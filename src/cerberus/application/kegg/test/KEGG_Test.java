@@ -1,4 +1,4 @@
-package cerberus.applications.kegg.test;
+package cerberus.application.kegg.test;
 
 import keggapi.*;
 
