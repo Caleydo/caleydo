@@ -1,0 +1,68 @@
+/*
+ * Project: GenView
+ * 
+ * Author: Michael Kalkusch
+ * 
+ *  creation date: 18-05-2005
+ *  
+ */
+package cerberus.data.collection.selection.iterator;
+
+import cerberus.data.collection.Selection;
+import cerberus.util.exception.PrometheusVirtualArrayException;
+
+/**
+ * Iterator for Selecion SelectionSingleBlock
+ * 
+ * Desing Pattern "Iterator"
+ * 
+ * @author Michael Kalkusch
+ *
+ */
+public class SelectionSingleBlockIterator 
+extends AbstractSelectionIterator
+implements SelectionIterator {
+
+	
+	/**
+	 * 
+	 */
+	public SelectionSingleBlockIterator( Selection setSelection ) {
+		super( setSelection );
+
+	}
+
+
+	/* (non-Javadoc)
+	 * @see cerberus.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
+	 */
+	public void setVirtualIndex(int iSetVirtualIndex)
+			throws PrometheusVirtualArrayException {
+		
+		if (( iSetVirtualIndex < 0 ) || 
+				( iSetVirtualIndex >= iSelectionLength) ) {
+			throw new PrometheusVirtualArrayException("setVirtualIndex() with index that was out of bounds.");
+		}
+		
+		iCurrentVirtualIndex = iSetVirtualIndex;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.data.collection.iterator.CollectionIterator#next()
+	 */
+	public int next() {
+		final int iCurrentRealIndex = iCurrentVirtualIndex + iSelectionOffset;
+				
+		iCurrentVirtualIndex++;
+		return iCurrentRealIndex;
+	}
+
+	public String toString() {
+		String result = "[ " + iCurrentVirtualIndex + 
+			"# " + iSelectionOffset + 
+			":" + (iSelectionOffset + iSelectionLength) + "]";
+		
+		return result;
+	}
+
+}
