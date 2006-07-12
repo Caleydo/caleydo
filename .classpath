@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="bin/ext_jar/axis/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos-util.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/kegg/keggapi.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>
