@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="bin/ext_jar/axis/axis.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/axis/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/axis/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos-util.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>
+	<classpathentry kind="output" path="bin/class"/>
+</classpath>
