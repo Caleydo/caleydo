@@ -6,16 +6,24 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.view.manager.tester;
+package cerberus.view.swing.graph.tester;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
 
 import java.io.IOException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-import java.io.StringReader;
 
 import javax.swing.JFrame;
+import javax.swing.JDesktopPane;
+import javax.swing.JLabel;
 
+import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -23,11 +31,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.singelton.OneForAllManager;
-import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
-import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
-
-
-
+import cerberus.view.swing.graph.DualNode;
+import cerberus.view.swing.graph.parser.NodeSaxDefaultHandler;
+import cerberus.view.swing.graph.visitor.NodeVisitorRenderer;
 
 import cerberus.command.CommandType;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
@@ -48,14 +54,8 @@ import cerberus.net.dwt.swing.menu.DMenuBootStraper;
 import cerberus.net.dwt.swing.mdi.DDesktopPane;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
-
-
 //import cerberus.data.xml.MementoNetEventXML;
 import cerberus.data.xml.MementoCallbackXML;
-
-import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
-import org.studierstube.net.protocol.muddleware.Message;
-import org.studierstube.net.protocol.muddleware.Operation;
 
 
 /**
@@ -64,43 +64,34 @@ import org.studierstube.net.protocol.muddleware.Operation;
  * @author Michael Kalkusch
  *
  */
-public class CanvasFromXMLFileTester extends JFrame {
+public class GraphNodeXMLParserTester extends JFrame {
 //implements MementoCallbackXML {
 
 
-	private boolean bUSeMuddlewareXMLserver = false;
+	private GraphNodeAWTCanvasTester canvas;
 	
-	private ClientByteStreamHandler connection;
-	
-	protected CanvasSwingJoglManager canvasManager;
-	
-	protected SwingJoglJFrameSaxHandler saxHandler;
-	
+	//protected FlatStorageSimple storage;
 	
 	/**
 	 * 
 	 */
-	public CanvasFromXMLFileTester() {
+	public GraphNodeXMLParserTester() {
 		super("XML BootStrapper");
 		
-		canvasManager = (CanvasSwingJoglManager) new OneForAllManager( null
-				).getSingelton().getViewCanvasManager();		
+		canvas = new GraphNodeAWTCanvasTester();
 		
-		canvasManager.run_Animator();
+//		this.getContentPane().setLayout( new BorderLayout() );
+//		this.getContentPane().add( canvas, BorderLayout.CENTER );				
 		
-		saxHandler = canvasManager.getSAXHandler();
+		setLayout( new BorderLayout() );
+		add( canvas, BorderLayout.CENTER );				
 		
-		//saxHandler = new SwingJoglJFrameSaxHandler( canvasManager );		
 		
-		
-		setSize( 150, 150 );
+		setSize( 800, 500 );
 		//XmlBootStrapper.setLocation( 2000, 30);
-		setLocation( 50, 50);
+		setLocation( 300, 30);
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		setVisible( true );
-		
-		connection = new ClientByteStreamHandler( null );
-		
 	}
 
 	
@@ -110,7 +101,7 @@ public class CanvasFromXMLFileTester extends JFrame {
 //	}
 	
 	public boolean parseOnce( InputSource inStream, 
-			SwingJoglJFrameSaxHandler handler) {
+			NodeSaxDefaultHandler handler) {
 		
 		try {
 			XMLReader reader = XMLReaderFactory.createXMLReader();			
@@ -147,72 +138,32 @@ public class CanvasFromXMLFileTester extends JFrame {
 		return true;
 	}
 	
-	public boolean bootstrapFromXMLusingFileName( final String filename ) {
+	public boolean setMementoXMLusingFileName( final String filename ) {
 		
-		parseOnce( openInputStreamFromFile(filename), saxHandler);
+		NodeSaxDefaultHandler currentXMLContentHandler
+			= new NodeSaxDefaultHandler( );
+		
+		parseOnce( openInputStreamFromFile(filename),
+				currentXMLContentHandler);
+		
 		
 		System.out.println("PARSE done.");
 	
+		
 		/**
 		 * SELECTION is done...
 		 */
+		DualNode rootNode = currentXMLContentHandler.getRootNode();
+
+		System.out.println("Tree:\n" +
+				rootNode.toStringRecursively(" ") );
 		
-		this.repaint();
+		NodeVisitorRenderer visitor = new NodeVisitorRenderer();				
+		visitor.calculatePoints( rootNode );
 		
-		return true;
-	}
-	
-	public boolean bootstrapFromXMLusingMuddleWare( final String filename ) {
+		canvas.setGraph( visitor, rootNode );
 		
-		String sXPath = "/cerberus/workspace";
-		
-		connection.setServerNameAndPort( "localhost", 20000 );
-		if ( connection.connect() ) {
-			System.out.println("Can not connect to Muddleware server.");
-			return false;
-		}
-		
-		Operation operationSend = new Operation( Operation.OP_ELEMENT_EXISTS );
-		operationSend.setXPath( sXPath );
-		
-		Message sendMsg = new Message();
-		sendMsg.addOperation( operationSend );
-		
-		Message receiveMsg = connection.sendReceiveMessage( sendMsg );
-		
-		if (( receiveMsg == null )||( receiveMsg.getNumOperations() < 1 )) {
-			System.out.println("XPath does not exist, Muddleware server has no data on canvas settings.");
-			connection.disconnect();
-			return false;
-		}
-		
-		if ( receiveMsg.getOperation( 0 ).getNodeString().equalsIgnoreCase( "true" ) ) {
-			
-			operationSend.setOperation( Operation.OP_GET_ELEMENT );
-			
-			/* get configuration .. */
-			sendMsg.setOperation( operationSend );
-			receiveMsg = connection.sendReceiveMessage( sendMsg );
-			connection.disconnect();
-						
-			String configutaion = receiveMsg.getOperation( 0 ).getNodeString();						
-			InputSource in = new InputSource(new StringReader(configutaion));				
-			
-			parseOnce( in, saxHandler);
-			
-			System.out.println("PARSE done.");
-			
-		} else {
-			System.out.println("Muddleware server has no data on canvas settings.");
-			connection.disconnect();
-			return false;
-		}
-		
-	
-	
-		/**
-		 * SELECTION is done...
-		 */
+		canvas.repaint();
 		
 		this.repaint();
 		
@@ -246,10 +197,10 @@ public class CanvasFromXMLFileTester extends JFrame {
 	 */
 	public static void main(String[] args) {
 		
-		CanvasFromXMLFileTester xmlBootStrapper =
-			new CanvasFromXMLFileTester();
+		GraphNodeXMLParserTester XmlBootStrapper =
+			new GraphNodeXMLParserTester();
 		
-		String sFileXML = "..\\data\\XML\\bootstrap\\cerberus_bootstrap_sample.xml";
+		String sFileXML = "..\\data\\XML\\graph\\cerberus_graph_sample.xml";
 		
 		/**
 		 * use arguments...
@@ -266,20 +217,17 @@ public class CanvasFromXMLFileTester extends JFrame {
 		
 		try {
 			
-			if ( xmlBootStrapper.bUSeMuddlewareXMLserver ) {
-				xmlBootStrapper.bootstrapFromXMLusingMuddleWare( "" );
-			} else {
-				xmlBootStrapper.bootstrapFromXMLusingFileName( sFileXML );
-			}
-			
-			
+			XmlBootStrapper.setMementoXMLusingFileName( sFileXML );		
 			
 		}
 		catch ( Exception e) {
 			System.out.println("ERROR: " + e.toString());
 		}
 		
-		xmlBootStrapper.repaint();
+		XmlBootStrapper.repaint();
+	
+		
+		
 		
 	}
 	

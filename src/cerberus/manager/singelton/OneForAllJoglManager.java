@@ -10,17 +10,17 @@ package cerberus.manager.singelton;
 
 import java.util.StringTokenizer;
 
-import prometheus.data.collection.Storage;
-import prometheus.data.xml.MementoXML;
+import cerberus.data.collection.Storage;
+import cerberus.data.xml.MementoXML;
 
 
-//import prometheus.data.collection.SelectionType; 
-//import prometheus.data.collection.SetType;
-//import prometheus.data.collection.StorageType;
+//import cerberus.data.collection.SelectionType; 
+//import cerberus.data.collection.SetType;
+//import cerberus.data.collection.StorageType;
 
-//import prometheus.data.collection.Selection;
-import prometheus.data.collection.Set;
-import prometheus.data.collection.view.ViewCanvas;
+//import cerberus.data.collection.Selection;
+import cerberus.data.collection.Set;
+import cerberus.data.collection.view.ViewCanvas;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.DComponentManager;
@@ -42,10 +42,10 @@ import cerberus.manager.type.BaseManagerType;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 
-//import prometheus.manager.ViewCanvasManager;
-//import prometheus.net.dwt.swing.DHistogramCanvas;
-import prometheus.net.dwt.swing.parser.DParseSaxHandler;
-import prometheus.util.exception.PrometheusRuntimeException;
+//import cerberus.manager.ViewCanvasManager;
+//import cerberus.net.dwt.swing.DHistogramCanvas;
+import cerberus.net.dwt.swing.parser.DParseSaxHandler;
+import cerberus.util.exception.PrometheusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -76,7 +76,7 @@ implements GeneralManagerSingelton {
 	
 	/**
 	 * Used to create a new item by a Fabik.
-	 * used by prometheus.data.manager.OneForAllManager#createNewId(BaseManagerType)
+	 * used by cerberus.data.manager.OneForAllManager#createNewId(BaseManagerType)
 	 * 
 	 * @see cerberus.manager.singelton.OneForAllJoglManager#createNewId(BaseManagerType)
 	 */
@@ -104,7 +104,7 @@ implements GeneralManagerSingelton {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#getSingelton()
+	 * @see cerberus.data.manager.GeneralManager#getSingelton()
 	 */
 	public final SingeltonManager getSingelton() {
 		return refSingeltonManager;
@@ -144,7 +144,7 @@ implements GeneralManagerSingelton {
 	}
 	
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#hasItem(int)
+	 * @see cerberus.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem( final int iItemId) {
 		
@@ -194,7 +194,7 @@ implements GeneralManagerSingelton {
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#size()
+	 * @see cerberus.data.manager.GeneralManager#size()
 	 */
 	public int size() {
 		
@@ -207,21 +207,21 @@ implements GeneralManagerSingelton {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see prometheus.data.manager.singelton.GeneralManagerSingelton#getCommandManager()
+	 * @see cerberus.data.manager.singelton.GeneralManagerSingelton#getCommandManager()
 	 */
 	public CommandManager getCommandManager() {
 		return refCommandManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#getManagerType()
+	 * @see cerberus.data.manager.GeneralManager#getManagerType()
 	 */
 	public BaseManagerType getManagerType() {
 		return BaseManagerType.ALL_IN_ONE;
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#getSingeltonManager()
+	 * @see cerberus.data.manager.GeneralManager#getSingeltonManager()
 	 */
 	public GeneralManager getGeneralManager() {
 		return this;
@@ -229,7 +229,7 @@ implements GeneralManagerSingelton {
 
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.singelton.SingeltonManager#getCurrentType()
+	 * @see cerberus.data.manager.singelton.SingeltonManager#getCurrentType()
 	 */
 	public final BaseManagerType getCurrentType() {
 		return this.setCurrentType;
@@ -237,11 +237,11 @@ implements GeneralManagerSingelton {
 	
 	/**
 	 * Set the current type used to create the next Id using
-	 * prometheus.data.manager.singelton.OneForAllManager#createNewId()
+	 * cerberus.data.manager.singelton.OneForAllManager#createNewId()
 	 * Does not influence 
-	 * prometheus.data.manager.singelton.OneForAllManager#createNewId(BaseManagerType)
+	 * cerberus.data.manager.singelton.OneForAllManager#createNewId(BaseManagerType)
 	 * or 
-	 * prometheus.data.manager.singelton.OneForAllManager#createNewItem(BaseManagerType, String)
+	 * cerberus.data.manager.singelton.OneForAllManager#createNewItem(BaseManagerType, String)
 	 * .
 	 * 
 	 * @see cerberus.manager.singelton.OneForAllJoglManager#createNewId(BaseManagerType)
@@ -262,7 +262,7 @@ implements GeneralManagerSingelton {
 //	}
 	
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.singelton.SingeltonManager#createNewId(prometheus.data.manager.BaseManagerType)
+	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewId(cerberus.data.manager.BaseManagerType)
 	 */
 	public final int createNewId(final BaseManagerType setNewBaseType) {
 	
@@ -379,7 +379,7 @@ implements GeneralManagerSingelton {
 	
 	
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.singelton.SingeltonManager#createNewItem(prometheus.data.manager.BaseManagerType, java.lang.String)
+	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewItem(cerberus.data.manager.BaseManagerType, java.lang.String)
 	 */
 	public Object createNewItem( final BaseManagerType createNewType,
 			final String sNewTypeDetails ) {

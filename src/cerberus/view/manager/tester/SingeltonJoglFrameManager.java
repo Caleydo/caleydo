@@ -91,16 +91,16 @@ import cerberus.view.swing.loader.FileLoader;
 import cerberus.xml.parser.CerberusDefaultSaxHandler;
 import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
 
-import prometheus.data.collection.set.SetMultiDim;
-import prometheus.data.collection.Selection;
-//import prometheus.data.collection.Set;
-import prometheus.data.collection.Storage;
-import prometheus.data.collection.selection.SelectionThreadSingleBlock;
-import prometheus.data.collection.set.SetFlatThreadSimple;
-import prometheus.data.collection.storage.FlatThreadStorageSimple;
+import cerberus.data.collection.set.SetMultiDim;
+import cerberus.data.collection.Selection;
+//import cerberus.data.collection.Set;
+import cerberus.data.collection.Storage;
+import cerberus.data.collection.selection.SelectionThreadSingleBlock;
+import cerberus.data.collection.set.SetFlatThreadSimple;
+import cerberus.data.collection.storage.FlatThreadStorageSimple;
 
 /* import manager references. */
-import prometheus.net.dwt.swing.menu.DMenuBootStraper;
+import cerberus.net.dwt.swing.menu.DMenuBootStraper;
 
 /**
  Wavelength-dependent refraction demo<br>

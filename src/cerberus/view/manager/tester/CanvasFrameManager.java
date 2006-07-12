@@ -89,13 +89,13 @@ import cerberus.view.swing.status.SetBrowser;
 import cerberus.view.swing.status.StorageBrowser;
 import cerberus.view.swing.loader.FileLoader;
 
-import prometheus.data.collection.set.SetMultiDim;
-import prometheus.data.collection.Selection;
-//import prometheus.data.collection.Set;
-import prometheus.data.collection.Storage;
-import prometheus.data.collection.selection.SelectionThreadSingleBlock;
-import prometheus.data.collection.set.SetFlatThreadSimple;
-import prometheus.data.collection.storage.FlatThreadStorageSimple;
+import cerberus.data.collection.set.SetMultiDim;
+import cerberus.data.collection.Selection;
+//import cerberus.data.collection.Set;
+import cerberus.data.collection.Storage;
+import cerberus.data.collection.selection.SelectionThreadSingleBlock;
+import cerberus.data.collection.set.SetFlatThreadSimple;
+import cerberus.data.collection.storage.FlatThreadStorageSimple;
 
 /**
  Wavelength-dependent refraction demo<br>
