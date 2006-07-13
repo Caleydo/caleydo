@@ -1,6 +1,6 @@
 package cerberus.xml.parser.kgml;
 
-import cerberus.pathways.PathwayGraphBuilder;
+import cerberus.pathways.graph.PathwayGraphBuilder;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
