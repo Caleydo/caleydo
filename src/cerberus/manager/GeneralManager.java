@@ -61,6 +61,12 @@ public interface GeneralManager {
 	
 	public final int iUniqueId_TypeOffset_Storage = 53;
 	
+	public final int iUniqueId_TypeOffset_Pathways_Pathway = 90;
+	
+	public final int iUniqueId_TypeOffset_Pathways_Vertex = 91;
+	
+	public final int iUniqueId_TypeOffset_Pathways_Edge = 92;		
+	
 	public final int iUniqueId_TypeOffset_Memento = 10;
 	
 	public final int iUniqueId_TypeOffset_GuiComponent = 30;
