@@ -44,7 +44,7 @@ import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 
 //import cerberus.manager.ViewCanvasManager;
 //import cerberus.net.dwt.swing.DHistogramCanvas;
-import cerberus.net.dwt.swing.parser.DParseSaxHandler;
+import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.util.exception.PrometheusRuntimeException;
 
 /**

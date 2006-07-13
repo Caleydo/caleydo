@@ -6,7 +6,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import cerberus.xml.parser.kgml.KgmlSaxHandler;
-import cerberus.pathways.PathwayGraphBuilder;
+import cerberus.pathways.graph.PathwayGraphBuilder;
 
 public class PathwaysTest {
 	public static void main(String[] args) throws Exception 

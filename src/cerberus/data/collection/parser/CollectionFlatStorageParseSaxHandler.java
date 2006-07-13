@@ -96,7 +96,7 @@ implements DParseSaxHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseSaxHandler#reset()
+	 * @see cerberus.xml.parser.DParseSaxHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	

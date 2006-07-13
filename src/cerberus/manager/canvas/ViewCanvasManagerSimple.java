@@ -21,15 +21,15 @@ import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.collection.CollectionManager;
 import cerberus.manager.type.BaseManagerType;
 
-import prometheus.data.collection.view.ViewCanvas;
-import prometheus.net.dwt.swing.DSwingHistogramCanvas;
-import prometheus.net.dwt.swing.mdi.DDesktopPane;
-import prometheus.net.dwt.swing.mdi.DInternalFrame;
-import prometheus.net.dwt.swing.jogl.DSwingJoglCanvas;
-import prometheus.net.dwt.swing.jogl.WorkspaceSwingFrame;
-import prometheus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
-import prometheus.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
-import prometheus.util.exception.PrometheusRuntimeException;
+import cerberus.data.collection.view.ViewCanvas;
+import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
+import cerberus.net.dwt.swing.mdi.DDesktopPane;
+import cerberus.net.dwt.swing.mdi.DInternalFrame;
+import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
+import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
+import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
+import cerberus.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
+import cerberus.util.exception.PrometheusRuntimeException;
 
 /**
  * Manage several ViewCanvas items.

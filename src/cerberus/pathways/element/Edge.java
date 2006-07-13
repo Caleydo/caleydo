@@ -2,7 +2,7 @@ package cerberus.pathways.element;
 
 public class Edge extends Element
 {
-	enum EdgeType
+	public enum EdgeType
 	{
 		ECel, 	// enzyme-enzyme relation, 
 				// indicating two entymes catalyzing succesive reaction steps

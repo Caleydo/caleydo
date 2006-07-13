@@ -32,29 +32,29 @@ import cerberus.xml.parser.command.CommandSaxHandler;
 
 
 
-import prometheus.command.CommandType;
-import prometheus.command.window.CmdWindowNewIFrameHistogram2D;
-import prometheus.command.window.CmdWindowNewIFrameHeatmap2D;
+import cerberus.command.CommandType;
+import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
+import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 
-//import prometheus.data.manager.BaseManagerType;
-import prometheus.data.collection.Set;
-import prometheus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
-import prometheus.data.collection.parser.CollectionSelectionParseSaxHandler;
-import prometheus.data.collection.parser.CollectionSetParseSaxHandler;
-import prometheus.net.dwt.swing.collection.DSwingSelectionCanvas;
-import prometheus.net.dwt.swing.collection.DSwingStorageCanvas;
-import prometheus.net.dwt.swing.DSwingHistogramCanvas;
-import prometheus.net.dwt.swing.DSwingHeatMap2DCanvas;
-import prometheus.net.dwt.swing.parser.DParseBaseSaxHandler;
-import prometheus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
-import prometheus.net.dwt.swing.menu.DMenuBootStraper;
-import prometheus.net.dwt.swing.mdi.DDesktopPane;
-import prometheus.net.dwt.swing.mdi.DInternalFrame;
+//import cerberus.data.manager.BaseManagerType;
+import cerberus.data.collection.Set;
+import cerberus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
+import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
+import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
+import cerberus.net.dwt.swing.collection.DSwingSelectionCanvas;
+import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
+import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
+import cerberus.net.dwt.swing.canvas.DSwingHeatMap2DCanvas;
+import cerberus.xml.parser.DParseBaseSaxHandler;
+import cerberus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
+import cerberus.net.dwt.swing.menu.DMenuBootStraper;
+import cerberus.net.dwt.swing.mdi.DDesktopPane;
+import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
 
 
-//import prometheus.data.xml.MementoNetEventXML;
-import prometheus.data.xml.MementoCallbackXML;
+//import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.xml.MementoCallbackXML;
 
 import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
 import org.studierstube.net.protocol.muddleware.Message;

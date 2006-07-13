@@ -12,8 +12,8 @@ import java.util.Iterator;
 
 
 
-import prometheus.net.dwt.base.DGuiComponentType;
-import prometheus.net.dwt.DNetEventComponentInterface;
+import cerberus.net.dwt.base.DGuiComponentType;
+import cerberus.net.dwt.DNetEventComponentInterface;
 
 /**
  * Manges all Set's.

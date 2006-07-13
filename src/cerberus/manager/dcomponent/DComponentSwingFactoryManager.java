@@ -20,15 +20,15 @@ import cerberus.manager.type.BaseManagerGroupType;
 import cerberus.manager.type.BaseManagerType;
 import cerberus.manager.singelton.SingeltonManager;
 
-import prometheus.net.dwt.DNetEventComponentInterface;
-import prometheus.net.dwt.base.DGuiComponentType;
+import cerberus.net.dwt.DNetEventComponentInterface;
+import cerberus.net.dwt.base.DGuiComponentType;
 
-import prometheus.net.dwt.swing.DButton;
-import prometheus.net.dwt.swing.DPanel;
+import cerberus.net.dwt.swing.component.DButton;
+import cerberus.net.dwt.swing.component.DPanel;
 
-import prometheus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.PrometheusRuntimeException;
 
-//import prometheus.net.dwt.swing.DViewHistogram;
+//import cerberus.net.dwt.swing.DViewHistogram;
 
 /**
  * @author Michael Kalkusch
@@ -70,7 +70,7 @@ public class DComponentSwingFactoryManager
 
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.DComponentManager#createSet(prometheus.net.dwt.DNetEventType)
+	 * @see cerberus.data.manager.DComponentManager#createSet(cerberus.net.dwt.DNetEventType)
 	 */
 	public DNetEventComponentInterface createSet( final DGuiComponentType useSetType) {
 		
@@ -100,7 +100,7 @@ public class DComponentSwingFactoryManager
 
 	/*
 	 *  (non-Javadoc)
-	 * @see prometheus.data.manager.MementoManager#createMementoId()
+	 * @see cerberus.data.manager.MementoManager#createMementoId()
 	 */
 	 public int createNewId( final BaseManagerType setNewBaseType ) {
 		 if ( setNewBaseType.getGroupType() == BaseManagerGroupType.GUI_COMPONENT ) {
@@ -111,7 +111,7 @@ public class DComponentSwingFactoryManager
 	 }
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.DComponentManager#deleteSet(int)
+	 * @see cerberus.data.manager.DComponentManager#deleteSet(int)
 	 */
 	public boolean deleteSet(int iNetEventId) {
 		try {
@@ -129,8 +129,8 @@ public class DComponentSwingFactoryManager
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.DComponentManager#getItemSet(int)
-	 * @see prometheus.data.manager.GeneralManager#getItem(int)
+	 * @see cerberus.data.manager.DComponentManager#getItemSet(int)
+	 * @see cerberus.data.manager.GeneralManager#getItem(int)
 	 */
 	public DNetEventComponentInterface getItemSet( final int iNetEventId) {
 		try {
@@ -143,35 +143,35 @@ public class DComponentSwingFactoryManager
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#getItem(int)
+	 * @see cerberus.data.manager.GeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
 		return getItemSet(iItemId);
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.DComponentManager#getAllSetItems()
+	 * @see cerberus.data.manager.DComponentManager#getAllSetItems()
 	 */
 	public Iterator<DNetEventComponentInterface> getIteratorComponents() {
 		return this.vecGuiComponents.iterator();
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#hasItem(int)
+	 * @see cerberus.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem( final int iItemId) {
 		return hashGuiIndexLookup.containsKey( new Integer( iItemId) );
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#size()
+	 * @see cerberus.data.manager.GeneralManager#size()
 	 */
 	public int size() {
 		return this.vecGuiComponents.size();
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#getManagerType()
+	 * @see cerberus.data.manager.GeneralManager#getManagerType()
 	 */
 	public BaseManagerType getManagerType() {
 		return BaseManagerType.GUI_COMPONENT;

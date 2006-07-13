@@ -248,7 +248,7 @@ extends DefaultHandler
 	 * Important: all derived classes must call super.reset() inside their reset() call
 	 * to not cause side effects!
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseSaxHandler#reset()
+	 * @see cerberus.xml.parser.DParseSaxHandler#reset()
 	 */
 	public void reset() {
 		sErrorMessage = "";

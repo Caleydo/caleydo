@@ -32,17 +32,17 @@ implements DParseSaxHandler
 
 	/**
 	 * Buffer for error messages.
-	 * An error message always sets the flag prometheus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true.
+	 * An error message always sets the flag cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true.
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#sInfoMessage
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#sInfoMessage
 	 */
 	private String sErrorMessage;
 	
 	/**
 	 * Buffer for info messages.
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#sErrorMessage
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#sErrorMessage
 	 */
 	private String sInfoMessage;
 	
@@ -59,19 +59,19 @@ implements DParseSaxHandler
 	
 	/**
 	 * This variabel defines, if a parsing error shall throw a org.xml.sax.SAXParseException.
-	 * If an parsing error occures the variabel prometheus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing
+	 * If an parsing error occures the variabel cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing
 	 * is set to true. 
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
 	 */
 	protected boolean bError_HaltParsingOnError = true;
 	
 	/**
 	 * This variable indicates, that an error has occured.
-	 * With respect to the variabel prometheus.net.dwt.swing.DParseBaseSaxHandler#bError_HaltParsingOnError 
+	 * With respect to the variabel cerberus.net.dwt.swing.DParseBaseSaxHandler#bError_HaltParsingOnError 
 	 * the parsing is interrupted.
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#bError_HaltParsingOnError 
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#bError_HaltParsingOnError 
 	 */
 	protected boolean bErrorWhileParsing = false;
 	
@@ -104,7 +104,7 @@ implements DParseSaxHandler
 	/**
 	 * Tells if a parsing error will cause an abortion of parsing.
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#bError_HaltParsingOnError
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#bError_HaltParsingOnError
 	 * 
 	 * @return true if a parsing error will cause an parsing abortion
 	 */
@@ -152,12 +152,12 @@ implements DParseSaxHandler
 	
 	/**
 	 * Appand an error message and set the "error-has-occured"-flag true.
-	 * In comparision prometheus.net.dwt.swing.DParseBaseSaxHandler#appandInfoMsg(String) sets an info message
+	 * In comparision cerberus.net.dwt.swing.DParseBaseSaxHandler#appandInfoMsg(String) sets an info message
 	 * without setting the "error-has-occured"-flag true.
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#appandInfoMsg(String)
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#appandInfoMsg(String)
 	 * 
 	 * @param errorMessage new error message
 	 */
@@ -185,9 +185,9 @@ implements DParseSaxHandler
 	
 	/**
 	 * Appands an new debug information, which can be read after parsing by calling
-	 * prometheus.net.dwt.swing.DParseBaseSaxHandler#
+	 * cerberus.net.dwt.swing.DParseBaseSaxHandler#
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
 	 * @param infoMessage
 	 */
 	final protected void appandInfoMsg( final String infoMessage ) {
@@ -200,15 +200,15 @@ implements DParseSaxHandler
 	
 	/**
 	 * Returns the error message. An error message also always sets
-	 * prometheus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true,
+	 * cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true,
 	 * which can be tested via the methode 
-	 * prometheus.net.dwt.swing.DParseBaseSaxHandler#hasErrorWhileParsing() .
+	 * cerberus.net.dwt.swing.DParseBaseSaxHandler#hasErrorWhileParsing() .
 	 * 
 	 * @return text of error message. If no error occured this String is empty.
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#hasErrorWhileParsing()
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#getInfoMessage()
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#hasErrorWhileParsing()
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#getInfoMessage()
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#bErrorWhileParsing
 	 */
 	public final String getErrorMessage() {
 		return sErrorMessage;
@@ -219,8 +219,8 @@ implements DParseSaxHandler
 	 * 
 	 * @return text of info message. 
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#hasErrorWhileParsing()
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#hasErrorWhileParsing()
 	 */
 	public final String getInfoMessage() {
 		return sInfoMessage;
@@ -229,11 +229,11 @@ implements DParseSaxHandler
 	/**
 	 * Test if parsing was successful.
 	 * 
-	 * To get error message call  prometheus.net.dwt.swing.DButtonSaxHandler#getErrorMessage()
+	 * To get error message call  cerberus.net.dwt.swing.DButtonSaxHandler#getErrorMessage()
 	 * 
 	 * @return TRUE if an error occured on parsing. 
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
+	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#getErrorMessage()
 	 */
 	public final boolean hasErrorWhileParsing() {
 		return bErrorWhileParsing;
@@ -280,7 +280,7 @@ implements DParseSaxHandler
 	 * Important: all derived classes must call super.reset() inside their reset() call
 	 * to not cause side effects!
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseSaxHandler#reset()
+	 * @see cerberus.xml.parser.DParseSaxHandler#reset()
 	 */
 	public void reset() {
 		sErrorMessage = "";
@@ -301,7 +301,7 @@ implements DParseSaxHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.net.dwt.swing.DParseSaxHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see cerberus.net.dwt.swing.DParseSaxHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	public abstract void startElement(String uri, 
 			String localName, 
@@ -309,7 +309,7 @@ implements DParseSaxHandler
 			Attributes attributes);
 	
 	/* (non-Javadoc)
-	 * @see prometheus.net.dwt.swing.DParseSaxHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see cerberus.net.dwt.swing.DParseSaxHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public abstract void endElement(String uri, String localName, String qName );
 

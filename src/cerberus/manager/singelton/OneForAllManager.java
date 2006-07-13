@@ -39,7 +39,8 @@ import cerberus.data.xml.MementoXML;
 
 //import prometheus.data.collection.Selection;
 import cerberus.data.collection.Set;
-//import cerberus.data.collection.view.ViewCanvas;
+
+import cerberus.data.collection.view.ViewCanvas;
 
 
 //import prometheus.net.dwt.swing.DHistogramCanvas;
