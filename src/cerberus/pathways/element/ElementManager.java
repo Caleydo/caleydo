@@ -1,6 +1,6 @@
 package cerberus.pathways.element;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * The element manager is in charge for handling
@@ -8,12 +8,12 @@ import java.util.Map;
  * The class is implemented as a Singleton. 
  * @author	Marc Streit
  */
-public class ElementManager 
+public class ElementManager
 {
 	private static ElementManager instance = null;
 	
-	protected Map<Integer, Vertex> vertexMap;
-	protected Map<Integer, Edge> edgeMap;
+	protected HashMap<Integer, Vertex> vertexLUT;
+	protected HashMap<Integer, Edge> edgeLUT;
 	
 	/**
 	 * Returns the instance of the element manager.
@@ -41,22 +41,17 @@ public class ElementManager
 	private ElementManager()
 	{}
 	
-	public Vertex createVertex()
+	public void createVertex(String sName, String sType)
 	{
-		Vertex newVertex = new Vertex();
-		vertexMap.put(0, newVertex);
-		return (newVertex);
+		Vertex newVertex = new Vertex(sName, sType);
+		//TODO: generate ID here
+		vertexLUT.put(0, newVertex);
 	}
 	
-	public Edge createEdge()
+	public void createEdge()
 	{
 		Edge newEdge = new Edge();
-		int iEdgeID = generateID();
-		
-		// store new edge in the map
-		edgeMap.put(iEdgeID, newEdge);
-
-		return newEdge;
+		//edgeLUT.put(iEdgeID, newEdge);
 	}
 	
 	private int generateID()

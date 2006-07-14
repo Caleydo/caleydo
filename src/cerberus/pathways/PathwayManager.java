@@ -1,5 +1,9 @@
 package cerberus.pathways;
 
+import java.util.HashMap;
+
+import cerberus.pathways.Pathway;
+
 /**
  * The pathway manager is in charge for handling
  * the pathways.
@@ -9,6 +13,8 @@ package cerberus.pathways;
 public class PathwayManager 
 {
 	private static PathwayManager instance = null;
+
+	protected HashMap<Integer, Pathway> pathwayLUT;
 	
 	/**
 	 * Returns the instance of the pathway manager.
@@ -35,4 +41,9 @@ public class PathwayManager
 	 */
 	private PathwayManager()
 	{}
+	
+	public void registerPathway(int iPathwayID, Pathway newPathway)
+	{
+		pathwayLUT.put(iPathwayID, newPathway);	
+	}
 }

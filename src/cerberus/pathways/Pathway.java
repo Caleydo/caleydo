@@ -10,4 +10,12 @@ public class Pathway
 	protected String sInformationLink;
 	
 	protected HashMap hmapElements;
+
+	public Pathway(String sTitle, String sImageLink, String sLink, int iPathwayID)
+	{
+		this.sTitle = sTitle;
+		this.sImageLink = sImageLink;
+		this.sInformationLink = sLink;
+		this.iPathwayID = iPathwayID;
+	}
 }

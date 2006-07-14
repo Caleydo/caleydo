@@ -21,7 +21,7 @@ public class PathwaysTest {
             // Parse the input
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse( 
-            		new File("/home/marc/university/diploma/data/pathways/map00271.xml"), kgmlParser);
+            		new File("../data/pathways/map00271.xml"), kgmlParser);
 
         } catch (Throwable t) {
             t.printStackTrace();

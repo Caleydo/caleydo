@@ -1,11 +1,10 @@
 package cerberus.pathways.element;
 
-import java.util.Map;
-
+import java.util.Vector;
 
 public class Vertex extends Element 
 {
-	enum VertexType
+	public enum VertexType
 	{
 		ortholog,	// the node is a KO (ortholog group)
 		enzyme,		// the node is an enzyme
@@ -15,5 +14,10 @@ public class Vertex extends Element
 	
 	protected VertexType vertexType;
 	
-	//protected Map<Integer, VertexRepresentation> mapVertexRepresentation;
+	protected Vector vertexRepresentation;
+	
+	public Vertex(String sName, String sType)
+	{
+		
+	}
 }

@@ -1,6 +1,13 @@
 package cerberus.xml.parser.kgml;
 
 import cerberus.pathways.graph.PathwayGraphBuilder;
+import cerberus.pathways.Pathway;
+import cerberus.pathways.PathwayManager;
+import cerberus.pathways.element.ElementManager;
+import cerberus.pathways.element.Vertex;
+import cerberus.pathways.element.VertexRepresentation;
+import cerberus.pathways.element.Edge;
+import cerberus.pathways.element.EdgeRepresentation;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -10,8 +17,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class KgmlSaxHandler extends DefaultHandler 
 {
-	
 	private PathwayGraphBuilder pathwayGraphBuilder;
+	private Attributes attributes; 
 	
 	public KgmlSaxHandler(PathwayGraphBuilder pathwayGraphBuilder)
 	{
@@ -37,6 +44,7 @@ public class KgmlSaxHandler extends DefaultHandler
     throws SAXException	
     {
     	String sElementName = sSimpleName;
+    	this.attributes = attributes;
     	
     	if ("".equals(sElementName)) 
     	{
@@ -45,43 +53,19 @@ public class KgmlSaxHandler extends DefaultHandler
     	
     	System.out.println("Element name: " +sElementName);
     	
-    	if (sElementName.equals("graphics"))
-    	{
-    		if (attributes != null) 
-    		{
-    			String sName = "";
-    			int iHeight = 0;
-    			int iWidth = 0;
-    			int iXPosition = 0;
-    			int iYPosition = 0;
-    		
-    			for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
-    			{
-    				String sAttributeName = attributes.getLocalName(iAttributeIndex);
-    			
-    				if ("".equals(sAttributeName))
-    				{
-    					sAttributeName = attributes.getQName(iAttributeIndex);
-    				}
-    				
-    				if (sAttributeName.equals("name"))
-    					sName = attributes.getValue(iAttributeIndex); 
-	    			else if (sAttributeName.equals("height"))
-	    				iHeight = new Integer(attributes.getValue(iAttributeIndex)); 
-	    			else if (sAttributeName.equals("width"))
-	    				iWidth = new Integer(attributes.getValue(iAttributeIndex)); 
-	    			else if (sAttributeName.equals("x"))
-	    				iXPosition = new Integer(attributes.getValue(iAttributeIndex)); 
-	    			else if (sAttributeName.equals("y"))
-	    				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
-    			
-	    			System.out.println("Attribute name: " +sAttributeName);
-	    			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
-	    		}
-    		
-				pathwayGraphBuilder.createCell(sName, iHeight, iWidth, iXPosition, iYPosition);
-    		}
-    	}
+		if (attributes != null) 
+		{
+			if (sElementName.equals("pathway"))
+				handleGraphicsTag();
+			else if (sElementName.equals("entry"))
+				handleEntryTag();
+			else if (sElementName.equals("graphics"))
+				handleGraphicsTag();
+			else if (sElementName.equals("relation"))
+				handleRelationTag();
+			else if (sElementName.equals("reaction"))
+				handleReactionTag();
+		}
     }
 
     public void endElement(String namespaceURI,
@@ -91,4 +75,186 @@ public class KgmlSaxHandler extends DefaultHandler
 	{
 		//emit("</"+sName+">");
 	}
+    
+	/**
+	 * Reacts on the elements of the pathway tag.
+	 * 
+	 * An example pathway tag looks like this:
+	 *     <pathway name="path:map00271" 
+     *	org="map" number="00271" 
+     *	title="Methionine metabolism" 
+     *	image="http://www.genome.jp/kegg/pathway/map/map00271.gif" 
+     *	link="http://www.genome.jp/dbget-bin/show_pathway?map00271">
+	 */
+    public void handlePathwayTag()
+    {
+    	String sTitle = "";
+    	String sImageLink = "";
+    	String sLink = "";
+    	int iPathwayID = 0;
+    
+		String sAttributeName = "";
+
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("title"))
+				sTitle = attributes.getValue(iAttributeIndex); 
+   			else if (sAttributeName.equals("number"))
+  				iPathwayID = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("image"))
+    			sImageLink = attributes.getValue(iAttributeIndex); 
+    		else if (sAttributeName.equals("link"))
+    			sLink = attributes.getValue(iAttributeIndex); 
+			
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   		}
+		
+		Pathway newPathway = 
+			new Pathway(sTitle, sImageLink, sLink, iPathwayID);
+		PathwayManager.getInstance().registerPathway(iPathwayID, newPathway);
+    }
+    
+	/**
+	 * Reacts on the elements of the entry tag.
+	 * 
+	 * An example entry tag looks like this:
+	 * <entry id="1" name="ec:1.8.4.1" type="enzyme" 
+	 * reaction="rn:R01292" link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
+	 */
+    public void handleEntryTag()
+    {
+    	int iKgmlEntryID = 0;
+    	String sName = "";
+    	String sType = "";
+	   
+    	String sAttributeName = "";
+	
+    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+	   	{
+		   sAttributeName = attributes.getLocalName(iAttributeIndex);
+	
+		   if ("".equals(sAttributeName))
+		   {
+			   sAttributeName = attributes.getQName(iAttributeIndex);
+		   }
+			
+		   if (sAttributeName.equals("id"))
+			   iKgmlEntryID = new Integer(attributes.getValue(iAttributeIndex)); 
+		   else if (sAttributeName.equals("name"))
+			   sName = attributes.getValue(iAttributeIndex); 
+		   else if (sAttributeName.equals("type"))
+			   sType = attributes.getValue(iAttributeIndex); 
+		
+		   System.out.println("Attribute name: " +sAttributeName);
+		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+	   	}
+
+    	ElementManager.getInstance().createVertex(sName, sType);
+    }
+	
+	/**
+	 * Reacts on the elements of the graphics tag.
+	 * 
+	 * An example graphics tag looks like this:
+	 * <graphics name="1.8.4.1" fgcolor="#000000" 
+	 * bgcolor="#FFFFFF" type="rectangle" 
+	 * x="142" y="304" width="45" height="17"/>
+	 */
+    public void handleGraphicsTag()
+    {
+		String sName = "";
+		int iHeight = 0;
+		int iWidth = 0;
+		int iXPosition = 0;
+		int iYPosition = 0;
+		
+		String sAttributeName = "";
+		
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("name"))
+				sName = attributes.getValue(iAttributeIndex); 
+   			else if (sAttributeName.equals("height"))
+  				iHeight = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("width"))
+    			iWidth = new Integer(attributes.getValue(iAttributeIndex)); 
+    		else if (sAttributeName.equals("x"))
+    			iXPosition = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("y"))
+   				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
+			
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   		}
+
+		//ElementManager.getInstance().createVertexRepresentation();
+    }
+    
+	/**
+	 * Reacts on the elements of the relation tag.
+	 * 
+	 * An example relation tag looks like this:
+	 * <relation entry1="28" entry2="32" type="ECrel">
+	 */
+    public void handleRelationTag()
+    {
+		String sName = "";
+		int iHeight = 0;
+		int iWidth = 0;
+		int iXPosition = 0;
+		int iYPosition = 0;
+		
+		String sAttributeName = "";
+		
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("name"))
+				sName = attributes.getValue(iAttributeIndex); 
+   			else if (sAttributeName.equals("height"))
+  				iHeight = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("width"))
+    			iWidth = new Integer(attributes.getValue(iAttributeIndex)); 
+    		else if (sAttributeName.equals("x"))
+    			iXPosition = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("y"))
+   				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
+			
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   		}
+    	
+    }
+   
+	/**
+	 * Reacts on the elements of the pathway tag.
+	 * 
+	 * An example reaction tag looks like this:
+	 * <reaction name="rn:R01001" type="irreversible">
+	 */
+    public void handleReactionTag()
+    {
+    	//TODO: implement method
+    }
 }

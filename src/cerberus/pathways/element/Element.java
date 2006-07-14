@@ -1,25 +1,18 @@
 package cerberus.pathways.element;
 
-import java.util.Map;
-
 public class Element 
 {	
 	protected int iElementID = 0;
 	protected int iElementType = 0;
-	protected String sTitle = "";
+	protected String sElementTitle = "";
 
-	public int getElementID()
-	{
-		return iElementID;
-	}
+	public Element()
+	{}
 	
-	public void setElementID(int iElementID)
+	public Element(int iElementID, int iElementType, String sElementTitle)
 	{
-	  this.iElementID = iElementID;	
-	}
-	
-	public String getElementTitle()
-	{
-		return sTitle;
+		this.iElementID = iElementID;
+		this.iElementType = iElementType;
+		this.sElementTitle = sElementTitle;
 	}
 }
