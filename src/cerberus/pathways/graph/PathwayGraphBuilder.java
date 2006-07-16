@@ -1,5 +1,7 @@
 package cerberus.pathways.graph;
 
+import cerberus.pathways.element.ElementManager;
+
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
@@ -34,6 +36,11 @@ public class PathwayGraphBuilder
 		pathwayGraph = new JGraph(model, view);
 	}
 	
+	public void setUpPathwayGraph()
+	{
+		
+	}
+	
 	public void createCell(String sTitle, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition)
 	{	
@@ -51,22 +58,9 @@ public class PathwayGraphBuilder
 		pathwayGraph.getGraphLayoutCache().insert(cell);
 	}
 	
-	public void insertEdge()
-	{
-//		DefaultEdge edge = new DefaultEdge();
-//		edge.setSource(cells[0].getChildAt(0));
-//		edge.setTarget(cells[1].getChildAt(0));
-//		cells[2] = edge;
-//
-//		int arrow = GraphConstants.ARROW_CLASSIC;
-//		GraphConstants.setLineEnd(edge.getAttributes(), arrow);
-//		GraphConstants.setEndFill(edge.getAttributes(), true);	
-	}
 	
 	public void showPathwayGraph()
-	{
-
-		
+	{		
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(new JScrollPane(pathwayGraph));
 		frame.pack();

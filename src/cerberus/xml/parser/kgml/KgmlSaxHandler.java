@@ -1,13 +1,10 @@
 package cerberus.xml.parser.kgml;
 
-import cerberus.pathways.graph.PathwayGraphBuilder;
+import java.util.HashMap;
+
 import cerberus.pathways.Pathway;
 import cerberus.pathways.PathwayManager;
 import cerberus.pathways.element.ElementManager;
-import cerberus.pathways.element.Vertex;
-import cerberus.pathways.element.VertexRepresentation;
-import cerberus.pathways.element.Edge;
-import cerberus.pathways.element.EdgeRepresentation;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -17,13 +14,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class KgmlSaxHandler extends DefaultHandler 
 {
-	private PathwayGraphBuilder pathwayGraphBuilder;
 	private Attributes attributes; 
 	
-	public KgmlSaxHandler(PathwayGraphBuilder pathwayGraphBuilder)
-	{
-		this.pathwayGraphBuilder = pathwayGraphBuilder;
-	}
+	private HashMap<Integer, Integer> elementIdToKgmlIdLUT;
 	
     public void startDocument()
     throws SAXException
@@ -136,6 +129,7 @@ public class KgmlSaxHandler extends DefaultHandler
     	String sType = "";
 	   
     	String sAttributeName = "";
+    	int iGeneratedElementId = 0;
 	
     	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 	   	{
@@ -157,7 +151,8 @@ public class KgmlSaxHandler extends DefaultHandler
 		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
 	   	}
 
-    	ElementManager.getInstance().createVertex(sName, sType);
+    	iGeneratedElementId = ElementManager.getInstance().createVertex(sName, sType);
+    	elementIdToKgmlIdLUT.put(iGeneratedElementId, iKgmlEntryID);
     }
 	
 	/**
@@ -202,7 +197,8 @@ public class KgmlSaxHandler extends DefaultHandler
    			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 
-		//ElementManager.getInstance().createVertexRepresentation();
+		ElementManager.getInstance().createVertexRepresentation(sName, iHeight, iWidth,
+				iXPosition, iYPosition);
     }
     
 	/**
@@ -213,37 +209,6 @@ public class KgmlSaxHandler extends DefaultHandler
 	 */
     public void handleRelationTag()
     {
-		String sName = "";
-		int iHeight = 0;
-		int iWidth = 0;
-		int iXPosition = 0;
-		int iYPosition = 0;
-		
-		String sAttributeName = "";
-		
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
-		{
-			 sAttributeName = attributes.getLocalName(iAttributeIndex);
-		
-			if ("".equals(sAttributeName))
-			{
-				sAttributeName = attributes.getQName(iAttributeIndex);
-			}
-				
-			if (sAttributeName.equals("name"))
-				sName = attributes.getValue(iAttributeIndex); 
-   			else if (sAttributeName.equals("height"))
-  				iHeight = new Integer(attributes.getValue(iAttributeIndex)); 
-   			else if (sAttributeName.equals("width"))
-    			iWidth = new Integer(attributes.getValue(iAttributeIndex)); 
-    		else if (sAttributeName.equals("x"))
-    			iXPosition = new Integer(attributes.getValue(iAttributeIndex)); 
-   			else if (sAttributeName.equals("y"))
-   				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
-			
-   			System.out.println("Attribute name: " +sAttributeName);
-   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
-   		}
     	
     }
    

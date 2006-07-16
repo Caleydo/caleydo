@@ -14,10 +14,20 @@ public class Vertex extends Element
 	
 	protected VertexType vertexType;
 	
-	protected Vector vertexRepresentation;
+	protected Vector<VertexRepresentation> vertexRepresentations;
 	
-	public Vertex(String sName, String sType)
+	public Vertex(int iVertexID, String sName, String sType)
+	{	
+		super(iVertexID, sName);
+	}
+	
+	public void addVertexRepresentation(VertexRepresentation vertexRep)
 	{
-		
+		vertexRepresentations.add(vertexRep);
+	}
+
+	public Vector<VertexRepresentation> getVertexRepresentations()
+	{
+		return vertexRepresentations;
 	}
 }

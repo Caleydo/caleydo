@@ -9,7 +9,7 @@ public class Pathway
 	protected String sImageLink;
 	protected String sInformationLink;
 	
-	protected HashMap hmapElements;
+	protected HashMap elementsLUT;
 
 	public Pathway(String sTitle, String sImageLink, String sLink, int iPathwayID)
 	{

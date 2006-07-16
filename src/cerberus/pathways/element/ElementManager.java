@@ -2,6 +2,9 @@ package cerberus.pathways.element;
 
 import java.util.HashMap;
 
+import cerberus.manager.GeneralManager;
+import cerberus.manager.collection.CollectionManager;
+
 /**
  * The element manager is in charge for handling
  * the elements. Elements are vertices and edges.
@@ -11,9 +14,12 @@ import java.util.HashMap;
 public class ElementManager
 {
 	private static ElementManager instance = null;
+	private int iCurrentUniqueElementId;
+	private HashMap<Integer, Vertex> vertexLUT;
+	private HashMap<Integer, Edge> edgeLUT;
 	
-	protected HashMap<Integer, Vertex> vertexLUT;
-	protected HashMap<Integer, Edge> edgeLUT;
+	//FIXME: this is just a workaround.
+	private Vertex currentVertex = null;
 	
 	/**
 	 * Returns the instance of the element manager.
@@ -39,13 +45,31 @@ public class ElementManager
 	 * To get a instance call the getInstance() method. 
 	 */
 	private ElementManager()
-	{}
-	
-	public void createVertex(String sName, String sType)
 	{
-		Vertex newVertex = new Vertex(sName, sType);
-		//TODO: generate ID here
-		vertexLUT.put(0, newVertex);
+//		iCurrentUniqueElementId = 
+//			CollectionManager.calculateId( 
+//					GeneralManager.iUniqueId_TypeOffset_Memento, 
+//					refGeneralManager );
+		
+		iCurrentUniqueElementId = 0;
+	}
+	
+	public int createVertex(String sName, String sType)
+	{
+		int iGeneratedID = generateID();
+		Vertex newVertex = new Vertex(iGeneratedID, sName, sType);
+		currentVertex = newVertex;
+		vertexLUT.put(iGeneratedID, newVertex);
+		return iGeneratedID;
+	}
+	
+	public void createVertexRepresentation(String sName, int iHeight, int iWidth,
+			int iXPosition, int iYPosition)
+	{
+		VertexRepresentation newVertexRep = new VertexRepresentation(sName, iHeight, iWidth,
+			iXPosition, iYPosition);
+		
+		currentVertex.addVertexRepresentation(newVertexRep);
 	}
 	
 	public void createEdge()
@@ -56,8 +80,13 @@ public class ElementManager
 	
 	private int generateID()
 	{
-		//TODO: implement ID generation
-		return 0;
+		return iCurrentUniqueElementId++;
+
+	}
+
+	public HashMap<Integer, Vertex> getVertexLUT() 
+	{
+		return vertexLUT;
 	}
 }
 

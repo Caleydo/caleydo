@@ -11,8 +11,7 @@ import cerberus.pathways.graph.PathwayGraphBuilder;
 public class PathwaysTest {
 	public static void main(String[] args) throws Exception 
 	{
-	  	PathwayGraphBuilder pathwayGraphBuilder = new PathwayGraphBuilder();
-	  	KgmlSaxHandler kgmlParser = new KgmlSaxHandler(pathwayGraphBuilder);
+	  	KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 	  	
         // Use the default (non-validating) parser
         SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -26,7 +25,8 @@ public class PathwaysTest {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        
+
+	  	PathwayGraphBuilder pathwayGraphBuilder = new PathwayGraphBuilder();
         pathwayGraphBuilder.showPathwayGraph();
         //System.exit(0);
 	}
