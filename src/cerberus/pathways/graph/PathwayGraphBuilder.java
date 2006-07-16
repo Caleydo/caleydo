@@ -1,16 +1,24 @@
 package cerberus.pathways.graph;
 
-import cerberus.pathways.element.ElementManager;
+import cerberus.pathways.Pathway;
+import cerberus.pathways.PathwayManager;
+import cerberus.pathways.element.Vertex;
+import cerberus.pathways.element.VertexRepresentation;
+//import cerberus.pathways.element.ElementManager;
+//import cerberus.pathways.element.Edge;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultCellViewFactory;
-import org.jgraph.graph.DefaultEdge;
+//import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.DefaultPort;
@@ -38,7 +46,38 @@ public class PathwayGraphBuilder
 	
 	public void setUpPathwayGraph()
 	{
+		HashMap<Integer, Pathway> pathwayLUT = PathwayManager.getInstance().getPathwayLUT();
 		
+		//iterator through the pathways
+	    Iterator<Pathway> pathwayIterator = pathwayLUT.values().iterator();
+	    Iterator<Vertex> vertexIterator;
+	    Vector<VertexRepresentation> vertexRepresentations;
+	    Iterator<VertexRepresentation> vertexRepIterator;
+	    VertexRepresentation vertexRep;
+	    
+	    while (pathwayIterator.hasNext()) 
+	    {
+	        Vector<Vertex> vertexList = pathwayIterator.next().getVertexList();
+	        vertexIterator = vertexList.iterator();
+	        while (vertexIterator.hasNext())
+	        {
+	        	vertexRepresentations = vertexIterator.next().getVertexRepresentations();
+	        	vertexRepIterator = vertexRepresentations.iterator();
+	        	while (vertexRepIterator.hasNext())
+	        	{
+	        		vertexRep = vertexRepIterator.next();
+	        		createCell(vertexRep.getSName(), vertexRep.getIHeight(),
+	        				vertexRep.getIWidth(), vertexRep.getIXPosition(), vertexRep.getIYPosition());
+	        	}
+	        }   
+	    }
+		
+//		HashMap<Integer, Vertex> vertexLUT = ElementManager.getInstance().getVertexLUT();
+//		
+//		for (int vertexIndex = 0; vertexIndex <= vertexLUT.size(); vertexIndex++)
+//		{
+//			vertexLUT.values()
+//		}
 	}
 	
 	public void createCell(String sTitle, int iHeight, int iWidth, 

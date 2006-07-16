@@ -17,4 +17,29 @@ public class VertexRepresentation
 		this.iXPosition = iXPosition;
 		this.iYPosition = iYPosition;
 	}
+
+	public int getIHeight() 
+	{
+		return iHeight;
+	}
+
+	public int getIWidth() 
+	{
+		return iWidth;
+	}
+
+	public int getIXPosition() 
+	{
+		return iXPosition;
+	}
+
+	public int getIYPosition() 
+	{
+		return iYPosition;
+	}
+
+	public String getSName() 
+	{
+		return sName;
+	}
 }

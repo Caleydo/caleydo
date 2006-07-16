@@ -2,8 +2,7 @@ package cerberus.pathways.element;
 
 import java.util.HashMap;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.collection.CollectionManager;
+import cerberus.pathways.Pathway;
 
 /**
  * The element manager is in charge for handling
@@ -16,9 +15,9 @@ public class ElementManager
 	private static ElementManager instance = null;
 	private int iCurrentUniqueElementId;
 	private HashMap<Integer, Vertex> vertexLUT;
-	private HashMap<Integer, Edge> edgeLUT;
+	//private HashMap<Integer, Edge> edgeLUT;
 	
-	//FIXME: this is just a workaround.
+	//FIXME: this is just a temporary workaround.
 	private Vertex currentVertex = null;
 	
 	/**
@@ -46,6 +45,8 @@ public class ElementManager
 	 */
 	private ElementManager()
 	{
+		vertexLUT = new HashMap<Integer, Vertex>();
+		
 //		iCurrentUniqueElementId = 
 //			CollectionManager.calculateId( 
 //					GeneralManager.iUniqueId_TypeOffset_Memento, 
@@ -54,12 +55,13 @@ public class ElementManager
 		iCurrentUniqueElementId = 0;
 	}
 	
-	public int createVertex(String sName, String sType)
+	public int createVertex(Pathway pathway, String sName, String sType)
 	{
 		int iGeneratedID = generateID();
 		Vertex newVertex = new Vertex(iGeneratedID, sName, sType);
 		currentVertex = newVertex;
 		vertexLUT.put(iGeneratedID, newVertex);
+		pathway.addVertex(newVertex);
 		return iGeneratedID;
 	}
 	
@@ -74,8 +76,9 @@ public class ElementManager
 	
 	public void createEdge()
 	{
-		Edge newEdge = new Edge();
+		//Edge newEdge = new Edge();
 		//edgeLUT.put(iEdgeID, newEdge);
+		//TODO: implement!
 	}
 	
 	private int generateID()

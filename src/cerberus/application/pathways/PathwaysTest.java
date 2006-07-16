@@ -27,6 +27,7 @@ public class PathwaysTest {
         }
 
 	  	PathwayGraphBuilder pathwayGraphBuilder = new PathwayGraphBuilder();
+	  	pathwayGraphBuilder.setUpPathwayGraph();
         pathwayGraphBuilder.showPathwayGraph();
         //System.exit(0);
 	}

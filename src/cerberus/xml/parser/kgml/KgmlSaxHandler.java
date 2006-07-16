@@ -14,9 +14,15 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class KgmlSaxHandler extends DefaultHandler 
 {
-	private Attributes attributes; 
+	private Attributes attributes = null;
+	private Pathway currentPathway = null;
 	
 	private HashMap<Integer, Integer> elementIdToKgmlIdLUT;
+	
+	public KgmlSaxHandler()
+	{
+		elementIdToKgmlIdLUT = new HashMap<Integer, Integer>(); 
+	}
 	
     public void startDocument()
     throws SAXException
@@ -49,7 +55,7 @@ public class KgmlSaxHandler extends DefaultHandler
 		if (attributes != null) 
 		{
 			if (sElementName.equals("pathway"))
-				handleGraphicsTag();
+				handlePathwayTag();
 			else if (sElementName.equals("entry"))
 				handleEntryTag();
 			else if (sElementName.equals("graphics"))
@@ -110,9 +116,7 @@ public class KgmlSaxHandler extends DefaultHandler
    			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 		
-		Pathway newPathway = 
-			new Pathway(sTitle, sImageLink, sLink, iPathwayID);
-		PathwayManager.getInstance().registerPathway(iPathwayID, newPathway);
+		PathwayManager.getInstance().createPathway(sTitle, sImageLink, sLink, iPathwayID);
     }
     
 	/**
@@ -151,7 +155,8 @@ public class KgmlSaxHandler extends DefaultHandler
 		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
 	   	}
 
-    	iGeneratedElementId = ElementManager.getInstance().createVertex(sName, sType);
+    	iGeneratedElementId = ElementManager.getInstance().createVertex(
+    			PathwayManager.getInstance().getCurrentPathway(), sName, sType);
     	elementIdToKgmlIdLUT.put(iGeneratedElementId, iKgmlEntryID);
     }
 	

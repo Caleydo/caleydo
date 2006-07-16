@@ -19,6 +19,7 @@ public class Vertex extends Element
 	public Vertex(int iVertexID, String sName, String sType)
 	{	
 		super(iVertexID, sName);
+		vertexRepresentations = new Vector<VertexRepresentation>();
 	}
 	
 	public void addVertexRepresentation(VertexRepresentation vertexRep)

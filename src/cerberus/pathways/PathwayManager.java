@@ -14,7 +14,8 @@ public class PathwayManager
 {
 	private static PathwayManager instance = null;
 
-	protected HashMap<Integer, Pathway> pathwayLUT;
+	private HashMap<Integer, Pathway> pathwayLUT;
+	private Pathway currentPathway;
 	
 	/**
 	 * Returns the instance of the pathway manager.
@@ -40,10 +41,28 @@ public class PathwayManager
 	 * To get a instance call the getInstance() method. 
 	 */
 	private PathwayManager()
-	{}
-	
-	public void registerPathway(int iPathwayID, Pathway newPathway)
 	{
+		pathwayLUT = new HashMap<Integer, Pathway>();
+	}
+	
+
+	public HashMap<Integer, Pathway> getPathwayLUT() 
+	{
+		return pathwayLUT;
+	}
+
+	public void createPathway(String sTitle, String sImageLink, String sLink, int iPathwayID) 
+	{
+		Pathway newPathway = 
+			new Pathway(sTitle, sImageLink, sLink, iPathwayID);
+		
 		pathwayLUT.put(iPathwayID, newPathway);	
+		
+		currentPathway = newPathway;
+	}
+
+	public Pathway getCurrentPathway() 
+	{
+		return currentPathway;
 	}
 }
