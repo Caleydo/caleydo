@@ -20,6 +20,7 @@ public class ElementManager
 	
 	//FIXME: this is just a temporary workaround.
 	private Vertex currentVertex = null;
+	private Edge currentEdge = null;
 	
 	/**
 	 * Returns the instance of the element manager.
@@ -82,17 +83,28 @@ public class ElementManager
 		Edge newEdge = new Edge(iVertexId1, iVertexId2, sType);
 		edgeLUT.put(iGeneratedId, newEdge);
 		PathwayManager.getInstance().getCurrentPathway().addEdge(newEdge);
+		currentEdge = newEdge;
+	}
+
+	public void addCompoundForEdge(int iCompoundId) 
+	{
+		if (currentEdge != null)
+		{
+			currentEdge.setICompoundId(iCompoundId);
+		}
+		
+		currentEdge = null;
 	}
 	
 	private int generateId()
 	{
 		return iCurrentUniqueElementId++;
-
 	}
 
 	public HashMap<Integer, Vertex> getVertexLUT() 
 	{
 		return vertexLUT;
 	}
+
 }
 

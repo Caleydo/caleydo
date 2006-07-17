@@ -62,6 +62,8 @@ public class KgmlSaxHandler extends DefaultHandler
 				handleGraphicsTag();
 			else if (sElementName.equals("relation"))
 				handleRelationTag();
+			else if (sElementName.equals("subtype"))
+				handleSubtypeTag();
 			else if (sElementName.equals("reaction"))
 				handleReactionTag();
 		}
@@ -244,6 +246,38 @@ public class KgmlSaxHandler extends DefaultHandler
     	ElementManager.getInstance().createEdge(iElementId1, iElementId2, sType);
     }
     	
+    public void handleSubtypeTag()
+    {
+    	String sName = "";
+    	int iValue = 0;
+    	
+		String sAttributeName = "";
+		
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("name"))
+				sName = attributes.getValue(iAttributeIndex); 
+   			else if (sAttributeName.equals("value"))
+  				iValue = new Integer(attributes.getValue(iAttributeIndex)); 
+ 
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   		}  	
+		
+		if (sName.equals("compound"))
+		{
+			//retrieve the internal element ID and add the compound value to the edge
+			ElementManager.getInstance().addCompoundForEdge(kgmlIdToElementIdLUT.get(iValue));
+		}
+    }
+    
 	/**
 	 * Reacts on the elements of the pathway tag.
 	 * 

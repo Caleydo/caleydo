@@ -93,13 +93,18 @@ public class PathwayGraphBuilder
 	        
 	        	if (edge.getSType().equals("ECrel"))
 	        	{
-	        		createEdge(edge.getIElementId1(), edge.getIElementId2());
-	        
+	        		if (edge.getICompoundId() == -1)
+	        		{
+		        		createEdge(edge.getIElementId1(), edge.getIElementId2());	        			
+	        		}
+	        		else 
+	        		{
+	        			createEdge(edge.getIElementId1(), edge.getICompoundId());
+	        			createEdge(edge.getICompoundId(), edge.getIElementId2());
+	        		}
 	        	}
-	        }
-	        
+	        }   
 	    }
-	
 	}
 	
 	public void createVertex(Vertex vertex, String sTitle, int iHeight, int iWidth, 
