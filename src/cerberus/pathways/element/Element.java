@@ -2,17 +2,22 @@ package cerberus.pathways.element;
 
 public class Element 
 {	
-	protected int iElementID = 0;
+	private int iElementId = 0;
 	//protected int iElementType = 0;
-	protected String sElementTitle = "";
+	private String sElementTitle = "";
 
 	public Element()
 	{}
 	
-	public Element(int iElementID, String sElementTitle)
+	public Element(int iElementId, String sElementTitle)
 	{
-		this.iElementID = iElementID;
+		this.iElementId = iElementId;
 		//this.iElementType = iElementType;
 		this.sElementTitle = sElementTitle;
+	}
+
+	public int getIElementId() 
+	{
+		return iElementId;
 	}
 }

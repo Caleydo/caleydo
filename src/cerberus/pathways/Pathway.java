@@ -40,4 +40,9 @@ public class Pathway
 	{
 		return vertexList;
 	}
+
+	public Vector<Edge> getEdgeList() 
+	{
+		return edgeList;
+	}
 }

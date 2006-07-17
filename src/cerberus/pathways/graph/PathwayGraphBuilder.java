@@ -4,8 +4,8 @@ import cerberus.pathways.Pathway;
 import cerberus.pathways.PathwayManager;
 import cerberus.pathways.element.Vertex;
 import cerberus.pathways.element.VertexRepresentation;
-//import cerberus.pathways.element.ElementManager;
-//import cerberus.pathways.element.Edge;
+import cerberus.pathways.element.ElementManager;
+import cerberus.pathways.element.Edge;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
@@ -18,7 +18,7 @@ import javax.swing.JScrollPane;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultCellViewFactory;
-//import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.DefaultPort;
@@ -33,6 +33,7 @@ public class PathwayGraphBuilder
 	private JGraph pathwayGraph;
 	private DefaultGraphCell cell;
 	
+	private HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
 	/**
 	 * Constructor
 	 */
@@ -42,45 +43,66 @@ public class PathwayGraphBuilder
 		view = new GraphLayoutCache(model, new DefaultCellViewFactory());
 
 		pathwayGraph = new JGraph(model, view);
+		
+		vertexIdToCellLUT = new HashMap<Integer, DefaultGraphCell>();
 	}
 	
 	public void setUpPathwayGraph()
 	{
 		HashMap<Integer, Pathway> pathwayLUT = PathwayManager.getInstance().getPathwayLUT();
-		
-		//iterator through the pathways
-	    Iterator<Pathway> pathwayIterator = pathwayLUT.values().iterator();
+			
+		Pathway pathway;
+		Iterator<Pathway> pathwayIterator = pathwayLUT.values().iterator();
+	    
+	    Vector<Vertex> vertexList;
 	    Iterator<Vertex> vertexIterator;
+	    Vertex vertex;
 	    Vector<VertexRepresentation> vertexRepresentations;
 	    Iterator<VertexRepresentation> vertexRepIterator;
 	    VertexRepresentation vertexRep;
 	    
+	    Vector<Edge> edgeList;
+	    Iterator<Edge> edgeIterator;
+	    Edge edge;
+	    
+	    
 	    while (pathwayIterator.hasNext()) 
 	    {
-	        Vector<Vertex> vertexList = pathwayIterator.next().getVertexList();
+	    	pathway = pathwayIterator.next();
+	        vertexList = pathway.getVertexList();
+	        
 	        vertexIterator = vertexList.iterator();
 	        while (vertexIterator.hasNext())
 	        {
-	        	vertexRepresentations = vertexIterator.next().getVertexRepresentations();
+	        	vertex = vertexIterator.next();
+	        	vertexRepresentations = vertex.getVertexRepresentations();
 	        	vertexRepIterator = vertexRepresentations.iterator();
 	        	while (vertexRepIterator.hasNext())
 	        	{
 	        		vertexRep = vertexRepIterator.next();
-	        		createCell(vertexRep.getSName(), vertexRep.getIHeight(),
+	        		createVertex(vertex, vertexRep.getSName(), vertexRep.getIHeight(),
 	        				vertexRep.getIWidth(), vertexRep.getIXPosition(), vertexRep.getIYPosition());
 	        	}
 	        }   
+	        
+	        edgeList = pathway.getEdgeList();
+	        edgeIterator = edgeList.iterator();
+	        while (edgeIterator.hasNext())
+	        {
+	        	edge = edgeIterator.next();
+	        
+	        	if (edge.getSType().equals("ECrel"))
+	        	{
+	        		createEdge(edge.getIElementId1(), edge.getIElementId2());
+	        
+	        	}
+	        }
+	        
 	    }
-		
-//		HashMap<Integer, Vertex> vertexLUT = ElementManager.getInstance().getVertexLUT();
-//		
-//		for (int vertexIndex = 0; vertexIndex <= vertexLUT.size(); vertexIndex++)
-//		{
-//			vertexLUT.values()
-//		}
+	
 	}
 	
-	public void createCell(String sTitle, int iHeight, int iWidth, 
+	public void createVertex(Vertex vertex, String sTitle, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition)
 	{	
 		//create node
@@ -89,12 +111,26 @@ public class PathwayGraphBuilder
 				new Rectangle2D.Double(iXPosition, iYPosition, iWidth, iHeight));
 		GraphConstants.setGradientColor(cell.getAttributes(), Color.orange);
 		GraphConstants.setOpaque(cell.getAttributes(), true);
-
-		//create port
-		DefaultPort port0 = new DefaultPort();
-		cell.add(port0);	
 		
 		pathwayGraph.getGraphLayoutCache().insert(cell);
+		
+		vertexIdToCellLUT.put(vertex.getIElementId(), cell);
+	}
+	
+	public void createEdge(int iVertexId1, int iVertexId2)
+	{
+		DefaultPort port1 = new DefaultPort();
+		DefaultGraphCell cell1 = vertexIdToCellLUT.get(iVertexId1);
+		cell1.add(port1);
+		
+		DefaultPort port2 = new DefaultPort();
+		DefaultGraphCell cell2 = vertexIdToCellLUT.get(iVertexId2);
+		cell2.add(port2);
+		
+		DefaultEdge edge = new DefaultEdge();
+		edge.setSource(cell1.getChildAt(0));
+		edge.setTarget(cell2.getChildAt(0));
+		pathwayGraph.getGraphLayoutCache().insert(edge);
 	}
 	
 	

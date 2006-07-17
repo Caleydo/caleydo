@@ -1,23 +1,46 @@
 package cerberus.pathways.element;
 
+import java.util.Vector;
+
 public class Edge extends Element
 {
-	public enum EdgeType
+//	public enum EdgeType
+//	{
+//		ECel, 	// enzyme-enzyme relation, 
+//				// indicating two entymes catalyzing succesive reaction steps
+//		PPrel,	// protein-protein interactionm such as binding and modification
+//		GErel,	// gene expression interaction, indicating relation of 
+//				// transcription factor and target gene product
+//		PCrel	// protein-compound interaction
+//	}
+	
+	//private EdgeType vertexType;
+	
+	private Vector<EdgeRepresentation> edgeRepresentations;
+	
+	private int iElementId1 = 0;
+	private int iElementId2 = 0;
+	private String sType = "";
+
+	public Edge(int iElementId1, int iElementId2, String sType)
 	{
-		ECel, 	// enzyme-enzyme relation, 
-				// indicating two entymes catalyzing succesive reaction steps
-		PPrel,	// protein-protein interactionm such as binding and modification
-		GErel,	// gene expression interaction, indicating relation of 
-				// transcription factor and target gene product
-		PCrel	// protein-compound interaction
+		this.iElementId1 = iElementId1;
+		this.iElementId2 = iElementId2;
+		this.sType = sType;
+	}
+
+	public int getIElementId1() 
+	{
+		return iElementId1;
+	}
+
+	public int getIElementId2() 
+	{
+		return iElementId2;
+	}
+
+	public String getSType() {
+		return sType;
 	}
 	
-	protected EdgeType vertexType;
-	
-	//TODO: a typedef to elementID would be better here to be typesafe
-	//this could be achieved by interhiting the Integer class
-	protected int entry1;
-	protected int entry2;
-
-	//protected Map<Integer, EdgeRepresentation> mapEdgeRepresentation;
 }

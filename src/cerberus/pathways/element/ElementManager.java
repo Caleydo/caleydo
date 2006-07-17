@@ -3,6 +3,7 @@ package cerberus.pathways.element;
 import java.util.HashMap;
 
 import cerberus.pathways.Pathway;
+import cerberus.pathways.PathwayManager;
 
 /**
  * The element manager is in charge for handling
@@ -15,7 +16,7 @@ public class ElementManager
 	private static ElementManager instance = null;
 	private int iCurrentUniqueElementId;
 	private HashMap<Integer, Vertex> vertexLUT;
-	//private HashMap<Integer, Edge> edgeLUT;
+	private HashMap<Integer, Edge> edgeLUT;
 	
 	//FIXME: this is just a temporary workaround.
 	private Vertex currentVertex = null;
@@ -46,6 +47,7 @@ public class ElementManager
 	private ElementManager()
 	{
 		vertexLUT = new HashMap<Integer, Vertex>();
+		edgeLUT = new HashMap<Integer, Edge>();
 		
 //		iCurrentUniqueElementId = 
 //			CollectionManager.calculateId( 
@@ -55,14 +57,14 @@ public class ElementManager
 		iCurrentUniqueElementId = 0;
 	}
 	
-	public int createVertex(Pathway pathway, String sName, String sType)
+	public int createVertex(String sName, String sType)
 	{
-		int iGeneratedID = generateID();
-		Vertex newVertex = new Vertex(iGeneratedID, sName, sType);
+		int iGeneratedId = generateId();
+		Vertex newVertex = new Vertex(iGeneratedId, sName, sType);
 		currentVertex = newVertex;
-		vertexLUT.put(iGeneratedID, newVertex);
-		pathway.addVertex(newVertex);
-		return iGeneratedID;
+		vertexLUT.put(iGeneratedId, newVertex);
+		PathwayManager.getInstance().getCurrentPathway().addVertex(newVertex);
+		return iGeneratedId;
 	}
 	
 	public void createVertexRepresentation(String sName, int iHeight, int iWidth,
@@ -74,14 +76,15 @@ public class ElementManager
 		currentVertex.addVertexRepresentation(newVertexRep);
 	}
 	
-	public void createEdge()
+	public void createEdge(int iVertexId1, int iVertexId2, String sType)
 	{
-		//Edge newEdge = new Edge();
-		//edgeLUT.put(iEdgeID, newEdge);
-		//TODO: implement!
+		int iGeneratedId = generateId();
+		Edge newEdge = new Edge(iVertexId1, iVertexId2, sType);
+		edgeLUT.put(iGeneratedId, newEdge);
+		PathwayManager.getInstance().getCurrentPathway().addEdge(newEdge);
 	}
 	
-	private int generateID()
+	private int generateId()
 	{
 		return iCurrentUniqueElementId++;
 

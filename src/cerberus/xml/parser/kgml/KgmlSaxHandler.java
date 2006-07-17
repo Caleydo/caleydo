@@ -17,11 +17,11 @@ public class KgmlSaxHandler extends DefaultHandler
 	private Attributes attributes = null;
 	private Pathway currentPathway = null;
 	
-	private HashMap<Integer, Integer> elementIdToKgmlIdLUT;
+	private HashMap<Integer, Integer> kgmlIdToElementIdLUT;
 	
 	public KgmlSaxHandler()
 	{
-		elementIdToKgmlIdLUT = new HashMap<Integer, Integer>(); 
+		kgmlIdToElementIdLUT = new HashMap<Integer, Integer>(); 
 	}
 	
     public void startDocument()
@@ -155,9 +155,8 @@ public class KgmlSaxHandler extends DefaultHandler
 		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
 	   	}
 
-    	iGeneratedElementId = ElementManager.getInstance().createVertex(
-    			PathwayManager.getInstance().getCurrentPathway(), sName, sType);
-    	elementIdToKgmlIdLUT.put(iGeneratedElementId, iKgmlEntryID);
+    	iGeneratedElementId = ElementManager.getInstance().createVertex(sName, sType);
+    	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
     }
 	
 	/**
@@ -214,9 +213,37 @@ public class KgmlSaxHandler extends DefaultHandler
 	 */
     public void handleRelationTag()
     {
+    	int iEntry1 = 0;
+    	int iEntry2 = 0;
+    	String sType = "";
     	
+		String sAttributeName = "";
+		
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("type"))
+				sType = attributes.getValue(iAttributeIndex); 
+   			else if (sAttributeName.equals("entry1"))
+  				iEntry1 = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("entry2"))
+    			iEntry2 = new Integer(attributes.getValue(iAttributeIndex)); 
+			
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   		}  	
+    	
+    	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1); //TODO: exception
+    	int iElementId2 = kgmlIdToElementIdLUT.get(iEntry2);
+    	ElementManager.getInstance().createEdge(iElementId1, iElementId2, sType);
     }
-   
+    	
 	/**
 	 * Reacts on the elements of the pathway tag.
 	 * 
