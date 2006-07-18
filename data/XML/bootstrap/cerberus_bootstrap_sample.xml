@@ -1,0 +1,48 @@
+<cerberus version="0.1">
+
+  <workspace title="primary" server="localhsot">
+  
+  <Application remote="no" IP="127.0.0.1" port="4000" >
+  
+   <FrameState>
+
+  <JFrame id="6601900" title="S-JOGL Histogram external -SwingJogl-" name="frame2" type="HISTOGRAM" x="300" y="54" width="450" height="368" visible="true" >
+  </JFrame>
+  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
+    <JInternalFrame id="6603900" title="Collection Browser -Storage- INTERNAL" name="null" type="JBROWSER_STORAGE" x="1382" y="23" width="362" height="108" visible="true" > </JInternalFrame>
+    <JInternalFrame id="6604900" title="S-JOGL-I Histogram -SwingJogl inner-" name="null" type="HISTOGRAM" x="357" y="11" width="335" height="278" visible="true" > </JInternalFrame>
+    <JInternalFrame id="6605900" title="S-JOGL-I Heatmap -SwingJogl inner-" name="null" type="HEATMAP" x="716" y="126" width="328" height="275" visible="true" > </JInternalFrame>
+    <JInternalFrame id="6606900" title="S-JOGL-I Scatter Plot 2D -SwingJogl inner-" name="null" type="SCATTERPLOT2D" x="1069" y="23" width="290" height="274" visible="true" > </JInternalFrame>
+    <JInternalFrame id="6607900" title="Collection Browser -Set- INTERNAL" name="null" type="JBROWSER_SELECTION" x="1408" y="185" width="333" height="146" visible="true" > </JInternalFrame>
+    <JInternalFrame id="6608900" title="S-JOGL-I gears -SwingJogl inner-" name="null" type="GEARS" x="0" y="100" width="400" height="300" visible="true" > </JInternalFrame>
+  </JFrame>
+  
+   </FrameState>
+   
+   <JFrameMenuList>
+   
+     <FrameMenu id="8801100" frameId="6601900" cmdId="7701500" parentMenuId="-1"      type="list" enabled="true" title="file.." tooltip="" memento="-" ></FrameMenu>
+     <FrameMenu id="8802100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="item" enabled="true" title="load.." tooltip="" memento="-" ></FrameMenu>
+     <FrameMenu id="8803100" frameId="6601900" cmdId="-1"      parentMenuId="8801100" type="step" enabled="true" title=""       tooltip="" memento="-" ></FrameMenu>
+     <FrameMenu id="8804100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="list" enabled="true" title="save.." tooltip="" memento="-" ></FrameMenu>
+   
+   </JFrameMenuList>
+  
+   <CommandBuffer>
+     <Cmd mementoId="0" process="on load" type="LOAD_DATA_FILE" details="filename.gpr" />
+     <Cmd mementoId="0" process="on load" type="LOAD_DATA_FILE" details="filename.gpr" />
+     
+     <Cmd mementoId="-1" process="memento" type="LOAD_DATA_FILE" details="filename.gpr" />
+     <Cmd mementoId="-2" process="memento" type="OPEN_VIEW" details="" />
+   </CommandBuffer>
+   
+  </Application>
+  
+  <Application remote="yes" IP="127.0.0.1" port="4100" >
+  
+   
+  </Application>
+  
+  </workspace>
+
+</cerberus>
