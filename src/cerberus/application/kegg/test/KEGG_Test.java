@@ -1,6 +1,8 @@
 package cerberus.application.kegg.test;
 
-import keggapi.*;
+import keggapi.KEGGLocator;
+import keggapi.KEGGPortType;
+import keggapi.SSDBRelation;
 
 class KEGG_Test {
         public static void main(String[] args) throws Exception {
