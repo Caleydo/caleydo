@@ -1,3 +1,11 @@
+/*
+ * Project: GenView
+ * 
+ * Author: Marc Streit
+ * 
+ *  creation date: 03-07-2006
+ *  
+ */
 package cerberus.application.kegg.jgraph;
 
 
