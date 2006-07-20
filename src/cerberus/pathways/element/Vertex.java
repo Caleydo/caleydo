@@ -14,14 +14,27 @@ public class Vertex extends Element
 		map
 	}
 	
-	protected VertexType vertexType;
+	private VertexType vertexType;
 	
-	protected Vector<VertexRepresentation> vertexRepresentations;
+	private Vector<VertexRepresentation> vertexRepresentations;
 	
 	public Vertex(int iVertexID, String sName, String sType)
 	{	
 		super(iVertexID, sName);
 		vertexRepresentations = new Vector<VertexRepresentation>();
+		
+		if (sType.equals("ortholog"))
+			vertexType = VertexType.ortholog;
+		else if (sType.equals("enzyme"))
+			vertexType = VertexType.enzyme;
+		else if (sType.equals("gene"))
+			vertexType = VertexType.gene;
+		else if (sType.equals("group"))
+			vertexType = VertexType.group;
+		else if (sType.equals("compound"))
+			vertexType = VertexType.compound;
+		else if (sType.equals("map"))
+			vertexType = VertexType.map;
 	}
 	
 	public void addVertexRepresentation(VertexRepresentation vertexRep)
@@ -32,5 +45,10 @@ public class Vertex extends Element
 	public Vector<VertexRepresentation> getVertexRepresentations()
 	{
 		return vertexRepresentations;
+	}
+
+	public VertexType getVertexType() 
+	{
+		return vertexType;
 	}
 }

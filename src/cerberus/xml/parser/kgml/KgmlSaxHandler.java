@@ -66,10 +66,14 @@ public class KgmlSaxHandler extends DefaultHandler
 				handleSubtypeTag();
 			else if (sElementName.equals("reaction"))
 				handleReactionTag();
+			else if (sElementName.equals("product"))
+				handleReactionProtuctTag();
+			else if (sElementName.equals("substrate"))
+				handleReactionSubstrateTag();
 		}
     }
 
-    public void endElement(String namespaceURI,
+	public void endElement(String namespaceURI,
           String sSimpleName,
           String sQualifiedName)
 	throws SAXException
@@ -279,13 +283,35 @@ public class KgmlSaxHandler extends DefaultHandler
     }
     
 	/**
-	 * Reacts on the elements of the pathway tag.
+	 * Reacts on the elements of the reaction tag.
 	 * 
 	 * An example reaction tag looks like this:
 	 * <reaction name="rn:R01001" type="irreversible">
 	 */
     public void handleReactionTag()
     {
-    	//TODO: implement method
+
     }
+    
+	/**
+	 * Reacts on the elements of the reaction substrate tag.
+	 * 
+	 * An example reaction substrate tag looks like this:
+	 * <substrate name="cpd:C01118"/>
+	 */
+    private void handleReactionSubstrateTag() 
+    {
+		
+	}
+
+	/**
+	 * Reacts on the elements of the reaction product tag.
+	 * 
+	 * An example reaction product tag looks like this:
+	 * <product name="cpd:C02291"/>
+	 */
+	private void handleReactionProtuctTag() 
+	{
+		
+	}
 }

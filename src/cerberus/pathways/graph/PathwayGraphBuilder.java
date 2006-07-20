@@ -80,8 +80,10 @@ public class PathwayGraphBuilder
 	        	while (vertexRepIterator.hasNext())
 	        	{
 	        		vertexRep = vertexRepIterator.next();
-	        		createVertex(vertex, vertexRep.getSName(), vertexRep.getIHeight(),
-	        				vertexRep.getIWidth(), vertexRep.getIXPosition(), vertexRep.getIYPosition());
+	        		createVertex(vertex, vertexRep.getSName(), 
+	        				vertexRep.getIHeight(), vertexRep.getIWidth(), 
+	        				vertexRep.getIXPosition(), vertexRep.getIYPosition(),
+	        				vertex.getVertexType());
 	        	}
 	        }   
 	        
@@ -108,14 +110,23 @@ public class PathwayGraphBuilder
 	}
 	
 	public void createVertex(Vertex vertex, String sTitle, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition)
+			int iXPosition, int iYPosition, Vertex.VertexType vertexType)
 	{	
 		//create node
 		cell = new DefaultGraphCell(sTitle);
 		GraphConstants.setBounds(cell.getAttributes(), 
-				new Rectangle2D.Double(iXPosition, iYPosition, iWidth, iHeight));
-		GraphConstants.setGradientColor(cell.getAttributes(), Color.orange);
+				new Rectangle2D.Double((int)(iXPosition * 1.4), (int)(iYPosition * 1.4), iWidth, iHeight));
 		GraphConstants.setOpaque(cell.getAttributes(), true);
+		GraphConstants.setAutoSize(cell.getAttributes(), true);
+		
+		//assign vertex color
+		if (vertexType == Vertex.VertexType.enzyme)
+			GraphConstants.setGradientColor(cell.getAttributes(), Color.orange);
+		else if (vertexType == Vertex.VertexType.compound)
+			GraphConstants.setGradientColor(cell.getAttributes(), Color.green);
+		else if (vertexType == Vertex.VertexType.map)
+			GraphConstants.setGradientColor(cell.getAttributes(), Color.yellow);
+		
 		
 		pathwayGraph.getGraphLayoutCache().insert(cell);
 		
