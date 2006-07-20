@@ -76,7 +76,7 @@ implements ViewCanvas
 		
 		// super( refGeneralManager );
 		super();
-		
+
 		assert setGLEventListener!= null : "can not init with null-pointer";
 		
 		//this.refGeneralManager= refGeneralManager;	

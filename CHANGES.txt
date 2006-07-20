@@ -1,0 +1,1 @@
+2006-07-20 kalkusch: update to most recent version of JOGL (2006-07-20) from https://jogl.dev.java.net/

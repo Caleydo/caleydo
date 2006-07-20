@@ -14,14 +14,14 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.StringReader;
 
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.manager.CommandManager;
+//import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
@@ -32,29 +32,27 @@ import cerberus.xml.parser.command.CommandSaxHandler;
 
 
 
-import cerberus.command.CommandType;
-import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
-import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
+//import cerberus.command.CommandType;
+//import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
+//import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
+//
+////import cerberus.data.manager.BaseManagerType;
+//import cerberus.data.collection.Set;
+//import cerberus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
+//import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
+//import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
+//import cerberus.net.dwt.swing.collection.DSwingSelectionCanvas;
+//import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
+//import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
+//import cerberus.net.dwt.swing.canvas.DSwingHeatMap2DCanvas;
+//import cerberus.xml.parser.DParseBaseSaxHandler;
+//import cerberus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
+//import cerberus.net.dwt.swing.menu.DMenuBootStraper;
+//import cerberus.net.dwt.swing.mdi.DDesktopPane;
+//import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
-//import cerberus.data.manager.BaseManagerType;
-import cerberus.data.collection.Set;
-import cerberus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
-import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
-import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
-import cerberus.net.dwt.swing.collection.DSwingSelectionCanvas;
-import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
-import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
-import cerberus.net.dwt.swing.canvas.DSwingHeatMap2DCanvas;
-import cerberus.xml.parser.DParseBaseSaxHandler;
-import cerberus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
-import cerberus.net.dwt.swing.menu.DMenuBootStraper;
-import cerberus.net.dwt.swing.mdi.DDesktopPane;
-import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
-
-
-//import cerberus.data.xml.MementoNetEventXML;
-import cerberus.data.xml.MementoCallbackXML;
+//import cerberus.data.xml.MementoCallbackXML;
 
 import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
 import org.studierstube.net.protocol.muddleware.Message;
@@ -273,7 +271,7 @@ public class CerberusApplicationFromXML {
 		CerberusApplicationFromXML xmlBootStrapper =
 			new CerberusApplicationFromXML();
 		
-		String sFileXML = "..\\data\\XML\\bootstrap\\cerberus_bootstrap_sample.xml";
+		String sFileXML = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";
 		
 		/**
 		 * use arguments...

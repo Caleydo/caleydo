@@ -17,7 +17,7 @@ public interface GeneralManager {
 	 * 
 	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffset
 	 * @see cerberus.manager.GeneralManager#iUniqueId_Increment
-	 * @see cerberus.manager.GeneralManager#createNewId()
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.BaseManagerType)
 	 */
 	public final int iUniqueId_WorkspaceOffset = 100;
 	
@@ -32,7 +32,7 @@ public interface GeneralManager {
 	 * 
 	 * @see cerberus.manager.GeneralManager#iUniqueId_Increment
 	 * @see cerberus.manager.GeneralManager#iUniqueId_WorkspaceOffset
-	 * @see cerberus.manager.GeneralManager#createNewId()
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.BaseManagerType)
 	 */
 	public final int iUniqueId_TypeOffset = 100;
 	
@@ -40,8 +40,8 @@ public interface GeneralManager {
 	 * Increment from one Id to the next unique id.
 	 * 
 	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffset
-	 * @see cerberus.manager.GeneralManager#iUniqueId_WorkspaceOffset
-	 * @see cerberus.manager.GeneralManager#createNewId()
+	 * @see cerberus.manager.GeneralManager#iUniqueId_Workspace
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.BaseManagerType)
 	 */
 	public final int iUniqueId_Increment = 10000;
 	
