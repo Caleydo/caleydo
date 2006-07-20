@@ -59,15 +59,14 @@ public class Vec2f {
     return new Vec2f(this);
   }
 
-  public void set(Vec2f val) {
-    this.x = val.x();
-    this.y = val.y();
+  public void set(Vec2f arg) {
+    set(arg.x, arg.y);
   }
-  
+
   public void set(float x, float y) {
-	    this.x = x;
-	    this.y = y;
-	  }
+    this.x = x;
+    this.y = y;
+  }
 
   /** Sets the ith component, 0 <= i < 2 */
   public void set(int i, float val) {
