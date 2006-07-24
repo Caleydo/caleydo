@@ -40,13 +40,13 @@ In \stdref{gfx:cerberus_module_design} the module design is visualized using an 
 
 In the following sections the modules are explained in more detail.
 
-\subsection{Manager Module}
+\section{Manager Module}
 
 All components are handled by Mangers. This opens the possibility to use Abstract Factories (Design Pattern "Abstract  Factory"). Since all above described components are only Interfaces, all components / objects can be created by factories (Design Pattern "Factory").
 
-\subsection{Data Module}
+\section{Data Module}
 
-\subsubsection{Internal Data Management}
+\subsection{Internal Data Management}
 
 \minisec{DataStorage}
 Arrays filled with INT, FLOAT, DOUBLE, STRING, BOOLEAN
@@ -66,7 +66,7 @@ Selection and Set can be accessed by Iterators. Design Pattern "Iterator".
 \label{gfx:data_module_class_design}
 \end{figure}
 
-\subsubsection{External Data}
+\subsection{External Data}
 
 \minisec{Micro-Array Data file}
 
@@ -98,7 +98,7 @@ Selection and Set can be accessed by Iterators. Design Pattern "Iterator".
 \item \textbf{Format: } XML-file
 \end{itemize}
 
-\subsection{GUI Module}
+\section{GUI Module}
 
 The application will be built using the SWT. 
 The Frame class is the basis of all GUI elements in the Cerberus application.
@@ -116,7 +116,7 @@ The Jogl render area can be embedded in an SWT Fram without problems.
 \label{gfx:gui_module_class_design}
 \end{figure}
 
-\subsection{View Module}
+\section{View Module}
 
 In \stdref{gfx:view_module_class_design} the class design of the view module is visualized in UML.
 All special view types (e.g. heatmaps, pathways, etc.) are inherited from a general View interface.
@@ -141,14 +141,14 @@ The ViewMediator reacts on two basic events.
 \item \textbf{dataSetUpdate: } The dataSetUpdate is called when the Set of data changes in a View. For example when a clustering algorithm is performed on the Set of data which results in an update of all Views, which visualize these 
 \end{itemize}
 
-\subsubsection{Heatmap View}
+\subsection{Heatmap View}
 
-\subsubsection{Dendrogram View}
+\subsection{Dendrogram View}
 
 \minisec{Description}
 A Dendrogram is a tree diagram that is mostly used to show the result of clustering alogrithms.
 
-\subsubsection{Pathway View}
+\subsection{Pathway View}
 
 \minisec{Description}
 \label{msec:pathway_description}
@@ -162,9 +162,9 @@ Collection of Proteins, that interact with each other and thus occur co-regulate
 \label{gfx:pathway_class_design}
 \end{figure}
 
-\subsubsection{Histogram View}
+\subsection{Histogram View}
 
-\subsubsection{Combination and interaction of Views}
+\subsection{Combination and interaction of Views}
 
 
 
