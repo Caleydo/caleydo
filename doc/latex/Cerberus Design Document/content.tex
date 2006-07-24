@@ -24,7 +24,7 @@ Weka is a collection of machine learning algorithms for data mining tasks. The a
 
 \chapter{Class Design}
 
-\section{Modules}
+\section{Module Overview}
 
 The Cerberus Software can be devided in several module packages.
 The packages itself are intended to be as seperate as possible with a clear interface for moudle inter-communication. 
@@ -68,7 +68,7 @@ Selection and Set can be accessed by Iterators. Design Pattern "Iterator".
 
 \subsection{External Data}
 
-\minisec{Micro-Array Data file}
+\subsubsection{Micro-Array Data file}
 
 \begin{itemize}
 \item \textbf{Description: } One file stores one micro-array experiment containing all Genes/Proteins.
@@ -78,7 +78,7 @@ Selection and Set can be accessed by Iterators. Design Pattern "Iterator".
 \item \textbf{Format: } ASCII, header, table of values
 \end{itemize}
 
-\minisec{Clinical Excel files}
+\subsubsection{Clinical Excel files}
 
 \begin{itemize}
 \item \textbf{Description: } Each row represents one patient; each column contains data on the patient.
@@ -88,10 +88,11 @@ Selection and Set can be accessed by Iterators. Design Pattern "Iterator".
 \item \textbf{Format: } EXCEL-file, Header row, table of values
 \end{itemize}
 
-\minisec{Pathway data file}
+\subsubsection{Pathway data file}
+\label{sssec:pathway_data_file}
 
 \begin{itemize}
-\item \textbf{Description: } Biological and medical pathways. For details see \fullref{msec:pathway_description}.
+\item \textbf{Description: } Biological and medical pathways. For details see \fullref{sssec:pathway_description}.
 \item \textbf{Extension: } *.xml
 \item \textbf{File size: } each < 1 MB
 \item \textbf{Dimension: } [~3000] x [ directed cyclic graph]
@@ -116,6 +117,43 @@ The Jogl render area can be embedded in an SWT Fram without problems.
 \label{gfx:gui_module_class_design}
 \end{figure}
 
+\subsection{Alternative Application Styles}
+
+\subsubsection{Multiple Document Interface (MDI)}
+
+The MDI approach is a controverial issue but without doubt it has it's advantages. 
+An simple MDI example can be seen in \stdref{gfx:mdi}.
+For our Cerberus Framework we can exclude the MDI GUI approach because of the usage of SWT as a GUI toolkit.
+With SWT it is not (out of the box) possible to create a clean MDI application.
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.6}{\includegraphics{gfx/mdi}} 
+\caption[MDI]{\textit{MDI}} 
+\label{gfx:mdi}
+\end{figure}
+
+\subsubsection{Tree Managed Views combined with Grid Layout}
+
+This layout consists of one overall window in which the widgets are placed. 
+On the left side a tree appears where the views are listed. It is possible to arrange the views on a grid
+layout. These grid sheets can also be managed by tabs that are well known from the broweser (i.e. Tabbed Browsing Concept).
+
+\subsubsection{Free window layout}
+
+In a free window layout all windows are genereated from one application but the windows appear to the user as independent windows.
+The layout is known from the GNU GIMP project under Linux.
+A simple example of that GUI design can be seen in \stdref{gfx:free_window_layout}.
+We apply this layout for working on multiple desktops (in most cases a dual monitor system).
+We can visualize the overview of several depending views on one screen and a detailed specific view on the second screen.
+
+\begin{figure}[ht]
+\centering 
+\scalebox{0.6}{\includegraphics{gfx/free_windows}} 
+\caption[Free Window Layout]{\textit{Free Window Layout}} 
+\label{gfx:free_window_layout}
+\end{figure}
+
 \section{View Module}
 
 In \stdref{gfx:view_module_class_design} the class design of the view module is visualized in UML.
@@ -133,7 +171,7 @@ The Views are created by a ViewFactory (which follows the Abstract Factory Desig
 \minisec{DataViewMediator}
 The View objects are stored in a HashMap in the ViewMediator. The key in the Map is the Set ID of the Dataset and the value the View Object. The map can then be used as a lookup table for finding out the relations among the View objects. Generally (in most cases) a View influences another View only if they operate on the same Set of data. 
 The ViewMediator follows the well known Mediator Design Pattern, where several Objects can communicate over a common module.
-Therefore the usage of the Mediator Pattern eliminates the need of Objects to refer to each other directly which reduces the implementation effort. Also in case of a new View type it has to only registered in the ViewMediator without knowing an referring to the other Views. In the Mediator class special update methods are implemented, which are called when in a View some kind of event occurs. The View calls on of these update models (as the case may be) and the update method in the Mediator finds out all related Views and triggers the update. The update method in the view knows then how to react on that update. For example a Heatmap has to visualize an selection completely different as an Dendrogram.
+Therefore the usage of the Mediator Pattern eliminates the need of Objects to refer to each other directly which reduces the implementation effort. Also in case of a new View type it has only registered in the ViewMediator without knowing an referring to the other Views. In the Mediator class special update methods are implemented, which are called when in a View some kind of event occurs. The View calls on of these update models (as the case may be) and the update method in the Mediator finds out all related Views and triggers the update. The update method in the View knows then how to react on that update. For example a Heatmap has to visualize an selection completely different as a Dendrogram.
 
 The ViewMediator reacts on two basic events.
 \begin{itemize}
@@ -150,19 +188,38 @@ A Dendrogram is a tree diagram that is mostly used to show the result of cluster
 
 \subsection{Pathway View}
 
-\minisec{Description}
-\label{msec:pathway_description}
+\subsubsection{Description}
+\label{sssec:pathway_description}
 
 Collection of Proteins, that interact with each other and thus occur co-regulated or counter-regulated in the micro-array data-sets. A pathway is a directed cyclic graph consisting of Proteins, which can be traversed in forward or backward order. One Protein may occur several times in different nodes. The edges of the graph can be tagged with additional information. For instance required or produced biochemical energy (ADP +Pi  <==> ATP) or (NADP <==> NADPH). Some pathways are irreversible and thus only traverse in one direction, like "Glukose-Spalltung = Glykolyse". Once this kind of pathway is triggered it is "executed". Other Pathways like "Umbau von Zucker" or the Fat-Cycle can be traversed back and forth.
 
+\subsubsection{Class Diagram}
+
+The UML class diagram is shown in \stdref{gfx:pathway_class_design}.
+Basicall a pathway graph from the computer science point of view is a cyclic graph that consists of nodes and edges.
+Nodes and edges are inherited from the base class Element.
+Elements are created by the ElementFactory and are stored in the ElementManager (Note: The ElementFactory is integrated in the
+ElementManager and exists only as a logical entity in the design.) 
+The pathway consists of elements and are stored in the PathwayManager.
+The ElementManager and the PathwayManager are implemented as a Singleton. 
+The KgmlSaxHandler uses the Java SAX parser API for XML. Therefore this class implements the parsing of the XML input pathway file (for details see \fullref{sssec:pathway_data_file}. The extracted data is feed into the PathwayManager and the ElementManager.
+When the pathways and the elements are created, the data is ready to be drawn in a graph using the JGraph library.
+This is implemented in the PathwayGraphBuilder classes.
+
 \begin{figure}[ht]
 \centering
-\scalebox{0.5}{\includegraphics{gfx/PathwayClassDesign}} 
+\scalebox{0.55}{\includegraphics{gfx/PathwayClassDesign}} 
 \caption[Pathway Class Design]{\textit{Pathway Class Design}} 
 \label{gfx:pathway_class_design}
 \end{figure}
 
 \subsection{Histogram View}
+
+\subsection{Alternative visualization techniques}
+
+It seems that a 2.5D version of the heatmap has a lot of potential to improve the state of the art heatmap visualization technique.
+In this concecpt the 3rd dimension contains information about the quantity of a specific gene (like a historgram in the third dimension). For example when the clustering algorithmn merges some genes this information can be visualized in an elegant way.
+Also in comination with the pathways this visualization method needs to be explored in the future.
 
 \subsection{Combination and interaction of Views}
 
