@@ -1,0 +1,27 @@
+*** Templates for LaTeX ***
+>                         <
+>    by Alexander Lex     <
+>   alexander.lex@gmx.at  <
+***************************
+
+Usage: read the files, everything is explained there (especially in demo.tex)
+
+When writing slides, simply use slides.tex, with make handout or make slides both are made from the same source (slides.tex) => you need not bother about handout.tex and slides_main.tex
+
+Make commands:
+
+make: clean, compiles the document to pdf
+
+view: clean, compiles the documents and opens acrobat reader with the document
+
+slides: clean, compiles the slides
+
+vslides: clean, compiles the slides and opens acrobat reader with the slides 
+
+handout: clean, compiles the handout
+
+vhandout: clean, compiles the handout and opens acrobat reader with the handout
+
+clean: removes everything you do not need, copies temp files (~) to /tmp/
+
+archive: clean, creates an archive with all files in it 
