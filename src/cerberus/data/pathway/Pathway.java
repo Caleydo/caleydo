@@ -1,9 +1,9 @@
-package cerberus.pathways;
+package cerberus.data.pathway;
 
 import java.util.Vector;
 
-import cerberus.pathways.element.Vertex;
-import cerberus.pathways.element.Edge;
+import cerberus.data.pathway.element.Vertex;
+import cerberus.data.pathway.element.Edge;
 
 public class Pathway 
 {

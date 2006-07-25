@@ -1,4 +1,4 @@
-package cerberus.pathways.element;
+package cerberus.data.pathway.element;
 
 import java.util.Vector;
 

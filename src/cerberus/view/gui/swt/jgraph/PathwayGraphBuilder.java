@@ -1,11 +1,10 @@
-package cerberus.pathways.graph;
+package cerberus.view.gui.swt.jgraph;
 
-import cerberus.pathways.Pathway;
-import cerberus.pathways.PathwayManager;
-import cerberus.pathways.element.Vertex;
-import cerberus.pathways.element.VertexRepresentation;
-import cerberus.pathways.element.ElementManager;
-import cerberus.pathways.element.Edge;
+import cerberus.data.pathway.Pathway;
+import cerberus.manager.pathway.PathwayManager;
+import cerberus.data.pathway.element.Vertex;
+import cerberus.data.pathway.element.VertexRepresentation;
+import cerberus.data.pathway.element.Edge;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
