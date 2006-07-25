@@ -27,8 +27,8 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-import cerberus.manager.type.BaseManagerGroupType;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.CommandInterface;
 import cerberus.data.collection.Selection;
@@ -66,7 +66,7 @@ public class DSwingSelectionRow {
 	
 	private JComboBox    j_cb_selectionTypes;
 	
-	private BaseManagerType currentType = BaseManagerType.SELECTION;
+	private ManagerObjectType currentType = ManagerObjectType.SELECTION;
 	
 	private final static String[] tooltipText = {"Id",
 		"label",
@@ -151,7 +151,7 @@ public class DSwingSelectionRow {
 		
 		j_Box.add( new JScrollPane( j_ta ) );
 		
-		setGuiByBaseType( BaseManagerType.SELECTION );
+		setGuiByBaseType( ManagerObjectType.SELECTION );
 		
 		j_cb_selectionTypes.addItemListener( 
 				//new  DSwingSelectionRowItemListener implements 
@@ -164,19 +164,19 @@ public class DSwingSelectionRow {
 							switch ( j_cb_selectionTypes.getSelectedIndex() ) {
 							
 							case SELECT_SINGEL:
-								setGuiByBaseType( BaseManagerType.SELECTION_SINGLE_BLOCK );
+								setGuiByBaseType( ManagerObjectType.SELECTION_SINGLE_BLOCK );
 								break;
 							case SELECT_MULTI:
-								setGuiByBaseType( BaseManagerType.SELECTION_MULTI_BLOCK );
+								setGuiByBaseType( ManagerObjectType.SELECTION_MULTI_BLOCK );
 								break;
 							case SELECT_MULTI_RLE:
-								setGuiByBaseType( BaseManagerType.SELECTION_MULTI_BLOCK_RLE );
+								setGuiByBaseType( ManagerObjectType.SELECTION_MULTI_BLOCK_RLE );
 								break;
 							case SELECT_RANDOM:
-								setGuiByBaseType( BaseManagerType.SELECTION_RANDOM_BLOCK );
+								setGuiByBaseType( ManagerObjectType.SELECTION_RANDOM_BLOCK );
 								break;
 							case SELECT_NONE:
-								setGuiByBaseType( BaseManagerType.SELECTION );
+								setGuiByBaseType( ManagerObjectType.SELECTION );
 								break;
 							default:
 								throw new PrometheusRuntimeException("unkown type in GUI!");
@@ -205,9 +205,9 @@ public class DSwingSelectionRow {
 	 * @param setType Type to switch gui
 	 * @return true on success
 	 */
-	private boolean setGuiByBaseType(final BaseManagerType setType){
+	private boolean setGuiByBaseType(final ManagerObjectType setType){
 		
-		if ( setType.getGroupType() != BaseManagerGroupType.SELECTION ) {
+		if ( setType.getGroupType() != ManagerType.SELECTION ) {
 			return false;
 		}
 		
@@ -311,7 +311,7 @@ public class DSwingSelectionRow {
 			return;
 		}
 		
-		final BaseManagerType testType = useSelection.getBaseType();
+		final ManagerObjectType testType = useSelection.getBaseType();
 		
 		if ( currentType != testType ) {
 			this.setGuiByBaseType( testType );
@@ -433,8 +433,8 @@ public class DSwingSelectionRow {
 		
 		sDataFromGui_label = j_tf[ INDEX_LABEL ].getText();
 		
-		if (( currentType == BaseManagerType.SELECTION_RANDOM_BLOCK ) ||
-				(currentType == BaseManagerType.SELECTION_MULTI_BLOCK_RLE)) {
+		if (( currentType == ManagerObjectType.SELECTION_RANDOM_BLOCK ) ||
+				(currentType == ManagerObjectType.SELECTION_MULTI_BLOCK_RLE)) {
 			/*
 			 * Use Tokinizer for parsing textarea...
 			 */
@@ -484,13 +484,13 @@ public class DSwingSelectionRow {
 		updateSelection.setMultiOffset( iDataFromGui_MultiOffset );
 		updateSelection.setMultiRepeat( iDataFromGui_MultiRepeat);
 		
-		BaseManagerType selType = updateSelection.getBaseType();
+		ManagerObjectType selType = updateSelection.getBaseType();
 		
-		if ( selType == BaseManagerType.SELECTION_RANDOM_BLOCK ) {
+		if ( selType == ManagerObjectType.SELECTION_RANDOM_BLOCK ) {
 			updateSelection.setIndexArray( iDataFromGui_MultiRLE_Random_Array ); 
 			return;
 		}
-		if ( selType == BaseManagerType.SELECTION_MULTI_BLOCK_RLE ) {
+		if ( selType == ManagerObjectType.SELECTION_MULTI_BLOCK_RLE ) {
 			updateSelection.setIndexArray( iDataFromGui_MultiRLE_Random_Array ); 
 			return;
 		}
@@ -502,7 +502,7 @@ public class DSwingSelectionRow {
 	 * 
 	 * @return current type used for the Gui.
 	 */
-	public BaseManagerType getBaseType() {
+	public ManagerObjectType getBaseType() {
 		return currentType;
 	}
 
@@ -537,7 +537,7 @@ public class DSwingSelectionRow {
 		else {
 			if ( j_Box.isVisible() ) {
 				refSelection = null;
-				currentType = BaseManagerType.SELECTION;
+				currentType = ManagerObjectType.SELECTION;
 				
 				j_Box.setVisible(set);
 			}

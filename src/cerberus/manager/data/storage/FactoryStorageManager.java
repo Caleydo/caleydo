@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.storage;
+package cerberus.manager.data.storage;
 
 import java.util.Vector;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.StorageManager;
-import cerberus.manager.collection.CollectionManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.data.CollectionManager;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.Storage;
 //import cerberus.data.collection.StorageType;
@@ -61,7 +61,7 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#createStorage(cerberus.data.collection.StorageType)
 	 */
-	public Storage createStorage(BaseManagerType useStorageType) {
+	public Storage createStorage(ManagerObjectType useStorageType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -159,22 +159,22 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
 	 */
-	public BaseManagerType getManagerType() {
+	public ManagerObjectType getManagerType() {
 		if ( refStorage == null ) {
-			return BaseManagerType.FABRIK;
+			return ManagerObjectType.FABRIK;
 		}
-		return BaseManagerType.STORAGE;
+		return ManagerObjectType.STORAGE;
 	}
 	
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		assert false:"not supported";
 		return false;
 	}
 	
 	public boolean unregisterItem( final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		assert false:"not supported";
 		return false;
 	}

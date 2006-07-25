@@ -1,9 +1,8 @@
-package cerberus.manager.pathway;
+package cerberus.manager.data.pathway;
 
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
-import cerberus.manager.pathway.PathwayManager;
 import cerberus.data.pathway.element.Vertex;
 import cerberus.data.pathway.element.Edge;
 import cerberus.data.pathway.element.VertexRepresentation;

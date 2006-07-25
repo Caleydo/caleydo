@@ -17,18 +17,19 @@ import cerberus.manager.MementoManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
+import cerberus.manager.Singelton;
 import cerberus.manager.StorageManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.canvas.ViewCanvasManagerSimple;
 import cerberus.manager.command.CommandManagerSimple;
+import cerberus.manager.data.selection.SelectionManagerSimple;
+import cerberus.manager.data.set.SetManagerSimple;
+import cerberus.manager.data.storage.StorageManagerSimple;
 import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
 import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.memento.MementoManagerSimple;
 import cerberus.manager.menu.MenuManagerSimple;
-import cerberus.manager.selection.SelectionManagerSimple;
-import cerberus.manager.set.SetManagerSimple;
-import cerberus.manager.storage.StorageManagerSimple;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.Storage;
 import cerberus.data.xml.MementoXML;
 
@@ -76,11 +77,11 @@ implements GeneralManagerSingelton {
 	
 	/**
 	 * Used to create a new item by a Fabik.
-	 * used by cerberus.data.manager.OneForAllManager#createNewId(BaseManagerType)
+	 * used by cerberus.data.manager.OneForAllManager#createNewId(ManagerObjectType)
 	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(BaseManagerType)
+	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
 	 */
-	protected BaseManagerType setCurrentType = BaseManagerType.ALL_IN_ONE;
+	protected ManagerObjectType setCurrentType = ManagerObjectType.ALL_IN_ONE;
 	
 //	protected SelectionType initSelectionType;
 //	
@@ -106,7 +107,7 @@ implements GeneralManagerSingelton {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getSingelton()
 	 */
-	public final SingeltonManager getSingelton() {
+	public final Singelton getSingelton() {
 		return refSingeltonManager;
 	}
 	
@@ -210,8 +211,8 @@ implements GeneralManagerSingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getManagerType()
 	 */
-	public BaseManagerType getManagerType() {
-		return BaseManagerType.ALL_IN_ONE;
+	public ManagerObjectType getManagerType() {
+		return ManagerObjectType.ALL_IN_ONE;
 	}
 
 	/* (non-Javadoc)
@@ -225,7 +226,7 @@ implements GeneralManagerSingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.singelton.SingeltonManager#getCurrentType()
 	 */
-	public final BaseManagerType getCurrentType() {
+	public final ManagerObjectType getCurrentType() {
 		return this.setCurrentType;
 	}
 	
@@ -233,23 +234,23 @@ implements GeneralManagerSingelton {
 	 * Set the current type used to create the next Id using
 	 * cerberus.data.manager.singelton.OneForAllManager#createNewId()
 	 * Does not influence 
-	 * cerberus.data.manager.singelton.OneForAllManager#createNewId(BaseManagerType)
+	 * cerberus.data.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
 	 * or 
-	 * cerberus.data.manager.singelton.OneForAllManager#createNewItem(BaseManagerType, String)
+	 * cerberus.data.manager.singelton.OneForAllManager#createNewItem(ManagerObjectType, String)
 	 * .
 	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(BaseManagerType)
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewItem(BaseManagerType, String)
+	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
+	 * @see cerberus.manager.singelton.OneForAllManager#createNewItem(ManagerObjectType, String)
 	 * @see cerberus.manager.singelton.OneForAllManager#getCurrentType()
 	 * 
 	 * @param setCurrentType
 	 */
-	protected final void setCurrentType( BaseManagerType setCurrentType) {
+	protected final void setCurrentType( ManagerObjectType setCurrentType) {
 		this.setCurrentType = setCurrentType;
 	}
 	
 //	/**
-//	 * Create a new Id using the BaseManagerType set with 
+//	 * Create a new Id using the ManagerObjectType set with 
 //	 */
 //	public final int createNewId() {
 //		return this.createNewId( setCurrentType );
@@ -258,7 +259,7 @@ implements GeneralManagerSingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewId(cerberus.data.manager.BaseManagerType)
 	 */
-	public final int createNewId(final BaseManagerType setNewBaseType) {
+	public final int createNewId(final ManagerObjectType setNewBaseType) {
 	
 		this.setCurrentType = setNewBaseType;
 		
@@ -286,7 +287,7 @@ implements GeneralManagerSingelton {
 	}
 
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		
 		if ( type != null ) {
 			switch ( type.getGroupType() ) {
@@ -328,7 +329,7 @@ implements GeneralManagerSingelton {
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		
 		if ( type != null ) {
 			switch ( type.getGroupType() ) {
@@ -371,7 +372,7 @@ implements GeneralManagerSingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewItem(cerberus.data.manager.BaseManagerType, java.lang.String)
 	 */
-	public Object createNewItem( final BaseManagerType createNewType,
+	public Object createNewItem( final ManagerObjectType createNewType,
 			final String sNewTypeDetails ) {
 		
 		switch ( createNewType.getGroupType() ) {
@@ -388,7 +389,7 @@ implements GeneralManagerSingelton {
 			case STORAGE:
 				return refStorageManager.createStorage( createNewType );
 			case VIEW:
-				if ( createNewType == BaseManagerType.VIEW_NEW_FRAME ) {
+				if ( createNewType == ManagerObjectType.VIEW_NEW_FRAME ) {
 					return refViewCanvasManager.createWorkspace( createNewType, sNewTypeDetails );
 				}
 				return refViewCanvasManager.createCanvas( createNewType, sNewTypeDetails );
@@ -401,7 +402,7 @@ implements GeneralManagerSingelton {
 		} // end switch
 	}
 	
-	public void callbackForParser( final BaseManagerType type,
+	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final DParseSaxHandler refSaxHandler) {
@@ -439,7 +440,7 @@ implements GeneralManagerSingelton {
 			
 		case VIEW:
 			
-			if ( type == BaseManagerType.VIEW_NEW_FRAME ) {
+			if ( type == ManagerObjectType.VIEW_NEW_FRAME ) {
 				Object setFrame = 
 					refViewCanvasManager.createCanvas( type, details );
 			
@@ -461,7 +462,7 @@ implements GeneralManagerSingelton {
 		
 	}
 
-	public GeneralManager getManagerByBaseType(BaseManagerType managerType) {
+	public GeneralManager getManagerByBaseType(ManagerObjectType managerType) {
 		
 		assert managerType!=null: "type is null!";
 		

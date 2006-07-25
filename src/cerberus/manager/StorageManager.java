@@ -10,7 +10,7 @@ package cerberus.manager;
 
 import java.util.Vector;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.Storage;
 
@@ -26,7 +26,7 @@ public interface StorageManager
 extends GeneralManager
 {
 	
-	public Storage createStorage( final BaseManagerType useStorageType );
+	public Storage createStorage( final ManagerObjectType useStorageType );
 	
 	public boolean deleteStorage( Storage deleteStorage );
 	
@@ -38,6 +38,6 @@ extends GeneralManager
 	
 	public Vector<Storage> getAllStorageItemsVector();
 	
-	//public BaseManagerType getManagerType();
+	//public ManagerObjectType getManagerType();
 	
 }

@@ -1,7 +1,7 @@
 package cerberus.view.gui.swing.jgraph;
 
 import cerberus.data.pathway.Pathway;
-import cerberus.manager.pathway.PathwayManager;
+import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.data.pathway.element.Vertex;
 import cerberus.data.pathway.element.VertexRepresentation;
 import cerberus.data.pathway.element.Edge;

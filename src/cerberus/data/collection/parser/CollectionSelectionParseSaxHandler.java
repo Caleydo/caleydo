@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 import org.xml.sax.Attributes;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
@@ -55,7 +55,7 @@ implements DParseSaxHandler
 	protected final String sTag_XML_DataCollection_Container 		= "DataComponent";
 	protected final String sTag_XML_DataCollection_attr_id 			= "data_Id";
 	protected final String sTag_XML_DataCollection_attr_type 		= "type";
-	protected final String sTag_XML_DataCollection_attr_type_value 	= BaseManagerType.SELECTION.name();
+	protected final String sTag_XML_DataCollection_attr_type_value 	= ManagerObjectType.SELECTION.name();
 	protected final String sTag_XML_DataCollection_details 			= "DataComponentItemDetails";
 	protected final String sTag_XML_DataCollection_details_attr_filetag = "FileName";
 	protected final String sTag_XML_DataCollection_details_attr_filename = "microArrayFileName";
@@ -98,7 +98,7 @@ implements DParseSaxHandler
 	/**
 	 * Stores the current Selection type.
 	 */
-	protected BaseManagerType eSelectionType;
+	protected ManagerObjectType eSelectionType;
 	
 	private final static String sDelimiter = " ";
 	
@@ -179,7 +179,7 @@ implements DParseSaxHandler
 							iXML_DataComponent_Id = Integer.valueOf( bufferId );						
 							bXML_Section_DataComponent = true;
 							sSelectionType = bufferType;
-							eSelectionType = BaseManagerType.getType( bufferType );
+							eSelectionType = ManagerObjectType.getType( bufferType );
 							
 							return true;
 						} 

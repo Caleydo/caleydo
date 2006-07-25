@@ -5,7 +5,7 @@ package cerberus.manager.base;
 
 import cerberus.manager.AbstractManager;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.singelton.SingeltonManager;
+import cerberus.manager.Singelton;
 
 /**
  * Base class for manager classes, that connect to the GeneralManager.
@@ -16,7 +16,7 @@ import cerberus.manager.singelton.SingeltonManager;
 public abstract class AbstractManagerImpl implements AbstractManager  {
 
 	/**
-	 * Referebce to GeneralManager set via Constructor
+	 * Reference to GeneralManager set via Constructor
 	 */
 	protected final GeneralManager refGeneralManager;
 	
@@ -40,7 +40,7 @@ public abstract class AbstractManagerImpl implements AbstractManager  {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.AbstractManager#getSingelton()
 	 */
-	public final SingeltonManager getSingelton() {
+	public final Singelton getSingelton() {
 		return refGeneralManager.getSingelton();
 	}
 	
@@ -58,7 +58,7 @@ public abstract class AbstractManagerImpl implements AbstractManager  {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.AbstractManager#setSingelton(cerberus.manager.singelton.SingeltonManager)
 	 */
-	public final void setSingelton( SingeltonManager setSingeltonManager ) {
+	public final void setSingelton( Singelton setSingeltonManager ) {
 		throw new RuntimeException("AbstractManagerImpl::setSingelton() is not supported!");
 	}
 

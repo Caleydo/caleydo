@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.storage;
+package cerberus.manager.data.storage;
 
 import java.util.Vector;
 
-import cerberus.manager.singelton.SingeltonManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.Singelton;
+import cerberus.manager.type.ManagerObjectType;
 
 
 /**
@@ -21,15 +21,15 @@ import cerberus.manager.type.BaseManagerType;
 public class GenericsStorageManager< T > 
 {
 
-	protected SingeltonManager refSingeltonManager = null;
+	protected Singelton refSingeltonManager = null;
 	
-	protected BaseManagerType refBaseManagerType = BaseManagerType.FABRIK;
+	protected ManagerObjectType refBaseManagerType = ManagerObjectType.FABRIK;
 	
 	protected Vector<T> vecItems;
 	
-	public GenericsStorageManager( SingeltonManager setSingeltonManager,
+	public GenericsStorageManager( Singelton setSingeltonManager,
 			final int iInitSizeContainer,
-			final BaseManagerType initBaseManagerType) {
+			final ManagerObjectType initBaseManagerType) {
 		
 		refBaseManagerType = initBaseManagerType;
 		
@@ -86,7 +86,7 @@ public class GenericsStorageManager< T >
 		return false;
 	}
 		
-	public final BaseManagerType getManagerType() {		
+	public final ManagerObjectType getManagerType() {		
 		return refBaseManagerType;
 	}
 	

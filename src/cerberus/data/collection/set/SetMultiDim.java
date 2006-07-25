@@ -13,7 +13,7 @@ import java.util.Vector;
 //import java.util.Iterator;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.CollectionMetaData;
 import cerberus.data.collection.Selection;
@@ -404,11 +404,11 @@ implements Set {
 //			}
 //			
 //			getManager().unregisterItem( getId(), 
-//					BaseManagerType.SET_LINEAR );
+//					ManagerObjectType.SET_LINEAR );
 //			
 //			getManager().registerItem( this, 
 //					parser.getXML_DataComponent_Id(), 
-//					BaseManagerType.SET_LINEAR );
+//					ManagerObjectType.SET_LINEAR );
 //			
 //			setId( parser.getXML_DataComponent_Id() );		
 //			
@@ -435,7 +435,7 @@ implements Set {
 		assert false:"Memento of Set is not created yet!";
 		
 		return createMementoXML_Intro(
-				BaseManagerType.SELECTION_SINGLE_BLOCK.name())
+				ManagerObjectType.SELECTION_SINGLE_BLOCK.name())
 			+ "</DataComponentItem>\n";
 	}
 
@@ -443,8 +443,8 @@ implements Set {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
 	 */
-	public BaseManagerType getBaseType() {
-		return BaseManagerType.SET_MULTI_DIM;
+	public ManagerObjectType getBaseType() {
+		return ManagerObjectType.SET_MULTI_DIM;
 	}
 	
 	/* (non-Javadoc)

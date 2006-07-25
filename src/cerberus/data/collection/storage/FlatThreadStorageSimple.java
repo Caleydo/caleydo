@@ -11,7 +11,7 @@ package cerberus.data.collection.storage;
 import java.lang.NullPointerException;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;
 
@@ -472,7 +472,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 		String result = "<DataComponentSet data_Id=\"";
 		
 		result += getId() + "\" type=\"" +
-		BaseManagerType.STORAGE_FLAT.name() + "\">\n";
+		ManagerObjectType.STORAGE_FLAT.name() + "\">\n";
 		
 		/**
 		 * Integer
@@ -504,12 +504,12 @@ implements Storage, MementoNetEventXML, CollectionLock
 	 * 
 	 * @param tag_causes_callback Tag that cased the callback
 	 */
-	public void callbackForParser( final BaseManagerType type,
+	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final DParseSaxHandler refSaxHandler) {
 		
-		if ( tag_causes_callback.equalsIgnoreCase( BaseManagerType.STORAGE_FLAT.name() )) {
+		if ( tag_causes_callback.equalsIgnoreCase( ManagerObjectType.STORAGE_FLAT.name() )) {
 			
 			setMementoXML_usingHandler( refSaxHandler );
 		}
@@ -541,7 +541,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 			
 			getManager().registerItem( this, 
 					handler.getXML_DataComponent_Id(),
-					BaseManagerType.STORAGE_FLAT );
+					ManagerObjectType.STORAGE_FLAT );
 			
 			return true;			
 		}
@@ -564,8 +564,8 @@ implements Storage, MementoNetEventXML, CollectionLock
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
 	 */
-	public BaseManagerType getBaseType() {
-		return BaseManagerType.STORAGE_FLAT;
+	public ManagerObjectType getBaseType() {
+		return ManagerObjectType.STORAGE_FLAT;
 	}
 	
 	public void setArrayInt( int[] set ) {

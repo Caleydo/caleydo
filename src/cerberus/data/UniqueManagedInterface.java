@@ -9,7 +9,7 @@
 package cerberus.data;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 /**
  * Interface to access prometheus.data.manager.CollectionManager
@@ -32,7 +32,7 @@ extends UniqueInterface {
 	 * 
 	 * @return type of this object
 	 */
-	public BaseManagerType getBaseType();
+	public ManagerObjectType getBaseType();
 	
 
 }

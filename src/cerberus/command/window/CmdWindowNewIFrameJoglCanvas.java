@@ -89,7 +89,7 @@ implements CommandInterface {
 //		
 //		
 ////			refGeneralManager.getSingelton().getViewCanvasManager().createCanvas( 
-////				BaseManagerType.VIEW_JOGL_CANVAS_MULTIPLE, "" );
+////				ManagerObjectType.VIEW_JOGL_CANVAS_MULTIPLE, "" );
 //		
 //		if ( refGLEventListener != null ) {
 //			refDSwingJoglCanvas =

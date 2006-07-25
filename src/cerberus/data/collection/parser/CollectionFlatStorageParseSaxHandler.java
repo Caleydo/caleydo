@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 import org.xml.sax.Attributes;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
@@ -51,7 +51,7 @@ implements DParseSaxHandler
 	protected final String sTag_XML_DataCollection_Container 		= "DataComponent";
 	protected final String sTag_XML_DataCollection_attr_id 			= "data_Id";
 	protected final String sTag_XML_DataCollection_attr_type 		= "type";
-	protected       String sTag_XML_DataCollection_attr_type_value 	= BaseManagerType.STORAGE_FLAT.name();
+	protected       String sTag_XML_DataCollection_attr_type_value 	= ManagerObjectType.STORAGE_FLAT.name();
 	protected       String sTag_XML_DataCollection_details 			= "DataComponentItemDetails";
 	protected       String sTag_XML_DataCollection_details_attr_type  = "type";
 	protected       String sTag_XML_DataCollection_details_attr_value = "";
@@ -273,7 +273,7 @@ implements DParseSaxHandler
 				 */
 				if ( refParentMementoCaller != null ) {
 					refParentMementoCaller.callbackForParser( 
-							BaseManagerType.STORAGE_FLAT,
+							ManagerObjectType.STORAGE_FLAT,
 							"",
 							sTag_XML_DataCollection_attr_type_value , 
 							this );

@@ -14,7 +14,7 @@ import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.singelton.SingeltonManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 //import java.util.Iterator;
 
 import cerberus.command.CommandInterface;
@@ -127,8 +127,8 @@ public class CommandManagerSimple
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getManagerType()
 	 */
-	public BaseManagerType getManagerType() {
-		return BaseManagerType.COMMAND;
+	public ManagerObjectType getManagerType() {
+		return ManagerObjectType.COMMAND;
 	}
 
 
@@ -137,7 +137,7 @@ public class CommandManagerSimple
 	 * @see cerberus.data.manager.GeneralManager#registerItem(java.lang.Object, int, cerberus.data.manager.BaseManagerType)
 	 */
 	public boolean registerItem(Object registerItem, int iItemId,
-			BaseManagerType type) {
+			ManagerObjectType type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -145,7 +145,7 @@ public class CommandManagerSimple
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#unregisterItem(int, cerberus.data.manager.BaseManagerType)
 	 */
-	public boolean unregisterItem(int iItemId, BaseManagerType type) {
+	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -163,7 +163,7 @@ public class CommandManagerSimple
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
 	 */
-	public int createNewId(BaseManagerType setNewBaseType) {
+	public int createNewId(ManagerObjectType setNewBaseType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

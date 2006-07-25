@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.base;
+package cerberus.base.type;
 
 /**
  * Define kind of window toolkit.

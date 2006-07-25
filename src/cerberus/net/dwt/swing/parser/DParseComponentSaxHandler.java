@@ -11,7 +11,7 @@ package cerberus.net.dwt.swing.parser;
 import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.xml.parser.DParseBaseSaxHandler;
 //import org.xml.sax.SAXException;
@@ -241,8 +241,8 @@ implements DParseSaxHandler
 			 */
 			if ( refParentMementoCaller != null ) {
 				refParentMementoCaller.callbackForParser(
-						//BaseManagerType.GUI_COMPONENT,
-						BaseManagerType.VIEW_HISTOGRAM2D,
+						//ManagerObjectType.GUI_COMPONENT,
+						ManagerObjectType.VIEW_HISTOGRAM2D,
 						"",
 						sTag_XML_DEvent_type , 
 						this );

@@ -29,7 +29,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.Set;
 import cerberus.data.collection.view.ViewCanvas;
@@ -272,14 +272,14 @@ implements DNetEventComponentInterface, ViewCanvas
 			 */			
 			if ( iDNetEventComponentId != refHistogramSaxHandler.getXML_dNetEvent_Id() ) {
 				getManager().unregisterItem( iDNetEventComponentId, 
-						BaseManagerType.VIEW_HISTOGRAM2D );
+						ManagerObjectType.VIEW_HISTOGRAM2D );
 				
 				setId( refHistogramSaxHandler.getXML_dNetEvent_Id() );
 			}
 			
 			getManager().registerItem( this, 
 					iDNetEventComponentId, 
-					BaseManagerType.VIEW_HISTOGRAM2D );
+					ManagerObjectType.VIEW_HISTOGRAM2D );
 			
 			this.setVisible( refHistogramSaxHandler.getXML_state_visible() );
 			this.setEnabled( refHistogramSaxHandler.getXML_state_enabled() );
@@ -459,7 +459,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	 *  (non-Javadoc)
 	 * @see cerberus.data.xml.MementoNetEventXML#callbackForParser(java.lang.String)
 	 */
-	public void callbackForParser(  final BaseManagerType type,
+	public void callbackForParser(  final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final DParseSaxHandler refSaxHandler ) {
@@ -480,8 +480,8 @@ implements DNetEventComponentInterface, ViewCanvas
 	 * 
 	 * @return type of this object
 	 */
-	public BaseManagerType getBaseType() {
-		return BaseManagerType.VIEW_HISTOGRAM2D;
+	public ManagerObjectType getBaseType() {
+		return ManagerObjectType.VIEW_HISTOGRAM2D;
 	}
 
 	public void paintComponent( Graphics g ) {

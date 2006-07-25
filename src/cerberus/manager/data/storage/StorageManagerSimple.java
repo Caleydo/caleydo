@@ -6,16 +6,16 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.storage;
+package cerberus.manager.data.storage;
 
 import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.StorageManager;
-import cerberus.manager.collection.CollectionManager;
-import cerberus.manager.type.BaseManagerGroupType;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.data.CollectionManager;
+import cerberus.manager.type.ManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
 //import java.util.Hashtable;
 
@@ -58,9 +58,9 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#createStorage()
 	 */
-	public Storage createStorage( final BaseManagerType useStorageType ) {
+	public Storage createStorage( final ManagerObjectType useStorageType ) {
 		
-		if ( useStorageType.getGroupType() != BaseManagerGroupType.STORAGE ) {
+		if ( useStorageType.getGroupType() != ManagerType.STORAGE ) {
 			throw new PrometheusRuntimeException("try to create object with wrong type " + useStorageType.name() );
 		}
 
@@ -172,12 +172,12 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
 	 */
-	public final BaseManagerType getManagerType() {		
-		return BaseManagerType.STORAGE_FLAT;
+	public final ManagerObjectType getManagerType() {		
+		return ManagerObjectType.STORAGE_FLAT;
 	}
 	
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		
 		if ( this.hasLookupValueById( iItemId )) {
 			vecStorage.remove( 
@@ -190,7 +190,7 @@ implements StorageManager {
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		
 		
 		try {

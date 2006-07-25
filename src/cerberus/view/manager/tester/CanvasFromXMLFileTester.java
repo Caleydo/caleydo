@@ -283,7 +283,7 @@ public class CanvasFromXMLFileTester extends JFrame {
 		
 	}
 	
-//	public void callbackForParser( final BaseManagerType type,
+//	public void callbackForParser( final ManagerObjectType type,
 //			final String tag_causes_callback,
 //			final DParseSaxHandler refSaxHandler) {
 //			

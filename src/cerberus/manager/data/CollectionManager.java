@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.collection;
+package cerberus.manager.data;
 
 import java.util.Hashtable;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.base.AbstractManagerImpl;
-import cerberus.manager.type.BaseManagerGroupType;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
 
 //import prometheus.manager.SetManager;
@@ -106,7 +106,7 @@ public abstract class CollectionManager
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.GeneralManager#getManagerType()
 	 */
-	public abstract BaseManagerType getManagerType();
+	public abstract ManagerObjectType getManagerType();
 	
 	
 	/**
@@ -114,11 +114,11 @@ public abstract class CollectionManager
 	 * 
 	 * @return new unique collectionId
 	 */
-	public final int createNewId( final BaseManagerType setNewBaseType ) {
+	public final int createNewId( final ManagerObjectType setNewBaseType ) {
 		
-		if (( setNewBaseType.getGroupType() == BaseManagerGroupType.SELECTION )
-			||( setNewBaseType.getGroupType() == BaseManagerGroupType.SET )
-			||( setNewBaseType.getGroupType() == BaseManagerGroupType.STORAGE )) {
+		if (( setNewBaseType.getGroupType() == ManagerType.SELECTION )
+			||( setNewBaseType.getGroupType() == ManagerType.SET )
+			||( setNewBaseType.getGroupType() == ManagerType.STORAGE )) {
 			
 			iCurrentCollectionId += iUniqueId_Increment;		
 			return iCurrentCollectionId;

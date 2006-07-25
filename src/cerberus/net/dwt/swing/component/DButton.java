@@ -27,7 +27,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import org.xml.sax.SAXException;
 
 import cerberus.manager.DComponentManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 //import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.command.CommandListener;
@@ -344,7 +344,7 @@ implements DNetEventComponentInterface {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.xml.MementoNetEventXML#callbackForParser(java.lang.String)
 	 */
-	public void callbackForParser( final BaseManagerType type,
+	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final DParseSaxHandler refSaxHandler ) {

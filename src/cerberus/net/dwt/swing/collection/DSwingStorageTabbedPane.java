@@ -31,8 +31,8 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
-import cerberus.manager.type.BaseManagerGroupType;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.CommandInterface;
 import cerberus.data.collection.Storage;
@@ -75,7 +75,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	
 	private JComboBox    j_cb_selectionTypes;
 	
-	private BaseManagerType currentType = BaseManagerType.SELECTION;
+	private ManagerObjectType currentType = ManagerObjectType.SELECTION;
 	
 	private final static String[] sTabbenPaneNames = {
 		"INT",
@@ -195,7 +195,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 		
 		
 		
-		setGuiByBaseType( BaseManagerType.SELECTION );
+		setGuiByBaseType( ManagerObjectType.SELECTION );
 		
 		/*
 		 * General Layout
@@ -229,10 +229,10 @@ public class DSwingStorageTabbedPane extends JPanel {
 							switch ( j_cb_selectionTypes.getSelectedIndex() ) {
 							
 							case STORE_FLAT:
-								setGuiByBaseType( BaseManagerType.STORAGE_FLAT );
+								setGuiByBaseType( ManagerObjectType.STORAGE_FLAT );
 								break;
 							case STORE_NONE:
-								setGuiByBaseType( BaseManagerType.STORAGE );
+								setGuiByBaseType( ManagerObjectType.STORAGE );
 								break;
 							
 							default:
@@ -254,9 +254,9 @@ public class DSwingStorageTabbedPane extends JPanel {
 	 * @param setType Type to switch gui
 	 * @return true on success
 	 */
-	private boolean setGuiByBaseType(final BaseManagerType setType){
+	private boolean setGuiByBaseType(final ManagerObjectType setType){
 		
-		if ( setType.getGroupType() != BaseManagerGroupType.STORAGE ) {
+		if ( setType.getGroupType() != ManagerType.STORAGE ) {
 			return false;
 		}
 		
@@ -311,7 +311,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 			return;
 		}
 		
-		final BaseManagerType testType = useStorage.getBaseType();
+		final ManagerObjectType testType = useStorage.getBaseType();
 		
 		if ( currentType != testType ) {
 			setGuiByBaseType( testType );
@@ -320,7 +320,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 		switch (currentType) {
 		
 		case STORAGE_FLAT: {
-			assert useStorage.getBaseType() == BaseManagerType.STORAGE_FLAT :
+			assert useStorage.getBaseType() == ManagerObjectType.STORAGE_FLAT :
 				"Wrong type for storage STORAGE_FLAT!";
 			
 			j_tf[INDEX_ID].setText( 
@@ -506,9 +506,9 @@ public class DSwingStorageTabbedPane extends JPanel {
 		
 		readBackGui();
 		
-		BaseManagerType selType = updateStorage.getBaseType();
+		ManagerObjectType selType = updateStorage.getBaseType();
 		
-		if ( selType == BaseManagerType.STORAGE_FLAT ) {
+		if ( selType == ManagerObjectType.STORAGE_FLAT ) {
 			
 			updateStorage.setId( iDataFromGui_Id );
 			updateStorage.setLabel( this.sDataFromGui_label );
@@ -532,7 +532,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	 * 
 	 * @return current type used for the Gui.
 	 */
-	public BaseManagerType getBaseType() {
+	public ManagerObjectType getBaseType() {
 		return currentType;
 	}
 
@@ -567,7 +567,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 		else {
 			if ( j_Box.isVisible() ) {
 				refStorage = null;
-				currentType = BaseManagerType.STORAGE;
+				currentType = ManagerObjectType.STORAGE;
 				
 				j_Box.setVisible(set);
 			}

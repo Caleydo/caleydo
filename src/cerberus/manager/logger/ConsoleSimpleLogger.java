@@ -11,7 +11,8 @@ import cerberus.manager.base.AbstractManagerImpl;
  * @author java
  *
  */
-public class ConsoleSimpleLogger extends AbstractManagerImpl implements LoggerManager {
+public class ConsoleSimpleLogger extends 
+	AbstractManagerImpl implements LoggerManager {
 
 	protected short sLogLevel = 0;
 	

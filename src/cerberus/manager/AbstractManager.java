@@ -1,6 +1,5 @@
 package cerberus.manager;
 
-import cerberus.manager.singelton.SingeltonManager;
 
 public interface AbstractManager {
 
@@ -9,13 +8,13 @@ public interface AbstractManager {
 	 */
 	public abstract GeneralManager getGeneralManager();
 
-	public abstract SingeltonManager getSingelton();
+	public abstract Singelton getSingelton();
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.AbstractManagerImpl#getGeneralManager()
 	 */
 	public abstract void setGeneralManager(GeneralManager setGeneralManager);
 
-	public abstract void setSingelton(SingeltonManager setSingeltonManager);
+	public abstract void setSingelton(Singelton setSingeltonManager);
 
 }

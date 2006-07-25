@@ -87,6 +87,6 @@ implements UniqueManagedInterface {
 		this.iCollectionId = iSetDNetEventId;		
 	}
 	
-	//public abstract BaseManagerType getBaseType();
+	//public abstract ManagerObjectType getBaseType();
 	
 }

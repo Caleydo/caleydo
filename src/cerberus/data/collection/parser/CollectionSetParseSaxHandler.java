@@ -14,7 +14,7 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
@@ -53,7 +53,7 @@ implements DParseSaxHandler
 	protected final String sTag_XML_DataCollection_Container 		= "DataComponent";
 	protected final String sTag_XML_DataCollection_attr_id 			= "data_Id";
 	protected final String sTag_XML_DataCollection_attr_type 		= "type";
-	protected final String sTag_XML_DataCollection_attr_type_value 	= BaseManagerType.SET.name();
+	protected final String sTag_XML_DataCollection_attr_type_value 	= ManagerObjectType.SET.name();
 	protected final String sTag_XML_DataCollection_details 			= "DataComponentItemDetails";
 	protected       String sTag_XML_DataCollection_details_attr_A_type  = "type";
 	protected       String[] sTag_XML_DataCollection_details_attr_A_value = {"select","store"};
@@ -92,7 +92,7 @@ implements DParseSaxHandler
 	/**
 	 * Stores the current Selection type.
 	 */
-	protected BaseManagerType eSelectionType;
+	protected ManagerObjectType eSelectionType;
 	
 	private final static String sDelimiter = " ";
 	
@@ -182,7 +182,7 @@ implements DParseSaxHandler
 							iXML_DataComponent_Id = Integer.valueOf( bufferId );						
 							bXML_Section_DataComponent = true;
 							sSelectionType = bufferType;
-							eSelectionType = BaseManagerType.getType( bufferType );
+							eSelectionType = ManagerObjectType.getType( bufferType );
 							
 							return true;
 						} 

@@ -6,15 +6,15 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.set;
+package cerberus.manager.data.set;
 
 import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SetManager;
-import cerberus.manager.collection.CollectionManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.data.CollectionManager;
+import cerberus.manager.type.ManagerObjectType;
 
 //import cerberus.data.collection.Selection;
 import cerberus.data.collection.Set;
@@ -64,7 +64,7 @@ implements SetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#createSet()
 	 */
-	public Set createSet( final BaseManagerType useStorageType ) {
+	public Set createSet( final ManagerObjectType useStorageType ) {
 			
 		switch ( useStorageType ) {
 			case SET_LINEAR:
@@ -160,12 +160,12 @@ implements SetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
 	 */
-	public final BaseManagerType getManagerType() {		
-		return BaseManagerType.SET;
+	public final ManagerObjectType getManagerType() {		
+		return ManagerObjectType.SET;
 	}
 	
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		
 		if ( this.hasLookupValueById( iItemId )) {
 			unregisterItemCollection( iItemId );
@@ -176,7 +176,7 @@ implements SetManager {
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		
 		
 		try {

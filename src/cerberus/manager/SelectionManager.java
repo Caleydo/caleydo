@@ -10,7 +10,7 @@ package cerberus.manager;
 
 import java.util.Vector;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.Selection;
 import cerberus.data.xml.MementoXML;
@@ -27,7 +27,7 @@ public interface SelectionManager
 extends GeneralManager
 {
 	
-	public MementoXML createSelection( final BaseManagerType useSelectionType );
+	public MementoXML createSelection( final ManagerObjectType useSelectionType );
 	
 	public boolean deleteSelection( Selection deleteSelection );
 	
@@ -39,6 +39,6 @@ extends GeneralManager
 	
 	public Vector<Selection> getAllSelectionItemsVector();
 	
-	//public BaseManagerType getManagerType();
+	//public ManagerObjectType getManagerType();
 	
 }

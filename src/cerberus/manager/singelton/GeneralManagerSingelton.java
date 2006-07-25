@@ -3,7 +3,7 @@ package cerberus.manager.singelton;
 import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
 //import cerberus.manager.ViewCanvasManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.xml.MementoCallbackXML;
 
 public interface GeneralManagerSingelton 
@@ -15,11 +15,11 @@ extends GeneralManager, MementoCallbackXML {
 	 * Get the current type used to create new Id with createNewId().
 	 * 
 	 * @see cerberus.manager.singelton.OneForAllManager#createNewId()
-	 * @see cerberus.manager.singelton.OneForAllManager#setCurrentType(BaseManagerType)
+	 * @see cerberus.manager.singelton.OneForAllManager#setCurrentType(ManagerObjectType)
 	 * 
 	 * @return current type used to create new Id with createNewId()
 	 */
-	public abstract BaseManagerType getCurrentType();
+	public abstract ManagerObjectType getCurrentType();
 
 	/**
 	 * Creates a new unique Id with the type, that was set previouse.
@@ -29,10 +29,10 @@ extends GeneralManager, MementoCallbackXML {
 	 * 
 	 * @return int new unique Id
 	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#setNewType(BaseManagerType)
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(BaseManagerType)
+	 * @see cerberus.manager.singelton.OneForAllManager#setNewType(ManagerObjectType)
+	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
 	 */
-	public abstract int createNewId(BaseManagerType setNewBaseType);
+	public abstract int createNewId(ManagerObjectType setNewBaseType);
 
 	/**
 	 * Create a new item.
@@ -41,7 +41,7 @@ extends GeneralManager, MementoCallbackXML {
 	 * @param sNewTypeDetails optional details used to create new object
 	 * @return new object
 	 */
-	public abstract Object createNewItem(final BaseManagerType createNewType,
+	public abstract Object createNewItem(final ManagerObjectType createNewType,
 			final String sNewTypeDetails);
 
 //	/**
@@ -59,14 +59,14 @@ extends GeneralManager, MementoCallbackXML {
 	public CommandManager getCommandManager();
 	
 	/**
-	 * Get the reference to the managers using the BaseManagerType.
+	 * Get the reference to the managers using the ManagerObjectType.
 	 * Note: Instead of writing one get-methode for all Managers this methode
 	 * handles all differnt types of managers.
 	 * 
 	 * @param managerType define type of manger that is requested
 	 * @return manager for a certain type.
 	 */
-	public GeneralManager getManagerByBaseType(BaseManagerType managerType);
+	public GeneralManager getManagerByBaseType(ManagerObjectType managerType);
 	
 	/**
 	 * Define an error message presented in the GUI.

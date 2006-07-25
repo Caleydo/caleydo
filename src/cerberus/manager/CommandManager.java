@@ -26,7 +26,7 @@ import cerberus.command.CommandActionListener;
 public interface CommandManager 
 extends CommandActionListener, GeneralManager {
 
-	//public CommandInterface createCommand( final BaseManagerType useSelectionType );
+	//public CommandInterface createCommand( final ManagerObjectType useSelectionType );
 	
 	/**
 	 * Create a new command using a String.

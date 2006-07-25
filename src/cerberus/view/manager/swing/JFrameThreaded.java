@@ -80,7 +80,7 @@ import demos.vertexProgWarp.VertexProgWarp;
 import demos.xtrans.*;
 
 
-import cerberus.base.WindowToolkitType;
+import cerberus.base.type.WindowToolkitType;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.swing.CerberusJStatusBar;
 import cerberus.view.swing.texture.TestTexture;

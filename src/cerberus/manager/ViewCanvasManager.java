@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import javax.swing.JFrame;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.view.ViewCanvas;
 import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
@@ -31,7 +31,7 @@ public interface ViewCanvasManager
 extends GeneralManager
 {
 	
-	public ViewCanvas createCanvas( final BaseManagerType useViewCanvasType,
+	public ViewCanvas createCanvas( final ManagerObjectType useViewCanvasType,
 			final String sParameter );
 		
 	public boolean deleteCanvas( ViewCanvas deleteSet );
@@ -57,13 +57,13 @@ extends GeneralManager
 	
 	/**
 	 * Creates a new Internal Frame as child Frame of the Frame addressed via iTargetFrameId.
-	 * Note: Same result as createCanvas( BaseManagerType.VIEW_NEW_IFRAME , * )
+	 * Note: Same result as createCanvas( ManagerObjectType.VIEW_NEW_IFRAME , * )
 	 * 
 	 * @param iTargetFrameId unique Id ot address Frame
 	 * @param sAditionalParameter additional parameters
 	 * 
-	 * @see cerberus.manager.canvas.ViewCanvasManagerSimple#createCanvas(BaseManagerType, String)
-	 * @see cerberus.manager.ViewCanvasManager#createCanvas(BaseManagerType, String)
+	 * @see cerberus.manager.canvas.ViewCanvasManagerSimple#createCanvas(ManagerObjectType, String)
+	 * @see cerberus.manager.ViewCanvasManager#createCanvas(ManagerObjectType, String)
 	 * 
 	 * @return new DInternalFrame as child of frame addressed via iTargetFrameId
 	 */
@@ -79,7 +79,7 @@ extends GeneralManager
 	 * @return new frame
 	 */
 	public WorkspaceSwingFrame createWorkspace( 
-			final BaseManagerType useViewCanvasType,
+			final ManagerObjectType useViewCanvasType,
 			final String sAditionalParameter );
 	
 	public boolean deleteWorkspace( final int iItemId );
@@ -104,7 +104,7 @@ extends GeneralManager
 	 *  (non-Javadoc)
 	 * @see prometheus.manager.GeneralManager#getManagerType()
 	 */
-	public BaseManagerType getManagerType();
+	public ManagerObjectType getManagerType();
 	
 	/**
 	 * Adds all ViewCanvas components to the parent JFrame.

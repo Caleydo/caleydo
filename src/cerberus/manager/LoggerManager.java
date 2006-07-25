@@ -3,11 +3,15 @@
  */
 package cerberus.manager;
 
+import cerberus.manager.GeneralManager;
+
 /**
  * @author java
  *
  */
-public interface LoggerManager {
+public interface LoggerManager 
+// extends GeneralManager 
+{
 
 	public void logMsg( String info );
 	

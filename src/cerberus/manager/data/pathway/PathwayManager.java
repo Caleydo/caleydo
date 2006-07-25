@@ -1,4 +1,4 @@
-package cerberus.manager.pathway;
+package cerberus.manager.data.pathway;
 
 import java.util.HashMap;
 

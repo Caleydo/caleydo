@@ -17,9 +17,9 @@ import java.util.Hashtable;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MementoManager;
 import cerberus.manager.base.AbstractManagerImpl;
-import cerberus.manager.collection.CollectionManager;
-import cerberus.manager.type.BaseManagerGroupType;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.data.CollectionManager;
+import cerberus.manager.type.ManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
 //import java.util.Enumeration;
 
@@ -79,7 +79,7 @@ public class MementoManagerSimple
 	 * @see prometheus.command.memento.manager.MementoManager#setMemento(prometheus.command.memento.Memento)
 	 */
 	public final int pushMemento( final Memento addMemento) {
-		final int iUniqueId = createNewId( BaseManagerType.MEMENTO );
+		final int iUniqueId = createNewId( ManagerObjectType.MEMENTO );
 		
 		try {
 			vecMemento.add(addMemento);
@@ -148,8 +148,8 @@ public class MementoManagerSimple
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.GeneralManagerInterface#getManagerType()
 	 */
-	public final BaseManagerType getManagerType() {		
-		return BaseManagerType.MEMENTO;
+	public final ManagerObjectType getManagerType() {		
+		return ManagerObjectType.MEMENTO;
 	}
 	
 	public String toString() {
@@ -193,8 +193,8 @@ public class MementoManagerSimple
 	 *  (non-Javadoc)
 	 * @see prometheus.data.manager.MementoManager#createMementoId()
 	 */
-	 public final int createNewId( final BaseManagerType setNewBaseType ) {
-		 if ( setNewBaseType.getGroupType() == BaseManagerGroupType.GUI_COMPONENT ) {
+	 public final int createNewId( final ManagerObjectType setNewBaseType ) {
+		 if ( setNewBaseType.getGroupType() == ManagerType.GUI_COMPONENT ) {
 			 iCurrentUniqueMementoId += GeneralManager.iUniqueId_Increment;
 			 return iCurrentUniqueMementoId;
 		 }
@@ -249,7 +249,7 @@ public class MementoManagerSimple
 	}
 	
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		
 		assert false:"not done yet";
 		return false;
@@ -257,7 +257,7 @@ public class MementoManagerSimple
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		
 		
 		assert false:"not done yet";

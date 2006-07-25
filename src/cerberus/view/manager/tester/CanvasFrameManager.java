@@ -59,7 +59,7 @@ import demos.vertexProgWarp.VertexProgWarp;
 import demos.xtrans.*;
 
 
-import cerberus.base.WindowToolkitType;
+import cerberus.base.type.WindowToolkitType;
 import cerberus.manager.GeneralManager;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.swing.CerberusData;

@@ -11,7 +11,7 @@ package cerberus.data.collection.selection;
 import java.lang.NullPointerException;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.Selection;
 import cerberus.data.collection.SelectionType;
@@ -132,11 +132,11 @@ public class SelectionThreadSingleBlock
 			setOffset( parser.getXML_DataOffset() );
 			
 			getManager().unregisterItem( getId(), 
-					BaseManagerType.SELECTION_SINGLE_BLOCK );
+					ManagerObjectType.SELECTION_SINGLE_BLOCK );
 			
 			getManager().registerItem( this, 
 					parser.getXML_DataComponent_Id(), 
-					BaseManagerType.SELECTION_SINGLE_BLOCK );
+					ManagerObjectType.SELECTION_SINGLE_BLOCK );
 			
 			setId( parser.getXML_DataComponent_Id() );			
 			
@@ -156,7 +156,7 @@ public class SelectionThreadSingleBlock
 	public String createMementoXML() {
 		
 		return createMementoXML_Intro(
-				BaseManagerType.SELECTION_SINGLE_BLOCK.name())
+				ManagerObjectType.SELECTION_SINGLE_BLOCK.name())
 			+ "</DataComponentItem>\n";
 	}
 
@@ -164,8 +164,8 @@ public class SelectionThreadSingleBlock
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
 	 */
-	public BaseManagerType getBaseType() {
-		return BaseManagerType.SELECTION_SINGLE_BLOCK;
+	public ManagerObjectType getBaseType() {
+		return ManagerObjectType.SELECTION_SINGLE_BLOCK;
 	}
 	
 	/*

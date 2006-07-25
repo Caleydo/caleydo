@@ -90,7 +90,7 @@ implements CmdHandleSetInterface {
 //		SingeltonManager buf = refGeneralManager.getSingelton();
 //		
 //		DInternalFrame refNewViewCanvas = (DInternalFrame)
-//			buf.getViewCanvasManager().createCanvas( BaseManagerType.VIEW_NEW_IFRAME,
+//			buf.getViewCanvasManager().createCanvas( ManagerObjectType.VIEW_NEW_IFRAME,
 //				sTargetFrameId );
 //		
 //		return refNewViewCanvas;

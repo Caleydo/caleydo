@@ -9,7 +9,7 @@
 package cerberus.data.collection.selection;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.Selection;
 import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
@@ -179,11 +179,11 @@ implements
 			setMultiRepeat( parser.getXML_DataMultiRepeat() );
 			
 			getManager().unregisterItem( getId(), 
-					BaseManagerType.SELECTION_MULTI_BLOCK );
+					ManagerObjectType.SELECTION_MULTI_BLOCK );
 			
 			getManager().registerItem( this, 
 					parser.getXML_DataComponent_Id(), 
-					BaseManagerType.SELECTION_MULTI_BLOCK );
+					ManagerObjectType.SELECTION_MULTI_BLOCK );
 			
 			setId( parser.getXML_DataComponent_Id() );			
 			
@@ -205,7 +205,7 @@ implements
 		final String closeDetail = "</DataComponentItemDetails>\n";
 		
 		String result = createMementoXML_Intro(
-				BaseManagerType.SELECTION_MULTI_BLOCK.name());
+				ManagerObjectType.SELECTION_MULTI_BLOCK.name());
 	
 		result += openDetail + "MultiOffset\" >" +
 			getMultiOffset() +	closeDetail;
@@ -224,8 +224,8 @@ implements
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
 	 */
-	public BaseManagerType getBaseType() {
-		return BaseManagerType.SELECTION_MULTI_BLOCK;
+	public ManagerObjectType getBaseType() {
+		return ManagerObjectType.SELECTION_MULTI_BLOCK;
 	}
 	
 	/*

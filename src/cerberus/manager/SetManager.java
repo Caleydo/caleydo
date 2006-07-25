@@ -8,7 +8,7 @@
  */
 package cerberus.manager;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.Set;
 
 
@@ -24,7 +24,7 @@ public interface SetManager
 extends GeneralManager
 {
 	
-	public Set createSet( final BaseManagerType useSetType );
+	public Set createSet( final ManagerObjectType useSetType );
 	
 	public boolean deleteSet( Set deleteSet );
 	
@@ -34,6 +34,6 @@ extends GeneralManager
 	
 	public Set[] getAllSetItems();
 	
-	//public BaseManagerType getManagerType();
+	//public ManagerObjectType getManagerType();
 	
 }

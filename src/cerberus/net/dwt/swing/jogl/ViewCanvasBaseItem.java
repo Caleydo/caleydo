@@ -7,7 +7,7 @@ import java.awt.Graphics;
 
 import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.CommandListener;
 import cerberus.data.collection.view.ViewCanvas;
@@ -72,7 +72,7 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
 	 */
-	public BaseManagerType getBaseType() {
+	public ManagerObjectType getBaseType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -160,7 +160,7 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	/* (non-Javadoc)
 	 * @see cerberus.data.xml.MementoCallbackXML#callbackForParser(cerberus.manager.BaseManagerType, java.lang.String, java.lang.String, cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
-	public void callbackForParser(BaseManagerType type,
+	public void callbackForParser(ManagerObjectType type,
 			String tag_causes_callback, String details,
 			DParseSaxHandler refSaxHandler) {
 		// TODO Auto-generated method stub

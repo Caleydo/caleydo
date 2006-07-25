@@ -22,7 +22,7 @@ import javax.swing.JMenuBar;
 import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.CommandType;
 import cerberus.command.CommandInterface;
@@ -261,7 +261,7 @@ implements UniqueManagedInterface {
 		
 //		WorkspaceSwingFrame frame = 
 //			manager.getSingelton().getViewCanvasManager().createWorkspace(
-//				BaseManagerType.VIEW_NEW_FRAME, "" );
+//				ManagerObjectType.VIEW_NEW_FRAME, "" );
 //		
 //		final int iFrameId = frame.getId();
 	
@@ -583,8 +583,8 @@ implements UniqueManagedInterface {
 		//storage = new FlatStorageSimple(8080,manager);
 		
 //		storage = (FlatStorageSimple) manager.createNewItem( 
-//				BaseManagerType.STORAGE , 
-//				BaseManagerType.STORAGE_FLAT.name() );
+//				ManagerObjectType.STORAGE , 
+//				ManagerObjectType.STORAGE_FLAT.name() );
 		
 		
 	
@@ -693,8 +693,8 @@ implements UniqueManagedInterface {
 	 * 
 	 * @return type of this object
 	 */
-	public BaseManagerType getBaseType() {
-		return BaseManagerType.VIEW_NEW_FRAME;
+	public ManagerObjectType getBaseType() {
+		return ManagerObjectType.VIEW_NEW_FRAME;
 	}
 
 }

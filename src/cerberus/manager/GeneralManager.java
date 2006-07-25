@@ -1,7 +1,6 @@
 package cerberus.manager;
 
-import cerberus.manager.singelton.SingeltonManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
 public interface GeneralManager {
@@ -17,7 +16,7 @@ public interface GeneralManager {
 	 * 
 	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffset
 	 * @see cerberus.manager.GeneralManager#iUniqueId_Increment
-	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.BaseManagerType)
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
 	public final int iUniqueId_WorkspaceOffset = 100;
 	
@@ -32,7 +31,7 @@ public interface GeneralManager {
 	 * 
 	 * @see cerberus.manager.GeneralManager#iUniqueId_Increment
 	 * @see cerberus.manager.GeneralManager#iUniqueId_WorkspaceOffset
-	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.BaseManagerType)
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
 	public final int iUniqueId_TypeOffset = 100;
 	
@@ -41,7 +40,7 @@ public interface GeneralManager {
 	 * 
 	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffset
 	 * @see cerberus.manager.GeneralManager#iUniqueId_Workspace
-	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.BaseManagerType)
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
 	public final int iUniqueId_Increment = 10000;
 	
@@ -101,7 +100,7 @@ public interface GeneralManager {
 	 * 
 	 * @return type of the manager
 	 */
-	public BaseManagerType getManagerType();
+	public ManagerObjectType getManagerType();
 	/**
 	 * Returns the reference to the prometheus.app.SingeltonManager.
 	 * 
@@ -116,7 +115,7 @@ public interface GeneralManager {
 	 * 
 	 * @return Singelton object
 	 */
-	public SingeltonManager getSingelton();
+	public Singelton getSingelton();
 	
 	/**
 	 * Registers one Id and links it to the reference.
@@ -127,7 +126,7 @@ public interface GeneralManager {
 	 * 
 	 * @return TRUE if item was unregisterd by this manager
 	 */
-	public boolean registerItem( final Object registerItem, final int iItemId , final BaseManagerType type );
+	public boolean registerItem( final Object registerItem, final int iItemId , final ManagerObjectType type );
 	
 	
 	/**
@@ -138,7 +137,7 @@ public interface GeneralManager {
 	 * 
 	 * @return TRUE if item was unregisterd by this manager
 	 */
-	public boolean unregisterItem( final int iItemId, final BaseManagerType type  );
+	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  );
 	
 	/**
 	 * Create a new unique Id.
@@ -149,7 +148,7 @@ public interface GeneralManager {
 	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffset
 	 * @see cerberus.manager.GeneralManager#iUniqueId_WorkspaceOffset
 	 */
-	public int createNewId( final BaseManagerType setNewBaseType );
+	public int createNewId( final ManagerObjectType setNewBaseType );
 
 	
 }

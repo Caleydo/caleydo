@@ -13,7 +13,7 @@ import gleem.linalg.Vec3f;
 import javax.swing.JPanel;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.net.dwt.base.ViewingAreaComponent;
 import cerberus.data.UniqueManagedInterface;
@@ -142,7 +142,7 @@ public abstract class DSwingJPanel extends JPanel implements
 	/**
 	 * @see prometheus.data.collection.UniqueManagedInterface#getBaseType()()
 	 */
-	public abstract BaseManagerType getBaseType();
+	public abstract ManagerObjectType getBaseType();
 
 
 }

@@ -3,8 +3,8 @@ package cerberus.xml.parser.kgml;
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
-import cerberus.manager.pathway.PathwayManager;
-import cerberus.manager.pathway.ElementManager;
+import cerberus.manager.data.pathway.ElementManager;
+import cerberus.manager.data.pathway.PathwayManager;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

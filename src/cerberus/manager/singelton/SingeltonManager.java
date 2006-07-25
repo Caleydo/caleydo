@@ -10,14 +10,20 @@ package cerberus.manager.singelton;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.DComponentManager;
+import cerberus.manager.GeneralManager;
 import cerberus.manager.LoggerManager;
 import cerberus.manager.MementoManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
+import cerberus.manager.Singelton;
 import cerberus.manager.StorageManager;
 import cerberus.manager.ViewCanvasManager;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
+
+import cerberus.manager.type.ManagerType;
+
+import cerberus.util.exception.PrometheusRuntimeException;
 
 /**
  * Global object contining and handling several managers.
@@ -27,7 +33,7 @@ import cerberus.manager.ViewCanvasManager;
  * @author Michael Kalkusch
  *
  */
-public class SingeltonManager {
+public class SingeltonManager implements Singelton {
 
 	protected DComponentManager refDComponentManager = null;
 	
@@ -64,14 +70,23 @@ public class SingeltonManager {
 				
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getMementoManager()
+	 */
 	public MementoManager getMementoManager() {
 		return refMementoManager;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getStorageManager()
+	 */
 	public StorageManager getStorageManager() {
 		return refStorageManager;
 	}
 		
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getSelectionManager()
+	 */
 	public SelectionManager getSelectionManager() {
 		return refSelectionManager;
 	}
@@ -80,14 +95,23 @@ public class SingeltonManager {
 		this.refMenuManager = setMenuManager;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getMenuManager()
+	 */
 	public MenuManager getMenuManager() {
 		return this.refMenuManager;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getSetManager()
+	 */
 	public SetManager getSetManager() {
 		return refSetManager;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getViewCanvasManager()
+	 */
 	public ViewCanvasManager getViewCanvasManager() {
 		return refViewCanvasManager;
 	}
@@ -122,6 +146,9 @@ public class SingeltonManager {
 		refViewCanvasManager = setViewCanvasManager;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
+	 */
 	public CommandManager getCommandManager() {
 		return refCommandManager;
 	}
@@ -130,6 +157,9 @@ public class SingeltonManager {
 		refCommandManager = setCommandManager;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getDComponentManager()
+	 */
 	public DComponentManager getDComponentManager() {
 		return refDComponentManager;
 	}
@@ -145,8 +175,47 @@ public class SingeltonManager {
 		this.refLoggerManager = refLoggerManager;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getLoggerManager()
+	 */
 	public LoggerManager getLoggerManager() {
 		return this.refLoggerManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getManager(cerberus.manager.type.ManagerType)
+	 */
+	public GeneralManager getManager( ManagerType type) {
+		
+		
+		switch ( type ) {
+		case COMMAND: return this.refCommandManager;
+		
+		case SET: return this.refSetManager;
+		
+		case STORAGE: return this.refStorageManager;
+		
+		case SELECTION: return this.refSelectionManager;
+		
+		case MEMENTO: return this.refMementoManager;
+				
+		case VIEW: return this.refViewCanvasManager;
+		
+		case MENU: return this.refMenuManager;
+		
+		
+		
+		case NONE: 
+			throw new PrometheusRuntimeException("No Manager for type 'NONE' available!");
+	
+		case LOGGER:
+			//TODO: fix this
+			//return this.refLoggerManager;
+			
+			default: 
+				throw new PrometheusRuntimeException("No Manager for type [" + 
+						type.toString() + "] available!");
+		}
 	}
 	
 //	/**
@@ -177,16 +246,16 @@ public class SingeltonManager {
 //		refDDesktopPane = setDDesktopPane;
 //	}
 	
-	/**
-	 * Identifies each application in the network with a unique Id form [1..99]
-	 * issued by the network server.
-	 * 
-	 * @return unique networkHostId of this host.
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getNetworkPostfix()
 	 */
 	public int getNetworkPostfix() {
 		return iNetworkApplicationIdPostfix;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#setNetworkPostfix(int)
+	 */
 	public void setNetworkPostfix( int iSetNetworkPrefix ) {
 		if (( iSetNetworkPrefix < 100) && ( iSetNetworkPrefix > 0)) { 
 			iNetworkApplicationIdPostfix = iSetNetworkPrefix;

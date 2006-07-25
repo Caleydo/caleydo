@@ -91,7 +91,7 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.singelton.OneForAllManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.SwingJoglJComponent;
@@ -489,7 +489,7 @@ public class CanvasSwingJoglManager
 	}
 	
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		
 		if ( this.hash_Id_2_Menu.containsKey( iItemId ) ) {
 			unregisterJMenu( hash_Id_2_Menu.get( iItemId ) );

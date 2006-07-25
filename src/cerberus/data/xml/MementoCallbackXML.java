@@ -12,7 +12,7 @@ package cerberus.data.xml;
 // import org.xml.sax.InputSource;
 
 //import prometheus.data.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.DParseSaxHandler;
 //import prometheus.data.xml.MementoXML;
 
@@ -41,7 +41,7 @@ public interface MementoCallbackXML {
 	 * @param details additional inforamtion
 	 * @param refSaxHandler SaxHandler with state for object from XML file
 	 */
-	public void callbackForParser( final BaseManagerType type,
+	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final DParseSaxHandler refSaxHandler);	

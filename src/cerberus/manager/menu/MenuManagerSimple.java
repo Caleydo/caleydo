@@ -19,7 +19,7 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.base.AbstractManagerImpl;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 //import prometheus.command.CommandType;
 import cerberus.command.CommandInterface;
@@ -274,8 +274,8 @@ public class MenuManagerSimple
 	/* (non-Javadoc)
 	 * @see prometheus.manager.GeneralManager#getManagerType()
 	 */
-	public BaseManagerType getManagerType() {
-		return BaseManagerType.MENU;
+	public ManagerObjectType getManagerType() {
+		return ManagerObjectType.MENU;
 	}
 
 
@@ -283,7 +283,7 @@ public class MenuManagerSimple
 	 * @see prometheus.manager.GeneralManager#registerItem(java.lang.Object, int, prometheus.manager.BaseManagerType)
 	 */
 	public boolean registerItem(Object registerItem, int iItemId,
-			BaseManagerType type) {
+			ManagerObjectType type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -291,7 +291,7 @@ public class MenuManagerSimple
 	/* (non-Javadoc)
 	 * @see prometheus.manager.GeneralManager#unregisterItem(int, prometheus.manager.BaseManagerType)
 	 */
-	public boolean unregisterItem(int iItemId, BaseManagerType type) {
+	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -299,7 +299,7 @@ public class MenuManagerSimple
 	/* (non-Javadoc)
 	 * @see prometheus.manager.GeneralManager#createNewId(prometheus.manager.BaseManagerType)
 	 */
-	public int createNewId(BaseManagerType setNewBaseType) {
+	public int createNewId(ManagerObjectType setNewBaseType) {
 		return iMenuId_current += iMenuIdIncrement;
 	}
 

@@ -21,7 +21,7 @@ import javax.swing.JMenuItem;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.DComponentManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.CommandListener;
 import cerberus.command.CommandInterface;
@@ -346,7 +346,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	/* (non-Javadoc)
 	 * @see cerberus.data.xml.MementoCallbackXML#callbackForParser(cerberus.data.manager.BaseManagerType, java.lang.String, cerberus.xml.parser.DParseSaxHandler)
 	 */
-	public void callbackForParser( final BaseManagerType type,
+	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final DParseSaxHandler refSaxHandler) {

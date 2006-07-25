@@ -6,15 +6,15 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.selection;
+package cerberus.manager.data.selection;
 
 import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SelectionManager;
-import cerberus.manager.collection.CollectionManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.data.CollectionManager;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.Selection;
 //import cerberus.data.collection.SelectionType;
@@ -63,17 +63,17 @@ implements SelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#createSelection()
 	 */
-	public MementoXML createSelection( final BaseManagerType useSelectionType ) {
+	public MementoXML createSelection( final ManagerObjectType useSelectionType ) {
 		
 		assert useSelectionType!= null: "can not handle null pointer";
 	
 		
 		switch ( useSelectionType ) {
 			case SELECTION_SINGLE_BLOCK:
-				return new SelectionSingleBlock( createNewId(BaseManagerType.SELECTION), this, null );
+				return new SelectionSingleBlock( createNewId(ManagerObjectType.SELECTION), this, null );
 				
 			case SELECTION_MULTI_BLOCK:
-				return new SelectionMultiBlock( createNewId(BaseManagerType.SELECTION), this, null );	
+				return new SelectionMultiBlock( createNewId(ManagerObjectType.SELECTION), this, null );	
 				
 			case SELECTION_LOAD_MICROARRAY:
 				return new MicroArrayLoader( getGeneralManager() );
@@ -176,12 +176,12 @@ implements SelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
 	 */
-	public final BaseManagerType getManagerType() {		
-		return BaseManagerType.SELECTION;
+	public final ManagerObjectType getManagerType() {		
+		return ManagerObjectType.SELECTION;
 	}
 	
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		
 		if ( this.hasLookupValueById( iItemId )) {
 			vecSelection.remove( 
@@ -194,7 +194,7 @@ implements SelectionManager
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		
 		
 		try {

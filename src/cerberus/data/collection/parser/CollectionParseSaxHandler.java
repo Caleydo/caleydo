@@ -11,7 +11,7 @@ package cerberus.data.collection.parser;
 //import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
@@ -71,7 +71,7 @@ implements DParseSaxHandler
 	 * @see prometheus.data.collection.parser.CollectionParseSaxHandler#getXML_DataCollection_BaseManagerType()
 	 * 
 	 */
-	private BaseManagerType eXML_DataComonent_type;
+	private ManagerObjectType eXML_DataComonent_type;
 	
 	/**
 	 * 
@@ -290,20 +290,20 @@ implements DParseSaxHandler
 	}
 	
 	/**
-	 * Get type of data collection as BaseManagerType
+	 * Get type of data collection as ManagerObjectType
 	 * 
 	 * @see prometheus.data.collection.parser.CollectionParseSaxHandler#setXML_DataCollection_Type
 	 * 
 	 * @return type of data collection
 	 */
-	public final BaseManagerType getXML_DataCollection_BaseManagerType(){
+	public final ManagerObjectType getXML_DataCollection_BaseManagerType(){
 		return eXML_DataComonent_type;
 	}
 	
 	public final void setXML_DataCollection_Type( String setType ) {
 		sTag_XML_DataCollection_attr_type_value = setType;
 		
-		BaseManagerType buffer = BaseManagerType.getType( setType );
+		ManagerObjectType buffer = ManagerObjectType.getType( setType );
 		
 		if ( buffer == null ) {
 			throw new RuntimeException("setXML_DataCollection_Type() failed due to unkown type " +

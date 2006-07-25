@@ -26,7 +26,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLDrawableFactory;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 //import javax.media.opengl.glu.*;
 
 
@@ -128,7 +128,7 @@ implements ViewCanvas
 //		 */
 ////		refDInternalFrame = (DInternalFrame)
 ////			refGeneralManager.getSingelton().getViewCanvasManager().createCanvas( 
-////					BaseManagerType.VIEW_NEW_IFRAME, sTargetFrameId );
+////					ManagerObjectType.VIEW_NEW_IFRAME, sTargetFrameId );
 //		
 //		refDInternalFrame = callingInternalFrame;
 //		

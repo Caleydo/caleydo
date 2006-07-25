@@ -15,9 +15,9 @@ import java.util.Iterator;
 import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.base.AbstractManagerImpl;
-import cerberus.manager.collection.CollectionManager;
-import cerberus.manager.type.BaseManagerGroupType;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.data.CollectionManager;
+import cerberus.manager.type.ManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
 
 import cerberus.net.dwt.DNetEventComponentInterface;
@@ -89,7 +89,7 @@ public class DComponentSwingFactoryManager
 				//return null;
 		}
 		
-		final int iNewUniqueId = this.createNewId( BaseManagerType.MEMENTO );
+		final int iNewUniqueId = this.createNewId( ManagerObjectType.MEMENTO );
 		refResult.setId( iNewUniqueId );
 		
 		vecGuiComponents.add( refResult );
@@ -102,8 +102,8 @@ public class DComponentSwingFactoryManager
 	 *  (non-Javadoc)
 	 * @see cerberus.data.manager.MementoManager#createMementoId()
 	 */
-	 public int createNewId( final BaseManagerType setNewBaseType ) {
-		 if ( setNewBaseType.getGroupType() == BaseManagerGroupType.GUI_COMPONENT ) {
+	 public int createNewId( final ManagerObjectType setNewBaseType ) {
+		 if ( setNewBaseType.getGroupType() == ManagerType.GUI_COMPONENT ) {
 			 iCurrentUniqueComponentId += GeneralManager.iUniqueId_Increment;
 			 return iCurrentUniqueComponentId;
 		 }
@@ -173,12 +173,12 @@ public class DComponentSwingFactoryManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getManagerType()
 	 */
-	public BaseManagerType getManagerType() {
-		return BaseManagerType.GUI_COMPONENT;
+	public ManagerObjectType getManagerType() {
+		return ManagerObjectType.GUI_COMPONENT;
 	}
 	
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		
 		assert false:"not done yet";
 		return false;
@@ -186,7 +186,7 @@ public class DComponentSwingFactoryManager
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
-			final BaseManagerType type ) {
+			final ManagerObjectType type ) {
 		
 		
 		assert false:"not done yet";

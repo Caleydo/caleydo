@@ -66,14 +66,14 @@ import cerberus.manager.FrameManagerInterface;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.singelton.OneForAllManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.SwingJoglJComponent;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.SingeltonJoglWindowAdapter;
 
-import cerberus.base.WindowToolkitType;
+import cerberus.base.type.WindowToolkitType;
 import cerberus.view.manager.swing.CerberusJStatusBar;
 import cerberus.view.swing.texture.TestTexture;
 //import cerberus.view.swing.heatmap.HeatMapWarp;
@@ -447,7 +447,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 	}
 	
 	public boolean unregisterItem( final int iItemId,
-			final BaseManagerType type  ) {
+			final ManagerObjectType type  ) {
 		if ( hashFrameObject.containsKey( iItemId ) ) {
 			hashFrameObject.remove( iItemId );
 			

@@ -38,7 +38,7 @@ public interface UniqueInterface {
 //	 * 
 //	 * @return type of this object
 //	 */
-//	//public BaseManagerType getBaseType();
+//	//public ManagerObjectType getBaseType();
 
 	
 }

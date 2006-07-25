@@ -35,6 +35,6 @@ extends GeneralManager
 	
 	public Iterator<DNetEventComponentInterface> getIteratorComponents();
 	
-	//public BaseManagerType getManagerType();
+	//public ManagerObjectType getManagerType();
 	
 }

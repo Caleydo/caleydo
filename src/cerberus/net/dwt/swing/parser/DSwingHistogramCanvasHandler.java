@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
 
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.xml.MementoNetEventXML;
 import cerberus.data.collection.view.ViewCanvas;

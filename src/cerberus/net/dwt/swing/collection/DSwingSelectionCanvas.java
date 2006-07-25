@@ -38,7 +38,7 @@ import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.StorageManager;
 import cerberus.manager.singelton.GeneralManagerSingelton;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;
 //import org.xml.sax.SAXException;
@@ -222,13 +222,13 @@ implements DNetEventComponentInterface, ViewCanvas
 			
 			refSelectionManager = (SelectionManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
-						BaseManagerType.SELECTION );
+						ManagerObjectType.SELECTION );
 			refSetManager = (SetManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
-						BaseManagerType.SET );
+						ManagerObjectType.SET );
 			refStorageManager = (StorageManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
-						BaseManagerType.STORAGE );
+						ManagerObjectType.STORAGE );
 		}
 		catch (NullPointerException npe) {
 			
@@ -361,14 +361,14 @@ implements DNetEventComponentInterface, ViewCanvas
 			 */			
 			if ( iDNetEventComponentId != refHistogramSaxHandler.getXML_dNetEvent_Id() ) {
 				getManager().unregisterItem( iDNetEventComponentId, 
-						BaseManagerType.VIEW_HISTOGRAM2D );
+						ManagerObjectType.VIEW_HISTOGRAM2D );
 				
 				setId( refHistogramSaxHandler.getXML_dNetEvent_Id() );
 			}
 			
 			getManager().registerItem( this, 
 					iDNetEventComponentId, 
-					BaseManagerType.VIEW_HISTOGRAM2D );
+					ManagerObjectType.VIEW_HISTOGRAM2D );
 			
 			this.setVisible( refHistogramSaxHandler.getXML_state_visible() );
 			this.setEnabled( refHistogramSaxHandler.getXML_state_enabled() );
@@ -542,7 +542,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	 *  (non-Javadoc)
 	 * @see cerberus.data.xml.MementoNetEventXML#callbackForParser(java.lang.String)
 	 */
-	public void callbackForParser(  final BaseManagerType type,
+	public void callbackForParser(  final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final DParseSaxHandler refSaxHandler ) {
@@ -563,8 +563,8 @@ implements DNetEventComponentInterface, ViewCanvas
 	 * 
 	 * @return type of this object
 	 */
-	public BaseManagerType getBaseType() {
-		return BaseManagerType.VIEW;
+	public ManagerObjectType getBaseType() {
+		return ManagerObjectType.VIEW;
 	}
 
 	public void paintDComponent( Graphics g ) {
@@ -785,11 +785,11 @@ implements DNetEventComponentInterface, ViewCanvas
 				
 				Selection newSelection =
 					(Selection) refGeneralManagerSingelton.createNewItem( 
-							BaseManagerType.SELECTION_SINGLE_BLOCK, "" );
+							ManagerObjectType.SELECTION_SINGLE_BLOCK, "" );
 				
 				refGeneralManagerSingelton.registerItem( newSelection, 
 						newSelection.getId(), 
-						BaseManagerType.SELECTION_SINGLE_BLOCK );
+						ManagerObjectType.SELECTION_SINGLE_BLOCK );
 				
 				updateState();
 				

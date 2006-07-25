@@ -18,8 +18,8 @@ import javax.swing.JFrame;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.ViewCanvasManager;
-import cerberus.manager.collection.CollectionManager;
-import cerberus.manager.type.BaseManagerType;
+import cerberus.manager.data.CollectionManager;
+import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.view.ViewCanvas;
 import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
@@ -80,12 +80,12 @@ implements ViewCanvasManager,
 	
 	/**
 	 * Creates a new Internal Frame as child Frame of the Frame addressed via iTargetFrameId.
-	 * Note: Same result as createCanvas( BaseManagerType.VIEW_NEW_IFRAME , * )
+	 * Note: Same result as createCanvas( ManagerObjectType.VIEW_NEW_IFRAME , * )
 	 * 
 	 * @param iTargetFrameId unique Id ot address Frame
 	 * @param sAditionalParameter additional parameters
 	 * 
-	 * @see cerberus.manager.canvas.ViewCanvasManagerSimple#createCanvas(BaseManagerType, String)
+	 * @see cerberus.manager.canvas.ViewCanvasManagerSimple#createCanvas(ManagerObjectType, String)
 	 * 
 	 * @return new DInternalFrame as child of frame addressed via iTargetFrameId
 	 */
@@ -101,15 +101,15 @@ implements ViewCanvasManager,
 		/* set Id & register .. */
 		final int iNewId = createNewViewId();
 		newDInternalFrame.setId( iNewId );
-		registerItem( newDInternalFrame, iNewId, BaseManagerType.VIEW_NEW_IFRAME );
+		registerItem( newDInternalFrame, iNewId, ManagerObjectType.VIEW_NEW_IFRAME );
 		
 		return newDInternalFrame;		
 	}
 	
 	/**
-	 * @see prometheus.data.manager.ViewCanvasManager#createCanvas(prometheus.data.manager.BaseManagerType)
+	 * @see prometheus.data.manager.ViewCanvasManager#createCanvas(prometheus.data.manager.ManagerObjectType)
 	 */
-	public ViewCanvas createCanvas(final BaseManagerType useViewCanvasType, 
+	public ViewCanvas createCanvas(final ManagerObjectType useViewCanvasType, 
 			final String sAditionalParameter ) {
 		
 		ViewCanvas newView = null;
@@ -156,7 +156,7 @@ implements ViewCanvasManager,
 				} 
 				break;
 				
-//			case BaseManagerType.:
+//			case ManagerObjectType.:
 //				break;
 				
 			default:
@@ -237,8 +237,8 @@ implements ViewCanvasManager,
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.ViewCanvasManager#getManagerType()
 	 */
-	public BaseManagerType getManagerType() {
-		return BaseManagerType.VIEW;
+	public ManagerObjectType getManagerType() {
+		return ManagerObjectType.VIEW;
 	}
 
 	/* (non-Javadoc)
@@ -265,12 +265,12 @@ implements ViewCanvasManager,
 	 * @see prometheus.manager.ViewCanvasManager#createWorkspace(prometheus.manager.BaseManagerType, java.lang.String)
 	 */
 	public WorkspaceSwingFrame createWorkspace( 
-			final BaseManagerType useViewCanvasType,
+			final ManagerObjectType useViewCanvasType,
 			final String sAditionalParameter ) {
 		
 		WorkspaceSwingFrame newWorkspace = null;
 		
-		if ( useViewCanvasType == BaseManagerType.VIEW_NEW_FRAME) {
+		if ( useViewCanvasType == ManagerObjectType.VIEW_NEW_FRAME) {
 			boolean bIsRootFrame = false;
 			if ( sAditionalParameter.startsWith("root_frame") ) {
 				bIsRootFrame = true;
@@ -279,7 +279,7 @@ implements ViewCanvasManager,
 				new WorkspaceSwingFrame(refGeneralManager,bIsRootFrame);
 		}
 		else {
-			assert false : "Can not create Workpsace due to invalid BaseManagerType [" + 
+			assert false : "Can not create Workpsace due to invalid ManagerObjectType [" + 
 				useViewCanvasType + "]";
 			return null;
 		}
@@ -347,7 +347,7 @@ implements ViewCanvasManager,
 	 * @see prometheus.data.manager.GeneralManager#registerItem(java.lang.Object, int, prometheus.data.manager.BaseManagerType)
 	 */
 	public boolean registerItem(Object registerItem, int iItemId,
-			BaseManagerType type) {
+			ManagerObjectType type) {
 		
 		try {
 			ViewCanvas addItem = (ViewCanvas) registerItem;
@@ -373,7 +373,7 @@ implements ViewCanvasManager,
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.GeneralManager#unregisterItem(int, prometheus.data.manager.BaseManagerType)
 	 */
-	public boolean unregisterItem(int iItemId, BaseManagerType type) {
+	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
 		
 		return unregisterItemCollection( iItemId );
 	}

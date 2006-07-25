@@ -302,7 +302,7 @@ public class CerberusApplicationFromXML {
 		
 	}
 	
-//	public void callbackForParser( final BaseManagerType type,
+//	public void callbackForParser( final ManagerObjectType type,
 //			final String tag_causes_callback,
 //			final DParseSaxHandler refSaxHandler) {
 //			
