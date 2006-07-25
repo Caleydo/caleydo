@@ -141,6 +141,7 @@ public class SWTEmbeddedSwing {
 		final Composite comp = new Composite(shell, SWT.NONE);
 		final Tree fileTree = new Tree(comp, SWT.SINGLE | SWT.BORDER);
 		Sash sash = new Sash(comp, SWT.VERTICAL);
+
 		Composite tableComp = new Composite(comp, SWT.EMBEDDED);
 		Label separator3 = new Label(shell, SWT.SEPARATOR | SWT.HORIZONTAL);
 		Composite statusComp = new Composite(shell, SWT.EMBEDDED);
