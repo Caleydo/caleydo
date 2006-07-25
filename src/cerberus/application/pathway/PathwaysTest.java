@@ -14,7 +14,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import cerberus.xml.parser.kgml.KgmlSaxHandler;
-import cerberus.view.gui.swt.jgraph.PathwayGraphBuilder;
+import cerberus.view.gui.swing.jgraph.PathwayGraphBuilder;
 
 
 public class PathwaysTest {
