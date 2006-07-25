@@ -38,17 +38,17 @@ public class JGears extends GLJPanel {
   public JGears() {
     super(caps, null, null);
     addGLEventListener(new Gears());
-    try {
-      InputStream in = JGears.class.getClassLoader().getResourceAsStream("demos/data/images/java_logo.png");
-      BufferedImage image = ImageIO.read(in);
-      javaImage = scaleImage(image, 0.25f, 0.25f);
-
-      in = JGears.class.getClassLoader().getResourceAsStream("demos/data/images/opengl_logo.png");
-      image = ImageIO.read(in);
-      openglImage = scaleImage(image, 0.45f, 0.45f);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+//    try {
+//      InputStream in = JGears.class.getClassLoader().getResourceAsStream("demos/data/images/java_logo.png");
+//      BufferedImage image = ImageIO.read(in);
+//      javaImage = scaleImage(image, 0.25f, 0.25f);
+//
+//      in = JGears.class.getClassLoader().getResourceAsStream("demos/data/images/opengl_logo.png");
+//      image = ImageIO.read(in);
+//      openglImage = scaleImage(image, 0.45f, 0.45f);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
   }
 
 
