@@ -54,11 +54,7 @@ public class GUITest
 		ok.setText ("OK");
 		ok.setSize(300, 300);
 		
-		
-	    //frame.setLayout(new BorderLayout());
-	    
-	    frame.setPreferredSize(new java.awt.Dimension(200, 200));
-	    
+	    frame.setLayout(new BorderLayout());
 	    final GLJPanel drawable = new JGears();
 	    drawable.setOpaque(false);
 
