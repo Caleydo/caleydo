@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.jgraph;
+package cerberus.view.gui.swing.jgraph;
 
 public class PathwayGraphBuilder2D extends PathwayGraphBuilder
 {

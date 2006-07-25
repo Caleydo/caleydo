@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.jgraph;
+package cerberus.view.gui.swing.jgraph;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.manager.pathway.PathwayManager;
