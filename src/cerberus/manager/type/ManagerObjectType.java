@@ -76,6 +76,14 @@ public enum ManagerObjectType {
 	 */
 	VIEW(ManagerType.VIEW),
 	
+	HISTOGRAM_VIEW(ManagerType.VIEW),
+	
+	HEATMAP_VIEW(ManagerType.VIEW),
+	
+	DENDROGRAM_VIEW(ManagerType.VIEW),
+	
+	PATHWAY_VIEW(ManagerType.VIEW),
+	
 	VIEW_HISTOGRAM2D(ManagerType.VIEW),
 	
 	VIEW_HEATMAP2D(ManagerType.VIEW),

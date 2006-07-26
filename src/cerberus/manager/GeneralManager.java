@@ -70,6 +70,8 @@ public interface GeneralManager {
 	
 	public final int iUniqueId_TypeOffset_GuiComponent = 30;
 	
+	public final int iUniqueId_TypeOffset_GUI = 100;
+	
 	
 	/**
 	 * Tests, if a cairtain iItemId is handled by the manager.

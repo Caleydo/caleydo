@@ -8,7 +8,6 @@
  */
 package cerberus.manager.singelton;
 
-
 import cerberus.manager.CommandManager;
 import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
@@ -19,6 +18,7 @@ import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.Singelton;
 import cerberus.manager.StorageManager;
+import cerberus.manager.SWTGUIManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.canvas.ViewCanvasManagerSimple;
 import cerberus.manager.command.CommandManagerSimple;
@@ -30,6 +30,7 @@ import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.memento.MementoManagerSimple;
 import cerberus.manager.menu.MenuManagerSimple;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.gui.SWTGUIManagerSimple;
 import cerberus.data.collection.Storage;
 import cerberus.data.xml.MementoXML;
 
@@ -75,8 +76,10 @@ implements GeneralManagerSingelton {
 	
 	protected LoggerManager refLoggerManager;
 	
+	protected SWTGUIManager refSWTGUIManager;
+	
 	/**
-	 * Used to create a new item by a Fabik.
+	 * Used to create a new item by a Fabrik.
 	 * used by cerberus.data.manager.OneForAllManager#createNewId(ManagerObjectType)
 	 * 
 	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
@@ -113,16 +116,16 @@ implements GeneralManagerSingelton {
 	
 	protected void initAll() {
 		
-		refMenuManager = new MenuManagerSimple( this );
-		refSetManager = new SetManagerSimple(this,4);
-		refStorageManager = new StorageManagerSimple(this,4);
-		refSelectionManager = new SelectionManagerSimple(this,4);
+		refSetManager = new SetManagerSimple(this, 4);
+		refStorageManager = new StorageManagerSimple(this, 4);
+		refSelectionManager = new SelectionManagerSimple(this, 4);
 		refMementoManager = new MementoManagerSimple(this);
 		refDComponentManager = new DComponentSwingFactoryManager(this);
 		refViewCanvasManager = new ViewCanvasManagerSimple( this );
 		refCommandManager = new CommandManagerSimple( this );
 		refMenuManager = new MenuManagerSimple( this );		
 		refLoggerManager = new ConsoleSimpleLogger( this );
+		refSWTGUIManager = new SWTGUIManagerSimple( this );
 		
 		/**
 		 * Register managers to singelton ...
@@ -135,6 +138,7 @@ implements GeneralManagerSingelton {
 		refSingeltonManager.setStorageManager( refStorageManager );
 		refSingeltonManager.setMenuManager( refMenuManager );
 		refSingeltonManager.setLoggerManager( refLoggerManager );
+		refSingeltonManager.setSWTGUIManager (refSWTGUIManager );
 	}
 	
 	/* (non-Javadoc)
@@ -142,15 +146,22 @@ implements GeneralManagerSingelton {
 	 */
 	public boolean hasItem( final int iItemId) {
 		
-		if ( refSetManager.hasItem( iItemId ) ) return true;
-		if ( refSelectionManager.hasItem( iItemId ) ) return true;
-		if ( refStorageManager.hasItem( iItemId ) ) return true;
-		if ( refDComponentManager.hasItem( iItemId ) ) return true;
-		if ( refMementoManager.hasItem( iItemId ) ) return true;
-		if ( refViewCanvasManager.hasItem( iItemId ) ) return true;
+		if ( refSetManager.hasItem( iItemId ) ) 
+			return true;
+		if ( refSelectionManager.hasItem( iItemId ) ) 
+			return true;
+		if ( refStorageManager.hasItem( iItemId ) ) 
+			return true;
+		if ( refDComponentManager.hasItem( iItemId ) ) 
+			return true;
+		if ( refMementoManager.hasItem( iItemId ) )
+			return true;
+		if ( refViewCanvasManager.hasItem( iItemId ) ) 
+			return true;
 		
 		//FIXME Is next line useless?
-		if ( refCommandManager.hasItem( iItemId ) ) return true;
+		if ( refCommandManager.hasItem( iItemId ) )
+			return true;
 		
 		return false;
 	}
@@ -163,27 +174,30 @@ implements GeneralManagerSingelton {
 	 */
 	public Object getItem( final int iItemId) {
 		
-		if ( refSetManager.hasItem( iItemId ) ) {
+		if ( refSetManager.hasItem( iItemId ) )
 			return refSetManager.getItemSet( iItemId );
-		}
-		if ( refSelectionManager.hasItem( iItemId ) ) {
+
+		if ( refSelectionManager.hasItem( iItemId ) )
 			return refSelectionManager.getItemSelection( iItemId );
-		}
-		if ( refStorageManager.hasItem( iItemId ) ) {
+
+		if ( refStorageManager.hasItem( iItemId ) )
 			return refStorageManager.getItemStorage( iItemId );
-		}
-		if ( refDComponentManager.hasItem( iItemId ) ) {
+
+		if ( refDComponentManager.hasItem( iItemId ) )
 			return refDComponentManager.getItemSet( iItemId );
-		}
-		if ( refMementoManager.hasItem( iItemId ) ) {
+
+		if ( refMementoManager.hasItem( iItemId ) )
 			return refMementoManager.getMemento( iItemId );
-		}		
-		if ( refViewCanvasManager.hasItem( iItemId )) {
+		
+		if ( refViewCanvasManager.hasItem( iItemId ))
 			return refViewCanvasManager.getItemCanvas( iItemId );
-		}
-		if ( refCommandManager.hasItem( iItemId )) {
+
+		if ( refCommandManager.hasItem( iItemId ))
 			return refCommandManager.getItem( iItemId );
-		}
+		
+//		if ( refSWTGUIManager.hasItem( iItemId ))
+//			return refSWTGUIManager.getItem( iItemId );
+
 		return null;
 	}
 
@@ -197,7 +211,8 @@ implements GeneralManagerSingelton {
 		refSelectionManager.size() +
 		refMementoManager.size() + 
 		refDComponentManager.size() +
-		refViewCanvasManager.size() );
+		refViewCanvasManager.size() +
+		refSWTGUIManager.size());
 	}
 
 	/*

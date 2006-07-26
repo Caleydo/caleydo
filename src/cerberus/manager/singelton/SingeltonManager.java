@@ -14,6 +14,7 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.LoggerManager;
 import cerberus.manager.MementoManager;
 import cerberus.manager.MenuManager;
+import cerberus.manager.SWTGUIManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.Singelton;
@@ -57,6 +58,9 @@ public class SingeltonManager implements Singelton {
 	
 	protected LoggerManager refLoggerManager = null;
 	
+	protected SWTGUIManager refSWTGUIManager = null;
+	
+	
 	/**
 	 * Unique Id per each application over the network.
 	 * Used to identify and create Id's unique for distributed applications. 
@@ -77,7 +81,9 @@ public class SingeltonManager implements Singelton {
 		return refMementoManager;
 	}
 	
-	/* (non-Javadoc)
+	/* (non-Javadoc)	public void setMenuManager( MenuManager setMenuManager ) {
+		this.refMenuManager = setMenuManager;
+	}
 	 * @see cerberus.manager.singelton.Singelton#getStorageManager()
 	 */
 	public StorageManager getStorageManager() {
@@ -89,10 +95,6 @@ public class SingeltonManager implements Singelton {
 	 */
 	public SelectionManager getSelectionManager() {
 		return refSelectionManager;
-	}
-	
-	public void setMenuManager( MenuManager setMenuManager ) {
-		this.refMenuManager = setMenuManager;
 	}
 	
 	/* (non-Javadoc)
@@ -114,6 +116,17 @@ public class SingeltonManager implements Singelton {
 	 */
 	public ViewCanvasManager getViewCanvasManager() {
 		return refViewCanvasManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getSWTGUIManager()
+	 */
+	public SWTGUIManager getSWTGUIManager() {
+		return refSWTGUIManager;
+	}
+	
+	public void setMenuManager( MenuManager setMenuManager ) {
+		this.refMenuManager = setMenuManager;
 	}
 	
 	public void setMementoManager( MementoManager setMementoManager ) {
@@ -141,10 +154,17 @@ public class SingeltonManager implements Singelton {
 	}
 	
 	public void setViewCanvasManager( ViewCanvasManager setViewCanvasManager ) {
-		assert setViewCanvasManager!=null: "ViewCanvasManager was null";
+		assert setViewCanvasManager != null : "ViewCanvasManager was null";
 		
 		refViewCanvasManager = setViewCanvasManager;
 	}
+
+	public void setSWTGUIManager( SWTGUIManager setSWTGUIManager ) {
+		assert setSWTGUIManager != null : "SWTGUIManager was null";
+		
+		refSWTGUIManager = setSWTGUIManager;
+	}
+
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
@@ -188,29 +208,31 @@ public class SingeltonManager implements Singelton {
 	public GeneralManager getManager( ManagerType type) {
 		
 		
-		switch ( type ) {
-		case COMMAND: return this.refCommandManager;
+		switch ( type ) 
+		{
+			case COMMAND: return this.refCommandManager;
 		
-		case SET: return this.refSetManager;
+			case SET: return this.refSetManager;
 		
-		case STORAGE: return this.refStorageManager;
+			case STORAGE: return this.refStorageManager;
 		
-		case SELECTION: return this.refSelectionManager;
+			case SELECTION: return this.refSelectionManager;
 		
-		case MEMENTO: return this.refMementoManager;
+			case MEMENTO: return this.refMementoManager;
 				
-		case VIEW: return this.refViewCanvasManager;
+			case VIEW: return this.refViewCanvasManager;
 		
-		case MENU: return this.refMenuManager;
+			case MENU: return this.refMenuManager;
+			
+			case SWT_GUI: return this.refSWTGUIManager;
 		
-		
-		
-		case NONE: 
-			throw new PrometheusRuntimeException("No Manager for type 'NONE' available!");
+			case NONE: 
+				throw new PrometheusRuntimeException("No Manager for type 'NONE' available!");
 	
-		case LOGGER:
-			//TODO: fix this
-			//return this.refLoggerManager;
+			case LOGGER:
+				//TODO: fix this
+				//return this.refLoggerManager;
+				
 			
 			default: 
 				throw new PrometheusRuntimeException("No Manager for type [" + 

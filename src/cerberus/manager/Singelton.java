@@ -22,8 +22,10 @@ public interface Singelton {
 
 	public abstract LoggerManager getLoggerManager();
 
+	public abstract SWTGUIManager getSWTGUIManager();
+	
 	public abstract GeneralManager getManager(ManagerType type);
-
+	
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.
@@ -48,13 +50,12 @@ public interface Singelton {
 	public abstract void setViewCanvasManager(
 			ViewCanvasManager setViewCanvasManager);
 
-
 	public abstract void setCommandManager(CommandManager setCommandManager);
-
 
 	public abstract void setDComponentManager(
 			DComponentManager setDComponentManager);
 
 	public abstract void setLoggerManager(LoggerManager refLoggerManager);
 
+	public abstract void setSWTGUIManager(SWTGUIManager refSWTGUIManager);
 }
