@@ -5,7 +5,7 @@ BIBTEX_CMD = bibtex
 FILES = main.tex
 CURRENT_DATE = `date +%Y%m%d`
 
-all: clean main.pdf
+all: clean bin_pdf/main.pdf
 
 slides: clean slides.pdf 
 
@@ -17,7 +17,7 @@ vslides: slides view_slides_command
 
 vhandout: handout view_handout_command
 
-main.pdf: ${FILES}
+bin_pdf/main.pdf: ${FILES}
 	${PDFLATEX_CMD} main.tex
 	${BIBTEX_CMD} main
 	${PDFLATEX_CMD} main.tex
@@ -43,7 +43,7 @@ handout.pdf: handout.tex
 
 # open the acrobat reader with the pdfs
 view_text:
-	-acroread main.pdf -openInNewWindow
+	-acroread bin_pdf/main.pdf -openInNewWindow
 
 view_slides_command:
 	-acroread slides_main.pdf -openInNewWindow
@@ -53,7 +53,7 @@ view_handout_command:
 
 # clean up all temporary latex files
 clean:
-	-rm *.aux *.bbl main.dvi main.ps main.pdf slides_main.pdf handout.pdf *.blg *.idx *.ilg *.ind *.toc *.log *.log *.brf *.nav *.snm *.out *.lof *.lot *.gxg *.glx *.gxs *.glo *.gls semantic.cache auto biblio/auto -f -R; mv *~* /tmp/; mv biblio/*~* /tmp/ 
+	-rm *.aux *.bbl main.dvi main.ps bin_pdf/main.pdf slides_main.pdf handout.pdf *.blg *.idx *.ilg *.ind *.toc *.log *.log *.brf *.nav *.snm *.out *.lof *.lot *.gxg *.glx *.gxs *.glo *.gls semantic.cache auto biblio/auto -f -R; mv *~* /tmp/; mv biblio/*~* /tmp/ 
 
 archive: clean
 	(tar -czf latex_report_vorlage_${CURRENT_DATE}.tgz * )
