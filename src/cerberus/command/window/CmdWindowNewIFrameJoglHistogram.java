@@ -29,7 +29,7 @@ import cerberus.command.CommandType;
 ////import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
 ////import cerberus.net.dwt.swing.mdi.DDesktopPane;
 ////import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram in JOGL.
@@ -72,7 +72,7 @@ implements CommandInterface {
 	 * @see cerberus.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {	
+	public void doCommand() throws CerberusRuntimeException {	
 		
 		super.doCommand_IFrame();
 
@@ -86,14 +86,14 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM;
 	}
 

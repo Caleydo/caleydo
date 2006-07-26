@@ -11,8 +11,10 @@ package cerberus.command.memento.sample;
 import cerberus.command.memento.GeneralMemento;
 import cerberus.command.memento.Memento;
 import cerberus.command.memento.MementoCreatorInterface;
-import cerberus.util.exception.PrometheusMementoException;
 import cerberus.command.memento.sample.SampleMementoState;
+import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.CerberusExceptionType;
+
 
 /**
  * Sample code for Memento objects.
@@ -77,7 +79,7 @@ public class SampleObjectShowUsageOfMemento implements MementoCreatorInterface {
 	 * @see prometheus.command.memento.MementoCreator#setMemento(prometheus.command.memento.Memento)
 	 */
 	public void setMemento(Memento setMemento)
-			throws PrometheusMementoException {
+			throws CerberusRuntimeException {
 		
 		SampleMementoState 	bufferMementoState 	= null;
 		
@@ -91,7 +93,8 @@ public class SampleObjectShowUsageOfMemento implements MementoCreatorInterface {
 			this.fMyData = bufferMementoState.getPostData();
 				
 		} catch (Exception e) {
-			throw new PrometheusMementoException("setMemento() with wrong MementoState! "+ e.toString());
+			throw new CerberusRuntimeException("setMemento() with wrong MementoState! "+ e.toString(),
+					CerberusExceptionType.MEMENTO );
 		}
 
 	}

@@ -40,7 +40,7 @@ import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.SelectionSingleBlock;
 import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
 
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -236,7 +236,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 								break;
 							
 							default:
-								throw new PrometheusRuntimeException("unkown type in GUI!");
+								throw new CerberusRuntimeException("unkown type in GUI!");
 							}
 						}
 						
@@ -386,7 +386,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	
 		
 		default:
-			throw new PrometheusRuntimeException("updateFromSelection() unsupported type!");
+			throw new CerberusRuntimeException("updateFromSelection() unsupported type!");
 		
 		} // end switch
 	}
@@ -489,7 +489,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 			return;
 			
 			default:
-				throw new PrometheusRuntimeException("ERROR in readBackGui() unknown type");
+				throw new CerberusRuntimeException("ERROR in readBackGui() unknown type");
 			
 		} // end   switch
 
@@ -523,7 +523,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 			return;
 		}
 		
-		throw new PrometheusRuntimeException("ERROR in updateSelectionFromGui() unknown type");
+		throw new CerberusRuntimeException("ERROR in updateSelectionFromGui() unknown type");
 		
 	}
 	

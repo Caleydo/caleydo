@@ -10,10 +10,10 @@ package cerberus.command.window;
 
 import cerberus.manager.GeneralManager;
 import cerberus.command.CommandInterface;
-import cerberus.command.base.CommandAbstractBase;
+import cerberus.command.base.AbstractCommand;
 //import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
 //import cerberus.net.dwt.swing.jogl.listener.GLEventForwardListener;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Base class for Jogl classes provinding a GL rendering contexst inside an internal frame.
@@ -22,7 +22,7 @@ import cerberus.util.exception.PrometheusCommandException;
  *
  */
 public abstract class CmdWindowNewIFrameJoglBase 
-extends CommandAbstractBase
+extends AbstractCommand
 implements CommandInterface {
 
 	/**
@@ -104,7 +104,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see prometheus.command.CommandInterface#doCommand()
 	 */
-	protected void doCommand_IFrame() throws PrometheusCommandException {
+	protected void doCommand_IFrame() throws CerberusRuntimeException {
 		
 //		if ( bEnableCreationOfNewIFrame ) {
 //			refCmdWindowNewIFrameJoglCanvas.doCommand();

@@ -16,7 +16,7 @@ import cerberus.command.window.CmdHandleSetBase;
 import cerberus.command.window.CmdWindowNewInternalFrame;
 //import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram.
@@ -46,7 +46,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 			
 		//TODO: include header
 		//setGuiTextHeader( "Storage" );
@@ -67,7 +67,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
@@ -75,7 +75,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_STORAGE;
 	}
 

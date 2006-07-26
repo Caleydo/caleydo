@@ -9,7 +9,7 @@
 package cerberus.command.window;
 
 import cerberus.manager.GeneralManager;
-import cerberus.command.base.CommandAbstractBase;
+import cerberus.command.base.AbstractCommand;
 import cerberus.command.base.CmdHandleSetInterface;
 import cerberus.data.collection.Set;
 //import cerberus.data.collection.ViewCanvas;
@@ -24,7 +24,7 @@ import cerberus.data.collection.Set;
  *
  */
 public abstract class CmdHandleSetBase
-extends CommandAbstractBase
+extends AbstractCommand
 implements CmdHandleSetInterface {
 
 	/**

@@ -17,7 +17,7 @@ import cerberus.manager.GeneralManager;
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
 import cerberus.command.CommandTypeGroup;
-import cerberus.command.base.CommandAbstractBase;
+import cerberus.command.base.AbstractCommand;
 
 import cerberus.command.factory.CommandFactoryInterface;
 
@@ -42,14 +42,15 @@ import cerberus.command.system.CmdSystemNewFrame;
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 //import cerberus.net.dwt.swing.mdi.DDesktopPane;
 
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public class CommandFactory 
-extends CommandAbstractBase
+extends AbstractCommand
 	implements CommandInterface, CommandFactoryInterface {
 
 	/**
@@ -331,15 +332,17 @@ extends CommandAbstractBase
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		try {
 			refCommand.doCommand();
-		} catch (PrometheusCommandException pe) {
-			throw new PrometheusCommandException("CommandFactory.doCommand() failed with "+
-					pe.toString() );
+		} catch (CerberusRuntimeException pe) {
+			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+					pe.toString(),
+					CerberusExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new PrometheusCommandException("CommandFactory.doCommand() failed with "+
-					e.toString() );
+			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+					e.toString(),
+					CerberusExceptionType.COMMAND );
 		}
 	}
 
@@ -347,27 +350,29 @@ extends CommandAbstractBase
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		try {
 			refCommand.undoCommand();
-		} catch (PrometheusCommandException pe) {
-			throw new PrometheusCommandException("CommandFactory.doCommand() failed with "+
-					pe.toString() );
+		} catch (CerberusRuntimeException pe) {
+			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+					pe.toString(),
+					CerberusExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new PrometheusCommandException("CommandFactory.doCommand() failed with "+
-					e.toString() );
+			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+					e.toString(),
+					CerberusExceptionType.COMMAND );
 		}
 	}
 	
 	
 	public void setCommandType(CommandType setType) 
-		throws PrometheusCommandException {
+		throws CerberusRuntimeException {
 		
 	}
 	
 	
 	public CommandType getCommandType() 
-		throws PrometheusCommandException {
+		throws CerberusRuntimeException {
 		
 		if ( refCommand == null ) {
 			return CommandType.APPLICATION_COMMAND_FACTORY;
@@ -375,9 +380,10 @@ extends CommandAbstractBase
 		
 		try {
 			return refCommand.getCommandType();
-		} catch (PrometheusCommandException pe) {
-			throw new PrometheusCommandException("CommandFactroy.getCommandType() failed with "+
-					pe.toString() );
+		} catch (CerberusRuntimeException pe) {
+			throw new CerberusRuntimeException("CommandFactroy.getCommandType() failed with "+
+					pe.toString(),
+					CerberusExceptionType.COMMAND );
 		}
 	}
 

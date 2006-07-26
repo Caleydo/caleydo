@@ -22,7 +22,7 @@ import cerberus.manager.singelton.SingeltonManager;
 import cerberus.data.collection.Storage;
 //import cerberus.data.collection.StorageType;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -61,7 +61,7 @@ implements StorageManager {
 	public Storage createStorage( final ManagerObjectType useStorageType ) {
 		
 		if ( useStorageType.getGroupType() != ManagerType.STORAGE ) {
-			throw new PrometheusRuntimeException("try to create object with wrong type " + useStorageType.name() );
+			throw new CerberusRuntimeException("try to create object with wrong type " + useStorageType.name() );
 		}
 
 		
@@ -73,7 +73,7 @@ implements StorageManager {
 				return new FlatThreadStorageSimple( iNewId, refGeneralManager, null );				
 				
 			default:
-				throw new PrometheusRuntimeException("StorageManagerSimple.createStorage() failed due to unhandled type [" +
+				throw new CerberusRuntimeException("StorageManagerSimple.createStorage() failed due to unhandled type [" +
 						useStorageType.toString() + "]");
 		}
 		

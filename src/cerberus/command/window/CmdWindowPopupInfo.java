@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
-import cerberus.command.base.CommandAbstractBase;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.command.base.AbstractCommand;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Creates a popup window dispaying info.
@@ -24,7 +24,7 @@ import cerberus.util.exception.PrometheusCommandException;
  *
  */
 public class CmdWindowPopupInfo 
-extends CommandAbstractBase
+extends AbstractCommand
 implements CommandInterface {
 
 	private JComponent parentComponent = null;
@@ -67,7 +67,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		JOptionPane.showMessageDialog( parentComponent,
 				sTextMessage,
 				sTextHeader,
@@ -77,14 +77,14 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_POPUP_CREDITS;
 	}
 

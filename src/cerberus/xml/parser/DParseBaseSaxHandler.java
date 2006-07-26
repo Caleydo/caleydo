@@ -17,7 +17,8 @@ import org.xml.sax.Locator;
 import org.xml.sax.helpers.LocatorImpl;
 
 import cerberus.data.xml.MementoCallbackXML;
-import cerberus.util.exception.PrometheusSaxParserException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Base class for SAX Parser containing several useful methodes.
@@ -176,7 +177,8 @@ implements DParseSaxHandler
 								refLocator ));
 			}
 			catch (SAXException s_e) {
-				throw new PrometheusSaxParserException(s_e.toString());
+				throw new CerberusRuntimeException(s_e.toString(),
+						CerberusExceptionType.SAXPARSER );
 			}
 		}
 		if ( ! bErrorWhileParsing )

@@ -30,7 +30,7 @@ import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.net.dwt.swing.menu.DMenuCmdActionListener;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -193,7 +193,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 				gui_menuBar.add( newMenuObject );
 //			}
 //			else {
-//				throw new PrometheusRuntimeException("DMenuBootStraper::add.. try to assign root menu a second time");
+//				throw new CerberusRuntimeException("DMenuBootStraper::add.. try to assign root menu a second time");
 //			}	
 			
 		}
@@ -204,7 +204,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 				parentMenuObject.add( newMenuObject );
 			}
 			else {
-				throw new PrometheusRuntimeException("DMenuBootStraper::add.. can not find parent menu ["+
+				throw new CerberusRuntimeException("DMenuBootStraper::add.. can not find parent menu ["+
 						sMenuParentLookupName + "] for child menu [" +
 						sMenuLookupName + "]" );			
 			} // end if ( parentMenuObject != null ) ... else 
@@ -215,7 +215,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 					return null;
 				}
 				catch (NullPointerException npe) {
-					throw  new PrometheusRuntimeException("DMenuBootStraper::add.. can not add Seperator to non Menu item ["+
+					throw  new CerberusRuntimeException("DMenuBootStraper::add.. can not add Seperator to non Menu item ["+
 							sMenuParentLookupName + "]");
 				}
 			} // end if ( sMenuParentLookupName.equalsIgnoreCase( MENU_SEPERATOR ) ) {

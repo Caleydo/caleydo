@@ -8,7 +8,7 @@
  */
 package cerberus.command;
 
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.data.UniqueInterface;
 
 /**
@@ -30,7 +30,7 @@ extends UniqueInterface {
 	 * @throws PrometheusCommandException if an error occures.
 	 */
 	public abstract void doCommand() 
-		throws PrometheusCommandException;
+		throws CerberusRuntimeException;
 	
 	/**
 	 * Undo the command.
@@ -38,7 +38,7 @@ extends UniqueInterface {
 	 * @throws PrometheusCommandException if an error occures.
 	 */
 	public abstract void undoCommand() 
-		throws PrometheusCommandException;
+		throws CerberusRuntimeException;
 	
 	/**
 	 * Tests, if two commands are of the same type.
@@ -58,6 +58,6 @@ extends UniqueInterface {
 	 * @see cerberus.command.factory.CommandFactory.getCommandType()
 	 */
 	public abstract CommandType getCommandType() 
-		throws PrometheusCommandException;
+		throws CerberusRuntimeException;
 	
 }

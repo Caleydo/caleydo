@@ -15,16 +15,14 @@ import cerberus.data.AbstractUniqueItem;
  * @author Michael Kalkusch
  *
  */
-public abstract class CommandAbstractBase 
+public abstract class AbstractCommand 
 	extends AbstractUniqueItem
 	implements CommandInterface {
 
-	protected int iCmdCollectionId;
-	
 	/**
 	 * Defautl constructor, collectionId ist set to -1.
 	 */
-	public CommandAbstractBase() {
+	public AbstractCommand() {
 		super( -1 );
 	}
 	
@@ -33,7 +31,7 @@ public abstract class CommandAbstractBase
 	 * 
 	 * @param iSetCmdCollectionId set collection Id
 	 */
-	public CommandAbstractBase( int iSetCmdCollectionId) {
+	public AbstractCommand( int iSetCmdCollectionId) {
 		super( iSetCmdCollectionId );
 	}
 

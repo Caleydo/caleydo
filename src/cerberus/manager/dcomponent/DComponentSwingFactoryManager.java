@@ -26,7 +26,7 @@ import cerberus.net.dwt.base.DGuiComponentType;
 import cerberus.net.dwt.swing.component.DButton;
 import cerberus.net.dwt.swing.component.DPanel;
 
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 //import cerberus.net.dwt.swing.DViewHistogram;
 
@@ -85,7 +85,7 @@ public class DComponentSwingFactoryManager
 				refResult = new DPanel();
 				break;
 			default:
-				throw new PrometheusRuntimeException("The type " + useSetType.toString() + " is not supported yet.");
+				throw new CerberusRuntimeException("The type " + useSetType.toString() + " is not supported yet.");
 				//return null;
 		}
 		
@@ -107,7 +107,7 @@ public class DComponentSwingFactoryManager
 			 iCurrentUniqueComponentId += GeneralManager.iUniqueId_Increment;
 			 return iCurrentUniqueComponentId;
 		 }
-		 throw new PrometheusRuntimeException("createNewId() called with non GUI_COMPONENT type.");
+		 throw new CerberusRuntimeException("createNewId() called with non GUI_COMPONENT type.");
 	 }
 
 	/* (non-Javadoc)

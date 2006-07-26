@@ -9,7 +9,7 @@ import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author kalkusch
@@ -48,7 +48,7 @@ public abstract class GeneralManagerImpl implements GeneralManager {
 		
 		/** Check for inconsistency... */
 		if ( refGeneralManager.getSingelton() != null ) {
-			throw new PrometheusRuntimeException("GeneralManagerImpl() refGeneralManager already has a  proper Singelton!");
+			throw new CerberusRuntimeException("GeneralManagerImpl() refGeneralManager already has a  proper Singelton!");
 		}
 		
 		this.refSingelton = refSingeltonManager;
@@ -81,7 +81,7 @@ public abstract class GeneralManagerImpl implements GeneralManager {
 		switch ( setManagerType ) {
 			case COMMAND:
 			
-			default: throw new PrometheusRuntimeException("GeneralManagerImpl: Can not handle type [" +
+			default: throw new CerberusRuntimeException("GeneralManagerImpl: Can not handle type [" +
 					setManagerType.toString() + "]");
 		}				
 	}

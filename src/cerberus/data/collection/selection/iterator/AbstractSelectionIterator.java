@@ -9,7 +9,8 @@
 package cerberus.data.collection.selection.iterator;
 
 import cerberus.data.collection.Selection;
-import cerberus.util.exception.PrometheusVirtualArrayException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -47,7 +48,8 @@ public abstract class AbstractSelectionIterator implements SelectionIterator {
 	protected AbstractSelectionIterator( Selection setSelection ) {
 		
 		if ( setSelection == null ) {
-			throw new PrometheusVirtualArrayException("AbstractSelectionIterator.Constructor init with null-pointer to Selection.");
+			throw new CerberusRuntimeException("AbstractSelectionIterator.Constructor init with null-pointer to Selection.",
+					CerberusExceptionType.VIRTUALARRAY );
 		}
 		
 		refSelection = setSelection;

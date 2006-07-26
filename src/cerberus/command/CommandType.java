@@ -49,7 +49,10 @@ public enum CommandType {
 	MANAGER_MEMENTO_EMPTY(CommandTypeGroup.MANAGER,"INTERNAL: Removes all stored Mementos"),
 	MANAGER_MEMENTO_SAVE(CommandTypeGroup.MANAGER,"INTERNAL: Stores all stored Mementos to file or network"),	
 	MANAGER_MEMENTO_LOAD(CommandTypeGroup.MANAGER,"INTERNAL: Loads stored Mementos from file or network"),
-			
+	
+	// --- Comamdn Queue ---
+	QUEUE_OPEN(CommandTypeGroup.SYSTEM,"Creates a new command qroup"),
+	QUEUE_CLOSE(CommandTypeGroup.SYSTEM,"Closes a command qroup, it is set read only now"),
 	
 	// --- Selection ---
 	SELECT_NEW(CommandTypeGroup.SELECT,"Create a new selection"),

@@ -23,7 +23,7 @@ import cerberus.command.base.CmdHandleSetInterface;
 import cerberus.data.collection.Set;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 //import cerberus.net.dwt.swing.DSwingHeatMap2DCanvas;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D heatmap.
@@ -53,7 +53,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		
 //		DInternalFrame newDInternalFrame = subCmdNewIFrame.doCommand_getDInternalFrame();
 //		
@@ -74,7 +74,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 	
@@ -88,7 +88,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D;
 	}
 

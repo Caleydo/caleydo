@@ -27,7 +27,7 @@ import cerberus.command.CommandType;
 ////import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
 ////import cerberus.net.dwt.swing.mdi.DDesktopPane;
 ////import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram.
@@ -64,7 +64,7 @@ implements CommandInterface //, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		
 //		super.doCommand_IFrame();
 //
@@ -76,14 +76,14 @@ implements CommandInterface //, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_JOGL_HEATMAP;
 	}
 

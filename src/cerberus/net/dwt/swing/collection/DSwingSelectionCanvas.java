@@ -56,7 +56,7 @@ import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
 import cerberus.net.protocol.interaction.SuperMouseEvent;
 
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 
 
@@ -236,7 +236,7 @@ implements DNetEventComponentInterface, ViewCanvas
 			refSetManager = null;
 			refStorageManager = null;
 			
-			throw new PrometheusRuntimeException("can not get all required references to managers. " +
+			throw new CerberusRuntimeException("can not get all required references to managers. " +
 					npe.toString() );
 		}
 		
@@ -393,7 +393,7 @@ implements DNetEventComponentInterface, ViewCanvas
 //				DNetEventComponentInterface itemRef = refParentCreator.getItemSet( itemId );
 //				
 //				if ( itemRef == null ) {
-//					throw new PrometheusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
+//					throw new CerberusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
 //							itemId + "]");
 //				}
 //				this.add( (JComponent) itemRef );
@@ -661,7 +661,7 @@ implements DNetEventComponentInterface, ViewCanvas
 					/*
 					 * Selections are done, but Gui-elements still exist.
 					 */
-					throw new PrometheusRuntimeException("updateAllSelectionsFromGui() failed becaus selection does not exist any more.");
+					throw new CerberusRuntimeException("updateAllSelectionsFromGui() failed becaus selection does not exist any more.");
 				}
 			}
 		}

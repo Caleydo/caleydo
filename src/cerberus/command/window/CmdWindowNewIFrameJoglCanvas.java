@@ -15,7 +15,7 @@ package cerberus.command.window;
 import cerberus.manager.GeneralManager;
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
-import cerberus.command.base.CommandAbstractBase;
+import cerberus.command.base.AbstractCommand;
 //import cerberus.command.base.CmdHandleSetInterface;
 import cerberus.command.window.CmdWindowNewInternalFrame;
 ////import cerberus.data.collection.ViewCanvas;
@@ -30,7 +30,7 @@ import cerberus.command.window.CmdWindowNewInternalFrame;
 //import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
 ////import cerberus.net.dwt.swing.mdi.DDesktopPane;
 ////import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 //import cerberus.net.dwt.swing.jogl.listener.GLEventObserverListener;
 
@@ -41,7 +41,7 @@ import cerberus.util.exception.PrometheusCommandException;
  *
  */
 public class CmdWindowNewIFrameJoglCanvas 
-extends CommandAbstractBase //CmdHandleSetBase 
+extends AbstractCommand //CmdHandleSetBase 
 implements CommandInterface {
 
 	private int iCountCanvas = 1;
@@ -82,7 +82,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		
 //		DInternalFrame refNewDInternalFrame = 
 //			subCmdWindowNewInternalFrame.doCommand_getDInternalFrame();
@@ -132,14 +132,14 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_JOGL_CANVAS;
 	}
 

@@ -35,7 +35,7 @@ import cerberus.data.collection.Selection;
 import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.SelectionSingleBlock;
 
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -179,7 +179,7 @@ public class DSwingSelectionRow {
 								setGuiByBaseType( ManagerObjectType.SELECTION );
 								break;
 							default:
-								throw new PrometheusRuntimeException("unkown type in GUI!");
+								throw new CerberusRuntimeException("unkown type in GUI!");
 							}
 						}
 						
@@ -366,7 +366,7 @@ public class DSwingSelectionRow {
 		}
 		
 		default:
-			throw new PrometheusRuntimeException("updateFromSelection() unsupported type!");
+			throw new CerberusRuntimeException("updateFromSelection() unsupported type!");
 		
 		} // end switch
 	}

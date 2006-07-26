@@ -24,7 +24,7 @@ import cerberus.manager.ViewCanvasManager;
 
 import cerberus.manager.type.ManagerType;
 
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Global object contining and handling several managers.
@@ -227,7 +227,7 @@ public class SingeltonManager implements Singelton {
 			case SWT_GUI: return this.refSWTGUIManager;
 		
 			case NONE: 
-				throw new PrometheusRuntimeException("No Manager for type 'NONE' available!");
+				throw new CerberusRuntimeException("No Manager for type 'NONE' available!");
 	
 			case LOGGER:
 				//TODO: fix this
@@ -235,7 +235,7 @@ public class SingeltonManager implements Singelton {
 				
 			
 			default: 
-				throw new PrometheusRuntimeException("No Manager for type [" + 
+				throw new CerberusRuntimeException("No Manager for type [" + 
 						type.toString() + "] available!");
 		}
 	}

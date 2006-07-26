@@ -5,7 +5,7 @@ package cerberus.data.collection.selection.iterator;
 
 import java.util.NoSuchElementException;
 
-import cerberus.util.exception.PrometheusVirtualArrayException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Null iterator representing null obejct for iteration.
@@ -47,7 +47,7 @@ public final class SelectionNullIterator implements SelectionIterator {
 	 * @see prometheus.data.collection.selection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
-			throws PrometheusVirtualArrayException {
+			throws CerberusRuntimeException {
 		assert false : "Does not make sence to set idnex on null iterator.";
 	}
 

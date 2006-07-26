@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
  * @author Michael Kalkusch
  *
  */
-public class PrometheusRmiException 
+public class CerberusRmiException 
 	extends RemoteException {
 
 	final static long serialVersionUID = 7700;
@@ -20,14 +20,14 @@ public class PrometheusRmiException
 	/**
 	 * 
 	 */
-	public PrometheusRmiException() {
+	public CerberusRmiException() {
 		super();		
 	}
 
 	/**
 	 * @param s
 	 */
-	public PrometheusRmiException(String s) {
+	public CerberusRmiException(String s) {
 		super(s);
 	}
 
@@ -35,7 +35,7 @@ public class PrometheusRmiException
 	 * @param s
 	 * @param ex
 	 */
-	public PrometheusRmiException(String s, Throwable ex) {
+	public CerberusRmiException(String s, Throwable ex) {
 		super(s, ex);
 	}
 

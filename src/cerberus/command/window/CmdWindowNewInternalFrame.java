@@ -15,12 +15,12 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
-import cerberus.command.base.CommandAbstractBase;
+import cerberus.command.base.AbstractCommand;
 
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Creates a popup window dispaying info.
@@ -29,7 +29,7 @@ import cerberus.util.exception.PrometheusCommandException;
  *
  */
 public class CmdWindowNewInternalFrame 
-extends CommandAbstractBase
+extends AbstractCommand
 implements CommandInterface {
 
 //	private DInternalFrame refNewDInternalFrame = null;
@@ -100,7 +100,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		
 //		WorkspaceSwingFrame refCallingFrame =
 //			this.refViewCanvasManager.getItemWorkspace( iCallingFrameId );
@@ -113,14 +113,14 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_NEW_INTERNAL_FRAME;
 	}
 

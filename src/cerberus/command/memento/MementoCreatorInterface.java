@@ -8,7 +8,7 @@
  */
 package cerberus.command.memento;
 
-import cerberus.util.exception.PrometheusMementoException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Interface for creator-object's of Memento's.
@@ -45,5 +45,5 @@ public interface MementoCreatorInterface {
 	 * @param setMemento prometheus.command.memento.Memento to reset the obejct in a previouse state
 	 */
 	public void setMemento( Memento setMemento )
-		throws PrometheusMementoException;
+		throws CerberusRuntimeException;
 }

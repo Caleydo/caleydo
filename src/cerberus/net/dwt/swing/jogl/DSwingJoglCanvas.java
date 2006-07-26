@@ -35,7 +35,7 @@ import cerberus.net.dwt.swing.jogl.ViewCanvasBaseItem;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 import cerberus.net.dwt.swing.jogl.listener.GLEventForwardListener;
 
-//import cerberus.util.exception.PrometheusRuntimeException;
+//import cerberus.util.exception.CerberusRuntimeException;
 
 
 

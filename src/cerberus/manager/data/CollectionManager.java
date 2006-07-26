@@ -18,7 +18,7 @@ import cerberus.manager.singelton.SingeltonManager;
 
 //import prometheus.manager.SetManager;
 //import prometheus.manager.StorageManager;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Base interface for all manger objects.
@@ -123,7 +123,7 @@ public abstract class CollectionManager
 			iCurrentCollectionId += iUniqueId_Increment;		
 			return iCurrentCollectionId;
 		}
-		throw new PrometheusRuntimeException("error create a new Id from type " + setNewBaseType.name() );
+		throw new CerberusRuntimeException("error create a new Id from type " + setNewBaseType.name() );
 	}
 	
 	

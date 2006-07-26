@@ -21,7 +21,7 @@ import cerberus.data.collection.Set;
 //import cerberus.net.dwt.swing.DSwingHistogramCanvas;
 ////import cerberus.net.dwt.swing.mdi.DDesktopPane;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram.
@@ -53,7 +53,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		
 		assert refGeneralManager != null:"can not handle null-pointer to GeneralManager";
 
@@ -82,14 +82,14 @@ implements CommandInterface, CmdHandleSetInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_HISTOGRAM2D;
 	}
 

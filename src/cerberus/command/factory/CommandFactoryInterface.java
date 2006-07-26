@@ -10,7 +10,7 @@ package cerberus.command.factory;
 
 import cerberus.command.CommandType;
 import cerberus.command.CommandInterface;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Base class for Command factory.
@@ -29,7 +29,7 @@ public interface CommandFactoryInterface {
 	 * @throws PrometheusCommandException
 	 */
 	public void setCommandType(CommandType setType) 
-		throws PrometheusCommandException;
+		throws CerberusRuntimeException;
 	
 	
 	/**
@@ -41,7 +41,7 @@ public interface CommandFactoryInterface {
 	 * @see cerberus.command.CommandInterface.getCommandType()
 	 */
 	public CommandType getCommandType() 
-		throws PrometheusCommandException;
+		throws CerberusRuntimeException;
 	
 	
 	/**

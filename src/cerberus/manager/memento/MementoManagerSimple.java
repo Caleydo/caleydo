@@ -25,8 +25,8 @@ import cerberus.manager.singelton.SingeltonManager;
 
 import cerberus.command.memento.Memento;
 //import prometheus.data.collection.Set;
-import cerberus.util.exception.PrometheusMementoException;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Simple Memento Manager, that stores all Memento's in a Vector.
@@ -88,7 +88,8 @@ public class MementoManagerSimple
 			return iUniqueId;
 
 		} catch (Exception e) {
-			throw new PrometheusMementoException("setMemento(Memento) failed. " + e.toString());
+			throw new CerberusRuntimeException("setMemento(Memento) failed. " + e.toString(),
+					CerberusExceptionType.MEMENTO );
 		}
 	}
 
@@ -198,7 +199,8 @@ public class MementoManagerSimple
 			 iCurrentUniqueMementoId += GeneralManager.iUniqueId_Increment;
 			 return iCurrentUniqueMementoId;
 		 }
-		 throw new PrometheusRuntimeException("createNewId() called with non GUI_COMPONENT type.");
+		 throw new CerberusRuntimeException("createNewId() called with non GUI_COMPONENT type.",
+				 CerberusExceptionType.MEMENTO );
 	 }
 	 
 	 /*

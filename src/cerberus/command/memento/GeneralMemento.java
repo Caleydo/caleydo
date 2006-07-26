@@ -9,7 +9,8 @@
 package cerberus.command.memento;
 
 //import cerberus.manager.MementoManager;
-import cerberus.util.exception.PrometheusMementoException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * One base implementation of the Memento interface.
@@ -100,10 +101,11 @@ public class GeneralMemento
 	 */
 	public void setMementoState(final Object setMementoCreator,
 			final MementoState setMemetoState) 
-	throws PrometheusMementoException 
+	throws CerberusRuntimeException 
 	{
 		if ( refMementoCreator != setMementoCreator) {
-			throw new PrometheusMementoException("GeneralMemento.setMementoState() failed due to setting data not from the creator of the Memento.");
+			throw new CerberusRuntimeException("GeneralMemento.setMementoState() failed due to setting data not from the creator of the Memento.",
+					CerberusExceptionType.MEMENTO );
 		}
 		//assert  refMementoCreator == setMementoCreator: "GeneralMemento.setMementoState() failed due to setting data not from the creator of the Memento.";
 		

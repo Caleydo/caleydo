@@ -47,7 +47,7 @@ import cerberus.net.dwt.swing.component.DSwingJPanel;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
 import cerberus.net.protocol.interaction.SuperMouseEvent;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 
 /**
@@ -342,7 +342,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 //				DNetEventComponentInterface itemRef = refParentCreator.getItemSet( itemId );
 //				
 //				if ( itemRef == null ) {
-//					throw new PrometheusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
+//					throw new CerberusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
 //							itemId + "]");
 //				}
 //				this.add( (JComponent) itemRef );
@@ -613,7 +613,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 		//final int iCounterRows = refHistogramCreator.getRowWidth();
 		
 		if (( refSelectionFromSet == null)||( this.refStorageFromSet == null)) {
-			throw new PrometheusRuntimeException("DSwingHEatMap2DCanvas.paintComponent() due to selction or storage references are null.");						
+			throw new CerberusRuntimeException("DSwingHEatMap2DCanvas.paintComponent() due to selction or storage references are null.");						
 		}
 		
 		SelectionProxyIterator iterSelection = new SelectionProxyIterator(refSelectionFromSet);
@@ -625,7 +625,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 		 */
 		
 		if ( iData_IntArray_FromStorage.length < iGui_RowsX_times_ColumnsY ) {
-			throw new PrometheusRuntimeException("DSwingHEatMap2DCanvas.paintComponent() storage provide to few values!");									
+			throw new CerberusRuntimeException("DSwingHEatMap2DCanvas.paintComponent() storage provide to few values!");									
 		}
 		
 		/**
@@ -693,7 +693,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 			else {
 				refStorageFromSet = null;
 				refSelectionFromSet = null;
-				throw new PrometheusRuntimeException("DSwingHEatMap2DCanvas.updateState() error while try to get storage.");			
+				throw new CerberusRuntimeException("DSwingHEatMap2DCanvas.updateState() error while try to get storage.");			
 			}
 			
 			if ( refSelectionArray.length > 0 ){
@@ -702,7 +702,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 			else {
 				refStorageFromSet = null;
 				refSelectionFromSet = null;
-				throw new PrometheusRuntimeException("DSwingHEatMap2DCanvas.updateState() error while try to get selection.");				
+				throw new CerberusRuntimeException("DSwingHEatMap2DCanvas.updateState() error while try to get selection.");				
 			}
 		}
 				

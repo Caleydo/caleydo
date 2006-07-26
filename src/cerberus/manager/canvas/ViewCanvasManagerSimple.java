@@ -29,7 +29,7 @@ import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
 import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
 import cerberus.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Manage several ViewCanvas items.
@@ -160,7 +160,7 @@ implements ViewCanvasManager,
 //				break;
 				
 			default:
-				throw new PrometheusRuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
+				throw new CerberusRuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
 						useViewCanvasType.name() + "]");
 			// return null;
 		}

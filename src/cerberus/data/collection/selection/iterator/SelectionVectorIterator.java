@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import cerberus.data.collection.Selection;
-import cerberus.util.exception.PrometheusVirtualArrayException;
+import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionNullIterator;
 
@@ -124,7 +124,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * @see cerberus.data.collection.selection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(final int iSetVirtualIndex)
-			throws PrometheusVirtualArrayException {
+			throws CerberusRuntimeException {
 		iterator.setVirtualIndex( iSetVirtualIndex );
 	}
 

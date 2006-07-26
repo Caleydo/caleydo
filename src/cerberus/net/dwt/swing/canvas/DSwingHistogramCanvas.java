@@ -310,7 +310,7 @@ implements DNetEventComponentInterface, ViewCanvas
 //				DNetEventComponentInterface itemRef = refParentCreator.getItemSet( itemId );
 //				
 //				if ( itemRef == null ) {
-//					throw new PrometheusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
+//					throw new CerberusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
 //							itemId + "]");
 //				}
 //				this.add( (JComponent) itemRef );

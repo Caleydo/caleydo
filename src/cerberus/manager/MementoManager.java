@@ -13,8 +13,7 @@ import java.io.ObjectOutputStream;
 
 
 import cerberus.command.memento.Memento;
-import cerberus.util.exception.PrometheusMementoException;
-//import prometheus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Administration of Memento's
@@ -35,7 +34,7 @@ extends GeneralManager
 	 * @throws exception on errors
 	 */
 	public abstract int pushMemento(Memento addMemento)
-		throws PrometheusMementoException;
+		throws CerberusRuntimeException;
 	
 	
 	/**

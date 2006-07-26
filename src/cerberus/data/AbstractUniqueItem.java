@@ -24,14 +24,14 @@ implements UniqueInterface {
 	/**
 	 * Unique Id
 	 */
-	private int iCollectionId;
+	private int iUniqueId;
 	
 	/**
 	 * 
 	 */
 	protected AbstractUniqueItem( int iSetCollectionId ) {
 		
-		iCollectionId = iSetCollectionId;
+		iUniqueId = iSetCollectionId;
 	}
 	
 	/**
@@ -44,7 +44,7 @@ implements UniqueInterface {
 	 * @return
 	 */
 	public final int getId() {
-		return this.iCollectionId;
+		return this.iUniqueId;
 	}
 	
 	/**
@@ -57,7 +57,7 @@ implements UniqueInterface {
 	 * @see prometheus.data.xml.MementiItemXML
 	 */
 	public final void setId( final int iSetDNetEventId ) {		
-		this.iCollectionId = iSetDNetEventId;		
+		this.iUniqueId = iSetDNetEventId;		
 	}
 
 }

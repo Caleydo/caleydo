@@ -34,7 +34,7 @@ import cerberus.net.dwt.DNetEventListener;
 import cerberus.net.dwt.swing.parser.DPanelSaxHandler;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.net.protocol.interaction.SuperMouseEvent;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -252,7 +252,7 @@ implements DNetEventComponentInterface {
 				DNetEventComponentInterface itemRef = refParentCreator.getItemSet( itemId );
 				
 				if ( itemRef == null ) {
-					throw new PrometheusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
+					throw new CerberusRuntimeException("DPanel.setMementoXML_usingHandler() ERROR during iterator due to not existing itemID= [" +
 							itemId + "]");
 				}
 				this.add( (JComponent) itemRef );

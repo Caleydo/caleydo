@@ -21,7 +21,8 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.StorageType;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.xml.parser.DParseBaseSaxHandler;
-import cerberus.util.exception.PrometheusSaxParserException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 
 //import cerberus.util.exception.PrometheusSaxParserException;
@@ -524,7 +525,8 @@ implements DParseSaxHandler
 			
 			
 			default:
-				throw new PrometheusSaxParserException("Can not handle unkonw type [" + details + "]");
+				throw new CerberusRuntimeException("Can not handle unkonw type [" + details + "]",
+						CerberusExceptionType.SAXPARSER );
 			
 			} // end switch
 		

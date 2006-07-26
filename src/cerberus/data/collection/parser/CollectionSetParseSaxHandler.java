@@ -21,7 +21,8 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.xml.parser.DParseBaseSaxHandler;
-import cerberus.util.exception.PrometheusSaxParserException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Parsing pices of information present in each Colleciton.
@@ -213,7 +214,8 @@ implements DParseSaxHandler
 				if ( qName.equals( sTag_XML_DataCollection_details ) ) {
 					
 					if ( attributes.getLength() < 2 ) {
-						throw new PrometheusSaxParserException("need attributes <... type=\"\" dim=\"*\">");
+						throw new CerberusRuntimeException("need attributes <... type=\"\" dim=\"*\">",
+								CerberusExceptionType.SAXPARSER );
 					}
 					
 					final String bufferType = attributes.getValue(sTag_XML_DataCollection_details_attr_A_type);
@@ -227,7 +229,8 @@ implements DParseSaxHandler
 							iCurrentDim = Integer.valueOf( bufferDim ).intValue();
 						}
 						catch ( NumberFormatException nfe ) {
-							throw new PrometheusSaxParserException("attributes <... dim=\"" + bufferDim + "\"> mut be an integer");
+							throw new CerberusRuntimeException("attributes <... dim=\"" + bufferDim + "\"> mut be an integer",
+									CerberusExceptionType.SAXPARSER );
 						}
 						bXML_Section_DataComponent_details_Select = true;
 					}

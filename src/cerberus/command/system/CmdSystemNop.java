@@ -10,9 +10,9 @@ package cerberus.command.system;
 
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
-import cerberus.command.base.CommandAbstractBase;
+import cerberus.command.base.AbstractCommand;
 import cerberus.command.window.CmdWindowPopupInfo;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * No Opoeration command does nothing.
@@ -21,7 +21,7 @@ import cerberus.util.exception.PrometheusCommandException;
  *
  */
 public class CmdSystemNop
-extends CommandAbstractBase
+extends AbstractCommand
 implements CommandInterface {
 
 	/**
@@ -34,7 +34,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
 		exitWarning.setText("DEBUG-INFO","do nop ...");
 		exitWarning.doCommand();
@@ -43,7 +43,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
@@ -51,7 +51,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.SYSTEM_NOP;
 	}
 

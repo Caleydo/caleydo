@@ -47,7 +47,7 @@ import cerberus.data.collection.view.ViewCanvas;
 
 //import prometheus.net.dwt.swing.DHistogramCanvas;
 import cerberus.xml.parser.DParseSaxHandler;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -295,7 +295,7 @@ implements GeneralManagerSingelton {
 				return refCommandManager.createNewId(setNewBaseType);
 				
 			default:
-				throw new PrometheusRuntimeException("Error in OneForAllManager.createNewId() unknown type " +
+				throw new CerberusRuntimeException("Error in OneForAllManager.createNewId() unknown type " +
 						setNewBaseType.toString() );			
 		}
 	
@@ -321,14 +321,14 @@ implements GeneralManagerSingelton {
 			case VIEW:
 				return refViewCanvasManager.unregisterItem( iItemId, type );
 			case COMMAND:
-				throw new PrometheusRuntimeException("Error in OneForAllManager.unregisterItem() type " +
+				throw new CerberusRuntimeException("Error in OneForAllManager.unregisterItem() type " +
 						type.name() + " can not unregister!");
 			/**
 			 * Note: refCommandManager can not unregister items.
 			 */
 				
 			default:
-				throw new PrometheusRuntimeException("Error in OneForAllManager.unregisterItem() unknown type " +
+				throw new CerberusRuntimeException("Error in OneForAllManager.unregisterItem() unknown type " +
 						type.name() );			
 			} // end switch
 		}
@@ -369,11 +369,11 @@ implements GeneralManagerSingelton {
 				return refViewCanvasManager.registerItem( 
 						registerItem, iItemId, type );
 			case COMMAND:
-				throw new PrometheusRuntimeException("Error in OneForAllManager.registerItem() type " +
+				throw new CerberusRuntimeException("Error in OneForAllManager.registerItem() type " +
 						type.name() + " can niot register!");	
 				
 			default:
-				throw new PrometheusRuntimeException("Error in OneForAllManager.registerItem() unknown type " +
+				throw new CerberusRuntimeException("Error in OneForAllManager.registerItem() unknown type " +
 						type.name() );			
 			} // end switch
 		}
@@ -412,7 +412,7 @@ implements GeneralManagerSingelton {
 				return refCommandManager.createCommand( sNewTypeDetails );
 				
 			default:
-				throw new PrometheusRuntimeException("Error in OneForAllManager.createNewId() unknown type " +
+				throw new CerberusRuntimeException("Error in OneForAllManager.createNewId() unknown type " +
 						createNewType.toString() );			
 		} // end switch
 	}
@@ -471,7 +471,7 @@ implements GeneralManagerSingelton {
 			}
 		
 		default:
-			throw new PrometheusRuntimeException("Error in OneForAllManager.createNewId() unknown type " +
+			throw new CerberusRuntimeException("Error in OneForAllManager.createNewId() unknown type " +
 					type.name() );			
 		} // end switch ( type.getGroupType() )
 		
@@ -499,7 +499,7 @@ implements GeneralManagerSingelton {
 			return refCommandManager;
 		
 		default:
-			throw new PrometheusRuntimeException("Error in OneForAllManager.getManagerByBaseType() unsupported type " +
+			throw new CerberusRuntimeException("Error in OneForAllManager.getManagerByBaseType() unsupported type " +
 					managerType.name() );			
 		} // end switch ( type.getGroupType() )
 	}

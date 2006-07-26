@@ -12,16 +12,16 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
-import cerberus.command.base.CommandAbstractBase;
+import cerberus.command.base.AbstractCommand;
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
-import cerberus.util.exception.PrometheusCommandException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public class CmdWindowSetActiveFrame 
-extends CommandAbstractBase
+extends AbstractCommand
 implements CommandInterface {
 
 	private final GeneralManager refGeneralManager;
@@ -70,7 +70,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
-	public void doCommand() throws PrometheusCommandException {
+	public void doCommand() throws CerberusRuntimeException {
 		
 //		WorkspaceSwingFrame targetFrame = 
 //			refViewCanvasManager.getItemWorkspace( iTargetFrameId );
@@ -90,7 +90,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#undoCommand()
 	 */
-	public void undoCommand() throws PrometheusCommandException {
+	public void undoCommand() throws CerberusRuntimeException {
 		// TODO Auto-generated method stub
 
 	}
@@ -98,7 +98,7 @@ implements CommandInterface {
 	/* (non-Javadoc)
 	 * @see cerberus.command.CommandInterface#getCommandType()
 	 */
-	public CommandType getCommandType() throws PrometheusCommandException {
+	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_SET_ACTIVE_FRAME;
 	}
 

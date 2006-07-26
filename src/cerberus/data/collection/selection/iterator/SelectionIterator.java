@@ -10,7 +10,7 @@ package cerberus.data.collection.selection.iterator;
 
 
 import cerberus.data.collection.iterator.CollectionIterator;
-import cerberus.util.exception.PrometheusVirtualArrayException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 
 /**
@@ -50,9 +50,9 @@ extends CollectionIterator {
 	 * Sets a new current virtual indexs.
 	 * 
 	 * @param iSetVirtualIndex new virtual index
-	 * @throws PrometheusVirtualArrayException if iSetVirtualIndex can not be set
+	 * @throws CerberusRuntimeException if iSetVirtualIndex can not be set
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
-			throws PrometheusVirtualArrayException;
+			throws CerberusRuntimeException;
 	
 }

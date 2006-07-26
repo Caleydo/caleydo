@@ -37,7 +37,7 @@ import cerberus.net.dwt.DNetEventListener;
 import cerberus.net.dwt.swing.parser.DButtonSaxHandler;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.net.protocol.interaction.SuperMouseEvent;
-import cerberus.util.exception.PrometheusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Distributed JButton.
