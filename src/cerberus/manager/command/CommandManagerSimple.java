@@ -8,20 +8,23 @@
  */
 package cerberus.manager.command;
 
+import java.util.Hashtable;
 import java.util.Vector;
+//import java.util.Iterator;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.command.factory.CommandFactoryInterface;
 import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
-//import java.util.Iterator;
+
 
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandListener;
 import cerberus.command.CommandType;
-import cerberus.command.factory.CommandFactory;
-import cerberus.command.factory.CommandFactoryInterface;
+import cerberus.command.queue.CommandQueueInterface;
 
 /**
  * @author Michael Kalkusch
@@ -44,6 +47,8 @@ public class CommandManagerSimple
 	 */
 	private Vector<CommandInterface> vecCmd_schedule;
 	
+	protected Hashtable<Integer,CommandQueueInterface> hash_CommandQueue;
+	
 	/**
 	 * 
 	 */
@@ -55,6 +60,8 @@ public class CommandManagerSimple
 		vecCmd_handle = new Vector<CommandInterface> ();
 		
 		vecCmd_schedule = new Vector<CommandInterface> ();
+		
+		hash_CommandQueue = new Hashtable<Integer,CommandQueueInterface> ();
 	}
 
 	/* (non-Javadoc)
@@ -165,7 +172,22 @@ public class CommandManagerSimple
 	 */
 	public int createNewId(ManagerObjectType setNewBaseType) {
 		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
+	/*
+	 * 
+	 */
+	public boolean hasCommandQueueId( final int iCmdQueueId ) {
+		return hash_CommandQueue.containsKey( iCmdQueueId );
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.CommandManager#getCommandQueueByCmdQueueId(int)
+	 */
+	public CommandQueueInterface getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
+		return hash_CommandQueue.get( iCmdQueueId );
+	}
 }

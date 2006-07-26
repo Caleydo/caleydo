@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.command.factory;
+package cerberus.manager.command.factory;
 
 
 import javax.swing.JComponent;
@@ -19,7 +19,6 @@ import cerberus.command.CommandType;
 import cerberus.command.CommandTypeGroup;
 import cerberus.command.base.AbstractCommand;
 
-import cerberus.command.factory.CommandFactoryInterface;
 
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;

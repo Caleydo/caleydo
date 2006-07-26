@@ -51,8 +51,9 @@ public enum CommandType {
 	MANAGER_MEMENTO_LOAD(CommandTypeGroup.MANAGER,"INTERNAL: Loads stored Mementos from file or network"),
 	
 	// --- Comamdn Queue ---
-	QUEUE_OPEN(CommandTypeGroup.SYSTEM,"Creates a new command qroup"),
-	QUEUE_CLOSE(CommandTypeGroup.SYSTEM,"Closes a command qroup, it is set read only now"),
+	COMMAND_QUEUE_OPEN(CommandTypeGroup.COMMAND,"Creates a new command qroup"),
+	COMMAND_QUEUE_CLOSE(CommandTypeGroup.COMMAND,"Closes a command qroup, it is set read only now"),
+	COMMAND_QUEUE_RUN(CommandTypeGroup.COMMAND,"Execute a command qroup"),
 	
 	// --- Selection ---
 	SELECT_NEW(CommandTypeGroup.SELECT,"Create a new selection"),

@@ -12,6 +12,7 @@ import cerberus.command.CommandInterface;
 import cerberus.command.CommandListener;
 import cerberus.command.CommandType;
 import cerberus.command.CommandActionListener;
+import cerberus.command.queue.CommandQueueInterface;
 //import prometheus.data.xml.MementoXML;
 
 /**
@@ -62,4 +63,21 @@ extends CommandActionListener, GeneralManager {
 	 */
 	public boolean hasCommandListener( CommandListener hasCommandListener );	
 
+	/**
+	 * Get a command queue by it's commandQueueId, which is only a key for the commandQueue
+	 * and is nopt a uniqueSystem wide Id.
+	 * 
+	 * @param iCmdQueueId commandQueueId
+	 * @return command queue
+	 */
+	public CommandQueueInterface getCommandQueueByCmdQueueId( final int iCmdQueueId );
+	
+	/**
+	 * Tests if a iCmdQueueId is registered with a CommandQueue obejct.
+	 * 
+	 * @param iCmdQueueId test this id
+	 * @return TRUE if an CommandQueue is bound that iCmdQueueId
+	 */
+	public boolean hasCommandQueueId( final int iCmdQueueId );
+	
 }

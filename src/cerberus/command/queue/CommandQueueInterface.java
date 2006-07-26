@@ -2,7 +2,8 @@ package cerberus.command.queue;
 
 import cerberus.command.CommandInterface;
 
-public interface CommandQueueInterface {
+public interface CommandQueueInterface 
+extends CommandInterface {
 
 	/**
 	 * Get CommandQueueId.
@@ -32,7 +33,7 @@ public interface CommandQueueInterface {
 	 * 
 	 * @param cmdItem add command
 	 */
-	public void addCmdToQueue( final CommandInterface cmdItem );
+	public boolean addCmdToQueue( final CommandInterface cmdItem );
 	
 	/**
 	 * Remove a new command.

@@ -12,30 +12,31 @@ import cerberus.manager.GeneralManager;
 //import cerberus.manager.type.BaseManagerType;
 import cerberus.data.UniqueManagedInterface;
 import cerberus.data.AbstractUniqueItem;
-import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Abstract class providing methodes defiend in UniqueManagedInterface.
  * Stores reference to creator of item in private variable.
  * 
+ * Same as cerberus.data.UniqueManagedObject but GeneralManger may be reassinged.
+ * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.UniqueReManagedObject
  * @see prometheus.data.xml.MementiItemXML
+ * @see cerberus.data.UniqueManagedObject
  */
-public abstract class UniqueManagedObject 
+public abstract class UniqueReManagedObject 
 extends AbstractUniqueItem
 implements UniqueManagedInterface {
 
 	/**
 	 * Reference to manager, who created this object.
 	 */
-	protected final GeneralManager refGeneralManager;
+	protected GeneralManager refGeneralManager;
 	
 	/**
 	 * 
 	 */
-	protected UniqueManagedObject( int iSetCollectionId, GeneralManager setGeneralManager ) {
+	protected UniqueReManagedObject( int iSetCollectionId, GeneralManager setGeneralManager ) {
 
 		super( iSetCollectionId );
 		
@@ -53,14 +54,12 @@ implements UniqueManagedInterface {
 	}
 
 	/**
-	 * Reset GeneralManger object
+	 * Reset the GeneralManager.
 	 * 
-	 * @see cerberus.data.UniqueReManagedObject#setManager(cerberus.manager.GeneralManager)
 	 * @see cerberus.data.UniqueManagedInterface#getGeneralManager()
 	 */
 	final protected void setManager( final GeneralManager setGeneralManager) {
-		throw new CerberusRuntimeException("setManager() prohibited inside this class!");
-		//this.refGeneralManager = setGeneralManager;
+		this.refGeneralManager = setGeneralManager;
 	}
 	
 	

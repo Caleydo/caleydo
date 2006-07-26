@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.command.factory;
+package cerberus.manager.command.factory;
 
 import cerberus.command.CommandType;
 import cerberus.command.CommandInterface;

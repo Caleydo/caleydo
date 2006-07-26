@@ -36,8 +36,9 @@ public abstract class AbstractCommand
 	}
 
 	
-	/* (non-Javadoc)
+	/**
 	 * @see prometheus.command.CommandInterface#isEqualType(prometheus.command.CommandInterface)
+	 *  * @see base.AbstractManagedCommand#isEqualType(cerberus.command.CommandInterface)
 	 */
 	public final boolean isEqualType(CommandInterface compareToObject) {
 		if ( compareToObject.getCommandType() == this.getCommandType() ) { 
