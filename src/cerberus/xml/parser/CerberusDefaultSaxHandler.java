@@ -6,9 +6,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
 
-
-
-
 public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 
 	protected final String sArgumentBegin = "=\""; 
