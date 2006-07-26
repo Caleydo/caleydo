@@ -14,6 +14,7 @@ import cerberus.data.collection.CollectionMetaDataInterface;
 //import cerberus.data.collection.CollectionInterface;
 import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.thread.CollectionThreadObject;
 import cerberus.data.xml.MementoItemXML;
 
 //import prometheus.util.exception.PrometheusVirtualArrayException;
@@ -26,7 +27,7 @@ import cerberus.data.xml.MementoItemXML;
 public interface Selection  
 	extends CollectionMetaDataInterface, 
 	MementoItemXML,
-	CollectionThread
+	CollectionThreadObject
 {
 
 	/**

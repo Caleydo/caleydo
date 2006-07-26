@@ -9,14 +9,14 @@
 package cerberus.command.base;
 
 import cerberus.command.CommandInterface;
-import cerberus.data.UniqueItem;
+import cerberus.data.AbstractUniqueItem;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public abstract class CommandAbstractBase 
-	extends UniqueItem
+	extends AbstractUniqueItem
 	implements CommandInterface {
 
 	protected int iCmdCollectionId;

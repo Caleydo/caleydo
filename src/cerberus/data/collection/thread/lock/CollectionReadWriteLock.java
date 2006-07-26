@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.data.collection.thread;
+package cerberus.data.collection.thread.lock;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -9,6 +9,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * Read and write locks for collections.

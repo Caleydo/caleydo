@@ -10,9 +10,9 @@ package cerberus.data.collection.selection;
 
 import cerberus.manager.GeneralManager;
 import cerberus.data.collection.CollectionMetaData;
-import cerberus.data.collection.CollectionThreadItem;
 import cerberus.data.collection.Selection;
-import cerberus.data.collection.thread.CollectionLock;
+import cerberus.data.collection.thread.impl.CollectionThreadItem;
+import cerberus.data.collection.thread.lock.CollectionLock;
 
 /**
  * Abstract calss for all virtual arrays.

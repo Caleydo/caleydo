@@ -35,8 +35,8 @@ public enum ManagerType {
 		MEMENTO("memento manager"),
 		
 		LOGGER("logger manager"),
-		
-		VIEW("view manager"),
+				
+		VIEW("view manager"),				
 		
 		VIEW_SWT("view swt manager", ManagerType.VIEW ),
 		

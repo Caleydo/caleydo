@@ -15,14 +15,14 @@ import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;
 
-import cerberus.data.collection.CollectionThreadItem;
 import cerberus.data.collection.Storage;
 import cerberus.data.collection.StorageType;
 //import cerberus.data.manager.DComponentManager;
 import cerberus.data.xml.MementoNetEventXML;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
-import cerberus.data.collection.thread.CollectionLock;
+import cerberus.data.collection.thread.impl.CollectionThreadItem;
+import cerberus.data.collection.thread.lock.CollectionLock;
 
 /**
  * @author Michael Kalkusch

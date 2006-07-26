@@ -10,8 +10,8 @@ package cerberus.data.collection.set;
 
 import cerberus.manager.GeneralManager;
 import cerberus.data.collection.Set;
-import cerberus.data.collection.CollectionThreadItem;
-import cerberus.data.collection.thread.CollectionLock;
+import cerberus.data.collection.thread.impl.CollectionThreadItem;
+import cerberus.data.collection.thread.lock.CollectionLock;
 
 /**
  * @author Michael Kalkusch

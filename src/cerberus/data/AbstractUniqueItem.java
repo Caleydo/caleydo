@@ -18,7 +18,7 @@ import cerberus.data.UniqueInterface;
  *
  * @see prometheus.data.xml.MementiItemXML
  */
-public abstract class UniqueItem 
+public abstract class AbstractUniqueItem 
 implements UniqueInterface {
 
 	/**
@@ -29,7 +29,7 @@ implements UniqueInterface {
 	/**
 	 * 
 	 */
-	protected UniqueItem( int iSetCollectionId) {
+	protected AbstractUniqueItem( int iSetCollectionId ) {
 		
 		iCollectionId = iSetCollectionId;
 	}

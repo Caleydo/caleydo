@@ -16,7 +16,7 @@ import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionMultiBlockIterator;
 import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
 import cerberus.data.collection.selection.iterator.SelectionSingleBlockIterator;
-import cerberus.data.collection.thread.CollectionLock;
+import cerberus.data.collection.thread.lock.CollectionLock;
 import cerberus.data.xml.MementoItemXML;
 import cerberus.xml.parser.DParseSaxHandler;
 

@@ -22,8 +22,8 @@ import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
 import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
-import cerberus.data.collection.thread.CollectionLock;
-import cerberus.data.collection.CollectionThreadItem;
+import cerberus.data.collection.thread.impl.CollectionThreadItem;
+import cerberus.data.collection.thread.lock.CollectionLock;
 
 /**
  * @author Michael Kalkusch
@@ -488,7 +488,7 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionThread#hasCacheChanged(int)
+	 * @see cerberus.data.collection.CollectionThreadObject#hasCacheChanged(int)
 	 */
 	public boolean hasCacheChanged( final int iCompareCacheId ) {
 		return (iCompareCacheId < this.getCacheId());

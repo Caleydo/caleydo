@@ -11,6 +11,7 @@ package cerberus.data.collection;
 import cerberus.data.UniqueManagedInterface;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.CollectionInterface;
+import cerberus.data.collection.thread.CollectionThreadObject;
 import cerberus.data.xml.MementoNetEventXML;
 
 /**
@@ -20,7 +21,7 @@ import cerberus.data.xml.MementoNetEventXML;
 public interface Storage 
 	extends CollectionInterface,
 	MementoNetEventXML,
-	CollectionThread
+	CollectionThreadObject
 {
 
 	/**

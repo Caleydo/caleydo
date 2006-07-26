@@ -1,10 +1,11 @@
-package cerberus.data.collection;
+package cerberus.data.collection.thread;
 
 import cerberus.data.collection.CollectionCache;
-import cerberus.data.collection.thread.CollectionLock;
+import cerberus.data.collection.CollectionInterface;
+import cerberus.data.collection.thread.lock.CollectionLock;
 import cerberus.data.UniqueManagedInterface;
 
-public interface CollectionThread 
+public interface CollectionThreadObject 
 	extends CollectionCache, 
 	CollectionInterface, 
 	UniqueManagedInterface {

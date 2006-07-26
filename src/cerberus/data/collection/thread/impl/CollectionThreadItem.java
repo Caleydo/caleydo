@@ -1,12 +1,13 @@
 /**
  * 
  */
-package cerberus.data.collection;
+package cerberus.data.collection.thread.impl;
 
 import cerberus.manager.GeneralManager;
-import cerberus.data.UniqueManagedItem;
-import cerberus.data.collection.thread.CollectionLock;
-import cerberus.data.collection.thread.CollectionReadWriteLock;
+import cerberus.data.UniqueManagedObject;
+import cerberus.data.collection.thread.CollectionThreadObject;
+import cerberus.data.collection.thread.lock.CollectionLock;
+import cerberus.data.collection.thread.lock.CollectionReadWriteLock;
 //import prometheus.manager.BaseManagerType;
 
 /**
@@ -14,8 +15,8 @@ import cerberus.data.collection.thread.CollectionReadWriteLock;
  *
  */
 public abstract class CollectionThreadItem 
-	extends UniqueManagedItem 
-	implements CollectionLock, CollectionThread {
+	extends UniqueManagedObject 
+	implements CollectionLock, CollectionThreadObject {
 
 	/**
 	 * Lock for read-write access.

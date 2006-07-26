@@ -12,13 +12,13 @@ import java.util.Iterator;
 
 import cerberus.data.UniqueManagedInterface;
 import cerberus.data.collection.Storage;
-import cerberus.data.collection.CollectionThread;
 
 import cerberus.data.collection.SubSet;
 import cerberus.data.collection.CollectionMetaDataInterface;
 import cerberus.data.collection.CollectionInterface;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
+import cerberus.data.collection.thread.CollectionThreadObject;
 import cerberus.data.xml.MementoItemXML;
 
 /**
@@ -32,7 +32,7 @@ public interface Set
 	CollectionMetaDataInterface, 
 	SubSet,
 	MementoItemXML,
-	CollectionThread
+	CollectionThreadObject
 {
 	
 	/**
@@ -174,7 +174,7 @@ public interface Set
 	/**
 	 * Test if cache has changed without reevaluating the stats of the cildren.
 	 * 
-	 * @see cerberus.data.collection.CollectionThread#hasCacheChanged(int)
+	 * @see cerberus.data.collection.thread.CollectionThreadObject#hasCacheChanged(int)
 	 * 
 	 * @param iCompareCacheId
 	 */

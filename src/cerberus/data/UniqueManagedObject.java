@@ -11,6 +11,7 @@ package cerberus.data;
 import cerberus.manager.GeneralManager;
 //import cerberus.manager.type.BaseManagerType;
 import cerberus.data.UniqueManagedInterface;
+import cerberus.data.AbstractUniqueItem;
 
 /**
  * Abstract class providing methodes defiend in UniqueManagedInterface.
@@ -20,13 +21,10 @@ import cerberus.data.UniqueManagedInterface;
  *
  * @see prometheus.data.xml.MementiItemXML
  */
-public abstract class UniqueManagedItem 
+public abstract class UniqueManagedObject 
+extends AbstractUniqueItem
 implements UniqueManagedInterface {
 
-	/**
-	 * Unique Id
-	 */
-	private int iCollectionId;
 	
 	
 	/**
@@ -37,12 +35,14 @@ implements UniqueManagedInterface {
 	/**
 	 * 
 	 */
-	protected UniqueManagedItem( int iSetCollectionId, GeneralManager setGeneralManager ) {
+	protected UniqueManagedObject( int iSetCollectionId, GeneralManager setGeneralManager ) {
+
+		super( iSetCollectionId );
 		
 		assert setGeneralManager != null: "SetFlatSimple() with null pointer";
 		
 		refGeneralManager = setGeneralManager;
-		iCollectionId = iSetCollectionId;
+
 	}
 
 	/* (non-Javadoc)
@@ -61,31 +61,6 @@ implements UniqueManagedInterface {
 		this.refGeneralManager = setGeneralManager;
 	}
 	
-	/**
-	 * Get Id by calling prometheus.data.collection.BaseManagerItem#getCollecionId().
-	 * Part of prometheus.data.xml.MementiItemXML iterface.
-	 * 
-	 * @see prometheus.data.collection.BaseManagerItem#getCollecionId()
-	 * @see prometheus.data.xml.MementiItemXML
-	 * 
-	 * @return
-	 */
-	public final int getId() {
-		return this.iCollectionId;
-	}
-	
-	/**
-	 * Sets Id by calling prometheus.data.collection.BaseManagerItem#setCollecionId(GeneralManager, int)
-	 * Part of prometheus.data.xml.MementiItemXML iterface.
-	 * @param creator
-	 * @param iSetDNetEventId
-	 * 
-	 * @see prometheus.data.collection.BaseManagerItem#setCollecionId(GeneralManager, int)
-	 * @see prometheus.data.xml.MementiItemXML
-	 */
-	public final void setId( final int iSetDNetEventId ) {		
-		this.iCollectionId = iSetDNetEventId;		
-	}
 	
 	//public abstract ManagerObjectType getBaseType();
 	

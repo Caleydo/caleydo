@@ -1,4 +1,4 @@
-package cerberus.data.collection.thread;
+package cerberus.data.collection.thread.lock;
 
 /**
  * Interface for locks used to make access to collections threadsafe.
