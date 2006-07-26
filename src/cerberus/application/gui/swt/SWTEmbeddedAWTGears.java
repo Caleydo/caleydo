@@ -2,6 +2,7 @@ package cerberus.application.gui.swt;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,6 +15,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 
+import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLJPanel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -30,8 +32,9 @@ import org.eclipse.swt.widgets.Shell;
 import com.sun.opengl.util.Animator;
 
 import demos.jgears.JGears;
+import demos.gears.Gears;
 
-public class GUITest 
+public class SWTEmbeddedAWTGears
 {
 	public static void main(String args[]) 
 	{
@@ -54,25 +57,12 @@ public class GUITest
 		ok.setText ("OK");
 		ok.setSize(300, 300);
 		
-	    frame.setLayout(new BorderLayout());
-	    final GLJPanel drawable = new JGears();
-	    drawable.setOpaque(false);
+	    GLCanvas canvas = new GLCanvas();
 
-	    JPanel gradientPanel = createGradientPanel();
-	    
-	    frame.add(gradientPanel, BorderLayout.CENTER);
-	    gradientPanel.add(drawable, BorderLayout.CENTER);
-
-	    final JCheckBox checkBox = new JCheckBox("Transparent", true);
-	    checkBox.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	          drawable.setOpaque(!checkBox.isSelected());
-	        }
-	      });
-	    
-	    frame.add(checkBox, BorderLayout.SOUTH);
-	    
-	    final Animator animator = new Animator(drawable);
+	    canvas.addGLEventListener(new Gears());
+	    frame.add(canvas);
+	    frame.setSize(300, 300);
+	    final Animator animator = new Animator(canvas);
 	    frame.addWindowListener(new WindowAdapter() {
 	        public void windowClosing(WindowEvent e) {
 	          // Run this on another thread than the AWT event queue to
@@ -86,8 +76,6 @@ public class GUITest
 	            }).start();
 	        }
 	      });
-	    
-	    //frame.setSize(400, 400);
 	    frame.show();
 	    animator.start();
 
