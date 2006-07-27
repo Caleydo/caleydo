@@ -5,17 +5,7 @@ import cerberus.data.view.rep.pathway.PathwayEdgeRepInter;
 
 public class PathwayEdge extends PathwayElement
 {
-	public enum EdgeType
-	{
-		ECel, 	// enzyme-enzyme relation, 
-				// indicating two entymes catalyzing succesive reaction steps
-		PPrel,	// protein-protein interactionm such as binding and modification
-		GErel,	// gene expression interaction, indicating relation of 
-				// transcription factor and target gene product
-		PCrel	// protein-compound interaction
-	}
-	
-	private EdgeType vertexType;
+	private PathwayEdgeType vertexType;
 	
 	private Vector<PathwayEdgeRepInter> edgeReps;
 	

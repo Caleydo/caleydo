@@ -43,6 +43,26 @@ public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 		return bDefaultValue;
 	}
 	
+	/**
+	 * Get String from a Attributes attrs. If key does not exist sDefaultValue is returned.
+	 * 
+	 * @param attrs SAX attributes
+	 * @param key key to search for
+	 * @param sDefaultValue default key
+	 * @return
+	 */
+	protected final String assignStringValue( final Attributes attrs,
+			final String key,
+			final String sDefaultValue) {		
+		String sBuffer = attrs.getValue( key );
+		
+		if ( sBuffer == null  ) {
+			return sDefaultValue;
+		}
+		
+		return sBuffer;
+	}
+	
 	protected final int assignIntValueIfValid( final Attributes attrs,
 			final String key,
 			final int iDefaultValue) {		

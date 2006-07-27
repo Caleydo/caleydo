@@ -98,7 +98,6 @@ public class CerberusApplicationFromXML {
 		saxCmdHandler = new CommandSaxHandler( refGeneralManager );
 		
 		//saxHandler = new SwingJoglJFrameSaxHandler( canvasManager );		
-
 		
 		connection = new ClientByteStreamHandler( null );
 		

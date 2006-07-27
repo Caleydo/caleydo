@@ -8,10 +8,12 @@ package cerberus.xml.parser.command;
 import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 
+import cerberus.command.CommandType;
+import cerberus.command.CommandInterface;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.CommandManager;
-
+import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.CerberusDefaultSaxHandler;
 
 
@@ -27,6 +29,8 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	
 	private boolean bCommandBuffer_isActive = false;
 	
+	private boolean bCommandQueue_isActive = false;
+	
 	private boolean bData_EnableMenu = true;
 	
 	protected boolean bApplicationActive = false;
@@ -41,6 +45,11 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	private String sData_MenuTooltip = "";
 	private String sData_MenuMemento = "-";
 	
+	protected String sData_Queue_process;
+	protected String sData_Queue_type;
+	protected int iData_Queue_CmdId;
+	protected int iData_Queue_CmdQueueId;
+	
 	protected int iDefaultFrameWidht = 100;
 	protected int iDefaultFrameHeight = 100;
 	protected int iDefaultFrameX = 0;
@@ -48,7 +57,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	protected int iDefaultFrameId = -1;
 	
 	/* XML Attributes */
-	protected static final String sMenuKey_processType = "proecess";
+	protected static final String sMenuKey_processType = "process";
 	protected static final String sMenuKey_commandId = "cmdId";
 	//protected static final String sMenuKey_parentMenuId = "parentMenuId";
 	//protected static final String sMenuKey_enabled = "enabled";
@@ -57,13 +66,16 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	protected static final String sMenuKey_memento = "mementoId";
 	protected static final String sCmdKey_type = "type";
 	//protected static final String sMenuKey_objectId = "id";
-		
-
+	
+	public static final String sCmdQueueKey_process = "process";
+	public static final String sCmdQueueKey_type = "type";
+	public static final String sCmdQueueKey_cmdQueueId = "cmdQueueId";
 	
 	/* XML Tags */
 	public static final String sTag_Application = "Application";	
 	public static final String sTag_CommandBuffer = "CommandBuffer";	
 	public static final String sTag_Command = "Cmd";
+	public static final String sTag_CommandQueue = "CmdQueue";
 	
 	
 	
@@ -168,7 +180,54 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	
 	
 	
-
+	/**
+	 * 
+	 * Read values of class: iCurrentFrameId
+	 * @param attrs
+	 * @param bIsExternalFrame
+	 */
+	private void createCommandQueue( final Attributes attrs, boolean bIsExternalFrame ) {
+		
+		try 
+		{
+			/* create new Frame */
+			sData_Queue_process = assignStringValue( attrs, 
+					CommandQueueSaxType.ON_DEMAND.getXmlKey(), 
+					CommandQueueSaxType.ON_DEMAND.toString() );
+			
+			iData_Queue_CmdId = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.CMD_ID.getXmlKey(),
+					-1  );
+			
+			iData_Queue_CmdQueueId = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.CMDQUEUE_ID.getXmlKey(),
+					-1  );
+			
+			sData_Queue_type = assignStringValue( attrs,
+					CommandQueueSaxType.COMMAND_QUEUE_RUN.getXmlKey(), 
+					CommandQueueSaxType.COMMAND_QUEUE_RUN.toString() );		
+			
+			int iData_Queue_ThreadPool_Id = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.CMD_THREAD_POOL_ID.getXmlKey(),
+					-1  );
+						
+			int iData_Queue_ThreadPool_Wait_Id = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(),
+					-1  );
+			
+			this.refCommandManager.createCommandQueue( sData_Queue_type,
+					sData_Queue_process,
+					iData_Queue_CmdId,
+					iData_Queue_CmdQueueId,
+					iData_Queue_ThreadPool_Id,
+					-iData_Queue_ThreadPool_Wait_Id );
+				
+		}
+		catch ( Exception e) 
+		{
+			System.err.println(" ERROR whiel parsing " + e.toString() );
+		}
+	}
 	
 
 	
@@ -178,7 +237,39 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	 * @param attrs
 	 * @param bIsExternalFrame
 	 */
-	private void readFrameData( final Attributes attrs, boolean bIsExternalFrame ) {
+	private void readCommandData( final Attributes attrs, boolean bIsExternalFrame ) {
+		
+		try 
+		{
+			/* create new Frame */
+			sData_Queue_process = assignStringValue( attrs, 
+					CommandQueueSaxType.ON_DEMAND.getXmlKey(), 
+					CommandQueueSaxType.ON_DEMAND.toString() );
+			
+			iData_Queue_CmdId = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.CMD_ID.getXmlKey(), -1  );
+			
+			iData_Queue_CmdQueueId = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.CMDQUEUE_ID.getXmlKey(), -1  );
+			
+			sData_Queue_type = assignStringValue( attrs,
+					CommandQueueSaxType.COMMAND_QUEUE_RUN.getXmlKey(), 
+					CommandQueueSaxType.COMMAND_QUEUE_RUN.toString() );										
+				
+		}
+		catch ( Exception e) 
+		{
+			System.err.println(" ERROR whiel parsing " + e.toString() );
+		}
+	}
+	
+	/**
+	 * 
+	 * Read values of class: iCurrentFrameId
+	 * @param attrs
+	 * @param bIsExternalFrame
+	 */
+	private void readCommandQueueData( final Attributes attrs, boolean bIsExternalFrame ) {
 		
 		/* create new Frame */
 		iData_TargetFrameId = assignIntValueIfValid( attrs, sMenuKey_processType, -1 );
@@ -192,7 +283,27 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 		sData_MenuTooltip = attrs.getValue( sMenuKey_details );
 		sData_MenuMemento = attrs.getValue( sMenuKey_memento );
 			
-		sData_MenuType = attrs.getValue( sCmdKey_type );					
+		String sData_Queue_Type = attrs.getValue( sCmdQueueKey_type );		
+		String sData_Queue_Id = attrs.getValue( sCmdQueueKey_cmdQueueId );			
+		String sData_Queue_process = attrs.getValue( sCmdQueueKey_process );
+		
+		CommandInterface lastCommand = null;
+		
+		if ( sData_Queue_Type.equals( CommandType.COMMAND_QUEUE_RUN.toString() )) {
+			
+			lastCommand =  refCommandManager.createCommand( CommandType.COMMAND_QUEUE_RUN, sData_Queue_Id );
+			
+		}
+		
+		if ( lastCommand != null ) {
+			if ( sData_Queue_process.equals( "process" )) {
+				lastCommand.doCommand();
+			}
+		}
+		else {
+			throw new CerberusRuntimeException( "can not create command from [" +
+					attrs.toString() + "]");
+		}
 	}
 	
 	public void startElement(String namespaceURI, String localName,
@@ -229,8 +340,14 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 					 */
 					if ( bCommandBuffer_isActive ) {
 						
-						
-						readFrameData( attrs, true );
+						if  ( bCommandQueue_isActive ) {
+														
+						} else {
+							
+							createCommandQueue( attrs, true );
+							//readCommandData( attrs, true );
+							
+						}
 						
 
 						
@@ -238,6 +355,25 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 						throw new SAXException ( "<"+ sTag_Command + "> opens without <" + 
 								sTag_CommandBuffer + "> being opened!");
 					}
+				}
+				else if (eName.equals( sTag_CommandQueue )) {
+					
+					/**
+					 *  <CmdQueue ...> 
+					 */
+					if ( bCommandBuffer_isActive ) {
+						
+						bCommandQueue_isActive = true;
+						
+						readCommandQueueData( attrs, true );
+						
+
+						
+					} else {
+						throw new SAXException ( "<"+ sTag_Command + "> opens without <" + 
+								sTag_CommandBuffer + "> being opened!");
+					}
+					
 				}
 				
 				
@@ -276,13 +412,27 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 				} 
 				else if (eName.equals(sTag_Command)) {	
 					
-					/* </sFrameTag> */
+					/* </cmd> */
 					if ( ! bCommandBuffer_isActive ) {
 						throw new SAXException ( "<" + sTag_Command + "> opens without " + 
 								sTag_CommandBuffer + " being opened.");
 					}	
 					
 				}
+				else if (eName.equals( sTag_CommandQueue )) {
+					
+					/**
+					 *  </CmdQueue ...> 
+					 */
+					if ( bCommandBuffer_isActive ) {
+						
+						bCommandQueue_isActive = false;
+					} else {
+						throw new SAXException ( "<" + sTag_CommandQueue + "> opens without " + 
+								sTag_CommandBuffer + " being opened.");
+					}
+				}
+				
 				// end:else if (eName.equals(...)) {	
 			} //end: if (null != eName) {
 			

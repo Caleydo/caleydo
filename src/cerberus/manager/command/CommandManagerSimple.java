@@ -190,4 +190,27 @@ public class CommandManagerSimple
 	public CommandQueueInterface getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
 		return hash_CommandQueue.get( iCmdQueueId );
 	}
+	
+	public CommandInterface createCommandQueue( final String sCmdType,
+			final String sProcessType,
+			final int iCmdId,
+			final int iCmdQueueId,
+			final int sQueueThread,
+			final int sQueueThreadWait ) {
+		
+		CommandInterface newCmd = 
+			refCommandFactory.createCommandQueue( sCmdType,
+			sProcessType,
+			iCmdId,
+			iCmdQueueId,
+			sQueueThread,
+			sQueueThreadWait );
+		
+		int iNewCmdId = createNewId( ManagerObjectType.COMMAND );
+		newCmd.setId( iNewCmdId );
+		
+		registerItem( newCmd, iNewCmdId, ManagerObjectType.COMMAND );
+		
+		return newCmd;
+	}
 }

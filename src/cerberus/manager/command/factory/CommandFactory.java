@@ -18,6 +18,7 @@ import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
 import cerberus.command.CommandTypeGroup;
 import cerberus.command.base.AbstractCommand;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
 
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
@@ -33,6 +34,10 @@ import cerberus.command.window.CmdWindowNewIFrameJoglHistogram;
 import cerberus.command.window.CmdWindowNewIFrameJoglHeatmap;
 import cerberus.command.window.CmdWindowNewIFrameJoglScatterplot;
 import cerberus.command.window.CmdWindowSetActiveFrame;
+
+import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.queue.CmdSystemRunCmdQueue;
+import cerberus.command.queue.CommandQueueVector;
 
 import cerberus.command.system.CmdSystemExit;
 import cerberus.command.system.CmdSystemNop;
@@ -89,7 +94,7 @@ extends AbstractCommand
 		
 		assert createCommandByType != null:"Can not create command from null-pointer.";
 		
-		switch ( (CommandTypeGroup)createCommandByType.getGroup()) {
+		switch ( createCommandByType.getGroup()) {
 		
 		case APPLICATION:
 			break;
@@ -126,6 +131,42 @@ extends AbstractCommand
 		}
 		
 		return null;
+		
+	}
+	
+	public CommandInterface createCommandQueue( final String sCmdType,
+			final String sProcessType,
+			final int iCmdId,
+			final int iCmdQueueId,
+			final int sQueueThread,
+			final int sQueueThreadWait ) {
+		
+		CommandQueueSaxType queueType;
+		
+		try 
+		{
+			queueType =CommandQueueSaxType.valueOf( sCmdType );
+		}
+		catch ( IllegalArgumentException iae ) 
+		{
+			throw new CerberusRuntimeException("Undefined CommadnQueue key= [" + sCmdType + "]",
+					CerberusExceptionType.SAXPARSER);
+		}
+			
+		switch (queueType) 
+		{
+		case COMMAND_QUEUE_OPEN:
+			return new CommandQueueVector(iCmdId, iCmdQueueId);
+			
+		case COMMAND_QUEUE_RUN:
+			return new CmdSystemRunCmdQueue(iCmdId,
+					refGeneralManager,
+					iCmdQueueId);
+			
+			default:
+				throw new CerberusRuntimeException("Unsupported CommadnQueue key= [" + sCmdType + "]",
+						CerberusExceptionType.SAXPARSER);
+		}
 		
 	}
 	

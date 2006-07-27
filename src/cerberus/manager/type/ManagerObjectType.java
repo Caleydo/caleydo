@@ -109,6 +109,9 @@ public enum ManagerObjectType {
 	
 	SWT_GUI(ManagerType.SWT_GUI),
 
+	CMD_QUEUE(ManagerType.COMMAND),
+	
+	CMD_QUEUE_RUN(ManagerType.COMMAND),
 	
 	/*
 	 * MEMENTO

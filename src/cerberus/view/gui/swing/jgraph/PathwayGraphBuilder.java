@@ -3,6 +3,7 @@ package cerberus.view.gui.swing.jgraph;
 import cerberus.data.pathway.Pathway;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.PathwayVertexRepInter;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.pathway.element.PathwayEdge;
@@ -110,7 +111,7 @@ public class PathwayGraphBuilder
 	}
 	
 	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition, PathwayVertex.VertexType vertexType)
+			int iXPosition, int iYPosition, PathwayVertexType vertexType)
 	{	
 		//create node
 		cell = new DefaultGraphCell(sTitle);
@@ -120,11 +121,11 @@ public class PathwayGraphBuilder
 		GraphConstants.setAutoSize(cell.getAttributes(), true);
 		
 		//assign vertex color
-		if (vertexType == PathwayVertex.VertexType.enzyme)
+		if (vertexType == PathwayVertexType.enzyme)
 			GraphConstants.setGradientColor(cell.getAttributes(), Color.orange);
-		else if (vertexType == PathwayVertex.VertexType.compound)
+		else if (vertexType == PathwayVertexType.compound)
 			GraphConstants.setGradientColor(cell.getAttributes(), Color.green);
-		else if (vertexType == PathwayVertex.VertexType.map)
+		else if (vertexType == PathwayVertexType.map)
 			GraphConstants.setGradientColor(cell.getAttributes(), Color.yellow);
 		
 		

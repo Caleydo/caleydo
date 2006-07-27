@@ -10,6 +10,7 @@ package cerberus.manager.command.factory;
 
 import cerberus.command.CommandType;
 import cerberus.command.CommandInterface;
+import cerberus.command.queue.CommandQueueInterface;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -55,5 +56,14 @@ public interface CommandFactoryInterface {
 			final CommandType createCommandByType, 
 			final String details);
 	
+	/**
+	 * @see cerberus.manager.CommandManager#createCommandQueue(String, String, int, int, int, int)
+	 */
+	public CommandInterface createCommandQueue( final String sCmdType,
+			final String sProcessType,
+			final int iCmdId,
+			final int iCmdQueueId,
+			final int sQueueThread,
+			final int sQueueThreadWait );
 	
 }

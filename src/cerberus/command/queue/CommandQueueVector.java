@@ -71,8 +71,8 @@ implements CommandInterface , CommandQueueInterface
 	/**
 	 * 
 	 */
-	public CommandQueueVector( int iSetCmdCollectionId ) {
-		super( iSetCmdCollectionId );
+	public CommandQueueVector( int iUniqueCmdId, int iCmdQueuId ) {
+		super( iUniqueCmdId, iCmdQueuId );
 		
 		vecCommandsInQueue = 
 			new Vector <CommandInterface> (iCmdQueueVector_initialLength);

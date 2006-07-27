@@ -27,10 +27,13 @@ public abstract class AbstractCommandQueue
 	/**
 	 * Set CollectionId using this constructor.
 	 * 
-	 * @param iSetCmdCollectionId set collection Id
+	 * @param iUniqueId unique system-wide Id
+	 * @param iCmdQueueId define cmd queue by this id
 	 */
-	protected AbstractCommandQueue( int iSetCmdCollectionId) {
-		super( iSetCmdCollectionId );
+	protected AbstractCommandQueue( int iUniqueId, int iCmdQueueId ) {
+		super( iUniqueId );
+		
+		this.iCmdQueueId = iCmdQueueId;
 	}
 
 	/**
