@@ -1,6 +1,8 @@
-package cerberus.data.view.rep;
+package cerberus.data.view.rep.pathway.jgraph;
 
-public class VertexRep 
+import cerberus.data.view.rep.pathway.VertexRepInter;
+
+public class VertexRep implements VertexRepInter 
 {
 	private String sName;
 	private int iHeight = 0;
@@ -28,16 +30,25 @@ public class VertexRep
 		return iWidth;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getIXPosition()
+	 */
 	public int getIXPosition() 
 	{
 		return iXPosition;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getIYPosition()
+	 */
 	public int getIYPosition() 
 	{
 		return iYPosition;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getSName()
+	 */
 	public String getSName() 
 	{
 		return sName;

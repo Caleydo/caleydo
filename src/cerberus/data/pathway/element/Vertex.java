@@ -1,7 +1,8 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
-import cerberus.data.view.rep.VertexRep;
+import cerberus.data.view.rep.pathway.jgraph.VertexRep;
+
 
 public class Vertex extends Element 
 {
