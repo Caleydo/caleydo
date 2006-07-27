@@ -1,5 +1,5 @@
 package cerberus.view.gui;
 
-public class Frame {
+public class Widget {
 
 }
