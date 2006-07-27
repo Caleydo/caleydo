@@ -1,6 +1,7 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
+import cerberus.data.view.rep.EdgeRep;
 
 public class Edge extends Element
 {
@@ -16,7 +17,7 @@ public class Edge extends Element
 	
 	private EdgeType vertexType;
 	
-	private Vector<EdgeRepresentation> edgeRepresentations;
+	private Vector<EdgeRep> edgeReps;
 	
 	private int iElementId1 = 0;
 	private int iElementId2 = 0;

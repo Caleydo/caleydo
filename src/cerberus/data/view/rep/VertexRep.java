@@ -1,6 +1,6 @@
-package cerberus.data.pathway.element;
+package cerberus.data.view.rep;
 
-public class VertexRepresentation 
+public class VertexRep 
 {
 	private String sName;
 	private int iHeight = 0;
@@ -8,7 +8,7 @@ public class VertexRepresentation
 	private int iXPosition = 0;
 	private int iYPosition = 0;
 
-	public VertexRepresentation(String sName, int iHeight, int iWidth, 
+	public VertexRep(String sName, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition) 
 	{
 		this.sName = sName;

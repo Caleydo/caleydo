@@ -3,7 +3,7 @@ package cerberus.view.gui.swing.jgraph;
 import cerberus.data.pathway.Pathway;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.data.pathway.element.Vertex;
-import cerberus.data.pathway.element.VertexRepresentation;
+import cerberus.data.view.rep.VertexRep;
 import cerberus.data.pathway.element.Edge;
 
 import java.awt.Color;
@@ -56,9 +56,9 @@ public class PathwayGraphBuilder
 	    Vector<Vertex> vertexList;
 	    Iterator<Vertex> vertexIterator;
 	    Vertex vertex;
-	    Vector<VertexRepresentation> vertexRepresentations;
-	    Iterator<VertexRepresentation> vertexRepIterator;
-	    VertexRepresentation vertexRep;
+	    Vector<VertexRep> vertexReps;
+	    Iterator<VertexRep> vertexRepIterator;
+	    VertexRep vertexRep;
 	    
 	    Vector<Edge> edgeList;
 	    Iterator<Edge> edgeIterator;
@@ -74,8 +74,8 @@ public class PathwayGraphBuilder
 	        while (vertexIterator.hasNext())
 	        {
 	        	vertex = vertexIterator.next();
-	        	vertexRepresentations = vertex.getVertexRepresentations();
-	        	vertexRepIterator = vertexRepresentations.iterator();
+	        	vertexReps = vertex.getVertexReps();
+	        	vertexRepIterator = vertexReps.iterator();
 	        	while (vertexRepIterator.hasNext())
 	        	{
 	        		vertexRep = vertexRepIterator.next();

@@ -70,7 +70,7 @@ implements ViewManager
 			case VIEW:
 				
 			case PATHWAY_VIEW:
-				return new PathwayView( iNewId, refGeneralManager, null );				
+				//return new PathwayView( iNewId, refGeneralManager, null );				
 				
 			default:
 				throw new CerberusRuntimeException("StorageManagerSimple.createView() failed due to unhandled type [" +
@@ -78,5 +78,4 @@ implements ViewManager
 		}
 			
 	}
-
 }

@@ -1,6 +1,7 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
+import cerberus.data.view.rep.VertexRep;
 
 public class Vertex extends Element 
 {
@@ -16,12 +17,12 @@ public class Vertex extends Element
 	
 	private VertexType vertexType;
 	
-	private Vector<VertexRepresentation> vertexRepresentations;
+	private Vector<VertexRep> vertexReps;
 	
 	public Vertex(int iVertexID, String sName, String sType)
 	{	
 		super(iVertexID, sName);
-		vertexRepresentations = new Vector<VertexRepresentation>();
+		vertexReps = new Vector<VertexRep>();
 		
 		if (sType.equals("ortholog"))
 			vertexType = VertexType.ortholog;
@@ -37,14 +38,14 @@ public class Vertex extends Element
 			vertexType = VertexType.map;
 	}
 	
-	public void addVertexRepresentation(VertexRepresentation vertexRep)
+	public void addVertexRep(VertexRep vertexRep)
 	{
-		vertexRepresentations.add(vertexRep);
+		vertexReps.add(vertexRep);
 	}
 
-	public Vector<VertexRepresentation> getVertexRepresentations()
+	public Vector<VertexRep> getVertexReps()
 	{
-		return vertexRepresentations;
+		return vertexReps;
 	}
 
 	public VertexType getVertexType() 

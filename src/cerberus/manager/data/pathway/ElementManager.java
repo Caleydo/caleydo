@@ -5,8 +5,8 @@ import java.util.HashMap;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.Vertex;
 import cerberus.data.pathway.element.Edge;
-import cerberus.data.pathway.element.VertexRepresentation;
-import cerberus.data.pathway.element.EdgeRepresentation;
+import cerberus.data.view.rep.VertexRep;
+import cerberus.data.view.rep.EdgeRep;
 
 /**
  * The element manager is in charge for handling
@@ -74,10 +74,10 @@ public class ElementManager
 	public void createVertexRepresentation(String sName, int iHeight, int iWidth,
 			int iXPosition, int iYPosition)
 	{
-		VertexRepresentation newVertexRep = new VertexRepresentation(sName, iHeight, iWidth,
+		VertexRep newVertexRep = new VertexRep(sName, iHeight, iWidth,
 			iXPosition, iYPosition);
 		
-		currentVertex.addVertexRepresentation(newVertexRep);
+		currentVertex.addVertexRep(newVertexRep);
 	}
 	
 	public void createEdge(int iVertexId1, int iVertexId2, String sType)
