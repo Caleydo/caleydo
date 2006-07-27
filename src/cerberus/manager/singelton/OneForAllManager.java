@@ -497,6 +497,8 @@ implements GeneralManagerSingelton {
 			return refViewCanvasManager;
 		case COMMAND:
 			return refCommandManager;
+		case SWT_GUI:
+			return refSWTGUIManager;
 		
 		default:
 			throw new CerberusRuntimeException("Error in OneForAllManager.getManagerByBaseType() unsupported type " +

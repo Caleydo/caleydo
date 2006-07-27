@@ -1,7 +1,10 @@
 package cerberus.application.prototype;
 
+import cerberus.manager.gui.SWTGUIManagerSimple;
 import cerberus.manager.singelton.OneForAllManager;
+import cerberus.manager.view.ViewManagerSimple;
 import cerberus.data.loader.MicroArrayLoader;
+import cerberus.manager.type.ManagerObjectType;
 
 public class CerberusPrototype 
 {
@@ -15,6 +18,9 @@ public class CerberusPrototype
 			new MicroArrayLoader(oneForAllManager.getGeneralManager(), sRawDataFileName);
 		microArrayLoader.loadData();
 		
-		//oneForAllManager.createNewId()
+		ViewManagerSimple viewManager = (ViewManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		
+		SWTGUIManagerSimple swtGuiManager = (SWTGUIManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.SWT_GUI);
+
 	}
 }

@@ -106,6 +106,8 @@ public enum ManagerObjectType {
 	 * GUI_COMPONENT
 	 */
 	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
+	
+	SWT_GUI(ManagerType.SWT_GUI),
 
 	
 	/*

@@ -26,6 +26,8 @@ public interface Singelton {
 	
 	public abstract GeneralManager getManager(ManagerType type);
 	
+	public abstract ViewManager getViewManager(ManagerType type);
+	
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.
@@ -58,4 +60,6 @@ public interface Singelton {
 	public abstract void setLoggerManager(LoggerManager refLoggerManager);
 
 	public abstract void setSWTGUIManager(SWTGUIManager refSWTGUIManager);
+	
+	public abstract void setViewManager(ViewManager refViewManager);
 }

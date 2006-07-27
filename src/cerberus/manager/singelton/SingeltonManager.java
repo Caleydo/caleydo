@@ -20,6 +20,7 @@ import cerberus.manager.SetManager;
 import cerberus.manager.Singelton;
 import cerberus.manager.StorageManager;
 import cerberus.manager.ViewCanvasManager;
+import cerberus.manager.ViewManager;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
 import cerberus.manager.type.ManagerType;
@@ -59,6 +60,8 @@ public class SingeltonManager implements Singelton {
 	protected LoggerManager refLoggerManager = null;
 	
 	protected SWTGUIManager refSWTGUIManager = null;
+	
+	protected ViewManager refViewManager = null;
 	
 	
 	/**
@@ -119,10 +122,38 @@ public class SingeltonManager implements Singelton {
 	}
 	
 	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getViewManager()
+	 */
+	public ViewManager getViewManager(ManagerType type) {
+		return refViewManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
+	 */
+	public CommandManager getCommandManager() {
+		return refCommandManager;
+	}
+	
+	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getSWTGUIManager()
 	 */
 	public SWTGUIManager getSWTGUIManager() {
 		return refSWTGUIManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getDComponentManager()
+	 */
+	public DComponentManager getDComponentManager() {
+		return refDComponentManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getLoggerManager()
+	 */
+	public LoggerManager getLoggerManager() {
+		return this.refLoggerManager;
 	}
 	
 	public void setMenuManager( MenuManager setMenuManager ) {
@@ -158,30 +189,21 @@ public class SingeltonManager implements Singelton {
 		
 		refViewCanvasManager = setViewCanvasManager;
 	}
+	
+	public void setViewManager( ViewManager setViewManager ) {
+		assert setViewManager != null : "ViewManager was null";
+		
+		refViewManager = setViewManager;
+	}	
 
 	public void setSWTGUIManager( SWTGUIManager setSWTGUIManager ) {
 		assert setSWTGUIManager != null : "SWTGUIManager was null";
 		
 		refSWTGUIManager = setSWTGUIManager;
 	}
-
-	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
-	 */
-	public CommandManager getCommandManager() {
-		return refCommandManager;
-	}
 	
 	public void setCommandManager( CommandManager setCommandManager ) {
 		refCommandManager = setCommandManager;
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getDComponentManager()
-	 */
-	public DComponentManager getDComponentManager() {
-		return refDComponentManager;
 	}
 	
 	public void setDComponentManager( DComponentManager setDComponentManager ) {
@@ -196,17 +218,9 @@ public class SingeltonManager implements Singelton {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getLoggerManager()
-	 */
-	public LoggerManager getLoggerManager() {
-		return this.refLoggerManager;
-	}
-	
-	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getManager(cerberus.manager.type.ManagerType)
 	 */
 	public GeneralManager getManager( ManagerType type) {
-		
 		
 		switch ( type ) 
 		{
@@ -284,7 +298,4 @@ public class SingeltonManager implements Singelton {
 		}
 		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0..99] ");
 	}
-	
-
-
 }

@@ -1,11 +1,7 @@
 package cerberus.manager.gui;
 
-import java.util.Vector;
-
-import cerberus.data.collection.Storage;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SWTGUIManager;
-import cerberus.manager.Singelton;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.type.ManagerObjectType;
 
@@ -24,6 +20,11 @@ implements SWTGUIManager
 			
 	}
 
+	public void createWdiget()
+	{
+		
+	}
+	
 	public boolean hasItem(int iItemId) {
 		// TODO Auto-generated method stub
 		return false;
