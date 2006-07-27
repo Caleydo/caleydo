@@ -2,11 +2,10 @@ package cerberus.manager.data.pathway;
 
 import java.util.HashMap;
 
-import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.Vertex;
 import cerberus.data.pathway.element.Edge;
-import cerberus.data.view.rep.VertexRep;
-import cerberus.data.view.rep.EdgeRep;
+import cerberus.data.view.rep.pathway.VertexRepInter;
+import cerberus.data.view.rep.pathway.jgraph.VertexRep;
 
 /**
  * The element manager is in charge for handling
@@ -74,7 +73,7 @@ public class ElementManager
 	public void createVertexRepresentation(String sName, int iHeight, int iWidth,
 			int iXPosition, int iYPosition)
 	{
-		VertexRep newVertexRep = new VertexRep(sName, iHeight, iWidth,
+		VertexRepInter newVertexRep = new VertexRep(sName, iHeight, iWidth,
 			iXPosition, iYPosition);
 		
 		currentVertex.addVertexRep(newVertexRep);

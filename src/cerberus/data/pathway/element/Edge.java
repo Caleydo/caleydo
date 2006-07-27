@@ -1,7 +1,7 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
-import cerberus.data.view.rep.pathway.jgraph.EdgeRep;
+import cerberus.data.view.rep.pathway.EdgeRepInter;
 
 public class Edge extends Element
 {
@@ -17,7 +17,7 @@ public class Edge extends Element
 	
 	private EdgeType vertexType;
 	
-	private Vector<EdgeRep> edgeReps;
+	private Vector<EdgeRepInter> edgeReps;
 	
 	private int iElementId1 = 0;
 	private int iElementId2 = 0;

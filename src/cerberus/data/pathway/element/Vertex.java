@@ -1,7 +1,7 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
-import cerberus.data.view.rep.pathway.jgraph.VertexRep;
+import cerberus.data.view.rep.pathway.VertexRepInter;
 
 
 public class Vertex extends Element 
@@ -18,12 +18,12 @@ public class Vertex extends Element
 	
 	private VertexType vertexType;
 	
-	private Vector<VertexRep> vertexReps;
+	private Vector<VertexRepInter> vertexReps;
 	
 	public Vertex(int iVertexID, String sName, String sType)
 	{	
 		super(iVertexID, sName);
-		vertexReps = new Vector<VertexRep>();
+		vertexReps = new Vector<VertexRepInter>();
 		
 		if (sType.equals("ortholog"))
 			vertexType = VertexType.ortholog;
@@ -39,12 +39,12 @@ public class Vertex extends Element
 			vertexType = VertexType.map;
 	}
 	
-	public void addVertexRep(VertexRep vertexRep)
+	public void addVertexRep(VertexRepInter vertexRep)
 	{
 		vertexReps.add(vertexRep);
 	}
 
-	public Vector<VertexRep> getVertexReps()
+	public Vector<VertexRepInter> getVertexReps()
 	{
 		return vertexReps;
 	}
