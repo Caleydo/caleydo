@@ -18,7 +18,6 @@ import cerberus.data.collection.view.ViewCanvas;
 import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
-
 /**
  * Manges all Set's.
  * 
@@ -27,17 +26,16 @@ import cerberus.net.dwt.swing.mdi.DInternalFrame;
  * @author Michael Kalkusch
  *
  */
-public interface ViewCanvasManager
-extends GeneralManager
+public interface ViewCanvasManager extends GeneralManager
 {
-	
-	public ViewCanvas createCanvas( final ManagerObjectType useViewCanvasType,
-			final String sParameter );
-		
-	public boolean deleteCanvas( ViewCanvas deleteSet );
-	
-	public boolean deleteCanvas( final int iItemId );
-	
+
+	public ViewCanvas createCanvas(final ManagerObjectType useViewCanvasType,
+			final String sParameter);
+
+	public boolean deleteCanvas(ViewCanvas deleteSet);
+
+	public boolean deleteCanvas(final int iItemId);
+
 	/**
 	 * Get ViewCanvas linked to the unique Id iItemId.
 	 * Note: Does not return any WorkspaceSwingFrame
@@ -46,15 +44,15 @@ extends GeneralManager
 	 * 
 	 * @return ViewCanvas linke to the unique Id
 	 */
-	public ViewCanvas getItemCanvas( final int iItemId );
-	
+	public ViewCanvas getItemCanvas(final int iItemId);
+
 	/**
 	 * Get an array containig all ViewCanvas objects, but not the WorkspaceSwingFrame / Frame obejcts.
 	 * 
 	 * @return array with all ViewCanvas objects, excluding all WorkspaceSwingFrame
 	 */
 	public ViewCanvas[] getAllCanvasItems();
-	
+
 	/**
 	 * Creates a new Internal Frame as child Frame of the Frame addressed via iTargetFrameId.
 	 * Note: Same result as createCanvas( ManagerObjectType.VIEW_NEW_IFRAME , * )
@@ -69,7 +67,7 @@ extends GeneralManager
 	 */
 	public DInternalFrame createNewInternalFrame(final int iTargetFrameId,
 			final String sAditionalParameter);
-		
+
 	/**
 	 * Creates a new WorkspaceSwingFrame / JFrame 
 	 * 
@@ -78,12 +76,12 @@ extends GeneralManager
 	 * 
 	 * @return new frame
 	 */
-	public WorkspaceSwingFrame createWorkspace( 
+	public WorkspaceSwingFrame createWorkspace(
 			final ManagerObjectType useViewCanvasType,
-			final String sAditionalParameter );
-	
-	public boolean deleteWorkspace( final int iItemId );
-	
+			final String sAditionalParameter);
+
+	public boolean deleteWorkspace(final int iItemId);
+
 	/**
 	 * Get a workspace addressed via its unique Id
 	 * 
@@ -91,7 +89,7 @@ extends GeneralManager
 	 * 
 	 * @return frame linked to iItemId
 	 */
-	public WorkspaceSwingFrame getItemWorkspace( final int iItemId );
+	public WorkspaceSwingFrame getItemWorkspace(final int iItemId);
 
 	/**
 	 * Get iterator for all workspace fames.
@@ -99,18 +97,18 @@ extends GeneralManager
 	 * @return iterator for all workspace fames
 	 */
 	public Iterator<WorkspaceSwingFrame> getWorkspaceIterator();
-	
+
 	/*
 	 *  (non-Javadoc)
 	 * @see prometheus.manager.GeneralManager#getManagerType()
 	 */
 	public ManagerObjectType getManagerType();
-	
+
 	/**
 	 * Adds all ViewCanvas components to the parent JFrame.
 	 * 
 	 * @param refJFrame parent JFrame
 	 */
-	public void addAllViewCanvas( JFrame refJFrame );
-	
+	public void addAllViewCanvas(JFrame refJFrame);
+
 }

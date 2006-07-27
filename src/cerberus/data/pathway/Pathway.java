@@ -2,8 +2,8 @@ package cerberus.data.pathway;
 
 import java.util.Vector;
 
-import cerberus.data.pathway.element.Vertex;
-import cerberus.data.pathway.element.Edge;
+import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.data.pathway.element.PathwayEdge;
 
 public class Pathway 
 {
@@ -12,13 +12,13 @@ public class Pathway
 	private String sImageLink;
 	private String sInformationLink;
 	
-	private Vector<Vertex> vertexList;
-	private Vector<Edge> edgeList;
+	private Vector<PathwayVertex> vertexList;
+	private Vector<PathwayEdge> edgeList;
 
 	public Pathway(String sTitle, String sImageLink, String sLink, int iPathwayID)
 	{
-		vertexList = new Vector<Vertex>();
-		edgeList = new Vector<Edge>();
+		vertexList = new Vector<PathwayVertex>();
+		edgeList = new Vector<PathwayEdge>();
 		
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
@@ -26,22 +26,22 @@ public class Pathway
 		this.iPathwayID = iPathwayID;
 	}
 	
-	public void addVertex(Vertex vertex)
+	public void addVertex(PathwayVertex vertex)
 	{
 		vertexList.add(vertex);
 	}
 	
-	public void addEdge(Edge edge)
+	public void addEdge(PathwayEdge edge)
 	{
 		edgeList.add(edge);
 	}
 
-	public Vector<Vertex> getVertexList() 
+	public Vector<PathwayVertex> getVertexList() 
 	{
 		return vertexList;
 	}
 
-	public Vector<Edge> getEdgeList() 
+	public Vector<PathwayEdge> getEdgeList() 
 	{
 		return edgeList;
 	}

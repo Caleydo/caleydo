@@ -1,6 +1,6 @@
 package cerberus.data.view.rep.pathway;
 
-public interface VertexRepInter
+public interface PathwayVertexRepInter
 {
 
 	public abstract int getIXPosition();

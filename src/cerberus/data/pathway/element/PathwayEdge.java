@@ -1,9 +1,9 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
-import cerberus.data.view.rep.pathway.EdgeRepInter;
+import cerberus.data.view.rep.pathway.PathwayEdgeRepInter;
 
-public class Edge extends Element
+public class PathwayEdge extends PathwayElement
 {
 	public enum EdgeType
 	{
@@ -17,14 +17,14 @@ public class Edge extends Element
 	
 	private EdgeType vertexType;
 	
-	private Vector<EdgeRepInter> edgeReps;
+	private Vector<PathwayEdgeRepInter> edgeReps;
 	
 	private int iElementId1 = 0;
 	private int iElementId2 = 0;
 	private String sType = "";
 	private int iCompoundId = -1;
 
-	public Edge(int iElementId1, int iElementId2, String sType)
+	public PathwayEdge(int iElementId1, int iElementId2, String sType)
 	{
 		this.iElementId1 = iElementId1;
 		this.iElementId2 = iElementId2;

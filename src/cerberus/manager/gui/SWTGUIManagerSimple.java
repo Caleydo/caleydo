@@ -4,6 +4,9 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.SWTGUIManager;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
+import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.view.gui.Widget;
 
 public class SWTGUIManagerSimple 
 extends AbstractManagerImpl
@@ -20,9 +23,30 @@ implements SWTGUIManager
 			
 	}
 
-	public void createWdiget()
-	{
-		
+	public Widget createWdiget()
+	{	
+//		if (useWidgetType.getGroupType() != ManagerType.VIEW)
+//		{
+//			throw new CerberusRuntimeException(
+//					"try to create object with wrong type "
+//							+ useViewType.name());
+//		}
+//
+//		final int iNewId = this.createNewId(useViewType);
+//
+//		switch (useViewType)
+//		{
+//		case VIEW:
+//
+//		case PATHWAY_VIEW:
+//			return new PathwayViewRep(iNewId);
+//
+//		default:
+//			throw new CerberusRuntimeException(
+//					"StorageManagerSimple.createView() failed due to unhandled type ["
+//							+ useViewType.toString() + "]");
+//		}
+		return null;
 	}
 	
 	public boolean hasItem(int iItemId) {

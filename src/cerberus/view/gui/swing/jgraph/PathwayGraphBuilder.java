@@ -2,10 +2,10 @@ package cerberus.view.gui.swing.jgraph;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.manager.data.pathway.PathwayManager;
-import cerberus.data.pathway.element.Vertex;
-import cerberus.data.view.rep.pathway.VertexRepInter;
-import cerberus.data.view.rep.pathway.jgraph.VertexRep;
-import cerberus.data.pathway.element.Edge;
+import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.data.view.rep.pathway.PathwayVertexRepInter;
+import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
+import cerberus.data.pathway.element.PathwayEdge;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
@@ -54,16 +54,16 @@ public class PathwayGraphBuilder
 		Pathway pathway;
 		Iterator<Pathway> pathwayIterator = pathwayLUT.values().iterator();
 	    
-	    Vector<Vertex> vertexList;
-	    Iterator<Vertex> vertexIterator;
-	    Vertex vertex;
-	    Vector<VertexRepInter> vertexReps;
-	    Iterator<VertexRepInter> vertexRepIterator;
-	    VertexRep vertexRep;
+	    Vector<PathwayVertex> vertexList;
+	    Iterator<PathwayVertex> vertexIterator;
+	    PathwayVertex vertex;
+	    Vector<PathwayVertexRepInter> vertexReps;
+	    Iterator<PathwayVertexRepInter> vertexRepIterator;
+	    PathwayVertexRep vertexRep;
 	    
-	    Vector<Edge> edgeList;
-	    Iterator<Edge> edgeIterator;
-	    Edge edge;
+	    Vector<PathwayEdge> edgeList;
+	    Iterator<PathwayEdge> edgeIterator;
+	    PathwayEdge edge;
 	    
 	    
 	    while (pathwayIterator.hasNext()) 
@@ -79,7 +79,7 @@ public class PathwayGraphBuilder
 	        	vertexRepIterator = vertexReps.iterator();
 	        	while (vertexRepIterator.hasNext())
 	        	{
-	        		vertexRep = (VertexRep) vertexRepIterator.next();
+	        		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
 	        		createVertex(vertex, vertexRep.getSName(), 
 	        				vertexRep.getIHeight(), vertexRep.getIWidth(), 
 	        				vertexRep.getIXPosition(), vertexRep.getIYPosition(),
@@ -109,8 +109,8 @@ public class PathwayGraphBuilder
 	    }
 	}
 	
-	public void createVertex(Vertex vertex, String sTitle, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition, Vertex.VertexType vertexType)
+	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 
+			int iXPosition, int iYPosition, PathwayVertex.VertexType vertexType)
 	{	
 		//create node
 		cell = new DefaultGraphCell(sTitle);
@@ -120,11 +120,11 @@ public class PathwayGraphBuilder
 		GraphConstants.setAutoSize(cell.getAttributes(), true);
 		
 		//assign vertex color
-		if (vertexType == Vertex.VertexType.enzyme)
+		if (vertexType == PathwayVertex.VertexType.enzyme)
 			GraphConstants.setGradientColor(cell.getAttributes(), Color.orange);
-		else if (vertexType == Vertex.VertexType.compound)
+		else if (vertexType == PathwayVertex.VertexType.compound)
 			GraphConstants.setGradientColor(cell.getAttributes(), Color.green);
-		else if (vertexType == Vertex.VertexType.map)
+		else if (vertexType == PathwayVertex.VertexType.map)
 			GraphConstants.setGradientColor(cell.getAttributes(), Color.yellow);
 		
 		

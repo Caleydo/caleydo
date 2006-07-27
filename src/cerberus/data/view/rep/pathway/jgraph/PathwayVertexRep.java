@@ -1,8 +1,8 @@
 package cerberus.data.view.rep.pathway.jgraph;
 
-import cerberus.data.view.rep.pathway.VertexRepInter;
+import cerberus.data.view.rep.pathway.PathwayVertexRepInter;
 
-public class VertexRep implements VertexRepInter 
+public class PathwayVertexRep implements PathwayVertexRepInter 
 {
 	private String sName;
 	private int iHeight = 0;
@@ -10,7 +10,7 @@ public class VertexRep implements VertexRepInter
 	private int iXPosition = 0;
 	private int iYPosition = 0;
 
-	public VertexRep(String sName, int iHeight, int iWidth, 
+	public PathwayVertexRep(String sName, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition) 
 	{
 		this.sName = sName;

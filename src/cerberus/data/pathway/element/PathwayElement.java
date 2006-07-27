@@ -1,15 +1,15 @@
 package cerberus.data.pathway.element;
 
-public class Element 
+public class PathwayElement 
 {	
 	private int iElementId = 0;
 	//protected int iElementType = 0;
 	private String sElementTitle = "";
 
-	public Element()
+	public PathwayElement()
 	{}
 	
-	public Element(int iElementId, String sElementTitle)
+	public PathwayElement(int iElementId, String sElementTitle)
 	{
 		this.iElementId = iElementId;
 		//this.iElementType = iElementType;

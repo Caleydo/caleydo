@@ -1,10 +1,10 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
-import cerberus.data.view.rep.pathway.VertexRepInter;
+import cerberus.data.view.rep.pathway.PathwayVertexRepInter;
 
 
-public class Vertex extends Element 
+public class PathwayVertex extends PathwayElement 
 {
 	public enum VertexType
 	{
@@ -18,12 +18,12 @@ public class Vertex extends Element
 	
 	private VertexType vertexType;
 	
-	private Vector<VertexRepInter> vertexReps;
+	private Vector<PathwayVertexRepInter> vertexReps;
 	
-	public Vertex(int iVertexID, String sName, String sType)
+	public PathwayVertex(int iVertexID, String sName, String sType)
 	{	
 		super(iVertexID, sName);
-		vertexReps = new Vector<VertexRepInter>();
+		vertexReps = new Vector<PathwayVertexRepInter>();
 		
 		if (sType.equals("ortholog"))
 			vertexType = VertexType.ortholog;
@@ -39,12 +39,12 @@ public class Vertex extends Element
 			vertexType = VertexType.map;
 	}
 	
-	public void addVertexRep(VertexRepInter vertexRep)
+	public void addVertexRep(PathwayVertexRepInter vertexRep)
 	{
 		vertexReps.add(vertexRep);
 	}
 
-	public Vector<VertexRepInter> getVertexReps()
+	public Vector<PathwayVertexRepInter> getVertexReps()
 	{
 		return vertexReps;
 	}
