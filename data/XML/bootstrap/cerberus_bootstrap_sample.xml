@@ -6,8 +6,12 @@
   
    <FrameState>
 
-  <JFrame id="6601900" title="S-JOGL Histogram external -SwingJogl-" name="frame2" type="HISTOGRAM" x="300" y="54" width="450" height="368" visible="true" >
+  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
+    <JInternalFrame id="6603900" title="Collection Browser -Storage- INTERNAL" name="null" type="JBROWSER_STORAGE" x="1382" y="23" width="362" height="108" visible="true" > </JInternalFrame>
+     <JInternalFrame id="6607900" title="Collection Browser -Set- INTERNAL" name="null" type="JBROWSER_SELECTION" x="1408" y="185" width="333" height="146" visible="true" > </JInternalFrame>
+    <JInternalFrame id="6608900" title="S-JOGL-I gears -SwingJogl inner-" name="null" type="GEARS" x="0" y="100" width="400" height="300" visible="true" > </JInternalFrame>
   </JFrame>
+  
   <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
     <JInternalFrame id="6603900" title="Collection Browser -Storage- INTERNAL" name="null" type="JBROWSER_STORAGE" x="1382" y="23" width="362" height="108" visible="true" > </JInternalFrame>
     <JInternalFrame id="6604900" title="S-JOGL-I Histogram -SwingJogl inner-" name="null" type="HISTOGRAM" x="357" y="11" width="335" height="278" visible="true" > </JInternalFrame>
@@ -34,6 +38,15 @@
      
      <Cmd mementoId="-1" process="memento" type="LOAD_DATA_FILE" details="filename.gpr" />
      <Cmd mementoId="-2" process="memento" type="OPEN_VIEW" details="" />
+     
+     <CmdQueue type="COMMAND_QUEUE_OPEN" process="ON_DEMAND" cmdQueueId="1" cmdId="7709600">
+     
+       <Cmd mementoId="0" process="on load" type="LOAD_DATA_FILE" details="filename.gpr" load_pattern="" />
+       <Cmd mementoId="0" process="on load" type="LOAD_DATA_FILE" details="filename.gpr" />
+       
+     </CmdQueue>     
+     <CmdQueue type="COMMAND_QUEUE_RUN"  process="RUN_QUEUE" cmdqueue_id="1" cmdId="7711600" queue_thread="-1" queue_thread_wait="-1" />
+     
    </CommandBuffer>
    
   </Application>
