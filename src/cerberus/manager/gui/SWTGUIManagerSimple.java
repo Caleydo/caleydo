@@ -7,13 +7,16 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.Widget;
+import cerberus.view.gui.swt.SWTNativeWidget;
+import cerberus.view.gui.swt.SWTEmbeddedJoglWidget;
+import cerberus.view.gui.swt.SWTEmbeddedGraphWidget;
 
 public class SWTGUIManagerSimple 
 extends AbstractManagerImpl
 implements SWTGUIManager
 {
 
-	public SWTGUIManagerSimple( GeneralManager setGeneralManager) 
+	public SWTGUIManagerSimple(GeneralManager setGeneralManager) 
 	{	
 		super( setGeneralManager );
 		
@@ -23,30 +26,36 @@ implements SWTGUIManager
 			
 	}
 
-	public Widget createWdiget()
+	public void createApplicationFrame()
+	{
+		
+	}
+	
+	public Widget createWdiget(final ManagerObjectType useWidgetType)
 	{	
-//		if (useWidgetType.getGroupType() != ManagerType.VIEW)
-//		{
-//			throw new CerberusRuntimeException(
-//					"try to create object with wrong type "
-//							+ useViewType.name());
-//		}
-//
-//		final int iNewId = this.createNewId(useViewType);
-//
-//		switch (useViewType)
-//		{
-//		case VIEW:
-//
-//		case PATHWAY_VIEW:
-//			return new PathwayViewRep(iNewId);
-//
-//		default:
-//			throw new CerberusRuntimeException(
-//					"StorageManagerSimple.createView() failed due to unhandled type ["
-//							+ useViewType.toString() + "]");
-//		}
-		return null;
+		if (useWidgetType.getGroupType() != ManagerType.VIEW)
+		{
+			throw new CerberusRuntimeException(
+					"try to create object with wrong type "
+							+ useWidgetType.name());
+		}
+
+		//TODO: save id somewhere
+		final int iNewId = this.createNewId(useWidgetType);
+
+		switch (useWidgetType)
+		{
+		case GUI_SWT_NATIVE_WIDGET:
+			return new SWTNativeWidget();
+		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
+			return new SWTEmbeddedJoglWidget();
+		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
+			//return new SWTEmbeddedGraphWidget();
+		default:
+			throw new CerberusRuntimeException(
+					"StorageManagerSimple.createView() failed due to unhandled type ["
+							+ useWidgetType.toString() + "]");
+		}
 	}
 	
 	public boolean hasItem(int iItemId) {

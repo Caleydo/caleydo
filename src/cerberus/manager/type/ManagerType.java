@@ -38,7 +38,9 @@ public enum ManagerType {
 				
 		VIEW("view manager"),				
 		
-		SWT_GUI("SWT GUI manager"),
+		GUI_SWT("SWT GUI manager"),
+		
+		GUI_SWING("Sing GUI manager"),
 		
 		MENU("view menu manager", ManagerType.VIEW ),
 		

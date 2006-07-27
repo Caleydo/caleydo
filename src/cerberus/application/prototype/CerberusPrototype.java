@@ -19,8 +19,8 @@ public class CerberusPrototype
 		microArrayLoader.loadData();
 		
 		ViewManagerSimple viewManager = (ViewManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		viewManager.createView(ManagerObjectType.PATHWAY_VIEW);
 		
-		SWTGUIManagerSimple swtGuiManager = (SWTGUIManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.SWT_GUI);
-
+		SWTGUIManagerSimple swtGuiManager = (SWTGUIManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
 	}
 }

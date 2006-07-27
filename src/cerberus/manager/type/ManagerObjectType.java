@@ -25,7 +25,7 @@ public enum ManagerObjectType {
 	 */
 	
 	/**
-	 * This class is the fabtik itself befor assinging a type.
+	 * This class is the fabrik itself befor assinging a type.
 	 */
 	STORAGE(ManagerType.STORAGE),
 	
@@ -107,8 +107,20 @@ public enum ManagerObjectType {
 	 */
 	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
 	
-	SWT_GUI(ManagerType.SWT_GUI),
-
+	GUI_SWT(ManagerType.GUI_SWT),
+	
+	GUI_SWING(ManagerType.GUI_SWING),
+	
+	GUI_SWT_NATIVE_WIDGET(ManagerType.GUI_SWT),
+	
+	GUI_SWT_EMBEDDED_JOGL_WIDGET(ManagerType.GUI_SWT),
+	
+	GUI_SWT_EMBEDDED_JGRAPH_WIDGET(ManagerType.GUI_SWT),
+	
+	/*
+	 * COMMAND QUEUE
+	 */
+	
 	CMD_QUEUE(ManagerType.COMMAND),
 	
 	CMD_QUEUE_RUN(ManagerType.COMMAND),

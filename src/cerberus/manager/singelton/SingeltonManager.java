@@ -238,7 +238,7 @@ public class SingeltonManager implements Singelton {
 		
 			case MENU: return this.refMenuManager;
 			
-			case SWT_GUI: return this.refSWTGUIManager;
+			case GUI_SWT: return this.refSWTGUIManager;
 		
 			case NONE: 
 				throw new CerberusRuntimeException("No Manager for type 'NONE' available!");

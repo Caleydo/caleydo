@@ -497,7 +497,7 @@ implements GeneralManagerSingelton {
 			return refViewCanvasManager;
 		case COMMAND:
 			return refCommandManager;
-		case SWT_GUI:
+		case GUI_SWT:
 			return refSWTGUIManager;
 		
 		default:
