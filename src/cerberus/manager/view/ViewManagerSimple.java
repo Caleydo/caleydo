@@ -82,7 +82,7 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 		case VIEW:
 
 		case PATHWAY_VIEW:
-			return new PathwayViewRep(iNewId);
+			return new PathwayViewRep(iNewId, this.refGeneralManager);
 
 		default:
 			throw new CerberusRuntimeException(

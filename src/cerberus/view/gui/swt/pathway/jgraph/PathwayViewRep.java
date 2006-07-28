@@ -1,6 +1,11 @@
 package cerberus.view.gui.swt.pathway.jgraph;
 
+import java.awt.Frame;
+
+import cerberus.manager.GeneralManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.swt.pathway.PathwayViewInter;
+import cerberus.view.gui.swt.SWTEmbeddedGraphWidget;
 
 /**
  * In this class the real drawing of the Pathway happens.
@@ -13,24 +18,30 @@ import cerberus.view.gui.swt.pathway.PathwayViewInter;
  */
 public class PathwayViewRep implements PathwayViewInter
 {
-	final int iNewId;
+	protected final int iNewId;
+	protected GeneralManager refGeneralManager;
+	protected Frame refEmbeddedFrame;
 	
-	public PathwayViewRep(int iNewId)
+	public PathwayViewRep(int iNewId, GeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
+		this.refGeneralManager = refGeneralManager;
 	}
 
 	public void drawGraph()
 	{
-		
 	}
 	
-	private void retrieveNewWidget()
+	protected void retrieveNewWidget()
 	{
-		//GUIManager
+		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
+			(SWTEmbeddedGraphWidget)refGeneralManager.getSingelton()
+		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET);
+
+		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
 	}
 	
-	private void retrieveExistingWidget()
+	protected void retrieveExistingWidget()
 	{
 		
 	}

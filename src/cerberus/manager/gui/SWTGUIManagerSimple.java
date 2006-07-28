@@ -1,5 +1,7 @@
 package cerberus.manager.gui;
 
+import org.eclipse.swt.widgets.Composite;
+
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SWTGUIManager;
 import cerberus.manager.base.AbstractManagerImpl;
@@ -15,7 +17,8 @@ public class SWTGUIManagerSimple
 extends AbstractManagerImpl
 implements SWTGUIManager
 {
-
+	protected Composite refRootComposite;
+	
 	public SWTGUIManagerSimple(GeneralManager setGeneralManager) 
 	{	
 		super( setGeneralManager );
@@ -23,6 +26,8 @@ implements SWTGUIManager
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		
 		refGeneralManager.getSingelton().setSWTGUIManager( this );
+		
+		//refRootComposite = new Composite();
 			
 	}
 
@@ -31,7 +36,7 @@ implements SWTGUIManager
 		
 	}
 	
-	public Widget createWdiget(final ManagerObjectType useWidgetType)
+	public Widget createWidget(final ManagerObjectType useWidgetType)
 	{	
 		if (useWidgetType.getGroupType() != ManagerType.VIEW)
 		{
