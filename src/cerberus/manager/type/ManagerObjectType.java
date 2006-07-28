@@ -84,6 +84,10 @@ public enum ManagerObjectType {
 	
 	PATHWAY_VIEW(ManagerType.VIEW),
 	
+	TABLE_VIEW(ManagerType.VIEW),
+	
+	//deprecated
+	
 	VIEW_HISTOGRAM2D(ManagerType.VIEW),
 	
 	VIEW_HEATMAP2D(ManagerType.VIEW),

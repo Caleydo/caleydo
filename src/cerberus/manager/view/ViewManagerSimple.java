@@ -8,12 +8,13 @@ import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
+import cerberus.view.gui.swt.table.TableViewRep;
 
 public class ViewManagerSimple extends AbstractManagerImpl implements
 		ViewManager
 {
 
-	protected ViewManagerSimple(GeneralManager setGeneralManager)
+	public ViewManagerSimple(GeneralManager setGeneralManager)
 	{
 		super(setGeneralManager);
 
@@ -83,6 +84,8 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 
 		case PATHWAY_VIEW:
 			return new PathwayViewRep(iNewId, this.refGeneralManager);
+		case TABLE_VIEW:
+			return new TableViewRep(iNewId, this.refGeneralManager);
 
 		default:
 			throw new CerberusRuntimeException(

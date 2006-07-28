@@ -20,6 +20,7 @@ import cerberus.manager.Singelton;
 import cerberus.manager.StorageManager;
 import cerberus.manager.SWTGUIManager;
 import cerberus.manager.ViewCanvasManager;
+import cerberus.manager.ViewManager;
 import cerberus.manager.canvas.ViewCanvasManagerSimple;
 import cerberus.manager.command.CommandManagerSimple;
 import cerberus.manager.data.selection.SelectionManagerSimple;
@@ -30,10 +31,10 @@ import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.memento.MementoManagerSimple;
 import cerberus.manager.menu.MenuManagerSimple;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.view.ViewManagerSimple;
 import cerberus.manager.gui.SWTGUIManagerSimple;
 import cerberus.data.collection.Storage;
 import cerberus.data.xml.MementoXML;
-
 
 //import prometheus.data.collection.SelectionType; 
 //import prometheus.data.collection.SetType;
@@ -75,6 +76,8 @@ implements GeneralManagerSingelton {
 	protected CommandManager refCommandManager;
 	
 	protected LoggerManager refLoggerManager;
+	
+	protected ViewManager refViewManager;
 	
 	protected SWTGUIManager refSWTGUIManager;
 	
@@ -125,7 +128,9 @@ implements GeneralManagerSingelton {
 		refCommandManager = new CommandManagerSimple( this );
 		refMenuManager = new MenuManagerSimple( this );		
 		refLoggerManager = new ConsoleSimpleLogger( this );
+		refViewManager = new ViewManagerSimple( this );
 		refSWTGUIManager = new SWTGUIManagerSimple( this );
+		
 		
 		/**
 		 * Register managers to singelton ...
@@ -138,6 +143,7 @@ implements GeneralManagerSingelton {
 		refSingeltonManager.setStorageManager( refStorageManager );
 		refSingeltonManager.setMenuManager( refMenuManager );
 		refSingeltonManager.setLoggerManager( refLoggerManager );
+		refSingeltonManager.setViewManager ( refViewManager );
 		refSingeltonManager.setSWTGUIManager (refSWTGUIManager );
 	}
 	
@@ -494,7 +500,7 @@ implements GeneralManagerSingelton {
 		case STORAGE:
 			return refStorageManager;
 		case VIEW:
-			return refViewCanvasManager;
+			return refViewManager;
 		case COMMAND:
 			return refCommandManager;
 		case GUI_SWT:

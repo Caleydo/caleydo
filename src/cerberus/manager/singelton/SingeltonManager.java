@@ -234,7 +234,7 @@ public class SingeltonManager implements Singelton {
 		
 			case MEMENTO: return this.refMementoManager;
 				
-			case VIEW: return this.refViewCanvasManager;
+			case VIEW: return this.refViewManager;
 		
 			case MENU: return this.refMenuManager;
 			
