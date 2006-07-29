@@ -1,7 +1,5 @@
 package cerberus.view.gui.swt;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.view.gui.Widget;

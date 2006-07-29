@@ -1,7 +1,5 @@
 package cerberus.view.gui.swt.table;
 
-import java.awt.Frame;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -64,7 +62,6 @@ public class TableViewRep implements ViewInter
 	
 	protected void createTable()
 	{
-		
 		final Table table = new Table(refSWTContainer, SWT.BORDER | SWT.V_SCROLL);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
