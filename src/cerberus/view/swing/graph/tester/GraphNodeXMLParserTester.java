@@ -118,7 +118,7 @@ public class GraphNodeXMLParserTester extends JFrame {
 			 * Use data from parser to restore state...
 			 */ 
 			
-			System.out.println("PARS DONE\n  INFO:" +
+			System.out.println("PARSE DONE\n  INFO:" +
 					handler.getErrorMessage() );
 			
 			/**
