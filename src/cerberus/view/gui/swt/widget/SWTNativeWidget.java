@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt;
+package cerberus.view.gui.swt.widget;
 
 import org.eclipse.swt.widgets.Composite;
 

@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt;
+package cerberus.view.gui.swt.widget;
 
 import javax.media.opengl.GLCanvas;
 

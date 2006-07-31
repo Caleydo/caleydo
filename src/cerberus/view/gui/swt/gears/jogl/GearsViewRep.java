@@ -13,8 +13,8 @@ import com.sun.opengl.util.Animator;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.ViewInter;
-import cerberus.view.gui.swt.SWTEmbeddedGraphWidget;
-import cerberus.view.gui.swt.SWTEmbeddedJoglWidget;
+import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import demos.gears.Gears;
 
 public class GearsViewRep implements ViewInter

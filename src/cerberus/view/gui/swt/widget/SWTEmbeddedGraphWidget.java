@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt;
+package cerberus.view.gui.swt.widget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;

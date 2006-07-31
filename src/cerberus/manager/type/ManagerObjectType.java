@@ -84,7 +84,7 @@ public enum ManagerObjectType {
 	
 	PATHWAY_VIEW(ManagerType.VIEW),
 	
-	TABLE_VIEW(ManagerType.VIEW),
+	TEST_TABLE_VIEW(ManagerType.VIEW),
 	
 	GEARS_VIEW(ManagerType.VIEW),
 	

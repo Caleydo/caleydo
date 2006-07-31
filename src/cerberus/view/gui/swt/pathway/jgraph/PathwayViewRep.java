@@ -30,7 +30,7 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.swt.pathway.PathwayViewInter;
-import cerberus.view.gui.swt.SWTEmbeddedGraphWidget;
+import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
  * In this class the real drawing of the Pathway happens.

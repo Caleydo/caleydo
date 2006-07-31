@@ -9,7 +9,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
-import cerberus.view.gui.swt.table.TableViewRep;
+import cerberus.view.gui.swt.test.TestTableViewRep;
 
 public class ViewManagerSimple extends AbstractManagerImpl implements
 		ViewManager
@@ -85,8 +85,8 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 
 		case PATHWAY_VIEW:
 			return new PathwayViewRep(iNewId, this.refGeneralManager);
-		case TABLE_VIEW:
-			return new TableViewRep(iNewId, this.refGeneralManager);
+		case TEST_TABLE_VIEW:
+			return new TestTableViewRep(iNewId, this.refGeneralManager);
 		case GEARS_VIEW:
 			return new GearsViewRep(iNewId, this.refGeneralManager);
 

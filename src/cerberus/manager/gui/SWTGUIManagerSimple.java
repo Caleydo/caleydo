@@ -1,20 +1,12 @@
 package cerberus.manager.gui;
 
-import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.jgraph.graph.GraphConstants;
-
-import com.sun.opengl.util.Animator;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SWTGUIManager;
@@ -23,9 +15,9 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.Widget;
-import cerberus.view.gui.swt.SWTNativeWidget;
-import cerberus.view.gui.swt.SWTEmbeddedJoglWidget;
-import cerberus.view.gui.swt.SWTEmbeddedGraphWidget;
+import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
+import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 		SWTGUIManager

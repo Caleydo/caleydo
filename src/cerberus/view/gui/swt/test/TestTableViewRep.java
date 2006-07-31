@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.table;
+package cerberus.view.gui.swt.test;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -13,15 +13,15 @@ import org.eclipse.swt.widgets.TableItem;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.ViewInter;
-import cerberus.view.gui.swt.SWTNativeWidget;
+import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
-public class TableViewRep implements ViewInter
+public class TestTableViewRep implements ViewInter
 {
 	protected final int iNewId;
 	protected GeneralManager refGeneralManager;
 	protected Composite refSWTContainer;
 	
-	public TableViewRep(int iNewId, GeneralManager refGeneralManager)
+	public TestTableViewRep(int iNewId, GeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
