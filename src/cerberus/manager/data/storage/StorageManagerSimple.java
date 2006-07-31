@@ -21,6 +21,7 @@ import cerberus.manager.singelton.SingeltonManager;
 
 import cerberus.data.collection.Storage;
 //import cerberus.data.collection.StorageType;
+import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -32,6 +33,7 @@ public class StorageManagerSimple
 extends CollectionManager
 implements StorageManager {
 	
+	private Storage testStorage;
 	/**
 	 * Vector holds a list of all Storage's
 	 */
@@ -52,6 +54,22 @@ implements StorageManager {
 		vecStorage = new Vector< Storage > ( iInitSizeContainer );
 		
 		refGeneralManager.getSingelton().setStorageManager( this );
+		
+		/**
+		 * Test Storage...
+		 */
+		testStorage = new FlatThreadStorageSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
+				refGeneralManager,
+				/// pass no CollectionLock 
+				null);
+		
+		this.registerItem( testStorage, testStorage.getId(), ManagerObjectType.STORAGE_FLAT );
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( "STORAGE: testStorage created with Id =[" +
+				testStorage.getId() +"]");
+		/**
+		 * END: Test Storage...
+		 */
 			
 	}
 

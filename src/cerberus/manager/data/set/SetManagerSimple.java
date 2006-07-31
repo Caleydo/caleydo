@@ -16,7 +16,8 @@ import cerberus.manager.SetManager;
 import cerberus.manager.data.CollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
-//import cerberus.data.collection.Selection;
+import cerberus.data.collection.Storage;
+import cerberus.data.collection.Selection;
 import cerberus.data.collection.Set;
 //import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetFlatSimple;
@@ -43,7 +44,7 @@ implements SetManager {
 	 */
 	protected Vector<Set> vecSets;
 	
-	
+	private Set testSet;
 	
 	/**
 	 * 
@@ -57,9 +58,41 @@ implements SetManager {
 		
 		vecSets = new Vector< Set > ( iInitSizeContainer );
 		
-		refGeneralManager.getSingelton().setSetManager( this );			
+		refGeneralManager.getSingelton().setSetManager( this );		
+		
+		
 	}
 	
+	/**
+	 * Create a test Set.
+	 */
+	public void initManager() {
+		/**
+		 * Test Set...
+		 */
+		testSet = new SetPlanarSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
+				refGeneralManager );
+		
+		this.registerItem( testSet, testSet.getId(), ManagerObjectType.SET_PLANAR );
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet created with Id =[" +
+				testSet.getId() +"]");
+		
+		Selection getSelectionById = (Selection) refGeneralManager.getItem( 25201 );
+		Storage getStorageById = (Storage) refGeneralManager.getItem( 25301 );
+		
+		/* register Selection & Storage to Set ... */
+		testSet.setSelectionByDimAndIndex( getSelectionById, 0, 0 );
+		testSet.setStorageByDimAndIndex( getStorageById, 0, 0 );
+		
+		Set testMySet = (Set) refGeneralManager.getItem( 25101 );
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet get Set by Id; [" +
+				testSet.getId() +"] == [" + testMySet.getId() + "]_(test)");
+		/**
+		 * END: Test Set...
+		 */
+	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#createSet()

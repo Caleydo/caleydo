@@ -21,6 +21,7 @@ import cerberus.manager.Singelton;
 import cerberus.manager.StorageManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.ViewManager;
+import cerberus.manager.logger.ConsoleSimpleLogger;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
 import cerberus.manager.type.ManagerType;
@@ -37,6 +38,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  */
 public class SingeltonManager implements Singelton {
 
+	//private final GeneralManager refGeneralManager;
+	
 	protected DComponentManager refDComponentManager = null;
 	
 	protected ViewCanvasManager refViewCanvasManager = null;
@@ -73,8 +76,11 @@ public class SingeltonManager implements Singelton {
 	/**
 	 * Constructor
 	 */
-	public SingeltonManager() {
+	public SingeltonManager( final GeneralManager refGeneralManager ) {
 				
+		//this.refGeneralManager = refGeneralManager;
+		
+		refLoggerManager = new ConsoleSimpleLogger( refGeneralManager );
 	}
 	
 	/* (non-Javadoc)
@@ -243,9 +249,7 @@ public class SingeltonManager implements Singelton {
 			case NONE: 
 				throw new CerberusRuntimeException("No Manager for type 'NONE' available!");
 	
-			case LOGGER:
-				//TODO: fix this
-				//return this.refLoggerManager;
+			case LOGGER: return this.refLoggerManager;
 				
 			
 			default: 

@@ -21,6 +21,8 @@ import cerberus.data.collection.Selection;
 //import cerberus.data.collection.Storage;
 import cerberus.data.collection.selection.SelectionSingleBlock;
 import cerberus.data.collection.selection.SelectionMultiBlock;
+import cerberus.data.collection.set.SetPlanarSimple;
+import cerberus.data.collection.Selection;
 import cerberus.data.loader.MicroArrayLoader;
 import cerberus.data.xml.MementoXML;
 
@@ -34,6 +36,8 @@ public class SelectionManagerSimple
 extends CollectionManager
 implements SelectionManager
 {
+	
+	private Selection testSelection;
 	
 	/**
 	 * Vector holds a list of all Selection's
@@ -55,6 +59,23 @@ implements SelectionManager
 		vecSelection = new Vector< Selection > ( iInitSizeContainer );
 
 		refGeneralManager.getSingelton().setSelectionManager( this );
+		
+		/**
+		 * Test Selection...
+		 */
+		testSelection = new SelectionMultiBlock( 
+				this.createNewId(ManagerObjectType.SELECTION_MULTI_BLOCK),
+				refGeneralManager,
+				/// pass no CollectionLock 
+				null );
+		
+		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.SELECTION_MULTI_BLOCK );
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SELECTION: testSelection created with Id =[" +
+				testSelection.getId() +"]");
+		/**
+		 * END: Test Selection...
+		 */
 	}
 
 

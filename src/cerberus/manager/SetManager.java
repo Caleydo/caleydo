@@ -34,6 +34,12 @@ extends GeneralManager
 	
 	public Set[] getAllSetItems();
 	
+	/**
+	 * Initialize data structures prior using this manager.
+	 *
+	 */
+	public void initManager();
+	
 	//public ManagerObjectType getManagerType();
 	
 }

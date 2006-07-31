@@ -6,6 +6,8 @@ package cerberus.manager.logger;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.LoggerManager;
 import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.type.ManagerObjectType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author java
@@ -75,6 +77,61 @@ public class ConsoleLogger extends AbstractManagerImpl implements LoggerManager 
 	 */
 	public boolean isLogFlushed() {
 		return true;
+	}
+	
+	/**
+	 * @see cerberus.manager.GeneralManager#hasItem(int)
+	 */
+	public boolean hasItem(final int iItemId) {
+		throw new CerberusRuntimeException("LOGGER: does not support this methode hasItem()");
+	}
+
+	/**
+	 * @see cerberus.manager.GeneralManager#getItem(int)
+	 */
+	public Object getItem( final int iItemId) {
+		throw new CerberusRuntimeException("LOGGER: does not support this methode getItem()");
+	}
+	
+	/**
+	 * @see cerberus.manager.GeneralManager#size()
+	 */
+	public int size() {
+		return 0;
+	}
+
+	/**
+	 * @see cerberus.manager.GeneralManager#getManagerType()
+	 */
+	public ManagerObjectType getManagerType() {
+		return ManagerObjectType.LOGGER;
+	}
+	
+
+	/**
+	 * @see cerberus.manager.GeneralManager#registerItem(java.lang.Object, int, cerberus.manager.type.ManagerObjectType)
+	 */
+	public boolean registerItem( final Object registerItem, 
+			final int iItemId , 
+			final ManagerObjectType type )
+	{
+		throw new CerberusRuntimeException("LOGGER: does not support this methode registerItem()");
+	}
+	
+	
+	
+	/**
+	 * @see cerberus.manager.GeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
+	 */
+	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
+		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");
+	}
+	
+	/**
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
+	 */
+	public int createNewId( final ManagerObjectType setNewBaseType ) {
+		throw new CerberusRuntimeException("LOGGER: does not support this methode createNewId()");
 	}
 
 }

@@ -101,7 +101,7 @@ implements GeneralManagerSingelton {
 	public OneForAllManager( final SingeltonManager sef_SingeltonManager ) {
 		
 		if ( refSingeltonManager == null ) {
-			refSingeltonManager = new SingeltonManager();
+			refSingeltonManager = new SingeltonManager( this );
 		} else {
 			refSingeltonManager = sef_SingeltonManager;			
 		}
@@ -119,9 +119,9 @@ implements GeneralManagerSingelton {
 	
 	protected void initAll() {
 		
-		refSetManager = new SetManagerSimple(this, 4);
 		refStorageManager = new StorageManagerSimple(this, 4);
 		refSelectionManager = new SelectionManagerSimple(this, 4);
+		refSetManager = new SetManagerSimple(this, 4);
 		refMementoManager = new MementoManagerSimple(this);
 		refDComponentManager = new DComponentSwingFactoryManager(this);
 		refViewCanvasManager = new ViewCanvasManagerSimple( this );
@@ -145,6 +145,8 @@ implements GeneralManagerSingelton {
 		refSingeltonManager.setLoggerManager( refLoggerManager );
 		refSingeltonManager.setViewManager ( refViewManager );
 		refSingeltonManager.setSWTGUIManager (refSWTGUIManager );
+		
+		refSetManager.initManager();
 	}
 	
 	/* (non-Javadoc)

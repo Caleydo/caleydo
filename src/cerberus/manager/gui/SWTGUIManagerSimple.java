@@ -39,7 +39,7 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 
 		refWidgetContainer = new Vector<Widget>();
 
-		createApplicationFrame();
+		//createApplicationFrame();
 	}
 
 	public void createApplicationFrame()

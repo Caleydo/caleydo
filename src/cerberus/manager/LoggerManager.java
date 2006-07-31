@@ -10,7 +10,7 @@ import cerberus.manager.GeneralManager;
  *
  */
 public interface LoggerManager 
-// extends GeneralManager 
+extends GeneralManager 
 {
 
 	public void logMsg( String info );

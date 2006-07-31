@@ -33,7 +33,7 @@ public abstract class GeneralManagerImpl implements GeneralManager {
 		if ( dummySingelton != null ) {
 			this.refSingelton = dummySingelton;
 		} else {
-			this.refSingelton = new SingeltonManager();	
+			this.refSingelton = new SingeltonManager( this );	
 		}
 		
 	}

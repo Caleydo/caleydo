@@ -154,6 +154,11 @@ public enum ManagerObjectType {
 	 */
 	COMMAND(ManagerType.COMMAND ),
 	
+	/**
+	 * Logger
+	 */
+	LOGGER(ManagerType.LOGGER),
+	
 	ALL_IN_ONE(ManagerType.FABRIK);
 	
 	

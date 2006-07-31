@@ -95,7 +95,7 @@ implements GeneralManagerSingelton {
 	public OneForAllJoglManager( final SingeltonManager sef_SingeltonManager ) {
 		
 		if ( refSingeltonManager == null ) {
-			refSingeltonManager = new SingeltonManager();
+			refSingeltonManager = new SingeltonManager( this );
 		} else {
 			refSingeltonManager = sef_SingeltonManager;			
 		}
