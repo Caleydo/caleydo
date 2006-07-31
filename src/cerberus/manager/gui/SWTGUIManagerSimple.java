@@ -56,7 +56,7 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 
 		refShell = new Shell(refDisplay);
 		refShell.setLayout(new GridLayout());
-		refShell.setSize(800, 600);
+		refShell.setSize(410, 1000);
 	}
 
 	public void runApplication()
@@ -90,7 +90,8 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 			refWidgetContainer.add(newSWTNativeWidget);
 			return newSWTNativeWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			SWTEmbeddedJoglWidget newSWTEmbeddedJoglWidget = new SWTEmbeddedJoglWidget();
+			SWTEmbeddedJoglWidget newSWTEmbeddedJoglWidget = new SWTEmbeddedJoglWidget(
+					new Composite(refShell, SWT.EMBEDDED));
 			refWidgetContainer.add(newSWTEmbeddedJoglWidget);
 			return newSWTEmbeddedJoglWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:

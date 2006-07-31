@@ -9,8 +9,8 @@ import cerberus.view.gui.Widget;
 
 public class SWTEmbeddedGraphWidget extends Widget 
 {
-	Composite refSWTComposite;
-	java.awt.Frame refEmbeddedFrame;
+//	protected Composite refSWTComposite;
+	protected java.awt.Frame refEmbeddedFrame;
 	
 	public SWTEmbeddedGraphWidget(Composite refComposite)
 	{
