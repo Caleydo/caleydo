@@ -144,10 +144,12 @@ implements MementoXML {
 	
 	
 	public MicroArrayLoader(GeneralManager setGeneralManager, String setFileName) {
-		super();
+//		super();
 		
-		assert refGeneralManager!= null :"null-pointer in constructor";
-		refGeneralManager = setGeneralManager;
+//		assert refGeneralManager!= null :"null-pointer in constructor";
+//		refGeneralManager = setGeneralManager;
+
+		this(setGeneralManager);
 		
 		this.sFileName = setFileName;
 	}

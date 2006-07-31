@@ -28,7 +28,7 @@ public class TestTableViewRep implements ViewInter
 		
 		//FIXME: do the following code in a method
 		initView();
-		retrieveNewWidget();
+		retrieveNewGUIContainer();
 		drawView();
 	}
 	
@@ -41,20 +41,18 @@ public class TestTableViewRep implements ViewInter
 	public void drawView()
 	{
 		createTable();
-		
 	}
 
-	public void retrieveNewWidget()
+	public void retrieveNewGUIContainer()
 	{
 		SWTNativeWidget refSWTNativeWidget = 
 			(SWTNativeWidget)refGeneralManager.getSingelton()
 		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_NATIVE_WIDGET);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
-		
 	}
 
-	public void retrieveExistingWidget()
+	public void retrieveExistingGUIContainer()
 	{
 		// TODO Auto-generated method stub
 		

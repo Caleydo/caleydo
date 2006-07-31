@@ -63,7 +63,7 @@ public class PathwayViewRep implements PathwayViewInter
 		
 		//FIXME: do the following code in a method
 		initView();
-		retrieveNewWidget();
+		retrieveNewGUIContainer();
 		drawView();
 	}
 
@@ -181,7 +181,7 @@ public class PathwayViewRep implements PathwayViewInter
 		refPathwayGraph.getGraphLayoutCache().insert(edge);
 	}
 	
-	public void retrieveNewWidget()
+	public void retrieveNewGUIContainer()
 	{
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
 			(SWTEmbeddedGraphWidget)refGeneralManager.getSingelton()
@@ -190,7 +190,7 @@ public class PathwayViewRep implements PathwayViewInter
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
 	}
 	
-	public void retrieveExistingWidget()
+	public void retrieveExistingGUIContainer()
 	{
 		
 	}

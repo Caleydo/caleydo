@@ -1,19 +1,12 @@
 package cerberus.view.gui.swt.gears.jogl;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.HashMap;
-
 import javax.media.opengl.GLCanvas;
-
-import org.jgraph.graph.DefaultGraphCell;
 
 import com.sun.opengl.util.Animator;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.ViewInter;
-import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import demos.gears.Gears;
 
@@ -30,7 +23,7 @@ public class GearsViewRep implements ViewInter
 		
 		//FIXME: do the following code in a method
 		initView();
-		retrieveNewWidget();
+		retrieveNewGUIContainer();
 		drawView();
 	}
 	
@@ -49,7 +42,7 @@ public class GearsViewRep implements ViewInter
 		
 	}
 
-	public void retrieveNewWidget()
+	public void retrieveNewGUIContainer()
 	{
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
 			(SWTEmbeddedJoglWidget)refGeneralManager.getSingelton()
@@ -59,7 +52,7 @@ public class GearsViewRep implements ViewInter
 		
 	}
 
-	public void retrieveExistingWidget()
+	public void retrieveExistingGUIContainer()
 	{
 		// TODO Auto-generated method stub
 		

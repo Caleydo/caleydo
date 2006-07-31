@@ -88,6 +88,8 @@ public enum ManagerObjectType {
 	
 	GEARS_VIEW(ManagerType.VIEW),
 	
+	SET_TABLE_VIEW(ManagerType.VIEW),
+	
 	//deprecated
 	
 	VIEW_HISTOGRAM2D(ManagerType.VIEW),

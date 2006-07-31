@@ -20,9 +20,9 @@ public class CerberusPrototype
 		OneForAllManager oneForAllManager = new OneForAllManager(null);
 		
 		//loading the raw data
-		MicroArrayLoader microArrayLoader = 
-			new MicroArrayLoader(oneForAllManager.getGeneralManager(), sRawDataFileName);
-		microArrayLoader.loadData();
+//		MicroArrayLoader microArrayLoader = 
+//			new MicroArrayLoader(oneForAllManager.getGeneralManager(), sRawDataFileName);
+//		microArrayLoader.loadData();
 		
 		//load the pathway data
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
@@ -43,7 +43,8 @@ public class CerberusPrototype
 		
 		ViewManagerSimple viewManager = (ViewManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.VIEW);
 		viewManager.createView(ManagerObjectType.PATHWAY_VIEW);
-		viewManager.createView(ManagerObjectType.TEST_TABLE_VIEW);
+		//viewManager.createView(ManagerObjectType.TEST_TABLE_VIEW);
+		viewManager.createView(ManagerObjectType.SET_TABLE_VIEW);
 		viewManager.createView(ManagerObjectType.GEARS_VIEW);
 
 		swtGuiManager.runApplication();
