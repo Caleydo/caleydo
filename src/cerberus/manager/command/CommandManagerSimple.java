@@ -145,6 +145,9 @@ public class CommandManagerSimple
 	 */
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
+		
+		//FIXME!
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -152,7 +155,8 @@ public class CommandManagerSimple
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#unregisterItem(int, cerberus.data.manager.BaseManagerType)
 	 */
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
+	public boolean unregisterItem(int iItemId, ManagerObjectType type) {	
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -165,6 +169,44 @@ public class CommandManagerSimple
 	public CommandInterface createCommand( final String useSelectionType ) {
 		
 		return refCommandFactory.createCommand( CommandType.getType( useSelectionType ), null );
+	}
+	
+	/**
+	 * Create a new command.
+	 * 
+	 * @param sData_Cmd_type
+	 * @param sData_Cmd_process
+	 * @param iData_CmdId
+	 * @param iData_Cmd_MementoId
+	 * @param sData_Cmd_detail
+	 * @param sData_Cmd_attrbute1
+	 * @param sData_Cmd_attrbute2
+	 * 
+	 * @return new command
+	 */
+	public CommandInterface createCommand( 
+			String sData_Cmd_type,
+			String sData_Cmd_process,
+			final int iData_CmdId,
+			final int iData_Cmd_MementoId,
+			String sData_Cmd_detail,
+			String sData_Cmd_attrbute1,
+			String sData_Cmd_attrbute2 ) {
+		
+		CommandInterface createdCommand = 
+			this.refCommandFactory.createCommand( sData_Cmd_type,
+			sData_Cmd_process,
+			iData_CmdId,
+			iData_Cmd_MementoId,
+			sData_Cmd_detail,
+			sData_Cmd_attrbute1,
+			sData_Cmd_attrbute2 );	
+		
+		registerItem( createdCommand, 
+				createdCommand.getId(),
+				ManagerObjectType.COMMAND );
+		
+		return createdCommand;
 	}
 	
 	/* (non-Javadoc)

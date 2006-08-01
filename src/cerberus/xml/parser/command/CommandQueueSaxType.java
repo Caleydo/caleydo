@@ -11,17 +11,40 @@ package cerberus.xml.parser.command;
  */
 public enum CommandQueueSaxType
 {
+	/*
+	 * -------  COMMAND  --------
+	 */ 
+	LOAD_DATA_FILE("cmd","type"),
+	OPEN_VIEW("cmd","type"),
+	
+	RUN_CMD_NOW("cmd","process"),	
+	LOAD_ON_DEMAND("cmd","process"),
+	MEMENTO("cmd","process"),	
+	
+	TAG_CMD_ID("cmd","cmdId"),
+	TAG_MEMENTO_ID("cmd","mementoId"),
+	TAG_TYPE("cmd","type"),
+	TAG_ATTRIBUTE1("cmd","attrib1"),	
+	TAG_ATTRIBUTE2("cmd","attrib2"),	
+	TAG_DETAIL("cmd","detail"),
+	TAG_PROCESS("cmd","process"),
+	
+	/*
+	 * -------  COMMAND QUEUE  --------
+	 */ 
 	COMMAND_QUEUE_OPEN("cmdqueue","type"),
 	COMMAND_QUEUE_RUN("cmdqueue","type"),
 	
 	CMD_ID("cmdqueue","cmdId"),
 	CMDQUEUE_ID("cmdqueue","cmdQueueId"),
 	
-	ON_DEMAND("cmdqueue","process"),
+	RUN_QUEUE_ON_DEMAND("cmdqueue","process"),
 	RUN_QUEUE("cmdqueue","process"),
+
 	
 	CMD_THREAD_POOL_ID("cmdqueue","queue_thread"),
 	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait");
+	
 	
 	/**
 	 *  * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>

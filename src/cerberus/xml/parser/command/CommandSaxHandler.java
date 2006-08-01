@@ -10,6 +10,7 @@ import org.xml.sax.Attributes;
 
 import cerberus.command.CommandType;
 import cerberus.command.CommandInterface;
+import cerberus.command.queue.CommandQueueInterface;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.CommandManager;
@@ -44,6 +45,8 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	private String sData_MenuTitle = "none";
 	private String sData_MenuTooltip = "";
 	private String sData_MenuMemento = "-";
+	
+	protected CommandQueueInterface refCommandQueueIter = null;
 	
 	protected String sData_Queue_process;
 	protected String sData_Queue_type;
@@ -180,20 +183,141 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	
 	
 	
+//	/**
+//	 * 
+//	 * Read values of class: iCurrentFrameId
+//	 * @param attrs
+//	 * @param bIsExternalFrame
+//	 */
+//	private void parseCommandQueueData( final Attributes attrs, boolean bIsExternalFrame ) {
+//		
+//		try 
+//		{
+//			/* create new Frame */
+//			sData_Queue_process = assignStringValue( attrs, 
+//					CommandQueueSaxType.RUN_QUEUE_ON_DEMAND.getXmlKey(), 
+//					CommandQueueSaxType.RUN_QUEUE_ON_DEMAND.toString() );
+//			
+//			iData_Queue_CmdId = assignIntValueIfValid( attrs, 
+//					CommandQueueSaxType.CMD_ID.getXmlKey(),
+//					-1  );
+//			
+//			iData_Queue_CmdQueueId = assignIntValueIfValid( attrs, 
+//					CommandQueueSaxType.CMDQUEUE_ID.getXmlKey(),
+//					-1  );
+//			
+//			sData_Queue_type = assignStringValue( attrs,
+//					CommandQueueSaxType.COMMAND_QUEUE_RUN.getXmlKey(), 
+//					CommandQueueSaxType.COMMAND_QUEUE_RUN.toString() );		
+//			
+//			int iData_Queue_ThreadPool_Id = assignIntValueIfValid( attrs, 
+//					CommandQueueSaxType.CMD_THREAD_POOL_ID.getXmlKey(),
+//					-1  );
+//						
+//			int iData_Queue_ThreadPool_Wait_Id = assignIntValueIfValid( attrs, 
+//					CommandQueueSaxType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(),
+//					-1  );
+//			
+//			this.refCommandManager.createCommandQueue( sData_Queue_type,
+//					sData_Queue_process,
+//					iData_Queue_CmdId,
+//					iData_Queue_CmdQueueId,
+//					iData_Queue_ThreadPool_Id,
+//					-iData_Queue_ThreadPool_Wait_Id );
+//				
+//		}
+//		catch ( Exception e) 
+//		{
+//			System.err.println("CommandSaxHandler::parseCommandQueueData() ERROR while parsing " + e.toString() );
+//		}
+//	}
+	
+
+	
 	/**
 	 * 
 	 * Read values of class: iCurrentFrameId
 	 * @param attrs
 	 * @param bIsExternalFrame
 	 */
-	private void parseCommandQueueData( final Attributes attrs, boolean bIsExternalFrame ) {
+	private CommandInterface readCommandData( final Attributes attrs, boolean bIsExternalFrame ) {
+		
+		CommandInterface lastCommand = null;
+		
+		try 
+		{
+			/* create new Frame */
+			String sData_Cmd_process = assignStringValue( attrs, 
+					CommandQueueSaxType.TAG_PROCESS.getXmlKey(), 
+					CommandQueueSaxType.TAG_PROCESS.toString() );
+			
+			int iData_CmdId = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), -1  );
+			
+			int iData_Cmd_MementoId = assignIntValueIfValid( attrs, 
+					CommandQueueSaxType.TAG_MEMENTO_ID.getXmlKey(), -1  );
+			
+			String sData_Cmd_type = assignStringValue( attrs,
+					CommandQueueSaxType.TAG_TYPE.getXmlKey(), 
+					CommandQueueSaxType.TAG_TYPE.toString() );										
+
+			String sData_Cmd_attribute1 = assignStringValue( attrs,
+					CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+					CommandQueueSaxType.TAG_ATTRIBUTE1.toString() );	
+			
+			String sData_Cmd_attribute2 = assignStringValue( attrs,
+					CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+					CommandQueueSaxType.TAG_ATTRIBUTE2.toString() );	
+				
+			String sData_Cmd_detail = assignStringValue( attrs,
+					CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
+					CommandQueueSaxType.TAG_DETAIL.toString() );										
+				
+			
+			lastCommand = refCommandManager.createCommand( 
+					sData_Cmd_type,
+					sData_Cmd_process,
+					iData_CmdId,
+					iData_Cmd_MementoId,
+					sData_Cmd_detail,
+					sData_Cmd_attribute1,
+					sData_Cmd_attribute2 );
+			
+			
+			if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() )){
+				lastCommand.doCommand();
+			}
+			
+			return lastCommand;
+			
+		}
+		catch ( Exception e) 
+		{
+			System.err.println(" ERROR while parsing " + e.toString() );
+			
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * Read values of class: iCurrentFrameId
+	 * @param attrs
+	 * @param bIsExternalFrame
+	 */
+	private void readCommandQueueData( final Attributes attrs, boolean bIsExternalFrame ) {
+		
+		CommandInterface lastCommand = null;
+		
+		int iData_Queue_ThreadPool_Id = -1;					
+		int iData_Queue_ThreadPool_Wait_Id = -1;
 		
 		try 
 		{
 			/* create new Frame */
 			sData_Queue_process = assignStringValue( attrs, 
-					CommandQueueSaxType.ON_DEMAND.getXmlKey(), 
-					CommandQueueSaxType.ON_DEMAND.toString() );
+					CommandQueueSaxType.RUN_QUEUE_ON_DEMAND.getXmlKey(), 
+					CommandQueueSaxType.RUN_QUEUE_ON_DEMAND.toString() );
 			
 			iData_Queue_CmdId = assignIntValueIfValid( attrs, 
 					CommandQueueSaxType.CMD_ID.getXmlKey(),
@@ -207,15 +331,16 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 					CommandQueueSaxType.COMMAND_QUEUE_RUN.getXmlKey(), 
 					CommandQueueSaxType.COMMAND_QUEUE_RUN.toString() );		
 			
-			int iData_Queue_ThreadPool_Id = assignIntValueIfValid( attrs, 
+			iData_Queue_ThreadPool_Id = assignIntValueIfValid( attrs, 
 					CommandQueueSaxType.CMD_THREAD_POOL_ID.getXmlKey(),
 					-1  );
 						
-			int iData_Queue_ThreadPool_Wait_Id = assignIntValueIfValid( attrs, 
+			iData_Queue_ThreadPool_Wait_Id = assignIntValueIfValid( attrs, 
 					CommandQueueSaxType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(),
 					-1  );
 			
-			this.refCommandManager.createCommandQueue( sData_Queue_type,
+			lastCommand = refCommandManager.createCommandQueue( 
+					sData_Queue_type,
 					sData_Queue_process,
 					iData_Queue_CmdId,
 					iData_Queue_CmdQueueId,
@@ -227,83 +352,44 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 		{
 			System.err.println("CommandSaxHandler::parseCommandQueueData() ERROR while parsing " + e.toString() );
 		}
-	}
-	
-
-	
-	/**
-	 * 
-	 * Read values of class: iCurrentFrameId
-	 * @param attrs
-	 * @param bIsExternalFrame
-	 */
-	private void readCommandData( final Attributes attrs, boolean bIsExternalFrame ) {
 		
-		try 
-		{
-			/* create new Frame */
-			sData_Queue_process = assignStringValue( attrs, 
-					CommandQueueSaxType.ON_DEMAND.getXmlKey(), 
-					CommandQueueSaxType.ON_DEMAND.toString() );
-			
-			iData_Queue_CmdId = assignIntValueIfValid( attrs, 
-					CommandQueueSaxType.CMD_ID.getXmlKey(), -1  );
-			
-			iData_Queue_CmdQueueId = assignIntValueIfValid( attrs, 
-					CommandQueueSaxType.CMDQUEUE_ID.getXmlKey(), -1  );
-			
-			sData_Queue_type = assignStringValue( attrs,
-					CommandQueueSaxType.COMMAND_QUEUE_RUN.getXmlKey(), 
-					CommandQueueSaxType.COMMAND_QUEUE_RUN.toString() );										
-				
-		}
-		catch ( Exception e) 
-		{
-			System.err.println(" ERROR whiel parsing " + e.toString() );
-		}
-	}
-	
-	/**
-	 * 
-	 * Read values of class: iCurrentFrameId
-	 * @param attrs
-	 * @param bIsExternalFrame
-	 */
-	private void readCommandQueueData( final Attributes attrs, boolean bIsExternalFrame ) {
+		/* -------------------------------------------- */
 		
-		/* create new Frame */
-		iData_TargetFrameId = assignIntValueIfValid( attrs, sMenuKey_processType, -1 );
-		iData_CommandId = assignIntValueIfValid( attrs, sMenuKey_commandId, -1  );
-								
-//		iData_MenuParentId = assignIntValueIfValid( attrs, sMenuKey_parentMenuId, -1 );
-//		iData_MenuId = assignIntValueIfValid( attrs, sMenuKey_objectId, -1 );
+//		/* create new Frame */
+//		iData_TargetFrameId = assignIntValueIfValid( attrs, sMenuKey_processType, -1 );
+//		iData_CommandId = assignIntValueIfValid( attrs, sMenuKey_commandId, -1  );
+//								
+////		iData_MenuParentId = assignIntValueIfValid( attrs, sMenuKey_parentMenuId, -1 );
+////		iData_MenuId = assignIntValueIfValid( attrs, sMenuKey_objectId, -1 );
+////		
+////		bData_EnableMenu = assignBooleanValueIfValid( attrs, sMenuKey_enabled, true );											
 //		
-//		bData_EnableMenu = assignBooleanValueIfValid( attrs, sMenuKey_enabled, true );											
+//		sData_MenuTooltip = attrs.getValue( sMenuKey_details );
+//		sData_MenuMemento = attrs.getValue( sMenuKey_memento );
+//			
+//		String sData_Queue_Type = attrs.getValue( sCmdQueueKey_type );		
+//		String sData_Queue_Id = attrs.getValue( sCmdQueueKey_cmdQueueId );			
+//		String sData_Queue_process = attrs.getValue( sCmdQueueKey_process );
 		
-		sData_MenuTooltip = attrs.getValue( sMenuKey_details );
-		sData_MenuMemento = attrs.getValue( sMenuKey_memento );
+		
+		
+		if ( sData_Queue_type.equals( CommandType.COMMAND_QUEUE_RUN.toString() )) {
 			
-		String sData_Queue_Type = attrs.getValue( sCmdQueueKey_type );		
-		String sData_Queue_Id = attrs.getValue( sCmdQueueKey_cmdQueueId );			
-		String sData_Queue_process = attrs.getValue( sCmdQueueKey_process );
-		
-		CommandInterface lastCommand = null;
-		
-		if ( sData_Queue_Type.equals( CommandType.COMMAND_QUEUE_RUN.toString() )) {
-			
-			lastCommand =  refCommandManager.createCommand( CommandType.COMMAND_QUEUE_RUN, sData_Queue_Id );
-			
-		}
-		
-		if ( lastCommand != null ) {
-			if ( sData_Queue_process.equals( "process" )) {
+			if ( sData_Queue_process.equals( "RUN_QUEUE" )) {
 				lastCommand.doCommand();
+				
+				refCommandQueueIter = null;
 			}
+			
+		} 
+		else if ( sData_Queue_type.equals( CommandType.COMMAND_QUEUE_OPEN.toString() )) {
+			
+			refCommandQueueIter = (CommandQueueInterface) lastCommand;
+			
 		}
-		else {
-			throw new CerberusRuntimeException( "can not create command from [" +
-					attrs.toString() + "]");
-		}
+
+//			throw new CerberusRuntimeException( "can not create command from [" +
+//					attrs.toString() + "]");
 	}
 	
 	public void startElement(String namespaceURI, String localName,
@@ -331,27 +417,55 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 						bCommandBuffer_isActive = true;
 						return;
 					}
+					
 				} //end: if (eName.equals(sFrameStateTag)) {
 				else if (eName.equals(sTag_Command)) {
 					
 					
-					/**
-					 *  <Cmd ...> 
-					 */
-					if ( bCommandBuffer_isActive ) {
+					
+					if ( bCommandBuffer_isActive ) {						
+						/**
+						 * <CommandBuffer>
+						 *   ... 
+						 *  <Cmd ...> 
+						 */
 						
 						if  ( bCommandQueue_isActive ) {
+							/**
+							 * <CommandBuffer>
+							 * ...
+							 * <CmdQueue> <br>
+							 *  ...
+							 * <Cmd ...>
+							 */
+							
+							//readCommandQueueData( attrs, true );
+							CommandInterface lastCommand = 
+								readCommandData( attrs, true );
+							
+							refCommandQueueIter.addCmdToQueue( lastCommand );
+							
+							
 														
 						} else {
+							/**
+							 * <CommandBuffer>
+							 * ...
+							 * <Cmd ...>
+							 */
 							
-							parseCommandQueueData( attrs, true );
-							//readCommandData( attrs, true );
+							//readCommandQueueData( attrs, true );
+							CommandInterface lastCommand = readCommandData( attrs, true );
+							
+
 							
 						}
 						
 
 						
-					} else {
+					}  //if ( bCommandBuffer_isActive ) {
+					else 
+					{ 
 						throw new SAXException ( "<"+ sTag_Command + "> opens without <" + 
 								sTag_CommandBuffer + "> being opened!");
 					}
@@ -362,6 +476,11 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 					 *  <CmdQueue ...> 
 					 */
 					if ( bCommandBuffer_isActive ) {
+						
+						if ( bCommandQueue_isActive ) {
+							throw new SAXException ( "<"+ sTag_CommandQueue + "> opens inside a <" + 
+									sTag_CommandQueue + "> block!");
+						}
 						
 						bCommandQueue_isActive = true;
 						

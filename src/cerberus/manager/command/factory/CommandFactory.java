@@ -42,6 +42,7 @@ import cerberus.command.queue.CommandQueueVector;
 import cerberus.command.system.CmdSystemExit;
 import cerberus.command.system.CmdSystemNop;
 import cerberus.command.system.CmdSystemNewFrame;
+import cerberus.command.system.CmdSystemLoadFileViaImporter;
 
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 //import cerberus.net.dwt.swing.mdi.DDesktopPane;
@@ -134,6 +135,41 @@ extends AbstractCommand
 		
 	}
 	
+	public CommandInterface createCommand( 
+			String sData_Cmd_type,
+			String sData_Cmd_process,
+			final int iData_CmdId,
+			final int iData_Cmd_MementoId,
+			String sData_Cmd_detail,
+			String sData_Cmd_attrbute1,
+			String sData_Cmd_attrbute2 ) {
+		
+		CommandQueueSaxType cmdType = CommandQueueSaxType.valueOf( sData_Cmd_type );
+		
+		CommandInterface createdCommand = null;
+		
+		switch ( cmdType ) {
+		
+		case LOAD_DATA_FILE: {
+			createdCommand =
+				new CmdSystemLoadFileViaImporter(sData_Cmd_detail,
+						sData_Cmd_attrbute1,
+						sData_Cmd_attrbute2 );
+			break;
+		}
+		
+		default: 
+			throw new CerberusRuntimeException("Unsupported CommandQueue key= [" + 
+					cmdType + "]",
+					CerberusExceptionType.SAXPARSER);
+		} // end switch
+		
+		
+		createdCommand.setId( iData_CmdId );
+					
+		return createdCommand;
+	}
+	
 	public CommandInterface createCommandQueue( final String sCmdType,
 			final String sProcessType,
 			final int iCmdId,
@@ -149,14 +185,16 @@ extends AbstractCommand
 		}
 		catch ( IllegalArgumentException iae ) 
 		{
-			throw new CerberusRuntimeException("Undefined CommadnQueue key= [" + sCmdType + "]",
+			throw new CerberusRuntimeException("Undefined CommandQueue key= [" + sCmdType + "]",
 					CerberusExceptionType.SAXPARSER);
 		}
 			
 		switch (queueType) 
 		{
-		case COMMAND_QUEUE_OPEN:
-			return new CommandQueueVector(iCmdId, iCmdQueueId);
+		case COMMAND_QUEUE_OPEN: {
+			CommandInterface cmdQueue = new CommandQueueVector(iCmdId, iCmdQueueId);				
+			return cmdQueue;
+		}
 			
 		case COMMAND_QUEUE_RUN:
 			return new CmdSystemRunCmdQueue(iCmdId,
@@ -164,7 +202,7 @@ extends AbstractCommand
 					iCmdQueueId);
 			
 			default:
-				throw new CerberusRuntimeException("Unsupported CommadnQueue key= [" + sCmdType + "]",
+				throw new CerberusRuntimeException("Unsupported CommandQueue key= [" + sCmdType + "]",
 						CerberusExceptionType.SAXPARSER);
 		}
 		

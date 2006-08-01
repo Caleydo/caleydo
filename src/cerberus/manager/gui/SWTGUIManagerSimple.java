@@ -29,6 +29,13 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 	protected Display refDisplay;
 
 
+	/**
+	 * Call createApplicationFrame() before using this object.
+	 * 
+	 * @see cerberus.manager.gui.SWTGUIManagerSimple#createApplicationFrame()
+	 * 
+	 * @param setGeneralManager reference to GeneralManager
+	 */
 	public SWTGUIManagerSimple(GeneralManager setGeneralManager)
 	{
 		super(setGeneralManager);
@@ -37,13 +44,20 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 
 		refGeneralManager.getSingelton().setSWTGUIManager(this);
 
-		refWidgetContainer = new Vector<Widget>();
-
-		createApplicationFrame();
+		//refWidgetContainer = new Vector<Widget>();
+		//
+		//createApplicationFrame();
 	}
 
+	/**
+	 * Methode to initialize this Manger.
+	 * Must be called before using this class.
+	 * 
+	 */
 	public void createApplicationFrame()
 	{
+		refWidgetContainer = new Vector<Widget>();
+		
 		refDisplay = new Display();
 
 		refShell = new Shell(refDisplay);

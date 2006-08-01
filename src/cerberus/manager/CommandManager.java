@@ -54,6 +54,28 @@ extends CommandActionListener, GeneralManager {
 			final int sQueueThreadWait );
 	
 	/**
+	 * Create a new command.
+	 * 
+	 * @param sData_Cmd_type
+	 * @param sData_Cmd_process
+	 * @param iData_CmdId
+	 * @param iData_Cmd_MementoId
+	 * @param sData_Cmd_detail
+	 * @param sData_Cmd_attrbute1
+	 * @param sData_Cmd_attrbute2
+	 * 
+	 * @return new command
+	 */
+	public CommandInterface createCommand( 
+			String sData_Cmd_type,
+			String sData_Cmd_process,
+			final int iData_CmdId,
+			final int iData_Cmd_MementoId,
+			String sData_Cmd_detail,
+			String sData_Cmd_attrbute1,
+			String sData_Cmd_attrbute2 );
+	
+	/**
 	 * Create a new command using the CommandType.
 	 * @param details TODO
 	 */
