@@ -186,7 +186,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	 * @param attrs
 	 * @param bIsExternalFrame
 	 */
-	private void createCommandQueue( final Attributes attrs, boolean bIsExternalFrame ) {
+	private void parseCommandQueueData( final Attributes attrs, boolean bIsExternalFrame ) {
 		
 		try 
 		{
@@ -225,7 +225,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 		}
 		catch ( Exception e) 
 		{
-			System.err.println(" ERROR whiel parsing " + e.toString() );
+			System.err.println("CommandSaxHandler::parseCommandQueueData() ERROR while parsing " + e.toString() );
 		}
 	}
 	
@@ -344,7 +344,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 														
 						} else {
 							
-							createCommandQueue( attrs, true );
+							parseCommandQueueData( attrs, true );
 							//readCommandData( attrs, true );
 							
 						}
