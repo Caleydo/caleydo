@@ -21,7 +21,10 @@ public class TestFrameSingelton {
 	 * 
 	 */
 	public TestFrameSingelton() {
-		viewManager = new SingeltonJoglFrameManager( new OneForAllManager(null) );
+		OneForAllManager regGeneralManager = new OneForAllManager(null);
+		regGeneralManager.initAll();
+		
+		viewManager = new SingeltonJoglFrameManager( regGeneralManager );
 	}
 
 	/**

@@ -182,7 +182,10 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 		
 		System.out.println("  ...Cerberus v0.1 01-2006 ...");
 		
-		new SingeltonJoglFrameManager( new OneForAllManager(null) ).run(args);
+		OneForAllManager regGeneralManager = new OneForAllManager(null);
+		regGeneralManager.initAll();
+		
+		new SingeltonJoglFrameManager( regGeneralManager ).run(args);
 	}
 
 	

@@ -57,6 +57,18 @@ import cerberus.util.exception.CerberusRuntimeException;
 public class OneForAllManager 
 implements GeneralManagerSingelton {
 
+	/**
+	 * Defines, if initAll() was called.
+	 * 
+	 * @see cerberus.manager.singelton.OneForAllManager#initAll()
+	 */
+	private boolean bAllManagersInizailized = false;
+	
+	/**
+	 * Define if SWT is used.
+	 */
+	private boolean bEnableSWT = false;
+	
 	protected SingeltonManager refSingeltonManager;
 	
 	protected SetManager refSetManager;
@@ -96,7 +108,9 @@ implements GeneralManagerSingelton {
 //	protected StorageType 	initStorageType;
 	
 	/**
+	 * Call initAll() before using this class!
 	 * 
+	 * @see cerberus.data.manager.singelton.OneForAllManager#initAll()
 	 */
 	public OneForAllManager( final SingeltonManager sef_SingeltonManager ) {
 		
@@ -106,7 +120,7 @@ implements GeneralManagerSingelton {
 			refSingeltonManager = sef_SingeltonManager;			
 		}
 		
-		initAll();
+		//initAll();
 	}
 
 	/*
@@ -117,7 +131,18 @@ implements GeneralManagerSingelton {
 		return refSingeltonManager;
 	}
 	
-	protected void initAll() {
+	/**
+	 * Must be called right after teh constructor before using this class.
+	 * Initialzes all Mangeger obejcts.
+	 *
+	 */
+	public void initAll() {
+		
+		if ( bAllManagersInizailized ) {
+			throw new CerberusRuntimeException("initAll() was called at least twice!");
+		}
+		bAllManagersInizailized = true;
+		
 		
 		refStorageManager = new StorageManagerSimple(this, 4);
 		refSelectionManager = new SelectionManagerSimple(this, 4);
@@ -131,6 +156,13 @@ implements GeneralManagerSingelton {
 		refViewManager = new ViewManagerSimple( this );
 		refSWTGUIManager = new SWTGUIManagerSimple( this );
 		
+		
+		/**
+		 * Make sure SWT is only used, when needed!
+		 */
+		if ( bEnableSWT ) {
+			refSWTGUIManager.createApplicationFrame();
+		}
 		
 		/**
 		 * Register managers to singelton ...
@@ -521,5 +553,34 @@ implements GeneralManagerSingelton {
 	
 	public void setErrorMessage( final String sErrorMsg ) {
 		System.err.println("ERROR: " + sErrorMsg);
+	}
+	
+	/**
+	 * Set curretn state of SWT.
+	 * Must be set before initAll() is called!
+	 * Default is FALSE.
+	 * 
+	 * @see cerberus.manager.singelton.OneForAllManager#initAll()
+	 * @see cerberus.manager.singelton.OneForAllManager#getStateSWT()
+	 * 
+	 * @param bEnableSWT TRUE to enable SWT
+	 */
+	public void setStateSWT( final boolean bEnableSWT ) {
+		if ( bAllManagersInizailized ) {
+			throw new CerberusRuntimeException("setStateSWT() was called after initAll() was called, which has no influence!");
+		}
+		this.bEnableSWT = bEnableSWT;		
+	}
+	
+	/**
+	 * Get current state of SWT. 
+	 * TURE indicates that SWT is used.
+	 * 
+	 * @see cerberus.manager.singelton.OneForAllManager#setStateSWT(boolean)
+	 * 
+	 * @return TRUE is SWT is enabled.
+	 */
+	public boolean getStateSWT() {
+		return this.bEnableSWT;
 	}
 }

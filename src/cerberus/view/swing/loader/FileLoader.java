@@ -74,7 +74,8 @@ public class FileLoader {
 	}
 	
 	private void init() {
-		regGeneralManager = new OneForAllManager(null);
+		regGeneralManager = new OneForAllManager(null);		
+		((OneForAllManager) regGeneralManager).initAll();
 		
 		refSet = new SetFlatSimple(1,regGeneralManager);
 		

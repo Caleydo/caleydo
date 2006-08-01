@@ -83,8 +83,11 @@ public class CanvasFromXMLFileTester extends JFrame {
 	public CanvasFromXMLFileTester() {
 		super("XML BootStrapper");
 		
-		canvasManager = (CanvasSwingJoglManager) new OneForAllManager( null
-				).getSingelton().getViewCanvasManager();		
+		OneForAllManager regGeneralManager = new OneForAllManager(null);
+		regGeneralManager.initAll();
+		
+		canvasManager = (CanvasSwingJoglManager) 
+			regGeneralManager.getSingelton().getViewCanvasManager();		
 		
 		canvasManager.run_Animator();
 		

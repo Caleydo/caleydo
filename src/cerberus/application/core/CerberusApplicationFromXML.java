@@ -86,7 +86,9 @@ public class CerberusApplicationFromXML {
 	 */
 	public CerberusApplicationFromXML() {
 		
-		refGeneralManager =	new OneForAllManager( null );
+		refGeneralManager =	new OneForAllManager( null );		
+		
+		((OneForAllManager) oneForAllManager).initAll();
 		
 		System.out.println("...Cerberus bootloader...");
 		

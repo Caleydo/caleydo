@@ -119,7 +119,6 @@ implements MementoXML {
 	protected int iIndexPerArray[];
 	
 	public MicroArrayLoader(GeneralManager setGeneralManager) {
-		super();
 				
 		refGeneralManager = setGeneralManager;
 		
@@ -144,10 +143,6 @@ implements MementoXML {
 	
 	
 	public MicroArrayLoader(GeneralManager setGeneralManager, String setFileName) {
-//		super();
-		
-//		assert refGeneralManager!= null :"null-pointer in constructor";
-//		refGeneralManager = setGeneralManager;
 
 		this(setGeneralManager);
 		

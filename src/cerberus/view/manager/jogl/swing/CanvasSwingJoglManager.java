@@ -220,6 +220,7 @@ public class CanvasSwingJoglManager
 		System.out.println("  ...Cerberus v0.1 01-2006 ...");
 		
 		OneForAllManager generalManager = new OneForAllManager(null);
+		generalManager.initAll();
 		
 		CanvasSwingJoglManager viewManager = 
 			(CanvasSwingJoglManager) generalManager.getSingelton().getViewCanvasManager();
