@@ -11,13 +11,14 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import cerberus.data.collection.Set;
+import cerberus.data.collection.Storage;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.swt.data.DataViewInter;
+import cerberus.view.gui.swt.data.DataTableViewInter;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
-public class SetTableViewRep implements DataViewInter
+public class SetTableViewRep implements DataTableViewInter
 {
 	protected final int iNewId;
 	protected GeneralManager refGeneralManager;
@@ -32,7 +33,6 @@ public class SetTableViewRep implements DataViewInter
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
 				
-		//FIXME: do the following code in a method
 		retrieveNewGUIContainer();
 		initView();
 		drawView();

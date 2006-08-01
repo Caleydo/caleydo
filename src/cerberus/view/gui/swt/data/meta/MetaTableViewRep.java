@@ -1,8 +1,8 @@
 package cerberus.view.gui.swt.data.meta;
 
-import cerberus.view.gui.swt.data.DataViewInter;
+import cerberus.view.gui.swt.data.DataTableViewInter;
 
-public class MetaTableViewRep implements DataViewInter
+public class MetaTableViewRep implements DataTableViewInter
 {
 
 	public void initView()
@@ -24,6 +24,18 @@ public class MetaTableViewRep implements DataViewInter
 	}
 
 	public void retrieveExistingGUIContainer()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void initTable()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void createTable()
 	{
 		// TODO Auto-generated method stub
 		

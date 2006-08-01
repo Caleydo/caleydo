@@ -90,6 +90,12 @@ public enum ManagerObjectType {
 	
 	SET_TABLE_VIEW(ManagerType.VIEW),
 	
+	STORAGE_TABLE_VIEW(ManagerType.VIEW),
+	
+	SELECTION_TABLE_VIEW(ManagerType.VIEW),
+	
+	META_TABLE_VIEW(ManagerType.VIEW),
+	
 	//deprecated
 	
 	VIEW_HISTOGRAM2D(ManagerType.VIEW),

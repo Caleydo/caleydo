@@ -42,17 +42,17 @@ public class CerberusPrototype
 		MicroArrayLoader microArrayLoader = new MicroArrayLoader(oneForAllManager.getGeneralManager());
 		microArrayLoader.setTargetSet(oneForAllManager.getSingelton().getSetManager().getItemSet(25101));
 		microArrayLoader.setFileName(sRawDataFileName);
-		microArrayLoader.setTokenPattern("SKIP;SKIP;SKIP;STRING;STRING;ABORT");
+		microArrayLoader.setTokenPattern("FLOAT;FLOAT;SKIP;STRING;STRING;ABORT");
 		microArrayLoader.loadData();
-		
-		
-		
+			
 		SWTGUIManagerSimple swtGuiManager = (SWTGUIManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
 		
 		ViewManagerSimple viewManager = (ViewManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.VIEW);
-		viewManager.createView(ManagerObjectType.PATHWAY_VIEW);
+		//viewManager.createView(ManagerObjectType.PATHWAY_VIEW);
 		//viewManager.createView(ManagerObjectType.TEST_TABLE_VIEW);
-		viewManager.createView(ManagerObjectType.SET_TABLE_VIEW);
+	//	viewManager.createView(ManagerObjectType.SET_TABLE_VIEW);
+		//viewManager.createView(ManagerObjectType.STORAGE_TABLE_VIEW);
+		viewManager.createView(ManagerObjectType.GEARS_VIEW);
 		viewManager.createView(ManagerObjectType.GEARS_VIEW);
 		
 		swtGuiManager.runApplication();
