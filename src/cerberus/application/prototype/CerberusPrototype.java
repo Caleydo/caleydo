@@ -16,7 +16,7 @@ public class CerberusPrototype
 {
 	public static void main(String[] args) 
 	{
-		String sRawDataFileName = "data/MicroarrayData/slides30.gpr";
+		String sRawDataFileName = "data/MicroarrayData/slide30.gpr";
 		OneForAllManager oneForAllManager = new OneForAllManager(null);
 		
 		//loading the raw data
@@ -39,6 +39,14 @@ public class CerberusPrototype
 			t.printStackTrace();
 		}
 		
+		MicroArrayLoader microArrayLoader = new MicroArrayLoader(oneForAllManager.getGeneralManager());
+		microArrayLoader.setTargetSet(oneForAllManager.getSingelton().getSetManager().getItemSet(25101));
+		microArrayLoader.setFileName(sRawDataFileName);
+		microArrayLoader.setTokenPattern("SKIP;SKIP;SKIP;STRING;STRING;ABORT");
+		microArrayLoader.loadData();
+		
+		
+		
 		SWTGUIManagerSimple swtGuiManager = (SWTGUIManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
 		
 		ViewManagerSimple viewManager = (ViewManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.VIEW);
@@ -46,7 +54,7 @@ public class CerberusPrototype
 		//viewManager.createView(ManagerObjectType.TEST_TABLE_VIEW);
 		viewManager.createView(ManagerObjectType.SET_TABLE_VIEW);
 		viewManager.createView(ManagerObjectType.GEARS_VIEW);
-
+		
 		swtGuiManager.runApplication();
 	}
 }

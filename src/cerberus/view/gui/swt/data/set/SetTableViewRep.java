@@ -83,15 +83,13 @@ public class SetTableViewRep implements DataViewInter
 		final TableColumn labelColumn = new TableColumn(refTable, SWT.NONE);
 		labelColumn.setText("Label");
 		
-		//insert row
+		//insert SET in table
 		for (int setDimIndex = 0; setDimIndex < refAllSetItems.length ; setDimIndex++) {
 			TableItem item = new TableItem(refTable, SWT.NONE);
 			
-			//Set testMySet = (Set) refGeneralManager.getItem( 25101 );
 			item.setText(new String [] {
 					Integer.toString(refAllSetItems[setDimIndex].getId()).toString(),
 					refAllSetItems[setDimIndex].getLabel()});
-			//System.out.println(refAllSetItems[setDimIndex].getStorageByDim(0));
 		}
 		
 		refSWTContainer.addControlListener(new ControlAdapter() {
@@ -99,21 +97,24 @@ public class SetTableViewRep implements DataViewInter
 				Rectangle area = refSWTContainer.getClientArea();
 				Point preferredSize = refTable.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 				int width = area.width - 2*refTable.getBorderWidth();
-				if (preferredSize.y > area.height + refTable.getHeaderHeight()) {
+				if (preferredSize.y > area.height + refTable.getHeaderHeight())
+				{
 					// Subtract the scrollbar width from the total column width
 					// if a vertical scrollbar will be required
 					Point vBarSize = refTable.getVerticalBar().getSize();
 					width -= vBarSize.x;
 				}
 				Point oldSize = refTable.getSize();
-				if (oldSize.x > area.width) {
+				if (oldSize.x > area.width) 
+				{
 					// table is getting smaller so make the columns 
 					// smaller first and then resize the table to
 					// match the client area width
 					idColumn.setWidth(width/3);
 					labelColumn.setWidth(width - idColumn.getWidth());
 					refTable.setSize(area.width, area.height);
-				} else {
+				} else 
+				{
 					// table is getting bigger so make the table 
 					// bigger first and then make the columns wider
 					// to match the client area width

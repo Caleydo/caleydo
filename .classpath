@@ -8,7 +8,7 @@
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>
 	<classpathentry excluding="**/.svn/|*.html|org/eclipse/swt/" kind="src" path="src_ext"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos-util_mod.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/swt/swt.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/weka/weka.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/swt/linux/swt.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>
