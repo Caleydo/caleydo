@@ -7,6 +7,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.jface.window.WindowManager;
+import org.eclipse.jface.window.Window;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SWTGUIManager;
@@ -22,17 +25,20 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
 public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 		SWTGUIManager
 {
+	//protected WindowManager windowManager;
+	
 	protected Vector<Widget> refWidgetContainer;
 
 	protected Shell refShell;
+	
+	protected Shell refShell2;
 
 	protected Display refDisplay;
 
-
 	/**
-	 * Call createApplicationFrame() before using this object.
+	 * Call createApplicationWindow() before using this object.
 	 * 
-	 * @see cerberus.manager.gui.SWTGUIManagerSimple#createApplicationFrame()
+	 * @see cerberus.manager.gui.SWTGUIManagerSimple#createApplicationWindow()
 	 * 
 	 * @param setGeneralManager reference to GeneralManager
 	 */
@@ -45,8 +51,8 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 		refGeneralManager.getSingelton().setSWTGUIManager(this);
 
 		//refWidgetContainer = new Vector<Widget>();
-		//
-		//createApplicationFrame();
+		
+		//windowManager = new WindowManager();
 	}
 
 	/**
@@ -54,7 +60,7 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 	 * Must be called before using this class.
 	 * 
 	 */
-	public void createApplicationFrame()
+	public void createApplicationWindow()
 	{
 		refWidgetContainer = new Vector<Widget>();
 		
@@ -63,6 +69,11 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 		refShell = new Shell(refDisplay);
 		refShell.setLayout(new GridLayout());
 		refShell.setSize(410, 1000);
+	
+//		ApplicationWindow appWindow = new ApplicationWindow(refShell);
+//		windowManager.add(appWindow);
+//		appWindow.open();
+		
 	}
 
 	public void runApplication()
@@ -73,6 +84,7 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 			if (!refDisplay.readAndDispatch())
 				refDisplay.sleep();
 		}
+
 		refDisplay.dispose();
 	}
 

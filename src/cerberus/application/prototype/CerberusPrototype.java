@@ -16,11 +16,6 @@ public class CerberusPrototype
 {
 	public static void main(String[] args) 
 	{
-		System.setProperty("java.library.path", "C:\\Compiler\\JAVA\\jre1.5.0_04\\lib\\ext");
-		
-		System.err.println(" java.lib.path: " + 
-				System.getProperty("java.library.path") );
-		
 		String sRawDataFileName = "data/MicroarrayData/slide30.gpr";
 		
 		/**

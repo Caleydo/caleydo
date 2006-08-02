@@ -87,20 +87,20 @@ public class StorageTableViewRep implements DataTableViewInter
 		Storage[] allStorages;
 		Storage refCurrentStorage;
 		float[] floatData;
+		TableItem item;
 		
 		//insert SET in table
-		for (int storageDimIndex = 0; storageDimIndex < refAllStorageItems.length ; storageDimIndex++) {
-			TableItem item = new TableItem(refTable, SWT.NONE);
-			
-			item.setText(new String [] {
-					Integer.toString(refAllStorageItems[storageDimIndex].getId()).toString(),
-					refAllStorageItems[storageDimIndex].getLabel()});
-			
+		for (int storageDimIndex = 0; storageDimIndex < refAllStorageItems.length ; storageDimIndex++) 
+		{	
 			refCurrentStorage = refAllStorageItems[storageDimIndex];
+			
 			floatData = refCurrentStorage.getArrayFloat();
 			for(int dataIndex = 0; dataIndex < floatData.length; dataIndex++)
 			{
-				System.out.println("Data: " +floatData[dataIndex]);
+				item = new TableItem(refTable, SWT.NONE);
+				item.setText(new String [] {
+						Float.toString(floatData[dataIndex]),
+						Float.toString(floatData[dataIndex])});
 			}				
 		}			
 		

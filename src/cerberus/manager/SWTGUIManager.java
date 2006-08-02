@@ -8,8 +8,8 @@ public interface SWTGUIManager extends GeneralManager
 	public Widget createWidget(final ManagerObjectType useWidgetType);
 	
 	/**
-	 * initialize Frame.
+	 * Initialize Window.
 	 *
 	 */
-	public void createApplicationFrame();
+	public void createApplicationWindow();
 }
