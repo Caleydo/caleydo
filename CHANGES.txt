@@ -1,3 +1,5 @@
 2006-07-20 kalkusch: update to most recent version of JOGL (2006-07-20) from https://jogl.dev.java.net/
 2006-07-31 kalkusch: checkin swt.jar for linux, version M20060629-1905-gtk-linux-x86
 2006-07-31 kalkusch: checkin swt.jar for win32, version M20060629-1905-win32-win32-x86
+2006-08-02 streit: added required packages for jFace namly org.eclipse.* v3.1.2 in folder cerberus\bin\ext_jar\jface
+2006-08-03 kalkusch: added documentation on useded *.jar packeges

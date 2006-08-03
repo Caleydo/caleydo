@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/|*.html|org/eclipse/swt/" kind="src" path="src_ext"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="bin/ext_jar/axis/axis.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/axis/jaxrpc.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/axis/log4j-1.2.8.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>
-	<classpathentry excluding="**/.svn/|*.html|org/eclipse/swt/" kind="src" path="src_ext"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>	
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos-util_mod.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/weka/weka.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/swt/linux/swt.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/swt/swt.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.jface_3.1.1.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.jface.text_3.1.2.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.core.runtime_3.1.2.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.osgi_3.1.2.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.core.resources_3.1.2.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.ui.workbench_3.1.2.jar"/>	
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

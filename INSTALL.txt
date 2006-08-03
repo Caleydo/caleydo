@@ -1,0 +1,56 @@
+
+ How to install Cerberus?
+==========================
+
+author: Michael Kalkusch, kalkusch@icg.tu-graz.aca.t
+
+creation: 01-08-2006
+last change: 03-08-2006
+-----------------------
+
+ How to install Jogl:
+======================
+
+
+  WIN32
+ -------
+
+ JOGL:
+ 
+ 1) copy "jogl.jar" to
+    [drive:][folder]\jre1.5.0_04\lib\ext
+ 
+ 2) copy *.dll from "jogl-natives-windows-i586.jar" to
+    [drive:][folder]\jre1.5.0_04\bin
+ 
+ for Eclipse: 
+ 3) copy *.dll from "jogl-natives-windows-i586.jar" to
+    [drive:][windows]\[system32]\
+    
+
+  LINUX
+ =======
+ 
+ JOGL:
+ 
+ 1) copy "jogl.jar" to
+    [folder]\jre1.5.0_04\lib\ext
+ 
+ 2) copy *.so from "jogl-natives-linux-i586.jar" to
+    [folder]\jre1.5.0_04\bin
+
+
+
+ How to install SWT:
+=====================
+
+copy swt.jar from either 
+	cerberus\bin\ext_jar\swt\linux 
+or 
+	cerberus\bin\ext_jar\swt\win32
+  
+to the folder
+	cerberus\bin\ext_jar\swt 
+
+Eclipse porject files and batch files assume swt.jar to be in that folder.
+ 
