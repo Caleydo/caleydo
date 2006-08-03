@@ -37,47 +37,34 @@ public class StorageTableViewRep implements DataTableViewInter
 	{
 		this.refGeneralManager = refGeneralManager;
 				
-		retrieveNewGUIContainer();
+		//retrieveNewGUIContainer();
 		initView();
-		drawView();
 	}
-	
-	public void redrawTable()
-	{
-		refSWTContainer.redraw();
-	}
-	
+		
 	public void initView()
 	{
 		refStorageManager = refGeneralManager.getSingelton().getStorageManager();
 
 		//load data
 		//refAllStorageItems = refStorageManager.getAllStorageItems();
-		
-		initTable();
 	}
 
 	public void drawView()
 	{		
-		createTable(-1);
+		// not implemented in this class
 	}
 
 	public void retrieveNewGUIContainer()
 	{
-		SWTNativeWidget refSWTNativeWidget = 
-			(SWTNativeWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_NATIVE_WIDGET);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
+		// not implemented in this class
 	}
 
 	public void retrieveExistingGUIContainer()
 	{
-		// TODO Auto-generated method stub
-
+		// not implemented in this class
 	}
 
-	protected void initTable()
+	public void initTable()
 	{
 		refTable = new Table(refSWTContainer, SWT.BORDER | SWT.V_SCROLL);
 		refTable.setHeaderVisible(true);
@@ -117,6 +104,7 @@ public class StorageTableViewRep implements DataTableViewInter
 				//floatData = refCurrentStorage.getArrayFloat();
 				stringData = refCurrentStorage.getArrayString();
 				intData = refCurrentStorage.getArrayInt();
+				//floatData = refCurrentStorage.getArrayFloat();
 			} 
 			catch (NullPointerException npe) 
 			{
@@ -167,4 +155,15 @@ public class StorageTableViewRep implements DataTableViewInter
 			}
 		});
 	}
+	
+	public void redrawTable()
+	{
+		refSWTContainer.redraw();
+	}
+	
+	public void setExternalGUIContainer(Composite refSWTContainer)
+	{
+		this.refSWTContainer = refSWTContainer;
+	}
+
 }

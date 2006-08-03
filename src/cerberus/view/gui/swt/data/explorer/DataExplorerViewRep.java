@@ -10,7 +10,9 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -77,12 +79,25 @@ public class DataExplorerViewRep implements ViewInter
 //		layout.marginHeight = 2;
 //		refSWTContainer.setLayout(layout);
 		
-	    RowLayout layout = new RowLayout(SWT.HORIZONTAL);
-	    layout.wrap = true;
-	    layout.fill = false;
-	    layout.justify = true;
-	    refSWTContainer.setLayout(layout);
-				
+//	    GridLayout gridLayout = new GridLayout();
+//	    gridLayout.numColumns = 2;
+//	    gridLayout.marginHeight = gridLayout.marginWidth = 0;
+//	    refSWTContainer.setLayout(gridLayout);
+			
+		RowLayout rowLayout = new RowLayout();
+ 		rowLayout.wrap = false;
+ 		rowLayout.pack = true;
+ 		rowLayout.justify = true;
+ 		rowLayout.type = SWT.VERTICAL;
+ 		rowLayout.marginLeft = 5;
+ 		rowLayout.marginTop = 5;
+ 		rowLayout.marginRight = 5;
+ 		rowLayout.marginBottom = 5;
+ 		rowLayout.spacing = 0;
+ 		refSWTContainer.setLayout(rowLayout);
+		
+		//Composite treeComposite = new Composite(refSWTContainer, SWT.NONE);
+		
 		// Create the tree viewer as a child of the composite parent
 		treeViewer = new TreeViewer(refSWTContainer);
 		treeViewer.setContentProvider(new DataExplorerContentProvider());
@@ -103,6 +118,11 @@ public class DataExplorerViewRep implements ViewInter
 		
 		treeViewer.setInput(getInitalInput());
 		treeViewer.expandAll();	
+		
+	    Composite tableComposite = new Composite(refSWTContainer, SWT.NONE);
+	    refStorageTableViewRep.setExternalGUIContainer(tableComposite);
+		refStorageTableViewRep.initTable();
+		refStorageTableViewRep.createTable(-1);
 	}
 
 	public void drawView()
@@ -130,10 +150,19 @@ public class DataExplorerViewRep implements ViewInter
     {
     	SetModel currentSetModel;
     	StorageModel currentStorageModel;
+    	SelectionModel currentSelectionModel;
     	
 		Set[] allSetItems;
-		List<Storage> allStorageItemsInSet;
-		List<Selection> allSelectionItemsInSet;
+		//TODO: a list would be nuch nicer - ask michael
+		Selection[] currentSelectionArray;
+		Storage[] currentStorageArray;
+		
+		Set currentSet;
+		Storage currentStorage;
+		Selection currentSelection;
+		
+//		List<Storage> allStorageItemsInSet;
+//		List<Selection> allSelectionItemsInSet;
 		
     	//root node in the tree (not visible)
 		rootSet = new SetModel();
@@ -144,24 +173,41 @@ public class DataExplorerViewRep implements ViewInter
 		//iterate over all SETs
 		for(int setIndex = 0; setIndex < allSetItems.length; setIndex++)
 		{
+			currentSet = allSetItems[setIndex];
+			            
 			//insert SET with ID and label in the tree
 			currentSetModel = new SetModel(
-					allSetItems[setIndex].getId(), 
-					allSetItems[setIndex].getLabel());			
+					currentSet.getId(), 
+					currentSet.getLabel());			
 			rootSet.add(currentSetModel);
 			
-//			for(int storageDimIndex = 0; storageDimIndex < allSetItems[setIndex].get)
-//			(allSetItems[setIndex]).getS
-//			
-//			allStorageItemsInSet = (allSetItems[setIndex]).get .getStorages();
-//			
-//			//iterate over all Storages
-//			for(int storageIndex = 0; storageIndex < allStorageItemsInSet.size(); storageIndex++)
-//			{
-//				currentStorageModel = new StorageModel(					
-//						allStorageItemsInSet[setIndex].getId(), 
-//						allStorageItemsInSet[setIndex].getLabel());
-//			}
+		    for(int dimIndex = 0; dimIndex < allSetItems[setIndex].getDimensions(); dimIndex++)
+		    {
+		    	currentSelectionArray = currentSet.getSelectionByDim(dimIndex);
+		    	//currentStorageArray = currentSet.getStorageByDim(dimIndex);
+		    	
+		    	for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
+		    	{
+		    		currentSelection = (Selection)currentSelectionArray[selectionIndex];
+		    		
+					//insert SELECTION with ID and label in the tree
+					currentSelectionModel = new SelectionModel(
+							currentSelection.getId(), 
+							currentSelection.getLabel());			
+					currentSetModel.add(currentSelectionModel);
+		    	}
+		    	
+//		    	for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
+//		    	{
+//		    		currentStorage = (Storage)currentStorageArray[storageIndex];
+//		    		
+//					//insert STORAGE with ID and label in the tree
+//					currentStorageModel = new StorageModel(
+//							currentStorage.getId(), 
+//							currentStorage.getLabel());			
+//					currentSetModel.add(currentStorageModel);
+//		    	}
+		    }
 		}
 		
 		//just for testing the tree
@@ -169,12 +215,12 @@ public class DataExplorerViewRep implements ViewInter
 		subSet.add(new StorageModel(15301, "Storage"));
 		subSet.add(new StorageModel(1, "Selection"));
 		rootSet.add(subSet);	
-		rootSet.add(new SelectionModel(2, "Selection"));
-		rootSet.add(new StorageModel(15101, "Storage"));
-		rootSet.add(new SelectionModel(2, "Selection"));
-		rootSet.add(new StorageModel(15101, "Storage"));
-		rootSet.add(new SelectionModel(2, "Selection"));
-		rootSet.add(new StorageModel(15101, "Storage"));
+//		rootSet.add(new SelectionModel(2, "Selection"));
+//		rootSet.add(new StorageModel(15101, "Storage"));
+//		rootSet.add(new SelectionModel(2, "Selection"));
+//		rootSet.add(new StorageModel(15101, "Storage"));
+//		rootSet.add(new SelectionModel(2, "Selection"));
+//		rootSet.add(new StorageModel(15101, "Storage"));
 
 		return rootSet;
      }

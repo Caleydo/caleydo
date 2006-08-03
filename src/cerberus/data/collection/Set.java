@@ -108,9 +108,10 @@ public interface Set
 	
 	/**
 	 * Get the number of dimensions used in this set. 
-	 * The number of dimension is identical the number of stored Selection's.
+	 * The number of dimension is identical the number of stored Selections and Storages.
 	 * 
-	 * @return total number of dimensions, which is equal to the total nubmer of handled Selection's
+	 * @return total number of dimensions, which is equal to the total nubmer 
+	 * of handled Selections and Storages. 
 	 */
 	public int getDimensions();
 	
