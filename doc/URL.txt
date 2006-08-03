@@ -1,18 +1,161 @@
+/***************************************
+/***           CERBERUS              ***
+/***************************************
+/***                                 ***
+/*** List of external packages       ***
+/*** required for CERBERUS           ***
+/***                                 ***
+/*** author: Michael Kalkusch        ***
+/*** creation:    2006-07-27         ***
+/*** last update: 2006-08-03         ***
+/***************************************
 
 
-Eclipse SWT 
+
+(0) Java JRE 1.5
+-----------------------------
+	web: http://java.sun.com/
+	version: jre 1.5 or higher	
+	status: mandatory
+		
+	remark: this project requires Java 1.5 or higher
+	
+
+(1) Eclipse SWT 
 (Standard Widget Toolkit)
 -----------------------------
-http://www.eclipse.org/swt/
+	web: http://www.eclipse.org/swt/		
+	version: 2006-08-01
+	status: mandatory
+
+	path: 
+		cerberus\bin\ext_jar\swt\linux
+		cerberus\bin\ext_jar\swt\win32
+	
+	files:
+  	swt.jar (linux& win32)
 
 
-JOGL
+
+(2) JOGL
 OpenGL binding for Java
 -----------------------------
-https://jogl.dev.java.net/
+	web: https://jogl.dev.java.net/
+	version: 2006-08-01
+	status: mandatory
+	    
+	path: 
+		cerberus\bin\ext_jar\jogl
+		cerberus\bin\ext_jar\jogl\linux
+		cerberus\bin\ext_jar\jogl\win32
+	
+	files required:
+	  jogl.jar	  
+	  jogl-natives-linux-i586.jar			(linux)
+	  jogl-natives-windows-i586.jar		(win32)
+	  
+	files optional:
+		jogl-demos-data.jar
+		jogl-demos-src.zip
+		jogl-demos-util.jar
+		jogl-demos-util_mod.jar
+		jogl-demos.jar
+		jogl-src.zip
 
 
-SWT Jogl binding 0.5 win only
+
+(3) SWT Jogl binding 0.5 win only
 -----------------------------
-http://opengl.j3d.org/swt/download.html
+	web: http://opengl.j3d.org/swt/download.html
+	version: v0.5
+	status: optional
+	description: Eclipse windowing toolkit for Java
+  remark: v0.5 works for windows only
+  
+  path: 
+  	cerberus\bin\ext_jar\swt\swt_jogl
+  
+  files required:
+		opengl-swt-win32-0.5.zip
+		
+	files optional:
+		opengl-swt-examples-0.5.zip
+		opengl-swt-src-0.5.zip
+  
+  
+  
+(4) WEKA (Data Minig Tool):
+---------------------------
+  web: http://www.cs.waikato.ac.nz/ml/weka/
+  version: 2006-07-12
+  status: optional
+  description: data minig tool
+  remark:
+  
+  path: 
+  	cerberus\bin\ext_jar\weka
+  
+  files required:
+  	weka.jar
+  
+  
 
+(5) JFace:
+----------
+  web: 
+  version: v3.1.2  2006-07-12
+  status: optional
+  description: extends SWT, Eclipse plugins (import)
+  remark: requires SWT [3]
+  
+  
+  path: 
+  	cerberus\bin\ext_jar\jface
+  
+  files required:
+		org.eclipse.core.resources_3.1.2.jar
+		org.eclipse.core.runtime_3.1.2.jar
+		org.eclipse.jface.text_3.1.2.jar
+		org.eclipse.jface_3.1.1.jar
+		org.eclipse.osgi_3.1.2.jar
+		org.eclipse.ui.workbench_3.1.2.jar
+	
+	
+	
+(6) KEGG:
+---------
+  web: http://www.genome.jp/kegg/
+	     http://www.genome.jp/kegg/soap/  (API)
+  version: 
+  status: optional
+  description: API to access pathway database
+  remark: requires axis [7]
+  
+	
+	
+(7) axis:
+----------
+	web: http://ws.apache.org/axis/
+	version: v3.1.2  2006-07-12
+  status: optional
+  description: Apache Axis is an implementation of the SOAP ("Simple Object Access Protocol")
+  remark: required for KEGG [6]
+  
+  path: 
+  	cerberus\bin\ext_jar\axis
+  
+  files required:
+  	axis.jar
+  	jaxrpc.jar
+  	log4j-1.2.8.jar
+  	log4j.properties
+  	
+	files optional:  	
+  	axis-ant.jar		
+		commons-discovery-0.2.jar
+		commons-logging-1.0.4.jar						
+		saaj.jar
+		wsdl4j-1.5.1.jar
+		
+
+  
