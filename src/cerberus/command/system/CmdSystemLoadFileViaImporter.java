@@ -8,21 +8,28 @@
  */
 package cerberus.command.system;
 
+import java.util.LinkedList;
+import java.util.Iterator;
+
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
 import cerberus.command.base.AbstractCommand;
-import cerberus.command.window.CmdWindowPopupInfo;
+//import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.GeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.system.StringConversionTool;
 
 import cerberus.data.loader.MicroArrayLoader;
 
 
 /**
- * Command, shuts down application.
+ * Command, load data from file using a token pattern and a target Set.
+ * Use MicroArrayLoader to laod dataset.
  * 
  * @author Michael Kalkusch
  *
+ * @see cerberus.data.collection.Set
+ * @see cerberus.data.loader.MicroArrayLoader
  */
 public class CmdSystemLoadFileViaImporter 
 extends AbstractCommand
@@ -34,46 +41,74 @@ implements CommandInterface {
 	
 	protected String sTokenPattern;
 	
-	protected String sTargetSet;
+	protected int iTargetSetId;
 	
 	
 	/**
 	 * 
+	 * List of expected Strings inside LinkedList <String>: <br>
+	 * sData_CmdId <br>
+	 * sData_Cmd_label <br>
+	 * sData_Cmd_process <br> 
+	 * sData_Cmd_MementoId <br> 
+	 * sData_Cmd_detail <br>
+	 * sData_Cmd_attribute1 <br>
+	 * sData_Cmd_attribute2 <br>
+	 * 
+	 * @see cerberus.data.loader.MicroArrayLoader
+	 */
+	public CmdSystemLoadFileViaImporter( GeneralManager refGeneralManager,
+			final LinkedList <String> llAttributes ) {
+		
+		Iterator <String> iter = llAttributes.iterator();
+		
+		this.setId( StringConversionTool.convertStringToInt(
+				iter.next(), 
+				-1 ) );
+		
+		/**
+		 * skip unneeded Strings...
+		 */
+		iter.next();
+		iter.next();
+		iter.next();
+		
+		this.refGeneralManager = refGeneralManager;		
+		this.sFileName = iter.next();		
+		this.sTokenPattern = iter.next();
+		this.iTargetSetId = StringConversionTool.convertStringToInt(
+				iter.next(), 
+				-1 );	
+	}
+	
+	/**
+	 * Use 
+	 * 
+	 * @see cerberus.data.loader.MicroArrayLoader
 	 */
 	public CmdSystemLoadFileViaImporter( GeneralManager refGeneralManager,
 			String fileName, 
 			String tokenPattern,
-			String targetSet ) {
+			final int iTargetSet ) {
 		
 		this.refGeneralManager = refGeneralManager;		
 		this.sFileName = fileName;		
-		this.sTokenPattern =tokenPattern;		
- 		this.sTargetSet = targetSet;
+		this.sTokenPattern =tokenPattern;
+		this.iTargetSetId = iTargetSet;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Load data from file using a token pattern.
+	 * 
+	 * @see cerberus.data.loader.MicroArrayLoader#loadData()
+	 * 
 	 * @see cerberus.command.CommandInterface#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		System.out.println("load file via importer... ([" +
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
-				sTargetSet + "])");
-		
-		int iTargetSetId = -1;
-		
-		try {
-			iTargetSetId = Integer.valueOf(sTargetSet);
-		}
-		catch ( NumberFormatException nfe ) 
-		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg("CmdSystemLoadFileViaImporter::doCommand() can not convert ["+
-					sTargetSet + "] to integer. Can not load [" +
-					sFileName + "] with tokenPattern=[" +
-					sTokenPattern + "]");
-			
-			return;
-		}
+				iTargetSetId + "])");	
 		
 		MicroArrayLoader loader = new MicroArrayLoader( refGeneralManager );
 		
@@ -105,5 +140,6 @@ implements CommandInterface {
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.DATASET_LOAD; 
 	}
+	
 
 }

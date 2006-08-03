@@ -118,7 +118,10 @@ public abstract class CollectionManager
 	}
 
 	protected int getIndexInVector_byUniqueId( final int iItemId ) {
-		return (int) hashId2IndexLookup.get( new Integer( iItemId )).intValue();
+		Integer buffer = hashId2IndexLookup.get( new Integer( iItemId ));
+		return (int) buffer.intValue();
+		
+		//return (int) hashId2IndexLookup.get( new Integer( iItemId )).intValue();
 	}
 	
 	protected boolean hasItem_withUniqueId( final int iItemId ) {

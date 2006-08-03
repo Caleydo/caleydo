@@ -17,14 +17,41 @@ public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 	protected String sErrorMessage = "";
 	
 	
-	protected CerberusDefaultSaxHandler( final GeneralManager setGeneralManager ) {
+	protected CerberusDefaultSaxHandler( 
+			final GeneralManager setGeneralManager ) {
 		refGeneralManager = setGeneralManager;
 		refMenuMenager = setGeneralManager.getSingelton().getMenuManager();
 		
 		assert refMenuMenager != null : "MenuManager was not instanciated in Singelton!";
 	}
 	
-	protected final int assignIntValueIfValid_orReturnNegative( final Attributes attrs,
+	/* (non-Javadoc)
+	 * @see cerberus.xml.parser.jogl.CerberusSaxHandler#getErrorMessage()
+	 */
+	public String getErrorMessage() {
+		return sErrorMessage;
+	}
+	
+	public abstract String createXMLcloseingTag(
+			final Object frame, 
+			final String sIndent);
+
+	public abstract String createXML(
+			final Object frame, 
+			final String sIndent);
+
+
+	
+	/**
+	 * Read (int) key from Attributes, if key is not present a defautl value 
+	 * is returned.
+	 * 
+	 * @param attrs Attributes from SAX-parser
+	 * @param key key to search for
+	 * @return integer of -1 in case key was not present
+	 */
+	protected static final int assignIntValueIfValid_orReturnNegative( 
+			final Attributes attrs,
 			final String key ) {		
 		String sBuffer = attrs.getValue( key );
 		if ( sBuffer != null  ) {
@@ -33,7 +60,16 @@ public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 		return -1;
 	}
 	
-	protected final boolean assignBooleanValueIfValid( final Attributes attrs,
+	/**
+	 * Read (boolean) key from Attributes, if key is not present 
+	 * a default value is returned.
+	 * 
+	 * @param attrs Attributes from SAX-parser
+	 * @param key key to search for
+	 * @return integer of -1 in case key was not present
+	 */
+	protected static final boolean assignBooleanValueIfValid( 
+			final Attributes attrs,
 			final String key,
 			final boolean bDefaultValue) {		
 		String sBuffer = attrs.getValue( key );
@@ -44,14 +80,15 @@ public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 	}
 	
 	/**
-	 * Get String from a Attributes attrs. If key does not exist sDefaultValue is returned.
+	 * Get String from a Attributes attrs. If key does not exist sDefaultValue 
+	 * is returned.
 	 * 
 	 * @param attrs SAX attributes
 	 * @param key key to search for
-	 * @param sDefaultValue default key
-	 * @return
+	 * @param sDefaultValue default value
+	 * @return data assigned to the key in Attributes or default value
 	 */
-	protected final String assignStringValue( final Attributes attrs,
+	protected static final String assignStringValue( final Attributes attrs,
 			final String key,
 			final String sDefaultValue) {		
 		String sBuffer = attrs.getValue( key );
@@ -63,7 +100,16 @@ public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 		return sBuffer;
 	}
 	
-	protected final int assignIntValueIfValid( final Attributes attrs,
+	/**
+	 * Read (int) key from Attributes, if key is not present a defautl value 
+	 * is returned.
+	 * 
+	 * @param attrs Attributes from SAX-parser
+	 * @param key key to search for
+	 * @param iDefaultValue default value
+	 * @return integer of key of default value
+	 */
+	protected static final int assignIntValueIfValid( final Attributes attrs,
 			final String key,
 			final int iDefaultValue) {		
 		String sBuffer = attrs.getValue( key );
@@ -73,16 +119,5 @@ public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 		return iDefaultValue;
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.jogl.CerberusSaxHandler#getErrorMessage()
-	 */
-	public String getErrorMessage() {
-		return sErrorMessage;
-	}
-	
-	public abstract String createXMLcloseingTag(final Object frame, final String sIndent);
-
-	public abstract String createXML(final Object frame, final String sIndent);
-
 
 }

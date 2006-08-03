@@ -32,6 +32,7 @@ public enum CommandQueueSaxType
 	TAG_ATTRIBUTE2("cmd","attrib2"),	
 	TAG_DETAIL("cmd","detail"),
 	TAG_PROCESS("cmd","process"),
+	TAG_LABEL("cmd","label"),
 	
 	/*
 	 * -------  COMMAND QUEUE  --------

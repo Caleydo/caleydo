@@ -10,6 +10,8 @@ package cerberus.manager.command.factory;
 
 
 import javax.swing.JComponent;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 import cerberus.manager.GeneralManager;
 
@@ -19,7 +21,9 @@ import cerberus.command.CommandType;
 import cerberus.command.CommandTypeGroup;
 import cerberus.command.base.AbstractCommand;
 
-
+import cerberus.command.data.CmdDataCreateSelection;
+import cerberus.command.data.CmdDataCreateSet;
+import cerberus.command.data.CmdDataCreateStorage;
 
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
@@ -71,6 +75,13 @@ extends AbstractCommand
 
 	protected final CommandManager refCommandManager;
 
+	public static final String sDelimiter_CreateStorage_DataItemBlock 	= "@";	
+	public static final String sDelimiter_CreateStorage_DataItems 		= " ";
+	public static final String sDelimiter_CreateStorage_DataType 		= ";";
+	
+	public static final String sDelimiter_CreateSelection_DataItems 	= " ";
+	public static final String sDelimiter_CreateSelection_DataItemBlock = "@";
+	
 	/**
 	 * Constructor
 	 * 
@@ -88,7 +99,7 @@ extends AbstractCommand
 		
 		/* create new command from constructor parameter. */
 		if ( setCommandType != null ) {
-			refCommand = createCommand( setCommandType, null );
+			refCommand = createCommand( setCommandType, "" );
 		}
 	}
 	
@@ -142,14 +153,22 @@ extends AbstractCommand
 		
 	}
 	
+	/**
+	 * 
+	 * List of expected Strings inside LinkedList <String>: <br>
+	 * sData_CmdId <br>
+	 * sData_Cmd_label <br>
+	 * sData_Cmd_process <br> 
+	 * sData_Cmd_MementoId <br> 
+	 * sData_Cmd_detail <br>
+	 * sData_Cmd_attribute1 <br>
+	 * sData_Cmd_attribute2 <br>
+	 * 
+	 * @see cerberus.manager.command.factory.CommandFactoryInterface#createCommand(java.lang.String, java.util.LinkedList)
+	 */
 	public CommandInterface createCommand( 
-			String sData_Cmd_type,
-			String sData_Cmd_process,
-			final int iData_CmdId,
-			final int iData_Cmd_MementoId,
-			String sData_Cmd_detail,
-			String sData_Cmd_attrbute1,
-			String sData_Cmd_attrbute2 ) {
+			final String sData_Cmd_type,
+			final LinkedList <String> llAttributes ) {
 		
 		CommandQueueSaxType cmdType = CommandQueueSaxType.valueOf( sData_Cmd_type );
 		
@@ -162,46 +181,40 @@ extends AbstractCommand
 			createdCommand =
 				new CmdSystemLoadFileViaImporter( 
 						refGeneralManager,
-						sData_Cmd_detail,
-						sData_Cmd_attrbute1,
-						sData_Cmd_attrbute2 );
+						llAttributes );
 			break;
 		}
 		
-		/*
+
 		case CREATE_STORAGE:
-		{
+		{					
 			createdCommand =
-				new CmdSystemLoadFileViaImporter( 
+				new CmdDataCreateStorage(
 						refGeneralManager,
-						sData_Cmd_detail,
-						sData_Cmd_attrbute1,
-						sData_Cmd_attrbute2 );
+						llAttributes,
+						true );
 			break;
 		}
-			
+		
 		case CREATE_SET:
 		{
 			createdCommand =
-				new CmdSystemLoadFileViaImporter( 
+				new CmdDataCreateSet(
 						refGeneralManager,
-						sData_Cmd_detail,
-						sData_Cmd_attrbute1,
-						sData_Cmd_attrbute2 );
+						llAttributes,
+						true );
 			break;
 		}
-			
+		
 		case CREATE_SELECTION:
 		{
 			createdCommand =
-				new CmdSystemLoadFileViaImporter( 
+				new CmdDataCreateSelection(
 						refGeneralManager,
-						sData_Cmd_detail,
-						sData_Cmd_attrbute1,
-						sData_Cmd_attrbute2 );
+						llAttributes );			
 			break;
 		}
-		*/
+
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
@@ -209,17 +222,17 @@ extends AbstractCommand
 					CerberusExceptionType.SAXPARSER);
 		} // end switch
 		
-		/**
-		 * Create a new uniqueId if nessecary
-		 */
-		int iNewUniqueId = iData_CmdId;		
-		if ( iData_CmdId < 0 ) {
-			iNewUniqueId = refCommandManager.createNewId( null );
-		}
-		createdCommand.setId( iNewUniqueId );
-		/**
-		 * End: Create a new uniqueId if nessecary
-		 */			
+//		/**
+//		 * Create a new uniqueId if nessecary
+//		 */
+//		int iNewUniqueId = iData_CmdId;		
+//		if ( iData_CmdId < 0 ) {
+//			iNewUniqueId = refCommandManager.createNewId( null );
+//		}
+//		createdCommand.setId( iNewUniqueId );
+//		/**
+//		 * End: Create a new uniqueId if nessecary
+//		 */			
 		
 		return createdCommand;
 	}

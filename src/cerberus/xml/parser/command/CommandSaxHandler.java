@@ -3,6 +3,7 @@
  */
 package cerberus.xml.parser.command;
 
+import java.util.LinkedList;
 
 //import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
@@ -237,6 +238,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	/**
 	 * 
 	 * Read values of class: iCurrentFrameId
+	 * 
 	 * @param attrs
 	 * @param bIsExternalFrame
 	 */
@@ -251,11 +253,17 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 					CommandQueueSaxType.TAG_PROCESS.getXmlKey(), 
 					CommandQueueSaxType.TAG_PROCESS.toString() );
 			
-			int iData_CmdId = assignIntValueIfValid( attrs, 
-					CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), -1  );
+			String sData_Cmd_label = assignStringValue( attrs, 
+					CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+					CommandQueueSaxType.TAG_LABEL.toString() );
 			
-			int iData_Cmd_MementoId = assignIntValueIfValid( attrs, 
-					CommandQueueSaxType.TAG_MEMENTO_ID.getXmlKey(), -1  );
+			String sData_CmdId = assignStringValue( attrs, 
+					CommandQueueSaxType.TAG_CMD_ID.getXmlKey(),
+					Integer.toString(-1)  );
+			
+			String sData_Cmd_MementoId = assignStringValue( attrs, 
+					CommandQueueSaxType.TAG_MEMENTO_ID.getXmlKey(),
+					Integer.toString(-1)  );
 			
 			String sData_Cmd_type = assignStringValue( attrs,
 					CommandQueueSaxType.TAG_TYPE.getXmlKey(), 
@@ -273,15 +281,20 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 					CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
 					CommandQueueSaxType.TAG_DETAIL.toString() );										
 				
+			LinkedList <String> llAttributes = 
+				new LinkedList <String> ();
+			
+			llAttributes.add( sData_CmdId );			
+			llAttributes.add( sData_Cmd_label );
+			llAttributes.add( sData_Cmd_process );
+			llAttributes.add( sData_Cmd_MementoId );
+			llAttributes.add( sData_Cmd_detail );
+			llAttributes.add( sData_Cmd_attribute1 );
+			llAttributes.add( sData_Cmd_attribute2 );
 			
 			lastCommand = refCommandManager.createCommand( 
 					sData_Cmd_type,
-					sData_Cmd_process,
-					iData_CmdId,
-					iData_Cmd_MementoId,
-					sData_Cmd_detail,
-					sData_Cmd_attribute1,
-					sData_Cmd_attribute2 );
+					llAttributes );
 			
 			
 			if (( lastCommand != null )&&(sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() )))

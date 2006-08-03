@@ -118,9 +118,10 @@ implements UniqueManagedInterface {
 //				String details_activeFrame = Integer.toString(iCollectionId) + " " +
 //					Integer.toString( iCollectionId );
 				
-				CmdWindowSetActiveFrame cmd_iter = (CmdWindowSetActiveFrame) refCommandManager.createCommand( 
+				CmdWindowSetActiveFrame cmd_iter = 
+					(CmdWindowSetActiveFrame) refCommandManager.createCommand( 
 						CommandType.WINDOW_SET_ACTIVE_FRAME, 
-						null );
+						"" );
 				
 				/* Set own farme as current frame */
 				cmd_iter.setCallerAndTargetFrameId( iCollectionId, iCollectionId );
@@ -142,9 +143,10 @@ implements UniqueManagedInterface {
 				 */
 				int iIdOfOtherWorkspaceFrame = refWorkspaceFrame.getId();
 				
-				CmdWindowSetActiveFrame cmd_iter = (CmdWindowSetActiveFrame) refCommandManager.createCommand( 
+				CmdWindowSetActiveFrame cmd_iter = 
+					(CmdWindowSetActiveFrame) refCommandManager.createCommand( 
 						CommandType.WINDOW_SET_ACTIVE_FRAME, 
-						null );
+						"" );
 				
 				/* Set own farme as current frame */
 				cmd_iter.setCallerAndTargetFrameId( iCollectionId, iIdOfOtherWorkspaceFrame );
@@ -268,7 +270,7 @@ implements UniqueManagedInterface {
 
 		CommandInterface bufferCmd = 
 			this.refCommandManager.createCommand(
-				CommandType.WINDOW_POPUP_INFO, null );
+				CommandType.WINDOW_POPUP_INFO, "" );
 				
 //		menuCreator.createMenu( iCollectionId,
 //				"SYSTEM_ACTIVE",
@@ -298,7 +300,7 @@ implements UniqueManagedInterface {
 				"Load, save, exit application",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 	
 		
@@ -308,14 +310,14 @@ implements UniqueManagedInterface {
 				"Load from several files..",
 				'*',
 				"SYSTEM_FILE",
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_SAVE",
 				"save..",
 				"Save to several file formats..",
 				'*',
 				"SYSTEM_FILE",
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null) );
+				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "") );
 		
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_SAVE_XML",
@@ -323,14 +325,14 @@ implements UniqueManagedInterface {
 				"Save all settings to a XML file.",
 				'A',
 				"SYSTEM_FILE_SAVE",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "") );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_SAVE_SNAPSHOT_XML",
 				"save Snapshot (XML)",
 				"Save a snap shot of the current application sate to a XML file.",
 				'S',
 				"SYSTEM_FILE_SAVE",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "") );
 		
 		refJMenuBar.addMenuItemWithCommand(DMenuBootStraper.MENU_SEPERATOR,
 				"-",
@@ -345,7 +347,7 @@ implements UniqueManagedInterface {
 					"exit from Application",
 					'X',
 					"SYSTEM_FILE",
-					true, refCommandManager.createCommand( CommandType.SYSTEM_EXIT, null ) );
+					true, refCommandManager.createCommand( CommandType.SYSTEM_EXIT, "" ) );
 		}
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_LOAD_JPG",
@@ -353,7 +355,7 @@ implements UniqueManagedInterface {
 				"load jpg-file..",
 				'J',
 				"SYSTEM_FILE_LOAD",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 		refJMenuBar.addMenuItemWithCommand(DMenuBootStraper.MENU_SEPERATOR,
 				"-",
@@ -368,7 +370,7 @@ implements UniqueManagedInterface {
 				"load gpr-file..",
 				'G',
 				"SYSTEM_FILE_LOAD",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 
 		
 		/*
@@ -379,7 +381,7 @@ implements UniqueManagedInterface {
 				"Edit parameters",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 //		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_SET",
 //				"Set..",
@@ -415,14 +417,14 @@ implements UniqueManagedInterface {
 				"Handle views",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_VIEW_ADD_VIEW",
 				"add View",
 				"adds a bew view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 		refJMenuBar.addMenuItemWithCommand(DMenuBootStraper.MENU_SEPERATOR,
 				"-",
@@ -437,21 +439,21 @@ implements UniqueManagedInterface {
 				"adds a Histogram to the current view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_VIEW_ADD_HEATMAP",
 				"add Heatmap",
 				"adds a Heatmap to the current view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_VIEW_ADD_SCATTERPLOT",
 				"add Scatterplot",
 				"adds a Scatterplot to the current view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 
 		
 		/*
@@ -462,14 +464,14 @@ implements UniqueManagedInterface {
 				"Handel windows",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_WINDOW_NEW_FRAME",
 				"new Frame",
 				"create a new Frame",
 				'*',
 				"SYSTEM_WINDOW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NEW_FRAME, null ) );
+				true, refCommandManager.createCommand( CommandType.SYSTEM_NEW_FRAME, "" ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_WINDOW_SET_FRAME",
 				"set Frame..",
@@ -564,7 +566,7 @@ implements UniqueManagedInterface {
 				"Show credits",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, null ) );
+				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_CREDITS",

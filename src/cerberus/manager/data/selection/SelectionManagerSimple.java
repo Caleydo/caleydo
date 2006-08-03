@@ -148,6 +148,10 @@ implements SelectionManager
 			assert false: "SelectionManagerSimple.getItemSelection() ArrayIndexOutOfBoundsException ";
 			return null;
 		}
+		catch (NullPointerException npe) {
+			assert false: "SelectionManagerSimple.getItemSelection() uniqueId=[" + iItemId + "] is not in Manager ";
+			return null;
+		}
 	}
 
 	/*

@@ -9,6 +9,7 @@
 package cerberus.manager.command;
 
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.Vector;
 //import java.util.Iterator;
 
@@ -195,36 +196,21 @@ public class CommandManagerSimple
 		return refCommandFactory.createCommand( CommandType.getType( useSelectionType ), null );
 	}
 	
+	
 	/**
-	 * Create a new command.
-	 * 
-	 * @param sData_Cmd_type
-	 * @param sData_Cmd_process
-	 * @param iData_CmdId
-	 * @param iData_Cmd_MementoId
-	 * @param sData_Cmd_detail
-	 * @param sData_Cmd_attrbute1
-	 * @param sData_Cmd_attrbute2
-	 * 
-	 * @return new command
+	 * Create a new command using the CommandType.
+	 * @param details TODO
 	 */
-	public CommandInterface createCommand( 
-			String sData_Cmd_type,
-			String sData_Cmd_process,
-			final int iData_CmdId,
-			final int iData_Cmd_MementoId,
-			String sData_Cmd_detail,
-			String sData_Cmd_attrbute1,
-			String sData_Cmd_attrbute2 ) {
+	public CommandInterface createCommand( final String  useSelectionType, 
+			final LinkedList <String> llAttributes ) {
 		
 		CommandInterface createdCommand = 
-			refCommandFactory.createCommand( sData_Cmd_type,
-			sData_Cmd_process,
-			iData_CmdId,
-			iData_Cmd_MementoId,
-			sData_Cmd_detail,
-			sData_Cmd_attrbute1,
-			sData_Cmd_attrbute2 );	
+			refCommandFactory.createCommand( useSelectionType,
+					llAttributes );	
+		
+		if ( createdCommand.getId() < 0 ) {
+			createdCommand.setId( createNewId( ManagerObjectType.SELECTION_MULTI_BLOCK ) );
+		}
 		
 		registerItem( createdCommand, 
 				createdCommand.getId(),
@@ -232,6 +218,7 @@ public class CommandManagerSimple
 		
 		return createdCommand;
 	}
+	
 	
 //	/* (non-Javadoc)
 //	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)

@@ -8,6 +8,8 @@
  */
 package cerberus.manager.command.factory;
 
+import java.util.LinkedList;
+
 import cerberus.command.CommandType;
 import cerberus.command.CommandInterface;
 import cerberus.command.queue.CommandQueueInterface;
@@ -59,24 +61,24 @@ public interface CommandFactoryInterface {
 	/**
 	 * Create a new command.
 	 * 
+	 * List of expected Strings inside LinkedList <String>: <br>
+	 * sData_CmdId <br>
+	 * sData_Cmd_label <br>
+	 * sData_Cmd_process <br> 
+	 * sData_Cmd_MementoId <br> 
+	 * sData_Cmd_detail <br>
+	 * sData_Cmd_attribute1 <br>
+	 * sData_Cmd_attribute2 <br>
+	 * 
 	 * @param sData_Cmd_type
-	 * @param sData_Cmd_process
-	 * @param iData_CmdId
-	 * @param iData_Cmd_MementoId
-	 * @param sData_Cmd_detail
-	 * @param sData_Cmd_attrbute1
-	 * @param sData_Cmd_attrbute2
+	 * @param llAttributes
 	 * 
 	 * @return new command
 	 */
 	public CommandInterface createCommand( 
-			String sData_Cmd_type,
-			String sData_Cmd_process,
-			final int iData_CmdId,
-			final int iData_Cmd_MementoId,
-			String sData_Cmd_detail,
-			String sData_Cmd_attrbute1,
-			String sData_Cmd_attrbute2 );
+			final String sData_Cmd_type,
+			final LinkedList <String> llAttributes );
+
 	
 	/**
 	 * @see cerberus.manager.CommandManager#createCommandQueue(String, String, int, int, int, int)
@@ -88,4 +90,8 @@ public interface CommandFactoryInterface {
 			final int sQueueThread,
 			final int sQueueThreadWait );
 	
+	
+//	public CommandInterface createCommandQueue( 
+//			final String sData_Cmd_type,
+//			final LinkedList <String> llAttributes );
 }

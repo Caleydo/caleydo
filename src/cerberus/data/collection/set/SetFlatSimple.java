@@ -75,7 +75,7 @@ implements Set {
 		}
 		
 		//FIXME Test Range!
-		refFlatSelection[iAtDimension] = addSelection[0];
+		refFlatSelection = addSelection;
 		
 		return true;
 	}
@@ -399,7 +399,7 @@ implements Set {
 		
 		assert setStorage != null: "setStorage() with null-pointer";
 		
-		refFlatStorage[0] = setStorage[0];
+		refFlatStorage = setStorage;
 	}
 	
 	public boolean setStorageByDimAndIndex( final Storage addStorage, 

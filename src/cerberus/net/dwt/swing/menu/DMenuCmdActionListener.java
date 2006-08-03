@@ -54,7 +54,7 @@ public class DMenuCmdActionListener implements ActionListener {
 			final CommandType createCommandByType) {
 		
 		refCommandManager = setCommandManager;
-		refCommand = refCommandManager.createCommand(createCommandByType, null);;
+		refCommand = refCommandManager.createCommand(createCommandByType, "");
 	}
 
 	/* (non-Javadoc)
