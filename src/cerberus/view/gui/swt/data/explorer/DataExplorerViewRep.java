@@ -1,6 +1,7 @@
 package cerberus.view.gui.swt.data.explorer;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -9,11 +10,16 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import cerberus.data.collection.Selection;
+import cerberus.data.collection.Set;
+import cerberus.data.collection.Storage;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SWTGUIManager;
+import cerberus.manager.SetManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
 import cerberus.view.gui.ViewInter;
@@ -62,25 +68,21 @@ public class DataExplorerViewRep implements ViewInter
 	
 	public void initView()
 	{
-		/* Create a grid layout object so the text and treeviewer
-		 * are layed out the way I want. */
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.verticalSpacing = 2;
-		layout.marginWidth = 0;
-		layout.marginHeight = 2;
-		refSWTContainer.setLayout(layout);
+//		/* Create a grid layout object so the text and treeviewer
+//		 * are layed out the way I want. */
+//		GridLayout layout = new GridLayout();
+//		layout.numColumns = 1;
+//		layout.verticalSpacing = 2;
+//		layout.marginWidth = 0;
+//		layout.marginHeight = 2;
+//		refSWTContainer.setLayout(layout);
 		
-		/* Create a "label" to display information in. I'm
-		 * using a text field instead of a lable so you can
-		 * copy-paste out of it. */
-		text = new Text(refSWTContainer, SWT.READ_ONLY | SWT.SINGLE | SWT.BORDER);
-		// layout the text field above the treeviewer
-		GridData layoutData = new GridData();
-		layoutData.grabExcessHorizontalSpace = true;
-		layoutData.horizontalAlignment = GridData.FILL;
-		text.setLayoutData(layoutData);
-		
+	    RowLayout layout = new RowLayout(SWT.HORIZONTAL);
+	    layout.wrap = true;
+	    layout.fill = false;
+	    layout.justify = true;
+	    refSWTContainer.setLayout(layout);
+				
 		// Create the tree viewer as a child of the composite parent
 		treeViewer = new TreeViewer(refSWTContainer);
 		treeViewer.setContentProvider(new DataExplorerContentProvider());
@@ -89,13 +91,13 @@ public class DataExplorerViewRep implements ViewInter
 		
 		treeViewer.setUseHashlookup(true);
 		
-		// layout the tree viewer below the text field
-		layoutData = new GridData();
-		layoutData.grabExcessHorizontalSpace = true;
-		layoutData.grabExcessVerticalSpace = true;
-		layoutData.horizontalAlignment = GridData.FILL;
-		layoutData.verticalAlignment = GridData.FILL;
-		treeViewer.getControl().setLayoutData(layoutData);
+//		// layout the tree viewer below the text field
+//		GridData layoutData = new GridData();
+//		layoutData.grabExcessHorizontalSpace = true;
+//		layoutData.grabExcessVerticalSpace = true;
+//		layoutData.horizontalAlignment = GridData.FILL;
+//		layoutData.verticalAlignment = GridData.FILL;
+//		treeViewer.getControl().setLayoutData(layoutData);
 	
 		hookListeners();
 		
@@ -115,8 +117,7 @@ public class DataExplorerViewRep implements ViewInter
 			(SWTNativeWidget)refGeneralManager.getSingelton()
 		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_NATIVE_WIDGET);
 
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
-		
+		refSWTContainer = refSWTNativeWidget.getSWTWidget();	
 	}
 
 	public void retrieveExistingGUIContainer()
@@ -127,12 +128,46 @@ public class DataExplorerViewRep implements ViewInter
 	
     protected SetModel getInitalInput() 
     {
-		rootSet = new SetModel(3, "ROOT");
-
+    	SetModel currentSetModel;
+    	StorageModel currentStorageModel;
+    	
+		Set[] allSetItems;
+		List<Storage> allStorageItemsInSet;
+		List<Selection> allSelectionItemsInSet;
+		
+    	//root node in the tree (not visible)
+		rootSet = new SetModel();
+	
+		allSetItems = ((SetManager)refGeneralManager.
+				getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
+		
+		//iterate over all SETs
+		for(int setIndex = 0; setIndex < allSetItems.length; setIndex++)
+		{
+			//insert SET with ID and label in the tree
+			currentSetModel = new SetModel(
+					allSetItems[setIndex].getId(), 
+					allSetItems[setIndex].getLabel());			
+			rootSet.add(currentSetModel);
+			
+//			for(int storageDimIndex = 0; storageDimIndex < allSetItems[setIndex].get)
+//			(allSetItems[setIndex]).getS
+//			
+//			allStorageItemsInSet = (allSetItems[setIndex]).get .getStorages();
+//			
+//			//iterate over all Storages
+//			for(int storageIndex = 0; storageIndex < allStorageItemsInSet.size(); storageIndex++)
+//			{
+//				currentStorageModel = new StorageModel(					
+//						allStorageItemsInSet[setIndex].getId(), 
+//						allStorageItemsInSet[setIndex].getLabel());
+//			}
+		}
+		
+		//just for testing the tree
 		SetModel subSet = new SetModel(15101, "BLABLA");
 		subSet.add(new StorageModel(15301, "Storage"));
 		subSet.add(new StorageModel(1, "Selection"));
-
 		rootSet.add(subSet);	
 		rootSet.add(new SelectionModel(2, "Selection"));
 		rootSet.add(new StorageModel(15101, "Storage"));
@@ -171,18 +206,23 @@ public class DataExplorerViewRep implements ViewInter
 							refStorageTableViewRep.createTable(model.getID());
 							refStorageTableViewRep.redrawTable();
 						}
+						else if(model instanceof SelectionModel)
+						{
+							refStorageTableViewRep.createTable(model.getID());
+							refStorageTableViewRep.redrawTable();
+						}
 						
-						String value = labelProvider.getText(model);
-						toShow.append(value);
-						toShow.append(", ");
+//						String value = labelProvider.getText(model);
+//						toShow.append(value);
+//						toShow.append(", ");
 					}
 					
-					// remove the trailing comma space pair
-					if(toShow.length() > 0) 
-					{
-						toShow.setLength(toShow.length() - 2);
-					}
-					text.setText(toShow.toString());
+//					// remove the trailing comma space pair
+//					if(toShow.length() > 0) 
+//					{
+//						toShow.setLength(toShow.length() - 2);
+//					}
+//					text.setText(toShow.toString());
 				}
 			}
 		});

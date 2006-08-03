@@ -59,7 +59,7 @@ public class StorageTableViewRep implements DataTableViewInter
 
 	public void drawView()
 	{		
-		createTable(15301);
+		createTable(-1);
 	}
 
 	public void retrieveNewGUIContainer()
@@ -87,57 +87,53 @@ public class StorageTableViewRep implements DataTableViewInter
 	
 	public void createTable(int iRequestedStorageId)
 	{
+		TableItem item;
+		
+		//TODO: create columns dynamically
 		final TableColumn idColumn = new TableColumn(refTable, SWT.NONE);
 		idColumn.setText("Id");
 		final TableColumn labelColumn = new TableColumn(refTable, SWT.NONE);
 		labelColumn.setText("Label");
 		
-		float[] floatData;
-		int[] intData;
-		TableItem item;
-		
-		refCurrentStorage = refStorageManager.getItemStorage(iRequestedStorageId);
-			
-		//Just for testing - only the float array is read out
-		//in future we have to iterate over all arrays
-		
-		try 
-		{
-			floatData = refCurrentStorage.getArrayFloat();
-		} 
-		catch (NullPointerException npe) 
-		{
-			assert false:"uniqueId was not found";
-			return;
-		}
-		
-		try 
-		{
-			intData = refCurrentStorage.getArrayInt();
-		} 
-		catch (NullPointerException npe) 
-		{
-			assert false:"uniqueId was not found";
-			return;
-		}
-		
-		
-		for(int dataIndex = 0; dataIndex < floatData.length; dataIndex++)
+		//init empty table
+		if(iRequestedStorageId == -1)
 		{
 			item = new TableItem(refTable, SWT.NONE);
-			item.setText(new String [] {
-					Float.toString(floatData[dataIndex]),
-					Float.toString(floatData[dataIndex])});
-		}	
-		
-		for(int dataIndex = 0; dataIndex < intData.length; dataIndex++)
-		{
-			item = new TableItem(refTable, SWT.NONE);
-			item.setText(new String [] {
-					Integer.toString(intData[dataIndex]),
-					Integer.toString(intData[dataIndex])});
+			item.setText(new String [] {"",""});
 		}
+		//fill table with regular data
+		else
+		{
+			refTable.removeAll();
+	
+			//float[] floatData;
+			int[] intData;
+			String[] stringData;
 			
+			try 
+			{
+				refCurrentStorage = refStorageManager.getItemStorage(iRequestedStorageId);
+				
+				//floatData = refCurrentStorage.getArrayFloat();
+				stringData = refCurrentStorage.getArrayString();
+				intData = refCurrentStorage.getArrayInt();
+			} 
+			catch (NullPointerException npe) 
+			{
+				assert false:"uniqueId was not found";
+				return;
+			}
+					
+			for(int dataIndex = 0; dataIndex < intData.length; dataIndex++)
+			{
+				item = new TableItem(refTable, SWT.NONE);
+				item.setText(new String [] {
+						Integer.toString(intData[dataIndex]),
+						stringData[dataIndex]});
+			}
+		}
+		
+		//resize table
 		refSWTContainer.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
 				Rectangle area = refSWTContainer.getClientArea();

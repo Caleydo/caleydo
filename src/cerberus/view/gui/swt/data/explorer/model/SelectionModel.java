@@ -12,7 +12,6 @@ public class SelectionModel extends Model
 	@Override
 	public void accept(IModelVisitor visitor, Object passAlongArgument)
 	{
-		visitor.visitSelectionModel(this, passAlongArgument);
-		
+		visitor.visitSelectionModel(this, passAlongArgument);	
 	}
 }

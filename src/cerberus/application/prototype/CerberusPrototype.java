@@ -56,7 +56,7 @@ public class CerberusPrototype
 //		microArrayLoader.loadData();
 
 		CmdSystemLoadFileViaImporter commandFileImporter = new CmdSystemLoadFileViaImporter(
-				generalManager, sRawDataFileName, "SKIP;INT;FLOAT;ABORT", "15101");
+				generalManager, sRawDataFileName, "SKIP;INT;SKIP;STRING;ABORT", "15101");
 		commandFileImporter.doCommand();
 		
 		SWTGUIManagerSimple swtGuiManager = (SWTGUIManagerSimple) generalManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
