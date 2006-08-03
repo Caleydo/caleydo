@@ -69,7 +69,7 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 
 		refShell = new Shell(refDisplay);
 		refShell.setLayout(new GridLayout());
-		refShell.setSize(410, 1000);
+		refShell.setSize(800, 1000);
 	
 //		ApplicationWindow appWindow = new ApplicationWindow(refShell);
 //		windowManager.add(appWindow);

@@ -12,26 +12,32 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import cbg.article.model.Model;
-import cbg.article.treeviewer.ui.MovingBoxContentProvider;
-import cbg.article.treeviewer.ui.MovingBoxLabelProvider;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.SetManager;
+import cerberus.manager.SWTGUIManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.view.ViewManagerSimple;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
+import cerberus.view.gui.swt.data.explorer.model.Model;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
 import cerberus.view.gui.swt.data.explorer.model.SetModel;
 import cerberus.view.gui.swt.data.explorer.model.StorageModel;
 import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
 import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
+import cerberus.view.gui.swt.data.selection.SelectionTableViewRep;
+import cerberus.view.gui.swt.data.set.SetTableViewRep;
+import cerberus.view.gui.swt.data.storage.StorageTableViewRep;
 
 public class DataExplorerViewRep implements ViewInter
 {
+	protected static final Object StorageModel = null;
 	protected final int iNewId;
 	protected GeneralManager refGeneralManager;
 	protected Composite refSWTContainer;
-	
+	protected SetTableViewRep refSetTableViewRep;
+	protected StorageTableViewRep refStorageTableViewRep;
+	protected SelectionTableViewRep refSelectionTableViewRep;
+
 	protected TreeViewer treeViewer;
 	protected Text text;
 	protected DataExplorerLabelProvider labelProvider;
@@ -43,6 +49,12 @@ public class DataExplorerViewRep implements ViewInter
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
 				
+		ViewManagerSimple viewManager = 
+			(ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		//refSetTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SET_TABLE);
+		refStorageTableViewRep = (StorageTableViewRep)viewManager.createView(ManagerObjectType.VIEW_STORAGE_TABLE);
+		//refSelectionTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SELECTION_TABLE);
+		
 		retrieveNewGUIContainer();
 		initView();
 		drawView();
@@ -115,22 +127,35 @@ public class DataExplorerViewRep implements ViewInter
 	
     protected SetModel getInitalInput() 
     {
-		rootSet = new SetModel();
+		rootSet = new SetModel(3, "ROOT");
 
-		rootSet.add(new StorageModel(1, "Storage 1"));
-		rootSet.add(new SelectionModel(2, "Selection 1"));
+		SetModel subSet = new SetModel(15101, "BLABLA");
+		subSet.add(new StorageModel(15301, "Storage"));
+		subSet.add(new StorageModel(1, "Selection"));
+
+		rootSet.add(subSet);	
+		rootSet.add(new SelectionModel(2, "Selection"));
+		rootSet.add(new StorageModel(15101, "Storage"));
+		rootSet.add(new SelectionModel(2, "Selection"));
+		rootSet.add(new StorageModel(15101, "Storage"));
+		rootSet.add(new SelectionModel(2, "Selection"));
+		rootSet.add(new StorageModel(15101, "Storage"));
 
 		return rootSet;
      }
 
+	/**
+	 * Adds selection change listener.
+	 * In this method the selected tree entries are handled.
+	 */
 	protected void hookListeners() 
 	{
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() 
 		{
 			public void selectionChanged(SelectionChangedEvent event) 
 			{
-				// if the selection is empty clear the label
-				if(event.getSelection().isEmpty()) {
+				if(event.getSelection().isEmpty()) 
+				{
 					text.setText("");
 					return;
 				}
@@ -138,9 +163,16 @@ public class DataExplorerViewRep implements ViewInter
 				{
 					IStructuredSelection selection = (IStructuredSelection)event.getSelection();
 					StringBuffer toShow = new StringBuffer();
-					for (Iterator iterator = selection.iterator(); iterator.hasNext();) {
-						Object domain = (Model) iterator.next();
-						String value = labelProvider.getText(domain);
+					for (Iterator iterator = selection.iterator(); iterator.hasNext();) 
+					{
+						Model model = (Model) iterator.next();
+						if(model instanceof StorageModel)
+						{
+							refStorageTableViewRep.createTable(model.getID());
+							refStorageTableViewRep.redrawTable();
+						}
+						
+						String value = labelProvider.getText(model);
 						toShow.append(value);
 						toShow.append(", ");
 					}

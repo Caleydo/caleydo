@@ -20,7 +20,6 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 public class SetTableViewRep implements DataTableViewInter
 {
-	protected final int iNewId;
 	protected GeneralManager refGeneralManager;
 	protected SetManager refSetManager;
 	protected Composite refSWTContainer;
@@ -28,9 +27,8 @@ public class SetTableViewRep implements DataTableViewInter
 	protected Set[] refAllSetItems;
 	protected Table refTable;
 	
-	public SetTableViewRep(int iNewId, GeneralManager refGeneralManager)
+	public SetTableViewRep(GeneralManager refGeneralManager)
 	{
-		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
 				
 		retrieveNewGUIContainer();

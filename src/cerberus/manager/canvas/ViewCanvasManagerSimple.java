@@ -348,8 +348,8 @@ implements ViewCanvasManager,
 	 * @see prometheus.data.manager.GeneralManager#registerItem(java.lang.Object, int, prometheus.data.manager.BaseManagerType)
 	 */
 	public boolean registerItem(Object registerItem, int iItemId,
-			ManagerObjectType type) {
-		
+			ManagerObjectType type) 
+	{	
 		try {
 			ViewCanvas addItem = (ViewCanvas) registerItem;
 			

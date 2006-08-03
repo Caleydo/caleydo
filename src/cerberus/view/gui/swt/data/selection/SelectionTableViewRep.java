@@ -6,7 +6,7 @@ import cerberus.view.gui.swt.data.DataTableViewInter;
 public class SelectionTableViewRep implements DataTableViewInter
 {
 
-	public SelectionTableViewRep(int newId, GeneralManager manager)
+	public SelectionTableViewRep(GeneralManager manager)
 	{
 		// TODO Auto-generated constructor stub
 	}

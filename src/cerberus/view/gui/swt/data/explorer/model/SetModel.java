@@ -3,25 +3,31 @@ package cerberus.view.gui.swt.data.explorer.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import cerberus.manager.GeneralManager;
+
 public class SetModel extends Model
 {
-	protected List setList;
-	protected List storageList;
-	protected List selectionList;
+	protected List<SetModel> setList;
+	protected List<StorageModel> storageList;
+	protected List<SelectionModel> selectionList;
 	
 	private static IModelVisitor adder = new Adder();
-	//private static IModelVisitor remover = new Remover();
+	private static IModelVisitor remover = new Remover();
 	
 	public SetModel() 
 	{
-		setList = new ArrayList();
-		storageList = new ArrayList();
-		selectionList = new ArrayList();
+		setList = new ArrayList<SetModel>();
+		storageList = new ArrayList<StorageModel>();
+		selectionList = new ArrayList<SelectionModel>();
 	}
 	
 	public SetModel(int iId, String sLabel) 
 	{
 		super(iId, sLabel);
+		
+		setList = new ArrayList<SetModel>();
+		storageList = new ArrayList<StorageModel>();
+		selectionList = new ArrayList<SelectionModel>();
 	}
 	
 	private static class Adder implements IModelVisitor 
@@ -29,9 +35,9 @@ public class SetModel extends Model
 		/*
 		 * @see ModelVisitorI#visitSetModel(SetModel, Object)
 		 */
-		public void visitSetModel(SetModel setModel, Object argument) 
+		public void visitSetModel(SetModel set, Object argument) 
 		{
-			//((SetModel) argument).addSet(setModel);
+			((SetModel) argument).addSet(set);
 		}
 
 		/*
@@ -51,27 +57,38 @@ public class SetModel extends Model
 		}
 	}
 
-//	private static class Remover implements IModelVisitor {
-//		public void visitBoardgame(BoardGame boardgame, Object argument) {
-//			((MovingBox) argument).removeBoardGame(boardgame);
-//		}
-//
-//		/*
-//		 * @see ModelVisitorI#visitBook(MovingBox, Object)
-//		 */
-//		public void visitBook(Book book, Object argument) {
-//			((MovingBox) argument).removeBook(book);
-//		}
-//
-//		/*
-//		 * @see ModelVisitorI#visitMovingBox(MovingBox, Object)
-//		 */
-//		public void visitMovingBox(MovingBox box, Object argument) {
-//			((MovingBox) argument).removeBox(box);
-//			box.addListener(NullDeltaListener.getSoleInstance());
-//		}
-//
-//	}
+	private static class Remover implements IModelVisitor 
+	{
+		public void visitSetModel(SetModel setModel, Object argument) 
+		{
+			((SetModel) argument).removeSetModel(setModel);
+			setModel.addListener(NullDeltaListener.getSoleInstance());
+		}
+
+		/*
+		 * @see ModelVisitorI#visitStorageModel(StorageModel, Object)
+		 */
+		public void visitStorageModel(StorageModel storage, Object argument) 
+		{
+			((SetModel) argument).removeStorageModel(storage);
+		}
+
+		/*
+		 * @see ModelVisitorI#visitSelectionModel(Selection, Object)
+		 */
+		public void visitSelectionModel(SelectionModel selection, Object argument) 
+		{
+			((SetModel) argument).removeSelectionModel(selection);
+		}
+	}
+	
+	
+	protected void addSet(SetModel set) 
+	{
+		setList.add(set);
+		set.parent = this;
+		fireAdd(set);
+	}		
 	
 	protected void addStorage(StorageModel storage) 
 	{
@@ -101,29 +118,29 @@ public class SetModel extends Model
 	{
 		return selectionList;
 	}
-//	
-//	public void remove(Model toRemove) {
-//		toRemove.accept(remover, this);
-//	}
-//	
-//	protected void removeBoardGame(BoardGame boardGame) {
-//		games.remove(boardGame);
-//		boardGame.addListener(NullDeltaListener.getSoleInstance());
-//		fireRemove(boardGame);
-//	}
-//	
-//	protected void removeBook(Book book) {
-//		books.remove(book);
-//		book.addListener(NullDeltaListener.getSoleInstance());
-//		fireRemove(book);
-//	}
-//	
-//	protected void removeBox(MovingBox box) {
-//		boxes.remove(box);
-//		box.addListener(NullDeltaListener.getSoleInstance());
-//		fireRemove(box);	
-//	}
-//
+	
+	public void remove(Model toRemove) {
+		toRemove.accept(remover, this);
+	}
+	
+	protected void removeStorageModel(StorageModel storageModel) {
+		storageList.remove(storageModel);
+		storageModel.addListener(NullDeltaListener.getSoleInstance());
+		fireRemove(storageModel);
+	}
+	
+	protected void removeSelectionModel(SelectionModel selectionModel) {
+		selectionList.remove(selectionModel);
+		selectionModel.addListener(NullDeltaListener.getSoleInstance());
+		fireRemove(selectionModel);
+	}
+	
+	protected void removeSetModel(SetModel setModel) {
+		setList.remove(setModel);
+		setModel.addListener(NullDeltaListener.getSoleInstance());
+		fireRemove(setModel);	
+	}
+
 	public void add(Model toAdd) 
 	{
 		toAdd.accept(adder, this);
@@ -142,5 +159,4 @@ public class SetModel extends Model
 	{
 		visitor.visitSetModel(this, passAlongArgument);
 	}
-
 }

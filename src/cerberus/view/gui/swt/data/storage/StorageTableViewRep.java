@@ -3,9 +3,12 @@ package cerberus.view.gui.swt.data.storage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -21,17 +24,17 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 public class StorageTableViewRep implements DataTableViewInter
 {
-	protected final int iNewId;
-	protected GeneralManager refGeneralManager;
+	protected final GeneralManager refGeneralManager;
 	protected StorageManager refStorageManager;
 	protected Composite refSWTContainer;
+	//protected int iRequestedStorageId;
 	
 	protected Storage[] refAllStorageItems;
+	protected Storage refCurrentStorage;
 	protected Table refTable;
 	
-	public StorageTableViewRep(int iNewId, GeneralManager refGeneralManager)
+	public StorageTableViewRep(GeneralManager refGeneralManager)
 	{
-		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
 				
 		retrieveNewGUIContainer();
@@ -39,19 +42,24 @@ public class StorageTableViewRep implements DataTableViewInter
 		drawView();
 	}
 	
+	public void redrawTable()
+	{
+		refSWTContainer.redraw();
+	}
+	
 	public void initView()
 	{
 		refStorageManager = refGeneralManager.getSingelton().getStorageManager();
 
 		//load data
-		refAllStorageItems = refStorageManager.getAllStorageItems();
+		//refAllStorageItems = refStorageManager.getAllStorageItems();
 		
 		initTable();
 	}
 
 	public void drawView()
 	{		
-		createTable();
+		createTable(15301);
 	}
 
 	public void retrieveNewGUIContainer()
@@ -74,36 +82,62 @@ public class StorageTableViewRep implements DataTableViewInter
 		refTable = new Table(refSWTContainer, SWT.BORDER | SWT.V_SCROLL);
 		refTable.setHeaderVisible(true);
 		refTable.setLinesVisible(true);
-		refTable.setSize(400, 300);
+		refTable.setSize(300, 400);
 	}
 	
-	protected void createTable()
+	public void createTable(int iRequestedStorageId)
 	{
 		final TableColumn idColumn = new TableColumn(refTable, SWT.NONE);
 		idColumn.setText("Id");
 		final TableColumn labelColumn = new TableColumn(refTable, SWT.NONE);
 		labelColumn.setText("Label");
 		
-		Storage[] allStorages;
-		Storage refCurrentStorage;
 		float[] floatData;
+		int[] intData;
 		TableItem item;
 		
-		//insert SET in table
-		for (int storageDimIndex = 0; storageDimIndex < refAllStorageItems.length ; storageDimIndex++) 
-		{	
-			refCurrentStorage = refAllStorageItems[storageDimIndex];
+		refCurrentStorage = refStorageManager.getItemStorage(iRequestedStorageId);
 			
-			floatData = refCurrentStorage.getArrayFloat();
-			for(int dataIndex = 0; dataIndex < floatData.length; dataIndex++)
-			{
-				item = new TableItem(refTable, SWT.NONE);
-				item.setText(new String [] {
-						Float.toString(floatData[dataIndex]),
-						Float.toString(floatData[dataIndex])});
-			}				
-		}			
+		//Just for testing - only the float array is read out
+		//in future we have to iterate over all arrays
 		
+		try 
+		{
+			floatData = refCurrentStorage.getArrayFloat();
+		} 
+		catch (NullPointerException npe) 
+		{
+			assert false:"uniqueId was not found";
+			return;
+		}
+		
+		try 
+		{
+			intData = refCurrentStorage.getArrayInt();
+		} 
+		catch (NullPointerException npe) 
+		{
+			assert false:"uniqueId was not found";
+			return;
+		}
+		
+		
+		for(int dataIndex = 0; dataIndex < floatData.length; dataIndex++)
+		{
+			item = new TableItem(refTable, SWT.NONE);
+			item.setText(new String [] {
+					Float.toString(floatData[dataIndex]),
+					Float.toString(floatData[dataIndex])});
+		}	
+		
+		for(int dataIndex = 0; dataIndex < intData.length; dataIndex++)
+		{
+			item = new TableItem(refTable, SWT.NONE);
+			item.setText(new String [] {
+					Integer.toString(intData[dataIndex]),
+					Integer.toString(intData[dataIndex])});
+		}
+			
 		refSWTContainer.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
 				Rectangle area = refSWTContainer.getClientArea();

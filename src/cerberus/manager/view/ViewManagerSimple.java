@@ -89,11 +89,11 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 		case VIEW_TEST_TABLE:
 			return new TestTableViewRep(iNewId, this.refGeneralManager);
 		case VIEW_SET_TABLE:
-			return new SetTableViewRep(iNewId, this.refGeneralManager);
+			return new SetTableViewRep(this.refGeneralManager);
 		case VIEW_STORAGE_TABLE:
-			return new StorageTableViewRep(iNewId, this.refGeneralManager);
+			return new StorageTableViewRep(this.refGeneralManager);
 		case VIEW_SELECTION_TABLE:
-			return new SelectionTableViewRep(iNewId, this.refGeneralManager);		
+			return new SelectionTableViewRep(this.refGeneralManager);		
 		case VIEW_GEARS:
 			return new GearsViewRep(iNewId, this.refGeneralManager);
 

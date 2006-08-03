@@ -1,5 +1,7 @@
 package cerberus.view.gui.swt.data.explorer.model;
 
+import cerberus.manager.GeneralManager;
+
 public abstract class Model 
 {	
 	protected SetModel parent;
@@ -12,7 +14,7 @@ public abstract class Model
 	{
 	}
 	
-	public Model(int iId, String sLabel) 
+	public Model(int iID, String sLabel) 
 	{
 		this.iID = iID;
 		this.sLabel = sLabel;
@@ -37,6 +39,11 @@ public abstract class Model
 	{
 		return sLabel;
 	}	
+	
+	public int getID()
+	{
+		return iID;
+	}
 	
 	public SetModel getParent() 
 	{

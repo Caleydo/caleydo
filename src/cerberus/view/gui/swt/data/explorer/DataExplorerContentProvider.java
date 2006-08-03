@@ -14,7 +14,6 @@ import cerberus.view.gui.swt.data.explorer.model.SetModel;
 public class DataExplorerContentProvider 
 implements ITreeContentProvider, IDeltaListener
 {
-
 	private static Object[] EMPTY_ARRAY = new Object[0];
 	protected TreeViewer viewer;
 	
