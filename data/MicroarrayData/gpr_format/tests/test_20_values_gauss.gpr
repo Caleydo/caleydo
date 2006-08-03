@@ -1,0 +1,58 @@
+ATF	1.0
+29	48    
+"Type=GenePix Results 3"
+"DateTime=2005/01/27 17:20:48"
+"Settings="
+"GalFile=T:\Expression Analysis\Unigene_3.1\Listen für GenePix\GAL-files für Unigene 3.1 gespottete Slides\Gal_Dateien_Januar2004\unigene 3-1 nov 03_5st_Ara_70µ.gal"
+"PixelSize=10"
+"Wavelengths=635	532"
+"ImageFiles=J:\user\stojanov\Breastcancer\Axon-Daten\Breastcancerscans_am27012005\2005-01-27_Slide1.tif 0	J:\user\stojanov\Breastcancer\Axon-Daten\Breastcancerscans_am27012005\2005-01-27_Slide1.tif 1"
+"NormalizationMethod=None"
+"NormalizationFactors=1	1"
+"JpegImage=J:\user\stojanov\Breastcancer\Genepix-Results\am_27012005gescannt\2005-01-27_Slide1.jpg"
+"StdDev=Type 1"
+"RatioFormulations=W1/W2 (635/532)"
+"Barcode="
+"BackgroundSubtraction=Median"
+"ImageOrigin=460, 4090"
+"JpegOrigin=1090, 6520"
+"Creator=GenePix Pro 4.1.1.31"
+"Scanner=GenePix 4000B [92597]"
+"FocusPosition=0"
+"Temperature=30.17"
+"LinesAveraged=1"
+"Comment="
+"PMTGain=600	640"
+"ScanPower=100	100"
+"LaserPower=3.3	3.43"
+"LaserOnTime=110625	37737"
+"Filters=<Empty>	<Empty>"
+"ScanRegion=46,409,2079,6295"
+"Supplier="
+"Block"	"Column"	"Row"	"Name"	"ID"	"X"	"Y"	"Dia."	"F635 Median"	"F635 Mean"	"F635 SD"	"B635 Median"	"B635 Mean"	"B635 SD"	"% > B635+1SD"	"% > B635+2SD"	"F635 % Sat."	"F532 Median"	"F532 Mean"	"F532 SD"	"B532 Median"	"B532 Mean"	"B532 SD"	"% > B532+1SD"	"% > B532+2SD"	"F532 % Sat."	"Ratio of Medians (635/532)"	"Ratio of Means (635/532)"	"Median of Ratios (635/532)"	"Mean of Ratios (635/532)"	"Ratios SD (635/532)"	"Rgn Ratio (635/532)"	"Rgn R² (635/532)"	"F Pixels"	"B Pixels"	"Sum of Medians"	"Sum of Means"	"Log Ratio (635/532)"	"F635 Median - B635"	"F532 Median - B532"	"F635 Mean - B635"	"F532 Mean - B532"	"F635 Total Intensity"	"F532 Total Intensity"	"SNR 635"	"SNR 532"	"Flags"	"Normalize"
+0
+0
+1
+1
+2
+2
+2
+3
+3
+3
+3
+4
+4
+4
+4
+4
+5
+5
+5
+5
+6
+6
+6
+7
+7
+8
