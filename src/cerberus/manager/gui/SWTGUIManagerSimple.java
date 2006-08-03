@@ -44,7 +44,8 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 	 */
 	public SWTGUIManagerSimple(GeneralManager setGeneralManager)
 	{
-		super(setGeneralManager);
+		super(setGeneralManager,
+				GeneralManager.iUniqueId_TypeOffset_GuiSWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
@@ -159,11 +160,5 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 	{
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	public int createNewId(ManagerObjectType setNewBaseType)
-	{
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

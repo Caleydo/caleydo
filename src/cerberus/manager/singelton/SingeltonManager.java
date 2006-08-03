@@ -66,6 +66,7 @@ public class SingeltonManager implements Singelton {
 	
 	protected ViewManager refViewManager = null;
 	
+	private GeneralManager refGeneralManager = null;
 	
 	/**
 	 * Unique Id per each application over the network.
@@ -78,8 +79,15 @@ public class SingeltonManager implements Singelton {
 	 */
 	public SingeltonManager( final GeneralManager refGeneralManager ) {
 				
-		//this.refGeneralManager = refGeneralManager;
+		this.refGeneralManager = refGeneralManager;			
 		
+	}
+	
+	/**
+	 * Initialize the objects
+	 *
+	 */
+	public void initManager() {
 		refLoggerManager = new ConsoleSimpleLogger( refGeneralManager );
 	}
 	
@@ -226,7 +234,7 @@ public class SingeltonManager implements Singelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getManager(cerberus.manager.type.ManagerType)
 	 */
-	public GeneralManager getManager( ManagerType type) {
+	public GeneralManager getManagerByBaseType( ManagerType type) {
 		
 		switch ( type ) 
 		{

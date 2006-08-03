@@ -10,6 +10,7 @@ package cerberus.data.collection.set;
 
 import java.util.Vector;
 import java.util.Iterator;
+import java.util.Enumeration;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -456,6 +457,84 @@ implements Set {
 	public Iterator<Storage> iteratorStorageByDim( final int iAtDimension ) {
 		
 		return vecRefStorage_Array.get( iAtDimension ).iterator();
+	}
+	
+	public String toString() {
+		StringBuffer result = new StringBuffer("SET:");
+	
+		result.append( this.getId() );
+		
+		result.append(" Se=");
+		if ( this.vecRefSelection_Array.isEmpty() ) 
+		{
+			result.append("-empty-");
+		}
+		else 
+		{
+			Enumeration <Vector<Selection>> itemsVectorSelection = 
+				this.vecRefSelection_Array.elements();
+			
+			while ( itemsVectorSelection.hasMoreElements() ) 
+			{
+				Enumeration <Selection> itemsInVectorSelection = 
+					itemsVectorSelection.nextElement().elements();
+				
+				while ( itemsInVectorSelection.hasMoreElements() ) {
+					
+					result.append( itemsInVectorSelection.nextElement().toString() );
+					
+					if ( itemsInVectorSelection.hasMoreElements() ) 
+					{
+						result.append( " - " );
+					}
+					
+				} // end: while ( itemsInVector.hasMoreElements() ) {
+				
+				if ( itemsVectorSelection.hasMoreElements() ) 
+				{
+					result.append( " | " );
+				} // end: if ( itemsVector.hasMoreElements() ) 
+				
+			} //end: while ( itemsVector.hasMoreElements() ) 
+			
+		} // end: if ( this.vecRefSelection_Array.isEmpty() ) {...} else {..}
+		
+		result.append(" St=");
+		if ( this.vecRefStorage_Array.isEmpty() ) 
+		{
+			result.append("-empty-");
+		} 
+		else 
+		{
+			Enumeration <Vector<Storage>> itemsVectorStorage = 
+				this.vecRefStorage_Array.elements();
+			
+			while ( itemsVectorStorage.hasMoreElements() ) 
+			{
+				Enumeration <Storage> itemsInVector_storage = 
+					itemsVectorStorage.nextElement().elements();
+				
+				while ( itemsInVector_storage.hasMoreElements() ) {
+					
+					result.append( itemsInVector_storage.nextElement().toString() );
+					
+					if ( itemsInVector_storage.hasMoreElements() ) 
+					{
+						result.append( " - " );
+					}
+					
+				} // end: while ( itemsInVector.hasMoreElements() ) {
+				
+				if ( itemsVectorStorage.hasMoreElements() ) 
+				{
+					result.append( " | " );
+				} // end: if ( itemsVector.hasMoreElements() ) 
+				
+			} //end: while ( itemsVector.hasMoreElements() ) 
+			
+		} //end: if ( this.vecRefStorage_Array.isEmpty() ) 
+		
+		return result.toString();
 	}
 	
 }

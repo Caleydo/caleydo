@@ -17,6 +17,10 @@ public enum CommandQueueSaxType
 	LOAD_DATA_FILE("cmd","type"),
 	OPEN_VIEW("cmd","type"),
 	
+	CREATE_SELECTION("cmd","type"),
+	CREATE_SET("cmd","type"),
+	CREATE_STORAGE("cmd","type"),
+	
 	RUN_CMD_NOW("cmd","process"),	
 	LOAD_ON_DEMAND("cmd","process"),
 	MEMENTO("cmd","process"),	

@@ -54,23 +54,33 @@ public interface GeneralManager {
 	
 	public final int iUniqueId_TypeOffset_Collection = 50;
 	
+	public final int iUniqueId_TypeOffset_Logger = 10;
+	
 	public final int iUniqueId_TypeOffset_Set = 51;
 	
 	public final int iUniqueId_TypeOffset_Selection = 52;
 	
 	public final int iUniqueId_TypeOffset_Storage = 53;
 	
-	public final int iUniqueId_TypeOffset_Pathways_Pathway = 90;
+	public final int iUniqueId_TypeOffset_Command = 99;
 	
-	public final int iUniqueId_TypeOffset_Pathways_Vertex = 91;
+	public final int iUniqueId_TypeOffset_Command_Queue = 98;
 	
-	public final int iUniqueId_TypeOffset_Pathways_Edge = 92;		
+	public final int iUniqueId_TypeOffset_Pathways_Pathway = 60;
 	
-	public final int iUniqueId_TypeOffset_Memento = 10;
+	public final int iUniqueId_TypeOffset_Pathways_Vertex = 61;
+	
+	public final int iUniqueId_TypeOffset_Pathways_Edge = 62;		
+	
+	public final int iUniqueId_TypeOffset_Memento = 95;
 	
 	public final int iUniqueId_TypeOffset_GuiComponent = 30;
+
+	public final int iUniqueId_TypeOffset_GuiAWT = 31;
 	
-	public final int iUniqueId_TypeOffset_GUI = 100;
+	public final int iUniqueId_TypeOffset_GuiSWT = 32;
+		
+	public final int iUniqueId_TypeOffset_GuiMemu = 39;
 	
 	
 	/**
@@ -152,5 +162,8 @@ public interface GeneralManager {
 	 */
 	public int createNewId( final ManagerObjectType setNewBaseType );
 
+	public GeneralManager getManagerByBaseType(ManagerObjectType managerType);
+		
+		
 	
 }

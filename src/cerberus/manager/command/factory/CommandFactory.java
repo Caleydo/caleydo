@@ -18,7 +18,7 @@ import cerberus.command.CommandInterface;
 import cerberus.command.CommandType;
 import cerberus.command.CommandTypeGroup;
 import cerberus.command.base.AbstractCommand;
-import cerberus.xml.parser.command.CommandQueueSaxType;
+
 
 
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
@@ -44,11 +44,15 @@ import cerberus.command.system.CmdSystemNop;
 import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 
+import cerberus.manager.CommandManager;
+
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 //import cerberus.net.dwt.swing.mdi.DDesktopPane;
 
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
+
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
  * @author Michael Kalkusch
@@ -65,6 +69,7 @@ extends AbstractCommand
 	
 	protected final GeneralManager refGeneralManager;
 
+	protected final CommandManager refCommandManager;
 
 	/**
 	 * Constructor
@@ -73,11 +78,13 @@ extends AbstractCommand
 	 * @param setCommandType may be null if no command shall be created by the constructor
 	 */
 	public CommandFactory(  final GeneralManager setRefGeneralManager,
+			final CommandManager refCommandManager,
 			final CommandType setCommandType) {
 		
 		assert setRefGeneralManager != null:"Can not create CommandFactory from null-pointer to GeneralManager";
 		
-		refGeneralManager = setRefGeneralManager;
+		this.refGeneralManager = setRefGeneralManager;		
+		this.refCommandManager = refCommandManager;
 		
 		/* create new command from constructor parameter. */
 		if ( setCommandType != null ) {
@@ -150,23 +157,70 @@ extends AbstractCommand
 		
 		switch ( cmdType ) {
 		
-		case LOAD_DATA_FILE: {
+		case LOAD_DATA_FILE: 
+		{
 			createdCommand =
-				new CmdSystemLoadFileViaImporter(sData_Cmd_detail,
+				new CmdSystemLoadFileViaImporter( 
+						refGeneralManager,
+						sData_Cmd_detail,
 						sData_Cmd_attrbute1,
 						sData_Cmd_attrbute2 );
 			break;
 		}
 		
+		/*
+		case CREATE_STORAGE:
+		{
+			createdCommand =
+				new CmdSystemLoadFileViaImporter( 
+						refGeneralManager,
+						sData_Cmd_detail,
+						sData_Cmd_attrbute1,
+						sData_Cmd_attrbute2 );
+			break;
+		}
+			
+		case CREATE_SET:
+		{
+			createdCommand =
+				new CmdSystemLoadFileViaImporter( 
+						refGeneralManager,
+						sData_Cmd_detail,
+						sData_Cmd_attrbute1,
+						sData_Cmd_attrbute2 );
+			break;
+		}
+			
+		case CREATE_SELECTION:
+		{
+			createdCommand =
+				new CmdSystemLoadFileViaImporter( 
+						refGeneralManager,
+						sData_Cmd_detail,
+						sData_Cmd_attrbute1,
+						sData_Cmd_attrbute2 );
+			break;
+		}
+		*/
+		
 		default: 
-			throw new CerberusRuntimeException("Unsupported CommandQueue key= [" + 
+			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
 					cmdType + "]",
 					CerberusExceptionType.SAXPARSER);
 		} // end switch
 		
+		/**
+		 * Create a new uniqueId if nessecary
+		 */
+		int iNewUniqueId = iData_CmdId;		
+		if ( iData_CmdId < 0 ) {
+			iNewUniqueId = refCommandManager.createNewId( null );
+		}
+		createdCommand.setId( iNewUniqueId );
+		/**
+		 * End: Create a new uniqueId if nessecary
+		 */			
 		
-		createdCommand.setId( iData_CmdId );
-					
 		return createdCommand;
 	}
 	
@@ -178,6 +232,17 @@ extends AbstractCommand
 			final int sQueueThreadWait ) {
 		
 		CommandQueueSaxType queueType;
+		
+		/**
+		 * Create a new uniqueId if necessary
+		 */
+		int iNewUniqueId = iCmdId;		
+		if ( iCmdId < 0 ) {
+			iNewUniqueId = refCommandManager.createNewId( null );
+		}
+		/**
+		 * End: Create a new uniqueId if necessary
+		 */
 		
 		try 
 		{
@@ -192,12 +257,12 @@ extends AbstractCommand
 		switch (queueType) 
 		{
 		case COMMAND_QUEUE_OPEN: {
-			CommandInterface cmdQueue = new CommandQueueVector(iCmdId, iCmdQueueId);				
+			CommandInterface cmdQueue = new CommandQueueVector(iNewUniqueId, iCmdQueueId);				
 			return cmdQueue;
 		}
 			
 		case COMMAND_QUEUE_RUN:
-			return new CmdSystemRunCmdQueue(iCmdId,
+			return new CmdSystemRunCmdQueue(iNewUniqueId,
 					refGeneralManager,
 					iCmdQueueId);
 			

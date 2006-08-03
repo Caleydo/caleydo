@@ -34,7 +34,6 @@ public class CommandManagerSimple
  extends AbstractManagerImpl 
  implements CommandManager {
 
-	
 	private CommandFactoryInterface refCommandFactory;
 	
 	/**
@@ -43,25 +42,32 @@ public class CommandManagerSimple
 	private Vector<CommandInterface> vecCmd_handle;
 	
 	/**
-	 * List of All Commands to be executed when soonr or later.
+	 * List of All Commands to be executed when sooner or later.
 	 */
 	private Vector<CommandInterface> vecCmd_schedule;
 	
-	protected Hashtable<Integer,CommandQueueInterface> hash_CommandQueue;
+	protected Hashtable<Integer,CommandQueueInterface> hash_CommandQueueId;
+	
+	protected Hashtable<Integer,CommandInterface> hash_CommandId;
 	
 	/**
 	 * 
 	 */
 	public CommandManagerSimple( GeneralManager setGeneralManager ) {
-		super( setGeneralManager );
+		super( setGeneralManager, GeneralManager.iUniqueId_TypeOffset_Command );
 		
-		refCommandFactory = new CommandFactory( setGeneralManager, null );
+		refCommandFactory = new CommandFactory( setGeneralManager, 
+				this, 
+				null );
 		
 		vecCmd_handle = new Vector<CommandInterface> ();
 		
 		vecCmd_schedule = new Vector<CommandInterface> ();
 		
-		hash_CommandQueue = new Hashtable<Integer,CommandQueueInterface> ();
+		hash_CommandQueueId = new Hashtable<Integer,CommandQueueInterface> ();
+		
+		hash_CommandId = new Hashtable<Integer,CommandInterface> ();
+				
 	}
 
 	/* (non-Javadoc)
@@ -111,24 +117,21 @@ public class CommandManagerSimple
 	 * @see cerberus.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
-		// TODO Auto-generated method stub
-		return false;
+		return hash_CommandId.containsKey( iItemId );
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
-		// TODO Auto-generated method stub
-		return null;
+		return hash_CommandId.get( iItemId );
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#size()
 	 */
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return hash_CommandId.size();
 	}
 
 	/* (non-Javadoc)
@@ -146,10 +149,19 @@ public class CommandManagerSimple
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
 		
-		//FIXME!
+		CommandInterface registerCommand = (CommandInterface) registerItem;
 		
-		// TODO Auto-generated method stub
-		return false;
+		if ( registerCommand.getClass().equals( 
+				cerberus.command.queue.CommandQueueInterface.class )) {
+			hash_CommandQueueId.put( iItemId, (CommandQueueInterface) registerItem );
+		} else {
+			
+		}
+		
+		vecCmd_handle.addElement( registerCommand );		
+		hash_CommandId.put( iItemId, registerCommand );
+		
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -157,7 +169,19 @@ public class CommandManagerSimple
 	 */
 	public boolean unregisterItem(int iItemId, ManagerObjectType type) {	
 		
-		// TODO Auto-generated method stub
+		//TODO: ensure thread safety! 
+		if ( type == ManagerObjectType.CMD_QUEUE ) {
+			hash_CommandQueueId.remove( iItemId );
+		}
+		
+		if ( hash_CommandId.containsKey( iItemId ) ) {
+		
+			CommandInterface unregisterCommand = 
+				hash_CommandId.remove( iItemId );
+			
+			return vecCmd_handle.remove( unregisterCommand );
+		}
+		
 		return false;
 	}
 
@@ -194,7 +218,7 @@ public class CommandManagerSimple
 			String sData_Cmd_attrbute2 ) {
 		
 		CommandInterface createdCommand = 
-			this.refCommandFactory.createCommand( sData_Cmd_type,
+			refCommandFactory.createCommand( sData_Cmd_type,
 			sData_Cmd_process,
 			iData_CmdId,
 			iData_Cmd_MementoId,
@@ -209,20 +233,21 @@ public class CommandManagerSimple
 		return createdCommand;
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
-	 */
-	public int createNewId(ManagerObjectType setNewBaseType) {
-		// TODO Auto-generated method stub
-		
-		return 0;
-	}
+//	/* (non-Javadoc)
+//	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
+//	 */
+//	public int createNewId(ManagerObjectType setNewBaseType) {
+//		
+//		iUniqueId_current += iUniqueId_Increment;
+//		
+//		return iUniqueId_current;
+//	}
 
 	/*
 	 * 
 	 */
 	public boolean hasCommandQueueId( final int iCmdQueueId ) {
-		return hash_CommandQueue.containsKey( iCmdQueueId );
+		return hash_CommandQueueId.containsKey( iCmdQueueId );
 	}
 	
 	/*
@@ -230,7 +255,7 @@ public class CommandManagerSimple
 	 * @see cerberus.manager.CommandManager#getCommandQueueByCmdQueueId(int)
 	 */
 	public CommandQueueInterface getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
-		return hash_CommandQueue.get( iCmdQueueId );
+		return hash_CommandQueueId.get( iCmdQueueId );
 	}
 	
 	public CommandInterface createCommandQueue( final String sCmdType,

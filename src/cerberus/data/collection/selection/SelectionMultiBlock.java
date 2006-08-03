@@ -20,6 +20,8 @@ import cerberus.data.collection.thread.lock.CollectionLock;
 import cerberus.data.xml.MementoItemXML;
 import cerberus.xml.parser.DParseSaxHandler;
 
+import java.lang.StringBuffer;
+
 /**
  * @author Michael Kalkusch
  *
@@ -148,17 +150,23 @@ implements
 		// TODO Auto-generated method stub
 
 	}
-	
-	public String toString() {
-		String result ="[" + getId() + "#" + 
-			iSelectionOffset + 
-			":" + iSelectionLength + 
-			" (" + this.iMultiOffset +
-			":" + this.iMultiRepeat + ")]";
-		
-		return result;
-	}
 
+	public String toString() {
+		StringBuffer result = new StringBuffer("Sel:");
+		
+		result.append( getId() );
+		result.append( " (");
+		
+		result.append( this.iSelectionOffset );
+		result.append( ")->");
+		result.append( this.iSelectionLength );
+		result.append( " [");
+		result.append( this.iMultiOffset );
+		result.append( "]->");
+		result.append( this.iMultiRepeat );
+		
+		return result.toString();
+	}
 
 	/**
 	 * Restore state of object by update data from SaxHandler
@@ -239,4 +247,6 @@ implements
 	public SelectionIterator iterator() {
 		return new SelectionMultiBlockIterator(this);
 	}
+	
+
 }

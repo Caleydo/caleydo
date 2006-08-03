@@ -21,7 +21,8 @@ public class ConsoleLogger extends AbstractManagerImpl implements LoggerManager 
 	 * @param setGeneralManager
 	 */
 	public ConsoleLogger(GeneralManager setGeneralManager) {
-		super(setGeneralManager);
+		super(setGeneralManager, 
+				GeneralManager.iUniqueId_TypeOffset_Logger );
 	}
 
 	protected void logMessage( final String msg ) {	
@@ -125,13 +126,6 @@ public class ConsoleLogger extends AbstractManagerImpl implements LoggerManager 
 	 */
 	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");
-	}
-	
-	/**
-	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
-	 */
-	public int createNewId( final ManagerObjectType setNewBaseType ) {
-		throw new CerberusRuntimeException("LOGGER: does not support this methode createNewId()");
 	}
 
 }

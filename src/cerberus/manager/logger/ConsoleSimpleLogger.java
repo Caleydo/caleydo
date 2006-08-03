@@ -23,7 +23,8 @@ public class ConsoleSimpleLogger extends
 	 * @param setGeneralManager
 	 */
 	public ConsoleSimpleLogger(GeneralManager setGeneralManager) {
-		super(setGeneralManager);
+		super(setGeneralManager,
+				GeneralManager.iUniqueId_TypeOffset_Logger );
 	}
 	
 	/* (non-Javadoc)
@@ -120,13 +121,6 @@ public class ConsoleSimpleLogger extends
 	 */
 	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");
-	}
-	
-	/**
-	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
-	 */
-	public int createNewId( final ManagerObjectType setNewBaseType ) {
-		throw new CerberusRuntimeException("LOGGER: does not support this methode createNewId()");
 	}
 
 }

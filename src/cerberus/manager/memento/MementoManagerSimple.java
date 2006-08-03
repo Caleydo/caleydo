@@ -57,7 +57,8 @@ public class MementoManagerSimple
 	 */
 	public MementoManagerSimple(final GeneralManager setGeneralManager) {
 		
-		super(setGeneralManager);
+		super( setGeneralManager,
+				GeneralManager.iUniqueId_TypeOffset_Memento );
 		
 		vecMemento = new Vector<Memento>(iInitSizeMementoVector);
 		hashMementoId2Index = new Hashtable<Integer,Integer>(iInitSizeMementoVector*2);
@@ -189,19 +190,7 @@ public class MementoManagerSimple
 	public void optimize() {
 		
 	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see prometheus.data.manager.MementoManager#createMementoId()
-	 */
-	 public final int createNewId( final ManagerObjectType setNewBaseType ) {
-		 if ( setNewBaseType.getGroupType() == ManagerType.GUI_COMPONENT ) {
-			 iCurrentUniqueMementoId += GeneralManager.iUniqueId_Increment;
-			 return iCurrentUniqueMementoId;
-		 }
-		 throw new CerberusRuntimeException("createNewId() called with non GUI_COMPONENT type.",
-				 CerberusExceptionType.MEMENTO );
-	 }
+
 	 
 	 /*
 	  *  (non-Javadoc)

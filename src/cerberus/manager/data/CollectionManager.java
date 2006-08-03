@@ -39,42 +39,20 @@ public abstract class CollectionManager
 
 	
 	/**
-	 * Holds value of the current collectionId.
-	 */
-	private int iCurrentCollectionId;
-	
-	/**
-	 * Offset used for seperating manager-type-id from network-application-id.
-	 * See constructor for details.
-	 */
-	private int iUniqueId_Collection_Offset_TypeId = 50;
-	
-	/**
 	 * Contains a lookup of unique Id to Object
 	 */
 	private Hashtable<Integer,Integer> hashId2IndexLookup;
 	
 	
 	protected CollectionManager( final GeneralManager setSingeltonManager,
-			final int iSetInitialCollectionTypeId ) {
+			final int iUniqueId_type_offset ) {
 		
-		super( setSingeltonManager );
-		
-//		assert iSetInitialCollectionTypeId >= iUniqueId_WorkspaceOffset: 
-//			"CollectionManager.CollectionManager() failed due to wrong initialisation prefix: "+ iSetInitialCollectionTypeId;
-		
-		setUniqueId_TypeParameters( iSetInitialCollectionTypeId );
+		super( setSingeltonManager, iUniqueId_type_offset );		
 		
 		hashId2IndexLookup = new Hashtable<Integer,Integer>();
 	}
 
 	
-	private void setUniqueId_TypeParameters( final int iSetuniqueId_TypeOffset) {
-		iUniqueId_Collection_Offset_TypeId = iSetuniqueId_TypeOffset;
-		
-		iCurrentCollectionId = 
-			calculateId( iSetuniqueId_TypeOffset, refGeneralManager );
-	}
 	
 	/**
 	 * Calculates an initial Id from the pieces of information provided 
@@ -109,40 +87,45 @@ public abstract class CollectionManager
 	public abstract ManagerObjectType getManagerType();
 	
 	
-	/**
-	 * Create a new unique collectionId.
-	 * 
-	 * @return new unique collectionId
-	 */
-	public final int createNewId( final ManagerObjectType setNewBaseType ) {
+//	/**
+//	 * Create a new unique collectionId.
+//	 * 
+//	 * @return new unique collectionId
+//	 */
+//	public final int createNewId( final ManagerObjectType setNewBaseType ) {
+//		
+//		if (( setNewBaseType.getGroupType() == ManagerType.SELECTION )
+//			||( setNewBaseType.getGroupType() == ManagerType.SET )
+//			||( setNewBaseType.getGroupType() == ManagerType.STORAGE )) {
+//			
+//			iCurrentCollectionId += iUniqueId_Increment;		
+//			return iCurrentCollectionId;
+//		}
+//		throw new CerberusRuntimeException("error create a new Id from type " + setNewBaseType.name() );
+//	}
+	
+	
+	protected boolean unregisterItem_byUniqueId_insideCollection( final int iItemId ) {
 		
-		if (( setNewBaseType.getGroupType() == ManagerType.SELECTION )
-			||( setNewBaseType.getGroupType() == ManagerType.SET )
-			||( setNewBaseType.getGroupType() == ManagerType.STORAGE )) {
-			
-			iCurrentCollectionId += iUniqueId_Increment;		
-			return iCurrentCollectionId;
-		}
-		throw new CerberusRuntimeException("error create a new Id from type " + setNewBaseType.name() );
-	}
-	
-	
-	protected boolean unregisterItemCollection( final int iItemId ) {
+		System.out.println("remove PRE : " + this.hashId2IndexLookup.toString() );
 		
 		hashId2IndexLookup.remove( new Integer(iItemId) );
+		
+		System.out.println("remove POST: " + this.hashId2IndexLookup.toString() );
+		
 		return true;
 		
 	}
 
-	protected int getLookupValueById( final int iItemId ) {
+	protected int getIndexInVector_byUniqueId( final int iItemId ) {
 		return (int) hashId2IndexLookup.get( new Integer( iItemId )).intValue();
 	}
 	
-	protected boolean hasLookupValueById( final int iItemId ) {
+	protected boolean hasItem_withUniqueId( final int iItemId ) {
 		return hashId2IndexLookup.containsKey( new Integer( iItemId ));
 	}
 	
-	protected boolean registerItemCollection( final int iItemId, 
+	protected boolean registerItem_byUniqueId_insideCollection( final int iItemId, 
 			final int iValuefromLookup  ) {
 		
 		try {

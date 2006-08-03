@@ -116,6 +116,7 @@ implements GeneralManagerSingelton {
 		
 		if ( refSingeltonManager == null ) {
 			refSingeltonManager = new SingeltonManager( this );
+			refSingeltonManager.initManager();
 		} else {
 			refSingeltonManager = sef_SingeltonManager;			
 		}

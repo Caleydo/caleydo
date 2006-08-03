@@ -53,15 +53,12 @@ public class MenuManagerSimple
 	
 	private Hashtable<String,JMenuItem> hashMenuLookupName_to_MenuItem;
 	
-	private final int iMenuIdIncrement = GeneralManager.iUniqueId_Menu_Inc;
-
-	private int iMenuId_current = GeneralManager.iUniqueId_Menu_Offset + iMenuIdIncrement;
-	
 	/**
 	 * 
 	 */
 	public MenuManagerSimple(GeneralManager setGeneralManager) {
-		super( setGeneralManager );
+		super( setGeneralManager,
+				GeneralManager.iUniqueId_TypeOffset_GuiMemu );
 		
 		refViewCanvasManager = 
 			setGeneralManager.getSingelton().getViewCanvasManager();
@@ -296,11 +293,5 @@ public class MenuManagerSimple
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see prometheus.manager.GeneralManager#createNewId(prometheus.manager.BaseManagerType)
-	 */
-	public int createNewId(ManagerObjectType setNewBaseType) {
-		return iMenuId_current += iMenuIdIncrement;
-	}
 
 }

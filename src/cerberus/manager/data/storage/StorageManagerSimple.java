@@ -46,7 +46,7 @@ implements StorageManager {
 			final int iInitSizeContainer ) {
 		
 		super( setGeneralManager, 
-				iUniqueId_TypeOffset_Storage );
+				GeneralManager.iUniqueId_TypeOffset_Storage );
 		
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -128,7 +128,7 @@ implements StorageManager {
 	public Storage getItemStorage( final int iItemId) {
 		
 		try {
-			return vecStorage.get( getLookupValueById(iItemId) );
+			return vecStorage.get( getIndexInVector_byUniqueId(iItemId) );
 		} 
 		catch (NullPointerException npe) {
 			assert false:"uniqueId was not found";
@@ -177,7 +177,7 @@ implements StorageManager {
 	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
-		return hasLookupValueById( iItemId );	
+		return hasItem_withUniqueId( iItemId );	
 	}
 
 	/* (non-Javadoc)
@@ -197,10 +197,10 @@ implements StorageManager {
 	public boolean unregisterItem( final int iItemId,
 			final ManagerObjectType type  ) {
 		
-		if ( this.hasLookupValueById( iItemId )) {
+		if ( this.hasItem_withUniqueId( iItemId )) {
 			vecStorage.remove( 
-					(int) getLookupValueById( iItemId ));
-			unregisterItemCollection( iItemId );
+					(int) getIndexInVector_byUniqueId( iItemId ));
+			unregisterItem_byUniqueId_insideCollection( iItemId );
 			return true;
 		}
 		return false;
@@ -215,12 +215,12 @@ implements StorageManager {
 			
 			Storage addItem = (Storage) registerItem;
 			
-			if ( hasLookupValueById( iItemId ) ) {
-				vecStorage.set( getLookupValueById( iItemId ), addItem );
+			if ( hasItem_withUniqueId( iItemId ) ) {
+				vecStorage.set( getIndexInVector_byUniqueId( iItemId ), addItem );
 				return true;
 			}
 			
-			registerItemCollection( iItemId, vecStorage.size() );
+			registerItem_byUniqueId_insideCollection( iItemId, vecStorage.size() );
 			vecStorage.addElement( addItem );
 				
 			return true;

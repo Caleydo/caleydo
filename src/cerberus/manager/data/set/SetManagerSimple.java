@@ -51,7 +51,8 @@ implements SetManager {
 	 */
 	public SetManagerSimple( GeneralManager setSingelton,
 			final int iInitSizeContainer ) {
-		super( setSingelton , iUniqueId_TypeOffset_Set );
+		super( setSingelton , 
+				GeneralManager.iUniqueId_TypeOffset_Set );
 
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -78,14 +79,14 @@ implements SetManager {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet created with Id =[" +
 				testSet.getId() +"]");
 		
-		Selection getSelectionById = (Selection) refGeneralManager.getItem( 25201 );
-		Storage getStorageById = (Storage) refGeneralManager.getItem( 25301 );
+		Selection getSelectionById = (Selection) refGeneralManager.getItem( 15201 );
+		Storage getStorageById = (Storage) refGeneralManager.getItem( 15301 );
 		
 		/* register Selection & Storage to Set ... */
 		testSet.setSelectionByDimAndIndex( getSelectionById, 0, 0 );
 		testSet.setStorageByDimAndIndex( getStorageById, 0, 0 );
 		
-		Set testMySet = (Set) refGeneralManager.getItem( 25101 );
+		Set testMySet = (Set) refGeneralManager.getItem( 15101 );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet get Set by Id; [" +
 				testSet.getId() +"] == [" + testMySet.getId() + "]_(test)");
@@ -145,7 +146,7 @@ implements SetManager {
 	public Set getItemSet( final int iItemId) {
 		
 		try {
-			return vecSets.get( getLookupValueById( iItemId ) );
+			return vecSets.get( getIndexInVector_byUniqueId( iItemId ) );
 		} 
 		catch (ArrayIndexOutOfBoundsException ae) {
 			assert false: "SetManagerSimple.getItemSet() ArrayIndexOutOfBoundsException ";
@@ -180,7 +181,7 @@ implements SetManager {
 	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
-		return hasLookupValueById( iItemId );
+		return hasItem_withUniqueId( iItemId );
 	}
 
 	/* (non-Javadoc)
@@ -200,8 +201,8 @@ implements SetManager {
 	public boolean unregisterItem( final int iItemId,
 			final ManagerObjectType type  ) {
 		
-		if ( this.hasLookupValueById( iItemId )) {
-			unregisterItemCollection( iItemId );
+		if ( this.hasItem_withUniqueId( iItemId )) {
+			unregisterItem_byUniqueId_insideCollection( iItemId );
 			return true;
 		}
 		return false;
@@ -215,12 +216,12 @@ implements SetManager {
 		try {
 			Set addItem = (Set) registerItem;
 			
-			if ( hasLookupValueById( iItemId ) ) {
-				vecSets.set( getLookupValueById( iItemId ), addItem );
+			if ( hasItem_withUniqueId( iItemId ) ) {
+				vecSets.set( getIndexInVector_byUniqueId( iItemId ), addItem );
 				return true;
 			}
 			
-			registerItemCollection( iItemId, vecSets.size() );
+			registerItem_byUniqueId_insideCollection( iItemId, vecSets.size() );
 			vecSets.addElement( addItem );
 				
 			return true;

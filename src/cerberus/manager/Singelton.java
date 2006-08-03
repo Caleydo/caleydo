@@ -4,6 +4,13 @@ import cerberus.manager.type.ManagerType;
 
 public interface Singelton {
 
+	/**
+	 * Initialize the singelton. 
+	 * Call this methode before using the singelton.
+	 *
+	 */
+	public void initManager();
+	
 	public abstract MementoManager getMementoManager();
 
 	public abstract StorageManager getStorageManager();
@@ -24,7 +31,7 @@ public interface Singelton {
 
 	public abstract SWTGUIManager getSWTGUIManager();
 	
-	public abstract GeneralManager getManager(ManagerType type);
+	public abstract GeneralManager getManagerByBaseType(ManagerType type);
 	
 	public abstract ViewManager getViewManager(ManagerType type);
 	

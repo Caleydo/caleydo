@@ -51,7 +51,8 @@ public class DComponentSwingFactoryManager
 	 */
 	public DComponentSwingFactoryManager(GeneralManager setGeneralManager) {
 		
-		super( setGeneralManager);
+		super( setGeneralManager, 
+				GeneralManager.iUniqueId_TypeOffset_GuiComponent);
 		
 		assert setGeneralManager != null: "DComponentSwingFactoryManager.DComponentSwingFactoryManager() init with null-pointer.";
 		
@@ -98,17 +99,6 @@ public class DComponentSwingFactoryManager
 		return refResult;
 	}
 
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.data.manager.MementoManager#createMementoId()
-	 */
-	 public int createNewId( final ManagerObjectType setNewBaseType ) {
-		 if ( setNewBaseType.getGroupType() == ManagerType.GUI_COMPONENT ) {
-			 iCurrentUniqueComponentId += GeneralManager.iUniqueId_Increment;
-			 return iCurrentUniqueComponentId;
-		 }
-		 throw new CerberusRuntimeException("createNewId() called with non GUI_COMPONENT type.");
-	 }
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.DComponentManager#deleteSet(int)

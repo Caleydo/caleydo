@@ -228,7 +228,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 //		}
 //		catch ( Exception e) 
 //		{
-//			System.err.println("CommandSaxHandler::parseCommandQueueData() ERROR while parsing " + e.toString() );
+//			System.err.println("CommandSaxHandler::readCommandQueueData() ERROR while parsing " + e.toString() );
 //		}
 //	}
 	
@@ -284,7 +284,10 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 					sData_Cmd_attribute2 );
 			
 			
-			if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() )){
+			if (( lastCommand != null )&&(sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() )))
+			{				
+				this.refGeneralManager.getSingelton().getLoggerManager().logMsg("status: do command: " + 
+						lastCommand.toString() );
 				lastCommand.doCommand();
 			}
 			
@@ -350,7 +353,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 		}
 		catch ( Exception e) 
 		{
-			System.err.println("CommandSaxHandler::parseCommandQueueData() ERROR while parsing " + e.toString() );
+			System.err.println("CommandSaxHandler::readCommandQueueData() ERROR while parsing " + e.toString() );
 		}
 		
 		/* -------------------------------------------- */
@@ -443,7 +446,14 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 							CommandInterface lastCommand = 
 								readCommandData( attrs, true );
 							
-							refCommandQueueIter.addCmdToQueue( lastCommand );
+							if ( lastCommand != null ) {
+								refCommandQueueIter.addCmdToQueue( lastCommand );
+							} 
+							else 
+							{
+								refGeneralManager.getSingelton().getLoggerManager().logMsg(
+										"CommandQueue: no Command to add. skip it.");
+							}
 							
 							
 														
@@ -457,6 +467,11 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 							//readCommandQueueData( attrs, true );
 							CommandInterface lastCommand = readCommandData( attrs, true );
 							
+							if ( lastCommand == null ) 
+							{
+								refGeneralManager.getSingelton().getLoggerManager().logMsg(
+										"Command: can not execute command du to error while parsing. skip it.");
+							}
 
 							
 						}

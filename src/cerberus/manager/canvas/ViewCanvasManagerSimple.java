@@ -63,7 +63,8 @@ implements ViewCanvasManager,
 	 * 
 	 */
 	public ViewCanvasManagerSimple( GeneralManager refSingelton ) {
-		super(refSingelton,4);
+		super(refSingelton,
+				GeneralManager.iUniqueId_TypeOffset_GuiAWT );
 		
 		vecViewCanvas = new Vector<ViewCanvas>(10);
 		
@@ -196,10 +197,10 @@ implements ViewCanvasManager,
 	 */
 	public boolean deleteCanvas( final int iItemId) {
 		
-		if ( ! hasLookupValueById( iItemId ) ) {
+		if ( ! hasItem_withUniqueId( iItemId ) ) {
 			return false;
 		}
-		final int iIndexInVector = getLookupValueById(iItemId);
+		final int iIndexInVector = getIndexInVector_byUniqueId(iItemId);
 		
 		unregisterItem( iItemId, 
 				vecViewCanvas.get( iIndexInVector ).getBaseType() );
@@ -214,7 +215,7 @@ implements ViewCanvasManager,
 	 * @see prometheus.data.manager.ViewCanvasManager#getItemCanvas(int)
 	 */
 	public ViewCanvas getItemCanvas(int iItemId) {
-		return vecViewCanvas.get( getLookupValueById(iItemId) );
+		return vecViewCanvas.get( getIndexInVector_byUniqueId(iItemId) );
 	}
 
 	/* (non-Javadoc)
@@ -245,7 +246,7 @@ implements ViewCanvasManager,
 	 * @see prometheus.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
-		return hasLookupValueById( iItemId );
+		return hasItem_withUniqueId( iItemId );
 	}
 
 	/* (non-Javadoc)
@@ -293,7 +294,7 @@ implements ViewCanvasManager,
 		vecWorkspaces.add( newWorkspace );
 				
 		// add to this list too, in order to use only one list for checking hasItem()...
-		registerItemCollection( iNewWorkspaceId, iPositionInVector );
+		registerItem_byUniqueId_insideCollection( iNewWorkspaceId, iPositionInVector );
 		
 		// add to hashtable for workspace only.
 		hashWorkspaceId2IndexLookup.put( iNewWorkspaceId, iPositionInVector );
@@ -354,12 +355,12 @@ implements ViewCanvasManager,
 			
 			//addItem.setId( iItemId );
 			
-			if ( hasLookupValueById( iItemId ) ) {
-				vecViewCanvas.set( getLookupValueById( iItemId ), addItem );
+			if ( hasItem_withUniqueId( iItemId ) ) {
+				vecViewCanvas.set( getIndexInVector_byUniqueId( iItemId ), addItem );
 				return true;
 			}
 			
-			registerItemCollection( iItemId, vecViewCanvas.size() );
+			registerItem_byUniqueId_insideCollection( iItemId, vecViewCanvas.size() );
 			vecViewCanvas.addElement( addItem );
 				
 			return true;
@@ -375,7 +376,7 @@ implements ViewCanvasManager,
 	 */
 	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
 		
-		return unregisterItemCollection( iItemId );
+		return unregisterItem_byUniqueId_insideCollection( iItemId );
 	}
 
 	/*

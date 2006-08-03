@@ -21,7 +21,8 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 
 	public ViewManagerSimple(GeneralManager setGeneralManager)
 	{
-		super(setGeneralManager);
+		super(setGeneralManager,
+				GeneralManager.iUniqueId_TypeOffset_GuiAWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
@@ -64,12 +65,6 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 	{
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	public int createNewId(ManagerObjectType setNewBaseType)
-	{
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	public ViewInter createView(final ManagerObjectType useViewType)

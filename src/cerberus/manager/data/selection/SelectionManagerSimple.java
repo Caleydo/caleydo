@@ -51,7 +51,8 @@ implements SelectionManager
 	 */
 	public SelectionManagerSimple( GeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
-		super( setGeneralManager, iUniqueId_TypeOffset_Selection );
+		super( setGeneralManager, 
+				GeneralManager.iUniqueId_TypeOffset_Selection );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -141,7 +142,7 @@ implements SelectionManager
 	public Selection getItemSelection( final int iItemId) {
 		
 		try {
-			return vecSelection.get( getLookupValueById( iItemId ) );
+			return vecSelection.get( getIndexInVector_byUniqueId( iItemId ) );
 		} 
 		catch (ArrayIndexOutOfBoundsException ae) {
 			assert false: "SelectionManagerSimple.getItemSelection() ArrayIndexOutOfBoundsException ";
@@ -184,7 +185,7 @@ implements SelectionManager
 	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
-		return hasLookupValueById( iItemId );
+		return hasItem_withUniqueId( iItemId );
 	}
 
 	/* (non-Javadoc)
@@ -204,10 +205,10 @@ implements SelectionManager
 	public boolean unregisterItem( final int iItemId,
 			final ManagerObjectType type  ) {
 		
-		if ( this.hasLookupValueById( iItemId )) {
+		if ( this.hasItem_withUniqueId( iItemId )) {
 			vecSelection.remove( 
-					(int) getLookupValueById( iItemId ));
-			unregisterItemCollection( iItemId );
+					(int) getIndexInVector_byUniqueId( iItemId ));
+			unregisterItem_byUniqueId_insideCollection( iItemId );
 			return true;
 		}
 		return false;
@@ -221,12 +222,12 @@ implements SelectionManager
 		try {
 			Selection addItem = (Selection) registerItem;
 			
-			if ( hasLookupValueById( iItemId ) ) {
-				vecSelection.set( getLookupValueById( iItemId ), addItem );
+			if ( hasItem_withUniqueId( iItemId ) ) {
+				vecSelection.set( getIndexInVector_byUniqueId( iItemId ), addItem );
 				return true;
 			}
 			
-			registerItemCollection( iItemId, vecSelection.size() );
+			registerItem_byUniqueId_insideCollection( iItemId, vecSelection.size() );
 			vecSelection.addElement( addItem );
 				
 			return true;

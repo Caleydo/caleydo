@@ -232,7 +232,11 @@ public class CanvasSwingJoglManager
 	public CanvasSwingJoglManager( final GeneralManager setManager,
 			final boolean setIsPrimaryWindow ) {
 		
-		super( setManager );
+		super( setManager,
+				GeneralManager.iUniqueId_TypeOffset_GuiAWT );
+		
+		//TODO: check why the constructors differ!
+		
 		
 		refManager = setManager;
 		
@@ -250,7 +254,10 @@ public class CanvasSwingJoglManager
 	
 	public CanvasSwingJoglManager(  final GeneralManager setManager ) { 
 		
-		super( setManager );
+		super( setManager,				
+				GeneralManager.iUniqueId_TypeOffset_GuiAWT);
+		
+		//TODO: check why the constructors differ!
 		
 		initDatastructures();		
 		

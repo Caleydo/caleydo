@@ -49,7 +49,8 @@ implements StorageManager {
 	public FactoryStorageManager(GeneralManager setGeneralManager,
 			final int iSetInitSizeContainer ) {
 		
-		super( setGeneralManager, iCollectionId_LowestDigit );
+		super( setGeneralManager, 
+				GeneralManager.iUniqueId_TypeOffset_Storage );
 		
 		assert setGeneralManager != null : "FactoryStorageManager.Constructor  fed with null-pointer to singelton";
 		

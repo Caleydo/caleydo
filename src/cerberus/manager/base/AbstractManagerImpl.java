@@ -6,6 +6,7 @@ package cerberus.manager.base;
 import cerberus.manager.AbstractManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.Singelton;
+import cerberus.manager.type.ManagerObjectType;
 
 /**
  * Base class for manager classes, that connect to the GeneralManager.
@@ -15,6 +16,8 @@ import cerberus.manager.Singelton;
  */
 public abstract class AbstractManagerImpl implements AbstractManager  {
 
+	protected int iUniqueId_current;
+	
 	/**
 	 * Reference to GeneralManager set via Constructor
 	 */
@@ -23,8 +26,13 @@ public abstract class AbstractManagerImpl implements AbstractManager  {
 	/**
 	 * 
 	 */
-	protected AbstractManagerImpl( final GeneralManager setGeneralManager) {
+	protected AbstractManagerImpl( final GeneralManager setGeneralManager,
+			final int iUniqueId_type_offset ) {
 		refGeneralManager = setGeneralManager;
+		
+		iUniqueId_current = iUniqueId_type_offset * 
+		GeneralManager.iUniqueId_TypeOffset +
+		setGeneralManager.getSingelton().getNetworkPostfix();
 	}
 	
 	/* (non-Javadoc)
@@ -44,7 +52,6 @@ public abstract class AbstractManagerImpl implements AbstractManager  {
 		return refGeneralManager.getSingelton();
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.AbstractManagerImpl#getGeneralManager()
 	 */
@@ -62,5 +69,18 @@ public abstract class AbstractManagerImpl implements AbstractManager  {
 		throw new RuntimeException("AbstractManagerImpl::setSingelton() is not supported!");
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
+	 */
+	public final int createNewId(ManagerObjectType setNewBaseType) {
+		
+		iUniqueId_current += GeneralManager.iUniqueId_Increment;
+		
+		return iUniqueId_current;
+	}
 
+	public final GeneralManager getManagerByBaseType(ManagerObjectType managerType) {
+		assert false : "Do not call this methode. use singelton only.";
+		return null;
+	}
 }
