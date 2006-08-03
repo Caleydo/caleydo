@@ -60,6 +60,4 @@ public abstract class Model {
 	public String getTitle() {
 		return name;
 	}
-
-
 }

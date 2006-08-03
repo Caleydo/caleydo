@@ -76,25 +76,27 @@ public enum ManagerObjectType {
 	 */
 	VIEW(ManagerType.VIEW),
 	
-	HISTOGRAM_VIEW(ManagerType.VIEW),
+	VIEW_HISTOGRAM(ManagerType.VIEW),
 	
-	HEATMAP_VIEW(ManagerType.VIEW),
+	VIEWHEATMAP(ManagerType.VIEW),
 	
-	DENDROGRAM_VIEW(ManagerType.VIEW),
+	VIEW_DENDROGRAM(ManagerType.VIEW),
 	
-	PATHWAY_VIEW(ManagerType.VIEW),
+	VIEW_PATHWAY(ManagerType.VIEW),
 	
-	TEST_TABLE_VIEW(ManagerType.VIEW),
+	VIEW_TEST_TABLE(ManagerType.VIEW),
 	
-	GEARS_VIEW(ManagerType.VIEW),
+	VIEW_GEARS(ManagerType.VIEW),
 	
-	SET_TABLE_VIEW(ManagerType.VIEW),
+	VIEW_DATA_EXPLORER(ManagerType.VIEW),
 	
-	STORAGE_TABLE_VIEW(ManagerType.VIEW),
+	VIEW_SET_TABLE(ManagerType.VIEW),
 	
-	SELECTION_TABLE_VIEW(ManagerType.VIEW),
+	VIEW_STORAGE_TABLE(ManagerType.VIEW),
 	
-	META_TABLE_VIEW(ManagerType.VIEW),
+	VIEW_SELECTION_TABLE(ManagerType.VIEW),
+	
+	VIEW_META_TABLE(ManagerType.VIEW),
 	
 	//deprecated
 	

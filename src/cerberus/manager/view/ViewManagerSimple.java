@@ -7,6 +7,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.selection.SelectionTableViewRep;
 import cerberus.view.gui.swt.data.set.SetTableViewRep;
 import cerberus.view.gui.swt.data.storage.StorageTableViewRep;
@@ -86,17 +87,19 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 		{
 		case VIEW:
 
-		case PATHWAY_VIEW:
+		case VIEW_PATHWAY:
 			return new PathwayViewRep(iNewId, this.refGeneralManager);
-		case TEST_TABLE_VIEW:
+		case VIEW_DATA_EXPLORER:
+			return new DataExplorerViewRep(iNewId, this.refGeneralManager);	
+		case VIEW_TEST_TABLE:
 			return new TestTableViewRep(iNewId, this.refGeneralManager);
-		case SET_TABLE_VIEW:
+		case VIEW_SET_TABLE:
 			return new SetTableViewRep(iNewId, this.refGeneralManager);
-		case STORAGE_TABLE_VIEW:
+		case VIEW_STORAGE_TABLE:
 			return new StorageTableViewRep(iNewId, this.refGeneralManager);
-		case SELECTION_TABLE_VIEW:
+		case VIEW_SELECTION_TABLE:
 			return new SelectionTableViewRep(iNewId, this.refGeneralManager);		
-		case GEARS_VIEW:
+		case VIEW_GEARS:
 			return new GearsViewRep(iNewId, this.refGeneralManager);
 
 		default:

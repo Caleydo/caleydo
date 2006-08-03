@@ -1,13 +1,30 @@
 package cerberus.view.gui.swt.data.explorer;
 
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.widgets.Composite;
+import java.util.Iterator;
 
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+
+import cbg.article.model.Model;
+import cbg.article.treeviewer.ui.MovingBoxContentProvider;
+import cbg.article.treeviewer.ui.MovingBoxLabelProvider;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
+import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
+import cerberus.view.gui.swt.data.explorer.model.SetModel;
+import cerberus.view.gui.swt.data.explorer.model.StorageModel;
+import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
+import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
 
 public class DataExplorerViewRep implements ViewInter
 {
@@ -16,6 +33,10 @@ public class DataExplorerViewRep implements ViewInter
 	protected Composite refSWTContainer;
 	
 	protected TreeViewer treeViewer;
+	protected Text text;
+	protected DataExplorerLabelProvider labelProvider;
+	
+	protected SetModel rootSet;
 	
 	public DataExplorerViewRep(int iNewId, GeneralManager refGeneralManager)
 	{
@@ -29,9 +50,43 @@ public class DataExplorerViewRep implements ViewInter
 	
 	public void initView()
 	{
+		/* Create a grid layout object so the text and treeviewer
+		 * are layed out the way I want. */
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		layout.verticalSpacing = 2;
+		layout.marginWidth = 0;
+		layout.marginHeight = 2;
+		refSWTContainer.setLayout(layout);
+		
+		/* Create a "label" to display information in. I'm
+		 * using a text field instead of a lable so you can
+		 * copy-paste out of it. */
+		text = new Text(refSWTContainer, SWT.READ_ONLY | SWT.SINGLE | SWT.BORDER);
+		// layout the text field above the treeviewer
+		GridData layoutData = new GridData();
+		layoutData.grabExcessHorizontalSpace = true;
+		layoutData.horizontalAlignment = GridData.FILL;
+		text.setLayoutData(layoutData);
+		
+		// Create the tree viewer as a child of the composite parent
 		treeViewer = new TreeViewer(refSWTContainer);
-		//treeViewer.setContentProvider(new MovingBoxContentProvider());
-		//treeViewer.setLabelProvider(new MovingBoxLabelProvider());
+		treeViewer.setContentProvider(new DataExplorerContentProvider());
+		labelProvider = new DataExplorerLabelProvider();
+		treeViewer.setLabelProvider(labelProvider);
+		
+		treeViewer.setUseHashlookup(true);
+		
+		// layout the tree viewer below the text field
+		layoutData = new GridData();
+		layoutData.grabExcessHorizontalSpace = true;
+		layoutData.grabExcessVerticalSpace = true;
+		layoutData.horizontalAlignment = GridData.FILL;
+		layoutData.verticalAlignment = GridData.FILL;
+		treeViewer.getControl().setLayoutData(layoutData);
+	
+		hookListeners();
+		
 		treeViewer.setInput(getInitalInput());
 		treeViewer.expandAll();	
 	}
@@ -58,42 +113,47 @@ public class DataExplorerViewRep implements ViewInter
 		
 	}
 	
-    protected void getInitalInput() {
-//        MovingBox root = new MovingBox();
-//        MovingBox books = new MovingBox("Books");
-//        MovingBox games = new MovingBox("Games");
-//        MovingBox books2 = new MovingBox("More books");
-//        MovingBox games2 = new MovingBox("More games");
-//        
-//        root.addBox(books);
-//        root.addBox(games);
-//        root.addBox(new MovingBox());
-//        
-//        books.addBox(books2);
-//        games.addBox(games2);
-//        
-//        books.addBook(new Book("The Lord of the Rings", "J.R.R.", "Tolkien"));
-//        books.addBoardGame(new BoardGame("Taj Mahal", "Reiner", "Knizia"));
-//        books.addBook(new Book("Cryptonomicon", "Neal", "Stephenson"));
-//        books.addBook(new Book("Smalltalk, Objects, and Design", "Chamond", "Liu"));
-//        books.addBook(new Book("A Game of Thrones", "George R. R.", " Martin"));
-//        books.addBook(new Book("The Hacker Ethic", "Pekka", "Himanen"));
-//        //books.addBox(new MovingBox());
-//        
-//        books2.addBook(new Book("The Code Book", "Simon", "Singh"));
-//        books2.addBook(new Book("The Chronicles of Narnia", "C. S.", "Lewis"));
-//        books2.addBook(new Book("The Screwtape Letters", "C. S.", "Lewis"));
-//        books2.addBook(new Book("Mere Christianity ", "C. S.", "Lewis"));
-//        games.addBoardGame(new BoardGame("Tigris & Euphrates", "Reiner", "Knizia"));        
-//        games.addBoardGame(new BoardGame("La Citta", "Gerd", "Fenchel"));
-//        games.addBoardGame(new BoardGame("El Grande", "Wolfgang", "Kramer"));
-//        games.addBoardGame(new BoardGame("The Princes of Florence", "Richard", "Ulrich"));
-//        games.addBoardGame(new BoardGame("The Traders of Genoa", "Rudiger", "Dorn"));
-//        games2.addBoardGame(new BoardGame("Tikal", "M.", "Kiesling"));
-//        games2.addBoardGame(new BoardGame("Modern Art", "Reiner", "Knizia"));       
-//        return root;
+    protected SetModel getInitalInput() 
+    {
+		rootSet = new SetModel();
+
+		rootSet.add(new StorageModel(1, "Storage 1"));
+		rootSet.add(new SelectionModel(2, "Selection 1"));
+
+		return rootSet;
      }
 
-
+	protected void hookListeners() 
+	{
+		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() 
+		{
+			public void selectionChanged(SelectionChangedEvent event) 
+			{
+				// if the selection is empty clear the label
+				if(event.getSelection().isEmpty()) {
+					text.setText("");
+					return;
+				}
+				if(event.getSelection() instanceof IStructuredSelection) 
+				{
+					IStructuredSelection selection = (IStructuredSelection)event.getSelection();
+					StringBuffer toShow = new StringBuffer();
+					for (Iterator iterator = selection.iterator(); iterator.hasNext();) {
+						Object domain = (Model) iterator.next();
+						String value = labelProvider.getText(domain);
+						toShow.append(value);
+						toShow.append(", ");
+					}
+					
+					// remove the trailing comma space pair
+					if(toShow.length() > 0) 
+					{
+						toShow.setLength(toShow.length() - 2);
+					}
+					text.setText(toShow.toString());
+				}
+			}
+		});
+	}
 
 }

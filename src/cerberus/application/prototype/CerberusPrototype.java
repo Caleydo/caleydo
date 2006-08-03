@@ -54,13 +54,12 @@ public class CerberusPrototype
 		SWTGUIManagerSimple swtGuiManager = (SWTGUIManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
 		
 		ViewManagerSimple viewManager = (ViewManagerSimple) oneForAllManager.getManagerByBaseType(ManagerObjectType.VIEW);
-		viewManager.createView(ManagerObjectType.PATHWAY_VIEW);
-		//viewManager.createView(ManagerObjectType.TEST_TABLE_VIEW);
-
-		viewManager.createView(ManagerObjectType.SET_TABLE_VIEW);
-		viewManager.createView(ManagerObjectType.STORAGE_TABLE_VIEW);
-		//viewManager.createView(ManagerObjectType.GEARS_VIEW);
-		//viewManager.createView(ManagerObjectType.GEARS_VIEW);
+		viewManager.createView(ManagerObjectType.VIEW_PATHWAY);
+		//viewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
+		viewManager.createView(ManagerObjectType.VIEW_DATA_EXPLORER);
+		//viewManager.createView(ManagerObjectType.VIEW_SET_TABLE);
+		viewManager.createView(ManagerObjectType.VIEW_STORAGE_TABLE);
+		//viewManager.createView(ManagerObjectType.VIEW_GEARS);
 		
 		swtGuiManager.runApplication();
 	}

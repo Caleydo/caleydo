@@ -11,9 +11,6 @@ public class Book extends Model {
 		super(title, authorGivenName, authorSirName);
 	}
 	
-	
-	
-	
 	public static Book newBook() {
 		Book newBook = (Book)newBooks.get(cursor);
 		cursor = ((cursor + 1) % newBooks.size());
