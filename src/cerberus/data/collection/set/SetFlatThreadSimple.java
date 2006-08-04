@@ -449,6 +449,37 @@ implements Set {
 		refFlatStorage[0] = setStorage[0];
 	}
 	
+
+	public final boolean setSelectionByDim( Vector<Selection> setSelection, final int iAtDimension ) {
+		
+		assert setSelection != null: "setStorage() with null-pointer";
+		
+		refFlatSelection = new Selection[ setSelection.size() ];		
+		Iterator <Selection> iter = setSelection.iterator();
+		int iIndex = 0;
+		
+		while ( iter.hasNext() ) {
+			refFlatSelection[ iIndex ] = iter.next();
+		}
+		
+		return true;
+	}
+	
+	public final boolean setStorageByDim( Vector<Storage> setStorage, final int iAtDimension ) {
+		
+		assert setStorage != null: "setStorage() with null-pointer";
+		
+		refFlatStorage = new Storage[ setStorage.size() ];		
+		Iterator <Storage> iter = setStorage.iterator();
+		int iIndex = 0;
+		
+		while ( iter.hasNext() ) {
+			refFlatStorage[ iIndex ] = iter.next();
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Create "Header" for all Selections.
 	 * 
@@ -534,6 +565,28 @@ implements Set {
 		iterator.addSelectionVector( vec_Selection );
 		
 		return iterator;
+	}
+	
+	public final Vector<Storage> getStorageVectorByDim( final int iAtDimension ) {
+		
+		Vector<Storage> resultVector = new Vector<Storage> (refFlatStorage.length);
+		
+		for ( int i=0; i < refFlatStorage.length; i++ ) {
+			resultVector.addElement( refFlatStorage[i] );
+		}
+		
+		return resultVector;
+	}
+	
+	public final Vector<Selection> getSelectionVectorByDim( final int iAtDimension ) {
+		
+		Vector<Selection> resultVector = new Vector<Selection> (refFlatSelection.length);
+		
+		for ( int i=0; i < refFlatSelection.length; i++ ) {
+			resultVector.addElement( refFlatSelection[i] );
+		}
+		
+		return resultVector;
 	}
 
 }

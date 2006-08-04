@@ -155,6 +155,24 @@ implements Set {
 		return true;
 	}
 	
+	public final boolean setStorageByDim( Vector <Storage> setVecStorage, final int iAtDimension ) {
+		
+		assert setVecStorage != null: "setStorageVectorByDim() with null-pointer";
+		
+		this.vecRefStorage_Array.setElementAt( setVecStorage, iAtDimension );
+
+		return true;
+	}
+	
+	public final boolean setSelectionByDim( Vector <Selection> setVecSelection, final int iAtDimension ) {
+		
+		assert setVecSelection != null: "setStorageVectorByDim() with null-pointer";
+		
+		this.vecRefSelection_Array.setElementAt( setVecSelection, iAtDimension );
+
+		return true;
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.Set#removeSelection(cerberus.data.collection.Selection, int)
 	 */
@@ -457,6 +475,14 @@ implements Set {
 	public Iterator<Storage> iteratorStorageByDim( final int iAtDimension ) {
 		
 		return vecRefStorage_Array.get( iAtDimension ).iterator();
+	}
+	
+	public final Vector<Storage> getStorageVectorByDim( final int iAtDimension ) {
+		return this.vecRefStorage_Array.get( iAtDimension );
+	}
+	
+	public final Vector<Selection> getSelectionVectorByDim( final int iAtDimension ) {
+		return this.vecRefSelection_Array.get( iAtDimension );
 	}
 	
 	public String toString() {

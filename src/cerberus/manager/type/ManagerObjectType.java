@@ -78,7 +78,7 @@ public enum ManagerObjectType {
 	
 	VIEW_HISTOGRAM(ManagerType.VIEW),
 	
-	VIEWHEATMAP(ManagerType.VIEW),
+	VIEW_HEATMAP(ManagerType.VIEW),
 	
 	VIEW_DENDROGRAM(ManagerType.VIEW),
 	

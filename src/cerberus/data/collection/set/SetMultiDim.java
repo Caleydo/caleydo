@@ -94,7 +94,7 @@ implements Set {
 			bufferInsertVector.addElement( addSelection[i] );
 		}
 		
-		setSelectionVectorByDim( bufferInsertVector , iAtDimension );
+		setSelectionByDim( bufferInsertVector , iAtDimension );
 		
 		return true;
 	}
@@ -454,11 +454,17 @@ implements Set {
 		return null;
 	}
 	
-	protected final Vector<Storage> getStorageVectorByDim( final int iAtDimension ) {
+	public final Vector<Storage> getStorageVectorByDim( final int iAtDimension ) {
 		return vecStorageDim.get( iAtDimension );
 	}
 	
-	protected final Vector<Selection> getSelectionVectorByDim( final int iAtDimension ) {
+	public final Vector<Selection> getSelectionVectorByDim( final int iAtDimension ) {
+		return vecSelectionDim.get( iAtDimension );
+	}
+	
+
+	
+	public final Vector<Selection> setSelectionVectorByDim( final int iAtDimension ) {
 		return vecSelectionDim.get( iAtDimension );
 	}
 	
@@ -525,23 +531,25 @@ implements Set {
 			bufferInsertVector.addElement( setStorage[i] );
 		}
 		
-		this.setStorageVectorByDim( bufferInsertVector , iAtDimension );
+		this.setStorageByDim( bufferInsertVector , iAtDimension );
 	}
 	
-	protected final void setStorageVectorByDim( Vector <Storage> setVecStorage, final int iAtDimension ) {
+	public final boolean setStorageByDim( Vector <Storage> setVecStorage, final int iAtDimension ) {
 		
 		assert setVecStorage != null: "setStorageVectorByDim() with null-pointer";
 		
 		this.vecStorageDim.setElementAt( setVecStorage, iAtDimension );
 
+		return true;
 	}
 	
-	protected final void setSelectionVectorByDim( Vector <Selection> setVecSelection, final int iAtDimension ) {
+	public final boolean setSelectionByDim( Vector <Selection> setVecSelection, final int iAtDimension ) {
 		
 		assert setVecSelection != null: "setStorageVectorByDim() with null-pointer";
 		
 		this.vecSelectionDim.setElementAt( setVecSelection, iAtDimension );
 
+		return true;
 	}
 	
 	/**

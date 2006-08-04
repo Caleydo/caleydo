@@ -473,4 +473,50 @@ implements Set {
 		
 		return null;
 	}
+	
+	public boolean setSelectionByDim( final Vector<Selection> addSelection, 
+			final int iAtDimension ) {
+		
+		Selection [] setNewArray = (Selection []) addSelection.toArray();
+		
+		refFlatSelection = setNewArray;
+		
+		return true;
+	}
+	
+	public boolean setStorageByDim( final Vector<Storage> addStorage, 
+			final int iAtDimension ) {
+		
+		Storage [] setNewArray = (Storage []) addStorage.toArray();
+		
+		refFlatStorage = setNewArray;
+		
+		return true;
+	}
+	
+	public Vector<Storage> getStorageVectorByDim( final int iAtDimension ) {
+		 int iLengthStorage = refFlatStorage.length;
+		 
+		 Vector<Storage> vecResult = new Vector<Storage> (iLengthStorage);
+		 
+		 for ( int i=0; i< iLengthStorage; i++) {
+			 vecResult.addElement( refFlatStorage[i] );
+		 }
+		 
+		 return vecResult;
+	}
+
+	public Vector<Selection> getSelectionVectorByDim( final int iAtDimension ) {
+		int iLengthSelection = refFlatSelection.length;
+		
+		Vector<Selection> vecResult = new Vector<Selection> (iLengthSelection);
+		 
+		for ( int i=0; i< iLengthSelection; i++) {
+			vecResult.addElement( refFlatSelection[i] );
+			}
+ 
+		 return vecResult;
+	}
+
+	
 }

@@ -9,6 +9,7 @@
 package cerberus.data.collection;
 
 import java.util.Iterator;
+import java.util.Vector;
 
 import cerberus.data.UniqueManagedInterface;
 import cerberus.data.collection.Storage;
@@ -41,9 +42,22 @@ public interface Set
 	 * 
 	 * @param addSelection
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
+	 * 
 	 * @return TRUE if adding was successful
 	 */
 	public boolean setSelectionByDim( final Selection[] addSelection, 
+			final int iAtDimension );
+	
+	/**
+	 * Adds a Selection to a specific dimension.
+	 * Note, that addSelection() can not overwrite existing references to other Selection
+	 * 
+	 * @param addSelection
+	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
+	 * 
+	 * @return TRUE if adding was successful
+	 */
+	public boolean setSelectionByDim( final Vector<Selection> addSelection, 
 			final int iAtDimension );
 	
 	/**
@@ -133,6 +147,13 @@ public interface Set
 	
 	/**
 	 * Sets a reference to a storage.
+	 */
+	public boolean setStorageByDim( final Vector<Storage> setStorage, final int iAtDimension  );
+	
+	
+	
+	/**
+	 * Sets a reference to a storage.
 	 * 
 	 * @param addStorage Storage to be added
 	 * @param iAtDimension 
@@ -166,9 +187,13 @@ public interface Set
 	 */
 	public Storage[] getStorageByDim( final int iAtDimension );
 	
+	public Vector<Storage> getStorageVectorByDim( final int iAtDimension );
+	
 	public Storage getStorageByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
 	public Selection[] getSelectionByDim( final int iAtDimension );
+	
+	public Vector<Selection> getSelectionVectorByDim( final int iAtDimension );
 	
 	public Selection getSelectionByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
