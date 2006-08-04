@@ -84,10 +84,11 @@ public class CerberusPrototype
 		ViewManagerSimple viewManager = (ViewManagerSimple) generalManager.getManagerByBaseType(ManagerObjectType.VIEW);
 		//viewManager.createView(ManagerObjectType.VIEW_PATHWAY);
 		//viewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
-		viewManager.createView(ManagerObjectType.VIEW_DATA_EXPLORER);
-		//viewManager.createView(ManagerObjectType.VIEW_SET_TABLE);
-		//viewManager.createView(ManagerObjectType.VIEW_STORAGE_TABLE);
-		//viewManager.createView(ManagerObjectType.VIEW_GEARS);
+		viewManager.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER);
+		//viewManager.createView(ManagerObjectType.VIEW_SWT_SET_TABLE);
+		//viewManager.createView(ManagerObjectType.VIEW_SWT_STORAGE_TABLE);
+		//viewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
+		//viewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);
 		
 		swtGuiManager.runApplication();
 	}

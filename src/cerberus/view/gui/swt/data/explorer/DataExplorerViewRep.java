@@ -57,9 +57,9 @@ public class DataExplorerViewRep implements ViewInter
 				
 		ViewManagerSimple viewManager = 
 			(ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
-		//refSetTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SET_TABLE);
-		refStorageTableViewRep = (StorageTableViewRep)viewManager.createView(ManagerObjectType.VIEW_STORAGE_TABLE);
-		refSelectionTableViewRep = (SelectionTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SELECTION_TABLE);
+		//refSetTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SWT_SET_TABLE);
+		refStorageTableViewRep = (StorageTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SWT_STORAGE_TABLE);
+		refSelectionTableViewRep = (SelectionTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SWT_SELECTION_TABLE);
 		
 		retrieveNewGUIContainer();
 		initView();

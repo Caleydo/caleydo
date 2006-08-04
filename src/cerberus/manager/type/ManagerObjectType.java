@@ -78,7 +78,11 @@ public enum ManagerObjectType {
 	
 	VIEW_HISTOGRAM(ManagerType.VIEW),
 	
-	VIEW_HEATMAP(ManagerType.VIEW),
+	VIEW_SWT_HEATMAP2D(ManagerType.VIEW),
+	
+	VIEW_SWT_SCATTERPLOT2D(ManagerType.VIEW),
+	
+	VIEW_SWT_SCATTERPLOT3D(ManagerType.VIEW),
 	
 	VIEW_DENDROGRAM(ManagerType.VIEW),
 	
@@ -86,15 +90,15 @@ public enum ManagerObjectType {
 	
 	VIEW_TEST_TABLE(ManagerType.VIEW),
 	
-	VIEW_GEARS(ManagerType.VIEW),
+	VIEW_SWT_GEARS(ManagerType.VIEW),
 	
-	VIEW_DATA_EXPLORER(ManagerType.VIEW),
+	VIEW_SWT_DATA_EXPLORER(ManagerType.VIEW),
 	
-	VIEW_SET_TABLE(ManagerType.VIEW),
+	VIEW_SWT_SET_TABLE(ManagerType.VIEW),
 	
-	VIEW_STORAGE_TABLE(ManagerType.VIEW),
+	VIEW_SWT_STORAGE_TABLE(ManagerType.VIEW),
 	
-	VIEW_SELECTION_TABLE(ManagerType.VIEW),
+	VIEW_SWT_SELECTION_TABLE(ManagerType.VIEW),
 	
 	VIEW_META_TABLE(ManagerType.VIEW),
 	
