@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import cerberus.data.collection.Set;
 import cerberus.data.collection.Storage;
+import cerberus.data.collection.StorageType;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
@@ -74,85 +75,89 @@ public class StorageTableViewRep implements DataTableViewInter
 	public void createTable(int iRequestedStorageId)
 	{
 		TableItem item;
+		TableColumn column;
+
+		refCurrentStorage = refStorageManager.getItemStorage(iRequestedStorageId);
 		
-		//TODO: create columns dynamically
-		final TableColumn idColumn = new TableColumn(refTable, SWT.NONE);
-		idColumn.setText("Id");
-		final TableColumn labelColumn = new TableColumn(refTable, SWT.NONE);
-		labelColumn.setText("Label");
+		refTable.removeAll();
 		
-		//init empty table
-		if(iRequestedStorageId == -1)
+		// remove old columns
+		for(int columnIndex = refTable.getColumnCount()-1; columnIndex >= 0; columnIndex--)
 		{
-			item = new TableItem(refTable, SWT.NONE);
-			item.setText(new String [] {"",""});
+			refTable.getColumn(columnIndex).dispose();
 		}
-		//fill table with regular data
-		else
+
+		int tableColumnIndex = 0;
+		
+		if (refCurrentStorage.getSize(StorageType.INT) != 0)
 		{
-			refTable.removeAll();
-	
-			//float[] floatData;
-			int[] intData;
-			String[] stringData;
+			int[] intData = refCurrentStorage.getArrayInt();
+
+			column = new TableColumn(refTable, SWT.NONE);
+			column.setText("Int data");
 			
-			try 
-			{
-				refCurrentStorage = refStorageManager.getItemStorage(iRequestedStorageId);
-				
-				//floatData = refCurrentStorage.getArrayFloat();
-				stringData = refCurrentStorage.getArrayString();
-				intData = refCurrentStorage.getArrayInt();
-				//floatData = refCurrentStorage.getArrayFloat();
-			} 
-			catch (NullPointerException npe) 
-			{
-				assert false:"uniqueId was not found";
-				return;
-			}
-					
 			for(int dataIndex = 0; dataIndex < intData.length; dataIndex++)
 			{
 				item = new TableItem(refTable, SWT.NONE);
-				item.setText(new String [] {
-						Integer.toString(intData[dataIndex]),
-						stringData[dataIndex]});
+				item.setText (tableColumnIndex, Integer.toString(intData[dataIndex]));
 			}
+			
+			column.pack();
+			tableColumnIndex++;
 		}
 		
-		//resize table
-		refSWTContainer.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent e) {
-				Rectangle area = refSWTContainer.getClientArea();
-				Point preferredSize = refTable.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-				int width = area.width - 2*refTable.getBorderWidth();
-				if (preferredSize.y > area.height + refTable.getHeaderHeight())
-				{
-					// Subtract the scrollbar width from the total column width
-					// if a vertical scrollbar will be required
-					Point vBarSize = refTable.getVerticalBar().getSize();
-					width -= vBarSize.x;
-				}
-				Point oldSize = refTable.getSize();
-				if (oldSize.x > area.width) 
-				{
-					// table is getting smaller so make the columns 
-					// smaller first and then resize the table to
-					// match the client area width
-					idColumn.setWidth(width/3);
-					labelColumn.setWidth(width - idColumn.getWidth());
-					refTable.setSize(area.width, area.height);
-				} else 
-				{
-					// table is getting bigger so make the table 
-					// bigger first and then make the columns wider
-					// to match the client area width
-					refTable.setSize(area.width, area.height);
-					idColumn.setWidth(width/3);
-					labelColumn.setWidth(width - idColumn.getWidth());
-				}
+		if (refCurrentStorage.getSize(StorageType.FLOAT) != 0)
+		{
+			float[] floatData = refCurrentStorage.getArrayFloat();
+
+			column = new TableColumn(refTable, SWT.NONE);
+			column.setText("Float data");
+			
+			for(int dataIndex = 0; dataIndex < floatData.length; dataIndex++)
+			{
+				item = refTable.getItem(dataIndex);
+				item.setText (tableColumnIndex, Float.toString(floatData[dataIndex]));
 			}
-		});
+			
+			column.pack();
+			tableColumnIndex++;
+		}
+		
+		if (refCurrentStorage.getSize(StorageType.STRING) != 0)
+		{
+			String[] stringData = refCurrentStorage.getArrayString();
+
+			column = new TableColumn(refTable, SWT.NONE);
+			column.setText("String data");
+			
+			for(int dataIndex = 0; dataIndex < stringData.length; dataIndex++)
+			{
+				item = refTable.getItem(dataIndex);
+//				if (item == null)
+//					item = new TableItem(refTable, SWT.NONE);
+				item.setText (tableColumnIndex, stringData[dataIndex]);
+			}
+			
+			column.pack();
+			tableColumnIndex++;
+		}
+		
+		if (refCurrentStorage.getSize(StorageType.BOOLEAN) != 0)
+		{
+			boolean[] booleanData = refCurrentStorage.getArrayBoolean();
+
+			column = new TableColumn(refTable, SWT.NONE);
+			column.setText("Boolean data");
+			
+			for(int dataIndex = 0; dataIndex < booleanData.length; dataIndex++)
+			{
+				item = refTable.getItem(dataIndex);
+				item.setText (tableColumnIndex, Boolean.toString(booleanData[dataIndex]));
+			}
+			
+			column.pack();
+			tableColumnIndex++;
+		}
 	}
 	
 	public void redrawTable()
@@ -164,5 +169,4 @@ public class StorageTableViewRep implements DataTableViewInter
 	{
 		this.refSWTContainer = refSWTContainer;
 	}
-
 }

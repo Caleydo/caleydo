@@ -27,10 +27,9 @@
    </JFrameMenuList>
   
    <CommandBuffer>
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="25301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go hohoho" />        
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="35301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast" />            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="25301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34 1.0@info bla foo go" />        
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="35301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66 -1.0@bbname bbof bbthe bbbeast" />            
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="45301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
-     
      
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="25201" label="my Selection" attrib1="0 200 0 10" />             
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="35201" label="my Selection2" attrib1="50 50 0 1" />  

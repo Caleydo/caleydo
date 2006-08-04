@@ -7,6 +7,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -99,17 +101,18 @@ public class DataExplorerViewRep implements ViewInter
 		hookListeners();
 		
 		treeViewer.setInput(getInitalInput());
-		//treeViewer.expandAll();	
+		treeViewer.expandAll();	
 		
 	    Composite storageTableComposite = new Composite(refSWTContainer, SWT.NONE);
 	    refStorageTableViewRep.setExternalGUIContainer(storageTableComposite);
 		refStorageTableViewRep.initTable();
-		refStorageTableViewRep.createTable(-1);
+		//refStorageTableViewRep.createTable(-1);
 		
 		Composite selectionTableComposite = new Composite(refSWTContainer, SWT.NONE);
 	    refSelectionTableViewRep.setExternalGUIContainer(selectionTableComposite);
 		refSelectionTableViewRep.initTable();
 		refSelectionTableViewRep.createTable(-1);
+		
 	}
 
 	public void drawView()

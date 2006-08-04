@@ -104,7 +104,8 @@ public class SelectionTableViewRep implements DataTableViewInter
 			}
 		
 			item = new TableItem(refTable, SWT.NONE);
-			item.setText(new String [] {"length?", 
+			item.setText(new String [] {
+					Integer.toString(refCurrentSelection.length()), 
 					Integer.toString(refCurrentSelection.getOffset()),
 					Integer.toString(refCurrentSelection.getMultiOffset()),
 					Integer.toString(refCurrentSelection.getMultiRepeat())});

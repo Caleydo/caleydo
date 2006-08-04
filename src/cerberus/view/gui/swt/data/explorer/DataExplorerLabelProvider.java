@@ -1,18 +1,13 @@
 package cerberus.view.gui.swt.data.explorer;
 
-//import java.util.Iterator;
-
-//import org.eclipse.jface.resource.ImageDescriptor;
-//import java.util.HashMap;
-//import java.util.Map;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-//import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
 import cerberus.view.gui.swt.data.explorer.model.SetModel;
@@ -26,23 +21,23 @@ public class DataExplorerLabelProvider extends LabelProvider
 	 * @see ILabelProvider#getImage(Object)
 	 */
 	public Image getImage(Object element) {
-//		ImageDescriptor descriptor = null;
-//		if (element instanceof SetModel) {
-//			descriptor = TreeViewerPlugin.getImageDescriptor("movingBox.gif");
-//		} else if (element instanceof Book) {
-//			descriptor = TreeViewerPlugin.getImageDescriptor("book.gif");
-//		} else if (element instanceof BoardGame) {
-//			descriptor = TreeViewerPlugin.getImageDescriptor("gameboard.gif");
-//		} else {
-//			throw unknownElement(element);
-//		}
-//
-//		//obtain the cached image corresponding to the descriptor
-//		Image image = (Image)imageCache.get(descriptor);
-//		if (image == null) {
-//			image = descriptor.createImage();
-//			imageCache.put(descriptor, image);
-//		}
+		ImageDescriptor descriptor;
+		if (element instanceof SetModel) {
+			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/set.gif"));
+		} else if (element instanceof SelectionModel) {
+			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/selection.gif"));
+		} else if (element instanceof StorageModel) {
+			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/storage.gif"));
+		} else {
+			throw unknownElement(element);
+		}
+
+		//obtain the cached image corresponding to the descriptor
+		Image image = (Image)imageCache.get(descriptor);
+		if (image == null) {
+			image = descriptor.createImage();
+			imageCache.put(descriptor, image);
+		}
 		return null;
 	}
 
