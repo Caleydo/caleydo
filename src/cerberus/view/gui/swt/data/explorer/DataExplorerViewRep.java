@@ -227,7 +227,7 @@ public class DataExplorerViewRep implements ViewInter
 				getManagerByBaseType(ManagerObjectType.SELECTION)).getAllSelectionItems();
 		
 		//iterate over all SELECTIONs
-		for(int selectionIndex = 0; selectionIndex < allStorageItems.length; selectionIndex++)
+		for(int selectionIndex = 0; selectionIndex < allSelectionItems.length; selectionIndex++)
 		{
 			currentSelection = allSelectionItems[selectionIndex];
             

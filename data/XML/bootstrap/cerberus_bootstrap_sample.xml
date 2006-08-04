@@ -40,9 +40,9 @@
     <!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
-		-->
+		
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;SKIP;SKIP;INT;ABORT" attrib2="15201" />
-     <!-- 
+     
      <Cmd mementoId="-2" process="MEMENTO" type="OPEN_VIEW" detail="" />
 
      
