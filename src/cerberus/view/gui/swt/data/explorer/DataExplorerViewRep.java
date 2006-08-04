@@ -1,18 +1,13 @@
 package cerberus.view.gui.swt.data.explorer;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -20,8 +15,9 @@ import cerberus.data.collection.Selection;
 import cerberus.data.collection.Set;
 import cerberus.data.collection.Storage;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.SWTGUIManager;
 import cerberus.manager.SetManager;
+import cerberus.manager.StorageManager;
+import cerberus.manager.SelectionManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
 import cerberus.view.gui.ViewInter;
@@ -61,7 +57,7 @@ public class DataExplorerViewRep implements ViewInter
 			(ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
 		//refSetTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SET_TABLE);
 		refStorageTableViewRep = (StorageTableViewRep)viewManager.createView(ManagerObjectType.VIEW_STORAGE_TABLE);
-		//refSelectionTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SELECTION_TABLE);
+		refSelectionTableViewRep = (SelectionTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SELECTION_TABLE);
 		
 		retrieveNewGUIContainer();
 		initView();
@@ -70,20 +66,6 @@ public class DataExplorerViewRep implements ViewInter
 	
 	public void initView()
 	{
-//		/* Create a grid layout object so the text and treeviewer
-//		 * are layed out the way I want. */
-//		GridLayout layout = new GridLayout();
-//		layout.numColumns = 1;
-//		layout.verticalSpacing = 2;
-//		layout.marginWidth = 0;
-//		layout.marginHeight = 2;
-//		refSWTContainer.setLayout(layout);
-		
-//	    GridLayout gridLayout = new GridLayout();
-//	    gridLayout.numColumns = 2;
-//	    gridLayout.marginHeight = gridLayout.marginWidth = 0;
-//	    refSWTContainer.setLayout(gridLayout);
-			
 		RowLayout rowLayout = new RowLayout();
  		rowLayout.wrap = false;
  		rowLayout.pack = true;
@@ -117,12 +99,17 @@ public class DataExplorerViewRep implements ViewInter
 		hookListeners();
 		
 		treeViewer.setInput(getInitalInput());
-		treeViewer.expandAll();	
+		//treeViewer.expandAll();	
 		
-	    Composite tableComposite = new Composite(refSWTContainer, SWT.NONE);
-	    refStorageTableViewRep.setExternalGUIContainer(tableComposite);
+	    Composite storageTableComposite = new Composite(refSWTContainer, SWT.NONE);
+	    refStorageTableViewRep.setExternalGUIContainer(storageTableComposite);
 		refStorageTableViewRep.initTable();
 		refStorageTableViewRep.createTable(-1);
+		
+		Composite selectionTableComposite = new Composite(refSWTContainer, SWT.NONE);
+	    refSelectionTableViewRep.setExternalGUIContainer(selectionTableComposite);
+		refSelectionTableViewRep.initTable();
+		refSelectionTableViewRep.createTable(-1);
 	}
 
 	public void drawView()
@@ -153,6 +140,8 @@ public class DataExplorerViewRep implements ViewInter
     	SelectionModel currentSelectionModel;
     	
 		Set[] allSetItems;
+		Storage[] allStorageItems;
+		Selection[] allSelectionItems;
 		//TODO: a list would be nuch nicer - ask michael
 		Selection[] currentSelectionArray;
 		Storage[] currentStorageArray;
@@ -166,7 +155,14 @@ public class DataExplorerViewRep implements ViewInter
 		
     	//root node in the tree (not visible)
 		rootSet = new SetModel();
-	
+		//TODO: make a own DataCollectionModel for the root elements
+		SetModel rootSetModel = new SetModel(0, "SET");
+		rootSet.add(rootSetModel);
+		SetModel rootSelectionModel = new SetModel(0, "SELECTION");
+		rootSet.add(rootSelectionModel);
+		SetModel rootStorageModel = new SetModel(0, "STORAGE");
+		rootSet.add(rootStorageModel);
+		
 		allSetItems = ((SetManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
 		
@@ -179,7 +175,7 @@ public class DataExplorerViewRep implements ViewInter
 			currentSetModel = new SetModel(
 					currentSet.getId(), 
 					currentSet.getLabel());			
-			rootSet.add(currentSetModel);
+			rootSetModel.add(currentSetModel);
 			
 		    for(int dimIndex = 0; dimIndex < allSetItems[setIndex].getDimensions(); dimIndex++)
 		    {
@@ -210,8 +206,40 @@ public class DataExplorerViewRep implements ViewInter
 		    }
 		}
 		
+		
+		allStorageItems = ((StorageManager)refGeneralManager.
+				getManagerByBaseType(ManagerObjectType.STORAGE)).getAllStorageItems();
+		
+		//iterate over all STORAGESs
+		for(int storageIndex = 0; storageIndex < allStorageItems.length; storageIndex++)
+		{
+			currentStorage = allStorageItems[storageIndex];
+            
+			//insert STORAGES with ID and label in the tree
+			currentStorageModel = new StorageModel(
+					currentStorage.getId(), 
+					currentStorage.getLabel());			
+			rootStorageModel.add(currentStorageModel);
+
+		}
+		
+		allSelectionItems = ((SelectionManager)refGeneralManager.
+				getManagerByBaseType(ManagerObjectType.SELECTION)).getAllSelectionItems();
+		
+		//iterate over all SELECTIONs
+		for(int selectionIndex = 0; selectionIndex < allStorageItems.length; selectionIndex++)
+		{
+			currentSelection = allSelectionItems[selectionIndex];
+            
+			//insert SELECTIONs with ID and label in the tree
+			currentSelectionModel = new SelectionModel(
+					currentSelection.getId(), 
+					currentSelection.getLabel());			
+			rootSelectionModel.add(currentSelectionModel);
+		}
+		
 		//just for testing the tree
-		SetModel subSet = new SetModel(15101, "BLABLA");
+		SetModel subSet = new SetModel(15101, "TEST");
 		subSet.add(new StorageModel(15301, "Storage"));
 		subSet.add(new StorageModel(1, "Selection"));
 		rootSet.add(subSet);	
@@ -237,7 +265,7 @@ public class DataExplorerViewRep implements ViewInter
 			{
 				if(event.getSelection().isEmpty()) 
 				{
-					text.setText("");
+					//text.setText("");
 					return;
 				}
 				if(event.getSelection() instanceof IStructuredSelection) 
@@ -254,8 +282,8 @@ public class DataExplorerViewRep implements ViewInter
 						}
 						else if(model instanceof SelectionModel)
 						{
-							refStorageTableViewRep.createTable(model.getID());
-							refStorageTableViewRep.redrawTable();
+							refSelectionTableViewRep.createTable(model.getID());
+							refSelectionTableViewRep.redrawTable();
 						}
 						
 //						String value = labelProvider.getText(model);

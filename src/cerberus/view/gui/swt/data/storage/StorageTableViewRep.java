@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.TableItem;
 import cerberus.data.collection.Set;
 import cerberus.data.collection.Storage;
 import cerberus.manager.GeneralManager;
+import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.StorageManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -43,10 +44,8 @@ public class StorageTableViewRep implements DataTableViewInter
 		
 	public void initView()
 	{
-		refStorageManager = refGeneralManager.getSingelton().getStorageManager();
-
-		//load data
-		//refAllStorageItems = refStorageManager.getAllStorageItems();
+		refStorageManager = (StorageManager)refGeneralManager.
+			getManagerByBaseType(ManagerObjectType.STORAGE);
 	}
 
 	public void drawView()
