@@ -98,6 +98,8 @@ public interface Storage
 	 */
 	public int getSize( final int iAtContainerPosition );
 	
+	public int getSize( final StorageType type );
+	
 	/**
 	 * Get each size of each container (array)
 	 * @return

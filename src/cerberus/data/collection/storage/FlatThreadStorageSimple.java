@@ -251,6 +251,39 @@ implements Storage, MementoNetEventXML, CollectionLock
 		} // end switch
 	}
 	
+	public int getSize( final StorageType type ) {
+		
+		switch ( type ) {
+		case INT:
+			if ( dataInt == null ) return 0;
+			return dataInt.length;
+			
+		case FLOAT:
+			if ( dataFloat == null ) return 0;
+			return dataFloat.length;
+			
+		case STRING:
+			if ( dataString == null ) return 0;
+			return dataString.length;
+			
+		case BOOLEAN:
+			if ( dataBoolean == null ) return 0;
+			return dataBoolean.length;
+			
+		case DOUBLE:
+			if ( dataDouble == null ) return 0;
+			return dataDouble.length;
+		
+		case OBJECT:
+			if ( dataObject == null ) return 0;
+			return dataObject.length;
+		
+		default:
+			throw new RuntimeException("getSize() with unknown index.");
+		} // end switch
+		
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.Storage#getSize(int)
 	 */
