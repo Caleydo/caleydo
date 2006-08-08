@@ -71,25 +71,25 @@ implements SetManager {
 		/**
 		 * Test Set...
 		 */
-		testSet = new SetPlanarSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
-				refGeneralManager );
-		
-		this.registerItem( testSet, testSet.getId(), ManagerObjectType.SET_PLANAR );
-		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet created with Id =[" +
-				testSet.getId() +"]");
-		
-		Selection getSelectionById = (Selection) refGeneralManager.getItem( 15201 );
-		Storage getStorageById = (Storage) refGeneralManager.getItem( 15301 );
-		
-		/* register Selection & Storage to Set ... */
-		testSet.setSelectionByDimAndIndex( getSelectionById, 0, 0 );
-		testSet.setStorageByDimAndIndex( getStorageById, 0, 0 );
-		
-		Set testMySet = (Set) refGeneralManager.getItem( 15101 );
-		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet get Set by Id; [" +
-				testSet.getId() +"] == [" + testMySet.getId() + "]_(test)");
+//		testSet = new SetPlanarSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
+//				refGeneralManager );
+//		
+//		this.registerItem( testSet, testSet.getId(), ManagerObjectType.SET_PLANAR );
+//		
+//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet created with Id =[" +
+//				testSet.getId() +"]");
+//		
+//		Selection getSelectionById = (Selection) refGeneralManager.getItem( 15201 );
+//		Storage getStorageById = (Storage) refGeneralManager.getItem( 15301 );
+//		
+//		/* register Selection & Storage to Set ... */
+//		testSet.setSelectionByDimAndIndex( getSelectionById, 0, 0 );
+//		testSet.setStorageByDimAndIndex( getStorageById, 0, 0 );
+//		
+//		Set testMySet = (Set) refGeneralManager.getItem( 15101 );
+//		
+//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet get Set by Id; [" +
+//				testSet.getId() +"] == [" + testMySet.getId() + "]_(test)");
 		/**
 		 * END: Test Set...
 		 */

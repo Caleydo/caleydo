@@ -7,8 +7,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -127,6 +125,16 @@ public class DataExplorerViewRep implements ViewInter
 		
 	}
 	
+	/**
+	 * Fill the tree with Sets, Storages and Selections.
+	 * The Sets are furthermore divided in the subcomponents.
+	 * We assume here that a Set consists of Storages and Selections 
+	 * which have the same dimension!
+	 * 
+	 * @see cerberus.manager.gui.SWTGUIManagerSimple#createApplicationWindow()
+	 * 
+	 * @param setGeneralManager reference to GeneralManager
+	 */
     protected SetModel getInitalInput() 
     {
     	SetModel currentSetModel;
@@ -173,9 +181,7 @@ public class DataExplorerViewRep implements ViewInter
 			
 		    for(int dimIndex = 0; dimIndex < allSetItems[setIndex].getDimensions(); dimIndex++)
 		    {
-		    	currentSelectionArray = currentSet.getSelectionByDim(dimIndex);
-		    	//currentStorageArray = currentSet.getStorageByDim(dimIndex);
-		    	
+		    	currentSelectionArray = currentSet.getSelectionByDim(dimIndex);		    	
 		    	for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
 		    	{
 		    		currentSelection = (Selection)currentSelectionArray[selectionIndex];
@@ -187,16 +193,17 @@ public class DataExplorerViewRep implements ViewInter
 					currentSetModel.add(currentSelectionModel);
 		    	}
 		    	
-//		    	for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
-//		    	{
-//		    		currentStorage = (Storage)currentStorageArray[storageIndex];
-//		    		
-//					//insert STORAGE with ID and label in the tree
-//					currentStorageModel = new StorageModel(
-//							currentStorage.getId(), 
-//							currentStorage.getLabel());			
-//					currentSetModel.add(currentStorageModel);
-//		    	}
+		    	currentStorageArray = currentSet.getStorageByDim(dimIndex);
+		    	for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
+		    	{
+		    		currentStorage = (Storage)currentStorageArray[storageIndex];
+		    		
+					//insert STORAGE with ID and label in the tree
+					currentStorageModel = new StorageModel(
+							currentStorage.getId(), 
+							currentStorage.getLabel());			
+					currentSetModel.add(currentStorageModel);
+		    	}
 		    }
 		}
 		
@@ -204,7 +211,7 @@ public class DataExplorerViewRep implements ViewInter
 		allStorageItems = ((StorageManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.STORAGE)).getAllStorageItems();
 		
-		//iterate over all STORAGESs
+		//iterate over all STORAGEs
 		for(int storageIndex = 0; storageIndex < allStorageItems.length; storageIndex++)
 		{
 			currentStorage = allStorageItems[storageIndex];
@@ -247,13 +254,11 @@ public class DataExplorerViewRep implements ViewInter
 			{
 				if(event.getSelection().isEmpty()) 
 				{
-					//text.setText("");
 					return;
 				}
 				if(event.getSelection() instanceof IStructuredSelection) 
 				{
 					IStructuredSelection selection = (IStructuredSelection)event.getSelection();
-					StringBuffer toShow = new StringBuffer();
 					for (Iterator iterator = selection.iterator(); iterator.hasNext();) 
 					{
 						Model model = (Model) iterator.next();
@@ -270,22 +275,11 @@ public class DataExplorerViewRep implements ViewInter
 						{
 							refDataTableViewRep.reinitializeTable();
 						}
-						refDataTableViewRep.redrawTable();
 						
-//						String value = labelProvider.getText(model);
-//						toShow.append(value);
-//						toShow.append(", ");
+						refDataTableViewRep.redrawTable();
 					}
-					
-//					// remove the trailing comma space pair
-//					if(toShow.length() > 0) 
-//					{
-//						toShow.setLength(toShow.length() - 2);
-//					}
-//					text.setText(toShow.toString());
 				}
 			}
 		});
 	}
-
 }

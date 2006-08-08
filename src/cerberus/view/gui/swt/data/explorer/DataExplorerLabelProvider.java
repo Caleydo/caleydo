@@ -15,7 +15,8 @@ import cerberus.view.gui.swt.data.explorer.model.StorageModel;
 
 public class DataExplorerLabelProvider extends LabelProvider
 {
-	private Map imageCache = new HashMap(11);
+	private HashMap<ImageDescriptor, Image> imageCache = 
+		new HashMap<ImageDescriptor, Image>();
 	
 	/*
 	 * @see ILabelProvider#getImage(Object)

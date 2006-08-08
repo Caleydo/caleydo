@@ -89,38 +89,5 @@ public class SetTableViewRep implements DataTableViewInter
 					Integer.toString(refAllSetItems[setDimIndex].getId()).toString(),
 					refAllSetItems[setDimIndex].getLabel()});
 		}
-		
-		refSWTContainer.addControlListener(new ControlAdapter() {
-			public void controlResized(ControlEvent e) {
-				Rectangle area = refSWTContainer.getClientArea();
-				Point preferredSize = refTable.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-				int width = area.width - 2*refTable.getBorderWidth();
-				if (preferredSize.y > area.height + refTable.getHeaderHeight())
-				{
-					// Subtract the scrollbar width from the total column width
-					// if a vertical scrollbar will be required
-					Point vBarSize = refTable.getVerticalBar().getSize();
-					width -= vBarSize.x;
-				}
-				Point oldSize = refTable.getSize();
-				if (oldSize.x > area.width) 
-				{
-					// table is getting smaller so make the columns 
-					// smaller first and then resize the table to
-					// match the client area width
-					idColumn.setWidth(width/3);
-					labelColumn.setWidth(width - idColumn.getWidth());
-					refTable.setSize(area.width, area.height);
-				} else 
-				{
-					// table is getting bigger so make the table 
-					// bigger first and then make the columns wider
-					// to match the client area width
-					refTable.setSize(area.width, area.height);
-					idColumn.setWidth(width/3);
-					labelColumn.setWidth(width - idColumn.getWidth());
-				}
-			}
-		});
 	}
 }
