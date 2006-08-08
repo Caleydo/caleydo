@@ -206,7 +206,11 @@ implements CommandInterface {
 				iIndexDimensionStorage++;
 				
 			} //end: while ( iter_Storage.hasNext() ) {
-		
+					
+			refSetManager.registerItem( newObject, 
+					newObject.getId(),
+					newObject.getBaseType() );
+			
 			System.out.println("SET: done! " + newObject.toString() );
 			
 		} catch (NumberFormatException nfe) {
