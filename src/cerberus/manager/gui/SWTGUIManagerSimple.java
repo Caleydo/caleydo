@@ -70,11 +70,21 @@ implements SWTGUIManager
 		
 		refShell = new Shell(refDisplay);
 		refShell.setLayout(new GridLayout());
-		refShell.setSize(800, 1000);
+		refShell.setMaximized(true);
 		
 		refMenuBar = createMenuBar(refShell);
 			    
-		refShell.setMenuBar(refMenuBar);   
+		refShell.setMenuBar(refMenuBar); 
+		
+		setUpLayout();
+	}
+	
+	protected void setUpLayout()
+	{
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.makeColumnsEqualWidth = true;
+		refShell.setLayout(gridLayout);
 	}
 	
 	protected Menu createMenuBar(Shell refShell)

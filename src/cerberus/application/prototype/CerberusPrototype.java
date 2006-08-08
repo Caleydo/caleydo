@@ -82,7 +82,7 @@ public class CerberusPrototype
 		// refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
 		// refViewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
 		refViewManager.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER);
-		// refViewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
+		refViewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
 		// refViewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);
 	}
 

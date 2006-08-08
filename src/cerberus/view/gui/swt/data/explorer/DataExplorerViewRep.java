@@ -62,20 +62,13 @@ public class DataExplorerViewRep implements ViewInter
 	}
 	
 	public void initView()
-	{
-		RowLayout rowLayout = new RowLayout();
- 		rowLayout.wrap = false;
- 		rowLayout.pack = true;
- 		rowLayout.justify = true;
- 		rowLayout.type = SWT.VERTICAL;
- 		rowLayout.marginLeft = 5;
- 		rowLayout.marginTop = 5;
- 		rowLayout.marginRight = 5;
- 		rowLayout.marginBottom = 5;
- 		rowLayout.spacing = 0;
- 		refSWTContainer.setLayout(rowLayout);
-		
-		//Composite treeComposite = new Composite(refSWTContainer, SWT.NONE);
+	{	
+		RowLayout rowLayout = new RowLayout(); 
+		rowLayout.wrap = false;
+		rowLayout.pack = false;
+		rowLayout.justify = false;
+		rowLayout.type = SWT.HORIZONTAL;
+		refSWTContainer.setLayout(rowLayout);
 		
 		// Create the tree viewer as a child of the composite parent
 		treeViewer = new TreeViewer(refSWTContainer);
@@ -84,22 +77,13 @@ public class DataExplorerViewRep implements ViewInter
 		treeViewer.setLabelProvider(labelProvider);
 		
 		treeViewer.setUseHashlookup(true);
-		
-//		// layout the tree viewer below the text field
-//		GridData layoutData = new GridData();
-//		layoutData.grabExcessHorizontalSpace = true;
-//		layoutData.grabExcessVerticalSpace = true;
-//		layoutData.horizontalAlignment = GridData.FILL;
-//		layoutData.verticalAlignment = GridData.FILL;
-//		treeViewer.getControl().setLayoutData(layoutData);
-	
+			
 		hookListeners();
 		
 		treeViewer.setInput(getInitalInput());
 		treeViewer.expandAll();	
 
-	    Composite dataTableComposite = new Composite(refSWTContainer, SWT.NONE);
-	    refDataTableViewRep.setExternalGUIContainer(dataTableComposite);
+	    refDataTableViewRep.setExternalGUIContainer(refSWTContainer);
 		refDataTableViewRep.initTable();
 		
 	}
