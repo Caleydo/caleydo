@@ -8,9 +8,8 @@ import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
-import cerberus.view.gui.swt.data.selection.SelectionTableViewRep;
+import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.data.set.SetTableViewRep;
-import cerberus.view.gui.swt.data.storage.StorageTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
 import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
@@ -90,12 +89,10 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 			return new DataExplorerViewRep(iNewId, this.refGeneralManager);	
 		case VIEW_TEST_TABLE:
 			return new TestTableViewRep(iNewId, this.refGeneralManager);
+		case VIEW_SWT_DATA_TABLE:
+			return new DataTableViewRep(this.refGeneralManager);		
 		case VIEW_SWT_SET_TABLE:
-			return new SetTableViewRep(this.refGeneralManager);
-		case VIEW_SWT_STORAGE_TABLE:
-			return new StorageTableViewRep(this.refGeneralManager);
-		case VIEW_SWT_SELECTION_TABLE:
-			return new SelectionTableViewRep(this.refGeneralManager);		
+			return new SetTableViewRep(this.refGeneralManager);		
 		case VIEW_SWT_GEARS:
 			return new GearsViewRep(iNewId, this.refGeneralManager);
 		case VIEW_SWT_HEATMAP2D:

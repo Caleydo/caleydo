@@ -24,8 +24,6 @@ import cerberus.xml.parser.CerberusDefaultSaxHandler;
 import cerberus.xml.parser.command.CommandSaxHandler;
 import cerberus.xml.parser.kgml.KgmlSaxHandler;
 
-
-
 public class CerberusPrototype 
 {
 	public static void main(String[] args) 

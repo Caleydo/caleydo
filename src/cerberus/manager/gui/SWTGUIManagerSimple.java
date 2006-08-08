@@ -6,6 +6,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.WindowManager;
@@ -22,11 +24,10 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
-public class SWTGUIManagerSimple extends AbstractManagerImpl implements
-		SWTGUIManager
-{
-	//protected WindowManager windowManager;
-	
+public class SWTGUIManagerSimple 
+extends AbstractManagerImpl
+implements SWTGUIManager
+{	
 	protected Vector<Widget> refWidgetContainer;
 
 	protected Shell refShell;
@@ -34,7 +35,9 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 	protected Shell refShell2;
 
 	protected Display refDisplay;
-
+	
+	protected Menu refMenuBar;
+	
 	/**
 	 * Call createApplicationWindow() before using this object.
 	 * 
@@ -51,32 +54,60 @@ public class SWTGUIManagerSimple extends AbstractManagerImpl implements
 
 		refGeneralManager.getSingelton().setSWTGUIManager(this);
 
-		//refWidgetContainer = new Vector<Widget>();
-		
-		//windowManager = new WindowManager();
+		refWidgetContainer = new Vector<Widget>();
 	}
 
 	/**
-	 * Methode to initialize this Manger.
+	 * Method to initialize this application window.
 	 * Must be called before using this class.
 	 * 
 	 */
 	public void createApplicationWindow()
 	{
-		refWidgetContainer = new Vector<Widget>();
+		//refWidgetContainer = new Vector<Widget>();
 		
 		refDisplay = new Display();
-
+		
 		refShell = new Shell(refDisplay);
 		refShell.setLayout(new GridLayout());
 		refShell.setSize(800, 1000);
-	
-//		ApplicationWindow appWindow = new ApplicationWindow(refShell);
-//		windowManager.add(appWindow);
-//		appWindow.open();
 		
+		refMenuBar = createMenuBar(refShell);
+			    
+		refShell.setMenuBar(refMenuBar);   
 	}
+	
+	protected Menu createMenuBar(Shell refShell)
+	{
+	    Menu menuBar = new Menu(refShell, SWT.BAR);
+	    
+	    MenuItem viewMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
+	    viewMenuHeader.setText("&Views");
 
+	    Menu viewMenu = new Menu(refShell, SWT.DROP_DOWN);
+	    viewMenuHeader.setMenu(viewMenu);
+
+	    MenuItem heatmapViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+	    heatmapViewMenuItem.setText("&Heatmap");
+	    MenuItem scatterplotViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+	    scatterplotViewMenuItem.setText("&Scatterplot");
+	    MenuItem dendrogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+	    dendrogramViewMenuItem.setText("&Dendrogram");
+	    MenuItem histogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+	    histogramViewMenuItem.setText("&Histogram");
+	    MenuItem pathwayViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+	    pathwayViewMenuItem.setText("&Pathway");   
+	    
+	    MenuItem aboutMenu = new MenuItem(menuBar, SWT.CASCADE);
+	    aboutMenu.setText("&About");
+	    
+//	    fileExitItem.addSelectionListener(new fileExitItemListener());
+//	    fileSaveItem.addSelectionListener(new fileSaveItemListener());
+//	    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
+	    
+	    return menuBar;
+	}
+	
 	public void runApplication()
 	{
 		refShell.open();

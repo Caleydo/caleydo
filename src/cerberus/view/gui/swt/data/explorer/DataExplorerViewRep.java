@@ -30,9 +30,8 @@ import cerberus.view.gui.swt.data.explorer.model.SetModel;
 import cerberus.view.gui.swt.data.explorer.model.StorageModel;
 import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
 import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
-import cerberus.view.gui.swt.data.selection.SelectionTableViewRep;
 import cerberus.view.gui.swt.data.set.SetTableViewRep;
-import cerberus.view.gui.swt.data.storage.StorageTableViewRep;
+import cerberus.view.gui.swt.data.DataTableViewRep;
 
 public class DataExplorerViewRep implements ViewInter
 {
@@ -41,8 +40,7 @@ public class DataExplorerViewRep implements ViewInter
 	protected GeneralManager refGeneralManager;
 	protected Composite refSWTContainer;
 	protected SetTableViewRep refSetTableViewRep;
-	protected StorageTableViewRep refStorageTableViewRep;
-	protected SelectionTableViewRep refSelectionTableViewRep;
+	protected DataTableViewRep refDataTableViewRep;
 
 	protected TreeViewer treeViewer;
 	protected Text text;
@@ -58,8 +56,7 @@ public class DataExplorerViewRep implements ViewInter
 		ViewManagerSimple viewManager = 
 			(ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
 		//refSetTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SWT_SET_TABLE);
-		refStorageTableViewRep = (StorageTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SWT_STORAGE_TABLE);
-		refSelectionTableViewRep = (SelectionTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SWT_SELECTION_TABLE);
+		refDataTableViewRep = (DataTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SWT_DATA_TABLE);
 		
 		retrieveNewGUIContainer();
 		initView();
@@ -102,16 +99,10 @@ public class DataExplorerViewRep implements ViewInter
 		
 		treeViewer.setInput(getInitalInput());
 		treeViewer.expandAll();	
-		
-	    Composite storageTableComposite = new Composite(refSWTContainer, SWT.NONE);
-	    refStorageTableViewRep.setExternalGUIContainer(storageTableComposite);
-		refStorageTableViewRep.initTable();
-		//refStorageTableViewRep.createTable(-1);
-		
-		Composite selectionTableComposite = new Composite(refSWTContainer, SWT.NONE);
-	    refSelectionTableViewRep.setExternalGUIContainer(selectionTableComposite);
-		refSelectionTableViewRep.initTable();
-		refSelectionTableViewRep.createTable(-1);
+
+	    Composite dataTableComposite = new Composite(refSWTContainer, SWT.NONE);
+	    refDataTableViewRep.setExternalGUIContainer(dataTableComposite);
+		refDataTableViewRep.initTable();
 		
 	}
 
@@ -240,18 +231,6 @@ public class DataExplorerViewRep implements ViewInter
 					currentSelection.getLabel());			
 			rootSelectionModel.add(currentSelectionModel);
 		}
-		
-		//just for testing the tree
-		SetModel subSet = new SetModel(15101, "TEST");
-		subSet.add(new StorageModel(15301, "Storage"));
-		subSet.add(new StorageModel(1, "Selection"));
-		rootSet.add(subSet);	
-//		rootSet.add(new SelectionModel(2, "Selection"));
-//		rootSet.add(new StorageModel(15101, "Storage"));
-//		rootSet.add(new SelectionModel(2, "Selection"));
-//		rootSet.add(new StorageModel(15101, "Storage"));
-//		rootSet.add(new SelectionModel(2, "Selection"));
-//		rootSet.add(new StorageModel(15101, "Storage"));
 
 		return rootSet;
      }
@@ -280,14 +259,18 @@ public class DataExplorerViewRep implements ViewInter
 						Model model = (Model) iterator.next();
 						if(model instanceof StorageModel)
 						{
-							refStorageTableViewRep.createTable(model.getID());
-							refStorageTableViewRep.redrawTable();
+							refDataTableViewRep.createStorageTable(model.getID());
+							
 						}
 						else if(model instanceof SelectionModel)
 						{
-							refSelectionTableViewRep.createTable(model.getID());
-							refSelectionTableViewRep.redrawTable();
+							refDataTableViewRep.createSelectionTable(model.getID());
 						}
+						else
+						{
+							refDataTableViewRep.reinitializeTable();
+						}
+						refDataTableViewRep.redrawTable();
 						
 //						String value = labelProvider.getText(model);
 //						toShow.append(value);
