@@ -17,9 +17,10 @@ public class SWTEmbeddedGraphWidget extends Widget
 		//FIXME: this is only a realy shitty workaround to make the frame larger
 		Button ok = new Button (refComposite, SWT.PUSH);
 		ok.setText ("OK");
-		ok.setSize(400, 300);
-		
+		ok.setSize(500, 500);
+	
 		refEmbeddedFrame = SWT_AWT.new_Frame(refComposite);
+
 	}
 
 	public java.awt.Frame getEmbeddedFrame()

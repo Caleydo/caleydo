@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
+import org.eclipse.swt.SWT;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultEdge;
@@ -138,7 +139,7 @@ public class PathwayViewRep implements PathwayViewInter
 	        }   
 	    }
 		
-		refEmbeddedFrame.add(new JScrollPane(refPathwayGraph), BorderLayout.CENTER);
+		refEmbeddedFrame.add(new JScrollPane(refPathwayGraph), SWT.NONE);
 	}
 	
 	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 

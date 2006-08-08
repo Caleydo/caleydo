@@ -82,7 +82,7 @@ implements SWTGUIManager
 	protected void setUpLayout()
 	{
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
+		gridLayout.numColumns = 2;
 		gridLayout.makeColumnsEqualWidth = true;
 		refShell.setLayout(gridLayout);
 	}

@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -17,6 +20,7 @@ import cerberus.manager.view.ViewManagerSimple;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.CerberusDefaultSaxHandler;
 import cerberus.xml.parser.command.CommandSaxHandler;
+import cerberus.xml.parser.kgml.KgmlSaxHandler;
 
 public class CerberusPrototype
 {
@@ -57,12 +61,27 @@ public class CerberusPrototype
 	
 	protected void parseInputFromXML()
 	{
+		// Read application data
 		CommandSaxHandler saxCmdHandler = 
 			new CommandSaxHandler(refGeneralManager);
-		
 		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";
-					
 		parseOnce( openInputStreamFromFile(filename), saxCmdHandler);
+		
+		// Read pathway data
+	  	KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
+
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        try 
+        {
+            // Parse the input
+            SAXParser saxParser = factory.newSAXParser();
+            saxParser.parse( 
+            		new File("data/XML/pathways/map00271.xml"), kgmlParser);
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+		
 		
 //		 MicroArrayLoader microArrayLoader = new MicroArrayLoader(generalManager);
 //		 microArrayLoader.setTargetSet(oneForAllManager.getSingelton().getSetManager().getItemSet(25101));
@@ -79,10 +98,10 @@ public class CerberusPrototype
 	
 	protected void createViews()
 	{
-		// refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
 		// refViewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
 		refViewManager.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER);
 		refViewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
+		refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
 		// refViewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);
 	}
 
