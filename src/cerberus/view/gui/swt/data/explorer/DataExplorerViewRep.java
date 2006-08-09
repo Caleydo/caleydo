@@ -115,7 +115,7 @@ public class DataExplorerViewRep implements ViewInter
 	 * We assume here that a ISet consists of Storages and Selections 
 	 * which have the same dimension!
 	 * 
-	 * @see cerberus.manager.gui.SWTGUIManagerSimple#createApplicationWindow()
+	 * @see cerberus.manager.gui.SWTGUIManager#createApplicationWindow()
 	 * 
 	 * @param setGeneralManager reference to GeneralManager
 	 */

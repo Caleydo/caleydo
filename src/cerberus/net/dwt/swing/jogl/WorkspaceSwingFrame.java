@@ -21,7 +21,7 @@ import javax.swing.JMenuBar;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.CommandType;
@@ -63,7 +63,7 @@ implements IUniqueManagedObject {
 	
 	private final CommandManager refCommandManager;
 	
-	private final MenuManager menuCreator;
+	private final IMenuManager menuCreator;
 	
 	private WorkspaceSwingFrame refTargetFrame;
 	

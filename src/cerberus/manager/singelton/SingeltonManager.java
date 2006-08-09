@@ -13,8 +13,8 @@ import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.LoggerManager;
 import cerberus.manager.MementoManager;
-import cerberus.manager.MenuManager;
-import cerberus.manager.SWTGUIManager;
+import cerberus.manager.IMenuManager;
+import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.Singelton;
@@ -58,11 +58,11 @@ public class SingeltonManager implements Singelton {
 	
 	protected CommandManager refCommandManager = null;
 	
-	protected MenuManager refMenuManager = null;
+	protected IMenuManager refMenuManager = null;
 	
 	protected LoggerManager refLoggerManager = null;
 	
-	protected SWTGUIManager refSWTGUIManager = null;
+	protected ISWTGUIManager refSWTGUIManager = null;
 	
 	protected ViewManager refViewManager = null;
 	
@@ -117,7 +117,7 @@ public class SingeltonManager implements Singelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getMenuManager()
 	 */
-	public MenuManager getMenuManager() {
+	public IMenuManager getMenuManager() {
 		return this.refMenuManager;
 	}
 	
@@ -152,7 +152,7 @@ public class SingeltonManager implements Singelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getSWTGUIManager()
 	 */
-	public SWTGUIManager getSWTGUIManager() {
+	public ISWTGUIManager getSWTGUIManager() {
 		return refSWTGUIManager;
 	}
 	
@@ -170,7 +170,7 @@ public class SingeltonManager implements Singelton {
 		return this.refLoggerManager;
 	}
 	
-	public void setMenuManager( MenuManager setMenuManager ) {
+	public void setMenuManager( IMenuManager setMenuManager ) {
 		this.refMenuManager = setMenuManager;
 	}
 	
@@ -210,7 +210,7 @@ public class SingeltonManager implements Singelton {
 		refViewManager = setViewManager;
 	}	
 
-	public void setSWTGUIManager( SWTGUIManager setSWTGUIManager ) {
+	public void setSWTGUIManager( ISWTGUIManager setSWTGUIManager ) {
 		assert setSWTGUIManager != null : "SWTGUIManager was null";
 		
 		refSWTGUIManager = setSWTGUIManager;

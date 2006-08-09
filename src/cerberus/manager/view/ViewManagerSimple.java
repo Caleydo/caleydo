@@ -28,7 +28,6 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
 		refGeneralManager.getSingelton().setViewManager(this);
-
 	}
 
 	public boolean hasItem(int iItemId)

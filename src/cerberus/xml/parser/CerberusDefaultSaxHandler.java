@@ -4,14 +4,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 
 public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 
 	protected final String sArgumentBegin = "=\""; 
 	protected final String sArgumentEnd   = "\" "; 
 	
-	protected final MenuManager    refMenuMenager;
+	protected final IMenuManager    refMenuMenager;
 	protected final GeneralManager refGeneralManager;
 		
 	protected String sErrorMessage = "";

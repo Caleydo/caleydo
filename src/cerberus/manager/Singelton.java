@@ -17,7 +17,7 @@ public interface Singelton {
 
 	public abstract SelectionManager getSelectionManager();
 
-	public abstract MenuManager getMenuManager();
+	public abstract IMenuManager getMenuManager();
 
 	public abstract SetManager getSetManager();
 
@@ -29,7 +29,7 @@ public interface Singelton {
 
 	public abstract LoggerManager getLoggerManager();
 
-	public abstract SWTGUIManager getSWTGUIManager();
+	public abstract ISWTGUIManager getSWTGUIManager();
 	
 	public abstract GeneralManager getManagerByBaseType(ManagerType type);
 	
@@ -45,7 +45,7 @@ public interface Singelton {
 
 	public abstract void setNetworkPostfix(int iSetNetworkPrefix);
 
-	public abstract void setMenuManager(MenuManager setMenuManager);
+	public abstract void setMenuManager(IMenuManager setMenuManager);
 
 	public abstract void setMementoManager(MementoManager setMementoManager);
 
@@ -66,7 +66,7 @@ public interface Singelton {
 
 	public abstract void setLoggerManager(LoggerManager refLoggerManager);
 
-	public abstract void setSWTGUIManager(SWTGUIManager refSWTGUIManager);
+	public abstract void setSWTGUIManager(ISWTGUIManager refSWTGUIManager);
 	
 	public abstract void setViewManager(ViewManager refViewManager);
 }

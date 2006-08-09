@@ -64,7 +64,7 @@ import demos.xtrans.*;
 import cerberus.manager.CommandManager;
 import cerberus.manager.FrameManagerInterface;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
@@ -120,7 +120,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 	
 	private CommandManager refCommandManager;
 	
-	private MenuManager refMenuManager;
+	private IMenuManager refMenuManager;
 	
 	private DMenuBootStraper refJMenuBar;
 	

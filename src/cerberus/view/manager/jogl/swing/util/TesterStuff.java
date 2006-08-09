@@ -2,7 +2,7 @@ package cerberus.view.manager.jogl.swing.util;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.swing.CerberusJStatusBar;

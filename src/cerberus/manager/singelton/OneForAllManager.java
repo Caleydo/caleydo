@@ -13,12 +13,12 @@ import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.LoggerManager;
 import cerberus.manager.MementoManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.Singelton;
 import cerberus.manager.StorageManager;
-import cerberus.manager.SWTGUIManager;
+import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.ViewManager;
 import cerberus.manager.canvas.ViewCanvasManagerSimple;
@@ -29,10 +29,10 @@ import cerberus.manager.data.storage.StorageManagerSimple;
 import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
 import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.memento.MementoManagerSimple;
-import cerberus.manager.menu.MenuManagerSimple;
+import cerberus.manager.menu.swing.SwingMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
-import cerberus.manager.gui.SWTGUIManagerSimple;
+import cerberus.manager.gui.SWTGUIManager;
 import cerberus.data.collection.IStorage;
 import cerberus.data.xml.MementoXML;
 
@@ -79,7 +79,7 @@ implements GeneralManagerSingelton {
 	
 	protected MementoManager refMementoManager;
 	
-	protected MenuManager refMenuManager;
+	protected IMenuManager refMenuManager;
 	
 	protected DComponentManager refDComponentManager;
 	
@@ -91,7 +91,7 @@ implements GeneralManagerSingelton {
 	
 	protected ViewManager refViewManager;
 	
-	protected SWTGUIManager refSWTGUIManager;
+	protected ISWTGUIManager refSWTGUIManager;
 	
 	/**
 	 * Used to create a new item by a Fabrik.
@@ -152,10 +152,10 @@ implements GeneralManagerSingelton {
 		refDComponentManager = new DComponentSwingFactoryManager(this);
 		refViewCanvasManager = new ViewCanvasManagerSimple( this );
 		refCommandManager = new CommandManagerSimple( this );
-		refMenuManager = new MenuManagerSimple( this );		
+		refMenuManager = new SwingMenuManager( this );		
 		refLoggerManager = new ConsoleSimpleLogger( this );
 		refViewManager = new ViewManagerSimple( this );
-		refSWTGUIManager = new SWTGUIManagerSimple( this );
+		refSWTGUIManager = new SWTGUIManager( this );
 		
 		
 		/**

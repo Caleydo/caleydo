@@ -160,7 +160,6 @@ public class PathwayViewRep implements PathwayViewInter
 		else if (vertexType == PathwayVertexType.map)
 			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.yellow);
 		
-		
 		refPathwayGraph.getGraphLayoutCache().insert(refGraphCell);
 		
 		vertexIdToCellLUT.put(vertex.getIElementId(), refGraphCell);
@@ -186,14 +185,14 @@ public class PathwayViewRep implements PathwayViewInter
 	{
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
 			(SWTEmbeddedGraphWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET);
+				.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET);
 
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
 	}
-	
+
 	public void retrieveExistingGUIContainer()
 	{
+		// TODO Auto-generated method stub
 		
-	}
-	
+	}	
 }

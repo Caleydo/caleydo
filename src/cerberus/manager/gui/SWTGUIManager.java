@@ -3,6 +3,9 @@ package cerberus.manager.gui;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -13,8 +16,9 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.WindowManager;
 import org.eclipse.jface.window.Window;
 
+import cerberus.command.view.swt.CmdViewNewPathway;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.SWTGUIManager;
+import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
@@ -24,15 +28,13 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
-public class SWTGUIManagerSimple 
+public class SWTGUIManager 
 extends AbstractManagerImpl
-implements SWTGUIManager
+implements ISWTGUIManager
 {	
 	protected Vector<Widget> refWidgetContainer;
 
 	protected Shell refShell;
-	
-	protected Shell refShell2;
 
 	protected Display refDisplay;
 	
@@ -41,11 +43,11 @@ implements SWTGUIManager
 	/**
 	 * Call createApplicationWindow() before using this object.
 	 * 
-	 * @see cerberus.manager.gui.SWTGUIManagerSimple#createApplicationWindow()
+	 * @see cerberus.manager.gui.SWTGUIManager#createApplicationWindow()
 	 * 
 	 * @param setGeneralManager reference to GeneralManager
 	 */
-	public SWTGUIManagerSimple(GeneralManager setGeneralManager)
+	public SWTGUIManager(GeneralManager setGeneralManager)
 	{
 		super(setGeneralManager,
 				GeneralManager.iUniqueId_TypeOffset_GuiSWT );
@@ -71,9 +73,9 @@ implements SWTGUIManager
 		refShell = new Shell(refDisplay);
 		refShell.setLayout(new GridLayout());
 		refShell.setMaximized(true);
+		refShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
 		
 		refMenuBar = createMenuBar(refShell);
-			    
 		refShell.setMenuBar(refMenuBar); 
 		
 		setUpLayout();
@@ -91,22 +93,51 @@ implements SWTGUIManager
 	{
 	    Menu menuBar = new Menu(refShell, SWT.BAR);
 	    
-	    MenuItem viewMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
-	    viewMenuHeader.setText("&Views");
+	    MenuItem fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
+	    fileMenuHeader.setText("&File");
+	    Menu fileMenu = new Menu(refShell, SWT.DROP_DOWN);
+	    fileMenuHeader.setMenu(fileMenu);
 
-	    Menu viewMenu = new Menu(refShell, SWT.DROP_DOWN);
-	    viewMenuHeader.setMenu(viewMenu);
-
-	    MenuItem heatmapViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-	    heatmapViewMenuItem.setText("&Heatmap");
-	    MenuItem scatterplotViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-	    scatterplotViewMenuItem.setText("&Scatterplot");
-	    MenuItem dendrogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-	    dendrogramViewMenuItem.setText("&Dendrogram");
-	    MenuItem histogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-	    histogramViewMenuItem.setText("&Histogram");
-	    MenuItem pathwayViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-	    pathwayViewMenuItem.setText("&Pathway");   
+	    MenuItem newWindowMenuItem = new MenuItem(fileMenu, SWT.NULL);
+	    newWindowMenuItem.setText("&New window");
+	    
+	    MenuItem addViewMenuItem = new MenuItem(fileMenu, SWT.NULL);
+	    addViewMenuItem.setText("&Add view");
+//	    addViewMenuItem.addSelectionListener(new SelectionAdapter()
+//	    {
+//	    	public void widgetSelected(SelectionEvent event)
+//	    	{
+//	    		if (((MenuItem) event.widget).getText().equals("&Add view"))
+//	    		{
+//	    			CmdViewNewPathway commandNewPathway = new CmdViewNewPathway(refGeneralManager);
+//	    			commandNewPathway.doCommand();
+//	    		}
+//	    	}
+//	    });
+	    
+	    MenuItem exitMenuItem = new MenuItem(fileMenu, SWT.NULL);
+	    exitMenuItem.setText("&Exit");
+//	    exitMenuItem.addSelectionListener(new SelectionAdapter()
+//	    {
+//	    	public void widgetSelected(SelectionEvent event)
+//	    	{
+//	    		if (((MenuItem) event.widget).getText().equals("&Exit"))
+//	    		{
+//	    			Display.getCurrent().getActiveShell().close();
+//	    		}
+//	    	}
+//	    });
+//	    
+//	    MenuItem heatmapViewMenuItem = new MenuItem(refShell, SWT.CHECK);
+//	    heatmapViewMenuItem.setText("&Heatmap");
+//	    MenuItem scatterplotViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+//	    scatterplotViewMenuItem.setText("&Scatterplot");
+//	    MenuItem dendrogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+//	    dendrogramViewMenuItem.setText("&Dendrogram");
+//	    MenuItem histogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+//	    histogramViewMenuItem.setText("&Histogram");
+//	    MenuItem pathwayViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
+//	    pathwayViewMenuItem.setText("&Pathway");   
 	    
 	    MenuItem aboutMenu = new MenuItem(menuBar, SWT.CASCADE);
 	    aboutMenu.setText("&About");
@@ -202,4 +233,26 @@ implements SWTGUIManager
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public Shell getActiveWindow()
+	{
+		return refShell;
+	}
 }
+
+//class MenuItemListener extends SelectionAdapter
+//{
+//	public void widgetSelected(SelectionEvent event)
+//	{
+//		if (((MenuItem) event.widget).getText().equals("&Exit"))
+//		{
+//			CmdViewNewPathway commandNewPathway = new CmdViewNewPathway(0, refGeneralManager);
+//			commandNewPathway.doCommand();
+//		}
+//
+//		if (((MenuItem) event.widget).getText().equals("&Exit"))
+//		{
+//			Display.getCurrent().getActiveShell().close();
+//		}
+//	}
+//}

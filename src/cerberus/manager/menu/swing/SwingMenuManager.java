@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.menu;
+package cerberus.manager.menu.swing;
 
 import java.util.Hashtable;
 
@@ -16,7 +16,7 @@ import javax.swing.JMenuBar;
 
 import cerberus.manager.CommandManager;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.type.ManagerObjectType;
@@ -35,9 +35,9 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public class MenuManagerSimple 
+public class SwingMenuManager 
  extends AbstractManagerImpl
- implements MenuManager {
+ implements IMenuManager {
 	
 	private final ViewCanvasManager refViewCanvasManager;
 	
@@ -56,7 +56,7 @@ public class MenuManagerSimple
 	/**
 	 * 
 	 */
-	public MenuManagerSimple(GeneralManager setGeneralManager) {
+	public SwingMenuManager(GeneralManager setGeneralManager) {
 		super( setGeneralManager,
 				GeneralManager.iUniqueId_TypeOffset_GuiMemu );
 		

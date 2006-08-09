@@ -13,7 +13,7 @@ import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.CommandManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.CerberusDefaultSaxHandler;

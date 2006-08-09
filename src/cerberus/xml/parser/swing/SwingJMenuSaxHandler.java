@@ -10,7 +10,7 @@ import org.xml.sax.Attributes;
 
 import cerberus.manager.FrameManagerInterface;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 

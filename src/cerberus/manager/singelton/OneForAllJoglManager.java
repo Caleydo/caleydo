@@ -26,7 +26,7 @@ import cerberus.manager.CommandManager;
 import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MementoManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.Singelton;
@@ -38,7 +38,7 @@ import cerberus.manager.data.set.SetManagerSimple;
 import cerberus.manager.data.storage.StorageManagerSimple;
 import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
 import cerberus.manager.memento.MementoManagerSimple;
-import cerberus.manager.menu.MenuManagerSimple;
+import cerberus.manager.menu.swing.SwingMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
@@ -65,7 +65,7 @@ implements GeneralManagerSingelton {
 	
 	protected MementoManager refMementoManager;
 	
-	protected MenuManager refMenuManager;
+	protected IMenuManager refMenuManager;
 	
 	protected DComponentManager refDComponentManager;
 	
@@ -113,7 +113,7 @@ implements GeneralManagerSingelton {
 	
 	protected void initAll() {
 		
-		refMenuManager = new MenuManagerSimple( this );
+		refMenuManager = new SwingMenuManager( this );
 		refSetManager = new SetManagerSimple(this,4);
 		refStorageManager = new StorageManagerSimple(this,4);
 		refSelectionManager = new SelectionManagerSimple(this,4);
@@ -122,7 +122,7 @@ implements GeneralManagerSingelton {
 //		refViewCanvasManager = new ViewCanvasManagerSimple( this );
 		refViewManager = new CanvasSwingJoglManager( this );
 		refCommandManager = new CommandManagerSimple( this );
-		refMenuManager = new MenuManagerSimple( this );
+		refMenuManager = new SwingMenuManager( this );
 		
 		/**
 		 * Register managers to singelton ...

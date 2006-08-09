@@ -20,7 +20,7 @@ public abstract class ACommand
 	implements ICommand {
 
 	/**
-	 * Defautl constructor, collectionId ist set to -1.
+	 * Default constructor, collectionId is set to -1.
 	 */
 	public ACommand() {
 		super( -1 );

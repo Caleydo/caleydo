@@ -88,7 +88,7 @@ import demos.vertexProgWarp.VertexProgWarp;
 import cerberus.manager.CommandManager;
 import cerberus.manager.FrameManagerInterface;
 import cerberus.manager.GeneralManager;
-import cerberus.manager.MenuManager;
+import cerberus.manager.IMenuManager;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -149,7 +149,7 @@ public class CanvasSwingJoglManager
 	
 	private CommandManager refCommandManager;
 	
-	private MenuManager refMenuManager;
+	private IMenuManager refMenuManager;
 	
 	private DMenuBootStraper refJMenuBar;
 	

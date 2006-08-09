@@ -28,9 +28,6 @@ implements ICommandManaged {
 		super(iSetCollectionId, setGeneralManager);
 	}
 
-
-
-
 	/**
 	 * @see cerberus.command.ICommand#isEqualType(cerberus.command.ICommand)
 	 * @see base.ACommand#isEqualType(cerberus.command.ICommand)

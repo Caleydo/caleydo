@@ -14,7 +14,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.manager.GeneralManager;
-import cerberus.manager.gui.SWTGUIManagerSimple;
+import cerberus.manager.gui.SWTGUIManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.view.ViewManagerSimple;
 import cerberus.manager.type.ManagerObjectType;
@@ -25,7 +25,7 @@ import cerberus.xml.parser.kgml.KgmlSaxHandler;
 public class CerberusPrototype
 {
 	protected GeneralManager refGeneralManager;
-	protected SWTGUIManagerSimple refSWTGUIManager;
+	protected SWTGUIManager refSWTGUIManager;
 	protected ViewManagerSimple refViewManager;
 	
 	public static void main(String[] args) 
@@ -45,7 +45,7 @@ public class CerberusPrototype
 		
 		refGeneralManager = oneForAllManager.getGeneralManager();
 		
-		refSWTGUIManager = (SWTGUIManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
+		refSWTGUIManager = (SWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
 		
 		refViewManager = (ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);		
 	}
