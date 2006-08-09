@@ -13,12 +13,12 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.base.ACommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.StorageManager;
@@ -35,11 +35,11 @@ import cerberus.manager.type.ManagerObjectType;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.Storage
+ * @see cerberus.data.collection.IStorage
  */
 public class CmdDataCreateStorage 
-extends AbstractCommand
-implements CommandInterface {
+extends ACommand
+implements ICommand {
 
 	private final GeneralManager refGeneralManager;
 	
@@ -66,12 +66,12 @@ implements CommandInterface {
 	protected LinkedList<String> llDataRaw;
 	
 	/**
-	 * Unique Id of the Storage, that will be created.
+	 * Unique Id of the IStorage, that will be created.
 	 */
 	protected int iUniqueId;
 	
 	/**
-	 * Label of the new Storage, that will be created.
+	 * Label of the new IStorage, that will be created.
 	 */
 	protected String sLabel;
 		
@@ -115,7 +115,7 @@ implements CommandInterface {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader#loadData()
 	 * 
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
@@ -124,7 +124,7 @@ implements CommandInterface {
 		StorageManager refSelectionManager = 
 			refGeneralManager.getSingelton().getStorageManager();
 		
-		Storage newObject = (Storage) refSelectionManager.createStorage(
+		IStorage newObject = (IStorage) refSelectionManager.createStorage(
 				ManagerObjectType.STORAGE );
 		
 		newObject.setId( iUniqueId );
@@ -192,7 +192,7 @@ implements CommandInterface {
 				} // end while ( tokenizer.hasMoreTokens() ) 
 					
 				/**
-				 * copy result to Storage...
+				 * copy result to IStorage...
 				 */
 				newObject.setArrayInt( bufferedArray );
 				
@@ -236,7 +236,7 @@ implements CommandInterface {
 				} // end while ( tokenizer.hasMoreTokens() ) 
 					
 				/**
-				 * copy result to Storage...
+				 * copy result to IStorage...
 				 */
 				newObject.setArrayFloat( bufferedArray );
 				
@@ -262,7 +262,7 @@ implements CommandInterface {
 				} // end while ( tokenizer.hasMoreTokens() ) 
 					
 				/**
-				 * copy result to Storage...
+				 * copy result to IStorage...
 				 */
 				newObject.setArrayString( bufferedArray );
 				
@@ -297,7 +297,7 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
@@ -311,7 +311,7 @@ implements CommandInterface {
 	
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		assert false : "add propper type!";
@@ -321,7 +321,7 @@ implements CommandInterface {
 	
 	
 	/**
-	 * Set new target Set.
+	 * ISet new target ISet.
 	 * 
 	 * excpected format: sUniqueId sLabel [sStorageType_TokenPattern [{datacontainer}*]]
 	 *
@@ -334,7 +334,7 @@ implements CommandInterface {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @param sUniqueId uniqueId of new target Set
+	 * @param sUniqueId uniqueId of new target ISet
 	 * @return TRUE on successful conversion of Strgin to interger
 	 */
 	protected boolean setAttributes( final LinkedList <String> listAttrib ) {

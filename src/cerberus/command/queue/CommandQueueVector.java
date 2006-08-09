@@ -7,24 +7,24 @@ import java.util.Vector;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.queue.AbstractCommandQueue;
-import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.queue.ACommandQueue;
+import cerberus.command.queue.ICommandQueue;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Create a queue of command's, that can be executed in a row.
  * 
- * @see cerberus.command.CommandInterface
+ * @see cerberus.command.ICommand
  * 
  * @author kalkusch
  *
  */
 public class CommandQueueVector 
-extends AbstractCommandQueue
-implements CommandInterface , CommandQueueInterface
+extends ACommandQueue
+implements ICommand , ICommandQueue
 {
 
 	/**
@@ -65,7 +65,7 @@ implements CommandInterface , CommandQueueInterface
 	/**
 	 * Vector holding several Command's
 	 */
-	protected Vector <CommandInterface> vecCommandsInQueue;
+	protected Vector <ICommand> vecCommandsInQueue;
 	
 	
 	/**
@@ -75,11 +75,11 @@ implements CommandInterface , CommandQueueInterface
 		super( iUniqueCmdId, iCmdQueuId );
 		
 		vecCommandsInQueue = 
-			new Vector <CommandInterface> (iCmdQueueVector_initialLength);
+			new Vector <ICommand> (iCmdQueueVector_initialLength);
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
@@ -100,7 +100,7 @@ implements CommandInterface , CommandQueueInterface
 		bQueueIsExcecuting = true;
 		
 		try {
-			Iterator <CommandInterface> iter = 
+			Iterator <ICommand> iter = 
 				vecCommandsInQueue.iterator();
 			
 			while ( iter.hasNext() ) {
@@ -121,7 +121,7 @@ implements CommandInterface , CommandQueueInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
@@ -149,7 +149,7 @@ implements CommandInterface , CommandQueueInterface
 		 */
 		bQueueIsExcecuting = true;
 		
-		ListIterator <CommandInterface> iter = 
+		ListIterator <ICommand> iter = 
 			vecCommandsInQueue.listIterator();
 				
 		if ( bQueueUndoInReverseOrder ) {			
@@ -157,7 +157,7 @@ implements CommandInterface , CommandQueueInterface
 			 * excecute undo in reverse order ..
 			 */	
 			
-			CommandInterface lastCommandInList = null;
+			ICommand lastCommandInList = null;
 			
 			/* goto end of list ... */
 			while ( iter.hasNext() ) {
@@ -190,7 +190,7 @@ implements CommandInterface , CommandQueueInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.COMMAND_QUEUE_OPEN;
@@ -207,7 +207,7 @@ implements CommandInterface , CommandQueueInterface
 	 */
 	public boolean containsCmdQueueId( final int testCmdQueueId ) {
 		
-		Iterator <CommandInterface> iter = 
+		Iterator <ICommand> iter = 
 			vecCommandsInQueue.iterator();
 		
 		while ( iter.hasNext() ) {
@@ -226,7 +226,7 @@ implements CommandInterface , CommandQueueInterface
 	 * 
 	 * @return FALSE if command is already inside queue, TRUE else
 	 */
-	public boolean addCmdToQueue( final CommandInterface cmdItem ) {
+	public boolean addCmdToQueue( final ICommand cmdItem ) {
 		if ( this.vecCommandsInQueue.contains( cmdItem ) ) {
 			return false;
 		}
@@ -240,7 +240,7 @@ implements CommandInterface , CommandQueueInterface
 	 * 
 	 * @param cmdItem remove command
 	 */
-	public boolean removeCmdFromQueue( final CommandInterface cmdItem ) {
+	public boolean removeCmdFromQueue( final ICommand cmdItem ) {
 		return this.vecCommandsInQueue.remove( cmdItem );		
 	}
 	
@@ -249,7 +249,7 @@ implements CommandInterface , CommandQueueInterface
 	 * 
 	 * @param cmdItem test if command is contained in command queue
 	 */
-	public boolean containsCmdInQueue( final CommandInterface cmdItem ) {
+	public boolean containsCmdInQueue( final ICommand cmdItem ) {
 		return this.vecCommandsInQueue.contains( cmdItem );
 	}
 }

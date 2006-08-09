@@ -26,9 +26,9 @@ import cerberus.manager.singelton.OneForAllManager;
 //import javax.swing.JMenuItem;
 //import javax.swing.KeyStroke;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.selection.SelectionSingleBlock;
@@ -41,11 +41,11 @@ import cerberus.data.loader.MicroArrayLoader;
  */
 public class FileLoader {
 
-	protected Set refSet;
+	protected ISet refSet;
 	
-	protected Selection refSelection;
+	protected ISelection refSelection;
 	
-	protected Storage refStorage;
+	protected IStorage refStorage;
 	
 	protected GeneralManager regGeneralManager;
 	
@@ -155,27 +155,27 @@ public class FileLoader {
           
 	}
 	
-	public Set getSet() {
+	public ISet getSet() {
 		return this.refSet;
 	}
 	
-	public Selection getSelection() {
+	public ISelection getSelection() {
 		return this.refSelection;
 	}
 	
-	public Storage getStorage() {
+	public IStorage getStorage() {
 		return this.refStorage;
 	}
 
-	public void setSet( Set setRefSet) {
+	public void setSet( ISet setRefSet) {
 		this.refSet = setRefSet;
 	}
 	
-	public void setSelection( Selection setRefSelection ) {
+	public void setSelection( ISelection setRefSelection ) {
 		this.refSelection = setRefSelection;
 	}
 	
-	public void setStorage( Storage setRefStorage ) {
+	public void setStorage( IStorage setRefStorage ) {
 		this.refStorage = setRefStorage;
 		loader.setFileDataStorage( setRefStorage );
 	}

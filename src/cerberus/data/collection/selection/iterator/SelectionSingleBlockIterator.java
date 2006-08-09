@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection.selection.iterator;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -28,7 +28,7 @@ implements SelectionIterator {
 	/**
 	 * 
 	 */
-	public SelectionSingleBlockIterator( Selection setSelection ) {
+	public SelectionSingleBlockIterator( ISelection setSelection ) {
 		super( setSelection );
 
 	}

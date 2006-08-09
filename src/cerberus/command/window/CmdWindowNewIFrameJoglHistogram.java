@@ -13,7 +13,7 @@ package cerberus.command.window;
 //import javax.swing.JLabel;
 
 import cerberus.manager.GeneralManager;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 ////import cerberus.command.factory.CommandFactory;
 ////import cerberus.command.base.CmdHandleSetInterface;
@@ -39,11 +39,11 @@ import cerberus.util.exception.CerberusRuntimeException;
  */
 public class CmdWindowNewIFrameJoglHistogram 
 extends CmdWindowNewIFrameJoglBase
-//extends CmdHandleSetBase
-implements CommandInterface {
+//extends ACmdHandleSet
+implements ICommand {
 
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param refGeneralManager reference to singelton
 	 * @param iCallingFrameId Id of the calling frame
@@ -70,7 +70,7 @@ implements CommandInterface {
 	 * as a spuer class.
 	 * 
 	 * @see cerberus.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {	
 		
@@ -84,14 +84,14 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM;

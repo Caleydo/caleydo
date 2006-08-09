@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection.selection.iterator;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -40,15 +40,15 @@ public abstract class AbstractSelectionIterator implements SelectionIterator {
 	/**
 	 * Link to Collection-Meta data.
 	 */
-	protected Selection refSelection = null;
+	protected ISelection refSelection = null;
 	
 	/**
 	 * 
 	 */
-	protected AbstractSelectionIterator( Selection setSelection ) {
+	protected AbstractSelectionIterator( ISelection setSelection ) {
 		
 		if ( setSelection == null ) {
-			throw new CerberusRuntimeException("AbstractSelectionIterator.Constructor init with null-pointer to Selection.",
+			throw new CerberusRuntimeException("AbstractSelectionIterator.Constructor init with null-pointer to ISelection.",
 					CerberusExceptionType.VIRTUALARRAY );
 		}
 		

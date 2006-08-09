@@ -52,7 +52,7 @@ implements DParseSaxHandler
 	private Vector<Integer> vecNetEventListenerId;
 	
 	/**
-	 * List of all CommandListener Id's
+	 * List of all ICommandListener Id's
 	 */
 	private Vector<Integer> vecCommandListenerId;
 	

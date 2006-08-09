@@ -6,12 +6,11 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.command.window;
+package cerberus.command.base;
 
 import cerberus.manager.GeneralManager;
-import cerberus.command.base.AbstractCommand;
-import cerberus.command.base.CmdHandleSetInterface;
-import cerberus.data.collection.Set;
+import cerberus.command.window.CmdWindowNewInternalFrame;
+import cerberus.data.collection.ISet;
 //import cerberus.data.collection.ViewCanvas;
 //import cerberus.manager.BaseManagerType;
 //import cerberus.manager.singelton.SingeltonManager;
@@ -23,9 +22,9 @@ import cerberus.data.collection.Set;
  * @author Michael Kalkusch
  *
  */
-public abstract class CmdHandleSetBase
-extends AbstractCommand
-implements CmdHandleSetInterface {
+public abstract class ACmdHandleSet
+extends ACommand
+implements ICmdHandleSet {
 
 	/**
 	 * Reference to GeneralManager set in constructor only.
@@ -33,11 +32,11 @@ implements CmdHandleSetInterface {
 	protected final GeneralManager refGeneralManager;
 	
 	/**
-	 * Reference to current Set.
+	 * Reference to current ISet.
 	 * 
-	 * @see cerberus.command.window.CmdHandleSetBase#setSet(Set)
+	 * @see cerberus.command.base.ACmdHandleSet#setSet(ISet)
 	 */
-	protected Set refCurrentSet;
+	protected ISet refCurrentSet;
 	
 	/**
 	 * Header text shown in internal frame
@@ -54,14 +53,14 @@ implements CmdHandleSetInterface {
 	/**
 	 * 
 	 */
-	public CmdHandleSetBase( final GeneralManager setRefGeneralManager,
+	public ACmdHandleSet( final GeneralManager setRefGeneralManager,
 			final int iTargetFrameId,
 			final String sHeaderText ) {
 				
 		refGeneralManager = setRefGeneralManager;
 		this.iTargetFrameId = iTargetFrameId;
 		
-		assert refGeneralManager != null:"CmdHandleSetBase() with null-pointer to general manager";
+		assert refGeneralManager != null:"ACmdHandleSet() with null-pointer to general manager";
 		
 		subCmdNewIFrame= 
 			new CmdWindowNewInternalFrame(refGeneralManager,
@@ -70,9 +69,9 @@ implements CmdHandleSetInterface {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.base.CmdHandleSetInterface#setSet(cerberus.data.collection.Set)
+	 * @see cerberus.command.base.ICmdHandleSet#setSet(cerberus.data.collection.ISet)
 	 */
-	public final void setSet( final Set useSet) {
+	public final void setSet( final ISet useSet) {
 		refCurrentSet = useSet;
 	}
 	

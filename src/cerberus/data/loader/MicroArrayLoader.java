@@ -26,9 +26,9 @@ import cerberus.manager.GeneralManager;
 //import java.util.*;
 
 //import prometheus.data.DataStorageInterface;
-import cerberus.data.collection.Storage;
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.selection.SelectionThreadSingleBlock;
 import cerberus.data.xml.MementoXML;
 import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
@@ -54,19 +54,19 @@ implements MementoXML {
 	/**
 	 * Reference to the current DataStorage.
 	 */
-	private Storage refDataStorage;
+	private IStorage refDataStorage;
 	//protected IDataStorage refDataStorage;
 	
 	/**
 	 * Imports data from file to this set.
 	 * uses first storage and overwrites first selection.
 	 */
-	protected Set refImportDataToSet;
+	protected ISet refImportDataToSet;
 	
 	/**
 	 * 
 	 */
-	private Selection refImportDataOverrideSelection;
+	private ISelection refImportDataOverrideSelection;
 	
 	/**
 	 * ref to singelton
@@ -161,20 +161,20 @@ implements MementoXML {
 
 	/**
 	 * 
-	 * @deprecated use setTargetSet(Set) instead
+	 * @deprecated use setTargetSet(ISet) instead
 	 * 
-	 * @param setDataStorage reference to Storage
+	 * @param setDataStorage reference to IStorage
 	 */
-	public void setFileDataStorage(Storage setDataStorage) {
+	public void setFileDataStorage(IStorage setDataStorage) {
 		this.refDataStorage = setDataStorage;
 	}
 	
 	/**
-	 * Assign a Set to write the data to.
+	 * Assign a ISet to write the data to.
 	 * 
 	 * @param refUseSet target set.
 	 */
-	public void setTargetSet(Set refUseSet) {
+	public void setTargetSet(ISet refUseSet) {
 		this.refImportDataToSet = refUseSet;
 	}
 	
@@ -190,11 +190,11 @@ implements MementoXML {
 		
 		if ( refImportDataToSet == null ) {
 			if ( refDataStorage == null ) {
-				assert false: "No reference to Storage was set!";
+				assert false: "No reference to IStorage was set!";
 			
 				return false;
 			}
-			assert false : "deprecated call! need to assign a Set!";
+			assert false : "deprecated call! need to assign a ISet!";
 		}
 		else {
 			/* refImportDataToSet != null */
@@ -410,7 +410,7 @@ implements MementoXML {
 			    }
 			    refDataStorage.setArrayFloat( floatBuffer );
 			    
-			    Selection selFloat = 
+			    ISelection selFloat = 
 			    	new SelectionThreadSingleBlock(1,null,null);
 			    selFloat.setLabel("import FLOAT");
 			    selFloat.setLength( LLFloat.size() );
@@ -429,7 +429,7 @@ implements MementoXML {
 			    }
 			    refDataStorage.setArrayString( stringBuffer );
 			    
-			    Selection selFloat = 
+			    ISelection selFloat = 
 			    	new SelectionThreadSingleBlock(1,null,null);
 			    selFloat.setLabel("import STRING");
 			    selFloat.setLength( LLString.size() );
@@ -594,7 +594,7 @@ implements MementoXML {
 				throw new RuntimeException("MicroArrayLoader.setMementoXML_usingHandler() failed. need <DataComponentItemDetails type=RandomLookup> tag.");
 			}
 			try {
-				refDataStorage= (Storage) refGeneralManager.getItem( iLinkToIdList[0] );
+				refDataStorage= (IStorage) refGeneralManager.getItem( iLinkToIdList[0] );
 				
 				setTokenPattern( handler.getXML_MicroArray_TokenPattern().trim() );
 				//setTokenPattern( "SKIP;SKIP;SKIP;STRING;STRING;INT;INT;ABORT" );

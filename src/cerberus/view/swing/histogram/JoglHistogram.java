@@ -79,9 +79,9 @@ import demos.util.SystemTime;
 import demos.util.Time;
 
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 //import cerberus.data.collection.set.SetFlatSimple;
 //import cerberus.data.collection.storage.FlatThreadStorageSimple;
@@ -154,7 +154,7 @@ public class JoglHistogram extends Demo {
 
   private List < HistogramData > listHistogramData;
   
-  private Set refSet = null;
+  private ISet refSet = null;
 
   private StatisticHistogramType enumCurrentHistogramMode = StatisticHistogramType.REGULAR_LINEAR;
   
@@ -270,10 +270,10 @@ public class JoglHistogram extends Demo {
   //public int[] createHistogram(final int iHistogramLevels) {
   public void createHistogram(final int iHistogramLevels) {
 	  
-	  Storage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
-	  Selection refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
+	  IStorage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
+	  ISelection refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
   	
-	  System.out.println("Histogram: use Selection(" +
+	  System.out.println("Histogram: use ISelection(" +
 			  refBufferSelection.getLabel() + ")");
 	  
 	   
@@ -394,7 +394,7 @@ public class JoglHistogram extends Demo {
 
 	    if ( this.refSet != null ) {
 	    	
-	    	Storage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
+	    	IStorage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
 	    	
 	    	int[] i_dataValues = refStorage.getArrayInt();
 	    	

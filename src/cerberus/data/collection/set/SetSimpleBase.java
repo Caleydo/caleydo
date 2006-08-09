@@ -9,7 +9,7 @@
 package cerberus.data.collection.set;
 
 import cerberus.manager.GeneralManager;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.thread.impl.CollectionThreadItem;
 
 /**
@@ -18,7 +18,7 @@ import cerberus.data.collection.thread.impl.CollectionThreadItem;
  */
 public abstract class SetSimpleBase 
 extends CollectionThreadItem
-implements Set {
+implements ISet {
 	
 
 	/**
@@ -37,16 +37,16 @@ implements Set {
 	
 
 //	/* (non-Javadoc)
-//	 * @see cerberus.data.collection.Set#getStorage()
+//	 * @see cerberus.data.collection.ISet#getStorage()
 //	 */
-//	public final Storage getStorage() {
+//	public final IStorage getStorage() {
 //		return refFlatStorage[0];
 //	}
 //	
 //	/* (non-Javadoc)
-//	 * @see cerberus.data.collection.Set#setStorage(cerberus.data.collection.Storage)
+//	 * @see cerberus.data.collection.ISet#setStorage(cerberus.data.collection.IStorage)
 //	 */
-//	public final void setStorage(Storage setStorage) {
+//	public final void setStorage(IStorage setStorage) {
 //		
 //		assert setStorage != null: "setStorage() with null-pointer";
 //		
@@ -71,14 +71,14 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionInterface#getCacheId()
+	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
 	public abstract int getCacheId();
 	
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionInterface#hasCacheChanged(int)
+	 * @see cerberus.data.collection.ICollection#hasCacheChanged(int)
 	 */
 	public final boolean hasCacheChanged( final int iCompareCacheId ) {
 		return (iCompareCacheId < this.getCacheId());
@@ -86,7 +86,7 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Set#hasCacheChangedReadOnly(int)
+	 * @see cerberus.data.collection.ISet#hasCacheChangedReadOnly(int)
 	 */
 	public final boolean hasCacheChangedReadOnly( final int iCompareCacheId ) {
 		return (iCompareCacheId > this.iCacheId);

@@ -12,10 +12,10 @@ import java.util.Vector;
 
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 
 /**
- * Manages all Storage's.
+ * Manages all IStorage's.
  * 
  * Note: the StorageManager must register itself to the singelton prometheus.app.SingeltonManager
  * 
@@ -26,17 +26,17 @@ public interface StorageManager
 extends GeneralManager
 {
 	
-	public Storage createStorage( final ManagerObjectType useStorageType );
+	public IStorage createStorage( final ManagerObjectType useStorageType );
 	
-	public boolean deleteStorage( Storage deleteStorage );
+	public boolean deleteStorage( IStorage deleteStorage );
 	
 	public boolean deleteStorage( final int iItemId );
 	
-	public Storage getItemStorage( final int iItemId );
+	public IStorage getItemStorage( final int iItemId );
 	
-	public Storage[] getAllStorageItems();
+	public IStorage[] getAllStorageItems();
 	
-	public Vector<Storage> getAllStorageItemsVector();
+	public Vector<IStorage> getAllStorageItemsVector();
 	
 	//public ManagerObjectType getManagerType();
 	

@@ -16,7 +16,7 @@ import cerberus.net.dwt.base.DGuiComponentType;
 import cerberus.net.dwt.DNetEventComponentInterface;
 
 /**
- * Manges all Set's.
+ * Manges all ISet's.
  * 
  * Note: the SetManager must register itself to the singelton prometheus.app.SingeltonManager
  * 

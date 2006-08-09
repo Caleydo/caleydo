@@ -6,7 +6,7 @@ package cerberus.math.statistics.histogram;
 //import java.lang.Comparable;
 import java.lang.Number;
 
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 
 /**
  * @author java
@@ -50,7 +50,7 @@ public class HistogramStatisticData <T extends Number > {
 	
 	protected T[] t_histogramBorder;
 	
-	protected Set refSet;
+	protected ISet refSet;
 	
 	protected boolean bUseMinMaxValueFromData = true;
 	
@@ -225,7 +225,7 @@ public class HistogramStatisticData <T extends Number > {
 		
 	}
 	
-	public void defineSet( final Set refUseSet ) {
+	public void defineSet( final ISet refUseSet ) {
 		
 	}
 	

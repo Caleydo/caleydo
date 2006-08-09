@@ -11,8 +11,8 @@ package cerberus.manager.command.factory;
 import java.util.LinkedList;
 
 import cerberus.command.CommandType;
-import cerberus.command.CommandInterface;
-import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.ICommand;
+import cerberus.command.queue.ICommandQueue;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -26,7 +26,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 public interface CommandFactoryInterface {
 
 	/**
-	 * Set the command type.
+	 * ISet the command type.
 	 * 
 	 * @param setType
 	 * @throws PrometheusCommandException
@@ -41,7 +41,7 @@ public interface CommandFactoryInterface {
 	 * @return command type of this class
 	 * @throws PrometheusCommandException
 	 * 
-	 * @see cerberus.command.CommandInterface.getCommandType()
+	 * @see cerberus.command.ICommand.getCommandType()
 	 */
 	public CommandType getCommandType() 
 		throws CerberusRuntimeException;
@@ -54,7 +54,7 @@ public interface CommandFactoryInterface {
 	 * @param details details for command creation
 	 * @return new created Command
 	 */
-	public CommandInterface createCommand( 
+	public ICommand createCommand( 
 			final CommandType createCommandByType, 
 			final String details);
 	
@@ -75,7 +75,7 @@ public interface CommandFactoryInterface {
 	 * 
 	 * @return new command
 	 */
-	public CommandInterface createCommand( 
+	public ICommand createCommand( 
 			final String sData_Cmd_type,
 			final LinkedList <String> llAttributes );
 
@@ -83,7 +83,7 @@ public interface CommandFactoryInterface {
 	/**
 	 * @see cerberus.manager.CommandManager#createCommandQueue(String, String, int, int, int, int)
 	 */
-	public CommandInterface createCommandQueue( final String sCmdType,
+	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,
 			final int iCmdId,
 			final int iCmdQueueId,
@@ -91,7 +91,7 @@ public interface CommandFactoryInterface {
 			final int sQueueThreadWait );
 	
 	
-//	public CommandInterface createCommandQueue( 
+//	public ICommand createCommandQueue( 
 //			final String sData_Cmd_type,
 //			final LinkedList <String> llAttributes );
 }

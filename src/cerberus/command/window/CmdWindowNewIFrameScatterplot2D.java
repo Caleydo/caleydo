@@ -12,9 +12,9 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.base.ACommand;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -24,8 +24,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdWindowNewIFrameScatterplot2D 
-extends AbstractCommand
-implements CommandInterface {
+extends ACommand
+implements ICommand {
 
 	private JComponent parentComponent = null;
 	
@@ -40,7 +40,7 @@ implements CommandInterface {
 	}
 	
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
@@ -50,7 +50,7 @@ implements CommandInterface {
 
 
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
@@ -64,7 +64,7 @@ implements CommandInterface {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		JOptionPane.showMessageDialog( parentComponent,
@@ -74,14 +74,14 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_POPUP_CREDITS;

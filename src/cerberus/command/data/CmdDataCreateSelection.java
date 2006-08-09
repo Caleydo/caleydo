@@ -12,9 +12,9 @@ import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.base.ACommand;
 import cerberus.manager.command.factory.CommandFactory;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.GeneralManager;
@@ -22,23 +22,23 @@ import cerberus.manager.SelectionManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 //import cerberus.xml.parser.CerberusDefaultSaxHandler;
 
 import cerberus.manager.type.ManagerObjectType;
 
 /**
- * Command, load data from file using a token pattern and a target Set.
+ * Command, load data from file using a token pattern and a target ISet.
  * Use MicroArrayLoader to laod dataset.
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.Set
+ * @see cerberus.data.collection.ISet
  * @see cerberus.data.loader.MicroArrayLoader
  */
 public class CmdDataCreateSelection 
-extends AbstractCommand
-implements CommandInterface {
+extends ACommand
+implements ICommand {
 
 	private final GeneralManager refGeneralManager;
 	
@@ -86,14 +86,14 @@ implements CommandInterface {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader#loadData()
 	 * 
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
 		SelectionManager refSelectionManager = 
 			refGeneralManager.getSingelton().getSelectionManager();
 		
-		Selection newObject = (Selection) refSelectionManager.createSelection(
+		ISelection newObject = (ISelection) refSelectionManager.createSelection(
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 		
 		newObject.setId( iUniqueId );
@@ -113,7 +113,7 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
@@ -127,7 +127,7 @@ implements CommandInterface {
 	
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.SELECT_NEW; 
@@ -135,7 +135,7 @@ implements CommandInterface {
 	
 	
 	/**
-	 * Set new target Set.
+	 * ISet new target ISet.
 	 * 
 	 * excpected format: sUniqueId sLabel [sOffset sLength [sMultiRepeat sMultiOffset]]
 	 * 
@@ -149,7 +149,7 @@ implements CommandInterface {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @param sUniqueId uniqueId of new target Set
+	 * @param sUniqueId uniqueId of new target ISet
 	 * @return TRUE on successful conversion of Strgin to interger
 	 */
 	protected boolean setAttributes( final LinkedList <String> listAttrib ) {

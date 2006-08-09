@@ -33,12 +33,12 @@ import cerberus.manager.type.ManagerObjectType;
 
 import gleem.linalg.Vec3f;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.selection.iterator.SelectionProxyIterator;
 import cerberus.data.collection.view.ViewCanvas;
-import cerberus.data.collection.Storage;
-import cerberus.command.CommandListener;
+import cerberus.data.collection.IStorage;
+import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -87,7 +87,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	/**
 	 * stores references to Command listener objects.
 	 */
-	private Vector<CommandListener> vecRefCommandListener;
+	private Vector<ICommandListener> vecRefCommandListener;
 	
 	private Vector<DNetEventComponentInterface> vecRefComponentCildren;
 	
@@ -96,7 +96,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	private boolean bHistogramIsValid = false;
 
 	
-	protected Set refCurrentSet = null;
+	protected ISet refCurrentSet = null;
 	
 	
 	private int iGui_RowsX = 0;
@@ -105,7 +105,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	
 	/**
 	 * product of iGui_RowsX tiems iGui_ColumnsY.
-	 * Set in setter only!
+	 * ISet in setter only!
 	 * Used to test if data array is large enough.
 	 */
 	private int iGui_RowsX_times_ColumnsY =0 ;
@@ -133,9 +133,9 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	
 	private Color cGui_highColor = Color.GREEN;
 	
-	private Storage refStorageFromSet;
+	private IStorage refStorageFromSet;
 	
-	private Selection refSelectionFromSet;
+	private ISelection refSelectionFromSet;
 
 	
 
@@ -154,7 +154,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	 * @param iRowsX
 	 * @param iColumnsY
 	 */
-	public void setSetRationXY( final Set refSet, 
+	public void setSetRationXY( final ISet refSet, 
 			final int iRowsX, 
 			final int iColumnsY ) {
 		
@@ -170,7 +170,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 		
 		verRefDNetEventListener = new  Vector<DNetEventListener>();
 		
-		vecRefCommandListener = new Vector<CommandListener>(); 
+		vecRefCommandListener = new Vector<ICommandListener>(); 
 		
 		this.add( new JLabel("HEATMAP") );
 
@@ -209,9 +209,9 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	synchronized public boolean addCommandListener(CommandListener setCommandListener) {
+	synchronized public boolean addCommandListener(ICommandListener setCommandListener) {
 		
 		if ( vecRefCommandListener.contains(setCommandListener)) {
 			return false;
@@ -264,7 +264,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	}
 
 	/**
-	 * Set the pixel ratio of the heatmap.
+	 * ISet the pixel ratio of the heatmap.
 	 * Note: iGui_HeatMapCell_height_Y shall be smaller or equal than iGui_HeatMapCell_height_Y_inc 
 	 * to avoid overlapping. Same goes for iGui_HeatMapCell_width_X and iGui_HeatMapCell_width_X_inc
 	 * 
@@ -323,7 +323,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 			this.setBorder( new LineBorder( Color.RED ) );
 			
 			try {
-				refCurrentSet = (Set) refGeneralManager.getItem( 
+				refCurrentSet = (ISet) refGeneralManager.getItem( 
 						refHistogramSaxHandler.getXML_link2Target_SetId() );
 					
 				updateState();
@@ -453,11 +453,11 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 		XML_MementoString += getTab(1) + "</SubNetEventListener>\n";
 		
 		/**
-		 * Link to CommandListener ...
+		 * Link to ICommandListener ...
 		 */
 		XML_MementoString += getTab(1) + "<SubCommandListener>\n";	
 		
-//		Iterator<CommandListener> iterCommand = vecRefCommandListener.iterator();
+//		Iterator<ICommandListener> iterCommand = vecRefCommandListener.iterator();
 //		
 //		while ( iterCommand.hasNext() ) {
 //			XML_MementoString += getTab(2) + "<CmdListener  Id=\"" +			
@@ -684,8 +684,8 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	public void updateState() {
 		
 		if ( refCurrentSet != null ) {
-			Storage[] refStorageArray = refCurrentSet.getStorageByDim(0);
-			Selection[] refSelectionArray = refCurrentSet.getSelectionByDim(0);
+			IStorage[] refStorageArray = refCurrentSet.getStorageByDim(0);
+			ISelection[] refSelectionArray = refCurrentSet.getSelectionByDim(0);
 			
 			if ( refStorageArray.length > 0 ) {
 				refStorageFromSet = refStorageArray[0]; 

@@ -10,9 +10,9 @@ package cerberus.math.statistics.histogram_old;
 
 //import java.util.Vector;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionProxyIterator;
@@ -30,7 +30,7 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	
 	protected int iHistogramWidth = 100;
 	
-	protected Set refSet = null;
+	protected ISet refSet = null;
 	
 	private int iMaxValue = 0;
 	
@@ -40,7 +40,7 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	/**
 	 * 
 	 */
-	public HistogramCreatorSimple(Set setRefSet ) {
+	public HistogramCreatorSimple(ISet setRefSet ) {
 		refSet = setRefSet;		
 	}
 
@@ -68,12 +68,12 @@ public class HistogramCreatorSimple implements HistogramCreator {
 		}
 		
 		if ( refSet == null ) {
-			assert false: "HistogramCreator Set is null";
+			assert false: "HistogramCreator ISet is null";
 			return;
 		}
 		
-		Storage[] refStorage = refSet.getStorageByDim( 0 );
-		Selection[] refSelection = refSet.getSelectionByDim( 0 );
+		IStorage[] refStorage = refSet.getStorageByDim( 0 );
+		ISelection[] refSelection = refSet.getSelectionByDim( 0 );
 		
 		int [] refArray = refStorage[0].getArrayInt();
 					
@@ -203,14 +203,14 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	/* (non-Javadoc)
 	 * @see cerberus.statistic.histogram.HistogramCreator#getSelection()
 	 */
-	public Set getSet() {
+	public ISet getSet() {
 		return refSet;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.statistic.histogram.HistogramCreator#setSelection(cerberus.data.set.Selection)
 	 */
-	public void setSet( Set setSet ) {
+	public void setSet( ISet setSet ) {
 		refSet = setSet;
 	}
 

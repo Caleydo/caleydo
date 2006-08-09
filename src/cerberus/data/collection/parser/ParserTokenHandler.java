@@ -109,7 +109,7 @@ public final class ParserTokenHandler {
 	
 	
 	/**
-	 * Set the current index.
+	 * ISet the current index.
 	 */
 	/*
 	public void setIndex( int iSetIndex ) {
@@ -122,7 +122,7 @@ public final class ParserTokenHandler {
 	*/
 	
 	/**
-	 * Set the current index.
+	 * ISet the current index.
 	 */
 	/*
 	public void setTypeAndIndex( ParserTokenType eSetType,
@@ -144,7 +144,7 @@ public final class ParserTokenHandler {
 	
 	
 	/**
-	 * Set the current type to ArrayList == TRUE or Vector == FALSE.
+	 * ISet the current type to ArrayList == TRUE or Vector == FALSE.
 	 * 
 	 * \sa isArrayListNotVector()
 	 */
@@ -154,7 +154,7 @@ public final class ParserTokenHandler {
 	
 	
 	/**
-	 * Set the type for this MultiData object.
+	 * ISet the type for this MultiData object.
 	 */
 	/*
 	public void setType( ParserTokenType eSetType ) {

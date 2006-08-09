@@ -11,7 +11,7 @@ package cerberus.data.collection.selection.iterator;
 
 import java.lang.ArrayIndexOutOfBoundsException;
 import cerberus.data.collection.iterator.CollectionIterator;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 
 /**
  * Iterator handling several Selections at once.
@@ -23,38 +23,38 @@ extends CollectionIterator
 {
 
 	/**
-	 * Insertes a new Selection to the iterator.
+	 * Insertes a new ISelection to the iterator.
 	 * Note, that the same selection sould not be added to the iterator more than once,
 	 * becaus the iteration-process will be not as assumed.
 	 * 
-	 * @param addSelection adds a new Selection
+	 * @param addSelection adds a new ISelection
 	 */
-	public void addSelection( final Selection addSelection );
+	public void addSelection( final ISelection addSelection );
 	
 	/**
-	 * Adds a Selection to a defined position iPosition.
+	 * Adds a ISelection to a defined position iPosition.
 	 * Note: If any selection is already at position iPosition 
-	 * the Selection is replaced by addSelection
+	 * the ISelection is replaced by addSelection
 	 * 
 	 * @param addSelection object ot add
 	 * @param iPosition position in iterator
 	 */
-	public void addSelectionAt( final Selection addSelection , final int iPosition );
+	public void addSelectionAt( final ISelection addSelection , final int iPosition );
 	
 	/**
 	 * Get the selection used at a certain position.
 	 * 
 	 * @param iPosition index in the Iterator
-	 * @return Selection bound to iPosition
+	 * @return ISelection bound to iPosition
 	 * @throws ArrayIndexOutOfBoundsException if index does not fit
 	 */
-	public Selection getSelectionAt( final int iPosition ) 
+	public ISelection getSelectionAt( final int iPosition ) 
 		throws ArrayIndexOutOfBoundsException;
 	
 	/**
 	 * Get the total number of selections inside the iterator.
 	 * 
-	 * @return number of Selection handled by iterator
+	 * @return number of ISelection handled by iterator
 	 */
 	public int size();
 	

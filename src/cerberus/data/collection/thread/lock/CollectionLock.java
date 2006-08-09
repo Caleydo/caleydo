@@ -64,7 +64,7 @@ public interface CollectionLock {
 	public CollectionLock getCollectionLock();
 	
 	/**
-	 * Set the CollectionLock of the current object.
+	 * ISet the CollectionLock of the current object.
 	 * Factory Design Pattern.
 	 * 
 	 * @return CollectionLock of the current object

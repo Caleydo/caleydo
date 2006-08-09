@@ -9,8 +9,8 @@ import cerberus.data.IUniqueManagedObject;
  * @author kalkusch
  *
  */
-public interface CommandManagedInterface 
-extends CommandInterface,
+public interface ICommandManaged 
+extends ICommand,
 		IUniqueManagedObject {
 
 }

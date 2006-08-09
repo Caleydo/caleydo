@@ -5,9 +5,9 @@ package cerberus.math.statistics.histogram;
 
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 
 /**
  * @author kalkusch
@@ -17,9 +17,9 @@ public class HistogramStatisticsSet
 extends HistogramStatisticInteger 
 implements HistogramStatisticBase {
 	
-	private Set refSet = null;
-	private Selection refSelection = null;
-	private Storage refStorage = null;
+	private ISet refSet = null;
+	private ISelection refSelection = null;
+	private IStorage refStorage = null;
 	
 	/**
 	 * 
@@ -32,7 +32,7 @@ implements HistogramStatisticBase {
 	/* (non-Javadoc)
 	 * @see cerberus.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
-	public void addData( final Set useSet ) {
+	public void addData( final ISet useSet ) {
 		refSet = useSet;
 				
 		bRawDataIsValid = false;
@@ -42,7 +42,7 @@ implements HistogramStatisticBase {
 	}
 	
 	/**
-	 * Get the required references and set lock to Set.	 
+	 * Get the required references and set lock to ISet.	 
 	 */
 	private boolean getReferencesFromSet() {
 		
@@ -71,7 +71,7 @@ implements HistogramStatisticBase {
 	}
 	
 	/**
-	 * Attention: ReadLock for Set must be valid!
+	 * Attention: ReadLock for ISet must be valid!
 	 *  
 	 * @see cerberus.math.statistics.histogram.HistogramStatisticInteger#calculateVariance(float)
 	 */
@@ -141,7 +141,7 @@ implements HistogramStatisticBase {
 		assert bRawDataIsValid : "not int[] data was set!";
 		
 		if ( ! getReferencesFromSet() ) {
-			System.err.println("updateHistogram() can not get lock for Set=" +
+			System.err.println("updateHistogram() can not get lock for ISet=" +
 					this.refSet.toString() + " ==> no histogram!");
 			return false;			
 		}

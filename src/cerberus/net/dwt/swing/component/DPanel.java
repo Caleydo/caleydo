@@ -27,7 +27,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import cerberus.manager.DComponentManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.command.CommandListener;
+import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -69,7 +69,7 @@ implements DNetEventComponentInterface {
 	/**
 	 * stores references to Command listener objects.
 	 */
-	private Vector<CommandListener> vecRefCommandListener;
+	private Vector<ICommandListener> vecRefCommandListener;
 	
 	private Vector<DNetEventComponentInterface> vecRefComponentCildren;
 	
@@ -113,7 +113,7 @@ implements DNetEventComponentInterface {
 		
 		verRefDNetEventListener = new  Vector<DNetEventListener>();
 		
-		vecRefCommandListener = new Vector<CommandListener>(); 
+		vecRefCommandListener = new Vector<ICommandListener>(); 
 	}
 	
 	/* (non-Javadoc)
@@ -147,9 +147,9 @@ implements DNetEventComponentInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	synchronized public boolean addCommandListener(CommandListener setCommandListener) {
+	synchronized public boolean addCommandListener(ICommandListener setCommandListener) {
 		
 		if ( vecRefCommandListener.contains(setCommandListener)) {
 			return false;
@@ -365,11 +365,11 @@ implements DNetEventComponentInterface {
 		XML_MementoString += getTab(1) + "</SubNetEventListener>\n";
 		
 		/**
-		 * Link to CommandListener ...
+		 * Link to ICommandListener ...
 		 */
 		XML_MementoString += getTab(1) + "<SubCommandListener>\n";	
 		
-//		Iterator<CommandListener> iterCommand = vecRefCommandListener.iterator();
+//		Iterator<ICommandListener> iterCommand = vecRefCommandListener.iterator();
 //		
 //		while ( iterCommand.hasNext() ) {
 //			XML_MementoString += getTab(2) + "<CmdListener  Id=\"" +			

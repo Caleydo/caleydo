@@ -13,7 +13,7 @@ package cerberus.command.window;
 //import javax.swing.JLabel;
 
 import cerberus.manager.GeneralManager;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 ////import cerberus.command.factory.CommandFactory;
 ////import cerberus.command.base.CmdHandleSetInterface;
@@ -37,12 +37,12 @@ import cerberus.util.exception.CerberusRuntimeException;
  */
 public class CmdWindowNewIFrameJoglHeatmap 
 extends CmdWindowNewIFrameJoglBase 
-implements CommandInterface //, CmdHandleSetInterface {
+implements ICommand //, ICmdHandleSet {
 {
 
 		
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
@@ -62,7 +62,7 @@ implements CommandInterface //, CmdHandleSetInterface {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
@@ -74,14 +74,14 @@ implements CommandInterface //, CmdHandleSetInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_JOGL_HEATMAP;

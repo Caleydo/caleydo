@@ -8,39 +8,39 @@
  */
 package cerberus.command.base;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.data.AbstractUniqueItem;
 
 /**
  * @author Michael Kalkusch
  *
  */
-public abstract class AbstractCommand 
+public abstract class ACommand 
 	extends AbstractUniqueItem
-	implements CommandInterface {
+	implements ICommand {
 
 	/**
 	 * Defautl constructor, collectionId ist set to -1.
 	 */
-	public AbstractCommand() {
+	public ACommand() {
 		super( -1 );
 	}
 	
 	/**
-	 * Set CollectionId using this constructor.
+	 * ISet CollectionId using this constructor.
 	 * 
 	 * @param iSetCmdCollectionId set collection Id
 	 */
-	public AbstractCommand( int iSetCmdCollectionId) {
+	public ACommand( int iSetCmdCollectionId) {
 		super( iSetCmdCollectionId );
 	}
 
 	
 	/**
-	 * @see prometheus.command.CommandInterface#isEqualType(prometheus.command.CommandInterface)
-	 *  * @see base.AbstractManagedCommand#isEqualType(cerberus.command.CommandInterface)
+	 * @see prometheus.command.ICommand#isEqualType(prometheus.command.ICommand)
+	 *  * @see base.AManagedCommand#isEqualType(cerberus.command.ICommand)
 	 */
-	public final boolean isEqualType(CommandInterface compareToObject) {
+	public final boolean isEqualType(ICommand compareToObject) {
 		if ( compareToObject.getCommandType() == this.getCommandType() ) { 
 			return true;
 		}

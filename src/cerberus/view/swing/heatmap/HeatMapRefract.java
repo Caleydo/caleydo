@@ -53,9 +53,9 @@ import demos.util.*;
 import gleem.*;
 import gleem.linalg.*;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
@@ -234,7 +234,7 @@ public class HeatMapRefract extends Demo {
   
   public FileLoader loader;
   
-  private Set refSet = null;
+  private ISet refSet = null;
 
   public HeatMapRefract( GLCanvas canvas, final Animator animator ) {
 	  FileLoader loader = new FileLoader();
@@ -506,7 +506,7 @@ public class HeatMapRefract extends Demo {
     	
     	gl.glNormal3f( 0.0f, 0.0f, 1.0f );
     	
-    	Storage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
+    	IStorage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
     	
     	int[] i_dataValues = refStorage.getArrayInt();
     	
@@ -585,10 +585,10 @@ public class HeatMapRefract extends Demo {
   public int[] createHistogram(final int iHistogramLevels) {
 	  
 	  
-	  Storage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
-	  Selection refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
+	  IStorage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
+	  ISelection refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
   	
-	  System.out.println("Histogram: use Selection(" +
+	  System.out.println("Histogram: use ISelection(" +
 			  refBufferSelection.getLabel() + ")");
 	  
 	  if ( refBufferStorage == null ) {
@@ -608,7 +608,7 @@ public class HeatMapRefract extends Demo {
 	  if ( i_dataValues.length < iOffset ) {
 		System.err.println("Offset of selection(" +
 				Integer.toString( iOffset ) +
-				") exceeds Storage array (" +
+				") exceeds IStorage array (" +
 				Integer.toString( i_dataValues.length ) + ") ==> ABORT histogram!");
 		return null;
 	  } 
@@ -617,9 +617,9 @@ public class HeatMapRefract extends Demo {
 			  iUpperBorder ) {
 		  System.err.println("Offset of selection(" +
 					Integer.toString( iOffset ) +
-					") + length of Selection(" +
+					") + length of ISelection(" +
 					Integer.toString( refBufferSelection.length() ) +
-					") exceeds Storage array (" +
+					") exceeds IStorage array (" +
 					Integer.toString( i_dataValues.length ) + ") ==> shorten length!");
 		  
 		  iUpperBorder = i_dataValues.length;
@@ -745,7 +745,7 @@ public class HeatMapRefract extends Demo {
 //
 //	    if ( this.refSet != null ) {
 //	    	
-//	    	Storage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
+//	    	IStorage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
 //	    	
 //	    	int[] i_dataValues = refStorage.getArrayInt();
 //	    	
@@ -877,7 +877,7 @@ public class HeatMapRefract extends Demo {
 
 	    if ( this.refSet != null ) {
 	    	
-	    	Storage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
+	    	IStorage refStorage = this.refSet.getStorageByDimAndIndex(0,0);
 	    	
 	    	int[] i_dataValues = refStorage.getArrayInt();
 	    	
@@ -890,7 +890,7 @@ public class HeatMapRefract extends Demo {
 	    			
 	    			iSetCacheId = refSet.getCacheId();
 	    			
-	    			Selection select = refSet.getSelectionByDimAndIndex(0,0);
+	    			ISelection select = refSet.getSelectionByDimAndIndex(0,0);
 	    			
 	    			System.out.print(" R: " + refSet.getLabel() + " id=" +
 	    					Integer.toString( refSet.getCacheId() ));

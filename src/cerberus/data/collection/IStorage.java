@@ -10,7 +10,7 @@ package cerberus.data.collection;
 
 import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.StorageType;
-import cerberus.data.collection.CollectionInterface;
+import cerberus.data.collection.ICollection;
 import cerberus.data.collection.thread.CollectionThreadObject;
 import cerberus.data.xml.MementoNetEventXML;
 
@@ -18,8 +18,8 @@ import cerberus.data.xml.MementoNetEventXML;
  * @author Michael Kalkusch
  *
  */
-public interface Storage 
-	extends CollectionInterface,
+public interface IStorage 
+	extends ICollection,
 	MementoNetEventXML,
 	CollectionThreadObject
 {
@@ -73,7 +73,7 @@ public interface Storage
 	public boolean allocate();
 	
 	/**
-	 * Set size of all containers.
+	 * ISet size of all containers.
 	 * Note: allocate() must be called to make the change permanent.
 	 * 
 	 * @param size

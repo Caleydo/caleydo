@@ -4,9 +4,9 @@
 package cerberus.math.statistics.histogram;
 
 
-import cerberus.data.collection.Set;
-//import cerberus.data.collection.Selection;
-//import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+//import cerberus.data.collection.ISelection;
+//import cerberus.data.collection.IStorage;
 
 /**
  * @author java
@@ -323,7 +323,7 @@ implements HistogramStatisticBase {
 
 	}
 	
-	public void addData( final Set useSet ) {
+	public void addData( final ISet useSet ) {
 		useSet.getSelectionByDimAndIndex(0,0);
 		useSet.getStorageByDimAndIndex(0,0);
 	}

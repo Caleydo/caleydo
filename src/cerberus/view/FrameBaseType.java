@@ -50,9 +50,9 @@ public enum FrameBaseType {
 	LOADIMAGE( null, true,  true,"Load Image","Load image"),
 	
 	//--- AWT canvas ----
-	JBROWSER_SELECTION(null, true, false,"Selection Browser","select.."),
-	JBROWSER_SET(null, true, false,"Set Browser","set.."),
-	JBROWSER_STORAGE(null, true, false,"Storage Browser","store..");
+	JBROWSER_SELECTION(null, true, false,"ISelection Browser","select.."),
+	JBROWSER_SET(null, true, false,"ISet Browser","set.."),
+	JBROWSER_STORAGE(null, true, false,"IStorage Browser","store..");
 	
 	/**
 	 * Default window toolkit.
@@ -161,7 +161,7 @@ public enum FrameBaseType {
 
 
 	/**
-	 * Set the default frame title.
+	 * ISet the default frame title.
 	 * 
 	 * @param sSetFrameTitle default frame title
 	 */
@@ -170,7 +170,7 @@ public enum FrameBaseType {
 	}
 	
 	/**
-	 * Set type of windowing toolkit used.
+	 * ISet type of windowing toolkit used.
 	 * 
 	 * @see cerberus.view.FrameBaseType#getWindowToolkitType()
 	 * @see cerberus.view.FrameBaseType#setInternalFrameState(boolean)
@@ -203,7 +203,7 @@ public enum FrameBaseType {
 	}
 	
 	/**
-	 * Set status wether it is an internal or external frame.
+	 * ISet status wether it is an internal or external frame.
 	 * 
 	 * @see cerberus.view.FrameBaseType#getInternalFrameState()
 	 * @see cerberus.view.FrameBaseType#setWindowToolkitType(WindowToolkitType)
@@ -229,7 +229,7 @@ public enum FrameBaseType {
 	
 	
 	/**
-	 * Set status wether it is an internal or external frame.
+	 * ISet status wether it is an internal or external frame.
 	 * 
 	 * @see cerberus.view.FrameBaseType#isGLCanvas()
 	 * 

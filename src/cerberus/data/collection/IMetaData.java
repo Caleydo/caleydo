@@ -11,7 +11,7 @@ package cerberus.data.collection;
 /**
  * Meta data defines a state for each object it is bound to.
  */
-public interface CollectionMetaData {
+public interface IMetaData {
 
 	/**
 	 * Tells that this selection can not be selected.
@@ -89,7 +89,7 @@ public interface CollectionMetaData {
 	
 
 	/**
-	 * compares two CollectionMetaData objects if their state is equal.
+	 * compares two IMetaData objects if their state is equal.
 	 * 
 	 * The state is equal if HIDE, LOCK, SELECTED and SELECTED_FUZZY are equal.
 	 * Note the special case if SELECTED = FALSE than SELECTED_FUZZY is not relevant.
@@ -97,7 +97,7 @@ public interface CollectionMetaData {
 	 * @param testObject to compare with
 	 * @return TRUE is state is equal
 	 */
-	public boolean equalState( final CollectionMetaData testObject);
+	public boolean equalState( final IMetaData testObject);
 	
 	/**
 	 * Sets all boolean parameters to false.

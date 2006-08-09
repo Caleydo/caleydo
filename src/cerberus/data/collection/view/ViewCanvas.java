@@ -11,7 +11,7 @@ package cerberus.data.collection.view;
 import java.awt.Graphics;
 
 import cerberus.data.IUniqueManagedObject;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 //import prometheus.data.collection.BaseManagerItemInterface;
 import cerberus.data.xml.MementoItemXML;
 import cerberus.net.dwt.DNetEventComponentInterface;
@@ -43,34 +43,34 @@ public interface ViewCanvas
 	public void updateState();
 	
 //	/**
-//	 * Adds a Selection to a specific dimension.
-//	 * Note, that addSelection() can not overwrite existing references to other Selection
+//	 * Adds a ISelection to a specific dimension.
+//	 * Note, that addSelection() can not overwrite existing references to other ISelection
 //	 * 
 //	 * @param addSelection
 //	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 //	 * @return TRUE if adding was successful
 //	 */
-//	public boolean setDataSet( final Set addSet, 
+//	public boolean setDataSet( final ISet addSet, 
 //			final int iAtDimension );
 //	
 //	/**
 //	 * Removes a selection bound to a dimension.
 //	 * 
-//	 * @param removeSelection Selection to be removed
+//	 * @param removeSelection ISelection to be removed
 //	 * @param iFromDimension address which dimension removeSelection shall be removed from, range [0.. getDimensionSize()-1 ]
 //	 * @return TRUE if removeSelection was removed from dimension iFromDimension
 //	 */
-//	public boolean removeDataSet( final Set removeSelection, 
+//	public boolean removeDataSet( final ISet removeSelection, 
 //			final int iFromDimension );
 //	
 //	/**
 //	 * Tests, if testSelection is in a specific dimension addressed by iAtDimension.
 //	 * 
-//	 * @param testSelection Selection to search for
+//	 * @param testSelection ISelection to search for
 //	 * @param iAtDimension address a dimension
 //	 * @return TRUE if the testSelection is used for dimension iAtDimension
 //	 */
-//	public boolean hasDataSet( final Set testSelection, 
+//	public boolean hasDataSet( final ISet testSelection, 
 //			final int iAtDimension );
 //	
 //	/**
@@ -79,10 +79,10 @@ public interface ViewCanvas
 //	 * @param testSelection in any dimension of this set
 //	 * @return TRUE if testSelection was in any dimension
 //	 */
-//	public boolean hasDataSetAnyDimension( final Set testSelection );
+//	public boolean hasDataSetAnyDimension( final ISet testSelection );
 //	
 //
 //	
-//	public Set getDataSet( final int iAtDimension );
+//	public ISet getDataSet( final int iAtDimension );
 	
 }

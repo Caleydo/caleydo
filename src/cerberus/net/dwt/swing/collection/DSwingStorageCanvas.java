@@ -45,10 +45,10 @@ import cerberus.manager.type.ManagerObjectType;
 //import org.xml.sax.XMLReader;
 //import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.view.ViewCanvas;
-import cerberus.command.CommandListener;
+import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -62,7 +62,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 
 
 /**
- * GUI for handling Set, Selections and Storage objects.
+ * GUI for handling ISet, Selections and IStorage objects.
  * Visual link to SetManger, SelectionManger and StorageManager.
  * 
  * @author Michael Kalkusch
@@ -116,7 +116,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	/**
 	 * stores references to Command listener objects.
 	 */
-	private Vector<CommandListener> vecRefCommandListener;
+	private Vector<ICommandListener> vecRefCommandListener;
 	
 	private Vector<DNetEventComponentInterface> vecRefComponentCildren;
 	
@@ -136,7 +136,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	private JButton j_button_update;
 	private JButton j_button_new;
 	
-	protected Set refCurrentSet = null;
+	protected ISet refCurrentSet = null;
 	
 
 //	/**
@@ -175,7 +175,7 @@ implements DNetEventComponentInterface, ViewCanvas
 		
 		verRefDNetEventListener = new  Vector<DNetEventListener>();
 		
-		vecRefCommandListener = new Vector<CommandListener>(); 
+		vecRefCommandListener = new Vector<ICommandListener>(); 
 		
 		vecJListRows = new Vector<DSwingStorageTabbedPane> (8);
 		
@@ -275,9 +275,9 @@ implements DNetEventComponentInterface, ViewCanvas
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	synchronized public boolean addCommandListener(CommandListener setCommandListener) {
+	synchronized public boolean addCommandListener(ICommandListener setCommandListener) {
 		
 		if ( vecRefCommandListener.contains(setCommandListener)) {
 			return false;
@@ -505,11 +505,11 @@ implements DNetEventComponentInterface, ViewCanvas
 		XML_MementoString += getTab(1) + "</SubNetEventListener>\n";
 		
 		/**
-		 * Link to CommandListener ...
+		 * Link to ICommandListener ...
 		 */
 		XML_MementoString += getTab(1) + "<SubCommandListener>\n";	
 		
-//		Iterator<CommandListener> iterCommand = vecRefCommandListener.iterator();
+//		Iterator<ICommandListener> iterCommand = vecRefCommandListener.iterator();
 //		
 //		while ( iterCommand.hasNext() ) {
 //			XML_MementoString += getTab(2) + "<CmdListener  Id=\"" +			
@@ -643,10 +643,10 @@ implements DNetEventComponentInterface, ViewCanvas
 	
 	public void updateAllSelectionsFromGui() {
 		
-		Vector<Storage> refVecCurrentSelections = 
+		Vector<IStorage> refVecCurrentSelections = 
 			refStorageManager.getAllStorageItemsVector();
 		
-		Iterator<Storage> iterSel = refVecCurrentSelections.iterator();
+		Iterator<IStorage> iterSel = refVecCurrentSelections.iterator();
 		
 		Iterator<DSwingStorageTabbedPane> iterRow = vecJListRows.iterator();
 		
@@ -655,7 +655,7 @@ implements DNetEventComponentInterface, ViewCanvas
 			if (( buffer != null )&&( buffer.hasSelectionChanged() )) 
 			{
 				if (iterSel.hasNext() ) {
-					Storage bufferSel = iterSel.next();
+					IStorage bufferSel = iterSel.next();
 					buffer.updateStorageFromGui( bufferSel );
 				}
 				else {
@@ -674,7 +674,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	 */
 	public void updateState() {
 		
-		Vector<Storage> refVecCurrentSelections = 
+		Vector<IStorage> refVecCurrentSelections = 
 			refStorageManager.getAllStorageItemsVector();
 		
 		final int iSizeVectorSelections = refVecCurrentSelections.size();
@@ -683,7 +683,7 @@ implements DNetEventComponentInterface, ViewCanvas
 			vecJListRows.ensureCapacity( iSizeVectorSelections );
 		}
 		
-		Iterator<Storage> iterFromManager = refVecCurrentSelections.iterator();
+		Iterator<IStorage> iterFromManager = refVecCurrentSelections.iterator();
 		Iterator<DSwingStorageTabbedPane> iterFromGui = vecJListRows.iterator();
 		
 		// index for both vectors...
@@ -691,7 +691,7 @@ implements DNetEventComponentInterface, ViewCanvas
 		int iIndexGuiRow = 0;
 		
 		for ( iIndex= 0 ; iterFromManager.hasNext(); iIndex++ ) {
-			Storage bufferSelection = iterFromManager.next();
+			IStorage bufferSelection = iterFromManager.next();
 			DSwingStorageTabbedPane buffer = null;
 			
 			if ( iIndexGuiRow < iActiveJListItems ) {
@@ -707,7 +707,7 @@ implements DNetEventComponentInterface, ViewCanvas
 //			}
 			
 			assert bufferSelection != null :
-				"null-pointer in Selection list from SelectionManager.";
+				"null-pointer in ISelection list from SelectionManager.";
 			
 			if ( buffer == null ) {
 				DSwingStorageTabbedPane newListItem = 
@@ -784,8 +784,8 @@ implements DNetEventComponentInterface, ViewCanvas
 				b_Gui_UpdateEnabled = false;
 				j_button_update.setEnabled( false );
 				
-				Storage newStorage =
-					(Storage) refGeneralManagerSingelton.createNewItem( 
+				IStorage newStorage =
+					(IStorage) refGeneralManagerSingelton.createNewItem( 
 							ManagerObjectType.STORAGE_FLAT, "" );
 				
 				refGeneralManagerSingelton.registerItem( newStorage, 

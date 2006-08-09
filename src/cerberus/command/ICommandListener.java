@@ -10,7 +10,7 @@ package cerberus.command;
 
 import cerberus.manager.CommandManager;
 //import cerberus.command.CommandInterface;
-import cerberus.command.CommandActionListener;
+import cerberus.command.ICommandActionListener;
 import cerberus.data.xml.MementoNetEventXML;
 
 /**
@@ -21,11 +21,11 @@ import cerberus.data.xml.MementoNetEventXML;
  * @author Michael Kalkusch
  *
  */
-public interface CommandListener 
-extends CommandActionListener, MementoNetEventXML {
+public interface ICommandListener 
+extends ICommandActionListener, MementoNetEventXML {
 	
 	/**
-	 * Get the reference to the parent manager of all CommandListener obejcts.
+	 * Get the reference to the parent manager of all ICommandListener obejcts.
 	 * 
 	 * @return parent CommandManager
 	 */

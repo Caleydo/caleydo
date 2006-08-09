@@ -8,16 +8,16 @@
  */
 package cerberus.command.queue;
 
-import cerberus.command.CommandInterface;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.ICommand;
+import cerberus.command.base.ACommand;
 
 /**
  * @author Michael Kalkusch
  *
  */
-public abstract class AbstractCommandQueue 
-	extends AbstractCommand
-	implements CommandInterface {
+public abstract class ACommandQueue 
+	extends ACommand
+	implements ICommand {
 
 	/**
 	 * Commadn QueueId
@@ -25,12 +25,12 @@ public abstract class AbstractCommandQueue
 	protected int iCmdQueueId;
 	
 	/**
-	 * Set CollectionId using this constructor.
+	 * ISet CollectionId using this constructor.
 	 * 
 	 * @param iUniqueId unique system-wide Id
 	 * @param iCmdQueueId define cmd queue by this id
 	 */
-	protected AbstractCommandQueue( int iUniqueId, int iCmdQueueId ) {
+	protected ACommandQueue( int iUniqueId, int iCmdQueueId ) {
 		super( iUniqueId );
 		
 		this.iCmdQueueId = iCmdQueueId;
@@ -47,7 +47,7 @@ public abstract class AbstractCommandQueue
 	}
 
 	/**
-	 * Set a new QueueID.
+	 * ISet a new QueueID.
 	 * CommandQueueId = -1 indicates no queueId
 	 * 
 	 * @param setCmdQueueId new QueueId

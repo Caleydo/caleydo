@@ -11,7 +11,7 @@ package cerberus.manager;
 import javax.swing.JMenuItem;
 
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 
 /**
  * Manager for Menus.
@@ -49,10 +49,10 @@ public interface MenuManager extends GeneralManager {
 			final String sMenuTooltipText,
 			final char sMenuMnemonic,
 			final boolean bIsItem,
-			final CommandInterface refCommand );
+			final ICommand refCommand );
 	
 	/**
-	 * Set state of menu item.
+	 * ISet state of menu item.
 	 * 
 	 * @param iMenuId id to identify menu
 	 * @param bSetEnabled set menu enabeld or disabled

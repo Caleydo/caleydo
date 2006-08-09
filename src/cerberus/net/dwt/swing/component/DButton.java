@@ -30,7 +30,7 @@ import cerberus.manager.DComponentManager;
 import cerberus.manager.type.ManagerObjectType;
 //import org.xml.sax.helpers.DefaultHandler;
 
-import cerberus.command.CommandListener;
+import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -74,7 +74,7 @@ implements DNetEventComponentInterface {
 	/**
 	 * stores references to Command listener objects.
 	 */
-	private Vector<CommandListener> vecRefCommandListener;
+	private Vector<ICommandListener> vecRefCommandListener;
 	
 	/**
 	 * 
@@ -141,9 +141,9 @@ implements DNetEventComponentInterface {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	synchronized public boolean addCommandListener( final CommandListener setCommandListener ) {
+	synchronized public boolean addCommandListener( final ICommandListener setCommandListener ) {
 		
 		if ( vecRefCommandListener.contains(setCommandListener)) {
 			return false;

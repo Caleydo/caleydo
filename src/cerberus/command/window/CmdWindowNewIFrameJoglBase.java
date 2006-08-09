@@ -9,8 +9,8 @@
 package cerberus.command.window;
 
 import cerberus.manager.GeneralManager;
-import cerberus.command.CommandInterface;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.ICommand;
+import cerberus.command.base.ACommand;
 //import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
 //import cerberus.net.dwt.swing.jogl.listener.GLEventForwardListener;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -22,8 +22,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public abstract class CmdWindowNewIFrameJoglBase 
-extends AbstractCommand
-implements CommandInterface {
+extends ACommand
+implements ICommand {
 
 	/**
 	 * Reference to the sub command to create a new Jogl canvas.
@@ -60,7 +60,7 @@ implements CommandInterface {
 //	protected DSwingJoglCanvas initDSwingJoglCanvas;
 
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param refGeneralManager reference to singelton
 	 * @param iCallingFrameId Id of the calling frame
@@ -102,7 +102,7 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.command.CommandInterface#doCommand()
+	 * @see prometheus.command.ICommand#doCommand()
 	 */
 	protected void doCommand_IFrame() throws CerberusRuntimeException {
 		

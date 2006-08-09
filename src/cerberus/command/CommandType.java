@@ -35,7 +35,7 @@ public enum CommandType {
 	DATA_COLLECTION_SAVE(CommandTypeGroup.DATA_COLLECTION,"Save a data collection to file or network, consisting of data sets and selections"),
 
 	
-	// ---  Data Set ---
+	// ---  Data ISet ---
 	DATASET_LOAD(CommandTypeGroup.DATASET,"Load a data set from file or network"),
 	DATASET_RELOAD(CommandTypeGroup.DATASET,"Re-Load a data set from file or network"),
 	DATASET_SAVE(CommandTypeGroup.DATASET,"Save a data set to file or network"),
@@ -55,25 +55,25 @@ public enum CommandType {
 	COMMAND_QUEUE_CLOSE(CommandTypeGroup.COMMAND,"Closes a command qroup, it is set read only now"),
 	COMMAND_QUEUE_RUN(CommandTypeGroup.COMMAND,"Execute a command qroup"),
 	
-	// --- Selection ---
+	// --- ISelection ---
 	SELECT_NEW(CommandTypeGroup.SELECT,"Create a new selection"),
 	SELECT_DEL(CommandTypeGroup.SELECT,"Deletes a selection"),
 	SELECT_ADD(CommandTypeGroup.SELECT,"Add a selection to another selection"),
 	
 	SELECT_LOAD(CommandTypeGroup.SELECT,"Load a selection from file or network"),
 	SELECT_SAVE(CommandTypeGroup.SELECT,"Save a selection to file or network"),
-	SELECT_SET_UPDATE(CommandTypeGroup.SELECT,"Update an existing Selection without changing its type."),
-	SELECT_CHANGE_TYPE(CommandTypeGroup.SELECT,"Change the type of an existing Selection."),
+	SELECT_SET_UPDATE(CommandTypeGroup.SELECT,"Update an existing ISelection without changing its type."),
+	SELECT_CHANGE_TYPE(CommandTypeGroup.SELECT,"Change the type of an existing ISelection."),
 	
 	
-	// ... Selection Parameters ...
-	SELECT_SET_OFFSET(CommandTypeGroup.SELECT_VALUE,"Set offset of selection (int)"),
-	SELECT_SET_SIZE(CommandTypeGroup.SELECT_VALUE,"Set size of selection"),
-	SELECT_SET_INC(CommandTypeGroup.SELECT_VALUE,"Set increment of selection (int)"),
-	SELECT_SET_REPEAT(CommandTypeGroup.SELECT_VALUE,"Set repeat of selection"),
+	// ... ISelection Parameters ...
+	SELECT_SET_OFFSET(CommandTypeGroup.SELECT_VALUE,"ISet offset of selection (int)"),
+	SELECT_SET_SIZE(CommandTypeGroup.SELECT_VALUE,"ISet size of selection"),
+	SELECT_SET_INC(CommandTypeGroup.SELECT_VALUE,"ISet increment of selection (int)"),
+	SELECT_SET_REPEAT(CommandTypeGroup.SELECT_VALUE,"ISet repeat of selection"),
 	
 	
-	// ... Selection States ...
+	// ... ISelection States ...
 	SELECT_SHOW(CommandTypeGroup.SELECT_VALUE,"Show a selection, enable show/hide"),
 	SELECT_HIDE(CommandTypeGroup.SELECT_VALUE,"Hide a selection, disable show/hide"),
 	SELECT_LOCK(CommandTypeGroup.SELECT_VALUE,"Lock a selection, enable lock/unlock"),

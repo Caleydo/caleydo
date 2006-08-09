@@ -19,7 +19,7 @@ import javax.swing.JLabel;
 import cerberus.manager.DComponentManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.command.CommandListener;
+import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -97,9 +97,9 @@ public class DDesktopPane extends JDesktopPane implements
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	public boolean addCommandListener(CommandListener setCommandListener) {
+	public boolean addCommandListener(ICommandListener setCommandListener) {
 		// TODO Auto-generated method stub
 		return false;
 	}

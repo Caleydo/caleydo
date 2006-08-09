@@ -17,8 +17,8 @@ package cerberus.data.collection;
  * @author Michael Kalkusch
  *
  */
-public interface CollectionInterface {
-	//extends CollectionCache, IUniqueManagedObject {
+public interface ICollection {
+	//extends ICollectionCache, IUniqueManagedObject {
 
 	/**
 	 * Return a Label of the item.

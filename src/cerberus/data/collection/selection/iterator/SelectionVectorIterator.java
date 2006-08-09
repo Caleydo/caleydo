@@ -8,14 +8,14 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionNullIterator;
 
 
 /**
- * Iterator for a several Selection.
+ * Iterator for a several ISelection.
  * 
  * @author kalkusch
  *
@@ -25,23 +25,23 @@ public class SelectionVectorIterator implements SelectionIterator {
 	/**
 	 * Vector storing all Selections.
 	 */
-	private Vector <Selection> vecSelection;
+	private Vector <ISelection> vecSelection;
 	
 	/**
-	 * Define curretn Selection in Vector vecSelection
+	 * Define curretn ISelection in Vector vecSelection
 	 */
 	private int iCurrentSelection = 0;
 	
 	/**
 	 * Current iterator.
-	 * It is bound to the Selection at vecSelection.get(iCurrentSelection)
+	 * It is bound to the ISelection at vecSelection.get(iCurrentSelection)
 	 */
 	private SelectionIterator iterator;
 	
 	/**
 	 * Iterator for Vector vecSelection
 	 */
-	private Iterator <Selection> iteratorSelection;
+	private Iterator <ISelection> iteratorSelection;
 	
 	
 	
@@ -49,7 +49,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * 
 	 */
 	public SelectionVectorIterator() {
-		vecSelection = new Vector <Selection> (3);
+		vecSelection = new Vector <ISelection> (3);
 		
 		begin();
 	}
@@ -62,21 +62,21 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * 
 	 * @param addSelection
 	 */
-	public void addSelection( final Selection addSelection) {
+	public void addSelection( final ISelection addSelection) {
 		if ( ! vecSelection.contains( addSelection ) ) {
 			vecSelection.addElement( addSelection );
 		}
 	}
 	
 	/**
-	 * Assign a hole Vector <Selection> to this iterator.
+	 * Assign a hole Vector <ISelection> to this iterator.
 	 * Note: begin() is called inside this methode.
 	 * 
 	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
 	 * 
 	 * @param addSelectionVector
 	 */
-	public void addSelectionVector( final Vector <Selection> addSelectionVector) {
+	public void addSelectionVector( final Vector <ISelection> addSelectionVector) {
 		vecSelection = addSelectionVector;
 		begin();
 	}
@@ -85,7 +85,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * @see cerberus.data.collection.selection.iterator.SelectionIterator#size()
 	 */
 	public int size() {
-		Iterator <Selection> iter = vecSelection.iterator();
+		Iterator <ISelection> iter = vecSelection.iterator();
 
 		int iSize = 0;
 		
@@ -134,7 +134,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * 
 	 * @see cerberus.data.collection.iterator.CollectionIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#addSelection(Selection)
+	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#addSelection(ISelection)
 	 * 
 	 */
 	public void begin() {
@@ -188,10 +188,10 @@ public class SelectionVectorIterator implements SelectionIterator {
 		
 
 	/**
-	 * Returns true, if the current Selection has mor elements, or if 
+	 * Returns true, if the current ISelection has mor elements, or if 
 	 * there are any other Selections left, that have mor elements.
 	 * If the crrent selection does not have any more elements a new
-	 * iterator from the next Selection is created unde the hood.
+	 * iterator from the next ISelection is created unde the hood.
 	 * 
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
@@ -215,7 +215,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 			
 			if ( iterator.hasNext() ) {
 				/*
-				 * found an non-empty Selection..
+				 * found an non-empty ISelection..
 				 */
 				return true;
 			}

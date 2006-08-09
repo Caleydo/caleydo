@@ -55,9 +55,9 @@ import javax.swing.*;
 //import gleem.*;
 //import gleem.linalg.*;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
@@ -152,8 +152,8 @@ public class SetBrowser {
 						
 						String selectText = "";
 						String storeText ="";
-						Selection [] selBuffer;
-						Storage [] storeBuffer;
+						ISelection [] selBuffer;
+						IStorage [] storeBuffer;
 						
 						for ( int i=0; i< iCountDimensions; i++ ){
 							if( i != 0) {
@@ -218,7 +218,7 @@ public class SetBrowser {
 	public SetBrowser(JFrame setRefParentExternalFrame) {
 		refParentExternalFrame = setRefParentExternalFrame;
 
-		setRefParentExternalFrame.setTitle("Collection Browser -Set-");
+		setRefParentExternalFrame.setTitle("Collection Browser -ISet-");
 
 		setRefParentExternalFrame.setLayout(new BorderLayout());
 
@@ -251,7 +251,7 @@ public class SetBrowser {
 
 		refParentInternalFrame = setRefParentInternalFrame;
 
-		refParentInternalFrame.setTitle("Collection Browser -Set- INTERNAL");
+		refParentInternalFrame.setTitle("Collection Browser -ISet- INTERNAL");
 
 		refParentInternalFrame.setLayout(new BorderLayout());
 

@@ -17,10 +17,11 @@ import cerberus.manager.GeneralManager;
 //import javax.swing.JOptionPane;
 
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.CmdHandleSetInterface;
-import cerberus.data.collection.Set;
+import cerberus.command.base.ACmdHandleSet;
+import cerberus.command.base.ICmdHandleSet;
+import cerberus.data.collection.ISet;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 //import cerberus.net.dwt.swing.DSwingHeatMap2DCanvas;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -32,12 +33,12 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdWindowNewIFrameHeatmap2D 
-extends CmdHandleSetBase 
-implements CommandInterface, CmdHandleSetInterface {
+extends ACmdHandleSet 
+implements ICommand, ICmdHandleSet {
 
 	
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
@@ -51,7 +52,7 @@ implements CommandInterface, CmdHandleSetInterface {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
@@ -60,7 +61,7 @@ implements CommandInterface, CmdHandleSetInterface {
 //		DSwingHeatMap2DCanvas heatmap = 
 //			new DSwingHeatMap2DCanvas(refGeneralManager);
 //		
-//		Set refSet = (Set) refGeneralManager.getItem( 70300 );
+//		ISet refSet = (ISet) refGeneralManager.getItem( 70300 );
 //		
 //		heatmap.setSetRationXY(refSet,20,20);
 //		heatmap.setVisible( true );
@@ -72,21 +73,21 @@ implements CommandInterface, CmdHandleSetInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 	
 //	/* (non-Javadoc)
-//	 * @see cerberus.command.CommandInterface#isEqualType(cerberus.command.CommandInterface)
+//	 * @see cerberus.command.ICommand#isEqualType(cerberus.command.ICommand)
 //	 */
-//	public boolean isEqualType(CommandInterface compareToObject) {		
+//	public boolean isEqualType(ICommand compareToObject) {		
 //		return compareToObject.getCommandType() == CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D;
 //	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D;

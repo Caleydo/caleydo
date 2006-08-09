@@ -3,8 +3,8 @@
  */
 package cerberus.math.statistics.minmax;
 
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.set.SetMultiDim;
 
@@ -63,7 +63,7 @@ public final class MinMaxDataInteger {
 		  if ( refSet != null ) {
 		    	
 			  if ( refSet.getDimensions() < iDimensions ) {
-	    			System.out.println("Can not use a Set with only one dimension!");
+	    			System.out.println("Can not use a ISet with only one dimension!");
 	    			return false;
 			  }
 			  
@@ -71,8 +71,8 @@ public final class MinMaxDataInteger {
 		    		
 		    		//allocateMinMax( refSet.getDimensions() );
 		    	
-			    	Storage refStorageX = refSet.getStorageByDimAndIndex(0,0);
-			    	Storage refStorageY = refSet.getStorageByDimAndIndex(1,0);
+			    	IStorage refStorageX = refSet.getStorageByDimAndIndex(0,0);
+			    	IStorage refStorageY = refSet.getStorageByDimAndIndex(1,0);
 			    			    	
 			    	int[] i_dataValuesX = refStorageX.getArrayInt();
 			    	int[] i_dataValuesY = refStorageY.getArrayInt();
@@ -142,7 +142,7 @@ public final class MinMaxDataInteger {
 		  if ( refSet != null ) {
 		    	
 			  if ( refSet.getDimensions() < iDimensions ) {
-	    			System.out.println("Can not use a Set with only one dimension!");
+	    			System.out.println("Can not use a ISet with only one dimension!");
 	    			return false;
 			  }
 			  
@@ -154,9 +154,9 @@ public final class MinMaxDataInteger {
 		    		
 		    		for ( int iIndex = 0; iIndex < iDimensions; iIndex++ ) {
 		    					
-		    			Selection select = refSet.getSelectionByDimAndIndex(iIndex,0);		    			
+		    			ISelection select = refSet.getSelectionByDimAndIndex(iIndex,0);		    			
 		    			SelectionIterator iter = select.iterator();
-		    			Storage refStorage = 
+		    			IStorage refStorage = 
 		    				refSet.getStorageByDimAndIndex(iIndex,0);
 		    			
 		    			int[] i_dataValues = refStorage.getArrayInt();
@@ -202,10 +202,10 @@ public final class MinMaxDataInteger {
 	
 	
 	/**
-	 * Defein a Set.
+	 * Defein a ISet.
 	 * updateData() is called automatically.
 	 * 
-	 * @param useSet Set to calcualte min max and mean value from.
+	 * @param useSet ISet to calcualte min max and mean value from.
 	 */
 	public void useSet( SetMultiDim useSet ) {
 		refSet = useSet;		

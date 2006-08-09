@@ -10,8 +10,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.IStorage;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -24,7 +24,7 @@ public class SetTableViewRep implements DataTableViewInter
 	protected SetManager refSetManager;
 	protected Composite refSWTContainer;
 	
-	protected Set[] refAllSetItems;
+	protected ISet[] refAllSetItems;
 	protected Table refTable;
 	
 	public SetTableViewRep(GeneralManager refGeneralManager)

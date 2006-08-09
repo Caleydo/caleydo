@@ -96,7 +96,7 @@ implements DParseSaxHandler
 	protected String sSelectionType;
 	
 	/**
-	 * Stores the current Selection type.
+	 * Stores the current ISelection type.
 	 */
 	protected ManagerObjectType eSelectionType;
 	

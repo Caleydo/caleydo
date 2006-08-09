@@ -75,13 +75,13 @@ implements DParseSaxHandler
 	protected Vector <int[]> vecSelect;
 
 	/**
-	 * Set the maximum dimension.
+	 * ISet the maximum dimension.
 	 * This is the maximum of all iCurrentDim values.
 	 */
 	private int iDimActive;
 	
 	/**
-	 * Set the current dimension.
+	 * ISet the current dimension.
 	 */
 	private int iCurrentDim;
 	
@@ -91,7 +91,7 @@ implements DParseSaxHandler
 	protected String sSelectionType;
 	
 	/**
-	 * Stores the current Selection type.
+	 * Stores the current ISelection type.
 	 */
 	protected ManagerObjectType eSelectionType;
 	

@@ -41,7 +41,7 @@ public enum MementoType {
 	VIEW("memento of a hole view; may contain several sub-mementos"),
 	
 	/**
-	 * Memento of an object, that is neither a GUI-object nor a view. 
+	 * IMemento of an object, that is neither a GUI-object nor a view. 
 	 */
 	NOGUI("memento of a GUI componenet");
 	

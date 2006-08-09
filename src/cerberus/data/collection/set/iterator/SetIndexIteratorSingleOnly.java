@@ -3,8 +3,8 @@
  */
 package cerberus.data.collection.set.iterator;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 
 /**
@@ -13,14 +13,14 @@ import cerberus.data.collection.selection.iterator.SelectionIterator;
  */
 public class SetIndexIteratorSingleOnly implements SetIndexIterator {
 
-	protected Set refSet;
+	protected ISet refSet;
 	
 	protected SelectionIterator selectIterator;
 	
 	/**
 	 * 
 	 */
-	public SetIndexIteratorSingleOnly( final Set useSet ) {
+	public SetIndexIteratorSingleOnly( final ISet useSet ) {
 		
 		assert useSet == null : "Can not handel null pointer, need set";
 		
@@ -64,7 +64,7 @@ public class SetIndexIteratorSingleOnly implements SetIndexIterator {
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.set.iterator.SetDataIterator#nextSelection()
 	 */
-	public Selection nextSelection() {
+	public ISelection nextSelection() {
 		// TODO Auto-generated method stub
 		return null;
 	}

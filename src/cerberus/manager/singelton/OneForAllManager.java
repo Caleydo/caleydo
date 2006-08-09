@@ -33,7 +33,7 @@ import cerberus.manager.menu.MenuManagerSimple;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
 import cerberus.manager.gui.SWTGUIManagerSimple;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 import cerberus.data.xml.MementoXML;
 
 //import prometheus.data.collection.SelectionType; 
@@ -41,7 +41,7 @@ import cerberus.data.xml.MementoXML;
 //import prometheus.data.collection.StorageType;
 
 //import prometheus.data.collection.Selection;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 
 import cerberus.data.collection.view.ViewCanvas;
 
@@ -287,7 +287,7 @@ implements GeneralManagerSingelton {
 	}
 	
 	/**
-	 * Set the current type used to create the next Id using
+	 * ISet the current type used to create the next Id using
 	 * cerberus.data.manager.singelton.OneForAllManager#createNewId()
 	 * Does not influence 
 	 * cerberus.data.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
@@ -482,14 +482,14 @@ implements GeneralManagerSingelton {
 			return;
 		}
 		case SET: {
-			Set setBuffer = 
+			ISet setBuffer = 
 				this.refSetManager.createSet( type );
 			
 			//setBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;
 		}
 		case STORAGE:
-			Storage storageBuffer = refStorageManager.createStorage( type );
+			IStorage storageBuffer = refStorageManager.createStorage( type );
 			
 			storageBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;
@@ -557,7 +557,7 @@ implements GeneralManagerSingelton {
 	}
 	
 	/**
-	 * Set curretn state of SWT.
+	 * ISet curretn state of SWT.
 	 * Must be set before initAll() is called!
 	 * Default is FALSE.
 	 * 

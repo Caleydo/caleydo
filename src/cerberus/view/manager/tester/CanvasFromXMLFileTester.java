@@ -34,7 +34,7 @@ import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 
 //import cerberus.data.manager.BaseManagerType;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
 import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
 import cerberus.data.collection.parser.CollectionSetParseSaxHandler;

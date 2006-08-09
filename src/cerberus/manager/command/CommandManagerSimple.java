@@ -22,10 +22,10 @@ import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
 
 
-import cerberus.command.CommandInterface;
-import cerberus.command.CommandListener;
+import cerberus.command.ICommand;
+import cerberus.command.ICommandListener;
 import cerberus.command.CommandType;
-import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.queue.ICommandQueue;
 
 /**
  * @author Michael Kalkusch
@@ -40,16 +40,16 @@ public class CommandManagerSimple
 	/**
 	 * List of all Commands to be excecuted as soon as possible
 	 */
-	private Vector<CommandInterface> vecCmd_handle;
+	private Vector<ICommand> vecCmd_handle;
 	
 	/**
 	 * List of All Commands to be executed when sooner or later.
 	 */
-	private Vector<CommandInterface> vecCmd_schedule;
+	private Vector<ICommand> vecCmd_schedule;
 	
-	protected Hashtable<Integer,CommandQueueInterface> hash_CommandQueueId;
+	protected Hashtable<Integer,ICommandQueue> hash_CommandQueueId;
 	
-	protected Hashtable<Integer,CommandInterface> hash_CommandId;
+	protected Hashtable<Integer,ICommand> hash_CommandId;
 	
 	/**
 	 * 
@@ -61,53 +61,53 @@ public class CommandManagerSimple
 				this, 
 				null );
 		
-		vecCmd_handle = new Vector<CommandInterface> ();
+		vecCmd_handle = new Vector<ICommand> ();
 		
-		vecCmd_schedule = new Vector<CommandInterface> ();
+		vecCmd_schedule = new Vector<ICommand> ();
 		
-		hash_CommandQueueId = new Hashtable<Integer,CommandQueueInterface> ();
+		hash_CommandQueueId = new Hashtable<Integer,ICommandQueue> ();
 		
-		hash_CommandId = new Hashtable<Integer,CommandInterface> ();
+		hash_CommandId = new Hashtable<Integer,ICommand> ();
 				
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.CommandManager#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.data.manager.CommandManager#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	public void addCommandListener(CommandListener addCommandListener) {
+	public void addCommandListener(ICommandListener addCommandListener) {
 		// TODO Auto-generated method stub
 
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.CommandManager#removeCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.data.manager.CommandManager#removeCommandListener(cerberus.command.ICommandListener)
 	 */
-	public boolean removeCommandListener(CommandListener removeCommandListener) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.CommandManager#hasCommandListener(cerberus.command.CommandListener)
-	 */
-	public boolean hasCommandListener(CommandListener hasCommandListener) {
+	public boolean removeCommandListener(ICommandListener removeCommandListener) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandActionListener#handleCommand(cerberus.command.CommandInterface)
+	 * @see cerberus.data.manager.CommandManager#hasCommandListener(cerberus.command.ICommandListener)
 	 */
-	public void handleCommand(CommandInterface addCommand) {
+	public boolean hasCommandListener(ICommandListener hasCommandListener) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.command.ICommandActionListener#handleCommand(cerberus.command.ICommand)
+	 */
+	public void handleCommand(ICommand addCommand) {
 		
 		addCommand.doCommand();
 		vecCmd_handle.addElement( addCommand );
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandActionListener#scheduleCommand(cerberus.command.CommandInterface)
+	 * @see cerberus.command.ICommandActionListener#scheduleCommand(cerberus.command.ICommand)
 	 */
-	public void scheduleCommand(CommandInterface addCommand) {
+	public void scheduleCommand(ICommand addCommand) {
 		
 		vecCmd_schedule.addElement( addCommand );
 		addCommand.doCommand();
@@ -150,11 +150,11 @@ public class CommandManagerSimple
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
 		
-		CommandInterface registerCommand = (CommandInterface) registerItem;
+		ICommand registerCommand = (ICommand) registerItem;
 		
 		if ( registerCommand.getClass().equals( 
-				cerberus.command.queue.CommandQueueInterface.class )) {
-			hash_CommandQueueId.put( iItemId, (CommandQueueInterface) registerItem );
+				cerberus.command.queue.ICommandQueue.class )) {
+			hash_CommandQueueId.put( iItemId, (ICommandQueue) registerItem );
 		} else {
 			
 		}
@@ -177,7 +177,7 @@ public class CommandManagerSimple
 		
 		if ( hash_CommandId.containsKey( iItemId ) ) {
 		
-			CommandInterface unregisterCommand = 
+			ICommand unregisterCommand = 
 				hash_CommandId.remove( iItemId );
 			
 			return vecCmd_handle.remove( unregisterCommand );
@@ -186,12 +186,12 @@ public class CommandManagerSimple
 		return false;
 	}
 
-	public CommandInterface createCommand( final CommandType useSelectionType, String details ) {
+	public ICommand createCommand( final CommandType useSelectionType, String details ) {
 	
 		return refCommandFactory.createCommand( useSelectionType, details );
 	}
 	
-	public CommandInterface createCommand( final String useSelectionType ) {
+	public ICommand createCommand( final String useSelectionType ) {
 		
 		return refCommandFactory.createCommand( CommandType.getType( useSelectionType ), null );
 	}
@@ -201,10 +201,10 @@ public class CommandManagerSimple
 	 * Create a new command using the CommandType.
 	 * @param details TODO
 	 */
-	public CommandInterface createCommand( final String  useSelectionType, 
+	public ICommand createCommand( final String  useSelectionType, 
 			final LinkedList <String> llAttributes ) {
 		
-		CommandInterface createdCommand = 
+		ICommand createdCommand = 
 			refCommandFactory.createCommand( useSelectionType,
 					llAttributes );	
 		
@@ -241,18 +241,18 @@ public class CommandManagerSimple
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.CommandManager#getCommandQueueByCmdQueueId(int)
 	 */
-	public CommandQueueInterface getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
+	public ICommandQueue getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
 		return hash_CommandQueueId.get( iCmdQueueId );
 	}
 	
-	public CommandInterface createCommandQueue( final String sCmdType,
+	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,
 			final int iCmdId,
 			final int iCmdQueueId,
 			final int sQueueThread,
 			final int sQueueThreadWait ) {
 		
-		CommandInterface newCmd = 
+		ICommand newCmd = 
 			refCommandFactory.createCommandQueue( sCmdType,
 			sProcessType,
 			iCmdId,

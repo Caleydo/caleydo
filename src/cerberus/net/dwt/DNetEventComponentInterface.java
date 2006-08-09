@@ -10,7 +10,7 @@ package cerberus.net.dwt;
 
 import cerberus.manager.DComponentManager;
 import cerberus.net.dwt.DNetEvent;
-import cerberus.command.CommandListener;
+import cerberus.command.ICommandListener;
 import cerberus.data.xml.MementoNetEventXML;
 
 //import prometheus.net.protocol.interaction.SuperMouseEvent;
@@ -48,7 +48,7 @@ extends MementoNetEventXML
 	 * 
 	 * @param setCommandListener reference to the command listener
 	 */
-	public boolean addCommandListener( CommandListener setCommandListener );
+	public boolean addCommandListener( ICommandListener setCommandListener );
 	
 	/**
 	 * Test if a component has to handle the event.
@@ -68,13 +68,13 @@ extends MementoNetEventXML
 	public DNetEventComponentInterface getNetEventComponent( DNetEvent event );
 	
 	/**
-	 * Set reference to creator, that manages all GUI components.
+	 * ISet reference to creator, that manages all GUI components.
 	 * @param creator reference to manager of GUI components
 	 */
 	public void setParentCreator( final DComponentManager creator);
 	
 	/**
-	 * Set referecne to parent GUI container.
+	 * ISet referecne to parent GUI container.
 	 * Used for event handling.
 	 * 
 	 * @param parentComponent reference to parent GUI container, used for event handling.

@@ -1,9 +1,9 @@
 package cerberus.command.queue;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 
-public interface CommandQueueInterface 
-extends CommandInterface {
+public interface ICommandQueue 
+extends ICommand {
 
 	/**
 	 * Get CommandQueueId.
@@ -14,7 +14,7 @@ extends CommandInterface {
 	public int getCmdQueueId();
 
 	/**
-	 * Set a new QueueID.
+	 * ISet a new QueueID.
 	 * CommandQueueId = -1 indicates no queueId
 	 * 
 	 * @param setCmdQueueId new QueueId
@@ -33,20 +33,20 @@ extends CommandInterface {
 	 * 
 	 * @param cmdItem add command
 	 */
-	public boolean addCmdToQueue( final CommandInterface cmdItem );
+	public boolean addCmdToQueue( final ICommand cmdItem );
 	
 	/**
 	 * Remove a new command.
 	 * 
 	 * @param cmdItem remove command
 	 */
-	public boolean removeCmdFromQueue( final CommandInterface cmdItem );
+	public boolean removeCmdFromQueue( final ICommand cmdItem );
 	
 	/**
 	 * Contains a command.
 	 * 
 	 * @param cmdItem test if command is contained in command queue
 	 */
-	public boolean containsCmdInQueue( final CommandInterface cmdItem );
+	public boolean containsCmdInQueue( final ICommand cmdItem );
 
 }

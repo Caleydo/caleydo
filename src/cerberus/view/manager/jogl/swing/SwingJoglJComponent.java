@@ -41,7 +41,7 @@ public interface SwingJoglJComponent {
 	public void addWindowListener();
 
 	/**
-	 * Set size and location of frame immedeatly.
+	 * ISet size and location of frame immedeatly.
 	 * 
 	 * Calls setLocation() and setSize().
 	 * 
@@ -54,7 +54,7 @@ public interface SwingJoglJComponent {
 			final int iOffsetX, final int iOffsetY);
 	
 	/**
-	 * Set position of frame immedeatly.
+	 * ISet position of frame immedeatly.
 	 * 
 	 *  Calls setLocation().
 	 *  
@@ -72,7 +72,7 @@ public interface SwingJoglJComponent {
 	public FrameBaseType getFrameType();
 	
 	/**
-	 * Set the frame type.
+	 * ISet the frame type.
 	 * Note: This is used for bootstraping from an XML file.
 	 * 
 	 * @param setFrameType type of frame

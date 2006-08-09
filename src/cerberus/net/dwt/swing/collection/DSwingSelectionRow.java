@@ -30,8 +30,8 @@ import javax.swing.JOptionPane;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.command.CommandInterface;
-import cerberus.data.collection.Selection;
+import cerberus.command.ICommand;
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.SelectionSingleBlock;
 
@@ -103,7 +103,7 @@ public class DSwingSelectionRow {
 	private int[] iDataFromGui_MultiRLE_Random_Array = null;
 	private String sDataFromGui_label;
 	
-	private Selection refSelection;
+	private ISelection refSelection;
 	
 	/**
 	 * 
@@ -300,11 +300,11 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * Immedeatly updates the gui based on the data from the Selection.
+	 * Immedeatly updates the gui based on the data from the ISelection.
 	 * 
 	 * @param useSelection data used to update the Gui
 	 */
-	public void updateFromSelectionToGui( final Selection useSelection ) {
+	public void updateFromSelectionToGui( final ISelection useSelection ) {
 
 		if ( useSelection == null ) {
 			assert useSelection!= null :"updateFromSelection() can not handle null-pointer";
@@ -372,11 +372,11 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * Get the current Selection shown in this element.
+	 * Get the current ISelection shown in this element.
 	 * 
-	 * @return Selection the data was read from
+	 * @return ISelection the data was read from
 	 */
-	public Selection getCurrentSelection() {
+	public ISelection getCurrentSelection() {
 		return refSelection;
 	}
 	
@@ -467,11 +467,11 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * updates parameters from the GUI to the Selection.
+	 * updates parameters from the GUI to the ISelection.
 	 * 
 	 * @param updateSelection
 	 */
-	public void updateSelectionFromGui( Selection updateSelection ) {
+	public void updateSelectionFromGui( ISelection updateSelection ) {
 	
 //		if ( updateSelection.getId() != iDataFromGui_Id ) {
 //			updateSelection.setId( null, iDataFromGui_Id );
@@ -511,9 +511,9 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * Do we need to update the Selection because the Gui requires it
+	 * Do we need to update the ISelection because the Gui requires it
 	 * 
-	 * @return True, if the Selection needs to be update.
+	 * @return True, if the ISelection needs to be update.
 	 */
 	public boolean hasSelectionChanged() {
 		return bUpdateSelectionFromGui;
@@ -544,7 +544,7 @@ public class DSwingSelectionRow {
 		}
 	}
 	
-	public void triggerCommand( CommandInterface triggerCmd ) {
+	public void triggerCommand( ICommand triggerCmd ) {
 //		this.refCanvas.
 	}
 	

@@ -8,17 +8,17 @@
  */
 package cerberus.data.collection.metadata;
 
-import cerberus.data.collection.CollectionMetaData;
+import cerberus.data.collection.IMetaData;
 
 /**
  * Keep a state of an object linked to. 
  * 
- * Implementation of CollectionMetaData.
+ * Implementation of IMetaData.
  * 
  * @author Michael Kalkusch
  *
  */
-public class MetaData implements CollectionMetaData {
+public class MetaData implements IMetaData {
 
 	/**
 	 * Tells that this selection can not be selected.
@@ -132,7 +132,7 @@ public class MetaData implements CollectionMetaData {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.CollectionMetaData#equalState(prometheus.data.set.SelectionMetaData)
 	 */
-	public boolean equalState( final CollectionMetaData testObject) {
+	public boolean equalState( final IMetaData testObject) {
 		if ((testObject.isLocked() == bIsLocked)&&
 				(testObject.isHidden() == bIsHidden)&&
 				(testObject.isSelected() == bIsSelected)) 

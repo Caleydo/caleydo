@@ -15,7 +15,7 @@ import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;
 
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 //import cerberus.data.manager.DComponentManager;
 import cerberus.data.xml.MementoNetEventXML;
@@ -30,7 +30,7 @@ import cerberus.data.collection.thread.lock.CollectionLock;
  */
 public class FlatThreadStorageSimple 
 extends CollectionThreadItem 
-implements Storage, MementoNetEventXML, CollectionLock
+implements IStorage, MementoNetEventXML, CollectionLock
 {
 
 	
@@ -93,7 +93,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#addStorageTypePerContainer(cerberus.data.collection.StorageType)
+	 * @see cerberus.data.collection.IStorage#addStorageTypePerContainer(cerberus.data.collection.StorageType)
 	 */
 	public int addStorageTypePerContainer(StorageType setStorageType) {
 		
@@ -102,7 +102,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#setStorageTypePerContainer(cerberus.data.collection.StorageType, int)
+	 * @see cerberus.data.collection.IStorage#setStorageTypePerContainer(cerberus.data.collection.StorageType, int)
 	 */
 	public void setStorageTypePerContainer(StorageType setStorageType,
 			int iAtContainerPosition) {
@@ -111,7 +111,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getStorageTypePerContainer(int)
+	 * @see cerberus.data.collection.IStorage#getStorageTypePerContainer(int)
 	 */
 	public StorageType getStorageTypePerContainer(int iAtContainerPosition) {
 		try {
@@ -123,7 +123,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#removeStorage(int)
+	 * @see cerberus.data.collection.IStorage#removeStorage(int)
 	 */
 	public void removeStorage(int iAtContainerPosition) {
 
@@ -160,7 +160,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#allocate()
+	 * @see cerberus.data.collection.IStorage#allocate()
 	 */
 	public boolean allocate() {
 
@@ -177,7 +177,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#setAllSize(int[])
+	 * @see cerberus.data.collection.IStorage#setAllSize(int[])
 	 */
 	public void setAllSize(int[] size) {
 	
@@ -193,7 +193,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#setSize(int, int)
+	 * @see cerberus.data.collection.IStorage#setSize(int, int)
 	 */
 	public boolean setSize(int iAtContainerPosition, int iSetSize) {
 		
@@ -217,7 +217,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getSize(int)
+	 * @see cerberus.data.collection.IStorage#getSize(int)
 	 */
 	public int getSize(int iAtContainerPosition) {
 
@@ -285,7 +285,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getSize(int)
+	 * @see cerberus.data.collection.IStorage#getSize(int)
 	 */
 	private boolean allocatePerIndex( final int iAtContainerPosition, final int iAllocationSize) {
 
@@ -376,7 +376,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getAllSize()
+	 * @see cerberus.data.collection.IStorage#getAllSize()
 	 */
 	public int[] getAllSize() {
 		final int iSize =  typePerContainer.length;
@@ -391,21 +391,21 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getNumberArrays()
+	 * @see cerberus.data.collection.IStorage#getNumberArrays()
 	 */
 	public int getNumberArrays() {
 		return typePerContainer.length;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArrayInt()
+	 * @see cerberus.data.collection.IStorage#getArrayInt()
 	 */
 	public int[] getArrayInt() {
 		return dataInt;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArray2DInt()
+	 * @see cerberus.data.collection.IStorage#getArray2DInt()
 	 */
 	public int[][] getArray2DInt() {
 		assert false: "not supported by FlatStorageSimple";
@@ -414,14 +414,14 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArrayFloat()
+	 * @see cerberus.data.collection.IStorage#getArrayFloat()
 	 */
 	public float[] getArrayFloat() {
 		return dataFloat;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArray2DFloat()
+	 * @see cerberus.data.collection.IStorage#getArray2DFloat()
 	 */
 	public float[][] getArray2DFloat() {
 		assert false: "not supported by FlatStorageSimple";
@@ -430,14 +430,14 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArrayDouble()
+	 * @see cerberus.data.collection.IStorage#getArrayDouble()
 	 */
 	public double[] getArrayDouble() {
 		return dataDouble;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArray2DDouble()
+	 * @see cerberus.data.collection.IStorage#getArray2DDouble()
 	 */
 	public double[][] getArray2DDouble() {
 		assert false: "not supported by FlatStorageSimple";
@@ -446,14 +446,14 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArrayString()
+	 * @see cerberus.data.collection.IStorage#getArrayString()
 	 */
 	public String[] getArrayString() {
 		return dataString;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArray2DString()
+	 * @see cerberus.data.collection.IStorage#getArray2DString()
 	 */
 	public String[][] getArray2DString() {
 		assert false: "not supported by FlatStorageSimple";
@@ -462,7 +462,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArrayObject()
+	 * @see cerberus.data.collection.IStorage#getArrayObject()
 	 */
 	public Object[] getArrayObject() {
 		assert false: "not supported by FlatStorageSimple";
@@ -471,7 +471,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArray2DObject()
+	 * @see cerberus.data.collection.IStorage#getArray2DObject()
 	 */
 	public Object[][] getArray2DObject() {
 		assert false: "not supported by FlatStorageSimple";
@@ -481,14 +481,14 @@ implements Storage, MementoNetEventXML, CollectionLock
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArrayBoolean()
+	 * @see cerberus.data.collection.IStorage#getArrayBoolean()
 	 */
 	public boolean[] getArrayBoolean() {
 		return dataBoolean;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Storage#getArray2DObject()
+	 * @see cerberus.data.collection.IStorage#getArray2DObject()
 	 */
 	public boolean[][] getArray2DBoolean() {
 		assert false: "not supported by FlatStorageSimple";
@@ -615,7 +615,7 @@ implements Storage, MementoNetEventXML, CollectionLock
 
 	
 	/**
-	 * @see cerberus.data.collection.CollectionInterface#getCacheId()
+	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		return this.iCacheId;

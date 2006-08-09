@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SelectionManager;
@@ -27,9 +27,9 @@ public class DataTableViewRep implements DataTableViewInter
 	protected SelectionManager refSelectionManager;
 	protected Composite refSWTContainer;
 	
-	protected Storage[] refAllStorageItems;
-	protected Storage refCurrentStorage;
-	protected Selection refCurrentSelection;
+	protected IStorage[] refAllStorageItems;
+	protected IStorage refCurrentStorage;
+	protected ISelection refCurrentSelection;
 
 	protected Table refTable;
 	

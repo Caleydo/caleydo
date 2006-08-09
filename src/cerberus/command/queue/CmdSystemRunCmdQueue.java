@@ -3,10 +3,10 @@
  */
 package cerberus.command.queue;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AbstractManagedCommand;
-import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.base.AManagedCommand;
+import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -18,8 +18,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdSystemRunCmdQueue 
-extends AbstractManagedCommand 
-implements CommandInterface {
+extends AManagedCommand 
+implements ICommand {
 
 	protected int iCommandQueueId;
 	
@@ -35,10 +35,10 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
-		CommandQueueInterface cmdQueue = 
+		ICommandQueue cmdQueue = 
 			this.refGeneralManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
@@ -49,11 +49,11 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-		CommandQueueInterface cmdQueue = 
+		ICommandQueue cmdQueue = 
 			this.refGeneralManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
@@ -64,7 +64,7 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.COMMAND_QUEUE_RUN;

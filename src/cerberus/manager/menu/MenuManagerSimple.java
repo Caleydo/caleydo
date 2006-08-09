@@ -22,7 +22,7 @@ import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.type.ManagerObjectType;
 
 //import prometheus.command.CommandType;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -92,7 +92,7 @@ public class MenuManagerSimple
 			final String sMenuTooltipText, 
 			final char sMenuMnemonic,
 			final boolean bIsItem, 
-			final CommandInterface refCommand) {
+			final ICommand refCommand) {
 		
 //		WorkspaceSwingFrame bufFrame = refViewCanvasManager.getItemWorkspace( iFrameId );
 		
@@ -141,7 +141,7 @@ public class MenuManagerSimple
 		
 		
 		/**
-		 * Set menu item parameter...
+		 * ISet menu item parameter...
 		 */
 		
 		/**

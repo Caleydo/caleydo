@@ -74,7 +74,7 @@ public class SetModel extends Model
 		}
 
 		/*
-		 * @see ModelVisitorI#visitSelectionModel(Selection, Object)
+		 * @see ModelVisitorI#visitSelectionModel(ISelection, Object)
 		 */
 		public void visitSelectionModel(SelectionModel selection, Object argument) 
 		{

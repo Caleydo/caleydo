@@ -12,11 +12,11 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import cerberus.data.IUniqueManagedObject;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 
-import cerberus.data.collection.SubSet;
-import cerberus.data.collection.CollectionMetaDataInterface;
-import cerberus.data.collection.CollectionInterface;
+import cerberus.data.collection.ISubSet;
+import cerberus.data.collection.IMetaDataHandler;
+import cerberus.data.collection.ICollection;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
 import cerberus.data.collection.thread.CollectionThreadObject;
@@ -28,48 +28,48 @@ import cerberus.data.xml.MementoItemXML;
  * @author Michael Kalkusch
  *
  */
-public interface Set
-	extends  CollectionInterface,
-	CollectionMetaDataInterface, 
-	SubSet,
+public interface ISet
+	extends  ICollection,
+	IMetaDataHandler, 
+	ISubSet,
 	MementoItemXML,
 	CollectionThreadObject
 {
 	
 	/**
-	 * Adds a Selection to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other Selection
+	 * Adds a ISelection to a specific dimension.
+	 * Note, that addSelection() can not overwrite existing references to other ISelection
 	 * 
 	 * @param addSelection
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 	 * 
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDim( final Selection[] addSelection, 
+	public boolean setSelectionByDim( final ISelection[] addSelection, 
 			final int iAtDimension );
 	
 	/**
-	 * Adds a Selection to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other Selection
+	 * Adds a ISelection to a specific dimension.
+	 * Note, that addSelection() can not overwrite existing references to other ISelection
 	 * 
 	 * @param addSelection
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 	 * 
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDim( final Vector<Selection> addSelection, 
+	public boolean setSelectionByDim( final Vector<ISelection> addSelection, 
 			final int iAtDimension );
 	
 	/**
-	 * Adds a Selection to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other Selection
+	 * Adds a ISelection to a specific dimension.
+	 * Note, that addSelection() can not overwrite existing references to other ISelection
 	 * 
-	 * @param addSelection Selection to be added
+	 * @param addSelection ISelection to be added
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
-	 * @param iAtIndex index to put new Selection to
+	 * @param iAtIndex index to put new ISelection to
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDimAndIndex( final Selection addSelection, 
+	public boolean setSelectionByDimAndIndex( final ISelection addSelection, 
 			final int iAtDimension, 
 			final int iAtIndex );
 	
@@ -77,21 +77,21 @@ public interface Set
 	/**
 	 * Removes a selection bound to a dimension.
 	 * 
-	 * @param removeSelection Selection to be removed
+	 * @param removeSelection ISelection to be removed
 	 * @param iFromDimension address which dimension removeSelection shall be removed from, range [0.. getDimensionSize()-1 ]
 	 * @return TRUE if removeSelection was removed from dimension iFromDimension
 	 */
-	public boolean removeSelection( final Selection[] removeSelection, 
+	public boolean removeSelection( final ISelection[] removeSelection, 
 			final int iFromDimension );
 	
 	/**
 	 * Tests, if testSelection is in a specific dimension addressed by iAtDimension.
 	 * 
-	 * @param testSelection Selection to search for
+	 * @param testSelection ISelection to search for
 	 * @param iAtDimension address a dimension
 	 * @return TRUE if the testSelection is used for dimension iAtDimension
 	 */
-	public boolean hasSelection( final Selection testSelection, 
+	public boolean hasSelection( final ISelection testSelection, 
 			final int iAtDimension );
 	
 	/**
@@ -100,7 +100,7 @@ public interface Set
 	 * @param testSelection in any dimension of this set
 	 * @return TRUE if testSelection was in any dimension
 	 */
-	public boolean hasSelectionInSet( final Selection testSelection );
+	public boolean hasSelectionInSet( final ISelection testSelection );
 	
 	
 	/**
@@ -143,59 +143,59 @@ public interface Set
 	/**
 	 * Sets a reference to a storage.
 	 */
-	public void setStorageByDim( final Storage[] setStorage, final int iAtDimension  );
+	public void setStorageByDim( final IStorage[] setStorage, final int iAtDimension  );
 	
 	/**
 	 * Sets a reference to a storage.
 	 */
-	public boolean setStorageByDim( final Vector<Storage> setStorage, final int iAtDimension  );
+	public boolean setStorageByDim( final Vector<IStorage> setStorage, final int iAtDimension  );
 	
 	
 	
 	/**
 	 * Sets a reference to a storage.
 	 * 
-	 * @param addStorage Storage to be added
+	 * @param addStorage IStorage to be added
 	 * @param iAtDimension 
 	 * @param iAtIndex
 	 * @return TRUE if it was successful
 	 */
-	public boolean setStorageByDimAndIndex( final Storage addStorage, 
+	public boolean setStorageByDimAndIndex( final IStorage addStorage, 
 			final int iAtDimension, 
 			final int iAtIndex );
 	
 	/**
-	 * Get an Iterator containin all Selection's used in this Set.
+	 * Get an Iterator containin all ISelection's used in this ISet.
 	 * 
 	 * @param iAtDimension requested dimension
-	 * @return iterator for Selection's
+	 * @return iterator for ISelection's
 	 */	
 	public SelectionIterator iteratorSelectionByDim( final int iAtDimension );
 
 	/**
-	 * Get an Iterator for all Storage used in this Set.
+	 * Get an Iterator for all IStorage used in this ISet.
 	 * 
 	 * @param iAtDimension requested dimension
-	 * @return Storage bound to this dimension
+	 * @return IStorage bound to this dimension
 	 */
-	public Iterator<Storage> iteratorStorageByDim( final int iAtDimension );
+	public Iterator<IStorage> iteratorStorageByDim( final int iAtDimension );
 	
 	/**
 	 * Get the reference to the storage.
 	 * 
 	 * @return
 	 */
-	public Storage[] getStorageByDim( final int iAtDimension );
+	public IStorage[] getStorageByDim( final int iAtDimension );
 	
-	public Vector<Storage> getStorageVectorByDim( final int iAtDimension );
+	public Vector<IStorage> getStorageVectorByDim( final int iAtDimension );
 	
-	public Storage getStorageByDimAndIndex( final int iAtDimension, final int iAtIndex );
+	public IStorage getStorageByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
-	public Selection[] getSelectionByDim( final int iAtDimension );
+	public ISelection[] getSelectionByDim( final int iAtDimension );
 	
-	public Vector<Selection> getSelectionVectorByDim( final int iAtDimension );
+	public Vector<ISelection> getSelectionVectorByDim( final int iAtDimension );
 	
-	public Selection getSelectionByDimAndIndex( final int iAtDimension, final int iAtIndex );
+	public ISelection getSelectionByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
 	/**
 	 * Test if cache has changed without reevaluating the stats of the cildren.
@@ -208,34 +208,34 @@ public interface Set
 	
 /////////////////////////////
 //	/**
-//	 * Adds a Selection to a specific dimension.
-//	 * Note, that addSelection() can not overwrite existing references to other Selection
+//	 * Adds a ISelection to a specific dimension.
+//	 * Note, that addSelection() can not overwrite existing references to other ISelection
 //	 * 
 //	 * @param addSelection
 //	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 //	 * @return TRUE if adding was successful
 //	 */
-//	public boolean setSelectionByDim( final Selection[] addSelection, 
+//	public boolean setSelectionByDim( final ISelection[] addSelection, 
 //			final int iAtDimension );
 //	
 //	/**
 //	 * Removes a selection bound to a dimension.
 //	 * 
-//	 * @param removeSelection Selection to be removed
+//	 * @param removeSelection ISelection to be removed
 //	 * @param iFromDimension address which dimension removeSelection shall be removed from, range [0.. getDimensionSize()-1 ]
 //	 * @return TRUE if removeSelection was removed from dimension iFromDimension
 //	 */
-//	public boolean removeSelectionByDim( final Selection[] removeSelection, 
+//	public boolean removeSelectionByDim( final ISelection[] removeSelection, 
 //			final int iFromDimension );
 //	
 //	/**
 //	 * Tests, if testSelection is in a specific dimension addressed by iAtDimension.
 //	 * 
-//	 * @param testSelection Selection to search for
+//	 * @param testSelection ISelection to search for
 //	 * @param iAtDimension address a dimension
 //	 * @return TRUE if the testSelection is used for dimension iAtDimension
 //	 */
-//	public boolean hasSelection( final Selection testSelection, 
+//	public boolean hasSelection( final ISelection testSelection, 
 //			final int iAtDimension );
 //	
 //	/**
@@ -244,7 +244,7 @@ public interface Set
 //	 * @param testSelection in any dimension of this set
 //	 * @return TRUE if testSelection was in any dimension
 //	 */
-//	public boolean hasSelectionInSet( final Selection testSelection );
+//	public boolean hasSelectionInSet( final ISelection testSelection );
 //	
 //	
 //	/**
@@ -266,9 +266,9 @@ public interface Set
 //	
 //	/**
 //	 * Get the number of dimensions used in this set. 
-//	 * The number of dimension is identicto the number of stored Selection's.
+//	 * The number of dimension is identicto the number of stored ISelection's.
 //	 * 
-//	 * @return total number of dimensions, which is equal to the total nubmer of handled Selection's
+//	 * @return total number of dimensions, which is equal to the total nubmer of handled ISelection's
 //	 */
 //	public int getDimensions();
 //	
@@ -286,15 +286,15 @@ public interface Set
 //	/**
 //	 * Sets a reference to a storage.
 //	 */
-//	public void setStorageByDim( final Storage[] setStorage, final int iDimension );
+//	public void setStorageByDim( final IStorage[] setStorage, final int iDimension );
 //	
 //	/**
 //	 * Get the reference to the storage.
 //	 * 
 //	 * @return
 //	 */
-//	public Storage[] getStorageByDim( final int iDimension );
+//	public IStorage[] getStorageByDim( final int iDimension );
 //	
-//	public Selection[] getSelectionByDim( final int iDimension );
+//	public ISelection[] getSelectionByDim( final int iDimension );
 	
 }

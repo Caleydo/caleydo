@@ -120,7 +120,7 @@ public abstract class CollectionThreadItem
 	 * Sets new cacheId to iSetCacheIdCompared if iSetCacheIdCompared if larger than this.cacheId.
 	 * Called by getCacheId() if hildren are linked to current object.
 	 * 
-	 * @see prometheus.data.collection.CollectionInterface#getCacheId()
+	 * @see prometheus.data.collection.ICollection#getCacheId()
 	 * 
 	 * @param iSetCacheIdCompared set this as new cacheId if it is largen than current cacheId
 	 */
@@ -142,14 +142,14 @@ public abstract class CollectionThreadItem
 	}
 	
 	/**
-	 * @see prometheus.data.collection.CollectionInterface#setLabel(java.lang.String)
+	 * @see prometheus.data.collection.ICollection#setLabel(java.lang.String)
 	 */
 	public final void setLabel( final String setLabel) {
 		this.sLabel = setLabel;
 	}
 	
 	/**
-	 * @see prometheus.data.collection.CollectionInterface#getLabel()
+	 * @see prometheus.data.collection.ICollection#getLabel()
 	 */
 	public final String getLabel() {
 		return this.sLabel;

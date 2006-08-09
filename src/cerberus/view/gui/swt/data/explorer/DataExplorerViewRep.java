@@ -11,9 +11,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.IStorage;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.StorageManager;
@@ -112,7 +112,7 @@ public class DataExplorerViewRep implements ViewInter
 	/**
 	 * Fill the tree with Sets, Storages and Selections.
 	 * The Sets are furthermore divided in the subcomponents.
-	 * We assume here that a Set consists of Storages and Selections 
+	 * We assume here that a ISet consists of Storages and Selections 
 	 * which have the same dimension!
 	 * 
 	 * @see cerberus.manager.gui.SWTGUIManagerSimple#createApplicationWindow()
@@ -125,19 +125,19 @@ public class DataExplorerViewRep implements ViewInter
     	StorageModel currentStorageModel;
     	SelectionModel currentSelectionModel;
     	
-		Set[] allSetItems;
-		Storage[] allStorageItems;
-		Selection[] allSelectionItems;
+		ISet[] allSetItems;
+		IStorage[] allStorageItems;
+		ISelection[] allSelectionItems;
 		//TODO: a list would be nuch nicer - ask michael
-		Selection[] currentSelectionArray;
-		Storage[] currentStorageArray;
+		ISelection[] currentSelectionArray;
+		IStorage[] currentStorageArray;
 		
-		Set currentSet;
-		Storage currentStorage;
-		Selection currentSelection;
+		ISet currentSet;
+		IStorage currentStorage;
+		ISelection currentSelection;
 		
-//		List<Storage> allStorageItemsInSet;
-//		List<Selection> allSelectionItemsInSet;
+//		List<IStorage> allStorageItemsInSet;
+//		List<ISelection> allSelectionItemsInSet;
 		
     	//root node in the tree (not visible)
 		rootSet = new SetModel();
@@ -168,7 +168,7 @@ public class DataExplorerViewRep implements ViewInter
 		    	currentSelectionArray = currentSet.getSelectionByDim(dimIndex);		    	
 		    	for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
 		    	{
-		    		currentSelection = (Selection)currentSelectionArray[selectionIndex];
+		    		currentSelection = (ISelection)currentSelectionArray[selectionIndex];
 		    		
 					//insert SELECTION with ID and label in the tree
 					currentSelectionModel = new SelectionModel(
@@ -180,7 +180,7 @@ public class DataExplorerViewRep implements ViewInter
 		    	currentStorageArray = currentSet.getStorageByDim(dimIndex);
 		    	for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
 		    	{
-		    		currentStorage = (Storage)currentStorageArray[storageIndex];
+		    		currentStorage = (IStorage)currentStorageArray[storageIndex];
 		    		
 					//insert STORAGE with ID and label in the tree
 					currentStorageModel = new StorageModel(

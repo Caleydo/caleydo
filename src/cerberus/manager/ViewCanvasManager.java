@@ -19,7 +19,7 @@ import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
 /**
- * Manges all Set's.
+ * Manges all ISet's.
  * 
  * Note: the SetManager must register itself to the singelton prometheus.app.SingeltonManager
  * 

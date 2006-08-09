@@ -8,21 +8,21 @@
  */
 package cerberus.test.objecttest.command.memento;
 
-import cerberus.command.memento.Memento;
+import cerberus.command.memento.IMemento;
 //import cerberus.command.memento.MementoState;
-import cerberus.command.memento.MementoCreatorInterface;
+import cerberus.command.memento.IMementoCreator;
 
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Class for testing Memento.
+ * Class for testing IMemento.
  * 
  * @author Michael Kalkusch
  *
  */
 public final class MementoTesterObject {
 
-	private MementoCreatorInterface refCreator;
+	private IMementoCreator refCreator;
 	
 	private int iTestRuns;
 	
@@ -30,7 +30,7 @@ public final class MementoTesterObject {
 		this.iTestRuns = iTestRuns;
 	}
 	
-	public void setMementoCreator( MementoCreatorInterface creatorObject, final int iTestMementos ) {
+	public void setMementoCreator( IMementoCreator creatorObject, final int iTestMementos ) {
 		refCreator = creatorObject;
 		if ( iTestRuns > 0 ) {
 			iTestRuns = iTestMementos;
@@ -39,7 +39,7 @@ public final class MementoTesterObject {
 	
 	public boolean testGetSetMemento() {
 		
-		Memento[] testMementos = new Memento[iTestRuns];
+		IMemento[] testMementos = new IMemento[iTestRuns];
 		
 		for ( int i=0; i < iTestRuns; i++ ) {
 			testMementos[i] = refCreator.createMemento();

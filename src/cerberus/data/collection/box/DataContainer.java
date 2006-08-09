@@ -6,9 +6,9 @@ package cerberus.data.collection.box;
 import java.util.Vector;
 import java.util.Iterator;
 
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.IStorage;
 
 import cerberus.data.collection.thread.CollectionThreadElement;
 import cerberus.data.collection.thread.impl.AbstractThreadElement;
@@ -16,7 +16,7 @@ import cerberus.data.collection.thread.lock.CollectionLock;
 
 
 /**
- * Container or box holding several Set's.
+ * Container or box holding several ISet's.
  * Has it's own unique id and a label.
  * 
  * @author kalkusch
@@ -33,12 +33,12 @@ public class DataContainer extends AbstractThreadElement implements
 	protected String sMetaBoxLabel;
 	
 	/**
-	 * Define a group of cerberus.data.collection.Set objects.
-	 * Each Set may have a label stored in cerberus.data.collection.box.DataContainer#vecLabelOfSet
+	 * Define a group of cerberus.data.collection.ISet objects.
+	 * Each ISet may have a label stored in cerberus.data.collection.box.DataContainer#vecLabelOfSet
 	 * 
 	 * @see cerberus.data.collection.box.DataContainer#vecLabelOfSet
 	 */
-	protected Vector <Set> vecSet;
+	protected Vector <ISet> vecSet;
 	
 	/**
 	 * Define a label for each set
@@ -78,7 +78,7 @@ public class DataContainer extends AbstractThreadElement implements
 	}
 	
 	/**
-	 * Set Label of DataContainer. 
+	 * ISet Label of DataContainer. 
 	 * Must not be an unique name.
 	 * 
 	 * @param setMetaBoxLabel set new label name
@@ -87,16 +87,16 @@ public class DataContainer extends AbstractThreadElement implements
 		this.sMetaBoxLabel = setMetaBoxLabel;
 	}
 	
-	public void addSet( Set addSet, String label ) {
+	public void addSet( ISet addSet, String label ) {
 		
 	}
 	
-	public void removeSet( Set addSet ) {
+	public void removeSet( ISet addSet ) {
 		
 	}
 	
 	/**
-	 * @see cerberus.data.collection.box.DataContainer#addSet(Set, String)
+	 * @see cerberus.data.collection.box.DataContainer#addSet(ISet, String)
 	 * 
 	 * @param iUniqueSetId
 	 * @param label
@@ -108,7 +108,7 @@ public class DataContainer extends AbstractThreadElement implements
 	/**
 	 * 
 	 * @see cerberus.data.collection.box.DataContainer#addItem(int, String)
-	 * @see cerberus.data.collection.box.DataContainer#addSet(Set, String)
+	 * @see cerberus.data.collection.box.DataContainer#addSet(ISet, String)
 	 * 
 	 * @param iUniqueSetId
 	 */
@@ -117,20 +117,20 @@ public class DataContainer extends AbstractThreadElement implements
 	}
 	
 	/**
-	 * Swap position of two Set'S in a Box.
+	 * Swap position of two ISet'S in a Box.
 	 * 
-	 * @param iFromUniqueSetId Addess first Set
-	 * @param iToUniqueSetId address second Set
+	 * @param iFromUniqueSetId Addess first ISet
+	 * @param iToUniqueSetId address second ISet
 	 */
 	public void swapItem( int iFromUniqueSetId, int iToUniqueSetId ) {
 		
 	}
 	
 	/**
-	 * Remove all Set objects from Box.
+	 * Remove all ISet objects from Box.
 	 * 
 	 * @see cerberus.data.collection.box.DataContainer#addItem(int, String)
-	 * @see cerberus.data.collection.box.DataContainer#addSet(Set, String)
+	 * @see cerberus.data.collection.box.DataContainer#addSet(ISet, String)
 	 * 
 	 *
 	 */

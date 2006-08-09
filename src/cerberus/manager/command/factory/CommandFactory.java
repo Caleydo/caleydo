@@ -16,10 +16,10 @@ import java.util.StringTokenizer;
 import cerberus.manager.GeneralManager;
 
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.CommandTypeGroup;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.base.ACommand;
 
 import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
@@ -39,7 +39,7 @@ import cerberus.command.window.CmdWindowNewIFrameJoglHeatmap;
 import cerberus.command.window.CmdWindowNewIFrameJoglScatterplot;
 import cerberus.command.window.CmdWindowSetActiveFrame;
 
-import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.queue.ICommandQueue;
 import cerberus.command.queue.CmdSystemRunCmdQueue;
 import cerberus.command.queue.CommandQueueVector;
 
@@ -63,13 +63,13 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
  *
  */
 public class CommandFactory 
-extends AbstractCommand
-	implements CommandInterface, CommandFactoryInterface {
+extends ACommand
+	implements ICommand, CommandFactoryInterface {
 
 	/**
 	 * Command created by the factory.
 	 */
-	protected CommandInterface refCommand;
+	protected ICommand refCommand;
 	
 	protected final GeneralManager refGeneralManager;
 
@@ -107,7 +107,7 @@ extends AbstractCommand
 	 *  (non-Javadoc)
 	 * @see cerberus.command.factory.CommandFactoryInterface#createCommand(cerberus.command.CommandType)
 	 */
-	public CommandInterface createCommand( 
+	public ICommand createCommand( 
 			final CommandType createCommandByType, 
 			final String details ) {
 		
@@ -166,13 +166,13 @@ extends AbstractCommand
 	 * 
 	 * @see cerberus.manager.command.factory.CommandFactoryInterface#createCommand(java.lang.String, java.util.LinkedList)
 	 */
-	public CommandInterface createCommand( 
+	public ICommand createCommand( 
 			final String sData_Cmd_type,
 			final LinkedList <String> llAttributes ) {
 		
 		CommandQueueSaxType cmdType = CommandQueueSaxType.valueOf( sData_Cmd_type );
 		
-		CommandInterface createdCommand = null;
+		ICommand createdCommand = null;
 		
 		switch ( cmdType ) {
 		
@@ -237,7 +237,7 @@ extends AbstractCommand
 		return createdCommand;
 	}
 	
-	public CommandInterface createCommandQueue( final String sCmdType,
+	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,
 			final int iCmdId,
 			final int iCmdQueueId,
@@ -270,7 +270,7 @@ extends AbstractCommand
 		switch (queueType) 
 		{
 		case COMMAND_QUEUE_OPEN: {
-			CommandInterface cmdQueue = new CommandQueueVector(iNewUniqueId, iCmdQueueId);				
+			ICommand cmdQueue = new CommandQueueVector(iNewUniqueId, iCmdQueueId);				
 			return cmdQueue;
 		}
 			
@@ -286,7 +286,7 @@ extends AbstractCommand
 		
 	}
 	
-	protected CommandInterface createDatasetCommand( 
+	protected ICommand createDatasetCommand( 
 			final CommandType setCommandType,
 			final String details ) {
 		switch (setCommandType) {
@@ -311,7 +311,7 @@ extends AbstractCommand
 		return null;
 	}
 	
-	protected CommandInterface createSelectionCommand( 
+	protected ICommand createSelectionCommand( 
 			final CommandType setCommandType,
 			final String details ) {
 		switch (setCommandType) {
@@ -336,7 +336,7 @@ extends AbstractCommand
 		return null;
 	}
 	
-	protected CommandInterface createSystemCommand( 
+	protected ICommand createSystemCommand( 
 			final CommandType setCommandType,
 			final String details ) {
 		switch (setCommandType) {
@@ -358,7 +358,7 @@ extends AbstractCommand
 		return null;
 	}
 	
-	protected CommandInterface createWindowCommand( 
+	protected ICommand createWindowCommand( 
 			final CommandType setCommandType,
 			final String details ) {
 		
@@ -452,7 +452,7 @@ extends AbstractCommand
 	
 	
 	
-	protected CommandInterface createSelectionValueCommand( 
+	protected ICommand createSelectionValueCommand( 
 			final CommandType setCommandType,
 			final String details ) {
 		switch (setCommandType) {
@@ -480,13 +480,13 @@ extends AbstractCommand
 	 * Note: be carefull with this methode, becaus maybe the commadn was already executed or distryed, or a new command was created meanwhile
 	 * @return reference to last created command
 	 */
-	protected CommandInterface getLastCreatedCommand() {
+	protected ICommand getLastCreatedCommand() {
 		return refCommand;
 	}
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		try {
@@ -504,7 +504,7 @@ extends AbstractCommand
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		try {

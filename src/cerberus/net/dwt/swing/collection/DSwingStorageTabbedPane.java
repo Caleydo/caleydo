@@ -34,8 +34,8 @@ import javax.swing.JTabbedPane;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.command.CommandInterface;
-import cerberus.data.collection.Storage;
+import cerberus.command.ICommand;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.SelectionSingleBlock;
 import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
@@ -90,7 +90,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	private final static String[] tooltipText = {"Id",
 		"label" };
 	
-	private final static String[] sTypeNames = {"Flat Storage",
+	private final static String[] sTypeNames = {"Flat IStorage",
 		"none"};
 	
 	private final static int[] j_array_length = { 5, 10};
@@ -116,7 +116,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	private boolean bDataFromGui_Float_HasChanged 	= true;
 	private boolean bDataFromGui_String_HasChanged 	= true;
 	
-	private Storage refStorage;
+	private IStorage refStorage;
 	
 	/**
 	 * 
@@ -300,11 +300,11 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * Immedeatly updates the gui based on the data from the Selection.
+	 * Immedeatly updates the gui based on the data from the ISelection.
 	 * 
 	 * @param useSelection data used to update the Gui
 	 */
-	public void updateFromStorageToGui( final Storage useStorage ) {
+	public void updateFromStorageToGui( final IStorage useStorage ) {
 
 		if ( useStorage == null ) {
 			assert useStorage!= null :"updateFromStorageToGui() can not handle null-pointer";
@@ -392,11 +392,11 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * Get the current Selection shown in this element.
+	 * Get the current ISelection shown in this element.
 	 * 
-	 * @return Selection the data was read from
+	 * @return ISelection the data was read from
 	 */
-	public Storage getCurrentSelection() {
+	public IStorage getCurrentSelection() {
 		return refStorage;
 	}
 	
@@ -496,11 +496,11 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * updates parameters from the GUI to the Selection.
+	 * updates parameters from the GUI to the ISelection.
 	 * 
 	 * @param updateSelection
 	 */
-	public void updateStorageFromGui( Storage updateStorage ) {
+	public void updateStorageFromGui( IStorage updateStorage ) {
 	
 		assert updateStorage != null:"updateStorageFromGui() can not handle null-pointer";
 		
@@ -541,9 +541,9 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * Do we need to update the Selection because the Gui requires it
+	 * Do we need to update the ISelection because the Gui requires it
 	 * 
-	 * @return True, if the Selection needs to be update.
+	 * @return True, if the ISelection needs to be update.
 	 */
 	public boolean hasSelectionChanged() {
 		return bUpdateSelectionFromGui;
@@ -574,7 +574,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 		}
 	}
 	
-	public void triggerCommand( CommandInterface triggerCmd ) {
+	public void triggerCommand( ICommand triggerCmd ) {
 //		this.refCanvas.
 	}
 	

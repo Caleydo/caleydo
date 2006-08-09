@@ -9,10 +9,10 @@
 package cerberus.command.window;
 
 import cerberus.manager.GeneralManager;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.CmdHandleSetInterface;
-import cerberus.command.window.CmdHandleSetBase;
+import cerberus.command.base.ACmdHandleSet;
+import cerberus.command.base.ICmdHandleSet;
 //import cerberus.net.dwt.swing.collection.DSwingSelectionCanvas;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -24,14 +24,14 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdWindowNewIFrameSelection 
-extends CmdHandleSetBase 
-implements CommandInterface, CmdHandleSetInterface {
+extends ACmdHandleSet 
+implements ICommand, ICmdHandleSet {
 
 //	private DSwingSelectionCanvas refDSwingSelectionCanvas = null;
 
 	
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
@@ -39,16 +39,16 @@ implements CommandInterface, CmdHandleSetInterface {
 			final int iTargetFrameId ) {
 		super( refGeneralManager,
 				iTargetFrameId,
-				"Selection" );
+				"ISelection" );
 	}
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		setGuiTextHeader( "Selection" );
+		setGuiTextHeader( "ISelection" );
 		
 //		DInternalFrame newDInternalFrame = subCmdNewIFrame.doCommand_getDInternalFrame();
 //	
@@ -62,14 +62,14 @@ implements CommandInterface, CmdHandleSetInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_SELECTION;

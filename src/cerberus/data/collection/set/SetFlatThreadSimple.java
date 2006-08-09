@@ -14,10 +14,10 @@ import java.util.Vector;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.CollectionMetaData;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.IMetaData;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
 import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
 import cerberus.xml.parser.DParseSaxHandler;
@@ -31,23 +31,23 @@ import cerberus.data.collection.thread.lock.CollectionLock;
  */
 public class SetFlatThreadSimple 
 extends CollectionThreadItem
-implements Set {
+implements ISet {
 
 	/**
 	 * Since only one Selections is stored only one 
 	 * MetaData object is needed. 
 	 */
-	protected CollectionMetaData refMetaDataAllAndAny = null;
+	protected IMetaData refMetaDataAllAndAny = null;
 	
 	/**
-	 * Store reference to the Selection.
+	 * Store reference to the ISelection.
 	 */
-	protected Selection[] refFlatSelection = null;
+	protected ISelection[] refFlatSelection = null;
 	
 	/**
 	 * Store reference to the Storages.
 	 */
-	protected Storage[] refFlatStorage = null;
+	protected IStorage[] refFlatStorage = null;
 	
 	/**
 	 * Variable for the dimension of this set.
@@ -62,16 +62,16 @@ implements Set {
 
 		super( iSetCollectionId, setGeneralManager, setCollectionLock );
 		
-		refFlatSelection = new Selection[1];
+		refFlatSelection = new ISelection[1];
 		
-		refFlatStorage = new Storage[1];
+		refFlatStorage = new IStorage[1];
 	}
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#setSelection(cerberus.data.collection.Selection, int)
+	 * @see cerberus.data.collection.ISet#setSelection(cerberus.data.collection.ISelection, int)
 	 */
-	public boolean setSelectionByDim(Selection[] addSelection, int iAtDimension) {		
+	public boolean setSelectionByDim(ISelection[] addSelection, int iAtDimension) {		
 		
 		if ( iAtDimension >= refFlatSelection.length) {
 			assert false :"Can not address dimension != 0";
@@ -82,7 +82,7 @@ implements Set {
 		return true;
 	}
 	
-	public boolean setSelectionByDimAndIndex( final Selection addSelection, 
+	public boolean setSelectionByDimAndIndex( final ISelection addSelection, 
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
@@ -91,8 +91,8 @@ implements Set {
 		}
 		
 		if ( refFlatSelection.length < iAtIndex) {
-			/* create a new Selection[] and copy to new Selection[]... */
-			Selection[] copyToNewSelectionArray = new Selection[iAtIndex+1];
+			/* create a new ISelection[] and copy to new ISelection[]... */
+			ISelection[] copyToNewSelectionArray = new ISelection[iAtIndex+1];
 			
 			for ( int i=0; i < refFlatSelection.length; i++ ) {				
 				copyToNewSelectionArray[i] = refFlatSelection[i];
@@ -107,9 +107,9 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Set#setStorageByDimAndIndex(cerberus.data.collection.Storage, int, int)
+	 * @see cerberus.data.collection.ISet#setStorageByDimAndIndex(cerberus.data.collection.IStorage, int, int)
 	 */
-	public boolean setStorageByDimAndIndex( final Storage addStorage, 
+	public boolean setStorageByDimAndIndex( final IStorage addStorage, 
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
@@ -118,8 +118,8 @@ implements Set {
 		}
 		
 		if ( refFlatStorage.length < iAtIndex) {
-			/* create a new Selection[] and copy to new Selection[]... */
-			Storage[] copyToNewSelectionArray = new Storage[iAtIndex+1];
+			/* create a new ISelection[] and copy to new ISelection[]... */
+			IStorage[] copyToNewSelectionArray = new IStorage[iAtIndex+1];
 			
 			for ( int i=0; i < refFlatStorage.length; i++ ) {				
 				copyToNewSelectionArray[i] = refFlatStorage[i];
@@ -133,9 +133,9 @@ implements Set {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#removeSelection(cerberus.data.collection.Selection, int)
+	 * @see cerberus.data.collection.ISet#removeSelection(cerberus.data.collection.ISelection, int)
 	 */
-	public boolean removeSelection( final Selection[] removeSelection, final int iFromDimension) {
+	public boolean removeSelection( final ISelection[] removeSelection, final int iFromDimension) {
 		
 		for ( int i=0; i< removeSelection.length; i++ ) {
 			if ( refFlatSelection[iFromDimension] == removeSelection[i] ) {
@@ -147,9 +147,9 @@ implements Set {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#hasSelection(cerberus.data.collection.Selection, int)
+	 * @see cerberus.data.collection.ISet#hasSelection(cerberus.data.collection.ISelection, int)
 	 */
-	public boolean hasSelection(Selection testSelection, int iAtDimension) {
+	public boolean hasSelection(ISelection testSelection, int iAtDimension) {
 		
 		assert testSelection != null: "SetFlatSimple.hasSelection() test with null pointer!";
 		
@@ -161,9 +161,9 @@ implements Set {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#hasSelectionInSet(cerberus.data.collection.Selection)
+	 * @see cerberus.data.collection.ISet#hasSelectionInSet(cerberus.data.collection.ISelection)
 	 */
-	public boolean hasSelectionInSet(Selection testSelection) {
+	public boolean hasSelectionInSet(ISelection testSelection) {
 		
 		//FIXME return index instead of true or false
 		
@@ -175,7 +175,7 @@ implements Set {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#getDimensionSizeForAllSelections()
+	 * @see cerberus.data.collection.ISet#getDimensionSizeForAllSelections()
 	 */
 	public int[] getDimensionSizeForAllSelections() {
 		
@@ -184,25 +184,25 @@ implements Set {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#getDimensionSize(int)
+	 * @see cerberus.data.collection.ISet#getDimensionSize(int)
 	 */
 	public int getDimensionSize(int iAtDimension) {
 		//FIXME what shall that function do?
-		assert refFlatSelection != null : "no Selection[] is set";
-		assert refFlatSelection.length > 0 : "no Selection is set";
+		assert refFlatSelection != null : "no ISelection[] is set";
+		assert refFlatSelection.length > 0 : "no ISelection is set";
 		
 		return refFlatSelection[0].length();
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#getDimensions()
+	 * @see cerberus.data.collection.ISet#getDimensions()
 	 */
 	public int getDimensions() {
 		return 1;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#setDimensionSize(int, int)
+	 * @see cerberus.data.collection.ISet#setDimensionSize(int, int)
 	 */
 	public void setDimensionSize(int iIndexDimension, int iValueDimensionSize) {
 		//FIXME what shall that function do?
@@ -214,18 +214,18 @@ implements Set {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#getSelection(int)
+	 * @see cerberus.data.collection.ISet#getSelection(int)
 	 */
-	public Selection[] getSelectionByDim(int iAtDimension) {
+	public ISelection[] getSelectionByDim(int iAtDimension) {
 		//FIXME add range check..
 		return refFlatSelection;
 	}
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Set#getSelectionByDimAndIndex(int, int)
+	 * @see cerberus.data.collection.ISet#getSelectionByDimAndIndex(int, int)
 	 */
-	public Selection getSelectionByDimAndIndex( final int iAtDimension, 
+	public ISelection getSelectionByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {
 		return refFlatSelection[iAtIndex];
 	}
@@ -236,10 +236,10 @@ implements Set {
 	 * Since only one selection is stored only one MetaData obejct is used.
 	 * 
 	 * @param setMetaData sets the meta data
-	 * @see cerberus.data.collection.CollectionMetaDataInterface#setMetaData(cerberus.data.collection.CollectionMetaData)
+	 * @see cerberus.data.collection.IMetaDataCollection#setMetaData(cerberus.data.collection.IMetaData)
 	 * 
 	 */
-	public void setMetaData(CollectionMetaData setMetaData) {
+	public void setMetaData(IMetaData setMetaData) {
 		
 		assert setMetaData != null :"setMetaData() with null-pointer.";
 		
@@ -247,9 +247,9 @@ implements Set {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionMetaDataInterface#getMetaData()
+	 * @see cerberus.data.collection.IMetaDataCollection#getMetaData()
 	 */
-	public CollectionMetaData getMetaData() {
+	public IMetaData getMetaData() {
 		return refMetaDataAllAndAny;
 	}
 	
@@ -258,9 +258,9 @@ implements Set {
 	 * 
 	 * @return curretn meta data
 	 * 
-	 * @see cerberus.data.collection.MetaDataSetInterface#getMetaDataAny()
+	 * @see cerberus.data.collection.IMetaDataSet#getMetaData()
 	 */
-	public CollectionMetaData getMetaDataAny() {
+	public IMetaData getMetaDataAny() {
 		return refMetaDataAllAndAny;
 	}
 
@@ -269,20 +269,20 @@ implements Set {
 	 * 
 	 * @param sets the meta data
 	 * 
-	 * @see cerberus.data.collection.MetaDataSetInterface#setMetaDataAny(cerberus.data.collection.CollectionMetaData)
+	 * @see cerberus.data.collection.IMetaDataSet#setMetaData(cerberus.data.collection.IMetaData)
 	 */
-	public void setMetaDataAny(CollectionMetaData setMetaData) {
+	public void setMetaDataAny(IMetaData setMetaData) {
 		setMetaData( setMetaData );
 	}
 
 	/**
 	 * No subsets are available.
 	 * 
-	 * @see cerberus.data.collection.SubSet#getSubSets()
+	 * @see cerberus.data.collection.ISubSet#getSubSets()
 	 */
-	public Set[] getSubSets() {
+	public ISet[] getSubSets() {
 		
-		assert false: "SetFlatSimple.getSubSets() SetFlatSimple does not supper SubSet's.";
+		assert false: "SetFlatSimple.getSubSets() SetFlatSimple does not supper ISubSet's.";
 	
 		return null;
 	}
@@ -290,7 +290,7 @@ implements Set {
 	/**
 	 * No subsets are available.
 	 * 
-	 * @see cerberus.data.collection.SubSet#hasSubSets()
+	 * @see cerberus.data.collection.ISubSet#hasSubSets()
 	 */
 	public boolean hasSubSets() {
 		return false;
@@ -299,28 +299,28 @@ implements Set {
 	/**
 	 * No subsets are available.
 	 * 
-	 * @see cerberus.data.collection.SubSet#addSubSet(cerberus.data.collection.Set)
+	 * @see cerberus.data.collection.ISubSet#addSubSet(cerberus.data.collection.ISet)
 	 */
-	public boolean addSubSet(Set addSet) {
-		throw new RuntimeException("SetFlatSimple.addSubSet() SetFlatSimple does not supper SubSet's.");
+	public boolean addSubSet(ISet addSet) {
+		throw new RuntimeException("SetFlatSimple.addSubSet() SetFlatSimple does not supper ISubSet's.");
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.SubSet#swapSubSet(cerberus.data.collection.Set, cerberus.data.collection.Set)
+	 * @see cerberus.data.collection.ISubSet#swapSubSet(cerberus.data.collection.ISet, cerberus.data.collection.ISet)
 	 */
-	public boolean swapSubSet(Set fromSet, Set toSet) {
+	public boolean swapSubSet(ISet fromSet, ISet toSet) {
 		
-		assert false: "SetFlatSimple.swapSubSet() SetFlatSimple does not supper SubSet's.";
+		assert false: "SetFlatSimple.swapSubSet() SetFlatSimple does not supper ISubSet's.";
 	
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.SubSet#removeSubSet(cerberus.data.collection.Set)
+	 * @see cerberus.data.collection.ISubSet#removeSubSet(cerberus.data.collection.ISet)
 	 */
-	public boolean removeSubSet(Set addSet) {
+	public boolean removeSubSet(ISet addSet) {
 
-		assert false: "SetFlatSimple.removeSubSet() SetFlatSimnple does not supper SubSet's.";
+		assert false: "SetFlatSimple.removeSubSet() SetFlatSimnple does not supper ISubSet's.";
 	
 		return false;
 	}
@@ -351,13 +351,13 @@ implements Set {
 			/**
 			 * Store reference to the Selections.
 			 */
-			refFlatSelection = new Selection[iListOfSellectionId.length];
+			refFlatSelection = new ISelection[iListOfSellectionId.length];
 			
 			for ( int iIndex=0; iIndex< iListOfSellectionId.length ; iIndex++ ) {
 				
 				try {					
 					Object buffer = getManager().getItem( iListOfSellectionId[iIndex] );
-					refFlatSelection[iIndex] = (Selection) buffer;
+					refFlatSelection[iIndex] = (ISelection) buffer;
 				}
 				catch ( NullPointerException npe) {
 					npe.printStackTrace();
@@ -368,13 +368,13 @@ implements Set {
 			/**
 			 * Store reference to the Storages.
 			 */
-			refFlatStorage = new Storage[iListOfStorageId.length];
+			refFlatStorage = new IStorage[iListOfStorageId.length];
 			
 			for ( int iIndex=0; iIndex< iListOfStorageId.length ; iIndex++ ) {
 				
 				try {					
 					Object buffer = getManager().getItem( iListOfStorageId[iIndex] );
-					refFlatStorage[iIndex] = (Storage) buffer;
+					refFlatStorage[iIndex] = (IStorage) buffer;
 				}
 				catch ( NullPointerException npe) {
 					npe.printStackTrace();
@@ -409,9 +409,9 @@ implements Set {
 //		final String openDetail = "<DataComponentItemDetails type=\"";
 //		final String closeDetail = "</DataComponentItemDetails>\n";
 		
-		//FIXME Memento is not created yet!
+		//FIXME IMemento is not created yet!
 		
-		assert false:"Memento of Set is not created yet!";
+		assert false:"IMemento of ISet is not created yet!";
 		
 		return createMementoXML_Intro(
 				ManagerObjectType.SELECTION_SINGLE_BLOCK.name())
@@ -427,22 +427,22 @@ implements Set {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#getStorage()
+	 * @see cerberus.data.collection.ISet#getStorage()
 	 */
-	public final Storage[] getStorageByDim( final int iAtDimension ) {
+	public final IStorage[] getStorageByDim( final int iAtDimension ) {
 		return refFlatStorage;
 	}
 	
-	public final Storage getStorageByDimAndIndex( final int iAtDimension, 
+	public final IStorage getStorageByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {
 		return refFlatStorage[iAtIndex];
 	}
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Set#setStorage(cerberus.data.collection.Storage)
+	 * @see cerberus.data.collection.ISet#setStorage(cerberus.data.collection.IStorage)
 	 */
-	public final void setStorageByDim(Storage[] setStorage, final int iAtDimension ) {
+	public final void setStorageByDim(IStorage[] setStorage, final int iAtDimension ) {
 		
 		assert setStorage != null: "setStorage() with null-pointer";
 		
@@ -450,12 +450,12 @@ implements Set {
 	}
 	
 
-	public final boolean setSelectionByDim( Vector<Selection> setSelection, final int iAtDimension ) {
+	public final boolean setSelectionByDim( Vector<ISelection> setSelection, final int iAtDimension ) {
 		
 		assert setSelection != null: "setStorage() with null-pointer";
 		
-		refFlatSelection = new Selection[ setSelection.size() ];		
-		Iterator <Selection> iter = setSelection.iterator();
+		refFlatSelection = new ISelection[ setSelection.size() ];		
+		Iterator <ISelection> iter = setSelection.iterator();
 		int iIndex = 0;
 		
 		while ( iter.hasNext() ) {
@@ -465,12 +465,12 @@ implements Set {
 		return true;
 	}
 	
-	public final boolean setStorageByDim( Vector<Storage> setStorage, final int iAtDimension ) {
+	public final boolean setStorageByDim( Vector<IStorage> setStorage, final int iAtDimension ) {
 		
 		assert setStorage != null: "setStorage() with null-pointer";
 		
-		refFlatStorage = new Storage[ setStorage.size() ];		
-		Iterator <Storage> iter = setStorage.iterator();
+		refFlatStorage = new IStorage[ setStorage.size() ];		
+		Iterator <IStorage> iter = setStorage.iterator();
 		int iIndex = 0;
 		
 		while ( iter.hasNext() ) {
@@ -498,7 +498,7 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionInterface#getCacheId()
+	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		
@@ -527,7 +527,7 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Set#hasCacheChangedReadOnly(int)
+	 * @see cerberus.data.collection.ISet#hasCacheChangedReadOnly(int)
 	 */
 	public final boolean hasCacheChangedReadOnly( final int iCompareCacheId ) {
 		return (iCompareCacheId > this.iCacheId);
@@ -536,11 +536,11 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Set#iteratorStorageByDim(int)
+	 * @see cerberus.data.collection.ISet#iteratorStorageByDim(int)
 	 */
-	public Iterator<Storage> iteratorStorageByDim( final int iAtDimension ) {
+	public Iterator<IStorage> iteratorStorageByDim( final int iAtDimension ) {
 		
-		Vector<Storage> vec_Storage = new Vector<Storage> (refFlatStorage.length);
+		Vector<IStorage> vec_Storage = new Vector<IStorage> (refFlatStorage.length);
 		
 		for ( int i=0; i <refFlatStorage.length; i++ ) {					
 			vec_Storage.addElement( refFlatStorage[i] );
@@ -551,11 +551,11 @@ implements Set {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Set#iteratorSelectionByDim(int)
+	 * @see cerberus.data.collection.ISet#iteratorSelectionByDim(int)
 	 */
 	public SelectionIterator iteratorSelectionByDim( final int iAtDimension ) {
-		Vector<Selection> vec_Selection = 
-			new Vector<Selection> (refFlatSelection.length);
+		Vector<ISelection> vec_Selection = 
+			new Vector<ISelection> (refFlatSelection.length);
 		
 		for ( int i=0; i <refFlatSelection.length; i++ ) {					
 			vec_Selection.addElement( refFlatSelection[i] );
@@ -567,9 +567,9 @@ implements Set {
 		return iterator;
 	}
 	
-	public final Vector<Storage> getStorageVectorByDim( final int iAtDimension ) {
+	public final Vector<IStorage> getStorageVectorByDim( final int iAtDimension ) {
 		
-		Vector<Storage> resultVector = new Vector<Storage> (refFlatStorage.length);
+		Vector<IStorage> resultVector = new Vector<IStorage> (refFlatStorage.length);
 		
 		for ( int i=0; i < refFlatStorage.length; i++ ) {
 			resultVector.addElement( refFlatStorage[i] );
@@ -578,9 +578,9 @@ implements Set {
 		return resultVector;
 	}
 	
-	public final Vector<Selection> getSelectionVectorByDim( final int iAtDimension ) {
+	public final Vector<ISelection> getSelectionVectorByDim( final int iAtDimension ) {
 		
-		Vector<Selection> resultVector = new Vector<Selection> (refFlatSelection.length);
+		Vector<ISelection> resultVector = new Vector<ISelection> (refFlatSelection.length);
 		
 		for ( int i=0; i < refFlatSelection.length; i++ ) {
 			resultVector.addElement( refFlatSelection[i] );

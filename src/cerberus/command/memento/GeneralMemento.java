@@ -13,9 +13,9 @@ import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * One base implementation of the Memento interface.
+ * One base implementation of the IMemento interface.
  * 
- * Desing Patern "Memento"
+ * Desing Patern "IMemento"
  * 
  * @see cerberus.manager.MementoManager
  * 
@@ -23,21 +23,21 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class GeneralMemento 
-	implements Memento {
+	implements IMemento {
 
 	
 	/**
 	 * Stores all inforamtion needed to reset an object to a previouse state.
-	 * Must only be used by the object, that created the Memento!
-	 * Object which creates the Memento must derive a class from MementoStateInterface
+	 * Must only be used by the object, that created the IMemento!
+	 * Object which creates the IMemento must derive a class from MementoStateInterface
 	 * and cast to the derived class once the obejct revices the MementoStateInterface-object.
 	 * 
 	 */
-	protected MementoState refMementoState = null;
-	//TODO: write TEST for Memento objects!
+	protected IMementoState refMementoState = null;
+	//TODO: write TEST for IMemento objects!
 
 	/**
-	 * Reference to creator of Memento.
+	 * Reference to creator of IMemento.
 	 */
 	final protected Object refMementoCreator;
 	
@@ -52,7 +52,7 @@ public class GeneralMemento
 	 * @param setMementoCreator creator of memento
 	 */
 	public GeneralMemento(final Object setMementoCreator) {
-		assert setMementoCreator != null: "Memento(Object)Can not creat a memento with null-pointer as parent";
+		assert setMementoCreator != null: "IMemento(Object)Can not creat a memento with null-pointer as parent";
 		
 		refMementoCreator = setMementoCreator;
 	}
@@ -64,8 +64,8 @@ public class GeneralMemento
 	 * @param setMementoData data from the creator object
 	 */
 	public GeneralMemento(final Object setMementoCreator,
-			final MementoState setMementoData) {
-		assert setMementoCreator != null: "Memento(Object,MementoType) Can not creat a memento with null-pointer as parent";
+			final IMementoState setMementoData) {
+		assert setMementoCreator != null: "IMemento(Object,MementoType) Can not creat a memento with null-pointer as parent";
 		
 		refMementoCreator = setMementoCreator;
 		refMementoState = setMementoData;		
@@ -79,9 +79,9 @@ public class GeneralMemento
 	 * @param setMementoType type of memento; used for memento manger
 	 */
 	public GeneralMemento(final Object setMementoCreator, 
-			final MementoState setMementoData,
+			final IMementoState setMementoData,
 			final MementoType setMementoType) {
-		assert setMementoCreator != null: "Memento(Object,MementoType,MementoState)Can not creat a memento with null-pointer as parent";
+		assert setMementoCreator != null: "IMemento(Object,MementoType,IMementoState)Can not creat a memento with null-pointer as parent";
 		
 		refMementoCreator = setMementoCreator;
 		refMementoType = setMementoType;
@@ -100,14 +100,14 @@ public class GeneralMemento
 	 * @see prometheus.command.memento.Memento#setMementoState(java.lang.Object, prometheus.command.memento.MementoState)
 	 */
 	public void setMementoState(final Object setMementoCreator,
-			final MementoState setMemetoState) 
+			final IMementoState setMemetoState) 
 	throws CerberusRuntimeException 
 	{
 		if ( refMementoCreator != setMementoCreator) {
-			throw new CerberusRuntimeException("GeneralMemento.setMementoState() failed due to setting data not from the creator of the Memento.",
+			throw new CerberusRuntimeException("GeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
 					CerberusExceptionType.MEMENTO );
 		}
-		//assert  refMementoCreator == setMementoCreator: "GeneralMemento.setMementoState() failed due to setting data not from the creator of the Memento.";
+		//assert  refMementoCreator == setMementoCreator: "GeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.";
 		
 		this.refMementoState = setMemetoState;
 	}
@@ -119,14 +119,14 @@ public class GeneralMemento
 	/* (non-Javadoc)
 	 * @see prometheus.command.memento.Memento#getMementoState(java.lang.Object)
 	 */
-	public MementoState getMementoState(final Object setMementoCreator) {		
+	public IMementoState getMementoState(final Object setMementoCreator) {		
 		assert setMementoCreator != refMementoCreator :"getMemento() can only ba called by the creator of the memento!";
 		
 		return refMementoState;
 	}
 	
 	/**
-	 * Get the estimated size of a Memento 
+	 * Get the estimated size of a IMemento 
 	 * 
 	 * @return size in 4*Byte
 	 */

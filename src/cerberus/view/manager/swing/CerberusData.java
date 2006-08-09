@@ -1,8 +1,8 @@
 package cerberus.view.manager.swing;
 
 import cerberus.view.swing.loader.FileLoader;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.selection.SelectionThreadSingleBlock;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.SetMultiDim;
@@ -37,10 +37,10 @@ public class CerberusData {
 		refTEST_Set2D = new SetMultiDim(0,null,null,2);
 		refTEST_Set3D = new SetMultiDim(0,null,null,3);
 		
-		Selection[] helpSelect = new Selection[1];
+		ISelection[] helpSelect = new ISelection[1];
 		helpSelect[0] = refTEST_Selection;
 		
-		Storage [] helpStore = new Storage [1];
+		IStorage [] helpStore = new IStorage [1];
 		helpStore[0] = refTEST_Storage;
 		
 		refTEST_Set.setSelectionByDim(helpSelect,0);

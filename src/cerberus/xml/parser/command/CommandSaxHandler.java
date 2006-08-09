@@ -10,8 +10,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 
 import cerberus.command.CommandType;
-import cerberus.command.CommandInterface;
-import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.ICommand;
+import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.MenuManager;
 import cerberus.manager.CommandManager;
@@ -47,7 +47,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	private String sData_MenuTooltip = "";
 	private String sData_MenuMemento = "-";
 	
-	protected CommandQueueInterface refCommandQueueIter = null;
+	protected ICommandQueue refCommandQueueIter = null;
 	
 	protected String sData_Queue_process;
 	protected String sData_Queue_type;
@@ -101,7 +101,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	}
 	
 	/**
-	 * Set state of application-tag.
+	 * ISet state of application-tag.
 	 * 
 	 * @param stateApplication TRUE ot indicate, that teh application tag is opened, FALSE if it is closed.
 	 */
@@ -242,9 +242,9 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	 * @param attrs
 	 * @param bIsExternalFrame
 	 */
-	private CommandInterface readCommandData( final Attributes attrs, boolean bIsExternalFrame ) {
+	private ICommand readCommandData( final Attributes attrs, boolean bIsExternalFrame ) {
 		
-		CommandInterface lastCommand = null;
+		ICommand lastCommand = null;
 		
 		try 
 		{
@@ -323,7 +323,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	 */
 	private void readCommandQueueData( final Attributes attrs, boolean bIsExternalFrame ) {
 		
-		CommandInterface lastCommand = null;
+		ICommand lastCommand = null;
 		
 		int iData_Queue_ThreadPool_Id = -1;					
 		int iData_Queue_ThreadPool_Wait_Id = -1;
@@ -400,7 +400,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 		} 
 		else if ( sData_Queue_type.equals( CommandType.COMMAND_QUEUE_OPEN.toString() )) {
 			
-			refCommandQueueIter = (CommandQueueInterface) lastCommand;
+			refCommandQueueIter = (ICommandQueue) lastCommand;
 			
 		}
 
@@ -456,7 +456,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 							 */
 							
 							//readCommandQueueData( attrs, true );
-							CommandInterface lastCommand = 
+							ICommand lastCommand = 
 								readCommandData( attrs, true );
 							
 							if ( lastCommand != null ) {
@@ -478,7 +478,7 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 							 */
 							
 							//readCommandQueueData( attrs, true );
-							CommandInterface lastCommand = readCommandData( attrs, true );
+							ICommand lastCommand = readCommandData( attrs, true );
 							
 							if ( lastCommand == null ) 
 							{

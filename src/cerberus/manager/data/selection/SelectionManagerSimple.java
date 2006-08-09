@@ -16,13 +16,13 @@ import cerberus.manager.SelectionManager;
 import cerberus.manager.data.CollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 //import cerberus.data.collection.SelectionType;
 //import cerberus.data.collection.Storage;
 import cerberus.data.collection.selection.SelectionSingleBlock;
 import cerberus.data.collection.selection.SelectionMultiBlock;
 import cerberus.data.collection.set.SetPlanarSimple;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 import cerberus.data.loader.MicroArrayLoader;
 import cerberus.data.xml.MementoXML;
 
@@ -37,12 +37,12 @@ extends CollectionManager
 implements SelectionManager
 {
 	
-	private Selection testSelection;
+	private ISelection testSelection;
 	
 	/**
-	 * Vector holds a list of all Selection's
+	 * Vector holds a list of all ISelection's
 	 */
-	protected Vector<Selection> vecSelection;
+	protected Vector<ISelection> vecSelection;
 	
 
 	
@@ -57,12 +57,12 @@ implements SelectionManager
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 			
-		vecSelection = new Vector< Selection > ( iInitSizeContainer );
+		vecSelection = new Vector< ISelection > ( iInitSizeContainer );
 
 		refGeneralManager.getSingelton().setSelectionManager( this );
 		
 		/**
-		 * Test Selection...
+		 * Test ISelection...
 		 */
 		testSelection = new SelectionMultiBlock( 
 				this.createNewId(ManagerObjectType.SELECTION_MULTI_BLOCK),
@@ -75,7 +75,7 @@ implements SelectionManager
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SELECTION: testSelection created with Id =[" +
 				testSelection.getId() +"]");
 		/**
-		 * END: Test Selection...
+		 * END: Test ISelection...
 		 */
 	}
 
@@ -117,14 +117,14 @@ implements SelectionManager
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.Selection)
+	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.ISelection)
 	 */
-	public boolean deleteSelection(Selection deleteSelection ) {
+	public boolean deleteSelection(ISelection deleteSelection ) {
 		return vecSelection.remove( deleteSelection );
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.Selection)
+	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.ISelection)
 	 */
 	public boolean deleteSelection( final int iItemId ) {
 		try {
@@ -139,7 +139,7 @@ implements SelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getItemSelection(int)
 	 */
-	public Selection getItemSelection( final int iItemId) {
+	public ISelection getItemSelection( final int iItemId) {
 		
 		try {
 			return vecSelection.get( getIndexInVector_byUniqueId( iItemId ) );
@@ -165,11 +165,11 @@ implements SelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
 	 */
-	public Selection[] getAllSelectionItems() {
+	public ISelection[] getAllSelectionItems() {
 		
-		Selection[] resultArray = new Selection[ vecSelection.size() ];
+		ISelection[] resultArray = new ISelection[ vecSelection.size() ];
 		
-		Iterator<Selection> iter = vecSelection.iterator();
+		Iterator<ISelection> iter = vecSelection.iterator();
 		for ( int i=0 ; iter.hasNext() ; i++ ) {
 			resultArray[i] = iter.next();
 		}
@@ -180,7 +180,7 @@ implements SelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
 	 */
-	public Vector<Selection> getAllSelectionItemsVector() {
+	public Vector<ISelection> getAllSelectionItemsVector() {
 		
 		return vecSelection;
 	}
@@ -224,7 +224,7 @@ implements SelectionManager
 		
 		
 		try {
-			Selection addItem = (Selection) registerItem;
+			ISelection addItem = (ISelection) registerItem;
 			
 			if ( hasItem_withUniqueId( iItemId ) ) {
 				vecSelection.set( getIndexInVector_byUniqueId( iItemId ), addItem );

@@ -12,11 +12,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 
-import cerberus.command.memento.Memento;
+import cerberus.command.memento.IMemento;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Administration of Memento's
+ * Administration of IMemento's
  * 
  * @author Michael Kalkusch
  *
@@ -26,19 +26,19 @@ extends GeneralManager
 {
 
 	/**
-	 * Add a new Memento to the MementoManager.
+	 * Add a new IMemento to the MementoManager.
 	 * 
 	 * @param addMemento
 	 * @return unique mementoId
 	 * 
 	 * @throws exception on errors
 	 */
-	public abstract int pushMemento(Memento addMemento)
+	public abstract int pushMemento(IMemento addMemento)
 		throws CerberusRuntimeException;
 	
 	
 	/**
-	 * Add a new Memento to the MementoManager and register a unique MementoName.
+	 * Add a new IMemento to the MementoManager and register a unique MementoName.
 	 * 
 	 * @param addMemento
 	 * @param sMementoId
@@ -46,43 +46,43 @@ extends GeneralManager
 	 * 
 	 * @throws PrometheusMementoException if the String "sMementoId" is already in use.
 	 */
-	//public abstract int pushMemento(Memento addMemento, String sMementoId)
+	//public abstract int pushMemento(IMemento addMemento, String sMementoId)
 	//	throws PrometheusMementoException;
 	
 
 	/**
-	 * Get a Memento by it's iMementoId. 
+	 * Get a IMemento by it's iMementoId. 
 	 * The iMementoId is created by the MementoManager @see setMemento()
 	 * 
 	 * @param iMementoId unique Id
 	 * @return memento bound to this unique id
-	 * @throws PrometheusMementoException if no Memento is bound to int "iMementoId"
+	 * @throws PrometheusMementoException if no IMemento is bound to int "iMementoId"
 	 */
-	public abstract Memento getMemento( final int iMementoId );
+	public abstract IMemento getMemento( final int iMementoId );
 	
 	
 	/**
-	 * Get a Memento by it's uniuqe sMementoId. 
+	 * Get a IMemento by it's uniuqe sMementoId. 
 	 * The sMementoId is added to the MementoManager @see setMemento()
 	 * 
 	 * @param iMementoId
-	 * @return Memento on sucsess, else returns null
-	 * @throws PrometheusMementoException if no Memento is bound to String "sMementoId"
+	 * @return IMemento on sucsess, else returns null
+	 * @throws PrometheusMementoException if no IMemento is bound to String "sMementoId"
 	 */
-	public abstract Memento pullMemento( final int iMementoId );
+	public abstract IMemento pullMemento( final int iMementoId );
 	
 	
 	/**
-	 * Get a Memento and removes it from the storage.
+	 * Get a IMemento and removes it from the storage.
 	 * 
-	 * @param pullMemento Memento, that shoud be pulled
-	 * @return Memento on sucsess, else returns null
+	 * @param pullMemento IMemento, that shoud be pulled
+	 * @return IMemento on sucsess, else returns null
 	 */
-	public abstract boolean pullMemento( Memento pullMemento );
+	public abstract boolean pullMemento( IMemento pullMemento );
 	
 	
 	/**
-	 * Test if a Memento with this int "iMementoId" does exist.
+	 * Test if a IMemento with this int "iMementoId" does exist.
 	 * 
 	 * @param iMementoId
 	 * @return TRUE if int "iMementoId" does exist.

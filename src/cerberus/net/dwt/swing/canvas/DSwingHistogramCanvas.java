@@ -31,9 +31,9 @@ import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.view.ViewCanvas;
-import cerberus.command.CommandListener;
+import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -84,7 +84,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	/**
 	 * stores references to Command listener objects.
 	 */
-	private Vector<CommandListener> vecRefCommandListener;
+	private Vector<ICommandListener> vecRefCommandListener;
 	
 	private Vector<DNetEventComponentInterface> vecRefComponentCildren;
 	
@@ -94,7 +94,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	
 	protected GeneralManager refGeneralManager;
 	
-	protected Set refCurrentSet = null;
+	protected ISet refCurrentSet = null;
 	
 //	/**
 //	 * @param arg0
@@ -125,7 +125,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	/**
 	 * 
 	 */
-	public DSwingHistogramCanvas( GeneralManager refGeneralManager, Set setRefCurrentSet ) {
+	public DSwingHistogramCanvas( GeneralManager refGeneralManager, ISet setRefCurrentSet ) {
 		super();
 		
 		this.refGeneralManager= refGeneralManager;
@@ -140,7 +140,7 @@ implements DNetEventComponentInterface, ViewCanvas
 		
 		verRefDNetEventListener = new  Vector<DNetEventListener>();
 		
-		vecRefCommandListener = new Vector<CommandListener>(); 
+		vecRefCommandListener = new Vector<ICommandListener>(); 
 		
 		this.add( new JLabel("HISTOGRAM") );
 		
@@ -150,7 +150,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	}
 	
 	/**
-	 * Set the current object, that creates the histogram.
+	 * ISet the current object, that creates the histogram.
 	 * 
 	 * @param set the current creator of histogram
 	 */
@@ -198,9 +198,9 @@ implements DNetEventComponentInterface, ViewCanvas
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	synchronized public boolean addCommandListener(CommandListener setCommandListener) {
+	synchronized public boolean addCommandListener(ICommandListener setCommandListener) {
 		
 		if ( vecRefCommandListener.contains(setCommandListener)) {
 			return false;
@@ -248,7 +248,7 @@ implements DNetEventComponentInterface, ViewCanvas
 		setParentComponent = parentComponent; 
 	}
 
-	public void setSet( Set setRefCurrentSet ) {
+	public void setSet( ISet setRefCurrentSet ) {
 		refCurrentSet = setRefCurrentSet;
 		refHistogramCreator.setSet( setRefCurrentSet );	
 		refHistogramCreator.updateState();
@@ -293,7 +293,7 @@ implements DNetEventComponentInterface, ViewCanvas
 			this.setBorder( new LineBorder( Color.RED ) );
 			
 			try {
-				setSet( (Set) refGeneralManager.getItem( 
+				setSet( (ISet) refGeneralManager.getItem( 
 						refHistogramSaxHandler.getXML_link2Target_SetId() ) );	
 			}
 			catch (NullPointerException npe) {
@@ -421,11 +421,11 @@ implements DNetEventComponentInterface, ViewCanvas
 		XML_MementoString += getTab(1) + "</SubNetEventListener>\n";
 		
 		/**
-		 * Link to CommandListener ...
+		 * Link to ICommandListener ...
 		 */
 		XML_MementoString += getTab(1) + "<SubCommandListener>\n";	
 		
-//		Iterator<CommandListener> iterCommand = vecRefCommandListener.iterator();
+//		Iterator<ICommandListener> iterCommand = vecRefCommandListener.iterator();
 //		
 //		while ( iterCommand.hasNext() ) {
 //			XML_MementoString += getTab(2) + "<CmdListener  Id=\"" +			

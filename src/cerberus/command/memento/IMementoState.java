@@ -13,12 +13,12 @@ package cerberus.command.memento;
  * Objects store their information to restore their state inside this object,
  * by deriving a class.
  * 
- * Part of DesignPattern "Memento"
+ * Part of DesignPattern "IMemento"
  * 
  * @author Michael Kalkusch
  *
  */
-public interface MementoState {
+public interface IMementoState {
 	
 	/**
 	 * Create reasonable debug information.

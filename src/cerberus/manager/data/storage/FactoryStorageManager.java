@@ -15,7 +15,7 @@ import cerberus.manager.StorageManager;
 import cerberus.manager.data.CollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 //import cerberus.data.collection.StorageType;
 
 /**
@@ -26,7 +26,7 @@ public class FactoryStorageManager
 extends CollectionManager
 implements StorageManager {
 
-	protected Storage refStorage = null;
+	protected IStorage refStorage = null;
 	
 	protected int iInitSizeContainer = 2;
 	
@@ -34,9 +34,9 @@ implements StorageManager {
 	/**
 	 * Via  ( collectionId MODULO iCollectionId_LowestDigit) you can identify the type of collection.
 	 * 
-	 * iCollectionId_LowestDigit....1   ==>  Selection
-	 * iCollectionId_LowestDigit....3   ==>  Set
-	 * iCollectionId_LowestDigit....5   ==>  Storage
+	 * iCollectionId_LowestDigit....1   ==>  ISelection
+	 * iCollectionId_LowestDigit....3   ==>  ISet
+	 * iCollectionId_LowestDigit....5   ==>  IStorage
 	 * iCollectionId_LowestDigit....7   ==>  not used yet
 	 * 
 	 */
@@ -62,15 +62,15 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#createStorage(cerberus.data.collection.StorageType)
 	 */
-	public Storage createStorage(ManagerObjectType useStorageType) {
+	public IStorage createStorage(ManagerObjectType useStorageType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.Storage)
+	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.IStorage)
 	 */
-	public boolean deleteStorage(Storage deleteStorage) {
+	public boolean deleteStorage(IStorage deleteStorage) {
 		if ( refStorage == null ) {
 			return false;
 		}
@@ -95,7 +95,7 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#getItemStorage(int)
 	 */
-	public Storage getItemStorage(int iItemId) {
+	public IStorage getItemStorage(int iItemId) {
 		if ( refStorage == null ) {
 			return null;
 		}
@@ -119,18 +119,18 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#getAllStorageItems()
 	 */
-	public Storage[] getAllStorageItems() {
+	public IStorage[] getAllStorageItems() {
 		if ( refStorage == null ) {
 			return null;
 		}
 		
-		Storage[] resultArray = new Storage[1];
+		IStorage[] resultArray = new IStorage[1];
 		resultArray[0] = refStorage;
 		
 		return resultArray;
 	}
 
-	public Vector<Storage> getAllStorageItemsVector() {
+	public Vector<IStorage> getAllStorageItemsVector() {
 		return null;
 	}
 	

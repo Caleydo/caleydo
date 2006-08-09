@@ -7,14 +7,14 @@ package cerberus.data.collection;
  * @author java
  *
  */
-public interface CollectionCache {
+public interface ICollectionCache {
 
 	/**
 	 * Get the current cacheId.
 	 * Querys linked child objects for hier cacheId and sets largest cacheId as current cacheId.
 	 * 
-	 * @see prometheus.data.collection.CollectionInterface#getCacheId()
-	 * @see prometheus.data.collection.CollectionInterface#hasCacheChanged(int)
+	 * @see prometheus.data.collection.ICollection#getCacheId()
+	 * @see prometheus.data.collection.ICollection#hasCacheChanged(int)
 	 * 
 	 * @return current updated cacheId
 	 */
@@ -25,8 +25,8 @@ public interface CollectionCache {
 	 * The cacheId is not propagated to other linked cache objects 
 	 * (PULL from paretn objects not PUSH of childrens).
 	 * 
-	 * @see prometheus.data.collection.CollectionInterface#getCacheId()
-	 * @see prometheus.data.collection.CollectionInterface#hasCacheChanged(int)
+	 * @see prometheus.data.collection.ICollection#getCacheId()
+	 * @see prometheus.data.collection.ICollection#hasCacheChanged(int)
 	 * 
 	 * @param iCacheId new cacheId for this object.
 	 */
@@ -37,8 +37,8 @@ public interface CollectionCache {
 	 * Internally calls getCacheId() to update its children if nessecary.
 	 * If cacheId of object is larger than iCompareCacheId TRUE is returned, indicating that object has changed.
 	 * 
-	 * @see prometheus.data.collection.CollectionInterface#getCacheId()
-	 * @see prometheus.data.collection.CollectionInterface#setCacheId(int)
+	 * @see prometheus.data.collection.ICollection#getCacheId()
+	 * @see prometheus.data.collection.ICollection#setCacheId(int)
 	 * 
 	 * @param iCompareCacheId current cacheId to be compared to internal cacheId of the object
 	 * @return TRUE if cacheId of object is larger than iCompareCacheId and object has changed.

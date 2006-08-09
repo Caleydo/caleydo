@@ -12,11 +12,11 @@ import java.util.Vector;
 
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 import cerberus.data.xml.MementoXML;
 
 /**
- * Manage all Selection's.
+ * Manage all ISelection's.
  * 
  * Note: the SelectionManager must register itself to the singelton prometheus.app.SingeltonManager
  * 
@@ -29,15 +29,15 @@ extends GeneralManager
 	
 	public MementoXML createSelection( final ManagerObjectType useSelectionType );
 	
-	public boolean deleteSelection( Selection deleteSelection );
+	public boolean deleteSelection( ISelection deleteSelection );
 	
 	public boolean deleteSelection( final int iItemId  );
 	
-	public Selection getItemSelection( final int iItemId );
+	public ISelection getItemSelection( final int iItemId );
 	
-	public Selection[] getAllSelectionItems();
+	public ISelection[] getAllSelectionItems();
 	
-	public Vector<Selection> getAllSelectionItemsVector();
+	public Vector<ISelection> getAllSelectionItemsVector();
 	
 	//public ManagerObjectType getManagerType();
 	

@@ -8,14 +8,14 @@
  */
 package cerberus.data.collection.selection.iterator;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 //import prometheus.data.collection.SelectionType;
 
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Automatical creates the suitable iterator for several Selection's.
+ * Automatical creates the suitable iterator for several ISelection's.
  * 
  * Desing Pattern "Factory"
  * 
@@ -37,9 +37,9 @@ implements SelectionIterator {
 	/**
 	 * 
 	 */
-	public SelectionProxyIterator( Selection setSelection ) {
+	public SelectionProxyIterator( ISelection setSelection ) {
 		
-		assert setSelection != null : "can not handle null-pointer Selection";
+		assert setSelection != null : "can not handle null-pointer ISelection";
 		
 		switch ( setSelection.getSelectionType() ) {
 		

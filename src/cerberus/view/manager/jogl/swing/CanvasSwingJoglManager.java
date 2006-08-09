@@ -119,9 +119,9 @@ import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
 //import cerberus.view.swing.loader.FileLoader;
 
 import cerberus.data.collection.set.SetMultiDim;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 //import cerberus.data.collection.Set;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.selection.SelectionThreadSingleBlock;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;

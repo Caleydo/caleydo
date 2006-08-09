@@ -8,9 +8,9 @@
  */
 package cerberus.command.system;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -21,8 +21,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdSystemExit 
-extends AbstractCommand
-implements CommandInterface {
+extends ACommand
+implements ICommand {
 
 	/**
 	 * 
@@ -32,7 +32,7 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		System.out.println("shut down application...");
@@ -49,7 +49,7 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		// no undo of system shutdown!
@@ -57,7 +57,7 @@ implements CommandInterface {
 	
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.SYSTEM_EXIT; 

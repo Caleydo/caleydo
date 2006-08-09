@@ -3,8 +3,8 @@
  */
 package cerberus.command.base;
 
-import cerberus.command.CommandInterface;
-import cerberus.command.CommandManagedInterface;
+import cerberus.command.ICommand;
+import cerberus.command.ICommandManaged;
 import cerberus.command.CommandType;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.GeneralManager;
@@ -15,15 +15,15 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author kalkusch
  *
  */
-public abstract class AbstractManagedCommand 
+public abstract class AManagedCommand 
 extends AUniqueManagedObject 
-implements CommandManagedInterface {
+implements ICommandManaged {
 
 	/**
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
 	 */
-	public AbstractManagedCommand(int iSetCollectionId,
+	public AManagedCommand(int iSetCollectionId,
 			GeneralManager setGeneralManager) {
 		super(iSetCollectionId, setGeneralManager);
 	}
@@ -32,10 +32,10 @@ implements CommandManagedInterface {
 
 
 	/**
-	 * @see cerberus.command.CommandInterface#isEqualType(cerberus.command.CommandInterface)
-	 * @see base.AbstractCommand#isEqualType(cerberus.command.CommandInterface)
+	 * @see cerberus.command.ICommand#isEqualType(cerberus.command.ICommand)
+	 * @see base.ACommand#isEqualType(cerberus.command.ICommand)
 	 */
-	public boolean isEqualType(CommandInterface compareToObject) {
+	public boolean isEqualType(ICommand compareToObject) {
 		if ( compareToObject.getCommandType() == this.getCommandType() ) { 
 			return true;
 		}

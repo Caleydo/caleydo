@@ -282,7 +282,7 @@ public class SingeltonManager implements Singelton {
 //	}
 //	
 //	/**
-//	 * Set a reference to the desktop pane. 
+//	 * ISet a reference to the desktop pane. 
 //	 * Needed to create new windows in the multi document environment.
 //	 * 
 //	 * @see javax.swing.JDeskopPane

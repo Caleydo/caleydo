@@ -13,11 +13,11 @@ package cerberus.command.window;
 //import javax.swing.JLabel;
 
 import cerberus.manager.GeneralManager;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.CmdHandleSetInterface;
-import cerberus.command.window.CmdHandleSetBase;
-import cerberus.data.collection.Set;
+import cerberus.command.base.ACmdHandleSet;
+import cerberus.command.base.ICmdHandleSet;
+import cerberus.data.collection.ISet;
 //import cerberus.net.dwt.swing.DSwingHistogramCanvas;
 ////import cerberus.net.dwt.swing.mdi.DDesktopPane;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
@@ -30,14 +30,14 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdWindowNewIFrameHistogram2D 
-extends CmdHandleSetBase 
-implements CommandInterface, CmdHandleSetInterface {
+extends ACmdHandleSet 
+implements ICommand, ICmdHandleSet {
 
 //	private DSwingHistogramCanvas refDViewHistogram2D = null;
 
 	
 	/**
-	 * Set the reference to the parent JComponent.
+	 * ISet the reference to the parent JComponent.
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
@@ -51,7 +51,7 @@ implements CommandInterface, CmdHandleSetInterface {
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
@@ -64,7 +64,7 @@ implements CommandInterface, CmdHandleSetInterface {
 //		DInternalFrame newDInternalFrame = 
 //			subCmdNewIFrame.doCommand_getDInternalFrame();
 //
-//		Set refSet = (Set) refGeneralManager.getItem( 70300 );
+//		ISet refSet = (ISet) refGeneralManager.getItem( 70300 );
 //				
 //		refDViewHistogram2D.setSet( refSet );
 //		refDViewHistogram2D.updateState();
@@ -80,14 +80,14 @@ implements CommandInterface, CmdHandleSetInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_OPEN_HISTOGRAM2D;

@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import cerberus.manager.CommandManager;
 
 import cerberus.command.CommandType;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 
 /**
  * Menu ActionListener triggers command.
@@ -32,13 +32,13 @@ public class DMenuCmdActionListener implements ActionListener {
 	/**
 	 * Referecne to Command
 	 */
-	protected CommandInterface refCommand;
+	protected ICommand refCommand;
 	
 	/**
 	 * Creates a new listener, which triggers setCommand.
 	 */
 	public DMenuCmdActionListener(final CommandManager setCommandManager,
-			final CommandInterface setCommand) {
+			final ICommand setCommand) {
 		
 		refCommandManager = setCommandManager;
 		refCommand = setCommand;

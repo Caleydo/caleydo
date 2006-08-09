@@ -60,9 +60,9 @@ import demos.util.*;
 import gleem.*;
 import gleem.linalg.*;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
@@ -368,11 +368,11 @@ public class JoglScatterPlot2D extends Demo {
 
 				if (refSet.getDimensions() < 2) {
 					System.out
-							.println("Can not use a Set with only one dimension!");
+							.println("Can not use a ISet with only one dimension!");
 				}
 
-				Storage refStorageX = this.refSet.getStorageByDimAndIndex(0, 0);
-				Storage refStorageY = this.refSet.getStorageByDimAndIndex(1, 0);
+				IStorage refStorageX = this.refSet.getStorageByDimAndIndex(0, 0);
+				IStorage refStorageY = this.refSet.getStorageByDimAndIndex(1, 0);
 
 				int[] i_dataValuesX = refStorageX.getArrayInt();
 				int[] i_dataValuesY = refStorageY.getArrayInt();

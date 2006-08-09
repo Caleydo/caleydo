@@ -9,24 +9,24 @@
 package cerberus.command.memento.sample;
 
 import cerberus.command.memento.GeneralMemento;
-import cerberus.command.memento.Memento;
-import cerberus.command.memento.MementoCreatorInterface;
+import cerberus.command.memento.IMemento;
+import cerberus.command.memento.IMementoCreator;
 import cerberus.command.memento.sample.SampleMementoState;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.exception.CerberusExceptionType;
 
 
 /**
- * Sample code for Memento objects.
+ * Sample code for IMemento objects.
  * 
- * Implementation of Desing Pattern "Memento"
+ * Implementation of Desing Pattern "IMemento"
  * 
  * \sa SampleMementoApplicationCmd
  * 
  * @author Michael Kalkusch
  *
  */
-public class SampleObjectShowUsageOfMemento implements MementoCreatorInterface {
+public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 	
 	
 	/**
@@ -51,34 +51,34 @@ public class SampleObjectShowUsageOfMemento implements MementoCreatorInterface {
 	/* (non-Javadoc)
 	 * @see prometheus.command.memento.MementoCreator#createMemento()
 	 */
-	public Memento createMemento() {
+	public IMemento createMemento() {
 		
 		// Create new state object, which stores the current state...
 		SampleMementoState myMementoState = new SampleMementoState(iMyData);
 		myMementoState.setPostData( fMyData );
 		
-		// First possibility to set a Memento.
+		// First possibility to set a IMemento.
 		//-------------------------------------
 		// create new memento for this object...
 		GeneralMemento myMemento = new GeneralMemento(this,myMementoState);
 
-		// Second possibility to set the Memento state data.
+		// Second possibility to set the IMemento state data.
 		//---------------------------------------------------
 		// set current data of this object and store it in "myMementoState" ...
 		myMementoState.setPostData(fMyData);
 		
-		// second possibility to set the Memento state data.
+		// second possibility to set the IMemento state data.
 		myMemento.setMementoState(this,myMementoState);
 				
-		// return Memento to be stored in Memento-Manager...
-		return  myMemento;	// cast to super class "Memento"
+		// return IMemento to be stored in IMemento-Manager...
+		return  myMemento;	// cast to super class "IMemento"
 	}
 
 	
 	/* (non-Javadoc)
 	 * @see prometheus.command.memento.MementoCreator#setMemento(prometheus.command.memento.Memento)
 	 */
-	public void setMemento(Memento setMemento)
+	public void setMemento(IMemento setMemento)
 			throws CerberusRuntimeException {
 		
 		SampleMementoState 	bufferMementoState 	= null;
@@ -93,7 +93,7 @@ public class SampleObjectShowUsageOfMemento implements MementoCreatorInterface {
 			this.fMyData = bufferMementoState.getPostData();
 				
 		} catch (Exception e) {
-			throw new CerberusRuntimeException("setMemento() with wrong MementoState! "+ e.toString(),
+			throw new CerberusRuntimeException("setMemento() with wrong IMementoState! "+ e.toString(),
 					CerberusExceptionType.MEMENTO );
 		}
 

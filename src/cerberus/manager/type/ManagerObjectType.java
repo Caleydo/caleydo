@@ -30,7 +30,7 @@ public enum ManagerObjectType {
 	STORAGE(ManagerType.STORAGE),
 	
 	/**
-	 * sub of Storage
+	 * sub of IStorage
 	 */
 	STORAGE_FLAT(ManagerType.STORAGE),
 	
@@ -49,7 +49,7 @@ public enum ManagerObjectType {
 	SELECTION_RANDOM_BLOCK(ManagerType.SELECTION),
 	
 	/**
-	 * Load a microarray dataset. Is defined as Selection, because 
+	 * Load a microarray dataset. Is defined as ISelection, because 
 	 * all storage decives are loaded prior.
 	 */
 	SELECTION_LOAD_MICROARRAY(ManagerType.SELECTION),

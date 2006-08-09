@@ -2,7 +2,7 @@ package cerberus.data.collection.set.iterator;
 
 import java.util.Iterator;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 
 public interface SetIndexIterator {
 
@@ -14,6 +14,6 @@ public interface SetIndexIterator {
 	
 	public int nextIndex();
 	
-	public Selection nextSelection();
+	public ISelection nextSelection();
 	
 }

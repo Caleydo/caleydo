@@ -16,24 +16,24 @@ package cerberus.command;
  * @author Michael Kalkusch
  *
  */
-public interface CommandActionListener {
+public interface ICommandActionListener {
 
 	/**
 	 * Immedieatly executes command.
 	 * 
-	 * @see cerberus.command.Command.CommandListener#scheduleCommand(cerberus.command.CommandInterface)
+	 * @see cerberus.command.Command.ICommandListener#scheduleCommand(cerberus.command.ICommand)
 	 * 
 	 * @param addCommand
 	 */
-	public void handleCommand( CommandInterface addCommand );
+	public void handleCommand( ICommand addCommand );
 	
 	/**
 	 * Insertes command into execution queue.
 	 * 
-	 * @see cerberus.command.Command.CommandListener#handleCommand(cerberus.command.CommandInterface)
+	 * @see cerberus.command.Command.ICommandListener#handleCommand(cerberus.command.ICommand)
 	 * 
 	 * @param addCommand
 	 */
-	public void scheduleCommand( CommandInterface addCommand );
+	public void scheduleCommand( ICommand addCommand );
 	
 }

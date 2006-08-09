@@ -10,7 +10,7 @@ package cerberus.data.collection.selection;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionMultiBlockIterator;
@@ -29,7 +29,7 @@ import java.lang.StringBuffer;
 public class SelectionMultiBlock 
 extends AbstractSelection 
 implements
-		Selection, MementoItemXML {
+		ISelection, MementoItemXML {
 
 	protected int iMultiOffset = 0;
 	
@@ -47,28 +47,28 @@ implements
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getSelectionType()
+	 * @see cerberus.data.collection.ISelection#getSelectionType()
 	 */
 	public SelectionType getSelectionType() {
 		return SelectionType.SELECTION_MULTI_BLOCK;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getMultiRepeat()
+	 * @see cerberus.data.collection.ISelection#getMultiRepeat()
 	 */
 	public int getMultiRepeat() {
 		return iMultiRepeat;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getMultiOffset()
+	 * @see cerberus.data.collection.ISelection#getMultiOffset()
 	 */
 	public int getMultiOffset() {
 		return iMultiOffset;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getIndexArray()
+	 * @see cerberus.data.collection.ISelection#getIndexArray()
 	 */
 	public int[] getIndexArray() {
 		int[] indexArray = new int[ iSelectionLength ];
@@ -106,21 +106,21 @@ implements
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setOffset(int)
+	 * @see cerberus.data.collection.ISelection#setOffset(int)
 	 */
 	public void setOffset(int iSetOffset) {
 		this.iSelectionOffset = iSetOffset;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setLength(int)
+	 * @see cerberus.data.collection.ISelection#setLength(int)
 	 */
 	public void setLength(int iSetLength) {
 		this.iSelectionLength = iSetLength;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setMultiRepeat(int)
+	 * @see cerberus.data.collection.ISelection#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {
 		if ( iSetSize <= this.iMultiOffset ) {
@@ -132,7 +132,7 @@ implements
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setMultiOffset(int)
+	 * @see cerberus.data.collection.ISelection#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize) {
 		if ( iSetSize >= this.iMultiRepeat ) {
@@ -144,7 +144,7 @@ implements
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setIndexArray(int[])
+	 * @see cerberus.data.collection.ISelection#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray) {
 		// TODO Auto-generated method stub
@@ -204,7 +204,7 @@ implements
 	}
 	
 	/**
-	 * Create XML Memento.
+	 * Create XML IMemento.
 	 * 
 	 * @see cerberus.data.xml.MementoXML#createMementoXML()
 	 */
@@ -238,7 +238,7 @@ implements
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionInterface#getCacheId()
+	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		return this.iCacheId;

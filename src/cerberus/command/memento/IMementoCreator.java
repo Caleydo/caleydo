@@ -11,20 +11,20 @@ package cerberus.command.memento;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Interface for creator-object's of Memento's.
+ * Interface for creator-object's of IMemento's.
  * 
  * This interface must be implemented by all objects, that create Mementos 
- * and restore a prevoius state using the inforamtion stored in the Memento.
+ * and restore a prevoius state using the inforamtion stored in the IMemento.
  * Each creator-object must implement it's own state-storage class derived from prometheus.command.memento.MementoState .
  *   
- * Part of DesignPattern "Memento"
+ * Part of DesignPattern "IMemento"
  *   
  * @author Michael Kalkusch
  *
- * @see prometheus.command.memento.Memento
- * @see prometheus.command.memento.MementoState
+ * @see prometheus.command.memento.IMemento
+ * @see prometheus.command.memento.IMementoState
  */
-public interface MementoCreatorInterface {
+public interface IMementoCreator {
 
 	/**
 	 * Tell's the object ot create it's memento, stoing all information needed,
@@ -32,18 +32,18 @@ public interface MementoCreatorInterface {
 	 * 
 	 * @return the created prometheus.command.memento.Memento
 	 */
-	public Memento createMemento();
+	public IMemento createMemento();
 	
 	/**
-	 * Restore a prevoius state using data stored in the Memento.
+	 * Restore a prevoius state using data stored in the IMemento.
 	 * 
 	 * Throws PrometheusMementoException if an inappropriate MementoStateInterface-object
-	 * is passed inside the memento, or if the Memento-object does not fit.
+	 * is passed inside the memento, or if the IMemento-object does not fit.
 	 * 
-	 * Derived class has to check, if Memento-object fits.
+	 * Derived class has to check, if IMemento-object fits.
 	 * 
 	 * @param setMemento prometheus.command.memento.Memento to reset the obejct in a previouse state
 	 */
-	public void setMemento( Memento setMemento )
+	public void setMemento( IMemento setMemento )
 		throws CerberusRuntimeException;
 }

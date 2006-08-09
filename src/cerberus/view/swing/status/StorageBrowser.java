@@ -53,9 +53,9 @@ import demos.util.*;
 import gleem.*;
 import gleem.linalg.*;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.selection.SelectionSingleBlock;
@@ -186,7 +186,7 @@ public class StorageBrowser {
 	public StorageBrowser(JFrame setRefParentExternalFrame) {
 		refParentExternalFrame = setRefParentExternalFrame;
 
-		setRefParentExternalFrame.setTitle("Collection Browser -Storage-");
+		setRefParentExternalFrame.setTitle("Collection Browser -IStorage-");
 
 		setRefParentExternalFrame.setLayout(new BorderLayout());
 
@@ -219,7 +219,7 @@ public class StorageBrowser {
 
 		refParentInternalFrame = setRefParentInternalFrame;
 
-		refParentInternalFrame.setTitle("Collection Browser -Storage- INTERNAL");
+		refParentInternalFrame.setTitle("Collection Browser -IStorage- INTERNAL");
 
 		refParentInternalFrame.setLayout(new BorderLayout());
 

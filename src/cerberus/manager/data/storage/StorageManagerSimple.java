@@ -19,7 +19,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
 //import java.util.Hashtable;
 
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 //import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
@@ -33,11 +33,11 @@ public class StorageManagerSimple
 extends CollectionManager
 implements StorageManager {
 	
-	private Storage testStorage;
+	private IStorage testStorage;
 	/**
-	 * Vector holds a list of all Storage's
+	 * Vector holds a list of all IStorage's
 	 */
-	protected Vector<Storage> vecStorage;
+	protected Vector<IStorage> vecStorage;
 	
 	/**
 	 * 
@@ -51,12 +51,12 @@ implements StorageManager {
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 			
-		vecStorage = new Vector< Storage > ( iInitSizeContainer );
+		vecStorage = new Vector< IStorage > ( iInitSizeContainer );
 		
 		refGeneralManager.getSingelton().setStorageManager( this );
 		
 		/**
-		 * Test Storage...
+		 * Test IStorage...
 		 */
 		testStorage = new FlatThreadStorageSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
 				refGeneralManager,
@@ -68,7 +68,7 @@ implements StorageManager {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( "STORAGE: testStorage created with Id =[" +
 				testStorage.getId() +"]");
 		/**
-		 * END: Test Storage...
+		 * END: Test IStorage...
 		 */
 			
 	}
@@ -76,7 +76,7 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#createStorage()
 	 */
-	public Storage createStorage( final ManagerObjectType useStorageType ) {
+	public IStorage createStorage( final ManagerObjectType useStorageType ) {
 		
 		if ( useStorageType.getGroupType() != ManagerType.STORAGE ) {
 			throw new CerberusRuntimeException("try to create object with wrong type " + useStorageType.name() );
@@ -101,14 +101,14 @@ implements StorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.Storage)
+	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.IStorage)
 	 */
-	public boolean deleteStorage(Storage deleteStorage ) {
+	public boolean deleteStorage(IStorage deleteStorage ) {
 		return vecStorage.remove( deleteStorage );
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.Storage)
+	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.IStorage)
 	 */
 	public boolean deleteStorage( final int iItemId ) {
 		try {
@@ -125,7 +125,7 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#getItemStorage(int)
 	 */
-	public Storage getItemStorage( final int iItemId) {
+	public IStorage getItemStorage( final int iItemId) {
 		
 		try {
 			return vecStorage.get( getIndexInVector_byUniqueId(iItemId) );
@@ -153,11 +153,11 @@ implements StorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#getAllStorageItems()
 	 */
-	public Storage[] getAllStorageItems() {
+	public IStorage[] getAllStorageItems() {
 		
-		Storage[] resultArray = new Storage[ vecStorage.size() ];
+		IStorage[] resultArray = new IStorage[ vecStorage.size() ];
 		
-		Iterator<Storage> iter = vecStorage.iterator();
+		Iterator<IStorage> iter = vecStorage.iterator();
 		for ( int i=0 ; iter.hasNext() ; i++ ) {
 			resultArray[i] = iter.next();
 		}
@@ -169,7 +169,7 @@ implements StorageManager {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#getAllStorageItemsVector()
 	 */
-	public Vector<Storage> getAllStorageItemsVector() {
+	public Vector<IStorage> getAllStorageItemsVector() {
 		return vecStorage;
 	}
 
@@ -213,7 +213,7 @@ implements StorageManager {
 		
 		try {
 			
-			Storage addItem = (Storage) registerItem;
+			IStorage addItem = (IStorage) registerItem;
 			
 			if ( hasItem_withUniqueId( iItemId ) ) {
 				vecStorage.set( getIndexInVector_byUniqueId( iItemId ), addItem );

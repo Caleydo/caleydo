@@ -13,7 +13,7 @@ import java.lang.NullPointerException;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.SelectionType;
 import cerberus.xml.parser.DParseSaxHandler;
 import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
@@ -29,7 +29,7 @@ import cerberus.data.xml.MementoItemXML;
  */
 public class SelectionThreadSingleBlock 
 	extends AbstractSelection 
-	implements Selection, MementoItemXML, CollectionLock
+	implements ISelection, MementoItemXML, CollectionLock
 {
 
 	
@@ -44,7 +44,7 @@ public class SelectionThreadSingleBlock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getSelectionType()
+	 * @see cerberus.data.collection.ISelection#getSelectionType()
 	 */
 	public SelectionType getSelectionType() {		
 		return SelectionType.SELECTION_SINGLE_BLOCK;
@@ -52,7 +52,7 @@ public class SelectionThreadSingleBlock
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getMultiRepeat()
+	 * @see cerberus.data.collection.ISelection#getMultiRepeat()
 	 */
 	public int getMultiRepeat() {			
 		//do nothing. this is not supported
@@ -60,7 +60,7 @@ public class SelectionThreadSingleBlock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getMultiOffset()
+	 * @see cerberus.data.collection.ISelection#getMultiOffset()
 	 */
 	public int getMultiOffset() {
 		//do nothing. this is not supported
@@ -68,7 +68,7 @@ public class SelectionThreadSingleBlock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getIndexArray()
+	 * @see cerberus.data.collection.ISelection#getIndexArray()
 	 */
 	public int[] getIndexArray() {
 		int[] indexArray = new int[ this.iSelectionLength ];
@@ -81,35 +81,35 @@ public class SelectionThreadSingleBlock
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setOffset(int)
+	 * @see cerberus.data.collection.ISelection#setOffset(int)
 	 */
 	public void setOffset(int iSetOffset) {
 		this.iSelectionOffset = iSetOffset;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setLength(int)
+	 * @see cerberus.data.collection.ISelection#setLength(int)
 	 */
 	public void setLength(int iSetLength) {
 		this.iSelectionLength = iSetLength;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setMultiRepeat(int)
+	 * @see cerberus.data.collection.ISelection#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setMultiOffset(int)
+	 * @see cerberus.data.collection.ISelection#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#setIndexArray(int[])
+	 * @see cerberus.data.collection.ISelection#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray) {
 		throw new RuntimeException("SelectionSingleBlock.setIndexArray() is not supported.");
@@ -170,7 +170,7 @@ public class SelectionThreadSingleBlock
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionInterface#getCacheId()
+	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		return this.iCacheId;
@@ -178,7 +178,7 @@ public class SelectionThreadSingleBlock
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#iterator()
+	 * @see cerberus.data.collection.ISelection#iterator()
 	 */
 	public SelectionIterator iterator() {
 		return new SelectionSingleBlockIterator(this);

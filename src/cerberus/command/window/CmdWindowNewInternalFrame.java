@@ -13,9 +13,9 @@ package cerberus.command.window;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.ViewCanvasManager;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.base.ACommand;
 
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
@@ -29,8 +29,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdWindowNewInternalFrame 
-extends AbstractCommand
-implements CommandInterface {
+extends ACommand
+implements ICommand {
 
 //	private DInternalFrame refNewDInternalFrame = null;
 	
@@ -98,7 +98,7 @@ implements CommandInterface {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
@@ -111,14 +111,14 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.WINDOW_IFRAME_NEW_INTERNAL_FRAME;

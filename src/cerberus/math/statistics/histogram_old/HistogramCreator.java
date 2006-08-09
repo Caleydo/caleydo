@@ -9,7 +9,7 @@
 package cerberus.math.statistics.histogram_old;
 
 import cerberus.data.IStatefulItem;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 
 
 /**
@@ -47,14 +47,14 @@ public interface HistogramCreator extends IStatefulItem {
 	public int getMaxCountPerRow();
 		
 	/**
-	 * Set the number of rows the historgam is based on.
+	 * ISet the number of rows the historgam is based on.
 	 * 
 	 * @return number of rows
 	 */
 	public int getRowWidth();
 	
 	/**
-	 * Set the number of rows.
+	 * ISet the number of rows.
 	 * 
 	 * Note: update() must be called to recreate the histogram.
 	 * 
@@ -67,14 +67,14 @@ public interface HistogramCreator extends IStatefulItem {
 	 * 
 	 * @return selection the histogram is bound to.
 	 */
-	public Set getSet();
+	public ISet getSet();
 	
 	/**
-	 * Set the Selection the histogram is based on.
+	 * ISet the ISelection the histogram is based on.
 	 * 
-	 * @param setSelection reference to the Selection the histogram is based on
+	 * @param setSelection reference to the ISelection the histogram is based on
 	 */
-	public void setSet( Set setSet );
+	public void setSet( ISet setSet );
 	
 	/**
 	 * Get minumum value.

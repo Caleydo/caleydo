@@ -10,7 +10,7 @@ package cerberus.manager.singelton;
 
 import java.util.StringTokenizer;
 
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.IStorage;
 import cerberus.data.xml.MementoXML;
 
 
@@ -19,7 +19,7 @@ import cerberus.data.xml.MementoXML;
 //import cerberus.data.collection.StorageType;
 
 //import cerberus.data.collection.Selection;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.view.ViewCanvas;
 
 import cerberus.manager.CommandManager;
@@ -237,7 +237,7 @@ implements GeneralManagerSingelton {
 	}
 	
 	/**
-	 * Set the current type used to create the next Id using
+	 * ISet the current type used to create the next Id using
 	 * cerberus.data.manager.singelton.OneForAllManager#createNewId()
 	 * Does not influence 
 	 * cerberus.data.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
@@ -481,14 +481,14 @@ implements GeneralManagerSingelton {
 			return;
 		}
 		case SET: {
-			Set setBuffer = 
+			ISet setBuffer = 
 				this.refSetManager.createSet( type );
 			
 			//setBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;
 		}
 		case STORAGE:
-			Storage storageBuffer = refStorageManager.createStorage( type );
+			IStorage storageBuffer = refStorageManager.createStorage( type );
 			
 			storageBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;

@@ -57,7 +57,7 @@ implements DParseSaxHandler
 	private Vector<Integer> vecCanvasLink2ViewId;
 	
 	/**
-	 * List of all CommandListener Id's
+	 * List of all ICommandListener Id's
 	 */
 	private Vector<Integer> vecSubCanvasId;
 

@@ -9,7 +9,7 @@ import cerberus.manager.DComponentManager;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.command.CommandListener;
+import cerberus.command.ICommandListener;
 import cerberus.data.collection.view.ViewCanvas;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
@@ -110,9 +110,9 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	public boolean addCommandListener(CommandListener setCommandListener) {
+	public boolean addCommandListener(ICommandListener setCommandListener) {
 		// TODO Auto-generated method stub
 		return false;
 	}

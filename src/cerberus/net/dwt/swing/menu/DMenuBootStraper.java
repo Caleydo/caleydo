@@ -23,8 +23,8 @@ import cerberus.manager.CommandManager;
 import cerberus.manager.DComponentManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.command.CommandListener;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommandListener;
+import cerberus.command.ICommand;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -45,12 +45,12 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	
 	private Hashtable<String,JMenuItem> hashMenuLookupName_to_MenuItem;
 	
-	private Hashtable<String,CommandInterface> hashMenuLookupName_to_Command;
+	private Hashtable<String,ICommand> hashMenuLookupName_to_Command;
 	
 	/**
 	 * String to define and address root menu.
 	 * 
-	 * @see cerberus.net.dwt.swing.menu.DMenuBootStraper#addMenuItemWithCommand(String, String, String, char, String, boolean, CommandInterface)
+	 * @see cerberus.net.dwt.swing.menu.DMenuBootStraper#addMenuItemWithCommand(String, String, String, char, String, boolean, ICommand)
 	 */
 	public final static String MENU_ROOT = "ROOT";
 	
@@ -75,7 +75,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 		
 		hashMenuLookupName_to_MenuItem = new Hashtable<String,JMenuItem>();
 		
-		hashMenuLookupName_to_Command = new Hashtable<String,CommandInterface>(); 
+		hashMenuLookupName_to_Command = new Hashtable<String,ICommand>(); 
 		
 		gui_vec_MenuItem = new Vector<JMenuItem>();
 	}
@@ -116,7 +116,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 			final char sMenuMnemonic,
 			final String sMenuParentLookupName,
 			final boolean isItem,
-			final CommandInterface refCommand ) {
+			final ICommand refCommand ) {
 		
 		/**
 		 * SEPERATOR doen not need its own Menu-Object
@@ -158,7 +158,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 		
 		
 		/**
-		 * Set menu item parameter...
+		 * ISet menu item parameter...
 		 */
 		
 		/**
@@ -263,9 +263,9 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.CommandListener)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#addCommandListener(cerberus.command.ICommandListener)
 	 */
-	public boolean addCommandListener(CommandListener setCommandListener) {
+	public boolean addCommandListener(ICommandListener setCommandListener) {
 		// TODO Auto-generated method stub
 		return false;
 	}

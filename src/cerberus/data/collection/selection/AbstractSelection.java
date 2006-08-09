@@ -9,8 +9,8 @@
 package cerberus.data.collection.selection;
 
 import cerberus.manager.GeneralManager;
-import cerberus.data.collection.CollectionMetaData;
-import cerberus.data.collection.Selection;
+import cerberus.data.collection.IMetaData;
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.thread.impl.CollectionThreadItem;
 import cerberus.data.collection.thread.lock.CollectionLock;
 
@@ -22,7 +22,7 @@ import cerberus.data.collection.thread.lock.CollectionLock;
  */
 public abstract class AbstractSelection 
 extends CollectionThreadItem
-implements Selection {
+implements ISelection {
 
 	/**
 	 * Defines the offset of the virtual array.
@@ -41,7 +41,7 @@ implements Selection {
 	/**
 	 * Link to Collection-Meta data.
 	 */
-	protected CollectionMetaData refCollectionMetaData = null;
+	protected IMetaData refCollectionMetaData = null;
 	
 	
 	/**
@@ -59,30 +59,30 @@ implements Selection {
 	
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#length()
+	 * @see cerberus.data.collection.ISelection#length()
 	 */
 	public final int length() {
 		return iSelectionLength;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.Selection#getOffset()
+	 * @see cerberus.data.collection.ISelection#getOffset()
 	 */
 	public final int getOffset() {
 		return iSelectionOffset;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionMetaDataInterface#getMetaData()
+	 * @see cerberus.data.collection.IMetaDataCollection#getMetaData()
 	 */
-	public final CollectionMetaData getMetaData() {
+	public final IMetaData getMetaData() {
 		return refCollectionMetaData;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionMetaDataInterface#setMetaData(cerberus.data.collection.CollectionMetaData)
+	 * @see cerberus.data.collection.IMetaDataCollection#setMetaData(cerberus.data.collection.IMetaData)
 	 */
-	public final void setMetaData(CollectionMetaData setMetaData) {		
+	public final void setMetaData(IMetaData setMetaData) {		
 		refCollectionMetaData = setMetaData;
 	}
 

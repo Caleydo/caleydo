@@ -23,13 +23,13 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
 //import java.util.Enumeration;
 
-import cerberus.command.memento.Memento;
+import cerberus.command.memento.IMemento;
 //import prometheus.data.collection.Set;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Simple Memento Manager, that stores all Memento's in a Vector.
+ * Simple IMemento Manager, that stores all IMemento's in a Vector.
  * 
  * @author Michael Kalkusch
  *
@@ -42,7 +42,7 @@ public class MementoManagerSimple
 	
 	private int iVecMementoStorageSize;
 	
-	protected Vector<Memento> vecMemento;
+	protected Vector<IMemento> vecMemento;
 	
 	protected Hashtable<Integer,Integer> hashMementoId2Index;
 	
@@ -60,7 +60,7 @@ public class MementoManagerSimple
 		super( setGeneralManager,
 				GeneralManager.iUniqueId_TypeOffset_Memento );
 		
-		vecMemento = new Vector<Memento>(iInitSizeMementoVector);
+		vecMemento = new Vector<IMemento>(iInitSizeMementoVector);
 		hashMementoId2Index = new Hashtable<Integer,Integer>(iInitSizeMementoVector*2);
 		iVecMementoStorageSize = 0;
 		
@@ -79,7 +79,7 @@ public class MementoManagerSimple
 	/* (non-Javadoc)
 	 * @see prometheus.command.memento.manager.MementoManager#setMemento(prometheus.command.memento.Memento)
 	 */
-	public final int pushMemento( final Memento addMemento) {
+	public final int pushMemento( final IMemento addMemento) {
 		final int iUniqueId = createNewId( ManagerObjectType.MEMENTO );
 		
 		try {
@@ -89,7 +89,7 @@ public class MementoManagerSimple
 			return iUniqueId;
 
 		} catch (Exception e) {
-			throw new CerberusRuntimeException("setMemento(Memento) failed. " + e.toString(),
+			throw new CerberusRuntimeException("setMemento(IMemento) failed. " + e.toString(),
 					CerberusExceptionType.MEMENTO );
 		}
 	}
@@ -98,7 +98,7 @@ public class MementoManagerSimple
 	/* (non-Javadoc)
 	 * @see prometheus.command.memento.manager.MementoManager#getMemento(int)
 	 */
-	public Memento getMemento(int iMementoId) {
+	public IMemento getMemento(int iMementoId) {
 		
 		final int iVectorIndex = hashMementoId2Index.get( iMementoId );
 		
@@ -110,12 +110,12 @@ public class MementoManagerSimple
 		}
 	}
 	
-	public Memento pullMemento( final int iMementoId )
+	public IMemento pullMemento( final int iMementoId )
 	{
 		final int iIndex = hashMementoId2Index.get( iMementoId );
 		
 		try {
-			Memento pullMemento = vecMemento.get(iIndex);
+			IMemento pullMemento = vecMemento.get(iIndex);
 			vecMemento.removeElementAt(iIndex);
 			return pullMemento;
 		} 
@@ -125,7 +125,7 @@ public class MementoManagerSimple
 		}
 	}
 	
-	public boolean pullMemento( Memento pullMemento )
+	public boolean pullMemento( IMemento pullMemento )
 	{
 		return vecMemento.contains( pullMemento );
 	}
@@ -161,14 +161,14 @@ public class MementoManagerSimple
 		// Show content of Vector ...
 		
 		int iCounter = 0;
-		Iterator<Memento> iter  = vecMemento.iterator();		
+		Iterator<IMemento> iter  = vecMemento.iterator();		
 		
 		if ( ! iter.hasNext() ) {
 			result += "Vector: is empty" + newLine;		
 		}
 		
 		while ( iter.hasNext() ) {
-			Memento buffer = iter.next();
+			IMemento buffer = iter.next();
 			
 			if (buffer != null ) {
 				result += " #" + iCounter + ": " + buffer.toString() + newLine;

@@ -16,9 +16,9 @@ import cerberus.manager.SetManager;
 import cerberus.manager.data.CollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.Storage;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.ISet;
 //import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetPlanarSimple;
@@ -40,11 +40,11 @@ implements SetManager {
 	//protected GeneralManager refGeneralManager = null;
 	
 	/**
-	 * Vector holds a list of all Set's
+	 * Vector holds a list of all ISet's
 	 */
-	protected Vector<Set> vecSets;
+	protected Vector<ISet> vecSets;
 	
-	private Set testSet;
+	private ISet testSet;
 	
 	/**
 	 * 
@@ -57,7 +57,7 @@ implements SetManager {
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 		
-		vecSets = new Vector< Set > ( iInitSizeContainer );
+		vecSets = new Vector< ISet > ( iInitSizeContainer );
 		
 		refGeneralManager.getSingelton().setSetManager( this );		
 		
@@ -65,11 +65,11 @@ implements SetManager {
 	}
 	
 	/**
-	 * Create a test Set.
+	 * Create a test ISet.
 	 */
 	public void initManager() {
 		/**
-		 * Test Set...
+		 * Test ISet...
 		 */
 //		testSet = new SetPlanarSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
 //				refGeneralManager );
@@ -79,26 +79,26 @@ implements SetManager {
 //		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet created with Id =[" +
 //				testSet.getId() +"]");
 //		
-//		Selection getSelectionById = (Selection) refGeneralManager.getItem( 15201 );
-//		Storage getStorageById = (Storage) refGeneralManager.getItem( 15301 );
+//		ISelection getSelectionById = (ISelection) refGeneralManager.getItem( 15201 );
+//		IStorage getStorageById = (IStorage) refGeneralManager.getItem( 15301 );
 //		
-//		/* register Selection & Storage to Set ... */
+//		/* register ISelection & IStorage to ISet ... */
 //		testSet.setSelectionByDimAndIndex( getSelectionById, 0, 0 );
 //		testSet.setStorageByDimAndIndex( getStorageById, 0, 0 );
 //		
-//		Set testMySet = (Set) refGeneralManager.getItem( 15101 );
+//		ISet testMySet = (ISet) refGeneralManager.getItem( 15101 );
 //		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet get Set by Id; [" +
+//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet get ISet by Id; [" +
 //				testSet.getId() +"] == [" + testMySet.getId() + "]_(test)");
 		/**
-		 * END: Test Set...
+		 * END: Test ISet...
 		 */
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#createSet()
 	 */
-	public Set createSet( final ManagerObjectType useStorageType ) {
+	public ISet createSet( final ManagerObjectType useStorageType ) {
 			
 		switch ( useStorageType ) {
 			case SET_LINEAR:
@@ -121,14 +121,14 @@ implements SetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.Set)
+	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.ISet)
 	 */
-	public boolean deleteSet(Set deleteSet ) {
+	public boolean deleteSet(ISet deleteSet ) {
 		return vecSets.remove( deleteSet );
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.Set)
+	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.ISet)
 	 */
 	public boolean deleteSet( final int iItemId ) {
 		try {
@@ -143,7 +143,7 @@ implements SetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#getItemSet(int)
 	 */
-	public Set getItemSet( final int iItemId) {
+	public ISet getItemSet( final int iItemId) {
 		
 		try {
 			return vecSets.get( getIndexInVector_byUniqueId( iItemId ) );
@@ -165,11 +165,11 @@ implements SetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#getAllSetItems()
 	 */
-	public Set[] getAllSetItems() {
+	public ISet[] getAllSetItems() {
 		
-		Set[] resultArray = new Set[ vecSets.size() ];
+		ISet[] resultArray = new ISet[ vecSets.size() ];
 		
-		Iterator<Set> iter = vecSets.iterator();
+		Iterator<ISet> iter = vecSets.iterator();
 		for ( int i=0 ; iter.hasNext() ; i++ ) {
 			resultArray[i] = iter.next();
 		}
@@ -214,7 +214,7 @@ implements SetManager {
 		
 		
 		try {
-			Set addItem = (Set) registerItem;
+			ISet addItem = (ISet) registerItem;
 			
 			if ( hasItem_withUniqueId( iItemId ) ) {
 				vecSets.set( getIndexInVector_byUniqueId( iItemId ), addItem );

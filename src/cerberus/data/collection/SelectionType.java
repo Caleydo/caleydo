@@ -21,7 +21,7 @@ public enum SelectionType
 implements CollectionType {
 
 	SELECTION_ABSTRACT(false,
-			"Abstract Selection, that has not been instaniated"),
+			"Abstract ISelection, that has not been instaniated"),
 	
 	// --- instanitated Virtual Array's ---
 	SELECTION_SINGLE_BLOCK(true,
@@ -43,7 +43,7 @@ implements CollectionType {
 	
 	
 	/**
-	 * Brief description, what the Selection does.
+	 * Brief description, what the ISelection does.
 	 */
 	private final String sDescription;
 	

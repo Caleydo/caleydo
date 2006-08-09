@@ -363,7 +363,7 @@ public class CerberusGraphViewer {
 		edge.setSource(source.getChildAt(0));
 		edge.setTarget(target.getChildAt(0));
 		
-		//Set Arrow Style for edge
+		//ISet Arrow Style for edge
 		GraphConstants.setLineEnd(edge.getAttributes(), GraphConstants.ARROW_TECHNICAL);
 		GraphConstants.setEndFill(edge.getAttributes(), true);
 		
@@ -382,22 +382,22 @@ public class CerberusGraphViewer {
 		// Create vertex with the given name
 		DefaultGraphCell cell = new DefaultGraphCell(name);
 
-		// Set bounds
+		// ISet bounds
 		GraphConstants.setBounds(cell.getAttributes(), new Rectangle2D.Double(
 				x, y, w, h));
 
-		// Set fill color
+		// ISet fill color
 		if (bg != null) {
 			GraphConstants.setGradientColor(cell.getAttributes(), Color.orange);
 			GraphConstants.setOpaque(cell.getAttributes(), true);
 		}
 
-		// Set raised border
+		// ISet raised border
 		if (raised)
 			GraphConstants.setBorder(cell.getAttributes(), BorderFactory
 					.createRaisedBevelBorder());
 		else
-			// Set black border
+			// ISet black border
 			GraphConstants.setBorderColor(cell.getAttributes(), Color.black);
 
 		// Add a Floating Port

@@ -10,7 +10,7 @@ package cerberus.data.collection;
 
 
 //import cerberus.data.IUniqueManagedObject;
-import cerberus.data.collection.CollectionMetaDataInterface;
+import cerberus.data.collection.IMetaDataHandler;
 //import cerberus.data.collection.CollectionInterface;
 import cerberus.data.collection.SelectionType;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
@@ -24,8 +24,8 @@ import cerberus.data.xml.MementoItemXML;
  * @author Michael Kalkusch
  *
  */
-public interface Selection  
-	extends CollectionMetaDataInterface, 
+public interface ISelection  
+	extends IMetaDataHandler, 
 	MementoItemXML,
 	CollectionThreadObject
 {
@@ -47,7 +47,7 @@ public interface Selection
 	 * 
 	 * @param iSetSelectionId 
 	 */
-	//public Selection(int iSetSelectionId);
+	//public ISelection(int iSetSelectionId);
 
 
 	public int getOffset();

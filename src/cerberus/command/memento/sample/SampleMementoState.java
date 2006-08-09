@@ -10,19 +10,19 @@ package cerberus.command.memento.sample;
 
 import java.io.Serializable;
 
-import cerberus.command.memento.MementoState;
+import cerberus.command.memento.IMementoState;
 
 /**
- * Sample code for a Memento state.
+ * Sample code for a IMemento state.
  * 
- * Implementation of Design Pattern "Memento"
+ * Implementation of Design Pattern "IMemento"
  * 
  * \sa SampleMementoApplicationCmd
  * 
  * @author Michael Kalkusch
  *
  */
-public class SampleMementoState implements MementoState,Serializable {
+public class SampleMementoState implements IMementoState,Serializable {
 
 	static final long serialVersionUID = 8300;
 	
@@ -46,7 +46,7 @@ public class SampleMementoState implements MementoState,Serializable {
 	}
 	
 	/**
-	 * Set any data required to restore the state of the object...
+	 * ISet any data required to restore the state of the object...
 	 */
 	public void setPostData( float fSetData ) {
 		fData = fSetData;

@@ -11,9 +11,9 @@ package cerberus.command.system;
 import java.util.LinkedList;
 import java.util.Iterator;
 
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AbstractCommand;
+import cerberus.command.base.ACommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.GeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -23,17 +23,17 @@ import cerberus.data.loader.MicroArrayLoader;
 
 
 /**
- * Command, load data from file using a token pattern and a target Set.
+ * Command, load data from file using a token pattern and a target ISet.
  * Use MicroArrayLoader to laod dataset.
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.Set
+ * @see cerberus.data.collection.ISet
  * @see cerberus.data.loader.MicroArrayLoader
  */
 public class CmdSystemLoadFileViaImporter 
-extends AbstractCommand
-implements CommandInterface {
+extends ACommand
+implements ICommand {
 
 	private final GeneralManager refGeneralManager;
 	
@@ -102,7 +102,7 @@ implements CommandInterface {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader#loadData()
 	 * 
-	 * @see cerberus.command.CommandInterface#doCommand()
+	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		System.out.println("load file via importer... ([" +
@@ -127,7 +127,7 @@ implements CommandInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#undoCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		// no undo of system shutdown!
@@ -135,7 +135,7 @@ implements CommandInterface {
 	
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.CommandInterface#getCommandType()
+	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.DATASET_LOAD; 

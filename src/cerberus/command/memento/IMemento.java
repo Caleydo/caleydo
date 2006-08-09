@@ -4,10 +4,10 @@ import cerberus.util.exception.CerberusRuntimeException;
 
 
 /**
- * Memento has a public interface and a pseudo-private interface.
+ * IMemento has a public interface and a pseudo-private interface.
  * 
- * This pseudo-private interface is the "small" interface for the creator-object of the Memento only.
- * The creator-object stores its state in a derived calss of MementoState,
+ * This pseudo-private interface is the "small" interface for the creator-object of the IMemento only.
+ * The creator-object stores its state in a derived calss of IMementoState,
  * which contains all information needed to restore the current state.
  * 
  * @author Michael Kalkusch
@@ -15,7 +15,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @see cerberus.manager.MementoManager
  *
  */
-public interface Memento {
+public interface IMemento {
 
 	/**
 	 * Get the type of this memento.
@@ -38,16 +38,16 @@ public interface Memento {
 	 * @throws CerberusRuntimeException are thrown in case of full storage or maximum number of mementos 
 	 */
 	public void setMementoState(final Object setMementoCreator,
-			final MementoState setMemetoState)
+			final IMementoState setMemetoState)
 			throws CerberusRuntimeException;
 
 	/**
 	 * Each class is be able to restore it's previouse status using the information stored 
-	 * in the MementoState object.
+	 * in the IMementoState object.
 	 * 
-	 * @return MementoState object to restore a previouse status.
+	 * @return IMementoState object to restore a previouse status.
 	 */
-	public MementoState getMementoState(final Object setMementoCreator);
+	public IMementoState getMementoState(final Object setMementoCreator);
 
 	/**
 	 * Overwrite toString() to get valueable debug information.

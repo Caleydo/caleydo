@@ -12,16 +12,16 @@ package cerberus.data.collection;
 /*
  * Methodes for meta data handling.
  */
-public interface MetaDataSetInterface {
+public interface IMetaDataHandler {
 
 	/**
 	 * Get the meta data from a prometheus.data.collection.selection.Selection
 	 */
-	public CollectionMetaData getMetaDataAny();
+	public IMetaData getMetaData();
 	
 	/**
-	 * Set the meta data for a selection.
+	 * ISet the meta data for a selection.
 	 */
-	public void setMetaDataAny( CollectionMetaData setMetaData );
+	public void setMetaData( IMetaData setMetaData );
 	
 }

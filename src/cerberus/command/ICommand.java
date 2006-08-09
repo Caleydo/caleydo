@@ -14,14 +14,14 @@ import cerberus.data.IUniqueObject;
 /**
  * Design Pattern "Command" ;behaviour pattern
  * 
- * Is combined with Design Pattern "Memento" to provide Do-Undo
+ * Is combined with Design Pattern "IMemento" to provide Do-Undo
  * 
  * Base interface.
  * 
  * @author Michael Kalkusch
  *
  */
-public interface CommandInterface 
+public interface ICommand 
 extends IUniqueObject {
 
 	/**
@@ -46,7 +46,7 @@ extends IUniqueObject {
 	 * @param compareToObject
 	 * @return TRUE if both commands are of the same type.
 	 */
-	abstract boolean isEqualType(CommandInterface compareToObject);
+	abstract boolean isEqualType(ICommand compareToObject);
 	
 	/**
 	 * Get type information on this command.

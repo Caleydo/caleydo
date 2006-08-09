@@ -25,11 +25,11 @@ import cerberus.manager.MenuManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.CommandType;
-import cerberus.command.CommandInterface;
+import cerberus.command.ICommand;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
 import cerberus.command.window.CmdWindowSetActiveFrame;
 import cerberus.data.IUniqueManagedObject;
-import cerberus.data.collection.Set;
+import cerberus.data.collection.ISet;
 //import cerberus.manager.singelton.OneForAllManager;
 //import cerberus.net.dwt.swing.DSwingHeatMap2DCanvas;
 //import cerberus.net.dwt.swing.DSwingHistogramCanvas;
@@ -123,7 +123,7 @@ implements IUniqueManagedObject {
 						CommandType.WINDOW_SET_ACTIVE_FRAME, 
 						"" );
 				
-				/* Set own farme as current frame */
+				/* ISet own farme as current frame */
 				cmd_iter.setCallerAndTargetFrameId( iCollectionId, iCollectionId );
 				
 				refIterDMenuBootStraper.addMenuItemWithCommand( 
@@ -148,7 +148,7 @@ implements IUniqueManagedObject {
 						CommandType.WINDOW_SET_ACTIVE_FRAME, 
 						"" );
 				
-				/* Set own farme as current frame */
+				/* ISet own farme as current frame */
 				cmd_iter.setCallerAndTargetFrameId( iCollectionId, iIdOfOtherWorkspaceFrame );
 				
 				this.refJMenuBar.addMenuItemWithCommand(
@@ -169,7 +169,7 @@ implements IUniqueManagedObject {
 		
 		
 //		DInternalFrame bufferNewIFrameC = this.manager.getSingelton().
-//			getDDesktopPane().createInternalFrame( "Storage GUI" );		
+//			getDDesktopPane().createInternalFrame( "IStorage GUI" );		
 //		bufferNewIFrameC.add( storagePanel );
 //		bufferNewIFrameC.pack();
 		
@@ -180,10 +180,10 @@ implements IUniqueManagedObject {
 		
 		/* --- SET --- */
 		
-		Set bufferedSet = (Set) manager.getItem( 70300 );
-		Set bufferedSet2 = (Set) manager.getItem( 70100 );
+		ISet bufferedSet = (ISet) manager.getItem( 70300 );
+		ISet bufferedSet2 = (ISet) manager.getItem( 70100 );
 		
-		Set bufferedSet3 = (Set) manager.getItem( 70400 );
+		ISet bufferedSet3 = (ISet) manager.getItem( 70400 );
 		
 //		DSwingHistogramCanvas histogram = new DSwingHistogramCanvas( manager, bufferedSet );
 //		DSwingHistogramCanvas histogram2 = new DSwingHistogramCanvas( manager, bufferedSet2 );
@@ -243,7 +243,7 @@ implements IUniqueManagedObject {
 		selectionPanel.updateState();
 		
 		DInternalFrame bufferNewIFrameA = 
-			createDInternalFrame( "Selection GUI" );
+			createDInternalFrame( "ISelection GUI" );
 		
 		bufferNewIFrameA.add( selectionPanel );
 		bufferNewIFrameA.pack();
@@ -268,7 +268,7 @@ implements IUniqueManagedObject {
 //		final int iFrameId = frame.getId();
 	
 
-		CommandInterface bufferCmd = 
+		ICommand bufferCmd = 
 			this.refCommandManager.createCommand(
 				CommandType.WINDOW_POPUP_INFO, "" );
 				
@@ -384,14 +384,14 @@ implements IUniqueManagedObject {
 				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
 		
 //		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_SET",
-//				"Set..",
+//				"ISet..",
 //				"Edit sets",
 //				'*',
 //				"SYSTEM_EDIT",
 //				true, refCommandManager.createCommand( CommandType.WINDOW_IFRAME_OPEN_SET ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_SELECTION",
-				"Selection..",
+				"ISelection..",
 				"Edit selection",
 				'*',
 				"SYSTEM_EDIT",
@@ -400,7 +400,7 @@ implements IUniqueManagedObject {
 						sCollectionId ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_STORAGE",
-				"Storage..",
+				"IStorage..",
 				"Edit storage",
 				'*',
 				"SYSTEM_EDIT",

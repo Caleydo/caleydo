@@ -10,31 +10,31 @@ package cerberus.manager;
 
 import java.util.LinkedList;
 
-import cerberus.command.CommandInterface;
-import cerberus.command.CommandListener;
+import cerberus.command.ICommand;
+import cerberus.command.ICommandListener;
 import cerberus.command.CommandType;
-import cerberus.command.CommandActionListener;
-import cerberus.command.queue.CommandQueueInterface;
+import cerberus.command.ICommandActionListener;
+import cerberus.command.queue.ICommandQueue;
 //import prometheus.data.xml.MementoXML;
 
 /**
- * One Manager handle all CommandListener.
+ * One Manager handle all ICommandListener.
  * 
- * This is a singelton for all Commands and CommandListener objects. 
+ * This is a singelton for all Commands and ICommandListener objects. 
  * "Singelton" Design Pattern.
  * 
  * @author Michael Kalkusch
  *
  */
 public interface CommandManager 
-extends CommandActionListener, GeneralManager {
+extends ICommandActionListener, GeneralManager {
 
-	//public CommandInterface createCommand( final ManagerObjectType useSelectionType );
+	//public ICommand createCommand( final ManagerObjectType useSelectionType );
 	
 	/**
 	 * Create a new command using a String.
 	 */
-	public CommandInterface createCommand( final String useSelectionType );
+	public ICommand createCommand( final String useSelectionType );
 	
 	/**
 	 * Create a new CommandQueue object.
@@ -48,7 +48,7 @@ extends CommandActionListener, GeneralManager {
 	 * 
 	 * @return new commandQueue
 	 */
-	public CommandInterface createCommandQueue( final String sCmdType,
+	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,
 			final int iCmdId,
 			final int iCmdQueueId,
@@ -68,7 +68,7 @@ extends CommandActionListener, GeneralManager {
 //	 * 
 //	 * @return new command
 //	 */
-//	public CommandInterface createCommand( 
+//	public ICommand createCommand( 
 //			String sData_Cmd_type,
 //			String sData_Cmd_process,
 //			final int iData_CmdId,
@@ -93,7 +93,7 @@ extends CommandActionListener, GeneralManager {
 	 * @param llAttributes
 	 * 
 	 */
-	public CommandInterface createCommand( 
+	public ICommand createCommand( 
 			final String sData_Cmd_type,
 			final LinkedList <String> llAttributes );
 	
@@ -101,31 +101,31 @@ extends CommandActionListener, GeneralManager {
 	 * Create a new command using the CommandType.
 	 * @param details TODO
 	 */
-	public CommandInterface createCommand( final CommandType useSelectionType, 
+	public ICommand createCommand( final CommandType useSelectionType, 
 			String details );
 	
 	/**
-	 * Add reference to one CommandListener object.
+	 * Add reference to one ICommandListener object.
 	 * 
-	 * @param addCommandListener adds referenc to CommandListener obejct.
+	 * @param addCommandListener adds referenc to ICommandListener obejct.
 	 */
-	public void addCommandListener( CommandListener addCommandListener );
+	public void addCommandListener( ICommandListener addCommandListener );
 	
 	/**
-	 * Remove reference to one CommandListener object.
+	 * Remove reference to one ICommandListener object.
 	 * 
-	 * @param removeCommandListener removes referens to CommandListener obejct.
+	 * @param removeCommandListener removes referens to ICommandListener obejct.
 	 * @return TRUE if the reference was removed, false if the reference was not found.
 	 */
-	public boolean removeCommandListener( CommandListener removeCommandListener );
+	public boolean removeCommandListener( ICommandListener removeCommandListener );
 	
 	/**
-	 * Tests if the reference to one CommandListener object exists.
+	 * Tests if the reference to one ICommandListener object exists.
 	 * 
 	 * @param hasCommandListener referenc to be tested
 	 * @return true if the reference is bound to this CommandManager
 	 */
-	public boolean hasCommandListener( CommandListener hasCommandListener );	
+	public boolean hasCommandListener( ICommandListener hasCommandListener );	
 
 	/**
 	 * Get a command queue by it's commandQueueId, which is only a key for the commandQueue
@@ -134,7 +134,7 @@ extends CommandActionListener, GeneralManager {
 	 * @param iCmdQueueId commandQueueId
 	 * @return command queue
 	 */
-	public CommandQueueInterface getCommandQueueByCmdQueueId( final int iCmdQueueId );
+	public ICommandQueue getCommandQueueByCmdQueueId( final int iCmdQueueId );
 	
 	/**
 	 * Tests if a iCmdQueueId is registered with a CommandQueue obejct.

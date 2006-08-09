@@ -133,7 +133,7 @@ public class SuperMouseEvent extends MouseEvent
 	}
 	
 	/**
-	 * Set InputSourceId. 
+	 * ISet InputSourceId. 
 	 * 
 	 * Note, that this Id is set by the "EventServer" based on the input stream.
 	 * 
@@ -144,7 +144,7 @@ public class SuperMouseEvent extends MouseEvent
 	}
 	
 	/**
-	 * Set the state for a dragging event.
+	 * ISet the state for a dragging event.
 	 * 
 	 * @param bSetIsDragged TRUE is dragging is happening
 	 */

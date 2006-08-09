@@ -189,7 +189,7 @@ public class SelectionBrowser {
 	public SelectionBrowser(JFrame setRefParentExternalFrame) {
 		refParentExternalFrame = setRefParentExternalFrame;
 
-		setRefParentExternalFrame.setTitle("Collection Browser -Set-");
+		setRefParentExternalFrame.setTitle("Collection Browser -ISet-");
 
 		setRefParentExternalFrame.setLayout(new BorderLayout());
 
@@ -222,7 +222,7 @@ public class SelectionBrowser {
 
 		refParentInternalFrame = setRefParentInternalFrame;
 
-		refParentInternalFrame.setTitle("Collection Browser -Set- INTERNAL");
+		refParentInternalFrame.setTitle("Collection Browser -ISet- INTERNAL");
 
 		refParentInternalFrame.setLayout(new BorderLayout());
 

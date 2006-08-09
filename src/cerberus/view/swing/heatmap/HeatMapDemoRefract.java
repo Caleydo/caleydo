@@ -53,9 +53,9 @@ import demos.util.*;
 import gleem.*;
 import gleem.linalg.*;
 
-import cerberus.data.collection.Set;
-import cerberus.data.collection.Selection;
-import cerberus.data.collection.Storage;
+import cerberus.data.collection.ISet;
+import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
@@ -226,7 +226,7 @@ public class HeatMapDemoRefract extends Demo {
   
   public FileLoader loader;
   
-  private Set refSet = null;
+  private ISet refSet = null;
 
   public HeatMapDemoRefract( GLCanvas canvas, final Animator animator ) {
 	  FileLoader loader = new FileLoader();
