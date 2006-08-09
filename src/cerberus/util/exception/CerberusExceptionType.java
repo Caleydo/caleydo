@@ -16,10 +16,13 @@ package cerberus.util.exception;
  */
 public enum CerberusExceptionType {
 	
+	ANY_ERROR("cerberus-error"),
 	COMMAND("Command"),
 	DATAHANDLING("LOAD,SAVE"),
-	MEMENTO("Memeont"),
+	MEMENTO("Memeont"),	
 	OBSERVER("Observer"),
+	JOGL_AWT("Jogl AWT"),
+	JOGL_SWT("Jogl SWT"),
 	RUNTIME("Runtime"),
 	SAXPARSER("Sax parser"),
 	VIRTUALARRAY("Virtual array");

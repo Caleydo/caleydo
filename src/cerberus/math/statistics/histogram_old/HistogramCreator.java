@@ -8,7 +8,7 @@
  */
 package cerberus.math.statistics.histogram_old;
 
-import cerberus.data.StatefulItem;
+import cerberus.data.IStatefulItem;
 import cerberus.data.collection.Set;
 
 
@@ -18,7 +18,7 @@ import cerberus.data.collection.Set;
  * @author Michael Kalkusch
  *
  */
-public interface HistogramCreator extends StatefulItem {
+public interface HistogramCreator extends IStatefulItem {
 
 	/**
 	 * Remove all content and data.	 
@@ -28,7 +28,7 @@ public interface HistogramCreator extends StatefulItem {
 	/**
 	 * Create the histogram.
 	 * 
-	 * @see prometheus.data.StatefulItem#updateState()
+	 * @see prometheus.data.IStatefulItem#updateState()
 	 */
 	public void updateState();
 	

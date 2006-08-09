@@ -28,7 +28,7 @@ import cerberus.command.CommandType;
 import cerberus.command.CommandInterface;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
 import cerberus.command.window.CmdWindowSetActiveFrame;
-import cerberus.data.UniqueManagedInterface;
+import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.Set;
 //import cerberus.manager.singelton.OneForAllManager;
 //import cerberus.net.dwt.swing.DSwingHeatMap2DCanvas;
@@ -45,7 +45,7 @@ import cerberus.net.dwt.swing.menu.DMenuBootStraper;
  */
 public class WorkspaceSwingFrame 
 extends JFrame
-implements UniqueManagedInterface {
+implements IUniqueManagedObject {
 
 	protected final GeneralManager manager;
 	

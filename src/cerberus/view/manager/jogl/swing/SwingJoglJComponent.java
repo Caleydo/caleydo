@@ -29,12 +29,12 @@ public interface SwingJoglJComponent {
 
 	
 	/**
-	 * @see prometheus.data.UniqueInterface#setId(int)
+	 * @see prometheus.data.IUniqueObject#setId(int)
 	 */
 	public void setId(int iSetCollectionId);
 
 	/**
-	 * @see prometheus.data.UniqueInterface#getId()
+	 * @see prometheus.data.IUniqueObject#getId()
 	 */
 	public int getId();
 

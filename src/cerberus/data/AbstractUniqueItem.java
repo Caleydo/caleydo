@@ -8,10 +8,10 @@
  */
 package cerberus.data;
 
-import cerberus.data.UniqueInterface;
+import cerberus.data.IUniqueObject;
 
 /**
- * Abstract class providing methodes defiend in UniqueManagedInterface.
+ * Abstract class providing methodes defiend in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
  * @author Michael Kalkusch
@@ -19,7 +19,7 @@ import cerberus.data.UniqueInterface;
  * @see prometheus.data.xml.MementiItemXML
  */
 public abstract class AbstractUniqueItem 
-implements UniqueInterface {
+implements IUniqueObject {
 
 	/**
 	 * Unique Id

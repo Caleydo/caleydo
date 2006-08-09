@@ -9,7 +9,7 @@
 
 package cerberus.data;
 
-public interface DataStorageInterface {
+public interface IDataStorage {
 
 	
 }

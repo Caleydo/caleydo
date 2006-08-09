@@ -17,8 +17,8 @@ import cerberus.manager.type.ManagerObjectType;
  * @author Michael Kalkusch
  *
  */
-public interface UniqueManagedInterface 
-extends UniqueInterface {
+public interface IUniqueManagedObject 
+extends IUniqueObject {
 
 	/**
 	 * Get the manager that created the item.

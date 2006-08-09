@@ -14,12 +14,12 @@ import java.util.Collection;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec2f;
 
-import cerberus.data.DimensionGroupIterface;
+import cerberus.data.IDimensionGroup;
 
 /*
  * Iterface for all data items.
  */
-public interface DataItemInterface {
+public interface IDataItem {
 
 	// ----  get  ----
 	
@@ -34,7 +34,7 @@ public interface DataItemInterface {
 	
 	
 	/// return collection of one "group" bound to iDimensionGroupId.
-	DimensionGroupIterface getDimensionGroup( int iDimensionGroupId );
+	IDimensionGroup getDimensionGroup( int iDimensionGroupId );
 	
 	/// return collection of "data values".
 	Collection getDataValueList( );
@@ -61,7 +61,7 @@ public interface DataItemInterface {
 	
 	/// set collection of one "group" bound to iDimensionGroupId.
 	boolean setDimensionGroup( int iSetDimensionGroupId,
-			DimensionGroupIterface setDimensionGroup );
+			IDimensionGroup setDimensionGroup );
 	
 	/// set collection of "data values".
 	boolean setDataValueList( Collection setDataValueCollection );

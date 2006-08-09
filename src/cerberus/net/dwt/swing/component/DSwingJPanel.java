@@ -16,7 +16,7 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.net.dwt.base.ViewingAreaComponent;
-import cerberus.data.UniqueManagedInterface;
+import cerberus.data.IUniqueManagedObject;
 
 /**
  * Abstract class provinging get and set for ViewingAreaComponent interface.
@@ -27,7 +27,7 @@ import cerberus.data.UniqueManagedInterface;
  *
  */
 public abstract class DSwingJPanel extends JPanel implements
-		ViewingAreaComponent, UniqueManagedInterface {
+		ViewingAreaComponent, IUniqueManagedObject {
 
 	
 	protected GeneralManager refGeneralManager;
@@ -113,7 +113,7 @@ public abstract class DSwingJPanel extends JPanel implements
 	/**
 	 * Get the singelton
 	 * 
-	 * @see prometheus.data.UniqueManagedInterface#getManager()
+	 * @see prometheus.data.IUniqueManagedObject#getManager()
 	 */
 	public final GeneralManager getManager() {
 		return refGeneralManager;
@@ -121,7 +121,7 @@ public abstract class DSwingJPanel extends JPanel implements
 	
 
 	/**
-	 * @see prometheus.data.UniqueManagedInterface#setId(int)
+	 * @see prometheus.data.IUniqueManagedObject#setId(int)
 	 *
 	 */
 	public final void setId(int iSetDNetEventId) {
@@ -133,7 +133,7 @@ public abstract class DSwingJPanel extends JPanel implements
 	}
 	
 	/**
-	 * @see prometheus.data.UniqueManagedInterface#getId()
+	 * @see prometheus.data.IUniqueManagedObject#getId()
 	 */
 	public final int getId() {
 		return iDNetEventComponentId;

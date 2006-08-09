@@ -27,7 +27,7 @@ import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 
 //import com.sun.opengl.util.FPSAnimator;
 
-import cerberus.data.UniqueInterface;
+import cerberus.data.IUniqueObject;
 	
 /**
  * @author kalkusch
@@ -35,7 +35,7 @@ import cerberus.data.UniqueInterface;
  */
 public class SwingJoglJFrame 
   extends JFrame 
-  implements UniqueInterface, SwingJoglJComponent {
+  implements IUniqueObject, SwingJoglJComponent {
 
 	private FrameBaseType frameType = FrameBaseType.MAIN_FRAME;
 	

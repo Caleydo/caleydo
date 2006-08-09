@@ -163,7 +163,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	/**
 	 * Get the singelton
 	 * 
-	 * @see cerberus.data.UniqueManagedInterface#getManager()
+	 * @see cerberus.data.IUniqueManagedObject#getManager()
 	 */
 	public GeneralManager getManager() {
 		return refGeneralManager;

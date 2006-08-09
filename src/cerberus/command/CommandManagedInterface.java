@@ -3,7 +3,7 @@
  */
 package cerberus.command;
 
-import cerberus.data.UniqueManagedInterface;
+import cerberus.data.IUniqueManagedObject;
 
 /**
  * @author kalkusch
@@ -11,6 +11,6 @@ import cerberus.data.UniqueManagedInterface;
  */
 public interface CommandManagedInterface 
 extends CommandInterface,
-		UniqueManagedInterface {
+		IUniqueManagedObject {
 
 }

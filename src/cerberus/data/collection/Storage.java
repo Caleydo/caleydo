@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection;
 
-import cerberus.data.UniqueManagedInterface;
+import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.CollectionInterface;
 import cerberus.data.collection.thread.CollectionThreadObject;

@@ -6,7 +6,7 @@ package cerberus.command.base;
 import cerberus.command.CommandInterface;
 import cerberus.command.CommandManagedInterface;
 import cerberus.command.CommandType;
-import cerberus.data.UniqueManagedObject;
+import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -16,7 +16,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public abstract class AbstractManagedCommand 
-extends UniqueManagedObject 
+extends AUniqueManagedObject 
 implements CommandManagedInterface {
 
 	/**

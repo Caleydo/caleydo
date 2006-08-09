@@ -55,7 +55,7 @@ implements MementoXML {
 	 * Reference to the current DataStorage.
 	 */
 	private Storage refDataStorage;
-	//protected DataStorageInterface refDataStorage;
+	//protected IDataStorage refDataStorage;
 	
 	/**
 	 * Imports data from file to this set.

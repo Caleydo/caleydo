@@ -9,11 +9,11 @@
 
 package cerberus.data;
 
-import cerberus.data.DataItemInterface;
+import cerberus.data.IDataItem;
 
 import java.util.Collection;
 
-public interface DimensionGroupIterface {
+public interface IDimensionGroup {
 
 	/// set a label for an index
 	void setLabelByIndex( int iIndex, String sSetLabel );
@@ -26,13 +26,13 @@ public interface DimensionGroupIterface {
 	/*
 	 * Inserts a data item at the end of the row.
 	 */
-	void addItemByIndex( int iIndex, DataItemInterface setItem );
+	void addItemByIndex( int iIndex, IDataItem setItem );
 	
 	
 	/*
-	 * Get all DataItemInterface-items of one row.
+	 * Get all IDataItem-items of one row.
 	 * row is addressed by iIndex.
-	 * Items contained in Collection are DataItemInterface-items. 
+	 * Items contained in Collection are IDataItem-items. 
 	 */
 	Collection getRowCollectionByIndex( int iIndex );
 	
@@ -48,7 +48,7 @@ public interface DimensionGroupIterface {
 	 * [row 2]:  [colum 0] [colum 1] [colum 2] ... [colom n]
 	 *   ..
 	 */
-	DataItemInterface getDataItemByGlobalIndex( int iGlobalItemIndex );
+	IDataItem getDataItemByGlobalIndex( int iGlobalItemIndex );
 	
 	
 	/*
@@ -59,7 +59,7 @@ public interface DimensionGroupIterface {
 	 * [row 2]:  [colum 0] [colum 1] [colum 2] ... [colom n]
 	 *   ..
 	 */
-	DataItemInterface getDataItemByRowIndex( int iRowIndex, int iColumIndex );
+	IDataItem getDataItemByRowIndex( int iRowIndex, int iColumIndex );
 	
 
 	/*  return the nuber of active rows

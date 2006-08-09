@@ -18,7 +18,7 @@ package cerberus.data;
  * @author Michael Kalkusch
  *
  */
-public interface UniqueInterface {
+public interface IUniqueObject {
 	
 	/**
 	 * Resets the selectionId.

@@ -1,10 +1,10 @@
 package cerberus.data.collection.thread;
 
 import cerberus.data.collection.thread.lock.CollectionLock;
-import cerberus.data.UniqueInterface;
+import cerberus.data.IUniqueObject;
 
 public interface CollectionThreadElement 
-	extends UniqueInterface {
+	extends IUniqueObject {
 
 	/** 
 	 * 

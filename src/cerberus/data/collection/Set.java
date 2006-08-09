@@ -11,7 +11,7 @@ package cerberus.data.collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import cerberus.data.UniqueManagedInterface;
+import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.Storage;
 
 import cerberus.data.collection.SubSet;

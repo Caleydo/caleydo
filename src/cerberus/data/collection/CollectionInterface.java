@@ -18,7 +18,7 @@ package cerberus.data.collection;
  *
  */
 public interface CollectionInterface {
-	//extends CollectionCache, UniqueManagedInterface {
+	//extends CollectionCache, IUniqueManagedObject {
 
 	/**
 	 * Return a Label of the item.

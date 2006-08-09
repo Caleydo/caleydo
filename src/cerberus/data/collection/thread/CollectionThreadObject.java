@@ -3,12 +3,12 @@ package cerberus.data.collection.thread;
 import cerberus.data.collection.CollectionCache;
 import cerberus.data.collection.CollectionInterface;
 import cerberus.data.collection.thread.lock.CollectionLock;
-import cerberus.data.UniqueManagedInterface;
+import cerberus.data.IUniqueManagedObject;
 
 public interface CollectionThreadObject 
 	extends CollectionCache, 
 	CollectionInterface, 
-	UniqueManagedInterface {
+	IUniqueManagedObject {
 
 	/** 
 	 * 

@@ -4,7 +4,7 @@
 package cerberus.data.collection.thread.impl;
 
 import cerberus.manager.GeneralManager;
-import cerberus.data.UniqueManagedObject;
+import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.thread.CollectionThreadObject;
 import cerberus.data.collection.thread.lock.CollectionLock;
 import cerberus.data.collection.thread.lock.CollectionReadWriteLock;
@@ -15,7 +15,7 @@ import cerberus.data.collection.thread.lock.CollectionReadWriteLock;
  *
  */
 public abstract class CollectionThreadItem 
-	extends UniqueManagedObject 
+	extends AUniqueManagedObject 
 	implements CollectionLock, CollectionThreadObject {
 
 	/**

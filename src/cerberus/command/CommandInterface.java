@@ -9,7 +9,7 @@
 package cerberus.command;
 
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.data.UniqueInterface;
+import cerberus.data.IUniqueObject;
 
 /**
  * Design Pattern "Command" ;behaviour pattern
@@ -22,7 +22,7 @@ import cerberus.data.UniqueInterface;
  *
  */
 public interface CommandInterface 
-extends UniqueInterface {
+extends IUniqueObject {
 
 	/**
 	 * execute a command.

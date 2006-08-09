@@ -10,7 +10,7 @@ package cerberus.data.collection.view;
 
 import java.awt.Graphics;
 
-import cerberus.data.UniqueManagedInterface;
+import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.Set;
 //import prometheus.data.collection.BaseManagerItemInterface;
 import cerberus.data.xml.MementoItemXML;
@@ -24,7 +24,7 @@ import cerberus.net.dwt.DNetEventComponentInterface;
  */
 public interface ViewCanvas
 	extends 
-	UniqueManagedInterface, 
+	IUniqueManagedObject, 
 	MementoItemXML,
 	DNetEventComponentInterface
 {

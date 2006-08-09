@@ -9,7 +9,7 @@
 package cerberus.data.collection;
 
 
-//import cerberus.data.UniqueManagedInterface;
+//import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.CollectionMetaDataInterface;
 //import cerberus.data.collection.CollectionInterface;
 import cerberus.data.collection.SelectionType;

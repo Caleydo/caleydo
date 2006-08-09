@@ -8,7 +8,7 @@
  */
 package cerberus.data.xml;
 
-import cerberus.data.UniqueInterface;
+import cerberus.data.IUniqueObject;
 import cerberus.data.xml.MementoXML;
 
 /**
@@ -21,7 +21,7 @@ import cerberus.data.xml.MementoXML;
  * 
  */
 public interface MementoItemXML 
-extends MementoXML, UniqueInterface {
+extends MementoXML, IUniqueObject {
 
 	
 	/**

@@ -14,7 +14,7 @@ package cerberus.data;
  * @author Michael Kalkusch
  *
  */
-public interface StatefulItem {
+public interface IStatefulItem {
 
 	/**
 	 * Update the internal state.

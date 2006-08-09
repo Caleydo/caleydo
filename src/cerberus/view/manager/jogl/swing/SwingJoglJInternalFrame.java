@@ -93,28 +93,28 @@ public class SwingJoglJInternalFrame
 	}
 	
 	/**
-	 * @see prometheus.data.UniqueInterface#setId(int)
+	 * @see prometheus.data.IUniqueObject#setId(int)
 	 */
 	public void setId( int iSetCollectionId ) {
 		this.iUniqueId = iSetCollectionId;
 	}
 	
 	/**
-	 * @see prometheus.data.UniqueInterface#getId()
+	 * @see prometheus.data.IUniqueObject#getId()
 	 */
 	public int getId() {
 		return iUniqueId;
 	}
 	
 	/**
-	 * @see prometheus.data.UniqueInterface#setId(int)
+	 * @see prometheus.data.IUniqueObject#setId(int)
 	 */
 	public void setId_parentFrame( int iSetParentFrameUniqueId) {
 		this.iParentFrameUniqueId = iSetParentFrameUniqueId;
 	}
 	
 	/**
-	 * @see prometheus.data.UniqueInterface#getId()
+	 * @see prometheus.data.IUniqueObject#getId()
 	 */
 	public int getId_parentFrame() {
 		return iParentFrameUniqueId;

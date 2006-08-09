@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
  * 
  * @author Michael Kalkusch
  */
-public interface DataIteratorInterface {
+public interface IDataIterator {
 
 	/*
 	 * Sets the iterator to the first valid item;

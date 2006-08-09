@@ -163,7 +163,7 @@ implements ViewCanvas
 	/**
 	 * Must override this methode in derived class.
 	 * 
-	 * @see cerberus.data.StatefulItem#updateState()
+	 * @see cerberus.data.IStatefulItem#updateState()
 	 */
 	public void updateState() {
 			
