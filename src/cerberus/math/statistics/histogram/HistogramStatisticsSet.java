@@ -15,7 +15,7 @@ import cerberus.data.collection.IStorage;
  */
 public class HistogramStatisticsSet 
 extends HistogramStatisticInteger 
-implements HistogramStatisticBase {
+implements IHistogramStatistic {
 	
 	private ISet refSet = null;
 	private ISelection refSelection = null;

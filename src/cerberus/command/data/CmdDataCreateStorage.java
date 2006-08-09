@@ -19,6 +19,7 @@ import cerberus.data.collection.StorageType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
+import cerberus.command.base.AManagedCommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.StorageManager;
@@ -38,11 +39,9 @@ import cerberus.manager.type.ManagerObjectType;
  * @see cerberus.data.collection.IStorage
  */
 public class CmdDataCreateStorage 
-extends ACommand
+extends AManagedCommand
 implements ICommand {
 
-	private final GeneralManager refGeneralManager;
-	
 	/**
 	 * This list contains the data types for cerberus.data.collection.StorageType as String.
 	 * 
@@ -68,7 +67,7 @@ implements ICommand {
 	/**
 	 * Unique Id of the IStorage, that will be created.
 	 */
-	protected int iUniqueId;
+	protected int iUniqueTargetId;
 	
 	/**
 	 * Label of the new IStorage, that will be created.
@@ -87,6 +86,7 @@ implements ICommand {
 	 * 
 	 * List of expected Strings inside LinkedList <String>: <br>
 	 * sData_CmdId <br>
+	 * sData_TargetId <br>
 	 * sData_Cmd_label <br>
 	 * sData_Cmd_process <br> 
 	 * sData_Cmd_MementoId <br> 
@@ -100,7 +100,8 @@ implements ICommand {
 			final LinkedList <String> listAttributes,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		this.refGeneralManager = refGeneralManager;		
+		super( -1, refGeneralManager );
+			
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
 		llDataTypes = new LinkedList<String> ();
@@ -127,7 +128,7 @@ implements ICommand {
 		IStorage newObject = (IStorage) refSelectionManager.createStorage(
 				ManagerObjectType.STORAGE );
 		
-		newObject.setId( iUniqueId );
+		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
 		
 		newObject.allocate();
@@ -283,7 +284,7 @@ implements ICommand {
 						
 		
 		refSelectionManager.registerItem( newObject, 
-				iUniqueId, 
+				iUniqueTargetId, 
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
@@ -301,12 +302,12 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
-				iUniqueId,
+				iUniqueTargetId,
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"UNDO new SEL: " + 
-				iUniqueId );		
+				iUniqueTargetId );		
 	}
 	
 
@@ -327,6 +328,7 @@ implements ICommand {
 	 *
 	 * List of expected Strings inside LinkedList <String>: <br>
 	 * sData_CmdId <br>
+	 * sData_TargetId <br>
 	 * sData_Cmd_label <br>
 	 * sData_Cmd_process <br> 
 	 * sData_Cmd_MementoId <br> 
@@ -349,9 +351,11 @@ implements ICommand {
 
 		
 		try {			
-			iUniqueId = StringConversionTool.convertStringToInt( iter.next(), -1 );			
+			this.setId( StringConversionTool.convertStringToInt( iter.next(), -1 ) );
+			
+			iUniqueTargetId = StringConversionTool.convertStringToInt( iter.next(), -1 );			
 			sLabel = StringConversionTool.convertStringToString( iter.next(), 
-					Integer.toString(iUniqueId) );			
+					Integer.toString(iUniqueTargetId) );			
 			
 			/**
 			 * SKIP:

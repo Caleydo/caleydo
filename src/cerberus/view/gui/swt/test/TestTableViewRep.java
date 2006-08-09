@@ -12,10 +12,14 @@ import org.eclipse.swt.widgets.TableItem;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
-public class TestTableViewRep implements ViewInter
+public class TestTableViewRep 
+extends AViewRep 
+implements ViewInter
 {
 	protected final int iNewId;
 	protected GeneralManager refGeneralManager;

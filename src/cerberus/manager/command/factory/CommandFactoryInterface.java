@@ -62,7 +62,8 @@ public interface CommandFactoryInterface {
 	 * Create a new command.
 	 * 
 	 * List of expected Strings inside LinkedList <String>: <br>
-	 * sData_CmdId <br>
+	 * sData_CmdId <br>	 
+	 * sData_TargetId <br>
 	 * sData_Cmd_label <br>
 	 * sData_Cmd_process <br> 
 	 * sData_Cmd_MementoId <br> 

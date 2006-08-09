@@ -20,6 +20,7 @@ import cerberus.manager.StorageManager;
 import cerberus.manager.SelectionManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.swt.data.explorer.model.Model;
@@ -31,7 +32,9 @@ import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
 import cerberus.view.gui.swt.data.set.SetTableViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 
-public class DataExplorerViewRep implements ViewInter
+public class DataExplorerViewRep 
+extends AViewRep 
+implements ViewInter
 {
 	protected static final Object StorageModel = null;
 	protected final int iNewId;

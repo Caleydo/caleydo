@@ -14,7 +14,7 @@ import cerberus.data.collection.ISet;
  */
 public class HistogramStatisticInteger 
 extends HistogramStatisticItem
-implements HistogramStatisticBase {
+implements IHistogramStatistic {
 
 	private boolean bDistroyArrayAfterUpdate = false;
 	
@@ -601,7 +601,7 @@ implements HistogramStatisticBase {
 	/**
 	 * Copy histogram intervall borders to a new Number array.
 	 * 
-	 * @see cerberus.math.statistics.histogram.HistogramStatisticBase#getHistogramIntervalls()
+	 * @see cerberus.math.statistics.histogram.IHistogramStatistic#getHistogramIntervalls()
 	 * 
 	 */
 	public final Number[] getHistogramIntervalls() {

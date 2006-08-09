@@ -37,14 +37,14 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 	
 	protected boolean bApplicationActive = false;
 	
-	private int iData_MenuId = -1;
-	private int iData_MenuParentId = -1;
-	private int iData_TargetFrameId = -1;
-	private int iData_CommandId = -1;
-	
-	private String sData_MenuType = "none";
-	private String sData_MenuTitle = "none";
-	private String sData_MenuTooltip = "";
+//	private int iData_MenuId = -1;
+//	private int iData_MenuParentId = -1;
+//	private int iData_TargetFrameId = -1;
+//	private int iData_CommandId = -1;
+//	
+//	private String sData_MenuType = "none";
+//	private String sData_MenuTitle = "none";
+//	private String sData_MenuTooltip = "";
 	private String sData_MenuMemento = "-";
 	
 	protected ICommandQueue refCommandQueueIter = null;
@@ -261,6 +261,10 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 					CommandQueueSaxType.TAG_CMD_ID.getXmlKey(),
 					Integer.toString(-1)  );
 			
+			String sData_TargetId = assignStringValue( attrs, 
+					CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(),
+					Integer.toString(-1)  );
+			
 			String sData_Cmd_MementoId = assignStringValue( attrs, 
 					CommandQueueSaxType.TAG_MEMENTO_ID.getXmlKey(),
 					Integer.toString(-1)  );
@@ -284,7 +288,8 @@ public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
 			LinkedList <String> llAttributes = 
 				new LinkedList <String> ();
 			
-			llAttributes.add( sData_CmdId );			
+			llAttributes.add( sData_CmdId );	
+			llAttributes.add( sData_TargetId );			
 			llAttributes.add( sData_Cmd_label );
 			llAttributes.add( sData_Cmd_process );
 			llAttributes.add( sData_Cmd_MementoId );

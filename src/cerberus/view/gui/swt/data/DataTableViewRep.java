@@ -19,8 +19,11 @@ import cerberus.manager.SelectionManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.StorageManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.AViewRep;
 
-public class DataTableViewRep implements DataTableViewInter
+public class DataTableViewRep 
+extends AViewRep 
+implements DataTableViewInter
 {
 	protected final GeneralManager refGeneralManager;
 	protected StorageManager refStorageManager;

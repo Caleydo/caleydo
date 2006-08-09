@@ -26,6 +26,7 @@ public enum CommandQueueSaxType
 	MEMENTO("cmd","process"),	
 	
 	TAG_CMD_ID("cmd","cmdId"),
+	TAG_TARGET_ID("cmd","targetId"),
 	TAG_MEMENTO_ID("cmd","mementoId"),
 	TAG_TYPE("cmd","type"),
 	TAG_ATTRIBUTE1("cmd","attrib1"),	

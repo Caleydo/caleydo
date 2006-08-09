@@ -6,11 +6,14 @@ import com.sun.opengl.util.Animator;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.ViewInter;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import demos.gears.Gears;
 
-public class GearsViewRep implements ViewInter
+public class GearsViewRep 
+extends AViewRep 
+implements ViewInter
 {
 	protected final int iNewId;
 	protected GeneralManager refGeneralManager;

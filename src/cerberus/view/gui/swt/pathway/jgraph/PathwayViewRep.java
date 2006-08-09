@@ -30,6 +30,7 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.pathway.PathwayViewInter;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
@@ -42,7 +43,9 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
  * @author Marc Streit
  *
  */
-public class PathwayViewRep implements PathwayViewInter
+public class PathwayViewRep
+extends AViewRep 
+implements PathwayViewInter
 {
 	protected final int iNewId;
 	protected GeneralManager refGeneralManager;

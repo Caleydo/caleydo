@@ -72,6 +72,7 @@ implements ICommand {
 		iter.next();
 		iter.next();
 		iter.next();
+		iter.next();
 		
 		this.refGeneralManager = refGeneralManager;		
 		this.sFileName = iter.next();		

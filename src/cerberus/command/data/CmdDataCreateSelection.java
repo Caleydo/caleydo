@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
 
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.ACommand;
+import cerberus.command.base.AManagedCommand;
 import cerberus.manager.command.factory.CommandFactory;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.GeneralManager;
@@ -37,10 +37,8 @@ import cerberus.manager.type.ManagerObjectType;
  * @see cerberus.data.loader.MicroArrayLoader
  */
 public class CmdDataCreateSelection 
-extends ACommand
+extends AManagedCommand
 implements ICommand {
-
-	private final GeneralManager refGeneralManager;
 	
 	protected int iOffset;
 	
@@ -55,13 +53,14 @@ implements ICommand {
 	
 	protected String sTokenPattern;
 	
-	protected int iUniqueId;
+	protected int iUniqueTargetId;
 	
 	
 	/**
 	 * 
 	 * List of expected Strings inside LinkedList <String>: <br>
 	 * sData_CmdId <br>
+	 * sData_TargetId <br>
 	 * sData_Cmd_label <br>
 	 * sData_Cmd_process <br> 
 	 * sData_Cmd_MementoId <br> 
@@ -74,7 +73,7 @@ implements ICommand {
 	public CmdDataCreateSelection( GeneralManager refGeneralManager,
 			final LinkedList <String> listAttributes ) {
 		
-		this.refGeneralManager = refGeneralManager;		
+		super( -1, refGeneralManager );		
 		
 		setAttributes( listAttributes );
 		
@@ -96,7 +95,7 @@ implements ICommand {
 		ISelection newObject = (ISelection) refSelectionManager.createSelection(
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 		
-		newObject.setId( iUniqueId );
+		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
 		newObject.setOffset( iOffset );
 		newObject.setLength( iLength );
@@ -104,7 +103,7 @@ implements ICommand {
 		newObject.setMultiRepeat( iMultiRepeat );
 		
 		refSelectionManager.registerItem( newObject, 
-				iUniqueId, 
+				iUniqueTargetId, 
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
@@ -117,12 +116,12 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
-				iUniqueId,
+				iUniqueTargetId,
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"UNDO new SEL: " + 
-				iUniqueId );
+				iUniqueTargetId );
 	}
 	
 
@@ -142,6 +141,7 @@ implements ICommand {
 	 * 
 	 * List of expected Strings inside LinkedList <String>: <br>
 	 * sData_CmdId <br>
+	 * sData_TargetId <br>
 	 * sData_Cmd_label <br>
 	 * sData_Cmd_process <br> 
 	 * sData_Cmd_MementoId <br> 
@@ -161,11 +161,14 @@ implements ICommand {
 		
 		assert iSizeList > 1 : "can not handle empty argument list!";					
 		
-		try {			
-			iUniqueId = StringConversionTool.convertStringToInt( iter.next(), -1 );
+		try {	
+			
+			this.setId( StringConversionTool.convertStringToInt( iter.next(), -1 ) );
+			
+			iUniqueTargetId = StringConversionTool.convertStringToInt( iter.next(), -1 );
 			
 			sLabel = StringConversionTool.convertStringToString( iter.next(), 
-					Integer.toString(iUniqueId) );			
+					Integer.toString(iUniqueTargetId) );			
 			
 			iter.next();
 			iter.next();

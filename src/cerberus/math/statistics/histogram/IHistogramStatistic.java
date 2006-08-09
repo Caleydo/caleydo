@@ -8,7 +8,7 @@ package cerberus.math.statistics.histogram;
  *
  * @param <T> basic data type of histogram
  */
-public interface HistogramStatisticBase<T extends Number> {
+public interface IHistogramStatistic<T extends Number> {
 
 	public abstract void setIntervalBorders(T[] setBorders);
 

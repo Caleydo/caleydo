@@ -1,8 +1,11 @@
 package cerberus.view.gui.swt.data.meta;
 
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.data.DataTableViewInter;
 
-public class MetaTableViewRep implements DataTableViewInter
+public class MetaTableViewRep 
+extends AViewRep 
+implements DataTableViewInter
 {
 
 	public void initView()

@@ -10,7 +10,7 @@ package cerberus.math.statistics.histogram;
  *
  */
 public abstract class HistogramStatisticItem 
-implements HistogramStatisticBase {
+implements IHistogramStatistic {
 
 	protected StatisticHistogramType enumHistogramType = StatisticHistogramType.REGULAR_LINEAR;
 	

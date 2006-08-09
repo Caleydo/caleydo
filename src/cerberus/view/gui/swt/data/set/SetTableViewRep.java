@@ -15,10 +15,13 @@ import cerberus.data.collection.IStorage;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SetManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.data.DataTableViewInter;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
-public class SetTableViewRep implements DataTableViewInter
+public class SetTableViewRep 
+extends AViewRep 
+implements DataTableViewInter
 {
 	protected GeneralManager refGeneralManager;
 	protected SetManager refSetManager;

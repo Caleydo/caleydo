@@ -20,7 +20,7 @@ import cerberus.data.collection.IStorage;
 
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.ACommand;
+import cerberus.command.base.AManagedCommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.SelectionManager;
@@ -42,10 +42,8 @@ import cerberus.manager.type.ManagerObjectType;
  * @see cerberus.data.collection.IStorage
  */
 public class CmdDataCreateSet 
-extends ACommand
+extends AManagedCommand
 implements ICommand {
-
-	private final GeneralManager refGeneralManager;
 	
 	/**
 	 * This list contains the data types for cerberus.data.collection.StorageType as String.
@@ -104,7 +102,8 @@ implements ICommand {
 			final LinkedList <String> listAttributes,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		this.refGeneralManager = refGeneralManager;		
+		super( -1 , refGeneralManager );
+		
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
 		llRefStorage = new LinkedList<String> ();
@@ -272,6 +271,8 @@ implements ICommand {
 
 		
 		try {			
+			this.setId( StringConversionTool.convertStringToInt( iter.next(), -1 ) );
+			
 			iUniqueId = StringConversionTool.convertStringToInt( iter.next(), -1 );			
 			sLabel = StringConversionTool.convertStringToString( iter.next(), 
 					Integer.toString(iUniqueId) );			
