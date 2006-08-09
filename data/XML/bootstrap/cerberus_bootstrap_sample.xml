@@ -41,7 +41,7 @@
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="99007" targetId="45201" label="target Set for file" attrib1="25201" attrib2="35301" /> 
 
 	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201"  />
-	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_GEARS" cmdId="99009" targetId="55301" >
+	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_GEARS" cmdId="99009" targetId="55301" />
 	 
 	  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 		

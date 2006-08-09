@@ -6,6 +6,14 @@ package cerberus.xml.parser.command;
 /**
  * Type of Command Queue "tag's" and "key's"
  * 
+ * Example: LOAD_DATA_FILE("cmd","type")
+ * 
+ * in XML:   <cmd type="LOAD_DATA_FILE" />
+ * 
+ * Example 2: LOAD_ON_DEMAND("cmd","process")
+ * 
+ * in XML: <cmd process="LOAD_ON_DEMAND" />
+ * 
  * @author kalkusch
  *
  */
@@ -14,6 +22,10 @@ public enum CommandQueueSaxType
 	/*
 	 * -------  COMMAND  --------
 	 */ 
+	
+	/**
+	 * XML-value  ( XML-Tag , XML-key ) 
+	 */
 	LOAD_DATA_FILE("cmd","type"),
 	OPEN_VIEW("cmd","type"),
 	
