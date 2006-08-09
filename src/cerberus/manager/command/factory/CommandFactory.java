@@ -25,6 +25,8 @@ import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 
+import cerberus.command.view.swt.CmdViewCreateHeatmap;
+import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
 import cerberus.command.window.CmdWindowNewIFrameScatterplot2D;
@@ -38,6 +40,7 @@ import cerberus.command.window.CmdWindowNewIFrameJoglHistogram;
 import cerberus.command.window.CmdWindowNewIFrameJoglHeatmap;
 import cerberus.command.window.CmdWindowNewIFrameJoglScatterplot;
 import cerberus.command.window.CmdWindowSetActiveFrame;
+import cerberus.command.window.swt.CmdWindowCreate;
 
 import cerberus.command.queue.ICommandQueue;
 import cerberus.command.queue.CmdSystemRunCmdQueue;
@@ -215,7 +218,33 @@ extends ACommand
 						llAttributes );			
 			break;
 		}
-
+		
+		case CREATE_WINDOW_SWT:
+		{
+			createdCommand =
+				new CmdWindowCreate(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_HEATMAP:
+		{
+			createdCommand =
+				new CmdViewCreateHeatmap(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_PATHWAY:
+		{
+			createdCommand =
+				new CmdViewCreatePathway(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 

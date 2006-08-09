@@ -80,7 +80,7 @@ public interface GeneralManager {
 	
 	public final int iUniqueId_TypeOffset_GuiSWT = 32;
 		
-	public final int iUniqueId_TypeOffset_GuiMemu = 39;
+	public final int iUniqueId_TypeOffset_GuiMenu = 39;
 	
 	
 	/**

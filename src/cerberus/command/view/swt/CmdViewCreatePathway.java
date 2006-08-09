@@ -1,23 +1,24 @@
 package cerberus.command.view.swt;
 
-import org.eclipse.swt.widgets.Shell;
+import java.util.LinkedList;
 
 import cerberus.command.CommandType;
+import cerberus.command.ICommand;
 import cerberus.command.base.AManagedCommand;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.ViewManager;
-import cerberus.manager.gui.SWTGUIManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
 
-public class CmdViewNewPathway extends AManagedCommand
-{
+public class CmdViewCreatePathway 
+extends AManagedCommand
+implements ICommand {
 
-	public CmdViewNewPathway(GeneralManager setGeneralManager)
+	public CmdViewCreatePathway( GeneralManager refGeneralManager,
+		final LinkedList <String> listAttributes ) 
 	{
-		//FIXME: for what is the collection ID needed here?
-		super(0, setGeneralManager);
+		super( -1, refGeneralManager );	
 	}
 
 	public void doCommand() throws CerberusRuntimeException

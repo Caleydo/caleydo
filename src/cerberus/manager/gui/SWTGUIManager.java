@@ -16,7 +16,7 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.WindowManager;
 import org.eclipse.jface.window.Window;
 
-import cerberus.command.view.swt.CmdViewNewPathway;
+import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AbstractManagerImpl;
