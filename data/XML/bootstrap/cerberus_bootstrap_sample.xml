@@ -15,15 +15,18 @@
   <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
   </JFrame>
   
+  <Window id="7000000" title="Cerberus PrototypeWindow" x="50" y="458" width="1802" height="583" visible="true">
+  	<View cmdId="55201" />
+  	<View cmdId="55301" />
+  </Window>
+  
    </FrameState>
    
    <JFrameMenuList>
-   
      <FrameMenu id="8801100" frameId="6601900" cmdId="7701500" parentMenuId="-1"      type="list" enabled="true" title="file.." tooltip="" memento="-" ></FrameMenu>
      <FrameMenu id="8802100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="item" enabled="true" title="load.." tooltip="" memento="-" ></FrameMenu>
      <FrameMenu id="8803100" frameId="6601900" cmdId="-1"      parentMenuId="8801100" type="step" enabled="true" title=""       tooltip="" memento="-" ></FrameMenu>
      <FrameMenu id="8804100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="list" enabled="true" title="save.." tooltip="" memento="-" ></FrameMenu>
-   
    </JFrameMenuList>
   
    <CommandBuffer>
@@ -36,15 +39,16 @@
         
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="35201" label="my Set1" attrib1="25201 35201" attrib2="25301 25301" /> 
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="45201" label="target Set for file" attrib1="25201" attrib2="35301" /> 
-    <!--
+
+	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_PATHWAY" cmdId="55201" />
+	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_GEARS" cmdId="55301"
+<!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 		
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;SKIP;SKIP;INT;ABORT" attrib2="15201" />
      
      <Cmd mementoId="-2" process="MEMENTO" type="OPEN_VIEW" detail="" />
-
-     
 
      <CmdQueue type="COMMAND_QUEUE_OPEN" process="RUN_QUEUE_ON_DEMAND" cmdQueueId="1" cmdId="7709600">
      
@@ -53,8 +57,7 @@
        
      </CmdQueue>     
      <CmdQueue type="COMMAND_QUEUE_RUN"  process="RUN_QUEUE" cmdqueue_id="1" cmdId="7711600" queue_thread="-1" queue_thread_wait="-1" />
-
-			-->
+-->
      
    </CommandBuffer>
    
