@@ -30,18 +30,21 @@
    </JFrameMenuList>
   
    <CommandBuffer>
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="25301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="35301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="45301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="99001" targetId="25301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="99002" targetId="35301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="99003" targetId="45301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
      
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="25201" label="my Selection" attrib1="0 200 0 10" />             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="35201" label="my Selection2" attrib1="50 50 0 1" />  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="99004" targetId="25201" label="my Selection" attrib1="0 200 0 10" />             
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="99005" targetId="35201" label="my Selection2" attrib1="50 50 0 1" />  
         
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="35201" label="my Set1" attrib1="25201 35201" attrib2="25301 25301" /> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="45201" label="target Set for file" attrib1="25201" attrib2="35301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="99006" targetId="35201" label="my Set1" attrib1="25201 35201" attrib2="25301 25301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="99007" targetId="45201" label="target Set for file" attrib1="25201" attrib2="35301" /> 
 
-	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_PATHWAY" cmdId="55201" />
-	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_GEARS" cmdId="55301"
+	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201"  />
+	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_GEARS" cmdId="99009" targetId="55301" >
+	 
+	  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
+		
 <!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
