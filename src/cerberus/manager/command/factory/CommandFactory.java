@@ -25,6 +25,8 @@ import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 
+import cerberus.command.view.swt.CmdViewCreateDataExplorer;
+import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
 import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
@@ -232,6 +234,24 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdViewCreateHeatmap(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_GEARS:
+		{
+			createdCommand =
+				new CmdViewCreateGears(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_DATA_EXPLORER:
+		{
+			createdCommand =
+				new CmdViewCreateDataExplorer(
 						refGeneralManager,
 						llAttributes );			
 			break;

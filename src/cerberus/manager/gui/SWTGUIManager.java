@@ -9,6 +9,8 @@
 
 package cerberus.manager.gui;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
@@ -33,6 +35,7 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.swt.widget.ASWTWidget;
+import cerberus.manager.gui.CerberusWindow;
 
 /**
  * The SWTGUIManager is responsible for the creation 
@@ -50,11 +53,16 @@ implements ISWTGUIManager
 	
 	protected final Vector<ISWTWidget> refWidgetContainer;
 
+	/**
+	 * SWT Display represents a thread.
+	 */
+	protected final Display refDisplay;
+	
 	protected Shell refShell;
-
-	protected Display refDisplay;
 	
 	protected Menu refMenuBar;
+	
+	protected final HashMap<Integer, Shell> refWindowMap; 
 	
 	/**
 	 * Call createApplicationWindow() before using this object.
@@ -75,41 +83,179 @@ implements ISWTGUIManager
 		refWidgetContainer = new Vector<ISWTWidget>();
 		
 		refWindowManager = new WindowManager();
-	}
-
-//	public void createWindow()
-//	{
-//		refWindowManager.add()
-//	}
-	
-	/**
-	 * Method to initialize this application window.
-	 * Must be called before using this class.
-	 * 
-	 */
-	public void createApplicationWindow()
-	{
-		//refWidgetContainer = new Vector<Widget>();
 		
 		refDisplay = new Display();
 		
-		refShell = new Shell(refDisplay);
-		refShell.setLayout(new GridLayout());
-		refShell.setMaximized(true);
-		refShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
+		refWindowMap = new HashMap<Integer, Shell>();
+	}
+
+	/**
+	 * Method cretes an unique window ID and calls createWindow(iUniqueId)
+	 * 
+	 * @return Newly created shell.
+	 */
+	public Shell createWindow()
+	{
+		// Register shell in the window map
+		final int iUniqueId = this.createNewId(ManagerObjectType.GUI_WINDOW);
 		
-		refMenuBar = createMenuBar(refShell);
-		refShell.setMenuBar(refMenuBar); 
-		
-		setUpLayout();
+		return createWindow(iUniqueId);
 	}
 	
-	protected void setUpLayout()
+	/**
+	 * Method takes a window ID and creates a shell using this ID.
+	 * Also the layout is set here.
+	 * 
+	 * @return Newly created shell.
+	 */	
+	public Shell createWindow(int iUniqueId)
+	{
+		Shell refNewShell = new Shell(refDisplay);
+		refNewShell.setLayout(new GridLayout());
+		refNewShell.setMaximized(true);
+		refNewShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
+
+		refWindowMap.put(iUniqueId, refNewShell);
+		
+		//refMenuBar = createMenuBar(refShell);
+		//refShell.setMenuBar(refMenuBar); 
+		
+		setUpLayout(refNewShell);
+		
+		//FIXME: just for testing
+		refShell = refNewShell;
+		
+		return refNewShell;
+	}
+	
+	public Shell createWindow(final ManagerObjectType useWindowType)
+	{
+		Shell refNewShell = new Shell(refDisplay);
+		refNewShell.setLayout(new GridLayout());
+		refNewShell.setMaximized(true);
+		refNewShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
+		
+		// Register shell in the window map
+		final int iUniqueId = this.createNewId(useWindowType);
+		refWindowMap.put(iUniqueId, refNewShell);
+		
+		//refMenuBar = createMenuBar(refShell);
+		//refShell.setMenuBar(refMenuBar); 
+		
+		setUpLayout(refNewShell);
+		
+		return refNewShell;
+	}
+	
+	public ISWTWidget createWidget(final ManagerObjectType useWidgetType)
+	{
+		final int iUniqueId = this.createNewId(useWidgetType);
+		Composite composite;
+		ASWTWidget newSWTWidget;
+		
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.heightHint = 700;
+		
+		switch (useWidgetType)
+		{
+		case GUI_SWT_NATIVE_WIDGET:
+			composite = new Composite(refShell, SWT.NONE);
+			composite.setLayoutData(gridData);
+			newSWTWidget = new SWTNativeWidget(composite);
+			newSWTWidget.setId(iUniqueId);
+			refWidgetContainer.add(newSWTWidget);
+			return newSWTWidget;
+		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
+			composite = new Composite(refShell, SWT.EMBEDDED);
+			composite.setLayoutData(gridData);
+			newSWTWidget = new SWTEmbeddedJoglWidget(composite);
+			refWidgetContainer.add(newSWTWidget);
+			return newSWTWidget;
+		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
+			composite = new Composite(refShell, SWT.EMBEDDED);
+			composite.setLayoutData(gridData);
+			newSWTWidget = new SWTEmbeddedGraphWidget(composite);
+			refWidgetContainer.add(newSWTWidget);
+			return newSWTWidget;
+		default:
+			throw new CerberusRuntimeException(
+					"StorageManagerSimple.createView() failed due to unhandled type ["
+							+ useWidgetType.toString() + "]");
+		}
+	}
+	
+	public ISWTWidget createWidget(final ManagerObjectType useWidgetType, int iUniqueParentWindowId)
+	{
+		final int iUniqueId = this.createNewId(useWidgetType);
+		Composite composite;
+		ASWTWidget newSWTWidget;
+		
+		// TODO Check if window id is valid and print error message
+		refShell = refWindowMap.get(iUniqueParentWindowId);
+		
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.heightHint = 700;
+		
+		switch (useWidgetType)
+		{
+		case GUI_SWT_NATIVE_WIDGET:
+			composite = new Composite(refShell, SWT.NONE);
+			composite.setLayoutData(gridData);
+			newSWTWidget = new SWTNativeWidget(composite);
+			newSWTWidget.setId(iUniqueId);
+			refWidgetContainer.add(newSWTWidget);
+			return newSWTWidget;
+		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
+			composite = new Composite(refShell, SWT.EMBEDDED);
+			composite.setLayoutData(gridData);
+			newSWTWidget = new SWTEmbeddedJoglWidget(composite);
+			refWidgetContainer.add(newSWTWidget);
+			return newSWTWidget;
+		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
+			composite = new Composite(refShell, SWT.EMBEDDED);
+			composite.setLayoutData(gridData);
+			newSWTWidget = new SWTEmbeddedGraphWidget(composite);
+			refWidgetContainer.add(newSWTWidget);
+			return newSWTWidget;
+		default:
+			throw new CerberusRuntimeException(
+					"StorageManagerSimple.createView() failed due to unhandled type ["
+							+ useWidgetType.toString() + "]");
+		}
+	}
+	
+//	/**
+//	 * Method to initialize this application window.
+//	 * Must be called before using this class.
+//	 * 
+//	 */
+//	public void createApplicationWindow()
+//	{		
+//		refShell = new Shell(refDisplay);
+//		refShell.setLayout(new GridLayout());
+//		refShell.setMaximized(true);
+//		refShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
+//		
+//		refMenuBar = createMenuBar(refShell);
+//		refShell.setMenuBar(refMenuBar); 
+//		
+//		//setUpLayout();
+//	}
+	
+	protected void setUpLayout(Shell refNewShell)
 	{
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		gridLayout.makeColumnsEqualWidth = true;
-		refShell.setLayout(gridLayout);
+		refNewShell.setLayout(gridLayout);
 	}
 	
 	protected Menu createMenuBar(Shell refShell)
@@ -149,64 +295,39 @@ implements ISWTGUIManager
 	
 	public void runApplication()
 	{
-		refShell.open();
-		while (!refShell.isDisposed())
+		Iterator<Shell> shellIterator;
+		Shell refCurrentShell;
+		
+		shellIterator = refWindowMap.values().iterator();
+		while(shellIterator.hasNext())
 		{
-			if (!refDisplay.readAndDispatch())
-				refDisplay.sleep();
+			refCurrentShell = shellIterator.next();
+			refCurrentShell.open();
 		}
-
+		
+		shellIterator = refWindowMap.values().iterator();
+		
+		// TODO Don't know if this is ok like this!
+		while(shellIterator.hasNext())
+		{
+			refCurrentShell = shellIterator.next();
+			while (!refCurrentShell.isDisposed())
+			{
+				if (!refDisplay.readAndDispatch())
+					refDisplay.sleep();
+			}
+		}
+		
 		refDisplay.dispose();
-	}
-
-	public ISWTWidget createWidget(final ManagerObjectType useWidgetType)
-	{
-		if (useWidgetType.getGroupType() != ManagerType.GUI_SWT)
-		{
-			throw new CerberusRuntimeException(
-					"try to create object with wrong type "
-							+ useWidgetType.name());
-		}
-
-		// TODO: save id somewhere
-		final int iNewId = this.createNewId(useWidgetType);
-		final Composite composite;
 		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.heightHint = 700;
-		
-		switch (useWidgetType)
-		{
-		case GUI_SWT_NATIVE_WIDGET:
-			composite = new Composite(refShell, SWT.NONE);
-			composite.setLayoutData(gridData);
-			ISWTWidget newSWTNativeWidget = 
-				new SWTNativeWidget(composite);
-			refWidgetContainer.add(newSWTNativeWidget);
-			return newSWTNativeWidget;
-		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			composite = new Composite(refShell, SWT.EMBEDDED);
-			composite.setLayoutData(gridData);
-			ISWTWidget newSWTEmbeddedJoglWidget = 
-				new SWTEmbeddedJoglWidget(composite);
-			refWidgetContainer.add(newSWTEmbeddedJoglWidget);
-			return newSWTEmbeddedJoglWidget;
-		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			composite = new Composite(refShell, SWT.EMBEDDED);
-			ISWTWidget newSWTEmbeddedGraphWidget = 
-				new SWTEmbeddedGraphWidget(composite);
-			composite.setLayoutData(gridData);
-			refWidgetContainer.add(newSWTEmbeddedGraphWidget);
-			return newSWTEmbeddedGraphWidget;
-		default:
-			throw new CerberusRuntimeException(
-					"StorageManagerSimple.createView() failed due to unhandled type ["
-							+ useWidgetType.toString() + "]");
-		}
+//		refShell.open();
+//		while (!refShell.isDisposed())
+//		{
+//			if (!refDisplay.readAndDispatch())
+//				refDisplay.sleep();
+//		}
+//
+//		refDisplay.dispose();
 	}
 
 	public boolean hasItem(int iItemId)

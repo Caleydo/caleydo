@@ -161,9 +161,9 @@ implements GeneralManagerSingelton {
 		/**
 		 * Make sure SWT is only used, when needed!
 		 */
-		if ( bEnableSWT ) {
-			refSWTGUIManager.createApplicationWindow();		
-		}
+//		if ( bEnableSWT ) {
+//			refSWTGUIManager.createApplicationWindow();		
+//		}
 		
 		/**
 		 * Register managers to singelton ...

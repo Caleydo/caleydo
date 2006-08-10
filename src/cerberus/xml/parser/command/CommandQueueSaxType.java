@@ -34,8 +34,9 @@ public enum CommandQueueSaxType
 	CREATE_STORAGE("cmd","type"),
 	
 	CREATE_VIEW_HEATMAP("cmd", "type"),
-	CREATE_VIEW_GEARS("cmd", "type"),
 	CREATE_VIEW_PATHWAY("cmd", "type"),
+	CREATE_VIEW_GEARS("cmd", "type"),
+	CREATE_VIEW_DATA_EXPLORER("cmd", "type"),
 	
 	CREATE_WINDOW_SWT("cmd", "type"),
 	

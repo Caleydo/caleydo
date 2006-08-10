@@ -129,6 +129,8 @@ public enum ManagerObjectType {
 	 */
 	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
 	
+	GUI_WINDOW(ManagerType.GUI_SWT),
+	
 	GUI_SWT(ManagerType.GUI_SWT),
 	
 	GUI_SWING(ManagerType.GUI_SWING),

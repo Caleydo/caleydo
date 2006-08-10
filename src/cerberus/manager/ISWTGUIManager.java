@@ -1,15 +1,17 @@
 package cerberus.manager;
 
+import org.eclipse.swt.widgets.Shell;
+
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.swt.ISWTWidget;
 
 public interface ISWTGUIManager extends GeneralManager
-{
-	public ISWTWidget createWidget(final ManagerObjectType useWidgetType);
+{	
+	public ISWTWidget createWidget(final ManagerObjectType uswWidgetType);
 	
-	/**
-	 * Initialize Window.
-	 *
-	 */
-	public void createApplicationWindow();
+	public ISWTWidget createWidget(final ManagerObjectType useWidgetType, int iUniqueParentWindowId);
+	
+	public Shell createWindow();
+	
+	public Shell createWindow(int iUniqueId);
 }

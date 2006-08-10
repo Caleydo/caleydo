@@ -5,5 +5,7 @@ import cerberus.view.gui.ViewInter;
 
 public interface ViewManager extends GeneralManager 
 {
-	public ViewInter createView( final ManagerObjectType useViewType );
+	public ViewInter createView(final ManagerObjectType useViewType);
+	
+	public ViewInter createView(final ManagerObjectType useViewType, int iUniqueId);
 }

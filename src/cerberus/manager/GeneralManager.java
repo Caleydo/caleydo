@@ -73,6 +73,8 @@ public interface GeneralManager {
 	public final int iUniqueId_TypeOffset_Pathways_Edge = 62;		
 	
 	public final int iUniqueId_TypeOffset_Memento = 95;
+
+	public final int iUniqueId_TypeOffset_Window = 40;
 	
 	public final int iUniqueId_TypeOffset_GuiComponent = 30;
 

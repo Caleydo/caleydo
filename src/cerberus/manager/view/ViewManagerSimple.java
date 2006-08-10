@@ -69,6 +69,13 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 
 	public ViewInter createView(final ManagerObjectType useViewType)
 	{
+		final int iUniqueId = this.createNewId(useViewType);
+		
+		return createView(useViewType, iUniqueId);
+	}
+
+	public ViewInter createView(ManagerObjectType useViewType, int iUniqueId)
+	{
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{
 			throw new CerberusRuntimeException(
@@ -76,30 +83,28 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 							+ useViewType.name());
 		}
 
-		final int iNewId = this.createNewId(useViewType);
-
 		switch (useViewType)
 		{
 		case VIEW:
 
 		case VIEW_PATHWAY:
-			return new PathwayViewRep(iNewId, this.refGeneralManager);
+			return new PathwayViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_DATA_EXPLORER:
-			return new DataExplorerViewRep(iNewId, this.refGeneralManager);	
+			return new DataExplorerViewRep(iUniqueId, this.refGeneralManager);	
 		case VIEW_TEST_TABLE:
-			return new TestTableViewRep(iNewId, this.refGeneralManager);
+			return new TestTableViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_DATA_TABLE:
 			return new DataTableViewRep(this.refGeneralManager);		
 		case VIEW_SWT_SET_TABLE:
 			return new SetTableViewRep(this.refGeneralManager);		
 		case VIEW_SWT_GEARS:
-			return new GearsViewRep(iNewId, this.refGeneralManager);
+			return new GearsViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_HEATMAP2D:
-			return new Heatmap2DViewRep(iNewId, this.refGeneralManager);
+			return new Heatmap2DViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_SCATTERPLOT2D:
-			return new Scatterplot2DViewRep(iNewId, this.refGeneralManager);
+			return new Scatterplot2DViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_SCATTERPLOT3D:
-			return new Scatterplot2DViewRep(iNewId, this.refGeneralManager);			
+			return new Scatterplot2DViewRep(iUniqueId, this.refGeneralManager);			
 
 		default:
 			throw new CerberusRuntimeException(

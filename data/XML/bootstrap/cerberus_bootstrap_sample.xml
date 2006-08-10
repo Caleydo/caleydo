@@ -36,16 +36,23 @@
      
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="99004" targetId="25201" label="my Selection" attrib1="0 200 0 10" />             
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="99005" targetId="35201" label="my Selection2" attrib1="50 50 0 1" />  
-        
+            
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="99006" targetId="35201" label="my Set1" attrib1="25201 35201" attrib2="25301 25301" /> 
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="99007" targetId="45201" label="target Set for file" attrib1="25201" attrib2="35301" /> 
 
-	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201"  />
-	 <Cmd mementoId="0" process="ON_DEMAND" type="CREATE_VIEW_GEARS" cmdId="99009" targetId="55301" />
-	 
-	  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_WINDOW_SWT" cmdId="990011" targetId="01401" label="Cerberus Prototype" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_WINDOW_SWT" cmdId="990015" targetId="02401" label="Cerberus Prototype" />   
+
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201" label="Pathway" attrib1="014001" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="99012" targetId="55401" label="Data Explorer" attrib1="014001" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" targetId="55601" label="Gears" attrib1="024001" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" targetId="56601" label="Gears" attrib1="024001" />
+
+<!--	 
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\tests\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
+
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="99009" targetId="55301" label="Heatmap" attrib="winId" />
 		
-<!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 		
@@ -54,11 +61,10 @@
      <Cmd mementoId="-2" process="MEMENTO" type="OPEN_VIEW" detail="" />
 
      <CmdQueue type="COMMAND_QUEUE_OPEN" process="RUN_QUEUE_ON_DEMAND" cmdQueueId="1" cmdId="7709600">
-     
        <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" details="filename.gpr" switches="" />
-       <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" details="filename.gpr" />
-       
+       <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" details="filename.gpr" /> 
      </CmdQueue>     
+     
      <CmdQueue type="COMMAND_QUEUE_RUN"  process="RUN_QUEUE" cmdqueue_id="1" cmdId="7711600" queue_thread="-1" queue_thread_wait="-1" />
 -->
      
