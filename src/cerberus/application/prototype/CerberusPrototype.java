@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -12,6 +13,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 
 import cerberus.manager.GeneralManager;
 import cerberus.manager.gui.SWTGUIManager;
@@ -98,11 +102,24 @@ public class CerberusPrototype
 	
 	protected void createViews()
 	{
-		// refViewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
-		//refViewManager.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER);
-		//refViewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
-		//refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
-		// refViewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);
+		refViewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
+		refViewManager.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER);
+		refViewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
+		refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
+		refViewManager.createView(ManagerObjectType.VIEW_SWT_HISTOGRAM2D);
+		
+//		ViewInter newView = refViewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);	
+//		
+//		SwtJogHistogram2DViewRep newCastView = (SwtJogHistogram2DViewRep) newView;
+//		
+//		Vector <String> vecAttributes = new Vector <String> ();		
+//		vecAttributes.addElement( "35201" );
+//		
+//		newCastView.setAttributes( vecAttributes );
+//		
+//		newView.initView();
+////		newView.retrieveNewGUIContainer();
+//		newView.drawView();
 	}
 
 	/**

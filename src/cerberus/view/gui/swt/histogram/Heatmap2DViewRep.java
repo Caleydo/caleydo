@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.gears.jogl;
+package cerberus.view.gui.swt.histogram;
 
 import javax.media.opengl.GLCanvas;
 
@@ -8,12 +8,11 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.ViewInter;
-import cerberus.view.gui.awt.jogl.GearsMain;
-import cerberus.view.gui.awt.jogl.TriangleMain;
-import cerberus.view.gui.awt.jogl.Histogram2DMain;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
+import cerberus.view.gui.awt.jogl.Histogram2DMain;
 
-public class GearsViewRep 
+
+public class Heatmap2DViewRep 
 extends AViewRep 
 implements ViewInter
 {
@@ -21,7 +20,7 @@ implements ViewInter
 	protected GeneralManager refGeneralManager;
 	protected GLCanvas refGLCanvas;
 	
-	public GearsViewRep(int iNewId, GeneralManager refGeneralManager)
+	public Heatmap2DViewRep(int iNewId, GeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
@@ -40,24 +39,15 @@ implements ViewInter
 
 	public void drawView()
 	{
-		Histogram2DMain canvas = new Histogram2DMain();
+		Histogram2DMain newCanvas = new Histogram2DMain();
+		newCanvas.runMain();
 		
-		/**
-		 * Calling "canvas.runMain();" starts a new thread an a new AWT-Frame
-		 */
-		//canvas.runMain();
-		
-		refGLCanvas.addGLEventListener( canvas );
-		
-		/**
-		 * old code
-		 */
-		//refGLCanvas.addGLEventListener( new TriangleMain() );
-		
-	    //refGLCanvas.addGLEventListener(new GearsMain());
+	    refGLCanvas.addGLEventListener( newCanvas );
 
 	    final Animator animator = new Animator(refGLCanvas);
 	    animator.start();
+	    
+	    //newCanvas.runMain();
 		
 	}
 

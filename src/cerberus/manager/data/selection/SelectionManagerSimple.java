@@ -24,7 +24,6 @@ import cerberus.data.collection.selection.SelectionMultiBlock;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.ISelection;
 import cerberus.data.loader.MicroArrayLoader;
-import cerberus.data.xml.MementoXML;
 
 
 
@@ -85,7 +84,7 @@ implements SelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#createSelection()
 	 */
-	public MementoXML createSelection( final ManagerObjectType useSelectionType ) {
+	public ISelection createSelection( final ManagerObjectType useSelectionType ) {
 		
 		assert useSelectionType!= null: "can not handle null pointer";
 	
@@ -98,7 +97,8 @@ implements SelectionManager
 				return new SelectionMultiBlock( createNewId(ManagerObjectType.SELECTION), this, null );	
 				
 			case SELECTION_LOAD_MICROARRAY:
-				return new MicroArrayLoader( getGeneralManager() );
+				System.err.println("SelectionManager.createSelection() SELECTION_LOAD_MICROARRAY is deprecated!");
+				//return new MicroArrayLoader( getGeneralManager() );
 				
 //			case SELECTION_MULTI_BLOCK_RLE:
 //				break;

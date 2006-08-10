@@ -50,7 +50,7 @@ public class KgmlSaxHandler extends DefaultHandler
     		sElementName = sQualifiedName; // namespaceAware = false
     	}
     	
-    	System.out.println("Element name: " +sElementName);
+    	//System.out.println("Element name: " +sElementName);
     	
 		if (attributes != null) 
 		{
@@ -118,8 +118,8 @@ public class KgmlSaxHandler extends DefaultHandler
     		else if (sAttributeName.equals("link"))
     			sLink = attributes.getValue(iAttributeIndex); 
 			
-   			System.out.println("Attribute name: " +sAttributeName);
-   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+//   			System.out.println("Attribute name: " +sAttributeName);
+//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 		
 		PathwayManager.getInstance().createPathway(sTitle, sImageLink, sLink, iPathwayID);
@@ -157,8 +157,8 @@ public class KgmlSaxHandler extends DefaultHandler
 		   else if (sAttributeName.equals("type"))
 			   sType = attributes.getValue(iAttributeIndex); 
 		
-		   System.out.println("Attribute name: " +sAttributeName);
-		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+//		   System.out.println("Attribute name: " +sAttributeName);
+//		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
 	   	}
 
     	iGeneratedElementId = ElementManager.getInstance().createVertex(sName, sType);
@@ -203,8 +203,8 @@ public class KgmlSaxHandler extends DefaultHandler
    			else if (sAttributeName.equals("y"))
    				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
 			
-   			System.out.println("Attribute name: " +sAttributeName);
-   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+//   			System.out.println("Attribute name: " +sAttributeName);
+//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 
 		ElementManager.getInstance().createVertexRepresentation(sName, iHeight, iWidth,
@@ -241,8 +241,8 @@ public class KgmlSaxHandler extends DefaultHandler
    			else if (sAttributeName.equals("entry2"))
     			iEntry2 = new Integer(attributes.getValue(iAttributeIndex)); 
 			
-   			System.out.println("Attribute name: " +sAttributeName);
-   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+//   			System.out.println("Attribute name: " +sAttributeName);
+//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}  	
     	
     	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1); //TODO: exception
@@ -271,8 +271,8 @@ public class KgmlSaxHandler extends DefaultHandler
    			else if (sAttributeName.equals("value"))
   				iValue = new Integer(attributes.getValue(iAttributeIndex)); 
  
-   			System.out.println("Attribute name: " +sAttributeName);
-   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+//   			System.out.println("Attribute name: " +sAttributeName);
+//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}  	
 		
 		if (sName.equals("compound"))

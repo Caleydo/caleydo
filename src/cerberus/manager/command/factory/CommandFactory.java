@@ -8,17 +8,13 @@
  */
 package cerberus.manager.command.factory;
 
-
-import javax.swing.JComponent;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+import javax.swing.JComponent;
 
-import cerberus.manager.GeneralManager;
-
-
-import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.CommandTypeGroup;
+import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 
 import cerberus.command.data.CmdDataCreateSelection;
@@ -54,6 +50,8 @@ import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 
 import cerberus.manager.CommandManager;
+import cerberus.manager.GeneralManager;
+
 
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 //import cerberus.net.dwt.swing.mdi.DDesktopPane;
@@ -230,32 +228,14 @@ extends ACommand
 			break;
 		}
 		
-		case CREATE_VIEW_HEATMAP:
-		{
-			createdCommand =
-				new CmdViewCreateHeatmap(
-						refGeneralManager,
-						llAttributes );			
-			break;
-		}
-		
-		case CREATE_VIEW_GEARS:
-		{
-			createdCommand =
-				new CmdViewCreateGears(
-						refGeneralManager,
-						llAttributes );			
-			break;
-		}
-		
-		case CREATE_VIEW_DATA_EXPLORER:
-		{
-			createdCommand =
-				new CmdViewCreateDataExplorer(
-						refGeneralManager,
-						llAttributes );			
-			break;
-		}
+//		case CREATE_VIEW_HEATMAP:
+//		{
+//			createdCommand =
+//				new CmdViewCreateHeatmap(
+//						refGeneralManager,
+//						llAttributes );			
+//			break;
+//		}
 		
 		case CREATE_VIEW_PATHWAY:
 		{

@@ -54,7 +54,7 @@ implements ISet {
 	/**
 	 * Variable for the dimension of this set.
 	 */
-	protected int iSizeDimension = 0;
+	protected int iSizeDimension = 1;
 	
 
 	/**
@@ -84,6 +84,11 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 	
+		if ( refFlatSelection == null ) {
+			refFlatSelection = new ISelection[iSizeDimension];
+			refFlatStorage = new IStorage[iSizeDimension];
+		}
+		
 		refFlatSelection[iAtIndex] = addSelection;
 		
 		return true;
@@ -406,6 +411,11 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 	
+		if ( refFlatStorage == null ) {
+			refFlatSelection = new ISelection[iSizeDimension];
+			refFlatStorage = new IStorage[iSizeDimension];
+		}
+		
 		this.refFlatStorage[iAtIndex] = addStorage;
 		
 		return true;

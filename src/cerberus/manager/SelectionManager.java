@@ -13,7 +13,6 @@ import java.util.Vector;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.ISelection;
-import cerberus.data.xml.MementoXML;
 
 /**
  * Manage all ISelection's.
@@ -27,7 +26,7 @@ public interface SelectionManager
 extends GeneralManager
 {
 	
-	public MementoXML createSelection( final ManagerObjectType useSelectionType );
+	public ISelection createSelection( final ManagerObjectType useSelectionType );
 	
 	public boolean deleteSelection( ISelection deleteSelection );
 	

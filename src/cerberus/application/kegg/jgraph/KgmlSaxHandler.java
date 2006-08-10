@@ -49,7 +49,7 @@ public class KgmlSaxHandler extends DefaultHandler
     		sElementName = sQualifiedName; // namespaceAware = false
     	}
     	
-    	System.out.println("Element name: " +sElementName);
+    	//System.out.println("Element name: " +sElementName);
     	
     	if (sElementName.equals("graphics"))
     	{
@@ -81,8 +81,8 @@ public class KgmlSaxHandler extends DefaultHandler
 	    			else if (sAttributeName.equals("y"))
 	    				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
     			
-	    			System.out.println("Attribute name: " +sAttributeName);
-	    			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+//	    			System.out.println("Attribute name: " +sAttributeName);
+//	    			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
 	    		}
     		
 				pathwayGraphBuilder.createCell(sName, iHeight, iWidth, iXPosition, iYPosition);

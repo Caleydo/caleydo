@@ -80,6 +80,8 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_HEATMAP2D(ManagerType.VIEW),
 	
+	VIEW_SWT_HISTOGRAM2D(ManagerType.VIEW),
+	
 	VIEW_SWT_SCATTERPLOT2D(ManagerType.VIEW),
 	
 	VIEW_SWT_SCATTERPLOT3D(ManagerType.VIEW),

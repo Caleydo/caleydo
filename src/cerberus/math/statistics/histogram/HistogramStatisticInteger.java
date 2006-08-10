@@ -615,5 +615,16 @@ implements IHistogramStatistic {
 	}
 	
 	
+	/**
+	 * Copy histogram intervall borders to a new Number array.
+	 * 
+	 * @see cerberus.math.statistics.histogram.IHistogramStatistic#getHistogramIntervalls()
+	 * 
+	 */
+	public final int[] getHistogramIntervallsToInt() {		
+		return this.iHistogramIntervallCounter;
+	}
+	
+	
 	
 }
