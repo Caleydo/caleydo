@@ -20,8 +20,7 @@ implements ICommand {
 
 	public void doCommand() throws CerberusRuntimeException
 	{
-		// TODO Auto-generated method stub
-		
+		refGeneralManager.getSingelton().getSWTGUIManager().createApplicationWindow();
 	}
 
 	public void undoCommand() throws CerberusRuntimeException

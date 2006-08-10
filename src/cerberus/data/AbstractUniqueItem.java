@@ -11,29 +11,30 @@ package cerberus.data;
 import cerberus.data.IUniqueObject;
 
 /**
- * Abstract class providing methodes defiend in IUniqueManagedObject.
+ * Abstract class providing methodes defined in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
  * @author Michael Kalkusch
  *
  * @see prometheus.data.xml.MementiItemXML
  */
-public abstract class AbstractUniqueItem 
-implements IUniqueObject {
+public abstract class AbstractUniqueItem implements IUniqueObject
+{
 
 	/**
 	 * Unique Id
 	 */
 	private int iUniqueId;
-	
+
 	/**
 	 * 
 	 */
-	protected AbstractUniqueItem( int iSetCollectionId ) {
-		
+	protected AbstractUniqueItem(int iSetCollectionId)
+	{
+
 		iUniqueId = iSetCollectionId;
 	}
-	
+
 	/**
 	 * Get Id by calling prometheus.data.collection.BaseManagerItem#getCollecionId().
 	 * Part of prometheus.data.xml.MementiItemXML iterface.
@@ -43,21 +44,22 @@ implements IUniqueObject {
 	 * 
 	 * @return
 	 */
-	public final int getId() {
+	public final int getId()
+	{
 		return this.iUniqueId;
 	}
-	
+
 	/**
 	 * Sets Id by calling prometheus.data.collection.BaseManagerItem#setCollecionId(GeneralManager, int)
 	 * Part of prometheus.data.xml.MementiItemXML iterface.
-	 * @param creator
 	 * @param iSetDNetEventId
 	 * 
 	 * @see prometheus.data.collection.BaseManagerItem#setCollecionId(GeneralManager, int)
 	 * @see prometheus.data.xml.MementiItemXML
 	 */
-	public final void setId( final int iSetDNetEventId ) {		
-		this.iUniqueId = iSetDNetEventId;		
+	public final void setId(final int iSetDNetEventId)
+	{
+		this.iUniqueId = iSetDNetEventId;
 	}
 
 }

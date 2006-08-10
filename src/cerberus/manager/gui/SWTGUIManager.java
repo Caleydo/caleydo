@@ -1,10 +1,17 @@
+/*
+ * Project: GenView
+ * 
+ * Author: Marc Streit
+ * 
+ * Creation date: 26-07-2006
+ *  
+ */
+
 package cerberus.manager.gui;
 
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -13,27 +20,34 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.WindowManager;
-import org.eclipse.jface.window.Window;
 
-import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.Widget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
+import cerberus.view.gui.swt.widget.ASWTWidget;
 
+/**
+ * The SWTGUIManager is responsible for the creation 
+ * and the administration of the windows and composites.
+ * Also the overall layout is defined here and the
+ * menues are added to the windows.
+ * 
+ * @author Marc Streit
+ */
 public class SWTGUIManager 
 extends AbstractManagerImpl
 implements ISWTGUIManager
 {	
-	protected Vector<Widget> refWidgetContainer;
+	protected final WindowManager refWindowManager;
+	
+	protected final Vector<ASWTWidget> refWidgetContainer;
 
 	protected Shell refShell;
 
@@ -46,7 +60,7 @@ implements ISWTGUIManager
 	 * 
 	 * @see cerberus.manager.gui.SWTGUIManager#createApplicationWindow()
 	 * 
-	 * @param setGeneralManager reference to GeneralManager
+	 * @param setGeneralManager Reference to GeneralManager
 	 */
 	public SWTGUIManager(GeneralManager setGeneralManager)
 	{
@@ -57,9 +71,16 @@ implements ISWTGUIManager
 
 		refGeneralManager.getSingelton().setSWTGUIManager(this);
 
-		refWidgetContainer = new Vector<Widget>();
+		refWidgetContainer = new Vector<ASWTWidget>();
+		
+		refWindowManager = new WindowManager();
 	}
 
+//	public void createWindow()
+//	{
+//		refWindowManager.add()
+//	}
+	
 	/**
 	 * Method to initialize this application window.
 	 * Must be called before using this class.
@@ -118,34 +139,9 @@ implements ISWTGUIManager
 	    
 	    MenuItem exitMenuItem = new MenuItem(fileMenu, SWT.NULL);
 	    exitMenuItem.setText("&Exit");
-//	    exitMenuItem.addSelectionListener(new SelectionAdapter()
-//	    {
-//	    	public void widgetSelected(SelectionEvent event)
-//	    	{
-//	    		if (((MenuItem) event.widget).getText().equals("&Exit"))
-//	    		{
-//	    			Display.getCurrent().getActiveShell().close();
-//	    		}
-//	    	}
-//	    });
-//	    
-//	    MenuItem heatmapViewMenuItem = new MenuItem(refShell, SWT.CHECK);
-//	    heatmapViewMenuItem.setText("&Heatmap");
-//	    MenuItem scatterplotViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-//	    scatterplotViewMenuItem.setText("&Scatterplot");
-//	    MenuItem dendrogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-//	    dendrogramViewMenuItem.setText("&Dendrogram");
-//	    MenuItem histogramViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-//	    histogramViewMenuItem.setText("&Histogram");
-//	    MenuItem pathwayViewMenuItem = new MenuItem(viewMenu, SWT.CHECK);
-//	    pathwayViewMenuItem.setText("&Pathway");   
 	    
 	    MenuItem aboutMenu = new MenuItem(menuBar, SWT.CASCADE);
 	    aboutMenu.setText("&About");
-	    
-//	    fileExitItem.addSelectionListener(new fileExitItemListener());
-//	    fileSaveItem.addSelectionListener(new fileSaveItemListener());
-//	    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
 	    
 	    return menuBar;
 	}
@@ -162,7 +158,7 @@ implements ISWTGUIManager
 		refDisplay.dispose();
 	}
 
-	public Widget createWidget(final ManagerObjectType useWidgetType)
+	public ASWTWidget createWidget(final ManagerObjectType useWidgetType)
 	{
 		if (useWidgetType.getGroupType() != ManagerType.GUI_SWT)
 		{
@@ -254,20 +250,3 @@ implements ISWTGUIManager
 		return refShell;
 	}
 }
-
-//class MenuItemListener extends SelectionAdapter
-//{
-//	public void widgetSelected(SelectionEvent event)
-//	{
-//		if (((MenuItem) event.widget).getText().equals("&Exit"))
-//		{
-//			CmdViewNewPathway commandNewPathway = new CmdViewNewPathway(0, refGeneralManager);
-//			commandNewPathway.doCommand();
-//		}
-//
-//		if (((MenuItem) event.widget).getText().equals("&Exit"))
-//		{
-//			Display.getCurrent().getActiveShell().close();
-//		}
-//	}
-//}
