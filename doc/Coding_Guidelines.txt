@@ -1,0 +1,178 @@
+==================================
+ CODEING GUIDELINES for Cerberus:
+==================================
+
+(1) Placement of members and methodes inside a class
+----------------------------------------------------
+
+public class MyClass {
+
+  /** 
+   * Member Variabels
+   */   
+   
+  /**
+   * private member variables
+   */
+  private static final (type) (name)
+
+  private static       (type) (name)  
+    
+  private final        (type) (name)
+
+  private              (type) (name)  
+  
+  /**
+   * protected member variables
+   */  
+  protected static final (type) (name)
+
+  protected static       (type) (name)  
+    
+  protected final        (type) (name)
+
+  protected              (type) (name)  
+  
+  /**
+   * public member variables
+   */
+  public static final (type) (name)
+
+  public static       (type) (name)  
+    
+  public final        (type) (name)
+
+  public              (type) (name)  
+  
+  
+  
+  
+  /**
+   *  Nested Classes
+   */
+   
+  public class MyNestedClass {
+  
+    /**
+     * Same structure as MyClass
+     */
+  }
+  
+  /** 
+   * Constructor
+   */
+   
+   
+  /**
+   * Medhodes
+   */
+
+   
+  /**
+   * private Methodes
+   */
+   
+  private static final void myPrivateFinalMehtode()  
+    
+  private static       void myPrivateFinalMehtode()  
+  
+  private final        void myPrivateFinalMehtode()  
+  
+  private              void myPrivateMehtode()
+  
+  
+  /**
+   * protected Methodes
+   */
+   
+  protected static final void myPrivateFinalMehtode()   
+  
+  protected static       void myPrivateFinalMehtode()   
+ 
+  protected abstract     void myPrivateFinalMehtode();
+    
+  protected final        void myPrivateFinalMehtode()
+   
+  protected              void myPrivateFinalMehtode()
+  
+  
+  /**
+   * public Methodes
+   */
+
+  public static final void myPrivateFinalMehtode()   
+  
+  public static       void myPrivateFinalMehtode()   
+
+  public abstract     void myPrivateFinalMehtode();
+   
+  public final        void myPrivateFinalMehtode()
+   
+  public              void myPrivateFinalMehtode()
+  
+  
+}
+
+
+
+
+(2) Naming of files and packages:
+---------------------------------
+
+ 2.1) package names without capital letters
+ 
+ 2.2) class names always start with capital letter, avoid "_"
+ 
+ 2.3) Interface: always start with "I" and a capital letter of the class-name; do not use "Interface" as part of the class name
+      Example: MyFirstInterface  ==> IMyFirst
+      
+ 2.4) Abstract Classes: always start with "A" and a capital letter of the class-name; do not use "Abstract" as part of the class name
+ 			Example: MyFirstAbstractClass ==> AMyFirstClass
+
+
+
+
+(3) Import policy:
+------------------
+ 
+ 3.1) always import the class you use.
+      Example: Do not import java.util.*      
+      
+ 3.2) order import ascending by name
+      always insert external packages via import before own packages.
+        always insert java.* as first packages to be imported (layout only).
+        example: 
+        
+      import java.util.LinkedList;
+			import java.util.StringTokenizer;
+			
+			import javax.swing.JComponent;
+			
+			import cerberus.command.CommandType;
+			import cerberus.command.CommandTypeGroup;
+			import cerberus.command.ICommand;
+			import cerberus.command.base.ACommand;
+			import cerberus.command.data.CmdDataCreateSelection;
+			import cerberus.command.data.CmdDataCreateSet;
+			import cerberus.command.data.CmdDataCreateStorage;
+ 
+ 3.3) always include used classes from the same path.
+      Makes refactoring easier!
+      
+      Example: 
+         .\test\myClassA.java
+         .\test\myClassB.java
+      
+      ------- file: .\test\myClassB.java ---------
+      package test;
+      
+      import test.myClassA;
+      
+      public class myClassB {
+      
+         public myClassA reference;
+         
+      }
+      ----- end file: myClassB.java -------
+      
+      
