@@ -1,24 +1,52 @@
+/*
+ * Project: GenView
+ * 
+ * Author: Marc Streit
+ * 
+ * Creation date: 26-07-2006
+ *  
+ */
+
 package cerberus.view.gui.swt.widget;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import cerberus.view.gui.Widget;
 
-public class SWTEmbeddedGraphWidget extends Widget 
+/**
+ * Class takes a composite in the constructor and
+ * embedds an AWT Frame in it.
+ * The Frame can be retrieved over the getEmbeddedFrame()
+ * method.
+ * 
+ * @author Marc Streit
+ */
+public class SWTEmbeddedGraphWidget extends ASWTWidget 
 {
-//	protected Composite refSWTComposite;
-	protected java.awt.Frame refEmbeddedFrame;
+	/**
+	 * Embedded AWT Frame.
+	 */
+	protected final java.awt.Frame refEmbeddedFrame;
 	
+	/**
+	 * Constructor that takes the composite in which it should 
+	 * place the content and creates an embedded AWT frame.
+	 * 
+	 * @param Composite Reference to the composite 
+	 * that is supposed to be filled.
+	 */
 	public SWTEmbeddedGraphWidget(Composite refComposite)
 	{
+		super(refComposite);
 		refEmbeddedFrame = SWT_AWT.new_Frame(refComposite);
-
 	}
 
-	public java.awt.Frame getEmbeddedFrame()
+	/**
+	 * Get the embedded frame.
+	 * 
+	 * @return The embedded AWT Frame.
+	 */
+	public final java.awt.Frame getEmbeddedFrame()
 	{
 		return refEmbeddedFrame;
 	}

@@ -1,20 +1,43 @@
+/*
+ * Project: GenView
+ * 
+ * Author: Marc Streit
+ * 
+ * Creation date: 26-07-2006
+ *  
+ */
+
 package cerberus.view.gui.swt.widget;
 
 import org.eclipse.swt.widgets.Composite;
 
-import cerberus.view.gui.Widget;
 
-public class SWTNativeWidget extends Widget 
+/**
+ * Class takes a composite in the constructor
+ * and provides this composite over the getSWTWidget()
+ * method.
+ * 
+ * @author Marc Streit
+ */
+public class SWTNativeWidget extends ASWTWidget 
 {
-	Composite refComposite;
-	
-	//TODO: the parameter should be the parent composite
+	/**
+	 * Constructor 
+	 * 
+	 * @param refComposite Reference to the composite 
+	 * that is supposed to be filled.
+	 */
 	public SWTNativeWidget(Composite refComposite)
 	{
-		this.refComposite = refComposite;
+		super(refComposite);
 	}
-	
-	public Composite getSWTWidget()
+
+	/**
+	 * Get the SWT container in which the View can place the content.
+	 * 
+	 * @return SWT container
+	 */
+	final public Composite getSWTWidget()
 	{
 		return refComposite;
 	}
