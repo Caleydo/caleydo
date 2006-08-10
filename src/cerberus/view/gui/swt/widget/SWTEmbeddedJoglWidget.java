@@ -16,11 +16,6 @@ public class SWTEmbeddedJoglWidget extends Widget
 	
 	public SWTEmbeddedJoglWidget(Composite refComposite)
 	{
-		//FIXME: this is only a realy shitty workaround to make the frame larger
-		Button ok = new Button (refComposite, SWT.PUSH);
-		ok.setText ("OK");
-		ok.setSize(400, 300);
-		
 		refEmbeddedFrame = SWT_AWT.new_Frame(refComposite);
 		refGLCanvas = new GLCanvas();
 		refEmbeddedFrame.add(refGLCanvas);

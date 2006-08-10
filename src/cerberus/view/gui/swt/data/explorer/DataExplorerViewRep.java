@@ -7,6 +7,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -66,12 +68,16 @@ implements ViewInter
 	
 	public void initView()
 	{	
-		RowLayout rowLayout = new RowLayout(); 
-		rowLayout.wrap = false;
-		rowLayout.pack = false;
-		rowLayout.justify = false;
-		rowLayout.type = SWT.HORIZONTAL;
-		refSWTContainer.setLayout(rowLayout);
+//		RowLayout rowLayout = new RowLayout(); 
+//		rowLayout.wrap = false;
+//		rowLayout.pack = false;
+//		rowLayout.justify = true;
+//		rowLayout.type = SWT.HORIZONTAL;
+//		refSWTContainer.setLayout(rowLayout);
+		
+		FillLayout fillLayout = new FillLayout();
+		fillLayout.type = SWT.HORIZONTAL;
+		refSWTContainer.setLayout(fillLayout);
 		
 		// Create the tree viewer as a child of the composite parent
 		treeViewer = new TreeViewer(refSWTContainer);

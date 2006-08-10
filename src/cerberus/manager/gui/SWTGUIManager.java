@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -172,22 +173,36 @@ implements ISWTGUIManager
 
 		// TODO: save id somewhere
 		final int iNewId = this.createNewId(useWidgetType);
-
+		final Composite composite;
+		
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.heightHint = 700;
+		
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
+			composite = new Composite(refShell, SWT.NONE);
+			composite.setLayoutData(gridData);
 			SWTNativeWidget newSWTNativeWidget = 
-				new SWTNativeWidget(new Composite(refShell, SWT.NONE));
+				new SWTNativeWidget(composite);
 			refWidgetContainer.add(newSWTNativeWidget);
 			return newSWTNativeWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			SWTEmbeddedJoglWidget newSWTEmbeddedJoglWidget = new SWTEmbeddedJoglWidget(
-					new Composite(refShell, SWT.EMBEDDED));
+			composite = new Composite(refShell, SWT.EMBEDDED);
+			composite.setLayoutData(gridData);
+			SWTEmbeddedJoglWidget newSWTEmbeddedJoglWidget = 
+				new SWTEmbeddedJoglWidget(composite);
 			refWidgetContainer.add(newSWTEmbeddedJoglWidget);
 			return newSWTEmbeddedJoglWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			SWTEmbeddedGraphWidget newSWTEmbeddedGraphWidget = new SWTEmbeddedGraphWidget(
-					new Composite(refShell, SWT.EMBEDDED));
+			composite = new Composite(refShell, SWT.EMBEDDED);
+			SWTEmbeddedGraphWidget newSWTEmbeddedGraphWidget = 
+				new SWTEmbeddedGraphWidget(composite);
+			composite.setLayoutData(gridData);
 			refWidgetContainer.add(newSWTEmbeddedGraphWidget);
 			return newSWTEmbeddedGraphWidget;
 		default:
