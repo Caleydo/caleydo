@@ -9,6 +9,8 @@
 
 package cerberus.view.gui.swt.widget;
 
+import cerberus.view.gui.swt.widget.ASWTWidget;
+
 import javax.media.opengl.GLCanvas;
 
 import org.eclipse.swt.awt.SWT_AWT;

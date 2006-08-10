@@ -9,6 +9,8 @@
 
 package cerberus.view.gui.swt.widget;
 
+import cerberus.view.gui.swt.widget.ASWTWidget;
+
 import org.eclipse.swt.widgets.Composite;
 
 

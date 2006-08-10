@@ -9,9 +9,10 @@
 
 package cerberus.view.gui.swt.widget;
 
+import cerberus.view.gui.swt.widget.ASWTWidget;
+
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
-
 
 /**
  * Class takes a composite in the constructor and
