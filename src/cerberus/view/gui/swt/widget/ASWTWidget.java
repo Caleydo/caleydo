@@ -10,12 +10,18 @@ package cerberus.view.gui.swt.widget;
 
 import org.eclipse.swt.widgets.Composite;
 
+import cerberus.data.IUniqueObject;
+import cerberus.view.gui.swt.ISWTWidget;
+
 abstract public class ASWTWidget 
+implements IUniqueObject, ISWTWidget
 {
 	/**
 	 * Composite in which the content of the View should be placed.
 	 */
 	protected final Composite refComposite;
+	
+	protected int iUniqueId;
 	
 	/**
 	 * Constructor that takes the composite in which it should 
@@ -24,8 +30,18 @@ abstract public class ASWTWidget
 	 * @param refComposite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public ASWTWidget(Composite refComposite)
+	protected ASWTWidget(Composite refComposite)
 	{
 		this.refComposite = refComposite;
+	}
+	
+	public void setId(int iUniqueId)
+	{
+		this.iUniqueId = iUniqueId;
+	}
+
+	public int getId()
+	{
+		return iUniqueId;
 	}
 }

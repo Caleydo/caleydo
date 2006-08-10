@@ -28,6 +28,7 @@ import cerberus.manager.base.AbstractManagerImpl;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.view.gui.swt.ISWTWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
@@ -47,7 +48,7 @@ implements ISWTGUIManager
 {	
 	protected final WindowManager refWindowManager;
 	
-	protected final Vector<ASWTWidget> refWidgetContainer;
+	protected final Vector<ISWTWidget> refWidgetContainer;
 
 	protected Shell refShell;
 
@@ -71,7 +72,7 @@ implements ISWTGUIManager
 
 		refGeneralManager.getSingelton().setSWTGUIManager(this);
 
-		refWidgetContainer = new Vector<ASWTWidget>();
+		refWidgetContainer = new Vector<ISWTWidget>();
 		
 		refWindowManager = new WindowManager();
 	}
@@ -158,7 +159,7 @@ implements ISWTGUIManager
 		refDisplay.dispose();
 	}
 
-	public ASWTWidget createWidget(final ManagerObjectType useWidgetType)
+	public ISWTWidget createWidget(final ManagerObjectType useWidgetType)
 	{
 		if (useWidgetType.getGroupType() != ManagerType.GUI_SWT)
 		{
@@ -183,20 +184,20 @@ implements ISWTGUIManager
 		case GUI_SWT_NATIVE_WIDGET:
 			composite = new Composite(refShell, SWT.NONE);
 			composite.setLayoutData(gridData);
-			SWTNativeWidget newSWTNativeWidget = 
+			ISWTWidget newSWTNativeWidget = 
 				new SWTNativeWidget(composite);
 			refWidgetContainer.add(newSWTNativeWidget);
 			return newSWTNativeWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
 			composite = new Composite(refShell, SWT.EMBEDDED);
 			composite.setLayoutData(gridData);
-			SWTEmbeddedJoglWidget newSWTEmbeddedJoglWidget = 
+			ISWTWidget newSWTEmbeddedJoglWidget = 
 				new SWTEmbeddedJoglWidget(composite);
 			refWidgetContainer.add(newSWTEmbeddedJoglWidget);
 			return newSWTEmbeddedJoglWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
 			composite = new Composite(refShell, SWT.EMBEDDED);
-			SWTEmbeddedGraphWidget newSWTEmbeddedGraphWidget = 
+			ISWTWidget newSWTEmbeddedGraphWidget = 
 				new SWTEmbeddedGraphWidget(composite);
 			composite.setLayoutData(gridData);
 			refWidgetContainer.add(newSWTEmbeddedGraphWidget);

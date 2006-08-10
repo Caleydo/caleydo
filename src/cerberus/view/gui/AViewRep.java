@@ -14,15 +14,6 @@ public abstract class AViewRep implements ViewInter
 {
 
 	protected Vector <String> vecAttributes = null;
-	
-//	/**
-//	 * 
-//	 */
-//	public AViewRep()
-//	{
-//		
-//	}
-
 
 	/**
 	 * Set attributes for this view.

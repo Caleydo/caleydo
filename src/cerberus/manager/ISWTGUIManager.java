@@ -1,11 +1,11 @@
 package cerberus.manager;
 
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.swt.widget.ASWTWidget;
+import cerberus.view.gui.swt.ISWTWidget;
 
 public interface ISWTGUIManager extends GeneralManager
 {
-	public ASWTWidget createWidget(final ManagerObjectType useWidgetType);
+	public ISWTWidget createWidget(final ManagerObjectType useWidgetType);
 	
 	/**
 	 * Initialize Window.
