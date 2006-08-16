@@ -37,16 +37,8 @@ public class SWTNativeWidget extends ASWTWidget
 	{
 		super(refParentComposite);
 		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
+		GridData gridData = new GridData(GridData.FILL_BOTH);
 		
-		// FIXME how to make the widget full screen?
-		gridData.heightHint = 2000;
-		gridData.widthHint = 2000;
-					
 		refComposite = new Composite(refParentComposite, SWT.NONE);
 		refComposite.setLayoutData(gridData);
 

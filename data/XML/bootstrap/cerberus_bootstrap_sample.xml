@@ -30,27 +30,28 @@
    </JFrameMenuList>
   
    <CommandBuffer>
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="109901" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="119902" targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="12903" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="1293" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
      
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="209901" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="219901" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="21991" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="309901" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="319901" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="409901" targetId="10401" label="Cerberus Prototype" />   
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="419901" targetId="20401" label="Cerberus Prototype" />   
-     
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="609901" targetId="55401" label="Data Explorer" attrib1="10401" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="619901" targetId="55201" label="Pathway" attrib1="10401" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="629901" targetId="56201" label="Pathway" attrib1="10401" />
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Prototype" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Prototype" />   
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="639901" targetId="55201" label="Pathway" attrib1="20401" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" label="" attrib1="10331" attrib2="HORIZONTAL" />
+
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="10341" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" />
+
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="13401" label="Pathway" attrib1="20331" />
 
 <!--	
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId=509901" targetId="13401" />
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" targetId="55601" label="Gears" attrib1="024001" />
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" targetId="56601" label="Gears" attrib1="024001" />

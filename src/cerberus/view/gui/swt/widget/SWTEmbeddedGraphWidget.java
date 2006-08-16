@@ -42,20 +42,10 @@ public class SWTEmbeddedGraphWidget extends ASWTWidget
 	{
 		super(refParentComposite);
 		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		
-		// FIXME how to make the widget full screen?
-		gridData.heightHint = 2000;
-		gridData.widthHint = 2000;
+		GridData gridData = new GridData(GridData.FILL_BOTH);
 		
 		Composite composite = new Composite(refParentComposite, SWT.EMBEDDED);
-		
 		composite.setLayoutData(gridData);
-		
 		refEmbeddedFrame = SWT_AWT.new_Frame(composite);
 	}
 

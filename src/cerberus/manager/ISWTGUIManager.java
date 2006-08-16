@@ -2,6 +2,7 @@ package cerberus.manager;
 
 import org.eclipse.swt.widgets.Shell;
 
+import cerberus.manager.gui.SWTGUIManager.LayoutDirection;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.swt.ISWTWidget;
 
@@ -14,4 +15,7 @@ public interface ISWTGUIManager extends IGeneralManager
 	public Shell createWindow();
 	
 	public Shell createWindow(int iUniqueId);
+	
+	public void createComposite(
+			int iUniqueId, int iUniqueParentContainerId, LayoutDirection layoutDirection);
 }

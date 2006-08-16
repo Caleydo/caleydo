@@ -82,11 +82,11 @@ public interface IGeneralManager {
 	
 	public final int iUniqeuId_TypeOffset_GUI_SWT_Container = 34;
 	
+	public final int iUniqueId_TypeOffset_View = 40;
+	
 	/**
 	 * Deprecated ID ranges
 	 */
-	
-	public final int iUniqueId_TypeOffset_Window = 40;
 	
 	public final int iUniqueId_TypeOffset_GuiComponent = 30;
 	

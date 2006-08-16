@@ -17,6 +17,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -49,20 +50,26 @@ public class SWTGUIManager
 extends AAbstractManager
 implements ISWTGUIManager
 {	
-	protected final WindowManager refWindowManager;
+	public enum LayoutDirection
+	{
+		HORIZONTAL,
+		VERTICAL
+	}
 	
-	protected final Vector<ISWTWidget> refWidgetContainer;
-
 	/**
 	 * SWT Display represents a thread.
 	 */
 	protected final Display refDisplay;
 	
-	protected Shell refShell;
+	protected Composite refComposite;
 	
 	protected Menu refMenuBar;
 	
 	protected final HashMap<Integer, Shell> refWindowMap; 
+	
+	protected final HashMap<Integer, Composite> refCompositeMap;
+	
+	protected final Vector<ISWTWidget> refWidgetMap;
 	
 	/**
 	 * Call createApplicationWindow() before using this object.
@@ -81,13 +88,13 @@ implements ISWTGUIManager
 
 		refGeneralManager.getSingelton().setSWTGUIManager(this);
 
-		refWidgetContainer = new Vector<ISWTWidget>();
-		
-		refWindowManager = new WindowManager();
+		refWidgetMap = new Vector<ISWTWidget>();
 		
 		refDisplay = new Display();
 		
 		refWindowMap = new HashMap<Integer, Shell>();
+		
+		refCompositeMap = new HashMap<Integer, Composite>();
 	}
 
 	/**
@@ -121,10 +128,10 @@ implements ISWTGUIManager
 		//refMenuBar = createMenuBar(refShell);
 		//refShell.setMenuBar(refMenuBar); 
 		
-		setUpLayout(refNewShell);
+		setUpLayout(refNewShell, LayoutDirection.VERTICAL);
 		
-		//FIXME: just for testing
-		refShell = refNewShell;
+//		//FIXME: just for testing
+//		refComposite = refNewShell;
 		
 		return refNewShell;
 	}
@@ -143,9 +150,30 @@ implements ISWTGUIManager
 		//refMenuBar = createMenuBar(refShell);
 		//refShell.setMenuBar(refMenuBar); 
 		
-		setUpLayout(refNewShell);
+		// TODO read layout direction for windows also from XML file
+		setUpLayout(refNewShell, LayoutDirection.HORIZONTAL);
 		
 		return refNewShell;
+	}
+	
+	/**
+	 * Searches for the parent window in the map and 
+	 * creates a new composite in that window.
+	 */
+	public void createComposite(
+			int iUniqueId, int iUniqueParentContainerId, LayoutDirection layoutDirection)
+	{
+		// TODO check if parent exists
+		Shell parentWindow = refWindowMap.get(iUniqueParentContainerId);
+		
+		Composite newComposite = new Composite(parentWindow, SWT.NONE);
+		
+		refCompositeMap.put(iUniqueId, newComposite);
+
+		setUpLayout(newComposite, layoutDirection);
+
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		newComposite.setLayoutData(gridData);
 	}
 	
 	public ISWTWidget createWidget(final ManagerObjectType useWidgetType)
@@ -156,17 +184,17 @@ implements ISWTGUIManager
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refShell);
+			newSWTWidget = new SWTNativeWidget(refComposite);
 			newSWTWidget.setId(iUniqueId);
-			refWidgetContainer.add(newSWTWidget);
+			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(refShell);
-			refWidgetContainer.add(newSWTWidget);
+			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite);
+			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(refShell);
-			refWidgetContainer.add(newSWTWidget);
+			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite);
+			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
 			throw new CerberusRuntimeException(
@@ -175,28 +203,36 @@ implements ISWTGUIManager
 		}
 	}
 	
-	public ISWTWidget createWidget(final ManagerObjectType useWidgetType, int iUniqueParentWindowId)
+	public ISWTWidget createWidget(final ManagerObjectType useWidgetType, int iUniqueParentContainerId)
 	{
 		final int iUniqueId = this.createNewId(useWidgetType);
 		ASWTWidget newSWTWidget;
 		
 		// TODO Check if window id is valid and print error message
-		refShell = refWindowMap.get(iUniqueParentWindowId);
+		
+		// Check if the parent is a window
+		refComposite = refWindowMap.get(iUniqueParentContainerId);
+		
+		if (refComposite == null)
+		{
+			// Check if the parent is a composite
+			refComposite = refCompositeMap.get(iUniqueParentContainerId);
+		}
 		
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refShell);
+			newSWTWidget = new SWTNativeWidget(refComposite);
 			newSWTWidget.setId(iUniqueId);
-			refWidgetContainer.add(newSWTWidget);
+			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(refShell);
-			refWidgetContainer.add(newSWTWidget);
+			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite);
+			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(refShell);
-			refWidgetContainer.add(newSWTWidget);
+			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite);
+			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
 			throw new CerberusRuntimeException(
@@ -223,12 +259,17 @@ implements ISWTGUIManager
 //		//setUpLayout();
 //	}
 	
-	protected void setUpLayout(Shell refNewShell)
+	protected void setUpLayout(Composite refNewComposite, LayoutDirection layoutDirection)
 	{
 		GridLayout gridLayout = new GridLayout();
-		//gridLayout.numColumns = 1;
-		gridLayout.makeColumnsEqualWidth = true;
-		refNewShell.setLayout(gridLayout);
+		
+		gridLayout.numColumns = 1;
+		
+		if (layoutDirection == LayoutDirection.HORIZONTAL)
+			gridLayout.numColumns = 2;
+		
+		//gridLayout.makeColumnsEqualWidth = true;
+		refNewComposite.setLayout(gridLayout);
 	}
 	
 	protected Menu createMenuBar(Shell refShell)
@@ -338,10 +379,5 @@ implements ISWTGUIManager
 	{
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	public Shell getActiveWindow()
-	{
-		return refShell;
 	}
 }
