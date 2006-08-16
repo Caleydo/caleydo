@@ -28,7 +28,7 @@ import cerberus.command.ICommand;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.net.dwt.swing.menu.DMenuCmdActionListener;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -311,9 +311,9 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoXML#setMementoXML_usingHandler(cerberus.xml.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.MementoXML#setMementoXML_usingHandler(cerberus.xml.parser.ISaxParserHandler)
 	 */
-	public boolean setMementoXML_usingHandler( final DParseSaxHandler refSaxHandler) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -344,12 +344,12 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoCallbackXML#callbackForParser(cerberus.data.manager.BaseManagerType, java.lang.String, cerberus.xml.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.MementoCallbackXML#callbackForParser(cerberus.data.manager.BaseManagerType, java.lang.String, cerberus.xml.parser.ISaxParserHandler)
 	 */
 	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
-			final DParseSaxHandler refSaxHandler) {
+			final ISaxParserHandler refSaxHandler) {
 		// TODO Auto-generated method stub
 
 	}

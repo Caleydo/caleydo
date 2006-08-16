@@ -16,7 +16,7 @@ import cerberus.manager.GeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.CommandManager;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.xml.parser.CerberusDefaultSaxHandler;
+import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 
 
 /**
@@ -25,7 +25,7 @@ import cerberus.xml.parser.CerberusDefaultSaxHandler;
  * @author java
  *
  */
-public class CommandSaxHandler extends CerberusDefaultSaxHandler  {
+public class CommandSaxHandler extends ACerberusDefaultSaxHandler  {
 
 	private final CommandManager refCommandManager;
 	

@@ -45,7 +45,7 @@ import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 
 //import cerberus.manager.ViewCanvasManager;
 //import cerberus.net.dwt.swing.DHistogramCanvas;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -460,7 +460,7 @@ implements GeneralManagerSingelton {
 	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
-			final DParseSaxHandler refSaxHandler) {
+			final ISaxParserHandler refSaxHandler) {
 		
 		assert type!=null: "type is null!";
 		

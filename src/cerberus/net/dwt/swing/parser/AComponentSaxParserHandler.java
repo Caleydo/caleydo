@@ -12,8 +12,8 @@ import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
 
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.xml.parser.DParseSaxHandler;
-import cerberus.xml.parser.DParseBaseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
+import cerberus.xml.parser.ASaxParserHandler;
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
 
@@ -25,14 +25,14 @@ import cerberus.xml.parser.DParseBaseSaxHandler;
  * 
  * @see cerberus.net.dwt.swing.parser.DPanelSaxHandler
  * @see cerberus.net.dwt.swing.parser.DButtonSaxHandler
- * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler
+ * @see cerberus.net.dwt.swing.parser.ASaxParserHandler
  * 
  * @see org.xml.sax.helpers.DefaultHandler
  *
  */
-public abstract class DParseComponentSaxHandler 
-extends DParseBaseSaxHandler 
-implements DParseSaxHandler
+public abstract class AComponentSaxParserHandler 
+extends ASaxParserHandler 
+implements ISaxParserHandler
 {
 	
 	protected boolean bXML_Section_DNetEventComponent;
@@ -60,14 +60,14 @@ implements DParseSaxHandler
 	/**
 	 * 
 	 */
-	public DParseComponentSaxHandler() {
+	public AComponentSaxParserHandler() {
 		super();
 	}
 	
 	/**
 	 * 
 	 */
-	public DParseComponentSaxHandler(final boolean bEnableHaltOnParsingError) {
+	public AComponentSaxParserHandler(final boolean bEnableHaltOnParsingError) {
 		super(bEnableHaltOnParsingError);
 	}
 	
@@ -77,7 +77,7 @@ implements DParseSaxHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseSaxHandler#reset()
+	 * @see cerberus.net.dwt.swing.parser.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	
@@ -101,9 +101,9 @@ implements DParseSaxHandler
 	
 	/**
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseComponentSaxHandler#endElement_DComponent(String, String, String)
-	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#endElement(String, String, String)
-	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#startElement(String, String, String, Attributes)
+	 * @see cerberus.net.dwt.swing.parser.AComponentSaxParserHandler#endElement_DComponent(String, String, String)
+	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
+	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
 	 * 
 	 * @return TRUE if the token was pased already, else false
 	 */
@@ -221,9 +221,9 @@ implements DParseSaxHandler
 	 *  
 	 * @return TRUE if the token was pased already, else false
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#endElement(String, String, String) 
+	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String) 
 	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)	 
-	 * @see cerberus.net.dwt.swing.parser.DParseComponentSaxHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see cerberus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 */
 	final protected boolean endElement_DComponent( final String uri, 
 			final String localName, 
@@ -299,7 +299,7 @@ implements DParseSaxHandler
 	/**
 	 * Note: do not forget to call startElement_DComponent(String, String, String, Attributes)!
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseComponentSaxHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see cerberus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	public abstract void startElement(String uri, 

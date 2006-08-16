@@ -88,7 +88,7 @@ import cerberus.view.swing.status.SelectionSliderBrowser;
 import cerberus.view.swing.status.SetBrowser;
 import cerberus.view.swing.status.StorageBrowser;
 import cerberus.view.swing.loader.FileLoader;
-import cerberus.xml.parser.CerberusDefaultSaxHandler;
+import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
 
 import cerberus.data.collection.set.SetMultiDim;
@@ -176,7 +176,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 	
 	protected static final boolean B_DEFAULT_MENU_NONE = false;
 	
-	protected CerberusDefaultSaxHandler handlerSax;
+	protected ACerberusDefaultSaxHandler handlerSax;
 	
 	public static void main(String[] args) {
 		

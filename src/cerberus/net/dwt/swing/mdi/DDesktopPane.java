@@ -23,7 +23,7 @@ import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
 /**
@@ -147,7 +147,7 @@ public class DDesktopPane extends JDesktopPane implements
 	/* (non-Javadoc)
 	 * @see cerberus.data.xml.MementoXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
-	public boolean setMementoXML_usingHandler(DParseSaxHandler refSaxHandler) {
+	public boolean setMementoXML_usingHandler(ISaxParserHandler refSaxHandler) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -182,7 +182,7 @@ public class DDesktopPane extends JDesktopPane implements
 	public void callbackForParser(final ManagerObjectType type,
 			final String tag_causes_callback, 
 			final String details,
-			DParseSaxHandler refSaxHandler) {
+			ISaxParserHandler refSaxHandler) {
 		// TODO Auto-generated method stub
 
 	}

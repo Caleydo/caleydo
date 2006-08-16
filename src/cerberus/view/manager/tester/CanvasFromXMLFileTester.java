@@ -35,14 +35,14 @@ import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 
 //import cerberus.data.manager.BaseManagerType;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
-import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
-import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
+import cerberus.data.collection.parser.CollectionFlatStorageSaxParserHandler;
+import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
+import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
 import cerberus.net.dwt.swing.collection.DSwingSelectionCanvas;
 import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
 import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
 import cerberus.net.dwt.swing.canvas.DSwingHeatMap2DCanvas;
-import cerberus.xml.parser.DParseBaseSaxHandler;
+import cerberus.xml.parser.ASaxParserHandler;
 import cerberus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
 import cerberus.net.dwt.swing.menu.DMenuBootStraper;
 import cerberus.net.dwt.swing.mdi.DDesktopPane;
@@ -108,7 +108,7 @@ public class CanvasFromXMLFileTester extends JFrame {
 
 	
 //	public void callbackForParser( final String tag_causes_callback,
-//			final DParseSaxHandler refSaxHandler) {
+//			final ISaxParserHandler refSaxHandler) {
 //		
 //	}
 	
@@ -288,7 +288,7 @@ public class CanvasFromXMLFileTester extends JFrame {
 	
 //	public void callbackForParser( final ManagerObjectType type,
 //			final String tag_causes_callback,
-//			final DParseSaxHandler refSaxHandler) {
+//			final ISaxParserHandler refSaxHandler) {
 //			
 //	}
 

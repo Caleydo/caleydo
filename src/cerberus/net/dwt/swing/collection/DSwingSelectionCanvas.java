@@ -52,7 +52,7 @@ import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.net.dwt.swing.parser.DSwingHistogramCanvasHandler;
 import cerberus.net.protocol.interaction.SuperMouseEvent;
 
@@ -347,7 +347,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	 *  (non-Javadoc)
 	 * @see cerberus.data.xml.MementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
-	public synchronized boolean setMementoXML_usingHandler( final DParseSaxHandler refSaxHandler ) {
+	public synchronized boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
 		try {
 			/**
@@ -545,7 +545,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	public void callbackForParser(  final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
-			final DParseSaxHandler refSaxHandler ) {
+			final ISaxParserHandler refSaxHandler ) {
 		
 		//FIXME test type...
 		

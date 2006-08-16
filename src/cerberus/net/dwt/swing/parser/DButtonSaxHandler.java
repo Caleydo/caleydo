@@ -12,7 +12,7 @@ package cerberus.net.dwt.swing.parser;
 import org.xml.sax.Attributes;
 
 import cerberus.data.xml.MementoNetEventXML;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 
 
 /**
@@ -22,8 +22,8 @@ import cerberus.xml.parser.DParseSaxHandler;
  * 
  */
 public final class DButtonSaxHandler 
-extends DParseComponentSaxHandler 
-implements DParseSaxHandler
+extends AComponentSaxParserHandler 
+implements ISaxParserHandler
 {
 	
 	/**
@@ -49,7 +49,7 @@ implements DParseSaxHandler
 	/**
 	 * Reset state. set component type.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseSaxHandler#reset()
+	 * @see cerberus.net.dwt.swing.parser.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		

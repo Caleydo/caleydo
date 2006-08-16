@@ -11,7 +11,7 @@ package cerberus.data.xml;
 //import java.io.InputStream;
 //import org.xml.sax.InputSource;
 
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 
 //import prometheus.net.dwt.DNetEventComponentInterface;
 
@@ -41,6 +41,6 @@ public interface MementoXML {
 	 * @param refSaxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final DParseSaxHandler refSaxHandler );
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler );
 
 }

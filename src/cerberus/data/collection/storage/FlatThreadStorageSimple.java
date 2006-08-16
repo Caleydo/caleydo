@@ -19,8 +19,8 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 //import cerberus.data.manager.DComponentManager;
 import cerberus.data.xml.MementoNetEventXML;
-import cerberus.xml.parser.DParseSaxHandler;
-import cerberus.data.collection.parser.CollectionFlatStorageParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
+import cerberus.data.collection.parser.CollectionFlatStorageSaxParserHandler;
 import cerberus.data.collection.thread.impl.CollectionThreadItem;
 import cerberus.data.collection.thread.lock.CollectionLock;
 
@@ -540,7 +540,7 @@ implements IStorage, MementoNetEventXML, CollectionLock
 	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
-			final DParseSaxHandler refSaxHandler) {
+			final ISaxParserHandler refSaxHandler) {
 		
 		if ( tag_causes_callback.equalsIgnoreCase( ManagerObjectType.STORAGE_FLAT.name() )) {
 			
@@ -556,11 +556,11 @@ implements IStorage, MementoNetEventXML, CollectionLock
 	 * @param refSaxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final DParseSaxHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
 		try {
-			CollectionFlatStorageParseSaxHandler handler =
-				(CollectionFlatStorageParseSaxHandler) refSaxHandler;
+			CollectionFlatStorageSaxParserHandler handler =
+				(CollectionFlatStorageSaxParserHandler) refSaxHandler;
 				
 			setId( handler.getXML_DataComponent_Id() );
 			

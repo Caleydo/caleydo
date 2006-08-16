@@ -25,7 +25,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
-import cerberus.xml.parser.CerberusDefaultSaxHandler;
+import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
 import cerberus.xml.parser.swing.SwingJMenuSaxHandler;
 import cerberus.xml.parser.command.CommandSaxHandler;
@@ -106,12 +106,12 @@ public class CerberusApplicationFromXML {
 
 	
 //	public void callbackForParser( final String tag_causes_callback,
-//			final DParseSaxHandler refSaxHandler) {
+//			final ISaxParserHandler refSaxHandler) {
 //		
 //	}
 	
 	public boolean parseOnce( InputSource inStream, 
-			CerberusDefaultSaxHandler handler) {
+			ACerberusDefaultSaxHandler handler) {
 		
 		try {
 			XMLReader reader = XMLReaderFactory.createXMLReader();			
@@ -304,7 +304,7 @@ public class CerberusApplicationFromXML {
 	
 //	public void callbackForParser( final ManagerObjectType type,
 //			final String tag_causes_callback,
-//			final DParseSaxHandler refSaxHandler) {
+//			final ISaxParserHandler refSaxHandler) {
 //			
 //	}
 

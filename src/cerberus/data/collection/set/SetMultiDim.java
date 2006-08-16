@@ -20,7 +20,7 @@ import cerberus.data.collection.ISelection;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
 //import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.thread.impl.CollectionThreadItem;
 import cerberus.data.collection.thread.lock.CollectionLock;
 import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
@@ -350,13 +350,13 @@ implements ISet {
 	 * @param refSaxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final DParseSaxHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
 		return false;
 		
 //		try {
-//			CollectionSetParseSaxHandler parser = 
-//				(CollectionSetParseSaxHandler) refSaxHandler;
+//			CollectionSetSaxParserHandler parser = 
+//				(CollectionSetSaxParserHandler) refSaxHandler;
 //			
 //			if ( parser.getDim() < 0 ) {
 //				assert false:"Parser does not return informations neede";

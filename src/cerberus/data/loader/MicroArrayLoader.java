@@ -31,9 +31,9 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.selection.SelectionThreadSingleBlock;
 import cerberus.data.xml.MementoXML;
-import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
+import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenType;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenHandler;
 
 
@@ -579,11 +579,11 @@ implements MementoXML {
 	}
 	
 	public boolean setMementoXML_usingHandler( 
-			final DParseSaxHandler refSaxHandler ) {
+			final ISaxParserHandler refSaxHandler ) {
 		
 		try {
-			CollectionSelectionParseSaxHandler handler = 
-				(CollectionSelectionParseSaxHandler) refSaxHandler;
+			CollectionSelectionSaxParserHandler handler = 
+				(CollectionSelectionSaxParserHandler) refSaxHandler;
 			
 			setFileName( handler.getXML_MicroArray_FileName() );
 			

@@ -18,7 +18,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.xml.MementoNetEventXML;
 import cerberus.data.collection.view.ViewCanvas;
 
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 
 //import org.xml.sax.helpers.DefaultHandler;
 //import org.xml.sax.SAXException;
@@ -32,8 +32,8 @@ import cerberus.xml.parser.DParseSaxHandler;
  *
  */
 public class DSwingHistogramCanvasHandler 
-extends DParseComponentSaxHandler 
-implements DParseSaxHandler
+extends AComponentSaxParserHandler 
+implements ISaxParserHandler
 {
 
 	private boolean bXML_Section_CanvasLink2Model = false;
@@ -95,7 +95,7 @@ implements DParseSaxHandler
 	/**
 	 * Reset all parameters to resart parsing.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseSaxHandler#reset()
+	 * @see cerberus.net.dwt.swing.parser.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();

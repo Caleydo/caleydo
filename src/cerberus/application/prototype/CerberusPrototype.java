@@ -22,7 +22,7 @@ import cerberus.manager.gui.SWTGUIManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.view.ViewManagerSimple;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.xml.parser.CerberusDefaultSaxHandler;
+import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.command.CommandSaxHandler;
 import cerberus.xml.parser.kgml.KgmlSaxHandler;
 
@@ -146,7 +146,7 @@ public class CerberusPrototype
 	}
 
 	public boolean parseOnce(InputSource inStream,
-			CerberusDefaultSaxHandler handler)
+			ACerberusDefaultSaxHandler handler)
 	{
 		try
 		{

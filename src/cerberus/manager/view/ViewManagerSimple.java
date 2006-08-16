@@ -12,6 +12,7 @@ import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.data.set.SetTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
+import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
@@ -91,6 +92,8 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 							+ useViewType.name());
 		}
 
+		//final int iNewId = this.createNewId(useViewType);
+
 		switch (useViewType)
 		{
 		case VIEW:
@@ -108,7 +111,9 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 		case VIEW_SWT_GEARS:
 			return new GearsViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_HEATMAP2D:
-			return new Heatmap2DViewRep(iUniqueId, this.refGeneralManager);
+		case VIEW_SWT_HISTOGRAM2D:
+			return new SwtJogHistogram2DViewRep(iUniqueId, this.refGeneralManager);
+			//return new Heatmap2DViewRep(iNewId, this.refGeneralManager);
 		case VIEW_SWT_SCATTERPLOT2D:
 			return new Scatterplot2DViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_SCATTERPLOT3D:

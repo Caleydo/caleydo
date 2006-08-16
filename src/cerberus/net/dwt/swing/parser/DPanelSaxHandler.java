@@ -14,7 +14,7 @@ import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
 
 import cerberus.data.xml.MementoNetEventXML;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 
 //import org.xml.sax.helpers.DefaultHandler;
 //import org.xml.sax.SAXException;
@@ -28,8 +28,8 @@ import cerberus.xml.parser.DParseSaxHandler;
  *
  */
 public class DPanelSaxHandler 
-extends DParseComponentSaxHandler 
-implements DParseSaxHandler
+extends AComponentSaxParserHandler 
+implements ISaxParserHandler
 {
 
 	private boolean bXML_Section_SubComponents = false;
@@ -89,7 +89,7 @@ implements DParseSaxHandler
 	/**
 	 * Reset all parameters to resart parsing.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.DParseSaxHandler#reset()
+	 * @see cerberus.net.dwt.swing.parser.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();

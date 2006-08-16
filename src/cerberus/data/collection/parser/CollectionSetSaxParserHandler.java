@@ -19,8 +19,8 @@ import cerberus.manager.type.ManagerObjectType;
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
 
-import cerberus.xml.parser.DParseSaxHandler;
-import cerberus.xml.parser.DParseBaseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
+import cerberus.xml.parser.ASaxParserHandler;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -31,14 +31,14 @@ import cerberus.util.exception.CerberusRuntimeException;
  * 
  * @see prometheus.net.dwt.swing.parser.DPanelSaxHandler
  * @see prometheus.net.dwt.swing.parser.DButtonSaxHandler
- * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler
+ * @see prometheus.net.dwt.swing.parser.ASaxParserHandler
  * 
  * @see org.xml.sax.helpers.DefaultHandler
  *
  */
-public class CollectionSetParseSaxHandler 
-extends DParseBaseSaxHandler 
-implements DParseSaxHandler
+public class CollectionSetSaxParserHandler 
+extends ASaxParserHandler 
+implements ISaxParserHandler
 {
 	
 	protected boolean bXML_Section_DataComponent_Container;
@@ -100,7 +100,7 @@ implements DParseSaxHandler
 	/**
 	 * 
 	 */
-	public CollectionSetParseSaxHandler() {
+	public CollectionSetSaxParserHandler() {
 		super();
 		
 		vecSelect = new Vector<int[]>(3);
@@ -110,7 +110,7 @@ implements DParseSaxHandler
 	/**
 	 * 
 	 */
-	public CollectionSetParseSaxHandler(final boolean bEnableHaltOnParsingError) {
+	public CollectionSetSaxParserHandler(final boolean bEnableHaltOnParsingError) {
 		super(bEnableHaltOnParsingError);
 		
 		vecSelect = new Vector<int[]>(3);
@@ -123,7 +123,7 @@ implements DParseSaxHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see cerberus.xml.parser.DParseSaxHandler#reset()
+	 * @see cerberus.xml.parser.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	
@@ -152,9 +152,9 @@ implements DParseSaxHandler
 	
 	/**
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseComponentSaxHandler#endElement_DComponent(String, String, String)
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#endElement(String, String, String)
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#startElement(String, String, String, Attributes)
+	 * @see prometheus.net.dwt.swing.parser.AComponentSaxParserHandler#endElement_DComponent(String, String, String)
+	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
+	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
 	 * 
 	 * @return TRUE if the token was pased already, else false
 	 */
@@ -315,9 +315,9 @@ implements DParseSaxHandler
 	 *  
 	 * @return TRUE if the token was pased already, else false
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseBaseSaxHandler#endElement(String, String, String) 
+	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String) 
 	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)	 
-	 * @see prometheus.net.dwt.swing.parser.DParseComponentSaxHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see prometheus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 */
 	final protected boolean endElement_DComponent( final String uri, 
 			final String localName, 
@@ -452,7 +452,7 @@ implements DParseSaxHandler
 	/**
 	 * Note: do not forget to call startElement_DComponent(String, String, String, Attributes)!
 	 * 
-	 * @see prometheus.net.dwt.swing.parser.DParseComponentSaxHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see prometheus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	public void startElement(String uri, String localName, String qName,

@@ -15,8 +15,8 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.SelectionType;
-import cerberus.xml.parser.DParseSaxHandler;
-import cerberus.data.collection.parser.CollectionSelectionParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
+import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.selection.AbstractSelection;
 import cerberus.data.collection.selection.iterator.SelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionSingleBlockIterator;
@@ -122,11 +122,11 @@ public class SelectionThreadSingleBlock
 	 * @param refSaxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final DParseSaxHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
 		try {
-			CollectionSelectionParseSaxHandler parser = 
-				(CollectionSelectionParseSaxHandler) refSaxHandler;
+			CollectionSelectionSaxParserHandler parser = 
+				(CollectionSelectionSaxParserHandler) refSaxHandler;
 			
 			setLength( parser.getXML_DataLength() );
 			setOffset( parser.getXML_DataOffset() );

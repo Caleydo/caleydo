@@ -30,7 +30,7 @@ import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
-import cerberus.xml.parser.CerberusDefaultSaxHandler;
+import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 
 import cerberus.manager.type.ManagerObjectType;
 

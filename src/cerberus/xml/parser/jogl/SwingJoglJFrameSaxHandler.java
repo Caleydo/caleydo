@@ -17,14 +17,14 @@ import cerberus.manager.GeneralManager;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
-import cerberus.xml.parser.CerberusDefaultSaxHandler;
+import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 
 
 /**
  * @author java
  *
  */
-public class SwingJoglJFrameSaxHandler extends CerberusDefaultSaxHandler  {
+public class SwingJoglJFrameSaxHandler extends ACerberusDefaultSaxHandler  {
 
 	
 	private boolean bFrameStateActive = false;

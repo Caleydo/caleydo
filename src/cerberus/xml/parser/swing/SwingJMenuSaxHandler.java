@@ -14,7 +14,7 @@ import cerberus.manager.IMenuManager;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 
-import cerberus.xml.parser.CerberusDefaultSaxHandler;
+import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 
 
 /**
@@ -23,7 +23,7 @@ import cerberus.xml.parser.CerberusDefaultSaxHandler;
  * @author java
  *
  */
-public class SwingJMenuSaxHandler extends CerberusDefaultSaxHandler  {
+public class SwingJMenuSaxHandler extends ACerberusDefaultSaxHandler  {
 
 	
 	private boolean bJFrameMenuList_isActive = false;

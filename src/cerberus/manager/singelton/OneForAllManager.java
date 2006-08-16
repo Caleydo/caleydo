@@ -47,7 +47,7 @@ import cerberus.data.collection.view.ViewCanvas;
 
 
 //import prometheus.net.dwt.swing.DHistogramCanvas;
-import cerberus.xml.parser.DParseSaxHandler;
+import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -461,7 +461,7 @@ implements GeneralManagerSingelton {
 	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
-			final DParseSaxHandler refSaxHandler) {
+			final ISaxParserHandler refSaxHandler) {
 		
 		assert type!=null: "type is null!";
 		

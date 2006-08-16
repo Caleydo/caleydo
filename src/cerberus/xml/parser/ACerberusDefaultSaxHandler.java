@@ -6,7 +6,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import cerberus.manager.GeneralManager;
 import cerberus.manager.IMenuManager;
 
-public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
+public abstract class ACerberusDefaultSaxHandler extends DefaultHandler {
 
 	protected final String sArgumentBegin = "=\""; 
 	protected final String sArgumentEnd   = "\" "; 
@@ -17,7 +17,7 @@ public abstract class CerberusDefaultSaxHandler extends DefaultHandler {
 	protected String sErrorMessage = "";
 	
 	
-	protected CerberusDefaultSaxHandler( 
+	protected ACerberusDefaultSaxHandler( 
 			final GeneralManager setGeneralManager ) {
 		refGeneralManager = setGeneralManager;
 		refMenuMenager = setGeneralManager.getSingelton().getMenuManager();
