@@ -12,6 +12,7 @@ package cerberus.view.gui.swt.widget;
 import cerberus.view.gui.swt.widget.ASWTWidget;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -35,8 +36,20 @@ public class SWTNativeWidget extends ASWTWidget
 	public SWTNativeWidget(Composite refParentComposite)
 	{
 		super(refParentComposite);
-
+		
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		
+		// FIXME how to make the widget full screen?
+		gridData.heightHint = 2000;
+		gridData.widthHint = 2000;
+					
 		refComposite = new Composite(refParentComposite, SWT.NONE);
+		refComposite.setLayoutData(gridData);
+
 	}
 
 	/**

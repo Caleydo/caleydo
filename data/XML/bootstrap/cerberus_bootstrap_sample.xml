@@ -44,8 +44,10 @@
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_WINDOW_SWT" cmdId="990015" targetId="20401" label="Cerberus Prototype" />   
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="99012" targetId="55401" label="Data Explorer" attrib1="10401" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201" label="Pathway" attrib1="10401" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99009" targetId="56201" label="Pathway" attrib1="20401" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201" label="Pathway" attrib1="10401" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="56201" label="Pathway" attrib1="10401" />
+
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99009" targetId="55201" label="Pathway" attrib1="20401" />
 
 <!--	
 

@@ -150,35 +150,21 @@ implements ISWTGUIManager
 	public ISWTWidget createWidget(final ManagerObjectType useWidgetType)
 	{
 		final int iUniqueId = this.createNewId(useWidgetType);
-		Composite composite;
 		ASWTWidget newSWTWidget;
-		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.heightHint = 700;
 		
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			composite = new Composite(refShell, SWT.NONE);
-			composite.setLayoutData(gridData);
-			newSWTWidget = new SWTNativeWidget(composite);
+			newSWTWidget = new SWTNativeWidget(refShell);
 			newSWTWidget.setId(iUniqueId);
 			refWidgetContainer.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			composite = new Composite(refShell, SWT.EMBEDDED);
-			composite.setLayoutData(gridData);
-			newSWTWidget = new SWTEmbeddedJoglWidget(composite);
+			newSWTWidget = new SWTEmbeddedJoglWidget(refShell);
 			refWidgetContainer.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			composite = new Composite(refShell, SWT.EMBEDDED);
-			composite.setLayoutData(gridData);
-			newSWTWidget = new SWTEmbeddedGraphWidget(composite);
+			newSWTWidget = new SWTEmbeddedGraphWidget(refShell);
 			refWidgetContainer.add(newSWTWidget);
 			return newSWTWidget;
 		default:
@@ -239,7 +225,7 @@ implements ISWTGUIManager
 	protected void setUpLayout(Shell refNewShell)
 	{
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
+		//gridLayout.numColumns = 1;
 		gridLayout.makeColumnsEqualWidth = true;
 		refNewShell.setLayout(gridLayout);
 	}
