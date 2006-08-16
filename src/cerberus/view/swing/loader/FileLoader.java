@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
 //import javax.swing.JMenu;
 //import javax.swing.JMenuBar;
@@ -47,7 +47,7 @@ public class FileLoader {
 	
 	protected IStorage refStorage;
 	
-	protected GeneralManager regGeneralManager;
+	protected IGeneralManager regGeneralManager;
 	
 	private MicroArrayLoader loader;
 	

@@ -8,10 +8,10 @@
  */
 package cerberus.net.dwt;
 
-import cerberus.manager.DComponentManager;
+import cerberus.manager.IDistComponentManager;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.command.ICommandListener;
-import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.xml.IMementoNetEventXML;
 
 //import prometheus.net.protocol.interaction.SuperMouseEvent;
 //import prometheus.command.CommandInterface;
@@ -21,12 +21,12 @@ import cerberus.data.xml.MementoNetEventXML;
  * 
  * @see prometheus.net.dwt.DNetEventListener
  * @see prometheus.net.dwt.DNetEvent
- * @see prometheus.data.xml.MementoNetEventXML
+ * @see prometheus.data.xml.IMementoNetEventXML
  * 
  * @author Michael Kalkusch
  */
 public interface DNetEventComponentInterface 
-extends MementoNetEventXML 
+extends IMementoNetEventXML 
 {
 	
 	/**
@@ -71,7 +71,7 @@ extends MementoNetEventXML
 	 * ISet reference to creator, that manages all GUI components.
 	 * @param creator reference to manager of GUI components
 	 */
-	public void setParentCreator( final DComponentManager creator);
+	public void setParentCreator( final IDistComponentManager creator);
 	
 	/**
 	 * ISet referecne to parent GUI container.

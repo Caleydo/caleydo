@@ -8,8 +8,8 @@
  */
 package cerberus.command.window;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.ViewCanvasManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewCanvasManager;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -24,9 +24,9 @@ public class CmdWindowSetActiveFrame
 extends ACommand
 implements ICommand {
 
-	private final GeneralManager refGeneralManager;
+	private final IGeneralManager refGeneralManager;
 	
-	private final ViewCanvasManager refViewCanvasManager;
+	private final IViewCanvasManager refViewCanvasManager;
 	
 	private int iTargetFrameId = -1;
 	
@@ -36,7 +36,7 @@ implements ICommand {
 	/**
 	 * 
 	 */
-	public CmdWindowSetActiveFrame(final GeneralManager setRefGeneralManager,
+	public CmdWindowSetActiveFrame(final IGeneralManager setRefGeneralManager,
 			final String details ) {
 		refGeneralManager = setRefGeneralManager;
 		

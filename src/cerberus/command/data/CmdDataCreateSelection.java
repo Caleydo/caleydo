@@ -17,8 +17,8 @@ import cerberus.command.CommandType;
 import cerberus.command.base.AManagedCommand;
 import cerberus.manager.command.factory.CommandFactory;
 //import cerberus.command.window.CmdWindowPopupInfo;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SelectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISelectionManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
@@ -70,7 +70,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader
 	 */
-	public CmdDataCreateSelection( GeneralManager refGeneralManager,
+	public CmdDataCreateSelection( IGeneralManager refGeneralManager,
 			final LinkedList <String> listAttributes ) {
 		
 		super( -1, refGeneralManager );		
@@ -89,7 +89,7 @@ implements ICommand {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		SelectionManager refSelectionManager = 
+		ISelectionManager refSelectionManager = 
 			refGeneralManager.getSingelton().getSelectionManager();
 		
 		ISelection newObject = (ISelection) refSelectionManager.createSelection(

@@ -7,7 +7,7 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.AManagedCommand;
 import cerberus.command.queue.ICommandQueue;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -27,7 +27,7 @@ implements ICommand {
 	 * @param iSetCmdCollectionId
 	 */
 	public CmdSystemRunCmdQueue(int iSetCmdId, 			
-			final GeneralManager setGeneralManager,
+			final IGeneralManager setGeneralManager,
 			final int iCommandQueueId ) {
 		super(iSetCmdId, setGeneralManager);
 		

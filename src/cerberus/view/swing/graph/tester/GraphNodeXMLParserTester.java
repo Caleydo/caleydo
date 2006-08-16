@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.manager.CommandManager;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.view.swing.graph.DualNode;
 import cerberus.view.swing.graph.parser.NodeSaxDefaultHandler;
@@ -55,7 +55,7 @@ import cerberus.net.dwt.swing.mdi.DDesktopPane;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
 //import cerberus.data.xml.MementoNetEventXML;
-import cerberus.data.xml.MementoCallbackXML;
+import cerberus.data.xml.IMementoCallbackXML;
 
 
 /**
@@ -65,7 +65,7 @@ import cerberus.data.xml.MementoCallbackXML;
  *
  */
 public class GraphNodeXMLParserTester extends JFrame {
-//implements MementoCallbackXML {
+//implements IMementoCallbackXML {
 
 
 	private GraphNodeAWTCanvasTester canvas;

@@ -11,7 +11,7 @@ package cerberus.net.dwt.swing.parser;
 
 import org.xml.sax.Attributes;
 
-import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.xml.IMementoNetEventXML;
 import cerberus.xml.parser.ISaxParserHandler;
 
 
@@ -40,7 +40,7 @@ implements ISaxParserHandler
 		super(bEnableHaltOnParsingError);		
 	}
 	
-	public DButtonSaxHandler(final MementoNetEventXML setRefParent) {
+	public DButtonSaxHandler(final IMementoNetEventXML setRefParent) {
 		super();
 		
 		this.refParentMementoCaller = setRefParent;

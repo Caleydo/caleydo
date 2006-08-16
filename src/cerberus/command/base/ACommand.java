@@ -9,14 +9,14 @@
 package cerberus.command.base;
 
 import cerberus.command.ICommand;
-import cerberus.data.AbstractUniqueItem;
+import cerberus.data.AUniqueItem;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public abstract class ACommand 
-	extends AbstractUniqueItem
+	extends AUniqueItem
 	implements ICommand {
 
 	/**

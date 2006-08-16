@@ -16,12 +16,12 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.ViewCanvasManager;
-import cerberus.manager.data.CollectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.collection.view.IViewCanvas;
 import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
 import cerberus.net.dwt.swing.mdi.DDesktopPane;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
@@ -32,41 +32,41 @@ import cerberus.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Manage several ViewCanvas items.
+ * Manage several IViewCanvas items.
  * 
  * @author Michael Kalkusch
  *
  */
 public class ViewCanvasManagerSimple 
-extends CollectionManager
-implements ViewCanvasManager,
-		GeneralManager {
+extends ICollectionManager
+implements IViewCanvasManager,
+		IGeneralManager {
 
-	private int iIdIncrement = GeneralManager.iUniqueId_Increment;
+	private int iIdIncrement = IGeneralManager.iUniqueId_Increment;
 	
-	private int iCurrentViewId = GeneralManager.iUniqueId_View;
+	private int iCurrentViewId = IGeneralManager.iUniqueId_View;
 	
-	private int iCurrentWorkspaceId = GeneralManager.iUniqueId_Workspace;
+	private int iCurrentWorkspaceId = IGeneralManager.iUniqueId_Workspace;
 	
 	private Hashtable<Integer,Integer> hashWorkspaceId2IndexLookup;
 	
 	private boolean bIsFirstWorkspace = true;
 	
 	/**
-	 * Stores references to all manged ViewCanvas items.
+	 * Stores references to all manged IViewCanvas items.
 	 */
-	protected Vector<ViewCanvas> vecViewCanvas;
+	protected Vector<IViewCanvas> vecViewCanvas;
 	
 	protected Vector<WorkspaceSwingFrame> vecWorkspaces;
 	
 	/**
 	 * 
 	 */
-	public ViewCanvasManagerSimple( GeneralManager refSingelton ) {
+	public ViewCanvasManagerSimple( IGeneralManager refSingelton ) {
 		super(refSingelton,
-				GeneralManager.iUniqueId_TypeOffset_GuiAWT );
+				IGeneralManager.iUniqueId_TypeOffset_GuiAWT );
 		
-		vecViewCanvas = new Vector<ViewCanvas>(10);
+		vecViewCanvas = new Vector<IViewCanvas>(10);
 		
 		vecWorkspaces = new Vector<WorkspaceSwingFrame> (3);
 		
@@ -108,12 +108,12 @@ implements ViewCanvasManager,
 	}
 	
 	/**
-	 * @see prometheus.data.manager.ViewCanvasManager#createCanvas(prometheus.data.manager.ManagerObjectType)
+	 * @see prometheus.data.manager.IViewCanvasManager#createCanvas(prometheus.data.manager.ManagerObjectType)
 	 */
-	public ViewCanvas createCanvas(final ManagerObjectType useViewCanvasType, 
+	public IViewCanvas createCanvas(final ManagerObjectType useViewCanvasType, 
 			final String sAditionalParameter ) {
 		
-		ViewCanvas newView = null;
+		IViewCanvas newView = null;
 		
 		GLEventListenerMultiSource listenerGL = null;
 		
@@ -186,7 +186,7 @@ implements ViewCanvasManager,
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.ViewCanvasManager#deleteCanvas(prometheus.data.collection.ViewCanvas)
 	 */
-	public boolean deleteCanvas(ViewCanvas deleteSet) {
+	public boolean deleteCanvas(IViewCanvas deleteSet) {
 		
 		return deleteCanvas( 
 				vecViewCanvas.indexOf(deleteSet) );
@@ -214,19 +214,19 @@ implements ViewCanvasManager,
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.ViewCanvasManager#getItemCanvas(int)
 	 */
-	public ViewCanvas getItemCanvas(int iItemId) {
+	public IViewCanvas getItemCanvas(int iItemId) {
 		return vecViewCanvas.get( getIndexInVector_byUniqueId(iItemId) );
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.ViewCanvasManager#getAllCanvasItems()
 	 */
-	public ViewCanvas[] getAllCanvasItems() {
+	public IViewCanvas[] getAllCanvasItems() {
 		final int iSizeAllViewCanvas = vecViewCanvas.size();
 		
-		ViewCanvas[] resultBuffer = new ViewCanvas[iSizeAllViewCanvas];
+		IViewCanvas[] resultBuffer = new IViewCanvas[iSizeAllViewCanvas];
 		
-		Iterator <ViewCanvas> iter = vecViewCanvas.iterator();
+		Iterator <IViewCanvas> iter = vecViewCanvas.iterator();
 		
 		for ( int iIndex=0; iter.hasNext(); iIndex++ ) {
 			resultBuffer[iIndex] = iter.next();
@@ -253,7 +253,7 @@ implements ViewCanvasManager,
 	 * @see prometheus.data.manager.GeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
-		ViewCanvas buffer = getItemCanvas( iItemId );
+		IViewCanvas buffer = getItemCanvas( iItemId );
 		if ( buffer != null ) {
 			return buffer;
 		}
@@ -351,7 +351,7 @@ implements ViewCanvasManager,
 			ManagerObjectType type) 
 	{	
 		try {
-			ViewCanvas addItem = (ViewCanvas) registerItem;
+			IViewCanvas addItem = (IViewCanvas) registerItem;
 			
 			//addItem.setId( iItemId );
 			
@@ -385,7 +385,7 @@ implements ViewCanvasManager,
 	 */
 	public void addAllViewCanvas( JFrame refJFrame ) {
 				
-		Iterator<ViewCanvas> iter = this.vecViewCanvas.iterator();
+		Iterator<IViewCanvas> iter = this.vecViewCanvas.iterator();
 		
 		assert false : "missing code";
 		

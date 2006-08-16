@@ -14,10 +14,10 @@ import java.util.Vector;
 import java.util.Iterator;
 import java.util.Hashtable;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.MementoManager;
-import cerberus.manager.base.AbstractManagerImpl;
-import cerberus.manager.data.CollectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IMementoManager;
+import cerberus.manager.base.AAbstractManager;
+import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
@@ -35,8 +35,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class MementoManagerSimple 
- extends AbstractManagerImpl
- implements MementoManager {
+ extends AAbstractManager
+ implements IMementoManager {
 	
 	private int iCurrentUniqueMementoId;	
 	
@@ -48,17 +48,17 @@ public class MementoManagerSimple
 	
 	protected final int iInitSizeMementoVector = 40;
 	
-	protected GeneralManager refGeneralManager = null;
+	protected IGeneralManager refGeneralManager = null;
 	
 	/**
 	 * Constructor. 
 	 * 
 	 * Allocates Vector and Hashtable.
 	 */
-	public MementoManagerSimple(final GeneralManager setGeneralManager) {
+	public MementoManagerSimple(final IGeneralManager setGeneralManager) {
 		
 		super( setGeneralManager,
-				GeneralManager.iUniqueId_TypeOffset_Memento );
+				IGeneralManager.iUniqueId_TypeOffset_Memento );
 		
 		vecMemento = new Vector<IMemento>(iInitSizeMementoVector);
 		hashMementoId2Index = new Hashtable<Integer,Integer>(iInitSizeMementoVector*2);
@@ -68,8 +68,8 @@ public class MementoManagerSimple
 		refGeneralManager = setGeneralManager;
 		
 		iCurrentUniqueMementoId = 
-			CollectionManager.calculateId( 
-					GeneralManager.iUniqueId_TypeOffset_Memento, 
+			ICollectionManager.calculateId( 
+					IGeneralManager.iUniqueId_TypeOffset_Memento, 
 					refGeneralManager );
 		
 		refGeneralManager.getSingelton().setMementoManager( this );
@@ -206,7 +206,7 @@ public class MementoManagerSimple
 	/**
 	 * Mementos are internal structures and can not be search for.
 	 * 
-	 * @see cerberus.manager.GeneralManager#hasItem(int)
+	 * @see cerberus.manager.IGeneralManager#hasItem(int)
 	 */
 	public final boolean hasItem(final int iItemId) {
 		return false;

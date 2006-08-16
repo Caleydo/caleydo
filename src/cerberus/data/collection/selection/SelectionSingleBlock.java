@@ -10,25 +10,25 @@ package cerberus.data.collection.selection;
 
 import java.lang.NullPointerException;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.SelectionType;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
-import cerberus.data.collection.thread.lock.CollectionLock;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.thread.lock.ICollectionLock;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionSingleBlockIterator;
-import cerberus.data.xml.MementoItemXML;
+import cerberus.data.xml.IMementoItemXML;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public class SelectionSingleBlock 
-	extends AbstractSelection 
-	implements ISelection, MementoItemXML
+	extends ASelection 
+	implements ISelection, IMementoItemXML
 {
 
 	
@@ -36,8 +36,8 @@ public class SelectionSingleBlock
 	 * 
 	 */
 	public SelectionSingleBlock( final int iCollectionId, 
-			final GeneralManager refBaseManager,
-			final CollectionLock setCollectionLock) {
+			final IGeneralManager refBaseManager,
+			final ICollectionLock setCollectionLock) {
 		super(iCollectionId, refBaseManager, setCollectionLock);
 	}
 
@@ -147,7 +147,7 @@ public class SelectionSingleBlock
 	}
 
 	/**
-	 * @see cerberus.data.xml.MementoXML#createMementoXML()
+	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
 	 * @return String containing all information on the state 
 	 * of the object in XML form with out a header.
 	 */
@@ -178,7 +178,7 @@ public class SelectionSingleBlock
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.ISelection#iterator()
 	 */
-	public SelectionIterator iterator() {
+	public ISelectionIterator iterator() {
 		return new SelectionSingleBlockIterator(this);
 	}
 }

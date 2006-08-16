@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection;
 
-import cerberus.data.collection.CollectionType;
+import cerberus.data.collection.ICollectionType;
 
 /**
  * Defines different types of sets.
@@ -17,7 +17,7 @@ import cerberus.data.collection.CollectionType;
  *
  */
 public enum SetType 
-implements CollectionType {
+implements ICollectionType {
 
 	/** 1-dimensional set */
 	SET_LINEAR,
@@ -63,7 +63,7 @@ implements CollectionType {
 	
 	/**
 	 * 
-	 * @see prometheus.data.collection.CollectionType#isDataType()
+	 * @see prometheus.data.collection.ICollectionType#isDataType()
 	 */
 	public boolean isDataType() {
 		if ( this==SetType.SET_NONE) {

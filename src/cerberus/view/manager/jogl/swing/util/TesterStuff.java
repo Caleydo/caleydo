@@ -1,7 +1,7 @@
 package cerberus.view.manager.jogl.swing.util;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;

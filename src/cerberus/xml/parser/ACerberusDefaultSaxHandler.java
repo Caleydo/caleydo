@@ -3,7 +3,7 @@ package cerberus.xml.parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 
 public abstract class ACerberusDefaultSaxHandler extends DefaultHandler {
@@ -12,17 +12,17 @@ public abstract class ACerberusDefaultSaxHandler extends DefaultHandler {
 	protected final String sArgumentEnd   = "\" "; 
 	
 	protected final IMenuManager    refMenuMenager;
-	protected final GeneralManager refGeneralManager;
+	protected final IGeneralManager refGeneralManager;
 		
 	protected String sErrorMessage = "";
 	
 	
 	protected ACerberusDefaultSaxHandler( 
-			final GeneralManager setGeneralManager ) {
+			final IGeneralManager setGeneralManager ) {
 		refGeneralManager = setGeneralManager;
 		refMenuMenager = setGeneralManager.getSingelton().getMenuManager();
 		
-		assert refMenuMenager != null : "MenuManager was not instanciated in Singelton!";
+		assert refMenuMenager != null : "MenuManager was not instanciated in ISingelton!";
 	}
 	
 	/* (non-Javadoc)

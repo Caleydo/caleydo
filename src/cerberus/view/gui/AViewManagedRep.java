@@ -7,7 +7,7 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.data.AUniqueManagedObject;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 
 /**
  * @author kalkusch
@@ -15,7 +15,7 @@ import cerberus.manager.GeneralManager;
  */
 public abstract class AViewManagedRep 
 extends AUniqueManagedObject
-implements ViewInter
+implements IView
 {
 
 	protected Vector <String> vecAttributes = null;
@@ -24,7 +24,7 @@ implements ViewInter
 	 * 
 	 */
 	public AViewManagedRep( final int iSetCollectionId, 
-			final GeneralManager setGeneralManager)
+			final IGeneralManager setGeneralManager)
 	{
 		super( iSetCollectionId, setGeneralManager );
 	}
@@ -34,7 +34,7 @@ implements ViewInter
 	 * Set attributes for this view.
 	 * Overwrite previous attributes.
 	 * 
-	 * @see cerberus.view.gui.ViewInter#setAttributes(java.util.Vector)
+	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
 	 */
 	public void setAttributes( final Vector<String> attributes)
 	{ 

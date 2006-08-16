@@ -26,10 +26,10 @@ import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 //import cerberus.view.gui.AViewManagedRep;
 import cerberus.view.gui.swt.base.AJoglContainerViewRep;
 import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
@@ -89,7 +89,7 @@ implements GLEventListener, IJoglMouseListener
 	}
 
 	public Histogram2DMain( final int iNewId,
-			final GeneralManager setRefGeneralManager)
+			final IGeneralManager setRefGeneralManager)
 	{
 		super(iNewId, setRefGeneralManager);
 		

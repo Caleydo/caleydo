@@ -21,8 +21,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class SelectionSingleBlockIterator 
-extends AbstractSelectionIterator
-implements SelectionIterator {
+extends ASelectionIterator
+implements ISelectionIterator {
 
 	
 	/**
@@ -50,7 +50,7 @@ implements SelectionIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.CollectionIterator#next()
+	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public int next() {
 		final int iCurrentRealIndex = iCurrentVirtualIndex + iSelectionOffset;

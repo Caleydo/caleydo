@@ -16,7 +16,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.Locator;
 import org.xml.sax.helpers.LocatorImpl;
 
-import cerberus.data.xml.MementoCallbackXML;
+import cerberus.data.xml.IMementoCallbackXML;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -49,7 +49,7 @@ extends DefaultHandler
 	/**
 	 * Reference to the calling MenmentoXML object.
 	 */
-	protected MementoCallbackXML refParentMementoCaller = null;
+	protected IMementoCallbackXML refParentMementoCaller = null;
 	
 	/**
 	 * This variabel defines, if a parsing error shall throw a org.xml.sax.SAXParseException.
@@ -265,7 +265,7 @@ extends DefaultHandler
 	 * 
 	 * @param setRefParent reference to the parent obejct or the object, that sould be triggert in case of a callback action
 	 */
-	public void setParentMementoCaller( MementoCallbackXML setRefParent ) {
+	public void setParentMementoCaller( IMementoCallbackXML setRefParent ) {
 		refParentMementoCaller = setRefParent;
 	}
 

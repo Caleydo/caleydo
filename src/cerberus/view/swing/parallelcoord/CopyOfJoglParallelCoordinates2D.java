@@ -71,7 +71,7 @@ import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.selection.SelectionSingleBlock;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 
 import cerberus.view.manager.tester.CerberusFrameManager;
 
@@ -391,9 +391,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 		
 		cleanNodeIntersectionList();		
 
-		SelectionIterator iterX = useSet.getSelectionByDimAndIndex(0, 0)
+		ISelectionIterator iterX = useSet.getSelectionByDimAndIndex(0, 0)
 				.iterator();
-		SelectionIterator iterY = useSet.getSelectionByDimAndIndex(1, 0)
+		ISelectionIterator iterY = useSet.getSelectionByDimAndIndex(1, 0)
 				.iterator();
 
 		IStorage refStorageX = useSet.getStorageByDimAndIndex(0, 0);
@@ -444,9 +444,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 			
 			intersectStart(xFix, yFix);
 
-			SelectionIterator iterX_inner = useSet.getSelectionByDimAndIndex(0,
+			ISelectionIterator iterX_inner = useSet.getSelectionByDimAndIndex(0,
 					0).iterator();
-			SelectionIterator iterY_inner = useSet.getSelectionByDimAndIndex(1,
+			ISelectionIterator iterY_inner = useSet.getSelectionByDimAndIndex(1,
 					0).iterator();
 
 			int iIndexInner = 0;
@@ -635,9 +635,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 					}
 					// System.out.print("+");				
 
-					SelectionIterator iterX = refSet.getSelectionByDimAndIndex(
+					ISelectionIterator iterX = refSet.getSelectionByDimAndIndex(
 							0, 0).iterator();
-					SelectionIterator iterY = refSet.getSelectionByDimAndIndex(
+					ISelectionIterator iterY = refSet.getSelectionByDimAndIndex(
 							1, 0).iterator();
 					
 					if (!doMinMaxData.isValid()) {

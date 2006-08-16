@@ -8,16 +8,16 @@
  */
 package cerberus.data.collection.selection;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.SelectionType;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionMultiBlockIterator;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.selection.iterator.SelectionSingleBlockIterator;
-import cerberus.data.collection.thread.lock.CollectionLock;
-import cerberus.data.xml.MementoItemXML;
+import cerberus.data.collection.thread.lock.ICollectionLock;
+import cerberus.data.xml.IMementoItemXML;
 import cerberus.xml.parser.ISaxParserHandler;
 
 import java.lang.StringBuffer;
@@ -27,9 +27,9 @@ import java.lang.StringBuffer;
  *
  */
 public class SelectionMultiBlock 
-extends AbstractSelection 
+extends ASelection 
 implements
-		ISelection, MementoItemXML {
+		ISelection, IMementoItemXML {
 
 	protected int iMultiOffset = 0;
 	
@@ -40,8 +40,8 @@ implements
 	 * @param setRefBaseManager
 	 */
 	public SelectionMultiBlock(int iSetCollectionId,
-			final GeneralManager setRefBaseManager,
-			final CollectionLock setCollectionLock) {
+			final IGeneralManager setRefBaseManager,
+			final ICollectionLock setCollectionLock) {
 		super(iSetCollectionId, setRefBaseManager, setCollectionLock);
 		
 	}
@@ -206,7 +206,7 @@ implements
 	/**
 	 * Create XML IMemento.
 	 * 
-	 * @see cerberus.data.xml.MementoXML#createMementoXML()
+	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
 	 */
 	public String createMementoXML() {
 		final String openDetail = "<DataComponentItemDetails type=\"";
@@ -244,7 +244,7 @@ implements
 		return this.iCacheId;
 	}
 
-	public SelectionIterator iterator() {
+	public ISelectionIterator iterator() {
 		return new SelectionMultiBlockIterator(this);
 	}
 	

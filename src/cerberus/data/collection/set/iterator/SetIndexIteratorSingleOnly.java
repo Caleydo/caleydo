@@ -5,17 +5,17 @@ package cerberus.data.collection.set.iterator;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.ISelection;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 
 /**
  * @author kalkusch
  *
  */
-public class SetIndexIteratorSingleOnly implements SetIndexIterator {
+public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 
 	protected ISet refSet;
 	
-	protected SelectionIterator selectIterator;
+	protected ISelectionIterator selectIterator;
 	
 	/**
 	 * 
@@ -30,7 +30,7 @@ public class SetIndexIteratorSingleOnly implements SetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.SetDataIterator#begin()
+	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#begin()
 	 */
 	public void begin() {
 		// TODO Auto-generated method stub
@@ -38,7 +38,7 @@ public class SetIndexIteratorSingleOnly implements SetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.SetDataIterator#hasNext()
+	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		// TODO Auto-generated method stub
@@ -46,7 +46,7 @@ public class SetIndexIteratorSingleOnly implements SetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.SetDataIterator#hasNextInSelection()
+	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#hasNextInSelection()
 	 */
 	public boolean hasNextInSelection() {
 		// TODO Auto-generated method stub
@@ -54,7 +54,7 @@ public class SetIndexIteratorSingleOnly implements SetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.SetDataIterator#nextIndex()
+	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#nextIndex()
 	 */
 	public int nextIndex() {
 		// TODO Auto-generated method stub
@@ -62,7 +62,7 @@ public class SetIndexIteratorSingleOnly implements SetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.SetDataIterator#nextSelection()
+	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#nextSelection()
 	 */
 	public ISelection nextSelection() {
 		// TODO Auto-generated method stub

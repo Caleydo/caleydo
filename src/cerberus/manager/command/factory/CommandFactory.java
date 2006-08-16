@@ -49,8 +49,8 @@ import cerberus.command.system.CmdSystemNop;
 import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
 
 
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
@@ -67,16 +67,16 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
  */
 public class CommandFactory 
 extends ACommand
-	implements ICommand, CommandFactoryInterface {
+	implements ICommand, ICommandFactory {
 
 	/**
 	 * Command created by the factory.
 	 */
 	protected ICommand refCommand;
 	
-	protected final GeneralManager refGeneralManager;
+	protected final IGeneralManager refGeneralManager;
 
-	protected final CommandManager refCommandManager;
+	protected final ICommandManager refCommandManager;
 
 	public static final String sDelimiter_CreateStorage_DataItemBlock 	= "@";	
 	public static final String sDelimiter_CreateStorage_DataItems 		= " ";
@@ -88,14 +88,14 @@ extends ACommand
 	/**
 	 * Constructor
 	 * 
-	 * @param setRefGeneralManager reference to GeneralManager
+	 * @param setRefGeneralManager reference to IGeneralManager
 	 * @param setCommandType may be null if no command shall be created by the constructor
 	 */
-	public CommandFactory(  final GeneralManager setRefGeneralManager,
-			final CommandManager refCommandManager,
+	public CommandFactory(  final IGeneralManager setRefGeneralManager,
+			final ICommandManager refCommandManager,
 			final CommandType setCommandType) {
 		
-		assert setRefGeneralManager != null:"Can not create CommandFactory from null-pointer to GeneralManager";
+		assert setRefGeneralManager != null:"Can not create CommandFactory from null-pointer to IGeneralManager";
 		
 		this.refGeneralManager = setRefGeneralManager;		
 		this.refCommandManager = refCommandManager;
@@ -168,7 +168,7 @@ extends ACommand
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @see cerberus.manager.command.factory.CommandFactoryInterface#createCommand(java.lang.String, java.util.LinkedList)
+	 * @see cerberus.manager.command.factory.ICommandFactory#createCommand(java.lang.String, java.util.LinkedList)
 	 */
 	public ICommand createCommand( 
 			final String sData_Cmd_type,

@@ -85,16 +85,16 @@ import demos.vertexProgWarp.VertexProgWarp;
 
 //import demos.xtrans.*;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.FrameManagerInterface;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IFrameManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
-import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.view.FrameBaseType;
-import cerberus.view.manager.jogl.swing.SwingJoglJComponent;
+import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.util.SwingJoglWindowAdapter;
@@ -142,12 +142,12 @@ import cerberus.net.dwt.swing.menu.DMenuBootStraper;
  */
 
 public class CanvasSwingJoglManager 
-	extends AbstractManagerImpl 
-	implements FrameManagerInterface {
+	extends AAbstractManager 
+	implements IFrameManager {
 	
-	private GeneralManager refManager;
+	private IGeneralManager refManager;
 	
-	private CommandManager refCommandManager;
+	private ICommandManager refCommandManager;
 	
 	private IMenuManager refMenuManager;
 	
@@ -186,14 +186,14 @@ public class CanvasSwingJoglManager
 
 	private Hashtable<Integer, Vector<Integer> > hash_IdFrame_2_vecInternalFrame;
 	
-	private int iIdFrameIncrement = GeneralManager.iUniqueId_Increment;
-	private int iIdFrameCurrent = GeneralManager.iUniqueId_Workspace;
+	private int iIdFrameIncrement = IGeneralManager.iUniqueId_Increment;
+	private int iIdFrameCurrent = IGeneralManager.iUniqueId_Workspace;
 	
-	private int iIdInternalFrameIncrement = GeneralManager.iUniqueId_Increment;
-	private int iIdInternalFrameCurrent = GeneralManager.iUniqueId_View;
+	private int iIdInternalFrameIncrement = IGeneralManager.iUniqueId_Increment;
+	private int iIdInternalFrameCurrent = IGeneralManager.iUniqueId_View;
 	
-	private int iIdMenuIncrement = GeneralManager.iUniqueId_Menu_Inc;
-	private int iIdMenuCurrent = GeneralManager.iUniqueId_Menu_Offset;
+	private int iIdMenuIncrement = IGeneralManager.iUniqueId_Menu_Inc;
+	private int iIdMenuCurrent = IGeneralManager.iUniqueId_Menu_Offset;
 	
 	private CerberusJStatusBar jsb_statusBar;
 
@@ -229,11 +229,11 @@ public class CanvasSwingJoglManager
 	}
 
 	
-	public CanvasSwingJoglManager( final GeneralManager setManager,
+	public CanvasSwingJoglManager( final IGeneralManager setManager,
 			final boolean setIsPrimaryWindow ) {
 		
 		super( setManager,
-				GeneralManager.iUniqueId_TypeOffset_GuiAWT );
+				IGeneralManager.iUniqueId_TypeOffset_GuiAWT );
 		
 		//TODO: check why the constructors differ!
 		
@@ -252,10 +252,10 @@ public class CanvasSwingJoglManager
 		
 	}
 	
-	public CanvasSwingJoglManager(  final GeneralManager setManager ) { 
+	public CanvasSwingJoglManager(  final IGeneralManager setManager ) { 
 		
 		super( setManager,				
-				GeneralManager.iUniqueId_TypeOffset_GuiAWT);
+				IGeneralManager.iUniqueId_TypeOffset_GuiAWT);
 		
 		//TODO: check why the constructors differ!
 		
@@ -546,7 +546,7 @@ public class CanvasSwingJoglManager
 	/* (non-Javadoc)
 	 * @see cerberus.view.manager.jogl.swing.FrameManagerInterface#addWindow(cerberus.view.manager.FrameBaseType, int, int)
 	 */
-	public SwingJoglJComponent addWindow(FrameBaseType which, 
+	public ISwingJoglJComponent addWindow(FrameBaseType which, 
 			int iUniqueViewId,
 			int iUniquePartenViewId ) {
 		
@@ -563,7 +563,7 @@ public class CanvasSwingJoglManager
 		return addWindow_AWTcanvas(which,iUniqueViewId,iUniquePartenViewId);
 	}
 		
-	private SwingJoglJComponent addWindow_AWTcanvas(FrameBaseType which, 
+	private ISwingJoglJComponent addWindow_AWTcanvas(FrameBaseType which, 
 			//final boolean bIsInternalFrame,
 			final int iUniqueViewId,
 			final int iUniquePartenViewId ) {
@@ -580,7 +580,7 @@ public class CanvasSwingJoglManager
 		/** 
 		 * In order to be able to put this function inside a methode this variabel is used.
 		 */
-		final SwingJoglJComponent newFrame;
+		final ISwingJoglJComponent newFrame;
 		
 		/**
 		 * Handle creation internal and external frames different...		
@@ -724,7 +724,7 @@ public class CanvasSwingJoglManager
 	}
 	
 	
-	private SwingJoglJComponent addWindow_GLcanvas(FrameBaseType which, 
+	private ISwingJoglJComponent addWindow_GLcanvas(FrameBaseType which, 
 			//final boolean bIsInternalFrame,
 			final int iUniqueViewId,
 			final int iUniquePartenViewId  ) {
@@ -757,7 +757,7 @@ public class CanvasSwingJoglManager
 //		final JInternalFrame inner;
 //		final JFrame outer;
 		
-		final SwingJoglJComponent newFrame;
+		final ISwingJoglJComponent newFrame;
 		
 		/**
 		 * use only one threaded GLListener for (JInternalFrame) inner and (JFrame) outer

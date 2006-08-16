@@ -8,10 +8,10 @@
  */
 package cerberus.command;
 
-import cerberus.manager.CommandManager;
+import cerberus.manager.ICommandManager;
 //import cerberus.command.CommandInterface;
 import cerberus.command.ICommandActionListener;
-import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.xml.IMementoNetEventXML;
 
 /**
  * Handles commands.
@@ -22,13 +22,13 @@ import cerberus.data.xml.MementoNetEventXML;
  *
  */
 public interface ICommandListener 
-extends ICommandActionListener, MementoNetEventXML {
+extends ICommandActionListener, IMementoNetEventXML {
 	
 	/**
 	 * Get the reference to the parent manager of all ICommandListener obejcts.
 	 * 
-	 * @return parent CommandManager
+	 * @return parent ICommandManager
 	 */
-	public CommandManager getCommandManager();
+	public ICommandManager getCommandManager();
 	
 }

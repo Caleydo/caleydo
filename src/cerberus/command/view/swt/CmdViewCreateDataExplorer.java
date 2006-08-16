@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.base.AManagedCommand;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.ViewManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -22,7 +22,7 @@ implements ICommand
 	protected int iUniqueDataExplorerId;
 	protected int iUniqueParentContainerId;
 	
-	public CmdViewCreateDataExplorer( GeneralManager refGeneralManager,
+	public CmdViewCreateDataExplorer( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
 	{
 		super( -1, refGeneralManager );	
@@ -31,7 +31,7 @@ implements ICommand
 
 	public void doCommand() throws CerberusRuntimeException
 	{
-		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep) ((ViewManager)refGeneralManager.
+		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep) ((IViewManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.VIEW)).
 					createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER, iUniqueDataExplorerId);
 

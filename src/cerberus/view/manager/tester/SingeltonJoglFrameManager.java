@@ -61,14 +61,14 @@ import demos.vertexProgWarp.VertexProgWarp;
 
 import demos.xtrans.*;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.FrameManagerInterface;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IFrameManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
-import cerberus.view.manager.jogl.swing.SwingJoglJComponent;
+import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.SingeltonJoglWindowAdapter;
@@ -114,11 +114,11 @@ import cerberus.net.dwt.swing.menu.DMenuBootStraper;
  Ported to Java, Swing and ARB_fragment_program by Kenneth Russell
  */
 
-public class SingeltonJoglFrameManager implements FrameManagerInterface {
+public class SingeltonJoglFrameManager implements IFrameManager {
 	
-	private GeneralManager refManager;
+	private IGeneralManager refManager;
 	
-	private CommandManager refCommandManager;
+	private ICommandManager refCommandManager;
 	
 	private IMenuManager refMenuManager;
 	
@@ -189,7 +189,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 	}
 
 	
-	public SingeltonJoglFrameManager( final GeneralManager setManager,
+	public SingeltonJoglFrameManager( final IGeneralManager setManager,
 			final boolean setIsPrimaryWindow ) {
 		
 		refManager = setManager;
@@ -204,7 +204,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 		refJMenuBar = new DMenuBootStraper( refCommandManager );
 	}
 	
-	public SingeltonJoglFrameManager( GeneralManager setGeneralManager ) {
+	public SingeltonJoglFrameManager( IGeneralManager setGeneralManager ) {
 		
 		this.refManager = setGeneralManager;
 		
@@ -464,7 +464,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 					}
 				}
 				
-				SwingJoglJComponent frame = vec_JFrame.remove( iItemId );
+				ISwingJoglJComponent frame = vec_JFrame.remove( iItemId );
 				
 				if ( frame == null ) {
 					throw new RuntimeException("Can not unregister frame from Hashtable");
@@ -503,7 +503,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 		vec_JFrame.remove( new Integer(iUniqueFrameId) );
 	}
 
-	public SwingJoglJComponent addWindow(FrameBaseType which,
+	public ISwingJoglJComponent addWindow(FrameBaseType which,
 			int iUniqueViewId, int iUniquePartenViewId) {
 		boolean isInternalFrame = true;
 		
@@ -511,7 +511,7 @@ public class SingeltonJoglFrameManager implements FrameManagerInterface {
 			isInternalFrame = false;
 		}
 		
-		return (SwingJoglJComponent) addWindow( which, isInternalFrame, iUniqueViewId );
+		return (ISwingJoglJComponent) addWindow( which, isInternalFrame, iUniqueViewId );
 	}
 	
 	public Container addWindow(FrameBaseType which, 

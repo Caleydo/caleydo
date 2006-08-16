@@ -19,8 +19,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.DComponentManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IDistComponentManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.ICommandListener;
@@ -61,12 +61,12 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	 */
 	private boolean bGui_hasMenuBar_one_Menu = false;
 	
-	protected CommandManager refCommandManager;
+	protected ICommandManager refCommandManager;
 	
 	/**
 	 * 
 	 */
-	public DMenuBootStraper( CommandManager setCommandManager ) {
+	public DMenuBootStraper( ICommandManager setCommandManager ) {
 		super();
 		
 		refCommandManager = setCommandManager;
@@ -289,7 +289,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	/* (non-Javadoc)
 	 * @see cerberus.net.dwt.DNetEventComponentInterface#setParentCreator(cerberus.data.manager.DComponentManager)
 	 */
-	public void setParentCreator(DComponentManager creator) {
+	public void setParentCreator(IDistComponentManager creator) {
 		// TODO Auto-generated method stub
 
 	}
@@ -303,7 +303,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#createMementoXMLperObject()
+	 * @see cerberus.data.xml.IMementoNetEventXML#createMementoXMLperObject()
 	 */
 	public String createMementoXMLperObject() {
 		// TODO Auto-generated method stub
@@ -311,7 +311,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoXML#setMementoXML_usingHandler(cerberus.xml.parser.ISaxParserHandler)
+	 * @see cerberus.data.xml.IMementoXML#setMementoXML_usingHandler(cerberus.xml.parser.ISaxParserHandler)
 	 */
 	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler) {
 		// TODO Auto-generated method stub
@@ -320,7 +320,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoItemXML#getId()
+	 * @see cerberus.data.xml.IMementoItemXML#getId()
 	 */
 	public int getId() {
 		// TODO Auto-generated method stub
@@ -328,7 +328,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoItemXML#setId(cerberus.data.manager.GeneralManager, int)
+	 * @see cerberus.data.xml.IMementoItemXML#setId(cerberus.data.manager.GeneralManager, int)
 	 */
 	public void setId(int iSetDNetEventId) {
 		// TODO Auto-generated method stub
@@ -336,7 +336,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoItemXML#createMementoXML()
+	 * @see cerberus.data.xml.IMementoItemXML#createMementoXML()
 	 */
 	public String createMementoXML() {
 		// TODO Auto-generated method stub
@@ -344,7 +344,7 @@ public class DMenuBootStraper implements DNetEventComponentInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoCallbackXML#callbackForParser(cerberus.data.manager.BaseManagerType, java.lang.String, cerberus.xml.parser.ISaxParserHandler)
+	 * @see cerberus.data.xml.IMementoCallbackXML#callbackForParser(cerberus.data.manager.BaseManagerType, java.lang.String, cerberus.xml.parser.ISaxParserHandler)
 	 */
 	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,

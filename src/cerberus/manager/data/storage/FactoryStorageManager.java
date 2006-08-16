@@ -10,9 +10,9 @@ package cerberus.manager.data.storage;
 
 import java.util.Vector;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.StorageManager;
-import cerberus.manager.data.CollectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IStorageManager;
+import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IStorage;
@@ -23,8 +23,8 @@ import cerberus.data.collection.IStorage;
  *
  */
 public class FactoryStorageManager 
-extends CollectionManager
-implements StorageManager {
+extends ICollectionManager
+implements IStorageManager {
 
 	protected IStorage refStorage = null;
 	
@@ -46,11 +46,11 @@ implements StorageManager {
 	/**
 	 * 
 	 */
-	public FactoryStorageManager(GeneralManager setGeneralManager,
+	public FactoryStorageManager(IGeneralManager setGeneralManager,
 			final int iSetInitSizeContainer ) {
 		
 		super( setGeneralManager, 
-				GeneralManager.iUniqueId_TypeOffset_Storage );
+				IGeneralManager.iUniqueId_TypeOffset_Storage );
 		
 		assert setGeneralManager != null : "FactoryStorageManager.Constructor  fed with null-pointer to singelton";
 		
@@ -107,8 +107,8 @@ implements StorageManager {
 	
 	/**
 	 *  
-	 * @see cerberus.manager.GeneralManager#getItem(int)
-	 * @see cerberus.manager.StorageManager#getItemStorage(int)
+	 * @see cerberus.manager.IGeneralManager#getItem(int)
+	 * @see cerberus.manager.IStorageManager#getItemStorage(int)
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 */

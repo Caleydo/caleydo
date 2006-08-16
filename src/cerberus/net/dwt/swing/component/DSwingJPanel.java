@@ -12,7 +12,7 @@ import gleem.linalg.Vec3f;
 
 import javax.swing.JPanel;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.net.dwt.base.ViewingAreaComponent;
@@ -30,7 +30,7 @@ public abstract class DSwingJPanel extends JPanel implements
 		ViewingAreaComponent, IUniqueManagedObject {
 
 	
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 		
 	protected int iDNetEventComponentId;
 	
@@ -115,7 +115,7 @@ public abstract class DSwingJPanel extends JPanel implements
 	 * 
 	 * @see prometheus.data.IUniqueManagedObject#getManager()
 	 */
-	public final GeneralManager getManager() {
+	public final IGeneralManager getManager() {
 		return refGeneralManager;
 	}
 	
@@ -126,7 +126,7 @@ public abstract class DSwingJPanel extends JPanel implements
 	 */
 	public final void setId(int iSetDNetEventId) {
 		
-		//refParentCreator = (DComponentManager) creator;
+		//refParentCreator = (IDistComponentManager) creator;
 		//FIXME check...	
 		
 		iDNetEventComponentId = iSetDNetEventId;

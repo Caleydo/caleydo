@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.base.AManagedCommand;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
@@ -17,7 +17,7 @@ implements ICommand
 	protected int iUniqueCommandId;
 	protected int iUniqueWindowId;
 	
-	public CmdWindowCreate( GeneralManager refGeneralManager,
+	public CmdWindowCreate( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
 	{
 		super( -1, refGeneralManager );	

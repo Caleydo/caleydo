@@ -8,7 +8,7 @@
  */
 package cerberus.command.window;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 //import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
@@ -40,7 +40,7 @@ implements ICommand {
 	/**
 	 * Reference to singelton.
 	 */
-	protected final GeneralManager refGeneralManager;
+	protected final IGeneralManager refGeneralManager;
 
 	/**
 	 * Current Jogl canvas.
@@ -67,7 +67,7 @@ implements ICommand {
 	 * @param refGLEventListener listener for GLEvents or null if listener shall be created
 	 * @param initDSwingJoglCanvas reference to existing GLcanvas or null if canvas shall be created
 	 */
-	protected CmdWindowNewIFrameJoglBase( final GeneralManager refGeneralManager,
+	protected CmdWindowNewIFrameJoglBase( final IGeneralManager refGeneralManager,
 			final int iCallingFrameId,
 //			final GLEventForwardListener refGLEventListener,
 //			final DSwingJoglCanvas initDSwingJoglCanvas,

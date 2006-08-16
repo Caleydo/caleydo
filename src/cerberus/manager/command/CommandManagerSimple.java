@@ -13,11 +13,11 @@ import java.util.LinkedList;
 import java.util.Vector;
 //import java.util.Iterator;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.command.factory.CommandFactory;
-import cerberus.manager.command.factory.CommandFactoryInterface;
+import cerberus.manager.command.factory.ICommandFactory;
 import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
 
@@ -32,10 +32,10 @@ import cerberus.command.queue.ICommandQueue;
  *
  */
 public class CommandManagerSimple 
- extends AbstractManagerImpl 
- implements CommandManager {
+ extends AAbstractManager 
+ implements ICommandManager {
 
-	private CommandFactoryInterface refCommandFactory;
+	private ICommandFactory refCommandFactory;
 	
 	/**
 	 * List of all Commands to be excecuted as soon as possible
@@ -54,8 +54,8 @@ public class CommandManagerSimple
 	/**
 	 * 
 	 */
-	public CommandManagerSimple( GeneralManager setGeneralManager ) {
-		super( setGeneralManager, GeneralManager.iUniqueId_TypeOffset_Command );
+	public CommandManagerSimple( IGeneralManager setGeneralManager ) {
+		super( setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_Command );
 		
 		refCommandFactory = new CommandFactory( setGeneralManager, 
 				this, 
@@ -239,7 +239,7 @@ public class CommandManagerSimple
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.CommandManager#getCommandQueueByCmdQueueId(int)
+	 * @see cerberus.manager.ICommandManager#getCommandQueueByCmdQueueId(int)
 	 */
 	public ICommandQueue getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
 		return hash_CommandQueueId.get( iCmdQueueId );

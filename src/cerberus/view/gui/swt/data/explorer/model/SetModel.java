@@ -3,9 +3,9 @@ package cerberus.view.gui.swt.data.explorer.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 
-public class SetModel extends Model
+public class SetModel extends AModel
 {
 	protected List<SetModel> setList;
 	protected List<StorageModel> storageList;
@@ -119,7 +119,7 @@ public class SetModel extends Model
 		return selectionList;
 	}
 	
-	public void remove(Model toRemove) {
+	public void remove(AModel toRemove) {
 		toRemove.accept(remover, this);
 	}
 	
@@ -141,7 +141,7 @@ public class SetModel extends Model
 		fireRemove(setModel);	
 	}
 
-	public void add(Model toAdd) 
+	public void add(AModel toAdd) 
 	{
 		toAdd.accept(adder, this);
 	}
@@ -153,7 +153,7 @@ public class SetModel extends Model
 //	}
 	
 	/*
-	 * @see Model#accept(ModelVisitorI, Object)
+	 * @see AModel#accept(ModelVisitorI, Object)
 	 */
 	public void accept(IModelVisitor visitor, Object passAlongArgument) 
 	{

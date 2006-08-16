@@ -11,9 +11,9 @@ package cerberus.manager.data.set;
 import java.util.Vector;
 import java.util.Iterator;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SetManager;
-import cerberus.manager.data.CollectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISetManager;
+import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IStorage;
@@ -29,15 +29,15 @@ import cerberus.data.collection.set.SetPlanarSimple;
  *
  */
 public class SetManagerSimple 
-extends CollectionManager
-implements SetManager {
+extends ICollectionManager
+implements ISetManager {
 
 	/**
 	 * Reference to the singelton manager.
 	 * 
-	 * Note: See "Design Pattern" Singelton
+	 * Note: See "Design Pattern" ISingelton
 	 */
-	//protected GeneralManager refGeneralManager = null;
+	//protected IGeneralManager refGeneralManager = null;
 	
 	/**
 	 * Vector holds a list of all ISet's
@@ -49,10 +49,10 @@ implements SetManager {
 	/**
 	 * 
 	 */
-	public SetManagerSimple( GeneralManager setSingelton,
+	public SetManagerSimple( IGeneralManager setSingelton,
 			final int iInitSizeContainer ) {
 		super( setSingelton , 
-				GeneralManager.iUniqueId_TypeOffset_Set );
+				IGeneralManager.iUniqueId_TypeOffset_Set );
 
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";

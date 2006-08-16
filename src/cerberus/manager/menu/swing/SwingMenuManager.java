@@ -14,11 +14,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
-import cerberus.manager.ViewCanvasManager;
-import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 
 //import prometheus.command.CommandType;
@@ -36,12 +36,12 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class SwingMenuManager 
- extends AbstractManagerImpl
+ extends AAbstractManager
  implements IMenuManager {
 	
-	private final ViewCanvasManager refViewCanvasManager;
+	private final IViewCanvasManager refViewCanvasManager;
 	
-	private final CommandManager refCommandManager;
+	private final ICommandManager refCommandManager;
 	
 	private Hashtable<Integer,JMenuItem> hashMenu;
 	
@@ -56,9 +56,9 @@ public class SwingMenuManager
 	/**
 	 * 
 	 */
-	public SwingMenuManager(GeneralManager setGeneralManager) {
+	public SwingMenuManager(IGeneralManager setGeneralManager) {
 		super( setGeneralManager,
-				GeneralManager.iUniqueId_TypeOffset_GuiMenu );
+				IGeneralManager.iUniqueId_TypeOffset_GuiMenu );
 		
 		refViewCanvasManager = 
 			setGeneralManager.getSingelton().getViewCanvasManager();

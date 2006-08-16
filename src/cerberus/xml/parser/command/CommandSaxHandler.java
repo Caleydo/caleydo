@@ -12,9 +12,9 @@ import org.xml.sax.Attributes;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
-import cerberus.manager.CommandManager;
+import cerberus.manager.ICommandManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 
@@ -27,7 +27,7 @@ import cerberus.xml.parser.ACerberusDefaultSaxHandler;
  */
 public class CommandSaxHandler extends ACerberusDefaultSaxHandler  {
 
-	private final CommandManager refCommandManager;
+	private final ICommandManager refCommandManager;
 	
 	private boolean bCommandBuffer_isActive = false;
 	
@@ -91,13 +91,13 @@ public class CommandSaxHandler extends ACerberusDefaultSaxHandler  {
 	 *  </CommandBuffer>
 	 * </Application>
 	 */
-	public CommandSaxHandler( final GeneralManager setGeneralManager  ) {
+	public CommandSaxHandler( final IGeneralManager setGeneralManager  ) {
 		super( setGeneralManager );
 		
 		refCommandManager = 
 			refGeneralManager.getSingelton().getCommandManager();
 
-		assert refCommandManager != null : "CommandManager was not created by Singelton!";
+		assert refCommandManager != null : "ICommandManager was not created by ISingelton!";
 	}
 	
 	/**

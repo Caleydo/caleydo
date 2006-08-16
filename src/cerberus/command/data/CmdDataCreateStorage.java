@@ -21,8 +21,8 @@ import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.command.base.AManagedCommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.StorageManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IStorageManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -96,7 +96,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader
 	 */
-	public CmdDataCreateStorage( GeneralManager refGeneralManager,
+	public CmdDataCreateStorage( IGeneralManager refGeneralManager,
 			final LinkedList <String> listAttributes,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
@@ -122,7 +122,7 @@ implements ICommand {
 		
 		assert llDataTypes != null : "Probably this doCommand() was already executed once!";
 		
-		StorageManager refSelectionManager = 
+		IStorageManager refSelectionManager = 
 			refGeneralManager.getSingelton().getStorageManager();
 		
 		IStorage newObject = (IStorage) refSelectionManager.createStorage(

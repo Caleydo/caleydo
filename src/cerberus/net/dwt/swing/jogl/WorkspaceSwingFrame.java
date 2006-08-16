@@ -19,8 +19,8 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 
@@ -47,7 +47,7 @@ public class WorkspaceSwingFrame
 extends JFrame
 implements IUniqueManagedObject {
 
-	protected final GeneralManager manager;
+	protected final IGeneralManager manager;
 	
 	public DSwingSelectionCanvas selectionPanel;
 	
@@ -61,7 +61,7 @@ implements IUniqueManagedObject {
 	
 	protected int iCollectionId = -1;
 	
-	private final CommandManager refCommandManager;
+	private final ICommandManager refCommandManager;
 	
 	private final IMenuManager menuCreator;
 	
@@ -72,7 +72,7 @@ implements IUniqueManagedObject {
 	/**
 	 * @throws HeadlessException
 	 */
-	public WorkspaceSwingFrame( final GeneralManager setManager,
+	public WorkspaceSwingFrame( final IGeneralManager setManager,
 			final boolean setIsPrimaryWindow ) throws HeadlessException {
 		super("Prometheus v0.1");
 		
@@ -650,9 +650,9 @@ implements IUniqueManagedObject {
 	/**
 	 * Get the manager that created the item.
 	 * 
-	 * @return reference to CollectionManager
+	 * @return reference to ICollectionManager
 	 */
-	public GeneralManager getManager() {
+	public IGeneralManager getManager() {
 		return manager;
 	}
 	

@@ -22,10 +22,10 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.AManagedCommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SelectionManager;
-import cerberus.manager.SetManager;
-import cerberus.manager.StorageManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISelectionManager;
+import cerberus.manager.ISetManager;
+import cerberus.manager.IStorageManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -98,7 +98,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader
 	 */
-	public CmdDataCreateSet( GeneralManager refGeneralManager,
+	public CmdDataCreateSet( IGeneralManager refGeneralManager,
 			final LinkedList <String> listAttributes,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
@@ -124,11 +124,11 @@ implements ICommand {
 		
 		assert llRefStorage != null : "Probably this doCommand() was already executed once!";
 		
-		StorageManager refStorageManager = 
+		IStorageManager refStorageManager = 
 			refGeneralManager.getSingelton().getStorageManager();		
-		SelectionManager refSelectionManager = 
+		ISelectionManager refSelectionManager = 
 			refGeneralManager.getSingelton().getSelectionManager();		
-		SetManager refSetManager = 
+		ISetManager refSetManager = 
 			refGeneralManager.getSingelton().getSetManager();
 		
 		

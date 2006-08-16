@@ -11,8 +11,8 @@ package cerberus.command.window;
 //import javax.swing.JComponent;
 //import javax.swing.JOptionPane;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.ViewCanvasManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewCanvasManager;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -36,16 +36,16 @@ implements ICommand {
 	
 	private int iCallingFrameId;
 	
-	protected final GeneralManager refGeneralManage;
+	protected final IGeneralManager refGeneralManage;
 	
-	protected final ViewCanvasManager refViewCanvasManager;
+	protected final IViewCanvasManager refViewCanvasManager;
 	
 	protected String sHeaderText;
 	
 	/**
 	 * Does not set the reference to the parent JComponent.
 	 */
-	public CmdWindowNewInternalFrame( final GeneralManager refGeneralManage,
+	public CmdWindowNewInternalFrame( final IGeneralManager refGeneralManage,
 			final int iCallingFrameId,
 			final String sHeaderText ) {
 		
@@ -63,7 +63,7 @@ implements ICommand {
 //	 * @see cerberus.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
 //	 * @see cerberus.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
 //	 * 
-//	 * @return new created ViewCanvas object 
+//	 * @return new created IViewCanvas object 
 //	 */
 //	public DInternalFrame doCommand_getDInternalFrame() {
 //		this.doCommand();
@@ -71,12 +71,12 @@ implements ICommand {
 //	}
 //	
 //	/**
-//	 * Get the last ViewCanvas created with doCommand().
+//	 * Get the last IViewCanvas created with doCommand().
 //	 * 
 //	 * @see cerberus.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
 //	 * @see cerberus.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
 //	 * 
-//	 * @return last ViewCanvas created by doCommand() 
+//	 * @return last IViewCanvas created by doCommand() 
 //	 */
 //	public DInternalFrame getCurrentDInternalFrame() {
 //		return refNewDInternalFrame;

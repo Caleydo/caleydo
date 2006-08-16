@@ -1,10 +1,10 @@
 package cerberus.view;
 
-//import cerberus.manager.GeneralManager;
+//import cerberus.manager.IGeneralManager;
 
 public class ViewMediator 
 {
-//	public ViewMediator(GeneralManager refGerneralManager)
+//	public ViewMediator(IGeneralManager refGerneralManager)
 //	{
 //		
 //	}

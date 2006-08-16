@@ -3,10 +3,10 @@
  */
 package cerberus.manager.logger;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.LoggerManager;
-import cerberus.manager.Singelton;
-import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager;
+import cerberus.manager.ISingelton;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -15,27 +15,27 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class ConsoleSimpleLogger extends 
-	AbstractManagerImpl implements LoggerManager, GeneralManager {
+	AAbstractManager implements ILoggerManager, IGeneralManager {
 
 	protected short sLogLevel = 0;
 	
 	/**
 	 * @param setGeneralManager
 	 */
-	public ConsoleSimpleLogger(GeneralManager setGeneralManager) {
+	public ConsoleSimpleLogger(IGeneralManager setGeneralManager) {
 		super(setGeneralManager,
-				GeneralManager.iUniqueId_TypeOffset_Logger );
+				IGeneralManager.iUniqueId_TypeOffset_Logger );
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.LoggerManager#logMsg(java.lang.String)
+	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String)
 	 */
 	public void logMsg(String info) {
 		System.out.println( info );
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.LoggerManager#logMsg(java.lang.String, short)
+	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)
 	 */
 	public void logMsg(String info, short logLevel) {
 		sLogLevel = logLevel;
@@ -43,14 +43,14 @@ public class ConsoleSimpleLogger extends
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.LoggerManager#setLogLevel(short)
+	 * @see cerberus.manager.ILoggerManager#setLogLevel(short)
 	 */
 	public void setLogLevel(short level) {
 		sLogLevel = level;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.LoggerManager#getLogLevel()
+	 * @see cerberus.manager.ILoggerManager#getLogLevel()
 	 */
 	public short getLogLevel() {
 		return sLogLevel;
@@ -59,7 +59,7 @@ public class ConsoleSimpleLogger extends
 	/**
 	 * Since the logger prints to system.out it is always flushed.
 	 * 
-	 * @see cerberus.manager.LoggerManager#flushLog()
+	 * @see cerberus.manager.ILoggerManager#flushLog()
 	 */
 	public void flushLog() {
 		assert false : "logger is always flushed, since it prints to system.out";
@@ -68,7 +68,7 @@ public class ConsoleSimpleLogger extends
 	/** 
 	 * Since the logger prints to system.out it is always flushed.
 	 * 
-	 * @see cerberus.manager.LoggerManager#isLogFlushed()
+	 * @see cerberus.manager.ILoggerManager#isLogFlushed()
 	 */
 	public boolean isLogFlushed() {
 		return true;
@@ -76,28 +76,28 @@ public class ConsoleSimpleLogger extends
 
 	
 	/**
-	 * @see cerberus.manager.GeneralManager#hasItem(int)
+	 * @see cerberus.manager.IGeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(final int iItemId) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode hasItem()");
 	}
 
 	/**
-	 * @see cerberus.manager.GeneralManager#getItem(int)
+	 * @see cerberus.manager.IGeneralManager#getItem(int)
 	 */
 	public Object getItem( final int iItemId) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode getItem()");
 	}
 	
 	/**
-	 * @see cerberus.manager.GeneralManager#size()
+	 * @see cerberus.manager.IGeneralManager#size()
 	 */
 	public int size() {
 		return 0;
 	}
 
 	/**
-	 * @see cerberus.manager.GeneralManager#getManagerType()
+	 * @see cerberus.manager.IGeneralManager#getManagerType()
 	 */
 	public ManagerObjectType getManagerType() {
 		return ManagerObjectType.LOGGER;
@@ -105,7 +105,7 @@ public class ConsoleSimpleLogger extends
 	
 
 	/**
-	 * @see cerberus.manager.GeneralManager#registerItem(java.lang.Object, int, cerberus.manager.type.ManagerObjectType)
+	 * @see cerberus.manager.IGeneralManager#registerItem(java.lang.Object, int, cerberus.manager.type.ManagerObjectType)
 	 */
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
@@ -117,7 +117,7 @@ public class ConsoleSimpleLogger extends
 	
 	
 	/**
-	 * @see cerberus.manager.GeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
+	 * @see cerberus.manager.IGeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
 	 */
 	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");

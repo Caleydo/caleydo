@@ -27,7 +27,7 @@ public class SelectionIteratorFactory {
 //	/**
 //	 * Reference to the actual iterator.
 //	 */
-//	protected SelectionIterator refSelectionIterator;
+//	protected ISelectionIterator refSelectionIterator;
 	
 	/**
 	 * 
@@ -36,11 +36,11 @@ public class SelectionIteratorFactory {
 	
 	}
 
-	public SelectionIterator iterator( ISelection setSelection ) {
+	public ISelectionIterator iterator( ISelection setSelection ) {
 		
 		assert setSelection != null : "can not handle null-pointer ISelection";
 		
-		SelectionIterator refSelectionIterator = null;
+		ISelectionIterator refSelectionIterator = null;
 		
 		switch ( setSelection.getSelectionType() ) {
 		

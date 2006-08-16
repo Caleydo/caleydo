@@ -67,7 +67,7 @@ import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.selection.SelectionSingleBlock;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.math.statistics.histogram.HistogramData;
@@ -389,9 +389,9 @@ public class JoglScatterPlot2D extends Demo {
 					}
 					// System.out.print("+");				
 
-					SelectionIterator iterX = refSet.getSelectionByDimAndIndex(
+					ISelectionIterator iterX = refSet.getSelectionByDimAndIndex(
 							0, 0).iterator();
-					SelectionIterator iterY = refSet.getSelectionByDimAndIndex(
+					ISelectionIterator iterY = refSet.getSelectionByDimAndIndex(
 							1, 0).iterator();
 
 					if (!doMinMaxData.isValid()) {

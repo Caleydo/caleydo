@@ -32,12 +32,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 
-import cerberus.manager.DComponentManager;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SelectionManager;
-import cerberus.manager.SetManager;
-import cerberus.manager.StorageManager;
-import cerberus.manager.singelton.GeneralManagerSingelton;
+import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISelectionManager;
+import cerberus.manager.ISetManager;
+import cerberus.manager.IStorageManager;
+import cerberus.manager.singelton.IGeneralManagerSingelton;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;
@@ -47,7 +47,7 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.collection.view.IViewCanvas;
 import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
@@ -63,14 +63,14 @@ import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * GUI for handling ISet, Selections and IStorage objects.
- * Visual link to SetManger, SelectionManger and StorageManager.
+ * Visual link to SetManger, SelectionManger and IStorageManager.
  * 
  * @author Michael Kalkusch
  *
  */
 public class DSwingStorageCanvas 
 extends JPanel 
-implements DNetEventComponentInterface, ViewCanvas
+implements DNetEventComponentInterface, IViewCanvas
 {
 
 	static final long serialVersionUID = 80008070;
@@ -103,7 +103,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	 * 
 	 * TODO: remove this from stable code!
 	 */
-	private DComponentManager refParentCreator;
+	private IDistComponentManager refParentCreator;
 	
 	/**
 	 * reference to parent object.
@@ -126,12 +126,12 @@ implements DNetEventComponentInterface, ViewCanvas
 	
 	private boolean b_Gui_UpdateEnabled = false;
 	
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	
-	private GeneralManagerSingelton refGeneralManagerSingelton;
-	private SelectionManager refSelectionManager;
-	private SetManager refSetManager;
-	private StorageManager refStorageManager;
+	private IGeneralManagerSingelton refGeneralManagerSingelton;
+	private ISelectionManager refSelectionManager;
+	private ISetManager refSetManager;
+	private IStorageManager refStorageManager;
 	
 	private JButton j_button_update;
 	private JButton j_button_new;
@@ -152,7 +152,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	/**
 	 * 
 	 */
-	public DSwingStorageCanvas( GeneralManager refGeneralManager ) {
+	public DSwingStorageCanvas( IGeneralManager refGeneralManager ) {
 		super();
 		
 		this.refGeneralManager= refGeneralManager;
@@ -165,7 +165,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	 * 
 	 * @see cerberus.data.IUniqueManagedObject#getManager()
 	 */
-	public GeneralManager getManager() {
+	public IGeneralManager getManager() {
 		return refGeneralManager;
 	}
 	
@@ -219,15 +219,15 @@ implements DNetEventComponentInterface, ViewCanvas
 		
 		try {
 			refGeneralManagerSingelton = 
-				(GeneralManagerSingelton) this.refGeneralManager;
+				(IGeneralManagerSingelton) this.refGeneralManager;
 			
-			refSelectionManager = (SelectionManager)
+			refSelectionManager = (ISelectionManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
 						ManagerObjectType.SELECTION );
-			refSetManager = (SetManager)
+			refSetManager = (ISetManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
 						ManagerObjectType.SET );
-			refStorageManager = (StorageManager)
+			refStorageManager = (IStorageManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
 						ManagerObjectType.STORAGE );
 		}
@@ -329,13 +329,13 @@ implements DNetEventComponentInterface, ViewCanvas
 	 */
 	public void setId(int iSetDNetEventId) {
 		
-		//refParentCreator = (DComponentManager) creator;
+		//refParentCreator = (IDistComponentManager) creator;
 		//FIXME check...	
 		
 		iDNetEventComponentId = iSetDNetEventId;
 	}
 	
-	public final void setParentCreator( final DComponentManager creator) {
+	public final void setParentCreator( final IDistComponentManager creator) {
 		refParentCreator = creator; 
 	}
 	
@@ -346,7 +346,7 @@ implements DNetEventComponentInterface, ViewCanvas
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.IMementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
 	public synchronized boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
@@ -541,7 +541,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#callbackForParser(java.lang.String)
+	 * @see cerberus.data.xml.IMementoNetEventXML#callbackForParser(java.lang.String)
 	 */
 	public void callbackForParser(  final ManagerObjectType type,
 			final String tag_causes_callback,
@@ -707,7 +707,7 @@ implements DNetEventComponentInterface, ViewCanvas
 //			}
 			
 			assert bufferSelection != null :
-				"null-pointer in ISelection list from SelectionManager.";
+				"null-pointer in ISelection list from ISelectionManager.";
 			
 			if ( buffer == null ) {
 				DSwingStorageTabbedPane newListItem = 

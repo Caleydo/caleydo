@@ -8,19 +8,19 @@
  */
 package cerberus.manager.singelton;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.DComponentManager;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.LoggerManager;
-import cerberus.manager.MementoManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager;
+import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
-import cerberus.manager.SelectionManager;
-import cerberus.manager.SetManager;
-import cerberus.manager.Singelton;
-import cerberus.manager.StorageManager;
+import cerberus.manager.ISelectionManager;
+import cerberus.manager.ISetManager;
+import cerberus.manager.ISingelton;
+import cerberus.manager.IStorageManager;
 import cerberus.manager.ISWTGUIManager;
-import cerberus.manager.ViewCanvasManager;
-import cerberus.manager.ViewManager;
+import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.canvas.ViewCanvasManagerSimple;
 import cerberus.manager.command.CommandManagerSimple;
 import cerberus.manager.data.selection.SelectionManagerSimple;
@@ -34,7 +34,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.data.collection.IStorage;
-import cerberus.data.xml.MementoXML;
+import cerberus.data.xml.IMementoXML;
 
 //import prometheus.data.collection.SelectionType; 
 //import prometheus.data.collection.SetType;
@@ -43,7 +43,7 @@ import cerberus.data.xml.MementoXML;
 //import prometheus.data.collection.Selection;
 import cerberus.data.collection.ISet;
 
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.collection.view.IViewCanvas;
 
 
 //import prometheus.net.dwt.swing.DHistogramCanvas;
@@ -55,7 +55,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class OneForAllManager 
-implements GeneralManagerSingelton {
+implements IGeneralManagerSingelton {
 
 	/**
 	 * Defines, if initAll() was called.
@@ -71,25 +71,25 @@ implements GeneralManagerSingelton {
 	
 	protected SingeltonManager refSingeltonManager;
 	
-	protected SetManager refSetManager;
+	protected ISetManager refSetManager;
 	
-	protected StorageManager refStorageManager;
+	protected IStorageManager refStorageManager;
 	
-	protected SelectionManager refSelectionManager;
+	protected ISelectionManager refSelectionManager;
 	
-	protected MementoManager refMementoManager;
+	protected IMementoManager refMementoManager;
 	
 	protected IMenuManager refMenuManager;
 	
-	protected DComponentManager refDComponentManager;
+	protected IDistComponentManager refDComponentManager;
 	
-	protected ViewCanvasManager refViewCanvasManager;
+	protected IViewCanvasManager refViewCanvasManager;
 	
-	protected CommandManager refCommandManager;
+	protected ICommandManager refCommandManager;
 	
-	protected LoggerManager refLoggerManager;
+	protected ILoggerManager refLoggerManager;
 	
-	protected ViewManager refViewManager;
+	protected IViewManager refViewManager;
 	
 	protected ISWTGUIManager refSWTGUIManager;
 	
@@ -128,7 +128,7 @@ implements GeneralManagerSingelton {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getSingelton()
 	 */
-	public final Singelton getSingelton() {
+	public final ISingelton getSingelton() {
 		return refSingeltonManager;
 	}
 	
@@ -208,7 +208,7 @@ implements GeneralManagerSingelton {
 	}
 	
 	/**
-	 * @see cerberus.manager.GeneralManager#hasItem(int)
+	 * @see cerberus.manager.IGeneralManager#hasItem(int)
 	 * 
 	 * @param iItemId unique Id used for lookup
 	 * @return Object bound to Id or null, if id was not found.
@@ -260,7 +260,7 @@ implements GeneralManagerSingelton {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.manager.singelton.GeneralManagerSingelton#getCommandManager()
 	 */
-	public CommandManager getCommandManager() {
+	public ICommandManager getCommandManager() {
 		return refCommandManager;
 	}
 	
@@ -274,7 +274,7 @@ implements GeneralManagerSingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getSingeltonManager()
 	 */
-	public GeneralManager getGeneralManager() {
+	public IGeneralManager getGeneralManager() {
 		return this;
 	}
 
@@ -475,7 +475,7 @@ implements GeneralManagerSingelton {
 			//return refDComponentManager.createNewId();
 			assert false: "not implemented";
 		case SELECTION: {
-			MementoXML selectionBuffer = 
+			IMementoXML selectionBuffer = 
 				refSelectionManager.createSelection( type );
 			
 			selectionBuffer.setMementoXML_usingHandler( refSaxHandler );
@@ -504,7 +504,7 @@ implements GeneralManagerSingelton {
 				return;
 			}
 			else {
-				ViewCanvas setCanvas = (ViewCanvas)
+				IViewCanvas setCanvas = (IViewCanvas)
 					refViewCanvasManager.createCanvas( type, details );
 				
 				setCanvas.setMementoXML_usingHandler( refSaxHandler );
@@ -518,7 +518,7 @@ implements GeneralManagerSingelton {
 		
 	}
 
-	public GeneralManager getManagerByBaseType(ManagerObjectType managerType) {
+	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
 		
 		assert managerType!=null: "type is null!";
 		
@@ -548,7 +548,7 @@ implements GeneralManagerSingelton {
 	}
 	
 	
-	public ViewCanvasManager getViewCanvasManager() {
+	public IViewCanvasManager getViewCanvasManager() {
 		return refViewCanvasManager;
 	}
 	

@@ -1,8 +1,8 @@
 package cerberus.view.gui.swt.data.explorer.model;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 
-public class SelectionModel extends Model
+public class SelectionModel extends AModel
 {
 	public SelectionModel(int iId, String sLabel)
 	{

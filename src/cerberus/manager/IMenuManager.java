@@ -19,7 +19,7 @@ import cerberus.command.ICommand;
  * @author Michael Kalkusch
  *
  */
-public interface IMenuManager extends GeneralManager {
+public interface IMenuManager extends IGeneralManager {
 
 	/**
 	 * 

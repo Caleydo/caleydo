@@ -1,8 +1,8 @@
 package cerberus.view.gui.swt.data.explorer.model;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 
-public class StorageModel extends Model
+public class StorageModel extends AModel
 {	
 	public StorageModel(int iId, String sLabel)
 	{

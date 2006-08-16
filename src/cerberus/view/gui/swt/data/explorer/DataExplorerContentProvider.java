@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 import cerberus.view.gui.swt.data.explorer.model.DeltaEvent;
 import cerberus.view.gui.swt.data.explorer.model.IDeltaListener;
-import cerberus.view.gui.swt.data.explorer.model.Model;
+import cerberus.view.gui.swt.data.explorer.model.AModel;
 import cerberus.view.gui.swt.data.explorer.model.SetModel;
 
 public class DataExplorerContentProvider 
@@ -104,8 +104,8 @@ implements ITreeContentProvider, IDeltaListener
 	 */
 	public Object getParent(Object element) 
 	{
-		if(element instanceof Model) {
-			return ((Model)element).getParent();
+		if(element instanceof AModel) {
+			return ((AModel)element).getParent();
 		}
 		return null;
 	}
@@ -131,7 +131,7 @@ implements ITreeContentProvider, IDeltaListener
 	 */
 	public void add(DeltaEvent event) 
 	{
-		Object setModel = ((Model)event.receiver()).getParent();
+		Object setModel = ((AModel)event.receiver()).getParent();
 		viewer.refresh(setModel, false);
 	}
 

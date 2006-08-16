@@ -13,7 +13,7 @@ import javax.swing.event.InternalFrameListener;
 import javax.swing.event.InternalFrameEvent;
 
 import cerberus.view.FrameBaseType;
-import cerberus.view.manager.jogl.swing.SwingJoglJComponent;
+import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
 
 /**
  * @author kalkusch
@@ -21,7 +21,7 @@ import cerberus.view.manager.jogl.swing.SwingJoglJComponent;
  */
 public class SwingJoglJInternalFrame 
   extends JInternalFrame 
-  implements SwingJoglJComponent {
+  implements ISwingJoglJComponent {
 //implements InternalFrameListener {
 	
 	private FrameBaseType frameType = FrameBaseType.EMPTY_INTERNAL_AWTFRAME;
@@ -58,7 +58,7 @@ public class SwingJoglJInternalFrame
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#addWindowListener()
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addWindowListener()
 	 */
 	public void addWindowListener() {
 		assert false : "not implemented yet!";
@@ -71,7 +71,7 @@ public class SwingJoglJInternalFrame
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#setSizeAndPosition(int, int, int, int)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#setSizeAndPosition(int, int, int, int)
 	 */
 	public void setSizeAndPosition( final int iSizeX, 
 			final int iSizeY, 
@@ -131,7 +131,7 @@ public class SwingJoglJInternalFrame
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#addDefaultListenerForClosingWindow(javax.swing.event.InternalFrameAdapter)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addDefaultListenerForClosingWindow(javax.swing.event.InternalFrameAdapter)
 	 */
 	public void addDefaultListenerForClosingWindow( InternalFrameAdapter adapter ) {
 		assert adapter == null : "Can not handle null pointer instead of adapter!";
@@ -141,7 +141,7 @@ public class SwingJoglJInternalFrame
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#addDefaultListenerForClosingWindow(java.awt.event.WindowAdapter)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addDefaultListenerForClosingWindow(java.awt.event.WindowAdapter)
 	 */
 	public void addDefaultListenerForClosingWindow( WindowAdapter adapter ) {
 		throw new RuntimeException("WindowAdapter can not be connected to a JInternalFrame! Use InternalFrameAdapter instread!");

@@ -14,10 +14,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.view.ViewManagerSimple;
@@ -28,7 +28,7 @@ import cerberus.xml.parser.kgml.KgmlSaxHandler;
 
 public class CerberusPrototype
 {
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	protected SWTGUIManager refSWTGUIManager;
 	protected ViewManagerSimple refViewManager;
 	
@@ -107,7 +107,7 @@ public class CerberusPrototype
 //		refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
 //		refViewManager.createView(ManagerObjectType.VIEW_SWT_HISTOGRAM2D);
 		
-//		ViewInter newView = refViewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);	
+//		IView newView = refViewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);	
 //		
 //		SwtJogHistogram2DViewRep newCastView = (SwtJogHistogram2DViewRep) newView;
 //		

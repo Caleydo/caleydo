@@ -10,7 +10,7 @@ import java.util.Vector;
 
 import cerberus.data.collection.ISelection;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionNullIterator;
 
 
@@ -20,7 +20,7 @@ import cerberus.data.collection.selection.iterator.SelectionNullIterator;
  * @author kalkusch
  *
  */
-public class SelectionVectorIterator implements SelectionIterator {
+public class SelectionVectorIterator implements ISelectionIterator {
 
 	/**
 	 * Vector storing all Selections.
@@ -36,7 +36,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * Current iterator.
 	 * It is bound to the ISelection at vecSelection.get(iCurrentSelection)
 	 */
-	private SelectionIterator iterator;
+	private ISelectionIterator iterator;
 	
 	/**
 	 * Iterator for Vector vecSelection
@@ -82,7 +82,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.SelectionIterator#size()
+	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#size()
 	 */
 	public int size() {
 		Iterator <ISelection> iter = vecSelection.iterator();
@@ -97,7 +97,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.SelectionIterator#remaining()
+	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#remaining()
 	 */
 	public int remaining() {
 		
@@ -114,14 +114,14 @@ public class SelectionVectorIterator implements SelectionIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.SelectionIterator#getVirtualIndex()
+	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#getVirtualIndex()
 	 */
 	public int getVirtualIndex() {
 		return iterator.getVirtualIndex();		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.SelectionIterator#setVirtualIndex(int)
+	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(final int iSetVirtualIndex)
 			throws CerberusRuntimeException {
@@ -132,7 +132,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * Resets the iterator to the begin.
 	 * Note: must be called if Selections are set using addSelection().
 	 * 
-	 * @see cerberus.data.collection.iterator.CollectionIterator#begin()
+	 * @see cerberus.data.collection.iterator.ICollectionIterator#begin()
 	 * 
 	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#addSelection(ISelection)
 	 * 
@@ -156,7 +156,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * 
 	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.CollectionIterator#next()
+	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public int next() {
 
@@ -197,7 +197,7 @@ public class SelectionVectorIterator implements SelectionIterator {
 	 * 
 	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.CollectionIterator#hasNext()
+	 * @see cerberus.data.collection.iterator.ICollectionIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		

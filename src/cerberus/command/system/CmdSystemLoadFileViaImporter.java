@@ -15,7 +15,7 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
@@ -35,7 +35,7 @@ public class CmdSystemLoadFileViaImporter
 extends ACommand
 implements ICommand {
 
-	private final GeneralManager refGeneralManager;
+	private final IGeneralManager refGeneralManager;
 	
 	protected String sFileName;
 	
@@ -57,7 +57,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader
 	 */
-	public CmdSystemLoadFileViaImporter( GeneralManager refGeneralManager,
+	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 			final LinkedList <String> llAttributes ) {
 		
 		Iterator <String> iter = llAttributes.iterator();
@@ -87,7 +87,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader
 	 */
-	public CmdSystemLoadFileViaImporter( GeneralManager refGeneralManager,
+	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 			String fileName, 
 			String tokenPattern,
 			final int iTargetSet ) {

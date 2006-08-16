@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayEdge;
-import cerberus.data.view.rep.pathway.PathwayVertexRepInter;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 
 /**
@@ -55,8 +55,8 @@ public class ElementManager
 		edgeLUT = new HashMap<Integer, PathwayEdge>();
 
 		// iCurrentUniqueElementId =
-		// CollectionManager.calculateId(
-		// GeneralManager.iUniqueId_TypeOffset_Memento,
+		// ICollectionManager.calculateId(
+		// IGeneralManager.iUniqueId_TypeOffset_Memento,
 		// refGeneralManager );
 
 		iCurrentUniqueElementId = 0;
@@ -75,7 +75,7 @@ public class ElementManager
 	public void createVertexRepresentation(String sName, int iHeight,
 			int iWidth, int iXPosition, int iYPosition)
 	{
-		PathwayVertexRepInter newVertexRep = new PathwayVertexRep(sName, iHeight, iWidth,
+		IPathwayVertexRep newVertexRep = new PathwayVertexRep(sName, iHeight, iWidth,
 				iXPosition, iYPosition);
 
 		currentVertex.addVertexRep(newVertexRep);

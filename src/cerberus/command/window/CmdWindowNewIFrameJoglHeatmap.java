@@ -12,7 +12,7 @@ package cerberus.command.window;
 //import javax.swing.JOptionPane;
 //import javax.swing.JLabel;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 ////import cerberus.command.factory.CommandFactory;
@@ -46,7 +46,7 @@ implements ICommand //, ICmdHandleSet {
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
-	public CmdWindowNewIFrameJoglHeatmap( GeneralManager refGeneralManager,
+	public CmdWindowNewIFrameJoglHeatmap( IGeneralManager refGeneralManager,
 			final int iCallingFrameId
 //			,
 //			final GLEventForwardListener refGLEventListener,

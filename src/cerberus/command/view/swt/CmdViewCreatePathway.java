@@ -7,8 +7,8 @@ import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.base.AManagedCommand;
 import cerberus.data.collection.ISet;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.ViewManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -23,7 +23,7 @@ implements ICommand
 	protected String sLabel;
 	protected int iUniqueParentContainerId;
 	
-	public CmdViewCreatePathway( GeneralManager refGeneralManager,
+	public CmdViewCreatePathway( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
 	{
 		super( -1, refGeneralManager );	
@@ -32,7 +32,7 @@ implements ICommand
 
 	public void doCommand() throws CerberusRuntimeException
 	{				
-		PathwayViewRep pathwayView = (PathwayViewRep) ((ViewManager)refGeneralManager.
+		PathwayViewRep pathwayView = (PathwayViewRep) ((IViewManager)refGeneralManager.
 			getManagerByBaseType(ManagerObjectType.VIEW)).
 				createView(ManagerObjectType.VIEW_PATHWAY, iUniquePathwayId);
 

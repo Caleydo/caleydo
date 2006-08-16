@@ -1,13 +1,13 @@
 package cerberus.data.pathway.element;
 
 import java.util.Vector;
-import cerberus.data.view.rep.pathway.PathwayEdgeRepInter;
+import cerberus.data.view.rep.pathway.IPathwayEdgeRep;
 
 public class PathwayEdge extends PathwayElement
 {
 	private PathwayEdgeType vertexType;
 	
-	private Vector<PathwayEdgeRepInter> edgeReps;
+	private Vector<IPathwayEdgeRep> edgeReps;
 	
 	private int iElementId1 = 0;
 	private int iElementId2 = 0;

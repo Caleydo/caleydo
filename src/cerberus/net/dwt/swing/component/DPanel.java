@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.manager.DComponentManager;
+import cerberus.manager.IDistComponentManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.ICommandListener;
@@ -56,7 +56,7 @@ implements DNetEventComponentInterface {
 	 * 
 	 * TODO: remove this from stable code!
 	 */
-	private DComponentManager refParentCreator;
+	private IDistComponentManager refParentCreator;
 	
 	/**
 	 * reference to parent object.
@@ -203,7 +203,7 @@ implements DNetEventComponentInterface {
 		iDNetEventComponentId = iSetDNetEventId;
 	}
 	
-	public final void setParentCreator( final DComponentManager creator) {
+	public final void setParentCreator( final IDistComponentManager creator) {
 		refParentCreator = creator; 
 	}
 	
@@ -214,7 +214,7 @@ implements DNetEventComponentInterface {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.IMementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
 	public synchronized boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
@@ -401,7 +401,7 @@ implements DNetEventComponentInterface {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#callbackForParser(java.lang.String)
+	 * @see cerberus.data.xml.IMementoNetEventXML#callbackForParser(java.lang.String)
 	 */
 	public void callbackForParser(  final ManagerObjectType type,
 			final String tag_causes_callback,

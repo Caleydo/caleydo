@@ -1,12 +1,12 @@
 package cerberus.manager.view;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.ViewManager;
-import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewManager;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.data.set.SetTableViewRep;
@@ -17,14 +17,14 @@ import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
 
-public class ViewManagerSimple extends AbstractManagerImpl implements
-		ViewManager
+public class ViewManagerSimple extends AAbstractManager implements
+		IViewManager
 {
 
-	public ViewManagerSimple(GeneralManager setGeneralManager)
+	public ViewManagerSimple(IGeneralManager setGeneralManager)
 	{
 		super(setGeneralManager,
-				GeneralManager.iUniqueId_TypeOffset_GuiAWT );
+				IGeneralManager.iUniqueId_TypeOffset_GuiAWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
@@ -72,7 +72,7 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 	 * Method creates a new ID and 
 	 * calls createView(ManagerObjectType useViewType, int iUniqueId).
 	 */
-	public ViewInter createView(final ManagerObjectType useViewType)
+	public IView createView(final ManagerObjectType useViewType)
 	{
 		final int iUniqueId = this.createNewId(useViewType);
 		
@@ -83,7 +83,7 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 	 * Method creates a new view representation according to the 
 	 * type parameter.
 	 */
-	public ViewInter createView(ManagerObjectType useViewType, int iUniqueId)
+	public IView createView(ManagerObjectType useViewType, int iUniqueId)
 	{
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{

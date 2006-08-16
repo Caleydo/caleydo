@@ -8,19 +8,19 @@
  */
 package cerberus.manager.singelton;
 
-import cerberus.manager.CommandManager;
-import cerberus.manager.DComponentManager;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.LoggerManager;
-import cerberus.manager.MementoManager;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager;
+import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.ISWTGUIManager;
-import cerberus.manager.SelectionManager;
-import cerberus.manager.SetManager;
-import cerberus.manager.Singelton;
-import cerberus.manager.StorageManager;
-import cerberus.manager.ViewCanvasManager;
-import cerberus.manager.ViewManager;
+import cerberus.manager.ISelectionManager;
+import cerberus.manager.ISetManager;
+import cerberus.manager.ISingelton;
+import cerberus.manager.IStorageManager;
+import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.logger.ConsoleSimpleLogger;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
@@ -31,42 +31,42 @@ import cerberus.util.exception.CerberusRuntimeException;
 /**
  * Global object contining and handling several managers.
  * 
- * Desing Pattern "Singelton"
+ * Desing Pattern "ISingelton"
  * 
  * @author Michael Kalkusch
  *
  */
-public class SingeltonManager implements Singelton {
+public class SingeltonManager implements ISingelton {
 
-	//private final GeneralManager refGeneralManager;
+	//private final IGeneralManager refGeneralManager;
 	
-	protected DComponentManager refDComponentManager = null;
+	protected IDistComponentManager refDComponentManager = null;
 	
-	protected ViewCanvasManager refViewCanvasManager = null;
+	protected IViewCanvasManager refViewCanvasManager = null;
 	
-	protected StorageManager refStorageManager = null;
+	protected IStorageManager refStorageManager = null;
 	/**
 	 * Store all undo& redo Mementos
 	 */
-	protected MementoManager refMementoManager = null;
+	protected IMementoManager refMementoManager = null;
 	
-	protected SelectionManager refSelectionManager = null;
+	protected ISelectionManager refSelectionManager = null;
 	
-	protected SetManager refSetManager = null;
+	protected ISetManager refSetManager = null;
 	
 	//protected DDesktopPane refDDesktopPane = null;
 	
-	protected CommandManager refCommandManager = null;
+	protected ICommandManager refCommandManager = null;
 	
 	protected IMenuManager refMenuManager = null;
 	
-	protected LoggerManager refLoggerManager = null;
+	protected ILoggerManager refLoggerManager = null;
 	
 	protected ISWTGUIManager refSWTGUIManager = null;
 	
-	protected ViewManager refViewManager = null;
+	protected IViewManager refViewManager = null;
 	
-	private GeneralManager refGeneralManager = null;
+	private IGeneralManager refGeneralManager = null;
 	
 	/**
 	 * Unique Id per each application over the network.
@@ -77,7 +77,7 @@ public class SingeltonManager implements Singelton {
 	/**
 	 * Constructor
 	 */
-	public SingeltonManager( final GeneralManager refGeneralManager ) {
+	public SingeltonManager( final IGeneralManager refGeneralManager ) {
 				
 		this.refGeneralManager = refGeneralManager;			
 		
@@ -94,7 +94,7 @@ public class SingeltonManager implements Singelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getMementoManager()
 	 */
-	public MementoManager getMementoManager() {
+	public IMementoManager getMementoManager() {
 		return refMementoManager;
 	}
 	
@@ -103,14 +103,14 @@ public class SingeltonManager implements Singelton {
 	}
 	 * @see cerberus.manager.singelton.Singelton#getStorageManager()
 	 */
-	public StorageManager getStorageManager() {
+	public IStorageManager getStorageManager() {
 		return refStorageManager;
 	}
 		
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getSelectionManager()
 	 */
-	public SelectionManager getSelectionManager() {
+	public ISelectionManager getSelectionManager() {
 		return refSelectionManager;
 	}
 	
@@ -124,28 +124,28 @@ public class SingeltonManager implements Singelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getSetManager()
 	 */
-	public SetManager getSetManager() {
+	public ISetManager getSetManager() {
 		return refSetManager;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getViewCanvasManager()
 	 */
-	public ViewCanvasManager getViewCanvasManager() {
+	public IViewCanvasManager getViewCanvasManager() {
 		return refViewCanvasManager;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getViewManager()
 	 */
-	public ViewManager getViewManager(ManagerType type) {
+	public IViewManager getViewManager(ManagerType type) {
 		return refViewManager;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
 	 */
-	public CommandManager getCommandManager() {
+	public ICommandManager getCommandManager() {
 		return refCommandManager;
 	}
 	
@@ -159,14 +159,14 @@ public class SingeltonManager implements Singelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getDComponentManager()
 	 */
-	public DComponentManager getDComponentManager() {
+	public IDistComponentManager getDComponentManager() {
 		return refDComponentManager;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getLoggerManager()
 	 */
-	public LoggerManager getLoggerManager() {
+	public ILoggerManager getLoggerManager() {
 		return this.refLoggerManager;
 	}
 	
@@ -174,38 +174,38 @@ public class SingeltonManager implements Singelton {
 		this.refMenuManager = setMenuManager;
 	}
 	
-	public void setMementoManager( MementoManager setMementoManager ) {
-		assert setMementoManager!=null: "MementoManager was null";
+	public void setMementoManager( IMementoManager setMementoManager ) {
+		assert setMementoManager!=null: "IMementoManager was null";
 		
 		refMementoManager = setMementoManager;
 	}
 	
-	public void setStorageManager( StorageManager setStorageManager ) {
-		assert setStorageManager!=null: "StorageManager was null";
+	public void setStorageManager( IStorageManager setStorageManager ) {
+		assert setStorageManager!=null: "IStorageManager was null";
 		
 		refStorageManager = setStorageManager;
 	}
 		
-	public void setSelectionManager( SelectionManager setSelectionManager ) {
-		assert setSelectionManager!=null: "SelectionManager was null";
+	public void setSelectionManager( ISelectionManager setSelectionManager ) {
+		assert setSelectionManager!=null: "ISelectionManager was null";
 		
 		refSelectionManager = setSelectionManager;
 	}
 	
-	public void setSetManager( SetManager setSetManager ) {
-		assert setSetManager!=null: "SetManager was null";
+	public void setSetManager( ISetManager setSetManager ) {
+		assert setSetManager!=null: "ISetManager was null";
 		
 		refSetManager = setSetManager;
 	}
 	
-	public void setViewCanvasManager( ViewCanvasManager setViewCanvasManager ) {
-		assert setViewCanvasManager != null : "ViewCanvasManager was null";
+	public void setViewCanvasManager( IViewCanvasManager setViewCanvasManager ) {
+		assert setViewCanvasManager != null : "IViewCanvasManager was null";
 		
 		refViewCanvasManager = setViewCanvasManager;
 	}
 	
-	public void setViewManager( ViewManager setViewManager ) {
-		assert setViewManager != null : "ViewManager was null";
+	public void setViewManager( IViewManager setViewManager ) {
+		assert setViewManager != null : "IViewManager was null";
 		
 		refViewManager = setViewManager;
 	}	
@@ -216,25 +216,25 @@ public class SingeltonManager implements Singelton {
 		refSWTGUIManager = setSWTGUIManager;
 	}
 	
-	public void setCommandManager( CommandManager setCommandManager ) {
+	public void setCommandManager( ICommandManager setCommandManager ) {
 		refCommandManager = setCommandManager;
 	}
 	
-	public void setDComponentManager( DComponentManager setDComponentManager ) {
-		assert setDComponentManager!=null: "DComponentManager was null";
+	public void setDComponentManager( IDistComponentManager setDComponentManager ) {
+		assert setDComponentManager!=null: "IDistComponentManager was null";
 		
 		refDComponentManager = setDComponentManager;
 		
 	}
 	
-	public void setLoggerManager( LoggerManager refLoggerManager ) {
+	public void setLoggerManager( ILoggerManager refLoggerManager ) {
 		this.refLoggerManager = refLoggerManager;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getManager(cerberus.manager.type.ManagerType)
 	 */
-	public GeneralManager getManagerByBaseType( ManagerType type) {
+	public IGeneralManager getManagerByBaseType( ManagerType type) {
 		
 		switch ( type ) 
 		{

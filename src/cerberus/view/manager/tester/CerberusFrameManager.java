@@ -63,7 +63,7 @@ import cerberus.view.FrameBaseType;
 import cerberus.view.manager.swing.CerberusData;
 import cerberus.view.manager.swing.CerberusJStatusBar;
 import cerberus.view.manager.swing.FrameCollector;
-import cerberus.view.manager.swing.listener.WindowAdapterTarget;
+import cerberus.view.manager.swing.listener.IWindowAdapterTarget;
 
 import cerberus.view.swing.graph.CerberusGraphViewer;
 
@@ -105,7 +105,7 @@ import cerberus.data.collection.storage.FlatThreadStorageSimple;
  Ported to Java, Swing and ARB_fragment_program by Kenneth Russell
  */
 
-public class CerberusFrameManager implements WindowAdapterTarget {
+public class CerberusFrameManager implements IWindowAdapterTarget {
 	
 	
 	

@@ -10,7 +10,7 @@ package cerberus.manager.data.storage;
 
 import java.util.Vector;
 
-import cerberus.manager.Singelton;
+import cerberus.manager.ISingelton;
 import cerberus.manager.type.ManagerObjectType;
 
 
@@ -21,13 +21,13 @@ import cerberus.manager.type.ManagerObjectType;
 public class GenericsStorageManager< T > 
 {
 
-	protected Singelton refSingeltonManager = null;
+	protected ISingelton refSingeltonManager = null;
 	
 	protected ManagerObjectType refBaseManagerType = ManagerObjectType.FABRIK;
 	
 	protected Vector<T> vecItems;
 	
-	public GenericsStorageManager( Singelton setSingeltonManager,
+	public GenericsStorageManager( ISingelton setSingeltonManager,
 			final int iInitSizeContainer,
 			final ManagerObjectType initBaseManagerType) {
 		

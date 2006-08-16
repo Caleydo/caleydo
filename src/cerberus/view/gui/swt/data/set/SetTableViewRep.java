@@ -12,25 +12,25 @@ import org.eclipse.swt.widgets.TableItem;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SetManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.swt.data.DataTableViewInter;
+import cerberus.view.gui.swt.data.IDataTableView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 public class SetTableViewRep 
 extends AViewRep 
-implements DataTableViewInter
+implements IDataTableView
 {
-	protected GeneralManager refGeneralManager;
-	protected SetManager refSetManager;
+	protected IGeneralManager refGeneralManager;
+	protected ISetManager refSetManager;
 	protected Composite refSWTContainer;
 	
 	protected ISet[] refAllSetItems;
 	protected Table refTable;
 	
-	public SetTableViewRep(GeneralManager refGeneralManager)
+	public SetTableViewRep(IGeneralManager refGeneralManager)
 	{
 		this.refGeneralManager = refGeneralManager;
 				

@@ -35,7 +35,7 @@ import cerberus.data.IUniqueObject;
  */
 public class SwingJoglJFrame 
   extends JFrame 
-  implements IUniqueObject, SwingJoglJComponent {
+  implements IUniqueObject, ISwingJoglJComponent {
 
 	private FrameBaseType frameType = FrameBaseType.MAIN_FRAME;
 	
@@ -100,28 +100,28 @@ public class SwingJoglJFrame
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#setStatusBar(javax.swing.JPanel)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#setStatusBar(javax.swing.JPanel)
 	 */
 	public void setStatusBar( JPanel setStatusBar ) {
 		this.m_statusBar = setStatusBar;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#setId(int)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#setId(int)
 	 */
 	public void setId( int iSetCollectionId ) {
 		this.iUniqueId = iSetCollectionId;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#getId()
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#getId()
 	 */
 	public int getId() {
 		return iUniqueId;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#getStatusBar()
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#getStatusBar()
 	 */
 	public JPanel getStatusBar() {
 		assert m_statusBar != null : "Status bar is not set!";
@@ -146,7 +146,7 @@ public class SwingJoglJFrame
 //	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#addWindowListener()
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addWindowListener()
 	 */
 	public void addWindowListener() {
 		assert false : "not implemented yet!";
@@ -157,7 +157,7 @@ public class SwingJoglJFrame
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#setSizeAndPosition(int, int, int, int)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#setSizeAndPosition(int, int, int, int)
 	 */
 	public void setSizeAndPosition( final int iSizeX, 
 			final int iSizeY, 
@@ -177,7 +177,7 @@ public class SwingJoglJFrame
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#getFrameType()
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#getFrameType()
 	 */
 	public final FrameBaseType getFrameType() {
 		return frameType;
@@ -185,7 +185,7 @@ public class SwingJoglJFrame
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#setFrameType(cerberus.view.manager.FrameBaseType)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#setFrameType(cerberus.view.manager.FrameBaseType)
 	 */
 	public final void setFrameType( FrameBaseType setFrameType) {
 		this.frameType = setFrameType;
@@ -197,7 +197,7 @@ public class SwingJoglJFrame
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#addDefaultListenerForClosingWindow(java.awt.event.WindowAdapter)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addDefaultListenerForClosingWindow(java.awt.event.WindowAdapter)
 	 */
 	public void addDefaultListenerForClosingWindow( WindowAdapter adapter ) {
 		this.addWindowListener( adapter );		
@@ -205,7 +205,7 @@ public class SwingJoglJFrame
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.manager.jogl.swing.SwingJoglJComponent#addDefaultListenerForClosingWindow(javax.swing.event.InternalFrameAdapter)
+	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addDefaultListenerForClosingWindow(javax.swing.event.InternalFrameAdapter)
 	 */
 	public void addDefaultListenerForClosingWindow( InternalFrameAdapter adapter ) {
 		throw new RuntimeException("InternalFrameAdapter can not be connected to a JFrame! Use WindowAdapter instread!");

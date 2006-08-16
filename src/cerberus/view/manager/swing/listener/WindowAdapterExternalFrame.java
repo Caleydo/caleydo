@@ -3,13 +3,13 @@ package cerberus.view.manager.swing.listener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import cerberus.view.manager.swing.listener.WindowAdapterTarget;
+import cerberus.view.manager.swing.listener.IWindowAdapterTarget;
 
 public class WindowAdapterExternalFrame extends WindowAdapter {
 
-	private final WindowAdapterTarget target;
+	private final IWindowAdapterTarget target;
 	
-	public WindowAdapterExternalFrame(WindowAdapterTarget target) {
+	public WindowAdapterExternalFrame(IWindowAdapterTarget target) {
 		this.target = target;
 	}
 	

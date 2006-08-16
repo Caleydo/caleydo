@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Vector;
 //import java.util.Iterator;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IMetaData;
@@ -21,17 +21,17 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
 //import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
 import cerberus.xml.parser.ISaxParserHandler;
-import cerberus.data.collection.thread.impl.CollectionThreadItem;
-import cerberus.data.collection.thread.lock.CollectionLock;
+import cerberus.data.collection.thread.impl.ACollectionThreadItem;
+import cerberus.data.collection.thread.lock.ICollectionLock;
 import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public class SetMultiDim 
-extends CollectionThreadItem
+extends ACollectionThreadItem
 implements ISet {
 
 	/**
@@ -63,8 +63,8 @@ implements ISet {
 	 * 
 	 */
 	public SetMultiDim( int iSetCollectionId, 
-			GeneralManager setGeneralManager,
-			CollectionLock setCollectionLock,
+			IGeneralManager setGeneralManager,
+			ICollectionLock setCollectionLock,
 			final int iSetDimension ) {
 
 		super( iSetCollectionId, setGeneralManager, setCollectionLock );
@@ -421,7 +421,7 @@ implements ISet {
 	}
 	
 	/**
-	 * @see cerberus.data.xml.MementoXML#createMementoXML()
+	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
 	 * @return String containing all information on the state 
 	 * of the object in XML form with out a header.
 	 */
@@ -555,7 +555,7 @@ implements ISet {
 	/**
 	 * Create "Header" for all Selections.
 	 * 
-	 * @see cerberus.data.xml.MementoXML#createMementoXML()
+	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
 	 * 
 	 * @return String containign the XML-header for this selection
 	 */
@@ -632,7 +632,7 @@ implements ISet {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.ISet#iteratorSelection()
 	 */
-	public SelectionIterator iteratorSelectionByDim( final int iAtDimension ) {
+	public ISelectionIterator iteratorSelectionByDim( final int iAtDimension ) {
 		
 //		Vector<ISelection> bufferVecSelection = 
 //			vecSelectionDim.get( iAtDimension );

@@ -4,10 +4,10 @@ import javax.media.opengl.GLCanvas;
 
 import com.sun.opengl.util.Animator;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.awt.jogl.GearsMain;
 import cerberus.view.gui.awt.jogl.TriangleMain;
 import cerberus.view.gui.awt.jogl.Histogram2DMain;
@@ -15,13 +15,13 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
 public class GearsViewRep 
 extends AViewRep 
-implements ViewInter
+implements IView
 {
 	protected final int iNewId;
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	protected GLCanvas refGLCanvas;
 	
-	public GearsViewRep(int iNewId, GeneralManager refGeneralManager)
+	public GearsViewRep(int iNewId, IGeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;

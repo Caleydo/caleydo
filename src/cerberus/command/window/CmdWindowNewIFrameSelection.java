@@ -8,7 +8,7 @@
  */
 package cerberus.command.window;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACmdHandleSet;
@@ -35,7 +35,7 @@ implements ICommand, ICmdHandleSet {
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
-	public CmdWindowNewIFrameSelection( final GeneralManager refGeneralManager,
+	public CmdWindowNewIFrameSelection( final IGeneralManager refGeneralManager,
 			final int iTargetFrameId ) {
 		super( refGeneralManager,
 				iTargetFrameId,

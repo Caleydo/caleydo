@@ -8,7 +8,7 @@
  */
 package cerberus.command.base;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.command.window.CmdWindowNewInternalFrame;
 import cerberus.data.collection.ISet;
 //import cerberus.data.collection.ViewCanvas;
@@ -27,9 +27,9 @@ extends ACommand
 implements ICmdHandleSet {
 
 	/**
-	 * Reference to GeneralManager set in constructor only.
+	 * Reference to IGeneralManager set in constructor only.
 	 */
-	protected final GeneralManager refGeneralManager;
+	protected final IGeneralManager refGeneralManager;
 	
 	/**
 	 * Reference to current ISet.
@@ -53,7 +53,7 @@ implements ICmdHandleSet {
 	/**
 	 * 
 	 */
-	public ACmdHandleSet( final GeneralManager setRefGeneralManager,
+	public ACmdHandleSet( final IGeneralManager setRefGeneralManager,
 			final int iTargetFrameId,
 			final String sHeaderText ) {
 				

@@ -12,8 +12,8 @@ import org.xml.sax.SAXException;
 //import org.xml.sax.helpers.DefaultHandler;
 
 
-import cerberus.manager.FrameManagerInterface;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IFrameManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
@@ -30,7 +30,7 @@ public class SwingJoglJFrameSaxHandler extends ACerberusDefaultSaxHandler  {
 	private boolean bFrameStateActive = false;
 	private boolean bFrameIsCreated = false;
 	
-	private final FrameManagerInterface viewManager;
+	private final IFrameManager viewManager;
 	
 	private int iCurrentFrameId = -1;
 	
@@ -70,8 +70,8 @@ public class SwingJoglJFrameSaxHandler extends ACerberusDefaultSaxHandler  {
 	/**
 	 * 
 	 */
-	public SwingJoglJFrameSaxHandler( final GeneralManager refGeneralManager,
-			final FrameManagerInterface viewManager ) {
+	public SwingJoglJFrameSaxHandler( final IGeneralManager refGeneralManager,
+			final IFrameManager viewManager ) {
 		super( refGeneralManager );
 		
 		assert viewManager != null : "viewManager can not be null";

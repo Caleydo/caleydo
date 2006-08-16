@@ -8,10 +8,10 @@
  */
 package cerberus.data;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 //import cerberus.manager.type.BaseManagerType;
 import cerberus.data.IUniqueManagedObject;
-import cerberus.data.AbstractUniqueItem;
+import cerberus.data.AUniqueItem;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -24,18 +24,18 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @see prometheus.data.xml.MementiItemXML
  */
 public abstract class AUniqueManagedObject 
-extends AbstractUniqueItem
+extends AUniqueItem
 implements IUniqueManagedObject {
 
 	/**
 	 * Reference to manager, who created this object.
 	 */
-	protected final GeneralManager refGeneralManager;
+	protected final IGeneralManager refGeneralManager;
 	
 	/**
 	 * 
 	 */
-	protected AUniqueManagedObject( int iSetCollectionId, GeneralManager setGeneralManager ) {
+	protected AUniqueManagedObject( int iSetCollectionId, IGeneralManager setGeneralManager ) {
 
 		super( iSetCollectionId );
 		
@@ -48,17 +48,17 @@ implements IUniqueManagedObject {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.UniqueManagedInterface#getManager()
 	 */
-	public final GeneralManager getManager() {
+	public final IGeneralManager getManager() {
 		return this.refGeneralManager;
 	}
 
 	/**
 	 * Reset GeneralManger object
 	 * 
-	 * @see cerberus.data.AUniqueReManagedObject#setManager(cerberus.manager.GeneralManager)
+	 * @see cerberus.data.AUniqueReManagedObject#setManager(cerberus.manager.IGeneralManager)
 	 * @see cerberus.data.IUniqueManagedObject#getGeneralManager()
 	 */
-	final protected void setManager( final GeneralManager setGeneralManager) {
+	final protected void setManager( final IGeneralManager setGeneralManager) {
 		throw new CerberusRuntimeException("setManager() prohibited inside this class!");
 		//this.refGeneralManager = setGeneralManager;
 	}

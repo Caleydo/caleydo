@@ -10,7 +10,7 @@ package cerberus.command.window;
 
 import java.awt.Dimension;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 
 //import javax.swing.JComponent;
 //import javax.swing.JLabel;
@@ -42,7 +42,7 @@ implements ICommand, ICmdHandleSet {
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
-	public CmdWindowNewIFrameHeatmap2D( final GeneralManager setRefGeneralManger,
+	public CmdWindowNewIFrameHeatmap2D( final IGeneralManager setRefGeneralManger,
 			final int iTargetFrameId  ) {
 		
 		super( setRefGeneralManger, 

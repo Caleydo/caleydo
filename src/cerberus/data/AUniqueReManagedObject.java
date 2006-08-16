@@ -8,10 +8,10 @@
  */
 package cerberus.data;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 //import cerberus.manager.type.BaseManagerType;
 import cerberus.data.IUniqueManagedObject;
-import cerberus.data.AbstractUniqueItem;
+import cerberus.data.AUniqueItem;
 
 /**
  * Abstract class providing methodes defiend in IUniqueManagedObject.
@@ -25,18 +25,18 @@ import cerberus.data.AbstractUniqueItem;
  * @see cerberus.data.AUniqueManagedObject
  */
 public abstract class AUniqueReManagedObject 
-extends AbstractUniqueItem
+extends AUniqueItem
 implements IUniqueManagedObject {
 
 	/**
 	 * Reference to manager, who created this object.
 	 */
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	
 	/**
 	 * 
 	 */
-	protected AUniqueReManagedObject( int iSetCollectionId, GeneralManager setGeneralManager ) {
+	protected AUniqueReManagedObject( int iSetCollectionId, IGeneralManager setGeneralManager ) {
 
 		super( iSetCollectionId );
 		
@@ -49,16 +49,16 @@ implements IUniqueManagedObject {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.UniqueManagedInterface#getManager()
 	 */
-	public final GeneralManager getManager() {
+	public final IGeneralManager getManager() {
 		return this.refGeneralManager;
 	}
 
 	/**
-	 * Reset the GeneralManager.
+	 * Reset the IGeneralManager.
 	 * 
 	 * @see cerberus.data.IUniqueManagedObject#getGeneralManager()
 	 */
-	final protected void setManager( final GeneralManager setGeneralManager) {
+	final protected void setManager( final IGeneralManager setGeneralManager) {
 		this.refGeneralManager = setGeneralManager;
 	}
 	

@@ -59,7 +59,7 @@ public class CerberusGraphViewer {
 	protected Vector<DefaultGraphCell> vecCellEdge;
 	
 	public CerberusGraphViewer() {
-//		 Construct Model and Graph
+//		 Construct AModel and Graph
 		model = new DefaultGraphModel();
 		graph = new JGraph(model);
 

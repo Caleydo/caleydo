@@ -14,9 +14,9 @@ import javax.media.opengl.GLEventListener;
 import com.sun.opengl.util.Animator;
 
 import cerberus.data.collection.ISet;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.base.AJoglContainerViewRep;
 import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -34,7 +34,7 @@ import cerberus.math.statistics.histogram.StatisticHistogramType;
  */
 public class SwtJogHistogram2DViewRep 
 extends AJoglContainerViewRep 
-implements ISwtJoglContainerViewRep, ViewInter, GLEventListener
+implements ISwtJoglContainerViewRep, IView, GLEventListener
 {
 	
 	private boolean bHistogramIsValid = false;
@@ -52,7 +52,7 @@ implements ISwtJoglContainerViewRep, ViewInter, GLEventListener
 	 * @param setRefGeneralManager
 	 */
 	public SwtJogHistogram2DViewRep(int iNewId,
-			GeneralManager setRefGeneralManager)
+			IGeneralManager setRefGeneralManager)
 	{
 		super(iNewId, setRefGeneralManager);
 		
@@ -66,7 +66,7 @@ implements ISwtJoglContainerViewRep, ViewInter, GLEventListener
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.ViewInter#initView()
+	 * @see cerberus.view.gui.IView#initView()
 	 */
 	public void initView()
 	{
@@ -96,7 +96,7 @@ implements ISwtJoglContainerViewRep, ViewInter, GLEventListener
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.ViewInter#drawView()
+	 * @see cerberus.view.gui.IView#drawView()
 	 */
 	public void drawView()
 	{

@@ -11,7 +11,7 @@ package cerberus.data.collection.set;
 import java.util.Iterator;
 import java.util.Vector;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IMetaData;
@@ -19,9 +19,9 @@ import cerberus.data.collection.ISelection;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 //import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
-import cerberus.data.collection.set.SetSimpleBase;
+import cerberus.data.collection.set.ASetSimple;
 import cerberus.xml.parser.ISaxParserHandler;
 
 /**
@@ -32,7 +32,7 @@ import cerberus.xml.parser.ISaxParserHandler;
  * @deprecated Use SetFlatThreadSimple
  */
 public class SetFlatSimple 
-extends SetSimpleBase
+extends ASetSimple
 implements ISet {
 
 	/**
@@ -60,7 +60,7 @@ implements ISet {
 	/**
 	 * 
 	 */
-	public SetFlatSimple( int iSetCollectionId, GeneralManager setGeneralManager) {
+	public SetFlatSimple( int iSetCollectionId, IGeneralManager setGeneralManager) {
 
 		super( iSetCollectionId, setGeneralManager );
 		
@@ -357,7 +357,7 @@ implements ISet {
 	}
 	
 	/**
-	 * @see cerberus.data.xml.MementoXML#createMementoXML()
+	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
 	 * @return String containing all information on the state 
 	 * of the object in XML form with out a header.
 	 */
@@ -479,7 +479,7 @@ implements ISet {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.ISet#iteratorSelectionByDim(int)
 	 */
-	public SelectionIterator iteratorSelectionByDim( final int iAtDimension ) {
+	public ISelectionIterator iteratorSelectionByDim( final int iAtDimension ) {
 		
 		return null;
 	}

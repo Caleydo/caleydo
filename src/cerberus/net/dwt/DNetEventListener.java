@@ -8,7 +8,7 @@
  */
 package cerberus.net.dwt;
 
-import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.xml.IMementoNetEventXML;
 import cerberus.net.dwt.DNetEvent;
 
 /**
@@ -21,7 +21,7 @@ import cerberus.net.dwt.DNetEvent;
  *
  */
 public interface DNetEventListener 
-extends MementoNetEventXML {
+extends IMementoNetEventXML {
 
 	public void netActionPerformed( DNetEvent event );
 	

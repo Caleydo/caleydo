@@ -12,7 +12,7 @@ package cerberus.command.window;
 //import javax.swing.JOptionPane;
 //import javax.swing.JLabel;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACmdHandleSet;
@@ -41,7 +41,7 @@ implements ICommand, ICmdHandleSet {
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
-	public CmdWindowNewIFrameHistogram2D( GeneralManager refGeneralManager,
+	public CmdWindowNewIFrameHistogram2D( IGeneralManager refGeneralManager,
 			final int iTargetFrameId ) {
 		super( refGeneralManager, 
 				iTargetFrameId,
@@ -55,7 +55,7 @@ implements ICommand, ICmdHandleSet {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		assert refGeneralManager != null:"can not handle null-pointer to GeneralManager";
+		assert refGeneralManager != null:"can not handle null-pointer to IGeneralManager";
 
 //		refDViewHistogram2D = new DSwingHistogramCanvas( refGeneralManager, refCurrentSet );
 //		

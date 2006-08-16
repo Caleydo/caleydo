@@ -12,7 +12,7 @@ package cerberus.command.window;
 //import javax.swing.JOptionPane;
 //import javax.swing.JLabel;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -46,7 +46,7 @@ implements ICommand {
 
 	private int iCountCanvas = 1;
 		
-	private final GeneralManager refGeneralManager;
+	private final IGeneralManager refGeneralManager;
 	
 //	private DSwingJoglCanvas refDSwingJoglCanvas = null;
 	
@@ -61,7 +61,7 @@ implements ICommand {
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
-	public CmdWindowNewIFrameJoglCanvas( final GeneralManager refGeneralManager,
+	public CmdWindowNewIFrameJoglCanvas( final IGeneralManager refGeneralManager,
 //			final GLEventForwardListener refGLEventListener,
 			final int iSetCallingFrameId,
 			final String sHeaderText ) {

@@ -14,20 +14,20 @@ import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SelectionManager;
-import cerberus.manager.SetManager;
-import cerberus.manager.StorageManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISelectionManager;
+import cerberus.manager.ISetManager;
+import cerberus.manager.IStorageManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 
 public class DataTableViewRep 
 extends AViewRep 
-implements DataTableViewInter
+implements IDataTableView
 {
-	protected final GeneralManager refGeneralManager;
-	protected StorageManager refStorageManager;
-	protected SelectionManager refSelectionManager;
+	protected final IGeneralManager refGeneralManager;
+	protected IStorageManager refStorageManager;
+	protected ISelectionManager refSelectionManager;
 	protected Composite refSWTContainer;
 	
 	protected IStorage[] refAllStorageItems;
@@ -36,7 +36,7 @@ implements DataTableViewInter
 
 	protected Table refTable;
 	
-	public DataTableViewRep(GeneralManager refGeneralManager)
+	public DataTableViewRep(IGeneralManager refGeneralManager)
 	{
 		this.refGeneralManager = refGeneralManager;
 				
@@ -45,10 +45,10 @@ implements DataTableViewInter
 		
 	public void initView()
 	{
-		refStorageManager = (StorageManager)refGeneralManager.
+		refStorageManager = (IStorageManager)refGeneralManager.
 			getManagerByBaseType(ManagerObjectType.STORAGE);
 		
-		refSelectionManager = (SelectionManager)refGeneralManager.
+		refSelectionManager = (ISelectionManager)refGeneralManager.
 			getManagerByBaseType(ManagerObjectType.SELECTION);
 	}
 

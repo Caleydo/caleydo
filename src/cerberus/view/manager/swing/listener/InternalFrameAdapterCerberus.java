@@ -12,12 +12,12 @@ import javax.swing.event.InternalFrameEvent;
  */
 public class InternalFrameAdapterCerberus extends InternalFrameAdapter {
 
-	private final WindowAdapterTarget target;
+	private final IWindowAdapterTarget target;
 	
 	/**
 	 * 
 	 */
-	public InternalFrameAdapterCerberus(WindowAdapterTarget target) {
+	public InternalFrameAdapterCerberus(IWindowAdapterTarget target) {
 		this.target = target;
 	}
 	

@@ -10,7 +10,7 @@ package cerberus.data.collection.storage;
 
 import java.lang.NullPointerException;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;
@@ -18,19 +18,19 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 //import cerberus.data.manager.DComponentManager;
-import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.xml.IMementoNetEventXML;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.CollectionFlatStorageSaxParserHandler;
-import cerberus.data.collection.thread.impl.CollectionThreadItem;
-import cerberus.data.collection.thread.lock.CollectionLock;
+import cerberus.data.collection.thread.impl.ACollectionThreadItem;
+import cerberus.data.collection.thread.lock.ICollectionLock;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public class FlatThreadStorageSimple 
-extends CollectionThreadItem 
-implements IStorage, MementoNetEventXML, CollectionLock
+extends ACollectionThreadItem 
+implements IStorage, IMementoNetEventXML, ICollectionLock
 {
 
 	
@@ -86,8 +86,8 @@ implements IStorage, MementoNetEventXML, CollectionLock
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
 	 */
-	public FlatThreadStorageSimple( final int iSetCollectionId, final GeneralManager setGeneralManager,
-			final CollectionLock setCollectionLock ) {
+	public FlatThreadStorageSimple( final int iSetCollectionId, final IGeneralManager setGeneralManager,
+			final ICollectionLock setCollectionLock ) {
 		super(iSetCollectionId, setGeneralManager, setCollectionLock);
 		
 	}

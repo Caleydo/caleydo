@@ -6,10 +6,10 @@ import javax.media.opengl.GLEventListener;
 import com.sun.opengl.util.Animator;
 
 import cerberus.data.AUniqueManagedObject;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 //import cerberus.manager.SWTGUIManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.AViewManagedRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -40,7 +40,7 @@ import demos.gears.Gears;
  */
 public abstract class AJoglContainerViewRep 
 extends AViewManagedRep
-implements ViewInter, ISwtJoglContainerViewRep
+implements IView, ISwtJoglContainerViewRep
 {
 	/**
 	 * OpenGL context of thsi canvas handled by JOGL.
@@ -60,7 +60,7 @@ implements ViewInter, ISwtJoglContainerViewRep
 	 * @param iNewId
 	 * @param setRefGeneralManager
 	 */
-	protected AJoglContainerViewRep(int iNewId, GeneralManager setRefGeneralManager)
+	protected AJoglContainerViewRep(int iNewId, IGeneralManager setRefGeneralManager)
 	{
 		super( iNewId, setRefGeneralManager);
 		
@@ -76,7 +76,7 @@ implements ViewInter, ISwtJoglContainerViewRep
 	 * 
 	 * @see cerberus.manager.SWTGUIManager
 	 * @see cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget
-	 * @see cerberus.view.gui.ViewInter#retrieveNewGUIContainer()
+	 * @see cerberus.view.gui.IView#retrieveNewGUIContainer()
 	 */
 	public void retrieveNewGUIContainer()
 	{
@@ -90,9 +90,9 @@ implements ViewInter, ISwtJoglContainerViewRep
 
 	/**
 	 * Empyt default methode.
-	 * Shall suit inteface cerberus.view.gui.ViewInter
+	 * Shall suit inteface cerberus.view.gui.IView
 	 * 
-	 * @see cerberus.view.gui.ViewInter#retrieveExistingGUIContainer()
+	 * @see cerberus.view.gui.IView#retrieveExistingGUIContainer()
 	 */
 	public void retrieveExistingGUIContainer()
 	{

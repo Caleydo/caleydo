@@ -60,11 +60,11 @@ import demos.xtrans.*;
 
 
 import cerberus.base.type.WindowToolkitType;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.swing.CerberusData;
 import cerberus.view.manager.swing.CerberusJStatusBar;
-import cerberus.view.manager.swing.listener.WindowAdapterTarget;
+import cerberus.view.manager.swing.listener.IWindowAdapterTarget;
 
 import cerberus.view.swing.graph.CerberusGraphViewer;
 
@@ -109,13 +109,13 @@ import cerberus.data.collection.storage.FlatThreadStorageSimple;
  Ported to Java, Swing and ARB_fragment_program by Kenneth Russell
  */
 
-public class CanvasFrameManager implements WindowAdapterTarget {
+public class CanvasFrameManager implements IWindowAdapterTarget {
 	
-	private int iIdIncrement = GeneralManager.iUniqueId_Increment;
+	private int iIdIncrement = IGeneralManager.iUniqueId_Increment;
 	
-	private int iCurrentViewId = GeneralManager.iUniqueId_View;
+	private int iCurrentViewId = IGeneralManager.iUniqueId_View;
 	
-	private int iCurrentWorkspaceId = GeneralManager.iUniqueId_Workspace;
+	private int iCurrentWorkspaceId = IGeneralManager.iUniqueId_Workspace;
 	
 	protected Hashtable <Integer,SwingJoglJFrame> hashJFrame;
 	

@@ -8,7 +8,7 @@
  */
 package cerberus.command.memento.sample;
 
-import cerberus.command.memento.GeneralMemento;
+import cerberus.command.memento.IGeneralMemento;
 import cerberus.command.memento.IMemento;
 import cerberus.command.memento.IMementoCreator;
 import cerberus.command.memento.sample.SampleMementoState;
@@ -60,7 +60,7 @@ public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 		// First possibility to set a IMemento.
 		//-------------------------------------
 		// create new memento for this object...
-		GeneralMemento myMemento = new GeneralMemento(this,myMementoState);
+		IGeneralMemento myMemento = new IGeneralMemento(this,myMementoState);
 
 		// Second possibility to set the IMemento state data.
 		//---------------------------------------------------

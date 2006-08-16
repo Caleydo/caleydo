@@ -12,7 +12,7 @@ package cerberus.command.window;
 //import javax.swing.JOptionPane;
 //import javax.swing.JLabel;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 //import cerberus.command.factory.CommandFactory;
@@ -51,7 +51,7 @@ implements ICommand {
 	 * @param refGLEventListener listener for GLEvents or null if listener shall be created
 	 * @param initDSwingJoglCanvas reference to existing GLcanvas or null if canvas shall be created
 	 */
-	public CmdWindowNewIFrameJoglScatterplot( final GeneralManager refGeneralManager,
+	public CmdWindowNewIFrameJoglScatterplot( final IGeneralManager refGeneralManager,
 			final int iCallingFrameId
 //			,
 //			final GLEventForwardListener refGLEventListener,

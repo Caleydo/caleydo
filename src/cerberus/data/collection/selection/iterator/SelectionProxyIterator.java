@@ -23,12 +23,12 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class SelectionProxyIterator 
-implements SelectionIterator {
+implements ISelectionIterator {
 
 	/**
 	 * Reference to the actual iterator.
 	 */
-	protected SelectionIterator refSelectionIterator = null;
+	protected ISelectionIterator refSelectionIterator = null;
 	
 	public SelectionProxyIterator() {
 		

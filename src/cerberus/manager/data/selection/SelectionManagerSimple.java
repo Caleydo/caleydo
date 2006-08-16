@@ -11,9 +11,9 @@ package cerberus.manager.data.selection;
 import java.util.Vector;
 import java.util.Iterator;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SelectionManager;
-import cerberus.manager.data.CollectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISelectionManager;
+import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.ISelection;
@@ -32,8 +32,8 @@ import cerberus.data.loader.MicroArrayLoader;
  *
  */
 public class SelectionManagerSimple 
-extends CollectionManager
-implements SelectionManager
+extends ICollectionManager
+implements ISelectionManager
 {
 	
 	private ISelection testSelection;
@@ -48,10 +48,10 @@ implements SelectionManager
 	/**
 	 * 
 	 */
-	public SelectionManagerSimple( GeneralManager setGeneralManager,
+	public SelectionManagerSimple( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
 		super( setGeneralManager, 
-				GeneralManager.iUniqueId_TypeOffset_Selection );
+				IGeneralManager.iUniqueId_TypeOffset_Selection );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -66,7 +66,7 @@ implements SelectionManager
 		testSelection = new SelectionMultiBlock( 
 				this.createNewId(ManagerObjectType.SELECTION_MULTI_BLOCK),
 				refGeneralManager,
-				/// pass no CollectionLock 
+				/// pass no ICollectionLock 
 				null );
 		
 		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.SELECTION_MULTI_BLOCK );
@@ -97,7 +97,7 @@ implements SelectionManager
 				return new SelectionMultiBlock( createNewId(ManagerObjectType.SELECTION), this, null );	
 				
 			case SELECTION_LOAD_MICROARRAY:
-				System.err.println("SelectionManager.createSelection() SELECTION_LOAD_MICROARRAY is deprecated!");
+				System.err.println("ISelectionManager.createSelection() SELECTION_LOAD_MICROARRAY is deprecated!");
 				//return new MicroArrayLoader( getGeneralManager() );
 				
 //			case SELECTION_MULTI_BLOCK_RLE:

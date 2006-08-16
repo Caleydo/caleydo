@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.base.AManagedCommand;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.ViewManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
@@ -15,7 +15,7 @@ public class CmdViewCreateGears
 extends AManagedCommand
 implements ICommand 
 {
-	public CmdViewCreateGears( GeneralManager refGeneralManager,
+	public CmdViewCreateGears( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
 	{
 		super( -1, refGeneralManager );	
@@ -23,7 +23,7 @@ implements ICommand
 
 	public void doCommand() throws CerberusRuntimeException
 	{
-		GearsViewRep gearsView = (GearsViewRep) ((ViewManager)refGeneralManager.
+		GearsViewRep gearsView = (GearsViewRep) ((IViewManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.VIEW)).
 					createView(ManagerObjectType.VIEW_SWT_GEARS);
 		//TODO: register view

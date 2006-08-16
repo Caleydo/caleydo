@@ -11,7 +11,7 @@ package cerberus.net.dwt.swing.menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import cerberus.manager.CommandManager;
+import cerberus.manager.ICommandManager;
 
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
@@ -27,7 +27,7 @@ public class DMenuCmdActionListener implements ActionListener {
 	/**
 	 * Reference to CommandManger
 	 */
-	protected CommandManager refCommandManager;
+	protected ICommandManager refCommandManager;
 	
 	/**
 	 * Referecne to Command
@@ -37,7 +37,7 @@ public class DMenuCmdActionListener implements ActionListener {
 	/**
 	 * Creates a new listener, which triggers setCommand.
 	 */
-	public DMenuCmdActionListener(final CommandManager setCommandManager,
+	public DMenuCmdActionListener(final ICommandManager setCommandManager,
 			final ICommand setCommand) {
 		
 		refCommandManager = setCommandManager;
@@ -47,10 +47,10 @@ public class DMenuCmdActionListener implements ActionListener {
 	/**
 	 * Creates a new command using the CommandType and stores it.
 	 * 
-	 * @param setCommandManager reference to CommandManager
+	 * @param setCommandManager reference to ICommandManager
 	 * @param createCommandByType type of Command
 	 */
-	public DMenuCmdActionListener(final CommandManager setCommandManager,
+	public DMenuCmdActionListener(final ICommandManager setCommandManager,
 			final CommandType createCommandByType) {
 		
 		refCommandManager = setCommandManager;

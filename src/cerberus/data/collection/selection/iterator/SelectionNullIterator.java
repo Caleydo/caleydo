@@ -13,7 +13,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author kalkusch
  *
  */
-public final class SelectionNullIterator implements SelectionIterator {
+public final class SelectionNullIterator implements ISelectionIterator {
 
 	/**
 	 * 

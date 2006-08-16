@@ -7,7 +7,7 @@ import cerberus.command.ICommand;
 import cerberus.command.ICommandManaged;
 import cerberus.command.CommandType;
 import cerberus.data.AUniqueManagedObject;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -24,7 +24,7 @@ implements ICommandManaged {
 	 * @param setGeneralManager
 	 */
 	public AManagedCommand(int iSetCollectionId,
-			GeneralManager setGeneralManager) {
+			IGeneralManager setGeneralManager) {
 		super(iSetCollectionId, setGeneralManager);
 	}
 

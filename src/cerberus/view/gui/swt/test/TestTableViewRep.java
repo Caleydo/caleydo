@@ -10,22 +10,22 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 public class TestTableViewRep 
 extends AViewRep 
-implements ViewInter
+implements IView
 {
 	protected final int iNewId;
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	protected Composite refSWTContainer;
 	
-	public TestTableViewRep(int iNewId, GeneralManager refGeneralManager)
+	public TestTableViewRep(int iNewId, IGeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;

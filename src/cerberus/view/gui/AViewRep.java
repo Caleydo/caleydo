@@ -10,7 +10,7 @@ import java.util.Iterator;
  * @author kalkusch
  *
  */
-public abstract class AViewRep implements ViewInter
+public abstract class AViewRep implements IView
 {
 	protected int iParentContainerId;
 	
@@ -20,7 +20,7 @@ public abstract class AViewRep implements ViewInter
 	 * Set attributes for this view.
 	 * Overwrite previous attributes.
 	 * 
-	 * @see cerberus.view.gui.ViewInter#setAttributes(java.util.Vector)
+	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
 	 */
 	public void setAttributes( final Vector<String> attributes)
 	{ 

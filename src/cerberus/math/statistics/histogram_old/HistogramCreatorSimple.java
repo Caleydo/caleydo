@@ -14,7 +14,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.IStorage;
 
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionProxyIterator;
 
 
@@ -82,7 +82,7 @@ public class HistogramCreatorSimple implements HistogramCreator {
 		}
 		
 		// ... read out data from storage ...
-		SelectionIterator iter =
+		ISelectionIterator iter =
 			new SelectionProxyIterator( refSelection[0] );
 		
 		iMaxItemsPerRow = 0;

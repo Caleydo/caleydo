@@ -21,7 +21,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 
 //import java.util.*;
 
@@ -30,7 +30,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.selection.SelectionThreadSingleBlock;
-import cerberus.data.xml.MementoXML;
+import cerberus.data.xml.IMementoXML;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenType;
 import cerberus.xml.parser.ISaxParserHandler;
@@ -44,7 +44,7 @@ import cerberus.data.collection.parser.ParserTokenHandler;
  *
  */
 public class MicroArrayLoader 
-implements MementoXML {
+implements IMementoXML {
 
 	/**
 	 *  file name of *.gpr file
@@ -71,7 +71,7 @@ implements MementoXML {
 	/**
 	 * ref to singelton
 	 */
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	
 	/**
 	 * Define the speperator
@@ -118,7 +118,7 @@ implements MementoXML {
 	 */
 	protected int iIndexPerArray[];
 	
-	public MicroArrayLoader(GeneralManager setGeneralManager) {
+	public MicroArrayLoader(IGeneralManager setGeneralManager) {
 				
 		refGeneralManager = setGeneralManager;
 		
@@ -142,7 +142,7 @@ implements MementoXML {
 	}
 	
 	
-	public MicroArrayLoader(GeneralManager setGeneralManager, String setFileName) {
+	public MicroArrayLoader(IGeneralManager setGeneralManager, String setFileName) {
 
 		this(setGeneralManager);
 		

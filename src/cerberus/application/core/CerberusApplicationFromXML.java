@@ -22,7 +22,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 //import cerberus.manager.CommandManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 import cerberus.xml.parser.ACerberusDefaultSaxHandler;
@@ -66,7 +66,7 @@ import org.studierstube.net.protocol.muddleware.Operation;
  *
  */
 public class CerberusApplicationFromXML {
-//implements MementoCallbackXML {
+//implements IMementoCallbackXML {
 
 
 	private boolean bUSeMuddlewareXMLserver = false;
@@ -77,7 +77,7 @@ public class CerberusApplicationFromXML {
 	
 	protected SwingJoglJFrameSaxHandler saxHandler;
 	
-	protected final GeneralManager refGeneralManager;
+	protected final IGeneralManager refGeneralManager;
 
 	private CommandSaxHandler saxCmdHandler;
 	
@@ -149,7 +149,7 @@ public class CerberusApplicationFromXML {
 	}
 	
 	/**
-	 * Bootstrapping of GeneralManager and menus inside the views. 
+	 * Bootstrapping of IGeneralManager and menus inside the views. 
 	 * Not parsing personal settings.
 	 * 
 	 * @return TRUE on successful bootstrapping of frames, views and menus inside the views

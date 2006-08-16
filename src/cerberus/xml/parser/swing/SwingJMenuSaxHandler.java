@@ -8,8 +8,8 @@ package cerberus.xml.parser.swing;
 import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 
-import cerberus.manager.FrameManagerInterface;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IFrameManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
@@ -28,7 +28,7 @@ public class SwingJMenuSaxHandler extends ACerberusDefaultSaxHandler  {
 	
 	private boolean bJFrameMenuList_isActive = false;
 	
-	private final FrameManagerInterface viewManager;
+	private final IFrameManager viewManager;
 	
 	private boolean bData_EnableMenu = true;
 	
@@ -73,8 +73,8 @@ public class SwingJMenuSaxHandler extends ACerberusDefaultSaxHandler  {
 	/**
 	 * 
 	 */
-	public SwingJMenuSaxHandler( final GeneralManager refGeneralManager,
-			final FrameManagerInterface viewManager ) {
+	public SwingJMenuSaxHandler( final IGeneralManager refGeneralManager,
+			final IFrameManager viewManager ) {
 		super( refGeneralManager );
 		
 		assert viewManager != null : "viewManager can not be null";

@@ -21,8 +21,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class SelectionMultiBlockIterator 
-extends AbstractSelectionIterator
-implements SelectionIterator {
+extends ASelectionIterator
+implements ISelectionIterator {
 
 
 	/**

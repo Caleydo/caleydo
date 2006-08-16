@@ -17,10 +17,10 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISubSet;
 import cerberus.data.collection.IMetaDataHandler;
 import cerberus.data.collection.ICollection;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
-import cerberus.data.collection.thread.CollectionThreadObject;
-import cerberus.data.xml.MementoItemXML;
+import cerberus.data.collection.thread.ICollectionThreadObject;
+import cerberus.data.xml.IMementoItemXML;
 
 /**
  * Defines a set containing of selections and storage
@@ -32,8 +32,8 @@ public interface ISet
 	extends  ICollection,
 	IMetaDataHandler, 
 	ISubSet,
-	MementoItemXML,
-	CollectionThreadObject
+	IMementoItemXML,
+	ICollectionThreadObject
 {
 	
 	/**
@@ -170,7 +170,7 @@ public interface ISet
 	 * @param iAtDimension requested dimension
 	 * @return iterator for ISelection's
 	 */	
-	public SelectionIterator iteratorSelectionByDim( final int iAtDimension );
+	public ISelectionIterator iteratorSelectionByDim( final int iAtDimension );
 
 	/**
 	 * Get an Iterator for all IStorage used in this ISet.
@@ -200,7 +200,7 @@ public interface ISet
 	/**
 	 * Test if cache has changed without reevaluating the stats of the cildren.
 	 * 
-	 * @see cerberus.data.collection.thread.CollectionThreadObject#hasCacheChanged(int)
+	 * @see cerberus.data.collection.thread.ICollectionThreadObject#hasCacheChanged(int)
 	 * 
 	 * @param iCompareCacheId
 	 */

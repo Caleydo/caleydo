@@ -14,16 +14,16 @@ import org.eclipse.swt.widgets.Text;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.SetManager;
-import cerberus.manager.StorageManager;
-import cerberus.manager.SelectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISetManager;
+import cerberus.manager.IStorageManager;
+import cerberus.manager.ISelectionManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewInter;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
-import cerberus.view.gui.swt.data.explorer.model.Model;
+import cerberus.view.gui.swt.data.explorer.model.AModel;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
 import cerberus.view.gui.swt.data.explorer.model.SetModel;
 import cerberus.view.gui.swt.data.explorer.model.StorageModel;
@@ -34,11 +34,11 @@ import cerberus.view.gui.swt.data.DataTableViewRep;
 
 public class DataExplorerViewRep 
 extends AViewRep 
-implements ViewInter
+implements IView
 {
 	protected static final Object StorageModel = null;
 	protected final int iNewId;
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	protected Composite refSWTContainer;
 	protected SetTableViewRep refSetTableViewRep;
 	protected DataTableViewRep refDataTableViewRep;
@@ -49,7 +49,7 @@ implements ViewInter
 	
 	protected SetModel rootSet;
 	
-	public DataExplorerViewRep(int iNewId, GeneralManager refGeneralManager)
+	public DataExplorerViewRep(int iNewId, IGeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
@@ -145,7 +145,7 @@ implements ViewInter
 		SetModel rootStorageModel = new SetModel(0, "STORAGE");
 		rootSet.add(rootStorageModel);
 		
-		allSetItems = ((SetManager)refGeneralManager.
+		allSetItems = ((ISetManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
 		
 		//iterate over all SETs
@@ -188,7 +188,7 @@ implements ViewInter
 		}
 		
 		
-		allStorageItems = ((StorageManager)refGeneralManager.
+		allStorageItems = ((IStorageManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.STORAGE)).getAllStorageItems();
 		
 		//iterate over all STORAGEs
@@ -204,7 +204,7 @@ implements ViewInter
 
 		}
 		
-		allSelectionItems = ((SelectionManager)refGeneralManager.
+		allSelectionItems = ((ISelectionManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.SELECTION)).getAllSelectionItems();
 		
 		//iterate over all SELECTIONs
@@ -241,7 +241,7 @@ implements ViewInter
 					IStructuredSelection selection = (IStructuredSelection)event.getSelection();
 					for (Iterator iterator = selection.iterator(); iterator.hasNext();) 
 					{
-						Model model = (Model) iterator.next();
+						AModel model = (AModel) iterator.next();
 						if(model instanceof StorageModel)
 						{
 							refDataTableViewRep.createStorageTable(model.getID());

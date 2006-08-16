@@ -24,13 +24,13 @@ import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
-import cerberus.data.view.rep.pathway.PathwayVertexRepInter;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.swt.pathway.PathwayViewInter;
+import cerberus.view.gui.swt.pathway.IPathwayView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
@@ -44,10 +44,10 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
  */
 public class PathwayViewRep
 extends AViewRep 
-implements PathwayViewInter
+implements IPathwayView
 {
 	protected final int iNewId;
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	protected Frame refEmbeddedFrame;
 	
 	protected GraphModel refGraphModel;
@@ -57,7 +57,7 @@ implements PathwayViewInter
 	
 	private HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
 	
-	public PathwayViewRep(int iNewId, GeneralManager refGeneralManager)
+	public PathwayViewRep(int iNewId, IGeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
@@ -87,8 +87,8 @@ implements PathwayViewInter
 	    Vector<PathwayVertex> vertexList;
 	    Iterator<PathwayVertex> vertexIterator;
 	    PathwayVertex vertex;
-	    Vector<PathwayVertexRepInter> vertexReps;
-	    Iterator<PathwayVertexRepInter> vertexRepIterator;
+	    Vector<IPathwayVertexRep> vertexReps;
+	    Iterator<IPathwayVertexRep> vertexRepIterator;
 	    PathwayVertexRep vertexRep;
 	    
 	    Vector<PathwayEdge> edgeList;

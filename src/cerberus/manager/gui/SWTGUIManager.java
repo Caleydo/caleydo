@@ -24,9 +24,9 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jface.window.WindowManager;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISWTGUIManager;
-import cerberus.manager.base.AbstractManagerImpl;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -46,7 +46,7 @@ import cerberus.manager.gui.CerberusWindow;
  * @author Marc Streit
  */
 public class SWTGUIManager 
-extends AbstractManagerImpl
+extends AAbstractManager
 implements ISWTGUIManager
 {	
 	protected final WindowManager refWindowManager;
@@ -69,12 +69,12 @@ implements ISWTGUIManager
 	 * 
 	 * @see cerberus.manager.gui.SWTGUIManager#createApplicationWindow()
 	 * 
-	 * @param setGeneralManager Reference to GeneralManager
+	 * @param setGeneralManager Reference to IGeneralManager
 	 */
-	public SWTGUIManager(GeneralManager setGeneralManager)
+	public SWTGUIManager(IGeneralManager setGeneralManager)
 	{
 		super(setGeneralManager,
-				GeneralManager.iUniqueId_TypeOffset_GuiSWT );
+				IGeneralManager.iUniqueId_TypeOffset_GuiSWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 

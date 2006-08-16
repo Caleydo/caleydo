@@ -1,8 +1,8 @@
 package cerberus.data.view.rep.pathway.jgraph;
 
-import cerberus.data.view.rep.pathway.PathwayVertexRepInter;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 
-public class PathwayVertexRep implements PathwayVertexRepInter 
+public class PathwayVertexRep implements IPathwayVertexRep 
 {
 	private String sName;
 	private int iHeight = 0;

@@ -25,12 +25,12 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLDrawableFactory;
 
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 //import javax.media.opengl.glu.*;
 
 
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.collection.view.IViewCanvas;
 import cerberus.net.dwt.swing.jogl.ViewCanvasBaseItem;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 import cerberus.net.dwt.swing.jogl.listener.GLEventForwardListener;
@@ -49,10 +49,10 @@ extends ViewCanvasBaseItem
 //extends Frame
 //extends DSwingJPanel 
 //implements DNetEventComponentInterface, 
-implements ViewCanvas
+implements IViewCanvas
 {
 	
-	//protected final GeneralManager refGeneralManager;
+	//protected final IGeneralManager refGeneralManager;
 
 	protected final GLEventForwardListener refGLEventListener;
 
@@ -70,7 +70,7 @@ implements ViewCanvas
 	/**
 	 * 
 	 */
-	public DSwingJoglCanvas( GeneralManager refGeneralManager,
+	public DSwingJoglCanvas( IGeneralManager refGeneralManager,
 			GLEventForwardListener setGLEventListener,
 			final int iTargetFrameId ) {
 		

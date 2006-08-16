@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection;
 
-import cerberus.data.collection.CollectionType;
+import cerberus.data.collection.ICollectionType;
 
 /**
  * Types of selections.
@@ -18,7 +18,7 @@ import cerberus.data.collection.CollectionType;
  * @see prometheus.data.set.SelectionInterface
  */
 public enum SelectionType 
-implements CollectionType {
+implements ICollectionType {
 
 	SELECTION_ABSTRACT(false,
 			"Abstract ISelection, that has not been instaniated"),

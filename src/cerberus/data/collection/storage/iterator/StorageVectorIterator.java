@@ -10,9 +10,9 @@ import java.util.Vector;
 
 import cerberus.data.collection.IStorage;
 //import cerberus.util.exception.PrometheusVirtualArrayException;
-//import cerberus.data.collection.selection.iterator.SelectionIterator;
+//import cerberus.data.collection.selection.iterator.ISelectionIterator;
 //import cerberus.data.collection.selection.iterator.SelectionNullIterator;
-//import cerberus.data.collection.iterator.CollectionIterator;
+//import cerberus.data.collection.iterator.ICollectionIterator;
 
 /**
  * Iterator for a several ISelection.
@@ -82,7 +82,7 @@ public class StorageVectorIterator {
 	 * Resets the iterator to the begin.
 	 * Note: must be called if Storages are set using addStorage().
 	 * 
-	 * @see cerberus.data.collection.iterator.CollectionIterator#begin()
+	 * @see cerberus.data.collection.iterator.ICollectionIterator#begin()
 	 * 
 	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#addSelection(ISelection)
 	 * 
@@ -97,7 +97,7 @@ public class StorageVectorIterator {
 	 * 
 	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.CollectionIterator#next()
+	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public IStorage next() {
 		return iteratorStorage.next();
@@ -115,7 +115,7 @@ public class StorageVectorIterator {
 	 * 
 	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.CollectionIterator#hasNext()
+	 * @see cerberus.data.collection.iterator.ICollectionIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		return iteratorStorage.hasNext();

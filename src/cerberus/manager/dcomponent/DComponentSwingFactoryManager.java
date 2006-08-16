@@ -12,10 +12,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Iterator;
 
-import cerberus.manager.DComponentManager;
-import cerberus.manager.GeneralManager;
-import cerberus.manager.base.AbstractManagerImpl;
-import cerberus.manager.data.CollectionManager;
+import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.base.AAbstractManager;
+import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
@@ -35,8 +35,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class DComponentSwingFactoryManager 
- extends AbstractManagerImpl
- implements DComponentManager {
+ extends AAbstractManager
+ implements IDistComponentManager {
 	
 	protected Vector<DNetEventComponentInterface> vecGuiComponents;
 	
@@ -44,15 +44,15 @@ public class DComponentSwingFactoryManager
 	
 	private int iCurrentUniqueComponentId;
 	
-	protected GeneralManager refGeneralManager = null;
+	protected IGeneralManager refGeneralManager = null;
 	
 	/**
 	 * 
 	 */
-	public DComponentSwingFactoryManager(GeneralManager setGeneralManager) {
+	public DComponentSwingFactoryManager(IGeneralManager setGeneralManager) {
 		
 		super( setGeneralManager, 
-				GeneralManager.iUniqueId_TypeOffset_GuiComponent);
+				IGeneralManager.iUniqueId_TypeOffset_GuiComponent);
 		
 		assert setGeneralManager != null: "DComponentSwingFactoryManager.DComponentSwingFactoryManager() init with null-pointer.";
 		
@@ -62,8 +62,8 @@ public class DComponentSwingFactoryManager
 		hashGuiIndexLookup = new Hashtable<Integer,DNetEventComponentInterface> ();
 		
 		iCurrentUniqueComponentId = 
-			CollectionManager.calculateId( 
-					GeneralManager.iUniqueId_TypeOffset_GuiComponent, 
+			ICollectionManager.calculateId( 
+					IGeneralManager.iUniqueId_TypeOffset_GuiComponent, 
 					setGeneralManager );
 		
 		refGeneralManager.getSingelton().setDComponentManager( this );

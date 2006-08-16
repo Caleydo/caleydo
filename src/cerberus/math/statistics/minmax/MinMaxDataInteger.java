@@ -5,7 +5,7 @@ package cerberus.math.statistics.minmax;
 
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.iterator.SelectionIterator;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.data.collection.set.SetMultiDim;
 
 /**
@@ -80,8 +80,8 @@ public final class MinMaxDataInteger {
 			    	if (( i_dataValuesX != null )&&
 			    			( i_dataValuesY != null )) {
 			    		
-				    	SelectionIterator iterX = refSet.getSelectionByDimAndIndex(0,0).iterator();
-				    	SelectionIterator iterY = refSet.getSelectionByDimAndIndex(1,0).iterator();
+				    	ISelectionIterator iterX = refSet.getSelectionByDimAndIndex(0,0).iterator();
+				    	ISelectionIterator iterY = refSet.getSelectionByDimAndIndex(1,0).iterator();
 			    		
 				    	/**
 				    	 * update ...
@@ -155,7 +155,7 @@ public final class MinMaxDataInteger {
 		    		for ( int iIndex = 0; iIndex < iDimensions; iIndex++ ) {
 		    					
 		    			ISelection select = refSet.getSelectionByDimAndIndex(iIndex,0);		    			
-		    			SelectionIterator iter = select.iterator();
+		    			ISelectionIterator iter = select.iterator();
 		    			IStorage refStorage = 
 		    				refSet.getStorageByDimAndIndex(iIndex,0);
 		    			

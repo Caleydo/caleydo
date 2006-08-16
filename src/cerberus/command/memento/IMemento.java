@@ -12,7 +12,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * 
  * @author Michael Kalkusch
  * 
- * @see cerberus.manager.MementoManager
+ * @see cerberus.manager.IMementoManager
  *
  */
 public interface IMemento {
@@ -52,14 +52,14 @@ public interface IMemento {
 	/**
 	 * Overwrite toString() to get valueable debug information.
 	 * 
-	 * Note: This methode is used by MementoManager.toString()
+	 * Note: This methode is used by IMementoManager.toString()
 	 */
 	public String toString();
 
 	/**
 	 * Overwrite toString() to get valueable debug information.
 	 * 
-	 * Note: This methode is used by MementoManager.toString()
+	 * Note: This methode is used by IMementoManager.toString()
 	 */
 	public String toStringRecursive();
 

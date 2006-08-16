@@ -1,8 +1,8 @@
 package cerberus.data.view.rep.pathway.jgraph;
 
-import cerberus.data.view.rep.pathway.PathwayEdgeRepInter;
+import cerberus.data.view.rep.pathway.IPathwayEdgeRep;
 
-public class PathwayEdgeRep implements PathwayEdgeRepInter 
+public class PathwayEdgeRep implements IPathwayEdgeRep 
 {
 
 }

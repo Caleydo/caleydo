@@ -27,8 +27,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.manager.DComponentManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import gleem.linalg.Vec3f;
@@ -36,7 +36,7 @@ import gleem.linalg.Vec3f;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.selection.iterator.SelectionProxyIterator;
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.collection.view.IViewCanvas;
 import cerberus.data.collection.IStorage;
 import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
@@ -56,7 +56,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  */
 public class DSwingHeatMap2DCanvas 
 extends DSwingJPanel 
-implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
+implements DNetEventComponentInterface, IViewCanvas, ViewingAreaComponent
 {
 
 	static final long serialVersionUID = 80008030;
@@ -74,7 +74,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	 * 
 	 * TODO: remove this from stable code!
 	 */
-	private DComponentManager refParentCreator;
+	private IDistComponentManager refParentCreator;
 	
 	/**
 	 * reference to parent object.
@@ -142,7 +142,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	/**
 	 * 
 	 */
-	public DSwingHeatMap2DCanvas( GeneralManager refGeneralManager ) {
+	public DSwingHeatMap2DCanvas( IGeneralManager refGeneralManager ) {
 		super();
 		initDPanel();
 		refGeneralManager = refGeneralManager;
@@ -255,7 +255,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	
 
 	
-	public final void setParentCreator( final DComponentManager creator) {
+	public final void setParentCreator( final IDistComponentManager creator) {
 		refParentCreator = creator; 
 	}
 	
@@ -286,7 +286,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.IMementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
 	public synchronized boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
@@ -489,7 +489,7 @@ implements DNetEventComponentInterface, ViewCanvas, ViewingAreaComponent
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#callbackForParser(java.lang.String)
+	 * @see cerberus.data.xml.IMementoNetEventXML#callbackForParser(java.lang.String)
 	 */
 	public void callbackForParser(  final ManagerObjectType type,
 			final String tag_causes_callback,

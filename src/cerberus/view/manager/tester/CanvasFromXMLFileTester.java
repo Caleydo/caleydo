@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.manager.CommandManager;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
@@ -51,7 +51,7 @@ import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
 
 //import cerberus.data.xml.MementoNetEventXML;
-import cerberus.data.xml.MementoCallbackXML;
+import cerberus.data.xml.IMementoCallbackXML;
 
 import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
 import org.studierstube.net.protocol.muddleware.Message;
@@ -65,7 +65,7 @@ import org.studierstube.net.protocol.muddleware.Operation;
  *
  */
 public class CanvasFromXMLFileTester extends JFrame {
-//implements MementoCallbackXML {
+//implements IMementoCallbackXML {
 
 
 	private boolean bUSeMuddlewareXMLserver = false;

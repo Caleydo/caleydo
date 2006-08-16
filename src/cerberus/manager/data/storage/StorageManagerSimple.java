@@ -11,9 +11,9 @@ package cerberus.manager.data.storage;
 import java.util.Vector;
 import java.util.Iterator;
 
-import cerberus.manager.GeneralManager;
-import cerberus.manager.StorageManager;
-import cerberus.manager.data.CollectionManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.IStorageManager;
+import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
@@ -30,8 +30,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class StorageManagerSimple 
-extends CollectionManager
-implements StorageManager {
+extends ICollectionManager
+implements IStorageManager {
 	
 	private IStorage testStorage;
 	/**
@@ -42,11 +42,11 @@ implements StorageManager {
 	/**
 	 * 
 	 */
-	public StorageManagerSimple( GeneralManager setGeneralManager,
+	public StorageManagerSimple( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
 		
 		super( setGeneralManager, 
-				GeneralManager.iUniqueId_TypeOffset_Storage );
+				IGeneralManager.iUniqueId_TypeOffset_Storage );
 		
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -60,7 +60,7 @@ implements StorageManager {
 		 */
 		testStorage = new FlatThreadStorageSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
 				refGeneralManager,
-				/// pass no CollectionLock 
+				/// pass no ICollectionLock 
 				null);
 		
 		this.registerItem( testStorage, testStorage.getId(), ManagerObjectType.STORAGE_FLAT );
@@ -142,7 +142,7 @@ implements StorageManager {
 
 	/**
 	 *  
-	 * @see cerberus.manager.GeneralManager#getItem(int)
+	 * @see cerberus.manager.IGeneralManager#getItem(int)
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 */

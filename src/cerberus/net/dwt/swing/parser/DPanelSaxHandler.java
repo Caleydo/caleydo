@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
 
-import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.xml.IMementoNetEventXML;
 import cerberus.xml.parser.ISaxParserHandler;
 
 //import org.xml.sax.helpers.DefaultHandler;
@@ -78,7 +78,7 @@ implements ISaxParserHandler
 		
 	}
 	
-	public DPanelSaxHandler(final MementoNetEventXML setRefParent) {
+	public DPanelSaxHandler(final IMementoNetEventXML setRefParent) {
 		super();
 		
 		this.refParentMementoCaller = setRefParent;

@@ -11,8 +11,8 @@ package cerberus.data.collection;
 import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.ICollection;
-import cerberus.data.collection.thread.CollectionThreadObject;
-import cerberus.data.xml.MementoNetEventXML;
+import cerberus.data.collection.thread.ICollectionThreadObject;
+import cerberus.data.xml.IMementoNetEventXML;
 
 /**
  * @author Michael Kalkusch
@@ -20,8 +20,8 @@ import cerberus.data.xml.MementoNetEventXML;
  */
 public interface IStorage 
 	extends ICollection,
-	MementoNetEventXML,
-	CollectionThreadObject
+	IMementoNetEventXML,
+	ICollectionThreadObject
 {
 
 	/**

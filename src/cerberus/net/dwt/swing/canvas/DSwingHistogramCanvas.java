@@ -27,12 +27,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import cerberus.manager.DComponentManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.collection.view.IViewCanvas;
 import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
@@ -54,7 +54,7 @@ import cerberus.xml.parser.ISaxParserHandler;
  */
 public class DSwingHistogramCanvas 
 extends DSwingJPanel 
-implements DNetEventComponentInterface, ViewCanvas
+implements DNetEventComponentInterface, IViewCanvas
 {
 
 	static final long serialVersionUID = 80008030;
@@ -71,7 +71,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	 * 
 	 * TODO: remove this from stable code!
 	 */
-	private DComponentManager refParentCreator;
+	private IDistComponentManager refParentCreator;
 	
 	/**
 	 * reference to parent object.
@@ -92,7 +92,7 @@ implements DNetEventComponentInterface, ViewCanvas
 		
 	private boolean bHistogramIsValid = false;
 	
-	protected GeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	
 	protected ISet refCurrentSet = null;
 	
@@ -125,7 +125,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	/**
 	 * 
 	 */
-	public DSwingHistogramCanvas( GeneralManager refGeneralManager, ISet setRefCurrentSet ) {
+	public DSwingHistogramCanvas( IGeneralManager refGeneralManager, ISet setRefCurrentSet ) {
 		super();
 		
 		this.refGeneralManager= refGeneralManager;
@@ -240,7 +240,7 @@ implements DNetEventComponentInterface, ViewCanvas
 		return null;
 	}
 	
-	public final void setParentCreator( final DComponentManager creator) {
+	public final void setParentCreator( final IDistComponentManager creator) {
 		refParentCreator = creator; 
 	}
 	
@@ -256,7 +256,7 @@ implements DNetEventComponentInterface, ViewCanvas
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.IMementoNetEventXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
 	public synchronized boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
@@ -457,7 +457,7 @@ implements DNetEventComponentInterface, ViewCanvas
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#callbackForParser(java.lang.String)
+	 * @see cerberus.data.xml.IMementoNetEventXML#callbackForParser(java.lang.String)
 	 */
 	public void callbackForParser(  final ManagerObjectType type,
 			final String tag_causes_callback,

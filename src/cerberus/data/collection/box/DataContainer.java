@@ -10,9 +10,9 @@ import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 
-import cerberus.data.collection.thread.CollectionThreadElement;
-import cerberus.data.collection.thread.impl.AbstractThreadElement;
-import cerberus.data.collection.thread.lock.CollectionLock;
+import cerberus.data.collection.thread.ICollectionThreadItem;
+import cerberus.data.collection.thread.impl.AThreadItem;
+import cerberus.data.collection.thread.lock.ICollectionLock;
 
 
 /**
@@ -22,8 +22,8 @@ import cerberus.data.collection.thread.lock.CollectionLock;
  * @author kalkusch
  *
  */
-public class DataContainer extends AbstractThreadElement implements
-		CollectionThreadElement {
+public class DataContainer extends AThreadItem implements
+		ICollectionThreadItem {
 
 	/**
 	 * Label for this DataContainer.
@@ -61,7 +61,7 @@ public class DataContainer extends AbstractThreadElement implements
 	 * @param iSetCollectionId
 	 * @param setCollectionLock
 	 */
-	public DataContainer(int iSetCollectionId, CollectionLock setCollectionLock) {
+	public DataContainer(int iSetCollectionId, ICollectionLock setCollectionLock) {
 		super(iSetCollectionId, setCollectionLock);
 		
 		sMetaBoxLabel = Integer.toString( iSetCollectionId );

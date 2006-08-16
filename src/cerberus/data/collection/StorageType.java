@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection;
 
-import cerberus.data.collection.CollectionType;
+import cerberus.data.collection.ICollectionType;
 
 /**
  * Collection of diferent data types used in stograge.
@@ -17,7 +17,7 @@ import cerberus.data.collection.CollectionType;
  *
  */
 public enum StorageType 
-implements CollectionType {
+implements ICollectionType {
 
 	/*
 	 * Note: When adding a type also check all methodes!

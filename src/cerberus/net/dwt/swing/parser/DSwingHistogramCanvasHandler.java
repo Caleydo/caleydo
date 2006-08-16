@@ -15,8 +15,8 @@ import org.xml.sax.Attributes;
 
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.xml.MementoNetEventXML;
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.xml.IMementoNetEventXML;
+import cerberus.data.collection.view.IViewCanvas;
 
 import cerberus.xml.parser.ISaxParserHandler;
 
@@ -84,7 +84,7 @@ implements ISaxParserHandler
 		
 	}
 	
-	public DSwingHistogramCanvasHandler(final MementoNetEventXML setRefParent) {
+	public DSwingHistogramCanvasHandler(final IMementoNetEventXML setRefParent) {
 		super();
 		
 		this.refParentMementoCaller = setRefParent;

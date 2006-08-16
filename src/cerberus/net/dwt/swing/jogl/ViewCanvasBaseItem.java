@@ -5,12 +5,12 @@ package cerberus.net.dwt.swing.jogl;
 
 import java.awt.Graphics;
 
-import cerberus.manager.DComponentManager;
-import cerberus.manager.GeneralManager;
+import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.ICommandListener;
-import cerberus.data.collection.view.ViewCanvas;
+import cerberus.data.collection.view.IViewCanvas;
 import cerberus.net.dwt.DNetEvent;
 import cerberus.net.dwt.DNetEventComponentInterface;
 import cerberus.net.dwt.DNetEventListener;
@@ -20,7 +20,7 @@ import cerberus.xml.parser.ISaxParserHandler;
  * @author java
  *
  */
-public class ViewCanvasBaseItem implements ViewCanvas {
+public class ViewCanvasBaseItem implements IViewCanvas {
 
 	/**
 	 * 
@@ -48,7 +48,7 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.UniqueManagedInterface#getManager()
 	 */
-	public GeneralManager getManager() {
+	public IGeneralManager getManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -78,7 +78,7 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoItemXML#createMementoXML()
+	 * @see cerberus.data.xml.IMementoItemXML#createMementoXML()
 	 */
 	public String createMementoXML() {
 		// TODO Auto-generated method stub
@@ -86,7 +86,7 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.IMementoXML#setMementoXML_usingHandler(cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
 	public boolean setMementoXML_usingHandler(ISaxParserHandler refSaxHandler) {
 		// TODO Auto-generated method stub
@@ -134,9 +134,9 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.DNetEventComponentInterface#setParentCreator(cerberus.manager.DComponentManager)
+	 * @see cerberus.net.dwt.DNetEventComponentInterface#setParentCreator(cerberus.manager.IDistComponentManager)
 	 */
-	public void setParentCreator(DComponentManager creator) {
+	public void setParentCreator(IDistComponentManager creator) {
 		// TODO Auto-generated method stub
 
 	}
@@ -150,7 +150,7 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoNetEventXML#createMementoXMLperObject()
+	 * @see cerberus.data.xml.IMementoNetEventXML#createMementoXMLperObject()
 	 */
 	public String createMementoXMLperObject() {
 		// TODO Auto-generated method stub
@@ -158,7 +158,7 @@ public class ViewCanvasBaseItem implements ViewCanvas {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.MementoCallbackXML#callbackForParser(cerberus.manager.BaseManagerType, java.lang.String, java.lang.String, cerberus.net.dwt.swing.parser.DParseSaxHandler)
+	 * @see cerberus.data.xml.IMementoCallbackXML#callbackForParser(cerberus.manager.BaseManagerType, java.lang.String, java.lang.String, cerberus.net.dwt.swing.parser.DParseSaxHandler)
 	 */
 	public void callbackForParser(ManagerObjectType type,
 			String tag_causes_callback, String details,
