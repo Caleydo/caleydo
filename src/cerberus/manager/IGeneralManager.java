@@ -38,9 +38,9 @@ public interface IGeneralManager {
 	/**
 	 * Increment from one Id to the next unique id.
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffset
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_Workspace
-	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
+	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffset
+	 * @see cerberus.manager.GeneralManager#iUniqueId_Workspace
+	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
 	public final int iUniqueId_Increment = 10000;
 	
@@ -74,16 +74,23 @@ public interface IGeneralManager {
 	
 	public final int iUniqueId_TypeOffset_Memento = 95;
 
+	public final int iUniqueId_TypeOffset_GUI_AWT = 31;
+	
+	public final int iUniqueId_TypeOffset_GUI_SWT = 32;
+	
+	public final int iUniqueId_TypeOffset_GUI_SWT_Window = 33;
+	
+	public final int iUniqeuId_TypeOffset_GUI_SWT_Container = 34;
+	
+	/**
+	 * Deprecated ID ranges
+	 */
+	
 	public final int iUniqueId_TypeOffset_Window = 40;
 	
 	public final int iUniqueId_TypeOffset_GuiComponent = 30;
-
-	public final int iUniqueId_TypeOffset_GuiAWT = 31;
 	
-	public final int iUniqueId_TypeOffset_GuiSWT = 32;
-		
-	public final int iUniqueId_TypeOffset_GuiMenu = 39;
-	
+	public final int iUniqueId_TypeOffset_GUI_AWT_Menu = 39;
 	
 	/**
 	 * Tests, if a cairtain iItemId is handled by the manager.

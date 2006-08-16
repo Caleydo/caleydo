@@ -39,8 +39,8 @@ import cerberus.command.window.CmdWindowNewIFrameJoglHeatmap;
 import cerberus.command.window.CmdWindowNewIFrameJoglScatterplot;
 import cerberus.command.window.CmdWindowSetActiveFrame;
 import cerberus.command.window.swt.CmdWindowCreate;
+import cerberus.command.window.swt.CmdContainerCreate;
 
-import cerberus.command.queue.ICommandQueue;
 import cerberus.command.queue.CmdSystemRunCmdQueue;
 import cerberus.command.queue.CommandQueueVector;
 
@@ -219,10 +219,19 @@ extends ACommand
 			break;
 		}
 		
-		case CREATE_WINDOW_SWT:
+		case CREATE_SWT_WINDOW:
 		{
 			createdCommand =
 				new CmdWindowCreate(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_SWT_CONTAINER:
+		{
+			createdCommand =
+				new CmdContainerCreate(
 						refGeneralManager,
 						llAttributes );			
 			break;

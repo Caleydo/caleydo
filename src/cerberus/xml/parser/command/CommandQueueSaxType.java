@@ -38,7 +38,8 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_GEARS("cmd", "type"),
 	CREATE_VIEW_DATA_EXPLORER("cmd", "type"),
 	
-	CREATE_WINDOW_SWT("cmd", "type"),
+	CREATE_SWT_WINDOW("cmd", "type"),
+	CREATE_SWT_CONTAINER("cmd", "type"),
 	
 	RUN_CMD_NOW("cmd","process"),	
 	LOAD_ON_DEMAND("cmd","process"),

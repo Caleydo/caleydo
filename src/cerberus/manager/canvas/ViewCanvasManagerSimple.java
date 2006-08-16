@@ -64,7 +64,7 @@ implements IViewCanvasManager,
 	 */
 	public ViewCanvasManagerSimple( IGeneralManager refSingelton ) {
 		super(refSingelton,
-				IGeneralManager.iUniqueId_TypeOffset_GuiAWT );
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT );
 		
 		vecViewCanvas = new Vector<IViewCanvas>(10);
 		

@@ -58,7 +58,8 @@ public class SwingMenuManager
 	 */
 	public SwingMenuManager(IGeneralManager setGeneralManager) {
 		super( setGeneralManager,
-				IGeneralManager.iUniqueId_TypeOffset_GuiMenu );
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT_Menu );
+
 		
 		refViewCanvasManager = 
 			setGeneralManager.getSingelton().getViewCanvasManager();

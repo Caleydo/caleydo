@@ -24,7 +24,7 @@ public class ViewManagerSimple extends AAbstractManager implements
 	public ViewManagerSimple(IGeneralManager setGeneralManager)
 	{
 		super(setGeneralManager,
-				IGeneralManager.iUniqueId_TypeOffset_GuiAWT );
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 

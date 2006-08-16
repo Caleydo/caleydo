@@ -8,11 +8,11 @@ import cerberus.command.base.AManagedCommand;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 
-public class CmdCompositeCreate
+public class CmdContainerCreate
 extends AManagedCommand
 implements ICommand {
 
-	public CmdCompositeCreate( IGeneralManager refGeneralManager,
+	public CmdContainerCreate( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
 	{
 		super( -1, refGeneralManager );	

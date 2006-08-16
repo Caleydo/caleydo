@@ -74,7 +74,8 @@ implements ISWTGUIManager
 	public SWTGUIManager(IGeneralManager setGeneralManager)
 	{
 		super(setGeneralManager,
-				IGeneralManager.iUniqueId_TypeOffset_GuiSWT );
+				IGeneralManager.iUniqueId_TypeOffset_GUI_SWT );
+
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 

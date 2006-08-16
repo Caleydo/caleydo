@@ -233,8 +233,8 @@ public class CanvasSwingJoglManager
 			final boolean setIsPrimaryWindow ) {
 		
 		super( setManager,
-				IGeneralManager.iUniqueId_TypeOffset_GuiAWT );
-		
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT );
+
 		//TODO: check why the constructors differ!
 		
 		
@@ -255,7 +255,7 @@ public class CanvasSwingJoglManager
 	public CanvasSwingJoglManager(  final IGeneralManager setManager ) { 
 		
 		super( setManager,				
-				IGeneralManager.iUniqueId_TypeOffset_GuiAWT);
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT);
 		
 		//TODO: check why the constructors differ!
 		
