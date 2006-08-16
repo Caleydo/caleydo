@@ -8,7 +8,7 @@
  */
 package cerberus.data;
 
-import cerberus.data.IManagedObject;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 /**
@@ -17,15 +17,13 @@ import cerberus.manager.type.ManagerObjectType;
  * @author Michael Kalkusch
  *
  */
-public interface IUniqueManagedObject 
-extends IUniqueObject, IManagedObject {
+public interface IManagedObject {
 
-	
 	/**
-	 * Get the type of this object.
+	 * Get the manager that created the item.
 	 * 
-	 * @return type of this object
+	 * @return reference to ICollectionManager
 	 */
-	public ManagerObjectType getBaseType();
-	
+	public IGeneralManager getManager();	
+
 }
