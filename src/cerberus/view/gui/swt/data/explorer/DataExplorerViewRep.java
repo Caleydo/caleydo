@@ -59,20 +59,17 @@ implements ViewInter
 		//refSetTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SWT_SET_TABLE);
 		refDataTableViewRep = (DataTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SWT_DATA_TABLE);
 		
-		retrieveNewGUIContainer();
+//		retrieveNewGUIContainer();
 		initView();
-		drawView();
+//		drawView();
 	}
 	
 	public void initView()
 	{	
-//		RowLayout rowLayout = new RowLayout(); 
-//		rowLayout.wrap = false;
-//		rowLayout.pack = false;
-//		rowLayout.justify = true;
-//		rowLayout.type = SWT.HORIZONTAL;
-//		refSWTContainer.setLayout(rowLayout);
-		
+	}
+
+	public void drawView()
+	{
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.type = SWT.HORIZONTAL;
 		refSWTContainer.setLayout(fillLayout);
@@ -95,17 +92,11 @@ implements ViewInter
 		
 	}
 
-	public void drawView()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void retrieveNewGUIContainer()
 	{
 		SWTNativeWidget refSWTNativeWidget = 
 			(SWTNativeWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_NATIVE_WIDGET);
+		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();	
 	}
@@ -122,9 +113,7 @@ implements ViewInter
 	 * We assume here that a ISet consists of Storages and Selections 
 	 * which have the same dimension!
 	 * 
-	 * @see cerberus.manager.gui.SWTGUIManager#createApplicationWindow()
-	 * 
-	 * @param setGeneralManager reference to GeneralManager
+	 * @return Reference to the current SetModel
 	 */
     protected SetModel getInitalInput() 
     {

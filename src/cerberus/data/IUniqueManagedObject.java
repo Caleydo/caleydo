@@ -33,6 +33,4 @@ extends IUniqueObject {
 	 * @return type of this object
 	 */
 	public ManagerObjectType getBaseType();
-	
-
 }

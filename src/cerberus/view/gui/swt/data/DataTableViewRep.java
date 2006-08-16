@@ -40,7 +40,6 @@ implements DataTableViewInter
 	{
 		this.refGeneralManager = refGeneralManager;
 				
-		//retrieveNewGUIContainer();
 		initView();
 	}
 		

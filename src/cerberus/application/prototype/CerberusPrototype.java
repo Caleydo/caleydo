@@ -65,12 +65,6 @@ public class CerberusPrototype
 	
 	protected void parseInputFromXML()
 	{
-		// Read application data
-		CommandSaxHandler saxCmdHandler = 
-			new CommandSaxHandler(refGeneralManager);
-		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";
-		parseOnce( openInputStreamFromFile(filename), saxCmdHandler);
-		
 		// Read pathway data
 	  	KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 
@@ -86,6 +80,11 @@ public class CerberusPrototype
             t.printStackTrace();
         }
 		
+		// Read application data
+		CommandSaxHandler saxCmdHandler = 
+			new CommandSaxHandler(refGeneralManager);
+		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";
+		parseOnce( openInputStreamFromFile(filename), saxCmdHandler);
 		
 //		 MicroArrayLoader microArrayLoader = new MicroArrayLoader(generalManager);
 //		 microArrayLoader.setTargetSet(oneForAllManager.getSingelton().getSetManager().getItemSet(25101));
@@ -102,11 +101,11 @@ public class CerberusPrototype
 	
 	protected void createViews()
 	{
-		refViewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
-		refViewManager.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER);
-		refViewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
-		refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
-		refViewManager.createView(ManagerObjectType.VIEW_SWT_HISTOGRAM2D);
+//		refViewManager.createView(ManagerObjectType.VIEW_TEST_TABLE);
+//		refViewManager.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER);
+//		refViewManager.createView(ManagerObjectType.VIEW_SWT_GEARS);
+//		refViewManager.createView(ManagerObjectType.VIEW_PATHWAY);
+//		refViewManager.createView(ManagerObjectType.VIEW_SWT_HISTOGRAM2D);
 		
 //		ViewInter newView = refViewManager.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D);	
 //		

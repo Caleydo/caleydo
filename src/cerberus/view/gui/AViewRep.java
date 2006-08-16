@@ -12,7 +12,8 @@ import java.util.Iterator;
  */
 public abstract class AViewRep implements ViewInter
 {
-
+	protected int iParentContainerId;
+	
 	protected Vector <String> vecAttributes = null;
 
 	/**
@@ -44,5 +45,9 @@ public abstract class AViewRep implements ViewInter
 		
 		return cloneVecAttributes;
 	}
-
+	
+	public void setParentContainerId(int iParentContainerId)
+	{
+		this.iParentContainerId = iParentContainerId;
+	}
 }

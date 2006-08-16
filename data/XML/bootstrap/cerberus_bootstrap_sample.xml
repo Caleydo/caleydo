@@ -40,15 +40,18 @@
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="99006" targetId="35201" label="my Set1" attrib1="25201 35201" attrib2="25301 25301" /> 
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="99007" targetId="45201" label="target Set for file" attrib1="25201" attrib2="35301" /> 
 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_WINDOW_SWT" cmdId="990011" targetId="01401" label="Cerberus Prototype" />   
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_WINDOW_SWT" cmdId="990015" targetId="02401" label="Cerberus Prototype" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_WINDOW_SWT" cmdId="990011" targetId="10401" label="Cerberus Prototype" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_WINDOW_SWT" cmdId="990015" targetId="20401" label="Cerberus Prototype" />   
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201" label="Pathway" attrib1="014001" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="99012" targetId="55401" label="Data Explorer" attrib1="014001" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="99012" targetId="55401" label="Data Explorer" attrib1="10401" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99008" targetId="55201" label="Pathway" attrib1="10401" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="99009" targetId="56201" label="Pathway" attrib1="20401" />
+
+<!--	
+
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" targetId="55601" label="Gears" attrib1="024001" />
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" targetId="56601" label="Gears" attrib1="024001" />
 
-<!--	 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\tests\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="99009" targetId="55301" label="Heatmap" attrib="winId" />

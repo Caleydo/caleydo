@@ -1,6 +1,5 @@
 package cerberus.view.gui.swt.pathway.jgraph;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.geom.Rectangle2D;
@@ -65,10 +64,7 @@ implements PathwayViewInter
 		
 		vertexIdToCellLUT = new HashMap<Integer, DefaultGraphCell>();
 		
-		//FIXME: do the following code in a method
 		initView();
-		retrieveNewGUIContainer();
-		drawView();
 	}
 
 	public void initView()
@@ -188,7 +184,7 @@ implements PathwayViewInter
 	{
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
 			(SWTEmbeddedGraphWidget)refGeneralManager.getSingelton()
-				.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET);
+				.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET, iParentContainerId);
 
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
 	}
@@ -197,5 +193,5 @@ implements PathwayViewInter
 	{
 		// TODO Auto-generated method stub
 		
-	}	
+	}
 }

@@ -14,6 +14,7 @@ public class CmdWindowCreate
 extends AManagedCommand
 implements ICommand 
 {
+	protected int iUniqueCommandId;
 	protected int iUniqueWindowId;
 	
 	public CmdWindowCreate( GeneralManager refGeneralManager,
@@ -50,7 +51,8 @@ implements ICommand
 		assert iSizeList > 1 : "can not handle empty argument list!";					
 		
 		try 
-		{		
+		{	
+			this.iUniqueCommandId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
 			this.iUniqueWindowId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
 			return true;
 		}

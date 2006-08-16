@@ -237,6 +237,24 @@ extends ACommand
 //			break;
 //		}
 		
+		case CREATE_VIEW_GEARS:
+		{
+			createdCommand =
+				new CmdViewCreateGears(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_DATA_EXPLORER:
+		{
+			createdCommand =
+				new CmdViewCreateDataExplorer(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
 		case CREATE_VIEW_PATHWAY:
 		{
 			createdCommand =

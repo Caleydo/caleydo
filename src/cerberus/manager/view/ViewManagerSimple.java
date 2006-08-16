@@ -67,6 +67,10 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 		return false;
 	}
 
+	/**
+	 * Method creates a new ID and 
+	 * calls createView(ManagerObjectType useViewType, int iUniqueId).
+	 */
 	public ViewInter createView(final ManagerObjectType useViewType)
 	{
 		final int iUniqueId = this.createNewId(useViewType);
@@ -74,6 +78,10 @@ public class ViewManagerSimple extends AbstractManagerImpl implements
 		return createView(useViewType, iUniqueId);
 	}
 
+	/**
+	 * Method creates a new view representation according to the 
+	 * type parameter.
+	 */
 	public ViewInter createView(ManagerObjectType useViewType, int iUniqueId)
 	{
 		if (useViewType.getGroupType() != ManagerType.VIEW)

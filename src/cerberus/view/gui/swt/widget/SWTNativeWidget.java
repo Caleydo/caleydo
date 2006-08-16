@@ -11,6 +11,7 @@ package cerberus.view.gui.swt.widget;
 
 import cerberus.view.gui.swt.widget.ASWTWidget;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -23,15 +24,19 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class SWTNativeWidget extends ASWTWidget 
 {
+	protected Composite refComposite;
+	
 	/**
 	 * Constructor 
 	 * 
 	 * @param refComposite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTNativeWidget(Composite refComposite)
+	public SWTNativeWidget(Composite refParentComposite)
 	{
-		super(refComposite);
+		super(refParentComposite);
+
+		refComposite = new Composite(refParentComposite, SWT.NONE);
 	}
 
 	/**
