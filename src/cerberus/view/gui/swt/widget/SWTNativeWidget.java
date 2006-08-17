@@ -39,22 +39,31 @@ public class SWTNativeWidget extends ASWTWidget
 		
 		refComposite = new Composite(refParentComposite, SWT.NONE);
 		
-		GridData gridData;
+		GridData gridData = new GridData();
 		
-		if (iWidth != -1 || iHeight != -1)
+		if (iWidth != -1)
 		{
-			gridData = new GridData();
 			gridData.widthHint = iWidth;
-			gridData.heightHint = iHeight;
+			gridData.verticalAlignment = GridData.CENTER;
 		}
 		else
 		{
-			gridData = new GridData(GridData.FILL_BOTH);
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.grabExcessHorizontalSpace = true;
+		}
+		
+		if (iHeight != -1)
+		{
+			gridData.heightHint = iHeight;
+			gridData.horizontalAlignment = GridData.CENTER;
+		}
+		else
+		{
+			gridData.verticalAlignment = GridData.FILL;
+			gridData.grabExcessVerticalSpace = true;
 		}
 		
 		refComposite.setLayoutData(gridData);
-		
-		refComposite.setSize(iWidth, iHeight);
 	}
 
 	/**

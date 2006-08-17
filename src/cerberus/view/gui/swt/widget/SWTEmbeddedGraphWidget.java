@@ -43,17 +43,28 @@ public class SWTEmbeddedGraphWidget extends ASWTWidget
 		super(refParentComposite);
 		
 		Composite composite = new Composite(refParentComposite, SWT.EMBEDDED);
-		GridData gridData;
 		
-		if (iWidth != -1 || iHeight != -1)
+		GridData gridData = new GridData();
+		
+		if (iWidth != -1)
 		{
-			gridData = new GridData();
 			gridData.widthHint = iWidth;
+		}
+		else
+		{
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.grabExcessHorizontalSpace = true;
+		}
+		
+		
+		if (iHeight != -1)
+		{
 			gridData.heightHint = iHeight;
 		}
 		else
 		{
-			gridData = new GridData(GridData.FILL_BOTH);
+			gridData.verticalAlignment = GridData.FILL;
+			gridData.grabExcessVerticalSpace = true;
 		}
 		
 		composite.setLayoutData(gridData);

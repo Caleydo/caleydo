@@ -45,11 +45,11 @@
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW HORIZONTAL" />
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="10341" attrib2="-1 -1" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="800 400" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" attrib2="300 300" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="10341" attrib2="600 500" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 500" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" attrib2="-1 500" />
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="13401" label="Pathway" attrib1="20331" attrib2="500 200" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="13401" label="Pathway" attrib1="20331" attrib2="-1 -1" />
 
 <!--	
 
