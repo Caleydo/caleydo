@@ -297,6 +297,8 @@ public class CommandSaxHandler extends ACerberusDefaultSaxHandler  {
 			llAttributes.add( sData_Cmd_attribute1 );
 			llAttributes.add( sData_Cmd_attribute2 );
 			
+			System.err.println(" XML-TAG= " + sData_Cmd_label );
+			
 			lastCommand = refCommandManager.createCommand( 
 					sData_Cmd_type,
 					llAttributes );
@@ -490,6 +492,8 @@ public class CommandSaxHandler extends ACerberusDefaultSaxHandler  {
 								refGeneralManager.getSingelton().getLoggerManager().logMsg(
 										"Command: can not execute command du to error while parsing. skip it.");
 							}
+							
+						
 
 							
 						}

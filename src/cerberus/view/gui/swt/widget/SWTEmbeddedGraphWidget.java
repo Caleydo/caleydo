@@ -38,14 +38,26 @@ public class SWTEmbeddedGraphWidget extends ASWTWidget
 	 * @param Composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTEmbeddedGraphWidget(Composite refParentComposite)
+	public SWTEmbeddedGraphWidget(Composite refParentComposite, int iWidth, int iHeight)
 	{
 		super(refParentComposite);
 		
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		
 		Composite composite = new Composite(refParentComposite, SWT.EMBEDDED);
+		GridData gridData;
+		
+		if (iWidth != -1 || iHeight != -1)
+		{
+			gridData = new GridData();
+			gridData.widthHint = iWidth;
+			gridData.heightHint = iHeight;
+		}
+		else
+		{
+			gridData = new GridData(GridData.FILL_BOTH);
+		}
+		
 		composite.setLayoutData(gridData);
+		
 		refEmbeddedFrame = SWT_AWT.new_Frame(composite);
 	}
 

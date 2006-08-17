@@ -33,15 +33,28 @@ public class SWTNativeWidget extends ASWTWidget
 	 * @param refComposite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTNativeWidget(Composite refParentComposite)
+	public SWTNativeWidget(Composite refParentComposite, int iWidth, int iHeight)
 	{
 		super(refParentComposite);
 		
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		
 		refComposite = new Composite(refParentComposite, SWT.NONE);
+		
+		GridData gridData;
+		
+		if (iWidth != -1 || iHeight != -1)
+		{
+			gridData = new GridData();
+			gridData.widthHint = iWidth;
+			gridData.heightHint = iHeight;
+		}
+		else
+		{
+			gridData = new GridData(GridData.FILL_BOTH);
+		}
+		
 		refComposite.setLayoutData(gridData);
-
+		
+		refComposite.setSize(iWidth, iHeight);
 	}
 
 	/**

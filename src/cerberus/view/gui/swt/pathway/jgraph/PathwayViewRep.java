@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
@@ -27,8 +28,10 @@ import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.pathway.IPathwayView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
@@ -181,10 +184,17 @@ implements IPathwayView
 	}
 	
 	public void retrieveNewGUIContainer()
-	{
-		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
-			(SWTEmbeddedGraphWidget)refGeneralManager.getSingelton()
-				.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET, iParentContainerId);
+	{			
+		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
+				CommandFactory.sDelimiter_CreateView_Size );
+
+		int iWidth = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
+		int iHeight = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
+		
+		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) refGeneralManager
+				.getSingelton().getSWTGUIManager().createWidget(
+						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
+						iParentContainerId, iWidth, iHeight);
 
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
 	}

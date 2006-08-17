@@ -11,6 +11,7 @@ package cerberus.manager.gui;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
@@ -28,9 +29,11 @@ import org.eclipse.jface.window.WindowManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AAbstractManager;
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.ISWTWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
@@ -50,12 +53,6 @@ public class SWTGUIManager
 extends AAbstractManager
 implements ISWTGUIManager
 {	
-	public enum LayoutDirection
-	{
-		HORIZONTAL,
-		VERTICAL
-	}
-	
 	/**
 	 * SWT Display represents a thread.
 	 */
@@ -99,6 +96,7 @@ implements ISWTGUIManager
 
 	/**
 	 * Method cretes an unique window ID and calls createWindow(iUniqueId)
+	 * with the default layout (ROW VERTICAL).
 	 * 
 	 * @return Newly created shell.
 	 */
@@ -107,7 +105,8 @@ implements ISWTGUIManager
 		// Register shell in the window map
 		final int iUniqueId = this.createNewId(ManagerObjectType.GUI_WINDOW);
 		
-		return createWindow(iUniqueId);
+		// use default layout
+		return createWindow(iUniqueId, "ROW VERTICAL");
 	}
 	
 	/**
@@ -116,7 +115,7 @@ implements ISWTGUIManager
 	 * 
 	 * @return Newly created shell.
 	 */	
-	public Shell createWindow(int iUniqueId)
+	public Shell createWindow(int iUniqueId, String sLayoutAttributes)
 	{
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
@@ -128,7 +127,7 @@ implements ISWTGUIManager
 		//refMenuBar = createMenuBar(refShell);
 		//refShell.setMenuBar(refMenuBar); 
 		
-		setUpLayout(refNewShell, LayoutDirection.VERTICAL);
+		setUpLayout(refNewShell, sLayoutAttributes);
 		
 //		//FIXME: just for testing
 //		refComposite = refNewShell;
@@ -136,32 +135,32 @@ implements ISWTGUIManager
 		return refNewShell;
 	}
 	
-	public Shell createWindow(final ManagerObjectType useWindowType)
-	{
-		Shell refNewShell = new Shell(refDisplay);
-		refNewShell.setLayout(new GridLayout());
-		refNewShell.setMaximized(true);
-		refNewShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
-		
-		// Register shell in the window map
-		final int iUniqueId = this.createNewId(useWindowType);
-		refWindowMap.put(iUniqueId, refNewShell);
-		
-		//refMenuBar = createMenuBar(refShell);
-		//refShell.setMenuBar(refMenuBar); 
-		
-		// TODO read layout direction for windows also from XML file
-		setUpLayout(refNewShell, LayoutDirection.HORIZONTAL);
-		
-		return refNewShell;
-	}
+//	public Shell createWindow(final ManagerObjectType useWindowType)
+//	{
+//		Shell refNewShell = new Shell(refDisplay);
+//		refNewShell.setLayout(new GridLayout());
+//		refNewShell.setMaximized(true);
+//		refNewShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
+//		
+//		// Register shell in the window map
+//		final int iUniqueId = this.createNewId(useWindowType);
+//		refWindowMap.put(iUniqueId, refNewShell);
+//		
+//		//refMenuBar = createMenuBar(refShell);
+//		//refShell.setMenuBar(refMenuBar); 
+//		
+//		// TODO read layout direction for windows also from XML file
+//		setUpLayout(refNewShell, "ROW VERTICAL");
+//		
+//		return refNewShell;
+//	}
 	
 	/**
 	 * Searches for the parent window in the map and 
 	 * creates a new composite in that window.
 	 */
 	public void createComposite(
-			int iUniqueId, int iUniqueParentContainerId, LayoutDirection layoutDirection)
+			int iUniqueId, int iUniqueParentContainerId, String refLayoutAttributes)
 	{
 		// TODO check if parent exists
 		Shell parentWindow = refWindowMap.get(iUniqueParentContainerId);
@@ -170,7 +169,7 @@ implements ISWTGUIManager
 		
 		refCompositeMap.put(iUniqueId, newComposite);
 
-		setUpLayout(newComposite, layoutDirection);
+		setUpLayout(newComposite, refLayoutAttributes);
 
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		newComposite.setLayoutData(gridData);
@@ -184,7 +183,7 @@ implements ISWTGUIManager
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refComposite);
+			newSWTWidget = new SWTNativeWidget(refComposite, -1, -1);
 			newSWTWidget.setId(iUniqueId);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
@@ -193,7 +192,7 @@ implements ISWTGUIManager
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite);
+			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite, -1, -1);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
@@ -203,7 +202,9 @@ implements ISWTGUIManager
 		}
 	}
 	
-	public ISWTWidget createWidget(final ManagerObjectType useWidgetType, int iUniqueParentContainerId)
+	public ISWTWidget createWidget(
+			final ManagerObjectType useWidgetType, 
+			int iUniqueParentContainerId, int iWidth, int iHeight)
 	{
 		final int iUniqueId = this.createNewId(useWidgetType);
 		ASWTWidget newSWTWidget;
@@ -222,7 +223,7 @@ implements ISWTGUIManager
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refComposite);
+			newSWTWidget = new SWTNativeWidget(refComposite, iWidth, iHeight);
 			newSWTWidget.setId(iUniqueId);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
@@ -231,7 +232,7 @@ implements ISWTGUIManager
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite);
+			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite, iWidth, iHeight);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
@@ -259,17 +260,48 @@ implements ISWTGUIManager
 //		//setUpLayout();
 //	}
 	
-	protected void setUpLayout(Composite refNewComposite, LayoutDirection layoutDirection)
+	protected void setUpLayout(Composite refNewComposite, String sLayoutAttributes)
 	{
+		String layoutType; // GRID or ROW
+		String layoutDirection; 
 		GridLayout gridLayout = new GridLayout();
-		
 		gridLayout.numColumns = 1;
 		
-		if (layoutDirection == LayoutDirection.HORIZONTAL)
-			gridLayout.numColumns = 2;
+		StringTokenizer token = new StringTokenizer(sLayoutAttributes,
+				CommandFactory.sDelimiter_CreateComposite_Layout );
+				
+		layoutType = token.nextToken();
+		
+		if (layoutType.equals("ROW"))
+		{
+			layoutDirection = token.nextToken();
+			if (layoutDirection.equals("HORIZONTAL"))
+			{
+				gridLayout.numColumns += 1;
+			}
+		}
+		else if (layoutType.equals("GRID"))
+		{
+			// real GRID layout is now implemented yet
+		}
+		else
+		{
+			// ERROR
+		}
 		
 		//gridLayout.makeColumnsEqualWidth = true;
 		refNewComposite.setLayout(gridLayout);
+		
+//		FillLayout fillLayout = new FillLayout();
+//		
+//		if (layoutDirection == LayoutDirection.HORIZONTAL)
+//		{
+//			fillLayout.type = SWT.HORIZONTAL;
+//		}
+//		else if (layoutDirection == LayoutDirection.VERTICAL)
+//		{
+//			fillLayout.type = SWT.VERTICAL;
+//		} 
 	}
 	
 	protected Menu createMenuBar(Shell refShell)

@@ -2,6 +2,7 @@ package cerberus.command.view.swt;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
@@ -22,11 +23,15 @@ implements ICommand
 	protected int iUniquePathwayId;
 	protected String sLabel;
 	protected int iUniqueParentContainerId;
+	protected Vector<String> refVecAttributes;
 	
 	public CmdViewCreatePathway( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
 	{
 		super( -1, refGeneralManager );	
+		
+		refVecAttributes = new Vector<String>();
+		
 		setAttributes( listAttributes );
 	}
 
@@ -38,6 +43,7 @@ implements ICommand
 
 		//pathwayView.setLabel(sLabel);
 		pathwayView.setParentContainerId(iUniqueParentContainerId);
+		pathwayView.setAttributes(refVecAttributes);
 		pathwayView.retrieveNewGUIContainer();
 		pathwayView.drawView();
 	}
@@ -89,6 +95,10 @@ implements ICommand
 			iter.next();
 			
 			iUniqueParentContainerId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
+			
+			// Add view size
+			refVecAttributes.addElement(iter.next());
+			
 			return true;
 		}
 		catch ( NumberFormatException nfe ) 

@@ -16,6 +16,7 @@ implements ICommand
 {
 	protected int iUniqueCommandId;
 	protected int iUniqueWindowId;
+	protected String sLayoutAttributes;
 	
 	public CmdWindowCreate( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
@@ -27,7 +28,7 @@ implements ICommand
 	public void doCommand() throws CerberusRuntimeException
 	{
 		refGeneralManager.getSingelton().
-			getSWTGUIManager().createWindow(iUniqueWindowId);	
+			getSWTGUIManager().createWindow(iUniqueWindowId, sLayoutAttributes);	
 	}
 
 	public void undoCommand() throws CerberusRuntimeException
@@ -54,6 +55,17 @@ implements ICommand
 		{	
 			this.iUniqueCommandId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
 			this.iUniqueWindowId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
+			
+			// Skip some attributes
+			// FIXME here is a bug - ask michael!
+			String bla;
+			bla = iter.next();
+			bla = iter.next();
+			bla = iter.next();
+			bla = iter.next();
+			
+			sLayoutAttributes = iter.next();
+
 			return true;
 		}
 		catch ( NumberFormatException nfe ) 

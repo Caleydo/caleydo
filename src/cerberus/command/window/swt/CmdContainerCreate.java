@@ -2,12 +2,16 @@ package cerberus.command.window.swt;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import org.eclipse.swt.widgets.Composite;
 
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.base.AManagedCommand;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.gui.SWTGUIManager.LayoutDirection;
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
@@ -18,7 +22,7 @@ implements ICommand
 	protected int iUniqueCommandId;
 	protected int iUniqueContainerId;
 	protected int iUniqueParentContainerId;
-	protected LayoutDirection layoutDirection;
+	protected String sLayoutAttributes;
 	
 	public CmdContainerCreate( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
@@ -31,9 +35,7 @@ implements ICommand
 	{
 		refGeneralManager.getSingelton().
 			getSWTGUIManager().createComposite(
-					iUniqueContainerId, iUniqueParentContainerId, layoutDirection);	
-		
-		
+					iUniqueContainerId, iUniqueParentContainerId, sLayoutAttributes);	
 	}
 
 	public void undoCommand() throws CerberusRuntimeException
@@ -72,12 +74,7 @@ implements ICommand
 			
 			iUniqueParentContainerId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
 
-			String sAlignment = iter.next();
-			if (sAlignment.equals("HORIZONTAL"))
-				layoutDirection = LayoutDirection.HORIZONTAL;
-			else 
-				layoutDirection = LayoutDirection.VERTICAL;
-			
+			sLayoutAttributes = iter.next();
 			
 			return true;
 		}

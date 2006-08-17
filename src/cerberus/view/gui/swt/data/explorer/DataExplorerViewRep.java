@@ -1,6 +1,8 @@
 package cerberus.view.gui.swt.data.explorer;
 
+import java.awt.Dimension;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -18,8 +20,10 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISetManager;
 import cerberus.manager.IStorageManager;
 import cerberus.manager.ISelectionManager;
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewManagerSimple;
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
@@ -94,9 +98,16 @@ implements IView
 
 	public void retrieveNewGUIContainer()
 	{
-		SWTNativeWidget refSWTNativeWidget = 
-			(SWTNativeWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId);
+		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
+				CommandFactory.sDelimiter_CreateView_Size );
+
+		int iWidth = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
+		int iHeight = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
+		
+		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
+				.getSingelton().getSWTGUIManager().createWidget(
+						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
+						iParentContainerId, iWidth, iHeight);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();	
 	}

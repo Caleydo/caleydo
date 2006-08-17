@@ -85,6 +85,10 @@ extends ACommand
 	public static final String sDelimiter_CreateSelection_DataItems 	= " ";
 	public static final String sDelimiter_CreateSelection_DataItemBlock = "@";
 	
+	public static final String sDelimiter_CreateComposite_Layout 		= " ";
+	
+	public static final String sDelimiter_CreateView_Size				= " ";
+	
 	/**
 	 * Constructor
 	 * 
