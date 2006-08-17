@@ -6,6 +6,7 @@ package cerberus.xml.parser.manager;
 import org.xml.sax.ContentHandler;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.xml.parser.handler.IXmlParserHandler;
 
 
 /**
@@ -31,7 +32,7 @@ extends ContentHandler
 	/**
 	 * Register a SaxHandler by its opening Tag.
 	 * 	 
-	 * @see cerberus.xml.parser.manager.IXmlParserHandler#initHandler()
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
 	 * 
 	 * @param handler register handler to an opening tag.
 	 * @param sOpeningAndClosingTag defines opening and closing tag tiggering the handler to become active.
@@ -45,7 +46,7 @@ extends ContentHandler
 	/**
 	 * Calls cerberus.xml.parser.base.IXmlParserHandler#destroyHandler()
 	 * 
-	 * @see cerberus.xml.parser.manager.IXmlParserHandler#destroyHandler()
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()
 	 * 
 	 * @param handler handel, that should be unregistered.
 	 * 
@@ -61,4 +62,16 @@ extends ContentHandler
 	 * @return TRUE if handle was unregistered.
 	 */
 	public boolean unregisterSaxHandler( final String sActivationXmlTag );	
+	
+	
+	/**
+	 * Callback called by cerberus.xml.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
+	 * 
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler
+	 * @see orl.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * 
+	 * @param handler calling handler, that just read its closing tag
+	 * 
+	 */
+	public void sectionFinishedByHandler(IXmlParserHandler handler);
 }

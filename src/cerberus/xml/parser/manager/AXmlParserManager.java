@@ -12,7 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.data.IManagedObject;
 import cerberus.manager.IGeneralManager;
-import cerberus.xml.parser.manager.IXmlParserHandler;
+import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 /**
  * @author kalkusch
@@ -180,7 +180,7 @@ implements IXmlParserManager, IManagedObject
 		}		
 		return false;
 	}
-
+	
 	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.manager.IXmlParserManager#unregisterSaxHandler(java.lang.String)

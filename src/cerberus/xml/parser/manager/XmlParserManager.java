@@ -8,7 +8,10 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.manager.AXmlParserManager;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author kalkusch
@@ -64,6 +67,9 @@ implements IXmlParserManager
 			Attributes attrib) throws SAXException
 	{
 		if ( currentHandler == null ) {
+			
+			System.out.println(" < TAG= " + qName);
+			
 			if ( hashTag2XmlParser.containsKey( qName ) ) {
 				openCurrentTag( hashTag2XmlParser.get( qName ) );
 			}
@@ -93,6 +99,8 @@ implements IXmlParserManager
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException
 	{
+		System.out.println("        " + qName + " TAG -->");
+		
 		if ( currentHandler != null ) {
 			if ( sCurrentClosingTag.equals( qName ) ) {
 				this.closeCurrentTag();
@@ -116,6 +124,28 @@ implements IXmlParserManager
 		}
 	}
 
+	
+	public final void sectionFinishedByHandler(IXmlParserHandler handler)
+	{
+		/**
+		 * allow unregistering of handler
+		 */
+		setXmlFileProcessedNow( false );
+		
+		if ( currentHandler != handler ) {
+			throw new CerberusRuntimeException("sectionFinishedByHandler() called by wrong handler!",
+					CerberusExceptionType.SAXPARSER);
+		}
+		
+		
+		closeCurrentTag();		
+		
+		
+		/**
+		 * enable processing flag again. Return "token".		 
+		 */
+		setXmlFileProcessedNow( true );
+	}
 
 
 

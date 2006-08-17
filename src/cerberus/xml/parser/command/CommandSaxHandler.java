@@ -13,10 +13,11 @@ import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IMenuManager;
+//import cerberus.manager.IMenuManager;
 import cerberus.manager.ICommandManager;
-import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.ACerberusDefaultSaxHandler;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
 
 /**
@@ -488,7 +489,7 @@ public class CommandSaxHandler extends ACerberusDefaultSaxHandler  {
 							if ( lastCommand == null ) 
 							{
 								refGeneralManager.getSingelton().getLoggerManager().logMsg(
-										"Command: can not execute command du to error while parsing. skip it.");
+										"Command: can not execute command due to error while parsing. skip it.");
 							}
 							
 						

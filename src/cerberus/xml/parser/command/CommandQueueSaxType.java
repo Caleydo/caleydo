@@ -45,6 +45,8 @@ public enum CommandQueueSaxType
 	LOAD_ON_DEMAND("cmd","process"),
 	MEMENTO("cmd","process"),	
 	
+	TAG_CMD("cmd","Cmd"),
+	TAG_CMD_QUEUE("cmd","CmdQueue"),
 	TAG_CMD_ID("cmd","cmdId"),
 	TAG_TARGET_ID("cmd","targetId"),
 	TAG_MEMENTO_ID("cmd","mementoId"),

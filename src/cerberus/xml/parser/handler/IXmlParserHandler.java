@@ -1,9 +1,12 @@
 /**
  * 
  */
-package cerberus.xml.parser.manager;
+package cerberus.xml.parser.handler;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
+
+import cerberus.xml.parser.manager.IXmlParserManager;
 
 
 /**
@@ -14,6 +17,8 @@ public interface IXmlParserHandler
 extends ContentHandler
 {
 
+
+	
 	/**
 	 * Initilisation of handler.
 	 * Called once by Manager before using the handler.

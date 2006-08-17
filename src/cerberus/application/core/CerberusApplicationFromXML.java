@@ -24,6 +24,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 //import cerberus.manager.CommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
+import cerberus.util.system.CerberusInputStream;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
@@ -110,43 +111,6 @@ public class CerberusApplicationFromXML {
 //		
 //	}
 	
-	public boolean parseOnce( InputSource inStream, 
-			ACerberusDefaultSaxHandler handler) {
-		
-		try {
-			XMLReader reader = XMLReaderFactory.createXMLReader();			
-			reader.setContentHandler( handler );
-			
-			try {						
-				reader.parse( inStream );
-			} 
-			catch ( IOException e) {
-				System.out.println(" EX " + e.toString() );
-			}
-			
-			/**
-			 * Use data from parser to restore state...
-			 */ 
-			
-			System.out.println("PARSE DONE\n  INFO:" +
-					handler.getErrorMessage() );
-			
-			/**
-			 * Restore state...
-			 */
-		
-			inStream.getCharacterStream().close();
-		}
-		catch (SAXException se) {
-			System.out.println("ERROR SE " + se.toString() );
-		} // end try-catch SAXException
-		catch (IOException ioe) {
-			System.out.println("ERROR IO " + ioe.toString() );
-		} // end try-catch SAXException, IOException
-		
-		
-		return true;
-	}
 	
 	/**
 	 * Bootstrapping of IGeneralManager and menus inside the views. 
@@ -163,12 +127,17 @@ public class CerberusApplicationFromXML {
 		
 		System.out.print("   bootloader read data from file.. ");
 		
-		parseOnce( openInputStreamFromFile(filename), saxHandler);
+		CerberusInputStream.parseOnce( 
+				CerberusInputStream.openInputStreamFromFile(filename),
+				saxHandler);
 		
-		parseOnce( openInputStreamFromFile(filename), 
+		CerberusInputStream.parseOnce( 
+				CerberusInputStream.openInputStreamFromFile(filename),
 				new SwingJMenuSaxHandler( refGeneralManager, canvasManager ) );
 		
-		parseOnce( openInputStreamFromFile(filename), saxCmdHandler);
+		CerberusInputStream.parseOnce( 
+				CerberusInputStream.openInputStreamFromFile(filename),
+				saxCmdHandler);
 		
 		System.out.println(" views initialized!");
 		
@@ -221,7 +190,7 @@ public class CerberusApplicationFromXML {
 			String configutaion = receiveMsg.getOperation( 0 ).getNodeString();						
 			InputSource in = new InputSource(new StringReader(configutaion));				
 			
-			parseOnce( in, saxHandler);
+			CerberusInputStream.parseOnce( in, saxHandler);
 			
 			System.out.println("PARSE done.");
 			
@@ -241,28 +210,7 @@ public class CerberusApplicationFromXML {
 		return initializedGeneralManager();
 	}
 	
-	/**
-	 * Opens a file and returns an input stream to that file.
-	 * 
-	 * @param sXMLFileName name abd path of the file
-	 * @return input stream of the file, or null
-	 */
-	protected InputSource openInputStreamFromFile( final String sXMLFileName ) {
-		
-		try {
-			File inputFile = new File( sXMLFileName );		
-			FileReader inReader = new FileReader( inputFile );
-			
-			InputSource inStream = new InputSource( inReader );
-			
-			return inStream;
-		}
-		catch ( FileNotFoundException fnfe) {
-			System.out.println("File not found " + fnfe.toString() );
-		}
-		return null;
-	}
-	
+
 	/**
 	 * @param args
 	 */
