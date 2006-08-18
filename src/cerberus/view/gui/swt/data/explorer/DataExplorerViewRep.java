@@ -20,9 +20,9 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISetManager;
 import cerberus.manager.IStorageManager;
 import cerberus.manager.ISelectionManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.view.ViewManagerSimple;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
@@ -53,13 +53,15 @@ implements IView
 	
 	protected SetModel rootSet;
 	
+	private ISelectionChangedListener refISelectionChangedListener;
+	
 	public DataExplorerViewRep(int iNewId, IGeneralManager refGeneralManager)
 	{
 		this.iNewId = iNewId;
 		this.refGeneralManager = refGeneralManager;
 				
-		ViewManagerSimple viewManager = 
-			(ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		IViewManager viewManager = 
+			(IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
 		//refSetTableViewRep = viewManager.createView(ManagerObjectType.VIEW_SWT_SET_TABLE);
 		refDataTableViewRep = (DataTableViewRep)viewManager.createView(ManagerObjectType.VIEW_SWT_DATA_TABLE);
 		

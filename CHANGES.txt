@@ -3,3 +3,4 @@
 2006-07-31 kalkusch: checkin swt.jar for win32, version M20060629-1905-win32-win32-x86
 2006-08-02 streit: added required packages for jFace namly org.eclipse.* v3.1.2 in folder cerberus\bin\ext_jar\jface
 2006-08-03 kalkusch: added documentation on useded *.jar packeges
+2006-08-17: kalkusch: nested class inside "DataExplorerViewRep::protected void hookListeners() { treeViewer.addSelectionChangedListener( new ISelectionChangedListener() { ... } ) }; maybe move nested class to "private ISelectionChangedListener refISelectionChangedListener;"

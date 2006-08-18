@@ -62,7 +62,7 @@ implements IView, ISwtJoglContainerViewRep
 	 */
 	protected AJoglContainerViewRep(int iNewId, IGeneralManager setRefGeneralManager)
 	{
-		super( iNewId, setRefGeneralManager);
+		super( setRefGeneralManager, iNewId, -1);
 		
 		//FIXME: do the following code in a method
 //		initView();

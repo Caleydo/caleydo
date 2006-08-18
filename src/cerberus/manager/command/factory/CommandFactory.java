@@ -21,10 +21,12 @@ import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 
+
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
 import cerberus.command.view.swt.CmdViewCreatePathway;
+import cerberus.command.view.swt.CmdViewCreateProgressBar;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
 import cerberus.command.window.CmdWindowNewIFrameScatterplot2D;
@@ -263,6 +265,15 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdViewCreateDataExplorer(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_PROGRESSBAR:
+		{
+			createdCommand =
+				new CmdViewCreateProgressBar(
 						refGeneralManager,
 						llAttributes );			
 			break;

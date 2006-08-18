@@ -98,6 +98,8 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_DATA_TABLE(ManagerType.VIEW),
 	
+	VIEW_SWT_PROGRESS_BAR(ManagerType.VIEW),
+	
 	VIEW_SWT_SET_TABLE(ManagerType.VIEW),
 	
 	VIEW_SWT_STORAGE_TABLE(ManagerType.VIEW),

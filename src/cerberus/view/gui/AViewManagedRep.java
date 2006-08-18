@@ -18,47 +18,28 @@ extends AUniqueManagedObject
 implements IView
 {
 
+	/**
+	 * parentId of the parent SWT container
+	 */
+	protected int iParentContainerId;
+	
+	/**
+	 * Lsit of attributes inside a vector.
+	 */
 	protected Vector <String> vecAttributes = null;
 	
 	/**
 	 * 
 	 */
-	public AViewManagedRep( final int iSetCollectionId, 
-			final IGeneralManager setGeneralManager)
+	public AViewManagedRep( final IGeneralManager setGeneralManager,
+			final int iSetCollectionId,
+			final int iParentContainerId )
 	{
 		super( iSetCollectionId, setGeneralManager );
+		
+		this.iParentContainerId = iParentContainerId;
 	}
 
-
-	/**
-	 * Set attributes for this view.
-	 * Overwrite previous attributes.
-	 * 
-	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
-	 */
-	public void setAttributes( final Vector<String> attributes)
-	{ 
-		vecAttributes = attributes;
-	}
-	
-	/**
-	 * Get a copy of the current attributes.
-	 *  
-	 * @return copy of the current attributes
-	 */
-	protected final Vector<String> getAttributes()
-	{
-		Vector <String> cloneVecAttributes = 
-			new Vector <String> ( vecAttributes.size() );
-				
-		Iterator <String> iter = vecAttributes.iterator();
-		
-		while ( iter.hasNext() ) {
-			cloneVecAttributes.addElement( iter.next() );
-		}
-		
-		return cloneVecAttributes;
-	}
 	
 	/**
 	 * Get one attribute by its index.
@@ -102,5 +83,56 @@ implements IView
 		}
 		
 	}
+	
+	
+	/**
+	 * Set teh parent Id of this SWT container.
+	 * 
+	 * @param setParentContainerId parentId of the parent SWT container
+	 */
+	public final void setParentContainerId( final int setParentContainerId) {
+		this.iParentContainerId = setParentContainerId;
+	}
+	
+	/**
+	 * Get parentId of the parent SWT container.
+	 * 
+	 * @return parentId of the parent SWT container
+	 */
+	public final int getParentContainerId() {
+		return this.iParentContainerId;
+	}
+	
+	/**
+	 * Set attributes for this view.
+	 * Overwrite previous attributes.
+	 * 
+	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
+	 */
+	public void setAttributes( final Vector<String> attributes)
+	{ 
+		vecAttributes = attributes;
+	}
+	
+	/**
+	 * Get a copy of the current attributes.
+	 *  
+	 * @return copy of the current attributes
+	 */
+	protected final Vector<String> getAttributes()
+	{
+		Vector <String> cloneVecAttributes = 
+			new Vector <String> ( vecAttributes.size() );
+				
+		Iterator <String> iter = vecAttributes.iterator();
+		
+		while ( iter.hasNext() ) {
+			cloneVecAttributes.addElement( iter.next() );
+		}
+		
+		return cloneVecAttributes;
+	}
+	
+	
 
 }

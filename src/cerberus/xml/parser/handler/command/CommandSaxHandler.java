@@ -173,7 +173,8 @@ implements IXmlParserHandler
 		}
 		catch ( Exception e) 
 		{
-			System.err.println(" ERROR while parsing " + e.toString() );
+			System.err.println("CommandSaxHandler.readCommandData(" +
+					attrs.toString() + ") ERROR while parsing " + e.toString() );
 			
 			return null;
 		}

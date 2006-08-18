@@ -13,4 +13,6 @@ public interface IView
 	public void retrieveExistingGUIContainer();
 	
 	public void setAttributes( Vector <String> attributes );
+	
+	public void setParentContainerId(int iParentContainerId);
 }

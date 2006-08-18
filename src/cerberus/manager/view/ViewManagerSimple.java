@@ -11,6 +11,7 @@ import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.data.set.SetTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
+import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
@@ -101,7 +102,9 @@ public class ViewManagerSimple extends AAbstractManager implements
 		case VIEW_PATHWAY:
 			return new PathwayViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_DATA_EXPLORER:
-			return new DataExplorerViewRep(iUniqueId, this.refGeneralManager);	
+			return new DataExplorerViewRep(iUniqueId, this.refGeneralManager);
+		case VIEW_SWT_PROGRESS_BAR:
+			return new ProgressBarViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_TEST_TABLE:
 			return new TestTableViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_DATA_TABLE:
