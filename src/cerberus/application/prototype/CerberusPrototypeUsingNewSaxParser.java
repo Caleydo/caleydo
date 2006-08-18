@@ -66,27 +66,24 @@ public class CerberusPrototypeUsingNewSaxParser
 	}
 
 	public void run()
-	{
+	{		
+		parsePathwayDataFromXML();
+		parseBootstrapDataFromXML();
 		
-		/**
-		 * Parse XML file...
-		 */
+		refSWTGUIManager.runApplication();
+	}
+	
+	protected void parseBootstrapDataFromXML()
+	{
 		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";
 		
 		InputSource inSource = 
 			CerberusInputStream.openInputStreamFromFile( filename );
 					
 		CerberusInputStream.parseOnce( inSource , refXmlParserManager );
-		/**
-		 * END: Parse XML file...
-		 */		
-		
-		parseInputFromXML();
-		
-		refSWTGUIManager.runApplication();
 	}
 	
-	protected void parseInputFromXML()
+	protected void parsePathwayDataFromXML()
 	{
 		// Read pathway data
 	  	KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
