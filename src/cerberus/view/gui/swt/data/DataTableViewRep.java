@@ -1,14 +1,23 @@
 package cerberus.view.gui.swt.data;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
@@ -73,6 +82,8 @@ implements IDataTableView
 		refTable.setHeaderVisible(true);
 		refTable.setLinesVisible(true);
 		refTable.setSize(300, 400);
+		
+		initTableEditor();
 	}
 	
 	public void createStorageTable(int iRequestedStorageId)
@@ -87,7 +98,8 @@ implements IDataTableView
 		int iTableColumnIndex = 0;
 		int iNumberOfTableRows = 0;
 		
-		// Find maximum array size to know the needed number of rows in the table.
+		// Find maximum array size to know the needed number of rows in the
+		// table.
 		int[] storageAllSize = refCurrentStorage.getAllSize();
 		for(int storageSizeIndex = 0; storageSizeIndex < storageAllSize.length; storageSizeIndex++)
 		{
@@ -221,5 +233,66 @@ implements IDataTableView
 		{
 			refTable.getColumn(columnIndex).dispose();
 		}
+	}
+	
+	protected void initTableEditor()
+	{	
+		final TableEditor editor = new TableEditor(refTable);
+		editor.horizontalAlignment = SWT.LEFT;
+		editor.grabHorizontal = true;
+		refTable.addListener (SWT.MouseDown, new Listener () 
+		{
+			public void handleEvent (Event event) 
+			{
+				Rectangle clientArea = refTable.getClientArea ();
+				Point pt = new Point (event.x, event.y);
+				int index = refTable.getTopIndex ();
+				while (index < refTable.getItemCount ()) 
+				{
+					boolean visible = false;
+					final TableItem item = refTable.getItem (index);
+					for (int i = 0; i < refTable.getColumnCount (); i++) 
+					{
+						Rectangle rect = item.getBounds (i);
+						if (rect.contains (pt)) {
+							final int column = i;
+							final Text text = new Text(refTable, SWT.NONE);
+							Listener textListener = new Listener () {
+								public void handleEvent (final Event e) {
+									switch (e.type) {
+										case SWT.FocusOut:
+											item.setText (column, text.getText ());
+											text.dispose ();
+											break;
+										case SWT.Traverse:
+											switch (e.detail) {
+												case SWT.TRAVERSE_RETURN:
+													item.setText (column, text.getText ());
+													// FALL THROUGH
+												case SWT.TRAVERSE_ESCAPE:
+													text.dispose ();
+													e.doit = false;
+											}
+											break;
+									}
+								}
+							};
+							text.addListener (SWT.FocusOut, textListener);
+							text.addListener (SWT.Traverse, textListener);
+							editor.setEditor (text, item, i);
+							text.setText (item.getText (i));
+							text.selectAll ();
+							text.setFocus ();
+							return;
+						}
+						if (!visible && rect.intersects (clientArea)) {
+							visible = true;
+						}
+					}
+					if (!visible) return;
+					index++;
+				}
+			}
+		});
 	}
 }
