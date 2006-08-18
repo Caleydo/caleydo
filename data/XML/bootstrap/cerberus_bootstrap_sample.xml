@@ -40,14 +40,15 @@
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Prototype" attrib1="ROW VERTICAL" />   
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Prototype" attrib1="ROW VERTICAL" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Prototype" attrib1="ROW HORIZONTAL" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Prototype" attrib1="ROW HORIZONTAL" />   
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW HORIZONTAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW VERTICAL" />
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="10341" attrib2="600 500" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="10341" attrib2="-1 100" />
+
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 500" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" attrib2="-1 500" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" attrib2="-1 -1" />
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="13401" label="Pathway" attrib1="20331" attrib2="-1 -1" />
 
