@@ -49,6 +49,7 @@ public class SWTEmbeddedGraphWidget extends ASWTWidget
 		if (iWidth != -1)
 		{
 			gridData.widthHint = iWidth;
+			gridData.horizontalAlignment = GridData.CENTER;
 		}
 		else
 		{
@@ -56,10 +57,10 @@ public class SWTEmbeddedGraphWidget extends ASWTWidget
 			gridData.grabExcessHorizontalSpace = true;
 		}
 		
-		
 		if (iHeight != -1)
 		{
 			gridData.heightHint = iHeight;
+			gridData.verticalAlignment = GridData.CENTER;
 		}
 		else
 		{

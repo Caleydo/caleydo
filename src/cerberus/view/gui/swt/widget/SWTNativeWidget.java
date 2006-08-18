@@ -44,7 +44,7 @@ public class SWTNativeWidget extends ASWTWidget
 		if (iWidth != -1)
 		{
 			gridData.widthHint = iWidth;
-			gridData.verticalAlignment = GridData.CENTER;
+			gridData.horizontalAlignment = GridData.CENTER;
 		}
 		else
 		{
@@ -55,7 +55,7 @@ public class SWTNativeWidget extends ASWTWidget
 		if (iHeight != -1)
 		{
 			gridData.heightHint = iHeight;
-			gridData.horizontalAlignment = GridData.CENTER;
+			gridData.verticalAlignment = GridData.CENTER;
 		}
 		else
 		{

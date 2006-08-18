@@ -67,7 +67,7 @@ public class CerberusPrototypeUsingNewSaxParser
 
 	public void run()
 	{		
-		parsePathwayDataFromXML();
+		//parsePathwayDataFromXML();
 		parseBootstrapDataFromXML();
 		
 		refSWTGUIManager.runApplication();
