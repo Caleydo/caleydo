@@ -21,16 +21,13 @@ public class TestTableViewRep
 extends AViewRep 
 implements IView
 {
-	protected final int iNewId;
-	protected IGeneralManager refGeneralManager;
 	protected Composite refSWTContainer;
 	
-	public TestTableViewRep(int iNewId, IGeneralManager refGeneralManager)
+	public TestTableViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
 	{
-		this.iNewId = iNewId;
-		this.refGeneralManager = refGeneralManager;
-		
-		//FIXME: do the following code in a method
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+
 		initView();
 		retrieveNewGUIContainer();
 		drawView();

@@ -35,9 +35,9 @@ implements IUniqueManagedObject {
 	/**
 	 * 
 	 */
-	protected AUniqueManagedObject( int iSetCollectionId, IGeneralManager setGeneralManager ) {
+	protected AUniqueManagedObject( int iUniqueId, IGeneralManager setGeneralManager ) {
 
-		super( iSetCollectionId );
+		super( iUniqueId );
 		
 		assert setGeneralManager != null: "SetFlatSimple() with null pointer";
 		

@@ -16,16 +16,16 @@ public class Heatmap2DViewRep
 extends AViewRep 
 implements IView
 {
-	protected final int iNewId;
-	protected IGeneralManager refGeneralManager;
 	protected GLCanvas refGLCanvas;
 	
-	public Heatmap2DViewRep(int iNewId, IGeneralManager refGeneralManager)
+	public Heatmap2DViewRep(
+			IGeneralManager refGeneralManager, 
+			int iViewId, 
+			int iParentContainerId, 
+			String sLabel)
 	{
-		this.iNewId = iNewId;
-		this.refGeneralManager = refGeneralManager;
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
 		
-		//FIXME: do the following code in a method
 		initView();
 		retrieveNewGUIContainer();
 		drawView();

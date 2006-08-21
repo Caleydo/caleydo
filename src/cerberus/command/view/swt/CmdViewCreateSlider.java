@@ -8,15 +8,16 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
+import cerberus.view.gui.swt.slider.SliderViewRep;
 
 /**
- * Class implementes the command for creating a gears view.
+ * Class implementes the command for creating a slider view.
  * 
  * @author Marc Streit
  *
  */
-public class CmdViewCreateGears extends CmdViewCreateAdapter implements ICommand 
+public class CmdViewCreateSlider extends CmdViewCreateAdapter implements
+		ICommand
 {
 	/**
 	 * Constructor
@@ -24,7 +25,7 @@ public class CmdViewCreateGears extends CmdViewCreateAdapter implements ICommand
 	 * @param refGeneralManager
 	 * @param listAttributes List of attributes
 	 */
-	public CmdViewCreateGears(
+	public CmdViewCreateSlider(
 			IGeneralManager refGeneralManager,
 			final LinkedList<String> listAttributes)
 	{
@@ -32,21 +33,20 @@ public class CmdViewCreateGears extends CmdViewCreateAdapter implements ICommand
 	}
 
 	/**
-	 * Method creates a gears view, sets the attributes 
+	 * Method creates a slider view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		GearsViewRep gearsView = (GearsViewRep) ((IViewManager)refGeneralManager.
-				getManagerByBaseType(ManagerObjectType.VIEW)).
-					createView(ManagerObjectType.VIEW_SWT_GEARS, 
-							iViewId, iParentContainerId, sLabel);
-		
-		gearsView.setAttributes(refVecAttributes);
-		gearsView.extractAttributes();
-		gearsView.retrieveNewGUIContainer();
-		gearsView.initView();
-		gearsView.drawView();
-	}
+		SliderViewRep sliderView = (SliderViewRep) ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW)).createView(
+				ManagerObjectType.VIEW_SWT_SLIDER, 
+				iViewId, iParentContainerId, sLabel);
 
+		sliderView.setAttributes(refVecAttributes);
+		sliderView.extractAttributes();
+		sliderView.retrieveNewGUIContainer();
+		sliderView.initView();
+		sliderView.drawView();
+	}
 }

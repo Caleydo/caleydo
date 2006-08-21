@@ -1,12 +1,16 @@
 package cerberus.view.gui.swt.data.meta;
 
+import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.data.IDataTableView;
 
-public class MetaTableViewRep 
-extends AViewRep 
-implements IDataTableView
-{
+public class MetaTableViewRep extends AViewRep implements IDataTableView
+{	
+	public MetaTableViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
+	{
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+	}
 
 	public void initView()
 	{

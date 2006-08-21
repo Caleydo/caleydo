@@ -9,8 +9,9 @@ import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.SWTGUIManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.IView;
 import cerberus.view.gui.AViewManagedRep;
+import cerberus.view.gui.IView;
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.exception.CerberusExceptionType;
@@ -56,18 +57,11 @@ implements IView, ISwtJoglContainerViewRep
 	 * Default constructor.
 	 * 
 	 * After calling the construtor the follogwing methodes should 
-	 * 
-	 * @param iNewId
-	 * @param setRefGeneralManager
 	 */
-	protected AJoglContainerViewRep(int iNewId, IGeneralManager setRefGeneralManager)
+	public AJoglContainerViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super( setRefGeneralManager, iNewId, -1);
-		
-		//FIXME: do the following code in a method
-//		initView();
-//		retrieveNewGUIContainer();
-//		drawView();
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
 	}
 
 	/**

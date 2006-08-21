@@ -16,16 +16,14 @@ public class Scatterplot2DViewRep
 extends AViewRep 
 implements IView
 {
-	protected final int iNewId;
 	protected IGeneralManager refGeneralManager;
 	protected GLCanvas refGLCanvas;
 	
-	public Scatterplot2DViewRep(int iNewId, IGeneralManager refGeneralManager)
+	public Scatterplot2DViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
 	{
-		this.iNewId = iNewId;
-		this.refGeneralManager = refGeneralManager;
-		
-		//FIXME: do the following code in a method
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+
 		initView();
 		retrieveNewGUIContainer();
 		drawView();

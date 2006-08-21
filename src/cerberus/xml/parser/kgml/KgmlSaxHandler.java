@@ -14,8 +14,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class KgmlSaxHandler extends DefaultHandler 
 {
-	private Attributes attributes = null;
-	private Pathway currentPathway = null;
+	private Attributes attributes;
+	private Pathway currentPathway;
 	
 	private HashMap<Integer, Integer> kgmlIdToElementIdLUT;
 	

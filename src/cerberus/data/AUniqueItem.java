@@ -29,10 +29,10 @@ public abstract class AUniqueItem implements IUniqueObject
 	/**
 	 * 
 	 */
-	protected AUniqueItem(int iSetCollectionId)
+	protected AUniqueItem(int iUniqueId)
 	{
 
-		iUniqueId = iSetCollectionId;
+		this.iUniqueId = iUniqueId;
 	}
 
 	/**

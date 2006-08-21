@@ -17,27 +17,28 @@ public abstract class AViewManagedRep
 extends AUniqueManagedObject
 implements IView
 {
-
-	/**
-	 * parentId of the parent SWT container
-	 */
+	protected IGeneralManager refGeneralManager;
+	
+	protected final int iViewId;
+	
 	protected int iParentContainerId;
 	
-	/**
-	 * Lsit of attributes inside a vector.
-	 */
-	protected Vector <String> vecAttributes = null;
+	protected String sLabel;
 	
-	/**
-	 * 
-	 */
-	public AViewManagedRep( final IGeneralManager setGeneralManager,
-			final int iSetCollectionId,
-			final int iParentContainerId )
+	protected Vector <String> vecAttributes;
+	
+	public AViewManagedRep(
+			final IGeneralManager refGeneralManager, 
+			final int iViewId, 
+			final int iParentContainerId, 
+			final String sLabel)
 	{
-		super( iSetCollectionId, setGeneralManager );
+		super(iViewId, refGeneralManager);
 		
+		this.refGeneralManager = refGeneralManager;
+		this.iViewId = iViewId;
 		this.iParentContainerId = iParentContainerId;
+		this.sLabel = sLabel;
 	}
 
 	

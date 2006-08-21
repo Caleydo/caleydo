@@ -1,99 +1,52 @@
 package cerberus.command.view.swt;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Vector;
 
-import cerberus.command.CommandType;
 import cerberus.command.ICommand;
-import cerberus.command.base.AManagedCommand;
+import cerberus.command.view.CmdViewCreateAdapter;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 
-
-public class CmdViewCreateDataExplorer
-extends AManagedCommand
-implements ICommand 
+/**
+ * Class implementes the command for creating a data explorer view.
+ * 
+ * @author Marc Streit
+ *
+ */
+public class CmdViewCreateDataExplorer extends CmdViewCreateAdapter implements
+		ICommand
 {
-	protected int iUniqueCommandId;
-	protected int iUniqueDataExplorerId;
-	protected int iUniqueParentContainerId;
-	protected Vector<String> refVecAttributes;
-	
-	public CmdViewCreateDataExplorer( IGeneralManager refGeneralManager,
-		final LinkedList <String> listAttributes ) 
+	/**
+	 * Constructor
+	 * 
+	 * @param refGeneralManager
+	 * @param listAttributes List of attributes
+	 */
+	public CmdViewCreateDataExplorer(
+			IGeneralManager refGeneralManager,
+			final LinkedList<String> listAttributes)
 	{
-		super( -1, refGeneralManager );	
-		
-		refVecAttributes = new Vector<String>();
-		
-		setAttributes( listAttributes );
+		super(refGeneralManager, listAttributes);
 	}
 
+	/**
+	 * Method creates a data explorer view, sets the attributes 
+	 * and calls the init and draw method.
+	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep) ((IViewManager)refGeneralManager.
-				getManagerByBaseType(ManagerObjectType.VIEW)).
-					createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER, iUniqueDataExplorerId);
+		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep) ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW))
+				.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
+						iViewId, iParentContainerId, sLabel);
 
-		//pathwayView.setLabel(sLabel);
-		dataExplorerView.setParentContainerId(iUniqueParentContainerId);
 		dataExplorerView.setAttributes(refVecAttributes);
+		dataExplorerView.extractAttributes();
 		dataExplorerView.retrieveNewGUIContainer();
+		dataExplorerView.initView();
 		dataExplorerView.drawView();
 	}
-
-	public void undoCommand() throws CerberusRuntimeException
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	public CommandType getCommandType() throws CerberusRuntimeException
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	protected boolean setAttributes( final LinkedList <String> listAttrib ) 
-	{
-		assert listAttrib != null: "can not handle null object!";		
-		
-		Iterator <String> iter = listAttrib.iterator();		
-		final int iSizeList= listAttrib.size();
-		
-		assert iSizeList > 1 : "can not handle empty argument list!";					
-		
-		try 
-		{		
-			iUniqueCommandId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
-			iUniqueDataExplorerId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
-			
-			// Skip label argument
-			iter.next();
-			
-			// Skip process, memenoto and detail argument
-			iter.next();
-			iter.next();
-			iter.next();
-			
-			iUniqueParentContainerId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
-
-			// Add view size
-			refVecAttributes.add(iter.next());
-			
-			return true;
-		}
-		catch ( NumberFormatException nfe ) 
-		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"CmdDataCreateWindow::doCommand() error on attributes!");			
-			return false;
-		}	
-	}
-
 }

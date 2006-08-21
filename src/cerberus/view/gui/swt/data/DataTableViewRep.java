@@ -34,7 +34,6 @@ public class DataTableViewRep
 extends AViewRep 
 implements IDataTableView
 {
-	protected final IGeneralManager refGeneralManager;
 	protected IStorageManager refStorageManager;
 	protected ISelectionManager refSelectionManager;
 	protected Composite refSWTContainer;
@@ -45,9 +44,9 @@ implements IDataTableView
 
 	protected Table refTable;
 	
-	public DataTableViewRep(IGeneralManager refGeneralManager)
+	public DataTableViewRep(IGeneralManager refGeneralManager, int iParentId)
 	{
-		this.refGeneralManager = refGeneralManager;
+		super(refGeneralManager, -1, iParentId, "");
 				
 		initView();
 	}

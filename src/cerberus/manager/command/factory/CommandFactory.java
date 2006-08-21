@@ -27,6 +27,7 @@ import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
 import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.view.swt.CmdViewCreateProgressBar;
+import cerberus.command.view.swt.CmdViewCreateSlider;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
 import cerberus.command.window.CmdWindowNewIFrameScatterplot2D;
@@ -287,6 +288,16 @@ extends ACommand
 						llAttributes );			
 			break;
 		}
+
+		case CREATE_VIEW_SLIDER:
+		{
+			createdCommand =
+				new CmdViewCreateSlider(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 

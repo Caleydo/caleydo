@@ -40,7 +40,6 @@ public enum CommandType {
 	DATASET_RELOAD(CommandTypeGroup.DATASET,"Re-Load a data set from file or network"),
 	DATASET_SAVE(CommandTypeGroup.DATASET,"Save a data set to file or network"),
 	
-	
     // ---  Errors ---
 	ERROR_UNKOWN_COMMAND(CommandTypeGroup.ERROR,"Error caused by unkown command type"),
 			

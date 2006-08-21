@@ -86,11 +86,11 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_SCATTERPLOT3D(ManagerType.VIEW),
 	
-	VIEW_DENDROGRAM(ManagerType.VIEW),
+	VIEW_SWT_DENDROGRAM(ManagerType.VIEW),
 	
-	VIEW_PATHWAY(ManagerType.VIEW),
+	VIEW_SWT_PATHWAY(ManagerType.VIEW),
 	
-	VIEW_TEST_TABLE(ManagerType.VIEW),
+	VIEW_SWT_TEST_TABLE(ManagerType.VIEW),
 	
 	VIEW_SWT_GEARS(ManagerType.VIEW),
 	
@@ -103,6 +103,8 @@ public enum ManagerObjectType {
 	VIEW_SWT_STORAGE_TABLE(ManagerType.VIEW),
 	
 	VIEW_SWT_SELECTION_TABLE(ManagerType.VIEW),
+	
+	VIEW_SWT_SLIDER(ManagerType.VIEW),
 	
 	VIEW_META_TABLE(ManagerType.VIEW),
 	

@@ -17,19 +17,12 @@ public class GearsViewRep
 extends AViewRep 
 implements IView
 {
-	protected final int iNewId;
-	protected IGeneralManager refGeneralManager;
 	protected GLCanvas refGLCanvas;
 	
-	public GearsViewRep(int iNewId, IGeneralManager refGeneralManager)
+	public GearsViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
 	{
-		this.iNewId = iNewId;
-		this.refGeneralManager = refGeneralManager;
-		
-		//FIXME: do the following code in a method
-		initView();
-		retrieveNewGUIContainer();
-		drawView();
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 	}
 	
 	public void initView()

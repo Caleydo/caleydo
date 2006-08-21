@@ -49,8 +49,6 @@ public class PathwayViewRep
 extends AViewRep 
 implements IPathwayView
 {
-	protected final int iNewId;
-	protected IGeneralManager refGeneralManager;
 	protected Frame refEmbeddedFrame;
 	
 	protected GraphModel refGraphModel;
@@ -60,14 +58,12 @@ implements IPathwayView
 	
 	private HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
 	
-	public PathwayViewRep(int iNewId, IGeneralManager refGeneralManager)
+	public PathwayViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
 	{
-		this.iNewId = iNewId;
-		this.refGeneralManager = refGeneralManager;
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
 		vertexIdToCellLUT = new HashMap<Integer, DefaultGraphCell>();
-		
-		initView();
 	}
 
 	public void initView()

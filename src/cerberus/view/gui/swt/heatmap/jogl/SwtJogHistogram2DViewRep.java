@@ -47,14 +47,10 @@ implements ISwtJoglContainerViewRep, IView, GLEventListener
 	
 	protected ISet refSet = null;
 	
-	/**
-	 * @param iNewId
-	 * @param setRefGeneralManager
-	 */
-	public SwtJogHistogram2DViewRep(int iNewId,
-			IGeneralManager setRefGeneralManager)
+	public SwtJogHistogram2DViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(iNewId, setRefGeneralManager);
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
 		vecSet = new Vector <ISet> (); 
 		
