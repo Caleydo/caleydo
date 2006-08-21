@@ -20,7 +20,7 @@ import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.manager.singelton.OneForAllManager;
-import cerberus.manager.view.ViewManagerSimple;
+import cerberus.manager.view.ViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.command.CommandSaxHandler;
@@ -30,7 +30,7 @@ public class CerberusPrototype
 {
 	protected IGeneralManager refGeneralManager;
 	protected SWTGUIManager refSWTGUIManager;
-	protected ViewManagerSimple refViewManager;
+	protected ViewManager refViewManager;
 	
 	public static void main(String[] args) 
 	{
@@ -51,7 +51,7 @@ public class CerberusPrototype
 		
 		refSWTGUIManager = (SWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
 		
-		refViewManager = (ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);		
+		refViewManager = (ViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);		
 	}
 
 	public void run()

@@ -18,7 +18,7 @@ import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.manager.singelton.OneForAllManager;
-import cerberus.manager.view.ViewManagerSimple;
+import cerberus.manager.view.ViewManager;
 import cerberus.manager.type.ManagerObjectType;
 //import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 //import cerberus.xml.parser.command.CommandSaxHandler;
@@ -31,7 +31,7 @@ public class CerberusPrototypeUsingNewSaxParser
 {
 	protected IGeneralManager refGeneralManager;
 	protected SWTGUIManager refSWTGUIManager;
-	protected ViewManagerSimple refViewManager;	
+	protected ViewManager refViewManager;	
 	protected XmlParserManager refXmlParserManager;
 	
 	public static void main(String[] args) 
@@ -53,7 +53,7 @@ public class CerberusPrototypeUsingNewSaxParser
 		
 		refSWTGUIManager = (SWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
 		
-		refViewManager = (ViewManagerSimple) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		refViewManager = (ViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
 		
 		refXmlParserManager = new XmlParserManager( refGeneralManager, false );
 		
@@ -67,7 +67,7 @@ public class CerberusPrototypeUsingNewSaxParser
 
 	public void run()
 	{		
-		//parsePathwayDataFromXML();
+		parsePathwayDataFromXML();
 		parseBootstrapDataFromXML();
 		
 		refSWTGUIManager.runApplication();
