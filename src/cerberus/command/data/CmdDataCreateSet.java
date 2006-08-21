@@ -23,10 +23,10 @@ import cerberus.command.CommandType;
 import cerberus.command.base.AManagedCommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISelectionManager;
-import cerberus.manager.ISetManager;
-import cerberus.manager.IStorageManager;
 import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.ISetManager;
+import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 

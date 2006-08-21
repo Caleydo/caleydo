@@ -1,5 +1,8 @@
 package cerberus.manager;
 
+import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.ISetManager;
+import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerType;
 
 public interface ISingelton {

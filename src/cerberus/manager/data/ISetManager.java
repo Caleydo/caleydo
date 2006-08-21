@@ -6,8 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager;
+package cerberus.manager.data;
 
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.ISet;
 

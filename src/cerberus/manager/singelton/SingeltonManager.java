@@ -15,14 +15,14 @@ import cerberus.manager.ILoggerManager;
 import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.ISWTGUIManager;
-import cerberus.manager.ISelectionManager;
-import cerberus.manager.ISetManager;
 import cerberus.manager.ISingelton;
-import cerberus.manager.IStorageManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
+import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.ISetManager;
+import cerberus.manager.data.IStorageManager;
 import cerberus.manager.logger.ConsoleSimpleLogger;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 

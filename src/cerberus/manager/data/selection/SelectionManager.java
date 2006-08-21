@@ -12,8 +12,8 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISelectionManager;
 import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.ISelection;

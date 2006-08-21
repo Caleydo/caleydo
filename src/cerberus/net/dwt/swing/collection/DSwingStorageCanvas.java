@@ -34,9 +34,9 @@ import javax.swing.BoxLayout;
 
 import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISelectionManager;
-import cerberus.manager.ISetManager;
-import cerberus.manager.IStorageManager;
+import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.ISetManager;
+import cerberus.manager.data.IStorageManager;
 import cerberus.manager.singelton.IGeneralManagerSingelton;
 import cerberus.manager.type.ManagerObjectType;
 

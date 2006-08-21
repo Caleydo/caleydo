@@ -12,8 +12,8 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISetManager;
 import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IStorage;

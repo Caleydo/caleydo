@@ -11,8 +11,8 @@ package cerberus.manager.data.storage;
 import java.util.Vector;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IStorageManager;
 import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IStorage;
@@ -108,7 +108,7 @@ implements IStorageManager {
 	/**
 	 *  
 	 * @see cerberus.manager.IGeneralManager#getItem(int)
-	 * @see cerberus.manager.IStorageManager#getItemStorage(int)
+	 * @see cerberus.manager.data.IStorageManager#getItemStorage(int)
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 */

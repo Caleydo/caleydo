@@ -29,8 +29,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  * @see prometheus.data.manager.SelectionManger
- * @see cerberus.manager.ISetManager
- * @see cerberus.manager.IStorageManager
+ * @see cerberus.manager.data.ISetManager
+ * @see cerberus.manager.data.IStorageManager
  * 
  */
 public abstract class ICollectionManager 

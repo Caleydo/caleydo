@@ -24,9 +24,9 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISelectionManager;
-import cerberus.manager.ISetManager;
-import cerberus.manager.IStorageManager;
+import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.ISetManager;
+import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 

@@ -22,8 +22,8 @@ import cerberus.command.base.ACommand;
 import cerberus.command.base.AManagedCommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IStorageManager;
 import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
