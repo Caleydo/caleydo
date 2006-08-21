@@ -37,7 +37,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public class ViewCanvasManagerSimple 
+public class ViewCanvasManager 
 extends ICollectionManager
 implements IViewCanvasManager,
 		IGeneralManager {
@@ -62,7 +62,7 @@ implements IViewCanvasManager,
 	/**
 	 * 
 	 */
-	public ViewCanvasManagerSimple( IGeneralManager refSingelton ) {
+	public ViewCanvasManager( IGeneralManager refSingelton ) {
 		super(refSingelton,
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT );
 		
@@ -86,7 +86,7 @@ implements IViewCanvasManager,
 	 * @param iTargetFrameId unique Id ot address Frame
 	 * @param sAditionalParameter additional parameters
 	 * 
-	 * @see cerberus.manager.canvas.ViewCanvasManagerSimple#createCanvas(ManagerObjectType, String)
+	 * @see cerberus.manager.canvas.ViewCanvasManager#createCanvas(ManagerObjectType, String)
 	 * 
 	 * @return new DInternalFrame as child of frame addressed via iTargetFrameId
 	 */

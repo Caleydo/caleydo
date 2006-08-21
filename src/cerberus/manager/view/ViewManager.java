@@ -9,7 +9,6 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
-import cerberus.view.gui.swt.data.set.SetTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
@@ -18,12 +17,12 @@ import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
 
-public class ViewManagerSimple 
+public class ViewManager 
 extends AAbstractManager
 implements IViewManager
 {
 
-	public ViewManagerSimple(IGeneralManager setGeneralManager)
+	public ViewManager(IGeneralManager setGeneralManager)
 	{
 		super(setGeneralManager,
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT );
@@ -110,8 +109,6 @@ implements IViewManager
 			return new TestTableViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_DATA_TABLE:
 			return new DataTableViewRep(this.refGeneralManager);		
-		case VIEW_SWT_SET_TABLE:
-			return new SetTableViewRep(this.refGeneralManager);		
 		case VIEW_SWT_GEARS:
 			return new GearsViewRep(iUniqueId, this.refGeneralManager);
 		case VIEW_SWT_HEATMAP2D:

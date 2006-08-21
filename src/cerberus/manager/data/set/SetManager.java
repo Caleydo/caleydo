@@ -28,7 +28,7 @@ import cerberus.data.collection.set.SetPlanarSimple;
  * @author Michael Kalkusch
  *
  */
-public class SetManagerSimple 
+public class SetManager 
 extends ICollectionManager
 implements ISetManager {
 
@@ -49,7 +49,7 @@ implements ISetManager {
 	/**
 	 * 
 	 */
-	public SetManagerSimple( IGeneralManager setSingelton,
+	public SetManager( IGeneralManager setSingelton,
 			final int iInitSizeContainer ) {
 		super( setSingelton , 
 				IGeneralManager.iUniqueId_TypeOffset_Set );

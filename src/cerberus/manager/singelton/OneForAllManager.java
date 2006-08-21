@@ -21,17 +21,17 @@ import cerberus.manager.IStorageManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewManager;
-import cerberus.manager.canvas.ViewCanvasManagerSimple;
+import cerberus.manager.canvas.ViewCanvasManager;
 import cerberus.manager.command.CommandManagerSimple;
-import cerberus.manager.data.selection.SelectionManagerSimple;
-import cerberus.manager.data.set.SetManagerSimple;
-import cerberus.manager.data.storage.StorageManagerSimple;
+import cerberus.manager.data.selection.SelectionManager;
+import cerberus.manager.data.set.SetManager;
+import cerberus.manager.data.storage.StorageManager;
 import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
 import cerberus.manager.logger.ConsoleSimpleLogger;
-import cerberus.manager.memento.MementoManagerSimple;
+import cerberus.manager.memento.MementoManager;
 import cerberus.manager.menu.swing.SwingMenuManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.view.ViewManagerSimple;
+import cerberus.manager.view.ViewManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.data.collection.IStorage;
 import cerberus.data.xml.IMementoXML;
@@ -145,16 +145,16 @@ implements IGeneralManagerSingelton {
 		bAllManagersInizailized = true;
 		
 		
-		refStorageManager = new StorageManagerSimple(this, 4);
-		refSelectionManager = new SelectionManagerSimple(this, 4);
-		refSetManager = new SetManagerSimple(this, 4);
-		refMementoManager = new MementoManagerSimple(this);
+		refStorageManager = new StorageManager(this, 4);
+		refSelectionManager = new SelectionManager(this, 4);
+		refSetManager = new SetManager(this, 4);
+		refMementoManager = new MementoManager(this);
 		refDComponentManager = new DComponentSwingFactoryManager(this);
-		refViewCanvasManager = new ViewCanvasManagerSimple( this );
+		refViewCanvasManager = new ViewCanvasManager( this );
 		refCommandManager = new CommandManagerSimple( this );
 		refMenuManager = new SwingMenuManager( this );		
 		refLoggerManager = new ConsoleSimpleLogger( this );
-		refViewManager = new ViewManagerSimple( this );
+		refViewManager = new ViewManager( this );
 		refSWTGUIManager = new SWTGUIManager( this );
 		
 		

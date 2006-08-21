@@ -31,7 +31,7 @@ import cerberus.data.loader.MicroArrayLoader;
  * @author Michael Kalkusch
  *
  */
-public class SelectionManagerSimple 
+public class SelectionManager 
 extends ICollectionManager
 implements ISelectionManager
 {
@@ -48,7 +48,7 @@ implements ISelectionManager
 	/**
 	 * 
 	 */
-	public SelectionManagerSimple( IGeneralManager setGeneralManager,
+	public SelectionManager( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
 		super( setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Selection );

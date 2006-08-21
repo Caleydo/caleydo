@@ -29,7 +29,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public class StorageManagerSimple 
+public class StorageManager 
 extends ICollectionManager
 implements IStorageManager {
 	
@@ -42,7 +42,7 @@ implements IStorageManager {
 	/**
 	 * 
 	 */
-	public StorageManagerSimple( IGeneralManager setGeneralManager,
+	public StorageManager( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
 		
 		super( setGeneralManager, 

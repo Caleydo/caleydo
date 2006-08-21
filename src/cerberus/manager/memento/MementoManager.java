@@ -34,7 +34,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public class MementoManagerSimple 
+public class MementoManager 
  extends AAbstractManager
  implements IMementoManager {
 	
@@ -55,7 +55,7 @@ public class MementoManagerSimple
 	 * 
 	 * Allocates Vector and Hashtable.
 	 */
-	public MementoManagerSimple(final IGeneralManager setGeneralManager) {
+	public MementoManager(final IGeneralManager setGeneralManager) {
 		
 		super( setGeneralManager,
 				IGeneralManager.iUniqueId_TypeOffset_Memento );

@@ -60,7 +60,7 @@ public interface IViewCanvasManager extends IGeneralManager
 	 * @param iTargetFrameId unique Id ot address Frame
 	 * @param sAditionalParameter additional parameters
 	 * 
-	 * @see cerberus.manager.canvas.ViewCanvasManagerSimple#createCanvas(ManagerObjectType, String)
+	 * @see cerberus.manager.canvas.ViewCanvasManager#createCanvas(ManagerObjectType, String)
 	 * @see cerberus.manager.IViewCanvasManager#createCanvas(ManagerObjectType, String)
 	 * 
 	 * @return new DInternalFrame as child of frame addressed via iTargetFrameId
