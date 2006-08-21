@@ -18,8 +18,9 @@ import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
 
-public class ViewManagerSimple extends AAbstractManager implements
-		IViewManager
+public class ViewManagerSimple 
+extends AAbstractManager
+implements IViewManager
 {
 
 	public ViewManagerSimple(IGeneralManager setGeneralManager)

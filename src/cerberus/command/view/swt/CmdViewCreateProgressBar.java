@@ -23,11 +23,14 @@ implements ICommand
 	protected int iUniqueDataExplorerId;
 	protected int iUniqueParentContainerId;
 	protected int iProgressPercentage;
+	protected Vector<String> refVecAttributes;
 	
 	public CmdViewCreateProgressBar( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
 	{
 		super( -1, refGeneralManager );	
+		
+		refVecAttributes = new Vector<String>();
 		
 		setAttributes( listAttributes );
 	}
@@ -41,8 +44,10 @@ implements ICommand
 
 		//pathwayView.setLabel(sLabel);
 		progressBarView.setParentContainerId(iUniqueParentContainerId);
+		progressBarView.setAttributes(refVecAttributes);
+		//progressBarView.setProgressBarStyle(iProgressPercentage);
+		progressBarView.setProgressBarPercentage(iProgressPercentage);
 		progressBarView.retrieveNewGUIContainer();
-		progressBarView.setProgressBarStyle( iProgressPercentage );
 		progressBarView.initView();
 		progressBarView.drawView();
 	}
@@ -79,10 +84,12 @@ implements ICommand
 			// Skip process, memenoto and detail argument
 			iter.next();
 			iter.next();
-			iter.next();
+			iProgressPercentage = (StringConversionTool.convertStringToInt( iter.next(), 0 ) );
 			
 			iUniqueParentContainerId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
-			iProgressPercentage = (StringConversionTool.convertStringToInt( iter.next(), 0 ) );
+
+			// Add view size
+			refVecAttributes.addElement(iter.next());
 			
 			setId( iUniqueCommandId );
 			

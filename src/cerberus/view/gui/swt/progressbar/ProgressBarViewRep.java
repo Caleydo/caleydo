@@ -9,6 +9,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
@@ -27,21 +30,19 @@ import cerberus.view.gui.swt.data.DataTableViewRep;
  */
 public class ProgressBarViewRep extends AViewManagedRep implements IView
 {
-
-	protected int iSWT_widht = 200;
-	protected int iSWT_height = 50;
+	protected int iProgressBarMinValue = 0;
 	
-	protected int iProgressBar_minValue = 0;
+	protected int iProgressBarMaxValue = 100;
 	
-	protected int iProgressBar_maxValue = 100;
-	
-	protected int iProgressBar_currentValue = 0;
+	protected int iProgressBarCurrentValue = 0;
 	
 	protected Composite refSWTContainer;
 	
 	protected ProgressBar refProgressBar;
 	
-	protected int iPrograssBarStyle = SWT.HORIZONTAL;
+	protected int iProgressBarStyle = SWT.HORIZONTAL;
+	protected int iHeight = 0;
+	protected int iWidth = 0;
 	
 //	protected DataTableViewRep refDataTableViewRep;
 	
@@ -80,11 +81,11 @@ public class ProgressBarViewRep extends AViewManagedRep implements IView
 		}
 		
 		if ( setStyle == SWT.HORIZONTAL ) {
-			iPrograssBarStyle = SWT.HORIZONTAL;
+			iProgressBarStyle = SWT.HORIZONTAL;
 			return;
 		}
 		else if ( setStyle == SWT.VERTICAL ) {
-			iPrograssBarStyle = SWT.VERTICAL;
+			iProgressBarStyle = SWT.VERTICAL;
 			return;
 		}
 		
@@ -94,7 +95,7 @@ public class ProgressBarViewRep extends AViewManagedRep implements IView
 		System.out.println(
 				"WARNING: set progressbar in unsupportet style; use Horizontal instead!");
 		
-		iPrograssBarStyle = SWT.HORIZONTAL;		
+		iProgressBarStyle = SWT.HORIZONTAL;		
 	}
 	
 	/**
@@ -106,18 +107,18 @@ public class ProgressBarViewRep extends AViewManagedRep implements IView
 	 * @return SWT.HORIZONTAL or SWT.VERTICAL
 	 */
 	public final int getProgressBarStyle() {
-		if ( iPrograssBarStyle == SWT.HORIZONTAL )
+		if ( iProgressBarStyle == SWT.HORIZONTAL )
 		{
 			return SWT.HORIZONTAL;			
 		}
-		else if ( iPrograssBarStyle == SWT.VERTICAL ) 
+		else if ( iProgressBarStyle == SWT.VERTICAL ) 
 		{
 			return SWT.VERTICAL;
 		}
 		
 		//TODO: optimize! just return value!
 		
-		return iPrograssBarStyle;
+		return iProgressBarStyle;
 	}
 	
 	/* (non-Javadoc)
@@ -131,16 +132,12 @@ public class ProgressBarViewRep extends AViewManagedRep implements IView
 		}
 		
 		refProgressBar = 
-			new ProgressBar( refSWTContainer, iPrograssBarStyle );	
+			new ProgressBar( refSWTContainer, iProgressBarStyle );	
 		
-		refProgressBar.setMinimum( this.iProgressBar_minValue );
-		refProgressBar.setMaximum( this.iProgressBar_maxValue );
-		refProgressBar.setSelection( this.iProgressBar_currentValue );
-		
-		refProgressBar.setVisible( true );
-		
-		refSWTContainer.redraw();
-
+		refProgressBar.setMinimum( this.iProgressBarMinValue );
+		refProgressBar.setMaximum( this.iProgressBarMaxValue );
+		refProgressBar.setSelection( this.iProgressBarCurrentValue );
+		refProgressBar.setSize(iWidth, iHeight);
 	}
 
 	/* (non-Javadoc)
@@ -148,17 +145,7 @@ public class ProgressBarViewRep extends AViewManagedRep implements IView
 	 */
 	public void drawView()
 	{
-		
-		refProgressBar.setSelection( this.iProgressBar_currentValue );
-
-		Button testButton = new Button(refSWTContainer,0);
-		testButton.setText("TEST");
-		testButton.setVisible( true );
-		
-		refSWTContainer.redraw();
-		
-//		 refDataTableViewRep.setExternalGUIContainer(refSWTContainer);
-//			refDataTableViewRep.initTable();
+		refProgressBar.setSelection( this.iProgressBarCurrentValue );
 	}
 
 	/* (non-Javadoc)
@@ -166,14 +153,18 @@ public class ProgressBarViewRep extends AViewManagedRep implements IView
 	 */
 	public void retrieveNewGUIContainer()
 	{
+		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
+				CommandFactory.sDelimiter_CreateView_Size );
+
+		iWidth = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
+		iHeight = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iSWT_widht , iSWT_height);
+						iParentContainerId, iWidth , iHeight);
 
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();				
-		
+		refSWTContainer = refSWTNativeWidget.getSWTWidget();					
 	}
 
 	/* (non-Javadoc)
@@ -192,6 +183,12 @@ public class ProgressBarViewRep extends AViewManagedRep implements IView
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setProgressBarPercentage(int iProgressPercentage)
+	{
+		this.iProgressBarCurrentValue = iProgressPercentage;
+		
 	}
 
 }
