@@ -76,9 +76,9 @@ implements IViewManager
 //	 */
 //	public IView createView(final ManagerObjectType useViewType)
 //	{
-//		final int iViewId = this.createNewId(useViewType);
+//		final int iUniqueId = this.createNewId(useViewType);
 //		
-//		return createView(useViewType, iViewId);
+//		return createView(useViewType, iUniqueId);
 //	}
 
 	/**

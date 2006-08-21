@@ -1,41 +1,38 @@
-package cerberus.xml.parser.kgml;
+package cerberus.xml.parser.handler.importer.kegg;
 
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
+import cerberus.xml.parser.handler.IXmlParserHandler;
+import cerberus.xml.parser.manager.IXmlParserManager;
+import cerberus.xml.parser.handler.AXmlParserHandler;
 
 import org.xml.sax.Attributes;
+//import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+//import org.xml.sax.helpers.DefaultHandler;
 
 //import java.lang.Integer;
 
-public class KgmlSaxHandler extends DefaultHandler 
+public class KgmlSaxHandler2 extends AXmlParserHandler 
+implements IXmlParserHandler
 {
 	private Attributes attributes;
 	
-	private Pathway currentPathway;
-	
 	private HashMap<Integer, Integer> kgmlIdToElementIdLUT;
 	
-	public KgmlSaxHandler()
-	{
-		kgmlIdToElementIdLUT = new HashMap<Integer, Integer>(); 
+	public KgmlSaxHandler2(  final IGeneralManager refGeneralManager,
+			final IXmlParserManager refXmlParserManager)
+	{		
+		super( refGeneralManager, refXmlParserManager);
+		
+		kgmlIdToElementIdLUT = new HashMap<Integer, Integer>(); 	
+		
+		setXmlActivationTag("pathway");
 	}
-	
-    public void startDocument()
-    throws SAXException
-    {
-        System.out.println("Start parsing the document.");
-    }
-
-    public void endDocument()
-    throws SAXException
-    {
-       	System.out.println("End parsing the document.");
-    }
 	
     public void startElement(String namespaceURI,
             String sSimpleName,
@@ -316,4 +313,20 @@ public class KgmlSaxHandler extends DefaultHandler
 		
 	}
 
+	/**
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
+	 */
+	public void initHandler()
+	{
+		
+	}
+
+	/**
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()
+	 */
+	public void destroyHandler()
+	{
+		
+	}
+	
 }

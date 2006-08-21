@@ -9,9 +9,8 @@ import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.SWTGUIManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.AViewManagedRep;
-import cerberus.view.gui.IView;
 import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.exception.CerberusExceptionType;
@@ -40,7 +39,7 @@ import demos.gears.Gears;
  *
  */
 public abstract class AJoglContainerViewRep 
-extends AViewManagedRep
+extends AViewRep
 implements IView, ISwtJoglContainerViewRep
 {
 	/**

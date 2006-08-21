@@ -102,13 +102,6 @@ implements ISwtJoglContainerViewRep, IView, GLEventListener
 		System.out.println(" draw.." );
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.data.IUniqueManagedObject#getBaseType()
-	 */
-	public ManagerObjectType getBaseType()
-	{
-		return ManagerObjectType.VIEW_SWT_HISTOGRAM2D;
-	}
 	
 	public String toString() {
 		StringBuffer strBuf = new StringBuffer();

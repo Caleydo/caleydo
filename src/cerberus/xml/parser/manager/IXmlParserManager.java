@@ -4,6 +4,7 @@
 package cerberus.xml.parser.manager;
 
 import org.xml.sax.ContentHandler;
+import org.xml.sax.InputSource;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.handler.IXmlParserHandler;
@@ -31,16 +32,19 @@ extends ContentHandler
 	
 	/**
 	 * Register a SaxHandler by its opening Tag.
-	 * 	 
+	 * Calls getXmlActivationTag() and hasOpeningTagOnlyOnce() for each handler and
+	 * registers the handler using this data.
+	 * 
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#getXmlActivationTag()
 	 * 
 	 * @param handler register handler to an opening tag.
 	 * @param sOpeningAndClosingTag defines opening and closing tag tiggering the handler to become active.
 	 * 
 	 * @return TRUE if Handler could be register and FALSE if either handler or its associated opening Tag was already registered.
 	 */
-	public boolean registerSaxHandler( final IXmlParserHandler handler,
-			final boolean bOpeningTagExistsOnlyOnce );		
+	public boolean registerSaxHandler( final IXmlParserHandler handler );		
 	
 	
 	/**
@@ -74,4 +78,22 @@ extends ContentHandler
 	 * 
 	 */
 	public void sectionFinishedByHandler(IXmlParserHandler handler);
+	
+	/**
+	 * Open a new XML file and spart parsing it.
+	 * 
+	 * @param filename XML file name.
+	 * @return true if file existed and was parsed successfully
+	 */
+	public boolean parseXmlFileByName( String filename );
+	
+	/**
+	 * Open a new XML file and start parsing it
+	 * 
+	 * @param inputStream stream containing an XML file.
+	 * @return true if file existed and was parsed successfully
+	 */
+	public boolean parseXmlFileByInputStream( InputSource inputStream );
+	
+	
 }

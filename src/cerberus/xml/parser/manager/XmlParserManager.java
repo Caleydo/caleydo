@@ -4,16 +4,25 @@
 package cerberus.xml.parser.manager;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.xml.parser.manager.AXmlParserManager;
+import cerberus.util.system.CerberusInputStream;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.xml.parser.handler.IXmlParserHandler;
+import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
+import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler2;
+import cerberus.xml.parser.manager.AXmlParserManager;
 
 /**
+ * Administer several XML-SaxHandelers.
+ * Switches between several XML-SaxHandeler automatical, based by a registerd tag.
+ * 
+ * @see cerberus.xml.parser.handler.IXmlParserHandler
+ * 
  * @author kalkusch
  *
  */
@@ -22,6 +31,16 @@ extends AXmlParserManager
 implements IXmlParserManager
 {
 
+	/**
+	 * Define maximum number of recursions
+	 */
+	public final int iCountMaximumOpenedFile = 513;
+
+	/**
+	 * count number of recusrions in order to detect misbehaviour.
+	 */
+	private int iCountOpenedFiles = 0;		
+	
 	/**
 	 * TRUE defines, that handles may be cascaded.
 	 * Optimization!
@@ -40,6 +59,15 @@ implements IXmlParserManager
 		super( generalManager );
 		
 		this.bUseCascadingHandler = bUseCascadingHandler;
+		
+		OpenExternalXmlFileSaxHandler externalFileHandler =
+			new OpenExternalXmlFileSaxHandler( generalManager, this );
+						
+		KgmlSaxHandler2 kgmlParser = 
+			new KgmlSaxHandler2( generalManager, this );		
+		
+		registerSaxHandler( externalFileHandler );		
+		registerSaxHandler( kgmlParser );
 	}
 
 
@@ -63,15 +91,72 @@ implements IXmlParserManager
 	/* (non-Javadoc)
 	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
-	public void startElement(String uri, String localName, String qName,
+	public void startElement(String uri, 
+			String localName, 
+			String qName,
 			Attributes attrib) throws SAXException
 	{
-		if ( currentHandler == null ) {
+		if ( currentHandler == null ) 
+		{
 			
 			System.out.println(" < TAG= " + qName);
 			
-			if ( hashTag2XmlParser.containsKey( qName ) ) {
-				openCurrentTag( hashTag2XmlParser.get( qName ) );
+			if ( hashTag2XmlParser.containsKey( qName ) ) 
+			{
+				IXmlParserHandler handler = hashTag2XmlParser.get( qName );
+				
+				/**
+				 * Register handly onyl if it is not 
+				 * the OpenExternalXmlFileSaxHandler ...
+				 */
+				if ( handler.getClass().getName().equals( 
+						OpenExternalXmlFileSaxHandler.class.getName()) ) 
+				{
+					/**
+					 * Special case: 
+					 * 
+					 * Open new file, but do not register new handler...
+					 * Attention: do not call  sectionFinishedByHandler() from FileLoaderSaxHandler !
+					 */
+					handler.startElement( uri,
+							localName,
+							qName,
+							attrib );															
+				
+					currentHandler.startElement(  uri,
+							localName,
+							qName,
+							attrib );		
+				}								
+				else {
+					
+					/**
+					 * Regular case: register new handler ...
+					 */
+					
+					this.openCurrentTag( handler );
+				
+					handler.startElement( uri,
+							localName,
+							qName,
+							attrib );
+				
+				}
+				
+				
+				
+//				if ( hander.getClass().getName().equals( 
+//						OpenExternalXmlFileSaxHandler.class.getName()) ) 
+//				{
+//					
+//					/**
+//					 * execute opening tag..
+//					 */
+//					hander.startElement( uri,
+//							localName,
+//							qName,
+//							attrib );
+//				}
 			}
 			
 			return;
@@ -102,10 +187,10 @@ implements IXmlParserManager
 		System.out.println("        " + qName + " TAG -->");
 		
 		if ( currentHandler != null ) {
-			if ( sCurrentClosingTag.equals( qName ) ) {
-				this.closeCurrentTag();
-				return;
-			}
+//			if ( sCurrentClosingTag.equals( qName ) ) {
+//				this.closeCurrentTag();
+//				return;
+//			}
 			
 			currentHandler.endElement( uri, 
 					localName,
@@ -127,11 +212,27 @@ implements IXmlParserManager
 	
 	public final void sectionFinishedByHandler(IXmlParserHandler handler)
 	{
+		assert handler != null : "Can not handel null pointer!";
+		
 		/**
 		 * allow unregistering of handler
 		 */
 		setXmlFileProcessedNow( false );
 		
+		/**
+		 * Special case: OpenExternalXmlFileSaxHandler
+		 */
+		if ( handler.getClass().getName().equals( 
+				OpenExternalXmlFileSaxHandler.class.getName()) ) 
+		{
+			throw new CerberusRuntimeException(
+					"sectionFinishedByHandler() must not be called by OpenExternalXmlFileSaxHandler, because this handler is notregistered by default!",
+					CerberusExceptionType.SAXPARSER);
+		}
+		
+		/**
+		 * 
+		 */
 		if ( currentHandler != handler ) {
 			throw new CerberusRuntimeException("sectionFinishedByHandler() called by wrong handler!",
 					CerberusExceptionType.SAXPARSER);
@@ -147,6 +248,27 @@ implements IXmlParserManager
 		setXmlFileProcessedNow( true );
 	}
 
+	
+	/**
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 */
+	public boolean parseXmlFileByName( String filename ) {
+		
+		iCountOpenedFiles++;
+		InputSource inSource = 
+			CerberusInputStream.openInputStreamFromFile( filename );
+		
+		return CerberusInputStream.parseOnce( inSource , this );		
+	}
+	
+	
+	/**
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
+	 */
+	public boolean parseXmlFileByInputStream( InputSource inputStream ) {
+		iCountOpenedFiles++;
+		return CerberusInputStream.parseOnce( inputStream , this );	
+	}
 
 
 }

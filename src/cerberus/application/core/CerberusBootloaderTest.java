@@ -49,7 +49,7 @@ public class CerberusBootloaderTest
 					parserManager );
 		
 		
-		parserManager.registerSaxHandler( cmdHandler, true );
+		parserManager.registerSaxHandler( cmdHandler );
 		
 		
 		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";

@@ -4,8 +4,10 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.Iterator;
 
+import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 
 /**
@@ -16,11 +18,10 @@ import cerberus.util.system.StringConversionTool;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public abstract class AViewRep implements IView
+public abstract class AViewRep 
+extends AUniqueManagedObject
+implements IView
 {
-	protected IGeneralManager refGeneralManager;
-	
-	protected final int iViewId;
 	
 	protected int iParentContainerId;
 	
@@ -44,10 +45,53 @@ public abstract class AViewRep implements IView
 			final int iParentContainerId, 
 			final String sLabel)
 	{	
-		this.refGeneralManager = refGeneralManager;
-		this.iViewId = iViewId;
+		super ( iViewId, refGeneralManager );
+		
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
+	}
+	
+	/**
+	 * Get one attribute by its index.
+	 * If the index in invalid "" is returned. 
+	 *  
+	 * @return attribute bound to index or "" if index is invalid
+	 */
+	protected final String getAttributeByIndex( final int iIndex )
+	{
+		try {
+			return vecAttributes.get( iIndex );
+		}
+		catch (ArrayIndexOutOfBoundsException ae) 
+		{
+			return "";
+		}
+		
+	}
+	
+	/**
+	 * Get one attribute by its index assuning that it is a integer.
+	 * If the index in invalid -1 is returned. 
+	 *  
+	 * @return attribute bound to index as (int) or -1 if index is invalid
+	 */
+	protected final int getAttributeByIndexToInteger( final int iIndex )
+	{
+		try {
+			return Integer.valueOf( vecAttributes.get( iIndex ) );
+		}
+		catch ( NumberFormatException nfe ) 
+		{
+			/**
+			 * From String to Int conversion
+			 */
+			return -1;
+		}
+		catch ( ArrayIndexOutOfBoundsException ae ) 
+		{
+			return -1;
+		}
+		
 	}
 	
 	/**
@@ -60,6 +104,27 @@ public abstract class AViewRep implements IView
 	{ 
 		vecAttributes = attributes;
 	}
+	
+	/**
+	 * Extracts the height and the width of the widget from the attributes.
+	 *
+	 */
+	public final void extractAttributes()
+	{
+		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
+				CommandFactory.sDelimiter_CreateView_Size);
+
+		iWidth = (StringConversionTool.convertStringToInt(
+				token.nextToken(), -1));
+		iHeight = (StringConversionTool.convertStringToInt(token
+				.nextToken(), -1));
+
+	}
+	
+	public final ManagerObjectType getBaseType() {
+		return null;
+	}
+	
 	
 	/**
 	 * Get a copy of the current attributes.
@@ -90,19 +155,6 @@ public abstract class AViewRep implements IView
 		this.iParentContainerId = iParentContainerId;
 	}
 	
-	/**
-	 * Extracts the height and the width of the widget from the attributes.
-	 *
-	 */
-	public final void extractAttributes()
-	{
-		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
-				CommandFactory.sDelimiter_CreateView_Size);
 
-		iWidth = (StringConversionTool.convertStringToInt(
-				token.nextToken(), -1));
-		iHeight = (StringConversionTool.convertStringToInt(token
-				.nextToken(), -1));
 
-	}
 }

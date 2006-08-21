@@ -33,6 +33,8 @@ import cerberus.manager.ISingelton;
 import cerberus.manager.IStorageManager;
 import cerberus.manager.canvas.ViewCanvasManager;
 import cerberus.manager.command.CommandManagerSimple;
+import cerberus.manager.data.pathway.PathwayElementManager;
+import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.data.selection.SelectionManager;
 import cerberus.manager.data.set.SetManager;
 import cerberus.manager.data.storage.StorageManager;
@@ -134,6 +136,11 @@ implements IGeneralManagerSingelton {
 		refSingeltonManager.setSetManager( refSetManager );
 		refSingeltonManager.setStorageManager( refStorageManager );
 		refSingeltonManager.setMenuManager( refMenuManager );
+		
+		refSingeltonManager.setPathwayElementManager( PathwayElementManager.getInstance() );
+		refSingeltonManager.setPathwayManager( PathwayManager.getInstance() );
+		
+		
 		
 		/**
 		 * start threads..

@@ -53,7 +53,7 @@ implements IXmlParserHandler
 	 * Since the opening tag is handled by the extenal handler
 	 * this fal is set to true by default.
 	 */
-	private boolean bCommandBuffer_isActive = true;
+	private boolean bCommandBuffer_isActive = false;
 	
 	private boolean bCommandQueue_isActive = false;
 

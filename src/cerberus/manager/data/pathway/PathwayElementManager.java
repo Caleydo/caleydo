@@ -6,6 +6,7 @@ import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayEdge;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
+import cerberus.manager.data.IPathwayElementManager;
 
 /**
  * The element manager is in charge for handling the elements. Elements are
@@ -13,9 +14,9 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
  * 
  * @author Marc Streit
  */
-public class ElementManager
+public class PathwayElementManager implements IPathwayElementManager
 {
-	private static ElementManager instance = null;
+	private static IPathwayElementManager instance = null;
 
 	private int iCurrentUniqueElementId;
 
@@ -34,11 +35,11 @@ public class ElementManager
 	 * 
 	 * @return Instance of the element manager.
 	 */
-	public static ElementManager getInstance()
+	public static IPathwayElementManager getInstance()
 	{
 		if (instance == null)
 		{
-			instance = new ElementManager();
+			instance = new PathwayElementManager();
 		}
 
 		return instance;
@@ -49,7 +50,7 @@ public class ElementManager
 	 * it is not allowed to create a new instance. To get a instance call the
 	 * getInstance() method.
 	 */
-	private ElementManager()
+	public PathwayElementManager()
 	{
 		vertexLUT = new HashMap<Integer, PathwayVertex>();
 		edgeLUT = new HashMap<Integer, PathwayEdge>();
@@ -62,6 +63,9 @@ public class ElementManager
 		iCurrentUniqueElementId = 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertex(java.lang.String, java.lang.String)
+	 */
 	public int createVertex(String sName, String sType)
 	{
 		int iGeneratedId = generateId();
@@ -72,6 +76,9 @@ public class ElementManager
 		return iGeneratedId;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertexRepresentation(java.lang.String, int, int, int, int)
+	 */
 	public void createVertexRepresentation(String sName, int iHeight,
 			int iWidth, int iXPosition, int iYPosition)
 	{
@@ -81,6 +88,9 @@ public class ElementManager
 		currentVertex.addVertexRep(newVertexRep);
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createEdge(int, int, java.lang.String)
+	 */
 	public void createEdge(int iVertexId1, int iVertexId2, String sType)
 	{
 		int iGeneratedId = generateId();
@@ -90,6 +100,9 @@ public class ElementManager
 		currentEdge = newEdge;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#addCompoundForEdge(int)
+	 */
 	public void addCompoundForEdge(int iCompoundId)
 	{
 		if (currentEdge != null)
@@ -105,6 +118,9 @@ public class ElementManager
 		return iCurrentUniqueElementId++;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#getVertexLUT()
+	 */
 	public HashMap<Integer, PathwayVertex> getVertexLUT()
 	{
 		return vertexLUT;

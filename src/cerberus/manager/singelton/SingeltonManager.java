@@ -21,6 +21,8 @@ import cerberus.manager.ISingelton;
 import cerberus.manager.IStorageManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewManager;
+import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.logger.ConsoleSimpleLogger;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
@@ -38,35 +40,38 @@ import cerberus.util.exception.CerberusRuntimeException;
  */
 public class SingeltonManager implements ISingelton {
 
-	//private final IGeneralManager refGeneralManager;
+	private final IGeneralManager refGeneralManager;
 	
-	protected IDistComponentManager refDComponentManager = null;
+	protected IDistComponentManager refDComponentManager;
 	
-	protected IViewCanvasManager refViewCanvasManager = null;
+	protected IViewCanvasManager refViewCanvasManager;
 	
-	protected IStorageManager refStorageManager = null;
+	protected IStorageManager refStorageManager;
 	/**
 	 * Store all undo& redo Mementos
 	 */
-	protected IMementoManager refMementoManager = null;
+	protected IMementoManager refMementoManager;
 	
-	protected ISelectionManager refSelectionManager = null;
+	protected ISelectionManager refSelectionManager;
 	
-	protected ISetManager refSetManager = null;
+	protected ISetManager refSetManager;
 	
-	//protected DDesktopPane refDDesktopPane = null;
+	//protected DDesktopPane refDDesktopPane;
 	
-	protected ICommandManager refCommandManager = null;
+	protected ICommandManager refCommandManager;
 	
-	protected IMenuManager refMenuManager = null;
+	protected IMenuManager refMenuManager;
 	
-	protected ILoggerManager refLoggerManager = null;
+	protected ILoggerManager refLoggerManager;
 	
-	protected ISWTGUIManager refSWTGUIManager = null;
+	protected ISWTGUIManager refSWTGUIManager;
 	
-	protected IViewManager refViewManager = null;
+	protected IViewManager refViewManager;
 	
-	private IGeneralManager refGeneralManager = null;
+	protected IPathwayManager refPathwayManager;
+	
+	protected IPathwayElementManager refPathwayElementManager;
+
 	
 	/**
 	 * Unique Id per each application over the network.
@@ -141,6 +146,23 @@ public class SingeltonManager implements ISingelton {
 	public IViewManager getViewManager(ManagerType type) {
 		return refViewManager;
 	}
+	
+	public IPathwayManager getPathwayManager(ManagerType type) {
+		return refPathwayManager;
+	}
+	
+	public IPathwayElementManager getPathwayElementManager(ManagerType type) {
+		return refPathwayElementManager;
+	}
+	
+	public void setPathwayManager(IPathwayManager refPathwayManager) {
+		this.refPathwayManager = refPathwayManager;
+	}
+	
+	public void setPathwayElementManager(IPathwayElementManager refPathwayElementManager) {
+		this.refPathwayElementManager = refPathwayElementManager;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getCommandManager()

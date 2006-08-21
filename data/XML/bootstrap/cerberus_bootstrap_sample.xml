@@ -81,6 +81,8 @@
      
    </CommandBuffer>
    
+   <read-xml-file target="data/XML/pathways/map00271.xml" />
+    
   </Application>
   
   <Application remote="yes" IP="127.0.0.1" port="4100" >

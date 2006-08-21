@@ -4,7 +4,7 @@
 package cerberus.xml.parser.manager;
 
 import java.util.Hashtable;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.LinkedList;
 
 //import org.xml.sax.Attributes;
@@ -13,6 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import cerberus.data.IManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.handler.IXmlParserHandler;
+import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 /**
  * @author kalkusch
@@ -34,7 +35,7 @@ implements IXmlParserManager, IManagedObject
 	 */
 	protected IXmlParserHandler currentHandler = null;
 	
-	protected String sCurrentClosingTag = "";
+	//protected String sCurrentClosingTag = "";
 	
 	/**
 	 * Contains the Handler of the previouse opening tags. 
@@ -110,8 +111,19 @@ implements IXmlParserManager, IManagedObject
 			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTag() new handler is null!");
 		}
 		
+		if ( ! newHandler.getClass().getName().equals( 
+				OpenExternalXmlFileSaxHandler.class.getName()) ) 
+		{
+			
+			
+			
+			llXmlParserStack.add( currentHandler );		
+			currentHandler = newHandler;
+		}
+		
 		llXmlParserStack.add( currentHandler );		
 		currentHandler = newHandler;
+				
 	}
 	
 	/**
@@ -124,8 +136,7 @@ implements IXmlParserManager, IManagedObject
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.manager.IXmlParserManager#registerSaxHandler(cerberus.xml.parser.manager.IXmlParserHandler, boolean)
 	 */
-	public final boolean registerSaxHandler(IXmlParserHandler handler,
-			boolean bOpeningTagExistsOnlyOnce)
+	public final boolean registerSaxHandler(IXmlParserHandler handler )
 	{
 		assert handler != null : "Can not handle null pointer as handler";
 		
@@ -156,7 +167,7 @@ implements IXmlParserManager, IManagedObject
 	}
 
 	
-	/* (non-Javadoc)
+	/**
 	 * @see cerberus.xml.parser.manager.IXmlParserManager#unregisterSaxHandler(cerberus.xml.parser.manager.IXmlParserHandler)
 	 */
 	public final boolean unregisterSaxHandler(IXmlParserHandler handler)
@@ -182,7 +193,7 @@ implements IXmlParserManager, IManagedObject
 	}
 	
 	
-	/* (non-Javadoc)
+	/**
 	 * @see cerberus.xml.parser.manager.IXmlParserManager#unregisterSaxHandler(java.lang.String)
 	 */
 	public final boolean unregisterSaxHandler(String sActivationXmlTag)

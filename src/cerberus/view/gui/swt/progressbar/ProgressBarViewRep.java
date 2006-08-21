@@ -159,11 +159,6 @@ public class ProgressBarViewRep extends AViewRep implements IView
 
 	}
 
-	public ManagerObjectType getBaseType()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public void setProgressBarPercentage(int iProgressPercentage)
 	{

@@ -3,6 +3,7 @@ package cerberus.manager.data.pathway;
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
+import cerberus.manager.data.IPathwayManager;
 
 /**
  * The pathway manager is in charge for handling
@@ -10,9 +11,9 @@ import cerberus.data.pathway.Pathway;
  * The class is implemented as a Singleton. 
  * @author	Marc Streit
  */
-public class PathwayManager 
+public class PathwayManager implements IPathwayManager 
 {
-	private static PathwayManager instance = null;
+	private static IPathwayManager instance = null;
 
 	private HashMap<Integer, Pathway> pathwayLUT;
 	private Pathway currentPathway;
@@ -24,7 +25,7 @@ public class PathwayManager
 	 *
 	 * @return      Instance of the element manager.
 	 */
-	public static PathwayManager getInstance()
+	public static IPathwayManager getInstance()
 	{
 		if (instance == null)
 		{
@@ -46,11 +47,17 @@ public class PathwayManager
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayManager#getPathwayLUT()
+	 */
 	public HashMap<Integer, Pathway> getPathwayLUT() 
 	{
 		return pathwayLUT;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayManager#createPathway(java.lang.String, java.lang.String, java.lang.String, int)
+	 */
 	public void createPathway(String sTitle, String sImageLink, String sLink, int iPathwayID) 
 	{
 		Pathway newPathway = 
@@ -61,6 +68,9 @@ public class PathwayManager
 		currentPathway = newPathway;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayManager#getCurrentPathway()
+	 */
 	public Pathway getCurrentPathway() 
 	{
 		return currentPathway;
