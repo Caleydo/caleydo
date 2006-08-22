@@ -23,6 +23,8 @@ import cerberus.manager.command.CommandManagerSimple;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
+import cerberus.manager.data.pathway.PathwayElementManager;
+import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.data.selection.SelectionManager;
 import cerberus.manager.data.set.SetManager;
 import cerberus.manager.data.storage.StorageManager;
@@ -178,6 +180,10 @@ implements IGeneralManagerSingelton {
 		refSingeltonManager.setLoggerManager( refLoggerManager );
 		refSingeltonManager.setViewManager ( refViewManager );
 		refSingeltonManager.setSWTGUIManager (refSWTGUIManager );
+		
+		refSingeltonManager.setPathwayElementManager( PathwayElementManager.getInstance() );
+		refSingeltonManager.setPathwayManager( PathwayManager.getInstance() );
+	
 		
 		refSetManager.initManager();
 	}
