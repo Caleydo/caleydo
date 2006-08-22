@@ -1,0 +1,136 @@
+<cerberus version="0.1">
+
+  <workspace title="primary" server="localhsot">
+  
+  <Application remote="no" IP="127.0.0.1" port="4000" >
+  
+  <!-- COMMAND DOCUMENTATION
+  
+    General needed arguments for all command:
+      
+      mementoId:  0
+      process:    RUN_CMD_NOW
+      type:       CREATE_STORAGE
+                  CREATE_SELECTION
+                  CREATE_SET
+                  CREATE_SWT_WINDOW
+                  CREATE_SWT_CONTAINER
+                  CREATE_VIEW_PATHWAY
+                  CREATE_VIEW_GEARS
+                  CREATE_VIEW_DATA_EXPLORER
+                  CREATE_VIEW_PROGRESSBAR
+                  CREATE_VIEW_SLIDER
+                  CREATE_VIEW_MIXER
+      cmdId:      STORAGE:   1x991
+                  SELECTION: 2x991
+                  SET:       3x991
+                  WINDOW:    4x991
+                  CONTAINER: 5x991
+                  VIEW:      6x991
+      targetId:   STORAGE:   x5301
+                  SELECTION: x5201
+                  SET:       x5101
+                  WINDOW:    xx331
+                  CONTAINER: xx341
+                  VIEW       xx401
+      label:      <String>	
+  
+    STORAGE Creation Command:
+    
+      Special attributes:  
+        attrib1: Data types
+                 Sample value: "INT;FLOAT;STRING" 
+        attrib2: Data values (separated with @)
+                 Sample value: "123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla"   
+      Sample:
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />
+
+    SELECTION Creation Command:
+
+      Special attributes:
+        attrib1: Length / Offset / MultiOffset / MultiRepeat
+                 Sample value: "0 200 0 10"
+      Sample:    
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
+
+    SET Creation Command:
+
+      Special attributes:
+        attrib1: StorageId
+        attrib2: SetId
+
+      Sample:
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
+
+    WINDOW Creation Command:
+
+      Special attributes:
+        attrib1: Layout ROW HORIZONTAL / VERTICAL (GridLayout is not implemented at the moment)
+                 Sample value: "ROW HORIZONTAL"
+
+      Sample:
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Window 2" attrib1="ROW HORIZONTAL" />   
+    
+    CONTAINER Creation Command:
+
+      Special attributes:
+        attrib1: Layout ROW HORIZONTAL / VERTICAL (GridLayout is not implemented at the moment)
+                 Sample value: "ROW HORIZONTAL"
+      
+      Sample:
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW VERTICAL" />
+    
+    VIEW Creation Commands:
+    
+      Special attributes:
+         attrib1: ParentId (Window or Container)
+         attrib2: Size
+                  -1 stands for "take all space that you get"
+                  Sample value: "-1 400"
+     
+      Sample:
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />    
+   -->
+  
+   <CommandBuffer>
+      
+     <!-- Creating Data -->
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="1293" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
+     
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="21991" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
+            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
+
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Window 2" attrib1="ROW HORIZONTAL" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Window 1" attrib1="ROW VERTICAL" />   
+
+     <!-- Window 10331 -->
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW VERTICAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" attrib1="10331" attrib2="ROW VERTICAL" />
+
+     <!-- Container 10341 -->
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" attrib1="10341" attrib2="500 30" detail="30" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" attrib1="10341" attrib2="500 30" detail="70" />
+
+     <!-- Container 11341 -->
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="11341" attrib2="700 500" />		  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="67991" targetId="16401" label="Gears" attrib1="11341" attrib2="300 300" />		  
+
+     <!-- Window 11331 -->
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="13401" label="Pathway" attrib1="20331" attrib2="-1 -1" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER" cmdId="66991" targetId="13401" label="Slider" attrib1="20331" attrib2="400 100" />	 
+
+   </CommandBuffer>
+   
+   <read-xml-file target="data/XML/pathways/map00271.xml" />
+    
+  </Application>
+  
+  </workspace>
+
+</cerberus>
