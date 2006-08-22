@@ -162,7 +162,7 @@ implements ISWTGUIManager
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite);
+			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite, -1, -1);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
@@ -202,7 +202,7 @@ implements ISWTGUIManager
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite);
+			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite, iWidth, iHeight);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:

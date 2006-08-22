@@ -44,8 +44,9 @@
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Window 1" attrib1="ROW VERTICAL" />   
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW VERTICAL" />
+   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" attrib1="20331" attrib2="ROW HORIZONTAL" />
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="10341" attrib2="500 400" />		  
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="11341" attrib2="500 400" />		  
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" attrib1="10341" attrib2="500 30" detail="30" />
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" attrib1="10341" attrib2="500 30" detail="70" />
@@ -53,9 +54,13 @@
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="13401" label="Pathway" attrib1="20331" attrib2="-1 -1" />
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER" cmdId="66991" targetId="13401" label="Slider" attrib1="20331" attrib2="400 100" />	 
-	 
+
+   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="67991" targetId="16401" label="Gears" attrib1="11341" attrib2="-1 -1" />		 
+	  
 
 <!--	
+ 
+	
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" targetId="55601" label="Gears" attrib1="024001" />
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" targetId="56601" label="Gears" attrib1="024001" />

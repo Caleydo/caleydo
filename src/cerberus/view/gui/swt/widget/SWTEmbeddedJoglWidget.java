@@ -9,10 +9,11 @@
 
 package cerberus.view.gui.swt.widget;
 
-import cerberus.view.gui.swt.widget.ASWTWidget;
+import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
 
 import javax.media.opengl.GLCanvas;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -24,12 +25,8 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Marc Streit
  */
-public class SWTEmbeddedJoglWidget extends ASWTWidget 
+public class SWTEmbeddedJoglWidget extends ASWTEmbeddedWidget 
 {
-	/**
-	 * Embedded AWT Frame.
-	 */
-	protected final java.awt.Frame refEmbeddedFrame;
 	
 	/**
 	 * GLCanvas.
@@ -44,10 +41,10 @@ public class SWTEmbeddedJoglWidget extends ASWTWidget
 	 * @param Composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTEmbeddedJoglWidget(Composite refComposite)
+	public SWTEmbeddedJoglWidget(Composite refParentComposite, int iWidth, int iHeight)
 	{
-		super(refComposite);
-		refEmbeddedFrame = SWT_AWT.new_Frame(refComposite);
+		super(refParentComposite,iWidth, iHeight);
+
 		refGLCanvas = new GLCanvas();
 		refEmbeddedFrame.add(refGLCanvas);
 	}

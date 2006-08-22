@@ -155,7 +155,7 @@ implements IXmlParserHandler
 			llAttributes.add( sData_Cmd_attribute2 );
 			
 			System.err.println(" XML-TAG= " + sData_Cmd_label );
-			
+					
 			lastCommand = refCommandManager.createCommand( 
 					sData_Cmd_type,
 					llAttributes );

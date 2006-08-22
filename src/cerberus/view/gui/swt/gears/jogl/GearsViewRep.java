@@ -13,6 +13,8 @@ import cerberus.view.gui.awt.jogl.TriangleMain;
 import cerberus.view.gui.awt.jogl.Histogram2DMain;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
+import demos.gears.Gears;
+
 public class GearsViewRep 
 extends AViewRep 
 implements IView
@@ -33,14 +35,22 @@ implements IView
 
 	public void drawView()
 	{
-		Histogram2DMain canvas = new Histogram2DMain();
+//		Histogram2DMain canvas = new Histogram2DMain();
+//		
+//		GearsMain gears = new GearsMain();
+		
+		Gears gears = new Gears();
+		
+		//gears.runMain();
 		
 		/**
 		 * Calling "canvas.runMain();" starts a new thread an a new AWT-Frame
 		 */
 		//canvas.runMain();
 		
-		refGLCanvas.addGLEventListener( canvas );
+		refGLCanvas.addGLEventListener( gears );
+		
+//		refGLCanvas.addGLEventListener( canvas );
 		
 		/**
 		 * old code
