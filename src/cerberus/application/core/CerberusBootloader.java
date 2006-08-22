@@ -68,7 +68,7 @@ public class CerberusBootloader
 			new CommandSaxHandler( refGeneralManager,
 					refParserManager );
 				
-		refParserManager.registerSaxHandler( cmdHandler );
+		refParserManager.registerSaxHandler( cmdHandler );				
 	
 	}
 	
