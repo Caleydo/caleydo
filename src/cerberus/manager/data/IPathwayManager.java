@@ -3,8 +3,9 @@ package cerberus.manager.data;
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
+import cerberus.manager.IGeneralManager;
 
-public interface IPathwayManager
+public interface IPathwayManager extends IGeneralManager
 {
 
 	public abstract HashMap<Integer, Pathway> getPathwayLUT();

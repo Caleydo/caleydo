@@ -3,8 +3,9 @@ package cerberus.manager.data;
 import java.util.HashMap;
 
 import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.manager.IGeneralManager;
 
-public interface IPathwayElementManager
+public interface IPathwayElementManager extends IGeneralManager
 {
 
 	public abstract int createVertex(String sName, String sType);

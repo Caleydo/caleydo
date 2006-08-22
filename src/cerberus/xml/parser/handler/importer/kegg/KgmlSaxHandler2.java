@@ -6,6 +6,7 @@ import cerberus.data.pathway.Pathway;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.manager.IXmlParserManager;
 import cerberus.xml.parser.handler.AXmlParserHandler;
@@ -120,7 +121,8 @@ implements IXmlParserHandler
 //   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 		
-		PathwayManager.getInstance().createPathway(sTitle, sImageLink, sLink, iPathwayID);
+		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+			createPathway(sTitle, sImageLink, sLink, iPathwayID);
     }
     
 	/**
@@ -159,7 +161,10 @@ implements IXmlParserHandler
 //		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
 	   	}
 
-    	iGeneratedElementId = PathwayElementManager.getInstance().createVertex(sName, sType);
+    	iGeneratedElementId = 		
+    		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+			createVertex(sName, sType);
+    	
     	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
     }
 	
@@ -205,7 +210,8 @@ implements IXmlParserHandler
 //   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 
-		PathwayElementManager.getInstance().createVertexRepresentation(sName, iHeight, iWidth,
+		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+			createVertexRepresentation(sName, iHeight, iWidth,
 				iXPosition, iYPosition);
     }
     
@@ -245,7 +251,9 @@ implements IXmlParserHandler
     	
     	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1); //TODO: exception
     	int iElementId2 = kgmlIdToElementIdLUT.get(iEntry2);
-    	PathwayElementManager.getInstance().createEdge(iElementId1, iElementId2, sType);
+    	
+		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+			createEdge(iElementId1, iElementId2, sType);
     }
     	
     public void handleSubtypeTag()
@@ -276,7 +284,8 @@ implements IXmlParserHandler
 		if (sName.equals("compound"))
 		{
 			//retrieve the internal element ID and add the compound value to the edge
-			PathwayElementManager.getInstance().addCompoundForEdge(kgmlIdToElementIdLUT.get(iValue));
+    		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+				addCompoundForEdge(kgmlIdToElementIdLUT.get(iValue));
 		}
     }
     

@@ -47,11 +47,4 @@ public class SliderViewRep extends AViewRep implements IView
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 
 	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 }

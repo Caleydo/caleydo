@@ -39,6 +39,7 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_DATA_EXPLORER("cmd", "type"),
 	CREATE_VIEW_PROGRESSBAR("cmd", "type"),
 	CREATE_VIEW_SLIDER("cmd", "type"),
+	CREATE_VIEW_MIXER("cmd", "type"),
 	
 	CREATE_SWT_WINDOW("cmd", "type"),
 	CREATE_SWT_CONTAINER("cmd", "type"),

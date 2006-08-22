@@ -78,7 +78,9 @@ implements IPathwayView
 	
 	public void drawView()
 	{
-		HashMap<Integer, Pathway> pathwayLUT = PathwayManager.getInstance().getPathwayLUT();
+		HashMap<Integer, Pathway> pathwayLUT = 		
+			((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+				getPathwayLUT();
 		
 		Pathway pathway;
 		Iterator<Pathway> pathwayIterator = pathwayLUT.values().iterator();

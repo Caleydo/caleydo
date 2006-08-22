@@ -31,7 +31,7 @@ import cerberus.command.queue.ICommandQueue;
  * @author Michael Kalkusch
  *
  */
-public class CommandManagerSimple 
+public class CommandManager 
  extends AAbstractManager 
  implements ICommandManager {
 
@@ -54,7 +54,7 @@ public class CommandManagerSimple
 	/**
 	 * 
 	 */
-	public CommandManagerSimple( IGeneralManager setGeneralManager ) {
+	public CommandManager( IGeneralManager setGeneralManager ) {
 		super( setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_Command );
 		
 		refCommandFactory = new CommandFactory( setGeneralManager, 

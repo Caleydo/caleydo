@@ -29,7 +29,7 @@ import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.canvas.ViewCanvasManager;
-import cerberus.manager.command.CommandManagerSimple;
+import cerberus.manager.command.CommandManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
@@ -123,7 +123,7 @@ implements IGeneralManagerSingelton {
 		refDComponentManager = new DComponentSwingFactoryManager(this);
 //		refViewCanvasManager = new ViewCanvasManagerSimple( this );
 		refViewManager = new CanvasSwingJoglManager( this );
-		refCommandManager = new CommandManagerSimple( this );
+		refCommandManager = new CommandManager( this );
 		refMenuManager = new SwingMenuManager( this );
 		
 		/**
@@ -137,8 +137,8 @@ implements IGeneralManagerSingelton {
 		refSingeltonManager.setStorageManager( refStorageManager );
 		refSingeltonManager.setMenuManager( refMenuManager );
 		
-		refSingeltonManager.setPathwayElementManager( PathwayElementManager.getInstance() );
-		refSingeltonManager.setPathwayManager( PathwayManager.getInstance() );
+		//refSingeltonManager.setPathwayElementManager( PathwayElementManager.getInstance() );
+		//refSingeltonManager.setPathwayManager( PathwayManager.getInstance() );
 		
 		
 		

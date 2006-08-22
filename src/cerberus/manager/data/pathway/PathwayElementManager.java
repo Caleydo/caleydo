@@ -6,7 +6,10 @@ import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayEdge;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISingelton;
 import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.type.ManagerObjectType;
 
 /**
  * The element manager is in charge for handling the elements. Elements are
@@ -16,49 +19,29 @@ import cerberus.manager.data.IPathwayElementManager;
  */
 public class PathwayElementManager implements IPathwayElementManager
 {
-	private static IPathwayElementManager instance = null;
+	protected IGeneralManager refGeneralManager;
+	
+	protected int iCurrentUniqueElementId;
 
-	private int iCurrentUniqueElementId;
+	protected HashMap<Integer, PathwayVertex> vertexLUT;
 
-	private HashMap<Integer, PathwayVertex> vertexLUT;
-
-	private HashMap<Integer, PathwayEdge> edgeLUT;
+	protected HashMap<Integer, PathwayEdge> edgeLUT;
 
 	// FIXME: this is just a temporary workaround.
-	private PathwayVertex currentVertex = null;
+	protected PathwayVertex currentVertex = null;
 
-	private PathwayEdge currentEdge = null;
+	protected PathwayEdge currentEdge = null;
 
 	/**
-	 * Returns the instance of the element manager. If no instance exists a new
-	 * one is created and returned.
+	 * Constructor
 	 * 
-	 * @return Instance of the element manager.
 	 */
-	public static IPathwayElementManager getInstance()
+	public PathwayElementManager(IGeneralManager refGeneralManager)
 	{
-		if (instance == null)
-		{
-			instance = new PathwayElementManager();
-		}
-
-		return instance;
-	}
-
-	/**
-	 * Private Constructor The class is implemented as a Singleton and therefore
-	 * it is not allowed to create a new instance. To get a instance call the
-	 * getInstance() method.
-	 */
-	public PathwayElementManager()
-	{
+		this.refGeneralManager = refGeneralManager;
+		
 		vertexLUT = new HashMap<Integer, PathwayVertex>();
 		edgeLUT = new HashMap<Integer, PathwayEdge>();
-
-		// iCurrentUniqueElementId =
-		// ICollectionManager.calculateId(
-		// IGeneralManager.iUniqueId_TypeOffset_Memento,
-		// refGeneralManager );
 
 		iCurrentUniqueElementId = 0;
 	}
@@ -72,7 +55,11 @@ public class PathwayElementManager implements IPathwayElementManager
 		PathwayVertex newVertex = new PathwayVertex(iGeneratedId, sName, sType);
 		currentVertex = newVertex;
 		vertexLUT.put(iGeneratedId, newVertex);
-		PathwayManager.getInstance().getCurrentPathway().addVertex(newVertex);
+		
+		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+			getCurrentPathway().addVertex(newVertex);
+		//PathwayManager.getInstance().getCurrentPathway().addVertex(newVertex);
+		
 		return iGeneratedId;
 	}
 
@@ -94,9 +81,14 @@ public class PathwayElementManager implements IPathwayElementManager
 	public void createEdge(int iVertexId1, int iVertexId2, String sType)
 	{
 		int iGeneratedId = generateId();
+		
 		PathwayEdge newEdge = new PathwayEdge(iVertexId1, iVertexId2, sType);
+		
 		edgeLUT.put(iGeneratedId, newEdge);
-		PathwayManager.getInstance().getCurrentPathway().addEdge(newEdge);
+		
+		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+			getCurrentPathway().addEdge(newEdge);
+		
 		currentEdge = newEdge;
 	}
 
@@ -124,6 +116,66 @@ public class PathwayElementManager implements IPathwayElementManager
 	public HashMap<Integer, PathwayVertex> getVertexLUT()
 	{
 		return vertexLUT;
+	}
+
+	public boolean hasItem(int iItemId)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Object getItem(int iItemId)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int size()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public ManagerObjectType getManagerType()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IGeneralManager getGeneralManager()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ISingelton getSingelton()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean unregisterItem(int iItemId, ManagerObjectType type)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public int createNewId(ManagerObjectType setNewBaseType)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

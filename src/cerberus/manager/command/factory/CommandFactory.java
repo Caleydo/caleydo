@@ -3,7 +3,7 @@
  * 
  * Author: Michael Kalkusch
  * 
- *  creation date: 18-05-2005
+ * Creation date: 18-05-2005
  *  
  */
 package cerberus.manager.command.factory;
@@ -25,6 +25,7 @@ import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
+import cerberus.command.view.swt.CmdViewCreateMixer;
 import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.view.swt.CmdViewCreateProgressBar;
 import cerberus.command.view.swt.CmdViewCreateSlider;
@@ -65,7 +66,11 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
+ * Class is responsible for creating the commands.
+ * The commands are created according to the command type.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class CommandFactory 
@@ -297,7 +302,15 @@ extends ACommand
 						llAttributes );			
 			break;
 		}
-
+		
+		case CREATE_VIEW_MIXER:
+		{
+			createdCommand =
+				new CmdViewCreateMixer(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 

@@ -54,11 +54,13 @@ public enum ManagerType {
 		
 		STORAGE("storage manager", ManagerType.DATA ),
 		
-		PATHWAY("pathway manager", ManagerType.DATA ),
-				
+		PATHWAY("pathway manager", ManagerType.DATA),
+		
+		PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA),
+							
 		NONE("no type set");
 		
-		/**
+		/*
 		 * Remark describing window toolkit.
 		 */
 		private final String sRemark;

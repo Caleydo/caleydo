@@ -1,28 +1,15 @@
 package cerberus.application.prototype;
 
-import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.FileReader;
-//import java.io.IOException;
-//import java.util.Vector;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.xml.sax.InputSource;
 
 import cerberus.util.system.CerberusInputStream;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
+
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.view.ViewManager;
 import cerberus.manager.type.ManagerObjectType;
-//import cerberus.xml.parser.ACerberusDefaultSaxHandler;
-//import cerberus.xml.parser.command.CommandSaxHandler;
-import cerberus.xml.parser.kgml.KgmlSaxHandler;
 
 import cerberus.xml.parser.manager.XmlParserManager;
 import cerberus.xml.parser.handler.command.CommandSaxHandler;
@@ -67,7 +54,6 @@ public class CerberusPrototype
 
 	public void run()
 	{		
-		//parsePathwayDataFromXML();
 		parseBootstrapDataFromXML();
 		
 		refSWTGUIManager.runApplication();
@@ -82,36 +68,4 @@ public class CerberusPrototype
 					
 		CerberusInputStream.parseOnce( inSource , refXmlParserManager );
 	}
-	
-	protected void parsePathwayDataFromXML()
-	{
-		// Read pathway data
-	  	KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
-
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        try 
-        {
-            // Parse the input
-            SAXParser saxParser = factory.newSAXParser();
-            saxParser.parse( 
-            		new File("data/XML/pathways/map00271.xml"), kgmlParser);
-
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-		
-		
-//		 MicroArrayLoader microArrayLoader = new MicroArrayLoader(generalManager);
-//		 microArrayLoader.setTargetSet(oneForAllManager.getSingelton().getSetManager().getItemSet(25101));
-//		 microArrayLoader.setFileName(sRawDataFileName);
-//		 microArrayLoader.setTokenPattern("FLOAT;FLOAT;SKIP;STRING;STRING;ABORT");
-//		 microArrayLoader.loadData();
-		
-//		 CmdSystemLoadFileViaImporter commandFileImporter =
-//		 new CmdSystemLoadFileViaImporter(
-//		 generalManager, sRawDataFileName, "SKIP;INT;SKIP;STRING;ABORT", 15101 );
-//		 commandFileImporter.doCommand();
-
-	}
-	
 }

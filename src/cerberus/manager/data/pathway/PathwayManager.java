@@ -3,7 +3,10 @@ package cerberus.manager.data.pathway;
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISingelton;
 import cerberus.manager.data.IPathwayManager;
+import cerberus.manager.type.ManagerObjectType;
 
 /**
  * The pathway manager is in charge for handling
@@ -13,36 +16,17 @@ import cerberus.manager.data.IPathwayManager;
  */
 public class PathwayManager implements IPathwayManager 
 {
-	private static IPathwayManager instance = null;
-
-	private HashMap<Integer, Pathway> pathwayLUT;
-	private Pathway currentPathway;
+    protected IGeneralManager refGeneralManager;
+	
+	protected HashMap<Integer, Pathway> pathwayLUT;
+	protected Pathway currentPathway;
 	
 	/**
-	 * Returns the instance of the pathway manager.
-	 * If no instance exists a new one is created
-	 * and returned. 
-	 *
-	 * @return      Instance of the element manager.
+	 * Constructor
 	 */
-	public static IPathwayManager getInstance()
+	public PathwayManager(IGeneralManager refGeneralManager)
 	{
-		if (instance == null)
-		{
-			instance = new PathwayManager();
-		}
-		
-		return instance;
-	}
-	
-	/**
-	 * Private Constructor
-	 * The class is implemented as a Singleton and 
-	 * therefore it is not allowed to create a new instance.
-	 * To get a instance call the getInstance() method. 
-	 */
-	private PathwayManager()
-	{
+		this.refGeneralManager = refGeneralManager;
 		pathwayLUT = new HashMap<Integer, Pathway>();
 	}
 	
@@ -74,5 +58,65 @@ public class PathwayManager implements IPathwayManager
 	public Pathway getCurrentPathway() 
 	{
 		return currentPathway;
+	}
+
+	public boolean hasItem(int iItemId)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Object getItem(int iItemId)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int size()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public ManagerObjectType getManagerType()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IGeneralManager getGeneralManager()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ISingelton getSingelton()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean unregisterItem(int iItemId, ManagerObjectType type)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public int createNewId(ManagerObjectType setNewBaseType)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

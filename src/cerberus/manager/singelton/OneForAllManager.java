@@ -19,7 +19,9 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.canvas.ViewCanvasManager;
-import cerberus.manager.command.CommandManagerSimple;
+import cerberus.manager.command.CommandManager;
+import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
@@ -95,6 +97,10 @@ implements IGeneralManagerSingelton {
 	
 	protected ISWTGUIManager refSWTGUIManager;
 	
+	protected IPathwayManager refPathwayManager;
+	
+	protected IPathwayElementManager refPathwayElementManager;
+	
 	/**
 	 * Used to create a new item by a Fabrik.
 	 * used by cerberus.data.manager.OneForAllManager#createNewId(ManagerObjectType)
@@ -153,12 +159,13 @@ implements IGeneralManagerSingelton {
 		refMementoManager = new MementoManager(this);
 		refDComponentManager = new DComponentSwingFactoryManager(this);
 		refViewCanvasManager = new ViewCanvasManager( this );
-		refCommandManager = new CommandManagerSimple( this );
+		refCommandManager = new CommandManager( this );
 		refMenuManager = new SwingMenuManager( this );		
 		refLoggerManager = new ConsoleSimpleLogger( this );
 		refViewManager = new ViewManager( this );
 		refSWTGUIManager = new SWTGUIManager( this );
-		
+		refPathwayManager = new PathwayManager( this );
+		refPathwayElementManager = new PathwayElementManager( this );
 		
 		/**
 		 * Make sure SWT is only used, when needed!
@@ -181,8 +188,8 @@ implements IGeneralManagerSingelton {
 		refSingeltonManager.setViewManager ( refViewManager );
 		refSingeltonManager.setSWTGUIManager (refSWTGUIManager );
 		
-		refSingeltonManager.setPathwayElementManager( PathwayElementManager.getInstance() );
-		refSingeltonManager.setPathwayManager( PathwayManager.getInstance() );
+		refSingeltonManager.setPathwayElementManager( refPathwayElementManager );
+		refSingeltonManager.setPathwayManager( refPathwayManager );
 	
 		
 		refSetManager.initManager();
@@ -546,6 +553,10 @@ implements IGeneralManagerSingelton {
 			return refCommandManager;
 		case GUI_SWT:
 			return refSWTGUIManager;
+		case PATHWAY:
+			return refPathwayManager;
+		case PATHWAY_ELEMENT:
+			return refPathwayElementManager;
 		
 		default:
 			throw new CerberusRuntimeException("Error in OneForAllManager.getManagerByBaseType() unsupported type " +

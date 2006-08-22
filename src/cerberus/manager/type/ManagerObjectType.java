@@ -106,6 +106,8 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_SLIDER(ManagerType.VIEW),
 	
+	VIEW_SWT_MIXER(ManagerType.VIEW),
+	
 	VIEW_META_TABLE(ManagerType.VIEW),
 	
 	//deprecated
@@ -176,13 +178,24 @@ public enum ManagerObjectType {
 	 */
 	COMMAND(ManagerType.COMMAND ),
 	
-	/**
+	/*
+	 * Pathway
+	 */
+	
+	PATHWAY(ManagerType.PATHWAY),
+	
+	PATHWAY_ELEMENT(ManagerType.PATHWAY_ELEMENT),
+	
+	/*
 	 * Logger
 	 */
 	LOGGER(ManagerType.LOGGER),
 	
 	ALL_IN_ONE(ManagerType.FABRIK);
 	
+	/*
+	 * Pathway
+	 */
 	
 	
 	/**
