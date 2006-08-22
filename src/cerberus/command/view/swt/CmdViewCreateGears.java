@@ -44,7 +44,7 @@ public class CmdViewCreateGears extends CmdViewCreateAdapter implements ICommand
 		
 		gearsView.setAttributes(refVecAttributes);
 		gearsView.extractAttributes();
-		gearsView.retrieveNewGUIContainer();
+		gearsView.retrieveGUIContainer();
 		gearsView.initView();
 		gearsView.drawView();
 	}

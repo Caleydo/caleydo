@@ -45,7 +45,7 @@ public class CmdViewCreateSlider extends CmdViewCreateAdapter implements
 
 		sliderView.setAttributes(refVecAttributes);
 		sliderView.extractAttributes();
-		sliderView.retrieveNewGUIContainer();
+		sliderView.retrieveGUIContainer();
 		sliderView.initView();
 		sliderView.drawView();
 	}

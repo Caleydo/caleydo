@@ -45,7 +45,7 @@ public class CmdViewCreateDataExplorer extends CmdViewCreateAdapter implements
 
 		dataExplorerView.setAttributes(refVecAttributes);
 		dataExplorerView.extractAttributes();
-		dataExplorerView.retrieveNewGUIContainer();
+		dataExplorerView.retrieveGUIContainer();
 		dataExplorerView.initView();
 		dataExplorerView.drawView();
 	}

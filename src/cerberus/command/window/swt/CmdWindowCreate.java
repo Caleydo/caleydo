@@ -14,9 +14,10 @@ public class CmdWindowCreate
 extends AManagedCommand
 implements ICommand 
 {
-	protected int iUniqueCommandId;
-	protected int iUniqueWindowId;
+	protected int iCommandId;
+	protected int iWindowId;
 	protected String sLayoutAttributes;
+	protected String sLabel;
 	
 	public CmdWindowCreate( IGeneralManager refGeneralManager,
 		final LinkedList <String> listAttributes ) 
@@ -28,7 +29,7 @@ implements ICommand
 	public void doCommand() throws CerberusRuntimeException
 	{
 		refGeneralManager.getSingelton().
-			getSWTGUIManager().createWindow(iUniqueWindowId, sLayoutAttributes);	
+			getSWTGUIManager().createWindow(iWindowId, sLabel, sLayoutAttributes);	
 	}
 
 	public void undoCommand() throws CerberusRuntimeException
@@ -53,16 +54,14 @@ implements ICommand
 		
 		try 
 		{	
-			this.iUniqueCommandId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
-			this.iUniqueWindowId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
+			this.iCommandId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
+			this.iWindowId = (StringConversionTool.convertStringToInt( iter.next(), -1 ) );
 			
 			// Skip some attributes
-			// FIXME here is a bug - ask michael!
-			String bla;
-			bla = iter.next();
-			bla = iter.next();
-			bla = iter.next();
-			bla = iter.next();
+			sLabel = iter.next();
+			iter.next();
+			iter.next();
+			iter.next();
 			
 			sLayoutAttributes = iter.next();
 

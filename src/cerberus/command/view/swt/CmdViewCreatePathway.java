@@ -44,7 +44,7 @@ public class CmdViewCreatePathway extends CmdViewCreateAdapter implements IComma
 
 		pathwayView.setAttributes(refVecAttributes);
 		pathwayView.extractAttributes();
-		pathwayView.retrieveNewGUIContainer();
+		pathwayView.retrieveGUIContainer();
 		pathwayView.initView();
 		pathwayView.drawView();
 	}

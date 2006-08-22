@@ -18,28 +18,23 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.jface.window.WindowManager;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.ISWTWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.swt.widget.ASWTWidget;
-import cerberus.manager.gui.CerberusWindow;
 
 /**
  * The SWTGUIManager is responsible for the creation 
@@ -106,7 +101,7 @@ implements ISWTGUIManager
 		final int iUniqueId = this.createNewId(ManagerObjectType.GUI_WINDOW);
 		
 		// use default layout
-		return createWindow(iUniqueId, "ROW VERTICAL");
+		return createWindow(iUniqueId, "Cerberus", "ROW VERTICAL");
 	}
 	
 	/**
@@ -115,45 +110,24 @@ implements ISWTGUIManager
 	 * 
 	 * @return Newly created shell.
 	 */	
-	public Shell createWindow(int iUniqueId, String sLayoutAttributes)
+	public Shell createWindow(
+			int iUniqueId, String sLabel, String sLayoutAttributes)
 	{
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
 		refNewShell.setMaximized(true);
 		refNewShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
-
+		refNewShell.setText(sLabel);
+		
 		refWindowMap.put(iUniqueId, refNewShell);
 		
 		//refMenuBar = createMenuBar(refShell);
 		//refShell.setMenuBar(refMenuBar); 
 		
 		setUpLayout(refNewShell, sLayoutAttributes);
-		
-//		//FIXME: just for testing
-//		refComposite = refNewShell;
-		
+
 		return refNewShell;
 	}
-	
-//	public Shell createWindow(final ManagerObjectType useWindowType)
-//	{
-//		Shell refNewShell = new Shell(refDisplay);
-//		refNewShell.setLayout(new GridLayout());
-//		refNewShell.setMaximized(true);
-//		refNewShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
-//		
-//		// Register shell in the window map
-//		final int iUniqueId = this.createNewId(useWindowType);
-//		refWindowMap.put(iUniqueId, refNewShell);
-//		
-//		//refMenuBar = createMenuBar(refShell);
-//		//refShell.setMenuBar(refMenuBar); 
-//		
-//		// TODO read layout direction for windows also from XML file
-//		setUpLayout(refNewShell, "ROW VERTICAL");
-//		
-//		return refNewShell;
-//	}
 	
 	/**
 	 * Searches for the parent window in the map and 

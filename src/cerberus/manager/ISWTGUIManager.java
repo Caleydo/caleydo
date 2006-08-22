@@ -1,7 +1,5 @@
 package cerberus.manager;
 
-import java.util.Vector;
-
 import org.eclipse.swt.widgets.Shell;
 
 import cerberus.manager.type.ManagerObjectType;
@@ -17,7 +15,7 @@ public interface ISWTGUIManager extends IGeneralManager
 	
 	public Shell createWindow();
 	
-	public Shell createWindow(int iUniqueId, String sLayoutAttributes);
+	public Shell createWindow(int iUniqueId, String sLabel, String sLayoutAttributes);
 	
 	public void createComposite(
 			int iUniqueId, int iUniqueParentContainerId, String sLayoutAttributes);

@@ -43,7 +43,7 @@ public class CmdViewCreateProgressBar extends CmdViewCreateAdapter implements IC
 
 		progressBarView.setAttributes(refVecAttributes);
 		progressBarView.extractAttributes();
-		progressBarView.retrieveNewGUIContainer();
+		progressBarView.retrieveGUIContainer();
 		progressBarView.initView();
 		progressBarView.drawView();
 	}
