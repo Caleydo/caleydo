@@ -5,7 +5,7 @@
 
 package cerberus.observer.mediator;
 
-import cerberus.observer.mediator.ALockableReceiver;
+import cerberus.observer.mediator.ALockableMediatorReceiver;
 import cerberus.observer.mediator.IMediatorSender;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -14,7 +14,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public abstract class ALockableMediator 
-extends ALockableReceiver
+extends ALockableMediatorReceiver
 implements IMediator
 {
 

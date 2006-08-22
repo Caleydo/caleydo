@@ -53,6 +53,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 /**
  * @author Michael Kalkusch
  *
+ * @deprecated use OneForAllManager
  */
 public class OneForAllJoglManager 
 implements IGeneralManagerSingelton {

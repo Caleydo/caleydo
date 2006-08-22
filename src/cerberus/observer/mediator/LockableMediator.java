@@ -53,7 +53,7 @@ implements IMediator
 	 * @see cerberus.observer.mediator.AThreadedMediatorReceiver#updateReceiver(cerberus.observer.mediator.IMediatorSender)
 	 */
 	@Override
-	public void updateReceiver(IMediatorSender eventTrigger)
+	public void updateReceiver(Object eventTrigger)
 	{
 		Iterator <IMediatorReceiver> iter = vecReceiver.iterator();
 		
