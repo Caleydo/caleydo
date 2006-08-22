@@ -37,7 +37,7 @@ public class SliderViewRep extends AViewRep implements IView
 	   // TODO: set slider to current position
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 		.getSingelton().getSWTGUIManager().createWidget(

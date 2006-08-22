@@ -135,7 +135,7 @@ public class ProgressBarViewRep extends AViewRep implements IView
 		refProgressBar.setSelection(this.iProgressBarCurrentValue);
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
 				CommandFactory.sDelimiter_CreateView_Size);
@@ -152,13 +152,6 @@ public class ProgressBarViewRep extends AViewRep implements IView
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 
 	public void setProgressBarPercentage(int iProgressPercentage)
 	{

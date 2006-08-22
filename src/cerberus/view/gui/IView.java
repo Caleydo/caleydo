@@ -19,9 +19,14 @@ public interface IView
 	 */
 	public void drawView();
 
-	public void retrieveNewGUIContainer();
-
-	public void retrieveExistingGUIContainer();
+	/**
+	 * Method takes uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * Method is implemented in the subclasses because only there
+	 * the type of the needed widget is available.
+	 */
+	public void retrieveGUIContainer();
 	
 	public void setAttributes(Vector <String> attributes );
 	

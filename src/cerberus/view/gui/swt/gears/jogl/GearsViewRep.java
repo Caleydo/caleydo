@@ -54,7 +54,7 @@ implements IView
 		
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
 			(SWTEmbeddedJoglWidget)refGeneralManager.getSingelton()
@@ -63,11 +63,4 @@ implements IView
 		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
 		
 	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
 }

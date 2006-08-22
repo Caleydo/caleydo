@@ -21,7 +21,7 @@ public class Heatmap2DViewRep extends AViewRep implements IView
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
 		initView();
-		retrieveNewGUIContainer();
+		retrieveGUIContainer();
 		drawView();
 	}
 	
@@ -40,7 +40,7 @@ public class Heatmap2DViewRep extends AViewRep implements IView
 		
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
 			(SWTEmbeddedJoglWidget)refGeneralManager.getSingelton()
@@ -49,11 +49,4 @@ public class Heatmap2DViewRep extends AViewRep implements IView
 		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
 		
 	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
 }

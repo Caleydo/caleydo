@@ -315,4 +315,10 @@ implements ISwtJoglContainerViewRep, IView, GLEventListener
 ////				iHistogramCell_offsetY );
 	}
 
+	public void retrieveGUIContainer()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

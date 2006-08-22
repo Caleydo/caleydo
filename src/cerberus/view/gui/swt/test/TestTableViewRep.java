@@ -29,7 +29,7 @@ implements IView
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 
 		initView();
-		retrieveNewGUIContainer();
+		retrieveGUIContainer();
 		drawView();
 	}
 	
@@ -44,7 +44,7 @@ implements IView
 		createTable();
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		SWTNativeWidget refSWTNativeWidget = 
 			(SWTNativeWidget)refGeneralManager.getSingelton()
@@ -53,12 +53,6 @@ implements IView
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
 	protected void createTable()
 	{
 		final Table table = new Table(refSWTContainer, SWT.BORDER | SWT.V_SCROLL);

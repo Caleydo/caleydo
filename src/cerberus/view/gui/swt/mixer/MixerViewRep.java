@@ -28,16 +28,9 @@ public class MixerViewRep extends AViewRep implements IView
 
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		// TODO Auto-generated method stub
 
 	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 }

@@ -2,16 +2,9 @@ package cerberus.view.gui.swt.data;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
@@ -20,12 +13,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import cerberus.data.collection.ISelection;
-import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.ISelectionManager;
-import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
@@ -65,12 +56,7 @@ implements IDataTableView
 		// not implemented in this class
 	}
 
-	public void retrieveNewGUIContainer()
-	{
-		// not implemented in this class
-	}
-
-	public void retrieveExistingGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		// not implemented in this class
 	}

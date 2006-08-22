@@ -27,7 +27,7 @@ implements IView
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
 		
 		initView();
-		retrieveNewGUIContainer();
+		retrieveGUIContainer();
 		drawView();
 	}
 	
@@ -51,7 +51,7 @@ implements IView
 		
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
 			(SWTEmbeddedJoglWidget)refGeneralManager.getSingelton()
@@ -60,11 +60,4 @@ implements IView
 		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
 		
 	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
 }

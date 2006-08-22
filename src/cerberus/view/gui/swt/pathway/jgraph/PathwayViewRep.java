@@ -179,7 +179,7 @@ implements IPathwayView
 		refPathwayGraph.getGraphLayoutCache().insert(edge);
 	}
 	
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{			
 		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
 				CommandFactory.sDelimiter_CreateView_Size );
@@ -193,11 +193,5 @@ implements IPathwayView
 						iParentContainerId, iWidth, iHeight);
 
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-		
 	}
 }

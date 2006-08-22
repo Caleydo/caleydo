@@ -100,7 +100,7 @@ public class DataExplorerViewRep extends AViewRep implements IView
 
 	}
 
-	public void retrieveNewGUIContainer()
+	public void retrieveGUIContainer()
 	{	
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
@@ -108,12 +108,6 @@ public class DataExplorerViewRep extends AViewRep implements IView
 						iParentContainerId, iWidth, iHeight);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
-	}
-
-	public void retrieveExistingGUIContainer()
-	{
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
