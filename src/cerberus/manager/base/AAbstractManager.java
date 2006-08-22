@@ -1,5 +1,6 @@
-/**
- * 
+/*
+ * Project: GenView
+ *  
  */
 package cerberus.manager.base;
 

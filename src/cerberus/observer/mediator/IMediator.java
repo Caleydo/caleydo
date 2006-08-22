@@ -4,11 +4,12 @@ import cerberus.observer.mediator.IMediatorReceiver;
 import cerberus.observer.mediator.IMediatorSender;
 
 public interface IMediator
+extends IMediatorReceiver
 {	
 	
-	public void register( IMediatorSender sender );
+	public boolean register( IMediatorSender sender );
 	
-	public void register( IMediatorReceiver receiver );
+	public boolean register( IMediatorReceiver receiver );
 	
 	
 	/**
@@ -17,9 +18,9 @@ public interface IMediator
 	 * 
 	 * @param sender
 	 */
-	public void unregister( IMediatorSender sender );
+	public boolean unregister( IMediatorSender sender );
 	
-	public void unregister( IMediatorReceiver receiver );
+	public boolean unregister( IMediatorReceiver receiver );
 	
 	/**
 	 * Called before destruction of Mediator.
