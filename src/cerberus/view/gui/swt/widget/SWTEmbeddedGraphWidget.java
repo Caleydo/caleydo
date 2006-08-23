@@ -9,6 +9,8 @@
 
 package cerberus.view.gui.swt.widget;
 
+import java.awt.Frame;
+
 import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
 
 import org.eclipse.swt.SWT;
@@ -46,7 +48,7 @@ public class SWTEmbeddedGraphWidget extends ASWTEmbeddedWidget
 	 * 
 	 * @return The embedded AWT Frame.
 	 */
-	public final java.awt.Frame getEmbeddedFrame()
+	public final Frame getEmbeddedFrame()
 	{
 		return refEmbeddedFrame;
 	}

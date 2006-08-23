@@ -13,6 +13,7 @@ import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
+import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
 import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.slider.SliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
@@ -117,6 +118,8 @@ implements IViewManager
 			return new GearsViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
 		case VIEW_SWT_HEATMAP2D:
+			return new Heatmap2DViewRep(
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
 		case VIEW_SWT_HISTOGRAM2D:
 			return new SwtJogHistogram2DViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
@@ -129,7 +132,11 @@ implements IViewManager
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
 		case VIEW_SWT_SLIDER:
 			return new SliderViewRep(
-					this.refGeneralManager, iViewId, iParentContainerId, sLabel);			
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
+		case VIEW_SWT_JOGL_TEST_TRIANGLE:
+			return new TestTriangleViewRep(
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
+		
 
 		default:
 			throw new CerberusRuntimeException(

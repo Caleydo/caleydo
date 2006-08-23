@@ -31,7 +31,7 @@ public abstract class ASWTEmbeddedWidget extends ASWTWidget
 	{
 		super(refParentComposite);
 		
-	Composite composite = new Composite(refParentComposite, SWT.EMBEDDED);
+		Composite composite = new Composite(refParentComposite, SWT.EMBEDDED);
 		
 		GridData gridData = new GridData();
 		

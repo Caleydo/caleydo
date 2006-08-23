@@ -90,6 +90,8 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_PATHWAY(ManagerType.VIEW),
 	
+	VIEW_SWT_JOGL_TEST_TRIANGLE(ManagerType.VIEW),
+	
 	VIEW_SWT_TEST_TABLE(ManagerType.VIEW),
 	
 	VIEW_SWT_GEARS(ManagerType.VIEW),

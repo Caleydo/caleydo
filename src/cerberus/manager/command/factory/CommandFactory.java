@@ -29,6 +29,7 @@ import cerberus.command.view.swt.CmdViewCreateMixer;
 import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.view.swt.CmdViewCreateProgressBar;
 import cerberus.command.view.swt.CmdViewCreateSlider;
+import cerberus.command.view.swt.CmdViewCreateTestTriangle;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
 import cerberus.command.window.CmdWindowNewIFrameScatterplot2D;
@@ -249,14 +250,14 @@ extends ACommand
 			break;
 		}
 		
-//		case CREATE_VIEW_HEATMAP:
-//		{
-//			createdCommand =
-//				new CmdViewCreateHeatmap(
-//						refGeneralManager,
-//						llAttributes );			
-//			break;
-//		}
+		case CREATE_VIEW_HEATMAP:
+		{
+			createdCommand =
+				new CmdViewCreateHeatmap(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
 		
 		case CREATE_VIEW_GEARS:
 		{
@@ -266,6 +267,17 @@ extends ACommand
 						llAttributes );			
 			break;
 		}
+		
+		case CREATE_VIEW_TEST_TRIANGLE:
+		{
+			createdCommand =
+				new CmdViewCreateTestTriangle(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		
 		
 		case CREATE_VIEW_DATA_EXPLORER:
 		{

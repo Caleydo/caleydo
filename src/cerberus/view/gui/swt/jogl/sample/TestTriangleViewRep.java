@@ -1,0 +1,29 @@
+package cerberus.view.gui.swt.jogl.sample;
+
+import javax.media.opengl.GLCanvas;
+
+import cerberus.manager.IGeneralManager;
+import cerberus.view.gui.swt.base.AJoglViewRep;
+import cerberus.view.gui.IView;
+import cerberus.view.gui.awt.jogl.TriangleMain;
+
+
+public class TestTriangleViewRep 
+extends AJoglViewRep 
+implements IView
+{
+	protected GLCanvas refGLCanvas;
+	
+	public TestTriangleViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel)
+	{
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+	}
+	
+	public void initView()
+	{
+		TriangleMain renderer = new TriangleMain();		
+		super.setGLEventListener( renderer );
+	}
+	
+}
