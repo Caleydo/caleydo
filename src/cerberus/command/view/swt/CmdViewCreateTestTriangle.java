@@ -17,7 +17,8 @@ import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
  *
  */
 public class CmdViewCreateTestTriangle 
-extends ACmdCreate implements ICommand 
+extends ACmdCreate 
+implements ICommand 
 {
 	/**
 	 * Constructor
@@ -33,24 +34,29 @@ extends ACmdCreate implements ICommand
 	}
 	
 	/**
-	 * Method creates a gears view, sets the attributes 
+	 * Method creates a test triangle view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		TestTriangleViewRep triangleView = 
-			(TestTriangleViewRep)( 
-				(IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW)
-						).createView(ManagerObjectType.VIEW_SWT_JOGL_TEST_TRIANGLE, 
-						iUniqueId, 
-						iParentContainerId, 
-						sLabel);
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
+		
+		TestTriangleViewRep triangleView = (TestTriangleViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_JOGL_TEST_TRIANGLE,
+							iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				triangleView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
 		
 		triangleView.setAttributes(refVecAttributes);
 		triangleView.extractAttributes();
 		triangleView.retrieveGUIContainer();
 		triangleView.initView();
-		triangleView.drawView();
-		
+		triangleView.drawView();	
 	}
 }

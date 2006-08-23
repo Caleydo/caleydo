@@ -16,7 +16,9 @@ import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreatePathway extends ACmdCreate implements ICommand
+public class CmdViewCreatePathway 
+extends ACmdCreate 
+implements ICommand
 {
 	/**
 	 * Constructor
@@ -37,10 +39,19 @@ public class CmdViewCreatePathway extends ACmdCreate implements ICommand
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{				
-		PathwayViewRep pathwayView = (PathwayViewRep) ((IViewManager)refGeneralManager.
-			getManagerByBaseType(ManagerObjectType.VIEW)).
-				createView(ManagerObjectType.VIEW_SWT_PATHWAY, 
-						iUniqueId, iParentContainerId, sLabel);
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
+		
+		PathwayViewRep pathwayView = (PathwayViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,
+							iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				pathwayView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
 
 		pathwayView.setAttributes(refVecAttributes);
 		pathwayView.extractAttributes();

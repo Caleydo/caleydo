@@ -16,8 +16,9 @@ import cerberus.view.gui.swt.mixer.MixerViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateMixer extends ACmdCreate implements
-		ICommand
+public class CmdViewCreateMixer 
+extends ACmdCreate 
+implements ICommand
 {
 	/**
 	 * Constructor
@@ -38,15 +39,24 @@ public class CmdViewCreateMixer extends ACmdCreate implements
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		MixerViewRep sliderView = (MixerViewRep) ((IViewManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.VIEW)).createView(
-				ManagerObjectType.VIEW_SWT_MIXER, 
-				iUniqueId, iParentContainerId, sLabel);
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
+		
+		MixerViewRep mixerView = (MixerViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_MIXER,
+						iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				mixerView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
 
-		sliderView.setAttributes(refVecAttributes);
-		sliderView.extractAttributes();
-		sliderView.retrieveGUIContainer();
-		sliderView.initView();
-		sliderView.drawView();
+		mixerView.setAttributes(refVecAttributes);
+		mixerView.extractAttributes();
+		mixerView.retrieveGUIContainer();
+		mixerView.initView();
+		mixerView.drawView();
 	}
 }

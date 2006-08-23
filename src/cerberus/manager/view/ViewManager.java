@@ -1,5 +1,7 @@
 package cerberus.manager.view;
 
+import java.util.HashMap;
+
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.base.AAbstractManager;
@@ -23,7 +25,8 @@ public class ViewManager
 extends AAbstractManager
 implements IViewManager
 {
-
+	protected HashMap<Integer, IView> hashViewId2View;
+	
 	public ViewManager(IGeneralManager setGeneralManager)
 	{
 		super(setGeneralManager,
@@ -31,19 +34,22 @@ implements IViewManager
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
+		hashViewId2View = new HashMap<Integer, IView>();
+		
 		refGeneralManager.getSingelton().setViewManager(this);
 	}
 
 	public boolean hasItem(int iItemId)
 	{
-		// TODO Auto-generated method stub
+		if (hashViewId2View.containsKey(iItemId) == true)
+			return true;
+		
 		return false;
 	}
 
 	public Object getItem(int iItemId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return hashViewId2View.get(iItemId);
 	}
 
 	public int size()
@@ -54,20 +60,23 @@ implements IViewManager
 
 	public ManagerObjectType getManagerType()
 	{
-		// TODO Auto-generated method stub
+		assert false:"not done yet";
 		return null;
 	}
 
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		IView registerView = (IView) registerItem;
+		
+		hashViewId2View.put(iItemId, registerView);
+		
+		return true;
 	}
 
 	public boolean unregisterItem(int iItemId, ManagerObjectType type)
 	{
-		// TODO Auto-generated method stub
+		assert false : "not done yet";
 		return false;
 	}
 

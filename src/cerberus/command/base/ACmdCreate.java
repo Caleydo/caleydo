@@ -15,6 +15,8 @@ extends AManagedCommand
 implements ICommand
 {
 	protected int iCommandId;
+	
+	protected int iCreatedObjectId;
 
 	protected int iParentContainerId;
 	
@@ -67,7 +69,7 @@ implements ICommand
 		{			
 			iCommandId = (StringConversionTool.convertStringToInt(
 					iter.next(), -1));
-			iUniqueId = (StringConversionTool.convertStringToInt(
+			iCreatedObjectId = (StringConversionTool.convertStringToInt(
 					iter.next(), -1));
 
 			sLabel = iter.next();

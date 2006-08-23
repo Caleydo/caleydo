@@ -16,8 +16,9 @@ import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateDataExplorer extends ACmdCreate implements
-		ICommand
+public class CmdViewCreateDataExplorer 
+extends ACmdCreate 
+implements ICommand
 {
 	/**
 	 * Constructor
@@ -38,11 +39,21 @@ public class CmdViewCreateDataExplorer extends ACmdCreate implements
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep) ((IViewManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.VIEW))
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
+		
+		
+		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
-						iUniqueId, iParentContainerId, sLabel);
-
+							iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				dataExplorerView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
+		
 		dataExplorerView.setAttributes(refVecAttributes);
 		dataExplorerView.extractAttributes();
 		dataExplorerView.retrieveGUIContainer();

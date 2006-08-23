@@ -16,7 +16,9 @@ import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateProgressBar extends ACmdCreate implements ICommand 
+public class CmdViewCreateProgressBar 
+extends ACmdCreate 
+implements ICommand 
 {
 	/**
 	 * Constructor
@@ -36,10 +38,19 @@ public class CmdViewCreateProgressBar extends ACmdCreate implements ICommand
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		ProgressBarViewRep progressBarView = (ProgressBarViewRep) ((IViewManager)refGeneralManager.
-				getManagerByBaseType(ManagerObjectType.VIEW)).
-					createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR, 
-							iUniqueId, iParentContainerId, sLabel);
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
+		
+		ProgressBarViewRep progressBarView = (ProgressBarViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR,
+							iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				progressBarView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
 
 		progressBarView.setAttributes(refVecAttributes);
 		progressBarView.extractAttributes();

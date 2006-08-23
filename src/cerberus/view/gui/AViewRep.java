@@ -7,6 +7,8 @@ import java.util.Iterator;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.event.mediator.IMediatorReceiver;
+import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 
@@ -20,7 +22,7 @@ import cerberus.util.system.StringConversionTool;
  */
 public abstract class AViewRep 
 extends AUniqueManagedObject
-implements IView
+implements IView, IMediatorSender, IMediatorReceiver
 {
 	
 	protected int iParentContainerId;
@@ -164,6 +166,12 @@ implements IView
 		this.iParentContainerId = iParentContainerId;
 	}
 	
-
+	/**
+	 * TODO: implement in subclasses
+	 */
+	public void update( Object eventTrigger )
+	{
+		
+	}
 
 }

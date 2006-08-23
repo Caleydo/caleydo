@@ -23,7 +23,13 @@ public class EventPublisher implements IEventPublisher
 
 	public void registerSenderToReceiver(int iMediatorSenderId, int iMediatorReceiverId)
 	{
-		//refGeneralManager.getItem()
+		IMediatorSender sender = (IMediatorSender)refGeneralManager.
+			getItem(iMediatorSenderId);
+		
+		IMediatorReceiver receiver = (IMediatorReceiver)refGeneralManager.
+			getItem(iMediatorReceiverId);
+		
+		registerSenderToReceiver(sender, receiver);
 	}
 
 	public void registerSenderToSender(IMediatorSender senderExisting, IMediatorSender senderNew)

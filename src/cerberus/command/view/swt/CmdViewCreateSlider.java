@@ -16,8 +16,9 @@ import cerberus.view.gui.swt.slider.SliderViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateSlider extends ACmdCreate implements
-		ICommand
+public class CmdViewCreateSlider 
+extends ACmdCreate 
+implements ICommand
 {
 	/**
 	 * Constructor
@@ -38,10 +39,19 @@ public class CmdViewCreateSlider extends ACmdCreate implements
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		SliderViewRep sliderView = (SliderViewRep) ((IViewManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.VIEW)).createView(
-				ManagerObjectType.VIEW_SWT_SLIDER, 
-				iUniqueId, iParentContainerId, sLabel);
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
+		
+		SliderViewRep sliderView = (SliderViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_SLIDER,
+							iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				sliderView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
 
 		sliderView.setAttributes(refVecAttributes);
 		sliderView.extractAttributes();

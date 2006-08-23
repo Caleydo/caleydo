@@ -16,7 +16,9 @@ import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateGears extends ACmdCreate implements ICommand 
+public class CmdViewCreateGears 
+extends ACmdCreate 
+implements ICommand 
 {
 	/**
 	 * Constructor
@@ -37,10 +39,19 @@ public class CmdViewCreateGears extends ACmdCreate implements ICommand
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		GearsViewRep gearsView = (GearsViewRep) ((IViewManager)refGeneralManager.
-				getManagerByBaseType(ManagerObjectType.VIEW)).
-					createView(ManagerObjectType.VIEW_SWT_GEARS, 
-							iUniqueId, iParentContainerId, sLabel);
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
+		
+		GearsViewRep gearsView = (GearsViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_GEARS,
+							iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				gearsView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
 		
 		gearsView.setAttributes(refVecAttributes);
 		gearsView.extractAttributes();

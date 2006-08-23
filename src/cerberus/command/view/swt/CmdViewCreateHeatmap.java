@@ -16,7 +16,9 @@ import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateHeatmap extends ACmdCreate implements ICommand 
+public class CmdViewCreateHeatmap 
+extends ACmdCreate 
+implements ICommand 
 {
 	/**
 	 * Constructor
@@ -37,13 +39,19 @@ public class CmdViewCreateHeatmap extends ACmdCreate implements ICommand
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		Object buffer = ( (IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW)
-						).createView(ManagerObjectType.VIEW_SWT_HEATMAP2D, 
-						iUniqueId, 
-						iParentContainerId, 
-						sLabel);
+		IViewManager viewManager = ((IViewManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
-		Heatmap2DViewRep heatmapView = (Heatmap2DViewRep) buffer;
+		Heatmap2DViewRep heatmapView = (Heatmap2DViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D,
+						iCreatedObjectId, 
+							iParentContainerId, 
+							sLabel);
+		
+		viewManager.registerItem(
+				heatmapView, 
+				iCreatedObjectId, 
+				ManagerObjectType.VIEW);
 		
 		heatmapView.setAttributes(refVecAttributes);
 		heatmapView.extractAttributes();
