@@ -79,7 +79,7 @@ implements IPathwayView
 	public void drawView()
 	{
 		HashMap<Integer, Pathway> pathwayLUT = 		
-			((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+			((PathwayManager)refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY)).
 				getPathwayLUT();
 		
 		Pathway pathway;
@@ -182,13 +182,7 @@ implements IPathwayView
 	}
 	
 	public void retrieveGUIContainer()
-	{			
-		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
-				CommandFactory.sDelimiter_CreateView_Size );
-
-		int iWidth = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
-		int iHeight = (StringConversionTool.convertStringToInt( token.nextToken(), -1 ) );
-		
+	{				
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,

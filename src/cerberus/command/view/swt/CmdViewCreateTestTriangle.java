@@ -3,7 +3,7 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.view.CmdViewCreateAdapter;
+import cerberus.command.base.ACmdCreate;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -16,7 +16,8 @@ import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateTestTriangle extends CmdViewCreateAdapter implements ICommand 
+public class CmdViewCreateTestTriangle 
+extends ACmdCreate implements ICommand 
 {
 	/**
 	 * Constructor
@@ -41,7 +42,7 @@ public class CmdViewCreateTestTriangle extends CmdViewCreateAdapter implements I
 			(TestTriangleViewRep)( 
 				(IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW)
 						).createView(ManagerObjectType.VIEW_SWT_JOGL_TEST_TRIANGLE, 
-						iViewId, 
+						iUniqueId, 
 						iParentContainerId, 
 						sLabel);
 		

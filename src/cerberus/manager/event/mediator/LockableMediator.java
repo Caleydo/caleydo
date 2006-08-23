@@ -1,18 +1,17 @@
 /**
  * 
  */
-package cerberus.observer.mediator;
+package cerberus.manager.event.mediator;
 
 import java.util.Vector;
 import java.util.Iterator;
 
-import cerberus.observer.mediator.ALockableMediator;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care 
  * has to be taken when regsitering a Mediator as Receiver.
  * 
- * @version "Schieß dir nicht ins Bein"
+ * @version "Schieï¿½ dir nicht ins Bein"
  * 
  * @author kalkusch
  *

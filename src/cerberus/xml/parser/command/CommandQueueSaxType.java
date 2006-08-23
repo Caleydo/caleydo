@@ -45,6 +45,8 @@ public enum CommandQueueSaxType
 	CREATE_SWT_WINDOW("cmd", "type"),
 	CREATE_SWT_CONTAINER("cmd", "type"),
 	
+	CREATE_EVENT_RELATION("cmd","type"),
+	
 	RUN_CMD_NOW("cmd", "process"),	
 	LOAD_ON_DEMAND("cmd", "process"),
 	MEMENTO("cmd", "process"),	

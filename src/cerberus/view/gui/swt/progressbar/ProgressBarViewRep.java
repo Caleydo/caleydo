@@ -36,11 +36,6 @@ public class ProgressBarViewRep extends AViewRep implements IView
 	protected ProgressBar refProgressBar;
 
 	protected int iProgressBarStyle = SWT.HORIZONTAL;
-
-	protected int iHeight = 0;
-
-	protected int iWidth = 0;
-
 	
 	public ProgressBarViewRep(
 			IGeneralManager refGeneralManager, 
@@ -137,14 +132,6 @@ public class ProgressBarViewRep extends AViewRep implements IView
 
 	public void retrieveGUIContainer()
 	{
-		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
-				CommandFactory.sDelimiter_CreateView_Size);
-
-		iWidth = (StringConversionTool
-				.convertStringToInt(token.nextToken(), -1));
-		iHeight = (StringConversionTool.convertStringToInt(token.nextToken(),
-				-1));
-
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
@@ -157,6 +144,21 @@ public class ProgressBarViewRep extends AViewRep implements IView
 	{
 		this.iProgressBarCurrentValue = iProgressPercentage;
 
+	}
+	
+	/**
+	 * Extracts the ProgressBar percentage value and calls extractAttributes()
+	 * from the Adapter Base class.
+	 */
+	public void extractAttributes()
+	{
+		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
+				CommandFactory.sDelimiter_CreateView_Size);
+
+		iProgressBarCurrentValue = (StringConversionTool.convertStringToInt(
+				token.nextToken(), -1));
+		
+		super.extractAttributes();
 	}
 
 }

@@ -1,4 +1,4 @@
-package cerberus.observer.mediator;
+package cerberus.manager.event.mediator;
 
 /**
  * @author kalkusch

@@ -3,7 +3,7 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.view.CmdViewCreateAdapter;
+import cerberus.command.base.ACmdCreate;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -16,7 +16,7 @@ import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateProgressBar extends CmdViewCreateAdapter implements ICommand 
+public class CmdViewCreateProgressBar extends ACmdCreate implements ICommand 
 {
 	/**
 	 * Constructor
@@ -39,7 +39,7 @@ public class CmdViewCreateProgressBar extends CmdViewCreateAdapter implements IC
 		ProgressBarViewRep progressBarView = (ProgressBarViewRep) ((IViewManager)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.VIEW)).
 					createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR, 
-							iViewId, iParentContainerId, sLabel);
+							iUniqueId, iParentContainerId, sLabel);
 
 		progressBarView.setAttributes(refVecAttributes);
 		progressBarView.extractAttributes();

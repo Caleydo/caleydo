@@ -3,7 +3,7 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.view.CmdViewCreateAdapter;
+import cerberus.command.base.ACmdCreate;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -16,7 +16,7 @@ import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreatePathway extends CmdViewCreateAdapter implements ICommand
+public class CmdViewCreatePathway extends ACmdCreate implements ICommand
 {
 	/**
 	 * Constructor
@@ -40,7 +40,7 @@ public class CmdViewCreatePathway extends CmdViewCreateAdapter implements IComma
 		PathwayViewRep pathwayView = (PathwayViewRep) ((IViewManager)refGeneralManager.
 			getManagerByBaseType(ManagerObjectType.VIEW)).
 				createView(ManagerObjectType.VIEW_SWT_PATHWAY, 
-						iViewId, iParentContainerId, sLabel);
+						iUniqueId, iParentContainerId, sLabel);
 
 		pathwayView.setAttributes(refVecAttributes);
 		pathwayView.extractAttributes();

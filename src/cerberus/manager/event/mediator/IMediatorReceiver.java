@@ -1,5 +1,5 @@
 
-package cerberus.observer.mediator;
+package cerberus.manager.event.mediator;
 
 /**
  * Object that shall receive an event.

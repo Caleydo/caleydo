@@ -10,6 +10,7 @@ package cerberus.manager.singelton;
 
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.IMementoManager;
@@ -31,6 +32,7 @@ import cerberus.manager.data.selection.SelectionManager;
 import cerberus.manager.data.set.SetManager;
 import cerberus.manager.data.storage.StorageManager;
 import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
+import cerberus.manager.event.EventPublisher;
 import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.memento.MementoManager;
 import cerberus.manager.menu.swing.SwingMenuManager;
@@ -101,6 +103,8 @@ implements IGeneralManagerSingelton {
 	
 	protected IPathwayElementManager refPathwayElementManager;
 	
+	protected IEventPublisher refEventPublisher;
+	
 	/**
 	 * Used to create a new item by a Fabrik.
 	 * used by cerberus.data.manager.OneForAllManager#createNewId(ManagerObjectType)
@@ -166,6 +170,7 @@ implements IGeneralManagerSingelton {
 		refSWTGUIManager = new SWTGUIManager( this );
 		refPathwayManager = new PathwayManager( this );
 		refPathwayElementManager = new PathwayElementManager( this );
+		refEventPublisher = new EventPublisher( this );
 		
 		/**
 		 * Make sure SWT is only used, when needed!
@@ -187,10 +192,9 @@ implements IGeneralManagerSingelton {
 		refSingeltonManager.setLoggerManager( refLoggerManager );
 		refSingeltonManager.setViewManager ( refViewManager );
 		refSingeltonManager.setSWTGUIManager (refSWTGUIManager );
-		
 		refSingeltonManager.setPathwayElementManager( refPathwayElementManager );
 		refSingeltonManager.setPathwayManager( refPathwayManager );
-	
+		refSingeltonManager.setEventPublisher( refEventPublisher );
 		
 		refSetManager.initManager();
 	}
@@ -557,6 +561,8 @@ implements IGeneralManagerSingelton {
 			return refPathwayManager;
 		case PATHWAY_ELEMENT:
 			return refPathwayElementManager;
+		case EVENT_PUBLISHER:
+			return refEventPublisher;
 		
 		default:
 			throw new CerberusRuntimeException("Error in OneForAllManager.getManagerByBaseType() unsupported type " +

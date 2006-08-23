@@ -3,7 +3,7 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.view.CmdViewCreateAdapter;
+import cerberus.command.base.ACmdCreate;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -16,7 +16,7 @@ import cerberus.view.gui.swt.slider.SliderViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateSlider extends CmdViewCreateAdapter implements
+public class CmdViewCreateSlider extends ACmdCreate implements
 		ICommand
 {
 	/**
@@ -41,7 +41,7 @@ public class CmdViewCreateSlider extends CmdViewCreateAdapter implements
 		SliderViewRep sliderView = (SliderViewRep) ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW)).createView(
 				ManagerObjectType.VIEW_SWT_SLIDER, 
-				iViewId, iParentContainerId, sLabel);
+				iUniqueId, iParentContainerId, sLabel);
 
 		sliderView.setAttributes(refVecAttributes);
 		sliderView.extractAttributes();

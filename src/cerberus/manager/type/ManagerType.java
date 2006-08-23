@@ -48,6 +48,8 @@ public enum ManagerType {
 		
 		DATA("abstract data manager"),
 		
+		EVENT_PUBLISHER("event publisher"),
+		
 		SET("set manager", ManagerType.DATA ),
 		
 		SELECTION("selection manager", ManagerType.DATA ),
@@ -57,6 +59,7 @@ public enum ManagerType {
 		PATHWAY("pathway manager", ManagerType.DATA),
 		
 		PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA),
+		
 							
 		NONE("no type set");
 		

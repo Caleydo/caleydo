@@ -48,9 +48,9 @@
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" attrib1="10331" attrib2="ROW VERTICAL" />
 
      <!-- Container 10341 -->
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="30" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="70" />
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" attrib1="10341" attrib2="500 30" detail="30" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" attrib1="10341" attrib2="500 30" detail="70" />
 
      <!-- Container 11341 -->
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="11341" attrib2="700 500" />		  
@@ -70,6 +70,9 @@
      <!-- Window 11331 -->
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="18401" label="Pathway" attrib1="20331" attrib2="-1 -1" />
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER" cmdId="66991" targetId="1901" label="Slider" attrib1="20331" attrib2="400 100" />	 
+
+	 <!-- Relations -->
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" cmdId="68991" targetId="10501" label="Event Relation" attrib1="20991" attrib2="14401" />
 
 <!--	
 

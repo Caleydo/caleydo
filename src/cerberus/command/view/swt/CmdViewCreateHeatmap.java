@@ -3,7 +3,7 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.view.CmdViewCreateAdapter;
+import cerberus.command.base.ACmdCreate;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -16,7 +16,7 @@ import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateHeatmap extends CmdViewCreateAdapter implements ICommand 
+public class CmdViewCreateHeatmap extends ACmdCreate implements ICommand 
 {
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ public class CmdViewCreateHeatmap extends CmdViewCreateAdapter implements IComma
 	{
 		super(refGeneralManager, listAttributes);
 	}
-	
+
 	/**
 	 * Method creates a gears view, sets the attributes 
 	 * and calls the init and draw method.
@@ -39,7 +39,7 @@ public class CmdViewCreateHeatmap extends CmdViewCreateAdapter implements IComma
 	{
 		Object buffer = ( (IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW)
 						).createView(ManagerObjectType.VIEW_SWT_HEATMAP2D, 
-						iViewId, 
+						iUniqueId, 
 						iParentContainerId, 
 						sLabel);
 		

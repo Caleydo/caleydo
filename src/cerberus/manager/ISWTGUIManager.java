@@ -19,4 +19,6 @@ public interface ISWTGUIManager extends IGeneralManager
 	
 	public void createComposite(
 			int iUniqueId, int iUniqueParentContainerId, String sLayoutAttributes);
+
+	public void runApplication();
 }

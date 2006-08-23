@@ -106,20 +106,6 @@ implements
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setOffset(int)
-	 */
-	public void setOffset(int iSetOffset) {
-		this.iSelectionOffset = iSetOffset;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setLength(int)
-	 */
-	public void setLength(int iSetLength) {
-		this.iSelectionLength = iSetLength;
-	}
-
-	/* (non-Javadoc)
 	 * @see cerberus.data.collection.ISelection#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {

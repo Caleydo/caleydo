@@ -20,6 +20,7 @@ import cerberus.command.base.ACommand;
 import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
+import cerberus.command.event.CmdEventRelationCreate;
 
 
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
@@ -319,6 +320,15 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdViewCreateMixer(
+						refGeneralManager,
+						llAttributes );			
+			break;
+		}
+		
+		case CREATE_EVENT_RELATION:
+		{
+			createdCommand =
+				new CmdEventRelationCreate(
 						refGeneralManager,
 						llAttributes );			
 			break;

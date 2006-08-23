@@ -1,7 +1,5 @@
-package cerberus.observer.mediator;
+package cerberus.manager.event.mediator;
 
-import cerberus.observer.mediator.IMediatorReceiver;
-import cerberus.observer.mediator.IMediatorSender;
 
 public interface IMediator
 extends IMediatorReceiver

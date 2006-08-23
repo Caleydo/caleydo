@@ -24,7 +24,7 @@ public abstract class AUniqueItem implements IUniqueObject
 	/**
 	 * Unique Id
 	 */
-	private int iUniqueId;
+	protected int iUniqueId;
 
 	/**
 	 * 

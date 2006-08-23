@@ -245,13 +245,11 @@ public class DataExplorerViewRep extends AViewRep implements IView
 						AModel model = (AModel) iterator.next();
 						if (model instanceof StorageModel)
 						{
-							refDataTableViewRep.createStorageTable(model
-									.getID());
+							refDataTableViewRep.createStorageTable(model.getID());
 
 						} else if (model instanceof SelectionModel)
 						{
-							refDataTableViewRep.createSelectionTable(model
-									.getID());
+							refDataTableViewRep.createSelectionTable(model.getID());
 						} else
 						{
 							refDataTableViewRep.reinitializeTable();

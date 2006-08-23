@@ -10,6 +10,7 @@ package cerberus.manager.singelton;
 
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IDistComponentManager;
+import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.IMementoManager;
@@ -71,6 +72,8 @@ public class SingeltonManager implements ISingelton {
 	protected IPathwayManager refPathwayManager;
 	
 	protected IPathwayElementManager refPathwayElementManager;
+	
+	protected IEventPublisher refEventPublisher;
 
 	
 	/**
@@ -163,6 +166,10 @@ public class SingeltonManager implements ISingelton {
 		this.refPathwayElementManager = refPathwayElementManager;
 	}
 	
+	public void setEventPublisher(IEventPublisher refEventPublisher)
+	{
+		this.refEventPublisher = refEventPublisher;
+	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getCommandManager()

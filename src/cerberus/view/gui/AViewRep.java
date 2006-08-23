@@ -39,6 +39,14 @@ implements IView
 	 */
 	protected int iHeight;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param refGeneralManager
+	 * @param iViewId
+	 * @param iParentContainerId
+	 * @param sLabel
+	 */
 	public AViewRep(
 			final IGeneralManager refGeneralManager, 
 			final int iViewId, 
@@ -109,16 +117,15 @@ implements IView
 	 * Extracts the height and the width of the widget from the attributes.
 	 *
 	 */
-	public final void extractAttributes()
+	public void extractAttributes()
 	{
-		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
+		StringTokenizer token = new StringTokenizer(vecAttributes.get(2),
 				CommandFactory.sDelimiter_CreateView_Size);
 
 		iWidth = (StringConversionTool.convertStringToInt(
 				token.nextToken(), -1));
-		iHeight = (StringConversionTool.convertStringToInt(token
-				.nextToken(), -1));
-
+		iHeight = (StringConversionTool.convertStringToInt(
+				token.nextToken(), -1));
 	}
 	
 	public final ManagerObjectType getBaseType() {
@@ -149,6 +156,8 @@ implements IView
 	 * Sets the unique ID of the parent container.
 	 * Normally it is already set in the constructor.
 	 * Use this method only if you want to change the parent during runtime.
+	 * 
+	 * @param iParentContainerId
 	 */
 	public void setParentContainerId(int iParentContainerId)
 	{

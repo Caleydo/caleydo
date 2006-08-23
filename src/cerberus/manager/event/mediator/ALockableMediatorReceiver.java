@@ -1,19 +1,18 @@
 /**
  * 
  */
-package cerberus.observer.mediator;
+package cerberus.manager.event.mediator;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cerberus.observer.mediator.ILockableMediatorReceiver;
 
 /**
  * Threadsafe Mediator receiver.
  * Exchange update(Object) with updateReceiver(Object)
  * in derived classes.
  * 
- * @see cerberus.observer.mediator.IMediatorReceiver#update(Object)
- * @see cerberus.observer.mediator.IMediatorReceiver#updateReceiver(Object)
+ * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
+ * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
  * 
  * @author kalkusch
  *
@@ -42,8 +41,8 @@ implements ILockableMediatorReceiver
 	 * Notification of update events.
 	 * Calles updateReceiver(IMediatorSender) internal if updates are not stalled.
 	 * 
-	 * @see cerberus.observer.mediator.IMediatorReceiver#updateReceiver(Object)
-	 * @see cerberus.observer.mediator.IMediatorReceiver#update(Object)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
 	 */
 	public final void update(Object eventTrigger)
 	{		
@@ -64,7 +63,7 @@ implements ILockableMediatorReceiver
 	 * Frees lock called by updateStall() and
 	 * calls update() respectevly updateReceiver()
 	 * 
-	 * @see cerberus.observer.mediator.IMediatorReceiver#updateContinue(Object)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateContinue(Object)
 	 */
 	public final void updateContinue(Object eventTrigger)
 	{
@@ -74,7 +73,7 @@ implements ILockableMediatorReceiver
 	}
 	
 	/**
-	 * @see cerberus.observer.mediator.IMediatorReceiver#isUpdateStalled()
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#isUpdateStalled()
 	 */
 	public final boolean isUpdateStalled() 
 	{
@@ -85,7 +84,7 @@ implements ILockableMediatorReceiver
 	/**
 	 * Derived classes must implement this methode instead of update(Object).
 	 * 
-	 * @see cerberus.observer.mediator.IMediatorReceiver#update(Object)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
 	 * 	 
 	 * @param eventTrigger
 	 */

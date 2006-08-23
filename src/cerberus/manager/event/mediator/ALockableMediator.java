@@ -3,10 +3,8 @@
  *  
  */
 
-package cerberus.observer.mediator;
+package cerberus.manager.event.mediator;
 
-import cerberus.observer.mediator.ALockableMediatorReceiver;
-import cerberus.observer.mediator.IMediatorSender;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -33,7 +31,7 @@ implements IMediator
 	/**
 	 * Implement cleanup inside this function.
 	 * 
-	 * @see cerberus.observer.mediator.ALockableMediator#destroyMediator(IMediatorSender)
+	 * @see cerberus.manager.event.mediator.ALockableMediator#destroyMediator(IMediatorSender)
 	 * 
 	 * @param sender callling object 
 	 */
@@ -43,8 +41,8 @@ implements IMediator
 	/**
 	 * Test if caller is creator and calls destroyMediatorObject(IMediatorSender).
 	 * 
-	 * @see cerberus.observer.mediator.IMediator#destroyMediator()
-	 * @see cerberus.observer.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
+	 * @see cerberus.manager.event.mediator.IMediator#destroyMediator()
+	 * @see cerberus.manager.event.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
 	 */
 	public final void destroyMediator( final IMediatorSender sender )
 	{

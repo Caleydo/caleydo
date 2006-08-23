@@ -189,6 +189,12 @@ public enum ManagerObjectType {
 	PATHWAY_ELEMENT(ManagerType.PATHWAY_ELEMENT),
 	
 	/*
+	 * Event Publisher
+	 */
+	
+	EVENT_PUBLISHER(ManagerType.EVENT_PUBLISHER),
+	
+	/*
 	 * Logger
 	 */
 	LOGGER(ManagerType.LOGGER),

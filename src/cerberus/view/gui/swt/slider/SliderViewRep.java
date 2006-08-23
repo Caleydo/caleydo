@@ -5,12 +5,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.event.mediator.IMediatorReceiver;
+import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
-public class SliderViewRep extends AViewRep implements IView
+public class SliderViewRep 
+extends AViewRep 
+implements IView, IMediatorSender, IMediatorReceiver
 {
 	protected Composite refSWTContainer;
 	
@@ -45,6 +49,18 @@ public class SliderViewRep extends AViewRep implements IView
 				iParentContainerId, iWidth, iHeight);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
+	}
 
+	public void extractAttributes()
+	{
+		super.extractAttributes();
+		
+		
+	}
+	
+	public void update(Object eventTrigger)
+	{
+		
+		
 	}
 }
