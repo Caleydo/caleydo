@@ -10,24 +10,24 @@ public interface IGeneralManager {
 	 * This defines the lowest numbers to address applications over the network.
 	 * 
 	 * Schema: [enumeration of components][type][unique network id]
-	 * regular ranges: [ >0][01..99][00..99]
+	 * regular ranges: [ >0][01..99][0..9]
 	 * 
-	 * exampels: [12][03][09]
+	 * exampels: [12][03][9]
 	 * 
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffset
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_Increment
 	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
-	public final int iUniqueId_WorkspaceOffset = 100;
+	public final int iUniqueId_WorkspaceOffset = 10;
 	
 	/**
 	 * Used to create a unique networkwide identification numbers.
 	 * This defines the lowest numbers to address applications over the network.
 	 * 
 	 * Schema: [enumeration of components][type][unique network id]
-	 * regular ranges: [ >0][01..99][00..99]
+	 * regular ranges: [ >0][01..99][0..9]
 	 * 
-	 * exampels: [12][03][09]
+	 * exampels: [12][03][9]
 	 * 
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_Increment
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
@@ -42,7 +42,7 @@ public interface IGeneralManager {
 	 * @see cerberus.manager.GeneralManager#iUniqueId_Workspace
 	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
-	public final int iUniqueId_Increment = 10000;
+	public final int iUniqueId_Increment = 1000;
 	
 	public final int iUniqueId_Menu_Offset = 5600;
 		

@@ -327,7 +327,8 @@ public class SingeltonManager implements ISingelton {
 	 * @see cerberus.manager.singelton.Singelton#setNetworkPostfix(int)
 	 */
 	public void setNetworkPostfix( int iSetNetworkPrefix ) {
-		if (( iSetNetworkPrefix < 100) && ( iSetNetworkPrefix > 0)) { 
+		if (( iSetNetworkPrefix < IGeneralManager.iUniqueId_WorkspaceOffset) && 
+				( iSetNetworkPrefix > 0)) { 
 			iNetworkApplicationIdPostfix = iSetNetworkPrefix;
 		}
 		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0..99] ");
