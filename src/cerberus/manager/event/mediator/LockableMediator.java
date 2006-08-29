@@ -9,9 +9,7 @@ import java.util.Iterator;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care 
- * has to be taken when regsitering a Mediator as Receiver.
- * 
- * @version "Schie� dir nicht ins Bein"
+ * has to be taken when registering a Mediator as Receiver.
  * 
  * @author kalkusch
  *

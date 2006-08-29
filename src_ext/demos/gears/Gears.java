@@ -20,7 +20,7 @@ public class Gears implements GLEventListener, MouseListener, MouseMotionListene
 
     canvas.addGLEventListener(new Gears());
     frame.add(canvas);
-    frame.setSize(300, 300);
+    //frame.setSize(300, 300);
     final Animator animator = new Animator(canvas);
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
@@ -45,7 +45,7 @@ public class Gears implements GLEventListener, MouseListener, MouseMotionListene
 
     canvas.addGLEventListener(new Gears());
     frame.add(canvas);
-    frame.setSize(300, 300);
+    //frame.setSize(300, 300);
     final Animator animator = new Animator(canvas);
     frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {

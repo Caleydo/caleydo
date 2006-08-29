@@ -9,13 +9,10 @@ package cerberus.manager.event.mediator;
  */
 public interface IMediatorReceiver
 {
-
 	/**
 	 * Update called by Mediator triggered by IMediatorSender.
 	 * 
-	 * @param eventTrigger calling object, that created the update
+	 * @param eventTrigger Calling object, that created the update
 	 */
-	public void update( Object eventTrigger );
-	
-	
+	public void update( Object eventTrigger );	
 }

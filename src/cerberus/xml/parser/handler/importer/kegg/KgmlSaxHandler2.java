@@ -117,8 +117,8 @@ implements IXmlParserHandler
     		else if (sAttributeName.equals("link"))
     			sLink = attributes.getValue(iAttributeIndex); 
 			
-//   			System.out.println("Attribute name: " +sAttributeName);
-//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   			System.out.println("Attribute name: " +sAttributeName);
+  			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 		
 		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
@@ -157,8 +157,8 @@ implements IXmlParserHandler
 		   else if (sAttributeName.equals("type"))
 			   sType = attributes.getValue(iAttributeIndex); 
 		
-//		   System.out.println("Attribute name: " +sAttributeName);
-//		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+		   System.out.println("Attribute name: " +sAttributeName);
+		   System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
 	   	}
 
     	iGeneratedElementId = 		
@@ -206,8 +206,8 @@ implements IXmlParserHandler
    			else if (sAttributeName.equals("y"))
    				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
 			
-//   			System.out.println("Attribute name: " +sAttributeName);
-//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 
 		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
@@ -245,8 +245,8 @@ implements IXmlParserHandler
    			else if (sAttributeName.equals("entry2"))
     			iEntry2 = new Integer(attributes.getValue(iAttributeIndex)); 
 			
-//   			System.out.println("Attribute name: " +sAttributeName);
-//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}  	
     	
     	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1); //TODO: exception
@@ -277,8 +277,8 @@ implements IXmlParserHandler
    			else if (sAttributeName.equals("value"))
   				iValue = new Integer(attributes.getValue(iAttributeIndex)); 
  
-//   			System.out.println("Attribute name: " +sAttributeName);
-//   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   			System.out.println("Attribute name: " +sAttributeName);
+   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}  	
 		
 		if (sName.equals("compound"))

@@ -1,26 +1,58 @@
 package cerberus.manager.event;
 
+import java.util.HashMap;
+
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
+import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
+import cerberus.manager.event.mediator.LockableMediator;
 import cerberus.manager.type.ManagerObjectType;
 
 public class EventPublisher implements IEventPublisher
 {
-	IGeneralManager refGeneralManager;
+	protected IGeneralManager refGeneralManager;
 	
+	protected HashMap<IMediatorSender, IMediator> hashSender2Mediator;
+	
+	/**
+	 * Constructor. 
+	 * 
+	 * @param refGeneralManager
+	 */
 	public EventPublisher(IGeneralManager refGeneralManager)
 	{
 		this.refGeneralManager = refGeneralManager;
+		
+		hashSender2Mediator = new HashMap<IMediatorSender, IMediator>();
 	}
 
+	/**
+	 * Creates the mediator and registers sender and receiver.
+	 * Additionally the sender mediator relation is stored in the hashmap.
+	 * 
+	 * @see cerberus.manager.IEventPublisher#registerSenderToReceiver(cerberus.manager.event.mediator.IMediatorSender, cerberus.manager.event.mediator.IMediatorReceiver)
+	 */
 	public void registerSenderToReceiver(IMediatorSender sender, IMediatorReceiver receiver)
 	{
-		// TODO Auto-generated method stub
+		IMediator newMediator = new LockableMediator(sender);
+
+		newMediator.register(receiver);
+		
+		hashSender2Mediator.put(sender, newMediator);
 	}
 
+	/**
+	 * Method takes ID from sender and receiver as parameters
+	 * and requests the IMediatorSender and IMediatorReceiver
+	 * objects from the general manager.
+	 * 
+	 * @param iMediatorSenderId 
+	 * @param iMediatorReceiverId 
+	 * @see cerberus.manager.IEventPublisher#registerSenderToReceiver(int, int)
+	 */
 	public void registerSenderToReceiver(int iMediatorSenderId, int iMediatorReceiverId)
 	{
 		IMediatorSender sender = (IMediatorSender)refGeneralManager.
@@ -51,6 +83,18 @@ public class EventPublisher implements IEventPublisher
 
 	}
 
+	/**
+	 * Casts the event trigger object to ISender and looks up 
+	 * the Mediator for this sender.
+	 * On the mediator object then the update method is called.
+	 * 
+	 * @param eventTrigger
+	 */
+	public void update(Object eventTrigger)
+	{
+		hashSender2Mediator.get((IMediatorSender)eventTrigger).updateReceiver(eventTrigger);
+	}
+	
 	public void removeMediator(IMediatorSender sender)
 	{
 		// TODO Auto-generated method stub

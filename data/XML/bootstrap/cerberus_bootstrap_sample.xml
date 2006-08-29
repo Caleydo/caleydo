@@ -1,33 +1,10 @@
 <cerberus version="0.1">
 
+   <read-xml-file target="data/XML/pathways/map00271.xml" />
+
   <workspace title="primary" server="localhsot">
   
   <Application remote="no" IP="127.0.0.1" port="4000" >
-  
-   <FrameState>
-
-  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
-    <JInternalFrame id="6603900" title="Collection Browser -Storage- INTERNAL" name="null" type="JBROWSER_STORAGE" x="1382" y="23" width="362" height="108" visible="true" > </JInternalFrame>
-     <JInternalFrame id="6607900" title="Collection Browser -Set- INTERNAL" name="null" type="JBROWSER_SELECTION" x="1408" y="185" width="333" height="146" visible="true" > </JInternalFrame>
-    <JInternalFrame id="6608900" title="S-JOGL-I gears -SwingJogl inner-" name="null" type="GEARS" x="0" y="100" width="400" height="300" visible="true" > </JInternalFrame>
-  </JFrame>
-  
-  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
-  </JFrame>
-  
-  <Window id="7000000" title="Cerberus PrototypeWindow" x="50" y="458" width="1802" height="583" visible="true">
-  	<View cmdId="55201" />
-  	<View cmdId="55301" />
-  </Window>
-  
-   </FrameState>
-   
-   <JFrameMenuList>
-     <FrameMenu id="8801100" frameId="6601900" cmdId="7701500" parentMenuId="-1"      type="list" enabled="true" title="file.." tooltip="" memento="-" ></FrameMenu>
-     <FrameMenu id="8802100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="item" enabled="true" title="load.." tooltip="" memento="-" ></FrameMenu>
-     <FrameMenu id="8803100" frameId="6601900" cmdId="-1"      parentMenuId="8801100" type="step" enabled="true" title=""       tooltip="" memento="-" ></FrameMenu>
-     <FrameMenu id="8804100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="list" enabled="true" title="save.." tooltip="" memento="-" ></FrameMenu>
-   </JFrameMenuList>
   
    <CommandBuffer>
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
@@ -74,6 +51,32 @@
 
 <!--	
 
+   <FrameState>
+
+  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
+    <JInternalFrame id="6603900" title="Collection Browser -Storage- INTERNAL" name="null" type="JBROWSER_STORAGE" x="1382" y="23" width="362" height="108" visible="true" > </JInternalFrame>
+     <JInternalFrame id="6607900" title="Collection Browser -Set- INTERNAL" name="null" type="JBROWSER_SELECTION" x="1408" y="185" width="333" height="146" visible="true" > </JInternalFrame>
+    <JInternalFrame id="6608900" title="S-JOGL-I gears -SwingJogl inner-" name="null" type="GEARS" x="0" y="100" width="400" height="300" visible="true" > </JInternalFrame>
+  </JFrame>
+  
+  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
+  </JFrame>
+  
+  <Window id="7000000" title="Cerberus PrototypeWindow" x="50" y="458" width="1802" height="583" visible="true">
+  	<View cmdId="55201" />
+  	<View cmdId="55301" />
+  </Window>
+  
+   </FrameState>
+   
+   <JFrameMenuList>
+     <FrameMenu id="8801100" frameId="6601900" cmdId="7701500" parentMenuId="-1"      type="list" enabled="true" title="file.." tooltip="" memento="-" ></FrameMenu>
+     <FrameMenu id="8802100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="item" enabled="true" title="load.." tooltip="" memento="-" ></FrameMenu>
+     <FrameMenu id="8803100" frameId="6601900" cmdId="-1"      parentMenuId="8801100" type="step" enabled="true" title=""       tooltip="" memento="-" ></FrameMenu>
+     <FrameMenu id="8804100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="list" enabled="true" title="save.." tooltip="" memento="-" ></FrameMenu>
+   </JFrameMenuList>
+  
+
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" attrib2="400 -1" />
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" targetId="55601" label="Gears" attrib1="024001" />
@@ -99,8 +102,6 @@
 -->
      
    </CommandBuffer>
-   
-   <read-xml-file target="data/XML/pathways/map00271.xml" />
     
   </Application>
   

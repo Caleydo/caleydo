@@ -195,6 +195,9 @@ implements IXmlParserManager
 			currentHandler.endElement( uri, 
 					localName,
 					qName);
+			
+			if (qName == "read-xml-file")
+				currentHandler = null;
 		}
 
 	}

@@ -21,6 +21,8 @@ public interface IEventPublisher extends IGeneralManager
 	public void unregister( IMediatorSender senderExisting,
 			IMediatorSender senderRemove );
 	
+	public void update(Object triggerObject);
+	
 	/**
 	 * Called only by Sender.
 	 * 

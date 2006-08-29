@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 
+import cerberus.data.collection.ISelection;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
@@ -19,6 +20,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	protected Composite refSWTContainer;
 	
 	protected Slider refSlider;
+	
+	protected int iCurrentSliderValue;
 	
 	public SliderViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
@@ -38,7 +41,7 @@ implements IView, IMediatorSender, IMediatorReceiver
 
 	public void drawView()
 	{
-	   // TODO: set slider to current position
+	   refSlider.setSelection(iCurrentSliderValue);
 	}
 
 	public void retrieveGUIContainer()
@@ -53,14 +56,16 @@ implements IView, IMediatorSender, IMediatorReceiver
 
 	public void extractAttributes()
 	{
-		super.extractAttributes();
-		
-		
+		super.extractAttributes();	
 	}
 	
 	public void update(Object eventTrigger)
 	{
-		
+		if (eventTrigger instanceof ISelection)
+		{
+			iCurrentSliderValue = ((ISelection)eventTrigger).getOffset();
+			drawView();
+		}
 		
 	}
 }
