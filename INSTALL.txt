@@ -5,7 +5,7 @@
 author: Michael Kalkusch, kalkusch@icg.tu-graz.aca.t
 
 creation: 01-08-2006
-last change: 03-08-2006
+last change: 12-09-2006
 -----------------------
 
  How to install Jogl:
@@ -53,4 +53,51 @@ to the folder
 	cerberus\bin\ext_jar\swt 
 
 Eclipse porject files and batch files assume swt.jar to be in that folder.
+
+
+ F.A.Q
+=======
+
+1) Error message: "Exception [..] java.lang.UnsatisfiedLinkError: no swt-win32-3232 in java.library.path"
+---------------------------------------------------------------------------------------------------------
+
+problem: *.dll files for swt are not in execution path of java.
+
+solution:
+
+  win32:
+  ------
+    copy *.dll files from swt.zip to [java]\bin\
+    
+    for the current version these are the following files:
+    
+			swt-awt-win32-3232.dll
+			swt-gdip-win32-3232.dll
+			swt-wgl-win32-3232.dll
+			swt-win32-3232.dll
+
+
+Weblink:
+
+  http://www.eclipse.org/swt/faq.php#missingdll
  
+ 
+2) Jogl window does not show
+----------------------------
+
+problem:  *.dll files for jogl are not in execution path of java.
+
+solution:
+
+   win32:
+   ------
+   
+     copy *.dll files from [cerberus]\bin\ext_jar\jogl\win32\jogl-natives-windows-i586.jar
+     
+     to [java]\jre1.5.0_06\bin
+     
+     for the current version these are the following files:
+     
+      jogl.dll
+			jogl_awt.dll
+      jogl_cg.dll
