@@ -1,33 +1,32 @@
 package cerberus.command.event;
 
-import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
+import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.manager.IEventPublisher;
 
-public class CmdEventRelationCreate extends ACmdCreate implements ICommand
+public class CmdEventRelationCreate extends ACmdCreateGui implements ICommand
 {
 	protected int iSenderId;
 
 	protected int iReceiverId;
 	
 	public CmdEventRelationCreate(IGeneralManager refGeneralManager,
-			final LinkedList<String> listAttributes)
+			final IParameterHandler refParameterHandler)
 	{
 		// set unique ID to -1 because it is unknown at this moment
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
+		
+		setAttributes();
 	}
 
 	public void doCommand() throws CerberusRuntimeException
 	{
-		extractAttributes();
 		
 		((IEventPublisher)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
@@ -38,14 +37,14 @@ public class CmdEventRelationCreate extends ACmdCreate implements ICommand
 	 * Extracts sender and receiver ID of the Event Relation.
 	 *
 	 */
-	protected void extractAttributes()
+	protected void setAttributes()
 	{
 		// Extract attrib1 which represents sender
 		iSenderId = (StringConversionTool.convertStringToInt(
-				refVecAttributes.get(1), -1));
+				sAttribute1, -1));
 		
 		// Extract attrib2 which represents receiver
 		iReceiverId = (StringConversionTool.convertStringToInt(
-				refVecAttributes.get(2), -1));
+				sAttribute2, -1));
 	}
 }

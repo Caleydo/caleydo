@@ -15,7 +15,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author kalkusch
  *
  */
-public abstract class AManagedCommand 
+public abstract class AManagedCmd 
 extends AUniqueManagedObject 
 implements ICommandManaged {
 
@@ -23,7 +23,7 @@ implements ICommandManaged {
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
 	 */
-	public AManagedCommand(int iSetCollectionId,
+	protected AManagedCmd(int iSetCollectionId,
 			IGeneralManager setGeneralManager) {
 		super(iSetCollectionId, setGeneralManager);
 	}

@@ -3,12 +3,13 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.slider.SliderViewRep;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a slider view.
@@ -17,7 +18,7 @@ import cerberus.view.gui.swt.slider.SliderViewRep;
  *
  */
 public class CmdViewCreateSlider 
-extends ACmdCreate 
+extends ACmdCreateGui 
 implements ICommand
 {
 	/**
@@ -27,10 +28,10 @@ implements ICommand
 	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateSlider(
-			IGeneralManager refGeneralManager,
-			final LinkedList<String> listAttributes)
+			final IGeneralManager refGeneralManager,
+			final IParameterHandler refParameterHandler)
 	{
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
 	}
 
 	/**
@@ -44,17 +45,17 @@ implements ICommand
 		
 		SliderViewRep sliderView = (SliderViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_SLIDER,
-							iCreatedObjectId, 
+							iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
 				sliderView, 
-				iCreatedObjectId, 
+				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		sliderView.setAttributes(refVecAttributes);
-		sliderView.extractAttributes();
+		sliderView.setAttributes(refParameterHandler);
+		
 		sliderView.retrieveGUIContainer();
 		sliderView.initView();
 		sliderView.drawView();

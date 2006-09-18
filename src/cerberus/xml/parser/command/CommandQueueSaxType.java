@@ -26,58 +26,65 @@ public enum CommandQueueSaxType
 	/**
 	 * XML-value  ( XML-Tag , XML-key ) 
 	 */
-	LOAD_DATA_FILE("cmd","type"),
+	LOAD_DATA_FILE("cmd","type",""),
 	//OPEN_VIEW("cmd","type"),
 	
-	CREATE_SELECTION("cmd","type"),
-	CREATE_SET("cmd","type"),
-	CREATE_STORAGE("cmd","type"),
+	NO_OPERATION("cmd","type","NO_OPERATION"),
 	
-	CREATE_VIEW_HEATMAP("cmd", "type"),
-	CREATE_VIEW_PATHWAY("cmd", "type"),
-	CREATE_VIEW_GEARS("cmd", "type"),
-	CREATE_VIEW_DATA_EXPLORER("cmd", "type"),
-	CREATE_VIEW_PROGRESSBAR("cmd", "type"),
-	CREATE_VIEW_SLIDER("cmd", "type"),
-	CREATE_VIEW_MIXER("cmd", "type"),
-	CREATE_VIEW_TEST_TRIANGLE("cmd", "type"),
+	CREATE_SELECTION("cmd","type","-1"),
+	CREATE_SET("cmd","type","-1"),
+	CREATE_STORAGE("cmd","type","-1"),
 	
-	CREATE_SWT_WINDOW("cmd", "type"),
-	CREATE_SWT_CONTAINER("cmd", "type"),
+	CREATE_VIEW_HEATMAP("cmd", "type","-1"),
+	CREATE_VIEW_PATHWAY("cmd", "type","-1"),
+	CREATE_VIEW_GEARS("cmd", "type","-1"),
+	CREATE_VIEW_DATA_EXPLORER("cmd", "type","-1"),
+	CREATE_VIEW_PROGRESSBAR("cmd", "type","-1"),
+	CREATE_VIEW_SLIDER("cmd", "type","-1"),
+	CREATE_VIEW_MIXER("cmd", "type","-1"),
+	CREATE_VIEW_TEST_TRIANGLE("cmd", "type","-1"),
+	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1"),
 	
-	CREATE_EVENT_RELATION("cmd","type"),
+	CREATE_SWT_WINDOW("cmd", "type","-1"),
+	CREATE_SWT_CONTAINER("cmd", "type","-1"),
 	
-	RUN_CMD_NOW("cmd", "process"),	
-	LOAD_ON_DEMAND("cmd", "process"),
-	MEMENTO("cmd", "process"),	
+	CREATE_EVENT_RELATION("cmd","type",null),
 	
-	TAG_CMD("cmd","Cmd"),
-	TAG_CMD_QUEUE("cmd","CmdQueue"),
-	TAG_CMD_ID("cmd","cmdId"),
-	TAG_TARGET_ID("cmd","targetId"),
-	TAG_MEMENTO_ID("cmd","mementoId"),
-	TAG_TYPE("cmd","type"),
-	TAG_ATTRIBUTE1("cmd","attrib1"),	
-	TAG_ATTRIBUTE2("cmd","attrib2"),	
-	TAG_DETAIL("cmd","detail"),
-	TAG_PROCESS("cmd","process"),
-	TAG_LABEL("cmd","label"),
+	RUN_CMD_NOW("cmd", "process","RUN_CMD_NOW"),	
+	LOAD_ON_DEMAND("cmd", "process","LOAD_ON_DEMAND"),
+	MEMENTO("cmd", "process",null),	
+	
+	TAG_CMD("cmd","Cmd",null),
+	TAG_CMD_QUEUE("cmd","CmdQueue",null),
+	TAG_CMD_ID("cmd","cmdId","-1"),
+	TAG_TARGET_ID("cmd","targetId","-1"),
+	TAG_MEMENTO_ID("cmd","mementoId","-1"),
+	TAG_TYPE("cmd","type","NO_OPERATION"),
+	TAG_ATTRIBUTE1("cmd","attrib1",""),	
+	TAG_ATTRIBUTE2("cmd","attrib2",""),	
+	TAG_DETAIL("cmd","detail",""),
+	TAG_PARENT("cmd","parent","-1"),
+	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),
+	TAG_LABEL("cmd","label",""),
+	
+	TAG_POS_WIDTH_X("cmd","iWidthX","-1"),
+	TAG_POS_HEIGHT_Y("cmd","iHeightY","-1"),
 	
 	/*
 	 * -------  COMMAND QUEUE  --------
 	 */ 
-	COMMAND_QUEUE_OPEN("cmdqueue","type"),
-	COMMAND_QUEUE_RUN("cmdqueue","type"),
+	COMMAND_QUEUE_OPEN("cmdqueue","type",null),
+	COMMAND_QUEUE_RUN("cmdqueue","type",null),
 	
-	CMD_ID("cmdqueue","cmdId"),
-	CMDQUEUE_ID("cmdqueue","cmdQueueId"),
+	CMD_ID("cmdqueue","cmdId","-1"),
+	CMDQUEUE_ID("cmdqueue","cmdQueueId","-1"),
 	
-	RUN_QUEUE_ON_DEMAND("cmdqueue","process"),
-	RUN_QUEUE("cmdqueue","process"),
+	RUN_QUEUE_ON_DEMAND("cmdqueue","process","RUN_QUEUE_ON_DEMAND"),
+	RUN_QUEUE("cmdqueue","process","RUN_QUEUE"),
 
 	
-	CMD_THREAD_POOL_ID("cmdqueue","queue_thread"),
-	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait");
+	CMD_THREAD_POOL_ID("cmdqueue","queue_thread","-1"),
+	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait","-1");
 	
 	
 	/**
@@ -96,11 +103,15 @@ public enum CommandQueueSaxType
 	 */
 	private String sXmlKey;
 	
+	private String sDefaultValue;
+	
 	private CommandQueueSaxType( String sXmlTag, 
-			String sXmlKey ) 
+			String sXmlKey,
+			String sDefaultValue ) 
 	{
 		this.sXmlTag = sXmlTag;		
 		this.sXmlKey = sXmlKey;
+		this.sDefaultValue = sDefaultValue;
 	}
 	
 //	public static final CommandQueueSaxType parse( final String sData) {
@@ -132,4 +143,14 @@ public enum CommandQueueSaxType
 	{
 		return this.sXmlTag;
 	}
+	
+	/**
+	 * Return the default value, if it is known.
+	 * 
+	 * @return default value
+	 */
+	public String getDefault() {
+		return this.sDefaultValue;
+	}
+	
 }

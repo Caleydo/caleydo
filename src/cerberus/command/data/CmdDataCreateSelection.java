@@ -14,13 +14,15 @@ import java.util.StringTokenizer;
 
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.AManagedCommand;
+import cerberus.command.base.AManagedCmd;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.ISelectionManager;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
+import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.data.collection.ISelection;
 //import cerberus.xml.parser.CerberusDefaultSaxHandler;
@@ -37,7 +39,7 @@ import cerberus.manager.type.ManagerObjectType;
  * @see cerberus.data.loader.MicroArrayLoader
  */
 public class CmdDataCreateSelection 
-extends AManagedCommand
+extends AManagedCmd
 implements ICommand {
 	
 	protected int iOffset;
@@ -68,6 +70,8 @@ implements ICommand {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
+	 * @deprecated
+	 * 
 	 * @see cerberus.data.loader.MicroArrayLoader
 	 */
 	public CmdDataCreateSelection( IGeneralManager refGeneralManager,
@@ -75,10 +79,17 @@ implements ICommand {
 		
 		super( -1, refGeneralManager );		
 		
-		setAttributes( listAttributes );
+		setAttributesLL( listAttributes );
 		
 	}
 	
+	public CmdDataCreateSelection( IGeneralManager refGeneralManager,
+			final IParameterHandler refParameterHandler ) {
+	
+		super( -1, refGeneralManager );		
+		
+		setAttributes( refParameterHandler );
+	}
 
 	/**
 	 * Load data from file using a token pattern.
@@ -149,10 +160,12 @@ implements ICommand {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
+	 * @deprecated
+	 * 
 	 * @param sUniqueId uniqueId of new target ISet
 	 * @return TRUE on successful conversion of Strgin to interger
 	 */
-	protected boolean setAttributes( final LinkedList <String> listAttrib ) {
+	protected boolean setAttributesLL( final LinkedList <String> listAttrib ) {
 		
 		assert listAttrib != null: "can not handle null object!";		
 				
@@ -207,6 +220,60 @@ implements ICommand {
 					"CmdDataCreateSelection::doCommand() error on attributes!");			
 			return false;
 		}
+		
+	}
+	
+	protected boolean setAttributes( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "can not handle null object!";		
+				
+				
+			this.setId( 
+					refParameterHandler.getValueInt( 
+							CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
+			
+			iUniqueTargetId = 
+				refParameterHandler.getValueInt( 
+						CommandQueueSaxType.TAG_TARGET_ID.getXmlKey() );
+			
+			sLabel = refParameterHandler.getValueString( 
+					CommandQueueSaxType.TAG_LABEL.getXmlKey() );
+			
+				
+			/**
+			 * Handle selection parameters...
+			 */
+			
+			StringTokenizer token = new StringTokenizer(
+					refParameterHandler.getValueString( 
+							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
+					CommandFactory.sDelimiter_CreateSelection_DataItems );
+			
+			
+			int iSizeSelectionTokens = token.countTokens();
+			
+			iOffset = StringConversionTool.convertStringToInt( 
+					token.nextToken(), 
+					0 );
+			
+			iLength = StringConversionTool.convertStringToInt( 
+					token.nextToken(), 
+					0 );
+			
+			if ( iSizeSelectionTokens >= 4 ) {
+				iMultiRepeat = 
+					StringConversionTool.convertStringToInt( 
+							token.nextToken(), 
+							1 );
+				
+				iMultiOffset = 
+					StringConversionTool.convertStringToInt( 
+							token.nextToken(), 
+							0 );
+			}
+			
+			return true;
+		
 		
 	}
 

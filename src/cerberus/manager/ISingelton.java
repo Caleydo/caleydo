@@ -36,7 +36,7 @@ public interface ISingelton {
 	
 	public abstract IGeneralManager getManagerByBaseType(ManagerType type);
 	
-	public abstract IViewManager getViewManager(ManagerType type);
+	public abstract IViewGLCanvasManager getViewManager();
 	
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]
@@ -71,5 +71,5 @@ public interface ISingelton {
 
 	public abstract void setSWTGUIManager(ISWTGUIManager refSWTGUIManager);
 	
-	public abstract void setViewManager(IViewManager refViewManager);
+	public abstract void setViewManager(IViewGLCanvasManager refViewManager);
 }

@@ -150,74 +150,82 @@ public class DataExplorerViewRep extends AViewRep implements IView
 		allSetItems = ((ISetManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
 
-		// iterate over all SETs
-		for (int setIndex = 0; setIndex < allSetItems.length; setIndex++)
-		{
-			currentSet = allSetItems[setIndex];
-
-			// insert SET with ID and label in the tree
-			currentSetModel = new SetModel(currentSet.getId(), currentSet
-					.getLabel());
-			rootSetModel.add(currentSetModel);
-
-			for (int dimIndex = 0; dimIndex < allSetItems[setIndex]
-					.getDimensions(); dimIndex++)
+		try {
+			// iterate over all SETs
+			for (int setIndex = 0; setIndex < allSetItems.length; setIndex++)
 			{
-				currentSelectionArray = currentSet.getSelectionByDim(dimIndex);
-				for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
+				currentSet = allSetItems[setIndex];
+	
+				// insert SET with ID and label in the tree
+				currentSetModel = new SetModel(currentSet.getId(), currentSet
+						.getLabel());
+				rootSetModel.add(currentSetModel);
+	
+				for (int dimIndex = 0; dimIndex < allSetItems[setIndex]
+						.getDimensions(); dimIndex++)
 				{
-					currentSelection = (ISelection) currentSelectionArray[selectionIndex];
-
-					// insert SELECTION with ID and label in the tree
-					currentSelectionModel = new SelectionModel(currentSelection
-							.getId(), currentSelection.getLabel());
-					currentSetModel.add(currentSelectionModel);
-				}
-
-				currentStorageArray = currentSet.getStorageByDim(dimIndex);
-				for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
-				{
-					currentStorage = (IStorage) currentStorageArray[storageIndex];
-
-					// insert STORAGE with ID and label in the tree
-					currentStorageModel = new StorageModel(currentStorage
-							.getId(), currentStorage.getLabel());
-					currentSetModel.add(currentStorageModel);
+					currentSelectionArray = currentSet.getSelectionByDim(dimIndex);
+					for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
+					{
+						currentSelection = (ISelection) currentSelectionArray[selectionIndex];
+	
+						// insert SELECTION with ID and label in the tree
+						currentSelectionModel = new SelectionModel(currentSelection
+								.getId(), currentSelection.getLabel());
+						currentSetModel.add(currentSelectionModel);
+					}
+	
+					currentStorageArray = currentSet.getStorageByDim(dimIndex);
+					for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
+					{
+						currentStorage = (IStorage) currentStorageArray[storageIndex];
+	
+						// insert STORAGE with ID and label in the tree
+						currentStorageModel = new StorageModel(currentStorage
+								.getId(), currentStorage.getLabel());
+						currentSetModel.add(currentStorageModel);
+					}
 				}
 			}
+	
+			allStorageItems = ((IStorageManager) refGeneralManager
+					.getManagerByBaseType(ManagerObjectType.STORAGE))
+					.getAllStorageItems();
+	
+			// iterate over all STORAGEs
+			for (int storageIndex = 0; storageIndex < allStorageItems.length; storageIndex++)
+			{
+				currentStorage = allStorageItems[storageIndex];
+	
+				// insert STORAGES with ID and label in the tree
+				currentStorageModel = new StorageModel(currentStorage.getId(),
+						currentStorage.getLabel());
+				rootStorageModel.add(currentStorageModel);
+	
+			}
+	
+			allSelectionItems = ((ISelectionManager) refGeneralManager
+					.getManagerByBaseType(ManagerObjectType.SELECTION))
+					.getAllSelectionItems();
+	
+			// iterate over all SELECTIONs
+			for (int selectionIndex = 0; selectionIndex < allSelectionItems.length; selectionIndex++)
+			{
+				currentSelection = allSelectionItems[selectionIndex];
+	
+				// insert SELECTIONs with ID and label in the tree
+				currentSelectionModel = new SelectionModel(
+						currentSelection.getId(), currentSelection.getLabel());
+				rootSelectionModel.add(currentSelectionModel);
+			}
+
 		}
-
-		allStorageItems = ((IStorageManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.STORAGE))
-				.getAllStorageItems();
-
-		// iterate over all STORAGEs
-		for (int storageIndex = 0; storageIndex < allStorageItems.length; storageIndex++)
+		catch ( Exception e) 
 		{
-			currentStorage = allStorageItems[storageIndex];
-
-			// insert STORAGES with ID and label in the tree
-			currentStorageModel = new StorageModel(currentStorage.getId(),
-					currentStorage.getLabel());
-			rootStorageModel.add(currentStorageModel);
-
+			System.err.println("Error while acquiring data via DataExplorerViewRep.");
+			throw new RuntimeException( e.toString() );
 		}
-
-		allSelectionItems = ((ISelectionManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.SELECTION))
-				.getAllSelectionItems();
-
-		// iterate over all SELECTIONs
-		for (int selectionIndex = 0; selectionIndex < allSelectionItems.length; selectionIndex++)
-		{
-			currentSelection = allSelectionItems[selectionIndex];
-
-			// insert SELECTIONs with ID and label in the tree
-			currentSelectionModel = new SelectionModel(
-					currentSelection.getId(), currentSelection.getLabel());
-			rootSelectionModel.add(currentSelectionModel);
-		}
-
+		
 		return rootSet;
 	}
 

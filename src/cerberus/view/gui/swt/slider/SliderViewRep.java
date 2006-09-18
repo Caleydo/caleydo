@@ -54,6 +54,9 @@ implements IView, IMediatorSender, IMediatorReceiver
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public void extractAttributes()
 	{
 		super.extractAttributes();	

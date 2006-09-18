@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.command.factory.CommandFactory;

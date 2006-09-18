@@ -5,21 +5,22 @@ import java.util.LinkedList;
 import cerberus.command.ICommand;
 import cerberus.command.base.AcmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
+import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
+import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
- * Class implementes the command for creating a data explorer view.
+ * Class implementes the command for creating a heatmap view.
  * 
  * @author Marc Streit
  *
  */
-public class CmdViewCreateDataExplorer 
+public class CmdViewCreateSwtGLCanvas 
 extends AcmdCreate_IdTargetLabelParentXY 
-implements ICommand
+implements ICommand 
 {
 	/**
 	 * Constructor
@@ -27,38 +28,40 @@ implements ICommand
 	 * @param refGeneralManager
 	 * @param listAttributes List of attributes
 	 */
-	public CmdViewCreateDataExplorer(
+	public CmdViewCreateSwtGLCanvas( 
 			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler )
+			final IParameterHandler refParameterHandler) 
 	{
 		super(refGeneralManager, refParameterHandler);
+		
+		
 	}
-
+	
 	/**
-	 * Method creates a data explorer view, sets the attributes 
+	 * Method creates a test triangle view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewGLCanvasManager viewManager = ((IViewGLCanvasManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
-		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
+		SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_JOGL_MULTI_GLCANVAS,
 							iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
-				dataExplorerView, 
+				swtGLCanvasView, 
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		dataExplorerView.setAttributes(refParameterHandler);
+		swtGLCanvasView.setAttributes(refParameterHandler);
 		
-		dataExplorerView.retrieveGUIContainer();
-		dataExplorerView.initView();
-		dataExplorerView.drawView();
+		swtGLCanvasView.retrieveGUIContainer();
+		swtGLCanvasView.initView();
+		swtGLCanvasView.drawView();	
 	}
 
 	public void undoCommand() throws CerberusRuntimeException

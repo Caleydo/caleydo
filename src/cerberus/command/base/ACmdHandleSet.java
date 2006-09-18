@@ -53,7 +53,7 @@ implements ICmdHandleSet {
 	/**
 	 * 
 	 */
-	public ACmdHandleSet( final IGeneralManager setRefGeneralManager,
+	protected ACmdHandleSet( final IGeneralManager setRefGeneralManager,
 			final int iTargetFrameId,
 			final String sHeaderText ) {
 				

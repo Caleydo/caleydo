@@ -23,8 +23,9 @@ import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.SXmlParserHandler;
 import cerberus.xml.parser.manager.IXmlParserManager;
-
-
+import cerberus.xml.parser.parameter.IParameterHandler;
+import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
+import cerberus.xml.parser.parameter.ParameterHandler;
 
 
 
@@ -96,76 +97,73 @@ implements IXmlParserHandler
 		
 		try 
 		{
+			IParameterHandler phAttributes =
+				new ParameterHandler();
+			
 			/* create new Frame */
-			String sData_Cmd_process = 
-				SXmlParserHandler.assignStringValue( attrs, 
+			phAttributes.setValueBySaxAttributes( attrs, 
 					CommandQueueSaxType.TAG_PROCESS.getXmlKey(), 
-					CommandQueueSaxType.TAG_PROCESS.toString() );
+					CommandQueueSaxType.TAG_PROCESS.getDefault(),
+					ParameterHandlerType.STRING );
 			
-			String sData_Cmd_label = 
-				SXmlParserHandler.assignStringValue( attrs, 
+			phAttributes.setValueBySaxAttributes( attrs, 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-					CommandQueueSaxType.TAG_LABEL.toString() );
+					CommandQueueSaxType.TAG_LABEL.getDefault(),
+					ParameterHandlerType.STRING );
 			
-			String sData_CmdId = 
-				SXmlParserHandler.assignStringValue( attrs, 
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_CMD_ID.getXmlKey(),
-					Integer.toString(-1)  );
+					CommandQueueSaxType.TAG_CMD_ID.getDefault(),
+					ParameterHandlerType.INT );
 			
-			String sData_TargetId = 
-				SXmlParserHandler.assignStringValue( attrs, 
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(),
-					Integer.toString(-1)  );
+					CommandQueueSaxType.TAG_TARGET_ID.getDefault(),
+					ParameterHandlerType.INT );
 			
-			String sData_Cmd_MementoId = 
-				SXmlParserHandler.assignStringValue( attrs, 
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_MEMENTO_ID.getXmlKey(),
-					Integer.toString(-1)  );
+					CommandQueueSaxType.TAG_MEMENTO_ID.getDefault(),
+					ParameterHandlerType.INT );
 			
-			String sData_Cmd_type = 
-				SXmlParserHandler.assignStringValue( attrs,
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_TYPE.getXmlKey(), 
-					CommandQueueSaxType.TAG_TYPE.toString() );										
+					CommandQueueSaxType.TAG_TYPE.getDefault(),
+					ParameterHandlerType.STRING );
 
-			String sData_Cmd_attribute1 = 
-				SXmlParserHandler.assignStringValue( attrs,
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
-					CommandQueueSaxType.TAG_ATTRIBUTE1.toString() );	
+					CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault(),
+					ParameterHandlerType.STRING );	
 			
-			String sData_Cmd_attribute2 = 
-				SXmlParserHandler.assignStringValue( attrs,
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-					CommandQueueSaxType.TAG_ATTRIBUTE2.toString() );	
+					CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault(),
+					ParameterHandlerType.STRING );	
 				
-			String sData_Cmd_detail = 
-				SXmlParserHandler.assignStringValue( attrs,
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
-					CommandQueueSaxType.TAG_DETAIL.toString() );										
+					CommandQueueSaxType.TAG_DETAIL.getDefault(),
+					ParameterHandlerType.STRING );										 
+
+			
+			System.err.println(" XML-TAG= " +  phAttributes.getValueString( 
+					CommandQueueSaxType.TAG_LABEL.getXmlKey() ) );
 				
-			LinkedList <String> llAttributes = 
-				new LinkedList <String> ();
-			
-			llAttributes.add( sData_CmdId );	
-			llAttributes.add( sData_TargetId );			
-			llAttributes.add( sData_Cmd_label );
-			llAttributes.add( sData_Cmd_process );
-			llAttributes.add( sData_Cmd_MementoId );
-			llAttributes.add( sData_Cmd_detail );
-			llAttributes.add( sData_Cmd_attribute1 );
-			llAttributes.add( sData_Cmd_attribute2 );
-			
-			System.err.println(" XML-TAG= " + sData_Cmd_label );
-					
-			lastCommand = refCommandManager.createCommand( 
-					sData_Cmd_type,
-					llAttributes );
+			lastCommand = refCommandManager.createCommand( phAttributes );
 			
 			
-			if (( lastCommand != null )&&(sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() )))
-			{				
-				refGeneralManager.getSingelton().getLoggerManager().logMsg("status: do command: " + 
+			if ( lastCommand != null )
+			{
+				String sData_Cmd_process = phAttributes.getValueString( 
+						CommandQueueSaxType.TAG_PROCESS.getXmlKey() );
+				
+				if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() ))
+				{				
+					refGeneralManager.getSingelton().getLoggerManager().logMsg("status: do command: " + 
 						lastCommand.toString() );
-				lastCommand.doCommand();
+					lastCommand.doCommand();
+				}
 			}
 			
 			return lastCommand;

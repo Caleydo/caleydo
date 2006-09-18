@@ -3,12 +3,13 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.mixer.MixerViewRep;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a mixer view.
@@ -17,7 +18,7 @@ import cerberus.view.gui.swt.mixer.MixerViewRep;
  *
  */
 public class CmdViewCreateMixer 
-extends ACmdCreate 
+extends ACmdCreateGui 
 implements ICommand
 {
 	/**
@@ -28,9 +29,9 @@ implements ICommand
 	 */
 	public CmdViewCreateMixer(
 			IGeneralManager refGeneralManager,
-			final LinkedList<String> listAttributes)
+			final IParameterHandler refParameterHandler)
 	{
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
 	}
 
 	/**
@@ -44,17 +45,17 @@ implements ICommand
 		
 		MixerViewRep mixerView = (MixerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_MIXER,
-						iCreatedObjectId, 
+						iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
 				mixerView, 
-				iCreatedObjectId, 
+				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		mixerView.setAttributes(refVecAttributes);
-		mixerView.extractAttributes();
+		mixerView.setAttributes(refParameterHandler);
+		
 		mixerView.retrieveGUIContainer();
 		mixerView.initView();
 		mixerView.drawView();

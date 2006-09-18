@@ -44,7 +44,7 @@ public class CerberusBootloader
 		CerberusBootloader prototype = new CerberusBootloader();
 		prototype.run( "data/XML/bootstrap/cerberus_bootstrap_sample.xml" );
 		
-		prototype.runUsingMuddleWare( "/cerberus/workspace" );
+		//prototype.runUsingMuddleWare( "/cerberus/workspace" );
 	}
 	
 	/**

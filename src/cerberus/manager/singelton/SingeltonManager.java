@@ -18,6 +18,7 @@ import cerberus.manager.IMenuManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
@@ -67,7 +68,7 @@ public class SingeltonManager implements ISingelton {
 	
 	protected ISWTGUIManager refSWTGUIManager;
 	
-	protected IViewManager refViewManager;
+	protected IViewGLCanvasManager refViewManager;
 	
 	protected IPathwayManager refPathwayManager;
 	
@@ -146,7 +147,7 @@ public class SingeltonManager implements ISingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getViewManager()
 	 */
-	public IViewManager getViewManager(ManagerType type) {
+	public IViewGLCanvasManager getViewManager() {
 		return refViewManager;
 	}
 	
@@ -233,7 +234,7 @@ public class SingeltonManager implements ISingelton {
 		refViewCanvasManager = setViewCanvasManager;
 	}
 	
-	public void setViewManager( IViewManager setViewManager ) {
+	public void setViewManager( IViewGLCanvasManager setViewManager ) {
 		assert setViewManager != null : "IViewManager was null";
 		
 		refViewManager = setViewManager;

@@ -152,13 +152,11 @@ public class ProgressBarViewRep extends AViewRep implements IView
 	 */
 	public void extractAttributes()
 	{
-		StringTokenizer token = new StringTokenizer(vecAttributes.get(0),
-				CommandFactory.sDelimiter_CreateView_Size);
-
-		iProgressBarCurrentValue = (StringConversionTool.convertStringToInt(
-				token.nextToken(), -1));
+		//TODO: optimize this workflow!
 		
-		super.extractAttributes();
+		iProgressBarCurrentValue = 
+			refParameterHandler.getValueInt( "iProgressBarCurrentValue" );
+		
 	}
 
 }

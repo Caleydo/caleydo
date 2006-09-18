@@ -80,7 +80,7 @@
                  Sample value: "ROW HORIZONTAL"
       
       Sample:
-        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW VERTICAL" />
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" label="swt container 1" attrib1="10331" attrib2="ROW VERTICAL" />
     
     VIEW Creation Commands:
     
@@ -111,8 +111,8 @@
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Window 1" attrib1="ROW VERTICAL" />   
 
      <!-- Window 10331 -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" attrib1="10331" attrib2="ROW VERTICAL" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" attrib1="10331" attrib2="ROW VERTICAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" label="swt container 1" attrib1="10331" attrib2="ROW VERTICAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" label="swt container 2" attrib1="10331" attrib2="ROW VERTICAL" />
 
      <!-- Container 10341 -->
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />

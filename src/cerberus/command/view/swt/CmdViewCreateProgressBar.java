@@ -3,12 +3,14 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.AcmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a progress bar view.
@@ -17,8 +19,9 @@ import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
  *
  */
 public class CmdViewCreateProgressBar 
-extends ACmdCreate 
-implements ICommand 
+extends AcmdCreate_IdTargetLabelParentXY 
+//ACmdCreateGui 
+implements ICommand
 {
 	/**
 	 * Constructor
@@ -27,9 +30,11 @@ implements ICommand
 	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateProgressBar( IGeneralManager refGeneralManager,
-		final LinkedList <String> listAttributes ) 
+			final IParameterHandler refParameterHandler ) 
 	{
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
+		
+		setAttributesProgressBar(refParameterHandler);
 	}
 
 	/**
@@ -43,19 +48,33 @@ implements ICommand
 		
 		ProgressBarViewRep progressBarView = (ProgressBarViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR,
-							iCreatedObjectId, 
+							iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
 				progressBarView, 
-				iCreatedObjectId, 
+				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		progressBarView.setAttributes(refVecAttributes);
+		progressBarView.setAttributes(refParameterHandler);
+		
 		progressBarView.extractAttributes();
 		progressBarView.retrieveGUIContainer();
 		progressBarView.initView();
 		progressBarView.drawView();
+	}
+	
+	protected void setAttributesProgressBar( final IParameterHandler refParameterHandler ) {
+		
+		refParameterHandler.setValueAndType( "iProgressBarCurrentValue",
+				sAttribute1,
+				IParameterHandler.ParameterHandlerType.INT);
+	}
+
+	public void undoCommand() throws CerberusRuntimeException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

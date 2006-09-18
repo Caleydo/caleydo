@@ -18,6 +18,8 @@ import cerberus.command.base.ACommand;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
+import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.data.loader.MicroArrayLoader;
 
@@ -80,6 +82,22 @@ implements ICommand {
 		this.iTargetSetId = StringConversionTool.convertStringToInt(
 				iter.next(), 
 				-1 );	
+	}
+	
+	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
+			final IParameterHandler phAttributes ) {
+		
+		this.refGeneralManager = refGeneralManager;		
+		
+		this.setId( phAttributes.getValueInt( 
+				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
+	
+		this.sFileName = phAttributes.getValueString( 
+				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
+		this.sTokenPattern =  phAttributes.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
+		this.iTargetSetId = phAttributes.getValueInt(
+				CommandQueueSaxType.TAG_TARGET_ID.getXmlKey() );
 	}
 	
 	/**

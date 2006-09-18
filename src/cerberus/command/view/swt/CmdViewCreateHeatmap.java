@@ -3,12 +3,13 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a heatmap view.
@@ -17,7 +18,7 @@ import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
  *
  */
 public class CmdViewCreateHeatmap 
-extends ACmdCreate 
+extends ACmdCreateGui 
 implements ICommand 
 {
 	/**
@@ -28,9 +29,9 @@ implements ICommand
 	 */
 	public CmdViewCreateHeatmap( 
 			IGeneralManager refGeneralManager,
-			final LinkedList <String> listAttributes) 
+			final IParameterHandler refParameterHandler) 
 	{
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
 	}
 
 	/**
@@ -44,17 +45,17 @@ implements ICommand
 		
 		Heatmap2DViewRep heatmapView = (Heatmap2DViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D,
-						iCreatedObjectId, 
+						iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
 				heatmapView, 
-				iCreatedObjectId, 
+				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		heatmapView.setAttributes(refVecAttributes);
-		heatmapView.extractAttributes();
+		heatmapView.setAttributes(refParameterHandler);
+		
 		heatmapView.retrieveGUIContainer();
 		heatmapView.initView();
 		heatmapView.drawView();

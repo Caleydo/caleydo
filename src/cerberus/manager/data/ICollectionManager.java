@@ -119,7 +119,7 @@ public abstract class ICollectionManager
 
 	protected int getIndexInVector_byUniqueId( final int iItemId ) {
 		Integer buffer = hashId2IndexLookup.get( new Integer( iItemId ));
-		return (int) buffer.intValue();
+		return buffer.intValue();
 		
 		//return (int) hashId2IndexLookup.get( new Integer( iItemId )).intValue();
 	}

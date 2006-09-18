@@ -30,6 +30,7 @@ import cerberus.command.view.swt.CmdViewCreateMixer;
 import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.view.swt.CmdViewCreateProgressBar;
 import cerberus.command.view.swt.CmdViewCreateSlider;
+import cerberus.command.view.swt.CmdViewCreateSwtGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateTestTriangle;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
@@ -66,6 +67,7 @@ import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class is responsible for creating the commands.
@@ -170,6 +172,7 @@ extends ACommand
 		
 	}
 	
+	
 	/**
 	 * 
 	 * List of expected Strings inside LinkedList <String>: <br>
@@ -184,12 +187,11 @@ extends ACommand
 	 * 
 	 * @see cerberus.manager.command.factory.ICommandFactory#createCommand(java.lang.String, java.util.LinkedList)
 	 */
-	public ICommand createCommand( 
-			final String sData_Cmd_type,
-			final LinkedList <String> llAttributes ) {
+	public ICommand createCommand(final IParameterHandler phAttributes) {
 		
-		CommandQueueSaxType cmdType = CommandQueueSaxType.valueOf( sData_Cmd_type );
-		
+		CommandQueueSaxType cmdType = 
+			CommandQueueSaxType.valueOf( phAttributes.getValueString( CommandQueueSaxType.TAG_TYPE.getXmlKey() ) );
+			
 		ICommand createdCommand = null;
 		
 		switch ( cmdType ) {
@@ -199,7 +201,7 @@ extends ACommand
 			createdCommand =
 				new CmdSystemLoadFileViaImporter( 
 						refGeneralManager,
-						llAttributes );
+						phAttributes );
 			break;
 		}
 		
@@ -209,7 +211,7 @@ extends ACommand
 			createdCommand =
 				new CmdDataCreateStorage(
 						refGeneralManager,
-						llAttributes,
+						phAttributes,
 						true );
 			break;
 		}
@@ -219,7 +221,7 @@ extends ACommand
 			createdCommand =
 				new CmdDataCreateSet(
 						refGeneralManager,
-						llAttributes,
+						phAttributes,
 						true );
 			break;
 		}
@@ -229,7 +231,7 @@ extends ACommand
 			createdCommand =
 				new CmdDataCreateSelection(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -238,7 +240,7 @@ extends ACommand
 			createdCommand =
 				new CmdWindowCreate(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -247,7 +249,7 @@ extends ACommand
 			createdCommand =
 				new CmdContainerCreate(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -256,7 +258,7 @@ extends ACommand
 			createdCommand =
 				new CmdViewCreateHeatmap(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -265,7 +267,7 @@ extends ACommand
 			createdCommand =
 				new CmdViewCreateGears(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -274,7 +276,16 @@ extends ACommand
 			createdCommand =
 				new CmdViewCreateTestTriangle(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_SWT_GLCANVAS:
+		{
+			createdCommand =
+				new CmdViewCreateSwtGLCanvas(
+						refGeneralManager,
+						phAttributes );			
 			break;
 		}
 		
@@ -285,7 +296,7 @@ extends ACommand
 			createdCommand =
 				new CmdViewCreateDataExplorer(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -294,25 +305,25 @@ extends ACommand
 			createdCommand =
 				new CmdViewCreateProgressBar(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
-		case CREATE_VIEW_PATHWAY:
-		{
-			createdCommand =
-				new CmdViewCreatePathway(
-						refGeneralManager,
-						llAttributes );			
-			break;
-		}
+//		case CREATE_VIEW_PATHWAY:
+//		{
+//			createdCommand =
+//				new CmdViewCreatePathway(
+//						refGeneralManager,
+//						phAttributes );			
+//			break;
+//		}
 
 		case CREATE_VIEW_SLIDER:
 		{
 			createdCommand =
 				new CmdViewCreateSlider(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -321,7 +332,7 @@ extends ACommand
 			createdCommand =
 				new CmdViewCreateMixer(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -330,7 +341,7 @@ extends ACommand
 			createdCommand =
 				new CmdEventRelationCreate(
 						refGeneralManager,
-						llAttributes );			
+						phAttributes );			
 			break;
 		}
 		
@@ -354,6 +365,7 @@ extends ACommand
 		
 		return createdCommand;
 	}
+	
 	
 	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,

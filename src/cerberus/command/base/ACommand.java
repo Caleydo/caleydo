@@ -38,7 +38,7 @@ public abstract class ACommand
 	
 	/**
 	 * @see prometheus.command.ICommand#isEqualType(prometheus.command.ICommand)
-	 *  * @see base.AManagedCommand#isEqualType(cerberus.command.ICommand)
+	 *  * @see base.AManagedCmd#isEqualType(cerberus.command.ICommand)
 	 */
 	public final boolean isEqualType(ICommand compareToObject) {
 		if ( compareToObject.getCommandType() == this.getCommandType() ) { 

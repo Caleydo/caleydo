@@ -65,7 +65,7 @@ public class CerberusPrototype
 	
 	protected void parseBootstrapDataFromXML()
 	{
-		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample_documented.xml";
+		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";
 		
 		InputSource inSource = 
 			CerberusInputStream.openInputStreamFromFile( filename );

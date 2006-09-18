@@ -3,12 +3,13 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a gears view.
@@ -17,7 +18,7 @@ import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
  *
  */
 public class CmdViewCreateGears 
-extends ACmdCreate 
+extends ACmdCreateGui 
 implements ICommand 
 {
 	/**
@@ -27,10 +28,10 @@ implements ICommand
 	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateGears(
-			IGeneralManager refGeneralManager,
-			final LinkedList<String> listAttributes)
+			final IGeneralManager refGeneralManager,
+			final IParameterHandler refParameterHandler)
 	{
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
 	}
 
 	/**
@@ -44,17 +45,17 @@ implements ICommand
 		
 		GearsViewRep gearsView = (GearsViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_GEARS,
-							iCreatedObjectId, 
+						iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
 				gearsView, 
-				iCreatedObjectId, 
+				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		gearsView.setAttributes(refVecAttributes);
-		gearsView.extractAttributes();
+		gearsView.setAttributes(refParameterHandler);
+		
 		gearsView.retrieveGUIContainer();
 		gearsView.initView();
 		gearsView.drawView();

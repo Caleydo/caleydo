@@ -14,6 +14,7 @@ import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Base class for Command factory.
@@ -57,11 +58,12 @@ public interface ICommandFactory {
 	public ICommand createCommand( 
 			final CommandType createCommandByType, 
 			final String details);
-	
+
+
 	/**
 	 * Create a new command.
 	 * 
-	 * List of expected Strings inside LinkedList <String>: <br>
+	 * Deprecated list of expected Strings inside LinkedList <String>: <br>
 	 * sData_CmdId <br>	 
 	 * sData_TargetId <br>
 	 * sData_Cmd_label <br>
@@ -71,15 +73,11 @@ public interface ICommandFactory {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @param sData_Cmd_type
-	 * @param llAttributes
-	 * 
-	 * @return new command
+	 * @param useSelectionType
+	 * @param phAttributes
+	 * @return
 	 */
-	public ICommand createCommand( 
-			final String sData_Cmd_type,
-			final LinkedList <String> llAttributes );
-
+	public ICommand createCommand(final IParameterHandler phAttributes);
 	
 	/**
 	 * @see cerberus.manager.ICommandManager#createCommandQueue(String, String, int, int, int, int)

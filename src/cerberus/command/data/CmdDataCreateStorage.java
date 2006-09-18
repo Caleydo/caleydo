@@ -17,17 +17,15 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
-import cerberus.command.base.ACommand;
-import cerberus.command.base.AManagedCommand;
+import cerberus.command.base.ACmdCreate_IdTargetLabel;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.system.StringConversionTool;
 
-import cerberus.xml.parser.ACerberusDefaultSaxHandler;
+import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.manager.type.ManagerObjectType;
 
@@ -39,7 +37,7 @@ import cerberus.manager.type.ManagerObjectType;
  * @see cerberus.data.collection.IStorage
  */
 public class CmdDataCreateStorage 
-extends AManagedCommand
+extends ACmdCreate_IdTargetLabel
 implements ICommand {
 
 	/**
@@ -64,15 +62,7 @@ implements ICommand {
 	 */
 	protected LinkedList<String> llDataRaw;
 	
-	/**
-	 * Unique Id of the IStorage, that will be created.
-	 */
-	protected int iUniqueTargetId;
 	
-	/**
-	 * Label of the new IStorage, that will be created.
-	 */
-	protected String sLabel;
 		
 	/**
 	 * Define if data from llDataRaw and llDataTypes shall be removed after
@@ -94,20 +84,20 @@ implements ICommand {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader
+	 * 
 	 */
-	public CmdDataCreateStorage( IGeneralManager refGeneralManager,
-			final LinkedList <String> listAttributes,
+	public CmdDataCreateStorage( final IGeneralManager refGeneralManager,
+			final IParameterHandler refParameterHandler,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super( -1, refGeneralManager );
+		super( refGeneralManager, refParameterHandler );
 			
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
 		llDataTypes = new LinkedList<String> ();
 		llDataRaw = new LinkedList<String> ();
 		
-		setAttributes( listAttributes );
+		setAttributes( refParameterHandler );
 	}
 	
 
@@ -311,14 +301,17 @@ implements ICommand {
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		assert false : "add propper type!";
+//	/* (non-Javadoc)
+//	 * @see cerberus.command.ICommand#getCommandType()
+//	 */
+//	public CommandType getCommandType() throws CerberusRuntimeException {
+//		assert false : "add propper type!";
+//	
+//		return CommandType.SELECT_NEW; 
+//	}
 	
-		return CommandType.SELECT_NEW; 
-	}
+	
+
 	
 	
 	/**
@@ -339,73 +332,43 @@ implements ICommand {
 	 * @param sUniqueId uniqueId of new target ISet
 	 * @return TRUE on successful conversion of Strgin to interger
 	 */
-	protected boolean setAttributes( final LinkedList <String> listAttrib ) {
+	protected boolean setAttributes( final IParameterHandler refParameterHandler ) {
 		
-		assert listAttrib != null: "can not handle null object!";		
+		assert refParameterHandler != null: "can not handle null object!";		
 				
-		Iterator <String> iter = listAttrib.iterator();		
-		final int iSizeList= listAttrib.size();
+		setAttributesBase( refParameterHandler );
 		
-		assert iSizeList > 1 : "can not handle empty argument list!";					
-		
+		/**
+		 * Fill data type pattern...
+		 */
+		StringTokenizer strToken_DataTypes = 
+			new StringTokenizer( 
+					refParameterHandler.getValueString( 
+							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
+							
+					CommandFactory.sDelimiter_CreateStorage_DataType); 
 
-		
-		try {			
-			this.setId( StringConversionTool.convertStringToInt( iter.next(), -1 ) );
-			
-			iUniqueTargetId = StringConversionTool.convertStringToInt( iter.next(), -1 );			
-			sLabel = StringConversionTool.convertStringToString( iter.next(), 
-					Integer.toString(iUniqueTargetId) );			
-			
-			/**
-			 * SKIP:
-			 *  sData_Cmd_process 
-			 *  sData_Cmd_MementoId  
-			 *  sData_Cmd_detail
-			 */
-			iter.next();
-			iter.next();
-			iter.next();
-			
-			/**
-			 * Fill data type pattern...
-			 */
-			StringTokenizer strToken_DataTypes = 
-				new StringTokenizer( iter.next(),
-						CommandFactory.sDelimiter_CreateStorage_DataType); 
-	
-			while ( strToken_DataTypes.hasMoreTokens() ) {
-				llDataTypes.add( strToken_DataTypes.nextToken() );
-			}
-	
-			/** 
-			 * Fill raw data...
-			 */
-			StringTokenizer strTokenLine = new StringTokenizer( 
-					iter.next(), 
-					CommandFactory.sDelimiter_CreateStorage_DataItemBlock );
-			
-			while ( strTokenLine.hasMoreTokens() ) 
-			{
-				llDataRaw.add( strTokenLine.nextToken() );
-			}
-			
-//			/**
-//			 * Copy remainig Strings to internal data structure.
-//			 */
-//			while ( iter.hasNext() ) {
-//				llDataRaw.add( iter.next() );
-//			}		
-			
-			return true;
+		while ( strToken_DataTypes.hasMoreTokens() ) {
+			llDataTypes.add( strToken_DataTypes.nextToken() );
 		}
-		catch ( NumberFormatException nfe ) 
+
+		/* Free memory.. */
+		strToken_DataTypes = null;
+		
+		/** 
+		 * Fill raw data...
+		 */
+		StringTokenizer strTokenLine = new StringTokenizer( 
+				refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),
+				CommandFactory.sDelimiter_CreateStorage_DataItemBlock );
+		
+		while ( strTokenLine.hasMoreTokens() ) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"CmdDataCreateSelection::doCommand() error on attributes!");			
-			return false;
-		}
+			llDataRaw.add( strTokenLine.nextToken() );
+		}	
 		
+		return true;
 	}
 
 }

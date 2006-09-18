@@ -2,6 +2,8 @@ package cerberus.view.gui;
 
 import java.util.Vector;
 
+import cerberus.xml.parser.parameter.IParameterHandler;
+
 /**
  * Interface for the view representations.
  * 
@@ -28,6 +30,13 @@ public interface IView
 	 */
 	public void retrieveGUIContainer();
 	
+	public void setAttributes(IParameterHandler refParameterHandler );
+	
+	/**
+	 * @deprecated use setAttributes(IParameterHandler) instead
+	 * 
+	 * @param attributes
+	 */
 	public void setAttributes(Vector <String> attributes );
 	
 	/**

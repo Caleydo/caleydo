@@ -3,12 +3,13 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a pathway view.
@@ -17,7 +18,7 @@ import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
  *
  */
 public class CmdViewCreatePathway 
-extends ACmdCreate 
+extends ACmdCreateGui 
 implements ICommand
 {
 	/**
@@ -27,10 +28,10 @@ implements ICommand
 	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreatePathway( 
-			IGeneralManager refGeneralManager,
-			final LinkedList <String> listAttributes) 
+			final IGeneralManager refGeneralManager,
+			final IParameterHandler refParameterHandler) 
 	{
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
 	}
 
 	/**
@@ -44,17 +45,17 @@ implements ICommand
 		
 		PathwayViewRep pathwayView = (PathwayViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,
-							iCreatedObjectId, 
-							iParentContainerId, 
-							sLabel);
+						iUniqueTargetId,
+						iParentContainerId, 
+						sLabel);
 		
 		viewManager.registerItem(
 				pathwayView, 
-				iCreatedObjectId, 
+				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		pathwayView.setAttributes(refVecAttributes);
-		pathwayView.extractAttributes();
+		pathwayView.setAttributes(refParameterHandler);
+		
 		pathwayView.retrieveGUIContainer();
 		pathwayView.initView();
 		pathwayView.drawView();

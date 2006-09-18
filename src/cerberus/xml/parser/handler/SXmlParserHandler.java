@@ -5,6 +5,8 @@ package cerberus.xml.parser.handler;
 
 import org.xml.sax.Attributes;
 
+import cerberus.xml.parser.parameter.IParameterHandler;
+
 /**
  * @author kalkusch
  *
@@ -96,6 +98,33 @@ public final class SXmlParserHandler
 		}
 		return iDefaultValue;
 	}
+	
+	/**
+	 * Read (int) key from Attributes, if key is not present a defautl value 
+	 * is returned.
+	 * 
+	 * @param attrs Attributes from SAX-parser
+	 * @param key key to search for
+	 * @param iDefaultValue default value
+	 * @return integer of key of default value
+	 */
+	public static final int assignIntValueIfValid( final Attributes attrs,
+			final String key,
+			final int iDefaultValue,
+			IParameterHandler parameterHandler ) {		
+		String sBuffer = attrs.getValue( key );
+		
+		if ( sBuffer != null  ) {
+			parameterHandler.setValueAndType( key, 
+					sBuffer, 
+					IParameterHandler.ParameterHandlerType.STRING);
+			
+			return Integer.valueOf(  sBuffer );
+		}
+		
+		return iDefaultValue;
+	}
+	
 	
 
 }

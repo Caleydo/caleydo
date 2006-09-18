@@ -18,7 +18,7 @@ import cerberus.manager.IMenuManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.IViewCanvasManager;
-import cerberus.manager.IViewManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.canvas.ViewCanvasManager;
 import cerberus.manager.command.CommandManager;
 import cerberus.manager.data.IPathwayElementManager;
@@ -37,7 +37,7 @@ import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.memento.MementoManager;
 import cerberus.manager.menu.swing.SwingMenuManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.view.ViewManager;
+import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.data.collection.IStorage;
 import cerberus.data.xml.IMementoXML;
@@ -94,7 +94,7 @@ public class OneForAllManager implements IGeneralManagerSingelton
 
 	protected ILoggerManager refLoggerManager;
 
-	protected IViewManager refViewManager;
+	protected IViewGLCanvasManager refViewManager;
 
 	protected ISWTGUIManager refSWTGUIManager;
 
@@ -165,13 +165,14 @@ public class OneForAllManager implements IGeneralManagerSingelton
 		refStorageManager = new StorageManager(this, 4);
 		refSelectionManager = new SelectionManager(this, 4);
 		refSetManager = new SetManager(this, 4);
+		
 		refMementoManager = new MementoManager(this);
 		refDComponentManager = new DComponentSwingFactoryManager(this);
 		refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);
 		refLoggerManager = new ConsoleSimpleLogger(this);
-		refViewManager = new ViewManager(this);
+		refViewManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refPathwayManager = new PathwayManager(this);
 		refPathwayElementManager = new PathwayElementManager(this);

@@ -15,6 +15,7 @@ import cerberus.command.ICommandListener;
 import cerberus.command.CommandType;
 import cerberus.command.ICommandActionListener;
 import cerberus.command.queue.ICommandQueue;
+import cerberus.xml.parser.parameter.IParameterHandler;
 //import prometheus.data.xml.MementoXML;
 
 /**
@@ -77,10 +78,33 @@ extends ICommandActionListener, IGeneralManager {
 //			String sData_Cmd_attrbute1,
 //			String sData_Cmd_attrbute2 );
 	
+//	/**
+//	 * Create a new command using the CommandType.
+//	 * 
+//	 * List of expected Strings inside LinkedList <String>: <br>
+//	 * sData_CmdId <br>
+//	 * sData_TargetId <br>
+//	 * sData_Cmd_label <br>
+//	 * sData_Cmd_process <br> 
+//	 * sData_Cmd_MementoId <br> 
+//	 * sData_Cmd_detail <br>
+//	 * sData_Cmd_attribute1 <br>
+//	 * sData_Cmd_attribute2 <br>
+//	 * 
+//	 * @deprecated
+//	 * 
+//	 * @param sData_Cmd_type
+//	 * @param llAttributes
+//	 * 
+//	 */
+//	public ICommand createCommand( 
+//			final String sData_Cmd_type,
+//			final LinkedList <String> llAttributes );
+	
 	/**
-	 * Create a new command using the CommandType.
+	 *  Create a new command using the CommandType.
 	 * 
-	 * List of expected Strings inside LinkedList <String>: <br>
+	 * Deprecated list of expected Strings inside LinkedList <String>: <br>
 	 * sData_CmdId <br>
 	 * sData_TargetId <br>
 	 * sData_Cmd_label <br>
@@ -91,12 +115,11 @@ extends ICommandActionListener, IGeneralManager {
 	 * sData_Cmd_attribute2 <br>
 	 * 
 	 * @param sData_Cmd_type
-	 * @param llAttributes
-	 * 
+	 * @param phAttributes
+	 * @return
 	 */
-	public ICommand createCommand( 
-			final String sData_Cmd_type,
-			final LinkedList <String> llAttributes );
+	public ICommand createCommand( IParameterHandler phAttributes );
+	
 	
 	/**
 	 * Create a new command using the CommandType.

@@ -20,6 +20,7 @@ import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.command.factory.ICommandFactory;
 import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 
 import cerberus.command.ICommand;
@@ -191,34 +192,42 @@ public class CommandManager
 		return refCommandFactory.createCommand( useSelectionType, details );
 	}
 	
+	
+	
 	public ICommand createCommand( final String useSelectionType ) {
 		
 		return refCommandFactory.createCommand( CommandType.getType( useSelectionType ), null );
 	}
 	
 	
-	/**
-	 * Create a new command using the CommandType.
-	 * @param details TODO
-	 */
-	public ICommand createCommand( final String  useSelectionType, 
-			final LinkedList <String> llAttributes ) {
-		
-		ICommand createdCommand = 
-			refCommandFactory.createCommand( useSelectionType,
-					llAttributes );	
-		
-		if ( createdCommand.getId() < 0 ) {
-			createdCommand.setId( createNewId( ManagerObjectType.SELECTION_MULTI_BLOCK ) );
-		}
-		
-		registerItem( createdCommand, 
-				createdCommand.getId(),
-				ManagerObjectType.COMMAND );
-		
-		return createdCommand;
-	}
+//	/**
+//	 * Create a new command using the CommandType.
+//	 * @param details TODO
+//	 * 
+//	 * @deprecated
+//	 */
+//	public ICommand createCommand( final String  useSelectionType, 
+//			final LinkedList <String> llAttributes ) {
+//		
+//		ICommand createdCommand = 
+//			refCommandFactory.createCommand( useSelectionType,
+//					llAttributes );	
+//		
+//		if ( createdCommand.getId() < 0 ) {
+//			createdCommand.setId( createNewId( ManagerObjectType.SELECTION_MULTI_BLOCK ) );
+//		}
+//		
+//		registerItem( createdCommand, 
+//				createdCommand.getId(),
+//				ManagerObjectType.COMMAND );
+//		
+//		return createdCommand;
+//	}
 	
+	public ICommand createCommand(final IParameterHandler phAttributes)
+	{
+		return refCommandFactory.createCommand( phAttributes );
+	}
 	
 //	/* (non-Javadoc)
 //	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
@@ -267,4 +276,6 @@ public class CommandManager
 		
 		return newCmd;
 	}
+
+	
 }

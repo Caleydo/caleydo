@@ -2,7 +2,11 @@ package cerberus.manager.view;
 
 import java.util.HashMap;
 
+import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
+
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -15,6 +19,7 @@ import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
+import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
 import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.slider.SliderViewRep;
@@ -23,7 +28,7 @@ import cerberus.view.gui.swt.test.TestTableViewRep;
 
 public class ViewManager 
 extends AAbstractManager
-implements IViewManager
+implements IViewManager, IViewGLCanvasManager
 {
 	protected HashMap<Integer, IView> hashViewId2View;
 	
@@ -145,6 +150,9 @@ implements IViewManager
 		case VIEW_SWT_JOGL_TEST_TRIANGLE:
 			return new TestTriangleViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
+		case VIEW_SWT_JOGL_MULTI_GLCANVAS:
+			assert false : "not implemented! No Jogl available!";
+			return null;
 		
 
 		default:
@@ -152,5 +160,53 @@ implements IViewManager
 					"StorageManagerSimple.createView() failed due to unhandled type ["
 							+ useViewType.toString() + "]");
 		}
+	}
+
+	public GLCanvas getGLCanvas(int iId)
+	{
+		assert false : "not implemented!";
+		return null;
+	}
+
+	public boolean registerGLCanvas(GLCanvas canvas, int iCanvasId)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public boolean unregisterGLCanvas(GLCanvas canvas)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public GLEventListener getGLEventListener(int iId)
+	{
+		assert false : "not implemented!";
+		return null;
+	}
+
+	public boolean registerGLEventListener(GLEventListener canvasListener, int iId)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public boolean unregisterGLEventListener(GLEventListener canvasListener)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public boolean addGLEventListener2GLCanvasById(int iCanvasListenerId, int iCanvasId)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public boolean removeGLEventListener2GLCanvasById(int iCanvasListenerId, int iCanvasId)
+	{
+		assert false : "not implemented!";
+		return false;
 	}
 }

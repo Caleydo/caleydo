@@ -3,12 +3,13 @@ package cerberus.command.view.swt;
 import java.util.LinkedList;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate;
+import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a heatmap view.
@@ -17,7 +18,7 @@ import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
  *
  */
 public class CmdViewCreateTestTriangle 
-extends ACmdCreate 
+extends ACmdCreateGui 
 implements ICommand 
 {
 	/**
@@ -27,10 +28,10 @@ implements ICommand
 	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateTestTriangle( 
-			IGeneralManager refGeneralManager,
-			final LinkedList <String> listAttributes) 
+			final IGeneralManager refGeneralManager,
+			final IParameterHandler refParameterHandler) 
 	{
-		super(refGeneralManager, listAttributes);
+		super(refGeneralManager, refParameterHandler);
 	}
 	
 	/**
@@ -44,17 +45,17 @@ implements ICommand
 		
 		TestTriangleViewRep triangleView = (TestTriangleViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_JOGL_TEST_TRIANGLE,
-							iCreatedObjectId, 
+							iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
 				triangleView, 
-				iCreatedObjectId, 
+				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		triangleView.setAttributes(refVecAttributes);
-		triangleView.extractAttributes();
+		triangleView.setAttributes(refParameterHandler);
+		
 		triangleView.retrieveGUIContainer();
 		triangleView.initView();
 		triangleView.drawView();	

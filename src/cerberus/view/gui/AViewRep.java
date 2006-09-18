@@ -1,8 +1,8 @@
 package cerberus.view.gui;
 
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.Iterator;
 
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
@@ -11,6 +11,8 @@ import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
+import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Abstract class that is the base of all view representations.
@@ -30,6 +32,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	protected String sLabel;
 	
 	protected Vector <String> vecAttributes;
+
+	protected IParameterHandler refParameterHandler;
 	
 	/**
 	 * Width of the widget.
@@ -76,8 +80,32 @@ implements IView, IMediatorSender, IMediatorReceiver
 		{
 			return "";
 		}
-		
 	}
+	
+//	/**
+//	 * Get one attribute by its index assuning that it is a integer.
+//	 * If the index in invalid -1 is returned. 
+//	 *  
+//	 * @return attribute bound to index as (int) or -1 if index is invalid
+//	 */
+//	protected final int getAttributeByIndexToInteger( final int iIndex )
+//	{
+//		try {
+//			return Integer.valueOf( vecAttributes.get( iIndex ) );
+//		}
+//		catch ( NumberFormatException nfe ) 
+//		{
+//			/**
+//			 * From String to Int conversion
+//			 */
+//			return -1;
+//		}
+//		catch ( ArrayIndexOutOfBoundsException ae ) 
+//		{
+//			return -1;
+//		}
+//		
+//	}
 	
 	/**
 	 * Get one attribute by its index assuning that it is a integer.
@@ -102,9 +130,11 @@ implements IView, IMediatorSender, IMediatorReceiver
 			return -1;
 		}
 		
+		//throw new RuntimeException("AViewRep.setAttributes(Vector <String> attributes ) must not be called any more!");
 	}
 	
-	/**
+
+/**
 	 * Set attributes for this view.
 	 * Overwrite previous attributes.
 	 * 
@@ -114,10 +144,11 @@ implements IView, IMediatorSender, IMediatorReceiver
 	{ 
 		vecAttributes = attributes;
 	}
-	
+
 	/**
 	 * Extracts the height and the width of the widget from the attributes.
 	 *
+	 * @deprecated
 	 */
 	public void extractAttributes()
 	{
@@ -129,13 +160,30 @@ implements IView, IMediatorSender, IMediatorReceiver
 		iHeight = (StringConversionTool.convertStringToInt(
 				token.nextToken(), -1));
 	}
+
+	/**
+	 * Set attributes for this view.
+	 * Extracts the height and the width of the widget from the attributes.
+	 * 
+	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
+	 */
+	public void setAttributes( final IParameterHandler refParameterHandler )
+	{ 
+		this.refParameterHandler = refParameterHandler;
+		
+		iWidth = 
+			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_POS_WIDTH_X.getXmlKey() );
+		iHeight = 
+			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_POS_HEIGHT_Y.getXmlKey() );
+	}
+	
 	
 	public final ManagerObjectType getBaseType() {
 		return null;
 	}
 	
-	
-	/**
+
+/**
 	 * Get a copy of the current attributes.
 	 *  
 	 * @return copy of the current attributes
@@ -152,6 +200,16 @@ implements IView, IMediatorSender, IMediatorReceiver
 		}
 		
 		return cloneVecAttributes;
+	}
+	
+	/**
+	 * Get a copy of the current attributes.
+	 *  
+	 * @return copy of the current attributes
+	 */
+	protected final IParameterHandler getAttributesParameterHandler()
+	{
+		return refParameterHandler;
 	}
 	
 	/**
