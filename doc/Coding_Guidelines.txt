@@ -2,7 +2,7 @@
  CODEING GUIDELINES for Cerberus:
 ==================================
 
-(1) Placement of members and methodes inside a class
+(1) Placement of members and methods inside a class
 ----------------------------------------------------
 
 public class MyClass {
@@ -62,16 +62,16 @@ public class MyClass {
    * Constructor
    */
    
-   
+
   /**
-   * Medhodes
+   * Methods
    */
 
    
   /**
-   * private Methodes
+   * private methods
    */
-   
+     
   private static final void myPrivateFinalMehtode()  
     
   private static       void myPrivateFinalMehtode()  
@@ -82,7 +82,7 @@ public class MyClass {
   
   
   /**
-   * protected Methodes
+   * protected methods
    */
    
   protected static final void myPrivateFinalMehtode()   
@@ -97,7 +97,7 @@ public class MyClass {
   
   
   /**
-   * public Methodes
+   * public methods
    */
 
   public static final void myPrivateFinalMehtode()   
@@ -114,7 +114,38 @@ public class MyClass {
 }
 
 
+ (1.1) class - extends - implements
 
+  In case "public class myClass" uses "extends" and "implemetns" and the line is to long
+  use the following layout:
+  
+
+	  public abstract class MyClass
+	  extends ABase_Class
+	  implements Interface_A, Interface_B {
+	  
+	   ...
+	  }
+
+ (1.2) method
+
+	  /** 
+	   * Constructor
+	   */
+	   
+	  public class MyNestedClass {
+	    ...
+	  }
+	   
+	  /**
+	   * Methods
+	   */
+	
+	  public void doSomething() {
+	     ...
+	  }
+	  
+	  
 
 (2) Naming of files and packages:
 ---------------------------------
@@ -174,5 +205,30 @@ public class MyClass {
          
       }
       ----- end file: myClassB.java -------
+      
+      
+(4) Safe Programming
+
+ 4.1) Safe Programming:
+ 
+ PROBLEM:
+   Object item = (Object) doSomthing();
+   item.doSomthingElse();
+      
+ Either make sure your method does not return null
+ or do the following or use a TRY-CATCH block:
+   
+ SAFE:
+   Object item = (Object) doSomthing();
+
+   if ( item != null ) 
+   {
+	   item.doSomthingElse();
+   }
+   else
+   {
+     //Error handling, if needed
+   }
+
       
       
