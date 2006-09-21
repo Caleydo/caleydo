@@ -1,9 +1,7 @@
 package cerberus.command.view.swt;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreateGui;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -14,11 +12,12 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 /**
  * Class implementes the command for creating a gears view.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public class CmdViewCreateGears 
-extends ACmdCreateGui 
+extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand 
 {
 	/**
@@ -54,11 +53,17 @@ implements ICommand
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		gearsView.setAttributes(refParameterHandler);
+		gearsView.readInAttributes(refParameterHandler);
 		
 		gearsView.retrieveGUIContainer();
 		gearsView.initView();
 		gearsView.drawView();
+	}
+
+	public void undoCommand() throws CerberusRuntimeException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

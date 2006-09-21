@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -35,6 +36,8 @@ public class SelectionManager
 extends ICollectionManager
 implements ISelectionManager
 {
+	
+	private final short iLogLevel = LoggerType.VERBOSE.getLevel();
 	
 	private ISelection testSelection;
 	
@@ -71,8 +74,9 @@ implements ISelectionManager
 		
 		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.SELECTION_MULTI_BLOCK );
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SELECTION: testSelection created with Id =[" +
-				testSelection.getId() +"]");
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+				"SELECTION: testSelection created with Id =[" +
+				testSelection.getId() +"]", iLogLevel);
 		/**
 		 * END: Test ISelection...
 		 */

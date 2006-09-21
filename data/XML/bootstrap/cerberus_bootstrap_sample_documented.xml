@@ -58,8 +58,9 @@
     SET Creation Command:
 
       Special attributes:
+        targetId: SetId
         attrib1: StorageId
-        attrib2: SetId
+        attrib2: SelectionId
 
       Sample:
         <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 

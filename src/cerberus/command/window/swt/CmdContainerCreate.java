@@ -40,11 +40,8 @@ implements ICommand
 	}
 
 	protected boolean setAttributes( final IParameterHandler refParameterHandler ) 
-	{
-		super.setAttributesBaseParent( refParameterHandler );
-		
-		sLayoutAttributes = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
+	{	
+		sLayoutAttributes = sAttribute2;
 		
 		return true;
 		

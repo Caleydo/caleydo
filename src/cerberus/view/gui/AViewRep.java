@@ -167,7 +167,7 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 * 
 	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
 	 */
-	public void setAttributes( final IParameterHandler refParameterHandler )
+	public void readInAttributes( final IParameterHandler refParameterHandler )
 	{ 
 		this.refParameterHandler = refParameterHandler;
 		

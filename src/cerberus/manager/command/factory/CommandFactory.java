@@ -309,14 +309,14 @@ extends ACommand
 			break;
 		}
 		
-//		case CREATE_VIEW_PATHWAY:
-//		{
-//			createdCommand =
-//				new CmdViewCreatePathway(
-//						refGeneralManager,
-//						phAttributes );			
-//			break;
-//		}
+		case CREATE_VIEW_PATHWAY:
+		{
+			createdCommand =
+				new CmdViewCreatePathway(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
 
 		case CREATE_VIEW_SLIDER:
 		{

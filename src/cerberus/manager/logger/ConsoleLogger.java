@@ -15,6 +15,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  */
 public class ConsoleLogger extends AAbstractManager implements ILoggerManager {
 
+	private short sSystemLogLevel = 0;
+	
 	protected short sLogLevel = 0;
 	
 	/**
@@ -25,9 +27,9 @@ public class ConsoleLogger extends AAbstractManager implements ILoggerManager {
 				IGeneralManager.iUniqueId_TypeOffset_Logger );
 	}
 
-	protected void logMessage( final String msg ) {	
-		if ( sLogLevel > 0 ) {
-			System.err.println( msg );
+	private void logMessage( final String msg ) {	
+		if ( sLogLevel > sSystemLogLevel ) {
+			//System.err.println( msg );
 			return;
 		}
 		System.out.println( msg );
@@ -54,12 +56,23 @@ public class ConsoleLogger extends AAbstractManager implements ILoggerManager {
 	public void setLogLevel(short level) {
 		sLogLevel = level;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#getLogLevel()
 	 */
 	public short getLogLevel() {
 		return sLogLevel;
+	}
+	
+	/**
+	 * 
+	 */
+	public void setSystemLogLevel(short systemLogLevel) {		
+		this.sSystemLogLevel= systemLogLevel;
+	}
+	
+	public short getSystemLogLevel() {		
+		return this.sSystemLogLevel;
 	}
 
 	/**

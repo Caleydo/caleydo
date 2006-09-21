@@ -8,8 +8,7 @@ import java.util.StringTokenizer;
 import cerberus.command.ICommand;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
-import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.system.StringConversionTool;
+//import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -18,7 +17,7 @@ import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
  * @author java
  *
  */
-public abstract class AcmdCreate_IdTargetLabelParentXY 
+public abstract class ACmdCreate_IdTargetLabelParentXY 
 extends ACmdCreate_IdTargetLabelParent 
 implements ICommand
 {
@@ -33,16 +32,13 @@ implements ICommand
 	 */
 	protected int iHeightY;
 	
-	protected String sAttribute1;
-	
-	protected String sAttribute2;
-	
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	protected AcmdCreate_IdTargetLabelParentXY(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	protected ACmdCreate_IdTargetLabelParentXY(
+			final IGeneralManager refGeneralManager,
+			final IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
 		
@@ -61,11 +57,6 @@ implements ICommand
 		
 		//super.setAttributesBaseParent( refParameterHandler );
 		
-		sAttribute1 = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
-		
-		sAttribute2 = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute2,

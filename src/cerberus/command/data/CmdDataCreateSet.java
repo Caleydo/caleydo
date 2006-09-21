@@ -21,6 +21,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
@@ -124,8 +125,8 @@ implements ICommand {
 		
 		ISet newObject = (ISet) refSetManager.createSet(
 				ManagerObjectType.SET_LINEAR );
-		
-		newObject.setId( iUniqueId );
+				
+		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
 		
 		
@@ -149,11 +150,11 @@ implements ICommand {
 						
 				while ( tokenizer_Selection.hasMoreTokens() ) 
 				{		
-					iUniqueId = 
+					int iBufferdId = 
 						Integer.valueOf( tokenizer_Selection.nextToken() );
 					
 					arraySelection[iIndexSelection] = 
-						refSelectionManager.getItemSelection( iUniqueId );
+						refSelectionManager.getItemSelection( iBufferdId );
 					
 					iIndexSelection++;
 					
@@ -180,11 +181,11 @@ implements ICommand {
 				
 				while ( tokenizer_Storage.hasMoreTokens() ) 
 				{		
-					iUniqueId = 
+					int iBufferdId = 
 						Integer.valueOf( tokenizer_Storage.nextToken() );
 					
 					arrayStorage[iIndexStorage] = 
-						refStorageManager.getItemStorage( iUniqueId );
+						refStorageManager.getItemStorage( iBufferdId );
 					
 					iIndexStorage++;
 				} // end while ( tokenizer_Storage.hasMoreTokens() ) 
@@ -200,7 +201,9 @@ implements ICommand {
 					newObject.getId(),
 					newObject.getBaseType() );
 			
-			System.out.println("SET: done! " + newObject.toString() );
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"SET: done! " + newObject.toString(),
+					LoggerType.VERBOSE.getLevel() );
 			
 		} catch (NumberFormatException nfe) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
@@ -277,7 +280,7 @@ implements ICommand {
 		 */
 		StringTokenizer strToken_StorageId = new StringTokenizer( 
 				refParameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),	
+						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),	
 				CommandFactory.sDelimiter_CreateStorage_DataItemBlock );
 		
 		while ( strToken_StorageId.hasMoreTokens() ) 

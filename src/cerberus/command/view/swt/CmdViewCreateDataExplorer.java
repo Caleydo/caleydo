@@ -1,9 +1,7 @@
 package cerberus.command.view.swt;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
-import cerberus.command.base.AcmdCreate_IdTargetLabelParentXY;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -14,11 +12,12 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 /**
  * Class implementes the command for creating a data explorer view.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public class CmdViewCreateDataExplorer 
-extends AcmdCreate_IdTargetLabelParentXY 
+extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand
 {
 	/**
@@ -54,7 +53,7 @@ implements ICommand
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		dataExplorerView.setAttributes(refParameterHandler);
+		dataExplorerView.readInAttributes(refParameterHandler);
 		
 		dataExplorerView.retrieveGUIContainer();
 		dataExplorerView.initView();

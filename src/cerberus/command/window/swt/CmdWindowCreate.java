@@ -2,7 +2,7 @@ package cerberus.command.window.swt;
 
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabel;
+import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.command.CommandQueueSaxType;
@@ -10,7 +10,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 
 
 public class CmdWindowCreate
-extends ACmdCreate_IdTargetLabel
+extends ACmdCreate_IdTargetLabelAttr
 implements ICommand 
 {
 	protected String sLayoutAttributes;
@@ -35,11 +35,7 @@ implements ICommand
 
 	
 	protected void setAttributes( final IParameterHandler refParameterHandler ) 
-	{				
-	
-		super.setAttributesBase( refParameterHandler );
-		
-		sLayoutAttributes = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
+	{						
+		sLayoutAttributes = sAttribute1;
 	}
 }

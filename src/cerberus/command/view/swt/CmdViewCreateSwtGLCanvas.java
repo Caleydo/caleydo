@@ -1,25 +1,23 @@
 package cerberus.command.view.swt;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
-import cerberus.command.base.AcmdCreate_IdTargetLabelParentXY;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
-import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a heatmap view.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public class CmdViewCreateSwtGLCanvas 
-extends AcmdCreate_IdTargetLabelParentXY 
+extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand 
 {
 	/**
@@ -33,8 +31,6 @@ implements ICommand
 			final IParameterHandler refParameterHandler) 
 	{
 		super(refGeneralManager, refParameterHandler);
-		
-		
 	}
 	
 	/**
@@ -57,7 +53,7 @@ implements ICommand
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		swtGLCanvasView.setAttributes(refParameterHandler);
+		swtGLCanvasView.readInAttributes(refParameterHandler);
 		
 		swtGLCanvasView.retrieveGUIContainer();
 		swtGLCanvasView.initView();

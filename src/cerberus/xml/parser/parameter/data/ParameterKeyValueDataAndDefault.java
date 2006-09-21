@@ -3,6 +3,7 @@
  */
 package cerberus.xml.parser.parameter.data;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import cerberus.xml.parser.parameter.IParameterKeyValuePair;
@@ -115,6 +116,49 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 			return true;
 		}
 		return false;
+	}
+
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.xml.parser.parameter.IParameterKeyValuePair#size()
+	 */
+	public int size()
+	{
+		return this.hashKey2Generic.size();
+	}
+
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.xml.parser.parameter.IParameterKeyValuePair#isEmpty()
+	 */
+	public boolean isEmpty()
+	{
+		return this.hashKey2Generic.isEmpty();
+	}
+	
+	public String toString() {
+		
+		if ( this.isEmpty() ) {
+			return "-";
+		}
+		
+		StringBuffer strBuffer = new StringBuffer();
+		
+		Enumeration <String> iter = hashKey2Generic.keys();
+		
+		/* special case for first element... */
+		if ( iter.hasMoreElements() ) 
+		{
+			strBuffer.append( iter.nextElement() );
+		}
+		
+		while ( iter.hasMoreElements() )
+		{
+			strBuffer.append( " " );
+			strBuffer.append( iter.nextElement() );
+		}
+		
+		return strBuffer.toString();
 	}
 
 }

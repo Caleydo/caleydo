@@ -14,20 +14,20 @@ import cerberus.util.system.StringConversionTool;
  * @author java
  *
  */
-public abstract class ACmdCreate_IdTargetLabelParent 
+public abstract class ACmdCreate_IdTargetLabelAttr 
 	extends ACmdCreate_IdTargetLabel
 		implements ICommand
 {
 
-	protected int iParentContainerId;
-		
+	protected String sAttribute1;
+	
 	protected String sAttribute2;
 	
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager refGeneralManager,
+	protected ACmdCreate_IdTargetLabelAttr(final IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
@@ -45,14 +45,11 @@ public abstract class ACmdCreate_IdTargetLabelParent
 	 */
 	protected final void setAttributesBaseParent( final IParameterHandler refParameterHandler ) {
 		
-		String sAttributeValue1 = refParameterHandler.getValueString( 
+		sAttribute1 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 		
 		sAttribute2 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
-		
-		iParentContainerId = 
-			StringConversionTool.convertStringToInt( sAttributeValue1, -1 );
 	}
 
 }

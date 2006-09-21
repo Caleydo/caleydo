@@ -1,16 +1,16 @@
 <cerberus version="0.1">
 
-   <!--
    <read-xml-file target="data/XML/pathways/map00271.xml" />
-   -->
    
   <workspace title="primary" server="localhsot">
   
   <Application remote="no" IP="127.0.0.1" port="4000" >
   
    <CommandBuffer>
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
+   	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15202" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />             
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25201" label="my Storage3" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />                 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25301" label="my Storage4" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="1293" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
      
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
@@ -38,12 +38,13 @@
  	 <!--  mute pathway explorer
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />
    -->
-   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68991" targetId="11401" label="Gears" attrib1="10341" attrib2="500 500" detail="1077991" />		  
     
    
      <!-- Container 11341 -->
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="11341" attrib2="700 500" />		  
 
+   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68991" targetId="11401" label="Gears" attrib1="10341" attrib2="500 500" detail="1077991" />		  
+    
   <!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="67991" targetId="30401" label="Gears" attrib1="11341" attrib2="300 300" />		  
   --> 
@@ -98,31 +99,26 @@
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" targetId="56601" label="Gears" attrib1="024001" />
 
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="99009" targetId="55301" label="Heatmap" attrib="winId" />
-	 
-   -->		
+		-->
 		
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\tests\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 
-	   
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="979010" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
-  
-	 <!--
-	 
-     <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" cmdId="290010" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
+     <!--
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
+     -->
+     
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 		
-     <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" cmdId="290010" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;SKIP;SKIP;INT;ABORT" attrib2="15201" />
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;SKIP;SKIP;INT;ABORT" attrib2="15201" />
      
      <Cmd mementoId="-2" process="MEMENTO" type="OPEN_VIEW" detail="" />
 
-
-   
      <CmdQueue type="COMMAND_QUEUE_OPEN" process="RUN_QUEUE_ON_DEMAND" cmdQueueId="1" cmdId="7709600">
        <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" details="filename.gpr" switches="" />
        <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" details="filename.gpr" /> 
      </CmdQueue>     
      
      <CmdQueue type="COMMAND_QUEUE_RUN"  process="RUN_QUEUE" cmdqueue_id="1" cmdId="7711600" queue_thread="-1" queue_thread_wait="-1" />
-     
-   -->
 
      
    </CommandBuffer>

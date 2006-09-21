@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerType;
@@ -66,7 +67,8 @@ implements IStorageManager {
 		this.registerItem( testStorage, testStorage.getId(), ManagerObjectType.STORAGE_FLAT );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( "STORAGE: testStorage created with Id =[" +
-				testStorage.getId() +"]");
+				testStorage.getId() +"]",
+				LoggerType.VERBOSE.getLevel() );
 		/**
 		 * END: Test IStorage...
 		 */

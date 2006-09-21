@@ -71,7 +71,7 @@ public class CerberusInputStream
 			 * Use data from parser to restore state...
 			 */ 
 			
-			System.out.println("PARSE DONE");
+			handler.endDocument();
 			
 			/**
 			 * Restore state...

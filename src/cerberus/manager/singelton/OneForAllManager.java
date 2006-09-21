@@ -33,7 +33,8 @@ import cerberus.manager.data.set.SetManager;
 import cerberus.manager.data.storage.StorageManager;
 import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
 import cerberus.manager.event.EventPublisher;
-import cerberus.manager.logger.ConsoleSimpleLogger;
+import cerberus.manager.logger.ConsoleLogger;
+//import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.memento.MementoManager;
 import cerberus.manager.menu.swing.SwingMenuManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -162,6 +163,13 @@ public class OneForAllManager implements IGeneralManagerSingelton
 		}
 		bAllManagersInizailized = true;
 
+		/** int logger first! */
+		refLoggerManager = new ConsoleLogger(this);
+		refLoggerManager.setSystemLogLevel( 
+				ILoggerManager.LoggerType.VERBOSE.getLevel() );
+		refSingeltonManager.setLoggerManager(refLoggerManager);
+		/* end init logger */
+		
 		refStorageManager = new StorageManager(this, 4);
 		refSelectionManager = new SelectionManager(this, 4);
 		refSetManager = new SetManager(this, 4);
@@ -171,13 +179,14 @@ public class OneForAllManager implements IGeneralManagerSingelton
 		refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);
-		refLoggerManager = new ConsoleSimpleLogger(this);
+		
 		refViewManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refPathwayManager = new PathwayManager(this);
 		refPathwayElementManager = new PathwayElementManager(this);
 		refEventPublisher = new EventPublisher(this);
 
+		
 		/**
 		 * Make sure SWT is only used, when needed!
 		 */
@@ -187,6 +196,7 @@ public class OneForAllManager implements IGeneralManagerSingelton
 		/**
 		 * Register managers to singelton ...
 		 */
+		
 		refSingeltonManager.setCommandManager(refCommandManager);
 		refSingeltonManager.setDComponentManager(refDComponentManager);
 		refSingeltonManager.setViewCanvasManager(refViewCanvasManager);
@@ -194,7 +204,6 @@ public class OneForAllManager implements IGeneralManagerSingelton
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
 		refSingeltonManager.setMenuManager(refMenuManager);
-		refSingeltonManager.setLoggerManager(refLoggerManager);
 		refSingeltonManager.setViewManager(refViewManager);
 		refSingeltonManager.setSWTGUIManager(refSWTGUIManager);
 		refSingeltonManager.setPathwayElementManager(refPathwayElementManager);

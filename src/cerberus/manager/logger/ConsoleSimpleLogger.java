@@ -123,4 +123,24 @@ public class ConsoleSimpleLogger extends
 		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");
 	}
 
+	/**
+	 * Do nothing, since all messages are loged any way.
+	 * 
+	 * @see cerberus.manager.ILoggerManager#setSystemLogLevel(short)
+	 */
+	public void setSystemLogLevel(short systemLogLevel)
+	{
+		
+	}
+
+	/**
+	 * Do nothing, since all messages are loged any way.
+	 * 
+	 * @see cerberus.manager.ILoggerManager#getSystemLogLevel()
+	 */
+	public short getSystemLogLevel()
+	{
+		return 0;
+	}
+
 }

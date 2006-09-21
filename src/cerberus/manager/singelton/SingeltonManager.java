@@ -97,7 +97,7 @@ public class SingeltonManager implements ISingelton {
 	 *
 	 */
 	public void initManager() {
-		refLoggerManager = new ConsoleSimpleLogger( refGeneralManager );
+		//refLoggerManager = new ConsoleSimpleLogger( refGeneralManager );
 	}
 	
 	/* (non-Javadoc)

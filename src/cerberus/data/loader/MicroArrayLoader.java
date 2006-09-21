@@ -33,8 +33,9 @@ import cerberus.data.collection.selection.SelectionThreadSingleBlock;
 import cerberus.data.xml.IMementoXML;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenType;
-import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenHandler;
+import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.xml.parser.ISaxParserHandler;
 
 
 /**
@@ -231,11 +232,13 @@ implements IMementoXML {
 		try {
 		    BufferedReader brFile = 
 			new BufferedReader( new FileReader( this.sFileName ) );
-
-
+		   
+		    		
 		    // sample line: 1110 Kybernetik
-		    System.out.println("Read file \""+ 
-				       this.sFileName + "\" ..." );
+		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    		"Read file \""+ 
+				       this.sFileName + "\" ...",
+				       LoggerType.VERBOSE.getLevel() );
 
 		    Vector <String> vecBufferText = new Vector<String>(10);
 		    StringBuffer strLineBuffer = new StringBuffer();
@@ -452,12 +455,17 @@ implements IMementoXML {
 		    
 		}
 		catch (IOException ioe) {
-		    System.err.println( "MicroArrayLaoder: ERROR line=[" + iLineInFile + "] while parsing: " + ioe.getMessage() );
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"MicroArrayLoader: ERROR line=[" + iLineInFile + "] while parsing: " + ioe.getMessage(),
+					LoggerType.STATUS.getLevel() );
+		    
 		    return false;
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-		    System.err.println( "MicroArrayLaoder: ERROR line=[" + iLineInFile + "] while parsing: " + ex.getMessage() );
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"MicroArrayLoader: ERROR line=[" + iLineInFile + "] while parsing: " + ex.getMessage(),
+					LoggerType.ERROR_ONLY.getLevel() );
 		    return false;
 		}		
 		

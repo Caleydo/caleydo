@@ -25,4 +25,7 @@ public interface IParameterKeyValuePair<T>
 
 	public abstract boolean containsValueAndDefaultValue(final String key);
 
+	public int size();
+	
+	public boolean isEmpty();
 }

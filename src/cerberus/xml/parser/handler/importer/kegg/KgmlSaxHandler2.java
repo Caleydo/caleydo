@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -18,7 +19,8 @@ import org.xml.sax.SAXException;
 
 //import java.lang.Integer;
 
-public class KgmlSaxHandler2 extends AXmlParserHandler 
+public class KgmlSaxHandler2 
+extends AXmlParserHandler 
 implements IXmlParserHandler
 {
 	private Attributes attributes;
@@ -245,8 +247,8 @@ implements IXmlParserHandler
    			else if (sAttributeName.equals("entry2"))
     			iEntry2 = new Integer(attributes.getValue(iAttributeIndex)); 
 			
-   			System.out.println("Attribute name: " +sAttributeName);
-   			System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   			//System.out.println("Attribute name: " +sAttributeName);
+   			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}  	
     	
     	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1); //TODO: exception
@@ -327,7 +329,8 @@ implements IXmlParserHandler
 	 */
 	public void initHandler()
 	{
-		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"KEGGSaxHandler: init", LoggerType.STATUS.getLevel() );
 	}
 
 	/**
@@ -335,7 +338,8 @@ implements IXmlParserHandler
 	 */
 	public void destroyHandler()
 	{
-		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"KEGGSaxHandler: destroy!", LoggerType.STATUS.getLevel() );
 	}
 	
 }

@@ -1,25 +1,24 @@
 package cerberus.command.view.swt;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
-import cerberus.command.base.AcmdCreate_IdTargetLabelParentXY;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a progress bar view.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public class CmdViewCreateProgressBar 
-extends AcmdCreate_IdTargetLabelParentXY 
+extends ACmdCreate_IdTargetLabelParentXY 
 //ACmdCreateGui 
 implements ICommand
 {
@@ -57,7 +56,7 @@ implements ICommand
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		progressBarView.setAttributes(refParameterHandler);
+		progressBarView.readInAttributes(refParameterHandler);
 		
 		progressBarView.extractAttributes();
 		progressBarView.retrieveGUIContainer();
@@ -67,9 +66,11 @@ implements ICommand
 	
 	protected void setAttributesProgressBar( final IParameterHandler refParameterHandler ) {
 		
-		refParameterHandler.setValueAndType( "iProgressBarCurrentValue",
-				sAttribute1,
-				IParameterHandler.ParameterHandlerType.INT);
+		refParameterHandler.setValueAndTypeAndDefault( "iProgressBarCurrentValue",
+				refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
+				IParameterHandler.ParameterHandlerType.INT,
+				"0");
 	}
 
 	public void undoCommand() throws CerberusRuntimeException

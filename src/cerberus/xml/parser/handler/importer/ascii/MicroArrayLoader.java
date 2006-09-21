@@ -452,12 +452,12 @@ implements IMementoXML {
 		    
 		}
 		catch (IOException ioe) {
-		    System.err.println( "MicroArrayLaoder: ERROR line=[" + iLineInFile + "] while parsing: " + ioe.getMessage() );
+		    System.err.println( "MicroArrayLoader: IO-ERROR line=[" + iLineInFile + "] while parsing: " + ioe.getMessage() );
 		    return false;
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-		    System.err.println( "MicroArrayLaoder: ERROR line=[" + iLineInFile + "] while parsing: " + ex.getMessage() );
+		    System.err.println( "MicroArrayLoader: ERROR line=[" + iLineInFile + "] while parsing: " + ex.getMessage() );
 		    return false;
 		}		
 		

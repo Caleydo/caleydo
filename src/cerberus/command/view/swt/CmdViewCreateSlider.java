@@ -1,7 +1,5 @@
 package cerberus.command.view.swt;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
@@ -14,6 +12,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 /**
  * Class implementes the command for creating a slider view.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
@@ -54,7 +53,7 @@ implements ICommand
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		sliderView.setAttributes(refParameterHandler);
+		sliderView.readInAttributes(refParameterHandler);
 		
 		sliderView.retrieveGUIContainer();
 		sliderView.initView();

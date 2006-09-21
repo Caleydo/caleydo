@@ -16,6 +16,7 @@ import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.command.CommandQueueSaxType;
@@ -87,6 +88,8 @@ implements ICommand {
 	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 			final IParameterHandler phAttributes ) {
 		
+		super();
+		
 		this.refGeneralManager = refGeneralManager;		
 		
 		this.setId( phAttributes.getValueInt( 
@@ -96,8 +99,10 @@ implements ICommand {
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 		this.sTokenPattern =  phAttributes.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
-		this.iTargetSetId = phAttributes.getValueInt(
-				CommandQueueSaxType.TAG_TARGET_ID.getXmlKey() );
+		this.iTargetSetId =	StringConversionTool.convertStringToInt(
+				phAttributes.getValueString( 
+						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()),
+				-1 );
 	}
 	
 	/**
@@ -124,10 +129,13 @@ implements ICommand {
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CerberusRuntimeException {
-		System.out.println("load file via importer... ([" +
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+	    		"load file via importer... ([" +
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
-				iTargetSetId + "])");	
+				iTargetSetId + "])",
+				LoggerType.STATUS.getLevel() );
 		
 		MicroArrayLoader loader = new MicroArrayLoader( refGeneralManager );
 		

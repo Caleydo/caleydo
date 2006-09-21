@@ -8,6 +8,8 @@
  */
 package cerberus.manager.data.set;
 
+import java.util.Collection;
+import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Iterator;
 
@@ -42,9 +44,11 @@ implements ISetManager {
 	/**
 	 * Vector holds a list of all ISet's
 	 */
-	protected Vector<ISet> vecSets;
+	//protected Vector<ISet> vecSets;
 	
-	private ISet testSet;
+	protected Hashtable <Integer, ISet > hashId2Set;
+	
+	//private ISet testSet;
 	
 	/**
 	 * 
@@ -57,7 +61,9 @@ implements ISetManager {
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 		
-		vecSets = new Vector< ISet > ( iInitSizeContainer );
+		//vecSets = new Vector< ISet > ( iInitSizeContainer );
+		
+		hashId2Set = new Hashtable <Integer, ISet > ();
 		
 		refGeneralManager.getSingelton().setSetManager( this );		
 		
@@ -124,34 +130,31 @@ implements ISetManager {
 	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.ISet)
 	 */
 	public boolean deleteSet(ISet deleteSet ) {
-		return vecSets.remove( deleteSet );
+		
+		throw new RuntimeException("not impelemtned!");
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.ISet)
 	 */
 	public boolean deleteSet( final int iItemId ) {
-		try {
-			vecSets.remove( iItemId );
-			return true;
-		}
-		catch (ArrayIndexOutOfBoundsException ae) {
+		
+		ISet removedObj = hashId2Set.remove( iItemId );
+		
+		if ( removedObj == null ) {
+			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+					"deleteSet(" + 
+					iItemId + ") falied, because Set was not registered!" );
 			return false;
 		}
+		return true;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#getItemSet(int)
 	 */
 	public ISet getItemSet( final int iItemId) {
-		
-		try {
-			return vecSets.get( getIndexInVector_byUniqueId( iItemId ) );
-		} 
-		catch (ArrayIndexOutOfBoundsException ae) {
-			assert false: "SetManagerSimple.getItemSet() ArrayIndexOutOfBoundsException ";
-			return null;
-		}
+		return hashId2Set.get( iItemId );
 	}
 	
 	/*
@@ -165,30 +168,23 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#getAllSetItems()
 	 */
-	public ISet[] getAllSetItems() {
+	public Collection<ISet> getAllSetItems() {
 		
-		ISet[] resultArray = new ISet[ vecSets.size() ];
-		
-		Iterator<ISet> iter = vecSets.iterator();
-		for ( int i=0 ; iter.hasNext() ; i++ ) {
-			resultArray[i] = iter.next();
-		}
-		
-		return resultArray;
+		return hashId2Set.values();
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
-		return hasItem_withUniqueId( iItemId );
+		return hashId2Set.containsKey( iItemId );
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
-		return vecSets.size();
+		return hashId2Set.size();
 	}
 
 	/* (non-Javadoc)
@@ -201,33 +197,36 @@ implements ISetManager {
 	public boolean unregisterItem( final int iItemId,
 			final ManagerObjectType type  ) {
 		
-		if ( this.hasItem_withUniqueId( iItemId )) {
-			unregisterItem_byUniqueId_insideCollection( iItemId );
-			return true;
+		ISet buffer = hashId2Set.remove(iItemId);
+		
+		if  ( buffer == null ) {
+			this.refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"unregisterItem(" + 
+					iItemId + ") failed because Set was not registered!");
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
 			final ManagerObjectType type ) {
 		
-		
+
 		try {
 			ISet addItem = (ISet) registerItem;
 			
-			if ( hasItem_withUniqueId( iItemId ) ) {
-				vecSets.set( getIndexInVector_byUniqueId( iItemId ), addItem );
-				return true;
+			if ( this.hashId2Set.containsKey( iItemId ) ) {
+				
+				return false;
 			}
 			
-			registerItem_byUniqueId_insideCollection( iItemId, vecSets.size() );
-			vecSets.addElement( addItem );
+			hashId2Set.put( iItemId, addItem );
 				
 			return true;
 		}
 		catch ( NullPointerException npe) {
-			assert false:"cast of object ot storage falied";
+			assert false : "cast of object ot storage falied";
 			return false;
 		}
 	

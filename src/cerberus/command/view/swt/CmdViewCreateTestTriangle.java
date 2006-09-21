@@ -1,9 +1,7 @@
 package cerberus.command.view.swt;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreateGui;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -14,11 +12,11 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 /**
  * Class implementes the command for creating a heatmap view.
  * 
- * @author Marc Streit
+ * @author Michael Kalkusch
  *
  */
 public class CmdViewCreateTestTriangle 
-extends ACmdCreateGui 
+extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand 
 {
 	/**
@@ -54,10 +52,16 @@ implements ICommand
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		triangleView.setAttributes(refParameterHandler);
+		triangleView.readInAttributes(refParameterHandler);
 		
 		triangleView.retrieveGUIContainer();
 		triangleView.initView();
 		triangleView.drawView();	
+	}
+
+	public void undoCommand() throws CerberusRuntimeException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

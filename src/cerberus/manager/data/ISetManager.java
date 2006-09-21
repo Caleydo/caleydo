@@ -8,6 +8,8 @@
  */
 package cerberus.manager.data;
 
+import java.util.Collection;
+
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.ISet;
@@ -33,7 +35,7 @@ extends IGeneralManager
 	
 	public ISet getItemSet( final int iItemId );
 	
-	public ISet[] getAllSetItems();
+	public Collection<ISet> getAllSetItems();
 	
 	/**
 	 * Initialize data structures prior using this manager.

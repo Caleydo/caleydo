@@ -1,5 +1,6 @@
 package cerberus.view.gui.swt.data.explorer;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -17,6 +18,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
@@ -123,7 +125,7 @@ public class DataExplorerViewRep extends AViewRep implements IView
 		StorageModel currentStorageModel;
 		SelectionModel currentSelectionModel;
 
-		ISet[] allSetItems;
+		Collection <ISet> allSetItems;
 		IStorage[] allStorageItems;
 		ISelection[] allSelectionItems;
 		// TODO: a list would be nuch nicer - ask michael
@@ -152,39 +154,77 @@ public class DataExplorerViewRep extends AViewRep implements IView
 
 		try {
 			// iterate over all SETs
-			for (int setIndex = 0; setIndex < allSetItems.length; setIndex++)
+			Iterator <ISet> iterSets = allSetItems.iterator();
+			
+			while (iterSets.hasNext() )
 			{
-				currentSet = allSetItems[setIndex];
+				currentSet = iterSets.next();
 	
-				// insert SET with ID and label in the tree
-				currentSetModel = new SetModel(currentSet.getId(), currentSet
-						.getLabel());
-				rootSetModel.add(currentSetModel);
-	
-				for (int dimIndex = 0; dimIndex < allSetItems[setIndex]
-						.getDimensions(); dimIndex++)
+				if ( currentSet != null) 
 				{
-					currentSelectionArray = currentSet.getSelectionByDim(dimIndex);
-					for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
+					// insert SET with ID and label in the tree
+					currentSetModel = new SetModel(currentSet.getId(), currentSet
+							.getLabel());
+					rootSetModel.add(currentSetModel);
+		
+					for (int dimIndex = 0; 
+						dimIndex < currentSet.getDimensions(); 
+						dimIndex++)
 					{
-						currentSelection = (ISelection) currentSelectionArray[selectionIndex];
-	
-						// insert SELECTION with ID and label in the tree
-						currentSelectionModel = new SelectionModel(currentSelection
-								.getId(), currentSelection.getLabel());
-						currentSetModel.add(currentSelectionModel);
-					}
-	
-					currentStorageArray = currentSet.getStorageByDim(dimIndex);
-					for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
-					{
-						currentStorage = (IStorage) currentStorageArray[storageIndex];
-	
-						// insert STORAGE with ID and label in the tree
-						currentStorageModel = new StorageModel(currentStorage
-								.getId(), currentStorage.getLabel());
-						currentSetModel.add(currentStorageModel);
-					}
+						try {
+							currentSelectionArray = currentSet.getSelectionByDim(dimIndex);
+							for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
+							{
+								currentSelection = (ISelection) currentSelectionArray[selectionIndex];
+			
+								if ( currentSelection!= null ) {
+									// insert SELECTION with ID and label in the tree
+									currentSelectionModel = new SelectionModel(currentSelection
+											.getId(), currentSelection.getLabel());
+									currentSetModel.add(currentSelectionModel);
+								}
+								else
+								{
+									System.err.println("Error in DataExplorerViewRep currentSelection==null!");
+								}
+							}
+						}
+						catch ( Exception e) 
+						{
+							System.err.println("Error in DataExplorerViewRep while (Selection) getSelectionByDim()..");
+							throw new RuntimeException( e.toString() );
+						}
+		
+						try {
+							currentStorageArray = currentSet.getStorageByDim(dimIndex);
+							for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
+							{
+								currentStorage = (IStorage) currentStorageArray[storageIndex];
+			
+								// insert STORAGE with ID and label in the tree
+								if ( currentStorage != null ) {
+									currentStorageModel = new StorageModel(currentStorage
+											.getId(), currentStorage.getLabel());
+									currentSetModel.add(currentStorageModel);
+								}
+								else
+								{
+									refGeneralManager.getSingelton().getLoggerManager().logMsg(
+										"Error in DataExplorerViewRep currentStorage==null!",
+										LoggerType.STATUS.getLevel() );
+								}
+							}
+						}
+						catch ( Exception e) 
+						{
+							System.err.println("Error in DataExplorerViewRep while (IStorage) getStorageByDim()..");
+							throw new RuntimeException( e.toString() );
+						}
+					} // for ...
+				} // if
+				else 
+				{
+					System.err.println("Error in DataExplorerViewRep currentSet==null !");
 				}
 			}
 	
@@ -192,31 +232,45 @@ public class DataExplorerViewRep extends AViewRep implements IView
 					.getManagerByBaseType(ManagerObjectType.STORAGE))
 					.getAllStorageItems();
 	
-			// iterate over all STORAGEs
-			for (int storageIndex = 0; storageIndex < allStorageItems.length; storageIndex++)
+			try {
+				// iterate over all STORAGEs
+				for (int storageIndex = 0; storageIndex < allStorageItems.length; storageIndex++)
+				{
+					currentStorage = allStorageItems[storageIndex];
+		
+					// insert STORAGES with ID and label in the tree
+					currentStorageModel = new StorageModel(currentStorage.getId(),
+							currentStorage.getLabel());
+					rootStorageModel.add(currentStorageModel);
+		
+				}
+			}
+			catch ( Exception e) 
 			{
-				currentStorage = allStorageItems[storageIndex];
-	
-				// insert STORAGES with ID and label in the tree
-				currentStorageModel = new StorageModel(currentStorage.getId(),
-						currentStorage.getLabel());
-				rootStorageModel.add(currentStorageModel);
-	
+				System.err.println("Error in DataExplorerViewRep while iterate over all STORAGEs ==> currentStorage = allStorageItems[storageIndex];..");
+				throw new RuntimeException( e.toString() );
 			}
 	
 			allSelectionItems = ((ISelectionManager) refGeneralManager
 					.getManagerByBaseType(ManagerObjectType.SELECTION))
 					.getAllSelectionItems();
 	
-			// iterate over all SELECTIONs
-			for (int selectionIndex = 0; selectionIndex < allSelectionItems.length; selectionIndex++)
+			try {
+				// iterate over all SELECTIONs
+				for (int selectionIndex = 0; selectionIndex < allSelectionItems.length; selectionIndex++)
+				{
+					currentSelection = allSelectionItems[selectionIndex];
+		
+					// insert SELECTIONs with ID and label in the tree
+					currentSelectionModel = new SelectionModel(
+							currentSelection.getId(), currentSelection.getLabel());
+					rootSelectionModel.add(currentSelectionModel);
+				}
+			}
+			catch ( Exception e) 
 			{
-				currentSelection = allSelectionItems[selectionIndex];
-	
-				// insert SELECTIONs with ID and label in the tree
-				currentSelectionModel = new SelectionModel(
-						currentSelection.getId(), currentSelection.getLabel());
-				rootSelectionModel.add(currentSelectionModel);
+				System.err.println("Error in DataExplorerViewRep while iterate over all SELECTIONs ==> currentSelection = allSelectionItems[selectionIndex];..");
+				throw new RuntimeException( e.toString() );
 			}
 
 		}

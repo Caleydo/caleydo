@@ -1,7 +1,5 @@
 package cerberus.command.view.swt;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreateGui;
 import cerberus.manager.IGeneralManager;
@@ -14,7 +12,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 /**
  * Class implementes the command for creating a heatmap view.
  * 
- * @author Marc Streit
+ * @author Michael Kalkusch
  *
  */
 public class CmdViewCreateHeatmap 
@@ -54,7 +52,7 @@ implements ICommand
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		heatmapView.setAttributes(refParameterHandler);
+		heatmapView.readInAttributes(refParameterHandler);
 		
 		heatmapView.retrieveGUIContainer();
 		heatmapView.initView();

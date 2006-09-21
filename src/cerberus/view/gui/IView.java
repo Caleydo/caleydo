@@ -30,7 +30,7 @@ public interface IView
 	 */
 	public void retrieveGUIContainer();
 	
-	public void setAttributes(IParameterHandler refParameterHandler );
+	public void readInAttributes(IParameterHandler refParameterHandler );
 	
 	/**
 	 * @deprecated use setAttributes(IParameterHandler) instead

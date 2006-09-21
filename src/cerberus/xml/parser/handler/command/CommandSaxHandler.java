@@ -3,22 +3,23 @@
  */
 package cerberus.xml.parser.handler.command;
 
-import java.util.LinkedList;
 
 //import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
+//import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IMenuManager;
+import cerberus.manager.ILoggerManager.LoggerType;
+//import cerberus.manager.IMenuManager;
 import cerberus.manager.ICommandManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.manager.ILoggerManager.LoggerType;
+//import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.command.CommandQueueSaxType;
-import cerberus.xml.parser.ACerberusDefaultSaxHandler;
+//import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.SXmlParserHandler;
@@ -26,7 +27,6 @@ import cerberus.xml.parser.manager.IXmlParserManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 import cerberus.xml.parser.parameter.ParameterHandler;
-
 
 
 /**
@@ -95,11 +95,11 @@ implements IXmlParserHandler
 		
 		ICommand lastCommand = null;
 		
+		IParameterHandler phAttributes =
+			new ParameterHandler();
+	
 		try 
 		{
-			IParameterHandler phAttributes =
-				new ParameterHandler();
-			
 			/* create new Frame */
 			phAttributes.setValueBySaxAttributes( attrs, 
 					CommandQueueSaxType.TAG_PROCESS.getXmlKey(), 
@@ -146,13 +146,27 @@ implements IXmlParserHandler
 					CommandQueueSaxType.TAG_DETAIL.getDefault(),
 					ParameterHandlerType.STRING );										 
 
-			
-			System.err.println(" XML-TAG= " +  phAttributes.getValueString( 
-					CommandQueueSaxType.TAG_LABEL.getXmlKey() ) );
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					" XML-TAG= " +  phAttributes.getValueString( 
+					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
+					LoggerType.VERBOSE.getLevel() );
 				
 			lastCommand = refCommandManager.createCommand( phAttributes );
 			
+		}
+		catch ( Exception e) 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"CommandSaxHandler.readCommandData(" +
+					attrs.toString() + ") ERROR while parsing " + 
+					lastCommand.toString() + " error=" + e.toString(),
+					LoggerType.STATUS.getLevel() );
+					
+			return null;
+		}
 			
+		try 
+		{
 			if ( lastCommand != null )
 			{
 				String sData_Cmd_process = phAttributes.getValueString( 
@@ -171,8 +185,11 @@ implements IXmlParserHandler
 		}
 		catch ( Exception e) 
 		{
-			System.err.println("CommandSaxHandler.readCommandData(" +
-					attrs.toString() + ") ERROR while parsing " + e.toString() );
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"CommandSaxHandler.readCommandData(" +
+					attrs.toString() + ")\n  ERROR while executing command " + e.toString(),
+					LoggerType.STATUS.getLevel() );
+					
 			
 			return null;
 		}

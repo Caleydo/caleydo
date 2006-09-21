@@ -332,4 +332,21 @@ implements IParameterHandler
 		hashPrimarySwitch.put( key, type );
 	}
 	
+	public String toString() {
+		StringBuffer strBuffer = new StringBuffer();
+		
+		strBuffer.append("B:");
+		strBuffer.append( hashKey2Boolean.toString() );
+		
+		strBuffer.append(" I:");
+		strBuffer.append( hashKey2Integer.toString() );
+		
+		strBuffer.append(" F:");
+		strBuffer.append( hashKey2Float.toString() );
+		
+		strBuffer.append(" S:");
+		strBuffer.append( hashKey2String.toString() );
+		
+		return strBuffer.toString();
+	}
 }
