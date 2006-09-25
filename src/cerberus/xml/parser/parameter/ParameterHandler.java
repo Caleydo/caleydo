@@ -4,10 +4,17 @@
 package cerberus.xml.parser.parameter;
 
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 import org.xml.sax.Attributes;
 
+import gleem.linalg.Vec3f;
+import gleem.linalg.Rotf;
+
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.AParameterHandler;
 import cerberus.xml.parser.parameter.IParameterKeyValuePair;
@@ -104,6 +111,39 @@ implements IParameterHandler
 			throw new CerberusRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(java.lang.String)
+	 */
+	public Vec3f getValueVec3f( final String key ) {
+		try {
+			return new Vec3f( hashKey2Float.getValue(key+"_GL0"),
+					hashKey2Float.getValue(key+"_GL1"),
+					hashKey2Float.getValue(key+"_GL2") );
+		}
+		catch ( NullPointerException npe) 
+		{
+			throw new CerberusRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(java.lang.String)
+	 */
+	public Rotf getValueRotf( final String key ) {
+		try {
+			return new Rotf( 
+					new Vec3f( hashKey2Float.getValue(key+"_GLROT0"),
+							hashKey2Float.getValue(key+"_GLROT1"),
+							hashKey2Float.getValue(key+"_GLROT2")),
+					hashKey2Float.getValue(key+"_GLROT3") );
+		}
+		catch ( NullPointerException npe) 
+		{
+			throw new CerberusRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+		}
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueFloat(java.lang.String)
@@ -273,6 +313,52 @@ implements IParameterHandler
 					}
 					break;
 				
+				case VEC3F:
+				{
+					StringTokenizer tokenizer = new StringTokenizer( value,
+							CommandFactory.sDelimiter_CreateView_Size);
+					
+					if ( tokenizer.countTokens() != 3 ) {						
+						throw new CerberusRuntimeException( 
+								"Error in parameter " +
+								key +
+								"=[" + value + 
+								"] needs three float values!",
+								CerberusExceptionType.CONVERSION );
+					} // if
+					
+					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 
+					{
+						hashKey2Float.setValue(key+"_GL" + i, 
+								Float.valueOf(tokenizer.nextToken()) );
+					} //for
+					
+				} // case
+					break;
+					
+				case VEC4F:
+				{
+					StringTokenizer tokenizer = new StringTokenizer( value,
+							CommandFactory.sDelimiter_CreateView_Size);
+					
+					if ( tokenizer.countTokens() != 4 ) {						
+						throw new CerberusRuntimeException( 
+								"Error in parameter " +
+								key +
+								"=[" + value + 
+								"] needs four float values!",
+								CerberusExceptionType.CONVERSION );
+					} // if
+					
+					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 
+					{
+						hashKey2Float.setValue(key+"_GLROT" + i, 
+								Float.valueOf(tokenizer.nextToken()) );
+					} //for
+					
+				} // case
+					break;
+					
 				default:
 					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregisterd enumeration!");
 			}

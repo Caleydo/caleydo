@@ -18,6 +18,7 @@ public enum CerberusExceptionType {
 	
 	ANY_ERROR("cerberus-error"),
 	COMMAND("Command"),
+	CONVERSION("NumberFormatError"),
 	DATAHANDLING("LOAD,SAVE"),
 	MEMENTO("Memeont"),	
 	OBSERVER("Observer"),

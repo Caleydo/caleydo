@@ -1,18 +1,25 @@
 package cerberus.xml.parser.parameter;
 
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
+
 import java.util.Vector;
 
 import org.xml.sax.Attributes;
+
+import cerberus.util.exception.CerberusRuntimeException;
 
 public interface IParameterHandler
 {
 
 	public enum ParameterHandlerType {
 		
+		BOOL(),
 		INT(),
 		FLOAT(),
 		STRING(),
-		BOOL();
+		VEC3F(),
+		VEC4F();
 		
 		private ParameterHandlerType() {
 			
@@ -30,6 +37,10 @@ public interface IParameterHandler
 	public abstract String getValueString(final String key);
 
 	public abstract boolean getValueBoolean(final String key);
+	
+	public Vec3f getValueVec3f( final String key );
+
+	public Rotf getValueRotf( final String key );
 
 	public abstract void setValue(final String key, final String value);
 

@@ -23,6 +23,7 @@ import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventRelationCreate;
 
 
+import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
@@ -331,6 +332,15 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdViewCreateMixer(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_TRIANGLE_TEST:
+		{
+			createdCommand =
+				new CmdGlObjectTriangleTest(
 						refGeneralManager,
 						phAttributes );			
 			break;
