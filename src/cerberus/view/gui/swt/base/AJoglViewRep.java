@@ -25,6 +25,8 @@ implements IView
 	 */
 	protected GLCanvas refGLCanvas;
 	
+	protected GLEventListener refGLEventListener;
+	
 	public AJoglViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
@@ -44,7 +46,17 @@ implements IView
 		
 		assert refGLCanvas != null : "can not set GLEventListener, because refGLCanves == null !";
 		
-		refGLCanvas.addGLEventListener( setGListener );
+		refGLEventListener = setGListener;
+		
+		refGLCanvas.addGLEventListener( refGLEventListener );
+	}
+	
+	public final GLEventListener getGLEventListener() {
+		return refGLEventListener;
+	}
+	
+	public final void removeGLEventListener( final GLEventListener refGLEventListener) {
+		this.refGLCanvas.removeGLEventListener( refGLEventListener );
 	}
 	
 

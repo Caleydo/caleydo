@@ -5,13 +5,18 @@ package cerberus.view.gui.opengl;
 
 import javax.media.opengl.GLCanvas;
 
+import cerberus.data.AUniqueManagedObject;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 
 /**
  * @author java
  *
  */
-public class GLObjectTriangleTest implements IGLCanvasUser
+public class GLObjectTriangleTest 
+extends AUniqueManagedObject
+implements IGLCanvasUser
 {
 
 	protected GLCanvas refCanvas;
@@ -21,9 +26,10 @@ public class GLObjectTriangleTest implements IGLCanvasUser
 	/**
 	 * 
 	 */
-	public GLObjectTriangleTest()
+	public GLObjectTriangleTest( final int iUniqueId, 
+			final IGeneralManager setGeneralManager)
 	{
-		
+		super( iUniqueId, setGeneralManager);
 	}
 	
 	/* (non-Javadoc)
@@ -62,5 +68,10 @@ public class GLObjectTriangleTest implements IGLCanvasUser
 	public void destroy() {
 		this.refCanvas = null;
 		this.refParentView = null;
+	}
+
+	public ManagerObjectType getBaseType()
+	{
+		return null;
 	}
 }

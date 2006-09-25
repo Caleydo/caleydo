@@ -78,6 +78,8 @@ public enum ManagerObjectType {
 	
 	VIEW_HISTOGRAM(ManagerType.VIEW),
 	
+	// VIEW_OPNEGL_CANVAS(ManagerType.VIEW),
+	
 	VIEW_SWT_HEATMAP2D(ManagerType.VIEW),
 	
 	VIEW_SWT_HISTOGRAM2D(ManagerType.VIEW),

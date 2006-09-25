@@ -28,17 +28,17 @@
      
      
      <!-- Window 10331 -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" label="swt container 1" attrib1="10331" attrib2="ROW VERTICAL" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" label="swt container 2" attrib1="10331" attrib2="ROW VERTICAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" label="swt container 1" parent="10331" attrib1="10331" attrib2="ROW VERTICAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" label="swt container 2" parent="10331" attrib1="10331" attrib2="ROW VERTICAL" />
 
      <!-- Container 10341 -->
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="30" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="70" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" parent="10341" attrib1="10341" attrib2="300 30" detail="30" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" parent="10341"  attrib1="10341" attrib2="300 30" detail="70" />
  	 
  	 <!--  mute pathway explorer
  	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />
    -->
-   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68991" targetId="11401" label="Gears" attrib1="10341" attrib2="500 500" detail="1077991" />		  
+   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68991" targetId="11401" label="Gears" parent="10341"  attrib1="10341" attrib2="500 500" detail="1077991" />		  
     
    <!-- 
    
@@ -51,17 +51,17 @@
    attrib2="0 0 1 0"       rotation (axis,angle)  exsampel 0 0 1 0.5  ==> axis ( 0 0 1) z-axis, rotation 0.5 radiant
    tail="red" />		  
    -->
-   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_TRIANGLE_TEST"  cmdId="68991" targetId="77401" label="GL Triangle" attrib1="0 0 0" attrib2="0 0 1 0" detail="red" />		  
+   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_TRIANGLE_TEST"  cmdId="68992" targetId="77401" label="GL Triangle" attrib1="0 0 0" attrib2="0 0 1 0" detail="red" />		  
    
      <!-- Container 11341 -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="11341" attrib2="700 500" />		  
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60993" targetId="10401" label="Data Explorer" parent="11341" attrib1="11341" attrib2="700 500" />		  
 
   <!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="67991" targetId="30401" label="Gears" attrib1="11341" attrib2="300 300" />		  
   --> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="68991" targetId="31401" label="Gears" attrib1="11341" attrib2="300 300" />		  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="68994" targetId="31401" label="Gears" parent="11341" attrib1="11341" attrib2="300 300" />		  
      
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" cmdId="69991" targetId="32401" label="Heatmap" attrib1="11341" attrib2="300 300" />		  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" cmdId="69995" targetId="32401" label="Heatmap" parent="11341" attrib1="11341" attrib2="300 300" />		  
   <!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="70991" targetId="33401" label="Heatmap" attrib1="11341" attrib2="300 300" />		  
   --> 
@@ -74,7 +74,7 @@
    -->
     
 	 <!-- Relations -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" cmdId="68991" targetId="10501" label="Event Relation" attrib1="15201" attrib2="14401" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" cmdId="68991" targetId="10501" label="Event Relation" parent="15201" attrib1="15201" attrib2="14401" />
 
 <!--	
 

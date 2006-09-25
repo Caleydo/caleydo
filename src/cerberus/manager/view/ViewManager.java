@@ -41,7 +41,7 @@ implements IViewManager, IViewGLCanvasManager
 
 		hashViewId2View = new HashMap<Integer, IView>();
 		
-		refGeneralManager.getSingelton().setViewManager(this);
+		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
 
 	public boolean hasItem(int iItemId)

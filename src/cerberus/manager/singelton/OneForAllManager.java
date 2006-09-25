@@ -204,7 +204,7 @@ public class OneForAllManager implements IGeneralManagerSingelton
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
 		refSingeltonManager.setMenuManager(refMenuManager);
-		refSingeltonManager.setViewManager(refViewManager);
+		refSingeltonManager.setViewGLCanvasManager(refViewManager);
 		refSingeltonManager.setSWTGUIManager(refSWTGUIManager);
 		refSingeltonManager.setPathwayElementManager(refPathwayElementManager);
 		refSingeltonManager.setPathwayManager(refPathwayManager);

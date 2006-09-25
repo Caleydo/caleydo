@@ -9,6 +9,7 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.base.AAbstractManager;
@@ -75,7 +76,7 @@ implements IViewManager, IViewGLCanvasManager
 			new Hashtable <Integer, Vector<GLEventListener> > ();
 		
 		
-		refGeneralManager.getSingelton().setViewManager(this);
+		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
 
 	public boolean hasItem(int iItemId)
@@ -125,6 +126,10 @@ implements IViewManager, IViewGLCanvasManager
 		IView registerView = (IView) registerItem;
 		
 		hashViewId2View.put(iItemId, registerView);
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+				"registerItem( " + iItemId + " ) as View",
+				LoggerType.VERBOSE.getLevel() );
 		
 		return true;
 	}

@@ -2,7 +2,7 @@ package cerberus.command.event;
 
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreateGui;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -10,7 +10,9 @@ import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.manager.IEventPublisher;
 
-public class CmdEventRelationCreate extends ACmdCreateGui implements ICommand
+public class CmdEventRelationCreate 
+extends ACmdCreate_IdTargetLabelParentAttr 
+implements ICommand
 {
 	protected int iSenderId;
 
@@ -46,5 +48,11 @@ public class CmdEventRelationCreate extends ACmdCreateGui implements ICommand
 		// Extract attrib2 which represents receiver
 		iReceiverId = (StringConversionTool.convertStringToInt(
 				sAttribute2, -1));
+	}
+
+	public void undoCommand() throws CerberusRuntimeException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

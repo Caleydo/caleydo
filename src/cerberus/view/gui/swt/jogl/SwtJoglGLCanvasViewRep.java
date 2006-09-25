@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.media.opengl.GLCanvas;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.view.gui.swt.base.AJoglViewRep;
 import cerberus.view.gui.IView;
@@ -27,12 +28,14 @@ implements IView, IGLCanvasDirector
 	
 	protected int iGLEventListernerId = 99000;
 	
-	protected int iGLCanvasId = 88000;
+	protected int iGLCanvasId;
 	
 	protected Vector <IGLCanvasUser> vecGLCanvasUser;
 	
 	public SwtJoglGLCanvasViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, int iParentContainerId, String sLabel)
+			int iViewId, 
+			int iParentContainerId, 
+			String sLabel )
 	{
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
@@ -41,7 +44,18 @@ implements IView, IGLCanvasDirector
 		abEnableRendering = new AtomicBoolean( true );
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * Attention, side effect! Call this before calling initView() !
+	 * 
+	 * @param iOpenGLCanvasId
+	 */
+	public void setOpenGLCanvasId( int iOpenGLCanvasId ) {
+		this.iGLCanvasId = iOpenGLCanvasId;		
+	}
+	
+	/**
+	 * Attension: call setOpenGLCanvasId(int) before callign this methode!
+	 * 
 	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#initView()
 	 */
 	public void initView()
@@ -49,14 +63,19 @@ implements IView, IGLCanvasDirector
 		TriangleMain renderer = new TriangleMain();
 		
 		IViewGLCanvasManager canvasManager = 
-			refGeneralManager.getSingelton().getViewManager();
+			refGeneralManager.getSingelton().getViewGLCanvasManager();
 
-		canvasManager.registerGLEventListener( renderer, iGLEventListernerId );
 		canvasManager.registerGLCanvas( refGLCanvas, iGLCanvasId );
 		
+		canvasManager.registerGLEventListener( renderer, iGLEventListernerId );
 		canvasManager.addGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
 		
 		super.setGLEventListener( renderer );
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"SwtJoglGLCanvasViewRep [" +
+				getId() + "] was created & initalized!",
+				LoggerType.STATUS.getLevel() );
 	}
 	
 	/* (non-Javadoc)
@@ -67,6 +86,12 @@ implements IView, IGLCanvasDirector
 			throw new CerberusRuntimeException("addGLCanvasUser() try to same user twice!");
 		}
 		vecGLCanvasUser.addElement( user );
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"SwtJoglGLCanvasViewRep [" +
+				getId() + "] added GLCanvas user =" +
+				user.toString() ,
+				LoggerType.STATUS.getLevel() );
 	}
 	
 	/* (non-Javadoc)

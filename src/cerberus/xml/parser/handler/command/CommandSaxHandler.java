@@ -12,11 +12,10 @@ import org.xml.sax.Attributes;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.manager.IMenuManager;
-import cerberus.manager.ICommandManager;
-import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 //import cerberus.xml.parser.ACerberusDefaultSaxHandler;
@@ -132,6 +131,11 @@ implements IXmlParserHandler
 					ParameterHandlerType.STRING );
 
 			phAttributes.setValueBySaxAttributes( attrs,
+					CommandQueueSaxType.TAG_PARENT.getXmlKey(), 
+					CommandQueueSaxType.TAG_PARENT.getDefault(),
+					ParameterHandlerType.INT );	
+			
+			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
 					CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault(),
 					ParameterHandlerType.STRING );	
@@ -147,7 +151,7 @@ implements IXmlParserHandler
 					ParameterHandlerType.STRING );										 
 
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					" XML-TAG= " +  phAttributes.getValueString( 
+					"verbose: XML-TAG= " +  phAttributes.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
 					LoggerType.VERBOSE.getLevel() );
 				
@@ -174,8 +178,9 @@ implements IXmlParserHandler
 				
 				if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() ))
 				{				
-					refGeneralManager.getSingelton().getLoggerManager().logMsg("status: do command: " + 
-						lastCommand.toString() );
+					refGeneralManager.getSingelton().getLoggerManager().logMsg("verbose: do command: " + 
+						lastCommand.toString(),
+						LoggerType.VERBOSE.getLevel() );
 					lastCommand.doCommand();
 				}
 			}
@@ -522,7 +527,9 @@ implements IXmlParserHandler
 	 * Cleanup called by Mananger after Handler is not used any more. 
 	 */
 	public void destroyHandler() {
-		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"destroyHandler() free memory!",
+				LoggerType.STATUS.getLevel() );
 	}
 	
 }

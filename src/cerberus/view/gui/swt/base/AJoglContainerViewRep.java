@@ -47,6 +47,8 @@ implements IView, ISwtJoglContainerViewRep
 	 */
 	protected GLCanvas refGLCanvas;
 	
+	protected GLEventListener refGLEventListener;
+	
 	/**
 	 * Animaotr for this canvas.
 	 */
@@ -159,6 +161,10 @@ implements IView, ISwtJoglContainerViewRep
 	 */
 	public final GLCanvas getGLCanvas() {
 		return refGLCanvas;
+	}
+	
+	public final GLEventListener getGLEventListener() {
+		return refGLEventListener;
 	}
 
 }

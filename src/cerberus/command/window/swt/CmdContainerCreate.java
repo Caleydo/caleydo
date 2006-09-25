@@ -5,14 +5,14 @@ package cerberus.command.window.swt;
 //import org.eclipse.swt.widgets.Composite;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelParent;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 public class CmdContainerCreate
-extends ACmdCreate_IdTargetLabelParent
+extends ACmdCreate_IdTargetLabelParentAttr
 implements ICommand 
 {
 	protected String sLayoutAttributes;

@@ -147,7 +147,7 @@ public class SingeltonManager implements ISingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getViewManager()
 	 */
-	public IViewGLCanvasManager getViewManager() {
+	public IViewGLCanvasManager getViewGLCanvasManager() {
 		return refViewManager;
 	}
 	
@@ -234,7 +234,7 @@ public class SingeltonManager implements ISingelton {
 		refViewCanvasManager = setViewCanvasManager;
 	}
 	
-	public void setViewManager( IViewGLCanvasManager setViewManager ) {
+	public void setViewGLCanvasManager( IViewGLCanvasManager setViewManager ) {
 		assert setViewManager != null : "IViewManager was null";
 		
 		refViewManager = setViewManager;

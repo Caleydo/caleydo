@@ -1,7 +1,7 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreateGui;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -16,7 +16,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CmdViewCreateHeatmap 
-extends ACmdCreateGui 
+extends ACmdCreate_IdTargetLabelParentAttr 
 implements ICommand 
 {
 	/**
@@ -68,5 +68,11 @@ implements ICommand
 //		gearsView.retrieveGUIContainer();
 //		gearsView.initView();
 //		gearsView.drawView();
+	}
+
+	public void undoCommand() throws CerberusRuntimeException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

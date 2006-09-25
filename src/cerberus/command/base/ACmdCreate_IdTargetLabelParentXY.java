@@ -5,7 +5,9 @@ package cerberus.command.base;
 
 import java.util.StringTokenizer;
 
+
 import cerberus.command.ICommand;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
 //import cerberus.util.exception.CerberusRuntimeException;
@@ -18,7 +20,7 @@ import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
  *
  */
 public abstract class ACmdCreate_IdTargetLabelParentXY 
-extends ACmdCreate_IdTargetLabelParent 
+extends ACmdCreate_IdTargetLabelParentAttr 
 implements ICommand
 {
 

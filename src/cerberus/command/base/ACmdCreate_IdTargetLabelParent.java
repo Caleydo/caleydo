@@ -21,7 +21,7 @@ public abstract class ACmdCreate_IdTargetLabelParent
 
 	protected int iParentContainerId;
 		
-	protected String sAttribute2;
+	//protected String sAttribute2;
 	
 	/**
 	 * @param refGeneralManager
@@ -45,14 +45,8 @@ public abstract class ACmdCreate_IdTargetLabelParent
 	 */
 	protected final void setAttributesBaseParent( final IParameterHandler refParameterHandler ) {
 		
-		String sAttributeValue1 = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
-		
-		sAttribute2 = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
-		
-		iParentContainerId = 
-			StringConversionTool.convertStringToInt( sAttributeValue1, -1 );
+		iParentContainerId = refParameterHandler.getValueInt(
+				CommandQueueSaxType.TAG_PARENT.getXmlKey() );
 	}
 
 }

@@ -48,6 +48,9 @@ public interface ISwtJoglContainerViewRep
 	public abstract void removeGLEventListener(
 			final GLEventListener setGLEventListener);
 
+	public GLEventListener getGLEventListener();
+
+	
 	public abstract boolean setGLCanvas(final GLCanvas setGLCanvas);
 
 	public abstract GLCanvas getGLCanvas();

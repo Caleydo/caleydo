@@ -1,7 +1,7 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreateGui;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -17,7 +17,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CmdViewCreateMixer 
-extends ACmdCreateGui 
+extends ACmdCreate_IdTargetLabelParentAttr 
 implements ICommand
 {
 	/**
@@ -58,5 +58,11 @@ implements ICommand
 		mixerView.retrieveGUIContainer();
 		mixerView.initView();
 		mixerView.drawView();
+	}
+
+	public void undoCommand() throws CerberusRuntimeException
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

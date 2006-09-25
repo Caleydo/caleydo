@@ -1,6 +1,7 @@
 package cerberus.view.gui.swt.jogl.sample;
 
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.swt.base.AJoglViewRep;
@@ -12,7 +13,6 @@ public class TestTriangleViewRep
 extends AJoglViewRep 
 implements IView
 {
-	protected GLCanvas refGLCanvas;
 	
 	public TestTriangleViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
@@ -23,7 +23,10 @@ implements IView
 	public void initView()
 	{
 		TriangleMain renderer = new TriangleMain();		
-		super.setGLEventListener( renderer );
+		
+		refGLEventListener = renderer;
+		
+		super.setGLEventListener( refGLEventListener );
 	}
 	
 }

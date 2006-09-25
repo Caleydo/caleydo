@@ -6,7 +6,10 @@ package cerberus.command.view.opengl;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetParentGLObject;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewGLCanvasManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -39,7 +42,22 @@ extends ACmdCreate_IdTargetParentGLObject
 	 */
 	public void doCommand() throws CerberusRuntimeException
 	{
-		// TODO Auto-generated method stub
+		IViewGLCanvasManager glCanvasManager = 
+			refGeneralManager.getSingelton().getViewGLCanvasManager();
+		
+		TestTriangleViewRep view =
+			(TestTriangleViewRep) glCanvasManager.createView( ManagerObjectType.VIEW_SWT_JOGL_TEST_TRIANGLE,
+				iUniqueTargetId,
+				iParentContainerId,
+				sLabel );
+		
+		glCanvasManager.registerGLEventListener( 
+				view.getGLEventListener(), 
+				iUniqueTargetId );
+		glCanvasManager.addGLEventListener2GLCanvasById( 
+				iUniqueTargetId,
+				iParentContainerId );
+		
 
 	}
 
