@@ -3,6 +3,7 @@
  */
 package cerberus.view.gui.opengl;
 
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 
 import cerberus.data.AUniqueManagedObject;
@@ -19,7 +20,7 @@ extends AUniqueManagedObject
 implements IGLCanvasUser
 {
 
-	protected GLCanvas refCanvas;
+	protected GLAutoDrawable refCanvas;
 	
 	protected IGLCanvasDirector refParentView;
 	
@@ -47,21 +48,21 @@ implements IGLCanvasUser
 	/* (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#render(javax.media.opengl.GLCanvas)
 	 */
-	public void render( GLCanvas canvas ) {
+	public void render( GLAutoDrawable canvas ) {
 		this.refCanvas = canvas;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#update(javax.media.opengl.GLCanvas)
 	 */
-	public void update( GLCanvas canvas ) {
+	public void update( GLAutoDrawable canvas ) {
 		this.refCanvas = canvas;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvas()
 	 */
-	public final GLCanvas getGLCanvas() {
+	public final GLAutoDrawable getGLCanvas() {
 		return refCanvas;
 	}
 	

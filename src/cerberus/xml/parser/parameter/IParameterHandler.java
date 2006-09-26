@@ -1,7 +1,7 @@
 package cerberus.xml.parser.parameter;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+import gleem.linalg.Vec4f;
 
 import java.util.Vector;
 
@@ -40,7 +40,7 @@ public interface IParameterHandler
 	
 	public Vec3f getValueVec3f( final String key );
 
-	public Rotf getValueRotf( final String key );
+	public Vec4f getValueVec4f( final String key );
 
 	public abstract void setValue(final String key, final String value);
 

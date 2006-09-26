@@ -46,6 +46,8 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1"),
 	
 	CREATE_GL_TRIANGLE_TEST("cmd","type","-1"),
+	CREATE_GL_HEATMAP("cmd","type","-1"),
+	CREATE_GL_SCATTERPLOT2D("cmd","type","-1"),
 	
 	CREATE_SWT_WINDOW("cmd", "type","-1"),
 	CREATE_SWT_CONTAINER("cmd", "type","-1"),
@@ -63,7 +65,8 @@ public enum CommandQueueSaxType
 	TAG_MEMENTO_ID("cmd","mementoId","-1"),
 	TAG_TYPE("cmd","type","NO_OPERATION"),
 	TAG_ATTRIBUTE1("cmd","attrib1",""),	
-	TAG_ATTRIBUTE2("cmd","attrib2",""),	
+	TAG_ATTRIBUTE2("cmd","attrib2",""),
+	TAG_ATTRIBUTE3("cmd","attrib3",""),	
 	TAG_DETAIL("cmd","detail",""),
 	TAG_PARENT("cmd","parent","-1"),
 	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),

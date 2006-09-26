@@ -4,7 +4,7 @@
 package cerberus.command.base;
 
 import gleem.linalg.Vec3f;
-import gleem.linalg.Rotf;
+import gleem.linalg.Vec4f;
 
 import cerberus.command.ICommand;
 import cerberus.manager.IGeneralManager;
@@ -25,9 +25,11 @@ implements ICommand
 
 	protected Vec3f vec3fOrigin;
 	
-	protected Rotf  rotOrentation;
+	protected Vec4f vec4fRotation;
 	
 	protected String sDetail;
+	
+	protected String sAttribute3;
 	
 	/**
 	 * @param refGeneralManager
@@ -59,6 +61,9 @@ implements ICommand
 		String sAttribute2 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
 		
+		sAttribute3 = refParameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() );
+		
 		sDetail = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 		
@@ -74,6 +79,13 @@ implements ICommand
 				sAttribute2, 
 				ParameterHandlerType.VEC4F,
 				CommandQueueSaxType.TAG_POS_GL_ROTATION.getDefault() );
+		
+		
+		vec3fOrigin = refParameterHandler.getValueVec3f( 
+				CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey() );
+		
+		vec4fRotation = refParameterHandler.getValueVec4f( 
+				CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey() );
 		
 		return refParameterHandler;
 	}

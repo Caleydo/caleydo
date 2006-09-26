@@ -12,6 +12,7 @@ import javax.media.opengl.GLEventListener;
 
 import com.sun.opengl.util.Animator;
 
+import cerberus.view.gui.opengl.IGLCanvasDirector;
 
 /**
  * Gears.java <BR>
@@ -23,6 +24,8 @@ import com.sun.opengl.util.Animator;
 public class TriangleMain implements GLEventListener, IJoglMouseListener
 {
 
+	private final IGLCanvasDirector refGLCanvasDirector;
+	
 	private GearsMouse refMouseHandler;
 
 	private float view_rotx = 00.0f, view_roty = 00.0f, view_rotz = 0.0f;
@@ -40,8 +43,16 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 
 	public TriangleMain()
 	{
-
 		refMouseHandler = new GearsMouse(this);
+		
+		this.refGLCanvasDirector = null;
+	}
+	
+	public TriangleMain( IGLCanvasDirector refGLCanvasDirector)
+	{
+		refMouseHandler = new GearsMouse(this);
+		
+		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
 
 	public void runMain()
@@ -106,7 +117,7 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 
 		GL gl = drawable.getGL();
 
-		System.err.println("INIT GL IS: " + gl.getClass().getName());
+		System.err.println("INIT GL IS: " + gl.getClass().getName() + "   TrinagleMain!");
 
 		//gl.resizeGLScene();                      // Initialize the GL viewport
 
@@ -130,6 +141,8 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height)
 	{
+		System.err.println("RESHAPE GL    TrinagleMain!");
+		
 		GL gl = drawable.getGL();
 
 		float h = (float) height / (float) width;
@@ -149,6 +162,8 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 	public void display(GLAutoDrawable drawable)
 	{
 
+		//System.err.println("DISPLAY GL    TrinagleMain!");
+		
 		GL gl = drawable.getGL();
 		if ((drawable instanceof GLJPanel)
 				&& !((GLJPanel) drawable).isOpaque()
@@ -191,6 +206,10 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 		gl.glEnd(); // Done drawing the quad
 
 		gl.glPopMatrix();
+		
+		if ( refGLCanvasDirector != null ) {
+			refGLCanvasDirector.renderGLCanvasUser( drawable );
+		}
 	}
 
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,

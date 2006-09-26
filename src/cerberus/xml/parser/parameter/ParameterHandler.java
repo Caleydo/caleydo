@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 import org.xml.sax.Attributes;
 
 import gleem.linalg.Vec3f;
-import gleem.linalg.Rotf;
+import gleem.linalg.Vec4f;
 
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -88,7 +88,7 @@ implements IParameterHandler
 				return getValueString(key);
 			
 			default:
-				throw new CerberusRuntimeException("ParameterHandler.getValue("+ key + ") uses unregisterd enumeration!");
+				throw new CerberusRuntimeException("ParameterHandler.getValue("+ key + ") uses unregistered enumeration!");
 		}
 	}
 	
@@ -130,12 +130,12 @@ implements IParameterHandler
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(java.lang.String)
 	 */
-	public Rotf getValueRotf( final String key ) {
+	public Vec4f getValueVec4f( final String key ) {
 		try {
-			return new Rotf( 
-					new Vec3f( hashKey2Float.getValue(key+"_GLROT0"),
-							hashKey2Float.getValue(key+"_GLROT1"),
-							hashKey2Float.getValue(key+"_GLROT2")),
+			return new Vec4f( 
+					hashKey2Float.getValue(key+"_GLROT0"),
+					hashKey2Float.getValue(key+"_GLROT1"),
+					hashKey2Float.getValue(key+"_GLROT2"),
 					hashKey2Float.getValue(key+"_GLROT3") );
 		}
 		catch ( NullPointerException npe) 
@@ -176,7 +176,7 @@ implements IParameterHandler
 			hashPrimarySwitch.get( key );
 		
 		if ( currentType== null ) {
-			throw new CerberusRuntimeException("ParameterHandler.setValue("+ key + " , * ) key was not registerd as type!");			
+			throw new CerberusRuntimeException("ParameterHandler.setValue("+ key + " , * ) key was not registered as type!");			
 		}
 		
 		try 
@@ -192,7 +192,7 @@ implements IParameterHandler
 					hashKey2String.setValue(key, value );break;
 				
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValue("+ key + ",*) uses unregisterd enumeration!");
+					throw new CerberusRuntimeException("ParameterHandler.setValue("+ key + ",*) uses unregistered enumeration!");
 			}
 			
 		} 
@@ -224,7 +224,7 @@ implements IParameterHandler
 					hashKey2String.setValue(key, value );break;
 				
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregisterd enumeration!");
+					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
@@ -360,7 +360,7 @@ implements IParameterHandler
 					break;
 					
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregisterd enumeration!");
+					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
@@ -393,7 +393,7 @@ implements IParameterHandler
 					hashKey2String.setDefaultValue(key, value );break;
 				
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregisterd enumeration!");
+					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 

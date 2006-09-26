@@ -75,6 +75,5 @@ implements IView
 		
 	    final Animator animator = new Animator(refGLCanvas);
 	    animator.start();
-		
 	}
 }

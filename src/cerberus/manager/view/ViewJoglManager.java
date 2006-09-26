@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
+
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewManager;
@@ -17,6 +18,11 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
+import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
+import cerberus.view.gui.opengl.canvas.GLCanvasScatterPlot2D;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
@@ -29,6 +35,8 @@ import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.slider.SliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
+import cerberus.xml.parser.command.CommandQueueSaxType;
+
 
 public class ViewJoglManager 
 extends AAbstractManager
@@ -46,6 +54,15 @@ implements IViewManager, IViewGLCanvasManager
 	protected Hashtable<Integer, IView> hashViewId2View;
 	
 	protected Hashtable <Integer,GLCanvas> hashGLCanvas;
+	
+	protected Hashtable <Integer,IGLCanvasUser> hashGLCanvasUser;
+	
+	protected Hashtable <IGLCanvasUser,Integer> hashGLCanvasUser_revert;
+
+	protected Hashtable <Integer,IGLCanvasDirector> hashGLCanvasDirector;
+	
+	protected Hashtable <IGLCanvasDirector,Integer> hashGLCanvasDirector_revert;
+
 	
 	/** speed up removal of GLCanvastbon2!WS objects. */
 	protected Hashtable <GLCanvas,Integer> hashGLCanvas_revert;
@@ -75,6 +92,11 @@ implements IViewManager, IViewGLCanvasManager
 		hashGLCanvasId_2_vecGLEventListener = 
 			new Hashtable <Integer, Vector<GLEventListener> > ();
 		
+		hashGLCanvasUser = new Hashtable <Integer,IGLCanvasUser> ();
+		hashGLCanvasUser_revert = new Hashtable <IGLCanvasUser,Integer> ();
+		
+		hashGLCanvasDirector = new Hashtable <Integer,IGLCanvasDirector> ();
+		hashGLCanvasDirector_revert = new Hashtable <IGLCanvasDirector,Integer> ();
 		
 		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
@@ -216,6 +238,36 @@ implements IViewManager, IViewGLCanvasManager
 							+ useViewType.toString() + "]");
 		}
 	}
+	
+	public IGLCanvasUser createGLCanvasUser(CommandQueueSaxType useViewType, int iViewId,
+			int iParentContainerId, String sLabel) {
+		
+		switch (useViewType)
+		{
+		case CREATE_GL_TRIANGLE_TEST:
+			return new GLCanvasTestTriangle(
+					refGeneralManager, 
+					iViewId, 
+					iParentContainerId, 
+					sLabel);
+		case CREATE_GL_HEATMAP:
+			return new GLCanvasHeatmap(
+					refGeneralManager, 
+					iViewId, 
+					iParentContainerId, 
+					sLabel);
+		case CREATE_GL_SCATTERPLOT2D:
+			return new GLCanvasScatterPlot2D(
+					refGeneralManager, 
+					iViewId, 
+					iParentContainerId, 
+					sLabel);
+		default:
+			throw new CerberusRuntimeException(
+					"StorageManagerSimple.createGLCanvasUser() failed due to unhandled type ["
+							+ useViewType.toString() + "]");
+		}
+	}
 
 	public GLCanvas getGLCanvas( final int iId)
 	{
@@ -227,13 +279,13 @@ implements IViewManager, IViewGLCanvasManager
 		if ( hashGLCanvas.containsKey( iCanvasId ) ) 
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLCanvas() id " +
-					iCanvasId + " is already registerd!");
+					iCanvasId + " is already registered!");
 			return false;
 		}
 		if ( hashGLCanvas.containsValue( canvas ) ) 
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLCanvas() canvas bound to id " +
-					iCanvasId + " is already registerd!");
+					iCanvasId + " is already registered!");
 			return false;
 		}
 		
@@ -259,7 +311,7 @@ implements IViewManager, IViewGLCanvasManager
 			
 			synchronized( getClass() ) 
 			{
-				/* get all GLEventListeners registerd to this GLCanvas... */
+				/* get all GLEventListeners registered to this GLCanvas... */
 				Vector <GLEventListener> vecListOfRemoveableGLEventListeners =  
 					hashGLCanvasId_2_vecGLEventListener.get( iCanvasId );
 				
@@ -284,6 +336,53 @@ implements IViewManager, IViewGLCanvasManager
 
 		return false;
 	}
+	
+	
+	public boolean registerGLCanvasUser( final IGLCanvasUser canvas, 
+			final int iCanvasId )
+	{
+		if ( hashGLCanvasUser.containsKey( iCanvasId ) ) 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLCanvasUser() id " +
+					iCanvasId + " is already registered!");
+			return false;
+		}
+		if ( hashGLCanvasUser.containsValue( canvas ) ) 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLCanvasUser() canvas bound to id " +
+					iCanvasId + " is already registered!");
+			return false;
+		}
+		
+		hashGLCanvasUser.put( iCanvasId, canvas );
+		hashGLCanvasUser_revert.put( canvas, iCanvasId );
+		
+		synchronized( getClass() ) {
+			hashGLCanvasId_2_vecGLEventListener.put( iCanvasId, new Vector <GLEventListener> () );
+		}
+		
+		return true;
+	}
+
+	
+	public boolean unregisterGLCanvasUser( final IGLCanvasUser canvas)
+	{
+		if ( hashGLCanvas_revert.containsKey( canvas ) ) 
+		{
+			
+			int iCanvasId = hashGLCanvas_revert.get( canvas );
+			
+			hashGLCanvas.remove( iCanvasId );
+			hashGLCanvas_revert.remove( canvas );
+			
+			return true;
+		}
+			
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			"unregisterGLCanvasUser() canvas object was not found inside ViewJogleManager!");
+
+		return false;
+	}
 
 	public GLEventListener getGLEventListener( final int iId)
 	{
@@ -298,13 +397,13 @@ implements IViewManager, IViewGLCanvasManager
 		if ( hashGLEventListener.containsKey( iId ) ) 
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLEventListener() id " +
-					iId + " is already registerd!");
+					iId + " is already registered!");
 			return false;
 		}
 		if ( hashGLEventListener.containsValue( canvasListener ) ) 
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLEventListener() canvas bound to id " +
-					iId + " is already registerd!");
+					iId + " is already registered!");
 			return false;
 		}
 		
@@ -376,6 +475,50 @@ implements IViewManager, IViewGLCanvasManager
 		}
 		
 		canvas.removeGLEventListener( listener );
+		
+		return true;
+	}
+
+	public IGLCanvasDirector getGLCanvasDirector(int iId)
+	{		
+		return this.hashGLCanvasDirector.get( iId );
+	}
+
+	public boolean registerGLCanvasDirector( final IGLCanvasDirector director, 
+			final int iId )
+	{
+		if ( hashGLCanvasDirector.containsKey( iId ) ) 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLCanvasDirector() id " +
+					iId + " is already registered!");
+			return false;
+		}
+		if ( hashGLCanvasDirector.containsValue( director ) ) 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg("registerGLCanvasDirector() director bound to id " +
+					iId + " is already registered!");
+			return false;
+		}
+		
+		hashGLCanvasDirector.put( iId, director );
+		
+		return true;
+		
+	}
+
+	public boolean unregisterGLCanvasDirector(IGLCanvasDirector director)
+	{
+		if ( ! hashGLCanvasDirector_revert.containsKey( director ) ) {
+			refGeneralManager.getSingelton().getLoggerManager().logMsg("unregisterGLEventListener() because GLEventListern is unkown!");
+			return false;
+		}
+		
+		int icanvasDirectorId = hashGLCanvasDirector_revert.get( director );
+		
+		hashGLCanvasDirector.remove( icanvasDirectorId );
+		hashGLCanvasDirector_revert.remove( director );
+		
+		//TODO: check details..
 		
 		return true;
 	}

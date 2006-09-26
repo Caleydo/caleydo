@@ -45,7 +45,7 @@ implements IXmlParserManager, IManagedObject
 	protected LinkedList <IXmlParserHandler> llXmlParserStack;
 	
 	/**
-	 * Hashtable of handlers and registerd XMl Tags bound to them.
+	 * Hashtable of handlers and registered XMl Tags bound to them.
 	 */
 	protected Hashtable <String,IXmlParserHandler> hashTag2XmlParser;
 	

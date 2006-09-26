@@ -4,23 +4,22 @@
 package cerberus.command.view.opengl;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetParentGLObject;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewGLCanvasManager;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
+import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
+import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.xml.parser.parameter.IParameterHandler;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
  * @author java
  *
  */
 public class CmdGlObjectTriangleTest 
-extends ACmdCreate_IdTargetParentGLObject
+extends ACmdCreate_GlCanvasUser
 		implements ICommand
 {
-
+	
 	protected String color;
 	
 	/**
@@ -35,39 +34,26 @@ extends ACmdCreate_IdTargetParentGLObject
 		refParameterHandler.setValueAndType( "OpenGLTriangleTest_color",
 				sDetail,
 				IParameterHandler.ParameterHandlerType.STRING);
+		
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_TRIANGLE_TEST;
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#doCommand()
-	 */
-	public void doCommand() throws CerberusRuntimeException
-	{
-		IViewGLCanvasManager glCanvasManager = 
-			refGeneralManager.getSingelton().getViewGLCanvasManager();
-		
-		TestTriangleViewRep view =
-			(TestTriangleViewRep) glCanvasManager.createView( ManagerObjectType.VIEW_SWT_JOGL_TEST_TRIANGLE,
-				iUniqueTargetId,
-				iParentContainerId,
-				sLabel );
-		
-		glCanvasManager.registerGLEventListener( 
-				view.getGLEventListener(), 
-				iUniqueTargetId );
-		glCanvasManager.addGLEventListener2GLCanvasById( 
-				iUniqueTargetId,
-				iParentContainerId );
-		
 
+	@Override
+	public void doCommandPart() throws CerberusRuntimeException
+	{
+
+		GLCanvasTestTriangle canvas = 
+			(GLCanvasTestTriangle) openGLCanvasUser;
+				
+		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
+		
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
-	 */
-	public void undoCommand() throws CerberusRuntimeException
+	@Override
+	public void undoCommandPart() throws CerberusRuntimeException
 	{
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }

@@ -23,6 +23,8 @@ import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventRelationCreate;
 
 
+import cerberus.command.view.opengl.CmdGlObjectHeatmap;
+import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
@@ -341,6 +343,24 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectTriangleTest(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_HEATMAP:
+		{
+			createdCommand =
+				new CmdGlObjectHeatmap(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_SCATTERPLOT2D:
+		{
+			createdCommand =
+				new CmdGlObjectScatterPlot2D(
 						refGeneralManager,
 						phAttributes );			
 			break;

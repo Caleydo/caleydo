@@ -7,7 +7,9 @@ import java.util.Vector;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -30,6 +32,8 @@ implements IView, IGLCanvasDirector
 	
 	protected int iGLCanvasId;
 	
+	protected GLEventListener refGLEventListener;
+	
 	protected Vector <IGLCanvasUser> vecGLCanvasUser;
 	
 	public SwtJoglGLCanvasViewRep(IGeneralManager refGeneralManager, 
@@ -42,6 +46,9 @@ implements IView, IGLCanvasDirector
 		vecGLCanvasUser = new Vector <IGLCanvasUser> ();
 		
 		abEnableRendering = new AtomicBoolean( true );
+		
+		refGeneralManager.getSingelton().getViewGLCanvasManager(
+				).registerGLCanvasDirector( this, iViewId );
 	}
 	
 	/**
@@ -60,17 +67,20 @@ implements IView, IGLCanvasDirector
 	 */
 	public void initView()
 	{
-		TriangleMain renderer = new TriangleMain();
+		TriangleMain renderer = new TriangleMain( this );
+		
+		refGLEventListener = renderer;
 		
 		IViewGLCanvasManager canvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
 
 		canvasManager.registerGLCanvas( refGLCanvas, iGLCanvasId );
+		canvasManager.registerGLCanvasDirector( this, iGLCanvasId);
 		
-		canvasManager.registerGLEventListener( renderer, iGLEventListernerId );
+		canvasManager.registerGLEventListener( refGLEventListener, iGLEventListernerId );
 		canvasManager.addGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
 		
-		super.setGLEventListener( renderer );
+		super.setGLEventListener( refGLEventListener );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
@@ -89,7 +99,8 @@ implements IView, IGLCanvasDirector
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
-				getId() + "] added GLCanvas user =" +
+				getId() + "] added GLCanvas user=[" +
+				user.getId() + "] " + 
 				user.toString() ,
 				LoggerType.STATUS.getLevel() );
 	}
@@ -134,19 +145,38 @@ implements IView, IGLCanvasDirector
 		return this.refGLCanvas;
 	}
 
-	public void render() {
+	public void renderGLCanvasUser(GLAutoDrawable drawable) {
 		if ( abEnableRendering.get() ) 
 		{
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-			iter.next().render( refGLCanvas );
+			
+			while ( iter.hasNext() ) {
+				iter.next().render( drawable );
+			}
 		}
 	}
 	
-	public void update() {
+	public void updateGLCanvasUser(GLAutoDrawable drawable) {
 		if ( abEnableRendering.get() ) 
 		{
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-			iter.next().update( refGLCanvas );
+			
+			while ( iter.hasNext() ) {
+				iter.next().update( drawable );
+			}
 		}
+	}
+	
+	public void destroyDirector() {
+		
+		super.removeGLEventListener( refGLEventListener );
+		
+		IViewGLCanvasManager canvasManager = 
+			refGeneralManager.getSingelton().getViewGLCanvasManager();
+		
+		canvasManager.unregisterGLCanvasDirector( this );
+		canvasManager.unregisterGLCanvas( refGLCanvas );		
+		canvasManager.unregisterGLEventListener( refGLEventListener );
+		canvasManager.removeGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
 	}
 }

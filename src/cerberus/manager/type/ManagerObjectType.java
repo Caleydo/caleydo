@@ -78,7 +78,14 @@ public enum ManagerObjectType {
 	
 	VIEW_HISTOGRAM(ManagerType.VIEW),
 	
-	// VIEW_OPNEGL_CANVAS(ManagerType.VIEW),
+	// VIEW_OPENGL_CANVAS(ManagerType.VIEW),
+	
+//	VIEW_OPENGL_TEST_TRIANGLE(ManagerType.VIEW),
+//	
+//	VIEW_OPENGL_HEATMAP(ManagerType.VIEW),
+//	
+//	VIEW_OPENGL_SCATTERPLOT2D(ManagerType.VIEW),
+	
 	
 	VIEW_SWT_HEATMAP2D(ManagerType.VIEW),
 	
@@ -92,7 +99,7 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_PATHWAY(ManagerType.VIEW),
 	
-	VIEW_SWT_JOGL_TEST_TRIANGLE(ManagerType.VIEW),
+	VIEW_SWT_JOGL_TEST_TRIANGLE(ManagerType.VIEW),	
 	
 	VIEW_SWT_JOGL_MULTI_GLCANVAS(ManagerType.VIEW),
 	
@@ -129,7 +136,7 @@ public enum ManagerObjectType {
 	VIEW_JOGL_CANVAS_MULTIPLE(ManagerType.VIEW),
 	
 	VIEW_JOGL_HISTOGRAM(ManagerType.VIEW),
-	
+
 	VIEW_NEW_FRAME(ManagerType.VIEW),
 	
 	/** Creates a new internal frame */

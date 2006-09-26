@@ -488,7 +488,7 @@ public class CanvasSwingJoglManager
 			
 		} else {
 			throw new RuntimeException("Try to unregister an internal frame [" +
-					iUniqueFrameId + ", but parent frame has not registerd that internal frame");
+					iUniqueFrameId + ", but parent frame has not registered that internal frame");
 		}
 		
 		hash_IdInternalFrame_2_IdParentFrame.remove( iUniqueFrameId );

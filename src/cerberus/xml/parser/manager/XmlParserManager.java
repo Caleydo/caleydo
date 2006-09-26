@@ -20,7 +20,7 @@ import cerberus.xml.parser.manager.AXmlParserManager;
 
 /**
  * Administer several XML-SaxHandelers.
- * Switches between several XML-SaxHandeler automatical, based by a registerd tag.
+ * Switches between several XML-SaxHandeler automatical, based by a registered tag.
  * 
  * @see cerberus.xml.parser.handler.IXmlParserHandler
  * 

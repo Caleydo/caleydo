@@ -66,7 +66,7 @@ implements GLEventListener,GLEventObserverListener, GLEventForwardListener
 	/**
 	 * Unregisters a source.
 	 * 
-	 * @param refSource source to be unregisterd
+	 * @param refSource source to be unregistered
 	 * @return TRUE if source was in list and removed, FALSE is source was not in list
 	 */
 	public synchronized boolean unregisterSource( final GLEventListenerTarget refSource ) {

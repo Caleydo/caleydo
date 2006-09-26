@@ -145,7 +145,7 @@ public interface IGeneralManager {
 	 * @param iItemId unique Id
 	 * @param type defines type, can also be null if type is not known
 	 * 
-	 * @return TRUE if item was unregisterd by this manager
+	 * @return TRUE if item was unregistered by this manager
 	 */
 	public boolean registerItem( final Object registerItem, final int iItemId , final ManagerObjectType type );
 	
@@ -156,7 +156,7 @@ public interface IGeneralManager {
 	 * @param iItemId unique Id
 	 * @param type defines type, can also be null if type is not known
 	 * 
-	 * @return TRUE if item was unregisterd by this manager
+	 * @return TRUE if item was unregistered by this manager
 	 */
 	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  );
 	

@@ -13,6 +13,8 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
@@ -25,7 +27,15 @@ import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.slider.SliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
+/**
+ * 
+ * @deprecated use  ViewJoglManager
+ * 
+ * @author kalkusch
+ *
+ */
 public class ViewManager 
 extends AAbstractManager
 implements IViewManager, IViewGLCanvasManager
@@ -208,5 +218,47 @@ implements IViewManager, IViewGLCanvasManager
 	{
 		assert false : "not implemented!";
 		return false;
+	}
+
+	public boolean registerGLCanvasUser(IGLCanvasUser canvas, int iCanvasId)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public boolean unregisterGLCanvasUser(IGLCanvasUser canvas)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public IGLCanvasDirector getGLCanvasDirector(int iId)
+	{
+		assert false : "not implemented!";
+		return null;
+	}
+
+	public boolean registerGLCanvasDirector(IGLCanvasDirector director)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public boolean unregisterGLCanvasDirector(IGLCanvasDirector director)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public boolean registerGLCanvasDirector(IGLCanvasDirector director, int iId)
+	{
+		assert false : "not implemented!";
+		return false;
+	}
+
+	public IGLCanvasUser createGLCanvasUser(CommandQueueSaxType useViewType, int iViewId, int iParentContainerId, String sLabel)
+	{
+		assert false : "not implemented!";
+		return null;
 	}
 }
