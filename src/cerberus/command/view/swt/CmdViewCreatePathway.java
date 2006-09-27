@@ -1,7 +1,7 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -17,7 +17,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CmdViewCreatePathway 
-extends ACmdCreate_IdTargetLabelParentAttr 
+extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand
 {
 	/**
