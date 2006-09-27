@@ -47,6 +47,7 @@ public enum CommandQueueSaxType
 	
 	CREATE_GL_TRIANGLE_TEST("cmd","type","-1"),
 	CREATE_GL_HEATMAP("cmd","type","-1"),
+	CREATE_GL_HISTOGRAM2D("cmd","type","-1"),
 	CREATE_GL_SCATTERPLOT2D("cmd","type","-1"),
 	
 	CREATE_SWT_WINDOW("cmd", "type","-1"),

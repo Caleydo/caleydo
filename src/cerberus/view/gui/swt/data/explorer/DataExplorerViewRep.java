@@ -211,7 +211,7 @@ public class DataExplorerViewRep extends AViewRep implements IView
 								{
 									refGeneralManager.getSingelton().getLoggerManager().logMsg(
 										"Error in DataExplorerViewRep currentStorage==null!",
-										LoggerType.STATUS.getLevel() );
+										LoggerType.STATUS );
 								}
 							}
 						}

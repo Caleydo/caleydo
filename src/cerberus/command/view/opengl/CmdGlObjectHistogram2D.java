@@ -12,7 +12,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
+import cerberus.view.gui.opengl.canvas.GLCanvasHistogram2D;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
@@ -20,7 +20,7 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
  * @author java
  *
  */
-public class CmdGlObjectHeatmap 
+public class CmdGlObjectHistogram2D 
 extends ACmdCreate_GlCanvasUser
 		implements ICommand
 {
@@ -40,7 +40,7 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectHeatmap(IGeneralManager refGeneralManager,
+	public CmdGlObjectHistogram2D(IGeneralManager refGeneralManager,
 			IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
@@ -49,13 +49,10 @@ extends ACmdCreate_GlCanvasUser
 		
 		setAttributesHeatmapWidthHeight( refParameterHandler );
 		
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_HEATMAP;
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_HISTOGRAM2D;
 	}
 
 	private final void setAttributesHeatmapWidthHeight( IParameterHandler refParameterHandler ) {
-		
-		//super.setAttributesBaseParent( refParameterHandler );
-		
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute3,
@@ -69,7 +66,7 @@ extends ACmdCreate_GlCanvasUser
 		}
 		
 		if ( i != 3 ) {
-			String logMessage = "CmdGlObjectHeatmap.setAttributesHeatmapWidthHeight() failed! 3 values are excpected, but only " +
+			String logMessage = "CmdGlObjectHistogram2D.setAttributesHeatmapWidthHeight() failed! 3 values are excpected, but only " +
 			i + " are present";
 			
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
@@ -89,20 +86,23 @@ extends ACmdCreate_GlCanvasUser
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException
 	{
-
-		GLCanvasHeatmap canvas = 
-			(GLCanvasHeatmap) openGLCanvasUser;
+		GLCanvasHistogram2D canvas = 
+			(GLCanvasHistogram2D) openGLCanvasUser;
 				
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
 		canvas.setResolution( iResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
-		
+		canvas.setHistogramLength( 200 );
 	}
 
 	@Override
 	public void undoCommandPart() throws CerberusRuntimeException
 	{
+		GLCanvasHistogram2D canvas = 
+			(GLCanvasHistogram2D) openGLCanvasUser;
 		
+		canvas.destroy();
+		canvas = null;
 	}
 	
 	

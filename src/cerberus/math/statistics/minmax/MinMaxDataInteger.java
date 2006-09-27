@@ -4,6 +4,7 @@
 package cerberus.math.statistics.minmax;
 
 import cerberus.data.collection.ISelection;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.data.collection.set.SetMultiDim;
@@ -24,7 +25,9 @@ public final class MinMaxDataInteger {
 	
 	protected boolean bIsValid = false;
 	
-	protected SetMultiDim refSet = null;
+	// protected SetMultiDim refSet = null;
+	
+	protected ISet refSet = null;
 	
 	/**
 	 * 
@@ -207,7 +210,7 @@ public final class MinMaxDataInteger {
 	 * 
 	 * @param useSet ISet to calcualte min max and mean value from.
 	 */
-	public void useSet( SetMultiDim useSet ) {
+	public void useSet( ISet useSet ) {
 		refSet = useSet;		
 		//allocateMinMax( useSet.getDimensions() );		
 		bIsValid = updateData();	

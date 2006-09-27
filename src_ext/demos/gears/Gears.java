@@ -77,7 +77,7 @@ public class Gears implements GLEventListener, MouseListener, MouseMotionListene
 
     GL gl = drawable.getGL();
 
-    System.err.println("INIT GL IS: " + gl.getClass().getName());
+    System.out.println("Greas.java INIT GL IS: " + gl.getClass().getName());
 
     gl.setSwapInterval(1);
 

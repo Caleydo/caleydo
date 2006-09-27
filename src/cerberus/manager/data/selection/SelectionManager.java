@@ -37,7 +37,7 @@ extends ICollectionManager
 implements ISelectionManager
 {
 	
-	private final short iLogLevel = LoggerType.VERBOSE.getLevel();
+	private final LoggerType logLevel = LoggerType.VERBOSE;
 	
 	private ISelection testSelection;
 	
@@ -76,7 +76,7 @@ implements ISelectionManager
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"SELECTION: testSelection created with Id =[" +
-				testSelection.getId() +"]", iLogLevel);
+				testSelection.getId() +"]", logLevel);
 		/**
 		 * END: Test ISelection...
 		 */

@@ -68,7 +68,7 @@ implements IStorageManager {
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( "STORAGE: testStorage created with Id =[" +
 				testStorage.getId() +"]",
-				LoggerType.VERBOSE.getLevel() );
+				LoggerType.VERBOSE );
 		/**
 		 * END: Test IStorage...
 		 */

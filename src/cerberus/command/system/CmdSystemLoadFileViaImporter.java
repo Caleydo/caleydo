@@ -14,6 +14,7 @@ import java.util.Iterator;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
+import cerberus.command.window.CmdWindowPopupInfo;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -22,6 +23,7 @@ import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
+import cerberus.data.collection.ISet;
 import cerberus.data.loader.MicroArrayLoader;
 
 
@@ -135,20 +137,64 @@ implements ICommand {
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])",
-				LoggerType.STATUS.getLevel() );
+				LoggerType.STATUS );
 		
-		MicroArrayLoader loader = new MicroArrayLoader( refGeneralManager );
+		ISet useSet = refGeneralManager.getSingelton().getSetManager(
+				).getItemSet( iTargetSetId );
 		
-		loader.setFileName( sFileName );
-		loader.setTokenPattern( sTokenPattern );
-		loader.setTargetSet( refGeneralManager.getSingelton().getSetManager().getItemSet( iTargetSetId ));
+		if ( useSet == null ) {
+			String errorMsg = "Could not load data via MicroArrayLoader, target Set is not valid! file=["+
+			sFileName + "] tokens:[" +
+			sTokenPattern + "]  targetSet(s)=[" +
+			iTargetSetId + "])";
+			
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					errorMsg,
+					LoggerType.ERROR_ONLY );
+			
+			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
+			exitWarning.setText("ERROR",errorMsg);
+			exitWarning.doCommand();
+			return;
+		}
 		
-		//boolean bSuccessOnLoad = 
-		loader.loadData();
+		MicroArrayLoader loader = null;
 		
-//		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
-//		exitWarning.setText("WARNING","Load data from file..");
-//		exitWarning.doCommand();
+		try 
+		{
+			loader = new MicroArrayLoader( refGeneralManager );
+			
+			loader.setFileName( sFileName );
+			loader.setTokenPattern( sTokenPattern );
+			loader.setTargetSet( useSet );
+			
+			loader.loadData();
+			
+			
+		} //try
+		catch ( Exception e ) 
+		{
+			String errorMsg = "Could not load data via MicroArrayLoader, error during loading! file=["+
+				sFileName + "] tokens:[" +
+				sTokenPattern + "]  targetSet(s)=[" +
+				iTargetSetId + "])";
+			
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					errorMsg,
+					LoggerType.ERROR_ONLY );
+			
+			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
+			exitWarning.setText("ERROR",errorMsg);
+			exitWarning.doCommand();
+		} // catch
+		finally 
+		{
+			if ( loader != null ) 
+			{
+				loader.destroy();
+				loader = null;
+			}
+		} // finally
 		
 		
 	}

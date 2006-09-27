@@ -330,7 +330,7 @@ implements IXmlParserHandler
 	public void initHandler()
 	{
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"KEGGSaxHandler: init", LoggerType.STATUS.getLevel() );
+				"KEGGSaxHandler: init", LoggerType.STATUS );
 	}
 
 	/**
@@ -339,7 +339,7 @@ implements IXmlParserHandler
 	public void destroyHandler()
 	{
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"KEGGSaxHandler: destroy!", LoggerType.STATUS.getLevel() );
+				"KEGGSaxHandler: destroy!", LoggerType.STATUS );
 	}
 	
 }

@@ -85,7 +85,7 @@ implements IView, IGLCanvasDirector
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
 				getId() + "] was created & initalized!",
-				LoggerType.STATUS.getLevel() );
+				LoggerType.STATUS );
 	}
 	
 	/* (non-Javadoc)
@@ -102,7 +102,7 @@ implements IView, IGLCanvasDirector
 				getId() + "] added GLCanvas user=[" +
 				user.getId() + "] " + 
 				user.toString() ,
-				LoggerType.STATUS.getLevel() );
+				LoggerType.STATUS );
 	}
 	
 	/* (non-Javadoc)

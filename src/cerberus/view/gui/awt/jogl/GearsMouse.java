@@ -105,7 +105,7 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
 	    view_roty += thetaY;
 	    
 	    
-	    System.out.println("dragging...");
+	    //System.out.println("dragging...");
 	    
 	    refGearsMain.setViewAngles( view_rotx, view_roty, view_rotz );	
     	

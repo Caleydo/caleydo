@@ -50,7 +50,7 @@ implements IGLCanvasUser
 		}
 	}
 	
-	public void setTragetSetId( final int iTargetCollectionSetId ) {
+	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
 			refGeneralManager.getSingelton().getSetManager(

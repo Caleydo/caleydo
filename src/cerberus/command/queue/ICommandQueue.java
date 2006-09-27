@@ -1,9 +1,10 @@
 package cerberus.command.queue;
 
 import cerberus.command.ICommand;
+import cerberus.xml.parser.IParserObject;
 
 public interface ICommandQueue 
-extends ICommand {
+extends ICommand, IParserObject {
 
 	/**
 	 * Get CommandQueueId.

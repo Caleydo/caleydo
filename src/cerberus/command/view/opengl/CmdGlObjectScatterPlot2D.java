@@ -74,7 +74,7 @@ extends ACmdCreate_GlCanvasUser
 			
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					logMessage,
-					LoggerType.STATUS.getLevel() );
+					LoggerType.STATUS );
 			
 			throw new CerberusRuntimeException( logMessage );
 		}
@@ -95,7 +95,7 @@ extends ACmdCreate_GlCanvasUser
 				
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
 		canvas.setResolution( iResolution );
-		canvas.setTragetSetId( iTargetCollectionSetId );
+		canvas.setTargetSetId( iTargetCollectionSetId );
 	}
 
 	@Override

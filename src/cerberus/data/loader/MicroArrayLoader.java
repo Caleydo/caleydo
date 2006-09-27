@@ -35,6 +35,7 @@ import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenType;
 import cerberus.data.collection.parser.ParserTokenHandler;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.xml.parser.IParserObject;
 import cerberus.xml.parser.ISaxParserHandler;
 
 
@@ -45,7 +46,7 @@ import cerberus.xml.parser.ISaxParserHandler;
  *
  */
 public class MicroArrayLoader 
-implements IMementoXML {
+implements IMementoXML, IParserObject {
 
 	/**
 	 *  file name of *.gpr file
@@ -118,6 +119,7 @@ implements IMementoXML {
 	 * Defines index 
 	 */
 	protected int iIndexPerArray[];
+	
 	
 	public MicroArrayLoader(IGeneralManager setGeneralManager) {
 				
@@ -238,7 +240,7 @@ implements IMementoXML {
 		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
 		    		"Read file \""+ 
 				       this.sFileName + "\" ...",
-				       LoggerType.VERBOSE.getLevel() );
+				       LoggerType.VERBOSE );
 
 		    Vector <String> vecBufferText = new Vector<String>(10);
 		    StringBuffer strLineBuffer = new StringBuffer();
@@ -366,8 +368,11 @@ implements IMementoXML {
 		    brFile.close();
 		    
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
-		    System.out.println("Read file \""+ 
-				       this.sFileName + "\"  ....  [DONE]" );
+		    
+		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    		"  Read file \""+ 
+				       this.sFileName + "\"  ....  [DONE]",
+				     LoggerType.STATUS );
 
 		    /**
 		     * Copy valued to refStorage...
@@ -450,14 +455,16 @@ implements IMementoXML {
 		     */
 		    refImportDataToSet.getCacheId();
 		    
-		    System.out.println("Read file \""+ 
-				       this.sFileName + "\"  ....  [DONE]  ....  copy to storage  [DONE]" );
+		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    		"  Read file \""+ 
+				       this.sFileName + "\" .... copy to storage ...[DONE]",
+				       LoggerType.STATUS );
 		    
 		}
 		catch (IOException ioe) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"MicroArrayLoader: ERROR line=[" + iLineInFile + "] while parsing: " + ioe.getMessage(),
-					LoggerType.STATUS.getLevel() );
+					LoggerType.STATUS );
 		    
 		    return false;
 		    //System.exit(1);
@@ -465,7 +472,7 @@ implements IMementoXML {
 		catch (Exception ex) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"MicroArrayLoader: ERROR line=[" + iLineInFile + "] while parsing: " + ex.getMessage(),
-					LoggerType.ERROR_ONLY.getLevel() );
+					LoggerType.ERROR_ONLY );
 		    return false;
 		}		
 		
@@ -619,6 +626,41 @@ implements IMementoXML {
 			
 			return false;
 		}
+	}
+	
+	/**
+	 * Removes all data structures.
+	 * 
+	 * @see cerberus.xml.parser.IParserObject#destroy()
+	 */
+	public final void destroy() {
+		
+		LLInteger.clear();	
+		LLFloat.clear();		
+		LLString.clear();
+		
+		alTokenPattern.clear();
+		alTokenTargetToParserTokenType.clear();		
+		
+		LLInteger = null;		
+		LLFloat = null;		
+		LLString = null;
+		
+		alTokenPattern = null;
+		alTokenTargetToParserTokenType = null;
+		
+		iIndexPerArray = null;
+	}
+
+
+	/**
+	 * Nothing to init.
+	 * 
+	 * @see cerberus.xml.parser.IParserObject#init()
+	 */
+	public final void init()
+	{
+		
 	}
 
 }

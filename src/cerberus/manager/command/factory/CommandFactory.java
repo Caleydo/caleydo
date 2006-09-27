@@ -24,6 +24,7 @@ import cerberus.command.event.CmdEventRelationCreate;
 
 
 import cerberus.command.view.opengl.CmdGlObjectHeatmap;
+import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
@@ -352,6 +353,15 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_HISTOGRAM2D:
+		{
+			createdCommand =
+				new CmdGlObjectHistogram2D(
 						refGeneralManager,
 						phAttributes );			
 			break;

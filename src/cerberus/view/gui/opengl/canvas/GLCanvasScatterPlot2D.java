@@ -10,7 +10,9 @@ import javax.media.opengl.GLAutoDrawable;
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
+import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
@@ -46,11 +48,11 @@ implements IGLCanvasUser
 		this.iResolution = iResolution;
 		
 		if ( iResolution.length < 3 ) {
-			throw new RuntimeException("GLCanvasHeatmap.setResolution() array must contain 3 items.");
+			throw new RuntimeException("GLCanvasScatterPlot2D.setResolution() array must contain 3 items.");
 		}
 	}
 	
-	public void setTragetSetId( final int iTargetCollectionSetId ) {
+	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
 			refGeneralManager.getSingelton().getSetManager(
@@ -58,23 +60,49 @@ implements IGLCanvasUser
 		
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"GLCanvasObjectHeatmap.setTragetSetId(" +
+					"GLCanvasScatterPlot2D.setTragetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"GLCanvasScatterPlot2D.setTragetSetId(" +
+				iTargetCollectionSetId + ") done!");
 	}
 	
 	@Override
 	public void renderPart(GL gl)
 	{
 		
-		if  ( targetSet != null ) 
-		{
-			
-		}
-		else 
-		{
-			
-		}
+//		if  ( targetSet != null ) 
+//		{
+//			int iDimTotal = targetSet.getDimensions();
+//			
+//			ISelection select = null;
+//			IStorage storage = null;
+//			
+//			if ( targetSet.getReadTokenWait() ) {
+//				select = targetSet.getSelectionByDimAndIndex(0,0);
+//				storage = targetSet.getStorageByDimAndIndex(0,0);
+//							
+//				int iIndex = select.getOffset();
+//				int iInc = select.getMultiRepeat();
+//				int iLength = select.length();
+//				
+//				int [] dataArray = storage.getArrayInt();
+//				
+//				for ( int i=0; i < iLength; i++ ) {
+//					
+//					//System.out.print( dataArray[ iIndex ] + " ");
+//					
+//					iIndex += iInc;
+//				}
+//				
+//			}
+//		}
+//		else 
+//		{
+//			
+//		}
 
 		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
 		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red

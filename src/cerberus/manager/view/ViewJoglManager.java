@@ -21,6 +21,7 @@ import cerberus.view.gui.IView;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
+import cerberus.view.gui.opengl.canvas.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.view.gui.opengl.canvas.GLCanvasScatterPlot2D;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
@@ -151,7 +152,7 @@ implements IViewManager, IViewGLCanvasManager
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"registerItem( " + iItemId + " ) as View",
-				LoggerType.VERBOSE.getLevel() );
+				LoggerType.VERBOSE );
 		
 		return true;
 	}
@@ -258,6 +259,12 @@ implements IViewManager, IViewGLCanvasManager
 					sLabel);
 		case CREATE_GL_SCATTERPLOT2D:
 			return new GLCanvasScatterPlot2D(
+					refGeneralManager, 
+					iViewId, 
+					iParentContainerId, 
+					sLabel);
+		case CREATE_GL_HISTOGRAM2D:
+			return new GLCanvasHistogram2D(
 					refGeneralManager, 
 					iViewId, 
 					iParentContainerId, 

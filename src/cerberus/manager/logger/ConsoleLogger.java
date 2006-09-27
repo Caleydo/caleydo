@@ -5,6 +5,7 @@ package cerberus.manager.logger;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -13,11 +14,13 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author java
  *
  */
-public class ConsoleLogger extends AAbstractManager implements ILoggerManager {
+public class ConsoleLogger 
+extends AAbstractManager 
+implements ILoggerManager {
 
-	private short sSystemLogLevel = 0;
+	private LoggerType systemLogLevel = LoggerType.ERROR_ONLY;
 	
-	protected short sLogLevel = 0;
+	protected LoggerType logLevel = LoggerType.VERBOSE;
 	
 	/**
 	 * @param setGeneralManager
@@ -27,12 +30,12 @@ public class ConsoleLogger extends AAbstractManager implements ILoggerManager {
 				IGeneralManager.iUniqueId_TypeOffset_Logger );
 	}
 
-	private void logMessage( final String msg ) {	
-		if ( sLogLevel > sSystemLogLevel ) {
+	private void logMessage( final String msg ) {
+		if ( systemLogLevel.showLog( logLevel ) ) {
+//		if ( sLogLevel > sSystemLogLevel ) {
 			//System.err.println( msg );
-			return;
+			System.out.println( logLevel + msg );
 		}
-		System.out.println( msg );
 	}
 	
 	/* (non-Javadoc)
@@ -45,34 +48,34 @@ public class ConsoleLogger extends AAbstractManager implements ILoggerManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)
 	 */
-	public void logMsg(String info, short logLevel) {
-		sLogLevel = logLevel;
+	public void logMsg(final String info, final LoggerType logLevel) {
+		this.logLevel = logLevel;
 		logMessage( info );
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#setLogLevel(short)
 	 */
-	public void setLogLevel(short level) {
-		sLogLevel = level;
+	public void setLogLevel( final LoggerType level) {
+		this.logLevel = level;
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#getLogLevel()
 	 */
-	public short getLogLevel() {
-		return sLogLevel;
+	public LoggerType getLogLevel() {
+		return logLevel;
 	}
 	
 	/**
 	 * 
 	 */
-	public void setSystemLogLevel(short systemLogLevel) {		
-		this.sSystemLogLevel= systemLogLevel;
+	public void setSystemLogLevel( final LoggerType systemLogLevel) {		
+		this.systemLogLevel= systemLogLevel;
 	}
 	
-	public short getSystemLogLevel() {		
-		return this.sSystemLogLevel;
+	public LoggerType getSystemLogLevel() {		
+		return this.systemLogLevel;
 	}
 
 	/**

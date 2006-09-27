@@ -203,7 +203,7 @@ implements ICommand {
 			
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"SET: done! " + newObject.toString(),
-					LoggerType.VERBOSE.getLevel() );
+					LoggerType.VERBOSE );
 			
 		} catch (NumberFormatException nfe) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(

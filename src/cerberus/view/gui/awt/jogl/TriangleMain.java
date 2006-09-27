@@ -117,7 +117,7 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 
 		GL gl = drawable.getGL();
 
-		System.err.println("INIT GL IS: " + gl.getClass().getName() + "   TrinagleMain!");
+		System.out.println("TrinalgeMain.java INIT GL IS: " + gl.getClass().getName() );
 
 		//gl.resizeGLScene();                      // Initialize the GL viewport
 
@@ -141,7 +141,7 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height)
 	{
-		System.err.println("RESHAPE GL    TrinagleMain!");
+		System.out.println("TrinalgeMain.java  RESHAPE GL");
 		
 		GL gl = drawable.getGL();
 

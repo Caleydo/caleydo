@@ -5,6 +5,7 @@ package cerberus.manager.logger;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.ISingelton;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -17,7 +18,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 public class ConsoleSimpleLogger extends 
 	AAbstractManager implements ILoggerManager, IGeneralManager {
 
-	protected short sLogLevel = 0;
+	protected LoggerType sLogLevel = LoggerType.ERROR_ONLY;
 	
 	/**
 	 * @param setGeneralManager
@@ -37,22 +38,22 @@ public class ConsoleSimpleLogger extends
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)
 	 */
-	public void logMsg(String info, short logLevel) {
+	public void logMsg(String info, LoggerType logLevel) {
 		sLogLevel = logLevel;
-		System.out.println( info );
+		System.out.println( logLevel + info );
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#setLogLevel(short)
 	 */
-	public void setLogLevel(short level) {
+	public void setLogLevel(LoggerType level) {
 		sLogLevel = level;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#getLogLevel()
 	 */
-	public short getLogLevel() {
+	public LoggerType getLogLevel() {
 		return sLogLevel;
 	}
 
@@ -128,9 +129,9 @@ public class ConsoleSimpleLogger extends
 	 * 
 	 * @see cerberus.manager.ILoggerManager#setSystemLogLevel(short)
 	 */
-	public void setSystemLogLevel(short systemLogLevel)
+	public void setSystemLogLevel(LoggerType systemLogLevel)
 	{
-		
+		assert false : "Not suppoerted by this class!";
 	}
 
 	/**
@@ -138,9 +139,9 @@ public class ConsoleSimpleLogger extends
 	 * 
 	 * @see cerberus.manager.ILoggerManager#getSystemLogLevel()
 	 */
-	public short getSystemLogLevel()
+	public LoggerType getSystemLogLevel()
 	{
-		return 0;
+		return LoggerType.FULL;
 	}
 
 }

@@ -156,9 +156,9 @@ implements IXmlParserHandler
 					ParameterHandlerType.STRING );										 
 
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"verbose: XML-TAG= " +  phAttributes.getValueString( 
+					"XML-TAG= " +  phAttributes.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
-					LoggerType.VERBOSE.getLevel() );
+					LoggerType.VERBOSE );
 				
 			lastCommand = refCommandManager.createCommand( phAttributes );
 			
@@ -169,7 +169,7 @@ implements IXmlParserHandler
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + ") ERROR while parsing " + 
 					lastCommand.toString() + " error=" + e.toString(),
-					LoggerType.STATUS.getLevel() );
+					LoggerType.STATUS );
 					
 			return null;
 		}
@@ -183,9 +183,9 @@ implements IXmlParserHandler
 				
 				if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() ))
 				{				
-					refGeneralManager.getSingelton().getLoggerManager().logMsg("verbose: do command: " + 
+					refGeneralManager.getSingelton().getLoggerManager().logMsg("do command: " + 
 						lastCommand.toString(),
-						LoggerType.VERBOSE.getLevel() );
+						LoggerType.VERBOSE );
 					lastCommand.doCommand();
 				}
 			}
@@ -198,7 +198,7 @@ implements IXmlParserHandler
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + ")\n  ERROR while executing command " + e.toString(),
-					LoggerType.STATUS.getLevel() );
+					LoggerType.STATUS );
 					
 			
 			return null;
@@ -532,9 +532,15 @@ implements IXmlParserHandler
 	 * Cleanup called by Mananger after Handler is not used any more. 
 	 */
 	public void destroyHandler() {
+		
+		if ( refCommandQueueIter != null ) {
+			refCommandQueueIter.destroy();
+			refCommandQueueIter = null;
+		}
+		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"destroyHandler() free memory!",
-				LoggerType.STATUS.getLevel() );
+				"CommandSaxHandler.destroyHandler() free memory!",
+				LoggerType.STATUS );
 	}
 	
 }

@@ -12,6 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.data.IManagedObject;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -185,8 +186,10 @@ implements IXmlParserManager, IManagedObject
 		}
 		
 		if ( hashTag2XmlParser.remove( handler.getXmlActivationTag() ) != null ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg("XmlParserManager.unregisterHandler( "
-					+ handler.getXmlActivationTag() + ") done.");
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"XmlParserManager.unregisterSaxHandler( "
+					+ handler.getXmlActivationTag() + ") done.",
+					LoggerType.STATUS );
 			return true;
 		}		
 		return false;
@@ -211,8 +214,10 @@ implements IXmlParserManager, IManagedObject
 		}
 		
 		if ( hashTag2XmlParser.remove( sActivationXmlTag ) != null ) {	
-			refGeneralManager.getSingelton().getLoggerManager().logMsg("XmlParserManager.unregisterHandler( "
-					+ sActivationXmlTag + ") done.");
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"XmlParserManager.unregisterHandler( "
+					+ sActivationXmlTag + ") done.",
+					LoggerType.STATUS );
 			return true;
 		}
 		return false;

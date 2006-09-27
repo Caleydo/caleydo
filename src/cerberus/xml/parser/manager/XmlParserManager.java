@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.system.CerberusInputStream;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -35,7 +36,7 @@ implements IXmlParserManager
 	protected final ILoggerManager refLoggerManager;
 
 	/** Define log level for log inforamtion */
-	protected final short iLogLevel;
+	protected final LoggerType logLevel;
 	
 	/**
 	 * Define maximum number of recursions
@@ -66,7 +67,7 @@ implements IXmlParserManager
 		
 		refLoggerManager = generalManager.getSingelton().getLoggerManager();
 		
-		this.iLogLevel = ILoggerManager.LoggerType.VERBOSE.getLevel();
+		this.logLevel = LoggerType.VERBOSE;
 		
 		this.bUseCascadingHandler = bUseCascadingHandler;
 		
@@ -108,7 +109,8 @@ implements IXmlParserManager
 	{
 		if ( currentHandler == null ) 
 		{
-			refLoggerManager.logMsg( " < TAG= " + qName, iLogLevel );
+			refLoggerManager.logMsg( " < TAG= " + qName,
+					LoggerType.FULL );
 			
 			if ( hashTag2XmlParser.containsKey( qName ) ) 
 			{
@@ -193,7 +195,8 @@ implements IXmlParserManager
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException
 	{
-		refLoggerManager.logMsg( "        " + qName + " TAG -->", iLogLevel );
+		refLoggerManager.logMsg( "        " + qName + " TAG -->",
+				LoggerType.FULL );
 		
 		if ( currentHandler != null ) {
 //			if ( sCurrentClosingTag.equals( qName ) ) {

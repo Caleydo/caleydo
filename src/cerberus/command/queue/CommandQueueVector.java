@@ -252,4 +252,15 @@ implements ICommand , ICommandQueue
 	public boolean containsCmdInQueue( final ICommand cmdItem ) {
 		return this.vecCommandsInQueue.contains( cmdItem );
 	}
+
+	public void init()
+	{
+		// nothing to do, all done in constructor		
+	}
+
+	public void destroy()
+	{
+		vecCommandsInQueue.clear();
+		vecCommandsInQueue = null;		
+	}
 }

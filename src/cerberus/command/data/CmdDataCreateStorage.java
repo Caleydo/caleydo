@@ -281,7 +281,7 @@ implements ICommand {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"DO new STO: " + 
 				newObject.toString(),
-				LoggerType.VERBOSE.getLevel() );
+				LoggerType.VERBOSE );
 		
 		if ( bDisposeDataAfterDoCommand ) {
 			llDataTypes = null;
