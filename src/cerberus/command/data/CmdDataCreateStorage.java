@@ -338,7 +338,7 @@ implements ICommand {
 		
 		assert refParameterHandler != null: "can not handle null object!";		
 				
-		setAttributesBase( refParameterHandler );
+		//setAttributesBase( refParameterHandler );
 		
 		/**
 		 * Fill data type pattern...

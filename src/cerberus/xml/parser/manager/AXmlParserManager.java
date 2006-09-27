@@ -162,6 +162,11 @@ implements IXmlParserManager, IManagedObject
 		
 		hashTag2XmlParser.put( key, handler );
 		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"XmlParserManager.registerSaxHandler( "
+				+ handler.getXmlActivationTag() + ") done.",
+				LoggerType.STATUS );
+		
 		handler.initHandler();
 		
 		return true;
@@ -190,6 +195,12 @@ implements IXmlParserManager, IManagedObject
 					"XmlParserManager.unregisterSaxHandler( "
 					+ handler.getXmlActivationTag() + ") done.",
 					LoggerType.STATUS );
+			
+//			if ( handler.hasOpeningTagOnlyOnce() ) {
+//				handler.destroyHandler();
+//			}
+			handler.destroyHandler();
+			
 			return true;
 		}		
 		return false;
@@ -213,11 +224,15 @@ implements IXmlParserManager, IManagedObject
 			//return false;
 		}
 		
-		if ( hashTag2XmlParser.remove( sActivationXmlTag ) != null ) {	
+		IXmlParserHandler refParserHandler = hashTag2XmlParser.remove( sActivationXmlTag );
+		
+		if ( refParserHandler != null ) {	
+						
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"XmlParserManager.unregisterHandler( "
 					+ sActivationXmlTag + ") done.",
 					LoggerType.STATUS );
+			
 			return true;
 		}
 		return false;

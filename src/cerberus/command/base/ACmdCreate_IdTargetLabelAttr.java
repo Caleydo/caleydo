@@ -15,8 +15,8 @@ import cerberus.util.system.StringConversionTool;
  *
  */
 public abstract class ACmdCreate_IdTargetLabelAttr 
-	extends ACmdCreate_IdTargetLabel
-		implements ICommand
+extends ACmdCreate_IdTargetLabel
+implements ICommand
 {
 
 	protected String sAttribute1;
@@ -32,24 +32,11 @@ public abstract class ACmdCreate_IdTargetLabelAttr
 	{
 		super(refGeneralManager, refParameterHandler);
 		
-		setAttributesBaseParent( refParameterHandler );
-	}
-
-
-	/**
-	 * Note: This methode does not call setAttributesBase(IParameterHandler) internal.
-	 * 
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabel#setAttributesBase(IParameterHandler)
-	 * 
-	 * @param refParameterHandler
-	 */
-	protected final void setAttributesBaseParent( final IParameterHandler refParameterHandler ) {
-		
 		sAttribute1 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 		
 		sAttribute2 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
 	}
-
+	
 }

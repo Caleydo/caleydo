@@ -96,4 +96,10 @@ extends ContentHandler
 	public boolean parseXmlFileByInputStream( InputSource inputStream );
 	
 	
+	/**
+	 * Cleanup called by Mananger after Handler is not used any more. 
+	 */
+	public void destroyHandler();
+	
+	
 }

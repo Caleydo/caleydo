@@ -44,22 +44,6 @@ implements ICommand
 	{
 		super(refGeneralManager, refParameterHandler);
 		
-		setAttributesBaseParentXY( refParameterHandler );
-	}
-	
-	/**
-	 * Note: This methode calles setAttributesBase(IParameterHandler) and setAttributesBaseParent(IParameterHandler) internal.
-	 * Please do not call methode setAttributesBase(IParameterHandler) after calling this methode.
-	 * 
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabel#setAttributesBase(IParameterHandler)
-	 * 
-	 * @param refParameterHandler
-	 */
-	protected final IParameterHandler setAttributesBaseParentXY( IParameterHandler refParameterHandler ) {
-		
-		//super.setAttributesBaseParent( refParameterHandler );
-		
-		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute2,
 				CommandFactory.sDelimiter_CreateView_Size);
@@ -75,9 +59,8 @@ implements ICommand
 				token.nextToken(), 
 				ParameterHandlerType.INT,
 				"-1" );
-		
-		return refParameterHandler;
 	}
+	
 	
 	public final int getWidthX() {
 		return this.iWidthX;

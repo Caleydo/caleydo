@@ -120,12 +120,12 @@ implements IGLCanvasUser
 		
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"GLCanvasScatterPlot2D.setTragetSetId(" +
+					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"GLCanvasScatterPlot2D.setTragetSetId(" +
+				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
 	}
 	
@@ -150,7 +150,7 @@ implements IGLCanvasUser
 
 					if (targetSet.getDimensions() < 1) {
 						System.out
-								.println("Can not use a ISet with only one dimension!");
+								.println("GLCanvasHistogram2D.renderPart()  Can not use a ISet with only one dimension!");
 					}
 
 					IStorage refStorageX = this.targetSet.getStorageByDimAndIndex(0, 0);

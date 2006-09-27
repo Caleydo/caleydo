@@ -49,7 +49,16 @@ implements ICommand
 
 		this.refParameterHandler = refParameterHandler;
 
-		setAttributesBase(refParameterHandler);
+		this.setId( 
+				refParameterHandler.getValueInt( 
+						CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
+	
+		iUniqueTargetId = 
+			refParameterHandler.getValueInt( 
+					CommandQueueSaxType.TAG_TARGET_ID.getXmlKey() );
+		
+		sLabel = refParameterHandler.getValueString( 
+					CommandQueueSaxType.TAG_LABEL.getXmlKey() );
 	}
 
 
@@ -60,20 +69,5 @@ implements ICommand
 	{
 		return null;
 	}
-
-	protected final void setAttributesBase(final IParameterHandler useParameterHandler)
-	{
-		//assert useParameterHandler != null : "can not handle null object!";
-
-		this.setId( 
-					refParameterHandler.getValueInt( 
-							CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
-		
-		iUniqueTargetId = 
-			refParameterHandler.getValueInt( 
-					CommandQueueSaxType.TAG_TARGET_ID.getXmlKey() );
-		
-		sLabel = refParameterHandler.getValueString( 
-					CommandQueueSaxType.TAG_LABEL.getXmlKey() );
-	}
+	
 }

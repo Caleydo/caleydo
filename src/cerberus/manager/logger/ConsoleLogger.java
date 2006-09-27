@@ -29,28 +29,25 @@ implements ILoggerManager {
 		super(setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Logger );
 	}
-
-	private void logMessage( final String msg ) {
-		if ( systemLogLevel.showLog( logLevel ) ) {
-//		if ( sLogLevel > sSystemLogLevel ) {
-			//System.err.println( msg );
-			System.out.println( logLevel + msg );
-		}
-	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String)
 	 */
-	public void logMsg(String info) {
-		logMessage( info );
+	public void logMsg( final String info) {
+		if ( systemLogLevel.showLog( logLevel ) ) {
+			System.out.println( logLevel + info );
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)
 	 */
-	public void logMsg(final String info, final LoggerType logLevel) {
-		this.logLevel = logLevel;
-		logMessage( info );
+	public void logMsg( final String info, 
+			final LoggerType useLogLevel) {
+		
+		if ( systemLogLevel.showLog( useLogLevel ) ) {
+			System.out.println( useLogLevel + info );
+		}
 	}
 
 	/* (non-Javadoc)
@@ -99,14 +96,14 @@ implements ILoggerManager {
 	/**
 	 * @see cerberus.manager.IGeneralManager#hasItem(int)
 	 */
-	public boolean hasItem(final int iItemId) {
+	public boolean hasItem( final int iItemId ) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode hasItem()");
 	}
 
 	/**
 	 * @see cerberus.manager.IGeneralManager#getItem(int)
 	 */
-	public Object getItem( final int iItemId) {
+	public Object getItem( final int iItemId ) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode getItem()");
 	}
 	
@@ -140,7 +137,9 @@ implements ILoggerManager {
 	/**
 	 * @see cerberus.manager.IGeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
 	 */
-	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
+	public boolean unregisterItem( final int iItemId, 
+			final ManagerObjectType type  ) {
+		
 		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");
 	}
 

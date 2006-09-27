@@ -40,21 +40,6 @@ implements ICommand
 	{
 		super(refGeneralManager, refParameterHandler);
 		
-		setAttributesOpenGL_Object( refParameterHandler );
-	}
-	
-	/**
-	 * Note: This methode calles setAttributesBase(IParameterHandler) and setAttributesBaseParent(IParameterHandler) internal.
-	 * Please do not call methode setAttributesBase(IParameterHandler) after calling this methode.
-	 * 
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabel#setAttributesBase(IParameterHandler)
-	 * 
-	 * @param refParameterHandler
-	 */
-	protected final IParameterHandler setAttributesOpenGL_Object( IParameterHandler refParameterHandler ) {
-		
-		//super.setAttributesBaseParent( refParameterHandler );
-		
 		String sAttribute1 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 		
@@ -86,10 +71,6 @@ implements ICommand
 		
 		vec4fRotation = refParameterHandler.getValueVec4f( 
 				CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey() );
-		
-		return refParameterHandler;
 	}
-	
-	
 
 }

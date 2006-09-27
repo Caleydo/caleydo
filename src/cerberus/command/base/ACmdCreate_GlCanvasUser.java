@@ -18,7 +18,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public abstract class ACmdCreate_GlCanvasUser 
 extends ACmdCreate_IdTargetParentGLObject
-		implements ICommand
+implements ICommand
 {
 	
 	protected IGLCanvasUser openGLCanvasUser;

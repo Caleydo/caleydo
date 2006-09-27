@@ -458,7 +458,7 @@ implements IMementoXML, IParserObject {
 		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
 		    		"  Read file \""+ 
 				       this.sFileName + "\" .... copy to storage ...[DONE]",
-				       LoggerType.STATUS );
+				       LoggerType.VERBOSE );
 		    
 		}
 		catch (IOException ioe) {

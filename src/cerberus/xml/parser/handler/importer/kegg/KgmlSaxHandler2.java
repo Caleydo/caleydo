@@ -80,6 +80,17 @@ implements IXmlParserHandler
 	throws SAXException
 	{
 		//emit("</"+sName+">");
+		
+		String eName = ("".equals(sSimpleName)) ? sQualifiedName : sSimpleName;
+		
+		if (null != eName) {
+			if (eName.equals(sOpeningTag)) {	
+				/**
+				 * section (xml block) finished, call callback function from IXmlParserManager
+				 */
+				refXmlParserManager.sectionFinishedByHandler( this );
+			}
+		}
 	}
     
 	/**
@@ -330,7 +341,7 @@ implements IXmlParserHandler
 	public void initHandler()
 	{
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"KEGGSaxHandler: init", LoggerType.STATUS );
+				"KEGGSaxHandler: initHandler", LoggerType.STATUS );
 	}
 
 	/**
@@ -339,7 +350,7 @@ implements IXmlParserHandler
 	public void destroyHandler()
 	{
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"KEGGSaxHandler: destroy!", LoggerType.STATUS );
+				"KEGGSaxHandler: destroyHandler!", LoggerType.STATUS );
 	}
 	
 }

@@ -58,7 +58,7 @@ implements IGLCanvasUser
 		
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"GLCanvasObjectHeatmap.setTragetSetId(" +
+					"GLCanvasObjectHeatmap.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
 	}

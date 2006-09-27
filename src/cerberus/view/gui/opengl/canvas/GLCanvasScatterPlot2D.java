@@ -60,12 +60,12 @@ implements IGLCanvasUser
 		
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"GLCanvasScatterPlot2D.setTragetSetId(" +
+					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"GLCanvasScatterPlot2D.setTragetSetId(" +
+				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
 	}
 	

@@ -6,6 +6,7 @@ package cerberus.xml.parser.handler.importer;
 import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.handler.AXmlParserHandler;
@@ -32,8 +33,9 @@ implements IXmlParserHandler
 	{
 		super(refGeneralManager, refXmlParserManager);
 		
-		this.sOpeningTag = "read-xml-file";
-		this.bHasOpeningTagOnlyOnce = false;		
+		setXmlActivationTag( "read-xml-file" );
+		
+		this.bHasOpeningTagOnlyOnce = true;		
 	}
 
 	/* (non-Javadoc)
@@ -41,7 +43,8 @@ implements IXmlParserHandler
 	 */
 	public void initHandler()
 	{
-		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"OpenExternalXmlFileSaxHandler: initHandler", LoggerType.STATUS );
 	}
 
 	/* (non-Javadoc)
@@ -49,7 +52,8 @@ implements IXmlParserHandler
 	 */
 	public void destroyHandler()
 	{
-		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"OpenExternalXmlFileSaxHandler: destroyHandler", LoggerType.STATUS );
 	}
 	
 	public void reset() {		
@@ -120,9 +124,9 @@ implements IXmlParserHandler
 			String localName, 
 			String qName){
 		
-//		if (qName.equals(sOpeningTag)) {	
-//			refXmlParserManager.sectionFinishedByHandler( this );
-//		}
+		if (qName.equals(sOpeningTag)) {	
+			refXmlParserManager.sectionFinishedByHandler( this );
+		}
 	}
 
 

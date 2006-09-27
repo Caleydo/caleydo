@@ -18,7 +18,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabel;
+import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -41,8 +41,10 @@ import cerberus.manager.type.ManagerObjectType;
  * @see cerberus.data.collection.IStorage
  */
 public class CmdDataCreateSet 
-extends ACmdCreate_IdTargetLabel
-implements ICommand {
+extends ACmdCreate_IdTargetLabelAttr {
+	
+	private CommandQueueSaxType set_type;
+
 	
 	/**
 	 * This list contains the data types for cerberus.data.collection.StorageType as String.
@@ -66,7 +68,6 @@ implements ICommand {
 	 */
 	protected LinkedList<String> llRefSelection;
 	
-
 		
 	/**
 	 * Define if data from llDataRaw and llDataTypes shall be removed after
@@ -100,6 +101,8 @@ implements ICommand {
 		llRefStorage = new LinkedList<String> ();
 		llRefSelection = new LinkedList<String> ();
 		
+		set_type = CommandQueueSaxType.CREATE_SET;
+		
 		setAttributes( refParameterHandler );
 	}
 	
@@ -122,9 +125,27 @@ implements ICommand {
 		ISetManager refSetManager = 
 			refGeneralManager.getSingelton().getSetManager();
 		
+		ISet newObject = null;
 		
-		ISet newObject = (ISet) refSetManager.createSet(
-				ManagerObjectType.SET_LINEAR );
+		switch ( set_type ) 
+		{
+		case CREATE_SET:
+			newObject = (ISet) refSetManager.createSet(
+					ManagerObjectType.SET_LINEAR );
+			break;
+			
+		case CREATE_SET_PLANAR:
+			newObject = (ISet) refSetManager.createSet(
+					ManagerObjectType.SET_PLANAR );
+			break;
+			
+		default:
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						"CmdDataCreateSet.doCommand() failed because type=[" +
+						set_type + "] is not supported!",
+						LoggerType.ERROR_ONLY );
+			return;
+		}
 				
 		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
@@ -256,7 +277,7 @@ implements ICommand {
 		
 		assert refParameterHandler != null: "can not handle null object!";		
 		
-		setAttributesBase( refParameterHandler );
+		//setAttributesBase( refParameterHandler );
 		
 		/**
 		 * Fill data type pattern...
@@ -288,9 +309,16 @@ implements ICommand {
 			llRefStorage.add( strToken_StorageId.nextToken() );
 		}	
 		
+		
+		String sDetail = 
+			refParameterHandler.getValueString( 
+					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
+		
+		if ( sDetail.length() > 0 ) {
+			this.set_type = CommandQueueSaxType.valueOf( sDetail );
+		}
+		
 		return true;
-		
-		
 	}
 
 }

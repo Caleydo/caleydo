@@ -524,7 +524,9 @@ implements IXmlParserHandler
 
 		
 	public void initHandler() {
-	
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"CommandSaxHandler.initHandler()",
+				LoggerType.STATUS );
 	}
 	
 	

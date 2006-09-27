@@ -3,6 +3,8 @@
  */
 package cerberus.xml.parser.manager;
 
+import java.util.Iterator;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -95,7 +97,7 @@ implements IXmlParserManager
 	 */
 	public final void endDocument() throws SAXException
 	{
-		setXmlFileProcessedNow( false );
+		setXmlFileProcessedNow( false );			
 	}
 
 
@@ -283,6 +285,31 @@ implements IXmlParserManager
 	public boolean parseXmlFileByInputStream( InputSource inputStream ) {
 		iCountOpenedFiles++;
 		return CerberusInputStream.parseOnce( inputStream , this );	
+	}
+
+
+	public void destroyHandler()
+	{
+		if ( ! llXmlParserStack.isEmpty() ) 
+		{
+			Iterator <IXmlParserHandler> iterParserHandler = 
+				llXmlParserStack.iterator();
+			
+			while ( iterParserHandler.hasNext() ) 
+			{
+				iterParserHandler.next().destroyHandler();
+			} // while
+			
+			llXmlParserStack.clear();	
+			
+		} // if 
+		llXmlParserStack = null;
+		
+		if ( ! hashTag2XmlParser.isEmpty() ) {
+			hashTag2XmlParser.clear();			
+		}
+		hashTag2XmlParser = null;
+		
 	}
 
 

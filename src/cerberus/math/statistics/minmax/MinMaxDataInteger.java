@@ -66,7 +66,7 @@ public final class MinMaxDataInteger {
 		  if ( refSet != null ) {
 		    	
 			  if ( refSet.getDimensions() < iDimensions ) {
-	    			System.out.println("Can not use a ISet with only one dimension!");
+	    			System.out.println("MinMaxDataInteger.updateDataOld() deprecated methode! Can not use a ISet with only one dimension!");
 	    			return false;
 			  }
 			  
@@ -145,7 +145,7 @@ public final class MinMaxDataInteger {
 		  if ( refSet != null ) {
 		    	
 			  if ( refSet.getDimensions() < iDimensions ) {
-	    			System.out.println("Can not use a ISet with only one dimension!");
+	    			System.out.println("MinMaxDataInteger.updateData()  Can not use a ISet with only one dimension!");
 	    			return false;
 			  }
 			  

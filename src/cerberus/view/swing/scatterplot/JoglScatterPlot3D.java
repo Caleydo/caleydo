@@ -369,7 +369,7 @@ public class JoglScatterPlot3D extends Demo {
 
 				if (refSet.getDimensions() < 3) {
 					System.out
-							.println("Can not use a ISet with only one dimension!");
+							.println("JoglScatterPlot3D.displayHistogram() Can not use a ISet with only one dimension!");
 				}
 
 				IStorage refStorageX = this.refSet.getStorageByDimAndIndex(0, 0);

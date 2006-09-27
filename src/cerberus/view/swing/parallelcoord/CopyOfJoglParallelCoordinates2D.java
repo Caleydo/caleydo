@@ -609,7 +609,7 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 
 				if (refSet.getDimensions() < 2) {
 					System.out
-							.println("Can not use a ISet with only one dimension!");
+							.println("GLCanvasHistogram2D.displayHistogram()   Can not use a ISet with only one dimension!");
 				}
 
 				IStorage refStorageX = this.refSet.getStorageByDimAndIndex(0, 0);

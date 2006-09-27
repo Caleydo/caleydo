@@ -33,6 +33,8 @@ public enum CommandQueueSaxType
 	
 	CREATE_SELECTION("cmd","type","-1"),
 	CREATE_SET("cmd","type","-1"),
+	CREATE_SET_PLANAR("cmd","type","-1"),
+	//CREATE_SET_MULTIDIM("cmd","type","-1"),
 	CREATE_STORAGE("cmd","type","-1"),
 	
 	CREATE_VIEW_HEATMAP("cmd", "type","-1"),
