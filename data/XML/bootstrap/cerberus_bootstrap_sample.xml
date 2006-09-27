@@ -1,169 +1,71 @@
 <cerberus version="0.1">
 
-   <!-- -->
-   <read-xml-file target="data/XML/pathways/map00271.xml" />
-   
-   
   <workspace title="primary" server="localhsot">
+
+  <!-- External loading of XML files -->
+    <read-xml-file target="data/XML/pathways/map00271.xml" />
   
   <Application remote="no" IP="127.0.0.1" port="4000" >
   
-   <CommandBuffer>
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="12993" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="13993" targetId="45301" label="Storage file"        attrib1="STRING" attrib2="test data from file" />            
-    
+    <CommandBuffer>
+   
+      <!-- Creating Data -->
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="11992" targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="12993" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="13993" targetId="45301" label="Storage file"        attrib1="STRING" attrib2="test data from file" />            
      
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="21991" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="22991" targetId="35201" label="Select file" attrib1="0 200 0 1" />  
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 			cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 			cmdId="21991" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 			cmdId="22991" targetId="35201" label="Select file" attrib1="0 200 0 1" />  
             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="32991" targetId="35101" label="target Set for file" attrib1="35201" attrib2="45301" /> 
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="32991" targetId="35101" label="target Set for file" attrib1="35201" attrib2="45301" /> 
 
+    	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" 				cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="35101" />
 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="35101" />
+      <!-- Window 10331 -->
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="10331" label="Cerberus Window 1" attrib1="ROW HORIZONTAL" />   
+         
+      <!-- Container 10341 -->
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="50991" targetId="10341" label="swt container 1" 	parent="10331" attrib2="ROW VERTICAL" />
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="64991" targetId="14401" label="Progress Bar" 	parent="10341" attrib2="300 30" detail="30" />
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="65991" targetId="15401" label="Progress Bar" 	parent="10341" attrib2="300 30" detail="70" />
+     	
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" 	cmdId="68991" targetId="11401" label="Canvas" 			parent="10341" attrib2="500 500" detail="1077991" />		  
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" 	cmdId="68971" targetId="19401" label="Canvas" 			parent="10341" attrib2="500 500" detail="1077992" />		  
+ 	 	
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
+     	
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_TRIANGLE_TEST"  	cmdId="68992" targetId="77401" label="GL Triangle A" 	parent="19401" attrib1="0 2 0" attrib2="0 0 1 0.85" detail="red" />		  
 
+      <!-- Container 11341 -->
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="51991" targetId="11341" label="swt container 2" 	parent="10331" attrib2="ROW VERTICAL" />
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="11341" attrib1="11341" attrib2="700 500" />		  
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" 			cmdId="68994" targetId="31401" label="Gears" 			parent="11341" attrib2="300 300" />		  
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" 	cmdId="69995" targetId="32401" label="Heatmap" 			parent="11341" attrib2="300 300" />		  
 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Window 2" attrib1="ROW HORIZONTAL" />   
-     
-     <!--
-     no second window 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Window 1" attrib1="ROW VERTICAL" />   
+      <!-- Window 11331 -->
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Cerberus Window 2" attrib1="ROW VERTICAL" />   
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER"  		cmdId="66991" targetId="19401" label="Slider"  			parent="11331" attrib2="400 100" detail="" />	 
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="18401" label="Pathway" 			parent="11331" attrib2="-1 -1" />
+
+	  <!-- Relations -->
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	parent="15201" attrib2="14401" />	
+
+ 	  <!--Commands not in use at the moment	  
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_TRIANGLE_TEST"  	cmdId="68992" targetId="77401" label="GL Triangle A" 	parent="19401" attrib1="0 2 0" attrib2="0 0 1 0.85" detail="red" />		  
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" 		cmdId="70991" targetId="33401" label="Heatmap" 			parent="11341" attrib2="300 300" />
      -->
-     
-     
-     <!-- Window 10331 -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" label="swt container 1" parent="10331" attrib2="ROW VERTICAL" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" label="swt container 2" parent="10331" attrib2="ROW VERTICAL" />
-
-     <!-- Container 10341 -->
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" parent="10341"  attrib2="300 30" detail="30" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" parent="10341"  attrib2="300 30" detail="70" />
- 	 
- 	 <!--  mute pathway explorer   --> 	 
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" parent="10341" attrib2="-1 -1" />
-
-   
-   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68991" targetId="11401" label="Gears" parent="10341"  attrib2="500 500" detail="1077991" />		  
-    
-   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68971" targetId="19401" label="Gears" parent="10341"  attrib2="500 500" detail="1077992" />		  
-    
-   <!-- 
-   
-   <Cmd mementoId="0" process="RUN_CMD_NOW" 
-   type="CREATE_GL_TRIANGLE_TEST"  
-   cmdId="68991"           id to identify this command
-   targetId="77401"        id for this obejct, required to bind it to a GLCanvas
-   label="GL Triangle"
-   attrib1="0 0 0"         offset X,Y,Z
-   attrib2="0 0 1 0"       rotation (axis,angle)  exsampel 0 0 1 0.5  ==> axis ( 0 0 1) z-axis, rotation 0.5 radiant
-   tail="red" />		  
-   
-   -->
-   
-   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_TRIANGLE_TEST"  cmdId="68992" targetId="77401" label="GL Triangle A" parent="19401" attrib1="0 2 0" attrib2="0 0 1 0.85" detail="red" />		  
- 	
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        cmdId="68980" targetId="79401" label="GL Heatmap  C" parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="200 300 0"/>		  
- 	 
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  cmdId="68981" targetId="80401" label="GL Scatterplot" parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="200 300 0"/>	
- 	 
- 	 <!--
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  cmdId="68981" targetId="80401" label="GL Histogram2D" parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
- 	 -->
- 	 
-     <!-- Container 11341 -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60993" targetId="10401" label="Data Explorer" parent="11341" attrib1="11341" attrib2="700 500" />		  
-
-  <!--
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="67991" targetId="30401" label="Gears" attrib1="11341" attrib2="300 300" />		  
-  --> 
-  
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="68994" targetId="31401" label="Gears" parent="11341" attrib2="300 300" />		  
- 
-  <!--
-      
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" cmdId="69995" targetId="32401" label="Heatmap" parent="11341" attrib2="300 300" />		  
-     
- 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="70991" targetId="33401" label="Heatmap" parent="11341" attrib2="300 300" />		  
-  --> 
-
-     <!-- Window 11331 -->
-     
-   <!--  mute content of second window
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="18401" label="Pathway" parent="20331" attrib2="-1 -1" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER"  cmdId="66991" targetId="1901"  label="Slider"  parent="20331" attrib2="400 100" />	 
-   -->
-    
-	 <!-- Relations -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" cmdId="68991" targetId="10501" label="Event Relation" parent="15201" attrib2="14401" />
-
-<!--	
-
-   <FrameState>
-
-  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
-    <JInternalFrame id="6603900" title="Collection Browser -Storage- INTERNAL" name="null" type="JBROWSER_STORAGE" x="1382" y="23" width="362" height="108" visible="true" > </JInternalFrame>
-     <JInternalFrame id="6607900" title="Collection Browser -Set- INTERNAL" name="null" type="JBROWSER_SELECTION" x="1408" y="185" width="333" height="146" visible="true" > </JInternalFrame>
-    <JInternalFrame id="6608900" title="S-JOGL-I gears -SwingJogl inner-" name="null" type="GEARS" x="0" y="100" width="400" height="300" visible="true" > </JInternalFrame>
-  </JFrame>
-  
-  <JFrame id="6602900" title="S-JOGL Cerberus Main Frame external -SwingJogl-" name="frame1" type="MAIN_FRAME" x="50" y="458" width="1802" height="583" visible="true" >
-  </JFrame>
-  
-  <Window id="7000000" title="Cerberus PrototypeWindow" x="50" y="458" width="1802" height="583" visible="true">
-  	<View cmdId="55201" />
-  	<View cmdId="55301" />
-  </Window>
-  
-   </FrameState>
-   
-   <JFrameMenuList>
-     <FrameMenu id="8801100" frameId="6601900" cmdId="7701500" parentMenuId="-1"      type="list" enabled="true" title="file.." tooltip="" memento="-" ></FrameMenu>
-     <FrameMenu id="8802100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="item" enabled="true" title="load.." tooltip="" memento="-" ></FrameMenu>
-     <FrameMenu id="8803100" frameId="6601900" cmdId="-1"      parentMenuId="8801100" type="step" enabled="true" title=""       tooltip="" memento="-" ></FrameMenu>
-     <FrameMenu id="8804100" frameId="6601900" cmdId="7701600" parentMenuId="8801100" type="list" enabled="true" title="save.." tooltip="" memento="-" ></FrameMenu>
-   </JFrameMenuList>
-  
-
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" attrib2="400 -1" />
-
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" targetId="55601" label="Gears" attrib1="024001" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" targetId="56601" label="Gears" attrib1="024001" />
-
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="99009" targetId="55301" label="Heatmap" attrib="winId" />
-
-		
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\tests\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
-
-
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
-		
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;SKIP;SKIP;INT;ABORT" attrib2="15201" />
-     
-     <Cmd mementoId="-2" process="MEMENTO" type="OPEN_VIEW" detail="" />
-
-     <CmdQueue type="COMMAND_QUEUE_OPEN" process="RUN_QUEUE_ON_DEMAND" cmdQueueId="1" cmdId="7709600">
-       <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" details="filename.gpr" switches="" />
-       <Cmd mementoId="0" process="LOAD_ON_DEMAND" type="LOAD_DATA_FILE" details="filename.gpr" /> 
-     </CmdQueue>     
-     
-     <CmdQueue type="COMMAND_QUEUE_RUN"  process="RUN_QUEUE" cmdqueue_id="1" cmdId="7711600" queue_thread="-1" queue_thread_wait="-1" />
-     
-   -->
-
      
    </CommandBuffer>
     
-  </Application>
-  
-  <Application remote="yes" IP="127.0.0.1" port="4100" >
-  
-   
   </Application>
   
   </workspace>
