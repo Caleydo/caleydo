@@ -17,8 +17,8 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public class CmdViewCreateHeatmap 
 extends ACmdCreate_IdTargetLabelParentAttr 
-implements ICommand 
-{
+implements ICommand {
+	
 	/**
 	 * Constructor
 	 * 
@@ -27,8 +27,7 @@ implements ICommand
 	 */
 	public CmdViewCreateHeatmap( 
 			IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) 
-	{
+			final IParameterHandler refParameterHandler) {
 		super(refGeneralManager, refParameterHandler);
 	}
 
@@ -36,8 +35,7 @@ implements ICommand
 	 * Method creates a gears view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
-	public void doCommand() throws CerberusRuntimeException
-	{
+	public void doCommand() throws CerberusRuntimeException {
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
@@ -70,8 +68,7 @@ implements ICommand
 //		gearsView.drawView();
 	}
 
-	public void undoCommand() throws CerberusRuntimeException
-	{
+	public void undoCommand() throws CerberusRuntimeException {
 		// TODO Auto-generated method stub
 		
 	}

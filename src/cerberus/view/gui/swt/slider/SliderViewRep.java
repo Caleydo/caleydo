@@ -13,13 +13,24 @@ import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
+/**
+ * The view representation of a slider.
+ * The slider value is taken from the first 
+ * selection and the first storage in the specified Set.
+ * The Set is represented by the local variable setId.
+ * 
+ * @author Michael Kalkusch
+ * @author Marc Streit
+ */
 public class SliderViewRep 
 extends AViewRep 
-implements IView, IMediatorSender, IMediatorReceiver
-{
+implements IView, IMediatorSender, IMediatorReceiver {
+	
 	protected Composite refSWTContainer;
 	
 	protected Slider refSlider;
+	
+	protected int iSetId;
 	
 	protected int iCurrentSliderValue;
 	
@@ -55,11 +66,15 @@ implements IView, IMediatorSender, IMediatorReceiver
 	}
 
 	/**
-	 * @deprecated
+	 * Retrieves the slider set 
+	 * from the parameter handler
+	 * and sets the local variable.
 	 */
 	public void extractAttributes()
 	{
-		super.extractAttributes();	
+		//TODO: optimize this workflow!
+		
+		iSetId = refParameterHandler.getValueInt( "iSetId" );
 	}
 	
 	public void update(Object eventTrigger)
@@ -69,6 +84,5 @@ implements IView, IMediatorSender, IMediatorReceiver
 			iCurrentSliderValue = ((ISelection)eventTrigger).getOffset();
 			drawView();
 		}
-		
 	}
 }

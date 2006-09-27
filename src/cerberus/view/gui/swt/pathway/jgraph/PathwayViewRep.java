@@ -96,7 +96,6 @@ implements IPathwayView
 	    Iterator<PathwayEdge> edgeIterator;
 	    PathwayEdge edge;
 	    
-	    
 	    while (pathwayIterator.hasNext()) 
 	    {
 	    	pathway = pathwayIterator.next();

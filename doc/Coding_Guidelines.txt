@@ -134,6 +134,7 @@ public class MyClass {
 	   */
 	   
 	  public class MyNestedClass {
+	    first line empty!
 	    ...
 	  }
 	   

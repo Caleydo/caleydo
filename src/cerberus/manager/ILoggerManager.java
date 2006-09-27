@@ -70,8 +70,6 @@ extends IGeneralManager
 			return logMessage;
 		}
 	}
-	
-	
 
 	public void logMsg( final String info );
 	

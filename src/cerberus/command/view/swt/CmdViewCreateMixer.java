@@ -18,8 +18,8 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public class CmdViewCreateMixer 
 extends ACmdCreate_IdTargetLabelParentAttr 
-implements ICommand
-{
+implements ICommand {
+	
 	/**
 	 * Constructor
 	 * 

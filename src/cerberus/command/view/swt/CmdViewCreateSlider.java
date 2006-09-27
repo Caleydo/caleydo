@@ -1,12 +1,13 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.slider.SliderViewRep;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -17,9 +18,9 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CmdViewCreateSlider 
-extends ACmdCreate_IdTargetLabelParentAttr 
-implements ICommand
-{
+extends ACmdCreate_IdTargetLabelParentXY 
+implements ICommand {
+	
 	/**
 	 * Constructor
 	 * 
@@ -31,6 +32,8 @@ implements ICommand
 			final IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
+		
+		setAttributes(refParameterHandler);
 	}
 
 	/**
@@ -60,6 +63,15 @@ implements ICommand
 		sliderView.drawView();
 	}
 
+	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+		
+		refParameterHandler.setValueAndTypeAndDefault( "iSetId",
+				refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
+				IParameterHandler.ParameterHandlerType.INT,
+				"0");
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException
 	{
 		// TODO Auto-generated method stub

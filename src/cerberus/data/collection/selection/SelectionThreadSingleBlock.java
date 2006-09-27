@@ -28,10 +28,8 @@ import cerberus.data.xml.IMementoItemXML;
  *
  */
 public class SelectionThreadSingleBlock 
-	extends ASelection 
-	implements ISelection, IMementoItemXML, ICollectionLock
-{
-
+extends ASelection 
+implements ISelection, IMementoItemXML, ICollectionLock {
 	
 	/**
 	 * 

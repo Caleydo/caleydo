@@ -3,8 +3,6 @@
  */
 package cerberus.view.gui.swt.progressbar;
 
-import java.util.StringTokenizer;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -23,8 +21,10 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class ProgressBarViewRep extends AViewRep implements IView
-{
+public class ProgressBarViewRep 
+extends AViewRep 
+implements IView {
+	
 	protected int iProgressBarMinValue = 0;
 
 	protected int iProgressBarMaxValue = 100;
@@ -140,15 +140,14 @@ public class ProgressBarViewRep extends AViewRep implements IView
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 
-	public void setProgressBarPercentage(int iProgressPercentage)
+	public void setProgressBarPercentage(int iProgressBarCurrentValue)
 	{
-		this.iProgressBarCurrentValue = iProgressPercentage;
-
+		this.iProgressBarCurrentValue = iProgressBarCurrentValue;
 	}
 	
 	/**
-	 * Extracts the ProgressBar percentage value and calls extractAttributes()
-	 * from the Adapter Base class.
+	 * Retrieves the progress bar percentage value from the parameter handler
+	 * and sets the local variable.
 	 */
 	public void extractAttributes()
 	{
@@ -158,5 +157,4 @@ public class ProgressBarViewRep extends AViewRep implements IView
 			refParameterHandler.getValueInt( "iProgressBarCurrentValue" );
 		
 	}
-
 }

@@ -200,7 +200,8 @@ implements ICommand {
 					token.nextToken(), 
 					0 );
 			
-			if ( iSizeSelectionTokens >= 4 ) {
+			if ( iSizeSelectionTokens >= 4 ) 
+			{
 				iMultiRepeat = 
 					StringConversionTool.convertStringToInt( 
 							token.nextToken(), 
@@ -260,7 +261,8 @@ implements ICommand {
 					token.nextToken(), 
 					0 );
 			
-			if ( iSizeSelectionTokens >= 4 ) {
+			if ( iSizeSelectionTokens >= 4 ) 
+			{
 				iMultiRepeat = 
 					StringConversionTool.convertStringToInt( 
 							token.nextToken(), 
@@ -273,8 +275,6 @@ implements ICommand {
 			}
 			
 			return true;
-		
-		
 	}
 
 }

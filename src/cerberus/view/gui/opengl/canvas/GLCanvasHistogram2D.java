@@ -148,7 +148,7 @@ implements IGLCanvasUser
 
 				if (targetSet.getReadToken()) {
 
-					if (targetSet.getDimensions() < 2) {
+					if (targetSet.getDimensions() < 1) {
 						System.out
 								.println("Can not use a ISet with only one dimension!");
 					}

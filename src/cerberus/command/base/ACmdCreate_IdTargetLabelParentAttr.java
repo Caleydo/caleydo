@@ -12,9 +12,8 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * @author java
  *
  */
-public abstract class ACmdCreate_IdTargetLabelParentAttr extends
-		ACmdCreate_IdTargetLabelParent
-{
+public abstract class ACmdCreate_IdTargetLabelParentAttr 
+extends ACmdCreate_IdTargetLabelParent {
 
 	protected String sAttribute1;
 	

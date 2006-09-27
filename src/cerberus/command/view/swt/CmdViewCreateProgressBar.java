@@ -17,11 +17,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateProgressBar 
-extends ACmdCreate_IdTargetLabelParentXY 
-//ACmdCreateGui 
-implements ICommand
-{
+public class CmdViewCreateProgressBar extends ACmdCreate_IdTargetLabelParentXY implements ICommand {
 	/**
 	 * Constructor
 	 * 
@@ -33,7 +29,7 @@ implements ICommand
 	{
 		super(refGeneralManager, refParameterHandler);
 		
-		setAttributesProgressBar(refParameterHandler);
+		setAttributes(refParameterHandler);
 	}
 
 	/**
@@ -64,7 +60,7 @@ implements ICommand
 		progressBarView.drawView();
 	}
 	
-	protected void setAttributesProgressBar( final IParameterHandler refParameterHandler ) {
+	protected void setAttributes( final IParameterHandler refParameterHandler ) {
 		
 		refParameterHandler.setValueAndTypeAndDefault( "iProgressBarCurrentValue",
 				refParameterHandler.getValueString( 
