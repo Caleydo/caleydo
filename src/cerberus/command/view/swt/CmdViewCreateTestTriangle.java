@@ -17,8 +17,8 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public class CmdViewCreateTestTriangle 
 extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand 
-{
+implements ICommand {
+	
 	/**
 	 * Constructor
 	 * 
@@ -27,8 +27,8 @@ implements ICommand
 	 */
 	public CmdViewCreateTestTriangle( 
 			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) 
-	{
+			final IParameterHandler refParameterHandler) {
+		
 		super(refGeneralManager, refParameterHandler);
 	}
 	
@@ -36,8 +36,8 @@ implements ICommand
 	 * Method creates a test triangle view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
-	public void doCommand() throws CerberusRuntimeException
-	{
+	public void doCommand() throws CerberusRuntimeException {
+		
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
@@ -59,9 +59,8 @@ implements ICommand
 		triangleView.drawView();	
 	}
 
-	public void undoCommand() throws CerberusRuntimeException
-	{
-		// TODO Auto-generated method stub
+	public void undoCommand() throws CerberusRuntimeException {
 		
+		// TODO Auto-generated method stub
 	}
 }

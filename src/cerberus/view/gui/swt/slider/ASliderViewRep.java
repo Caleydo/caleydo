@@ -22,7 +22,7 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class SliderViewRep 
+public abstract class ASliderViewRep 
 extends AViewRep 
 implements IView, IMediatorSender, IMediatorReceiver {
 	
@@ -30,18 +30,16 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	protected Slider refSlider;
 	
-	protected int iSetId;
-	
 	protected int iCurrentSliderValue;
 	
-	public SliderViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, int iParentContainerId, String sLabel)
-	{
+	public ASliderViewRep(IGeneralManager refGeneralManager, 
+			int iViewId, int iParentContainerId, String sLabel) {
+		
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 	}
 	
-	public void initView()
-	{
+	public void initView() {
+		
 	    refSlider = new Slider(refSWTContainer, SWT.HORIZONTAL);
 	    //slider.setBounds(115, 50, 25, 15);
 	    refSlider.setSize(iWidth, iHeight);
@@ -50,39 +48,18 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	    refSlider.setIncrement(1);
 	}
 
-	public void drawView()
-	{
+	public void drawView() {
+		
 	   refSlider.setSelection(iCurrentSliderValue);
 	}
 
-	public void retrieveGUIContainer()
-	{
+	public void retrieveGUIContainer() {
+		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 		.getSingelton().getSWTGUIManager().createWidget(
 				ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
 				iParentContainerId, iWidth, iHeight);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
-	}
-
-	/**
-	 * Retrieves the slider set 
-	 * from the parameter handler
-	 * and sets the local variable.
-	 */
-	public void extractAttributes()
-	{
-		//TODO: optimize this workflow!
-		
-		iSetId = refParameterHandler.getValueInt( "iSetId" );
-	}
-	
-	public void update(Object eventTrigger)
-	{
-		if (eventTrigger instanceof ISelection)
-		{
-			iCurrentSliderValue = ((ISelection)eventTrigger).getOffset();
-			drawView();
-		}
 	}
 }

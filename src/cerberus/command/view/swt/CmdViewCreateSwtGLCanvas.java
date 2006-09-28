@@ -18,8 +18,8 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public class CmdViewCreateSwtGLCanvas 
 extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand 
-{
+implements ICommand {
+	
 	/**
 	 * Constructor
 	 * 
@@ -28,8 +28,8 @@ implements ICommand
 	 */
 	public CmdViewCreateSwtGLCanvas( 
 			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) 
-	{
+			final IParameterHandler refParameterHandler) {
+		
 		super(refGeneralManager, refParameterHandler);
 	}
 	
@@ -37,8 +37,8 @@ implements ICommand
 	 * Method creates a test triangle view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
-	public void doCommand() throws CerberusRuntimeException
-	{
+	public void doCommand() throws CerberusRuntimeException {
+		
 		IViewGLCanvasManager viewManager = ((IViewGLCanvasManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
@@ -60,9 +60,8 @@ implements ICommand
 		swtGLCanvasView.drawView();	
 	}
 
-	public void undoCommand() throws CerberusRuntimeException
-	{
-		// TODO Auto-generated method stub
+	public void undoCommand() throws CerberusRuntimeException {
 		
+		// TODO Auto-generated method stub
 	}
 }

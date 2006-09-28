@@ -126,6 +126,7 @@ implements ICommand {
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
+		
 		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
 				iUniqueTargetId,
 				ManagerObjectType.SELECTION_MULTI_BLOCK );

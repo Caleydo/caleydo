@@ -12,19 +12,19 @@
       <!-- Creating Data -->
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="10991" targetId="15301" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="11992" targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="12993" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
-        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="13993" targetId="45301" label="Storage file"        attrib1="STRING" attrib2="test data from file" />            
-     
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="12993" targetId="35301" label="my Storage from file" attrib1="STRING" attrib2="test data filled by file" />            
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" 				cmdId="13993" targetId="45301" label="Storage file" attrib1="STRING" attrib2="test data from file" />            
+             
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 			cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 			cmdId="21991" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
-        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 			cmdId="22991" targetId="35201" label="Select file" attrib1="0 200 0 1" />  
-            
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 			cmdId="22991" targetId="35201" label="Select file" attrib1="30 200 0 1" />  
+                        
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="32991" targetId="35101" label="target Set for file" attrib1="35201" attrib2="45301" /> 
-
-    	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" 				cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="35101" />
-
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="32991" targetId="35101" label="target Set for file new" attrib1="35201" attrib2="45301" /> 
+     	
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" 				cmdId="99010" targetId="-1" detail="data/MicroarrayData/gpr_format/slide30.gpr" attrib1="SKIP;INT;SKIP;STRING" attrib2="35101" />    
+     	
       <!-- Window 10331 -->
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="10331" label="Cerberus Window 1" attrib1="ROW HORIZONTAL" />   
          
@@ -50,11 +50,12 @@
 
       <!-- Window 11331 -->
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Cerberus Window 2" attrib1="ROW VERTICAL" />   
-	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER"  		cmdId="66991" targetId="19401" label="Slider"  			parent="11331" attrib2="400 100" detail="" />	 
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_STORAGE_SLIDER"  cmdId="66991" targetId="19401" label="Storage Slider"  	parent="11331" attrib2="400 100" detail="35101" />	 
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" cmdId="66991" targetId="20401" label="Selection Slider" parent="11331" attrib2="400 100" detail="35201" attrib3="offset" />
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="18401" label="Pathway" 			parent="11331" attrib2="-1 -1" />
 
 	  <!-- Relations -->
-	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	parent="15201" attrib2="14401" />	
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	parent="15201" attrib1="35201" attrib2="20401" />	
 
  	  <!--Commands not in use at the moment	  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  

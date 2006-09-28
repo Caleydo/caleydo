@@ -1,7 +1,5 @@
 package cerberus.view.gui.swt.data;
 
-import java.util.HashMap;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.graphics.Point;
@@ -17,7 +15,6 @@ import org.eclipse.swt.widgets.Text;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
-import cerberus.data.collection.box.DataContainer;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.IStorageManager;
@@ -25,8 +22,10 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 
-public class DataTableViewRep extends AViewRep implements IDataTableView
-{
+public class DataTableViewRep 
+extends AViewRep 
+implements IDataTableView {
+	
 	protected IStorageManager refStorageManager;
 
 	protected ISelectionManager refSelectionManager;
@@ -43,15 +42,16 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 	
 	protected int iCurrentlyRequestedCollectionId;
 
-	public DataTableViewRep(IGeneralManager refGeneralManager, int iParentId)
-	{
+	public DataTableViewRep(IGeneralManager refGeneralManager, 
+			int iParentId) {
+		
 		super(refGeneralManager, -1, iParentId, "");
 
 		initView();
 	}
 
-	public void initView()
-	{
+	public void initView() {
+		
 		refStorageManager = (IStorageManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.STORAGE);
 
@@ -59,18 +59,18 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 				.getManagerByBaseType(ManagerObjectType.SELECTION);
 	}
 
-	public void drawView()
-	{
+	public void drawView() {
+		
 		// not implemented in this class
 	}
 
-	public void retrieveGUIContainer()
-	{
+	public void retrieveGUIContainer() {
+		
 		// not implemented in this class
 	}
 
-	public void initTable()
-	{
+	public void initTable() {
+		
 		refTable = new Table(refSWTContainer, SWT.BORDER | SWT.V_SCROLL);
 		refTable.setHeaderVisible(true);
 		refTable.setLinesVisible(true);
@@ -79,8 +79,8 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 		initTableEditor();
 	}
 
-	public void createStorageTable(int iRequestedStorageId)
-	{
+	public void createStorageTable(int iRequestedStorageId) {
+		
 		TableItem item;
 		TableColumn column;
 		
@@ -102,6 +102,13 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 				iNumberOfTableRows = storageAllSize[storageSizeIndex];
 			}
 		}
+		
+		// Restrict table rows to 100
+		// TODO: paging feature for big tables
+		if (iNumberOfTableRows > 100)
+		{
+			iNumberOfTableRows = 100;
+		}
 
 		for (int iTableRowIndex = 0; iTableRowIndex < iNumberOfTableRows; iTableRowIndex++)
 		{
@@ -115,7 +122,7 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 			column = new TableColumn(refTable, SWT.NONE);
 			column.setText("Int data");
 
-			for (int dataIndex = 0; dataIndex < intData.length; dataIndex++)
+			for (int dataIndex = 0; dataIndex < iNumberOfTableRows; dataIndex++)
 			{
 				item = refTable.getItem(dataIndex);
 				item.setText(iTableColumnIndex, Float
@@ -133,7 +140,7 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 			column = new TableColumn(refTable, SWT.NONE);
 			column.setText("Float data");
 
-			for (int dataIndex = 0; dataIndex < floatData.length; dataIndex++)
+			for (int dataIndex = 0; dataIndex < iNumberOfTableRows; dataIndex++)
 			{
 				item = refTable.getItem(dataIndex);
 				item.setText(iTableColumnIndex, Float
@@ -151,7 +158,7 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 			column = new TableColumn(refTable, SWT.NONE);
 			column.setText("String data");
 
-			for (int dataIndex = 0; dataIndex < stringData.length; dataIndex++)
+			for (int dataIndex = 0; dataIndex < iNumberOfTableRows; dataIndex++)
 			{
 				item = refTable.getItem(dataIndex);
 				item.setText(iTableColumnIndex, stringData[dataIndex]);
@@ -168,7 +175,7 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 			column = new TableColumn(refTable, SWT.NONE);
 			column.setText("Boolean data");
 
-			for (int dataIndex = 0; dataIndex < booleanData.length; dataIndex++)
+			for (int dataIndex = 0; dataIndex < iNumberOfTableRows; dataIndex++)
 			{
 				item = refTable.getItem(dataIndex);
 				item.setText(iTableColumnIndex, Boolean
@@ -180,8 +187,8 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 		}
 	}
 
-	public void createSelectionTable(int iRequestedSelectionId)
-	{
+	public void createSelectionTable(int iRequestedSelectionId) {
+		
 		TableItem item;
 
 		reinitializeTable();
@@ -215,18 +222,18 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 		multiRepeatColumn.pack();
 	}
 
-	public void redrawTable()
-	{
+	public void redrawTable() {
+		
 		refSWTContainer.redraw();
 	}
 
-	public void setExternalGUIContainer(Composite refSWTContainer)
-	{
+	public void setExternalGUIContainer(Composite refSWTContainer) {
+		
 		this.refSWTContainer = refSWTContainer;
 	}
 
-	public void reinitializeTable()
-	{
+	public void reinitializeTable() {
+		
 		refTable.removeAll();
 
 		// remove old columns
@@ -236,8 +243,8 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 		}
 	}
 
-	protected void initTableEditor()
-	{
+	protected void initTableEditor() {
+		
 		final TableEditor editor = new TableEditor(refTable);
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
@@ -306,8 +313,9 @@ public class DataTableViewRep extends AViewRep implements IDataTableView
 		});
 	}
 	
-	protected void updateData(TableItem refUpdatedItem, int iColumnIndexOfItem)
-	{
+	protected void updateData(TableItem refUpdatedItem, 
+			int iColumnIndexOfItem) {
+		
 		ISelection tmpSelection =
 			refSelectionManager.getItemSelection(iCurrentlyRequestedCollectionId);
 		

@@ -29,6 +29,7 @@ implements ICommand {
 	public CmdViewCreateDataExplorer(
 			final IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler ) {
+		
 		super(refGeneralManager, refParameterHandler);
 	}
 
@@ -37,6 +38,7 @@ implements ICommand {
 	 * and calls the init and draw method.
 	 */
 	public void doCommand() throws CerberusRuntimeException {
+		
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
@@ -59,7 +61,7 @@ implements ICommand {
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {
-		// TODO Auto-generated method stub
 		
+		// TODO Auto-generated method stub	
 	}
 }

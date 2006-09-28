@@ -33,7 +33,8 @@ import cerberus.command.view.swt.CmdViewCreateHeatmap;
 import cerberus.command.view.swt.CmdViewCreateMixer;
 import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.view.swt.CmdViewCreateProgressBar;
-import cerberus.command.view.swt.CmdViewCreateSlider;
+import cerberus.command.view.swt.CmdViewCreateSelectionSlider;
+import cerberus.command.view.swt.CmdViewCreateStorageSlider;
 import cerberus.command.view.swt.CmdViewCreateSwtGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateTestTriangle;
 import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
@@ -322,10 +323,19 @@ extends ACommand
 			break;
 		}
 
-		case CREATE_VIEW_SLIDER:
+		case CREATE_VIEW_STORAGE_SLIDER:
 		{
 			createdCommand =
-				new CmdViewCreateSlider(
+				new CmdViewCreateStorageSlider(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_VIEW_SELECTION_SLIDER:
+		{
+			createdCommand =
+				new CmdViewCreateSelectionSlider(
 						refGeneralManager,
 						phAttributes );			
 			break;

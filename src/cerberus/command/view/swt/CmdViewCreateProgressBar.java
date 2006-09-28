@@ -17,7 +17,9 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * @author Marc Streit
  *
  */
-public class CmdViewCreateProgressBar extends ACmdCreate_IdTargetLabelParentXY implements ICommand {
+public class CmdViewCreateProgressBar 
+extends ACmdCreate_IdTargetLabelParentXY 
+implements ICommand {
 	/**
 	 * Constructor
 	 * 
@@ -25,8 +27,8 @@ public class CmdViewCreateProgressBar extends ACmdCreate_IdTargetLabelParentXY i
 	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateProgressBar( IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler ) 
-	{
+			final IParameterHandler refParameterHandler ) {
+		
 		super(refGeneralManager, refParameterHandler);
 		
 		setAttributes(refParameterHandler);
@@ -36,8 +38,8 @@ public class CmdViewCreateProgressBar extends ACmdCreate_IdTargetLabelParentXY i
 	 * Method creates a progress bar view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
-	public void doCommand() throws CerberusRuntimeException
-	{
+	public void doCommand() throws CerberusRuntimeException {
+		
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
@@ -69,9 +71,8 @@ public class CmdViewCreateProgressBar extends ACmdCreate_IdTargetLabelParentXY i
 				"0");
 	}
 
-	public void undoCommand() throws CerberusRuntimeException
-	{
-		// TODO Auto-generated method stub
+	public void undoCommand() throws CerberusRuntimeException {
 		
+		// TODO Auto-generated method stub		
 	}
 }

@@ -1,6 +1,5 @@
 package cerberus.command.event;
 
-
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.IGeneralManager;
@@ -12,23 +11,22 @@ import cerberus.manager.IEventPublisher;
 
 public class CmdEventRelationCreate 
 extends ACmdCreate_IdTargetLabelParentAttr 
-implements ICommand
-{
+implements ICommand {
+	
 	protected int iSenderId;
 
 	protected int iReceiverId;
 	
 	public CmdEventRelationCreate(IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler)
-	{
+			final IParameterHandler refParameterHandler) {
+		
 		// set unique ID to -1 because it is unknown at this moment
 		super(refGeneralManager, refParameterHandler);
 		
 		setAttributes();
 	}
 
-	public void doCommand() throws CerberusRuntimeException
-	{
+	public void doCommand() throws CerberusRuntimeException {
 		
 		((IEventPublisher)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
@@ -39,8 +37,8 @@ implements ICommand
 	 * Extracts sender and receiver ID of the Event Relation.
 	 *
 	 */
-	protected void setAttributes()
-	{
+	protected void setAttributes() {
+		
 		// Extract attrib1 which represents sender
 		iSenderId = (StringConversionTool.convertStringToInt(
 				sAttribute1, -1));
@@ -50,8 +48,8 @@ implements ICommand
 				sAttribute2, -1));
 	}
 
-	public void undoCommand() throws CerberusRuntimeException
-	{
+	public void undoCommand() throws CerberusRuntimeException {
+		
 		// TODO Auto-generated method stub
 		
 	}

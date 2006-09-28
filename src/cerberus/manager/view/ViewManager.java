@@ -24,7 +24,8 @@ import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
 import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
-import cerberus.view.gui.swt.slider.SliderViewRep;
+import cerberus.view.gui.swt.slider.SelectionSliderViewRep;
+import cerberus.view.gui.swt.slider.StorageSliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
 import cerberus.xml.parser.command.CommandQueueSaxType;
@@ -38,8 +39,8 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
  */
 public class ViewManager 
 extends AAbstractManager
-implements IViewManager, IViewGLCanvasManager
-{
+implements IViewManager, IViewGLCanvasManager {
+	
 	protected HashMap<Integer, IView> hashViewId2View;
 	
 	public ViewManager(IGeneralManager setGeneralManager)
@@ -154,8 +155,11 @@ implements IViewManager, IViewGLCanvasManager
 		case VIEW_SWT_SCATTERPLOT3D:
 			return new Scatterplot2DViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
-		case VIEW_SWT_SLIDER:
-			return new SliderViewRep(
+		case VIEW_SWT_SELECTION_SLIDER:
+			return new SelectionSliderViewRep(
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
+		case VIEW_SWT_STORAGE_SLIDER:
+			return new StorageSliderViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
 		case VIEW_SWT_JOGL_TEST_TRIANGLE:
 			return new TestTriangleViewRep(
