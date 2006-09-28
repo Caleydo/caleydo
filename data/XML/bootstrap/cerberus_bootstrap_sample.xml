@@ -36,10 +36,6 @@
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" 	cmdId="68991" targetId="11401" label="Canvas" 			parent="10341" attrib2="500 500" detail="1077991" />		  
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" 	cmdId="68971" targetId="19401" label="Canvas" 			parent="10341" attrib2="500 500" detail="1077992" />		  
  	 	
- 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
- 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
- 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
-     	
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_TRIANGLE_TEST"  	cmdId="68992" targetId="77401" label="GL Triangle A" 	parent="19401" attrib1="0 2 0" attrib2="0 0 1 0.85" detail="red" />		  
 
       <!-- Container 11341 -->
@@ -56,6 +52,7 @@
 
 	  <!-- Relations -->
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	parent="15201" attrib1="35201" attrib2="20401" />	
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	parent="15201" attrib1="20401" attrib2="10401" />	
 
  	  <!--Commands not in use at the moment	  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
@@ -63,6 +60,10 @@
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_TRIANGLE_TEST"  	cmdId="68992" targetId="77401" label="GL Triangle A" 	parent="19401" attrib1="0 2 0" attrib2="0 0 1 0.85" detail="red" />		  
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" 		cmdId="70991" targetId="33401" label="Heatmap" 			parent="11341" attrib2="300 300" />
+
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
+ 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
      -->
      
    </CommandBuffer>

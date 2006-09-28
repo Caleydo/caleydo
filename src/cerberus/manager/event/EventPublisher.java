@@ -92,7 +92,16 @@ public class EventPublisher implements IEventPublisher
 	 */
 	public void update(Object eventTrigger)
 	{
-		hashSender2Mediator.get((IMediatorSender)eventTrigger).updateReceiver(eventTrigger);
+		IMediator tmpMediator = hashSender2Mediator.get((IMediatorSender)eventTrigger);
+		
+		if (tmpMediator != null)
+		{
+			tmpMediator.updateReceiver(eventTrigger);
+		}
+		else
+		{
+			//TODO: print message
+		}
 	}
 	
 	public void removeMediator(IMediatorSender sender)

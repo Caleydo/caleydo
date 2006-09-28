@@ -18,6 +18,7 @@ import cerberus.data.collection.StorageType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.IStorageManager;
+import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
@@ -196,9 +197,9 @@ implements IDataTableView {
 		iCurrentlyRequestedCollectionId = iRequestedSelectionId;
 
 		final TableColumn lengthColumn = new TableColumn(refTable, SWT.NONE);
-		lengthColumn.setText("Length");
+		lengthColumn.setText("Offset");
 		final TableColumn offsetColumn = new TableColumn(refTable, SWT.NONE);
-		offsetColumn.setText("Offset");
+		offsetColumn.setText("Length");
 		final TableColumn multiOffsetColumn = new TableColumn(refTable,
 				SWT.NONE);
 		multiOffsetColumn.setText("MultiOffset");
@@ -321,14 +322,14 @@ implements IDataTableView {
 		
 		switch(iColumnIndexOfItem)
 		{
-		// length
-		case 0:
-			tmpSelection.setLength(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(), -1));
 		// offset
-		case 1:
+		case 0:
 			tmpSelection.setOffset(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(), -1));		
+					refUpdatedItem.getText(), -1));	
+		// length
+		case 1:
+			tmpSelection.setLength(StringConversionTool.convertStringToInt(
+					refUpdatedItem.getText(), -1));	
 		// mulit offset
 		case 2:
 			tmpSelection.setMultiOffset(StringConversionTool.convertStringToInt(
@@ -338,5 +339,10 @@ implements IDataTableView {
 			tmpSelection.setMultiRepeat(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(), -1));
 		}
+	}
+	
+	public void updateSelection( int iSelectionId ) {
+		
+		createSelectionTable( iSelectionId );
 	}
 }

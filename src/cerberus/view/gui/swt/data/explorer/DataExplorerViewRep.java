@@ -2,7 +2,6 @@ package cerberus.view.gui.swt.data.explorer;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -17,17 +16,14 @@ import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
+import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.swt.data.explorer.model.AModel;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
@@ -37,8 +33,10 @@ import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
 import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 
-public class DataExplorerViewRep extends AViewRep implements IView
-{
+public class DataExplorerViewRep 
+extends AViewRep 
+implements IView, IMediatorReceiver {
+	
 	protected static final Object StorageModel = null;
 
 	protected Composite refSWTContainer;
@@ -59,8 +57,8 @@ public class DataExplorerViewRep extends AViewRep implements IView
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
 			int iParentContainerId, 
-			String sLabel)
-	{
+			String sLabel) {
+		
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
 
 //		IViewManager viewManager = (IViewManager) refGeneralManager
@@ -75,15 +73,15 @@ public class DataExplorerViewRep extends AViewRep implements IView
 				this.refGeneralManager, iViewId);
 	}
 
-	public void initView()
-	{
+	public void initView() {
+		
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.type = SWT.HORIZONTAL;
 		refSWTContainer.setLayout(fillLayout);
 	}
 
-	public void drawView()
-	{
+	public void drawView() {
+		
 		// Create the tree viewer as a child of the composite parent
 		treeViewer = new TreeViewer(refSWTContainer);
 		treeViewer.setContentProvider(new DataExplorerContentProvider());
@@ -102,8 +100,7 @@ public class DataExplorerViewRep extends AViewRep implements IView
 
 	}
 
-	public void retrieveGUIContainer()
-	{	
+	public void retrieveGUIContainer() {	
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
@@ -119,8 +116,8 @@ public class DataExplorerViewRep extends AViewRep implements IView
 	 * 
 	 * @return Reference to the current SetModel
 	 */
-	protected SetModel getInitalInput()
-	{
+	protected SetModel getInitalInput() {
+		
 		SetModel currentSetModel;
 		StorageModel currentStorageModel;
 		SelectionModel currentSelectionModel;
@@ -287,8 +284,7 @@ public class DataExplorerViewRep extends AViewRep implements IView
 	 * Adds selection change listener. In this method the selected tree entries
 	 * are handled.
 	 */
-	protected void hookListeners()
-	{
+	protected void hookListeners() {
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener()
 		{
 			public void selectionChanged(SelectionChangedEvent event)
@@ -322,5 +318,10 @@ public class DataExplorerViewRep extends AViewRep implements IView
 				}
 			}
 		});
+	}
+	
+	public void update( Object eventTrigger ) {
+		
+		refDataTableViewRep.updateSelection(((ISelection)eventTrigger).getId());
 	}
 }

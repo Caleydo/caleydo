@@ -40,7 +40,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public class SingeltonManager implements ISingelton {
+public class SingeltonManager 
+implements ISingelton {
 
 	private final IGeneralManager refGeneralManager;
 	
@@ -191,6 +192,13 @@ public class SingeltonManager implements ISingelton {
 	 */
 	public IDistComponentManager getDComponentManager() {
 		return refDComponentManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getEventManager()
+	 */
+	public IEventPublisher getEventPublisher() {
+		return refEventPublisher;
 	}
 	
 	/* (non-Javadoc)

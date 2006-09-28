@@ -22,9 +22,9 @@ import cerberus.data.collection.thread.lock.ICollectionLock;
  * 
  * @author Michael Kalkusch
  */
-public abstract class ASelection extends ACollectionThreadItem implements
-		ISelection
-{
+public abstract class ASelection 
+extends ACollectionThreadItem 
+implements ISelection {
 
 	/**
 	 * Defines the offset of the virtual array.
@@ -82,8 +82,8 @@ public abstract class ASelection extends ACollectionThreadItem implements
 	{
 		this.iSelectionOffset = iSetOffset;
 		
-//		((EventPublisher)refGeneralManager.
-//				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).update(this);
+		((EventPublisher)refGeneralManager.getSingelton().
+				getEventPublisher()).update(this);
 	}
 
 	/* (non-Javadoc)

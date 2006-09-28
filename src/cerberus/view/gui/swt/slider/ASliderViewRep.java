@@ -2,13 +2,17 @@ package cerberus.view.gui.swt.slider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Slider;
 
 import cerberus.data.collection.ISelection;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
@@ -30,7 +34,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	protected Slider refSlider;
 	
-	protected int iCurrentSliderValue;
+	protected int iCurrentSliderValue = 50; //default value (middle position)
 	
 	public ASliderViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel) {
@@ -45,7 +49,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	    refSlider.setSize(iWidth, iHeight);
 	    refSlider.setMinimum(0);
 	    refSlider.setMaximum(100);
-	    refSlider.setIncrement(1);
+	    //refSlider.setIncrement(1);
 	}
 
 	public void drawView() {

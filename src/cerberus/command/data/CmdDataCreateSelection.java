@@ -193,11 +193,11 @@ implements ICommand {
 			
 			int iSizeSelectionTokens = token.countTokens();
 			
-			iOffset = StringConversionTool.convertStringToInt( 
+			iLength = StringConversionTool.convertStringToInt( 
 					token.nextToken(), 
 					0 );
 			
-			iLength = StringConversionTool.convertStringToInt( 
+			iOffset = StringConversionTool.convertStringToInt( 
 					token.nextToken(), 
 					0 );
 			
@@ -254,11 +254,11 @@ implements ICommand {
 			
 			int iSizeSelectionTokens = token.countTokens();
 			
-			iOffset = StringConversionTool.convertStringToInt( 
+			iLength = StringConversionTool.convertStringToInt( 
 					token.nextToken(), 
 					0 );
 			
-			iLength = StringConversionTool.convertStringToInt( 
+			iOffset = StringConversionTool.convertStringToInt( 
 					token.nextToken(), 
 					0 );
 			

@@ -38,6 +38,8 @@ public interface ISingelton {
 	
 	public abstract IViewGLCanvasManager getViewGLCanvasManager();
 	
+	public abstract IEventPublisher getEventPublisher();
+	
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.
