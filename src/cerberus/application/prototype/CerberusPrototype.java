@@ -17,6 +17,8 @@ import cerberus.xml.parser.handler.command.CommandSaxHandler;
 
 public class CerberusPrototype
 {
+	private String sFileName;
+		
 	protected IGeneralManager refGeneralManager;
 	protected ISWTGUIManager refSWTGUIManager;
 	protected IViewManager refViewManager;	
@@ -25,7 +27,13 @@ public class CerberusPrototype
 	
 	public static void main(String[] args) 
 	{
-		CerberusPrototype prototype = new CerberusPrototype();	
+		CerberusPrototype prototype = new CerberusPrototype();
+		
+		if ( args.length > 0 ) 
+		{
+			prototype.setXmlFileName( args[0] ); 	
+		}
+		
 		prototype.run();
 	}
 	
@@ -54,6 +62,7 @@ public class CerberusPrototype
 		
 		refXmlParserManager.registerSaxHandler( cmdHandler );
 		
+		sFileName = "data/XML/bootstrap/cerberus_bootstrap_sample_demo.xml";
 	}
 
 	public void run()
@@ -63,13 +72,19 @@ public class CerberusPrototype
 		refSWTGUIManager.runApplication();
 	}
 	
+	public void setXmlFileName( String sFileName ) {
+		this.sFileName = sFileName;
+	}
+	
+	public String getXmlFileName() {
+		return this.sFileName;
+	}
+	
 	protected void parseBootstrapDataFromXML()
 	{
-		String filename = "data/XML/bootstrap/cerberus_bootstrap_sample.xml";
-		
 		InputSource inSource = 
-			CerberusInputStream.openInputStreamFromFile( filename );
-					
+			CerberusInputStream.openInputStreamFromFile( sFileName );
+				
 		CerberusInputStream.parseOnce( inSource , refXmlParserManager );
 	}
 }
