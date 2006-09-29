@@ -211,14 +211,14 @@ implements IDataTableView {
 				.getItemSelection(iRequestedSelectionId);
 
 		item = new TableItem(refTable, SWT.NONE);
-		item.setText(new String[]
-		{ Integer.toString(refCurrentSelection.length()),
-				Integer.toString(refCurrentSelection.getOffset()),
+		item.setText(
+				new String[] { Integer.toString(refCurrentSelection.getOffset()),
+				Integer.toString(refCurrentSelection.length()),
 				Integer.toString(refCurrentSelection.getMultiOffset()),
 				Integer.toString(refCurrentSelection.getMultiRepeat()) });
 
-		lengthColumn.pack();
 		offsetColumn.pack();
+		lengthColumn.pack();
 		multiOffsetColumn.pack();
 		multiRepeatColumn.pack();
 	}
@@ -326,18 +326,24 @@ implements IDataTableView {
 		case 0:
 			tmpSelection.setOffset(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(), -1));	
+			break;
 		// length
 		case 1:
 			tmpSelection.setLength(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(), -1));	
+			break;
 		// mulit offset
 		case 2:
 			tmpSelection.setMultiOffset(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(), -1));
+			break;
 		// multi repeat
 		case 3:
 			tmpSelection.setMultiRepeat(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(), -1));
+			break;
+		default:
+			break;
 		}
 	}
 	

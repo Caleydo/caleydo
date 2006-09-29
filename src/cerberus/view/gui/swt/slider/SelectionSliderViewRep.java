@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Listener;
 
 import cerberus.data.collection.ISelection;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 
 public class SelectionSliderViewRep 
 extends ASliderViewRep {
@@ -54,6 +55,11 @@ extends ASliderViewRep {
 	
 	// TODO: retrieve locking token!
 	public void update(Object eventTrigger) {
+		
+		int triggerId = ((ISelection)eventTrigger).getId();	
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+				"Slider update called by " +triggerId,
+				LoggerType.VERBOSE );
 		
 		if (eventTrigger instanceof ISelection)
 		{

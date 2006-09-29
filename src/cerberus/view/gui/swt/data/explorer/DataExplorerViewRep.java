@@ -322,6 +322,11 @@ implements IView, IMediatorReceiver {
 	
 	public void update( Object eventTrigger ) {
 		
-		refDataTableViewRep.updateSelection(((ISelection)eventTrigger).getId());
+		int triggerId = ((ISelection)eventTrigger).getId();	
+		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+				"Data Explorer update called by " +triggerId,
+				LoggerType.VERBOSE );
+		
+		refDataTableViewRep.updateSelection(triggerId);
 	}
 }

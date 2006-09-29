@@ -55,7 +55,14 @@ implements IMediator
 		Iterator <IMediatorReceiver> iter = vecReceiver.iterator();
 		
 		while ( iter.hasNext() ) {
-			iter.next().update( eventTrigger );
+			
+			IMediatorReceiver currentReceiver = (IMediatorReceiver)iter.next();
+			
+			// Prevent circular updates
+			if (!currentReceiver.getClass().equals(eventTrigger.getClass()))
+			{
+				currentReceiver.update( eventTrigger );
+			}
 		}
 	}
 

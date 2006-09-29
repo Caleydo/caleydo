@@ -21,7 +21,7 @@
                         
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="32991" targetId="35101" label="target Set for file new" attrib1="35201" attrib2="45301"  detail="CREATE_SET_PLANAR" /> 
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" 					cmdId="32991" targetId="35101" label="target Set for file new" attrib1="35201" attrib2="45301" /> 
      	
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" 				cmdId="99010" targetId="-1" detail="data/MicroarrayData/gpr_format/slide30.gpr" attrib1="SKIP;INT;SKIP;STRING" attrib2="35101" />    
      	
@@ -47,12 +47,12 @@
       <!-- Window 11331 -->
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Cerberus Window 2" attrib1="ROW VERTICAL" />   
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_STORAGE_SLIDER"  cmdId="66991" targetId="19401" label="Storage Slider"  	parent="11331" attrib2="400 100" detail="35101" />	 
-	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" cmdId="66991" targetId="20401" label="Selection Slider" parent="11331" attrib2="400 100" detail="35201" attrib3="offset" />
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" cmdId="67991" targetId="20401" label="Selection Slider" parent="11331" attrib2="400 100" detail="35201" attrib3="offset" />
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="18401" label="Pathway" 			parent="11331" attrib2="-1 -1" />
 
 	  <!-- Relations -->
-	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	parent="15201" attrib1="35201" attrib2="20401" />	
-	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	parent="15201" attrib1="20401" attrib2="10401" />	
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="68991" targetId="10501" label="Event Relation"	attrib1="35201" attrib2="20401" />
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" 		cmdId="69991" targetId="11501" label="Event Relation"	attrib1="35201" attrib2="10401" />
 
  	  <!--Commands not in use at the moment	  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
@@ -64,6 +64,10 @@
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
+
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_MEDIATOR"   cmdId="68991" targetId="920501" label="Mediator A" attrib1="list of sender" attrib2="listerr of receiver" /> 
+    	<Cmd mementoId="0" process="RUN_CMD_NOW" type="ADD_MEDIATOR"       cmdId="68991" targetId="920501" label="Mediator A" attrib1="list of sender" attrib2="listerr of receiver" /> 
+    	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DELETE_MEDIATOR"   cmdId="68991" targetId="920501" label="Mediator A" attrib1="list of sender" attrib2="listerr of receiver" />
      -->
      
    </CommandBuffer>
