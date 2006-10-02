@@ -18,7 +18,6 @@ import cerberus.data.collection.StorageType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.IStorageManager;
-import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
@@ -283,7 +282,7 @@ implements IDataTableView {
 										case SWT.TRAVERSE_RETURN:
 											item.setText(columnIndexFinal, text.getText());
 											updateData(item, columnIndexFinal);
-																						
+											
 										// FALL THROUGH
 										case SWT.TRAVERSE_ESCAPE:
 											text.dispose();

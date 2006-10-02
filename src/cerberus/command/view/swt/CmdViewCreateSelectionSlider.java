@@ -81,7 +81,7 @@ implements ICommand {
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.STRING,
-				"offset");
+				"invalid selection field");
 	}
 	
 	public void undoCommand() throws CerberusRuntimeException {

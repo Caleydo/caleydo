@@ -2,17 +2,12 @@ package cerberus.view.gui.swt.slider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Slider;
 
-import cerberus.data.collection.ISelection;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
@@ -54,6 +49,17 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 	public void drawView() {
 		
+	   // Check and reset minium and maximum of slider
+	   if (iCurrentSliderValue > refSlider.getMaximum())
+	   {
+		   refSlider.setMaximum(iCurrentSliderValue);
+	   }
+	   else if (iCurrentSliderValue < refSlider.getMinimum())
+	   {
+		   refSlider.setMinimum(iCurrentSliderValue);
+	   }
+		
+	   // Set current slider value
 	   refSlider.setSelection(iCurrentSliderValue);
 	}
 

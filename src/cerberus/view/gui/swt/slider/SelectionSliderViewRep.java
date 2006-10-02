@@ -33,8 +33,22 @@ extends ASliderViewRep {
 					refGeneralManager.getSingelton().getSelectionManager()
 						.getItemSelection(iSelectionId);
 				
-					//TODO: implement other selection fields
-					tmpSelection.setOffset(refSlider.getSelection());	
+				if (sSelectionFieldName.equals("length"))
+				{
+					tmpSelection.setLength(refSlider.getSelection());
+				}
+				else if (sSelectionFieldName.equals("offset"))
+				{
+					tmpSelection.setOffset(refSlider.getSelection());
+				}
+				else if (sSelectionFieldName.equals("multioffset"))
+				{
+					tmpSelection.setMultiOffset(refSlider.getSelection());
+				}
+				else if (sSelectionFieldName.equals("multirepeat"))
+				{
+					tmpSelection.setMultiRepeat(refSlider.getSelection());
+				}	
 			}
 		});
 	}

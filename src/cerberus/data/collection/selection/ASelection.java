@@ -92,6 +92,9 @@ implements ISelection {
 	public void setLength(int iSetLength)
 	{
 		this.iSelectionLength = iSetLength;
+		
+		((EventPublisher)refGeneralManager.getSingelton().
+				getEventPublisher()).update(this);
 	}
 
 	/* (non-Javadoc)
