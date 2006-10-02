@@ -1,6 +1,8 @@
 package cerberus.manager.event;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
 
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
@@ -15,7 +17,11 @@ public class EventPublisher implements IEventPublisher
 {
 	protected IGeneralManager refGeneralManager;
 	
-	protected HashMap<IMediatorSender, IMediator> hashSender2Mediator;
+	protected HashMap<Integer, IMediator> hashMediatorId2Mediator;
+	
+	protected HashMap<IMediatorSender, Vector<IMediator>> hashSender2Mediators;
+	
+	protected HashMap<IMediatorReceiver, Vector<IMediator>> hashReceiver2Mediators;
 	
 	/**
 	 * Constructor. 
@@ -26,63 +32,97 @@ public class EventPublisher implements IEventPublisher
 	{
 		this.refGeneralManager = refGeneralManager;
 		
-		hashSender2Mediator = new HashMap<IMediatorSender, IMediator>();
+		hashSender2Mediators = new HashMap<IMediatorSender, Vector<IMediator>>();
+		hashReceiver2Mediators = new HashMap<IMediatorReceiver, Vector<IMediator>>();
 	}
-
-	/**
-	 * Creates the mediator and registers sender and receiver.
-	 * Additionally the sender mediator relation is stored in the hashmap.
-	 * 
-	 * @see cerberus.manager.IEventPublisher#registerSenderToReceiver(cerberus.manager.event.mediator.IMediatorSender, cerberus.manager.event.mediator.IMediatorReceiver)
-	 */
-	public void registerSenderToReceiver(IMediatorSender sender, IMediatorReceiver receiver)
+	
+	public void createMediator(int iMediatorId, 
+			Vector<Integer> vecSenderIDs, Vector<Integer> vecReceiverIDs)
 	{
-		IMediator newMediator = new LockableMediator(sender);
-
-		newMediator.register(receiver);
+		IMediator newMediator = new LockableMediator(iMediatorId);
 		
-		hashSender2Mediator.put(sender, newMediator);
+		Iterator<Integer> iterSenderIDs = vecSenderIDs.iterator();
+		Iterator<Integer> iterReceiverIDs = vecReceiverIDs.iterator();
+	
+		// Register sender
+		while (iterSenderIDs.hasNext())
+		{
+			IMediatorSender sender = (IMediatorSender)refGeneralManager.
+				getItem(iterSenderIDs.next());
+		
+			newMediator.register(sender);
+			
+			if (!hashSender2Mediators.containsKey(sender))
+			{
+				hashSender2Mediators.put(sender, new Vector<IMediator>());
+			}
+			hashSender2Mediators.get(sender).add(newMediator);
+		}
+		
+		// Register receiver
+		while (iterReceiverIDs.hasNext())
+		{
+			IMediatorReceiver receiver = (IMediatorReceiver)refGeneralManager.
+				getItem(iterReceiverIDs.next());
+		
+			newMediator.register(receiver);
+			
+			if (!hashReceiver2Mediators.containsKey(receiver))
+			{
+				hashReceiver2Mediators.put(receiver, new Vector<IMediator>());
+			}
+			hashReceiver2Mediators.get(receiver).add(newMediator);
+		}
 	}
 
-	/**
-	 * Method takes ID from sender and receiver as parameters
-	 * and requests the IMediatorSender and IMediatorReceiver
-	 * objects from the general manager.
-	 * 
-	 * @param iMediatorSenderId 
-	 * @param iMediatorReceiverId 
-	 * @see cerberus.manager.IEventPublisher#registerSenderToReceiver(int, int)
-	 */
-	public void registerSenderToReceiver(int iMediatorSenderId, int iMediatorReceiverId)
-	{
-		IMediatorSender sender = (IMediatorSender)refGeneralManager.
-			getItem(iMediatorSenderId);
-		
-		IMediatorReceiver receiver = (IMediatorReceiver)refGeneralManager.
-			getItem(iMediatorReceiverId);
-		
-		registerSenderToReceiver(sender, receiver);
-	}
-
-	public void registerSenderToSender(IMediatorSender senderExisting, IMediatorSender senderNew)
+	public void registerSenderToMediator(int iMediatorId, IMediatorSender sender)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void unregister(IMediatorSender sender, IMediatorReceiver receiver)
+	public void registerSenderToMediator(int iMediatorId, int iMediatorSenderId)
 	{
 		// TODO Auto-generated method stub
-
+		
 	}
 
-	public void unregister(IMediatorSender senderExisting,
-			IMediatorSender senderRemove)
+	public void registerReceiverToMediator(int iMediatorId, IMediatorReceiver receiver)
 	{
 		// TODO Auto-generated method stub
-
+		
 	}
 
+	public void registerReceiverToMediator(int iMediatorId, int iMediatorReceiverId)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void unregisterSenderToMediator(int iMediatorId, IMediatorSender sender)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void unregisterSenderToMediator(int iMediatorId, int iMediatorSenderId)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void unregisterReceiverToMediator(int iMediatorId, IMediatorReceiver receiver)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void unregisterReceiverToMediator(int iMediatorId, int iMediatorReceiverId)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/**
 	 * Casts the event trigger object to ISender and looks up 
 	 * the Mediator for this sender.
@@ -92,15 +132,29 @@ public class EventPublisher implements IEventPublisher
 	 */
 	public void update(Object eventTrigger)
 	{
-		IMediator tmpMediator = hashSender2Mediator.get((IMediatorSender)eventTrigger);
-		
-		if (tmpMediator != null)
+		// Prevent update during initialization of data.
+		if (hashSender2Mediators.isEmpty())
 		{
-			tmpMediator.updateReceiver(eventTrigger);
+			return;
 		}
-		else
+		
+		Vector<IMediator> vecMediators = hashSender2Mediators.get((IMediatorSender)eventTrigger);
+		Iterator<IMediator> iterMediators = vecMediators.iterator();
+		
+		IMediator tmpMediator;
+		
+		while (iterMediators.hasNext())
 		{
-			//TODO: print message
+			tmpMediator = iterMediators.next();
+			
+			if (tmpMediator != null)
+			{
+				tmpMediator.updateReceiver(eventTrigger);
+			}
+			else
+			{
+				//TODO: print message
+			}
 		}
 	}
 	
@@ -176,5 +230,6 @@ public class EventPublisher implements IEventPublisher
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
+
+

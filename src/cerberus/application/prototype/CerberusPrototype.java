@@ -62,7 +62,7 @@ public class CerberusPrototype
 		
 		refXmlParserManager.registerSaxHandler( cmdHandler );
 		
-		sFileName = "data/XML/bootstrap/cerberus_bootstrap_sample_demo.xml";
+		sFileName = "data/XML/bootstrap/cerberus_bootstrap_sample_marc.xml";
 	}
 
 	public void run()

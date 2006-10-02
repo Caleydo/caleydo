@@ -1,25 +1,68 @@
 package cerberus.manager;
 
+import java.util.Vector;
+
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 
 public interface IEventPublisher extends IGeneralManager
 {
+
+	/**
+	 * Creates a mediator and registers the senders and receivers
+	 * to this mediator.
+	 */
+	public void createMediator (int iMediatorId, Vector<Integer> vecSenderIDs, 
+			Vector<Integer> vecReceiverIDs);
 	
-	public void registerSenderToReceiver( IMediatorSender sender,
-			IMediatorReceiver receiver );
+	/**
+	 * Adds a sender to an existing mediator. 
+	 */
+	public void registerSenderToMediator (int iMediatorId, 
+			IMediatorSender sender);
 	
-	public void registerSenderToReceiver( int iMediatorSenderId,
-			int iMediatorReceiverId );
+	/**
+	 * Adds a sender to an existing mediator (using the sender ID).
+	 */
+	public void registerSenderToMediator (int iMediatorId,
+			int iMediatorSenderId);
 	
-	public void registerSenderToSender( IMediatorSender senderExisting,
-			IMediatorSender senderNew );
-		
-	public void unregister( IMediatorSender sender,
-			IMediatorReceiver receiver );
+	/**
+	 * Adds a receiver to an existing mediator.
+	 */
+	public void registerReceiverToMediator (int iMediatorId, 
+			IMediatorReceiver receiver);
 	
-	public void unregister( IMediatorSender senderExisting,
-			IMediatorSender senderRemove );
+	/**
+	 * Adds a receiver to an existing mediator (using the receiver ID).
+	 */
+	public void registerReceiverToMediator (int iMediatorId, 
+			int iMediatorReceiverId);
+	
+	/**
+	 * Removes a sender from a mediator.
+	 */
+	public void unregisterSenderToMediator (int iMediatorId, 
+			IMediatorSender sender);
+	
+	/**
+	 * Removes a sender from a mediator (using the sender ID).
+	 */
+	public void unregisterSenderToMediator (int iMediatorId,
+			int iMediatorSenderId);
+	
+	/**
+	 * Removes a receiver from a mediator.
+	 */
+	public void unregisterReceiverToMediator (int iMediatorId, 
+			IMediatorReceiver receiver);
+
+	/**
+	 * Removes a receiver from a mediator (using the receiver ID).
+	 */
+	public void unregisterReceiverToMediator (int iMediatorId,
+			int iMediatorReceiverId);
+	
 	
 	public void update(Object triggerObject);
 	

@@ -8,24 +8,25 @@ package cerberus.manager.event.mediator;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * @author kalkusch
- *
+ * Abstract class for the mediator that belongs to the event mechanism.
+ * 
+ * @author Micheal Kalkusch
+ * @author Marc Streit
  */
 public abstract class ALockableMediator 
 extends ALockableMediatorReceiver
-implements IMediator
-{
-
-	protected final IMediatorSender refSender;
+implements IMediator {
+	
+	public final int iMediatorId;
 	
 	/**
 	 * 
 	 */
-	protected ALockableMediator( final IMediatorSender sender )
+	protected ALockableMediator(int iMediatorId)
 	{
 		super();
 		
-		refSender = sender;
+		this.iMediatorId = iMediatorId;
 	}
 
 	/**
@@ -46,11 +47,11 @@ implements IMediator
 	 */
 	public final void destroyMediator( final IMediatorSender sender )
 	{
-		if ( sender != this.refSender ) {
-			throw new CerberusRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
-		}
-
-		destroyMediatorDerivedObject( sender );
+//		if ( sender != this.refSender ) {
+//			throw new CerberusRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
+//		}
+//
+//		destroyMediatorDerivedObject( sender );
 	}
 	
 

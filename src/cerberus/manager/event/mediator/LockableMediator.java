@@ -26,9 +26,9 @@ implements IMediator
 	/**
 	 * 
 	 */
-	public LockableMediator( IMediatorSender sender )
+	public LockableMediator(int iMediatorId)
 	{
-		super( sender );
+		super(iMediatorId);
 		
 		vecReceiver = new Vector <IMediatorReceiver> ();
 		vecSender   = new Vector <IMediatorSender> ();

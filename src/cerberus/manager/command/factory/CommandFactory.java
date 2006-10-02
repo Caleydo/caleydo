@@ -20,8 +20,7 @@ import cerberus.command.base.ACommand;
 import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
-import cerberus.command.event.CmdEventRelationCreate;
-
+import cerberus.command.event.CmdEventCreateMediator;
 
 import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
@@ -103,8 +102,10 @@ extends ACommand
 	public static final String sDelimiter_CreateSelection_DataItemBlock = "@";
 	
 	public static final String sDelimiter_CreateComposite_Layout 		= " ";
-	
 	public static final String sDelimiter_CreateView_Size				= " ";
+	
+	public static final String sDelimiter_Space							= " ";
+	
 	
 	/**
 	 * Constructor
@@ -386,14 +387,15 @@ extends ACommand
 			break;
 		}
 		
-		case CREATE_EVENT_RELATION:
+		case CREATE_EVENT_MEDIATOR:
 		{
 			createdCommand =
-				new CmdEventRelationCreate(
+				new CmdEventCreateMediator(
 						refGeneralManager,
 						phAttributes );			
 			break;
 		}
+		
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
