@@ -370,7 +370,7 @@ implements IMementoXML, IParserObject {
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
 		    
 		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
-		    		"  Read file \""+ 
+		    		" read file \""+ 
 				       this.sFileName + "\"  ....  [DONE]",
 				     LoggerType.STATUS );
 

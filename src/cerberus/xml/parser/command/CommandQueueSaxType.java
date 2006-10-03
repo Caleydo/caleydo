@@ -56,7 +56,10 @@ public enum CommandQueueSaxType
 	CREATE_SWT_WINDOW("cmd", "type","-1"),
 	CREATE_SWT_CONTAINER("cmd", "type","-1"),
 	
-	CREATE_EVENT_RELATION("cmd","type",null),
+	// replaced by CREATE_EVENT_MEDIATOR
+	//CREATE_EVENT_RELATION("cmd","type",null),
+	// TODO: remove lines
+	
 	CREATE_EVENT_MEDIATOR("cmd", "type", null),
 	
 	RUN_CMD_NOW("cmd", "process","RUN_CMD_NOW"),	

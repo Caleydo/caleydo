@@ -4,6 +4,7 @@
 package cerberus.xml.parser.manager;
 
 import java.util.Iterator;
+import java.util.Collection;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -17,6 +18,7 @@ import cerberus.util.system.CerberusInputStream;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.handler.IXmlParserHandler;
+import cerberus.xml.parser.handler.command.CommandSaxHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler2;
 import cerberus.xml.parser.manager.AXmlParserManager;
@@ -56,6 +58,8 @@ implements IXmlParserManager
 	 */
 	protected boolean bUseCascadingHandler = false;
 	
+	protected boolean bUnloadSaxHandlerAfterBootstraping = true;
+	
 	/**
 	 * Default constructor.
 	 * 
@@ -79,8 +83,14 @@ implements IXmlParserManager
 		KgmlSaxHandler2 kgmlParser = 
 			new KgmlSaxHandler2( generalManager, this );		
 		
-		registerSaxHandler( externalFileHandler );		
-		registerSaxHandler( kgmlParser );
+		CommandSaxHandler cmdHandler = 
+			new CommandSaxHandler( generalManager, this );
+		
+		registerAndInitSaxHandler( externalFileHandler );		
+		registerAndInitSaxHandler( kgmlParser );
+		registerAndInitSaxHandler( cmdHandler );
+		
+		//openCurrentTag( cmdHandler );
 	}
 
 
@@ -97,7 +107,25 @@ implements IXmlParserManager
 	 */
 	public final void endDocument() throws SAXException
 	{
-		setXmlFileProcessedNow( false );			
+		setXmlFileProcessedNow( false );	
+		
+		if ( currentHandler != null ) 
+		{
+			refLoggerManager.logMsg( "XmlParserManager.endDocument()  key=[" +
+					currentHandler.getXmlActivationTag() + "]  call " +
+					currentHandler.getClass().getSimpleName() + 
+					".endDocument() ...",
+					LoggerType.FULL );
+			
+			currentHandler.endDocument();
+		} // if ( currentHandler != null ) 
+		else 
+		{
+			if ( bUnloadSaxHandlerAfterBootstraping ) {				
+				this.destroyHandler();
+			}
+			
+		} // else .. if ( currentHandler != null ) 
 	}
 
 
@@ -114,66 +142,14 @@ implements IXmlParserManager
 			refLoggerManager.logMsg( " < TAG= " + qName,
 					LoggerType.FULL );
 			
-			if ( hashTag2XmlParser.containsKey( qName ) ) 
-			{
-				IXmlParserHandler handler = hashTag2XmlParser.get( qName );
-				
-				/**
-				 * Register handly onyl if it is not 
-				 * the OpenExternalXmlFileSaxHandler ...
-				 */
-				if ( handler.getClass().getName().equals( 
-						OpenExternalXmlFileSaxHandler.class.getName()) ) 
-				{
-					/**
-					 * Special case: 
-					 * 
-					 * Open new file, but do not register new handler...
-					 * Attention: do not call  sectionFinishedByHandler() from FileLoaderSaxHandler !
-					 */
-					handler.startElement( uri,
-							localName,
-							qName,
-							attrib );															
-				
-					currentHandler.startElement(  uri,
-							localName,
-							qName,
-							attrib );		
-				}								
-				else {
-					
-					/**
-					 * Regular case: register new handler ...
-					 */
-					
-					this.openCurrentTag( handler );
-				
-					handler.startElement( uri,
-							localName,
-							qName,
-							attrib );
-				
-				}
-				
-				
-				
-//				if ( hander.getClass().getName().equals( 
-//						OpenExternalXmlFileSaxHandler.class.getName()) ) 
-//				{
-//					
-//					/**
-//					 * execute opening tag..
-//					 */
-//					hander.startElement( uri,
-//							localName,
-//							qName,
-//							attrib );
-//				}
-			}
+			startElement_search4Tag(uri,
+					localName, 
+					qName,
+					attrib);
 			
 			return;
-		}
+			
+		} // if ( currentHandler == null ) 
 		else 
 		{
 			if ( bUseCascadingHandler ) {				
@@ -191,6 +167,94 @@ implements IXmlParserManager
 
 	}
 
+	/**
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#startElement_search4Tag(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
+	public void startElement_search4Tag(String uri, 
+			String localName, 
+			String qName,
+			Attributes attrib)
+	{
+		if ( hashTag2XmlParser.containsKey( qName ) ) 
+		{
+			IXmlParserHandler handler = hashTag2XmlParser.get( qName );
+			
+			try // catch (SAXException se) 
+			{
+				/**
+				 * Register handler only if it is not 
+				 * the OpenExternalXmlFileSaxHandler ...
+				 */
+				if ( handler.getClass().getName().equals( 
+						OpenExternalXmlFileSaxHandler.class.getName()) ) 
+				{
+					/**
+					 * Special case: 
+					 * 
+					 * Open new file, but do not register new handler...
+					 * Attention: do not call  sectionFinishedByHandler() from FileLoaderSaxHandler !
+					 */
+					if ( openCurrentTagForRecursiveReader( 
+							(OpenExternalXmlFileSaxHandler) handler, 
+							this ) ) 
+					{
+						/**
+						 * List of handler was not empty!
+						 * call startElement( .. ) once for OpenExternalXmlFileSaxHandler 
+						 * and once for currentHandler
+						 */
+						handler.startElement( uri,
+								localName,
+								qName,
+								attrib );
+					}
+				
+					currentHandler.startElement(  uri,
+							localName,
+							qName,
+							attrib );		
+				} // if ( handler.getClass().getName().equals(OpenExternalXmlFileSaxHandler.class.getName()) ) 						
+				else 
+				{
+					
+					/**
+					 * Regular case: register new handler ...
+					 */
+					
+					this.openCurrentTag( handler );
+				
+					handler.startElement( uri,
+							localName,
+							qName,
+							attrib );
+				
+				} // else .. if ( handler.getClass().getName().equals( OpenExternalXmlFileSaxHandler.class.getName()) ) 
+				
+			} // try
+			catch (SAXException se) 
+			{
+				refLoggerManager.logMsg( "XmlParserManager.startElement_search4Tag() SAX error: " +
+						se.toString(),
+						LoggerType.ERROR_ONLY );
+				
+			} // try .. catch (SAXException se) 		
+			
+			
+//			if ( hander.getClass().getName().equals( 
+//					OpenExternalXmlFileSaxHandler.class.getName()) ) 
+//			{
+//				
+//				/**
+//				 * execute opening tag..
+//				 */
+//				hander.startElement( uri,
+//						localName,
+//						qName,
+//						attrib );
+//			}
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
 	 */
@@ -210,10 +274,33 @@ implements IXmlParserManager
 					localName,
 					qName);
 			
-			if (qName == "read-xml-file")
-				currentHandler = null;
+//			if (qName == "read-xml-file")
+//				currentHandler = null;
+			
 		}
 
+	}
+	
+	
+	/**
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#endElement_search4Tag(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void endElement_search4Tag(String uri, 
+			String localName, 
+			String qName) 
+	{
+		
+//		try
+//		{
+//		} // try
+//		catch (SAXException se) 
+//		{
+//			refLoggerManager.logMsg( "XmlParserManager.startElement_search4Tag() SAX error: " +
+//					se.toString(),
+//					LoggerType.ERROR_ONLY );
+//			
+//		} // try .. catch (SAXException se) 		
+		
 	}
 
 	/* (non-Javadoc)
@@ -227,7 +314,7 @@ implements IXmlParserManager
 	}
 
 	
-	public final void sectionFinishedByHandler(IXmlParserHandler handler)
+	public final void sectionFinishedByHandler( IXmlParserHandler handler )
 	{
 		assert handler != null : "Can not handel null pointer!";
 		
@@ -237,25 +324,13 @@ implements IXmlParserManager
 		setXmlFileProcessedNow( false );
 		
 		/**
-		 * Special case: OpenExternalXmlFileSaxHandler
-		 */
-		if ( handler.getClass().getName().equals( 
-				OpenExternalXmlFileSaxHandler.class.getName()) ) 
-		{
-			throw new CerberusRuntimeException(
-					"sectionFinishedByHandler() must not be called by OpenExternalXmlFileSaxHandler, because this handler is notregistered by default!",
-					CerberusExceptionType.SAXPARSER);
-		}
-		
-		/**
 		 * 
 		 */
 		if ( currentHandler != handler ) {
 			throw new CerberusRuntimeException("sectionFinishedByHandler() called by wrong handler!",
 					CerberusExceptionType.SAXPARSER);
 		}
-		
-		
+				
 		closeCurrentTag();		
 		
 		
@@ -269,46 +344,137 @@ implements IXmlParserManager
 	/**
 	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
 	 */
-	public boolean parseXmlFileByName( String filename ) {
+	public boolean parseXmlFileByName( final String filename ) {
 		
 		iCountOpenedFiles++;
 		InputSource inSource = 
-			CerberusInputStream.openInputStreamFromFile( filename );
+			CerberusInputStream.openInputStreamFromFile( filename,
+					refLoggerManager );
 		
-		return CerberusInputStream.parseOnce( inSource , this );		
+		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
+				LoggerType.VERBOSE );
+		
+		boolean status = CerberusInputStream.parseOnce( inSource ,
+				filename,
+				this,
+				refLoggerManager );
+		
+		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") done.",
+				LoggerType.VERBOSE );
+		
+		return 	status;
+	}
+	
+	/**
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 */
+	public boolean parseXmlFileByNameAndHandler( final String filename, 
+			final OpenExternalXmlFileSaxHandler openFileHandler ) {
+		
+		// this.swapXmlParserHandler( currentHandler, openFileHandler );
+		
+		iCountOpenedFiles++;
+		InputSource inSource = 
+			CerberusInputStream.openInputStreamFromFile( filename,
+					refLoggerManager );
+		
+		return CerberusInputStream.parseOnce( inSource , 
+				filename,
+				this,
+				refLoggerManager );		
 	}
 	
 	
 	/**
 	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
 	 */
-	public boolean parseXmlFileByInputStream( InputSource inputStream ) {
+	public boolean parseXmlFileByInputStream( InputSource inputStream,
+			final String inputStreamText ) {
+		
 		iCountOpenedFiles++;
-		return CerberusInputStream.parseOnce( inputStream , this );	
+		return CerberusInputStream.parseOnce( inputStream ,
+				inputStreamText,
+				this,
+				refLoggerManager );	
 	}
 
 
 	public void destroyHandler()
 	{
-		if ( ! llXmlParserStack.isEmpty() ) 
-		{
-			Iterator <IXmlParserHandler> iterParserHandler = 
-				llXmlParserStack.iterator();
-			
-			while ( iterParserHandler.hasNext() ) 
-			{
-				iterParserHandler.next().destroyHandler();
-			} // while
-			
-			llXmlParserStack.clear();	
-			
-		} // if 
-		llXmlParserStack = null;
+		refLoggerManager.logMsg( "XmlParserManager.destoryHandler() ... ",
+				LoggerType.VERBOSE );
 		
-		if ( ! hashTag2XmlParser.isEmpty() ) {
-			hashTag2XmlParser.clear();			
-		}
-		hashTag2XmlParser = null;
+		/**
+		 * Linked list...
+		 */
+		
+		if ( llXmlParserStack == null )
+		{
+			refLoggerManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack is null",
+					LoggerType.FULL );
+		} // if ( llXmlParserStack == null )
+		else 
+		{
+			refLoggerManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack remove objects..",
+					LoggerType.FULL );
+			
+			if ( ! llXmlParserStack.isEmpty() ) 
+			{
+				Iterator <IXmlParserHandler> iterParserHandler = 
+					llXmlParserStack.iterator();
+				
+				while ( iterParserHandler.hasNext() ) 
+				{
+					IXmlParserHandler handler = iterParserHandler.next();
+					
+					unregisterSaxHandler( handler.getXmlActivationTag() );
+					handler.destroyHandler();
+				} // while ( iterParserHandler.hasNext() ) 
+				
+				llXmlParserStack.clear();	
+				
+			} // if ( ! llXmlParserStack.isEmpty() ) 
+			
+			llXmlParserStack = null;
+		} // else .. if ( llXmlParserStack == null )
+		
+		
+		/**
+		 * Hashtable ...
+		 */
+		
+		if ( hashTag2XmlParser == null )
+		{
+			refLoggerManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser is null",
+					LoggerType.FULL );
+		} // if ( hashTag2XmlParser == null )
+		else
+		{
+			refLoggerManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser remove objects..",
+					LoggerType.FULL );
+			
+			if ( ! hashTag2XmlParser.isEmpty() ) {
+				Iterator <IXmlParserHandler> iterHandler =  hashTag2XmlParser.values().iterator();
+										
+				while ( iterHandler.hasNext() ) 
+				{
+					IXmlParserHandler refHandler = iterHandler.next();  
+					unregisterSaxHandler( refHandler.getXmlActivationTag() );
+					
+				} // while ( iterHandler.hasNext() ) 
+			
+				hashTag2XmlParser.clear();	
+				
+			} // if ( ! hashTag2XmlParser.isEmpty() ) {
+			hashTag2XmlParser = null;
+			
+		} // else .. if ( hashTag2XmlParser == null )
+		
+		refLoggerManager.logMsg( "XmlParserManager.destoryHandler() ... done!",
+				LoggerType.FULL );
+		
+		refLoggerManager.logMsg( "XML file was read sucessfully.",
+				LoggerType.STATUS );
 		
 	}
 

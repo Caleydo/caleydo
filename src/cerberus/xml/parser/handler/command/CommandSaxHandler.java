@@ -78,7 +78,7 @@ implements IXmlParserHandler
 		
 		refCommandManager = 
 			refGeneralManager.getSingelton().getCommandManager();
-
+		
 		assert refCommandManager != null : "ICommandManager was not created by ISingelton!";
 	}
 
@@ -158,7 +158,7 @@ implements IXmlParserHandler
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"XML-TAG= " +  phAttributes.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
-					LoggerType.VERBOSE );
+					LoggerType.FULL );
 				
 			lastCommand = refCommandManager.createCommand( phAttributes );
 			
@@ -169,7 +169,7 @@ implements IXmlParserHandler
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + ") ERROR while parsing " + 
 					lastCommand.toString() + " error=" + e.toString(),
-					LoggerType.STATUS );
+					LoggerType.TRANSITION );
 					
 			return null;
 		}
@@ -185,7 +185,7 @@ implements IXmlParserHandler
 				{				
 					refGeneralManager.getSingelton().getLoggerManager().logMsg("do command: " + 
 						lastCommand.toString(),
-						LoggerType.VERBOSE );
+						LoggerType.FULL );
 					lastCommand.doCommand();
 				}
 			}
@@ -198,7 +198,7 @@ implements IXmlParserHandler
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + ")\n  ERROR while executing command " + e.toString(),
-					LoggerType.STATUS );
+					LoggerType.TRANSITION );
 					
 			
 			return null;
@@ -522,27 +522,18 @@ implements IXmlParserHandler
 		return result;
 	}
 
-		
-	public void initHandler() {
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"CommandSaxHandler.initHandler()",
-				LoggerType.STATUS );
-	}
-	
 	
 	/**
 	 * Cleanup called by Mananger after Handler is not used any more. 
 	 */
 	public void destroyHandler() {
-		
+				
 		if ( refCommandQueueIter != null ) {
 			refCommandQueueIter.destroy();
 			refCommandQueueIter = null;
 		}
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"CommandSaxHandler.destroyHandler() free memory!",
-				LoggerType.STATUS );
+		super.destroyHandler();		
 	}
 	
 }

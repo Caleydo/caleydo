@@ -14,7 +14,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-//import cerberus.xml.parser.ACerberusDefaultSaxHandler;
+import cerberus.manager.ILoggerManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 
 /**
  * @author kalkusch
@@ -37,7 +38,8 @@ public class CerberusInputStream
 	 * @param sXMLFileName name abd path of the file
 	 * @return input stream of the file, or null
 	 */
-	public static InputSource openInputStreamFromFile( final String sXMLFileName ) {
+	public static InputSource openInputStreamFromFile( final String sXMLFileName,
+			final ILoggerManager refLoggerManager ) {
 		
 		try {
 			File inputFile = new File( sXMLFileName );		
@@ -45,45 +47,87 @@ public class CerberusInputStream
 			
 			InputSource inStream = new InputSource( inReader );
 			
+			refLoggerManager.logMsg("open input stream  [" + sXMLFileName + "]",
+					LoggerType.STATUS );
+			
 			return inStream;
 		}
 		catch ( FileNotFoundException fnfe) {
-			System.out.println("File not found " + fnfe.toString() );
+			refLoggerManager.logMsg("CerberusInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
+					LoggerType.ERROR_ONLY );
 		}
 		return null;
 	}
 	
-	public static boolean parseOnce( InputSource inStream, 
-			ContentHandler handler) {
+	public static boolean parseOnce( InputSource inStream,
+			final String sInputStreamLabel,
+			ContentHandler handler,
+			final ILoggerManager refLoggerManager ) {
 		
-		try {
+		if ( handler == null ) 
+		{
+			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+					sInputStreamLabel +
+					") error because handler is null!",
+					LoggerType.ERROR_ONLY );
+			
+			return false;
+		} //if
+		
+		try 
+		{			
 			XMLReader reader = XMLReaderFactory.createXMLReader();			
 			reader.setContentHandler( handler );
 			
-			try {						
+			try 
+			{						
 				reader.parse( inStream );
 			} 
-			catch ( IOException e) {
-				System.out.println(" EX " + e.toString() );
-			}
+			catch ( IOException e) 
+			{
+				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+						sInputStreamLabel +
+						") error while parsing: " +
+						e.toString(),
+						LoggerType.ERROR_ONLY );
+			} // try
+			
 			
 			/**
-			 * Use data from parser to restore state...
-			 */ 
-			
-			handler.endDocument();
-			
-			/**
-			 * Restore state...
+			 * close file...
 			 */
 		
 			inStream.getCharacterStream().close();
-		}
-		catch (SAXException se) {
-			System.out.println("ERROR SE " + se.toString() );
+			
+			refLoggerManager.logMsg("close input stream [" + 
+					sInputStreamLabel + 
+					"]",
+					LoggerType.STATUS );
+			
+		} // try
+		catch (SAXException se) 
+		{
+			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+					sInputStreamLabel +
+					") SAXError  while parsing: " +
+					se.toString(),
+					LoggerType.ERROR_ONLY );
 		} // end try-catch SAXException
-		catch (IOException ioe) {
-			System.out.println("ERROR IO " + ioe.toString() );
+		catch (IOException ioe) 
+		{
+			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+					sInputStreamLabel +
+					") IO-error while parsing: " +
+					ioe.toString(),
+					LoggerType.ERROR_ONLY );
+		} // end try-catch SAXException, IOException
+		catch (Exception e) 
+		{
+			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+					sInputStreamLabel +
+					") general error while parsing: " +
+					e.toString(),
+					LoggerType.ERROR_ONLY );
 		} // end try-catch SAXException, IOException
 		
 		

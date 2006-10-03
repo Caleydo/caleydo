@@ -166,7 +166,7 @@ public class OneForAllManager implements IGeneralManagerSingelton
 		/** int logger first! */
 		refLoggerManager = new ConsoleLogger(this);
 		refLoggerManager.setSystemLogLevel( 
-				ILoggerManager.LoggerType.VERBOSE );
+				ILoggerManager.LoggerType.TRANSITION );
 				// ILoggerManager.LoggerType.VERBOSE );
 		refSingeltonManager.setLoggerManager(refLoggerManager);
 		/* end init logger */

@@ -336,21 +336,15 @@ implements IXmlParserHandler
 	}
 
 	/**
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
-	 */
-	public void initHandler()
-	{
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"KEGGSaxHandler: initHandler", LoggerType.STATUS );
-	}
-
-	/**
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()
+	 * @see cerberus.xml.parser.handler.AXmlParserHandler#destroyHandler()
+	 * 
 	 */
 	public void destroyHandler()
-	{
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"KEGGSaxHandler: destroyHandler!", LoggerType.STATUS );
+	{		
+		kgmlIdToElementIdLUT = null;
+		
+		super.destroyHandler();
 	}
 	
 }

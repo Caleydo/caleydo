@@ -68,7 +68,7 @@ implements IXmlParserManager, IManagedObject
 		
 		hashTag2XmlParser = new Hashtable < String, IXmlParserHandler > ();
 		
-		llXmlParserStack = new LinkedList <IXmlParserHandler> ();
+		llXmlParserStack = new LinkedList <IXmlParserHandler> ();		
 	}
 	
 	
@@ -85,22 +85,64 @@ implements IXmlParserManager, IManagedObject
 		
 		IXmlParserHandler buffer = currentHandler;
 		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"AXmlParserManger.closeCurrentTag() key=[" +
+				currentHandler.getXmlActivationTag() + "] " +
+				currentHandler.getClass().getSimpleName(),
+				LoggerType.VERBOSE );
+		
 		if ( ! llXmlParserStack.isEmpty() ) {
-			currentHandler = llXmlParserStack.getLast();
-			llXmlParserStack.removeLast();
-		}
+			
+			
+			//llXmlParserStack.removeLast();
+			
+			if ( ! llXmlParserStack.remove( buffer ) ) {
+				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						"AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!",
+						LoggerType.MINOR_ERROR);
+				return false;
+			}
+			
+			/**
+			 * Get previouse item from stack ...
+			 */
+			if ( llXmlParserStack.isEmpty() ) 
+			{
+				/**
+				 * stack is empty, set currentHandler null!
+				 */
+				currentHandler = null;
+			} // if ( llXmlParserStack.isEmpty() ) 
+			else 
+			{
+				/**
+				 * Get previouse item from stack.
+				 */
+				currentHandler = llXmlParserStack.getLast();
+			} // else .. if ( llXmlParserStack.isEmpty() ) 
+			
+		} // if ( ! llXmlParserStack.isEmpty() ) {
 		else
 		{
 			currentHandler = null;
-		}
+		} // else ... if ( ! llXmlParserStack.isEmpty() ) {
 		
 		/**
 		 * Clean up XmlParserHandler..
 		 */
-		if ( buffer.hasOpeningTagOnlyOnce() ) {
-			buffer.destroyHandler();
+		if ( buffer.hasOpeningTagOnlyOnce() ) {			
 			unregisterSaxHandler( buffer.getXmlActivationTag() );
+			buffer.destroyHandler();
 			buffer = null;
+		} 
+		else
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"AXmlParserManger.closeCurrentTag() key=[" +
+					buffer.getXmlActivationTag() + "] " +
+					buffer.getClass().getSimpleName() + 
+					" do not destroyHandler() since it may be needed later on.",
+					LoggerType.FULL );
 		}
 		
 		return true;
@@ -112,18 +154,66 @@ implements IXmlParserManager, IManagedObject
 			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTag() new handler is null!");
 		}
 		
-		if ( ! newHandler.getClass().getName().equals( 
-				OpenExternalXmlFileSaxHandler.class.getName()) ) 
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"AXmlParserManager.openCurrentTag( key=[" + 
+				newHandler.getXmlActivationTag() + "] " +
+				newHandler.getClass().getSimpleName() +	" )",
+				LoggerType.VERBOSE );
+		
+		llXmlParserStack.add( newHandler );				
+		currentHandler = newHandler;				
+	}
+	
+	/**
+	 * Special case for recursive opening of files.
+	 * 
+	 * @param filename filename for recursive XML file
+	 * @param openFileHandler reference to SaxHandler opening the file
+	 * @return TRUE if  startElement(String,String,String,Attributes) should be called twice, else FALSE
+	 *
+	 */
+	public final boolean openCurrentTagForRecursiveReader( 
+			OpenExternalXmlFileSaxHandler newHandler,
+			final IXmlParserManager refIXmlParserManager ) {
+		
+		if ( ! refIXmlParserManager.equals( this) ) 
 		{
-			
-			
-			
-			llXmlParserStack.add( currentHandler );		
-			currentHandler = newHandler;
+			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
 		}
 		
-		llXmlParserStack.add( currentHandler );		
-		currentHandler = newHandler;
+		if ( newHandler == null ) 
+		{
+			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
+		}
+		
+		if ( currentHandler != null ) 
+		{
+			/**
+			 * insert OpenExternalXmlFileSaxHandler in front of currentHandler...
+			 */
+			llXmlParserStack.remove( currentHandler );		
+			llXmlParserStack.add( newHandler );		
+			llXmlParserStack.add( currentHandler );
+			
+			/**
+			 * trigger calling startElement(String,String,String,Attributes) twice!
+			 */
+			return true;
+		}
+		else 
+		{
+			/**
+			 * Empty queue, no swapping necessary!
+			 */
+			llXmlParserStack.add( newHandler );	
+			
+			currentHandler = newHandler;
+			
+			/**
+			 * avoid calling startElement(String,String,String,Attributes) twice!
+			 */
+			return false;
+		}
 				
 	}
 	
@@ -135,26 +225,26 @@ implements IXmlParserManager, IManagedObject
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#registerSaxHandler(cerberus.xml.parser.manager.IXmlParserHandler, boolean)
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
-	public final boolean registerSaxHandler(IXmlParserHandler handler )
+	public final boolean registerAndInitSaxHandler(IXmlParserHandler handler )
 	{
 		assert handler != null : "Can not handle null pointer as handler";
 		
 		if ( bProcessingXmlDataNow ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");			
+			throw new CerberusRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");			
 			//return false;
 		}
 		
 		if ( hashTag2XmlParser.contains( handler ) ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because it is already registered!");
+			throw new CerberusRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
 			//return false;
 		}
 		
 		String key = handler.getXmlActivationTag();
 		
 		if ( hashTag2XmlParser.containsKey( key ) ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because String [" + 
+			throw new CerberusRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String [" + 
 					handler.getXmlActivationTag() + 
 					"] is already registered!");
 			//return false;
@@ -163,9 +253,10 @@ implements IXmlParserManager, IManagedObject
 		hashTag2XmlParser.put( key, handler );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"XmlParserManager.registerSaxHandler( "
-				+ handler.getXmlActivationTag() + ") done.",
-				LoggerType.STATUS );
+				"XmlParserManager.registerAndInitSaxHandler( key=["
+				+ handler.getXmlActivationTag() + "] " +
+				handler.getClass().getSimpleName() + " ) done.",
+				LoggerType.TRANSITION );
 		
 		handler.initHandler();
 		
@@ -173,44 +264,11 @@ implements IXmlParserManager, IManagedObject
 	}
 
 	
-	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#unregisterSaxHandler(cerberus.xml.parser.manager.IXmlParserHandler)
-	 */
-	public final boolean unregisterSaxHandler(IXmlParserHandler handler)
-	{
-		assert handler != null : "Can not handel null pointer as handler";
-		
-		if ( bProcessingXmlDataNow ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");			
-			//return false;
-		}
-		
-		if ( ! hashTag2XmlParser.containsValue( handler ) ) {
-			throw new CerberusRuntimeException("AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
-			//return false;
-		}
-		
-		if ( hashTag2XmlParser.remove( handler.getXmlActivationTag() ) != null ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"XmlParserManager.unregisterSaxHandler( "
-					+ handler.getXmlActivationTag() + ") done.",
-					LoggerType.STATUS );
-			
-//			if ( handler.hasOpeningTagOnlyOnce() ) {
-//				handler.destroyHandler();
-//			}
-			handler.destroyHandler();
-			
-			return true;
-		}		
-		return false;
-	}
-	
 	
 	/**
 	 * @see cerberus.xml.parser.manager.IXmlParserManager#unregisterSaxHandler(java.lang.String)
 	 */
-	public final boolean unregisterSaxHandler(String sActivationXmlTag)
+	public final boolean unregisterSaxHandler( final String sActivationXmlTag)
 	{
 		assert sActivationXmlTag != null : "Can not handle null pointer as handler";
 		
@@ -229,12 +287,20 @@ implements IXmlParserManager, IManagedObject
 		if ( refParserHandler != null ) {	
 						
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"XmlParserManager.unregisterHandler( "
-					+ sActivationXmlTag + ") done.",
-					LoggerType.STATUS );
+					"XmlParserManager.unregisterHandler( key=[" 
+					+ sActivationXmlTag + "] "
+					+ refParserHandler.getClass().getSimpleName()
+					+ " ) done.",
+					LoggerType.TRANSITION );
 			
 			return true;
 		}
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"XmlParserManager.unregisterHandler( "
+				+ sActivationXmlTag + " ) failed to unload!",
+				LoggerType.ERROR_ONLY );
+		
 		return false;
 	}
 	
@@ -246,5 +312,60 @@ implements IXmlParserManager, IManagedObject
 		return false;
 	}
 
+	/**
+	 * Swap two IXmlParserHandler.
+	 * 
+	 * @deprecated not used any more. use openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) instead.
+	 * 
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
+	 */
+	protected final void swapXmlParserHandler( IXmlParserHandler from, 
+			IXmlParserHandler to ) {
+		int iIndexFrom = llXmlParserStack.indexOf( from );
+		
+		if ( iIndexFrom == -1 ) {
+			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+					"Error: can not find IXmlParserHandler 'from' in AXmlParserManager! " +
+					from.getXmlActivationTag(),
+					LoggerType.ERROR_ONLY );
+			return;
+		} // if
+		
+		int iIndexTo = llXmlParserStack.indexOf( to );
+		
+		if ( iIndexTo == -1 ) {
+			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+					"Error: can not find IXmlParserHandler 'to' in AXmlParserManager! " +
+					from.getXmlActivationTag(),
+					LoggerType.ERROR_ONLY );
+			return;
+		} // if
+		
+		if ( iIndexFrom < iIndexTo ) 
+		{
+			llXmlParserStack.remove( iIndexFrom );
+			llXmlParserStack.add( iIndexFrom, to );
+			
+			llXmlParserStack.remove( iIndexTo );
+			llXmlParserStack.add( iIndexTo, from );
+		}
+		else 
+		{
+			llXmlParserStack.remove( iIndexTo );
+			llXmlParserStack.add( iIndexTo, from );
+			
+			llXmlParserStack.remove( iIndexFrom );
+			llXmlParserStack.add( iIndexFrom, to );
+		} // else
+	}
+	
+
+	/*
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#getCurrentXmlParserHandler()
+	 */
+	public final IXmlParserHandler getCurrentXmlParserHandler() {
+		return this.currentHandler;
+	}
+	
 
 }

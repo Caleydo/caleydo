@@ -68,7 +68,7 @@ public class CerberusBootloader
 			new CommandSaxHandler( refGeneralManager,
 					refParserManager );
 				
-		refParserManager.registerSaxHandler( cmdHandler );				
+		refParserManager.registerAndInitSaxHandler( cmdHandler );				
 	
 	}
 	
@@ -143,10 +143,10 @@ public class CerberusBootloader
 			receiveMsg = connection.sendReceiveMessage( sendMsg );
 			connection.disconnect();
 						
-			String configutaion = receiveMsg.getOperation( 0 ).getNodeString();						
-			InputSource inStream = new InputSource(new StringReader(configutaion));				
+			String configuration = receiveMsg.getOperation( 0 ).getNodeString();						
+			InputSource inStream = new InputSource(new StringReader(configuration));				
 			
-			refParserManager.parseXmlFileByInputStream( inStream );
+			refParserManager.parseXmlFileByInputStream( inStream, configuration );
 			
 			System.out.println("PARSE using Muddleware done.");
 			

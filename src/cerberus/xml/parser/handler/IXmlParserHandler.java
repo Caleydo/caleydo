@@ -3,10 +3,10 @@
  */
 package cerberus.xml.parser.handler;
 
-import org.xml.sax.Attributes;
+//import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 
-import cerberus.xml.parser.manager.IXmlParserManager;
+//import cerberus.xml.parser.manager.IXmlParserManager;
 
 
 /**
@@ -23,7 +23,7 @@ extends ContentHandler
 	 * Initilisation of handler.
 	 * Called once by Manager before using the handler.
 	 *
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#registerSaxHandler(IXmlParserHandler, boolean)
+	 * @see cerberus.xml.parser.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
 	public void initHandler();
 	

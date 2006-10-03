@@ -208,7 +208,7 @@ implements IView, IMediatorReceiver {
 								{
 									refGeneralManager.getSingelton().getLoggerManager().logMsg(
 										"Error in DataExplorerViewRep currentStorage==null!",
-										LoggerType.STATUS );
+										LoggerType.MINOR_ERROR );
 								}
 							}
 						}

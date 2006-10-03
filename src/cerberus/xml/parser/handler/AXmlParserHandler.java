@@ -6,6 +6,7 @@ package cerberus.xml.parser.handler;
 import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.manager.IXmlParserManager;
@@ -69,6 +70,31 @@ implements IXmlParserHandler
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Sends init message to logger.
+	 * 
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
+	 */
+	public void initHandler()
+	{
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				this.getClass().getSimpleName() + 
+				": initHandler", LoggerType.VERBOSE );
+	}
+	
+	/**
+	 * Sends init message to logger.
+	 * 
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()
+	 */
+	public void destroyHandler()
+	{
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				this.getClass().getSimpleName() + 
+				": destroyHandler", 
+				LoggerType.VERBOSE );
 	}
 
 

@@ -71,7 +71,7 @@ extends ACmdCreate_GlCanvasUser
 			
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					logMessage,
-					LoggerType.STATUS );
+					LoggerType.MINOR_ERROR );
 			
 			throw new CerberusRuntimeException( logMessage );
 		}

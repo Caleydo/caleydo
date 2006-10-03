@@ -7,6 +7,7 @@ import cerberus.util.system.CerberusInputStream;
 
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.singelton.OneForAllManager;
@@ -56,13 +57,20 @@ public class CerberusPrototype
 		
 		//refEventPublisher = (IEventPublisher) refGeneralManager.getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER);
 		
-		CommandSaxHandler cmdHandler = 
-			new CommandSaxHandler( refGeneralManager,
-					refXmlParserManager );
+		/**
+		 * Register additional SaxParserHandler here:
+		 * <br>
+		 * sample code:<br>
+		 * <br>
+		 * AnySaxHandler myNewHandler = <br>
+		 *   new CommandSaxHandler( generalManager, refXmlParserManager );<br>
+		 * <br>  
+		 * refXmlParserManager.registerAndInitSaxHandler( myNewHandler ); <br>
+		 * <br>
+		 */
+
 		
-		refXmlParserManager.registerSaxHandler( cmdHandler );
-		
-		sFileName = "data/XML/bootstrap/cerberus_bootstrap_sample_marc.xml";
+		setXmlFileName( "data/XML/bootstrap/cerberus_bootstrap_sample_marc.xml" );
 	}
 
 	public void run()
@@ -72,19 +80,26 @@ public class CerberusPrototype
 		refSWTGUIManager.runApplication();
 	}
 	
-	public void setXmlFileName( String sFileName ) {
+	public final void setXmlFileName( String sFileName ) {
 		this.sFileName = sFileName;
 	}
 	
-	public String getXmlFileName() {
+	public final String getXmlFileName() {
 		return this.sFileName;
 	}
 	
 	protected void parseBootstrapDataFromXML()
 	{
+		ILoggerManager logger = 
+			refGeneralManager.getSingelton().getLoggerManager();
+		
 		InputSource inSource = 
-			CerberusInputStream.openInputStreamFromFile( sFileName );
+			CerberusInputStream.openInputStreamFromFile( sFileName, 
+					logger );
 				
-		CerberusInputStream.parseOnce( inSource , refXmlParserManager );
+		CerberusInputStream.parseOnce( inSource , 
+				sFileName,
+				refXmlParserManager,
+				logger );
 	}
 }

@@ -154,7 +154,7 @@ public class CanvasFromXMLFileTester extends JFrame {
 		
 		parseOnce( openInputStreamFromFile(filename), saxHandler);
 		
-		System.out.println("PARSE done.");
+		System.out.println("PARSE file [" + filename + "] done.");
 	
 		/**
 		 * SELECTION is done...
@@ -203,7 +203,7 @@ public class CanvasFromXMLFileTester extends JFrame {
 			
 			parseOnce( in, saxHandler);
 			
-			System.out.println("PARSE done.");
+			System.out.println("PARSE file [" + filename + "] recursive called from XML done.");
 			
 		} else {
 			System.out.println("Muddleware server has no data on canvas settings.");

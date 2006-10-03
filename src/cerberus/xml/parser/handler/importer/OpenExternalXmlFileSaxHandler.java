@@ -29,32 +29,15 @@ implements IXmlParserHandler
 	 * @param refXmlParserManager
 	 */
 	public OpenExternalXmlFileSaxHandler(IGeneralManager refGeneralManager,
-			IXmlParserManager refXmlParserManager)
+			IXmlParserManager refXmlParserManager )
 	{
 		super(refGeneralManager, refXmlParserManager);
 		
 		setXmlActivationTag( "read-xml-file" );
 		
-		this.bHasOpeningTagOnlyOnce = true;		
+		this.bHasOpeningTagOnlyOnce = false;		
 	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
-	 */
-	public void initHandler()
-	{
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"OpenExternalXmlFileSaxHandler: initHandler", LoggerType.STATUS );
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()
-	 */
-	public void destroyHandler()
-	{
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"OpenExternalXmlFileSaxHandler: destroyHandler", LoggerType.STATUS );
-	}
+	
 	
 	public void reset() {		
 		
@@ -93,8 +76,10 @@ implements IXmlParserHandler
 				/**
 				 * Recursion...
 				 */
-				refXmlParserManager.parseXmlFileByName( 
-						sTargetFileName );
+//				refXmlParserManager.parseXmlFileByNameAndHandler( 
+//						sTargetFileName, this );				
+//				
+				refXmlParserManager.parseXmlFileByName( sTargetFileName);
 				
 			}
 			catch ( CerberusRuntimeException cre)
@@ -107,6 +92,13 @@ implements IXmlParserHandler
 			}
 				
 		
+		} // if ( qName.equalsIgnoreCase( this.sOpeningTag ) ) 
+		else
+		{
+			refXmlParserManager.startElement_search4Tag( uri, 
+					localName,
+					qName, 
+					attributes );
 		}
 	}
 
