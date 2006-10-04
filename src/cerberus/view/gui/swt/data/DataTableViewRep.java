@@ -324,6 +324,10 @@ implements IDataTableView {
 
 		reinitializeTable();
 		
+		// No paging needed for selections
+		refPreviousPageButton.setEnabled(false);
+		refNextPageButton.setEnabled(false);
+		
 		iCurrentlyRequestedCollectionId = iRequestedSelectionId;
 
 		final TableColumn offsetColumn = new TableColumn(refTable, 
