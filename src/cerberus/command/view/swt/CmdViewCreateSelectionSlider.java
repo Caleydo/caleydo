@@ -1,15 +1,11 @@
 package cerberus.command.view.swt;
 
-import java.util.StringTokenizer;
-
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.slider.SelectionSliderViewRep;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
