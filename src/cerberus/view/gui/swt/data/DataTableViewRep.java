@@ -312,9 +312,6 @@ implements IDataTableView {
 		}
 		
 		// Check if last page is reached		
-		System.out.println("Pages needed: "+ (iNumberOfTableItems / (float)MAX_TABLE_ROWS - 1));
-		System.out.println("Current page: " +iCurrentTablePage);
-		
 		if (iCurrentTablePage >= (iNumberOfTableItems / (float)MAX_TABLE_ROWS - 1))
 		{
 			refNextPageButton.setEnabled(false);
