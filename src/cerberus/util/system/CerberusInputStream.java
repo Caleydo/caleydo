@@ -87,9 +87,19 @@ public class CerberusInputStream
 			{
 				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
 						sInputStreamLabel +
-						") error while parsing: " +
+						") IO-error during parsing: " +
 						e.toString(),
 						LoggerType.ERROR_ONLY );
+			} // try
+			catch ( Exception e) 
+			{
+				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+						sInputStreamLabel +
+						") error during parsing: " +
+						e.toString() + "\n",
+						LoggerType.ERROR_ONLY );
+				
+				e.printStackTrace();
 			} // try
 			
 			

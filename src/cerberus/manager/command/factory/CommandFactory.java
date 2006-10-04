@@ -196,7 +196,9 @@ extends ACommand
 	public ICommand createCommand(final IParameterHandler phAttributes) {
 		
 		CommandQueueSaxType cmdType = 
-			CommandQueueSaxType.valueOf( phAttributes.getValueString( CommandQueueSaxType.TAG_TYPE.getXmlKey() ) );
+			CommandQueueSaxType.valueOf( 
+					phAttributes.getValueString( 
+							CommandQueueSaxType.TAG_TYPE.getXmlKey() ) );
 			
 		ICommand createdCommand = null;
 		

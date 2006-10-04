@@ -487,9 +487,16 @@ implements ISet {
 	public boolean setSelectionByDim( final Vector<ISelection> addSelection, 
 			final int iAtDimension ) {
 		
-		ISelection [] setNewArray = (ISelection []) addSelection.toArray();
+		ISelection [] createArray = new ISelection [ addSelection.size() ];
 		
-		refFlatSelection = setNewArray;
+		Iterator <ISelection> iter = addSelection.iterator();
+		
+		for ( int i=0; iter.hasNext(); i++ )
+		{
+			createArray[i] = iter.next();
+		}
+		
+		refFlatSelection = createArray;
 		
 		return true;
 	}
@@ -497,7 +504,14 @@ implements ISet {
 	public boolean setStorageByDim( final Vector<IStorage> addStorage, 
 			final int iAtDimension ) {
 		
-		IStorage [] setNewArray = (IStorage []) addStorage.toArray();
+		IStorage [] setNewArray = new IStorage [ addStorage.size() ];
+		
+		Iterator <IStorage> iter = addStorage.iterator();
+		
+		for ( int i=0; iter.hasNext(); i++ )
+		{
+			setNewArray[i] = iter.next();
+		}
 		
 		refFlatStorage = setNewArray;
 		

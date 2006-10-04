@@ -108,6 +108,7 @@ public class SelectionSingleBlock
 	 */
 	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
 		
+		
 		try {
 			CollectionSelectionSaxParserHandler parser = 
 				(CollectionSelectionSaxParserHandler) refSaxHandler;

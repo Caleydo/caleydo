@@ -167,8 +167,11 @@ implements IXmlParserHandler
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"CommandSaxHandler.readCommandData(" +
-					attrs.toString() + ") ERROR while parsing " + 
-					lastCommand.toString() + " error=" + e.toString(),
+					attrs.toString() + 
+					") ERROR while parsing " + 
+					lastCommand.toString() + 
+					" error=" + 
+					e.toString(),
 					LoggerType.TRANSITION );
 					
 			return null;
@@ -189,17 +192,30 @@ implements IXmlParserHandler
 					lastCommand.doCommand();
 				}
 			}
+			else {
+				refGeneralManager.getSingelton().getLoggerManager().logMsg("do command: command=null!", 						
+						LoggerType.VERBOSE );
+			}
 			
 			return lastCommand;
 			
 		}
 		catch ( Exception e) 
 		{
+			String sDetails = "";
+			if ( lastCommand != null ) 
+			{
+				sDetails = lastCommand.getClass().getSimpleName();
+			}
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 					"CommandSaxHandler.readCommandData(" +
-					attrs.toString() + ")\n  ERROR while executing command " + e.toString(),
+					attrs.toString() + 
+					")\n  ERROR while executing command " +
+					sDetails + "  ==> " 
+					+ e.toString() + "\n",
 					LoggerType.TRANSITION );
 					
+			e.printStackTrace();
 			
 			return null;
 		}

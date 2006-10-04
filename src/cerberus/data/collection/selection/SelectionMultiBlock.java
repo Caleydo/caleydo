@@ -44,7 +44,6 @@ implements ISelection, IMementoItemXML, IMediatorSender
 			final ICollectionLock setCollectionLock)
 	{
 		super(iSetCollectionId, setRefBaseManager, setCollectionLock);
-
 	}
 
 	/* (non-Javadoc)

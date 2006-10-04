@@ -346,10 +346,6 @@ implements IMementoXML, IParserObject {
 					
 					} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
 					
-//					System.out.println( 
-//							" " + Integer.toString( iLineInFile ) + "/" +
-//							Integer.toString( iLineInFile_CurrentDataIndex ) + "/" +
-//							Integer.toString( iHeaderLinesSize ));
 					
 					iLineInFile_CurrentDataIndex++;
 					
@@ -463,15 +459,17 @@ implements IMementoXML, IParserObject {
 		}
 		catch (IOException ioe) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"MicroArrayLoader: ERROR line=[" + iLineInFile + "] while parsing: " + ioe.getMessage(),
-					LoggerType.STATUS );
+					"MicroArrayLoader: IO-error line=[" + iLineInFile +
+					"] while parsing: " + ioe.toString(),
+					LoggerType.MINOR_ERROR );
 		    
 		    return false;
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"MicroArrayLoader: ERROR line=[" + iLineInFile + "] while parsing: " + ex.getMessage(),
+					"MicroArrayLoader: ERROR line=[" + iLineInFile +
+					"] while parsing: " + ex.toString(),
 					LoggerType.ERROR_ONLY );
 		    return false;
 		}		

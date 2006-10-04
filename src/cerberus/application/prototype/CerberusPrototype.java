@@ -14,7 +14,7 @@ import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.xml.parser.manager.XmlParserManager;
-import cerberus.xml.parser.handler.command.CommandSaxHandler;
+//import cerberus.xml.parser.handler.command.CommandSaxHandler;
 
 public class CerberusPrototype
 {

@@ -146,16 +146,23 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 		
 		Enumeration <String> iter = hashKey2Generic.keys();
 		
+		String sBuffer;
 		/* special case for first element... */
 		if ( iter.hasMoreElements() ) 
 		{
-			strBuffer.append( iter.nextElement() );
+			sBuffer = iter.nextElement();
+			strBuffer.append( sBuffer );
+			strBuffer.append( "->");
+			strBuffer.append( hashKey2Generic.get( sBuffer ) );
 		}
 		
 		while ( iter.hasMoreElements() )
 		{
+			sBuffer = iter.nextElement();
 			strBuffer.append( " " );
-			strBuffer.append( iter.nextElement() );
+			strBuffer.append( sBuffer );
+			strBuffer.append( "->");
+			strBuffer.append( hashKey2Generic.get( sBuffer ) );
 		}
 		
 		return strBuffer.toString();

@@ -423,12 +423,15 @@ implements IParameterHandler
 		
 		strBuffer.append("B:");
 		strBuffer.append( hashKey2Boolean.toString() );
+		strBuffer.append( "\n" );
 		
 		strBuffer.append(" I:");
 		strBuffer.append( hashKey2Integer.toString() );
+		strBuffer.append( "\n" );
 		
 		strBuffer.append(" F:");
 		strBuffer.append( hashKey2Float.toString() );
+		strBuffer.append( "\n" );
 		
 		strBuffer.append(" S:");
 		strBuffer.append( hashKey2String.toString() );
