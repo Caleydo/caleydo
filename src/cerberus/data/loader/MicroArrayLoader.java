@@ -396,7 +396,7 @@ implements IMementoXML, IParserObject {
 			    
 			    refImportDataOverrideSelection.setLabel("import INTEGER");
 			    refImportDataOverrideSelection.setOffset( 0 );
-			    refImportDataOverrideSelection.setLength( LLInteger.size() );			    
+			    refImportDataOverrideSelection.setLength( LLInteger.size() );
 			    
 			    /*
 			     * notify selection cacheId of changed data...

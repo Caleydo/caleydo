@@ -63,23 +63,23 @@ implements ISelectionManager
 
 		refGeneralManager.getSingelton().setSelectionManager( this );
 		
-		/**
-		 * Test ISelection...
-		 */
-		testSelection = new SelectionMultiBlock( 
-				this.createNewId(ManagerObjectType.SELECTION_MULTI_BLOCK),
-				refGeneralManager,
-				/// pass no ICollectionLock 
-				null );
-		
-		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.SELECTION_MULTI_BLOCK );
-		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
-				"SELECTION: testSelection created with Id =[" +
-				testSelection.getId() +"]", logLevel);
-		/**
-		 * END: Test ISelection...
-		 */
+//		/**
+//		 * Test ISelection...
+//		 */
+//		testSelection = new SelectionMultiBlock( 
+//				this.createNewId(ManagerObjectType.SELECTION_MULTI_BLOCK),
+//				refGeneralManager,
+//				/// pass no ICollectionLock 
+//				null );
+//		
+//		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.SELECTION_MULTI_BLOCK );
+//		
+//		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+//				"SELECTION: testSelection created with Id =[" +
+//				testSelection.getId() +"]", logLevel);
+//		/**
+//		 * END: Test ISelection...
+//		 */
 	}
 
 

@@ -41,12 +41,15 @@ implements IDataTableView {
 	protected Table refTable;
 	
 	protected int iCurrentlyRequestedCollectionId;
+	
+	protected boolean bTriggeredUpdateFlag;
 
 	public DataTableViewRep(IGeneralManager refGeneralManager, 
 			int iParentId) {
 		
 		super(refGeneralManager, -1, iParentId, "");
 
+		bTriggeredUpdateFlag = false;
 		initView();
 	}
 
@@ -195,10 +198,12 @@ implements IDataTableView {
 		
 		iCurrentlyRequestedCollectionId = iRequestedSelectionId;
 
-		final TableColumn lengthColumn = new TableColumn(refTable, SWT.NONE);
-		lengthColumn.setText("Offset");
-		final TableColumn offsetColumn = new TableColumn(refTable, SWT.NONE);
-		offsetColumn.setText("Length");
+		final TableColumn offsetColumn = new TableColumn(refTable, 
+				SWT.NONE);
+		offsetColumn.setText("Offset");
+		final TableColumn lengthColumn = new TableColumn(refTable, 
+				SWT.NONE);
+		lengthColumn.setText("Length");
 		final TableColumn multiOffsetColumn = new TableColumn(refTable,
 				SWT.NONE);
 		multiOffsetColumn.setText("MultiOffset");
@@ -281,8 +286,10 @@ implements IDataTableView {
 										{
 										case SWT.TRAVERSE_RETURN:
 											item.setText(columnIndexFinal, text.getText());
+											bTriggeredUpdateFlag = true;									
+											System.out.println("Item text before: "+item.getText(columnIndexFinal));
 											updateData(item, columnIndexFinal);
-											
+											System.out.println("Item text after: "+item.getText(columnIndexFinal));
 										// FALL THROUGH
 										case SWT.TRAVERSE_ESCAPE:
 											text.dispose();
@@ -294,8 +301,8 @@ implements IDataTableView {
 							};
 							text.addListener(SWT.FocusOut, textListener);
 							text.addListener(SWT.Traverse, textListener);
-							editor.setEditor(text, item, columnIndexFinal);
-							text.setText(item.getText(columnIndexFinal));
+							editor.setEditor(text, item, columnIndex);
+							text.setText(item.getText(columnIndex));
 							text.selectAll();
 							text.setFocus();
 							return;
@@ -306,7 +313,9 @@ implements IDataTableView {
 						}
 					}
 					if (!visible)
+					{
 						return;
+					}
 					index++;
 				}
 			}
@@ -324,22 +333,22 @@ implements IDataTableView {
 		// offset
 		case 0:
 			tmpSelection.setOffset(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(), -1));	
+					refUpdatedItem.getText(iColumnIndexOfItem), -1));	
 			break;
 		// length
 		case 1:
 			tmpSelection.setLength(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(), -1));	
+					refUpdatedItem.getText(iColumnIndexOfItem), -1));	
 			break;
 		// mulit offset
 		case 2:
 			tmpSelection.setMultiOffset(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(), -1));
+					refUpdatedItem.getText(iColumnIndexOfItem), -1));
 			break;
 		// multi repeat
 		case 3:
 			tmpSelection.setMultiRepeat(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(), -1));
+					refUpdatedItem.getText(iColumnIndexOfItem), -1));
 			break;
 		default:
 			break;
@@ -347,6 +356,12 @@ implements IDataTableView {
 	}
 	
 	public void updateSelection( int iSelectionId ) {
+		
+		if (bTriggeredUpdateFlag == true)
+		{
+			bTriggeredUpdateFlag = false;
+			return;		
+		}
 		
 		createSelectionTable( iSelectionId );
 	}

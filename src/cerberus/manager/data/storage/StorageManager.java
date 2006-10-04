@@ -56,23 +56,23 @@ implements IStorageManager {
 		
 		refGeneralManager.getSingelton().setStorageManager( this );
 		
-		/**
-		 * Test IStorage...
-		 */
-		testStorage = new FlatThreadStorageSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
-				refGeneralManager,
-				/// pass no ICollectionLock 
-				null);
-		
-		this.registerItem( testStorage, testStorage.getId(), ManagerObjectType.STORAGE_FLAT );
-		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( "STORAGE: testStorage created with Id =[" +
-				testStorage.getId() +"]",
-				LoggerType.VERBOSE );
-		/**
-		 * END: Test IStorage...
-		 */
-			
+//		/**
+//		 * Test IStorage...
+//		 */
+//		testStorage = new FlatThreadStorageSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
+//				refGeneralManager,
+//				/// pass no ICollectionLock 
+//				null);
+//		
+//		this.registerItem( testStorage, testStorage.getId(), ManagerObjectType.STORAGE_FLAT );
+//		
+//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "STORAGE: testStorage created with Id =[" +
+//				testStorage.getId() +"]",
+//				LoggerType.VERBOSE );
+//		/**
+//		 * END: Test IStorage...
+//		 */
+//			
 	}
 
 	/* (non-Javadoc)

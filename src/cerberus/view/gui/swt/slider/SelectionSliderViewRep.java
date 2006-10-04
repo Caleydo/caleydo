@@ -27,6 +27,27 @@ extends ASliderViewRep {
 		
 		super.initView();
 		
+		ISelection tmpSelection =
+			refGeneralManager.getSingelton().getSelectionManager()
+				.getItemSelection(iSelectionId);
+		
+		if (sSelectionFieldName.equals("length"))
+		{
+			iCurrentSliderValue = tmpSelection.length();
+		}
+		else if (sSelectionFieldName.equals("offset"))
+		{
+			iCurrentSliderValue = tmpSelection.getOffset();
+		}
+		else if (sSelectionFieldName.equals("multioffset"))
+		{
+			iCurrentSliderValue = tmpSelection.getMultiOffset();
+		}
+		else if (sSelectionFieldName.equals("multirepeat"))
+		{
+			iCurrentSliderValue = tmpSelection.getMultiRepeat();
+		}
+		
 	    refSlider.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event event) {
 				ISelection tmpSelection =

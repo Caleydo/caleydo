@@ -48,11 +48,10 @@
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Cerberus Window 2" attrib1="ROW VERTICAL" />   
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="18401" label="Pathway" 			parent="11331" attrib2="-1 -1" />
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" 			cmdId="68994" targetId="31401" label="Gears" 			parent="11331" attrib2="300 300" />		  
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" 	cmdId="69995" targetId="32401" label="Heatmap" 			parent="11331" attrib2="300 300" />		  
 
 	  <!-- Mediator -->
-	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="35201" attrib2="19401 10401" /> 
-	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="68991" targetId="92501" label="Mediator B" 		attrib1="35201" attrib2="20401 10401" /> 
+	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="35201" attrib2="19401 10401 20401" /> 
+
 
  	  <!--Commands not in use at the moment	  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
@@ -69,6 +68,8 @@
 	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator D" 		attrib1="35201" attrib2="22401 10401" /> 	  	
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER"  	cmdId="68991" targetId="21401" label="Slider Selection Multi Offset"  parent="11341" attrib2="400 100" detail="35201" attrib3="multioffset" />	 
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="69991" targetId="22401" label="Slider Selection Multi Repeat" parent="11341" attrib2="400 100" detail="35201" attrib3="multirepeat" />
+	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="68991" targetId="92501" label="Mediator B" 		attrib1="35201" attrib2="20401 10401" /> 
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" 	cmdId="69995" targetId="32401" label="Heatmap" 			parent="11331" attrib2="300 300" />		  
 
      -->
 
