@@ -90,7 +90,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
 	 */
 	public CmdDataCreateSet( final IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler,
@@ -112,7 +112,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader#loadData()
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

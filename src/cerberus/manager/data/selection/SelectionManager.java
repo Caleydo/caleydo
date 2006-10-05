@@ -16,6 +16,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
 
 import cerberus.data.collection.ISelection;
 //import cerberus.data.collection.SelectionType;
@@ -24,7 +25,6 @@ import cerberus.data.collection.selection.SelectionSingleBlock;
 import cerberus.data.collection.selection.SelectionMultiBlock;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.ISelection;
-import cerberus.data.loader.MicroArrayLoader;
 
 
 

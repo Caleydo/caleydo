@@ -21,10 +21,10 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.loader.MicroArrayLoader;
 
 
 /**
@@ -34,7 +34,7 @@ import cerberus.data.loader.MicroArrayLoader;
  * @author Michael Kalkusch
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.data.loader.MicroArrayLoader
+ * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
  */
 public class CmdSystemLoadFileViaImporter 
 extends ACommand
@@ -60,7 +60,7 @@ implements ICommand {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
 	 */
 	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 			final LinkedList <String> llAttributes ) {
@@ -110,7 +110,7 @@ implements ICommand {
 	/**
 	 * Use 
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
 	 */
 	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 			String fileName, 
@@ -126,7 +126,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader#loadData()
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

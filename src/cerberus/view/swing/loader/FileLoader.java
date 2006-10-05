@@ -21,6 +21,7 @@ import javax.swing.filechooser.FileFilter;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
+import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
 //import javax.swing.JMenu;
 //import javax.swing.JMenuBar;
 //import javax.swing.JMenuItem;
@@ -33,7 +34,6 @@ import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.selection.SelectionSingleBlock;
 
-import cerberus.data.loader.MicroArrayLoader;
 
 /**
  * @author kalkusch

@@ -36,7 +36,7 @@ import cerberus.manager.type.ManagerObjectType;
  * @author Michael Kalkusch
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.data.loader.MicroArrayLoader
+ * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
  */
 public class CmdDataCreateSelection 
 extends AManagedCmd
@@ -72,7 +72,7 @@ implements ICommand {
 	 * 
 	 * @deprecated
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
 	 */
 	public CmdDataCreateSelection( IGeneralManager refGeneralManager,
 			final LinkedList <String> listAttributes ) {
@@ -94,7 +94,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.data.loader.MicroArrayLoader#loadData()
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

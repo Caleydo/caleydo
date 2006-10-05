@@ -7,7 +7,7 @@
  *  
  */
 
-package cerberus.data.loader;
+package cerberus.xml.parser.handler.importer.ascii;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
