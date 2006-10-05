@@ -12,6 +12,7 @@ import java.awt.LayoutManager;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Color;
+import java.util.LinkedList;
 import java.util.Vector;
 import java.util.Iterator;
 import java.awt.Rectangle;
@@ -643,7 +644,7 @@ implements DNetEventComponentInterface, IViewCanvas
 	
 	public void updateAllSelectionsFromGui() {
 		
-		Vector<IStorage> refVecCurrentSelections = 
+		LinkedList<IStorage> refVecCurrentSelections = 
 			refStorageManager.getAllStorageItemsVector();
 		
 		Iterator<IStorage> iterSel = refVecCurrentSelections.iterator();
@@ -674,7 +675,7 @@ implements DNetEventComponentInterface, IViewCanvas
 	 */
 	public void updateState() {
 		
-		Vector<IStorage> refVecCurrentSelections = 
+		LinkedList<IStorage> refVecCurrentSelections = 
 			refStorageManager.getAllStorageItemsVector();
 		
 		final int iSizeVectorSelections = refVecCurrentSelections.size();

@@ -1,5 +1,8 @@
 package cerberus.view.gui.swt.data;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -149,21 +152,17 @@ implements IDataTableView {
 		TableColumn column;
 
 		int iTableColumnIndex = 0;
-		int iNumberOfTableItems = 0;
 		int iTmpNumberOfDataItems = 0;	
+		int iNumberOfTableItems = refCurrentStorage.getMaximumLengthOfAllArrays();
 		int iStartItemIndex = iCurrentTablePage * MAX_TABLE_ROWS;
 				
 		// Find maximum array size to know the needed number of rows in the
 		// table.
-		int[] storageAllSize = refCurrentStorage.getAllSize();	
+		//int[] storageAllSize = refCurrentStorage.getAllSize();	
 		
-		for (int storageSizeIndex = 0; storageSizeIndex < storageAllSize.length; storageSizeIndex++)
-		{
-			if (iNumberOfTableItems < storageAllSize[storageSizeIndex])
-			{
-				iNumberOfTableItems = storageAllSize[storageSizeIndex];
-			}
-		}
+		/**
+		 * Search for maximum number of items in all arrays of refCurrentStorage
+		 */
 		
 		reinitializeTable();
 		

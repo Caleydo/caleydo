@@ -86,6 +86,8 @@ implements ISet {
 	
 		if ( refFlatSelection == null ) {
 			refFlatSelection = new ISelection[iSizeDimension];
+		}
+		if ( refFlatStorage == null ) {
 			refFlatStorage = new IStorage[iSizeDimension];
 		}
 		
@@ -411,8 +413,12 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 	
-		if ( refFlatStorage == null ) {
+		if ( refFlatSelection == null ) 
+		{
 			refFlatSelection = new ISelection[iSizeDimension];
+		}
+		if ( refFlatStorage == null )
+		{
 			refFlatStorage = new IStorage[iSizeDimension];
 		}
 		
@@ -426,21 +432,6 @@ implements ISet {
 	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
-		
-		assert false : "not implemented update yet";
-	
-//		if ( this.refFlatSelection != null ) {
-//			for ( int i=0; i<refFlatSelection.length;i++) {
-//				setCacheIdCompared( refFlatSelection[i].getCacheId());
-//			}
-//		}
-//		
-//		if ( this.refFlatStorage != null ) {
-//			for ( int i=0; i<refFlatStorage.length;i++) {
-//				setCacheIdCompared( refFlatStorage[i].getCacheId());
-//			}
-//		}
-		
 		return this.iCacheId;
 	}
 	

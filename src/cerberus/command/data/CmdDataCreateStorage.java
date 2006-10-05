@@ -113,11 +113,11 @@ implements ICommand {
 		
 		assert llDataTypes != null : "Probably this doCommand() was already executed once!";
 		
-		IStorageManager refSelectionManager = 
+		IStorageManager refStorageManager = 
 			refGeneralManager.getSingelton().getStorageManager();
 		
-		IStorage newObject = (IStorage) refSelectionManager.createStorage(
-				ManagerObjectType.STORAGE );
+		IStorage newObject = (IStorage) refStorageManager.createStorage(
+				ManagerObjectType.STORAGE_FLAT );
 		
 		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
@@ -274,9 +274,9 @@ implements ICommand {
 		} //end: while ( iter_DataRaw.hasNext() ) {
 						
 		
-		refSelectionManager.registerItem( newObject, 
-				iUniqueTargetId, 
-				ManagerObjectType.SELECTION_MULTI_BLOCK );
+		refStorageManager.registerItem( newObject, 
+				newObject.getId(), 
+				newObject.getBaseType() );
 
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"DO new STO: " + 

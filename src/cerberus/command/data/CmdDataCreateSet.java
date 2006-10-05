@@ -46,6 +46,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	
 	private CommandQueueSaxType set_type;
 
+	private ISet newObject = null;
 	
 	/**
 	 * This list contains the data types for cerberus.data.collection.StorageType as String.
@@ -122,7 +123,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		ISetManager refSetManager = 
 			refGeneralManager.getSingelton().getSetManager();
 		
-		ISet newObject = null;
+		newObject = null;
 		
 		switch ( set_type ) 
 		{
@@ -631,6 +632,21 @@ extends ACmdCreate_IdTargetLabelAttr {
 		}
 		
 		return true;
+	}
+	
+	public String toString() {
+		String result = this.getClass().getSimpleName();
+		
+		if ( newObject == null ) 
+		{
+			result += " SET: ---"; 
+		}
+		else
+		{
+			result += " SET: " + newObject.toString();
+		}
+		
+		return result;
 	}
 
 }

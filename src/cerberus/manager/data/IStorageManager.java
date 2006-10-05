@@ -8,12 +8,13 @@
  */
 package cerberus.manager.data;
 
-import java.util.Vector;
+import java.util.LinkedList;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
 
 /**
  * Manages all IStorage's.
@@ -37,7 +38,7 @@ extends IGeneralManager
 	
 	public IStorage[] getAllStorageItems();
 	
-	public Vector<IStorage> getAllStorageItemsVector();
+	public LinkedList<IStorage> getAllStorageItemsVector();
 	
 	//public ManagerObjectType getManagerType();
 	

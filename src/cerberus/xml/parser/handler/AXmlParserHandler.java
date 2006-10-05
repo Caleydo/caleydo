@@ -41,7 +41,7 @@ implements IXmlParserHandler
 
 	public final void setXmlActivationTag( final String tag)
 	{
-		assert tag == null : "can not assing null as tag";
+		assert tag != null : "can not assing null as tag";
 		
 		if ( tag.length() < 2 ) {
 			throw new CerberusRuntimeException("setXmlActivationTag() tag must be at least one char!",

@@ -8,6 +8,8 @@
  */
 package cerberus.data.collection;
 
+import java.util.Hashtable;
+
 import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.ICollection;
@@ -48,21 +50,21 @@ public interface IStorage
 			final int iAtContainerPosition );
 
 	
-	/**
-	 * Get the storage type of one container 
-	 * 
-	 * @param iAtContainerPosition address the container
-	 * @return storage type of the container.
-	 */
-	public StorageType getStorageTypePerContainer( 
-			final int iAtContainerPosition );
+//	/**
+//	 * Get the storage type of one container 
+//	 * 
+//	 * @param iAtContainerPosition address the container
+//	 * @return storage type of the container.
+//	 */
+//	public StorageType getStorageTypePerContainer( 
+//			final int iAtContainerPosition );
 	
 	/**
 	 * Removes a container immediately.
 	 * 
 	 * @param iAtContainerPosition 
 	 */
-	public void removeStorage( final int iAtContainerPosition  );
+	public void removeStorage( final StorageType byStorageType );
 	
 	/**
 	 * Allocates all arrays.
@@ -72,13 +74,23 @@ public interface IStorage
 	 */
 	public boolean allocate();
 	
+//	/**
+//	 * ISet size of all containers.
+//	 * Note: allocate() must be called to make the change permanent.
+//	 * 
+//	 * @param size
+//	 */
+//	public void setAllSize( final int [] size );
+	
 	/**
 	 * ISet size of all containers.
 	 * Note: allocate() must be called to make the change permanent.
 	 * 
+	 * @see cerberus.data.collection.IStorage#getMaximumLengthOfAllArrays()
+	 * 
 	 * @param size
 	 */
-	public void setAllSize( final int [] size );
+	public Hashtable <StorageType,Integer> getAllSize();
 	
 	/**
 	 * Sets size for one container.
@@ -88,7 +100,7 @@ public interface IStorage
 	 * @param iSetSize new size of the container (array)
 	 * @return TRUE if all was fine
 	 */
-	public boolean setSize( final int iAtContainerPosition, final int iSetSize);
+	public void setSize( final StorageType byStorageType, final int iSetSize);
 	
 	/**
 	 * Get size for one container.
@@ -96,15 +108,13 @@ public interface IStorage
 	 * @param iAtContainerPosition address a container. range [0.. getNumberArrays()-1 ]
 	 * @return number of allocated elements in container at position iAtContainerPosition
 	 */
-	public int getSize( final int iAtContainerPosition );
-	
 	public int getSize( final StorageType type );
 	
-	/**
-	 * Get each size of each container (array)
-	 * @return
-	 */
-	public int[] getAllSize();
+//	/**
+//	 * Get each size of each container (array)
+//	 * @return
+//	 */
+//	public int[] getAllSize();
 	
 	/**
 	 * Return the number of hosted containers (arrays).
@@ -112,6 +122,15 @@ public interface IStorage
 	 * @return number of container (arrays) hosted
 	 */
 	public int getNumberArrays();
+	
+	/**
+	 * Get the size of the largest array in the storage.
+	 * 
+	 * @see cerberus.data.collection.IStorage#getAllSize()
+	 * 
+	 * @return size of largest array
+	 */
+	public int getMaximumLengthOfAllArrays();
 	
 	//-----------------------------------
 	

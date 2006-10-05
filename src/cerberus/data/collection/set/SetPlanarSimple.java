@@ -542,7 +542,11 @@ implements ISet {
 				
 				while ( itemsInVector_storage.hasMoreElements() ) {
 					
-					result.append( itemsInVector_storage.nextElement().toString() );
+					IStorage buffer = itemsInVector_storage.nextElement();
+					if ( buffer != null ) 
+					{
+						result.append( buffer.toString() );
+					}
 					
 					if ( itemsInVector_storage.hasMoreElements() ) 
 					{

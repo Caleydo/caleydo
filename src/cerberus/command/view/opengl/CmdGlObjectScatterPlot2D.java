@@ -25,7 +25,7 @@ extends ACmdCreate_GlCanvasUser
 		implements ICommand
 {
 	
-	protected int [] iResolution;
+	protected int[] iResolution;
 	
 	/**
 	 * If of Set to be read data from
@@ -44,8 +44,8 @@ extends ACmdCreate_GlCanvasUser
 			IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
-
-		iResolution = new int [3];
+		
+		iResolution = new int[3];
 		
 		setAttributesHeatmapWidthHeight( refParameterHandler );
 		
@@ -54,34 +54,33 @@ extends ACmdCreate_GlCanvasUser
 
 	private final void setAttributesHeatmapWidthHeight( IParameterHandler refParameterHandler ) {
 		
-		//super.setAttributesBaseParent( refParameterHandler );
+		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
+				this.sDetail, 
+				-1 );
 		
-		
-		StringTokenizer token = new StringTokenizer(
-				sAttribute3,
-				CommandFactory.sDelimiter_CreateView_Size);
+		StringTokenizer tokenize = new StringTokenizer( sAttribute3,
+				CommandFactory.sDelimiter_CreateSelection_DataItems );
 		
 		int i=0;		
-		for ( ; token.hasMoreTokens(); i++ ) {
+		for ( ; tokenize.hasMoreTokens(); i++ ) 
+		{
+			if ( i > 2 )
+			{
+				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						"attrib3='" + sAttribute3 + "' should contain 3 interger values! ignore remaining values!",
+						LoggerType.VERBOSE );
+			}
+			
 			iResolution[i] = StringConversionTool.convertStringToInt( 
-					token.nextToken(), 
-					0 );
+				tokenize.nextToken(), 0 );					
 		}
 		
-		if ( i != 3 ) {
-			String logMessage = "CmdGlObjectHeatmap.setAttributesHeatmapWidthHeight() failed! 3 values are excpected, but only " +
-			i + " are present";
-			
+		if ( i != 3 ) 
+		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					logMessage,
+					"attrib3='" + sAttribute3 + "' should contain 3 interger values!",
 					LoggerType.MINOR_ERROR );
-			
-			throw new CerberusRuntimeException( logMessage );
 		}
-		
-		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
-				sDetail, 
-				-1 );
 	}
 
 
@@ -89,7 +88,6 @@ extends ACmdCreate_GlCanvasUser
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException
 	{
-
 		GLCanvasScatterPlot2D canvas = 
 			(GLCanvasScatterPlot2D) openGLCanvasUser;
 				

@@ -185,7 +185,7 @@ implements ISaxParserHandler
 				if ( qName.equals( sTag_XML_DataCollection_details ) ) {
 					
 					final String bufferType = attributes.getValue(sTag_XML_DataCollection_details_attr_type);					
-					final StorageType currentStorageType = StorageType.getType( bufferType );
+					final StorageType currentStorageType = StorageType.valueOf( bufferType );
 					
 					if ( currentStorageType.isDataType() ) {
 						// reset buffer...
@@ -371,13 +371,13 @@ implements ISaxParserHandler
 		if ( tokenizer.hasMoreElements() ) {
 			
 			final int iInitSize = tokenizer.countTokens();			
-			final StorageType currentStorageType = StorageType.getType( details );
+			final StorageType currentStorageType = StorageType.valueOf( details );
 			
 			if ( ! currentStorageType.isDataType()) {
 				return;
 			}
 			
-			switch ( StorageType.getType( details )) {
+			switch ( currentStorageType ) {
 			
 			/**
 			 * BOOLEAN

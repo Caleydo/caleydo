@@ -27,6 +27,7 @@ import cerberus.manager.IGeneralManager;
 
 //import prometheus.data.DataStorageInterface;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.selection.SelectionThreadSingleBlock;
@@ -207,6 +208,8 @@ implements IMementoXML, IParserObject {
 				refImportDataToSet.getSelectionByDimAndIndex(0,0);
 		}
 		
+		//dfsd
+		
 		allocateStorageBufferForTokenPattern();
 		
 		/// open file....
@@ -363,6 +366,7 @@ implements IMementoXML, IParserObject {
 		    
 		    brFile.close();
 		    
+		    
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
 		    
 		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
@@ -374,13 +378,17 @@ implements IMementoXML, IParserObject {
 		     * Copy valued to refStorage...
 		     */
 		    		   
-		    refImportDataToSet.setLabel("microarray loader set");
-		    refDataStorage.setLabel( "microarray loader storage");
+		    refImportDataToSet.setLabel("microarray loader set " + this.getFileName() );
+		    refDataStorage.setLabel( "microarray loader storage " + this.getFileName() );
 		    
 		    /*
 		     * notify storage cacheId of changed data...
 		     */
 		    refDataStorage.setCacheId( refDataStorage.getCacheId() + 1);
+		    
+		    refDataStorage.setSize(StorageType.INT,1);
+		    refDataStorage.setSize(StorageType.FLOAT,1);
+		    refDataStorage.setSize(StorageType.STRING,1);
 		    
 		    if ( LLInteger.size() > 1) {
 			    Iterator<Integer> iter_I = LLInteger.iterator();		    
@@ -434,7 +442,7 @@ implements IMementoXML, IParserObject {
 			    refDataStorage.setArrayString( stringBuffer );
 			    
 			    ISelection selFloat = 
-			    	new SelectionThreadSingleBlock(1,null,null);
+			    	new SelectionThreadSingleBlock(1, refGeneralManager, null);
 			    selFloat.setLabel("import STRING");
 			    selFloat.setLength( LLString.size() );
 			    
@@ -471,6 +479,8 @@ implements IMementoXML, IParserObject {
 					"MicroArrayLoader: ERROR line=[" + iLineInFile +
 					"] while parsing: " + ex.toString(),
 					LoggerType.ERROR_ONLY );
+			
+			ex.printStackTrace();
 		    return false;
 		}		
 		

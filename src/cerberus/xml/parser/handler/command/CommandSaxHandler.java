@@ -165,15 +165,30 @@ implements IXmlParserHandler
 		}
 		catch ( Exception e) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"CommandSaxHandler.readCommandData(" +
-					attrs.toString() + 
-					") ERROR while parsing " + 
-					lastCommand.toString() + 
-					" error=" + 
-					e.toString(),
-					LoggerType.TRANSITION );
-					
+			if ( lastCommand != null ) 
+			{
+				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						"CommandSaxHandler.readCommandData(" +
+						attrs.toString() + 
+						") ERROR while parsing " + 
+						lastCommand.toString() + 
+						" error=" + 
+						e.toString(),
+						LoggerType.TRANSITION );
+			}
+			else
+			{
+				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						"CommandSaxHandler.readCommandData(" +
+						attrs.toString() + 
+						") ERROR while parsing --no command--" + 
+						" error=" + 
+						e.toString(),
+						LoggerType.TRANSITION );
+			}
+			
+			e.printStackTrace();
+			
 			return null;
 		}
 			

@@ -9,6 +9,7 @@
 package cerberus.data.collection.storage;
 
 import java.lang.NullPointerException;
+import java.util.Hashtable;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -33,6 +34,7 @@ extends ACollectionThreadItem
 implements IStorage, IMementoNetEventXML, ICollectionLock
 {
 
+	private static final int iNumerOfUsedArrays = 6;
 	
 	/**
 	 * One dimensional INT array.
@@ -63,23 +65,23 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	private int [] setSizeForAllocation = null;
 	
-	/**
-	 * Defines type per index.
-	 */
-	private StorageType[] typePerContainer = 
-		  { StorageType.INT, 
-			StorageType.FLOAT,
-			StorageType.STRING,
-			StorageType.BOOLEAN,
-			StorageType.DOUBLE,
-			StorageType.OBJECT };
+//	/**
+//	 * Defines type per index.
+//	 */
+//	private StorageType[] typePerContainer = 
+//		  { StorageType.INT, 
+//			StorageType.FLOAT,
+//			StorageType.STRING,
+//			StorageType.BOOLEAN,
+//			StorageType.DOUBLE,
+//			StorageType.OBJECT };
 	
-	private final static int INT = 0;  
-	private final static int FLOAT = 1;
-	private final static int STRING = 2;  
-	private final static int BOOLEAN = 3; 
-	private final static int DOUBLE = 4; 
-	private final static int OBJECT = 5;
+//	private final static int INT = 0;  
+//	private final static int FLOAT = 1;
+//	private final static int STRING = 2;  
+//	private final static int BOOLEAN = 3; 
+//	private final static int DOUBLE = 4; 
+//	private final static int OBJECT = 5;
 	
 	
 	/**
@@ -110,24 +112,24 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		assert false: "FlatStorageSimple.setStorageTypePerContainer() not supported.";
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IStorage#getStorageTypePerContainer(int)
-	 */
-	public StorageType getStorageTypePerContainer(int iAtContainerPosition) {
-		try {
-			return typePerContainer[ iAtContainerPosition ];
-		} 
-		catch (ArrayIndexOutOfBoundsException ae) {
-			return StorageType.NONE;
-		}
-	}
+//	/* (non-Javadoc)
+//	 * @see cerberus.data.collection.IStorage#getStorageTypePerContainer(int)
+//	 */
+//	public StorageType getStorageTypePerContainer( StorageType type) {
+//		try {
+//			return typePerContainer[ iAtContainerPosition ];
+//		} 
+//		catch (ArrayIndexOutOfBoundsException ae) {
+//			return StorageType.NONE;
+//		}
+//	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IStorage#removeStorage(int)
 	 */
-	public void removeStorage(int iAtContainerPosition) {
+	public void removeStorage(StorageType useStorageType) {
 
-		switch ( iAtContainerPosition ) {
+		switch ( useStorageType ) {
 		
 		case INT:
 			dataInt = null;
@@ -170,86 +172,118 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		}
 		
 		for ( int i=0; i < setSizeForAllocation.length; i++ ){
-			allocatePerIndex(i , setSizeForAllocation[i] );
+			allocatePerIndex( StorageType.getTypeByIndex(i) , setSizeForAllocation[i] );
 		}
 		
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IStorage#setAllSize(int[])
-	 */
-	public void setAllSize(int[] size) {
-	
-		final int iSizeIn = size.length;
-		
-		if ( this.setSizeForAllocation == null ) {
-			setSizeForAllocation = new int [ typePerContainer.length ];
-		}
-		
-		for( int i=0; (i< setSizeForAllocation.length) && (i < iSizeIn) ; i++ ) {
-			setSizeForAllocation[i] = size[i];
-		}
-	}
+//	/* (non-Javadoc)
+//	 * @see cerberus.data.collection.IStorage#setAllSize(int[])
+//	 */
+//	public void setAllSize(int[] size) {
+//	
+//		final int iSizeIn = size.length;
+//		
+//		if ( this.setSizeForAllocation == null ) {
+//			setSizeForAllocation = new int [ typePerContainer.length ];
+//		}
+//		
+//		for( int i=0; (i< setSizeForAllocation.length) && (i < iSizeIn) ; i++ ) {
+//			setSizeForAllocation[i] = size[i];
+//		}
+//	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IStorage#setSize(int, int)
 	 */
-	public boolean setSize(int iAtContainerPosition, int iSetSize) {
+	public void setSize( final StorageType byStorageType, final int iSetSize) {
 		
 		if ( iSetSize < 0 ) {
 			assert false: "setSize()  iSetSize < 0 !";
 		
-			return false;
+			return;
 		}
 		
-		if ( this.setSizeForAllocation == null ) {
-			setSizeForAllocation = new int [ typePerContainer.length ];
-		}
-		
-		try {
-			setSizeForAllocation[iAtContainerPosition] = iSetSize;
-			return true;
-		}
-		catch (ArrayIndexOutOfBoundsException ae) {
-			return false;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IStorage#getSize(int)
-	 */
-	public int getSize(int iAtContainerPosition) {
-
-		switch ( iAtContainerPosition ) {
+		switch ( byStorageType ) {
 		case INT:
-			if ( dataInt == null ) return 0;
-			return dataInt.length;
+			if  (dataInt == null) 
+			{
+				dataInt = new int [iSetSize];
+				return;
+			}
+			if ( dataInt.length != iSetSize )
+			{
+				dataInt = new int [iSetSize];
+			}
+			return;
 			
 		case FLOAT:
-			if ( dataFloat == null ) return 0;
-			return dataFloat.length;
+			if ( dataFloat == null )
+			{
+				dataFloat = new float [iSetSize];
+				return;
+			}
+			if ( dataFloat.length != iSetSize )
+			{
+				dataFloat = new float [iSetSize];
+			}
+			return;
 			
 		case STRING:
-			if ( dataString == null ) return 0;
-			return dataString.length;
+			if ( dataString == null )
+			{
+				dataString = new String [iSetSize];
+				return;
+			}
+			if ( dataString.length != iSetSize )
+			{
+				dataString = new String [iSetSize];
+			}
+			return;
 			
 		case BOOLEAN:
-			if ( dataBoolean == null ) return 0;
-			return dataBoolean.length;
+			if ( dataBoolean == null )
+			{
+				dataBoolean = new boolean [iSetSize];
+				return;
+			}
+			if ( dataBoolean.length != iSetSize )
+			{
+				dataBoolean = new boolean [iSetSize];
+			}
+			return;
 			
 		case DOUBLE:
-			if ( dataDouble == null ) return 0;
-			return dataDouble.length;
+			if ( dataDouble == null )
+			{
+				dataDouble = new double [iSetSize];
+				return;
+			}
+			if ( dataDouble.length != iSetSize )
+			{
+				dataDouble = new double [iSetSize];
+			}
+			return;
 		
 		case OBJECT:
-			if ( dataObject == null ) return 0;
-			return dataObject.length;
+			if ( dataObject == null )
+			{
+				dataObject = new Object [iSetSize];
+				return;
+			}
+			if ( dataObject.length != iSetSize )
+			{
+				dataObject = new Object [iSetSize];
+			}
+			return;
 		
 		default:
 			throw new RuntimeException("getSize() with unknown index.");
 		} // end switch
+	
 	}
+
 	
 	public int getSize( final StorageType type ) {
 		
@@ -287,7 +321,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IStorage#getSize(int)
 	 */
-	private boolean allocatePerIndex( final int iAtContainerPosition, final int iAllocationSize) {
+	private boolean allocatePerIndex( final StorageType type, final int iAllocationSize) {
 
 		if ( iAllocationSize <= 0 ) {
 			assert false: "allocatePerIndex() with negative size!";
@@ -295,7 +329,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 			return false;
 		}
 		
-		switch ( iAtContainerPosition ) {
+		switch ( type ) {
 		
 		case INT:		
 			if ( dataInt == null ) {
@@ -370,31 +404,77 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 			return true;
 		
 		default:
-			throw new RuntimeException("allocatePerIndex() with unknown index.");
+			throw new RuntimeException("allocatePerIndex() with unsupported type [" + 
+					type.toString() +"]");
 		
 		} // end switch
 	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IStorage#getAllSize()
+	
+	/**
+	 * ISet size of all containers.
+	 * Note: allocate() must be called to make the change permanent.
+	 * 
+	 * @param size
 	 */
-	public int[] getAllSize() {
-		final int iSize =  typePerContainer.length;
+	public Hashtable <StorageType,Integer> getAllSize() {
+		Hashtable <StorageType,Integer> resultHasttable = 
+			new Hashtable <StorageType,Integer> (iNumerOfUsedArrays);
 		
-		int [] resultArray = new int[ iSize ];
-
-		for ( int i=0; i < iSize; i++ ) {
-			resultArray[i] = getSize( i );
+		for ( int i=0; i < iNumerOfUsedArrays; i++ )
+		{			
+			StorageType help = 
+				StorageType.getTypeByIndex( i );
+			
+			resultHasttable.put( help, this.getSize(help) );
 		}
 		
-		return resultArray;
+		return resultHasttable;
 	}
+
+	public int getMaximumLengthOfAllArrays() {
+		
+		int iMaximumSizeOfAllArrays = 0;
+		
+		if ( getReadToken() )
+		{
+			for ( int i=0; i < iNumerOfUsedArrays; i++ )
+			{			
+				int iCurrentArraySize = 
+					this.getSize( StorageType.getTypeByIndex( i ) );
+				
+				if ( iMaximumSizeOfAllArrays < iCurrentArraySize ) 
+				{
+					iMaximumSizeOfAllArrays = iCurrentArraySize;
+				}
+			} // for ( int i=0; i < iNumerOfUsedArrays; i++ )
+		} // if ( getReadToken() )
+		
+		returnReadToken();
+		
+		return iMaximumSizeOfAllArrays;
+	}
+	
+	
+//	/* (non-Javadoc)
+//	 * @see cerberus.data.collection.IStorage#getAllSize()
+//	 */
+//	public int[] getAllSize() {
+//		final int iSize =  typePerContainer.length;
+//		
+//		int [] resultArray = new int[ iSize ];
+//
+//		for ( int i=0; i < iSize; i++ ) {
+//			resultArray[i] = getSize( StorageType.getTypeByIndex(i) );
+//		}
+//		
+//		return resultArray;
+//	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IStorage#getNumberArrays()
 	 */
-	public int getNumberArrays() {
-		return typePerContainer.length;
+	public final int getNumberArrays() {
+		return this.iNumerOfUsedArrays;
 	}
 
 	/* (non-Javadoc)

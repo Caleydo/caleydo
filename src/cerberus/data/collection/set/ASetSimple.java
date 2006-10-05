@@ -91,5 +91,4 @@ implements ISet {
 	public final boolean hasCacheChangedReadOnly( final int iCompareCacheId ) {
 		return (iCompareCacheId > this.iCacheId);
 	}
-
 }

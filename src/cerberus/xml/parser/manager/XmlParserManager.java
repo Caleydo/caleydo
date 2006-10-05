@@ -458,8 +458,13 @@ implements IXmlParserManager
 										
 				while ( iterHandler.hasNext() ) 
 				{
-					IXmlParserHandler refHandler = iterHandler.next();  
-					unregisterSaxHandler( refHandler.getXmlActivationTag() );
+					IXmlParserHandler refHandler = iterHandler.next(); 
+					
+					if ( refHandler != null )
+					{
+						refHandler.destroyHandler();
+						refHandler = null;
+					}
 					
 				} // while ( iterHandler.hasNext() ) 
 			

@@ -8,8 +8,10 @@
  */
 package cerberus.manager.data.storage;
 
-import java.util.Vector;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -21,6 +23,7 @@ import cerberus.manager.singelton.SingeltonManager;
 //import java.util.Hashtable;
 
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
@@ -38,7 +41,8 @@ implements IStorageManager {
 	/**
 	 * Vector holds a list of all IStorage's
 	 */
-	protected Vector<IStorage> vecStorage;
+	protected Hashtable<Integer,IStorage> vecStorage;
+	protected Hashtable<IStorage,Integer> vecStorage_reverse;
 	
 	/**
 	 * 
@@ -52,27 +56,10 @@ implements IStorageManager {
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 			
-		vecStorage = new Vector< IStorage > ( iInitSizeContainer );
+		vecStorage = new Hashtable<Integer,IStorage> ( iInitSizeContainer );
+		vecStorage_reverse = new Hashtable<IStorage,Integer> ( iInitSizeContainer );
 		
-		refGeneralManager.getSingelton().setStorageManager( this );
-		
-//		/**
-//		 * Test IStorage...
-//		 */
-//		testStorage = new FlatThreadStorageSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
-//				refGeneralManager,
-//				/// pass no ICollectionLock 
-//				null);
-//		
-//		this.registerItem( testStorage, testStorage.getId(), ManagerObjectType.STORAGE_FLAT );
-//		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "STORAGE: testStorage created with Id =[" +
-//				testStorage.getId() +"]",
-//				LoggerType.VERBOSE );
-//		/**
-//		 * END: Test IStorage...
-//		 */
-//			
+		refGeneralManager.getSingelton().setStorageManager( this );		
 	}
 
 	/* (non-Javadoc)
@@ -106,7 +93,11 @@ implements IStorageManager {
 	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.IStorage)
 	 */
 	public boolean deleteStorage(IStorage deleteStorage ) {
-		return vecStorage.remove( deleteStorage );
+		int iIndexStorage = 
+			vecStorage_reverse.remove( deleteStorage );
+		vecStorage.remove( iIndexStorage );
+		
+		return true;
 	}
 	
 	/* (non-Javadoc)
@@ -114,9 +105,9 @@ implements IStorageManager {
 	 */
 	public boolean deleteStorage( final int iItemId ) {
 		try {
-			unregisterItem( iItemId, null );
+			IStorage buffer = vecStorage.remove( iItemId );
+			vecStorage.remove( buffer );
 			
-			vecStorage.remove( iItemId );
 			return true;
 		}
 		catch (ArrayIndexOutOfBoundsException ae) {
@@ -127,19 +118,8 @@ implements IStorageManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#getItemStorage(int)
 	 */
-	public IStorage getItemStorage( final int iItemId) {
-		
-		try {
-			return vecStorage.get( getIndexInVector_byUniqueId(iItemId) );
-		} 
-		catch (NullPointerException npe) {
-			assert false:"uniqueId was not found";
-			return null;
-		}
-		catch (ArrayIndexOutOfBoundsException ae) {
-			assert false: "StorageManagerSimple.getItemStorage() ArrayIndexOutOfBoundsException ";
-			return null;
-		}
+	public IStorage getItemStorage( final int iItemId) {		
+		return vecStorage.get( iItemId );		
 	}
 
 	/**
@@ -149,7 +129,7 @@ implements IStorageManager {
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
 	public final Object getItem( final int iItemId) {
-		return getItemStorage(iItemId);
+		return vecStorage.get( iItemId );	
 	}
 	
 	/* (non-Javadoc)
@@ -159,9 +139,10 @@ implements IStorageManager {
 		
 		IStorage[] resultArray = new IStorage[ vecStorage.size() ];
 		
-		Iterator<IStorage> iter = vecStorage.iterator();
-		for ( int i=0 ; iter.hasNext() ; i++ ) {
-			resultArray[i] = iter.next();
+		Enumeration <IStorage> enumIter = vecStorage_reverse.keys();
+		
+		for ( int i=0 ; enumIter.hasMoreElements() ; i++ ) {
+			resultArray[i] = enumIter.nextElement();
 		}
 		
 		return resultArray;
@@ -171,15 +152,25 @@ implements IStorageManager {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.manager.StorageManager#getAllStorageItemsVector()
 	 */
-	public Vector<IStorage> getAllStorageItemsVector() {
-		return vecStorage;
+	public LinkedList<IStorage> getAllStorageItemsVector() {
+		
+		LinkedList <IStorage> resultArray = 
+			new LinkedList <IStorage> ();
+		
+		Enumeration <IStorage> enumIter = vecStorage_reverse.keys();
+		
+		for ( int i=0 ; enumIter.hasMoreElements() ; i++ ) {
+			resultArray.addLast( enumIter.nextElement() );
+		}
+		
+		return resultArray;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
-		return hasItem_withUniqueId( iItemId );	
+		return vecStorage.containsKey( iItemId );	
 	}
 
 	/* (non-Javadoc)
@@ -199,31 +190,27 @@ implements IStorageManager {
 	public boolean unregisterItem( final int iItemId,
 			final ManagerObjectType type  ) {
 		
-		if ( this.hasItem_withUniqueId( iItemId )) {
-			vecStorage.remove( 
-					(int) getIndexInVector_byUniqueId( iItemId ));
-			unregisterItem_byUniqueId_insideCollection( iItemId );
-			return true;
-		}
-		return false;
+		return deleteStorage( iItemId );
 	}
 
 	public boolean registerItem( final Object registerItem, 
 			final int iItemId , 
 			final ManagerObjectType type ) {
 		
+		if ( vecStorage.containsKey( iItemId ) ) 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"try to register id that was already used!");
+			
+			return false;
+		}
 		
 		try {
 			
 			IStorage addItem = (IStorage) registerItem;
 			
-			if ( hasItem_withUniqueId( iItemId ) ) {
-				vecStorage.set( getIndexInVector_byUniqueId( iItemId ), addItem );
-				return true;
-			}
-			
-			registerItem_byUniqueId_insideCollection( iItemId, vecStorage.size() );
-			vecStorage.addElement( addItem );
+			vecStorage.put( iItemId, addItem );
+			vecStorage_reverse.put( addItem, iItemId );
 				
 			return true;
 		}

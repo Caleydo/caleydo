@@ -42,7 +42,6 @@ import java.util.*;
 import javax.imageio.*;
 import javax.imageio.stream.*;
 import javax.swing.*;
-import javax.swing.SwingUtilities;
 
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
@@ -56,6 +55,7 @@ import gleem.linalg.*;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.selection.SelectionSingleBlock;
@@ -143,15 +143,21 @@ public class StorageBrowser {
 				else {
 					if ( refStorage.getReadTokenWait() ) {
 						
-						int [] iArraySize = refStorage.getAllSize();
+						Hashtable <StorageType,Integer> hastLookupTable =
+							refStorage.getAllSize();
 						
 						String sBuffer = "";
-						for ( int i=0; i<iArraySize.length; i++ ){
-							if (i != 0 ) {
-								sBuffer += " ";
-							}
-							sBuffer += Integer.toString( iArraySize[i] );
+						
+						Enumeration <StorageType> items = hastLookupTable.keys();
+						
+						while ( items.hasMoreElements() ) 
+						{
+							int iBuffer = hastLookupTable.get( items.nextElement() );
+							
+							sBuffer += " " + iBuffer;
+							
 						}
+						
 						jtf_NumberArrays.setText( Integer.toString( refStorage.getNumberArrays() ) );
 						jtf_SizeArrays.setText( sBuffer );
 						jtf_Label.setText( refStorage.getLabel() );
