@@ -47,15 +47,16 @@
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="67991" targetId="20401" label="Slider Selection Offset" parent="11341" attrib2="400 30" detail="35201" attrib3="offset" />
 
       <!-- Window 11331 -->
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Cerberus Window 2" attrib1="ROW VERTICAL" />   
-	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="18401" label="Pathway" 			parent="11331" attrib2="-1 -1" />
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" 			cmdId="68994" targetId="31401" label="Gears" 			parent="11331" attrib2="300 300" />		  
-
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW VERTICAL" />   
+	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="-1 -1" detail="85401" />
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="-1 500" />
+  
 	  <!-- Mediator -->
 	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="35201" attrib2="19401 10401 20401" /> 
 
-
  	  <!--Commands not in use at the moment	  
+	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="71991" targetId="94501" label="Mediator Pathway Browser" attrib1="84401" attrib2="85401" /> 
+
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	
@@ -72,6 +73,7 @@
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="69991" targetId="22401" label="Slider Selection Multi Repeat" parent="11341" attrib2="400 100" detail="35201" attrib3="multirepeat" />
 	  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="68991" targetId="92501" label="Mediator B" 		attrib1="35201" attrib2="20401 10401" /> 
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" 	cmdId="69995" targetId="32401" label="Heatmap" 			parent="11331" attrib2="300 300" />		  
+   		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" 			cmdId="68994" targetId="31401" label="Gears" 			parent="11331" attrib2="300 300" />		  
 
      -->
 

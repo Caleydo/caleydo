@@ -36,7 +36,9 @@ public enum ManagerType {
 		
 		LOGGER("logger manager"),
 				
-		VIEW("view manager"),				
+		VIEW_GL_CANVAS("view GL canvas manager"),	
+		
+		VIEW("view manager"),
 		
 		GUI_SWT("SWT GUI manager"),
 		

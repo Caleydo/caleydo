@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 
 //import java.lang.Integer;
 
-public class KgmlSaxHandler2 
+public class KgmlSaxHandler 
 extends AXmlParserHandler 
 implements IXmlParserHandler
 {
@@ -27,7 +27,7 @@ implements IXmlParserHandler
 	
 	private HashMap<Integer, Integer> kgmlIdToElementIdLUT;
 	
-	public KgmlSaxHandler2(  final IGeneralManager refGeneralManager,
+	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
 			final IXmlParserManager refXmlParserManager)
 	{		
 		super( refGeneralManager, refXmlParserManager);
@@ -150,8 +150,9 @@ implements IXmlParserHandler
     	int iKgmlEntryID = 0;
     	String sName = "";
     	String sType = "";
+    	String sLink = "";
 	   
-    	String sAttributeName = "";
+    	String sAttributeName;
     	int iGeneratedElementId = 0;
 	
     	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
@@ -169,14 +170,13 @@ implements IXmlParserHandler
 			   sName = attributes.getValue(iAttributeIndex); 
 		   else if (sAttributeName.equals("type"))
 			   sType = attributes.getValue(iAttributeIndex); 
-		
-		   //System.out.println("Attribute name: " +sAttributeName);
-		   //System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+		   else if (sAttributeName.equals("link"))
+			   sLink = attributes.getValue(iAttributeIndex);
 	   	}
 
     	iGeneratedElementId = 		
     		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
-			createVertex(sName, sType);
+			createVertex(sName, sType, sLink);
     	
     	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
     }

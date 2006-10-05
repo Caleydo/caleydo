@@ -8,8 +8,6 @@
  */
 package cerberus.manager;
 
-import java.util.LinkedList;
-
 import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;
 import cerberus.command.CommandType;

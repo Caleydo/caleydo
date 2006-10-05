@@ -5,10 +5,9 @@ import java.util.HashMap;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.manager.IGeneralManager;
 
-public interface IPathwayElementManager extends IGeneralManager
-{
-
-	public abstract int createVertex(String sName, String sType);
+public interface IPathwayElementManager extends IGeneralManager {
+	
+	public abstract int createVertex(String sName, String sType, String sLink);
 
 	public abstract void createVertexRepresentation(String sName, int iHeight,
 			int iWidth, int iXPosition, int iYPosition);

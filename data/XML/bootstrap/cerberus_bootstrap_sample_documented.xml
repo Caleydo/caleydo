@@ -23,6 +23,7 @@
                   CREATE_VIEW_PROGRESSBAR
                   CREATE_VIEW_SLIDER
                   CREATE_VIEW_MIXER
+                  CREATE_VIEW_BROWSER
       cmdId:      STORAGE:   1x991
                   SELECTION: 2x991
                   SET:       3x991

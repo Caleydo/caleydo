@@ -8,9 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
@@ -41,8 +39,7 @@ implements IView {
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
 			int iParentContainerId, 
-			String sLabel)
-	{
+			String sLabel) {
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
 	}
 
@@ -59,8 +56,7 @@ implements IView {
 	 * 
 	 * @param setStyle
 	 */
-	public final void setProgressBarStyle(int setStyle)
-	{
+	public final void setProgressBarStyle(int setStyle) {
 		if (this.refProgressBar != null)
 		{
 			System.out
@@ -94,8 +90,8 @@ implements IView {
 	 * 
 	 * @return SWT.HORIZONTAL or SWT.VERTICAL
 	 */
-	public final int getProgressBarStyle()
-	{
+	public final int getProgressBarStyle() {
+		
 		if (iProgressBarStyle == SWT.HORIZONTAL)
 		{
 			return SWT.HORIZONTAL;
@@ -109,8 +105,8 @@ implements IView {
 		return iProgressBarStyle;
 	}
 
-	public void initView()
-	{
+	public void initView() {
+		
 		if (this.refProgressBar != null)
 		{
 			System.err.println("call initView() more than once!");
@@ -125,13 +121,13 @@ implements IView {
 		refProgressBar.setSize(iWidth, iHeight);
 	}
 
-	public void drawView()
-	{
+	public void drawView() {
+		
 		refProgressBar.setSelection(this.iProgressBarCurrentValue);
 	}
 
-	public void retrieveGUIContainer()
-	{
+	public void retrieveGUIContainer() {
+		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
@@ -140,8 +136,8 @@ implements IView {
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 
-	public void setProgressBarPercentage(int iProgressBarCurrentValue)
-	{
+	public void setProgressBarPercentage(int iProgressBarCurrentValue) {
+		
 		this.iProgressBarCurrentValue = iProgressBarCurrentValue;
 	}
 	
@@ -149,8 +145,8 @@ implements IView {
 	 * Retrieves the progress bar percentage value from the parameter handler
 	 * and sets the local variable.
 	 */
-	public void extractAttributes()
-	{
+	public void extractAttributes() {
+		
 		//TODO: optimize this workflow!
 		
 		iProgressBarCurrentValue = 

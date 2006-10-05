@@ -15,6 +15,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
@@ -161,6 +162,9 @@ implements IViewManager, IViewGLCanvasManager {
 		case VIEW_SWT_STORAGE_SLIDER:
 			return new StorageSliderViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
+		case VIEW_SWT_BROWSER:
+			return new HTMLBrowserViewRep(
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);			
 		case VIEW_SWT_JOGL_TEST_TRIANGLE:
 			return new TestTriangleViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);

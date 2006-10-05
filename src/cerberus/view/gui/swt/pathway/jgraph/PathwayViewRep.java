@@ -2,16 +2,24 @@ package cerberus.view.gui.swt.pathway.jgraph;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.jgraph.JGraph;
+import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
@@ -28,11 +36,14 @@ import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.IViewManager;
 import cerberus.manager.data.pathway.PathwayManager;
+import cerberus.manager.event.EventPublisher;
+import cerberus.manager.event.mediator.IMediator;
+import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.pathway.IPathwayView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
@@ -47,37 +58,93 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
  */
 public class PathwayViewRep
 extends AViewRep 
-implements IPathwayView
-{
+implements IPathwayView{
+		
 	protected Frame refEmbeddedFrame;
 	
 	protected GraphModel refGraphModel;
+	
 	protected GraphLayoutCache refGraphLayoutCache;
+	
 	protected JGraph refPathwayGraph;
+	
 	protected DefaultGraphCell refGraphCell;
 	
-	private HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
+	protected HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
+	
+	protected int iHTMLBrowserId;
 	
 	public PathwayViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, int iParentContainerId, String sLabel)
-	{
+			int iViewId, int iParentContainerId, String sLabel) {
+		
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
 		vertexIdToCellLUT = new HashMap<Integer, DefaultGraphCell>();
 	}
 
-	public void initView()
-	{
+	public void initView() {
+		
+		class PathwayMarqueeHandler 
+		extends BasicMarqueeHandler {
+
+			public boolean isForceMarqueeEvent(MouseEvent event) {
+				
+		       if(SwingUtilities.isLeftMouseButton(event) && event.getClickCount() == 2)
+		          return true;
+		       else
+		          return super.isForceMarqueeEvent(event);
+		    } 
+			
+		    public void mousePressed(final MouseEvent event) {
+				// Point p =
+				// (Point)refPathwayGraph.fromScreen(event.getPoint());
+				DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
+						.getFirstCellForLocation(event.getX(), event.getY());
+
+				if (event.getClickCount() == 2)
+				{	
+					if (clickedCell != null)
+					{
+						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
+							.getVertexLink();
+						
+						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+							getViewGLCanvasManager();
+						
+						((HTMLBrowserViewRep)tmpViewManager.
+								getItem(iHTMLBrowserId)).setUrl(sUrl);
+						
+//						if (SwingUtilities.isEventDispatchThread())
+//							((HTMLBrowserViewRep)tmpViewManager.
+//									getItem(iHTMLBrowserId)).setUrl(sUrl);
+//						else
+//						{
+//							try {
+//								SwingUtilities.invokeLater(new Runnable() {
+//									public void run() {
+//										((HTMLBrowserViewRep)tmpViewManager.
+//												getItem(iHTMLBrowserId)).setUrl(sUrl);
+//									}
+//								});									
+//							} catch(InterruptedException ie) {
+//							} catch(InvocationTargetException ite) {}
+//						}
+					}
+				}
+			}
+		}
+		
 		refGraphModel = new DefaultGraphModel();
 		refGraphLayoutCache = 
 			new GraphLayoutCache(refGraphModel, new DefaultCellViewFactory());
 
 		refPathwayGraph = new JGraph(refGraphModel, refGraphLayoutCache);
-
+		
+		refPathwayGraph.setMarqueeHandler(new PathwayMarqueeHandler());
 	}
 	
-	public void drawView()
-	{
+	public void drawView() {
+		
 		HashMap<Integer, Pathway> pathwayLUT = 		
 			((PathwayManager)refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY)).
 				getPathwayLUT();
@@ -142,15 +209,15 @@ implements IPathwayView
 	}
 	
 	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition, PathwayVertexType vertexType)
-	{	
+			int iXPosition, int iYPosition, PathwayVertexType vertexType) {
+		
 		//create node
-		refGraphCell = new DefaultGraphCell(sTitle);
+		refGraphCell = new DefaultGraphCell(vertex);
 		GraphConstants.setBounds(refGraphCell.getAttributes(), 
 				new Rectangle2D.Double((int)(iXPosition * 1.4), (int)(iYPosition * 1.4), iWidth, iHeight));
 		GraphConstants.setOpaque(refGraphCell.getAttributes(), true);
 		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
-		
+
 		//assign vertex color
 		if (vertexType == PathwayVertexType.enzyme)
 			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.orange);
@@ -164,8 +231,8 @@ implements IPathwayView
 		vertexIdToCellLUT.put(vertex.getIElementId(), refGraphCell);
 	}
 	
-	public void createEdge(int iVertexId1, int iVertexId2)
-	{
+	public void createEdge(int iVertexId1, int iVertexId2) {
+		
 		DefaultPort port1 = new DefaultPort();
 		DefaultGraphCell cell1 = vertexIdToCellLUT.get(iVertexId1);
 		cell1.add(port1);
@@ -175,18 +242,30 @@ implements IPathwayView
 		cell2.add(port2);
 		
 		DefaultEdge edge = new DefaultEdge();
+		
+//		GraphConstants.setRouting(edge.getAttributes(), GraphConstants.ROUTING_SIMPLE);
+//		GraphConstants.setLineStyle(edge.getAttributes(), GraphConstants.STYLE_SPLINE);
+
 		edge.setSource(cell1.getChildAt(0));
 		edge.setTarget(cell2.getChildAt(0));
 		refPathwayGraph.getGraphLayoutCache().insert(edge);
 	}
 	
-	public void retrieveGUIContainer()
-	{				
+	public void retrieveGUIContainer() {
+		
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
 						iParentContainerId, iWidth, iHeight);
 
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
+	}
+	
+	/**
+	 * Retrieves the HTML browser ID.
+	 */
+	public void extractAttributes() {
+		
+		iHTMLBrowserId = refParameterHandler.getValueInt( "iHTMLBrowserId" );
 	}
 }

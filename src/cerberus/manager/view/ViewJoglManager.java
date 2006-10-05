@@ -24,6 +24,7 @@ import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
 import cerberus.view.gui.opengl.canvas.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.view.gui.opengl.canvas.GLCanvasScatterPlot2D;
+import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
@@ -49,8 +50,6 @@ implements IViewManager, IViewGLCanvasManager {
 	 * hashGLCanvasId2Vector provices mapping of unique-GLCanvas-Id to position inside this vector.
 	 */
 	private  Hashtable <Integer, Vector<GLEventListener> > hashGLCanvasId_2_vecGLEventListener;
-
-	
 	
 	protected Hashtable<Integer, IView> hashViewId2View;
 	
@@ -228,6 +227,9 @@ implements IViewManager, IViewGLCanvasManager {
 		case VIEW_SWT_STORAGE_SLIDER:
 			return new StorageSliderViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
+		case VIEW_SWT_BROWSER:
+			return new HTMLBrowserViewRep(
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);			
 		case VIEW_SWT_JOGL_TEST_TRIANGLE:
 			return new TestTriangleViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);

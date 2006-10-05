@@ -26,6 +26,7 @@ import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
+import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
@@ -352,6 +353,16 @@ extends ACommand
 						phAttributes );			
 			break;
 		}
+		
+		case CREATE_VIEW_BROWSER:
+		{
+			createdCommand =
+				new CmdViewCreateHTMLBrowser(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
 		
 		case CREATE_GL_TRIANGLE_TEST:
 		{

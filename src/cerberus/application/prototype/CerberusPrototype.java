@@ -62,15 +62,18 @@ public class CerberusPrototype
 		 * <br>
 		 * sample code:<br>
 		 * <br>
-		 * AnySaxHandler myNewHandler = <br>
+		 * AnySaxHandler myNewHandler = <br>		if ( args.length > 0 ) 
+		{
+			prototype.setXmlFileName( args[0] ); 	
+		}
 		 *   new CommandSaxHandler( generalManager, refXmlParserManager );<br>
 		 * <br>  
 		 * refXmlParserManager.registerAndInitSaxHandler( myNewHandler ); <br>
 		 * <br>
 		 */
 
-		
-		setXmlFileName( "data/XML/bootstrap/cerberus_bootstrap_sample_marc.xml" );
+		// Default file name
+		setXmlFileName( "data/XML/bootstrap/cerberus_bootstrap_sample_demo.xml" );
 	}
 
 	public void run()

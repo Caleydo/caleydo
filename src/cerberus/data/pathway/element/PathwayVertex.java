@@ -4,33 +4,41 @@ import java.util.Vector;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 
 
-public class PathwayVertex extends PathwayElement 
-{
-	private PathwayVertexType vertexType;
+public class PathwayVertex extends PathwayElement {
 	
-	private Vector<IPathwayVertexRep> vertexReps;
+	protected PathwayVertexType vertexType;
 	
-	public PathwayVertex(int iVertexID, String sName, String sType)
-	{	
+	protected Vector<IPathwayVertexRep> vertexReps;
+	
+	protected String sVertexLink; 
+	
+	public PathwayVertex(int iVertexID, String sName, String sType, String sLink) {
+		
 		super(iVertexID, sName);
 		vertexReps = new Vector<IPathwayVertexRep>();
 		
 		vertexType = PathwayVertexType.valueOf( sType );
-
+		
+		sVertexLink = sLink;
 	}
 	
-	public void addVertexRep(IPathwayVertexRep vertexRep)
-	{
+	public void addVertexRep(IPathwayVertexRep vertexRep) {
+		
 		vertexReps.add(vertexRep);
 	}
 
-	public Vector<IPathwayVertexRep> getVertexReps()
-	{
+	public Vector<IPathwayVertexRep> getVertexReps() {
+		
 		return vertexReps;
 	}
 
-	public PathwayVertexType getVertexType() 
-	{
+	public PathwayVertexType getVertexType() {
+		
 		return vertexType;
+	}
+	
+	public String getVertexLink() {
+		
+		return sVertexLink;
 	}
 }

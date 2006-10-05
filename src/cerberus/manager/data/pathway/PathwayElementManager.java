@@ -17,8 +17,8 @@ import cerberus.manager.type.ManagerObjectType;
  * 
  * @author Marc Streit
  */
-public class PathwayElementManager implements IPathwayElementManager
-{
+public class PathwayElementManager implements IPathwayElementManager {
+	
 	protected IGeneralManager refGeneralManager;
 	
 	protected int iCurrentUniqueElementId;
@@ -36,8 +36,8 @@ public class PathwayElementManager implements IPathwayElementManager
 	 * Constructor
 	 * 
 	 */
-	public PathwayElementManager(IGeneralManager refGeneralManager)
-	{
+	public PathwayElementManager(IGeneralManager refGeneralManager) {
+		
 		this.refGeneralManager = refGeneralManager;
 		
 		vertexLUT = new HashMap<Integer, PathwayVertex>();
@@ -49,10 +49,10 @@ public class PathwayElementManager implements IPathwayElementManager
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertex(java.lang.String, java.lang.String)
 	 */
-	public int createVertex(String sName, String sType)
-	{
+	public int createVertex(String sName, String sType, String sLink) {
+		
 		int iGeneratedId = generateId();
-		PathwayVertex newVertex = new PathwayVertex(iGeneratedId, sName, sType);
+		PathwayVertex newVertex = new PathwayVertex(iGeneratedId, sName, sType, sLink);
 		currentVertex = newVertex;
 		vertexLUT.put(iGeneratedId, newVertex);
 		
@@ -67,8 +67,8 @@ public class PathwayElementManager implements IPathwayElementManager
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertexRepresentation(java.lang.String, int, int, int, int)
 	 */
 	public void createVertexRepresentation(String sName, int iHeight,
-			int iWidth, int iXPosition, int iYPosition)
-	{
+			int iWidth, int iXPosition, int iYPosition) {
+		
 		IPathwayVertexRep newVertexRep = new PathwayVertexRep(sName, iHeight, iWidth,
 				iXPosition, iYPosition);
 
@@ -78,8 +78,8 @@ public class PathwayElementManager implements IPathwayElementManager
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createEdge(int, int, java.lang.String)
 	 */
-	public void createEdge(int iVertexId1, int iVertexId2, String sType)
-	{
+	public void createEdge(int iVertexId1, int iVertexId2, String sType) {
+		
 		int iGeneratedId = generateId();
 		
 		PathwayEdge newEdge = new PathwayEdge(iVertexId1, iVertexId2, sType);
@@ -95,8 +95,8 @@ public class PathwayElementManager implements IPathwayElementManager
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#addCompoundForEdge(int)
 	 */
-	public void addCompoundForEdge(int iCompoundId)
-	{
+	public void addCompoundForEdge(int iCompoundId) {
+		
 		if (currentEdge != null)
 		{
 			currentEdge.setICompoundId(iCompoundId);
@@ -105,77 +105,67 @@ public class PathwayElementManager implements IPathwayElementManager
 		currentEdge = null;
 	}
 
-	private int generateId()
-	{
+	private int generateId() {
+		
 		return iCurrentUniqueElementId++;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#getVertexLUT()
 	 */
-	public HashMap<Integer, PathwayVertex> getVertexLUT()
-	{
+	public HashMap<Integer, PathwayVertex> getVertexLUT() {
+		
 		return vertexLUT;
 	}
 
-	public boolean hasItem(int iItemId)
-	{
+	public boolean hasItem(int iItemId) {
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public Object getItem(int iItemId)
-	{
+	public Object getItem(int iItemId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public int size()
-	{
+	public int size() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public ManagerObjectType getManagerType()
-	{
+	public ManagerObjectType getManagerType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IGeneralManager getGeneralManager()
-	{
+	public IGeneralManager getGeneralManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ISingelton getSingelton()
-	{
+	public ISingelton getSingelton() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type)
-	{
+	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean unregisterItem(int iItemId, ManagerObjectType type)
-	{
+	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public int createNewId(ManagerObjectType setNewBaseType)
-	{
+	public int createNewId(ManagerObjectType setNewBaseType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType)
-	{
+	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

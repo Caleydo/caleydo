@@ -20,7 +20,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.command.CommandSaxHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
-import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler2;
+import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler;
 import cerberus.xml.parser.manager.AXmlParserManager;
 
 /**
@@ -80,8 +80,8 @@ implements IXmlParserManager
 		OpenExternalXmlFileSaxHandler externalFileHandler =
 			new OpenExternalXmlFileSaxHandler( generalManager, this );
 						
-		KgmlSaxHandler2 kgmlParser = 
-			new KgmlSaxHandler2( generalManager, this );		
+		KgmlSaxHandler kgmlParser = 
+			new KgmlSaxHandler( generalManager, this );		
 		
 		CommandSaxHandler cmdHandler = 
 			new CommandSaxHandler( generalManager, this );
