@@ -28,19 +28,40 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import org.jgraph.JGraph;
-import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
+import org.jgraph.graph.ParentMap;
 
-public class HelloWorld {
+public class GroupingRemoving {
 
 	public static void main(String[] args) {
 
 		// Construct Model and Graph
 		GraphModel model = new DefaultGraphModel();
-		JGraph graph = new JGraph(model);
+		GraphLayoutCache cache = new GraphLayoutCache(model, new DefaultCellViewFactory(), true);
+		JGraph graph = new JGraph(model, cache);
+		int numGroupedCells = 10;
+		DefaultGraphCell[] cells = new DefaultGraphCell[numGroupedCells];
+
+		for (int i=0; i < numGroupedCells; i++) {
+			cells[i] = createVertex("Hello", 20, 20, 40, 20, null, false);
+		}
+		DefaultGraphCell group = createVertex("Hello", 20, 20, 40, 20, null, false);
+
+		ParentMap pm = new ParentMap();
+
+        for (int i = 0; i < cells.length; i++) {
+            pm.addEntry(cells[i], group);
+        }
+        // Insert the cells via the cache, so they are visible
+        graph.getGraphLayoutCache().insert(new Object[] { group }, null, null, pm, null);
+        
+        // Set some of the children are hidden
+        graph.getGraphLayoutCache().hideCells(new Object[] { cells[3], cells [7] }, true);
 
 		// Control-drag should clone selection
 		graph.setCloneable(true);
@@ -51,36 +72,25 @@ public class HelloWorld {
 		// When over a cell, jump to its default port (we only have one, anyway)
 		graph.setJumpToDefaultPort(true);
 
-		// Insert all three cells in one call, so we need an array to store them
-		DefaultGraphCell[] cells = new DefaultGraphCell[3];
-
-		// Create Hello Vertex
-		cells[0] = createVertex("Hello", 20, 20, 40, 20, null, false);
-
-		// Create World Vertex
-		cells[1] = createVertex("World", 140, 140, 40, 20, Color.ORANGE, true);
-
-		// Create Edge
-		DefaultEdge edge = new DefaultEdge();
-		// Fetch the ports from the new vertices, and connect them with the edge
-		edge.setSource(cells[0].getChildAt(0));
-		edge.setTarget(cells[1].getChildAt(0));
-		cells[2] = edge;
-
-		// Set Arrow Style for edge
-		int arrow = GraphConstants.ARROW_CLASSIC;
-		GraphConstants.setLineEnd(edge.getAttributes(), arrow);
-		GraphConstants.setEndFill(edge.getAttributes(), true);
-
-		// Insert the cells via the cache, so they get selected
-		graph.getGraphLayoutCache().insert(cells);
-
 		// Show in Frame
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(new JScrollPane(graph));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+		
+		// Wait a bit and then remove the cells
+        try {
+        	Thread.sleep(5000);
+        } catch (InterruptedException e){
+        	
+        }
+        model.remove(DefaultGraphModel.getDescendants(model, DefaultGraphModel.getRoots(model)).toArray());
+        System.out.println("model.roots.size() = " + DefaultGraphModel.getRoots(model).length);
+        System.out.println("cell views size = " + cache.getCellViews().length);
+        System.out.println("hidden views size = " + cache.getHiddenCellViews().length);
+        System.out.println("visible set size = " + cache.getVisibleSet().size());
+        System.out.println("cache roots size = " + cache.getRoots().length);
 	}
 
 	public static DefaultGraphCell createVertex(String name, double x,

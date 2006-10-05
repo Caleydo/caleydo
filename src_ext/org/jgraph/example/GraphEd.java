@@ -70,7 +70,6 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 import org.jgraph.graph.Port;
 import org.jgraph.graph.PortView;
-import org.jgraph.graph.VertexView;
 
 public class GraphEd extends JApplet implements GraphSelectionListener,
 		KeyListener {
@@ -89,7 +88,7 @@ public class GraphEd extends JApplet implements GraphSelectionListener,
 	protected int cellCount = 0;
 
 	// Status Bar
-	protected EdStatusBar statusBar;
+	protected StatusBarGraphListener statusBar;
 
 	//
 	// Main
@@ -143,6 +142,45 @@ public class GraphEd extends JApplet implements GraphSelectionListener,
 			}
 		};
 		populateContentPane();
+		
+		/**********************************************************************
+		 * GraphModelChange explaination
+		 *********************************************************************/
+		// Uncomment out the code below if you want to see the model change outputs
+		// the new attributes are obtained from getPreviousAttributes(). The 
+		// mode change is the undo edit of the change. That is, if you undo, 
+		// that change edit is executed directly. So the previous attributes 
+		// are the attributes before the undo and the attributes are the 
+		// attributes after the undo. But when listening to a change,
+		// getPreviousAttributes() returns the new attributes and
+		// getAttributes() the old attributes.
+//        graph.getModel().addGraphModelListener(new GraphModelListener() {
+//            public void graphChanged(GraphModelEvent e) {
+//                GraphModelEvent.GraphModelChange c = e.getChange();
+//                if (c.getRemoved() == null && c.getInserted() == null) {
+//                	Map previousAttributes = c.getPreviousAttributes();
+//                	Set keySet = previousAttributes.keySet();
+//                	Iterator iter = keySet.iterator();
+//                    while (iter.hasNext()) {
+//                    	Object attribute = iter.next();
+//                        System.out.println("Prev Key " + String.valueOf(attribute));
+//                        Object value = c.getPreviousAttributes().get(attribute);
+//                        System.out.println("\t" + String.valueOf(value));
+//                    }
+//                    Map attributes = c.getAttributes();
+//                    keySet = attributes.keySet();
+//                    iter = keySet.iterator();
+//                    while (iter.hasNext()) {
+//                    	Object attribute = iter.next();
+//                        System.out.println("Curr Key " + String.valueOf(attribute));
+//                        Object value = c.getAttributes().get(attribute);
+//                        System.out.println("\t" + String.valueOf(value));
+//                    }
+//                    System.out.println("\n\n");
+//                }     
+//            }
+//        });
+
 		installListeners(graph);
 	}
 
@@ -154,18 +192,14 @@ public class GraphEd extends JApplet implements GraphSelectionListener,
 		getContentPane().add(createToolBar(), BorderLayout.NORTH);
 		// Add the Graph as Center Component
 		getContentPane().add(new JScrollPane(graph), BorderLayout.CENTER);
-		getContentPane().add(createStatusBar(), BorderLayout.SOUTH);
+		statusBar = createStatusBar();
+		getContentPane().add(statusBar, BorderLayout.SOUTH);
 	}
 
 	// Hook for subclassers
 	protected JGraph createGraph() {
 		JGraph graph = new MyGraph(new MyModel());
 		graph.getGraphLayoutCache().setFactory(new DefaultCellViewFactory() {
-
-			protected VertexView createVertexView(Object cell) {
-				//return super.createVertexView(cell);
-				return new CompoundVertexView(cell);
-			}
 
 			// Override Superclass Method to Return Custom EdgeView
 			protected EdgeView createEdgeView(Object cell) {
@@ -290,10 +324,7 @@ public class GraphEd extends JApplet implements GraphSelectionListener,
 		cells = graph.order(cells);
 		// If Any Cells in View
 		if (cells != null && cells.length > 0) {
-			// Assigns some initial bounds (child area)
 			DefaultGraphCell group = createGroupCell();
-			Rectangle2D childBounds = graph.getCellBounds(cells);
-			GraphConstants.setBounds(group.getAttributes(), childBounds);
 			// Insert into model
 			graph.getGraphLayoutCache().insertGroup(group, cells);
 		}
@@ -923,7 +954,7 @@ public class GraphEd extends JApplet implements GraphSelectionListener,
 	/**
 	 * Create a status bar
 	 */
-	protected JPanel createStatusBar() {
+	protected StatusBarGraphListener createStatusBar() {
 		return new EdStatusBar();
 	}
 
@@ -965,7 +996,21 @@ public class GraphEd extends JApplet implements GraphSelectionListener,
 		this.undo = undo;
 	}
 
-	public class EdStatusBar extends JPanel implements GraphModelListener {
+	public class StatusBarGraphListener extends JPanel implements GraphModelListener {
+
+		/**
+		 * Graph Model change event
+		 */
+		public void graphChanged(GraphModelEvent e) {
+			updateStatusBar();
+		}
+
+		protected void updateStatusBar(){
+			
+		}
+	}
+
+	public class EdStatusBar extends StatusBarGraphListener {
 		/**
 		 * 
 		 */
@@ -992,14 +1037,7 @@ public class GraphEd extends JApplet implements GraphSelectionListener,
 			add(rightSideStatus, BorderLayout.EAST);
 		}
 
-		/**
-		 * Graph Model change event
-		 */
-		public void graphChanged(GraphModelEvent e) {
-			updateHeapStatus();
-		}
-
-		protected void updateHeapStatus() {
+		protected void updateStatusBar() {
 			Runtime runtime = Runtime.getRuntime();
 			int freeMemory = (int) (runtime.freeMemory() / 1024);
 			int totalMemory = (int) (runtime.totalMemory() / 1024);
