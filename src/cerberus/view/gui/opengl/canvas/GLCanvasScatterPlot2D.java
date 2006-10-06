@@ -3,6 +3,8 @@
  */
 package cerberus.view.gui.opengl.canvas;
 
+import java.util.Iterator;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 //import javax.media.opengl.GLCanvas;
@@ -13,7 +15,10 @@ import javax.media.opengl.GLAutoDrawable;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.selection.iterator.ISelectionIterator;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
@@ -26,9 +31,16 @@ extends AGLCanvasUser_OriginRotation
 implements IGLCanvasUser
 {
 	
+	protected float[][] fAspectRatio;
+	
 	protected int[] iResolution;
 	
 	protected ISet targetSet;
+	
+	public static final int X = 0;
+	public static final int Y = 1;
+	public static final int MIN = 0;
+	public static final int MAX = 1;
 	
 	/**
 	 * @param setGeneralManager
@@ -42,6 +54,13 @@ implements IGLCanvasUser
 				iViewId,  
 				iParentContainerId, 
 				sLabel );
+		
+		fAspectRatio = new float [2][2];
+		
+		fAspectRatio[X][MIN] = 0.0f;
+		fAspectRatio[X][MAX] = 20.0f; 
+		fAspectRatio[Y][MIN] = 0.0f; 
+		fAspectRatio[Y][MAX] = 20.0f; 
 	}
 
 	public void setResolution( int[] iResolution ) {
@@ -104,51 +123,179 @@ implements IGLCanvasUser
 //			
 //		}
 
-		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
-		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
-		gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
-		gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
-		gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
-		gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
-		gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-		gl.glEnd(); // Finish drawing the triangle
+//		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
+//		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
+//		gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
+//		gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
+//		gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+//		gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
+//		gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+//		gl.glEnd(); // Finish drawing the triangle
+		
 
-		float fX_inc = 1.0f / (float) iResolution[0];
-		float fY_inc = 1.0f / (float) iResolution[1];
+//		float fX_inc = 1.0f / (float) iResolution[0];
+//		float fY_inc = 1.0f / (float) iResolution[1];
+//		
+//		float fX_init = 0.0f;
+//		
+//		float fX = fX_init;
+//		float fY = 0.0f;
+//		
+//		gl.glTranslatef(0.0f, 0.0f, -0.5f); // Move right 3 units	
+//		
+//		for ( int i=0; i < this.iResolution[0]; i++ ) {
+//			
+//			float fY_next = fY + fY_inc;
+//			
+//			for ( int j=0; j < this.iResolution[1]; j++ ) {
+//				
+//				float fX_next = fX + fX_inc;
+//				
+//				gl.glColor3f(fX * fY, 0.2f, 1 - fX); // Set the color to blue one time only
+//				
+//				gl.glBegin(GL.GL_TRIANGLES); // Draw a quad
+//				gl.glVertex3f(fX, fY, 0.0f); // Top left
+//				gl.glVertex3f(fX_next, fY, 0.0f); // Top right
+//				gl.glVertex3f(fX_next, fY_next, 0.0f); // Bottom right
+//				gl.glEnd(); // Done drawing the quad
+//				
+//				fX = fX_next;
+//			}
+//			
+//			fX = fX_init;
+//			fY = fY_next;
+//		}
 		
-		float fX_init = 0.0f;
-		
-		float fX = fX_init;
-		float fY = 0.0f;
-		
-		gl.glTranslatef(0.0f, 0.0f, -0.5f); // Move right 3 units	
-		
-		for ( int i=0; i < this.iResolution[0]; i++ ) {
-			
-			float fY_next = fY + fY_inc;
-			
-			for ( int j=0; j < this.iResolution[1]; j++ ) {
-				
-				float fX_next = fX + fX_inc;
-				
-				gl.glColor3f(fX * fY, 0.2f, 1 - fX); // Set the color to blue one time only
-				
-				gl.glBegin(GL.GL_TRIANGLES); // Draw a quad
-				gl.glVertex3f(fX, fY, 0.0f); // Top left
-				gl.glVertex3f(fX_next, fY, 0.0f); // Top right
-				gl.glVertex3f(fX_next, fY_next, 0.0f); // Bottom right
-				gl.glEnd(); // Done drawing the quad
-				
-				fX = fX_next;
-			}
-			
-			fX = fX_init;
-			fY = fY_next;
-		}
+		drawScatterPlotInteger( gl );
 		
 		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
 	}
 
+	protected void drawScatterPlotInteger(GL gl) {
+		
+		
+//		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
+//		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
+//		gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
+//		gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
+//		gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+//		gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
+//		gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+//		gl.glEnd(); // Finish drawing the triangle
+		
+		
+		if ( targetSet.getDimensions() < 2 ) {
+			return;
+		}
+		
+		/**
+		 * Check type of set...
+		 */
+		ManagerObjectType typeData = targetSet.getBaseType();
+		
+		switch ( typeData )
+		{
+			case SET_PLANAR: break;
+			
+			case SET_MULTI_DIM: break;
+			
+			default:
+				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						"GLCanvasScatterPlot assigned Set mut be at least 2-dimesional!",
+						LoggerType.VERBOSE );
+		} // switch
+		
+		ISelection [] arraySelectionX = targetSet.getSelectionByDim(0);
+		ISelection [] arraySelectionY = targetSet.getSelectionByDim(1);
+		
+		IStorage [] arrayStorageX = targetSet.getStorageByDim(0);
+		IStorage [] arrayStorageY = targetSet.getStorageByDim(1);
+				
+		int iLoopX = arraySelectionX.length;
+		int iLoopY = arraySelectionY.length;
+		int iLoopXY = iLoopX;
+		
+		if ( iLoopX != iLoopY )
+		{
+			if ( iLoopX < iLoopY )
+			{
+				iLoopXY = iLoopX;
+			}
+			else
+			{
+				iLoopXY = iLoopY;
+			}
+		}
+		
+		/**
+		 * Consistency check...
+		 */
+		if (( arrayStorageX.length < iLoopXY)||
+				( arrayStorageY.length < iLoopXY))
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"GLCanvasScatterPlot assigned Storage must contain at least equal number of Stprages as Selections!",
+					LoggerType.ERROR_ONLY );
+			return;
+		}
+		
+		gl.glTranslatef( -1, -2.5f, 0);
+		
+		//gl.glPointSize( 2.0f );		
+		gl.glColor3f(1.0f, 0.2f, 0.0f); // Set the color to blue one time only	
+		
+		for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 
+		{
+			ISelection selectX = arraySelectionX[iOuterLoop];
+			ISelection selectY = arraySelectionY[iOuterLoop];
+			
+			ISelectionIterator iterSelectX = selectX.iterator();
+			ISelectionIterator iterSelectY = selectY.iterator();
+			
+			IStorage storeX = arrayStorageX[iOuterLoop];
+			IStorage storeY = arrayStorageY[iOuterLoop];
+			
+			int [] arrayIntX = storeX.getArrayInt();
+			int [] arrayIntY = storeY.getArrayInt();
+			
+			float fTri = 0.05f;
+			
+			//gl.glBegin(GL.GL_POINT); // Draw a quad
+			
+			while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
+			{
+				float fX = (float) arrayIntX[ iterSelectX.next() ] / fAspectRatio[X][MAX];
+				float fY = (float) arrayIntY[ iterSelectY.next() ] / fAspectRatio[Y][MAX];
+				
+				//gl.glColor3f(fX * fY, 0.2f, 1 - fX); // Set the color to blue one time only
+				
+				
+				gl.glBegin(GL.GL_TRIANGLES); // Draw a quad		
+				
+				gl.glVertex3f(fX, fY, 0.0f); // Point				
+				gl.glVertex3f(fX, fY-fTri, 0.0f); // Point
+				gl.glVertex3f(fX-fTri, fY, 0.0f); // Point
+				gl.glEnd(); // Done drawing the quad
+				
+//				gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
+//				gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
+//				gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
+//				gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
+//				gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+//				gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
+//				gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+//				gl.glEnd(); // Finish drawing the triangle
+				
+				System.out.println( fX + " ; " + fY );
+								
+			} // while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
+			
+			//gl.glEnd(); // Done drawing the quad
+			
+		} // for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 			
+
+	}
+	
 	public void update(GLAutoDrawable canvas)
 	{
 		// TODO Auto-generated method stub

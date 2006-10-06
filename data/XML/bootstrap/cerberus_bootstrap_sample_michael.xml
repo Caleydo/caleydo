@@ -16,8 +16,8 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="45301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
 						 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="0 200 0 10" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="50 200	0	1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="80 0 0 1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
 												
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />

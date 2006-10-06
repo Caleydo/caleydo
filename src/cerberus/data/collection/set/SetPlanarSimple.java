@@ -8,6 +8,7 @@
  */
 package cerberus.data.collection.set;
 
+import java.util.LinkedList;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.Enumeration;
@@ -280,8 +281,27 @@ implements ISet {
 	public final IStorage[] getStorageByDim(int iAtDimension) {
 		//	FIXME what shall this be used for?
 		
-		return (IStorage[]) vecRefStorage_Array.get(iAtDimension).toArray();		
+		Vector <IStorage> buffer = vecRefStorage_Array.get(iAtDimension);
+		
+		assert buffer != null : "emtpy buffer in IStorage[] getStorageByDim(int iAtDimension)";
+		
+		Iterator <IStorage> iter = buffer.iterator();
+		
+		IStorage[] result = new IStorage[ buffer.size() ];
+		
+		for ( int i=0; iter.hasNext() ; i++ )
+		{
+			result[i] = iter.next();
+		}
+		
+		return result;		
 	}
+	
+//	public final LinkedList <IStorage> getStorageByDimLinkedList(int iAtDimension) {
+//		//	FIXME what shall this be used for?
+//		
+//		return (IStorage[]) vecRefStorage_Array.get(iAtDimension).toArray();		
+//	}
 	
 	public final IStorage getStorageByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {

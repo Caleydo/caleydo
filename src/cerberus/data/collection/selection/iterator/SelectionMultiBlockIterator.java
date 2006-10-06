@@ -91,7 +91,6 @@ implements ISelectionIterator {
 		
 		iVirtualBlockOffset = refSelection.getMultiOffset();
 		iVirtualBlockRepeat = refSelection.getMultiRepeat();
-		iCurrentVirtualIndex = 0;
 		
 		// set virtual block index to 0...
 		iCurrentBlockIndex = 1;
