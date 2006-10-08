@@ -41,7 +41,21 @@
 	   
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	targetId="11401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Triangle	A"		attrib1="0 2 0" attrib2="0 0 1 0.85" attrib3="10 10 0"	detail="45101" />
+			
+			<!-- Doku:
+			Cmd type="CREATE_GL_MINMAX_SCATTERPLOT2D"	
+			 attrib3="x_min x_may y_min y_max x_offset y_offset view_X_min view_X_max view_Y_min view_Y_max gridSize pointSize" 
+			 --> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Triangle	A"	
+							attrib1="0 2 0" attrib2="0 0 1 0.85"
+							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
+							detail="45101" />
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="68992"	targetId="79401" parent="11401" label="GL Triangle	A"	
+							attrib1="0 2 0" attrib2="0 0 1 0.85"
+							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
+							detail="45101" />
+							
 
 			<!-- Container 11341 -->
 			<!--

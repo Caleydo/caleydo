@@ -1,9 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas;
-
-import java.util.Iterator;
+package cerberus.view.gui.opengl.canvas.scatterplot;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -91,80 +89,6 @@ implements IGLCanvasUser
 	@Override
 	public void renderPart(GL gl)
 	{
-		
-//		if  ( targetSet != null ) 
-//		{
-//			int iDimTotal = targetSet.getDimensions();
-//			
-//			ISelection select = null;
-//			IStorage storage = null;
-//			
-//			if ( targetSet.getReadTokenWait() ) {
-//				select = targetSet.getSelectionByDimAndIndex(0,0);
-//				storage = targetSet.getStorageByDimAndIndex(0,0);
-//							
-//				int iIndex = select.getOffset();
-//				int iInc = select.getMultiRepeat();
-//				int iLength = select.length();
-//				
-//				int [] dataArray = storage.getArrayInt();
-//				
-//				for ( int i=0; i < iLength; i++ ) {
-//					
-//					//System.out.print( dataArray[ iIndex ] + " ");
-//					
-//					iIndex += iInc;
-//				}
-//				
-//			}
-//		}
-//		else 
-//		{
-//			
-//		}
-
-//		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
-//		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
-//		gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
-//		gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
-//		gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
-//		gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
-//		gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-//		gl.glEnd(); // Finish drawing the triangle
-		
-
-//		float fX_inc = 1.0f / (float) iResolution[0];
-//		float fY_inc = 1.0f / (float) iResolution[1];
-//		
-//		float fX_init = 0.0f;
-//		
-//		float fX = fX_init;
-//		float fY = 0.0f;
-//		
-//		gl.glTranslatef(0.0f, 0.0f, -0.5f); // Move right 3 units	
-//		
-//		for ( int i=0; i < this.iResolution[0]; i++ ) {
-//			
-//			float fY_next = fY + fY_inc;
-//			
-//			for ( int j=0; j < this.iResolution[1]; j++ ) {
-//				
-//				float fX_next = fX + fX_inc;
-//				
-//				gl.glColor3f(fX * fY, 0.2f, 1 - fX); // Set the color to blue one time only
-//				
-//				gl.glBegin(GL.GL_TRIANGLES); // Draw a quad
-//				gl.glVertex3f(fX, fY, 0.0f); // Top left
-//				gl.glVertex3f(fX_next, fY, 0.0f); // Top right
-//				gl.glVertex3f(fX_next, fY_next, 0.0f); // Bottom right
-//				gl.glEnd(); // Done drawing the quad
-//				
-//				fX = fX_next;
-//			}
-//			
-//			fX = fX_init;
-//			fY = fY_next;
-//		}
 		
 		drawScatterPlotInteger( gl );
 		
@@ -276,15 +200,7 @@ implements IGLCanvasUser
 				gl.glVertex3f(fX, fY-fTri, 0.0f); // Point
 				gl.glVertex3f(fX-fTri, fY, 0.0f); // Point
 				gl.glEnd(); // Done drawing the quad
-				
-//				gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
-//				gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
-//				gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
-//				gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
-//				gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
-//				gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
-//				gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-//				gl.glEnd(); // Finish drawing the triangle
+	
 				
 				System.out.println( fX + " ; " + fY );
 								
@@ -298,13 +214,11 @@ implements IGLCanvasUser
 	
 	public void update(GLAutoDrawable canvas)
 	{
-		// TODO Auto-generated method stub
 		System.err.println(" TestTriangle.update(GLCanvas canvas)");
 	}
 
 	public void destroy()
 	{
-		// TODO Auto-generated method stub
 		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
 	}
 }

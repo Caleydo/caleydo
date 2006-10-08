@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 
 import org.xml.sax.Attributes;
 
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
@@ -100,7 +101,7 @@ implements ISaxParserHandler
 	 */
 	protected ManagerObjectType eSelectionType;
 	
-	private final static String sDelimiter = " ";
+	//private final static String sDelimiter = " ";
 	
 	/**
 	 * 
@@ -431,7 +432,7 @@ implements ISaxParserHandler
 			if ( bXML_Section_DataComponent_details_OffsetLength ) {
 				StringTokenizer tokenizer = 
 					new StringTokenizer( new String( sStringBuffer ),
-							sDelimiter );
+							CommandFactory.sDelimiter_CreateSelection_DataItems );
 				
 				if ( tokenizer.countTokens() < 2 ) {
 					appandErrorMsg("OffsetLength need 2 Integer");
@@ -476,7 +477,7 @@ implements ISaxParserHandler
 			
 			StringTokenizer tokenizer = 
 				new StringTokenizer( new String( sStringBuffer ),
-						sDelimiter );
+						CommandFactory.sDelimiter_CreateSelection_DataItems );
 			
 			iData_RLE_Random_LookupTable = new int[tokenizer.countTokens()];
 			

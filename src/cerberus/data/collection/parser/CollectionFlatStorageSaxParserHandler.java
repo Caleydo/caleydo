@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 
 import org.xml.sax.Attributes;
 
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
@@ -75,7 +76,7 @@ implements ISaxParserHandler
 	
 	protected String[] dataString = null;
 	
-	private final static String sDelimiter = " ";
+//	private final static String sDelimiter = " ";
 	
 	/**
 	 * 
@@ -366,7 +367,7 @@ implements ISaxParserHandler
 		
 		StringTokenizer tokenizer = 
 			new StringTokenizer( new String( sStringBuffer ),
-					sDelimiter );
+					CommandFactory.sDelimiter_CreateSelection_DataItems );
 		
 		if ( tokenizer.hasMoreElements() ) {
 			

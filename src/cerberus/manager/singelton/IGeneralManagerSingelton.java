@@ -9,7 +9,7 @@ import cerberus.data.xml.IMementoCallbackXML;
 public interface IGeneralManagerSingelton 
 extends IGeneralManager, IMementoCallbackXML {
 
-	public static final String sXMLDelimiter = ";";
+	//public static final String sXMLDelimiter = ";";
 	
 	/**
 	 * Get the current type used to create new Id with createNewId().

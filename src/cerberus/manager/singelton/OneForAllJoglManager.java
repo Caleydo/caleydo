@@ -30,6 +30,7 @@ import cerberus.manager.IMenuManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.canvas.ViewCanvasManager;
 import cerberus.manager.command.CommandManager;
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
@@ -407,7 +408,8 @@ implements IGeneralManagerSingelton {
 			case STORAGE:
 				return refStorageManager.createStorage( createNewType );
 			case VIEW:
-				StringTokenizer tokenizer = new StringTokenizer(sNewTypeDetails, sXMLDelimiter);
+				StringTokenizer tokenizer = new StringTokenizer(sNewTypeDetails, 
+						CommandFactory.sDelimiter_CreateStorage_DataType );
 				
 				FrameBaseType frameType;
 				int iUniqueId = -1;

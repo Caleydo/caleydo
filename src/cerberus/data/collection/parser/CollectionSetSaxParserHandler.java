@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
@@ -23,6 +24,7 @@ import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.ASaxParserHandler;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.system.StringConversionTool;
 
 /**
  * Parsing pices of information present in each Colleciton.
@@ -95,7 +97,7 @@ implements ISaxParserHandler
 	 */
 	protected ManagerObjectType eSelectionType;
 	
-	private final static String sDelimiter = " ";
+	//private final static String sDelimiter = " ";
 	
 	/**
 	 * 
@@ -331,23 +333,12 @@ implements ISaxParserHandler
 				
 				if (( bXML_Section_DataComponent_details_Select ) ||
 					    ( bXML_Section_DataComponent_details_Storage )) {
-						StringTokenizer tokenizer = 
-							new StringTokenizer( new String( sStringBuffer ),
-									sDelimiter );
 						
-						int[] iValueBuffer = new int[tokenizer.countTokens()];
-						
-						for ( int iIndex=0; tokenizer.hasMoreTokens(); iIndex++ ) {
-							try {
-								iValueBuffer[iIndex] = Integer.valueOf( tokenizer.nextToken() );
-							}
-							catch (NumberFormatException nfe2) {
-								iValueBuffer[iIndex] = 0;
-								appandErrorMsg("Error parsing dim="+ this.iCurrentDim +
-										" element=" + iIndex +"  non-intere value !" );
-							}
-						}
-						
+						int[] iValueBuffer = 
+							StringConversionTool.convertStringToIntArrayVariableLength(
+								sStringBuffer.toString(),
+								CommandFactory.sDelimiter_CreateSelection_DataItems );
+												
 						if ( bXML_Section_DataComponent_details_Select ) {
 							
 							/**

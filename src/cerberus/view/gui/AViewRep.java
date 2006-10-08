@@ -152,13 +152,11 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 */
 	public void extractAttributes()
 	{
-		StringTokenizer token = new StringTokenizer(vecAttributes.get(2),
-				CommandFactory.sDelimiter_CreateView_Size);
-
-		iWidth = (StringConversionTool.convertStringToInt(
-				token.nextToken(), -1));
-		iHeight = (StringConversionTool.convertStringToInt(
-				token.nextToken(), -1));
+		int [] iParseResult = 
+			StringConversionTool.convertStringToIntArray( vecAttributes.get(2), 2 );
+		
+		iWidth = iParseResult[0];
+		iHeight = iParseResult[1];
 	}
 
 	/**

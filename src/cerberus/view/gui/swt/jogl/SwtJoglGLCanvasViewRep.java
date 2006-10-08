@@ -16,7 +16,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.view.gui.swt.base.AJoglViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.awt.jogl.TriangleMain;
+import cerberus.view.gui.awt.jogl.CanvasForwarder;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -67,7 +67,7 @@ implements IView, IGLCanvasDirector
 	 */
 	public void initView()
 	{
-		TriangleMain renderer = new TriangleMain( this );
+		CanvasForwarder renderer = new CanvasForwarder( this );
 		
 		refGLEventListener = renderer;
 		

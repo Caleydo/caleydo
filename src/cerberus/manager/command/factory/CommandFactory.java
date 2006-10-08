@@ -24,6 +24,8 @@ import cerberus.command.event.CmdEventCreateMediator;
 
 import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
+import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
+import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
@@ -404,6 +406,24 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectScatterPlot2D(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_MINMAX_SCATTERPLOT2D:
+		{
+			createdCommand =
+				new CmdGlObjectMinMaxScatterPlot2D(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_MINMAX_SCATTERPLOT3D:
+		{
+			createdCommand =
+				new CmdGlObjectMinMaxScatterPlot3D(
 						refGeneralManager,
 						phAttributes );			
 			break;

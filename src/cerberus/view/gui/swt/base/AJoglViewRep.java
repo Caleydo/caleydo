@@ -9,12 +9,12 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.awt.jogl.GearsMain;
-import cerberus.view.gui.awt.jogl.TriangleMain;
-import cerberus.view.gui.awt.jogl.Histogram2DMain;
+//import cerberus.view.gui.awt.jogl.GearsMain;
+//import cerberus.view.gui.awt.jogl.TriangleMain;
+//import cerberus.view.gui.awt.jogl.Histogram2DMain;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
-import demos.gears.Gears;
+//import demos.gears.Gears;
 
 public abstract class AJoglViewRep 
 extends AViewRep 

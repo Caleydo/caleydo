@@ -3,28 +3,25 @@
  */
 package cerberus.command.view.opengl;
 
-
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.IGeneralManager;
-//import cerberus.manager.ILoggerManager.LoggerType;
-//import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
-import cerberus.xml.parser.parameter.IParameterHandler;
+import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
 import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * @author java
  *
  */
-public class CmdGlObjectScatterPlot2D 
+public class CmdGlObjectMinMaxScatterPlot3D 
 extends ACmdCreate_GlCanvasUser
-		implements ICommand
+implements ICommand
 {
-	
-	protected int[] iResolution;
+
+	protected float[] fResolution;
 	
 	/**
 	 * If of Set to be read data from
@@ -33,47 +30,40 @@ extends ACmdCreate_GlCanvasUser
 	 */
 	protected int iTargetCollectionSetId;
 	
-	protected String color;
 	
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectScatterPlot2D(IGeneralManager refGeneralManager,
+	public CmdGlObjectMinMaxScatterPlot3D(IGeneralManager refGeneralManager,
 			IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
 		
-		iResolution = new int[3];
+		setAttributesScatterPlot();
 		
-		setAttributesHeatmapWidthHeight( refParameterHandler );
-		
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_SCATTERPLOT2D;
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_MINMAX_SCATTERPLOT3D;
 	}
 
-	private final void setAttributesHeatmapWidthHeight( IParameterHandler refParameterHandler ) {
+	private void setAttributesScatterPlot() {
 		
 		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 				this.sDetail, 
 				-1 );
 		
-		iResolution = StringConversionTool.convertStringToIntArray(
-				refGeneralManager.getSingelton().getLoggerManager(), 
+		fResolution = StringConversionTool.convertStringToFloatArray( 
 				sAttribute3,
-				3 );
-		
+				12 );
 	}
-
-
 
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException
 	{
-		GLCanvasScatterPlot2D canvas = 
-			(GLCanvasScatterPlot2D) openGLCanvasUser;
+		GLCanvasMinMaxScatterPlot3D canvas = 
+			(GLCanvasMinMaxScatterPlot3D) openGLCanvasUser;
 				
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
-		canvas.setResolution( iResolution );
+		canvas.setResolution( fResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
 	}
 
@@ -82,6 +72,5 @@ extends ACmdCreate_GlCanvasUser
 	{
 		
 	}
-	
-	
+
 }
