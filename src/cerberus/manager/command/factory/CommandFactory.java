@@ -30,6 +30,7 @@ import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
+import cerberus.command.view.swt.CmdViewCreateImage;
 import cerberus.command.view.swt.CmdViewCreateMixer;
 import cerberus.command.view.swt.CmdViewCreatePathway;
 import cerberus.command.view.swt.CmdViewCreateProgressBar;
@@ -363,6 +364,14 @@ extends ACommand
 			break;
 		}
 		
+		case CREATE_VIEW_IMAGE:
+		{
+			createdCommand =
+				new CmdViewCreateImage(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}		
 		
 		case CREATE_GL_TRIANGLE_TEST:
 		{

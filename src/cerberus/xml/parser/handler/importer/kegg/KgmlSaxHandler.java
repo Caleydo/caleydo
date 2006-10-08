@@ -197,7 +197,7 @@ implements IXmlParserHandler
 		int iXPosition = 0;
 		int iYPosition = 0;
 		
-		String sAttributeName = "";
+		String sAttributeName;
 		
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{

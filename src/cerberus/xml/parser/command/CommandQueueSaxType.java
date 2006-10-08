@@ -46,6 +46,7 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_SELECTION_SLIDER("cmd", "type","-1"),	
 	CREATE_VIEW_MIXER("cmd", "type","-1"),
 	CREATE_VIEW_BROWSER("cmd", "type", "-1"),
+	CREATE_VIEW_IMAGE("cmd", "type", "-1"),	
 	CREATE_VIEW_TEST_TRIANGLE("cmd", "type","-1"),
 	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1"),
 	

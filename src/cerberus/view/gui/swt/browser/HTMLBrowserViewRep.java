@@ -121,5 +121,6 @@ implements IView {
 	public void setUrl(String sUrl) {
 		
 		this.sUrl = sUrl;
+//		drawView();
 	}
 }

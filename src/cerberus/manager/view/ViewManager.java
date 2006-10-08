@@ -28,6 +28,7 @@ import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.slider.SelectionSliderViewRep;
 import cerberus.view.gui.swt.slider.StorageSliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
+import cerberus.view.gui.swt.image.ImageViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
@@ -164,6 +165,9 @@ implements IViewManager, IViewGLCanvasManager {
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
 		case VIEW_SWT_BROWSER:
 			return new HTMLBrowserViewRep(
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);			
+		case VIEW_SWT_IMAGE:
+			return new ImageViewRep(
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);			
 		case VIEW_SWT_JOGL_TEST_TRIANGLE:
 			return new TestTriangleViewRep(
