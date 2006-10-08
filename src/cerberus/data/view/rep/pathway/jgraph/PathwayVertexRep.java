@@ -12,7 +12,7 @@ public class PathwayVertexRep implements IPathwayVertexRep
 
 	public PathwayVertexRep(String sName, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition) 
-	{
+	{	
 		this.sName = sName;
 		this.iHeight = iHeight;
 		this.iWidth = iWidth;

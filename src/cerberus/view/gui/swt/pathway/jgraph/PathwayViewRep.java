@@ -29,6 +29,8 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import com.jgraph.example.mycellview.GPCellViewFactory;
+
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -60,6 +62,8 @@ public class PathwayViewRep
 extends AViewRep 
 implements IPathwayView{
 		
+	protected static final double SCALING_FACTOR = 1.4;
+	
 	protected Frame refEmbeddedFrame;
 	
 	protected GraphModel refGraphModel;
@@ -96,9 +100,8 @@ implements IPathwayView{
 		    } 
 			
 		    public void mousePressed(final MouseEvent event) {
-				// Point p =
-				// (Point)refPathwayGraph.fromScreen(event.getPoint());
-				DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
+
+		    	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
 						.getFirstCellForLocation(event.getX(), event.getY());
 
 				if (event.getClickCount() == 2)
@@ -131,6 +134,7 @@ implements IPathwayView{
 //						}
 					}
 				}
+				super.mousePressed(event);
 			}
 		}
 		
@@ -139,6 +143,12 @@ implements IPathwayView{
 			new GraphLayoutCache(refGraphModel, new DefaultCellViewFactory());
 
 		refPathwayGraph = new JGraph(refGraphModel, refGraphLayoutCache);
+		
+		// Set own cell view factory
+		refPathwayGraph.getGraphLayoutCache().setFactory(new GPCellViewFactory());
+
+		// Control-drag should clone selection
+		refPathwayGraph.setCloneable(true);
 		
 		refPathwayGraph.setMarqueeHandler(new PathwayMarqueeHandler());
 	}
@@ -212,19 +222,54 @@ implements IPathwayView{
 			int iXPosition, int iYPosition, PathwayVertexType vertexType) {
 		
 		//create node
-		refGraphCell = new DefaultGraphCell(vertex);
-		GraphConstants.setBounds(refGraphCell.getAttributes(), 
-				new Rectangle2D.Double((int)(iXPosition * 1.4), (int)(iYPosition * 1.4), iWidth, iHeight));
+		refGraphCell = new DefaultGraphCell(sTitle);
+	
 		GraphConstants.setOpaque(refGraphCell.getAttributes(), true);
 		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
-
+		
 		//assign vertex color
 		if (vertexType == PathwayVertexType.enzyme)
+		{
+			// Set vertex type to ellipse
+			GPCellViewFactory.setViewClass(
+					refGraphCell.getAttributes(), 
+					"com.jgraph.example.mycellview.RoundRectView");
+
+			GraphConstants.setBounds(refGraphCell.getAttributes(), 
+					new Rectangle2D.Double(
+							(int)(iXPosition * SCALING_FACTOR), 
+							(int)(iYPosition * SCALING_FACTOR), 
+							iWidth, iHeight));
 			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.orange);
+		}
 		else if (vertexType == PathwayVertexType.compound)
+		{
+			// Set vertex type to ellipse
+			GPCellViewFactory.setViewClass(
+					refGraphCell.getAttributes(), 
+					"com.jgraph.example.mycellview.JGraphEllipseView");
+			
+			GraphConstants.setBounds(refGraphCell.getAttributes(), 
+					new Rectangle2D.Double(
+							(int)(iXPosition * SCALING_FACTOR), 
+							(int)(iYPosition * SCALING_FACTOR), 
+							15, 15));
 			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.green);
+		}	
 		else if (vertexType == PathwayVertexType.map)
+		{
+			// Set vertex type to ellipse
+			GPCellViewFactory.setViewClass(
+					refGraphCell.getAttributes(), 
+					"com.jgraph.example.mycellview.RoundRectView");
+
+			GraphConstants.setBounds(refGraphCell.getAttributes(), 
+					new Rectangle2D.Double(
+							(int)(iXPosition * SCALING_FACTOR), 
+							(int)(iYPosition * SCALING_FACTOR), 
+							iWidth, iHeight));
 			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.yellow);
+		}
 		
 		refPathwayGraph.getGraphLayoutCache().insert(refGraphCell);
 		
@@ -266,6 +311,7 @@ implements IPathwayView{
 	 */
 	public void extractAttributes() {
 		
-		iHTMLBrowserId = refParameterHandler.getValueInt( "iHTMLBrowserId" );
+		iHTMLBrowserId = 
+			refParameterHandler.getValueInt( "iHTMLBrowserId" );
 	}
 }

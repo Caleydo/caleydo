@@ -62,7 +62,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		pathwayView.readInAttributes(refParameterHandler);
-		
 		pathwayView.extractAttributes();
 		pathwayView.retrieveGUIContainer();
 		pathwayView.initView();
