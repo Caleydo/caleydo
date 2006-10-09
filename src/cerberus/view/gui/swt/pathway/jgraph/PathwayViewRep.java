@@ -1,8 +1,10 @@
 package cerberus.view.gui.swt.pathway.jgraph;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,6 +20,8 @@ import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.jgraph.JGraph;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultCellViewFactory;
@@ -65,6 +69,8 @@ implements IPathwayView{
 	protected static final double SCALING_FACTOR = 1.4;
 	
 	protected Frame refEmbeddedFrame;
+	
+	protected Composite refEmbeddedFrameComposite;
 	
 	protected GraphModel refGraphModel;
 	
@@ -114,8 +120,15 @@ implements IPathwayView{
 						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
 							getViewGLCanvasManager();
 						
-						((HTMLBrowserViewRep)tmpViewManager.
+//						((HTMLBrowserViewRep)tmpViewManager.
+//								getItem(iHTMLBrowserId)).setUrl(sUrl);
+						
+					    refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+					    	public void run() {
+								((HTMLBrowserViewRep)tmpViewManager.
 								getItem(iHTMLBrowserId)).setUrl(sUrl);
+					    	}	
+					    });
 						
 //						if (SwingUtilities.isEventDispatchThread())
 //							((HTMLBrowserViewRep)tmpViewManager.
@@ -310,6 +323,9 @@ implements IPathwayView{
 						iParentContainerId, iWidth, iHeight);
 
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
+		
+		refEmbeddedFrameComposite = 
+			refSWTEmbeddedGraphWidget.getEmbeddedFrameComposite();
 	}
 	
 	/**

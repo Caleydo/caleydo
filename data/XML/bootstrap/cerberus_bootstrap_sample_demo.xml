@@ -32,8 +32,7 @@
 		<!-- Container 10341 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="50991" targetId="10341" label="swt container 1" 	parent="10331" attrib2="ROW VERTICAL" />
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="64991" targetId="14401" label="Progress Bar" 	parent="10341" attrib2="500 30" detail="30" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="65991" targetId="15401" label="Progress Bar" 	parent="10341" attrib2="500 30" detail="70" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="10341" attrib2="600 600" detail="data/images/Heatmap_small.png" />
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="11401" parent="10341" label="Canvas" attrib2="500 300" detail="1077991"	/>
 
@@ -46,9 +45,6 @@
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="45101" />
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" 			cmdId="68994" targetId="31401" label="Gears" parent="11401" attrib2="500 300" />		  
-
-
 		<!-- Container 11341 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="51991" targetId="11341" label="swt container 2" 	parent="10331" attrib2="ROW VERTICAL" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="11341" attrib1="11341" attrib2="700 500" />		  
@@ -58,14 +54,11 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="67991" targetId="22401" label="Slider Selection Offset" parent="11341" attrib2="400 30" detail="25201" attrib3="offset" />
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="11341" attrib2="388 378" detail="data/images/GenView_original_microarray_DNA_chip.jpg" />
-			
-		
 
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW VERTICAL" />   
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="-1 -1" detail="85401" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="-1 500" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="11331" attrib2="700 124" detail="data/images/GenView_heatmap_microarray_DNA_chip.jpg" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="-1 400" />
   
   		<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" /> 
@@ -73,6 +66,10 @@
 
 
  	  <!--Commands not in use at the moment	  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" 			cmdId="68994" targetId="31401" label="Gears" parent="11401" attrib2="500 300" />		  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="64991" targetId="14401" label="Progress Bar" 	parent="10341" attrib2="500 30" detail="30" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="65991" targetId="15401" label="Progress Bar" 	parent="10341" attrib2="500 30" detail="70" />
+			
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"  		cmdId="68981" targetId="80401" label="GL Histogram2D" 	parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0 -1.5 -1.5 1.72" detail="35101" attrib3="100 100 0"/>	

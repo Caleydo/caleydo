@@ -35,6 +35,8 @@ implements IView {
     protected Browser refBrowser;
     
     protected String sUrl = "www.google.at";
+    
+    protected Text refTextField;
 	
 	public HTMLBrowserViewRep(
 			IGeneralManager refGeneralManager, 
@@ -62,8 +64,9 @@ implements IView {
 	    ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
 	    stopButton.setText("Stop");
 
-	    final Text text = new Text(refSWTContainer, SWT.BORDER);
-		text.setBounds(5, 35, 400, 25);
+	    refTextField = new Text(refSWTContainer, SWT.BORDER);
+	    refTextField.setBounds(5, 35, 400, 25);
+	    refTextField.setText(sUrl);
 
 		Listener listener = new Listener() {
 			public void handleEvent(Event event)
@@ -75,8 +78,10 @@ implements IView {
 				else if (string.equals("Stop"))
 					refBrowser.stop();
 				else if (string.equals("Go"))
+				{
 					drawView();
-					//sUrl = text.getText();
+				}
+//					sUrl = text.getText();
 			}
 		};
 
@@ -84,11 +89,11 @@ implements IView {
 		backButton.addListener(SWT.Selection, listener);
 		stopButton.addListener(SWT.Selection, listener);
 
-		text.addListener(SWT.DefaultSelection, new Listener()
+		refTextField.addListener(SWT.DefaultSelection, new Listener()
 		{
 			public void handleEvent(Event e)
 			{
-				sUrl = text.getText();
+				sUrl = refTextField.getText();
 				drawView();
 			}
 		});
@@ -101,6 +106,7 @@ implements IView {
 				": drawView(): Load "+sUrl, 
 				LoggerType.VERBOSE );
 		
+		refTextField.setText(sUrl);
 		refBrowser.setUrl(sUrl);
 	}
 
@@ -121,6 +127,6 @@ implements IView {
 	public void setUrl(String sUrl) {
 		
 		this.sUrl = sUrl;
-//		drawView();
+		drawView();
 	}
 }

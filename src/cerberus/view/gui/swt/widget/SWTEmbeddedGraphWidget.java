@@ -52,4 +52,14 @@ public class SWTEmbeddedGraphWidget extends ASWTEmbeddedWidget
 	{
 		return refEmbeddedFrame;
 	}
+	
+	/**
+	 * Get the embedded frame composite.
+	 * 
+	 * @return The embedded composite.
+	 */
+	public final Composite getEmbeddedFrameComposite()
+	{
+		return refEmbeddedFrameComposite;
+	}	
 }

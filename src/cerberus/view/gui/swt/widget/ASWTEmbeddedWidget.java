@@ -22,6 +22,8 @@ public abstract class ASWTEmbeddedWidget extends ASWTWidget
 	 */
 	protected final Frame refEmbeddedFrame;
 	
+	protected final Composite refEmbeddedFrameComposite;
+	
 	/**
 	 * @param refParentComposite
 	 */
@@ -31,7 +33,8 @@ public abstract class ASWTEmbeddedWidget extends ASWTWidget
 	{
 		super(refParentComposite);
 		
-		Composite composite = new Composite(refParentComposite, SWT.EMBEDDED);
+		refEmbeddedFrameComposite = 
+			new Composite(refParentComposite, SWT.EMBEDDED);
 		
 		GridData gridData = new GridData();
 		
@@ -57,9 +60,9 @@ public abstract class ASWTEmbeddedWidget extends ASWTWidget
 			gridData.grabExcessVerticalSpace = true;
 		}
 		
-		composite.setLayoutData(gridData);
-		
-		refEmbeddedFrame = SWT_AWT.new_Frame(composite);
+		refEmbeddedFrameComposite.setLayoutData(gridData);
+	
+		refEmbeddedFrame = SWT_AWT.new_Frame(refEmbeddedFrameComposite);
 	}
 
 }

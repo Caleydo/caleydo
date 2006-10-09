@@ -101,7 +101,7 @@ extends ASliderViewRep {
 				LoggerType.VERBOSE );
 		
 		if (eventTrigger instanceof ISelection)
-		{
+		{	
 			if (sSelectionFieldName.equals("length"))
 			{
 				iCurrentSliderValue = ((ISelection)eventTrigger).length();
