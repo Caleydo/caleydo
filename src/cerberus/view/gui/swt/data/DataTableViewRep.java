@@ -452,29 +452,36 @@ implements IDataTableView {
 		ISelection tmpSelection =
 			refSelectionManager.getItemSelection(iCurrentlyRequestedCollectionId);
 		
+		tmpSelection.getWriteToken();
+		
 		switch(iColumnIndexOfItem)
 		{
 		// offset
 		case 0:
 			tmpSelection.setOffset(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(iColumnIndexOfItem), -1));	
+					refUpdatedItem.getText(iColumnIndexOfItem), -1));
+			tmpSelection.returnWriteToken();
 			break;
 		// length
 		case 1:
 			tmpSelection.setLength(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(iColumnIndexOfItem), -1));	
+			tmpSelection.returnWriteToken();
 			break;
 		// mulit offset
 		case 2:
 			tmpSelection.setMultiOffset(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(iColumnIndexOfItem), -1));
+			tmpSelection.returnWriteToken();
 			break;
 		// multi repeat
 		case 3:
 			tmpSelection.setMultiRepeat(StringConversionTool.convertStringToInt(
 					refUpdatedItem.getText(iColumnIndexOfItem), -1));
+			tmpSelection.returnWriteToken();
 			break;
 		default:
+			tmpSelection.returnWriteToken();
 			break;
 		}
 	}
