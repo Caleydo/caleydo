@@ -114,4 +114,9 @@ implements ISelectionIterator {
 		return refSelectionIterator.hasNext();
 	}
 
+	public void setToEnd()
+	{
+		refSelectionIterator.setToEnd();		
+	}
+
 }

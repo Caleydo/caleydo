@@ -224,4 +224,14 @@ public class SelectionVectorIterator implements ISelectionIterator {
 		return false;
 	}
 
+	public void setToEnd()
+	{
+		while ( iterator.hasNext() ) {
+			iterator.next();
+		}
+		
+		iCurrentSelection = vecSelection.size();
+	}
+
+	
 }

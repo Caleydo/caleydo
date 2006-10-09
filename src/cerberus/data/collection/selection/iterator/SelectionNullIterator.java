@@ -72,4 +72,9 @@ public final class SelectionNullIterator implements ISelectionIterator {
 		return false;
 	}
 
+	public void setToEnd()
+	{
+		
+	}
+
 }

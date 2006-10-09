@@ -55,4 +55,10 @@ extends ICollectionIterator {
 	public void setVirtualIndex(int iSetVirtualIndex)
 			throws CerberusRuntimeException;
 	
+	/**
+	 * Sets iterator at + 1 element and terminates the iteration.
+	 *
+	 */
+	public void setToEnd();
+	
 }

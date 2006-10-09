@@ -142,4 +142,11 @@ implements ISelectionIterator {
 		return result;
 	}
 
+
+
+	public void setToEnd()
+	{
+		iCurrentVirtualIndex = iSelectionLength;		
+	}
+
 }

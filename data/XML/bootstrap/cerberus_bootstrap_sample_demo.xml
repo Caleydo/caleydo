@@ -43,7 +43,7 @@
 			 --> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Triangle	A"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
-							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 0.5f"								
+							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="45101" />
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" 			cmdId="68994" targetId="31401" label="Gears" parent="11401" attrib2="500 300" />		  
