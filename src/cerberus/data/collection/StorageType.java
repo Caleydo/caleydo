@@ -108,6 +108,9 @@ implements ICollectionType {
 		else if ( iIndex == DOUBLE.getIndexInArray() ) {
 			return DOUBLE;
 		}
+		else if ( iIndex == BOOLEAN.getIndexInArray() ) {
+			return BOOLEAN;
+		}
 		else if ( iIndex == OBJECT.getIndexInArray() ) {
 			return OBJECT;
 		}

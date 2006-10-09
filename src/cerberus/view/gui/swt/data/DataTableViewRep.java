@@ -1,8 +1,5 @@
 package cerberus.view.gui.swt.data;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -155,14 +152,6 @@ implements IDataTableView {
 		int iTmpNumberOfDataItems = 0;	
 		int iNumberOfTableItems = refCurrentStorage.getMaximumLengthOfAllArrays();
 		int iStartItemIndex = iCurrentTablePage * MAX_TABLE_ROWS;
-				
-		// Find maximum array size to know the needed number of rows in the
-		// table.
-		//int[] storageAllSize = refCurrentStorage.getAllSize();	
-		
-		/**
-		 * Search for maximum number of items in all arrays of refCurrentStorage
-		 */
 		
 		reinitializeTable();
 		
@@ -179,7 +168,7 @@ implements IDataTableView {
 			new TableItem(refTable, SWT.NONE);
 		}
 
-		if (refCurrentStorage.getSize(StorageType.INT) != 0)
+		if (refCurrentStorage.getSize(StorageType.INT) > 1)
 		{
 			int[] intData = refCurrentStorage.getArrayInt();
 
@@ -212,7 +201,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.FLOAT) != 0)
+		if (refCurrentStorage.getSize(StorageType.FLOAT) > 1)
 		{
 			float[] floatData = refCurrentStorage.getArrayFloat();
 			
@@ -245,7 +234,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.STRING) != 0)
+		if (refCurrentStorage.getSize(StorageType.STRING) > 1)
 		{
 			String[] stringData = refCurrentStorage.getArrayString();
 
@@ -277,7 +266,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.BOOLEAN) != 0)
+		if (refCurrentStorage.getSize(StorageType.BOOLEAN) > 1)
 		{
 			boolean[] booleanData = refCurrentStorage.getArrayBoolean();
 
