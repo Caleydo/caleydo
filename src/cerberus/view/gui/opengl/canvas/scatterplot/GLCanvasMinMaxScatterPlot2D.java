@@ -217,12 +217,12 @@ implements IGLCanvasUser
 
 		
 		
-		renderText( gl, "X-Axis",
+		renderText( gl, "Y-Axis",
 				viewingFrame[X][MIN], 
 				-2.0f, 
 				0 );
 		
-		renderText( gl, "Y-Axis", 
+		renderText( gl, "X-Axis", 
 				0,
 				viewingFrame[Y][MIN], 
 				0 );

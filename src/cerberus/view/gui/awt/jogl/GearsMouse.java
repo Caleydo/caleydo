@@ -123,7 +123,7 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
 		    view_y += thetaY;
 		    
 		    
-		    System.out.println("dragging -PAN-...");
+		    //System.out.println("dragging -PAN-...");
 		    
 		    refGearsMain.setTranslation( view_x, view_y, 0.0f );
 		    // refGearsMain.setTranslation( view_x, view_y, view_z );
@@ -143,7 +143,7 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
 		    	fBuffer *= -1;
 		    }
 		    
-		    System.out.println("dragging -zoom-...");
+		    //System.out.println("dragging -zoom-...");
 		    
 		    refGearsMain.setTranslation( view_x, view_y, fBuffer );
     	}

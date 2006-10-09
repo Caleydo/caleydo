@@ -35,6 +35,8 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="10341" attrib2="600 600" detail="data/images/Heatmap_small.png" />
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="11401" parent="10341" label="Canvas" attrib2="500 300" detail="1077991"	/>
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="12401" parent="10341" label="Canvas" attrib2="500 300" detail="1077991"	/>
+
 
 			<!-- Doku:
 			Cmd type="CREATE_GL_MINMAX_SCATTERPLOT2D"	
@@ -45,6 +47,11 @@
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="45101" />
 
+      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="69992"	targetId="79401" parent="12401" label="GL Triangle	A"	
+							attrib1="0 2 0" attrib2="0 0 1 0.85"
+							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0"								
+							detail="45101" />				
+							
 		<!-- Container 11341 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="51991" targetId="11341" label="swt container 2" 	parent="10331" attrib2="ROW VERTICAL" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="11341" attrib1="11341" attrib2="700 500" />		  

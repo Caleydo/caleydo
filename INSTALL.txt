@@ -101,3 +101,15 @@ solution:
       jogl.dll
 			jogl_awt.dll
       jogl_cg.dll
+      
+      
+      
+X) Switches for application:
+
+  parameter: cxml-bootstraping config file:
+  
+    data\XML\bootstrap\cerberus_bootstrap_sample_michael.xml
+    data\XML\bootstrap\cerberus_bootstrap_sample_marc.xml
+    data\XML\bootstrap\cerberus_bootstrap_sample_demo.xml   (is default if no argument is used!)
+    
+  Java VM switch (enable assert messages): -ea 

@@ -4,6 +4,7 @@
 package cerberus.view.gui.opengl.canvas.scatterplot;
 
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -40,6 +41,8 @@ implements IGLCanvasUser
 	
 	private int iGridSize = 40;
 	
+	private float fPointSize = 1.5f;
+	
 	/**
 	 * Color for grid (0,1,2) 
 	 * grid text (3,4,5)
@@ -58,7 +61,7 @@ implements IGLCanvasUser
 	
 	public static final int X = 0;
 	public static final int Y = 1;
-	public static final int Z = 3;
+	public static final int Z = 2;
 	
 	public static final int MIN = 0;
 	public static final int MAX = 1;
@@ -79,7 +82,7 @@ implements IGLCanvasUser
 				sLabel );
 		
 		fAspectRatio = new float [3][3];
-		viewingFrame = new float [2][2];
+		viewingFrame = new float [3][2];
 		
 		fAspectRatio[X][MIN] = 0.0f;
 		fAspectRatio[X][MAX] = 20.0f; 
@@ -88,13 +91,16 @@ implements IGLCanvasUser
 		fAspectRatio[Z][MIN] = 0.0f; 
 		fAspectRatio[Z][MAX] = 20.0f; 
 		
-		fAspectRatio[Y][OFFSET] = 0.0f; 
-		fAspectRatio[Y][OFFSET] = -2.0f; 
+		fAspectRatio[X][OFFSET] = 0.0f; 
+		fAspectRatio[Y][OFFSET] = -2.0f;
+		fAspectRatio[Z][OFFSET] = 2.0f; 
 		
 		viewingFrame[X][MIN] = -1.0f;
 		viewingFrame[X][MAX] = 1.0f; 
 		viewingFrame[Y][MIN] = 1.0f; 
-		viewingFrame[Y][MAX] = -1.0f; 
+		viewingFrame[Y][MAX] = -1.0f;
+		viewingFrame[Z][MIN] = 0.0f; 
+		viewingFrame[Z][MAX] = 2.0f; 
 	}
 	
 	public void renderText( GL gl, 
@@ -104,7 +110,7 @@ implements IGLCanvasUser
 			final float fz ) {
 		
 		
-		final float fFontSizeOffset = 0.09f;
+		final float fFontSizeOffset = -0.09f;
 		
 	        GLUT glut = new GLUT();
 	        
@@ -118,7 +124,7 @@ implements IGLCanvasUser
 	        //way so this is kind of necessary to not just see a blur in smaller windows
 	        //and even in the 640x480 method it will be a bit blurry...oh well you can
 	        //set it if you would like :)
-	        gl.glRasterPos2f( fx-fFontSizeOffset, fy-fFontSizeOffset );
+	        gl.glRasterPos3f( fx-fFontSizeOffset, fy-fFontSizeOffset, fz-fFontSizeOffset );
 	        
 	        //Take a string and make it a bitmap, put it in the 'gl' passed over and pick
 	        //the GLUT font, then provide the string to show
@@ -150,7 +156,9 @@ implements IGLCanvasUser
 		viewingFrame[Y][MAX] = fResolution[9]; 
 		
 		iGridSize = (int) fResolution[10]; 
+		fPointSize = fResolution[11]; 	
 		
+		//System.err.println(" pointSize= " + fPointSize);
 	}
 	
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
@@ -189,10 +197,12 @@ implements IGLCanvasUser
 		{
 			drawScatterPlotGridXY( gl ,iGridSize );
 			drawScatterPlotGridYZ( gl ,iGridSize );
+			drawScatterPlotGridXZ( gl ,iGridSize );
 		}
 		
 		drawScatterPlotInteger( gl );
 		
+		drawScatterPlotPlanes( gl );
 	
 		//System.err.println(" MinMax ScatterPlot2D .render(GLCanvas canvas)");
 	}
@@ -220,19 +230,11 @@ implements IGLCanvasUser
 			gl.glVertex3f(viewingFrame[X][MIN], fYhoricontal, 0.0f); // Top
 			gl.glVertex3f(viewingFrame[X][MAX], fYhoricontal, 0.0f); // Bottom left
 			
+			gl.glEnd();
+			
 			fXvertical += fIncX;
 			fYhoricontal += fIncY;
 		}
-		
-		renderText( gl, "X-Axis",
-				viewingFrame[X][MIN], 
-				-2.0f, 
-				0 );
-		
-		renderText( gl, "Y-Axis", 
-				0,
-				viewingFrame[Y][MIN], 
-				0 );
 	}
 	
 	
@@ -247,6 +249,7 @@ implements IGLCanvasUser
 		float fZvertical = viewingFrame[Z][MIN] + fIncZ;
 		float fYhoricontal = viewingFrame[Y][MIN] + fIncY;
 		
+	
 		
 		for ( int i=0; i < iResolution; i++ )
 		{
@@ -261,30 +264,80 @@ implements IGLCanvasUser
 			fYhoricontal += fIncY;
 		}
 		
-		renderText( gl, "X-Axis",
-				viewingFrame[X][MIN], 
-				-2.0f, 
-				0 );
-		
-		renderText( gl, "Y-Axis", 
-				0,
-				viewingFrame[Y][MIN], 
-				0 );
 	}
 	
-	protected void drawScatterPlotInteger(GL gl) {
-
+	protected void drawScatterPlotGridXZ( GL gl, int iResolution) 
+	{
+		gl.glColor3fv( colorGrid, 0); // Set the color to red
 		
+		
+		float fIncZ = (viewingFrame[Z][MAX] - viewingFrame[Z][MIN]) / (iResolution + 1);
+		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN]) / (iResolution + 1);
+		
+		float fZvertical = viewingFrame[Z][MIN] + fIncZ;
+		float fXhoricontal = viewingFrame[X][MIN] + fIncX;
+		
+	
+		
+		for ( int i=0; i < iResolution; i++ )
+		{
+			gl.glBegin(GL.GL_LINES); // Drawing using triangles
+			gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], fZvertical); // Top
+			gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], fZvertical); // Bottom left
+			
+			gl.glVertex3f( fXhoricontal, viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+			gl.glVertex3f( fXhoricontal, viewingFrame[Y][MIN], viewingFrame[Z][MAX]); // Bottom left
+			
+			fZvertical += fIncZ;
+			fXhoricontal += fIncX;
+		}		
+		
+	}
+	
+	protected void drawScatterPlotPlanes(GL gl) {
 		/**
-		 * Box..
+		 * Box X-Y..
 		 */
+		float fBias = 0.001f;
+		
+		gl.glColor3i( 0,0,0 ); // Set the color to red
+		gl.glBegin(GL.GL_TRIANGLE_FAN); // Drawing using triangles
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]-fBias); // Top
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]-fBias); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN]-fBias); // Bottom left		
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]-fBias); // Bottom left		
+		gl.glEnd(); // Finish drawing the triangle
 		
 		gl.glColor3fv( colorGrid, 0); // Set the color to red
 		gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], 0.0f); // Top
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], 0.0f); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], 0.0f); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], 0.0f); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+		gl.glEnd(); // Finish drawing the triangle
+		
+		/**
+		 * End draw Box
+		 */
+		
+		/**
+		 * Box Y-Z..
+		 */
+		
+		gl.glColor3i( 0,0,0 ); // Set the color to red
+		gl.glBegin(GL.GL_TRIANGLE_FAN); // Drawing using triangles
+		gl.glVertex3f(viewingFrame[X][MIN]-fBias, viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+		gl.glVertex3f(viewingFrame[X][MIN]-fBias, viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN]-fBias, viewingFrame[Y][MAX], viewingFrame[Z][MAX]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN]-fBias, viewingFrame[Y][MIN], viewingFrame[Z][MAX]); // Bottom left
+		gl.glEnd(); // Finish drawing the triangle
+		
+		gl.glColor3fv( colorGrid, 0); // Set the color to red
+		gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MAX]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MAX]); // Bottom left
 		gl.glEnd(); // Finish drawing the triangle
 		
 		/**
@@ -292,6 +345,49 @@ implements IGLCanvasUser
 		 */
 		
 		
+		/**
+		 * Box X-Z..
+		 */
+		
+		gl.glColor3i( 0,0,0 ); // Set the color to red
+		gl.glBegin(GL.GL_TRIANGLE_FAN); // Drawing using triangles
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN]-fBias, viewingFrame[Z][MIN]); // Top
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN]-fBias, viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN]-fBias, viewingFrame[Z][MAX]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN]-fBias, viewingFrame[Z][MAX]); // Bottom left
+		gl.glEnd(); // Finish drawing the triangle
+		
+		gl.glColor3fv( colorGrid, 0); // Set the color to red
+		gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MAX]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MAX]); // Bottom left
+		gl.glEnd(); // Finish drawing the triangle
+					
+		/**
+		 * End draw Box
+		 */
+		
+		renderText( gl, "Y-Axis",
+				viewingFrame[X][MIN], 
+				-2.0f, 
+				viewingFrame[Z][MAX] );
+		
+		renderText( gl, "X-Axis", 
+				0,
+				viewingFrame[Y][MIN], 
+				viewingFrame[Z][MAX] );
+		
+		renderText( gl, "Z-Axis", 
+				0,
+				-1, // this... 
+			    0 );
+	}
+		
+	protected void drawScatterPlotInteger(GL gl) 
+	{
+
 		if ( targetSet.getDimensions() < 2 ) {
 			return;
 		}
@@ -349,10 +445,11 @@ implements IGLCanvasUser
 		
 		//gl.glTranslatef( 0, -2.5f, 0);
 		
-		gl.glPointSize( this.fResolution[10] );		
-		gl.glDisable( GL.GL_LIGHTING );
+			
+		//gl.glDisable( GL.GL_LIGHTING );
 		gl.glColor3fv( colorGrid, 6); // Set the color to blue one time only	
 		
+		//gl.glPointSize( 30.0f );	
 		
 		for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 
 		{
@@ -370,22 +467,34 @@ implements IGLCanvasUser
 			
 			float fTri = 0.05f;
 			
-			//gl.glBegin(GL.GL_POINT); // Draw a quad
+			//gl.glBegin(GL.GL_POINTS); // Draw a quad
+			
+			Random randomGenerator = new Random( 343187995 );
 			
 			while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
 			{
 				float fX = (float) arrayIntX[ iterSelectX.next() ] / fAspectRatio[X][MAX];
 				float fY = (float) arrayIntY[ iterSelectY.next() ] / fAspectRatio[Y][MAX];
 				
+				float fZ = (float) randomGenerator.nextFloat() * 2.0f + 0.01f;
 				//gl.glColor3f(fX * fY, 0.2f, 1 - fX); // Set the color to blue one time only
 				
 				
-				// gl.glBegin(GL.GL_TRIANGLES); // Draw a quad		
-				gl.glBegin(GL.GL_POINTS);
+				gl.glBegin(GL.GL_TRIANGLE_FAN); // Draw a quad		
+				//gl.glBegin(GL.GL_POINTS);
 				
-				gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , fY +fAspectRatio[Y][OFFSET], 0.0f); // Point				
-//				gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , fY-fTri +fAspectRatio[Y][OFFSET], 0.0f); // Point
-//				gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , fY +fAspectRatio[Y][OFFSET], 0.0f); // Point
+				gl.glVertex3f(fX + fAspectRatio[X][OFFSET] ,
+						fY +fAspectRatio[Y][OFFSET],
+						fZ ); // Point					
+				gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , 
+						fY-fTri +fAspectRatio[Y][OFFSET],
+						fZ ); // Point
+				gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , 
+						fY-fTri +fAspectRatio[Y][OFFSET], 
+						fZ ); // Point
+				gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , 
+						fY +fAspectRatio[Y][OFFSET], 
+						fZ ); // Point
 				
 				gl.glEnd(); // Done drawing the quad
 				
@@ -398,11 +507,13 @@ implements IGLCanvasUser
 //				gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
 //				gl.glEnd(); // Finish drawing the triangle
 				
-				System.out.println( fX + " ; " + fY );
+				//System.out.println( fX + " ; " + fY );
 								
 			} // while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
 			
 			//gl.glEnd(); // Done drawing the quad
+			
+			//gl.glEnable( GL.GL_LIGHTING );
 			
 		} // for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 			
 

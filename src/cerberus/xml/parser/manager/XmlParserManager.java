@@ -58,7 +58,7 @@ implements IXmlParserManager
 	 */
 	protected boolean bUseCascadingHandler = false;
 	
-	protected boolean bUnloadSaxHandlerAfterBootstraping = true;
+	protected boolean bUnloadSaxHandlerAfterBootstraping = false;
 	
 	/**
 	 * Default constructor.
