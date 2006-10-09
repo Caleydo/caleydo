@@ -290,7 +290,7 @@ implements IGLCanvasUser
 		/**
 		 * Box X-Y..
 		 */
-		float fBias = 0.001f;
+		float fBias = 0.01f;
 		
 		gl.glColor3i( 0,0,0 ); // Set the color to red
 		gl.glBegin(GL.GL_TRIANGLE_FAN); // Drawing using triangles
