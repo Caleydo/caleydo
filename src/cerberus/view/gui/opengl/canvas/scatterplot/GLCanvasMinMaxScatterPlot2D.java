@@ -370,7 +370,7 @@ implements IGLCanvasUser
 //				gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
 //				gl.glEnd(); // Finish drawing the triangle
 				
-				System.out.println( fX + " ; " + fY );
+				//System.out.println( fX + " ; " + fY );
 								
 			} // while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
 			

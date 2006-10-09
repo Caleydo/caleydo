@@ -27,6 +27,11 @@ public class PathwayElement  {
 		return sElementTitle;
 	}
 	
+	public void setElementTitle(String sElementTitle) {
+		
+		this.sElementTitle = sElementTitle;
+	}
+	
 	/**
 	 * Method needed for the JGraph labeling of the vertices.
 	 */

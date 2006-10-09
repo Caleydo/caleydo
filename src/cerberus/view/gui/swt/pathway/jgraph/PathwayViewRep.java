@@ -134,6 +134,7 @@ implements IPathwayView{
 //						}
 					}
 				}
+				
 				super.mousePressed(event);
 			}
 		}
@@ -187,7 +188,12 @@ implements IPathwayView{
 	        	while (vertexRepIterator.hasNext())
 	        	{
 	        		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
-	        		createVertex(vertex, vertexRep.getSName(), 
+	        		
+	        		// FIXME: this is just a workaround.
+	        		// inconsitency between vertexRep and vertex "name"
+	        		vertex.setElementTitle(vertexRep.getSName());
+	        		
+	        		createVertex(vertex, 
 	        				vertexRep.getIHeight(), vertexRep.getIWidth(), 
 	        				vertexRep.getIXPosition(), vertexRep.getIYPosition(),
 	        				vertex.getVertexType());
@@ -218,11 +224,11 @@ implements IPathwayView{
 		refEmbeddedFrame.add(new JScrollPane(refPathwayGraph), SWT.NONE);
 	}
 	
-	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 
+	public void createVertex(PathwayVertex vertex, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition, PathwayVertexType vertexType) {
 		
 		//create node
-		refGraphCell = new DefaultGraphCell(sTitle);
+		refGraphCell = new DefaultGraphCell(vertex);
 	
 		GraphConstants.setOpaque(refGraphCell.getAttributes(), true);
 		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);

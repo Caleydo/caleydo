@@ -6,7 +6,7 @@ import cerberus.view.gui.IView;
 
 public interface IPathwayView extends IView
 {
-	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 
+	public void createVertex(PathwayVertex vertex, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition, PathwayVertexType vertexType);
 	
 	public void createEdge(int iVertexId1, int iVertexId2);

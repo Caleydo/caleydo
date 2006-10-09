@@ -48,7 +48,7 @@ implements IView {
 	public void initView() {
 		
 		refBrowser = new Browser (refSWTContainer, SWT.NONE);
-		refBrowser.setBounds(5, 75, 1000, 400);
+		refBrowser.setBounds(5, 75, 1400, 500);
 		
 	    ToolBar toolbar = new ToolBar(refSWTContainer, SWT.NONE);
 	    toolbar.setBounds(5, 5, 200, 30);
