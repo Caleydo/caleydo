@@ -52,9 +52,13 @@
 		<!-- Container 11341 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="51991" targetId="11341" label="swt container 2" 	parent="10331" attrib2="ROW VERTICAL" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="11341" attrib1="11341" attrib2="700 500" />		  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER"  	cmdId="66991" targetId="19401" label="Slider Selection Length"  parent="11341" attrib2="400 30" detail="35201" attrib3="length" />	 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="67991" targetId="20401" label="Slider Selection Offset" parent="11341" attrib2="400 30" detail="35201" attrib3="offset" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER"  	cmdId="66991" targetId="19401" label="Slider Selection Length"  parent="11341" attrib2="400 30" detail="15201" attrib3="length" />	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="67991" targetId="20401" label="Slider Selection Offset" parent="11341" attrib2="400 30" detail="15201" attrib3="offset" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER"  	cmdId="66991" targetId="21401" label="Slider Selection Length"  parent="11341" attrib2="400 30" detail="25201" attrib3="length" />	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="67991" targetId="22401" label="Slider Selection Offset" parent="11341" attrib2="400 30" detail="25201" attrib3="offset" />
+			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="11341" attrib2="388 378" detail="data/images/GenView_original_microarray_DNA_chip.jpg" />
+			
 		
 
 		<!-- Window 11331 -->
@@ -64,7 +68,9 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="11331" attrib2="700 124" detail="data/images/GenView_heatmap_microarray_DNA_chip.jpg" />
   
   		<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="35201" attrib2="19401 10401 20401" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="25201" attrib2="21401 10401 22401" /> 
+
 
  	  <!--Commands not in use at the moment	  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  

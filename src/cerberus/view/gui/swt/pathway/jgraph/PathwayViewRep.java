@@ -29,7 +29,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
-import com.jgraph.example.mycellview.GPCellViewFactory;
+import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayEdge;
