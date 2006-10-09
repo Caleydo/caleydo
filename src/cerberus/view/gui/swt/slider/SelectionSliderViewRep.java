@@ -54,6 +54,8 @@ extends ASliderViewRep {
 					refGeneralManager.getSingelton().getSelectionManager()
 						.getItemSelection(iSelectionId);
 				
+				tmpSelection.getWriteToken();
+				
 				if (sSelectionFieldName.equals("length"))
 				{
 					tmpSelection.setLength(refSlider.getSelection());
@@ -70,6 +72,8 @@ extends ASliderViewRep {
 				{
 					tmpSelection.setMultiRepeat(refSlider.getSelection());
 				}	
+				
+				tmpSelection.returnWriteToken();
 			}
 		});
 	}
