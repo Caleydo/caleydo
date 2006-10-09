@@ -183,14 +183,6 @@ implements IGLCanvasUser
 	@Override
 	public void renderPart(GL gl)
 	{
-		
-
-		float fx = 1.0f;
-		float fy = 1.5f;
-		
-		float fOffX = 0.0f;
-		float fOffY = -2.0f;
-		
 		gl.glTranslatef( 0,0, 0.01f);
 		
 		if ( iGridSize > 1 ) 
@@ -391,7 +383,7 @@ implements IGLCanvasUser
 		if ( targetSet.getDimensions() < 2 ) {
 			return;
 		}
-		
+			
 		/**
 		 * Check type of set...
 		 */
@@ -443,6 +435,12 @@ implements IGLCanvasUser
 			return;
 		}
 		
+		if ( ! targetSet.getReadToken() ) 
+		{
+			return;
+		}
+		
+		
 		//gl.glTranslatef( 0, -2.5f, 0);
 		
 			
@@ -456,67 +454,87 @@ implements IGLCanvasUser
 			ISelection selectX = arraySelectionX[iOuterLoop];
 			ISelection selectY = arraySelectionY[iOuterLoop];
 			
-			ISelectionIterator iterSelectX = selectX.iterator();
-			ISelectionIterator iterSelectY = selectY.iterator();
-			
-			IStorage storeX = arrayStorageX[iOuterLoop];
-			IStorage storeY = arrayStorageY[iOuterLoop];
-			
-			int [] arrayIntX = storeX.getArrayInt();
-			int [] arrayIntY = storeY.getArrayInt();
-			
-			float fTri = 0.05f;
-			
-			//gl.glBegin(GL.GL_POINTS); // Draw a quad
-			
-			Random randomGenerator = new Random( 343187995 );
-			
-			while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
+			if (( selectX.getReadToken())&&(selectY.getReadToken()))
 			{
-				float fX = (float) arrayIntX[ iterSelectX.next() ] / fAspectRatio[X][MAX];
-				float fY = (float) arrayIntY[ iterSelectY.next() ] / fAspectRatio[Y][MAX];
+				ISelectionIterator iterSelectX = selectX.iterator();
+				ISelectionIterator iterSelectY = selectY.iterator();
 				
-				float fZ = (float) randomGenerator.nextFloat() * 2.0f + 0.01f;
-				//gl.glColor3f(fX * fY, 0.2f, 1 - fX); // Set the color to blue one time only
+				IStorage storeX = arrayStorageX[iOuterLoop];
+				IStorage storeY = arrayStorageY[iOuterLoop];
 				
+				int [] arrayIntX = storeX.getArrayInt();
+				int [] arrayIntY = storeY.getArrayInt();
 				
-				gl.glBegin(GL.GL_TRIANGLE_FAN); // Draw a quad		
-				//gl.glBegin(GL.GL_POINTS);
+				float fTri = 0.02f;
 				
-				gl.glVertex3f(fX + fAspectRatio[X][OFFSET] ,
-						fY +fAspectRatio[Y][OFFSET],
-						fZ ); // Point					
-				gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , 
-						fY-fTri +fAspectRatio[Y][OFFSET],
-						fZ ); // Point
-				gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , 
-						fY-fTri +fAspectRatio[Y][OFFSET], 
-						fZ ); // Point
-				gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , 
-						fY +fAspectRatio[Y][OFFSET], 
-						fZ ); // Point
+				//gl.glBegin(GL.GL_POINTS); // Draw a quad
 				
-				gl.glEnd(); // Done drawing the quad
+				Random randomGenerator = new Random( 343187995 );
 				
-//				gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
-//				gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
-//				gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
-//				gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
-//				gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
-//				gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
-//				gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-//				gl.glEnd(); // Finish drawing the triangle
+				float fX = 0.0f;
+				float fY = 0.0f;
 				
-				//System.out.println( fX + " ; " + fY );
-								
-			} // while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
+				while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
+				{
+					try
+					{
+						fX = (float) arrayIntX[ iterSelectX.next() ] / fAspectRatio[X][MAX];
+						fY = (float) arrayIntY[ iterSelectY.next() ] / fAspectRatio[Y][MAX];
+					}
+					catch ( ArrayIndexOutOfBoundsException aiobe) 
+					{
+						// ignore and abort loop!	
+						iterSelectX.setToEnd();
+						
+						break;
+					}
+					
+					float fZ = (float) randomGenerator.nextFloat() * 2.0f + 0.01f;
+					
+					
+					gl.glBegin(GL.GL_TRIANGLE_FAN); // Draw a quad		
+					//gl.glBegin(GL.GL_POINTS);
+					
+					gl.glVertex3f(fX + fAspectRatio[X][OFFSET] ,
+							fY +fAspectRatio[Y][OFFSET],
+							fZ ); // Point					
+					gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , 
+							fY-fTri +fAspectRatio[Y][OFFSET],
+							fZ ); // Point
+					gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , 
+							fY-fTri +fAspectRatio[Y][OFFSET], 
+							fZ ); // Point
+					gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , 
+							fY +fAspectRatio[Y][OFFSET], 
+							fZ ); // Point
+					
+					gl.glEnd(); // Done drawing the quad
+					
+	//				gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
+	//				gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to red
+	//				gl.glVertex3f(0.0f, -2.0f, 0.0f); // Top
+	//				gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color to green
+	//				gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+	//				gl.glColor3f(1.0f, 1.0f, 0.0f); // Set the color to blue
+	//				gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+	//				gl.glEnd(); // Finish drawing the triangle
+					
+					//System.out.println( fX + " ; " + fY );
+									
+				} // while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
+				
+				//gl.glEnd(); // Done drawing the quad
+				
+				//gl.glEnable( GL.GL_LIGHTING );
 			
-			//gl.glEnd(); // Done drawing the quad
+			} // if (( selectX.getReadToken())&&(selectY.getReadToken()))
 			
-			//gl.glEnable( GL.GL_LIGHTING );
+			selectX.returnReadToken();
+			selectY.returnReadToken();
 			
 		} // for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 			
 
+		targetSet.returnReadToken();
 	}
 	
 	public void update(GLAutoDrawable canvas)
