@@ -110,8 +110,8 @@ implements IPathwayView{
 		    	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
 						.getFirstCellForLocation(event.getX(), event.getY());
 
-				if (event.getClickCount() == 2)
-				{	
+//				if (event.getClickCount() == 2)
+//				{	
 					if (clickedCell != null)
 					{
 						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
@@ -120,33 +120,14 @@ implements IPathwayView{
 						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
 							getViewGLCanvasManager();
 						
-//						((HTMLBrowserViewRep)tmpViewManager.
-//								getItem(iHTMLBrowserId)).setUrl(sUrl);
-						
 					    refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
 					    	public void run() {
 								((HTMLBrowserViewRep)tmpViewManager.
 								getItem(iHTMLBrowserId)).setUrl(sUrl);
 					    	}	
 					    });
-						
-//						if (SwingUtilities.isEventDispatchThread())
-//							((HTMLBrowserViewRep)tmpViewManager.
-//									getItem(iHTMLBrowserId)).setUrl(sUrl);
-//						else
-//						{
-//							try {
-//								SwingUtilities.invokeLater(new Runnable() {
-//									public void run() {
-//										((HTMLBrowserViewRep)tmpViewManager.
-//												getItem(iHTMLBrowserId)).setUrl(sUrl);
-//									}
-//								});									
-//							} catch(InterruptedException ie) {
-//							} catch(InvocationTargetException ite) {}
-//						}
 					}
-				}
+//				}
 				
 				super.mousePressed(event);
 			}
@@ -313,6 +294,11 @@ implements IPathwayView{
 		edge.setSource(cell1.getChildAt(0));
 		edge.setTarget(cell2.getChildAt(0));
 		refPathwayGraph.getGraphLayoutCache().insert(edge);
+	}
+	
+	public void loadPathwayFromFile(String sFilePath) {
+
+
 	}
 	
 	public void retrieveGUIContainer() {

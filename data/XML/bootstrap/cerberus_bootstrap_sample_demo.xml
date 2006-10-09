@@ -19,10 +19,10 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
 												
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="31991"	targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="32991"	targetId="35101" label="target Set for file	new" attrib1="35201" attrib2="45301" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="34991"	targetId="45101" label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="CREATE_SET_PLANAR" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="31991"	targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="32991"	targetId="35101" label="target Set for file	new" attrib1="35201" attrib2="45301" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="34991"	targetId="45101" label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="CREATE_SET_PLANAR" />
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
 			   	
@@ -31,12 +31,12 @@
          
 		<!-- Container 10341 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="50991" targetId="10341" label="swt container 1" 	parent="10331" attrib2="ROW VERTICAL" />
-
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="10341" attrib2="600 600" detail="data/images/Heatmap_small.png" />
-
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="64991" targetId="14401" label="Progress Bar" 	parent="10341" attrib2="500 30" detail="30" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="65991" targetId="15401" label="Progress Bar" 	parent="10341" attrib2="500 30" detail="70" />
+			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="11401" parent="10341" label="Canvas" attrib2="500 300" detail="1077991"	/>
-		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="12401" parent="10341" label="Canvas" attrib2="500 300" detail="1077991"	/>
-
+		  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="12401" parent="10341" label="Canvas" attrib2="500 300" detail="1077991"	/>
 
 			<!-- Doku:
 			Cmd type="CREATE_GL_MINMAX_SCATTERPLOT2D"	
@@ -47,25 +47,29 @@
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="45101" />
 
-      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="69992"	targetId="79401" parent="12401" label="GL Triangle	A"	
+      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="69992"	targetId="79401" parent="12401" label="GL Triangle	A"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0"								
-							detail="45101" />				
+							detail="45101" />											
 							
 		<!-- Container 11341 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="51991" targetId="11341" label="swt container 2" 	parent="10331" attrib2="ROW VERTICAL" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="11341" attrib1="11341" attrib2="700 500" />		  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="11341" attrib1="11341" attrib2="700 700" />		  
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER"  	cmdId="66991" targetId="19401" label="Slider Selection Length"  parent="11341" attrib2="400 30" detail="15201" attrib3="length" />	 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="67991" targetId="20401" label="Slider Selection Offset" parent="11341" attrib2="400 30" detail="15201" attrib3="offset" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER"  	cmdId="66991" targetId="21401" label="Slider Selection Length"  parent="11341" attrib2="400 30" detail="25201" attrib3="length" />	 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="67991" targetId="22401" label="Slider Selection Offset" parent="11341" attrib2="400 30" detail="25201" attrib3="offset" />
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Image" 			parent="11341" attrib2="388 378" detail="data/images/GenView_original_microarray_DNA_chip.jpg" />
-
 		<!-- Window 11331 -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW VERTICAL" />   
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="-1 -1" detail="85401" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="-1 400" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="500 -1" />
+ 
+ 		<!-- Window 12331 -->
+     		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="12331" label="Cerberus Window 1" attrib1="ROW HORIZONTAL" />   
+ 
+  			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="MicroArray Image" parent="12331" attrib2="500 500" detail="data/images/GenView_original_microarray_DNA_chip.jpg" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" targetId="86401" label="Heatmap Image" 	parent="12331" attrib2="600 600" detail="data/images/Heatmap_small.png" />  
   
   		<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" /> 

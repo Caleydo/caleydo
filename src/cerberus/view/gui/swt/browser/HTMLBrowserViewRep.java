@@ -49,11 +49,17 @@ implements IView {
 
 	public void initView() {
 		
+		if (iWidth == -1)
+			iWidth = 500;
+		
+		if (iHeight == -1)
+			iHeight = 1000;
+		
 		refBrowser = new Browser (refSWTContainer, SWT.NONE);
-		refBrowser.setBounds(5, 75, 1400, 500);
+		refBrowser.setBounds(5, 75, iWidth, iHeight);
 		
 	    ToolBar toolbar = new ToolBar(refSWTContainer, SWT.NONE);
-	    toolbar.setBounds(5, 5, 200, 30);
+	    toolbar.setBounds(5, 5, 300, 30);
 
 	    ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
 	    goButton.setText("Go");
@@ -65,7 +71,7 @@ implements IView {
 	    stopButton.setText("Stop");
 
 	    refTextField = new Text(refSWTContainer, SWT.BORDER);
-	    refTextField.setBounds(5, 35, 400, 25);
+	    refTextField.setBounds(5, 35, iWidth, 25);
 	    refTextField.setText(sUrl);
 
 		Listener listener = new Listener() {
@@ -79,9 +85,9 @@ implements IView {
 					refBrowser.stop();
 				else if (string.equals("Go"))
 				{
+					sUrl = refTextField.getText();
 					drawView();
 				}
-//					sUrl = text.getText();
 			}
 		};
 
