@@ -31,6 +31,7 @@ import cerberus.manager.logger.ConsoleSimpleLogger;
 import cerberus.manager.type.ManagerType;
 
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.xml.parser.manager.XmlParserManager;
 
 /**
  * Global object contining and handling several managers.
@@ -76,6 +77,8 @@ implements ISingelton {
 	protected IPathwayElementManager refPathwayElementManager;
 	
 	protected IEventPublisher refEventPublisher;
+	
+	protected XmlParserManager refXmlParserManager;
 
 	
 	/**
@@ -160,26 +163,6 @@ implements ISingelton {
 		return refPathwayElementManager;
 	}
 	
-	public void setPathwayManager(IPathwayManager refPathwayManager) {
-		this.refPathwayManager = refPathwayManager;
-	}
-	
-	public void setPathwayElementManager(IPathwayElementManager refPathwayElementManager) {
-		this.refPathwayElementManager = refPathwayElementManager;
-	}
-	
-	public void setEventPublisher(IEventPublisher refEventPublisher)
-	{
-		this.refEventPublisher = refEventPublisher;
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
-	 */
-	public ICommandManager getCommandManager() {
-		return refCommandManager;
-	}
-	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getSWTGUIManager()
 	 */
@@ -206,6 +189,20 @@ implements ISingelton {
 	 */
 	public ILoggerManager getLoggerManager() {
 		return this.refLoggerManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getXmlParserManager()
+	 */
+	public XmlParserManager getXmlParserManager() {
+		return this.refXmlParserManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
+	 */
+	public ICommandManager getCommandManager() {
+		return refCommandManager;
 	}
 	
 	public void setMenuManager( IMenuManager setMenuManager ) {
@@ -249,24 +246,46 @@ implements ISingelton {
 	}	
 
 	public void setSWTGUIManager( ISWTGUIManager setSWTGUIManager ) {
-		assert setSWTGUIManager != null : "SWTGUIManager was null";
+		assert setSWTGUIManager != null : "ISWTGUIManager was null";
 		
 		refSWTGUIManager = setSWTGUIManager;
 	}
 	
 	public void setCommandManager( ICommandManager setCommandManager ) {
+		assert setCommandManager != null : "ICommandManager was null";
+		
 		refCommandManager = setCommandManager;
 	}
 	
 	public void setDComponentManager( IDistComponentManager setDComponentManager ) {
 		assert setDComponentManager!=null: "IDistComponentManager was null";
 		
-		refDComponentManager = setDComponentManager;
-		
+		refDComponentManager = setDComponentManager;	
 	}
 	
 	public void setLoggerManager( ILoggerManager refLoggerManager ) {
+		assert refLoggerManager != null : "ILoggerManager was null";
+		
 		this.refLoggerManager = refLoggerManager;
+	}
+
+	public void setXmlParserManager( XmlParserManager refXmlParserManager ) {
+		assert refXmlParserManager != null : "XmlParserManager was null";
+		
+		this.refXmlParserManager = refXmlParserManager;
+	}
+
+	public void setPathwayManager(IPathwayManager refPathwayManager) {
+		this.refPathwayManager = refPathwayManager;
+	}
+	
+	public void setPathwayElementManager(IPathwayElementManager refPathwayElementManager) {
+		this.refPathwayElementManager = refPathwayElementManager;
+	}
+	
+	public void setEventPublisher(IEventPublisher refEventPublisher)
+	{
+		this.refEventPublisher = refEventPublisher;
 	}
 	
 	/* (non-Javadoc)

@@ -4,6 +4,7 @@ import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerType;
+import cerberus.xml.parser.manager.XmlParserManager;
 
 public interface ISingelton {
 
@@ -40,6 +41,8 @@ public interface ISingelton {
 	
 	public abstract IEventPublisher getEventPublisher();
 	
+	public abstract XmlParserManager getXmlParserManager();
+	
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.
@@ -74,4 +77,6 @@ public interface ISingelton {
 	public abstract void setSWTGUIManager(ISWTGUIManager refSWTGUIManager);
 	
 	public abstract void setViewGLCanvasManager(IViewGLCanvasManager refViewManager);
+	
+	public abstract void setXmlParserManager(XmlParserManager refXmlParserManager);
 }

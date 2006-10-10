@@ -118,14 +118,24 @@ implements IPathwayView{
 							.getVertexLink();
 						
 						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-							getViewGLCanvasManager();
-						
+							getViewGLCanvasManager();					
 					    refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
 					    	public void run() {
 								((HTMLBrowserViewRep)tmpViewManager.
 								getItem(iHTMLBrowserId)).setUrl(sUrl);
-					    	}	
-					    });
+					    	}
+				    	});						
+						
+//						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
+//							.getVertexLink();
+//						
+//						String sSearchPattern = "pathway/map/";
+//						String sPathwayFilePath;
+//						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
+//						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
+//						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
+//						System.out.println("Load pathway from " +sPathwayFilePath);
+//						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
 					}
 //				}
 				
@@ -298,7 +308,10 @@ implements IPathwayView{
 	
 	public void loadPathwayFromFile(String sFilePath) {
 
-
+		refGeneralManager.getSingelton().
+			getXmlParserManager().parseXmlFileByName(sFilePath);
+		
+		drawView();
 	}
 	
 	public void retrieveGUIContainer() {

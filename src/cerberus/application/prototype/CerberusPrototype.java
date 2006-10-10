@@ -54,8 +54,7 @@ public class CerberusPrototype
 		refViewManager = (IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
 		
 		refXmlParserManager = new XmlParserManager( refGeneralManager, false );
-		
-		//refEventPublisher = (IEventPublisher) refGeneralManager.getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER);
+		refGeneralManager.getSingelton().setXmlParserManager(refXmlParserManager);
 		
 		/**
 		 * Register additional SaxParserHandler here:
