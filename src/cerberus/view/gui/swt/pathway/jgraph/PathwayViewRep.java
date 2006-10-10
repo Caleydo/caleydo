@@ -33,6 +33,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 
 import cerberus.data.pathway.Pathway;
@@ -82,6 +83,8 @@ implements IPathwayView{
 	
 	protected HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
 	
+	protected int iPathwayId = 0;
+	
 	protected int iHTMLBrowserId;
 	
 	public PathwayViewRep(IGeneralManager refGeneralManager, 
@@ -114,28 +117,38 @@ implements IPathwayView{
 //				{	
 					if (clickedCell != null)
 					{
-						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
-							.getVertexLink();
-						
-						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-							getViewGLCanvasManager();					
-					    refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
-					    	public void run() {
-								((HTMLBrowserViewRep)tmpViewManager.
-								getItem(iHTMLBrowserId)).setUrl(sUrl);
-					    	}
-				    	});						
-						
 //						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
 //							.getVertexLink();
 //						
-//						String sSearchPattern = "pathway/map/";
-//						String sPathwayFilePath;
-//						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
-//						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
-//						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
-//						System.out.println("Load pathway from " +sPathwayFilePath);
-//						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+//						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+//							getViewGLCanvasManager();					
+//					    refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+//					    	public void run() {
+//								((HTMLBrowserViewRep)tmpViewManager.
+//								getItem(iHTMLBrowserId)).setUrl(sUrl);
+//					    	}
+//				    	});						
+//						
+						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
+							.getVertexLink();
+						
+						String sSearchPattern = "pathway/map/";
+						String sPathwayFilePath;
+						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
+						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
+						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
+						System.out.println("Load pathway from " +sPathwayFilePath);
+						
+						// Extract pathway clicked pathway ID
+						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+						System.out.println("Last index: " +iPathwayIdIndex);
+						iPathwayId = StringConversionTool.
+							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
+
+						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+								"Load pathway with ID " +iPathwayId);
+						
+						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
 					}
 //				}
 				
@@ -165,7 +178,17 @@ implements IPathwayView{
 				getPathwayLUT();
 		
 		Pathway pathway;
-		Iterator<Pathway> pathwayIterator = pathwayLUT.values().iterator();
+		
+		// Take first in list if pathway ID is not set
+		if (iPathwayId == 0)
+		{
+			Iterator<Pathway> iter = pathwayLUT.values().iterator();
+			pathway = iter.next();
+		}
+		else
+		{
+			pathway = pathwayLUT.get(iPathwayId);
+		}
 	    
 	    Vector<PathwayVertex> vertexList;
 	    Iterator<PathwayVertex> vertexIterator;
@@ -178,9 +201,6 @@ implements IPathwayView{
 	    Iterator<PathwayEdge> edgeIterator;
 	    PathwayEdge edge;
 	    
-	    while (pathwayIterator.hasNext()) 
-	    {
-	    	pathway = pathwayIterator.next();
 	        vertexList = pathway.getVertexList();
 	        
 	        vertexIterator = vertexList.iterator();
@@ -223,7 +243,6 @@ implements IPathwayView{
 	        		}
 	        	}
 	        }   
-	    }
 		
 		refEmbeddedFrame.add(new JScrollPane(refPathwayGraph), SWT.NONE);
 	}
@@ -306,12 +325,26 @@ implements IPathwayView{
 		refPathwayGraph.getGraphLayoutCache().insert(edge);
 	}
 	
+	public void setPathwayId(int iPathwayId) {
+		this.iPathwayId = iPathwayId;
+	}
+	
 	public void loadPathwayFromFile(String sFilePath) {
 
+		//refPathwayGraph.removeAll();
+		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
 		
+		resetGraph();
 		drawView();
+	}
+	
+	public void resetGraph() {
+		
+		//refPathwayGraph = null;
+		//refEmbeddedFrame.removeAll();
+		initView();
 	}
 	
 	public void retrieveGUIContainer() {

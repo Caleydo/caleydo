@@ -10,4 +10,10 @@ public interface IPathwayView extends IView
 			int iXPosition, int iYPosition, PathwayVertexType vertexType);
 	
 	public void createEdge(int iVertexId1, int iVertexId2);
+	
+	public void setPathwayId(int iPathwayId);
+	
+	public void loadPathwayFromFile(String sFilePath);
+	
+	public void resetGraph();
 }
