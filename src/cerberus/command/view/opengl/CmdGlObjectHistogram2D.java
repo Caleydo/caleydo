@@ -12,7 +12,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.GLCanvasHistogram2D;
+import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
@@ -25,7 +25,7 @@ extends ACmdCreate_GlCanvasUser
 		implements ICommand
 {
 	
-	protected int [] iResolution;
+	protected float [] fResolution;
 	
 	/**
 	 * If of Set to be read data from
@@ -45,7 +45,7 @@ extends ACmdCreate_GlCanvasUser
 	{
 		super(refGeneralManager, refParameterHandler);
 
-		iResolution = new int [3];
+		// fResolution = new float [3];
 		
 		setAttributesHeatmapWidthHeight( refParameterHandler );
 		
@@ -56,25 +56,12 @@ extends ACmdCreate_GlCanvasUser
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute3,
-				CommandFactory.sDelimiter_CreateView_Size);
+				CommandFactory.sDelimiter_Parser_DataItems);
 		
-		int i=0;		
-		for ( ; token.hasMoreTokens(); i++ ) {
-			iResolution[i] = StringConversionTool.convertStringToInt( 
-					token.nextToken(), 
-					0 );
-		}
+		int iSizeTokens= token.countTokens();
 		
-		if ( i != 3 ) {
-			String logMessage = "CmdGlObjectHistogram2D.setAttributesHeatmapWidthHeight() failed! 3 values are excpected, but only " +
-			i + " are present";
-			
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					logMessage,
-					LoggerType.MINOR_ERROR );
-			
-			throw new CerberusRuntimeException( logMessage );
-		}
+		fResolution = 
+			StringConversionTool.convertStringToFloatArray(sAttribute3,iSizeTokens);
 		
 		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 				sDetail, 
@@ -90,7 +77,8 @@ extends ACmdCreate_GlCanvasUser
 			(GLCanvasHistogram2D) openGLCanvasUser;
 				
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
-		canvas.setResolution( iResolution );
+		canvas.setResolution( fResolution );
+		canvas.setHistogramLength( (int) fResolution[10] );
 		canvas.setTargetSetId( iTargetCollectionSetId );
 		canvas.setHistogramLength( 200 );
 	}

@@ -59,9 +59,9 @@
 							
 							
 							
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="68992"	targetId="79401" parent="12401" label="GL Triangle	A"	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"		cmdId="68992"	targetId="79401" parent="12401" label="GL Triangle	A"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
-							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0"								
+							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 120 4.0"								
 							detail="45101" />
 							
 

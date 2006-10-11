@@ -432,7 +432,7 @@ implements ISaxParserHandler
 			if ( bXML_Section_DataComponent_details_OffsetLength ) {
 				StringTokenizer tokenizer = 
 					new StringTokenizer( new String( sStringBuffer ),
-							CommandFactory.sDelimiter_CreateSelection_DataItems );
+							CommandFactory.sDelimiter_Parser_DataItems );
 				
 				if ( tokenizer.countTokens() < 2 ) {
 					appandErrorMsg("OffsetLength need 2 Integer");
@@ -477,7 +477,7 @@ implements ISaxParserHandler
 			
 			StringTokenizer tokenizer = 
 				new StringTokenizer( new String( sStringBuffer ),
-						CommandFactory.sDelimiter_CreateSelection_DataItems );
+						CommandFactory.sDelimiter_Parser_DataItems );
 			
 			iData_RLE_Random_LookupTable = new int[tokenizer.countTokens()];
 			

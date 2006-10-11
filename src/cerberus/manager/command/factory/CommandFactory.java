@@ -98,17 +98,15 @@ extends ACommand
 
 	protected final ICommandManager refCommandManager;
 
-	public static final String sDelimiter_CreateStorage_DataItemBlock 	= "@";	
-	public static final String sDelimiter_CreateStorage_DataItems 		= " ";
-	public static final String sDelimiter_CreateStorage_DataType 		= ";";
+	public static final String sDelimiter_Paser_DataItemBlock 	= "@";	
+	public static final String sDelimiter_Parser_DataItems 		= " ";
+	public static final String sDelimiter_Parser_DataType 		= ";";
 	
-	public static final String sDelimiter_CreateSelection_DataItems 	= " ";
-	public static final String sDelimiter_CreateSelection_DataItemBlock = "@";
-	
-	public static final String sDelimiter_CreateComposite_Layout 		= " ";
-	public static final String sDelimiter_CreateView_Size				= " ";
-	
-	public static final String sDelimiter_Space							= " ";
+	// public static final String sDelimiter_CreateSelection_DataItems 	= " ";
+	// public static final String sDelimiter_CreateSelection_DataItemBlock = "@";	
+	// public static final String sDelimiter_CreateComposite_Layout 		= " ";
+	// public static final String sDelimiter_CreateView_Size				= " ";	
+	// public static final String sDelimiter_Space							= " ";
 	
 	
 	/**
@@ -395,7 +393,7 @@ extends ACommand
 		
 		case CREATE_GL_HISTOGRAM2D:
 		{
-			createdCommand =
+ 			createdCommand =
 				new CmdGlObjectHistogram2D(
 						refGeneralManager,
 						phAttributes );			

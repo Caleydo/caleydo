@@ -337,7 +337,7 @@ implements ISaxParserHandler
 						int[] iValueBuffer = 
 							StringConversionTool.convertStringToIntArrayVariableLength(
 								sStringBuffer.toString(),
-								CommandFactory.sDelimiter_CreateSelection_DataItems );
+								CommandFactory.sDelimiter_Parser_DataItems );
 												
 						if ( bXML_Section_DataComponent_details_Select ) {
 							

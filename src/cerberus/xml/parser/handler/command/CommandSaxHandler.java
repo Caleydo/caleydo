@@ -160,7 +160,8 @@ implements IXmlParserHandler
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
 					LoggerType.FULL );
 				
-			lastCommand = refCommandManager.createCommand( phAttributes );
+			lastCommand = 
+				refCommandManager.createCommand( phAttributes );
 			
 		}
 		catch ( Exception e) 

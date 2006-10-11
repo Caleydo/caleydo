@@ -189,7 +189,7 @@ implements ICommand {
 			iter.next();
 			
 			StringTokenizer token = new StringTokenizer( iter.next(),
-					CommandFactory.sDelimiter_CreateSelection_DataItems );
+					CommandFactory.sDelimiter_Parser_DataItems );
 			
 			int iSizeSelectionTokens = token.countTokens();
 			
@@ -249,7 +249,7 @@ implements ICommand {
 			StringTokenizer token = new StringTokenizer(
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
-					CommandFactory.sDelimiter_CreateSelection_DataItems );
+					CommandFactory.sDelimiter_Parser_DataItems );
 			
 			
 			int iSizeSelectionTokens = token.countTokens();

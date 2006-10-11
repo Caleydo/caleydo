@@ -316,7 +316,7 @@ implements IParameterHandler
 				case VEC3F:
 				{
 					StringTokenizer tokenizer = new StringTokenizer( value,
-							CommandFactory.sDelimiter_CreateView_Size);
+							CommandFactory.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 3 ) {						
 						throw new CerberusRuntimeException( 
@@ -339,7 +339,7 @@ implements IParameterHandler
 				case VEC4F:
 				{
 					StringTokenizer tokenizer = new StringTokenizer( value,
-							CommandFactory.sDelimiter_CreateView_Size);
+							CommandFactory.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 4 ) {						
 						throw new CerberusRuntimeException( 

@@ -367,7 +367,7 @@ implements ISaxParserHandler
 		
 		StringTokenizer tokenizer = 
 			new StringTokenizer( new String( sStringBuffer ),
-					CommandFactory.sDelimiter_CreateSelection_DataItems );
+					CommandFactory.sDelimiter_Parser_DataItems );
 		
 		if ( tokenizer.hasMoreElements() ) {
 			

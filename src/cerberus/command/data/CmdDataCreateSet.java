@@ -513,7 +513,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			new StringTokenizer( 
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),	
-					CommandFactory.sDelimiter_CreateSelection_DataItemBlock);
+					CommandFactory.sDelimiter_Paser_DataItemBlock);
 		
 		while ( strToken_SelectionBlock.hasMoreTokens() ) 
 		{
@@ -523,7 +523,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			StringTokenizer strToken_SelectionId = 
 				new StringTokenizer( 
 						strToken_SelectionBlock.nextToken(),	
-						CommandFactory.sDelimiter_CreateSelection_DataItems); 
+						CommandFactory.sDelimiter_Parser_DataItems); 
 			
 			/**
 			 * Create buffer list...
@@ -567,7 +567,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			new StringTokenizer( 
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),	
-					CommandFactory.sDelimiter_CreateSelection_DataItemBlock);
+					CommandFactory.sDelimiter_Paser_DataItemBlock);
 		
 		while ( strToken_StorageBlock.hasMoreTokens() ) 
 		{
@@ -577,7 +577,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			StringTokenizer strToken_StorageId = 
 				new StringTokenizer( 
 						strToken_StorageBlock.nextToken(),	
-						CommandFactory.sDelimiter_CreateSelection_DataItems); 
+						CommandFactory.sDelimiter_Parser_DataItems); 
 			
 			/**
 			 * Create buffer list...

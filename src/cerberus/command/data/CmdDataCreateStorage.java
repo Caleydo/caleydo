@@ -139,7 +139,7 @@ implements ICommand {
 			
 			StringTokenizer tokenizer = 
 				new StringTokenizer( strToParse, 
-						CommandFactory.sDelimiter_CreateStorage_DataItems );
+						CommandFactory.sDelimiter_Parser_DataItems );
 				
 			int iSizeArray = tokenizer.countTokens();
 			int iTokenIndex = 0;
@@ -348,7 +348,7 @@ implements ICommand {
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
 							
-					CommandFactory.sDelimiter_CreateStorage_DataType); 
+					CommandFactory.sDelimiter_Parser_DataType); 
 
 		while ( strToken_DataTypes.hasMoreTokens() ) {
 			llDataTypes.add( strToken_DataTypes.nextToken() );
@@ -363,7 +363,7 @@ implements ICommand {
 		StringTokenizer strTokenLine = new StringTokenizer( 
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),
-				CommandFactory.sDelimiter_CreateStorage_DataItemBlock );
+				CommandFactory.sDelimiter_Paser_DataItemBlock );
 		
 		while ( strTokenLine.hasMoreTokens() ) 
 		{

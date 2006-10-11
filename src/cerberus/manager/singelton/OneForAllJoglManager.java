@@ -409,7 +409,7 @@ implements IGeneralManagerSingelton {
 				return refStorageManager.createStorage( createNewType );
 			case VIEW:
 				StringTokenizer tokenizer = new StringTokenizer(sNewTypeDetails, 
-						CommandFactory.sDelimiter_CreateStorage_DataType );
+						CommandFactory.sDelimiter_Parser_DataType );
 				
 				FrameBaseType frameType;
 				int iUniqueId = -1;

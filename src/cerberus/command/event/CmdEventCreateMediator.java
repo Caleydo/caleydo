@@ -55,11 +55,11 @@ implements ICommand {
 		
 		StringTokenizer senderToken = new StringTokenizer(
 				sAttribute1,
-				CommandFactory.sDelimiter_Space);
+				CommandFactory.sDelimiter_Parser_DataItems);
 
 		StringTokenizer receiverToken = new StringTokenizer(
 				sAttribute2,
-				CommandFactory.sDelimiter_Space);
+				CommandFactory.sDelimiter_Parser_DataItems);
 
 		while (senderToken.hasMoreTokens())
 		{

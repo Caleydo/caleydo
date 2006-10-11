@@ -46,7 +46,7 @@ implements ICommand
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute2,
-				CommandFactory.sDelimiter_CreateView_Size);
+				CommandFactory.sDelimiter_Parser_DataItems);
 		
 		refParameterHandler.setValueAndTypeAndDefault( 
 				CommandQueueSaxType.TAG_POS_WIDTH_X.getXmlKey(),

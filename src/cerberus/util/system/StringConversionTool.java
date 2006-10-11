@@ -186,7 +186,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_CreateSelection_DataItems );
+				CommandFactory.sDelimiter_Parser_DataItems );
 			
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
 		{
@@ -222,7 +222,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_CreateSelection_DataItems );
+				CommandFactory.sDelimiter_Parser_DataItems );
 		
 		int i=0;
 		for (  ; tokenize.hasMoreTokens(); i++ ) 
@@ -270,7 +270,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_CreateSelection_DataItems );
+				CommandFactory.sDelimiter_Parser_DataItems );
 			
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
 		{
@@ -308,7 +308,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_CreateSelection_DataItems );
+				CommandFactory.sDelimiter_Parser_DataItems );
 			
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
 		{
@@ -420,7 +420,7 @@ public final class StringConversionTool
 			final int iDimension ) { 
 		
 		StringTokenizer tokenizer = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_CreateStorage_DataItems );
+				CommandFactory.sDelimiter_Parser_DataItems );
 		
 		float [] resultArray = new float [iDimension];
 		

@@ -52,7 +52,7 @@ public enum StatisticHistogramType {
 	 * 10....NON_REGULAR
 	 * 
 	 * 
-	 * @param iIndex valid input [0..2][10]
+	 * @param iIndex valid input [0..2],[10]
 	 * @return StatisticHistogramType
 	 */
 	public static final StatisticHistogramType getTypeByIndex( final int iIndex ) {
@@ -75,4 +75,21 @@ public enum StatisticHistogramType {
 		}
 	}
 	
+	/**
+	 * Increment type.
+	 * Possible outpus: REGULAR_LINEAR, REGULAR_LOG or REGULAR_LOG_INV
+	 * 
+	 * @param current 
+	 * @return current type incremented (may be REGULAR_LINEAR, REGULAR_LOG or REGULAR_LOG_INV)
+	 */
+	public StatisticHistogramType incrementMode() {
+		int iOrdinal = this.ordinal();
+		
+		if ( iOrdinal >= 2 ) 
+		{
+			return StatisticHistogramType.REGULAR_LINEAR;
+		}
+		
+		return getTypeByIndex( iOrdinal + 1 );
+	}
 }
