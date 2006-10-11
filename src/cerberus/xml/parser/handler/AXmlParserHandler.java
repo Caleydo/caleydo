@@ -19,15 +19,15 @@ public abstract class AXmlParserHandler
 extends DefaultHandler 
 implements IXmlParserHandler
 {
+	private boolean bDestroyHandlerAfterClosingTag = false;
+		
 	protected final IGeneralManager refGeneralManager;
 	
 	protected final IXmlParserManager refXmlParserManager;
 	
 	protected String sOpeningTag = "";
 	
-	protected boolean bHasOpeningTagOnlyOnce = true;
-	
-	
+
 	/**
 	 * 
 	 */
@@ -62,14 +62,20 @@ implements IXmlParserHandler
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
 	 */
-	public final boolean hasOpeningTagOnlyOnce()
+	public final boolean isHandlerDestoryedAfterClosingTag()
 	{
-		if ( bHasOpeningTagOnlyOnce ) 
+		if ( bDestroyHandlerAfterClosingTag ) 
 		{
 			return true;
 		}
 		
 		return false;
+	}
+	
+	public final void setHandlerDestoryedAfterClosingTag( 
+			final boolean setHandlerDestoryedAfterClosingTag )
+	{
+		this.bDestroyHandlerAfterClosingTag = setHandlerDestoryedAfterClosingTag;
 	}
 	
 	/**

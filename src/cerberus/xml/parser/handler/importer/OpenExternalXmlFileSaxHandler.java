@@ -33,9 +33,7 @@ implements IXmlParserHandler
 	{
 		super(refGeneralManager, refXmlParserManager);
 		
-		setXmlActivationTag( "read-xml-file" );
-		
-		this.bHasOpeningTagOnlyOnce = false;		
+		setXmlActivationTag( "read-xml-file" );	
 	}
 	
 	

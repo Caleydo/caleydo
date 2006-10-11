@@ -42,10 +42,22 @@ extends ContentHandler
 	//public boolean setXmlActivationTag( final String sXmlActivationTag );
 	
 	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager
-	 * if TURE the manager can destroy the SaxHandler after reading teh closing tag.
+	 * TRUE if handler is destoryed after activation tag is closed.
 	 * 
-	 * @return TRUE if the opening activation tag only exists once in teh XML file.
+	 * @see cerberus.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
+	 * @see cerberus.xml.parser.manager.IXmlParserManager	 
+	 * 
+	 * @return TRUE if handler is destoryed after activation tag is closed
 	 */
-	public boolean hasOpeningTagOnlyOnce();
+	public boolean isHandlerDestoryedAfterClosingTag();
+	
+	
+	/**
+	 * TRUE if handler is destoryed after activation tag is closed.
+	 * 
+	 * @see cerberus.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @param setHandlerDestoryedAfterClosingTag
+	 */
+	public void setHandlerDestoryedAfterClosingTag( 
+			final boolean setHandlerDestoryedAfterClosingTag );
 }

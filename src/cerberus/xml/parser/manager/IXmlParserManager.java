@@ -40,7 +40,7 @@ extends ContentHandler
 	 * Also calles initHandler() on the new Handler.
 	 * 
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
+	 * @see cerberus.xml.parser.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler#getXmlActivationTag()
 	 * 
 	 * @param handler register handler to an opening tag.

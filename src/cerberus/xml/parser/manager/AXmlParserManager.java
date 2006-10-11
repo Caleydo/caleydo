@@ -130,12 +130,11 @@ implements IXmlParserManager, IManagedObject
 		/**
 		 * Clean up XmlParserHandler..
 		 */
-		if ( buffer.hasOpeningTagOnlyOnce() ) {			
-
-// FIXME: don't know how to prevent unregistration		
-//			unregisterSaxHandler( buffer.getXmlActivationTag() );
-//			buffer.destroyHandler();
-//			buffer = null;
+		if ( buffer.isHandlerDestoryedAfterClosingTag() ) 
+		{					
+			unregisterSaxHandler( buffer.getXmlActivationTag() );
+			buffer.destroyHandler();
+			buffer = null;
 		} 
 		else
 		{
