@@ -87,6 +87,8 @@ implements IPathwayView{
 	
 	protected int iHTMLBrowserId;
 	
+	protected boolean isGraphSet = false;
+	
 	public PathwayViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel) {
 		
@@ -117,46 +119,53 @@ implements IPathwayView{
 //				{	
 					if (clickedCell != null)
 					{
-//						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
-//							.getVertexLink();
-//						
-//						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-//							getViewGLCanvasManager();					
-//					    refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
-//					    	public void run() {
-//								((HTMLBrowserViewRep)tmpViewManager.
-//								getItem(iHTMLBrowserId)).setUrl(sUrl);
-//					    	}
-//				    	});						
-//						
 						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
 							.getVertexLink();
 						
 						String sSearchPattern = "pathway/map/";
 						String sPathwayFilePath;
-						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
-						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
-						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
-						System.out.println("Load pathway from " +sPathwayFilePath);
 						
-						// Extract pathway clicked pathway ID
-						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
-						System.out.println("Last index: " +iPathwayIdIndex);
-						iPathwayId = StringConversionTool.
-							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
-
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
-								"Load pathway with ID " +iPathwayId);
-						
-						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+						// Check if clicked cell is another pathway
+						if (sUrl.contains((CharSequence)sSearchPattern))
+						{
+							int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
+							sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
+							sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
+							System.out.println("Load pathway from " +sPathwayFilePath);
+							
+							// Extract pathway clicked pathway ID
+							int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+							System.out.println("Last index: " +iPathwayIdIndex);
+							iPathwayId = StringConversionTool.
+								convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
+	
+							refGeneralManager.getSingelton().getLoggerManager().logMsg(
+									"Load pathway with ID " +iPathwayId);
+							
+							// Load pathway
+							loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+						}
+						// Load node information in browser
+						else
+						{
+							final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+							getViewGLCanvasManager();					
+					    
+							refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+								public void run() {
+									((HTMLBrowserViewRep)tmpViewManager.
+											getItem(iHTMLBrowserId)).setUrl(sUrl);
+								}
+							});	
+						}
 					}
-//				}
 				
 				super.mousePressed(event);
 			}
 		}
 		
 		refGraphModel = new DefaultGraphModel();
+		
 		refGraphLayoutCache = 
 			new GraphLayoutCache(refGraphModel, new DefaultCellViewFactory());
 
@@ -201,50 +210,55 @@ implements IPathwayView{
 	    Iterator<PathwayEdge> edgeIterator;
 	    PathwayEdge edge;
 	    
-	        vertexList = pathway.getVertexList();
-	        
-	        vertexIterator = vertexList.iterator();
-	        while (vertexIterator.hasNext())
-	        {
-	        	vertex = vertexIterator.next();
-	        	vertexReps = vertex.getVertexReps();
-	        	vertexRepIterator = vertexReps.iterator();
-	        	while (vertexRepIterator.hasNext())
-	        	{
-	        		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
-	        		
-	        		// FIXME: this is just a workaround.
-	        		// inconsitency between vertexRep and vertex "name"
-	        		vertex.setElementTitle(vertexRep.getSName());
-	        		
-	        		createVertex(vertex, 
-	        				vertexRep.getIHeight(), vertexRep.getIWidth(), 
-	        				vertexRep.getIXPosition(), vertexRep.getIYPosition(),
-	        				vertex.getVertexType());
-	        	}
-	        }   
-	        
-	        edgeList = pathway.getEdgeList();
-	        edgeIterator = edgeList.iterator();
-	        while (edgeIterator.hasNext())
-	        {
-	        	edge = edgeIterator.next();
-	        
-	        	if (edge.getSType().equals("ECrel"))
-	        	{
-	        		if (edge.getICompoundId() == -1)
-	        		{
-		        		createEdge(edge.getIElementId1(), edge.getIElementId2());	        			
-	        		}
-	        		else 
-	        		{
-	        			createEdge(edge.getIElementId1(), edge.getICompoundId());
-	        			createEdge(edge.getICompoundId(), edge.getIElementId2());
-	        		}
-	        	}
-	        }   
-		
-		refEmbeddedFrame.add(new JScrollPane(refPathwayGraph), SWT.NONE);
+        vertexList = pathway.getVertexList();
+        
+        vertexIterator = vertexList.iterator();
+        while (vertexIterator.hasNext())
+        {
+        	vertex = vertexIterator.next();
+        	vertexReps = vertex.getVertexReps();
+        	vertexRepIterator = vertexReps.iterator();
+        	while (vertexRepIterator.hasNext())
+        	{
+        		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
+        		
+        		// FIXME: this is just a workaround.
+        		// inconsitency between vertexRep and vertex "name"
+        		vertex.setElementTitle(vertexRep.getSName());
+        		
+        		createVertex(vertex, 
+        				vertexRep.getIHeight(), vertexRep.getIWidth(), 
+        				vertexRep.getIXPosition(), vertexRep.getIYPosition(),
+        				vertex.getVertexType());
+        	}
+        }   
+        
+        edgeList = pathway.getEdgeList();
+        edgeIterator = edgeList.iterator();
+        while (edgeIterator.hasNext())
+        {
+        	edge = edgeIterator.next();
+        
+        	if (edge.getSType().equals("ECrel"))
+        	{
+        		if (edge.getICompoundId() == -1)
+        		{
+	        		createEdge(edge.getIElementId1(), edge.getIElementId2());	        			
+        		}
+        		else 
+        		{
+        			createEdge(edge.getIElementId1(), edge.getICompoundId());
+        			createEdge(edge.getICompoundId(), edge.getIElementId2());
+        		}
+        	}
+        }   
+
+        // Check if graph is already added to the frame
+        if (isGraphSet == false)
+        {
+        	refEmbeddedFrame.add(new JScrollPane(refPathwayGraph), SWT.NONE);
+        	isGraphSet = true;
+        }
 	}
 	
 	public void createVertex(PathwayVertex vertex, int iHeight, int iWidth, 
@@ -330,20 +344,22 @@ implements IPathwayView{
 	}
 	
 	public void loadPathwayFromFile(String sFilePath) {
-
-		//refPathwayGraph.removeAll();
+		
+		refGraphModel = new DefaultGraphModel();
+		refPathwayGraph.setModel(refGraphModel);
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
 		
-		resetGraph();
+		//resetGraph();
 		drawView();
+		
+		//refPathwayGraph.getGraphLayoutCache().reload();
+		//refEmbeddedFrame.dispose();
 	}
 	
 	public void resetGraph() {
 		
-		//refPathwayGraph = null;
-		//refEmbeddedFrame.removeAll();
 		initView();
 	}
 	
