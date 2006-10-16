@@ -51,6 +51,7 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
+import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.IPathwayGraphView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
@@ -65,14 +66,9 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
  *
  */
 public class PathwayGraphViewRep
-extends AViewRep 
-implements IPathwayGraphView{
+extends APathwayGraphViewRep {
 		
 	protected static final double SCALING_FACTOR = 1.4;
-	
-	protected Frame refEmbeddedFrame;
-	
-	protected Composite refEmbeddedFrameComposite;
 	
 	protected GraphModel refGraphModel;
 	
@@ -83,10 +79,6 @@ implements IPathwayGraphView{
 	protected DefaultGraphCell refGraphCell;
 	
 	protected HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
-	
-	protected int iPathwayId = 0;
-	
-	protected int iHTMLBrowserId;
 	
 	protected boolean isGraphSet = false;
 	
@@ -182,77 +174,8 @@ implements IPathwayGraphView{
 	
 	public void drawView() {
 		
-		HashMap<Integer, Pathway> pathwayLUT = 		
-			((PathwayManager)refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY)).
-				getPathwayLUT();
+		super.drawView();
 		
-		Pathway pathway;
-		
-		// Take first in list if pathway ID is not set
-		if (iPathwayId == 0)
-		{
-			Iterator<Pathway> iter = pathwayLUT.values().iterator();
-			pathway = iter.next();
-		}
-		else
-		{
-			pathway = pathwayLUT.get(iPathwayId);
-		}
-	    
-	    Vector<PathwayVertex> vertexList;
-	    Iterator<PathwayVertex> vertexIterator;
-	    PathwayVertex vertex;
-	    Vector<IPathwayVertexRep> vertexReps;
-	    Iterator<IPathwayVertexRep> vertexRepIterator;
-	    PathwayVertexRep vertexRep;
-	    
-	    Vector<PathwayEdge> edgeList;
-	    Iterator<PathwayEdge> edgeIterator;
-	    PathwayEdge edge;
-	    
-        vertexList = pathway.getVertexList();
-        
-        vertexIterator = vertexList.iterator();
-        while (vertexIterator.hasNext())
-        {
-        	vertex = vertexIterator.next();
-        	vertexReps = vertex.getVertexReps();
-        	vertexRepIterator = vertexReps.iterator();
-        	while (vertexRepIterator.hasNext())
-        	{
-        		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
-        		
-        		// FIXME: this is just a workaround.
-        		// inconsitency between vertexRep and vertex "name"
-        		vertex.setElementTitle(vertexRep.getSName());
-        		
-        		createVertex(vertex, 
-        				vertexRep.getIHeight(), vertexRep.getIWidth(), 
-        				vertexRep.getIXPosition(), vertexRep.getIYPosition(),
-        				vertex.getVertexType());
-        	}
-        }   
-        
-        edgeList = pathway.getEdgeList();
-        edgeIterator = edgeList.iterator();
-        while (edgeIterator.hasNext())
-        {
-        	edge = edgeIterator.next();
-        
-        	if (edge.getSType().equals("ECrel"))
-        	{
-        		if (edge.getICompoundId() == -1)
-        		{
-	        		createEdge(edge.getIElementId1(), edge.getIElementId2());	        			
-        		}
-        		else 
-        		{
-        			createEdge(edge.getIElementId1(), edge.getICompoundId());
-        			createEdge(edge.getICompoundId(), edge.getIElementId2());
-        		}
-        	}
-        }   
-
         // Check if graph is already added to the frame
         if (isGraphSet == false)
         {
@@ -356,44 +279,6 @@ implements IPathwayGraphView{
 		
 		//refPathwayGraph.getGraphLayoutCache().reload();
 		//refEmbeddedFrame.dispose();
-	}
-	
-	public void resetGraph() {
-		
-		initView();
-	}
-
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.IView#retrieveGUIContainer()
-	 */
-	public void retrieveGUIContainer() {
-		
-		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
-			(SWTEmbeddedGraphWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
-						refEmbeddedFrameComposite,
-						iWidth, 
-						iHeight);
-
-		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-	}
-	
-	public void setExternalGUIContainer(Composite refSWTContainer) {
-		
-		refEmbeddedFrameComposite = refSWTContainer;
-	}
-	
-	public void setWidthAndHeight(int iWidth, int iHeight) {
-		
-		this.iWidth = iWidth;
-		this.iHeight = iHeight;
-	}
-
-	public void setHTMLBrowserId(int iHTMLBrowserId) {
-		
-		this.iHTMLBrowserId = iHTMLBrowserId;
 	}
 	
 	public void zoomOrig() {
