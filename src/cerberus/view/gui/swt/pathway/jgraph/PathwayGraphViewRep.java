@@ -51,8 +51,9 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
-import cerberus.view.gui.swt.pathway.IPathwayView;
+import cerberus.view.gui.swt.pathway.IPathwayGraphView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * In this class the real drawing of the Pathway happens.
@@ -63,9 +64,9 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
  * @author Marc Streit
  *
  */
-public class PathwayViewRep
+public class PathwayGraphViewRep
 extends AViewRep 
-implements IPathwayView{
+implements IPathwayGraphView{
 		
 	protected static final double SCALING_FACTOR = 1.4;
 	
@@ -89,10 +90,9 @@ implements IPathwayView{
 	
 	protected boolean isGraphSet = false;
 	
-	public PathwayViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, int iParentContainerId, String sLabel) {
+	public PathwayGraphViewRep(IGeneralManager refGeneralManager, int iParentContainerId) {
 		
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(refGeneralManager, -1, iParentContainerId, "");
 		
 		vertexIdToCellLUT = new HashMap<Integer, DefaultGraphCell>();
 	}
@@ -362,26 +362,51 @@ implements IPathwayView{
 		
 		initView();
 	}
-	
+
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.IView#retrieveGUIContainer()
+	 */
 	public void retrieveGUIContainer() {
 		
-		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) refGeneralManager
+		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
+			(SWTEmbeddedGraphWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
-						iParentContainerId, iWidth, iHeight);
+						refEmbeddedFrameComposite,
+						iWidth, 
+						iHeight);
 
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-		
-		refEmbeddedFrameComposite = 
-			refSWTEmbeddedGraphWidget.getEmbeddedFrameComposite();
 	}
 	
-	/**
-	 * Retrieves the HTML browser ID.
-	 */
-	public void extractAttributes() {
+	public void setExternalGUIContainer(Composite refSWTContainer) {
 		
-		iHTMLBrowserId = 
-			refParameterHandler.getValueInt( "iHTMLBrowserId" );
+		refEmbeddedFrameComposite = refSWTContainer;
+	}
+	
+	public void setWidthAndHeight(int iWidth, int iHeight) {
+		
+		this.iWidth = iWidth;
+		this.iHeight = iHeight;
+	}
+
+	public void setHTMLBrowserId(int iHTMLBrowserId) {
+		
+		this.iHTMLBrowserId = iHTMLBrowserId;
+	}
+	
+	public void zoomOrig() {
+		refPathwayGraph.setScale(1.0);
+	}
+	
+	public void zoomIn() {
+		
+		refPathwayGraph.setScale(1.5 * refPathwayGraph.getScale());
+	}
+	
+	public void zoomOut() {
+		
+		refPathwayGraph.setScale(refPathwayGraph.getScale() / 1.5);
 	}
 }

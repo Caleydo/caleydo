@@ -136,6 +136,8 @@ implements ISaxParserHandler
 	final protected void setSaxHandlerLocator(LocatorImpl setLocator) {
 		assert setLocator!=null : "setSaxHandlerLocator() Error due to null-pointer";
 		
+		System.out.println("DUMDIDUM");
+		
 		this.refLocator = setLocator;
 		setDocumentLocator( refLocator );
 	}

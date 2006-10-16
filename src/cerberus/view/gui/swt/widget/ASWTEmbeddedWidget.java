@@ -36,6 +36,8 @@ public abstract class ASWTEmbeddedWidget extends ASWTWidget
 		refEmbeddedFrameComposite = 
 			new Composite(refParentComposite, SWT.EMBEDDED);
 		
+		refEmbeddedFrameComposite.setBounds(0, 0, iWidth, iHeight);
+		
 		GridData gridData = new GridData();
 		
 		if (iWidth != -1)

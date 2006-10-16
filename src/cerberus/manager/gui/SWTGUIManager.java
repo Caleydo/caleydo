@@ -180,10 +180,7 @@ implements ISWTGUIManager
 	public ISWTWidget createWidget(
 			final ManagerObjectType useWidgetType, 
 			int iUniqueParentContainerId, int iWidth, int iHeight)
-	{
-		final int iUniqueId = this.createNewId(useWidgetType);
-		ASWTWidget newSWTWidget;
-		
+	{		
 		// TODO Check if window id is valid and print error message
 		
 		// Check if the parent is a window
@@ -195,19 +192,32 @@ implements ISWTGUIManager
 			refComposite = refCompositeMap.get(iUniqueParentContainerId);
 		}
 		
+		return(createWidget(useWidgetType, refComposite, iWidth, iHeight));
+
+	}
+	
+	public ISWTWidget createWidget(
+			final ManagerObjectType useWidgetType, 
+			final Composite refExternalParentComposite,
+			int iWidth,
+			int iHeight) {
+		
+		final int iUniqueId = this.createNewId(useWidgetType);
+		ASWTWidget newSWTWidget;
+		
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refComposite, iWidth, iHeight);
+			newSWTWidget = new SWTNativeWidget(refExternalParentComposite, iWidth, iHeight);
 			newSWTWidget.setId(iUniqueId);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite, iWidth, iHeight);
+			newSWTWidget = new SWTEmbeddedJoglWidget(refExternalParentComposite, iWidth, iHeight);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite, iWidth, iHeight);
+			newSWTWidget = new SWTEmbeddedGraphWidget(refExternalParentComposite, iWidth, iHeight);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
@@ -216,24 +226,6 @@ implements ISWTGUIManager
 							+ useWidgetType.toString() + "]");
 		}
 	}
-	
-//	/**
-//	 * Method to initialize this application window.
-//	 * Must be called before using this class.
-//	 * 
-//	 */
-//	public void createApplicationWindow()
-//	{		
-//		refShell = new Shell(refDisplay);
-//		refShell.setLayout(new GridLayout());
-//		refShell.setMaximized(true);
-//		refShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
-//		
-//		refMenuBar = createMenuBar(refShell);
-//		refShell.setMenuBar(refMenuBar); 
-//		
-//		//setUpLayout();
-//	}
 	
 	protected void setUpLayout(Composite refNewComposite, String sLayoutAttributes)
 	{

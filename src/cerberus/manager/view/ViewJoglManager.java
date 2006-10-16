@@ -29,7 +29,7 @@ import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
-import cerberus.view.gui.swt.pathway.jgraph.PathwayViewRep;
+import cerberus.view.gui.swt.pathway.PathwayViewRep;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;

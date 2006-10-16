@@ -1,5 +1,6 @@
 package cerberus.manager;
 
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import cerberus.manager.type.ManagerObjectType;
@@ -11,7 +12,16 @@ public interface ISWTGUIManager extends IGeneralManager
 			final ManagerObjectType uswWidgetType);
 	
 	public ISWTWidget createWidget(
-			final ManagerObjectType useWidgetType, int iUniqueParentWindowId, int iWidth, int iHeight);
+			final ManagerObjectType useWidgetType, 
+			int iUniqueParentWindowId, 
+			int iWidth, 
+			int iHeight);
+	
+	public ISWTWidget createWidget(
+			final ManagerObjectType useWidgetType, 
+			final Composite externalParentComposite,
+			int iWidth,
+			int iHeight);
 	
 	public Shell createWindow();
 	

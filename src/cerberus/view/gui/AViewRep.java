@@ -24,8 +24,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public abstract class AViewRep 
 extends AUniqueManagedObject
-implements IView, IMediatorSender, IMediatorReceiver
-{
+implements IView, IMediatorSender, IMediatorReceiver {
 	
 	protected int iParentContainerId;
 	
@@ -57,8 +56,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 			final IGeneralManager refGeneralManager, 
 			final int iViewId, 
 			final int iParentContainerId, 
-			final String sLabel)
-	{	
+			final String sLabel) {
+		
 		super ( iViewId, refGeneralManager );
 		
 		this.iParentContainerId = iParentContainerId;
@@ -71,8 +70,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 *  
 	 * @return attribute bound to index or "" if index is invalid
 	 */
-	protected final String getAttributeByIndex( final int iIndex )
-	{
+	protected final String getAttributeByIndex( final int iIndex ) {
+		
 		try {
 			return vecAttributes.get( iIndex );
 		}
@@ -113,8 +112,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 *  
 	 * @return attribute bound to index as (int) or -1 if index is invalid
 	 */
-	protected final int getAttributeByIndexToInteger( final int iIndex )
-	{
+	protected final int getAttributeByIndexToInteger( final int iIndex ) {
+		
 		try {
 			return Integer.valueOf( vecAttributes.get( iIndex ) );
 		}
@@ -140,8 +139,7 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 * 
 	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
 	 */
-	public void setAttributes( final Vector<String> attributes)
-	{ 
+	public void setAttributes( final Vector<String> attributes) { 
 		vecAttributes = attributes;
 	}
 
@@ -150,8 +148,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 *
 	 * @deprecated
 	 */
-	public void extractAttributes()
-	{
+	public void extractAttributes() {
+		
 		int [] iParseResult = 
 			StringConversionTool.convertStringToIntArray( vecAttributes.get(2), 2 );
 		
@@ -165,8 +163,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 * 
 	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
 	 */
-	public void readInAttributes( final IParameterHandler refParameterHandler )
-	{ 
+	public void readInAttributes( final IParameterHandler refParameterHandler ) { 
+		
 		this.refParameterHandler = refParameterHandler;
 		
 		iWidth = 
@@ -186,8 +184,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 *  
 	 * @return copy of the current attributes
 	 */
-	protected final Vector<String> getAttributes()
-	{
+	protected final Vector<String> getAttributes() {
+		
 		Vector <String> cloneVecAttributes = 
 			new Vector <String> ( vecAttributes.size() );
 				
@@ -205,8 +203,8 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 *  
 	 * @return copy of the current attributes
 	 */
-	protected final IParameterHandler getAttributesParameterHandler()
-	{
+	protected final IParameterHandler getAttributesParameterHandler() {
+		
 		return refParameterHandler;
 	}
 	
@@ -217,17 +215,15 @@ implements IView, IMediatorSender, IMediatorReceiver
 	 * 
 	 * @param iParentContainerId
 	 */
-	public void setParentContainerId(int iParentContainerId)
-	{
+	public void setParentContainerId(int iParentContainerId) {
+		
 		this.iParentContainerId = iParentContainerId;
 	}
 	
 	/**
 	 * TODO: implement in subclasses
 	 */
-	public void update( Object eventTrigger )
-	{
+	public void update( Object eventTrigger ) {
 		
 	}
-
 }

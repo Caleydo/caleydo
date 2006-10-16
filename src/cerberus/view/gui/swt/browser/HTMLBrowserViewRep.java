@@ -59,7 +59,7 @@ implements IView {
 		refBrowser.setBounds(5, 75, iWidth, iHeight);
 		
 	    ToolBar toolbar = new ToolBar(refSWTContainer, SWT.NONE);
-	    toolbar.setBounds(5, 5, 300, 30);
+	    toolbar.setBounds(0, 0, 300, 30);
 
 	    ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
 	    goButton.setText("Go");
@@ -71,7 +71,7 @@ implements IView {
 	    stopButton.setText("Stop");
 
 	    refTextField = new Text(refSWTContainer, SWT.BORDER);
-	    refTextField.setBounds(5, 35, iWidth, 25);
+	    refTextField.setBounds(0, 35, iWidth, 25);
 	    refTextField.setText(sUrl);
 
 		Listener listener = new Listener() {

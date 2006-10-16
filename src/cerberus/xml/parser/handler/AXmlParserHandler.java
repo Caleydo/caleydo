@@ -3,6 +3,7 @@
  */
 package cerberus.xml.parser.handler;
 
+import org.xml.sax.Locator;
 import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.manager.IGeneralManager;
@@ -26,7 +27,6 @@ implements IXmlParserHandler
 	protected final IXmlParserManager refXmlParserManager;
 	
 	protected String sOpeningTag = "";
-	
 
 	/**
 	 * 
@@ -102,6 +102,4 @@ implements IXmlParserHandler
 				": destroyHandler", 
 				LoggerType.VERBOSE );
 	}
-
-
 }

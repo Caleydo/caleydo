@@ -13,7 +13,8 @@ import cerberus.xml.parser.manager.IXmlParserManager;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 
 import org.xml.sax.Attributes;
-//import org.xml.sax.Locator;
+import org.xml.sax.Locator;
+import org.xml.sax.helpers.LocatorImpl;
 import org.xml.sax.SAXException;
 //import org.xml.sax.helpers.DefaultHandler;
 
@@ -23,10 +24,10 @@ public class KgmlSaxHandler
 extends AXmlParserHandler 
 implements IXmlParserHandler
 {
-	private Attributes attributes;
+	protected Attributes attributes;
 	
-	private HashMap<Integer, Integer> kgmlIdToElementIdLUT;
-	
+	protected HashMap<Integer, Integer> kgmlIdToElementIdLUT;
+		
 	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
 			final IXmlParserManager refXmlParserManager)
 	{		
@@ -72,6 +73,8 @@ implements IXmlParserHandler
 			else if (sElementName.equals("substrate"))
 				handleReactionSubstrateTag();
 		}
+		
+//        System.out.println("Line number: " +refLocator.getLineNumber());
     }
 
 	public void endElement(String namespaceURI,
@@ -346,5 +349,4 @@ implements IXmlParserHandler
 		
 		super.destroyHandler();
 	}
-	
 }

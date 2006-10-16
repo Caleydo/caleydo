@@ -68,9 +68,8 @@ implements IView, IMediatorReceiver {
 
 		// The simple data table is not created via the view manager
 		// because it is not needed in the global context.
-		
 		refDataTableViewRep = new DataTableViewRep(
-				this.refGeneralManager, iViewId);
+				refGeneralManager, iViewId);
 	}
 
 	public void initView() {
@@ -97,7 +96,6 @@ implements IView, IMediatorReceiver {
 
 		refDataTableViewRep.setExternalGUIContainer(refSWTContainer);
 		refDataTableViewRep.initTable();
-
 	}
 
 	public void retrieveGUIContainer() {	
