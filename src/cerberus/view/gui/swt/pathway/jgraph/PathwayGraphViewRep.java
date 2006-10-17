@@ -1,6 +1,7 @@
 package cerberus.view.gui.swt.pathway.jgraph;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
@@ -9,7 +10,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.SWT;
@@ -131,7 +136,7 @@ extends APathwayGraphViewRep {
 								}
 							});	
 							
-							showNeighbourhood(clickedCell, 2);
+							showNeighbourhood(clickedCell, 1);
 						}
 					}
 				
@@ -169,7 +174,29 @@ extends APathwayGraphViewRep {
         // Check if graph is already added to the frame
         if (isGraphSet == false)
         {
-        	refEmbeddedFrame.add(new JScrollPane(refPathwayGraph), SWT.NONE);
+        	final OverlayLayout overlayLayout = new OverlayLayout(refEmbeddedFrame);
+        	refEmbeddedFrame.setLayout(overlayLayout);
+        	
+            final Dimension dimOverviewMap = new Dimension(200, 200);
+            final Dimension dimPathway = new Dimension(iWidth, iHeight);
+        	
+            JPanel testPanel = new JPanel();
+            testPanel.setBackground(Color.LIGHT_GRAY);
+            testPanel.setMinimumSize(dimOverviewMap);
+            testPanel.setMaximumSize(dimOverviewMap);
+            testPanel.setPreferredSize(dimOverviewMap);
+            testPanel.setAlignmentX(0.0f);
+            testPanel.setAlignmentY(0.0f);
+        	refEmbeddedFrame.add(testPanel);
+        	
+        	JScrollPane refScrollPane = new JScrollPane(refPathwayGraph);
+        	refScrollPane.setMinimumSize(dimPathway);
+        	refScrollPane.setMaximumSize(dimPathway);
+        	refScrollPane.setPreferredSize(dimPathway);
+        	refScrollPane.setAlignmentX(0.0f);
+        	refScrollPane.setAlignmentY(0.0f);
+        	refEmbeddedFrame.add(refScrollPane);
+        	
         	isGraphSet = true;
         }
 	}
