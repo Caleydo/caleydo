@@ -1,27 +1,18 @@
 package cerberus.view.gui.swt.pathway.jgraph;
 
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Frame;
-import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.jgraph.JGraph;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultCellViewFactory;
@@ -32,29 +23,17 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
+import org.jgraph.graph.GraphUndoManager;
 
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 
-import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.PathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
-import cerberus.data.view.rep.pathway.IPathwayVertexRep;
-import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
-import cerberus.manager.data.pathway.PathwayManager;
-import cerberus.manager.event.EventPublisher;
-import cerberus.manager.event.mediator.IMediator;
-import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
-import cerberus.view.gui.swt.pathway.IPathwayGraphView;
-import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * In this class the real drawing of the Pathway happens.
@@ -82,6 +61,8 @@ extends APathwayGraphViewRep {
 	
 	protected boolean isGraphSet = false;
 	
+	protected GraphUndoManager refUndoManager;
+	
 	public PathwayGraphViewRep(IGeneralManager refGeneralManager, int iParentContainerId) {
 		
 		super(refGeneralManager, -1, iParentContainerId, "");
@@ -96,7 +77,7 @@ extends APathwayGraphViewRep {
 
 			public boolean isForceMarqueeEvent(MouseEvent event) {
 				
-		       if(SwingUtilities.isLeftMouseButton(event) && event.getClickCount() == 2)
+		       if(SwingUtilities.isLeftMouseButton(event) && event.getClickCount() == 1)
 		          return true;
 		       else
 		          return super.isForceMarqueeEvent(event);
@@ -137,9 +118,9 @@ extends APathwayGraphViewRep {
 							// Load pathway
 							loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
 						}
-						// Load node information in browser
 						else
 						{
+							// Load node information in browserr
 							final IViewManager tmpViewManager = refGeneralManager.getSingelton().
 							getViewGLCanvasManager();					
 					    
@@ -149,6 +130,8 @@ extends APathwayGraphViewRep {
 											getItem(iHTMLBrowserId)).setUrl(sUrl);
 								}
 							});	
+							
+							showNeighbourhood(clickedCell, 2);
 						}
 					}
 				
@@ -169,7 +152,14 @@ extends APathwayGraphViewRep {
 		// Control-drag should clone selection
 		refPathwayGraph.setCloneable(true);
 		
+		// Turn on anti-aliasing
+		//refPathwayGraph.setAntiAliased(true);
+		
 		refPathwayGraph.setMarqueeHandler(new PathwayMarqueeHandler());
+		
+		// Create and register Undo Manager
+		refUndoManager = new GraphUndoManager();
+		refGraphModel.addUndoableEditListener(refUndoManager);
 	}
 	
 	public void drawView() {
@@ -274,11 +264,7 @@ extends APathwayGraphViewRep {
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
 		
-		//resetGraph();
 		drawView();
-		
-		//refPathwayGraph.getGraphLayoutCache().reload();
-		//refEmbeddedFrame.dispose();
 	}
 	
 	public void zoomOrig() {
@@ -287,11 +273,43 @@ extends APathwayGraphViewRep {
 	
 	public void zoomIn() {
 		
-		refPathwayGraph.setScale(1.5 * refPathwayGraph.getScale());
+		refPathwayGraph.setScale(1.2 * refPathwayGraph.getScale());
 	}
 	
 	public void zoomOut() {
 		
-		refPathwayGraph.setScale(refPathwayGraph.getScale() / 1.5);
+		refPathwayGraph.setScale(refPathwayGraph.getScale() / 1.2);
+	}
+	
+	protected void showNeighbourhood(DefaultGraphCell cell, int iDistance) {
+	
+		refUndoManager.undo(refGraphLayoutCache);
+		
+		List<DefaultGraphCell> neighbourCells = 
+			refGraphLayoutCache.getNeighbours(cell, null, false, false);
+	
+		Iterator<DefaultGraphCell> cellIter = neighbourCells.iterator();
+		
+		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
+		Map attributeMap = new Hashtable();
+		
+		DefaultGraphCell tmpCell;
+		
+		GraphConstants.setGradientColor(
+				attributeMap, Color.red);
+		
+		while (cellIter.hasNext())
+		{
+			tmpCell = cellIter.next();
+
+			nested.put(tmpCell, attributeMap);
+			
+			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
+			{
+				showNeighbourhood(tmpCell, 1);
+			}
+		}
+		
+		refGraphLayoutCache.edit(nested, null, null, null);
 	}
 }

@@ -147,11 +147,6 @@ implements IPathwayGraphView {
 		// TODO Auto-generated method stub
 	}
 
-	public void resetGraph() {
-		
-		initView();
-	}
-
 	public void retrieveGUIContainer() {
 		
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 

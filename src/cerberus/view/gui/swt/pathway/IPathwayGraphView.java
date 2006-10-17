@@ -16,8 +16,6 @@ extends IView
 	
 	public void loadPathwayFromFile(String sFilePath);
 	
-	public void resetGraph();
-	
 	public void zoomOrig();
 	
 	public void zoomIn();

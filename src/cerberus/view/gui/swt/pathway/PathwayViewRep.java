@@ -77,7 +77,7 @@ implements IView {
 		
 //		// Graph initialization
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
-		refPathwayGraphViewRep.setWidthAndHeight(iWidth, iHeight - 50);
+		refPathwayGraphViewRep.setWidthAndHeight(iWidth, iHeight-30);
 		refPathwayGraphViewRep.setHTMLBrowserId(iHTMLBrowserId);
 		refPathwayGraphViewRep.retrieveGUIContainer();
 		refPathwayGraphViewRep.initView();
@@ -110,7 +110,7 @@ implements IView {
 	
 	protected void initToolbar() {
 		refToolBar = new ToolBar(refSWTContainer, SWT.NONE);
-		refToolBar.setBounds(0, 0, 400, 30);
+		refToolBar.setBounds(0, 0, iWidth, 30);
 		
 		refAddEnzymeNodeItem = new ToolItem(refToolBar, SWT.PUSH);
 	    refAddEnzymeNodeItem.setText("Add enzyme");
