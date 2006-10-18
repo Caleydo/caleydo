@@ -133,7 +133,7 @@ extends APathwayGraphViewRep {
 						}
 						else
 						{
-							// Load node information in browserr
+							// Load node information in browser
 							final IViewManager tmpViewManager = refGeneralManager.getSingelton().
 							getViewGLCanvasManager();					
 					    
@@ -199,7 +199,7 @@ extends APathwayGraphViewRep {
     		refOverviewPanel = 
     			new GPOverviewPanel(refPathwayGraph, refScrollPane);
     		
-    		showOverviewMapInNewWindow(dimOverviewMap);
+    		//showOverviewMapInNewWindow(dimOverviewMap);
     		
         	isGraphSet = true;
         }
@@ -337,10 +337,10 @@ extends APathwayGraphViewRep {
 
 			nested.put(tmpCell, attributeMap);
 			
-			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
-			{
-				showNeighbourhood(tmpCell, 1);
-			}
+//			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
+//			{
+//				showNeighbourhood(tmpCell, iDistance-1);
+//			}
 		}
 		
 		refGraphLayoutCache.edit(nested, null, null, null);
@@ -355,7 +355,7 @@ extends APathwayGraphViewRep {
 	public void showOverviewMapInNewWindow(Dimension dim) {
 		
         JFrame wnd = new JFrame();
-        wnd.setLocation(100, 100);
+        wnd.setLocation(800, 500);
         wnd.setSize(dim);
         wnd.setVisible(true);
         

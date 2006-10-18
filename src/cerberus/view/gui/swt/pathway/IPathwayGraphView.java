@@ -1,5 +1,7 @@
 package cerberus.view.gui.swt.pathway;
 
+import java.awt.Dimension;
+
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.view.gui.IView;
@@ -23,4 +25,6 @@ extends IView
 	public void zoomIn();
 	
 	public void zoomOut();
+	
+	public void showOverviewMapInNewWindow(Dimension dim);
 }

@@ -3,6 +3,7 @@
  */
 package cerberus.view.gui.swt.pathway;
 
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -53,6 +54,7 @@ implements IView {
 	protected ToolItem refZoomInItem;
 	protected ToolItem refZoomOutItem;
 	protected ToolItem refNeighbourItem;
+	protected ToolItem refShowOverviewMap;
 	
 	protected APathwayGraphViewRep refPathwayGraphViewRep;
 	
@@ -148,6 +150,13 @@ implements IView {
 	    		refSWTContainer.getDisplay(), 
 	    		"data/icons/PathwayEditor/neighbour.gif"));
 	    
+		refShowOverviewMap = new ToolItem(refToolBar, SWT.PUSH);
+		refShowOverviewMap.setText("Show overview map");
+		refShowOverviewMap.setData(new String("overview map"));
+		refShowOverviewMap.setToolTipText("Show overview map");
+//		refShowOverviewMap.setImage(new Image(
+//	    		refSWTContainer.getDisplay(), 
+//	    		"data/icons/PathwayEditor/neighbour.gif"));
 		
 	    Listener toolbarListener = new Listener() {
 	        public void handleEvent(Event event) {
@@ -168,7 +177,12 @@ implements IView {
 	          }	   
 	          else if (sToolItemIdentifier.equals("neighbour"))
 	          {
-	        	  refPathwayGraphViewRep.setNeighbourhoodDistance(2);
+	        	  //refPathwayGraphViewRep.setNeighbourhoodDistance(2);
+	          }
+	          else if (sToolItemIdentifier.equals("overview map"))
+	          {
+	        	  refPathwayGraphViewRep.
+	        	  	showOverviewMapInNewWindow(new Dimension(250, 250));
 	          }
 	        }
 	      };
@@ -177,5 +191,6 @@ implements IView {
 	      refZoomInItem.addListener(SWT.Selection, toolbarListener);
 	      refZoomOutItem.addListener(SWT.Selection, toolbarListener);
 	      refNeighbourItem.addListener(SWT.Selection, toolbarListener);
+	      refShowOverviewMap.addListener(SWT.Selection, toolbarListener);
 	}
 }
