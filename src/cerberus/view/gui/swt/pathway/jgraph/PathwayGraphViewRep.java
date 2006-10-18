@@ -1,6 +1,8 @@
 package cerberus.view.gui.swt.pathway.jgraph;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -9,15 +11,16 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
 
-import org.eclipse.swt.SWT;
 import org.jgraph.JGraph;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultCellViewFactory;
@@ -29,16 +32,17 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
+import org.jgraph.pad.resources.Translator;
 
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
-
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
+import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
+import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
 
 /**
  * In this class the real drawing of the Pathway happens.
@@ -180,23 +184,66 @@ extends APathwayGraphViewRep {
             final Dimension dimOverviewMap = new Dimension(200, 200);
             final Dimension dimPathway = new Dimension(iWidth, iHeight);
         	
-            JPanel testPanel = new JPanel();
-            testPanel.setBackground(Color.LIGHT_GRAY);
-            testPanel.setMinimumSize(dimOverviewMap);
-            testPanel.setMaximumSize(dimOverviewMap);
-            testPanel.setPreferredSize(dimOverviewMap);
-            testPanel.setAlignmentX(0.0f);
-            testPanel.setAlignmentY(0.0f);
-        	refEmbeddedFrame.add(testPanel);
+//            JPanel testPanel = new JPanel();
+//            testPanel.setBackground(Color.LIGHT_GRAY);
+//            testPanel.setMinimumSize(dimOverviewMap);
+//            testPanel.setMaximumSize(dimOverviewMap);
+//            testPanel.setPreferredSize(dimOverviewMap);
+//            testPanel.setAlignmentX(0.0f);
+//            testPanel.setAlignmentY(0.0f);
+//        	refEmbeddedFrame.add(testPanel);
         	
+            JFrame wnd = new JFrame();
+            wnd.setLocation(100, 100);
+            wnd.setSize(300, 200);
+            wnd.setVisible(true);
+            
+//    		JDialog overviewDlg;
+//    		overviewDlg = new JDialog(refEmbeddedFrame, "Overview Map", false);
+        	
+//    		Container fContentPane = overviewDlg.getContentPane();
+//    		fContentPane.setLayout(new BorderLayout());
+
         	JScrollPane refScrollPane = new JScrollPane(refPathwayGraph);
         	refScrollPane.setMinimumSize(dimPathway);
         	refScrollPane.setMaximumSize(dimPathway);
         	refScrollPane.setPreferredSize(dimPathway);
-        	refScrollPane.setAlignmentX(0.0f);
-        	refScrollPane.setAlignmentY(0.0f);
+        	refScrollPane.setAlignmentX(0.5f);
+        	refScrollPane.setAlignmentY(0.5f);
         	refEmbeddedFrame.add(refScrollPane);
-        	
+
+    		GPOverviewPanel gpOverviewPanel = 
+    			new GPOverviewPanel(refPathwayGraph, refScrollPane);
+    		
+//    		JPanel overviewPanel = 
+//    			GPOverviewPanel.createOverviewPanel(gpOverviewPanel);
+    		
+//    		fContentPane.add(overviewPanel);
+//    		overviewDlg.setSize(new Dimension(180, 180));
+//    		overviewDlg.setLocationRelativeTo(refEmbeddedFrame);
+//    		overviewPanel.revalidate();
+    		// getCurrentDocument().setOverviewDialog(overviewDlg);
+
+//    		overviewDlg.setVisible(true);
+    		
+//            overviewPanel.setBackground(Color.LIGHT_GRAY);
+//            overviewPanel.setMinimumSize(dimOverviewMap);
+//            overviewPanel.setMaximumSize(dimOverviewMap);
+//            overviewPanel.setPreferredSize(dimOverviewMap);
+//            overviewPanel.setAlignmentX(0.0f);
+//            overviewPanel.setAlignmentY(0.0f);
+ 
+//    		overviewScrollPane.add(gpOverviewPanel);
+    		
+//    		JButton test = new JButton("bla");
+//    		overviewScrollPane.add(test);
+        
+    		//refEmbeddedFrame.add(test);
+
+    		wnd.add(gpOverviewPanel);
+
+        	//refEmbeddedFrame.add(gpOverviewPanel);
+
         	isGraphSet = true;
         }
 	}
