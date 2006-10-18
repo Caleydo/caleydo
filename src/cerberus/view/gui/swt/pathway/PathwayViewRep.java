@@ -52,6 +52,7 @@ implements IView {
 	protected ToolItem refZoomOrigItem;
 	protected ToolItem refZoomInItem;
 	protected ToolItem refZoomOutItem;
+	protected ToolItem refNeighbourItem;
 	
 	protected APathwayGraphViewRep refPathwayGraphViewRep;
 	
@@ -113,39 +114,68 @@ implements IView {
 		refToolBar.setBounds(0, 0, iWidth, 30);
 		
 		refAddEnzymeNodeItem = new ToolItem(refToolBar, SWT.PUSH);
-	    refAddEnzymeNodeItem.setText("Add enzyme");
+	    refAddEnzymeNodeItem.setData(new String("add enzyme"));
+	    refAddEnzymeNodeItem.setToolTipText("Add enzyme");
+		refAddEnzymeNodeItem.setImage(new Image(
+	    		refSWTContainer.getDisplay(), 
+	    		"data/icons/PathwayEditor/add.gif"));
 	    
 	    refZoomOrigItem = new ToolItem(refToolBar, SWT.PUSH);
-	    refZoomOrigItem.setText("Zoom orig");
+	    refZoomOrigItem.setData(new String("zoom standard"));
+	    refZoomOrigItem.setToolTipText("Zoom standard");
+	    refZoomOrigItem.setImage(new Image(
+	    		refSWTContainer.getDisplay(), 
+	    		"data/icons/PathwayEditor/zoom100.gif"));
 	    
 		refZoomInItem = new ToolItem(refToolBar, SWT.PUSH);
-	    refZoomInItem.setText("Zoom in");
+	    refZoomInItem.setData(new String("zoom in"));
+	    refZoomInItem.setToolTipText("Zoom in");
+	    refZoomInItem.setImage(new Image(
+	    		refSWTContainer.getDisplay(), 
+	    		"data/icons/PathwayEditor/zoomin.gif"));
 	    
 		refZoomOutItem = new ToolItem(refToolBar, SWT.PUSH);
-	    refZoomOutItem.setText("Zoom out");
+	    refZoomOutItem.setData(new String("zoom out"));
+	    refZoomOutItem.setToolTipText("Zoom out");
+	    refZoomOutItem.setImage(new Image(
+	    		refSWTContainer.getDisplay(), 
+	    		"data/icons/PathwayEditor/zoomout.gif"));
 	    
+		refNeighbourItem = new ToolItem(refToolBar, SWT.PUSH);
+		refNeighbourItem.setData(new String("neighbour"));
+		refNeighbourItem.setToolTipText("Change neighbourhood distance");
+		refNeighbourItem.setImage(new Image(
+	    		refSWTContainer.getDisplay(), 
+	    		"data/icons/PathwayEditor/neighbour.gif"));
+	    
+		
 	    Listener toolbarListener = new Listener() {
 	        public void handleEvent(Event event) {
 	          ToolItem clickedToolItem = (ToolItem) event.widget;
-	          String clickedToolItemText = clickedToolItem.getText();
+	          String sToolItemIdentifier = ((String)clickedToolItem.getData());
 	          
-	          if (clickedToolItemText.equals("Zoom orig"))
+	          if (sToolItemIdentifier.equals("zoom standard"))
 	          {
 	        	  refPathwayGraphViewRep.zoomOrig();
 	          }
-	          else if (clickedToolItemText.equals("Zoom in"))
+	          else if (sToolItemIdentifier.equals("zoom in"))
 	          {
 	        	  refPathwayGraphViewRep.zoomIn();  
 	          }
-	          else if (clickedToolItemText.equals("Zoom out"))
+	          else if (sToolItemIdentifier.equals("zoom out"))
 	          {
 	        	  refPathwayGraphViewRep.zoomOut();
-	          }	          
+	          }	   
+	          else if (sToolItemIdentifier.equals("neighbour"))
+	          {
+	        	  refPathwayGraphViewRep.setNeighbourhoodDistance(2);
+	          }
 	        }
 	      };
 	      
 	      refZoomOrigItem.addListener(SWT.Selection, toolbarListener);
 	      refZoomInItem.addListener(SWT.Selection, toolbarListener);
 	      refZoomOutItem.addListener(SWT.Selection, toolbarListener);
+	      refNeighbourItem.addListener(SWT.Selection, toolbarListener);
 	}
 }

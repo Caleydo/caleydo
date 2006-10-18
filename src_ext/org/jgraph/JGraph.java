@@ -2216,6 +2216,7 @@ public class JGraph
 	 */
 	public void scrollCellToVisible(Object cell) {
 		Rectangle2D bounds = getCellBounds(cell);
+		//Rectangle2D bounds = (Rectangle2D)getCellBounds(cell).clone(); 
 		if (bounds != null) {
 			Rectangle2D b2 = toScreen((Rectangle2D) bounds.clone());
 			scrollRectToVisible(new Rectangle((int) b2.getX(), (int) b2.getY(),

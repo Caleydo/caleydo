@@ -72,6 +72,10 @@ extends APathwayGraphViewRep {
 	
 	protected GraphUndoManager refUndoManager;
 	
+	protected GPOverviewPanel refOverviewPanel;
+	
+	protected int iNeighbourhoodDistance = 1;
+	
 	public PathwayGraphViewRep(IGeneralManager refGeneralManager, int iParentContainerId) {
 		
 		super(refGeneralManager, -1, iParentContainerId, "");
@@ -140,7 +144,7 @@ extends APathwayGraphViewRep {
 								}
 							});	
 							
-							showNeighbourhood(clickedCell, 1);
+							showNeighbourhood(clickedCell, iNeighbourhoodDistance);
 						}
 					}
 				
@@ -183,26 +187,6 @@ extends APathwayGraphViewRep {
         	
             final Dimension dimOverviewMap = new Dimension(200, 200);
             final Dimension dimPathway = new Dimension(iWidth, iHeight);
-        	
-//            JPanel testPanel = new JPanel();
-//            testPanel.setBackground(Color.LIGHT_GRAY);
-//            testPanel.setMinimumSize(dimOverviewMap);
-//            testPanel.setMaximumSize(dimOverviewMap);
-//            testPanel.setPreferredSize(dimOverviewMap);
-//            testPanel.setAlignmentX(0.0f);
-//            testPanel.setAlignmentY(0.0f);
-//        	refEmbeddedFrame.add(testPanel);
-        	
-            JFrame wnd = new JFrame();
-            wnd.setLocation(100, 100);
-            wnd.setSize(300, 200);
-            wnd.setVisible(true);
-            
-//    		JDialog overviewDlg;
-//    		overviewDlg = new JDialog(refEmbeddedFrame, "Overview Map", false);
-        	
-//    		Container fContentPane = overviewDlg.getContentPane();
-//    		fContentPane.setLayout(new BorderLayout());
 
         	JScrollPane refScrollPane = new JScrollPane(refPathwayGraph);
         	refScrollPane.setMinimumSize(dimPathway);
@@ -212,38 +196,11 @@ extends APathwayGraphViewRep {
         	refScrollPane.setAlignmentY(0.5f);
         	refEmbeddedFrame.add(refScrollPane);
 
-    		GPOverviewPanel gpOverviewPanel = 
+    		refOverviewPanel = 
     			new GPOverviewPanel(refPathwayGraph, refScrollPane);
     		
-//    		JPanel overviewPanel = 
-//    			GPOverviewPanel.createOverviewPanel(gpOverviewPanel);
+    		showOverviewMapInNewWindow(dimOverviewMap);
     		
-//    		fContentPane.add(overviewPanel);
-//    		overviewDlg.setSize(new Dimension(180, 180));
-//    		overviewDlg.setLocationRelativeTo(refEmbeddedFrame);
-//    		overviewPanel.revalidate();
-    		// getCurrentDocument().setOverviewDialog(overviewDlg);
-
-//    		overviewDlg.setVisible(true);
-    		
-//            overviewPanel.setBackground(Color.LIGHT_GRAY);
-//            overviewPanel.setMinimumSize(dimOverviewMap);
-//            overviewPanel.setMaximumSize(dimOverviewMap);
-//            overviewPanel.setPreferredSize(dimOverviewMap);
-//            overviewPanel.setAlignmentX(0.0f);
-//            overviewPanel.setAlignmentY(0.0f);
- 
-//    		overviewScrollPane.add(gpOverviewPanel);
-    		
-//    		JButton test = new JButton("bla");
-//    		overviewScrollPane.add(test);
-        
-    		//refEmbeddedFrame.add(test);
-
-    		wnd.add(gpOverviewPanel);
-
-        	//refEmbeddedFrame.add(gpOverviewPanel);
-
         	isGraphSet = true;
         }
 	}
@@ -334,6 +291,8 @@ extends APathwayGraphViewRep {
 		
 		refGraphModel = new DefaultGraphModel();
 		refPathwayGraph.setModel(refGraphModel);
+		refGraphLayoutCache.setModel(refGraphModel);
+		refGraphModel.addUndoableEditListener(refUndoManager);
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
@@ -367,10 +326,10 @@ extends APathwayGraphViewRep {
 		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 		
-		DefaultGraphCell tmpCell;
-		
 		GraphConstants.setGradientColor(
 				attributeMap, Color.red);
+		
+		DefaultGraphCell tmpCell;
 		
 		while (cellIter.hasNext())
 		{
@@ -385,5 +344,26 @@ extends APathwayGraphViewRep {
 		}
 		
 		refGraphLayoutCache.edit(nested, null, null, null);
+	}
+	
+	/**
+	 * Methods puts the overview map in a new JFrame and
+	 * displays the frame.
+	 * 
+	 * @param dim
+	 */
+	public void showOverviewMapInNewWindow(Dimension dim) {
+		
+        JFrame wnd = new JFrame();
+        wnd.setLocation(100, 100);
+        wnd.setSize(dim);
+        wnd.setVisible(true);
+        
+		wnd.add(refOverviewPanel);
+	}
+
+	public void setNeighbourhoodDistance(int iNeighbourhoodDistance) {
+		
+		this.iNeighbourhoodDistance = iNeighbourhoodDistance;
 	}
 }

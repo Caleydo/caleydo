@@ -16,6 +16,8 @@ extends IView
 	
 	public void loadPathwayFromFile(String sFilePath);
 	
+	public void setNeighbourhoodDistance(int iNeighbourhoodDistance);
+	
 	public void zoomOrig();
 	
 	public void zoomIn();

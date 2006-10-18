@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
