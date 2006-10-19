@@ -78,8 +78,8 @@ extends ACmdCreate_GlCanvasUser
 				
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
 		canvas.setResolution( fResolution );
-		canvas.setHistogramLength( (int) fResolution[10] );
 		canvas.setTargetSetId( iTargetCollectionSetId );
+		canvas.setHistogramLength( (int) fResolution[10] );		
 		canvas.setHistogramLength( 200 );
 	}
 

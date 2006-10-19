@@ -45,7 +45,13 @@ implements IGLCanvasUser
 	  
 	private StatisticHistogramType enumCurrentHistogramMode = StatisticHistogramType.REGULAR_LINEAR;
 	 
-	private int iCurrentHistogramLength = 200;
+	/**
+	 * Defien number of histogram slots.
+	 * Default is 0 to ensure valid settings. 
+	 * 
+	 *  @see cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
+	 */
+	private int iCurrentHistogramLength = 0;
 	
 	private float [][] viewingFrame;
 	
@@ -214,16 +220,24 @@ implements IGLCanvasUser
 	  if ( targetSet == null ) 
 	  {
 		  refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				  "createHistogram() can not create Histogram, because",
+				  "createHistogram() can not create Histogram, because targetSet=null",
 				  LoggerType.STATUS );
+		  return;
+	  }
+	  
+	  if ( iHistogramLevels < 1) {
+		  refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
+				  LoggerType.FULL );
 		  return;
 	  }
 	  
 	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
 	  ISelection refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
-  	
-	  System.out.println("Histogram: use ISelection(" +
-		  refBufferSelection.getLabel() + ")");
+  		  
+	  refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			  "createHistogram() use ISelection(" + refBufferSelection.getLabel() + ")",
+			  LoggerType.FULL );
 	  
 	   
 	  if ( refBufferStorage == null ) {
