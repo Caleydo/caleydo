@@ -2,8 +2,10 @@ package cerberus.manager.data.pathway;
 
 import java.util.HashMap;
 
+import cerberus.data.pathway.element.PathwayReactionEdge;
+import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayEdge;
+import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
@@ -26,12 +28,16 @@ implements IPathwayElementManager {
 
 	protected HashMap<Integer, PathwayVertex> vertexLUT;
 
-	protected HashMap<Integer, PathwayEdge> edgeLUT;
+	protected HashMap<Integer, APathwayEdge> edgeLUT;
 
 	// FIXME: this is just a temporary workaround.
 	protected PathwayVertex currentVertex;
 
-	protected PathwayEdge currentEdge;
+	protected PathwayRelationEdge currentRelationEdge;
+	
+	protected PathwayReactionEdge currentReactionEdge;
+	
+	protected HashMap<String, Integer> reactionName2EdgeIdLUT;
 
 	/**
 	 * Constructor
@@ -42,7 +48,8 @@ implements IPathwayElementManager {
 		this.refGeneralManager = refGeneralManager;
 		
 		vertexLUT = new HashMap<Integer, PathwayVertex>();
-		edgeLUT = new HashMap<Integer, PathwayEdge>();
+		edgeLUT = new HashMap<Integer, APathwayEdge>();
+		reactionName2EdgeIdLUT = new HashMap<String, Integer>();
 
 		iCurrentUniqueElementId = 0;
 	}
@@ -57,7 +64,7 @@ implements IPathwayElementManager {
 			String sReactionId) {
 		
 		int iGeneratedId = generateId();
-		
+				
 		PathwayVertex newVertex = 
 			new PathwayVertex(iGeneratedId, sName, sType, sLink, sReactionId);
 		
@@ -91,57 +98,85 @@ implements IPathwayElementManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createEdge(int, int, java.lang.String)
 	 */
-	public void createEdge(
+	public void createRelationEdge(
 			int iVertexId1, 
 			int iVertexId2, 
 			String sType) {
 		
 		int iGeneratedId = generateId();
 		
-//		PathwayEdge newEdge = new PathwayEdge(iVertexId1, iVertexId2, sType);
-//		
-//		edgeLUT.put(iGeneratedId, newEdge);
-//		
-//		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
-//			getCurrentPathway().addEdge(newEdge);
-//		
-//		currentEdge = newEdge;
+		PathwayRelationEdge newEdge = new PathwayRelationEdge(iVertexId1, iVertexId2, sType);
+		
+		edgeLUT.put(iGeneratedId, newEdge);
+		
+		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+			getCurrentPathway().addEdge(newEdge);
+		
+		currentRelationEdge = newEdge;
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayElementManager#addCompoundForEdge(int)
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayElementManager#addRelationCompound(int)
 	 */
-	public void addCompoundForEdge(int iCompoundId) {
+	public void addRelationCompound(int iCompoundId) {
 		
-		if (currentEdge != null)
+		if (currentRelationEdge != null)
 		{
-//			currentEdge.setICompoundId(iCompoundId);
+			currentRelationEdge.setCompoundId(iCompoundId);
 		}
 
-		currentEdge = null;
+		currentRelationEdge = null;
 	}
 	
-
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayElementManager#addProductForEdge(int)
+	 * @see cerberus.manager.data.IPathwayElementManager#createReactionEdge(java.lang.String, java.lang.String)
 	 */
-	public void addProductForEdge(int iCompoundId) {
+	public void createReactionEdge(String sReactionName, String sReactionType) {
 
-		// TODO Auto-generated method stub
+		int iGeneratedId = generateId();
+		currentReactionEdge = null;
 		
+		PathwayReactionEdge newEdge = 
+			new PathwayReactionEdge(sReactionName, sReactionType);
+		
+		edgeLUT.put(iGeneratedId, newEdge);
+		reactionName2EdgeIdLUT.put(sReactionName, iGeneratedId);
+		
+		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+			getCurrentPathway().addEdge(newEdge);
+		
+		currentReactionEdge = newEdge;
 	}
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayElementManager#addSubstrateForEdge(int)
+	 * @see cerberus.manager.data.IPathwayElementManager#addReactionSubstrate(int)
 	 */
-	public void addSubstrateForEdge(int iCompoundId) {
+	public void addReactionSubstrate(int iCompoundId) {
 
-		// TODO Auto-generated method stub
-		
+		currentReactionEdge.addSubstrate(iCompoundId);		
 	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayElementManager#addReactionProduct(int)
+	 */
+	public void addReactionProduct(int iCompoundId) {
 
+		currentReactionEdge.addProduct(iCompoundId);
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayElementManager#getReactionName2EdgeIdLUT()
+	 */
+	public HashMap<String, Integer> getReactionName2EdgeIdLUT() {
+		
+		return reactionName2EdgeIdLUT;
+	}
+	
 	private int generateId() {
 		
 		return iCurrentUniqueElementId++;
@@ -153,6 +188,14 @@ implements IPathwayElementManager {
 	public HashMap<Integer, PathwayVertex> getVertexLUT() {
 		
 		return vertexLUT;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#getEdgeLUT()
+	 */
+	public HashMap<Integer, APathwayEdge> getEdgeLUT() {
+		
+		return edgeLUT;
 	}
 
 	public boolean hasItem(int iItemId) {
@@ -205,5 +248,4 @@ implements IPathwayElementManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

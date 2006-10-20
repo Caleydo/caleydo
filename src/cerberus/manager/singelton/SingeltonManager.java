@@ -19,13 +19,11 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
-import cerberus.manager.IViewManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
-import cerberus.manager.logger.ConsoleSimpleLogger;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
 import cerberus.manager.type.ManagerType;
@@ -44,7 +42,7 @@ import cerberus.xml.parser.manager.XmlParserManager;
 public class SingeltonManager 
 implements ISingelton {
 
-	private final IGeneralManager refGeneralManager;
+//	private final IGeneralManager refGeneralManager;
 	
 	protected IDistComponentManager refDComponentManager;
 	
@@ -92,7 +90,7 @@ implements ISingelton {
 	 */
 	public SingeltonManager( final IGeneralManager refGeneralManager ) {
 				
-		this.refGeneralManager = refGeneralManager;			
+//		this.refGeneralManager = refGeneralManager;			
 		
 	}
 	
@@ -149,17 +147,27 @@ implements ISingelton {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getViewManager()
+	 * @see cerberus.manager.singelton.Singelton#getViewGLCanvasManager()
 	 */
 	public IViewGLCanvasManager getViewGLCanvasManager() {
 		return refViewManager;
 	}
 	
-	public IPathwayManager getPathwayManager(ManagerType type) {
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISingelton#getPathwayManager()
+	 */
+	public IPathwayManager getPathwayManager() {
+		
 		return refPathwayManager;
 	}
 	
-	public IPathwayElementManager getPathwayElementManager(ManagerType type) {
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISingelton#getPathwayElementManager()
+	 */
+	public IPathwayElementManager getPathwayElementManager() {
+		
 		return refPathwayElementManager;
 	}
 	

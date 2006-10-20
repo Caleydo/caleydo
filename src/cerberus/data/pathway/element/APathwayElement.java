@@ -1,23 +1,23 @@
 package cerberus.data.pathway.element;
 
-public class PathwayElement  {
+public abstract class APathwayElement  {
 	
 	private int iElementId = 0;
 
 	private String sElementTitle;
 
-	public PathwayElement() {
+	public APathwayElement() {
 		
 	}
 	
-	public PathwayElement(int iElementId, String sElementTitle) {
+	public APathwayElement(int iElementId, String sElementTitle) {
 		
 		this.iElementId = iElementId;
 
 		this.sElementTitle = sElementTitle;
 	}
 
-	public int getIElementId() {
+	public int getElementId() {
 		
 		return iElementId;
 	}

@@ -2,6 +2,7 @@ package cerberus.manager.data;
 
 import java.util.HashMap;
 
+import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.manager.IGeneralManager;
 
@@ -21,17 +22,24 @@ public interface IPathwayElementManager extends IGeneralManager {
 			int iYPosition,
 			String sType);
 
-	public abstract void createEdge(
+	public abstract void createRelationEdge(
 			int iVertexId1, 
 			int iVertexId2, 
 			String sType);
-
-	public abstract void addCompoundForEdge(int iCompoundId);
 	
-	public abstract void addProductForEdge(int iCompoundId);
-	
-	public abstract void addSubstrateForEdge(int iCompoundId);
+	public abstract void createReactionEdge(
+			String sReactionName,
+			String sReactionType);
 
+	public abstract void addRelationCompound(int iCompoundId);
+	
+	public abstract void addReactionSubstrate(int iSubstrateId);
+
+	public abstract void addReactionProduct(int iProductId);
+	
 	public abstract HashMap<Integer, PathwayVertex> getVertexLUT();
-
+	
+	public abstract HashMap<Integer, APathwayEdge> getEdgeLUT();
+		
+	public abstract HashMap<String, Integer> getReactionName2EdgeIdLUT();
 }

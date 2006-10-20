@@ -8,12 +8,16 @@ import java.util.Vector;
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.PathwayEdge;
+import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.pathway.element.PathwayReactionEdge;
+import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.data.pathway.PathwayManager;
+import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
@@ -60,8 +64,8 @@ implements IPathwayGraphView {
 	public void drawView() {
 		
 		HashMap<Integer, Pathway> pathwayLUT = 		
-			((PathwayManager)refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY)).
-				getPathwayLUT();
+			((IPathwayManager)refGeneralManager.getSingelton().
+					getPathwayManager()).getPathwayLUT();
 		
 		Pathway pathway;
 		
@@ -83,9 +87,11 @@ implements IPathwayGraphView {
 	    Iterator<IPathwayVertexRep> vertexRepIterator;
 	    PathwayVertexRep vertexRep;
 	    
-	    Vector<PathwayEdge> edgeList;
-	    Iterator<PathwayEdge> edgeIterator;
-	    PathwayEdge edge;
+	    Vector<APathwayEdge> edgeList;
+	    Iterator<APathwayEdge> edgeIterator;
+	    APathwayEdge edge;
+	    PathwayRelationEdge relationEdge;
+	    PathwayReactionEdge reactionEdge;
 	    
         vertexList = pathway.getVertexList();
         
@@ -95,47 +101,105 @@ implements IPathwayGraphView {
         	vertex = vertexIterator.next();
         	vertexReps = vertex.getVertexReps();
         	vertexRepIterator = vertexReps.iterator();
+        	
+        	//FIXME: actually it is not right to interate over all vertex reps.
         	while (vertexRepIterator.hasNext())
         	{
         		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
         		
-        		// FIXME: this is just a workaround.
-        		// inconsitency between vertexRep and vertex "name"
-        		vertex.setElementTitle(vertexRep.getName());
+//        		// FIXME: this is just a workaround.
+//        		// inconsitency between vertexRep and vertex "name"
+//        		vertex.setElementTitle(vertexRep.getName());
         		
-        		createVertex(vertex, 
+        		createVertex(vertex,
+        				vertexRep.getName(),
         				vertexRep.getHeight(), vertexRep.getWidth(), 
         				vertexRep.getXPosition(), vertexRep.getYPosition(),
-        				vertexRep.getShapeType());
+        				vertexRep.getShapeType());        	
         	}
         }   
         
         edgeList = pathway.getEdgeList();
         edgeIterator = edgeList.iterator();
-//        while (edgeIterator.hasNext())
-//        {
-//        	edge = edgeIterator.next();
-//        
-//        	if (edge.getSType().equals("ECrel"))
+        while (edgeIterator.hasNext())
+        {
+        	edge = edgeIterator.next();
+        
+        	// Process RELATION EDGES
+        	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayRelationEdge"))
+        	{
+        		// Cast abstract edge to relation edge
+        		relationEdge = (PathwayRelationEdge)edge;
+        		
+        		if (relationEdge.getCompoundId() == -1)
+        		{
+        			// Direct connection between nodes
+	        		createEdge(relationEdge.getElementId1(), relationEdge.getElementId2());	        			
+        		}
+        		else 
+        		{
+        			// Edge is routed over a compound
+        			createEdge(relationEdge.getElementId1(), relationEdge.getCompoundId());
+        			createEdge(relationEdge.getCompoundId(), relationEdge.getElementId2());
+        		}
+        	}// if (edge.getClass().getName().equals("PathwayRelationEdge"))
+        	
+//        	// Process REACTION EDGES
+//        	else if (edge.getClass().getName().equals("PathwayReactionEdge"))
 //        	{
-//        		if (edge.getICompoundId() == -1)
-//        		{
-//        			// Direct connection between noded
-//	        		createEdge(edge.getIElementId1(), edge.getIElementId2());	        			
-//        		}
-//        		else 
-//        		{
-//        			// Edge is routed over a compound
-//        			createEdge(edge.getIElementId1(), edge.getICompoundId());
-//        			createEdge(edge.getICompoundId(), edge.getIElementId2());
-//        		}
+//        		// Cast abstract edge to reaction edge
+//        		reactionEdge = (PathwayReactionEdge)edge;
 //        	}
-//        	else if (edge.getSType().equals("maplink"))
+        	
+        	
+//        	else if (edge.getSype().equals("maplink"))
 //        	{
 //        		createEdge(edge.getICompoundId(), edge.getIElementId2());
 //        		// Is the second connection needed or already drawn?
 //        	}
-//        }   
+        }   
+        
+        // Process pathway reactions
+        vertexIterator = vertexList.iterator();
+        while (vertexIterator.hasNext())
+        {
+        	vertex = vertexIterator.next();
+        	vertexReps = vertex.getVertexReps();
+        	vertexRepIterator = vertexReps.iterator();
+ 
+        	if (vertex.getVertexType() == PathwayVertexType.enzyme)
+	    	{	
+	    		IPathwayElementManager pathwayElementManager = 
+	    			((IPathwayElementManager)refGeneralManager.getSingelton().
+	    				getPathwayElementManager());
+	    		
+	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
+	    		
+	    		edge = pathwayElementManager.getEdgeLUT().
+	    			get(pathwayElementManager.getReactionName2EdgeIdLUT().
+	    				get(vertex.getVertexReactionName()));
+	
+	    		// FIXME: problem with multiple reactions per enzyme
+	    		if (edge != null)
+	    		{
+	            	// Process REACTION EDGES
+	            	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayReactionEdge"))
+	            	{
+	            		// Cast abstract edge to reaction edge
+	            		reactionEdge = (PathwayReactionEdge)edge;
+	
+	            		//FIXME: interate over substrates and products
+		        		createEdge(
+		        				reactionEdge.getSubstrates().get(0), 
+		        				vertex.getElementId());	    
+		        		
+		        		createEdge(
+		        				vertex.getElementId(),
+		        				reactionEdge.getProducts().get(0));	  
+	            	}	
+	    		}// if (edge != null)
+	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
+        }
 	}
 
 	public void readInAttributes(IParameterHandler refParameterHandler) {

@@ -200,11 +200,11 @@ extends APathwayGraphViewRep {
         }
 	}
 	
-	public void createVertex(PathwayVertex vertex, int iHeight, int iWidth, 
+	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 
 			int iXPosition, int iYPosition, String sShapeType) {
 		
 		//create node
-		refGraphCell = new DefaultGraphCell(vertex);
+		refGraphCell = new DefaultGraphCell(sTitle);
 	
 		GraphConstants.setOpaque(refGraphCell.getAttributes(), true);
 		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
@@ -250,7 +250,7 @@ extends APathwayGraphViewRep {
 		
 		refPathwayGraph.getGraphLayoutCache().insert(refGraphCell);
 		
-		vertexIdToCellLUT.put(vertex.getIElementId(), refGraphCell);
+		vertexIdToCellLUT.put(vertex.getElementId(), refGraphCell);
 	}
 	
 	public void createEdge(int iVertexId1, int iVertexId2) {

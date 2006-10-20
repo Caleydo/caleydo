@@ -10,7 +10,8 @@ public interface IPathwayGraphView
 extends IView
 {
 	public void createVertex(
-			PathwayVertex vertex, 
+			PathwayVertex vertex,
+			String sTitle,
 			int iHeight, 
 			int iWidth, 
 			int iXPosition, 

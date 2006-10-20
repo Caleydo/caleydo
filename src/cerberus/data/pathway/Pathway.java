@@ -3,7 +3,7 @@ package cerberus.data.pathway;
 import java.util.Vector;
 
 import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayEdge;
+import cerberus.data.pathway.element.APathwayEdge;
 
 public class Pathway 
 {
@@ -13,12 +13,12 @@ public class Pathway
 	private String sInformationLink;
 	
 	private Vector<PathwayVertex> vertexList;
-	private Vector<PathwayEdge> edgeList;
+	private Vector<APathwayEdge> edgeList;
 
 	public Pathway(String sTitle, String sImageLink, String sLink, int iPathwayID)
 	{
 		vertexList = new Vector<PathwayVertex>();
-		edgeList = new Vector<PathwayEdge>();
+		edgeList = new Vector<APathwayEdge>();
 		
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
@@ -31,7 +31,7 @@ public class Pathway
 		vertexList.add(vertex);
 	}
 	
-	public void addEdge(PathwayEdge edge)
+	public void addEdge(APathwayEdge edge)
 	{
 		edgeList.add(edge);
 	}
@@ -41,7 +41,7 @@ public class Pathway
 		return vertexList;
 	}
 
-	public Vector<PathwayEdge> getEdgeList() 
+	public Vector<APathwayEdge> getEdgeList() 
 	{
 		return edgeList;
 	}

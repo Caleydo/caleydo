@@ -27,15 +27,24 @@ implements IXmlParserHandler
 	protected Attributes attributes;
 	
 	protected HashMap<Integer, Integer> kgmlIdToElementIdLUT;
+	
+	/**
+	 * Map that stores the KEGG compound names and the internal compound ID
+	 */
+	protected HashMap<String, Integer> kgmlCompoundNameToElementIdLUT;
 		
 	protected String sAttributeName = "";
+	
+	
 	
 	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
 			final IXmlParserManager refXmlParserManager)
 	{		
 		super( refGeneralManager, refXmlParserManager);
 		
-		kgmlIdToElementIdLUT = new HashMap<Integer, Integer>(); 	
+		kgmlIdToElementIdLUT = new HashMap<Integer, Integer>();
+		
+		kgmlCompoundNameToElementIdLUT = new HashMap<String, Integer>();
 		
 		setXmlActivationTag("pathway");
 	}
@@ -71,7 +80,7 @@ implements IXmlParserHandler
 			else if (sElementName.equals("reaction"))
 				handleReactionTag();
 			else if (sElementName.equals("product"))
-				handleReactionProtuctTag();
+				handleReactionProductTag();
 			else if (sElementName.equals("substrate"))
 				handleReactionSubstrateTag();
 		}
@@ -181,9 +190,14 @@ implements IXmlParserHandler
 
     	iGeneratedElementId = 		
     		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
-			createVertex(sName, sType, sLink, sReactionId);
+				createVertex(sName, sType, sLink, sReactionId);
     	
     	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
+    	
+    	if (sType.equals("compound"))
+    	{
+    		kgmlCompoundNameToElementIdLUT.put(sName, iGeneratedElementId);
+    	}
     }
 	
 	/**
@@ -270,13 +284,13 @@ implements IXmlParserHandler
     	int iElementId2 = kgmlIdToElementIdLUT.get(iEntry2);
     	
 		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
-			createEdge(iElementId1, iElementId2, sType);
+			createRelationEdge(iElementId1, iElementId2, sType);
     }
     	
     public void handleSubtypeTag()
     {
     	String sName = "";
-    	int iValue = 0;
+    	int iCompoundId = 0;
 		
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -290,7 +304,7 @@ implements IXmlParserHandler
 			if (sAttributeName.equals("name"))
 				sName = attributes.getValue(iAttributeIndex); 
    			else if (sAttributeName.equals("value"))
-  				iValue = new Integer(attributes.getValue(iAttributeIndex)); 
+  				iCompoundId = new Integer(attributes.getValue(iAttributeIndex)); 
  
    			//System.out.println("Attribute name: " +sAttributeName);
    			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
@@ -300,7 +314,7 @@ implements IXmlParserHandler
 		{
 			//retrieve the internal element ID and add the compound value to the edge
     		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
-				addCompoundForEdge(kgmlIdToElementIdLUT.get(iValue));
+				addRelationCompound(kgmlIdToElementIdLUT.get(iCompoundId));
 		}
     }
     
@@ -311,10 +325,10 @@ implements IXmlParserHandler
 	 * <reaction name="rn:R01001" type="irreversible">
 	 */
     public void handleReactionTag()
-    {	
-    	String sName = "";
-		String sType = "";
-		
+    {			
+    	String sReactionName = "";
+    	String sReactionType = "";
+    	
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
 			 sAttributeName = attributes.getLocalName(iAttributeIndex);
@@ -325,12 +339,13 @@ implements IXmlParserHandler
 			}
 				
 			if (sAttributeName.equals("type"))
-				sType = attributes.getValue(iAttributeIndex); 
+				sReactionType = attributes.getValue(iAttributeIndex); 
 			else if (sAttributeName.equals("name"))
-				sName = attributes.getValue(iAttributeIndex); 
-
-			
+				sReactionName = attributes.getValue(iAttributeIndex); 	
 		}  	
+		
+		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+			createReactionEdge(sReactionName, sReactionType);
     }
     
 	/**
@@ -341,7 +356,31 @@ implements IXmlParserHandler
 	 */
     private void handleReactionSubstrateTag() 
     {
+    	String sReactionSubstrateName = "";
+    	
+    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
 		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("name"))
+				sReactionSubstrateName = attributes.getValue(iAttributeIndex); 
+		}  	
+    	
+    	// If substrate is not included in pathway - ignore!
+    	if (kgmlCompoundNameToElementIdLUT.containsKey(sReactionSubstrateName))
+    	{
+        	// Lookup for internal comound ID
+    		int iReactionSubstrateId = 
+    			kgmlCompoundNameToElementIdLUT.get(sReactionSubstrateName);
+    	
+    		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+				addReactionSubstrate(iReactionSubstrateId);
+    	}
 	}
 
 	/**
@@ -350,9 +389,33 @@ implements IXmlParserHandler
 	 * An example reaction product tag looks like this:
 	 * <product name="cpd:C02291"/>
 	 */
-	private void handleReactionProtuctTag() 
+	private void handleReactionProductTag() 
 	{
+    	String sReactionProductName = "";
+    	
+    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
 		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("name"))
+				sReactionProductName = attributes.getValue(iAttributeIndex); 
+		}  	
+
+    	// If product is not included in pathway - ignore!
+    	if (kgmlCompoundNameToElementIdLUT.containsKey(sReactionProductName))
+    	{
+    		// Lookup for internal comound ID
+    		int iReactionProductId = 
+    			kgmlCompoundNameToElementIdLUT.get(sReactionProductName);
+    	
+    		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+				addReactionProduct(iReactionProductId);  
+    	}
 	}
 
 	/**

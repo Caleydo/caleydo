@@ -1,5 +1,7 @@
 package cerberus.manager;
 
+import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
@@ -42,6 +44,10 @@ public interface ISingelton {
 	public abstract IEventPublisher getEventPublisher();
 	
 	public abstract XmlParserManager getXmlParserManager();
+	
+	public abstract IPathwayManager getPathwayManager();
+	
+	public abstract IPathwayElementManager getPathwayElementManager();
 	
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]

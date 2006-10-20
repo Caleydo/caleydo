@@ -19,6 +19,7 @@ public class PathwayManager implements IPathwayManager
     protected IGeneralManager refGeneralManager;
 	
 	protected HashMap<Integer, Pathway> pathwayLUT;
+	
 	protected Pathway currentPathway;
 	
 	/**

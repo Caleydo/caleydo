@@ -1,7 +1,7 @@
 package cerberus.data.pathway.element;
 
 public class PathwayRelationEdge 
-extends PathwayEdge {
+extends APathwayEdge {
 
 	protected int iElementId1 = 0;
 
@@ -15,9 +15,7 @@ extends PathwayEdge {
 			int iElementId1, 
 			int iElementId2, 
 			String sRelationType) {
-		
-		edgeType = PathwayEdgeType.RELATION;
-		
+
 		this.iElementId1 = iElementId1;
 		this.iElementId2 = iElementId2;
 		this.sRelationType = sRelationType;
@@ -38,12 +36,12 @@ extends PathwayEdge {
 		return sRelationType;
 	}
 	
-	public void setICompoundId(int iCompoundId) {
+	public void setCompoundId(int iCompoundId) {
 		
 		this.iCompoundId = iCompoundId;
 	}
 
-	public int getICompoundId() {
+	public int getCompoundId() {
 		
 		return iCompoundId;
 	}

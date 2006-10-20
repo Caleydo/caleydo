@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.PathwayEdge;
+import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;

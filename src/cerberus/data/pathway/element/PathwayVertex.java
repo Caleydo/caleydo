@@ -4,7 +4,8 @@ import java.util.Vector;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 
 
-public class PathwayVertex extends PathwayElement {
+public class PathwayVertex 
+extends APathwayElement {
 	
 	protected PathwayVertexType vertexType;
 	
@@ -13,25 +14,26 @@ public class PathwayVertex extends PathwayElement {
 	protected String sVertexLink; 
 	
 	/*
-	 * The enzyme's reaction ID
+	 * The enzyme's reaction name
 	 */
-	protected String sReactionId;
+	protected String sReactionName;
 	
 	public PathwayVertex(
 			int iVertexID, 
 			String sName, 
 			String sType, 
 			String sLink,
-			String sReactionId) {
+			String sReactionName) {
 		
 		super(iVertexID, sName);
+		
 		vertexReps = new Vector<IPathwayVertexRep>();
 		
 		vertexType = PathwayVertexType.valueOf( sType );
 		
 		sVertexLink = sLink;
 		
-		this.sReactionId = sReactionId;
+		this.sReactionName = sReactionName;
 	}
 	
 	public void addVertexRep(IPathwayVertexRep vertexRep) {
@@ -52,5 +54,10 @@ public class PathwayVertex extends PathwayElement {
 	public String getVertexLink() {
 		
 		return sVertexLink;
+	}
+	
+	public String getVertexReactionName() {
+		
+		return sReactionName;
 	}
 }
