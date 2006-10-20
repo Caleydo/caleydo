@@ -107,10 +107,6 @@ implements IPathwayGraphView {
         	{
         		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
         		
-//        		// FIXME: this is just a workaround.
-//        		// inconsitency between vertexRep and vertex "name"
-//        		vertex.setElementTitle(vertexRep.getName());
-        		
         		createVertex(vertex,
         				vertexRep.getName(),
         				vertexRep.getHeight(), vertexRep.getWidth(), 
@@ -134,22 +130,18 @@ implements IPathwayGraphView {
         		if (relationEdge.getCompoundId() == -1)
         		{
         			// Direct connection between nodes
-	        		createEdge(relationEdge.getElementId1(), relationEdge.getElementId2());	        			
+	        		createEdge(relationEdge.getElementId1(), 
+	        				relationEdge.getElementId2(), false);	        			
         		}
         		else 
         		{
         			// Edge is routed over a compound
-        			createEdge(relationEdge.getElementId1(), relationEdge.getCompoundId());
-        			createEdge(relationEdge.getCompoundId(), relationEdge.getElementId2());
+        			createEdge(relationEdge.getElementId1(), 
+        					relationEdge.getCompoundId(), false);
+        			createEdge(relationEdge.getCompoundId(), 
+        					relationEdge.getElementId2(), false);
         		}
         	}// if (edge.getClass().getName().equals("PathwayRelationEdge"))
-        	
-//        	// Process REACTION EDGES
-//        	else if (edge.getClass().getName().equals("PathwayReactionEdge"))
-//        	{
-//        		// Cast abstract edge to reaction edge
-//        		reactionEdge = (PathwayReactionEdge)edge;
-//        	}
         	
         	
 //        	else if (edge.getSype().equals("maplink"))
@@ -191,11 +183,11 @@ implements IPathwayGraphView {
 	            		//FIXME: interate over substrates and products
 		        		createEdge(
 		        				reactionEdge.getSubstrates().get(0), 
-		        				vertex.getElementId());	    
+		        				vertex.getElementId(), false);	    
 		        		
 		        		createEdge(
 		        				vertex.getElementId(),
-		        				reactionEdge.getProducts().get(0));	  
+		        				reactionEdge.getProducts().get(0), true);	  
 	            	}	
 	    		}// if (edge != null)
 	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)

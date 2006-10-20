@@ -204,7 +204,7 @@ extends APathwayGraphViewRep {
 			int iXPosition, int iYPosition, String sShapeType) {
 		
 		//create node
-		refGraphCell = new DefaultGraphCell(sTitle);
+		refGraphCell = new DefaultGraphCell(vertex);
 	
 		GraphConstants.setOpaque(refGraphCell.getAttributes(), true);
 		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
@@ -253,7 +253,7 @@ extends APathwayGraphViewRep {
 		vertexIdToCellLUT.put(vertex.getElementId(), refGraphCell);
 	}
 	
-	public void createEdge(int iVertexId1, int iVertexId2) {
+	public void createEdge(int iVertexId1, int iVertexId2, boolean bDrawArrow) {
 		
 		DefaultPort port1 = new DefaultPort();
 		DefaultGraphCell cell1 = vertexIdToCellLUT.get(iVertexId1);
@@ -264,6 +264,13 @@ extends APathwayGraphViewRep {
 		cell2.add(port2);
 		
 		DefaultEdge edge = new DefaultEdge();
+
+		// Draw arrow
+		if (bDrawArrow == true)
+		{
+			GraphConstants.setLineEnd(edge.getAttributes(), GraphConstants.ARROW_CLASSIC);
+			GraphConstants.setEndFill(edge.getAttributes(), true);
+		}
 		
 //		GraphConstants.setRouting(edge.getAttributes(), GraphConstants.ROUTING_SIMPLE);
 //		GraphConstants.setLineStyle(edge.getAttributes(), GraphConstants.STYLE_SPLINE);

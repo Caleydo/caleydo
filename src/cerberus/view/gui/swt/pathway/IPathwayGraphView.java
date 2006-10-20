@@ -18,7 +18,7 @@ extends IView
 			int iYPosition, 
 			String sShapeType);
 	
-	public void createEdge(int iVertexId1, int iVertexId2);
+	public void createEdge(int iVertexId1, int iVertexId2, boolean bDrawArrow);
 	
 	public void setPathwayId(int iPathwayId);
 	
