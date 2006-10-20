@@ -12,7 +12,17 @@ public class PathwayVertex extends PathwayElement {
 	
 	protected String sVertexLink; 
 	
-	public PathwayVertex(int iVertexID, String sName, String sType, String sLink) {
+	/*
+	 * The enzyme's reaction ID
+	 */
+	protected String sReactionId;
+	
+	public PathwayVertex(
+			int iVertexID, 
+			String sName, 
+			String sType, 
+			String sLink,
+			String sReactionId) {
 		
 		super(iVertexID, sName);
 		vertexReps = new Vector<IPathwayVertexRep>();
@@ -20,6 +30,8 @@ public class PathwayVertex extends PathwayElement {
 		vertexType = PathwayVertexType.valueOf( sType );
 		
 		sVertexLink = sLink;
+		
+		this.sReactionId = sReactionId;
 	}
 	
 	public void addVertexRep(IPathwayVertexRep vertexRep) {

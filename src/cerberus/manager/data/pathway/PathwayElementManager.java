@@ -17,7 +17,8 @@ import cerberus.manager.type.ManagerObjectType;
  * 
  * @author Marc Streit
  */
-public class PathwayElementManager implements IPathwayElementManager {
+public class PathwayElementManager 
+implements IPathwayElementManager {
 	
 	protected IGeneralManager refGeneralManager;
 	
@@ -28,9 +29,9 @@ public class PathwayElementManager implements IPathwayElementManager {
 	protected HashMap<Integer, PathwayEdge> edgeLUT;
 
 	// FIXME: this is just a temporary workaround.
-	protected PathwayVertex currentVertex = null;
+	protected PathwayVertex currentVertex;
 
-	protected PathwayEdge currentEdge = null;
+	protected PathwayEdge currentEdge;
 
 	/**
 	 * Constructor
@@ -49,10 +50,17 @@ public class PathwayElementManager implements IPathwayElementManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertex(java.lang.String, java.lang.String)
 	 */
-	public int createVertex(String sName, String sType, String sLink) {
+	public int createVertex(
+			String sName, 
+			String sType, 
+			String sLink,
+			String sReactionId) {
 		
 		int iGeneratedId = generateId();
-		PathwayVertex newVertex = new PathwayVertex(iGeneratedId, sName, sType, sLink);
+		
+		PathwayVertex newVertex = 
+			new PathwayVertex(iGeneratedId, sName, sType, sLink, sReactionId);
+		
 		currentVertex = newVertex;
 		vertexLUT.put(iGeneratedId, newVertex);
 		
@@ -66,11 +74,16 @@ public class PathwayElementManager implements IPathwayElementManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertexRepresentation(java.lang.String, int, int, int, int)
 	 */
-	public void createVertexRepresentation(String sName, int iHeight,
-			int iWidth, int iXPosition, int iYPosition) {
+	public void createVertexRepresentation(
+			String sName, 
+			int iHeight,
+			int iWidth, 
+			int iXPosition, 
+			int iYPosition, 
+			String sType) {
 		
 		IPathwayVertexRep newVertexRep = new PathwayVertexRep(sName, iHeight, iWidth,
-				iXPosition, iYPosition);
+				iXPosition, iYPosition, sType);
 
 		currentVertex.addVertexRep(newVertexRep);
 	}
@@ -78,18 +91,21 @@ public class PathwayElementManager implements IPathwayElementManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createEdge(int, int, java.lang.String)
 	 */
-	public void createEdge(int iVertexId1, int iVertexId2, String sType) {
+	public void createEdge(
+			int iVertexId1, 
+			int iVertexId2, 
+			String sType) {
 		
 		int iGeneratedId = generateId();
 		
-		PathwayEdge newEdge = new PathwayEdge(iVertexId1, iVertexId2, sType);
-		
-		edgeLUT.put(iGeneratedId, newEdge);
-		
-		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
-			getCurrentPathway().addEdge(newEdge);
-		
-		currentEdge = newEdge;
+//		PathwayEdge newEdge = new PathwayEdge(iVertexId1, iVertexId2, sType);
+//		
+//		edgeLUT.put(iGeneratedId, newEdge);
+//		
+//		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
+//			getCurrentPathway().addEdge(newEdge);
+//		
+//		currentEdge = newEdge;
 	}
 
 	/* (non-Javadoc)
@@ -99,10 +115,31 @@ public class PathwayElementManager implements IPathwayElementManager {
 		
 		if (currentEdge != null)
 		{
-			currentEdge.setICompoundId(iCompoundId);
+//			currentEdge.setICompoundId(iCompoundId);
 		}
 
 		currentEdge = null;
+	}
+	
+
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayElementManager#addProductForEdge(int)
+	 */
+	public void addProductForEdge(int iCompoundId) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayElementManager#addSubstrateForEdge(int)
+	 */
+	public void addSubstrateForEdge(int iCompoundId) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 	private int generateId() {
@@ -168,4 +205,5 @@ public class PathwayElementManager implements IPathwayElementManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

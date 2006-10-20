@@ -1,8 +1,6 @@
 package cerberus.view.gui.swt.pathway.jgraph;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -11,12 +9,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
@@ -32,7 +26,6 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
-import org.jgraph.pad.resources.Translator;
 
 import cerberus.util.system.StringConversionTool;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -43,6 +36,8 @@ import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
+import cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView;
+import cerberus.view.gui.swt.pathway.jgraph.JGraphRoundRectView;
 
 /**
  * In this class the real drawing of the Pathway happens.
@@ -206,7 +201,7 @@ extends APathwayGraphViewRep {
 	}
 	
 	public void createVertex(PathwayVertex vertex, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition, PathwayVertexType vertexType) {
+			int iXPosition, int iYPosition, String sShapeType) {
 		
 		//create node
 		refGraphCell = new DefaultGraphCell(vertex);
@@ -215,12 +210,12 @@ extends APathwayGraphViewRep {
 		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
 		
 		//assign vertex color
-		if (vertexType == PathwayVertexType.enzyme)
+		if (sShapeType.equals("roundrectangle"))
 		{
-			// Set vertex type to ellipse
+			// Set vertex type to round rect
 			GPCellViewFactory.setViewClass(
 					refGraphCell.getAttributes(), 
-					"com.jgraph.example.mycellview.RoundRectView");
+					"cerberus.view.gui.swt.pathway.jgraph.JGraphRoundRectView");
 
 			GraphConstants.setBounds(refGraphCell.getAttributes(), 
 					new Rectangle2D.Double(
@@ -229,12 +224,12 @@ extends APathwayGraphViewRep {
 							iWidth, iHeight));
 			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.orange);
 		}
-		else if (vertexType == PathwayVertexType.compound)
+		else if (sShapeType.equals("circle"))
 		{
 			// Set vertex type to ellipse
 			GPCellViewFactory.setViewClass(
 					refGraphCell.getAttributes(), 
-					"com.jgraph.example.mycellview.JGraphEllipseView");
+					"cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView");
 			
 			GraphConstants.setBounds(refGraphCell.getAttributes(), 
 					new Rectangle2D.Double(
@@ -243,13 +238,8 @@ extends APathwayGraphViewRep {
 							15, 15));
 			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.green);
 		}	
-		else if (vertexType == PathwayVertexType.map)
+		else if (sShapeType.equals("rectangle"))
 		{
-			// Set vertex type to ellipse
-			GPCellViewFactory.setViewClass(
-					refGraphCell.getAttributes(), 
-					"com.jgraph.example.mycellview.RoundRectView");
-
 			GraphConstants.setBounds(refGraphCell.getAttributes(), 
 					new Rectangle2D.Double(
 							(int)(iXPosition * SCALING_FACTOR), 

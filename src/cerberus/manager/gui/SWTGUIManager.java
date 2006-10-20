@@ -330,17 +330,8 @@ implements ISWTGUIManager
 					refDisplay.sleep();
 			}
 		}
-		
+
 		refDisplay.dispose();
-		
-//		refShell.open();
-//		while (!refShell.isDisposed())
-//		{
-//			if (!refDisplay.readAndDispatch())
-//				refDisplay.sleep();
-//		}
-//
-//		refDisplay.dispose();
 	}
 
 	public boolean hasItem(int iItemId)

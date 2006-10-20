@@ -101,34 +101,41 @@ implements IPathwayGraphView {
         		
         		// FIXME: this is just a workaround.
         		// inconsitency between vertexRep and vertex "name"
-        		vertex.setElementTitle(vertexRep.getSName());
+        		vertex.setElementTitle(vertexRep.getName());
         		
         		createVertex(vertex, 
-        				vertexRep.getIHeight(), vertexRep.getIWidth(), 
-        				vertexRep.getIXPosition(), vertexRep.getIYPosition(),
-        				vertex.getVertexType());
+        				vertexRep.getHeight(), vertexRep.getWidth(), 
+        				vertexRep.getXPosition(), vertexRep.getYPosition(),
+        				vertexRep.getShapeType());
         	}
         }   
         
         edgeList = pathway.getEdgeList();
         edgeIterator = edgeList.iterator();
-        while (edgeIterator.hasNext())
-        {
-        	edge = edgeIterator.next();
-        
-        	if (edge.getSType().equals("ECrel"))
-        	{
-        		if (edge.getICompoundId() == -1)
-        		{
-	        		createEdge(edge.getIElementId1(), edge.getIElementId2());	        			
-        		}
-        		else 
-        		{
-        			createEdge(edge.getIElementId1(), edge.getICompoundId());
-        			createEdge(edge.getICompoundId(), edge.getIElementId2());
-        		}
-        	}
-        }   
+//        while (edgeIterator.hasNext())
+//        {
+//        	edge = edgeIterator.next();
+//        
+//        	if (edge.getSType().equals("ECrel"))
+//        	{
+//        		if (edge.getICompoundId() == -1)
+//        		{
+//        			// Direct connection between noded
+//	        		createEdge(edge.getIElementId1(), edge.getIElementId2());	        			
+//        		}
+//        		else 
+//        		{
+//        			// Edge is routed over a compound
+//        			createEdge(edge.getIElementId1(), edge.getICompoundId());
+//        			createEdge(edge.getICompoundId(), edge.getIElementId2());
+//        		}
+//        	}
+//        	else if (edge.getSType().equals("maplink"))
+//        	{
+//        		createEdge(edge.getICompoundId(), edge.getIElementId2());
+//        		// Is the second connection needed or already drawn?
+//        	}
+//        }   
 	}
 
 	public void readInAttributes(IParameterHandler refParameterHandler) {

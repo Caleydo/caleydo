@@ -2,55 +2,66 @@ package cerberus.data.view.rep.pathway.jgraph;
 
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 
-public class PathwayVertexRep implements IPathwayVertexRep 
-{
-	private String sName;
-	private int iHeight = 0;
-	private int iWidth = 0;
-	private int iXPosition = 0;
-	private int iYPosition = 0;
+public class PathwayVertexRep 
+implements IPathwayVertexRep {
 
-	public PathwayVertexRep(String sName, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition) 
-	{	
+	protected String sName;
+	protected String sShapeType;
+	protected int iHeight = 0;
+	protected int iWidth = 0;
+	protected int iXPosition = 0;
+	protected int iYPosition = 0;
+
+	public PathwayVertexRep(
+			String sName, 
+			int iHeight,
+			int iWidth, 
+			int iXPosition, 
+			int iYPosition, 
+			String sShapeType) {
+		
 		this.sName = sName;
 		this.iHeight = iHeight;
 		this.iWidth = iWidth;
 		this.iXPosition = iXPosition;
 		this.iYPosition = iYPosition;
+		this.sShapeType = sShapeType;
 	}
 
-	public int getIHeight() 
-	{
+	public int getHeight() {
 		return iHeight;
 	}
 
-	public int getIWidth() 
-	{
+	public int getWidth() {
 		return iWidth;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getIXPosition()
+	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getXPosition()
 	 */
-	public int getIXPosition() 
-	{
+	public int getXPosition() {
 		return iXPosition;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getIYPosition()
+	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getYPosition()
 	 */
-	public int getIYPosition() 
-	{
+	public int getYPosition() {	
 		return iYPosition;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getSName()
+	 * @see cerberus.data.view.rep.pathway.jgraph.VertexRepInter#getName()
 	 */
-	public String getSName() 
-	{
+	public String getName() {
 		return sName;
 	}
+
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.data.view.rep.pathway.IPathwayVertexRep#getType()
+	 */
+	public String getShapeType() {	
+		return sShapeType;
+	}	
 }

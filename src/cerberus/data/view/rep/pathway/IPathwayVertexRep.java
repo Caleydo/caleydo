@@ -3,10 +3,12 @@ package cerberus.data.view.rep.pathway;
 public interface IPathwayVertexRep
 {
 
-	public abstract int getIXPosition();
+	public abstract int getXPosition();
 
-	public abstract int getIYPosition();
+	public abstract int getYPosition();
 
-	public abstract String getSName();
+	public abstract String getName();
+	
+	public abstract String getShapeType();
 
 }

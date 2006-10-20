@@ -4,8 +4,6 @@ import org.xml.sax.InputSource;
 
 import cerberus.util.system.CerberusInputStream;
 
-
-import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ISWTGUIManager;

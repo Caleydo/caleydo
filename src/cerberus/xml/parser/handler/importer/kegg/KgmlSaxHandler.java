@@ -28,6 +28,8 @@ implements IXmlParserHandler
 	
 	protected HashMap<Integer, Integer> kgmlIdToElementIdLUT;
 		
+	protected String sAttributeName = "";
+	
 	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
 			final IXmlParserManager refXmlParserManager)
 	{		
@@ -112,8 +114,6 @@ implements IXmlParserHandler
     	String sImageLink = "";
     	String sLink = "";
     	int iPathwayID = 0;
-    
-		String sAttributeName = "";
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -154,8 +154,8 @@ implements IXmlParserHandler
     	String sName = "";
     	String sType = "";
     	String sLink = "";
+    	String sReactionId = "";
 	   
-    	String sAttributeName;
     	int iGeneratedElementId = 0;
 	
     	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
@@ -175,11 +175,13 @@ implements IXmlParserHandler
 			   sType = attributes.getValue(iAttributeIndex); 
 		   else if (sAttributeName.equals("link"))
 			   sLink = attributes.getValue(iAttributeIndex);
+		   else if (sAttributeName.equals("reaction"))
+			   sReactionId = attributes.getValue(iAttributeIndex);
 	   	}
 
     	iGeneratedElementId = 		
     		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
-			createVertex(sName, sType, sLink);
+			createVertex(sName, sType, sLink, sReactionId);
     	
     	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
     }
@@ -195,13 +197,12 @@ implements IXmlParserHandler
     public void handleGraphicsTag()
     {
 		String sName = "";
+		String sType = "";
 		int iHeight = 0;
 		int iWidth = 0;
 		int iXPosition = 0;
 		int iYPosition = 0;
-		
-		String sAttributeName;
-		
+
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
 			 sAttributeName = attributes.getLocalName(iAttributeIndex);
@@ -221,6 +222,8 @@ implements IXmlParserHandler
     			iXPosition = new Integer(attributes.getValue(iAttributeIndex)); 
    			else if (sAttributeName.equals("y"))
    				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("type"))
+   				sType = attributes.getValue(iAttributeIndex);
 			
    			//System.out.println("Attribute name: " +sAttributeName);
    			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
@@ -228,7 +231,7 @@ implements IXmlParserHandler
 
 		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
 			createVertexRepresentation(sName, iHeight, iWidth,
-				iXPosition, iYPosition);
+				iXPosition, iYPosition, sType);
     }
     
 	/**
@@ -242,8 +245,6 @@ implements IXmlParserHandler
     	int iEntry1 = 0;
     	int iEntry2 = 0;
     	String sType = "";
-    	
-		String sAttributeName = "";
 		
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -276,8 +277,6 @@ implements IXmlParserHandler
     {
     	String sName = "";
     	int iValue = 0;
-    	
-		String sAttributeName = "";
 		
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -312,8 +311,26 @@ implements IXmlParserHandler
 	 * <reaction name="rn:R01001" type="irreversible">
 	 */
     public void handleReactionTag()
-    {
+    {	
+    	String sName = "";
+		String sType = "";
+		
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("type"))
+				sType = attributes.getValue(iAttributeIndex); 
+			else if (sAttributeName.equals("name"))
+				sName = attributes.getValue(iAttributeIndex); 
 
+			
+		}  	
     }
     
 	/**

@@ -9,8 +9,13 @@ import cerberus.view.gui.IView;
 public interface IPathwayGraphView 
 extends IView
 {
-	public void createVertex(PathwayVertex vertex, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition, PathwayVertexType vertexType);
+	public void createVertex(
+			PathwayVertex vertex, 
+			int iHeight, 
+			int iWidth, 
+			int iXPosition, 
+			int iYPosition, 
+			String sShapeType);
 	
 	public void createEdge(int iVertexId1, int iVertexId2);
 	
