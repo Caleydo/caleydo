@@ -122,64 +122,74 @@ extends APathwayGraphViewRep {
 
 //				if (event.getClickCount() == 2)
 //				{	
-					if (clickedCell != null)
+		    		// Check if cell has an user object attached
+					if (clickedCell.getUserObject() == null)
 					{
-						final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
-							.getVertexLink();
+						super.mousePressed(event);
+						return;						
+					}
+
+					final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
+						.getVertexLink();
+					
+					if (sUrl == "") 
+					{
+						super.mousePressed(event);
+						return;
+					}
+					
+					String sSearchPattern = "pathway/map/";
+					String sPathwayFilePath;
+					
+					// Check if clicked cell is another pathway
+					if (sUrl.contains((CharSequence)sSearchPattern))
+					{
+						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
+						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
+						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
+						System.out.println("Load pathway from " +sPathwayFilePath);
 						
-						String sSearchPattern = "pathway/map/";
-						String sPathwayFilePath;
+						// Extract pathway clicked pathway ID
+						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+						System.out.println("Last index: " +iPathwayIdIndex);
+						iPathwayId = StringConversionTool.
+							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
+
+						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+								"Load pathway with ID " +iPathwayId);
 						
-						// Check if clicked cell is another pathway
-						if (sUrl.contains((CharSequence)sSearchPattern))
+						// Load pathway
+						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+					
+						bNeighbourhoodShown = false;
+					}
+					else
+					{
+						// Load node information in browser
+						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+						getViewGLCanvasManager();					
+				    
+						refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+							public void run() {
+								((HTMLBrowserViewRep)tmpViewManager.
+										getItem(iHTMLBrowserId)).setUrl(sUrl);
+							}
+						});	
+						
+						// Showing neighbours
+						if (bNeighbourhoodShown == true)
 						{
-							int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
-							sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
-							sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
-							System.out.println("Load pathway from " +sPathwayFilePath);
-							
-							// Extract pathway clicked pathway ID
-							int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
-							System.out.println("Last index: " +iPathwayIdIndex);
-							iPathwayId = StringConversionTool.
-								convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
-	
-							refGeneralManager.getSingelton().getLoggerManager().logMsg(
-									"Load pathway with ID " +iPathwayId);
-							
-							// Load pathway
-							loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
-						
+							for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
+							{
+								refUndoManager.undo(refGraphLayoutCache);
+							}
 							bNeighbourhoodShown = false;
 						}
-						else
-						{
-							// Load node information in browser
-							final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-							getViewGLCanvasManager();					
-					    
-							refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
-								public void run() {
-									((HTMLBrowserViewRep)tmpViewManager.
-											getItem(iHTMLBrowserId)).setUrl(sUrl);
-								}
-							});	
-							
-							// Showing neighbours
-							if (bNeighbourhoodShown == true)
-							{
-								for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
-								{
-									refUndoManager.undo(refGraphLayoutCache);
-								}
-								bNeighbourhoodShown = false;
-							}
 
-							showNeighbourhood(clickedCell, iNeighbourhoodDistance);
-							bNeighbourhoodShown = true;
-						}
-					}// (clickedCell != null)
-				
+						showNeighbourhood(clickedCell, iNeighbourhoodDistance);
+						bNeighbourhoodShown = true;
+					}
+//		    	}
 				super.mousePressed(event);
 			}
 		}

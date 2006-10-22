@@ -11,7 +11,7 @@ extends APathwayElement {
 	
 	protected Vector<IPathwayVertexRep> vertexReps;
 	
-	protected String sVertexLink; 
+	protected String sVertexLink = ""; 
 	
 	/*
 	 * The enzyme's reaction name
