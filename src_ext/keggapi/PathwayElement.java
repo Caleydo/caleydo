@@ -7,8 +7,10 @@
 
 package keggapi;
 
-public class PathwayElement  implements java.io.Serializable {
-    private int element_id;
+public class PathwayElement  
+implements java.io.Serializable {
+
+	private int element_id;
 
     private java.lang.String type;
 

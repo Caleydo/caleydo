@@ -2,8 +2,8 @@ package cerberus.view.gui.swt.pathway;
 
 import java.awt.Dimension;
 
+import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.view.gui.IView;
 
 public interface IPathwayGraphView 
@@ -18,7 +18,10 @@ extends IView
 			int iYPosition, 
 			String sShapeType);
 	
-	public void createEdge(int iVertexId1, int iVertexId2, boolean bDrawArrow);
+	public void createEdge(int iVertexId1, 
+			int iVertexId2, 
+			boolean bDrawArrow,
+			APathwayEdge refPathwayEdge);
 	
 	public void setPathwayId(int iPathwayId);
 	

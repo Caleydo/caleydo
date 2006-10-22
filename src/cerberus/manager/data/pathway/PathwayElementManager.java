@@ -105,7 +105,8 @@ implements IPathwayElementManager {
 		
 		int iGeneratedId = generateId();
 		
-		PathwayRelationEdge newEdge = new PathwayRelationEdge(iVertexId1, iVertexId2, sType);
+		PathwayRelationEdge newEdge = 
+			new PathwayRelationEdge(iVertexId1, iVertexId2, sType);
 		
 		edgeLUT.put(iGeneratedId, newEdge);
 		
@@ -177,6 +178,7 @@ implements IPathwayElementManager {
 		return reactionName2EdgeIdLUT;
 	}
 	
+	//TODO: Method needs to be replaced with createNewId method from interface.
 	private int generateId() {
 		
 		return iCurrentUniqueElementId++;

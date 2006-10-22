@@ -13,8 +13,11 @@ import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
+import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
@@ -35,6 +38,10 @@ implements IPathwayGraphView {
 	
 	protected int iHTMLBrowserId;
 	
+	protected PathwayRenderStyle refRenderStyle;
+	
+	protected Pathway refCurrentPathway;
+	
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
@@ -42,8 +49,8 @@ implements IPathwayGraphView {
 			String sLabel)
 	{
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
-		
-		// TODO Auto-generated constructor stub
+
+		refRenderStyle = new PathwayRenderStyle();
 	}
 
 	public void setPathwayId(int iPathwayId) {
@@ -67,17 +74,15 @@ implements IPathwayGraphView {
 			((IPathwayManager)refGeneralManager.getSingelton().
 					getPathwayManager()).getPathwayLUT();
 		
-		Pathway pathway;
-		
 		// Take first in list if pathway ID is not set
 		if (iPathwayId == 0)
 		{
 			Iterator<Pathway> iter = pathwayLUT.values().iterator();
-			pathway = iter.next();
+			refCurrentPathway = iter.next();
 		}
 		else
 		{
-			pathway = pathwayLUT.get(iPathwayId);
+			refCurrentPathway = pathwayLUT.get(iPathwayId);
 		}
 	    
 	    Vector<PathwayVertex> vertexList;
@@ -93,7 +98,7 @@ implements IPathwayGraphView {
 	    PathwayRelationEdge relationEdge;
 	    PathwayReactionEdge reactionEdge;
 	    
-        vertexList = pathway.getVertexList();
+        vertexList = refCurrentPathway.getVertexList();
         
         vertexIterator = vertexList.iterator();
         while (vertexIterator.hasNext())
@@ -115,7 +120,7 @@ implements IPathwayGraphView {
         	}
         }   
         
-        edgeList = pathway.getEdgeList();
+        edgeList = refCurrentPathway.getEdgeList();
         edgeIterator = edgeList.iterator();
         while (edgeIterator.hasNext())
         {
@@ -126,20 +131,38 @@ implements IPathwayGraphView {
         	{
         		// Cast abstract edge to relation edge
         		relationEdge = (PathwayRelationEdge)edge;
-        		
+
+    			// Direct connection between nodes
         		if (relationEdge.getCompoundId() == -1)
         		{
-        			// Direct connection between nodes
-	        		createEdge(relationEdge.getElementId1(), 
-	        				relationEdge.getElementId2(), false);	        			
+    				createEdge(relationEdge.getElementId1(), 
+    						relationEdge.getElementId2(), 
+    						false, 
+    						relationEdge);
         		}
+    			// Edge is routed over a compound
         		else 
         		{
-        			// Edge is routed over a compound
         			createEdge(relationEdge.getElementId1(), 
-        					relationEdge.getCompoundId(), false);
-        			createEdge(relationEdge.getCompoundId(), 
-        					relationEdge.getElementId2(), false);
+        					relationEdge.getCompoundId(), 
+        					false, 
+        					relationEdge);
+        			
+        			if (relationEdge.getEdgeRelationType() 
+        					== EdgeRelationType.maplink)
+        			{
+            			createEdge(relationEdge.getElementId2(),
+            					relationEdge.getCompoundId(),
+            					true,
+            					relationEdge);
+        			}
+        			else
+        			{
+            			createEdge(relationEdge.getCompoundId(), 
+            					relationEdge.getElementId2(), 
+            					false,
+            					relationEdge);
+        			}
         		}
         	}// if (edge.getClass().getName().equals("PathwayRelationEdge"))
         	
@@ -183,11 +206,15 @@ implements IPathwayGraphView {
 	            		//FIXME: interate over substrates and products
 		        		createEdge(
 		        				reactionEdge.getSubstrates().get(0), 
-		        				vertex.getElementId(), false);	    
+		        				vertex.getElementId(), 
+		        				false,
+		        				reactionEdge);	    
 		        		
 		        		createEdge(
 		        				vertex.getElementId(),
-		        				reactionEdge.getProducts().get(0), true);	  
+		        				reactionEdge.getProducts().get(0), 
+		        				true,
+		        				reactionEdge);	  
 	            	}	
 	    		}// if (edge != null)
 	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)

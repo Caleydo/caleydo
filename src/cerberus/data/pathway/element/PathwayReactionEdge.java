@@ -3,27 +3,40 @@ package cerberus.data.pathway.element;
 import java.util.Vector;
 
 import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 
 public class PathwayReactionEdge 
 extends APathwayEdge {
 	
-	protected String sReactionName;
+	public enum EdgeReactionType {
+		REVERSIBLE,
+		IRREVERSIBLE
+	};
 	
-	protected String sReactionType;
+	protected String sReactionName;
 	
 	protected Vector<Integer> vecReactionSubstrates;
 	
 	protected Vector<Integer> vecReactionProducts;
 	
+	protected EdgeReactionType edgeReactionType;
+	
 	public PathwayReactionEdge(
 			String sReactionName, 
 			String sReactionType) {
+		
+		edgeType = EdgeType.REACTION;
 		
 		vecReactionSubstrates = new Vector<Integer>();
 		vecReactionProducts = new Vector<Integer>();
 		
 		this.sReactionName = sReactionName;
-		this.sReactionType = sReactionType;
+		
+		if (sReactionType.equals("reversible"))
+			edgeReactionType = EdgeReactionType.REVERSIBLE;
+		else if (sReactionType.equals("irreversible"))
+			edgeReactionType = EdgeReactionType.IRREVERSIBLE;
 	}
 	
 	public void addSubstrate(int iCompoundId) {
@@ -44,5 +57,10 @@ extends APathwayEdge {
 	public Vector<Integer> getProducts() {
 		
 		return vecReactionProducts;
+	}
+	
+	public EdgeReactionType getEdgeReactionType() {
+		
+		return edgeReactionType;
 	}
 }

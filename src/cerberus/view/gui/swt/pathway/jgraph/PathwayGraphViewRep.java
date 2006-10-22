@@ -16,6 +16,7 @@ import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultEdge;
@@ -28,16 +29,19 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
 import cerberus.util.system.StringConversionTool;
+import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
+import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
+import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
-import cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView;
-import cerberus.view.gui.swt.pathway.jgraph.JGraphRoundRectView;
 
 /**
  * In this class the real drawing of the Pathway happens.
@@ -253,7 +257,10 @@ extends APathwayGraphViewRep {
 		vertexIdToCellLUT.put(vertex.getElementId(), refGraphCell);
 	}
 	
-	public void createEdge(int iVertexId1, int iVertexId2, boolean bDrawArrow) {
+	public void createEdge(int iVertexId1, 
+			int iVertexId2, 
+			boolean bDrawArrow,
+			APathwayEdge refPathwayEdge) {
 		
 		DefaultPort port1 = new DefaultPort();
 		DefaultGraphCell cell1 = vertexIdToCellLUT.get(iVertexId1);
@@ -265,15 +272,62 @@ extends APathwayGraphViewRep {
 		
 		DefaultEdge edge = new DefaultEdge();
 
+		AttributeMap changedMap = edge.getAttributes(); 	
+		EdgeLineStyle edgeLineStyle = null;
+		EdgeArrowHeadStyle edgeArrowHeadStyle = null;
+		Color edgeColor = null;
+		
+		// Differentiate between Relations and Reactions
+		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
+		{
+			edgeLineStyle = refRenderStyle.getReactionEdgeLineStyle();
+			edgeArrowHeadStyle = refRenderStyle.getReactionEdgeArrowHeadStyle();
+			edgeColor = refRenderStyle.getReactionEdgeColor();
+		}
+		else if (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+		{
+			// In case when relations are maplinks
+			if (((PathwayRelationEdge)refPathwayEdge).getEdgeRelationType() 
+					== EdgeRelationType.maplink)
+			{
+				edgeLineStyle = refRenderStyle.getMaplinkEdgeLineStyle();
+				edgeArrowHeadStyle = refRenderStyle.getMaplinkEdgeArrowHeadStyle();
+				edgeColor = refRenderStyle.getMaplinkEdgeColor();
+			}
+			else 
+			{
+				edgeLineStyle = refRenderStyle.getRelationEdgeLineStyle();
+				edgeArrowHeadStyle = refRenderStyle.getRelationEdgeArrowHeadStyle();
+				edgeColor = refRenderStyle.getRelationEdgeColor();
+			}
+		}// (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+		
+		// Assign render style
+	    if (edgeLineStyle == EdgeLineStyle.DASHED)
+	    {
+	    	GraphConstants.setDashPattern(changedMap, new float[]{4,4});
+	    }
+	    	
 		// Draw arrow
 		if (bDrawArrow == true)
 		{
-			GraphConstants.setLineEnd(edge.getAttributes(), GraphConstants.ARROW_CLASSIC);
-			GraphConstants.setEndFill(edge.getAttributes(), true);
+			GraphConstants.setLineEnd(
+					edge.getAttributes(), GraphConstants.ARROW_TECHNICAL);
 		}
+	    
+	    if (edgeArrowHeadStyle == EdgeArrowHeadStyle.FILLED)
+	    {
+			GraphConstants.setEndFill(changedMap, true);
+	    }
+		else if (edgeArrowHeadStyle == EdgeArrowHeadStyle.EMPTY)
+		{
+			GraphConstants.setEndFill(changedMap, false);
+		}
+	    
+		GraphConstants.setLineColor(changedMap, edgeColor);
+		GraphConstants.setLineWidth(changedMap, 2);
 		
 //		GraphConstants.setRouting(edge.getAttributes(), GraphConstants.ROUTING_SIMPLE);
-//		GraphConstants.setLineStyle(edge.getAttributes(), GraphConstants.STYLE_SPLINE);
 
 		edge.setSource(cell1.getChildAt(0));
 		edge.setTarget(cell2.getChildAt(0));

@@ -1,24 +1,40 @@
 package cerberus.data.pathway.element;
 
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+
 public class PathwayRelationEdge 
 extends APathwayEdge {
 
+	public enum EdgeRelationType {
+		ECrel,
+		PPrel,
+		GErel,
+		PCrel,
+		maplink
+	};
+	
 	protected int iElementId1 = 0;
 
 	protected int iElementId2 = 0;
 
-	protected String sRelationType = "";
-
 	protected int iCompoundId = 0;
+	
+	protected EdgeRelationType edgeRelationType;
 	
 	public PathwayRelationEdge(
 			int iElementId1, 
 			int iElementId2, 
 			String sRelationType) {
 
+		edgeType = EdgeType.RELATION;
+		
 		this.iElementId1 = iElementId1;
 		this.iElementId2 = iElementId2;
-		this.sRelationType = sRelationType;
+		
+		if (sRelationType.equals("ECrel"))
+			edgeRelationType = EdgeRelationType.ECrel;
+		else if (sRelationType.equals("maplink"))
+			edgeRelationType = EdgeRelationType.maplink;
 	}
 
 	public int getElementId1() {
@@ -30,11 +46,6 @@ extends APathwayEdge {
 		
 		return iElementId2;
 	}
-
-	public String getRelationType() {
-		
-		return sRelationType;
-	}
 	
 	public void setCompoundId(int iCompoundId) {
 		
@@ -44,5 +55,10 @@ extends APathwayEdge {
 	public int getCompoundId() {
 		
 		return iCompoundId;
+	}
+	
+	public EdgeRelationType getEdgeRelationType() {
+		
+		return edgeRelationType;
 	}
 }

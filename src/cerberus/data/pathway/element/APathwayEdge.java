@@ -8,6 +8,17 @@ import cerberus.data.view.rep.pathway.IPathwayEdgeRep;
 public abstract class APathwayEdge 
 extends PathwayElement {
 	
+	public enum EdgeType {
+		RELATION,
+		REACTION
+	};
+	
 	protected Vector<IPathwayEdgeRep> edgeReps;
 	
+	protected EdgeType edgeType;
+	
+	public EdgeType getEdgeType() {
+	
+		return edgeType;
+	}
 }
