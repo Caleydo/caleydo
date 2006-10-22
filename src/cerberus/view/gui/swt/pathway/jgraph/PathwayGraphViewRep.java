@@ -326,6 +326,8 @@ extends APathwayGraphViewRep {
 	    
 		GraphConstants.setLineColor(changedMap, edgeColor);
 		GraphConstants.setLineWidth(changedMap, 2);
+
+//		GraphConstants.setRouting(changedMap, JGraphParallelRouter.getSharedInstance());
 		
 //		GraphConstants.setRouting(edge.getAttributes(), GraphConstants.ROUTING_SIMPLE);
 
@@ -416,5 +418,27 @@ extends APathwayGraphViewRep {
 	public void setNeighbourhoodDistance(int iNeighbourhoodDistance) {
 		
 		this.iNeighbourhoodDistance = iNeighbourhoodDistance;
+	}
+	
+	public void showRelationEdges(boolean bShowRelationEdges) {
+		
+		this.bShowRelationEdges = bShowRelationEdges;
+		refGraphModel = new DefaultGraphModel();
+		refPathwayGraph.setModel(refGraphModel);
+		refGraphLayoutCache.setModel(refGraphModel);
+		refGraphModel.addUndoableEditListener(refUndoManager);
+		
+		drawView();
+	}
+	
+	public void showReactionEdges(boolean bShowReactionEdges) {
+		
+		this.bShowReactionEdges = bShowReactionEdges;
+		refGraphModel = new DefaultGraphModel();
+		refPathwayGraph.setModel(refGraphModel);
+		refGraphLayoutCache.setModel(refGraphModel);
+		refGraphModel.addUndoableEditListener(refUndoManager);
+		
+		drawView();
 	}
 }

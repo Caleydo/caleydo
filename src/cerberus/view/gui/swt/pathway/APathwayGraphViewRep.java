@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.swt.widgets.Composite;
+import org.jgraph.graph.DefaultGraphModel;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
@@ -42,6 +43,10 @@ implements IPathwayGraphView {
 	
 	protected Pathway refCurrentPathway;
 	
+	protected boolean bShowReactionEdges;
+	
+	protected boolean bShowRelationEdges;
+	
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
@@ -51,6 +56,9 @@ implements IPathwayGraphView {
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 
 		refRenderStyle = new PathwayRenderStyle();
+		
+		bShowRelationEdges = true;
+		bShowReactionEdges = true;
 	}
 
 	public void setPathwayId(int iPathwayId) {
@@ -126,6 +134,9 @@ implements IPathwayGraphView {
         {
         	edge = edgeIterator.next();
         
+        	if (bShowRelationEdges == false)
+        		break;
+        	
         	// Process RELATION EDGES
         	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayRelationEdge"))
         	{
@@ -197,6 +208,9 @@ implements IPathwayGraphView {
 	    		// FIXME: problem with multiple reactions per enzyme
 	    		if (edge != null)
 	    		{
+	            	if (bShowReactionEdges == false)
+	            		break;
+	    			
 	            	// Process REACTION EDGES
 	            	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayReactionEdge"))
 	            	{

@@ -36,4 +36,8 @@ extends IView
 	public void zoomOut();
 	
 	public void showOverviewMapInNewWindow(Dimension dim);
+	
+	public void showRelationEdges(boolean bShowRelationEdges);
+	
+	public void showReactionEdges(boolean bShowReactionEdges);
 }
