@@ -28,6 +28,8 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
+import sun.security.krb5.internal.bn;
+
 import cerberus.util.system.StringConversionTool;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -55,7 +57,12 @@ import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
 public class PathwayGraphViewRep
 extends APathwayGraphViewRep {
 		
-	protected static final double SCALING_FACTOR = 1.4;
+	/**
+	 * Pathway element positions are read from XML files.
+	 * The scaling factor can scale the positions to blow up or
+	 * shrink the pathway.
+	 */
+	protected static final double SCALING_FACTOR = 1.8;
 	
 	protected GraphModel refGraphModel;
 	
@@ -74,6 +81,19 @@ extends APathwayGraphViewRep {
 	protected GPOverviewPanel refOverviewPanel;
 	
 	protected int iNeighbourhoodDistance = 1;
+	
+	/**
+	 * Counts how often the neighbour recursion is called.
+	 * This is needed for the UNDO operation on the next selection.
+	 */
+	protected int iNeighbourhoodUndoCount = 0;
+	
+	/**
+	 * Flag shows if the neighbours of a cell
+	 * are currently displayed. Flag is needed
+	 * for UNDO of previous neigbour highlighning.
+	 */
+	protected boolean bNeighbourhoodShown = false;
 	
 	public PathwayGraphViewRep(IGeneralManager refGeneralManager, int iParentContainerId) {
 		
@@ -129,6 +149,8 @@ extends APathwayGraphViewRep {
 							
 							// Load pathway
 							loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+						
+							bNeighbourhoodShown = false;
 						}
 						else
 						{
@@ -143,9 +165,20 @@ extends APathwayGraphViewRep {
 								}
 							});	
 							
+							// Showing neighbours
+							if (bNeighbourhoodShown == true)
+							{
+								for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
+								{
+									refUndoManager.undo(refGraphLayoutCache);
+								}
+								bNeighbourhoodShown = false;
+							}
+
 							showNeighbourhood(clickedCell, iNeighbourhoodDistance);
+							bNeighbourhoodShown = true;
 						}
-					}
+					}// (clickedCell != null)
 				
 				super.mousePressed(event);
 			}
@@ -368,8 +401,6 @@ extends APathwayGraphViewRep {
 	}
 	
 	protected void showNeighbourhood(DefaultGraphCell cell, int iDistance) {
-	
-		refUndoManager.undo(refGraphLayoutCache);
 		
 		List<DefaultGraphCell> neighbourCells = 
 			refGraphLayoutCache.getNeighbours(cell, null, false, false);
@@ -380,7 +411,7 @@ extends APathwayGraphViewRep {
 		Map attributeMap = new Hashtable();
 		
 		GraphConstants.setGradientColor(
-				attributeMap, Color.red);
+				attributeMap, new Color(1.0f, 0.0f, 0.0f));
 		
 		DefaultGraphCell tmpCell;
 		
@@ -390,13 +421,15 @@ extends APathwayGraphViewRep {
 
 			nested.put(tmpCell, attributeMap);
 			
-//			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
-//			{
-//				showNeighbourhood(tmpCell, iDistance-1);
-//			}
+			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
+			{
+				showNeighbourhood(tmpCell, iDistance-1);
+			}
 		}
 		
 		refGraphLayoutCache.edit(nested, null, null, null);
+		
+		iNeighbourhoodUndoCount++;
 	}
 	
 	/**

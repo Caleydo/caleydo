@@ -61,11 +61,6 @@ implements IView, IMediatorReceiver {
 		
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
 
-//		IViewManager viewManager = (IViewManager) refGeneralManager
-//				.getManagerByBaseType(ManagerObjectType.VIEW);
-//		refDataTableViewRep = (DataTableViewRep) viewManager
-//				.createView(ManagerObjectType.VIEW_SWT_DATA_TABLE, -1, iUniqueId, sLabel);
-
 		// The simple data table is not created via the view manager
 		// because it is not needed in the global context.
 		refDataTableViewRep = new DataTableViewRep(

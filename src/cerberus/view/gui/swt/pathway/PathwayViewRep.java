@@ -17,16 +17,16 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.swt.pathway.jgraph.NumberInputDialog;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
- * Image view.
+ * Pathway view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -178,10 +178,10 @@ implements IView {
 		Listener edgeFilterListener = new Listener () {
 			public void handleEvent (Event event) {
 		
-				System.out.println("Name: " +event.widget.getClass().getSimpleName());
-
 				if (!event.widget.getClass().getSimpleName().equals("MenuItem"))
+				{
 					return;	
+				}
 
 				MenuItem clickedMenuItem = ((MenuItem)event.widget);
 				
@@ -191,7 +191,6 @@ implements IView {
 				}
 				else if (((MenuItem)event.widget).getText().equals("Show reactions"))
 				{
-					System.out.println("SELECTED: " +clickedMenuItem.getSelection());
 					refPathwayGraphViewRep.showReactionEdges(clickedMenuItem.getSelection());
 				}					
 			}
@@ -216,7 +215,11 @@ implements IView {
 	          }	   
 	          else if (sToolItemIdentifier.equals("Change neighbourhood distance"))
 	          {
-	        	  //refPathwayGraphViewRep.setNeighbourhoodDistance(2);
+	        	  NumberInputDialog neighbourhoodInputDialog = 
+	        		  new NumberInputDialog(refSWTContainer.getShell());
+	        	  
+	        	  refPathwayGraphViewRep.setNeighbourhoodDistance(
+	        			 neighbourhoodInputDialog.open());
 	          }
 	          else if (sToolItemIdentifier.equals("Show overview map"))
 	          {

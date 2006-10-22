@@ -160,20 +160,21 @@ implements IPathwayGraphView {
         					relationEdge);
         			
         			if (relationEdge.getEdgeRelationType() 
-        					== EdgeRelationType.maplink)
-        			{
-            			createEdge(relationEdge.getElementId2(),
-            					relationEdge.getCompoundId(),
-            					true,
-            					relationEdge);
-        			}
-        			else
+        					== EdgeRelationType.ECrel)
         			{
             			createEdge(relationEdge.getCompoundId(), 
             					relationEdge.getElementId2(), 
             					false,
             					relationEdge);
         			}
+        			else
+        			{
+            			createEdge(relationEdge.getElementId2(),
+            					relationEdge.getCompoundId(),
+            					true,
+            					relationEdge);
+        			}
+
         		}
         	}// if (edge.getClass().getName().equals("PathwayRelationEdge"))
         	
