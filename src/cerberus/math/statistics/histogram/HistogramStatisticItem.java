@@ -70,7 +70,7 @@ implements IHistogramStatistic {
 	 */
 	protected void setBorderIntervallLength( final int iSetLength ) {
 		
-		assert iSetLength < 1 : "can not create histogram with onyl one range!";		
+		assert iSetLength > 1 : "can not create histogram with onyl one range!";		
 		
 		this.iHistogramBorderLength = iSetLength + 1;
 		this.iHistogramIntervallLength = iSetLength;

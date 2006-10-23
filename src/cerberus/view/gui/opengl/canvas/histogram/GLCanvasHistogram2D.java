@@ -4,6 +4,7 @@
 package cerberus.view.gui.opengl.canvas.histogram;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -68,6 +69,8 @@ implements IGLCanvasUser
 			0.1f, 0.9f, 0.1f,
 			0.9f, 0.1f, 0.1f };
 	
+	private int iBorderIntervallLength = 200;
+	
 	protected float[][] fAspectRatio;
 	
 	protected float[] fResolution;
@@ -110,6 +113,8 @@ implements IGLCanvasUser
 		viewingFrame[X][MAX] = 1.0f; 
 		viewingFrame[Y][MIN] = 1.0f; 
 		viewingFrame[Y][MAX] = -1.0f; 
+		
+		listHistogramData = new  LinkedList < HistogramData > ();
 	}
 	
 	public void renderText( GL gl, 
@@ -186,7 +191,10 @@ implements IGLCanvasUser
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
 		
-		createHistogram( iCurrentHistogramLength );
+		if ( iCurrentHistogramLength > 0 ) 
+		{
+			createHistogram( iCurrentHistogramLength );
+		}
 	}
 	
 	@Override
@@ -236,7 +244,7 @@ implements IGLCanvasUser
 	  ISelection refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
   		  
 	  refGeneralManager.getSingelton().getLoggerManager().logMsg(
-			  "createHistogram() use ISelection(" + refBufferSelection.getLabel() + ")",
+			  "createHistogram() use ISelection(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
 			  LoggerType.FULL );
 	  
 	   
@@ -245,7 +253,7 @@ implements IGLCanvasUser
 	  }
 	  
 	  HistogramStatisticsSet histogramCreatorSet = 
-		  new HistogramStatisticsSet();
+		  new HistogramStatisticsSet( iBorderIntervallLength );
 	  
 	  histogramCreatorSet.addData( targetSet );
 	  histogramCreatorSet.setIntervalEqualSpacedInt( iHistogramLevels ,

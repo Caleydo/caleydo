@@ -69,6 +69,8 @@ implements GLEventListener, IJoglMouseListener
 	private float view_rotx = 00.0f, view_roty = 00.0f, view_rotz = 0.0f;
 
 	private float view_x = 0.0f, view_y = 0.0f, view_z = -10.0f;
+	
+	private int iBorderIntervallLength = 200;
 
 	public static void main(String[] args)
 	{
@@ -97,7 +99,7 @@ implements GLEventListener, IJoglMouseListener
 		
 		heatmapDim = new Dimension( 10, 10 );
 		
-		refHistogramCreator = new HistogramStatisticInteger();
+		refHistogramCreator = new HistogramStatisticInteger( iBorderIntervallLength );
 		
 		refMouseHandler = new GearsMouse(this);
 

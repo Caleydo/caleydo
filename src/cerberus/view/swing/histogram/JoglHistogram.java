@@ -282,7 +282,7 @@ public class JoglHistogram extends Demo {
 	  }
 	  
 	  HistogramStatisticsSet histogramCreatorSet = 
-		  new HistogramStatisticsSet();
+		  new HistogramStatisticsSet( 200 );
 	  
 	  histogramCreatorSet.addData( refSet );
 	  histogramCreatorSet.setIntervalEqualSpacedInt( iHistogramLevels ,

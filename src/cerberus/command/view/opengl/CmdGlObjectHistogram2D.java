@@ -80,7 +80,7 @@ extends ACmdCreate_GlCanvasUser
 		canvas.setResolution( fResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
 		canvas.setHistogramLength( (int) fResolution[10] );		
-		canvas.setHistogramLength( 200 );
+		//canvas.setHistogramLength( 200 );
 	}
 
 	@Override

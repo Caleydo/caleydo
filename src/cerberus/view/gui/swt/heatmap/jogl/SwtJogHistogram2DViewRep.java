@@ -56,7 +56,7 @@ implements ISwtJoglContainerViewRep, IView, GLEventListener
 		
 		heatmapDim = new Dimension( 10, 10 );
 		
-		refHistogramCreator = new HistogramStatisticInteger();
+		refHistogramCreator = new HistogramStatisticInteger( 200 );
 		
 
 	}

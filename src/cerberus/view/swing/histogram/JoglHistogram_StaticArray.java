@@ -270,7 +270,7 @@ public class JoglHistogram_StaticArray extends Demo {
 	  
 	  
 	  HistogramStatisticInteger histogramCreator = 
-		  new HistogramStatisticInteger();
+		  new HistogramStatisticInteger( iHistogramLevels );
 	  
 	  int[] i_dataValues = refBufferStorage.getArrayInt();
 	  

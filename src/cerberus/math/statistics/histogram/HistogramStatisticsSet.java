@@ -24,8 +24,8 @@ implements IHistogramStatistic {
 	/**
 	 * 
 	 */
-	public HistogramStatisticsSet() {
-		
+	public HistogramStatisticsSet(  final int iBorderItervallLength ) {
+		super( iBorderItervallLength );
 	}
 
 
@@ -138,7 +138,7 @@ implements IHistogramStatistic {
 	 */
 	public boolean updateHistogram() {
 		
-		assert bRawDataIsValid : "not int[] data was set!";
+		// assert bRawDataIsValid : "not int[] data was set!";
 		
 		if ( ! getReferencesFromSet() ) {
 			System.err.println("updateHistogram() can not get lock for ISet=" +

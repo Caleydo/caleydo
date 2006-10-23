@@ -455,17 +455,16 @@ implements ISet {
 	 */
 	public int getCacheId() {
 		
-		assert false : "not implemented update yet";
-	
-//		Iterator< Vector<ISelection> > iterDim = vecRefSelection_Array.iterator();
-//		
-//		while ( iterDim.hasNext() ) {
-//			Vector<ISelection> refVecSelect = iterDim.next();
-//			Iterator< ISelection > iterSel = refVecSelect.iterator();
-//			while ( iterSel.hasNext() ) {
-//				this.set iterSel.next().getCacheId();
-//			}
-//		}
+		//assert false : "not implemented update yet";
+	    //TODO check if storage need to be tested also?
+		
+		SetUpdateChacheId updateSelection = new SetUpdateChacheId <ISelection> () ;		
+		iCacheId = updateSelection.updateCacheId( vecRefSelection_Array,
+				iCacheId );
+		
+		SetUpdateChacheId updateStorage = new SetUpdateChacheId <IStorage> ();		
+		iCacheId = updateSelection.updateCacheId( vecRefStorage_Array,
+				iCacheId );
 		
 		return this.iCacheId;
 	}

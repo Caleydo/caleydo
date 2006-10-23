@@ -37,10 +37,12 @@ implements IHistogramStatistic {
 	/**
 	 * 
 	 */
-	public HistogramStatisticInteger() {
+	public HistogramStatisticInteger( final int iBorderItervallLength ) {
 		super();
 		
-		this.setBorderIntervallLength( 200 );
+		assert iBorderItervallLength > 0 : "HistogramStatisticInteger( iBorderItervallLength ) must be > 0!";
+		
+		this.setBorderIntervallLength( iBorderItervallLength );
 	}
 
 	/**
