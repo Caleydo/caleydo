@@ -7,12 +7,22 @@
 
 package keggapi;
 
-public class PathwayElement  implements java.io.Serializable {
-    private int element_id;
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import javax.xml.namespace.QName;
+import org.apache.axis.description.TypeDesc;
+import org.apache.axis.encoding.Serializer;
+import org.apache.axis.encoding.Deserializer;
+import org.apache.axis.description.ElementDesc;
 
-    private java.lang.String type;
+public class PathwayElement  
+implements Serializable {
 
-    private java.lang.String[] names;
+		private int element_id;
+
+    private String type;
+
+    private String[] names;
 
     private int[] components;
 
@@ -21,8 +31,8 @@ public class PathwayElement  implements java.io.Serializable {
 
     public PathwayElement(
            int element_id,
-           java.lang.String type,
-           java.lang.String[] names,
+           String type,
+           String[] names,
            int[] components) {
            this.element_id = element_id;
            this.type = type;
@@ -56,7 +66,7 @@ public class PathwayElement  implements java.io.Serializable {
      * 
      * @return type
      */
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
@@ -66,7 +76,7 @@ public class PathwayElement  implements java.io.Serializable {
      * 
      * @param type
      */
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -76,7 +86,7 @@ public class PathwayElement  implements java.io.Serializable {
      * 
      * @return names
      */
-    public java.lang.String[] getNames() {
+    public String[] getNames() {
         return names;
     }
 
@@ -86,7 +96,7 @@ public class PathwayElement  implements java.io.Serializable {
      * 
      * @param names
      */
-    public void setNames(java.lang.String[] names) {
+    public void setNames(String[] names) {
         this.names = names;
     }
 
@@ -110,8 +120,8 @@ public class PathwayElement  implements java.io.Serializable {
         this.components = components;
     }
 
-    private java.lang.Object __equalsCalc = null;
-    public synchronized boolean equals(java.lang.Object obj) {
+    private Object __equalsCalc = null;
+    public synchronized boolean equals(Object obj) {
         if (!(obj instanceof PathwayElement)) return false;
         PathwayElement other = (PathwayElement) obj;
         if (obj == null) return false;
@@ -149,9 +159,9 @@ public class PathwayElement  implements java.io.Serializable {
         }
         if (getNames() != null) {
             for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getNames());
+                 i<Array.getLength(getNames());
                  i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(getNames(), i);
+                Object obj = Array.get(getNames(), i);
                 if (obj != null &&
                     !obj.getClass().isArray()) {
                     _hashCode += obj.hashCode();
@@ -160,9 +170,9 @@ public class PathwayElement  implements java.io.Serializable {
         }
         if (getComponents() != null) {
             for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getComponents());
+                 i<Array.getLength(getComponents());
                  i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(getComponents(), i);
+                Object obj = Array.get(getComponents(), i);
                 if (obj != null &&
                     !obj.getClass().isArray()) {
                     _hashCode += obj.hashCode();
@@ -174,33 +184,33 @@ public class PathwayElement  implements java.io.Serializable {
     }
 
     // Type metadata
-    private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(PathwayElement.class, true);
+    private static TypeDesc typeDesc =
+        new TypeDesc(PathwayElement.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("SOAP/KEGG", "PathwayElement"));
-        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        typeDesc.setXmlType(new QName("SOAP/KEGG", "PathwayElement"));
+        ElementDesc elemField = new ElementDesc();
         elemField.setFieldName("element_id");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "element_id"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        elemField.setXmlName(new QName("", "element_id"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "int"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
+        elemField = new ElementDesc();
         elemField.setFieldName("type");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "type"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setXmlName(new QName("", "type"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
+        elemField = new ElementDesc();
         elemField.setFieldName("names");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "names"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setXmlName(new QName("", "names"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
+        elemField = new ElementDesc();
         elemField.setFieldName("components");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "components"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        elemField.setXmlName(new QName("", "components"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "int"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
@@ -208,17 +218,17 @@ public class PathwayElement  implements java.io.Serializable {
     /**
      * Return type metadata object
      */
-    public static org.apache.axis.description.TypeDesc getTypeDesc() {
+    public static TypeDesc getTypeDesc() {
         return typeDesc;
     }
 
     /**
      * Get Custom Serializer
      */
-    public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
+    public static Serializer getSerializer(
+           String mechType, 
+           Class _javaType,  
+           QName _xmlType) {
         return 
           new  org.apache.axis.encoding.ser.BeanSerializer(
             _javaType, _xmlType, typeDesc);
@@ -227,10 +237,10 @@ public class PathwayElement  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
+    public static Deserializer getDeserializer(
+           String mechType, 
+           Class _javaType,  
+           QName _xmlType) {
         return 
           new  org.apache.axis.encoding.ser.BeanDeserializer(
             _javaType, _xmlType, typeDesc);
