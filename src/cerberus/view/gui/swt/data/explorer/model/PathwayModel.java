@@ -1,9 +1,9 @@
 package cerberus.view.gui.swt.data.explorer.model;
 
-public class SelectionModel 
+public class PathwayModel 
 extends AModel {
-	
-	public SelectionModel(int iId, String sLabel) {
+
+	public PathwayModel(int iId, String sLabel) {
 
 		super(iId, sLabel);
 	}
@@ -11,6 +11,7 @@ extends AModel {
 	@Override
 	public void accept(IModelVisitor visitor, Object passAlongArgument) {
 
-		visitor.visitSelectionModel(this, passAlongArgument);
+		visitor.visitPathwayModel(this, passAlongArgument);
 	}
+
 }

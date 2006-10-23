@@ -62,7 +62,7 @@ extends APathwayGraphViewRep {
 	 * The scaling factor can scale the positions to blow up or
 	 * shrink the pathway.
 	 */
-	protected static final double SCALING_FACTOR = 1.8;
+	protected static final double SCALING_FACTOR = 1.6;
 	
 	protected GraphModel refGraphModel;
 	
@@ -252,13 +252,13 @@ extends APathwayGraphViewRep {
 		
 		//create node
 		refGraphCell = new DefaultGraphCell(vertex);
-	
+		
 		GraphConstants.setOpaque(refGraphCell.getAttributes(), true);
 		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
 		
 		//assign vertex color
 		if (sShapeType.equals("roundrectangle"))
-		{
+		{	
 			// Set vertex type to round rect
 			GPCellViewFactory.setViewClass(
 					refGraphCell.getAttributes(), 
@@ -272,7 +272,7 @@ extends APathwayGraphViewRep {
 			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.orange);
 		}
 		else if (sShapeType.equals("circle"))
-		{
+		{	
 			// Set vertex type to ellipse
 			GPCellViewFactory.setViewClass(
 					refGraphCell.getAttributes(), 
@@ -286,7 +286,7 @@ extends APathwayGraphViewRep {
 			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.green);
 		}	
 		else if (sShapeType.equals("rectangle"))
-		{
+		{	
 			GraphConstants.setBounds(refGraphCell.getAttributes(), 
 					new Rectangle2D.Double(
 							(int)(iXPosition * SCALING_FACTOR), 
@@ -313,7 +313,7 @@ extends APathwayGraphViewRep {
 		DefaultGraphCell cell2 = vertexIdToCellLUT.get(iVertexId2);
 		cell2.add(port2);
 		
-		DefaultEdge edge = new DefaultEdge();
+		DefaultEdge edge = new DefaultEdge(refPathwayEdge);
 
 		AttributeMap changedMap = edge.getAttributes(); 	
 		EdgeLineStyle edgeLineStyle = null;
@@ -420,7 +420,7 @@ extends APathwayGraphViewRep {
 		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 		
-		GraphConstants.setGradientColor(
+		GraphConstants.setBackground(
 				attributeMap, new Color(1.0f, 0.0f, 0.0f));
 		
 		DefaultGraphCell tmpCell;

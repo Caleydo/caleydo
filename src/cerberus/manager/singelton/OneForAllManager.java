@@ -60,7 +60,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public class OneForAllManager implements IGeneralManagerSingelton
+public class OneForAllManager 
+implements IGeneralManagerSingelton
 {
 
 	/**

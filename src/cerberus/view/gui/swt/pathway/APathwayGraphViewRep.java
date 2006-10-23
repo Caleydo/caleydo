@@ -93,21 +93,64 @@ implements IPathwayGraphView {
 			refCurrentPathway = pathwayLUT.get(iPathwayId);
 		}
 	    
+		extractVertices();
+		extractEdges();
+	}
+
+	public void readInAttributes(IParameterHandler refParameterHandler) {
+		
+		// TODO Auto-generated method stub
+	}
+
+	public void setAttributes(Vector<String> attributes) {
+		
+		// TODO Auto-generated method stub
+	}
+
+	public void setParentContainerId(int iParentContainerId) {
+		
+		// TODO Auto-generated method stub
+	}
+
+	public void retrieveGUIContainer() {
+		
+		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
+			(SWTEmbeddedGraphWidget) refGeneralManager
+				.getSingelton().getSWTGUIManager().createWidget(
+						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
+						refEmbeddedFrameComposite,
+						iWidth, 
+						iHeight);
+
+		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
+	}
+	
+	public void setExternalGUIContainer(Composite refSWTContainer) {
+		
+		refEmbeddedFrameComposite = refSWTContainer;
+	}
+	
+	public void setWidthAndHeight(int iWidth, int iHeight) {
+		
+		this.iWidth = iWidth;
+		this.iHeight = iHeight;
+	}
+
+	public void setHTMLBrowserId(int iHTMLBrowserId) {
+		
+		this.iHTMLBrowserId = iHTMLBrowserId;
+	}
+	
+	protected void extractVertices() {
+		
 	    Vector<PathwayVertex> vertexList;
 	    Iterator<PathwayVertex> vertexIterator;
 	    PathwayVertex vertex;
 	    Vector<IPathwayVertexRep> vertexReps;
 	    Iterator<IPathwayVertexRep> vertexRepIterator;
 	    PathwayVertexRep vertexRep;
-	    
-	    Vector<APathwayEdge> edgeList;
-	    Iterator<APathwayEdge> edgeIterator;
-	    APathwayEdge edge;
-	    PathwayRelationEdge relationEdge;
-	    PathwayReactionEdge reactionEdge;
-	    
+		
         vertexList = refCurrentPathway.getVertexList();
-        
         vertexIterator = vertexList.iterator();
         while (vertexIterator.hasNext())
         {
@@ -127,7 +170,17 @@ implements IPathwayGraphView {
         				vertexRep.getShapeType());        	
         	}
         }   
-        
+   
+	}
+	
+	protected void extractEdges() {
+		
+	    Vector<APathwayEdge> edgeList;
+	    Iterator<APathwayEdge> edgeIterator;
+	    APathwayEdge edge;
+	    PathwayRelationEdge relationEdge;
+	    PathwayReactionEdge reactionEdge;
+	    
         edgeList = refCurrentPathway.getEdgeList();
         edgeIterator = edgeList.iterator();
         while (edgeIterator.hasNext())
@@ -177,24 +230,26 @@ implements IPathwayGraphView {
 
         		}
         	}// if (edge.getClass().getName().equals("PathwayRelationEdge"))
-        	
-        	
-//        	else if (edge.getSype().equals("maplink"))
-//        	{
-//        		createEdge(edge.getICompoundId(), edge.getIElementId2());
-//        		// Is the second connection needed or already drawn?
-//        	}
         }   
-        
-        // Process pathway reactions
+		
+	    Vector<PathwayVertex> vertexList = null;
+	    Iterator<PathwayVertex> vertexIterator;
+	    PathwayVertex vertex;
+	    Vector<IPathwayVertexRep> vertexReps;
+	    Iterator<IPathwayVertexRep> vertexRepIterator;
+	    PathwayVertexRep vertexRep;
+		
+	    // Process reaction edges
+        vertexList = refCurrentPathway.getVertexList();
         vertexIterator = vertexList.iterator();
-        while (vertexIterator.hasNext())
-        {
-        	vertex = vertexIterator.next();
-        	vertexReps = vertex.getVertexReps();
-        	vertexRepIterator = vertexReps.iterator();
- 
-        	if (vertex.getVertexType() == PathwayVertexType.enzyme)
+	    
+	    while (vertexIterator.hasNext())
+	    {
+	    	vertex = vertexIterator.next();
+	    	vertexReps = vertex.getVertexReps();
+	    	vertexRepIterator = vertexReps.iterator();
+	
+	    	if (vertex.getVertexType() == PathwayVertexType.enzyme)
 	    	{	
 	    		IPathwayElementManager pathwayElementManager = 
 	    			((IPathwayElementManager)refGeneralManager.getSingelton().
@@ -209,74 +264,30 @@ implements IPathwayGraphView {
 	    		// FIXME: problem with multiple reactions per enzyme
 	    		if (edge != null)
 	    		{
-	            	if (bShowReactionEdges == false)
-	            		break;
-	    			
-	            	// Process REACTION EDGES
-	            	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayReactionEdge"))
+	            	if (bShowReactionEdges == true)
 	            	{
-	            		// Cast abstract edge to reaction edge
-	            		reactionEdge = (PathwayReactionEdge)edge;
-	
-	            		//FIXME: interate over substrates and products
-		        		createEdge(
-		        				reactionEdge.getSubstrates().get(0), 
-		        				vertex.getElementId(), 
-		        				false,
-		        				reactionEdge);	    
-		        		
-		        		createEdge(
-		        				vertex.getElementId(),
-		        				reactionEdge.getProducts().get(0), 
-		        				true,
-		        				reactionEdge);	  
-	            	}	
+		            	// Process REACTION EDGES
+		            	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayReactionEdge"))
+		            	{
+		            		// Cast abstract edge to reaction edge
+		            		reactionEdge = (PathwayReactionEdge)edge;
+		
+		            		//FIXME: interate over substrates and products
+			        		createEdge(
+			        				reactionEdge.getSubstrates().get(0), 
+			        				vertex.getElementId(), 
+			        				false,
+			        				reactionEdge);	    
+			        		
+			        		createEdge(
+			        				vertex.getElementId(),
+			        				reactionEdge.getProducts().get(0), 
+			        				true,
+			        				reactionEdge);	  
+		            	}	
+	            	}// (bShowReactionEdges == true)
 	    		}// if (edge != null)
 	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
-        }
-	}
-
-	public void readInAttributes(IParameterHandler refParameterHandler) {
-		
-		// TODO Auto-generated method stub
-	}
-
-	public void setAttributes(Vector<String> attributes) {
-		
-		// TODO Auto-generated method stub
-	}
-
-	public void setParentContainerId(int iParentContainerId) {
-		
-		// TODO Auto-generated method stub
-	}
-
-	public void retrieveGUIContainer() {
-		
-		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
-			(SWTEmbeddedGraphWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
-						refEmbeddedFrameComposite,
-						iWidth, 
-						iHeight);
-
-		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-	}
-	
-	public void setExternalGUIContainer(Composite refSWTContainer) {
-		
-		refEmbeddedFrameComposite = refSWTContainer;
-	}
-	
-	public void setWidthAndHeight(int iWidth, int iHeight) {
-		
-		this.iWidth = iWidth;
-		this.iHeight = iHeight;
-	}
-
-	public void setHTMLBrowserId(int iHTMLBrowserId) {
-		
-		this.iHTMLBrowserId = iHTMLBrowserId;
+	    }
 	}
 }

@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Text;
 import cerberus.data.collection.ISelection;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.pathway.Pathway;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISelectionManager;
@@ -26,8 +27,9 @@ import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.swt.data.explorer.model.AModel;
+import cerberus.view.gui.swt.data.explorer.model.PathwayModel;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
-import cerberus.view.gui.swt.data.explorer.model.SetModel;
+import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
 import cerberus.view.gui.swt.data.explorer.model.StorageModel;
 import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
 import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
@@ -36,7 +38,7 @@ import cerberus.view.gui.swt.data.DataTableViewRep;
 public class DataExplorerViewRep 
 extends AViewRep 
 implements IView, IMediatorReceiver {
-	
+
 	protected static final Object StorageModel = null;
 
 	protected Composite refSWTContainer;
@@ -49,33 +51,31 @@ implements IView, IMediatorReceiver {
 
 	protected DataExplorerLabelProvider labelProvider;
 
-	protected SetModel rootSet;
+	protected DataCollectionModel rootModel;
 
 	// private ISelectionChangedListener refISelectionChangedListener;
 
-	public DataExplorerViewRep(
-			IGeneralManager refGeneralManager, 
-			int iViewId, 
-			int iParentContainerId, 
+	public DataExplorerViewRep(IGeneralManager refGeneralManager,
+			int iViewId,
+			int iParentContainerId,
 			String sLabel) {
-		
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
+
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 
 		// The simple data table is not created via the view manager
 		// because it is not needed in the global context.
-		refDataTableViewRep = new DataTableViewRep(
-				refGeneralManager, iViewId);
+		refDataTableViewRep = new DataTableViewRep(refGeneralManager, iViewId);
 	}
 
 	public void initView() {
-		
+
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.type = SWT.HORIZONTAL;
 		refSWTContainer.setLayout(fillLayout);
 	}
 
 	public void drawView() {
-		
+
 		// Create the tree viewer as a child of the composite parent
 		treeViewer = new TreeViewer(refSWTContainer);
 		treeViewer.setContentProvider(new DataExplorerContentProvider());
@@ -93,7 +93,8 @@ implements IView, IMediatorReceiver {
 		refDataTableViewRep.initTable();
 	}
 
-	public void retrieveGUIContainer() {	
+	public void retrieveGUIContainer() {
+
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
@@ -109,16 +110,16 @@ implements IView, IMediatorReceiver {
 	 * 
 	 * @return Reference to the current SetModel
 	 */
-	protected SetModel getInitalInput() {
-		
-		SetModel currentSetModel;
+	protected DataCollectionModel getInitalInput() {
+
+		DataCollectionModel currentSetModel;
 		StorageModel currentStorageModel;
 		SelectionModel currentSelectionModel;
 
-		Collection <ISet> allSetItems;
+		Collection<ISet> allSetItems;
 		IStorage[] allStorageItems;
 		ISelection[] allSelectionItems;
-		// TODO: a list would be nuch nicer - ask michael
+		// TODO: a list would be nuch nicer
 		ISelection[] currentSelectionArray;
 		IStorage[] currentStorageArray;
 
@@ -130,147 +131,163 @@ implements IView, IMediatorReceiver {
 		// List<ISelection> allSelectionItemsInSet;
 
 		// root node in the tree (not visible)
-		rootSet = new SetModel();
-		// TODO: make a own DataCollectionModel for the root elements
-		SetModel rootSetModel = new SetModel(0, "SET");
-		rootSet.add(rootSetModel);
-		SetModel rootSelectionModel = new SetModel(0, "SELECTION");
-		rootSet.add(rootSelectionModel);
-		SetModel rootStorageModel = new SetModel(0, "STORAGE");
-		rootSet.add(rootStorageModel);
+		rootModel = new DataCollectionModel();
+		
+		DataCollectionModel rootSetModel = new DataCollectionModel(0, "SET");
+		rootModel.add(rootSetModel);
+		DataCollectionModel rootSelectionModel = new DataCollectionModel(0, "SELECTION");
+		rootModel.add(rootSelectionModel);
+		DataCollectionModel rootStorageModel = new DataCollectionModel(0, "STORAGE");
+		rootModel.add(rootStorageModel);
+		DataCollectionModel rootPathwayModel = new DataCollectionModel(0, "PATHWAY");
+		rootModel.add(rootPathwayModel);	
 
 		allSetItems = ((ISetManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
-
-		try {
+		
+		try
+		{
 			// iterate over all SETs
-			Iterator <ISet> iterSets = allSetItems.iterator();
-			
-			while (iterSets.hasNext() )
+			Iterator<ISet> iterSets = allSetItems.iterator();
+
+			while (iterSets.hasNext())
 			{
 				currentSet = iterSets.next();
-	
-				if ( currentSet != null) 
+
+				if (currentSet != null)
 				{
 					// insert SET with ID and label in the tree
-					currentSetModel = new SetModel(currentSet.getId(), currentSet
-							.getLabel());
+					currentSetModel = new DataCollectionModel(currentSet.getId(),
+							currentSet.getLabel());
 					rootSetModel.add(currentSetModel);
-		
-					for (int dimIndex = 0; 
-						dimIndex < currentSet.getDimensions(); 
-						dimIndex++)
+
+					for (int dimIndex = 0; dimIndex < currentSet
+							.getDimensions(); dimIndex++)
 					{
-						try {
-							currentSelectionArray = currentSet.getSelectionByDim(dimIndex);
+						try
+						{
+							currentSelectionArray = currentSet
+									.getSelectionByDim(dimIndex);
 							for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
 							{
 								currentSelection = (ISelection) currentSelectionArray[selectionIndex];
-			
-								if ( currentSelection!= null ) {
-									// insert SELECTION with ID and label in the tree
-									currentSelectionModel = new SelectionModel(currentSelection
-											.getId(), currentSelection.getLabel());
-									currentSetModel.add(currentSelectionModel);
-								}
-								else
+
+								if (currentSelection != null)
 								{
-									System.err.println("Error in DataExplorerViewRep currentSelection==null!");
+									// insert SELECTION with ID and label in the
+									// tree
+									currentSelectionModel = new SelectionModel(
+											currentSelection.getId(),
+											currentSelection.getLabel());
+									currentSetModel.add(currentSelectionModel);
+								} else
+								{
+									System.err
+											.println("Error in DataExplorerViewRep currentSelection==null!");
 								}
 							}
-						}
-						catch ( Exception e) 
+						} catch (Exception e)
 						{
-							System.err.println("Error in DataExplorerViewRep while (Selection) getSelectionByDim()..");
-							throw new RuntimeException( e.toString() );
+							System.err
+									.println("Error in DataExplorerViewRep while (Selection) getSelectionByDim()..");
+							throw new RuntimeException(e.toString());
 						}
-		
-						try {
-							currentStorageArray = currentSet.getStorageByDim(dimIndex);
+
+						try
+						{
+							currentStorageArray = currentSet
+									.getStorageByDim(dimIndex);
 							for (int storageIndex = 0; storageIndex < currentStorageArray.length; storageIndex++)
 							{
 								currentStorage = (IStorage) currentStorageArray[storageIndex];
-			
+
 								// insert STORAGE with ID and label in the tree
-								if ( currentStorage != null ) {
-									currentStorageModel = new StorageModel(currentStorage
-											.getId(), currentStorage.getLabel());
-									currentSetModel.add(currentStorageModel);
-								}
-								else
+								if (currentStorage != null)
 								{
-									refGeneralManager.getSingelton().getLoggerManager().logMsg(
-										"Error in DataExplorerViewRep currentStorage==null!",
-										LoggerType.MINOR_ERROR );
+									currentStorageModel = new StorageModel(
+											currentStorage.getId(),
+											currentStorage.getLabel());
+									currentSetModel.add(currentStorageModel);
+								} else
+								{
+									refGeneralManager
+											.getSingelton()
+											.getLoggerManager()
+											.logMsg(
+													"Error in DataExplorerViewRep currentStorage==null!",
+													LoggerType.MINOR_ERROR);
 								}
 							}
-						}
-						catch ( Exception e) 
+						} catch (Exception e)
 						{
-							System.err.println("Error in DataExplorerViewRep while (IStorage) getStorageByDim()..");
-							throw new RuntimeException( e.toString() );
+							System.err
+									.println("Error in DataExplorerViewRep while (IStorage) getStorageByDim()..");
+							throw new RuntimeException(e.toString());
 						}
 					} // for ...
 				} // if
-				else 
+				else
 				{
-					System.err.println("Error in DataExplorerViewRep currentSet==null !");
+					System.err
+							.println("Error in DataExplorerViewRep currentSet==null !");
 				}
 			}
-	
+
 			allStorageItems = ((IStorageManager) refGeneralManager
 					.getManagerByBaseType(ManagerObjectType.STORAGE))
 					.getAllStorageItems();
-	
-			try {
+
+			try
+			{
 				// iterate over all STORAGEs
 				for (int storageIndex = 0; storageIndex < allStorageItems.length; storageIndex++)
 				{
 					currentStorage = allStorageItems[storageIndex];
-		
+
 					// insert STORAGES with ID and label in the tree
-					currentStorageModel = new StorageModel(currentStorage.getId(),
-							currentStorage.getLabel());
+					currentStorageModel = new StorageModel(currentStorage
+							.getId(), currentStorage.getLabel());
 					rootStorageModel.add(currentStorageModel);
-		
+
 				}
-			}
-			catch ( Exception e) 
+			} catch (Exception e)
 			{
-				System.err.println("Error in DataExplorerViewRep while iterate over all STORAGEs ==> currentStorage = allStorageItems[storageIndex];..");
-				throw new RuntimeException( e.toString() );
+				System.err
+						.println("Error in DataExplorerViewRep while iterate over all STORAGEs ==> currentStorage = allStorageItems[storageIndex];..");
+				throw new RuntimeException(e.toString());
 			}
-	
+
 			allSelectionItems = ((ISelectionManager) refGeneralManager
 					.getManagerByBaseType(ManagerObjectType.SELECTION))
 					.getAllSelectionItems();
-	
-			try {
+
+			try
+			{
 				// iterate over all SELECTIONs
 				for (int selectionIndex = 0; selectionIndex < allSelectionItems.length; selectionIndex++)
 				{
 					currentSelection = allSelectionItems[selectionIndex];
-		
+
 					// insert SELECTIONs with ID and label in the tree
-					currentSelectionModel = new SelectionModel(
-							currentSelection.getId(), currentSelection.getLabel());
+					currentSelectionModel = new SelectionModel(currentSelection
+							.getId(), currentSelection.getLabel());
 					rootSelectionModel.add(currentSelectionModel);
 				}
-			}
-			catch ( Exception e) 
+			} catch (Exception e)
 			{
 				System.err.println("Error in DataExplorerViewRep while iterate over all SELECTIONs ==> currentSelection = allSelectionItems[selectionIndex];..");
-				throw new RuntimeException( e.toString() );
+				throw new RuntimeException(e.toString());
 			}
 
-		}
-		catch ( Exception e) 
+		} catch (Exception e)
 		{
 			System.err.println("Error while acquiring data via DataExplorerViewRep.");
-			throw new RuntimeException( e.toString() );
+			throw new RuntimeException(e.toString());
 		}
 		
-		return rootSet;
+		addExistingPathway();
+		
+		return rootModel;
 	}
 
 	/**
@@ -278,10 +295,10 @@ implements IView, IMediatorReceiver {
 	 * are handled.
 	 */
 	protected void hookListeners() {
-		treeViewer.addSelectionChangedListener(new ISelectionChangedListener()
-		{
-			public void selectionChanged(SelectionChangedEvent event)
-			{
+
+		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+
 				if (event.getSelection().isEmpty())
 				{
 					return;
@@ -296,11 +313,13 @@ implements IView, IMediatorReceiver {
 						AModel model = (AModel) iterator.next();
 						if (model instanceof StorageModel)
 						{
-							refDataTableViewRep.createStorageTable(model.getID());
+							refDataTableViewRep.createStorageTable(model
+									.getID());
 
 						} else if (model instanceof SelectionModel)
 						{
-							refDataTableViewRep.createSelectionTable(model.getID());
+							refDataTableViewRep.createSelectionTable(model
+									.getID());
 						} else
 						{
 							refDataTableViewRep.reinitializeTable();
@@ -312,14 +331,26 @@ implements IView, IMediatorReceiver {
 			}
 		});
 	}
-	
-	public void update( Object eventTrigger ) {
-		
-		int triggerId = ((ISelection)eventTrigger).getId();	
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
-				"Data Explorer update called by " +triggerId,
-				LoggerType.VERBOSE );
-		
+
+	public void update(Object eventTrigger) {
+
+		int triggerId = ((ISelection) eventTrigger).getId();
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"Data Explorer update called by " + triggerId,
+				LoggerType.VERBOSE);
+
 		refDataTableViewRep.updateSelection(triggerId);
+	}
+	
+	public void addExistingPathway() {
+
+		PathwayModel currentPathwayModel;
+		Pathway currentPathway =
+			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
+
+		currentPathwayModel = new PathwayModel(
+				currentPathway.getPathwayID(), currentPathway.getTitle());
+		
+		rootModel.add(currentPathwayModel);
 	}
 }

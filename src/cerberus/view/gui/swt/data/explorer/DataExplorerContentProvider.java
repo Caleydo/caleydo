@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.Viewer;
 import cerberus.view.gui.swt.data.explorer.model.DeltaEvent;
 import cerberus.view.gui.swt.data.explorer.model.IDeltaListener;
 import cerberus.view.gui.swt.data.explorer.model.AModel;
-import cerberus.view.gui.swt.data.explorer.model.SetModel;
+import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
 
 public class DataExplorerContentProvider 
 implements ITreeContentProvider, IDeltaListener
@@ -45,21 +45,21 @@ implements ITreeContentProvider, IDeltaListener
 	{
 		this.viewer = (TreeViewer)viewer;
 		if(oldInput != null) {
-			removeListenerFrom((SetModel)oldInput);
+			removeListenerFrom((DataCollectionModel)oldInput);
 		}
 		if(newInput != null) {
-			addListenerTo((SetModel)newInput);
+			addListenerTo((DataCollectionModel)newInput);
 		}
 	}
 	
 	/** Because the domain model does not have a richer
 	 * listener model, recursively remove this listener
 	 * from each child box of the given box. */
-	protected void removeListenerFrom(SetModel set) 
+	protected void removeListenerFrom(DataCollectionModel set) 
 	{
 		set.removeListener(this);
 		for (Iterator iterator = set.getSets().iterator(); iterator.hasNext();) {
-			SetModel aSet = (SetModel) iterator.next();
+			DataCollectionModel aSet = (DataCollectionModel) iterator.next();
 			removeListenerFrom(aSet);
 		}
 	}
@@ -67,11 +67,11 @@ implements ITreeContentProvider, IDeltaListener
 	/** Because the domain model does not have a richer
 	 * listener model, recursively add this listener
 	 * to each child box of the given box. */
-	protected void addListenerTo(SetModel set) 
+	protected void addListenerTo(DataCollectionModel set) 
 	{
 		set.addListener(this);
 		for (Iterator iterator = set.getSets().iterator(); iterator.hasNext();) {
-			SetModel aSet = (SetModel) iterator.next();
+			DataCollectionModel aSet = (DataCollectionModel) iterator.next();
 			addListenerTo(aSet);
 		}
 	}
@@ -81,9 +81,9 @@ implements ITreeContentProvider, IDeltaListener
 	 */
 	public Object[] getChildren(Object parentElement) 
 	{
-		if(parentElement instanceof SetModel) 
+		if(parentElement instanceof DataCollectionModel) 
 		{
-			SetModel set = (SetModel)parentElement;
+			DataCollectionModel set = (DataCollectionModel)parentElement;
 			return concat(set.getSets().toArray(), 
 				set.getStorages().toArray(), set.getSelections().toArray());
 		}

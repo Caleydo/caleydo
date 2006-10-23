@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
-import cerberus.view.gui.swt.data.explorer.model.SetModel;
+import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
 import cerberus.view.gui.swt.data.explorer.model.StorageModel;
 
 public class DataExplorerLabelProvider extends LabelProvider
@@ -23,7 +23,7 @@ public class DataExplorerLabelProvider extends LabelProvider
 	 */
 	public Image getImage(Object element) {
 		ImageDescriptor descriptor;
-		if (element instanceof SetModel) {
+		if (element instanceof DataCollectionModel) {
 			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/set.gif"));
 		} else if (element instanceof SelectionModel) {
 			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/selection.gif"));
@@ -47,17 +47,17 @@ public class DataExplorerLabelProvider extends LabelProvider
 	 */
 	public String getText(Object element) 
 	{
-		if (element instanceof SetModel) 
+		if (element instanceof DataCollectionModel) 
 		{
-			if(((SetModel)element).getLabel() == null) 
+			if(((DataCollectionModel)element).getLabel() == null) 
 			{
 				return "SET";
 			} 
 			else 
 			{
 				// format: "ID - Label"
-				return (Integer.toString(((SetModel)element).getID()) 
-						+ " - " + ((SetModel)element).getLabel());
+				return (Integer.toString(((DataCollectionModel)element).getID()) 
+						+ " - " + ((DataCollectionModel)element).getLabel());
 			}
 		} 
 		else if (element instanceof StorageModel) 
