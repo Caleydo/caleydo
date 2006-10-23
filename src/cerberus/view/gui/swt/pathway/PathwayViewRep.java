@@ -187,11 +187,13 @@ implements IView {
 				
 				if (((MenuItem)event.widget).getText().equals("Show relations"))
 				{
-					refPathwayGraphViewRep.showRelationEdges(clickedMenuItem.getSelection());
+					refPathwayGraphViewRep.showHideRelationEdges(
+							clickedMenuItem.getSelection());
 				}
 				else if (((MenuItem)event.widget).getText().equals("Show reactions"))
 				{
-					refPathwayGraphViewRep.showReactionEdges(clickedMenuItem.getSelection());
+					refPathwayGraphViewRep.showHideReactionEdges(
+							clickedMenuItem.getSelection());
 				}					
 			}
 		};	

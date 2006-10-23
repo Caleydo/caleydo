@@ -43,9 +43,9 @@ implements IPathwayGraphView {
 	
 	protected Pathway refCurrentPathway;
 	
-	protected boolean bShowReactionEdges;
-	
-	protected boolean bShowRelationEdges;
+//	protected boolean bShowReactionEdges;
+//	
+//	protected boolean bShowRelationEdges;
 	
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
@@ -57,8 +57,8 @@ implements IPathwayGraphView {
 
 		refRenderStyle = new PathwayRenderStyle();
 		
-		bShowRelationEdges = true;
-		bShowReactionEdges = true;
+//		bShowRelationEdges = true;
+//		bShowReactionEdges = true;
 	}
 
 	public void setPathwayId(int iPathwayId) {
@@ -95,6 +95,8 @@ implements IPathwayGraphView {
 	    
 		extractVertices();
 		extractEdges();
+		
+		finishGraphBuilding();
 	}
 
 	public void readInAttributes(IParameterHandler refParameterHandler) {
@@ -178,7 +180,6 @@ implements IPathwayGraphView {
 	    Vector<APathwayEdge> edgeList;
 	    Iterator<APathwayEdge> edgeIterator;
 	    APathwayEdge edge;
-	    PathwayRelationEdge relationEdge;
 	    PathwayReactionEdge reactionEdge;
 	    
         edgeList = refCurrentPathway.getEdgeList();
@@ -187,50 +188,15 @@ implements IPathwayGraphView {
         {
         	edge = edgeIterator.next();
         
-        	if (bShowRelationEdges == false)
-        		break;
+//        	if (bShowRelationEdges == false)
+//        		break;
         	
         	// Process RELATION EDGES
-        	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayRelationEdge"))
+        	if (edge.getClass().getSimpleName().equals("PathwayRelationEdge"))
         	{
-        		// Cast abstract edge to relation edge
-        		relationEdge = (PathwayRelationEdge)edge;
-
-    			// Direct connection between nodes
-        		if (relationEdge.getCompoundId() == -1)
-        		{
-    				createEdge(relationEdge.getElementId1(), 
-    						relationEdge.getElementId2(), 
-    						false, 
-    						relationEdge);
-        		}
-    			// Edge is routed over a compound
-        		else 
-        		{
-        			createEdge(relationEdge.getElementId1(), 
-        					relationEdge.getCompoundId(), 
-        					false, 
-        					relationEdge);
-        			
-        			if (relationEdge.getEdgeRelationType() 
-        					== EdgeRelationType.ECrel)
-        			{
-            			createEdge(relationEdge.getCompoundId(), 
-            					relationEdge.getElementId2(), 
-            					false,
-            					relationEdge);
-        			}
-        			else
-        			{
-            			createEdge(relationEdge.getElementId2(),
-            					relationEdge.getCompoundId(),
-            					true,
-            					relationEdge);
-        			}
-
-        		}
-        	}// if (edge.getClass().getName().equals("PathwayRelationEdge"))
-        }   
+        		extractRelationEdges(edge); 		
+        	}
+        }
 		
 	    Vector<PathwayVertex> vertexList = null;
 	    Iterator<PathwayVertex> vertexIterator;
@@ -255,7 +221,7 @@ implements IPathwayGraphView {
 	    			((IPathwayElementManager)refGeneralManager.getSingelton().
 	    				getPathwayElementManager());
 	    		
-	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
+//	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
 	    		
 	    		edge = pathwayElementManager.getEdgeLUT().
 	    			get(pathwayElementManager.getReactionName2EdgeIdLUT().
@@ -264,30 +230,80 @@ implements IPathwayGraphView {
 	    		// FIXME: problem with multiple reactions per enzyme
 	    		if (edge != null)
 	    		{
-	            	if (bShowReactionEdges == true)
-	            	{
+//	            	if (bShowReactionEdges == true)
+//	            	{
 		            	// Process REACTION EDGES
 		            	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayReactionEdge"))
 		            	{
-		            		// Cast abstract edge to reaction edge
-		            		reactionEdge = (PathwayReactionEdge)edge;
-		
-		            		//FIXME: interate over substrates and products
-			        		createEdge(
-			        				reactionEdge.getSubstrates().get(0), 
-			        				vertex.getElementId(), 
-			        				false,
-			        				reactionEdge);	    
-			        		
-			        		createEdge(
-			        				vertex.getElementId(),
-			        				reactionEdge.getProducts().get(0), 
-			        				true,
-			        				reactionEdge);	  
+		            		extractReactionEdges(edge, vertex);
 		            	}	
-	            	}// (bShowReactionEdges == true)
+//	            	}// (bShowReactionEdges == true)
 	    		}// if (edge != null)
 	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
 	    }
+	}
+	
+	protected void extractRelationEdges(APathwayEdge edge) {
+		
+		PathwayRelationEdge relationEdge;
+		
+   		// Cast abstract edge to relation edge
+		relationEdge = (PathwayRelationEdge)edge;
+
+		// Direct connection between nodes
+		if (relationEdge.getCompoundId() == -1)
+		{
+			createEdge(relationEdge.getElementId1(), 
+					relationEdge.getElementId2(), 
+					false, 
+					relationEdge);
+		}
+		// Edge is routed over a compound
+		else 
+		{
+			createEdge(relationEdge.getElementId1(), 
+					relationEdge.getCompoundId(), 
+					false, 
+					relationEdge);
+			
+			if (relationEdge.getEdgeRelationType() 
+					== EdgeRelationType.ECrel)
+			{
+    			createEdge(relationEdge.getCompoundId(), 
+    					relationEdge.getElementId2(), 
+    					false,
+    					relationEdge);
+			}
+			else
+			{
+    			createEdge(relationEdge.getElementId2(),
+    					relationEdge.getCompoundId(),
+    					true,
+    					relationEdge);
+			}
+
+		}
+	}
+	
+	protected void extractReactionEdges(APathwayEdge edge, 
+			PathwayVertex vertex) {
+		
+		PathwayReactionEdge reactionEdge;
+		
+		// Cast abstract edge to reaction edge
+		reactionEdge = (PathwayReactionEdge)edge;
+
+		//FIXME: interate over substrates and products
+		createEdge(
+				reactionEdge.getSubstrates().get(0), 
+				vertex.getElementId(), 
+				false,
+				reactionEdge);	    
+		
+		createEdge(
+				vertex.getElementId(),
+				reactionEdge.getProducts().get(0), 
+				true,
+				reactionEdge);	  
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -16,6 +17,7 @@ import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
+import org.jgraph.example.JGraphParallelRouter;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultCellViewFactory;
@@ -80,6 +82,10 @@ extends APathwayGraphViewRep {
 	
 	protected GPOverviewPanel refOverviewPanel;
 	
+	protected Vector<DefaultEdge> vecRelationEdges;
+	
+	protected Vector<DefaultEdge> vecReactionEdges;
+	
 	protected int iNeighbourhoodDistance = 1;
 	
 	/**
@@ -100,6 +106,10 @@ extends APathwayGraphViewRep {
 		super(refGeneralManager, -1, iParentContainerId, "");
 		
 		vertexIdToCellLUT = new HashMap<Integer, DefaultGraphCell>();
+		
+		vecRelationEdges = new Vector<DefaultEdge>();
+		vecReactionEdges = new Vector<DefaultEdge>();
+		
 	}
 
 	public void initView() {
@@ -320,31 +330,6 @@ extends APathwayGraphViewRep {
 		EdgeArrowHeadStyle edgeArrowHeadStyle = null;
 		Color edgeColor = null;
 		
-		// Differentiate between Relations and Reactions
-		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
-		{
-			edgeLineStyle = refRenderStyle.getReactionEdgeLineStyle();
-			edgeArrowHeadStyle = refRenderStyle.getReactionEdgeArrowHeadStyle();
-			edgeColor = refRenderStyle.getReactionEdgeColor();
-		}
-		else if (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
-		{
-			// In case when relations are maplinks
-			if (((PathwayRelationEdge)refPathwayEdge).getEdgeRelationType() 
-					== EdgeRelationType.maplink)
-			{
-				edgeLineStyle = refRenderStyle.getMaplinkEdgeLineStyle();
-				edgeArrowHeadStyle = refRenderStyle.getMaplinkEdgeArrowHeadStyle();
-				edgeColor = refRenderStyle.getMaplinkEdgeColor();
-			}
-			else 
-			{
-				edgeLineStyle = refRenderStyle.getRelationEdgeLineStyle();
-				edgeArrowHeadStyle = refRenderStyle.getRelationEdgeArrowHeadStyle();
-				edgeColor = refRenderStyle.getRelationEdgeColor();
-			}
-		}// (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
-		
 		// Assign render style
 	    if (edgeLineStyle == EdgeLineStyle.DASHED)
 	    {
@@ -367,16 +352,56 @@ extends APathwayGraphViewRep {
 			GraphConstants.setEndFill(changedMap, false);
 		}
 	    
-		GraphConstants.setLineColor(changedMap, edgeColor);
 		GraphConstants.setLineWidth(changedMap, 2);
-
-//		GraphConstants.setRouting(changedMap, JGraphParallelRouter.getSharedInstance());
-		
+		GraphConstants.setRouting(changedMap, JGraphParallelRouter.getSharedInstance());
 //		GraphConstants.setRouting(edge.getAttributes(), GraphConstants.ROUTING_SIMPLE);
 
 		edge.setSource(cell1.getChildAt(0));
 		edge.setTarget(cell2.getChildAt(0));
-		refPathwayGraph.getGraphLayoutCache().insert(edge);
+		
+		// Differentiate between Relations and Reactions
+		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
+		{
+			edgeLineStyle = refRenderStyle.getReactionEdgeLineStyle();
+			edgeArrowHeadStyle = refRenderStyle.getReactionEdgeArrowHeadStyle();
+			edgeColor = refRenderStyle.getReactionEdgeColor();
+			
+			GraphConstants.setLineColor(changedMap, edgeColor);
+			
+			vecReactionEdges.add(edge);
+		}
+		else if (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+		{
+			// In case when relations are maplinks
+			if (((PathwayRelationEdge)refPathwayEdge).getEdgeRelationType() 
+					== EdgeRelationType.maplink)
+			{
+				edgeLineStyle = refRenderStyle.getMaplinkEdgeLineStyle();
+				edgeArrowHeadStyle = refRenderStyle.getMaplinkEdgeArrowHeadStyle();
+				edgeColor = refRenderStyle.getMaplinkEdgeColor();
+			}
+			else 
+			{
+				edgeLineStyle = refRenderStyle.getRelationEdgeLineStyle();
+				edgeArrowHeadStyle = refRenderStyle.getRelationEdgeArrowHeadStyle();
+				edgeColor = refRenderStyle.getRelationEdgeColor();
+			}
+			
+			GraphConstants.setLineColor(changedMap, edgeColor);
+			
+			vecRelationEdges.add(edge);
+			
+		}// (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+		
+		//refPathwayGraph.getGraphLayoutCache().insert(edge);
+	}
+	
+	public void finishGraphBuilding() {
+		
+		refPathwayGraph.getGraphLayoutCache().insert(
+				vecRelationEdges.toArray());
+		refPathwayGraph.getGraphLayoutCache().insert(
+				vecReactionEdges.toArray());
 	}
 	
 	public void setPathwayId(int iPathwayId) {
@@ -463,25 +488,15 @@ extends APathwayGraphViewRep {
 		this.iNeighbourhoodDistance = iNeighbourhoodDistance;
 	}
 	
-	public void showRelationEdges(boolean bShowRelationEdges) {
-		
-		this.bShowRelationEdges = bShowRelationEdges;
-		refGraphModel = new DefaultGraphModel();
-		refPathwayGraph.setModel(refGraphModel);
-		refGraphLayoutCache.setModel(refGraphModel);
-		refGraphModel.addUndoableEditListener(refUndoManager);
-		
-		drawView();
+	public void showHideRelationEdges(boolean bShowRelationEdges) {
+
+		refGraphLayoutCache.setVisible(
+				vecRelationEdges, bShowRelationEdges);
 	}
 	
-	public void showReactionEdges(boolean bShowReactionEdges) {
-		
-		this.bShowReactionEdges = bShowReactionEdges;
-		refGraphModel = new DefaultGraphModel();
-		refPathwayGraph.setModel(refGraphModel);
-		refGraphLayoutCache.setModel(refGraphModel);
-		refGraphModel.addUndoableEditListener(refUndoManager);
-		
-		drawView();
+	public void showHideReactionEdges(boolean bShowReactionEdges) {
+
+		refGraphLayoutCache.setVisible(
+				vecReactionEdges, bShowReactionEdges);
 	}
 }

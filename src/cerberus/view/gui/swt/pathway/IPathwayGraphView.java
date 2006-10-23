@@ -37,7 +37,9 @@ extends IView
 	
 	public void showOverviewMapInNewWindow(Dimension dim);
 	
-	public void showRelationEdges(boolean bShowRelationEdges);
+	public void showHideRelationEdges(boolean bShowRelationEdges);
 	
-	public void showReactionEdges(boolean bShowReactionEdges);
+	public void showHideReactionEdges(boolean bShowReactionEdges);
+	
+	public void finishGraphBuilding();
 }
