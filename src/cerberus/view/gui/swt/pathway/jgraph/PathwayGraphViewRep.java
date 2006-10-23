@@ -269,7 +269,7 @@ extends APathwayGraphViewRep {
 							(int)(iXPosition * SCALING_FACTOR), 
 							(int)(iYPosition * SCALING_FACTOR), 
 							iWidth, iHeight));
-			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.orange);
+			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.orange);
 		}
 		else if (sShapeType.equals("circle"))
 		{
@@ -283,7 +283,7 @@ extends APathwayGraphViewRep {
 							(int)(iXPosition * SCALING_FACTOR), 
 							(int)(iYPosition * SCALING_FACTOR), 
 							15, 15));
-			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.green);
+			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.green);
 		}	
 		else if (sShapeType.equals("rectangle"))
 		{
@@ -292,7 +292,7 @@ extends APathwayGraphViewRep {
 							(int)(iXPosition * SCALING_FACTOR), 
 							(int)(iYPosition * SCALING_FACTOR), 
 							iWidth, iHeight));
-			GraphConstants.setGradientColor(refGraphCell.getAttributes(), Color.yellow);
+			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.yellow);
 		}
 		
 		refPathwayGraph.getGraphLayoutCache().insert(refGraphCell);

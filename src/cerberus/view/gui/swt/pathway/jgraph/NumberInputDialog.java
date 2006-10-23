@@ -48,13 +48,13 @@ extends Dialog {
 		shell.setText("Input dialog");
 
 		shell.setLayout(new GridLayout(2, true));
-
+		
 		Label label = new Label(shell, SWT.NULL);
 		label.setText("Neighbourhood distance:");
 
 		final Text text = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		text.setSize(100, 30);
-
+		text.setTextLimit(1);
+		
 		final Button buttonOK = new Button(shell, SWT.PUSH);
 		buttonOK.setText("Ok");
 		buttonOK.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
