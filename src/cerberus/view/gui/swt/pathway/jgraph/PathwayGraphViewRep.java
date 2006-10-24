@@ -133,6 +133,20 @@ extends APathwayGraphViewRep {
 		    	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
 						.getFirstCellForLocation(event.getX(), event.getY());
 
+		    	// Check if a node or edge was hit.
+		    	// If not undo neighborhood visualization and return.
+		    	if (clickedCell == null)
+		    	{
+					for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
+					{
+						refUndoManager.undo(refGraphLayoutCache);
+					}
+					
+					bNeighbourhoodShown = false;
+					
+		    		return;
+		    	}
+		    	
 //				if (event.getClickCount() == 2)
 //				{	
 		    		// Check if cell has an user object attached
@@ -466,10 +480,17 @@ extends APathwayGraphViewRep {
 		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 		
+		DefaultGraphCell tmpCell;
+		
+//		// Color mapping will start with red (neigborhood = 1)
+//		// For graph parts far away the color will turn to yellow.
+//		float fGreenPortion = fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
+//		
+//		if (fGreenPortion < 0.0)
+//			fGreenPortion = 0.0f;
+		
 		GraphConstants.setBackground(
 				attributeMap, new Color(1.0f, 0.0f, 0.0f));
-		
-		DefaultGraphCell tmpCell;
 		
 		while (cellIter.hasNext())
 		{

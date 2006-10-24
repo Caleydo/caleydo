@@ -315,8 +315,7 @@ implements ISWTGUIManager {
 
 		// Close loading progress bar after bootstrapping is completed.
 		refLoadingProgressBarWindow.close();
-//		refLoadingProgressBarWindow.dispose();
-//		refDisplay.dispose();
+		refLoadingProgressBar = null;
 
 		shellIterator = refWindowMap.values().iterator();
 		while (shellIterator.hasNext())
