@@ -143,6 +143,7 @@ extends APathwayGraphViewRep {
 						refUndoManager.undo(refGraphLayoutCache);
 					}
 					
+					iNeighbourhoodUndoCount = 0;
 					bNeighbourhoodShown = false;
 		    		return;
 		    	}
@@ -156,8 +157,13 @@ extends APathwayGraphViewRep {
 					return;						
 				}
 
-				final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
-					.getVertexLink();
+				if (!clickedCell.getUserObject().getClass().getSimpleName().equals("PathwayVertex"))
+				{
+					super.mousePressed(event);
+					return;
+				}
+				
+				final String sUrl = ((PathwayVertex)clickedCell.getUserObject()).getVertexLink();
 				
 				if (sUrl == "") 
 				{
@@ -449,11 +455,20 @@ extends APathwayGraphViewRep {
 		refPathwayGraph.setModel(refGraphModel);
 		refGraphLayoutCache.setModel(refGraphModel);
 		refGraphModel.addUndoableEditListener(refUndoManager);
+
+		vecVertices.removeAllElements();
+		vecRelationEdges.removeAllElements();
+		vecReactionEdges.removeAllElements();
+		
+		iNeighbourhoodUndoCount = 0;
+		bNeighbourhoodShown = false;
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
 		
 		drawView();
+		
+		refGraphLayoutCache.reload();
 	}
 	
 	public void zoomOrig() {
