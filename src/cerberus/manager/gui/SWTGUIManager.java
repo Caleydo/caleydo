@@ -65,6 +65,8 @@ implements ISWTGUIManager {
 	protected final Vector<ISWTWidget> refWidgetMap;
 	
 	protected Shell refLoadingProgressBarWindow;
+	
+	protected ProgressBar refLoadingProgressBar;
 
 	/**
 	 * Call createApplicationWindow() before using this object.
@@ -345,13 +347,39 @@ implements ISWTGUIManager {
 		refLoadingProgressBarWindow.setMaximized(false);
 		refLoadingProgressBarWindow.setText("Loading cerberus...");
 		
-		final ProgressBar bar = 
+		refLoadingProgressBar = 
 			new ProgressBar(refLoadingProgressBarWindow, SWT.SMOOTH);
-		bar.setBounds(10, 10, 200, 40);
-		bar.setSelection(50);
+		refLoadingProgressBar.setBounds(10, 10, 200, 40);
+		refLoadingProgressBar.setSelection(50);
 		
 		refLoadingProgressBarWindow.setBounds(500, 500, 230, 90);
 		refLoadingProgressBarWindow.open();
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#setLoadingProgressBarPercentage(int)
+	 */
+	public boolean setLoadingProgressBarPercentage(int iPercentage) {
+		
+		if (refLoadingProgressBar == null)
+			return false;
+		
+		if (iPercentage == 0 || iPercentage > 100)
+			return false;
+		
+		refLoadingProgressBar.setSelection(iPercentage);
+			
+		return true;
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
+	 */
+	public int getLoadingProgressBarPercentage() {
+		
+		return refLoadingProgressBar.getSelection();
 	}
 	
 	public boolean hasItem(int iItemId) {
