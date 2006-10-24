@@ -3,6 +3,10 @@
  */
 package cerberus.view.gui.swt.browser;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
@@ -112,6 +116,22 @@ implements IView {
 				this.getClass().getSimpleName() + 
 				": drawView(): Load "+sUrl, 
 				LoggerType.VERBOSE );
+
+		// Check internet connection
+		try
+		{
+			InetAddress.getByName("www.google.at");
+			
+		} catch (UnknownHostException e)
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					this.getClass().getSimpleName() + 
+					": No internet connection found!", 
+					LoggerType.VERBOSE );
+			
+			refTextField.setText("No internet connection found!");
+			return;
+		}
 		
 		refTextField.setText(sUrl);
 		refBrowser.setUrl(sUrl);

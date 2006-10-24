@@ -54,6 +54,8 @@ extends Dialog {
 
 		final Text text = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		text.setTextLimit(1);
+		text.setText("1");
+		text.setBounds(5, 5, 100, 20);
 		
 		final Button buttonOK = new Button(shell, SWT.PUSH);
 		buttonOK.setText("Ok");
@@ -98,8 +100,7 @@ extends Dialog {
 					event.doit = false;
 			}
 		});
-
-		text.setText("");
+		
 		shell.pack();
 		shell.open();
 
