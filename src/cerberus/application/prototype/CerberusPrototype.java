@@ -47,9 +47,9 @@ public class CerberusPrototype
 		
 		refGeneralManager = oneForAllManager.getGeneralManager();
 		
-		refSWTGUIManager = (ISWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);
-		
 		refViewManager = (IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		
+		refSWTGUIManager = (ISWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);		
 		
 		refXmlParserManager = new XmlParserManager( refGeneralManager, false );
 		refGeneralManager.getSingelton().setXmlParserManager(refXmlParserManager);
