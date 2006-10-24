@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -143,80 +144,82 @@ extends APathwayGraphViewRep {
 					}
 					
 					bNeighbourhoodShown = false;
-					
 		    		return;
 		    	}
 		    	
 //				if (event.getClickCount() == 2)
 //				{	
 		    		// Check if cell has an user object attached
-					if (clickedCell.getUserObject() == null)
-					{
-						super.mousePressed(event);
-						return;						
-					}
+				if (clickedCell.getUserObject() == null)
+				{
+					super.mousePressed(event);
+					return;						
+				}
 
-					final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
-						.getVertexLink();
+				final String sUrl = ((PathwayVertex) clickedCell.getUserObject())
+					.getVertexLink();
+				
+				if (sUrl == "") 
+				{
+					super.mousePressed(event);
+					return;
+				}
+				
+				String sSearchPattern = "pathway/map/";
+				String sPathwayFilePath;
+				
+				// Check if clicked cell is another pathway
+				if (sUrl.contains((CharSequence)sSearchPattern))
+				{
+					int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
+					sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
+					sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
+					System.out.println("Load pathway from " +sPathwayFilePath);
 					
-					if (sUrl == "") 
-					{
-						super.mousePressed(event);
-						return;
-					}
-					
-					String sSearchPattern = "pathway/map/";
-					String sPathwayFilePath;
-					
-					// Check if clicked cell is another pathway
-					if (sUrl.contains((CharSequence)sSearchPattern))
-					{
-						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
-						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
-						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
-						System.out.println("Load pathway from " +sPathwayFilePath);
-						
-						// Extract pathway clicked pathway ID
-						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
-						System.out.println("Last index: " +iPathwayIdIndex);
-						iPathwayId = StringConversionTool.
-							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
+					// Extract pathway clicked pathway ID
+					int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+					System.out.println("Last index: " +iPathwayIdIndex);
+					iPathwayId = StringConversionTool.
+						convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
 
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
-								"Load pathway with ID " +iPathwayId);
-						
-						// Load pathway
-						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+					refGeneralManager.getSingelton().getLoggerManager().logMsg(
+							"Load pathway with ID " +iPathwayId);
 					
+					// Load pathway
+					loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+				
+					bNeighbourhoodShown = false;
+				}
+				else
+				{
+					// Load node information in browser
+					final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+					getViewGLCanvasManager();					
+			    
+					refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							((HTMLBrowserViewRep)tmpViewManager.
+									getItem(iHTMLBrowserId)).setUrl(sUrl);
+						}
+					});	
+
+
+					// UNDO old neighborhood visualization
+					if (bNeighbourhoodShown == true)
+					{
+						for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
+						{
+							refUndoManager.undo(refGraphLayoutCache);
+						}
+						iNeighbourhoodUndoCount = 0;
 						bNeighbourhoodShown = false;
 					}
-					else
-					{
-						// Load node information in browser
-						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-						getViewGLCanvasManager();					
-				    
-						refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
-							public void run() {
-								((HTMLBrowserViewRep)tmpViewManager.
-										getItem(iHTMLBrowserId)).setUrl(sUrl);
-							}
-						});	
-						
-						// Showing neighbours
-						if (bNeighbourhoodShown == true)
-						{
-							for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
-							{
-								refUndoManager.undo(refGraphLayoutCache);
-							}
-							bNeighbourhoodShown = false;
-						}
+					
+					showNeighbourhood(clickedCell, iNeighbourhoodDistance);
+					
+					bNeighbourhoodShown = true;
+				}
 
-						showNeighbourhood(clickedCell, iNeighbourhoodDistance);
-						bNeighbourhoodShown = true;
-					}
-//		    	}
 				super.mousePressed(event);
 			}
 		}
@@ -253,9 +256,6 @@ extends APathwayGraphViewRep {
         // Check if graph is already added to the frame
         if (isGraphSet == false)
         {
-        	final OverlayLayout overlayLayout = new OverlayLayout(refEmbeddedFrame);
-        	refEmbeddedFrame.setLayout(overlayLayout);
-        	
             final Dimension dimOverviewMap = new Dimension(200, 200);
             final Dimension dimPathway = new Dimension(iWidth, iHeight);
 
@@ -477,7 +477,8 @@ extends APathwayGraphViewRep {
 	
 		Iterator<DefaultGraphCell> cellIter = neighbourCells.iterator();
 		
-		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
+		Map<DefaultGraphCell, Map> nested = 
+			new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 		
 		DefaultGraphCell tmpCell;
