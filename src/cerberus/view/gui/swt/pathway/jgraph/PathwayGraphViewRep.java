@@ -221,7 +221,7 @@ extends APathwayGraphViewRep {
 						bNeighbourhoodShown = false;
 					}
 					
-					showNeighbourhood(clickedCell, iNeighbourhoodDistance);
+					showNeighbourhood(clickedCell, iNeighbourhoodDistance, null);
 					
 					bNeighbourhoodShown = true;
 				}
@@ -304,8 +304,10 @@ extends APathwayGraphViewRep {
 							(int)(iXPosition * SCALING_FACTOR), 
 							(int)(iYPosition * SCALING_FACTOR), 
 							iWidth, iHeight));
-			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.orange);
+			GraphConstants.setBackground(refGraphCell.getAttributes(), 
+					Color.MAGENTA);
 		}
+
 		else if (sShapeType.equals("circle"))
 		{	
 			// Set vertex type to ellipse
@@ -327,7 +329,8 @@ extends APathwayGraphViewRep {
 							(int)(iXPosition * SCALING_FACTOR), 
 							(int)(iYPosition * SCALING_FACTOR), 
 							iWidth, iHeight));
-			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.yellow);
+			GraphConstants.setBackground(refGraphCell.getAttributes(), 
+					new Color(0.53f, 0.81f, 1.0f)); // ligth blue
 		}
 		
 		vecVertices.add(refGraphCell);
@@ -485,10 +488,24 @@ extends APathwayGraphViewRep {
 		refPathwayGraph.setScale(refPathwayGraph.getScale() / 1.2);
 	}
 	
-	protected void showNeighbourhood(DefaultGraphCell cell, int iDistance) {
+	/**
+	 * Method visualizes the neighborhood of a certain cell.
+	 * 
+	 * @param cell Cell around the neighborhood is shown.
+	 * @param iDistance Neighborhood distance.
+	 * @param parentCell The cell that should be excluded. This is needed 
+	 * because the method is called recursive.
+	 */
+	protected void showNeighbourhood(DefaultGraphCell cell, 
+			int iDistance, DefaultGraphCell parentCell) {
 		
+		HashSet<DefaultGraphCell> excludeParent = 
+			new HashSet<DefaultGraphCell>();
+		excludeParent.add(parentCell);
+
 		List<DefaultGraphCell> neighbourCells = 
-			refGraphLayoutCache.getNeighbours(cell, null, false, false);
+			refGraphLayoutCache.getNeighbours(cell, 
+					excludeParent, false, false);
 	
 		Iterator<DefaultGraphCell> cellIter = neighbourCells.iterator();
 		
@@ -498,15 +515,15 @@ extends APathwayGraphViewRep {
 		
 		DefaultGraphCell tmpCell;
 		
-//		// Color mapping will start with red (neigborhood = 1)
-//		// For graph parts far away the color will turn to yellow.
-//		float fGreenPortion = fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
-//		
-//		if (fGreenPortion < 0.0)
-//			fGreenPortion = 0.0f;
+		// Color mapping will start with red (neigborhood = 1)
+		// For graph parts far away the color will turn to yellow.
+		float fGreenPortion = fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
+		
+		if (fGreenPortion < 0.0)
+			fGreenPortion = 0.0f;
 		
 		GraphConstants.setBackground(
-				attributeMap, new Color(1.0f, 0.0f, 0.0f));
+				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
 		
 		while (cellIter.hasNext())
 		{
@@ -516,7 +533,7 @@ extends APathwayGraphViewRep {
 			
 			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
 			{
-				showNeighbourhood(tmpCell, iDistance-1);
+				showNeighbourhood(tmpCell, iDistance-1, cell);
 			}
 		}
 		
