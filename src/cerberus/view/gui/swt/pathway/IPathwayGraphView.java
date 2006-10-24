@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.view.gui.IView;
 
 public interface IPathwayGraphView 
@@ -37,9 +38,8 @@ extends IView
 	
 	public void showOverviewMapInNewWindow(Dimension dim);
 	
-	public void showHideRelationEdges(boolean bShowRelationEdges);
-	
-	public void showHideReactionEdges(boolean bShowReactionEdges);
+	public void showHideEdgesByType(boolean bShowEdges,
+			EdgeType edgeType);
 	
 	public void finishGraphBuilding();
 }

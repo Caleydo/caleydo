@@ -86,6 +86,8 @@ extends APathwayGraphViewRep {
 	
 	protected Vector<DefaultEdge> vecReactionEdges;
 	
+	protected Vector<DefaultGraphCell> vecVertices;
+	
 	protected int iNeighbourhoodDistance = 1;
 	
 	/**
@@ -109,6 +111,7 @@ extends APathwayGraphViewRep {
 		
 		vecRelationEdges = new Vector<DefaultEdge>();
 		vecReactionEdges = new Vector<DefaultEdge>();
+		vecVertices = new Vector<DefaultGraphCell>();
 		
 	}
 
@@ -207,12 +210,14 @@ extends APathwayGraphViewRep {
 		refGraphModel = new DefaultGraphModel();
 		
 		refGraphLayoutCache = 
-			new GraphLayoutCache(refGraphModel, new DefaultCellViewFactory());
+			new GraphLayoutCache(refGraphModel, new GPCellViewFactory(),
+					true);
 
 		refPathwayGraph = new JGraph(refGraphModel, refGraphLayoutCache);
 		
-		// Set own cell view factory
-		refPathwayGraph.getGraphLayoutCache().setFactory(new GPCellViewFactory());
+//		// Set own cell view factory
+//		refPathwayGraph.getGraphLayoutCache().setFactory(
+//				new GPCellViewFactory());
 
 		// Control-drag should clone selection
 		refPathwayGraph.setCloneable(true);
@@ -305,7 +310,7 @@ extends APathwayGraphViewRep {
 			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.yellow);
 		}
 		
-		refPathwayGraph.getGraphLayoutCache().insert(refGraphCell);
+		vecVertices.add(refGraphCell);
 		
 		vertexIdToCellLUT.put(vertex.getElementId(), refGraphCell);
 	}
@@ -322,42 +327,34 @@ extends APathwayGraphViewRep {
 		DefaultPort port2 = new DefaultPort();
 		DefaultGraphCell cell2 = vertexIdToCellLUT.get(iVertexId2);
 		cell2.add(port2);
-		
+	
 		DefaultEdge edge = new DefaultEdge(refPathwayEdge);
-
+		edge.setSource(cell1.getChildAt(0));
+		edge.setTarget(cell2.getChildAt(0));
+		
+		// Retrieve existing edges between nodes
+		Object[] existingEdges  = 
+			DefaultGraphModel.getEdgesBetween(
+					refGraphModel, edge.getSource() , edge.getTarget() ,false); 
+		
+		// Return if edge of same type between two nodes already exists
+		for (int iEdgeCount = 0; iEdgeCount < existingEdges.length; iEdgeCount++)
+		{
+			if (((APathwayEdge)((DefaultEdge)existingEdges[iEdgeCount]).
+					getUserObject()).getEdgeType() == refPathwayEdge.getEdgeType())
+			{
+				return;
+			}
+		}
+		
 		AttributeMap changedMap = edge.getAttributes(); 	
 		EdgeLineStyle edgeLineStyle = null;
 		EdgeArrowHeadStyle edgeArrowHeadStyle = null;
 		Color edgeColor = null;
-		
-		// Assign render style
-	    if (edgeLineStyle == EdgeLineStyle.DASHED)
-	    {
-	    	GraphConstants.setDashPattern(changedMap, new float[]{4,4});
-	    }
-	    	
-		// Draw arrow
-		if (bDrawArrow == true)
-		{
-			GraphConstants.setLineEnd(
-					edge.getAttributes(), GraphConstants.ARROW_TECHNICAL);
-		}
-	    
-	    if (edgeArrowHeadStyle == EdgeArrowHeadStyle.FILLED)
-	    {
-			GraphConstants.setEndFill(changedMap, true);
-	    }
-		else if (edgeArrowHeadStyle == EdgeArrowHeadStyle.EMPTY)
-		{
-			GraphConstants.setEndFill(changedMap, false);
-		}
 	    
 		GraphConstants.setLineWidth(changedMap, 2);
-		GraphConstants.setRouting(changedMap, JGraphParallelRouter.getSharedInstance());
+//		GraphConstants.setRouting(changedMap, JGraphParallelRouter.getSharedInstance());
 //		GraphConstants.setRouting(edge.getAttributes(), GraphConstants.ROUTING_SIMPLE);
-
-		edge.setSource(cell1.getChildAt(0));
-		edge.setTarget(cell2.getChildAt(0));
 		
 		// Differentiate between Relations and Reactions
 		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
@@ -393,15 +390,39 @@ extends APathwayGraphViewRep {
 			
 		}// (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
 		
-		//refPathwayGraph.getGraphLayoutCache().insert(edge);
+		// Assign render style
+	    if (edgeLineStyle == EdgeLineStyle.DASHED)
+	    {
+	    	GraphConstants.setDashPattern(changedMap, new float[]{4,4});
+	    }
+	    	
+		// Draw arrow
+		if (bDrawArrow == true)
+		{
+			GraphConstants.setLineEnd(
+					edge.getAttributes(), GraphConstants.ARROW_TECHNICAL);
+		}
+	    
+	    if (edgeArrowHeadStyle == EdgeArrowHeadStyle.FILLED)
+	    {
+			GraphConstants.setEndFill(changedMap, true);
+	    }
+		else if (edgeArrowHeadStyle == EdgeArrowHeadStyle.EMPTY)
+		{
+			GraphConstants.setEndFill(changedMap, false);
+		}
+		
+		refPathwayGraph.getGraphLayoutCache().insert(edge);
 	}
 	
 	public void finishGraphBuilding() {
 		
 		refPathwayGraph.getGraphLayoutCache().insert(
-				vecRelationEdges.toArray());
-		refPathwayGraph.getGraphLayoutCache().insert(
-				vecReactionEdges.toArray());
+				vecVertices.toArray());
+//		refPathwayGraph.getGraphLayoutCache().insert(
+//				vecRelationEdges.toArray());
+//		refPathwayGraph.getGraphLayoutCache().insert(
+//				vecReactionEdges.toArray());
 	}
 	
 	public void setPathwayId(int iPathwayId) {
@@ -488,15 +509,17 @@ extends APathwayGraphViewRep {
 		this.iNeighbourhoodDistance = iNeighbourhoodDistance;
 	}
 	
-	public void showHideRelationEdges(boolean bShowRelationEdges) {
+	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
 
-		refGraphLayoutCache.setVisible(
-				vecRelationEdges, bShowRelationEdges);
-	}
-	
-	public void showHideReactionEdges(boolean bShowReactionEdges) {
-
-		refGraphLayoutCache.setVisible(
-				vecReactionEdges, bShowReactionEdges);
+		if (edgeType == EdgeType.REACTION)
+		{
+			refGraphLayoutCache.setVisible(
+					vecRelationEdges.toArray(), bShowEdges);			
+		}
+		else if (edgeType == EdgeType.RELATION)
+		{
+			refGraphLayoutCache.setVisible(
+					vecReactionEdges.toArray(), bShowEdges);
+		}	
 	}
 }

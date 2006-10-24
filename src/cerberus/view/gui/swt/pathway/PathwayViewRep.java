@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
@@ -187,13 +188,15 @@ implements IView {
 				
 				if (((MenuItem)event.widget).getText().equals("Show relations"))
 				{
-					refPathwayGraphViewRep.showHideRelationEdges(
-							clickedMenuItem.getSelection());
+					refPathwayGraphViewRep.showHideEdgesByType(
+							clickedMenuItem.getSelection(),
+							EdgeType.RELATION);
 				}
 				else if (((MenuItem)event.widget).getText().equals("Show reactions"))
 				{
-					refPathwayGraphViewRep.showHideReactionEdges(
-							clickedMenuItem.getSelection());
+					refPathwayGraphViewRep.showHideEdgesByType(
+							clickedMenuItem.getSelection(),
+							EdgeType.REACTION);
 				}					
 			}
 		};	

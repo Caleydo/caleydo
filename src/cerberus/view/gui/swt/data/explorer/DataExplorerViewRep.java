@@ -344,13 +344,13 @@ implements IView, IMediatorReceiver {
 	
 	public void addExistingPathway() {
 
-		PathwayModel currentPathwayModel;
-		Pathway currentPathway =
-			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
-
-		currentPathwayModel = new PathwayModel(
-				currentPathway.getPathwayID(), currentPathway.getTitle());
-		
-		rootModel.add(currentPathwayModel);
+//		PathwayModel currentPathwayModel;
+//		Pathway currentPathway =
+//			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
+//
+//		currentPathwayModel = new PathwayModel(
+//				currentPathway.getPathwayID(), currentPathway.getTitle());
+//		
+//		rootModel.add(currentPathwayModel);
 	}
 }

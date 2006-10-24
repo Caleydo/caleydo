@@ -86,6 +86,11 @@ implements IPathwayGraphView {
 		if (iPathwayId == 0)
 		{
 			Iterator<Pathway> iter = pathwayLUT.values().iterator();
+			if (!iter.hasNext())
+			{
+				return;
+			}
+			
 			refCurrentPathway = iter.next();
 		}
 		else
