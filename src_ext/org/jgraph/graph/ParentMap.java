@@ -63,8 +63,13 @@ public class ParentMap implements Serializable {
 	public static ParentMap create(GraphModel m, Object[] c, boolean remove,
 			boolean onlyUsePassedInCells) {
 		Set cellSet = new HashSet();
-		for (int i = 0; i < c.length; i++)
-			cellSet.add(c[i]);
+		for (int i = 0; i < c.length; i++) {
+			// Do not add null cells otherwise the while loop lower down runs
+			// in an infinite loop
+			if (c[i] != null) {
+				cellSet.add(c[i]);
+			}
+		}
 		ParentMap parentMap = new ParentMap();
 		for (int i = 0; i < c.length; i++) {
 			// Collect Parent Information
@@ -75,8 +80,11 @@ public class ParentMap implements Serializable {
 				parentMap.addEntry(c[i], (remove) ? null : parent);
 			if (remove) {
 				// Move Orphans to First Unselected Parent
-				while (cellSet.contains(parent))
+				while (cellSet.contains(parent)) {
+					// Make sure there are no nulls in the cell set or the
+					// while will get stuck in a loop
 					parent = m.getParent(parent);
+				}
 				for (int j = 0; j < m.getChildCount(c[i]); j++) {
 					Object child = m.getChild(c[i], j);
 					if (!cellSet.contains(child))

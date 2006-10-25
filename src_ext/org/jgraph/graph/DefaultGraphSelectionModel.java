@@ -65,6 +65,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
 
 	/** List that contains the selected items. */
 	protected List selection = new ArrayList();
+	// TODO make selection a LinkedHashSet when minimum JVM moves to 1.4
+	// because of the number of remove calls in this class
 
 	/** Constructs a DefaultGraphSelectionModel for the specified graph. */
 	public DefaultGraphSelectionModel(JGraph graph) {
@@ -417,6 +419,7 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
 			Object[] tmp = new Object[] { cell };
 			List childs = DefaultGraphModel.getDescendants(model, tmp);
 			// Remove Current Cell From Flat-View
+			// TODO check performance of next line
 			childs.remove(cell);
 			Iterator it = childs.iterator();
 			while (it.hasNext()) {

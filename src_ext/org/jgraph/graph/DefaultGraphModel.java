@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -627,10 +628,22 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 	 */
 	protected Object[] handleRemove(Object[] cells) {
 		List removedRoots = new ArrayList();
-		if (cells != null)
-			for (int i = 0; i < cells.length; i++)
-				if (getParent(cells[i]) == null && roots.remove(cells[i]))
+		if (cells != null) {
+			Set rootsSet = null;
+			boolean rootsChanged = false;
+			for (int i = 0; i < cells.length; i++){
+				if (rootsSet == null) {
+					rootsSet = new HashSet(roots);
+				}
+				if (getParent(cells[i]) == null && rootsSet.remove(cells[i])) {
 					removedRoots.add(cells[i]);
+					rootsChanged = true;
+				}
+			}
+			if (rootsChanged) {
+				roots = new ArrayList(rootsSet);
+			}
+		}
 		return removedRoots.toArray();
 	}
 
@@ -662,14 +675,13 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 
 				boolean isRoot = rootsSet.contains(child);
 				if (parent == null && !isRoot) {
-					roots.add(child);
 					rootsSet.add(child);
 				}
 				else if (parent != null && isRoot) {
-					roots.remove(child);
 					rootsSet.remove(child);
 				}
 			}
+			roots = new ArrayList(rootsSet);
 			return undo;
 		}
 		return null;
@@ -711,6 +723,21 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 					else
 						GraphConstants.setRemoveAttributes(deltaOld,
 								new Object[] { GraphConstants.VALUE });
+				} else {
+					// Special case to handle removal of value attribute
+					Object[] remove = GraphConstants
+							.getRemoveAttributes(deltaNew);
+					if (remove != null && remove.length > 0) {
+						for (int i = 0; i < remove.length; i++) {
+							if (remove[i] == GraphConstants.VALUE) {
+								Object oldValue = valueForCellChanged(cell,
+										null);
+								if (oldValue != null) {
+									GraphConstants.setValue(deltaOld, oldValue);
+								}
+							}
+						}
+					}
 				}
 			}
 			return undo;
@@ -1568,6 +1595,28 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 				cells = new Object[model.getRootCount()];
 				for (int i = 0; i < cells.length; i++) {
 					cells[i] = model.getRootAt(i);
+				}
+			}
+		}
+		return cells;
+	}
+
+	/**
+	 * Returns the roots of the specified model as a collection. This implementation
+	 * uses the GraphModel interface in the general case, but if the model is a
+	 * <code>DefaultGraphModel</code> the performance can be improved to
+	 * linear time.
+	 */
+	public static Collection getRootsAsCollection(GraphModel model) {
+		Collection cells = null;
+		if (model != null) {
+			// If model is DefaultGraphModel, we can do a linear time getRoots
+			if (model instanceof DefaultGraphModel) {
+				cells = ((DefaultGraphModel) model).getRoots();
+			} else {
+				cells = new HashSet(model.getRootCount());
+				for (int i = 0; i < cells.size(); i++) {
+					cells.add(model.getRootAt(i));
 				}
 			}
 		}

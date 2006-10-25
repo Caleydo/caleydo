@@ -10,13 +10,11 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
@@ -182,9 +180,7 @@ public class VertexView extends AbstractCellView {
 
 	public static class SizeHandle implements CellHandle, Serializable {
 
-		// Double Buffer
-		protected transient Image offscreen;
-
+		/** Reference to graph off screen graphics */
 		protected transient Graphics offgraphics;
 
 		protected transient boolean firstDrag = true;
@@ -260,27 +256,26 @@ public class VertexView extends AbstractCellView {
 									(int) r[i].getWidth(), (int) r[i]
 											.getHeight(), true);
 			}
+			if (!graph.isXorEnabled()) {
+				firstOverlayInvocation = false;
+				overlay(g);
+			}
 		}
 
-		// Double Buffers by David Larsson
 		protected void initOffscreen() {
+			if (!graph.isXorEnabled()) {
+				return;
+			}
 			try {
-				Rectangle rect = graph.getBounds();
-				// RepaintManager repMan = RepaintManager.currentManager(graph);
-				// offscreen = repMan.getVolatileOffscreenBuffer(getGraph(),
-				// (int) rect.getWidth(), (int) rect.getHeight());
-				offscreen = new BufferedImage(rect.width, rect.height,
-						BufferedImage.TYPE_INT_RGB);
-				offgraphics = offscreen.getGraphics();
-				offgraphics.setClip(0, 0, rect.width, rect.height);
+				Graphics offgraphics = graph.getOffgraphics();
 				offgraphics.setColor(graph.getBackground());
+				offgraphics.setPaintMode();
+				Rectangle rect = graph.getBounds();
 				offgraphics.fillRect(0, 0, rect.width, rect.height);
 				graph.getUI().paint(offgraphics, graph);
 			} catch (Exception e) {
-				offscreen = null;
 				offgraphics = null;
 			} catch (Error e) {
-				offscreen = null;
 				offgraphics = null;
 			}
 		}
@@ -362,17 +357,21 @@ public class VertexView extends AbstractCellView {
 					.getGraphics();
 			if (index == -1)
 				return;
-			Rectangle2D newBounds = computeBounds(event);
-			g.setColor(graph.getForeground());
-			g.setXORMode(graph.getBackground().darker());
-			overlay(g);
-			if (offgraphics != null) {
+			if (offgraphics != null || !graph.isXorEnabled()) {
 				dirty = graph
 						.toScreen((Rectangle2D) vertex.getBounds().clone());
 				Rectangle2D t = graph.toScreen(AbstractCellView
 						.getBounds(contextViews));
 				if (t != null)
 					dirty.add(t);
+			}
+			Rectangle2D newBounds = computeBounds(event);
+			if (graph.isXorEnabled()) {
+				g.setColor(graph.getForeground());
+				g.setXORMode(graph.getBackground().darker());
+				overlay(g);
+			} else {
+				firstOverlayInvocation = false;
 			}
 			if (cachedBounds != null)
 				cachedBounds = newBounds;
@@ -396,8 +395,10 @@ public class VertexView extends AbstractCellView {
 				if (contextViews != null)
 					graph.getGraphLayoutCache().update(contextViews);
 			}
-			overlay(g);
-			if (offscreen != null) {
+			if (graph.isXorEnabled()) {
+				overlay(g);
+			}
+			if (offgraphics != null || !graph.isXorEnabled()) {
 				dirty.add(graph.toScreen((Rectangle2D) vertex.getBounds()
 						.clone()));
 				Rectangle2D t = graph.toScreen(AbstractCellView
@@ -414,9 +415,13 @@ public class VertexView extends AbstractCellView {
 				double sy1 = Math.max(0, dirty.getY());
 				double sx2 = sx1 + dirty.getWidth();
 				double sy2 = sy1 + dirty.getHeight();
-				graph.getGraphics().drawImage(offscreen, (int) sx1, (int) sy1,
-						(int) sx2, (int) sy2, (int) sx1, (int) sy1, (int) sx2,
-						(int) sy2, graph);
+				if (offgraphics != null) {
+					graph.drawImage((int) sx1, (int) sy1, (int) sx2, (int) sy2,
+							(int) sx1, (int) sy1, (int) sx2, (int) sy2);
+				} else {
+					graph.repaint((int) dirty.getX(), (int) dirty.getY(),
+							(int) dirty.getWidth(), (int) dirty.getHeight());
+				}
 			}
 		}
 
@@ -480,6 +485,10 @@ public class VertexView extends AbstractCellView {
 			cachedBounds = null;
 			initialBounds = null;
 			firstDrag = true;
+			if (offgraphics != null) {
+				offgraphics.dispose();
+			}
+
 		}
 
 		protected void invalidate() {

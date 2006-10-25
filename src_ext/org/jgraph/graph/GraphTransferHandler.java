@@ -171,8 +171,12 @@ public class GraphTransferHandler extends TransferHandler {
 
 								// Cloned via Clipboard
 							} else {
-								dx = inCount * graph.getGridSize();
-								dy = inCount * graph.getGridSize();
+								Point2D insertPoint = getInsertionOffset(graph,
+										inCount, bounds);
+								if (insertPoint != null) {
+									dx = insertPoint.getX();
+									dy = insertPoint.getY();
+								}
 							}
 						}
 
@@ -319,6 +323,21 @@ public class GraphTransferHandler extends TransferHandler {
 			exception.printStackTrace();
 		}
 		return false;
+	}
+
+	/**
+	 * Hook method to determine offset of cells cloned via the clipboard
+	 * @param graph the graph the insertion is occurring on
+	 * @param inCount the number of time the insert has been applied
+	 * @param bounds the bounds of the transferred graph
+	 * @return the offset from the cloned cell(s)
+	 */
+	protected Point2D getInsertionOffset(JGraph graph, int inCount, Rectangle2D bounds) {
+		Point2D result = null;
+		if (graph != null) {
+			result = new Point2D.Double(inCount * graph.getGridSize(), inCount * graph.getGridSize());
+		}
+		return result;
 	}
 
 	protected void handleExternalDrop(JGraph graph, Object[] cells, Map nested,

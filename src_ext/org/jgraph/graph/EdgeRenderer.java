@@ -667,12 +667,12 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 			}
 			if (isOpaque() && mainLabel) {
 				g.setColor(getBackground());
-				g.fillRect((int) (-sw / 2 - 1), (int) (-sh / 2 - 1), sw + 2,
+				g.fillRect(-sw / 2 - 1, -sh / 2 - 1, sw + 2,
 						sh + 2);
 			}
 			if (borderColor != null && mainLabel) {
 				g.setColor(borderColor);
-				g.drawRect((int) (-sw / 2 - 1), (int) (-sh / 2 - 1), sw + 2,
+				g.drawRect(-sw / 2 - 1, -sh / 2 - 1, sw + 2,
 						sh + 2);
 			}
 

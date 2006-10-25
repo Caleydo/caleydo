@@ -58,10 +58,6 @@ public class EdgeView extends AbstractCellView {
 
 	protected Point2D[] extraLabelPositions;
 
-	protected transient Rectangle2D cachedLabelBounds = null;
-
-	protected transient Rectangle2D[] cachedExtraLabelBounds = null;
-
 	protected transient Point2D labelVector = null;
 
 	/** Drawing attributes that are created on the fly */
@@ -207,8 +203,6 @@ public class EdgeView extends AbstractCellView {
 		labelVector = null;
 		sharedPath = null;
 		cachedBounds = null;
-		cachedLabelBounds = null;
-		cachedExtraLabelBounds = null;
 	}
 
 	/**
@@ -219,31 +213,6 @@ public class EdgeView extends AbstractCellView {
 			return sharedPath;
 		else {
 			return sharedPath = (GeneralPath) getEdgeRenderer().createShape();
-		}
-	}
-
-	/**
-	 * Returns the bounds of label according to the last rendering state
-	 */
-	public Rectangle2D getLabelBounds() {
-		if (cachedLabelBounds != null) {
-			return cachedLabelBounds;
-		} else {
-			return cachedLabelBounds = getEdgeRenderer().getLabelBounds(null,
-					this);
-		}
-	}
-
-	/**
-	 * Returns the bounds of label according to the last rendering state
-	 */
-	public Rectangle2D getExtraLabelBounds(int index) {
-		if (cachedLabelBounds != null && index < cachedExtraLabelBounds.length
-				&& cachedExtraLabelBounds[index] != null) {
-			return cachedExtraLabelBounds[index];
-		} else {
-			return cachedExtraLabelBounds[index] = getEdgeRenderer()
-					.getExtraLabelBounds(null, this, index);
 		}
 	}
 
@@ -414,7 +383,11 @@ public class EdgeView extends AbstractCellView {
 	 * Returns the number of point for this edge.
 	 */
 	public int getPointCount() {
-		return points.size();
+		if (points != null) {
+			return points.size();
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -595,8 +568,8 @@ public class EdgeView extends AbstractCellView {
 					dy += point.getY() - p0.getY();
 				}
 				n /= 2;
-				dx /= (double) n;
-				dy /= (double) n;
+				dx /= n;
+				dy /= n;
 				labelVector = new Point2D.Double(dx, dy);
 			} else {
 				Point2D point = getPoint(n - 1);
@@ -752,13 +725,19 @@ public class EdgeView extends AbstractCellView {
 										.getHeight() - 5);
 				}
 			}
+			if (!graph.isXorEnabled()) {
+				firstOverlayCall = false;
+				overlay(g);
+			}
 		}
 
 		public void overlay(Graphics g) {
 			if (edge != null && !firstOverlayCall && edge.isLeaf()) {
 				// g.setColor(graph.getBackground()); // JDK 1.3
 				g.setColor(graph.getForeground());
-				g.setXORMode(graph.getBackground().darker());
+				if (graph.isXorEnabled()) {
+					g.setXORMode(graph.getBackground().darker());
+				}
 				Graphics2D g2 = (Graphics2D) g;
 				AffineTransform oldTransform = g2.getTransform();
 				g2.scale(graph.getScale(), graph.getScale());
@@ -793,26 +772,46 @@ public class EdgeView extends AbstractCellView {
 			if (port != null && connect) {
 				CellView portView = graph.getGraphLayoutCache().getMapping(
 						port, false);
+				Rectangle2D dirty = edge.getBounds();
+				dirty.add(portView.getParentView().getBounds());
 				if (GraphConstants.isConnectable(portView.getParentView()
 						.getAllAttributes())) {
 					Object cell = edge.getCell();
 					if (source && graph.getModel().acceptsSource(cell, port)) {
 						if (edge.getSource() != portView) {
 							edgeModified = true;
-							overlay(graph.getGraphics());
+							if (graph.isXorEnabled()) {
+								overlay(graph.getGraphics());
+							}
 							edge.setSource(portView);
 							edge.update();
-							overlay(graph.getGraphics());
+							if (graph.isXorEnabled()) {
+								overlay(graph.getGraphics());
+							} else {
+								dirty.add(edge.getBounds());
+								graph.repaint((int) dirty.getX(), (int) dirty
+										.getY(), (int) dirty.getWidth(),
+										(int) dirty.getHeight());
+							}
 						}
 						return true;
 					} else if (!source
 							&& graph.getModel().acceptsTarget(cell, port)) {
 						if (edge.getTarget() != portView) {
 							edgeModified = true;
-							overlay(graph.getGraphics());
+							if (graph.isXorEnabled()) {
+								overlay(graph.getGraphics());
+							}
 							edge.setTarget(portView);
 							edge.update();
-							overlay(graph.getGraphics());
+							if (graph.isXorEnabled()) {
+								overlay(graph.getGraphics());
+							} else {
+								dirty.add(edge.getBounds());
+								graph.repaint((int) dirty.getX(), (int) dirty
+										.getY(), (int) dirty.getWidth(),
+										(int) dirty.getHeight());
+							}
 						}
 						return true;
 					}
@@ -912,14 +911,15 @@ public class EdgeView extends AbstractCellView {
 			if (!isEditing() && graph.isMoveable()
 					&& GraphConstants.isMoveable(edge.getAllAttributes())
 					&& loc != null && loc.contains(x, y)
-					&& !isAddPointEvent(event) && !isRemovePointEvent(event)) {
+					&& !isAddPointEvent(event) && !isRemovePointEvent(event)
+					&& graph.getEdgeLabelsMovable()) {
 				initialLabelLocation = (Point2D) edge.getLabelPosition()
 						.clone();
 				label = true;
 			}
 			// Detect hit on extra labels
 			else if (extraLabelLocations != null && !isEditing()
-					&& graph.isMoveable()
+					&& graph.isMoveable() && graph.getEdgeLabelsMovable()
 					&& GraphConstants.isMoveable(edge.getAllAttributes())) {
 				for (int i = 0; i < extraLabelLocations.length; i++) {
 					if (extraLabelLocations[i] != null
@@ -1063,7 +1063,18 @@ public class EdgeView extends AbstractCellView {
 									null) || graph.isPreviewInvalidNullPorts());
 					if (acceptSource || acceptTarget || !(source || target)) {
 						edgeModified = true;
-						overlay(graph.getGraphics());
+						Rectangle2D dirty = edge.getBounds();
+						if (edge.getSource() != null) {
+							dirty.add(edge.getSource().getParentView()
+									.getBounds());
+						}
+						if (edge.getTarget() != null) {
+							dirty.add(edge.getTarget().getParentView()
+									.getBounds());
+						}
+						if (graph.isXorEnabled()) {
+							overlay(graph.getGraphics());
+						}
 						p = graph.fromScreen(graph.snap(new Point(event
 								.getPoint())));
 						// Constrained movement
@@ -1092,7 +1103,22 @@ public class EdgeView extends AbstractCellView {
 							edge.setTarget(null);
 						}
 						edge.update();
-						overlay(graph.getGraphics());
+						dirty.add(edge.getBounds());
+						if (graph.isXorEnabled()) {
+							overlay(graph.getGraphics());
+						} else {
+							if (edge.getSource() != null) {
+								dirty.add(edge.getSource().getParentView()
+										.getBounds());
+							}
+							if (edge.getTarget() != null) {
+								dirty.add(edge.getTarget().getParentView()
+										.getBounds());
+							}
+							graph.repaint((int) dirty.getX(), (int) dirty
+									.getY(), (int) dirty.getWidth(),
+									(int) dirty.getHeight());
+						}
 					}
 				}
 			}
@@ -1169,7 +1195,13 @@ public class EdgeView extends AbstractCellView {
 					graph.getGraphLayoutCache().edit(nested, cs, null, null);
 				}
 			} else {
-				overlay(graph.getGraphics());
+				if (graph.isXorEnabled()) {
+					overlay(graph.getGraphics());
+				} else {
+					Rectangle2D dirty = edge.getBounds();
+					graph.repaint((int) dirty.getX(), (int) dirty.getY(),
+							(int) dirty.getWidth(), (int) dirty.getHeight());
+				}
 				edge.refresh(graph.getModel(), graph.getGraphLayoutCache(),
 						false);
 			}

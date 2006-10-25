@@ -103,16 +103,24 @@ public class BasicMarqueeHandler {
 			// Xor the current display
 			Color bg = graph.getBackground();
 			Color fg = graph.getMarqueeColor();
-			g.setColor(fg);
-			g.setXORMode(bg);
-			overlay(graph, g, true);
-
+			if (graph.isXorEnabled()) {
+				g.setColor(fg);
+				g.setXORMode(bg);
+				overlay(graph, g, true);
+			}
+			Rectangle2D dirty = (Rectangle2D) marqueeBounds.clone();
 			processMouseDraggedEvent(e);
 
 			// Repaint
-			g.setColor(bg);
-			g.setXORMode(fg);
-			overlay(graph, g, false);
+			if (graph.isXorEnabled()) {
+				g.setColor(bg);
+				g.setXORMode(fg);
+				overlay(graph, g, false);
+			} else {
+				dirty.add(marqueeBounds);
+				graph.repaint((int) dirty.getX(), (int) dirty.getY(),
+						(int) dirty.getWidth()+1, (int) dirty.getHeight()+1);
+			}
 		}
 	}
 
@@ -150,10 +158,14 @@ public class BasicMarqueeHandler {
 	 * @param g
 	 */
 	public void overlay(JGraph graph, Graphics g, boolean clear) {
-		if (marqueeBounds != null)
+		if (marqueeBounds != null) {
+			if (!graph.isXorEnabled()) {
+				g.setColor(graph.getMarqueeColor());
+			}
 			g.drawRect((int) marqueeBounds.getX(), (int) marqueeBounds.getY(),
 					(int) marqueeBounds.getWidth(), (int) marqueeBounds
 							.getHeight());
+		}
 	}
 
 	/**

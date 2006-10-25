@@ -598,7 +598,7 @@ public class GraphConstants {
 		for (int i = 0; i < elements.length; i++) {
 			AttributeMap attr = model.getAttributes(elements[i]);
 			if (attr != null && attr.size() > 0)
-				attributes.put(elements[i], (AttributeMap) attr.clone());
+				attributes.put(elements[i], attr.clone());
 		}
 		return attributes;
 	}
@@ -1127,6 +1127,9 @@ public class GraphConstants {
 
 	/**
 	 * Returns the value attribute from the specified map.
+	 * 
+	 * @deprecated value no longer stored in attribute map.
+	 * @see GraphModel#getValue(Object)
 	 */
 	public static final Object getValue(Map map) {
 		return map.get(VALUE);

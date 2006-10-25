@@ -126,9 +126,6 @@ public class PortView extends AbstractCellView {
 	 * may be <code>null</code>.
 	 */
 	public Point2D getLocation(EdgeView edge, Point2D nearest) {
-		Object modelAnchor = null;
-		if (cell instanceof Port)
-			modelAnchor = ((Port) cell).getAnchor();
 		CellView vertex = getParentView();
 		Point2D pos = null;
 		if (vertex != null) {

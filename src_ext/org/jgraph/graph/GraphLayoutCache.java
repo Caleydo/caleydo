@@ -7,6 +7,9 @@
 package org.jgraph.graph;
 
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -165,12 +168,17 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	protected GraphModel graphModel;
 
 	/**
+	 * Maps cells to views.
+	 */
+	protected Map mapping = new Hashtable();
+
+	/**
 	 * Maps cells to views. The hidden mapping is used to remembed cell views
 	 * that are hidden, based on the remembersCellViews setting. hiddenMapping
-	 * must weak keys for the cells since when cells are removed hiddenMapping
-	 * is not updated.
+	 * must use weak keys for the cells since when cells are removed
+	 * hiddenMapping is not updated.
 	 */
-	protected Map mapping = new Hashtable(), hiddenMapping = new WeakHashMap();
+	protected transient Map hiddenMapping = new WeakHashMap();
 
 	/**
 	 * Factory to create the views.
@@ -432,7 +440,7 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 			Rectangle2D r = views[0].getBounds();
 			Rectangle2D ret = (r != null) ? (Rectangle2D) r.clone() : null;
 			for (int i = 1; i < views.length; i++) {
-					r = views[i].getBounds();
+				r = views[i].getBounds();
 				if (r != null) {
 					if (ret == null)
 						ret = (r != null) ? (Rectangle2D) r.clone() : null;
@@ -496,20 +504,23 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 		return result;
 	}
 
-	// Remaps all existing views using the CellViewFactory
-	// and replaces the respective root views.
+	/**
+	 * Remaps all existing views using the CellViewFactory
+	 * and replaces the respective root views.
+	 */
 	public synchronized void reload() {
 		List newRoots = new ArrayList();
 		Map oldMapping = new Hashtable(mapping);
 		mapping.clear();
 		Iterator it = oldMapping.keySet().iterator();
+		Set rootsSet = new HashSet(roots);
 		while (it.hasNext()) {
 			Object cell = it.next();
 			CellView oldView = (CellView) oldMapping.get(cell);
 			CellView newView = getMapping(cell, true);
 			newView.changeAttributes(oldView.getAttributes());
 			// newView.refresh(getModel(), this, false);
-			if (roots.contains(oldView))
+			if (rootsSet.contains(oldView))
 				newRoots.add(newView);
 		}
 		// replace hidden
@@ -815,16 +826,20 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	 * mapping between the cell and its view and makes the cells invisible.
 	 */
 	public CellView[] removeCells(Object[] cells) {
-		if (cells != null) {
+		if (cells != null && cells.length > 0) {
 			CellView[] views = new CellView[cells.length];
+			// Store views to be removed from roots in an intermediate
+			// set for performance reasons
+			Set newRoots = new HashSet(roots);
 			for (int i = 0; i < cells.length; i++) {
 				views[i] = removeMapping(cells[i]);
 				if (views[i] != null) {
 					views[i].removeFromParent();
-					roots.remove(views[i]);
+					newRoots.remove(views[i]);
 					visibleSet.remove(views[i].getCell());
 				}
 			}
+			roots = new ArrayList(newRoots);
 			return views;
 		}
 		return null;
@@ -932,10 +947,28 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 		visibleSet = visible;
 	}
 
+	/**
+	 * Makes the specified cell visible or invisible depending on the flag
+	 * passed in. Note the cell really is a cell, not a cell view.
+	 * 
+	 * @param cell
+	 *            the cell whose visibility is to be changed
+	 * @param visible
+	 *            <code>true</code> if cell is to be made visible
+	 */
 	public void setVisible(Object cell, boolean visible) {
 		setVisible(new Object[] { cell }, visible);
 	}
 
+	/**
+	 * Makes the specified cells visible or invisible depending on the flag
+	 * passed in. Note the cells really are cells, not cell views.
+	 * 
+	 * @param cells
+	 *            the cells whose visibility is to be changed
+	 * @param visible
+	 *            <code>true</code> if the cells are to be made visible
+	 */
 	public void setVisible(Object[] cells, boolean visible) {
 		if (visible)
 			setVisible(cells, null);
@@ -943,10 +976,31 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 			setVisible(null, cells);
 	}
 
+	/**
+	 * Changes the visibility state of the cells passed in. Note that the arrays
+	 * must contain cells, not cell views.
+	 * 
+	 * @param visible
+	 *            cells to be made visible
+	 * @param invisible
+	 *            cells to be made invisible
+	 */
 	public void setVisible(Object[] visible, Object[] invisible) {
 		setVisible(visible, invisible, null);
 	}
 
+	/**
+	 * Changes the visibility state of the cells passed in. Note that the arrays
+	 * must contain cells, not cell views.
+	 * 
+	 * @param visible
+	 *            cells to be made visible
+	 * @param invisible
+	 *            cells to be made invisible
+	 * @param cs
+	 *            a <code>ConnectionSet</code> describing the new state of
+	 *            edge connections in the graph
+	 */
 	public void setVisible(Object[] visible, Object[] invisible,
 			ConnectionSet cs) {
 		GraphLayoutCacheEdit edit = new GraphLayoutCacheEdit(null, null,
@@ -1019,15 +1073,30 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 		return cells;
 	}
 
-	// You must call update ports if this method returns true.
+	/**
+	 * The actual implementation of changing cells' visibility state. This
+	 * method does not deal with creating the undo or updating the
+	 * GraphLayoutCache correctly. The <code>setVisible</code> methods in this
+	 * class are intended to be the main public way to change visiblilty.
+	 * However, if you do not require the undo to be formed, this method is much
+	 * quicker, just note that you must call <code>updatePorts</code> if this
+	 * method returns true.
+	 * 
+	 * @param cells
+	 * @param visible
+	 * @return whether or not the ports needed updating in the calling method
+	 */
 	public boolean setVisibleImpl(Object[] cells, boolean visible) {
 		cells = addVisibleDependencies(cells, visible);
 		if (cells != null && isPartial()) {
 			boolean updatePorts = false;
 			// Update Visible Set
 			CellView[] views = new CellView[cells.length];
-			if (!visible)
+			if (!visible) {
 				views = removeCells(cells);
+			}
+			// Set used for model roots contains call for performance
+			Set modelRoots = null;
 			for (int i = 0; i < cells.length; i++) {
 				if (cells[i] != null) {
 					if (visible) {
@@ -1035,9 +1104,14 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 						views[i] = getMapping(cells[i], true);
 					} else {
 						if (views[i] != null) {
-							if (graphModel.contains(views[i].getCell())
-									&& remembersCellViews)
+							if (modelRoots == null) {
+								modelRoots = new HashSet(DefaultGraphModel
+										.getRootsAsCollection(getModel()));
+							}
+							if (modelRoots.contains(views[i].getCell())
+									&& remembersCellViews) {
 								hiddenMapping.put(views[i].getCell(), views[i]);
+							}
 							updatePorts = true;
 						}
 					}
@@ -1046,14 +1120,16 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 			// Make Cell Views Visible (if not already in place)
 			if (visible) {
 				Set parentSet = new HashSet();
+				Set newRoots = new HashSet(roots);
 				for (int i = 0; i < views.length; i++) {
 					if (views[i] != null) {
 						CellView view = views[i];
 						// Remove all children from roots
 						CellView[] children = AbstractCellView
-								.getDescendantViews(new CellView[] { view });
-						for (int j = 0; j < children.length; j++)
-							roots.remove(children[j]);
+						.getDescendantViews(new CellView[] { view });
+						for (int j = 0; j < children.length; j++) {
+							newRoots.remove(children[j]);
+						}
 						view.refresh(getModel(), this, false);
 						// Link cellView into graphLayoutCache
 						CellView parentView = view.getParentView();
@@ -1062,6 +1138,7 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 						updatePorts = true;
 					}
 				}
+				roots = new ArrayList(newRoots);
 				CellView[] parentViews = new CellView[parentSet.size()];
 				parentSet.toArray(parentViews);
 				refresh(parentViews, true);
@@ -1105,6 +1182,15 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	}
 
 	/**
+	 * Required for XML persistence
+	 * 
+	 * @return whether or not the cache is partial
+	 */
+	public boolean getPartial() {
+		return isPartial();
+	}
+
+	/**
 	 * Messaged when the user has altered the value for the item identified by
 	 * cell to newValue. If newValue signifies a truly new value the model
 	 * should post a graphCellsChanged event. This calls
@@ -1117,9 +1203,14 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 			if (view != null) {
 				AttributeMap attrs = view.getAllAttributes();
 				Rectangle2D bounds = GraphConstants.getBounds(attrs);
+				Rectangle2D dummyBounds = null;
 				// Force the model to store the old bounds
-				Rectangle2D dummyBounds = attrs.createRect(bounds.getX(),
-						bounds.getY(), 0, 0);
+				if (bounds != null) {
+					dummyBounds = attrs.createRect(bounds.getX(),
+							bounds.getY(), 0, 0);
+				} else {
+					dummyBounds = attrs.createRect(0, 0, 0, 0);
+				}
 				nested = GraphConstants.createAttributes(new Object[] { cell },
 						new Object[] { GraphConstants.RESIZE,
 								GraphConstants.BOUNDS }, new Object[] {
@@ -1808,29 +1899,31 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	}
 
 	/**
-	 * Handles the removal of view local attributes. Since these attributes
-	 * are only being stored in the view, the option is provided to
-	 * copy the values for that key into the model. Without this, those
-	 * values are lost.
+	 * Handles the removal of view local attributes. Since these attributes are
+	 * only being stored in the view, the option is provided to copy the values
+	 * for that key into the model. Without this, those values are lost.
 	 * 
 	 * @param key
 	 *            the key of the view local attribute
 	 * @param addToModel
 	 *            whether or not to move the attribute values to the graph model
 	 * @param override
-	 *            whether or not to override the key's value in the model
-	 *            cell's attribute map if it exists
+	 *            whether or not to override the key's value in the model cell's
+	 *            attribute map if it exists
 	 * @return whether or not the operation completed sucessfully
 	 */
-	public boolean removeViewLocalAttribute(Object key, boolean addToModel, boolean override) {
+	public boolean removeViewLocalAttribute(Object key, boolean addToModel,
+			boolean override) {
 		if (localAttributes.contains(key)) {
 			if (addToModel) {
 				// Iterate through all views copying this attribute to the
 				// cell.
-				copyRemovedViewValue(key, addToModel, override, mapping.values());
-				copyRemovedViewValue(key, addToModel, override, hiddenMapping.values());
+				copyRemovedViewValue(key, addToModel, override, mapping
+						.values());
+				copyRemovedViewValue(key, addToModel, override, hiddenMapping
+						.values());
 			}
-			localAttributes.remove(key);				
+			localAttributes.remove(key);
 			return true;
 		}
 		return false;
@@ -1838,26 +1931,30 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 
 	/**
 	 * Helper method to copy removed view local attributes to model cell's
+	 * 
 	 * @param key
 	 *            the key of the view local attribute
 	 * @param addToModel
 	 *            whether or not to move the attribute values to the graph model
 	 * @param override
-	 *            whether or not to override the key's value in the model
-	 *            cell's attribute map if it exists
-	 * @param coll the current collection being analysed
+	 *            whether or not to override the key's value in the model cell's
+	 *            attribute map if it exists
+	 * @param coll
+	 *            the current collection being analysed
 	 */
-	private void copyRemovedViewValue(Object key, boolean addToModel, boolean override, Collection coll) {
+	private void copyRemovedViewValue(Object key, boolean addToModel,
+			boolean override, Collection coll) {
 		Iterator iter = coll.iterator();
-		while(iter.hasNext()) {
-			CellView cellView = (CellView)iter.next();
+		while (iter.hasNext()) {
+			CellView cellView = (CellView) iter.next();
 			Map attributes = cellView.getAttributes();
 			if (attributes.containsKey(key)) {
 				if (addToModel) {
 					Object cell = cellView.getCell();
 					Map cellAttributes = graphModel.getAttributes(cell);
 					if (cellAttributes != null) {
-						boolean cellContainsKey = cellAttributes.containsKey(key);
+						boolean cellContainsKey = cellAttributes
+								.containsKey(key);
 						// Write the model cell's attribute map key
 						// if overriding is enabled or if key doesn't
 						// exist
@@ -1871,7 +1968,7 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 			}
 		}
 	}
-	
+
 	/**
 	 * An implementation of GraphViewChange.
 	 */
@@ -2122,7 +2219,7 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 
 				// Moves the group to the origin of the children
 				Rectangle2D src = GraphConstants.getBounds(attrs);
-				Rectangle2D b = (Rectangle2D) view.getBounds();
+				Rectangle2D b = view.getBounds();
 				// FIXME: What if the group is exactly at "defaultBounds"?
 				if (resizesParentsOnCollapse || src == null
 						|| src.equals(VertexView.defaultBounds)) {
@@ -2647,6 +2744,27 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	 */
 	public void setResizesParentsOnCollapse(boolean resizesParentsOnCollapse) {
 		this.resizesParentsOnCollapse = resizesParentsOnCollapse;
+	}
+
+	/**
+	 * Serialization support.
+	 */
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		s.defaultWriteObject();
+		// Write out the hidden mapping
+		Map map = new Hashtable(hiddenMapping);
+		s.writeObject(map);
+	}
+
+	/**
+	 * Serialization support.
+	 */
+	private void readObject(ObjectInputStream s) throws IOException,
+			ClassNotFoundException {
+		s.defaultReadObject();
+		// Read the hidden mapping
+		Map map = (Map) s.readObject();
+		hiddenMapping = new WeakHashMap(map);
 	}
 
 }

@@ -37,7 +37,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
@@ -48,6 +47,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.CellRendererPane;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
@@ -988,10 +988,60 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 	 * Paint the background of this graph. Calls paintGrid.
 	 */
 	protected void paintBackground(Graphics g) {
-		if (graph.isGridVisible())
+		paintBackgroundImage(g);
+		if (graph.isGridVisible()) {
 			paintGrid(graph.getGridSize(), g, g.getClipBounds());
+		}
 	}
 
+	/**
+	 * Hook for subclassers to paint the background image.
+	 * 
+	 * @param g2
+	 *            The graphics object to paint the image on.
+	 */
+	protected void paintBackgroundImage(Graphics g) {
+		Component component = graph.getBackgroundComponent();
+		if (component != null) {
+			paintBackgroundComponent(g, component);
+		}
+		ImageIcon icon = graph.getBackgroundImage();
+		if (icon == null) {
+			return;
+		}
+		Image backgroundImage = icon.getImage();
+		if (backgroundImage == null) {
+			return;
+		}
+		Graphics2D g2 = (Graphics2D) g;
+		AffineTransform transform = null;
+		if (graph.isBackgroundScaled()) {
+			transform = g2.getTransform();
+			g2.scale(graph.getScale(), graph.getScale());
+		}
+		g2.drawImage(backgroundImage, 0, 0, graph);
+		if (transform != null) {
+			g2.setTransform(transform);
+		}
+	}
+
+	/**
+	 * Requests that the component responsible for painting the background
+	 * paint itself
+	 * 
+	 * @param the component to be painted onto the background image
+	 */
+	protected void paintBackgroundComponent(Graphics g, Component component) {
+		try {
+			g.setPaintMode();
+			Dimension dim = component.getPreferredSize();
+			rendererPane.paintComponent(g, component, graph, 0, 0, (int) dim.getWidth(),
+					(int) dim.getHeight(), true);
+		} catch (Exception e) {
+		} catch (Error e) {
+		}
+	}
+	
 	/**
 	 * Paint the grid.
 	 */
@@ -999,7 +1049,7 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 
 		// Parameter "r" is never used: remove it.
 
-		Rectangle rr = (Rectangle) g.getClipBounds();
+		Rectangle rr = g.getClipBounds();
 		double xl = rr.x;
 		double yt = rr.y;
 		double xr = xl + rr.width;
@@ -1165,6 +1215,7 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 	 * returned from <code>getPreferredSize()</code>.
 	 */
 	protected void updateCachedPreferredSize() {
+		// FIXME: Renderer for the views might have an old state
 		Rectangle2D size = AbstractCellView.getBounds(graphLayoutCache
 				.getRoots());
 		if (size == null)
@@ -1179,6 +1230,16 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 		preferredSize = new Dimension(
 				(int) Math.max(min.getX(), scaled.getX()), (int) Math.max(min
 						.getY(), scaled.getY()));
+		// Allow for background image
+		ImageIcon image = graph.getBackgroundImage();
+		if (image != null ) {
+			int height = image.getIconHeight();
+			int width = image.getIconWidth();
+			Point2D imageSize = graph.toScreen(new Point(width, height));
+			preferredSize = new Dimension((int) Math.max(preferredSize.getWidth(),
+					imageSize.getX()), (int) Math.max(preferredSize.getHeight(),
+					imageSize.getY()));
+		}
 		Insets in = graph.getInsets();
 		if (in != null) {
 			preferredSize.setSize(
@@ -1542,13 +1603,13 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 				for (int i = 0; i < inserted.length; i++)
 					graph.updateAutoSize(graphLayoutCache.getMapping(
 							inserted[i], false));
-				}
+			}
 			// Change (update size)
 			if (changed != null && changed.length > 0) {
 				for (int i = 0; i < changed.length; i++)
 					graph.updateAutoSize(graphLayoutCache.getMapping(
 							changed[i], false));
-								}
+			}
 			// Select if not partial
 			if (!graphLayoutCache.isPartial()
 					&& graphLayoutCache.isSelectsAllInsertedCells()
@@ -1561,8 +1622,8 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 					graph.setSelectionCells(roots);
 				}
 			}
-				updateSize();
-			}
+			updateSize();
+		}
 
 	} // End of BasicGraphUI.GraphModelHandler
 
@@ -1749,7 +1810,8 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 				if (focus == null)
 					focus = cell;
 				completeEditing();
-				if (!isForceMarqueeEvent(e)) {
+				boolean isForceMarquee = isForceMarqueeEvent(e);
+				if (!isForceMarquee) {
 					if (e.getClickCount() == graph.getEditClickCount()
 							&& focus != null && focus.isLeaf()
 							&& focus.getParentView() == null
@@ -1777,8 +1839,9 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 					}
 				}
 				// Marquee Selection
-				if (!e.isConsumed() && marquee != null
-						&& (!isToggleSelectionEvent(e) || focus == null)) {
+				if (!e.isConsumed()
+						&& marquee != null
+						&& (!isToggleSelectionEvent(e) || focus == null || isForceMarquee)) {
 					marquee.mousePressed(e);
 					handler = marquee;
 				}
@@ -1920,11 +1983,6 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 
 		protected transient double _mouseToViewDelta_y = 0;
 
-		// Double Buffered
-		protected transient Image offscreen;
-
-		protected transient Graphics offgraphics;
-
 		protected transient boolean firstDrag = true;
 
 		/* Temporary views for the cells. */
@@ -1947,6 +2005,9 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 
 		/* The point where the mouse was pressed. */
 		protected transient Point2D start = null, last, snapStart, snapLast;
+
+		/** Reference to graph off screen graphics */
+		protected transient Graphics offgraphics;
 
 		/**
 		 * Indicates whether this handle is currently moving cells. Start may be
@@ -1974,6 +2035,8 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 		protected boolean isContextVisible = true;
 
 		protected boolean blockPaint = false;
+
+		protected Point2D current;
 
 		/* Defines the Disconnection if DisconnectOnMove is True */
 		protected transient ConnectionSet disconnect = null;
@@ -2079,6 +2142,15 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 					if (handles[i] != null)
 						handles[i].paint(g);
 			blockPaint = true;
+			if (!graph.isXorEnabled() && current != null) {
+				double dx = current.getX() - start.getX();
+				double dy = current.getY() - start.getY();
+				if (dx != 0 || dy != 0) {
+					overlay(g);
+				}
+			} else {
+				blockPaint = true;
+			}
 		}
 
 		public void overlay(Graphics g) {
@@ -2101,9 +2173,10 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 				}
 				// Paint temporary context
 				if (contextViews != null && isContextVisible) {
-					for (int i = 0; i < contextViews.length; i++)
+					for (int i = 0; i < contextViews.length; i++) {
 						paintCell(g, contextViews[i], contextViews[i]
 								.getBounds(), true);
+					}
 				}
 				if (!graph.isPortsScaled())
 					g2.setTransform(oldTransform);
@@ -2262,33 +2335,20 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 			return component;
 		}
 
-		// Double Buffers by David Larsson
 		protected void initOffscreen() {
+			if (!graph.isXorEnabled()) {
+				return;
+			}
 			try {
-				Rectangle rect = graph.getBounds();
-				/*
-				 * RepaintManager repMan = RepaintManager.currentManager(graph);
-				 * offscreen = repMan.getVolatileOffscreenBuffer(graph, (int)
-				 * rect.getWidth(), (int) rect.getHeight());
-				 */
-				offscreen = new BufferedImage(rect.width, rect.height,
-						BufferedImage.TYPE_INT_RGB);
-				offgraphics = offscreen.getGraphics();
-				offgraphics.setClip(0, 0, rect.width, rect.height);
-				/*
-				 * Component comp = getFirstOpaqueParent(graph);
-				 * offgraphics.translate(-rect.x, -rect.y);
-				 * comp.paint(offgraphics); offgraphics.translate(rect.x,
-				 * rect.y);
-				 */
+				offgraphics = graph.getOffgraphics();
 				offgraphics.setColor(graph.getBackground());
+				offgraphics.setPaintMode();
+				Rectangle rect = graph.getBounds();
 				offgraphics.fillRect(0, 0, rect.width, rect.height);
 				graph.getUI().paint(offgraphics, graph);
 			} catch (Exception e) {
-				offscreen = null;
 				offgraphics = null;
 			} catch (Error e) {
-				offscreen = null;
 				offgraphics = null;
 			}
 		}
@@ -2314,7 +2374,7 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 							- _mouseToViewDelta_x, ep.getY()
 							- _mouseToViewDelta_y);
 					Point2D snapCurrent = graph.snap(point);
-					Point2D current = snapCurrent;
+					current = snapCurrent;
 					int thresh = graph.getMinimumMove();
 					double dx = current.getX() - start.getX();
 					double dy = current.getY() - start.getY();
@@ -2357,29 +2417,11 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 						// a mouse pointer occasionally, but will be catching
 						// up.
 						dy = (int) (dy / scale);
-
-						g.setColor(graph.getForeground());
-
-						// use 'darker' to force XOR to distinguish between
-						// existing background elements during drag
-						// http://sourceforge.net/tracker/index.php?func=detail&aid=677743&group_id=43118&atid=435210
-						g.setXORMode(graph.getBackground().darker());
-
 						// Start Drag and Drop
 						if (graph.isDragEnabled() && !isDragging)
 							startDragging(event);
 						if (dx != 0 || dy != 0) {
-							if (!snapLast.equals(snapStart)
-									&& (offscreen != null || !blockPaint)) {
-								overlay(g);
-								overlayed = true;
-							}
-							isContextVisible = (!event.isControlDown() || !graph
-									.isCloneable())
-									&& contextViews != null
-									&& (contextViews.length < MAXCELLS);
-							blockPaint = false;
-							if (offscreen != null) {
+							if (offgraphics != null || !graph.isXorEnabled()) {
 								dirty = graph.toScreen(AbstractCellView
 										.getBounds(views));
 								Rectangle2D t = graph.toScreen(AbstractCellView
@@ -2387,6 +2429,29 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 								if (t != null)
 									dirty.add(t);
 							}
+							if (graph.isXorEnabled()) {
+								g.setColor(graph.getForeground());
+
+								// use 'darker' to force XOR to distinguish
+								// between
+								// existing background elements during drag
+								// http://sourceforge.net/tracker/index.php?func=detail&aid=677743&group_id=43118&atid=435210
+								g
+										.setXORMode(graph.getBackground()
+												.darker());
+							}
+							if (!snapLast.equals(snapStart)
+									&& (offgraphics != null || !blockPaint)) {
+								if (graph.isXorEnabled()) {
+									overlay(g);
+								}
+								overlayed = true;
+							}
+							isContextVisible = (!event.isControlDown() || !graph
+									.isCloneable())
+									&& contextViews != null
+									&& (contextViews.length < MAXCELLS);
+							blockPaint = false;
 							if (constrained && cachedBounds == null) {
 								// Reset Initial Positions
 								CellView[] all = graphLayoutCache
@@ -2401,12 +2466,18 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 											false);
 								}
 							}
-							if (cachedBounds != null)
+							if (cachedBounds != null) {
+								if (dirty != null) {
+									dirty.add(cachedBounds);
+								}
 								cachedBounds.setFrame(cachedBounds.getX() + dx
 										* scale, cachedBounds.getY() + dy
 										* scale, cachedBounds.getWidth(),
 										cachedBounds.getHeight());
-							else {
+								if (dirty != null) {
+									dirty.add(cachedBounds);
+								}
+							} else {
 								// Translate
 								GraphLayoutCache.translateViews(views, dx, dy);
 								if (views != null)
@@ -2480,9 +2551,11 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 									targetGroup = null;
 							}
 							if (!snapCurrent.equals(snapStart)
-									&& (offscreen != null || !blockPaint)
+									&& (offgraphics != null || !blockPaint)
 									&& !spread) {
-								overlay(g);
+								if (graph.isXorEnabled()) {
+									overlay(g);
+								}
 								overlayed = true;
 							}
 							if (constrained)
@@ -2497,7 +2570,9 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 							// so that the view would be catching up with a
 							// mouse pointer
 							snapLast = snapCurrent;
-							if (overlayed && offscreen != null) {
+							if (overlayed
+									&& (offgraphics != null || !graph
+											.isXorEnabled())) {
 								dirty.add(graph.toScreen(AbstractCellView
 										.getBounds(views)));
 								Rectangle2D t = graph.toScreen(AbstractCellView
@@ -2521,10 +2596,16 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 								if (isDragging && !DNDPREVIEW) // BUG IN 1.4.0
 									// (FREEZE)
 									return;
-								graph.getGraphics().drawImage(offscreen,
-										(int) sx1, (int) sy1, (int) sx2,
-										(int) sy2, (int) sx1, (int) sy1,
-										(int) sx2, (int) sy2, graph);
+								if (offgraphics != null) {
+									graph.drawImage((int) sx1, (int) sy1, (int) sx2,
+											(int) sy2, (int) sx1, (int) sy1,
+											(int) sx2, (int) sy2);
+								} else {
+									graph.repaint((int) dirty.getX(),
+											(int) dirty.getY(), (int) dirty
+													.getWidth() + 1,
+											(int) dirty.getHeight() + 1);
+								}
 							}
 						}
 					} // end if (isMoving or ...)
@@ -2612,8 +2693,8 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 				initialLocation = null;
 				isDragging = false;
 				disconnect = null;
-				offscreen = null;
 				firstDrag = true;
+				current = null;
 				start = null;
 			}
 		}

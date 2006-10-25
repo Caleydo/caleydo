@@ -39,7 +39,7 @@ public class PortRenderer extends JComponent implements CellViewRenderer,
 	protected Color graphBackground = Color.white;
 
 	/** Cached hasFocus and selected value. */
-	transient protected boolean hasFocus, selected, preview;
+	transient protected boolean hasFocus, selected, preview, xorEnabled;
 
 	/**
 	 * Constructs a renderer that may be used to render ports.
@@ -75,6 +75,7 @@ public class PortRenderer extends JComponent implements CellViewRenderer,
 			this.hasFocus = focus;
 			this.selected = sel;
 			this.preview = preview;
+			this.xorEnabled = graph.isXorEnabled();
 			return this;
 		}
 		return null;
@@ -87,8 +88,10 @@ public class PortRenderer extends JComponent implements CellViewRenderer,
 	 */
 	public void paint(Graphics g) {
 		Dimension d = getSize();
-		g.setColor(graphBackground);
-		g.setXORMode(graphBackground);
+		if (xorEnabled) {
+			g.setColor(graphBackground);
+			g.setXORMode(graphBackground);
+		}
 		super.paint(g);
 		if (preview) {
 			g.fill3DRect(0, 0, d.width, d.height, true);

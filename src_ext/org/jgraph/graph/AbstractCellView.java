@@ -30,7 +30,7 @@ import org.jgraph.JGraph;
 public abstract class AbstractCellView implements CellView, Serializable {
 
 	/** Editor for the cell. */
-	protected static transient GraphCellEditor cellEditor = null;
+	public static transient GraphCellEditor cellEditor;
 
 	// Headless environment may have no default fonts installed
 	static {
@@ -245,6 +245,7 @@ public abstract class AbstractCellView implements CellView, Serializable {
 	public void removeFromParent() {
 		if (parent instanceof AbstractCellView) {
 			java.util.List list = ((AbstractCellView) parent).childViews;
+			// TODO performance could be quadratic
 			list.remove(this);
 		}
 	}
@@ -413,7 +414,6 @@ public abstract class AbstractCellView implements CellView, Serializable {
 	protected boolean includeInGroupBounds(CellView view) {
 		if (view instanceof EdgeView
 				&& getCell() instanceof DefaultMutableTreeNode) {
-			DefaultMutableTreeNode groupNode = (DefaultMutableTreeNode) getCell();
 			EdgeView edgeView = (EdgeView) view;
 			if (edgeView.getCell() instanceof DefaultMutableTreeNode) {
 				DefaultMutableTreeNode edge = (DefaultMutableTreeNode) edgeView

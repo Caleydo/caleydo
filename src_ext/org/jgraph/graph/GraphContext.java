@@ -171,9 +171,19 @@ public class GraphContext implements CellMapper {
 				// If Edge not in cellset, add its view is visible in graphview
 				if (!cellSet.contains(obj) && graphLayoutCache.isVisible(obj)
 						&& edge != null
-						&& (PREVIEW_EDGE_GROUPS || edge.isLeaf()))
+						&& (PREVIEW_EDGE_GROUPS || edge.isLeaf())) {
 					// Note: Do not use getMapping, it ignores the create flag
-					result.add(createMapping(obj));
+					CellView preview = createMapping(obj);
+					result.add(preview);
+					// Create temporary children which refer to this
+					// preview and adopt children in the preview
+					CellView[] children = preview.getChildViews();
+					for (int i=0; i<children.length; i++) {
+						children[i] = createMapping(children[i].getCell());
+					}
+					// Adopts the children
+					preview.refresh(graph.getModel(), this, false);
+				}
 			}
 			delta = DefaultGraphModel.getEdges(graph.getModel(), delta
 					.toArray());

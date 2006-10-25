@@ -11,7 +11,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Dimension2D;
@@ -30,12 +32,12 @@ import java.util.Vector;
 
 import javax.accessibility.Accessible;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-import org.eclipse.swt.events.MouseListener;
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.AbstractCellView;
@@ -142,10 +144,6 @@ import org.jgraph.plaf.GraphUI;
  * <p>
  * <strong>Change Notification </strong>
  * <p>
- * If you are interested in handling modifications, implement the
- * <code>GraphEventHandler</code> interface and add the instance using the
- * method <code>addGraphEventHandler</code>.
- * <p>
  * For detection of double-clicks or when a user clicks on a cell, regardless of
  * whether or not it was selected, I recommend you implement a MouseListener and
  * use <code>getFirstCellForLocation</code>.
@@ -181,7 +179,7 @@ public class JGraph
 		// org.jgraph.plaf.basic.TransferHandler.JAdapterComponent
 		implements Scrollable, Accessible, Serializable {
 
-	public static final String VERSION = "JGraph (v5.8.0.0)";
+	public static final String VERSION = "JGraph (v5.9.2.0)";
 
 	public static final int DOT_GRID_MODE = 0;
 
@@ -189,6 +187,18 @@ public class JGraph
 
 	public static final int LINE_GRID_MODE = 2;
 	
+	public static boolean IS_MAC = false; 
+	
+	static {
+		try {
+			String osName = System.getProperty("os.name");
+			if (osName != null) {
+				IS_MAC = osName.toLowerCase().startsWith("mac os x");
+			}
+		} catch (Exception e) {
+			// ignore
+		}
+	}
 	/**
 	 * @see #getUIClassID
 	 * @see #readObject
@@ -218,6 +228,21 @@ public class JGraph
 
 	/** Handler for marquee selection. */
 	transient protected BasicMarqueeHandler marquee;
+
+	/** Off screen image for double buffering */
+	protected transient Image offscreen;
+
+	/** Graphics object of off screen image */
+	protected transient Graphics offgraphics;
+
+	/** Holds the background image. */
+	protected ImageIcon backgroundImage;
+	
+	/** A Component responsible for drawing the background image, if any */
+	protected Component backgroundComponent;
+	
+	/** Whether or not the background image is scaled on zooming */
+	protected boolean backgroundScaled = true;
 
 	/** Scale of the graph. Default is 1. Bound property. */
 	protected double scale = 1.0;
@@ -258,6 +283,9 @@ public class JGraph
 	/** True if the graph allows to move cells below zero. */
 	protected boolean moveBelowZero = false;
 
+	/** True if the labels on edges may be moved. */
+	protected boolean edgeLabelsMovable = true;
+	
 	/**
 	 * True if the graph should be auto resized when cells are moved below the
 	 * bottom right corner. Default is true.
@@ -296,6 +324,12 @@ public class JGraph
 	 * also affects the clipboard. Default is true.
 	 */
 	protected boolean dropEnabled = true;
+
+	/**
+	 * True if the graph accepts transfers from other components (graphs). This
+	 * also affects the clipboard. Default is true.
+	 */
+	protected boolean xorEnabled = !IS_MAC;
 
 	//
 	// Unbound Properties
@@ -464,6 +498,12 @@ public class JGraph
 	 * Bound property name for <code>messagesStopCellEditing</code>.
 	 */
 	public final static String INVOKES_STOP_CELL_EDITING_PROPERTY = "invokesStopCellEditing";
+	
+	/**
+	 * Bound property name for <code>backgroundImage</code>.
+	 */
+	public final static String PROPERTY_BACKGROUNDIMAGE = "backgroundImage";
+
 
 	/**
 	 * Creates and returns a sample <code>GraphModel</code>. Used primarily
@@ -478,15 +518,19 @@ public class JGraph
 				GraphConstants.ARROW_TECHNICAL);
 		GraphConstants.setBeginSize(implementStyle, 10);
 		GraphConstants.setDashPattern(implementStyle, new float[] { 3, 3 });
-		GraphConstants.setFont(implementStyle, GraphConstants.DEFAULTFONT
-				.deriveFont(10));
+		if (GraphConstants.DEFAULTFONT != null) {
+			GraphConstants.setFont(implementStyle, GraphConstants.DEFAULTFONT
+					.deriveFont(10));
+		}
 		AttributeMap extendStyle = new AttributeMap();
 		GraphConstants
 				.setLineBegin(extendStyle, GraphConstants.ARROW_TECHNICAL);
 		GraphConstants.setBeginFill(extendStyle, true);
 		GraphConstants.setBeginSize(extendStyle, 10);
-		GraphConstants.setFont(extendStyle, GraphConstants.DEFAULTFONT
-				.deriveFont(10));
+		if (GraphConstants.DEFAULTFONT != null) {
+			GraphConstants.setFont(extendStyle, GraphConstants.DEFAULTFONT
+					.deriveFont(10));
+		}
 		AttributeMap aggregateStyle = new AttributeMap();
 		GraphConstants.setLineBegin(aggregateStyle,
 				GraphConstants.ARROW_DIAMOND);
@@ -496,8 +540,10 @@ public class JGraph
 		GraphConstants.setEndSize(aggregateStyle, 8);
 		GraphConstants.setLabelPosition(aggregateStyle, new Point2D.Double(500,
 				0));
-		GraphConstants.setFont(aggregateStyle, GraphConstants.DEFAULTFONT
-				.deriveFont(10));
+		if (GraphConstants.DEFAULTFONT != null) {
+			GraphConstants.setFont(aggregateStyle, GraphConstants.DEFAULTFONT
+					.deriveFont(10));
+		}
 		//
 		// The Swing MVC Pattern
 		//
@@ -577,8 +623,10 @@ public class JGraph
 		GraphConstants
 				.setGradientColor(map, c.brighter().brighter().brighter());
 		GraphConstants.setForeground(map, Color.white);
-		GraphConstants.setFont(map, GraphConstants.DEFAULTFONT.deriveFont(
-				Font.BOLD, 12));
+		if (GraphConstants.DEFAULTFONT != null) {
+			GraphConstants.setFont(map, GraphConstants.DEFAULTFONT.deriveFont(
+					Font.BOLD, 12));
+		}
 		GraphConstants.setOpaque(map, true);
 		return map;
 	}
@@ -922,8 +970,7 @@ public class JGraph
 					active = active | (cells[i] == c);
 				}
 			}
-			if (first != null)
-				return first;
+			return first;
 		}
 		return null;
 	}
@@ -1223,6 +1270,20 @@ public class JGraph
 	}
 
 	/**
+	 * Returns true if the graph accepts drops/pastes from external sources.
+	 */
+	public boolean isXorEnabled() {
+		return xorEnabled;
+	}
+
+	/**
+	 * Sets if the graph accepts drops/pastes from external sources.
+	 */
+	public void setXorEnabled(boolean flag) {
+		xorEnabled = flag;
+	}
+
+	/**
 	 * Returns true if the graph uses Drag-and-Drop to move cells.
 	 */
 	public boolean isDragEnabled() {
@@ -1420,6 +1481,25 @@ public class JGraph
 	}
 
 	/**
+	 * Returns true if edge labels may be dragged and dropped.
+	 * 
+	 * @return whether edge labels may be dragged and dropped
+	 */
+	public boolean getEdgeLabelsMovable() {
+		return edgeLabelsMovable;
+	}
+	
+	/**
+	 * Set if edge labels may be moved with the mouse or not.
+	 * 
+	 * @param edgeLabelsMovable
+	 *            true if edge labels may be dragged
+	 */
+	public void setEdgeLabelsMovable(boolean edgeLabelsMovable) {
+		this.edgeLabelsMovable = edgeLabelsMovable;
+	}
+	
+	/**
 	 * Returns true if the graph should be automatically resized when cells are
 	 * being move below the bottom right corner.
 	 */
@@ -1447,6 +1527,9 @@ public class JGraph
 	 * selected.
 	 */
 	public void setTolerance(int size) {
+		if (size < 1) {
+			size = 1;
+		}
 		tolerance = size;
 	}
 
@@ -1581,11 +1664,63 @@ public class JGraph
 	 *            the new scale
 	 */
 	public void setScale(double newValue) {
-		if (newValue > 0) {
+		Point2D centerPoint = getCenterPoint();
+		setScale(newValue, centerPoint);
+	}
+
+	/**
+	 * Sets the current scale and centers the graph to the specified point
+	 * @param newValue the new scale
+	 * @param center the center of the graph
+	 */
+	public void setScale(double newValue, Point2D center) {
+		if (newValue > 0 && newValue != this.scale) {
+			boolean isViewport = (getParent() instanceof JViewport);
+			Rectangle view = null;
+			// Scrolling to the correct position only possible with a viewport
+			if (isViewport) {
+				view = ((JViewport) getParent()).getViewRect();
+			}
 			double oldValue = this.scale;
 			scale = newValue;
+			boolean zoomIn = true;
+			Rectangle newView = null;
+			if (isViewport && view != null && newValue > 1.0) {
+				double scaleRatio = newValue / oldValue;
+				int newCenterX = (int) (center.getX() * scaleRatio);
+				int newCenterY = (int) (center.getY() * scaleRatio);
+				int newX = (int) (newCenterX - view.getWidth() / 2.0);
+				int newY = (int) (newCenterY - view.getHeight() / 2.0);
+				newView = new Rectangle(newX, newY, (int) view
+						.getWidth(), (int) view.getHeight());
+				// When zooming out scroll before revalidation otherwise
+				// revalidation causes one scroll and scrollRectToVisible
+				// another
+				if (scaleRatio < 1.0) {
+					scrollRectToVisible(newView);
+					zoomIn = false;
+				}
+			}
 			firePropertyChange(SCALE_PROPERTY, oldValue, newValue);
+			// When zooming in, do it after the revalidation otherwise
+			// it intermittently moves to the old co-ordinate system
+			if (zoomIn && newView != null) {
+				scrollRectToVisible(newView);
+			}
 		}
+	}
+	
+	/**
+	 * Returns the center of the component relative to the parent viewport's
+	 * position.
+	 */
+	public Point2D getCenterPoint() {
+		if (getParent() instanceof JViewport) {
+			Rectangle view = ((JViewport) getParent()).getViewRect();
+			return new Point2D.Double(view.getCenterX(), view.getCenterY());
+		}
+		Rectangle view = getBounds();
+		return new Point2D.Double(view.getCenterX(), view.getCenterY());
 	}
 
 	/**
@@ -1760,7 +1895,7 @@ public class JGraph
 	 *            a boolean value, true if cell selection is enabled
 	 */
 	public void setSelectionEnabled(boolean flag) {
-		boolean oldValue = this.editable;
+		boolean oldValue = this.selectionEnabled;
 		this.selectionEnabled = flag;
 		firePropertyChange(SELECTIONENABLED_PROPERTY, oldValue, flag);
 	}
@@ -1783,6 +1918,145 @@ public class JGraph
 	 */
 	public void setPreviewInvalidNullPorts(boolean flag) {
 		this.previewInvalidNullPorts = flag;
+	}
+
+	/**
+	 * Returns the current double buffering graphics object. Checks to see
+	 * if the graph bounds has changed since the last time the off screen
+	 * image was created and if so, creates a new image.
+	 * @return the off screen graphics
+	 */
+	public Graphics getOffgraphics() {
+		Rectangle rect = getBounds();
+
+		if ((offscreen == null || offgraphics == null)
+				|| (offscreen instanceof BufferedImage && ((((BufferedImage) offscreen)
+						.getWidth() != rect.width) || ((BufferedImage) offscreen)
+						.getHeight() != rect.height))) {
+			offscreen = new BufferedImage(rect.width, rect.height,
+					BufferedImage.TYPE_INT_RGB);
+			offgraphics = offscreen.getGraphics();
+			offgraphics.setClip(0, 0, rect.width, rect.height);
+		}
+		
+		return offgraphics;
+	}
+
+	/**
+	 * @return the offscreen
+	 */
+	public Image getOffscreen() {
+		return offscreen;
+	}
+
+	/**
+	 * Utility method to draw the off screen buffer
+	 * 
+	 * @param dx1
+	 *            the <i>x</i> coordinate of the first corner of the
+	 *            destination rectangle.
+	 * @param dy1
+	 *            the <i>y</i> coordinate of the first corner of the
+	 *            destination rectangle.
+	 * @param dx2
+	 *            the <i>x</i> coordinate of the second corner of the
+	 *            destination rectangle.
+	 * @param dy2
+	 *            the <i>y</i> coordinate of the second corner of the
+	 *            destination rectangle.
+	 * @param sx1
+	 *            the <i>x</i> coordinate of the first corner of the source
+	 *            rectangle.
+	 * @param sy1
+	 *            the <i>y</i> coordinate of the first corner of the source
+	 *            rectangle.
+	 * @param sx2
+	 *            the <i>x</i> coordinate of the second corner of the source
+	 *            rectangle.
+	 * @param sy2
+	 *            the <i>y</i> coordinate of the second corner of the source
+	 *            rectangle.
+	 * @return <code>true</code> if the current output representation is
+	 *         complete; <code>false</code> otherwise.
+	 */
+	public boolean drawImage(int dx1, int dy1, int dx2, int dy2, int sx1,
+			int sy1, int sx2, int sy2) {
+		Rectangle rect = getBounds();
+		if ((offscreen == null)
+				|| (offscreen instanceof BufferedImage && ((((BufferedImage) offscreen)
+						.getWidth() != rect.width) || ((BufferedImage) offscreen)
+						.getHeight() != rect.height))) {
+			offscreen = new BufferedImage(rect.width, rect.height,
+					BufferedImage.TYPE_INT_RGB);
+			offgraphics = offscreen.getGraphics();
+			offgraphics.setClip(0, 0, rect.width, rect.height);
+			return false;
+		}
+		return getGraphics().drawImage(offscreen, (int) sx1, (int) sy1,
+				(int) sx2, (int) sy2, (int) sx1, (int) sy1, (int) sx2,
+				(int) sy2, this);
+	}
+
+	public boolean drawImage(Graphics g) {
+		// If the graphics object passed in is the offscreen graphics
+		// object do nothing
+		if (g == offgraphics) {
+			return true;
+		}
+		Rectangle rect = getBounds();
+		return drawImage(rect.x, rect.y, rect.x + rect.width, rect.y
+				+ rect.height, rect.x, rect.y, rect.x + rect.width, rect.y
+				+ rect.height);
+	}
+
+	/**
+	 * Returns the background image.
+	 * 
+	 * @return Returns the backgroundImage.
+	 */
+	public ImageIcon getBackgroundImage() {
+		return backgroundImage;
+	}
+
+	/**
+	 * Sets the background image. Fires a property change event for
+	 * {@link #PROPERTY_BACKGROUNDIMAGE}.
+	 * 
+	 * @param backgroundImage
+	 *            The backgroundImage to set.
+	 */
+	public void setBackgroundImage(ImageIcon backgroundImage) {
+		ImageIcon oldValue = this.backgroundImage;
+		this.backgroundImage = backgroundImage;
+		firePropertyChange(PROPERTY_BACKGROUNDIMAGE, oldValue, backgroundImage);
+	}
+
+	/**
+	 * @return the backgroundScaled
+	 */
+	public boolean isBackgroundScaled() {
+		return backgroundScaled;
+	}
+
+	/**
+	 * @param backgroundScaled the backgroundScaled to set
+	 */
+	public void setBackgroundScaled(boolean backgroundScaled) {
+		this.backgroundScaled = backgroundScaled;
+	}
+
+	/**
+	 * @return the backgroundComponent
+	 */
+	public Component getBackgroundComponent() {
+		return backgroundComponent;
+	}
+
+	/**
+	 * @param backgroundComponent the backgroundComponent to set
+	 */
+	public void setBackgroundComponent(Component backgroundComponent) {
+		this.backgroundComponent = backgroundComponent;
 	}
 
 	/**
@@ -2216,7 +2490,6 @@ public class JGraph
 	 */
 	public void scrollCellToVisible(Object cell) {
 		Rectangle2D bounds = getCellBounds(cell);
-		//Rectangle2D bounds = (Rectangle2D)getCellBounds(cell).clone(); 
 		if (bounds != null) {
 			Rectangle2D b2 = toScreen((Rectangle2D) bounds.clone());
 			scrollRectToVisible(new Rectangle((int) b2.getX(), (int) b2.getY(),
@@ -2365,10 +2638,9 @@ public class JGraph
 			values.addElement(graphModel);
 		}
 		// Save the graphModel, if its Serializable.
-		if (graphLayoutCache instanceof Serializable) {
-			values.addElement("graphLayoutCache");
-			values.addElement(graphLayoutCache);
-		}
+		values.addElement("graphLayoutCache");
+		values.addElement(graphLayoutCache);
+		
 		// Save the selectionModel, if its Serializable.
 		if (selectionModel instanceof Serializable) {
 			values.addElement("selectionModel");
@@ -2612,4 +2884,5 @@ public class JGraph
 	public static void main(String[] args) {
 		System.out.println(VERSION);
 	}
+
 }
