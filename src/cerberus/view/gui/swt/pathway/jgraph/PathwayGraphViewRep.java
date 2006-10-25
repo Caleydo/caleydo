@@ -472,6 +472,30 @@ extends APathwayGraphViewRep {
 		
 		drawView();
 		
+		if (bBackgroundOverlaySet == true)
+		{
+			// Build current pathway file path of GIF
+			String sPathwayImageFilePath = refCurrentPathway.getTitle();
+			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
+			sPathwayImageFilePath = "data/images/pathways/" +sPathwayImageFilePath +".gif";
+	
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"Load background pathway from file: " +sPathwayImageFilePath);
+			
+			// Set background image
+			refPathwayGraph.setBackgroundImage(
+					new ImageIcon(sPathwayImageFilePath));
+			
+			// Set scaling factor so that background image is an direct overlay
+			fScalingFactor = 1.0f;
+			
+			// Set edges to visible
+			refGraphLayoutCache.setVisible(
+					vecReactionEdges.toArray(), false);
+			refGraphLayoutCache.setVisible(
+					vecRelationEdges.toArray(), false);
+		}
+		
 		refGraphLayoutCache.reload();
 	}
 	
@@ -587,10 +611,17 @@ extends APathwayGraphViewRep {
 		{		
 			bBackgroundOverlaySet = true;
 			
-			// Load image from file
-			// TODO: load also other pathway GIFs
+			// Build current pathway file path of GIF
+			String sPathwayImageFilePath = refCurrentPathway.getTitle();
+			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
+			sPathwayImageFilePath = "data/images/pathways/" +sPathwayImageFilePath +".gif";
+
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"Load background pathway from file: " +sPathwayImageFilePath);
+			
+			// Set background image
 			refPathwayGraph.setBackgroundImage(
-					new ImageIcon("data/images/pathways/map00271.gif"));
+					new ImageIcon(sPathwayImageFilePath));
 
 			// Set scaling factor so that background image is an direct overlay
 			fScalingFactor = 1.0f;

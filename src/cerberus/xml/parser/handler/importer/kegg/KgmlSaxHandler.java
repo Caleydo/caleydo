@@ -133,7 +133,7 @@ implements IXmlParserHandler
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 				
-			if (sAttributeName.equals("title"))
+			if (sAttributeName.equals("name"))
 				sTitle = attributes.getValue(iAttributeIndex); 
    			else if (sAttributeName.equals("number"))
   				iPathwayID = new Integer(attributes.getValue(iAttributeIndex)); 
