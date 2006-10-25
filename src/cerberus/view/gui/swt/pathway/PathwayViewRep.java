@@ -147,10 +147,17 @@ implements IView {
 		
 		refShowOverviewMapItem = createToolItem(refToolBar,
 				SWT.PUSH,
-				"Show overview map",
-				null,
+				"",
+				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/overview_map.gif"),
 				null,
 				"Show overview map");
+		
+		refBackgroundOverlayItem = createToolItem(refToolBar,
+				SWT.CHECK,
+				"",
+				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/background_image.gif"),
+				null,
+				"Show background overlay");
 		
 		refFilterEdgesItem = createToolItem(refToolBar, 
 				SWT.DROP_DOWN, 
@@ -158,13 +165,6 @@ implements IView {
 				null, 
 				null, 
 				"Filter reactions/relations");
-		
-		refBackgroundOverlayItem = createToolItem(refToolBar,
-				SWT.CHECK,
-				"Background overlay",
-				null,
-				null,
-				"Show background overlay");
 		
 		final Menu filterEdgeMenu = new Menu (refSWTContainer.getShell(), SWT.POP_UP);
 		MenuItem refShowRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);

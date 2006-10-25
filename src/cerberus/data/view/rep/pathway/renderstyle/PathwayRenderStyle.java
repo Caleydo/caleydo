@@ -2,7 +2,7 @@ package cerberus.data.view.rep.pathway.renderstyle;
 
 import java.awt.Color;
 
-import cerberus.data.view.rep.pathway.renderstyle.ARenderStyle;
+import cerberus.data.ARenderStyle;
 
 public class PathwayRenderStyle 
 extends ARenderStyle {
@@ -77,7 +77,7 @@ extends ARenderStyle {
 		
 		relationEdgeColor = Color.GREEN;
 		reactionEdgeColor = Color.BLUE;
-		maplinkEdgeColor = Color.RED;
+		maplinkEdgeColor = Color.MAGENTA;
 	}
 
 	public Color getCompoundNodeColor() {

@@ -514,6 +514,9 @@ extends APathwayGraphViewRep {
 			new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 		
+//		GraphConstants.setBackground(cell.getAttributes(), 
+//				new Color(0.7f, 0.133f, 0.133f));
+		
 		DefaultGraphCell tmpCell;
 		
 		// Color mapping will start with red (neigborhood = 1)
