@@ -259,17 +259,23 @@ implements IPathwayGraphView {
 		// Cast abstract edge to reaction edge
 		reactionEdge = (PathwayReactionEdge)edge;
 
-		//FIXME: interate over substrates and products
-		createEdge(
-				reactionEdge.getSubstrates().get(0), 
-				vertex.getElementId(), 
-				false,
-				reactionEdge);	    
+		if (!reactionEdge.getSubstrates().isEmpty())
+		{
+			//FIXME: interate over substrates and products
+			createEdge(
+					reactionEdge.getSubstrates().get(0), 
+					vertex.getElementId(), 
+					false,
+					reactionEdge);	
+		}
 		
-		createEdge(
-				vertex.getElementId(),
-				reactionEdge.getProducts().get(0), 
-				true,
-				reactionEdge);	  
+		if (!reactionEdge.getProducts().isEmpty())
+		{
+			createEdge(
+					vertex.getElementId(),
+					reactionEdge.getProducts().get(0), 
+					true,
+					reactionEdge);
+		}	  
 	}
 }
