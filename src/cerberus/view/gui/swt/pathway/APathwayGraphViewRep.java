@@ -43,37 +43,18 @@ implements IPathwayGraphView {
 	
 	protected Pathway refCurrentPathway;
 	
-//	protected boolean bShowReactionEdges;
-//	
-//	protected boolean bShowRelationEdges;
-	
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
 			int iParentContainerId, 
-			String sLabel)
-	{
+			String sLabel) {
+		
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 
 		refRenderStyle = new PathwayRenderStyle();
 		
 //		bShowRelationEdges = true;
 //		bShowReactionEdges = true;
-	}
-
-	public void setPathwayId(int iPathwayId) {
-		
-		// TODO Auto-generated method stub
-	}
-
-	public void loadPathwayFromFile(String sFilePath) {
-		
-		// TODO Auto-generated method stub
-	}
-
-	public void initView() {
-		
-		// TODO Auto-generated method stub
 	}
 
 	public void drawView() {
@@ -102,21 +83,6 @@ implements IPathwayGraphView {
 		extractEdges();
 		
 		finishGraphBuilding();
-	}
-
-	public void readInAttributes(IParameterHandler refParameterHandler) {
-		
-		// TODO Auto-generated method stub
-	}
-
-	public void setAttributes(Vector<String> attributes) {
-		
-		// TODO Auto-generated method stub
-	}
-
-	public void setParentContainerId(int iParentContainerId) {
-		
-		// TODO Auto-generated method stub
 	}
 
 	public void retrieveGUIContainer() {
@@ -169,12 +135,7 @@ implements IPathwayGraphView {
         	while (vertexRepIterator.hasNext())
         	{
         		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
-        		
-        		createVertex(vertex,
-        				vertexRep.getName(),
-        				vertexRep.getHeight(), vertexRep.getWidth(), 
-        				vertexRep.getXPosition(), vertexRep.getYPosition(),
-        				vertexRep.getShapeType());        	
+        		createVertex(vertexRep);        	
         	}
         }   
    

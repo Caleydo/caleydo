@@ -20,4 +20,11 @@ extends APathwayElement {
 	
 		return edgeType;
 	}
+
+	/**
+	 * Method needed for the JGraph labeling of the edges.
+	 */
+	public String toString() {
+		return "";
+	}
 }

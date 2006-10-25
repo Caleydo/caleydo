@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class NumberInputDialog 
+public class NeighborhoodInputDialog 
 extends Dialog {
 	
 	protected int value;
@@ -20,7 +20,7 @@ extends Dialog {
 	/**
 	 * @param parent
 	 */
-	public NumberInputDialog(Shell parent) {
+	public NeighborhoodInputDialog(Shell parent) {
 
 		super(parent);
 	}
@@ -29,7 +29,7 @@ extends Dialog {
 	 * @param parent
 	 * @param style
 	 */
-	public NumberInputDialog(Shell parent, int style) {
+	public NeighborhoodInputDialog(Shell parent, int style) {
 
 		super(parent, style);
 	}

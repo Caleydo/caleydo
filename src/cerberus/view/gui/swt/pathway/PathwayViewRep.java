@@ -22,7 +22,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.swt.pathway.jgraph.NumberInputDialog;
+import cerberus.view.gui.swt.pathway.jgraph.NeighborhoodInputDialog;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
@@ -49,6 +49,7 @@ implements IView {
 	protected ToolItem refNeighbourItem;
 	protected ToolItem refShowOverviewMapItem;
 	protected ToolItem refFilterEdgesItem;
+	protected ToolItem refBackgroundOverlayItem;
 	
 	protected APathwayGraphViewRep refPathwayGraphViewRep;
 	
@@ -158,6 +159,13 @@ implements IView {
 				null, 
 				"Filter reactions/relations");
 		
+		refBackgroundOverlayItem = createToolItem(refToolBar,
+				SWT.CHECK,
+				"Background overlay",
+				null,
+				null,
+				"Show background overlay");
+		
 		final Menu filterEdgeMenu = new Menu (refSWTContainer.getShell(), SWT.POP_UP);
 		MenuItem refShowRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
 		refShowRelationsItem.setText ("Show relations");
@@ -220,8 +228,8 @@ implements IView {
 	          }	   
 	          else if (sToolItemIdentifier.equals("Change neighbourhood distance"))
 	          {
-	        	  NumberInputDialog neighbourhoodInputDialog = 
-	        		  new NumberInputDialog(refSWTContainer.getShell());
+	        	  NeighborhoodInputDialog neighbourhoodInputDialog = 
+	        		  new NeighborhoodInputDialog(refSWTContainer.getShell());
 	        	  
 	        	  refPathwayGraphViewRep.setNeighbourhoodDistance(
 	        			 neighbourhoodInputDialog.open());
@@ -231,6 +239,11 @@ implements IView {
 	        	  refPathwayGraphViewRep.
 	        	  	showOverviewMapInNewWindow(new Dimension(250, 250));
 	          }
+	          else if (sToolItemIdentifier.equals("Show background overlay"))
+	          {
+	        	  refPathwayGraphViewRep.showBackgroundOverlay(
+	        			  refBackgroundOverlayItem.getSelection());
+	          }
 	        }
 	      };
 	      
@@ -239,6 +252,7 @@ implements IView {
 	      refZoomOutItem.addListener(SWT.Selection, toolbarListener);
 	      refNeighbourItem.addListener(SWT.Selection, toolbarListener);
 	      refShowOverviewMapItem.addListener(SWT.Selection, toolbarListener);
+	      refBackgroundOverlayItem.addListener(SWT.Selection, toolbarListener);
 	      
 		  refShowRelationsItem.addListener(SWT.Selection, edgeFilterListener);
 		  refShowReactionsItem.addListener(SWT.Selection, edgeFilterListener);		  

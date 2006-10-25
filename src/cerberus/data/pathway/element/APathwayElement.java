@@ -31,12 +31,4 @@ public abstract class APathwayElement  {
 		
 		this.sElementTitle = sElementTitle;
 	}
-	
-	/**
-	 * Method needed for the JGraph labeling of the vertices.
-	 */
-	public String toString() {
-		
-		return sElementTitle;
-	}
 }

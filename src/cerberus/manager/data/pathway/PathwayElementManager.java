@@ -89,8 +89,15 @@ implements IPathwayElementManager {
 			int iYPosition, 
 			String sType) {
 		
-		IPathwayVertexRep newVertexRep = new PathwayVertexRep(sName, iHeight, iWidth,
-				iXPosition, iYPosition, sType);
+		IPathwayVertexRep newVertexRep = 
+			new PathwayVertexRep(
+					currentVertex,
+					sName, 
+					iHeight, 
+					iWidth,
+					iXPosition, 
+					iYPosition, 
+					sType);
 
 		currentVertex.addVertexRep(newVertexRep);
 	}

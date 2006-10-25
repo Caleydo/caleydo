@@ -2,6 +2,7 @@ package cerberus.view.gui.swt.pathway.jgraph;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
@@ -12,9 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.OverlayLayout;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
@@ -31,14 +33,12 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
-import sun.security.krb5.internal.bn;
-
 import cerberus.util.system.StringConversionTool;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
-import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
+import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
@@ -65,7 +65,7 @@ extends APathwayGraphViewRep {
 	 * The scaling factor can scale the positions to blow up or
 	 * shrink the pathway.
 	 */
-	protected static final double SCALING_FACTOR = 1.6;
+	protected static final float SCALING_FACTOR = 1.5f;
 	
 	protected GraphModel refGraphModel;
 	
@@ -77,7 +77,9 @@ extends APathwayGraphViewRep {
 	
 	protected HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
 	
-	protected boolean isGraphSet = false;
+	protected boolean bGraphSet = false;
+	
+	protected boolean bBackgroundOverlaySet = false;
 	
 	protected GraphUndoManager refUndoManager;
 	
@@ -90,6 +92,8 @@ extends APathwayGraphViewRep {
 	protected Vector<DefaultGraphCell> vecVertices;
 	
 	protected int iNeighbourhoodDistance = 1;
+	
+	protected float fScalingFactor;
 	
 	/**
 	 * Counts how often the neighbour recursion is called.
@@ -114,6 +118,7 @@ extends APathwayGraphViewRep {
 		vecReactionEdges = new Vector<DefaultEdge>();
 		vecVertices = new Vector<DefaultGraphCell>();
 		
+		fScalingFactor = SCALING_FACTOR;
 	}
 
 	public void initView() {
@@ -157,13 +162,16 @@ extends APathwayGraphViewRep {
 					return;						
 				}
 
-				if (!clickedCell.getUserObject().getClass().getSimpleName().equals("PathwayVertex"))
+				if (!clickedCell.getUserObject().
+						getClass().getSimpleName().equals("PathwayVertexRep"))
 				{
 					super.mousePressed(event);
 					return;
 				}
 				
-				final String sUrl = ((PathwayVertex)clickedCell.getUserObject()).getVertexLink();
+				final String sUrl = 
+					((PathwayVertexRep)clickedCell.getUserObject()).
+						getVertex().getVertexLink();
 				
 				if (sUrl == "") 
 				{
@@ -226,7 +234,7 @@ extends APathwayGraphViewRep {
 					bNeighbourhoodShown = true;
 				}
 
-				super.mousePressed(event);
+				//super.mousePressed(event);
 			}
 		}
 		
@@ -260,7 +268,7 @@ extends APathwayGraphViewRep {
 		super.drawView();
 		
         // Check if graph is already added to the frame
-        if (isGraphSet == false)
+        if (bGraphSet == false)
         {
             final Dimension dimOverviewMap = new Dimension(200, 200);
             final Dimension dimPathway = new Dimension(iWidth, iHeight);
@@ -278,34 +286,33 @@ extends APathwayGraphViewRep {
     		
     		//showOverviewMapInNewWindow(dimOverviewMap);
     		
-        	isGraphSet = true;
+        	bGraphSet = true;
         }
 	}
 	
-	public void createVertex(PathwayVertex vertex, String sTitle, int iHeight, int iWidth, 
-			int iXPosition, int iYPosition, String sShapeType) {
+	public void createVertex(PathwayVertexRep vertexRep) {
 		
 		//create node
-		refGraphCell = new DefaultGraphCell(vertex);
+		refGraphCell = new DefaultGraphCell(vertexRep);
 		
-		GraphConstants.setOpaque(refGraphCell.getAttributes(), true);
-		GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
+		AttributeMap changedMap = refGraphCell.getAttributes(); 
 		
-		//assign vertex color
+		String sShapeType = vertexRep.getShapeType();
+		Rectangle2D vertexRect = new Rectangle2D.Double(
+				(int)(vertexRep.getXPosition() * fScalingFactor) - (vertexRep.getWidth() / 2), 
+				(int)(vertexRep.getYPosition() * fScalingFactor) - (vertexRep.getHeight() / 2), 
+				vertexRep.getWidth(), vertexRep.getHeight());
+				
 		if (sShapeType.equals("roundrectangle"))
-		{	
+		{				
 			// Set vertex type to round rect
 			GPCellViewFactory.setViewClass(
 					refGraphCell.getAttributes(), 
-					"cerberus.view.gui.swt.pathway.jgraph.JGraphRoundRectView");
+					"cerberus.view.gui.swt.pathway.jgraph.JGraphMultilineView");
+//					"cerberus.view.gui.swt.pathway.jgraph.JGraphRoundRectView");
 
-			GraphConstants.setBounds(refGraphCell.getAttributes(), 
-					new Rectangle2D.Double(
-							(int)(iXPosition * SCALING_FACTOR), 
-							(int)(iYPosition * SCALING_FACTOR), 
-							iWidth, iHeight));
-			GraphConstants.setBackground(refGraphCell.getAttributes(), 
-					Color.MAGENTA);
+			GraphConstants.setBounds(changedMap, vertexRect);
+			GraphConstants.setBackground(changedMap, Color.MAGENTA);
 		}
 
 		else if (sShapeType.equals("circle"))
@@ -315,27 +322,30 @@ extends APathwayGraphViewRep {
 					refGraphCell.getAttributes(), 
 					"cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView");
 			
-			GraphConstants.setBounds(refGraphCell.getAttributes(), 
-					new Rectangle2D.Double(
-							(int)(iXPosition * SCALING_FACTOR), 
-							(int)(iYPosition * SCALING_FACTOR), 
-							15, 15));
-			GraphConstants.setBackground(refGraphCell.getAttributes(), Color.green);
+			if (!bBackgroundOverlaySet)
+			{	
+				GraphConstants.setAutoSize(changedMap, true);
+			}
+
+			GraphConstants.setBounds(changedMap, vertexRect);
+			GraphConstants.setBackground(changedMap, Color.green);
 		}	
 		else if (sShapeType.equals("rectangle"))
 		{	
-			GraphConstants.setBounds(refGraphCell.getAttributes(), 
-					new Rectangle2D.Double(
-							(int)(iXPosition * SCALING_FACTOR), 
-							(int)(iYPosition * SCALING_FACTOR), 
-							iWidth, iHeight));
-			GraphConstants.setBackground(refGraphCell.getAttributes(), 
-					new Color(0.53f, 0.81f, 1.0f)); // ligth blue
+			GraphConstants.setBounds(changedMap, vertexRect); 
+			GraphConstants.setBackground(changedMap, new Color(0.53f, 0.81f, 1.0f)); // ligth blue
 		}
+		
+		// Some global attributes
+		GraphConstants.setOpaque(changedMap, true);
+		GraphConstants.setSelectable(changedMap, false);
+		GraphConstants.setFont(changedMap, new Font("Arial", Font.BOLD, 11));
+		//GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
 		
 		vecVertices.add(refGraphCell);
 		
-		vertexIdToCellLUT.put(vertex.getElementId(), refGraphCell);
+		vertexIdToCellLUT.put(
+				vertexRep.getVertex().getElementId(), refGraphCell);
 	}
 	
 	public void createEdge(int iVertexId1, 
@@ -376,6 +386,7 @@ extends APathwayGraphViewRep {
 		Color edgeColor = null;
 	    
 		GraphConstants.setLineWidth(changedMap, 2);
+		GraphConstants.setSelectable(changedMap, false);
 //		GraphConstants.setRouting(changedMap, JGraphParallelRouter.getSharedInstance());
 //		GraphConstants.setRouting(edge.getAttributes(), GraphConstants.ROUTING_SIMPLE);
 		
@@ -454,17 +465,7 @@ extends APathwayGraphViewRep {
 	
 	public void loadPathwayFromFile(String sFilePath) {
 		
-		refGraphModel = new DefaultGraphModel();
-		refPathwayGraph.setModel(refGraphModel);
-		refGraphLayoutCache.setModel(refGraphModel);
-		refGraphModel.addUndoableEditListener(refUndoManager);
-
-		vecVertices.removeAllElements();
-		vecRelationEdges.removeAllElements();
-		vecReactionEdges.removeAllElements();
-		
-		iNeighbourhoodUndoCount = 0;
-		bNeighbourhoodShown = false;
+		resetPathway();
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
@@ -575,5 +576,53 @@ extends APathwayGraphViewRep {
 			refGraphLayoutCache.setVisible(
 					vecReactionEdges.toArray(), bShowEdges);
 		}	
+	}
+	
+	public void showBackgroundOverlay(boolean bTurnOn) {
+		
+		if (bTurnOn == true)
+		{		
+			bBackgroundOverlaySet = true;
+			
+			// Load image from file
+			// TODO: load also other pathway GIFs
+			refPathwayGraph.setBackgroundImage(
+					new ImageIcon("data/images/pathways/map00271.gif"));
+
+			// Set scaling factor so that background image is an direct overlay
+			fScalingFactor = 1.0f;
+		}
+		else
+		{
+			bBackgroundOverlaySet = false;
+			refPathwayGraph.setBackgroundImage(null);
+			fScalingFactor = SCALING_FACTOR;
+		}
+					
+		resetPathway();
+		
+		// Attention: Performance problem.
+		drawView();
+		
+		// Set edges to visible
+		refGraphLayoutCache.setVisible(
+				vecReactionEdges.toArray(), !bTurnOn);
+		refGraphLayoutCache.setVisible(
+				vecRelationEdges.toArray(), !bTurnOn);
+	}
+	
+	protected void resetPathway() {
+		
+		refGraphModel = new DefaultGraphModel();
+		refPathwayGraph.setModel(refGraphModel);
+		refGraphLayoutCache.setModel(refGraphModel);
+		refGraphModel.addUndoableEditListener(refUndoManager);
+		
+		vecVertices.removeAllElements();
+		vecRelationEdges.removeAllElements();
+		vecReactionEdges.removeAllElements();
+		
+		iNeighbourhoodUndoCount = 0;
+		bNeighbourhoodShown = false;
 	}
 }

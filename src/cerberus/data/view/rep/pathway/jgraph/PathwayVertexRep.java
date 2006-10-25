@@ -1,10 +1,12 @@
 package cerberus.data.view.rep.pathway.jgraph;
 
+import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 
 public class PathwayVertexRep 
 implements IPathwayVertexRep {
 
+	protected PathwayVertex refVertex;
 	protected String sName;
 	protected String sShapeType;
 	protected int iHeight = 0;
@@ -13,6 +15,7 @@ implements IPathwayVertexRep {
 	protected int iYPosition = 0;
 
 	public PathwayVertexRep(
+			PathwayVertex refVertex,
 			String sName, 
 			int iHeight,
 			int iWidth, 
@@ -20,6 +23,7 @@ implements IPathwayVertexRep {
 			int iYPosition, 
 			String sShapeType) {
 		
+		this.refVertex = refVertex;
 		this.sName = sName;
 		this.iHeight = iHeight;
 		this.iWidth = iWidth;
@@ -64,4 +68,21 @@ implements IPathwayVertexRep {
 	public String getShapeType() {	
 		return sShapeType;
 	}	
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.data.view.rep.pathway.IPathwayVertexRep#getVertex()
+	 */
+	public PathwayVertex getVertex() {
+		
+		return refVertex;
+	}
+	
+	/**
+	 * Method needed for the JGraph labeling of the vertices.
+	 */
+	public String toString() {
+		
+		return sName;
+	}
 }

@@ -3,21 +3,14 @@ package cerberus.view.gui.swt.pathway;
 import java.awt.Dimension;
 
 import cerberus.data.pathway.element.APathwayEdge;
-import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.view.gui.IView;
 
 public interface IPathwayGraphView 
 extends IView
 {
-	public void createVertex(
-			PathwayVertex vertex,
-			String sTitle,
-			int iHeight, 
-			int iWidth, 
-			int iXPosition, 
-			int iYPosition, 
-			String sShapeType);
+	public void createVertex(PathwayVertexRep vertex);
 	
 	public void createEdge(int iVertexId1, 
 			int iVertexId2, 
@@ -40,6 +33,8 @@ extends IView
 	
 	public void showHideEdgesByType(boolean bShowEdges,
 			EdgeType edgeType);
+	
+	public void showBackgroundOverlay(boolean bTurnOn);
 	
 	public void finishGraphBuilding();
 }
