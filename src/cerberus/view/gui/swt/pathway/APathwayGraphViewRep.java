@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.swt.widgets.Composite;
-import org.jgraph.graph.DefaultGraphModel;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
@@ -14,7 +13,6 @@ import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
-import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
@@ -25,7 +23,6 @@ import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep

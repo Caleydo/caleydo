@@ -46,7 +46,9 @@ implements IView {
 	protected ToolItem refZoomOrigItem;
 	protected ToolItem refZoomInItem;
 	protected ToolItem refZoomOutItem;
-	protected ToolItem refNeighbourItem;
+	protected ToolItem refOneNeighborhoodItem;
+	protected ToolItem refTwoNeighborhoodItem;
+	protected ToolItem refThreeNeighborhoodItem;
 	protected ToolItem refShowOverviewMapItem;
 	protected ToolItem refFilterEdgesItem;
 	protected ToolItem refBackgroundOverlayItem;
@@ -138,12 +140,30 @@ implements IView {
 				null,
 				"Zoom out");
 	    
-		refNeighbourItem = createToolItem(refToolBar,
-				SWT.PUSH,
+	  	new ToolItem(refToolBar, SWT.SEPARATOR);
+		
+		refOneNeighborhoodItem = createToolItem(refToolBar,
+				SWT.CHECK,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/neighbour.gif"),
+				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/one_neighborhood.gif"),
 				null,
-				"Change neighbourhood distance");
+				"Show neighborhood within a distance of 1");
+		
+		refTwoNeighborhoodItem = createToolItem(refToolBar,
+				SWT.CHECK,
+				"",
+				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/two_neighborhood.gif"),
+				null,
+				"Show neighborhood within a distance of 2");
+		
+		refThreeNeighborhoodItem = createToolItem(refToolBar,
+				SWT.CHECK,
+				"",
+				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/three_neighborhood.gif"),
+				null,
+				"Show neighborhood within a distance of 3");
+		
+	  	new ToolItem(refToolBar, SWT.SEPARATOR);
 		
 		refShowOverviewMapItem = createToolItem(refToolBar,
 				SWT.PUSH,
@@ -226,13 +246,51 @@ implements IView {
 	          {
 	        	  refPathwayGraphViewRep.zoomOut();
 	          }	   
-	          else if (sToolItemIdentifier.equals("Change neighbourhood distance"))
+	          else if (sToolItemIdentifier.equals(
+	        		  "Show neighborhood within a distance of 1"))
 	          {
-	        	  NeighborhoodInputDialog neighbourhoodInputDialog = 
-	        		  new NeighborhoodInputDialog(refSWTContainer.getShell());
+	        	  refTwoNeighborhoodItem.setSelection(false);
+	        	  refThreeNeighborhoodItem.setSelection(false);
 	        	  
-	        	  refPathwayGraphViewRep.setNeighbourhoodDistance(
-	        			 neighbourhoodInputDialog.open());
+	        	  if (refOneNeighborhoodItem.getSelection() == true)
+	        	  {
+		        	  refPathwayGraphViewRep.setNeighbourhoodDistance(1);
+	        	  }
+	        	  else
+	        	  {
+	        		  refPathwayGraphViewRep.setNeighbourhoodDistance(0);
+	        	  }
+
+	          }
+	          else if (sToolItemIdentifier.equals(
+	        		  "Show neighborhood within a distance of 2"))
+	          {
+	        	  refOneNeighborhoodItem.setSelection(false);
+	        	  refThreeNeighborhoodItem.setSelection(false);
+	        	  
+	        	  if (refTwoNeighborhoodItem.getSelection() == true)
+	        	  {
+		        	  refPathwayGraphViewRep.setNeighbourhoodDistance(2);
+	        	  }
+	        	  else
+	        	  {
+	        		  refPathwayGraphViewRep.setNeighbourhoodDistance(0);
+	        	  }
+	          } 
+	          else if (sToolItemIdentifier.equals(
+						"Show neighborhood within a distance of 3"))
+	          {
+	        	  refOneNeighborhoodItem.setSelection(false);
+	        	  refTwoNeighborhoodItem.setSelection(false);
+	        	  
+	        	  if (refThreeNeighborhoodItem.getSelection() == true)
+	        	  {
+		        	  refPathwayGraphViewRep.setNeighbourhoodDistance(3);
+	        	  }
+	        	  else
+	        	  {
+	        		  refPathwayGraphViewRep.setNeighbourhoodDistance(0);
+	        	  }
 	          }
 	          else if (sToolItemIdentifier.equals("Show overview map"))
 	          {
@@ -250,7 +308,9 @@ implements IView {
 	      refZoomOrigItem.addListener(SWT.Selection, toolbarListener);
 	      refZoomInItem.addListener(SWT.Selection, toolbarListener);
 	      refZoomOutItem.addListener(SWT.Selection, toolbarListener);
-	      refNeighbourItem.addListener(SWT.Selection, toolbarListener);
+	      refOneNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
+	      refTwoNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
+	      refThreeNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
 	      refShowOverviewMapItem.addListener(SWT.Selection, toolbarListener);
 	      refBackgroundOverlayItem.addListener(SWT.Selection, toolbarListener);
 	      

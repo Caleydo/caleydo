@@ -91,7 +91,12 @@ extends APathwayGraphViewRep {
 	
 	protected Vector<DefaultGraphCell> vecVertices;
 	
-	protected int iNeighbourhoodDistance = 1;
+	/**
+	 * Specifies how deep the neighborhood recursion
+	 * should visualize surrounding elements.
+	 * Default value is 0.
+	 */
+	protected int iNeighbourhoodDistance = 0;
 	
 	protected float fScalingFactor;
 	
@@ -208,7 +213,7 @@ extends APathwayGraphViewRep {
 				{
 					// Load node information in browser
 					final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-					getViewGLCanvasManager();					
+						getViewGLCanvasManager();					
 			    
 					refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
 						public void run() {
@@ -228,10 +233,14 @@ extends APathwayGraphViewRep {
 						iNeighbourhoodUndoCount = 0;
 						bNeighbourhoodShown = false;
 					}
-					
-					showNeighbourhood(clickedCell, iNeighbourhoodDistance, null);
-					
-					bNeighbourhoodShown = true;
+
+					if (iNeighbourhoodDistance != 0)
+					{
+						showNeighbourhood(clickedCell, 
+							iNeighbourhoodDistance, null);
+				
+						bNeighbourhoodShown = true;
+					}
 				}
 
 				//super.mousePressed(event);
@@ -549,6 +558,8 @@ extends APathwayGraphViewRep {
 		
 		if (fGreenPortion < 0.0)
 			fGreenPortion = 0.0f;
+		else if (fGreenPortion > 1.0f)
+			fGreenPortion = 1.0f;
 		
 		GraphConstants.setBackground(
 				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
@@ -587,7 +598,7 @@ extends APathwayGraphViewRep {
 	}
 
 	public void setNeighbourhoodDistance(int iNeighbourhoodDistance) {
-		
+	
 		this.iNeighbourhoodDistance = iNeighbourhoodDistance;
 	}
 	
