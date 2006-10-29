@@ -1,0 +1,16 @@
+<imagemap>
+
+  <image src="/kegg/pathway/map/map01100.gif">
+ 
+  <area shape="rect"	coords="439,63,558,98"		link="data/XML/pathways/map01196.html" />
+  <area shape="rect"	coords="309,658,456,693"	link="data/XML/pathways/map01195.html" />
+  <area shape="rect"	coords="194,326,297,361"	link="data/XML/pathways/map01110.html" />
+  <area shape="rect"	coords="349,471,441,505"	link="data/XML/pathways/map01150.html" />
+  <area shape="rect"	coords="447,383,576,418"	link="data/XML/pathways/map01160.html" />
+  <area shape="rect"	coords="307,140,395,175"	link="data/XML/pathways/map01140.html" />
+  <area shape="rect"	coords="413,588,567,624"	link="data/XML/pathways/map01190.html" />
+  <area shape="rect"	coords="76,602,162,636"		link="data/XML/pathways/map01120.html" />
+  <area shape="rect"	coords="78,406,162,442"		link="data/XML/pathways/map01130.html" />
+  <area shape="rect" 	coords="65,64,225,100"		link="data/XML/pathways/map01170.html" />
+
+</imagemap>
