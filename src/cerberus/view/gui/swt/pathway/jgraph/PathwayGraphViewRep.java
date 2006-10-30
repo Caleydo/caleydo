@@ -248,10 +248,20 @@ extends APathwayGraphViewRep {
 				}// if(refCurrentPathway != 0) 
 		    	else if (refCurrentPathwayImageMap != null)
 		    	{
-		    		String sImageLink = refCurrentPathwayImageMap.processPoint(
+		    		String sLink = refCurrentPathwayImageMap.processPoint(
 		    				new Point(event.getX(), event.getY()));
 		    		
-		    		loadImageMapFromFile(sImageLink);
+		    		iPathwayLevel++;
+		    		if (iPathwayLevel >= 3)
+		    		{
+		    			//fScalingFactor = SCALING_FACTOR;
+		    			bBackgroundOverlaySet = true;
+		    			loadPathwayFromFile(sLink);
+		    		}	
+		    		else
+		    		{
+		    			loadImageMapFromFile(sLink);
+		    		}
 		    	}
 		    		
 				//super.mousePressed(event);
@@ -491,6 +501,8 @@ extends APathwayGraphViewRep {
 			getXmlParserManager().parseXmlFileByName(sFilePath);
 		
 		drawView();
+		
+		refPathwayGraph.setBackgroundImage(null);
 		
 		if (bBackgroundOverlaySet == true)
 		{

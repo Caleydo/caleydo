@@ -43,6 +43,8 @@ implements IPathwayGraphView {
 	
 	protected PathwayImageMap refCurrentPathwayImageMap;
 	
+	protected int iPathwayLevel = 0;
+
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
@@ -277,5 +279,15 @@ implements IPathwayGraphView {
 					true,
 					reactionEdge);
 		}	  
+	}
+	
+	public void setPathwayLevel(int iPathwayLevel) {
+	
+		this.iPathwayLevel = iPathwayLevel;
+	}
+	
+	public int getPathwayLevel() {
+		
+		return iPathwayLevel;
 	}
 }

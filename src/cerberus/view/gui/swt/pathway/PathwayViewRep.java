@@ -322,6 +322,8 @@ implements IView {
 	          else if (sToolItemIdentifier.equals("" +
 	          		"Go to KEGG Metabolic Pathways Overview Map"))
 	          {
+	        	  refPathwayGraphViewRep.setPathwayLevel(1);
+	        	  
 	        	  refPathwayGraphViewRep.loadImageMapFromFile(
 	        			  KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH);
 	          }
