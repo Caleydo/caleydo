@@ -1,0 +1,6 @@
+<imagemap image="data/images/pathways/map01140.gif">
+ 
+  <area shape="rect"	coords="156,91,453,258"		link="data/XML/pathways/map00230.xml" />
+  <area shape="rect"	coords="175,264,438,437"	link="data/XML/pathways/map00240.xml" />
+
+</imagemap>

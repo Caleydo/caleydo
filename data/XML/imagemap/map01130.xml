@@ -1,0 +1,17 @@
+<imagemap image="data/images/pathways/map01130.gif">
+ 
+  <area shape="rect"	coords="39,117,221,228"		link="data/XML/pathways/map00590.xml" />
+  <area shape="rect"	coords="224,164,430,229"	link="data/XML/pathways/map00561.xml" />
+  <area shape="rect"	coords="224,25,428,161"		link="data/XML/pathways/map00564.xml" />
+  <area shape="rect"	coords="348,593,503,775"	link="data/XML/pathways/map00150.xml" />
+  <area shape="rect"	coords="193,561,341,775"	link="data/XML/pathways/map00140.xml" />
+  <area shape="rect"	coords="39,623,187,773"		link="data/XML/pathways/map00120.xml" />
+  <area shape="rect"	coords="243,455,359,545"	link="data/XML/pathways/map00072.xml" />
+  <area shape="rect"	coords="243,413,424,455"	link="data/XML/pathways/map00072.xml" />
+  <area shape="rect"	coords="40,556,190,620"		link="data/XML/pathways/map00100.xml" />
+  <area shape="rect"	coords="40,437,242,556"		link="data/XML/pathways/map00100.xml" />
+  <area shape="rect"	coords="241,232,409,409"	link="data/XML/pathways/map00071.xml" />
+  <area shape="rect"	coords="55,337,236,432"		link="data/XML/pathways/map00062.xml" />
+  <area shape="rect"	coords="55,231,236,337"		link="data/XML/pathways/map00061.xml" />
+
+</imagemap>
