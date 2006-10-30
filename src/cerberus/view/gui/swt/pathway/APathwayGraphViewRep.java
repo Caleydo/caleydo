@@ -15,6 +15,7 @@ import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
@@ -39,6 +40,8 @@ implements IPathwayGraphView {
 	protected PathwayRenderStyle refRenderStyle;
 	
 	protected Pathway refCurrentPathway;
+	
+	protected PathwayImageMap refCurrentPathwayImageMap;
 	
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 

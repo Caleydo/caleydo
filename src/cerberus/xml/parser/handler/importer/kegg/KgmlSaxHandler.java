@@ -2,9 +2,7 @@ package cerberus.xml.parser.handler.importer.kegg;
 
 import java.util.HashMap;
 
-import cerberus.data.pathway.Pathway;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -13,18 +11,15 @@ import cerberus.xml.parser.manager.IXmlParserManager;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.Locator;
-import org.xml.sax.helpers.LocatorImpl;
 import org.xml.sax.SAXException;
-//import org.xml.sax.helpers.DefaultHandler;
-
-//import java.lang.Integer;
 
 public class KgmlSaxHandler 
 extends AXmlParserHandler 
-implements IXmlParserHandler
-{
+implements IXmlParserHandler {
+	
 	protected Attributes attributes;
+	
+	protected String sAttributeName = "";
 	
 	protected HashMap<Integer, Integer> kgmlIdToElementIdLUT;
 	
@@ -32,10 +27,6 @@ implements IXmlParserHandler
 	 * Map that stores the KEGG compound names and the internal compound ID
 	 */
 	protected HashMap<String, Integer> kgmlCompoundNameToElementIdLUT;
-		
-	protected String sAttributeName = "";
-	
-	
 	
 	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
 			final IXmlParserManager refXmlParserManager)
@@ -91,8 +82,8 @@ implements IXmlParserHandler
 	public void endElement(String namespaceURI,
           String sSimpleName,
           String sQualifiedName)
-	throws SAXException
-	{
+	throws SAXException {
+		
 		//emit("</"+sName+">");
 		
 		String eName = ("".equals(sSimpleName)) ? sQualifiedName : sSimpleName;
@@ -117,8 +108,8 @@ implements IXmlParserHandler
      *	image="http://www.genome.jp/kegg/pathway/map/map00271.gif" 
      *	link="http://www.genome.jp/dbget-bin/show_pathway?map00271">
 	 */
-    public void handlePathwayTag()
-    {
+    protected void handlePathwayTag() {
+    	
     	String sTitle = "";
     	String sImageLink = "";
     	String sLink = "";
@@ -157,8 +148,8 @@ implements IXmlParserHandler
 	 * <entry id="1" name="ec:1.8.4.1" type="enzyme" 
 	 * reaction="rn:R01292" link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
 	 */
-    public void handleEntryTag()
-    {
+    protected void handleEntryTag() {
+    	
     	int iKgmlEntryID = 0;
     	String sName = "";
     	String sType = "";
@@ -208,8 +199,8 @@ implements IXmlParserHandler
 	 * bgcolor="#FFFFFF" type="rectangle" 
 	 * x="142" y="304" width="45" height="17"/>
 	 */
-    public void handleGraphicsTag()
-    {
+    protected void handleGraphicsTag() {
+    	
 		String sName = "";
 		String sType = "";
 		int iHeight = 0;
@@ -254,8 +245,8 @@ implements IXmlParserHandler
 	 * An example relation tag looks like this:
 	 * <relation entry1="28" entry2="32" type="ECrel">
 	 */
-    public void handleRelationTag()
-    {
+    protected void handleRelationTag() {
+    	
     	int iEntry1 = 0;
     	int iEntry2 = 0;
     	String sType = "";
@@ -287,8 +278,8 @@ implements IXmlParserHandler
 			createRelationEdge(iElementId1, iElementId2, sType);
     }
     	
-    public void handleSubtypeTag()
-    {
+    protected void handleSubtypeTag() {
+    	
     	String sName = "";
     	int iCompoundId = 0;
 		
@@ -324,8 +315,8 @@ implements IXmlParserHandler
 	 * An example reaction tag looks like this:
 	 * <reaction name="rn:R01001" type="irreversible">
 	 */
-    public void handleReactionTag()
-    {			
+    protected void handleReactionTag() {
+    	
     	String sReactionName = "";
     	String sReactionType = "";
     	
@@ -354,8 +345,8 @@ implements IXmlParserHandler
 	 * An example reaction substrate tag looks like this:
 	 * <substrate name="cpd:C01118"/>
 	 */
-    private void handleReactionSubstrateTag() 
-    {
+    protected void handleReactionSubstrateTag() {
+    	
     	String sReactionSubstrateName = "";
     	
     	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
@@ -389,8 +380,8 @@ implements IXmlParserHandler
 	 * An example reaction product tag looks like this:
 	 * <product name="cpd:C02291"/>
 	 */
-	private void handleReactionProductTag() 
-	{
+	protected void handleReactionProductTag() {
+		
     	String sReactionProductName = "";
     	
     	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
@@ -423,8 +414,8 @@ implements IXmlParserHandler
 	 * @see cerberus.xml.parser.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
-	public void destroyHandler()
-	{		
+	public void destroyHandler() {
+		
 		kgmlIdToElementIdLUT = null;
 		
 		super.destroyHandler();

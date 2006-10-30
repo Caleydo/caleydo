@@ -9,8 +9,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -36,6 +40,9 @@ public class PathwayViewRep
 extends AViewRep 
 implements IView {
 	
+	protected static final String KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH = 
+		"data/XML/imagemap/map01100.xml";
+	
 	protected Composite refSWTContainer;
 	
 	protected int iHTMLBrowserId;
@@ -52,6 +59,7 @@ implements IView {
 	protected ToolItem refShowOverviewMapItem;
 	protected ToolItem refFilterEdgesItem;
 	protected ToolItem refBackgroundOverlayItem;
+	protected ToolItem refKeggMetabolicPathwaysMapItem;
 	
 	protected APathwayGraphViewRep refPathwayGraphViewRep;
 	
@@ -73,11 +81,13 @@ implements IView {
 
 	public void initView() {
 			
+		refSWTContainer.setLayout(new GridLayout(1, false));
+		
 		initToolbar();
 		
-//		// Graph initialization
+		// Graph initialization
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
-		refPathwayGraphViewRep.setWidthAndHeight(iWidth, iHeight-30);
+		refPathwayGraphViewRep.setWidthAndHeight(iWidth-5, iHeight-50);
 		refPathwayGraphViewRep.setHTMLBrowserId(iHTMLBrowserId);
 		refPathwayGraphViewRep.retrieveGUIContainer();
 		refPathwayGraphViewRep.initView();
@@ -185,6 +195,13 @@ implements IView {
 				null, 
 				null, 
 				"Filter reactions/relations");
+		
+		refKeggMetabolicPathwaysMapItem = createToolItem(refToolBar,
+				SWT.PUSH,
+				"",
+				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/home.gif"),
+				null,
+				"Go to KEGG Metabolic Pathways Overview Map");
 		
 		final Menu filterEdgeMenu = new Menu (refSWTContainer.getShell(), SWT.POP_UP);
 		MenuItem refShowRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
@@ -302,6 +319,12 @@ implements IView {
 	        	  refPathwayGraphViewRep.showBackgroundOverlay(
 	        			  refBackgroundOverlayItem.getSelection());
 	          }
+	          else if (sToolItemIdentifier.equals("" +
+	          		"Go to KEGG Metabolic Pathways Overview Map"))
+	          {
+	        	  refPathwayGraphViewRep.loadImageMapFromFile(
+	        			  KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH);
+	          }
 	        }
 	      };
 	      
@@ -313,6 +336,7 @@ implements IView {
 	      refThreeNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
 	      refShowOverviewMapItem.addListener(SWT.Selection, toolbarListener);
 	      refBackgroundOverlayItem.addListener(SWT.Selection, toolbarListener);
+	      refKeggMetabolicPathwaysMapItem.addListener(SWT.Selection, toolbarListener);
 	      
 		  refShowRelationsItem.addListener(SWT.Selection, edgeFilterListener);
 		  refShowReactionsItem.addListener(SWT.Selection, edgeFilterListener);		  

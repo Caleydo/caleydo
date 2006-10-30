@@ -3,6 +3,7 @@ package cerberus.manager.data.pathway;
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
+import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.data.IPathwayManager;
@@ -22,7 +23,14 @@ implements IPathwayManager {
 
 	protected HashMap<Integer, Pathway> pathwayLUT;
 
-	protected Pathway currentPathway;
+	protected Pathway refCurrentPathway;
+	
+	/**
+	 * Used for pathways where only images
+	 * can be loaded. The image map defines the clickable
+	 * regions on that pathway image.
+	 */
+	protected PathwayImageMap refCurrentPathwayImageMap;
 
 	/**
 	 * Constructor
@@ -44,14 +52,15 @@ implements IPathwayManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayManager#createPathway(java.lang.String, java.lang.String, java.lang.String, int)
 	 */
-	public void createPathway(String sTitle, String sImageLink, String sLink,
+	public void createPathway(String sTitle, 
+			String sImageLink, 
+			String sLink,
 			int iPathwayID) {
 
-		Pathway newPathway = new Pathway(sTitle, sImageLink, sLink, iPathwayID);
+		refCurrentPathway = new Pathway(
+				sTitle, sImageLink, sLink, iPathwayID);
 
-		pathwayLUT.put(iPathwayID, newPathway);
-
-		currentPathway = newPathway;
+		pathwayLUT.put(iPathwayID, refCurrentPathway);
 	}
 
 	/* (non-Javadoc)
@@ -59,7 +68,25 @@ implements IPathwayManager {
 	 */
 	public Pathway getCurrentPathway() {
 
-		return currentPathway;
+		return refCurrentPathway;
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#createPathwayImageMap()
+	 */
+	public void createPathwayImageMap(String sImageLink) {
+		
+		refCurrentPathwayImageMap = new PathwayImageMap(sImageLink);
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getCurrentPathwayImageMap()
+	 */
+	public PathwayImageMap getCurrentPathwayImageMap () {
+		
+		return refCurrentPathwayImageMap;
 	}
 
 	public boolean hasItem(int iItemId) {

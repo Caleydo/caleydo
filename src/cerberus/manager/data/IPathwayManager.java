@@ -3,16 +3,20 @@ package cerberus.manager.data;
 import java.util.HashMap;
 
 import cerberus.data.pathway.Pathway;
+import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.manager.IGeneralManager;
 
-public interface IPathwayManager extends IGeneralManager
-{
+public interface IPathwayManager 
+extends IGeneralManager {
 
-	public abstract HashMap<Integer, Pathway> getPathwayLUT();
+	public HashMap<Integer, Pathway> getPathwayLUT();
 
-	public abstract void createPathway(String sTitle, String sImageLink,
+	public void createPathway(String sTitle, String sImageLink,
 			String sLink, int iPathwayID);
 
-	public abstract Pathway getCurrentPathway();
-
+	public Pathway getCurrentPathway();
+	
+	public void createPathwayImageMap(String sLink);
+	
+	public PathwayImageMap getCurrentPathwayImageMap();
 }

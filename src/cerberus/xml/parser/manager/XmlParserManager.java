@@ -21,6 +21,7 @@ import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.command.CommandSaxHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler;
+import cerberus.xml.parser.handler.importer.kegg.PathwayImageMapSaxHandler;
 import cerberus.xml.parser.manager.AXmlParserManager;
 
 /**
@@ -34,8 +35,7 @@ import cerberus.xml.parser.manager.AXmlParserManager;
  */
 public class XmlParserManager 
 extends AXmlParserManager
-implements IXmlParserManager
-{
+implements IXmlParserManager {
 
 	protected final ILoggerManager refLoggerManager;
 
@@ -67,8 +67,8 @@ implements IXmlParserManager
 	 * @param bUseCascadingHandler TRUE enabeld cascading handlers and slows down parsing speed.
 	 */
 	public XmlParserManager( final IGeneralManager generalManager,
-			final boolean bUseCascadingHandler )
-	{
+			final boolean bUseCascadingHandler ) {
+		
 		super( generalManager );
 		
 		refLoggerManager = generalManager.getSingelton().getLoggerManager();
@@ -81,13 +81,17 @@ implements IXmlParserManager
 			new OpenExternalXmlFileSaxHandler( generalManager, this );
 						
 		KgmlSaxHandler kgmlParser = 
-			new KgmlSaxHandler( generalManager, this );		
+			new KgmlSaxHandler( generalManager, this );	
+		
+		PathwayImageMapSaxHandler pathwayImageMapParser =
+			new PathwayImageMapSaxHandler ( generalManager, this );
 		
 		CommandSaxHandler cmdHandler = 
 			new CommandSaxHandler( generalManager, this );
 		
 		registerAndInitSaxHandler( externalFileHandler );		
 		registerAndInitSaxHandler( kgmlParser );
+		registerAndInitSaxHandler( pathwayImageMapParser );
 		registerAndInitSaxHandler( cmdHandler );
 		
 		//openCurrentTag( cmdHandler );
@@ -97,16 +101,16 @@ implements IXmlParserManager
 	/* (non-Javadoc)
 	 * @see org.xml.sax.ContentHandler#startDocument()
 	 */
-	public final void startDocument() throws SAXException
-	{
+	public final void startDocument() throws SAXException {
+		
 		setXmlFileProcessedNow( true );
 	}
 
 	/* (non-Javadoc)
 	 * @see org.xml.sax.ContentHandler#endDocument()
 	 */
-	public final void endDocument() throws SAXException
-	{
+	public final void endDocument() throws SAXException {
+		
 		setXmlFileProcessedNow( false );	
 		
 		if ( currentHandler != null ) 
@@ -135,8 +139,8 @@ implements IXmlParserManager
 	public void startElement(String uri, 
 			String localName, 
 			String qName,
-			Attributes attrib) throws SAXException
-	{
+			Attributes attrib) throws SAXException {
+		
 		if ( currentHandler == null ) 
 		{
 			refLoggerManager.logMsg( " < TAG= " + qName,
@@ -173,8 +177,8 @@ implements IXmlParserManager
 	public void startElement_search4Tag(String uri, 
 			String localName, 
 			String qName,
-			Attributes attrib)
-	{
+			Attributes attrib) {
+		
 		if ( hashTag2XmlParser.containsKey( qName ) ) 
 		{
 			IXmlParserHandler handler = hashTag2XmlParser.get( qName );
@@ -259,8 +263,8 @@ implements IXmlParserManager
 	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void endElement(String uri, String localName, String qName)
-			throws SAXException
-	{
+			throws SAXException {
+		
 		refLoggerManager.logMsg( "        " + qName + " TAG -->",
 				LoggerType.FULL );
 		
@@ -287,8 +291,7 @@ implements IXmlParserManager
 	 */
 	public void endElement_search4Tag(String uri, 
 			String localName, 
-			String qName) 
-	{
+			String qName) {
 		
 //		try
 //		{
@@ -306,16 +309,17 @@ implements IXmlParserManager
 	/* (non-Javadoc)
 	 * @see org.xml.sax.ContentHandler#characters(char[], int, int)
 	 */
-	public void characters(char[] ch, int start, int length) throws SAXException
-	{
+	public void characters(char[] ch, int start, int length) 
+		throws SAXException {
+		
 		if ( currentHandler != null ) {				
 			currentHandler.characters(ch, start, length);
 		}
 	}
 
 	
-	public final void sectionFinishedByHandler( IXmlParserHandler handler )
-	{
+	public final void sectionFinishedByHandler( IXmlParserHandler handler ) {
+		
 		assert handler != null : "Can not handel null pointer!";
 		
 		/**
@@ -399,8 +403,8 @@ implements IXmlParserManager
 	}
 
 
-	public void destroyHandler()
-	{
+	public void destroyHandler() {
+		
 		refLoggerManager.logMsg( "XmlParserManager.destoryHandler() ... ",
 				LoggerType.VERBOSE );
 		
@@ -482,6 +486,4 @@ implements IXmlParserManager
 				LoggerType.STATUS );
 		
 	}
-
-
 }

@@ -3,6 +3,7 @@ package cerberus.view.gui.swt.pathway.jgraph;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
@@ -141,110 +142,120 @@ extends APathwayGraphViewRep {
 			
 		    public void mousePressed(final MouseEvent event) {
 
-		    	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
-						.getFirstCellForLocation(event.getX(), event.getY());
-
-		    	// Check if a node or edge was hit.
-		    	// If not undo neighborhood visualization and return.
-		    	if (clickedCell == null)
-		    	{
-					for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
-					{
-						refUndoManager.undo(refGraphLayoutCache);
-					}
-					
-					iNeighbourhoodUndoCount = 0;
-					bNeighbourhoodShown = false;
-		    		return;
-		    	}
-		    	
-//				if (event.getClickCount() == 2)
-//				{	
-		    		// Check if cell has an user object attached
-				if (clickedCell.getUserObject() == null)
-				{
-					super.mousePressed(event);
-					return;						
-				}
-
-				if (!clickedCell.getUserObject().
-						getClass().getSimpleName().equals("PathwayVertexRep"))
-				{
-					super.mousePressed(event);
-					return;
-				}
-				
-				final String sUrl = 
-					((PathwayVertexRep)clickedCell.getUserObject()).
-						getVertex().getVertexLink();
-				
-				if (sUrl == "") 
-				{
-					super.mousePressed(event);
-					return;
-				}
-				
-				String sSearchPattern = "pathway/map/";
-				String sPathwayFilePath;
-				
-				// Check if clicked cell is another pathway
-				if (sUrl.contains((CharSequence)sSearchPattern))
-				{
-					int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
-					sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
-					sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
-					System.out.println("Load pathway from " +sPathwayFilePath);
-					
-					// Extract pathway clicked pathway ID
-					int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
-					System.out.println("Last index: " +iPathwayIdIndex);
-					iPathwayId = StringConversionTool.
-						convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
-
-					refGeneralManager.getSingelton().getLoggerManager().logMsg(
-							"Load pathway with ID " +iPathwayId);
-					
-					// Load pathway
-					loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
-				
-					bNeighbourhoodShown = false;
-				}
-				else
-				{
-					// Load node information in browser
-					final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-						getViewGLCanvasManager();					
-			    
-					refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							((HTMLBrowserViewRep)tmpViewManager.
-									getItem(iHTMLBrowserId)).setUrl(sUrl);
-						}
-					});	
-
-
-					// UNDO old neighborhood visualization
-					if (bNeighbourhoodShown == true)
-					{
+		    	if (refCurrentPathway != null) 
+		    	{		    	
+			    	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
+							.getFirstCellForLocation(event.getX(), event.getY());
+	
+			    	// Check if a node or edge was hit.
+			    	// If not undo neighborhood visualization and return.
+			    	if (clickedCell == null)
+			    	{
 						for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
 						{
 							refUndoManager.undo(refGraphLayoutCache);
 						}
+						
 						iNeighbourhoodUndoCount = 0;
 						bNeighbourhoodShown = false;
-					}
-
-					if (iNeighbourhoodDistance != 0)
+			    		return;
+			    	}
+			    	
+	//				if (event.getClickCount() == 2)
+	//				{	
+			    		// Check if cell has an user object attached
+					if (clickedCell.getUserObject() == null)
 					{
-						showNeighbourhood(clickedCell, 
-							iNeighbourhoodDistance, null);
-				
-						bNeighbourhoodShown = true;
+						super.mousePressed(event);
+						return;						
 					}
-				}
-
+	
+					if (!clickedCell.getUserObject().
+							getClass().getSimpleName().equals("PathwayVertexRep"))
+					{
+						super.mousePressed(event);
+						return;
+					}
+					
+					final String sUrl = 
+						((PathwayVertexRep)clickedCell.getUserObject()).
+							getVertex().getVertexLink();
+					
+					if (sUrl == "") 
+					{
+						super.mousePressed(event);
+						return;
+					}
+					
+					String sSearchPattern = "pathway/map/";
+					String sPathwayFilePath;
+					
+					// Check if clicked cell is another pathway
+					if (sUrl.contains((CharSequence)sSearchPattern))
+					{
+						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
+						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
+						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
+						System.out.println("Load pathway from " +sPathwayFilePath);
+						
+						// Extract pathway clicked pathway ID
+						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+						System.out.println("Last index: " +iPathwayIdIndex);
+						iPathwayId = StringConversionTool.
+							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
+	
+						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+								"Load pathway with ID " +iPathwayId);
+						
+						// Load pathway
+						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+					
+						bNeighbourhoodShown = false;
+					}
+					else
+					{
+						// Load node information in browser
+						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+							getViewGLCanvasManager();					
+				    
+						refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+							public void run() {
+								((HTMLBrowserViewRep)tmpViewManager.
+										getItem(iHTMLBrowserId)).setUrl(sUrl);
+							}
+						});	
+	
+	
+						// UNDO old neighborhood visualization
+						if (bNeighbourhoodShown == true)
+						{
+							for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
+							{
+								refUndoManager.undo(refGraphLayoutCache);
+							}
+							iNeighbourhoodUndoCount = 0;
+							bNeighbourhoodShown = false;
+						}
+	
+						if (iNeighbourhoodDistance != 0)
+						{
+							showNeighbourhood(clickedCell, 
+								iNeighbourhoodDistance, null);
+					
+							bNeighbourhoodShown = true;
+						}
+					}// if(sUrl.contains((CharSequence)sSearchPattern))
+				}// if(refCurrentPathway != 0) 
+		    	else if (refCurrentPathwayImageMap != null)
+		    	{
+		    		String sImageLink = refCurrentPathwayImageMap.processPoint(
+		    				new Point(event.getX(), event.getY()));
+		    		
+		    		loadImageMapFromFile(sImageLink);
+		    	}
+		    		
 				//super.mousePressed(event);
-			}
+		    }
 		}
 		
 		refGraphModel = new DefaultGraphModel();
@@ -486,26 +497,26 @@ extends APathwayGraphViewRep {
 			// Build current pathway file path of GIF
 			String sPathwayImageFilePath = refCurrentPathway.getTitle();
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
-			sPathwayImageFilePath = "data/images/pathways/" +sPathwayImageFilePath +".gif";
-	
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"Load background pathway from file: " +sPathwayImageFilePath);
+			sPathwayImageFilePath = "data/images/pathways/" 
+				+sPathwayImageFilePath +".gif";
 			
-			// Set background image
-			refPathwayGraph.setBackgroundImage(
-					new ImageIcon(sPathwayImageFilePath));
-			
-			// Set scaling factor so that background image is an direct overlay
-			fScalingFactor = 1.0f;
-			
-			// Set edges to visible
-			refGraphLayoutCache.setVisible(
-					vecReactionEdges.toArray(), false);
-			refGraphLayoutCache.setVisible(
-					vecRelationEdges.toArray(), false);
+			loadBackgroundOverlayImage(sPathwayImageFilePath);
 		}
 		
 		refGraphLayoutCache.reload();
+	}
+	
+	public void loadImageMapFromFile(String sImageMapPath) {
+		
+		resetPathway();
+		
+		refGeneralManager.getSingelton().
+			getXmlParserManager().parseXmlFileByName(sImageMapPath);
+		
+		refCurrentPathwayImageMap = 
+			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
+		
+		loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink());
 	}
 	
 	public void zoomOrig() {
@@ -656,7 +667,10 @@ extends APathwayGraphViewRep {
 				vecRelationEdges.toArray(), !bTurnOn);
 	}
 	
-	protected void resetPathway() {
+	public void resetPathway() {
+		
+		refCurrentPathway = null;
+		refCurrentPathwayImageMap = null;
 		
 		refGraphModel = new DefaultGraphModel();
 		refPathwayGraph.setModel(refGraphModel);
@@ -669,5 +683,25 @@ extends APathwayGraphViewRep {
 		
 		iNeighbourhoodUndoCount = 0;
 		bNeighbourhoodShown = false;
+	}
+	
+	public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"Load background pathway image from file: " 
+				+sPathwayImageFilePath);
+		
+		// Set background image
+		refPathwayGraph.setBackgroundImage(
+				new ImageIcon(sPathwayImageFilePath));
+
+		// Set scaling factor so that background image is an direct overlay
+		fScalingFactor = 1.0f;
+		
+		// Set edges to visible
+		refGraphLayoutCache.setVisible(
+				vecReactionEdges.toArray(), false);
+		refGraphLayoutCache.setVisible(
+				vecRelationEdges.toArray(), false);
 	}
 }

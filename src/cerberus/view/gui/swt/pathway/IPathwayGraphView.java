@@ -21,6 +21,8 @@ extends IView
 	
 	public void loadPathwayFromFile(String sFilePath);
 	
+	public void loadImageMapFromFile(String sImagePath); 
+	
 	public void setNeighbourhoodDistance(int iNeighbourhoodDistance);
 	
 	public void zoomOrig();
@@ -37,4 +39,8 @@ extends IView
 	public void showBackgroundOverlay(boolean bTurnOn);
 	
 	public void finishGraphBuilding();
+	
+	public void loadBackgroundOverlayImage(String sPathwayImageFilePath);
+	
+	public void resetPathway();
 }
