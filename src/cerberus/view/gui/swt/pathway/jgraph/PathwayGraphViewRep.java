@@ -114,7 +114,8 @@ extends APathwayGraphViewRep {
 	 */
 	protected boolean bNeighbourhoodShown = false;
 	
-	public PathwayGraphViewRep(IGeneralManager refGeneralManager, int iParentContainerId) {
+	public PathwayGraphViewRep(IGeneralManager refGeneralManager, 
+			int iParentContainerId) {
 		
 		super(refGeneralManager, -1, iParentContainerId, "");
 		
@@ -490,6 +491,7 @@ extends APathwayGraphViewRep {
 	}
 	
 	public void setPathwayId(int iPathwayId) {
+		
 		this.iPathwayId = iPathwayId;
 	}
 	
@@ -499,6 +501,10 @@ extends APathwayGraphViewRep {
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
+	
+		iPathwayId = Integer.parseInt(
+				sFilePath.substring(sFilePath.lastIndexOf('/')+4, 
+						sFilePath.lastIndexOf('/')+9));
 		
 		drawView();
 		

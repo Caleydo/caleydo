@@ -111,6 +111,7 @@ implements IXmlParserHandler {
 		
 		String sCoords = "";
 		String sImageLink = "";
+		String sShape = "";
 		Rectangle rectArea = new Rectangle();
     	
     	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
@@ -126,7 +127,14 @@ implements IXmlParserHandler {
 				sCoords = attributes.getValue(iAttributeIndex); 
 			else if (sAttributeName.equals("link"))
 				sImageLink = attributes.getValue(iAttributeIndex);
+			else if (sAttributeName.equals("shape"))
+				sShape = attributes.getValue(iAttributeIndex);
+			
 		}  	
+    	
+    	// TODO: handle circular shapes!
+    	if (!sShape.equals("rect"))
+    		return;
     	
     	// Extract coordinates and set rectangle
 		StringTokenizer token = new StringTokenizer(
