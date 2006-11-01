@@ -40,9 +40,6 @@ public class PathwayViewRep
 extends AViewRep 
 implements IView {
 	
-	protected static final String KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH = 
-		"data/XML/imagemap/map01100.xml";
-	
 	protected Composite refSWTContainer;
 	
 	protected int iHTMLBrowserId;
@@ -87,7 +84,7 @@ implements IView {
 		
 		// Graph initialization
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
-		refPathwayGraphViewRep.setWidthAndHeight(iWidth-5, iHeight-50);
+		refPathwayGraphViewRep.setWidthAndHeight(iWidth-5, iHeight-75);
 		refPathwayGraphViewRep.setHTMLBrowserId(iHTMLBrowserId);
 		refPathwayGraphViewRep.retrieveGUIContainer();
 		refPathwayGraphViewRep.initView();
@@ -325,7 +322,7 @@ implements IView {
 	        	  refPathwayGraphViewRep.setPathwayLevel(1);
 	        	  
 	        	  refPathwayGraphViewRep.loadImageMapFromFile(
-	        			  KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH);
+	        			  refPathwayGraphViewRep.KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH);
 	          }
 	        }
 	      };

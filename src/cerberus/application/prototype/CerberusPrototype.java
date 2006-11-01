@@ -46,14 +46,11 @@ public class CerberusPrototype
 		oneForAllManager.initAll();
 		
 		refGeneralManager = oneForAllManager.getGeneralManager();
-		
-		refViewManager = (IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
-		
-		refSWTGUIManager = (ISWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);		
-		
+
 		refXmlParserManager = new XmlParserManager( refGeneralManager, false );
-		refGeneralManager.getSingelton().setXmlParserManager(refXmlParserManager);
 		
+		refGeneralManager.getSingelton().setXmlParserManager(refXmlParserManager);
+				
 		/**
 		 * Register additional SaxParserHandler here:
 		 * <br>
@@ -71,6 +68,11 @@ public class CerberusPrototype
 
 		// Default file name
 		setXmlFileName( "data/XML/bootstrap/cerberus_bootstrap_sample_demo.xml" );
+
+		refViewManager = (IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		
+		refSWTGUIManager = (ISWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);		
+
 	}
 
 	public void run()

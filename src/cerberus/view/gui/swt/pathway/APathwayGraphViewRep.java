@@ -29,6 +29,9 @@ public abstract class APathwayGraphViewRep
 extends AViewRep
 implements IPathwayGraphView {
 
+	public static final String KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH = 
+		"data/XML/imagemap/map01100.xml";
+	
 	protected Frame refEmbeddedFrame;
 	
 	protected Composite refEmbeddedFrameComposite;
@@ -43,7 +46,12 @@ implements IPathwayGraphView {
 	
 	protected PathwayImageMap refCurrentPathwayImageMap;
 	
-	protected int iPathwayLevel = 0;
+	/**
+	 * Pathway abstraction level.
+	 * Default value is 1 so that at the beginning the overview
+	 * reference pathway map is loaded.  
+	 */
+	protected int iPathwayLevel = 1;
 
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
@@ -61,30 +69,25 @@ implements IPathwayGraphView {
 
 	public void drawView() {
 		
-		HashMap<Integer, Pathway> pathwayLUT = 		
-			((IPathwayManager)refGeneralManager.getSingelton().
-					getPathwayManager()).getPathwayLUT();
-		
-		// Take first in list if pathway ID is not set
-		if (iPathwayId == 0)
+		if (iPathwayId != 0)
 		{
-			Iterator<Pathway> iter = pathwayLUT.values().iterator();
-			if (!iter.hasNext())
-			{
-				return;
-			}
+			HashMap<Integer, Pathway> pathwayLUT = 		
+				((IPathwayManager)refGeneralManager.getSingelton().
+						getPathwayManager()).getPathwayLUT();
 			
-			refCurrentPathway = iter.next();
-		}
-		else
-		{
 			refCurrentPathway = pathwayLUT.get(iPathwayId);
+			extractVertices();
+			extractEdges();
+
+			finishGraphBuilding();
+		}	    
+		else if (iPathwayLevel == 1)
+		{ 
+			refCurrentPathwayImageMap = 
+				refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
+			
+			loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink());
 		}
-	    
-		extractVertices();
-		extractEdges();
-		
-		finishGraphBuilding();
 	}
 
 	public void retrieveGUIContainer() {
