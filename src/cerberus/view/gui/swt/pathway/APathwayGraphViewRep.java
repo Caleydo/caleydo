@@ -69,13 +69,22 @@ implements IPathwayGraphView {
 
 	public void drawView() {
 		
-		if (iPathwayId != 0)
+		if (refGeneralManager.getSingelton().
+				getPathwayManager().getCurrentPathway() != null)
 		{
-			HashMap<Integer, Pathway> pathwayLUT = 		
-				((IPathwayManager)refGeneralManager.getSingelton().
-						getPathwayManager()).getPathwayLUT();
-			
-			refCurrentPathway = pathwayLUT.get(iPathwayId);
+			if (iPathwayId != 0)
+			{
+				HashMap<Integer, Pathway> pathwayLUT = 		
+					((IPathwayManager)refGeneralManager.getSingelton().
+							getPathwayManager()).getPathwayLUT();
+				
+				refCurrentPathway = pathwayLUT.get(iPathwayId);
+			}
+			else
+			{
+				refCurrentPathway = refGeneralManager.getSingelton().
+					getPathwayManager().getCurrentPathway();
+			}
 			extractVertices();
 			extractEdges();
 
