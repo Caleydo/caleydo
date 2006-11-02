@@ -4,13 +4,13 @@ import java.awt.Dimension;
 
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
-import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.view.gui.IView;
 
 public interface IPathwayGraphView 
-extends IView
-{
-	public void createVertex(PathwayVertexRep vertex);
+extends IView {
+	
+	public void createVertex(IPathwayVertexRep vertex);
 	
 	public void createEdge(int iVertexId1, 
 			int iVertexId2, 

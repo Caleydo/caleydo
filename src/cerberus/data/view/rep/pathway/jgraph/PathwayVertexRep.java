@@ -14,6 +14,9 @@ implements IPathwayVertexRep {
 	protected int iXPosition = 0;
 	protected int iYPosition = 0;
 
+	/**
+	 * Constructor.
+	 */
 	public PathwayVertexRep(
 			PathwayVertex refVertex,
 			String sName, 
@@ -32,10 +35,18 @@ implements IPathwayVertexRep {
 		this.sShapeType = sShapeType;
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.data.view.rep.pathway.IPathwayVertexRep#getHeight()
+	 */
 	public int getHeight() {
 		return iHeight;
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.data.view.rep.pathway.IPathwayVertexRep#getWidth()
+	 */
 	public int getWidth() {
 		return iWidth;
 	}
@@ -78,8 +89,9 @@ implements IPathwayVertexRep {
 		return refVertex;
 	}
 	
-	/**
-	 * Method needed for the JGraph labeling of the vertices.
+	/*
+	 *  (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
 		

@@ -39,6 +39,7 @@ import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
@@ -321,13 +322,13 @@ extends APathwayGraphViewRep {
         }
 	}
 	
-	public void createVertex(PathwayVertexRep vertexRep) {
+	public void createVertex(IPathwayVertexRep vertexRep) {
 		
 		//create node
 		refGraphCell = new DefaultGraphCell(vertexRep);
 		
 		AttributeMap changedMap = refGraphCell.getAttributes(); 
-		
+			
 		String sShapeType = vertexRep.getShapeType();
 		Rectangle2D vertexRect = new Rectangle2D.Double(
 				(int)(vertexRep.getXPosition() * fScalingFactor) - (vertexRep.getWidth() / 2), 

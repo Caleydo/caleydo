@@ -26,6 +26,8 @@ implements ICommand {
 	 */
 	protected int iTargetPathwayId;
 	
+	protected float[] fResolution;
+	
 	/**
 	 * Constructor.
 	 * 

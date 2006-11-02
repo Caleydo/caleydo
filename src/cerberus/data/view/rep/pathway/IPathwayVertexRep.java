@@ -2,16 +2,24 @@ package cerberus.data.view.rep.pathway;
 
 import cerberus.data.pathway.element.PathwayVertex;
 
-public interface IPathwayVertexRep
-{
-	public abstract PathwayVertex getVertex();
+public interface IPathwayVertexRep {
 	
-	public abstract int getXPosition();
-
-	public abstract int getYPosition();
-
-	public abstract String getName();
+	public PathwayVertex getVertex();
 	
-	public abstract String getShapeType();
+	public int getXPosition();
 
+	public int getYPosition();
+
+	public String getName();
+	
+	public String getShapeType();
+	
+	/**
+	 * Method needed for the JGraph labeling of the vertices.
+	 */
+	public String toString();
+	
+	public int getHeight();
+	
+	public int getWidth();
 }

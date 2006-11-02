@@ -46,6 +46,18 @@ implements IPathwayGraphView {
 	
 	protected PathwayImageMap refCurrentPathwayImageMap;
 	
+	/*
+	 * Specifies which vertex representation of a specific vertex
+	 * will be drawn.
+	 */
+	protected int iVertexRepIndex = 0;
+	
+	/*
+	 * Specifies which edge representation of a specific edge
+	 * will be drawn.
+	 */
+	protected int iEdgeRepIndex = 0;
+	
 	/**
 	 * Pathway abstraction level.
 	 * Default value is 1 so that at the beginning the overview
@@ -130,29 +142,21 @@ implements IPathwayGraphView {
 	
 	protected void extractVertices() {
 		
-	    Vector<PathwayVertex> vertexList;
 	    Iterator<PathwayVertex> vertexIterator;
 	    PathwayVertex vertex;
-	    Vector<IPathwayVertexRep> vertexReps;
-	    Iterator<IPathwayVertexRep> vertexRepIterator;
-	    PathwayVertexRep vertexRep;
+	    IPathwayVertexRep vertexRep;
 		
-        vertexList = refCurrentPathway.getVertexList();
-        vertexIterator = vertexList.iterator();
+        vertexIterator = refCurrentPathway.getVertexListIterator();
         while (vertexIterator.hasNext())
         {
         	vertex = vertexIterator.next();
-        	vertexReps = vertex.getVertexReps();
-        	vertexRepIterator = vertexReps.iterator();
-        	
-        	//FIXME: actually it is not right to interate over all vertex reps.
-        	while (vertexRepIterator.hasNext())
+        	vertexRep = vertex.getVertexRepByIndex(iVertexRepIndex);
+
+        	if (vertexRep != null)
         	{
-        		vertexRep = (PathwayVertexRep) vertexRepIterator.next();
         		createVertex(vertexRep);        	
         	}
         }   
-   
 	}
 	
 	protected void extractEdges() {
@@ -178,22 +182,18 @@ implements IPathwayGraphView {
         	}
         }
 		
-	    Vector<PathwayVertex> vertexList = null;
 	    Iterator<PathwayVertex> vertexIterator;
 	    PathwayVertex vertex;
 	    Vector<IPathwayVertexRep> vertexReps;
 	    Iterator<IPathwayVertexRep> vertexRepIterator;
-	    PathwayVertexRep vertexRep;
+	    IPathwayVertexRep vertexRep;
 		
 	    // Process reaction edges
-        vertexList = refCurrentPathway.getVertexList();
-        vertexIterator = vertexList.iterator();
+        vertexIterator = refCurrentPathway.getVertexListIterator();
 	    
 	    while (vertexIterator.hasNext())
 	    {
-	    	vertex = vertexIterator.next();
-	    	vertexReps = vertex.getVertexReps();
-	    	vertexRepIterator = vertexReps.iterator();
+	    	vertex = vertexIterator.next();	   
 	
 	    	if (vertex.getVertexType() == PathwayVertexType.enzyme)
 	    	{	

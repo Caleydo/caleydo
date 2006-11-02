@@ -188,8 +188,7 @@ implements IView, IMediatorReceiver {
 							}
 						} catch (Exception e)
 						{
-							System.err
-									.println("Error in DataExplorerViewRep while (Selection) getSelectionByDim()..");
+							System.err.println("Error in DataExplorerViewRep while (Selection) getSelectionByDim()..");
 							throw new RuntimeException(e.toString());
 						}
 

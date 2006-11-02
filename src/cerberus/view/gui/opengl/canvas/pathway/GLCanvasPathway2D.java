@@ -1,12 +1,15 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
+import java.util.Iterator;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
-import cerberus.data.collection.ISet;
 import cerberus.data.pathway.Pathway;
+import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
@@ -25,8 +28,6 @@ implements IGLCanvasUser {
 	
 	protected float[][] fAspectRatio;
 	
-	protected float[] fResolution;
-	
 	Pathway refCurrentPathway;
 	
 	public static final int X = 0;
@@ -35,6 +36,11 @@ implements IGLCanvasUser {
 	public static final int MAX = 1;
 	public static final int OFFSET = 2;
 	
+	float fScalingFactorX = 0.0f;
+	float fScalingFactorY = 0.0f;
+	
+	protected int iVertexRepIndex = 0;
+
 	/**
 	 * Constructor
 	 * 
@@ -50,21 +56,18 @@ implements IGLCanvasUser {
 				iParentContainerId, 
 				sLabel );
 		
-		fAspectRatio = new float [2][3];
 		viewingFrame = new float [2][2];
-		
-		fAspectRatio[X][MIN] = 0.0f;
-		fAspectRatio[X][MAX] = 20.0f; 
-		fAspectRatio[Y][MIN] = 0.0f; 
-		fAspectRatio[Y][MAX] = 20.0f; 
-		
-		fAspectRatio[Y][OFFSET] = 0.0f; 
-		fAspectRatio[Y][OFFSET] = -2.0f; 
 		
 		viewingFrame[X][MIN] = -1.0f;
 		viewingFrame[X][MAX] = 1.0f; 
-		viewingFrame[Y][MIN] = 1.0f; 
-		viewingFrame[Y][MAX] = -1.0f; 
+		viewingFrame[Y][MIN] = -1.0f; 
+		viewingFrame[Y][MAX] = 1.0f; 
+		
+		fScalingFactorX = 
+			((viewingFrame[X][MAX] - viewingFrame[X][MIN]) / 1000.0f) * 1.5f;
+		
+		fScalingFactorY = 
+			((viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 1000.0f) * 1.5f;
 		
 //		listHistogramData = new  LinkedList < HistogramData > ();
 	}
@@ -78,17 +81,16 @@ implements IGLCanvasUser {
 		if (refCurrentPathway == null) 
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-					"GLCanvasPathway2D.setTargetSetId(" +
+					"GLCanvasPathway2D.setPathwayId(" +
 					iTargetPathwayId + ") failed, because Pathway does not exist!");
 
 			return;
 		}
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-				"GLCanvasPathway2D.setTargetSetId(" +
+				"GLCanvasPathway2D.setPathwayId(" +
 				iTargetPathwayId + ") done!");
 		
-		createPathway();
 	}
 	
 	@Override
@@ -110,22 +112,47 @@ implements IGLCanvasUser {
 	{
 		System.err.println(" GLCanvasPathway2D.destroy(GLCanvas canvas)");
 	}
-	
-
-	public void createPathway() {
-	
-	}
 
 	public void displayPathway(GL gl) {
  
-		gl.glColor3f(1.0f,0.0f,0.0f);			// Red
-		gl.glVertex3f( 0.0f, 1.0f, 0.0f);		// Top Of Triangle (Front)
-		gl.glColor3f(0.0f,1.0f,0.0f);			// Green
-		gl.glVertex3f(-1.0f,-1.0f, 1.0f);		// Left Of Triangle (Front)
-		gl.glColor3f(0.0f,0.0f,1.0f);			// Blue
-		gl.glVertex3f( 1.0f,-1.0f, 1.0f);		// Right Of Triangle (Front)
+		// Clearing window and set background to WHITE
+//		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);		
 		
-		renderText(gl, "Pathway TRALALA", 1.0f, 0.1f, 0.1f);
+		renderText(gl, refCurrentPathway.getTitle(), 0.0f, -1.0f, 0.0f);
+		
+		extractVertices(gl);
+	}
+	
+	protected void extractVertices(GL gl) {
+		
+	    Iterator<PathwayVertex> vertexIterator;
+	    PathwayVertex vertex;
+	    IPathwayVertexRep vertexRep;
+		
+        vertexIterator = refCurrentPathway.getVertexListIterator();
+        while (vertexIterator.hasNext())
+        {
+        	vertex = vertexIterator.next();
+        	vertexRep = vertex.getVertexRepByIndex(iVertexRepIndex);
+
+        	if (vertexRep != null)
+        	{
+        		createVertex(gl, vertexRep);        	
+        	}
+        }   
+	}
+	
+	protected void createVertex(GL gl, IPathwayVertexRep vertexRep) {
+		
+		gl.glColor3f(1.0f, 0.0f, 0.0f);
+		
+		float fCanvasXPos = viewingFrame[X][MIN] + 
+			vertexRep.getXPosition() * fScalingFactorX;
+		float fCanvasYPos = viewingFrame[Y][MIN] + 
+			vertexRep.getYPosition() * fScalingFactorY;
+		
+		gl.glRectf(fCanvasXPos, fCanvasYPos, fCanvasXPos + 0.05f, fCanvasYPos + 0.05f);
 	}
 	
 	/**

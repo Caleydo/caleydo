@@ -1,9 +1,12 @@
 package cerberus.data.pathway;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 
 /**
  * @author Marc Streit
@@ -65,5 +68,15 @@ public class Pathway {
 	public String getTitle() {
 	
 		return sTitle;
+	}
+	
+	public Iterator<PathwayVertex> getVertexListIterator() {
+		
+        return vertexList.iterator();
+	}
+	
+	public Iterator<APathwayEdge> getEdgeListIterator() {
+		
+		return edgeList.iterator();
 	}
 }

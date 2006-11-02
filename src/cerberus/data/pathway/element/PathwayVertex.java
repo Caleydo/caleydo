@@ -1,15 +1,18 @@
 package cerberus.data.pathway.element;
 
-import java.util.Vector;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
-
 
 public class PathwayVertex 
 extends APathwayElement {
 	
 	protected PathwayVertexType vertexType;
 	
-	protected Vector<IPathwayVertexRep> vertexReps;
+	/*
+	 * Array can hold up to 3 Vertex Representations.
+	 * The array is of fixed size to get maximum performance.
+	 * Therefore each view has to hold their own vertexRep index.
+	 */
+	protected IPathwayVertexRep[] refVertexRepArray;
 	
 	protected String sVertexLink = ""; 
 	
@@ -18,6 +21,9 @@ extends APathwayElement {
 	 */
 	protected String sReactionName;
 	
+	/*
+	 * Constructor.
+	 */
 	public PathwayVertex(
 			int iVertexID, 
 			String sName, 
@@ -27,7 +33,7 @@ extends APathwayElement {
 		
 		super(iVertexID, sName);
 		
-		vertexReps = new Vector<IPathwayVertexRep>();
+		refVertexRepArray = new IPathwayVertexRep[3];
 		
 		vertexType = PathwayVertexType.valueOf( sType );
 		
@@ -36,14 +42,14 @@ extends APathwayElement {
 		this.sReactionName = sReactionName;
 	}
 	
-	public void addVertexRep(IPathwayVertexRep vertexRep) {
+	public void addVertexRep(IPathwayVertexRep vertexRep, int iVertexRepIndex) {
 		
-		vertexReps.add(vertexRep);
+		refVertexRepArray[iVertexRepIndex] = vertexRep;
 	}
 
-	public Vector<IPathwayVertexRep> getVertexReps() {
+	public IPathwayVertexRep[] getVertexReps() {
 		
-		return vertexReps;
+		return refVertexRepArray;
 	}
 
 	public PathwayVertexType getVertexType() {
@@ -59,5 +65,13 @@ extends APathwayElement {
 	public String getVertexReactionName() {
 		
 		return sReactionName;
+	}
+	
+	/*
+	 * Returns a Vertex Representation by a given index.
+	 */
+	public IPathwayVertexRep getVertexRepByIndex(int iVertexRepIndex) {
+		
+		return refVertexRepArray[iVertexRepIndex];
 	}
 }

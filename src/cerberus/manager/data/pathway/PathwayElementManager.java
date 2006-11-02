@@ -99,7 +99,9 @@ implements IPathwayElementManager {
 					iYPosition, 
 					sType);
 
-		currentVertex.addVertexRep(newVertexRep);
+		// Creates vertex representation with the index 0 in the 
+		// vertexRep array.
+		currentVertex.addVertexRep(newVertexRep, 0);
 	}
 
 	/* (non-Javadoc)
