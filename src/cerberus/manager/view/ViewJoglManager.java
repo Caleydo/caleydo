@@ -23,6 +23,7 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
+import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway2D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
@@ -262,12 +263,14 @@ implements IViewManager, IViewGLCanvasManager {
 					iViewId, 
 					iParentContainerId, 
 					sLabel);
+			
 		case CREATE_GL_HEATMAP:
 			return new GLCanvasHeatmap(
 					refGeneralManager, 
 					iViewId, 
 					iParentContainerId, 
 					sLabel);
+			
 		case CREATE_GL_SCATTERPLOT2D:
 			return new GLCanvasScatterPlot2D(
 					refGeneralManager, 
@@ -295,9 +298,17 @@ implements IViewManager, IViewGLCanvasManager {
 					iViewId, 
 					iParentContainerId, 
 					sLabel);
+			
+		case CREATE_GL_PATHWAY2D:
+			return new GLCanvasPathway2D(
+					refGeneralManager, 
+					iViewId, 
+					iParentContainerId, 
+					sLabel);
+			
 		default:
 			throw new CerberusRuntimeException(
-					"StorageManagerSimple.createGLCanvasUser() failed due to unhandled type ["
+					"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
 							+ useViewType.toString() + "]");
 		}
 	}

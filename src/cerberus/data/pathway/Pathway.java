@@ -5,19 +5,23 @@ import java.util.Vector;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge;
 
+/**
+ * @author Marc Streit
+ *
+ */
 public class Pathway {
 
-	private int iPathwayID;
+	protected int iPathwayID;
 
-	private String sTitle;
+	protected String sTitle;
 
-	private String sImageLink;
+	protected String sImageLink;
 
-	private String sInformationLink;
+	protected String sInformationLink;
 
-	private Vector<PathwayVertex> vertexList;
+	protected Vector<PathwayVertex> vertexList;
 
-	private Vector<APathwayEdge> edgeList;
+	protected Vector<APathwayEdge> edgeList;
 
 	public Pathway(String sTitle,
 			String sImageLink,

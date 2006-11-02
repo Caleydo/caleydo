@@ -53,15 +53,23 @@
 			Cmd type="CREATE_GL_MINMAX_SCATTERPLOT2D"	
 			 attrib3="x_min x_may y_min y_max x_offset y_offset view_X_min view_X_max view_Y_min view_Y_max gridSize pointSize" 
 			 --> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Triangle	A"	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Scatterplot 2D"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="65101" />
 
-      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="69992"	targetId="79401" parent="12401" label="GL Triangle	A"	
+			<!--
+      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="69992"	targetId="79401" parent="12401" label="GL Scatterplot 3D"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0"								
-							detail="65101" />											
+							detail="65101" />
+			-->	
+										 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY2D"		cmdId="68992"	targetId="79401" parent="12401" label="GL Pathway 2D" 
+							attrib1="0 2 0" attrib2="0 0 1 0.85"
+							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 120 4.0"								
+							detail="65101" />
+																			
 							
 		<!-- Container 11341 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="51991" targetId="11341" label="swt container 2" 	parent="10331" attrib2="ROW VERTICAL" />

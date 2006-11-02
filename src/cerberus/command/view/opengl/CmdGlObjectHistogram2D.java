@@ -17,13 +17,12 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class CmdGlObjectHistogram2D 
 extends ACmdCreate_GlCanvasUser
-		implements ICommand
-{
+implements ICommand {
 	
 	protected float [] fResolution;
 	
@@ -41,8 +40,8 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refParameterHandler
 	 */
 	public CmdGlObjectHistogram2D(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
-	{
+			IParameterHandler refParameterHandler) {
+		
 		super(refGeneralManager, refParameterHandler);
 
 		// fResolution = new float [3];
@@ -52,7 +51,8 @@ extends ACmdCreate_GlCanvasUser
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_HISTOGRAM2D;
 	}
 
-	private final void setAttributesHeatmapWidthHeight( IParameterHandler refParameterHandler ) {
+	private final void setAttributesHeatmapWidthHeight( 
+			IParameterHandler refParameterHandler ) {
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute3,
@@ -71,27 +71,23 @@ extends ACmdCreate_GlCanvasUser
 
 
 	@Override
-	public void doCommandPart() throws CerberusRuntimeException
-	{
+	public void doCommandPart() throws CerberusRuntimeException {
+		
 		GLCanvasHistogram2D canvas = 
 			(GLCanvasHistogram2D) openGLCanvasUser;
 				
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
 		canvas.setResolution( fResolution );
-		canvas.setTargetSetId( iTargetCollectionSetId );
-		canvas.setHistogramLength( (int) fResolution[10] );		
 		//canvas.setHistogramLength( 200 );
 	}
 
 	@Override
-	public void undoCommandPart() throws CerberusRuntimeException
-	{
+	public void undoCommandPart() throws CerberusRuntimeException {
+		
 		GLCanvasHistogram2D canvas = 
 			(GLCanvasHistogram2D) openGLCanvasUser;
 		
 		canvas.destroy();
 		canvas = null;
 	}
-	
-	
 }

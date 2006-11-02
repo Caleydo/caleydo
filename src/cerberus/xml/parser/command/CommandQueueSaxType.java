@@ -54,6 +54,7 @@ public enum CommandQueueSaxType
 	CREATE_GL_HEATMAP("cmd","type","-1"),
 	CREATE_GL_HISTOGRAM2D("cmd","type","-1"),
 	CREATE_GL_SCATTERPLOT2D("cmd","type","-1"),
+	CREATE_GL_PATHWAY2D("cmd","type","-1"),
 	CREATE_GL_MINMAX_SCATTERPLOT2D("cmd","type","-1"),
 	CREATE_GL_MINMAX_SCATTERPLOT3D("cmd","type","-1"),
 	

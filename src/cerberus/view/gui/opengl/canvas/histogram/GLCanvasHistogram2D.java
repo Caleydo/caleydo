@@ -445,5 +445,4 @@ implements IGLCanvasUser
 	    gl.glMatrixMode(GL.GL_MODELVIEW);
 	    gl.glPopMatrix();
 	  }
-  
 }
