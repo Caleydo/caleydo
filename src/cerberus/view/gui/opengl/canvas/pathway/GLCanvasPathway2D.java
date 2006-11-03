@@ -126,6 +126,7 @@ implements IGLCanvasUser {
 //		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 //		gl.glClear(GL.GL_COLOR_BUFFER_BIT);		
 		
+		// Draw title
 		renderText(gl, refCurrentPathway.getTitle(), 0.0f, -1.0f, 0.0f);
 		
 		extractVertices(gl);
@@ -255,14 +256,22 @@ implements IGLCanvasUser {
 	
 	protected void createVertex(GL gl, IPathwayVertexRep vertexRep) {
 		
-		gl.glColor3f(1.0f, 0.0f, 0.0f);
+		gl.glColor3f(0.0f, 1.0f, 0.0f);
 		
 		float fCanvasXPos = viewingFrame[X][MIN] + 
 			vertexRep.getXPosition() * fScalingFactorX;
 		float fCanvasYPos = viewingFrame[Y][MIN] + 
 			vertexRep.getYPosition() * fScalingFactorY;
 		
-		gl.glRectf(fCanvasXPos, fCanvasYPos, fCanvasXPos + 0.05f, fCanvasYPos + 0.05f);
+		gl.glRectf(fCanvasXPos - 0.07f, fCanvasYPos - 0.03f, 
+				fCanvasXPos + 0.07f, fCanvasYPos + 0.03f);
+		
+		renderText(gl, 
+				vertexRep.getName(), 
+				fCanvasXPos - 0.07f, 
+				fCanvasYPos - 0.03f, 
+				0.001f);
+
 	}
 	
 	protected void createEdge(GL gl,
@@ -293,9 +302,8 @@ implements IGLCanvasUser {
 		vertexRep2.getXPosition() * fScalingFactorX;
 		float fCanvasYPos2 = viewingFrame[Y][MIN] + 
 		vertexRep2.getYPosition() * fScalingFactorY;
-
 		
-		gl.glColor3f(1.0f, 1.0f, 1.0f);
+		gl.glColor3f(0.0f, 1.0f, 0.0f);
 		gl.glBegin(GL.GL_LINES);						
 			gl.glVertex2d(fCanvasXPos1, fCanvasYPos1);					
 			gl.glVertex2d(fCanvasXPos2, fCanvasYPos2);					
@@ -318,7 +326,7 @@ implements IGLCanvasUser {
 			final float fy, 
 			final float fz ) {
 		
-		final float fFontSizeOffset = 0.09f;
+		final float fFontSizeOffset = 0.01f;
 
 		GLUT glut = new GLUT();
 
@@ -341,6 +349,6 @@ implements IGLCanvasUser {
 		// Take a string and make it a bitmap, put it in the 'gl' passed over
 		// and pick
 		// the GLUT font, then provide the string to show
-		glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24, showText);    
+		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, showText);    
 	}
 }
