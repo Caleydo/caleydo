@@ -16,7 +16,6 @@ import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
-import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IPathwayElementManager;
@@ -161,34 +160,22 @@ implements IPathwayGraphView {
 	
 	protected void extractEdges() {
 		
-	    Vector<APathwayEdge> edgeList;
-	    Iterator<APathwayEdge> edgeIterator;
-	    APathwayEdge edge;
-	    PathwayReactionEdge reactionEdge;
-	    
-        edgeList = refCurrentPathway.getEdgeList();
-        edgeIterator = edgeList.iterator();
-        while (edgeIterator.hasNext())
+		// Process relation edges
+	    Iterator<PathwayRelationEdge> relationEdgeIterator;
+        relationEdgeIterator = refCurrentPathway.getRelationEdgeIterator();
+        while (relationEdgeIterator.hasNext())
         {
-        	edge = edgeIterator.next();
-        
-//        	if (bShowRelationEdges == false)
-//        		break;
-        	
-        	// Process RELATION EDGES
-        	if (edge.getClass().getSimpleName().equals("PathwayRelationEdge"))
-        	{
-        		extractRelationEdges(edge); 		
-        	}
+        	extractRelationEdges(relationEdgeIterator.next()); 		
         }
 		
+	    // Process reaction edges
+        PathwayReactionEdge reactionEdge;
 	    Iterator<PathwayVertex> vertexIterator;
 	    PathwayVertex vertex;
-	    Vector<IPathwayVertexRep> vertexReps;
-	    Iterator<IPathwayVertexRep> vertexRepIterator;
-	    IPathwayVertexRep vertexRep;
+		IPathwayElementManager pathwayElementManager = 
+			((IPathwayElementManager)refGeneralManager.getSingelton().
+				getPathwayElementManager());
 		
-	    // Process reaction edges
         vertexIterator = refCurrentPathway.getVertexListIterator();
 	    
 	    while (vertexIterator.hasNext())
@@ -197,39 +184,23 @@ implements IPathwayGraphView {
 	
 	    	if (vertex.getVertexType() == PathwayVertexType.enzyme)
 	    	{	
-	    		IPathwayElementManager pathwayElementManager = 
-	    			((IPathwayElementManager)refGeneralManager.getSingelton().
-	    				getPathwayElementManager());
-	    		
 //	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
 	    		
-	    		edge = pathwayElementManager.getEdgeLUT().
+	    		reactionEdge = (PathwayReactionEdge)pathwayElementManager.getEdgeLUT().
 	    			get(pathwayElementManager.getReactionName2EdgeIdLUT().
 	    				get(vertex.getVertexReactionName()));
 	
 	    		// FIXME: problem with multiple reactions per enzyme
-	    		if (edge != null)
+	    		if (reactionEdge != null)
 	    		{
-//	            	if (bShowReactionEdges == true)
-//	            	{
-		            	// Process REACTION EDGES
-		            	if (edge.getClass().getName().equals("cerberus.data.pathway.element.PathwayReactionEdge"))
-		            	{
-		            		extractReactionEdges(edge, vertex);
-		            	}	
-//	            	}// (bShowReactionEdges == true)
+	            	extractReactionEdges(reactionEdge, vertex);
 	    		}// if (edge != null)
 	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
 	    }
 	}
 	
-	protected void extractRelationEdges(APathwayEdge edge) {
+	protected void extractRelationEdges(PathwayRelationEdge relationEdge) {
 		
-		PathwayRelationEdge relationEdge;
-		
-   		// Cast abstract edge to relation edge
-		relationEdge = (PathwayRelationEdge)edge;
-
 		// Direct connection between nodes
 		if (relationEdge.getCompoundId() == -1)
 		{
@@ -265,14 +236,9 @@ implements IPathwayGraphView {
 		}
 	}
 	
-	protected void extractReactionEdges(APathwayEdge edge, 
+	protected void extractReactionEdges(PathwayReactionEdge reactionEdge, 
 			PathwayVertex vertex) {
 		
-		PathwayReactionEdge reactionEdge;
-		
-		// Cast abstract edge to reaction edge
-		reactionEdge = (PathwayReactionEdge)edge;
-
 		if (!reactionEdge.getSubstrates().isEmpty())
 		{
 			//FIXME: interate over substrates and products

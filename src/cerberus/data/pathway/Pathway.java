@@ -3,8 +3,11 @@ package cerberus.data.pathway;
 import java.util.Iterator;
 import java.util.Vector;
 
+import cerberus.data.pathway.element.PathwayReactionEdge;
+import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 
@@ -22,17 +25,23 @@ public class Pathway {
 
 	protected String sInformationLink;
 
-	protected Vector<PathwayVertex> vertexList;
+	protected Vector<PathwayVertex> refVecVertices;
 
-	protected Vector<APathwayEdge> edgeList;
-
+	protected Vector<APathwayEdge> refVecEdges;
+	
+	protected Vector<PathwayRelationEdge> refVecRelationEdges;
+	
+	protected Vector<PathwayReactionEdge> refVecReactionEdges;
+	
 	public Pathway(String sTitle,
 			String sImageLink,
 			String sLink,
 			int iPathwayID) {
 
-		vertexList = new Vector<PathwayVertex>();
-		edgeList = new Vector<APathwayEdge>();
+		refVecVertices = new Vector<PathwayVertex>();
+		refVecEdges = new Vector<APathwayEdge>();
+		refVecRelationEdges = new Vector<PathwayRelationEdge>();
+		refVecReactionEdges = new Vector<PathwayReactionEdge>();
 
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
@@ -42,22 +51,31 @@ public class Pathway {
 
 	public void addVertex(PathwayVertex vertex) {
 
-		vertexList.add(vertex);
+		refVecVertices.add(vertex);
 	}
 
 	public void addEdge(APathwayEdge edge) {
 
-		edgeList.add(edge);
+		refVecEdges.add(edge);
+		
+		if (edge.getEdgeType() == EdgeType.RELATION)
+		{
+			refVecRelationEdges.add((PathwayRelationEdge) edge);
+		}
+		else if (edge.getEdgeType() == EdgeType.REACTION)
+		{
+			refVecReactionEdges.add((PathwayReactionEdge) edge);
+		}
 	}
 
 	public Vector<PathwayVertex> getVertexList() {
 
-		return vertexList;
+		return refVecVertices;
 	}
 
 	public Vector<APathwayEdge> getEdgeList() {
 
-		return edgeList;
+		return refVecEdges;
 	}
 
 	public int getPathwayID() {
@@ -72,11 +90,21 @@ public class Pathway {
 	
 	public Iterator<PathwayVertex> getVertexListIterator() {
 		
-        return vertexList.iterator();
+        return refVecVertices.iterator();
 	}
 	
 	public Iterator<APathwayEdge> getEdgeListIterator() {
 		
-		return edgeList.iterator();
+		return refVecEdges.iterator();
+	}
+	
+	public Iterator<PathwayReactionEdge> getReactionEdgeIterator() {
+		
+		return refVecReactionEdges.iterator();
+	}
+
+	public Iterator<PathwayRelationEdge> getRelationEdgeIterator() {
+		
+		return refVecRelationEdges.iterator();
 	}
 }
