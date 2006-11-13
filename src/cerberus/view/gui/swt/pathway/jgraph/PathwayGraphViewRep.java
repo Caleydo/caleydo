@@ -253,6 +253,15 @@ extends APathwayGraphViewRep {
 		    		String sLink = refCurrentPathwayImageMap.processPoint(
 		    				new Point(event.getX(), event.getY()));
 		    		
+		    		if (sLink == null || sLink.equals(""))
+		    		{
+		    			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    					this.getClass().getSimpleName() +
+		    					":mousePressed(): No pathway link is available for that coordinate. Do nothing.");
+
+		    			return;
+		    		}
+		    		
 		    		iPathwayLevel++;
 		    		if (iPathwayLevel >= 3)
 		    		{
