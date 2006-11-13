@@ -3,21 +3,19 @@ package cerberus.view.gui.opengl.canvas.pathway;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.util.HashMap;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
-import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.data.IPathwayManager;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
@@ -107,7 +105,6 @@ implements IGLCanvasUser {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
 				"GLCanvasPathway2D.setPathwayId(" +
 				iTargetPathwayId + ") done!");
-		
 	}
 	
 	public void update(GLAutoDrawable canvas) {
@@ -124,19 +121,37 @@ implements IGLCanvasUser {
 
 	public void createVertex(IPathwayVertexRep vertexRep) {
 
-		gl.glColor3f(0.0f, 1.0f, 0.0f);
+		Color tmpColor; 
+		tmpColor = refRenderStyle.getEnzymeNodeColor();
+		
+		gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
 		
 		float fCanvasXPos = viewingFrame[X][MIN] + 
 			vertexRep.getXPosition() * fScalingFactorX;
 		float fCanvasYPos = viewingFrame[Y][MIN] + 
 			vertexRep.getYPosition() * fScalingFactorY;
 		
-		gl.glRectf(fCanvasXPos - 0.07f, fCanvasYPos - 0.03f, 
-				fCanvasXPos + 0.07f, fCanvasYPos + 0.03f);
+		float fCanvasWidth = (vertexRep.getWidth()/2.0f) * fScalingFactorX;
+		float fCanvasHeight = (vertexRep.getHeight()/2.0f) * fScalingFactorY;
+		
+		gl.glRectf(fCanvasXPos - fCanvasWidth, 
+				fCanvasYPos - fCanvasHeight, 
+				fCanvasXPos + fCanvasWidth, 
+				fCanvasYPos + fCanvasHeight);
+	
+		// draw border
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
+		gl.glBegin(GL.GL_LINE_STRIP);						
+			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, 0.0f);					
+			gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, 0.0f);	
+			gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, 0.0f);
+			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, 0.0f);
+			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, 0.0f);			
+		gl.glEnd();	
 		
 		renderText(vertexRep.getName(), 
-				fCanvasXPos - 0.07f, 
-				fCanvasYPos - 0.03f, 
+				fCanvasXPos - fCanvasWidth, 
+				fCanvasYPos - fCanvasHeight, 
 				0.001f);
 	}
 	
@@ -169,10 +184,10 @@ implements IGLCanvasUser {
 		float fCanvasYPos2 = viewingFrame[Y][MIN] + 
 		vertexRep2.getYPosition() * fScalingFactorY;
 		
-		gl.glColor3f(0.0f, 1.0f, 0.0f);
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
 		gl.glBegin(GL.GL_LINES);						
-			gl.glVertex2d(fCanvasXPos1, fCanvasYPos1);					
-			gl.glVertex2d(fCanvasXPos2, fCanvasYPos2);					
+			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, 0.001f);
+			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, 0.001f);					
 		gl.glEnd();				
 	}
 	
@@ -200,7 +215,7 @@ implements IGLCanvasUser {
 		// gl.glTranslatef(0.0f,0.0f,-1.0f);
 
 		// Pulsing Colors Based On Text Position
-		gl.glColor3f(0.0f, 0.0f, 1.0f);
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
 
 		// Position The Text On The Screen...fullscreen goes much slower than
 		// the other
@@ -283,11 +298,11 @@ implements IGLCanvasUser {
 		
 		this.gl = gl;
 		
-		gl.glTranslatef( 0, 0, 0.01f);
+		gl.glTranslatef(0.0f, 0.0f, 0.01f);
 	
 		// Clearing window and set background to WHITE
-//		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);		
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);		
 		
 		refCurrentPathway = refGeneralManager.getSingelton().
 			getPathwayManager().getCurrentPathway();
