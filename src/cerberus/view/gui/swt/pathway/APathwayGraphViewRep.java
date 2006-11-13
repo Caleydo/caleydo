@@ -94,6 +94,7 @@ implements IPathwayGraphView {
 				refCurrentPathway = refGeneralManager.getSingelton().
 					getPathwayManager().getCurrentPathway();
 			}
+			
 			extractVertices();
 			extractEdges();
 

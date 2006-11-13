@@ -10,6 +10,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway2D;
+import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
@@ -56,8 +57,8 @@ implements ICommand {
 	public void doCommandPart() throws CerberusRuntimeException {
 		
 		GLCanvasPathway2D canvas = 
-			(GLCanvasPathway2D) openGLCanvasUser;
-				
+			(GLCanvasPathway2D) openGLCanvasUser;		
+		
 		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
 		canvas.setTargetPathwayId(iTargetPathwayId);
 	}

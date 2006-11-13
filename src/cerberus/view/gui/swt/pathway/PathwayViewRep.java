@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
@@ -38,7 +39,7 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
  */
 public class PathwayViewRep 
 extends AViewRep 
-implements IView {
+implements IView, IMediatorSender {
 	
 	protected Composite refSWTContainer;
 	

@@ -257,7 +257,7 @@ extends APathwayGraphViewRep {
 		    		{
 		    			refGeneralManager.getSingelton().getLoggerManager().logMsg(
 		    					this.getClass().getSimpleName() +
-		    					":mousePressed(): No pathway link is available for that coordinate. Do nothing.");
+		    					":mousePressed(): No pathway link is available for that clicked point. Click ignored.");
 
 		    			return;
 		    		}

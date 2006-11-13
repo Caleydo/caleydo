@@ -7,8 +7,7 @@ import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.data.IUniqueObject;
 
 public interface IGLCanvasUser
-extends IUniqueObject
-{
+extends IUniqueObject {
 
 	public abstract void link2GLCanvasDirector( IGLCanvasDirector parentView );
 

@@ -1,6 +1,10 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
-import java.util.Iterator;
+import gleem.linalg.Vec3f;
+import gleem.linalg.Vec4f;
+
+import java.awt.Dimension;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -9,33 +13,26 @@ import com.sun.opengl.util.GLUT;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
-import cerberus.data.pathway.element.PathwayReactionEdge;
-import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
-import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
+import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
-import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.data.IPathwayManager;
+import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
-import cerberus.view.gui.swt.pathway.IPathwayGraphView;
-import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.IPathwayElementManager;
+import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 
 /**
  * @author Marc Streit
  *
  */
-public class GLCanvasPathway2D 
-extends AGLCanvasUser_OriginRotation 
+public class GLCanvasPathway2D  
+extends APathwayGraphViewRep
 implements IGLCanvasUser {
 		  	 
 	private float [][] viewingFrame;
 	
 	protected float[][] fAspectRatio;
-	
-	Pathway refCurrentPathway;
 	
 	public static final int X = 0;
 	public static final int Y = 1;
@@ -48,20 +45,33 @@ implements IGLCanvasUser {
 	
 	protected int iVertexRepIndex = 0;
 
+	protected GLAutoDrawable canvas;
+	
+	protected IGLCanvasDirector openGLCanvasDirector;
+	
+	protected Vec3f origin;
+	
+	protected Vec4f rotation;
+	
+	protected GL gl;
+		
 	/**
 	 * Constructor
 	 * 
-	 * @param setGeneralManager
+	 * @param refGeneralManager
 	 */
-	public GLCanvasPathway2D( final IGeneralManager setGeneralManager,
+	public GLCanvasPathway2D( final IGeneralManager refGeneralManager,
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel ) {
+				
+		super(refGeneralManager, -1, iParentContainerId, "");
 		
-		super( setGeneralManager, 
-				iViewId,  
-				iParentContainerId, 
-				sLabel );
+		openGLCanvasDirector =
+			refGeneralManager.getSingelton().
+				getViewGLCanvasManager().getGLCanvasDirector( iParentContainerId );
+		
+		this.canvas = openGLCanvasDirector.getGLCanvas();
 		
 		viewingFrame = new float [2][2];
 		
@@ -100,162 +110,20 @@ implements IGLCanvasUser {
 		
 	}
 	
-	@Override
-	public void renderPart(GL gl)
-	{
-		gl.glTranslatef( 0, 0, 0.01f);
-	
-		displayPathway(gl);
-	}
-	
-	public void update(GLAutoDrawable canvas)
-	{
+	public void update(GLAutoDrawable canvas) {
+		
 		System.err.println(" GLCanvasPathway2D.update(GLCanvas canvas)");	
 //		
 //		createHistogram( iCurrentHistogramLength );
 	}
 
-	public void destroy()
-	{
+	public void destroy() {
+		
 		System.err.println(" GLCanvasPathway2D.destroy(GLCanvas canvas)");
 	}
 
-	public void displayPathway(GL gl) {
- 
-		// Clearing window and set background to WHITE
-//		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);		
-		
-		// Draw title
-		renderText(gl, refCurrentPathway.getTitle(), 0.0f, -1.0f, 0.0f);
-		
-		extractVertices(gl);
-		extractEdges(gl);
-	}
-	
-	protected void extractVertices(GL gl) {
-		
-	    Iterator<PathwayVertex> vertexIterator;
-	    PathwayVertex vertex;
-	    IPathwayVertexRep vertexRep;
-		
-        vertexIterator = refCurrentPathway.getVertexListIterator();
-        while (vertexIterator.hasNext())
-        {
-        	vertex = vertexIterator.next();
-        	vertexRep = vertex.getVertexRepByIndex(iVertexRepIndex);
+	public void createVertex(IPathwayVertexRep vertexRep) {
 
-        	if (vertexRep != null)
-        	{
-        		createVertex(gl, vertexRep);        	
-        	}
-        }   
-	}
-	
-	protected void extractEdges(GL gl) {
-		
-		// Process relation edges
-	    Iterator<PathwayRelationEdge> relationEdgeIterator;
-        relationEdgeIterator = refCurrentPathway.getRelationEdgeIterator();
-        while (relationEdgeIterator.hasNext())
-        {
-        	extractRelationEdges(gl, relationEdgeIterator.next()); 		
-        }
-		
-	    // Process reaction edges
-        PathwayReactionEdge reactionEdge;
-	    Iterator<PathwayVertex> vertexIterator;
-	    PathwayVertex vertex;
-		IPathwayElementManager pathwayElementManager = 
-			((IPathwayElementManager)refGeneralManager.getSingelton().
-				getPathwayElementManager());
-		
-        vertexIterator = refCurrentPathway.getVertexListIterator();
-	    
-	    while (vertexIterator.hasNext())
-	    {
-	    	vertex = vertexIterator.next();	   
-	
-	    	if (vertex.getVertexType() == PathwayVertexType.enzyme)
-	    	{	
-//	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
-	    		
-	    		reactionEdge = (PathwayReactionEdge)pathwayElementManager.getEdgeLUT().
-	    			get(pathwayElementManager.getReactionName2EdgeIdLUT().
-	    				get(vertex.getVertexReactionName()));
-	
-	    		// FIXME: problem with multiple reactions per enzyme
-	    		if (reactionEdge != null)
-	    		{
-	            	extractReactionEdges(gl, reactionEdge, vertex);
-	    		}// if (edge != null)
-	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
-	    }
-	}
-	
-	protected void extractRelationEdges(GL gl, PathwayRelationEdge relationEdge) {
-		
-		// Direct connection between nodes
-		if (relationEdge.getCompoundId() == -1)
-		{
-			createEdge(gl, relationEdge.getElementId1(), 
-					relationEdge.getElementId2(), 
-					false, 
-					relationEdge);
-		}
-		// Edge is routed over a compound
-		else 
-		{
-			createEdge(gl, relationEdge.getElementId1(), 
-					relationEdge.getCompoundId(), 
-					false, 
-					relationEdge);
-			
-			if (relationEdge.getEdgeRelationType() 
-					== EdgeRelationType.ECrel)
-			{
-    			createEdge(gl, relationEdge.getCompoundId(), 
-    					relationEdge.getElementId2(), 
-    					false,
-    					relationEdge);
-			}
-			else
-			{
-    			createEdge(gl, relationEdge.getElementId2(),
-    					relationEdge.getCompoundId(),
-    					true,
-    					relationEdge);
-			}
-
-		}
-	}
-	
-	protected void extractReactionEdges(GL gl, PathwayReactionEdge reactionEdge, 
-			PathwayVertex vertex) {
-		
-		if (!reactionEdge.getSubstrates().isEmpty())
-		{
-			//FIXME: interate over substrates and products
-			createEdge(gl,
-					reactionEdge.getSubstrates().get(0), 
-					vertex.getElementId(), 
-					false,
-					reactionEdge);	
-		}
-		
-		if (!reactionEdge.getProducts().isEmpty())
-		{
-			createEdge(gl,
-					vertex.getElementId(),
-					reactionEdge.getProducts().get(0), 
-					true,
-					reactionEdge);
-		}	  
-	}
-	
-	
-	protected void createVertex(GL gl, IPathwayVertexRep vertexRep) {
-		
 		gl.glColor3f(0.0f, 1.0f, 0.0f);
 		
 		float fCanvasXPos = viewingFrame[X][MIN] + 
@@ -266,15 +134,13 @@ implements IGLCanvasUser {
 		gl.glRectf(fCanvasXPos - 0.07f, fCanvasYPos - 0.03f, 
 				fCanvasXPos + 0.07f, fCanvasYPos + 0.03f);
 		
-		renderText(gl, 
-				vertexRep.getName(), 
+		renderText(vertexRep.getName(), 
 				fCanvasXPos - 0.07f, 
 				fCanvasYPos - 0.03f, 
 				0.001f);
-
 	}
 	
-	protected void createEdge(GL gl,
+	public void createEdge(
 			int iVertexId1, 
 			int iVertexId2, 
 			boolean bDrawArrow,
@@ -320,8 +186,7 @@ implements IGLCanvasUser {
 	 * @param fy
 	 * @param fz
 	 */
-	public void renderText( GL gl, 
-			final String showText,
+	public void renderText(final String showText,
 			final float fx, 
 			final float fy, 
 			final float fz ) {
@@ -350,5 +215,175 @@ implements IGLCanvasUser {
 		// and pick
 		// the GLUT font, then provide the string to show
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, showText);    
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.gui.opengl.IGLCanvasDirector)
+	 */
+	public final void link2GLCanvasDirector(IGLCanvasDirector parentView) {
+		
+		if ( openGLCanvasDirector == null ) {
+			openGLCanvasDirector = parentView;
+		}
+		
+		parentView.addGLCanvasUser( this );
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvasDirector()
+	 */
+	public final IGLCanvasDirector getGLCanvasDirector() {
+		
+		return openGLCanvasDirector;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvas()
+	 */
+	public final GLAutoDrawable getGLCanvas() {
+		
+		return canvas;
+	}
+	
+	public final void setOriginRotation( final Vec3f origin,	
+			final Vec4f rotation ) {
+		this.origin   = origin;
+		this.rotation = rotation;
+	}
+	
+	public final Vec3f getOrigin( ) {
+		return this.origin;
+	}
+	
+	public final Vec4f getRoation( ) {
+		return this.rotation;
+	}
+		
+	public final void render(GLAutoDrawable canvas)
+	{
+		GL gl = canvas.getGL();
+		
+		/* Clear The Screen And The Depth Buffer */
+		gl.glPushMatrix();
+
+		gl.glTranslatef( origin.x(), origin.y(), origin.z() );
+		gl.glRotatef( rotation.x(), 
+				rotation.y(),
+				rotation.z(),
+				rotation.w() );
+		
+		renderPart( gl );
+
+		gl.glPopMatrix();		
+		
+		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
+	}
+
+	public void renderPart(GL gl) {
+		
+		this.gl = gl;
+		
+		gl.glTranslatef( 0, 0, 0.01f);
+	
+		// Clearing window and set background to WHITE
+//		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);		
+		
+		refCurrentPathway = refGeneralManager.getSingelton().
+			getPathwayManager().getCurrentPathway();
+		
+		if (refCurrentPathway == null)
+		{
+			return;
+		}
+		
+		extractVertices();
+		extractEdges();
+			
+		finishGraphBuilding();
+	}
+
+	public void setPathwayId(int iPathwayId) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void loadPathwayFromFile(String sFilePath) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void loadImageMapFromFile(String sImagePath) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setNeighbourhoodDistance(int iNeighbourhoodDistance) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void zoomOrig() {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void zoomIn() {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void zoomOut() {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showOverviewMapInNewWindow(Dimension dim) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showBackgroundOverlay(boolean bTurnOn) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void finishGraphBuilding() {
+
+		// Draw title
+		renderText(refCurrentPathway.getTitle(), 0.0f, -1.0f, 0.0f);	
+	}
+
+	public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void resetPathway() {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void initView() {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
