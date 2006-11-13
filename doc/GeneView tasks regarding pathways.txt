@@ -1,0 +1,30 @@
+GeneView TASKS regarding pathway part
+=====================================
+
+- Further research to keep global view on topic
+- Implementing selections data structure (for pathways, heatmaps, scatterplots)
+- MIDI interface + Mixer ViewRep
+- Enyzme -> Gene mapping (request a special mapping from Mr. Asslaber)
+- Extend Date Explorer (PW list, view list, maybe also update structure)
+- New edge implementation to consider multiple connections
+- OpenGL pathway layers - including cross-references
+- Mouse over ("Hot-Spot") ?
+- Semantic-zoom (concept!)
+- WEKA integration of pathway data
+- Command Serialization (for exporting/saving and network app.)
+- New JGraph pathway layer view
+- OpenGL pathway update (e.g. on neighborhood visualization in JGraph pathway)
+- Connection of pathway nodes to foreign nodes (concept!)
+- ViewRep for creating new Sets/Storages (problem!)
+- Progress bar on application bootstrapping (sticky)
+- Improve OpenGL pathway view (style sheets, alignment, etc.)
+- Correct pathway neighborhood visualization (i.e. indirect connections)
+- Cone Tree concept (some kind of)
+- Search for Enzyme/Compound/Gene + highlighting
+- On mouse-over item highlighting (+ identical visible items)
+- Dendrogram data structure
+- Pathway image loading in OpenGL pathway view (TGA - with transparency)
+- Papers: When should we start? What can we publish? Where can I participate?
+- Meeting with LKH partners - find out useful pathway/heatmap scenario
+- Multiple monitor setup - including new input devices
+- Multiple work station setup
