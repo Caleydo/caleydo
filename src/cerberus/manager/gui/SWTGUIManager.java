@@ -94,11 +94,9 @@ implements ISWTGUIManager {
 		createLoadingProgressBar();
 	}
 
-	/**
-	 * Method cretes an unique window ID and calls createWindow(iUniqueId)
-	 * with the default layout (ROW VERTICAL).
-	 * 
-	 * @return Newly created shell.
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#createWindow()
 	 */
 	public Shell createWindow() {
 
@@ -109,11 +107,9 @@ implements ISWTGUIManager {
 		return createWindow(iUniqueId, "Cerberus", "ROW VERTICAL");
 	}
 
-	/**
-	 * Method takes a window ID and creates a shell using this ID.
-	 * Also the layout is set here.
-	 * 
-	 * @return Newly created shell.
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#createWindow(int, java.lang.String, java.lang.String)
 	 */
 	public Shell createWindow(int iUniqueId, String sLabel,
 			String sLayoutAttributes) {
@@ -134,9 +130,9 @@ implements ISWTGUIManager {
 		return refNewShell;
 	}
 
-	/**
-	 * Searches for the parent window in the map and 
-	 * creates a new composite in that window.
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#createComposite(int, int, java.lang.String)
 	 */
 	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
 			String refLayoutAttributes) {
@@ -154,33 +150,10 @@ implements ISWTGUIManager {
 		newComposite.setLayoutData(gridData);
 	}
 
-	public ISWTWidget createWidget(final ManagerObjectType useWidgetType) {
-
-		final int iUniqueId = this.createNewId(useWidgetType);
-		ASWTWidget newSWTWidget;
-
-		switch (useWidgetType)
-		{
-		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refComposite, -1, -1);
-			newSWTWidget.setId(iUniqueId);
-			refWidgetMap.add(newSWTWidget);
-			return newSWTWidget;
-		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(refComposite, -1, -1);
-			refWidgetMap.add(newSWTWidget);
-			return newSWTWidget;
-		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(refComposite, -1, -1);
-			refWidgetMap.add(newSWTWidget);
-			return newSWTWidget;
-		default:
-			throw new CerberusRuntimeException(
-					"StorageManagerSimple.createView() failed due to unhandled type ["
-							+ useWidgetType.toString() + "]");
-		}
-	}
-
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#createWidget(cerberus.manager.type.ManagerObjectType, int, int, int)
+	 */
 	public ISWTWidget createWidget(final ManagerObjectType useWidgetType,
 			int iUniqueParentContainerId, int iWidth, int iHeight) {
 
@@ -199,6 +172,10 @@ implements ISWTGUIManager {
 
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#createWidget(cerberus.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
+	 */
 	public ISWTWidget createWidget(final ManagerObjectType useWidgetType,
 			final Composite refExternalParentComposite, int iWidth, int iHeight) {
 
@@ -308,6 +285,10 @@ implements ISWTGUIManager {
 		return menuBar;
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#runApplication()
+	 */
 	public void runApplication() {
 
 		Iterator<Shell> shellIterator;
@@ -340,6 +321,10 @@ implements ISWTGUIManager {
 		refDisplay.dispose();
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.ISWTGUIManager#createLoadingProgressBar()
+	 */
 	public void createLoadingProgressBar() {
 		
 		refLoadingProgressBarWindow = new Shell(refDisplay);

@@ -48,8 +48,9 @@ implements IView
 	{
 		SWTNativeWidget refSWTNativeWidget = 
 			(SWTNativeWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_NATIVE_WIDGET);
-
+		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
+				iParentContainerId, -1, -1);
+		
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 

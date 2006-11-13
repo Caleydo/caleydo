@@ -77,7 +77,9 @@ implements IView, ISwtJoglContainerViewRep
 	{
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
 			(SWTEmbeddedJoglWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET);
+				.getSWTGUIManager().createWidget(
+						ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
+						iParentContainerId, -1, -1);
 
 		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
 		

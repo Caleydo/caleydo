@@ -88,15 +88,10 @@
   
 		<!-- Window 13331 -->
      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="13331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
-         
-		<!-- Container 13341 -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="50991" targetId="13341" label="swt container 1" 	parent="13331" attrib2="ROW VERTICAL" />
- 
- 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" 	cmdId="64991" targetId="14401" label="Progress Bar" 	parent="13341" attrib2="500 30" detail="30" />
-         
- 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="12401" parent="13341" label="Canvas" attrib2="500 300" detail="1177991"	/>
+                 
+ 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="23401" parent="13331" label="Canvas" attrib2="500 300" detail="1177991"	/>
  	  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY2D"		cmdId="69992"	targetId="79401" parent="12401" label="GL Pathway 2D" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY2D"		cmdId="69992"	targetId="79401" parent="23401" label="GL Pathway 2D" 
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="65101" /> 	    

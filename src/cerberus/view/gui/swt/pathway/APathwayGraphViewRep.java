@@ -3,12 +3,10 @@ package cerberus.view.gui.swt.pathway;
 import java.awt.Frame;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;

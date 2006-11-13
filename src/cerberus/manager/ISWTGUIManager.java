@@ -1,17 +1,13 @@
 package cerberus.manager;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.swt.ISWTWidget;
 
-public interface ISWTGUIManager extends IGeneralManager
-{	
-	public ISWTWidget createWidget(
-			final ManagerObjectType uswWidgetType);
+public interface ISWTGUIManager 
+extends IGeneralManager {
 	
 	public ISWTWidget createWidget(
 			final ManagerObjectType useWidgetType, 
@@ -25,13 +21,29 @@ public interface ISWTGUIManager extends IGeneralManager
 			int iWidth,
 			int iHeight);
 	
+	/**
+	 * Method cretes an unique window ID and calls createWindow(iUniqueId)
+	 * with the default layout (ROW VERTICAL).
+	 * 
+	 * @return Newly created shell.
+	 */
 	public Shell createWindow();
 	
+	/**
+	 * Method takes a window ID and creates a shell using this ID.
+	 * Also the layout is set here.
+	 * 
+	 * @return Newly created shell.
+	 */
 	public Shell createWindow(
 			int iUniqueId, 
 			String sLabel, 
 			String sLayoutAttributes);
 	
+	/**
+	 * Searches for the parent window and 
+	 * creates a new composite in that window.
+	 */
 	public void createComposite(
 			int iUniqueId, 
 			int iUniqueParentContainerId, 

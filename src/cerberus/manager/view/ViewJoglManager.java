@@ -242,7 +242,7 @@ implements IViewManager, IViewGLCanvasManager {
 					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
 		case VIEW_SWT_JOGL_MULTI_GLCANVAS:
 				return new SwtJoglGLCanvasViewRep(
-						this.refGeneralManager, iViewId, iParentContainerId, sLabel);
+					this.refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
 
 		default:
