@@ -2,9 +2,10 @@ GeneView TASKS regarding pathway part
 =====================================
 
 - ViewRep
-  - Extend Date Explorer (PW list, view list, maybe also update structure)
+  - Extend Date Explorer (pathway list, view list, maybe also update structure)
   - MIDI interface + Mixer ViewRep
-  - ViewRep for creating new Sets/Storages
+  - ViewRep for creating new Sets/Storages/Selections
+  - Drag & drop of data on view
     Problem: How to assign new data to views? How should view know what to do with data?
 
 - 2D PathwayViewer
@@ -19,6 +20,7 @@ GeneView TASKS regarding pathway part
   - Enyzme -> Gene mapping (request a special mapping from Mr. Asslaber)
   - New edge implementation to consider multiple connections
   - Search for Enzyme/Compound/Gene + highlighting
+  - Import SBML data
 
 - OpenGL pathways
   - Multiple pathway layer view - including cross-references
