@@ -6,7 +6,8 @@ GeneView TASKS regarding pathway part
   - MIDI interface + Mixer ViewRep
   - ViewRep for creating new Sets/Storages/Selections
   - Drag & drop of data on view
-    Problem: How to assign new data to views? How should view know what to do with data?
+  - Command implementation for each important ViewRep with key value pair for int
+  - New ViewRep for Patient information (table)
 
 - 2D PathwayViewer
   - Connection of pathway nodes to foreign nodes (concept!)
@@ -41,6 +42,7 @@ GeneView TASKS regarding pathway part
 - Others
   - Progress bar on application bootstrapping (sticky)
   - Command Serialization (for exporting/saving and network app.)
+  - Extending CommandManager with seperate UNDO stacks for data and view
   - Multiple work station setup
   - Multi-monitor setup - including new input devices
 
