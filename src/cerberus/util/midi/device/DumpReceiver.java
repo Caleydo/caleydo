@@ -79,11 +79,13 @@ public class DumpReceiver
 	private boolean			m_bDebug;
 	private boolean			m_bPrintTimeStampAsTicks;
 
-
+	private IMidiCallback callbackObject;
 
 	public DumpReceiver(PrintStream printStream, IMidiCallback callback )
 	{
 		this(printStream, true);
+		
+		callbackObject = callback;
 	}
 
 
@@ -238,6 +240,12 @@ public class DumpReceiver
 		}
 		smCount++;
 		smByteCount+=message.getLength();
+		
+		callbackObject.callbackSetValue(
+				data.toString(),
+				data.getValue(),
+				data.getControlId() );
+		
 		return "["+getHexString(message)+"] "+strMessage + " ==>" + data.toString();
 	}
 
@@ -247,7 +255,9 @@ public class DumpReceiver
 	{
 		byte[]	abData = message.getData();
 		String	strMessage = null;
-		// System.out.println("sysex status: " + message.getStatus());
+		
+		System.out.println("sysex status: " + message.getStatus());
+		
 		if (message.getStatus() == SysexMessage.SYSTEM_EXCLUSIVE)
 		{
 			strMessage = "Sysex message: F0" + getHexString(abData);
@@ -270,7 +280,9 @@ public class DumpReceiver
 		byte[]	abData = message.getData();
 		int	nDataLength = message.getLength();
 		String	strMessage = null;
-		// System.out.println("data array length: " + abData.length);
+		
+		System.out.println("data array length: " + abData.length);
+		
 		switch (message.getType())
 		{
 		case 0:

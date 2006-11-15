@@ -1,17 +1,31 @@
 package cerberus.util.midi.device;
 
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Hashtable;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
+import javax.sound.midi.SysexMessage;
+
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+
+
 
 import cerberus.util.midi.device.IMidiCallback;
+import cerberus.util.midi.device.data.MsgBuilder;
 
 /**	<titleabbrev>MidiConnector</titleabbrev>
 <title>Listens to a MIDI port of a fader and a foot pedal and store the received events.</title>
@@ -22,7 +36,7 @@ For the Sun J2SDK 1.3.x or 1.4.0, MIDI IN does not work. See the <olink targetdo
 </para></formalpara>
 
 */
-public class MidiConnector 
+public class MidiConnectorSwingSliders 
 	implements IMidiCallback {
 
 	/**	Flag for debugging messages.
@@ -42,11 +56,84 @@ public class MidiConnector
 	           		
 	private DumpReceiver midiReceiver;
 	
-	public MidiConnector() {
+	protected JFrame mainFrame;
+	protected JSlider [] sliderArray;
+	protected JCheckBox [] boxArray;
+	
+	protected final int iNumberSliders = 16;
+	
+	protected final int iNumberCheckBoxes = 16;
+	
+	protected final int iOffsetCheckBoxes = 100;
+	
+	protected Hashtable <Integer,Integer> hashMidiDeviceIdLoopupTable;
+	
+	private String [][] settingsArray;
+	
+	public MidiConnectorSwingSliders() {
+		
+		hashMidiDeviceIdLoopupTable = new Hashtable <Integer,Integer> ();
+
+		initMidiLookupTable();
+		
+		mainFrame = new JFrame();
+		mainFrame.setSize( 800, 300 );
+		mainFrame.setLayout( new BorderLayout() );
+		mainFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		
+		JPanel slidersPanel = new JPanel();
+		JPanel buttonsPanel = new JPanel();
+		
+		slidersPanel.setLayout( new FlowLayout() );
+		buttonsPanel.setLayout( new FlowLayout() );
+		
+		mainFrame.add( slidersPanel, BorderLayout.CENTER );
+		mainFrame.add( buttonsPanel, BorderLayout.NORTH );
+		
+		sliderArray = new JSlider [iNumberSliders];
+		boxArray = new JCheckBox[ iNumberCheckBoxes ];
+		
+		for ( int i=0; i < iNumberSliders; i++ )			
+		{
+			sliderArray[i] = new JSlider(JSlider.VERTICAL, 0, 127, 10);
+			
+			sliderArray[i].setPaintTicks( true );
+			sliderArray[i].setPaintLabels( true );
+			sliderArray[i].setVisible( true );			
+			
+			slidersPanel.add( sliderArray[i] );
+		}
+		
+
+		for ( int i=0; i < iNumberCheckBoxes; i++ )			
+		{
+			boxArray[i] = new JCheckBox( " #" + i ,false);
+								
+			buttonsPanel.add( boxArray[i] );
+		}
+		
+		
+		mainFrame.setVisible( true );
 		
 	}
 	
-	public MidiConnector( final int iSizeAllocationMidiDevices) {
+	protected void initMidiLookupTable() {
+		
+		hashMidiDeviceIdLoopupTable.put( 33, 0 );
+		hashMidiDeviceIdLoopupTable.put( 34, 1 );
+		hashMidiDeviceIdLoopupTable.put( 35, 2 );
+		hashMidiDeviceIdLoopupTable.put( 36, 3 );
+		hashMidiDeviceIdLoopupTable.put( 37, 4 );
+		hashMidiDeviceIdLoopupTable.put( 38, 5 );
+		
+		hashMidiDeviceIdLoopupTable.put( 70, 7 );
+		hashMidiDeviceIdLoopupTable.put( 71, 8 );
+		hashMidiDeviceIdLoopupTable.put( 72, 9 );
+		hashMidiDeviceIdLoopupTable.put( 76, 10 );
+		hashMidiDeviceIdLoopupTable.put( 7, 11 );
+	}
+	
+	public MidiConnectorSwingSliders( final int iSizeAllocationMidiDevices) {
 		this.allocateNumberOfMidiDevices( iSizeAllocationMidiDevices );
 	}
 
@@ -121,11 +208,11 @@ public class MidiConnector
 		MidiCommon.listDevicesAndExit(true, false, false);
 		MidiCommon.listDevicesAndExit(false, true, false);
 		
-		MidiConnector midiConnector= new MidiConnector();
+		MidiConnectorSwingSliders midiConnector= new MidiConnectorSwingSliders();
 		
 		midiConnector.allocateNumberOfMidiDevices( 2 );
 		
-		midiConnector.initMidiDeviceByName("BCF2000 [01]");
+		//midiConnector.initMidiDeviceByName("BCF2000 [01]");
 		midiConnector.initMidiDeviceByName("USB Audio Device");
 		
 		midiConnector.connect();
@@ -135,12 +222,31 @@ public class MidiConnector
 	}
 	
 	public void connect() {
+		
+		MidiDevice outMidi = null;
+		try
+		{
+			outMidi = MidiSystem.getMidiDevice( MidiCommon.getMidiDeviceInfo(2));
+			
+			for ( int i=0; i < 6; i++ ) 
+			{
+				writePresetToMididDevice( outMidi, i );
+			}
+			
+		} catch (MidiUnavailableException e1)
+		{
+			e1.printStackTrace();
+		}
+		
+		
 		try
 		{
 			for ( int i=0; i < iNumberActiveMidiDevices; i++) 
 			{
 				inputDevice[i] = MidiSystem.getMidiDevice(info[i]);
 				inputDevice[i].open();
+				
+				
 			}
 		}
 		catch (MidiUnavailableException e)
@@ -295,8 +401,72 @@ public class MidiConnector
 	}
 	
 
-	public void callbackSetValue( String value) {
-		out("set: " + value );		
+	public void callbackSetValue( String value, int iValue, int control) {
+		out("set: " + value );	
+		
+		Integer IntloopkupValue = (Integer) hashMidiDeviceIdLoopupTable.get( control );
+		
+		if ( IntloopkupValue != null ) {
+			
+			int iloopkupValue = IntloopkupValue.intValue();
+			
+			if ( iloopkupValue < iOffsetCheckBoxes )
+			{
+				sliderArray[ iloopkupValue ].setValue( 127 - iValue );
+			}
+			else
+			{
+				if ( iValue < 1 ) {
+					boxArray[ iloopkupValue - iOffsetCheckBoxes ].setEnabled( false );
+				}
+				else
+				{
+					boxArray[ iloopkupValue - iOffsetCheckBoxes ].setEnabled( true );					
+				}
+			}
+		}
+			
+	}
+	
+	public void writePresetToMididDevice( MidiDevice MidiOut, final int presetnumber) {
+		
+		if ( MidiOut == null ) {
+			return;
+		}
+		
+		SysexMessage sysexMessage = new SysexMessage();
+		
+		 try
+         {
+			 if ( ! MidiOut.isOpen() ) {
+				 MidiOut.open();
+			 }
+			 
+			 int id = 0;
+			 int model = 20;
+			 
+			 //int presetnumber = 3;
+			 
+             Receiver rx = MidiOut.getReceiver();
+             byte mmsg[] = MsgBuilder.selectPreset(id, model, presetnumber);
+             
+             sysexMessage.setMessage(mmsg, mmsg.length);
+             
+             rx.send(sysexMessage, -1L);
+         }
+         catch(MidiUnavailableException e)
+         {
+             System.out.println("Error: " + e.getMessage());
+         }
+         catch(IllegalStateException llegalStateEx)
+         {
+             System.out.println("Error: " + llegalStateEx.getMessage());
+         }
+         catch(InvalidMidiDataException invDataEx)
+         {
+             System.out.println("Error: " + invDataEx.getMessage());
+         }
+         
 	}
 
 }

@@ -9,5 +9,5 @@ package cerberus.util.midi.device;
  */
 public interface IMidiCallback {
 
-	public void callbackSetValue( String value );
+	public void callbackSetValue( String value, int control, int iValue );
 }

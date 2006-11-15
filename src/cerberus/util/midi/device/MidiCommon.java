@@ -106,6 +106,7 @@ public class MidiCommon
 	public static MidiDevice.Info getMidiDeviceInfo(String strDeviceName, boolean bForOutput)
 	{
 		MidiDevice.Info[]	aInfos = MidiSystem.getMidiDeviceInfo();
+		
 		for (int i = 0; i < aInfos.length; i++)
 		{
 			if (aInfos[i].getName().equals(strDeviceName))
