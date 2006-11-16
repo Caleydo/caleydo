@@ -2,6 +2,8 @@ package cerberus.util.midi.device;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -20,7 +22,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
+import javax.swing.JComboBox;
 
 
 
@@ -53,6 +57,8 @@ public class MidiConnectorSwingSliders
 	
 	protected MidiDevice.Info	info[];
 	protected MidiDevice 		inputDevice []; 	
+	
+	protected MidiDevice 		outMidi;
 	           		
 	private DumpReceiver midiReceiver;
 	
@@ -60,11 +66,17 @@ public class MidiConnectorSwingSliders
 	protected JSlider [] sliderArray;
 	protected JCheckBox [] boxArray;
 	
+	protected JRadioButton [] presetComboBox;
+	
 	protected final int iNumberSliders = 16;
 	
 	protected final int iNumberCheckBoxes = 16;
 	
+	protected final int iNumberPresets = 9;
+	
 	protected final int iOffsetCheckBoxes = 100;
+	
+	private int iLastPresetNumber = 0;
 	
 	protected Hashtable <Integer,Integer> hashMidiDeviceIdLoopupTable;
 	
@@ -83,15 +95,19 @@ public class MidiConnectorSwingSliders
 		
 		JPanel slidersPanel = new JPanel();
 		JPanel buttonsPanel = new JPanel();
+		JPanel presetPanel  = new JPanel();
+
 		
 		slidersPanel.setLayout( new FlowLayout() );
 		buttonsPanel.setLayout( new FlowLayout() );
 		
 		mainFrame.add( slidersPanel, BorderLayout.CENTER );
 		mainFrame.add( buttonsPanel, BorderLayout.NORTH );
+		mainFrame.add( presetPanel, BorderLayout.SOUTH );
 		
 		sliderArray = new JSlider [iNumberSliders];
 		boxArray = new JCheckBox[ iNumberCheckBoxes ];
+		presetComboBox = new JRadioButton [ iNumberPresets ];
 		
 		for ( int i=0; i < iNumberSliders; i++ )			
 		{
@@ -112,10 +128,19 @@ public class MidiConnectorSwingSliders
 			buttonsPanel.add( boxArray[i] );
 		}
 		
+		for ( int i=0; i < iNumberPresets; i++ )			
+		{
+			presetComboBox[i] = new JRadioButton( "#" + (i+1) );
+			presetComboBox[i].setToolTipText("write preset #" + (i+1) + " ti midi device");
+			presetComboBox[i].addActionListener(
+					new PresetActionListener(this, i)
+			);
+			presetPanel.add( presetComboBox[i] );
+		}
 		
 		mainFrame.setVisible( true );
 		
-	}
+	}		
 	
 	protected void initMidiLookupTable() {
 		
@@ -223,7 +248,7 @@ public class MidiConnectorSwingSliders
 	
 	public void connect() {
 		
-		MidiDevice outMidi = null;
+		//MidiDevice outMidi = null;
 		try
 		{
 			outMidi = MidiSystem.getMidiDevice( MidiCommon.getMidiDeviceInfo(2));
@@ -428,7 +453,19 @@ public class MidiConnectorSwingSliders
 			
 	}
 	
-	public void writePresetToMididDevice( MidiDevice MidiOut, final int presetnumber) {
+	public void writePresetToMidiDevice( final int presetnumber) {
+		
+		if ( presetnumber != iLastPresetNumber ) 
+		{
+			presetComboBox[ iLastPresetNumber ].setSelected( false );
+			iLastPresetNumber = presetnumber;
+		}
+		
+		writePresetToMididDevice( outMidi, presetnumber);
+	}
+	
+	
+	protected void writePresetToMididDevice( MidiDevice MidiOut, final int presetnumber) {
 		
 		if ( MidiOut == null ) {
 			return;
