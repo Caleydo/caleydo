@@ -21,9 +21,9 @@ import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
 import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.SelectionType;
 //import cerberus.data.collection.Storage;
-import cerberus.data.collection.selection.VirtualArraySingleBlock;
-import cerberus.data.collection.selection.VirtualArrayMultiBlock;
 import cerberus.data.collection.set.SetPlanarSimple;
+import cerberus.data.collection.virtualarray.VirtualArrayMultiBlock;
+import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 import cerberus.data.collection.IVirtualArray;
 
 

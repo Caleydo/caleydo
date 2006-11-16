@@ -33,7 +33,6 @@
 
 package cerberus.view.swing.status;
 
-import java.awt.Color;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -67,7 +66,7 @@ import javax.swing.event.ChangeEvent;
 //import prometheus.data.collection.storage.FlatThreadStorageSimple;
 //import prometheus.data.collection.selection.SelectionSingleBlock;
 
-import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 
 //import cerberus.view.swing.loader.FileLoader;
 

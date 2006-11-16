@@ -7,7 +7,7 @@
  *  
  */
 
-package cerberus.data.collection.selection.iterator;
+package cerberus.data.collection.virtualarray.iterator;
 
 import java.lang.ArrayIndexOutOfBoundsException;
 import cerberus.data.collection.iterator.ICollectionIterator;

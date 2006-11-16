@@ -3,7 +3,7 @@
  */
 package cerberus.math.statistics.histogram;
 
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;

@@ -30,7 +30,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
-import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 import cerberus.data.xml.IMementoXML;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenType;

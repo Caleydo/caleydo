@@ -42,7 +42,6 @@ import java.util.*;
 import javax.imageio.*;
 import javax.imageio.stream.*;
 import javax.swing.*;
-import javax.swing.SwingUtilities;
 
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
@@ -59,7 +58,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 
 import cerberus.view.swing.loader.FileLoader;
 

@@ -19,7 +19,7 @@ import com.sun.opengl.util.GLUT;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.math.statistics.histogram.HistogramData;

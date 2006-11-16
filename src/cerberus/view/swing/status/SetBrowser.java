@@ -61,8 +61,8 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.VirtualArraySingleBlock;
-import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 
 
 /**

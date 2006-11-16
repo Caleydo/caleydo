@@ -62,7 +62,7 @@ import javax.swing.*;
 //import prometheus.data.collection.storage.FlatThreadStorageSimple;
 //import prometheus.data.collection.selection.SelectionSingleBlock;
 
-import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 
 import cerberus.view.swing.loader.FileLoader;
 

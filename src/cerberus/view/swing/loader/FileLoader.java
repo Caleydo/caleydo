@@ -32,7 +32,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 
 
 /**

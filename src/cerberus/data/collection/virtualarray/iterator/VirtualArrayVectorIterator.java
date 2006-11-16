@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.data.collection.selection.iterator;
+package cerberus.data.collection.virtualarray.iterator;
 
 
 import java.util.Iterator;
@@ -10,8 +10,8 @@ import java.util.Vector;
 
 import cerberus.data.collection.IVirtualArray;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
-import cerberus.data.collection.selection.iterator.VirtualArrayNullIterator;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.VirtualArrayNullIterator;
 
 
 /**
@@ -58,7 +58,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * 
 	 * Note: must call begin() before using this iterator!
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
+	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param addSelection
 	 */
@@ -72,7 +72,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * Assign a hole Vector <IVirtualArray> to this iterator.
 	 * Note: begin() is called inside this methode.
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
+	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param addSelectionVector
 	 */
@@ -134,7 +134,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * 
 	 * @see cerberus.data.collection.iterator.ICollectionIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#addSelection(IVirtualArray)
+	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#addSelection(IVirtualArray)
 	 * 
 	 */
 	public void begin() {
@@ -154,7 +154,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * Get the next index.
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
+	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
 	 */
@@ -195,7 +195,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * 
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
+	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @see cerberus.data.collection.iterator.ICollectionIterator#hasNext()
 	 */

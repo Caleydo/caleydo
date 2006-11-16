@@ -17,9 +17,9 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISubSet;
 import cerberus.data.collection.IMetaDataHandler;
 import cerberus.data.collection.ICollection;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
-import cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator;
 import cerberus.data.collection.thread.ICollectionThreadObject;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
 import cerberus.data.xml.IMementoItemXML;
 
 /**

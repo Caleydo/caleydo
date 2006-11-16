@@ -37,7 +37,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.command.ICommand;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.VirtualArrayType;
-import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
 
 import cerberus.util.exception.CerberusRuntimeException;

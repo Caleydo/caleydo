@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.data.collection.selection;
+package cerberus.data.collection.virtualarray;
 
 import java.lang.NullPointerException;
 
@@ -17,10 +17,10 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.VirtualArrayType;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
-import cerberus.data.collection.selection.AVirtualArray;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
-import cerberus.data.collection.selection.iterator.VirtualArraySingleBlockIterator;
 import cerberus.data.collection.thread.lock.ICollectionLock;
+import cerberus.data.collection.virtualarray.AVirtualArray;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.VirtualArraySingleBlockIterator;
 import cerberus.data.xml.IMementoItemXML;
 
 /**

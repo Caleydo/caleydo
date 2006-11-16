@@ -6,8 +6,8 @@ package cerberus.math.statistics.minmax;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.set.SetMultiDim;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 /**
  * @author kalkusch

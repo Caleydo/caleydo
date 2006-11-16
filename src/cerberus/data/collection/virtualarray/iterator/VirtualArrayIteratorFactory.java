@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.data.collection.selection.iterator;
+package cerberus.data.collection.virtualarray.iterator;
 
 import cerberus.data.collection.IVirtualArray;
 //import prometheus.data.collection.SelectionType;

@@ -6,17 +6,17 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.data.collection.selection;
+package cerberus.data.collection.virtualarray;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.VirtualArrayType;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
-import cerberus.data.collection.selection.iterator.VirtualArrayMultiBlockIterator;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.thread.lock.ICollectionLock;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.VirtualArrayMultiBlockIterator;
 import cerberus.data.xml.IMementoItemXML;
 import cerberus.xml.parser.ISaxParserHandler;
 

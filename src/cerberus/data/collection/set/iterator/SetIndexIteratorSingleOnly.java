@@ -5,7 +5,7 @@ package cerberus.data.collection.set.iterator;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 /**
  * @author kalkusch

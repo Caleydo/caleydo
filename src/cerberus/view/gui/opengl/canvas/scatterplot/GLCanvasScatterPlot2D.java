@@ -13,7 +13,7 @@ import javax.media.opengl.GLAutoDrawable;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;

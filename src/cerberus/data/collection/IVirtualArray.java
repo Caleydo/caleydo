@@ -13,8 +13,8 @@ package cerberus.data.collection;
 import cerberus.data.collection.IMetaDataHandler;
 //import cerberus.data.collection.CollectionInterface;
 import cerberus.data.collection.VirtualArrayType;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.thread.ICollectionThreadObject;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.xml.IMementoItemXML;
 
 //import prometheus.util.exception.PrometheusVirtualArrayException;

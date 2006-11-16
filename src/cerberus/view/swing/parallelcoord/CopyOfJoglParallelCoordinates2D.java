@@ -36,7 +36,6 @@ package cerberus.view.swing.parallelcoord;
 
 import java.awt.geom.Point2D;
 import java.awt.*;
-import java.awt.Color;
 import java.awt.event.*;
 //import java.awt.image.*;
 import java.io.*;
@@ -70,8 +69,8 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.VirtualArraySingleBlock;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 import cerberus.view.manager.tester.CerberusFrameManager;
 

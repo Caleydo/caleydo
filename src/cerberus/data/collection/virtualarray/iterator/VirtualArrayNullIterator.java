@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.data.collection.selection.iterator;
+package cerberus.data.collection.virtualarray.iterator;
 
 import java.util.NoSuchElementException;
 

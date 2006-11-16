@@ -83,9 +83,9 @@ import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.Set;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
+import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 
 /**
  Wavelength-dependent refraction demo<br>

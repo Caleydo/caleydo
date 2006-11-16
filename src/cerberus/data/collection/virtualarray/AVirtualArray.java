@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.data.collection.selection;
+package cerberus.data.collection.virtualarray;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.EventPublisher;

@@ -19,11 +19,11 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
-import cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator;
 import cerberus.xml.parser.ISaxParserHandler;
-import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;
 import cerberus.data.collection.thread.lock.ICollectionLock;
+import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
 
 /**
  * @author Michael Kalkusch

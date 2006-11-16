@@ -35,8 +35,8 @@ import gleem.linalg.Vec3f;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
-import cerberus.data.collection.selection.iterator.VirtualArrayProxyIterator;
 import cerberus.data.collection.view.IViewCanvas;
+import cerberus.data.collection.virtualarray.iterator.VirtualArrayProxyIterator;
 import cerberus.data.collection.IStorage;
 import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;

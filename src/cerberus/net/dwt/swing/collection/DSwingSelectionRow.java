@@ -33,7 +33,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.command.ICommand;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.VirtualArrayType;
-import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 
 import cerberus.util.exception.CerberusRuntimeException;
 
