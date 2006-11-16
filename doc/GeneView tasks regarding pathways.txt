@@ -1,4 +1,4 @@
-GeneView TASKS regarding pathway part
+GenView TASKS regarding pathway part
 =====================================
 
 - ViewRep

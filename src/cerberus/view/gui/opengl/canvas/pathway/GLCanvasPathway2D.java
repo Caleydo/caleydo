@@ -5,20 +5,26 @@ import gleem.linalg.Vec4f;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
+import org.jgraph.graph.GraphConstants;
+
 import com.sun.opengl.util.GLUT;
 
 import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
+import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 
 /**
  * @author Marc Streit
@@ -121,18 +127,50 @@ implements IGLCanvasUser {
 
 	public void createVertex(IPathwayVertexRep vertexRep) {
 
-		Color tmpColor; 
-		tmpColor = refRenderStyle.getEnzymeNodeColor();
-		
-		gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
-		
 		float fCanvasXPos = viewingFrame[X][MIN] + 
 			vertexRep.getXPosition() * fScalingFactorX;
 		float fCanvasYPos = viewingFrame[Y][MIN] + 
 			vertexRep.getYPosition() * fScalingFactorY;
-		
+	
 		float fCanvasWidth = (vertexRep.getWidth()/2.0f) * fScalingFactorX;
 		float fCanvasHeight = (vertexRep.getHeight()/2.0f) * fScalingFactorY;
+		
+		Color tmpColor = new Color(0.0f, 0.0f, 0.0f); 
+	
+		String sShapeType = vertexRep.getShapeType();
+				
+		// Pathway link
+		if (sShapeType.equals("roundrectangle"))
+		{				
+//			renderText(vertexRep.getName(), 
+//					fCanvasXPos - fCanvasWidth + 0.02f, 
+//					fCanvasYPos + 0.02f, 
+//					-0.001f);
+			
+			tmpColor = Color.MAGENTA;
+			gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
+		}
+		// Compound
+		else if (sShapeType.equals("circle"))
+		{				
+//			renderText(vertexRep.getName(), 
+//					fCanvasXPos - 0.04f, 
+//					fCanvasYPos - fCanvasHeight, 
+//					-0.001f);
+
+			tmpColor = Color.GREEN;
+			gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
+		}	
+		// Enzyme
+		else if (sShapeType.equals("rectangle"))
+		{	
+//			renderText(vertexRep.getName(), 
+//					fCanvasXPos - fCanvasWidth + 0.02f, 
+//					fCanvasYPos + 0.02f, 
+//					-0.001f);
+		
+			gl.glColor3f(0.53f, 0.81f, 1.0f); // ligth blue
+		}
 		
 		gl.glRectf(fCanvasXPos - fCanvasWidth, 
 				fCanvasYPos - fCanvasHeight, 
@@ -148,11 +186,6 @@ implements IGLCanvasUser {
 			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, 0.0f);
 			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, 0.0f);			
 		gl.glEnd();	
-		
-		renderText(vertexRep.getName(), 
-				fCanvasXPos - fCanvasWidth, 
-				fCanvasYPos - fCanvasHeight, 
-				0.001f);
 	}
 	
 	public void createEdge(
@@ -184,7 +217,34 @@ implements IGLCanvasUser {
 		float fCanvasYPos2 = viewingFrame[Y][MIN] + 
 		vertexRep2.getYPosition() * fScalingFactorY;
 		
-		gl.glColor3f(0.0f, 0.0f, 0.0f);
+		Color tmpColor = new Color(1.0f, 1.0f, 1.0f);
+
+		// Differentiate between Relations and Reactions
+		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
+		{
+//			edgeLineStyle = refRenderStyle.getReactionEdgeLineStyle();
+//			edgeArrowHeadStyle = refRenderStyle.getReactionEdgeArrowHeadStyle();
+			tmpColor = refRenderStyle.getReactionEdgeColor();
+		}
+		else if (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+		{
+			// In case when relations are maplinks
+			if (((PathwayRelationEdge)refPathwayEdge).getEdgeRelationType() 
+					== EdgeRelationType.maplink)
+			{
+//				edgeLineStyle = refRenderStyle.getMaplinkEdgeLineStyle();
+//				edgeArrowHeadStyle = refRenderStyle.getMaplinkEdgeArrowHeadStyle();
+				tmpColor = refRenderStyle.getMaplinkEdgeColor();
+			}
+			else 
+			{
+//				edgeLineStyle = refRenderStyle.getRelationEdgeLineStyle();
+//				edgeArrowHeadStyle = refRenderStyle.getRelationEdgeArrowHeadStyle();
+				tmpColor = refRenderStyle.getRelationEdgeColor();
+			}
+		}
+		
+		gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
 		gl.glBegin(GL.GL_LINES);						
 			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, 0.001f);
 			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, 0.001f);					
@@ -224,7 +284,7 @@ implements IGLCanvasUser {
 		// and even in the 640x480 method it will be a bit blurry...oh well you
 		// can
 		// set it if you would like :)
-		gl.glRasterPos2f(fx - fFontSizeOffset, fy - fFontSizeOffset);
+		gl.glRasterPos3f(fx - fFontSizeOffset, fy - fFontSizeOffset, fz);
 
 		// Take a string and make it a bitmap, put it in the 'gl' passed over
 		// and pick
@@ -311,6 +371,16 @@ implements IGLCanvasUser {
 		{
 			return;
 		}
+		
+		// Draw pathway "sheet" border
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
+		gl.glBegin(GL.GL_LINE_STRIP);						
+			gl.glVertex3f(-1.0f, -1.0f, 0.0f);					
+			gl.glVertex3f(-1.0f, 1.0f, 0.0f);
+			gl.glVertex3f(1.8f, 1.0f, 0.0f);
+			gl.glVertex3f(1.8f, -1.0f, 0.0f);
+			gl.glVertex3f(-1.0f, -1.0f, 0.0f);
+		gl.glEnd();	
 		
 		extractVertices();
 		extractEdges();

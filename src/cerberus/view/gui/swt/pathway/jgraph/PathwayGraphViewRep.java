@@ -67,7 +67,7 @@ extends APathwayGraphViewRep {
 	 * The scaling factor can scale the positions to blow up or
 	 * shrink the pathway.
 	 */
-	protected static final float SCALING_FACTOR = 1.5f;
+	protected static final float SCALING_FACTOR = 1.0f;
 	
 	protected GraphModel refGraphModel;
 	
@@ -339,11 +339,12 @@ extends APathwayGraphViewRep {
 		AttributeMap changedMap = refGraphCell.getAttributes(); 
 			
 		String sShapeType = vertexRep.getShapeType();
+		
 		Rectangle2D vertexRect = new Rectangle2D.Double(
-				(int)(vertexRep.getXPosition() * fScalingFactor) - (vertexRep.getWidth() / 2), 
-				(int)(vertexRep.getYPosition() * fScalingFactor) - (vertexRep.getHeight() / 2), 
+				(int)((vertexRep.getXPosition() - (vertexRep.getWidth() / 2))  * fScalingFactor), 
+				(int)((vertexRep.getYPosition() - (vertexRep.getHeight() / 2))  * fScalingFactor), 
 				vertexRep.getWidth(), vertexRep.getHeight());
-				
+		
 		if (sShapeType.equals("roundrectangle"))
 		{				
 			// Set vertex type to round rect
@@ -351,31 +352,29 @@ extends APathwayGraphViewRep {
 					refGraphCell.getAttributes(), 
 					"cerberus.view.gui.swt.pathway.jgraph.JGraphMultilineView");
 //					"cerberus.view.gui.swt.pathway.jgraph.JGraphRoundRectView");
-
-			GraphConstants.setBounds(changedMap, vertexRect);
+ 
 			GraphConstants.setBackground(changedMap, Color.MAGENTA);
 		}
-
 		else if (sShapeType.equals("circle"))
 		{	
 			// Set vertex type to ellipse
 			GPCellViewFactory.setViewClass(
 					refGraphCell.getAttributes(), 
 					"cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView");
-			
+
 			if (!bBackgroundOverlaySet)
 			{	
 				GraphConstants.setAutoSize(changedMap, true);
 			}
 
-			GraphConstants.setBounds(changedMap, vertexRect);
 			GraphConstants.setBackground(changedMap, Color.green);
 		}	
 		else if (sShapeType.equals("rectangle"))
 		{	
-			GraphConstants.setBounds(changedMap, vertexRect); 
 			GraphConstants.setBackground(changedMap, new Color(0.53f, 0.81f, 1.0f)); // ligth blue
 		}
+
+		GraphConstants.setBounds(changedMap, vertexRect);
 		
 		// Some global attributes
 		GraphConstants.setOpaque(changedMap, true);
