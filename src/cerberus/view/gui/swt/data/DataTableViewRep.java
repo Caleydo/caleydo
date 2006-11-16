@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.manager.IGeneralManager;
@@ -43,7 +43,7 @@ implements IDataTableView {
 
 	protected IStorage refCurrentStorage;
 
-	protected ISelection refCurrentSelection;
+	protected IVirtualArray refCurrentSelection;
 
 	protected Table refTable;
 	
@@ -449,7 +449,7 @@ implements IDataTableView {
 	protected void updateData(TableItem refUpdatedItem, 
 			int iColumnIndexOfItem) {
 		
-		ISelection tmpSelection =
+		IVirtualArray tmpSelection =
 			refSelectionManager.getItemSelection(iCurrentlyRequestedCollectionId);
 		
 		tmpSelection.getWriteToken();

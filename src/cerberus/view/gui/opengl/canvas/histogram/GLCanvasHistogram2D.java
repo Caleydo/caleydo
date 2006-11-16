@@ -16,10 +16,10 @@ import com.sun.opengl.util.GLUT;
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.math.statistics.histogram.HistogramData;
@@ -241,10 +241,10 @@ implements IGLCanvasUser
 	  }
 	  
 	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
-	  ISelection refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
+	  IVirtualArray refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
   		  
 	  refGeneralManager.getSingelton().getLoggerManager().logMsg(
-			  "createHistogram() use ISelection(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
+			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
 			  LoggerType.FULL );
 	  
 	   

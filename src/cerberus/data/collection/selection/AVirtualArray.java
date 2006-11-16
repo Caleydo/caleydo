@@ -12,7 +12,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.IMetaData;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;
 import cerberus.data.collection.thread.lock.ICollectionLock;
 
@@ -22,9 +22,9 @@ import cerberus.data.collection.thread.lock.ICollectionLock;
  * 
  * @author Michael Kalkusch
  */
-public abstract class ASelection 
+public abstract class AVirtualArray 
 extends ACollectionThreadItem 
-implements ISelection {
+implements IVirtualArray {
 
 	/**
 	 * Defines the offset of the virtual array.
@@ -50,7 +50,7 @@ implements ISelection {
 	 * 
 	 * @param iSetCollectionId unique collectionId
 	 */
-	protected ASelection(final int iSetCollectionId,
+	protected AVirtualArray(final int iSetCollectionId,
 			final IGeneralManager setRefBaseManager,
 			final ICollectionLock setCollectionLock)
 	{
@@ -60,7 +60,7 @@ implements ISelection {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#length()
+	 * @see cerberus.data.collection.IVirtualArray#length()
 	 */
 	public final int length()
 	{
@@ -68,7 +68,7 @@ implements ISelection {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getOffset()
+	 * @see cerberus.data.collection.IVirtualArray#getOffset()
 	 */
 	public final int getOffset()
 	{
@@ -76,7 +76,7 @@ implements ISelection {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setOffset(int)
+	 * @see cerberus.data.collection.IVirtualArray#setOffset(int)
 	 */
 	public void setOffset(int iSetOffset)
 	{
@@ -87,7 +87,7 @@ implements ISelection {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setLength(int)
+	 * @see cerberus.data.collection.IVirtualArray#setLength(int)
 	 */
 	public void setLength(int iSetLength)
 	{

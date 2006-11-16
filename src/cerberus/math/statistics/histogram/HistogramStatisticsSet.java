@@ -3,10 +3,10 @@
  */
 package cerberus.math.statistics.histogram;
 
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 
 /**
@@ -18,7 +18,7 @@ extends HistogramStatisticInteger
 implements IHistogramStatistic {
 	
 	private ISet refSet = null;
-	private ISelection refSelection = null;
+	private IVirtualArray refSelection = null;
 	private IStorage refStorage = null;
 	
 	/**
@@ -83,7 +83,7 @@ implements IHistogramStatistic {
 			 
 			 float fBufferVariance = 0.0f;
 			
-			ISelectionIterator iter = refSelection.iterator();
+			IVirtualArrayIterator iter = refSelection.iterator();
 			
 			/**
 			 * Variance =  1/(n-1)* SUM_n( (fUseEstimate - data_Value )^2 )
@@ -148,7 +148,7 @@ implements IHistogramStatistic {
 		
 		iData = refStorage.getArrayInt();
 		
-		ISelectionIterator iter = this.refSelection.iterator();
+		IVirtualArrayIterator iter = this.refSelection.iterator();
 		
 		int iFirstIndex = iter.next();
 		

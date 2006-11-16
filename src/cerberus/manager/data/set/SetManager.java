@@ -19,7 +19,7 @@ import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 //import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetFlatSimple;
@@ -85,10 +85,10 @@ implements ISetManager {
 //		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet created with Id =[" +
 //				testSet.getId() +"]");
 //		
-//		ISelection getSelectionById = (ISelection) refGeneralManager.getItem( 15201 );
+//		IVirtualArray getSelectionById = (IVirtualArray) refGeneralManager.getItem( 15201 );
 //		IStorage getStorageById = (IStorage) refGeneralManager.getItem( 15301 );
 //		
-//		/* register ISelection & IStorage to ISet ... */
+//		/* register IVirtualArray & IStorage to ISet ... */
 //		testSet.setSelectionByDimAndIndex( getSelectionById, 0, 0 );
 //		testSet.setStorageByDimAndIndex( getStorageById, 0, 0 );
 //		

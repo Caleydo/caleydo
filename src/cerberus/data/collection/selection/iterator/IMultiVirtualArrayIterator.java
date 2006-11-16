@@ -11,54 +11,54 @@ package cerberus.data.collection.selection.iterator;
 
 import java.lang.ArrayIndexOutOfBoundsException;
 import cerberus.data.collection.iterator.ICollectionIterator;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 
 /**
  * Iterator handling several Selections at once.
  * 
  * @author Michael Kalkusch
  */
-public interface IMultiSelectionIterator
+public interface IMultiVirtualArrayIterator
 extends ICollectionIterator
 {
 
 	/**
-	 * Insertes a new ISelection to the iterator.
+	 * Insertes a new IVirtualArray to the iterator.
 	 * Note, that the same selection sould not be added to the iterator more than once,
 	 * becaus the iteration-process will be not as assumed.
 	 * 
-	 * @param addSelection adds a new ISelection
+	 * @param addSelection adds a new IVirtualArray
 	 */
-	public void addSelection( final ISelection addSelection );
+	public void addSelection( final IVirtualArray addSelection );
 	
 	/**
-	 * Adds a ISelection to a defined position iPosition.
+	 * Adds a IVirtualArray to a defined position iPosition.
 	 * Note: If any selection is already at position iPosition 
-	 * the ISelection is replaced by addSelection
+	 * the IVirtualArray is replaced by addSelection
 	 * 
 	 * @param addSelection object ot add
 	 * @param iPosition position in iterator
 	 */
-	public void addSelectionAt( final ISelection addSelection , final int iPosition );
+	public void addSelectionAt( final IVirtualArray addSelection , final int iPosition );
 	
 	/**
 	 * Get the selection used at a certain position.
 	 * 
 	 * @param iPosition index in the Iterator
-	 * @return ISelection bound to iPosition
+	 * @return IVirtualArray bound to iPosition
 	 * @throws ArrayIndexOutOfBoundsException if index does not fit
 	 */
-	public ISelection getSelectionAt( final int iPosition ) 
+	public IVirtualArray getSelectionAt( final int iPosition ) 
 		throws ArrayIndexOutOfBoundsException;
 	
 	/**
 	 * Get the total number of selections inside the iterator.
 	 * 
-	 * @return number of ISelection handled by iterator
+	 * @return number of IVirtualArray handled by iterator
 	 */
 	public int size();
 	
-	public void setIterationType( MultiSelectionIterationType setIteratorType );
+	public void setIterationType( MultiVirtualArrayIterationType setIteratorType );
 	
 	/**
 	 * Returns true is end has not been reached yet.

@@ -11,10 +11,10 @@ package cerberus.data.collection.selection;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.data.collection.ISelection;
-import cerberus.data.collection.SelectionType;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
-import cerberus.data.collection.selection.iterator.SelectionMultiBlockIterator;
+import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.VirtualArrayType;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.selection.iterator.VirtualArrayMultiBlockIterator;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.thread.lock.ICollectionLock;
 import cerberus.data.xml.IMementoItemXML;
@@ -26,9 +26,9 @@ import java.lang.StringBuffer;
  * @author Michael Kalkusch
  *
  */
-public class SelectionMultiBlock 
-extends ASelection 
-implements ISelection, IMementoItemXML, IMediatorSender
+public class VirtualArrayMultiBlock 
+extends AVirtualArray 
+implements IVirtualArray, IMementoItemXML, IMediatorSender
 {
 
 	protected int iMultiOffset = 0;
@@ -39,7 +39,7 @@ implements ISelection, IMementoItemXML, IMediatorSender
 	 * @param iSetCollectionId
 	 * @param setRefBaseManager
 	 */
-	public SelectionMultiBlock(int iSetCollectionId,
+	public VirtualArrayMultiBlock(int iSetCollectionId,
 			final IGeneralManager setRefBaseManager,
 			final ICollectionLock setCollectionLock)
 	{
@@ -47,15 +47,15 @@ implements ISelection, IMementoItemXML, IMediatorSender
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getSelectionType()
+	 * @see cerberus.data.collection.IVirtualArray#getSelectionType()
 	 */
-	public SelectionType getSelectionType()
+	public VirtualArrayType getSelectionType()
 	{
-		return SelectionType.SELECTION_MULTI_BLOCK;
+		return VirtualArrayType.SELECTION_MULTI_BLOCK;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getMultiRepeat()
+	 * @see cerberus.data.collection.IVirtualArray#getMultiRepeat()
 	 */
 	public int getMultiRepeat()
 	{
@@ -63,7 +63,7 @@ implements ISelection, IMementoItemXML, IMediatorSender
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getMultiOffset()
+	 * @see cerberus.data.collection.IVirtualArray#getMultiOffset()
 	 */
 	public int getMultiOffset()
 	{
@@ -71,7 +71,7 @@ implements ISelection, IMementoItemXML, IMediatorSender
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getIndexArray()
+	 * @see cerberus.data.collection.IVirtualArray#getIndexArray()
 	 */
 	public int[] getIndexArray()
 	{
@@ -112,7 +112,7 @@ implements ISelection, IMementoItemXML, IMediatorSender
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setMultiRepeat(int)
+	 * @see cerberus.data.collection.IVirtualArray#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize)
 	{
@@ -126,7 +126,7 @@ implements ISelection, IMementoItemXML, IMediatorSender
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setMultiOffset(int)
+	 * @see cerberus.data.collection.IVirtualArray#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize)
 	{
@@ -140,7 +140,7 @@ implements ISelection, IMementoItemXML, IMediatorSender
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setIndexArray(int[])
+	 * @see cerberus.data.collection.IVirtualArray#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray)
 	{
@@ -246,9 +246,9 @@ implements ISelection, IMementoItemXML, IMediatorSender
 		return this.iCacheId;
 	}
 
-	public ISelectionIterator iterator()
+	public IVirtualArrayIterator iterator()
 	{
-		return new SelectionMultiBlockIterator(this);
+		return new VirtualArrayMultiBlockIterator(this);
 	}
 
 }

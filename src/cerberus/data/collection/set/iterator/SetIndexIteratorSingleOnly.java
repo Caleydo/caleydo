@@ -4,8 +4,8 @@
 package cerberus.data.collection.set.iterator;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 
 /**
  * @author kalkusch
@@ -15,7 +15,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 
 	protected ISet refSet;
 	
-	protected ISelectionIterator selectIterator;
+	protected IVirtualArrayIterator selectIterator;
 	
 	/**
 	 * 
@@ -64,7 +64,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#nextSelection()
 	 */
-	public ISelection nextSelection() {
+	public IVirtualArray nextSelection() {
 		// TODO Auto-generated method stub
 		return null;
 	}

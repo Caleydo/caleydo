@@ -24,7 +24,7 @@ import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 //import cerberus.xml.parser.CerberusDefaultSaxHandler;
 
 import cerberus.manager.type.ManagerObjectType;
@@ -103,7 +103,7 @@ implements ICommand {
 		ISelectionManager refSelectionManager = 
 			refGeneralManager.getSingelton().getSelectionManager();
 		
-		ISelection newObject = (ISelection) refSelectionManager.createSelection(
+		IVirtualArray newObject = (IVirtualArray) refSelectionManager.createSelection(
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 		
 		newObject.setId( iUniqueTargetId );

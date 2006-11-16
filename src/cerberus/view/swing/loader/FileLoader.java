@@ -28,11 +28,11 @@ import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
 //import javax.swing.KeyStroke;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.SelectionSingleBlock;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
 
 
 /**
@@ -43,7 +43,7 @@ public class FileLoader {
 
 	protected ISet refSet;
 	
-	protected ISelection refSelection;
+	protected IVirtualArray refSelection;
 	
 	protected IStorage refStorage;
 	
@@ -79,7 +79,7 @@ public class FileLoader {
 		
 		refSet = new SetFlatSimple(1,regGeneralManager);
 		
-		refSelection = new SelectionSingleBlock(2,regGeneralManager,null);
+		refSelection = new VirtualArraySingleBlock(2,regGeneralManager,null);
 		
 		refStorage = new FlatThreadStorageSimple(3,regGeneralManager,null);
 		
@@ -159,7 +159,7 @@ public class FileLoader {
 		return this.refSet;
 	}
 	
-	public ISelection getSelection() {
+	public IVirtualArray getSelection() {
 		return this.refSelection;
 	}
 	
@@ -171,7 +171,7 @@ public class FileLoader {
 		this.refSet = setRefSet;
 	}
 	
-	public void setSelection( ISelection setRefSelection ) {
+	public void setSelection( IVirtualArray setRefSelection ) {
 		this.refSelection = setRefSelection;
 	}
 	

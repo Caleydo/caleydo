@@ -10,10 +10,10 @@ import javax.media.opengl.GLAutoDrawable;
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.set.SetMultiDim;
 import cerberus.manager.IGeneralManager;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
@@ -171,9 +171,9 @@ implements IGLCanvasUser
 						}
 						// System.out.print("+");				
 
-						ISelectionIterator iterX = targetSet.getSelectionByDimAndIndex(
+						IVirtualArrayIterator iterX = targetSet.getSelectionByDimAndIndex(
 								0, 0).iterator();
-						ISelectionIterator iterY = targetSet.getSelectionByDimAndIndex(
+						IVirtualArrayIterator iterY = targetSet.getSelectionByDimAndIndex(
 								1, 0).iterator();
 
 						if (!doMinMaxData.isValid()) {

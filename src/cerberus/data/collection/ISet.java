@@ -17,8 +17,8 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISubSet;
 import cerberus.data.collection.IMetaDataHandler;
 import cerberus.data.collection.ICollection;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
-import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator;
 import cerberus.data.collection.thread.ICollectionThreadObject;
 import cerberus.data.xml.IMementoItemXML;
 
@@ -37,39 +37,39 @@ public interface ISet
 {
 	
 	/**
-	 * Adds a ISelection to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other ISelection
+	 * Adds a IVirtualArray to a specific dimension.
+	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
 	 * 
 	 * @param addSelection
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 	 * 
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDim( final ISelection[] addSelection, 
+	public boolean setSelectionByDim( final IVirtualArray[] addSelection, 
 			final int iAtDimension );
 	
 	/**
-	 * Adds a ISelection to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other ISelection
+	 * Adds a IVirtualArray to a specific dimension.
+	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
 	 * 
 	 * @param addSelection
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 	 * 
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDim( final Vector<ISelection> addSelection, 
+	public boolean setSelectionByDim( final Vector<IVirtualArray> addSelection, 
 			final int iAtDimension );
 	
 	/**
-	 * Adds a ISelection to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other ISelection
+	 * Adds a IVirtualArray to a specific dimension.
+	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
 	 * 
-	 * @param addSelection ISelection to be added
+	 * @param addSelection IVirtualArray to be added
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
-	 * @param iAtIndex index to put new ISelection to
+	 * @param iAtIndex index to put new IVirtualArray to
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDimAndIndex( final ISelection addSelection, 
+	public boolean setSelectionByDimAndIndex( final IVirtualArray addSelection, 
 			final int iAtDimension, 
 			final int iAtIndex );
 	
@@ -77,21 +77,21 @@ public interface ISet
 	/**
 	 * Removes a selection bound to a dimension.
 	 * 
-	 * @param removeSelection ISelection to be removed
+	 * @param removeSelection IVirtualArray to be removed
 	 * @param iFromDimension address which dimension removeSelection shall be removed from, range [0.. getDimensionSize()-1 ]
 	 * @return TRUE if removeSelection was removed from dimension iFromDimension
 	 */
-	public boolean removeSelection( final ISelection[] removeSelection, 
+	public boolean removeSelection( final IVirtualArray[] removeSelection, 
 			final int iFromDimension );
 	
 	/**
 	 * Tests, if testSelection is in a specific dimension addressed by iAtDimension.
 	 * 
-	 * @param testSelection ISelection to search for
+	 * @param testSelection IVirtualArray to search for
 	 * @param iAtDimension address a dimension
 	 * @return TRUE if the testSelection is used for dimension iAtDimension
 	 */
-	public boolean hasSelection( final ISelection testSelection, 
+	public boolean hasSelection( final IVirtualArray testSelection, 
 			final int iAtDimension );
 	
 	/**
@@ -100,7 +100,7 @@ public interface ISet
 	 * @param testSelection in any dimension of this set
 	 * @return TRUE if testSelection was in any dimension
 	 */
-	public boolean hasSelectionInSet( final ISelection testSelection );
+	public boolean hasSelectionInSet( final IVirtualArray testSelection );
 	
 	
 	/**
@@ -165,12 +165,12 @@ public interface ISet
 			final int iAtIndex );
 	
 	/**
-	 * Get an Iterator containin all ISelection's used in this ISet.
+	 * Get an Iterator containin all IVirtualArray's used in this ISet.
 	 * 
 	 * @param iAtDimension requested dimension
-	 * @return iterator for ISelection's
+	 * @return iterator for IVirtualArray's
 	 */	
-	public ISelectionIterator iteratorSelectionByDim( final int iAtDimension );
+	public IVirtualArrayIterator iteratorSelectionByDim( final int iAtDimension );
 
 	/**
 	 * Get an Iterator for all IStorage used in this ISet.
@@ -191,11 +191,11 @@ public interface ISet
 	
 	public IStorage getStorageByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
-	public ISelection[] getSelectionByDim( final int iAtDimension );
+	public IVirtualArray[] getSelectionByDim( final int iAtDimension );
 	
-	public Vector<ISelection> getSelectionVectorByDim( final int iAtDimension );
+	public Vector<IVirtualArray> getSelectionVectorByDim( final int iAtDimension );
 	
-	public ISelection getSelectionByDimAndIndex( final int iAtDimension, final int iAtIndex );
+	public IVirtualArray getSelectionByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
 	/**
 	 * Test if cache has changed without reevaluating the stats of the cildren.
@@ -208,34 +208,34 @@ public interface ISet
 	
 /////////////////////////////
 //	/**
-//	 * Adds a ISelection to a specific dimension.
-//	 * Note, that addSelection() can not overwrite existing references to other ISelection
+//	 * Adds a IVirtualArray to a specific dimension.
+//	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
 //	 * 
 //	 * @param addSelection
 //	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 //	 * @return TRUE if adding was successful
 //	 */
-//	public boolean setSelectionByDim( final ISelection[] addSelection, 
+//	public boolean setSelectionByDim( final IVirtualArray[] addSelection, 
 //			final int iAtDimension );
 //	
 //	/**
 //	 * Removes a selection bound to a dimension.
 //	 * 
-//	 * @param removeSelection ISelection to be removed
+//	 * @param removeSelection IVirtualArray to be removed
 //	 * @param iFromDimension address which dimension removeSelection shall be removed from, range [0.. getDimensionSize()-1 ]
 //	 * @return TRUE if removeSelection was removed from dimension iFromDimension
 //	 */
-//	public boolean removeSelectionByDim( final ISelection[] removeSelection, 
+//	public boolean removeSelectionByDim( final IVirtualArray[] removeSelection, 
 //			final int iFromDimension );
 //	
 //	/**
 //	 * Tests, if testSelection is in a specific dimension addressed by iAtDimension.
 //	 * 
-//	 * @param testSelection ISelection to search for
+//	 * @param testSelection IVirtualArray to search for
 //	 * @param iAtDimension address a dimension
 //	 * @return TRUE if the testSelection is used for dimension iAtDimension
 //	 */
-//	public boolean hasSelection( final ISelection testSelection, 
+//	public boolean hasSelection( final IVirtualArray testSelection, 
 //			final int iAtDimension );
 //	
 //	/**
@@ -244,7 +244,7 @@ public interface ISet
 //	 * @param testSelection in any dimension of this set
 //	 * @return TRUE if testSelection was in any dimension
 //	 */
-//	public boolean hasSelectionInSet( final ISelection testSelection );
+//	public boolean hasSelectionInSet( final IVirtualArray testSelection );
 //	
 //	
 //	/**
@@ -266,9 +266,9 @@ public interface ISet
 //	
 //	/**
 //	 * Get the number of dimensions used in this set. 
-//	 * The number of dimension is identicto the number of stored ISelection's.
+//	 * The number of dimension is identicto the number of stored IVirtualArray's.
 //	 * 
-//	 * @return total number of dimensions, which is equal to the total nubmer of handled ISelection's
+//	 * @return total number of dimensions, which is equal to the total nubmer of handled IVirtualArray's
 //	 */
 //	public int getDimensions();
 //	
@@ -295,6 +295,6 @@ public interface ISet
 //	 */
 //	public IStorage[] getStorageByDim( final int iDimension );
 //	
-//	public ISelection[] getSelectionByDim( final int iDimension );
+//	public IVirtualArray[] getSelectionByDim( final int iDimension );
 	
 }

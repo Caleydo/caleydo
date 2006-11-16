@@ -67,7 +67,7 @@ import javax.swing.event.ChangeEvent;
 //import prometheus.data.collection.storage.FlatThreadStorageSimple;
 //import prometheus.data.collection.selection.SelectionSingleBlock;
 
-import cerberus.data.collection.selection.SelectionThreadSingleBlock;
+import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
 
 //import cerberus.view.swing.loader.FileLoader;
 
@@ -121,7 +121,7 @@ public class SelectionSliderBrowser {
 
 	private JInternalFrame refParentInternalFrame = null;
 
-	private SelectionThreadSingleBlock refSelection;
+	private VirtualArrayThreadSingleBlock refSelection;
 
 	//public FileLoader loader;
 
@@ -386,7 +386,7 @@ public class SelectionSliderBrowser {
 		//loader.load();
 	}
 
-	public void setSelection(SelectionThreadSingleBlock setRefSelection) {
+	public void setSelection(VirtualArrayThreadSingleBlock setRefSelection) {
 		refSelection = setRefSelection;
 	}
 

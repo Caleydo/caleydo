@@ -8,48 +8,48 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
-import cerberus.data.collection.selection.iterator.SelectionNullIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.selection.iterator.VirtualArrayNullIterator;
 
 
 /**
- * Iterator for a several ISelection.
+ * Iterator for a several IVirtualArray.
  * 
  * @author kalkusch
  *
  */
-public class SelectionVectorIterator implements ISelectionIterator {
+public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 
 	/**
 	 * Vector storing all Selections.
 	 */
-	private Vector <ISelection> vecSelection;
+	private Vector <IVirtualArray> vecSelection;
 	
 	/**
-	 * Define curretn ISelection in Vector vecSelection
+	 * Define curretn IVirtualArray in Vector vecSelection
 	 */
 	private int iCurrentSelection = 0;
 	
 	/**
 	 * Current iterator.
-	 * It is bound to the ISelection at vecSelection.get(iCurrentSelection)
+	 * It is bound to the IVirtualArray at vecSelection.get(iCurrentSelection)
 	 */
-	private ISelectionIterator iterator;
+	private IVirtualArrayIterator iterator;
 	
 	/**
 	 * Iterator for Vector vecSelection
 	 */
-	private Iterator <ISelection> iteratorSelection;
+	private Iterator <IVirtualArray> iteratorSelection;
 	
 	
 	
 	/**
 	 * 
 	 */
-	public SelectionVectorIterator() {
-		vecSelection = new Vector <ISelection> (3);
+	public VirtualArrayVectorIterator() {
+		vecSelection = new Vector <IVirtualArray> (3);
 		
 		begin();
 	}
@@ -58,34 +58,34 @@ public class SelectionVectorIterator implements ISelectionIterator {
 	 * 
 	 * Note: must call begin() before using this iterator!
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
+	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param addSelection
 	 */
-	public void addSelection( final ISelection addSelection) {
+	public void addSelection( final IVirtualArray addSelection) {
 		if ( ! vecSelection.contains( addSelection ) ) {
 			vecSelection.addElement( addSelection );
 		}
 	}
 	
 	/**
-	 * Assign a hole Vector <ISelection> to this iterator.
+	 * Assign a hole Vector <IVirtualArray> to this iterator.
 	 * Note: begin() is called inside this methode.
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
+	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param addSelectionVector
 	 */
-	public void addSelectionVector( final Vector <ISelection> addSelectionVector) {
+	public void addSelectionVector( final Vector <IVirtualArray> addSelectionVector) {
 		vecSelection = addSelectionVector;
 		begin();
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#size()
+	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#size()
 	 */
 	public int size() {
-		Iterator <ISelection> iter = vecSelection.iterator();
+		Iterator <IVirtualArray> iter = vecSelection.iterator();
 
 		int iSize = 0;
 		
@@ -97,7 +97,7 @@ public class SelectionVectorIterator implements ISelectionIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#remaining()
+	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#remaining()
 	 */
 	public int remaining() {
 		
@@ -114,14 +114,14 @@ public class SelectionVectorIterator implements ISelectionIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#getVirtualIndex()
+	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#getVirtualIndex()
 	 */
 	public int getVirtualIndex() {
 		return iterator.getVirtualIndex();		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.ISelectionIterator#setVirtualIndex(int)
+	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(final int iSetVirtualIndex)
 			throws CerberusRuntimeException {
@@ -134,7 +134,7 @@ public class SelectionVectorIterator implements ISelectionIterator {
 	 * 
 	 * @see cerberus.data.collection.iterator.ICollectionIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#addSelection(ISelection)
+	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#addSelection(IVirtualArray)
 	 * 
 	 */
 	public void begin() {
@@ -143,7 +143,7 @@ public class SelectionVectorIterator implements ISelectionIterator {
 		iteratorSelection = vecSelection.iterator();
 		
 		if ( vecSelection.isEmpty() ) {
-			iterator = new SelectionNullIterator();
+			iterator = new VirtualArrayNullIterator();
 			return;
 		}
 		
@@ -154,7 +154,7 @@ public class SelectionVectorIterator implements ISelectionIterator {
 	 * Get the next index.
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
+	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
 	 */
@@ -188,14 +188,14 @@ public class SelectionVectorIterator implements ISelectionIterator {
 		
 
 	/**
-	 * Returns true, if the current ISelection has mor elements, or if 
+	 * Returns true, if the current IVirtualArray has mor elements, or if 
 	 * there are any other Selections left, that have mor elements.
 	 * If the crrent selection does not have any more elements a new
-	 * iterator from the next ISelection is created unde the hood.
+	 * iterator from the next IVirtualArray is created unde the hood.
 	 * 
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.selection.iterator.SelectionVectorIterator#begin()
+	 * @see cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @see cerberus.data.collection.iterator.ICollectionIterator#hasNext()
 	 */
@@ -215,7 +215,7 @@ public class SelectionVectorIterator implements ISelectionIterator {
 			
 			if ( iterator.hasNext() ) {
 				/*
-				 * found an non-empty ISelection..
+				 * found an non-empty IVirtualArray..
 				 */
 				return true;
 			}

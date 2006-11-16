@@ -243,7 +243,7 @@ implements IUniqueManagedObject {
 		selectionPanel.updateState();
 		
 		DInternalFrame bufferNewIFrameA = 
-			createDInternalFrame( "ISelection GUI" );
+			createDInternalFrame( "IVirtualArray GUI" );
 		
 		bufferNewIFrameA.add( selectionPanel );
 		bufferNewIFrameA.pack();
@@ -391,7 +391,7 @@ implements IUniqueManagedObject {
 //				true, refCommandManager.createCommand( CommandType.WINDOW_IFRAME_OPEN_SET ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_SELECTION",
-				"ISelection..",
+				"IVirtualArray..",
 				"Edit selection",
 				'*',
 				"SYSTEM_EDIT",

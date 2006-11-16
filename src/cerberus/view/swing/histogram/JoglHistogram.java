@@ -80,7 +80,7 @@ import demos.util.Time;
 
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 //import cerberus.data.collection.set.SetFlatSimple;
@@ -271,9 +271,9 @@ public class JoglHistogram extends Demo {
   public void createHistogram(final int iHistogramLevels) {
 	  
 	  IStorage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
-	  ISelection refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
+	  IVirtualArray refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
   	
-	  System.out.println("Histogram: use ISelection(" +
+	  System.out.println("Histogram: use IVirtualArray(" +
 			  refBufferSelection.getLabel() + ")");
 	  
 	   

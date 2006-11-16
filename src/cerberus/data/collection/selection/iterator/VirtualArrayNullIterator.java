@@ -13,12 +13,12 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author kalkusch
  *
  */
-public final class SelectionNullIterator implements ISelectionIterator {
+public final class VirtualArrayNullIterator implements IVirtualArrayIterator {
 
 	/**
 	 * 
 	 */
-	public SelectionNullIterator() {
+	public VirtualArrayNullIterator() {
 		
 	}
 

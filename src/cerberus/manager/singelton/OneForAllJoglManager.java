@@ -87,7 +87,7 @@ implements IGeneralManagerSingelton {
 	 */
 	protected ManagerObjectType setCurrentType = ManagerObjectType.ALL_IN_ONE;
 	
-//	protected SelectionType initSelectionType;
+//	protected VirtualArrayType initSelectionType;
 //	
 //	protected SetType 		initSetType;
 //	

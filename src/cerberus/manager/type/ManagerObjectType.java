@@ -49,7 +49,7 @@ public enum ManagerObjectType {
 	SELECTION_RANDOM_BLOCK(ManagerType.SELECTION),
 	
 	/**
-	 * Load a microarray dataset. Is defined as ISelection, because 
+	 * Load a microarray dataset. Is defined as IVirtualArray, because 
 	 * all storage decives are loaded prior.
 	 */
 	SELECTION_LOAD_MICROARRAY(ManagerType.SELECTION),

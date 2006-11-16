@@ -61,13 +61,13 @@ import gleem.*;
 import gleem.linalg.*;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.SelectionSingleBlock;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.math.statistics.histogram.HistogramData;
@@ -389,9 +389,9 @@ public class JoglScatterPlot2D extends Demo {
 					}
 					// System.out.print("+");				
 
-					ISelectionIterator iterX = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterX = refSet.getSelectionByDimAndIndex(
 							0, 0).iterator();
-					ISelectionIterator iterY = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterY = refSet.getSelectionByDimAndIndex(
 							1, 0).iterator();
 
 					if (!doMinMaxData.isValid()) {

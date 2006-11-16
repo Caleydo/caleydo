@@ -4,7 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 
@@ -27,7 +27,7 @@ extends ASliderViewRep {
 		
 		super.initView();
 		
-		ISelection tmpSelection =
+		IVirtualArray tmpSelection =
 			refGeneralManager.getSingelton().getSelectionManager()
 				.getItemSelection(iSelectionId);
 		
@@ -50,7 +50,7 @@ extends ASliderViewRep {
 		
 	    refSlider.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event event) {
-				ISelection tmpSelection =
+				IVirtualArray tmpSelection =
 					refGeneralManager.getSingelton().getSelectionManager()
 						.getItemSelection(iSelectionId);
 				
@@ -95,28 +95,28 @@ extends ASliderViewRep {
 	// TODO: retrieve locking token!
 	public void update(Object eventTrigger) {
 		
-		int triggerId = ((ISelection)eventTrigger).getId();	
+		int triggerId = ((IVirtualArray)eventTrigger).getId();	
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"Slider update called by " +triggerId,
 				LoggerType.VERBOSE );
 		
-		if (eventTrigger instanceof ISelection)
+		if (eventTrigger instanceof IVirtualArray)
 		{	
 			if (sSelectionFieldName.equals("length"))
 			{
-				iCurrentSliderValue = ((ISelection)eventTrigger).length();
+				iCurrentSliderValue = ((IVirtualArray)eventTrigger).length();
 			}
 			else if (sSelectionFieldName.equals("offset"))
 			{
-				iCurrentSliderValue = ((ISelection)eventTrigger).getOffset();
+				iCurrentSliderValue = ((IVirtualArray)eventTrigger).getOffset();
 			}
 			else if (sSelectionFieldName.equals("multioffset"))
 			{
-				iCurrentSliderValue = ((ISelection)eventTrigger).getMultiOffset();
+				iCurrentSliderValue = ((IVirtualArray)eventTrigger).getMultiOffset();
 			}
 			else if (sSelectionFieldName.equals("multirepeat"))
 			{
-				iCurrentSliderValue = ((ISelection)eventTrigger).getMultiRepeat();
+				iCurrentSliderValue = ((IVirtualArray)eventTrigger).getMultiRepeat();
 			}
 			
 			drawView();

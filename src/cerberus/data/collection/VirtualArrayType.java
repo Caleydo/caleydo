@@ -17,11 +17,11 @@ import cerberus.data.collection.ICollectionType;
  *
  * @see prometheus.data.set.SelectionInterface
  */
-public enum SelectionType 
+public enum VirtualArrayType 
 implements ICollectionType {
 
 	SELECTION_ABSTRACT(false,
-			"Abstract ISelection, that has not been instaniated"),
+			"Abstract IVirtualArray, that has not been instaniated"),
 	
 	// --- instanitated Virtual Array's ---
 	SELECTION_SINGLE_BLOCK(true,
@@ -43,7 +43,7 @@ implements ICollectionType {
 	
 	
 	/**
-	 * Brief description, what the ISelection does.
+	 * Brief description, what the IVirtualArray does.
 	 */
 	private final String sDescription;
 	
@@ -57,7 +57,7 @@ implements ICollectionType {
 	 * 
 	 * @param sSetDescription
 	 */
-	private SelectionType(final boolean bSetDataType, 
+	private VirtualArrayType(final boolean bSetDataType, 
 			final String sSetDescription) {
 		sDescription = sSetDescription;
 		bIsDataType = bSetDataType;
@@ -77,13 +77,13 @@ implements ICollectionType {
 	}
 	
 	/**
-	 * Convertion of a String to a SelectionType including abstract types.
-	 * All known types are converted to a SelectionType.
+	 * Convertion of a String to a VirtualArrayType including abstract types.
+	 * All known types are converted to a VirtualArrayType.
 	 * 
 	 * @param fromString input String
-	 * @return SelectionType parsed form String
+	 * @return VirtualArrayType parsed form String
 	 */
-	public final static SelectionType getTypeAll( final String fromString ) {
+	public final static VirtualArrayType getTypeAll( final String fromString ) {
 		
 		if ( fromString.equalsIgnoreCase( "SELECTION_SINGLE_BLOCK" ) ) 
 			return SELECTION_SINGLE_BLOCK;
@@ -106,7 +106,7 @@ implements ICollectionType {
 	
 	
 	/**
-	 * Convertion of a String to a SelectionType excluding abstract type.
+	 * Convertion of a String to a VirtualArrayType excluding abstract type.
 	 * 
 	 * Note: The following parameters are mapped to SELECTION_ABSTRACT:
 	 *  
@@ -116,9 +116,9 @@ implements ICollectionType {
 	 * SELECTION_NEW_TYPE
 	 * 
 	 * @param fromString input String
-	 * @return SelectionType parsed form String
+	 * @return VirtualArrayType parsed form String
 	 */
-	public final static SelectionType getType( final String fromString ) {
+	public final static VirtualArrayType getType( final String fromString ) {
 		
 		if ( fromString.equalsIgnoreCase( "SELECTION_SINGLE_BLOCK" ) ) 
 			return SELECTION_SINGLE_BLOCK;

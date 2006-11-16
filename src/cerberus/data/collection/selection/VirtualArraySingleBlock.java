@@ -13,44 +13,44 @@ import java.lang.NullPointerException;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.ISelection;
-import cerberus.data.collection.SelectionType;
+import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.VirtualArrayType;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
-import cerberus.data.collection.selection.ASelection;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
-import cerberus.data.collection.selection.iterator.SelectionSingleBlockIterator;
 import cerberus.data.collection.thread.lock.ICollectionLock;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.selection.iterator.VirtualArraySingleBlockIterator;
 import cerberus.data.xml.IMementoItemXML;
 
 /**
  * @author Michael Kalkusch
  *
  */
-public class SelectionThreadSingleBlock 
-extends ASelection 
-implements ISelection, IMementoItemXML, ICollectionLock {
+public class VirtualArraySingleBlock 
+	extends AVirtualArray 
+	implements IVirtualArray, IMementoItemXML
+{
+
 	
 	/**
 	 * 
 	 */
-	public SelectionThreadSingleBlock( final int iCollectionId, 
+	public VirtualArraySingleBlock( final int iCollectionId, 
 			final IGeneralManager refBaseManager,
 			final ICollectionLock setCollectionLock) {
-		super(iCollectionId, refBaseManager,setCollectionLock);
-		
+		super(iCollectionId, refBaseManager, setCollectionLock);
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getSelectionType()
+	 * @see cerberus.data.collection.IVirtualArray#getSelectionType()
 	 */
-	public SelectionType getSelectionType() {		
-		return SelectionType.SELECTION_SINGLE_BLOCK;
+	public VirtualArrayType getSelectionType() {		
+		return VirtualArrayType.SELECTION_SINGLE_BLOCK;
 	}
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getMultiRepeat()
+	 * @see cerberus.data.collection.IVirtualArray#getMultiRepeat()
 	 */
 	public int getMultiRepeat() {			
 		//do nothing. this is not supported
@@ -58,7 +58,7 @@ implements ISelection, IMementoItemXML, ICollectionLock {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getMultiOffset()
+	 * @see cerberus.data.collection.IVirtualArray#getMultiOffset()
 	 */
 	public int getMultiOffset() {
 		//do nothing. this is not supported
@@ -66,7 +66,7 @@ implements ISelection, IMementoItemXML, ICollectionLock {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#getIndexArray()
+	 * @see cerberus.data.collection.IVirtualArray#getIndexArray()
 	 */
 	public int[] getIndexArray() {
 		int[] indexArray = new int[ this.iSelectionLength ];
@@ -79,24 +79,24 @@ implements ISelection, IMementoItemXML, ICollectionLock {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setMultiRepeat(int)
+	 * @see cerberus.data.collection.IVirtualArray#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setMultiOffset(int)
+	 * @see cerberus.data.collection.IVirtualArray#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#setIndexArray(int[])
+	 * @see cerberus.data.collection.IVirtualArray#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray) {
-		throw new RuntimeException("SelectionSingleBlock.setIndexArray() is not supported.");
+		throw new RuntimeException("VirtualArraySingleBlock.setIndexArray() is not supported.");
 	}
 
 
@@ -107,6 +107,7 @@ implements ISelection, IMementoItemXML, ICollectionLock {
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
 	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
+		
 		
 		try {
 			CollectionSelectionSaxParserHandler parser = 
@@ -153,19 +154,18 @@ implements ISelection, IMementoItemXML, ICollectionLock {
 	}
 	
 	/*
-	 *  (non-Javadoc)
+	 * (non-Javadoc)
 	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		return this.iCacheId;
 	}
-	
+
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ISelection#iterator()
+	 * @see cerberus.data.collection.IVirtualArray#iterator()
 	 */
-	public ISelectionIterator iterator() {
-		return new SelectionSingleBlockIterator(this);
+	public IVirtualArrayIterator iterator() {
+		return new VirtualArraySingleBlockIterator(this);
 	}
-
 }

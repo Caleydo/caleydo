@@ -39,7 +39,7 @@ implements ICommand, ICmdHandleSet {
 			final int iTargetFrameId ) {
 		super( refGeneralManager,
 				iTargetFrameId,
-				"ISelection" );
+				"IVirtualArray" );
 	}
 	
 	
@@ -48,7 +48,7 @@ implements ICommand, ICmdHandleSet {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		setGuiTextHeader( "ISelection" );
+		setGuiTextHeader( "IVirtualArray" );
 		
 //		DInternalFrame newDInternalFrame = subCmdNewIFrame.doCommand_getDInternalFrame();
 //	

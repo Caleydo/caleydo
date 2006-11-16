@@ -47,12 +47,12 @@ import java.util.HashMap;
 
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.SelectionSingleBlock;
-import cerberus.data.collection.selection.SelectionThreadSingleBlock;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 
 import cerberus.manager.IGeneralManager;

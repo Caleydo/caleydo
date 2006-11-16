@@ -13,10 +13,10 @@ import java.util.Vector;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 
 /**
- * Manage all ISelection's.
+ * Manage all IVirtualArray's.
  * 
  * Note: the ISelectionManager must register itself to the singelton prometheus.app.SingeltonManager
  * 
@@ -27,17 +27,17 @@ public interface ISelectionManager
 extends IGeneralManager
 {
 	
-	public ISelection createSelection( final ManagerObjectType useSelectionType );
+	public IVirtualArray createSelection( final ManagerObjectType useSelectionType );
 	
-	public boolean deleteSelection( ISelection deleteSelection );
+	public boolean deleteSelection( IVirtualArray deleteSelection );
 	
 	public boolean deleteSelection( final int iItemId  );
 	
-	public ISelection getItemSelection( final int iItemId );
+	public IVirtualArray getItemSelection( final int iItemId );
 	
-	public ISelection[] getAllSelectionItems();
+	public IVirtualArray[] getAllSelectionItems();
 	
-	public Vector<ISelection> getAllSelectionItemsVector();
+	public Vector<IVirtualArray> getAllSelectionItemsVector();
 	
 	//public ManagerObjectType getManagerType();
 	

@@ -34,8 +34,8 @@ import cerberus.manager.type.ManagerObjectType;
 import gleem.linalg.Vec3f;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
-import cerberus.data.collection.selection.iterator.SelectionProxyIterator;
+import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.selection.iterator.VirtualArrayProxyIterator;
 import cerberus.data.collection.view.IViewCanvas;
 import cerberus.data.collection.IStorage;
 import cerberus.command.ICommandListener;
@@ -135,7 +135,7 @@ implements DNetEventComponentInterface, IViewCanvas, ViewingAreaComponent
 	
 	private IStorage refStorageFromSet;
 	
-	private ISelection refSelectionFromSet;
+	private IVirtualArray refSelectionFromSet;
 
 	
 
@@ -616,7 +616,7 @@ implements DNetEventComponentInterface, IViewCanvas, ViewingAreaComponent
 			throw new CerberusRuntimeException("DSwingHEatMap2DCanvas.paintComponent() due to selction or storage references are null.");						
 		}
 		
-		SelectionProxyIterator iterSelection = new SelectionProxyIterator(refSelectionFromSet);
+		VirtualArrayProxyIterator iterSelection = new VirtualArrayProxyIterator(refSelectionFromSet);
 		
 		int[] iData_IntArray_FromStorage = this.refStorageFromSet.getArrayInt();
 		
@@ -685,7 +685,7 @@ implements DNetEventComponentInterface, IViewCanvas, ViewingAreaComponent
 		
 		if ( refCurrentSet != null ) {
 			IStorage[] refStorageArray = refCurrentSet.getStorageByDim(0);
-			ISelection[] refSelectionArray = refCurrentSet.getSelectionByDim(0);
+			IVirtualArray[] refSelectionArray = refCurrentSet.getSelectionByDim(0);
 			
 			if ( refStorageArray.length > 0 ) {
 				refStorageFromSet = refStorageArray[0]; 

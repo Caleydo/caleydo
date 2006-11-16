@@ -19,7 +19,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public interface ISelectionIterator  
+public interface IVirtualArrayIterator  
 extends ICollectionIterator {
 
 	

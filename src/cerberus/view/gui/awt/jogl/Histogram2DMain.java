@@ -23,7 +23,7 @@ import com.sun.opengl.util.Animator;
 
 
 import cerberus.data.AUniqueManagedObject;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
@@ -412,7 +412,7 @@ implements GLEventListener, IJoglMouseListener
 		
 		createdStorage.setArrayInt( iRawDataArray );
 		
-		ISelection createdSelection = 
+		IVirtualArray createdSelection = 
 			this.refGeneralManager.getSingelton().getSelectionManager().createSelection( 
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 		

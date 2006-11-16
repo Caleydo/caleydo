@@ -10,10 +10,10 @@ import javax.media.opengl.GLAutoDrawable;
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
@@ -129,8 +129,8 @@ implements IGLCanvasUser
 						LoggerType.VERBOSE );
 		} // switch
 		
-		ISelection [] arraySelectionX = targetSet.getSelectionByDim(0);
-		ISelection [] arraySelectionY = targetSet.getSelectionByDim(1);
+		IVirtualArray [] arraySelectionX = targetSet.getSelectionByDim(0);
+		IVirtualArray [] arraySelectionY = targetSet.getSelectionByDim(1);
 		
 		IStorage [] arrayStorageX = targetSet.getStorageByDim(0);
 		IStorage [] arrayStorageY = targetSet.getStorageByDim(1);
@@ -170,11 +170,11 @@ implements IGLCanvasUser
 		
 		for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 
 		{
-			ISelection selectX = arraySelectionX[iOuterLoop];
-			ISelection selectY = arraySelectionY[iOuterLoop];
+			IVirtualArray selectX = arraySelectionX[iOuterLoop];
+			IVirtualArray selectY = arraySelectionY[iOuterLoop];
 			
-			ISelectionIterator iterSelectX = selectX.iterator();
-			ISelectionIterator iterSelectY = selectY.iterator();
+			IVirtualArrayIterator iterSelectX = selectX.iterator();
+			IVirtualArrayIterator iterSelectY = selectY.iterator();
 			
 			IStorage storeX = arrayStorageX[iOuterLoop];
 			IStorage storeY = arrayStorageY[iOuterLoop];

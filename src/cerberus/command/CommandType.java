@@ -54,25 +54,25 @@ public enum CommandType {
 	COMMAND_QUEUE_CLOSE(CommandTypeGroup.COMMAND,"Closes a command qroup, it is set read only now"),
 	COMMAND_QUEUE_RUN(CommandTypeGroup.COMMAND,"Execute a command qroup"),
 	
-	// --- ISelection ---
+	// --- IVirtualArray ---
 	SELECT_NEW(CommandTypeGroup.SELECT,"Create a new selection"),
 	SELECT_DEL(CommandTypeGroup.SELECT,"Deletes a selection"),
 	SELECT_ADD(CommandTypeGroup.SELECT,"Add a selection to another selection"),
 	
 	SELECT_LOAD(CommandTypeGroup.SELECT,"Load a selection from file or network"),
 	SELECT_SAVE(CommandTypeGroup.SELECT,"Save a selection to file or network"),
-	SELECT_SET_UPDATE(CommandTypeGroup.SELECT,"Update an existing ISelection without changing its type."),
-	SELECT_CHANGE_TYPE(CommandTypeGroup.SELECT,"Change the type of an existing ISelection."),
+	SELECT_SET_UPDATE(CommandTypeGroup.SELECT,"Update an existing IVirtualArray without changing its type."),
+	SELECT_CHANGE_TYPE(CommandTypeGroup.SELECT,"Change the type of an existing IVirtualArray."),
 	
 	
-	// ... ISelection Parameters ...
+	// ... IVirtualArray Parameters ...
 	SELECT_SET_OFFSET(CommandTypeGroup.SELECT_VALUE,"ISet offset of selection (int)"),
 	SELECT_SET_SIZE(CommandTypeGroup.SELECT_VALUE,"ISet size of selection"),
 	SELECT_SET_INC(CommandTypeGroup.SELECT_VALUE,"ISet increment of selection (int)"),
 	SELECT_SET_REPEAT(CommandTypeGroup.SELECT_VALUE,"ISet repeat of selection"),
 	
 	
-	// ... ISelection States ...
+	// ... IVirtualArray States ...
 	SELECT_SHOW(CommandTypeGroup.SELECT_VALUE,"Show a selection, enable show/hide"),
 	SELECT_HIDE(CommandTypeGroup.SELECT_VALUE,"Hide a selection, disable show/hide"),
 	SELECT_LOCK(CommandTypeGroup.SELECT_VALUE,"Lock a selection, enable lock/unlock"),

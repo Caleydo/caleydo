@@ -8,27 +8,27 @@
  */
 package cerberus.data.collection.selection.iterator;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Iterator for Selecion SelectionSingleBlock
+ * Iterator for Selecion VirtualArraySingleBlock
  * 
  * Desing Pattern "Iterator"
  * 
  * @author Michael Kalkusch
  *
  */
-public class SelectionSingleBlockIterator 
-extends ASelectionIterator
-implements ISelectionIterator {
+public class VirtualArraySingleBlockIterator 
+extends AVirtualArrayIterator
+implements IVirtualArrayIterator {
 
 	
 	/**
 	 * 
 	 */
-	public SelectionSingleBlockIterator( ISelection setSelection ) {
+	public VirtualArraySingleBlockIterator( IVirtualArray setSelection ) {
 		super( setSelection );
 
 	}

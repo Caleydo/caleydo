@@ -12,8 +12,8 @@ package cerberus.data.collection;
 //import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.IMetaDataHandler;
 //import cerberus.data.collection.CollectionInterface;
-import cerberus.data.collection.SelectionType;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.VirtualArrayType;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.thread.ICollectionThreadObject;
 import cerberus.data.xml.IMementoItemXML;
 
@@ -24,7 +24,7 @@ import cerberus.data.xml.IMementoItemXML;
  * @author Michael Kalkusch
  *
  */
-public interface ISelection  
+public interface IVirtualArray  
 	extends IMetaDataHandler, 
 	IMementoItemXML,
 	ICollectionThreadObject
@@ -35,9 +35,9 @@ public interface ISelection
 	 * 
 	 * @return type of the selection
 	 * 
-	 * @see prometheus.data.collection.SelectionType
+	 * @see prometheus.data.collection.VirtualArrayType
 	 */
-	public SelectionType getSelectionType(); 
+	public VirtualArrayType getSelectionType(); 
 	
 	
 	/**
@@ -47,7 +47,7 @@ public interface ISelection
 	 * 
 	 * @param iSetSelectionId 
 	 */
-	//public ISelection(int iSetSelectionId);
+	//public IVirtualArray(int iSetSelectionId);
 
 
 	public int getOffset();
@@ -96,6 +96,6 @@ public interface ISelection
 	 * 
 	 * @return Iterator
 	 */
-	public ISelectionIterator iterator();
+	public IVirtualArrayIterator iterator();
 	
 }

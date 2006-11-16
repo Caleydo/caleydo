@@ -70,9 +70,9 @@ public interface HistogramCreator extends IStatefulItem {
 	public ISet getSet();
 	
 	/**
-	 * ISet the ISelection the histogram is based on.
+	 * ISet the IVirtualArray the histogram is based on.
 	 * 
-	 * @param setSelection reference to the ISelection the histogram is based on
+	 * @param setSelection reference to the IVirtualArray the histogram is based on
 	 */
 	public void setSet( ISet setSet );
 	

@@ -21,10 +21,10 @@ import cerberus.view.swing.status.StorageBrowser;
 //import cerberus.view.swing.loader.FileLoader;
 
 import cerberus.data.collection.set.SetMultiDim;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.Set;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.SelectionThreadSingleBlock;
+import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 
@@ -34,7 +34,7 @@ import cerberus.net.dwt.swing.menu.DMenuBootStraper;
 
 public class TesterStuff {
 
-	public SelectionThreadSingleBlock refTEST_Selection;
+	public VirtualArrayThreadSingleBlock refTEST_Selection;
 	
 	public SetFlatThreadSimple refTEST_Set;
 	
@@ -52,7 +52,7 @@ public class TesterStuff {
 
 		
 		refTEST_Selection = 
-			new SelectionThreadSingleBlock(0,null,null);
+			new VirtualArrayThreadSingleBlock(0,null,null);
 						
 		refTEST_Storage = new FlatThreadStorageSimple(0,null,null);
 		refTEST_Storage2 = new FlatThreadStorageSimple(0,null,null);
@@ -62,7 +62,7 @@ public class TesterStuff {
 		refTEST_Set2D = new SetMultiDim(0,null,null,2);
 		refTEST_Set3D = new SetMultiDim(0,null,null,3);
 		
-		ISelection[] helpSelect = new ISelection[1];
+		IVirtualArray[] helpSelect = new IVirtualArray[1];
 		helpSelect[0] = refTEST_Selection;
 		
 		IStorage [] helpStore = new IStorage [1];

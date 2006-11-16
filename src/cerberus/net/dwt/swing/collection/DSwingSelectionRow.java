@@ -31,9 +31,9 @@ import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.ICommand;
-import cerberus.data.collection.ISelection;
-import cerberus.data.collection.SelectionType;
-import cerberus.data.collection.selection.SelectionSingleBlock;
+import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.VirtualArrayType;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
 
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -103,7 +103,7 @@ public class DSwingSelectionRow {
 	private int[] iDataFromGui_MultiRLE_Random_Array = null;
 	private String sDataFromGui_label;
 	
-	private ISelection refSelection;
+	private IVirtualArray refSelection;
 	
 	/**
 	 * 
@@ -300,11 +300,11 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * Immedeatly updates the gui based on the data from the ISelection.
+	 * Immedeatly updates the gui based on the data from the IVirtualArray.
 	 * 
 	 * @param useSelection data used to update the Gui
 	 */
-	public void updateFromSelectionToGui( final ISelection useSelection ) {
+	public void updateFromSelectionToGui( final IVirtualArray useSelection ) {
 
 		if ( useSelection == null ) {
 			assert useSelection!= null :"updateFromSelection() can not handle null-pointer";
@@ -325,7 +325,7 @@ public class DSwingSelectionRow {
 //		}
 		
 		case SELECTION_SINGLE_BLOCK: {
-			assert useSelection.getSelectionType() == SelectionType.SELECTION_SINGLE_BLOCK :
+			assert useSelection.getSelectionType() == VirtualArrayType.SELECTION_SINGLE_BLOCK :
 				"Wrong type for selection SELECTION_SINGLE_BLOCK!";
 			
 			j_tf[INDEX_ID].setText( 
@@ -342,7 +342,7 @@ public class DSwingSelectionRow {
 		}
 		
 		case SELECTION_MULTI_BLOCK: {
-			assert useSelection.getSelectionType() == SelectionType.SELECTION_MULTI_BLOCK :
+			assert useSelection.getSelectionType() == VirtualArrayType.SELECTION_MULTI_BLOCK :
 				"Wrong type for selection SELECTION_MULTI_BLOCK!";
 			
 			j_tf[INDEX_ID].setText( 
@@ -372,11 +372,11 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * Get the current ISelection shown in this element.
+	 * Get the current IVirtualArray shown in this element.
 	 * 
-	 * @return ISelection the data was read from
+	 * @return IVirtualArray the data was read from
 	 */
-	public ISelection getCurrentSelection() {
+	public IVirtualArray getCurrentSelection() {
 		return refSelection;
 	}
 	
@@ -467,11 +467,11 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * updates parameters from the GUI to the ISelection.
+	 * updates parameters from the GUI to the IVirtualArray.
 	 * 
 	 * @param updateSelection
 	 */
-	public void updateSelectionFromGui( ISelection updateSelection ) {
+	public void updateSelectionFromGui( IVirtualArray updateSelection ) {
 	
 //		if ( updateSelection.getId() != iDataFromGui_Id ) {
 //			updateSelection.setId( null, iDataFromGui_Id );
@@ -511,9 +511,9 @@ public class DSwingSelectionRow {
 	}
 	
 	/**
-	 * Do we need to update the ISelection because the Gui requires it
+	 * Do we need to update the IVirtualArray because the Gui requires it
 	 * 
-	 * @return True, if the ISelection needs to be update.
+	 * @return True, if the IVirtualArray needs to be update.
 	 */
 	public boolean hasSelectionChanged() {
 		return bUpdateSelectionFromGui;

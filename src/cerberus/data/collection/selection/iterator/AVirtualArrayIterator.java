@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection.selection.iterator;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -16,7 +16,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public abstract class ASelectionIterator implements ISelectionIterator {
+public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 
 	/**
 	 * Defines the offset of the virtual array.
@@ -40,15 +40,15 @@ public abstract class ASelectionIterator implements ISelectionIterator {
 	/**
 	 * Link to Collection-Meta data.
 	 */
-	protected ISelection refSelection = null;
+	protected IVirtualArray refSelection = null;
 	
 	/**
 	 * 
 	 */
-	protected ASelectionIterator( ISelection setSelection ) {
+	protected AVirtualArrayIterator( IVirtualArray setSelection ) {
 		
 		if ( setSelection == null ) {
-			throw new CerberusRuntimeException("ASelectionIterator.Constructor init with null-pointer to ISelection.",
+			throw new CerberusRuntimeException("AVirtualArrayIterator.Constructor init with null-pointer to IVirtualArray.",
 					CerberusExceptionType.VIRTUALARRAY );
 		}
 		

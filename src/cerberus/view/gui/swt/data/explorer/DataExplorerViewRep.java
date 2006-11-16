@@ -12,7 +12,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.pathway.Pathway;
@@ -118,17 +118,17 @@ implements IView, IMediatorReceiver {
 
 		Collection<ISet> allSetItems;
 		IStorage[] allStorageItems;
-		ISelection[] allSelectionItems;
+		IVirtualArray[] allSelectionItems;
 		// TODO: a list would be nuch nicer
-		ISelection[] currentSelectionArray;
+		IVirtualArray[] currentSelectionArray;
 		IStorage[] currentStorageArray;
 
 		ISet currentSet;
 		IStorage currentStorage;
-		ISelection currentSelection;
+		IVirtualArray currentSelection;
 
 		// List<IStorage> allStorageItemsInSet;
-		// List<ISelection> allSelectionItemsInSet;
+		// List<IVirtualArray> allSelectionItemsInSet;
 
 		// root node in the tree (not visible)
 		rootModel = new DataCollectionModel();
@@ -170,7 +170,7 @@ implements IView, IMediatorReceiver {
 									.getSelectionByDim(dimIndex);
 							for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
 							{
-								currentSelection = (ISelection) currentSelectionArray[selectionIndex];
+								currentSelection = (IVirtualArray) currentSelectionArray[selectionIndex];
 
 								if (currentSelection != null)
 								{
@@ -333,7 +333,7 @@ implements IView, IMediatorReceiver {
 
 	public void update(Object eventTrigger) {
 
-		int triggerId = ((ISelection) eventTrigger).getId();
+		int triggerId = ((IVirtualArray) eventTrigger).getId();
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
 				"Data Explorer update called by " + triggerId,
 				LoggerType.VERBOSE);

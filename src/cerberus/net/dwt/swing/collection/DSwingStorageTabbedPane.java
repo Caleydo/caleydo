@@ -36,8 +36,8 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.ICommand;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.SelectionType;
-import cerberus.data.collection.selection.SelectionSingleBlock;
+import cerberus.data.collection.VirtualArrayType;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
 import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
 
 import cerberus.util.exception.CerberusRuntimeException;
@@ -300,7 +300,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * Immedeatly updates the gui based on the data from the ISelection.
+	 * Immedeatly updates the gui based on the data from the IVirtualArray.
 	 * 
 	 * @param useSelection data used to update the Gui
 	 */
@@ -392,9 +392,9 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * Get the current ISelection shown in this element.
+	 * Get the current IVirtualArray shown in this element.
 	 * 
-	 * @return ISelection the data was read from
+	 * @return IVirtualArray the data was read from
 	 */
 	public IStorage getCurrentSelection() {
 		return refStorage;
@@ -496,7 +496,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * updates parameters from the GUI to the ISelection.
+	 * updates parameters from the GUI to the IVirtualArray.
 	 * 
 	 * @param updateSelection
 	 */
@@ -541,9 +541,9 @@ public class DSwingStorageTabbedPane extends JPanel {
 	}
 	
 	/**
-	 * Do we need to update the ISelection because the Gui requires it
+	 * Do we need to update the IVirtualArray because the Gui requires it
 	 * 
-	 * @return True, if the ISelection needs to be update.
+	 * @return True, if the IVirtualArray needs to be update.
 	 */
 	public boolean hasSelectionChanged() {
 		return bUpdateSelectionFromGui;

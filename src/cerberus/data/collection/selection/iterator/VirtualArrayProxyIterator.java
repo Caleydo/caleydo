@@ -8,47 +8,47 @@
  */
 package cerberus.data.collection.selection.iterator;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 //import prometheus.data.collection.SelectionType;
 
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Automatical creates the suitable iterator for several ISelection's.
+ * Automatical creates the suitable iterator for several IVirtualArray's.
  * 
  * Desing Pattern "Factory"
  * 
  * @author Michael Kalkusch
  *
  */
-public class SelectionProxyIterator 
-implements ISelectionIterator {
+public class VirtualArrayProxyIterator 
+implements IVirtualArrayIterator {
 
 	/**
 	 * Reference to the actual iterator.
 	 */
-	protected ISelectionIterator refSelectionIterator = null;
+	protected IVirtualArrayIterator refSelectionIterator = null;
 	
-	public SelectionProxyIterator() {
+	public VirtualArrayProxyIterator() {
 		
 	}
 	
 	/**
 	 * 
 	 */
-	public SelectionProxyIterator( ISelection setSelection ) {
+	public VirtualArrayProxyIterator( IVirtualArray setSelection ) {
 		
-		assert setSelection != null : "can not handle null-pointer ISelection";
+		assert setSelection != null : "can not handle null-pointer IVirtualArray";
 		
 		switch ( setSelection.getSelectionType() ) {
 		
 		case SELECTION_SINGLE_BLOCK:
-			refSelectionIterator = new SelectionSingleBlockIterator( setSelection );
+			refSelectionIterator = new VirtualArraySingleBlockIterator( setSelection );
 			break;
 			
 		case SELECTION_MULTI_BLOCK:
-			refSelectionIterator = new SelectionMultiBlockIterator( setSelection );
+			refSelectionIterator = new VirtualArrayMultiBlockIterator( setSelection );
 			break;
 			
 		case SELECTION_MULTI_BLOCK_RLE:
@@ -57,7 +57,7 @@ implements ISelectionIterator {
 			
 		default:
 			refSelectionIterator = null;
-			throw new CerberusRuntimeException("SelectionProxyIterator.Constructor with unsuppoerte selection type: [" +
+			throw new CerberusRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
 					setSelection.getSelectionType() + "] !",
 					CerberusExceptionType.VIRTUALARRAY );
 		}

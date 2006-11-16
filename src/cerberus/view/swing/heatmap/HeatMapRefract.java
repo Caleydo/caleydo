@@ -54,12 +54,12 @@ import gleem.*;
 import gleem.linalg.*;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.SelectionSingleBlock;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
 
 import cerberus.view.swing.loader.FileLoader;
 
@@ -586,9 +586,9 @@ public class HeatMapRefract extends Demo {
 	  
 	  
 	  IStorage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
-	  ISelection refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
+	  IVirtualArray refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
   	
-	  System.out.println("Histogram: use ISelection(" +
+	  System.out.println("Histogram: use IVirtualArray(" +
 			  refBufferSelection.getLabel() + ")");
 	  
 	  if ( refBufferStorage == null ) {
@@ -617,7 +617,7 @@ public class HeatMapRefract extends Demo {
 			  iUpperBorder ) {
 		  System.err.println("Offset of selection(" +
 					Integer.toString( iOffset ) +
-					") + length of ISelection(" +
+					") + length of IVirtualArray(" +
 					Integer.toString( refBufferSelection.length() ) +
 					") exceeds IStorage array (" +
 					Integer.toString( i_dataValues.length ) + ") ==> shorten length!");
@@ -890,7 +890,7 @@ public class HeatMapRefract extends Demo {
 	    			
 	    			iSetCacheId = refSet.getCacheId();
 	    			
-	    			ISelection select = refSet.getSelectionByDimAndIndex(0,0);
+	    			IVirtualArray select = refSet.getSelectionByDimAndIndex(0,0);
 	    			
 	    			System.out.print(" R: " + refSet.getLabel() + " id=" +
 	    					Integer.toString( refSet.getCacheId() ));

@@ -93,7 +93,7 @@ implements ISaxParserHandler
 	protected String sSelectionType;
 	
 	/**
-	 * Stores the current ISelection type.
+	 * Stores the current IVirtualArray type.
 	 */
 	protected ManagerObjectType eSelectionType;
 	

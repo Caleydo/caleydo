@@ -708,7 +708,7 @@ implements DNetEventComponentInterface, IViewCanvas
 //			}
 			
 			assert bufferSelection != null :
-				"null-pointer in ISelection list from ISelectionManager.";
+				"null-pointer in IVirtualArray list from ISelectionManager.";
 			
 			if ( buffer == null ) {
 				DSwingStorageTabbedPane newListItem = 

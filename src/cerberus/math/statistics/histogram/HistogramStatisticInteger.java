@@ -5,7 +5,7 @@ package cerberus.math.statistics.histogram;
 
 
 import cerberus.data.collection.ISet;
-//import cerberus.data.collection.ISelection;
+//import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.IStorage;
 
 /**

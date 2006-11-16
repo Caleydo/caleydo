@@ -46,7 +46,7 @@ import cerberus.manager.type.ManagerObjectType;
 //import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.view.IViewCanvas;
 import cerberus.command.ICommandListener;
 import cerberus.net.dwt.DNetEvent;
@@ -642,10 +642,10 @@ implements DNetEventComponentInterface, IViewCanvas
 	
 	public void updateAllSelectionsFromGui() {
 		
-		Vector<ISelection> refVecCurrentSelections = 
+		Vector<IVirtualArray> refVecCurrentSelections = 
 			refSelectionManager.getAllSelectionItemsVector();
 		
-		Iterator<ISelection> iterSel = refVecCurrentSelections.iterator();
+		Iterator<IVirtualArray> iterSel = refVecCurrentSelections.iterator();
 		
 		Iterator<DSwingSelectionRow> iterRow = vecJListRows.iterator();
 		
@@ -654,7 +654,7 @@ implements DNetEventComponentInterface, IViewCanvas
 			if (( buffer != null )&&( buffer.hasSelectionChanged() )) 
 			{
 				if (iterSel.hasNext() ) {
-					ISelection bufferSel = iterSel.next();
+					IVirtualArray bufferSel = iterSel.next();
 					buffer.updateSelectionFromGui( bufferSel );
 				}
 				else {
@@ -673,7 +673,7 @@ implements DNetEventComponentInterface, IViewCanvas
 	 */
 	public void updateState() {
 		
-		Vector<ISelection> refVecCurrentSelections = 
+		Vector<IVirtualArray> refVecCurrentSelections = 
 			refSelectionManager.getAllSelectionItemsVector();
 		
 		final int iSizeVectorSelections = refVecCurrentSelections.size();
@@ -682,7 +682,7 @@ implements DNetEventComponentInterface, IViewCanvas
 			vecJListRows.ensureCapacity( iSizeVectorSelections );
 		}
 		
-		Iterator<ISelection> iterFromManager = refVecCurrentSelections.iterator();
+		Iterator<IVirtualArray> iterFromManager = refVecCurrentSelections.iterator();
 		Iterator<DSwingSelectionRow> iterFromGui = vecJListRows.iterator();
 		
 		// index for both vectors...
@@ -690,7 +690,7 @@ implements DNetEventComponentInterface, IViewCanvas
 		int iIndexGuiRow = 0;
 		
 		for ( iIndex= 0 ; iterFromManager.hasNext(); iIndex++ ) {
-			ISelection bufferSelection = iterFromManager.next();
+			IVirtualArray bufferSelection = iterFromManager.next();
 			DSwingSelectionRow buffer = null;
 			
 			if ( iIndexGuiRow < iActiveJListItems ) {
@@ -706,7 +706,7 @@ implements DNetEventComponentInterface, IViewCanvas
 //			}
 			
 			assert bufferSelection != null :
-				"null-pointer in ISelection list from ISelectionManager.";
+				"null-pointer in IVirtualArray list from ISelectionManager.";
 			
 			if ( buffer == null ) {
 				DSwingSelectionRow newListItem = 
@@ -783,8 +783,8 @@ implements DNetEventComponentInterface, IViewCanvas
 				b_Gui_UpdateEnabled = false;
 				j_button_update.setEnabled( false );
 				
-				ISelection newSelection =
-					(ISelection) refGeneralManagerSingelton.createNewItem( 
+				IVirtualArray newSelection =
+					(IVirtualArray) refGeneralManagerSingelton.createNewItem( 
 							ManagerObjectType.SELECTION_SINGLE_BLOCK, "" );
 				
 				refGeneralManagerSingelton.registerItem( newSelection, 

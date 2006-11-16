@@ -15,15 +15,15 @@ package cerberus.data.collection.selection.iterator;
  *
  * @see prometheus.data.set.SelectionInterface
  */
-public enum MultiSelectionIterationType {
+public enum MultiVirtualArrayIterationType {
 
-	FIRST_TO_LAST_SUCCESSIVE("Abstract ISelection, that has not been instaniated"),
+	FIRST_TO_LAST_SUCCESSIVE("Abstract IVirtualArray, that has not been instaniated"),
 	FIRST_COLUMN_EACH_ROW("Abstract Virtual Array, that has not been defined"),
 	FIRST_ROW_EACH_COLUMN("Virtual Array of a single block"),
 	NONE("No type set");
 
 	/**
-	 * Brief description, what the ISelection does.
+	 * Brief description, what the IVirtualArray does.
 	 */
 	private final String sDescription;
 	
@@ -32,7 +32,7 @@ public enum MultiSelectionIterationType {
 	 * 
 	 * @param sSetDescription
 	 */
-	private MultiSelectionIterationType(String sSetDescription) {
+	private MultiVirtualArrayIterationType(String sSetDescription) {
 		sDescription = sSetDescription;
 	}
 	

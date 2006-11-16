@@ -1,6 +1,6 @@
 package cerberus.view.gui.swt.slider;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.manager.IGeneralManager;
 
 public class StorageSliderViewRep 
@@ -30,9 +30,9 @@ extends ASliderViewRep {
 	
 	public void update(Object eventTrigger) {
 		
-		if (eventTrigger instanceof ISelection)
+		if (eventTrigger instanceof IVirtualArray)
 		{
-			//iCurrentSliderValue = ((ISelection)eventTrigger).getOffset();
+			//iCurrentSliderValue = ((IVirtualArray)eventTrigger).getOffset();
 			drawView();
 		}
 	}

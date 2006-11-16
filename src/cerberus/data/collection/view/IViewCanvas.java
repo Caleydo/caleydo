@@ -43,8 +43,8 @@ public interface IViewCanvas
 	public void updateState();
 	
 //	/**
-//	 * Adds a ISelection to a specific dimension.
-//	 * Note, that addSelection() can not overwrite existing references to other ISelection
+//	 * Adds a IVirtualArray to a specific dimension.
+//	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
 //	 * 
 //	 * @param addSelection
 //	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
@@ -56,7 +56,7 @@ public interface IViewCanvas
 //	/**
 //	 * Removes a selection bound to a dimension.
 //	 * 
-//	 * @param removeSelection ISelection to be removed
+//	 * @param removeSelection IVirtualArray to be removed
 //	 * @param iFromDimension address which dimension removeSelection shall be removed from, range [0.. getDimensionSize()-1 ]
 //	 * @return TRUE if removeSelection was removed from dimension iFromDimension
 //	 */
@@ -66,7 +66,7 @@ public interface IViewCanvas
 //	/**
 //	 * Tests, if testSelection is in a specific dimension addressed by iAtDimension.
 //	 * 
-//	 * @param testSelection ISelection to search for
+//	 * @param testSelection IVirtualArray to search for
 //	 * @param iAtDimension address a dimension
 //	 * @return TRUE if the testSelection is used for dimension iAtDimension
 //	 */

@@ -58,12 +58,12 @@ import gleem.*;
 import gleem.linalg.*;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.SelectionSingleBlock;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
 
 import cerberus.math.statistics.histogram.HistogramData;
 import cerberus.math.statistics.histogram.HistogramStatisticInteger;
@@ -258,9 +258,9 @@ public class JoglHistogram_StaticArray extends Demo {
   public void createHistogram(final int iHistogramLevels) {
 	  
 	  IStorage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
-	  ISelection refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
+	  IVirtualArray refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
   	
-	  System.out.println("Histogram: use ISelection(" +
+	  System.out.println("Histogram: use IVirtualArray(" +
 			  refBufferSelection.getLabel() + ")");
 	  
 	   

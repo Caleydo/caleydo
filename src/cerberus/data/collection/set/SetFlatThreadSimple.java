@@ -15,13 +15,13 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.IMetaData;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
-import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
+import cerberus.data.collection.selection.iterator.VirtualArrayVectorIterator;
 import cerberus.xml.parser.ISaxParserHandler;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;
 import cerberus.data.collection.thread.lock.ICollectionLock;
 
@@ -40,9 +40,9 @@ implements ISet {
 	protected IMetaData refMetaDataAllAndAny = null;
 	
 	/**
-	 * Store reference to the ISelection.
+	 * Store reference to the IVirtualArray.
 	 */
-	protected ISelection[] refFlatSelection = null;
+	protected IVirtualArray[] refFlatSelection = null;
 	
 	/**
 	 * Store reference to the Storages.
@@ -62,16 +62,16 @@ implements ISet {
 
 		super( iSetCollectionId, setGeneralManager, setCollectionLock );
 		
-		refFlatSelection = new ISelection[1];
+		refFlatSelection = new IVirtualArray[1];
 		
 		refFlatStorage = new IStorage[1];
 	}
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#setSelection(cerberus.data.collection.ISelection, int)
+	 * @see cerberus.data.collection.ISet#setSelection(cerberus.data.collection.IVirtualArray, int)
 	 */
-	public boolean setSelectionByDim(ISelection[] addSelection, int iAtDimension) {		
+	public boolean setSelectionByDim(IVirtualArray[] addSelection, int iAtDimension) {		
 		
 		if ( iAtDimension >= refFlatSelection.length) {
 			assert false :"Can not address dimension != 0";
@@ -82,7 +82,7 @@ implements ISet {
 		return true;
 	}
 	
-	public boolean setSelectionByDimAndIndex( final ISelection addSelection, 
+	public boolean setSelectionByDimAndIndex( final IVirtualArray addSelection, 
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
@@ -91,8 +91,8 @@ implements ISet {
 		}
 		
 		if ( refFlatSelection.length < iAtIndex) {
-			/* create a new ISelection[] and copy to new ISelection[]... */
-			ISelection[] copyToNewSelectionArray = new ISelection[iAtIndex+1];
+			/* create a new IVirtualArray[] and copy to new IVirtualArray[]... */
+			IVirtualArray[] copyToNewSelectionArray = new IVirtualArray[iAtIndex+1];
 			
 			for ( int i=0; i < refFlatSelection.length; i++ ) {				
 				copyToNewSelectionArray[i] = refFlatSelection[i];
@@ -118,7 +118,7 @@ implements ISet {
 		}
 		
 		if ( refFlatStorage.length < iAtIndex) {
-			/* create a new ISelection[] and copy to new ISelection[]... */
+			/* create a new IVirtualArray[] and copy to new IVirtualArray[]... */
 			IStorage[] copyToNewSelectionArray = new IStorage[iAtIndex+1];
 			
 			for ( int i=0; i < refFlatStorage.length; i++ ) {				
@@ -133,9 +133,9 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#removeSelection(cerberus.data.collection.ISelection, int)
+	 * @see cerberus.data.collection.ISet#removeSelection(cerberus.data.collection.IVirtualArray, int)
 	 */
-	public boolean removeSelection( final ISelection[] removeSelection, final int iFromDimension) {
+	public boolean removeSelection( final IVirtualArray[] removeSelection, final int iFromDimension) {
 		
 		for ( int i=0; i< removeSelection.length; i++ ) {
 			if ( refFlatSelection[iFromDimension] == removeSelection[i] ) {
@@ -147,9 +147,9 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#hasSelection(cerberus.data.collection.ISelection, int)
+	 * @see cerberus.data.collection.ISet#hasSelection(cerberus.data.collection.IVirtualArray, int)
 	 */
-	public boolean hasSelection(ISelection testSelection, int iAtDimension) {
+	public boolean hasSelection(IVirtualArray testSelection, int iAtDimension) {
 		
 		assert testSelection != null: "SetFlatSimple.hasSelection() test with null pointer!";
 		
@@ -161,9 +161,9 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#hasSelectionInSet(cerberus.data.collection.ISelection)
+	 * @see cerberus.data.collection.ISet#hasSelectionInSet(cerberus.data.collection.IVirtualArray)
 	 */
-	public boolean hasSelectionInSet(ISelection testSelection) {
+	public boolean hasSelectionInSet(IVirtualArray testSelection) {
 		
 		//FIXME return index instead of true or false
 		
@@ -188,8 +188,8 @@ implements ISet {
 	 */
 	public int getDimensionSize(int iAtDimension) {
 		//FIXME what shall that function do?
-		assert refFlatSelection != null : "no ISelection[] is set";
-		assert refFlatSelection.length > 0 : "no ISelection is set";
+		assert refFlatSelection != null : "no IVirtualArray[] is set";
+		assert refFlatSelection.length > 0 : "no IVirtualArray is set";
 		
 		return refFlatSelection[0].length();
 	}
@@ -216,7 +216,7 @@ implements ISet {
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.ISet#getSelection(int)
 	 */
-	public ISelection[] getSelectionByDim(int iAtDimension) {
+	public IVirtualArray[] getSelectionByDim(int iAtDimension) {
 		//FIXME add range check..
 		return refFlatSelection;
 	}
@@ -225,7 +225,7 @@ implements ISet {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.ISet#getSelectionByDimAndIndex(int, int)
 	 */
-	public ISelection getSelectionByDimAndIndex( final int iAtDimension, 
+	public IVirtualArray getSelectionByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {
 		return refFlatSelection[iAtIndex];
 	}
@@ -351,13 +351,13 @@ implements ISet {
 			/**
 			 * Store reference to the Selections.
 			 */
-			refFlatSelection = new ISelection[iListOfSellectionId.length];
+			refFlatSelection = new IVirtualArray[iListOfSellectionId.length];
 			
 			for ( int iIndex=0; iIndex< iListOfSellectionId.length ; iIndex++ ) {
 				
 				try {					
 					Object buffer = getManager().getItem( iListOfSellectionId[iIndex] );
-					refFlatSelection[iIndex] = (ISelection) buffer;
+					refFlatSelection[iIndex] = (IVirtualArray) buffer;
 				}
 				catch ( NullPointerException npe) {
 					npe.printStackTrace();
@@ -450,12 +450,12 @@ implements ISet {
 	}
 	
 
-	public final boolean setSelectionByDim( Vector<ISelection> setSelection, final int iAtDimension ) {
+	public final boolean setSelectionByDim( Vector<IVirtualArray> setSelection, final int iAtDimension ) {
 		
 		assert setSelection != null: "setStorage() with null-pointer";
 		
-		refFlatSelection = new ISelection[ setSelection.size() ];		
-		Iterator <ISelection> iter = setSelection.iterator();
+		refFlatSelection = new IVirtualArray[ setSelection.size() ];		
+		Iterator <IVirtualArray> iter = setSelection.iterator();
 		int iIndex = 0;
 		
 		while ( iter.hasNext() ) {
@@ -553,15 +553,15 @@ implements ISet {
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.ISet#iteratorSelectionByDim(int)
 	 */
-	public ISelectionIterator iteratorSelectionByDim( final int iAtDimension ) {
-		Vector<ISelection> vec_Selection = 
-			new Vector<ISelection> (refFlatSelection.length);
+	public IVirtualArrayIterator iteratorSelectionByDim( final int iAtDimension ) {
+		Vector<IVirtualArray> vec_Selection = 
+			new Vector<IVirtualArray> (refFlatSelection.length);
 		
 		for ( int i=0; i <refFlatSelection.length; i++ ) {					
 			vec_Selection.addElement( refFlatSelection[i] );
 		}
 		
-		SelectionVectorIterator iterator = new SelectionVectorIterator();
+		VirtualArrayVectorIterator iterator = new VirtualArrayVectorIterator();
 		iterator.addSelectionVector( vec_Selection );
 		
 		return iterator;
@@ -578,9 +578,9 @@ implements ISet {
 		return resultVector;
 	}
 	
-	public final Vector<ISelection> getSelectionVectorByDim( final int iAtDimension ) {
+	public final Vector<IVirtualArray> getSelectionVectorByDim( final int iAtDimension ) {
 		
-		Vector<ISelection> resultVector = new Vector<ISelection> (refFlatSelection.length);
+		Vector<IVirtualArray> resultVector = new Vector<IVirtualArray> (refFlatSelection.length);
 		
 		for ( int i=0; i < refFlatSelection.length; i++ ) {
 			resultVector.addElement( refFlatSelection[i] );

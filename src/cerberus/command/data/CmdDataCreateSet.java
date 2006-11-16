@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 
@@ -201,8 +201,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 			 * init data structures..
 			 */
 			
-			Vector <ISelection> vecSelection = 
-				new Vector <ISelection> ( ll_Selection_1dim.size() );
+			Vector <IVirtualArray> vecSelection = 
+				new Vector <IVirtualArray> ( ll_Selection_1dim.size() );
 			
 			
 			while ( iter_ll_Selection_1dim.hasNext() )
@@ -309,8 +309,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 * init data structures..
 				 */
 				
-				Vector <ISelection> vecSelection = 
-					new Vector <ISelection> ( ll_Selection_1dim.size() );
+				Vector <IVirtualArray> vecSelection = 
+					new Vector <IVirtualArray> ( ll_Selection_1dim.size() );
 				
 				
 				while ( iter_ll_Selection_1dim.hasNext() )

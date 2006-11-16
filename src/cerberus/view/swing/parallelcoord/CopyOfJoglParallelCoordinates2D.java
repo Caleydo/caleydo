@@ -65,13 +65,13 @@ import gleem.*;
 import gleem.linalg.*;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.SelectionSingleBlock;
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
 
 import cerberus.view.manager.tester.CerberusFrameManager;
 
@@ -391,9 +391,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 		
 		cleanNodeIntersectionList();		
 
-		ISelectionIterator iterX = useSet.getSelectionByDimAndIndex(0, 0)
+		IVirtualArrayIterator iterX = useSet.getSelectionByDimAndIndex(0, 0)
 				.iterator();
-		ISelectionIterator iterY = useSet.getSelectionByDimAndIndex(1, 0)
+		IVirtualArrayIterator iterY = useSet.getSelectionByDimAndIndex(1, 0)
 				.iterator();
 
 		IStorage refStorageX = useSet.getStorageByDimAndIndex(0, 0);
@@ -444,9 +444,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 			
 			intersectStart(xFix, yFix);
 
-			ISelectionIterator iterX_inner = useSet.getSelectionByDimAndIndex(0,
+			IVirtualArrayIterator iterX_inner = useSet.getSelectionByDimAndIndex(0,
 					0).iterator();
-			ISelectionIterator iterY_inner = useSet.getSelectionByDimAndIndex(1,
+			IVirtualArrayIterator iterY_inner = useSet.getSelectionByDimAndIndex(1,
 					0).iterator();
 
 			int iIndexInner = 0;
@@ -635,9 +635,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 					}
 					// System.out.print("+");				
 
-					ISelectionIterator iterX = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterX = refSet.getSelectionByDimAndIndex(
 							0, 0).iterator();
-					ISelectionIterator iterY = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterY = refSet.getSelectionByDimAndIndex(
 							1, 0).iterator();
 					
 					if (!doMinMaxData.isValid()) {

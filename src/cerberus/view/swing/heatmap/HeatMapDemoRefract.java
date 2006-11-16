@@ -54,12 +54,12 @@ import gleem.*;
 import gleem.linalg.*;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.selection.SelectionSingleBlock;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
 
 import cerberus.view.swing.loader.FileLoader;
 

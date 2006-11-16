@@ -18,13 +18,13 @@ import cerberus.manager.data.ISelectionManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
 
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.SelectionType;
 //import cerberus.data.collection.Storage;
-import cerberus.data.collection.selection.SelectionSingleBlock;
-import cerberus.data.collection.selection.SelectionMultiBlock;
+import cerberus.data.collection.selection.VirtualArraySingleBlock;
+import cerberus.data.collection.selection.VirtualArrayMultiBlock;
 import cerberus.data.collection.set.SetPlanarSimple;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 
 
 
@@ -39,12 +39,12 @@ implements ISelectionManager
 	
 	private final LoggerType logLevel = LoggerType.VERBOSE;
 	
-	private ISelection testSelection;
+	private IVirtualArray testSelection;
 	
 	/**
-	 * Vector holds a list of all ISelection's
+	 * Vector holds a list of all IVirtualArray's
 	 */
-	protected Vector<ISelection> vecSelection;
+	protected Vector<IVirtualArray> vecSelection;
 	
 
 	
@@ -59,14 +59,14 @@ implements ISelectionManager
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 			
-		vecSelection = new Vector< ISelection > ( iInitSizeContainer );
+		vecSelection = new Vector< IVirtualArray > ( iInitSizeContainer );
 
 		refGeneralManager.getSingelton().setSelectionManager( this );
 		
 //		/**
-//		 * Test ISelection...
+//		 * Test IVirtualArray...
 //		 */
-//		testSelection = new SelectionMultiBlock( 
+//		testSelection = new VirtualArrayMultiBlock( 
 //				this.createNewId(ManagerObjectType.SELECTION_MULTI_BLOCK),
 //				refGeneralManager,
 //				/// pass no ICollectionLock 
@@ -78,7 +78,7 @@ implements ISelectionManager
 //				"SELECTION: testSelection created with Id =[" +
 //				testSelection.getId() +"]", logLevel);
 //		/**
-//		 * END: Test ISelection...
+//		 * END: Test IVirtualArray...
 //		 */
 	}
 
@@ -88,17 +88,17 @@ implements ISelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#createSelection()
 	 */
-	public ISelection createSelection( final ManagerObjectType useSelectionType ) {
+	public IVirtualArray createSelection( final ManagerObjectType useSelectionType ) {
 		
 		assert useSelectionType!= null: "can not handle null pointer";
 	
 		
 		switch ( useSelectionType ) {
 			case SELECTION_SINGLE_BLOCK:
-				return new SelectionSingleBlock( createNewId(ManagerObjectType.SELECTION), this, null );
+				return new VirtualArraySingleBlock( createNewId(ManagerObjectType.SELECTION), this, null );
 				
 			case SELECTION_MULTI_BLOCK:
-				return new SelectionMultiBlock( createNewId(ManagerObjectType.SELECTION), this, null );	
+				return new VirtualArrayMultiBlock( createNewId(ManagerObjectType.SELECTION), this, null );	
 				
 			case SELECTION_LOAD_MICROARRAY:
 				System.err.println("ISelectionManager.createSelection() SELECTION_LOAD_MICROARRAY is deprecated!");
@@ -121,14 +121,14 @@ implements ISelectionManager
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.ISelection)
+	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.IVirtualArray)
 	 */
-	public boolean deleteSelection(ISelection deleteSelection ) {
+	public boolean deleteSelection(IVirtualArray deleteSelection ) {
 		return vecSelection.remove( deleteSelection );
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.ISelection)
+	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.IVirtualArray)
 	 */
 	public boolean deleteSelection( final int iItemId ) {
 		try {
@@ -143,7 +143,7 @@ implements ISelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getItemSelection(int)
 	 */
-	public ISelection getItemSelection( final int iItemId) {
+	public IVirtualArray getItemSelection( final int iItemId) {
 		
 		try {
 			return vecSelection.get( getIndexInVector_byUniqueId( iItemId ) );
@@ -169,11 +169,11 @@ implements ISelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
 	 */
-	public ISelection[] getAllSelectionItems() {
+	public IVirtualArray[] getAllSelectionItems() {
 		
-		ISelection[] resultArray = new ISelection[ vecSelection.size() ];
+		IVirtualArray[] resultArray = new IVirtualArray[ vecSelection.size() ];
 		
-		Iterator<ISelection> iter = vecSelection.iterator();
+		Iterator<IVirtualArray> iter = vecSelection.iterator();
 		for ( int i=0 ; iter.hasNext() ; i++ ) {
 			resultArray[i] = iter.next();
 		}
@@ -184,7 +184,7 @@ implements ISelectionManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
 	 */
-	public Vector<ISelection> getAllSelectionItemsVector() {
+	public Vector<IVirtualArray> getAllSelectionItemsVector() {
 		
 		return vecSelection;
 	}
@@ -228,7 +228,7 @@ implements ISelectionManager
 		
 		
 		try {
-			ISelection addItem = (ISelection) registerItem;
+			IVirtualArray addItem = (IVirtualArray) registerItem;
 			
 			if ( hasItem_withUniqueId( iItemId ) ) {
 				vecSelection.set( getIndexInVector_byUniqueId( iItemId ), addItem );

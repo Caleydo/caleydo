@@ -29,8 +29,8 @@ import cerberus.manager.IGeneralManager;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
-import cerberus.data.collection.selection.SelectionThreadSingleBlock;
+import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.selection.VirtualArrayThreadSingleBlock;
 import cerberus.data.xml.IMementoXML;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.parser.ParserTokenType;
@@ -69,7 +69,7 @@ implements IMementoXML, IParserObject {
 	/**
 	 * 
 	 */
-	private ISelection refImportDataOverrideSelection;
+	private IVirtualArray refImportDataOverrideSelection;
 	
 	/**
 	 * ref to singelton
@@ -422,8 +422,8 @@ implements IMementoXML, IParserObject {
 			    }
 			    refDataStorage.setArrayFloat( floatBuffer );
 			    
-			    ISelection selFloat = 
-			    	new SelectionThreadSingleBlock(1,null,null);
+			    IVirtualArray selFloat = 
+			    	new VirtualArrayThreadSingleBlock(1,null,null);
 			    selFloat.setLabel("import FLOAT");
 			    selFloat.setLength( LLFloat.size() );
 			    
@@ -441,8 +441,8 @@ implements IMementoXML, IParserObject {
 			    }
 			    refDataStorage.setArrayString( stringBuffer );
 			    
-			    ISelection selFloat = 
-			    	new SelectionThreadSingleBlock(1, refGeneralManager, null);
+			    IVirtualArray selFloat = 
+			    	new VirtualArrayThreadSingleBlock(1, refGeneralManager, null);
 			    selFloat.setLabel("import STRING");
 			    selFloat.setLength( LLString.size() );
 			    

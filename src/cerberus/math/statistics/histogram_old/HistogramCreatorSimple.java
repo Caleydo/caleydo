@@ -11,11 +11,11 @@ package cerberus.math.statistics.histogram_old;
 //import java.util.Vector;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.ISelection;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 
-import cerberus.data.collection.selection.iterator.ISelectionIterator;
-import cerberus.data.collection.selection.iterator.SelectionProxyIterator;
+import cerberus.data.collection.selection.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.selection.iterator.VirtualArrayProxyIterator;
 
 
 /**
@@ -73,7 +73,7 @@ public class HistogramCreatorSimple implements HistogramCreator {
 		}
 		
 		IStorage[] refStorage = refSet.getStorageByDim( 0 );
-		ISelection[] refSelection = refSet.getSelectionByDim( 0 );
+		IVirtualArray[] refSelection = refSet.getSelectionByDim( 0 );
 		
 		int [] refArray = refStorage[0].getArrayInt();
 					
@@ -82,8 +82,8 @@ public class HistogramCreatorSimple implements HistogramCreator {
 		}
 		
 		// ... read out data from storage ...
-		ISelectionIterator iter =
-			new SelectionProxyIterator( refSelection[0] );
+		IVirtualArrayIterator iter =
+			new VirtualArrayProxyIterator( refSelection[0] );
 		
 		iMaxItemsPerRow = 0;
 		iMinValue = refArray[0];
