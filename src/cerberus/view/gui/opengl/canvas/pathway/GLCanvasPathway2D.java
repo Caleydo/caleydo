@@ -6,6 +6,9 @@ import gleem.linalg.Vec4f;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -58,6 +61,8 @@ implements IGLCanvasUser {
 	protected Vec4f rotation;
 	
 	protected GL gl;
+	
+	protected float fZLayerValue = 0.0f;
 		
 	/**
 	 * Constructor
@@ -172,20 +177,60 @@ implements IGLCanvasUser {
 			gl.glColor3f(0.53f, 0.81f, 1.0f); // ligth blue
 		}
 		
-		gl.glRectf(fCanvasXPos - fCanvasWidth, 
-				fCanvasYPos - fCanvasHeight, 
-				fCanvasXPos + fCanvasWidth, 
-				fCanvasYPos + fCanvasHeight);
-	
-		// draw border
-		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glBegin(GL.GL_LINE_STRIP);						
-			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, 0.0f);					
-			gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, 0.0f);	
-			gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, 0.0f);
-			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, 0.0f);
-			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, 0.0f);			
-		gl.glEnd();	
+//		gl.glTranslatef(0.0f, 0.0f, fZLayerValue);
+//		gl.glRectf(fCanvasXPos - fCanvasWidth, 
+//				fCanvasYPos - fCanvasHeight,
+//				fCanvasXPos + fCanvasWidth, 
+//				fCanvasYPos + fCanvasHeight);
+//		gl.glTranslatef(0.0f, 0.0f, -fZLayerValue);
+//	
+//		
+//		// draw border
+//		gl.glColor3f(0.0f, 0.0f, 0.0f);
+//		gl.glBegin(GL.GL_LINE_STRIP);						
+//			gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue);			
+//		gl.glEnd();	
+		
+		gl.glBegin(GL.GL_QUADS);
+		
+		// Front face
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue - 0.02f);					
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue - 0.02f);	
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue - 0.02f);
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue - 0.02f);
+
+		// Back face
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue + 0.02f);					
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue + 0.02f);	
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue + 0.02f);
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue + 0.02f);
+
+		gl.glColor3f(0.70f, 0.90f, 1.0f); // ligth blue
+		// Top face
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue - 0.02f);
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue - 0.02f);
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue + 0.02f);
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue + 0.02f);
+
+		// Bottom face
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue - 0.02f);					
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue + 0.02f);					
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue + 0.02f);	
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue - 0.02f);	
+
+		// Left face
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue - 0.02f);					
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue - 0.02f);
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue + 0.02f);
+		gl.glVertex3f(fCanvasXPos - fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue + 0.02f);					
+		
+		// Right face
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue - 0.02f);	
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue - 0.02f);
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos + fCanvasHeight, fZLayerValue + 0.02f);
+		gl.glVertex3f(fCanvasXPos + fCanvasWidth, fCanvasYPos - fCanvasHeight, fZLayerValue + 0.02f);	
+
+		gl.glEnd();
 	}
 	
 	public void createEdge(
@@ -244,10 +289,11 @@ implements IGLCanvasUser {
 			}
 		}
 		
+		gl.glLineWidth(2.0f);
 		gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
-		gl.glBegin(GL.GL_LINES);						
-			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, 0.001f);
-			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, 0.001f);					
+		gl.glBegin(GL.GL_LINES);		
+			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, fZLayerValue); 
+			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, fZLayerValue);					
 		gl.glEnd();				
 	}
 	
@@ -371,21 +417,31 @@ implements IGLCanvasUser {
 		{
 			return;
 		}
-		
-		// Draw pathway "sheet" border
-		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glBegin(GL.GL_LINE_STRIP);						
-			gl.glVertex3f(-1.0f, -1.0f, 0.0f);					
-			gl.glVertex3f(-1.0f, 1.0f, 0.0f);
-			gl.glVertex3f(1.8f, 1.0f, 0.0f);
-			gl.glVertex3f(1.8f, -1.0f, 0.0f);
-			gl.glVertex3f(-1.0f, -1.0f, 0.0f);
-		gl.glEnd();	
-		
-		extractVertices();
-		extractEdges();
+	
+		// Just for testing!
+		for (int iLayerIndex = 0; iLayerIndex < 3; iLayerIndex++)
+		{
+			fZLayerValue = iLayerIndex;
 			
-		finishGraphBuilding();
+			// Draw pathway "sheet" border
+			gl.glColor3f(0.0f, 0.0f, 0.0f);
+			gl.glBegin(GL.GL_LINE_STRIP);						
+				gl.glVertex3f(-1.0f, -1.0f, fZLayerValue);					
+				gl.glVertex3f(-1.0f, 1.0f, fZLayerValue);
+				gl.glVertex3f(1.8f, 1.0f, fZLayerValue);
+				gl.glVertex3f(1.8f, -1.0f, fZLayerValue);
+				gl.glVertex3f(-1.0f, -1.0f, fZLayerValue);
+			gl.glEnd();	
+			
+//			gl.glTranslatef(0.0f, 0.0f, fZLayerValue);
+//			gl.glColor4f(0.7f, 0.7f, 0.7f, 1.0f);
+//			gl.glRectf(-1.0f, -1.0f, 1.8f, 1.0f);
+//			gl.glTranslatef(0.0f, 0.0f, -fZLayerValue);
+//			
+			extractVertices();
+			extractEdges();	
+			finishGraphBuilding();
+		}
 	}
 
 	public void setPathwayId(int iPathwayId) {

@@ -23,6 +23,8 @@ implements IXmlParserHandler {
 	
 	protected HashMap<Integer, Integer> kgmlIdToElementIdLUT;
 	
+	protected boolean bVertexExists = false;
+	
 	/**
 	 * Map that stores the KEGG compound names and the internal compound ID
 	 */
@@ -178,12 +180,25 @@ implements IXmlParserHandler {
 		   else if (sAttributeName.equals("reaction"))
 			   sReactionId = attributes.getValue(iAttributeIndex);
 	   	}
-
-    	iGeneratedElementId = 		
-    		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
-				createVertex(sName, sType, sLink, sReactionId);
     	
-    	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
+    	// Return if node already exists
+    	if (!kgmlIdToElementIdLUT.containsKey(iKgmlEntryID))
+    	{
+        	iGeneratedElementId = 		
+        		((PathwayElementManager)(refGeneralManager.getSingelton().getPathwayElementManager())).
+    				createVertex(sName, sType, sLink, sReactionId);
+        	
+        	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
+        	
+        	bVertexExists = false;
+    	}
+    	else
+    	{
+    		bVertexExists = true;
+    	}
+    	
+    	((PathwayElementManager)(refGeneralManager.getSingelton().getPathwayElementManager())).
+			addVertexToPathway(iGeneratedElementId);
     	
     	if (sType.equals("compound"))
     	{
@@ -200,6 +215,10 @@ implements IXmlParserHandler {
 	 * x="142" y="304" width="45" height="17"/>
 	 */
     protected void handleGraphicsTag() {
+    	
+    	// Don't create a new vertex representation if vertex was already created.
+    	if (bVertexExists == true)
+    		return;
     	
 		String sName = "";
 		String sType = "";
@@ -229,9 +248,6 @@ implements IXmlParserHandler {
    				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
    			else if (sAttributeName.equals("type"))
    				sType = attributes.getValue(iAttributeIndex);
-			
-   			//System.out.println("Attribute name: " +sAttributeName);
-   			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}
 
 		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
@@ -269,12 +285,17 @@ implements IXmlParserHandler {
 			
    			//System.out.println("Attribute name: " +sAttributeName);
    			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
-   		}  	
-    	
-    	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1); //TODO: exception
+   		}  	    	
+		
+		if (!kgmlIdToElementIdLUT.containsKey(iEntry1) || !kgmlIdToElementIdLUT.containsKey(iEntry2))
+		{
+			return;
+		}
+		
+    	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1);
     	int iElementId2 = kgmlIdToElementIdLUT.get(iEntry2);
-    	
-		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+
+		((PathwayElementManager)(refGeneralManager.getSingelton().getPathwayElementManager())).
 			createRelationEdge(iElementId1, iElementId2, sType);
     }
     	

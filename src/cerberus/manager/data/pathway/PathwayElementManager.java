@@ -62,7 +62,7 @@ implements IPathwayElementManager {
 			String sType, 
 			String sLink,
 			String sReactionId) {
-		
+
 		int iGeneratedId = generateId();
 				
 		PathwayVertex newVertex = 
@@ -71,13 +71,19 @@ implements IPathwayElementManager {
 		currentVertex = newVertex;
 		vertexLUT.put(iGeneratedId, newVertex);
 		
-		((PathwayManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY))).
-			getCurrentPathway().addVertex(newVertex);
-		//PathwayManager.getInstance().getCurrentPathway().addVertex(newVertex);
-		
 		return iGeneratedId;
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayElementManager#addVertexToPathway(int)
+	 */
+	public void addVertexToPathway(int iVertexId) {
+		
+		((PathwayManager)(refGeneralManager.getSingelton().getPathwayManager())).
+			getCurrentPathway().addVertex(vertexLUT.get(iVertexId));
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertexRepresentation(java.lang.String, int, int, int, int)
 	 */
