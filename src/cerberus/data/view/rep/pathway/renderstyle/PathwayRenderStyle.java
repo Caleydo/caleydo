@@ -86,10 +86,10 @@ extends ARenderStyle {
 		reactionEdgeColor = Color.BLUE;
 		maplinkEdgeColor = Color.MAGENTA;
 		
-		fEnzymeNodeWidth = 8;
-		fEnzymeNodeHeight = 8;
-		fCompoundNodeWidth = 45;
-		fCompoundNodeHeight = 17;
+		fEnzymeNodeWidth = 45;
+		fEnzymeNodeHeight = 17;
+		fCompoundNodeWidth = 8;
+		fCompoundNodeHeight = 8;
 		fPathwayNodeWidth = 70;
 		fPathwayNodeHeight = 27;
 	}
