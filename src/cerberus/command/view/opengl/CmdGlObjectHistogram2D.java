@@ -86,7 +86,7 @@ implements ICommand {
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg( "CmdGLObjectHistogram2D no set defined!");
 		}
-		//canvas.setHistogramLength( 200 );
+		canvas.setHistogramLength( 3 );
 	}
 
 	@Override

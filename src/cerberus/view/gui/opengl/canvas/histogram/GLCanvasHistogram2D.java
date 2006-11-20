@@ -69,7 +69,7 @@ implements IGLCanvasUser
 			0.1f, 0.9f, 0.1f,
 			0.9f, 0.1f, 0.1f };
 	
-	private int iBorderIntervallLength = 200;
+	private int iBorderIntervallLength = 5;
 	
 	protected float[][] fAspectRatio;
 	
@@ -263,6 +263,7 @@ implements IGLCanvasUser
 	  HistogramStatisticsSet histogramCreatorSet = 
 		  new HistogramStatisticsSet( iBorderIntervallLength );
 	  
+	  histogramCreatorSet.setHistoramGetMinMaxFromDataEnabled( true );
 	  histogramCreatorSet.addData( targetSet );
 	  histogramCreatorSet.setIntervalEqualSpacedInt( iHistogramLevels ,
 			  enumCurrentHistogramMode,
@@ -271,6 +272,8 @@ implements IGLCanvasUser
 	  HistogramData refResultBuffer = 
 		  histogramCreatorSet.getUpdatedHistogramData();
 	 
+	  this.refGeneralManager.getSingelton().logMsg( "HISTOGRAM:\n  " + refResultBuffer.toString() );
+	  
 	  listHistogramData.clear();
 	  
 	  if ( refResultBuffer != null ) {
@@ -470,4 +473,12 @@ implements IGLCanvasUser
 	    gl.glMatrixMode(GL.GL_MODELVIEW);
 	    gl.glPopMatrix();
 	  }
+  
+	public void displayChanged(GLAutoDrawable drawable, 
+			final boolean modeChanged, 
+			final boolean deviceChanged) {
+
+		// TODO Auto-generated method stub
+		
+	}
 }

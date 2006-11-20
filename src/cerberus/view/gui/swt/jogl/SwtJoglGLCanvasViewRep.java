@@ -192,6 +192,16 @@ implements IView, IGLCanvasDirector {
 		}
 	}
 	
+	public void displayGLChanged(GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
+
+		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+		
+		while ( iter.hasNext() ) {
+			iter.next().displayChanged(drawable, modeChanged, deviceChanged);
+		}
+		
+	}
+	
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#destroyDirector()
@@ -211,6 +221,8 @@ implements IView, IGLCanvasDirector {
 		canvasManager.unregisterGLEventListener( refGLEventListener );
 		canvasManager.removeGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
 		
+		destroyOnExitViewRep();
+		
 		removeAllGLCanvasUsers();
 		
 		refGLEventListener = null;
@@ -218,4 +230,6 @@ implements IView, IGLCanvasDirector {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
 				iUniqueId + " ...[DONE]");
 	}
+
+
 }

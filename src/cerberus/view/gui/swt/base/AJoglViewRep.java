@@ -27,6 +27,8 @@ implements IView
 	
 	protected GLEventListener refGLEventListener;
 	
+	private Animator refAnimator;
+	
 	public AJoglViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
@@ -75,7 +77,13 @@ implements IView
 	public void drawView()
 	{
 		
-	    final Animator animator = new Animator(refGLCanvas);
-	    animator.start();
+		refAnimator = new Animator(refGLCanvas);
+		
+	    refAnimator.start();
+	}
+	
+	protected void destroyOnExitViewRep() {
+		
+		refAnimator.stop();
 	}
 }

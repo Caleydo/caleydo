@@ -83,4 +83,13 @@ implements IGLCanvasUser
 	{
 		return null;
 	}
+
+	public void displayChanged(GLAutoDrawable drawable, 
+			final boolean modeChanged, 
+			final boolean deviceChanged) {
+
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

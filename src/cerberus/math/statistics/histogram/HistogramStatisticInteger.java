@@ -627,6 +627,13 @@ implements IHistogramStatistic {
 		return this.iHistogramIntervallCounter;
 	}
 	
+	public final boolean isHistoramGetMinMaxFromDataEnabled() {
+		return bHistoramGetMinMaxFromData;
+	}
+	
+	public final void setHistoramGetMinMaxFromDataEnabled( final boolean bSet ) {
+		bHistoramGetMinMaxFromData = bSet;
+	}
 	
 	
 }

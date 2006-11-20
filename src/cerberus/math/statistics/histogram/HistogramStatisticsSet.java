@@ -35,6 +35,8 @@ implements IHistogramStatistic {
 	public void addData( final ISet useSet ) {
 		refSet = useSet;
 				
+		assert refSet != null : "addData(null) !";
+		
 		bRawDataIsValid = false;
 		bHistoramDataIsValid = false;
 		bHistoramPercentIsValid = false;

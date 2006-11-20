@@ -229,4 +229,12 @@ implements IGLCanvasUser
 	{
 		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
 	}
+	
+	public void displayChanged(GLAutoDrawable drawable, 
+			final boolean modeChanged, 
+			final boolean deviceChanged) {
+
+		// TODO Auto-generated method stub
+		
+	}
 }

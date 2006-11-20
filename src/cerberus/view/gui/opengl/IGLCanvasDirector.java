@@ -26,6 +26,10 @@ public interface IGLCanvasDirector {
 	
 	public abstract void updateGLCanvasUser( GLAutoDrawable drawable );
 	
+	public abstract void displayGLChanged(GLAutoDrawable drawable, 
+			boolean modeChanged,
+			boolean deviceChanged);
+		
 	public void destroyDirector();
 
 }

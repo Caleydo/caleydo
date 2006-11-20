@@ -442,4 +442,12 @@ implements IGLCanvasUser
 //		fAspectRatio[X][MAX] = minMaxSeaker.getMax(0);
 //		fAspectRatio[Y][MAX] = minMaxSeaker.getMax(1);
 	}
+	
+	public void displayChanged(GLAutoDrawable drawable, 
+			final boolean modeChanged, 
+			final boolean deviceChanged) {
+
+		// TODO Auto-generated method stub
+		
+	}
 }

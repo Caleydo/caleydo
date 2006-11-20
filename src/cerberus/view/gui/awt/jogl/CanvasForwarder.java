@@ -32,31 +32,40 @@ implements GLEventListener, IJoglMouseListener {
 
 	private float view_x = 0.0f, view_y = 0.0f, view_z = 0.0f;
 
-	public static void main(String[] args) {
+	//private Animator refAnimator = null;
+	
 
-		CanvasForwarder refGearsMainRoot = new CanvasForwarder();
 
-		refGearsMainRoot.runMain();
-
-	}
-
-	public CanvasForwarder() {
-
-		refMouseHandler = new GearsMouse(this);
-
-		this.refGLCanvasDirector = null;
-	}
-
-	public CanvasForwarder(IGLCanvasDirector refGLCanvasDirector) {
+	public CanvasForwarder( final IGLCanvasDirector refGLCanvasDirector) {
 
 		refMouseHandler = new GearsMouse(this);
 
 		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
+	
+	
+	/**
+	 * This methode is just for test purpose!
+	 * 
+	 * @deprecated use this code only for test purpose
+	 * 
+	 */
+	public static void main(String[] args) {
 
+		CanvasForwarder refGearsMainRoot = new CanvasForwarder( null );
+
+		refGearsMainRoot.runMain();
+
+	}
+	
+	/**
+	 * This methode is just for test purpose!
+	 * 
+	 * @deprecated use this code only for test purpose
+	 */
 	public void runMain() {
 
-		CanvasForwarder refmyGrears = new CanvasForwarder();
+		CanvasForwarder refmyGrears = new CanvasForwarder( null );
 
 		Frame frame = new Frame("GL Canvas Forwarder");
 		GLCanvas canvas = new GLCanvas();
@@ -66,7 +75,10 @@ implements GLEventListener, IJoglMouseListener {
 		frame.add(canvas);
 		frame.setSize(300, 300);
 
-		final Animator animator = new Animator(canvas);
+		Animator refAnimator = new Animator(canvas);
+		
+		final Animator animatorHelper = refAnimator;
+		
 		frame.addWindowListener(new WindowAdapter() {
 
 			public void windowClosing(WindowEvent e) {
@@ -78,7 +90,7 @@ implements GLEventListener, IJoglMouseListener {
 
 					public void run() {
 
-						animator.stop();
+						animatorHelper.stop();
 						System.exit(0);
 					}
 				}).start();
@@ -87,7 +99,9 @@ implements GLEventListener, IJoglMouseListener {
 
 		frame.setVisible(true);
 
-		animator.start();
+		//animatorHelper.start();
+		
+		refAnimator.start();
 	}
 
 	public synchronized void setViewAngles(float fView_RotX, float fView_RotY,
@@ -138,7 +152,7 @@ implements GLEventListener, IJoglMouseListener {
 
 		GL gl = drawable.getGL();
 
-		System.out.println("TrinalgeMain.java INIT GL IS: "
+		System.out.println("CanvasForwarder INIT GL IS: "
 				+ gl.getClass().getName());
 
 		//gl.resizeGLScene();                      // Initialize the GL viewport
@@ -168,7 +182,7 @@ implements GLEventListener, IJoglMouseListener {
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 
-		System.out.println("TrinalgeMain.java  RESHAPE GL");
+		System.out.println("CanvasForwarder  RESHAPE GL");
 
 		GL gl = drawable.getGL();
 
@@ -225,9 +239,10 @@ implements GLEventListener, IJoglMouseListener {
 
 	}
 
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-			boolean deviceChanged) {
+	public void displayChanged(GLAutoDrawable drawable, 
+			final boolean modeChanged,
+			final boolean deviceChanged) {
 
+		refGLCanvasDirector.displayGLChanged( drawable, modeChanged, deviceChanged);
 	}
-
 }

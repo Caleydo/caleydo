@@ -16,6 +16,8 @@ extends IUniqueObject {
 	public abstract void render(GLAutoDrawable canvas);
 
 	public abstract void update(GLAutoDrawable canvas);
+	
+	public abstract void displayChanged(GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged);
 
 	public abstract GLAutoDrawable getGLCanvas();
 
