@@ -74,7 +74,7 @@ implements ISelectionManager
 //		
 //		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.SELECTION_MULTI_BLOCK );
 //		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+//		refGeneralManager.getSingelton().logMsg( 
 //				"SELECTION: testSelection created with Id =[" +
 //				testSelection.getId() +"]", logLevel);
 //		/**

@@ -19,6 +19,7 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.ISelectionManager;
@@ -375,5 +376,13 @@ implements ISingelton {
 			iNetworkApplicationIdPostfix = iSetNetworkPrefix;
 		}
 		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0..99] ");
+	}
+
+	public final void logMsg( final String info, final LoggerType logLevel) {
+		refLoggerManager.logMsg( info, logLevel );		
+	}
+
+	public final void logMsg(String info) {
+		refLoggerManager.logMsg( info, LoggerType.FULL );	
 	}
 }

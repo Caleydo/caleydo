@@ -48,7 +48,7 @@ implements IView {
 
 	public void drawView() {
 		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+//		refGeneralManager.getSingelton().logMsg(
 //				this.getClass().getSimpleName() + 
 //				": drawView(): Load "+sUrl, 
 //				LoggerType.VERBOSE );		

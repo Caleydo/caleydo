@@ -1,5 +1,6 @@
 package cerberus.manager;
 
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.ISelectionManager;
@@ -85,4 +86,24 @@ public interface ISingelton {
 	public abstract void setViewGLCanvasManager(IViewGLCanvasManager refViewManager);
 	
 	public abstract void setXmlParserManager(XmlParserManager refXmlParserManager);
+	
+	
+	/**
+	 * @see cerberus.manager.ILoggerManager#logMsg(String, LoggerType)
+	 * 
+	 * @param info log message
+	 * @param logLevel type of message
+	 */
+	public abstract void logMsg( final String info, final LoggerType logLevel );
+	
+	/**
+	 * Note: each message will be sent with LoggerType.FULL
+	 * 
+	 * @see cerberus.manager.ILoggerManager#logMsg( String )
+	 * 
+	 * @param info log message
+	 */
+	public abstract void logMsg( final String info );
+	
+	
 }

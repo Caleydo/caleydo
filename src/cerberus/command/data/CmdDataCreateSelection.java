@@ -117,7 +117,7 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+		refGeneralManager.getSingelton().logMsg( 
 				"DO new SEL: " + 
 				newObject.toString() );
 	}
@@ -131,7 +131,7 @@ implements ICommand {
 				iUniqueTargetId,
 				ManagerObjectType.SELECTION_MULTI_BLOCK );
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueTargetId );
 	}
@@ -218,7 +218,7 @@ implements ICommand {
 		}
 		catch ( NumberFormatException nfe ) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"CmdDataCreateSelection::doCommand() error on attributes!");			
 			return false;
 		}

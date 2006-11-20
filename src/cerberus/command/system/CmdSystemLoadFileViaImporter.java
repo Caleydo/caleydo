@@ -132,7 +132,7 @@ implements ICommand {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
@@ -148,7 +148,7 @@ implements ICommand {
 			sTokenPattern + "]  targetSet(s)=[" +
 			iTargetSetId + "])";
 			
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					errorMsg,
 					LoggerType.ERROR_ONLY );
 			
@@ -179,7 +179,7 @@ implements ICommand {
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					errorMsg,
 					LoggerType.ERROR_ONLY );
 			

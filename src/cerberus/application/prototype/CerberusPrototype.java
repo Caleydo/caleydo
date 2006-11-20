@@ -17,7 +17,9 @@ import cerberus.xml.parser.manager.XmlParserManager;
 public class CerberusPrototype
 {
 	private String sFileName;
-		
+	
+	private OneForAllManager refOneForAllManager;
+	
 	protected IGeneralManager refGeneralManager;
 	protected ISWTGUIManager refSWTGUIManager;
 	protected IViewManager refViewManager;	
@@ -41,11 +43,11 @@ public class CerberusPrototype
 		/**
 		 * In order to use SWT call setStateSWT( true ) to enabel SWT support!
 		 */
-		OneForAllManager oneForAllManager = new OneForAllManager(null);
-		oneForAllManager.setStateSWT( true );
-		oneForAllManager.initAll();
+		refOneForAllManager = new OneForAllManager(null);
+		refOneForAllManager.setStateSWT( true );
+		refOneForAllManager.initAll();
 		
-		refGeneralManager = oneForAllManager.getGeneralManager();
+		refGeneralManager = refOneForAllManager.getGeneralManager();
 
 		refXmlParserManager = new XmlParserManager( refGeneralManager, false );
 		
@@ -80,6 +82,8 @@ public class CerberusPrototype
 		parseBootstrapDataFromXML();
 		
 		refSWTGUIManager.runApplication();
+		
+		refOneForAllManager.destroyOnExit();
 	}
 	
 	public final void setXmlFileName( String sFileName ) {
@@ -103,5 +107,6 @@ public class CerberusPrototype
 				sFileName,
 				refXmlParserManager,
 				logger );
+				
 	}
 }

@@ -334,7 +334,7 @@ implements IView, IMediatorReceiver {
 	public void update(Object eventTrigger) {
 
 		int triggerId = ((IVirtualArray) eventTrigger).getId();
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"Data Explorer update called by " + triggerId,
 				LoggerType.VERBOSE);
 

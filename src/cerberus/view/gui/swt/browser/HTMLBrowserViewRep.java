@@ -112,7 +112,7 @@ implements IView {
 
 	public void drawView() {
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				this.getClass().getSimpleName() + 
 				": drawView(): Load "+sUrl, 
 				LoggerType.VERBOSE );
@@ -124,7 +124,7 @@ implements IView {
 			
 		} catch (UnknownHostException e)
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
 					": No internet connection found!", 
 					LoggerType.VERBOSE );

@@ -78,6 +78,14 @@ implements ICommand {
 				
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
 		canvas.setResolution( fResolution );
+		
+		if ( iTargetCollectionSetId > -1 ) {
+			canvas.setTargetSetId( iTargetCollectionSetId );
+		}
+		else 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg( "CmdGLObjectHistogram2D no set defined!");
+		}
 		//canvas.setHistogramLength( 200 );
 	}
 

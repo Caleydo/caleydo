@@ -96,7 +96,7 @@ implements IGeneralManagerSingelton
 
 	protected ILoggerManager refLoggerManager;
 
-	protected IViewGLCanvasManager refViewManager;
+	protected IViewGLCanvasManager refViewGLManager;
 
 	protected ISWTGUIManager refSWTGUIManager;
 
@@ -182,7 +182,7 @@ implements IGeneralManagerSingelton
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);
 		
-		refViewManager = new ViewJoglManager(this);
+		refViewGLManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refPathwayManager = new PathwayManager(this);
 		refPathwayElementManager = new PathwayElementManager(this);
@@ -206,7 +206,7 @@ implements IGeneralManagerSingelton
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
 		refSingeltonManager.setMenuManager(refMenuManager);
-		refSingeltonManager.setViewGLCanvasManager(refViewManager);
+		refSingeltonManager.setViewGLCanvasManager(refViewGLManager);
 		refSingeltonManager.setSWTGUIManager(refSWTGUIManager);
 		refSingeltonManager.setPathwayElementManager(refPathwayElementManager);
 		refSingeltonManager.setPathwayManager(refPathwayManager);
@@ -274,8 +274,8 @@ implements IGeneralManagerSingelton
 		if (refSWTGUIManager.hasItem(iItemId))
 			return refSWTGUIManager.getItem(iItemId);
 
-		if (refViewManager.hasItem(iItemId))
-			return refViewManager.getItem(iItemId);
+		if (refViewGLManager.hasItem(iItemId))
+			return refViewGLManager.getItem(iItemId);
 
 		return null;
 	}
@@ -593,7 +593,7 @@ implements IGeneralManagerSingelton
 		case STORAGE:
 			return refStorageManager;
 		case VIEW:
-			return refViewManager;
+			return refViewGLManager;
 		case COMMAND:
 			return refCommandManager;
 		case GUI_SWT:
@@ -653,5 +653,14 @@ implements IGeneralManagerSingelton
 	public boolean getStateSWT()
 	{
 		return this.bEnableSWT;
+	}
+	
+	public void destroyOnExit() {
+		
+		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()");
+		
+		this.refViewGLManager.destroyOnExit();
+		
+		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()  ...[DONE]");
 	}
 }

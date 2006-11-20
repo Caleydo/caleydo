@@ -91,7 +91,7 @@ implements IXmlParserHandler {
 		if (sAttributeName.equals("image"))
 			sImageLink = attributes.getValue(0); 
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+		refGeneralManager.getSingelton().logMsg( 
 				"Load image map from: " + sImageLink,
 				LoggerType.FULL );
 		

@@ -8,4 +8,6 @@ extends IGeneralManager {
 	
 	public IView createView(final ManagerObjectType useViewType, 
 			int iViewId, int iParentContainerId, String sLabel);
+	
+	public void destroyOnExit();
 }

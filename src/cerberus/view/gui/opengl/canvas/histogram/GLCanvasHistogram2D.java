@@ -182,12 +182,12 @@ implements IGLCanvasUser
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
 		
@@ -235,14 +235,14 @@ implements IGLCanvasUser
 	  
 	  if ( targetSet == null ) 
 	  {
-		  refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		  refGeneralManager.getSingelton().logMsg(
 				  "createHistogram() can not create Histogram, because targetSet=null",
 				  LoggerType.STATUS );
 		  return;
 	  }
 	  
 	  if ( iHistogramLevels < 1) {
-		  refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		  refGeneralManager.getSingelton().logMsg(
 				  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
 				  LoggerType.FULL );
 		  return;
@@ -251,7 +251,7 @@ implements IGLCanvasUser
 	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
 	  IVirtualArray refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
   		  
-	  refGeneralManager.getSingelton().getLoggerManager().logMsg(
+	  refGeneralManager.getSingelton().logMsg(
 			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
 			  LoggerType.FULL );
 	  
@@ -439,10 +439,27 @@ implements IGLCanvasUser
 				gl.glNormal3f( 0.0f, 0.0f, 1.0f );
 				gl.glColor3f( 1,0,0 );
 				gl.glVertex3f( -1.0f, -1.0f, -0.5f );
-				gl.glColor3f( 1,0,1 );
+				//gl.glColor3f( 1,0,1 );
 				gl.glVertex3f( 1.0f, 1.0f, -0.5f );
-				gl.glColor3f( 0,1,0 );
+				//gl.glColor3f( 0,1,0 );
 				gl.glVertex3f( 1.0f, -1.0f, -0.5f );
+			gl.glEnd();
+			
+			float fmin = -2.0f;
+			float fmax = 2.0f;
+			
+			float fshiftX = -1.0f;
+			float fshiftY = -2.0f;
+			
+			gl.glBegin( GL.GL_TRIANGLES );
+				gl.glNormal3f( 0.0f, 0.0f, 0.0f );
+				gl.glColor3f( 1,1,0 );
+				
+				gl.glVertex3f( fmin+fshiftX, fmax+fshiftY, 0.0f );
+				gl.glColor3f( 1,0,1 );
+				gl.glVertex3f( fmax+fshiftX, fmin+fshiftY, 0.0f );
+				gl.glColor3f( 0,1,1 );
+				gl.glVertex3f( fmax+fshiftX, fmax+fshiftY, 0.0f );
 			gl.glEnd();
 	    //}
 	    

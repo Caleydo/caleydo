@@ -240,7 +240,7 @@ implements IMementoXML, IParserObject {
 		   
 		    		
 		    // sample line: 1110 Kybernetik
-		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    refGeneralManager.getSingelton().logMsg(
 		    		"Read file \""+ 
 				       this.sFileName + "\" ...",
 				       LoggerType.VERBOSE );
@@ -369,7 +369,7 @@ implements IMementoXML, IParserObject {
 		    
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
 		    
-		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    refGeneralManager.getSingelton().logMsg(
 		    		" read file \""+ 
 				       this.sFileName + "\"  ....  [DONE]",
 				     LoggerType.STATUS );
@@ -459,14 +459,14 @@ implements IMementoXML, IParserObject {
 		     */
 		    refImportDataToSet.getCacheId();
 		    
-		    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    refGeneralManager.getSingelton().logMsg(
 		    		"  Read file \""+ 
 				       this.sFileName + "\" .... copy to storage ...[DONE]",
 				       LoggerType.VERBOSE );
 		    
 		}
 		catch (IOException ioe) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"MicroArrayLoader: IO-error line=[" + iLineInFile +
 					"] while parsing: " + ioe.toString(),
 					LoggerType.MINOR_ERROR );
@@ -475,7 +475,7 @@ implements IMementoXML, IParserObject {
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"MicroArrayLoader: ERROR line=[" + iLineInFile +
 					"] while parsing: " + ex.toString(),
 					LoggerType.ERROR_ONLY );

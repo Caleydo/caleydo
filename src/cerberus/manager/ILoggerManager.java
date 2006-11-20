@@ -86,7 +86,7 @@ extends IGeneralManager
 	 * 
 	 * @param systemLogLevel
 	 */
-	public void setSystemLogLevel( LoggerType systemLogLevel );
+	public void setSystemLogLevel( final LoggerType systemLogLevel );
 	
 	/**
 	 * Get current system log level.

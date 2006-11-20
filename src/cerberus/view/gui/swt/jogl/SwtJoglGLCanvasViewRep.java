@@ -66,9 +66,7 @@ implements IView, IGLCanvasDirector {
 	 */
 	public void initView() {
 		
-		CanvasForwarder renderer = new CanvasForwarder( this );
-		
-		refGLEventListener = renderer;
+		refGLEventListener = new CanvasForwarder( this );
 		
 		IViewGLCanvasManager canvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
@@ -124,7 +122,9 @@ implements IView, IGLCanvasDirector {
 		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 		
 		while ( iter.hasNext() ) {		
-			iter.next().destroy();
+			IGLCanvasUser refIGLCanvasUser = iter.next();
+			refIGLCanvasUser.destroy();
+			refIGLCanvasUser = null;
 		}
 		vecGLCanvasUser.clear();
 	}
@@ -198,6 +198,9 @@ implements IView, IGLCanvasDirector {
 	 */
 	public void destroyDirector() {
 		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
+				iUniqueId);
+		
 		super.removeGLEventListener( refGLEventListener );
 		
 		IViewGLCanvasManager canvasManager = 
@@ -207,5 +210,12 @@ implements IView, IGLCanvasDirector {
 		canvasManager.unregisterGLCanvas( refGLCanvas );		
 		canvasManager.unregisterGLEventListener( refGLEventListener );
 		canvasManager.removeGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
+		
+		removeAllGLCanvasUsers();
+		
+		refGLEventListener = null;
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
+				iUniqueId + " ...[DONE]");
 	}
 }

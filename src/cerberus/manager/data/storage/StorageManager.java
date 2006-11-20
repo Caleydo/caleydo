@@ -199,7 +199,7 @@ implements IStorageManager {
 		
 		if ( vecStorage.containsKey( iItemId ) ) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"try to register id that was already used!");
 			
 			return false;
