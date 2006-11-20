@@ -56,9 +56,9 @@ implements IGLCanvasUser
 	
 	private float [][] viewingFrame;
 	
-	private int iGridSize = 40;
+	//private int iGridSize = 40;
 	
-	private float fPointSize = 1.0f;
+	//private float fPointSize = 1.0f;
 	
 	/**
 	 * Color for grid (0,1,2) 
@@ -80,6 +80,7 @@ implements IGLCanvasUser
 	
 	public static final int X = 0;
 	public static final int Y = 1;
+	public static final int Z = 2;
 	public static final int MIN = 0;
 	public static final int MAX = 1;
 	public static final int OFFSET = 2;
@@ -99,7 +100,7 @@ implements IGLCanvasUser
 				sLabel );
 		
 		fAspectRatio = new float [2][3];
-		viewingFrame = new float [2][2];
+		viewingFrame = new float [3][2];
 		
 		fAspectRatio[X][MIN] = 0.0f;
 		fAspectRatio[X][MAX] = 20.0f; 
@@ -113,6 +114,9 @@ implements IGLCanvasUser
 		viewingFrame[X][MAX] = 1.0f; 
 		viewingFrame[Y][MIN] = 1.0f; 
 		viewingFrame[Y][MAX] = -1.0f; 
+		
+		viewingFrame[Z][MIN] = 0.0f; 
+		viewingFrame[Z][MAX] = 0.0f; 
 		
 		listHistogramData = new  LinkedList < HistogramData > ();
 	}
@@ -167,11 +171,12 @@ implements IGLCanvasUser
 		viewingFrame[X][MIN] = fResolution[6];
 		viewingFrame[X][MAX] = fResolution[7]; 
 		viewingFrame[Y][MIN] = fResolution[8]; 
-		viewingFrame[Y][MAX] = fResolution[9]; 
+		viewingFrame[Y][MAX] = fResolution[9];
 		
-		iGridSize = (int) fResolution[10]; 
-		
-		fPointSize = fResolution[11]; 
+		viewingFrame[Z][MIN] = fResolution[10]; 
+		viewingFrame[Z][MAX] = fResolution[11]; 
+				
+		iCurrentHistogramLength = (int) fResolution[12]; 
 		
 	}
 	
@@ -225,7 +230,7 @@ implements IGLCanvasUser
 
 	public void destroy()
 	{
-		System.err.println(" GLCanvasHistogram2D.destroy(GLCanvas canvas)");
+		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
 	}
 	
 
@@ -300,7 +305,7 @@ implements IGLCanvasUser
   
   public void setHistogramLength( final int iSetLegth ) {
 	  
-	  if (( iSetLegth > 5 )&&(iSetLegth < 10000 )) {
+	  if (( iSetLegth > 0 )&&(iSetLegth < 10000 )) {
 		  iCurrentHistogramLength = iSetLegth;
 		
 		  if ( targetSet != null )
@@ -378,19 +383,20 @@ implements IGLCanvasUser
 		    		HistogramData currentHistogram = iter.next();
 			    			    		
 		    		iCurrentHistogramLength = currentHistogram.getHistogramSlotCounter();
-		    		
-			    	float fMinX = -0.7f;
-			    	float fMaxX = 0.7f;
+		    				    		
+		    		                
+//			    	float fMinX = -0.7f;
+//			    	float fMaxX = 0.7f;
+//			    	
+//			    	float fMinY = -0.7f;
+//			    	float fMaxY = 0.7f;
 			    	
-			    	float fMinY = -0.7f;
-			    	float fMaxY = 0.7f;
-			    	
-			    	float fIncX = (fMaxX - fMinX) / 
+			    	float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN]) / 
 			    		(float) iCurrentHistogramLength;
-			    	float fIncY = (fMaxY - fMinY) / 
+			    	float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 
 			    		(float) currentHistogram.iMaxValuesInIntervall;
 			    	
-			    	float fNowX = fMinX;
+			    	float fNowX = viewingFrame[X][MIN];
 			    	float fNextX = fNowX + fIncX;
 			    	
 			    	gl.glNormal3f( 0.0f, 0.0f, 1.0f );
@@ -411,14 +417,15 @@ implements IGLCanvasUser
 					    	bToggleColor = true;
 					    }
 					    
-					    float fBar =  fMinY + fIncY * 
+					    float fBar =  
+				    		viewingFrame[Y][MIN] + fIncY * 
 					    	currentHistogram.iCounterPerItervall[i];
 					    //iHistogramIntervalls[i];
 					    
-							gl.glVertex3f( fNowX, fMinY, 0.0f );
-							gl.glVertex3f( fNextX, fMinY, 0.0f );
-							gl.glVertex3f( fNextX, fBar, 0.0f );
-							gl.glVertex3f( fNowX, fBar, 0.0f );						
+							gl.glVertex3f( fNowX,  viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+							gl.glVertex3f( fNextX, viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+							gl.glVertex3f( fNextX, fBar, viewingFrame[Z][MIN] );
+							gl.glVertex3f( fNowX, fBar, viewingFrame[Z][MIN] );						
 							
 							fNowX  += fIncX;
 							fNextX += fIncX;
@@ -428,50 +435,50 @@ implements IGLCanvasUser
 		    	
 			    	gl.glColor3f( 0.1f, 0.1f, 1.0f );
 			    	gl.glBegin( GL.GL_LINE_LOOP );
-				    	gl.glVertex3f( fMinX, fMinY, 0.0f );
-						gl.glVertex3f( fMaxX, fMinY, 0.0f );
-						gl.glVertex3f( fMaxX, fMaxY, 0.0f );
-						gl.glVertex3f( fMinX, fMaxY, 0.0f );
+				    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
+						gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
 					gl.glEnd();
 		    	} //end: if
 		    	
 	    	} // end while
 	    }
 	    //else {
-		    gl.glBegin( GL.GL_TRIANGLES );
-				gl.glNormal3f( 0.0f, 0.0f, 1.0f );
-				gl.glColor3f( 1,0,0 );
-				gl.glVertex3f( -1.0f, -1.0f, -0.5f );
-				//gl.glColor3f( 1,0,1 );
-				gl.glVertex3f( 1.0f, 1.0f, -0.5f );
-				//gl.glColor3f( 0,1,0 );
-				gl.glVertex3f( 1.0f, -1.0f, -0.5f );
-			gl.glEnd();
-			
-			float fmin = -2.0f;
-			float fmax = 2.0f;
-			
-			float fshiftX = -1.0f;
-			float fshiftY = -2.0f;
-			
-			gl.glBegin( GL.GL_TRIANGLES );
-				gl.glNormal3f( 0.0f, 0.0f, 0.0f );
-				gl.glColor3f( 1,1,0 );
-				
-				gl.glVertex3f( fmin+fshiftX, fmax+fshiftY, 0.0f );
-				gl.glColor3f( 1,0,1 );
-				gl.glVertex3f( fmax+fshiftX, fmin+fshiftY, 0.0f );
-				gl.glColor3f( 0,1,1 );
-				gl.glVertex3f( fmax+fshiftX, fmax+fshiftY, 0.0f );
-			gl.glEnd();
+//		    gl.glBegin( GL.GL_TRIANGLES );
+//				gl.glNormal3f( 0.0f, 0.0f, 1.0f );
+//				gl.glColor3f( 1,0,0 );
+//				gl.glVertex3f( -1.0f, -1.0f, -0.5f );
+//				//gl.glColor3f( 1,0,1 );
+//				gl.glVertex3f( 1.0f, 1.0f, -0.5f );
+//				//gl.glColor3f( 0,1,0 );
+//				gl.glVertex3f( 1.0f, -1.0f, -0.5f );
+//			gl.glEnd();
+//			
+//			float fmin = -2.0f;
+//			float fmax = 2.0f;
+//			
+//			float fshiftX = -1.0f;
+//			float fshiftY = -2.0f;
+//			
+//			gl.glBegin( GL.GL_TRIANGLES );
+//				gl.glNormal3f( 0.0f, 0.0f, 0.0f );
+//				gl.glColor3f( 1,1,0 );
+//				
+//				gl.glVertex3f( fmin+fshiftX, fmax+fshiftY, 0.0f );
+//				gl.glColor3f( 1,0,1 );
+//				gl.glVertex3f( fmax+fshiftX, fmin+fshiftY, 0.0f );
+//				gl.glColor3f( 0,1,1 );
+//				gl.glVertex3f( fmax+fshiftX, fmax+fshiftY, 0.0f );
+//			gl.glEnd();
 	    //}
 	    
 			
 			
 	    gl.glEnable( GL.GL_LIGHTING );
 	    
-	    gl.glMatrixMode(GL.GL_MODELVIEW);
-	    gl.glPopMatrix();
+	    //gl.glMatrixMode(GL.GL_MODELVIEW);
+	    //gl.glPopMatrix();
 	  }
   
 	public void displayChanged(GLAutoDrawable drawable, 

@@ -169,12 +169,12 @@ implements IGLCanvasUser
 		
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
-					"GLCanvasScatterPlot2D.setTargetSetId(" +
+					"GLCanvasMinMaxScatterPlot3D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
-				"GLCanvasScatterPlot2D.setTargetSetId(" +
+				"GLCanvasMinMaxScatterPlot3D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
 		
 		updateMinMax();
@@ -548,7 +548,7 @@ implements IGLCanvasUser
 	public void update(GLAutoDrawable canvas)
 	{
 		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.update(GLCanvas canvas)");
+		System.err.println(" GLCanvasMinMaxScatterPlot3D.update(GLCanvas canvas)");
 		
 		updateMinMax();
 	}
@@ -556,7 +556,7 @@ implements IGLCanvasUser
 	public void destroy()
 	{
 		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
+		System.err.println(" GLCanvasMinMaxScatterPlot3D.destroy(GLCanvas canvas)");
 	}
 	
 	protected void updateMinMax() {

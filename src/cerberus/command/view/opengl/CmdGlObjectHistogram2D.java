@@ -33,6 +33,8 @@ implements ICommand {
 	 */
 	protected int iTargetCollectionSetId;
 	
+	protected int iHistogramLevel = 50;
+	
 	protected String color;
 	
 	/**
@@ -63,6 +65,8 @@ implements ICommand {
 		fResolution = 
 			StringConversionTool.convertStringToFloatArray(sAttribute3,iSizeTokens);
 		
+		iHistogramLevel = (int) fResolution[iSizeTokens-1];
+		
 		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 				sDetail, 
 				-1 );
@@ -86,7 +90,7 @@ implements ICommand {
 		{
 			refGeneralManager.getSingelton().getLoggerManager().logMsg( "CmdGLObjectHistogram2D no set defined!");
 		}
-		canvas.setHistogramLength( 3 );
+		canvas.setHistogramLength( iHistogramLevel );
 	}
 
 	@Override

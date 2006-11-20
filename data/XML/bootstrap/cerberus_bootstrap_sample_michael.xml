@@ -16,7 +16,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="45301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
 						 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="80 0 0 1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="90 5 0 1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
 												
@@ -29,16 +29,17 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
 			
 			<!-- Window	10331	-->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	targetId="10331" label="Cerberus Window	1" attrib1="ROW	VERTICAL"	/>	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	targetId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 				 
 			<!-- Container 10341 -->
 			<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="51991"	targetId="10441" parent="10331" label="swt	container	1"	attrib2="ROW	HORIZONTAL"	/>
-			-->
+		
 			
 			
+				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR"		cmdId="64991"	targetId="14401" parent="10331" label="Progress Bar 1"		attrib2="300	30"	detail="30"	/>
-	   
+	   	-->
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	targetId="11401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
 
@@ -54,15 +55,28 @@
 			 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Triangle	A"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
-							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
+							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 4.0f"								
 							detail="45101" />
+							
+	
 							
 							
 							
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"		cmdId="68992"	targetId="79401" parent="12401" label="GL Triangle	A"	
-							attrib1="0 2 0" attrib2="0 0 1 0.85"
-							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 120 4.0"								
+							attrib1="0 2 0" attrib2="0 0 1 0.85"						
+							attrib3="0 20 0 20   -0.5f -2.0f    -1.5f 1.5f   -3.0f -1.0f    0.0f 0.0f   40"				
 							detail="45101" />
+							
+							
+      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"		cmdId="68993"	targetId="79401" parent="12401" label="GL Triangle	B"	
+							attrib1="0 2 0" attrib2="0 0 1 0.85"						
+							attrib3="0 20 0 20   -0.5f -2.0f    -1.5f 1.5f   -3.0f -1.0f    -3.0f 0.0f   20"				
+							detail="45101" />							
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"		cmdId="68993"	targetId="79401" parent="12401" label="GL Triangle	C"	
+							attrib1="0 2 0" attrib2="0 0 1 0.85"						
+							attrib3="0 20 0 20   -0.5f -2.0f    -1.5f 1.5f   -3.0f -1.0f    -7.0f 0.0f   10"				
+							detail="45101" />			
 							
 
 			<!-- Container 11341 -->

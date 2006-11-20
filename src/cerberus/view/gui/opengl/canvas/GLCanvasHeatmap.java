@@ -133,13 +133,13 @@ implements IGLCanvasUser
 	public void update(GLAutoDrawable canvas)
 	{
 		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.update(GLCanvas canvas)");
+		System.err.println(" GLCanvasHeatmap.update(GLCanvas canvas)");
 	}
 
 	public void destroy()
 	{
 		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
+		System.err.println(" GLCanvasHeatmap.destroy(GLCanvas canvas)");
 	}
 	
 	public void displayChanged(GLAutoDrawable drawable, 

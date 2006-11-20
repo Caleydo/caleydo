@@ -60,6 +60,7 @@ implements IGLCanvasUser
 	
 	public static final int X = 0;
 	public static final int Y = 1;
+	public static final int Z = 2;
 	public static final int MIN = 0;
 	public static final int MAX = 1;
 	public static final int OFFSET = 2;
@@ -79,7 +80,7 @@ implements IGLCanvasUser
 				sLabel );
 		
 		fAspectRatio = new float [2][3];
-		viewingFrame = new float [2][2];
+		viewingFrame = new float [3][2];
 		
 		fAspectRatio[X][MIN] = 0.0f;
 		fAspectRatio[X][MAX] = 20.0f; 
@@ -92,7 +93,9 @@ implements IGLCanvasUser
 		viewingFrame[X][MIN] = -1.0f;
 		viewingFrame[X][MAX] = 1.0f; 
 		viewingFrame[Y][MIN] = 1.0f; 
-		viewingFrame[Y][MAX] = -1.0f; 
+		viewingFrame[Y][MAX] = -1.0f;
+		viewingFrame[Z][MIN] = 0.0f; 
+		viewingFrame[Z][MAX] = 0.0f; 
 	}
 	
 	public void renderText( GL gl, 
@@ -145,11 +148,14 @@ implements IGLCanvasUser
 		viewingFrame[X][MIN] = fResolution[6];
 		viewingFrame[X][MAX] = fResolution[7]; 
 		viewingFrame[Y][MIN] = fResolution[8]; 
-		viewingFrame[Y][MAX] = fResolution[9]; 
+		viewingFrame[Y][MAX] = fResolution[9];
 		
-		iGridSize = (int) fResolution[10]; 
+		viewingFrame[Z][MIN] = fResolution[10]; 
+		viewingFrame[Z][MAX] = fResolution[11]; 
 		
-		fPointSize = fResolution[11]; 
+		iGridSize = (int) fResolution[12]; 
+		
+		fPointSize = fResolution[13]; 
 		
 	}
 	
@@ -402,15 +408,14 @@ implements IGLCanvasUser
 	public void update(GLAutoDrawable canvas)
 	{
 		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.update(GLCanvas canvas)");
+		System.err.println(" GLCanvasMinMaxScatterPlot2D.update(GLCanvas canvas)");
 		
 		updateMinMax();
 	}
 
 	public void destroy()
 	{
-		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
+		refGeneralManager.getSingelton().logMsg( "GLCanvasMinMaxScatterPlot2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
 	}
 	
 	protected void updateMinMax() {

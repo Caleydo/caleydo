@@ -133,7 +133,7 @@ implements IGLCanvasUser
 			
 			default:
 				refGeneralManager.getSingelton().logMsg(
-						"GLCanvasScatterPlot assigned Set mut be at least 2-dimesional!",
+						"GLCanvasScatterPlot2D assigned Set mut be at least 2-dimesional!",
 						LoggerType.VERBOSE );
 		} // switch
 		
@@ -166,7 +166,7 @@ implements IGLCanvasUser
 				( arrayStorageY.length < iLoopXY))
 		{
 			refGeneralManager.getSingelton().logMsg(
-					"GLCanvasScatterPlot assigned Storage must contain at least equal number of Stprages as Selections!",
+					"GLCanvasScatterPlot2D assigned Storage must contain at least equal number of Stprages as Selections!",
 					LoggerType.ERROR_ONLY );
 			return;
 		}
@@ -222,12 +222,12 @@ implements IGLCanvasUser
 	
 	public void update(GLAutoDrawable canvas)
 	{
-		System.err.println(" TestTriangle.update(GLCanvas canvas)");
+		System.err.println(" GLCanvasScatterPlot2D.update(GLCanvas canvas)");
 	}
 
 	public void destroy()
 	{
-		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
+		System.err.println(" GLCanvasScatterPlot2D.destroy(GLCanvas canvas)");
 	}
 	
 	public void displayChanged(GLAutoDrawable drawable, 

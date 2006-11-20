@@ -293,19 +293,18 @@ implements IGLCanvasUser
 			fY = fY_next;
 		}
 		
-		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
+		//System.err.println(" GLCanvasHistogram2D.render(GLCanvas canvas)");
 	}
 
 	public void update(GLAutoDrawable canvas)
 	{
 		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.update(GLCanvas canvas)");
+		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");
 	}
 
 	public void destroy()
 	{
-		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
+		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
 	}
 	
 	public void displayChanged(GLAutoDrawable drawable, 
