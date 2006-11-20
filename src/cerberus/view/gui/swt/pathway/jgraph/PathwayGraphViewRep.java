@@ -506,10 +506,9 @@ extends APathwayGraphViewRep {
 	
 	public void loadPathwayFromFile(String sFilePath) {
 		
-		resetPathway();
+		super.loadPathwayFromFile(sFilePath);
 		
-		refGeneralManager.getSingelton().
-			getXmlParserManager().parseXmlFileByName(sFilePath);
+		resetPathway();
 	
 		iPathwayId = Integer.parseInt(
 				sFilePath.substring(sFilePath.lastIndexOf('/')+4, 

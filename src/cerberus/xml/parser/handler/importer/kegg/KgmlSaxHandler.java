@@ -26,9 +26,9 @@ implements IXmlParserHandler {
 	protected boolean bVertexExists = false;
 	
 	/**
-	 * Map that stores the KEGG compound names and the internal compound ID
+	 * Map that stores the KEGG entry names and the internal entry ID
 	 */
-	protected HashMap<String, Integer> kgmlCompoundNameToElementIdLUT;
+	protected HashMap<String, Integer> kgmlEntryNameToElementIdLUT;
 	
 	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
 			final IXmlParserManager refXmlParserManager)
@@ -37,7 +37,7 @@ implements IXmlParserHandler {
 		
 		kgmlIdToElementIdLUT = new HashMap<Integer, Integer>();
 		
-		kgmlCompoundNameToElementIdLUT = new HashMap<String, Integer>();
+		kgmlEntryNameToElementIdLUT = new HashMap<String, Integer>();
 		
 		setXmlActivationTag("pathway");
 	}
@@ -182,28 +182,24 @@ implements IXmlParserHandler {
 	   	}
     	
     	// Return if node already exists
-    	if (!kgmlIdToElementIdLUT.containsKey(iKgmlEntryID))
-    	{
+//    	if (!kgmlEntryNameToElementIdLUT.containsKey(sName))
+//    	{
         	iGeneratedElementId = 		
         		((PathwayElementManager)(refGeneralManager.getSingelton().getPathwayElementManager())).
     				createVertex(sName, sType, sLink, sReactionId);
         	
         	kgmlIdToElementIdLUT.put(iKgmlEntryID, iGeneratedElementId);
+    		kgmlEntryNameToElementIdLUT.put(sName, iGeneratedElementId);
         	
         	bVertexExists = false;
-    	}
-    	else
-    	{
-    		bVertexExists = true;
-    	}
+//    	}
+//    	else
+//    	{
+//    		bVertexExists = true;
+//    	}
     	
     	((PathwayElementManager)(refGeneralManager.getSingelton().getPathwayElementManager())).
 			addVertexToPathway(iGeneratedElementId);
-    	
-    	if (sType.equals("compound"))
-    	{
-    		kgmlCompoundNameToElementIdLUT.put(sName, iGeneratedElementId);
-    	}
     }
 	
 	/**
@@ -287,10 +283,11 @@ implements IXmlParserHandler {
    			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
    		}  	    	
 		
-		if (!kgmlIdToElementIdLUT.containsKey(iEntry1) || !kgmlIdToElementIdLUT.containsKey(iEntry2))
-		{
-			return;
-		}
+//		if (!kgmlIdToElementIdLUT.containsKey(iEntry1) 
+//				|| !kgmlIdToElementIdLUT.containsKey(iEntry2))
+//		{
+//			return;
+//		}
 		
     	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1);
     	int iElementId2 = kgmlIdToElementIdLUT.get(iEntry2);
@@ -325,7 +322,7 @@ implements IXmlParserHandler {
 		if (sName.equals("compound"))
 		{
 			//retrieve the internal element ID and add the compound value to the edge
-    		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
+    		((PathwayElementManager)(refGeneralManager.getSingelton().getPathwayElementManager())).
 				addRelationCompound(kgmlIdToElementIdLUT.get(iCompoundId));
 		}
     }
@@ -384,11 +381,11 @@ implements IXmlParserHandler {
 		}  	
     	
     	// If substrate is not included in pathway - ignore!
-    	if (kgmlCompoundNameToElementIdLUT.containsKey(sReactionSubstrateName))
+    	if (kgmlEntryNameToElementIdLUT.containsKey(sReactionSubstrateName))
     	{
         	// Lookup for internal comound ID
     		int iReactionSubstrateId = 
-    			kgmlCompoundNameToElementIdLUT.get(sReactionSubstrateName);
+    			kgmlEntryNameToElementIdLUT.get(sReactionSubstrateName);
     	
     		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
 				addReactionSubstrate(iReactionSubstrateId);
@@ -419,11 +416,11 @@ implements IXmlParserHandler {
 		}  	
 
     	// If product is not included in pathway - ignore!
-    	if (kgmlCompoundNameToElementIdLUT.containsKey(sReactionProductName))
+    	if (kgmlEntryNameToElementIdLUT.containsKey(sReactionProductName))
     	{
     		// Lookup for internal comound ID
     		int iReactionProductId = 
-    			kgmlCompoundNameToElementIdLUT.get(sReactionProductName);
+    			kgmlEntryNameToElementIdLUT.get(sReactionProductName);
     	
     		((PathwayElementManager)(refGeneralManager.getManagerByBaseType(ManagerObjectType.PATHWAY_ELEMENT))).
 				addReactionProduct(iReactionProductId);  

@@ -86,6 +86,14 @@ implements IGLCanvasUser
 				iTargetCollectionSetId + ") done!");
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void init( GLAutoDrawable canvas ) {
+
+	}	
+	
 	@Override
 	public void renderPart(GL gl)
 	{

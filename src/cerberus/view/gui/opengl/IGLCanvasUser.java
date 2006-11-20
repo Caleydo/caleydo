@@ -11,6 +11,8 @@ extends IUniqueObject {
 
 	public abstract void link2GLCanvasDirector( IGLCanvasDirector parentView );
 
+	public abstract void init(GLAutoDrawable canvas);
+	
 	public abstract void render(GLAutoDrawable canvas);
 
 	public abstract void update(GLAutoDrawable canvas);

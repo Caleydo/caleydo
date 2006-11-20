@@ -14,8 +14,6 @@ public class MixerViewRep extends AViewRep implements IView
 {
 	protected Composite refSWTContainer;
 	
-	protected Slider refSlider;
-	
 	public MixerViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
@@ -24,11 +22,8 @@ public class MixerViewRep extends AViewRep implements IView
 	
 	public void initView()
 	{
-	    refSlider = new Slider(refSWTContainer, SWT.HORIZONTAL);
-	    refSlider.setSize(iWidth, iHeight);
-	    refSlider.setMinimum(0);
-	    refSlider.setMaximum(100);
-	    refSlider.setIncrement(1);
+
+		
 	}
 
 	public void drawView()

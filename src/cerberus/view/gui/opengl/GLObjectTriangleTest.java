@@ -45,6 +45,14 @@ implements IGLCanvasUser
 		return refParentView;
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void init( GLAutoDrawable canvas ) {
+
+	}	
+	
 	/* (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#render(javax.media.opengl.GLCanvas)
 	 */

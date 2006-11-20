@@ -6,11 +6,10 @@ import javax.media.opengl.GLAutoDrawable;
 // import javax.media.opengl.GLCanvas;
 
 
-public interface IGLCanvasDirector
-{
+public interface IGLCanvasDirector {
 
 	public abstract void initView();
-
+	
 	public abstract void addGLCanvasUser(IGLCanvasUser user);
 
 	public abstract void removeGLCanvasUser(IGLCanvasUser user);
@@ -20,6 +19,8 @@ public interface IGLCanvasDirector
 	public abstract Collection<IGLCanvasUser> getAllGLCanvasUsers();
 
 	public abstract GLAutoDrawable getGLCanvas();
+	
+	public abstract void initGLCanvasUser( GLAutoDrawable drawable );
 	
 	public abstract void renderGLCanvasUser( GLAutoDrawable drawable ); 
 	

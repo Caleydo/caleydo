@@ -267,4 +267,10 @@ implements IPathwayGraphView {
 		
 		return iPathwayLevel;
 	}
+	
+	public void loadPathwayFromFile(String sFilePath) {
+		
+		refGeneralManager.getSingelton().
+			getXmlParserManager().parseXmlFileByName(sFilePath);
+	}
 }

@@ -23,8 +23,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 
 public class SwtJoglGLCanvasViewRep 
 extends AJoglViewRep 
-implements IView, IGLCanvasDirector
-{
+implements IView, IGLCanvasDirector {
 	
 	private AtomicBoolean abEnableRendering;
 	
@@ -39,8 +38,8 @@ implements IView, IGLCanvasDirector
 	public SwtJoglGLCanvasViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, 
 			int iParentContainerId, 
-			String sLabel )
-	{
+			String sLabel ) {
+		
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
 		vecGLCanvasUser = new Vector <IGLCanvasUser> ();
@@ -61,12 +60,12 @@ implements IView, IGLCanvasDirector
 	}
 	
 	/**
-	 * Attension: call setOpenGLCanvasId(int) before callign this methode!
+	 * Attension: call setOpenGLCanvasId(int) before callign this method!
 	 * 
 	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#initView()
 	 */
-	public void initView()
-	{
+	public void initView() {
+		
 		CanvasForwarder renderer = new CanvasForwarder( this );
 		
 		refGLEventListener = renderer;
@@ -145,7 +144,28 @@ implements IView, IGLCanvasDirector
 		return this.refGLCanvas;
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void initGLCanvasUser(GLAutoDrawable drawable) {
+		
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				iter.next().init( drawable );
+			}
+		}
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 */
 	public void renderGLCanvasUser(GLAutoDrawable drawable) {
+		
 		if ( abEnableRendering.get() ) 
 		{
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
@@ -156,7 +176,12 @@ implements IView, IGLCanvasDirector
 		}
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 */
 	public void updateGLCanvasUser(GLAutoDrawable drawable) {
+		
 		if ( abEnableRendering.get() ) 
 		{
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
@@ -167,6 +192,10 @@ implements IView, IGLCanvasDirector
 		}
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#destroyDirector()
+	 */
 	public void destroyDirector() {
 		
 		super.removeGLEventListener( refGLEventListener );

@@ -50,6 +50,13 @@ extends ARenderStyle {
 	protected EdgeArrowHeadStyle relationEdgeArrowHeadStyle;
 	protected EdgeArrowHeadStyle reactionEdgeArrowHeadStyle;
 	protected EdgeArrowHeadStyle mapEdgeArrowHeadStyle;
+	
+	protected float fEnzymeNodeWidth;
+	protected float fEnzymeNodeHeight;
+	protected float fCompoundNodeWidth;
+	protected float fCompoundNodeHeight;
+	protected float fPathwayNodeWidth;
+	protected float fPathwayNodeHeight;
 
 	/**
 	 * Constructor.
@@ -78,6 +85,13 @@ extends ARenderStyle {
 		relationEdgeColor = Color.GREEN;
 		reactionEdgeColor = Color.BLUE;
 		maplinkEdgeColor = Color.MAGENTA;
+		
+		fEnzymeNodeWidth = 8;
+		fEnzymeNodeHeight = 8;
+		fCompoundNodeWidth = 45;
+		fCompoundNodeHeight = 17;
+		fPathwayNodeWidth = 70;
+		fPathwayNodeHeight = 27;
 	}
 
 	public Color getCompoundNodeColor() {
@@ -231,5 +245,77 @@ extends ARenderStyle {
 	public void setRelationEdgeLineStyle(EdgeLineStyle relationEdgeLineStyle) {
 	
 		this.relationEdgeLineStyle = relationEdgeLineStyle;
+	}
+
+	
+	public float getCompoundNodeHeight() {
+	
+		return fCompoundNodeHeight;
+	}
+
+	
+	public void setCompoundNodeHeight(float compoundNodeHeight) {
+	
+		fCompoundNodeHeight = compoundNodeHeight;
+	}
+
+	
+	public float getCompoundNodeWidth() {
+	
+		return fCompoundNodeWidth;
+	}
+
+	
+	public void setCompoundNodeWidth(float compoundNodeWidth) {
+	
+		fCompoundNodeWidth = compoundNodeWidth;
+	}
+
+	
+	public float getEnzymeNodeWidth() {
+	
+		return fEnzymeNodeWidth;
+	}
+
+	
+	public void setEnzymeNodeWidth(float enzymeNodeWidth) {
+	
+		fEnzymeNodeWidth = enzymeNodeWidth;
+	}
+
+	
+	public float getEnzymeNodeHeight() {
+	
+		return fEnzymeNodeHeight;
+	}
+
+	
+	public void setEnzymeNodeHeight(float enzymeNodeHeight) {
+	
+		fEnzymeNodeHeight = enzymeNodeHeight;
+	}
+
+	
+	public float getPathwayNodeHeight() {
+	
+		return fPathwayNodeHeight;
+	}
+
+	
+	public void setPathwayNodeHeight(float pathwayNodeHeight) {
+	
+		fPathwayNodeHeight = pathwayNodeHeight;
+	}
+
+	
+	public float getPathwayNodeWidth() {
+	
+		return fPathwayNodeWidth;
+	}
+
+	
+	public void setPathwayNodeWidth(float pathwayNodeWidth) {
+	
+		fPathwayNodeWidth = pathwayNodeWidth;
 	}
 }
