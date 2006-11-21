@@ -783,6 +783,52 @@ public class SoWrapper extends SoMarchBase
 		   edge_18 = null;
 	}
 	
+	public void readBackIsosurface() {
+	
+		   cout( "total # of points: ? " + this.actvertex );
+		   cout( "total # of faces: ? " + this.actface );
+		   
+		   //this.vertices
+		   
+	}
+	
+	public boolean hasValidIsosurface() {
+		if ( actface > 0 ) {
+			return true;
+		}
+		return false;
+	}
+	
+	public int getVertexSize() {
+		return actvertex;
+	}
+	
+	public int getFaceSetSize() {
+		return actface;
+	}
+	
+	public Vec3f[] getVertices() {
+		
+		if ( actvertex > 1 ) 
+		{
+			return this.vertices;
+		}
+		
+		return null;
+	}
+	
+	
+	public int[] getFaceSet() {
+		
+		if ( actface > 1 ) 
+		{
+			return this.faceset;
+		}
+		
+		return null;
+	}
+	
+	
 	public void assignData( final short [] sDataArray ) {
 		this.data = sDataArray;
 	}

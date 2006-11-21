@@ -24,6 +24,7 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
+import cerberus.view.gui.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway2D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
@@ -295,6 +296,13 @@ implements IViewManager, IViewGLCanvasManager {
 			
 		case CREATE_GL_HISTOGRAM2D:
 			return new GLCanvasHistogram2D(
+					refGeneralManager, 
+					iViewId, 
+					iParentContainerId, 
+					sLabel);
+			
+		case CREATE_GL_ISOSURFACE3D:
+			return new GLCanvasIsoSurface3D(
 					refGeneralManager, 
 					iViewId, 
 					iParentContainerId, 
