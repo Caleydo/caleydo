@@ -23,6 +23,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
@@ -57,13 +58,13 @@ implements IGLCanvasUser
 	
 	protected ISet targetSet;
 	
+	private static final int X = GLCanvasStatics.X;
+	private static final int Y = GLCanvasStatics.Y;
+	private static final int Z = GLCanvasStatics.Z;
+	private static final int MIN = GLCanvasStatics.MIN;
+	private static final int MAX = GLCanvasStatics.MAX;
+	private static final int OFFSET = GLCanvasStatics.OFFSET;
 	
-	public static final int X = 0;
-	public static final int Y = 1;
-	public static final int Z = 2;
-	public static final int MIN = 0;
-	public static final int MAX = 1;
-	public static final int OFFSET = 2;
 
 	
 	/**
@@ -216,11 +217,11 @@ implements IGLCanvasUser
 		for ( int i=0; i < iResolution; i++ )
 		{
 			gl.glBegin(GL.GL_LINES); // Drawing using triangles
-			gl.glVertex3f(fXvertical, viewingFrame[Y][MIN], 0.0f); // Top
-			gl.glVertex3f(fXvertical, viewingFrame[Y][MAX], 0.0f); // Bottom left
+			gl.glVertex3f(fXvertical, viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+			gl.glVertex3f(fXvertical, viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
 			
-			gl.glVertex3f(viewingFrame[X][MIN], fYhoricontal, 0.0f); // Top
-			gl.glVertex3f(viewingFrame[X][MAX], fYhoricontal, 0.0f); // Bottom left
+			gl.glVertex3f(viewingFrame[X][MIN], fYhoricontal, viewingFrame[Z][MIN]); // Top
+			gl.glVertex3f(viewingFrame[X][MAX], fYhoricontal, viewingFrame[Z][MIN]); // Bottom left
 			
 			gl.glEnd(); // Finish drawing the triangle
 			
@@ -228,18 +229,16 @@ implements IGLCanvasUser
 			fYhoricontal += fIncY;
 		}
 		
-
-		
 		
 		renderText( gl, "Y-Axis",
 				viewingFrame[X][MIN], 
 				-2.0f, 
-				0 );
+				viewingFrame[Z][MIN] );
 		
 		renderText( gl, "X-Axis", 
 				0,
 				viewingFrame[Y][MIN], 
-				0 );
+				viewingFrame[Z][MIN] );
 		
 	}
 	
@@ -252,10 +251,10 @@ implements IGLCanvasUser
 		
 		gl.glColor3fv( colorGrid, 0); // Set the color to red
 		gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], 0.0f); // Top
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], 0.0f); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], 0.0f); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], 0.0f); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
 		gl.glEnd(); // Finish drawing the triangle
 		
 		/**
@@ -373,7 +372,7 @@ implements IGLCanvasUser
 					// gl.glBegin(GL.GL_TRIANGLES); // Draw a quad		
 					gl.glBegin(GL.GL_POINTS);
 					
-					gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , fY +fAspectRatio[Y][OFFSET], 0.0f); // Point				
+					gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , fY +fAspectRatio[Y][OFFSET], viewingFrame[Z][MIN]); // Point				
 	//				gl.glVertex3f(fX + fAspectRatio[X][OFFSET] , fY-fTri +fAspectRatio[Y][OFFSET], 0.0f); // Point
 	//				gl.glVertex3f(fX-fTri + fAspectRatio[X][OFFSET] , fY +fAspectRatio[Y][OFFSET], 0.0f); // Point
 					

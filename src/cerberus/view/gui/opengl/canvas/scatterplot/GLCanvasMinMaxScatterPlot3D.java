@@ -23,6 +23,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
+import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
@@ -59,13 +60,12 @@ implements IGLCanvasUser
 	protected ISet targetSet;
 	
 	
-	public static final int X = 0;
-	public static final int Y = 1;
-	public static final int Z = 2;
-	
-	public static final int MIN = 0;
-	public static final int MAX = 1;
-	public static final int OFFSET = 2;
+	private static final int X = GLCanvasStatics.X;
+	private static final int Y = GLCanvasStatics.Y;
+	private static final int Z = GLCanvasStatics.Z;
+	private static final int MIN = GLCanvasStatics.MIN;
+	private static final int MAX = GLCanvasStatics.MAX;
+	private static final int OFFSET = GLCanvasStatics.OFFSET;
 
 	
 	/**
@@ -224,11 +224,11 @@ implements IGLCanvasUser
 		for ( int i=0; i < iResolution; i++ )
 		{
 			gl.glBegin(GL.GL_LINES); // Drawing using triangles
-			gl.glVertex3f(fXvertical, viewingFrame[Y][MIN], 0.0f); // Top
-			gl.glVertex3f(fXvertical, viewingFrame[Y][MAX], 0.0f); // Bottom left
+			gl.glVertex3f(fXvertical, viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+			gl.glVertex3f(fXvertical, viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
 			
-			gl.glVertex3f(viewingFrame[X][MIN], fYhoricontal, 0.0f); // Top
-			gl.glVertex3f(viewingFrame[X][MAX], fYhoricontal, 0.0f); // Bottom left
+			gl.glVertex3f(viewingFrame[X][MIN], fYhoricontal, viewingFrame[Z][MIN]); // Top
+			gl.glVertex3f(viewingFrame[X][MAX], fYhoricontal, viewingFrame[Z][MIN]); // Bottom left
 			
 			gl.glEnd();
 			
@@ -382,7 +382,7 @@ implements IGLCanvasUser
 		renderText( gl, "Z-Axis", 
 				0,
 				-1, // this... 
-			    0 );
+				viewingFrame[Z][MIN] );
 	}
 		
 	protected void drawScatterPlotInteger(GL gl) 
@@ -497,7 +497,7 @@ implements IGLCanvasUser
 						break;
 					}
 					
-					float fZ = (float) randomGenerator.nextFloat() * 2.0f + 0.01f;
+					float fZ = (float) randomGenerator.nextFloat() * 2.0f + 0.01f + viewingFrame[Z][MIN];
 					
 					
 					gl.glBegin(GL.GL_TRIANGLE_FAN); // Draw a quad		

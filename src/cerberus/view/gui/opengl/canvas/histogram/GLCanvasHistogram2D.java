@@ -25,6 +25,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.math.statistics.histogram.HistogramData;
 import cerberus.math.statistics.histogram.HistogramStatisticsSet;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
+import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -78,12 +79,12 @@ implements IGLCanvasUser
 	protected ISet targetSet;
 	
 	
-	public static final int X = 0;
-	public static final int Y = 1;
-	public static final int Z = 2;
-	public static final int MIN = 0;
-	public static final int MAX = 1;
-	public static final int OFFSET = 2;
+	private static final int X = GLCanvasStatics.X;
+	private static final int Y = GLCanvasStatics.Y;
+	private static final int Z = GLCanvasStatics.Z;
+	private static final int MIN = GLCanvasStatics.MIN;
+	private static final int MAX = GLCanvasStatics.MAX;
+	private static final int OFFSET = GLCanvasStatics.OFFSET;
 
 	
 	/**
