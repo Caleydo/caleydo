@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
@@ -297,6 +298,10 @@ public class CoreMidiConnector
 
 	public void callbackSetValue( String value, int iValue, int control ) {
 		out("set: " + value );		
+	}
+	
+	public void callbackSetMidiMessage( MidiMessage message ) {
+		// out("msg: " + message.toString() );	
 	}
 
 }

@@ -109,18 +109,24 @@ public class DumpReceiver
 	{
 		String	strMessage = null;
 		MidiData curretnMidiData = new MidiData();
+		String strType = "";
 		
 		if (message instanceof ShortMessage)
 		{
 			strMessage = decodeMessage((ShortMessage) message, curretnMidiData);
+			strType = "short ";
+			
+			callbackObject.callbackSetMidiMessage( message );
 		}
 		else if (message instanceof SysexMessage)
 		{
 			strMessage = decodeMessage((SysexMessage) message);
+			strType = "sysex  ";
 		}
 		else if (message instanceof MetaMessage)
 		{
 			strMessage = decodeMessage((MetaMessage) message);
+			strType = "meta   ";
 		}
 		else
 		{
@@ -142,7 +148,9 @@ public class DumpReceiver
 				strTimeStamp = "timestamp " + lTimeStamp + " us: ";
 			}
 		}
-		m_printStream.println(strTimeStamp + strMessage);
+		m_printStream.println(strType + strTimeStamp + strMessage);
+		
+		
 	}
 
 

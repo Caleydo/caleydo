@@ -11,9 +11,11 @@ import java.util.Hashtable;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.SysexMessage;
@@ -48,6 +50,10 @@ public class MidiConnectorSwingSliders
  	during operation.
  	*/
 	private boolean		DEBUG = true;
+	
+	private MidiMessage lastMidiMessage = null;
+	
+	private ShortMessage lastShortMidiMessage = null;  
 	
 	protected PrintStream outStream;
 	
@@ -156,6 +162,15 @@ public class MidiConnectorSwingSliders
 		hashMidiDeviceIdLoopupTable.put( 72, 9 );
 		hashMidiDeviceIdLoopupTable.put( 76, 10 );
 		hashMidiDeviceIdLoopupTable.put( 7, 11 );
+		
+		/** buttons ... */
+		hashMidiDeviceIdLoopupTable.put( 30, 100 );
+		hashMidiDeviceIdLoopupTable.put( 31, 101 );
+		hashMidiDeviceIdLoopupTable.put( 1,  102 );
+		hashMidiDeviceIdLoopupTable.put( 66, 103 );
+		hashMidiDeviceIdLoopupTable.put( 67, 104 );
+		hashMidiDeviceIdLoopupTable.put( 68, 105 );
+		hashMidiDeviceIdLoopupTable.put( 69, 106 );
 	}
 	
 	public MidiConnectorSwingSliders( final int iSizeAllocationMidiDevices) {
@@ -442,11 +457,11 @@ public class MidiConnectorSwingSliders
 			else
 			{
 				if ( iValue < 1 ) {
-					boxArray[ iloopkupValue - iOffsetCheckBoxes ].setEnabled( false );
+					boxArray[ iloopkupValue - iOffsetCheckBoxes ].setSelected( false );
 				}
 				else
 				{
-					boxArray[ iloopkupValue - iOffsetCheckBoxes ].setEnabled( true );					
+					boxArray[ iloopkupValue - iOffsetCheckBoxes ].setSelected( true );					
 				}
 			}
 		}
@@ -461,7 +476,13 @@ public class MidiConnectorSwingSliders
 			iLastPresetNumber = presetnumber;
 		}
 		
+		
 		writePresetToMididDevice( outMidi, presetnumber);
+		
+		if ( presetnumber == 8 ) {
+			System.out.println(" MIDI go...");
+			writeMidiOutDevice( outMidi );
+		}
 	}
 	
 	
@@ -505,5 +526,47 @@ public class MidiConnectorSwingSliders
          }
          
 	}
+	
+	protected void writeMidiOutDevice( MidiDevice MidiOut ) {
+		
+		System.out.println("PLAYBACK!: " + lastShortMidiMessage.toString() );
+		
+		if ( MidiOut == null ) {
+			return;
+		}
+		
+		if ( lastShortMidiMessage == null ) {
+			return;
+			
+		}
+		
+		 try
+         {
+			 if ( ! MidiOut.isOpen() ) {
+				 MidiOut.open();
+			 }
+			 
+             Receiver rx = MidiOut.getReceiver();
+             
+             rx.send( lastShortMidiMessage , -1L);
+         }
+         catch(MidiUnavailableException e)
+         {
+             System.out.println("Error: " + e.getMessage());
+         }
+         catch(IllegalStateException llegalStateEx)
+         {
+             System.out.println("Error: " + llegalStateEx.getMessage());
+         }
+        
+         
+	}
+	
+	
+	public void callbackSetMidiMessage( MidiMessage message ) {
+		lastMidiMessage = message;
+		lastShortMidiMessage = (ShortMessage) message;
+	}
+
 
 }
