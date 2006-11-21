@@ -21,8 +21,8 @@ import cerberus.xml.parser.parameter.data.ParameterKeyValueDataAndDefault;
  * @author java
  *
  */
-public abstract class AParameterHandler implements IParameterHandler
-{
+public abstract class AParameterHandler 
+implements IParameterHandler {
 
 	/**
 	 * 

@@ -7,10 +7,7 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
-import cerberus.util.exception.CerberusRuntimeException;
-
-public interface IParameterHandler
-{
+public interface IParameterHandler {
 
 	public enum ParameterHandlerType {
 		

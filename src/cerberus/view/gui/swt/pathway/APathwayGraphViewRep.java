@@ -6,6 +6,9 @@ import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 
+import cerberus.command.data.CmdDataCreateSelection;
+import cerberus.command.data.CmdDataCreateSet;
+import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -23,6 +26,10 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
+import cerberus.xml.parser.parameter.ParameterHandler;
+import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
@@ -288,5 +295,119 @@ implements IPathwayGraphView {
 						getItem(iHTMLBrowserId)).setUrl(sUrl);
 			}
 		});	
+	}
+	
+	public void createSelectionSet() {
+	
+		IParameterHandler phAttributes = new ParameterHandler();
+		
+		//TODO: retrieve new generated IDs instead of static ones
+
+		// CmdId
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+				"12345", 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+
+		// Label
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+				"Pathway Selection Virtual Array", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_LABEL.getDefault());
+		
+		// TargetID
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+				"45201", 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
+		
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+				"3 0 0 1", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+
+		CmdDataCreateSelection cmdCreateSelection = new CmdDataCreateSelection(
+				refGeneralManager,
+				phAttributes);
+		
+		phAttributes = null;
+		phAttributes = new ParameterHandler();
+
+		// CmdId
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+				"12345", 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+
+		// Label
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+				"Pathway Selection Storage", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_LABEL.getDefault());
+		
+		// TargetID
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+				"45301", 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
+		
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+				"INT", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+				"123 123 123", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+		
+		CmdDataCreateStorage cmdCreateSelectionStorage = new CmdDataCreateStorage(
+				refGeneralManager,
+				phAttributes, true);
+		
+		phAttributes = null;
+		phAttributes = new ParameterHandler();
+		
+		// CmdId
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+				"12345", 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+
+		// Label
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+				"Pathway Selection Set", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_LABEL.getDefault());
+				
+		// TargetID
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+				"45101", 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
+		
+		// SelectionID
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+				"45201", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+		
+		// StorageIDs
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+				"45301", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+		
+		// Detail
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
+				"CREATE_SET_PLANAR", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_DETAIL.getDefault());
+		
+		CmdDataCreateSet cmdCreateSet =	new CmdDataCreateSet(
+					refGeneralManager,
+					phAttributes,
+					true );
+		
 	}
 }

@@ -17,15 +17,11 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
-import org.jgraph.example.JGraphParallelRouter;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
@@ -45,8 +41,6 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewManager;
-import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
@@ -231,15 +225,7 @@ extends APathwayGraphViewRep {
 						}
 						
 						// Highlight current cell
-						Map<DefaultGraphCell, Map> nested = 
-							new Hashtable<DefaultGraphCell, Map>();
-						Map attributeMap = new Hashtable();
-						
-						GraphConstants.setBackground(attributeMap, 
-								new Color(1.0f, 0.0f, 0.0f));
-						
-						nested.put(clickedCell, attributeMap);
-						refGraphLayoutCache.edit(nested, null, null, null);
+						highlightCell(clickedCell, Color.RED);
 						bNeighbourhoodShown = true;
 						iNeighbourhoodUndoCount++;
 	
@@ -620,6 +606,21 @@ extends APathwayGraphViewRep {
 		refGraphLayoutCache.edit(nested, null, null, null);
 		
 		iNeighbourhoodUndoCount++;
+		
+		createSelectionSet();
+	}
+	
+	public void highlightCell(final DefaultGraphCell refCell, 
+			final Color color) {
+		
+		Map<DefaultGraphCell, Map> nested = 
+			new Hashtable<DefaultGraphCell, Map>();
+		Map attributeMap = new Hashtable();
+		
+		GraphConstants.setBackground(attributeMap, color);
+		
+		nested.put(refCell, attributeMap);
+		refGraphLayoutCache.edit(nested, null, null, null);
 	}
 	
 	/**

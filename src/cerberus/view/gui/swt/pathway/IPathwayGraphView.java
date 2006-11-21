@@ -2,6 +2,8 @@ package cerberus.view.gui.swt.pathway;
 
 import java.awt.Dimension;
 
+import org.jgraph.graph.DefaultGraphCell;
+
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
