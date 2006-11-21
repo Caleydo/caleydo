@@ -333,12 +333,14 @@ implements IView, IMediatorReceiver {
 
 	public void update(Object eventTrigger) {
 
-		int triggerId = ((IVirtualArray) eventTrigger).getId();
+		
+		//int triggerId = ((IVirtualArray) eventTrigger).getId();
+		
 		refGeneralManager.getSingelton().logMsg(
-				"Data Explorer update called by " + triggerId,
+				"Data Explorer update called by " + eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 
-		refDataTableViewRep.updateSelection(triggerId);
+		//refDataTableViewRep.updateSelection(triggerId);
 	}
 	
 	public void addExistingPathway() {

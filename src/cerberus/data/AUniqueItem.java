@@ -18,8 +18,8 @@ import cerberus.data.IUniqueObject;
  *
  * @see prometheus.data.xml.MementiItemXML
  */
-public abstract class AUniqueItem implements IUniqueObject
-{
+public abstract class AUniqueItem 
+implements IUniqueObject {
 
 	/**
 	 * Unique Id
@@ -29,8 +29,7 @@ public abstract class AUniqueItem implements IUniqueObject
 	/**
 	 * 
 	 */
-	protected AUniqueItem(int iUniqueId)
-	{
+	protected AUniqueItem(int iUniqueId) {
 
 		this.iUniqueId = iUniqueId;
 	}
@@ -44,8 +43,8 @@ public abstract class AUniqueItem implements IUniqueObject
 	 * 
 	 * @return
 	 */
-	public final int getId()
-	{
+	public final int getId() {
+		
 		return this.iUniqueId;
 	}
 
@@ -57,8 +56,8 @@ public abstract class AUniqueItem implements IUniqueObject
 	 * @see prometheus.data.collection.BaseManagerItem#setCollecionId(IGeneralManager, int)
 	 * @see prometheus.data.xml.MementiItemXML
 	 */
-	public final void setId(final int iSetDNetEventId)
-	{
+	public final void setId(final int iSetDNetEventId) {
+		
 		this.iUniqueId = iSetDNetEventId;
 	}
 

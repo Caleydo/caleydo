@@ -1,6 +1,6 @@
 package cerberus.manager;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
@@ -12,8 +12,8 @@ public interface IEventPublisher extends IGeneralManager
 	 * Creates a mediator and registers the senders and receivers
 	 * to this mediator.
 	 */
-	public void createMediator (int iMediatorId, Vector<Integer> vecSenderIDs, 
-			Vector<Integer> vecReceiverIDs);
+	public void createMediator (int iMediatorId, ArrayList<Integer> arSenderIDs, 
+			ArrayList<Integer> arReceiverIDs);
 	
 	/**
 	 * Adds a sender to an existing mediator. 

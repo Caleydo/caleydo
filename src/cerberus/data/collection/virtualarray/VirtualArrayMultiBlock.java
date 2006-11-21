@@ -26,10 +26,8 @@ import java.lang.StringBuffer;
  * @author Michael Kalkusch
  *
  */
-public class VirtualArrayMultiBlock 
-extends AVirtualArray 
-implements IVirtualArray, IMementoItemXML, IMediatorSender
-{
+public class VirtualArrayMultiBlock extends AVirtualArray
+implements IVirtualArray, IMementoItemXML, IMediatorSender {
 
 	protected int iMultiOffset = 0;
 
@@ -41,40 +39,40 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	 */
 	public VirtualArrayMultiBlock(int iSetCollectionId,
 			final IGeneralManager setRefBaseManager,
-			final ICollectionLock setCollectionLock)
-	{
+			final ICollectionLock setCollectionLock) {
+
 		super(iSetCollectionId, setRefBaseManager, setCollectionLock);
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IVirtualArray#getSelectionType()
 	 */
-	public VirtualArrayType getSelectionType()
-	{
+	public VirtualArrayType getSelectionType() {
+
 		return VirtualArrayType.SELECTION_MULTI_BLOCK;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IVirtualArray#getMultiRepeat()
 	 */
-	public int getMultiRepeat()
-	{
+	public int getMultiRepeat() {
+
 		return iMultiRepeat;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IVirtualArray#getMultiOffset()
 	 */
-	public int getMultiOffset()
-	{
+	public int getMultiOffset() {
+
 		return iMultiOffset;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IVirtualArray#getIndexArray()
 	 */
-	public int[] getIndexArray()
-	{
+	public int[] getIndexArray() {
+
 		int[] indexArray = new int[iSelectionLength];
 
 		int iLastOffset = iSelectionOffset;
@@ -114,8 +112,8 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IVirtualArray#setMultiRepeat(int)
 	 */
-	public boolean setMultiRepeat(int iSetSize)
-	{
+	public boolean setMultiRepeat(int iSetSize) {
+
 		if (iSetSize <= this.iMultiOffset)
 		{
 			this.iMultiRepeat = iSetSize;
@@ -128,8 +126,8 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IVirtualArray#setMultiOffset(int)
 	 */
-	public boolean setMultiOffset(int iSetSize)
-	{
+	public boolean setMultiOffset(int iSetSize) {
+
 		if (iSetSize >= this.iMultiRepeat)
 		{
 			this.iMultiOffset = iSetSize;
@@ -142,14 +140,14 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.IVirtualArray#setIndexArray(int[])
 	 */
-	public void setIndexArray(int[] iSetIndexArray)
-	{
+	public void setIndexArray(int[] iSetIndexArray) {
+
 		// TODO Auto-generated method stub
 
 	}
 
-	public String toString()
-	{
+	public String toString() {
+
 		StringBuffer result = new StringBuffer("Sel:");
 
 		result.append(getId());
@@ -173,8 +171,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
 	public boolean setMementoXML_usingHandler(
-			final ISaxParserHandler refSaxHandler)
-	{
+			final ISaxParserHandler refSaxHandler) {
 
 		try
 		{
@@ -207,8 +204,8 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	 * 
 	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
 	 */
-	public String createMementoXML()
-	{
+	public String createMementoXML() {
+
 		final String openDetail = "<DataComponentItemDetails type=\"";
 		final String closeDetail = "</DataComponentItemDetails>\n";
 
@@ -232,8 +229,8 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
 	 */
-	public ManagerObjectType getBaseType()
-	{
+	public ManagerObjectType getBaseType() {
+
 		return ManagerObjectType.SELECTION_MULTI_BLOCK;
 	}
 
@@ -241,13 +238,13 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender
 	 *  (non-Javadoc)
 	 * @see cerberus.data.collection.ICollection#getCacheId()
 	 */
-	public int getCacheId()
-	{
+	public int getCacheId() {
+
 		return this.iCacheId;
 	}
 
-	public IVirtualArrayIterator iterator()
-	{
+	public IVirtualArrayIterator iterator() {
+
 		return new VirtualArrayMultiBlockIterator(this);
 	}
 

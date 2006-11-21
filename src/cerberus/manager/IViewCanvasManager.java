@@ -26,8 +26,8 @@ import cerberus.net.dwt.swing.mdi.DInternalFrame;
  * @author Michael Kalkusch
  *
  */
-public interface IViewCanvasManager extends IGeneralManager
-{
+public interface IViewCanvasManager 
+extends IGeneralManager {
 
 	public IViewCanvas createCanvas(final ManagerObjectType useViewCanvasType,
 			final String sParameter);

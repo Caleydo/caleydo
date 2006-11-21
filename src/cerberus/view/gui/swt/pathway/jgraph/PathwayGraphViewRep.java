@@ -42,6 +42,7 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHe
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
+import cerberus.view.gui.swt.pathway.PathwayViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
 
@@ -56,7 +57,7 @@ import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
  */
 public class PathwayGraphViewRep
 extends APathwayGraphViewRep {
-		
+	
 	/**
 	 * Pathway element positions are read from XML files.
 	 * The scaling factor can scale the positions to blow up or

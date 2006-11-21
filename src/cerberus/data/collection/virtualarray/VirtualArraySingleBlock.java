@@ -27,8 +27,8 @@ import cerberus.data.xml.IMementoItemXML;
  *
  */
 public class VirtualArraySingleBlock 
-	extends AVirtualArray 
-	implements IVirtualArray, IMementoItemXML
+extends AVirtualArray 
+implements IVirtualArray, IMementoItemXML
 {
 
 	

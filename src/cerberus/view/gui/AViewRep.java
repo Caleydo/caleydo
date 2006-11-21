@@ -26,6 +26,12 @@ public abstract class AViewRep
 extends AUniqueManagedObject
 implements IView, IMediatorSender, IMediatorReceiver {
 	
+	public enum ViewType {
+		DATA_EXPLORER,
+		PATHWAY,
+		HEATMAP
+	}
+	
 	protected int iParentContainerId;
 	
 	protected String sLabel;
@@ -43,6 +49,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	 * Height of the widget;
 	 */
 	protected int iHeight;
+	
+	protected ViewType viewType;
 
 	/**
 	 * Constructor
@@ -225,5 +233,10 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	 */
 	public void update( Object eventTrigger ) {
 		
+	}
+	
+	public void setViewType(ViewType viewType) {
+		
+		this.viewType = viewType;
 	}
 }

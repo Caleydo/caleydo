@@ -1,5 +1,6 @@
 package cerberus.command.event;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -23,9 +24,9 @@ public class CmdEventCreateMediator
 extends ACmdCreate_IdTargetLabelAttr 
 implements ICommand {
 	
-	protected Vector<Integer> vecSenderIDs;
+	protected ArrayList<Integer> arSenderIDs;
 
-	protected Vector<Integer> vecReceiverIDs;
+	protected ArrayList<Integer> arReceiverIDs;
 	
 	public CmdEventCreateMediator(IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler) {
@@ -33,8 +34,8 @@ implements ICommand {
 		// set unique ID to -1 because it is unknown at this moment
 		super(refGeneralManager, refParameterHandler);
 		
-		vecSenderIDs = new Vector<Integer>();
-		vecReceiverIDs = new Vector<Integer>();
+		arSenderIDs = new ArrayList<Integer>();
+		arReceiverIDs = new ArrayList<Integer>();
 		
 		setAttributes();
 		
@@ -44,7 +45,8 @@ implements ICommand {
 		
 		((IEventPublisher)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
-					createMediator(iUniqueTargetId, vecSenderIDs, vecReceiverIDs);
+					createMediator(iUniqueTargetId,
+							arSenderIDs, arReceiverIDs);
 	}
 	
 	/**
@@ -63,13 +65,13 @@ implements ICommand {
 
 		while (senderToken.hasMoreTokens())
 		{
-			vecSenderIDs.add(StringConversionTool.convertStringToInt(
+			arSenderIDs.add(StringConversionTool.convertStringToInt(
 					senderToken.nextToken(), -1));
 		}
 		
 		while (receiverToken.hasMoreTokens())
 		{
-			vecReceiverIDs.add(StringConversionTool.convertStringToInt(
+			arReceiverIDs.add(StringConversionTool.convertStringToInt(
 					receiverToken.nextToken(), -1));
 		}
 	}

@@ -2,6 +2,7 @@ package cerberus.view.gui;
 
 import java.util.Vector;
 
+import cerberus.view.gui.AViewRep.ViewType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -9,8 +10,8 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * 
  * @author Marc Streit
  */
-public interface IView
-{
+public interface IView {
+	
 	/**
 	 * Initialization of the view.
 	 */
@@ -45,4 +46,6 @@ public interface IView
 	 * Use this method only if you want to change the parent during runtime.
 	 */
 	public void setParentContainerId(int iParentContainerId);
+	
+	public void setViewType(ViewType viewType);
 }

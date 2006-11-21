@@ -19,8 +19,8 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
  * @author kalkusch
  *
  */
-public interface IViewGLCanvasManager extends IGeneralManager, IViewManager
-{
+public interface IViewGLCanvasManager 
+extends IGeneralManager, IViewManager {
 	
 	public IGLCanvasUser createGLCanvasUser(final CommandQueueSaxType useViewType, 
 			int iViewId, int iParentContainerId, String sLabel);

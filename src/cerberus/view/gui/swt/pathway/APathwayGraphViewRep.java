@@ -1,6 +1,7 @@
 package cerberus.view.gui.swt.pathway;
 
 import java.awt.Frame;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -9,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
+import cerberus.command.event.CmdEventCreateMediator;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -22,14 +24,15 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
+import cerberus.manager.event.EventPublisher;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.view.ViewJoglManager;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.ParameterHandler;
-import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
@@ -299,10 +302,12 @@ implements IPathwayGraphView {
 	
 	public void createSelectionSet() {
 	
-		IParameterHandler phAttributes = new ParameterHandler();
+		int iSelectionMediatorId = 95201;
 		
+		IParameterHandler phAttributes = new ParameterHandler();
+				
 		//TODO: retrieve new generated IDs instead of static ones
-
+		
 		// CmdId
 		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
 				"12345", 
@@ -326,9 +331,7 @@ implements IPathwayGraphView {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
 
-		CmdDataCreateSelection cmdCreateSelection = new CmdDataCreateSelection(
-				refGeneralManager,
-				phAttributes);
+		new CmdDataCreateSelection(refGeneralManager, phAttributes);
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
@@ -361,9 +364,7 @@ implements IPathwayGraphView {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
 		
-		CmdDataCreateStorage cmdCreateSelectionStorage = new CmdDataCreateStorage(
-				refGeneralManager,
-				phAttributes, true);
+		new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
@@ -404,10 +405,70 @@ implements IPathwayGraphView {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_DETAIL.getDefault());
 		
-		CmdDataCreateSet cmdCreateSet =	new CmdDataCreateSet(
-					refGeneralManager,
-					phAttributes,
-					true );
+		new CmdDataCreateSet(refGeneralManager, phAttributes, true);
 		
+		phAttributes = null;
+		phAttributes = new ParameterHandler();
+		
+		ViewJoglManager viewManager = 
+			(ViewJoglManager) refGeneralManager.getSingelton().getViewGLCanvasManager();
+		
+		ArrayList<AViewRep> arDataExplorerViews = 
+			viewManager.getViewByType(ViewType.DATA_EXPLORER);
+		
+		Iterator<AViewRep> iterDataExplorerViewRep = 
+			arDataExplorerViews.iterator();
+		
+		String strDataExplorerConcatenation = ""; 
+		
+		while(iterDataExplorerViewRep.hasNext())
+		{
+			strDataExplorerConcatenation = strDataExplorerConcatenation.concat(
+					Integer.toString(iterDataExplorerViewRep.next().getId()));
+			
+			//TODO: add space character
+		}
+		
+		// Create Selection Mediator
+		
+		// CmdId
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+				"12345", 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+
+		// Label
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+				"Pathway Selection Mediator", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_LABEL.getDefault());
+		
+		// TargetID
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+				Integer.toString(iSelectionMediatorId), 
+				IParameterHandler.ParameterHandlerType.INT, 
+				CommandQueueSaxType.TAG_TARGET_ID.getDefault());		 
+		
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+				Integer.toString(this.iParentContainerId), 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+				strDataExplorerConcatenation, 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+		
+		CmdEventCreateMediator createdCommand =
+			new CmdEventCreateMediator(
+					refGeneralManager,
+					phAttributes);	
+		
+		createdCommand.doCommand();
+		
+		((EventPublisher)refGeneralManager.getSingelton().
+				getEventPublisher()).update(refGeneralManager.
+						getSingelton().getViewGLCanvasManager().
+							getItem(iParentContainerId));
 	}
 }
