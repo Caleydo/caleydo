@@ -65,12 +65,12 @@ package cerberus.view.gui.opengl.canvas.isosurface;
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
 
-//import gleem.*;
-//import gleem.linalg.*;
+import gleem.*;
+import gleem.linalg.*;
 
-//import gleem.linalg.Vec2f;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
-//import gleem.linalg.Vec3d;
+import gleem.linalg.Vec3d;
 //import gleem.linalg.Vec4f;
 
 import gleem.linalg.open.Vec4fp;

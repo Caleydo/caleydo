@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-//import cerberus.view.gui.opengl.canvas.isosurface.GeneralByteReader;
+import cerberus.view.gui.opengl.canvas.isosurface.GeneralByteReader;
 import cerberus.view.gui.opengl.canvas.isosurface.SoWrapper;
 
 public class CTDataLoader {
@@ -133,7 +133,7 @@ public class CTDataLoader {
 				}
 				
 				int testN= -1;
-				//int iResult = GeneralByteReader.toByteArrayLSB(80,headerBuffer,testN);
+				int iResult = GeneralByteReader.toByteArrayLSB(80,headerBuffer,testN);
 				
 				
 				short iReadDimensionDatabase = (short) headerBuffer[40];
