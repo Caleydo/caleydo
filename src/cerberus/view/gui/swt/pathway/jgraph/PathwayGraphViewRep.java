@@ -24,6 +24,7 @@ import org.jgraph.JGraph;
 import org.jgraph.example.JGraphParallelRouter;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
+import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
@@ -216,17 +217,7 @@ extends APathwayGraphViewRep {
 					}
 					else
 					{
-						// Load node information in browser
-						final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-							getViewGLCanvasManager();					
-				    
-						refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
-							public void run() {
-								((HTMLBrowserViewRep)tmpViewManager.
-										getItem(iHTMLBrowserId)).setUrl(sUrl);
-							}
-						});	
-	
+						loadNodeInformationInBrowser(sUrl);
 	
 						// UNDO old neighborhood visualization
 						if (bNeighbourhoodShown == true)
@@ -238,6 +229,19 @@ extends APathwayGraphViewRep {
 							iNeighbourhoodUndoCount = 0;
 							bNeighbourhoodShown = false;
 						}
+						
+						// Highlight current cell
+						Map<DefaultGraphCell, Map> nested = 
+							new Hashtable<DefaultGraphCell, Map>();
+						Map attributeMap = new Hashtable();
+						
+						GraphConstants.setBackground(attributeMap, 
+								new Color(1.0f, 0.0f, 0.0f));
+						
+						nested.put(clickedCell, attributeMap);
+						refGraphLayoutCache.edit(nested, null, null, null);
+						bNeighbourhoodShown = true;
+						iNeighbourhoodUndoCount++;
 	
 						if (iNeighbourhoodDistance != 0)
 						{

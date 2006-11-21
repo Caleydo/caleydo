@@ -16,10 +16,12 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 public abstract class APathwayGraphViewRep 
@@ -272,5 +274,19 @@ implements IPathwayGraphView {
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
+	}
+	
+	public void loadNodeInformationInBrowser(final String sUrl) {
+		
+		// Load node information in browser
+		final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+			getViewGLCanvasManager();					
+    
+		refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				((HTMLBrowserViewRep)tmpViewManager.
+						getItem(iHTMLBrowserId)).setUrl(sUrl);
+			}
+		});	
 	}
 }
