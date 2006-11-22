@@ -15,6 +15,7 @@ import com.sun.opengl.util.GLUT;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -200,8 +201,6 @@ implements IGLCanvasUser {
 		{
 			Iterator<PathwayVertex> iterSelectedVertex = 
 				arSelectedVertex.iterator();
-			
-			IPathwayVertexRep tmpVertexRep = null;
 			
 			// FIXME: static value is bad here! change this!
 			fZLayerValue = 0.0f;
@@ -476,18 +475,18 @@ implements IGLCanvasUser {
 		{
 			fZLayerValue = iLayerIndex;
 			
-			if (iLayerIndex == 1)
-				loadPathwayFromFile(strPathwayPaths[0]);
-			else if (iLayerIndex == 2)
-				loadPathwayFromFile(strPathwayPaths[1]);
-			
-			refCurrentPathway = refGeneralManager.getSingelton().
-				getPathwayManager().getCurrentPathway();
-		
-			if (refCurrentPathway == null)
-			{
-				return;
-			}
+//			if (iLayerIndex == 1)
+//				loadPathwayFromFile(strPathwayPaths[0]);
+//			else if (iLayerIndex == 2)
+//				loadPathwayFromFile(strPathwayPaths[1]);
+//			
+//			refCurrentPathway = refGeneralManager.getSingelton().
+//				getPathwayManager().getCurrentPathway();
+//		
+//			if (refCurrentPathway == null)
+//			{
+//				return;
+//			}
 			
 			// Draw pathway "sheet" border
 			gl.glColor3f(0.0f, 0.0f, 0.0f);
@@ -781,6 +780,10 @@ implements IGLCanvasUser {
 		
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 */
 	public void updateSelection(Object eventTrigger, ISet selectionSet) {
 
 		// Clear old selected vertices
@@ -790,11 +793,16 @@ implements IGLCanvasUser {
 				"OpenGL Pathway update called by " + eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 		
-		int[] selectedElements = 
+		int[] iArSelectedElements = 
 			((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getArrayInt();
 		
-		arSelectedVertex.add(refGeneralManager.getSingelton().getPathwayElementManager().
-			getVertexLUT().get(selectedElements[0]));
+		for (int iSelectedVertexIndex = 0; 
+			iSelectedVertexIndex < ((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
+			iSelectedVertexIndex++)
+		{
+			arSelectedVertex.add(refGeneralManager.getSingelton().getPathwayElementManager().
+					getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]));
+		}
 		
 		getGLCanvas().display();
 		//getGLCanvas().repaint();

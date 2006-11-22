@@ -6,10 +6,12 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -34,6 +36,7 @@ import org.jgraph.graph.GraphUndoManager;
 import cerberus.util.system.StringConversionTool;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
+import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
@@ -90,6 +93,11 @@ extends APathwayGraphViewRep {
 	protected Vector<DefaultGraphCell> vecVertices;
 	
 	/**
+	 * HashSet is used because it guarantees uniuque elements.
+	 */
+	protected HashSet<Integer> iLLSelectedVertices;
+	
+	/**
 	 * Specifies how deep the neighborhood recursion
 	 * should visualize surrounding elements.
 	 * Default value is 0.
@@ -123,6 +131,8 @@ extends APathwayGraphViewRep {
 		vecVertices = new Vector<DefaultGraphCell>();
 		
 		fScalingFactor = SCALING_FACTOR;
+		
+		iLLSelectedVertices = new HashSet<Integer>();
 	}
 
 	public void initView() {
@@ -145,6 +155,9 @@ extends APathwayGraphViewRep {
 			    	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
 							.getFirstCellForLocation(event.getX(), event.getY());
 	
+			    	// Remove old selected vertices
+					iLLSelectedVertices.clear();
+			    	
 			    	// Check if a node or edge was hit.
 			    	// If not undo neighborhood visualization and return.
 			    	if (clickedCell == null)
@@ -234,11 +247,24 @@ extends APathwayGraphViewRep {
 						iNeighbourhoodUndoCount++;
 	
 						if (iNeighbourhoodDistance != 0)
-						{
+						{	
 							showNeighbourhood(clickedCell, 
 								iNeighbourhoodDistance, null);
 					
 							bNeighbourhoodShown = true;
+					
+							// Add selected vertex itself because neighborhood algorithm
+							// only adds neighbor vertices.
+							iLLSelectedVertices.add(((PathwayVertexRep)clickedCell.
+									getUserObject()).getVertex().getElementId());
+							
+							// Convert Link List to int[]
+						    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+						    int[] iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+						    for ( int i=0; iter_I.hasNext() ;i++ ) {
+						    	iArSelectedVertices[i] = iter_I.next().intValue();
+						    }
+							createSelectionSet(iArSelectedVertices);
 						}
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
@@ -594,11 +620,15 @@ extends APathwayGraphViewRep {
 		
 		GraphConstants.setBackground(
 				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
-		
+
 		while (cellIter.hasNext())
 		{
 			tmpCell = cellIter.next();
-
+		
+			// Add selected vertex
+			iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
+					getUserObject()).getVertex().getElementId());
+			
 			nested.put(tmpCell, attributeMap);
 			
 			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
@@ -610,8 +640,6 @@ extends APathwayGraphViewRep {
 		refGraphLayoutCache.edit(nested, null, null, null);
 		
 		iNeighbourhoodUndoCount++;
-		
-		//createSelectionSet();
 	}
 	
 	public void highlightCell(final DefaultGraphCell refCell, 

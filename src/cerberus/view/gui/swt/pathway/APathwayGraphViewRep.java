@@ -59,6 +59,8 @@ implements IPathwayGraphView {
 	
 	protected PathwayImageMap refCurrentPathwayImageMap;
 	
+	protected boolean bSelectionMediatorCreated = false;
+	
 	/*
 	 * Specifies which vertex representation of a specific vertex
 	 * will be drawn.
@@ -307,11 +309,19 @@ implements IPathwayGraphView {
 	public void createSelectionSet(int[] arSelectedVertices) {
 	
 		int iSelectionMediatorId = 95201;
+		int iSelectionSetId = 45101;
 		int iSelectionVirtualArrayId = 45201;
 		int iSelectionStorageId = 45301;
 		
+		
+//		refGeneralManager.getSingelton().getSetManager().deleteSet(45101);
+//		refGeneralManager.getSingelton().getSelectionManager().deleteSelection(45201);
+//		refGeneralManager.getSingelton().getStorageManager().deleteStorage(45301);
+		
 		IParameterHandler phAttributes = new ParameterHandler();
 				
+		if (bSelectionMediatorCreated == false)
+		{
 		//TODO: retrieve new generated IDs instead of static ones
 		
 		// CmdId
@@ -372,10 +382,6 @@ implements IPathwayGraphView {
 		
 		new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
 		
-		IStorage selectionStorage = 
-			(IStorage) refGeneralManager.getItem(iSelectionStorageId);
-		selectionStorage.setArrayInt(arSelectedVertices);
-		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
 		
@@ -393,7 +399,7 @@ implements IPathwayGraphView {
 				
 		// TargetID (SetID)
 		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				"45101", 
+				Integer.toString(iSelectionSetId), 
 				IParameterHandler.ParameterHandlerType.INT, 
 				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
 		
@@ -474,12 +480,18 @@ implements IPathwayGraphView {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_DETAIL.getDefault());
 		
-		CmdEventCreateMediator createdCommand =
-			new CmdEventCreateMediator(
-					refGeneralManager,
-					phAttributes);	
+
+			CmdEventCreateMediator createdCommand =
+				new CmdEventCreateMediator(refGeneralManager, phAttributes);	
 		
-		createdCommand.doCommand();
+			createdCommand.doCommand();
+			bSelectionMediatorCreated = true;
+		}
+		
+		// Set/update selection data
+		IStorage selectionStorage = 
+			(IStorage) refGeneralManager.getItem(iSelectionStorageId);
+		selectionStorage.setArrayInt(arSelectedVertices);
 		
 		// Calls update with the ID of the PathwayViewRep
 		((EventPublisher)refGeneralManager.getSingelton().
