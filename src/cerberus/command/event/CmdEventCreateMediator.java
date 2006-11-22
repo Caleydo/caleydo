@@ -2,15 +2,16 @@ package cerberus.command.event;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
+import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IEventPublisher.MediatorType;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.manager.IEventPublisher;
 
@@ -21,12 +22,14 @@ import cerberus.manager.IEventPublisher;
  * @author Marc Streit
  */
 public class CmdEventCreateMediator 
-extends ACmdCreate_IdTargetLabelAttr 
+extends ACmdCreate_IdTargetLabelAttrDetail 
 implements ICommand {
 	
 	protected ArrayList<Integer> arSenderIDs;
 
 	protected ArrayList<Integer> arReceiverIDs;
+	
+	protected MediatorType mediatorType;
 	
 	public CmdEventCreateMediator(IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler) {
@@ -42,11 +45,11 @@ implements ICommand {
 	}
 
 	public void doCommand() throws CerberusRuntimeException {
-		
+			
 		((IEventPublisher)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
 					createMediator(iUniqueTargetId,
-							arSenderIDs, arReceiverIDs);
+							arSenderIDs, arReceiverIDs, mediatorType);
 	}
 	
 	/**
@@ -74,6 +77,16 @@ implements ICommand {
 			arReceiverIDs.add(StringConversionTool.convertStringToInt(
 					receiverToken.nextToken(), -1));
 		}
+		
+		String sMediatorType = refParameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
+		
+		if (sMediatorType.equals("DATA_MEDIATOR"))
+			mediatorType = MediatorType.DATA_MEDIATOR;
+		else if (sMediatorType.equals("SELECTION_MEDIATOR"))
+			mediatorType = MediatorType.SELECTION_MEDIATOR;
+		else if (sMediatorType.equals("VIEWING_DATA_MEDIATOR")) // for future usage
+			mediatorType = MediatorType.VIEWING_DATA_MEDIATOR;
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {

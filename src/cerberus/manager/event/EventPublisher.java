@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import cerberus.data.collection.ISet;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
@@ -15,14 +16,18 @@ import cerberus.manager.type.ManagerObjectType;
 
 public class EventPublisher 
 implements IEventPublisher {
-
+	
 	protected IGeneralManager refGeneralManager;
 
 	protected HashMap<Integer, IMediator> hashMediatorId2Mediator;
 
-	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2Mediators;
+	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2DataMediators;
 
-	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2Mediators;
+	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2DataMediators;
+
+	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2SelectionMediators;
+
+	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2SelectionMediators;
 
 	/**
 	 * Constructor.
@@ -33,14 +38,18 @@ implements IEventPublisher {
 
 		this.refGeneralManager = refGeneralManager;
 
-		hashSender2Mediators = 
+		hashSender2DataMediators = 
 			new HashMap<IMediatorSender, ArrayList<IMediator>>();
-		hashReceiver2Mediators = 
+		hashReceiver2DataMediators = 
+			new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
+		hashSender2SelectionMediators = 
+			new HashMap<IMediatorSender, ArrayList<IMediator>>();
+		hashReceiver2SelectionMediators = 
 			new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
 	}
 
 	public void createMediator(int iMediatorId, ArrayList<Integer> arSenderIDs,
-			ArrayList<Integer> arReceiverIDs) {
+			ArrayList<Integer> arReceiverIDs, MediatorType mediatorType) {
 
 		IMediator newMediator = new LockableMediator(iMediatorId);
 
@@ -54,12 +63,23 @@ implements IEventPublisher {
 					.getItem(iterSenderIDs.next());
 
 			newMediator.register(sender);
-
-			if (!hashSender2Mediators.containsKey(sender))
+			
+			if (mediatorType == MediatorType.DATA_MEDIATOR)
 			{
-				hashSender2Mediators.put(sender, new ArrayList<IMediator>());
+				if (!hashSender2DataMediators.containsKey(sender))
+				{
+					hashSender2DataMediators.put(sender, new ArrayList<IMediator>());
+				}
+				hashSender2DataMediators.get(sender).add(newMediator);
 			}
-			hashSender2Mediators.get(sender).add(newMediator);
+			else if (mediatorType == MediatorType.SELECTION_MEDIATOR)
+			{
+				if (!hashSender2SelectionMediators.containsKey(sender))
+				{
+					hashSender2SelectionMediators.put(sender, new ArrayList<IMediator>());
+				}
+				hashSender2SelectionMediators.get(sender).add(newMediator);
+			}
 		}
 
 		// Register receiver
@@ -70,11 +90,22 @@ implements IEventPublisher {
 
 			newMediator.register(receiver);
 
-			if (!hashReceiver2Mediators.containsKey(receiver))
+			if (mediatorType == MediatorType.DATA_MEDIATOR)
 			{
-				hashReceiver2Mediators.put(receiver, new ArrayList<IMediator>());
+				if (!hashReceiver2DataMediators.containsKey(receiver))
+				{
+					hashReceiver2DataMediators.put(receiver, new ArrayList<IMediator>());
+				}
+				hashReceiver2DataMediators.get(receiver).add(newMediator);
 			}
-			hashReceiver2Mediators.get(receiver).add(newMediator);
+			else if (mediatorType == MediatorType.SELECTION_MEDIATOR)
+			{
+				if (!hashReceiver2SelectionMediators.containsKey(receiver))
+				{
+					hashReceiver2SelectionMediators.put(receiver, new ArrayList<IMediator>());
+				}
+				hashReceiver2SelectionMediators.get(receiver).add(newMediator);				
+			}
 		}
 	}
 
@@ -132,22 +163,21 @@ implements IEventPublisher {
 
 	}
 
-	/**
-	 * Casts the event trigger object to ISender and looks up the Mediator for
-	 * this sender. On the mediator object then the update method is called.
-	 * 
-	 * @param eventTrigger
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.IEventPublisher#update(java.lang.Object)
 	 */
 	public void update(Object eventTrigger) {
 
 		// Prevent update during initialization of data.
-		if (hashSender2Mediators.isEmpty())
+		if (hashSender2DataMediators.isEmpty())
 		{
 			return;
 		}
 
-		ArrayList<IMediator> arMediators = hashSender2Mediators
+		ArrayList<IMediator> arMediators = hashSender2DataMediators
 				.get((IMediatorSender) eventTrigger);
+		
 		Iterator<IMediator> iterMediators = arMediators.iterator();
 
 		IMediator tmpMediator;
@@ -165,7 +195,41 @@ implements IEventPublisher {
 			}
 		}
 	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.IEventPublisher#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 */
+	public void updateSelection(Object eventTrigger, ISet selectionSet) {
+		
+		// Prevent update during initialization of data.
+		if (hashSender2SelectionMediators.isEmpty())
+		{
+			return;
+		}
 
+		ArrayList<IMediator> arMediators = hashSender2SelectionMediators
+				.get((IMediatorSender) eventTrigger);
+		
+		Iterator<IMediator> iterMediators = arMediators.iterator();
+
+		IMediator tmpMediator;
+
+		while (iterMediators.hasNext())
+		{
+			tmpMediator = iterMediators.next();
+
+			if (tmpMediator != null)
+			{
+				tmpMediator.updateReceiverSelection(
+						eventTrigger, selectionSet);
+			} else
+			{
+				// TODO: print message
+			}
+		}	
+	}
+	
 	public void removeMediator(IMediatorSender sender) {
 
 		// TODO Auto-generated method stub

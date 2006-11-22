@@ -5,8 +5,6 @@
 
 package cerberus.manager.event.mediator;
 
-import cerberus.util.exception.CerberusRuntimeException;
-
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
  * 
@@ -22,8 +20,8 @@ implements IMediator {
 	/**
 	 * 
 	 */
-	protected ALockableMediator(int iMediatorId)
-	{
+	protected ALockableMediator(int iMediatorId) {
+		
 		super();
 		
 		this.iMediatorId = iMediatorId;
@@ -36,7 +34,8 @@ implements IMediator {
 	 * 
 	 * @param sender callling object 
 	 */
-	protected abstract void destroyMediatorDerivedObject( final IMediatorSender sender );
+	protected abstract void destroyMediatorDerivedObject( 
+			final IMediatorSender sender );
 
 	
 	/**

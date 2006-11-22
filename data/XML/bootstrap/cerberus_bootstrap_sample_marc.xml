@@ -97,8 +97,8 @@
 							detail="65101" /> 	    
   
   		<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
  	  <!--Commands not in use at the moment	  
  	  

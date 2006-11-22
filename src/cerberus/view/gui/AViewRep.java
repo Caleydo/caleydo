@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import cerberus.data.AUniqueManagedObject;
+import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.event.mediator.IMediatorReceiver;
@@ -32,6 +33,13 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		HEATMAP
 	}
 	
+	public enum EventState {
+		NONE,
+		NEW_SELECTION,
+		SELECTION_CHANGED,
+		DATA_CHANGED
+	}
+	
 	protected int iParentContainerId;
 	
 	protected String sLabel;
@@ -51,6 +59,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	protected int iHeight;
 	
 	protected ViewType viewType;
+	
+	protected EventState eventState;
 
 	/**
 	 * Constructor
@@ -70,6 +80,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
+		
+		eventState = EventState.NONE;
 	}
 	
 	/**
@@ -228,11 +240,22 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		this.iParentContainerId = iParentContainerId;
 	}
 	
-	/**
-	 * TODO: implement in subclasses
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
 	 */
 	public void update( Object eventTrigger ) {
 		
+		//Implemented in subclasses		
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 */
+	public void updateSelection(Object eventTrigger, ISet updatedSelectionSet) {
+
+		//Implemented in subclasses
 	}
 	
 	public void setViewType(ViewType viewType) {

@@ -5,6 +5,8 @@ package cerberus.manager.event.mediator;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import cerberus.data.collection.ISet;
+
 
 /**
  * Threadsafe Mediator receiver.
@@ -18,8 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  */
 public abstract class ALockableMediatorReceiver 
-implements ILockableMediatorReceiver
-{
+implements ILockableMediatorReceiver {
+	
 	/**
 	 * Thread safe boolean.
 	 * TURE indicates the updates are stelled,
@@ -32,8 +34,8 @@ implements ILockableMediatorReceiver
 	/**
 	 * 
 	 */
-	protected ALockableMediatorReceiver()
-	{
+	protected ALockableMediatorReceiver() {
+		
 		bUpdateIsStalled = new AtomicBoolean( false );
 	}
 
@@ -51,11 +53,20 @@ implements ILockableMediatorReceiver
 		}
 	}
 
+	public final void updateSelection(Object eventTrigger, 
+			ISet selectionSet) {
+		
+		if ( bUpdateIsStalled.get() ) {
+			updateReceiverSelection(eventTrigger, selectionSet);
+		}
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see cerberus.observer.mediator.IMediatorReceiver#updateStall()
 	 */
-	public final void updateStall()
-	{
+	public final void updateStall() {
+		
 		bUpdateIsStalled.set( true );
 	}
 
@@ -65,8 +76,8 @@ implements ILockableMediatorReceiver
 	 * 
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateContinue(Object)
 	 */
-	public final void updateContinue(Object eventTrigger)
-	{
+	public final void updateContinue(Object eventTrigger) {
+		
 		bUpdateIsStalled.set( false );
 
 		update( eventTrigger );
@@ -75,19 +86,23 @@ implements ILockableMediatorReceiver
 	/**
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#isUpdateStalled()
 	 */
-	public final boolean isUpdateStalled() 
-	{
+	public final boolean isUpdateStalled() {
+		
 		return bUpdateIsStalled.get();
 	}
 	
 	
 	/**
-	 * Derived classes must implement this methode instead of update(Object).
+	 * Derived classes must implement this method instead of update(Object).
 	 * 
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
 	 * 	 
 	 * @param eventTrigger
 	 */
 	public abstract void updateReceiver(Object eventTrigger);
+	
+
+	public abstract void updateReceiverSelection(Object eventTrigger,
+			ISet selectionSet);
 
 }

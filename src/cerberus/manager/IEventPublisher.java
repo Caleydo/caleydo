@@ -2,18 +2,27 @@ package cerberus.manager;
 
 import java.util.ArrayList;
 
+import cerberus.data.collection.ISet;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 
-public interface IEventPublisher extends IGeneralManager
-{
+public interface IEventPublisher 
+extends IGeneralManager {
 
+	public enum MediatorType {
+		DATA_MEDIATOR,
+		SELECTION_MEDIATOR,
+		VIEWING_DATA_MEDIATOR //for future usage
+	}
+	
 	/**
 	 * Creates a mediator and registers the senders and receivers
 	 * to this mediator.
 	 */
-	public void createMediator (int iMediatorId, ArrayList<Integer> arSenderIDs, 
-			ArrayList<Integer> arReceiverIDs);
+	public void createMediator (int iMediatorId, 
+			ArrayList<Integer> arSenderIDs, 
+			ArrayList<Integer> arReceiverIDs,
+			MediatorType mediatorType);
 	
 	/**
 	 * Adds a sender to an existing mediator. 
@@ -63,8 +72,15 @@ public interface IEventPublisher extends IGeneralManager
 	public void unregisterReceiverToMediator (int iMediatorId,
 			int iMediatorReceiverId);
 	
-	
+	/**
+	 * Casts the event trigger object to ISender and looks up the Mediator for
+	 * this sender. On the mediator object then the update method is called.
+	 * 
+	 * @param eventTrigger
+	 */
 	public void update(Object triggerObject);
+	
+	public void updateSelection(Object triggerObject, ISet selectionSet);
 	
 	/**
 	 * Called only by Sender.

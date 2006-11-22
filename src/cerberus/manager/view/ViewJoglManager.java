@@ -120,7 +120,10 @@ implements IViewManager, IViewGLCanvasManager {
 
 		if (hashGLCanvas.containsKey(iItemId))
 			return true;
-
+		
+		if (hashGLCanvasUser.containsKey(iItemId))
+			return true;
+		
 		if (hashGLEventListener.containsKey(iItemId))
 			return true;
 
@@ -138,6 +141,11 @@ implements IViewManager, IViewGLCanvasManager {
 
 		if (bufferCanvas != null)
 			return bufferCanvas;
+		
+		IGLCanvasUser bufferCanvasUser = hashGLCanvasUser.get(iItemId);
+
+		if (bufferCanvasUser != null)
+			return bufferCanvasUser;
 
 		return hashGLEventListener.get(iItemId);
 	}

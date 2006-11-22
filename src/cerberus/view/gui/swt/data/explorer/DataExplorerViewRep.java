@@ -331,6 +331,10 @@ implements IView, IMediatorReceiver {
 		});
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
+	 */
 	public void update(Object eventTrigger) {
 
 		
@@ -340,7 +344,20 @@ implements IView, IMediatorReceiver {
 				"Data Explorer update called by " + eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 
+		//treeViewer.setInput(getInitalInput());
 		//refDataTableViewRep.updateSelection(triggerId);
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 */
+	public void updateSelection(Object eventTrigger, ISet updatedSelectionSet) {
+
+		refGeneralManager.getSingelton().logMsg(
+				"Data Explorer selection update called by " 
+				+ eventTrigger.getClass().getSimpleName(),
+				LoggerType.VERBOSE);
 	}
 	
 	public void addExistingPathway() {

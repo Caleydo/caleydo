@@ -1,5 +1,7 @@
 package cerberus.manager.event.mediator;
 
+import cerberus.data.collection.ISet;
+
 
 public interface IMediator
 extends IMediatorReceiver
@@ -28,4 +30,7 @@ extends IMediatorReceiver
 	public void destroyMediator(  final IMediatorSender sender );
 	
 	public void updateReceiver( Object eventTrigger );
+	
+	public void updateReceiverSelection(Object eventTrigger, 
+			ISet selectionSet);
 }

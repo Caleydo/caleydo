@@ -381,7 +381,7 @@ implements IPathwayGraphView {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_LABEL.getDefault());
 				
-		// TargetID
+		// TargetID (SetID)
 		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
 				"45101", 
 				IParameterHandler.ParameterHandlerType.INT, 
@@ -455,9 +455,14 @@ implements IPathwayGraphView {
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
 
 		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-				strDataExplorerConcatenation, 
+				strDataExplorerConcatenation + " " +"79401", 
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+		
+		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
+				"SELECTION_MEDIATOR", 
+				IParameterHandler.ParameterHandlerType.STRING, 
+				CommandQueueSaxType.TAG_DETAIL.getDefault());
 		
 		CmdEventCreateMediator createdCommand =
 			new CmdEventCreateMediator(
@@ -466,9 +471,11 @@ implements IPathwayGraphView {
 		
 		createdCommand.doCommand();
 		
+		// Calls update with the ID of the PathwayViewRep
 		((EventPublisher)refGeneralManager.getSingelton().
-				getEventPublisher()).update(refGeneralManager.
+				getEventPublisher()).updateSelection(refGeneralManager.
 						getSingelton().getViewGLCanvasManager().
-							getItem(iParentContainerId));
+							getItem(iParentContainerId), 
+							refGeneralManager.getSingelton().getSetManager().getItemSet(45101));
 	}
 }

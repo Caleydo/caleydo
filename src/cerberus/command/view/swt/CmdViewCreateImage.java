@@ -23,8 +23,6 @@ public class CmdViewCreateImage
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
 	
-	protected String sDetail;
-	
 	/**
 	 * Constructor
 	 * 
@@ -36,9 +34,6 @@ implements ICommand {
 			final IParameterHandler refParameterHandler) {
 		
 		super(refGeneralManager, refParameterHandler);
-		
-		sDetail = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 		
 		setAttributes(refParameterHandler);
 	}

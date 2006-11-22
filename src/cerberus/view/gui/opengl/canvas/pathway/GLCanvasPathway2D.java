@@ -11,6 +11,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
+import cerberus.data.collection.ISet;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -18,6 +19,7 @@ import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
@@ -745,5 +747,12 @@ implements IGLCanvasUser {
 
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void updateSelection(Object eventTrigger, ISet selectionSet) {
+
+		refGeneralManager.getSingelton().logMsg(
+				"OpenGL Pathway update called by " + eventTrigger.getClass().getSimpleName(),
+				LoggerType.VERBOSE);
 	}
 }

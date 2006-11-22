@@ -1,6 +1,8 @@
 
 package cerberus.manager.event.mediator;
 
+import cerberus.data.collection.ISet;
+
 
 /**
  * Object that shall receive an event.
@@ -9,8 +11,7 @@ package cerberus.manager.event.mediator;
  *
  */
 public interface ILockableMediatorReceiver
-extends IMediatorReceiver
-{
+extends IMediatorReceiver {
 
 	/**
 	 * Update called by Mediator triggered by IMediatorSender.
@@ -18,6 +19,8 @@ extends IMediatorReceiver
 	 * @param eventTrigger calling object, that created the update
 	 */
 	public void update( Object eventTrigger );
+	
+	public void updateSelection(Object eventTrigger, ISet selectionSet);
 	
 	/**
 	 * Blocks update() until methode updateRunPipe() is called.
