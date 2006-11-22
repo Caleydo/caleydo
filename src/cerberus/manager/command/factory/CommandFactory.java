@@ -17,7 +17,7 @@ import cerberus.command.CommandTypeGroup;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 
-import cerberus.command.data.CmdDataCreateSelection;
+import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventCreateMediator;
@@ -238,10 +238,10 @@ extends ACommand
 			break;
 		}
 		
-		case CREATE_SELECTION:
+		case CREATE_VIRTUAL_ARRAY:
 		{
 			createdCommand =
-				new CmdDataCreateSelection(
+				new CmdDataCreateVirtualArray(
 						refGeneralManager,
 						phAttributes );			
 			break;

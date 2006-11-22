@@ -18,11 +18,11 @@
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="55301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
 						 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="80 0 0 1" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="80 0 0 1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION"			cmdId="23991"	targetId="55201" label="Select file" attrib1="30 200 0 1"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="23991"	targetId="55201" label="Select file" attrib1="30 200 0 1"	/>
 												
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="31991"	targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />

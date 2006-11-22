@@ -227,8 +227,8 @@ extends APathwayGraphViewRep {
 						
 						// Highlight current cell
 						highlightCell(clickedCell, Color.RED);
-						createSelectionSet(((PathwayVertexRep)clickedCell.getUserObject()).
-								getVertex().getElementId());
+						createSelectionSet(new int[]{((PathwayVertexRep)clickedCell.getUserObject()).
+								getVertex().getElementId()});
 						
 						bNeighbourhoodShown = true;
 						iNeighbourhoodUndoCount++;
@@ -610,6 +610,8 @@ extends APathwayGraphViewRep {
 		refGraphLayoutCache.edit(nested, null, null, null);
 		
 		iNeighbourhoodUndoCount++;
+		
+		//createSelectionSet();
 	}
 	
 	public void highlightCell(final DefaultGraphCell refCell, 

@@ -38,7 +38,7 @@ import cerberus.manager.type.ManagerObjectType;
  * @see cerberus.data.collection.ISet
  * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
  */
-public class CmdDataCreateSelection 
+public class CmdDataCreateVirtualArray 
 extends AManagedCmd
 implements ICommand {
 	
@@ -74,7 +74,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
 	 */
-	public CmdDataCreateSelection( IGeneralManager refGeneralManager,
+	public CmdDataCreateVirtualArray( IGeneralManager refGeneralManager,
 			final LinkedList <String> listAttributes ) {
 		
 		super( -1, refGeneralManager );		
@@ -83,7 +83,7 @@ implements ICommand {
 		
 	}
 	
-	public CmdDataCreateSelection( IGeneralManager refGeneralManager,
+	public CmdDataCreateVirtualArray( IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler ) {
 	
 		super( -1, refGeneralManager );		

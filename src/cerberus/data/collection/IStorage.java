@@ -10,7 +10,6 @@ package cerberus.data.collection;
 
 import java.util.Hashtable;
 
-import cerberus.data.IUniqueManagedObject;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.ICollection;
 import cerberus.data.collection.thread.ICollectionThreadObject;
@@ -21,10 +20,7 @@ import cerberus.data.xml.IMementoNetEventXML;
  *
  */
 public interface IStorage 
-	extends ICollection,
-	IMementoNetEventXML,
-	ICollectionThreadObject
-{
+extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
 
 	/**
 	 * Adds a new container with the storage type defined in setStorageType.

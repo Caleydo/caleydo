@@ -4,10 +4,11 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.eclipse.swt.widgets.Composite;
 
-import cerberus.command.data.CmdDataCreateSelection;
+import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventCreateMediator;
@@ -303,9 +304,11 @@ implements IPathwayGraphView {
 		});	
 	}
 	
-	public void createSelectionSet(int iSelectedElementId) {
+	public void createSelectionSet(int[] arSelectedVertices) {
 	
 		int iSelectionMediatorId = 95201;
+		int iSelectionVirtualArrayId = 45201;
+		int iSelectionStorageId = 45301;
 		
 		IParameterHandler phAttributes = new ParameterHandler();
 				
@@ -325,7 +328,7 @@ implements IPathwayGraphView {
 		
 		// TargetID
 		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				"45201", 
+				Integer.toString(iSelectionVirtualArrayId), 
 				IParameterHandler.ParameterHandlerType.INT, 
 				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
 		
@@ -334,7 +337,7 @@ implements IPathwayGraphView {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
 
-		new CmdDataCreateSelection(refGeneralManager, phAttributes);
+		new CmdDataCreateVirtualArray(refGeneralManager, phAttributes);
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
@@ -353,7 +356,7 @@ implements IPathwayGraphView {
 		
 		// TargetID
 		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				"45301", 
+				Integer.toString(iSelectionStorageId), 
 				IParameterHandler.ParameterHandlerType.INT, 
 				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
 		
@@ -370,8 +373,8 @@ implements IPathwayGraphView {
 		new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
 		
 		IStorage selectionStorage = 
-			(IStorage) refGeneralManager.getItem(45301);
-		selectionStorage.setArrayInt(new int[]{iSelectedElementId});
+			(IStorage) refGeneralManager.getItem(iSelectionStorageId);
+		selectionStorage.setArrayInt(arSelectedVertices);
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();

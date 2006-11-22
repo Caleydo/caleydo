@@ -31,10 +31,10 @@ public enum CommandQueueSaxType
 	
 	NO_OPERATION("cmd","type","NO_OPERATION"),
 	
-	CREATE_SELECTION("cmd","type","-1"),
 	CREATE_SET("cmd","type","-1"),
 	CREATE_SET_PLANAR("cmd","type","-1"),
 	//CREATE_SET_MULTIDIM("cmd","type","-1"),
+	CREATE_VIRTUAL_ARRAY("cmd","type","-1"),
 	CREATE_STORAGE("cmd","type","-1"),
 	
 	CREATE_VIEW_HEATMAP("cmd", "type","-1"),
@@ -61,10 +61,6 @@ public enum CommandQueueSaxType
 	
 	CREATE_SWT_WINDOW("cmd", "type","-1"),
 	CREATE_SWT_CONTAINER("cmd", "type","-1"),
-	
-	// replaced by CREATE_EVENT_MEDIATOR
-	//CREATE_EVENT_RELATION("cmd","type",null),
-	// TODO: remove lines
 	
 	CREATE_EVENT_MEDIATOR("cmd", "type", null),
 	
