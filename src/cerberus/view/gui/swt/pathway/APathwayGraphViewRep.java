@@ -11,6 +11,9 @@ import cerberus.command.data.CmdDataCreateSelection;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventCreateMediator;
+import cerberus.data.IDataStorage;
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -164,7 +167,7 @@ implements IPathwayGraphView {
 
         	if (vertexRep != null)
         	{
-        		createVertex(vertexRep);        	
+        		createVertex(vertexRep, false);        	
         	}
         }   
 	}
@@ -300,7 +303,7 @@ implements IPathwayGraphView {
 		});	
 	}
 	
-	public void createSelectionSet() {
+	public void createSelectionSet(int iSelectedElementId) {
 	
 		int iSelectionMediatorId = 95201;
 		
@@ -365,6 +368,10 @@ implements IPathwayGraphView {
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
 		
 		new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
+		
+		IStorage selectionStorage = 
+			(IStorage) refGeneralManager.getItem(45301);
+		selectionStorage.setArrayInt(new int[]{iSelectedElementId});
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();

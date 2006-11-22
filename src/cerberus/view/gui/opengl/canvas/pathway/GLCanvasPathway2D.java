@@ -5,6 +5,8 @@ import gleem.linalg.Vec4f;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -12,6 +14,7 @@ import javax.media.opengl.GLAutoDrawable;
 import com.sun.opengl.util.GLUT;
 
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.IStorage;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -72,6 +75,8 @@ implements IGLCanvasUser {
 	protected float fPathwayNodeWidth = 0.0f;
 	
 	protected float fPathwayNodeHeight = 0.0f;
+	
+	protected ArrayList<PathwayVertex> arSelectedVertex;
 
 		
 	/**
@@ -104,6 +109,8 @@ implements IGLCanvasUser {
 		
 		fScalingFactorY = 
 			((viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 1000.0f) * 1.5f;
+		
+		arSelectedVertex = new ArrayList<PathwayVertex>();
 	}
 	
 	/*
@@ -119,7 +126,7 @@ implements IGLCanvasUser {
 		// General GL settings
 //		gl.glEnable(GL.GL_BLEND);
 //		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
-		gl.glEnable(GL.GL_DEPTH_TEST);
+		//gl.glEnable(GL.GL_DEPTH_TEST);
 //		gl.glDepthFunc(GL.GL_LEQUAL);
 //		gl.glBlendEquation(GL.GL_MAX);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -185,8 +192,25 @@ implements IGLCanvasUser {
 	public void renderPart(GL gl) {
 		
 		this.gl = gl;
-	
+		
 		gl.glCallList(iPathwayDisplayListId);
+		
+		//Draw selected pathway nodes
+		if (!arSelectedVertex.isEmpty())
+		{
+			Iterator<PathwayVertex> iterSelectedVertex = 
+				arSelectedVertex.iterator();
+			
+			IPathwayVertexRep tmpVertexRep = null;
+			
+			// FIXME: static value is bad here! change this!
+			fZLayerValue = 0.0f;
+			
+			while(iterSelectedVertex.hasNext())
+			{
+				createVertex(iterSelectedVertex.next().getVertexRepByIndex(0), true);
+			}
+		}		
 	}
 	
 	public void setTargetPathwayId(final int iTargetPathwayId) {
@@ -211,9 +235,6 @@ implements IGLCanvasUser {
 	
 	public void update(GLAutoDrawable canvas) {
 		
-		System.err.println(" GLCanvasPathway2D.update(GLCanvas canvas)");	
-//		
-//		createHistogram( iCurrentHistogramLength );
 	}
 
 	public void destroy() {
@@ -221,7 +242,7 @@ implements IGLCanvasUser {
 		System.err.println(" GLCanvasPathway2D.destroy(GLCanvas canvas)");
 	}
 
-	public void createVertex(IPathwayVertexRep vertexRep) {
+	public void createVertex(IPathwayVertexRep vertexRep, boolean bHightlighVertex) {
 		
 		float fCanvasXPos = viewingFrame[X][MIN] + 
 		vertexRep.getXPosition() * fScalingFactorX;
@@ -240,8 +261,11 @@ implements IGLCanvasUser {
 //					fCanvasYPos + 0.02f, 
 //					-0.001f);
 			
-			gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f); // ligth blue
-
+			if (bHightlighVertex == true)
+				gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+			else 
+				gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+			
 			gl.glCallList(iPathwayNodeDisplayListId);
 		}
 		// Compounds
@@ -252,7 +276,11 @@ implements IGLCanvasUser {
 //					fCanvasYPos - fCanvasHeight, 
 //					-0.001f);
 			
-			gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f); // ligth blue
+			if (bHightlighVertex == true)
+				gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+			else 
+				gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f); // green
+			
 			gl.glCallList(iCompoundNodeDisplayListId);
 		}	
 		// Enzyme
@@ -263,7 +291,11 @@ implements IGLCanvasUser {
 //					fCanvasYPos + 0.02f, 
 //					-0.001f);
 		
-			gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+			if (bHightlighVertex == true)
+				gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+			else 
+				gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+			
 			gl.glCallList(iEnzymeNodeDisplayListId);
 		}
 
@@ -751,8 +783,20 @@ implements IGLCanvasUser {
 	
 	public void updateSelection(Object eventTrigger, ISet selectionSet) {
 
+		// Clear old selected vertices
+		arSelectedVertex.clear();
+		
 		refGeneralManager.getSingelton().logMsg(
 				"OpenGL Pathway update called by " + eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
+		
+		int[] selectedElements = 
+			((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getArrayInt();
+		
+		arSelectedVertex.add(refGeneralManager.getSingelton().getPathwayElementManager().
+			getVertexLUT().get(selectedElements[0]));
+		
+		getGLCanvas().display();
+		//getGLCanvas().repaint();
 	}
 }

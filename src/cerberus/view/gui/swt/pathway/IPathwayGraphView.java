@@ -12,7 +12,7 @@ import cerberus.view.gui.IView;
 public interface IPathwayGraphView 
 extends IView {
 	
-	public void createVertex(IPathwayVertexRep vertex);
+	public void createVertex(IPathwayVertexRep vertex, boolean bHightlightVertex);
 	
 	public void createEdge(int iVertexId1, 
 			int iVertexId2, 
