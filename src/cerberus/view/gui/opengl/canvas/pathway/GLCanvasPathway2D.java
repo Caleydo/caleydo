@@ -199,7 +199,9 @@ implements IGLCanvasUser {
 		//Draw selected pathway nodes
 		if (!arSelectedVertex.isEmpty())
 		{
-			PathwayVertex refCurrentSelectedVertex = null;
+			PathwayVertex refCurrentVertex = null;
+			IPathwayVertexRep refCurrentVertexRep = null;
+			
 			Iterator<PathwayVertex> iterSelectedVertices = 
 				arSelectedVertex.iterator();
 			
@@ -211,18 +213,23 @@ implements IGLCanvasUser {
 			
 			while(iterSelectedVertices.hasNext())
 			{
-				refCurrentSelectedVertex = iterSelectedVertices.next();
-				createVertex(refCurrentSelectedVertex.getVertexRepByIndex(iVertexRepIndex), true);
+				refCurrentVertex = iterSelectedVertices.next();
+				createVertex(refCurrentVertex.getVertexRepByIndex(iVertexRepIndex), true);
 				
 				// Hightlight all identical nodes
 				iterIdenticalVertices = refGeneralManager.getSingelton().
 						getPathwayElementManager().getPathwayVertexListByName(
-								refCurrentSelectedVertex.getElementTitle()).iterator();
+								refCurrentVertex.getElementTitle()).iterator();
 				
 				while(iterIdenticalVertices.hasNext())
 				{
-					createVertex(iterIdenticalVertices.next().
-							getVertexRepByIndex(iVertexRepIndex), true);
+					refCurrentVertexRep = iterIdenticalVertices.next().
+							getVertexRepByIndex(iVertexRepIndex);
+							
+					if (refCurrentVertexRep != null)
+					{
+						createVertex(refCurrentVertexRep, true);
+					}	
 				}
 			}
 		}		
