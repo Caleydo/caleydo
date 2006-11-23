@@ -1,6 +1,7 @@
 package cerberus.manager.data.pathway;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -29,7 +30,9 @@ implements IPathwayElementManager {
 	protected HashMap<Integer, PathwayVertex> vertexLUT;
 
 	protected HashMap<Integer, APathwayEdge> edgeLUT;
-
+	
+	protected HashMap<String, LinkedList<PathwayVertex>> refHashVertexNameToVertexList;
+	
 	// FIXME: this is just a temporary workaround.
 	protected PathwayVertex currentVertex;
 
@@ -49,6 +52,7 @@ implements IPathwayElementManager {
 		
 		vertexLUT = new HashMap<Integer, PathwayVertex>();
 		edgeLUT = new HashMap<Integer, APathwayEdge>();
+		refHashVertexNameToVertexList = new HashMap<String, LinkedList<PathwayVertex>>();
 		reactionName2EdgeIdLUT = new HashMap<String, Integer>();
 
 		iCurrentUniqueElementId = 0;
@@ -70,6 +74,14 @@ implements IPathwayElementManager {
 		
 		currentVertex = newVertex;
 		vertexLUT.put(iGeneratedId, newVertex);
+		
+		LinkedList<PathwayVertex> ll = refHashVertexNameToVertexList.get(sName);
+        if (ll == null)
+        {
+            refHashVertexNameToVertexList.put(sName, ll = new LinkedList<PathwayVertex>());
+        }
+           
+        ll.add(currentVertex);
 		
 		return iGeneratedId;
 	}
@@ -179,7 +191,7 @@ implements IPathwayElementManager {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.data.IPathwayElementManager#addReactionProduct(int)
 	 */
-	public void addReactionProduct(int iCompoundId) {
+	public void addReactionProduct(final int iCompoundId) {
 
 		currentReactionEdge.addProduct(iCompoundId);
 	}
@@ -188,9 +200,19 @@ implements IPathwayElementManager {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.data.IPathwayElementManager#getReactionName2EdgeIdLUT()
 	 */
-	public HashMap<String, Integer> getReactionName2EdgeIdLUT() {
+	public final HashMap<String, Integer> getReactionName2EdgeIdLUT() {
 		
 		return reactionName2EdgeIdLUT;
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayElementManager#getPathwayVertexListByName(java.lang.String)
+	 */
+	public final LinkedList<PathwayVertex> getPathwayVertexListByName(
+			final String sVertexName) {
+		
+		return refHashVertexNameToVertexList.get(sVertexName);
 	}
 	
 	//TODO: Method needs to be replaced with createNewId method from interface.
@@ -202,7 +224,7 @@ implements IPathwayElementManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#getVertexLUT()
 	 */
-	public HashMap<Integer, PathwayVertex> getVertexLUT() {
+	public final HashMap<Integer, PathwayVertex> getVertexLUT() {
 		
 		return vertexLUT;
 	}
@@ -210,7 +232,7 @@ implements IPathwayElementManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayElementManager#getEdgeLUT()
 	 */
-	public HashMap<Integer, APathwayEdge> getEdgeLUT() {
+	public final HashMap<Integer, APathwayEdge> getEdgeLUT() {
 		
 		return edgeLUT;
 	}

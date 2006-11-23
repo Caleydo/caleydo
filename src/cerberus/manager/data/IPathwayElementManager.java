@@ -1,6 +1,7 @@
 package cerberus.manager.data;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -44,4 +45,13 @@ public interface IPathwayElementManager extends IGeneralManager {
 	public HashMap<Integer, APathwayEdge> getEdgeLUT();
 		
 	public HashMap<String, Integer> getReactionName2EdgeIdLUT();
+	
+	/**
+	 * Method returnd all vertices that exists with the same name.
+	 * This method is needed for the finding (and highlighting) of identical vertices.
+	 * 
+	 * @param sVertexName
+	 * @return
+	 */
+	public LinkedList<PathwayVertex> getPathwayVertexListByName(final String sVertexName);
 }

@@ -4,7 +4,6 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -12,9 +11,7 @@ import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventCreateMediator;
-import cerberus.data.IDataStorage;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -96,35 +93,7 @@ implements IPathwayGraphView {
 
 	public void drawView() {
 		
-		if (refGeneralManager.getSingelton().
-				getPathwayManager().getCurrentPathway() != null)
-		{
-			if (iPathwayId != 0)
-			{
-				HashMap<Integer, Pathway> pathwayLUT = 		
-					((IPathwayManager)refGeneralManager.getSingelton().
-							getPathwayManager()).getPathwayLUT();
-				
-				refCurrentPathway = pathwayLUT.get(iPathwayId);
-			}
-			else
-			{
-				refCurrentPathway = refGeneralManager.getSingelton().
-					getPathwayManager().getCurrentPathway();
-			}
-			
-			extractVertices();
-			extractEdges();
 
-			finishGraphBuilding();
-		}	    
-		else if (iPathwayLevel == 1)
-		{ 
-			refCurrentPathwayImageMap = 
-				refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
-			
-			loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink());
-		}
 	}
 
 	public void retrieveGUIContainer() {

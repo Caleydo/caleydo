@@ -34,6 +34,7 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
 import cerberus.util.system.StringConversionTool;
+import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -44,6 +45,7 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.data.IPathwayManager;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.PathwayViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
@@ -327,6 +329,36 @@ extends APathwayGraphViewRep {
 	public void drawView() {
 		
 		super.drawView();
+		
+		if (refGeneralManager.getSingelton().
+				getPathwayManager().getCurrentPathway() != null)
+		{
+			if (iPathwayId != 0)
+			{
+				HashMap<Integer, Pathway> pathwayLUT = 		
+					((IPathwayManager)refGeneralManager.getSingelton().
+							getPathwayManager()).getPathwayLUT();
+				
+				refCurrentPathway = pathwayLUT.get(iPathwayId);
+			}
+			else
+			{
+				refCurrentPathway = refGeneralManager.getSingelton().
+					getPathwayManager().getCurrentPathway();
+			}
+			
+			extractVertices();
+			extractEdges();
+
+			finishGraphBuilding();
+		}	    
+		else if (iPathwayLevel == 1)
+		{ 
+			refCurrentPathwayImageMap = 
+				refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
+			
+			loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink());
+		}
 		
         // Check if graph is already added to the frame
         if (bGraphSet == false)

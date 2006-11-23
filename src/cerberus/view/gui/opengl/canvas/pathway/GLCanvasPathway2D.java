@@ -199,15 +199,31 @@ implements IGLCanvasUser {
 		//Draw selected pathway nodes
 		if (!arSelectedVertex.isEmpty())
 		{
-			Iterator<PathwayVertex> iterSelectedVertex = 
+			PathwayVertex refCurrentSelectedVertex = null;
+			Iterator<PathwayVertex> iterSelectedVertices = 
 				arSelectedVertex.iterator();
+			
+			Iterator<PathwayVertex> iterIdenticalVertices =
+				null;
 			
 			// FIXME: static value is bad here! change this!
 			fZLayerValue = 0.0f;
 			
-			while(iterSelectedVertex.hasNext())
+			while(iterSelectedVertices.hasNext())
 			{
-				createVertex(iterSelectedVertex.next().getVertexRepByIndex(0), true);
+				refCurrentSelectedVertex = iterSelectedVertices.next();
+				createVertex(refCurrentSelectedVertex.getVertexRepByIndex(iVertexRepIndex), true);
+				
+				// Hightlight all identical nodes
+				iterIdenticalVertices = refGeneralManager.getSingelton().
+						getPathwayElementManager().getPathwayVertexListByName(
+								refCurrentSelectedVertex.getElementTitle()).iterator();
+				
+				while(iterIdenticalVertices.hasNext())
+				{
+					createVertex(iterIdenticalVertices.next().
+							getVertexRepByIndex(iVertexRepIndex), true);
+				}
 			}
 		}		
 	}
@@ -302,7 +318,22 @@ implements IGLCanvasUser {
 		
 //		int[] buffers = new int[2];
 //		int iNumVertices = 8;
+////			if (iLayerIndex == 1)
+//		{
+//		loadPathwayFromFile(strPathwayPaths[0]);
+//	}
+//	else if (iLayerIndex == 2)
+//	{
+//		loadPathwayFromFile(strPathwayPaths[1]);
+//	}
+//	
+//	refCurrentPathway = refGeneralManager.getSingelton().
+//		getPathwayManager().getCurrentPathway();
 //
+//	if (refCurrentPathway == null)
+//	{
+//		return;
+//	}
 //		FloatBuffer vertexBuffer = BufferUtil.newFloatBuffer(3 * iNumVertices);
 //		vertexBuffer.put(-1.0f);
 //		vertexBuffer.put(-1.0f);
@@ -476,9 +507,13 @@ implements IGLCanvasUser {
 			fZLayerValue = iLayerIndex;
 			
 //			if (iLayerIndex == 1)
+//			{
 //				loadPathwayFromFile(strPathwayPaths[0]);
+//			}
 //			else if (iLayerIndex == 2)
+//			{
 //				loadPathwayFromFile(strPathwayPaths[1]);
+//			}
 //			
 //			refCurrentPathway = refGeneralManager.getSingelton().
 //				getPathwayManager().getCurrentPathway();
