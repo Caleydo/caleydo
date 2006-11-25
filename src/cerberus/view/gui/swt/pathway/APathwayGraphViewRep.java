@@ -2,7 +2,6 @@ package cerberus.view.gui.swt.pathway;
 
 import java.awt.Frame;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
@@ -24,7 +23,6 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.data.IPathwayElementManager;
-import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewJoglManager;

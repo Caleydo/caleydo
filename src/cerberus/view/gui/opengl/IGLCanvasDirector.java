@@ -3,8 +3,6 @@ package cerberus.view.gui.opengl;
 import java.util.Collection;
 
 import javax.media.opengl.GLAutoDrawable;
-// import javax.media.opengl.GLCanvas;
-
 
 public interface IGLCanvasDirector {
 
@@ -31,5 +29,4 @@ public interface IGLCanvasDirector {
 			boolean deviceChanged);
 		
 	public void destroyDirector();
-
 }

@@ -6,6 +6,7 @@ import gleem.linalg.Vec4f;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
@@ -16,6 +17,7 @@ import com.sun.opengl.util.GLUT;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
+import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
@@ -78,6 +80,15 @@ implements IGLCanvasUser {
 	protected float fPathwayNodeHeight = 0.0f;
 	
 	protected ArrayList<PathwayVertex> arSelectedVertex;
+	
+	protected boolean bCanvasInitialized = false;
+	
+	protected HashMap<Pathway, Float> refHashPathwayToZLayerValue;
+	
+	/**
+	 * Pathway that is currently under user interaction in the 2D pathway view.
+	 */
+	protected Pathway refBasicPathway;
 
 		
 	/**
@@ -112,6 +123,8 @@ implements IGLCanvasUser {
 			((viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 1000.0f) * 1.5f;
 		
 		arSelectedVertex = new ArrayList<PathwayVertex>();
+		
+		refHashPathwayToZLayerValue = new HashMap<Pathway, Float>();
 	}
 	
 	/*
@@ -120,9 +133,14 @@ implements IGLCanvasUser {
 	 */
 	public void init( GLAutoDrawable canvas ) {
 
-		this.gl = canvas.getGL();
+		// FIXME: usually this should not be needed
+		// Ask michael why init in CanvasForwarder is called twice!
+		if (bCanvasInitialized == true)
+			return;
 		
-		System.out.println("Init Pathway GL Canvas");
+		this.gl = canvas.getGL();
+//		
+//		System.out.println("Init Pathway GL Canvas");
 		
 		// General GL settings
 //		gl.glEnable(GL.GL_BLEND);
@@ -144,7 +162,7 @@ implements IGLCanvasUser {
 		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
 		float[] fModelAmbient = {0.2f, 0.2f, 0.2f, 1.0f};
 		
-		gl.glShadeModel(GL.GL_SMOOTH);
+//		gl.glShadeModel(GL.GL_SMOOTH);
 //		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
@@ -170,6 +188,8 @@ implements IGLCanvasUser {
 		}
 		
 		buildPathwayDisplayList();	
+		
+		bCanvasInitialized = true;
 	}	
 	
 	public final void render(GLAutoDrawable canvas) {
@@ -199,37 +219,60 @@ implements IGLCanvasUser {
 		//Draw selected pathway nodes
 		if (!arSelectedVertex.isEmpty())
 		{
+			Pathway refTmpPathway = null;
 			PathwayVertex refCurrentVertex = null;
+			PathwayVertex refTmpVertex = null;
 			IPathwayVertexRep refCurrentVertexRep = null;
 			
 			Iterator<PathwayVertex> iterSelectedVertices = 
 				arSelectedVertex.iterator();
 			
-			Iterator<PathwayVertex> iterIdenticalVertices =
-				null;
+			Iterator<PathwayVertex> iterIdenticalVertices = null;
 			
-			// FIXME: static value is bad here! change this!
-			fZLayerValue = 0.0f;
+			Iterator<Pathway> iterDrawnPathways = null;
 			
 			while(iterSelectedVertices.hasNext())
-			{
+			{	
+				//FIXME: should not be statically 0 
+				fZLayerValue = 0.0f;
+				
 				refCurrentVertex = iterSelectedVertices.next();
 				createVertex(refCurrentVertex.getVertexRepByIndex(iVertexRepIndex), true);
 				
-				// Hightlight all identical nodes
-				iterIdenticalVertices = refGeneralManager.getSingelton().
-						getPathwayElementManager().getPathwayVertexListByName(
-								refCurrentVertex.getElementTitle()).iterator();
+				iterDrawnPathways = refHashPathwayToZLayerValue.keySet().iterator();
 				
-				while(iterIdenticalVertices.hasNext())
+				while(iterDrawnPathways.hasNext())
 				{
-					refCurrentVertexRep = iterIdenticalVertices.next().
-							getVertexRepByIndex(iVertexRepIndex);
-							
-					if (refCurrentVertexRep != null)
+					refTmpPathway = iterDrawnPathways.next();
+					
+					// Hightlight all identical nodes
+					iterIdenticalVertices = refGeneralManager.getSingelton().
+							getPathwayElementManager().getPathwayVertexListByName(
+									refCurrentVertex.getElementTitle()).iterator();
+					
+					while(iterIdenticalVertices.hasNext())
 					{
-						createVertex(refCurrentVertexRep, true);
-					}	
+						refTmpVertex = iterIdenticalVertices.next();
+						
+						if (refTmpPathway.isVertexInPathway(refTmpVertex) == true)
+						{
+							fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
+						
+							refCurrentVertexRep = refTmpVertex.
+								getVertexRepByIndex(iVertexRepIndex);
+							
+							if (refCurrentVertexRep != null)
+							{
+								createVertex(refCurrentVertexRep, true);
+								
+								if (!refTmpPathway.equals(refBasicPathway))
+								{
+									connectVertices(refCurrentVertexRep, 
+											refCurrentVertex.getVertexRepByIndex(iVertexRepIndex));
+								}
+							}
+						}
+					}
 				}
 			}
 		}		
@@ -508,27 +551,35 @@ implements IGLCanvasUser {
 		strPathwayPaths[0] = "data/XML/pathways/map00260.xml";
 		strPathwayPaths[1] = "data/XML/pathways/map00272.xml";
 		
+		refBasicPathway = refCurrentPathway;
+		
 	    // Just for testing!
 		for (int iLayerIndex = 0; iLayerIndex < 3; iLayerIndex++)
 		{
 			fZLayerValue = iLayerIndex;
 			
-//			if (iLayerIndex == 1)
-//			{
-//				loadPathwayFromFile(strPathwayPaths[0]);
-//			}
-//			else if (iLayerIndex == 2)
-//			{
-//				loadPathwayFromFile(strPathwayPaths[1]);
-//			}
-//			
-//			refCurrentPathway = refGeneralManager.getSingelton().
-//				getPathwayManager().getCurrentPathway();
-//		
-//			if (refCurrentPathway == null)
-//			{
-//				return;
-//			}
+			if (iLayerIndex == 1)
+			{
+				loadPathwayFromFile(strPathwayPaths[0]);
+			}
+			else if (iLayerIndex == 2)
+			{
+				loadPathwayFromFile(strPathwayPaths[1]);
+			}
+			
+			refCurrentPathway = refGeneralManager.getSingelton().
+				getPathwayManager().getCurrentPathway();
+		
+			if (refCurrentPathway == null)
+			{
+				return;
+			}
+			
+			refHashPathwayToZLayerValue.put(refCurrentPathway, fZLayerValue);
+			
+			System.err.println("Current pathway: "+refCurrentPathway.getTitle());
+			
+			
 			
 			// Draw pathway "sheet" border
 			gl.glColor3f(0.0f, 0.0f, 0.0f);
@@ -653,6 +704,51 @@ implements IGLCanvasUser {
         gl.glVertex3f(-fPathwayNodeWidth,-fPathwayNodeHeight, 0.02f);			// Bottom Right Of The Quad (Left)
        
         gl.glEnd();
+	}
+	
+	protected void connectVertices(IPathwayVertexRep refVertexRep1, 
+			IPathwayVertexRep refVertexRep2) {
+
+		float fZLayerValue1 = 0.0f; 
+		float fZLayerValue2 = 0.0f;
+		Pathway refTmpPathway = null;
+		Iterator<Pathway> iterDrawnPathways = null;
+		
+		iterDrawnPathways = refHashPathwayToZLayerValue.keySet().iterator();
+		
+		while(iterDrawnPathways.hasNext())
+		{
+			refTmpPathway = iterDrawnPathways.next();
+
+//			if(!refTmpPathway.equals(refCurrentPathway))
+//			{			
+				if(refTmpPathway.isVertexInPathway(refVertexRep1.getVertex()) == true)
+				{
+					fZLayerValue1 = refHashPathwayToZLayerValue.get(refTmpPathway);
+				}
+				
+				if(refTmpPathway.isVertexInPathway(refVertexRep2.getVertex()) == true)
+				{
+					fZLayerValue2 = refHashPathwayToZLayerValue.get(refTmpPathway);
+				}
+//			}
+		}
+		
+		float fCanvasXPos1 = viewingFrame[X][MIN] + 
+		refVertexRep1.getXPosition() * fScalingFactorX;
+		float fCanvasYPos1 = viewingFrame[Y][MIN] + 
+		refVertexRep1.getYPosition() * fScalingFactorY;
+
+		float fCanvasXPos2 = viewingFrame[X][MIN] + 
+		refVertexRep2.getXPosition() * fScalingFactorX;
+		float fCanvasYPos2 = viewingFrame[Y][MIN] + 
+		refVertexRep2.getYPosition() * fScalingFactorY;
+		
+		gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
+		gl.glBegin(GL.GL_LINES);		
+			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, fZLayerValue1); 
+			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, fZLayerValue2);					
+		gl.glEnd();
 	}
 	
 	/**

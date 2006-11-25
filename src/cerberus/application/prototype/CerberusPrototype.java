@@ -71,9 +71,9 @@ public class CerberusPrototype
 		// Default file name
 		setXmlFileName( "data/XML/bootstrap/cerberus_bootstrap_sample_demo.xml" );
 
-		refViewManager = (IViewManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.VIEW);
+		refViewManager = (IViewManager) refGeneralManager.getSingelton().getViewGLCanvasManager();
 		
-		refSWTGUIManager = (ISWTGUIManager) refGeneralManager.getManagerByBaseType(ManagerObjectType.GUI_SWT);		
+		refSWTGUIManager = (ISWTGUIManager) refGeneralManager.getSingelton().getSWTGUIManager();		
 
 	}
 

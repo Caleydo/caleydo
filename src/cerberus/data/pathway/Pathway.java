@@ -1,5 +1,6 @@
 package cerberus.data.pathway;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -25,23 +26,23 @@ public class Pathway {
 
 	protected String sInformationLink;
 
-	protected Vector<PathwayVertex> refVecVertices;
+	protected ArrayList<PathwayVertex> refArVertexList;
 
-	protected Vector<APathwayEdge> refVecEdges;
+	protected ArrayList<APathwayEdge> refArEdgeList;
 	
-	protected Vector<PathwayRelationEdge> refVecRelationEdges;
+	protected ArrayList<PathwayRelationEdge> refArRelationEdges;
 	
-	protected Vector<PathwayReactionEdge> refVecReactionEdges;
+	protected ArrayList<PathwayReactionEdge> refArReactionEdges;
 	
 	public Pathway(String sTitle,
 			String sImageLink,
 			String sLink,
 			int iPathwayID) {
 
-		refVecVertices = new Vector<PathwayVertex>();
-		refVecEdges = new Vector<APathwayEdge>();
-		refVecRelationEdges = new Vector<PathwayRelationEdge>();
-		refVecReactionEdges = new Vector<PathwayReactionEdge>();
+		refArVertexList = new ArrayList<PathwayVertex>();
+		refArEdgeList = new ArrayList<APathwayEdge>();
+		refArRelationEdges = new ArrayList<PathwayRelationEdge>();
+		refArReactionEdges = new ArrayList<PathwayReactionEdge>();
 
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
@@ -51,31 +52,31 @@ public class Pathway {
 
 	public void addVertex(PathwayVertex vertex) {
 
-		refVecVertices.add(vertex);
+		refArVertexList.add(vertex);
 	}
 
 	public void addEdge(APathwayEdge edge) {
 
-		refVecEdges.add(edge);
+		refArEdgeList.add(edge);
 		
 		if (edge.getEdgeType() == EdgeType.RELATION)
 		{
-			refVecRelationEdges.add((PathwayRelationEdge) edge);
+			refArRelationEdges.add((PathwayRelationEdge) edge);
 		}
 		else if (edge.getEdgeType() == EdgeType.REACTION)
 		{
-			refVecReactionEdges.add((PathwayReactionEdge) edge);
+			refArReactionEdges.add((PathwayReactionEdge) edge);
 		}
 	}
 
-	public Vector<PathwayVertex> getVertexList() {
+	public ArrayList<PathwayVertex> getVertexList() {
 
-		return refVecVertices;
+		return refArVertexList;
 	}
 
-	public Vector<APathwayEdge> getEdgeList() {
+	public ArrayList<APathwayEdge> getEdgeList() {
 
-		return refVecEdges;
+		return refArEdgeList;
 	}
 
 	public int getPathwayID() {
@@ -90,21 +91,29 @@ public class Pathway {
 	
 	public Iterator<PathwayVertex> getVertexListIterator() {
 		
-        return refVecVertices.iterator();
+        return refArVertexList.iterator();
 	}
 	
 	public Iterator<APathwayEdge> getEdgeListIterator() {
 		
-		return refVecEdges.iterator();
+		return refArEdgeList.iterator();
 	}
 	
 	public Iterator<PathwayReactionEdge> getReactionEdgeIterator() {
 		
-		return refVecReactionEdges.iterator();
+		return refArReactionEdges.iterator();
 	}
 
 	public Iterator<PathwayRelationEdge> getRelationEdgeIterator() {
 		
-		return refVecRelationEdges.iterator();
+		return refArRelationEdges.iterator();
+	}
+	
+	public boolean isVertexInPathway(PathwayVertex refPathwayVertex) {
+		
+		if (refArVertexList.contains(refPathwayVertex))
+			return true;
+		
+		return false;
 	}
 }
