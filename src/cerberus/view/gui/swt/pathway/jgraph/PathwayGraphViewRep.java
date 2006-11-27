@@ -60,6 +60,7 @@ import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
  * @author Marc Streit
  *
  */
+
 public class PathwayGraphViewRep
 extends APathwayGraphViewRep {
 	
@@ -95,9 +96,18 @@ extends APathwayGraphViewRep {
 	protected Vector<DefaultGraphCell> vecVertices;
 	
 	/**
+	 * Integer storage of selected vertices
+	 * Container is needed for selection updates.
 	 * HashSet is used because it guarantees uniuque elements.
 	 */
-	protected HashSet<Integer> iLLSelectedVertices;
+	protected HashSet<Integer> iHashSetSelectedVertices;
+	
+	/**
+	 * Neighbor distance from currently selected vertex.
+	 * Container is needed for selection updates.
+	 * HashSet is used because it guarantees uniuque elements. 
+	 */
+	protected HashSet<Integer> iHashSetNeighborDistance;
 	
 	/**
 	 * Specifies how deep the neighborhood recursion
@@ -134,7 +144,8 @@ extends APathwayGraphViewRep {
 		
 		fScalingFactor = SCALING_FACTOR;
 		
-		iLLSelectedVertices = new HashSet<Integer>();
+		iHashSetSelectedVertices = new HashSet<Integer>();
+		iHashSetNeighborDistance = new HashSet<Integer>();
 	}
 
 	public void initView() {
@@ -158,7 +169,8 @@ extends APathwayGraphViewRep {
 							.getFirstCellForLocation(event.getX(), event.getY());
 	
 			    	// Remove old selected vertices
-					iLLSelectedVertices.clear();
+			    	iHashSetSelectedVertices.clear();
+			    	iHashSetNeighborDistance.clear();
 			    	
 			    	// Check if a node or edge was hit.
 			    	// If not undo neighborhood visualization and return.
@@ -243,7 +255,8 @@ extends APathwayGraphViewRep {
 						// Highlight current cell
 						highlightCell(clickedCell, Color.RED);
 						createSelectionSet(new int[]{((PathwayVertexRep)clickedCell.getUserObject()).
-								getVertex().getElementId()});
+								getVertex().getElementId()}, 
+								null, null);
 						
 						bNeighbourhoodShown = true;
 						iNeighbourhoodUndoCount++;
@@ -257,16 +270,23 @@ extends APathwayGraphViewRep {
 					
 							// Add selected vertex itself because neighborhood algorithm
 							// only adds neighbor vertices.
-							iLLSelectedVertices.add(((PathwayVertexRep)clickedCell.
+							iHashSetSelectedVertices.add(((PathwayVertexRep)clickedCell.
 									getUserObject()).getVertex().getElementId());
 							
 							// Convert Link List to int[]
-						    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
-						    int[] iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+						    Iterator<Integer> iter_I = iHashSetSelectedVertices.iterator();		    
+						    int[] iArSelectedVertices = new int[iHashSetSelectedVertices.size()];		    
 						    for ( int i=0; iter_I.hasNext() ;i++ ) {
 						    	iArSelectedVertices[i] = iter_I.next().intValue();
 						    }
-							createSelectionSet(iArSelectedVertices);
+						    
+						    iter_I = iHashSetNeighborDistance.iterator();		    
+						    int[] iArNeighborDistance = new int[iHashSetNeighborDistance.size()];		    
+						    for ( int i=0; iter_I.hasNext() ;i++ ) {
+						    	iArNeighborDistance[i] = iter_I.next().intValue();
+						    }
+						    
+							createSelectionSet(iArSelectedVertices, null, iArNeighborDistance);
 						}
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
@@ -658,8 +678,9 @@ extends APathwayGraphViewRep {
 			tmpCell = cellIter.next();
 		
 			// Add selected vertex
-			iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
+			iHashSetSelectedVertices.add(((PathwayVertexRep)tmpCell.
 					getUserObject()).getVertex().getElementId());
+			iHashSetNeighborDistance.add(iDistance);
 			
 			nested.put(tmpCell, attributeMap);
 			

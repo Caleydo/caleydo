@@ -38,6 +38,7 @@ extends ARenderStyle {
 	protected Color enzymeNodeColor;
 	protected Color compoundNodeColor;
 	protected Color pathwayNodeColor;
+	protected Color highlightedNodeColor;
 	
 	protected EdgeLineStyle relationEdgeLineStyle;
 	protected EdgeLineStyle reactionEdgeLineStyle;

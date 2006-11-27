@@ -79,7 +79,9 @@ implements IGLCanvasUser {
 	
 	protected float fPathwayNodeHeight = 0.0f;
 	
-	protected ArrayList<PathwayVertex> arSelectedVertex;
+	protected ArrayList<PathwayVertex> iArSelectionStorageVertexIDs;
+	
+	protected ArrayList<Integer> iArSelectionStorageNeighborDistance;
 	
 	protected boolean bCanvasInitialized = false;
 	
@@ -89,7 +91,6 @@ implements IGLCanvasUser {
 	 * Pathway that is currently under user interaction in the 2D pathway view.
 	 */
 	protected Pathway refBasicPathway;
-
 		
 	/**
 	 * Constructor
@@ -122,7 +123,8 @@ implements IGLCanvasUser {
 		fScalingFactorY = 
 			((viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 1000.0f) * 1.5f;
 		
-		arSelectedVertex = new ArrayList<PathwayVertex>();
+		iArSelectionStorageVertexIDs = new ArrayList<PathwayVertex>();
+		iArSelectionStorageNeighborDistance = new ArrayList<Integer>();
 		
 		refHashPathwayToZLayerValue = new HashMap<Pathway, Float>();
 	}
@@ -217,7 +219,7 @@ implements IGLCanvasUser {
 		gl.glCallList(iPathwayDisplayListId);
 		
 		//Draw selected pathway nodes
-		if (!arSelectedVertex.isEmpty())
+		if (!iArSelectionStorageVertexIDs.isEmpty())
 		{
 			Pathway refTmpPathway = null;
 			PathwayVertex refCurrentVertex = null;
@@ -225,7 +227,7 @@ implements IGLCanvasUser {
 			IPathwayVertexRep refCurrentVertexRep = null;
 			
 			Iterator<PathwayVertex> iterSelectedVertices = 
-				arSelectedVertex.iterator();
+				iArSelectionStorageVertexIDs.iterator();
 			
 			Iterator<PathwayVertex> iterIdenticalVertices = null;
 			
@@ -579,16 +581,15 @@ implements IGLCanvasUser {
 			
 			System.err.println("Current pathway: "+refCurrentPathway.getTitle());
 			
-			
-			
+				
 			// Draw pathway "sheet" border
 			gl.glColor3f(0.0f, 0.0f, 0.0f);
 			gl.glBegin(GL.GL_LINE_STRIP);						
-				gl.glVertex3f(-1.0f, -1.0f, fZLayerValue);					
-				gl.glVertex3f(-1.0f, 1.5f, fZLayerValue);
-				gl.glVertex3f(2.5f, 1.5f, fZLayerValue);
-				gl.glVertex3f(2.5f, -1.0f, fZLayerValue);
-				gl.glVertex3f(-1.0f, -1.0f, fZLayerValue);
+				gl.glVertex3f(-1.0f, -1.0f, fZLayerValue + 0.01f);					
+				gl.glVertex3f(-1.0f, 1.5f, fZLayerValue + 0.01f);
+				gl.glVertex3f(2.5f, 1.5f, fZLayerValue + 0.01f);
+				gl.glVertex3f(2.5f, -1.0f, fZLayerValue + 0.01f);
+				gl.glVertex3f(-1.0f, -1.0f, fZLayerValue + 0.01f);
 			gl.glEnd();	
 			
 			// Draw pathway layer surface
@@ -925,7 +926,9 @@ implements IGLCanvasUser {
 	public void updateSelection(Object eventTrigger, ISet selectionSet) {
 
 		// Clear old selected vertices
-		arSelectedVertex.clear();
+		iArSelectionStorageVertexIDs.clear();
+		// Clear old neighborhood distances
+		iArSelectionStorageNeighborDistance.clear();
 		
 		refGeneralManager.getSingelton().logMsg(
 				"OpenGL Pathway update called by " + eventTrigger.getClass().getSimpleName(),
@@ -934,12 +937,19 @@ implements IGLCanvasUser {
 		int[] iArSelectedElements = 
 			((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getArrayInt();
 		
+		int[] iArSelectionNeighborDistance = 
+			((IStorage)selectionSet.getStorageByDimAndIndex(1, 0)).getArrayInt();
+		
 		for (int iSelectedVertexIndex = 0; 
 			iSelectedVertexIndex < ((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
 			iSelectedVertexIndex++)
 		{
-			arSelectedVertex.add(refGeneralManager.getSingelton().getPathwayElementManager().
+			iArSelectionStorageVertexIDs.add(refGeneralManager.getSingelton().getPathwayElementManager().
 					getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]));
+			
+			iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
+			System.err.println(iArSelectionNeighborDistance[iSelectedVertexIndex]);
+			
 		}
 		
 		getGLCanvas().display();
