@@ -94,7 +94,7 @@ public abstract class ICollectionManager
 //	 */
 //	public final int createNewId( final ManagerObjectType setNewBaseType ) {
 //		
-//		if (( setNewBaseType.getGroupType() == ManagerType.SELECTION )
+//		if (( setNewBaseType.getGroupType() == ManagerType.VIRTUAL_ARRAY )
 //			||( setNewBaseType.getGroupType() == ManagerType.SET )
 //			||( setNewBaseType.getGroupType() == ManagerType.STORAGE )) {
 //			

@@ -413,8 +413,8 @@ implements GLEventListener, IJoglMouseListener
 		createdStorage.setArrayInt( iRawDataArray );
 		
 		IVirtualArray createdSelection = 
-			this.refGeneralManager.getSingelton().getSelectionManager().createSelection( 
-				ManagerObjectType.SELECTION_MULTI_BLOCK );
+			this.refGeneralManager.getSingelton().getVirtualArrayManager().createSelection( 
+				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		createdSelection.setLength( 150 );
 		createdSelection.setOffset( 5 );

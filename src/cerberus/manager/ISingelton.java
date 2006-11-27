@@ -3,7 +3,7 @@ package cerberus.manager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerType;
@@ -22,7 +22,7 @@ public interface ISingelton {
 
 	public abstract IStorageManager getStorageManager();
 
-	public abstract ISelectionManager getSelectionManager();
+	public abstract IVirtualArrayManager getVirtualArrayManager();
 
 	public abstract IMenuManager getMenuManager();
 
@@ -66,8 +66,8 @@ public interface ISingelton {
 
 	public abstract void setStorageManager(IStorageManager setStorageManager);
 
-	public abstract void setSelectionManager(
-			ISelectionManager setSelectionManager);
+	public abstract void setVirtualArrayManager(
+			IVirtualArrayManager setVirtualArrayManager);
 
 	public abstract void setSetManager(ISetManager setSetManager);
 

@@ -24,7 +24,7 @@ import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -194,8 +194,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 			Iterator <String> iter_ll_Selection_1dim = 
 				ll_Selection_1dim.iterator();
 	
-			ISelectionManager refSelectionManager = 
-				refGeneralManager.getSingelton().getSelectionManager();
+			IVirtualArrayManager refSelectionManager = 
+				refGeneralManager.getSingelton().getVirtualArrayManager();
 			
 			/**
 			 * init data structures..
@@ -283,8 +283,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		try {
 				
-			ISelectionManager refSelectionManager = 
-				refGeneralManager.getSingelton().getSelectionManager();
+			IVirtualArrayManager refSelectionManager = 
+				refGeneralManager.getSingelton().getVirtualArrayManager();
 			IStorageManager refStorageManager = 
 				refGeneralManager.getSingelton().getStorageManager();
 			
@@ -430,9 +430,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
-		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
+		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueId,
-				ManagerObjectType.SELECTION_MULTI_BLOCK );
+				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"UNDO new SEL: " + 

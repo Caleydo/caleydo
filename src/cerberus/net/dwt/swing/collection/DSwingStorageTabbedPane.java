@@ -75,7 +75,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	
 	private JComboBox    j_cb_selectionTypes;
 	
-	private ManagerObjectType currentType = ManagerObjectType.SELECTION;
+	private ManagerObjectType currentType = ManagerObjectType.VIRTUAL_ARRAY;
 	
 	private final static String[] sTabbenPaneNames = {
 		"INT",
@@ -191,11 +191,8 @@ public class DSwingStorageTabbedPane extends JPanel {
 			j_tf[i].addActionListener( textFieldHandler );
 		}
 		j_tf[0].setEditable( false );
-		
-		
-		
-		
-		setGuiByBaseType( ManagerObjectType.SELECTION );
+			
+		setGuiByBaseType( ManagerObjectType.VIRTUAL_ARRAY );
 		
 		/*
 		 * General Layout

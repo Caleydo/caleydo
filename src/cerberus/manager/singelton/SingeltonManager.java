@@ -22,7 +22,7 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
@@ -55,7 +55,7 @@ implements ISingelton {
 	 */
 	protected IMementoManager refMementoManager;
 	
-	protected ISelectionManager refSelectionManager;
+	protected IVirtualArrayManager refVirtualArrayManager;
 	
 	protected ISetManager refSetManager;
 	
@@ -120,10 +120,10 @@ implements ISingelton {
 	}
 		
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getSelectionManager()
+	 * @see cerberus.manager.singelton.Singelton#getVirtualArrayManager()
 	 */
-	public ISelectionManager getSelectionManager() {
-		return refSelectionManager;
+	public IVirtualArrayManager getVirtualArrayManager() {
+		return refVirtualArrayManager;
 	}
 	
 	/* (non-Javadoc)
@@ -230,10 +230,10 @@ implements ISingelton {
 		refStorageManager = setStorageManager;
 	}
 		
-	public void setSelectionManager( ISelectionManager setSelectionManager ) {
-		assert setSelectionManager!=null: "ISelectionManager was null";
+	public void setVirtualArrayManager( IVirtualArrayManager setVirtualArrayManager ) {
+		assert setVirtualArrayManager!=null: "IVirtualArrayManager was null";
 		
-		refSelectionManager = setSelectionManager;
+		refVirtualArrayManager = setVirtualArrayManager;
 	}
 	
 	public void setSetManager( ISetManager setSetManager ) {
@@ -310,7 +310,7 @@ implements ISingelton {
 		
 			case STORAGE: return this.refStorageManager;
 		
-			case SELECTION: return this.refSelectionManager;
+			case VIRTUAL_ARRAY: return this.refVirtualArrayManager;
 		
 			case MEMENTO: return this.refMementoManager;
 				

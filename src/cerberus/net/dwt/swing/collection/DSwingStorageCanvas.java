@@ -35,7 +35,7 @@ import javax.swing.BoxLayout;
 
 import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.singelton.IGeneralManagerSingelton;
@@ -130,7 +130,7 @@ implements DNetEventComponentInterface, IViewCanvas
 	protected IGeneralManager refGeneralManager;
 	
 	private IGeneralManagerSingelton refGeneralManagerSingelton;
-	private ISelectionManager refSelectionManager;
+	private IVirtualArrayManager refSelectionManager;
 	private ISetManager refSetManager;
 	private IStorageManager refStorageManager;
 	
@@ -213,7 +213,7 @@ implements DNetEventComponentInterface, IViewCanvas
 		
 		
 		
-		//this.add( new JLabel("SET - SELECTION - STORAGE") );
+		//this.add( new JLabel("SET - VIRTUAL_ARRAY - STORAGE") );
 		
 		this.add( new JScrollPane( j_mainBox ) );
 		this.setAutoscrolls( true );
@@ -222,9 +222,9 @@ implements DNetEventComponentInterface, IViewCanvas
 			refGeneralManagerSingelton = 
 				(IGeneralManagerSingelton) this.refGeneralManager;
 			
-			refSelectionManager = (ISelectionManager)
+			refSelectionManager = (IVirtualArrayManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
-						ManagerObjectType.SELECTION );
+						ManagerObjectType.VIRTUAL_ARRAY );
 			refSetManager = (ISetManager)
 				refGeneralManagerSingelton.getManagerByBaseType(
 						ManagerObjectType.SET );

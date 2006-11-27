@@ -200,9 +200,9 @@ public class JFrameThreaded extends JFrame implements Runnable {
 		
 		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SET, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 				
-		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SELECTION, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
+		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_VIRTUAL_ARRAY, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 		
-		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SELECTION, B_FRAME_EXTERNAL, B_DEFAULT_MENU_NONE );		
+		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_VIRTUAL_ARRAY, B_FRAME_EXTERNAL, B_DEFAULT_MENU_NONE );		
 		
 		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_STORAGE, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 		
@@ -434,7 +434,7 @@ public class JFrameThreaded extends JFrame implements Runnable {
 			}
 			
 			switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				//SelectionBrowser ref2FrameSel = new SelectionBrowser(inner);
 				SelectionSliderBrowser ref2FrameSel = new SelectionSliderBrowser(inner);					
 				createdDemo = ref2FrameSel;
@@ -472,7 +472,7 @@ public class JFrameThreaded extends JFrame implements Runnable {
 			}
 			
 			switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				//SelectionBrowser ref2FrameSel = new SelectionBrowser(inner);
 				SelectionSliderBrowser ref2FrameSel = new SelectionSliderBrowser(outer);
 				createdDemo = ref2FrameSel;
@@ -790,7 +790,7 @@ public class JFrameThreaded extends JFrame implements Runnable {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-				case JBROWSER_SELECTION: {
+				case JBROWSER_VIRTUAL_ARRAY: {
 					//SelectionBrowser ref2FrameSel = new SelectionBrowser(inner);
 					SelectionSliderBrowser ref2FrameSel = new SelectionSliderBrowser(inner);	
 					addedObject = ref2FrameSel;
@@ -827,7 +827,7 @@ public class JFrameThreaded extends JFrame implements Runnable {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				//SelectionBrowser ref2Frame = new SelectionBrowser(outer);
 				SelectionSliderBrowser ref2Frame = new SelectionSliderBrowser(outer);
 				addedObject = ref2Frame;
@@ -846,7 +846,7 @@ public class JFrameThreaded extends JFrame implements Runnable {
 		
 		
 //		switch (which) {
-//			case JBROWSER_SELECTION: {
+//			case JBROWSER_VIRTUAL_ARRAY: {
 //				break;
 //			}
 //		

@@ -35,8 +35,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	public enum EventState {
 		NONE,
-		NEW_SELECTION,
-		SELECTION_CHANGED,
+		NEW_VIRTUAL_ARRAY,
+		VIRTUAL_ARRAY_CHANGED,
 		DATA_CHANGED
 	}
 	

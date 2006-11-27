@@ -20,26 +20,26 @@ import cerberus.data.collection.ICollectionType;
 public enum VirtualArrayType 
 implements ICollectionType {
 
-	SELECTION_ABSTRACT(false,
+	VIRTUAL_ARRAY_ABSTRACT(false,
 			"Abstract IVirtualArray, that has not been instaniated"),
 	
 	// --- instanitated Virtual Array's ---
-	SELECTION_SINGLE_BLOCK(true,
+	VIRTUAL_ARRAY_SINGLE_BLOCK(true,
 			"Virtual Array of a single block"),
 	
-	SELECTION_MULTI_BLOCK(true,
+	VIRTUAL_ARRAY_MULTI_BLOCK(true,
 			"Virtual Array of a multiple blocks, all with the same size"),
 	
-	SELECTION_MULTI_BLOCK_RLE(true,
+	VIRTUAL_ARRAY_MULTI_BLOCK_RLE(true,
 			"Virtual Array of a multiple RLE (run length encoded) blocks"),
 	
-	SELECTION_RANDOM_BLOCK(true,
+	VIRTUAL_ARRAY_RANDOM_BLOCK(true,
 			"Virtual Array of a random block"),
 	
-	SELECTION_FABRIK(false,
+	VIRTUAL_ARRAY_FABRIK(false,
 			"Virtual Array Fabrik, that has not been initialized"),
 	
-	SELECTION_NEW_TYPE(false, "A new type of selection");
+	VIRTUAL_ARRAY_NEW_TYPE(false, "A new type of selection");
 	
 	
 	/**
@@ -85,23 +85,23 @@ implements ICollectionType {
 	 */
 	public final static VirtualArrayType getTypeAll( final String fromString ) {
 		
-		if ( fromString.equalsIgnoreCase( "SELECTION_SINGLE_BLOCK" ) ) 
-			return SELECTION_SINGLE_BLOCK;
-		if ( fromString.equalsIgnoreCase( "SELECTION_MULTI_BLOCK" ) ) 
-			return SELECTION_MULTI_BLOCK;
-		if ( fromString.equalsIgnoreCase( "SELECTION_MULTI_BLOCK_RLE" ) ) 
-			return SELECTION_MULTI_BLOCK_RLE;
-		if ( fromString.equalsIgnoreCase( "SELECTION_RANDOM_BLOCK" ) ) 
-			return SELECTION_RANDOM_BLOCK;
+		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_SINGLE_BLOCK" ) ) 
+			return VIRTUAL_ARRAY_SINGLE_BLOCK;
+		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_MULTI_BLOCK" ) ) 
+			return VIRTUAL_ARRAY_MULTI_BLOCK;
+		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_MULTI_BLOCK_RLE" ) ) 
+			return VIRTUAL_ARRAY_MULTI_BLOCK_RLE;
+		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_RANDOM_BLOCK" ) ) 
+			return VIRTUAL_ARRAY_RANDOM_BLOCK;
 		
-		if ( fromString.equalsIgnoreCase( "SELECTION_ABSTRACT" ) ) 
-			return SELECTION_ABSTRACT;
-		if ( fromString.equalsIgnoreCase( "SELECTION_FABRIK" ) ) 
-			return SELECTION_FABRIK;
-		if ( fromString.equalsIgnoreCase( "SELECTION_NEW_TYPE" ) ) 
-			return SELECTION_NEW_TYPE;
+		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_ABSTRACT" ) ) 
+			return VIRTUAL_ARRAY_ABSTRACT;
+		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_FABRIK" ) ) 
+			return VIRTUAL_ARRAY_FABRIK;
+		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_NEW_TYPE" ) ) 
+			return VIRTUAL_ARRAY_NEW_TYPE;
 		
-		return SELECTION_ABSTRACT;
+		return VIRTUAL_ARRAY_ABSTRACT;
 	}
 	
 	
@@ -121,14 +121,14 @@ implements ICollectionType {
 	public final static VirtualArrayType getType( final String fromString ) {
 		
 		if ( fromString.equalsIgnoreCase( "SELECTION_SINGLE_BLOCK" ) ) 
-			return SELECTION_SINGLE_BLOCK;
+			return VIRTUAL_ARRAY_SINGLE_BLOCK;
 		if ( fromString.equalsIgnoreCase( "SELECTION_MULTI_BLOCK" ) ) 
-			return SELECTION_MULTI_BLOCK;
+			return VIRTUAL_ARRAY_MULTI_BLOCK;
 		if ( fromString.equalsIgnoreCase( "SELECTION_MULTI_BLOCK_RLE" ) ) 
-			return SELECTION_MULTI_BLOCK_RLE;
+			return VIRTUAL_ARRAY_MULTI_BLOCK_RLE;
 		if ( fromString.equalsIgnoreCase( "SELECTION_RANDOM_BLOCK" ) ) 
-			return SELECTION_RANDOM_BLOCK;
+			return VIRTUAL_ARRAY_RANDOM_BLOCK;
 		
-		return SELECTION_ABSTRACT;
+		return VIRTUAL_ARRAY_ABSTRACT;
 	}
 }

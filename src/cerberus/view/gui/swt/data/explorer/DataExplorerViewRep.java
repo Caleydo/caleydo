@@ -18,7 +18,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.pathway.Pathway;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
@@ -135,7 +135,7 @@ implements IView, IMediatorReceiver {
 		
 		DataCollectionModel rootSetModel = new DataCollectionModel(0, "SET");
 		rootModel.add(rootSetModel);
-		DataCollectionModel rootSelectionModel = new DataCollectionModel(0, "SELECTION");
+		DataCollectionModel rootSelectionModel = new DataCollectionModel(0, "VIRTUAL_ARRAY");
 		rootModel.add(rootSelectionModel);
 		DataCollectionModel rootStorageModel = new DataCollectionModel(0, "STORAGE");
 		rootModel.add(rootStorageModel);
@@ -174,7 +174,7 @@ implements IView, IMediatorReceiver {
 
 								if (currentSelection != null)
 								{
-									// insert SELECTION with ID and label in the
+									// insert VIRTUAL_ARRAY with ID and label in the
 									// tree
 									currentSelectionModel = new SelectionModel(
 											currentSelection.getId(),
@@ -256,25 +256,25 @@ implements IView, IMediatorReceiver {
 				throw new RuntimeException(e.toString());
 			}
 
-			allSelectionItems = ((ISelectionManager) refGeneralManager
-					.getManagerByBaseType(ManagerObjectType.SELECTION))
+			allSelectionItems = ((IVirtualArrayManager) refGeneralManager
+					.getManagerByBaseType(ManagerObjectType.VIRTUAL_ARRAY))
 					.getAllSelectionItems();
 
 			try
 			{
-				// iterate over all SELECTIONs
+				// iterate over all VIRTUAL_ARRAYs
 				for (int selectionIndex = 0; selectionIndex < allSelectionItems.length; selectionIndex++)
 				{
 					currentSelection = allSelectionItems[selectionIndex];
 
-					// insert SELECTIONs with ID and label in the tree
+					// insert VIRTUAL_ARRAYs with ID and label in the tree
 					currentSelectionModel = new SelectionModel(currentSelection
 							.getId(), currentSelection.getLabel());
 					rootSelectionModel.add(currentSelectionModel);
 				}
 			} catch (Exception e)
 			{
-				System.err.println("Error in DataExplorerViewRep while iterate over all SELECTIONs ==> currentSelection = allSelectionItems[selectionIndex];..");
+				System.err.println("Error in DataExplorerViewRep while iterate over all VIRTUAL_ARRAYs ==> currentSelection = allSelectionItems[selectionIndex];..");
 				throw new RuntimeException(e.toString());
 			}
 

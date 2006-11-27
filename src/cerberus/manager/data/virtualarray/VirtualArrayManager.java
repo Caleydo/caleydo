@@ -28,26 +28,19 @@ import cerberus.data.collection.IVirtualArray;
  * @author Michael Kalkusch
  *
  */
-public class SelectionManager 
+public class VirtualArrayManager 
 extends ICollectionManager
 implements IVirtualArrayManager
-{
-	
-	private final LoggerType logLevel = LoggerType.VERBOSE;
-	
-	private IVirtualArray testSelection;
-	
+{	
 	/**
 	 * Vector holds a list of all IVirtualArray's
 	 */
 	protected Vector<IVirtualArray> vecSelection;
 	
-
-	
 	/**
 	 * 
 	 */
-	public SelectionManager( IGeneralManager setGeneralManager,
+	public VirtualArrayManager( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
 		super( setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Selection );
@@ -57,21 +50,21 @@ implements IVirtualArrayManager
 			
 		vecSelection = new Vector< IVirtualArray > ( iInitSizeContainer );
 
-		refGeneralManager.getSingelton().setSelectionManager( this );
+		refGeneralManager.getSingelton().setVirtualArrayManager( this );
 		
 //		/**
 //		 * Test IVirtualArray...
 //		 */
 //		testSelection = new VirtualArrayMultiBlock( 
-//				this.createNewId(ManagerObjectType.SELECTION_MULTI_BLOCK),
+//				this.createNewId(ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK),
 //				refGeneralManager,
 //				/// pass no ICollectionLock 
 //				null );
 //		
-//		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.SELECTION_MULTI_BLOCK );
+//		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.VIRTUAL_ARRAYMULTI_BLOCK );
 //		
 //		refGeneralManager.getSingelton().logMsg( 
-//				"SELECTION: testSelection created with Id =[" +
+//				"VIRTUAL_ARRAY: testSelection created with Id =[" +
 //				testSelection.getId() +"]", logLevel);
 //		/**
 //		 * END: Test IVirtualArray...
@@ -90,20 +83,20 @@ implements IVirtualArrayManager
 	
 		
 		switch ( useSelectionType ) {
-			case SELECTION_SINGLE_BLOCK:
-				return new VirtualArraySingleBlock( createNewId(ManagerObjectType.SELECTION), this, null );
+			case VIRTUAL_ARRAY_SINGLE_BLOCK:
+				return new VirtualArraySingleBlock( createNewId(ManagerObjectType.VIRTUAL_ARRAY), this, null );
 				
-			case SELECTION_MULTI_BLOCK:
-				return new VirtualArrayMultiBlock( createNewId(ManagerObjectType.SELECTION), this, null );	
+			case VIRTUAL_ARRAY_MULTI_BLOCK:
+				return new VirtualArrayMultiBlock( createNewId(ManagerObjectType.VIRTUAL_ARRAY), this, null );	
 				
-			case SELECTION_LOAD_MICROARRAY:
-				System.err.println("ISelectionManager.createSelection() SELECTION_LOAD_MICROARRAY is deprecated!");
+			case VIRTUAL_ARRAY_LOAD_MICROARRAY:
+				System.err.println("ISelectionManager.createSelection() VIRTUAL_ARRAY_LOAD_MICROARRAY is deprecated!");
 				//return new MicroArrayLoader( getGeneralManager() );
 				
-//			case SELECTION_MULTI_BLOCK_RLE:
+//			case VIRTUAL_ARRAY_MULTI_BLOCK_RLE:
 //				break;
 //				
-//			case SELECTION_RANDOM_BLOCK:
+//			case VIRTUAL_ARRAY_RANDOM_BLOCK:
 //				break;
 				
 				
@@ -203,7 +196,7 @@ implements IVirtualArrayManager
 	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
 	 */
 	public final ManagerObjectType getManagerType() {		
-		return ManagerObjectType.SELECTION;
+		return ManagerObjectType.VIRTUAL_ARRAY;
 	}
 	
 	public boolean unregisterItem( final int iItemId,

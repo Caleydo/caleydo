@@ -49,7 +49,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	 */
 	public VirtualArrayType getSelectionType() {
 
-		return VirtualArrayType.SELECTION_MULTI_BLOCK;
+		return VirtualArrayType.VIRTUAL_ARRAY_MULTI_BLOCK;
 	}
 
 	/* (non-Javadoc)
@@ -184,10 +184,10 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 			setMultiRepeat(parser.getXML_DataMultiRepeat());
 
 			getManager().unregisterItem(getId(),
-					ManagerObjectType.SELECTION_MULTI_BLOCK);
+					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
 
 			getManager().registerItem(this, parser.getXML_DataComponent_Id(),
-					ManagerObjectType.SELECTION_MULTI_BLOCK);
+					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
 
 			setId(parser.getXML_DataComponent_Id());
 
@@ -209,7 +209,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 		final String openDetail = "<DataComponentItemDetails type=\"";
 		final String closeDetail = "</DataComponentItemDetails>\n";
 
-		String result = createMementoXML_Intro(ManagerObjectType.SELECTION_MULTI_BLOCK
+		String result = createMementoXML_Intro(ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK
 				.name());
 
 		result += openDetail + "MultiOffset\" >" + getMultiOffset()
@@ -231,7 +231,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	 */
 	public ManagerObjectType getBaseType() {
 
-		return ManagerObjectType.SELECTION_MULTI_BLOCK;
+		return ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK;
 	}
 
 	/*

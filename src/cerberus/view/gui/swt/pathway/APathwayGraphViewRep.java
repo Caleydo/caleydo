@@ -285,7 +285,7 @@ implements IPathwayGraphView, IGroupedSelection {
 		int iSelectionNeighborStorageId = 55301;
 		
 //		refGeneralManager.getSingelton().getSetManager().deleteSet(45101);
-//		refGeneralManager.getSingelton().getSelectionManager().deleteSelection(45201);
+//		refGeneralManager.getSingelton().getVirtualArrayManager().deleteSelection(45201);
 //		refGeneralManager.getSingelton().getStorageManager().deleteStorage(45301);
 		
 		IParameterHandler phAttributes = new ParameterHandler();

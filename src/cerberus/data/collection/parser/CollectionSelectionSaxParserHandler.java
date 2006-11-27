@@ -56,7 +56,7 @@ implements ISaxParserHandler
 	protected final String sTag_XML_DataCollection_Container 		= "DataComponent";
 	protected final String sTag_XML_DataCollection_attr_id 			= "data_Id";
 	protected final String sTag_XML_DataCollection_attr_type 		= "type";
-	protected final String sTag_XML_DataCollection_attr_type_value 	= ManagerObjectType.SELECTION.name();
+	protected final String sTag_XML_DataCollection_attr_type_value 	= ManagerObjectType.VIRTUAL_ARRAY.name();
 	protected final String sTag_XML_DataCollection_details 			= "DataComponentItemDetails";
 	protected final String sTag_XML_DataCollection_details_attr_filetag = "FileName";
 	protected final String sTag_XML_DataCollection_details_attr_filename = "microArrayFileName";
@@ -364,7 +364,7 @@ implements ISaxParserHandler
 	
 	/**
 	 * Get the file name of a mircoarray dataset.
-	 * Only set when type="SELECTION_LOAD_MICROARRAY".
+	 * Only set when type="VIRTUAL_ARRAY_LOAD_MICROARRAY".
 	 * Used by class prometheus.data.loader.MicroArrayLoader .
 	 * 
 	 * @see prometheus.data.loader.MicroArrayLoader

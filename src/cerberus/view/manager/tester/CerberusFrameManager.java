@@ -199,7 +199,7 @@ public class CerberusFrameManager implements IWindowAdapterTarget {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-				case JBROWSER_SELECTION: {
+				case JBROWSER_VIRTUAL_ARRAY: {
 					//SelectionBrowser ref2FrameSel = new SelectionBrowser(inner);
 					SelectionSliderBrowser ref2FrameSel = new SelectionSliderBrowser(inner);
 					ref2FrameSel.setSelection( data.refTEST_Selection );					
@@ -238,7 +238,7 @@ public class CerberusFrameManager implements IWindowAdapterTarget {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				//SelectionBrowser ref2Frame = new SelectionBrowser(outer);
 				SelectionSliderBrowser ref2Frame = new  SelectionSliderBrowser(outer);
 				ref2Frame.setSelection( data.refTEST_Selection );
@@ -257,7 +257,7 @@ public class CerberusFrameManager implements IWindowAdapterTarget {
 		
 		
 		switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				break;
 			}
 		
@@ -735,7 +735,7 @@ public class CerberusFrameManager implements IWindowAdapterTarget {
 		
 		addWindow(FrameBaseType.PARALLELCOORDINATES2D,B_FRAME_INTERNAL);
 		
-		addWindow(FrameBaseType.JBROWSER_SELECTION,B_FRAME_INTERNAL);
+		addWindow(FrameBaseType.JBROWSER_VIRTUAL_ARRAY,B_FRAME_INTERNAL);
 		
 		
 		graphViewer.frame.setLocation( -800, 300 );

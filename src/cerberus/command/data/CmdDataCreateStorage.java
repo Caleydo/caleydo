@@ -293,9 +293,9 @@ implements ICommand {
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
-		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
+		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueTargetId,
-				ManagerObjectType.SELECTION_MULTI_BLOCK );
+				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
 				"UNDO new SEL: " + 

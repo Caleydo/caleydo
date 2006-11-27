@@ -147,9 +147,9 @@ public class JoglSwingFrameFactory {
 		
 		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SET, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 				
-		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SELECTION, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
+		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_VIRTUAL_ARRAY, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 		
-		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SELECTION, B_FRAME_EXTERNAL, B_DEFAULT_MENU_NONE );		
+		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_VIRTUAL_ARRAY, B_FRAME_EXTERNAL, B_DEFAULT_MENU_NONE );		
 		
 		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_STORAGE, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 		
@@ -318,7 +318,7 @@ public class JoglSwingFrameFactory {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-				case JBROWSER_SELECTION: {
+				case JBROWSER_VIRTUAL_ARRAY: {
 					//SelectionBrowser ref2FrameSel = new SelectionBrowser(inner);
 					SelectionSliderBrowser ref2FrameSel = new SelectionSliderBrowser(inner);
 //					ref2FrameSel.setSelection( refTEST_Selection );					
@@ -357,7 +357,7 @@ public class JoglSwingFrameFactory {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				//SelectionBrowser ref2Frame = new SelectionBrowser(outer);
 				SelectionSliderBrowser ref2Frame = new  SelectionSliderBrowser(outer);
 //				ref2Frame.setSelection( refTEST_Selection );
@@ -376,7 +376,7 @@ public class JoglSwingFrameFactory {
 		
 		
 		switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				break;
 			}
 		

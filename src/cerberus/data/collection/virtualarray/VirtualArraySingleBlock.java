@@ -45,7 +45,7 @@ implements IVirtualArray, IMementoItemXML
 	 * @see cerberus.data.collection.IVirtualArray#getSelectionType()
 	 */
 	public VirtualArrayType getSelectionType() {		
-		return VirtualArrayType.SELECTION_SINGLE_BLOCK;
+		return VirtualArrayType.VIRTUAL_ARRAY_SINGLE_BLOCK;
 	}
 
 
@@ -117,11 +117,11 @@ implements IVirtualArray, IMementoItemXML
 			setOffset( parser.getXML_DataOffset() );
 			
 			getManager().unregisterItem( getId(), 
-					ManagerObjectType.SELECTION_SINGLE_BLOCK );
+					ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK );
 			
 			getManager().registerItem( this, 
 					parser.getXML_DataComponent_Id(), 
-					ManagerObjectType.SELECTION_SINGLE_BLOCK );
+					ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK );
 			
 			setId( parser.getXML_DataComponent_Id() );			
 			
@@ -141,7 +141,7 @@ implements IVirtualArray, IMementoItemXML
 	public String createMementoXML() {
 		
 		return createMementoXML_Intro(
-				ManagerObjectType.SELECTION_SINGLE_BLOCK.name())
+				ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK.name())
 			+ "</DataComponentItem>\n";
 	}
 
@@ -150,7 +150,7 @@ implements IVirtualArray, IMementoItemXML
 	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
 	 */
 	public ManagerObjectType getBaseType() {
-		return ManagerObjectType.SELECTION_SINGLE_BLOCK;
+		return ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK;
 	}
 	
 	/*

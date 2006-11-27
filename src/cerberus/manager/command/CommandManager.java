@@ -214,7 +214,7 @@ public class CommandManager
 //					llAttributes );	
 //		
 //		if ( createdCommand.getId() < 0 ) {
-//			createdCommand.setId( createNewId( ManagerObjectType.SELECTION_MULTI_BLOCK ) );
+//			createdCommand.setId( createNewId( ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK ) );
 //		}
 //		
 //		registerItem( createdCommand, 

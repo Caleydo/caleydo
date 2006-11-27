@@ -16,7 +16,7 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.AManagedCmd;
 import cerberus.manager.command.factory.CommandFactory;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -100,11 +100,11 @@ implements ICommand {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		ISelectionManager refSelectionManager = 
-			refGeneralManager.getSingelton().getSelectionManager();
+		IVirtualArrayManager refSelectionManager = 
+			refGeneralManager.getSingelton().getVirtualArrayManager();
 		
 		IVirtualArray newObject = (IVirtualArray) refSelectionManager.createSelection(
-				ManagerObjectType.SELECTION_MULTI_BLOCK );
+				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
@@ -115,7 +115,7 @@ implements ICommand {
 		
 		refSelectionManager.registerItem( newObject, 
 				iUniqueTargetId, 
-				ManagerObjectType.SELECTION_MULTI_BLOCK );
+				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 
 		refGeneralManager.getSingelton().logMsg( 
 				"DO new SEL: " + 
@@ -127,9 +127,9 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-		refGeneralManager.getSingelton().getSelectionManager().unregisterItem( 
+		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueTargetId,
-				ManagerObjectType.SELECTION_MULTI_BLOCK );
+				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 

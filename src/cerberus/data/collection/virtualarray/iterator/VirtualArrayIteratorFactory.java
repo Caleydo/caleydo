@@ -44,17 +44,17 @@ public class VirtualArrayIteratorFactory {
 		
 		switch ( setSelection.getSelectionType() ) {
 		
-		case SELECTION_SINGLE_BLOCK:
+		case VIRTUAL_ARRAY_SINGLE_BLOCK:
 			refSelectionIterator = new VirtualArraySingleBlockIterator( setSelection );
 			break;
 			
-		case SELECTION_MULTI_BLOCK:
+		case VIRTUAL_ARRAY_MULTI_BLOCK:
 			refSelectionIterator = new VirtualArrayMultiBlockIterator( setSelection );
 			break;
 			
-		case SELECTION_MULTI_BLOCK_RLE:
+		case VIRTUAL_ARRAY_MULTI_BLOCK_RLE:
 			
-		case SELECTION_RANDOM_BLOCK:
+		case VIRTUAL_ARRAY_RANDOM_BLOCK:
 			
 		default:
 			

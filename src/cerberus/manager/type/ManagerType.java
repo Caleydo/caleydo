@@ -54,7 +54,7 @@ public enum ManagerType {
 		
 		SET("set manager", ManagerType.DATA ),
 		
-		SELECTION("selection manager", ManagerType.DATA ),
+		VIRTUAL_ARRAY("selection manager", ManagerType.DATA ),
 		
 		STORAGE("storage manager", ManagerType.DATA ),
 		

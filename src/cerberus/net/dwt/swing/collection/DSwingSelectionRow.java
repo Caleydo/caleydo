@@ -66,7 +66,7 @@ public class DSwingSelectionRow {
 	
 	private JComboBox    j_cb_selectionTypes;
 	
-	private ManagerObjectType currentType = ManagerObjectType.SELECTION;
+	private ManagerObjectType currentType = ManagerObjectType.VIRTUAL_ARRAY;
 	
 	private final static String[] tooltipText = {"Id",
 		"label",
@@ -151,7 +151,7 @@ public class DSwingSelectionRow {
 		
 		j_Box.add( new JScrollPane( j_ta ) );
 		
-		setGuiByBaseType( ManagerObjectType.SELECTION );
+		setGuiByBaseType( ManagerObjectType.VIRTUAL_ARRAY );
 		
 		j_cb_selectionTypes.addItemListener( 
 				//new  DSwingSelectionRowItemListener implements 
@@ -164,19 +164,19 @@ public class DSwingSelectionRow {
 							switch ( j_cb_selectionTypes.getSelectedIndex() ) {
 							
 							case SELECT_SINGEL:
-								setGuiByBaseType( ManagerObjectType.SELECTION_SINGLE_BLOCK );
+								setGuiByBaseType( ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK );
 								break;
 							case SELECT_MULTI:
-								setGuiByBaseType( ManagerObjectType.SELECTION_MULTI_BLOCK );
+								setGuiByBaseType( ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 								break;
 							case SELECT_MULTI_RLE:
-								setGuiByBaseType( ManagerObjectType.SELECTION_MULTI_BLOCK_RLE );
+								setGuiByBaseType( ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK_RLE );
 								break;
 							case SELECT_RANDOM:
-								setGuiByBaseType( ManagerObjectType.SELECTION_RANDOM_BLOCK );
+								setGuiByBaseType( ManagerObjectType.VIRTUAL_ARRAY_RANDOM_BLOCK );
 								break;
 							case SELECT_NONE:
-								setGuiByBaseType( ManagerObjectType.SELECTION );
+								setGuiByBaseType( ManagerObjectType.VIRTUAL_ARRAY );
 								break;
 							default:
 								throw new CerberusRuntimeException("unkown type in GUI!");
@@ -207,7 +207,7 @@ public class DSwingSelectionRow {
 	 */
 	private boolean setGuiByBaseType(final ManagerObjectType setType){
 		
-		if ( setType.getGroupType() != ManagerType.SELECTION ) {
+		if ( setType.getGroupType() != ManagerType.VIRTUAL_ARRAY ) {
 			return false;
 		}
 		
@@ -220,7 +220,7 @@ public class DSwingSelectionRow {
 		
 		switch ( setType ) {
 		
-			case SELECTION: {
+			case VIRTUAL_ARRAY: {
 				for ( int i=0; i<iSizeTF; i++) {
 					j_tf[i].setEditable( false );
 				}
@@ -233,7 +233,7 @@ public class DSwingSelectionRow {
 				return true;
 			}
 			
-			case SELECTION_SINGLE_BLOCK: {
+			case VIRTUAL_ARRAY_SINGLE_BLOCK: {
 				
 				enableSingleSelection();
 				
@@ -247,7 +247,7 @@ public class DSwingSelectionRow {
 				break;
 			}
 
-			case SELECTION_MULTI_BLOCK_RLE: {
+			case VIRTUAL_ARRAY_MULTI_BLOCK_RLE: {
 				
 				enableSingleSelection();
 				
@@ -257,7 +257,7 @@ public class DSwingSelectionRow {
 				break;
 			}
 
-			case SELECTION_RANDOM_BLOCK: {
+			case VIRTUAL_ARRAY_RANDOM_BLOCK: {
 				
 				enableSingleSelection();
 				
@@ -275,7 +275,7 @@ public class DSwingSelectionRow {
 				break;
 			}
 			
-			case SELECTION_MULTI_BLOCK: {
+			case VIRTUAL_ARRAY_MULTI_BLOCK: {
 				
 				for ( int i=0; i<iSizeTF; i++) {
 					j_tf[i].setEditable( true );
@@ -320,13 +320,13 @@ public class DSwingSelectionRow {
 		
 		switch (currentType) {
 		
-//		case SELECTION: {
+//		case VIRTUAL_ARRAY: {
 //			return;
 //		}
 		
-		case SELECTION_SINGLE_BLOCK: {
-			assert useSelection.getSelectionType() == VirtualArrayType.SELECTION_SINGLE_BLOCK :
-				"Wrong type for selection SELECTION_SINGLE_BLOCK!";
+		case VIRTUAL_ARRAY_SINGLE_BLOCK: {
+			assert useSelection.getSelectionType() == VirtualArrayType.VIRTUAL_ARRAY_SINGLE_BLOCK :
+				"Wrong type for selection VIRTUAL_ARRAY_SINGLE_BLOCK!";
 			
 			j_tf[INDEX_ID].setText( 
 					new Integer( useSelection.getId()).toString() );
@@ -341,9 +341,9 @@ public class DSwingSelectionRow {
 			return;
 		}
 		
-		case SELECTION_MULTI_BLOCK: {
-			assert useSelection.getSelectionType() == VirtualArrayType.SELECTION_MULTI_BLOCK :
-				"Wrong type for selection SELECTION_MULTI_BLOCK!";
+		case VIRTUAL_ARRAY_MULTI_BLOCK: {
+			assert useSelection.getSelectionType() == VirtualArrayType.VIRTUAL_ARRAY_MULTI_BLOCK :
+				"Wrong type for selection VIRTUAL_ARRAY_MULTI_BLOCK!";
 			
 			j_tf[INDEX_ID].setText( 
 					new Integer( useSelection.getId()).toString() );
@@ -433,8 +433,8 @@ public class DSwingSelectionRow {
 		
 		sDataFromGui_label = j_tf[ INDEX_LABEL ].getText();
 		
-		if (( currentType == ManagerObjectType.SELECTION_RANDOM_BLOCK ) ||
-				(currentType == ManagerObjectType.SELECTION_MULTI_BLOCK_RLE)) {
+		if (( currentType == ManagerObjectType.VIRTUAL_ARRAY_RANDOM_BLOCK ) ||
+				(currentType == ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK_RLE)) {
 			/*
 			 * Use Tokinizer for parsing textarea...
 			 */
@@ -486,11 +486,11 @@ public class DSwingSelectionRow {
 		
 		ManagerObjectType selType = updateSelection.getBaseType();
 		
-		if ( selType == ManagerObjectType.SELECTION_RANDOM_BLOCK ) {
+		if ( selType == ManagerObjectType.VIRTUAL_ARRAY_RANDOM_BLOCK ) {
 			updateSelection.setIndexArray( iDataFromGui_MultiRLE_Random_Array ); 
 			return;
 		}
-		if ( selType == ManagerObjectType.SELECTION_MULTI_BLOCK_RLE ) {
+		if ( selType == ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK_RLE ) {
 			updateSelection.setIndexArray( iDataFromGui_MultiRLE_Random_Array ); 
 			return;
 		}
@@ -537,7 +537,7 @@ public class DSwingSelectionRow {
 		else {
 			if ( j_Box.isVisible() ) {
 				refSelection = null;
-				currentType = ManagerObjectType.SELECTION;
+				currentType = ManagerObjectType.VIRTUAL_ARRAY;
 				
 				j_Box.setVisible(set);
 			}

@@ -23,14 +23,14 @@ import cerberus.manager.canvas.ViewCanvasManager;
 import cerberus.manager.command.CommandManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
-import cerberus.manager.data.selection.SelectionManager;
 import cerberus.manager.data.set.SetManager;
 import cerberus.manager.data.storage.StorageManager;
+import cerberus.manager.data.virtualarray.VirtualArrayManager;
 import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.logger.ConsoleLogger;
@@ -82,7 +82,7 @@ implements IGeneralManagerSingelton
 
 	protected IStorageManager refStorageManager;
 
-	protected ISelectionManager refSelectionManager;
+	protected IVirtualArrayManager refVirtualArrayManager;
 
 	protected IMementoManager refMementoManager;
 
@@ -173,7 +173,7 @@ implements IGeneralManagerSingelton
 		/* end init logger */
 		
 		refStorageManager = new StorageManager(this, 4);
-		refSelectionManager = new SelectionManager(this, 4);
+		refVirtualArrayManager = new VirtualArrayManager(this, 4);
 		refSetManager = new SetManager(this, 4);
 		
 		refMementoManager = new MementoManager(this);
@@ -202,7 +202,7 @@ implements IGeneralManagerSingelton
 		refSingeltonManager.setCommandManager(refCommandManager);
 		refSingeltonManager.setDComponentManager(refDComponentManager);
 		refSingeltonManager.setViewCanvasManager(refViewCanvasManager);
-		refSingeltonManager.setSelectionManager(refSelectionManager);
+		refSingeltonManager.setVirtualArrayManager(refVirtualArrayManager);
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
 		refSingeltonManager.setMenuManager(refMenuManager);
@@ -223,7 +223,7 @@ implements IGeneralManagerSingelton
 
 		if (refSetManager.hasItem(iItemId))
 			return true;
-		if (refSelectionManager.hasItem(iItemId))
+		if (refVirtualArrayManager.hasItem(iItemId))
 			return true;
 		if (refStorageManager.hasItem(iItemId))
 			return true;
@@ -253,8 +253,8 @@ implements IGeneralManagerSingelton
 		if (refSetManager.hasItem(iItemId))
 			return refSetManager.getItemSet(iItemId);
 
-		if (refSelectionManager.hasItem(iItemId))
-			return refSelectionManager.getItemSelection(iItemId);
+		if (refVirtualArrayManager.hasItem(iItemId))
+			return refVirtualArrayManager.getItemSelection(iItemId);
 
 		if (refStorageManager.hasItem(iItemId))
 			return refStorageManager.getItemStorage(iItemId);
@@ -287,7 +287,7 @@ implements IGeneralManagerSingelton
 	{
 
 		return (refSetManager.size() + refStorageManager.size()
-				+ refSelectionManager.size() + refMementoManager.size()
+				+ refVirtualArrayManager.size() + refMementoManager.size()
 				+ refDComponentManager.size() + refViewCanvasManager.size() + refSWTGUIManager
 				.size());
 	}
@@ -366,8 +366,8 @@ implements IGeneralManagerSingelton
 			return refMementoManager.createNewId(setNewBaseType);
 		case GUI_COMPONENT:
 			return refDComponentManager.createNewId(setNewBaseType);
-		case SELECTION:
-			return refSelectionManager.createNewId(setNewBaseType);
+		case VIRTUAL_ARRAY:
+			return refVirtualArrayManager.createNewId(setNewBaseType);
 		case SET:
 			return refSetManager.createNewId(setNewBaseType);
 		case STORAGE:
@@ -399,8 +399,8 @@ implements IGeneralManagerSingelton
 			case GUI_COMPONENT:
 				//return refDComponentManager.createNewId();
 				assert false : "not implemented";
-			case SELECTION:
-				return refSelectionManager.unregisterItem(iItemId, type);
+			case VIRTUAL_ARRAY:
+				return refVirtualArrayManager.unregisterItem(iItemId, type);
 			case SET:
 				return refSetManager.unregisterItem(iItemId, type);
 			case STORAGE:
@@ -447,8 +447,8 @@ implements IGeneralManagerSingelton
 				//return refDComponentManager.createNewId();
 				assert false : "not implemented";
 
-			case SELECTION:
-				return refSelectionManager.registerItem(registerItem, iItemId, type);
+			case VIRTUAL_ARRAY:
+				return refVirtualArrayManager.registerItem(registerItem, iItemId, type);
 			case SET:
 				return refSetManager.registerItem(registerItem, iItemId, type);
 			case STORAGE:
@@ -487,8 +487,8 @@ implements IGeneralManagerSingelton
 		case GUI_COMPONENT:
 			//return refDComponentManager.createNewId();
 			assert false : "not implemented";
-		case SELECTION:
-			return refSelectionManager.createSelection(createNewType);
+		case VIRTUAL_ARRAY:
+			return refVirtualArrayManager.createSelection(createNewType);
 		case SET:
 			return refSetManager.createSet(createNewType);
 		case STORAGE:
@@ -528,9 +528,9 @@ implements IGeneralManagerSingelton
 		case GUI_COMPONENT:
 			//return refDComponentManager.createNewId();
 			assert false : "not implemented";
-		case SELECTION:
+		case VIRTUAL_ARRAY:
 		{
-			IMementoXML selectionBuffer = refSelectionManager
+			IMementoXML selectionBuffer = refVirtualArrayManager
 					.createSelection(type);
 
 			selectionBuffer.setMementoXML_usingHandler(refSaxHandler);
@@ -586,8 +586,8 @@ implements IGeneralManagerSingelton
 			return refMementoManager;
 		case GUI_COMPONENT:
 			return refDComponentManager;
-		case SELECTION:
-			return refSelectionManager;
+		case VIRTUAL_ARRAY:
+			return refVirtualArrayManager;
 		case SET:
 			return refSetManager;
 		case STORAGE:

@@ -21,7 +21,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.data.ISelectionManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
@@ -35,7 +35,7 @@ implements IDataTableView {
 	
 	protected IStorageManager refStorageManager;
 
-	protected ISelectionManager refSelectionManager;
+	protected IVirtualArrayManager refSelectionManager;
 
 	protected Composite refSWTContainer;
 
@@ -71,8 +71,8 @@ implements IDataTableView {
 		refStorageManager = (IStorageManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.STORAGE);
 
-		refSelectionManager = (ISelectionManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.SELECTION);
+		refSelectionManager = (IVirtualArrayManager) refGeneralManager
+				.getManagerByBaseType(ManagerObjectType.VIRTUAL_ARRAY);
 	}
 
 	public void drawView() {

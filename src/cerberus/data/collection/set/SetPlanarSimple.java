@@ -438,7 +438,7 @@ implements ISet {
 		assert false:"IMemento of ISet is not created yet!";
 		
 		return createMementoXML_Intro(
-				ManagerObjectType.SELECTION_SINGLE_BLOCK.name())
+				ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK.name())
 			+ "</DataComponentItem>\n";
 	}
 

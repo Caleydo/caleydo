@@ -120,9 +120,9 @@ public class FrameCollector {
 		
 		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SET, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 				
-		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SELECTION, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
+		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_VIRTUAL_ARRAY, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 		
-		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_SELECTION, B_FRAME_EXTERNAL, B_DEFAULT_MENU_NONE );		
+		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_VIRTUAL_ARRAY, B_FRAME_EXTERNAL, B_DEFAULT_MENU_NONE );		
 		
 		menu = addItemToMenu( menu, FrameBaseType.JBROWSER_STORAGE, B_FRAME_INTERNAL, B_DEFAULT_MENU_NONE );
 		

@@ -50,7 +50,7 @@ public enum FrameBaseType {
 	LOADIMAGE( null, true,  true,"Load Image","Load image"),
 	
 	//--- AWT canvas ----
-	JBROWSER_SELECTION(null, true, false,"IVirtualArray Browser","select.."),
+	JBROWSER_VIRTUAL_ARRAY(null, true, false,"IVirtualArray Browser","select.."),
 	JBROWSER_SET(null, true, false,"ISet Browser","set.."),
 	JBROWSER_STORAGE(null, true, false,"IStorage Browser","store..");
 	

@@ -23,7 +23,7 @@ import cerberus.data.collection.IVirtualArray;
  * @author Michael Kalkusch
  *
  */
-public interface ISelectionManager
+public interface IVirtualArrayManager
 extends IGeneralManager
 {
 	

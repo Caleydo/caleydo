@@ -36,23 +36,23 @@ public enum ManagerObjectType {
 	
 	
 	/*
-	 * SELECTION
+	 * VIRTUAL_ARRAY
 	 */
-	SELECTION(ManagerType.SELECTION),
+	VIRTUAL_ARRAY(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_SINGLE_BLOCK(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_SINGLE_BLOCK(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_MULTI_BLOCK(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_MULTI_BLOCK(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_MULTI_BLOCK_RLE(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_RANDOM_BLOCK(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.VIRTUAL_ARRAY),
 	
 	/**
 	 * Load a microarray dataset. Is defined as IVirtualArray, because 
 	 * all storage decives are loaded prior.
 	 */
-	SELECTION_LOAD_MICROARRAY(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_LOAD_MICROARRAY(ManagerType.VIRTUAL_ARRAY),
 	
 	
 	/*
@@ -275,31 +275,31 @@ public enum ManagerObjectType {
 			return ManagerObjectType.MEMENTO;
 		
 		if ( sParseString.startsWith( 
-				ManagerObjectType.SELECTION.name()) ) {
+				ManagerObjectType.VIRTUAL_ARRAY.name()) ) {
 
 			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION.name() )) 
-				return ManagerObjectType.SELECTION;
+					ManagerObjectType.VIRTUAL_ARRAY.name() )) 
+				return ManagerObjectType.VIRTUAL_ARRAY;
 			
 			if ( sParseString.equalsIgnoreCase(  
-					ManagerObjectType.SELECTION_SINGLE_BLOCK.name()) ) 
-				return ManagerObjectType.SELECTION_SINGLE_BLOCK;
+					ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK.name()) ) 
+				return ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK;
 			
 			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_MULTI_BLOCK.name() )) 
-				return ManagerObjectType.SELECTION_MULTI_BLOCK;
+					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK.name() )) 
+				return ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK;
 			
 			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_MULTI_BLOCK_RLE.name() )) 
-				return ManagerObjectType.SELECTION_MULTI_BLOCK_RLE;
+					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK_RLE.name() )) 
+				return ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK_RLE;
 			
 			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_RANDOM_BLOCK.name() )) 
-				return ManagerObjectType.SELECTION_RANDOM_BLOCK;
+					ManagerObjectType.VIRTUAL_ARRAY_RANDOM_BLOCK.name() )) 
+				return ManagerObjectType.VIRTUAL_ARRAY_RANDOM_BLOCK;
 			
 			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_LOAD_MICROARRAY.name() )) 
-				return ManagerObjectType.SELECTION_LOAD_MICROARRAY;
+					ManagerObjectType.VIRTUAL_ARRAY_LOAD_MICROARRAY.name() )) 
+				return ManagerObjectType.VIRTUAL_ARRAY_LOAD_MICROARRAY;
 		}
 	
 		if ( sParseString.startsWith( 

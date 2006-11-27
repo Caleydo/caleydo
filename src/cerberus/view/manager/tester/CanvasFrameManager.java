@@ -229,7 +229,7 @@ public class CanvasFrameManager implements IWindowAdapterTarget {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-				case JBROWSER_SELECTION: {
+				case JBROWSER_VIRTUAL_ARRAY: {
 					//SelectionBrowser ref2FrameSel = new SelectionBrowser(inner);
 					SelectionSliderBrowser ref2FrameSel = new SelectionSliderBrowser(inner);
 					ref2FrameSel.setSelection( data.refTEST_Selection );					
@@ -272,7 +272,7 @@ public class CanvasFrameManager implements IWindowAdapterTarget {
 			//TODO: register Mouse Listener to canvas...
 			
 			switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				//SelectionBrowser ref2Frame = new SelectionBrowser(outer);
 				SelectionSliderBrowser ref2Frame = new  SelectionSliderBrowser(outer);
 				ref2Frame.setSelection( data.refTEST_Selection );
@@ -291,7 +291,7 @@ public class CanvasFrameManager implements IWindowAdapterTarget {
 		
 		
 		switch (which) {
-			case JBROWSER_SELECTION: {
+			case JBROWSER_VIRTUAL_ARRAY: {
 				break;
 			}
 		
@@ -787,7 +787,7 @@ public class CanvasFrameManager implements IWindowAdapterTarget {
 		
 //		addWindow(FrameBaseType.PARALLELCOORDINATES2D, frame.getId() );
 		
-		addWindow(FrameBaseType.JBROWSER_SELECTION, frame.getId() );
+		addWindow(FrameBaseType.JBROWSER_VIRTUAL_ARRAY, frame.getId() );
 		
 		
 		graphViewer.frame.setLocation( -800, 300 );
