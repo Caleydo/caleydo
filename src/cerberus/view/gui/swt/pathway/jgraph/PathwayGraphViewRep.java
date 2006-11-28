@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -105,9 +104,8 @@ extends APathwayGraphViewRep {
 	/**
 	 * Neighbor distance from currently selected vertex.
 	 * Container is needed for selection updates.
-	 * HashSet is used because it guarantees uniuque elements. 
 	 */
-	protected HashSet<Integer> iHashSetNeighborDistance;
+	protected LinkedList<Integer> iLLNeighborDistance;
 	
 	/**
 	 * Specifies how deep the neighborhood recursion
@@ -145,7 +143,7 @@ extends APathwayGraphViewRep {
 		fScalingFactor = SCALING_FACTOR;
 		
 		iHashSetSelectedVertices = new HashSet<Integer>();
-		iHashSetNeighborDistance = new HashSet<Integer>();
+		iLLNeighborDistance = new LinkedList<Integer>();
 	}
 
 	public void initView() {
@@ -170,7 +168,7 @@ extends APathwayGraphViewRep {
 	
 			    	// Remove old selected vertices
 			    	iHashSetSelectedVertices.clear();
-			    	iHashSetNeighborDistance.clear();
+			    	iLLNeighborDistance.clear();
 			    	
 			    	// Check if a node or edge was hit.
 			    	// If not undo neighborhood visualization and return.
@@ -254,9 +252,13 @@ extends APathwayGraphViewRep {
 						
 						// Highlight current cell
 						highlightCell(clickedCell, Color.RED);
-						createSelectionSet(new int[]{((PathwayVertexRep)clickedCell.getUserObject()).
-								getVertex().getElementId()}, 
-								null, null);
+						
+						// The clicked vertex will be added with neighborhood distance of 0
+						iLLNeighborDistance.add(0);
+						
+//						createSelectionSet(new int[]{((PathwayVertexRep)clickedCell.getUserObject()).
+//								getVertex().getElementId()}, 
+//								null, null);
 						
 						bNeighbourhoodShown = true;
 						iNeighbourhoodUndoCount++;
@@ -280,8 +282,8 @@ extends APathwayGraphViewRep {
 						    	iArSelectedVertices[i] = iter_I.next().intValue();
 						    }
 						    
-						    iter_I = iHashSetNeighborDistance.iterator();		    
-						    int[] iArNeighborDistance = new int[iHashSetNeighborDistance.size()];		    
+						    iter_I = iLLNeighborDistance.iterator();		    
+						    int[] iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
 						    for ( int i=0; iter_I.hasNext() ;i++ ) {
 						    	iArNeighborDistance[i] = iter_I.next().intValue();
 						    }
@@ -680,7 +682,7 @@ extends APathwayGraphViewRep {
 			// Add selected vertex
 			iHashSetSelectedVertices.add(((PathwayVertexRep)tmpCell.
 					getUserObject()).getVertex().getElementId());
-			iHashSetNeighborDistance.add(iDistance);
+			iLLNeighborDistance.add(iDistance);
 			
 			nested.put(tmpCell, attributeMap);
 			

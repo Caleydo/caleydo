@@ -279,7 +279,7 @@ implements IPathwayGraphView, IGroupedSelection {
 			int[] arNeighborVertices) {
 	
 		int iSelectionMediatorId = 95201;
-		int iSelectionSetId = 45101;
+		int iSelectionSetId = 75101;
 		int iSelectionVirtualArrayId = 45201;
 		int iSelectionDataStorageId = 45301;
 		int iSelectionNeighborStorageId = 55301;
@@ -318,7 +318,9 @@ implements IPathwayGraphView, IGroupedSelection {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
 
-		new CmdDataCreateVirtualArray(refGeneralManager, phAttributes);
+		CmdDataCreateVirtualArray createdVirtualArrayCommand = 
+			new CmdDataCreateVirtualArray(refGeneralManager, phAttributes);
+		createdVirtualArrayCommand.doCommand();
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
@@ -353,7 +355,9 @@ implements IPathwayGraphView, IGroupedSelection {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
 		
-		new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
+		CmdDataCreateStorage createdStorageDataCommand = 
+			new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
+		createdStorageDataCommand.doCommand();
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
@@ -388,7 +392,9 @@ implements IPathwayGraphView, IGroupedSelection {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
 		
-		new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
+		CmdDataCreateStorage createdNeighborStorageCommand = 
+			new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
+		createdNeighborStorageCommand.doCommand();
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
@@ -420,7 +426,7 @@ implements IPathwayGraphView, IGroupedSelection {
 		
 		// StorageIDs
 		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-				"45301", 
+				"45301 55301", 
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
 		
@@ -430,7 +436,8 @@ implements IPathwayGraphView, IGroupedSelection {
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_DETAIL.getDefault());
 		
-		new CmdDataCreateSet(refGeneralManager, phAttributes, true);
+		CmdDataCreateSet createdSetCommand = new CmdDataCreateSet(refGeneralManager, phAttributes, true);
+		createdSetCommand.doCommand();
 		
 		phAttributes = null;
 		phAttributes = new ParameterHandler();
@@ -510,6 +517,6 @@ implements IPathwayGraphView, IGroupedSelection {
 				getEventPublisher()).updateSelection(refGeneralManager.
 						getSingelton().getViewGLCanvasManager().
 							getItem(iParentContainerId), 
-							refGeneralManager.getSingelton().getSetManager().getItemSet(45101));
+							refGeneralManager.getSingelton().getSetManager().getItemSet(75101));
 	}
 }

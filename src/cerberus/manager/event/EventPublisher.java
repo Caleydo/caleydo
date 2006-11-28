@@ -175,6 +175,10 @@ implements IEventPublisher {
 			return;
 		}
 
+		// Dont't do anything if sender is not registered
+		if (!hashSender2DataMediators.containsKey((IMediatorSender) eventTrigger))
+			return;
+		
 		ArrayList<IMediator> arMediators = hashSender2DataMediators
 				.get((IMediatorSender) eventTrigger);
 		

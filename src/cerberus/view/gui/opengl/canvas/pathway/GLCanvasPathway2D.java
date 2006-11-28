@@ -938,7 +938,7 @@ implements IGLCanvasUser {
 			((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getArrayInt();
 		
 		int[] iArSelectionNeighborDistance = 
-			((IStorage)selectionSet.getStorageByDimAndIndex(1, 0)).getArrayInt();
+			((IStorage)selectionSet.getStorageByDimAndIndex(0, 1)).getArrayInt();
 		
 		for (int iSelectedVertexIndex = 0; 
 			iSelectedVertexIndex < ((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
