@@ -50,7 +50,7 @@
 			
 			<!-- Doku:
 			Cmd type="CREATE_GL_MINMAX_SCATTERPLOT2D"	
-			 attrib3="x_min x_may y_min y_max x_offset y_offset view_X_min view_X_max view_Y_min view_Y_max gridSize pointSize" 
+			 attrib3="x_min x_may    y_min y_max    x_offset y_offset   view_X_min view_X_max view_Y_min view_Y_max gridSize pointSize" 
 			 --> 
 			 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Triangle	A"	
@@ -63,13 +63,15 @@
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -3.0f  0.0f     30 4.0f"								
 							detail="45101" />
-							
+			
+			<!--				
+			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_ISOSURFACE3D"		cmdId="68982"	targetId="78401" parent="11401" label="GL isosurface"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -3.0f  0.0f     30 4.0f"								
 							detail="45101" />
-							
-	
+			
+		
 							
 							
 							
@@ -77,16 +79,20 @@
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
 							attrib3="0 20 0 20   -0.5f -2.0f    -1.5f 1.5f   -3.0f -1.0f    0.0f 0.0f   40"				
 							detail="45101" />
-							
-							
+																					
+				-->		
+				
+					
       <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"		cmdId="68993"	targetId="79401" parent="12401" label="GL Triangle	B"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
 							attrib3="0 20 0 20   -0.5f -2.0f    -1.5f 1.5f   -3.0f -1.0f    -3.0f 0.0f   20"				
 							detail="45101" />							
-							
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"		cmdId="68993"	targetId="79401" parent="12401" label="GL Triangle	C"	
+					
+	
+	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	targetId="79401" parent="12401" label="GL Triangle	C"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
-							attrib3="0 20 0 20   -0.5f -2.0f    -1.5f 1.5f   -3.0f -1.0f    -7.0f 0.0f   10"				
+							attrib3="0 20 0 20   -0.5f -2.0f    -1.5f 2.0f   -3.0f -1.0f    -7.0f 0.0f   10"				
 							detail="45101" />			
 							
 

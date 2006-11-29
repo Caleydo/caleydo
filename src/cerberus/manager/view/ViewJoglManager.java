@@ -26,6 +26,7 @@ import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
+import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway2D;
@@ -287,6 +288,10 @@ implements IViewManager, IViewGLCanvasManager {
 			return new GLCanvasHeatmap(refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
 
+		case CREATE_GL_HEATMAP2D:
+			return new GLCanvasHeatmap2D(refGeneralManager, iViewId,
+					iParentContainerId, sLabel);
+			
 		case CREATE_GL_SCATTERPLOT2D:
 			return new GLCanvasScatterPlot2D(refGeneralManager, iViewId,
 					iParentContainerId, sLabel);

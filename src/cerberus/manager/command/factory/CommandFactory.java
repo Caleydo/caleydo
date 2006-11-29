@@ -30,6 +30,7 @@ import cerberus.command.view.opengl.CmdGlObjectPathway2D;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
+import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
 import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
@@ -415,6 +416,15 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectScatterPlot2D(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_HEATMAP2D:
+		{
+			createdCommand =
+				new CmdGlObjectHeatmap2D(
 						refGeneralManager,
 						phAttributes );			
 			break;
