@@ -189,6 +189,12 @@ public interface ISet
 	
 	public Vector<IStorage> getStorageVectorByDim( final int iAtDimension );
 	
+	/**
+	 * 
+	 * @param iAtDimension select one Storage object inside the Storage array
+	 * @param iAtIndex select index inside a single Storage
+	 * @return
+	 */
 	public IStorage getStorageByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
 	public IVirtualArray[] getSelectionByDim( final int iAtDimension );
