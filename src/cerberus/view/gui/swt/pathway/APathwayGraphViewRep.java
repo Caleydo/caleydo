@@ -2,16 +2,10 @@ package cerberus.view.gui.swt.pathway;
 
 import java.awt.Color;
 import java.awt.Frame;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 
-import cerberus.command.data.CmdDataCreateVirtualArray;
-import cerberus.command.data.CmdDataCreateSet;
-import cerberus.command.data.CmdDataCreateStorage;
-import cerberus.command.event.CmdEventCreateMediator;
-import cerberus.data.collection.IStorage;
 import cerberus.data.collection.selection.GroupedSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
@@ -27,17 +21,13 @@ import cerberus.manager.IViewManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.view.ViewJoglManager;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
-import cerberus.xml.parser.command.CommandQueueSaxType;
-import cerberus.xml.parser.parameter.IParameterHandler;
-import cerberus.xml.parser.parameter.ParameterHandler;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
-implements IPathwayGraphView{
+implements IPathwayGraphView {
 
 	public static final String KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH = 
 		"data/XML/imagemap/map01100.xml";

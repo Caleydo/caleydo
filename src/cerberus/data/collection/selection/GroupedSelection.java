@@ -6,11 +6,9 @@ import java.util.Iterator;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.data.CmdDataCreateVirtualArray;
-import cerberus.command.event.CmdEventCreateMediator;
 import cerberus.data.collection.IGroupedSelection;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.event.EventPublisher;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.AViewRep.ViewType;
@@ -38,9 +36,9 @@ implements IGroupedSelection {
 	protected int iSelectionMediatorId = 95201;
 	protected int iSelectionSetId = 75101;
 	protected int iSelectionVirtualArrayId = 45201;
-	protected int iSelectionIdStorageId = 45301;
-	protected int iSelectionGroupStorageId = 55301;
-	protected int iSelectionOptionalStorageId = 65301;
+	protected int iSelectionIdStorageId = 65301;
+	protected int iSelectionGroupStorageId = 75301;
+	protected int iSelectionOptionalStorageId = 85301;
 
 	/**
 	 * Constructor.
@@ -66,12 +64,12 @@ implements IGroupedSelection {
 		
 		createSelectionVirtualArray();
 		createSelectionIdStorage(iArSelectionId);
-		createSelectionGroupStorage(iArSelectionGroup);
+		//createSelectionGroupStorage(iArSelectionGroup);
 		createSelectionOptionalStorage(iArSelectionOptionalData);
 		createSelectionSet();
 
 		setSelectionIdArray(iArSelectionId);
-		setGroupArray(iArSelectionGroup);
+		//setGroupArray(iArSelectionGroup);
 		setOptionalDataArray(iArSelectionOptionalData);
 		
 		createSelectionMediator();
@@ -88,32 +86,30 @@ implements IGroupedSelection {
 		IParameterHandler refParameterHandler = new ParameterHandler();
 		
 		// CmdId
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
 				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 
+		// Type
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
+				"CREATE_VIRTUAL_ARRAY",
+				IParameterHandler.ParameterHandlerType.STRING);
+		
 		// Label
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
 				"Pathway Selection Virtual Array", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
 				Integer.toString(iSelectionVirtualArrayId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 		
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
 				"3 0 0 1", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 
-		CmdDataCreateVirtualArray createdVirtualArrayCommand = 
-			new CmdDataCreateVirtualArray(refGeneralManager, refParameterHandler);
-		createdVirtualArrayCommand.doCommand();
-
+		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
 	}
 	
 	/**
@@ -127,37 +123,36 @@ implements IGroupedSelection {
 		IParameterHandler refParameterHandler = new ParameterHandler();
 		
 		// CmdId
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
 				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 
+		// Type
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
+				"CREATE_STORAGE",
+				IParameterHandler.ParameterHandlerType.STRING);
+		
 		// Label
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
 				"Pathway Selection Storage", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
 				Integer.toString(iSelectionIdStorageId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 		
 		//FIXME: the attributes are overwritten afterwards. so they should get a  proper default value.
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
 				"INT", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
 				"123 123 123", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
-		CmdDataCreateStorage createdStorageDataCommand = 
-			new CmdDataCreateStorage(refGeneralManager, refParameterHandler, true);
-		createdStorageDataCommand.doCommand();
+		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
+
 	}
 	
 	/**
@@ -181,37 +176,36 @@ implements IGroupedSelection {
 		IParameterHandler refParameterHandler = new ParameterHandler();
 		
 		// CmdId
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
 				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 
+		// Type
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
+				"CREATE_STORAGE",
+				IParameterHandler.ParameterHandlerType.STRING);
+		
 		// Label
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Neighbor Storage", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+				"Pathway Selection Optional Data Storage", 
+				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
 				Integer.toString(iSelectionOptionalStorageId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 		
 		//FIXME: the attributes are overwritten afterwards. so they should get a  proper default value.
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
 				"INT", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
 				"123 123 123", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
-		CmdDataCreateStorage createdOptionalStorageCommand = 
-			new CmdDataCreateStorage(refGeneralManager, refParameterHandler, true);
-		createdOptionalStorageCommand.doCommand();
+		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
+
 	}
 
 	/**
@@ -225,45 +219,43 @@ implements IGroupedSelection {
 		IParameterHandler refParameterHandler = new ParameterHandler();
 		
 		// CmdId
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
 				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 
+		// Type
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
+				"CREATE_SET",
+				IParameterHandler.ParameterHandlerType.STRING);
+		
 		// Label
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
 				"Pathway Selection Set", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 				
 		// TargetID (SetID)
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
 				Integer.toString(iSelectionSetId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
 		
 		// VirtualArrayIDs
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
 				Integer.toString(iSelectionVirtualArrayId), 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// StorageIDs
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
 				Integer.toString(iSelectionIdStorageId) + " " + 
-				Integer.toString(iSelectionGroupStorageId) + " " + 
+//				Integer.toString(iSelectionGroupStorageId) + " " + 
 				Integer.toString(iSelectionOptionalStorageId), 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// Detail
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
 				"CREATE_SET_PLANAR", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_DETAIL.getDefault());
-		
-		CmdDataCreateSet createdSetCommand = new CmdDataCreateSet(refGeneralManager, refParameterHandler, true);
-		createdSetCommand.doCommand();
+				IParameterHandler.ParameterHandlerType.STRING);
+
+		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
 	}
 	
 	/**
@@ -296,43 +288,38 @@ implements IGroupedSelection {
 		}
 		
 		// CmdId
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
 				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+				IParameterHandler.ParameterHandlerType.INT);
+		
+		// Type
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
+				"CREATE_EVENT_MEDIATOR",
+				IParameterHandler.ParameterHandlerType.STRING);
 
 		// Label
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
 				"Pathway Selection Mediator", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
 				Integer.toString(iSelectionMediatorId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());		 
+				IParameterHandler.ParameterHandlerType.INT);		 
 		
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
 				Integer.toString(iParentContainerId), 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
 				strDataExplorerConcatenation + " " +"79401", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
-		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
+		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
 				"SELECTION_MEDIATOR", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_DETAIL.getDefault());
+				IParameterHandler.ParameterHandlerType.STRING);
 		
-		CmdEventCreateMediator createdCommand =
-			new CmdEventCreateMediator(refGeneralManager, refParameterHandler);	
-	
-		createdCommand.doCommand();
-
+		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
 	}
 
 	public void setSelectionIdArray(int[] iArSelectionId) {
