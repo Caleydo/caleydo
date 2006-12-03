@@ -13,14 +13,6 @@ extends ARenderStyle {
 		ROUNDRECTANGULAR
 	};
 	
-	public enum NodeColor {
-		BLUE,
-		GREEN,
-		YELLOW,
-		ORANGE,
-		RED
-	};
-	
 	public enum EdgeLineStyle {
 		NORMAL,
 		DASHED
@@ -39,6 +31,24 @@ extends ARenderStyle {
 	protected Color compoundNodeColor;
 	protected Color pathwayNodeColor;
 	protected Color highlightedNodeColor;
+	
+	/**
+	 * The color of the neighborhood node with the distance 
+	 * to the clicked node of 1
+	 */
+	protected Color neighborhoodNodeColor_1;
+	
+	/**
+	 * The color of the neighborhood node with the distance 
+	 * to the clicked node of 2
+	 */
+	protected Color neighborhoodNodeColor_2;
+
+	/**
+	 * The color of the neighborhood node with the distance 
+	 * to the clicked node of 3
+	 */
+	protected Color neighborhoodNodeColor_3;
 	
 	protected EdgeLineStyle relationEdgeLineStyle;
 	protected EdgeLineStyle reactionEdgeLineStyle;
@@ -71,9 +81,13 @@ extends ARenderStyle {
 		compoundNodeShape = NodeShape.ROUND;
 		pathwayNodeShape = NodeShape.ROUNDRECTANGULAR;
 		
-		enzymeNodeColor = Color.YELLOW;
+		enzymeNodeColor = Color.BLUE;
 		compoundNodeColor = Color.GREEN;
-		pathwayNodeColor = Color.ORANGE;
+		pathwayNodeColor = Color.MAGENTA;
+		highlightedNodeColor = Color.WHITE;
+		neighborhoodNodeColor_1 = Color.RED;
+		neighborhoodNodeColor_2 = Color.ORANGE;
+		neighborhoodNodeColor_3 = Color.YELLOW;
 		
 		relationEdgeLineStyle = EdgeLineStyle.NORMAL;
 		reactionEdgeLineStyle = EdgeLineStyle.NORMAL;
@@ -318,5 +332,27 @@ extends ARenderStyle {
 	public void setPathwayNodeWidth(float pathwayNodeWidth) {
 	
 		fPathwayNodeWidth = pathwayNodeWidth;
+	}
+
+	public Color getHighlightedNodeColor() {
+		
+		return highlightedNodeColor;
+	}
+	
+	public Color getNeighborhoodNodeColor_1() {
+	
+		return neighborhoodNodeColor_1;
+	}
+
+	
+	public Color getNeighborhoodNodeColor_2() {
+	
+		return neighborhoodNodeColor_2;
+	}
+
+	
+	public Color getNeighborhoodNodeColor_3() {
+	
+		return neighborhoodNodeColor_3;
 	}
 }

@@ -1,8 +1,7 @@
 package cerberus.view.gui.swt.pathway;
 
+import java.awt.Color;
 import java.awt.Dimension;
-
-import org.jgraph.graph.DefaultGraphCell;
 
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
@@ -12,7 +11,8 @@ import cerberus.view.gui.IView;
 public interface IPathwayGraphView 
 extends IView {
 	
-	public void createVertex(IPathwayVertexRep vertex, boolean bHightlightVertex);
+	public void createVertex(IPathwayVertexRep vertex, 
+			boolean bHightlightVertex, Color nodeColor);
 	
 	public void createEdge(int iVertexId1, 
 			int iVertexId2, 

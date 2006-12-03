@@ -97,9 +97,8 @@ extends APathwayGraphViewRep {
 	/**
 	 * Integer storage of selected vertices
 	 * Container is needed for selection updates.
-	 * HashSet is used because it guarantees uniuque elements.
 	 */
-	protected HashSet<Integer> iHashSetSelectedVertices;
+	protected LinkedList<Integer> iLLSelectedVertices;
 	
 	/**
 	 * Neighbor distance from currently selected vertex.
@@ -142,7 +141,7 @@ extends APathwayGraphViewRep {
 		
 		fScalingFactor = SCALING_FACTOR;
 		
-		iHashSetSelectedVertices = new HashSet<Integer>();
+		iLLSelectedVertices = new LinkedList<Integer>();
 		iLLNeighborDistance = new LinkedList<Integer>();
 	}
 
@@ -167,7 +166,7 @@ extends APathwayGraphViewRep {
 							.getFirstCellForLocation(event.getX(), event.getY());
 	
 			    	// Remove old selected vertices
-			    	iHashSetSelectedVertices.clear();
+			    	iLLSelectedVertices.clear();
 			    	iLLNeighborDistance.clear();
 			    	
 			    	// Check if a node or edge was hit.
@@ -272,12 +271,12 @@ extends APathwayGraphViewRep {
 					
 							// Add selected vertex itself because neighborhood algorithm
 							// only adds neighbor vertices.
-							iHashSetSelectedVertices.add(((PathwayVertexRep)clickedCell.
+							iLLSelectedVertices.add(((PathwayVertexRep)clickedCell.
 									getUserObject()).getVertex().getElementId());
 							
 							// Convert Link List to int[]
-						    Iterator<Integer> iter_I = iHashSetSelectedVertices.iterator();		    
-						    int[] iArSelectedVertices = new int[iHashSetSelectedVertices.size()];		    
+						    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+						    int[] iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
 						    for ( int i=0; iter_I.hasNext() ;i++ ) {
 						    	iArSelectedVertices[i] = iter_I.next().intValue();
 						    }
@@ -288,7 +287,7 @@ extends APathwayGraphViewRep {
 						    	iArNeighborDistance[i] = iter_I.next().intValue();
 						    }
 						    
-							createSelectionSet(iArSelectedVertices, null, iArNeighborDistance);
+							createSelectionSet(iArSelectedVertices, new int[0], iArNeighborDistance);
 						}
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
@@ -405,7 +404,8 @@ extends APathwayGraphViewRep {
         }
 	}
 	
-	public void createVertex(IPathwayVertexRep vertexRep, boolean bHightlighVertex) {
+	public void createVertex(IPathwayVertexRep vertexRep, 
+			boolean bHightlighVertex, Color nodeColor) {
 		
 		//create node
 		refGraphCell = new DefaultGraphCell(vertexRep);
@@ -658,9 +658,6 @@ extends APathwayGraphViewRep {
 			new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 		
-//		GraphConstants.setBackground(cell.getAttributes(), 
-//				new Color(0.7f, 0.133f, 0.133f));
-		
 		DefaultGraphCell tmpCell;
 		
 		// Color mapping will start with red (neigborhood = 1)
@@ -671,16 +668,27 @@ extends APathwayGraphViewRep {
 			fGreenPortion = 0.0f;
 		else if (fGreenPortion > 1.0f)
 			fGreenPortion = 1.0f;
-		
 		GraphConstants.setBackground(
 				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
+		
+//		Color nodeColor;
+//		if (iDistance == 1)
+//			nodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
+//		else if (iDistance == 2)
+//			nodeColor = refRenderStyle.getNeighborhoodNodeColor_2();
+//		else if (iDistance == 3)
+//			nodeColor = refRenderStyle.getNeighborhoodNodeColor_3();
+//		else
+//			nodeColor = Color.BLACK;
+//		
+//		GraphConstants.setBackground(attributeMap, nodeColor);
 
 		while (cellIter.hasNext())
 		{
 			tmpCell = cellIter.next();
 		
 			// Add selected vertex
-			iHashSetSelectedVertices.add(((PathwayVertexRep)tmpCell.
+			iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
 					getUserObject()).getVertex().getElementId());
 			iLLNeighborDistance.add(iDistance);
 			

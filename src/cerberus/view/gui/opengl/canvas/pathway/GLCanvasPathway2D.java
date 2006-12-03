@@ -217,6 +217,7 @@ implements IGLCanvasUser {
 		this.gl = gl;
 		
 		gl.glCallList(iPathwayDisplayListId);
+		Color nodeColor = refRenderStyle.getHighlightedNodeColor();
 		
 		//Draw selected pathway nodes
 		if (!iArSelectionStorageVertexIDs.isEmpty())
@@ -229,6 +230,9 @@ implements IGLCanvasUser {
 			Iterator<PathwayVertex> iterSelectedVertices = 
 				iArSelectionStorageVertexIDs.iterator();
 			
+			Iterator<Integer> iterSelectedNeighborDistance = 
+				iArSelectionStorageNeighborDistance.iterator();			
+			
 			Iterator<PathwayVertex> iterIdenticalVertices = null;
 			
 			Iterator<Pathway> iterDrawnPathways = null;
@@ -238,8 +242,22 @@ implements IGLCanvasUser {
 				//FIXME: should not be statically 0 
 				fZLayerValue = 0.0f;
 				
+//				switch (iterSelectedNeighborDistance.next())
+//				{
+//				case 1:
+//					nodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
+//					break;
+//				case 2:
+//					nodeColor = refRenderStyle.getNeighborhoodNodeColor_2();
+//					break;
+//				case 3:
+//					nodeColor = refRenderStyle.getNeighborhoodNodeColor_3();
+//					break;						
+//				}
+				
 				refCurrentVertex = iterSelectedVertices.next();
-				createVertex(refCurrentVertex.getVertexRepByIndex(iVertexRepIndex), true);
+				createVertex(refCurrentVertex.getVertexRepByIndex(iVertexRepIndex), 
+						true, nodeColor);
 				
 				iterDrawnPathways = refHashPathwayToZLayerValue.keySet().iterator();
 				
@@ -265,7 +283,7 @@ implements IGLCanvasUser {
 							
 							if (refCurrentVertexRep != null)
 							{
-								createVertex(refCurrentVertexRep, true);
+								createVertex(refCurrentVertexRep, true, nodeColor);
 								
 								if (!refTmpPathway.equals(refBasicPathway))
 								{
@@ -309,7 +327,8 @@ implements IGLCanvasUser {
 		System.err.println(" GLCanvasPathway2D.destroy(GLCanvas canvas)");
 	}
 
-	public void createVertex(IPathwayVertexRep vertexRep, boolean bHightlighVertex) {
+	public void createVertex(IPathwayVertexRep vertexRep, 
+			boolean bHightlighVertex, Color nodeColor) {
 		
 		float fCanvasXPos = viewingFrame[X][MIN] + 
 		vertexRep.getXPosition() * fScalingFactorX;
@@ -319,7 +338,7 @@ implements IGLCanvasUser {
 		String sShapeType = vertexRep.getShapeType();
 
 		gl.glTranslatef(fCanvasXPos, fCanvasYPos, fZLayerValue);
-		
+
 		// Pathway link
 		if (sShapeType.equals("roundrectangle"))
 		{				
@@ -327,12 +346,14 @@ implements IGLCanvasUser {
 //					fCanvasXPos - fCanvasWidth + 0.02f, 
 //					fCanvasYPos + 0.02f, 
 //					-0.001f);
-			
+
+			// if vertex should be highlighted then the color parameter is taken.
+			// else the standard color for that node type is taken.
 			if (bHightlighVertex == true)
-				gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+				gl.glColor4f(nodeColor.getRed(), nodeColor.getGreen(), nodeColor.getBlue(), 1.0f);
 			else 
 				gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
-			
+						
 			gl.glCallList(iPathwayNodeDisplayListId);
 		}
 		// Compounds
@@ -344,7 +365,7 @@ implements IGLCanvasUser {
 //					-0.001f);
 			
 			if (bHightlighVertex == true)
-				gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+				gl.glColor4f(nodeColor.getRed(), nodeColor.getGreen(), nodeColor.getBlue(), 1.0f);
 			else 
 				gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f); // green
 			
@@ -359,9 +380,10 @@ implements IGLCanvasUser {
 //					-0.001f);
 		
 			if (bHightlighVertex == true)
-				gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+				gl.glColor4f(nodeColor.getRed(), nodeColor.getGreen(), nodeColor.getBlue(), 1.0f);
 			else 
 				gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+			
 			
 			gl.glCallList(iEnzymeNodeDisplayListId);
 		}
@@ -938,7 +960,7 @@ implements IGLCanvasUser {
 			((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getArrayInt();
 		
 		int[] iArSelectionNeighborDistance = 
-			((IStorage)selectionSet.getStorageByDimAndIndex(0, 1)).getArrayInt();
+			((IStorage)selectionSet.getStorageByDimAndIndex(0, 2)).getArrayInt();
 		
 		for (int iSelectedVertexIndex = 0; 
 			iSelectedVertexIndex < ((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);

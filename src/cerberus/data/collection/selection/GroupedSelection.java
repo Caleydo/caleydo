@@ -7,6 +7,7 @@ import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.event.CmdEventCreateMediator;
+import cerberus.data.collection.IGroupedSelection;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.EventPublisher;
@@ -26,7 +27,8 @@ import cerberus.xml.parser.parameter.ParameterHandler;
  * @author Marc Streit
  *
  */
-public class GroupedSelection {
+public class GroupedSelection
+implements IGroupedSelection {
 
 	protected IGeneralManager refGeneralManager;
 	
@@ -66,25 +68,13 @@ public class GroupedSelection {
 		createSelectionIdStorage(iArSelectionId);
 		createSelectionGroupStorage(iArSelectionGroup);
 		createSelectionOptionalStorage(iArSelectionOptionalData);
+		createSelectionSet();
+
+		setSelectionIdArray(iArSelectionId);
+		setGroupArray(iArSelectionGroup);
+		setOptionalDataArray(iArSelectionOptionalData);
 		
 		createSelectionMediator();
-
-		
-		// Set/update selection data storage
-		((IStorage)refGeneralManager.getItem(iSelectionIdStorageId)).
-			setArrayInt(iArSelectionId);
-		
-		// Set/update selection neighbor storage
-		((IStorage)refGeneralManager.getItem(iSelectionOptionalStorageId)).
-		setArrayInt(iArSelectionOptionalData);		
-		
-		// Calls update with the ID of the PathwayViewRep
-		((EventPublisher)refGeneralManager.getSingelton().
-				getEventPublisher()).updateSelection(refGeneralManager.
-						getSingelton().getViewGLCanvasManager().
-							getItem(iParentContainerId), 
-							refGeneralManager.getSingelton().getSetManager().getItemSet(75101));
-		
 	}
 	
 	/**
@@ -252,15 +242,17 @@ public class GroupedSelection {
 				IParameterHandler.ParameterHandlerType.INT, 
 				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
 		
-		// SelectionID
+		// VirtualArrayIDs
 		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
-				"45201", 
+				Integer.toString(iSelectionVirtualArrayId), 
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
 		
 		// StorageIDs
 		refParameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-				"45301 55301", 
+				Integer.toString(iSelectionIdStorageId) + " " + 
+				Integer.toString(iSelectionGroupStorageId) + " " + 
+				Integer.toString(iSelectionOptionalStorageId), 
 				IParameterHandler.ParameterHandlerType.STRING, 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
 		
@@ -341,5 +333,23 @@ public class GroupedSelection {
 	
 		createdCommand.doCommand();
 
+	}
+
+	public void setSelectionIdArray(int[] iArSelectionId) {
+
+		((IStorage)refGeneralManager.getItem(iSelectionIdStorageId)).
+			setArrayInt(iArSelectionId);
+	}
+
+	public void setGroupArray(int[] iArSelectionGroup) {
+
+		((IStorage)refGeneralManager.getItem(iSelectionGroupStorageId)).
+			setArrayInt(iArSelectionGroup);
+	}
+
+	public void setOptionalDataArray(int[] iArSelectionOptionalData) {
+
+		((IStorage)refGeneralManager.getItem(iSelectionOptionalStorageId)).
+			setArrayInt(iArSelectionOptionalData);	
 	}
 }

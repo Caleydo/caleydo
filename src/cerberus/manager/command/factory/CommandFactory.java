@@ -8,12 +8,7 @@
  */
 package cerberus.manager.command.factory;
 
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-import javax.swing.JComponent;
-
 import cerberus.command.CommandType;
-import cerberus.command.CommandTypeGroup;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 
@@ -43,19 +38,6 @@ import cerberus.command.view.swt.CmdViewCreateSelectionSlider;
 import cerberus.command.view.swt.CmdViewCreateStorageSlider;
 import cerberus.command.view.swt.CmdViewCreateSwtGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateTestTriangle;
-import cerberus.command.window.CmdWindowNewIFrameHeatmap2D;
-import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
-import cerberus.command.window.CmdWindowNewIFrameScatterplot2D;
-import cerberus.command.window.CmdWindowPopupCredits;
-import cerberus.command.window.CmdWindowPopupInfo;
-import cerberus.command.window.CmdWindowNewInternalFrame;
-import cerberus.command.window.CmdWindowNewIFrameSelection;
-import cerberus.command.window.CmdWindowNewIFrameStorage;
-import cerberus.command.window.CmdWindowNewIFrameJoglCanvas;
-import cerberus.command.window.CmdWindowNewIFrameJoglHistogram;
-import cerberus.command.window.CmdWindowNewIFrameJoglHeatmap;
-import cerberus.command.window.CmdWindowNewIFrameJoglScatterplot;
-import cerberus.command.window.CmdWindowSetActiveFrame;
 import cerberus.command.window.swt.CmdWindowCreate;
 import cerberus.command.window.swt.CmdContainerCreate;
 
@@ -69,10 +51,6 @@ import cerberus.command.system.CmdSystemLoadFileViaImporter;
 
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-
-
-//import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
-//import cerberus.net.dwt.swing.mdi.DDesktopPane;
 
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;

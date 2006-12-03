@@ -1,5 +1,6 @@
 package cerberus.view.gui.swt.pathway;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventCreateMediator;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.selection.GroupedSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -27,7 +29,6 @@ import cerberus.manager.event.EventPublisher;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IGroupedSelection;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.xml.parser.command.CommandQueueSaxType;
@@ -36,7 +37,7 @@ import cerberus.xml.parser.parameter.ParameterHandler;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
-implements IPathwayGraphView, IGroupedSelection {
+implements IPathwayGraphView{
 
 	public static final String KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH = 
 		"data/XML/imagemap/map01100.xml";
@@ -75,6 +76,8 @@ implements IPathwayGraphView, IGroupedSelection {
 	 * reference pathway map is loaded.  
 	 */
 	protected int iPathwayLevel = 1;
+	
+	protected GroupedSelection refSelection;
 
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
@@ -138,7 +141,7 @@ implements IPathwayGraphView, IGroupedSelection {
 
         	if (vertexRep != null)
         	{
-        		createVertex(vertexRep, false);        	
+        		createVertex(vertexRep, false, Color.RED);        	
         	}
         }   
 	}
@@ -274,243 +277,19 @@ implements IPathwayGraphView, IGroupedSelection {
 		});	
 	}
 	
-	public void createSelectionSet(int[] arSelectedVertices,
-			int[] arSelectedGroup,
+	public void createSelectionSet(int[] arSelectionVertexId,
+			int[] arSelectionGroup,
 			int[] arNeighborVertices) {
 	
-		int iSelectionMediatorId = 95201;
-		int iSelectionSetId = 75101;
-		int iSelectionVirtualArrayId = 45201;
-		int iSelectionDataStorageId = 45301;
-		int iSelectionNeighborStorageId = 55301;
+		if (refSelection != null)
+			return;
 		
-//		refGeneralManager.getSingelton().getSetManager().deleteSet(45101);
-//		refGeneralManager.getSingelton().getVirtualArrayManager().deleteSelection(45201);
-//		refGeneralManager.getSingelton().getStorageManager().deleteStorage(45301);
-		
-		IParameterHandler phAttributes = new ParameterHandler();
-				
-		if (bSelectionMediatorCreated == false)
-		{
-		//TODO: retrieve new generated IDs instead of static ones
-		
-		// CREATE SELECTION VIRTUAL ARRAY
-		// CmdId
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
-				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
+		refSelection = new GroupedSelection(refGeneralManager, 
+					this.iParentContainerId, 
+					arSelectionVertexId, 
+					arSelectionGroup, 
+					arNeighborVertices);
 
-		// Label
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Virtual Array", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
-		
-		// TargetID
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				Integer.toString(iSelectionVirtualArrayId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
-		
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
-				"3 0 0 1", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
-
-		CmdDataCreateVirtualArray createdVirtualArrayCommand = 
-			new CmdDataCreateVirtualArray(refGeneralManager, phAttributes);
-		createdVirtualArrayCommand.doCommand();
-		
-		phAttributes = null;
-		phAttributes = new ParameterHandler();
-
-		// CREATE SELECTION DATA STORAGE
-		// CmdId
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
-				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
-
-		// Label
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Storage", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
-		
-		// TargetID
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				Integer.toString(iSelectionDataStorageId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
-		
-		//FIXME: the attributes are overwritten afterwards. so they should get a  proper default value.
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
-				"INT", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
-
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-				"123 123 123", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
-		
-		CmdDataCreateStorage createdStorageDataCommand = 
-			new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
-		createdStorageDataCommand.doCommand();
-		
-		phAttributes = null;
-		phAttributes = new ParameterHandler();
-		
-		// CREATE SELECTION NEIGHBOR STORAGE
-		// CmdId
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
-				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
-
-		// Label
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Neighbor Storage", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
-		
-		// TargetID
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				Integer.toString(iSelectionNeighborStorageId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
-		
-		//FIXME: the attributes are overwritten afterwards. so they should get a  proper default value.
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
-				"INT", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
-
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-				"123 123 123", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
-		
-		CmdDataCreateStorage createdNeighborStorageCommand = 
-			new CmdDataCreateStorage(refGeneralManager, phAttributes, true);
-		createdNeighborStorageCommand.doCommand();
-		
-		phAttributes = null;
-		phAttributes = new ParameterHandler();
-		
-		// CREATE SELECTION SET
-		// CmdId
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
-				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
-
-		// Label
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Set", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
-				
-		// TargetID (SetID)
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				Integer.toString(iSelectionSetId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());
-		
-		// SelectionID
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
-				"45201", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
-		
-		// StorageIDs
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-				"45301 55301", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
-		
-		// Detail
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
-				"CREATE_SET_PLANAR", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_DETAIL.getDefault());
-		
-		CmdDataCreateSet createdSetCommand = new CmdDataCreateSet(refGeneralManager, phAttributes, true);
-		createdSetCommand.doCommand();
-		
-		phAttributes = null;
-		phAttributes = new ParameterHandler();
-		
-		ViewJoglManager viewManager = 
-			(ViewJoglManager) refGeneralManager.getSingelton().getViewGLCanvasManager();
-		
-		ArrayList<AViewRep> arDataExplorerViews = 
-			viewManager.getViewByType(ViewType.DATA_EXPLORER);
-		
-		Iterator<AViewRep> iterDataExplorerViewRep = 
-			arDataExplorerViews.iterator();
-		
-		String strDataExplorerConcatenation = ""; 
-		
-		while(iterDataExplorerViewRep.hasNext())
-		{
-			strDataExplorerConcatenation = strDataExplorerConcatenation.concat(
-					Integer.toString(iterDataExplorerViewRep.next().getId()));
-			
-			//TODO: add space character
-		}
-		
-		// CREATE SELECTION MEDIATOR
-		
-		// CmdId
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_CMD_ID.getXmlKey(), 
-				"12345", 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_CMD_ID.getDefault());
-
-		// Label
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Mediator", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_LABEL.getDefault());
-		
-		// TargetID
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
-				Integer.toString(iSelectionMediatorId), 
-				IParameterHandler.ParameterHandlerType.INT, 
-				CommandQueueSaxType.TAG_TARGET_ID.getDefault());		 
-		
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
-				Integer.toString(this.iParentContainerId), 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault());
-
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey(), 
-				strDataExplorerConcatenation + " " +"79401", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault());
-		
-		phAttributes.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
-				"SELECTION_MEDIATOR", 
-				IParameterHandler.ParameterHandlerType.STRING, 
-				CommandQueueSaxType.TAG_DETAIL.getDefault());
-		
-
-			CmdEventCreateMediator createdCommand =
-				new CmdEventCreateMediator(refGeneralManager, phAttributes);	
-		
-			createdCommand.doCommand();
-			bSelectionMediatorCreated = true;
-		}
-		
-		// Set/update selection data storage
-		((IStorage)refGeneralManager.getItem(iSelectionDataStorageId)).
-			setArrayInt(arSelectedVertices);
-		
-		// Set/update selection neighbor storage
-		((IStorage)refGeneralManager.getItem(iSelectionNeighborStorageId)).
-		setArrayInt(arNeighborVertices);		
 		
 		// Calls update with the ID of the PathwayViewRep
 		((EventPublisher)refGeneralManager.getSingelton().

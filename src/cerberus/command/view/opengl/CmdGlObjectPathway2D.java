@@ -10,7 +10,6 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway2D;
-import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
