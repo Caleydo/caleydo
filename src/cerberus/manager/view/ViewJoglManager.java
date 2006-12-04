@@ -33,6 +33,7 @@ import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
+import cerberus.view.gui.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
@@ -310,6 +311,13 @@ implements IViewManager, IViewGLCanvasManager {
 
 		case CREATE_GL_ISOSURFACE3D:
 			return new GLCanvasIsoSurface3D(
+					refGeneralManager, 
+					iViewId, 
+					iParentContainerId, 
+					sLabel);
+			
+		case CREATE_GL_TEXTURE2D:
+			return new GLCanvasTexture2D(
 					refGeneralManager, 
 					iViewId, 
 					iParentContainerId, 

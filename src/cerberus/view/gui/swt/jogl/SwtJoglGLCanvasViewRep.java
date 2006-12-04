@@ -171,7 +171,11 @@ implements IView, IGLCanvasDirector {
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 			
 			while ( iter.hasNext() ) {
-				iter.next().render( drawable );
+				IGLCanvasUser glCanvas = iter.next();
+				if ( glCanvas.isInitGLDone() )
+				{
+					glCanvas.render( drawable );
+				}
 			}
 		}
 	}

@@ -25,6 +25,7 @@ implements IGLCanvasUser
 	
 	protected IGLCanvasDirector openGLCanvasDirector;
 	
+	private boolean bInitGLcanvawsWasCalled = false;
 	
 	/**
 	 * @param setGeneralManager
@@ -42,6 +43,16 @@ implements IGLCanvasUser
 		this.canvas = openGLCanvasDirector.getGLCanvas();
 	}
 
+	public final boolean isInitGLDone() 
+	{
+		return this.bInitGLcanvawsWasCalled;
+	}
+	
+	protected final void setInitGLDone() 
+	{
+		bInitGLcanvawsWasCalled = true;
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.gui.opengl.IGLCanvasDirector)
 	 */

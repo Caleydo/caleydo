@@ -199,7 +199,7 @@ implements IGLCanvasUser
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void init( GLAutoDrawable canvas ) {
-
+		setInitGLDone();
 	}	
 	
 	@Override
@@ -236,7 +236,7 @@ implements IGLCanvasUser
 		
 		  displayHeatmap( gl );
 		  
-		System.err.println(" Heatmap2D ! .render(GLCanvas canvas)");
+		//System.err.println(" Heatmap2D ! .render(GLCanvas canvas)");
 	}
 
 	

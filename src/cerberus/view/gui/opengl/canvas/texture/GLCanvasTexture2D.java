@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.histogram;
+package cerberus.view.gui.opengl.canvas.texture;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -34,7 +34,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
  * @author kalkusch
  *
  */
-public class GLCanvasHistogram2D 
+public class GLCanvasTexture2D 
 extends AGLCanvasUser_OriginRotation 
 implements IGLCanvasUser
 {
@@ -43,10 +43,8 @@ implements IGLCanvasUser
 	
 	private int iSetCacheId = 0;
 	 
-	private List < HistogramData > listHistogramData;
-	  
-	private StatisticHistogramType enumCurrentHistogramMode = StatisticHistogramType.REGULAR_LINEAR;
-	 
+	private String sTextureFileName = "";
+	
 	/**
 	 * Defien number of histogram slots.
 	 * Default is 0 to ensure valid settings. 
@@ -90,7 +88,7 @@ implements IGLCanvasUser
 	/**
 	 * @param setGeneralManager
 	 */
-	public GLCanvasHistogram2D( final IGeneralManager setGeneralManager,
+	public GLCanvasTexture2D( final IGeneralManager setGeneralManager,
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel )
@@ -119,40 +117,15 @@ implements IGLCanvasUser
 		viewingFrame[Z][MIN] = 0.0f; 
 		viewingFrame[Z][MAX] = 0.0f; 
 		
-		listHistogramData = new  LinkedList < HistogramData > ();
-	}
-	
-	public void renderText( GL gl, 
-			final String showText,
-			final float fx, 
-			final float fy, 
-			final float fz ) {
-		
-		
-		final float fFontSizeOffset = 0.09f;
-		
-	        GLUT glut = new GLUT();
-	        
-//	        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-//	        gl.glLoadIdentity();
-//	        gl.glTranslatef(0.0f,0.0f,-1.0f);
-	        
-	        // Pulsing Colors Based On Text Position
-	        gl.glColor3fv( colorGrid, 3);
-	        // Position The Text On The Screen...fullscreen goes much slower than the other
-	        //way so this is kind of necessary to not just see a blur in smaller windows
-	        //and even in the 640x480 method it will be a bit blurry...oh well you can
-	        //set it if you would like :)
-	        gl.glRasterPos2f( fx-fFontSizeOffset, fy-fFontSizeOffset );
-	        
-	        //Take a string and make it a bitmap, put it in the 'gl' passed over and pick
-	        //the GLUT font, then provide the string to show
-	        glut.glutBitmapString( GLUT.BITMAP_TIMES_ROMAN_24,
-	        		showText);
-	         
 	}
 	
 
+
+	public void loadTextureFromFile( final String sTextureFromFile ) {
+	
+		
+	}
+	
 	public void setResolution( float[] setResolution ) {
 		
 //		if ( fResolution.length < 6 ) {
@@ -181,6 +154,10 @@ implements IGLCanvasUser
 		
 	}
 	
+	public void reloadTexture() {
+		
+	}
+	
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
@@ -199,7 +176,7 @@ implements IGLCanvasUser
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{
-			createHistogram( iCurrentHistogramLength );
+			reloadTexture();
 		}
 	}
 	
@@ -209,11 +186,14 @@ implements IGLCanvasUser
 	 */
 	public void init( GLAutoDrawable canvas ) {
 		setInitGLDone();
+		System.err.println(" Texture2D ! init( * )");
 	}	
 	
 	@Override
 	public void renderPart(GL gl)
 	{
+		System.err.println(" Texture2D ! render( * )");
+		
 		gl.glTranslatef( 0,0, 0.01f);
 	
 		displayHistogram( gl );
@@ -226,7 +206,7 @@ implements IGLCanvasUser
 	{
 		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");	
 		
-		createHistogram( iCurrentHistogramLength );
+		
 	}
 
 	public void destroy()
@@ -235,95 +215,6 @@ implements IGLCanvasUser
 	}
 	
 
-	
- //public int[] createHistogram(final int iHistogramLevels) {
-  public void createHistogram(final int iHistogramLevels) {
-	  
-	  if ( targetSet == null ) 
-	  {
-		  refGeneralManager.getSingelton().logMsg(
-				  "createHistogram() can not create Histogram, because targetSet=null",
-				  LoggerType.STATUS );
-		  return;
-	  }
-	  
-	  if ( iHistogramLevels < 1) {
-		  refGeneralManager.getSingelton().logMsg(
-				  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
-				  LoggerType.FULL );
-		  return;
-	  }
-	  
-	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
-	  IVirtualArray refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
-  		  
-	  refGeneralManager.getSingelton().logMsg(
-			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
-			  LoggerType.FULL );
-	  
-	   
-	  if ( refBufferStorage == null ) {
-		  return;
-	  }
-	  
-	  HistogramStatisticsSet histogramCreatorSet = 
-		  new HistogramStatisticsSet( iBorderIntervallLength );
-	  
-	  histogramCreatorSet.setHistoramGetMinMaxFromDataEnabled( true );
-	  histogramCreatorSet.addData( targetSet );
-	  histogramCreatorSet.setIntervalEqualSpacedInt( iHistogramLevels ,
-			  enumCurrentHistogramMode,
-			  true, 0 , 0 );
-	  
-	  HistogramData refResultBuffer = 
-		  histogramCreatorSet.getUpdatedHistogramData();
-	 
-	  this.refGeneralManager.getSingelton().logMsg( "HISTOGRAM:\n  " + refResultBuffer.toString() );
-	  
-	  listHistogramData.clear();
-	  
-	  if ( refResultBuffer != null ) {
-		  listHistogramData.add( refResultBuffer );
-	  }
-	  
-  }
-  
-  public void toggleMode() {
-	  
-	  enumCurrentHistogramMode = enumCurrentHistogramMode.incrementMode();
-	  
-	  System.out.println(" TOGGLE MODE: " + 
-			  enumCurrentHistogramMode.toString() );
-	  
-	  createHistogram( iCurrentHistogramLength );
-	  
-	  iSetCacheId = targetSet.getCacheId();
-  }
-  
-  public int getHistogramLength() {
-	  return iCurrentHistogramLength;
-  }
-  
-  public void setHistogramLength( final int iSetLegth ) {
-	  
-	  if (( iSetLegth > 0 )&&(iSetLegth < 10000 )) {
-		  iCurrentHistogramLength = iSetLegth;
-		
-		  if ( targetSet != null )
-		  {
-			  createHistogram( iCurrentHistogramLength );
-			  
-			  iSetCacheId = targetSet.getCacheId();
-		  }
-	  }
-	  else {
-		  
-		  System.out.println("exceed range [3..10000]");
-		  
-//		  throw new RuntimeException("setHistogramLength(" +
-//				  Integer.toString(iSetLegth) + ") exceeded range [3..10000]");
-	  }
-  }
   
   public void displayHistogram(GL gl) {
 
@@ -360,7 +251,7 @@ implements IGLCanvasUser
 		    	if ( targetSet.hasCacheChanged( iSetCacheId ) ) {
 		    		
 	    			//iHistogramIntervalls = createHistogram(iHistogramSpacing);
-	    			createHistogram( iCurrentHistogramLength );
+	    			//createHistogram( iCurrentHistogramLength );
 	    			//bUpdateHistogram = false;
 	    			
 	    			iSetCacheId = targetSet.getCacheId();
@@ -377,84 +268,49 @@ implements IGLCanvasUser
 		    	/**
 		    	 * force update ...
 		    	 */
-		    	Iterator <HistogramData> iter = 
-		    		listHistogramData.iterator();
 
-		    	while (iter.hasNext()) { 
-		    		HistogramData currentHistogram = iter.next();
-			    			    		
-		    		iCurrentHistogramLength = currentHistogram.getHistogramSlotCounter();
-		    				    		
-		    		                
-//			    	float fMinX = -0.7f;
-//			    	float fMaxX = 0.7f;
-//			    	
-//			    	float fMinY = -0.7f;
-//			    	float fMaxY = 0.7f;
-			    	
-			    	float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN]) / 
-			    		(float) iCurrentHistogramLength;
-			    	float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 
-			    		(float) currentHistogram.iMaxValuesInIntervall;
-			    	
-			    	float fNowX = viewingFrame[X][MIN];
-			    	float fNextX = fNowX + fIncX;
-			    	
-			    	gl.glNormal3f( 0.0f, 0.0f, 1.0f );
-		    	
-		        	boolean bToggleColor = true;
-		        	
-		        	//TODO: isert getToken ABC
-		        	
-			    	for ( int i=0; i < iCurrentHistogramLength; i++ ) {
-					    gl.glBegin( GL.GL_TRIANGLE_FAN );
-					    			  
-					    if ( bToggleColor) {
-					    	gl.glColor3f( 1.0f ,0,0 );
-					    	bToggleColor = false;
-					    }
-					    else {
-					    	gl.glColor3f( 0, 1.0f ,0 );
-					    	bToggleColor = true;
-					    }
-					    
-					    float fBar =  
-				    		viewingFrame[Y][MIN] + fIncY * 
-					    	currentHistogram.iCounterPerItervall[i];
-					    //iHistogramIntervalls[i];
-					    
-							gl.glVertex3f( fNowX,  viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNextX, viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNextX, fBar, viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNowX, fBar, viewingFrame[Z][MIN] );						
-							
-							fNowX  += fIncX;
-							fNextX += fIncX;
-													
-						gl.glEnd();
-			    	} //end for:		   
-		    	
-			    	gl.glColor3f( 0.1f, 0.1f, 1.0f );
-			    	gl.glBegin( GL.GL_LINE_LOOP );
-				    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
-						gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
-					gl.glEnd();
-		    	} //end: if
-		    	
-	    	} // end while
+		    
 	    }
+	    	
+    	
+    	float fNowX = viewingFrame[X][MIN];
+    	float fNextX = viewingFrame[X][MAX];
+    	
+    	float fNowY = viewingFrame[Y][MIN];
+    	float fNextY = viewingFrame[Y][MAX];
+    	
+    	gl.glNormal3f( 0.0f, 0.0f, 1.0f );
+
+    	
+    
+//		    gl.glBegin( GL.GL_TRIANGLE_FAN );
+		    gl.glBegin( GL.GL_LINE_LOOP );
+		    			  
+		
+		    	gl.glColor3f( 1, 
+		    			1 , 
+		    			0 );
+		    
+				gl.glVertex3f( fNowX, fNowY , viewingFrame[Z][MIN] );
+				gl.glVertex3f( fNextX, fNowY, viewingFrame[Z][MIN] );
+				gl.glVertex3f( fNextX, fNextY, viewingFrame[Z][MIN] );
+				gl.glVertex3f( fNowX, fNextY, viewingFrame[Z][MIN] );						
+				
+				
+				gl.glEnd();
+				
+				System.out.println(" TEXTURE!");
+				
 	    //else {
-//		    gl.glBegin( GL.GL_TRIANGLES );
-//				gl.glNormal3f( 0.0f, 0.0f, 1.0f );
-//				gl.glColor3f( 1,0,0 );
-//				gl.glVertex3f( -1.0f, -1.0f, -0.5f );
-//				//gl.glColor3f( 1,0,1 );
-//				gl.glVertex3f( 1.0f, 1.0f, -0.5f );
-//				//gl.glColor3f( 0,1,0 );
-//				gl.glVertex3f( 1.0f, -1.0f, -0.5f );
-//			gl.glEnd();
+		    gl.glBegin( GL.GL_TRIANGLES );
+				gl.glNormal3f( 0.0f, 0.0f, 1.0f );
+				gl.glColor3f( 1,0,0 );
+				gl.glVertex3f( -1.0f, -1.0f, -0.5f );
+				//gl.glColor3f( 1,0,1 );
+				gl.glVertex3f( 1.0f, 1.0f, -0.5f );
+				//gl.glColor3f( 0,1,0 );
+				gl.glVertex3f( 1.0f, -1.0f, -0.5f );
+			gl.glEnd();
 //			
 //			float fmin = -2.0f;
 //			float fmax = 2.0f;
@@ -475,7 +331,7 @@ implements IGLCanvasUser
 	    //}
 	    
 			
-			
+	    }	
 	    gl.glEnable( GL.GL_LIGHTING );
 	    
 	    //gl.glMatrixMode(GL.GL_MODELVIEW);

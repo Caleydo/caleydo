@@ -24,4 +24,6 @@ extends IUniqueObject {
 	public abstract IGLCanvasDirector getGLCanvasDirector();
 
 	public abstract void destroy();
+	
+	public boolean isInitGLDone();
 }

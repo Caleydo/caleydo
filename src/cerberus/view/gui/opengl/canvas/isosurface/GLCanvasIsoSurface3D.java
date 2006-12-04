@@ -253,7 +253,7 @@ implements IGLCanvasUser
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void init( GLAutoDrawable canvas ) {
-
+		setInitGLDone();
 		//initIsoSurface();
 		
 	}	

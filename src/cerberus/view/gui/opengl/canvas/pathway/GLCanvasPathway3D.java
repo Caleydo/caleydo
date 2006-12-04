@@ -43,6 +43,8 @@ implements IGLCanvasUser {
 	
 	protected float[][] fAspectRatio;
 	
+	protected boolean bInitGLcanvawsWasCalled = false;
+	
 	private static final int X = GLCanvasStatics.X;
 	private static final int Y = GLCanvasStatics.Y;
 //	private static final int Z = GLCanvasStatics.Z;
@@ -135,6 +137,11 @@ implements IGLCanvasUser {
 	 */
 	public void init( GLAutoDrawable canvas ) {
 
+		//FIXME: derive from AGLCanvasUser !
+		//setInitGLDone();
+		// remove next lein & boolean variable once fixed line above
+		bInitGLcanvawsWasCalled = true;
+		
 		// FIXME: usually this should not be needed
 		// Ask michael why init in CanvasForwarder is called twice!
 		if (bCanvasInitialized == true)
@@ -976,5 +983,9 @@ implements IGLCanvasUser {
 		
 		getGLCanvas().display();
 		//getGLCanvas().repaint();
+	}
+
+	public boolean isInitGLDone() {
+		return bInitGLcanvawsWasCalled;
 	}
 }

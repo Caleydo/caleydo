@@ -23,6 +23,7 @@ import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
 import cerberus.command.view.opengl.CmdGlObjectPathway3D;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
+import cerberus.command.view.opengl.CmdGlObjectTexture2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
@@ -394,6 +395,15 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectScatterPlot2D(
+						refGeneralManager,
+						phAttributes );			
+			break;
+		}
+		
+		case CREATE_GL_TEXTURE2D:
+		{
+			createdCommand =
+				new CmdGlObjectTexture2D(
 						refGeneralManager,
 						phAttributes );			
 			break;
