@@ -41,6 +41,7 @@ extends AToolbar {
 		this.refPathwayGraphViewRep = refPathwayGraphViewRep;
 
 		initToolbar();
+		createActionListener();
 	}
 	
 	protected void initToolbar() {
