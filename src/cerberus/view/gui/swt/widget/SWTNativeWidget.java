@@ -23,8 +23,9 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Marc Streit
  */
-public class SWTNativeWidget extends ASWTWidget 
-{
+public class SWTNativeWidget 
+extends ASWTWidget {
+	
 	protected Composite refComposite;
 	
 	/**
@@ -33,8 +34,9 @@ public class SWTNativeWidget extends ASWTWidget
 	 * @param refComposite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTNativeWidget(Composite refParentComposite, int iWidth, int iHeight)
-	{
+	public SWTNativeWidget(Composite refParentComposite, 
+			int iWidth, int iHeight) {
+		
 		super(refParentComposite);
 		
 		refComposite = new Composite(refParentComposite, SWT.NONE);
@@ -71,8 +73,8 @@ public class SWTNativeWidget extends ASWTWidget
 	 * 
 	 * @return SWT container
 	 */
-	final public Composite getSWTWidget()
-	{
+	final public Composite getSWTWidget() {
+		
 		return refComposite;
 	}
 }

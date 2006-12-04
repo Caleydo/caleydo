@@ -29,14 +29,14 @@ import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
-import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway2D;
+import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
-import cerberus.view.gui.swt.pathway.PathwayViewRep;
+import cerberus.view.gui.swt.pathway.Pathway2DViewRep;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
@@ -214,7 +214,7 @@ implements IViewManager, IViewGLCanvasManager {
 		case VIEW:
 
 		case VIEW_SWT_PATHWAY:
-			return new PathwayViewRep(this.refGeneralManager, iViewId,
+			return new Pathway2DViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_DATA_EXPLORER:
 			return new DataExplorerViewRep(this.refGeneralManager, iViewId,
@@ -316,7 +316,7 @@ implements IViewManager, IViewGLCanvasManager {
 					sLabel);
 			
 		case CREATE_GL_PATHWAY2D:
-			return new GLCanvasPathway2D(refGeneralManager, iViewId,
+			return new GLCanvasPathway3D(refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
 
 		default:

@@ -9,7 +9,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
-import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway2D;
+import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway3D;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
@@ -17,7 +17,7 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
  * @author Marc Streit
  *
  */
-public class CmdGlObjectPathway2D 
+public class CmdGlObjectPathway3D 
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
 		
@@ -34,7 +34,7 @@ implements ICommand {
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectPathway2D(IGeneralManager refGeneralManager,
+	public CmdGlObjectPathway3D(IGeneralManager refGeneralManager,
 			IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
@@ -55,8 +55,8 @@ implements ICommand {
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException {
 		
-		GLCanvasPathway2D canvas = 
-			(GLCanvasPathway2D) openGLCanvasUser;		
+		GLCanvasPathway3D canvas = 
+			(GLCanvasPathway3D) openGLCanvasUser;		
 		
 		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
 		canvas.setTargetPathwayId(iTargetPathwayId);

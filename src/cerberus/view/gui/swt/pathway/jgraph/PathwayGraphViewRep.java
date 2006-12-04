@@ -36,7 +36,6 @@ import cerberus.util.system.StringConversionTool;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
-import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
@@ -46,7 +45,6 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineSty
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
-import cerberus.view.gui.swt.pathway.PathwayViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
 

@@ -13,9 +13,6 @@ import java.awt.Frame;
 
 import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -26,8 +23,8 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Marc Streit
  */
-public class SWTEmbeddedGraphWidget extends ASWTEmbeddedWidget 
-{
+public class SWTEmbeddedGraphWidget 
+extends ASWTEmbeddedWidget {
 	
 	/**
 	 * Constructor that takes the composite in which it should 
@@ -38,9 +35,9 @@ public class SWTEmbeddedGraphWidget extends ASWTEmbeddedWidget
 	 */
 	public SWTEmbeddedGraphWidget(Composite refParentComposite, 
 			final int iWidth, 
-			final int iHeight)
-	{
-		super(refParentComposite,iWidth, iHeight);
+			final int iHeight) {
+		
+		super(refParentComposite, iWidth, iHeight);
 	}
 
 	/**
@@ -48,18 +45,8 @@ public class SWTEmbeddedGraphWidget extends ASWTEmbeddedWidget
 	 * 
 	 * @return The embedded AWT Frame.
 	 */
-	public final Frame getEmbeddedFrame()
-	{
+	public final Frame getEmbeddedFrame() {
+		
 		return refEmbeddedFrame;
 	}
-	
-	/**
-	 * Get the embedded frame composite.
-	 * 
-	 * @return The embedded composite.
-	 */
-	public final Composite getEmbeddedFrameComposite()
-	{
-		return refEmbeddedFrameComposite;
-	}	
 }

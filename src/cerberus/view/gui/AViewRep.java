@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.eclipse.swt.widgets.Composite;
+
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
@@ -61,6 +63,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	protected ViewType viewType;
 	
 	protected EventState eventState;
+	
+	protected Composite refSWTContainer;
 
 	/**
 	 * Constructor

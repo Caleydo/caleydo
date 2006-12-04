@@ -35,7 +35,7 @@ import cerberus.view.gui.opengl.GLCanvasStatics;
  * @author Marc Streit
  *
  */
-public class GLCanvasPathway2D  
+public class GLCanvasPathway3D  
 extends APathwayGraphViewRep
 implements IGLCanvasUser {
 		  	 
@@ -97,7 +97,7 @@ implements IGLCanvasUser {
 	 * 
 	 * @param refGeneralManager
 	 */
-	public GLCanvasPathway2D( final IGeneralManager refGeneralManager,
+	public GLCanvasPathway3D( final IGeneralManager refGeneralManager,
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel ) {

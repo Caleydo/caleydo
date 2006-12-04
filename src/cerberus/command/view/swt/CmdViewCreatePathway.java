@@ -6,7 +6,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.swt.pathway.PathwayViewRep;
+import cerberus.view.gui.swt.pathway.Pathway2DViewRep;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -50,7 +50,7 @@ implements ICommand {
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
-		PathwayViewRep pathwayView = (PathwayViewRep)viewManager
+		Pathway2DViewRep pathwayView = (Pathway2DViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,
 						iUniqueTargetId,
 						iParentContainerId, 

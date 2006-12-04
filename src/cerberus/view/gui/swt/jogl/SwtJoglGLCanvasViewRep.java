@@ -60,12 +60,12 @@ implements IView, IGLCanvasDirector {
 	}
 	
 	/**
-	 * Attension: call setOpenGLCanvasId(int) before callign this method!
+	 * Attension: call setOpenGLCanvasId(int) before calling this method!
 	 * 
 	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#initView()
 	 */
 	public void initView() {
-		
+				
 		refGLEventListener = new CanvasForwarder( this );
 		
 		IViewGLCanvasManager canvasManager = 
@@ -230,6 +230,4 @@ implements IView, IGLCanvasDirector {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
 				iUniqueId + " ...[DONE]");
 	}
-
-
 }

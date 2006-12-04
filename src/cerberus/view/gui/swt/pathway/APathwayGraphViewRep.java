@@ -98,6 +98,7 @@ implements IPathwayGraphView {
 						iWidth, 
 						iHeight);
 
+		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
 	}
 	

@@ -21,7 +21,7 @@ import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
-import cerberus.command.view.opengl.CmdGlObjectPathway2D;
+import cerberus.command.view.opengl.CmdGlObjectPathway3D;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
@@ -411,7 +411,7 @@ extends ACommand
 		case CREATE_GL_PATHWAY2D:
 		{
  			createdCommand =
-				new CmdGlObjectPathway2D(
+				new CmdGlObjectPathway3D(
 						refGeneralManager,
 						phAttributes );			
 			break;

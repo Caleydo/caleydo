@@ -8,30 +8,49 @@ import java.awt.Frame;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+
+import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
 
 /**
  * @author kalkusch
  *
  */
-public abstract class ASWTEmbeddedWidget extends ASWTWidget
-{
+public abstract class ASWTEmbeddedWidget 
+extends ASWTWidget {
 
 	/**
 	 * Embedded AWT Frame.
 	 */
-	protected final Frame refEmbeddedFrame;
+	protected Frame refEmbeddedFrame;
 	
-	protected final Composite refEmbeddedFrameComposite;
+	protected Composite refEmbeddedFrameComposite;
+	
+	protected final Composite refParentComposite;
+	
+	protected final int iWidth;
+	
+	protected final int iHeight;
 	
 	/**
 	 * @param refParentComposite
 	 */
 	public ASWTEmbeddedWidget(Composite refParentComposite,
 			final int iWidth, 
-			final int iHeight )
-	{
+			final int iHeight ) {
+		
 		super(refParentComposite);
+		
+		this.refParentComposite = refParentComposite;
+		this.iWidth = iWidth;
+		this.iHeight = iHeight;
+		
+		refEmbeddedFrame = null;
+		refEmbeddedFrameComposite = null;
+	}
+
+	public void createEmbeddedComposite() {
 		
 		refEmbeddedFrameComposite = 
 			new Composite(refParentComposite, SWT.EMBEDDED);
@@ -63,8 +82,28 @@ public abstract class ASWTEmbeddedWidget extends ASWTWidget
 		}
 		
 		refEmbeddedFrameComposite.setLayoutData(gridData);
-	
+
 		refEmbeddedFrame = SWT_AWT.new_Frame(refEmbeddedFrameComposite);
 	}
-
+	
+	/**
+	 * Get the embedded frame composite.
+	 * 
+	 * @return The embedded composite.
+	 */
+	public final Composite getEmbeddedFrameComposite() {
+		
+		return refEmbeddedFrameComposite;
+	}	
+	
+	/**
+	 * Get parent composite.
+	 * 
+	 * @return The parent composite.
+	 */
+	public final Composite getParentComposite() {
+		
+		return refParentComposite;
+	}	
+	
 }

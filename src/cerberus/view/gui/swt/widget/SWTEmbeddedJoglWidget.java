@@ -9,12 +9,12 @@
 
 package cerberus.view.gui.swt.widget;
 
+import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
 import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
 
 import javax.media.opengl.GLCanvas;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -25,13 +25,13 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Marc Streit
  */
-public class SWTEmbeddedJoglWidget extends ASWTEmbeddedWidget 
-{
+public class SWTEmbeddedJoglWidget 
+extends ASWTEmbeddedWidget {
 	
 	/**
 	 * GLCanvas.
 	 */
-	protected final GLCanvas refGLCanvas;
+	protected GLCanvas refGLCanvas;
 	
 	
 	/**
@@ -41,21 +41,29 @@ public class SWTEmbeddedJoglWidget extends ASWTEmbeddedWidget
 	 * @param Composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTEmbeddedJoglWidget(Composite refParentComposite, int iWidth, int iHeight)
-	{
+	public SWTEmbeddedJoglWidget(Composite refParentComposite, 
+			int iWidth, int iHeight) {
+	
 		super(refParentComposite,iWidth, iHeight);
-
+		
+		refGLCanvas = null;
+	}
+	
+	public void createEmbeddedComposite() {
+		super.createEmbeddedComposite();
+		
 		refGLCanvas = new GLCanvas();
 		refEmbeddedFrame.add(refGLCanvas);
 	}
+
 	
 	/**
 	 * Get the GLCanvas.
 	 * 
 	 * @return The GLCanvas that is supposed to be filled by the View.
 	 */
-	public GLCanvas getGLCanvas()
-	{
+	public GLCanvas getGLCanvas() {
+		
 		return refGLCanvas;
 	}
 }
