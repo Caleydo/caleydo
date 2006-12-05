@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import cerberus.data.collection.ISet;
+import cerberus.data.collection.selection.ISelectionSet;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
@@ -204,7 +204,7 @@ implements IEventPublisher {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.IEventPublisher#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, ISet selectionSet) {
+	public void updateSelection(Object eventTrigger, ISelectionSet selectionSet) {
 		
 		// Prevent update during initialization of data.
 		if (hashSender2SelectionMediators.isEmpty())

@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 
+import cerberus.data.collection.selection.ISelectionSet;
 import cerberus.data.collection.selection.SelectionHandler;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
@@ -295,6 +296,7 @@ implements IPathwayGraphView {
 				getEventPublisher()).updateSelection(refGeneralManager.
 						getSingelton().getViewGLCanvasManager().
 							getItem(iParentContainerId), 
-							refGeneralManager.getSingelton().getSetManager().getItemSet(75101));
+								(ISelectionSet)refGeneralManager.getSingelton().
+									getSetManager().getItemSet(75101));
 	}
 }

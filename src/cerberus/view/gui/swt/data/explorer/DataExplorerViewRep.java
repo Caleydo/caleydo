@@ -388,7 +388,7 @@ implements IView, IMediatorReceiver {
 							refSelectionDataStorage.getLabel());
 				rootStorageModel.add(currentSelectionDataStorageModel);	
 				
-				//TODO: insert selection groped STORAGE
+				//TODO: insert selection grouped STORAGE
 				
 				// insert new selection optional STORAGE with ID and label in the tree
 				IStorage refSelectionOptionalStorage = 
