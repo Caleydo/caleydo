@@ -569,22 +569,7 @@ implements IGLCanvasUser {
 			  
 			  gl.glTexCoord2f(0, 0); 
 			  gl.glVertex3f(0.0f, 1f, fZLayerValue + 0.01f);
-			gl.glEnd();
-			
-			// BOOK VERSION
-//			gl.glBegin(GL.GL_QUADS);
-//			  gl.glTexCoord2i(0, 0); 
-//			  gl.glVertex3f(0.0f, 0.0f, fZLayerValue + 0.01f);
-//			  
-//			  gl.glTexCoord2i(0, 1); 
-//			  gl.glVertex3f(0.0f, 1.0f, fZLayerValue + 0.01f);
-//			  
-//			  gl.glTexCoord2i(1, 1); 
-//			  gl.glVertex3f(fPathwayTextureAspectRatio, 1.0f, fZLayerValue + 0.01f);
-//			  
-//			  gl.glTexCoord2i(1, 0); 
-//			  gl.glVertex3f(fPathwayTextureAspectRatio, 0.0f, fZLayerValue + 0.01f);
-//			gl.glEnd();
+			gl.glEnd();			
 			
 //			// Draw pathway "sheet" border
 
@@ -595,20 +580,7 @@ implements IGLCanvasUser {
 //				gl.glVertex3f(3, 0, fZLayerValue + 0.01f);
 //				gl.glVertex3f(0, 0, fZLayerValue + 0.01f);
 //			gl.glEnd();	
-			
-//			gl.glBegin(GL.GL_QUADS);
-//			  gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
-//			  gl.glVertex3f(0, 0, fZLayerValue + 0.01f);
-//			  gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
-//			  gl.glVertex3f(0, fAspectRatio, fZLayerValue + 0.01f);
-//			  gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-//			  gl.glVertex3f(1, fAspectRatio, fZLayerValue + 0.01f);
-//			  gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
-//			  gl.glVertex3f(1, 0, fZLayerValue + 0.01f);
-//			gl.glEnd();
-			
-			
-//			gl.glTranslatef(0.0f, 0.0f, -fZLayerValue - 0.01f);
+						
 			gl.glDisable(GL.GL_TEXTURE_2D);
 			
 			extractVertices();

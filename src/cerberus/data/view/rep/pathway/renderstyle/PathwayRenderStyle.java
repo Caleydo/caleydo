@@ -84,7 +84,7 @@ extends ARenderStyle {
 		enzymeNodeColor = Color.BLUE;
 		compoundNodeColor = Color.GREEN;
 		pathwayNodeColor = Color.MAGENTA;
-		highlightedNodeColor = Color.WHITE;
+		highlightedNodeColor = Color.YELLOW;
 		neighborhoodNodeColor_1 = Color.RED;
 		neighborhoodNodeColor_2 = Color.ORANGE;
 		neighborhoodNodeColor_3 = Color.YELLOW;

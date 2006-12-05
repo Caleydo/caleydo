@@ -168,7 +168,7 @@ implements IDataTableView {
 			new TableItem(refTable, SWT.NONE);
 		}
 
-		if (refCurrentStorage.getSize(StorageType.INT) > 1)
+		if (refCurrentStorage.getSize(StorageType.INT) >= 1)
 		{
 			int[] intData = refCurrentStorage.getArrayInt();
 
@@ -201,7 +201,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.FLOAT) > 1)
+		if (refCurrentStorage.getSize(StorageType.FLOAT) >= 1)
 		{
 			float[] floatData = refCurrentStorage.getArrayFloat();
 			
@@ -234,7 +234,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.STRING) > 1)
+		if (refCurrentStorage.getSize(StorageType.STRING) >= 1)
 		{
 			String[] stringData = refCurrentStorage.getArrayString();
 
@@ -266,7 +266,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.BOOLEAN) > 1)
+		if (refCurrentStorage.getSize(StorageType.BOOLEAN) >= 1)
 		{
 			boolean[] booleanData = refCurrentStorage.getArrayBoolean();
 

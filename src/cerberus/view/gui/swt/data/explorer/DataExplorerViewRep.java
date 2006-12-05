@@ -1,5 +1,6 @@
 package cerberus.view.gui.swt.data.explorer;
 
+import java.awt.EventQueue;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -10,6 +11,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import cerberus.data.collection.IVirtualArray;
@@ -26,6 +28,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
+import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.model.AModel;
 import cerberus.view.gui.swt.data.explorer.model.PathwayModel;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
@@ -52,6 +55,15 @@ implements IView, IMediatorReceiver {
 	protected DataExplorerLabelProvider labelProvider;
 
 	protected DataCollectionModel rootModel;
+	
+	protected DataCollectionModel rootSetModel;
+	
+	protected DataCollectionModel rootSelectionModel;
+	
+	protected DataCollectionModel rootStorageModel;
+	
+	protected DataCollectionModel rootPathwayModel;
+
 
 	// private ISelectionChangedListener refISelectionChangedListener;
 
@@ -86,7 +98,7 @@ implements IView, IMediatorReceiver {
 
 		hookListeners();
 
-		treeViewer.setInput(getInitalInput());
+		treeViewer.setInput(getInitialInput());
 		treeViewer.expandAll();
 
 		refDataTableViewRep.setExternalGUIContainer(refSWTContainer);
@@ -110,7 +122,7 @@ implements IView, IMediatorReceiver {
 	 * 
 	 * @return Reference to the current SetModel
 	 */
-	protected DataCollectionModel getInitalInput() {
+	protected DataCollectionModel getInitialInput() {
 
 		DataCollectionModel currentSetModel;
 		StorageModel currentStorageModel;
@@ -133,13 +145,13 @@ implements IView, IMediatorReceiver {
 		// root node in the tree (not visible)
 		rootModel = new DataCollectionModel();
 		
-		DataCollectionModel rootSetModel = new DataCollectionModel(0, "SET");
+		rootSetModel = new DataCollectionModel(0, "SET");
 		rootModel.add(rootSetModel);
-		DataCollectionModel rootSelectionModel = new DataCollectionModel(0, "VIRTUAL_ARRAY");
+		rootSelectionModel = new DataCollectionModel(0, "VIRTUAL_ARRAY");
 		rootModel.add(rootSelectionModel);
-		DataCollectionModel rootStorageModel = new DataCollectionModel(0, "STORAGE");
+		rootStorageModel = new DataCollectionModel(0, "STORAGE");
 		rootModel.add(rootStorageModel);
-		DataCollectionModel rootPathwayModel = new DataCollectionModel(0, "PATHWAY");
+		rootPathwayModel = new DataCollectionModel(0, "PATHWAY");
 		rootModel.add(rootPathwayModel);	
 
 		allSetItems = ((ISetManager) refGeneralManager
@@ -182,8 +194,7 @@ implements IView, IMediatorReceiver {
 									currentSetModel.add(currentSelectionModel);
 								} else
 								{
-									System.err
-											.println("Error in DataExplorerViewRep currentSelection==null!");
+									System.err.println("Error in DataExplorerViewRep currentSelection==null!");
 								}
 							}
 						} catch (Exception e)
@@ -251,8 +262,7 @@ implements IView, IMediatorReceiver {
 				}
 			} catch (Exception e)
 			{
-				System.err
-						.println("Error in DataExplorerViewRep while iterate over all STORAGEs ==> currentStorage = allStorageItems[storageIndex];..");
+				System.err.println("Error in DataExplorerViewRep while iterate over all STORAGEs ==> currentStorage = allStorageItems[storageIndex];..");
 				throw new RuntimeException(e.toString());
 			}
 
@@ -352,12 +362,52 @@ implements IView, IMediatorReceiver {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, ISet updatedSelectionSet) {
+	public void updateSelection(Object eventTrigger, final ISet updatedSelectionSet) {
 
 		refGeneralManager.getSingelton().logMsg(
 				"Data Explorer selection update called by " 
 				+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
+
+		refSWTContainer.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				
+				// insert new selection VIRTUAL_ARRAY with ID and label in the tree
+				IVirtualArray refSelectionVirtualArray = 
+					updatedSelectionSet.getSelectionByDimAndIndex(0, 0);
+				SelectionModel currentSelectionVirtualArrayModel = 
+					new SelectionModel(refSelectionVirtualArray.getId(), 
+							refSelectionVirtualArray.getLabel());
+				rootSelectionModel.add(currentSelectionVirtualArrayModel);			
+				
+				// insert new selection data STORAGE with ID and label in the tree
+				IStorage refSelectionDataStorage = 
+					updatedSelectionSet.getStorageByDimAndIndex(0, 0);
+				StorageModel currentSelectionDataStorageModel = 
+					new StorageModel(refSelectionDataStorage.getId(), 
+							refSelectionDataStorage.getLabel());
+				rootStorageModel.add(currentSelectionDataStorageModel);	
+				
+				//TODO: insert selection groped STORAGE
+				
+				// insert new selection optional STORAGE with ID and label in the tree
+				IStorage refSelectionOptionalStorage = 
+					updatedSelectionSet.getStorageByDimAndIndex(0, 1);
+				StorageModel currentSelectionOptionalStorageModel = 
+					new StorageModel(refSelectionOptionalStorage.getId(), 
+							refSelectionOptionalStorage.getLabel());
+				rootStorageModel.add(currentSelectionOptionalStorageModel);		
+				
+				// insert new selection SET with ID and label in the tree
+				DataCollectionModel currentSelectionSetModel = 
+					new DataCollectionModel(updatedSelectionSet.getId(),
+							updatedSelectionSet.getLabel());
+				currentSelectionSetModel.add(currentSelectionVirtualArrayModel);
+				currentSelectionSetModel.add(currentSelectionDataStorageModel);
+				currentSelectionSetModel.add(currentSelectionOptionalStorageModel);
+				rootSetModel.add(currentSelectionSetModel);
+			}
+		});	
 	}
 	
 	public void addExistingPathway() {

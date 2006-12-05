@@ -272,15 +272,23 @@ implements IPathwayGraphView {
 			int[] arSelectionGroup,
 			int[] arNeighborVertices) {
 	
-		if (refSelection != null)
-			return;
-		
-		refSelection = new GroupedSelection(refGeneralManager, 
+		// Selection data will be iniitailly created.
+		// If selection object exists it is not necessary to create it again.
+		// Just the data needs to be set.
+		if (refSelection == null)
+		{
+			refSelection = new GroupedSelection(refGeneralManager, 
 					this.iParentContainerId, 
 					arSelectionVertexId, 
 					arSelectionGroup, 
 					arNeighborVertices);
-
+		}		
+		else
+		{
+			refSelection.setSelectionIdArray(arSelectionVertexId);
+			//refSelection.setGroupArray(arSelectionGroup);
+			refSelection.setOptionalDataArray(arNeighborVertices);
+		}
 		
 		// Calls update with the ID of the PathwayViewRep
 		((EventPublisher)refGeneralManager.getSingelton().

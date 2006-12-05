@@ -253,40 +253,40 @@ extends APathwayGraphViewRep {
 						// The clicked vertex will be added with neighborhood distance of 0
 						iLLNeighborDistance.add(0);
 						
-//						createSelectionSet(new int[]{((PathwayVertexRep)clickedCell.getUserObject()).
-//								getVertex().getElementId()}, 
-//								null, null);
-						
 						bNeighbourhoodShown = true;
 						iNeighbourhoodUndoCount++;
 	
+						// Add selected vertex itself because neighborhood algorithm
+						// only adds neighbor vertices.
+						iLLSelectedVertices.add(((PathwayVertexRep)clickedCell.
+								getUserObject()).getVertex().getElementId());
+						
 						if (iNeighbourhoodDistance != 0)
 						{	
 							showNeighbourhood(clickedCell, 
 								iNeighbourhoodDistance, null);
 					
 							bNeighbourhoodShown = true;
-					
-							// Add selected vertex itself because neighborhood algorithm
-							// only adds neighbor vertices.
-							iLLSelectedVertices.add(((PathwayVertexRep)clickedCell.
-									getUserObject()).getVertex().getElementId());
-							
-							// Convert Link List to int[]
-						    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
-						    int[] iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
-						    for ( int i=0; iter_I.hasNext() ;i++ ) {
-						    	iArSelectedVertices[i] = iter_I.next().intValue();
-						    }
-						    
-						    iter_I = iLLNeighborDistance.iterator();		    
-						    int[] iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
-						    for ( int i=0; iter_I.hasNext() ;i++ ) {
-						    	iArNeighborDistance[i] = iter_I.next().intValue();
-						    }
-						    
-							createSelectionSet(iArSelectedVertices, new int[0], iArNeighborDistance);
 						}
+						
+						int[] iArSelectedVertices = null;
+						int[] iArNeighborDistance = null;
+
+						// Convert Link List to int[]
+					    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+					    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+					    for ( int i=0; iter_I.hasNext() ;i++ ) {
+					    	iArSelectedVertices[i] = iter_I.next().intValue();
+					    }
+					    
+					    iter_I = iLLNeighborDistance.iterator();		    
+					    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
+					    for ( int i=0; iter_I.hasNext() ;i++ ) {
+					    	iArNeighborDistance[i] = iter_I.next().intValue();
+					    }
+						
+						createSelectionSet(iArSelectedVertices, new int[0], iArNeighborDistance);
+						
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
 		    	else if (refCurrentPathwayImageMap != null)

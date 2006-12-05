@@ -3,9 +3,6 @@ package cerberus.data.collection.selection;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import cerberus.command.data.CmdDataCreateSet;
-import cerberus.command.data.CmdDataCreateStorage;
-import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.data.collection.IGroupedSelection;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
@@ -109,7 +106,8 @@ implements IGroupedSelection {
 				"3 0 0 1", 
 				IParameterHandler.ParameterHandlerType.STRING);
 
-		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
+		refGeneralManager.getSingelton().getCommandManager().
+			createCommand(refParameterHandler).doCommand();
 	}
 	
 	/**
@@ -151,7 +149,8 @@ implements IGroupedSelection {
 				"123 123 123", 
 				IParameterHandler.ParameterHandlerType.STRING);
 		
-		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
+		refGeneralManager.getSingelton().getCommandManager().
+			createCommand(refParameterHandler).doCommand();
 
 	}
 	
@@ -204,7 +203,8 @@ implements IGroupedSelection {
 				"123 123 123", 
 				IParameterHandler.ParameterHandlerType.STRING);
 		
-		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
+		refGeneralManager.getSingelton().getCommandManager().
+			createCommand(refParameterHandler).doCommand();
 
 	}
 
@@ -255,7 +255,8 @@ implements IGroupedSelection {
 				"CREATE_SET_PLANAR", 
 				IParameterHandler.ParameterHandlerType.STRING);
 
-		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
+		refGeneralManager.getSingelton().getCommandManager().
+			createCommand(refParameterHandler).doCommand();
 	}
 	
 	/**
@@ -319,7 +320,8 @@ implements IGroupedSelection {
 				"SELECTION_MEDIATOR", 
 				IParameterHandler.ParameterHandlerType.STRING);
 		
-		refGeneralManager.getSingelton().getCommandManager().createCommand(refParameterHandler).doCommand();
+		refGeneralManager.getSingelton().getCommandManager().
+			createCommand(refParameterHandler).doCommand();
 	}
 
 	public void setSelectionIdArray(int[] iArSelectionId) {

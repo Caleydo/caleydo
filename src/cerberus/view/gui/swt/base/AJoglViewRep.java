@@ -72,10 +72,10 @@ implements IView {
 				.getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
 						iParentContainerId, -1, -1);
-		
+				
 		refSWTContainer = refSWTEmbeddedJoglWidget.getParentComposite();
 		refSWTContainer.setLayout(new GridLayout(1, false));
-		new Pathway3DToolbar(refSWTContainer, null);
+			new Pathway3DToolbar(refSWTContainer, null);
 		
 		refSWTEmbeddedJoglWidget.createEmbeddedComposite();
 
