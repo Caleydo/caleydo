@@ -89,6 +89,8 @@ implements IGLCanvasUser {
 	
 	protected float fCanvasYPos = 0.0f;
 	
+	protected float fPathwayTextureAspectRatio = 0.0f;
+	
 	protected ArrayList<PathwayVertex> iArSelectionStorageVertexIDs;
 	
 	protected ArrayList<Integer> iArSelectionStorageNeighborDistance;
@@ -172,27 +174,27 @@ implements IGLCanvasUser {
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		gl.glLineWidth(1.0f);
 	
-//		float[] fMatSpecular = { 1.0f, 1.0f, 1.0f, 1.0f};
-//		float[] fMatShininess = {25.0f}; 
-//		float[] fLightPosition = {0.0f, 0.0f, 0.0f, 1.0f};
-//		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
-//		float[] fModelAmbient = {0.2f, 0.2f, 0.2f, 1.0f};
-//		
-////		gl.glShadeModel(GL.GL_SMOOTH);
-////		gl.glEnable(GL.GL_COLOR_MATERIAL);
-//		
+		float[] fMatSpecular = { 1.0f, 1.0f, 1.0f, 1.0f};
+		float[] fMatShininess = {25.0f}; 
+		float[] fLightPosition = {-1.0f, 0.0f, 0.0f, 1.0f};
+		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
+		float[] fModelAmbient = {0.2f, 0.2f, 0.2f, 1.0f};
+		
+//		gl.glShadeModel(GL.GL_SMOOTH);
 //		gl.glEnable(GL.GL_COLOR_MATERIAL);
-//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
-//		
-////		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fMatSpecular, 0);
-////		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fMatShininess, 0);
-//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fLightPosition, 0);		
-////		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fWhiteLight, 0);
-////		gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fWhiteLight, 0);
-//		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
-//			
-//		gl.glEnable(GL.GL_LIGHTING);
-//		gl.glEnable(GL.GL_LIGHT0);	
+		
+		gl.glEnable(GL.GL_COLOR_MATERIAL);
+		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+		
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fMatSpecular, 0);
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fMatShininess, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fLightPosition, 0);		
+//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fWhiteLight, 0);
+//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fWhiteLight, 0);
+		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
+
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT0);	
 
 		// Clearing window and set background to WHITE
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -211,8 +213,12 @@ implements IGLCanvasUser {
 		loadBackgroundOverlayImage("data/images/pathways/map00271.gif");
 		
 		// Init scaling factor after pathway texture width/height is known
-		fScalingFactorX = 1.0f / (float)refPathwayTexture.getImageWidth();
+		fScalingFactorX = fPathwayTextureAspectRatio / (float)refPathwayTexture.getImageWidth();
 		fScalingFactorY = 1.0f / (float)refPathwayTexture.getImageHeight();
+		
+		fPathwayTextureAspectRatio = 
+			(float)refPathwayTexture.getImageWidth() / 
+			(float)refPathwayTexture.getImageHeight();
 		
 		buildPathwayDisplayList();	
 		
@@ -226,7 +232,7 @@ implements IGLCanvasUser {
 		// Clear The Screen And The Depth Buffer
 		gl.glPushMatrix();
 
-		gl.glTranslatef( origin.x(), origin.y(), origin.z() );
+		gl.glTranslatef( origin.x(), origin.y(), origin.z()+4.8f );
 		gl.glRotatef( rotation.x(), 
 				rotation.y(),
 				rotation.z(),
@@ -356,12 +362,12 @@ implements IGLCanvasUser {
 			boolean bHightlighVertex, Color nodeColor) {
 		
 		fCanvasXPos = viewingFrame[X][MIN] + 
-			(vertexRep.getXPosition()) * fScalingFactorX;
+			(vertexRep.getXPosition() * fScalingFactorX);
 		fCanvasYPos = viewingFrame[Y][MIN] + 
-			(vertexRep.getYPosition()) * fScalingFactorY;
+			(vertexRep.getYPosition() * fScalingFactorY);
 	
-		System.err.println("Vertex X Pos: " +fCanvasXPos);
-		System.err.println("Vertex Y Pos: " +fCanvasYPos);
+//		System.err.println("Vertex X Pos: " +fCanvasXPos);
+//		System.err.println("Vertex Y Pos: " +fCanvasYPos);
 		
 		String sShapeType = vertexRep.getShapeType();
 
@@ -500,28 +506,28 @@ implements IGLCanvasUser {
 		
 		refBasicPathway = refCurrentPathway;
 		
-	    // Just for testing!
-		for (int iLayerIndex = 0; iLayerIndex < 3; iLayerIndex++)
-		{
-			fZLayerValue = iLayerIndex;
+//	    // Just for testing!
+//		for (int iLayerIndex = 0; iLayerIndex < 3; iLayerIndex++)
+//		{
+			fZLayerValue = 0;//iLayerIndex;
 			
-			if (iLayerIndex == 1)
-			{
-				loadPathwayFromFile(strPathwayPaths[0]);
-			}
-			else if (iLayerIndex == 2)
-			{
-				loadPathwayFromFile(strPathwayPaths[1]);
-			}
-			
-			refCurrentPathway = refGeneralManager.getSingelton().
-				getPathwayManager().getCurrentPathway();
-		
-			if (refCurrentPathway == null)
-			{
-				return;
-			}
-			
+//			if (iLayerIndex == 1)
+//			{
+//				loadPathwayFromFile(strPathwayPaths[0]);
+//			}
+//			else if (iLayerIndex == 2)
+//			{
+//				loadPathwayFromFile(strPathwayPaths[1]);
+//			}
+//			
+//			refCurrentPathway = refGeneralManager.getSingelton().
+//				getPathwayManager().getCurrentPathway();
+//		
+//			if (refCurrentPathway == null)
+//			{
+//				return;
+//			}
+//			
 			refHashPathwayToZLayerValue.put(refCurrentPathway, fZLayerValue);
 			
 			System.err.println("Current pathway: "+refCurrentPathway.getTitle());
@@ -541,33 +547,44 @@ implements IGLCanvasUser {
 //			gl.glRectf(-1.0f, -1.0f, 2.5f, 1.5f);
 			
 			TextureCoords texCoords = refPathwayTexture.getImageTexCoords();
-			
-			float fAspectRatio = 
-				(float)refPathwayTexture.getImageWidth() / 
-				(float)refPathwayTexture.getImageHeight();
 
 			System.err.println("Height: "+(float)refPathwayTexture.getImageHeight());
 			System.err.println("Width: "+(float)refPathwayTexture.getImageWidth());
 				
-			System.err.println("Aspect ratio: " +fAspectRatio);
+			System.err.println("Aspect ratio: " +fPathwayTextureAspectRatio);
 			System.err.println("texCoords left: " +texCoords.left());
 			System.err.println("texCoords right: " +texCoords.right());
 			System.err.println("texCoords top: " +texCoords.top());
 			System.err.println("texCoords bottom: " +texCoords.bottom());
 		
 			gl.glBegin(GL.GL_QUADS);
-			  gl.glTexCoord2f(0, 1); 
+			  gl.glTexCoord2f(0, texCoords.top()); 
 			  gl.glVertex3f(0.0f, 0.0f, fZLayerValue + 0.01f);
 			  
-			  gl.glTexCoord2f(1, 1); 
-			  gl.glVertex3f(1.0f, 0.0f, fZLayerValue + 0.01f);
+			  gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
+			  gl.glVertex3f(fPathwayTextureAspectRatio, 0.0f, fZLayerValue + 0.01f);
 			  
-			  gl.glTexCoord2f(1, 0); 
-			  gl.glVertex3f(1.0f, fAspectRatio, fZLayerValue + 0.01f);
+			  gl.glTexCoord2f(texCoords.right(), 0); 
+			  gl.glVertex3f(fPathwayTextureAspectRatio, 1f, fZLayerValue + 0.01f);
 			  
 			  gl.glTexCoord2f(0, 0); 
-			  gl.glVertex3f(0.0f, fAspectRatio, fZLayerValue + 0.01f);
+			  gl.glVertex3f(0.0f, 1f, fZLayerValue + 0.01f);
 			gl.glEnd();
+			
+			// BOOK VERSION
+//			gl.glBegin(GL.GL_QUADS);
+//			  gl.glTexCoord2i(0, 0); 
+//			  gl.glVertex3f(0.0f, 0.0f, fZLayerValue + 0.01f);
+//			  
+//			  gl.glTexCoord2i(0, 1); 
+//			  gl.glVertex3f(0.0f, 1.0f, fZLayerValue + 0.01f);
+//			  
+//			  gl.glTexCoord2i(1, 1); 
+//			  gl.glVertex3f(fPathwayTextureAspectRatio, 1.0f, fZLayerValue + 0.01f);
+//			  
+//			  gl.glTexCoord2i(1, 0); 
+//			  gl.glVertex3f(fPathwayTextureAspectRatio, 0.0f, fZLayerValue + 0.01f);
+//			gl.glEnd();
 			
 //			// Draw pathway "sheet" border
 
@@ -597,7 +614,7 @@ implements IGLCanvasUser {
 			extractVertices();
 			//extractEdges();	
 			finishGraphBuilding();
-		}
+//		}
 		
 		gl.glEndList();
 	}
@@ -608,9 +625,9 @@ implements IGLCanvasUser {
 		iEnzymeNodeDisplayListId = gl.glGenLists(1);
 		
 		fPathwayNodeWidth = 
-			refRenderStyle.getEnzymeNodeWidth() * fScalingFactorX;
+			refRenderStyle.getEnzymeNodeWidth() / 2.0f * fScalingFactorX;
 		fPathwayNodeHeight = 
-			refRenderStyle.getEnzymeNodeHeight() * fScalingFactorY;
+			refRenderStyle.getEnzymeNodeHeight() / 2.0f * fScalingFactorY;
 
 		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		
@@ -625,9 +642,9 @@ implements IGLCanvasUser {
 		iCompoundNodeDisplayListId = gl.glGenLists(1);
 		
 		fPathwayNodeWidth = 
-			refRenderStyle.getCompoundNodeWidth() * fScalingFactorX;
+			refRenderStyle.getCompoundNodeWidth() / 2.0f * fScalingFactorX;
 		fPathwayNodeHeight = 
-			refRenderStyle.getCompoundNodeHeight() * fScalingFactorY;
+			refRenderStyle.getCompoundNodeHeight() / 2.0f * fScalingFactorY;
 		
 		gl.glNewList(iCompoundNodeDisplayListId, GL.GL_COMPILE);
 		
@@ -642,9 +659,9 @@ implements IGLCanvasUser {
 		iPathwayNodeDisplayListId = gl.glGenLists(1);
 	
 		fPathwayNodeWidth = 
-			refRenderStyle.getPathwayNodeWidth() * fScalingFactorX;
+			refRenderStyle.getPathwayNodeWidth() / 2.0f * fScalingFactorX;
 		fPathwayNodeHeight = 
-			refRenderStyle.getPathwayNodeHeight() * fScalingFactorY;
+			refRenderStyle.getPathwayNodeHeight() / 2.0f * fScalingFactorY;
 
 		gl.glNewList(iPathwayNodeDisplayListId, GL.GL_COMPILE);
 	
@@ -660,68 +677,68 @@ implements IGLCanvasUser {
         // FRONT FACE
 		gl.glNormal3f( 0.0f, 0.0f, 1.0f);	
 		// Top Right Of The Quad (Front)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos, 0.02f);		
+        gl.glVertex3f(-fPathwayNodeWidth , -fPathwayNodeHeight, 0.02f);		
         // Top Left Of The Quad (Front)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos, 0.02f);			
+        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);			
         // Bottom Left Of The Quad (Front)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos + fPathwayNodeHeight, 0.02f);
+        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
 		// Bottom Right Of The Quad (Front)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos + fPathwayNodeHeight, 0.02f);
+        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
 
         // BACK FACE
         gl.glNormal3f( 0.0f, 0.0f,-1.0f);
         // Bottom Left Of The Quad (Back)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos,-0.02f);	
+        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);	
         // Bottom Right Of The Quad (Back)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos,-0.02f);	
+        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);	
         // Top Right Of The Quad (Back)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos + fPathwayNodeHeight,-0.02f);			
+        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);			
         // Top Left Of The Quad (Back)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos + fPathwayNodeHeight,-0.02f);			
+        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);			
 
 		// TOP FACE
         gl.glNormal3f( 0.0f, 1.0f, 0.0f);	
         // Top Right Of The Quad (Top)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos + fPathwayNodeHeight,-0.02f);	
+        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);	
         // Top Left Of The Quad (Top)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos + fPathwayNodeHeight,-0.02f);	
+        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);	
         // Bottom Left Of The Quad (Top)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos + fPathwayNodeHeight, 0.02f);
+        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
         // Bottom Right Of The Quad (Top)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos + fPathwayNodeHeight, 0.02f);			
+        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);			
 
         // BOTTOM FACE
         gl.glNormal3f( 0.0f,-1.0f, 0.0f);	
         // Top Right Of The Quad (Bottom)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos, 0.02f);
+        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);
         // Top Left Of The Quad (Bottom)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos, 0.02f);
+        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);
         // Bottom Left Of The Quad (Bottom)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos,-0.02f);
+        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);
         // Bottom Right Of The Quad (Bottom)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos,-0.02f);			
+        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);			
 
         // RIGHT FACE
         gl.glNormal3f( 1.0f, 0.0f, 0.0f);	
         // Top Right Of The Quad (Right)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos + fPathwayNodeHeight,-0.02f);
+        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);
         // Top Left Of The Quad (Right)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos + fPathwayNodeHeight, 0.02f);
+        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
         // Bottom Left Of The Quad (Right)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos, 0.02f);
+        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);
         // Bottom Right Of The Quad (Right)
-        gl.glVertex3f(fCanvasXPos + fPathwayNodeWidth, fCanvasYPos,-0.02f);			
+        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);			
         
         // LEFT FACE
         gl.glNormal3f(-1.0f, 0.0f, 0.0f);	
         // Top Right Of The Quad (Left)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos + fPathwayNodeHeight, 0.02f);	
+        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);	
         // Top Left Of The Quad (Left)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos + fPathwayNodeHeight,-0.02f);	
+        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);	
         // Bottom Left Of The Quad (Left)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos,-0.02f);	
+        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);	
         // Bottom Right Of The Quad (Left)
-        gl.glVertex3f(fCanvasXPos                    , fCanvasYPos, 0.02f);			
+        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);			
        
         gl.glEnd();
 	}
@@ -842,6 +859,7 @@ implements IGLCanvasUser {
 	
 	public final void setOriginRotation( final Vec3f origin,	
 			final Vec4f rotation ) {
+		
 		this.origin   = origin;
 		this.rotation = rotation;
 	}
@@ -919,7 +937,7 @@ implements IGLCanvasUser {
 	public void finishGraphBuilding() {
 
 		// Draw title
-		renderText(refCurrentPathway.getTitle(), 0.0f, -1.0f, fZLayerValue);	
+		renderText(refCurrentPathway.getTitle(), 0.0f, 0.0f, fZLayerValue);	
 	}
 
 	/*
