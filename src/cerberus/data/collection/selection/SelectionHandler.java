@@ -22,7 +22,7 @@ import cerberus.xml.parser.parameter.ParameterHandler;
  * @author Marc Streit
  *
  */
-public class GroupedSelection
+public class SelectionHandler
 implements IGroupedSelection {
 
 	protected IGeneralManager refGeneralManager;
@@ -50,7 +50,7 @@ implements IGroupedSelection {
 	 * @param iArSelectionGroup
 	 * @param iArSelectionOptionalData
 	 */
-	public GroupedSelection(IGeneralManager refGeneralManager,
+	public SelectionHandler(IGeneralManager refGeneralManager,
 			int iParentContainerId,
 			int[] iArSelectionId,
 			int[] iArSelectionGroup,

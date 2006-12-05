@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 
-import cerberus.data.collection.selection.GroupedSelection;
+import cerberus.data.collection.selection.SelectionHandler;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -67,7 +67,7 @@ implements IPathwayGraphView {
 	 */
 	protected int iPathwayLevel = 1;
 	
-	protected GroupedSelection refSelection;
+	protected SelectionHandler refSelection;
 
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
@@ -277,7 +277,7 @@ implements IPathwayGraphView {
 		// Just the data needs to be set.
 		if (refSelection == null)
 		{
-			refSelection = new GroupedSelection(refGeneralManager, 
+			refSelection = new SelectionHandler(refGeneralManager, 
 					this.iParentContainerId, 
 					arSelectionVertexId, 
 					arSelectionGroup, 
