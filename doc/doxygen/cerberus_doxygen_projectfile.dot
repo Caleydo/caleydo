@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 PROJECT_NAME           = Cerberus
 PROJECT_NUMBER         = 1.0
-OUTPUT_DIRECTORY       = /home/marc/university/diploma/cerberus_eclipse/Cerberus/doc/doxygen/html_doxygen/
+OUTPUT_DIRECTORY       = html_dot
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = NO
@@ -25,7 +25,7 @@ ABBREVIATE_BRIEF       = "The $name class" \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = /home/marc/university/diploma/cerberus_eclipse/Cerberus/build/documentation/doxygen/linux/
+STRIP_FROM_PATH        = doc/doxygen
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -82,7 +82,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = /home/marc/university/diploma/cerberus_eclipse/Cerberus/src/cerberus/
+INPUT                  = ../../src/gleem/
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
