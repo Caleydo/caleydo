@@ -15,18 +15,31 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="11992"	targetId="25301" label="my Storage2" attrib1="INT;FLOAT;STRING"	attrib2="99	66 77	22@-0.55 1.11	-6.66@bbname bbof	bbthe	bbbeast	kuli muhli"	/>
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="45301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="14993"	targetId="55301" label="Storage	file2"	attrib1="STRING" attrib2="test data	from file" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="15993"	targetId="65301" label="Storage	file3"	attrib1="STRING" attrib2="test data	from file" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="16993"	targetId="75301" label="Storage	file3"	attrib1="INT" attrib2="test data	from file" />
+			
+			
 						 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="90 5 0 1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="23991"	targetId="45201" label="Select file" attrib1="30 200 0 1"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="24991"	targetId="55201" label="Select file" attrib1="30 200 0 1"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="25991"	targetId="65201" label="Select file" attrib1="30 200 0 1"	/>
 												
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="31991"	targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="32991"	targetId="35101" label="target Set for file	new" attrib1="35201" attrib2="45301" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="34991"	targetId="45101" label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="CREATE_SET_PLANAR" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="34991"	targetId="45101" label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="CREATE_SET_PLANAR" />			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"						cmdId="35991"	targetId="55101" label="target Set for LOAD_DATA_FILE_N_STORAGES" attrib1="45201@55201@65201" attrib2="55301@65301@75301"	detail="CREATE_SET_MULTIDIM" />
 			
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
+			<!-- <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" attrib3="start_at_line stop_at_line" > -->
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" attrib2="55101" attrib3="32 -1" />
+			
 			
 			<!-- Window	10331	-->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	targetId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 

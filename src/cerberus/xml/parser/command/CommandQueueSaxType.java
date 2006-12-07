@@ -27,13 +27,14 @@ public enum CommandQueueSaxType
 	 * XML-value  ( XML-Tag , XML-key ) 
 	 */
 	LOAD_DATA_FILE("cmd","type",""),
+	LOAD_DATA_FILE_N_STORAGES("cmd","type",""),
 	//OPEN_VIEW("cmd","type"),
 	
 	NO_OPERATION("cmd","type","NO_OPERATION"),
 	
 	CREATE_SET("cmd","type","-1"),
 	CREATE_SET_PLANAR("cmd","type","-1"),
-	//CREATE_SET_MULTIDIM("cmd","type","-1"),
+	CREATE_SET_MULTIDIM("cmd","type","-1"),
 	CREATE_VIRTUAL_ARRAY("cmd","type","-1"),
 	CREATE_STORAGE("cmd","type","-1"),
 	

@@ -31,12 +31,12 @@ import cerberus.manager.type.ManagerObjectType;
 
 /**
  * Command, load data from file using a token pattern and a target ISet.
- * Use MicroArrayLoader to laod dataset.
+ * Use MicroArrayLoader1Storage to laod dataset.
  * 
  * @author Michael Kalkusch
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
+ * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
  */
 public class CmdDataCreateVirtualArray 
 extends AManagedCmd
@@ -72,7 +72,7 @@ implements ICommand {
 	 * 
 	 * @deprecated
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
 	 */
 	public CmdDataCreateVirtualArray( IGeneralManager refGeneralManager,
 			final LinkedList <String> listAttributes ) {
@@ -94,7 +94,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader#loadData()
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

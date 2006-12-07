@@ -33,6 +33,7 @@ import cerberus.view.gui.IView;
 //import cerberus.view.gui.AViewManagedRep;
 import cerberus.view.gui.swt.base.AJoglContainerViewRep;
 import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.exception.CerberusExceptionType;
 
@@ -424,7 +425,7 @@ implements GLEventListener, IJoglMouseListener
 		
 		ISet createdSet = 
 			this.refGeneralManager.getSingelton().getSetManager().createSet( 
-				ManagerObjectType.SET_LINEAR );
+					CommandQueueSaxType.CREATE_SET );
 		
 		createdSet.setSelectionByDimAndIndex( createdSelection, 0 ,0 );
 		createdSet.setStorageByDimAndIndex( createdStorage, 0, 0 );

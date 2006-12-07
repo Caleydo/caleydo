@@ -49,6 +49,7 @@ import cerberus.command.system.CmdSystemExit;
 import cerberus.command.system.CmdSystemNop;
 import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
+import cerberus.command.system.CmdSystemLoadFileNStorages;
 
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -197,6 +198,14 @@ extends ACommand
 			break;
 		}
 		
+		case LOAD_DATA_FILE_N_STORAGES:
+		{
+			createdCommand =
+				new CmdSystemLoadFileNStorages( 
+						refGeneralManager,
+						phAttributes );
+			break;
+		}
 
 		case CREATE_STORAGE:
 		{					

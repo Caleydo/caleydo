@@ -16,7 +16,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
+import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.set.SetPlanarSimple;
@@ -91,7 +91,7 @@ implements IVirtualArrayManager
 				
 			case VIRTUAL_ARRAY_LOAD_MICROARRAY:
 				System.err.println("ISelectionManager.createSelection() VIRTUAL_ARRAY_LOAD_MICROARRAY is deprecated!");
-				//return new MicroArrayLoader( getGeneralManager() );
+				//return new MicroArrayLoader1Storage( getGeneralManager() );
 				
 //			case VIRTUAL_ARRAY_MULTI_BLOCK_RLE:
 //				break;

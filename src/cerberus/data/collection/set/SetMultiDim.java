@@ -103,7 +103,7 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
-		vecSelectionDim.get( iAtDimension ).setElementAt( addSelection, iAtIndex );
+		vecSelectionDim.elementAt(  iAtDimension ).setElementAt( addSelection, iAtIndex );
 		
 		return true;
 	}
@@ -111,7 +111,7 @@ implements ISet {
 	public boolean addSelectionByDim( final IVirtualArray addSelection, 
 			final int iAtDimension ) {
 		
-		vecSelectionDim.get( iAtDimension ).addElement( addSelection );
+		vecSelectionDim.elementAt(  iAtDimension ).addElement( addSelection );
 		
 		return true;
 	}
@@ -124,7 +124,7 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
-		vecStorageDim.get( iAtDimension ).setElementAt( addStorage, iAtIndex );
+		vecStorageDim.elementAt( iAtDimension ).setElementAt( addStorage, iAtIndex );
 		
 		return true;
 	}
@@ -132,7 +132,7 @@ implements ISet {
 	public boolean addStorageByDim( final IStorage addStorage, 
 			final int iAtDimension ) {
 		
-		Vector <IStorage> buffer = vecStorageDim.get( iAtDimension );
+		Vector <IStorage> buffer = vecStorageDim.elementAt( iAtDimension );
 		
 		buffer.addElement( addStorage );
 		
@@ -144,7 +144,7 @@ implements ISet {
 	 */
 	public boolean removeSelection( final IVirtualArray removeSelection, final int iFromDimension) {
 		
-		Vector <IVirtualArray> bufferVectorSelection = vecSelectionDim.get( iFromDimension );
+		Vector <IVirtualArray> bufferVectorSelection = vecSelectionDim.elementAt( iFromDimension );
 		
 		return bufferVectorSelection.removeElement( removeSelection );		
 	}
@@ -156,7 +156,7 @@ implements ISet {
 		
 		assert testSelection != null: "SetFlatSimple.hasSelection() test with null pointer!";
 		
-		return vecSelectionDim.get( iAtDimension ).contains( testSelection );	
+		return vecSelectionDim.elementAt( iAtDimension ).contains( testSelection );	
 	}
 
 	/* (non-Javadoc)
@@ -194,7 +194,7 @@ implements ISet {
 	public int getDimensionSize(int iAtDimension) {
 		
 		Iterator <IVirtualArray> iter = 
-			vecSelectionDim.get( iAtDimension ).iterator();
+			vecSelectionDim.elementAt( iAtDimension ).iterator();
 		
 		int iLength = 0;
 		while ( iter.hasNext() ) {
@@ -228,7 +228,7 @@ implements ISet {
 	 */
 	public IVirtualArray[] getSelectionByDim(int iAtDimension) {
 		
-		Vector <IVirtualArray> buffer = vecSelectionDim.get( iAtDimension );
+		Vector <IVirtualArray> buffer = vecSelectionDim.elementAt( iAtDimension );
 		Iterator <IVirtualArray> iter = buffer.iterator();
 		
 		IVirtualArray[] resultBuffer = new IVirtualArray[buffer.size()];
@@ -246,7 +246,7 @@ implements ISet {
 	public IVirtualArray getSelectionByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {
 		
-		return this.vecSelectionDim.get(iAtDimension).get(iAtIndex);
+		return this.vecSelectionDim.elementAt(iAtDimension).elementAt(iAtIndex);
 	}
 	
 
@@ -455,17 +455,17 @@ implements ISet {
 	}
 	
 	public final Vector<IStorage> getStorageVectorByDim( final int iAtDimension ) {
-		return vecStorageDim.get( iAtDimension );
+		return vecStorageDim.elementAt( iAtDimension );
 	}
 	
 	public final Vector<IVirtualArray> getSelectionVectorByDim( final int iAtDimension ) {
-		return vecSelectionDim.get( iAtDimension );
+		return vecSelectionDim.elementAt(  iAtDimension );
 	}
 	
 
 	
 	public final Vector<IVirtualArray> setSelectionVectorByDim( final int iAtDimension ) {
-		return vecSelectionDim.get( iAtDimension );
+		return vecSelectionDim.elementAt(  iAtDimension );
 	}
 	
 	/**
@@ -482,7 +482,7 @@ implements ISet {
 				( iAtIndex >= 0 )&&
 				( iAtDimension < vecStorageDim.size() )) {
 			
-			if ( iAtIndex < vecStorageDim.get(iAtDimension).size() ) {
+			if ( iAtIndex < vecStorageDim.elementAt( iAtDimension).size() ) {
 				return true;
 			}
 			return false;
@@ -504,7 +504,7 @@ implements ISet {
 				( iAtIndex >= 0 )&&
 				( iAtDimension < vecSelectionDim.size() )) {
 			
-			if ( iAtIndex < vecSelectionDim.get(iAtDimension).size() ) {
+			if ( iAtIndex < vecSelectionDim.elementAt( iAtDimension).size() ) {
 				return true;
 			}
 			return false;
@@ -513,8 +513,9 @@ implements ISet {
 	}
 	
 	public final IStorage getStorageByDimAndIndex( final int iAtDimension, 
-			final int iAtIndex ) {
-		return vecStorageDim.get( iAtDimension ).get( iAtIndex );
+			final int iAtIndex ) {		
+		Vector < IStorage > buffer = vecStorageDim.elementAt( iAtDimension );
+		return buffer.elementAt( iAtIndex );
 	}
 	
 	
@@ -635,12 +636,12 @@ implements ISet {
 	public IVirtualArrayIterator iteratorSelectionByDim( final int iAtDimension ) {
 		
 //		Vector<IVirtualArray> bufferVecSelection = 
-//			vecSelectionDim.get( iAtDimension );
+//			vecSelectionDim.elementAt(  iAtDimension );
 		
 		VirtualArrayVectorIterator iterator = 
 			new VirtualArrayVectorIterator();
 		
-		iterator.addSelectionVector( vecSelectionDim.get( iAtDimension ) );
+		iterator.addSelectionVector( vecSelectionDim.elementAt( iAtDimension ) );
 		
 		return iterator;
 	}
@@ -651,7 +652,7 @@ implements ISet {
 	 */
 	public Iterator<IStorage> iteratorStorageByDim( final int iAtDimension ) {
 			
-		Vector<IStorage> vec_Storage = vecStorageDim.get( iAtDimension );
+		Vector<IStorage> vec_Storage = vecStorageDim.elementAt(  iAtDimension );
 		
 		return vec_Storage.iterator();
 	}
@@ -661,7 +662,7 @@ implements ISet {
 	 */
 	public boolean removeSelection( final IVirtualArray[] removeSelection, final int iFromDimension) {
 		
-		Vector <IVirtualArray> bufferVecSelection = vecSelectionDim.get( iFromDimension );
+		Vector <IVirtualArray> bufferVecSelection = vecSelectionDim.elementAt(  iFromDimension );
 		
 		boolean bAllElementsRemoved = true;
 		

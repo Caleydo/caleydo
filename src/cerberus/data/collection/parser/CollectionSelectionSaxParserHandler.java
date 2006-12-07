@@ -367,7 +367,7 @@ implements ISaxParserHandler
 	 * Only set when type="VIRTUAL_ARRAY_LOAD_MICROARRAY".
 	 * Used by class prometheus.data.loader.MicroArrayLoader .
 	 * 
-	 * @see prometheus.data.loader.MicroArrayLoader
+	 * @see prometheus.data.loader.MicroArrayLoader1Storage
 	 * 
 	 * @return file name of a mircoarray dataset
 	 */

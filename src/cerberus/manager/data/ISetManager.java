@@ -11,7 +11,7 @@ package cerberus.manager.data;
 import java.util.Collection;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.data.collection.ISet;
 
 
@@ -27,7 +27,7 @@ public interface ISetManager
 extends IGeneralManager
 {
 	
-	public ISet createSet( final ManagerObjectType useSetType );
+	public ISet createSet( final CommandQueueSaxType useSetType );
 	
 	public boolean deleteSet( ISet deleteSet );
 	

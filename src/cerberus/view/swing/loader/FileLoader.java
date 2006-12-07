@@ -21,7 +21,7 @@ import javax.swing.filechooser.FileFilter;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
-import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader;
+import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 //import javax.swing.JMenu;
 //import javax.swing.JMenuBar;
 //import javax.swing.JMenuItem;
@@ -49,7 +49,7 @@ public class FileLoader {
 	
 	protected IGeneralManager regGeneralManager;
 	
-	private MicroArrayLoader loader;
+	private MicroArrayLoader1Storage loader;
 	
 	private String sText = "";
 	
@@ -83,7 +83,7 @@ public class FileLoader {
 		
 		refStorage = new FlatThreadStorageSimple(3,regGeneralManager,null);
 		
-		loader = new MicroArrayLoader(regGeneralManager);
+		loader = new MicroArrayLoader1Storage(regGeneralManager);
 	}
 	
 	public void setText( String sUseText) {
@@ -171,14 +171,14 @@ public class FileLoader {
 		this.refSet = setRefSet;
 	}
 	
-	public void setSelection( IVirtualArray setRefSelection ) {
-		this.refSelection = setRefSelection;
-	}
-	
-	public void setStorage( IStorage setRefStorage ) {
-		this.refStorage = setRefStorage;
-		loader.setFileDataStorage( setRefStorage );
-	}
+//	public void setSelection( IVirtualArray setRefSelection ) {
+//		this.refSelection = setRefSelection;
+//	}
+//	
+//	public void setStorage( IStorage setRefStorage ) {
+//		this.refStorage = setRefStorage;
+//		loader.setFileDataStorage( setRefStorage );
+//	}
 	
 	public class FileFilterGRP extends FileFilter {
 		

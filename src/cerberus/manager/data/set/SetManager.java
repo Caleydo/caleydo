@@ -17,13 +17,16 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetFlatSimple;
 import cerberus.data.collection.set.SetPlanarSimple;
+import cerberus.data.collection.set.SetMultiDim;
 
 
 /**
@@ -104,26 +107,27 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#createSet()
 	 */
-	public ISet createSet( final ManagerObjectType useStorageType ) {
+	public ISet createSet( final CommandQueueSaxType useStorageType ) {
 			
 		switch ( useStorageType ) {
-			case SET_LINEAR:
+			case CREATE_SET:
 				return new SetFlatSimple(4,getGeneralManager());
 				
-			case SET_PLANAR:
+			case CREATE_SET_PLANAR:
 				return new SetPlanarSimple(4,getGeneralManager());
 			
-			case SET_CUBIC:
-				break;
-				
-			case SET_MULTI_DIM:
+			case CREATE_SET_MULTIDIM:
+				return new SetMultiDim(4,
+						getGeneralManager(),
+						null,
+						3 );						
 				
 			default:
 				throw new RuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
 						useStorageType.toString() + "]");
 		}
 		
-		return null;
+		//return null;
 	}
 
 	/* (non-Javadoc)

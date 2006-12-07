@@ -1,5 +1,7 @@
 package cerberus.data.collection.parser;
 
+import cerberus.data.collection.StorageType;
+
 //import prometheus.data.MultiDataTypeEnum;
 
 
@@ -21,6 +23,7 @@ public final class ParserTokenHandler {
 	 */
 	private final int iIndex;
 	
+	private StorageType enumStorageType;
 	
 	/**
 	 * Defines the current data typ.
@@ -35,7 +38,7 @@ public final class ParserTokenHandler {
 	private boolean bArrayListNotVector;
 	
 	
-	private final ParserTokenType enumDataType;
+	//private final ParserTokenType enumDataType;
 	
 	
 //		 =====   public methodes  =====
@@ -47,26 +50,26 @@ public final class ParserTokenHandler {
 	public ParserTokenHandler() {
 		this.bArrayListNotVector = true;
 		this.iIndex = 0;
-		this.enumDataType = ParserTokenType.SKIP;
+		this.enumStorageType = StorageType.SKIP;
 	}
 	
 	/**
 	 * Constructor
 	 */
-	public ParserTokenHandler( final ParserTokenType setType) {
+	public ParserTokenHandler( final StorageType setType) {
 		this.bArrayListNotVector = true;
 		this.iIndex = 0;
-		this.enumDataType = setType;
+		this.enumStorageType = setType;
 	}
 	
 	/*
 	 * Constructor
 	 */
-	public ParserTokenHandler( final ParserTokenType setType,
+	public ParserTokenHandler( final StorageType setType,
 			final int iSetIndex) {
 		this.bArrayListNotVector = true;
 		this.iIndex = iSetIndex;
-		this.enumDataType = setType;
+		this.enumStorageType = setType;
 	}
 
 	
@@ -99,12 +102,9 @@ public final class ParserTokenHandler {
 	 * Returns TRUE if eCurrentType equals eMultiDataType.mdnone
 	 */
 	public boolean isEmpty() {
-		if ((   this.enumDataType == ParserTokenType.SKIP )
-			||( this.enumDataType == ParserTokenType.ABORT )
-			||( this.enumDataType == ParserTokenType.NONE )){
-			return true;
-		}
-		return false;
+		
+		return enumStorageType.isDataType();
+		
 	}
 	
 	
@@ -171,16 +171,16 @@ public final class ParserTokenHandler {
 	/**
 	 * Get the type for this MultiData object.
 	 */
-	public ParserTokenType getType( ) {
-		return this.enumDataType;
+	public StorageType getType( ) {
+		return this.enumStorageType;
 	}
 	
 	
 	/*
 	 * Test if other type is equal to this type.
 	 */
-	public boolean isEqualType( final ParserTokenType testType ) {
-		if ( testType == this.enumDataType ) {
+	public boolean isEqualType( final StorageType testType ) {
+		if ( testType == this.enumStorageType ) {
 			return true;
 		}
 		return false;
@@ -190,7 +190,7 @@ public final class ParserTokenHandler {
 	 * Test if other type is equal to this type.
 	 */
 	public boolean isEqualType( final ParserTokenHandler testType ) {
-		return testType.isEqualType( this.enumDataType );
+		return testType.isEqualType( this.enumStorageType );
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public final class ParserTokenHandler {
 	 * \sa ParserTokenType getType() 
 	 */
 	public int getTypeOrdinal( ) {
-		return this.enumDataType.ordinal();
+		return this.enumStorageType.ordinal();
 	}
 
 	/**
@@ -208,10 +208,12 @@ public final class ParserTokenHandler {
 	 */
 	public String toString() {
 		return new String(
-				"(" + this.enumDataType.toString() +
+				"(" + this.enumStorageType.toString() +
 				" " + this.iIndex +
 				")");
 	}
+	
+	
 //		 =====   private methodes  =====
 	
 }

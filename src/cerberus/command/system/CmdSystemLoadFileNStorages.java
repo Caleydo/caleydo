@@ -8,8 +8,8 @@
  */
 package cerberus.command.system;
 
-import java.util.LinkedList;
-import java.util.Iterator;
+//import java.util.LinkedList;
+//import java.util.Iterator;
 
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
@@ -21,7 +21,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.command.CommandQueueSaxType;
-import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
+import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoaderValues2MultipleStorages;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.data.collection.ISet;
@@ -29,14 +29,14 @@ import cerberus.data.collection.ISet;
 
 /**
  * Command, load data from file using a token pattern and a target ISet.
- * Use MicroArrayLoader1Storage to laod dataset.
+ * Use AMicroArrayLoader to load dataset.
  * 
  * @author Michael Kalkusch
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
+ * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader
  */
-public class CmdSystemLoadFileViaImporter 
+public class CmdSystemLoadFileNStorages 
 extends ACommand
 implements ICommand {
 
@@ -49,18 +49,18 @@ implements ICommand {
 	/**
 	 * Default is 32, because gpr files have a header of that size!
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStartParsingAtLine
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStartParsingAtLine()
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#iStartParsingAtLine
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#getStartParsingAtLine()
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStartPareseFileAtLine = 32;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStopParsingAtLine
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStopParsingAtLine()
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#iStopParsingAtLine
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#getStopParsingAtLine()
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopPareseFileAtLine = -1;
 	
@@ -78,7 +78,7 @@ implements ICommand {
 //	 * sData_Cmd_attribute1 <br>
 //	 * sData_Cmd_attribute2 <br>
 //	 * 
-//	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
+//	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader
 //	 */
 //	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 //			final LinkedList <String> llAttributes ) {
@@ -105,7 +105,7 @@ implements ICommand {
 //				-1 );	
 //	}
 	
-	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
+	public CmdSystemLoadFileNStorages( IGeneralManager refGeneralManager,
 			final IParameterHandler phAttributes ) {
 		
 		super();
@@ -135,7 +135,9 @@ implements ICommand {
 			
 			if ( iArrayStartStop.length > 1 ) 
 			{
-				if ( iArrayStartStop[0] > iArrayStartStop[1] ) {
+				
+				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
+						(iArrayStartStop[0] != -1 )) {
 					refGeneralManager.getSingelton().getLoggerManager().logMsg(
 							"CmdSystemLoadFileViaImporter ignore stop index=(" + 
 							iArrayStartStop[1]  + 
@@ -154,7 +156,7 @@ implements ICommand {
 //	/**
 //	 * Use 
 //	 * 
-//	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
+//	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader
 //	 */
 //	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 //			String fileName, 
@@ -170,7 +172,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
@@ -187,7 +189,7 @@ implements ICommand {
 				).getItemSet( iTargetSetId );
 		
 		if ( useSet == null ) {
-			String errorMsg = "Could not load data via MicroArrayLoader1Storage, target Set is not valid! file=["+
+			String errorMsg = "Could not load data via MicroArrayLoaderValues2MultipleStorages, target Set is not valid! file=["+
 			sFileName + "] tokens:[" +
 			sTokenPattern + "]  targetSet(s)=[" +
 			iTargetSetId + "])";
@@ -202,11 +204,11 @@ implements ICommand {
 			return;
 		}
 		
-		MicroArrayLoader1Storage loader = null;
+		MicroArrayLoaderValues2MultipleStorages loader = null;
 		
 		try 
 		{
-			loader = new MicroArrayLoader1Storage( refGeneralManager );
+			loader = new MicroArrayLoaderValues2MultipleStorages( refGeneralManager );
 			
 			loader.setFileName( sFileName );
 			loader.setTokenPattern( sTokenPattern );
@@ -220,7 +222,7 @@ implements ICommand {
 		} //try
 		catch ( Exception e ) 
 		{
-			String errorMsg = "Could not load data via MicroArrayLoader1Storage, error during loading! file=["+
+			String errorMsg = "Could not load data via MicroArrayLoaderValues2MultipleStorages, error during loading! file=["+
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])";

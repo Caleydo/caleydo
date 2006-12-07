@@ -8,6 +8,8 @@
  */
 package cerberus.manager.singelton;
 
+import cerberus.data.collection.IStorage;
+import cerberus.data.xml.IMementoXML;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IEventPublisher;
@@ -40,8 +42,7 @@ import cerberus.manager.menu.swing.SwingMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
-import cerberus.data.collection.IStorage;
-import cerberus.data.xml.IMementoXML;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
 //import prometheus.data.collection.SelectionType; 
 //import prometheus.data.collection.SetType;
@@ -490,7 +491,7 @@ implements IGeneralManagerSingelton
 		case VIRTUAL_ARRAY:
 			return refVirtualArrayManager.createSelection(createNewType);
 		case SET:
-			return refSetManager.createSet(createNewType);
+			return refSetManager.createSet( CommandQueueSaxType.CREATE_SET );
 		case STORAGE:
 			return refStorageManager.createStorage(createNewType);
 		case VIEW:
@@ -538,7 +539,7 @@ implements IGeneralManagerSingelton
 		}
 		case SET:
 		{
-			ISet setBuffer = this.refSetManager.createSet(type);
+			ISet setBuffer = this.refSetManager.createSet( CommandQueueSaxType.CREATE_SET );
 
 			//setBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;

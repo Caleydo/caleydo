@@ -90,7 +90,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * sData_Cmd_attribute1 <br>
 	 * sData_Cmd_attribute2 <br>
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
 	 */
 	public CmdDataCreateSet( final IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler,
@@ -112,7 +112,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader#loadData()
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
@@ -129,14 +129,21 @@ extends ACmdCreate_IdTargetLabelAttr {
 		{
 		case CREATE_SET:
 			newObject = (ISet) refSetManager.createSet(
-					ManagerObjectType.SET_LINEAR );
+					set_type );
 			
 			assingLinearSet( newObject );
 			break;
 			
 		case CREATE_SET_PLANAR:
 			newObject = (ISet) refSetManager.createSet(
-					ManagerObjectType.SET_PLANAR );
+					set_type );
+			
+			assingPlanarOrMultiDimensionalSet( newObject );
+			break;
+			
+		case CREATE_SET_MULTIDIM:
+			newObject = (ISet) refSetManager.createSet(
+					set_type );
 			
 			assingPlanarOrMultiDimensionalSet( newObject );
 			break;

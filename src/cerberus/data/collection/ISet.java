@@ -124,7 +124,7 @@ public interface ISet
 	 * Get the number of dimensions used in this set. 
 	 * The number of dimension is identical the number of stored Selections and Storages.
 	 * 
-	 * @return total number of dimensions, which is equal to the total nubmer 
+	 * @return total number of dimensions, which is equal to the total number 
 	 * of handled Selections and Storages. 
 	 */
 	public int getDimensions();
