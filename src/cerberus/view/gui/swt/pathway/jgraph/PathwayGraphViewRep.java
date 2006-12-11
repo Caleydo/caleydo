@@ -467,10 +467,17 @@ extends APathwayGraphViewRep {
 		
 		DefaultPort port1 = new DefaultPort();
 		DefaultGraphCell cell1 = vertexIdToCellLUT.get(iVertexId1);
-		cell1.add(port1);
 		
 		DefaultPort port2 = new DefaultPort();
 		DefaultGraphCell cell2 = vertexIdToCellLUT.get(iVertexId2);
+		
+		if (cell1 == null || cell2 == null)
+		{
+			System.err.println("Unknown Error during creating edge! SKIP");
+			return;
+		}
+		
+		cell1.add(port1);
 		cell2.add(port2);
 	
 		DefaultEdge edge = new DefaultEdge(refPathwayEdge);

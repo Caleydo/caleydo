@@ -222,27 +222,20 @@ implements IGLCanvasUser {
 		strPathwayTexturePaths[1] = "data/images/pathways/map00260.gif";
 		strPathwayTexturePaths[2] = "data/images/pathways/map00272.gif";
 		
-		loadPathwayFromFile(strPathwayPaths[0]);
-		refCurrentPathway = 
-			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
+		//loadPathwayFromFile(strPathwayPaths[0]);
 		loadBackgroundOverlayImage(strPathwayTexturePaths[0]);
 		refHashPathwayToZLayerValue.put(refCurrentPathway, fZLayerValue);
+		refBasicPathway = refCurrentPathway;
 		
 		fZLayerValue += 1.0f;
 		loadPathwayFromFile(strPathwayPaths[1]);
-		refCurrentPathway = 
-			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
 		loadBackgroundOverlayImage(strPathwayTexturePaths[1]);
 		refHashPathwayToZLayerValue.put(refCurrentPathway, fZLayerValue);
 		
 		fZLayerValue += 1.0f;
 		loadPathwayFromFile(strPathwayPaths[2]);
-		refCurrentPathway = 
-			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
 		loadBackgroundOverlayImage(strPathwayTexturePaths[2]);
 		refHashPathwayToZLayerValue.put(refCurrentPathway, fZLayerValue);
-		
-		refBasicPathway = refCurrentPathway;
 
 		Iterator<Pathway> iterPathways = 
 			refGeneralManager.getSingelton().getPathwayManager().getPathwayIterator();

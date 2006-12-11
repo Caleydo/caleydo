@@ -252,6 +252,9 @@ implements IPathwayGraphView {
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
+		
+		refCurrentPathway = 
+			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
 	}
 	
 	public void loadNodeInformationInBrowser(final String sUrl) {
