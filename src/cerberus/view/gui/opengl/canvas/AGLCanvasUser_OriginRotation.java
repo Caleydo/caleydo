@@ -83,7 +83,7 @@ implements IGLCanvasUser
 		
 		GL gl = canvas.getGL();
 		
-		System.err.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
+		System.out.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
 		
 		this.renderPart( gl );
 	}

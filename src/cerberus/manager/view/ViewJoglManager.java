@@ -436,6 +436,11 @@ implements IViewManager, IViewGLCanvasManager {
 			hashGLCanvasId_2_vecGLEventListener.put(iCanvasId,
 					new Vector<GLEventListener>());
 		}
+		
+		refGeneralManager.getSingelton().logMsg(
+				"registerGLCanvasUser() id " + iCanvasId
+						+ " registered successfully to " + this.iUniqueId_current + "  " + this.getClass().toString(),
+						LoggerType.FULL );
 
 		return true;
 	}

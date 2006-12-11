@@ -177,6 +177,10 @@ implements GLEventListener, IJoglMouseListener {
 		{
 			refGLCanvasDirector.initGLCanvasUser(drawable);
 		}
+		else 
+		{
+			System.err.println("CanvasForwarder init() can not call director, becaus director==null!");
+		}
 	}
 
 	public void reshape(GLAutoDrawable drawable, 

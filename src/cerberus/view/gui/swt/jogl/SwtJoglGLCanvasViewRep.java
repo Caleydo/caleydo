@@ -152,6 +152,8 @@ implements IView, IGLCanvasDirector {
 		
 		if ( abEnableRendering.get() ) 
 		{
+			System.out.println("SwtJoglCanvasViewRep.initGLCanvasUser() " + this.getClass().toString() );
+			
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 			
 			while ( iter.hasNext() ) {
@@ -197,7 +199,7 @@ implements IView, IGLCanvasDirector {
 				IGLCanvasUser glCanvas = iter.next();
 				if ( glCanvas.isInitGLDone() )
 				{
-					glCanvas.render( drawable );
+					glCanvas.reshape( drawable, x, y, width, height );
 				}
 			}
 		}
