@@ -60,6 +60,8 @@ implements IGLCanvasUser
 	
 	private MinMaxDataInteger refMinMaxDataInteger;
 	
+	private int iHeatmapDisplayListId = -1;
+	
 	//private int iGridSize = 40;
 	
 	//private float fPointSize = 1.0f;
@@ -196,12 +198,14 @@ implements IGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.FULL );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.FULL );
 		
 		refMinMaxDataInteger.useSet( targetSet );
 		initColorMapping( fColorMappingShiftFromMean );
@@ -216,6 +220,16 @@ implements IGLCanvasUser
 		setInitGLDone();
 		
 	}	
+	
+	protected void createDisplayLists(GL gl) {
+		
+		iHeatmapDisplayListId = gl.glGenLists(1);
+		
+		gl.glNewList(iHeatmapDisplayListId, GL.GL_COMPILE);	
+		displayHeatmap( gl );
+		gl.glEndList();
+	}
+	
 	
 	@Override
 	public void renderPart(GL gl)
@@ -244,12 +258,41 @@ implements IGLCanvasUser
 				  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
 				  LoggerType.FULL );
 		  
-		   
+		  if ((targetSet.hasCacheChanged(iSetCacheId))||
+				  ( iHeatmapDisplayListId == -1 ))
+			{
+
+				iSetCacheId = targetSet.getCacheId();
+
+				//	    			System.out.print("H:");
+				//	    			for ( int i=0;i<iHistogramIntervalls.length; i++) {
+				//	    				System.out.print(";" +
+				//	    						Integer.toString(iHistogramIntervalls[i]) );
+				//	    			}
+				System.out.println(" UPDATED!");
+				
+				createDisplayLists( gl );
+			}
+		  
 		  if ( refBufferStorage == null ) {
 			  return;
 		  }
 		
-		  displayHeatmap( gl );
+		  if (bUseGLWireframe) {
+		    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		    }
+		    
+//		    else 
+//		    {
+//		    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+//		    }     
+		  
+
+		  gl.glDisable( GL.GL_LIGHTING );
+		  
+		  gl.glCallList( iHeatmapDisplayListId );
+		  
+		  gl.glEnable( GL.GL_LIGHTING );
 		  
 		//System.err.println(" Heatmap2D ! .render(GLCanvas canvas)");
 	}
@@ -264,7 +307,9 @@ implements IGLCanvasUser
 
 	public void destroy()
 	{
-		refGeneralManager.getSingelton().logMsg( "GLCanvasHeatmap2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
+		refGeneralManager.getSingelton().logMsg( 
+				"GLCanvasHeatmap2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
+				LoggerType.FULL );
 	}
 	
 
@@ -276,7 +321,7 @@ implements IGLCanvasUser
 
 
 	 
-	  refGeneralManager.getSingelton().logMsg( "HEATMAP: set  " );
+	  refGeneralManager.getSingelton().logMsg( "HEATMAP: set  ", LoggerType.FULL );
 
 
 	  
@@ -318,6 +363,7 @@ implements IGLCanvasUser
 	  
 	  if ( fValue < 0.0f ) {
 		  // range [fColorMappingLowValue..fColorMappingMiddleValue[
+		  
 		  float fScale = (fColorMappingLowRange + fValue) * fColorMappingLowRangeDivisor;		  
 		  gl.glColor3f( 0, 1.0f - fScale, 0 );
 		  
@@ -326,156 +372,114 @@ implements IGLCanvasUser
 	  //else
 	  
 	  //range [fColorMappingMiddleValue..fColorMappingHighValue]
-	  
 	  float fScale = (fValue) * fColorMappingHighRangeDivisor;
+	  
 	  gl.glColor3f( fScale, 0, 0 );
 	  
   }
   
   public void displayHeatmap(GL gl) {
 
-	    //gl.glClear(GL.GL_COLOR_BUFFER_BIT|GL.GL_DEPTH_BUFFER_BIT);
+	  /**
+	   * Get data from Set...
+	   */
+		if (this.targetSet != null)
+		{
 
+			IStorage refStorage = this.targetSet.getStorageByDimAndIndex(0, 0);
 
-	    if (bUseGLWireframe) {
-	    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-	    }
-	    
-//	    else 
-//	    {
-//	    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-//	    }     
-	    
+			int[] dataArrayInt = refStorage.getArrayInt();
 
-	    // draw background
-//	    gl.glDisable(GL.GL_DEPTH_TEST);
-//	    drawSkyBox(gl);
-//	    gl.glEnable(GL.GL_DEPTH_TEST);
+			IVirtualArray refVArray = this.targetSet.getSelectionByDimAndIndex(
+					0, 0);
 
+			IVirtualArrayIterator iter = refVArray.iterator();
 
-	    gl.glDisable( GL.GL_LIGHTING );
+			int[] i_dataValues = refStorage.getArrayInt();
 
-	    if ( this.targetSet != null ) {
-	    	
-	    	IStorage refStorage = this.targetSet.getStorageByDimAndIndex(0,0);
-	    	
-	    	int[] dataArrayInt = refStorage.getArrayInt();
-	    	
-	    	IVirtualArray refVArray = this.targetSet.getSelectionByDimAndIndex(0,0);
-	    	
-	    	IVirtualArrayIterator iter = refVArray.iterator();
-	    	
-	    	int[] i_dataValues = refStorage.getArrayInt();
-	    	
-	    	
-	    	
-	    	if ( i_dataValues != null ) {
-	    		
-		    	
-		    	if ( targetSet.hasCacheChanged( iSetCacheId ) ) {
-		    		
-	    			iSetCacheId = targetSet.getCacheId();
-	    			
-//	    			System.out.print("H:");
-//	    			for ( int i=0;i<iHistogramIntervalls.length; i++) {
-//	    				System.out.print(";" +
-//	    						Integer.toString(iHistogramIntervalls[i]) );
-//	    			}
-	    			System.out.println(" UPDATED!");
-	    		}
-		    	//System.out.print("-");
-	    		
-		    	/**
-		    	 * force update ...
-		    	 */
+			if (i_dataValues != null)
+			{
 
-		    	
-		    	int iCountValuesInRow = 0;
-		    	
-		    	
-		    				    		
-		    		
-			    	
-			    	float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN]) / 
-			    		(float) (iValuesInRow + 1);
-			    	float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 
-			    		(float) (iValuesInColum + 1);
-			    	
-			    	float fNowX = viewingFrame[X][MIN];
-			    	float fNextX = fNowX + fIncX;
-			    	
-			    	float fNowY = viewingFrame[Y][MIN];
-			    	float fNextY = fNowY + fIncY;
-			    	
-			    	gl.glNormal3f( 0.0f, 0.0f, 1.0f );
-		        	
-		        while (iter.hasNext()) { 
-		        	
-			    
-					    gl.glBegin( GL.GL_TRIANGLE_FAN );
-//					    gl.glBegin( GL.GL_LINE_LOOP );
-					    			  
+				if (targetSet.hasCacheChanged(iSetCacheId))
+				{
+
+					iSetCacheId = targetSet.getCacheId();
+
+					//	    			System.out.print("H:");
+					//	    			for ( int i=0;i<iHistogramIntervalls.length; i++) {
+					//	    				System.out.print(";" +
+					//	    						Integer.toString(iHistogramIntervalls[i]) );
+					//	    			}
+					System.err.println(" UPDATED inside DispalyList!");
+				}
+				//System.out.print("-");
+
+				/**
+				 * force update ...
+				 */
+
+				int iCountValuesInRow = 0;
+
+				float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
+						/ (float) (iValuesInRow + 1);
+				float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
+						/ (float) (iValuesInColum + 1);
+
+				float fNowX = viewingFrame[X][MIN];
+				float fNextX = fNowX + fIncX;
+
+				float fNowY = viewingFrame[Y][MIN];
+				float fNextY = fNowY + fIncY;
+
+				gl.glNormal3f(0.0f, 0.0f, 1.0f);
+
+				while (iter.hasNext())
+				{
+
+					gl.glBegin(GL.GL_TRIANGLE_FAN);
+					// gl.glBegin( GL.GL_LINE_LOOP );
+
+					colorMapping(gl, dataArrayInt[iter.next()]);
+
+					gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
+
+					gl.glEnd();
 					
-					    colorMapping(gl, dataArrayInt[ iter.next() ] );
-					    	
-					    
-					    
-					    
-							gl.glVertex3f( fNowX, fNowY , viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNextX, fNowY, viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNextX, fNextY, viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNowX, fNextY, viewingFrame[Z][MIN] );						
-							
-							fNowX  += fIncX;
-							fNextX += fIncX;
-													
-						gl.glEnd();
-			    			   
-		    	
-//			    	gl.glColor3f( 0.1f, 0.1f, 1.0f );
-//			    	gl.glBegin( GL.GL_LINE_LOOP );
-//				    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-//						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-//						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
-//						gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
-//					gl.glEnd();
-					
+					fNowX = fNextX;
+					fNextX += fIncX;
 					iCountValuesInRow++;
-					
-					  if ( iCountValuesInRow > iValuesInRow ) 
-		    		  {
-						  fNowY  += fIncY;
-						  fNextY += fIncY;
-							
-						  fNowX = viewingFrame[X][MIN];
-					      fNextX = fNowX + fIncX;
-							
-						  iCountValuesInRow = 0;
-		    		  }
-					  
-		    	} //end: if
-		    	
-	    	} // end while
-	    	
-	    	float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
-	    	
-	    	gl.glColor3f( 1.0f, 1.0f, 0.1f );
-	    	gl.glBegin( GL.GL_LINE_LOOP );
-		    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], fBias_Z );
-				gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], fBias_Z );
-				gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], fBias_Z );
-				gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], fBias_Z );
-			gl.glEnd();
-	    	
-	    }
 
-	    
-			
-	    gl.glEnable( GL.GL_LIGHTING );
-	    
-	    //gl.glMatrixMode(GL.GL_MODELVIEW);
-	    //gl.glPopMatrix();
-	  }
+					if (iCountValuesInRow > iValuesInRow)
+					{
+						fNowY = fNextY;
+						fNextY += fIncY;
+
+						fNowX = viewingFrame[X][MIN];
+						fNextX = fNowX + fIncX;
+
+						iCountValuesInRow = 0;
+					} // if (iCountValuesInRow > iValuesInRow)
+
+				} //while (iter.hasNext())
+
+			} // if (i_dataValues != null)
+
+			float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
+
+			gl.glColor3f(1.0f, 1.0f, 0.1f);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], fBias_Z);
+			gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], fBias_Z);
+			gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], fBias_Z);
+			gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], fBias_Z);
+			gl.glEnd();
+
+		} // if (this.targetSet != null)
+
+	}
   
 	public void displayChanged(GLAutoDrawable drawable, 
 			final boolean modeChanged, 

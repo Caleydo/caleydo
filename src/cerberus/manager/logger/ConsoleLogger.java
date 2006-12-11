@@ -55,6 +55,8 @@ implements ILoggerManager {
 	 */
 	public void setLogLevel( final LoggerType level) {
 		this.logLevel = level;
+		
+		logMsg("Set Logger level to [" + level + "]", LoggerType.VERBOSE );
 	}
 	
 	/* (non-Javadoc)
@@ -69,6 +71,7 @@ implements ILoggerManager {
 	 */
 	public void setSystemLogLevel( final LoggerType systemLogLevel) {		
 		this.systemLogLevel= systemLogLevel;
+		logMsg("Set Logger systemLogLevel to [" + systemLogLevel + "]", LoggerType.VERBOSE );
 	}
 	
 	public LoggerType getSystemLogLevel() {		
