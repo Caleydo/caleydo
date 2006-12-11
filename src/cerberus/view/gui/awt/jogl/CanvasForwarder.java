@@ -237,7 +237,7 @@ implements GLEventListener, IJoglMouseListener {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity(); // Reset the current modelview matrix
 
-		gl.glTranslatef(view_x, view_y, view_z - 6.0f); // 10.0
+		gl.glTranslatef(view_x, view_y, view_z - 10.0f);
 
 		gl.glPushMatrix();
 		gl.glRotatef(view_rotx, 1.0f, 0.0f, 0.0f);
