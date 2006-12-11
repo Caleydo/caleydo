@@ -40,7 +40,11 @@ implements IGLCanvasUser
 		openGLCanvasDirector =
 			setGeneralManager.getSingelton().getViewGLCanvasManager().getGLCanvasDirector( iParentContainerId );
 		
+		assert openGLCanvasDirector != null : "parent GLCanvas Director is null!";
+		
 		this.canvas = openGLCanvasDirector.getGLCanvas();
+		
+		assert canvas != null : "canvas from parten ist null!";
 	}
 
 	public final boolean isInitGLDone() 
@@ -50,6 +54,17 @@ implements IGLCanvasUser
 	
 	protected final void setInitGLDone() 
 	{
+		if ( bInitGLcanvawsWasCalled ) {
+			System.err.println(" called setInitGLDone() for more than once! " + 
+					this.getClass().getSimpleName()  +
+					" " + this.getId());
+		}
+		else 
+		{
+			System.out.println(" called setInitGLDone() " + 
+					this.getClass().getSimpleName() + 
+					" " + this.getId() );
+		}
 		bInitGLcanvawsWasCalled = true;
 	}
 	

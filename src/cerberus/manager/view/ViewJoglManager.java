@@ -415,14 +415,16 @@ implements IViewManager, IViewGLCanvasManager {
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLCanvasUser() id " + iCanvasId
-							+ " is already registered!");
+							+ " is already registered!",
+							LoggerType.MINOR_ERROR );
 			return false;
 		}
 		if (hashGLCanvasUser.containsValue(canvas))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLCanvasUser() canvas bound to id " + iCanvasId
-							+ " is already registered!");
+							+ " is already registered!",
+							LoggerType.MINOR_ERROR );
 			return false;
 		}
 

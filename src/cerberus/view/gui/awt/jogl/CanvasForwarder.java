@@ -153,7 +153,7 @@ implements GLEventListener, IJoglMouseListener {
 		GL gl = drawable.getGL();
 
 		System.out.println("CanvasForwarder INIT GL IS: "
-				+ gl.getClass().getName());
+				+ gl.getClass().getName() + "  " + this.getClass().toString());
 
 		//gl.resizeGLScene();                      // Initialize the GL viewport
 
