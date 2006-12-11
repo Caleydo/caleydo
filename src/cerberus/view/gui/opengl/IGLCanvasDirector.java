@@ -24,6 +24,10 @@ public interface IGLCanvasDirector {
 	
 	public abstract void updateGLCanvasUser( GLAutoDrawable drawable );
 	
+	public abstract void  reshapeGLCanvasUser(GLAutoDrawable drawable, 
+			final int x, final int y, 
+			final int width, final int height);
+	
 	public abstract void displayGLChanged(GLAutoDrawable drawable, 
 			boolean modeChanged,
 			boolean deviceChanged);

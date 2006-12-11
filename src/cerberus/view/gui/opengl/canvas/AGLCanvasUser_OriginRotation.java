@@ -75,6 +75,19 @@ implements IGLCanvasUser
 		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
 	}
 	
+	public void reshape(GLAutoDrawable drawable, 
+			final int x,
+			final int y,
+			final int width,
+			final int height) {
+		
+		GL gl = canvas.getGL();
+		
+		System.err.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
+		
+		this.renderPart( gl );
+	}
+	
 	public abstract void renderPart(GL gl);
 
 //	public void update(GLAutoDrawable canvas)

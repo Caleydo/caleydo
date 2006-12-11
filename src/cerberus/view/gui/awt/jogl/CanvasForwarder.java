@@ -179,7 +179,10 @@ implements GLEventListener, IJoglMouseListener {
 		}
 	}
 
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+	public void reshape(GLAutoDrawable drawable, 
+			int x, 
+			int y, 
+			int width,
 			int height) {
 
 		System.out.println("CanvasForwarder  RESHAPE GL");
@@ -199,6 +202,15 @@ implements GLEventListener, IJoglMouseListener {
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.0f, 0.0f, -40.0f);
+		
+		if (refGLCanvasDirector != null)
+		{
+			refGLCanvasDirector.reshapeGLCanvasUser(drawable,
+					x, 
+					y, 
+					width,
+					height);
+		}
 	}
 
 	public void display(GLAutoDrawable drawable) {

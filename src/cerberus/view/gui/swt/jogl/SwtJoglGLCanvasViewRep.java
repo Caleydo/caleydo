@@ -189,6 +189,24 @@ implements IView, IGLCanvasDirector {
 		}
 	}
 	
+	public void reshapeGLCanvasUser(GLAutoDrawable drawable, 
+			final int x, final int y, 
+			final int width, final int height) {
+
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				IGLCanvasUser glCanvas = iter.next();
+				if ( glCanvas.isInitGLDone() )
+				{
+					glCanvas.render( drawable );
+				}
+			}
+		}
+	}
+	
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
@@ -243,4 +261,6 @@ implements IView, IGLCanvasDirector {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
 				iUniqueId + " ...[DONE]");
 	}
+
+	
 }

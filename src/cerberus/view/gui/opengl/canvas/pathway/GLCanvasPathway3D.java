@@ -972,4 +972,11 @@ implements IGLCanvasUser {
 	public boolean isInitGLDone() {
 		return bInitGLcanvawsWasCalled;
 	}
+
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+
+		//FIXME this is just a work around! derive from AGLCanvasUser or AGLCanvasUser_OriginRotation!
+		this.render( drawable );
+		
+	}
 }

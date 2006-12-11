@@ -3,14 +3,20 @@
  */
 package cerberus.view.gui.opengl.canvas.texture;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLException;
 
-import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureIO;
 //import javax.media.opengl.GLCanvas;
 
 //import gleem.linalg.Vec3f;
@@ -41,6 +47,10 @@ implements IGLCanvasUser
 	
 	private boolean bUseGLWireframe = false;
 	
+	private boolean bGLBindTextureOnInitGL = true;
+	
+	private int iTextureId;
+	
 	private int iSetCacheId = 0;
 	 
 	private String sTextureFileName = "";
@@ -68,14 +78,17 @@ implements IGLCanvasUser
 			0.1f, 0.9f, 0.1f,
 			0.9f, 0.1f, 0.1f };
 	
-	private int iBorderIntervallLength = 5;
-	
 	protected float[][] fAspectRatio;
 	
 	protected float[] fResolution;
 	
 	protected ISet targetSet;
 	
+	protected Texture refGLTexture = null;
+	
+	protected boolean bEnableMipMapping = false;
+	
+	public String sTextureLoadFromFile = null;
 	
 	private static final int X = GLCanvasStatics.X;
 	private static final int Y = GLCanvasStatics.Y;
@@ -114,16 +127,43 @@ implements IGLCanvasUser
 		viewingFrame[Y][MIN] = 1.0f; 
 		viewingFrame[Y][MAX] = -1.0f; 
 		
-		viewingFrame[Z][MIN] = 0.0f; 
-		viewingFrame[Z][MAX] = 0.0f; 
+		viewingFrame[Z][MIN] = -1.0f; 
+		viewingFrame[Z][MAX] = -1.0f; 
 		
 	}
 	
 
 
-	public void loadTextureFromFile( final String sTextureFromFile ) {
+	protected void loadTextureFromFile( final String sTextureFromFile ) {
 	
-		
+		try
+		{
+			refGLTexture = TextureIO.newTexture(new File(sTextureFromFile), 
+					bEnableMipMapping);
+		} 
+			catch ( FileNotFoundException fnfe) 
+		{
+			System.out.println("Error: can not find fiel for texture " + sTextureFromFile);
+		}
+			catch ( GLException gle) 
+		{
+				System.out.println("Error: GLError while accessing texture from file " + 
+						sTextureFromFile + "  " + gle.toString() );
+		}
+			catch (IOException ioe)
+		{
+			System.out.println("Error loading texture " + sTextureFromFile );
+		}
+			
+		try {
+			refGLTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+			refGLTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+		}
+		catch ( GLException gle) 
+		{
+			System.out.println("Error: GLError while accessing texture from file " + 
+					sTextureFromFile + "  " + gle.toString() );
+		}
 	}
 	
 	public void setResolution( float[] setResolution ) {
@@ -149,13 +189,25 @@ implements IGLCanvasUser
 		
 		viewingFrame[Z][MIN] = fResolution[10]; 
 		viewingFrame[Z][MAX] = fResolution[11]; 
-				
-		iCurrentHistogramLength = (int) fResolution[12]; 
-		
+			
 	}
+	
+	
+	public void setFileNameForTexture( final String sTextureLoadFromFile ) {
+		this.sTextureLoadFromFile = sTextureLoadFromFile;
+	}
+	
+	
+	public String getFileNameForTexture() {
+		return sTextureLoadFromFile;
+	}
+	
 	
 	public void reloadTexture() {
 		
+		if ( sTextureLoadFromFile != null ) {
+			loadTextureFromFile( sTextureLoadFromFile );
+		}
 	}
 	
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
@@ -187,7 +239,24 @@ implements IGLCanvasUser
 	public void init( GLAutoDrawable canvas ) {
 		setInitGLDone();
 		System.err.println(" Texture2D ! init( * )");
+		
+		reloadTexture();
+		
+		if ( bGLBindTextureOnInitGL ) {
+			final GL gl = canvas.getGL();
+			gl.glEnable(GL.GL_TEXTURE_2D);
+//			iTextureId = genTextures_Id(gl);
+//			gl.glBindTexture(GL.GL_TEXTURE_2D, iTextureId);
+//			
+			refGLTexture.bind();
+		}
 	}	
+	
+	private int genTextures_Id(GL gl) {
+        final int[] tmp = new int[1];
+        gl.glGenTextures(1, tmp, 0);
+        return tmp[0];
+    }
 	
 	@Override
 	public void renderPart(GL gl)
@@ -196,6 +265,10 @@ implements IGLCanvasUser
 		
 		gl.glTranslatef( 0,0, 0.01f);
 	
+		if ( refGLTexture == null) {
+			this.reloadTexture();
+		}
+		
 		displayHistogram( gl );
 		
 		//System.err.println(" MinMax ScatterPlot2D .render(GLCanvas canvas)");
@@ -206,7 +279,7 @@ implements IGLCanvasUser
 	{
 		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");	
 		
-		
+		reloadTexture();
 	}
 
 	public void destroy()
@@ -237,40 +310,12 @@ implements IGLCanvasUser
 //	    gl.glEnable(GL.GL_DEPTH_TEST);
 
 
-	    gl.glDisable( GL.GL_LIGHTING );
-
-	    if ( this.targetSet != null ) {
-	    	
-	    	IStorage refStorage = this.targetSet.getStorageByDimAndIndex(0,0);
-	    	
-	    	int[] i_dataValues = refStorage.getArrayInt();
-	    	
-	    	if ( i_dataValues != null ) {
-	    		
-		    	
-		    	if ( targetSet.hasCacheChanged( iSetCacheId ) ) {
-		    		
-	    			//iHistogramIntervalls = createHistogram(iHistogramSpacing);
-	    			//createHistogram( iCurrentHistogramLength );
-	    			//bUpdateHistogram = false;
-	    			
-	    			iSetCacheId = targetSet.getCacheId();
-	    			
-//	    			System.out.print("H:");
-//	    			for ( int i=0;i<iHistogramIntervalls.length; i++) {
-//	    				System.out.print(";" +
-//	    						Integer.toString(iHistogramIntervalls[i]) );
-//	    			}
-	    			System.out.println(" UPDATED!");
-	    		}
-		    	//System.out.print("-");
-	    		
-		    	/**
-		    	 * force update ...
-		    	 */
-
-		    
-	    }
+//	    gl.glDisable( GL.GL_LIGHTING );
+	    
+	    gl.glEnable( GL.GL_LIGHTING );
+	    
+	    gl.glEnable(GL.GL_TEXTURE_2D);
+	  
 	    	
     	
     	float fNowX = viewingFrame[X][MIN];
@@ -284,31 +329,58 @@ implements IGLCanvasUser
     	
     
 //		    gl.glBegin( GL.GL_TRIANGLE_FAN );
-		    gl.glBegin( GL.GL_LINE_LOOP );
+//		    gl.glBegin( GL.GL_LINE_LOOP );
 		    			  
-		
-		    	gl.glColor3f( 1, 
-		    			1 , 
-		    			0 );
-		    
-				gl.glVertex3f( fNowX, fNowY , viewingFrame[Z][MIN] );
-				gl.glVertex3f( fNextX, fNowY, viewingFrame[Z][MIN] );
-				gl.glVertex3f( fNextX, fNextY, viewingFrame[Z][MIN] );
-				gl.glVertex3f( fNowX, fNextY, viewingFrame[Z][MIN] );						
-				
-				
-				gl.glEnd();
+//		
+//		    	gl.glColor3f( 1, 
+//		    			1 , 
+//		    			0 );
+//		    
+//				gl.glVertex3f( fNowX, fNowY , viewingFrame[Z][MIN] );
+//				gl.glVertex3f( fNextX, fNowY, viewingFrame[Z][MIN] );
+//				gl.glVertex3f( fNextX, fNextY, viewingFrame[Z][MIN] );
+//				gl.glVertex3f( fNowX, fNextY, viewingFrame[Z][MIN] );						
+//				
+//				
+//				gl.glEnd();
 				
 				System.out.println(" TEXTURE!");
+				
+				if ( refGLTexture == null ) {
+					System.err.println(" TEXTURE not bound!");
+					return;
+				}
+				
+			refGLTexture.bind();
+			
+				TextureCoords texCoords = refGLTexture.getImageTexCoords();
+
+//				System.err.println("Height: "+(float)refPathwayTexture.getImageHeight());
+//				System.err.println("Width: "+(float)refPathwayTexture.getImageWidth());
+//					
+//				System.err.println("Aspect ratio: " +fPathwayTextureAspectRatio);
+//				System.err.println("texCoords left: " +texCoords.left());
+//				System.err.println("texCoords right: " +texCoords.right());
+//				System.err.println("texCoords top: " +texCoords.top());
+//				System.err.println("texCoords bottom: " +texCoords.bottom());
+			
+				
+				 
 				
 	    //else {
 		    gl.glBegin( GL.GL_TRIANGLES );
 				gl.glNormal3f( 0.0f, 0.0f, 1.0f );
 				gl.glColor3f( 1,0,0 );
+				
+				gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
 				gl.glVertex3f( -1.0f, -1.0f, -0.5f );
 				//gl.glColor3f( 1,0,1 );
+				
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
 				gl.glVertex3f( 1.0f, 1.0f, -0.5f );
 				//gl.glColor3f( 0,1,0 );
+				
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
 				gl.glVertex3f( 1.0f, -1.0f, -0.5f );
 			gl.glEnd();
 //			
@@ -330,9 +402,9 @@ implements IGLCanvasUser
 //			gl.glEnd();
 	    //}
 	    
+		gl.glDisable( GL.GL_LIGHTING );
 			
-	    }	
-	    gl.glEnable( GL.GL_LIGHTING );
+//	    gl.glEnable( GL.GL_LIGHTING );
 	    
 	    //gl.glMatrixMode(GL.GL_MODELVIEW);
 	    //gl.glPopMatrix();
