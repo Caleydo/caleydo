@@ -22,6 +22,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -38,17 +39,26 @@ implements IGLCanvasUser
 	private boolean bUseGLWireframe = false;
 	
 	private int iSetCacheId = 0;
-	 
-	/**
-	 * Defien number of histogram slots.
-	 * Default is 0 to ensure valid settings. 
-	 * 
-	 *  @see cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
-	 */
-	private int iCurrentHistogramLength = 0;
 
+	private float fColorMappingShiftFromMean = 1.0f;
+	
+	private float fColorMappingHighValue = 1.0f;
+	private float fColorMappingLowValue = 0.0f;
+	private float fColorMappingMiddleValue = 0.25f;
+	
+	private float fColorMappingHighRangeDivisor = 1 / 0.75f;
+	private float fColorMappingLowRangeDivisor = 1 / 0.25f;
+	private float fColorMappingLowRange = 0.25f;
+	
+	/**
+	 * Stretch lowest color in order to be not Back!
+	 */
+	private float fColorMappingPercentageStretch = 0.2f;
+	
 	
 	private float [][] viewingFrame;
+	
+	private MinMaxDataInteger refMinMaxDataInteger;
 	
 	//private int iGridSize = 40;
 	
@@ -115,6 +125,7 @@ implements IGLCanvasUser
 		viewingFrame[Z][MIN] = 0.0f; 
 		viewingFrame[Z][MAX] = 0.0f; 
 		
+		refMinMaxDataInteger = new MinMaxDataInteger( 1 );
 	}
 	
 	public void renderText( GL gl, 
@@ -172,7 +183,7 @@ implements IGLCanvasUser
 		viewingFrame[Z][MIN] = fResolution[10]; 
 		viewingFrame[Z][MAX] = fResolution[11]; 
 				
-		iCurrentHistogramLength = (int) fResolution[12]; 
+		iValuesInRow = (int) fResolution[12]; 
 		
 	}
 	
@@ -191,6 +202,9 @@ implements IGLCanvasUser
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
+		
+		refMinMaxDataInteger.useSet( targetSet );
+		initColorMapping( fColorMappingShiftFromMean );
 
 	}
 	
@@ -200,6 +214,7 @@ implements IGLCanvasUser
 	 */
 	public void init( GLAutoDrawable canvas ) {
 		setInitGLDone();
+		
 	}	
 	
 	@Override
@@ -261,31 +276,60 @@ implements IGLCanvasUser
 
 
 	 
-	  refGeneralManager.getSingelton().logMsg( "HISTOGRAM: set  " );
+	  refGeneralManager.getSingelton().logMsg( "HEATMAP: set  " );
 
 
 	  
   }
 
   
-  public int getHistogramLength() {
-	  return iCurrentHistogramLength;
+  public int getHeatmapValuesInRow() {
+	  return iValuesInRow;
   }
   
-  public void setHistogramLength( final int iSetLegth ) {
+  /**
+   * 
+   * @param fColorMappingShiftFromMean 1.0f indicates no shift
+   */
+  private void initColorMapping( final float fColorMappingShiftFromMean ) {
+	    
+	  if ( refMinMaxDataInteger.isValid() )
+	  {
+		  fColorMappingLowValue = (float) refMinMaxDataInteger.getMin(0);
+		  fColorMappingHighValue = (float) refMinMaxDataInteger.getMax(0);
+		  fColorMappingMiddleValue = (float) refMinMaxDataInteger.getMean(0)*fColorMappingShiftFromMean;
+		  
+		  fColorMappingLowRange = fColorMappingMiddleValue - fColorMappingLowValue;
+		  fColorMappingHighRangeDivisor = 1.0f / (fColorMappingHighValue - fColorMappingMiddleValue);
+		  fColorMappingLowRangeDivisor = 1.0f / (fColorMappingLowRange * (1.0f + fColorMappingPercentageStretch));
+		  
+		  
+		  iValuesInColum = (int)( (float) refMinMaxDataInteger.getItems( 0 ) / (float) (iValuesInRow) ) ;
+	  }
+	  else
+	  {
+		  System.err.println("Error while init color mapping for Heatmap!");
+	  }
+  }
+  
+  private void colorMapping(final GL gl, final int iValue) {
 	  
-	  if (( iSetLegth > 0 )&&(iSetLegth < 10000 )) {
-		  iCurrentHistogramLength = iSetLegth;
-		
-		  System.out.println("set exceed range [3..10000]");
-	  }
-	  else {
+	  float fValue = fColorMappingMiddleValue - (float) iValue;
+	  
+	  if ( fValue < 0.0f ) {
+		  // range [fColorMappingLowValue..fColorMappingMiddleValue[
+		  float fScale = (fColorMappingLowRange + fValue) * fColorMappingLowRangeDivisor;		  
+		  gl.glColor3f( 0, 1.0f - fScale, 0 );
 		  
-		  System.out.println("exceed range [3..10000]");
-		  
-//		  throw new RuntimeException("setHistogramLength(" +
-//				  Integer.toString(iSetLegth) + ") exceeded range [3..10000]");
+		  return;
 	  }
+	  //else
+	  
+	  //range [fColorMappingMiddleValue..fColorMappingHighValue]
+	  
+	  float fScale = (fValue) * fColorMappingHighRangeDivisor;
+	  gl.glColor3f( fScale, 0, 0 );
+	  
   }
   
   public void displayHeatmap(GL gl) {
@@ -355,7 +399,7 @@ implements IGLCanvasUser
 			    	float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN]) / 
 			    		(float) (iValuesInRow + 1);
 			    	float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 
-			    		(float) iValuesInColum;
+			    		(float) (iValuesInColum + 1);
 			    	
 			    	float fNowX = viewingFrame[X][MIN];
 			    	float fNextX = fNowX + fIncX;
@@ -372,10 +416,8 @@ implements IGLCanvasUser
 //					    gl.glBegin( GL.GL_LINE_LOOP );
 					    			  
 					
-					    	gl.glColor3f( 0, 
-					    			((float) dataArrayInt[ iter.next() ])/29.0f, 
-					    			0 );
-					    
+					    colorMapping(gl, dataArrayInt[ iter.next() ] );
+					    	
 					    
 					    
 					    
@@ -415,12 +457,14 @@ implements IGLCanvasUser
 		    	
 	    	} // end while
 	    	
-	    	gl.glColor3f( 1.0f, 0.1f, 1.0f );
+	    	float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
+	    	
+	    	gl.glColor3f( 1.0f, 1.0f, 0.1f );
 	    	gl.glBegin( GL.GL_LINE_LOOP );
-		    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-				gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-				gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
-				gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
+		    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], fBias_Z );
+				gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], fBias_Z );
+				gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], fBias_Z );
+				gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], fBias_Z );
 			gl.glEnd();
 	    	
 	    }
@@ -437,7 +481,7 @@ implements IGLCanvasUser
 			final boolean modeChanged, 
 			final boolean deviceChanged) {
 
-		// TODO Auto-generated method stub
+		this.render( drawable );
 		
 	}
 }

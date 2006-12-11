@@ -66,6 +66,7 @@ implements ICommand {
 		GLCanvasTexture2D canvas = 
 			(GLCanvasTexture2D) openGLCanvasUser;
 				
+		canvas.setFileNameForTexture( sDetail );
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
 		canvas.setResolution( fResolution );
 		
@@ -73,7 +74,6 @@ implements ICommand {
 			refGeneralManager.getSingelton().getLoggerManager().logMsg( "CmdGLObjectTexture2D no textrue defined!");
 		}
 		
-		canvas.loadTextureFromFile( sDetail );
 	}
 
 	@Override

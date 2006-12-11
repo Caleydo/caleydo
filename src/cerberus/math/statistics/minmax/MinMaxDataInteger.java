@@ -21,6 +21,8 @@ public final class MinMaxDataInteger {
 	
 	protected float fMeanValue[];
 	
+	protected int iCountItmes[];
+	
 	private int iDimensions = -1;
 	
 	protected boolean bIsValid = false;
@@ -42,7 +44,8 @@ public final class MinMaxDataInteger {
 			
 			fMinValue = new float[iDimensions]; 
 			fMaxValue = new float[iDimensions]; 
-			fMeanValue = new float[iDimensions];					
+			fMeanValue = new float[iDimensions];	
+			iCountItmes = new int [iDimensions];
 		}	
 	}
 	
@@ -192,8 +195,11 @@ public final class MinMaxDataInteger {
 				    	
 				    	fMeanValue[iIndex] = (float) iSum / (float) iCountAllItems;
 				    	
+				    	iCountItmes[iIndex] = iCountAllItems;
+				    	
 		    		} // end: for ( int iIndex = 0; iIndex < iDimension; iIndex++ ) {
 		    					    	
+		    		
 			    	refSet.returnReadToken();
 			    	return true;
 		    	} //end: if ( refSet.getReadToken() ) {
@@ -227,5 +233,10 @@ public final class MinMaxDataInteger {
 	public float getMean( int iAtDim ) {
 		return fMeanValue[iAtDim];
 	}
+	
+	public int getItems( int iAtDim ) {
+		return iCountItmes[iAtDim];
+	}
+	
 
 }
