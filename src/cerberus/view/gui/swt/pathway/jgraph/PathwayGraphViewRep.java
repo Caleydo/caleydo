@@ -80,7 +80,7 @@ extends APathwayGraphViewRep {
 	
 	protected boolean bGraphSet = false;
 	
-	protected boolean bBackgroundOverlaySet = false;
+	protected boolean bShowBackgroundOverlay = false;
 	
 	protected GraphUndoManager refUndoManager;
 	
@@ -307,7 +307,7 @@ extends APathwayGraphViewRep {
 		    		if (iPathwayLevel >= 3)
 		    		{
 		    			//fScalingFactor = SCALING_FACTOR;
-		    			bBackgroundOverlaySet = true;
+		    			bShowBackgroundOverlay = true;
 		    			loadPathwayFromFile(sLink);
 		    		}	
 		    		else
@@ -434,7 +434,7 @@ extends APathwayGraphViewRep {
 					refGraphCell.getAttributes(), 
 					"cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView");
 
-			if (!bBackgroundOverlaySet)
+			if (!bShowBackgroundOverlay)
 			{	
 				GraphConstants.setAutoSize(changedMap, true);
 			}
@@ -590,7 +590,7 @@ extends APathwayGraphViewRep {
 		
 		refPathwayGraph.setBackgroundImage(null);
 		
-		if (bBackgroundOverlaySet == true)
+		if (bShowBackgroundOverlay == true)
 		{
 			// Build current pathway file path of GIF
 			String sPathwayImageFilePath = refCurrentPathway.getTitle();
@@ -753,10 +753,10 @@ extends APathwayGraphViewRep {
 	
 	public void showBackgroundOverlay(boolean bTurnOn) {
 		
-		if (bTurnOn == true)
+		bShowBackgroundOverlay = bTurnOn;
+		
+		if (bShowBackgroundOverlay == true)
 		{		
-			bBackgroundOverlaySet = true;
-			
 			// Build current pathway file path of GIF
 			String sPathwayImageFilePath = refCurrentPathway.getTitle();
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
@@ -774,7 +774,6 @@ extends APathwayGraphViewRep {
 		}
 		else
 		{
-			bBackgroundOverlaySet = false;
 			refPathwayGraph.setBackgroundImage(null);
 			fScalingFactor = SCALING_FACTOR;
 		}

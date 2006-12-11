@@ -12,7 +12,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.swt.toolbar.Pathway2DToolbar;
 import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
@@ -74,8 +73,9 @@ implements IView {
 						iParentContainerId, -1, -1);
 				
 		refSWTContainer = refSWTEmbeddedJoglWidget.getParentComposite();
-		refSWTContainer.setLayout(new GridLayout(1, false));
-			new Pathway3DToolbar(refSWTContainer, null);
+
+//		refSWTContainer.setLayout(new GridLayout(1, false));
+//		new Pathway3DToolbar(refSWTContainer, null);
 		
 		refSWTEmbeddedJoglWidget.createEmbeddedComposite();
 
@@ -92,5 +92,10 @@ implements IView {
 	protected void destroyOnExitViewRep() {
 		
 		refAnimator.stop();
+	}
+	
+	public Composite getSWTContainer() {
+		
+		return refSWTContainer;
 	}
 }

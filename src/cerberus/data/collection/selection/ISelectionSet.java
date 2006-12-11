@@ -15,6 +15,7 @@ import cerberus.data.collection.ISet;
  * @author kalkusch
  *
  */
-public interface ISelectionSet extends ISet {
+public interface ISelectionSet 
+extends ISet {
 
 }

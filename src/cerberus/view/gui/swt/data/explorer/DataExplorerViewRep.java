@@ -1,6 +1,5 @@
 package cerberus.view.gui.swt.data.explorer;
 
-import java.awt.EventQueue;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -11,13 +10,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.pathway.Pathway;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IVirtualArrayManager;
@@ -63,7 +60,6 @@ implements IView, IMediatorReceiver {
 	protected DataCollectionModel rootStorageModel;
 	
 	protected DataCollectionModel rootPathwayModel;
-
 
 	// private ISelectionChangedListener refISelectionChangedListener;
 
@@ -368,7 +364,7 @@ implements IView, IMediatorReceiver {
 				"Data Explorer selection update called by " 
 				+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
-
+		
 		refSWTContainer.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				
