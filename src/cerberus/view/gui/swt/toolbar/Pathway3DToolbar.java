@@ -37,6 +37,7 @@ extends AToolbar {
 				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/background_image.gif"),
 				null,
 				"Show pathway texture");
+		refShowPathwayTextureItem.setSelection(true);
 	}	
 	
 	protected void createActionListener() {

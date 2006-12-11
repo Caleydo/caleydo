@@ -11,18 +11,14 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
-//import org.eclipse.swt.layout.GridLayout;
-
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.view.gui.swt.base.AJoglViewRep;
-//import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.awt.jogl.CanvasForwarder;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-//import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway3D;
 import cerberus.util.exception.CerberusRuntimeException;
 
 public class SwtJoglGLCanvasViewRep 

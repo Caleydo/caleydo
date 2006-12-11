@@ -39,7 +39,7 @@ implements IView {
 
     protected Browser refBrowser;
     
-    protected String sUrl = "www.google.at";
+    protected String sUrl = "";
     
     protected Text refTextField;
 	
@@ -117,21 +117,21 @@ implements IView {
 				": drawView(): Load "+sUrl, 
 				LoggerType.VERBOSE );
 
-		// Check internet connection
-		try
-		{
-			InetAddress.getByName("www.google.at");
-			
-		} catch (UnknownHostException e)
-		{
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName() + 
-					": No internet connection found!", 
-					LoggerType.VERBOSE );
-			
-			refTextField.setText("No internet connection found!");
-			return;
-		}
+//		// Check internet connection
+//		try
+//		{
+//			InetAddress.getByName("www.google.at");
+//			
+//		} catch (UnknownHostException e)
+//		{
+//			refGeneralManager.getSingelton().logMsg(
+//					this.getClass().getSimpleName() + 
+//					": No internet connection found!", 
+//					LoggerType.VERBOSE );
+//			
+//			refTextField.setText("No internet connection found!");
+//			return;
+//		}
 		
 		refTextField.setText(sUrl);
 		refBrowser.setUrl(sUrl);

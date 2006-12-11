@@ -1,6 +1,7 @@
 package cerberus.manager.data.pathway;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
@@ -62,7 +63,16 @@ implements IPathwayManager {
 
 		pathwayLUT.put(iPathwayID, refCurrentPathway);
 	}
-
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getPathwayIterator()
+	 */
+	public Iterator<Pathway> getPathwayIterator() {
+		
+		return pathwayLUT.values().iterator();
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayManager#getCurrentPathway()
 	 */

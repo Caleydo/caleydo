@@ -3,7 +3,6 @@ package cerberus.view.gui.swt.base;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
-//import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sun.opengl.util.Animator;
@@ -12,7 +11,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-//import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
 //import demos.gears.Gears;
@@ -73,9 +71,6 @@ implements IView {
 						iParentContainerId, -1, -1);
 				
 		refSWTContainer = refSWTEmbeddedJoglWidget.getParentComposite();
-
-//		refSWTContainer.setLayout(new GridLayout(1, false));
-//		new Pathway3DToolbar(refSWTContainer, null);
 		
 		refSWTEmbeddedJoglWidget.createEmbeddedComposite();
 
