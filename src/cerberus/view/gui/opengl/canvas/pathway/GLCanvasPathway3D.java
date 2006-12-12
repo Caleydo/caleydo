@@ -313,12 +313,14 @@ implements IGLCanvasUser {
 		iHighlightedEnzymeNodeDisplayListId = gl.glGenLists(1);
 		
 		fPathwayNodeWidth = 
-			refRenderStyle.getEnzymeNodeWidth() / 2.0f * fScalingFactorX + 0.005f;
+			refRenderStyle.getEnzymeNodeWidth() / 2.0f * fScalingFactorX;
 		fPathwayNodeHeight = 
-			refRenderStyle.getEnzymeNodeHeight() / 2.0f * fScalingFactorY + 0.005f;
+			refRenderStyle.getEnzymeNodeHeight() / 2.0f * fScalingFactorY;
 		
 		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
-		fillHighlightedNodeDisplayList();
+		gl.glScaled(1.1f,1.1f,1.1f);
+		fillNodeDisplayList();
+		gl.glScaled(1.0f/1.1f, 1.0f/1.1f, 1.0f/1.1f);
         gl.glEndList();
 	}
 	
@@ -343,12 +345,14 @@ implements IGLCanvasUser {
 		iHighlightedCompoundNodeDisplayListId = gl.glGenLists(1);
 		
 		fPathwayNodeWidth = 
-			refRenderStyle.getCompoundNodeWidth() / 2.0f * fScalingFactorX + 0.005f;
+			refRenderStyle.getCompoundNodeWidth() / 2.0f * fScalingFactorX;
 		fPathwayNodeHeight = 
-			refRenderStyle.getCompoundNodeHeight() / 2.0f * fScalingFactorY + 0.005f;
+			refRenderStyle.getCompoundNodeHeight() / 2.0f * fScalingFactorY;
 		
 		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL.GL_COMPILE);
+		gl.glScaled(1.1f,1.1f,1.1f);
 		fillNodeDisplayList();
+		gl.glScaled(1.0f/1.1f, 1.0f/1.1f, 1.0f/1.1f);
         gl.glEndList();
 	}
 	
@@ -363,15 +367,13 @@ implements IGLCanvasUser {
 			refRenderStyle.getPathwayNodeHeight() / 2.0f * fScalingFactorY;
 
 		gl.glNewList(iContainedPathwayNodeDisplayListId, GL.GL_COMPILE);
-		fillHighlightedNodeDisplayList();
+		fillNodeDisplayList();
         gl.glEndList();
 	}
 	
 	protected void fillNodeDisplayList() {
 		
 		gl.glBegin(GL.GL_QUADS);
-		
-		gl.glTranslatef(0, 0, fZLayerValue);
 		
         // FRONT FACE
 		gl.glNormal3f( 0.0f, 0.0f, 1.0f);	
@@ -439,85 +441,6 @@ implements IGLCanvasUser {
         // Bottom Right Of The Quad (Left)
         gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight, 0.015f);	
         
-		gl.glTranslatef(0, 0, -fZLayerValue);
-       
-        gl.glEnd();
-	}
-	
-	protected void fillHighlightedNodeDisplayList() {
-		
-		gl.glBegin(GL.GL_QUADS);
-		
-		gl.glTranslatef(0, 0, fZLayerValue);
-		
-        // FRONT FACE
-		gl.glNormal3f( 0.0f, 0.0f, 1.0f);	
-		// Top Right Of The Quad (Front)
-        gl.glVertex3f(-fPathwayNodeWidth , -fPathwayNodeHeight, 0.02f);		
-        // Top Left Of The Quad (Front)
-        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);			
-        // Bottom Left Of The Quad (Front)
-        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
-		// Bottom Right Of The Quad (Front)
-        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
-
-        // BACK FACE
-        gl.glNormal3f( 0.0f, 0.0f,-1.0f);
-        // Bottom Left Of The Quad (Back)
-        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);	
-        // Bottom Right Of The Quad (Back)
-        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);	
-        // Top Right Of The Quad (Back)
-        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);			
-        // Top Left Of The Quad (Back)
-        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);			
-
-		// TOP FACE
-        gl.glNormal3f( 0.0f, 1.0f, 0.0f);	
-        // Top Right Of The Quad (Top)
-        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);	
-        // Top Left Of The Quad (Top)
-        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);	
-        // Bottom Left Of The Quad (Top)
-        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
-        // Bottom Right Of The Quad (Top)
-        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);			
-
-        // BOTTOM FACE
-        gl.glNormal3f( 0.0f,-1.0f, 0.0f);	
-        // Top Right Of The Quad (Bottom)
-        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);
-        // Top Left Of The Quad (Bottom)
-        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);
-        // Bottom Left Of The Quad (Bottom)
-        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);
-        // Bottom Right Of The Quad (Bottom)
-        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);			
-
-        // RIGHT FACE
-        gl.glNormal3f( 1.0f, 0.0f, 0.0f);	
-        // Top Right Of The Quad (Right)
-        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);
-        // Top Left Of The Quad (Right)
-        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);
-        // Bottom Left Of The Quad (Right)
-        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);
-        // Bottom Right Of The Quad (Right)
-        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);			
-        
-        // LEFT FACE
-        gl.glNormal3f(-1.0f, 0.0f, 0.0f);	
-        // Top Right Of The Quad (Left)
-        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.02f);	
-        // Top Left Of The Quad (Left)
-        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight,-0.02f);	
-        // Bottom Left Of The Quad (Left)
-        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight,-0.02f);	
-        // Bottom Right Of The Quad (Left)
-        gl.glVertex3f(-fPathwayNodeWidth, -fPathwayNodeHeight, 0.02f);	
-        
-		gl.glTranslatef(0, 0, -fZLayerValue);
-       
         gl.glEnd();
 	}
 	
