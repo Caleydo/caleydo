@@ -183,7 +183,7 @@ implements IGLCanvasUser {
 		float[] fMatShininess = {25.0f}; 
 		float[] fLightPosition = {-1.0f, 0.0f, 0.0f, 1.0f};
 		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
-		float[] fModelAmbient = {0.2f, 0.2f, 0.2f, 1.0f};
+		float[] fModelAmbient = {0.3f, 0.3f, 0.3f, 1.0f};
 		
 //		gl.glShadeModel(GL.GL_SMOOTH);
 //		gl.glEnable(GL.GL_COLOR_MATERIAL);
@@ -513,6 +513,14 @@ implements IGLCanvasUser {
 				gl.glColor3f(0.9f, 0.9f, 0.9f);
 	
 				TextureCoords texCoords = refPathwayTexture.getImageTexCoords();
+				
+				// Recalculate scaling factor
+				refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
+				fPathwayTextureAspectRatio = 
+					(float)refPathwayTexture.getImageWidth() / 
+					(float)refPathwayTexture.getImageHeight();								
+				fScalingFactorX = fPathwayTextureAspectRatio / (float)refPathwayTexture.getImageWidth();
+				fScalingFactorY = 1.0f / (float)refPathwayTexture.getImageHeight();
 				
 				gl.glBegin(GL.GL_QUADS);
 				gl.glTexCoord2f(0, texCoords.top()); 

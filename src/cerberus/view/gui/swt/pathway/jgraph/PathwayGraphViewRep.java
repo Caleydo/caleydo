@@ -360,7 +360,7 @@ extends APathwayGraphViewRep {
 				
 				refCurrentPathway = pathwayLUT.get(iPathwayId);
 			}
-			else
+			else if (refCurrentPathway == null)
 			{
 				refCurrentPathway = refGeneralManager.getSingelton().
 					getPathwayManager().getCurrentPathway();
@@ -587,6 +587,8 @@ extends APathwayGraphViewRep {
 		
 		super.loadPathwayFromFile(sFilePath);
 		
+		refCurrentPathway = null;
+		refCurrentPathwayImageMap = null;
 		resetPathway();
 	
 		iPathwayId = Integer.parseInt(
@@ -613,6 +615,8 @@ extends APathwayGraphViewRep {
 	
 	public void loadImageMapFromFile(String sImageMapPath) {
 		
+		refCurrentPathway = null;
+		refCurrentPathwayImageMap = null;
 		resetPathway();
 		
 		refGeneralManager.getSingelton().
@@ -799,8 +803,8 @@ extends APathwayGraphViewRep {
 	
 	public void resetPathway() {
 		
-		refCurrentPathway = null;
-		refCurrentPathwayImageMap = null;
+		//refCurrentPathway = null;
+		//refCurrentPathwayImageMap = null;
 		
 		refGraphModel = new DefaultGraphModel();
 		refPathwayGraph.setModel(refGraphModel);
