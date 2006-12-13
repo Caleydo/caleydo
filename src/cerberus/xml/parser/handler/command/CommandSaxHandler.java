@@ -133,7 +133,17 @@ implements IXmlParserHandler
 			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_PARENT.getXmlKey(), 
 					CommandQueueSaxType.TAG_PARENT.getDefault(),
+					ParameterHandlerType.INT );
+			
+			phAttributes.setValueBySaxAttributes( attrs,
+					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey(), 
+					CommandQueueSaxType.TAG_GLCANVAS.getDefault(),
 					ParameterHandlerType.INT );	
+			
+			phAttributes.setValueBySaxAttributes( attrs,
+					CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey(), 
+					CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getDefault(),
+					ParameterHandlerType.INT );				
 			
 			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey(), 
