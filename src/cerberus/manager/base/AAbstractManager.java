@@ -29,8 +29,11 @@ public abstract class AAbstractManager implements IAbstractManager  {
 	 */
 	protected AAbstractManager( final IGeneralManager setGeneralManager,
 			final int iUniqueId_type_offset ) {
-		refGeneralManager = setGeneralManager;
 		
+		assert setGeneralManager != null : "Can not handle null refernence to IGeneralManager!";
+		
+		refGeneralManager = setGeneralManager;
+				
 		iUniqueId_current = iUniqueId_type_offset * 
 		IGeneralManager.iUniqueId_TypeOffset +
 		setGeneralManager.getSingelton().getNetworkPostfix();
