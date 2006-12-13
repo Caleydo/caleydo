@@ -115,6 +115,7 @@ implements IViewManager, IViewGLCanvasManager {
 		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
 
+
 	public boolean hasItem(int iItemId) {
 
 		if (hashViewId2View.containsKey(iItemId))
@@ -167,12 +168,15 @@ implements IViewManager, IViewGLCanvasManager {
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
 
+		assert iItemId != 0 : "registerItem(Object,int) must not use iItemId==0";
+		
 		IView registerView = (IView) registerItem;
 
 		hashViewId2View.put(iItemId, registerView);
 
 		refGeneralManager.getSingelton().logMsg(
-				"registerItem( " + iItemId + " ) as View", LoggerType.VERBOSE);
+				"registerItem( " + iItemId + " ) as View", 
+				LoggerType.VERBOSE);
 
 		return true;
 	}
@@ -341,6 +345,9 @@ implements IViewManager, IViewGLCanvasManager {
 
 	public boolean registerGLCanvas(final GLCanvas canvas, final int iCanvasId) {
 
+		assert iCanvasId != 0 : "registerItem(Object,int) must not use iItemId==0";
+		
+		
 		if (hashGLCanvas.containsKey(iCanvasId))
 		{
 			refGeneralManager.getSingelton().logMsg(
@@ -411,6 +418,8 @@ implements IViewManager, IViewGLCanvasManager {
 	public boolean registerGLCanvasUser(final IGLCanvasUser canvas,
 			final int iCanvasId) {
 
+		assert iCanvasId != 0 : "registerItem(Object,int) must not use iItemId==0";
+				
 		if (hashGLCanvasUser.containsKey(iCanvasId))
 		{
 			refGeneralManager.getSingelton().logMsg(
@@ -475,24 +484,26 @@ implements IViewManager, IViewGLCanvasManager {
 	 * Register a new GLEventListener with a new Id.
 	 */
 	public boolean registerGLEventListener(GLEventListener canvasListener,
-			int iId) {
+			int iGLEventListenerId) {
 
-		if (hashGLEventListener.containsKey(iId))
+		assert iGLEventListenerId != 0 : "registerItem(Object,int) must not use iItemId==0";		
+		
+		if (hashGLEventListener.containsKey(iGLEventListenerId))
 		{
 			refGeneralManager.getSingelton().logMsg(
-					"registerGLEventListener() id " + iId
+					"registerGLEventListener() id " + iGLEventListenerId
 							+ " is already registered!");
 			return false;
 		}
 		if (hashGLEventListener.containsValue(canvasListener))
 		{
 			refGeneralManager.getSingelton().logMsg(
-					"registerGLEventListener() canvas bound to id " + iId
+					"registerGLEventListener() canvas bound to id " + iGLEventListenerId
 							+ " is already registered!");
 			return false;
 		}
 
-		hashGLEventListener.put(iId, canvasListener);
+		hashGLEventListener.put(iGLEventListenerId, canvasListener);
 
 		return true;
 	}

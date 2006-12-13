@@ -47,7 +47,10 @@ implements ICommand {
 							iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
-		
+
+		/**
+		 * Register this new SwtJoglGLCanvasViewRep to ViewManager...
+		 */
 		viewManager.registerItem(
 				swtGLCanvasView, 
 				iUniqueTargetId, 

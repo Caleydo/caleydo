@@ -111,9 +111,12 @@ implements ISWTGUIManager {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.ISWTGUIManager#createWindow(int, java.lang.String, java.lang.String)
 	 */
-	public Shell createWindow(int iUniqueId, String sLabel,
+	public Shell createWindow(int iUniqueId,
+			String sLabel,
 			String sLayoutAttributes) {
 
+		assert iUniqueId != 0 :"createWindow() iUniqueId must not be 0!";
+		
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
 		refNewShell.setMaximized(true);
