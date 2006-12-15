@@ -36,6 +36,10 @@
                   WINDOW:    xx331
                   CONTAINER: xx341
                   VIEW       xx401
+                  
+      gene_id:    GENE_ID    xx666
+      kegg_id:    KEGG_ID    xx666
+      
       parent:     <INTEGER>
       label:      <String>	
   
