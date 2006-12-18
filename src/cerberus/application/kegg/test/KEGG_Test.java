@@ -10,40 +10,38 @@ package cerberus.application.kegg.test;
 
 import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
-import keggapi.SSDBRelation;
 
 class KEGG_Test {
-        public static void main(String[] args) throws Exception {
-                KEGGLocator    locator  = new KEGGLocator();
-                KEGGPortType   serv     = locator.getKEGGPort();
 
-                String         query    = args[0];
-                SSDBRelation[] results  = null;
+	public static void main(String[] args) throws Exception {
 
-                results = serv.get_best_neighbors_by_gene(query, 1, 50);
+		KEGGLocator locator = new KEGGLocator();
+		KEGGPortType serv = locator.getKEGGPort();
 
-                for (int i = 0; i < results.length; i++) {
-                        String gene1  = results[i].getGenes_id1();
-                        String gene2  = results[i].getGenes_id2();
-                        int    score  = results[i].getSw_score();
-                        System.out.println(gene1 + "\t" + gene2 + "\t" + score);
-                }
-        }
+		String[] res = new String[50];
+		
+		// Returns all the GENES entry IDs in E.coli genome which are assigned
+		// EC number ec:1.2.1.1
+		res = serv.get_genes_by_enzyme("ec:3.3.1.1", "hsa");
+
+		for (int i = 0; i < res.length; i++)
+		{
+			System.out.println("Enzyme 3.3.1.1 is activated by gene with geneID: "
+					+res[i]);
+		}
+	}
 }
 
-/*import keggapi.*;
-
-class KEGG_Test {
-        public static void main(String[] args) throws Exception {
-                KEGGLocator  locator = new KEGGLocator();
-                KEGGPortType serv = locator.getKEGGPort();
-
-                String   query   = "eco:b1002";
-                String[] results = serv.get_genes_by_pathway(query);
-                
-                System.out.println("here we go...");
-                for (int i = 0; i < results.length; i++) {
-                        System.out.println(results[i]);
-                }
-        }
-}*/
+/*
+ * import keggapi.*;
+ * 
+ * class KEGG_Test { public static void main(String[] args) throws Exception {
+ * KEGGLocator locator = new KEGGLocator(); KEGGPortType serv =
+ * locator.getKEGGPort();
+ * 
+ * String query = "eco:b1002"; String[] results =
+ * serv.get_genes_by_pathway(query);
+ * 
+ * System.out.println("here we go..."); for (int i = 0; i < results.length; i++) {
+ * System.out.println(results[i]); } } }
+ */
