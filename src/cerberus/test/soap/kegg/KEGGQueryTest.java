@@ -6,12 +6,12 @@
  *  creation date: 03-07-2006
  *  
  */
-package cerberus.application.kegg.test;
+package cerberus.test.soap.kegg;
 
 import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
 
-class KEGG_Test {
+class KEGGQueryTest {
 
 	public static void main(String[] args) throws Exception {
 
