@@ -835,7 +835,7 @@ extends APathwayGraphViewRep {
 		// Set edges to visible
 		refGraphLayoutCache.setVisible(
 				vecReactionEdges.toArray(), false);
-		refGraphLayoutCache.setVisible(
-				vecRelationEdges.toArray(), false);
+//		refGraphLayoutCache.setVisible(
+//				vecRelationEdges.toArray(), false);
 	}
 }
