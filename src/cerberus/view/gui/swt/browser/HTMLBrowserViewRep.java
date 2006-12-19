@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -133,8 +134,18 @@ implements IView {
 //			return;
 //		}
 		
-		refTextField.setText(sUrl);
-		refBrowser.setUrl(sUrl);
+		try {
+			refTextField.setText(sUrl);				
+			refBrowser.setUrl(sUrl);
+			//refBrowser.refresh();
+		} 
+			catch (SWTException swte) 
+		{
+				refGeneralManager.getSingelton().logMsg(
+						this.getClass().getSimpleName() + 
+						": error while setURL ["+sUrl + "]", 
+						LoggerType.STATUS );
+		}
 	}
 
 	public void retrieveGUIContainer() {
