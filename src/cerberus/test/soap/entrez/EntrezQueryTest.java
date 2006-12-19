@@ -17,36 +17,41 @@ public class EntrezQueryTest {
         	
             EUtilsServiceLocator service = new EUtilsServiceLocator();
             EUtilsServiceSoap utils = service.geteUtilsServiceSoap();
-            ESummaryRequest parameters = new ESummaryRequest();
-            parameters.setDb("gene");
-            parameters.setId("65250");
-            ESummaryResult res = utils.run_eSummary(parameters);
             
-            // results output
-            for(int i=0; i<res.getDocSum().length; i++)
-            {
-                System.out.println("ID: "+res.getDocSum()[i].getId());
-                for(int k=0; k<res.getDocSum()[i].getItem().length; k++)
-                {
-                	System.out.print(res.getDocSum()[i].getItem()[k].getName() +": ");
-                    System.out.println(res.getDocSum()[i].getItem()[k].get_any()[0].getValue());
-                }
-            }
-            
-//            // call NCBI EFetch utility
-//            EFetchRequest parameters = new EFetchRequest();
-//            parameters.setDb("nucleotid");
+//            ESummaryRequest parameters = new ESummaryRequest();
+//            parameters.setDb("gene");
 //            parameters.setId("65250");
-////            parameters.setRettype("xml");
-//            EFetchResult res = utils.run_eFetch(parameters);
+//            ESummaryResult res = utils.run_eSummary(parameters);
+//            
 //            // results output
-//            for(int i=0; i<res.getGBSet().getGBSeq().length; i++)
+//            for(int i=0; i<res.getDocSum().length; i++)
 //            {
-//            	System.out.println("BLA: " +res.getGBSet().getGBSeq()[i].getGBSeq_accessionVersion());
-////                System.out.println("ID: "+res.getPubmedArticleSet().getPubmedArticle()[i].getMedlineCitation().getPMID());
-////                System.out.println("Abstract: "+res.getPubmedArticleSet().getPubmedArticle()[i].getMedlineCitation().getArticle().get_abstract().getAbstractText());
-////                System.out.println("--------------------------\n");
+//                System.out.println("ID: "+res.getDocSum()[i].getId());
+//                for(int k=0; k<res.getDocSum()[i].getItem().length; k++)
+//                {
+//                	System.out.print(res.getDocSum()[i].getItem()[k].getName() +": ");
+//                    System.out.println(res.getDocSum()[i].getItem()[k].get_any()[0].getValue());
+//                }
 //            }
+            
+            String sAccession = null;
+            int iGeneID = 65250;
+            
+            // call NCBI EFetch utility
+            EFetchRequest parameters = new EFetchRequest();
+            parameters.setDb("gene");
+            parameters.setId(Integer.toString(iGeneID));
+            parameters.setRettype("xml");
+            EFetchResult res = utils.run_eFetch(parameters);
+
+            for (int iGeneCount = 0; iGeneCount < res.getEntrezgeneSet().getEntrezgene().length; iGeneCount++)
+            {
+            	sAccession = res.getEntrezgeneSet().getEntrezgene(0).getEntrezgene_comments().
+            		getGeneCommentary(2).getGeneCommentary_comment().getGeneCommentary(0).
+            			getGeneCommentary_products().getGeneCommentary(0).getGeneCommentary_accession();
+            	
+            	System.out.println("Accession number for gene with GeneId " +iGeneID +" is: " +sAccession);
+            }	
         }
         catch(Exception e) { System.out.println(e.toString()); }
     }
