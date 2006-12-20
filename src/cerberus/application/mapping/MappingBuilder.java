@@ -4,11 +4,8 @@ import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceLocator;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceSoap;
 import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchRequest;
 import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchResult;
-import gov.nih.nlm.ncbi.www.soap.eutils.efetch.Entrezgene_commentsType;
 import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GeneCommentaryType;
-import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GeneCommentary_typeType;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -72,9 +69,6 @@ public class MappingBuilder {
 		for (int iGeneIndex = 0; iGeneIndex < strArHomeSapiensGenes.length; 
 			iGeneIndex++)
 		{
-			if (iGeneIndex == 20)
-				break;
-			
 			strGeneID = strArHomeSapiensGenes[iGeneIndex];
 			
 			System.out.println("Getting enzymes for gene: "+strGeneID);
