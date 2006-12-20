@@ -24,7 +24,6 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader;
 
-
 /**
  * @author kalkusch
  *
@@ -55,6 +54,8 @@ extends AMicroArrayLoader {
 	 */
 	public MicroArrayLoader1Storage(IGeneralManager setGeneralManager) {
 		super( setGeneralManager );
+		
+		this.bRequiredSizeOfReadableLines = true;
 	}
 	
 	/**
@@ -124,6 +125,8 @@ extends AMicroArrayLoader {
 			final int iNumberOfLinesInFile ) 
 		throws IOException {
 
+		allocateStorageBufferForTokenPattern();
+		
 		/**
 		 * Consistency check: is a Set defined?
 		 */
@@ -149,6 +152,13 @@ extends AMicroArrayLoader {
 		    StringBuffer strLineBuffer = new StringBuffer();
 		    
 			String sLine;
+			
+			/**
+			 * progress bar init
+			 */
+			progressBarSetStoreInitTitle("load " + this.getFileName(),
+					0,  // reset progress bar to 0
+					getLinesInCurrentFileToBeRead());
 			
 			
 		    while ( ((sLine = brFile.readLine()) != null)&&
@@ -257,6 +267,7 @@ extends AMicroArrayLoader {
 					
 					iLineInFile_CurrentDataIndex++;
 					
+					progressBarStoredIncrement();
 					
 				} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
 //				else {
@@ -275,7 +286,13 @@ extends AMicroArrayLoader {
 				this.iStartParsingAtLine + " -> " +
 				this.iStopParsingAtLine +  "] stoped at line #" +
 				(this.iLineInFile-1),
-				LoggerType.VERBOSE );
+				LoggerType.VERBOSE );				
+		
+		/**
+		 * reset progressbar...
+		 */
+		progressBarResetTitle();		
+		progressBarIncrement(5);
 		
 		return true;
 	}

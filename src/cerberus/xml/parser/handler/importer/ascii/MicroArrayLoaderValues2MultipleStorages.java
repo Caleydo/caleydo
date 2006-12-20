@@ -70,7 +70,8 @@ extends AMicroArrayLoader {
 			String setFileName) {
 
 		super(setGeneralManager, setFileName); 
-		// TODO Auto-generated constructor stub
+	
+		super.bRequiredSizeOfReadableLines = true;
 	}
 	
 	
@@ -150,6 +151,8 @@ extends AMicroArrayLoader {
 		throws IOException 
 	{
 
+		allocateStorageBufferForTokenPattern();
+		
 		/**
 		 * Consistency check: is a Set defined?
 		 */
@@ -180,6 +183,14 @@ extends AMicroArrayLoader {
 		ParserTokenHandler bufferAllocationTokenInit;
 		
 		Vector <StorageType> vecBuffersTorage = new Vector <StorageType>();
+		
+		/**
+		 * progress bar init
+		 */
+		progressBarSetStoreInitTitle("load " + this.getFileName(),
+				0,  // reset progress bar to 0
+				refArrayDataStorage.length );
+		
 		
 		for ( int i=0; i < refArrayDataStorage.length; i++ ) 
 		{ 			
@@ -360,13 +371,17 @@ extends AMicroArrayLoader {
 
 						} // end switch
 
-					} catch (NoSuchElementException nsee)
+					} 
+					catch (NoSuchElementException nsee)
 					{
 						/*
 						 * no ABORT was set. since no more tokens are in
 						 * ParserTokenHandler skip rest of line..
 						 */
 						bMaintainLoop = false;
+					}
+					catch (NumberFormatException nfe) {
+						System.err.println("Can not parse element " + nfe.getMessage() );
 					}
 
 				} // end of: while (( strToken.hasMoreTokens()
@@ -379,6 +394,8 @@ extends AMicroArrayLoader {
 
 			// iLineInFile++;
 			lineInFile++;
+			
+			super.progressBarStoredIncrement();
 
 		} // end: while ((sLine = brFile.readLine()) != null) {
 
@@ -393,6 +410,9 @@ extends AMicroArrayLoader {
 				this.iStopParsingAtLine + "]",
 				LoggerType.VERBOSE);
 
+		super.progressBarResetTitle();
+		super.progressBarIncrement( 10 );
+		
 		return true;
 	}
 

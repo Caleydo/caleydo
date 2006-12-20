@@ -49,6 +49,8 @@ public class SWTGUIManager
 extends AAbstractManager 
 implements ISWTGUIManager {
 
+	public static final int PROGRESSBAR_MAXIMUM = 200;
+	
 	/**
 	 * SWT Display represents a thread.
 	 */
@@ -329,18 +331,18 @@ implements ISWTGUIManager {
 	 * @see cerberus.manager.ISWTGUIManager#createLoadingProgressBar()
 	 */
 	public void createLoadingProgressBar() {
-		
-		refLoadingProgressBarWindow = new Shell(refDisplay);
+				
+		refLoadingProgressBarWindow = new Shell(refDisplay, SWT.TITLE | SWT.BORDER);
 		refLoadingProgressBarWindow.setMaximized(false);
 		refLoadingProgressBarWindow.setText("Loading cerberus...");
 		
 		refLoadingProgressBar = 
-			new ProgressBar(refLoadingProgressBarWindow, SWT.SMOOTH);
-		refLoadingProgressBar.setBounds(10, 10, 200, 40);
-		refLoadingProgressBar.setSelection(50);
+			new ProgressBar(refLoadingProgressBarWindow, SWT.SMOOTH );
+		refLoadingProgressBar.setBounds(10, 10, 430, 40);
+		refLoadingProgressBar.setSelection(10);
 		
-		refLoadingProgressBarWindow.setBounds(500, 500, 230, 90);
-		refLoadingProgressBarWindow.open();
+		refLoadingProgressBarWindow.setBounds(500, 500, 460, 90);
+		refLoadingProgressBarWindow.open();			
 	}
 	
 	/*
@@ -352,12 +354,28 @@ implements ISWTGUIManager {
 		if (refLoadingProgressBar == null)
 			return false;
 		
-		if (iPercentage == 0 || iPercentage > 100)
+		if (iPercentage < 0 || iPercentage > PROGRESSBAR_MAXIMUM)
 			return false;
 		
 		refLoadingProgressBar.setSelection(iPercentage);
+		refLoadingProgressBar.update();
 			
 		return true;
+	}
+	
+	public String setLoadingProgressBarTitle(final String sText, final int iPosition ) {
+		
+		if (refLoadingProgressBarWindow == null)
+			return null;
+		
+		refLoadingProgressBar.setSelection( iPosition );
+		
+		String sCurrentText = refLoadingProgressBarWindow.getText();
+		
+		refLoadingProgressBarWindow.setText( sText );
+		refLoadingProgressBarWindow.update();
+					
+		return sCurrentText;
 	}
 	
 	/*

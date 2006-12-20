@@ -28,6 +28,7 @@ public enum CommandQueueSaxType
 	 */
 	LOAD_DATA_FILE("cmd","type",""),
 	LOAD_DATA_FILE_N_STORAGES("cmd","type",""),
+	LOAD_LOOKUP_TABLE_FILE("cmd","type",""),
 	//OPEN_VIEW("cmd","type"),
 	
 	NO_OPERATION("cmd","type","NO_OPERATION"),

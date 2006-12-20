@@ -1,0 +1,97 @@
+
+
+2006_12_19#0001: [OPEN] New frame ist not created by FrameManager
+
+
+cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
+
+public void showOverviewMapInNewWindow(Dimension dim) {
+		
+        JFrame wnd = new JFrame();
+        wnd.setLocation(800, 500);
+        wnd.setSize(dim);
+        wnd.setVisible(true);
+        
+		wnd.add(refOverviewPanel);
+	}
+	
+	
+2006_12_19#0002: [OPEN] Loading from file ist not done via Command
+
+cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
+
+public void loadPathwayFromFile(String sFilePath) { ... }
+
+
+
+	
+2006_12_19#0003: [OPEN] Loading image ist not done via Command
+
+cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
+
+public void loadImageMapFromFile(String sImageMapPath) { ... }
+
+
+
+2006_12_19#0004: [OPEN] calling refGraphLayoutCache.setVisible( .. ) twice!
+
+cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
+
+public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
+		
+		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"Load background pathway image from file: " 
+				+sPathwayImageFilePath);
+		
+		// Set background image
+		refPathwayGraph.setBackgroundImage(
+				new ImageIcon(sPathwayImageFilePath));
+
+		// Set scaling factor so that background image is an direct overlay
+		fScalingFactor = 1.0f;
+		
+		// Set edges to visible
+		refGraphLayoutCache.setVisible(
+				vecReactionEdges.toArray(), false);
+		refGraphLayoutCache.setVisible(
+				vecRelationEdges.toArray(), false);
+	}
+	
+	
+2006_12_19#0005: [OPEN] nested class! Export to new file probably better!
+
+cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
+
+		public void initView() {
+		
+		class PathwayMarqueeHandler 
+		extends BasicMarqueeHandler { ..}
+		
+		}
+		
+		
+2006_12_19#0006: [OPEN] need do create commadn for calling URL in browser!
+
+cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
+
+public void loadNodeInformationInBrowser(final String sUrl) {
+		
+		// Load node information in browser
+		final IViewManager tmpViewManager = refGeneralManager.getSingelton().
+			getViewGLCanvasManager();					
+    
+		refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				((HTMLBrowserViewRep)tmpViewManager.
+						getItem(iHTMLBrowserId)).setUrl(sUrl);
+			}
+		});	
+	}
+	
+	
+		
+2006_12_19#0007: [OPEN] error when executing data/XML/bootstrap/cerberus_bootstrap_sample_marc.xml with VM arguments: -ea
+
+	Exception in thread "main" java.lang.AssertionError: Can not read int[] array with length 0!
+	at cerberus.util.system.StringConversionTool.convertStringToIntArrayVariableLength(StringConversionTool.java:394)
+	

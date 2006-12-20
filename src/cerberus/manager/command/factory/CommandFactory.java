@@ -50,6 +50,7 @@ import cerberus.command.system.CmdSystemNop;
 import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 import cerberus.command.system.CmdSystemLoadFileNStorages;
+import cerberus.command.system.CmdSystemLoadFileLookupTable;
 
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -188,6 +189,15 @@ extends ACommand
 		ICommand createdCommand = null;
 		
 		switch ( cmdType ) {
+		
+		case LOAD_LOOKUP_TABLE_FILE: 
+		{
+			createdCommand =
+				new CmdSystemLoadFileLookupTable( 
+						refGeneralManager,
+						phAttributes );
+			break;
+		}
 		
 		case LOAD_DATA_FILE: 
 		{
