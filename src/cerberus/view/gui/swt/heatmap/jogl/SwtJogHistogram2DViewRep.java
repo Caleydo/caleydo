@@ -69,15 +69,12 @@ implements ISwtJoglContainerViewRep, IView, GLEventListener
 		/**
 		 * Handle attributes..
 		 */
-		
-		if ( this.vecAttributes == null ) {
-			throw new CerberusRuntimeException( "SwtJogHistogram2DViewRep.initView() no attributes set before calling this methode",
-					CerberusExceptionType.JOGL_SWT);
-		}
 				
-		refSet = refGeneralManager.getSingelton().getSetManager().getItemSet(
-				getAttributeByIndexToInteger( 0 ) );
+		refSet = refGeneralManager.getSingelton().getSetManager()
+			.getItemSet( 0 );
 		
+		assert false : "Need ID from set from XML file!";
+			
 		System.out.println( this.toString() );
 		
 		this.retrieveNewGUIContainer();

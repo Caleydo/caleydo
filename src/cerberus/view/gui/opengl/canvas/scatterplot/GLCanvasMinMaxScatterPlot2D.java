@@ -3,7 +3,6 @@
  */
 package cerberus.view.gui.opengl.canvas.scatterplot;
 
-import java.util.Iterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -178,14 +177,7 @@ implements IGLCanvasUser
 		
 		updateMinMax();
 	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void init( GLAutoDrawable canvas ) {
-		setInitGLDone();
-	}	
+		
 	
 	@Override
 	public void renderPart(GL gl)
@@ -345,7 +337,7 @@ implements IGLCanvasUser
 				int [] arrayIntX = storeX.getArrayInt();
 				int [] arrayIntY = storeY.getArrayInt();
 				
-				float fTri = 0.05f;
+				//float fTri = 0.05f;
 				
 				//gl.glBegin(GL.GL_POINT); // Draw a quad
 				float fX = 0.0f;

@@ -210,15 +210,6 @@ implements IGLCanvasUser
 		refMinMaxDataInteger.useSet( targetSet );
 		initColorMapping( fColorMappingShiftFromMean );
 
-	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void init( GLAutoDrawable canvas ) {
-		setInitGLDone();
-		
 	}	
 	
 	protected void createDisplayLists(GL gl) {
@@ -228,6 +219,11 @@ implements IGLCanvasUser
 		gl.glNewList(iHeatmapDisplayListId, GL.GL_COMPILE);	
 		displayHeatmap( gl );
 		gl.glEndList();
+		
+		  refGeneralManager.getSingelton().logMsg(
+				  "createHeatmap() create DsiplayList)",
+				  LoggerType.FULL );
+		  
 	}
 	
 	
@@ -239,14 +235,14 @@ implements IGLCanvasUser
 		  if ( targetSet == null ) 
 		  {
 			  refGeneralManager.getSingelton().logMsg(
-					  "createHistogram() can not create Histogram, because targetSet=null",
+					  "createHistogram() can not create Heatmap, because targetSet=null",
 					  LoggerType.STATUS );
 			  return;
 		  }
 		  
 		  if ( iValuesInRow < 1) {
 			  refGeneralManager.getSingelton().logMsg(
-					  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
+					  "createHistogram() can not create Heatmap, because histogramLevels are outside range [1..max]",
 					  LoggerType.FULL );
 			  return;
 		  }
@@ -254,10 +250,7 @@ implements IGLCanvasUser
 		  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
 		  IVirtualArray refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
 	  		  
-		  refGeneralManager.getSingelton().logMsg(
-				  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
-				  LoggerType.FULL );
-		  
+	
 		  if ((targetSet.hasCacheChanged(iSetCacheId))||
 				  ( iHeatmapDisplayListId == -1 ))
 			{
@@ -272,6 +265,11 @@ implements IGLCanvasUser
 				System.out.println(" UPDATED!");
 				
 				createDisplayLists( gl );
+				
+				  refGeneralManager.getSingelton().logMsg(
+						  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
+						  LoggerType.FULL );
+				  
 			}
 		  
 		  if ( refBufferStorage == null ) {

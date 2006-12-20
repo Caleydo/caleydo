@@ -1,5 +1,7 @@
 package cerberus.view.gui.swt.base;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
@@ -8,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.sun.opengl.util.Animator;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
@@ -15,6 +18,11 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
 //import demos.gears.Gears;
 
+/**
+ * Abstract Class for all Jogl ViewRep objects.
+ * 
+ * @author Michael Kalkusch
+ */
 public abstract class AJoglViewRep 
 extends AViewRep 
 implements IView {
@@ -28,7 +36,15 @@ implements IView {
 	
 	protected Composite refSWTContainer;
 	
-	private Animator refAnimator;
+	/**
+	 * This flag indicates, that the canvas was created.
+	 */
+	protected final AtomicBoolean abEnableRendering = new AtomicBoolean( false );
+	
+	/**
+	 * Aminator for Jogl thead
+	 */
+	protected Animator refAnimator = null;
 	
 	public AJoglViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
@@ -47,7 +63,8 @@ implements IView {
 	 */
 	protected final void setGLEventListener( GLEventListener setGListener) {
 		
-		assert refGLCanvas != null : "can not set GLEventListener, because refGLCanves == null !";
+		assert refGLCanvas != null : "setGLEventListener() can not set GLEventListener, because refGLCanves == null !";
+		assert setGListener != null : "setGLEventListener() can not register setGListener==null!";
 		
 		refGLEventListener = setGListener;
 		
@@ -77,14 +94,48 @@ implements IView {
 		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
 	}
 	
-	public void drawView() {
+	/**
+	 * Attention: local initView() of derived class must be called before calling this super.initView()
+	 * A GLCanvas must be set the refAnimator creates a new thread isdie thsi call.
+	 * 
+	 */
+	public void initView() {
+		
+		assert refGLCanvas != null : "Can not start GLCanvas Animator thread with refGLCanvas==null!";
+		
+		if ( refAnimator != null ) 
+		{
+			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"AJoglViewRep.drawView() cas called more than once + " +
+					this.getClass()
+					,LoggerType.ERROR_ONLY );
+		}
 		
 		refAnimator = new Animator(refGLCanvas);
 		
 	    refAnimator.start();
+	    
+	    abEnableRendering.set( true );
+	    
+	    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				"AJoglViewRep.intView() [" + 
+				this.iUniqueId + 
+				"] GLCavas created, Animator thread is running."
+				,LoggerType.VERBOSE );
+	    
+	    //this.refGLEventListener.init( refGLCanvas );
+	}
+	
+	public void drawView() {
+		 refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					"AJoglViewRep.drawView() [" + 
+					this.iUniqueId + "]"
+					,LoggerType.VERBOSE );
 	}
 	
 	protected void destroyOnExitViewRep() {
+		
+		abEnableRendering.set( false );
 		
 		refAnimator.stop();
 	}

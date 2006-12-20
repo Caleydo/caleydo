@@ -25,7 +25,7 @@ implements IView {
 	
 	protected int iProgressBarMinValue = 0;
 
-	protected int iProgressBarMaxValue = 100;
+	protected int iProgressBarMaxValue = 200;
 
 	protected int iProgressBarCurrentValue = 0;
 

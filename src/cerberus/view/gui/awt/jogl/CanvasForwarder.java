@@ -1,18 +1,19 @@
 package cerberus.view.gui.awt.jogl;
 
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+//import java.awt.Frame;
+//import java.awt.event.WindowAdapter;
+//import java.awt.event.WindowEvent;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLCanvas;
+//import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLJPanel;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import com.sun.opengl.util.Animator;
+//import com.sun.opengl.util.Animator;
 
 import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.data.AUniqueItem;
 
 /**
  * Gears.java <BR>
@@ -22,10 +23,13 @@ import cerberus.view.gui.opengl.IGLCanvasDirector;
  */
 
 public class CanvasForwarder 
+extends AUniqueItem
 implements GLEventListener, IJoglMouseListener {
 
 	private final IGLCanvasDirector refGLCanvasDirector;
 
+	private boolean bCallInitOpenGL = true;
+	
 	private GearsMouse refMouseHandler;
 
 	private float view_rotx = 00.0f, view_roty = 00.0f, view_rotz = 0.0f;
@@ -36,73 +40,75 @@ implements GLEventListener, IJoglMouseListener {
 	
 
 
-	public CanvasForwarder( final IGLCanvasDirector refGLCanvasDirector) {
+	public CanvasForwarder( final IGLCanvasDirector refGLCanvasDirector, final int iUniqueId) {
 
+		super(iUniqueId);
+		
 		refMouseHandler = new GearsMouse(this);
 
 		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
 	
 	
-	/**
-	 * This methode is just for test purpose!
-	 * 
-	 * @deprecated use this code only for test purpose
-	 * 
-	 */
-	public static void main(String[] args) {
-
-		CanvasForwarder refGearsMainRoot = new CanvasForwarder( null );
-
-		refGearsMainRoot.runMain();
-
-	}
-	
-	/**
-	 * This methode is just for test purpose!
-	 * 
-	 * @deprecated use this code only for test purpose
-	 */
-	public void runMain() {
-
-		CanvasForwarder refmyGrears = new CanvasForwarder( null );
-
-		Frame frame = new Frame("GL Canvas Forwarder");
-		GLCanvas canvas = new GLCanvas();
-
-		canvas.addGLEventListener(refmyGrears);
-
-		frame.add(canvas);
-		frame.setSize(300, 300);
-
-		Animator refAnimator = new Animator(canvas);
-		
-		final Animator animatorHelper = refAnimator;
-		
-		frame.addWindowListener(new WindowAdapter() {
-
-			public void windowClosing(WindowEvent e) {
-
-				// Run this on another thread than the AWT event queue to
-				// make sure the call to Animator.stop() completes before
-				// exiting
-				new Thread(new Runnable() {
-
-					public void run() {
-
-						animatorHelper.stop();
-						System.exit(0);
-					}
-				}).start();
-			}
-		});
-
-		frame.setVisible(true);
-
-		//animatorHelper.start();
-		
-		refAnimator.start();
-	}
+//	/**
+//	 * This methode is just for test purpose!
+//	 * 
+//	 * @deprecated use this code only for test purpose
+//	 * 
+//	 */
+//	public static void main(String[] args) {
+//
+//		CanvasForwarder refGearsMainRoot = new CanvasForwarder( null, 10701 );
+//
+//		refGearsMainRoot.runMain();
+//
+//	}
+//	
+//	/**
+//	 * This methode is just for test purpose!
+//	 * 
+//	 * @deprecated use this code only for test purpose
+//	 */
+//	public void runMain() {
+//
+//		CanvasForwarder refmyGrears = new CanvasForwarder( null, 10701 );
+//
+//		Frame frame = new Frame("GL Canvas Forwarder");
+//		GLCanvas canvas = new GLCanvas();
+//
+//		canvas.addGLEventListener(refmyGrears);
+//
+//		frame.add(canvas);
+//		frame.setSize(300, 300);
+//
+//		Animator refAnimator = new Animator(canvas);
+//		
+//		final Animator animatorHelper = refAnimator;
+//		
+//		frame.addWindowListener(new WindowAdapter() {
+//
+//			public void windowClosing(WindowEvent e) {
+//
+//				// Run this on another thread than the AWT event queue to
+//				// make sure the call to Animator.stop() completes before
+//				// exiting
+//				new Thread(new Runnable() {
+//
+//					public void run() {
+//
+//						animatorHelper.stop();
+//						System.exit(0);
+//					}
+//				}).start();
+//			}
+//		});
+//
+//		frame.setVisible(true);
+//
+//		//animatorHelper.start();
+//		
+//		refAnimator.start();
+//	}
 
 	public synchronized void setViewAngles(float fView_RotX, float fView_RotY,
 			float fView_RotZ) {
@@ -150,37 +156,49 @@ implements GLEventListener, IJoglMouseListener {
 		// Use debug pipeline
 		// drawable.setGL(new DebugGL(drawable.getGL()));
 
-		GL gl = drawable.getGL();
-
-		System.out.println("CanvasForwarder INIT GL IS: "
-				+ gl.getClass().getName() + "  " + this.getClass().toString());
-
-		//gl.resizeGLScene();                      // Initialize the GL viewport
-
-		gl.glShadeModel(GL.GL_SMOOTH); // Enables Smooth Shading
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black Background
-		gl.glClearDepth(1.0f); // Depth Buffer Setup
-
-		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Test To Do
-
-		/* Really Nice Perspective Calculations */
-		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-
-		/**
-		 * You must register the MouseMotionListener here!
-		 */
-		drawable.addMouseListener(this.refMouseHandler);
-		drawable.addMouseMotionListener(this.refMouseHandler);
-
-		if (refGLCanvasDirector != null)
-		{
-			refGLCanvasDirector.initGLCanvasUser(drawable);
+		System.out.println("CanvasForwarder [" + iUniqueId + "] init() ... ");
+		
+		if  ( bCallInitOpenGL ) {
+			bCallInitOpenGL = false;
+			
+			GL gl = drawable.getGL();
+	
+			System.out.println("CanvasForwarder [" + iUniqueId +
+					"] INIT GL IS: ");
+	
+			//gl.resizeGLScene();                      // Initialize the GL viewport
+	
+			gl.glShadeModel(GL.GL_SMOOTH); // Enables Smooth Shading
+			gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black Background
+			gl.glClearDepth(1.0f); // Depth Buffer Setup
+	
+			gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+			gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Test To Do
+	
+			/* Really Nice Perspective Calculations */
+			gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+	
+			/**
+			 * You must register the MouseMotionListener here!
+			 */
+			drawable.addMouseListener(this.refMouseHandler);
+			drawable.addMouseMotionListener(this.refMouseHandler);
+			
+			if (refGLCanvasDirector != null)
+			{
+				refGLCanvasDirector.initGLCanvasUser();
+			}
+			else 
+			{
+				System.err.println("CanvasForwarder init() can not call director, becaus director==null!");
+			}
+			
+		} // if  ( bCallInitOpenGL ) {
+		else
+		{			
+			System.err.println("CanvasForwarder [" + iUniqueId + "] init() ... done");
 		}
-		else 
-		{
-			System.err.println("CanvasForwarder init() can not call director, becaus director==null!");
-		}
+				
 	}
 
 	public void reshape(GLAutoDrawable drawable, 
@@ -222,16 +240,17 @@ implements GLEventListener, IJoglMouseListener {
 		//System.err.println("DISPLAY GL    TrinagleMain!");
 
 		GL gl = drawable.getGL();
-		if ((drawable instanceof GLJPanel)
-				&& !((GLJPanel) drawable).isOpaque()
-				&& ((GLJPanel) drawable)
-						.shouldPreserveColorBufferIfTranslucent())
-		{
-			gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-		} else
-		{
-			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		}
+		
+//		if ((drawable instanceof GLJPanel)
+//				&& !((GLJPanel) drawable).isOpaque()
+//				&& ((GLJPanel) drawable)
+//						.shouldPreserveColorBufferIfTranslucent())
+//		{
+//			gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+//		} else
+//		{
+//			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+//		}
 
 		/* Clear The Screen And The Depth Buffer */
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);

@@ -1,7 +1,5 @@
 package cerberus.view.gui;
 
-import java.util.Vector;
-
 import cerberus.view.gui.AViewRep.ViewType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -9,11 +7,13 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * Interface for the view representations.
  * 
  * @author Marc Streit
+ * @author Michael Kalkusch
  */
 public interface IView {
 	
 	/**
 	 * Initialization of the view.
+	 * All initialization sets must be accomplished in theis methode.
 	 */
 	public void initView();
 
@@ -31,14 +31,13 @@ public interface IView {
 	 */
 	public void retrieveGUIContainer();
 	
+	/**
+	 * Get required settigns from IParameterHandler object.
+	 * 
+	 * @param refParameterHandler data from XML paser
+	 */
 	public void readInAttributes(IParameterHandler refParameterHandler );
 	
-	/**
-	 * @deprecated use setAttributes(IParameterHandler) instead
-	 * 
-	 * @param attributes
-	 */
-	public void setAttributes(Vector <String> attributes );
 	
 	/**
 	 * Sets the unique ID of the parent container.

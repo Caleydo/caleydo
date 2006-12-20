@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCanvas;
 
 import org.eclipse.swt.layout.GridLayout;
 
@@ -159,7 +160,7 @@ implements IGLCanvasUser {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void init( GLAutoDrawable canvas ) {
+	public void initGLCanvas( GLCanvas canvas ) {
 		
 		//FIXME: derive from AGLCanvasUser !
 

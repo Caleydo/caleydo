@@ -46,7 +46,10 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	protected String sLabel;
 	
-	protected Vector <String> vecAttributes;
+	/**
+	 * @deprecated
+	 */
+	//protected Vector <String> vecAttributes;
 
 	protected IParameterHandler refParameterHandler;
 	
@@ -77,115 +80,25 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	public AViewRep(
 			final IGeneralManager refGeneralManager, 
 			final int iViewId, 
-			final int iParentContainerId, 
+			final int iSetParentContainerId, 
 			final String sLabel) {
 		
 		super ( iViewId, refGeneralManager );
 		
-		this.iParentContainerId = iParentContainerId;
+		assert iSetParentContainerId != 0 : "Constructor iParentContainerId must not be 0!";
+		
+		this.iParentContainerId = iSetParentContainerId;
 		this.sLabel = sLabel;
 		
 		eventState = EventState.NONE;
 	}
 	
-	/**
-	 * Get one attribute by its index.
-	 * If the index in invalid "" is returned. 
-	 *  
-	 * @return attribute bound to index or "" if index is invalid
-	 */
-	protected final String getAttributeByIndex( final int iIndex ) {
-		
-		try {
-			return vecAttributes.get( iIndex );
-		}
-		catch (ArrayIndexOutOfBoundsException ae) 
-		{
-			return "";
-		}
-	}
-	
-//	/**
-//	 * Get one attribute by its index assuning that it is a integer.
-//	 * If the index in invalid -1 is returned. 
-//	 *  
-//	 * @return attribute bound to index as (int) or -1 if index is invalid
-//	 */
-//	protected final int getAttributeByIndexToInteger( final int iIndex )
-//	{
-//		try {
-//			return Integer.valueOf( vecAttributes.get( iIndex ) );
-//		}
-//		catch ( NumberFormatException nfe ) 
-//		{
-//			/**
-//			 * From String to Int conversion
-//			 */
-//			return -1;
-//		}
-//		catch ( ArrayIndexOutOfBoundsException ae ) 
-//		{
-//			return -1;
-//		}
-//		
-//	}
-	
-	/**
-	 * Get one attribute by its index assuning that it is a integer.
-	 * If the index in invalid -1 is returned. 
-	 *  
-	 * @return attribute bound to index as (int) or -1 if index is invalid
-	 */
-	protected final int getAttributeByIndexToInteger( final int iIndex ) {
-		
-		try {
-			return Integer.valueOf( vecAttributes.get( iIndex ) );
-		}
-		catch ( NumberFormatException nfe ) 
-		{
-			/**
-			 * From String to Int conversion
-			 */
-			return -1;
-		}
-		catch ( ArrayIndexOutOfBoundsException ae ) 
-		{
-			return -1;
-		}
-		
-		//throw new RuntimeException("AViewRep.setAttributes(Vector <String> attributes ) must not be called any more!");
-	}
-	
-
-/**
-	 * Set attributes for this view.
-	 * Overwrite previous attributes.
-	 * 
-	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
-	 */
-	public void setAttributes( final Vector<String> attributes) { 
-		vecAttributes = attributes;
-	}
-
-	/**
-	 * Extracts the height and the width of the widget from the attributes.
-	 *
-	 * @deprecated
-	 */
-	public void extractAttributes() {
-		
-		int [] iParseResult = 
-			StringConversionTool.convertStringToIntArray( vecAttributes.get(2), 2 );
-		
-		iWidth = iParseResult[0];
-		iHeight = iParseResult[1];
-	}
 
 	/**
 	 * Set attributes for this view.
 	 * Extracts the height and the width of the widget from the attributes.
 	 * 
-	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
+	 * @see cerberus.view.gui.IView#readInAttributes(IParameterHandler)
 	 */
 	public void readInAttributes( final IParameterHandler refParameterHandler ) { 
 		
@@ -194,7 +107,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		iWidth = 
 			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_POS_WIDTH_X.getXmlKey() );
 		iHeight = 
-			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_POS_HEIGHT_Y.getXmlKey() );
+			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_POS_HEIGHT_Y.getXmlKey() );	
 	}
 	
 	
@@ -203,24 +116,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	}
 	
 
-/**
-	 * Get a copy of the current attributes.
-	 *  
-	 * @return copy of the current attributes
-	 */
-	protected final Vector<String> getAttributes() {
-		
-		Vector <String> cloneVecAttributes = 
-			new Vector <String> ( vecAttributes.size() );
-				
-		Iterator <String> iter = vecAttributes.iterator();
-		
-		while ( iter.hasNext() ) {
-			cloneVecAttributes.addElement( iter.next() );
-		}
-		
-		return cloneVecAttributes;
-	}
 	
 	/**
 	 * Get a copy of the current attributes.

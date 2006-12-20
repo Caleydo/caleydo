@@ -6,13 +6,14 @@ package cerberus.view.gui.opengl.canvas.texture;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+//import java.util.Iterator;
+//import java.util.LinkedList;
+//import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLException;
+import javax.media.opengl.GLCanvas;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -236,10 +237,9 @@ implements IGLCanvasUser
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void init( GLAutoDrawable canvas ) {
+	public void initGLCanvas( GLCanvas canvas ) {
 		setInitGLDone();
 		System.err.println(" Texture2D ! init( * )");
-		
 		reloadTexture();
 		
 		if ( bGLBindTextureOnInitGL ) {

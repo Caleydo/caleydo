@@ -61,7 +61,7 @@ implements IGLCanvasUser
 		}
 		else 
 		{
-			System.out.println(" called setInitGLDone() " + 
+			System.err.println(" called setInitGLDone() " + 
 					this.getClass().getSimpleName() + 
 					" " + this.getId() );
 		}
@@ -102,4 +102,8 @@ implements IGLCanvasUser
 		return null;
 	}
 
+	public void initGLCanvas(GLCanvas canvas)
+	{
+		setInitGLDone();
+	}
 }

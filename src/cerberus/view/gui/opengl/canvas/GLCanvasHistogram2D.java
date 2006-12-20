@@ -135,14 +135,7 @@ implements IGLCanvasUser
 			/** force update... */
 			iSetCacheId = targetSet.getCacheId() - 1;
 		}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void init( GLAutoDrawable canvas ) {
-		setInitGLDone();
-	}	 
+ 
 	 
 	@Override
 	public void renderPart(GL gl)

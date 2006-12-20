@@ -1,11 +1,11 @@
-package cerberus.view.gui.swt.jogl;
+  package cerberus.view.gui.swt.jogl;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+//import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -19,13 +19,13 @@ import cerberus.view.gui.IView;
 import cerberus.view.gui.awt.jogl.CanvasForwarder;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 
 public class SwtJoglGLCanvasViewRep 
 extends AJoglViewRep 
 implements IView, IGLCanvasDirector {
-	
-	private AtomicBoolean abEnableRendering;
 	
 	protected int iGLEventListernerId = 99000;
 	
@@ -42,9 +42,7 @@ implements IView, IGLCanvasDirector {
 		
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 		
-		vecGLCanvasUser = new Vector <IGLCanvasUser> ();
-		
-		abEnableRendering = new AtomicBoolean( true );
+		vecGLCanvasUser = new Vector <IGLCanvasUser> ();			
 		
 		refGeneralManager.getSingelton().getViewGLCanvasManager(
 				).registerGLCanvasDirector( this, iViewId );
@@ -66,7 +64,9 @@ implements IView, IGLCanvasDirector {
 	 */
 	public void initView() {
 				
-		refGLEventListener = new CanvasForwarder( this );
+		assert refGLEventListener == null : "initView() called more than once! refGLEventListener!=null !";
+		
+		refGLEventListener = new CanvasForwarder( this, iGLEventListernerId );
 		
 		IViewGLCanvasManager canvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
@@ -77,12 +77,19 @@ implements IView, IGLCanvasDirector {
 		canvasManager.registerGLEventListener( refGLEventListener, iGLEventListernerId );
 		canvasManager.addGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
 		
-		super.setGLEventListener( refGLEventListener );
+		setGLEventListener( refGLEventListener );
+		
+		/**
+		 * registering of GLCavnas GLEventListener and GLCanvasDirector to
+		 * JogleManager is done!
+		 */
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
-				getId() + "] was created & initalized!",
+				getId() + "] was initalized!",
 				LoggerType.TRANSITION );
+		
+		super.initView();
 	}
 	
 	/* (non-Javadoc)
@@ -92,7 +99,23 @@ implements IView, IGLCanvasDirector {
 		if ( vecGLCanvasUser.contains( user ) ) {
 			throw new CerberusRuntimeException("addGLCanvasUser() try to same user twice!");
 		}
+		
+		/**
+		 * Try to avoid java.util.ConcurrentModificationException
+		 * 
+		 * Critical section:
+		 */
+		abEnableRendering.set( false );
+		
 		vecGLCanvasUser.addElement( user );
+		
+		initGLCanvasUser();
+		
+		abEnableRendering.set( true );		
+		/**
+		 * End of critical section
+		 */
+		
 		
 		refGeneralManager.getSingelton().getLoggerManager().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
@@ -146,25 +169,42 @@ implements IView, IGLCanvasDirector {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser()
 	 */
-	public void initGLCanvasUser(GLAutoDrawable drawable) {
+	public void initGLCanvasUser() {
 		
 		if ( abEnableRendering.get() ) 
 		{
-			System.out.println("SwtJoglCanvasViewRep.initGLCanvasUser() " + this.getClass().toString() );
+			System.out.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
+					this.getClass().toString() );
 			
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			if ( ! iter.hasNext() ) 
+			{
+				System.err.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+						this.getClass().toString() + "  no GLCanvasUSer yet!" );
+				return;
+			}
+			
+			System.err.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+					this.getClass().toString() + "  init GLCanvasUSer .." );
 			
 			while ( iter.hasNext() ) {
 
 				IGLCanvasUser glCanvas = iter.next();
 				if  ( ! glCanvas.isInitGLDone() )
 				{
-					glCanvas.init( drawable );
+					glCanvas.initGLCanvas( refGLCanvas );
 				}
-			}
-		}
+				
+			} // while ( iter.hasNext() ) {
+			
+			return;
+		} // if ( abEnableRendering.get() ) 
+		
+		System.err.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+				this.getClass().toString() + "  no GLCanvas yet!");
 	}
 	
 	/*
@@ -223,10 +263,13 @@ implements IView, IGLCanvasDirector {
 	
 	public void displayGLChanged(GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
 
-		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-		
-		while ( iter.hasNext() ) {
-			iter.next().displayChanged(drawable, modeChanged, deviceChanged);
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				iter.next().displayChanged(drawable, modeChanged, deviceChanged);
+			}
 		}
 		
 	}
@@ -260,5 +303,20 @@ implements IView, IGLCanvasDirector {
 				iUniqueId + " ...[DONE]");
 	}
 
-	
+	/**
+	 * Set attributes for this view.
+	 * Extracts the height and the width of the widget from the attributes.
+	 * 
+	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
+	 */
+	public void readInAttributes( final IParameterHandler refParameterHandler ) { 
+		
+		super.readInAttributes( refParameterHandler );
+			
+		this.iGLCanvasId = 
+			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
+		
+		this.iGLEventListernerId = 
+			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
+	}
 }

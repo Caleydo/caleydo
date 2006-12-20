@@ -9,13 +9,10 @@
 
 package cerberus.view.gui.swt.widget;
 
-import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
-import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
-
 import javax.media.opengl.GLCanvas;
-
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+
+import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
 
 
 /**

@@ -18,7 +18,7 @@ public interface IGLCanvasDirector {
 
 	public abstract GLAutoDrawable getGLCanvas();
 	
-	public abstract void initGLCanvasUser( GLAutoDrawable drawable );
+	public abstract void initGLCanvasUser();
 	
 	public abstract void renderGLCanvasUser( GLAutoDrawable drawable ); 
 	

@@ -9,13 +9,14 @@
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos-util_mod.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/weka/weka.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/swt/swt.jar"/>
+	<classpathentry sourcepath="bin/ext_jar_src/swt/swt_src.zip" kind="lib" path="bin/ext_jar/swt/swt.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.jface_3.1.1.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.jface.text_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.core.runtime_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.osgi_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.core.resources_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
+	<classpathentry sourcepath="bin/ext_jar_src/entrez/entrez_SOAP_2006_12_18_src.zip" kind="lib" path="bin/ext_jar/entrez/entrez_SOAP_2006_12_18.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar_src/jogl/nehe_demos_data.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>
