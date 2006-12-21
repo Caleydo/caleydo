@@ -42,10 +42,14 @@ public class MappingBuilder {
 	throws ServiceException, IOException {
 		
 		String strGeneID = "";
-		String strAccessionNumber; 
+		String strAccessionNumber = ""; 
 		String[] strArEnzymeQueryResult = null;
 		String[] strArHomeSapiensGenes = null;
 		int iNumberOfGenes;
+		
+		GeneCommentaryType[] tmpGeneCommentaries = null;
+		GeneCommentaryType[] geneCommentaries = null;
+		GeneCommentaryType[] lastGeneCommentaries = null;
 		
 		//KEGG connection initialization
 		KEGGLocator locator = new KEGGLocator();
@@ -97,7 +101,7 @@ public class MappingBuilder {
             parameters.setId(strGeneID);
             entrezEFetchResult = utils.run_eFetch(parameters);
             
-            GeneCommentaryType[] geneCommentaries = 
+            geneCommentaries = 
             	entrezEFetchResult.getEntrezgeneSet().getEntrezgene(0).
             		getEntrezgene_comments().getGeneCommentary();
             
@@ -107,9 +111,37 @@ public class MappingBuilder {
             	if (geneCommentaries[iGeneCommentaryIndex].getGeneCommentary_heading() != null && 
             		geneCommentaries[iGeneCommentaryIndex].getGeneCommentary_heading().equals("NCBI Reference Sequences (RefSeq)"))
             	{      	
-                	strAccessionNumber = geneCommentaries[iGeneCommentaryIndex].
-                		getGeneCommentary_comment().getGeneCommentary(0).
-                			getGeneCommentary_products().getGeneCommentary(0).getGeneCommentary_accession();
+                	tmpGeneCommentaries = geneCommentaries[iGeneCommentaryIndex].
+                		getGeneCommentary_comment().getGeneCommentary();
+                	
+                    for (int iTmpGeneCommentaryIndex = 0; iTmpGeneCommentaryIndex < tmpGeneCommentaries.length;
+                		iTmpGeneCommentaryIndex++)
+                    {
+                    	if (tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_heading() != null && 
+                    			tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_heading().
+                    				equals("RefSeqs maintained independently of Annotated Genomes"))
+                    	{
+                    		lastGeneCommentaries = 
+                    			tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_products().getGeneCommentary();
+                    	
+                            for (int iLastGeneCommentaryIndex = 0; iLastGeneCommentaryIndex < lastGeneCommentaries.length;
+                    			iLastGeneCommentaryIndex++)
+                            {
+                            	if (lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_heading() != null && 
+                        			lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_heading().
+                        				equals("mRNA Sequence"))
+                            	{
+                            		strAccessionNumber = 
+                            			lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_accession();
+                            		
+                            		break;
+                            	}
+                            }
+                            
+                            break;
+                    	}
+                	
+                    }
                 	
                 	System.out.println("Writing: " 
                 		+strGeneID + strDelimiter + strAccessionNumber);
