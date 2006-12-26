@@ -28,6 +28,7 @@ import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
+import cerberus.manager.data.genome.GenomeIdManager;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.data.set.SetManager;
@@ -189,6 +190,7 @@ implements IGeneralManagerSingelton
 		refPathwayElementManager = new PathwayElementManager(this);
 		refEventPublisher = new EventPublisher(this);
 
+		refSingeltonManager.setGenomeIdManager( new GenomeIdManager(this) );
 		
 		/**
 		 * Make sure SWT is only used, when needed!

@@ -21,6 +21,7 @@ import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.IVirtualArrayManager;
@@ -76,6 +77,8 @@ implements ISingelton {
 	protected IEventPublisher refEventPublisher;
 	
 	protected IXmlParserManager refXmlParserManager;
+	
+	protected IGenomeIdManager refIGenomeIdManager;
 
 	
 	/**
@@ -293,6 +296,14 @@ implements ISingelton {
 	public void setEventPublisher(IEventPublisher refEventPublisher)
 	{
 		this.refEventPublisher = refEventPublisher;
+	}
+	
+	public void setGenomeIdManager( IGenomeIdManager refIGenomeIdManager) {
+		this.refIGenomeIdManager = refIGenomeIdManager;
+	}
+	
+	public IGenomeIdManager getGenomeIdManager() {
+		return this.refIGenomeIdManager;
 	}
 	
 	/* (non-Javadoc)
