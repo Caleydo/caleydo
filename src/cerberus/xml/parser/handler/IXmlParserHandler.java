@@ -23,7 +23,7 @@ extends ContentHandler
 	 * Initilisation of handler.
 	 * Called once by Manager before using the handler.
 	 *
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
+	 * @see cerberus.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
 	public void initHandler();
 	
@@ -45,7 +45,7 @@ extends ContentHandler
 	 * TRUE if handler is destoryed after activation tag is closed.
 	 * 
 	 * @see cerberus.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
-	 * @see cerberus.xml.parser.manager.IXmlParserManager	 
+	 * @see cerberus.manager.IXmlParserManager	 
 	 * 
 	 * @return TRUE if handler is destoryed after activation tag is closed
 	 */

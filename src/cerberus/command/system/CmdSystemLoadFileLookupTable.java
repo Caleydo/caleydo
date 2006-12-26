@@ -11,7 +11,6 @@ package cerberus.command.system;
 import java.util.LinkedList;
 import java.util.Iterator;
 
-import org.apache.commons.collections.MultiHashArrayMap;
 
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
@@ -27,6 +26,7 @@ import cerberus.xml.parser.handler.importer.ascii.LookupTableLoader;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.data.collection.ISet;
+import cerberus.base.map.MultiHashArrayMap;
 
 
 /**

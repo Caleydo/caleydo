@@ -7,12 +7,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.xml.parser.manager.IXmlParserManager;
 
 public class PathwayImageMapSaxHandler 
 extends AXmlParserHandler

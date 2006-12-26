@@ -7,7 +7,6 @@ import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerType;
-import cerberus.xml.parser.manager.XmlParserManager;
 
 public interface ISingelton {
 
@@ -44,7 +43,7 @@ public interface ISingelton {
 	
 	public abstract IEventPublisher getEventPublisher();
 	
-	public abstract XmlParserManager getXmlParserManager();
+	public abstract IXmlParserManager getXmlParserManager();
 	
 	public abstract IPathwayManager getPathwayManager();
 	
@@ -85,7 +84,7 @@ public interface ISingelton {
 	
 	public abstract void setViewGLCanvasManager(IViewGLCanvasManager refViewManager);
 	
-	public abstract void setXmlParserManager(XmlParserManager refXmlParserManager);
+	public abstract void setXmlParserManager(IXmlParserManager refXmlParserManager);
 	
 	
 	/**

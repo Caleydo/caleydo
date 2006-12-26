@@ -45,8 +45,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
 			
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" attrib2="55101" attrib3="32 -1" />
-			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" attrib2="55101" attrib3="32 -1" />
 			
 			
 			<!-- Window	10331	-->
@@ -62,12 +61,10 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR"		cmdId="64991"	targetId="14401" parent="10331" label="Progress Bar 1"		attrib2="300	30"	detail="30"	/>
 	   	-->
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	targetId="11401" parent="10331" 
-					glcanvas="10771" gllistener="10701" label="Canvas"	attrib2="300	300" detail="1077991"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	targetId="11401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
 
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	targetId="12401" parent="10331" 
-					glcanvas="20771" gllistener="20701" label="Canvas"						attrib2="300	300" detail="1077991"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	targetId="12401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
 			
 			
 			
@@ -82,14 +79,14 @@
 							detail="45101" />
 							
 							
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68982"	targetId="79401" parent="11401" label="GL Triangle	A"	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="68982"	targetId="78401" parent="11401" label="GL Triangle	A"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -3.0f  0.0f     30 4.0f"								
 							detail="45101" />
 			
 			<!--				
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_ISOSURFACE3D"		cmdId="68982"	targetId="80401" parent="11401" label="GL isosurface"	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_ISOSURFACE3D"		cmdId="68982"	targetId="78401" parent="11401" label="GL isosurface"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -3.0f  0.0f     30 4.0f"								
 							detail="45101" />
@@ -113,26 +110,27 @@
 	
 			-->		
 	
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	targetId="81401" parent="12401" label="GL Triangle	C"	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	targetId="79401" parent="12401" label="GL Triangle	C"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
 							attrib3="0 20 0 20   -0.5f -0.5f    -3.0f 3.0f   -5.0f 1.0f    -7.0f 1.0f   1000"				
 							detail="35101" />			
 							
 							
-		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68994"	targetId="82401" parent="12401" label="GL Triangle	C"	
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68994"	targetId="80401" parent="12401" label="GL Triangle	C"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
 							attrib3="0 20 0 20   -0.5f -0.5f    -20.0f 20.0f   2.5f 3.0f    -10.0f 1.0f   20004"				
 							detail="35101" />	
 							
-		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68995"	targetId="83401" parent="12401" label="GL Triangle	C"	
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68995"	targetId="81401" parent="12401" label="GL Triangle	C"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
 							attrib3="0 20 0 20   -0.5f -0.5f    -25.0f 25.0f   7.0f 7.5f    -15.0f 1.0f   39008"				
 							detail="35101" />	
 							
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68996"	targetId="84401" parent="12401" label="GL Triangle	C"	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68996"	targetId="82401" parent="12401" label="GL Triangle	C"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
 							attrib3="0 20 0 20   -0.5f -0.5f    25.0f -25.0f   7.7f 8.2f    -15.0f 1.0f   39008"				
 							detail="35101" />	
+						
 																																	
 		<!--
 		  full dataset: line= 39008
@@ -189,8 +187,6 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HISTOGRAM2D"			cmdId="68981"	targetId="80401" label="GL Histogram2D"		parent="11401" attrib1="-0.2 0.2 -0.5" attrib2="0	-1.5 -1.5	1.72"	detail="35101" attrib3="100	100	0"/>	
 		 -->
 		 
-			
-			
 	 </CommandBuffer>
 		
 	</Application>

@@ -1,10 +1,10 @@
 /**
  * 
  */
-package cerberus.xml.parser.manager;
+package cerberus.manager.parser;
 
 import java.util.Iterator;
-import java.util.Collection;
+//import java.util.Collection;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
+import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.system.CerberusInputStream;
 import cerberus.util.exception.CerberusExceptionType;
@@ -22,7 +23,6 @@ import cerberus.xml.parser.handler.command.CommandSaxHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler;
 import cerberus.xml.parser.handler.importer.kegg.PathwayImageMapSaxHandler;
-import cerberus.xml.parser.manager.AXmlParserManager;
 
 /**
  * Administer several XML-SaxHandelers.
@@ -172,7 +172,7 @@ implements IXmlParserManager {
 	}
 
 	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#startElement_search4Tag(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see cerberus.manager.IXmlParserManager#startElement_search4Tag(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	public void startElement_search4Tag(String uri, 
 			String localName, 
@@ -287,7 +287,7 @@ implements IXmlParserManager {
 	
 	
 	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#endElement_search4Tag(java.lang.String, java.lang.String, java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#endElement_search4Tag(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void endElement_search4Tag(String uri, 
 			String localName, 
@@ -346,7 +346,7 @@ implements IXmlParserManager {
 
 	
 	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
 	 */
 	public boolean parseXmlFileByName( final String filename ) {
 		
@@ -370,7 +370,7 @@ implements IXmlParserManager {
 	}
 	
 	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
 	 */
 	public boolean parseXmlFileByNameAndHandler( final String filename, 
 			final OpenExternalXmlFileSaxHandler openFileHandler ) {
@@ -390,7 +390,7 @@ implements IXmlParserManager {
 	
 	
 	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
+	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
 	 */
 	public boolean parseXmlFileByInputStream( InputSource inputStream,
 			final String inputStreamText ) {

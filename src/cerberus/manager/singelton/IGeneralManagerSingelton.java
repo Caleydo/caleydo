@@ -76,4 +76,24 @@ extends IGeneralManager, IMementoCallbackXML {
 	 */
 	public void setErrorMessage( final String sErrorMsg );
 	
+	/**
+	 * Enable SWT
+	 * 
+	 * @param enableSWT
+	 */
+	public void  setStateSWT( boolean enableSWT );
+	
+	
+	/**
+	 * Initialize all data structures.
+	 *
+	 */
+	public void initAll();
+	
+	
+	/**
+	 * Cleanup all data structures, close all windows, stop all threads.
+	 */
+	public void destroyOnExit();
+	
 }

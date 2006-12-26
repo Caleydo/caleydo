@@ -95,7 +95,7 @@ public class MidiConnectorSwingSliders
 		initMidiLookupTable();
 		
 		mainFrame = new JFrame();
-		mainFrame.setSize( 800, 300 );
+		mainFrame.setSize( 800, 400 );
 		mainFrame.setLayout( new BorderLayout() );
 		mainFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		
@@ -217,7 +217,7 @@ public class MidiConnectorSwingSliders
 		{
 			if (strDeviceName != null) 
 				{
-					out("no device info found for name " + strDeviceName);
+					out("no device info found for name [" + strDeviceName + "]");
 				}
 			else
 				{
@@ -253,7 +253,9 @@ public class MidiConnectorSwingSliders
 		midiConnector.allocateNumberOfMidiDevices( 2 );
 		
 		//midiConnector.initMidiDeviceByName("BCF2000 [01]");
-		midiConnector.initMidiDeviceByName("USB Audio Device");
+		//midiConnector.initMidiDeviceByName("USB Audio Device");
+		midiConnector.initMidiDeviceByName("USB-Audiogerät");
+		//midiConnector.initMidiDeviceByIndex(2);
 		
 		midiConnector.connect();
 	

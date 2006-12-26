@@ -6,15 +6,13 @@
  *  creation date: 03-07-2006
  *  
  */
-package cerberus.application.kegg.jgraph;
+package cerberus.test.jgraph.kegg;
 
 import java.io.File;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import cerberus.application.kegg.jgraph.KgmlSaxHandler;
-import cerberus.application.kegg.jgraph.PathwayGraphBuilder;
 
 public class PathwaysTest {
 	public static void main(String[] args) throws Exception 

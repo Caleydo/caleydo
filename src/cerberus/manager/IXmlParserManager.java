@@ -1,14 +1,13 @@
 /**
  * 
  */
-package cerberus.xml.parser.manager;
+package cerberus.manager;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 
@@ -117,15 +116,15 @@ extends ContentHandler
 	 * if TRUE is returened newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib )
 	 * has top be called!
 	 * IF FALSE is returned only currentHandler.startElement( uri,localName,qName,attrib ) has to be called. 
-	 * This is implemented as a final methode inside cerberus.xml.parser.handler.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
-	 * so please derive from cerberus.xml.parser.handler.AXmlParserManager .
+	 * This is implemented as a final methode inside cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
+	 * so please derive from cerberus.manager.parser.AXmlParserManager .
 	 *  
 	 * 
 	 * @param newHandler add new recursive reader
 	 * @param refIXmlParserManager retefence to SmlParserManager to ensure, that only this class can call this methode!
 	 * @return TRUE indicates that newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib ) must be called whiel FALSE indicates that only currentHandler.startElement( uri,localName,qName,attrib ) must be called
 	 * 
-	 * @see cerberus.xml.parser.handler.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
+	 * @see cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
 	 */
 	public boolean openCurrentTagForRecursiveReader( 
 			OpenExternalXmlFileSaxHandler newHandler,

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.xml.parser.manager;
+package cerberus.manager.parser;
 
 import java.util.Hashtable;
 //import java.util.Iterator;
@@ -12,6 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.data.IManagedObject;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
@@ -267,7 +268,7 @@ implements IXmlParserManager, IManagedObject
 	
 	
 	/**
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#unregisterSaxHandler(java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#unregisterSaxHandler(java.lang.String)
 	 */
 	public final boolean unregisterSaxHandler( final String sActivationXmlTag)
 	{
@@ -318,7 +319,7 @@ implements IXmlParserManager, IManagedObject
 	 * 
 	 * @deprecated not used any more. use openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) instead.
 	 * 
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
+	 * @see cerberus.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
 	 */
 	protected final void swapXmlParserHandler( IXmlParserHandler from, 
 			IXmlParserHandler to ) {

@@ -3,11 +3,11 @@ package cerberus.xml.parser.handler.importer.kegg;
 import java.util.HashMap;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IXmlParserManager;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.xml.parser.manager.IXmlParserManager;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 
 import org.xml.sax.Attributes;

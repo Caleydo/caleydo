@@ -6,12 +6,13 @@
  *  creation date: 03-07-2006
  *  
  */
-package cerberus.application.kegg.jgraph;
+package cerberus.test.jgraph.kegg;
 
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
 
 //import java.lang.Integer;
 

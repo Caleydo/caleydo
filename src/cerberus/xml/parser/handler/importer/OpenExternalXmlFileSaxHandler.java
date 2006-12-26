@@ -6,12 +6,12 @@ package cerberus.xml.parser.handler.importer;
 import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.xml.parser.manager.IXmlParserManager;
 
 /**
  * @author kalkusch

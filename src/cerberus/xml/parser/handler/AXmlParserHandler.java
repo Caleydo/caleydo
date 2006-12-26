@@ -7,10 +7,10 @@ import org.xml.sax.Locator;
 import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.xml.parser.manager.IXmlParserManager;
 
 /**
  * @author kalkusch

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.apache.commons.collections;
+package cerberus.base.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,11 +11,14 @@ import java.util.Map;
 import java.util.Set;
 
 
+
 /**
  * @author kalkusch
  *
  */
-public class MultiHashArrayMap extends HashMap<Integer,ArrayList<Integer>> implements MultiMap {
+public class MultiHashArrayMap
+extends HashMap <Integer,ArrayList<Integer>> 
+implements MultiIntegerMap  {
 
 	static final long serialVersionUID = 80806677;
 	
@@ -52,7 +55,7 @@ public class MultiHashArrayMap extends HashMap<Integer,ArrayList<Integer>> imple
 	/**
 	 * @param arg0
 	 */
-	public MultiHashArrayMap(Map arg0) {
+	public MultiHashArrayMap(Map <Integer,ArrayList<Integer>>  arg0) {
 
 		super(arg0);
 		// TODO Auto-generated constructor stub
@@ -72,10 +75,10 @@ public class MultiHashArrayMap extends HashMap<Integer,ArrayList<Integer>> imple
 		return null;
 	}
 	
-	
+
 	 public void putAll( Map mapToPut )
 	    {
-	        super.putAll( mapToPut );
+	        super.putAll( (MultiIntegerMap) mapToPut );
 	    }
 	 
 	 

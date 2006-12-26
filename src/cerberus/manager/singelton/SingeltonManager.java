@@ -19,6 +19,7 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
+import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
@@ -26,11 +27,8 @@ import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
-
 import cerberus.manager.type.ManagerType;
-
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.xml.parser.manager.XmlParserManager;
 
 /**
  * Global object contining and handling several managers.
@@ -77,7 +75,7 @@ implements ISingelton {
 	
 	protected IEventPublisher refEventPublisher;
 	
-	protected XmlParserManager refXmlParserManager;
+	protected IXmlParserManager refXmlParserManager;
 
 	
 	/**
@@ -203,7 +201,7 @@ implements ISingelton {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getXmlParserManager()
 	 */
-	public XmlParserManager getXmlParserManager() {
+	public IXmlParserManager getXmlParserManager() {
 		return this.refXmlParserManager;
 	}
 	
@@ -278,7 +276,7 @@ implements ISingelton {
 		this.refLoggerManager = refLoggerManager;
 	}
 
-	public void setXmlParserManager( XmlParserManager refXmlParserManager ) {
+	public void setXmlParserManager( IXmlParserManager refXmlParserManager ) {
 		assert refXmlParserManager != null : "XmlParserManager was null";
 		
 		this.refXmlParserManager = refXmlParserManager;

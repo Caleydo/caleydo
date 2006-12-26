@@ -6,7 +6,7 @@
  *  creation date: 03-07-2006
  *  
  */
-package cerberus.application.kegg.jgraph;
+package cerberus.test.jgraph.kegg;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
