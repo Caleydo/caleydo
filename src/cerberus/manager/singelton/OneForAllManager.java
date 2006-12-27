@@ -139,6 +139,13 @@ implements IGeneralManagerSingelton
 			refSingeltonManager = sef_SingeltonManager;
 		}
 
+		/**
+		 * The Network psotfix must be unique inside the network for 
+		 * destributed cerberus applications. 
+		 * For stand alone cerberus applications this id must match the XML file.
+		 */
+		refSingeltonManager.setNetworkPostfix( 1 );
+		
 		//initAll();
 	}
 

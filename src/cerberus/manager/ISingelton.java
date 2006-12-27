@@ -53,6 +53,8 @@ public interface ISingelton {
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.
 	 * 
+	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * 
 	 * @return unique networkHostId of this host.
 	 */
 	public abstract int getNetworkPostfix();

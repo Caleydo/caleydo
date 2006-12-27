@@ -59,7 +59,7 @@ public class CerberusBootloader
 	 * 
 	 * @see import cerberus.manager.IGeneralManager
 	 */
-	protected final IGeneralManagerSingelton refOneForAllManager;
+	protected IGeneralManagerSingelton refOneForAllManager;
 	
 	//protected final IGeneralManager refGeneralManager;
 	
@@ -142,7 +142,6 @@ public class CerberusBootloader
 		 */
 		
 		
-		
 		/** 
 		 * Default file name
 		 */
@@ -150,27 +149,6 @@ public class CerberusBootloader
 
 	}
 
-
-	/**
-	 * Load configuration from local XML file.
-	 */
-	protected void runFromLocalXML_File()
-	{
-		ILoggerManager logger = 
-			this.refOneForAllManager.getSingelton().getLoggerManager();
-		
-		InputSource inSource = 
-			CerberusInputStream.openInputStreamFromFile( sFileName, 
-					logger );
-				
-		CerberusInputStream.parseOnce( inSource , 
-				sFileName,
-				refXmlParserManager,
-				logger );
-		
-		refXmlParserManager.parseXmlFileByName( sFileName );		
-	}
-	
 	
 	/**
 	 * Connect to Muddelware server and get XML-configuration 
@@ -301,30 +279,31 @@ public class CerberusBootloader
 	 */
 	public void run() {
 		
-		
-		
+				
 		if ( bEnableBootstrapViaMuddleware )
 		{
-			logger.logMsg("  load config via Muddleware server ...", LoggerType.STATUS);
-			
+			/**
+			 * Load configuration from Muddleware server.
+			 */
+			logger.logMsg("  load config via Muddleware server ...", LoggerType.STATUS);			
 			runUsingMuddleWare( "/cerberus/workspace" );
 		}
 		else
 		{
-			logger.logMsg("  load config via local XML file ... ", LoggerType.STATUS);
-			
-			runFromLocalXML_File();
+			/**
+			 * Load configuration from local XML file.
+			 */
+			logger.logMsg("  load config via local XML file ... ", LoggerType.STATUS);			
+			refXmlParserManager.parseXmlFileByName( sFileName );		
 		}
 
-		logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);
-		
+		logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);		
 		refSWTGUIManager.runApplication();
 		
-		logger.logMsg("Cerberus.core   clean up... ", LoggerType.STATUS);
-		
+		logger.logMsg("Cerberus.core   clean up... ", LoggerType.STATUS);		
 		refOneForAllManager.destroyOnExit();
 		
-		logger.logMsg("Cerberus.core   clean up... [done]\n", LoggerType.STATUS);
+		logger.logMsg("Cerberus.core   clean up... [done]\n", LoggerType.STATUS);		
 		logger.logMsg("... Stop Cerberus Core ...", LoggerType.STATUS);
 	}
 	

@@ -84,8 +84,10 @@ implements ISingelton {
 	/**
 	 * Unique Id per each application over the network.
 	 * Used to identify and create Id's unique for distributed applications. 
+	 * 
+	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
-	private int iNetworkApplicationIdPostfix = 1;
+	private int iNetworkApplicationIdPostfix = 0;
 	
 	/**
 	 * Constructor
@@ -376,15 +378,19 @@ implements ISingelton {
 		return iNetworkApplicationIdPostfix;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see cerberus.manager.singelton.Singelton#setNetworkPostfix(int)
+	 * 
+	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	public void setNetworkPostfix( int iSetNetworkPrefix ) {
 		if (( iSetNetworkPrefix < IGeneralManager.iUniqueId_WorkspaceOffset) && 
-				( iSetNetworkPrefix > 0)) { 
+				( iSetNetworkPrefix >= 0)) { 
 			iNetworkApplicationIdPostfix = iSetNetworkPrefix;
+			return;
 		}
-		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0..99] ");
+		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0.." +
+				IGeneralManager.iUniqueId_WorkspaceOffset + "] ");
 	}
 
 	public final void logMsg( final String info, final LoggerType logLevel) {
