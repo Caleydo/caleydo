@@ -39,10 +39,14 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
 			-->
 			
-		 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/lookup_table_id/ncbi_2_kegg_geneid_pure.txt"	attrib2="55101" attrib3="1 -1" />
+		 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
+		   detail="data/MicroarrayData/lookup_table_id/enzyme_code_2_cerberusEnzymeId.txt"	
+		   attrib1="ENZYME_CODE_2_ENZYME STRING2INT" 
+		   attrib2="55101" 
+		   attrib3="0 -1" />
 		
 		
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
 			
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" attrib2="55101" attrib3="32 -1" />

@@ -1,6 +1,7 @@
 package cerberus.manager;
 
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.IVirtualArrayManager;
@@ -48,6 +49,8 @@ public interface ISingelton {
 	public abstract IPathwayManager getPathwayManager();
 	
 	public abstract IPathwayElementManager getPathwayElementManager();
+
+	public abstract IGenomeIdManager getGenomeIdManager();
 	
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]
@@ -88,6 +91,7 @@ public interface ISingelton {
 	
 	public abstract void setXmlParserManager(IXmlParserManager refXmlParserManager);
 	
+	public abstract void setGenomeIdManager( IGenomeIdManager refIGenomeIdManager);
 	
 	/**
 	 * @see cerberus.manager.ILoggerManager#logMsg(String, LoggerType)

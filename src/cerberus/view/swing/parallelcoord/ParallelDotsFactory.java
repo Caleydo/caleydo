@@ -19,7 +19,7 @@ import cerberus.view.swing.parallelcoord.ParallelDots_Line;
 import cerberus.view.swing.graph.CerberusGraphViewer;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class ParallelDotsFactory {

@@ -15,7 +15,7 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AGLCanvasUser_OriginRotation 

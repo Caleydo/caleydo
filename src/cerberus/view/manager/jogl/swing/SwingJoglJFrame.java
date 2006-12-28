@@ -30,7 +30,7 @@ import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.data.IUniqueObject;
 	
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class SwingJoglJFrame 

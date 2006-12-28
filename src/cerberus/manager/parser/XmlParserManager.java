@@ -30,7 +30,7 @@ import cerberus.xml.parser.handler.importer.kegg.PathwayImageMapSaxHandler;
  * 
  * @see cerberus.xml.parser.handler.IXmlParserHandler
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class XmlParserManager 

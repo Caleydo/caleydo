@@ -7,7 +7,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class InternalFrameAdapterCerberus extends InternalFrameAdapter {

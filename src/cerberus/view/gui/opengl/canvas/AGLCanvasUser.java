@@ -13,7 +13,7 @@ import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AGLCanvasUser 

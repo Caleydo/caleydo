@@ -6,7 +6,7 @@ package cerberus.view.manager.swing;
 import cerberus.view.manager.swing.JFrameThreaded;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class TestJFrameThreaded {

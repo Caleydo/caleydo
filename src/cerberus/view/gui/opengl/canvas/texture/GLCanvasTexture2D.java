@@ -38,7 +38,7 @@ import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 import cerberus.manager.ILoggerManager.LoggerType;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class GLCanvasTexture2D 

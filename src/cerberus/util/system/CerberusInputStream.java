@@ -18,7 +18,7 @@ import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class CerberusInputStream

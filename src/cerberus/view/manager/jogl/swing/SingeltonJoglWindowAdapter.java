@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 import cerberus.view.manager.tester.SingeltonJoglFrameManager;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class SingeltonJoglWindowAdapter extends WindowAdapter {

@@ -10,7 +10,7 @@ import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public final class MinMaxDataInteger {

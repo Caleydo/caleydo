@@ -31,7 +31,7 @@ import cerberus.xml.parser.parameter.ParameterHandler;
 /**
  * Create Menus in Frames from XML file.
  * 
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class CommandSaxHandler 

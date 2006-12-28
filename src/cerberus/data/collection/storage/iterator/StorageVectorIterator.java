@@ -17,7 +17,7 @@ import cerberus.data.collection.IStorage;
 /**
  * Iterator for a several IVirtualArray.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class StorageVectorIterator {

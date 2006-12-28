@@ -15,7 +15,7 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class GLCanvasTestTriangle 

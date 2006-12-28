@@ -14,7 +14,7 @@ import cerberus.view.swing.graph.NodeInterface;
 import cerberus.view.swing.graph.visitor.NodeVisitorRenderer;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class GraphNodeAWTCanvasTester extends Canvas {

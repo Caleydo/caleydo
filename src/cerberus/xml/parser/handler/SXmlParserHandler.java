@@ -8,7 +8,7 @@ import org.xml.sax.Attributes;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public final class SXmlParserHandler

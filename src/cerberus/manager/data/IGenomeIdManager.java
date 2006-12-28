@@ -4,13 +4,15 @@
 package cerberus.manager.data;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import cerberus.manager.IGeneralManager;
 
 import cerberus.data.mapping.GenomeIdType;
+import cerberus.data.mapping.GenomeMappingType;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public interface IGenomeIdManager extends IGeneralManager {
@@ -32,12 +34,12 @@ public interface IGenomeIdManager extends IGeneralManager {
 	public void buildLUT_startEditingSetTypes( final GenomeIdType typeFromId, 
 			final GenomeIdType typeToId );
 	
-	public void buildLUT( int iFirst, int iSecond );
+	//public void buildLUT( Object first, Object second );
 	
-	public void buildLUT( String iFirst, String iSecond );
-	
-	public boolean buildLUT_stopEditing();
+	public void buildLUT_stopEditing();
 	
 	public boolean isBuildLUTfinished();
+	
+	public Map getMapByGenomeType( final GenomeMappingType type );
 	
 }

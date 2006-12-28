@@ -6,7 +6,7 @@ package cerberus.view.swing.parallelcoord;
 import  cerberus.view.swing.parallelcoord.AbstractParallelDots;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class ParallelDots_Line extends AbstractParallelDots {

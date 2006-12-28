@@ -36,7 +36,7 @@ import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class FileLoader {

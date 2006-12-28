@@ -8,7 +8,7 @@ import java.awt.Color;
 import cerberus.view.swing.graph.NodeRenderingStyle;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class NodeAttributes {

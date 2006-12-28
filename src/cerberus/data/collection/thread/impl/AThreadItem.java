@@ -11,7 +11,7 @@ import cerberus.data.collection.thread.lock.ICollectionReadWriteLock;
 /**
  * Provides a UniqueID and a ICollectionLock.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AThreadItem

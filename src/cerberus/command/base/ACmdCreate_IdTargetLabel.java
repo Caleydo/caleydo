@@ -10,7 +10,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Abstract command class stores and handles commandId, tragertId and label of object.
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetLabel 

@@ -14,6 +14,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
@@ -21,12 +22,11 @@ public class CmdGlObjectPathway3D
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
 		
+	//replaced by 
 	/**
 	 * ID of the pathway that will be drawn.
 	 */
 	protected int iTargetPathwayId;
-	
-	protected float[] fResolution;
 	
 	/**
 	 * Constructor.
@@ -46,6 +46,9 @@ implements ICommand {
 
 	private final void setPathwayAttributes( 
 			IParameterHandler refParameterHandler) {
+		
+		
+		System.out.println( "info = " + iUniqueTargetId );
 		
 		iTargetPathwayId = StringConversionTool.convertStringToInt( 
 				sDetail, 

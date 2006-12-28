@@ -17,7 +17,7 @@ import cerberus.data.collection.virtualarray.iterator.VirtualArrayNullIterator;
 /**
  * Iterator for a several IVirtualArray.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class VirtualArrayVectorIterator implements IVirtualArrayIterator {

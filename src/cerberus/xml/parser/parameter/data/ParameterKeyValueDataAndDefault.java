@@ -9,7 +9,7 @@ import java.util.Hashtable;
 import cerberus.xml.parser.parameter.IParameterKeyValuePair;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public final class ParameterKeyValueDataAndDefault < T > implements IParameterKeyValuePair<T>

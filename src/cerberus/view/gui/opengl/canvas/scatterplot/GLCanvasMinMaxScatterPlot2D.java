@@ -26,7 +26,7 @@ import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class GLCanvasMinMaxScatterPlot2D 

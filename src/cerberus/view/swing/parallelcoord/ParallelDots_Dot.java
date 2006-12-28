@@ -11,7 +11,7 @@ import java.util.Iterator;
 import  cerberus.view.swing.parallelcoord.AbstractParallelDots;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class ParallelDots_Dot extends AbstractParallelDots {

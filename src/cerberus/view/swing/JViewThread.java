@@ -10,7 +10,7 @@ import demos.common.Demo;
  * 
  * @see cerberus.view.swing.JViewThreadListener
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class JViewThread extends Demo implements GLEventListener  {

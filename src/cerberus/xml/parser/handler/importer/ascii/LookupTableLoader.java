@@ -21,6 +21,8 @@ import cerberus.xml.parser.handler.importer.ascii.AbstractLoader;
 /**
  * @author kalkusch
  *
+ * @deprecated use LookupTableLoaderProxy instead!
+ *
  */
 public class LookupTableLoader extends AbstractLoader {
 

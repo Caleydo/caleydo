@@ -7,7 +7,7 @@ import cerberus.view.swing.graph.AbstractMiddleNode;
 import cerberus.view.swing.graph.NodeInterface;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class ArrayNode extends AbstractMiddleNode implements NodeInterface {

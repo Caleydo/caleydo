@@ -10,7 +10,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class HistogramStatisticsSet 

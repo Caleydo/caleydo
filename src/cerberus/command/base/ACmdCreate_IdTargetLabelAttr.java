@@ -11,7 +11,7 @@ import cerberus.command.base.ACmdCreate_IdTargetLabel;
 import cerberus.util.system.StringConversionTool;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetLabelAttr 

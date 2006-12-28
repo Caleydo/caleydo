@@ -6,7 +6,7 @@ package cerberus.math.statistics.histogram;
 /**
  * Define type of statistic histogram.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public enum StatisticHistogramType {

@@ -12,7 +12,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class AConsoleLogger 

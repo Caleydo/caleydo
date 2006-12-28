@@ -20,7 +20,8 @@ import cerberus.xml.parser.parameter.ParameterHandler;
  * takes place in the view.
  * 
  * @author Marc Streit
- *
+ * @author Michael Kalkusch
+ * 
  */
 public class SelectionHandler
 implements IGroupedSelection {

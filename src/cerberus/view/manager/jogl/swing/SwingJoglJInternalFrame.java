@@ -16,7 +16,7 @@ import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class SwingJoglJInternalFrame 

@@ -8,8 +8,10 @@
  */
 package cerberus.command.system;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 
 import cerberus.command.ICommand;
@@ -17,12 +19,16 @@ import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
 //import cerberus.command.window.CmdWindowPopupInfo;
+import cerberus.data.mapping.GenomeMappingType;
+import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.data.IGenomeIdManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.command.CommandQueueSaxType;
-import cerberus.xml.parser.handler.importer.ascii.LookupTableLoader;
+import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.data.collection.ISet;
@@ -45,7 +51,16 @@ implements ICommand {
 	
 	protected String sFileName;
 	
-	protected String sTokenPattern;
+	protected String sLookupTableType;
+	
+	protected String sLookupTableDataType;
+	
+	/**
+	 * Define type of lookup table to be created.
+	 * 
+	 * @see cerberus.data.mapping.GenomeIdType
+	 */
+	protected String sLUT_Target;
 	
 	/**
 	 * Default is 32, because gpr files have a header of that size!
@@ -54,7 +69,7 @@ implements ICommand {
 	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStartParsingAtLine()
 	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
-	protected int iStartPareseFileAtLine = 32;
+	protected int iStartPareseFileAtLine = 0;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
@@ -80,11 +95,22 @@ implements ICommand {
 	
 		this.sFileName = phAttributes.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-		this.sTokenPattern =  phAttributes.getValueString( 
+		
+		String sLUT_info =  phAttributes.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
+
+		StringTokenizer tokenizer = new StringTokenizer( sLUT_info,
+				CommandFactory.sDelimiter_Parser_DataItems);
+		
+		sLookupTableType = tokenizer.nextToken();
+		sLookupTableDataType = tokenizer.nextToken();
+		
+		this.sLUT_Target =	phAttributes.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
+		
 		this.iTargetSetId =	StringConversionTool.convertStringToInt(
 				phAttributes.getValueString( 
-						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()),
+						CommandQueueSaxType.TAG_TARGET_ID.getXmlKey()),
 				-1 );
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
@@ -124,44 +150,56 @@ implements ICommand {
 		
 		refGeneralManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
-				sFileName + "] tokens:[" +
-				sTokenPattern + "]  targetSet(s)=[" +
+				sFileName + "] LUT-tpye:[" +
+				sLookupTableType + "]  targetSet(s)=[" +
 				iTargetSetId + "])",
 				LoggerType.STATUS );
 		
-		ISet useSet = refGeneralManager.getSingelton().getSetManager(
-				).getItemSet( iTargetSetId );
+//		ISet useSet = refGeneralManager.getSingelton().getSetManager(
+//				).getItemSet( iTargetSetId );
+//		
+//		if ( useSet == null ) {
+//			String errorMsg = "Could not load data via MicroArrayLoader1Storage, target Set is not valid! file=["+
+//			sFileName + "] LUT-tpye:[" +
+//			sLookupTableType + "]  targetSet(s)=[" +
+//			iTargetSetId + "])";
+//			
+//			refGeneralManager.getSingelton().logMsg(
+//					errorMsg,
+//					LoggerType.ERROR_ONLY );
+//			
+//			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
+//			exitWarning.setText("ERROR",errorMsg);
+//			exitWarning.doCommand();
+//			return;
+//		}
 		
-		if ( useSet == null ) {
-			String errorMsg = "Could not load data via MicroArrayLoader1Storage, target Set is not valid! file=["+
-			sFileName + "] tokens:[" +
-			sTokenPattern + "]  targetSet(s)=[" +
-			iTargetSetId + "])";
-			
-			refGeneralManager.getSingelton().logMsg(
-					errorMsg,
-					LoggerType.ERROR_ONLY );
-			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
-			exitWarning.setText("ERROR",errorMsg);
-			exitWarning.doCommand();
-			return;
-		}
+		LookupTableLoaderProxy loader = null;
 		
-		LookupTableLoader loader = null;
+		IGenomeIdManager refGenomeIdManager = 
+			refGeneralManager.getSingelton().getGenomeIdManager();
 		
-		MultiHashArrayMap setHashMap = new MultiHashArrayMap();
 		
 		try 
 		{
-			loader = new LookupTableLoader( refGeneralManager, sFileName );
+			GenomeMappingType lut_genome_tpye = 
+				GenomeMappingType.valueOf( sLookupTableType );
+			
+			GenomeMappingDataType genomeDataType = 
+				GenomeMappingDataType.valueOf( sLookupTableDataType );
+			
+			loader = new LookupTableLoaderProxy( 
+					refGeneralManager, 
+					sFileName,
+					lut_genome_tpye,
+					genomeDataType );					
 			
 			//loader.setFileName( sFileName );
 			//loader.setTargetSet( useSet );
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine,
 					iStopPareseFileAtLine );
-			loader.setTokenSeperator( ";" );
-			loader.setHashMap( setHashMap );
+			//loader.setTokenSeperator( ";" );
+			
 			loader.loadData();
 			
 			
@@ -169,8 +207,8 @@ implements ICommand {
 		catch ( Exception e ) 
 		{
 			String errorMsg = "Could not load data via MicroArrayLoader1Storage, error during loading! file=["+
-				sFileName + "] tokens:[" +
-				sTokenPattern + "]  targetSet(s)=[" +
+				sFileName + "] LUT-tpye:[" +
+				sLookupTableType + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			
 			refGeneralManager.getSingelton().logMsg(

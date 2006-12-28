@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 import javax.media.opengl.GL;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class SingleIndexDataNode extends AbstractNode {

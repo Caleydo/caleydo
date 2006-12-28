@@ -18,7 +18,7 @@ import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AXmlParserManager 

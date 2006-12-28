@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class ASWTEmbeddedWidget 

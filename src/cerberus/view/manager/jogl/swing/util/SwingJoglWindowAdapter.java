@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class SwingJoglWindowAdapter extends WindowAdapter {

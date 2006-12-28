@@ -6,7 +6,7 @@ package cerberus.manager;
 import cerberus.manager.IGeneralManager;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public interface ILoggerManager 

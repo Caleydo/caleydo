@@ -28,7 +28,7 @@ import cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class MicroArrayLoaderValues2MultipleStorages 

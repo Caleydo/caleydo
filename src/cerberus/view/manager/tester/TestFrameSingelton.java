@@ -10,7 +10,7 @@ import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class TestFrameSingelton {

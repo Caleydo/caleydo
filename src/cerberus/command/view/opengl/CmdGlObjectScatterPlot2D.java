@@ -16,7 +16,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class CmdGlObjectScatterPlot2D 

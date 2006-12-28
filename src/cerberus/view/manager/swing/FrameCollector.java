@@ -24,7 +24,7 @@ import cerberus.view.FrameBaseType;
 import demos.gears.Gears;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class FrameCollector {

@@ -24,7 +24,7 @@ import cerberus.xml.parser.parameter.data.ParameterKeyValueDataAndDefault;
 /**
  * Handles attributes from XML file used to create objects.
  * 
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public final class ParameterHandler

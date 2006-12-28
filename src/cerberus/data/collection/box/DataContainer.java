@@ -19,7 +19,7 @@ import cerberus.data.collection.thread.lock.ICollectionLock;
  * Container or box holding several ISet's.
  * Has it's own unique id and a label.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class DataContainer extends AThreadItem implements

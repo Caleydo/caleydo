@@ -18,7 +18,7 @@ import javax.swing.event.InternalFrameAdapter;
  * since SwingJoglJFrame extends javax.swing.JFrame and 
  * SwingJoglJInternalFrame extends javax.swing.JInternalFrame .
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  * @see cerberus.view.manager.jogl.swing.SwingJoglJFrame
  * @see cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame

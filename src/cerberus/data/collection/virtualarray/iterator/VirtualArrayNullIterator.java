@@ -10,7 +10,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 /**
  * Null iterator representing null obejct for iteration.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public final class VirtualArrayNullIterator implements IVirtualArrayIterator {

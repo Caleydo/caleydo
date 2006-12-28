@@ -7,7 +7,7 @@ import cerberus.util.midi.device.data.MidiShortMessageType;
 /**
  * Container to store data from MIDI event.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class MidiData {

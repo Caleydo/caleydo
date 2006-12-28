@@ -216,6 +216,13 @@ implements ISingelton {
 	public ICommandManager getCommandManager() {
 		return refCommandManager;
 	}
+		
+	public IGenomeIdManager getGenomeIdManager() {
+		return this.refIGenomeIdManager;
+	}
+	
+	
+
 	
 	public void setMenuManager( IMenuManager setMenuManager ) {
 		this.refMenuManager = setMenuManager;
@@ -304,9 +311,6 @@ implements ISingelton {
 		this.refIGenomeIdManager = refIGenomeIdManager;
 	}
 	
-	public IGenomeIdManager getGenomeIdManager() {
-		return this.refIGenomeIdManager;
-	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getManager(cerberus.manager.type.ManagerType)

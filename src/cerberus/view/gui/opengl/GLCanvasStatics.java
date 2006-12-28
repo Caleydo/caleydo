@@ -5,7 +5,7 @@ package cerberus.view.gui.opengl;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public final class GLCanvasStatics {

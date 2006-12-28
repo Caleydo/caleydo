@@ -25,7 +25,7 @@ import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class MicroArrayLoader1Storage 

@@ -7,7 +7,7 @@ import cerberus.data.collection.ISet;
 /**
  * Object that shall receive an event.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface ILockableMediatorReceiver

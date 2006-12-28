@@ -11,7 +11,7 @@ import cerberus.data.collection.thread.lock.ICollectionReadWriteLock;
 //import prometheus.manager.BaseManagerType;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class ACollectionThreadItem 

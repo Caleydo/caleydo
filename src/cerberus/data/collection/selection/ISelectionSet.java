@@ -12,7 +12,7 @@ import cerberus.data.collection.ISet;
  * @see cerverus.view.gui.AViewRep
  * @see cerberus.manager.event.mediator.IMediatorReceiver
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface ISelectionSet 

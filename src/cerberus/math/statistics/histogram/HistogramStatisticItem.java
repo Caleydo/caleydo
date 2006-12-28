@@ -6,7 +6,7 @@ package cerberus.math.statistics.histogram;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class HistogramStatisticItem 

@@ -9,7 +9,7 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetLabelAttrDetail 

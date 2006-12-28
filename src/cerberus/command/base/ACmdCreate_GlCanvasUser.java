@@ -13,7 +13,7 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_GlCanvasUser 

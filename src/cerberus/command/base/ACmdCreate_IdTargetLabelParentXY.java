@@ -16,7 +16,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetLabelParentXY 

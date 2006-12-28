@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class CerberusJStatusBar extends JPanel {

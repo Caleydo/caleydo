@@ -16,7 +16,7 @@ import cerberus.view.swing.graph.NodeInterface;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class NodeVisitorRenderer {

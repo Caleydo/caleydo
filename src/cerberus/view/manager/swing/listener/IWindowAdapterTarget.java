@@ -7,7 +7,7 @@ package cerberus.view.manager.swing.listener;
  * Define methodes for handling external frames.
  * Is called form windowClosing(WindowEvent).
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface IWindowAdapterTarget {

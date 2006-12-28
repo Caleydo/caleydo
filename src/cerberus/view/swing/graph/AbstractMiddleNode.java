@@ -4,7 +4,7 @@
 package cerberus.view.swing.graph;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class AbstractMiddleNode extends AbstractNode {

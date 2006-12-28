@@ -19,7 +19,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * 
  * @see cerberus.command.ICommand
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class CommandQueueVector 

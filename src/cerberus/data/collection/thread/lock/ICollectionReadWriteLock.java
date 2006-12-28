@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Read and write locks for collections.
  *  
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class ICollectionReadWriteLock implements ICollectionLock {

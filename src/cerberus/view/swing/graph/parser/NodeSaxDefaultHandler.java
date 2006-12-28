@@ -10,7 +10,7 @@ import cerberus.view.swing.graph.SingleIndexDataNode;
 import cerberus.view.swing.graph.NodeAttributes;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class NodeSaxDefaultHandler extends AbstractSaxDefaultHandler {

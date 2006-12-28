@@ -5,9 +5,11 @@ package cerberus.manager.data.genome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import cerberus.base.map.MultiHashArrayMap;
 import cerberus.data.mapping.GenomeIdType;
+import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.ISingelton;
@@ -17,7 +19,7 @@ import cerberus.manager.type.ManagerObjectType;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class AGenomeIdManager 
@@ -26,19 +28,21 @@ implements IGenomeIdManager {
 
 	protected boolean bLUTcreationIsNotInPorgress = false;
 	
-	protected MultiHashArrayMap hashNCBI_GENEID_2_KEGGID;
+	protected MultiHashArrayMap multiMapNCBI_GENEID_2_KEGGID;
 	
-	protected MultiHashArrayMap hashKEGG_GENEID_2_KEGGID_reverse;
+	protected MultiHashArrayMap multiMapKEGG_GENEID_2_KEGGID_reverse;
 	
-	protected MultiHashArrayMap hashKEGG_2_ENZYMEID;
+	protected MultiHashArrayMap multiMapKEGG_2_ENZYMEID;
 	
-	protected MultiHashArrayMap hashKEGG_2_ENZYMEID_reverse;
+	protected MultiHashArrayMap multiMapKEGG_2_ENZYMEID_reverse;
 	
 	protected HashMap <String,Integer> hashENZYME_CODE_2_ENZYMEID;
 	
-	protected HashMap <String,Integer> hashENZYME_CODE_2_ENZYMEID_reverse;
+	protected HashMap <Integer,String> hashENZYME_CODE_2_ENZYMEID_reverse;
 	
 	protected HashMap <String,Integer> hashPATHWAY_2_NCBI_GENEID;
+	
+	protected HashMap <String,Integer> hashMICROARRAY_2_NCBI_GENEID;
 	
 	/**
 	 * 
@@ -55,31 +59,55 @@ implements IGenomeIdManager {
 	 * Needs a lot of memory and a large heap size!
 	 *
 	 */
-	public void initAll() {
+	protected void initAll() {
 	
-		if ( hashNCBI_GENEID_2_KEGGID != null) 
+		if ( multiMapNCBI_GENEID_2_KEGGID != null) 
 		{
 			getGeneralManager().getSingelton().getLoggerManager().logMsg("AGenomeIdManager.initAll() called twice!",
 					LoggerType.STATUS );
 			return;
 		}
 		
-		hashNCBI_GENEID_2_KEGGID = new MultiHashArrayMap();
+		multiMapNCBI_GENEID_2_KEGGID = new MultiHashArrayMap();
 		
-		hashKEGG_GENEID_2_KEGGID_reverse = new MultiHashArrayMap();
+		multiMapKEGG_GENEID_2_KEGGID_reverse = new MultiHashArrayMap();
 		
-		hashKEGG_2_ENZYMEID = new MultiHashArrayMap();
+		multiMapKEGG_2_ENZYMEID = new MultiHashArrayMap();
 		
-		hashKEGG_2_ENZYMEID_reverse = new MultiHashArrayMap();
+		multiMapKEGG_2_ENZYMEID_reverse = new MultiHashArrayMap();
+		
 		
 		hashENZYME_CODE_2_ENZYMEID = new HashMap <String,Integer> ();
 		
-		hashENZYME_CODE_2_ENZYMEID_reverse = new HashMap <String,Integer> ();
+		hashENZYME_CODE_2_ENZYMEID_reverse = new HashMap <Integer,String> ();
 		
 		hashPATHWAY_2_NCBI_GENEID = new HashMap <String,Integer> ();
 		
+		hashMICROARRAY_2_NCBI_GENEID = new HashMap <String,Integer> ();
 	}
 	
+	public Map getMapByGenomeType( final GenomeMappingType type ) {
+		
+		switch ( type ) {
+		
+		case PATHWAY_2_NCBI_GENEID:
+			return hashPATHWAY_2_NCBI_GENEID;
+			
+		case MICROARRAY_2_NCBI_GENEID:
+			return hashMICROARRAY_2_NCBI_GENEID;
+		
+		case ENZYME_CODE_2_ENZYME:
+			return hashENZYME_CODE_2_ENZYMEID;
+			
+		case ENZYME_CODE_2_ENZYME_R:
+			return hashENZYME_CODE_2_ENZYMEID_reverse;
+			
+		default:
+			assert false : "unknown type!";
+			return null;
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.IGenomeIdManager#getNameById(int)
 	 */

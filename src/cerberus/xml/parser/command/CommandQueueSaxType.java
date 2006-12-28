@@ -14,7 +14,7 @@ package cerberus.xml.parser.command;
  * 
  * in XML: <cmd process="LOAD_ON_DEMAND" />
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public enum CommandQueueSaxType

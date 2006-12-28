@@ -9,7 +9,7 @@ import cerberus.manager.ILoggerManager;
 import cerberus.manager.logger.AConsoleLogger;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class ConsoleLogger 

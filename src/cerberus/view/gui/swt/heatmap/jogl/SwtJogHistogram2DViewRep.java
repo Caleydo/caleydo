@@ -29,7 +29,7 @@ import cerberus.math.statistics.histogram.StatisticHistogramType;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class SwtJogHistogram2DViewRep 

@@ -4,7 +4,7 @@ package cerberus.data.collection;
 /**
  * Interface for threaded cached objects.
  * 
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public interface ICollectionCache {

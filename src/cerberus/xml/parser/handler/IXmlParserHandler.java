@@ -10,7 +10,7 @@ import org.xml.sax.ContentHandler;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface IXmlParserHandler

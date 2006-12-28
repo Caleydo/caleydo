@@ -17,7 +17,7 @@ import cerberus.net.dwt.DNetEventListener;
 import cerberus.xml.parser.ISaxParserHandler;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class ViewCanvasBaseItem implements IViewCanvas {

@@ -6,7 +6,7 @@ package cerberus.view.swing.parallelcoord;
 import java.util.Vector;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AbstractParallelDots {

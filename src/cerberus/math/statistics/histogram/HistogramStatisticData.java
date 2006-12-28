@@ -9,7 +9,7 @@ import java.lang.Number;
 import cerberus.data.collection.ISet;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class HistogramStatisticData <T extends Number > {

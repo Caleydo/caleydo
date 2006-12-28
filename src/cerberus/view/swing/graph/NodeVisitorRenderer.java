@@ -6,7 +6,7 @@ package cerberus.view.swing.graph;
 import cerberus.view.swing.graph.NodeInterface;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class NodeVisitorRenderer {

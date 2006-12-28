@@ -107,7 +107,7 @@ implements IMementoXML, IParserObject {
 	 * By default these lines are skipped during parsing.
 	 * Default is 32, because gpr files have a header of that size!
 	 */
-	protected int iStartParsingAtLine = 32;
+	protected int iStartParsingAtLine = 0;
 	
 	/**
 	 * Define numbers of lines to skip as assumed to be the header of a file.
@@ -452,7 +452,7 @@ implements IMementoXML, IParserObject {
 				iStepsTill100_Percent);
 	}
 	
-	protected final void progressBarStoredIncrement() {
+	public final void progressBarStoredIncrement() {
 		fProgressBarIndex += fProgressBarInc;
 		
 		if ( (int)fProgressBarIndex != iProgressBarCurrentPosition ) {

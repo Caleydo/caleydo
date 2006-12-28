@@ -8,7 +8,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class SetIndexIteratorSingleOnly implements ISetIndexIterator {

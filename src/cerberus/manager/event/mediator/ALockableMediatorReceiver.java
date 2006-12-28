@@ -16,7 +16,7 @@ import cerberus.data.collection.ISet;
  * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
  * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class ALockableMediatorReceiver 

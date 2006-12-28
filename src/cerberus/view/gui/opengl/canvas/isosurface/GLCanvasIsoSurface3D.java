@@ -33,7 +33,7 @@ import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class GLCanvasIsoSurface3D 

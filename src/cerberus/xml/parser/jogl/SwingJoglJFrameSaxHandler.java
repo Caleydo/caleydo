@@ -21,7 +21,7 @@ import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class SwingJoglJFrameSaxHandler extends ACerberusDefaultSaxHandler  {

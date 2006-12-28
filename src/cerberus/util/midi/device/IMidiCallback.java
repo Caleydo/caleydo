@@ -6,7 +6,7 @@ package cerberus.util.midi.device;
 import javax.sound.midi.MidiMessage;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface IMidiCallback {

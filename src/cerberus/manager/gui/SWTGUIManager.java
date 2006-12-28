@@ -1,12 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Marc Streit
- * 
- * Creation date: 26-07-2006
- *  
- */
-
 package cerberus.manager.gui;
 
 import java.util.HashMap;
@@ -44,6 +35,9 @@ import cerberus.view.gui.swt.widget.ASWTWidget;
  * menues are added to the windows.
  * 
  * @author Marc Streit
+ * @author Michael Kalkusch
+ * 
+ * 
  */
 public class SWTGUIManager 
 extends AAbstractManager 

@@ -14,7 +14,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 /**
  * Runs a command queue.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class CmdSystemRunCmdQueue 

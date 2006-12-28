@@ -4,7 +4,7 @@ package cerberus.math.statistics.histogram;
 /**
  * Interface for historagms.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  * @param <T> basic data type of histogram
  */

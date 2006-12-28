@@ -21,7 +21,7 @@ import cerberus.view.manager.jogl.swing.CanvasSwingJoglManager;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class SwingJoglJFrameSaxHandler extends DefaultHandler {

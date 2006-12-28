@@ -5,19 +5,21 @@ package cerberus.data.mapping;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public enum GenomeIdType
 {
 
-	ACCESSION("acc","accession"),
-	ENZYME("ec","EC_number"),
-	METHOBOLIT("ko","methobliot"),
-	NCBI_GENEID("ncbi-geneid","ncbi-geneid"),
-	NCBI_GI("ncbi-gi","ncbi-gi"),
-	PATHWAY("path","pathway-id"),
-	KEGG_ID("kegg","kegg-id");
+	ACCESSION    ("acc","accession"),
+	ENZYME       ("ec","EC_number"),
+	ENZYME_CODE  ("ec","EC_number as String"),
+	METHOBOLIT   ("ko","methobliot"),
+	MICROARRAY   ("IMAGp","Microarray LUT"),
+	NCBI_GENEID  ("ncbi-geneid","ncbi-geneid"),
+	NCBI_GI      ("ncbi-gi","ncbi-gi"),
+	PATHWAY      ("path","pathway-id"),
+	KEGG_ID      ("kegg","kegg-id");
 	
 	private String sName;
 	
@@ -27,7 +29,6 @@ public enum GenomeIdType
 		sName = name;
 		sDesciption = desciption;
 	}
-
 	
 	/**
 	 * @return Returns the desciption.

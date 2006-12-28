@@ -14,7 +14,7 @@ import cerberus.xml.parser.parameter.IParameterKeyValuePair;
  * Attention: Default values mut be set before key-value pair are set, because
  * otherwise they would be overwritten!
  * 
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public final class ParameterKeyValueDataNoDefault < T > implements IParameterKeyValuePair<T>

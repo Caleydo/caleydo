@@ -9,7 +9,7 @@ import java.util.Vector;
 import cerberus.data.collection.ICollectionCache;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public final class SetUpdateChacheId < T > {

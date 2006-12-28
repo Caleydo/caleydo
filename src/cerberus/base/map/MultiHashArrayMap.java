@@ -13,10 +13,10 @@ import java.util.Set;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
-public class MultiHashArrayMap
+public class MultiHashArrayMap 
 extends HashMap <Integer,ArrayList<Integer>> 
 implements MultiIntegerMap  {
 

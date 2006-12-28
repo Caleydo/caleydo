@@ -9,7 +9,7 @@ import cerberus.view.swing.graph.NodeInterface;
 /**
  * Node with only two child nodes.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class DualNode extends AbstractMiddleNode implements NodeInterface {

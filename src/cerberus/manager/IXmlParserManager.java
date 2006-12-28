@@ -13,7 +13,7 @@ import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface IXmlParserManager 

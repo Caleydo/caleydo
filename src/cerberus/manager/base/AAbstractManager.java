@@ -12,7 +12,7 @@ import cerberus.manager.type.ManagerObjectType;
 /**
  * Base class for manager classes, that connect to the IGeneralManager.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AAbstractManager implements IAbstractManager  {

@@ -12,6 +12,8 @@ package cerberus.view.gui.swt.widget;
 import javax.media.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 
+import com.sun.opengl.util.Animator;
+
 import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
 
 
@@ -21,6 +23,7 @@ import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
  * The GLCanvas can be retrieved by the getGLCanvas() method.
  * 
  * @author Marc Streit
+ * @author Michael Kalkusch
  */
 public class SWTEmbeddedJoglWidget 
 extends ASWTEmbeddedWidget {
@@ -30,6 +33,7 @@ extends ASWTEmbeddedWidget {
 	 */
 	protected GLCanvas refGLCanvas;
 	
+	protected Animator refAnimator = null;
 	
 	/**
 	 * Constructor that takes the composite in which it should 
@@ -62,5 +66,15 @@ extends ASWTEmbeddedWidget {
 	public GLCanvas getGLCanvas() {
 		
 		return refGLCanvas;
+	}
+	
+	public Animator getGLAnimator() {
+		return refAnimator;
+	}
+	
+	public void setGLAnimator( Animator setAnimator ) {
+		assert refAnimator == null : "Can not assign Animator if it is already assigned!";
+		
+		refAnimator = setAnimator;
 	}
 }

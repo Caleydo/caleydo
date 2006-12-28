@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 import javax.media.opengl.GL;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AbstractNode implements NodeInterface {

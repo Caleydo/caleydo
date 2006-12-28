@@ -9,7 +9,7 @@ import cerberus.data.collection.ISet;
 //import cerberus.data.collection.IStorage;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class HistogramStatisticInteger 

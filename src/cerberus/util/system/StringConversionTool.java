@@ -16,7 +16,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * Conversion of String to int and boolean using default values, 
  * in case conversion failes.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  */
 public final class StringConversionTool
 {

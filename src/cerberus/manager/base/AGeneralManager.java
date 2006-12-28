@@ -12,7 +12,7 @@ import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AGeneralManager implements IGeneralManager {

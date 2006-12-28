@@ -6,7 +6,7 @@ package cerberus.command;
 import cerberus.data.IUniqueManagedObject;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface ICommandManaged 

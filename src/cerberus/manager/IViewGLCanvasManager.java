@@ -16,7 +16,7 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
  * Make Jogl GLCanvas adressable by id and provide ground for XML bootstraping of 
  * GLCanvas & GLEventListener.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface IViewGLCanvasManager 

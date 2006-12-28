@@ -1,7 +1,7 @@
 package cerberus.manager.event.mediator;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface IMediatorSender {

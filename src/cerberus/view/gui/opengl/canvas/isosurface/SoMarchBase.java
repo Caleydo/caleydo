@@ -14,7 +14,7 @@ import gleem.linalg.open.Vec4fp;
 
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public abstract class SoMarchBase {

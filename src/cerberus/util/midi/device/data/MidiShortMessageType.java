@@ -6,7 +6,7 @@ package cerberus.util.midi.device.data;
 /**
  * Enumeration for different short MIDI messages.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  * @see cerberus.util.midi.device.data.MidiData
  */

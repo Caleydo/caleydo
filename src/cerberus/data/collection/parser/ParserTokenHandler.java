@@ -9,6 +9,7 @@ import cerberus.data.collection.StorageType;
  * Define the type's of data stored in MultiData storage.
  * Also used to address MultiData storages, becaus the index is stored.
  * 
+ * @author Michael Kalkusch
  */
 public final class ParserTokenHandler {
 	/**

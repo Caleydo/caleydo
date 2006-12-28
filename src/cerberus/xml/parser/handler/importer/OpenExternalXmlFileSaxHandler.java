@@ -14,7 +14,7 @@ import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public class OpenExternalXmlFileSaxHandler 

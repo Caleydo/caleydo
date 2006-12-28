@@ -20,7 +20,7 @@ import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 /**
  * Create Menus in Frames from XML file.
  * 
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class SwingJMenuSaxHandler extends ACerberusDefaultSaxHandler  {

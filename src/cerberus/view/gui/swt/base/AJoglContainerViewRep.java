@@ -35,7 +35,7 @@ import demos.gears.Gears;
  * @see javax.media.opengl.GLCanvas
  * @see javax.media.opengl.GLEventListener
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public abstract class AJoglContainerViewRep 

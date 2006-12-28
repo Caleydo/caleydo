@@ -6,7 +6,7 @@ package cerberus.base.type;
 /**
  * Define kind of window toolkit.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public enum WindowToolkitType {
