@@ -9,6 +9,7 @@ import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GeneCommentaryType;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import javax.xml.rpc.ServiceException;
 
@@ -16,7 +17,7 @@ import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
 
 /**
- * Class generated a file that contains a mapping 
+ * Class generates a file that contains a mapping 
  * from GeneIDs to Enzyme Code.
  * 
  * @author Marc Streit
@@ -26,17 +27,30 @@ public class MappingBuilder {
 	
 	protected static String strDelimiter = ";";
 	
-	protected PrintWriter mappingGeneID2EnzymeOutputStream;
+	protected PrintWriter writer_ACCESSION_NUMBER_2_ENZYME_ID;
 	
-	protected PrintWriter mappingGeneID2AccessionOutputStream;
+	protected PrintWriter writer_ACCESSION_NUMBER_2_GENE_ID;
+	
+	protected PrintWriter writer_ENZYME_CODE_2_ENZYME_ID;
+	
+	protected HashMap<String, Integer> hashMapEnzymeCode2EnzyneID;
+	
+	protected int iEnzymeID = 0;
+	
+	protected int iMaxEnzymeID = 0;
 	
 	public MappingBuilder() throws IOException {
 		
-		mappingGeneID2EnzymeOutputStream = 
-			new PrintWriter("data/mapping/geneID2EnzymeCode.map");
+		writer_ACCESSION_NUMBER_2_ENZYME_ID = 
+			new PrintWriter("data/mapping/accession_number_2_enzyme_id.map");
 		
-		mappingGeneID2AccessionOutputStream =
-			new PrintWriter("data/mapping/geneID2AccessionNumber.map");
+		writer_ACCESSION_NUMBER_2_GENE_ID =
+			new PrintWriter("data/mapping/accession_number_2_gene_id.map");
+		
+		writer_ENZYME_CODE_2_ENZYME_ID =
+			new PrintWriter("data/mapping/enzyme_code_2_enzyme_id.map");
+		
+		hashMapEnzymeCode2EnzyneID = new HashMap<String, Integer>();
 	}
 	
 	protected void fillMappingFile() 
@@ -72,7 +86,7 @@ public class MappingBuilder {
 		
 		strArHomeSapiensGenes = serv.get_genes_by_organism("hsa", 1, iNumberOfGenes);
 		
-		for (int iGeneIndex = 25000; iGeneIndex < strArHomeSapiensGenes.length; 
+		for (int iGeneIndex = 0; iGeneIndex < strArHomeSapiensGenes.length; 
 			iGeneIndex++)
 		{
 //			// Refresh connections every 100 genes
@@ -92,87 +106,115 @@ public class MappingBuilder {
 			// Remove the "hsa:" prefix of the geneID before writing it to the file
 			strGeneID = strGeneID.substring(4);
 			
-			if (strArEnzymeQueryResult.length == 0)
-			{
-				System.out.println("Writing: " +strGeneID + strDelimiter);
-				mappingGeneID2EnzymeOutputStream.println(strGeneID + strDelimiter);	
-	            mappingGeneID2EnzymeOutputStream.flush();
-			}
-			
-			for (int iResultIndex = 0; iResultIndex < strArEnzymeQueryResult.length; 
-				iResultIndex++)
-			{	
-				System.out.println("Write: " +strGeneID 
-						+strDelimiter + strArEnzymeQueryResult[iResultIndex]);
-				
-				mappingGeneID2EnzymeOutputStream.println(strGeneID 
-						+strDelimiter + strArEnzymeQueryResult[iResultIndex]);	
-				
-	            mappingGeneID2EnzymeOutputStream.flush();
-			}
-			
-//            // Call NCBI EFetch utility
-//            parameters.setId(strGeneID);
-//            entrezEFetchResult = utils.run_eFetch(parameters);
-//            
-//            geneCommentaries = 
-//            	entrezEFetchResult.getEntrezgeneSet().getEntrezgene(0).
-//            		getEntrezgene_comments().getGeneCommentary();
-//            
-//            for (int iGeneCommentaryIndex = 0; iGeneCommentaryIndex < geneCommentaries.length;
-//            	iGeneCommentaryIndex++)
-//            {
-//            	if (geneCommentaries[iGeneCommentaryIndex].getGeneCommentary_heading() != null && 
-//            		geneCommentaries[iGeneCommentaryIndex].getGeneCommentary_heading().equals("NCBI Reference Sequences (RefSeq)"))
-//            	{      	
-//                	tmpGeneCommentaries = geneCommentaries[iGeneCommentaryIndex].
-//                		getGeneCommentary_comment().getGeneCommentary();
-//                	
-//                    for (int iTmpGeneCommentaryIndex = 0; iTmpGeneCommentaryIndex < tmpGeneCommentaries.length;
-//                		iTmpGeneCommentaryIndex++)
-//                    {
-//                    	if (tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_heading() != null && 
-//                    			tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_heading().
-//                    				equals("RefSeqs maintained independently of Annotated Genomes"))
-//                    	{
-//                    		lastGeneCommentaries = 
-//                    			tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_products().getGeneCommentary();
-//                    	
-//                            for (int iLastGeneCommentaryIndex = 0; iLastGeneCommentaryIndex < lastGeneCommentaries.length;
-//                    			iLastGeneCommentaryIndex++)
-//                            {
-//                            	if (lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_heading() != null && 
-//                        			lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_heading().
-//                        				equals("mRNA Sequence"))
-//                            	{
-//                            		strAccessionNumber = 
-//                            			lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_accession();
-//                            		
-//                            		break;
-//                            	}
-//                            }
-//                            
-//                            break;
-//                    	}
-//                	
-//                    }
-//                	
-//                	System.out.println("Writing: " 
-//                		+strGeneID + strDelimiter + strAccessionNumber);
-//                	
-//    				mappingGeneID2AccessionOutputStream.println(strGeneID 
-//    						+strDelimiter + strAccessionNumber);
-//    				
-//    	            mappingGeneID2AccessionOutputStream.flush();
-//              	
-//                	break;
-//                }
-//            }
+            // Call NCBI EFetch utility
+            parameters.setId(strGeneID);
+            entrezEFetchResult = utils.run_eFetch(parameters);
+            
+            geneCommentaries = 
+            	entrezEFetchResult.getEntrezgeneSet().getEntrezgene(0).
+            		getEntrezgene_comments().getGeneCommentary();
+            
+            for (int iGeneCommentaryIndex = 0; iGeneCommentaryIndex < geneCommentaries.length;
+            	iGeneCommentaryIndex++)
+            {
+            	if (geneCommentaries[iGeneCommentaryIndex].getGeneCommentary_heading() != null && 
+            		geneCommentaries[iGeneCommentaryIndex].getGeneCommentary_heading().equals("NCBI Reference Sequences (RefSeq)"))
+            	{      	
+                	tmpGeneCommentaries = geneCommentaries[iGeneCommentaryIndex].
+                		getGeneCommentary_comment().getGeneCommentary();
+                	
+                    for (int iTmpGeneCommentaryIndex = 0; iTmpGeneCommentaryIndex < tmpGeneCommentaries.length;
+                		iTmpGeneCommentaryIndex++)
+                    {
+                    	if (tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_heading() != null && 
+                    			tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_heading().
+                    				equals("RefSeqs maintained independently of Annotated Genomes"))
+                    	{
+                    		lastGeneCommentaries = 
+                    			tmpGeneCommentaries[iTmpGeneCommentaryIndex].getGeneCommentary_products().getGeneCommentary();
+                    	
+                            for (int iLastGeneCommentaryIndex = 0; iLastGeneCommentaryIndex < lastGeneCommentaries.length;
+                    			iLastGeneCommentaryIndex++)
+                            {
+                            	if (lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_heading() != null && 
+                        			lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_heading().
+                        				equals("mRNA Sequence"))
+                            	{
+                            		strAccessionNumber = 
+                            			lastGeneCommentaries[iLastGeneCommentaryIndex].getGeneCommentary_accession();
+                            		
+                            		break;
+                            	}
+                            }
+                            
+                            break;
+                    	}
+                	
+                    }
+                	
+	                // Remove "NM_" from accesion number string
+	                strAccessionNumber = strAccessionNumber.substring(3);
+                    
+                    // Writing accession number 2 geneID mapping
+                	System.out.println("Writing: " 
+                		+strAccessionNumber + strDelimiter + strGeneID);	
+                	writer_ACCESSION_NUMBER_2_GENE_ID.println(strAccessionNumber 
+    						+strDelimiter + strGeneID);
+                	writer_ACCESSION_NUMBER_2_GENE_ID.flush();
+    	            
+    	            // Writing accession number 2 enzyme code mapping
+    				if (strArEnzymeQueryResult.length == 0)
+    				{
+    					System.out.println("Writing: " +strAccessionNumber + strDelimiter);
+    					writer_ACCESSION_NUMBER_2_ENZYME_ID.println(strAccessionNumber + strDelimiter);	
+    					writer_ACCESSION_NUMBER_2_ENZYME_ID.flush();
+    				}
+    				
+    				String sTmpEnzymeCode;
+    				
+    				for (int iResultIndex = 0; iResultIndex < strArEnzymeQueryResult.length; 
+    					iResultIndex++)
+    				{	
+    					sTmpEnzymeCode = strArEnzymeQueryResult[iResultIndex];
+    					
+    					if (!hashMapEnzymeCode2EnzyneID.containsKey(sTmpEnzymeCode))
+    					{
+    						iMaxEnzymeID++;
+    						
+    						hashMapEnzymeCode2EnzyneID.put(
+    							sTmpEnzymeCode, iMaxEnzymeID);
+    						
+    						writer_ENZYME_CODE_2_ENZYME_ID.println(sTmpEnzymeCode 
+    								+strDelimiter + iMaxEnzymeID);
+    						writer_ENZYME_CODE_2_ENZYME_ID.flush();
+    						
+    						System.out.println("Writing: " +sTmpEnzymeCode 
+    								+strDelimiter + iMaxEnzymeID);
+    						
+    						iEnzymeID = iMaxEnzymeID;
+    					}
+    					else
+    					{
+    						iEnzymeID = hashMapEnzymeCode2EnzyneID.get(sTmpEnzymeCode);
+    					}
+    					
+    					System.out.println("Writing: " +strAccessionNumber 
+    							+strDelimiter + iEnzymeID);
+    					
+    					writer_ACCESSION_NUMBER_2_ENZYME_ID.println(strAccessionNumber 
+    							+strDelimiter + iEnzymeID);	
+    					
+    					writer_ACCESSION_NUMBER_2_ENZYME_ID.flush();
+    				}
+    	            
+                	break;
+                }
+            }
 		}
 		
 		// Close output streams (only then the data is written).
-		mappingGeneID2EnzymeOutputStream.close();
-		mappingGeneID2AccessionOutputStream.close();
+		writer_ACCESSION_NUMBER_2_ENZYME_ID.close();
+		writer_ACCESSION_NUMBER_2_GENE_ID.close();
 		
 //		System.out.println("Finished creating mapping files.");
 	}
