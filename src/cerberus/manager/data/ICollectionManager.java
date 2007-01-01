@@ -34,9 +34,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  * 
  */
 public abstract class ICollectionManager 
- extends AAbstractManager
- implements IGeneralManager {
-
+extends AAbstractManager
+implements IGeneralManager {
 	
 	/**
 	 * Contains a lookup of unique Id to Object
@@ -52,8 +51,6 @@ public abstract class ICollectionManager
 		hashId2IndexLookup = new Hashtable<Integer,Integer>();
 	}
 
-	
-	
 	/**
 	 * Calculates an initial Id from the pieces of information provided 
 	 * by the SingeltonManager and the type-offset information.
@@ -69,8 +66,7 @@ public abstract class ICollectionManager
 			iSetUniqueId_TypeOffset * iUniqueId_WorkspaceOffset +
 			useRefSingeltonManager.getSingelton().getNetworkPostfix() );
 	}
-	
-	
+		
 	/* (non-Javadoc)
 	 * @see prometheus.data.manager.GeneralManager#hasItem(int)
 	 */

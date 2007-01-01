@@ -8,11 +8,7 @@
  */
 package cerberus.command.system;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Iterator;
 import java.util.StringTokenizer;
-
 
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
@@ -31,12 +27,9 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
-import cerberus.data.collection.ISet;
-import cerberus.base.map.MultiHashArrayMap;
-
-
 /**
- * Command, load lookup table from file using one delimiter and a target Collection.
+ * Command, load lookup table from file 
+ * using one delimiter and a target Collection.
  * 
  * @author Michael Kalkusch
  *
@@ -150,7 +143,7 @@ implements ICommand {
 		
 		refGeneralManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
-				sFileName + "] LUT-tpye:[" +
+				sFileName + "] LUT-type:[" +
 				sLookupTableType + "]  targetSet(s)=[" +
 				iTargetSetId + "])",
 				LoggerType.STATUS );
@@ -176,13 +169,12 @@ implements ICommand {
 		
 		LookupTableLoaderProxy loader = null;
 		
-		IGenomeIdManager refGenomeIdManager = 
-			refGeneralManager.getSingelton().getGenomeIdManager();
-		
+//		IGenomeIdManager refGenomeIdManager = 
+//			refGeneralManager.getSingelton().getGenomeIdManager();
 		
 		try 
 		{
-			GenomeMappingType lut_genome_tpye = 
+			GenomeMappingType genomeMappingType = 
 				GenomeMappingType.valueOf( sLookupTableType );
 			
 			GenomeMappingDataType genomeDataType = 
@@ -191,23 +183,19 @@ implements ICommand {
 			loader = new LookupTableLoaderProxy( 
 					refGeneralManager, 
 					sFileName,
-					lut_genome_tpye,
-					genomeDataType );					
+					genomeMappingType,
+					genomeDataType);					
 			
-			//loader.setFileName( sFileName );
-			//loader.setTargetSet( useSet );
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine,
 					iStopPareseFileAtLine );
-			//loader.setTokenSeperator( ";" );
 			
 			loader.loadData();
-			
 			
 		} //try
 		catch ( Exception e ) 
 		{
-			String errorMsg = "Could not load data via MicroArrayLoader1Storage, error during loading! file=["+
-				sFileName + "] LUT-tpye:[" +
+			String errorMsg = "Could not load data via Lookup Table Loader, error during loading! file=["+
+				sFileName + "] LUT-type:[" +
 				sLookupTableType + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			

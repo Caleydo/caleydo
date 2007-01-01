@@ -13,6 +13,21 @@ public interface ILookupTableLoader {
 	public boolean loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile ) throws IOException;
 	
+	public void setMultiHashMap(MultiHashArrayMap refMultiHashMap,
+			final boolean bIsReverse);
+	
+	public void setHashMap_StringInteger(HashMap <String,Integer> refHashMap,
+			final boolean bIsReverse);
+	
+	public void setHashMap_IntegerString(HashMap <Integer,String> refHashMap,
+			final boolean bIsReverse);
+	
+	public void setHashMap_IntegerInteger(HashMap <Integer,Integer> refHashMap,
+			final boolean bIsReverse);
+	
+	public void setHashMap( final HashMap refHashMap,
+			final GenomeMappingType type, final boolean bIsReverse);
+	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.IParserObject#init()
 	 */
@@ -22,20 +37,4 @@ public interface ILookupTableLoader {
 	 * @see cerberus.xml.parser.IParserObject#destroy()
 	 */
 	public void destroyLUT();
-	
-	public void setMultiHashMap( MultiHashArrayMap setMultiHashMap );
-	
-	public void setHashMap_StringInteger( HashMap <String,Integer> setHashMap );
-	
-	/**
-	 * Also called reverse HashMap in cerberus.
-	 * 
-	 * @param setHashMap
-	 */
-	public void setHashMap_IntegerString( HashMap <Integer,String> setHashMap );
-	
-	public void setHashMap_IntegerInteger( HashMap <Integer,Integer> setHashMap );
-	
-	public void setHashMap( final HashMap setHashMap,
-			final GenomeMappingType type);
 }

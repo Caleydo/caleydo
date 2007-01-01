@@ -21,7 +21,7 @@ import cerberus.xml.parser.IParserObject;
 
 
 /**
- * Loader for MircoArray data sets in *.gpr format.
+ * Abstract loader for all kind of data.
  * 
  * @author Michael Kalkusch
  *
@@ -30,7 +30,7 @@ public abstract class AbstractLoader
 implements IMementoXML, IParserObject {
 
 	/**
-	 *  file name of *.gpr file
+	 *  File name
 	 */  
 	private String sFileName = "";
 	
@@ -89,18 +89,16 @@ implements IMementoXML, IParserObject {
 	 */
 	private float fProgressBarInc;
 	
-	
 	/**
-	 * ref to singelton
+	 * Reference to general manager singleton.
 	 */
 	protected final IGeneralManager refGeneralManager;
 	
 	/**
-	 * ref to SwtGuiManager.
+	 * SwtGuiManager reference needed to update progress bar.
 	 */
 	protected final SWTGUIManager refSWTGUIManager;	
 
-	
 	/**
 	 * Define numbers of lines to skip as assumed to be the header of a file.
 	 * Defines how many lines are part of the header file.
@@ -114,7 +112,6 @@ implements IMementoXML, IParserObject {
 	 * Default is -1 which means until the end of file.
 	 */
 	protected int iStopParsingAtLine = Integer.MAX_VALUE;
-
 	
 	/**
 	 * Define the speperator
@@ -332,7 +329,7 @@ implements IMementoXML, IParserObject {
 		
 		try {
 		    BufferedReader brFile = 
-			new BufferedReader( new FileReader( this.sFileName ) );
+		    	new BufferedReader( new FileReader( this.sFileName ) );
 		   
 		    		
 		    // sample line: 1110 Kybernetik
@@ -343,13 +340,10 @@ implements IMementoXML, IParserObject {
 
 		    this.loadDataParseFile( brFile, iNumberOfLinesInFile );
 		    
-
 		    if ( brFile != null ) {
 		    	brFile.close();
 		    }
-		    
-		   
-		    
+		    	    
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
 		    
 		    refGeneralManager.getSingelton().logMsg(
@@ -358,9 +352,7 @@ implements IMementoXML, IParserObject {
 				     LoggerType.STATUS );
 
 		    copyDataToInternalDataStructures();
-		    
-		 
-		    
+		        
 		    refGeneralManager.getSingelton().logMsg(
 		    		"  Read file \""+ 
 				       this.sFileName + "\" .... copy to storage ...[DONE]",
@@ -488,9 +480,6 @@ implements IMementoXML, IParserObject {
 		return this.iProgressBarCurrentPosition;
 	}
 	
-
-
-	
 	/**
 	 * @param brFile input stream
 	 * @param iNumberOfLinesInFile optional, number of lines in file, only valid if bRequiredSizeOfReadableLines==true
@@ -500,6 +489,4 @@ implements IMementoXML, IParserObject {
 		throws IOException; 
 	
 	protected abstract boolean copyDataToInternalDataStructures();
-	
-
 }

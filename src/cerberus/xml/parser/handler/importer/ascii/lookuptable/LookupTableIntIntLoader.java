@@ -11,38 +11,52 @@ import java.util.StringTokenizer;
 
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
-
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public class LookupTableIntIntLoader extends ALookupTableLoader
-		implements ILookupTableLoader {
+public class LookupTableIntIntLoader 
+extends ALookupTableLoader
+implements ILookupTableLoader {
 
 	protected HashMap <Integer,Integer> refHashMap;
 	
+	protected HashMap <Integer, Integer> refHashMap_reverse;
+	
 	/**
-	 * @param setGeneralManager
-	 * @param setFileName
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 * @param sFileName
+	 * @param genomeType
+	 * @param refLookupTableLoaderProxy
 	 */
-	public LookupTableIntIntLoader(final IGeneralManager setGeneralManager,
-			final String setFileName,
-			final GenomeMappingType genometype,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
+	public LookupTableIntIntLoader(final IGeneralManager refGeneralManager,
+			final String sFileName,
+			final GenomeMappingType genomeType,
+			final LookupTableLoaderProxy refLookupTableLoaderProxy ) {
 
-		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
-		
+		super(refGeneralManager, sFileName, genomeType, refLookupTableLoaderProxy);	
 	}
 	
-	public void setHashMap_IntegerInteger( HashMap <Integer,Integer> setHashMap ) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ALookupTableLoader#setHashMap_IntegerInteger(java.util.HashMap, boolean)
+	 */
+	public void setHashMap_IntegerInteger(HashMap <Integer,Integer> refHashMap,
+			final boolean bIsReverse) {
 		
-		
-		Class buffer = setHashMap.getClass();
-		
-		this.refHashMap = (HashMap <Integer,Integer>) setHashMap;
+		if (!bIsReverse)
+		{
+			this.refHashMap = refHashMap;
+		}
+		else 
+		{
+			this.refHashMap_reverse = refHashMap;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -68,27 +82,28 @@ public class LookupTableIntIntLoader extends ALookupTableLoader
 			if( iLineInFile > iStartParsingAtLine ){
 				
 				boolean bMaintainLoop = true;
+				
 				StringTokenizer strTokenText = 
-					new StringTokenizer(sLine, 
-							refLookupTableLoaderProxy.getTokenSeperator() );
+					new StringTokenizer(sLine, refLookupTableLoaderProxy.getTokenSeperator() );
 				
 				/**
 				 * Read all tokens
 				 */
-				while (( strTokenText.hasMoreTokens() )&&(bMaintainLoop)) {
+				while ( (strTokenText.hasMoreTokens()) && (bMaintainLoop) ) {
 					
 					/**
 					 * Excpect two Integer values in one row!
 					 */
 					
 					try {
-						int iFirst = new Integer( strTokenText.nextToken() );
+						int iFirst = Integer.parseInt(strTokenText.nextToken());
 						
 						if  ( strTokenText.hasMoreTokens() ) 
 						{
-							int iSecond = new Integer(strTokenText.nextToken());
+							int iSecond = Integer.parseInt(strTokenText.nextToken());
 							
-							refHashMap.put(iFirst,iSecond);
+							refHashMap.put(iFirst, iSecond);
+							refHashMap_reverse.put(iSecond, iFirst);
 						}
 						
 					
@@ -110,7 +125,6 @@ public class LookupTableIntIntLoader extends ALookupTableLoader
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
 			
 			iLineInFile++;
-			
 		
 	    } // end: while ((sLine = brFile.readLine()) != null) { 
 	 

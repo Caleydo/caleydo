@@ -11,32 +11,54 @@ import java.util.StringTokenizer;
 import cerberus.base.map.MultiHashArrayMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
-
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
-		implements ILookupTableLoader {
+public class LookupTableIntIntMultiMapLoader 
+extends ALookupTableLoader
+implements ILookupTableLoader {
 
 	protected MultiHashArrayMap refMultiHashMap;
 	
+	protected MultiHashArrayMap refMultiHashMap_reverse;
+	
 	/**
-	 * @param setGeneralManager
-	 * @param setFileName
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 * @param sFileName
+	 * @param genomeType
+	 * @param refLookupTableLoaderProxy
 	 */
-	public LookupTableIntIntMultiMapLoader(final IGeneralManager setGeneralManager,
-			final String setFileName,
-			final GenomeMappingType genometype,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
+	public LookupTableIntIntMultiMapLoader(final IGeneralManager refGeneralManager,
+			final String sFileName,
+			final GenomeMappingType genomeType,
+			final LookupTableLoaderProxy refLookupTableLoaderProxy ) {
 
-		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
-		
+		super(refGeneralManager, sFileName, genomeType, refLookupTableLoaderProxy);	
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ALookupTableLoader#setMultiHashMap(cerberus.base.map.MultiHashArrayMap, boolean)
+	 */
+	public void setMultiHashMap(MultiHashArrayMap refMultiHashMap ,
+			final boolean bIsReverse) {
+		
+		if (!bIsReverse)
+		{
+			this.refMultiHashMap = refMultiHashMap;
+		}
+		else 
+		{
+			this.refMultiHashMap_reverse = refMultiHashMap;
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
@@ -80,6 +102,7 @@ public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
 							int iSecond = new Integer(strTokenText.nextToken());
 							
 							refMultiHashMap.put(iFirst,iSecond);
+							refMultiHashMap_reverse.put(iSecond, iFirst);
 						}
 						
 					
@@ -107,11 +130,4 @@ public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
 	 
 		return true;
 	}
-	
-	public void setMultiHashMap( MultiHashArrayMap setMultiHashMap ) {
-		
-		//refGenomeIdManager.
-		this.refMultiHashMap = setMultiHashMap;
-	}	
-
 }

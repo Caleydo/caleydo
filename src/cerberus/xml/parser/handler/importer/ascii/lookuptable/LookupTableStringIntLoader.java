@@ -13,29 +13,52 @@ import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 
-
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public class LookupTableStringIntLoader extends ALookupTableLoader
-		implements ILookupTableLoader {
+public class LookupTableStringIntLoader 
+extends ALookupTableLoader
+implements ILookupTableLoader {
 
-	protected HashMap <String,Integer> refHashMap_StringInt;
+	protected HashMap <String, Integer> refHashMap;
+	
+	protected HashMap <Integer, String> refHashMap_reverse;
 	
 	/**
-	 * @param setGeneralManager
-	 * @param setFileName
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 * @param sFileName
+	 * @param genomeType
+	 * @param refLookupTableLoaderProxy
 	 */
-	public LookupTableStringIntLoader(final IGeneralManager setGeneralManager,
-			final String setFileName,
-			final GenomeMappingType genometype,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
+	public LookupTableStringIntLoader(final IGeneralManager refGeneralManager,
+			final String sFileName,
+			final GenomeMappingType genomeType,
+			final LookupTableLoaderProxy refLookupTableLoaderProxy ) {
 
-		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
-		
+		super(refGeneralManager, sFileName, genomeType, refLookupTableLoaderProxy);	
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ALookupTableLoader#setHashMap_StringInteger(java.util.HashMap, boolean)
+	 */
+	public void setHashMap_StringInteger(HashMap refHashMap,
+			final boolean bIsReverse) {
+		
+		if (!bIsReverse)
+		{
+			this.refHashMap = (HashMap<String, Integer>) refHashMap;
+		}
+		else 
+		{
+			this.refHashMap_reverse = (HashMap<Integer, String>) refHashMap;
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
@@ -47,7 +70,7 @@ public class LookupTableStringIntLoader extends ALookupTableLoader
 		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
 		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();
 		
-	    while ( ((sLine = brFile.readLine()) != null)&&
+	    while ( ((sLine = brFile.readLine()) != null) &&
 	    		( iLineInFile <= iStopParsingAtLine) )  
 	    {
 			
@@ -78,7 +101,8 @@ public class LookupTableStringIntLoader extends ALookupTableLoader
 						{
 							int iSecond = new Integer(strTokenText.nextToken());
 							
-							refHashMap_StringInt.put( sFirst, iSecond);
+							refHashMap.put(sFirst, iSecond);
+							refHashMap_reverse.put(iSecond, sFirst);
 						}
 						
 					
@@ -107,11 +131,4 @@ public class LookupTableStringIntLoader extends ALookupTableLoader
 	 
 		return true;
 	}
-
-	public void setHashMap_StringInteger( HashMap  <String,Integer> setHashMap ) {
-		Class buffer = setHashMap.getClass();
-		
-		this.refHashMap_StringInt = setHashMap;
-	}
-
 }

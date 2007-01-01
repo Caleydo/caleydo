@@ -17,7 +17,7 @@ import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
 
 /**
- * Class generated a file that contains a 
+ * Class generates a file that contains a 
  * list of pathways for homo sapiens.
  * 
  * @author Marc Streit

@@ -43,24 +43,22 @@ public interface IGeneralManager {
 	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
 	public final int iUniqueId_Increment = 1000;
-	
-	public final int iUniqueId_Menu_Offset = 5600;
 		
-	public final int iUniqueId_Menu_Inc = 10000;
-	
-	public final int iUniqueId_Workspace = iUniqueId_Increment + 900;
-	
 	public final int iUniqueId_View = iUniqueId_Increment + 800;
-	
-	public final int iUniqueId_TypeOffset_Collection = 50;
 	
 	public final int iUniqueId_TypeOffset_Logger = 10;
 	
 	public final int iUniqueId_TypeOffset_Set = 51;
 	
-	public final int iUniqueId_TypeOffset_Selection = 52;
+	public final int iUniqueId_TypeOffset_VirtualArray = 52;
 	
 	public final int iUniqueId_TypeOffset_Storage = 53;
+
+	public final int iUniqueId_TypeOffset_Gene = 66;
+	
+	public final int iUniqueId_TypeOffset_Enzyme = 77;
+	
+	public final int iUniqueId_TypeOffset_Compound = 88;
 	
 	public final int iUniqueId_TypeOffset_Command = 99;
 	
@@ -72,8 +70,6 @@ public interface IGeneralManager {
 	
 	public final int iUniqueId_TypeOffset_Pathways_Edge = 62;		
 	
-	public final int iUniqueId_TypeOffset_Memento = 95;
-
 	public final int iUniqueId_TypeOffset_GUI_AWT = 31;
 	
 	public final int iUniqueId_TypeOffset_GUI_SWT = 32;
@@ -83,7 +79,7 @@ public interface IGeneralManager {
 	public final int iUniqeuId_TypeOffset_GUI_SWT_Container = 34;
 	
 	public final int iUniqueId_TypeOffset_View = 40;
-	
+		
 	/**
 	 * Deprecated ID ranges
 	 */
@@ -91,7 +87,17 @@ public interface IGeneralManager {
 	public final int iUniqueId_TypeOffset_GuiComponent = 30;
 	
 	public final int iUniqueId_TypeOffset_GUI_AWT_Menu = 39;
+
+	public final int iUniqueId_TypeOffset_Memento = 95;
+
+	public final int iUniqueId_TypeOffset_Collection = 50;
+
+	public final int iUniqueId_Menu_Offset = 5600;
 	
+	public final int iUniqueId_Menu_Inc = 10000;
+
+	public final int iUniqueId_Workspace = iUniqueId_Increment + 900;
+
 	/**
 	 * Tests, if a cairtain iItemId is handled by the manager.
 	 * 
@@ -122,14 +128,15 @@ public interface IGeneralManager {
 	 * @return type of the manager
 	 */
 	public ManagerObjectType getManagerType();
-	/**
-	 * Returns the reference to the prometheus.app.SingeltonManager.
-	 * 
-	 * Note: Do not forget to set the reference to the SingeltonManager inside the constructor.
-	 * 
-	 * @return reference to SingeltonManager
-	 */
-	public IGeneralManager getGeneralManager();
+	
+//	/**
+//	 * Returns the reference to the prometheus.app.SingeltonManager.
+//	 * 
+//	 * Note: Do not forget to set the reference to the SingeltonManager inside the constructor.
+//	 * 
+//	 * @return reference to SingeltonManager
+//	 */
+//	public IGeneralManager getGeneralManager();
 	
 	/**
 	 * Get the Singleton obejct.

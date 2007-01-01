@@ -3,27 +3,18 @@
  */
 package cerberus.xml.parser.handler.importer.ascii.lookuptable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import cerberus.base.map.MultiHashArrayMap;
-import cerberus.data.collection.parser.ParserTokenHandler;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.xml.parser.ISaxParserHandler;
-import cerberus.xml.parser.handler.importer.ascii.AbstractLoader;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
-
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public abstract class ALookupTableLoader 
@@ -44,78 +35,99 @@ implements ILookupTableLoader {
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public ALookupTableLoader( final IGeneralManager setGeneralManager,
-			final String setFileName,
-			final GenomeMappingType genometype,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
+	public ALookupTableLoader( final IGeneralManager refGeneralManager,
+			final String sFileName,
+			final GenomeMappingType genomeType,
+			final LookupTableLoaderProxy refLookupTableLoaderProxy ) {
 
-		refLookupTableLoaderProxy = setLookupTableLoaderProxy;
-		refGeneralManager = setGeneralManager;
-		sFileName = setFileName;
-		
-//		super(setGeneralManager, setFileName);
-//		
-//		super.bRequiredSizeOfReadableLines = true;		
-		
-	
-		genomeType = genometype;
+		this.refLookupTableLoaderProxy = refLookupTableLoaderProxy;
+		this.refGeneralManager = refGeneralManager;
+		this.sFileName = sFileName;	
+		this.genomeType = genomeType;
 		
 		refGenomeIdManager = 
 			refGeneralManager.getSingelton().getGenomeIdManager();
 		
+		// Set proper map for writing the parsed data in it.
+		setHashMap((HashMap)refGenomeIdManager.getMapByGenomeType(genomeType, false), 
+				genomeType, false);	
 		
-
-		HashMap bufferMap = (HashMap) refGenomeIdManager.getMapByGenomeType( genomeType );
-		
-		setHashMap( bufferMap, genomeType );
+		// Set reverse map
+		setHashMap((HashMap)refGenomeIdManager.getMapByGenomeType(genomeType, true), 
+				genomeType, true);	
 		
 	}
 
-	public final void setHashMap( final HashMap setHashMap,
-			final GenomeMappingType type) {
+	public final void setHashMap(final HashMap refHashMap,
+			final GenomeMappingType genomeMappingType, final boolean bIsReverse) {
 		
-		assert type == genomeType : "must use same type as in constructor!";
+		assert genomeMappingType == genomeType : "must use same type as in constructor!";
 		
-		if ( type.isMultiMap() )
+		// Check if map is a multi map
+		if (genomeMappingType.isMultiMap())
 		{
-			setMultiHashMap( (MultiHashArrayMap) setHashMap );
+			setMultiHashMap((MultiHashArrayMap) refHashMap, bIsReverse);
 			return;
 		}
 		
 		/**
 		 * GenomeMappingType.GenomeMappingDataType.*
 		 */
-		switch ( type.getDataMapppingType() ) {
+		switch (genomeMappingType.getDataMapppingType()) {
 		case INT2INT:
-			setHashMap_IntegerInteger( (HashMap <Integer,Integer>) setHashMap );
+			setHashMap_IntegerInteger((HashMap <Integer,Integer>)refHashMap, bIsReverse);
 			break;
 			
 		case STRING2INT:
-			setHashMap_StringInteger( setHashMap );
+			setHashMap_StringInteger(refHashMap, bIsReverse);
 			break;
 			
 		case INT2STRING:
-			setHashMap_IntegerString( setHashMap );
+			setHashMap_IntegerString(refHashMap, bIsReverse);
 			break;
 			
 		default:
-			assert false : "not supported type!";
+			assert false : "not supported genome mapping type!";
 		}
 	}
 	
-	public void setMultiHashMap( MultiHashArrayMap setMultiHashMap ) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#setMultiHashMap(cerberus.base.map.MultiHashArrayMap, boolean)
+	 */
+	public void setMultiHashMap(MultiHashArrayMap setMultiHashMap, 
+			final boolean bIsReverse) {
+		
 		assert false : "This methode must be overloaded by sub-class";
 	}
 	
-	public void setHashMap_StringInteger( HashMap  <String,Integer> setHashMap ) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#setHashMap_StringInteger(java.util.HashMap, boolean)
+	 */
+	public void setHashMap_StringInteger(HashMap  <String,Integer> setHashMap, 
+			final boolean bIsReverse) {
+		
 		assert false : "This methode must be overloaded by sub-class";
 	}
 	
-	public void setHashMap_IntegerString( HashMap  <Integer,String> setHashMap ) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#setHashMap_IntegerString(java.util.HashMap, boolean)
+	 */
+	public void setHashMap_IntegerString(HashMap  <Integer,String> setHashMap, 
+			final boolean bIsReverse) {
+		
 		assert false : "This methode must be overloaded by sub-class";
 	}
 	
-	public void setHashMap_IntegerInteger( HashMap  <Integer,Integer> setHashMap ) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#setHashMap_IntegerInteger(java.util.HashMap, boolean)
+	 */
+	public void setHashMap_IntegerInteger(HashMap  <Integer,Integer> setHashMap, 
+			final boolean bIsReverse) {
+		
 		assert false : "This methode must be overloaded by sub-class";
 	}
 	

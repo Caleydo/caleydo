@@ -3,10 +3,7 @@
  */
 package cerberus.manager.data.genome;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import cerberus.base.map.MultiHashArrayMap;
 import cerberus.data.mapping.GenomeIdType;
@@ -18,10 +15,12 @@ import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public class GenomeIdManager extends AGenomeIdManager
-		implements IGenomeIdManager {
+public class GenomeIdManager 
+extends AGenomeIdManager
+implements IGenomeIdManager {
 
 	protected MultiHashArrayMap refInsertingIntoMap;
 	protected MultiHashArrayMap refInsertingIntoMap_revers;
@@ -43,8 +42,6 @@ public class GenomeIdManager extends AGenomeIdManager
 		
 		buildLUT_stopEditing();
 	}
-
-	
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes(cerberus.data.mapping.GenomeIdType, cerberus.data.mapping.GenomeIdType)
@@ -67,7 +64,7 @@ public class GenomeIdManager extends AGenomeIdManager
 			switch (typeToId) {
 			
 			case KEGG_ID:
-				refInsertingIntoHashMap = multiMapNCBI_GENEID_2_KEGGID;
+				//refInsertingIntoHashMap = multiMapNCBI_GENEID_2_KEGGID;
 				break;
 				
 			default:
@@ -83,7 +80,7 @@ public class GenomeIdManager extends AGenomeIdManager
 		/**
 		 * ENZYME
 		 */
-		case ENZYME:
+		case ENZYME_ID:
 			
 			break;
 			
@@ -105,10 +102,6 @@ public class GenomeIdManager extends AGenomeIdManager
 					typeFromId + "]",
 					CerberusExceptionType.CONVERSION);
 		}
-		
-		
-		
-
 	}
 
 	public boolean buildLUT_String2Int_startEditing(final GenomeIdType typeFromId,
@@ -118,17 +111,17 @@ public class GenomeIdManager extends AGenomeIdManager
 		{
 			if ( typeFromId == GenomeIdType.NCBI_GENEID) 
 			{				
-				refHashMap_String2Int = this.hashMICROARRAY_2_NCBI_GENEID;
+				//refHashMap_String2Int = this.hashMICROARRAY_2_NCBI_GENEID;
 				return true;
 			}
 		}
 		
 		if ( typeFromId == GenomeIdType.ENZYME_CODE) 
 		{
-			if ( typeFromId == GenomeIdType.ENZYME) 
+			if ( typeFromId == GenomeIdType.ENZYME_ID) 
 			{				
-				refHashMap_String2Int = this.hashENZYME_CODE_2_ENZYMEID;
-				refHashMap_String2Int_revers = this.hashENZYME_CODE_2_ENZYMEID_reverse;
+				//refHashMap_String2Int = this.hashENZYME_CODE_2_ENZYMEID;
+				//refHashMap_String2Int_revers = this.hashENZYME_CODE_2_ENZYMEID_reverse;
 				return true;
 			}
 		}
