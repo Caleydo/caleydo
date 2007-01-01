@@ -33,11 +33,11 @@ public class MappingBuilder {
 	
 	protected PrintWriter writer_ENZYME_CODE_2_ENZYME_ID;
 	
-	protected HashMap<String, Integer> hashMapEnzymeCode2EnzyneID;
+	protected HashMap<String, Integer> hashMapEnzymeCode2EnzymeID;
 	
-	protected int iEnzymeID = 0;
+	protected int iIncrementedEnzymeID = 0;
 	
-	protected int iMaxEnzymeID = 0;
+	protected int iCurrentEnzymeID = 0;
 	
 	public MappingBuilder() throws IOException {
 		
@@ -50,7 +50,7 @@ public class MappingBuilder {
 		writer_ENZYME_CODE_2_ENZYME_ID =
 			new PrintWriter("data/mapping/enzyme_code_2_enzyme_id.map");
 		
-		hashMapEnzymeCode2EnzyneID = new HashMap<String, Integer>();
+		hashMapEnzymeCode2EnzymeID = new HashMap<String, Integer>();
 	}
 	
 	protected void fillMappingFile() 
@@ -177,32 +177,33 @@ public class MappingBuilder {
     				{	
     					sTmpEnzymeCode = strArEnzymeQueryResult[iResultIndex];
     					
-    					if (!hashMapEnzymeCode2EnzyneID.containsKey(sTmpEnzymeCode))
+    					if (!hashMapEnzymeCode2EnzymeID.containsKey(sTmpEnzymeCode))
     					{
-    						iMaxEnzymeID++;
+    						iIncrementedEnzymeID++;
     						
-    						hashMapEnzymeCode2EnzyneID.put(
-    							sTmpEnzymeCode, iMaxEnzymeID);
+    						hashMapEnzymeCode2EnzymeID.put(
+    							sTmpEnzymeCode, iIncrementedEnzymeID);
     						
     						writer_ENZYME_CODE_2_ENZYME_ID.println(sTmpEnzymeCode 
-    								+strDelimiter + iMaxEnzymeID);
+    								+strDelimiter + iIncrementedEnzymeID);
     						writer_ENZYME_CODE_2_ENZYME_ID.flush();
     						
     						System.out.println("Writing: " +sTmpEnzymeCode 
-    								+strDelimiter + iMaxEnzymeID);
+    								+strDelimiter + iIncrementedEnzymeID);
     						
-    						iEnzymeID = iMaxEnzymeID;
+    						iCurrentEnzymeID = iIncrementedEnzymeID;
     					}
     					else
     					{
-    						iEnzymeID = hashMapEnzymeCode2EnzyneID.get(sTmpEnzymeCode);
+    						iCurrentEnzymeID = 
+    							hashMapEnzymeCode2EnzymeID.get(sTmpEnzymeCode);
     					}
     					
     					System.out.println("Writing: " +strAccessionNumber 
-    							+strDelimiter + iEnzymeID);
+    							+strDelimiter + iCurrentEnzymeID);
     					
     					writer_ACCESSION_NUMBER_2_ENZYME_ID.println(strAccessionNumber 
-    							+strDelimiter + iEnzymeID);	
+    							+strDelimiter + iCurrentEnzymeID);	
     					
     					writer_ACCESSION_NUMBER_2_ENZYME_ID.flush();
     				}
