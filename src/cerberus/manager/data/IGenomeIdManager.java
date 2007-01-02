@@ -15,8 +15,7 @@ import cerberus.data.mapping.GenomeMappingType;
  * @author Michael Kalkusch
  *
  */
-public interface IGenomeIdManager 
-extends IGeneralManager {
+public interface IGenomeIdManager extends IGeneralManager {
 
 	public String getNameById( int iUniqueId );
 	
@@ -41,6 +40,6 @@ extends IGeneralManager {
 	
 	public boolean isBuildLUTfinished();
 	
-	public Map getMapByGenomeType( final GenomeMappingType type, 
-			final boolean bIsReverse);
+	public Map getMapByGenomeType( final GenomeMappingType type );
+	
 }

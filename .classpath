@@ -9,20 +9,14 @@
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos-util_mod.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/weka/weka.jar"/>
+	<classpathentry sourcepath="bin/ext_jar_src/swt/swt_src.zip" kind="lib" path="bin/ext_jar/swt/swt.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.jface_3.1.1.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.jface.text_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.core.runtime_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.osgi_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.core.resources_3.1.2.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/entrez/entrez_SOAP_2006_12_18.jar" sourcepath="bin/ext_jar_src/entrez/entrez_SOAP_2006_12_18_src.zip"/>
+	<classpathentry sourcepath="bin/ext_jar_src/entrez/entrez_SOAP_2006_12_18_src.zip" kind="lib" path="bin/ext_jar/entrez/entrez_SOAP_2006_12_18.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar_src/jogl/nehe_demos_data.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/swt/swt.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/axis/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/axis/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/axis/saaj.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/axis/wsdl4j-1.5.1.jar"/>
-	<classpathentry kind="lib" path="bin/ext_jar/axis/axis-ant.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

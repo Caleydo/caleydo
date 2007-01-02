@@ -12,13 +12,14 @@ import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.ISingelton;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
 
+
 /**
  * @author Michael Kalkusch
- * @author Marc Streit
  *
  */
 public abstract class AGenomeIdManager 
@@ -27,28 +28,24 @@ implements IGenomeIdManager {
 
 	protected boolean bLUTcreationIsNotInPorgress = false;
 	
-	protected HashMap hashMap_ACCESSION_NUMBER_2_GENE_ID;
+	protected MultiHashArrayMap multiMapNCBI_GENEID_2_KEGGID;
 	
-	protected HashMap hashMap_ACCESSION_NUMBER_2_GENE_ID_reverse;
+	protected MultiHashArrayMap multiMapKEGG_GENEID_2_KEGGID_reverse;
 	
-	protected HashMap hashMap_ENZYME_CODE_2_ENZYME_ID;
+	protected MultiHashArrayMap multiMapKEGG_2_ENZYMEID;
 	
-	protected HashMap hashMap_ENZYME_CODE_2_ENZYME_ID_reverse;
+	protected MultiHashArrayMap multiMapKEGG_2_ENZYMEID_reverse;
 	
-	protected MultiHashArrayMap multiMap_ACCESSION_NUMBER_2_ENZYME_ID;
+	protected HashMap <String,Integer> hashENZYME_CODE_2_ENZYMEID;
 	
-	protected MultiHashArrayMap multiMap_ACCESSION_NUMBER_2_ENZYME_ID_reverse;
+	protected HashMap <Integer,String> hashENZYME_CODE_2_ENZYMEID_reverse;
 	
-//	protected HashMap <String,Integer> hash_ENZYME_CODE_2_ENZYME_ID;
-//	
-//	protected HashMap <Integer,String> hash_ENZYME_CODE_2_ENZYME_ID_reverse;
-//	
-//	protected HashMap <String,Integer> hash_PATHWAY_2_ACCESSION_NUMBER;
-//	
-//	protected HashMap <String,Integer> hash_MICROARRAY_2_ACCESSION_NUMBER;
+	protected HashMap <String,Integer> hashPATHWAY_2_NCBI_GENEID;
+	
+	protected HashMap <String,Integer> hashMICROARRAY_2_NCBI_GENEID;
 	
 	/**
-	 * Constructor.
+	 * 
 	 */
 	protected AGenomeIdManager( final IGeneralManager setGeneralManager) {
 
@@ -64,86 +61,53 @@ implements IGenomeIdManager {
 	 */
 	protected void initAll() {
 	
-		// Check if init is called twice.
-		if (hashMap_ACCESSION_NUMBER_2_GENE_ID != null) 
+		if ( multiMapNCBI_GENEID_2_KEGGID != null) 
 		{
-			getGeneralManager().getSingelton().getLoggerManager().
-				logMsg("AGenomeIdManager.initAll() called twice!",
+			getGeneralManager().getSingelton().getLoggerManager().logMsg("AGenomeIdManager.initAll() called twice!",
 					LoggerType.STATUS );
 			return;
 		}
 		
-		hashMap_ACCESSION_NUMBER_2_GENE_ID = new HashMap();
-		hashMap_ACCESSION_NUMBER_2_GENE_ID_reverse = new HashMap();
+		multiMapNCBI_GENEID_2_KEGGID = new MultiHashArrayMap();
 		
-		hashMap_ENZYME_CODE_2_ENZYME_ID = new HashMap();
-		hashMap_ENZYME_CODE_2_ENZYME_ID_reverse = new HashMap();
+		multiMapKEGG_GENEID_2_KEGGID_reverse = new MultiHashArrayMap();
 		
-		multiMap_ACCESSION_NUMBER_2_ENZYME_ID = new MultiHashArrayMap();
-		multiMap_ACCESSION_NUMBER_2_ENZYME_ID_reverse = new MultiHashArrayMap();
+		multiMapKEGG_2_ENZYMEID = new MultiHashArrayMap();
 		
-//		multiMapNCBI_GENE_ID_2_KEGGID = new MultiHashArrayMap();		
-//		multiMapKEGG_GENE_ID_2_KEGGID_reverse = new MultiHashArrayMap();
-//		multiMapKEGG_2_ENZYME_ID = new MultiHashArrayMap();
-//		multiMapKEGG_2_ENZYME_ID_reverse = new MultiHashArrayMap();
-//		
-//		hashENZYME_CODE_2_ENZYME_ID = new HashMap <String,Integer> ();
-//		hashENZYME_CODE_2_ENZYME_ID_reverse = new HashMap <Integer,String> ();
-//		hashPATHWAY_2_NCBI_GENE_ID = new HashMap <String,Integer> ();
-//		hashMICROARRAY_2_NCBI_GENE_ID = new HashMap <String,Integer> ();
+		multiMapKEGG_2_ENZYMEID_reverse = new MultiHashArrayMap();
+		
+		
+		hashENZYME_CODE_2_ENZYMEID = new HashMap <String,Integer> ();
+		
+		hashENZYME_CODE_2_ENZYMEID_reverse = new HashMap <Integer,String> ();
+		
+		hashPATHWAY_2_NCBI_GENEID = new HashMap <String,Integer> ();
+		
+		hashMICROARRAY_2_NCBI_GENEID = new HashMap <String,Integer> ();
 	}
 	
-	/**
-	 * Method returns the requested hash map.
-	 * 
-	 * @param type
-	 * @param bIsReverse TRUE if reverse hash map is needed
-	 * @return Requested hash map
-	 */
-	public Map getMapByGenomeType(final GenomeMappingType genomeMappingType, 
-			final boolean bIsReverse) {
+	public Map getMapByGenomeType( final GenomeMappingType type ) {
 		
-		switch (genomeMappingType) {
+		switch ( type ) {
 		
-		case ACCESSION_NUMBER_2_GENE_ID:
-		{
-			if (!bIsReverse)
-			{
-				return hashMap_ACCESSION_NUMBER_2_GENE_ID;
-			}
-			else 
-			{
-				return hashMap_ACCESSION_NUMBER_2_GENE_ID_reverse;
-			}
-		}
-		case ENZYME_CODE_2_ENZYME_ID:
-		{
-			if (!bIsReverse)
-			{
-				return hashMap_ENZYME_CODE_2_ENZYME_ID;
-			}
-			else 
-			{
-				return hashMap_ENZYME_CODE_2_ENZYME_ID_reverse;
-			}
-		}
-		case ACCESSION_NUMBER_2_ENZYME_ID:
-		{
-			if (!bIsReverse)
-			{
-				return multiMap_ACCESSION_NUMBER_2_ENZYME_ID;
-			}
-			else 
-			{
-				return multiMap_ACCESSION_NUMBER_2_ENZYME_ID_reverse;
-			}
-		}
+		case PATHWAY_2_NCBI_GENEID:
+			return hashPATHWAY_2_NCBI_GENEID;
+			
+		case MICROARRAY_2_NCBI_GENEID:
+			return hashMICROARRAY_2_NCBI_GENEID;
+		
+		case ENZYME_CODE_2_ENZYME:
+			return hashENZYME_CODE_2_ENZYMEID;
+			
+		case ENZYME_CODE_2_ENZYME_R:
+			return hashENZYME_CODE_2_ENZYMEID_reverse;
+			
 		default:
-			assert false : "unknown genome mapping type!";
+			assert false : "unknown type!";
 			return null;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.IGenomeIdManager#getNameById(int)
 	 */

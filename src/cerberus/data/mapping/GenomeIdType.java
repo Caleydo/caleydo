@@ -11,15 +11,15 @@ package cerberus.data.mapping;
 public enum GenomeIdType
 {
 
-	ACCESSION_NUMBER    ("acc","accession"),
-	ENZYME_ID    		("ec","EC_number"),
-	ENZYME_CODE  		("ec","EC_number as String"),
-	METHOBOLIT   		("ko","methobliot"),
-	MICROARRAY   		("IMAGp","Microarray LUT"),
-	NCBI_GENEID  		("ncbi-geneid","ncbi-geneid"),
-	NCBI_GI      		("ncbi-gi","ncbi-gi"),
-	PATHWAY      		("path","pathway-id"),
-	KEGG_ID      		("kegg","kegg-id");
+	ACCESSION    ("acc","accession"),
+	ENZYME       ("ec","EC_number"),
+	ENZYME_CODE  ("ec","EC_number as String"),
+	METHOBOLIT   ("ko","methobliot"),
+	MICROARRAY   ("IMAGp","Microarray LUT"),
+	NCBI_GENEID  ("ncbi-geneid","ncbi-geneid"),
+	NCBI_GI      ("ncbi-gi","ncbi-gi"),
+	PATHWAY      ("path","pathway-id"),
+	KEGG_ID      ("kegg","kegg-id");
 	
 	private String sName;
 	

@@ -1,20 +1,25 @@
 package cerberus.manager.singelton;
 
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+//import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.data.xml.IMementoCallbackXML;
 
 public interface IGeneralManagerSingelton 
-extends IGeneralManager {
+extends IGeneralManager, IMementoCallbackXML {
 
-//	/**
-//	 * Get the current type used to create new Id with createNewId().
-//	 * 
-//	 * @see cerberus.manager.singelton.OneForAllManager#createNewId()
-//	 * @see cerberus.manager.singelton.OneForAllManager#setCurrentType(ManagerObjectType)
-//	 * 
-//	 * @return current type used to create new Id with createNewId()
-//	 */
-//	public abstract ManagerObjectType getCurrentType();
+	//public static final String sXMLDelimiter = ";";
+	
+	/**
+	 * Get the current type used to create new Id with createNewId().
+	 * 
+	 * @see cerberus.manager.singelton.OneForAllManager#createNewId()
+	 * @see cerberus.manager.singelton.OneForAllManager#setCurrentType(ManagerObjectType)
+	 * 
+	 * @return current type used to create new Id with createNewId()
+	 */
+	public abstract ManagerObjectType getCurrentType();
 
 	/**
 	 * Creates a new unique Id with the type, that was set previouse.
@@ -38,6 +43,20 @@ extends IGeneralManager {
 	 */
 	public abstract Object createNewItem(final ManagerObjectType createNewType,
 			final String sNewTypeDetails);
+
+//	/**
+//	 * Get the reference to the mangerer handling View's and Canvas.
+//	 * 
+//	 * @return manger for IViewCanvas objects
+//	 */
+//	public IViewCanvasManager getViewCanvasManager();
+	
+	/**
+	 * Get the current ICommandManager.
+	 * 
+	 * @return current ICommandManager
+	 */
+	public ICommandManager getCommandManager();
 	
 	/**
 	 * Get the reference to the managers using the ManagerObjectType.
@@ -64,6 +83,7 @@ extends IGeneralManager {
 	 */
 	public void  setStateSWT( boolean enableSWT );
 	
+	
 	/**
 	 * Initialize all data structures.
 	 *
@@ -75,4 +95,5 @@ extends IGeneralManager {
 	 * Cleanup all data structures, close all windows, stop all threads.
 	 */
 	public void destroyOnExit();
+	
 }

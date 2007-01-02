@@ -6,12 +6,18 @@ package cerberus.xml.parser.handler.importer.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
+import cerberus.base.map.MultiHashArrayMap;
+import cerberus.data.collection.parser.ParserTokenHandler;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.xml.parser.IParserObject;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.handler.importer.ascii.AbstractLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader;
@@ -19,12 +25,13 @@ import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntL
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntMultiMapLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringIntLoader;
 
+
+
 /**
  * @author Michael Kalkusch
  *
  */
-public class LookupTableLoaderProxy 
-extends AbstractLoader {
+public class LookupTableLoaderProxy extends AbstractLoader {
 	
 	private final ILoggerManager refLoggerManager;
 	
@@ -36,13 +43,12 @@ extends AbstractLoader {
 	 */
 	public LookupTableLoaderProxy(IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genomeType,
+			final GenomeMappingType genometype,
 			final GenomeMappingDataType type ) {
 		
 		super(setGeneralManager,setFileName);
 		
 		refLoggerManager = setGeneralManager.getSingelton().getLoggerManager();
-		this.setTokenSeperator(";");
 		
 		switch ( type ) {
 		
@@ -50,7 +56,7 @@ extends AbstractLoader {
 			refLookupTableLoader = new LookupTableIntIntLoader(
 					setGeneralManager,
 					setFileName,
-					genomeType,
+					genometype,
 					this );
 			break;
 			
@@ -58,15 +64,15 @@ extends AbstractLoader {
 			refLookupTableLoader = new LookupTableIntIntMultiMapLoader(
 					setGeneralManager,
 					setFileName,
-					genomeType,
-					this );
+					genometype,
+					this  );
 			break;
 			
 		case STRING2INT:
 			refLookupTableLoader = new LookupTableStringIntLoader(
 					setGeneralManager,
 					setFileName,
-					genomeType,
+					genometype,
 					this  );
 			break;
 			
@@ -81,16 +87,16 @@ extends AbstractLoader {
 //		refLookupTableLoader.setMultiHashMap( setMultiHashMap );
 //	}
 	
-//	public void setHashMap( final HashMap refHashMap,
-//			final GenomeMappingType type) {
-//		
-//		refLoggerManager.logMsg(
-//				"setHashMap(" + refHashMap.toString() + " , " +
-//				type.toString() + ") called from outside!",
-//				LoggerType.VERBOSE );
-//		
-//		refLookupTableLoader.setHashMap( refHashMap, type);
-//	}
+	public void setHashMap( final HashMap setHashMap,
+			final GenomeMappingType type) {
+		
+		refLoggerManager.logMsg(
+				"setHashMap(" + setHashMap.toString() + " , " +
+				type.toString() + ") called from outside!",
+				LoggerType.VERBOSE );
+		
+		refLookupTableLoader.setHashMap( setHashMap, type);
+	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
@@ -114,7 +120,7 @@ extends AbstractLoader {
 		refGeneralManager.getSingelton().getLoggerManager().logMsg("  parsed #" + 
 				this.iLineInFile_CurrentDataIndex + "  [" + 			
 				this.iStartParsingAtLine + " -> " +
-				this.iStopParsingAtLine +  "] stopped at line #" +
+				this.iStopParsingAtLine +  "] stoped at line #" +
 				(this.iLineInFile-1),
 				LoggerType.VERBOSE );	
 		
@@ -123,6 +129,7 @@ extends AbstractLoader {
 		 */
 		progressBarResetTitle();		
 		progressBarIncrement(5);
+		
 		
 		return bParsingResult;
 	}

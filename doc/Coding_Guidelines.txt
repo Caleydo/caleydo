@@ -233,3 +233,16 @@ public class MyClass {
 
       
       
+      
+      
+      SUBVERSION RULES
+      ================
+      
+  + Only check in once ore twice a day
+  + do not check in the same file several times a day
+  + do not use absolute path inside .classpath file!
+  + do not alter code that is in debug state, if it is not your code!
+  + do not add page breaks, tabs or only reformat code without any other changes
+  + if documentation is added to several files without changeing code:
+    commit changes containing only documentation all at once
+  + do not remove any include *, if the package of class is not maintained by you; Please use "//" instead
