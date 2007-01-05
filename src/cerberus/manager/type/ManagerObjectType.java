@@ -152,13 +152,13 @@ public enum ManagerObjectType {
 	/*
 	 * GUI_COMPONENT
 	 */
-	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
+//	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
 	
-	GUI_WINDOW(ManagerType.GUI_SWT),
+	GUI_SWING(ManagerType.GUI_SWING),
 	
 	GUI_SWT(ManagerType.GUI_SWT),
 	
-	GUI_SWING(ManagerType.GUI_SWING),
+	GUI_SWT_WINDOW(ManagerType.GUI_SWT),
 	
 	GUI_SWT_NATIVE_WIDGET(ManagerType.GUI_SWT),
 	
@@ -187,12 +187,6 @@ public enum ManagerObjectType {
 	
 	
 	/*
-	 * FABRIK
-	 */
-	FABRIK(ManagerType.FABRIK),
-	
-	
-	/*
 	 * Command 
 	 */
 	COMMAND(ManagerType.COMMAND ),
@@ -205,6 +199,8 @@ public enum ManagerObjectType {
 	
 	PATHWAY_ELEMENT(ManagerType.PATHWAY_ELEMENT),
 	
+	PATHWAY_VERTEX(ManagerType.PATHWAY_ELEMENT),
+	
 	/*
 	 * Event Publisher
 	 */
@@ -216,7 +212,7 @@ public enum ManagerObjectType {
 	 */
 	LOGGER(ManagerType.LOGGER),
 	
-	ALL_IN_ONE(ManagerType.FABRIK);
+	ALL_IN_ONE(ManagerType.SINGELTON);
 	
 	/*
 	 * Pathway

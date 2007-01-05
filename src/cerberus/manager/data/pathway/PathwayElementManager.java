@@ -11,21 +11,25 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * The element manager is in charge for handling the elements. Elements are
  * vertices and edges. The class is implemented as a Singleton.
  * 
  * @author Marc Streit
+ * @author Michael Kalkusch
  */
 public class PathwayElementManager 
+extends AAbstractManager
 implements IPathwayElementManager {
 	
-	protected IGeneralManager refGeneralManager;
-	
-	protected int iCurrentUniqueElementId;
+	protected int iCurrentUniqueEdgeId;
 
 	protected HashMap<Integer, PathwayVertex> vertexLUT;
 
@@ -48,14 +52,17 @@ implements IPathwayElementManager {
 	 */
 	public PathwayElementManager(IGeneralManager refGeneralManager) {
 		
-		this.refGeneralManager = refGeneralManager;
+		super( refGeneralManager, 
+				IGeneralManager.iUniqueId_TypeOffset_Pathways_Vertex,
+				ManagerType.D_GUI );
 		
 		vertexLUT = new HashMap<Integer, PathwayVertex>();
 		edgeLUT = new HashMap<Integer, APathwayEdge>();
 		refHashVertexNameToVertexList = new HashMap<String, LinkedList<PathwayVertex>>();
 		reactionName2EdgeIdLUT = new HashMap<String, Integer>();
 
-		iCurrentUniqueElementId = 0;
+		iCurrentUniqueEdgeId = calculateInitialUniqueId(
+				IGeneralManager.iUniqueId_TypeOffset_Pathways_Edge );
 	}
 
 	/* (non-Javadoc)
@@ -67,7 +74,7 @@ implements IPathwayElementManager {
 			String sLink,
 			String sReactionId) {
 
-		int iGeneratedId = generateId();
+		int iGeneratedId = createNewId( ManagerObjectType.PATHWAY_VERTEX );;
 				
 		PathwayVertex newVertex = 
 			new PathwayVertex(iGeneratedId, sName, sType, sLink, sReactionId);
@@ -130,7 +137,7 @@ implements IPathwayElementManager {
 			int iVertexId2, 
 			String sType) {
 		
-		int iGeneratedId = generateId();
+		int iGeneratedId = createNewId( ManagerObjectType.PATHWAY_ELEMENT );
 		
 		PathwayRelationEdge newEdge = 
 			new PathwayRelationEdge(iVertexId1, iVertexId2, sType);
@@ -163,7 +170,7 @@ implements IPathwayElementManager {
 	 */
 	public void createReactionEdge(String sReactionName, String sReactionType) {
 
-		int iGeneratedId = generateId();
+		int iGeneratedId = createNewId( ManagerObjectType.PATHWAY_ELEMENT );;
 		currentReactionEdge = null;
 		
 		PathwayReactionEdge newEdge = 
@@ -215,10 +222,28 @@ implements IPathwayElementManager {
 		return refHashVertexNameToVertexList.get(sVertexName);
 	}
 	
-	//TODO: Method needs to be replaced with createNewId method from interface.
-	private int generateId() {
+//	//TODO: Method needs to be replaced with createNewId method from interface.
+//	private int generateId() {
+//		
+//		return iCurrentUniqueElementId++;
+//	}
+	
+	public final int createNewId(ManagerObjectType setNewBaseType) {
 		
-		return iCurrentUniqueElementId++;
+		if ( setNewBaseType == ManagerObjectType.PATHWAY_VERTEX ) 
+		{
+			iUniqueId_current += IGeneralManager.iUniqueId_Increment;
+			return iUniqueId_current;
+		}
+		
+		if ( setNewBaseType == ManagerObjectType.PATHWAY_ELEMENT ) 
+		{
+			iCurrentUniqueEdgeId += IGeneralManager.iUniqueId_Increment;
+			return iCurrentUniqueEdgeId;
+		}
+		
+		throw new CerberusRuntimeException("Must use ManagerObjectType.PATHWAY_ELEMENT *",
+				CerberusExceptionType.DATAHANDLING);
 	}
 
 	/* (non-Javadoc)
@@ -253,21 +278,6 @@ implements IPathwayElementManager {
 		return 0;
 	}
 
-	public ManagerObjectType getManagerType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IGeneralManager getGeneralManager() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ISingelton getSingelton() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type) {
 		// TODO Auto-generated method stub
 		return false;
@@ -278,13 +288,4 @@ implements IPathwayElementManager {
 		return false;
 	}
 
-	public int createNewId(ManagerObjectType setNewBaseType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

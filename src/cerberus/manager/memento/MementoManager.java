@@ -58,7 +58,8 @@ public class MementoManager
 	public MementoManager(final IGeneralManager setGeneralManager) {
 		
 		super( setGeneralManager,
-				IGeneralManager.iUniqueId_TypeOffset_Memento );
+				IGeneralManager.iUniqueId_TypeOffset_Memento,
+				ManagerType.MEMENTO );
 		
 		vecMemento = new Vector<IMemento>(iInitSizeMementoVector);
 		hashMementoId2Index = new Hashtable<Integer,Integer>(iInitSizeMementoVector*2);
@@ -145,13 +146,6 @@ public class MementoManager
 	 */
 	public final int size() {		
 		return vecMemento.size();
-	}
-
-	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManagerInterface#getManagerType()
-	 */
-	public final ManagerObjectType getManagerType() {		
-		return ManagerObjectType.MEMENTO;
 	}
 	
 	public String toString() {

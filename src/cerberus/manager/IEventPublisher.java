@@ -6,6 +6,13 @@ import cerberus.data.collection.ISet;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 
+/**
+ * Handle events using Publish subsrib design pattern.
+ * 
+ * @author Michael Kalkusch
+ * @author Marc Streit
+ * 
+ */
 public interface IEventPublisher 
 extends IGeneralManager {
 

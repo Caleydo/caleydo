@@ -18,8 +18,9 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.command.factory.ICommandFactory;
-import cerberus.manager.singelton.SingeltonManager;
+//import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 
@@ -56,7 +57,9 @@ public class CommandManager
 	 * 
 	 */
 	public CommandManager( IGeneralManager setGeneralManager ) {
-		super( setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_Command );
+		super( setGeneralManager, 
+				IGeneralManager.iUniqueId_TypeOffset_Command, 
+				ManagerType.COMMAND );
 		
 		refCommandFactory = new CommandFactory( setGeneralManager, 
 				this, 
@@ -135,14 +138,6 @@ public class CommandManager
 	public int size() {
 		return hash_CommandId.size();
 	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getManagerType()
-	 */
-	public ManagerObjectType getManagerType() {
-		return ManagerObjectType.COMMAND;
-	}
-
 
 
 	/* (non-Javadoc)

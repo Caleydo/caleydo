@@ -98,11 +98,6 @@ extends IGeneralManager {
 	 */
 	public Iterator<WorkspaceSwingFrame> getWorkspaceIterator();
 
-	/*
-	 *  (non-Javadoc)
-	 * @see prometheus.manager.GeneralManager#getManagerType()
-	 */
-	public ManagerObjectType getManagerType();
 
 	/**
 	 * Adds all IViewCanvas components to the parent JFrame.

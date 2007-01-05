@@ -9,6 +9,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.ISingelton;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -31,7 +32,8 @@ public abstract class AConsoleLogger
 	public AConsoleLogger(final IGeneralManager setGeneralManager,
 			final int iUniqueId_type_offset) {
 		super(setGeneralManager,
-				IGeneralManager.iUniqueId_TypeOffset_Logger );
+				IGeneralManager.iUniqueId_TypeOffset_Logger,
+				ManagerType.LOGGER );
 	}
 
 	/* (non-Javadoc)
@@ -99,13 +101,6 @@ public abstract class AConsoleLogger
 	public int size() {
 		return 0;
 	}
-
-	/**
-	 * @see cerberus.manager.IGeneralManager#getManagerType()
-	 */
-	public final ManagerObjectType getManagerType() {
-		return ManagerObjectType.LOGGER;
-	}
 	
 
 	/**
@@ -126,7 +121,5 @@ public abstract class AConsoleLogger
 	public final boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
 		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");
 	}
-
-	
 
 }

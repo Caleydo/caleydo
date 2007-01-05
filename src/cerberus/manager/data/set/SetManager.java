@@ -17,6 +17,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
 import cerberus.data.collection.IStorage;
@@ -59,7 +60,8 @@ implements ISetManager {
 	public SetManager( IGeneralManager setSingelton,
 			final int iInitSizeContainer ) {
 		super( setSingelton , 
-				IGeneralManager.iUniqueId_TypeOffset_Set );
+				IGeneralManager.iUniqueId_TypeOffset_Set,
+				ManagerType.SET );
 
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -189,13 +191,6 @@ implements ISetManager {
 	 */
 	public final int size() {		
 		return hashId2Set.size();
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
-	 */
-	public final ManagerObjectType getManagerType() {		
-		return ManagerObjectType.SET;
 	}
 	
 	public boolean unregisterItem( final int iItemId,

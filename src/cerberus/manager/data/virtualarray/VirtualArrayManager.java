@@ -16,6 +16,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 
 import cerberus.data.collection.IVirtualArray;
@@ -43,7 +44,8 @@ implements IVirtualArrayManager
 	public VirtualArrayManager( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
 		super( setGeneralManager, 
-				IGeneralManager.iUniqueId_TypeOffset_VirtualArray );
+				IGeneralManager.iUniqueId_TypeOffset_VirtualArray,
+				ManagerType.VIRTUAL_ARRAY );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -190,13 +192,6 @@ implements IVirtualArrayManager
 	 */
 	public final int size() {		
 		return vecSelection.size();
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
-	 */
-	public final ManagerObjectType getManagerType() {		
-		return ManagerObjectType.VIRTUAL_ARRAY;
 	}
 	
 	public boolean unregisterItem( final int iItemId,

@@ -1,6 +1,7 @@
 package cerberus.manager;
 
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 //import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
 public interface IGeneralManager {
@@ -82,9 +83,11 @@ public interface IGeneralManager {
 	
 	public static final int iUniqueId_TypeOffset_Pathways_Pathway = 60;
 	
-	public static final int iUniqueId_TypeOffset_Pathways_Vertex = 61;
+	public static final int iUniqueId_TypeOffset_Pathways_Object = 61;
 	
 	public static final int iUniqueId_TypeOffset_Pathways_Edge = 62;	
+	
+	public static final int iUniqueId_TypeOffset_Pathways_Vertex = 63;
 		
 	public static final int iUniqueId_TypeOffset_GenomeId = 70;
 	
@@ -97,6 +100,8 @@ public interface IGeneralManager {
 	public static final int iUniqueId_TypeOffset_GenomeId_NCBI_GENE = 74;
 	
 	public static final int iUniqueId_TypeOffset_GenomeId_PATHWAY = 75;
+	
+	public static final int iUniqueId_TypeOffset_EventPublisher = 90;
 	
 	public static final int iUniqueId_TypeOffset_Memento = 95;
 	
@@ -156,7 +161,8 @@ public interface IGeneralManager {
 	 * 
 	 * @return type of the manager
 	 */
-	public ManagerObjectType getManagerType();
+	public ManagerType getManagerType();
+	
 	/**
 	 * Returns the reference to the prometheus.app.SingeltonManager.
 	 * 
@@ -182,7 +188,9 @@ public interface IGeneralManager {
 	 * 
 	 * @return TRUE if item was unregistered by this manager
 	 */
-	public boolean registerItem( final Object registerItem, final int iItemId , final ManagerObjectType type );
+	public boolean registerItem( final Object registerItem, 
+			final int iItemId , 
+			final ManagerObjectType type );
 	
 	
 	/**
@@ -193,7 +201,8 @@ public interface IGeneralManager {
 	 * 
 	 * @return TRUE if item was unregistered by this manager
 	 */
-	public boolean unregisterItem( final int iItemId, final ManagerObjectType type  );
+	public boolean unregisterItem( final int iItemId, 
+			final ManagerObjectType type  );
 	
 	/**
 	 * Create a new unique Id.
@@ -208,6 +217,10 @@ public interface IGeneralManager {
 
 	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType);
 		
-		
+	/**
+	 * Remove all data and stop all threads.
+	 *
+	 */
+	public void destroyOnExit();
 	
 }

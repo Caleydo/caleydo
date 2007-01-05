@@ -52,7 +52,8 @@ public class DComponentSwingFactoryManager
 	public DComponentSwingFactoryManager(IGeneralManager setGeneralManager) {
 		
 		super( setGeneralManager, 
-				IGeneralManager.iUniqueId_TypeOffset_GuiComponent);
+				IGeneralManager.iUniqueId_TypeOffset_GuiComponent,
+				ManagerType.D_GUI );
 		
 		assert setGeneralManager != null: "DComponentSwingFactoryManager.DComponentSwingFactoryManager() init with null-pointer.";
 		
@@ -158,13 +159,6 @@ public class DComponentSwingFactoryManager
 	 */
 	public int size() {
 		return this.vecGuiComponents.size();
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getManagerType()
-	 */
-	public ManagerObjectType getManagerType() {
-		return ManagerObjectType.GUI_COMPONENT;
 	}
 	
 	public boolean unregisterItem( final int iItemId,

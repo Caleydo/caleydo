@@ -147,13 +147,13 @@ public class SwingWindowBase implements AWTEventListener {
 	            if(evt.getID() == WindowEvent.WINDOW_OPENED) {
 	                ComponentEvent cev = (ComponentEvent)evt;
 	                if(cev.getComponent() instanceof JFrame) {
-	                	refGeneralManagerSingelton.setErrorMessage( "event: " + evt);
+	                	refGeneralManagerSingelton.getSingelton().getLoggerManager().logMsg( "event: " + evt);
 	                    JFrame frame = (JFrame)cev.getComponent();
 	                    loadSettings(frame);
 	                }
 	            }
 	        }catch(Exception ex) {
-	            refGeneralManagerSingelton.setErrorMessage( ex.toString() );
+	        	refGeneralManagerSingelton.getSingelton().getLoggerManager().logMsg( ex.toString() );
 	        }
 	    }
 

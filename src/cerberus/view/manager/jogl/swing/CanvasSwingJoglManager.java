@@ -85,6 +85,18 @@ import demos.vertexProgWarp.VertexProgWarp;
 
 //import demos.xtrans.*;
 
+
+
+
+//import cerberus.base.WindowToolkitType;
+
+import cerberus.data.collection.set.SetMultiDim;
+import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.Set;
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.set.SetFlatThreadSimple;
+import cerberus.data.collection.storage.FlatThreadStorageSimple;
+import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IFrameManager;
 import cerberus.manager.IGeneralManager;
@@ -92,17 +104,15 @@ import cerberus.manager.IMenuManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
-
+import cerberus.manager.type.ManagerType;
+import cerberus.net.dwt.swing.menu.DMenuBootStraper;
 import cerberus.view.FrameBaseType;
+import cerberus.view.manager.swing.CerberusJStatusBar;
 import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.util.SwingJoglWindowAdapter;
 import cerberus.view.manager.jogl.swing.util.TesterStuff;
-
-//import cerberus.base.WindowToolkitType;
-
-import cerberus.view.manager.swing.CerberusJStatusBar;
 import cerberus.view.swing.texture.TestTexture;
 //import cerberus.view.swing.heatmap.HeatMapWarp;
 import cerberus.view.swing.heatmap.HeatMapRefract;
@@ -118,16 +128,6 @@ import cerberus.view.swing.status.StorageBrowser;
 import cerberus.xml.parser.jogl.SwingJoglJFrameSaxHandler;
 //import cerberus.view.swing.loader.FileLoader;
 
-import cerberus.data.collection.set.SetMultiDim;
-import cerberus.data.collection.IVirtualArray;
-//import cerberus.data.collection.Set;
-import cerberus.data.collection.IStorage;
-import cerberus.data.collection.set.SetFlatThreadSimple;
-import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
-
-/* import manager references. */
-import cerberus.net.dwt.swing.menu.DMenuBootStraper;
 
 /**
  Wavelength-dependent refraction demo<br>
@@ -215,25 +215,26 @@ public class CanvasSwingJoglManager
 	
 	protected SwingJoglJFrameSaxHandler handlerSax;
 	
-	public static void main(String[] args) {
-		
-		System.out.println("  ...Cerberus v0.1 01-2006 ...");
-		
-		OneForAllManager generalManager = new OneForAllManager(null);
-		generalManager.initAll();
-		
-		CanvasSwingJoglManager viewManager = 
-			(CanvasSwingJoglManager) generalManager.getSingelton().getViewCanvasManager();
-		
-		viewManager.run(args);
-	}
+//	public static void main(String[] args) {
+//		
+//		System.out.println("  ...Cerberus v0.1 01-2006 ...");
+//		
+//		OneForAllManager generalManager = new OneForAllManager(null);
+//		generalManager.initAll();
+//		
+//		CanvasSwingJoglManager viewManager = 
+//			(CanvasSwingJoglManager) generalManager.getSingelton().getViewCanvasManager();
+//		
+//		viewManager.run(args);
+//	}
 
 	
 	public CanvasSwingJoglManager( final IGeneralManager setManager,
 			final boolean setIsPrimaryWindow ) {
 		
 		super( setManager,
-				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT );
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
+				ManagerType.GUI_SWING );
 
 		//TODO: check why the constructors differ!
 		
@@ -255,7 +256,8 @@ public class CanvasSwingJoglManager
 	public CanvasSwingJoglManager(  final IGeneralManager setManager ) { 
 		
 		super( setManager,				
-				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT);
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
+				ManagerType.GUI_SWING );
 		
 		//TODO: check why the constructors differ!
 		

@@ -51,7 +51,8 @@ implements IStorageManager {
 			final int iInitSizeContainer ) {
 		
 		super( setGeneralManager, 
-				IGeneralManager.iUniqueId_TypeOffset_Storage );
+				IGeneralManager.iUniqueId_TypeOffset_Storage,
+				ManagerType.STORAGE);
 		
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -178,13 +179,6 @@ implements IStorageManager {
 	 */
 	public final int size() {		
 		return vecStorage.size();
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#getManagerType()
-	 */
-	public final ManagerObjectType getManagerType() {		
-		return ManagerObjectType.STORAGE_FLAT;
 	}
 	
 	public boolean unregisterItem( final int iItemId,

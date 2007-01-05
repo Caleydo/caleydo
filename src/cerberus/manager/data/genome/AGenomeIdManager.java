@@ -16,7 +16,7 @@ import cerberus.manager.ISingelton;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
-
+import cerberus.manager.type.ManagerType;
 
 /**
  * @author Michael Kalkusch
@@ -49,7 +49,7 @@ implements IGenomeIdManager {
 	 */
 	protected AGenomeIdManager( final IGeneralManager setGeneralManager) {
 
-		super( setGeneralManager, 66);
+		super( setGeneralManager, 66, ManagerType.GENOME_ID );
 		
 		initAll();
 	}
@@ -229,14 +229,6 @@ implements IGenomeIdManager {
 	public int size() {
 
 		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#getManagerType()
-	 */
-	public ManagerObjectType getManagerType() {
-
-		return null;
 	}
 
 

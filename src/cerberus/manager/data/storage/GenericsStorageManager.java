@@ -23,7 +23,7 @@ public class GenericsStorageManager< T >
 
 	protected ISingelton refSingeltonManager = null;
 	
-	protected ManagerObjectType refBaseManagerType = ManagerObjectType.FABRIK;
+	protected ManagerObjectType refBaseManagerType = ManagerObjectType.ALL_IN_ONE;
 	
 	protected Vector<T> vecItems;
 	

@@ -33,7 +33,9 @@ public enum ManagerType {
 		
 		GUI_SWING("Sing GUI manager"),
 		
-    GENOME_ID("genome id manager", ManagerType.DATA),
+		GENOME_ID("genome id manager", ManagerType.DATA),
+		
+		D_GUI("distributed GUI"),
 		
 		MENU("view menu manager", ManagerType.VIEW ),
 		
@@ -49,22 +51,20 @@ public enum ManagerType {
 		
 		STORAGE("storage manager", ManagerType.DATA ),
 		
+		SINGELTON("use 'NONE' instead!"),
+		
 		PATHWAY("pathway manager", ManagerType.DATA),
 		
 		PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA),
 		
 							
-		NONE("no type set"),
+		NONE("no type set");
 		
-		/**
-		 * @deprecated replaced by "NONE"
-		 */
-		FABRIK("use 'NONE' instead!"),
 
-		/**
-		 * @deprecated repalced by "VIEW"
-		 */
-		GUI_COMPONENT("use 'VIEW' instead!");
+//		/**
+//		 * @deprecated repalced by "VIEW"
+//		 */
+//		GUI_COMPONENT("use 'VIEW' instead!");
 
 
 		

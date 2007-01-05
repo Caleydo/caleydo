@@ -20,6 +20,7 @@ import cerberus.manager.IMenuManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 
 //import prometheus.command.CommandType;
 import cerberus.command.ICommand;
@@ -58,7 +59,8 @@ public class SwingMenuManager
 	 */
 	public SwingMenuManager(IGeneralManager setGeneralManager) {
 		super( setGeneralManager,
-				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT_Menu );
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT_Menu,
+				ManagerType.MENU );
 
 		
 		refViewCanvasManager = 
@@ -267,13 +269,6 @@ public class SwingMenuManager
 	 */
 	public int size() {
 		return hashMenu.size();
-	}
-
-	/* (non-Javadoc)
-	 * @see prometheus.manager.GeneralManager#getManagerType()
-	 */
-	public ManagerObjectType getManagerType() {
-		return ManagerObjectType.MENU;
 	}
 
 

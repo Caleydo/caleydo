@@ -8,16 +8,17 @@ import cerberus.data.collection.ISet;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.event.mediator.LockableMediator;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 
 public class EventPublisher 
+extends AAbstractManager
 implements IEventPublisher {
-	
-	protected IGeneralManager refGeneralManager;
 
 	protected HashMap<Integer, IMediator> hashMediatorId2Mediator;
 
@@ -36,7 +37,9 @@ implements IEventPublisher {
 	 */
 	public EventPublisher(IGeneralManager refGeneralManager) {
 
-		this.refGeneralManager = refGeneralManager;
+		super( refGeneralManager,  
+				IGeneralManager.iUniqueId_TypeOffset_EventPublisher,
+				ManagerType.EVENT_PUBLISHER );
 
 		hashSender2DataMediators = 
 			new HashMap<IMediatorSender, ArrayList<IMediator>>();
@@ -265,24 +268,6 @@ implements IEventPublisher {
 		return 0;
 	}
 
-	public ManagerObjectType getManagerType() {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IGeneralManager getGeneralManager() {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ISingelton getSingelton() {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
 
@@ -296,15 +281,4 @@ implements IEventPublisher {
 		return false;
 	}
 
-	public int createNewId(ManagerObjectType setNewBaseType) {
-
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

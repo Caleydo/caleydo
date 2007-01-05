@@ -95,3 +95,5 @@ public void loadNodeInformationInBrowser(final String sUrl) {
 	Exception in thread "main" java.lang.AssertionError: Can not read int[] array with length 0!
 	at cerberus.util.system.StringConversionTool.convertStringToIntArrayVariableLength(StringConversionTool.java:394)
 	
+	
+2007_01_05#0008: [OPEN] integrate IPathwayElementManager into IPathwayManager

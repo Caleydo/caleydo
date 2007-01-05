@@ -8,6 +8,9 @@
  */
 package cerberus.manager.singelton;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import cerberus.data.collection.IStorage;
 import cerberus.data.xml.IMementoXML;
 import cerberus.manager.ICommandManager;
@@ -23,6 +26,7 @@ import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.canvas.ViewCanvasManager;
 import cerberus.manager.command.CommandManager;
+import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.IVirtualArrayManager;
@@ -41,8 +45,10 @@ import cerberus.manager.logger.ConsoleLogger;
 import cerberus.manager.memento.MementoManager;
 import cerberus.manager.menu.swing.SwingMenuManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
+import cerberus.net.dwt.base.DGuiComponentType;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
 //import prometheus.data.collection.SelectionType; 
@@ -78,6 +84,8 @@ implements IGeneralManagerSingelton
 	 */
 	private boolean bEnableSWT = false;
 
+	private LinkedList <IGeneralManager> llAllManagerObjects;
+	
 	protected SingeltonManager refSingeltonManager;
 
 	protected ISetManager refSetManager;
@@ -97,6 +105,8 @@ implements IGeneralManagerSingelton
 	protected ICommandManager refCommandManager;
 
 	protected ILoggerManager refLoggerManager;
+	
+	protected IGenomeIdManager refGenomeIdManager;
 
 	protected IViewGLCanvasManager refViewGLManager;
 
@@ -146,6 +156,8 @@ implements IGeneralManagerSingelton
 		 */
 		refSingeltonManager.setNetworkPostfix( 1 );
 		
+		llAllManagerObjects = new LinkedList <IGeneralManager> ();
+		
 		//initAll();
 	}
 
@@ -186,6 +198,7 @@ implements IGeneralManagerSingelton
 		refSetManager = new SetManager(this, 4);
 		
 		refMementoManager = new MementoManager(this);
+		
 		refDComponentManager = new DComponentSwingFactoryManager(this);
 		refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
@@ -196,8 +209,28 @@ implements IGeneralManagerSingelton
 		refPathwayManager = new PathwayManager(this);
 		refPathwayElementManager = new PathwayElementManager(this);
 		refEventPublisher = new EventPublisher(this);
-
-		refSingeltonManager.setGenomeIdManager( new GenomeIdManager(this) );
+		refGenomeIdManager = new GenomeIdManager(this);
+		
+		/**
+		 * Insert all Manager objects handling registered objects to 
+		 * the LinkedList
+		 */
+		llAllManagerObjects.add( refSetManager );
+		llAllManagerObjects.add( refVirtualArrayManager );
+		llAllManagerObjects.add( refStorageManager );
+		
+		llAllManagerObjects.add( refPathwayManager );
+		llAllManagerObjects.add( refPathwayElementManager );
+		llAllManagerObjects.add( refGenomeIdManager );
+		
+		llAllManagerObjects.add( refEventPublisher );
+		llAllManagerObjects.add( refViewGLManager );
+		llAllManagerObjects.add( refSWTGUIManager );
+		
+		llAllManagerObjects.add( refMenuManager );
+		llAllManagerObjects.add( refCommandManager );
+		llAllManagerObjects.add( refMementoManager );
+		llAllManagerObjects.add( refDComponentManager );
 		
 		/**
 		 * Make sure SWT is only used, when needed!
@@ -221,6 +254,8 @@ implements IGeneralManagerSingelton
 		refSingeltonManager.setPathwayElementManager(refPathwayElementManager);
 		refSingeltonManager.setPathwayManager(refPathwayManager);
 		refSingeltonManager.setEventPublisher(refEventPublisher);
+		refSingeltonManager.setGenomeIdManager( refGenomeIdManager );
+		
 
 		refSetManager.initManager();
 	}
@@ -231,22 +266,13 @@ implements IGeneralManagerSingelton
 	public boolean hasItem(final int iItemId)
 	{
 
-		if (refSetManager.hasItem(iItemId))
-			return true;
-		if (refVirtualArrayManager.hasItem(iItemId))
-			return true;
-		if (refStorageManager.hasItem(iItemId))
-			return true;
-		if (refDComponentManager.hasItem(iItemId))
-			return true;
-		if (refMementoManager.hasItem(iItemId))
-			return true;
-		if (refViewCanvasManager.hasItem(iItemId))
-			return true;
-
-		//FIXME Is next line useless?
-		if (refCommandManager.hasItem(iItemId))
-			return true;
+		Iterator <IGeneralManager> iter = llAllManagerObjects.iterator();
+		
+		while ( iter.hasNext() ) 
+		{
+			if ( iter.next().hasItem(iItemId) ) 
+				return true;
+		} // while ( iter.hasNext() ) 
 
 		return false;
 	}
@@ -260,32 +286,18 @@ implements IGeneralManagerSingelton
 	public Object getItem(final int iItemId)
 	{
 
-		if (refSetManager.hasItem(iItemId))
-			return refSetManager.getItemSet(iItemId);
-
-		if (refVirtualArrayManager.hasItem(iItemId))
-			return refVirtualArrayManager.getItemSelection(iItemId);
-
-		if (refStorageManager.hasItem(iItemId))
-			return refStorageManager.getItemStorage(iItemId);
-
-		if (refDComponentManager.hasItem(iItemId))
-			return refDComponentManager.getItemSet(iItemId);
-
-		if (refMementoManager.hasItem(iItemId))
-			return refMementoManager.getMemento(iItemId);
-
-		if (refViewCanvasManager.hasItem(iItemId))
-			return refViewCanvasManager.getItemCanvas(iItemId);
-
-		if (refCommandManager.hasItem(iItemId))
-			return refCommandManager.getItem(iItemId);
-
-		if (refSWTGUIManager.hasItem(iItemId))
-			return refSWTGUIManager.getItem(iItemId);
-
-		if (refViewGLManager.hasItem(iItemId))
-			return refViewGLManager.getItem(iItemId);
+		Iterator <IGeneralManager> iter = llAllManagerObjects.iterator();
+		
+		while ( iter.hasNext() ) 
+		{
+			IGeneralManager buffer = iter.next();
+			
+			if ( buffer.hasItem(iItemId) ) 
+			{
+				return buffer.getItem(iItemId);
+			}
+			
+		} // while ( iter.hasNext() ) 
 
 		return null;
 	}
@@ -314,9 +326,9 @@ implements IGeneralManagerSingelton
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#getManagerType()
 	 */
-	public ManagerObjectType getManagerType()
+	public ManagerType getManagerType()
 	{
-		return ManagerObjectType.ALL_IN_ONE;
+		return ManagerType.SINGELTON;
 	}
 
 	/* (non-Javadoc)
@@ -327,33 +339,6 @@ implements IGeneralManagerSingelton
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.singelton.SingeltonManager#getCurrentType()
-	 */
-	public final ManagerObjectType getCurrentType()
-	{
-		return this.setCurrentType;
-	}
-
-	/**
-	 * ISet the current type used to create the next Id using
-	 * cerberus.data.manager.singelton.OneForAllManager#createNewId()
-	 * Does not influence 
-	 * cerberus.data.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
-	 * or 
-	 * cerberus.data.manager.singelton.OneForAllManager#createNewItem(ManagerObjectType, String)
-	 * .
-	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewItem(ManagerObjectType, String)
-	 * @see cerberus.manager.singelton.OneForAllManager#getCurrentType()
-	 * 
-	 * @param setCurrentType
-	 */
-	protected final void setCurrentType(ManagerObjectType setCurrentType)
-	{
-		this.setCurrentType = setCurrentType;
-	}
 
 	//	/**
 	//	 * Create a new Id using the ManagerObjectType set with 
@@ -365,121 +350,43 @@ implements IGeneralManagerSingelton
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewId(cerberus.data.manager.BaseManagerType)
 	 */
-	public final int createNewId(final ManagerObjectType setNewBaseType)
+	public final int createNewId(final ManagerObjectType type)
 	{
 
-		this.setCurrentType = setNewBaseType;
-
-		switch (setNewBaseType.getGroupType())
-		{
-		case MEMENTO:
-			return refMementoManager.createNewId(setNewBaseType);
-		case GUI_COMPONENT:
-			return refDComponentManager.createNewId(setNewBaseType);
-		case VIRTUAL_ARRAY:
-			return refVirtualArrayManager.createNewId(setNewBaseType);
-		case SET:
-			return refSetManager.createNewId(setNewBaseType);
-		case STORAGE:
-			return refStorageManager.createNewId(setNewBaseType);
-		case VIEW:
-			return refViewCanvasManager.createNewId(setNewBaseType);
-		case COMMAND:
-			return refCommandManager.createNewId(setNewBaseType);
-
-		default:
-			throw new CerberusRuntimeException(
-					"Error in OneForAllManager.createNewId() unknown type "
-							+ setNewBaseType.toString());
-		}
-
+		assert type != null : "registerItem called with type == null!";
+		
+		IGeneralManager buffer = this.getManagerByBaseType( type );
+		
+		assert buffer != null : "createNewId type does not address manager!";
+		
+		return buffer.createNewId(type);
 	}
 
 	public boolean unregisterItem(final int iItemId,
 			final ManagerObjectType type)
 	{
-
-		if (type != null)
+		assert type != null : "registerItem called with type == null!";
+		
+		IGeneralManager buffer = this.getManagerByBaseType( type );
+		
+		if ( buffer != null ) 
 		{
-			switch (type.getGroupType())
-			{
-			case MEMENTO:
-				//return refMementoManager.c();
-				assert false : "not implemented";
-			case GUI_COMPONENT:
-				//return refDComponentManager.createNewId();
-				assert false : "not implemented";
-			case VIRTUAL_ARRAY:
-				return refVirtualArrayManager.unregisterItem(iItemId, type);
-			case SET:
-				return refSetManager.unregisterItem(iItemId, type);
-			case STORAGE:
-				return refStorageManager.unregisterItem(iItemId, type);
-			case VIEW:
-				return refViewCanvasManager.unregisterItem(iItemId, type);
-			case COMMAND:
-				throw new CerberusRuntimeException(
-						"Error in OneForAllManager.unregisterItem() type "
-								+ type.name() + " can not unregister!");
-			/**
-			 * Note: refCommandManager can not unregister items.
-			 */
-
-			default:
-				throw new CerberusRuntimeException(
-						"Error in OneForAllManager.unregisterItem() unknown type "
-								+ type.name());
-			} // end switch
+			return buffer.unregisterItem(iItemId, type);
 		}
-
-		/**
-		 * TEST all sub managers
-		 */
-
-		assert false : "must use type!";
-
+		
 		return false;
 	}
 
 	public boolean registerItem(final Object registerItem, final int iItemId,
 			final ManagerObjectType type)
 	{
-
-		if (type != null)
-		{
-			switch (type.getGroupType())
-			{
-			case MEMENTO:
-				//return refMementoManager.c();
-				assert false : "not implemented";
-
-			case GUI_COMPONENT:
-				//return refDComponentManager.createNewId();
-				assert false : "not implemented";
-
-			case VIRTUAL_ARRAY:
-				return refVirtualArrayManager.registerItem(registerItem, iItemId, type);
-			case SET:
-				return refSetManager.registerItem(registerItem, iItemId, type);
-			case STORAGE:
-				return refStorageManager.registerItem(registerItem, iItemId, type);
-			case VIEW:
-				return refViewCanvasManager.registerItem(registerItem, iItemId, type);
-			case COMMAND:
-				throw new CerberusRuntimeException(
-						"Error in OneForAllManager.registerItem() type "
-								+ type.name() + " can niot register!");
-
-			default:
-				throw new CerberusRuntimeException(
-						"Error in OneForAllManager.registerItem() unknown type "
-								+ type.name());
-			} // end switch
-		}
-
-		assert false : "must use type!";
-
-		return false;
+		assert type != null : "registerItem called with type == null!";
+		
+		IGeneralManager buffer = this.getManagerByBaseType( type );
+		
+		assert buffer != null : "registerItem type does not address manager!";
+		
+		return buffer.registerItem( registerItem, iItemId, type);
 	}
 
 	/* (non-Javadoc)
@@ -493,9 +400,6 @@ implements IGeneralManagerSingelton
 		{
 		case MEMENTO:
 			//return refMementoManager.c();
-			assert false : "not implemented";
-		case GUI_COMPONENT:
-			//return refDComponentManager.createNewId();
 			assert false : "not implemented";
 		case VIRTUAL_ARRAY:
 			return refVirtualArrayManager.createSelection(createNewType);
@@ -513,6 +417,8 @@ implements IGeneralManagerSingelton
 					sNewTypeDetails);
 		case COMMAND:
 			return refCommandManager.createCommand(sNewTypeDetails);
+		case D_GUI:
+			return refDComponentManager.createSet( DGuiComponentType.valueOf(sNewTypeDetails) );
 
 		default:
 			throw new CerberusRuntimeException(
@@ -534,9 +440,6 @@ implements IGeneralManagerSingelton
 		{
 		case MEMENTO:
 			//return refMementoManager.c();
-			assert false : "not implemented";
-		case GUI_COMPONENT:
-			//return refDComponentManager.createNewId();
 			assert false : "not implemented";
 		case VIRTUAL_ARRAY:
 		{
@@ -584,17 +487,23 @@ implements IGeneralManagerSingelton
 		} // end switch ( type.getGroupType() )
 
 	}
-
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType)
+	
+	
+	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType) 
+	{
+		return getManagerByType(managerType.getGroupType());
+	}
+	
+	public IGeneralManager getManagerByType(ManagerType managerType)
 	{
 
 		assert managerType != null : "type is null!";
 
-		switch (managerType.getGroupType())
+		switch (managerType)
 		{
 		case MEMENTO:
 			return refMementoManager;
-		case GUI_COMPONENT:
+		case D_GUI:
 			return refDComponentManager;
 		case VIRTUAL_ARRAY:
 			return refVirtualArrayManager;
@@ -602,6 +511,8 @@ implements IGeneralManagerSingelton
 			return refSetManager;
 		case STORAGE:
 			return refStorageManager;
+		case SINGELTON:
+			return this;
 		case VIEW:
 			return refViewGLManager;
 		case COMMAND:
@@ -614,7 +525,11 @@ implements IGeneralManagerSingelton
 			return refPathwayElementManager;
 		case EVENT_PUBLISHER:
 			return refEventPublisher;
-
+		case VIEW_GL_CANVAS:
+			return refViewGLManager;
+		case GENOME_ID:
+			return refGenomeIdManager;
+			
 		default:
 			throw new CerberusRuntimeException(
 					"Error in OneForAllManager.getManagerByBaseType() unsupported type "
@@ -625,11 +540,6 @@ implements IGeneralManagerSingelton
 	public IViewCanvasManager getViewCanvasManager()
 	{
 		return refViewCanvasManager;
-	}
-
-	public void setErrorMessage(final String sErrorMsg)
-	{
-		System.err.println("ERROR: " + sErrorMsg);
 	}
 
 	/**
@@ -670,6 +580,18 @@ implements IGeneralManagerSingelton
 		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()");
 		
 		this.refViewGLManager.destroyOnExit();
+		
+		Iterator <IGeneralManager> iter = llAllManagerObjects.iterator();
+		
+		while ( iter.hasNext() ) 
+		{
+			IGeneralManager buffer = iter.next();
+			
+			if ( buffer != null ) {
+				buffer.destroyOnExit();
+			}
+			
+		} // while ( iter.hasNext() ) 
 		
 		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()  ...[DONE]");
 	}

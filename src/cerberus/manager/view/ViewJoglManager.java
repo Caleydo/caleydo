@@ -89,7 +89,9 @@ implements IViewManager, IViewGLCanvasManager {
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
-		super(setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_GUI_AWT);
+		super(setGeneralManager, 
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
+				ManagerType.GUI_SWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
@@ -157,12 +159,6 @@ implements IViewManager, IViewGLCanvasManager {
 
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public ManagerObjectType getManagerType() {
-
-		assert false : "not done yet";
-		return null;
 	}
 
 	public boolean registerItem(Object registerItem, int iItemId,
@@ -644,6 +640,8 @@ implements IViewManager, IViewGLCanvasManager {
 		return true;
 	}
 
+	
+	@Override
 	public void destroyOnExit() {
 
 		refGeneralManager.getSingelton().logMsg(

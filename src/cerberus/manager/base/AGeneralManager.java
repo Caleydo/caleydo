@@ -85,5 +85,9 @@ public abstract class AGeneralManager implements IGeneralManager {
 					setManagerType.toString() + "]");
 		}				
 	}
+	
+	public void destroyOnExit() {
+		
+	}
 
 }

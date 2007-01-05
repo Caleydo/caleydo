@@ -20,7 +20,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.data.ICollectionManager;
 import cerberus.manager.type.ManagerObjectType;
-
+import cerberus.manager.type.ManagerType;
 import cerberus.data.collection.view.IViewCanvas;
 import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
 import cerberus.net.dwt.swing.mdi.DDesktopPane;
@@ -64,7 +64,8 @@ implements IViewCanvasManager,
 	 */
 	public ViewCanvasManager( IGeneralManager refSingelton ) {
 		super(refSingelton,
-				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT );
+				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
+				ManagerType.GUI_SWT );
 		
 		vecViewCanvas = new Vector<IViewCanvas>(10);
 		
@@ -233,13 +234,6 @@ implements IViewCanvasManager,
 		}
 		
 		return resultBuffer;
-	}
-
-	/* (non-Javadoc)
-	 * @see prometheus.data.manager.ViewCanvasManager#getManagerType()
-	 */
-	public ManagerObjectType getManagerType() {
-		return ManagerObjectType.VIEW;
 	}
 
 	/* (non-Javadoc)

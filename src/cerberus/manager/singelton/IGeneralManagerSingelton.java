@@ -4,22 +4,14 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.ViewCanvasManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 import cerberus.data.xml.IMementoCallbackXML;
 
 public interface IGeneralManagerSingelton 
 extends IGeneralManager, IMementoCallbackXML {
 
 	//public static final String sXMLDelimiter = ";";
-	
-	/**
-	 * Get the current type used to create new Id with createNewId().
-	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewId()
-	 * @see cerberus.manager.singelton.OneForAllManager#setCurrentType(ManagerObjectType)
-	 * 
-	 * @return current type used to create new Id with createNewId()
-	 */
-	public abstract ManagerObjectType getCurrentType();
+
 
 	/**
 	 * Creates a new unique Id with the type, that was set previouse.
@@ -59,6 +51,16 @@ extends IGeneralManager, IMementoCallbackXML {
 	public ICommandManager getCommandManager();
 	
 	/**
+	 * Get the reference to the managers using the ManagerType.
+	 * Note: Instead of writing one get-methode for all Managers this methode
+	 * handles all differnt types of managers.
+	 * 
+	 * @param managerType define type of manger that is requested
+	 * @return manager for a certain type.
+	 */
+	public IGeneralManager getManagerByType(ManagerType managerType);
+	
+	/**
 	 * Get the reference to the managers using the ManagerObjectType.
 	 * Note: Instead of writing one get-methode for all Managers this methode
 	 * handles all differnt types of managers.
@@ -68,13 +70,6 @@ extends IGeneralManager, IMementoCallbackXML {
 	 */
 	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType);
 	
-	/**
-	 * Define an error message presented in the GUI.
-	 * Must be connected to an error log and/or a GUI status bar.
-	 * 
-	 * @param sErrorMsg error message
-	 */
-	public void setErrorMessage( final String sErrorMsg );
 	
 	/**
 	 * Enable SWT

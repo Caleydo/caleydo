@@ -8,6 +8,7 @@ import cerberus.manager.IAbstractManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 
 /**
  * Base class for manager classes, that connect to the IGeneralManager.
@@ -17,6 +18,8 @@ import cerberus.manager.type.ManagerObjectType;
  */
 public abstract class AAbstractManager implements IAbstractManager  {
 
+	private final ManagerType refManagerType;
+	
 	protected int iUniqueId_current;
 	
 	/**
@@ -25,18 +28,32 @@ public abstract class AAbstractManager implements IAbstractManager  {
 	protected final IGeneralManager refGeneralManager;
 	
 	/**
+	 * Reference to ISingelton assinged via Constructor
+	 */
+	protected final ISingelton refSingelton;
+	
+	/**
 	 * 
 	 */
 	protected AAbstractManager( final IGeneralManager setGeneralManager,
-			final int iUniqueId_type_offset ) {
+			final int iUniqueId_type_offset,
+			final ManagerType setManagerType ) {
 		
 		assert setGeneralManager != null : "Can not handle null refernence to IGeneralManager!";
 		
 		refGeneralManager = setGeneralManager;
+		
+		refManagerType = setManagerType;
+		
+		refSingelton = refGeneralManager.getSingelton();
 				
-		iUniqueId_current = iUniqueId_type_offset * 
-		IGeneralManager.iUniqueId_TypeOffsetMultiplyer +
-		setGeneralManager.getSingelton().getNetworkPostfix();
+		iUniqueId_current = calculateInitialUniqueId( iUniqueId_type_offset);
+	}
+	
+	public int calculateInitialUniqueId( final int iUniqueId_type_offset ) {
+		return iUniqueId_type_offset * 
+			IGeneralManager.iUniqueId_TypeOffsetMultiplyer +
+			refGeneralManager.getSingelton() .getNetworkPostfix();
 	}
 	
 	/* (non-Javadoc)
@@ -53,7 +70,7 @@ public abstract class AAbstractManager implements IAbstractManager  {
 	 * @see cerberus.manager.IAbstractManager#getSingelton()
 	 */
 	public final ISingelton getSingelton() {
-		return refGeneralManager.getSingelton();
+		return refSingelton;
 	}
 	
 	/* (non-Javadoc)
@@ -76,7 +93,7 @@ public abstract class AAbstractManager implements IAbstractManager  {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
 	 */
-	public final int createNewId(ManagerObjectType setNewBaseType) {
+	public int createNewId(ManagerObjectType setNewBaseType) {
 		
 		iUniqueId_current += IGeneralManager.iUniqueId_Increment;
 		
@@ -86,5 +103,16 @@ public abstract class AAbstractManager implements IAbstractManager  {
 	public final IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
 		assert false : "Do not call this methode. use singelton only.";
 		return null;
+	}
+	
+	public final ManagerType getManagerType() {
+		return refManagerType;
+	}
+	
+	/* 
+	 * Remove "final" as soon as required by derived class.
+	 */
+	public void destroyOnExit() {
+		
 	}
 }

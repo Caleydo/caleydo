@@ -7,20 +7,23 @@ import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
+import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 
 /**
  * The pathway manager is in charge for handling
  * the pathways.
- * The class is implemented as a Singleton. 
- * @author	Marc Streit
+ * The class is implemented as a Singleton.
+ *  
+ * @author Marc Streit
+ * @author Michael Kalkusch
  */
 
 public class PathwayManager 
+extends AAbstractManager
 implements IPathwayManager {
-
-	protected IGeneralManager refGeneralManager;
 
 	protected HashMap<Integer, Pathway> pathwayLUT;
 
@@ -38,7 +41,10 @@ implements IPathwayManager {
 	 */
 	public PathwayManager(IGeneralManager refGeneralManager) {
 
-		this.refGeneralManager = refGeneralManager;
+		super( refGeneralManager, 
+				IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
+				ManagerType.PATHWAY_ELEMENT );
+		
 		pathwayLUT = new HashMap<Integer, Pathway>();
 	}
 
@@ -117,24 +123,6 @@ implements IPathwayManager {
 		return 0;
 	}
 
-	public ManagerObjectType getManagerType() {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IGeneralManager getGeneralManager() {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ISingelton getSingelton() {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
 
@@ -146,17 +134,5 @@ implements IPathwayManager {
 
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	public int createNewId(ManagerObjectType setNewBaseType) {
-
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
-
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

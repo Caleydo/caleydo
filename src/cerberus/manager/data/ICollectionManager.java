@@ -45,9 +45,12 @@ public abstract class ICollectionManager
 	
 	
 	protected ICollectionManager( final IGeneralManager setSingeltonManager,
-			final int iUniqueId_type_offset ) {
+			final int iUniqueId_type_offset,
+			final ManagerType setManagerType ) {
 		
-		super( setSingeltonManager, iUniqueId_type_offset );		
+		super( setSingeltonManager, 
+				iUniqueId_type_offset,
+				setManagerType);		
 		
 		hashId2IndexLookup = new Hashtable<Integer,Integer>();
 	}
@@ -80,11 +83,6 @@ public abstract class ICollectionManager
 	 * @see prometheus.data.manager.GeneralManager#size()
 	 */
 	public abstract int size();
-	
-	/* (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManager#getManagerType()
-	 */
-	public abstract ManagerObjectType getManagerType();
 	
 	
 //	/**

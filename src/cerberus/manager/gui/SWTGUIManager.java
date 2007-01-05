@@ -21,6 +21,7 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.ISWTWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
@@ -73,7 +74,9 @@ implements ISWTGUIManager {
 	 */
 	public SWTGUIManager(IGeneralManager setGeneralManager) {
 
-		super(setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_GUI_SWT);
+		super(setGeneralManager, 
+				IGeneralManager.iUniqueId_TypeOffset_GUI_SWT,
+				ManagerType.GUI_SWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
@@ -97,7 +100,7 @@ implements ISWTGUIManager {
 	public Shell createWindow() {
 
 		// Register shell in the window map
-		final int iUniqueId = this.createNewId(ManagerObjectType.GUI_WINDOW);
+		final int iUniqueId = this.createNewId(ManagerObjectType.GUI_SWT_WINDOW);
 
 		// use default layout
 		return createWindow(iUniqueId, "Cerberus", "ROW VERTICAL");
@@ -397,12 +400,6 @@ implements ISWTGUIManager {
 
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public ManagerObjectType getManagerType() {
-
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public boolean registerItem(Object registerItem, int iItemId,
