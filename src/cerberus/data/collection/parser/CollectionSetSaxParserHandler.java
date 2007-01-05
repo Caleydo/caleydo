@@ -185,7 +185,7 @@ implements ISaxParserHandler
 							iXML_DataComponent_Id = Integer.valueOf( bufferId );						
 							bXML_Section_DataComponent = true;
 							sSelectionType = bufferType;
-							eSelectionType = ManagerObjectType.getType( bufferType );
+							eSelectionType = ManagerObjectType.valueOf( bufferType );
 							
 							return true;
 						} 

@@ -1,8 +1,8 @@
 package cerberus.view.gui;
 
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.Vector;
+//import java.util.Iterator;
+//import java.util.StringTokenizer;
+//import java.util.Vector;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -13,7 +13,7 @@ import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.system.StringConversionTool;
+//import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -45,11 +45,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	protected int iParentContainerId;
 	
 	protected String sLabel;
-	
-	/**
-	 * @deprecated
-	 */
-	//protected Vector <String> vecAttributes;
 
 	protected IParameterHandler refParameterHandler;
 	

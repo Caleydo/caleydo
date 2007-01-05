@@ -35,30 +35,11 @@ implements ICollectionType {
 	/** not specified  */
 	SET_NONE;
 	
-	
-
 	/**
-	 * Convertion of String to SetType.
-	 * 
-	 * @param fromString String to parse
-	 * @return SetType parsed from String, or null if type is unknown.
+	 * Default Constructor
 	 */
-	public final static SetType getType( final String fromString ) {
+	private SetType() {
 		
-		if ( fromString.equalsIgnoreCase( "SET_CUBIC" ) ) 
-			return SetType.SET_CUBIC;
-		if ( fromString.equalsIgnoreCase( "SET_LINEAR" ) ) 
-			return SetType.SET_LINEAR;
-		if ( fromString.equalsIgnoreCase( "SET_MULTI_DIM" ) ) 
-			return SetType.SET_MULTI_DIM;
-		if ( fromString.equalsIgnoreCase( "SET_NONE" ) ) 
-			return SetType.SET_NONE;
-		if ( fromString.equalsIgnoreCase( "SET_PLANAR" ) ) 
-			return SetType.SET_PLANAR;
-		if ( fromString.equalsIgnoreCase( "SET_MULTI_DIM_VARIABLE" ) ) 
-			return SetType.SET_MULTI_DIM_VARIABLE;
-		
-		return null;
 	}
 	
 	/**

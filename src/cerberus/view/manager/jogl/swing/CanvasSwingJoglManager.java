@@ -193,7 +193,7 @@ public class CanvasSwingJoglManager
 	private int iIdInternalFrameCurrent = IGeneralManager.iUniqueId_View;
 	
 	private int iIdMenuIncrement = IGeneralManager.iUniqueId_Menu_Inc;
-	private int iIdMenuCurrent = IGeneralManager.iUniqueId_Menu_Offset;
+	private int iIdMenuCurrent = IGeneralManager.iUniqueId_MenuItem;
 	
 	private CerberusJStatusBar jsb_statusBar;
 

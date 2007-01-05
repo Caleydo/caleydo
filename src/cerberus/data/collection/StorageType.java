@@ -120,47 +120,7 @@ implements ICollectionType {
 		return NONE;
 	}
 	
-//	/**
-//	 * Convertion of String to SetType including abstract types.
-//	 * 
-//	 * @param fromString String to parse
-//	 * @return SetType parsed from String, or null if type is unknown
-//	 */
-//	public final static StorageType getTypeAll( final String fromString ) {
-//		
-//		if ( fromString.equalsIgnoreCase( "ABORT" ) ) 
-//			return StorageType.ABORT;
-//		if ( fromString.equalsIgnoreCase( "BOOLEAN" ) ) 
-//			return StorageType.BOOLEAN;
-//		if ( fromString.equalsIgnoreCase( "DOUBLE" ) ) 
-//			return StorageType.DOUBLE;
-//		if ( fromString.equalsIgnoreCase( "FLOAT" ) ) 
-//			return StorageType.FLOAT;
-//		if ( fromString.equalsIgnoreCase( "INTEGER" ) ) 
-//			return StorageType.INT;
-//		if ( fromString.equalsIgnoreCase( "ITERATOR" ) ) 
-//			return StorageType.ITERATOR;
-//		if ( fromString.equalsIgnoreCase( "LONG" ) ) 
-//			return StorageType.LONG;
-//		if ( fromString.equalsIgnoreCase( "SET_NONE" ) ) 
-//			return StorageType.NONE;
-//		if ( fromString.equalsIgnoreCase( "OBJECT" ) ) 
-//			return StorageType.OBJECT;
-//		if ( fromString.equalsIgnoreCase( "SHORT" ) ) 
-//			return StorageType.SHORT;
-//		if ( fromString.equalsIgnoreCase( "SKIP" ) ) 
-//			return StorageType.SKIP;
-//		if ( fromString.equalsIgnoreCase( "STRING" ) ) 
-//			return StorageType.STRING;
-//		if ( fromString.equalsIgnoreCase( "VEC2F" ) ) 
-//			return StorageType.VEC2F;
-//		if ( fromString.equalsIgnoreCase( "VEC3F" ) ) 
-//			return StorageType.VEC3F;
-//		if ( fromString.equalsIgnoreCase( "VEC4F" ) ) 
-//			return StorageType.VEC4F;
-//		
-//		return null;
-//	}
+
 	
 	/**
 	 * Return the index of this enum in an array. 
@@ -190,42 +150,4 @@ implements ICollectionType {
 		return this.bIsValue;
 	}
 	
-//	/**
-//	 * Convertion of String to SetType excluding abstract types.
-//	 * 
-//	 * Note: ignored types are:
-//	 * ABORT,
-//	 * ITERATOR,
-//	 * SKIP
-//	 * 
-//	 * @param fromString String to parse
-//	 * @return SetType parsed from String, or SET_NONE if type is abstract or unknown
-//	 */
-//	public final static StorageType getType( final String fromString ) {
-//		
-//		if ( fromString.equalsIgnoreCase( "BOOLEAN" ) ) 
-//			return StorageType.BOOLEAN;
-//		if ( fromString.equalsIgnoreCase( "DOUBLE" ) ) 
-//			return StorageType.DOUBLE;
-//		if ( fromString.equalsIgnoreCase( "FLOAT" ) ) 
-//			return StorageType.FLOAT;
-//		if ( fromString.equalsIgnoreCase( "INTEGER" ) ) 
-//			return StorageType.INT;
-//		if ( fromString.equalsIgnoreCase( "LONG" ) ) 
-//			return StorageType.LONG;
-//		if ( fromString.equalsIgnoreCase( "OBJECT" ) ) 
-//			return StorageType.OBJECT;
-//		if ( fromString.equalsIgnoreCase( "SHORT" ) ) 
-//			return StorageType.SHORT;
-//		if ( fromString.equalsIgnoreCase( "STRING" ) ) 
-//			return StorageType.STRING;
-//		if ( fromString.equalsIgnoreCase( "VEC2F" ) ) 
-//			return StorageType.VEC2F;
-//		if ( fromString.equalsIgnoreCase( "VEC3F" ) ) 
-//			return StorageType.VEC3F;
-//		if ( fromString.equalsIgnoreCase( "VEC4F" ) ) 
-//			return StorageType.VEC4F;
-//		
-//		return StorageType.NONE;
-//	}
 }

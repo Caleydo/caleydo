@@ -35,7 +35,7 @@ public abstract class AAbstractManager implements IAbstractManager  {
 		refGeneralManager = setGeneralManager;
 				
 		iUniqueId_current = iUniqueId_type_offset * 
-		IGeneralManager.iUniqueId_TypeOffset +
+		IGeneralManager.iUniqueId_TypeOffsetMultiplyer +
 		setGeneralManager.getSingelton().getNetworkPostfix();
 	}
 	

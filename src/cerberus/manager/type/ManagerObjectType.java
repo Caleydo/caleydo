@@ -38,21 +38,21 @@ public enum ManagerObjectType {
 	/*
 	 * SELECTION
 	 */
-	SELECTION(ManagerType.SELECTION),
+	VIRTUAL_ARRAY(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_SINGLE_BLOCK(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_SINGLE_BLOCK(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_MULTI_BLOCK(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_MULTI_BLOCK(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_MULTI_BLOCK_RLE(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.VIRTUAL_ARRAY),
 	
-	SELECTION_RANDOM_BLOCK(ManagerType.SELECTION),
+	VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.VIRTUAL_ARRAY),
 	
-	/**
-	 * Load a microarray dataset. Is defined as IVirtualArray, because 
-	 * all storage decives are loaded prior.
-	 */
-	SELECTION_LOAD_MICROARRAY(ManagerType.SELECTION),
+//	/**
+//	 * Load a microarray dataset. Is defined as IVirtualArray, because 
+//	 * all storage decives are loaded prior.
+//	 */
+//	SELECTION_LOAD_MICROARRAY(ManagerType.VIRTUAL_ARRAY),
 	
 	
 	/*
@@ -246,110 +246,6 @@ public enum ManagerObjectType {
 	 */
 	public final ManagerType getGroupType() {
 		return this.eGroupType;
-	}
-	
-	/**
-	 * Convert a String to a type.
-	 * 
-	 * @param sParseString String to be parsed
-	 * @return type or null on failure
-	 */
-	public static final ManagerObjectType getType( String sParseString) {
-		if ( sParseString.equalsIgnoreCase( 
-				ManagerObjectType.ALL_IN_ONE.name()) ) 
-			return ManagerObjectType.ALL_IN_ONE;
-		
-		if ( sParseString.equalsIgnoreCase( 
-				ManagerObjectType.COMMAND.name()) ) 
-			return ManagerObjectType.COMMAND;
-		
-		if ( sParseString.equalsIgnoreCase(  ManagerObjectType.FABRIK.name()) ) 
-			return ManagerObjectType.FABRIK;
-		
-		if ( sParseString.equalsIgnoreCase( 
-				ManagerObjectType.GUI_COMPONENT.name()) ) 
-			return ManagerObjectType.GUI_COMPONENT;
-		
-		if ( sParseString.equalsIgnoreCase( 
-				ManagerObjectType.MEMENTO.name() )) 
-			return ManagerObjectType.MEMENTO;
-		
-		if ( sParseString.startsWith( 
-				ManagerObjectType.SELECTION.name()) ) {
-
-			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION.name() )) 
-				return ManagerObjectType.SELECTION;
-			
-			if ( sParseString.equalsIgnoreCase(  
-					ManagerObjectType.SELECTION_SINGLE_BLOCK.name()) ) 
-				return ManagerObjectType.SELECTION_SINGLE_BLOCK;
-			
-			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_MULTI_BLOCK.name() )) 
-				return ManagerObjectType.SELECTION_MULTI_BLOCK;
-			
-			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_MULTI_BLOCK_RLE.name() )) 
-				return ManagerObjectType.SELECTION_MULTI_BLOCK_RLE;
-			
-			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_RANDOM_BLOCK.name() )) 
-				return ManagerObjectType.SELECTION_RANDOM_BLOCK;
-			
-			if ( sParseString.equalsIgnoreCase( 
-					ManagerObjectType.SELECTION_LOAD_MICROARRAY.name() )) 
-				return ManagerObjectType.SELECTION_LOAD_MICROARRAY;
-		}
-	
-		if ( sParseString.startsWith( 
-				ManagerObjectType.SET.name() )) {
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.SET.name() )) 
-				return ManagerObjectType.SET;	
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.SET_LINEAR.name() )) 
-				return ManagerObjectType.SET_LINEAR;	
-					
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.SET_PLANAR.name() )) 
-				return ManagerObjectType.SET_PLANAR;	
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.SET_CUBIC.name() )) 
-				return ManagerObjectType.SET_CUBIC;	
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.SET_MULTI_DIM.name() )) 
-				return ManagerObjectType.SET_MULTI_DIM;
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.SET_MULTI_DIM_VARIABLE.name() )) 
-				return ManagerObjectType.SET_MULTI_DIM_VARIABLE;
-		}
-		
-		if ( sParseString.startsWith( 
-				ManagerObjectType.VIEW.name() )) {
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.VIEW.name() )) 
-				return ManagerObjectType.VIEW;	
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.VIEW_JOGL_CANVAS_MULTIPLE.name() )) 
-				return ManagerObjectType.VIEW_JOGL_CANVAS_MULTIPLE;	
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.VIEW_JOGL_CANVAS_SINGLE.name() )) 
-				return ManagerObjectType.VIEW_JOGL_CANVAS_SINGLE;	
-			
-			if ( sParseString.equalsIgnoreCase(  ManagerObjectType.VIEW_NEW_FRAME.name() )) 
-				return ManagerObjectType.VIEW_NEW_FRAME;	
-		}
-		
-		if ( sParseString.equalsIgnoreCase(  ManagerObjectType.STORAGE.name() )) 
-			return ManagerObjectType.STORAGE;
-		
-		if ( sParseString.equalsIgnoreCase( 
-				ManagerObjectType.STORAGE_FLAT.name() )) 
-			return ManagerObjectType.STORAGE_FLAT;
-		
-		assert false: "unkown (ManagerObjectType) " + sParseString;
-		
-		return null;
 	}
 	
 }

@@ -76,34 +76,6 @@ implements ICollectionType {
 		return bIsDataType;
 	}
 	
-	/**
-	 * Convertion of a String to a VirtualArrayType including abstract types.
-	 * All known types are converted to a VirtualArrayType.
-	 * 
-	 * @param fromString input String
-	 * @return VirtualArrayType parsed form String
-	 */
-	public final static VirtualArrayType getTypeAll( final String fromString ) {
-		
-		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_SINGLE_BLOCK" ) ) 
-			return VIRTUAL_ARRAY_SINGLE_BLOCK;
-		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_MULTI_BLOCK" ) ) 
-			return VIRTUAL_ARRAY_MULTI_BLOCK;
-		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_MULTI_BLOCK_RLE" ) ) 
-			return VIRTUAL_ARRAY_MULTI_BLOCK_RLE;
-		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_RANDOM_BLOCK" ) ) 
-			return VIRTUAL_ARRAY_RANDOM_BLOCK;
-		
-		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_ABSTRACT" ) ) 
-			return VIRTUAL_ARRAY_ABSTRACT;
-		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_FABRIK" ) ) 
-			return VIRTUAL_ARRAY_FABRIK;
-		if ( fromString.equalsIgnoreCase( "VIRTUAL_ARRAY_NEW_TYPE" ) ) 
-			return VIRTUAL_ARRAY_NEW_TYPE;
-		
-		return VIRTUAL_ARRAY_ABSTRACT;
-	}
-	
 	
 	/**
 	 * Convertion of a String to a VirtualArrayType excluding abstract type.

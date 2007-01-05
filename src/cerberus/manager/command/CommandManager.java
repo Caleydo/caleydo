@@ -196,7 +196,7 @@ public class CommandManager
 	
 	public ICommand createCommand( final String useSelectionType ) {
 		
-		return refCommandFactory.createCommand( CommandType.getType( useSelectionType ), null );
+		return refCommandFactory.createCommand( CommandType.valueOf( useSelectionType ), null );
 	}
 	
 	

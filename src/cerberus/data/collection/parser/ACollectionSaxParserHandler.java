@@ -303,7 +303,7 @@ implements ISaxParserHandler
 	public final void setXML_DataCollection_Type( String setType ) {
 		sTag_XML_DataCollection_attr_type_value = setType;
 		
-		ManagerObjectType buffer = ManagerObjectType.getType( setType );
+		ManagerObjectType buffer = ManagerObjectType.valueOf( setType );
 		
 		if ( buffer == null ) {
 			throw new RuntimeException("setXML_DataCollection_Type() failed due to unkown type " +

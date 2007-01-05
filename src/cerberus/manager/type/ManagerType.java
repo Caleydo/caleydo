@@ -54,7 +54,7 @@ public enum ManagerType {
 		PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA),
 		
 							
-		NONE("no type set");
+		NONE("no type set"),
 		
 		/**
 		 * @deprecated replaced by "NONE"
@@ -64,7 +64,7 @@ public enum ManagerType {
 		/**
 		 * @deprecated repalced by "VIEW"
 		 */
-		GUI_COMPONENT("use 'VIEW' instead!"),
+		GUI_COMPONENT("use 'VIEW' instead!");
 
 
 		

@@ -14,11 +14,11 @@ public interface IGeneralManager {
 	 * 
 	 * exampels: [12][03][9]
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffset
+	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_Increment
 	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
-	public final int iUniqueId_WorkspaceOffset = 10;
+	public static final int iUniqueId_WorkspaceOffset = 10;
 	
 	/**
 	 * Used to create a unique networkwide identification numbers.
@@ -33,64 +33,99 @@ public interface IGeneralManager {
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
-	public final int iUniqueId_TypeOffset = 100;
+	public static final int iUniqueId_TypeOffsetMultiplyer = 10;
 	
 	/**
 	 * Increment from one Id to the next unique id.
 	 * 
-	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffset
+	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffsetMultiplyer
 	 * @see cerberus.manager.GeneralManager#iUniqueId_Workspace
 	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
-	public final int iUniqueId_Increment = 1000;
-	
-	public final int iUniqueId_Menu_Offset = 5600;
+	public static final int iUniqueId_Increment = 1000;
 		
-	public final int iUniqueId_Menu_Inc = 10000;
-	
-	public final int iUniqueId_Workspace = iUniqueId_Increment + 900;
-	
-	public final int iUniqueId_View = iUniqueId_Increment + 800;
-	
-	public final int iUniqueId_TypeOffset_Collection = 50;
-	
-	public final int iUniqueId_TypeOffset_Logger = 10;
-	
-	public final int iUniqueId_TypeOffset_Set = 51;
-	
-	public final int iUniqueId_TypeOffset_Selection = 52;
-	
-	public final int iUniqueId_TypeOffset_Storage = 53;
-	
-	public final int iUniqueId_TypeOffset_Command = 99;
-	
-	public final int iUniqueId_TypeOffset_Command_Queue = 98;
-	
-	public final int iUniqueId_TypeOffset_Pathways_Pathway = 60;
-	
-	public final int iUniqueId_TypeOffset_Pathways_Vertex = 61;
-	
-	public final int iUniqueId_TypeOffset_Pathways_Edge = 62;		
-	
-	public final int iUniqueId_TypeOffset_Memento = 95;
+	public static final int iUniqueId_Menu_Inc = 10000;
 
-	public final int iUniqueId_TypeOffset_GUI_AWT = 31;
 	
-	public final int iUniqueId_TypeOffset_GUI_SWT = 32;
+	/*
+	 * List of types for all managed objects
+	 * which are addressable via an id.
+	 */
+	public static final int iUniqueId_TypeOffset_Logger = 10;
 	
-	public final int iUniqueId_TypeOffset_GUI_SWT_Window = 33;
+	public static final int iUniqueId_TypeOffset_GUI_AWT = 31;
 	
-	public final int iUniqeuId_TypeOffset_GUI_SWT_Container = 34;
+	public static final int iUniqueId_TypeOffset_GUI_SWT = 32;
 	
-	public final int iUniqueId_TypeOffset_View = 40;
+	public static final int iUniqueId_TypeOffset_GUI_SWT_Window = 33;
+	
+	public static final int iUniqeuId_TypeOffset_GUI_SWT_Container = 34;
+	
+	public static final int iUniqueId_TypeOffset_View = 40;
+	
+	public static final int iUniqueId_TypeOffset_Workspace = 41;
+	
+	public static final int iUniqueId_TypeOffset_MenuItem = 42;
+
+	/** 
+	 * @deprecated use Set, Virtual Array or Storage 
+	 */
+	public static final int iUniqueId_TypeOffset_Collection = 50;
+
+	public static final int iUniqueId_TypeOffset_Set = 51;
+	
+	public static final int iUniqueId_TypeOffset_VirtualArray = 52;
+	
+	public static final int iUniqueId_TypeOffset_Storage = 53;
+	
+	public static final int iUniqueId_TypeOffset_InteractiveSelection = 54;
+	
+	public static final int iUniqueId_TypeOffset_Pathways_Pathway = 60;
+	
+	public static final int iUniqueId_TypeOffset_Pathways_Vertex = 61;
+	
+	public static final int iUniqueId_TypeOffset_Pathways_Edge = 62;	
+		
+	public static final int iUniqueId_TypeOffset_GenomeId = 70;
+	
+	public static final int iUniqueId_TypeOffset_GenomeId_ACCESSION = 71;
+	
+	public static final int iUniqueId_TypeOffset_GenomeId_ENZYME = 72;
+	
+	public static final int iUniqueId_TypeOffset_GenomeId_METHABOLIT = 73;
+	
+	public static final int iUniqueId_TypeOffset_GenomeId_NCBI_GENE = 74;
+	
+	public static final int iUniqueId_TypeOffset_GenomeId_PATHWAY = 75;
+	
+	public static final int iUniqueId_TypeOffset_Memento = 95;
+	
+	public static final int iUniqueId_TypeOffset_Command_Queue = 98;
+	
+	public static final int iUniqueId_TypeOffset_Command = 99;
+	
 	
 	/**
 	 * Deprecated ID ranges
 	 */
 	
-	public final int iUniqueId_TypeOffset_GuiComponent = 30;
+	public static final int iUniqueId_TypeOffset_GuiComponent = 30;
 	
-	public final int iUniqueId_TypeOffset_GUI_AWT_Menu = 39;
+	public static final int iUniqueId_TypeOffset_GUI_AWT_Menu = 39;
+	
+	
+	/*
+	 * Derived static attributes:
+	 */
+	public static final int iUniqueId_View = iUniqueId_Increment + 
+		iUniqueId_TypeOffset_View * iUniqueId_TypeOffsetMultiplyer;
+	
+	public static final int iUniqueId_Workspace = iUniqueId_Increment + 
+		iUniqueId_TypeOffset_Workspace * iUniqueId_TypeOffsetMultiplyer;
+	
+	public static final int iUniqueId_MenuItem = iUniqueId_Increment + 
+		iUniqueId_TypeOffset_MenuItem * iUniqueId_TypeOffsetMultiplyer;;
+
 	
 	/**
 	 * Tests, if a cairtain iItemId is handled by the manager.
@@ -166,7 +201,7 @@ public interface IGeneralManager {
 	 * @return new unique Id
 	 * @param setNewBaseType type of object the id shall be created for
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffset
+	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	public int createNewId( final ManagerObjectType setNewBaseType );

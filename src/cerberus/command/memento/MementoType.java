@@ -59,7 +59,7 @@ public enum MementoType {
 	 * @param tooltip describing, that kind of memento this is.
 	 */
 	private MementoType( String tooltip ) {
-		
+		this.sTooltip = tooltip;
 	}
 	
 	/**

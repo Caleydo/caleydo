@@ -89,8 +89,8 @@ implements IVirtualArrayManager
 			case VIRTUAL_ARRAY_MULTI_BLOCK:
 				return new VirtualArrayMultiBlock( createNewId(ManagerObjectType.VIRTUAL_ARRAY), this, null );	
 				
-			case VIRTUAL_ARRAY_LOAD_MICROARRAY:
-				System.err.println("ISelectionManager.createSelection() VIRTUAL_ARRAY_LOAD_MICROARRAY is deprecated!");
+//			case VIRTUAL_ARRAY_LOAD_MICROARRAY:
+//				System.err.println("ISelectionManager.createSelection() VIRTUAL_ARRAY_LOAD_MICROARRAY is deprecated!");
 				//return new MicroArrayLoader1Storage( getGeneralManager() );
 				
 //			case VIRTUAL_ARRAY_MULTI_BLOCK_RLE:

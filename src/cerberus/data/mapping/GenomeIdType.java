@@ -14,7 +14,7 @@ public enum GenomeIdType
 	ACCESSION    ("acc","accession"),
 	ENZYME       ("ec","EC_number"),
 	ENZYME_CODE  ("ec","EC_number as String"),
-	METHOBOLIT   ("ko","methobliot"),
+	METABOLIT   ("ko","methobliot"),
 	MICROARRAY   ("IMAGp","Microarray LUT"),
 	NCBI_GENEID  ("ncbi-geneid","ncbi-geneid"),
 	NCBI_GI      ("ncbi-gi","ncbi-gi"),

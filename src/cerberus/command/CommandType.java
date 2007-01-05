@@ -154,19 +154,4 @@ public enum CommandType {
 		return enumGroup;
 	}
 	
-	/**
-	 * Converts a String to a CommandType
-	 * 
-	 * @param fromString String to parse type from
-	 * @return CommandType defined by the String or ERROR_UNKOWN_COMMAND if the String could not be machted
-	 */
-	public static CommandType getType( final String fromString ) {
-		
-		if ( fromString.equalsIgnoreCase( CommandType.WINDOW_CLOSE.name() )) {
-			return CommandType.WINDOW_CLOSE;
-		}
-		
-		return CommandType.ERROR_UNKOWN_COMMAND;
-	}
-	
 }
