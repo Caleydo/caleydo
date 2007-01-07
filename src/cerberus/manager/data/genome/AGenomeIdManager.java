@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cerberus.base.map.MultiHashArrayMap;
+import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
@@ -30,11 +31,13 @@ implements IGenomeIdManager {
 	
 	protected MultiHashArrayMap multiMapNCBI_GENEID_2_KEGGID;
 	
-	protected MultiHashArrayMap multiMapKEGG_GENEID_2_KEGGID_reverse;
+	protected MultiHashArrayMap multiMapNCBI_GENEID_2_KEGGID_reverse;
 	
 	protected MultiHashArrayMap multiMapKEGG_2_ENZYMEID;
 	
 	protected MultiHashArrayMap multiMapKEGG_2_ENZYMEID_reverse;
+	
+	protected MultiHashArrayStringMap multiMapMICROARRAY_2_ACCESSION;
 	
 	protected HashMap <String,Integer> hashENZYME_CODE_2_ENZYMEID;
 	
@@ -43,6 +46,10 @@ implements IGenomeIdManager {
 	protected HashMap <String,Integer> hashPATHWAY_2_NCBI_GENEID;
 	
 	protected HashMap <String,Integer> hashMICROARRAY_2_NCBI_GENEID;
+	
+	protected HashMap <Integer,Integer> hashNCBI_GENEID_2_KEGGID;
+	
+	protected HashMap <String,String> hashMICROARRAY_2_ACCESSION;
 	
 	/**
 	 * 
@@ -68,9 +75,11 @@ implements IGenomeIdManager {
 			return;
 		}
 		
+		multiMapMICROARRAY_2_ACCESSION = new MultiHashArrayStringMap();
+		
 		multiMapNCBI_GENEID_2_KEGGID = new MultiHashArrayMap();
 		
-		multiMapKEGG_GENEID_2_KEGGID_reverse = new MultiHashArrayMap();
+		multiMapNCBI_GENEID_2_KEGGID_reverse = new MultiHashArrayMap();
 		
 		multiMapKEGG_2_ENZYMEID = new MultiHashArrayMap();
 		
@@ -84,6 +93,10 @@ implements IGenomeIdManager {
 		hashPATHWAY_2_NCBI_GENEID = new HashMap <String,Integer> ();
 		
 		hashMICROARRAY_2_NCBI_GENEID = new HashMap <String,Integer> ();
+		
+		hashNCBI_GENEID_2_KEGGID = new HashMap <Integer,Integer> ();
+		
+		hashMICROARRAY_2_ACCESSION = new HashMap <String,String> ();
 	}
 	
 	public Map getMapByGenomeType( final GenomeMappingType type ) {
@@ -101,6 +114,15 @@ implements IGenomeIdManager {
 			
 		case ENZYME_CODE_2_ENZYME_R:
 			return hashENZYME_CODE_2_ENZYMEID_reverse;
+			
+		case NCBI_GENEID_2_KEGG:
+			return hashNCBI_GENEID_2_KEGGID;
+			
+		case MICROARRAY_2_ACCESSION:
+			return	hashMICROARRAY_2_ACCESSION;
+			
+		case MICROARRAY_2_ACCESSION_STRING:
+			return multiMapMICROARRAY_2_ACCESSION;
 			
 		default:
 			assert false : "unknown type!";

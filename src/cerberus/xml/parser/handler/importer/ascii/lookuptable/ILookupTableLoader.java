@@ -36,6 +36,8 @@ public interface ILookupTableLoader {
 	
 	public void setHashMap_IntegerInteger( HashMap <Integer,Integer> setHashMap );
 	
+	public void setHashMap_StringString( HashMap  <String,String> setHashMap );
+	
 	public void setHashMap( final HashMap setHashMap,
 			final GenomeMappingType type);
 }

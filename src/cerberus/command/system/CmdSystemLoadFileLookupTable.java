@@ -151,7 +151,8 @@ implements ICommand {
 		refGeneralManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "] LUT-tpye:[" +
-				sLookupTableType + "]  targetSet(s)=[" +
+				sLookupTableType + "]  cast=[" + 
+				sLookupTableDataType + "] targetSet(s)=[" +
 				iTargetSetId + "])",
 				LoggerType.STATUS );
 		

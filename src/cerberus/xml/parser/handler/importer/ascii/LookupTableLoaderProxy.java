@@ -24,6 +24,7 @@ import cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntMultiMapLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringIntLoader;
+import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringStringLoader;
 
 
 
@@ -50,6 +51,8 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 		
 		refLoggerManager = setGeneralManager.getSingelton().getLoggerManager();
 		
+		bRequiredSizeOfReadableLines = true;
+		
 		switch ( type ) {
 		
 		case INT2INT:
@@ -68,6 +71,14 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 					this  );
 			break;
 			
+		case MULTI_STRING2STRING:
+			refLookupTableLoader = new LookupTableStringStringMultiMapLoader(
+					setGeneralManager,
+					setFileName,
+					genometype,
+					this  );
+			break;
+			
 		case STRING2INT:
 			refLookupTableLoader = new LookupTableStringIntLoader(
 					setGeneralManager,
@@ -76,8 +87,16 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 					this  );
 			break;
 			
+		case STRING2STRING:
+			refLookupTableLoader = new LookupTableStringStringLoader(
+					setGeneralManager,
+					setFileName,
+					genometype,
+					this  );
+			break;
+			
 		default:
-			assert false : "unsupported type!";
+			assert false : "unsupported type! " + type;
 		}
 		
 		refLookupTableLoader.initLUT();
@@ -129,8 +148,7 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 		 */
 		progressBarResetTitle();		
 		progressBarIncrement(5);
-		
-		
+				
 		return bParsingResult;
 	}
 

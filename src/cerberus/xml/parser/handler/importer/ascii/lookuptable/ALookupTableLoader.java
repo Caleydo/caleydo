@@ -58,12 +58,10 @@ implements ILookupTableLoader {
 //		super.bRequiredSizeOfReadableLines = true;		
 		
 	
-		genomeType = genometype;
+		this.genomeType = genometype;
 		
 		refGenomeIdManager = 
 			refGeneralManager.getSingelton().getGenomeIdManager();
-		
-		
 
 		HashMap bufferMap = (HashMap) refGenomeIdManager.getMapByGenomeType( genomeType );
 		
@@ -88,18 +86,22 @@ implements ILookupTableLoader {
 		switch ( type.getDataMapppingType() ) {
 		case INT2INT:
 			setHashMap_IntegerInteger( (HashMap <Integer,Integer>) setHashMap );
-			break;
+			return;
 			
 		case STRING2INT:
 			setHashMap_StringInteger( setHashMap );
-			break;
+			return;
 			
 		case INT2STRING:
 			setHashMap_IntegerString( setHashMap );
-			break;
+			return;
+			
+		case STRING2STRING:
+			setHashMap_StringString( setHashMap );
+			return;
 			
 		default:
-			assert false : "not supported type!";
+			assert false : "not supported type! " + type.getDataMapppingType() + "  from type= " + type;
 		}
 	}
 	
@@ -116,6 +118,10 @@ implements ILookupTableLoader {
 	}
 	
 	public void setHashMap_IntegerInteger( HashMap  <Integer,Integer> setHashMap ) {
+		assert false : "This methode must be overloaded by sub-class";
+	}
+	
+	public void setHashMap_StringString( HashMap  <String,String> setHashMap ) {
 		assert false : "This methode must be overloaded by sub-class";
 	}
 	

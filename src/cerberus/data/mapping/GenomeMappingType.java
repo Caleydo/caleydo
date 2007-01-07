@@ -18,8 +18,14 @@ public enum GenomeMappingType
 	KEGG_2_ENZYMEID (GenomeMappingDataType.MULTI_INT2INT),
 	KEGG_2_ENZYMEID_R (GenomeMappingDataType.MULTI_INT2INT),
 	
+	NCBI_GENEID_2_KEGG  (GenomeMappingDataType.INT2INT),
+	
 	PATHWAY_2_NCBI_GENEID  (GenomeMappingDataType.INT2INT),
 	MICROARRAY_2_NCBI_GENEID (GenomeMappingDataType.STRING2INT),
+	MICROARRAY_2_ACCESSION (GenomeMappingDataType.STRING2STRING),
+	
+	MICROARRAY_2_ACCESSION_STRING( GenomeMappingDataType.MULTI_STRING2STRING),
+	
 	ENZYME_CODE_2_ENZYME  (GenomeMappingDataType.STRING2INT),
 	
 	ENZYME_CODE_2_ENZYME_R (GenomeMappingDataType.INT2STRING),
