@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
@@ -30,7 +30,7 @@ import cerberus.data.collection.IVirtualArray;
  *
  */
 public class VirtualArrayManager 
-extends ICollectionManager
+extends ACollectionManager
 implements IVirtualArrayManager
 {	
 	/**

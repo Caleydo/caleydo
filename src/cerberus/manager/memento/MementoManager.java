@@ -17,7 +17,7 @@ import java.util.Hashtable;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMementoManager;
 import cerberus.manager.base.AAbstractManager;
-import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.singelton.SingeltonManager;
@@ -69,7 +69,7 @@ public class MementoManager
 		refGeneralManager = setGeneralManager;
 		
 		iCurrentUniqueMementoId = 
-			ICollectionManager.calculateId( 
+			ACollectionManager.calculateId( 
 					IGeneralManager.iUniqueId_TypeOffset_Memento, 
 					refGeneralManager );
 		

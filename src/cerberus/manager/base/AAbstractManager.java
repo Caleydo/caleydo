@@ -99,6 +99,18 @@ public abstract class AAbstractManager implements IAbstractManager  {
 		
 		return iUniqueId_current;
 	}
+	
+	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId ) {
+
+		if ( iCurrentId < iUniqueId_current )
+		{
+			return false;
+		}
+		
+		iUniqueId_current = iCurrentId;
+		
+		return true;
+	}
 
 	public final IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
 		assert false : "Do not call this methode. use singelton only.";

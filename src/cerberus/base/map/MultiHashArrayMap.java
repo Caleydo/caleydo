@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public class MultiHashArrayMap 
 extends HashMap <Integer,ArrayList<Integer>> 
-implements MultiIntegerMap  {
+implements GenericMultiMap <Integer>  {
 
 	static final long serialVersionUID = 80806677;
 	

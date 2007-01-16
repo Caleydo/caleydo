@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import cerberus.base.map.MultiHashArrayMap;
+import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.data.collection.parser.ParserTokenHandler;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.mapping.GenomeMappingDataType;
@@ -25,6 +26,8 @@ import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntL
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntMultiMapLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringIntLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringStringLoader;
+import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringStringMultiMapLoader;
+
 
 
 

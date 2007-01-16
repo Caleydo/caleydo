@@ -650,7 +650,7 @@ implements IUniqueManagedObject {
 	/**
 	 * Get the manager that created the item.
 	 * 
-	 * @return reference to ICollectionManager
+	 * @return reference to ACollectionManager
 	 */
 	public IGeneralManager getManager() {
 		return manager;

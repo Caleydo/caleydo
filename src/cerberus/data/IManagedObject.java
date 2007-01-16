@@ -22,7 +22,7 @@ public interface IManagedObject {
 	/**
 	 * Get the manager that created the item.
 	 * 
-	 * @return reference to ICollectionManager
+	 * @return reference to ACollectionManager
 	 */
 	public IGeneralManager getManager();	
 

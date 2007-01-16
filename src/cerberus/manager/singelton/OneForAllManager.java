@@ -355,8 +355,7 @@ implements IGeneralManagerSingelton
 
 		assert type != null : "registerItem called with type == null!";
 		
-		IGeneralManager buffer = this.getManagerByBaseType( type );
-		
+		IGeneralManager buffer = this.getManagerByBaseType( type );		
 		assert buffer != null : "createNewId type does not address manager!";
 		
 		return buffer.createNewId(type);

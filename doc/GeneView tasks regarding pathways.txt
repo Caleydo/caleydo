@@ -45,4 +45,16 @@ GenView TASKS regarding pathway part
   - Extending CommandManager with seperate UNDO stacks for data and view
   - Multiple work station setup
   - Multi-monitor setup - including new input devices
+  
+- several concepts: (mk 12-01-2007)
+  - edit Graph
+  - write out XML fiel with alterned or created Graph
+  - Layouting Graph (internal vs external)
+  
+  - create new: Set, Storage, Virtual array
+  - Several Sldiers in one SWT widget
+  - serach for other graphs, that are similar to our pathways
+  - new widget: shwo table with selected nodes of graph
+  - new widget: list of enzymes, list of compounds/metabolits
+  
 

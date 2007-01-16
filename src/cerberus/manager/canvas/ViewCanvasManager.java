@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewCanvasManager;
-import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.data.collection.view.IViewCanvas;
@@ -38,7 +38,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class ViewCanvasManager 
-extends ICollectionManager
+extends ACollectionManager
 implements IViewCanvasManager,
 		IGeneralManager {
 

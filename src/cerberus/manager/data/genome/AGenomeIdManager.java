@@ -276,7 +276,7 @@ implements IGenomeIdManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
 	 */
-	protected int createNewId(GenomeIdType type) {
+	protected int createNewId_ByType(GenomeIdType type) {
 
 		return 0;
 	}

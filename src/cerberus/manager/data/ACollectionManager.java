@@ -23,7 +23,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 /**
  * Base interface for all manger objects.
  * 
- * Note: each ICollectionManager like SelectionManger, ISetManager and IStorageManager must register 
+ * Note: each ACollectionManager like SelectionManger, ISetManager and IStorageManager must register 
  * itself to the singelton prometheus.app.SingeltonManager
  * 
  * @author Michael Kalkusch
@@ -33,7 +33,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @see cerberus.manager.data.IStorageManager
  * 
  */
-public abstract class ICollectionManager 
+public abstract class ACollectionManager 
  extends AAbstractManager
  implements IGeneralManager {
 
@@ -44,7 +44,7 @@ public abstract class ICollectionManager
 	private Hashtable<Integer,Integer> hashId2IndexLookup;
 	
 	
-	protected ICollectionManager( final IGeneralManager setSingeltonManager,
+	protected ACollectionManager( final IGeneralManager setSingeltonManager,
 			final int iUniqueId_type_offset,
 			final ManagerType setManagerType ) {
 		
@@ -83,24 +83,6 @@ public abstract class ICollectionManager
 	 * @see prometheus.data.manager.GeneralManager#size()
 	 */
 	public abstract int size();
-	
-	
-//	/**
-//	 * Create a new unique collectionId.
-//	 * 
-//	 * @return new unique collectionId
-//	 */
-//	public final int createNewId( final ManagerObjectType setNewBaseType ) {
-//		
-//		if (( setNewBaseType.getGroupType() == ManagerType.VIRTUAL_ARRAY )
-//			||( setNewBaseType.getGroupType() == ManagerType.SET )
-//			||( setNewBaseType.getGroupType() == ManagerType.STORAGE )) {
-//			
-//			iCurrentCollectionId += iUniqueId_Increment;		
-//			return iCurrentCollectionId;
-//		}
-//		throw new CerberusRuntimeException("error create a new Id from type " + setNewBaseType.name() );
-//	}
 	
 	
 	protected boolean unregisterItem_byUniqueId_insideCollection( final int iItemId ) {

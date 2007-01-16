@@ -14,7 +14,7 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
@@ -35,7 +35,7 @@ import cerberus.data.collection.set.SetMultiDim;
  *
  */
 public class SetManager 
-extends ICollectionManager
+extends ACollectionManager
 implements ISetManager {
 
 	/**

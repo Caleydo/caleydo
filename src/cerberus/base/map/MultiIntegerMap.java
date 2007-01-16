@@ -3,9 +3,10 @@
  */
 package cerberus.base.map;
 
-import java.util.ArrayList;
-import java.util.Map;
+//import java.util.ArrayList;
+//import java.util.Map;
 
+import cerberus.base.map.GenericMultiMap;
 
 /** 
  * This is simply a Map with slightly different semantics.
@@ -18,7 +19,8 @@ import java.util.Map;
  * @author Michael Kalkusch
  */
 public interface MultiIntegerMap 
-extends Map <Integer,ArrayList<Integer>> {
+extends GenericMultiMap <Integer> {
+//extends Map <Integer,ArrayList<Integer>> {
     
     public Object remove( Object key, Object item );
    

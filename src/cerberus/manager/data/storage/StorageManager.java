@@ -15,7 +15,7 @@ import java.util.LinkedList;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.ICollectionManager;
+import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
@@ -34,7 +34,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class StorageManager 
-extends ICollectionManager
+extends ACollectionManager
 implements IStorageManager {
 	
 	private IStorage testStorage;
