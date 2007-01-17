@@ -252,9 +252,9 @@ public class SwingJoglJFrameSaxHandler extends ACerberusDefaultSaxHandler  {
 			}
 			else //end: if ( ! bApplicationActive ) {
 			{
-				String sName;
-				String sTitle;
-				String sTypeName;
+//				String sName;
+//				String sTitle;
+//				String sTypeName;
 				
 				if (eName.equals(sFrameStateTag)) {
 					/* <sFrameStateTag> */

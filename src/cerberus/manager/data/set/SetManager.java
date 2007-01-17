@@ -148,7 +148,7 @@ implements ISetManager {
 		ISet removedObj = hashId2Set.remove( iItemId );
 		
 		if ( removedObj == null ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+			refGeneralManager.getSingelton().logMsg( 
 					"deleteSet(" + 
 					iItemId + ") falied, because Set was not registered!" );
 			return false;
@@ -199,7 +199,7 @@ implements ISetManager {
 		ISet buffer = hashId2Set.remove(iItemId);
 		
 		if  ( buffer == null ) {
-			this.refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			this.refGeneralManager.getSingelton().logMsg(
 					"unregisterItem(" + 
 					iItemId + ") failed because Set was not registered!");
 			return false;

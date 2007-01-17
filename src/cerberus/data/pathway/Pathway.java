@@ -2,15 +2,15 @@ package cerberus.data.pathway;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
+//import java.util.Vector;
 
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
-import cerberus.data.view.rep.pathway.IPathwayVertexRep;
-import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
+//import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+//import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 
 /**
  * @author Marc Streit

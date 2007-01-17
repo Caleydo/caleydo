@@ -7,8 +7,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 //import javax.media.opengl.GLCanvas;
 
-import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
+//import gleem.linalg.Vec3f;
+//import gleem.linalg.Vec4f;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.opengl.IGLCanvasUser;

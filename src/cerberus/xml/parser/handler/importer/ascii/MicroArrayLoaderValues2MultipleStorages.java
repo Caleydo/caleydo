@@ -34,11 +34,11 @@ import cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader;
 public class MicroArrayLoaderValues2MultipleStorages 
 extends AMicroArrayLoader {
 
-	private LinkedList<Integer> LLInteger = null;
-	
-	private LinkedList<Float> LLFloat = null;
-	
-	private LinkedList<String> LLString = null;
+//	private LinkedList<Integer> LLInteger = null;
+//	
+//	private LinkedList<Float> LLFloat = null;
+//	
+//	private LinkedList<String> LLString = null;
 	
 	private IStorage[] refArrayDataStorage = null;
 	
@@ -78,15 +78,7 @@ extends AMicroArrayLoader {
 	
 	protected void allocateStorageBufferForTokenPattern( ) {
 		
-		if ( LLInteger == null ) {
-			LLInteger = new LinkedList<Integer>(); 
-		}
-		if ( LLFloat == null ) {
-			LLFloat = new LinkedList<Float>(); 
-		}
-		if ( LLString == null ) {
-			LLString = new LinkedList<String>(); 
-		}
+		allocateStorageBufferForTokenPatternAbstractClass();
 		
 	}
 	
@@ -126,21 +118,8 @@ extends AMicroArrayLoader {
 	 */
 	public final void destroy() {
 		
-		LLInteger.clear();	
-		LLFloat.clear();		
-		LLString.clear();
+		super.destroy();
 		
-		alTokenPattern.clear();
-		alTokenTargetToParserTokenType.clear();		
-		
-		LLInteger = null;		
-		LLFloat = null;		
-		LLString = null;
-		
-		alTokenPattern = null;
-		alTokenTargetToParserTokenType = null;
-		
-		iIndexPerArray = null;
 	}
 
 	

@@ -18,6 +18,7 @@ import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.ISingelton;
@@ -576,7 +577,7 @@ implements IGeneralManagerSingelton
 	
 	public void destroyOnExit() {
 		
-		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()");
+		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
 		
 		this.refViewGLManager.destroyOnExit();
 		
@@ -592,6 +593,18 @@ implements IGeneralManagerSingelton
 			
 		} // while ( iter.hasNext() ) 
 		
-		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()  ...[DONE]");
+		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()  ...[DONE]", LoggerType.STATUS);
+	}
+
+	public boolean setCreateNewId(ManagerType setNewBaseType, int iCurrentId) {
+
+		IGeneralManager refSecialManager = getManagerByType( setNewBaseType );
+		
+		if ( ! refSecialManager.setCreateNewId(setNewBaseType, iCurrentId) ) {
+			refLoggerManager.logMsg("setCreateNewId failed!", LoggerType.MINOR_ERROR );
+			return false;
+		}
+		
+		return true;
 	}
 }

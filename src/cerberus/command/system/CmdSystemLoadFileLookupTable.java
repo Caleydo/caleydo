@@ -208,7 +208,7 @@ implements ICommand {
 		catch ( Exception e ) 
 		{
 			String errorMsg = "Could not load data via MicroArrayLoader1Storage, error during loading! file=["+
-				sFileName + "] LUT-tpye:[" +
+				sFileName + "] LUT-type:[" +
 				sLookupTableType + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			

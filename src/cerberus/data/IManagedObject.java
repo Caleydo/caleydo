@@ -9,7 +9,7 @@
 package cerberus.data;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
+//import cerberus.manager.type.ManagerObjectType;
 
 /**
  * Interface to access prometheus.data.manager.CollectionManager

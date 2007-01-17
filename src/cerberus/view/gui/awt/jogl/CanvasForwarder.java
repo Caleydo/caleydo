@@ -6,7 +6,7 @@ package cerberus.view.gui.awt.jogl;
 
 import javax.media.opengl.GL;
 //import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLJPanel;
+//import javax.media.opengl.GLJPanel;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 

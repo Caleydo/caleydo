@@ -50,16 +50,16 @@ import demos.common.*;
 import demos.hwShadowmapsSimple.HWShadowmapsSimple;
 import demos.infiniteShadowVolumes.InfiniteShadowVolumes;
 import demos.jgears.JGears;
-import demos.gears.Gears;
+//import demos.gears.Gears;
 //import demos.util.*;
 import demos.vertexBufferObject.VertexBufferObject;
 import demos.vertexProgRefract.VertexProgRefract;
 import demos.vertexProgWarp.VertexProgWarp;
 
-import demos.xtrans.*;
+//import demos.xtrans.*;
 
 
-import cerberus.base.type.WindowToolkitType;
+//import cerberus.base.type.WindowToolkitType;
 import cerberus.manager.IGeneralManager;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.swing.CerberusData;
@@ -77,7 +77,7 @@ import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 
 import cerberus.view.swing.texture.TestTexture;
 //import cerberus.view.swing.heatmap.HeatMapWarp;
-import cerberus.view.swing.graph.CerberusGraphViewer;
+//import cerberus.view.swing.graph.CerberusGraphViewer;
 import cerberus.view.swing.heatmap.HeatMapRefract;
 import cerberus.view.swing.parallelcoord.JoglParallelCoordinates2D;
 import cerberus.view.swing.histogram.JoglHistogram;
@@ -87,15 +87,15 @@ import cerberus.view.swing.scatterplot.JoglScatterPlot3D;
 import cerberus.view.swing.status.SelectionSliderBrowser;
 import cerberus.view.swing.status.SetBrowser;
 import cerberus.view.swing.status.StorageBrowser;
-import cerberus.view.swing.loader.FileLoader;
+//import cerberus.view.swing.loader.FileLoader;
 
-import cerberus.data.collection.set.SetMultiDim;
-import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.set.SetMultiDim;
+//import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.Set;
-import cerberus.data.collection.IStorage;
-import cerberus.data.collection.set.SetFlatThreadSimple;
-import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
+//import cerberus.data.collection.IStorage;
+//import cerberus.data.collection.set.SetFlatThreadSimple;
+//import cerberus.data.collection.storage.FlatThreadStorageSimple;
+//import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 
 /**
  Wavelength-dependent refraction demo<br>

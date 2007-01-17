@@ -100,6 +100,12 @@ public abstract class AAbstractManager implements IAbstractManager  {
 		return iUniqueId_current;
 	}
 	
+	/**
+	 * Set a new 
+	 * @param setNewBaseType
+	 * @param iCurrentId
+	 * @return
+	 */
 	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId ) {
 
 		if ( iCurrentId < iUniqueId_current )

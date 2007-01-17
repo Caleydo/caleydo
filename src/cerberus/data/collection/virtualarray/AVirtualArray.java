@@ -10,7 +10,7 @@ package cerberus.data.collection.virtualarray;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.EventPublisher;
-import cerberus.manager.type.ManagerObjectType;
+//import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.IMetaData;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;

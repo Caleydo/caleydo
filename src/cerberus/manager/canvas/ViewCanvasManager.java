@@ -11,8 +11,8 @@ package cerberus.manager.canvas;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.Hashtable;
-import java.awt.Component;
-import java.awt.BorderLayout;
+//import java.awt.Component;
+//import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
@@ -23,7 +23,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.data.collection.view.IViewCanvas;
 import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
-import cerberus.net.dwt.swing.mdi.DDesktopPane;
+//import cerberus.net.dwt.swing.mdi.DDesktopPane;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
 import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;

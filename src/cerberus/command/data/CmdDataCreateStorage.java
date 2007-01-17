@@ -169,10 +169,10 @@ implements ICommand {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						refGeneralManager.getSingelton().logMsg(
 								"Can not convert (String) to (int) at index=[" +
 								iTokenIndex + "]  => skip raw data:");
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						refGeneralManager.getSingelton().logMsg(
 								"  SKIP: " + strToParse );
 						
 						/** 
@@ -213,10 +213,10 @@ implements ICommand {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						refGeneralManager.getSingelton().logMsg(
 								"Can not convert (String) to (int) at index=[" +
 								iTokenIndex + "]  => skip raw data:");
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						refGeneralManager.getSingelton().logMsg(
 								"  SKIP: " + strToParse );
 						
 						/** 
@@ -297,7 +297,7 @@ implements ICommand {
 				iUniqueTargetId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueTargetId );		
 	}

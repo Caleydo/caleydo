@@ -280,7 +280,7 @@ implements IView, IGLCanvasDirector {
 	 */
 	public void destroyDirector() {
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
+		refGeneralManager.getSingelton().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
 				iUniqueId);
 		
 		super.removeGLEventListener( refGLEventListener );
@@ -299,7 +299,7 @@ implements IView, IGLCanvasDirector {
 		
 		refGLEventListener = null;
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
+		refGeneralManager.getSingelton().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
 				iUniqueId + " ...[DONE]");
 	}
 

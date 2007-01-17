@@ -15,17 +15,17 @@ import com.sun.opengl.util.Animator;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
+//import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.base.AJoglContainerViewRep;
 import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
-import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusExceptionType;
+//import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.CerberusExceptionType;
 
-import cerberus.math.statistics.histogram.IHistogramStatistic;
-import cerberus.math.statistics.histogram.HistogramData;
+//import cerberus.math.statistics.histogram.IHistogramStatistic;
+//import cerberus.math.statistics.histogram.HistogramData;
 import cerberus.math.statistics.histogram.HistogramStatisticInteger;
-import cerberus.math.statistics.histogram.StatisticHistogramType;
+//import cerberus.math.statistics.histogram.StatisticHistogramType;
 
 
 /**
@@ -37,7 +37,7 @@ extends AJoglContainerViewRep
 implements ISwtJoglContainerViewRep, IView, GLEventListener
 {
 	
-	private boolean bHistogramIsValid = false;
+//	private boolean bHistogramIsValid = false;
 	
 	protected HistogramStatisticInteger refHistogramCreator;
 

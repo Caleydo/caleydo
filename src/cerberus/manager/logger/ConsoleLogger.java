@@ -28,15 +28,6 @@ implements ILoggerManager {
 		 */
 		bIsLogFlushed = true;
 	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String)
-	 */
-	public void logMsg( final String info) {
-		if ( systemLogLevel.showLog( logLevel ) ) {
-			System.out.println( logLevel + info );
-		}
-	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)

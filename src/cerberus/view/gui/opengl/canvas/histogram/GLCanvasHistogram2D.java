@@ -19,7 +19,7 @@ import com.sun.opengl.util.GLUT;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+//import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.math.statistics.histogram.HistogramData;
@@ -190,12 +190,14 @@ implements IGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.ERROR_ONLY );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.STATUS );
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{
@@ -224,7 +226,8 @@ implements IGLCanvasUser
 
 	public void destroy()
 	{
-		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
+		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
+				LoggerType.STATUS );
 	}
 	
 

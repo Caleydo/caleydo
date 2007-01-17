@@ -8,7 +8,7 @@
  */
 package cerberus.data.collection.set;
 
-import java.util.LinkedList;
+//import java.util.LinkedList;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.Enumeration;
@@ -404,7 +404,7 @@ implements ISet {
 				return false;
 			}
 
-			final IGeneralManager refManger = getManager();
+			//final IGeneralManager refManger = getManager();
 			
 			getManager().unregisterItem( getId(), 
 					ManagerObjectType.SET_PLANAR );

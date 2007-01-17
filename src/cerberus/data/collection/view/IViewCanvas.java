@@ -11,7 +11,7 @@ package cerberus.data.collection.view;
 import java.awt.Graphics;
 
 import cerberus.data.IUniqueManagedObject;
-import cerberus.data.collection.ISet;
+//import cerberus.data.collection.ISet;
 //import prometheus.data.collection.BaseManagerItemInterface;
 import cerberus.data.xml.IMementoItemXML;
 import cerberus.net.dwt.DNetEventComponentInterface;

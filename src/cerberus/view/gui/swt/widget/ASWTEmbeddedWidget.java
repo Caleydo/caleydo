@@ -8,10 +8,8 @@ import java.awt.Frame;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+//import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-
-import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
 
 /**
  * @author Michael Kalkusch

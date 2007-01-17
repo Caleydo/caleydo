@@ -73,7 +73,7 @@ extends IGeneralManager
 		}
 	}
 
-	public void logMsg( final String info );
+	//public void logMsg( final String info );
 	
 	public void logMsg( final String info, final LoggerType logLevel );
 	

@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
+//import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;

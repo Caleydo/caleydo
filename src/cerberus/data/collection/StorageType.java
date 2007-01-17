@@ -9,8 +9,6 @@
 package cerberus.data.collection;
 
 import cerberus.data.collection.ICollectionType;
-import java.util.LinkedList;
-import java.util.Iterator;
 
 /**
  * Collection of diferent data types used in stograge.

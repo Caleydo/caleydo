@@ -81,12 +81,7 @@ implements ICommand {
 		String sMediatorType = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
 		
-		if (sMediatorType.equals("DATA_MEDIATOR"))
-			mediatorType = MediatorType.DATA_MEDIATOR;
-		else if (sMediatorType.equals("SELECTION_MEDIATOR"))
-			mediatorType = MediatorType.SELECTION_MEDIATOR;
-		else if (sMediatorType.equals("VIEWING_DATA_MEDIATOR")) // for future usage
-			mediatorType = MediatorType.VIEWING_DATA_MEDIATOR;
+		mediatorType = MediatorType.valueOf( sMediatorType );
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {

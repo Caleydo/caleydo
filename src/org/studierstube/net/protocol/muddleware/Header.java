@@ -190,7 +190,7 @@ public class Header extends MessageBorders {
 		
 		System.out.println( this.toString() );
 		
-		int ICutByteArrayLength = buffer.length - this.SIZE_OF_HEADER;
+		int ICutByteArrayLength = buffer.length - SIZE_OF_HEADER;
 		
 		if ( ICutByteArrayLength > 0 ) {
 			byte[] resultByteArray = new byte[ ICutByteArrayLength ];
@@ -199,7 +199,7 @@ public class Header extends MessageBorders {
 			 * remove header from byteArray..
 			 */
 			for ( int i=0; i < ICutByteArrayLength ;i++ ) {			
-				resultByteArray[i] = buffer[i+this.SIZE_OF_HEADER];
+				resultByteArray[i] = buffer[i + SIZE_OF_HEADER];
 			}
 			
 			return resultByteArray;

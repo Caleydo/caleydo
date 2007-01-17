@@ -154,7 +154,7 @@ public enum ManagerObjectType {
 	 */
 //	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
 	
-	GUI_SWING(ManagerType.GUI_SWING),
+	GUI_AWT(ManagerType.GUI_AWT),
 	
 	GUI_SWT(ManagerType.GUI_SWT),
 	
@@ -173,6 +173,7 @@ public enum ManagerObjectType {
 	CMD_QUEUE(ManagerType.COMMAND),
 	
 	CMD_QUEUE_RUN(ManagerType.COMMAND),
+	
 	
 	/*
 	 * MEMENTO
@@ -199,7 +200,9 @@ public enum ManagerObjectType {
 	
 	PATHWAY_ELEMENT(ManagerType.PATHWAY_ELEMENT),
 	
-	PATHWAY_VERTEX(ManagerType.PATHWAY_ELEMENT),
+	PATHWAY_EDGE(ManagerType.PATHWAY_ELEMENT, 62),
+	
+	PATHWAY_VERTEX(ManagerType.PATHWAY_ELEMENT, 63),
 	
 	/*
 	 * Event Publisher
@@ -210,7 +213,7 @@ public enum ManagerObjectType {
 	/*
 	 * Logger
 	 */
-	LOGGER(ManagerType.LOGGER),
+	LOGGER(ManagerType.LOGGER ),
 	
 	ALL_IN_ONE(ManagerType.SINGELTON);
 	
@@ -224,6 +227,7 @@ public enum ManagerObjectType {
 	 */
 	private final ManagerType eGroupType;
 	
+	private final int iId_TypeOffset;
 	
 	/**
 	 * Constructor.
@@ -232,6 +236,18 @@ public enum ManagerObjectType {
 	 */
 	private ManagerObjectType( final ManagerType setGroupType ) {
 		eGroupType = setGroupType;
+		iId_TypeOffset = setGroupType.getId_OffsetType();
+	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param setGroupType type of manager group
+	 */
+	private ManagerObjectType( final ManagerType setGroupType,
+			final int iSetUniqueId_TypeOffset) {
+		eGroupType = setGroupType;
+		iId_TypeOffset = iSetUniqueId_TypeOffset;
 	}
 	
 	
@@ -242,6 +258,37 @@ public enum ManagerObjectType {
 	 */
 	public final ManagerType getGroupType() {
 		return this.eGroupType;
+	}
+	
+	public int getId_TypeOffset() {
+		return iId_TypeOffset;
+	}
+	
+	/**
+	 * Create a list with all valid Id_TypeOffset values.
+	 * 
+	 * @param delimiter String between Id and String
+	 * @return
+	 */
+	public String toString_Id_TypeOffset( final String delimiter) {
+		
+		StringBuffer strBuffer = new StringBuffer();
+		
+		ManagerObjectType[] array = ManagerObjectType.values();
+				
+		for (int i=0; i < array.length; i++ ) 
+		{
+			int iCurrentId = array[i].getId_TypeOffset();
+			
+			if ( iCurrentId > 0 ) {
+				strBuffer.append( array[i].getId_TypeOffset() );
+				strBuffer.append( delimiter );
+				strBuffer.append( array[i].name() );
+				strBuffer.append( "\n" );
+			}
+		}
+		
+		return strBuffer.toString();
 	}
 	
 }

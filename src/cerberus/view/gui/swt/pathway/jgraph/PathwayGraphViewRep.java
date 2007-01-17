@@ -224,7 +224,7 @@ extends APathwayGraphViewRep {
 						iPathwayId = StringConversionTool.
 							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
 	
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						refGeneralManager.getSingelton().logMsg(
 								"Load pathway with ID " +iPathwayId);
 						
 						// Load pathway
@@ -296,7 +296,7 @@ extends APathwayGraphViewRep {
 		    		
 		    		if (sLink == null || sLink.equals(""))
 		    		{
-		    			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    			refGeneralManager.getSingelton().logMsg(
 		    					this.getClass().getSimpleName() +
 		    					":mousePressed(): No pathway link is available for that clicked point. Click ignored.");
 
@@ -773,7 +773,7 @@ extends APathwayGraphViewRep {
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
 			sPathwayImageFilePath = "data/images/pathways/" +sPathwayImageFilePath +".gif";
 
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"Load background pathway from file: " +sPathwayImageFilePath);
 			
 			// Set background image
@@ -821,7 +821,7 @@ extends APathwayGraphViewRep {
 	
 	public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"Load background pathway image from file: " 
 				+sPathwayImageFilePath);
 		

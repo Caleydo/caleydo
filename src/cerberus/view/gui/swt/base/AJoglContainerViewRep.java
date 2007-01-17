@@ -5,7 +5,7 @@ import javax.media.opengl.GLEventListener;
 
 import com.sun.opengl.util.Animator;
 
-import cerberus.data.AUniqueManagedObject;
+//import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.SWTGUIManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -14,7 +14,7 @@ import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.exception.CerberusExceptionType;
-import demos.gears.Gears;
+//import demos.gears.Gears;
 
 /**
  * To be able to create a JOGL canvas you have to register your

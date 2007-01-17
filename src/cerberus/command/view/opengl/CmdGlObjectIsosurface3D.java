@@ -88,7 +88,9 @@ implements ICommand {
 		}
 		else 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg( "CmdGLObjectHistogram2D no set defined!");
+			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+					"CmdGLObjectHistogram2D no set defined!",
+					LoggerType.STATUS );
 		}
 		canvas.setIsoValue( iHistogramLevel );
 	}

@@ -8,7 +8,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
-import cerberus.util.system.StringConversionTool;
 
 /**
  * @author Michael Kalkusch

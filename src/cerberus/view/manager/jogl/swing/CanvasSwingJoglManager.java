@@ -90,19 +90,19 @@ import demos.vertexProgWarp.VertexProgWarp;
 
 //import cerberus.base.WindowToolkitType;
 
-import cerberus.data.collection.set.SetMultiDim;
-import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.set.SetMultiDim;
+//import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.Set;
-import cerberus.data.collection.IStorage;
-import cerberus.data.collection.set.SetFlatThreadSimple;
-import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
+//import cerberus.data.collection.IStorage;
+//import cerberus.data.collection.set.SetFlatThreadSimple;
+//import cerberus.data.collection.storage.FlatThreadStorageSimple;
+//import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IFrameManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.base.AAbstractManager;
-import cerberus.manager.singelton.OneForAllManager;
+//import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.net.dwt.swing.menu.DMenuBootStraper;
@@ -234,7 +234,7 @@ public class CanvasSwingJoglManager
 		
 		super( setManager,
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
-				ManagerType.GUI_SWING );
+				ManagerType.GUI_AWT );
 
 		//TODO: check why the constructors differ!
 		
@@ -257,7 +257,7 @@ public class CanvasSwingJoglManager
 		
 		super( setManager,				
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
-				ManagerType.GUI_SWING );
+				ManagerType.GUI_AWT );
 		
 		//TODO: check why the constructors differ!
 		

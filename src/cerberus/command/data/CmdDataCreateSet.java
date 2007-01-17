@@ -18,7 +18,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 
-import cerberus.command.ICommand;
+//import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
@@ -253,7 +253,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			newObject.setStorageByDim( vecStorage, 0 );
 
 			if ( vecStorage.size() != vecSelection.size() ) {
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.setAttributes().assingLinearSet() # Selections differs from # Storages! Skip it!",
 						LoggerType.MINOR_ERROR );
 				
@@ -262,7 +262,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 
 			
 		} catch (NumberFormatException nfe) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"error while creation of ISet!");
 		}
 		
@@ -441,7 +441,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueId );		
 	}

@@ -1,6 +1,6 @@
 package cerberus.data.collection.set.iterator;
 
-import java.util.Iterator;
+//import java.util.Iterator;
 
 public interface ISetDataIterator_Generic<E extends Number> {
 

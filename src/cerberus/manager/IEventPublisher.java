@@ -19,7 +19,7 @@ extends IGeneralManager {
 	public enum MediatorType {
 		DATA_MEDIATOR,
 		SELECTION_MEDIATOR,
-		VIEWING_DATA_MEDIATOR //for future usage
+		VIEW_MEDIATOR //for future usage
 	}
 	
 	/**

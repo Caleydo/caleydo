@@ -57,7 +57,7 @@ implements IGLCanvasUser
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasObjectHeatmap.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}

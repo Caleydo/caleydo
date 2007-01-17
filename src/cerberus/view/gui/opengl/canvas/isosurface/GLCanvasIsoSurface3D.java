@@ -5,9 +5,9 @@ package cerberus.view.gui.opengl.canvas.isosurface;
 
 import gleem.linalg.Vec3f;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+//import java.util.Iterator;
+//import java.util.LinkedList;
+//import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -18,15 +18,15 @@ import com.sun.opengl.util.GLUT;
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
-import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.IStorage;
-import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+//import cerberus.data.collection.IStorage;
+//import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.math.statistics.histogram.HistogramData;
-import cerberus.math.statistics.histogram.HistogramStatisticsSet;
-import cerberus.math.statistics.histogram.StatisticHistogramType;
+//import cerberus.math.statistics.histogram.HistogramData;
+//import cerberus.math.statistics.histogram.HistogramStatisticsSet;
+//import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
@@ -47,7 +47,7 @@ implements IGLCanvasUser
 	
 	private boolean bHasIsoSurface = false;
 	
-	private int iSetCacheId = 0;
+	//private int iSetCacheId = 0;
 	 	 
 	/**
 	 * Defien number of histogram slots.
@@ -194,18 +194,21 @@ implements IGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasIsosurface3D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.ERROR_ONLY );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasIsosurface3D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.STATUS );
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasIsosurface3D.setTargetSetId(" +
-					iTargetCollectionSetId + ") skip isovalue (not implemented yet!");
+					iTargetCollectionSetId + ") skip isovalue (not implemented yet!",
+					LoggerType.STATUS );
 			
 			//createIsoSurface( iCurrentHistogramLength );
 		}
@@ -272,7 +275,8 @@ implements IGLCanvasUser
 
 	public void destroy()
 	{
-		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
+		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
+				LoggerType.STATUS );
 	}
 	
 
@@ -343,24 +347,24 @@ implements IGLCanvasUser
 	    	
 	    	
 //	    	Points only!
-//	    	
-//	    	for (int i=0; i < iVertexArraySize; i++ ) 
-//	    	{
-//	    	
-//			    gl.glVertex3f( vertexArray[i].x(), 
-//			    		vertexArray[i].y(),
-//			    		vertexArray[i].z() );
-//			    	
-//			    
-//			    gl.glVertex3f( vertexArray[i].x(), 
-//			    		vertexArray[i].y() + fy,
-//			    		vertexArray[i].z() );
-//			    
-//			    gl.glVertex3f( vertexArray[i].x() + fx, 
-//			    		vertexArray[i].y(),
-//			    		vertexArray[i].z() );
-//			    
-//	    	} // for (int i=0; i < iVertexArraySize; i++ )
+	    	
+	    	for (int i=0; i < iVertexArraySize; i++ ) 
+	    	{
+	    	
+			    gl.glVertex3f( vertexArray[i].x(), 
+			    		vertexArray[i].y(),
+			    		vertexArray[i].z() );
+			    	
+			    
+			    gl.glVertex3f( vertexArray[i].x(), 
+			    		vertexArray[i].y() + fy,
+			    		vertexArray[i].z() );
+			    
+			    gl.glVertex3f( vertexArray[i].x() + fx, 
+			    		vertexArray[i].y(),
+			    		vertexArray[i].z() );
+			    
+	    	} // for (int i=0; i < iVertexArraySize; i++ )
 	    	
 	    	
 	    	for (int i=0; i < iFaceSetArraySize; i = i+3 ) 

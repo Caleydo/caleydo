@@ -38,8 +38,6 @@ public class MementoManager
  extends AAbstractManager
  implements IMementoManager {
 	
-	private int iCurrentUniqueMementoId;	
-	
 	private int iVecMementoStorageSize;
 	
 	protected Vector<IMemento> vecMemento;
@@ -67,11 +65,6 @@ public class MementoManager
 		
 		assert setGeneralManager !=null : "MementoSimpleManager init with null-pointer for SingeltonManager";
 		refGeneralManager = setGeneralManager;
-		
-		iCurrentUniqueMementoId = 
-			ACollectionManager.calculateId( 
-					IGeneralManager.iUniqueId_TypeOffset_Memento, 
-					refGeneralManager );
 		
 		refGeneralManager.getSingelton().setMementoManager( this );
 	}

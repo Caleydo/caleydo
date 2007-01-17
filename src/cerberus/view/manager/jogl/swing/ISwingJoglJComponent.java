@@ -3,12 +3,12 @@ package cerberus.view.manager.jogl.swing;
 
 //import javax.swing.JPanel;
 
-import java.awt.Component;
+//import java.awt.Component;
 
 import java.awt.event.WindowAdapter;
 
 import cerberus.view.FrameBaseType;
-import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
+//import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 
 

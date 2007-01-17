@@ -3,8 +3,8 @@ package cerberus.data.pathway.element;
 import java.util.Vector;
 
 import cerberus.data.pathway.element.APathwayEdge;
-import cerberus.data.pathway.element.APathwayEdge.EdgeType;
-import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
+//import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+//import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 
 public class PathwayReactionEdge 
 extends APathwayEdge {

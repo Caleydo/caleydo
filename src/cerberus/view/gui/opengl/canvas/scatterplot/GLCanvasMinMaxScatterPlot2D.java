@@ -166,12 +166,12 @@ implements IGLCanvasUser
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
 		

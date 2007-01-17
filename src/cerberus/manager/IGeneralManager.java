@@ -215,6 +215,17 @@ public interface IGeneralManager {
 	 */
 	public int createNewId( final ManagerObjectType setNewBaseType );
 
+	/**
+	 * Set the current Id, what is incremented once the next time createNewId() is called.
+	 * 
+	 * Attention: this methode must be called from a synchronized block on the actual manager!
+	 * 
+	 * @param setNewBaseType test if manager may create such an id
+	 * @param iCurrentId set the new current Id
+	 * @return ture if the new current Id was valid, which is the case if it is larger than the current NewId!
+	 */
+	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId );
+	
 	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType);
 		
 	/**

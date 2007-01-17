@@ -10,6 +10,7 @@
 package cerberus.xml.parser.handler.importer.ascii;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 //import java.util.ListIterator;
 //import java.util.LinkedList;
@@ -51,6 +52,13 @@ public abstract class AMicroArrayLoader
 extends AbstractLoader
 implements IMementoXML, IParserObject {
 
+	protected LinkedList<Integer> LLInteger = null;
+	
+	protected LinkedList<Float> LLFloat = null;
+	
+	protected LinkedList<String> LLString = null;
+	
+	
 	//protected IDataStorage refDataStorage;
 	
 	/**
@@ -312,16 +320,64 @@ implements IMementoXML, IParserObject {
 	
 	protected abstract void allocateStorageBufferForTokenPattern( );
 
-	
-	public abstract boolean setMementoXML_usingHandler( 
-			final ISaxParserHandler refSaxHandler );
-	
+
+	protected final void allocateStorageBufferForTokenPatternAbstractClass( ) {
+		
+		if ( LLInteger == null ) 
+		{
+			LLInteger = new LinkedList<Integer>(); 
+		}
+		if ( LLFloat == null ) 
+		{
+			LLFloat = new LinkedList<Float>(); 
+		}
+		if ( LLString == null ) 
+		{
+			LLString = new LinkedList<String>(); 
+		}
+		
+	}
+
 	/**
 	 * Removes all data structures.
 	 * 
 	 * @see cerberus.xml.parser.IParserObject#destroy()
+	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader#destroy()
 	 */
-	public abstract void destroy();
-
-
+	public void destroy() {
+		
+		if ( LLInteger != null ) 
+		{
+			LLInteger.clear();	
+		}
+		if ( LLFloat!= null ) 
+		{
+		LLFloat.clear();
+		}
+		if ( LLString != null ) 
+		{
+			LLString.clear();
+		}
+		
+		if ( alTokenPattern != null ) {
+			alTokenPattern.clear();
+		}
+		if ( alTokenTargetToParserTokenType != null ) {
+			alTokenTargetToParserTokenType.clear();
+		}
+		
+		LLInteger = null;		
+		LLFloat = null;		
+		LLString = null;
+		
+		alTokenPattern = null;
+		alTokenTargetToParserTokenType = null;
+		
+		iIndexPerArray = null;
+	}
+	
+	
+	public abstract boolean setMementoXML_usingHandler( 
+			final ISaxParserHandler refSaxHandler );
+	
 }

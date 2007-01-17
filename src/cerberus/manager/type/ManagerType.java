@@ -8,7 +8,6 @@
  */
 package cerberus.manager.type;
 
-
 /**
  * Group of Managers.
  * 
@@ -19,46 +18,45 @@ package cerberus.manager.type;
  */
 public enum ManagerType {
 		
-		COMMAND("command manager"),
+		COMMAND("command manager", 99),
 		
-		MEMENTO("memento manager"),
+		MEMENTO("memento manager", 95),
 		
-		LOGGER("logger manager"),
+		LOGGER("logger manager", -1),
 				
-		VIEW_GL_CANVAS("view GL canvas manager"),	
+		VIEW_GL_CANVAS("view GL canvas manager", 35),	
 		
-		VIEW("view manager"),
+		VIEW("view manager", 30),
 		
-		GUI_SWT("SWT GUI manager"),
+		GUI_AWT("Sing GUI manager", 31),
 		
-		GUI_SWING("Sing GUI manager"),
+		GUI_SWT("SWT GUI manager",ManagerType.VIEW, 32 ),		
 		
-		GENOME_ID("genome id manager", ManagerType.DATA),
+		GENOME_ID("genome id manager", ManagerType.DATA, 70 ),
 		
-		D_GUI("distributed GUI"),
+		D_GUI("distributed GUI", 29),
 		
-		MENU("view menu manager", ManagerType.VIEW ),
+		MENU("view menu manager", ManagerType.VIEW, 39 ),
 		
-		SHAREDOBJECT("shared objects"),
+		DATA("abstract data manager", ManagerType.DATA, 50),
 		
-		DATA("abstract data manager"),
+		SET("set manager", ManagerType.DATA, 51 ),
 		
-		EVENT_PUBLISHER("event publisher"),
+		VIRTUAL_ARRAY("selection manager", ManagerType.DATA, 53 ),
 		
-		SET("set manager", ManagerType.DATA ),
+		STORAGE("storage manager", ManagerType.DATA, 53 ),
 		
-		VIRTUAL_ARRAY("selection manager", ManagerType.DATA ),
+		SHAREDOBJECT("shared objects", ManagerType.DATA, 59 ),
+				
+		SINGELTON("onyl used for singelton", 1 ),
 		
-		STORAGE("storage manager", ManagerType.DATA ),
+		PATHWAY("pathway manager", 60),
 		
-		SINGELTON("use 'NONE' instead!"),
+		PATHWAY_ELEMENT("pathway element manager", ManagerType.PATHWAY, 61),
 		
-		PATHWAY("pathway manager", ManagerType.DATA),
-		
-		PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA),
-		
+		EVENT_PUBLISHER("event publisher", 80 ),
 							
-		NONE("no type set");
+		NONE("no type set", -1);
 		
 
 //		/**
@@ -75,14 +73,18 @@ public enum ManagerType {
 		
 		private final ManagerType parentType;
 		
+		private final int iIdOffsetType;
+		
 		/**
 		 * Constructor.
 		 * 
 		 * @param setRemark details on toolkit and version of toolkit.
 		 */
-		private ManagerType(String setRemark) {
+		private ManagerType(String setRemark,
+				final int iSetIdOffsetType) {
 			this.sRemark = setRemark;
 			this.parentType = ManagerType.NONE;
+			this.iIdOffsetType = iSetIdOffsetType;
 		}
 		
 		/**
@@ -91,9 +93,11 @@ public enum ManagerType {
 		 * @param setRemark details on toolkit and version of toolkit.
 		 */
 		private ManagerType(String setRemark, 
-				ManagerType parentType) {
+				ManagerType parentType,
+				final int iSetIdOffsetType) {
 			this.sRemark = setRemark;
 			this.parentType = parentType;
+			this.iIdOffsetType = iSetIdOffsetType;
 		}
 		
 		/**
@@ -121,5 +125,17 @@ public enum ManagerType {
 		 */
 		public boolean isParentType() {
 			return (parentType == ManagerType.NONE) ? true : false;	
+		}
+		
+		/**
+		 * Get the postfix code of that Manager
+		 *
+		 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
+		 * @see cerberus.manager.IGeneralManager
+		 *
+		 * @return [0..99]
+		 */
+		public int getId_OffsetType() {
+			return iIdOffsetType;
 		}
 }

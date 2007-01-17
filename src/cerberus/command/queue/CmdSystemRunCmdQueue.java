@@ -8,7 +8,7 @@ import cerberus.command.CommandType;
 import cerberus.command.base.AManagedCmd;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
+//import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**

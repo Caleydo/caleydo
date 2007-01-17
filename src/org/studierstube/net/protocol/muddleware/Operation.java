@@ -35,7 +35,7 @@ import java.util.StringTokenizer;
 import org.studierstube.net.protocol.DataByteInputStream;
 import org.studierstube.net.protocol.GeneralByteReader;
 import org.studierstube.net.protocol.muddleware.Message;
-import org.studierstube.net.protocol.muddleware.MessageBorders;
+//import org.studierstube.net.protocol.muddleware.MessageBorders;
 import org.studierstube.net.protocol.muddleware.OperationEnum;
 
 
@@ -238,9 +238,9 @@ public class Operation {
 		nodeVector = new Vector <String> ();
 	}
 	
-	private void showInt( String text, int data ) {
-		System.out.println(" " + text + ": " + data);
-	}
+//	private void showInt( String text, int data ) {
+//		System.out.println(" " + text + ": " + data);
+//	}
 	
 	/**
 	 * Parse a byte array and create an operation from it, if possible.

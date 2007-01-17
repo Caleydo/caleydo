@@ -13,7 +13,7 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACmdHandleSet;
 import cerberus.command.base.ICmdHandleSet;
-import cerberus.command.window.CmdWindowNewInternalFrame;
+//import cerberus.command.window.CmdWindowNewInternalFrame;
 //import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 import cerberus.util.exception.CerberusRuntimeException;

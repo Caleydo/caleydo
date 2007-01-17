@@ -3,7 +3,7 @@
  */
 package cerberus.xml.parser.handler;
 
-import org.xml.sax.Locator;
+//import org.xml.sax.Locator;
 import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.manager.IGeneralManager;

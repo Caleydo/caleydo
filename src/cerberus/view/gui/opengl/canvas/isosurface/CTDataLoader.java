@@ -236,9 +236,8 @@ public class CTDataLoader {
 		
 		dataArray = new short [ dimensions[0] * dimensions[1] * dimensions[2] ];
 		
-		int iIndex = 0;
-		
-		float a = 0,b = 0,c = 0;
+//		int iIndex = 0;
+//		float a = 0,b = 0,c = 0;
 		
 		for ( int k = 0; k < dataArray.length ; k++ ) 
 		{

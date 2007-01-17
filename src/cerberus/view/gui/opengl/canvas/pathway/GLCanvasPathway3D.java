@@ -681,14 +681,14 @@ implements IGLCanvasUser {
 		
 		if (refCurrentPathway == null) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasPathway2D.setPathwayId(" +
 					iTargetPathwayId + ") failed, because Pathway does not exist!");
 
 			return;
 		}
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasPathway2D.setPathwayId(" +
 				iTargetPathwayId + ") done!");
 	}

@@ -66,21 +66,21 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
   public void mousePressed(MouseEvent e) {
     prevMouseX = e.getX();
     prevMouseY = e.getY();
-    if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       bMouseRightButtonDown = true;
     }
     
-    if ((e.getModifiers() & e.BUTTON2_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0) {
     	bMouseMiddleButtonDown = true;
     	System.err.println(" -- Middle --");
       }
   }
     
   public void mouseReleased(MouseEvent e) {
-    if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       bMouseRightButtonDown = false;
     }
-    if ((e.getModifiers() & e.BUTTON2_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0) {
 	    bMouseMiddleButtonDown = false;
 	    System.err.println(" -- END Middle --");
 	  }
@@ -125,8 +125,8 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
 		    
 		    //System.out.println("dragging -PAN-...");
 		    
-		    refGearsMain.setTranslation( view_x, view_y, 0.0f );
-		    // refGearsMain.setTranslation( view_x, view_y, view_z );
+		    //refGearsMain.setTranslation( view_x, view_y, 0.0f );
+		    refGearsMain.setTranslation( view_x, view_y, view_z );
     	}
     	else
     	{

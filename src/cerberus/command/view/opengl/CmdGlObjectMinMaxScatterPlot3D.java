@@ -53,7 +53,7 @@ implements ICommand
 		
 		fResolution = StringConversionTool.convertStringToFloatArray( 
 				sAttribute3,
-				12 );
+				14 );
 	}
 
 	@Override

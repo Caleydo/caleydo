@@ -16,6 +16,9 @@ import cerberus.manager.event.mediator.LockableMediator;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
+import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeException;
+
 public class EventPublisher 
 extends AAbstractManager
 implements IEventPublisher {
@@ -29,7 +32,12 @@ implements IEventPublisher {
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2SelectionMediators;
 
 	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2SelectionMediators;
+	
+	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2ViewMediators;
 
+	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2ViewMediators;
+	
+	
 	/**
 	 * Constructor.
 	 * 
@@ -40,19 +48,65 @@ implements IEventPublisher {
 		super( refGeneralManager,  
 				IGeneralManager.iUniqueId_TypeOffset_EventPublisher,
 				ManagerType.EVENT_PUBLISHER );
-
+		
+		/* Data */
 		hashSender2DataMediators = 
 			new HashMap<IMediatorSender, ArrayList<IMediator>>();
 		hashReceiver2DataMediators = 
 			new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
+		
+		/* Selection */
 		hashSender2SelectionMediators = 
 			new HashMap<IMediatorSender, ArrayList<IMediator>>();
 		hashReceiver2SelectionMediators = 
 			new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
+		
+		/* View */
+		hashReceiver2ViewMediators =
+			new HashMap<IMediatorReceiver, ArrayList<IMediator>> ();		
+		hashSender2ViewMediators =
+			new HashMap<IMediatorSender, ArrayList<IMediator>> ();
 	}
 
-	public void createMediator(int iMediatorId, ArrayList<Integer> arSenderIDs,
-			ArrayList<Integer> arReceiverIDs, MediatorType mediatorType) {
+	private void insertReceiver( HashMap<IMediatorReceiver, ArrayList<IMediator>> insertIntoHashMap, 
+			IMediatorReceiver receiver,
+			IMediator newMediator ) {
+	
+		if (!insertIntoHashMap.containsKey(receiver))
+		{
+			insertIntoHashMap.put(receiver, new ArrayList<IMediator>());
+		}
+		insertIntoHashMap.get(receiver).add(newMediator);	
+	}
+	
+	private void insertSender( HashMap<IMediatorSender, ArrayList<IMediator>> insertIntoHashMap, 
+			IMediatorSender sender,
+			IMediator newMediator ) {
+	
+		if (!insertIntoHashMap.containsKey(sender))
+		{
+			insertIntoHashMap.put(sender, new ArrayList<IMediator>());
+		}
+		
+		
+		ArrayList <IMediator> bufferArrayList = insertIntoHashMap.get(sender);
+		
+		if ( bufferArrayList.contains( sender ) ) {
+			throw new CerberusRuntimeException("Try to insert an existing object! " + 
+					sender.toString() + " ==> " + newMediator.toString() + 
+					" inside map" + bufferArrayList.toString() );
+		}
+		
+		bufferArrayList.add(newMediator);
+		
+//		//unchecked!
+//		insertIntoHashMap.get(sender).add(newMediator);
+	}
+	
+	public void createMediator(int iMediatorId, 
+			ArrayList<Integer> arSenderIDs,
+			ArrayList<Integer> arReceiverIDs, 
+			MediatorType mediatorType) {
 
 		IMediator newMediator = new LockableMediator(iMediatorId);
 
@@ -67,23 +121,47 @@ implements IEventPublisher {
 
 			newMediator.register(sender);
 			
-			if (mediatorType == MediatorType.DATA_MEDIATOR)
-			{
+			switch ( mediatorType ) {
+			
+			case DATA_MEDIATOR:
+				
+				//assert false : "test this code!";
+				
 				if (!hashSender2DataMediators.containsKey(sender))
 				{
 					hashSender2DataMediators.put(sender, new ArrayList<IMediator>());
 				}
 				hashSender2DataMediators.get(sender).add(newMediator);
-			}
-			else if (mediatorType == MediatorType.SELECTION_MEDIATOR)
-			{
-				if (!hashSender2SelectionMediators.containsKey(sender))
-				{
-					hashSender2SelectionMediators.put(sender, new ArrayList<IMediator>());
-				}
-				hashSender2SelectionMediators.get(sender).add(newMediator);
-			}
-		}
+				
+				insertSender(hashSender2DataMediators,sender,newMediator);
+				break;
+				
+			case SELECTION_MEDIATOR:
+				insertSender(hashSender2SelectionMediators,sender,newMediator);
+				
+				insertSender(hashSender2SelectionMediators,sender,newMediator);
+//				if (!hashSender2SelectionMediators.containsKey(sender))
+//				{
+//					hashSender2SelectionMediators.put(sender, new ArrayList<IMediator>());
+//				}
+//				hashSender2SelectionMediators.get(sender).add(newMediator);
+				break;
+				
+			case VIEW_MEDIATOR:
+				insertSender(hashSender2ViewMediators,sender,newMediator);
+//				if (!hashSender2ViewMediators.containsKey(sender))
+//				{
+//					hashSender2ViewMediators.put(sender, new ArrayList<IMediator>());
+//				}
+//				hashSender2ViewMediators.get(sender).add(newMediator);
+				break;
+				
+			default:
+				throw new CerberusRuntimeException("createMediator() unknown type sender: " + mediatorType.toString() );
+			
+			} //switch ( mediatorType ) {
+			
+		} //while (iterSenderIDs.hasNext())
 
 		// Register receiver
 		while (iterReceiverIDs.hasNext())
@@ -93,23 +171,33 @@ implements IEventPublisher {
 
 			newMediator.register(receiver);
 
-			if (mediatorType == MediatorType.DATA_MEDIATOR)
-			{
+			switch ( mediatorType ) {
+			
+			case DATA_MEDIATOR:
 				if (!hashReceiver2DataMediators.containsKey(receiver))
 				{
 					hashReceiver2DataMediators.put(receiver, new ArrayList<IMediator>());
 				}
 				hashReceiver2DataMediators.get(receiver).add(newMediator);
-			}
-			else if (mediatorType == MediatorType.SELECTION_MEDIATOR)
-			{
-				if (!hashReceiver2SelectionMediators.containsKey(receiver))
-				{
-					hashReceiver2SelectionMediators.put(receiver, new ArrayList<IMediator>());
-				}
-				hashReceiver2SelectionMediators.get(receiver).add(newMediator);				
-			}
-		}
+				
+				//assert false : "test this code!";
+				
+				insertReceiver( hashReceiver2DataMediators,receiver,newMediator);
+				break;
+			
+			case SELECTION_MEDIATOR:
+				insertReceiver( hashReceiver2SelectionMediators,receiver,newMediator);		
+				break;
+				
+			case VIEW_MEDIATOR:
+				insertReceiver( hashReceiver2SelectionMediators,receiver,newMediator);				
+				break;
+				
+				default:
+					throw new CerberusRuntimeException("createMediator() unknown type receiver: " + mediatorType.toString() );
+			} // switch ( mediatorType ) {
+			
+		} // while (iterReceiverIDs.hasNext())
 	}
 
 	public void registerSenderToMediator(int iMediatorId, IMediatorSender sender) {

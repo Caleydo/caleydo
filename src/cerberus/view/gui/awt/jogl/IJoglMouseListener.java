@@ -3,8 +3,8 @@
  */
 package cerberus.view.gui.awt.jogl;
 
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+//import java.awt.event.MouseListener;
+//import java.awt.event.MouseMotionListener;
 
 /**
  * @author Michael Kalkusch

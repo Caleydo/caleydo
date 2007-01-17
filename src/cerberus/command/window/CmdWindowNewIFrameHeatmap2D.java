@@ -8,7 +8,7 @@
  */
 package cerberus.command.window;
 
-import java.awt.Dimension;
+//import java.awt.Dimension;
 
 import cerberus.manager.IGeneralManager;
 
@@ -21,7 +21,7 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACmdHandleSet;
 import cerberus.command.base.ICmdHandleSet;
-import cerberus.data.collection.ISet;
+//import cerberus.data.collection.ISet;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 //import cerberus.net.dwt.swing.DSwingHeatMap2DCanvas;
 import cerberus.util.exception.CerberusRuntimeException;

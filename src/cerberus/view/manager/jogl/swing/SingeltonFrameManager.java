@@ -58,18 +58,18 @@ import demos.vertexBufferObject.VertexBufferObject;
 import demos.vertexProgRefract.VertexProgRefract;
 import demos.vertexProgWarp.VertexProgWarp;
 
-import demos.xtrans.*;
+//import demos.xtrans.*;
 
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 
-import cerberus.base.type.WindowToolkitType;
+//import cerberus.base.type.WindowToolkitType;
 import cerberus.view.manager.swing.CerberusJStatusBar;
 import cerberus.view.swing.texture.TestTexture;
 //import cerberus.view.swing.heatmap.HeatMapWarp;
 import cerberus.view.swing.heatmap.HeatMapRefract;
-import cerberus.view.swing.heatmap.HeatMapDemoRefract;
+//import cerberus.view.swing.heatmap.HeatMapDemoRefract;
 import cerberus.view.swing.histogram.JoglHistogram;
 import cerberus.view.swing.scatterplot.JoglScatterPlot2D;
 import cerberus.view.swing.scatterplot.JoglScatterPlot3D;

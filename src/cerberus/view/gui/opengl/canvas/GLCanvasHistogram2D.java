@@ -10,7 +10,7 @@ import javax.media.opengl.GLAutoDrawable;
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
-import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetMultiDim;
@@ -119,12 +119,12 @@ implements IGLCanvasUser
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!");
 		}
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!");
 	}

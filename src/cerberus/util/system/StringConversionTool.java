@@ -389,10 +389,10 @@ public final class StringConversionTool
 			
 		int [] resultIntArray = new int[tokenize.countTokens()];
 		
-		if ( resultIntArray.length < 1 ) 
-		{
-			assert false : "Can not read int[] array with length 0!"; 
-		}
+//		if ( resultIntArray.length < 1 ) 
+//		{
+//			assert false : "Can not read int[] array with length 0!"; 
+//		}
 		
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
 		{

@@ -254,7 +254,7 @@ extends AToolbar {
 	        	  refPathwayGraphViewRep.setPathwayLevel(1);
 	        	  
 	        	  refPathwayGraphViewRep.loadImageMapFromFile(
-	        			  refPathwayGraphViewRep.KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH);
+	        			  APathwayGraphViewRep.KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH);
 	          }
 	        }
 	      };

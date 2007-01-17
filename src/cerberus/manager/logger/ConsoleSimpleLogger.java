@@ -28,13 +28,6 @@ public class ConsoleSimpleLogger
 		 */
 		bIsLogFlushed = true;
 	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String)
-	 */
-	public void logMsg(String info) {
-		System.out.println( info );
-	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)

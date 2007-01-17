@@ -39,28 +39,39 @@ implements ICommand {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		IViewGLCanvasManager viewManager = ((IViewGLCanvasManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
-		
-		SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_JOGL_MULTI_GLCANVAS,
-							iUniqueTargetId, 
-							iParentContainerId, 
-							sLabel);
+		try
+		{
+			IViewGLCanvasManager viewManager = ((IViewGLCanvasManager) refGeneralManager
+					.getManagerByBaseType(ManagerObjectType.VIEW));
+			
+			SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager
+					.createView(ManagerObjectType.VIEW_SWT_JOGL_MULTI_GLCANVAS,
+								iUniqueTargetId, 
+								iParentContainerId, 
+								sLabel);
 
-		/**
-		 * Register this new SwtJoglGLCanvasViewRep to ViewManager...
-		 */
-		viewManager.registerItem(
-				swtGLCanvasView, 
-				iUniqueTargetId, 
-				ManagerObjectType.VIEW);
-		
-		swtGLCanvasView.readInAttributes(refParameterHandler);
-		
-		swtGLCanvasView.retrieveGUIContainer();
-		swtGLCanvasView.initView();
-		swtGLCanvasView.drawView();	
+			assert swtGLCanvasView != null : "SwtJoglCanvasViewRep could not be created!";
+			
+			/**
+			 * Register this new SwtJoglGLCanvasViewRep to ViewManager...
+			 */
+			viewManager.registerItem(
+					swtGLCanvasView, 
+					iUniqueTargetId, 
+					ManagerObjectType.VIEW);
+			
+			swtGLCanvasView.readInAttributes(refParameterHandler);
+			
+			swtGLCanvasView.retrieveGUIContainer();
+			swtGLCanvasView.initView();
+			swtGLCanvasView.drawView();
+			
+		} 	
+		catch ( CerberusRuntimeException ce)
+		{
+			refGeneralManager.getSingelton().logMsg("Can not open Jogl frame inside SWT container! " + ce.toString() );
+			ce.printStackTrace();
+		}
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {

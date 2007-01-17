@@ -97,6 +97,10 @@ implements ICommand {
 		this.iCallingFrameId = iCallingFrameId;
 	}
 	
+	public int getTargetFrameId( ) {
+		return iCallingFrameId;
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

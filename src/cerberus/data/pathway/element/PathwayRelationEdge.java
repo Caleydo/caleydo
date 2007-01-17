@@ -1,6 +1,6 @@
 package cerberus.data.pathway.element;
 
-import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+//import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 
 public class PathwayRelationEdge 
 extends APathwayEdge {

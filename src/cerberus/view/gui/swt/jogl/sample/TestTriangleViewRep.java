@@ -1,7 +1,7 @@
 package cerberus.view.gui.swt.jogl.sample;
 
-import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLEventListener;
+//import javax.media.opengl.GLCanvas;
+//import javax.media.opengl.GLEventListener;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.swt.base.AJoglViewRep;

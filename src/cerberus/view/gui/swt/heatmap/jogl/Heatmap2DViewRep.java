@@ -5,15 +5,15 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
-import com.sun.opengl.util.Animator;
+//import com.sun.opengl.util.Animator;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
+//import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.awt.jogl.TriangleMain;
 import cerberus.view.gui.swt.base.AJoglViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
-import demos.gears.Gears;
+//import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
+//import demos.gears.Gears;
 
 public class Heatmap2DViewRep 
 extends AJoglViewRep 

@@ -23,19 +23,18 @@ import com.sun.opengl.util.texture.TextureIO;
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
-import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.IStorage;
-import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+//import cerberus.data.collection.IStorage;
+//import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.math.statistics.histogram.HistogramData;
-import cerberus.math.statistics.histogram.HistogramStatisticsSet;
-import cerberus.math.statistics.histogram.StatisticHistogramType;
+//import cerberus.math.statistics.histogram.HistogramData;
+//import cerberus.math.statistics.histogram.HistogramStatisticsSet;
+//import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
-import cerberus.manager.ILoggerManager.LoggerType;
 
 /**
  * @author Michael Kalkusch
@@ -220,12 +219,14 @@ implements IGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.ERROR_ONLY );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.STATUS );
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{

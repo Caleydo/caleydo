@@ -5,11 +5,10 @@ package cerberus.command.base;
 
 import cerberus.command.ICommand;
 import cerberus.command.ICommandManaged;
-import cerberus.command.CommandType;
+//import cerberus.command.CommandType;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author kalkusch

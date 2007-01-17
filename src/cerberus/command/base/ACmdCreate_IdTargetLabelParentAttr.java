@@ -4,7 +4,6 @@
 package cerberus.command.base;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 

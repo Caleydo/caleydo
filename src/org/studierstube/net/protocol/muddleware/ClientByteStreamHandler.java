@@ -30,14 +30,14 @@ package org.studierstube.net.protocol.muddleware;
 
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.net.Socket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import java.util.Iterator;
+//import java.io.InputStream;
+//import java.io.OutputStream;
+//
+//import java.net.Socket;
+//import java.net.InetAddress;
+//import java.net.UnknownHostException;
+//
+//import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JTextArea;
@@ -46,7 +46,7 @@ import org.studierstube.net.AbstractClientByteStreamHandler;
 import org.studierstube.net.protocol.ErrorMessageHandler;
 import org.studierstube.net.protocol.muddleware.Message;
 import org.studierstube.net.protocol.muddleware.Operation;
-import org.studierstube.net.protocol.muddleware.OperationEnum;
+//import org.studierstube.net.protocol.muddleware.OperationEnum;
 
 
 

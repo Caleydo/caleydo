@@ -1,8 +1,8 @@
 package cerberus.view.gui.awt.jogl;
 
 import java.awt.Frame;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+//import java.awt.event.MouseListener;
+//import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -29,16 +29,16 @@ import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.IView;
+//import cerberus.view.gui.IView;
 //import cerberus.view.gui.AViewManagedRep;
-import cerberus.view.gui.swt.base.AJoglContainerViewRep;
-import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
+//import cerberus.view.gui.swt.base.AJoglContainerViewRep;
+//import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
 import cerberus.xml.parser.command.CommandQueueSaxType;
-import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusExceptionType;
+//import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.CerberusExceptionType;
 
-import cerberus.math.statistics.histogram.IHistogramStatistic;
-import cerberus.math.statistics.histogram.HistogramData;
+//import cerberus.math.statistics.histogram.IHistogramStatistic;
+//import cerberus.math.statistics.histogram.HistogramData;
 import cerberus.math.statistics.histogram.HistogramStatisticInteger;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
 
@@ -250,7 +250,7 @@ implements GLEventListener, IJoglMouseListener
 		return ManagerObjectType.VIEW_SWT_HEATMAP2D;
 	}
 	
-	private void renderTriangle( GL gl ) {
+	protected void renderTriangle( GL gl ) {
 		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
 		gl.glColor3f(1.0f, 0.0f, 0.0f); // Set the color to red
 		gl.glVertex3f(0.0f, 1.0f, 0.0f); // Top
@@ -269,6 +269,7 @@ implements GLEventListener, IJoglMouseListener
 		gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
 		gl.glEnd(); // Done drawing the quad
 	}
+	
 	/**
 	 * Does the rendering.
 	 * 

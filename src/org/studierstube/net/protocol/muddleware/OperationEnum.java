@@ -161,8 +161,8 @@ public enum OperationEnum {
 	 * @return index
 	 */
 	public int getIndex() {
-		return this.ordinal();
-//		return iIndex;
+//		return this.ordinal();
+		return iIndex;
 	}
 	
 	/**

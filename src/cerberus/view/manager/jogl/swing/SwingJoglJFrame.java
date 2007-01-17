@@ -5,7 +5,7 @@ package cerberus.view.manager.jogl.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
+//import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
@@ -48,6 +48,8 @@ public class SwingJoglJFrame
 	protected Vector<SwingJoglJInternalFrame> vecJInternalFrame;
 	
 	protected int iUniqueId;
+
+	public static final long serialVersionUID = 800900101;
 	
 	/**
 	 * Constructor.

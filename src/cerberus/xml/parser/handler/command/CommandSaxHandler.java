@@ -388,7 +388,7 @@ implements IXmlParserHandler
 							} 
 							else 
 							{
-								refGeneralManager.getSingelton().getLoggerManager().logMsg(
+								refGeneralManager.getSingelton().logMsg(
 										"CommandQueue: no Command to add. skip it.");
 							}
 							
@@ -406,7 +406,7 @@ implements IXmlParserHandler
 							
 							if ( lastCommand == null ) 
 							{
-								refGeneralManager.getSingelton().getLoggerManager().logMsg(
+								refGeneralManager.getSingelton().logMsg(
 										"Command: can not execute command due to error while parsing. skip it.");
 							}
 							

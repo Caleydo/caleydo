@@ -4,13 +4,13 @@
 package cerberus.view.manager.jogl.swing;
 
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+//import java.awt.event.WindowEvent;
 
 import javax.swing.JInternalFrame;
 
 import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameListener;
-import javax.swing.event.InternalFrameEvent;
+//import javax.swing.event.InternalFrameListener;
+//import javax.swing.event.InternalFrameEvent;
 
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
@@ -29,6 +29,8 @@ public class SwingJoglJInternalFrame
 	protected int iUniqueId;
 	
 	protected int iParentFrameUniqueId;
+	
+	public static final long serialVersionUID = 800900100;
 	
 	
 	/**

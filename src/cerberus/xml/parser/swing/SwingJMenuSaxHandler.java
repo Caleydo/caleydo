@@ -10,7 +10,7 @@ import org.xml.sax.Attributes;
 
 import cerberus.manager.IFrameManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IMenuManager;
+//import cerberus.manager.IMenuManager;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 
@@ -99,6 +99,8 @@ public class SwingJMenuSaxHandler extends ACerberusDefaultSaxHandler  {
 		if ( frame.getClass().equals( SwingJoglJFrame.class )) {
 			SwingJoglJFrame jframe = (SwingJoglJFrame) frame;
 			
+			result += "<" + jframe.toString() + ">";
+			
 //			result += "<" + sMenuTag;
 //			
 //			iCurrentFrameId = jframe.getId();
@@ -112,6 +114,8 @@ public class SwingJMenuSaxHandler extends ACerberusDefaultSaxHandler  {
 			
 		} else if ( frame.getClass().equals( SwingJoglJInternalFrame.class )) {
 			SwingJoglJInternalFrame jiframe = (SwingJoglJInternalFrame) frame;
+			
+			result += "<" + jiframe.toString() + ">";
 			
 //			result += "<" + sInternalFrameTag;
 //			
@@ -400,6 +404,10 @@ public class SwingJMenuSaxHandler extends ACerberusDefaultSaxHandler  {
 		} //end: if ( bApplicationActive ) {
 	}
 
+	public IFrameManager getIFrameManager() {
+		return viewManager;
+	}
+	
 //	public void characters(char[] buf, int offset, int len) throws SAXException {
 //		if ( bApplicationActive ) {
 //		

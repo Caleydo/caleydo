@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 import com.sun.opengl.util.Animator;
 
 import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
+import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.CerberusExceptionType;
 
 
 /**
@@ -53,7 +55,20 @@ extends ASWTEmbeddedWidget {
 	public void createEmbeddedComposite() {
 		super.createEmbeddedComposite();
 		
-		refGLCanvas = new GLCanvas();
+		try {
+			refGLCanvas = new GLCanvas();
+		} 
+		catch (UnsatisfiedLinkError ule) {
+			System.err.println("Can not open Jogl frame inside SWT container!");
+			System.err.println("Solution: Copy jogl related *.jar and native binary to path.");
+			System.err.println("SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: "				
+					+ ule.toString() );		
+			
+			throw new CerberusRuntimeException( "SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: " + 
+					ule.toString(),
+					CerberusExceptionType.JOGL_SWT );
+		}
+		
 		refEmbeddedFrame.add(refGLCanvas);
 	}
 
