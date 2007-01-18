@@ -17,27 +17,34 @@ last change: 12-09-2006
 
  JOGL:
  
- 1) copy "jogl.jar" to
-    [drive:][folder]\jre1.5.0_04\lib\ext
+ 1) copy "jogl.jar" and "gluegen-rt.jar" to
+    [drive:][folder]\jre1.6\jre\lib\ext
+    
+    Note: cerberus does not use "gluegen-rt.jar" jet
  
  2) copy *.dll from "jogl-natives-windows-i586.jar" to
-    [drive:][folder]\jre1.5.0_04\bin
+    [drive:][folder]\jre1.6\bin
  
+    Note: if you use Eclipse skip this point
+    
  for Eclipse: 
- 3) copy *.dll from "jogl-natives-windows-i586.jar" to
+ 3) copy *.dll from "jogl-windows-i586.zip" to
     [drive:][windows]\[system32]\
     
+    Note: you can skip Point 2) if you use Eclipse, 
+    since [drive:][windows]\[system32]\ is part of the path environment variable
+
 
   LINUX
  =======
  
  JOGL:
  
- 1) copy "jogl.jar" to
-    [folder]\jre1.5.0_04\lib\ext
+ 1) copy "jogl.jar" and "gluegen-rt.jar" to
+    [folder]\jre1.6\lib\ext
  
- 2) copy *.so from "jogl-natives-linux-i586.jar" to
-    [folder]\jre1.5.0_04\bin
+ 2) copy *.so from "jogl-linux-i586.zip" to
+    [folder]\jre1.6\bin
 
 
 
@@ -106,10 +113,13 @@ solution:
       
 X) Switches for application:
 
-  parameter: cxml-bootstraping config file:
+  parameter: xml-bootstraping config file:
   
     data\XML\bootstrap\cerberus_bootstrap_sample_michael.xml
     data\XML\bootstrap\cerberus_bootstrap_sample_marc.xml
     data\XML\bootstrap\cerberus_bootstrap_sample_demo.xml   (is default if no argument is used!)
     
   Java VM switch (enable assert messages): -ea 
+  
+  Default directory to run the 
+  cerberus-application (cerberus root folder): [cererus]

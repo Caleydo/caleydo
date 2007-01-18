@@ -5,3 +5,11 @@
 2006-08-03 kalkusch: added documentation on useded *.jar packeges
 2006-08-17 kalkusch: nested class inside "DataExplorerViewRep::protected void hookListeners() { treeViewer.addSelectionChangedListener( new ISelectionChangedListener() { ... } ) }; maybe move nested class to "private ISelectionChangedListener refISelectionChangedListener;"
 2006-11-20 kalkusch: fixed bug with zombie jogl canvas threads
+2007-01-16 kalkusch: update to jogl 1.1.0 pre 20070116
+2007-01-16 kalkusch:   jogl 1.1.0 pre 20070116, gluegen-rt.jar was added to jogl
+2007-01-16 kalkusch:   jogl has new package com.sun.opengl.util.j2d.*  com.sun.opengl.impl.packrect.*  com.sun.opengl.impl.GLBufferSizeTracker com.sun.opengl.impl.GLBufferStateTracker
+2007-01-16 kalkusch:   jogl 1.1.0 pre 20070116, jogl-demos-src.zip contains no changes!
+2007-01-16 kalkusch:   jogl has 64 bit support now!
+2007-01-16 kalkusch: update to java 1.6 !
+2007-01-16 kalkusch: update to eclipse 3.2
+
