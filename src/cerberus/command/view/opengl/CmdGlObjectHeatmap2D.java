@@ -9,6 +9,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -88,7 +89,8 @@ implements ICommand {
 		}
 		else 
 		{
-			refGeneralManager.getSingelton().logMsg( "CmdGLObjectHistogram2D no set defined!");
+			refGeneralManager.getSingelton().logMsg( "CmdGLObjectHistogram2D no set defined!",
+					LoggerType.ERROR_ONLY );
 		}
 		
 		//canvas.setHistogramLength( iHistogramLevel );

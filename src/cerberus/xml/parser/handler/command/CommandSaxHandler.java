@@ -165,7 +165,7 @@ implements IXmlParserHandler
 					CommandQueueSaxType.TAG_DETAIL.getDefault(),
 					ParameterHandlerType.STRING );										 
 
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"XML-TAG= " +  phAttributes.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
 					LoggerType.FULL );
@@ -178,7 +178,7 @@ implements IXmlParserHandler
 		{
 			if ( lastCommand != null ) 
 			{
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"CommandSaxHandler.readCommandData(" +
 						attrs.toString() + 
 						") ERROR while parsing " + 
@@ -189,7 +189,7 @@ implements IXmlParserHandler
 			}
 			else
 			{
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"CommandSaxHandler.readCommandData(" +
 						attrs.toString() + 
 						") ERROR while parsing --no command--" + 
@@ -212,14 +212,14 @@ implements IXmlParserHandler
 				
 				if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() ))
 				{				
-					refGeneralManager.getSingelton().getLoggerManager().logMsg("do command: " + 
+					refGeneralManager.getSingelton().logMsg("do command: " + 
 						lastCommand.toString(),
 						LoggerType.FULL );
 					lastCommand.doCommand();
 				}
 			}
 			else {
-				refGeneralManager.getSingelton().getLoggerManager().logMsg("do command: command=null!", 						
+				refGeneralManager.getSingelton().logMsg("do command: command=null!", 						
 						LoggerType.VERBOSE );
 			}
 			
@@ -233,7 +233,7 @@ implements IXmlParserHandler
 			{
 				sDetails = lastCommand.getClass().getSimpleName();
 			}
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + 
 					")\n  ERROR while executing command " +
@@ -389,7 +389,8 @@ implements IXmlParserHandler
 							else 
 							{
 								refGeneralManager.getSingelton().logMsg(
-										"CommandQueue: no Command to add. skip it.");
+										"CommandQueue: no Command to add. skip it.",
+										LoggerType.VERBOSE );
 							}
 							
 							
@@ -407,7 +408,8 @@ implements IXmlParserHandler
 							if ( lastCommand == null ) 
 							{
 								refGeneralManager.getSingelton().logMsg(
-										"Command: can not execute command due to error while parsing. skip it.");
+										"Command: can not execute command due to error while parsing. skip it.",
+										LoggerType.VERBOSE );
 							}
 							
 						

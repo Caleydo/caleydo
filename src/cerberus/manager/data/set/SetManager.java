@@ -14,6 +14,7 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -87,7 +88,7 @@ implements ISetManager {
 //		
 //		this.registerItem( testSet, testSet.getId(), ManagerObjectType.SET_PLANAR );
 //		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet created with Id =[" +
+//		refGeneralManager.getSingelton().logMsg( "SET: testSet created with Id =[" +
 //				testSet.getId() +"]");
 //		
 //		IVirtualArray getSelectionById = (IVirtualArray) refGeneralManager.getItem( 15201 );
@@ -99,7 +100,7 @@ implements ISetManager {
 //		
 //		ISet testMySet = (ISet) refGeneralManager.getItem( 15101 );
 //		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg( "SET: testSet get ISet by Id; [" +
+//		refGeneralManager.getSingelton().logMsg( "SET: testSet get ISet by Id; [" +
 //				testSet.getId() +"] == [" + testMySet.getId() + "]_(test)");
 		/**
 		 * END: Test ISet...
@@ -150,7 +151,8 @@ implements ISetManager {
 		if ( removedObj == null ) {
 			refGeneralManager.getSingelton().logMsg( 
 					"deleteSet(" + 
-					iItemId + ") falied, because Set was not registered!" );
+					iItemId + ") falied, because Set was not registered!",
+					LoggerType.STATUS );
 			return false;
 		}
 		return true;
@@ -201,7 +203,8 @@ implements ISetManager {
 		if  ( buffer == null ) {
 			this.refGeneralManager.getSingelton().logMsg(
 					"unregisterItem(" + 
-					iItemId + ") failed because Set was not registered!");
+					iItemId + ") failed because Set was not registered!",
+					LoggerType.STATUS );
 			return false;
 		}
 		return true;

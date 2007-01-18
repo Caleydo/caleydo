@@ -43,7 +43,10 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
@@ -54,6 +57,7 @@ import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
  * We can decide here if we want to draw in a new widget
  * or if we want to draw in an existing one.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
@@ -225,7 +229,8 @@ extends APathwayGraphViewRep {
 							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
 	
 						refGeneralManager.getSingelton().logMsg(
-								"Load pathway with ID " +iPathwayId);
+								"Load pathway with ID " +iPathwayId,
+								LoggerType.STATUS );
 						
 						// Load pathway
 						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
@@ -298,7 +303,8 @@ extends APathwayGraphViewRep {
 		    		{
 		    			refGeneralManager.getSingelton().logMsg(
 		    					this.getClass().getSimpleName() +
-		    					":mousePressed(): No pathway link is available for that clicked point. Click ignored.");
+		    					":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
+		    					LoggerType.VERBOSE );
 
 		    			return;
 		    		}
@@ -382,7 +388,7 @@ extends APathwayGraphViewRep {
         // Check if graph is already added to the frame
         if (bGraphSet == false)
         {
-            final Dimension dimOverviewMap = new Dimension(200, 200);
+            //final Dimension dimOverviewMap = new Dimension(200, 200);
             final Dimension dimPathway = new Dimension(iWidth, iHeight);
 
         	JScrollPane refScrollPane = new JScrollPane(refPathwayGraph);
@@ -651,7 +657,8 @@ extends APathwayGraphViewRep {
 	 * because the method is called recursive.
 	 */
 	protected void showNeighbourhood(DefaultGraphCell cell, 
-			int iDistance, DefaultGraphCell parentCell) {
+			int iDistance,
+			DefaultGraphCell parentCell) {
 		
 		HashSet<DefaultGraphCell> excludeParent = 
 			new HashSet<DefaultGraphCell>();
@@ -671,7 +678,7 @@ extends APathwayGraphViewRep {
 		
 		// Color mapping will start with red (neigborhood = 1)
 		// For graph parts far away the color will turn to yellow.
-		float fGreenPortion = fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
+		float fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
 		
 		if (fGreenPortion < 0.0)
 			fGreenPortion = 0.0f;
@@ -735,6 +742,10 @@ extends APathwayGraphViewRep {
 	 */
 	public void showOverviewMapInNewWindow(Dimension dim) {
 		
+		IViewCanvasManager refViewCanvasMng = refGeneralManager.getSingelton().getViewCanvasManager();
+		
+		refViewCanvasMng.createCanvas(ManagerObjectType.VIEW_NEW_FRAME, "");
+		
         JFrame wnd = new JFrame();
         wnd.setLocation(800, 500);
         wnd.setSize(dim);
@@ -774,7 +785,8 @@ extends APathwayGraphViewRep {
 			sPathwayImageFilePath = "data/images/pathways/" +sPathwayImageFilePath +".gif";
 
 			refGeneralManager.getSingelton().logMsg(
-					"Load background pathway from file: " +sPathwayImageFilePath);
+					"Load background pathway from file: " +sPathwayImageFilePath,
+					LoggerType.STATUS );
 			
 			// Set background image
 			refPathwayGraph.setBackgroundImage(
@@ -823,7 +835,8 @@ extends APathwayGraphViewRep {
 		
 		refGeneralManager.getSingelton().logMsg(
 				"Load background pathway image from file: " 
-				+sPathwayImageFilePath);
+				+sPathwayImageFilePath,
+				LoggerType.STATUS );
 		
 		// Set background image
 		refPathwayGraph.setBackgroundImage(

@@ -88,7 +88,7 @@ implements ICommand {
 		}
 		else 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+			refGeneralManager.getSingelton().logMsg( 
 					"CmdGLObjectHistogram2D no set defined!",
 					LoggerType.STATUS );
 		}

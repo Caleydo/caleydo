@@ -94,7 +94,7 @@ extends AMicroArrayLoader {
 		this.refImportDataToSet = refUseSet;
 		
 		if ( refImportDataToSet.getBaseType() != ManagerObjectType.SET_MULTI_DIM ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg("setTargetSet() ERROR! need a MultiSet!",
+			refGeneralManager.getSingelton().logMsg("setTargetSet() ERROR! need a MultiSet!",
 					LoggerType.MINOR_ERROR );
 		}
 		
@@ -381,7 +381,7 @@ extends AMicroArrayLoader {
 		iLineInFile = lineInFile;
 		iLineInFile_CurrentDataIndex = lineInFile_CurrentDataIndex;
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"  parsed " + this.iLineInFile_CurrentDataIndex + 
 				" lines, stoped at line " + 
 				(this.iLineInFile - 1) + "  [" +

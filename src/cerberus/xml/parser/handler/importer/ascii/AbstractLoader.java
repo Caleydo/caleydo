@@ -200,7 +200,7 @@ implements IMementoXML, IParserObject {
 		if ( iStartParsingAtLine > iStopParsingAtLine )
 		{
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"AMicroArrayLoader.setStartParsingStopParsingAtLine() stop index is smaller than start index. set stop index to end of file!",
 					LoggerType.MINOR_ERROR );			
 			return;

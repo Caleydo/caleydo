@@ -4,6 +4,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
@@ -69,7 +70,8 @@ implements ICommand {
 		} 	
 		catch ( CerberusRuntimeException ce)
 		{
-			refGeneralManager.getSingelton().logMsg("Can not open Jogl frame inside SWT container! " + ce.toString() );
+			refGeneralManager.getSingelton().logMsg("Can not open Jogl frame inside SWT container! " + ce.toString(),
+					LoggerType.ERROR_ONLY );
 			ce.printStackTrace();
 		}
 	}

@@ -56,6 +56,7 @@ import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.singelton.IGeneralManagerSingelton;
 import cerberus.view.swing.loader.FileLoader;
 
@@ -147,13 +148,15 @@ public class SwingWindowBase implements AWTEventListener {
 	            if(evt.getID() == WindowEvent.WINDOW_OPENED) {
 	                ComponentEvent cev = (ComponentEvent)evt;
 	                if(cev.getComponent() instanceof JFrame) {
-	                	refGeneralManagerSingelton.getSingelton().logMsg( "event: " + evt);
+	                	refGeneralManagerSingelton.getSingelton().logMsg( "event: " + evt,
+	                			LoggerType.VERBOSE);
 	                    JFrame frame = (JFrame)cev.getComponent();
 	                    loadSettings(frame);
 	                }
 	            }
 	        }catch(Exception ex) {
-	        	refGeneralManagerSingelton.getSingelton().logMsg( ex.toString() );
+	        	refGeneralManagerSingelton.getSingelton().logMsg( "eventDispatched() " + ex.toString(), 
+	        			LoggerType.ERROR_ONLY  );
 	        }
 	    }
 

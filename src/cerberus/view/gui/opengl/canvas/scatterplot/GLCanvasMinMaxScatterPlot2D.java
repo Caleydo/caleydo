@@ -270,7 +270,7 @@ implements IGLCanvasUser
 			case SET_MULTI_DIM: break;
 			
 			default:
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"GLCanvasScatterPlot assigned Set mut be at least 2-dimesional!",
 						LoggerType.VERBOSE );
 		} // switch
@@ -308,7 +308,7 @@ implements IGLCanvasUser
 		if (( arrayStorageX.length < iLoopXY)||
 				( arrayStorageY.length < iLoopXY))
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot assigned Storage must contain at least equal number of Stprages as Selections!",
 					LoggerType.ERROR_ONLY );
 			return;

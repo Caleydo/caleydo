@@ -12,6 +12,8 @@ import cerberus.data.mapping.GenomeMappingDataType;
 public enum GenomeMappingType
 {
 
+	ACCESSION_CODE_2_ACCESSION (GenomeMappingDataType.STRING2INT),
+	
 	ACCESSION_2_NCBI_GENEID (GenomeMappingDataType.INT2INT),
 	ACCESSION_2_NCBI_GENEID_REVERSE (GenomeMappingDataType.INT2INT),
 	

@@ -139,7 +139,7 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 				brFile, 
 				iNumberOfLinesInFile );
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg("  parsed #" + 
+		refGeneralManager.getSingelton().logMsg("  parsed #" + 
 				this.iLineInFile_CurrentDataIndex + "  [" + 			
 				this.iStartParsingAtLine + " -> " +
 				this.iStopParsingAtLine +  "] stoped at line #" +

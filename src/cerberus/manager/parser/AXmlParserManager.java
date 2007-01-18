@@ -86,7 +86,7 @@ implements IXmlParserManager, IManagedObject
 		
 		IXmlParserHandler buffer = currentHandler;
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"AXmlParserManger.closeCurrentTag() key=[" +
 				currentHandler.getXmlActivationTag() + "] " +
 				currentHandler.getClass().getSimpleName(),
@@ -98,7 +98,7 @@ implements IXmlParserManager, IManagedObject
 			//llXmlParserStack.removeLast();
 			
 			if ( ! llXmlParserStack.remove( buffer ) ) {
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!",
 						LoggerType.MINOR_ERROR);
 				return false;
@@ -139,7 +139,7 @@ implements IXmlParserManager, IManagedObject
 		} 
 		else
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"AXmlParserManger.closeCurrentTag() key=[" +
 					buffer.getXmlActivationTag() + "] " +
 					buffer.getClass().getSimpleName() + 
@@ -156,7 +156,7 @@ implements IXmlParserManager, IManagedObject
 			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTag() new handler is null!");
 		}
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"AXmlParserManager.openCurrentTag( key=[" + 
 				newHandler.getXmlActivationTag() + "] " +
 				newHandler.getClass().getSimpleName() +	" )",
@@ -254,7 +254,7 @@ implements IXmlParserManager, IManagedObject
 		
 		hashTag2XmlParser.put( key, handler );
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"XmlParserManager.registerAndInitSaxHandler( key=["
 				+ handler.getXmlActivationTag() + "] " +
 				handler.getClass().getSimpleName() + " ) done.",
@@ -288,7 +288,7 @@ implements IXmlParserManager, IManagedObject
 		
 		if ( refParserHandler != null ) {	
 						
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"XmlParserManager.unregisterHandler( key=[" 
 					+ sActivationXmlTag + "] "
 					+ refParserHandler.getClass().getSimpleName()
@@ -298,7 +298,7 @@ implements IXmlParserManager, IManagedObject
 			return true;
 		}
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"XmlParserManager.unregisterHandler( "
 				+ sActivationXmlTag + " ) failed to unload!",
 				LoggerType.ERROR_ONLY );
@@ -326,7 +326,7 @@ implements IXmlParserManager, IManagedObject
 		int iIndexFrom = llXmlParserStack.indexOf( from );
 		
 		if ( iIndexFrom == -1 ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+			refGeneralManager.getSingelton().logMsg( 
 					"Error: can not find IXmlParserHandler 'from' in AXmlParserManager! " +
 					from.getXmlActivationTag(),
 					LoggerType.ERROR_ONLY );
@@ -336,7 +336,7 @@ implements IXmlParserManager, IManagedObject
 		int iIndexTo = llXmlParserStack.indexOf( to );
 		
 		if ( iIndexTo == -1 ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+			refGeneralManager.getSingelton().logMsg( 
 					"Error: can not find IXmlParserHandler 'to' in AXmlParserManager! " +
 					from.getXmlActivationTag(),
 					LoggerType.ERROR_ONLY );

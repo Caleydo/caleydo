@@ -171,9 +171,11 @@ implements ICommand {
 					catch (NumberFormatException nfe) {
 						refGeneralManager.getSingelton().logMsg(
 								"Can not convert (String) to (int) at index=[" +
-								iTokenIndex + "]  => skip raw data:");
+								iTokenIndex + "]  => skip raw data:",
+								LoggerType.ERROR_ONLY );
 						refGeneralManager.getSingelton().logMsg(
-								"  SKIP: " + strToParse );
+								"  SKIP: " + strToParse,
+								LoggerType.ERROR_ONLY );
 						
 						/** 
 						 * terminate while loop...
@@ -215,9 +217,11 @@ implements ICommand {
 					catch (NumberFormatException nfe) {
 						refGeneralManager.getSingelton().logMsg(
 								"Can not convert (String) to (int) at index=[" +
-								iTokenIndex + "]  => skip raw data:");
+								iTokenIndex + "]  => skip raw data:",
+								LoggerType.ERROR_ONLY );
 						refGeneralManager.getSingelton().logMsg(
-								"  SKIP: " + strToParse );
+								"  SKIP: " + strToParse,
+								LoggerType.ERROR_ONLY );
 						
 						/** 
 						 * terminate while loop...
@@ -278,7 +282,7 @@ implements ICommand {
 				newObject.getId(), 
 				newObject.getBaseType() );
 
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+		refGeneralManager.getSingelton().logMsg( 
 				"DO new STO: " + 
 				newObject.toString(),
 				LoggerType.VERBOSE );
@@ -299,7 +303,8 @@ implements ICommand {
 		
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
-				iUniqueTargetId );		
+				iUniqueTargetId,
+				LoggerType.VERBOSE );		
 	}
 	
 

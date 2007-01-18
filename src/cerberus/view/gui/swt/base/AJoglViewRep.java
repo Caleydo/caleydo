@@ -105,7 +105,7 @@ implements IView {
 		
 		if ( refAnimator != null ) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"AJoglViewRep.drawView() cas called more than once + " +
 					this.getClass()
 					,LoggerType.ERROR_ONLY );
@@ -117,7 +117,7 @@ implements IView {
 	    
 	    abEnableRendering.set( true );
 	    
-	    refGeneralManager.getSingelton().getLoggerManager().logMsg(
+	    refGeneralManager.getSingelton().logMsg(
 				"AJoglViewRep.intView() [" + 
 				this.iUniqueId + 
 				"] GLCavas created, Animator thread is running."
@@ -127,7 +127,7 @@ implements IView {
 	}
 	
 	public void drawView() {
-		 refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		 refGeneralManager.getSingelton().logMsg(
 					"AJoglViewRep.drawView() [" + 
 					this.iUniqueId + "]"
 					,LoggerType.VERBOSE );

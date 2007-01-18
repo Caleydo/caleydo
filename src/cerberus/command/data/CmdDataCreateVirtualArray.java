@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.AManagedCmd;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.IVirtualArrayManager;
 //import cerberus.command.window.CmdWindowPopupInfo;
@@ -119,7 +120,8 @@ implements ICommand {
 
 		refGeneralManager.getSingelton().logMsg( 
 				"DO new SEL: " + 
-				newObject.toString() );
+				newObject.toString(),
+				LoggerType.VERBOSE );
 	}
 
 	/* (non-Javadoc)
@@ -133,7 +135,8 @@ implements ICommand {
 		
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
-				iUniqueTargetId );
+				iUniqueTargetId,
+				LoggerType.VERBOSE );
 	}
 	
 
@@ -219,7 +222,8 @@ implements ICommand {
 		catch ( NumberFormatException nfe ) 
 		{
 			refGeneralManager.getSingelton().logMsg(
-					"CmdDataCreateSelection::doCommand() error on attributes!");			
+					"CmdDataCreateSelection::doCommand() error on attributes!",
+					LoggerType.ERROR_ONLY  );			
 			return false;
 		}
 		

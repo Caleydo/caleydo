@@ -136,7 +136,7 @@ implements ICommand {
 			if ( iArrayStartStop.length > 1 ) 
 			{
 				if ( iArrayStartStop[0] > iArrayStartStop[1] ) {
-					refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					refGeneralManager.getSingelton().logMsg(
 							"CmdSystemLoadFileViaImporter ignore stop index=(" + 
 							iArrayStartStop[1]  + 
 							"), because it is smaller than start index (" + 

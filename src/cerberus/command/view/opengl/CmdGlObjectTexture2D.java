@@ -71,7 +71,7 @@ implements ICommand {
 		canvas.setResolution( fResolution );
 		
 		if ( sDetail.length() < 1 ) {
-			refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+			refGeneralManager.getSingelton().logMsg( 
 					"CmdGLObjectTexture2D no textrue defined!",
 					LoggerType.STATUS );
 		}

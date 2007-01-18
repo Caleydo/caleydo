@@ -84,7 +84,7 @@ implements IView, IGLCanvasDirector {
 		 * JogleManager is done!
 		 */
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
 				getId() + "] was initalized!",
 				LoggerType.TRANSITION );
@@ -117,7 +117,7 @@ implements IView, IGLCanvasDirector {
 		 */
 		
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
 				getId() + "] added GLCanvas user=[" +
 				user.getId() + "] " + 
@@ -281,7 +281,8 @@ implements IView, IGLCanvasDirector {
 	public void destroyDirector() {
 		
 		refGeneralManager.getSingelton().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
-				iUniqueId);
+				iUniqueId,
+				LoggerType.STATUS );
 		
 		super.removeGLEventListener( refGLEventListener );
 		
@@ -300,7 +301,8 @@ implements IView, IGLCanvasDirector {
 		refGLEventListener = null;
 		
 		refGeneralManager.getSingelton().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
-				iUniqueId + " ...[DONE]");
+				iUniqueId + " ...[DONE]",
+				LoggerType.STATUS );
 	}
 
 	/**

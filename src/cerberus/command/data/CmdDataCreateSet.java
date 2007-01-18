@@ -149,7 +149,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			break;
 			
 		default:
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.doCommand() failed because type=[" +
 						set_type + "] is not supported!",
 						LoggerType.ERROR_ONLY );
@@ -168,7 +168,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				newObject.getId(),
 				newObject.getBaseType() );
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"SET: " +
 				newObject.getClass().getSimpleName() + 
 				" done; " + 
@@ -176,7 +176,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				LoggerType.FULL );
 		
 
-		refGeneralManager.getSingelton().getLoggerManager().logMsg( 
+		refGeneralManager.getSingelton().logMsg( 
 				"DO new SET: " + 
 				iUniqueTargetId,
 				LoggerType.VERBOSE );	
@@ -187,7 +187,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		if (( llRefStorage_nDim.isEmpty() )||
 				( llRefSelection_nDim.isEmpty()))
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
 					LoggerType.MINOR_ERROR );
 			
@@ -263,7 +263,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 		} catch (NumberFormatException nfe) {
 			refGeneralManager.getSingelton().logMsg(
-					"error while creation of ISet!");
+					"error while creation of ISet!",
+					LoggerType.MINOR_ERROR );
 		}
 		
 		return true;
@@ -275,7 +276,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		if (( llRefStorage_nDim.isEmpty() )||
 				( llRefSelection_nDim.isEmpty()))
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
 					LoggerType.MINOR_ERROR );
 			
@@ -367,7 +368,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 */
 				if ( vecStorage.size() != vecSelection.size() )
 				{
-					refGeneralManager.getSingelton().getLoggerManager().logMsg(
+					refGeneralManager.getSingelton().logMsg(
 							"SET: #storages=" +
 							ll_Storage_1dim.size() + 
 							" differs from #selections=" +
@@ -388,14 +389,14 @@ extends ACmdCreate_IdTargetLabelAttr {
 			 * Consistency check..
 			 */
 			if ( iter_Selection_nDim.hasNext() ) {
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"SET: WARNING: there are more selection-is's available, than storage-id's, skip remainig selection-is's.",
 						LoggerType.VERBOSE );
 			} 
 			else
 			{
 				if ( iter_Storage_nDim.hasNext() ) {
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"SET: WARNING: there are more storage-id's available, than selection-id's, skip remainig storage-id's.",
 						LoggerType.VERBOSE );
 			} 
@@ -403,7 +404,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			if ( iIndexDimensionStorage != iIndexDimensionSelection)
 			{
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"SET: dimension(storage) != dimension(selection) ",
 						LoggerType.VERBOSE );
 				
@@ -412,7 +413,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			if ( bErrorWhileParsing ) 
 			{
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"SET: error while parsing!",
 						LoggerType.MINOR_ERROR );
 				return false;
@@ -423,7 +424,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		} 
 		catch (NumberFormatException nfe) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"error while creation of ISet! " + 
 					nfe.toString(),
 					LoggerType.ERROR_ONLY );
@@ -443,7 +444,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
-				iUniqueId );		
+				iUniqueId,
+				LoggerType.MINOR_ERROR);		
 	}
 	
 
@@ -551,7 +553,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.setAttributes() empty token inside [" +
 						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() + "]='" +
 						strToken_SelectionBlock.toString() + "'",
@@ -605,7 +607,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				refGeneralManager.getSingelton().getLoggerManager().logMsg(
+				refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.setAttributes() empty token inside [" +
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() + "]='" +
 						strToken_StorageBlock.toString() + "'",
@@ -628,7 +630,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		if ( bErrorOnLoadingXMLData ) 
 		{
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"CmdDataCreateSet.setAttributes() empty token! skip line!",
 					LoggerType.MINOR_ERROR );
 			bErrorOnLoadingXMLData = true;

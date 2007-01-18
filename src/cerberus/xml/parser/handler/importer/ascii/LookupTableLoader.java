@@ -132,7 +132,7 @@ public class LookupTableLoader extends AbstractLoader {
 			
 		    } // end: while ((sLine = brFile.readLine()) != null) { 
 		    
-		refGeneralManager.getSingelton().getLoggerManager().logMsg("  parsed #" + 
+		refGeneralManager.getSingelton().logMsg("  parsed #" + 
 				this.iLineInFile_CurrentDataIndex + "  [" + 			
 				this.iStartParsingAtLine + " -> " +
 				this.iStopParsingAtLine +  "] stoped at line #" +

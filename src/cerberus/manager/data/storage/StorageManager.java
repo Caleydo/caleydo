@@ -194,7 +194,8 @@ implements IStorageManager {
 		if ( vecStorage.containsKey( iItemId ) ) 
 		{
 			refGeneralManager.getSingelton().logMsg(
-					"try to register id that was already used!");
+					"try to register id that was already used!",
+					LoggerType.ERROR_ONLY );
 			
 			return false;
 		}

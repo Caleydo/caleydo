@@ -51,6 +51,8 @@ implements IGenomeIdManager {
 	
 	protected HashMap <String,String> hashMICROARRAY_2_ACCESSION;
 	
+	protected HashMap <String,Integer> hashACCESSION_CODE_2_ACCESSION;
+	
 	/**
 	 * 
 	 */
@@ -70,7 +72,7 @@ implements IGenomeIdManager {
 	
 		if ( multiMapNCBI_GENEID_2_KEGGID != null) 
 		{
-			getGeneralManager().getSingelton().getLoggerManager().logMsg("AGenomeIdManager.initAll() called twice!",
+			getGeneralManager().getSingelton().logMsg("AGenomeIdManager.initAll() called twice!",
 					LoggerType.STATUS );
 			return;
 		}
@@ -97,6 +99,8 @@ implements IGenomeIdManager {
 		hashNCBI_GENEID_2_KEGGID = new HashMap <Integer,Integer> ();
 		
 		hashMICROARRAY_2_ACCESSION = new HashMap <String,String> ();
+		
+		hashACCESSION_CODE_2_ACCESSION = new HashMap <String,Integer> ();
 	}
 	
 	public Map getMapByGenomeType( final GenomeMappingType type ) {
@@ -123,6 +127,9 @@ implements IGenomeIdManager {
 			
 		case MICROARRAY_2_ACCESSION_STRING:
 			return multiMapMICROARRAY_2_ACCESSION;
+			
+		case ACCESSION_CODE_2_ACCESSION:
+			return hashACCESSION_CODE_2_ACCESSION;
 			
 		default:
 			assert false : "unknown type!";
