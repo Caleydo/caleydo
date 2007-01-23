@@ -3,6 +3,7 @@ package cerberus.view.gui.swt.pathway;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
@@ -12,7 +13,7 @@ public interface IPathwayGraphView
 extends IView {
 	
 	public void createVertex(IPathwayVertexRep vertex, 
-			boolean bHightlightVertex, Color nodeColor);
+			Pathway refContainingPathway);
 	
 	public void createEdge(int iVertexId1, 
 			int iVertexId2, 
@@ -21,7 +22,7 @@ extends IView {
 	
 	public void setPathwayId(int iPathwayId);
 	
-	public void loadPathwayFromFile(String sFilePath);
+	public Pathway loadPathwayFromFile(String sFilePath);
 	
 	public void loadImageMapFromFile(String sImagePath); 
 	
@@ -42,7 +43,8 @@ extends IView {
 	
 	public void finishGraphBuilding();
 	
-	public void loadBackgroundOverlayImage(String sPathwayImageFilePath);
+	public void loadBackgroundOverlayImage(String sPathwayImageFilePath,
+			Pathway refTexturedPathway);
 	
 	public void resetPathway();
 }

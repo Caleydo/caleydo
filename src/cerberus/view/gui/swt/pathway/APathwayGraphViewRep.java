@@ -42,7 +42,7 @@ implements IPathwayGraphView {
 	
 	protected PathwayRenderStyle refRenderStyle;
 	
-	protected Pathway refCurrentPathway;
+	//protected Pathway refCurrentPathway;
 	
 	protected PathwayImageMap refCurrentPathwayImageMap;
 	
@@ -67,7 +67,7 @@ implements IPathwayGraphView {
 	 */
 	protected int iPathwayLevel = 1;
 	
-	protected SelectionHandler refSelection;
+	protected SelectionHandler refSelectionHandler;
 
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
@@ -118,13 +118,13 @@ implements IPathwayGraphView {
 		this.iHTMLBrowserId = iHTMLBrowserId;
 	}
 	
-	protected void extractVertices() {
+	protected void extractVertices(Pathway refPathwayToExtract) {
 		
 	    Iterator<PathwayVertex> vertexIterator;
 	    PathwayVertex vertex;
 	    IPathwayVertexRep vertexRep;
 		
-        vertexIterator = refCurrentPathway.getVertexListIterator();
+        vertexIterator = refPathwayToExtract.getVertexListIterator();
         while (vertexIterator.hasNext())
         {
         	vertex = vertexIterator.next();
@@ -132,16 +132,16 @@ implements IPathwayGraphView {
 
         	if (vertexRep != null)
         	{
-        		createVertex(vertexRep, false, Color.RED);        	
+        		createVertex(vertexRep, refPathwayToExtract);        	
         	}
         }   
 	}
 	
-	protected void extractEdges() {
+	protected void extractEdges(Pathway refPathwayToExtract) {
 		
 		// Process relation edges
 	    Iterator<PathwayRelationEdge> relationEdgeIterator;
-        relationEdgeIterator = refCurrentPathway.getRelationEdgeIterator();
+        relationEdgeIterator = refPathwayToExtract.getRelationEdgeIterator();
         while (relationEdgeIterator.hasNext())
         {
         	extractRelationEdges(relationEdgeIterator.next()); 		
@@ -155,7 +155,7 @@ implements IPathwayGraphView {
 			((IPathwayElementManager)refGeneralManager.getSingelton().
 				getPathwayElementManager());
 		
-        vertexIterator = refCurrentPathway.getVertexListIterator();
+        vertexIterator = refPathwayToExtract.getVertexListIterator();
 	    
 	    while (vertexIterator.hasNext())
 	    {
@@ -248,13 +248,13 @@ implements IPathwayGraphView {
 		return iPathwayLevel;
 	}
 	
-	public void loadPathwayFromFile(String sFilePath) {
+	public Pathway loadPathwayFromFile(String sFilePath) {
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sFilePath);
 		
-		refCurrentPathway = 
-			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
+		
+		return(refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway());
 	}
 	
 	public void loadNodeInformationInBrowser(final String sUrl) {
@@ -275,12 +275,12 @@ implements IPathwayGraphView {
 			int[] arSelectionGroup,
 			int[] arNeighborVertices) {
 	
-		// Selection data will be iniitailly created.
-		// If selection object exists it is not necessary to create it again.
+		// Selection handler will be iniitailly created.
+		// If selection handler exists already it is not necessary to create it again.
 		// Just the data needs to be set.
-		if (refSelection == null)
+		if (refSelectionHandler == null)
 		{
-			refSelection = new SelectionHandler(refGeneralManager, 
+			refSelectionHandler = new SelectionHandler(refGeneralManager, 
 					this.iParentContainerId, 
 					arSelectionVertexId, 
 					arSelectionGroup, 
@@ -288,9 +288,9 @@ implements IPathwayGraphView {
 		}		
 		else
 		{
-			refSelection.setSelectionIdArray(arSelectionVertexId);
-			//refSelection.setGroupArray(arSelectionGroup);
-			refSelection.setOptionalDataArray(arNeighborVertices);
+			refSelectionHandler.setSelectionIdArray(arSelectionVertexId);
+			//refSelectionHandler.setGroupArray(arSelectionGroup);
+			refSelectionHandler.setOptionalDataArray(arNeighborVertices);
 		}
 		
 		// Calls update with the ID of the PathwayViewRep

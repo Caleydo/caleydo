@@ -62,7 +62,7 @@ implements ICommand {
 			(GLCanvasPathway3D) openGLCanvasUser;		
 		
 		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
-		canvas.setTargetPathwayId(iTargetPathwayId);
+		//canvas.setTargetPathwayId(iTargetPathwayId);
 	}
 
 	@Override
