@@ -33,7 +33,7 @@ import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
-import cerberus.manager.data.genome.GenomeIdManager;
+import cerberus.manager.data.genome.DynamicGenomeIdManager;
 import cerberus.manager.data.pathway.PathwayElementManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.data.set.SetManager;
@@ -210,7 +210,7 @@ implements IGeneralManagerSingelton
 		refPathwayManager = new PathwayManager(this);
 		refPathwayElementManager = new PathwayElementManager(this);
 		refEventPublisher = new EventPublisher(this);
-		refGenomeIdManager = new GenomeIdManager(this);
+		refGenomeIdManager = new DynamicGenomeIdManager(this);
 		
 		/**
 		 * Insert all Manager objects handling registered objects to 

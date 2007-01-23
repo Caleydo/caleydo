@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 
 import javax.xml.rpc.ServiceException;
 
+import cerberus.manager.command.factory.CommandFactory;
+
 import keggapi.Definition;
 import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
@@ -25,7 +27,8 @@ import keggapi.KEGGPortType;
  */
 public class PathwayListBuilder {
 	
-	protected static String strDelimiter = ";";
+	protected static String strDelimiter = 
+		CommandFactory.sDelimiter_Parser_DataType;;
 	
 	protected PrintWriter pathwayListWriter;
 	

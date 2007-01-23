@@ -5,12 +5,13 @@ package cerberus.xml.parser.handler.importer.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 
 
@@ -18,31 +19,32 @@ import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
  * @author Michael Kalkusch
  *
  */
-public class LookupTableStringIntLoader extends ALookupTableLoader
-		implements ILookupTableLoader {
-
-	protected HashMap <String,Integer> refHashMap_StringInt;
+public class LookupTableHashMapLoader 
+extends ALookupTableLoader
+implements ILookupTableLoader {
 	
 	/**
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public LookupTableStringIntLoader(final IGeneralManager setGeneralManager,
+	public LookupTableHashMapLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
 			final GenomeMappingType genometype,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
+			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
 
 		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
 		
 	}
 
+
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
 	public boolean loadDataParseFileLUT(BufferedReader brFile,
-			final int iNumberOfLinesInFile) throws IOException {
+			int iNumberOfLinesInFile ) throws IOException {
 
 		String sLine;
+		
 		int iLineInFile = 1;
 		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
 		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();
@@ -60,7 +62,7 @@ public class LookupTableStringIntLoader extends ALookupTableLoader
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = 
 					new StringTokenizer(sLine, 
-							refLookupTableLoaderProxy.getTokenSeperator());
+							refLookupTableLoaderProxy.getTokenSeperator() );
 				
 				/**
 				 * Read all tokens
@@ -72,13 +74,19 @@ public class LookupTableStringIntLoader extends ALookupTableLoader
 					 */
 					
 					try {
-						String sFirst = strTokenText.nextToken();
+						String buffer = strTokenText.nextToken();
 						
 						if  ( strTokenText.hasMoreTokens() ) 
 						{
-							int iSecond = new Integer(strTokenText.nextToken());
-							
-							refHashMap_StringInt.put( sFirst, iSecond);
+							refGenomeIdMap.put(buffer,strTokenText.nextToken());
+						}
+						else
+						{
+							refGeneralManager.getSingelton().logMsg(
+									"(Key,Value) [" +
+									buffer + ", ?? ] value is missing in line " +
+									iLineInFile,
+									LoggerType.MINOR_ERROR);
 						}
 						
 					
@@ -95,7 +103,6 @@ public class LookupTableStringIntLoader extends ALookupTableLoader
 				} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
 				
 				
-				
 				refLookupTableLoaderProxy.progressBarStoredIncrement();
 				
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
@@ -106,12 +113,6 @@ public class LookupTableStringIntLoader extends ALookupTableLoader
 	    } // end: while ((sLine = brFile.readLine()) != null) { 
 	 
 		return true;
-	}
-
-	public void setHashMap_StringInteger( HashMap  <String,Integer> setHashMap ) {
-		Class buffer = setHashMap.getClass();
-		
-		this.refHashMap_StringInt = setHashMap;
 	}
 
 }

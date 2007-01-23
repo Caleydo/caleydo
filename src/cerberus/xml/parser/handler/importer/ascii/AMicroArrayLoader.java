@@ -19,10 +19,11 @@ import java.util.StringTokenizer;
 //import java.util.NoSuchElementException;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+//import java.io.FileReader;s
 import java.io.IOException;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.command.factory.CommandFactory;
 
 //import java.util.*;
 
@@ -36,7 +37,7 @@ import cerberus.data.xml.IMementoXML;
 //import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 //import cerberus.data.collection.parser.ParserTokenType;
 import cerberus.data.collection.parser.ParserTokenHandler;
-import cerberus.manager.ILoggerManager.LoggerType;
+//import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.IParserObject;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.handler.importer.ascii.AbstractLoader;
@@ -236,7 +237,8 @@ implements IMementoXML, IParserObject {
 		
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
 
-		final String sTokenPatternParserSeperator = ";";
+		final String sTokenPatternParserSeperator = 
+			CommandFactory.sDelimiter_Parser_DataType;
 		
 		// wipe former binding...
 		alTokenTargetToParserTokenType.clear();

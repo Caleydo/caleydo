@@ -4,6 +4,7 @@
 package cerberus.data.mapping;
 
 import cerberus.data.mapping.GenomeMappingDataType;
+import cerberus.data.mapping.GenomeIdType;
 
 /**
  * @author Michael Kalkusch
@@ -12,40 +13,98 @@ import cerberus.data.mapping.GenomeMappingDataType;
 public enum GenomeMappingType
 {
 
-	ACCESSION_CODE_2_ACCESSION (GenomeMappingDataType.STRING2INT),
+	ACCESSION_CODE_2_ACCESSION (
+			GenomeIdType.ACCESSION_CODE,
+			GenomeIdType.ACCESSION, 
+			GenomeMappingDataType.STRING2INT),
 	
-	ACCESSION_2_NCBI_GENEID (GenomeMappingDataType.INT2INT),
-	ACCESSION_2_NCBI_GENEID_REVERSE (GenomeMappingDataType.INT2INT),
+	ACCESSION_2_NCBI_GENEID (
+			GenomeIdType.ACCESSION,
+			GenomeIdType.NCBI_GENEID,
+			GenomeMappingDataType.INT2INT),
+			
+	ACCESSION_2_NCBI_GENEID_REVERSE (
+			GenomeIdType.NCBI_GENEID,
+			GenomeIdType.ACCESSION,
+			GenomeMappingDataType.INT2INT),
 	
-	KEGG_2_ENZYMEID (GenomeMappingDataType.MULTI_INT2INT),
-	KEGG_2_ENZYMEID_R (GenomeMappingDataType.MULTI_INT2INT),
+	KEGG_2_ENZYMEID (
+			GenomeIdType.KEGG_ID,
+			GenomeIdType.ENZYME,
+			GenomeMappingDataType.MULTI_INT2INT),
+			
+	KEGG_2_ENZYMEID_R (
+			GenomeIdType.ENZYME,
+			GenomeIdType.KEGG_ID,
+			GenomeMappingDataType.MULTI_INT2INT),
 	
-	NCBI_GENEID_2_KEGG  (GenomeMappingDataType.INT2INT),
+	NCBI_GENEID_2_KEGG  (
+			GenomeIdType.NCBI_GENEID,
+			GenomeIdType.KEGG_ID,
+			GenomeMappingDataType.INT2INT),
 	
-	PATHWAY_2_NCBI_GENEID  (GenomeMappingDataType.INT2INT),
-	MICROARRAY_2_NCBI_GENEID (GenomeMappingDataType.STRING2INT),
-	MICROARRAY_2_ACCESSION (GenomeMappingDataType.STRING2STRING),
+	PATHWAY_2_NCBI_GENEID  (
+			GenomeIdType.PATHWAY,
+			GenomeIdType.NCBI_GENEID,
+			GenomeMappingDataType.INT2INT),
+			
+	MICROARRAY_2_NCBI_GENEID (GenomeIdType.MICROARRAY,
+			GenomeIdType.NCBI_GENEID,
+			GenomeMappingDataType.STRING2INT),
+			
+	MICROARRAY_2_ACCESSION (
+			GenomeIdType.MICROARRAY,
+			GenomeIdType.ACCESSION,
+			GenomeMappingDataType.STRING2STRING),
 	
-	MICROARRAY_2_ACCESSION_STRING( GenomeMappingDataType.MULTI_STRING2STRING),
+	MICROARRAY_2_ACCESSION_STRING( 
+			GenomeIdType.MICROARRAY,
+			GenomeIdType.ACCESSION,
+			GenomeMappingDataType.MULTI_STRING2STRING),
 	
-	ENZYME_CODE_2_ENZYME  (GenomeMappingDataType.STRING2INT),
+	ENZYME_CODE_2_ENZYME  (
+			GenomeIdType.ENZYME_CODE,
+			GenomeIdType.ENZYME,
+			GenomeMappingDataType.STRING2INT),
 	
-	ENZYME_CODE_2_ENZYME_R (GenomeMappingDataType.INT2STRING),
+	ENZYME_CODE_2_ENZYME_R (
+			GenomeIdType.ENZYME,
+			GenomeIdType.ENZYME_CODE,
+			GenomeMappingDataType.INT2STRING),
 	
-	Z_NO_MAPPING(GenomeMappingDataType.NONE);
+	NON_MAPPING(GenomeIdType.NONE,
+			GenomeIdType.NONE,
+			GenomeMappingDataType.NONE);
 	
 	
+	private final GenomeIdType originType;
 	
-	private boolean bIsMultiMap;
+	private final GenomeIdType targetType;
 	
-	private GenomeMappingDataType enumDataMappingType;
+	private final boolean bIsMultiMap;
+	
+	private final GenomeMappingDataType enumDataMappingType;
 	
 	
-	private GenomeMappingType( GenomeMappingDataType setDataMappingType ) {
+	private GenomeMappingType( GenomeIdType destination,
+			GenomeIdType target,
+			GenomeMappingDataType setDataMappingType ) {
 		enumDataMappingType = setDataMappingType;
+		
+		originType = destination;
+		targetType = target;
 		
 		bIsMultiMap = setDataMappingType.isMultiMapUsed();
 	}
+	
+//	private GenomeMappingType( GenomeMappingDataType setDataMappingType ) {
+//		enumDataMappingType = setDataMappingType;
+//		
+//		originType = GenomeIdType.ACCESSION_2_NCBI_GENEID;
+//		targetType = GenomeIdType.ACCESSION_2_NCBI_GENEID;
+//		
+//		bIsMultiMap = setDataMappingType.isMultiMapUsed();
+//	}
 
 	/**
 	 * TRUE if this is a MultiMap <Integer,ArrayList<Integer>>
@@ -67,5 +126,15 @@ public enum GenomeMappingType
 	 */
 	public GenomeMappingDataType getDataMapppingType() {
 		return enumDataMappingType;
+	}
+	
+	public GenomeIdType getTypeOrigin()
+	{
+		return originType;
+	}
+	
+	public GenomeIdType getTypeTarget()
+	{
+		return targetType;
 	}
 }

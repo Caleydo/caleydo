@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import cerberus.base.map.MultiHashArrayGMap;
 
 /**
- * @author java
+ * @author Michael Kalkusch
  *
  */
 public class TestMultiHashArrayGMap {

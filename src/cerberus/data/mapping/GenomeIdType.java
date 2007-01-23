@@ -5,6 +5,8 @@ package cerberus.data.mapping;
 
 
 /**
+ * Note: *_CODE indicates, that is it a String that is mapped to an integer internally.
+ * 
  * @author Michael Kalkusch
  *
  */
@@ -12,6 +14,7 @@ public enum GenomeIdType
 {
 
 	ACCESSION    ("acc","accession"),
+	ACCESSION_CODE    ("acc","accession_code"),
 	ENZYME       ("ec","EC_number"),
 	ENZYME_CODE  ("ec","EC_number as String"),
 	METABOLIT   ("ko","methobliot"),
@@ -19,13 +22,14 @@ public enum GenomeIdType
 	NCBI_GENEID  ("ncbi-geneid","ncbi-geneid"),
 	NCBI_GI      ("ncbi-gi","ncbi-gi"),
 	PATHWAY      ("path","pathway-id"),
-	KEGG_ID      ("kegg","kegg-id");
+	KEGG_ID      ("kegg","kegg-id"),
+	NONE         ("none","none");
 	
-	private String sName;
+	private final String sName;
 	
-	private String sDesciption;
+	private final String sDesciption;
 	
-	private GenomeIdType( String name, String desciption ) {
+	private GenomeIdType( final String name, final String desciption ) {
 		sName = name;
 		sDesciption = desciption;
 	}
@@ -39,13 +43,13 @@ public enum GenomeIdType
 	}
 
 	
-	/**
-	 * @param desciption The desciption to set.
-	 */
-	public void setDesciption(String desciption) {
-	
-		sDesciption = desciption;
-	}
+//	/**
+//	 * @param desciption The desciption to set.
+//	 */
+//	public void setDesciption(String desciption) {
+//	
+//		sDesciption = desciption;
+//	}
 
 	
 	/**
@@ -57,11 +61,11 @@ public enum GenomeIdType
 	}
 
 	
-	/**
-	 * @param name The name to set.
-	 */
-	public void setName(String name) {
-	
-		sName = name;
-	}
+//	/**
+//	 * @param name The name to set.
+//	 */
+//	public void setName(String name) {
+//	
+//		sName = name;
+//	}
 }

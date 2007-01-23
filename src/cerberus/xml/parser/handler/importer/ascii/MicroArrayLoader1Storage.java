@@ -6,7 +6,6 @@ package cerberus.xml.parser.handler.importer.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;

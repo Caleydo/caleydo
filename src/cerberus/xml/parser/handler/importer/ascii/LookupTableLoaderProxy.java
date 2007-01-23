@@ -5,27 +5,25 @@ package cerberus.xml.parser.handler.importer.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
+//import java.util.HashMap;
+//import java.util.ListIterator;
+//import java.util.NoSuchElementException;
+//import java.util.StringTokenizer;
 
-import cerberus.base.map.MultiHashArrayMap;
-import cerberus.base.map.MultiHashArrayStringMap;
-import cerberus.data.collection.parser.ParserTokenHandler;
+//import cerberus.base.map.MultiHashArrayMap;
+//import cerberus.base.map.MultiHashArrayStringMap;
+//import cerberus.data.collection.parser.ParserTokenHandler;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.xml.parser.IParserObject;
+import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.handler.importer.ascii.AbstractLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader;
-import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntLoader;
+import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableHashMapLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntMultiMapLoader;
-import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringIntLoader;
-import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringStringLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringStringMultiMapLoader;
 
 
@@ -34,12 +32,14 @@ import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringS
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.xml.parser.IParserObject
  */
-public class LookupTableLoaderProxy extends AbstractLoader {
+public final class LookupTableLoaderProxy 
+extends AbstractLoader {
 	
 	private final ILoggerManager refLoggerManager;
 	
-	protected ILookupTableLoader refLookupTableLoader;
+	private ILookupTableLoader refProxyLookupTableLoader;
 	
 	/**
 	 * @param setGeneralManager
@@ -59,7 +59,10 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 		switch ( type ) {
 		
 		case INT2INT:
-			refLookupTableLoader = new LookupTableIntIntLoader(
+		case INT2STRING:
+		case STRING2INT:
+		case STRING2STRING:
+			refProxyLookupTableLoader = new LookupTableHashMapLoader(
 					setGeneralManager,
 					setFileName,
 					genometype,
@@ -67,7 +70,7 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 			break;
 			
 		case MULTI_INT2INT:
-			refLookupTableLoader = new LookupTableIntIntMultiMapLoader(
+			refProxyLookupTableLoader = new LookupTableIntIntMultiMapLoader(
 					setGeneralManager,
 					setFileName,
 					genometype,
@@ -75,41 +78,26 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 			break;
 			
 		case MULTI_STRING2STRING:
-			refLookupTableLoader = new LookupTableStringStringMultiMapLoader(
+			refProxyLookupTableLoader = new LookupTableStringStringMultiMapLoader(
 					setGeneralManager,
 					setFileName,
 					genometype,
 					this  );
 			break;
 			
-		case STRING2INT:
-			refLookupTableLoader = new LookupTableStringIntLoader(
-					setGeneralManager,
-					setFileName,
-					genometype,
-					this  );
-			break;
-			
-		case STRING2STRING:
-			refLookupTableLoader = new LookupTableStringStringLoader(
-					setGeneralManager,
-					setFileName,
-					genometype,
-					this  );
-			break;
 			
 		default:
 			assert false : "unsupported type! " + type;
 		}
 		
-		refLookupTableLoader.initLUT();
+		refProxyLookupTableLoader.initLUT();
 	}
 //
 //	public void setMultiHashMap( final MultiHashArrayMap setMultiHashMap ) {
-//		refLookupTableLoader.setMultiHashMap( setMultiHashMap );
+//		refProxyLookupTableLoader.setMultiHashMap( setMultiHashMap );
 //	}
 	
-	public void setHashMap( final HashMap setHashMap,
+	public void setHashMap( final IGenomeIdMap setHashMap,
 			final GenomeMappingType type) {
 		
 		refLoggerManager.logMsg(
@@ -117,7 +105,7 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 				type.toString() + ") called from outside!",
 				LoggerType.VERBOSE );
 		
-		refLookupTableLoader.setHashMap( setHashMap, type);
+		refProxyLookupTableLoader.setHashMap( setHashMap, type);
 	}
 	
 	/* (non-Javadoc)
@@ -135,7 +123,7 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 				iNumberOfLinesInFile );
 		
 		boolean bParsingResult = 
-			refLookupTableLoader.loadDataParseFileLUT( 
+			refProxyLookupTableLoader.loadDataParseFileLUT( 
 				brFile, 
 				iNumberOfLinesInFile );
 		
@@ -183,7 +171,7 @@ public class LookupTableLoaderProxy extends AbstractLoader {
 	 * @see cerberus.xml.parser.IParserObject#destroy()
 	 */
 	public void destroy() {
-		refLookupTableLoader.destroyLUT();
+		refProxyLookupTableLoader.destroyLUT();
 	}
 
 }

@@ -16,6 +16,8 @@ import javax.xml.rpc.ServiceException;
 import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
 
+import cerberus.manager.command.factory.CommandFactory;
+
 /**
  * Class generates a file that contains a mapping 
  * from GeneIDs to Enzyme Code.
@@ -25,7 +27,8 @@ import keggapi.KEGGPortType;
  */
 public class MappingBuilder {
 	
-	protected static String strDelimiter = ";";
+	protected static String strDelimiter = 
+		CommandFactory.sDelimiter_Parser_DataType;
 	
 	protected PrintWriter writer_ACCESSION_NUMBER_2_ENZYME_ID;
 	

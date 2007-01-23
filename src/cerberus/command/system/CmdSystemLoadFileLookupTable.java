@@ -8,9 +8,8 @@
  */
 package cerberus.command.system;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Iterator;
+//import java.util.HashMap;
+//import java.util.Iterator;
 import java.util.StringTokenizer;
 
 
@@ -31,8 +30,8 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
-import cerberus.data.collection.ISet;
-import cerberus.base.map.MultiHashArrayMap;
+//import cerberus.data.collection.ISet;
+//import cerberus.base.map.MultiHashArrayMap;
 
 
 /**
@@ -47,6 +46,8 @@ public class CmdSystemLoadFileLookupTable
 extends ACommand
 implements ICommand {
 
+	public static final String sCommaSeperatedFileExtension = ".csv";
+	
 	private final IGeneralManager refGeneralManager;
 	
 	protected String sFileName;
@@ -156,19 +157,8 @@ implements ICommand {
 				iTargetSetId + "])",
 				LoggerType.STATUS );
 		
-//		ISet useSet = refGeneralManager.getSingelton().getSetManager(
-//				).getItemSet( iTargetSetId );
-//		
-//		if ( useSet == null ) {
-//			String errorMsg = "Could not load data via MicroArrayLoader1Storage, target Set is not valid! file=["+
-//			sFileName + "] LUT-tpye:[" +
-//			sLookupTableType + "]  targetSet(s)=[" +
-//			iTargetSetId + "])";
-//			
-//			refGeneralManager.getSingelton().logMsg(
-//					errorMsg,
-//					LoggerType.ERROR_ONLY );
-//			
+
+//			if ( ?? ) {
 //			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
 //			exitWarning.setText("ERROR",errorMsg);
 //			exitWarning.doCommand();
@@ -183,25 +173,35 @@ implements ICommand {
 		
 		try 
 		{
-			GenomeMappingType lut_genome_tpye = 
+			GenomeMappingType lut_genome_type = 
 				GenomeMappingType.valueOf( sLookupTableType );
 			
 			GenomeMappingDataType genomeDataType = 
 				GenomeMappingDataType.valueOf( sLookupTableDataType );
 			
+			refGenomeIdManager.createMapByType( lut_genome_type,
+					genomeDataType,
+					1000 );
+			
 			loader = new LookupTableLoaderProxy( 
 					refGeneralManager, 
 					sFileName,
-					lut_genome_tpye,
-					genomeDataType );					
+					lut_genome_type,
+					genomeDataType );	
 			
-			//loader.setFileName( sFileName );
-			//loader.setTargetSet( useSet );
+			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
+				loader.setTokenSeperator( CommandFactory.sDelimiter_Parser_DataType );
+			}
+			
+			loader.setHashMap(
+					refGenomeIdManager.getMapByType(lut_genome_type),
+					lut_genome_type );
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine,
 					iStopPareseFileAtLine );
-			//loader.setTokenSeperator( ";" );
 			
+			refGenomeIdManager.buildLUT_startEditing( lut_genome_type );
 			loader.loadData();
+			refGenomeIdManager.buildLUT_stopEditing( lut_genome_type );
 			
 			
 		} //try

@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 import cerberus.base.map.MultiHashArrayMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
+//import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 
 

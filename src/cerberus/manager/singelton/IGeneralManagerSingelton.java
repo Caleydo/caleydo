@@ -10,8 +10,6 @@ import cerberus.data.xml.IMementoCallbackXML;
 public interface IGeneralManagerSingelton 
 extends IGeneralManager, IMementoCallbackXML {
 
-	//public static final String sXMLDelimiter = ";";
-
 
 	/**
 	 * Creates a new unique Id with the type, that was set previouse.

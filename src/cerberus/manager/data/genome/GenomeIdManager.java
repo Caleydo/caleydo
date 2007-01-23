@@ -18,7 +18,8 @@ import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * @author Michael Kalkusch
- *
+ * 
+ * @deprecated use DynamicGenomeIdManager.java instead
  */
 public class GenomeIdManager extends AGenomeIdManager
 		implements IGenomeIdManager {

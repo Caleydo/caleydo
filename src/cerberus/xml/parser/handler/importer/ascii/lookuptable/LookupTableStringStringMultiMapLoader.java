@@ -5,13 +5,14 @@ package cerberus.xml.parser.handler.importer.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.command.factory.CommandFactory;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 
 
@@ -19,8 +20,9 @@ import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
  * @author Michael Kalkusch
  *
  */
-public class LookupTableStringStringMultiMapLoader extends ALookupTableLoader
-		implements ILookupTableLoader {
+public class LookupTableStringStringMultiMapLoader 
+extends ALookupTableLoader
+implements ILookupTableLoader {
 
 	protected boolean bOneLineConaintsMultipleStrings = false;
 	
@@ -37,7 +39,8 @@ public class LookupTableStringStringMultiMapLoader extends ALookupTableLoader
 
 		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
 		
-		refLookupTableLoaderProxy.setTokenSeperator( ";" );
+		refLookupTableLoaderProxy.setTokenSeperator( 
+				CommandFactory.sDelimiter_Parser_DataType);
 	}
 
 	/* (non-Javadoc)
@@ -200,10 +203,10 @@ public class LookupTableStringStringMultiMapLoader extends ALookupTableLoader
 	}
 
 	
-	public void setHashMap_MultiStringString( HashMap  <String,String> setHashMap ) {
-		Class buffer = setHashMap.getClass();
-		
-		//this.refMultiHashMap_StringString = setHashMap;
-	}
+//	public void setHashMap_MultiStringString( HashMap  <String,String> setHashMap ) {
+//		Class buffer = setHashMap.getClass();
+//		
+//		//this.refMultiHashMap_StringString = setHashMap;
+//	}
 
 }
