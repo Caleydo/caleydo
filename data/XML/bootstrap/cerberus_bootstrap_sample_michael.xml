@@ -46,10 +46,23 @@
 		   attrib3="0 -1" />
 		   
 		 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
-		   detail="data/MicroarrayData/lookup_table_id/accession_code_2_cerberusAccessionId.txt"	
-		   attrib1="ACCESSION_CODE_2_ACCESSION STRING2INT" 
+		   detail="data/MicroarrayData/lookup_table_id/ncbi_2_kegg_geneid_INT2INT.txt"	
+		   attrib1="NCBI_GENEID_2_KEGG INT2INT" 
 		   attrib2="55101" 
 		   attrib3="0 -1" />
+		   
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
+		   detail="data/MicroarrayData/lookup_table_id/MICROARRAY_CODE_2_MICROARRAY.csv"	
+		   attrib1="MICROARRAY_2_ACCESSION STRING2INT" 
+		   attrib2="55101" 
+		   attrib3="0 -1" />
+		   
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
+		   detail="data/MicroarrayData/lookup_table_id/MICROARRAY_2_MICROARRAY_CODE.csv"	
+		   attrib1="ACCESSION_2_MICROARRAY INT2STRING" 
+		   attrib2="55101" 
+		   attrib3="0 -1" />
+		  
 		
 		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
