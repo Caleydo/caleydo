@@ -93,7 +93,7 @@ implements IUniqueManagedObject {
 	}
 
 	public void initCanvas() {
-		initMenu();
+		//initMenu();
 		initIFrames();
 		initComonenets();
 		

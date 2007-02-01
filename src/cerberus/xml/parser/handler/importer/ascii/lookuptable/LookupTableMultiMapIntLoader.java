@@ -19,7 +19,7 @@ import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
  * @author Michael Kalkusch
  *
  */
-public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
+public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 		implements ILookupTableLoader {
 
 	protected MultiHashArrayMap refMultiHashMap;
@@ -28,7 +28,7 @@ public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public LookupTableIntIntMultiMapLoader(final IGeneralManager setGeneralManager,
+	public LookupTableMultiMapIntLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
 			final GenomeMappingType genometype,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
@@ -40,7 +40,7 @@ public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
-	public boolean loadDataParseFileLUT(BufferedReader brFile,
+	public int loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
 
 		String sLine;
@@ -96,6 +96,11 @@ public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
 				} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
 				
 		
+				 if ( ! bMaintainLoop ) {
+					refLookupTableLoaderProxy.progressBarStoredIncrement();
+				    return -1;
+				 }
+				 
 				refLookupTableLoaderProxy.progressBarStoredIncrement();
 				
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
@@ -105,7 +110,8 @@ public class LookupTableIntIntMultiMapLoader extends ALookupTableLoader
 		
 	    } // end: while ((sLine = brFile.readLine()) != null) { 
 	 
-		return true;
+	   
+		return iLineInFile;
 	}
 	
 	public void setMultiHashMap( MultiHashArrayMap setMultiHashMap ) {

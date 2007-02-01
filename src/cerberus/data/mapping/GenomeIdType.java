@@ -3,6 +3,7 @@
  */
 package cerberus.data.mapping;
 
+import cerberus.data.collection.StorageType;
 
 /**
  * Note: *_CODE indicates, that is it a String that is mapped to an integer internally.
@@ -13,25 +14,33 @@ package cerberus.data.mapping;
 public enum GenomeIdType
 {
 
-	ACCESSION    ("acc","accession"),
-	ACCESSION_CODE    ("acc","accession_code"),
-	ENZYME       ("ec","EC_number"),
-	ENZYME_CODE  ("ec","EC_number as String"),
-	METABOLIT   ("ko","methobliot"),
-	MICROARRAY   ("IMAGp","Microarray LUT"),
-	NCBI_GENEID  ("ncbi-geneid","ncbi-geneid"),
-	NCBI_GI      ("ncbi-gi","ncbi-gi"),
-	PATHWAY      ("path","pathway-id"),
-	KEGG_ID      ("kegg","kegg-id"),
-	NONE         ("none","none");
+	ACCESSION    (StorageType.INT,"acc","accession"),
+	ACCESSION_CODE    (StorageType.STRING,"acc","accession_code"),
+	ENZYME       (StorageType.INT,"ec","EC_number"),
+	ENZYME_CODE  (StorageType.STRING,"ec","EC_number as String"),
+	METABOLIT   (StorageType.INT,"ko","methobliot"),
+	METABOLIT_CODE   (StorageType.STRING,"ko","methobliot"),
+	MICROARRAY   (StorageType.INT,"IMAGp","Microarray LUT"),
+	MICROARRAY_CODE   (StorageType.STRING,"IMAGp","Microarray LUT"),
+	NCBI_GENEID  (StorageType.INT,"ncbi-geneid","ncbi-geneid"),
+	NCBI_GI      (StorageType.INT,"ncbi-gi","ncbi-gi"),
+	PATHWAY      (StorageType.INT,"path","pathway-id"),
+	KEGG      (StorageType.INT,"kegg","kegg-id"),
+	NONE         (StorageType.NONE,"none","none");
+	
+	
+	private final StorageType storageType;
 	
 	private final String sName;
 	
 	private final String sDesciption;
 	
-	private GenomeIdType( final String name, final String desciption ) {
+	private GenomeIdType( final StorageType setStorageType, 
+			final String name, 
+			final String desciption ) {
 		sName = name;
 		sDesciption = desciption;
+		storageType = setStorageType;
 	}
 	
 	/**
@@ -42,6 +51,15 @@ public enum GenomeIdType
 		return sDesciption;
 	}
 
+	/**
+	 * Define type of storage required for this type.
+	 * 
+	 * @return type of storage needed
+	 */
+	public StorageType getStorageType() {
+	
+		return storageType;
+	}
 	
 //	/**
 //	 * @param desciption The desciption to set.

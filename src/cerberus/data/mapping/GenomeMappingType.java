@@ -27,20 +27,25 @@ public enum GenomeMappingType
 			GenomeIdType.NCBI_GENEID,
 			GenomeIdType.ACCESSION,
 			GenomeMappingDataType.INT2INT),
-	
+
+	ACCESSION_2_MICROARRAY (
+			GenomeIdType.MICROARRAY,
+			GenomeIdType.ACCESSION,
+			GenomeMappingDataType.INT2STRING),
+					
 	KEGG_2_ENZYMEID (
-			GenomeIdType.KEGG_ID,
+			GenomeIdType.KEGG,
 			GenomeIdType.ENZYME,
 			GenomeMappingDataType.MULTI_INT2INT),
 			
 	KEGG_2_ENZYMEID_R (
 			GenomeIdType.ENZYME,
-			GenomeIdType.KEGG_ID,
+			GenomeIdType.KEGG,
 			GenomeMappingDataType.MULTI_INT2INT),
 	
 	NCBI_GENEID_2_KEGG  (
 			GenomeIdType.NCBI_GENEID,
-			GenomeIdType.KEGG_ID,
+			GenomeIdType.KEGG,
 			GenomeMappingDataType.INT2INT),
 	
 	PATHWAY_2_NCBI_GENEID  (
@@ -56,7 +61,27 @@ public enum GenomeMappingType
 			GenomeIdType.MICROARRAY,
 			GenomeIdType.ACCESSION,
 			GenomeMappingDataType.STRING2STRING),
-	
+			
+	MICROARRAY_CODE_2_ACCESSION (
+			GenomeIdType.MICROARRAY,
+			GenomeIdType.ACCESSION,
+			GenomeMappingDataType.STRING2INT),
+			
+	MICROARRAY_CODE_2_ACCESSION_CODE (
+			GenomeIdType.MICROARRAY_CODE,
+			GenomeIdType.ACCESSION_CODE,
+			GenomeMappingDataType.MULTI_STRING2STRING ),
+
+	MICROARRAY_CODE_2_ACCESSION_CODE_USE_LUT (
+			GenomeIdType.MICROARRAY_CODE,
+			GenomeIdType.ACCESSION_CODE,
+			GenomeMappingDataType.MULTI_STRING2STRING_USE_LUT ),
+					
+	MICROARRAY_CODE_2_MICROARRAY (
+			GenomeIdType.MICROARRAY,
+			GenomeIdType.MICROARRAY,
+			GenomeMappingDataType.STRING2INT),
+					
 	MICROARRAY_2_ACCESSION_STRING( 
 			GenomeIdType.MICROARRAY,
 			GenomeIdType.ACCESSION,

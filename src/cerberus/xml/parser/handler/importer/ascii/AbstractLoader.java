@@ -123,6 +123,12 @@ implements IMementoXML, IParserObject {
 	protected String sTokenSeperator = "\t";
 	
 	/**
+	 * Define the speperator
+	 * TAB is the default token.
+	 */
+	protected String sTokenInnerLoopSeperator = " ";
+	
+	/**
 	 * Define, if exact file size need to be computed prior to loading the file.
 	 * Default is fales.
 	 * 
@@ -166,6 +172,25 @@ implements IMementoXML, IParserObject {
 	public final String getTokenSeperator() {			
 		return sTokenSeperator;
 	}
+	
+	/**
+	 * Set the current token seperator.
+	 * 
+	 * @param token current token seperator
+	 */
+	public final void setTokenSeperatorInnerLoop(final String token) {			
+		sTokenInnerLoopSeperator = token;
+	}
+	
+	/**
+	 * Get the current token seperator.
+	 * 
+	 * @return current token seperator
+	 */
+	public final String getTokenSeperatorInnerLoop() {			
+		return sTokenInnerLoopSeperator;
+	}
+	
 	
 	/**
 	 * Set the current file name.
@@ -495,7 +520,7 @@ implements IMementoXML, IParserObject {
 	 * @param brFile input stream
 	 * @param iNumberOfLinesInFile optional, number of lines in file, only valid if bRequiredSizeOfReadableLines==true
 	 */
-	protected abstract boolean loadDataParseFile( BufferedReader brFile,
+	protected abstract int loadDataParseFile( BufferedReader brFile,
 			final int iNumberOfLinesInFile )
 		throws IOException; 
 	

@@ -13,6 +13,7 @@ import java.io.IOException;
 //import cerberus.base.map.MultiHashArrayMap;
 //import cerberus.base.map.MultiHashArrayStringMap;
 //import cerberus.data.collection.parser.ParserTokenHandler;
+import cerberus.base.map.MultiHashArrayIntegerMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.IGeneralManager;
@@ -23,8 +24,8 @@ import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.handler.importer.ascii.AbstractLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableHashMapLoader;
-import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableIntIntMultiMapLoader;
-import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableStringStringMultiMapLoader;
+import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapIntLoader;
+import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader;
 
 
 
@@ -70,19 +71,21 @@ extends AbstractLoader {
 			break;
 			
 		case MULTI_INT2INT:
-			refProxyLookupTableLoader = new LookupTableIntIntMultiMapLoader(
+			refProxyLookupTableLoader = new LookupTableMultiMapIntLoader(
 					setGeneralManager,
 					setFileName,
 					genometype,
 					this  );
 			break;
 			
+		case MULTI_STRING2STRING_USE_LUT:
 		case MULTI_STRING2STRING:
-			refProxyLookupTableLoader = new LookupTableStringStringMultiMapLoader(
+			refProxyLookupTableLoader = new LookupTableMultiMapStringLoader(
 					setGeneralManager,
 					setFileName,
 					genometype,
 					this  );
+			refProxyLookupTableLoader.setInitialSizeHashMap( 1000 );
 			break;
 			
 			
@@ -108,11 +111,17 @@ extends AbstractLoader {
 		refProxyLookupTableLoader.setHashMap( setHashMap, type);
 	}
 	
+	public void setMultiMap( final MultiHashArrayIntegerMap setMultiMap,
+			final GenomeMappingType type) {
+		
+		refProxyLookupTableLoader.setMultiMap( setMultiMap, type );
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
 	 */
 	@Override
-	protected boolean loadDataParseFile(BufferedReader brFile,
+	protected int loadDataParseFile(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
 
 		/**
@@ -122,7 +131,7 @@ extends AbstractLoader {
 				0,  // reset progress bar to 0
 				iNumberOfLinesInFile );
 		
-		boolean bParsingResult = 
+		int iTotalNumerOfLinesRed = 
 			refProxyLookupTableLoader.loadDataParseFileLUT( 
 				brFile, 
 				iNumberOfLinesInFile );
@@ -131,7 +140,7 @@ extends AbstractLoader {
 				this.iLineInFile_CurrentDataIndex + "  [" + 			
 				this.iStartParsingAtLine + " -> " +
 				this.iStopParsingAtLine +  "] stoped at line #" +
-				(this.iLineInFile-1),
+				iTotalNumerOfLinesRed,
 				LoggerType.VERBOSE );	
 		
 		/**
@@ -140,7 +149,7 @@ extends AbstractLoader {
 		progressBarResetTitle();		
 		progressBarIncrement(5);
 				
-		return bParsingResult;
+		return iTotalNumerOfLinesRed;
 	}
 
 	/* (non-Javadoc)

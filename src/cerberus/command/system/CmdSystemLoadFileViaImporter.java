@@ -135,7 +135,8 @@ implements ICommand {
 			
 			if ( iArrayStartStop.length > 1 ) 
 			{
-				if ( iArrayStartStop[0] > iArrayStartStop[1] ) {
+				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
+				   ( iArrayStartStop[1] != -1 )){
 					refGeneralManager.getSingelton().logMsg(
 							"CmdSystemLoadFileViaImporter ignore stop index=(" + 
 							iArrayStartStop[1]  + 
@@ -190,7 +191,7 @@ implements ICommand {
 			String errorMsg = "Could not load data via MicroArrayLoader1Storage, target Set is not valid! file=["+
 			sFileName + "] tokens:[" +
 			sTokenPattern + "]  targetSet(s)=[" +
-			iTargetSetId + "])";
+			iTargetSetId + "]) CmdSystemLoadfileViaImporter";
 			
 			refGeneralManager.getSingelton().logMsg(
 					errorMsg,

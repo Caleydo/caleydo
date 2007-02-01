@@ -43,8 +43,11 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayManager;
+import cerberus.manager.type.ManagerObjectType;
+import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
@@ -55,6 +58,7 @@ import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
  * We can decide here if we want to draw in a new widget
  * or if we want to draw in an existing one.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
@@ -227,7 +231,7 @@ extends APathwayGraphViewRep {
 						iPathwayId = StringConversionTool.
 							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
 	
-						refGeneralManager.getSingelton().getLoggerManager().logMsg(
+						refGeneralManager.getSingelton().logMsg(
 								"Load pathway with ID " +iPathwayId,
 								LoggerType.VERBOSE);
 						
@@ -300,7 +304,7 @@ extends APathwayGraphViewRep {
 		    		
 		    		if (sLink == null || sLink.equals(""))
 		    		{
-		    			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		    			refGeneralManager.getSingelton().logMsg(
 		    					this.getClass().getSimpleName() +
 		    					":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
 		    					LoggerType.VERBOSE);
@@ -388,7 +392,7 @@ extends APathwayGraphViewRep {
         // Check if graph is already added to the frame
         if (bGraphSet == false)
         {
-            final Dimension dimOverviewMap = new Dimension(200, 200);
+            //final Dimension dimOverviewMap = new Dimension(200, 200);
             final Dimension dimPathway = new Dimension(iWidth, iHeight);
 
         	JScrollPane refScrollPane = new JScrollPane(refPathwayGraph);
@@ -741,7 +745,10 @@ extends APathwayGraphViewRep {
 	 */
 	public void showOverviewMapInNewWindow(Dimension dim) {
 		
-        JFrame wnd = new JFrame();
+		IViewCanvasManager refViewCanvasMng = refGeneralManager.getSingelton().getViewCanvasManager();
+		WorkspaceSwingFrame workspaceFrame = refViewCanvasMng.createWorkspace(ManagerObjectType.VIEW_NEW_FRAME, "");
+		
+        JFrame wnd = (JFrame) workspaceFrame;
         wnd.setLocation(800, 500);
         wnd.setSize(dim);
         wnd.setVisible(true);
@@ -779,7 +786,7 @@ extends APathwayGraphViewRep {
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
 			sPathwayImageFilePath = "data/images/pathways/" +sPathwayImageFilePath +".gif";
 
-			refGeneralManager.getSingelton().getLoggerManager().logMsg(
+			refGeneralManager.getSingelton().logMsg(
 					"Load background pathway from file: " +sPathwayImageFilePath,
 					LoggerType.VERBOSE);
 			
@@ -829,7 +836,7 @@ extends APathwayGraphViewRep {
 	public void loadBackgroundOverlayImage(String sPathwayImageFilePath, 
 			Pathway refCurrentPathway) {
 		
-		refGeneralManager.getSingelton().getLoggerManager().logMsg(
+		refGeneralManager.getSingelton().logMsg(
 				"Load background pathway image from file: " 
 				+sPathwayImageFilePath, 
 				LoggerType.VERBOSE);

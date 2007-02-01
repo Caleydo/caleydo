@@ -124,7 +124,7 @@ extends AMicroArrayLoader {
 	
 	
 	@Override
-	protected boolean loadDataParseFile(BufferedReader brFile,
+	protected int loadDataParseFile(BufferedReader brFile,
 			final int iNumberOfLinesInFile )
 		throws IOException 
 	{
@@ -139,7 +139,7 @@ extends AMicroArrayLoader {
 			if ( refDataStorage == null ) {
 				assert false: "No reference to IStorage was set!";
 			
-				return false;
+				return -1;
 			}
 			assert false : "deprecated call! need to assign a ISet!";
 		}
@@ -391,7 +391,7 @@ extends AMicroArrayLoader {
 		super.progressBarResetTitle();
 		super.progressBarIncrement( 10 );
 		
-		return true;
+		return lineInFile - this.iStartParsingAtLine;
 	}
 
 	@Override

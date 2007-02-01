@@ -10,6 +10,8 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import cerberus.data.mapping.GenomeMappingType;
+import cerberus.base.map.MultiHashArrayIntegerMap;
+import cerberus.base.map.MultiHashArrayMap;
 import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
@@ -20,19 +22,21 @@ import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
  * @author Michael Kalkusch
  *
  */
-public class LookupTableStringStringMultiMapLoader 
+public class LookupTableMultiMapStringLoader 
 extends ALookupTableLoader
 implements ILookupTableLoader {
 
-	protected boolean bOneLineConaintsMultipleStrings = false;
+	protected boolean bOneLineConaintsMultipleStrings = true;
 	
 	protected MultiHashArrayStringMap refMultiHashMap_StringString;
+	
+	protected MultiHashArrayIntegerMap refMultiHashArrayIntegerMap;
 	
 	/**
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public LookupTableStringStringMultiMapLoader(final IGeneralManager setGeneralManager,
+	public LookupTableMultiMapStringLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
 			final GenomeMappingType genometype,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
@@ -43,10 +47,29 @@ implements ILookupTableLoader {
 				CommandFactory.sDelimiter_Parser_DataType);
 	}
 
+	
+	public final void initLUT() {
+		
+		if ( refMultiHashMap_StringString == null )
+		{
+			refMultiHashMap_StringString = 
+				new MultiHashArrayStringMap( iInitialSizeMultiHashMap );
+		}
+	}
+	
+	public void destroyLUT() {
+		if ( refMultiHashArrayIntegerMap != null ) {
+			
+			copy back!
+			
+		}
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
-	public boolean loadDataParseFileLUT(BufferedReader brFile,
+	public int loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
 
 		
@@ -66,8 +89,14 @@ implements ILookupTableLoader {
 				iStopParsingAtLine);
 	}
 	
+
+	public void setMultiMap( final MultiHashArrayIntegerMap setHashMap,
+			final GenomeMappingType type) {
 	
-	protected boolean loadDataParseFileLUT_oneStringPerLine(BufferedReader brFile,
+		refMultiHashArrayIntegerMap = setHashMap;
+	}
+	
+	protected int loadDataParseFileLUT_oneStringPerLine(BufferedReader brFile,
 			final int iNumberOfLinesInFile,
 			final int iStartParsingAtLine,
 			final int iStopParsingAtLine ) throws IOException {
@@ -126,22 +155,30 @@ implements ILookupTableLoader {
 				
 				refLookupTableLoaderProxy.progressBarStoredIncrement();
 				
+				if ( ! bMaintainLoop )
+				{
+					return -1;
+				}
+				
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
 			
 			iLineInFile++;
 			
 	    } // end: while ((sLine = brFile.readLine()) != null) { 
 	 
-		return true;
+		return iLineInFile;
 	}
 	
 	
-	protected boolean loadDataParseFileLUT_multipleStringPerLine(BufferedReader brFile,
+	protected int loadDataParseFileLUT_multipleStringPerLine(BufferedReader brFile,
 			final int iNumberOfLinesInFile,
 			final int iStartParsingAtLine,
 			final int iStopParsingAtLine ) throws IOException {
-
+		
+		final String sTokenDelimiterOuterLoop = refLookupTableLoaderProxy.getTokenSeperator();
+		final String sTokenDelimiterInnerLoop = refLookupTableLoaderProxy.getTokenSeperatorInnerLoop();
 		String sLine;
+			
 		int iLineInFile = 1;
 		
 	    while ( ((sLine = brFile.readLine()) != null)&&
@@ -156,8 +193,7 @@ implements ILookupTableLoader {
 				
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = 
-					new StringTokenizer(sLine, 
-							refLookupTableLoaderProxy.getTokenSeperator());
+					new StringTokenizer(sLine, sTokenDelimiterOuterLoop);
 				
 				/**
 				 * Read all tokens
@@ -173,9 +209,17 @@ implements ILookupTableLoader {
 						
 						if  ( strTokenText.hasMoreTokens() ) 
 						{
-							String sSecond = strTokenText.nextToken();
+							StringTokenizer tokenizerInnerLoop = 
+								new StringTokenizer( strTokenText.nextToken(),
+										sTokenDelimiterInnerLoop );
 							
-							refMultiHashMap_StringString.put( sFirst, sSecond);
+							while ( tokenizerInnerLoop.hasMoreTokens() ) 
+							{
+								refMultiHashMap_StringString.put( sFirst, 
+										tokenizerInnerLoop.nextToken() );
+								
+							} // while ( tokenizerInnerLoop.hasMoreTokens() ) 
+							
 						}
 						
 					
@@ -193,20 +237,55 @@ implements ILookupTableLoader {
 				
 				refLookupTableLoaderProxy.progressBarStoredIncrement();
 				
+				if ( ! bMaintainLoop ) 
+				{
+					return -1;
+				}
+				
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
 			
 			iLineInFile++;
 		
 	    } // end: while ((sLine = brFile.readLine()) != null) { 
 	 
-		return true;
+		return iLineInFile;
 	}
 
+	public void setHashMap_MultiStringString( MultiHashArrayStringMap  setHashMap ) {
+		
+		refMultiHashMap_StringString = (MultiHashArrayStringMap) setHashMap;
+	}
 	
-//	public void setHashMap_MultiStringString( HashMap  <String,String> setHashMap ) {
-//		Class buffer = setHashMap.getClass();
-//		
-//		//this.refMultiHashMap_StringString = setHashMap;
-//	}
+	public MultiHashArrayStringMap getHashMap_MultiStringString( ) {
+		
+		return refMultiHashMap_StringString;
+	}
 
+	/**
+	 * TRUE if only multple values my be in one line assigned to one key.
+	 * 
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#setOneLineHasMultipleStrings(boolean)
+	 * @return
+	 */
+	public boolean hasOneLineMultipleStrings() {
+		
+		return bOneLineConaintsMultipleStrings;
+	}
+	
+	/**
+	 * Switch parser between two modes parsing one STRING per line (FALSE) or parsing multiple STRINGS in one line (TRUE)
+	 * TRUE: [key, value1 value2 ... value_n] <br>
+	 * FALSE: [key,value1]<br>
+	 *        [key1, value2] <br>
+	 *         .. <br>
+	 *        [key1, value_n] <br>
+	 *        
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#hasOneLineMultipleStrings()
+	 * 
+	 * @param bset TRUE for parsing multiple Strings per line
+	 */
+	public void setOneLineHasMultipleStrings( final boolean bset ) {	
+		bOneLineConaintsMultipleStrings = bset;
+	}
+	
 }

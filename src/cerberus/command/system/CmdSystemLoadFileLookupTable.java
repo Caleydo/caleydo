@@ -125,7 +125,8 @@ implements ICommand {
 			
 			if ( iArrayStartStop.length > 1 ) 
 			{
-				if ( iArrayStartStop[0] > iArrayStartStop[1] ) {
+				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
+						( iArrayStartStop[1] != -1 )) {
 					refGeneralManager.getSingelton().logMsg(
 							"CmdSystemLoadFileLookupTable ignore stop index=(" + 
 							iArrayStartStop[1]  + 
@@ -151,11 +152,15 @@ implements ICommand {
 		
 		refGeneralManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
-				sFileName + "] LUT-tpye:[" +
+				sFileName + "]",
+				LoggerType.STATUS );
+		
+		refGeneralManager.getSingelton().logMsg(
+	    		"load file via importer: [LUT-tpye:[" +
 				sLookupTableType + "]  cast=[" + 
 				sLookupTableDataType + "] targetSet(s)=[" +
 				iTargetSetId + "])",
-				LoggerType.STATUS );
+				LoggerType.VERBOSE );
 		
 
 //			if ( ?? ) {
@@ -193,9 +198,10 @@ implements ICommand {
 				loader.setTokenSeperator( CommandFactory.sDelimiter_Parser_DataType );
 			}
 			
-			loader.setHashMap(
-					refGenomeIdManager.getMapByType(lut_genome_type),
-					lut_genome_type );
+//			loader.setHashMap(
+//					refGenomeIdManager.getMapByType(lut_genome_type),
+//					lut_genome_type );
+			
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine,
 					iStopPareseFileAtLine );
 			
@@ -210,7 +216,7 @@ implements ICommand {
 			String errorMsg = "Could not load data via MicroArrayLoader1Storage, error during loading! file=["+
 				sFileName + "] LUT-type:[" +
 				sLookupTableType + "]  targetSet(s)=[" +
-				iTargetSetId + "])";
+				iTargetSetId + "]) CmdSystemLoadFileLookupTable " + e.getMessage();
 			
 			refGeneralManager.getSingelton().logMsg(
 					errorMsg,

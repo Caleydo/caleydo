@@ -48,7 +48,7 @@ public class LookupTableLoader extends AbstractLoader {
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
 	 */
 	@Override
-	protected boolean loadDataParseFile(BufferedReader brFile,
+	protected int loadDataParseFile(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
 
 	
@@ -144,8 +144,10 @@ public class LookupTableLoader extends AbstractLoader {
 		 */
 		progressBarResetTitle();		
 		progressBarIncrement(5);
+
+		//TODO: return -1 in case of an error!
 		
-		return true;
+		return iLineInFile - this.iStartParsingAtLine;
 	}
 
 	/* (non-Javadoc)

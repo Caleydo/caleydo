@@ -14,6 +14,8 @@ public enum GenomeMappingDataType
 	MULTI_INT2INT ( true ),
 	MULTI_STRING2STRING ( true ),
 	
+	MULTI_STRING2STRING_USE_LUT ( true ),
+	
 	NONE( false );
 	
 	private boolean bUseMultiMap;

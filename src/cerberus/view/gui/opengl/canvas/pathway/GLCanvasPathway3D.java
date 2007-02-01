@@ -345,7 +345,7 @@ implements IGLCanvasUser {
 			
 			refHashDisplayListNodeId2Pathway.put(iVerticesDiplayListId, refTmpPathway);	
 	
-			System.out.println("Current pathway: " +refTmpPathway.getTitle());
+			//System.out.println("Current pathway: " +refTmpPathway.getTitle());
 			
 			fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
 			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);

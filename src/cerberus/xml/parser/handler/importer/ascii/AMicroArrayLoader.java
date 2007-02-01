@@ -150,7 +150,7 @@ implements IMementoXML, IParserObject {
 	 * @param brFile input stream
 	 * @param iNumberOfLinesInFile optional, number of lines in file, only valid if bRequiredSizeOfReadableLines==true
 	 */
-	protected abstract boolean loadDataParseFile( BufferedReader brFile,
+	protected abstract int loadDataParseFile( BufferedReader brFile,
 			final int iNumberOfLinesInFile )
 		throws IOException; 
 	

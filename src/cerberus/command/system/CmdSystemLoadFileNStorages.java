@@ -137,7 +137,7 @@ implements ICommand {
 			{
 				
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
-						(iArrayStartStop[0] != -1 )) {
+						(iArrayStartStop[1] != -1 )) {
 					refGeneralManager.getSingelton().logMsg(
 							"CmdSystemLoadFileNStorages ignore stop index=(" + 
 							iArrayStartStop[1]  + 

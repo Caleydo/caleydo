@@ -6,13 +6,15 @@ package cerberus.manager.data.genome;
 import java.util.ArrayList;
 import java.util.HashMap;
 //import java.util.Iterator;
-import java.util.Map;
+//import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 //import cerberus.base.map.MultiHashArrayMap;
 import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
+//import cerberus.base.map.MultiHashArrayStringMap;
+import cerberus.base.map.MultiHashArrayIntegerMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IGenomeIdManager;
@@ -38,6 +40,8 @@ implements IGenomeIdManager {
 	
 	protected HashMap<GenomeMappingType, IGenomeIdMap> hashType2Map;
 	
+	protected HashMap<GenomeMappingType, MultiHashArrayIntegerMap> hashType2MultiMap;
+	
 	public static final int iInitialSizeHashMap = 1000;
 	
 	public static final int iInitialCountAllLookupTables = 10;
@@ -52,6 +56,8 @@ implements IGenomeIdManager {
 		super(setGeneralManager, 66, ManagerType.GENOME_ID );
 		
 		hashType2Map = new HashMap<GenomeMappingType, IGenomeIdMap> (iInitialCountAllLookupTables);
+		
+		hashType2MultiMap = new  HashMap<GenomeMappingType, MultiHashArrayIntegerMap> (iInitialCountAllLookupTables);
 	}
 
 	
@@ -76,33 +82,43 @@ implements IGenomeIdManager {
 		
 		IGenomeIdMap newMap = null;
 		
-		switch ( dataType ) 
-		{
-		case INT2INT:
-			newMap = new GenomeIdMapInt2Int(iInitialSizeHashMap);
-			break;
-			
-		case INT2STRING:
-			newMap = new GenomeIdMapInt2String(iInitialSizeHashMap);
-			break;
-			
-		case STRING2INT:
-			newMap = new GenomeIdMapString2Int(iInitialSizeHashMap);
-			break;
-			
-		case STRING2STRING:
-			newMap = new GenomeIdMapString2String(iInitialSizeHashMap);
-			break;
-			
-		default:
-			assert false : "createMap() type=" + dataType + " is not supported";
-			return false;
-			
-		} // switch ( dataType ) 
 		
-		try 
+		try //catch ( OutOfMemoryError oee ) 
 		{
+			
+			switch ( dataType ) 
+			{
+			case INT2INT:
+				newMap = new GenomeIdMapInt2Int(iInitialSizeHashMap);
+				break;
+				
+			case INT2STRING:
+				newMap = new GenomeIdMapInt2String(iInitialSizeHashMap);
+				break;
+				
+			case STRING2INT:
+				newMap = new GenomeIdMapString2Int(iInitialSizeHashMap);
+				break;
+				
+			case STRING2STRING:
+				newMap = new GenomeIdMapString2String(iInitialSizeHashMap);
+				break;
+		
+			case MULTI_STRING2STRING:
+			case MULTI_STRING2STRING_USE_LUT:
+				MultiHashArrayIntegerMap newMultiMap = new MultiHashArrayIntegerMap(iInitialSizeHashMap);
+				hashType2MultiMap.put( codingLutType, newMultiMap );
+				return true;
+				
+			default:
+				assert false : "createMap() type=" + dataType + " is not supported";
+				return false;
+				
+			} // switch ( dataType ) 
+			
+
 			hashType2Map.put( codingLutType, newMap );
+			
 		} 
 		catch ( OutOfMemoryError oee ) 
 		{
@@ -121,6 +137,12 @@ implements IGenomeIdManager {
 		return hashType2Map.get( type );
 	}
 	
+	public final MultiHashArrayIntegerMap getMultiMapByType( final GenomeMappingType type ) {
+		
+		return hashType2MultiMap.get( type );
+	}
+	
+	
 	public final boolean hasMapByType( final GenomeMappingType codingLutType ) {
 		
 		return hashType2Map.containsKey( codingLutType );
@@ -137,16 +159,26 @@ implements IGenomeIdManager {
 		
 		currentEditingType = type;
 		
-		currentGenomeIdMap = hashType2Map.get( type );
-		
-		if ( currentGenomeIdMap == null ) {
-			throw new CerberusRuntimeException(
-					"buildLUT_startEditingSetTypes(" + 
-					type + ") is not allocated!",
-					CerberusExceptionType.DATAHANDLING);
+		if ( type.isMultiMap() )
+		{
+			//TODO: register multi hash map to!
+			//assert false :  "TODO: register multi hash map to!";
+			
+			return true;
 		}
-		
-		return true;
+		else
+		{ // if ( type.isMultiMap() ) ... else 
+			currentGenomeIdMap = hashType2Map.get( type );
+			
+			if ( currentGenomeIdMap == null ) {
+				throw new CerberusRuntimeException(
+						"buildLUT_startEditingSetTypes(" + 
+						type + ") is not allocated!",
+						CerberusExceptionType.DATAHANDLING);
+			}
+			
+			return true;
+		} //if ( type.isMultiMap() )
 
 	}
 
@@ -164,6 +196,17 @@ implements IGenomeIdManager {
 		}
 		
 		/* consistency check */
+		
+		if ( type.isMultiMap() )
+		{
+			//TODO: register multi hash map to!
+			//assert false :  "TODO: register multi hash map to!";
+			
+			currentEditingType = GenomeMappingType.NON_MAPPING;
+			
+			return true;
+		} // if ( type.isMultiMap() ) ... else 
+		
 		if ( ! currentEditingType.equals( type ) ) 
 		{
 			throw new CerberusRuntimeException("buildLUT_stopEditing(" + type +

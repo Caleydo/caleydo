@@ -34,6 +34,8 @@ implements ILookupTableLoader {
 	
 	protected IGenomeIdMap refGenomeIdMap;
 	
+	protected int iInitialSizeMultiHashMap = 1000;
+	
 	/**
 	 * @param setGeneralManager
 	 * @param setFileName
@@ -57,7 +59,7 @@ implements ILookupTableLoader {
 		setHashMap( bufferMap, genomeType );
 		
 	}
-
+	
 	public final void setHashMap( final IGenomeIdMap setHashMap,
 			final GenomeMappingType type) {
 		
@@ -90,6 +92,23 @@ implements ILookupTableLoader {
 	 */
 	public void destroyLUT() {
 
+	}
+	
+
+	/**
+	 * Define initial size. 
+	 * Must be called before initLUT() is called!
+	 * 
+	 * @param iInitialSizeHashMap
+	 */
+	public void setInitialSizeHashMap( final int iSetInitialSizeHashMap ) {
+		
+		this.iInitialSizeMultiHashMap = iSetInitialSizeHashMap;
+	}
+	
+	protected final int getiInitialSizeHashMap( ) {
+		
+		return this.iInitialSizeMultiHashMap;
 	}
 
 }

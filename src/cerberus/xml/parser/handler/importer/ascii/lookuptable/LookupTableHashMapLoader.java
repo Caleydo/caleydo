@@ -40,7 +40,7 @@ implements ILookupTableLoader {
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
-	public boolean loadDataParseFileLUT(BufferedReader brFile,
+	public int loadDataParseFileLUT(BufferedReader brFile,
 			int iNumberOfLinesInFile ) throws IOException {
 
 		String sLine;
@@ -94,10 +94,19 @@ implements ILookupTableLoader {
 						/* no ABORT was set. 
 						 * since no more tokens are in ParserTokenHandler skip rest of line..*/
 						bMaintainLoop = false;
+						
+						//reset return value to indicate error
+						iStopParsingAtLine = -1;
+						
 					} catch ( NullPointerException npe ) {
 						bMaintainLoop = false;
+						
+						//reset return value to indicate error
+						iStopParsingAtLine = 1;
+						
 						System.out.println( "NullPointerException! " + npe.toString() );
 						npe.printStackTrace();
+						
 					}
 				
 				} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
@@ -109,10 +118,9 @@ implements ILookupTableLoader {
 			
 			iLineInFile++;
 			
-		
 	    } // end: while ((sLine = brFile.readLine()) != null) { 
 	 
-		return true;
+		return iLineInFile - iStartParsingAtLine;
 	}
 
 }
