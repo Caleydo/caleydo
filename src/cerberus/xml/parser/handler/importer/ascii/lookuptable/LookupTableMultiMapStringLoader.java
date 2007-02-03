@@ -6,7 +6,10 @@ package cerberus.xml.parser.handler.importer.ascii.lookuptable;
 import java.io.BufferedReader;
 import java.io.IOException;
 //import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import cerberus.data.mapping.GenomeMappingType;
@@ -59,10 +62,49 @@ implements ILookupTableLoader {
 	
 	public void destroyLUT() {
 		if ( refMultiHashArrayIntegerMap != null ) {
+			/**
+			 * Convert MultiMap<String> to Multimap<Integer>
+			 */
 			
-			copy back!
+			Set <String> refKeySet = 
+				refMultiHashMap_StringString.keySet();
 			
-		}
+			if ( refKeySet == null ) {
+				assert false : "WARNING: empty key-set!";
+				return;
+			}
+			
+			Iterator <String> iter = refKeySet.iterator();
+			
+			while ( iter.hasNext() ) 
+			{
+				String sKey = iter.next();
+				
+				ArrayList <String> alStringValue = 
+					refMultiHashMap_StringString.get( sKey );							
+				Iterator <String> iterValue = 
+					alStringValue.iterator();
+				
+				ArrayList <Integer> alIntValue = 
+					new ArrayList <Integer> ();
+				
+				while ( iterValue.hasNext() ) 
+				{
+					alIntValue.add(	
+							Integer.valueOf( iterValue.next() ) );
+					
+				} // while ( iterValue.hasNext() )
+				
+				refMultiHashArrayIntegerMap.put( 
+						Integer.valueOf(sKey),
+						alIntValue );
+				
+			} // while ( iter.hasNext() ) 
+			
+			/* clean up MultiMap */
+			refMultiHashMap_StringString.clear();
+			
+		} // if ( refMultiHashArrayIntegerMap != null ) {
 	}
 	
 	

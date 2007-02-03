@@ -4,6 +4,7 @@
 package cerberus.xml.parser.handler.importer.ascii.lookuptable;
 
 
+import cerberus.base.map.MultiHashArrayIntegerMap;
 import cerberus.base.map.MultiHashArrayMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
@@ -79,6 +80,10 @@ implements ILookupTableLoader {
 		assert false : "This methode must be overloaded by sub-class";
 	}
 	
+	public void setMultiMap( final MultiHashArrayIntegerMap setHashMap,
+			final GenomeMappingType type) {
+		assert false : "This methode must be overloaded by sub-class";
+	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#initLUT()
