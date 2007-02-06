@@ -2,11 +2,13 @@ package cerberus.command.view.swt;
 
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.mixer.MixerViewRep;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -17,7 +19,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CmdViewCreateMixer 
-extends ACmdCreate_IdTargetLabelParentAttr 
+extends ACmdCreate_IdTargetLabelParentXY
 implements ICommand {
 	
 	/**
@@ -31,6 +33,8 @@ implements ICommand {
 			final IParameterHandler refParameterHandler) {
 		
 		super(refGeneralManager, refParameterHandler);
+		
+		setAttributes(refParameterHandler);
 	}
 
 	/**
@@ -45,8 +49,8 @@ implements ICommand {
 		MixerViewRep mixerView = (MixerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_MIXER,
 						iUniqueTargetId, 
-							iParentContainerId, 
-							sLabel);
+						iParentContainerId, 
+						sLabel);
 		
 		viewManager.registerItem(
 				mixerView, 
@@ -54,12 +58,19 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		mixerView.readInAttributes(refParameterHandler);
-		
+		mixerView.extractAttributes();
 		mixerView.retrieveGUIContainer();
 		mixerView.initView();
 		mixerView.drawView();
 	}
 
+	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+		
+		refParameterHandler.setValueAndTypeAndDefault("iNumberOfSliders",
+				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
+				IParameterHandler.ParameterHandlerType.INT, "-1");
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		// TODO Auto-generated method stub

@@ -37,6 +37,7 @@ import cerberus.view.gui.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
+import cerberus.view.gui.swt.mixer.MixerViewRep;
 import cerberus.view.gui.swt.pathway.Pathway2DViewRep;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
 import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
@@ -248,6 +249,9 @@ implements IViewManager, IViewGLCanvasManager {
 		case VIEW_SWT_STORAGE_SLIDER:
 			return new StorageSliderViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
+		case VIEW_SWT_MIXER:
+			return new MixerViewRep(this.refGeneralManager, iViewId,
+					iParentContainerId, sLabel);			
 		case VIEW_SWT_BROWSER:
 			return new HTMLBrowserViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
