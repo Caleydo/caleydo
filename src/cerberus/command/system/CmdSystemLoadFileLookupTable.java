@@ -56,6 +56,8 @@ implements ICommand {
 	
 	protected String sLookupTableDataType;
 	
+	protected String sLookupTableTypeOptionalTarget;
+	
 	/**
 	 * Define type of lookup table to be created.
 	 * 
@@ -105,6 +107,11 @@ implements ICommand {
 		
 		sLookupTableType = tokenizer.nextToken();
 		sLookupTableDataType = tokenizer.nextToken();
+		
+		if ( tokenizer.hasMoreTokens() )
+		{
+			sLookupTableTypeOptionalTarget = tokenizer.nextToken();
+		}
 		
 		this.sLUT_Target =	phAttributes.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
@@ -184,6 +191,12 @@ implements ICommand {
 			GenomeMappingDataType genomeDataType = 
 				GenomeMappingDataType.valueOf( sLookupTableDataType );
 			
+			GenomeMappingType lut_genome_type_OptionalTarget = null;
+			
+			if ( sLookupTableTypeOptionalTarget.length() > 0 ) {
+				lut_genome_type_OptionalTarget = GenomeMappingType.valueOf( sLookupTableTypeOptionalTarget );
+			}
+			
 			refGenomeIdManager.createMapByType( lut_genome_type,
 					genomeDataType,
 					1000 );
@@ -192,7 +205,8 @@ implements ICommand {
 					refGeneralManager, 
 					sFileName,
 					lut_genome_type,
-					genomeDataType );	
+					genomeDataType,
+					lut_genome_type_OptionalTarget );	
 			
 			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
 				loader.setTokenSeperator( CommandFactory.sDelimiter_Parser_DataType );

@@ -32,6 +32,11 @@ public enum GenomeMappingType
 			GenomeIdType.MICROARRAY,
 			GenomeIdType.ACCESSION,
 			GenomeMappingDataType.INT2STRING),
+			
+	KEGG_CODE_2_KEGG (
+			GenomeIdType.KEGG,
+			GenomeIdType.KEGG,
+			GenomeMappingDataType.STRING2INT),
 					
 	KEGG_2_ENZYMEID (
 			GenomeIdType.KEGG,
@@ -47,12 +52,21 @@ public enum GenomeMappingType
 			GenomeIdType.NCBI_GENEID,
 			GenomeIdType.KEGG,
 			GenomeMappingDataType.INT2INT),
+			
+	NCBI_GENEID_CODE_2_NCBI_GENEID  (
+			GenomeIdType.NCBI_GENEID_CODE,
+			GenomeIdType.NCBI_GENEID,
+			GenomeMappingDataType.STRING2INT),
 	
 	PATHWAY_2_NCBI_GENEID  (
 			GenomeIdType.PATHWAY,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.INT2INT),
 			
+	METABOLIT_CODE_2_METABOLIT (GenomeIdType.METABOLIT_CODE,
+			GenomeIdType.METABOLIT,
+			GenomeMappingDataType.STRING2INT),
+					
 	MICROARRAY_2_NCBI_GENEID (GenomeIdType.MICROARRAY,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.STRING2INT),

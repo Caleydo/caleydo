@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 //import java.util.HashMap;
 import cerberus.base.map.MultiHashArrayIntegerMap;
+import cerberus.base.map.MultiHashArrayStringMap;
 //import cerberus.base.map.MultiHashArrayMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.data.genome.IGenomeIdMap;
@@ -56,7 +57,10 @@ public interface ILookupTableLoader {
 	 * @param setHashMap
 	 * @param type specify the type of mapping
 	 */
-	public void setMultiMap( final MultiHashArrayIntegerMap setHashMap,
+	public void setMultiMapInteger( final MultiHashArrayIntegerMap setHashMap,
+			final GenomeMappingType type);
+	
+	public void setMultiMapString( final MultiHashArrayStringMap setHashMap,
 			final GenomeMappingType type);
 	
 	/**

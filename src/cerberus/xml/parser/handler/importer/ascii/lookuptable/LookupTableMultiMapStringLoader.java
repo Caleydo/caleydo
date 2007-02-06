@@ -12,12 +12,14 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.base.map.MultiHashArrayIntegerMap;
-import cerberus.base.map.MultiHashArrayMap;
 import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
+import cerberus.manager.data.IGenomeIdManager;
+import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 
 
@@ -29,11 +31,18 @@ public class LookupTableMultiMapStringLoader
 extends ALookupTableLoader
 implements ILookupTableLoader {
 
+	/**
+	 * Switch between loadDataParseFileLUT_multipleStringPerLine() == TRUE and
+	 * loadDataParseFileLUT_oneStringPerLine()and == FALSE 
+	 * 
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_oneStringPerLine(BufferedReader, int, int, int)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_multipleStringPerLine(BufferedReader, int, int, int)
+	 */
 	protected boolean bOneLineConaintsMultipleStrings = true;
 	
-	protected MultiHashArrayStringMap refMultiHashMap_StringString;
+	protected MultiHashArrayStringMap  refMultiHashMapString;
 	
-	protected MultiHashArrayIntegerMap refMultiHashArrayIntegerMap;
+	protected MultiHashArrayIntegerMap refMultiHashMapInteger;
 	
 	/**
 	 * @param setGeneralManager
@@ -50,94 +59,6 @@ implements ILookupTableLoader {
 				CommandFactory.sDelimiter_Parser_DataType);
 	}
 
-	
-	public final void initLUT() {
-		
-		if ( refMultiHashMap_StringString == null )
-		{
-			refMultiHashMap_StringString = 
-				new MultiHashArrayStringMap( iInitialSizeMultiHashMap );
-		}
-	}
-	
-	public void destroyLUT() {
-		if ( refMultiHashArrayIntegerMap != null ) {
-			/**
-			 * Convert MultiMap<String> to Multimap<Integer>
-			 */
-			
-			Set <String> refKeySet = 
-				refMultiHashMap_StringString.keySet();
-			
-			if ( refKeySet == null ) {
-				assert false : "WARNING: empty key-set!";
-				return;
-			}
-			
-			Iterator <String> iter = refKeySet.iterator();
-			
-			while ( iter.hasNext() ) 
-			{
-				String sKey = iter.next();
-				
-				ArrayList <String> alStringValue = 
-					refMultiHashMap_StringString.get( sKey );							
-				Iterator <String> iterValue = 
-					alStringValue.iterator();
-				
-				ArrayList <Integer> alIntValue = 
-					new ArrayList <Integer> ();
-				
-				while ( iterValue.hasNext() ) 
-				{
-					alIntValue.add(	
-							Integer.valueOf( iterValue.next() ) );
-					
-				} // while ( iterValue.hasNext() )
-				
-				refMultiHashArrayIntegerMap.put( 
-						Integer.valueOf(sKey),
-						alIntValue );
-				
-			} // while ( iter.hasNext() ) 
-			
-			/* clean up MultiMap */
-			refMultiHashMap_StringString.clear();
-			
-		} // if ( refMultiHashArrayIntegerMap != null ) {
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
-	 */
-	public int loadDataParseFileLUT(BufferedReader brFile,
-			final int iNumberOfLinesInFile) throws IOException {
-
-		
-		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
-		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();
-		
-		if ( bOneLineConaintsMultipleStrings ) {
-			return loadDataParseFileLUT_multipleStringPerLine(brFile,
-					iNumberOfLinesInFile,
-					iStartParsingAtLine,
-					iStopParsingAtLine);
-		}
-		
-		return loadDataParseFileLUT_oneStringPerLine(brFile,
-				iNumberOfLinesInFile,
-				iStartParsingAtLine,
-				iStopParsingAtLine);
-	}
-	
-
-	public void setMultiMap( final MultiHashArrayIntegerMap setHashMap,
-			final GenomeMappingType type) {
-	
-		refMultiHashArrayIntegerMap = setHashMap;
-	}
-	
 	protected int loadDataParseFileLUT_oneStringPerLine(BufferedReader brFile,
 			final int iNumberOfLinesInFile,
 			final int iStartParsingAtLine,
@@ -177,7 +98,7 @@ implements ILookupTableLoader {
 						{
 							String sSecond = strTokenText.nextToken();
 							
-							refMultiHashMap_StringString.put( sFirst, sSecond);
+							refMultiHashMapString.put( sFirst, sSecond);
 						}
 						
 					
@@ -257,7 +178,7 @@ implements ILookupTableLoader {
 							
 							while ( tokenizerInnerLoop.hasMoreTokens() ) 
 							{
-								refMultiHashMap_StringString.put( sFirst, 
+								refMultiHashMapString.put( sFirst, 
 										tokenizerInnerLoop.nextToken() );
 								
 							} // while ( tokenizerInnerLoop.hasMoreTokens() ) 
@@ -292,24 +213,80 @@ implements ILookupTableLoader {
 	 
 		return iLineInFile;
 	}
-
-	public void setHashMap_MultiStringString( MultiHashArrayStringMap  setHashMap ) {
+	
+	public final void initLUT() {
 		
-		refMultiHashMap_StringString = (MultiHashArrayStringMap) setHashMap;
+		if ( refMultiHashMapString == null )
+		{
+			refMultiHashMapString = 
+				new MultiHashArrayStringMap( iInitialSizeMultiHashMap );
+		}
 	}
 	
-	public MultiHashArrayStringMap getHashMap_MultiStringString( ) {
+	public final void destroyLUT() {
 		
-		return refMultiHashMap_StringString;
+		if ( refMultiHashMapInteger != null ) {
+			/**
+			 * Convert MultiMap<String> to Multimap<Integer>
+			 */
+			
+			IGenomeIdManager gidmng = refGeneralManager.getSingelton().getGenomeIdManager();
+			
+			GenomeIdType originType = this.genomeType.getTypeOrigin();
+			GenomeIdType targetType = this.genomeType.getTypeTarget();			
+			
+			IGenomeIdMap originMap = gidmng.getMapByType( originType.getBasicConversion() );
+			IGenomeIdMap targetMap = gidmng.getMapByType( targetType.getBasicConversion() );
+			
+			
+			Set <String> refKeySet = 
+				refMultiHashMapString.keySet();
+			
+			if ( refKeySet == null ) {
+				assert false : "WARNING: empty key-set!";
+				return;
+			}
+			
+			Iterator <String> iter = refKeySet.iterator();
+			
+			while ( iter.hasNext() ) 
+			{
+				String sKey = iter.next();
+				
+				ArrayList <String> alStringValue = 
+					refMultiHashMapString.get( sKey );							
+				Iterator <String> iterValue = 
+					alStringValue.iterator();
+				
+				ArrayList <Integer> alIntValue = 
+					new ArrayList <Integer> ();
+				
+				while ( iterValue.hasNext() ) 
+				{
+					alIntValue.add(	
+							targetMap.getIntByString(iterValue.next()) );
+					
+				} // while ( iterValue.hasNext() )
+				
+				refMultiHashMapInteger.put( 
+						originMap.getIntByString(sKey),
+						alIntValue );
+				
+			} // while ( iter.hasNext() ) 
+			
+			/* clean up MultiMap */
+			refMultiHashMapString.clear();
+			
+		} // if ( refMultiHashMapInteger != null ) {
 	}
-
+	
 	/**
 	 * TRUE if only multple values my be in one line assigned to one key.
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#setOneLineHasMultipleStrings(boolean)
 	 * @return
 	 */
-	public boolean hasOneLineMultipleStrings() {
+	public final boolean hasOneLineMultipleStrings() {
 		
 		return bOneLineConaintsMultipleStrings;
 	}
@@ -326,8 +303,39 @@ implements ILookupTableLoader {
 	 * 
 	 * @param bset TRUE for parsing multiple Strings per line
 	 */
-	public void setOneLineHasMultipleStrings( final boolean bset ) {	
+	public final void setOneLineHasMultipleStrings( final boolean bset ) {	
 		bOneLineConaintsMultipleStrings = bset;
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
+	 */
+	public int loadDataParseFileLUT(BufferedReader brFile,
+			final int iNumberOfLinesInFile) throws IOException {
+
+		
+		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
+		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();
+		
+		if ( bOneLineConaintsMultipleStrings ) {
+			return loadDataParseFileLUT_multipleStringPerLine(brFile,
+					iNumberOfLinesInFile,
+					iStartParsingAtLine,
+					iStopParsingAtLine);
+		}
+		
+		return loadDataParseFileLUT_oneStringPerLine(brFile,
+				iNumberOfLinesInFile,
+				iStartParsingAtLine,
+				iStopParsingAtLine);
+	}
+	
+
+	public void setMultiMapInteger( final MultiHashArrayIntegerMap setHashMap,
+			final GenomeMappingType type) {
+	
+		refMultiHashMapInteger = setHashMap;
+	}
+
 }

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import cerberus.base.map.MultiHashArrayMap;
+import cerberus.base.map.MultiHashArrayIntegerMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.ILoggerManager.LoggerType;
@@ -22,7 +22,7 @@ import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 		implements ILookupTableLoader {
 
-	protected MultiHashArrayMap refMultiHashMap;
+	protected MultiHashArrayIntegerMap refMultiHashMapInteger;
 	
 	/**
 	 * @param setGeneralManager
@@ -79,7 +79,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 						{
 							int iSecond = new Integer(strTokenText.nextToken());
 							
-							refMultiHashMap.put(iFirst,iSecond);
+							refMultiHashMapInteger.put(iFirst,iSecond);
 						}
 						
 					
@@ -114,10 +114,11 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 		return iLineInFile;
 	}
 	
-	public void setMultiHashMap( MultiHashArrayMap setMultiHashMap ) {
+	public void setMultiMapInteger( MultiHashArrayIntegerMap setMultiHashMap,
+			GenomeMappingType type ) {
 		
 		//refGenomeIdManager.
-		this.refMultiHashMap = setMultiHashMap;
+		this.refMultiHashMapInteger = setMultiHashMap;
 	}	
 
 }

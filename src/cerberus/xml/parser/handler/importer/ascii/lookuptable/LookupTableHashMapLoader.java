@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 
 
@@ -23,6 +24,8 @@ public class LookupTableHashMapLoader
 extends ALookupTableLoader
 implements ILookupTableLoader {
 	
+	protected IGenomeIdMap refGenomeIdMap;
+	
 	/**
 	 * @param setGeneralManager
 	 * @param setFileName
@@ -33,7 +36,10 @@ implements ILookupTableLoader {
 			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
 
 		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
+
+		IGenomeIdMap bufferMap = refGenomeIdManager.getMapByType( genomeType );
 		
+		setHashMap( bufferMap, genomeType );
 	}
 
 
@@ -122,5 +128,18 @@ implements ILookupTableLoader {
 	 
 		return iLineInFile - iStartParsingAtLine;
 	}
-
+	
+	public final void setHashMap( final IGenomeIdMap setHashMap,
+			final GenomeMappingType type) {
+		
+		assert type == genomeType : "must use same type as in constructor!";
+		
+		if ( type.isMultiMap() )
+		{
+			assert false : "setHashMap() must not call MultiMap via setHashMap()";
+			return;
+		}
+		
+		refGenomeIdMap = setHashMap;		
+	}
 }

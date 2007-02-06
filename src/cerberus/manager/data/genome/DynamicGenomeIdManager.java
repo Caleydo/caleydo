@@ -15,6 +15,7 @@ import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 //import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.base.map.MultiHashArrayIntegerMap;
+import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IGenomeIdManager;
@@ -42,9 +43,13 @@ implements IGenomeIdManager {
 	
 	protected HashMap<GenomeMappingType, MultiHashArrayIntegerMap> hashType2MultiMap;
 	
+	protected HashMap<GenomeMappingType, MultiHashArrayStringMap> hashType2MultiMapString;
+	
 	public static final int iInitialSizeHashMap = 1000;
 	
 	public static final int iInitialCountAllLookupTables = 10;
+	
+	public static final int iInitialCountMultiMapLookupTables = 4;
 	
 	
 	
@@ -57,7 +62,9 @@ implements IGenomeIdManager {
 		
 		hashType2Map = new HashMap<GenomeMappingType, IGenomeIdMap> (iInitialCountAllLookupTables);
 		
-		hashType2MultiMap = new  HashMap<GenomeMappingType, MultiHashArrayIntegerMap> (iInitialCountAllLookupTables);
+		hashType2MultiMap = new  HashMap<GenomeMappingType, MultiHashArrayIntegerMap> (iInitialCountMultiMapLookupTables);
+		
+		hashType2MultiMapString = new HashMap<GenomeMappingType, MultiHashArrayStringMap> (iInitialCountMultiMapLookupTables);
 	}
 
 	
@@ -104,7 +111,14 @@ implements IGenomeIdManager {
 				newMap = new GenomeIdMapString2String(iInitialSizeHashMap);
 				break;
 		
+			/* Multi Map's */
+				
 			case MULTI_STRING2STRING:
+				MultiHashArrayStringMap newMultiMapString = new MultiHashArrayStringMap(iInitialSizeHashMap);
+				hashType2MultiMapString.put( codingLutType, newMultiMapString );
+				return true;
+				
+			case MULTI_INT2INT:
 			case MULTI_STRING2STRING_USE_LUT:
 				MultiHashArrayIntegerMap newMultiMap = new MultiHashArrayIntegerMap(iInitialSizeHashMap);
 				hashType2MultiMap.put( codingLutType, newMultiMap );
@@ -142,10 +156,31 @@ implements IGenomeIdManager {
 		return hashType2MultiMap.get( type );
 	}
 	
+	public final MultiHashArrayStringMap getMultiMapStringByType( final GenomeMappingType type ) {
+		
+		return hashType2MultiMapString.get( type );
+	}
+	
+	
 	
 	public final boolean hasMapByType( final GenomeMappingType codingLutType ) {
 		
 		return hashType2Map.containsKey( codingLutType );
+	}
+	
+	public final boolean hasMultiMapByType( final GenomeMappingType codingLutType ) {
+		
+		if ( hashType2MultiMap.containsKey( codingLutType ) ) 
+		{
+			return true;
+		}
+		
+		if ( hashType2MultiMapString.containsKey( codingLutType ) ) 
+		{
+			return true;
+		}
+		
+		return false;
 	}	
 	
 	/* (non-Javadoc)
