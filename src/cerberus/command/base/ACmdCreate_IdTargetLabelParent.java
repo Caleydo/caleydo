@@ -24,6 +24,8 @@ implements ICommand
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
+	 * 
+	 * @deprecated
 	 */
 	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager refGeneralManager,
 			final IParameterHandler refParameterHandler )

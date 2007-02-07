@@ -24,9 +24,23 @@ implements ICommand {
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public ACmdCreate_IdTargetLabelAttrDetail(IGeneralManager refGeneralManager )
+	protected ACmdCreate_IdTargetLabelAttrDetail(IGeneralManager refGeneralManager )
 	{
 		super(refGeneralManager);
+	}
+	
+	/**
+	 * 
+	 * @deprecated
+	 * 
+	 * @param refGeneralManager
+	 * @param refParameterHandler
+	 */
+	protected ACmdCreate_IdTargetLabelAttrDetail(final IGeneralManager refGeneralManager,
+			IParameterHandler refParameterHandler)
+	{
+		super(refGeneralManager, refParameterHandler);
+		
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

@@ -43,6 +43,8 @@ implements ICommand
 	/**
 	 * Constructor.
 	 * 
+	 * @deprecated
+	 * 
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */

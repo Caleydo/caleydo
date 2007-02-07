@@ -28,11 +28,23 @@ implements ICommand
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
+	 * 
+	 * @deprecated
 	 */
 	protected ACmdCreate_GlCanvasUser(IGeneralManager refGeneralManager,
 			IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
+
+	}
+	
+	/**
+	 * @param refGeneralManager
+	 * @param refParameterHandler
+	 */
+	protected ACmdCreate_GlCanvasUser(IGeneralManager refGeneralManager)
+	{
+		super(refGeneralManager);
 
 	}
 

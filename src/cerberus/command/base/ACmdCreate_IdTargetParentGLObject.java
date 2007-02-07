@@ -38,6 +38,12 @@ implements ICommand
 	public ACmdCreate_IdTargetParentGLObject(IGeneralManager refGeneralManager,
 			IParameterHandler refParameterHandler)
 	{
+		super(refGeneralManager,refParameterHandler);
+		
+	}
+	
+	public ACmdCreate_IdTargetParentGLObject(IGeneralManager refGeneralManager)
+	{
 		super(refGeneralManager);
 		
 	}
