@@ -192,8 +192,7 @@ extends ACommand
 		case LOAD_DATA_FILE: 
 		{
 			createdCommand =
-				new CmdSystemLoadFileViaImporter( 
-						refGeneralManager );
+				new CmdSystemLoadFileViaImporter(refGeneralManager);
 			break;
 		}
 		
@@ -229,61 +228,49 @@ extends ACommand
 		case CREATE_VIRTUAL_ARRAY:
 		{
 			createdCommand =
-				new CmdDataCreateVirtualArray(
-						refGeneralManager );			
+				new CmdDataCreateVirtualArray(refGeneralManager );			
 			break;
 		}
 		
 		case CREATE_SWT_WINDOW:
 		{
 			createdCommand =
-				new CmdWindowCreate(
-						refGeneralManager );			
+				new CmdWindowCreate(refGeneralManager );			
 			break;
 		}
 		
 		case CREATE_SWT_CONTAINER:
 		{
 			createdCommand =
-				new CmdContainerCreate(
-						refGeneralManager,
-						phAttributes );			
+				new CmdContainerCreate(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_HEATMAP:
 		{
 			createdCommand =
-				new CmdViewCreateHeatmap(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateHeatmap(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_GEARS:
 		{
 			createdCommand =
-				new CmdViewCreateGears(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateGears(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_TEST_TRIANGLE:
 		{
 			createdCommand =
-				new CmdViewCreateTestTriangle(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateTestTriangle(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_SWT_GLCANVAS:
 		{
 			createdCommand =
-				new CmdViewCreateSwtGLCanvas(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateSwtGLCanvas(refGeneralManager);			
 			break;
 		}
 		
@@ -292,74 +279,56 @@ extends ACommand
 		case CREATE_VIEW_DATA_EXPLORER:
 		{
 			createdCommand =
-				new CmdViewCreateDataExplorer(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateDataExplorer(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_PROGRESSBAR:
 		{
 			createdCommand =
-				new CmdViewCreateProgressBar(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateProgressBar(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_PATHWAY:
 		{
 			createdCommand =
-				new CmdViewCreatePathway(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreatePathway(refGeneralManager);			
 			break;
 		}
 
 		case CREATE_VIEW_STORAGE_SLIDER:
 		{
 			createdCommand =
-				new CmdViewCreateStorageSlider(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateStorageSlider(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_SELECTION_SLIDER:
 		{
 			createdCommand =
-				new CmdViewCreateSelectionSlider(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateSelectionSlider(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_MIXER:
 		{
 			createdCommand =
-				new CmdViewCreateMixer(
-						refGeneralManager,
-						phAttributes );
-			
-			
+				new CmdViewCreateMixer(refGeneralManager);	
 			break;
 		}
 		
 		case CREATE_VIEW_BROWSER:
 		{
 			createdCommand =
-				new CmdViewCreateHTMLBrowser(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateHTMLBrowser(refGeneralManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_IMAGE:
 		{
 			createdCommand =
-				new CmdViewCreateImage(
-						refGeneralManager,
-						phAttributes );			
+				new CmdViewCreateImage(refGeneralManager);			
 			break;
 		}		
 		

@@ -63,10 +63,11 @@ implements IView {
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
-
-	public void extractAttributes() {
+	
+	public void setAttributes(int iWidth, int iHeight, String sImagePath) {
 		
-		sImagePath = 
-			refParameterHandler.getValueString( "sImagePath" );
+		super.setAttributes(iWidth, iHeight);
+		
+		this.sImagePath = sImagePath;
 	}
 }

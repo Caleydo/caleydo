@@ -11,9 +11,9 @@ import cerberus.manager.ILoggerManager.LoggerType;
 public class SelectionSliderViewRep 
 extends ASliderViewRep {
 
-	protected int iSelectionId;
+	protected int iSelectionId = 0;
 	
-	protected String sSelectionFieldName;
+	protected String sSelectionFieldName = "";
 	
 	public SelectionSliderViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, 
@@ -78,18 +78,13 @@ extends ASliderViewRep {
 		});
 	}
 	
-	/**
-	 * Retrieves the slider selection ID 
-	 * from the parameter handler
-	 * and sets the local variable.
-	 */
-	public void extractAttributes() {
+	public void setAttributes(int iWidth, int iHeight,
+			int iSelectionId, String sSelectionFieldNumber) {
 		
-		//TODO: optimize this workflow!
+		super.setAttributes(iWidth, iHeight);
 		
-		iSelectionId = refParameterHandler.getValueInt( "iSelectionId" );
-		
-		sSelectionFieldName = refParameterHandler.getValueString( "sSelectionFieldName" );
+		this.iSelectionId = iSelectionId;
+		this.sSelectionFieldName = sSelectionFieldNumber;
 	}
 	
 	// TODO: retrieve locking token!

@@ -16,16 +16,11 @@ extends ASliderViewRep {
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 	}
 
-	/**
-	 * Retrieves the slider set ID
-	 * from the parameter handler
-	 * and sets the local variable.
-	 */
-	public void extractAttributes() {
+	public void setAttributes(int iWidth, int iHeight, int iSetId) {
+	
+		super.setAttributes(iWidth, iHeight);
 		
-		//TODO: optimize this workflow!
-		
-		iSetId = refParameterHandler.getValueInt( "iSetId" );
+		this.iSetId = iSetId;
 	}
 	
 	public void update(Object eventTrigger) {

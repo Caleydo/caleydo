@@ -24,13 +24,11 @@ implements ICommand {
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateGears(
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -53,13 +51,20 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		gearsView.readInAttributes(refParameterHandler);
-		
+		gearsView.setAttributes(iWidthX, iHeightY);
 		gearsView.retrieveGUIContainer();
 		gearsView.initView();
 		gearsView.drawView();
 	}
 
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		// TODO Auto-generated method stub

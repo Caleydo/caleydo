@@ -1,7 +1,6 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
@@ -22,6 +21,8 @@ public class CmdViewCreateMixer
 extends ACmdCreate_IdTargetLabelParentXY
 implements ICommand {
 	
+	int iNumberOfSliders = 1;
+	
 	/**
 	 * Constructor
 	 * 
@@ -29,12 +30,9 @@ implements ICommand {
 	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateMixer(
-			IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributes(refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -57,18 +55,23 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		mixerView.readInAttributes(refParameterHandler);
-		mixerView.extractAttributes();
+		mixerView.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
 		mixerView.retrieveGUIContainer();
 		mixerView.initView();
 		mixerView.drawView();
 	}
 
-	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+
 		refParameterHandler.setValueAndTypeAndDefault("iNumberOfSliders",
 				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.INT, "-1");
+		
+		iNumberOfSliders = refParameterHandler.getValueInt("iNumberOfSliders");
 	}
 	
 	public void undoCommand() throws CerberusRuntimeException {

@@ -22,19 +22,17 @@ public class CmdViewCreateStorageSlider
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
 	
+	protected int iSetId = 0;
+	
 	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateStorageSlider(
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributes(refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -57,21 +55,26 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		sliderView.readInAttributes(refParameterHandler);
-		
-		sliderView.extractAttributes();
+		sliderView.setAttributes(iWidthX, iHeightY, iSetId);
 		sliderView.retrieveGUIContainer();
 		sliderView.initView();
 		sliderView.drawView();
 	}
 
-	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
 		
 		refParameterHandler.setValueAndTypeAndDefault("iSetId",
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.INT,
 				"0");
+		
+
+		iSetId = refParameterHandler.getValueInt( "iSetId" );
 	}
 	
 	public void undoCommand() throws CerberusRuntimeException {

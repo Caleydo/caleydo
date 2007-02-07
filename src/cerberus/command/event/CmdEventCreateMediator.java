@@ -7,7 +7,6 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IEventPublisher.MediatorType;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -48,12 +47,12 @@ implements ICommand {
 							arSenderIDs, arReceiverIDs, mediatorType);
 	}
 	
-	/**
-	 * Extracts sender and receiver ID of the Event Relation.
-	 *
-	 */
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+
 		StringTokenizer senderToken = new StringTokenizer(
 				sAttribute1,
 				IGeneralManager.sDelimiter_Parser_DataItems);

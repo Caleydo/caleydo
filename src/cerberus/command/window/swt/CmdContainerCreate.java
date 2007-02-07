@@ -1,27 +1,28 @@
 package cerberus.command.window.swt;
 
-
-
-//import org.eclipse.swt.widgets.Composite;
-
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
-//import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
+/**
+ * Command class triggers the creation of
+ * a GUI container inside a window.
+ * 
+ * @author Marc Streit
+ * @author Michael Kalkusch
+ *
+ */
 public class CmdContainerCreate
 extends ACmdCreate_IdTargetLabelParentAttr
 implements ICommand 
 {
 	protected String sLayoutAttributes;
 	
-	public CmdContainerCreate( final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler ) 
+	public CmdContainerCreate( final IGeneralManager refGeneralManager) 
 	{
-		super( refGeneralManager, refParameterHandler );	
-		setAttributes( refParameterHandler );
+		super(refGeneralManager);
 	}
 
 	public void doCommand() throws CerberusRuntimeException
@@ -33,17 +34,18 @@ implements ICommand
 					sLayoutAttributes);	
 	}
 
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+		
+		sLayoutAttributes = sAttribute2;
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException
 	{
 		// TODO Auto-generated method stub
-		
-	}
-
-	protected boolean setAttributes( final IParameterHandler refParameterHandler ) 
-	{	
-		sLayoutAttributes = sAttribute2;
-		
-		return true;
 		
 	}
 }

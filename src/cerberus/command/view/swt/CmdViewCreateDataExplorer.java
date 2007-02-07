@@ -25,13 +25,11 @@ implements ICommand {
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateDataExplorer(
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler ) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -58,19 +56,21 @@ implements ICommand {
 		
 		dataExplorerView.setViewType(ViewType.DATA_EXPLORER);
 		
-		dataExplorerView.readInAttributes(refParameterHandler);
+		dataExplorerView.setAttributes(iWidthX, iHeightY);
 		dataExplorerView.retrieveGUIContainer();
 		dataExplorerView.initView();
 		dataExplorerView.drawView();
 	}
 
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		// TODO Auto-generated method stub	
-	}
-	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
-		super.setParameterHandler(refParameterHandler);
-		
 	}
 }

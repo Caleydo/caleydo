@@ -22,19 +22,19 @@ public class CmdViewCreateSelectionSlider
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
 	
+	protected int iSelectionId = 0;
+	
+	protected String sSelectionFieldName = "";
+	
 	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateSelectionSlider(
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributes(refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -57,15 +57,17 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		sliderView.readInAttributes(refParameterHandler);
-		
-		sliderView.extractAttributes();
+		sliderView.setAttributes(iWidthX, iHeightY, iSelectionId, sSelectionFieldName);
 		sliderView.retrieveGUIContainer();
 		sliderView.initView();
 		sliderView.drawView();
 	}
 
-	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
 		
 		refParameterHandler.setValueAndTypeAndDefault("iSelectionId",
 				refParameterHandler.getValueString( 
@@ -78,6 +80,11 @@ implements ICommand {
 						CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.STRING,
 				"invalid selection field");
+		
+		iSelectionId = refParameterHandler.getValueInt( "iSelectionId" );
+		
+		sSelectionFieldName = refParameterHandler.getValueString( "sSelectionFieldName" );
+
 	}
 	
 	public void undoCommand() throws CerberusRuntimeException {

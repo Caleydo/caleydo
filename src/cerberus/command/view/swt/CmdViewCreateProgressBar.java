@@ -20,18 +20,18 @@ import cerberus.xml.parser.parameter.IParameterHandler;
 public class CmdViewCreateProgressBar 
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
+	
+	int iProgressBarCurrentValue = 0;
+	
 	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
-	public CmdViewCreateProgressBar( IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler ) {
+	public CmdViewCreateProgressBar(
+			IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributes(refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -54,21 +54,26 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		progressBarView.readInAttributes(refParameterHandler);
-		
-		progressBarView.extractAttributes();
+		progressBarView.setAttributes(iProgressBarCurrentValue);
 		progressBarView.retrieveGUIContainer();
 		progressBarView.initView();
 		progressBarView.drawView();
 	}
 	
-	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+	
 		refParameterHandler.setValueAndTypeAndDefault( "iProgressBarCurrentValue",
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.INT,
 				"0");
+		
+		iProgressBarCurrentValue = 
+			refParameterHandler.getValueInt("iProgressBarCurrentValue");
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {

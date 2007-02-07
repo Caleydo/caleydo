@@ -8,6 +8,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -21,17 +22,19 @@ public class CmdViewCreateSwtGLCanvas
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
 	
+	protected int iGLCanvasId = 0;
+	 
+	protected int iGLEventListernerId = 0;
+	
 	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateSwtGLCanvas( 
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 	}
 	
 	/**
@@ -61,8 +64,8 @@ implements ICommand {
 					iUniqueTargetId, 
 					ManagerObjectType.VIEW);
 			
-			swtGLCanvasView.readInAttributes(refParameterHandler);
 			
+			swtGLCanvasView.setAttributes(iWidthX, iHeightY, iGLCanvasId, iGLEventListernerId);
 			swtGLCanvasView.retrieveGUIContainer();
 			swtGLCanvasView.initView();
 			swtGLCanvasView.drawView();
@@ -76,6 +79,20 @@ implements ICommand {
 		}
 	}
 
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+		
+		iGLCanvasId = refParameterHandler.getValueInt(
+				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
+		
+		iGLEventListernerId = refParameterHandler.getValueInt( 
+				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
+
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		// TODO Auto-generated method stub

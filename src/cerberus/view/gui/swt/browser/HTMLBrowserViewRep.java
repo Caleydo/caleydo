@@ -3,14 +3,9 @@
  */
 package cerberus.view.gui.swt.browser;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -20,7 +15,6 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
@@ -156,10 +150,6 @@ implements IView {
 						iParentContainerId, iWidth, iHeight);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
-	}
-
-	public void extractAttributes() {
-		
 	}
 	
 	public void setUrl(String sUrl) {

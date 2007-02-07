@@ -1,21 +1,13 @@
 package cerberus.view.gui;
 
-//import java.util.Iterator;
-//import java.util.StringTokenizer;
-//import java.util.Vector;
-
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
-//import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
-//import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.command.CommandQueueSaxType;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Abstract class that is the base of all view representations.
@@ -45,8 +37,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	protected int iParentContainerId;
 	
 	protected String sLabel;
-
-	protected IParameterHandler refParameterHandler;
 	
 	/**
 	 * Width of the widget.
@@ -89,37 +79,14 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	}
 	
 
-	/**
-	 * Set attributes for this view.
-	 * Extracts the height and the width of the widget from the attributes.
-	 * 
-	 * @see cerberus.view.gui.IView#readInAttributes(IParameterHandler)
-	 */
-	public void readInAttributes( final IParameterHandler refParameterHandler ) { 
+	public void setAttributes(int iWidth, int iHeight) {
 		
-		this.refParameterHandler = refParameterHandler;
-		
-		iWidth = 
-			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_POS_WIDTH_X.getXmlKey() );
-		iHeight = 
-			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_POS_HEIGHT_Y.getXmlKey() );	
+		this.iWidth = iWidth;
+		this.iHeight = iHeight;
 	}
-	
 	
 	public final ManagerObjectType getBaseType() {
 		return null;
-	}
-	
-
-	
-	/**
-	 * Get a copy of the current attributes.
-	 *  
-	 * @return copy of the current attributes
-	 */
-	protected final IParameterHandler getAttributesParameterHandler() {
-		
-		return refParameterHandler;
 	}
 	
 	/**

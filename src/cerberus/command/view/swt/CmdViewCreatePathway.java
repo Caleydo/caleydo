@@ -21,24 +21,17 @@ public class CmdViewCreatePathway
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
 	
-	protected String sDetail;
+	protected int iHTMLBrowserId = 0;
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreatePathway( 
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-		
-		sDetail = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-		
-		setAttributes(refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -61,20 +54,25 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		pathwayView.readInAttributes(refParameterHandler);
-		pathwayView.extractAttributes();
+		pathwayView.setAttributes(iWidthX, iHeightY, iHTMLBrowserId);
 		pathwayView.retrieveGUIContainer();
 		pathwayView.initView();
 		pathwayView.drawView();
 	}
 	
-	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+				
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
 		
 		refParameterHandler.setValueAndTypeAndDefault("iHTMLBrowserId",
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.INT,
 				"-1");
+		
+		iHTMLBrowserId = refParameterHandler.getValueInt("iHTMLBrowserId");
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {

@@ -2,7 +2,6 @@ package cerberus.view.gui;
 
 import cerberus.command.ICommand;
 import cerberus.view.gui.AViewRep.ViewType;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Interface for the view representations.
@@ -31,18 +30,6 @@ public interface IView {
 	 * the type of the needed widget is available.
 	 */
 	public void retrieveGUIContainer();
-	
-	/**
-	 * Get required settigns from IParameterHandler object.
-	 * 
-	 * @see cerberus.command.ICommand#setParameterHandler(IParameterHandler)
-	 * 
-	 * @deprecated use cerberus.command.ICommand#setParameterHandler(IParameterHandler)
-	 * 
-	 * @param refParameterHandler data from XML paser
-	 */
-	public void readInAttributes(IParameterHandler refParameterHandler );
-	
 	
 	/**
 	 * Sets the unique ID of the parent container.

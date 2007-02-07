@@ -305,20 +305,11 @@ implements IView, IGLCanvasDirector {
 				LoggerType.STATUS );
 	}
 
-	/**
-	 * Set attributes for this view.
-	 * Extracts the height and the width of the widget from the attributes.
-	 * 
-	 * @see cerberus.view.gui.IView#setAttributes(java.util.Vector)
-	 */
-	public void readInAttributes( final IParameterHandler refParameterHandler ) { 
+	public void setAttributes(int iWidth, int iHeight, int iGLCanvasId, int iGLEventListenerId) {
 		
-		super.readInAttributes( refParameterHandler );
-			
-		this.iGLCanvasId = 
-			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
+		super.setAttributes(iWidth, iHeight);
 		
-		this.iGLEventListernerId = 
-			refParameterHandler.getValueInt( CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
+		this.iGLCanvasId = iGLCanvasId;
+		this.iGLEventListernerId = iGLEventListenerId;
 	}
 }

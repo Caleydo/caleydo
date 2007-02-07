@@ -8,7 +8,14 @@ import cerberus.util.exception.CerberusRuntimeException;
 //import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
-
+/**
+ * Command class triggers the creation of
+ * a SWT GUI window.
+ * 
+ * @author Marc Streit
+ * @author Michael Kalkusch
+ *
+ */
 public class CmdWindowCreate
 extends ACmdCreate_IdTargetLabelAttr
 implements ICommand 
@@ -23,19 +30,21 @@ implements ICommand
 	public void doCommand() throws CerberusRuntimeException
 	{
 		refGeneralManager.getSingelton().
-			getSWTGUIManager().createWindow( iUniqueTargetId, sLabel, sLayoutAttributes);	
+			getSWTGUIManager().createWindow( 
+					iUniqueTargetId, sLabel, sLayoutAttributes);	
 	}
 
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+		
+		sLayoutAttributes = sAttribute1;
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException
 	{
 		// TODO Auto-generated method stub
-	}
-
-	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) 
-	{						
-		super.setParameterHandler(refParameterHandler);
-		
-		sLayoutAttributes = sAttribute1;
 	}
 }

@@ -141,16 +141,8 @@ implements IView {
 		this.iProgressBarCurrentValue = iProgressBarCurrentValue;
 	}
 	
-	/**
-	 * Retrieves the progress bar percentage value from the parameter handler
-	 * and sets the local variable.
-	 */
-	public void extractAttributes() {
+	public void setAttributes(int iProgressBarCurrentValue) {
 		
-		//TODO: optimize this workflow!
-		
-		iProgressBarCurrentValue = 
-			refParameterHandler.getValueInt( "iProgressBarCurrentValue" );
-		
+		this.iProgressBarCurrentValue = iProgressBarCurrentValue;		
 	}
 }

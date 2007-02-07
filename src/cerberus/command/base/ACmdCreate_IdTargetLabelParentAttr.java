@@ -51,5 +51,4 @@ extends ACmdCreate_IdTargetLabelParent {
 		sAttribute2 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
 	}
-
 }

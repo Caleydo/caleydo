@@ -22,19 +22,17 @@ public class CmdViewCreateImage
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
 	
+	String sImagePath = "";
+	
 	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateImage(
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributes(refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -57,20 +55,25 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		imageView.readInAttributes(refParameterHandler);	
-		imageView.extractAttributes();
+		imageView.setAttributes(iWidthX, iHeightY, sImagePath);
 		imageView.retrieveGUIContainer();
 		imageView.initView();
 		imageView.drawView();
 	}
 
-	protected void setAttributes( final IParameterHandler refParameterHandler ) {
-	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+
 		refParameterHandler.setValueAndTypeAndDefault("sImagePath",
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.STRING,
 				"");
+		
+		sImagePath = refParameterHandler.getValueString("sImagePath");
 	}
 	
 	public void undoCommand() throws CerberusRuntimeException {

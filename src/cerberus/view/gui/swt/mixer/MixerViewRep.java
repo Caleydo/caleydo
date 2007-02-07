@@ -67,15 +67,6 @@ implements IView
 	{
 	   // TODO: set slider to current position
 	}
-
-	/**
-	 * Retrieves number of sliders in mixer stack.
-	 */
-	public void extractAttributes() {
-		
-		iNumberOfSliders = 
-			refParameterHandler.getValueInt("iNumberOfSliders");
-	}
 	
 	public void retrieveGUIContainer()
 	{
@@ -134,5 +125,12 @@ implements IView
 	public int getSliderDimension() {
 		
 		return iNumberOfSliders;
+	}
+	
+	public void setAttributes(int iWidth, int iHeight, int iNumberOfSliders) {
+		
+		super.setAttributes(iWidth, iHeight);
+		
+		this.iNumberOfSliders = iNumberOfSliders;
 	}
 }

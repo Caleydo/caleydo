@@ -13,6 +13,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * Class implementes the command for creating a heatmap view.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class CmdViewCreateTestTriangle 
@@ -23,13 +24,11 @@ implements ICommand {
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateTestTriangle( 
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 	}
 	
 	/**
@@ -52,13 +51,19 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		triangleView.readInAttributes(refParameterHandler);
-		
+		triangleView.setAttributes(iWidthX, iHeightY);
 		triangleView.retrieveGUIContainer();
 		triangleView.initView();
 		triangleView.drawView();	
 	}
 
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		// TODO Auto-generated method stub

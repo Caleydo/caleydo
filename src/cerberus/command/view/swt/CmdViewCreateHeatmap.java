@@ -13,6 +13,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * Class implementes the command for creating a heatmap view.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class CmdViewCreateHeatmap 
@@ -23,13 +24,11 @@ implements ICommand {
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateHeatmap( 
-			IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -52,8 +51,6 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		heatmapView.readInAttributes(refParameterHandler);
-		
 		heatmapView.retrieveGUIContainer();
 		heatmapView.initView();
 		heatmapView.drawView();
@@ -70,6 +67,14 @@ implements ICommand {
 //		gearsView.drawView();
 	}
 
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+
+		super.setParameterHandler(refParameterHandler);
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		// TODO Auto-generated method stub

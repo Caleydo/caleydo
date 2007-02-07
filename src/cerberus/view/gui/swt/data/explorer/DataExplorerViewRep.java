@@ -25,12 +25,11 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
-import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.explorer.model.AModel;
-import cerberus.view.gui.swt.data.explorer.model.PathwayModel;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
 import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
 import cerberus.view.gui.swt.data.explorer.model.StorageModel;
+import cerberus.view.gui.swt.data.explorer.model.ViewModel;
 import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
 import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
 import cerberus.view.gui.swt.data.DataTableViewRep;
@@ -60,6 +59,8 @@ implements IView, IMediatorReceiver {
 	protected DataCollectionModel rootStorageModel;
 	
 	protected DataCollectionModel rootPathwayModel;
+	
+	protected DataCollectionModel rootViewModel;
 
 	// private ISelectionChangedListener refISelectionChangedListener;
 
@@ -149,6 +150,8 @@ implements IView, IMediatorReceiver {
 		rootModel.add(rootStorageModel);
 		rootPathwayModel = new DataCollectionModel(0, "PATHWAY");
 		rootModel.add(rootPathwayModel);	
+		rootViewModel = new DataCollectionModel(0, "VIEW");
+		rootModel.add(rootViewModel);
 
 		allSetItems = ((ISetManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
@@ -416,5 +419,21 @@ implements IView, IMediatorReceiver {
 //				currentPathway.getPathwayID(), currentPathway.getTitle());
 //		
 //		rootModel.add(currentPathwayModel);
+	}
+	
+	public void addExistingViews() {
+		
+//		ViewModel tmpViewModel; 
+//		
+//		Iterator<IView> viewIter = 
+//			refGeneralManager.getSingelton().getViewGLCanvasManager().getViewIterator();
+////		
+//		while(viewIter.hasNext())
+//		{
+//			tmpViewModel = new ViewModel(((AViewRep)viewIter.next()).getId(), 
+//					((AViewRep)viewIter.next()).getLabel());
+//			
+//			rootStorageModel.add(tmpViewModel);	
+//		}
 	}
 }

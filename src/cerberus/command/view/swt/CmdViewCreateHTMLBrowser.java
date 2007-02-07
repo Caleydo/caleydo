@@ -25,15 +25,11 @@ implements ICommand {
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
 	public CmdViewCreateHTMLBrowser(
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+			final IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributes(refParameterHandler);
+		super(refGeneralManager);
 	}
 
 	/**
@@ -56,16 +52,17 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		browserView.readInAttributes(refParameterHandler);
-		
-		browserView.extractAttributes();
+		browserView.setAttributes(iWidthX, iHeightY);
 		browserView.retrieveGUIContainer();
 		browserView.initView();
 		browserView.drawView();
 	}
 
-	protected void setAttributes( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
+		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(refParameterHandler);	
 	}
 	
 	public void undoCommand() throws CerberusRuntimeException {

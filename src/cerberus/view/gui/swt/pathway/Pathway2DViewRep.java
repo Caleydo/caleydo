@@ -59,13 +59,11 @@ implements IView, IMediatorSender {
 		refPathwayGraphViewRep.drawView();
 	}
 
-	/**
-	 * Retrieves the HTML browser ID.
-	 */
-	public void extractAttributes() {
+	public void setAttributes(int iWidth, int iHeight, int iHTMLBrowserId) {
 		
-		iHTMLBrowserId = 
-			refParameterHandler.getValueInt( "iHTMLBrowserId" );
+		super.setAttributes(iWidth, iHeight);
+		
+		this.iHTMLBrowserId = iHTMLBrowserId;
 	}
 
 	public void drawView() {
