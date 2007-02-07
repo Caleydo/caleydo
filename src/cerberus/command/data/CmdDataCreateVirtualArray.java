@@ -86,6 +86,8 @@ implements ICommand {
 				"DO new SEL: " + 
 				newObject.toString(),
 				LoggerType.VERBOSE );
+		
+		refCommandManager.runDoCommand(this);
 	}
 
 	/* (non-Javadoc)
@@ -101,6 +103,8 @@ implements ICommand {
 				"UNDO new SEL: " + 
 				iUniqueTargetId,
 				LoggerType.VERBOSE );
+		
+		refCommandManager.runUndoCommand(this);
 	}
 
 	

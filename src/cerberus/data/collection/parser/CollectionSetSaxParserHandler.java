@@ -15,7 +15,6 @@ import java.util.Vector;
 import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;
@@ -23,7 +22,7 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.ASaxParserHandler;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
@@ -218,7 +217,7 @@ implements ISaxParserHandler
 					
 					if ( attributes.getLength() < 2 ) {
 						throw new CerberusRuntimeException("need attributes <... type=\"\" dim=\"*\">",
-								CerberusExceptionType.SAXPARSER );
+								CerberusRuntimeExceptionType.SAXPARSER );
 					}
 					
 					final String bufferType = attributes.getValue(sTag_XML_DataCollection_details_attr_A_type);
@@ -233,7 +232,7 @@ implements ISaxParserHandler
 						}
 						catch ( NumberFormatException nfe ) {
 							throw new CerberusRuntimeException("attributes <... dim=\"" + bufferDim + "\"> mut be an integer",
-									CerberusExceptionType.SAXPARSER );
+									CerberusRuntimeExceptionType.SAXPARSER );
 						}
 						bXML_Section_DataComponent_details_Select = true;
 					}

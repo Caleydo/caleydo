@@ -17,7 +17,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.helpers.LocatorImpl;
 
 import cerberus.data.xml.IMementoCallbackXML;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -171,7 +171,7 @@ extends DefaultHandler
 			}
 			catch (SAXException s_e) {
 				throw new CerberusRuntimeException(s_e.toString(),
-						CerberusExceptionType.SAXPARSER );
+						CerberusRuntimeExceptionType.SAXPARSER );
 			}
 		}
 		if ( ! bErrorWhileParsing )

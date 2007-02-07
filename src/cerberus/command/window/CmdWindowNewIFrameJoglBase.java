@@ -73,6 +73,7 @@ implements ICommand {
 //			final DSwingJoglCanvas initDSwingJoglCanvas,
 			final String sHeaderText ) {
 
+		super( null);
 		//super(iSetCmdCollectionId);
 		
 		assert refGeneralManager != null :"Can not handle null-pointer to DSwingJoglCanvas";

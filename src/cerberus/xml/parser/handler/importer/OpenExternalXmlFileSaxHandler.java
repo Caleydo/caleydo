@@ -7,8 +7,7 @@ import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
-import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
@@ -68,7 +67,7 @@ implements IXmlParserHandler
 					
 				if ( sTargetFileName == null ) {
 					throw new CerberusRuntimeException( "no XML-file specified!",
-							CerberusExceptionType.SAXPARSER );
+							CerberusRuntimeExceptionType.SAXPARSER );
 				}
 				
 				/**
@@ -86,7 +85,7 @@ implements IXmlParserHandler
 						sTargetFileName + 
 						"] could not be loaded! Skip file... (Error=" +
 						cre.toString() + ")",
-						CerberusExceptionType.SAXPARSER );
+						CerberusRuntimeExceptionType.SAXPARSER );
 			}
 				
 		

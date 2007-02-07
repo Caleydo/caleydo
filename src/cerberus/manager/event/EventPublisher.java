@@ -16,7 +16,7 @@ import cerberus.manager.event.mediator.LockableMediator;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 public class EventPublisher 

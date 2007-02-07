@@ -53,6 +53,12 @@ public class CommandManager
 	
 	protected Hashtable<Integer,ICommand> hash_CommandId;
 	
+	protected Vector <ICommand> vecUndo;
+	
+	protected Vector <ICommand> vecRedo;
+	
+	private int iCountRedoCommand = 0;
+	
 	/**
 	 * 
 	 */
@@ -73,6 +79,9 @@ public class CommandManager
 		
 		hash_CommandId = new Hashtable<Integer,ICommand> ();
 				
+		vecUndo = new Vector <ICommand> (100);
+		
+		vecRedo = new  Vector <ICommand> (100);
 	}
 
 	/* (non-Javadoc)
@@ -270,6 +279,31 @@ public class CommandManager
 		registerItem( newCmd, iNewCmdId, ManagerObjectType.COMMAND );
 		
 		return newCmd;
+	}
+
+	/**
+	 * @see cerberus.manager.ICommandManager#runDoCommand(cerberus.command.ICommand)
+	 */
+	public synchronized void  runDoCommand(ICommand runCmd) {
+
+		vecUndo.addElement( runCmd );
+		
+		if ( iCountRedoCommand > 0 ) 
+		{
+			vecRedo.remove(runCmd);
+			iCountRedoCommand--;
+		}		
+	}
+
+	/**
+	 * @see cerberus.manager.ICommandManager#runUndoCommand(cerberus.command.ICommand)
+	 */
+	public synchronized void runUndoCommand(ICommand runCmd) {
+
+		iCountRedoCommand++;
+		vecUndo.remove( runCmd );
+		
+		vecRedo.addElement( runCmd );
 	}
 
 	

@@ -11,7 +11,7 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.queue.ACommandQueue;
 import cerberus.command.queue.ICommandQueue;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -85,14 +85,14 @@ implements ICommand , ICommandQueue
 		
 		if ( bQueueIsExcecuting ) {
 			throw new CerberusRuntimeException("Can not execute command queue, that is already processed!", 
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 			//return;
 		}
 				
 		if (( ! bQueueCanBeExecutedSeveralTimes )&&
 				( bQueueWasExcecuted )) {
 			throw new CerberusRuntimeException("Can not execute command queue, that is already processed!",
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 		}
 		/**
 		 * critical section
@@ -127,12 +127,12 @@ implements ICommand , ICommandQueue
 		
 		if ( this.bQueueCanBeExecutedSeveralTimes ) {
 			throw new CerberusRuntimeException("Can not call undo() on command queue, that can be executed several times!", 
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 		}
 		
 		if ( this.bQueueIsExcecuting ) {
 			throw new CerberusRuntimeException("Can not execute command queue, that is already processed!", 
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 		}		
 
 		

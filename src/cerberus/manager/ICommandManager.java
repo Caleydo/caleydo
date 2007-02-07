@@ -166,4 +166,24 @@ extends ICommandActionListener, IGeneralManager {
 	 */
 	public boolean hasCommandQueueId( final int iCmdQueueId );
 	
+	/**
+	 * Register a cerberus.command.ICommand after it's doCommand() method was called.
+	 * Used for redo-undo.
+	 * 
+	 * @see cerberus.command.ICommand#doCommand()
+	 * 
+	 * @param runCmd
+	 */
+	public void runDoCommand( ICommand runCmd );
+	
+	/**
+	 * Register a cerberus.command.ICommand after it's undoCommand() method was called.
+	 * Used for redo-undo.
+	 * 
+	 * @see cerberus.command.ICommand#undoCommand()
+	 * 
+	 * @param runCmd
+	 */
+	public void runUndoCommand( ICommand runCmd );
+	
 }

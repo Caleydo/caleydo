@@ -55,6 +55,8 @@ implements ICommand {
 		gearsView.retrieveGUIContainer();
 		gearsView.initView();
 		gearsView.drawView();
+		
+		refCommandManager.runDoCommand(this);
 	}
 
 	
@@ -67,6 +69,6 @@ implements ICommand {
 	
 	public void undoCommand() throws CerberusRuntimeException {
 		
-		// TODO Auto-generated method stub
+		refCommandManager.runUndoCommand(this);
 	}
 }

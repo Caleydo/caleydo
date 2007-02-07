@@ -36,6 +36,7 @@ implements ICommand {
 	 * Does not set the reference to the parent JComponent.
 	 */
 	public CmdWindowPopupProgressBarSwing( final String details ) {
+		super( null);
 		progressBar = new JProgressBar(0,100);
 		progressBar.setToolTipText( details );
 		

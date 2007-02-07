@@ -37,6 +37,7 @@ implements ICommand {
 	 * Does not set the reference to the parent JComponent.
 	 */
 	public CmdWindowNewIFrameScatterplot2D() {
+		super( null);
 	}
 	
 	/**
@@ -45,6 +46,7 @@ implements ICommand {
 	 * @param setParentComonent parent JComponenet
 	 */
 	public CmdWindowNewIFrameScatterplot2D( final JComponent setParentComonent ) {
+		super( null);
 		parentComponent = setParentComonent;
 	}
 

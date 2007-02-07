@@ -5,7 +5,7 @@
 package cerberus.command.memento;
 
 //import cerberus.manager.IMementoManager;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -101,7 +101,7 @@ public class IGeneralMemento
 	{
 		if ( refMementoCreator != setMementoCreator) {
 			throw new CerberusRuntimeException("IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
-					CerberusExceptionType.MEMENTO );
+					CerberusRuntimeExceptionType.MEMENTO );
 		}
 		//assert  refMementoCreator == setMementoCreator: "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.";
 		

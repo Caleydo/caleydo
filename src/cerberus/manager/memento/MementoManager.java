@@ -25,7 +25,7 @@ import cerberus.manager.singelton.SingeltonManager;
 
 import cerberus.command.memento.IMemento;
 //import prometheus.data.collection.Set;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -84,7 +84,7 @@ public class MementoManager
 
 		} catch (Exception e) {
 			throw new CerberusRuntimeException("setMemento(IMemento) failed. " + e.toString(),
-					CerberusExceptionType.MEMENTO );
+					CerberusRuntimeExceptionType.MEMENTO );
 		}
 	}
 

@@ -15,7 +15,7 @@ import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -243,7 +243,7 @@ implements IPathwayElementManager {
 		}
 		
 		throw new CerberusRuntimeException("Must use ManagerObjectType.PATHWAY_ELEMENT *",
-				CerberusExceptionType.DATAHANDLING);
+				CerberusRuntimeExceptionType.DATAHANDLING);
 	}
 
 	/* (non-Javadoc)

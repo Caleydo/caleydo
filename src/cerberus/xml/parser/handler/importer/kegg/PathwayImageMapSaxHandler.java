@@ -10,7 +10,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.pathway.PathwayManager;
-import cerberus.manager.type.ManagerObjectType;
+//import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 

@@ -14,7 +14,6 @@ import java.util.StringTokenizer;
 import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.SAXException;

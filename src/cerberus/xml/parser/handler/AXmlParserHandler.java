@@ -9,7 +9,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -45,7 +45,7 @@ implements IXmlParserHandler
 		
 		if ( tag.length() < 2 ) {
 			throw new CerberusRuntimeException("setXmlActivationTag() tag must be at least one char!",
-					CerberusExceptionType.SAXPARSER);
+					CerberusRuntimeExceptionType.SAXPARSER);
 		}
 		
 		this.sOpeningTag = tag;

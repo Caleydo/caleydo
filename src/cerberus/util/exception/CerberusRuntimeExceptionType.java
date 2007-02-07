@@ -14,7 +14,7 @@ package cerberus.util.exception;
  * @author Michael Kalkusch
  *
  */
-public enum CerberusExceptionType {
+public enum CerberusRuntimeExceptionType {
 	
 	ANY_ERROR("cerberus-error"),
 	COMMAND("Command"),
@@ -30,7 +30,7 @@ public enum CerberusExceptionType {
 	
 	private String sExceptionDetail;
 	
-	private CerberusExceptionType( String ssExceptionDetail ) {
+	private CerberusRuntimeExceptionType( String ssExceptionDetail ) {
 		sExceptionDetail = ssExceptionDetail;
 	}
 	

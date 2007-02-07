@@ -92,7 +92,6 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
 	 */
 	public CmdDataCreateSet( final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
 		super( refGeneralManager );
@@ -106,78 +105,22 @@ extends ACmdCreate_IdTargetLabelAttr {
 	}
 	
 
-	/**
-	 * Load data from file using a token pattern.
-	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
-	 * 
-	 * @see cerberus.command.ICommand#doCommand()
-	 */
-	public void doCommand() throws CerberusRuntimeException {
-		
-		assert llRefStorage_nDim != null : "Probably this doCommand() was already executed once!";
-		
-		ISetManager refSetManager = 
-			refGeneralManager.getSingelton().getSetManager();
-		
-		newObject = null;
-		
-		switch ( set_type ) 
-		{
-		case CREATE_SET:
-			newObject = (ISet) refSetManager.createSet(
-					set_type );
-			
-			assingLinearSet( newObject );
-			break;
-			
-		case CREATE_SET_PLANAR:
-			newObject = (ISet) refSetManager.createSet(
-					set_type );
-			
-			assingPlanarOrMultiDimensionalSet( newObject );
-			break;
-			
-		case CREATE_SET_MULTIDIM:
-			newObject = (ISet) refSetManager.createSet(
-					set_type );
-			
-			assingPlanarOrMultiDimensionalSet( newObject );
-			break;
-			
-		default:
-			refGeneralManager.getSingelton().logMsg(
-						"CmdDataCreateSet.doCommand() failed because type=[" +
-						set_type + "] is not supported!",
-						LoggerType.ERROR_ONLY );
-			return;
-		}
-				
-		newObject.setId( iUniqueTargetId );
-		newObject.setLabel( sLabel );
-		
-		
+	
+	private void wipeLinkedLists() 
+	{
 		/**
-		 * Register Set...
+		 * Wipe all lists
 		 */
-		refGeneralManager.getSingelton().getSetManager().registerItem( 
-				newObject, 
-				newObject.getId(),
-				newObject.getBaseType() );
-		
-		refGeneralManager.getSingelton().logMsg(
-				"SET: " +
-				newObject.getClass().getSimpleName() + 
-				" done; " + 
-				newObject.toString() ,
-				LoggerType.FULL );
-		
-
-		refGeneralManager.getSingelton().logMsg( 
-				"DO new SET: " + 
-				iUniqueTargetId,
-				LoggerType.VERBOSE );	
+		if ( ! llRefSelection_nDim.isEmpty() ) 
+		{
+			llRefSelection_nDim.clear();
+		}
+		if ( ! llRefStorage_nDim.isEmpty() ) 
+		{
+			llRefStorage_nDim.clear();
+		}
 	}
+	
 
 	private boolean assingLinearSet( ISet newObject )
 	{
@@ -431,6 +374,84 @@ extends ACmdCreate_IdTargetLabelAttr {
 	}
 	
 	
+	/**
+	 * Load data from file using a token pattern.
+	 * 
+	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * 
+	 * @see cerberus.command.ICommand#doCommand()
+	 */
+	public void doCommand() throws CerberusRuntimeException {
+		
+		assert llRefStorage_nDim != null : "Probably this doCommand() was already executed once!";
+		
+		ISetManager refSetManager = 
+			refGeneralManager.getSingelton().getSetManager();
+		
+		newObject = null;
+		
+		switch ( set_type ) 
+		{
+		case CREATE_SET:
+			newObject = (ISet) refSetManager.createSet(
+					set_type );
+			
+			assingLinearSet( newObject );
+			break;
+			
+		case CREATE_SET_PLANAR:
+			newObject = (ISet) refSetManager.createSet(
+					set_type );
+			
+			assingPlanarOrMultiDimensionalSet( newObject );
+			break;
+			
+		case CREATE_SET_MULTIDIM:
+			newObject = (ISet) refSetManager.createSet(
+					set_type );
+			
+			assingPlanarOrMultiDimensionalSet( newObject );
+			break;
+			
+		default:
+			refGeneralManager.getSingelton().logMsg(
+						"CmdDataCreateSet.doCommand() failed because type=[" +
+						set_type + "] is not supported!",
+						LoggerType.ERROR_ONLY );
+			return;
+		}
+				
+		newObject.setId( iUniqueTargetId );
+		newObject.setLabel( sLabel );
+		
+		
+		/**
+		 * Register Set...
+		 */
+		refGeneralManager.getSingelton().getSetManager().registerItem( 
+				newObject, 
+				newObject.getId(),
+				newObject.getBaseType() );
+		
+		refGeneralManager.getSingelton().logMsg(
+				"SET: " +
+				newObject.getClass().getSimpleName() + 
+				" done; " + 
+				newObject.toString() ,
+				LoggerType.FULL );
+		
+
+		refGeneralManager.getSingelton().logMsg( 
+				"DO new SET: " + 
+				iUniqueTargetId,
+				LoggerType.VERBOSE );
+		
+		refCommandManager.runDoCommand(this);
+	}
+
+
+	
+	
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
@@ -442,33 +463,12 @@ extends ACmdCreate_IdTargetLabelAttr {
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueId,
-				LoggerType.MINOR_ERROR);		
+				LoggerType.MINOR_ERROR);
+		
+		refCommandManager.runUndoCommand(this);
 	}
 	
 
-//	/* (non-Javadoc)
-//	 * @see cerberus.command.ICommand#getCommandType()
-//	 */
-//	public CommandType getCommandType() throws CerberusRuntimeException {
-//		assert false : "add propper type!";
-//	
-//		return CommandType.SELECT_NEW; 
-//	}
-	
-	private void wipeLinkedLists() 
-	{
-		/**
-		 * Wipe all lists
-		 */
-		if ( ! llRefSelection_nDim.isEmpty() ) 
-		{
-			llRefSelection_nDim.clear();
-		}
-		if ( ! llRefStorage_nDim.isEmpty() ) 
-		{
-			llRefStorage_nDim.clear();
-		}
-	}
 	
 	/**
 	 * 

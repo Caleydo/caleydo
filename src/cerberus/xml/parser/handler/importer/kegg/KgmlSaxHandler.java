@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
-import cerberus.manager.data.pathway.PathwayElementManager;
-import cerberus.manager.data.pathway.PathwayManager;
-import cerberus.manager.type.ManagerObjectType;
+//import cerberus.manager.data.pathway.PathwayElementManager;
+//import cerberus.manager.data.pathway.PathwayManager;
+//import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 

@@ -39,19 +39,16 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectScatterPlot2D(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	public CmdGlObjectScatterPlot2D(IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 		
 		iResolution = new int[3];
-		
-		setAttributesHeatmapWidthHeight( refParameterHandler );
 		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_SCATTERPLOT2D;
 	}
 
-	private final void setAttributesHeatmapWidthHeight( IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
 		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 				this.sDetail, 
@@ -82,6 +79,4 @@ extends ACmdCreate_GlCanvasUser
 	{
 		
 	}
-	
-	
 }

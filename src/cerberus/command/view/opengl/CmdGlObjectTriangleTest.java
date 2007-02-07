@@ -26,19 +26,20 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectTriangleTest(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	public CmdGlObjectTriangleTest(IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_TRIANGLE_TEST;
+	}
+
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		super.setParameterHandler(refParameterHandler);
 		
 		refParameterHandler.setValueAndType( "OpenGLTriangleTest_color",
 				sDetail,
 				IParameterHandler.ParameterHandlerType.STRING);
-		
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_TRIANGLE_TEST;
 	}
-
-
+	
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException
 	{

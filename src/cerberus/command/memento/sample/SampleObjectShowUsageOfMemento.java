@@ -13,7 +13,7 @@ import cerberus.command.memento.IMemento;
 import cerberus.command.memento.IMementoCreator;
 import cerberus.command.memento.sample.SampleMementoState;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 
 
 /**
@@ -94,7 +94,7 @@ public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 				
 		} catch (Exception e) {
 			throw new CerberusRuntimeException("setMemento() with wrong IMementoState! "+ e.toString(),
-					CerberusExceptionType.MEMENTO );
+					CerberusRuntimeExceptionType.MEMENTO );
 		}
 
 	}

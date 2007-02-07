@@ -10,6 +10,7 @@ package cerberus.command.base;
 
 import cerberus.command.ICommand;
 import cerberus.data.AUniqueItem;
+import cerberus.manager.ICommandManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -21,10 +22,25 @@ public abstract class ACommand
 	implements ICommand {
 
 	/**
+	 * Reference ot ICommandManager
+	 * 
+	 * Used to
+	 * 
+	 * @see cerberus.manager.ICommandManager#runDoCommand(ICommand)
+	 * @see cerberus.manager.ICommandManager#runUndoCommand(ICommand)
+	 * @see cerberus.command.ICommand#doCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
+	 * 
+	 */
+	protected final ICommandManager refCommandManager;
+	
+	/**
 	 * Default constructor, collectionId is set to -1.
 	 */
-	public ACommand() {
+	public ACommand(final ICommandManager refCommandManager) {
 		super( -1 );
+		
+		this.refCommandManager = refCommandManager;
 	}
 	
 	/**
@@ -34,6 +50,8 @@ public abstract class ACommand
 	 */
 	public ACommand( int iSetCmdCollectionId) {
 		super( iSetCmdCollectionId );
+		
+		refCommandManager = null;
 	}
 
 	
@@ -51,4 +69,5 @@ public abstract class ACommand
 	public void setParameterHandler( IParameterHandler phHandler) {
 		
 	}
+
 }

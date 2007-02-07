@@ -63,6 +63,6 @@ extends IUniqueObject {
 	 * @see cerberus.command.factory.CommandFactory.getCommandType()
 	 */
 	public abstract CommandType getCommandType() 
-		throws CerberusRuntimeException;
-	
+		throws CerberusRuntimeException;	
+
 }

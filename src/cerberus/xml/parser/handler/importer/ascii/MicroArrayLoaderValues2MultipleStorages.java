@@ -41,7 +41,7 @@ extends AMicroArrayLoader {
 	
 	private IStorage[] refArrayDataStorage = null;
 	
-	private int iArrayDataStorageLength = -1;
+//	private int iArrayDataStorageLength = -1;
 	
 	/**
 	 * Reference to the current DataStorage.
@@ -237,7 +237,7 @@ extends AMicroArrayLoader {
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = new StringTokenizer(sLine, "\"");
 
-				int iStringIndex = 0;
+				//int iStringIndex = 0;
 
 				strLineBuffer.setLength(0);
 				vecBufferText.clear();

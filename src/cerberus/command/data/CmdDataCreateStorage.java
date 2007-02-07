@@ -87,10 +87,9 @@ implements ICommand {
 	 * 
 	 */
 	public CmdDataCreateStorage( final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super( refGeneralManager, refParameterHandler );
+		super( refGeneralManager);
 			
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
@@ -289,6 +288,8 @@ implements ICommand {
 			llDataTypes = null;
 			llDataRaw = null;
 		}
+		
+		refCommandManager.runDoCommand(this);
 	}
 
 	/* (non-Javadoc)
@@ -302,7 +303,9 @@ implements ICommand {
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueTargetId,
-				LoggerType.VERBOSE );		
+				LoggerType.VERBOSE );	
+		
+		refCommandManager.runUndoCommand(this);
 	}
 	
 

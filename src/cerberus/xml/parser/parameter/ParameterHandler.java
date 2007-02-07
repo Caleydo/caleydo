@@ -12,9 +12,8 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 //import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.AParameterHandler;
@@ -325,7 +324,7 @@ implements IParameterHandler
 								key +
 								"=[" + value + 
 								"] needs three float values!",
-								CerberusExceptionType.CONVERSION );
+								CerberusRuntimeExceptionType.CONVERSION );
 					} // if
 					
 					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 
@@ -348,7 +347,7 @@ implements IParameterHandler
 								key +
 								"=[" + value + 
 								"] needs four float values!",
-								CerberusExceptionType.CONVERSION );
+								CerberusRuntimeExceptionType.CONVERSION );
 					} // if
 					
 					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 

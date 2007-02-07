@@ -29,7 +29,6 @@ import cerberus.view.gui.swt.data.explorer.model.AModel;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
 import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
 import cerberus.view.gui.swt.data.explorer.model.StorageModel;
-import cerberus.view.gui.swt.data.explorer.model.ViewModel;
 import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
 import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
 import cerberus.view.gui.swt.data.DataTableViewRep;

@@ -16,7 +16,7 @@ import com.sun.opengl.util.Animator;
 
 import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 
 
 /**
@@ -66,7 +66,7 @@ extends ASWTEmbeddedWidget {
 			
 			throw new CerberusRuntimeException( "SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: " + 
 					ule.toString(),
-					CerberusExceptionType.JOGL_SWT );
+					CerberusRuntimeExceptionType.JOGL_SWT );
 		}
 		
 		refEmbeddedFrame.add(refGLCanvas);

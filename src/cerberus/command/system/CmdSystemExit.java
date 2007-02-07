@@ -10,9 +10,10 @@ package cerberus.command.system;
 
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
-import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
+import cerberus.data.AUniqueItem;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Command, shuts down application.
@@ -21,14 +22,14 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdSystemExit 
-extends ACommand
+extends AUniqueItem
 implements ICommand {
 
 	/**
 	 * 
 	 */
 	public CmdSystemExit() {
-		
+		super (-1);
 	}
 
 	/* (non-Javadoc)
@@ -55,12 +56,19 @@ implements ICommand {
 		// no undo of system shutdown!
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#getCommandType()
 	 */
 	public CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.SYSTEM_EXIT; 
+	}
+
+	public boolean isEqualType(ICommand compareToObject) {
+		return false;
+	}
+
+	public void setParameterHandler(IParameterHandler refParameterHandler) {
+		assert false : "Must not be called for this classs.";
 	}
 
 }

@@ -35,17 +35,16 @@ implements ICommand
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectMinMaxScatterPlot3D(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	public CmdGlObjectMinMaxScatterPlot3D(IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributesScatterPlot();
+		super(refGeneralManager);
 		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_MINMAX_SCATTERPLOT3D;
 	}
 
-	private void setAttributesScatterPlot() {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 				this.sDetail, 
@@ -55,7 +54,7 @@ implements ICommand
 				sAttribute3,
 				14 );
 	}
-
+	
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException
 	{
@@ -72,5 +71,4 @@ implements ICommand
 	{
 		
 	}
-
 }

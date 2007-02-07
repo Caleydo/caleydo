@@ -48,7 +48,7 @@ implements ICommand {
 	public CmdWindowNewInternalFrame( final IGeneralManager refGeneralManage,
 			final int iCallingFrameId,
 			final String sHeaderText ) {
-		
+		super( null);
 		this.refGeneralManage = refGeneralManage;
 		this.iCallingFrameId = iCallingFrameId;		
 		this.refViewCanvasManager = 

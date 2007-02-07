@@ -13,7 +13,7 @@ import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 //import demos.gears.Gears;
 
 /**
@@ -138,7 +138,7 @@ implements IView, ISwtJoglContainerViewRep
 		if ( refGLCanvas == null ) {
 			throw new CerberusRuntimeException(
 					"JoglContainerViewRep::removeGLEventListener_JOGL() failed because GLCanvas was not created!",
-					CerberusExceptionType.JOGL_SWT );
+					CerberusRuntimeExceptionType.JOGL_SWT );
 		}
 		
 		refGLCanvas.removeGLEventListener( setGLEventListener );

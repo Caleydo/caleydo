@@ -16,6 +16,7 @@ import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
 //import cerberus.command.window.CmdWindowPopupInfo;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -67,47 +68,11 @@ implements ICommand {
 	protected int iTargetSetId;
 	
 	
-//	/**
-//	 * 
-//	 * List of expected Strings inside LinkedList <String>: <br>
-//	 * sData_CmdId <br>
-//	 * sData_Cmd_label <br>
-//	 * sData_Cmd_process <br> 
-//	 * sData_Cmd_MementoId <br> 
-//	 * sData_Cmd_detail <br>
-//	 * sData_Cmd_attribute1 <br>
-//	 * sData_Cmd_attribute2 <br>
-//	 * 
-//	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
-//	 */
-//	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
-//			final LinkedList <String> llAttributes ) {
-//		
-//		Iterator <String> iter = llAttributes.iterator();
-//		
-//		this.setId( StringConversionTool.convertStringToInt(
-//				iter.next(), 
-//				-1 ) );
-//		
-//		/**
-//		 * skip unneeded Strings...
-//		 */
-//		iter.next();
-//		iter.next();
-//		iter.next();
-//		iter.next();
-//		
-//		this.refGeneralManager = refGeneralManager;		
-//		this.sFileName = iter.next();		
-//		this.sTokenPattern = iter.next();
-//		this.iTargetSetId = StringConversionTool.convertStringToInt(
-//				iter.next(), 
-//				-1 );	
-//	}
 	
-	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager ) {
+	public CmdSystemLoadFileViaImporter( final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
 		
-		super();
+		super(refCommandManager);
 		
 		this.refGeneralManager = refGeneralManager;		
 		
@@ -115,6 +80,7 @@ implements ICommand {
 	}
 	
 	public void setParameterHandler( IParameterHandler refParameterHandler) {
+		super.setParameterHandler(refParameterHandler);
 		
 		this.setId( refParameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
@@ -245,14 +211,14 @@ implements ICommand {
 			}
 		} // finally
 		
-		
+		refCommandManager.runDoCommand(this);
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
-		// no undo of system shutdown!
+		refCommandManager.runUndoCommand(this);
 	}
 	
 

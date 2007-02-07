@@ -8,12 +8,9 @@
  */
 package cerberus.manager.command.factory;
 
-import java.util.LinkedList;
-
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
-import cerberus.command.queue.ICommandQueue;
-import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.command.queue.ICommandQueue;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -26,26 +23,6 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public interface ICommandFactory {
 
-	/**
-	 * ISet the command type.
-	 * 
-	 * @param setType
-	 * @throws PrometheusCommandException
-	 */
-	public void setCommandType(CommandType setType) 
-		throws CerberusRuntimeException;
-	
-	
-	/**
-	 * Get the command type of this class
-	 * 
-	 * @return command type of this class
-	 * @throws PrometheusCommandException
-	 * 
-	 * @see cerberus.command.ICommand.getCommandType()
-	 */
-	public CommandType getCommandType() 
-		throws CerberusRuntimeException;
 	
 	
 	/**
@@ -61,19 +38,8 @@ public interface ICommandFactory {
 
 
 	/**
-	 * Create a new command.
+	 * create a new command
 	 * 
-	 * Deprecated list of expected Strings inside LinkedList <String>: <br>
-	 * sData_CmdId <br>	 
-	 * sData_TargetId <br>
-	 * sData_Cmd_label <br>
-	 * sData_Cmd_process <br> 
-	 * sData_Cmd_MementoId <br> 
-	 * sData_Cmd_detail <br>
-	 * sData_Cmd_attribute1 <br>
-	 * sData_Cmd_attribute2 <br>
-	 * 
-	 * @param useSelectionType
 	 * @param phAttributes
 	 * @return
 	 */
@@ -89,8 +55,4 @@ public interface ICommandFactory {
 			final int sQueueThread,
 			final int sQueueThreadWait );
 	
-	
-//	public ICommand createCommandQueue( 
-//			final String sData_Cmd_type,
-//			final LinkedList <String> llAttributes );
 }

@@ -70,6 +70,8 @@ implements ICommand {
 			swtGLCanvasView.initView();
 			swtGLCanvasView.drawView();
 			
+			refCommandManager.runDoCommand(this);
+			
 		} 	
 		catch ( CerberusRuntimeException ce)
 		{
@@ -95,6 +97,6 @@ implements ICommand {
 	
 	public void undoCommand() throws CerberusRuntimeException {
 		
-		// TODO Auto-generated method stub
+		refCommandManager.runUndoCommand(this);
 	}
 }

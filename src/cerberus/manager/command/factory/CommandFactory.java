@@ -10,7 +10,6 @@ package cerberus.manager.command.factory;
 
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
-import cerberus.command.base.ACommand;
 
 import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
@@ -46,7 +45,6 @@ import cerberus.command.queue.CmdSystemRunCmdQueue;
 import cerberus.command.queue.CommandQueueVector;
 
 import cerberus.command.system.CmdSystemExit;
-import cerberus.command.system.CmdSystemNop;
 import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 import cerberus.command.system.CmdSystemLoadFileNStorages;
@@ -55,7 +53,7 @@ import cerberus.command.system.CmdSystemLoadFileLookupTable;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 import cerberus.xml.parser.command.CommandQueueSaxType;
@@ -70,13 +68,9 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CommandFactory 
-extends ACommand
-	implements ICommand, ICommandFactory {
+	implements  ICommandFactory {
 
-	/**
-	 * Command created by the factory.
-	 */
-	protected ICommand refCommand;
+	private ICommand refLastCommand;
 	
 	protected final IGeneralManager refGeneralManager;
 
@@ -93,6 +87,7 @@ extends ACommand
 			final ICommandManager refCommandManager,
 			final CommandType setCommandType) {
 		
+		
 		assert setRefGeneralManager != null:"Can not create CommandFactory from null-pointer to IGeneralManager";
 		
 		this.refGeneralManager = setRefGeneralManager;		
@@ -100,7 +95,7 @@ extends ACommand
 		
 		/* create new command from constructor parameter. */
 		if ( setCommandType != null ) {
-			refCommand = createCommand( setCommandType, "" );
+			refLastCommand = createCommand( setCommandType, "" );
 		}
 	}
 	
@@ -146,7 +141,7 @@ extends ACommand
 		default:
 			System.err.println("CommandFactory(CommandType) failed, because CommandTypeGroup ["+
 					createCommandByType.getGroup() +"] is not known by factory.");
-			refCommand = null;
+			refLastCommand = null;
 			return null;			
 		}
 		
@@ -156,18 +151,7 @@ extends ACommand
 	
 	
 	/**
-	 * 
-	 * List of expected Strings inside LinkedList <String>: <br>
-	 * sData_CmdId <br>
-	 * sData_TargetId <br>
-	 * sData_Cmd_label <br>
-	 * sData_Cmd_process <br> 
-	 * sData_Cmd_MementoId <br> 
-	 * sData_Cmd_detail <br>
-	 * sData_Cmd_attribute1 <br>
-	 * sData_Cmd_attribute2 <br>
-	 * 
-	 * @see cerberus.manager.command.factory.ICommandFactory#createCommand(java.lang.String, java.util.LinkedList)
+	 * @see cerberus.manager.command.factory.ICommandFactory#createCommand(cerberus.xml.parser.parameter.IParameterHandler)
 	 */
 	public ICommand createCommand(final IParameterHandler phAttributes) {
 		
@@ -185,14 +169,15 @@ extends ACommand
 			createdCommand =
 				new CmdSystemLoadFileLookupTable( 
 						refGeneralManager,
-						phAttributes );
+						refCommandManager );
 			break;
 		}
 		
 		case LOAD_DATA_FILE: 
 		{
 			createdCommand =
-				new CmdSystemLoadFileViaImporter(refGeneralManager);
+				new CmdSystemLoadFileViaImporter(refGeneralManager,
+						refCommandManager);
 			break;
 		}
 		
@@ -201,7 +186,7 @@ extends ACommand
 			createdCommand =
 				new CmdSystemLoadFileNStorages( 
 						refGeneralManager,
-						phAttributes );
+						refCommandManager );
 			break;
 		}
 
@@ -210,7 +195,6 @@ extends ACommand
 			createdCommand =
 				new CmdDataCreateStorage(
 						refGeneralManager,
-						phAttributes,
 						true );
 			break;
 		}
@@ -220,7 +204,6 @@ extends ACommand
 			createdCommand =
 				new CmdDataCreateSet(
 						refGeneralManager,
-						phAttributes,
 						true );
 			break;
 		}
@@ -336,8 +319,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectTriangleTest(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -345,8 +327,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -354,8 +335,7 @@ extends ACommand
 		{
  			createdCommand =
 				new CmdGlObjectHistogram2D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -363,8 +343,7 @@ extends ACommand
 		{
  			createdCommand =
 				new CmdGlObjectIsosurface3D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -372,8 +351,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectScatterPlot2D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -381,8 +359,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectTexture2D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -390,8 +367,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap2D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -408,8 +384,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectMinMaxScatterPlot2D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -417,8 +392,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdGlObjectMinMaxScatterPlot3D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -434,7 +408,7 @@ extends ACommand
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
 					cmdType + "]",
-					CerberusExceptionType.SAXPARSER);
+					CerberusRuntimeExceptionType.SAXPARSER);
 		} // end switch
 		
 		
@@ -487,7 +461,7 @@ extends ACommand
 		catch ( IllegalArgumentException iae ) 
 		{
 			throw new CerberusRuntimeException("Undefined CommandQueue key= [" + sCmdType + "]",
-					CerberusExceptionType.SAXPARSER);
+					CerberusRuntimeExceptionType.SAXPARSER);
 		}
 			
 		switch (queueType) 
@@ -504,7 +478,7 @@ extends ACommand
 			
 			default:
 				throw new CerberusRuntimeException("Unsupported CommandQueue key= [" + sCmdType + "]",
-						CerberusExceptionType.SAXPARSER);
+						CerberusRuntimeExceptionType.SAXPARSER);
 		}
 		
 	}
@@ -527,7 +501,7 @@ extends ACommand
 			default:
 				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
 						setCommandType +"] is not known by factory.");
-				refCommand = null;
+				refLastCommand = null;
 			return null;
 		}
 		
@@ -552,7 +526,7 @@ extends ACommand
 			default:
 				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
 						setCommandType +"] is not known by factory.");
-				refCommand = null;
+				refLastCommand = null;
 			return null;
 		}
 		
@@ -564,18 +538,16 @@ extends ACommand
 			final String details ) {
 		switch (setCommandType) {
 			case SYSTEM_EXIT :
-				refCommand = new CmdSystemExit();
-				return refCommand;
-			case SYSTEM_NOP:
-				return new CmdSystemNop();
+				refLastCommand = new CmdSystemExit();
+				return refLastCommand;
 				
 			case SYSTEM_NEW_FRAME:
-				return new CmdSystemNewFrame();
+				return new CmdSystemNewFrame(refCommandManager);
 				
 			default:
 				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
 						setCommandType +"] is not known by factory.");
-				refCommand = null;
+				refLastCommand = null;
 		}
 		
 		return null;
@@ -691,7 +663,7 @@ extends ACommand
 			default:
 				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
 						setCommandType +"] is not known by factory.");
-				refCommand = null;
+				refLastCommand = null;
 			return null;
 		}
 		
@@ -704,71 +676,55 @@ extends ACommand
 	 * @return reference to last created command
 	 */
 	protected ICommand getLastCreatedCommand() {
-		return refCommand;
+		return refLastCommand;
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#doCommand()
+	/**
+	 * Call doCommand() inside a try catch block.
+	 * 
+	 * @param refCommand
+	 * @throws CerberusRuntimeException
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public static final void doCommandSafe(ICommand refCommand) throws CerberusRuntimeException {
 		try {
 			refCommand.doCommand();
 		} catch (CerberusRuntimeException pe) {
-			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+					"doCommand() failed with "+
 					pe.toString(),
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+					"doCommand() failed with "+
 					e.toString(),
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 		}
 	}
 
 
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	/**
+	 * Call undoCommand() inside a try catch block.
+	 * 
+	 * @param refCommand
+	 * @throws CerberusRuntimeException
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public static final void undoCommandSafe(ICommand refCommand) throws CerberusRuntimeException {
 		try {
 			refCommand.undoCommand();
 		} catch (CerberusRuntimeException pe) {
-			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+					"undoCommand() failed with "+
 					pe.toString(),
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new CerberusRuntimeException("CommandFactory.doCommand() failed with "+
+			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+					"undoCommand() failed with "+
 					e.toString(),
-					CerberusExceptionType.COMMAND );
+					CerberusRuntimeExceptionType.COMMAND );
 		}
 	}
 	
-	
-	public void setCommandType(CommandType setType) 
-		throws CerberusRuntimeException {
-		
-	}
-	
-	
-	public CommandType getCommandType() 
-		throws CerberusRuntimeException {
-		
-		if ( refCommand == null ) {
-			return CommandType.APPLICATION_COMMAND_FACTORY;
-		}
-		
-		try {
-			return refCommand.getCommandType();
-		} catch (CerberusRuntimeException pe) {
-			throw new CerberusRuntimeException("CommandFactroy.getCommandType() failed with "+
-					pe.toString(),
-					CerberusExceptionType.COMMAND );
-		}
-	}
 
-	public void setParameterHandler(IParameterHandler phHandler) {
-
-		assert false : "Should not be called";	
-	}
 
 }

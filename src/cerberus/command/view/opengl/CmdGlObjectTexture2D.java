@@ -9,7 +9,6 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.texture.GLCanvasTexture2D;
@@ -32,20 +31,14 @@ implements ICommand {
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectTexture2D(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler) {
+	public CmdGlObjectTexture2D(IGeneralManager refGeneralManager) {
 		
-		super(refGeneralManager, refParameterHandler);
-
-		// fResolution = new float [3];
-		
-		setAttributesHeatmapWidthHeight( refParameterHandler );
-		
+		super(refGeneralManager);		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_TEXTURE2D;
 	}
 
-	private final void setAttributesHeatmapWidthHeight( 
-			IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		super.setParameterHandler(refParameterHandler);
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute3,
@@ -55,8 +48,8 @@ implements ICommand {
 		
 		fResolution = 
 			StringConversionTool.convertStringToFloatArray(sAttribute3,iSizeTokens);
-		
 	}
+
 
 
 

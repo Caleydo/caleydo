@@ -20,9 +20,9 @@ import cerberus.command.window.CmdWindowPopupInfo;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.mapping.GenomeMappingDataType;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -86,20 +86,25 @@ implements ICommand {
 	protected int iTargetSetId;
 	
 	
-	public CmdSystemLoadFileLookupTable( IGeneralManager refGeneralManager,
-			final IParameterHandler phAttributes ) {
+	public CmdSystemLoadFileLookupTable( final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager ) {
 		
-		super();
+		super(refCommandManager);
 		
 		this.refGeneralManager = refGeneralManager;		
+	}
+	
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		super.setParameterHandler(refParameterHandler);
 		
-		this.setId( phAttributes.getValueInt( 
+		this.setId( refParameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
 	
-		this.sFileName = phAttributes.getValueString( 
+		this.sFileName = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 		
-		String sLUT_info =  phAttributes.getValueString( 
+		String sLUT_info =  refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 
 		StringTokenizer tokenizer = new StringTokenizer( sLUT_info,
@@ -113,16 +118,16 @@ implements ICommand {
 			sLookupTableTypeOptionalTarget = tokenizer.nextToken();
 		}
 		
-		this.sLUT_Target =	phAttributes.getValueString( 
+		this.sLUT_Target =	refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
 		
 		this.iTargetSetId =	StringConversionTool.convertStringToInt(
-				phAttributes.getValueString( 
+				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_TARGET_ID.getXmlKey()),
 				-1 );
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				phAttributes.getValueString( 
+				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				" " );
 		
@@ -223,6 +228,7 @@ implements ICommand {
 			loader.loadData();
 			refGenomeIdManager.buildLUT_stopEditing( lut_genome_type );
 			
+			refCommandManager.runDoCommand(this);
 			
 		} //try
 		catch ( Exception e ) 
@@ -256,7 +262,7 @@ implements ICommand {
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
-		// no undo of system shutdown!
+		refCommandManager.runUndoCommand(this);
 	}
 	
 

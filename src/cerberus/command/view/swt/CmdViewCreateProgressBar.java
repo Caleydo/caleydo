@@ -58,6 +58,8 @@ implements ICommand {
 		progressBarView.retrieveGUIContainer();
 		progressBarView.initView();
 		progressBarView.drawView();
+		
+		refCommandManager.runDoCommand(this);
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -78,6 +80,6 @@ implements ICommand {
 
 	public void undoCommand() throws CerberusRuntimeException {
 		
-		// TODO Auto-generated method stub		
+		refCommandManager.runUndoCommand(this);
 	}
 }

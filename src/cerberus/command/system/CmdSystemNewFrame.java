@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
+import cerberus.manager.ICommandManager;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -35,7 +36,9 @@ implements ICommand {
 	/**
 	 * Does not set the reference to the parent JComponent.
 	 */
-	public CmdSystemNewFrame() {
+	public CmdSystemNewFrame(final ICommandManager refCommandManager) {
+		
+		super(refCommandManager);
 	}
 	
 	/**
@@ -43,7 +46,9 @@ implements ICommand {
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
-	public CmdSystemNewFrame( final JComponent setParentComonent ) {
+	public CmdSystemNewFrame(final ICommandManager refCommandManager,
+			final JComponent setParentComonent ) {
+		super(refCommandManager);
 		parentComponent = setParentComonent;
 	}
 

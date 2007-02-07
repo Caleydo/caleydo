@@ -16,6 +16,7 @@ import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
 //import cerberus.command.window.CmdWindowPopupInfo;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -67,65 +68,32 @@ implements ICommand {
 	protected int iTargetSetId;
 	
 	
-//	/**
-//	 * 
-//	 * List of expected Strings inside LinkedList <String>: <br>
-//	 * sData_CmdId <br>
-//	 * sData_Cmd_label <br>
-//	 * sData_Cmd_process <br> 
-//	 * sData_Cmd_MementoId <br> 
-//	 * sData_Cmd_detail <br>
-//	 * sData_Cmd_attribute1 <br>
-//	 * sData_Cmd_attribute2 <br>
-//	 * 
-//	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader
-//	 */
-//	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
-//			final LinkedList <String> llAttributes ) {
-//		
-//		Iterator <String> iter = llAttributes.iterator();
-//		
-//		this.setId( StringConversionTool.convertStringToInt(
-//				iter.next(), 
-//				-1 ) );
-//		
-//		/**
-//		 * skip unneeded Strings...
-//		 */
-//		iter.next();
-//		iter.next();
-//		iter.next();
-//		iter.next();
-//		
-//		this.refGeneralManager = refGeneralManager;		
-//		this.sFileName = iter.next();		
-//		this.sTokenPattern = iter.next();
-//		this.iTargetSetId = StringConversionTool.convertStringToInt(
-//				iter.next(), 
-//				-1 );	
-//	}
-	
 	public CmdSystemLoadFileNStorages( IGeneralManager refGeneralManager,
-			final IParameterHandler phAttributes ) {
+			final ICommandManager refCommandManager ) {
 		
-		super();
+		super(refCommandManager);
 		
 		this.refGeneralManager = refGeneralManager;		
+	}
+	
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		super.setParameterHandler(refParameterHandler);
 		
-		this.setId( phAttributes.getValueInt( 
+		this.setId( refParameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
 	
-		this.sFileName = phAttributes.getValueString( 
+		this.sFileName = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-		this.sTokenPattern =  phAttributes.getValueString( 
+		this.sTokenPattern =  refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 		this.iTargetSetId =	StringConversionTool.convertStringToInt(
-				phAttributes.getValueString( 
+				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()),
 				-1 );
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				phAttributes.getValueString( 
+				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				" " );
 		
@@ -153,21 +121,21 @@ implements ICommand {
 	
 	
 	
-//	/**
-//	 * Use 
-//	 * 
-//	 * @see cerberus.xml.parser.handler.importer.ascii.AMicroArrayLoader
-//	 */
-//	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
-//			String fileName, 
-//			String tokenPattern,
-//			final int iTargetSet ) {
-//		
-//		this.refGeneralManager = refGeneralManager;		
-//		this.sFileName = fileName;		
-//		this.sTokenPattern =tokenPattern;
-//		this.iTargetSetId = iTargetSet;
-//	}
+	/**
+	 * Set attributes.
+	 * 
+	 * @param fileName
+	 * @param tokenPattern
+	 * @param iTargetSet
+	 */
+	public void setAttributes( String fileName, 
+			String tokenPattern,
+			final int iTargetSet ) {
+			
+		this.sFileName = fileName;		
+		this.sTokenPattern =tokenPattern;
+		this.iTargetSetId = iTargetSet;
+	}
 
 	/**
 	 * Load data from file using a token pattern.
@@ -258,7 +226,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#getCommandType()
 	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
+	public final CommandType getCommandType() throws CerberusRuntimeException {
 		return CommandType.DATASET_LOAD; 
 	}
 	

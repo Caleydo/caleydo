@@ -79,6 +79,7 @@ implements ICommand
 		
 		canvasDirector.addGLCanvasUser( (IGLCanvasUser) openGLCanvasUser );
 
+		refCommandManager.runDoCommand(this);
 	}
 
 	/**
@@ -100,6 +101,9 @@ implements ICommand
 		canvasDirector.removeGLCanvasUser( openGLCanvasUser );		
 			
 		openGLCanvasUser.destroy();
+		
+
+		refCommandManager.runUndoCommand(this);
 	}
 	
 	/**

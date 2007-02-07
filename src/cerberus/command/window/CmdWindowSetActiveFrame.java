@@ -38,6 +38,8 @@ implements ICommand {
 	 */
 	public CmdWindowSetActiveFrame(final IGeneralManager setRefGeneralManager,
 			final String details ) {
+		super( null);
+		
 		refGeneralManager = setRefGeneralManager;
 		
 		refViewCanvasManager = refGeneralManager.getSingelton().getViewCanvasManager();

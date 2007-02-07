@@ -17,7 +17,7 @@ public class CerberusRuntimeException
 
 	final static long serialVersionUID = 7000;
 	
-	protected final CerberusExceptionType type;
+	protected final CerberusRuntimeExceptionType type;
 	
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class CerberusRuntimeException
 	public CerberusRuntimeException() {
 		super();	
 		
-		type = CerberusExceptionType.RUNTIME;
+		type = CerberusRuntimeExceptionType.RUNTIME;
 	}
 
 	/**
@@ -34,13 +34,13 @@ public class CerberusRuntimeException
 	public CerberusRuntimeException(String s) {
 		super(s);
 		
-		type = CerberusExceptionType.RUNTIME;
+		type = CerberusRuntimeExceptionType.RUNTIME;
 	}
 
 	/**
 	 * @param s
 	 */
-	public CerberusRuntimeException(String s, final CerberusExceptionType type) {
+	public CerberusRuntimeException(String s, final CerberusRuntimeExceptionType type) {
 		super(s);
 		this.type = type;
 	}
@@ -53,7 +53,7 @@ public class CerberusRuntimeException
 	public CerberusRuntimeException(String s, Throwable ex) {
 		super(s, ex);
 		
-		type = CerberusExceptionType.RUNTIME;
+		type = CerberusRuntimeExceptionType.RUNTIME;
 	}
 	
 	
@@ -61,7 +61,7 @@ public class CerberusRuntimeException
 	 * @param s
 	 * @param ex
 	 */
-	public CerberusRuntimeException(String s, Throwable ex, final CerberusExceptionType type) {
+	public CerberusRuntimeException(String s, Throwable ex, final CerberusRuntimeExceptionType type) {
 		super(s, ex);
 		
 		this.type = type;

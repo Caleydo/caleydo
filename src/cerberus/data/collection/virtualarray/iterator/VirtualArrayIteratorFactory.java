@@ -11,7 +11,7 @@ package cerberus.data.collection.virtualarray.iterator;
 import cerberus.data.collection.IVirtualArray;
 //import prometheus.data.collection.SelectionType;
 
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -60,7 +60,7 @@ public class VirtualArrayIteratorFactory {
 			
 			throw new CerberusRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
 					setSelection.getSelectionType() + "] !",
-					CerberusExceptionType.VIRTUALARRAY );
+					CerberusRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
 		return refSelectionIterator;

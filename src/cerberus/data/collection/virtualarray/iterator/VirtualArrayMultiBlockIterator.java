@@ -9,7 +9,7 @@
 package cerberus.data.collection.virtualarray.iterator;
 
 import cerberus.data.collection.IVirtualArray;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -71,7 +71,7 @@ implements IVirtualArrayIterator {
 		if (( iSetVirtualIndex < 0 ) || 
 				( iSetVirtualIndex >= iSelectionLength) ) {
 			throw new CerberusRuntimeException("setVirtualIndex() with index that was out of bounds.",
-							CerberusExceptionType.VIRTUALARRAY );
+							CerberusRuntimeExceptionType.VIRTUALARRAY );
 		}				
 		
 		final int iCountMultiBlocks = (int) ( (float) iCurrentVirtualIndex % (float) iVirtualBlockRepeat );

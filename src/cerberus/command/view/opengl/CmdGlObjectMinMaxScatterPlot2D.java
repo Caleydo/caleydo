@@ -35,17 +35,15 @@ implements ICommand
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectMinMaxScatterPlot2D(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	public CmdGlObjectMinMaxScatterPlot2D(IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
-		
-		setAttributesScatterPlot();
-		
+		super(refGeneralManager);
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_MINMAX_SCATTERPLOT2D;
 	}
 
-	private void setAttributesScatterPlot() {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 				this.sDetail, 
@@ -65,6 +63,7 @@ implements ICommand
 		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
 		canvas.setResolution( fResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
+		
 	}
 
 	@Override

@@ -17,7 +17,6 @@ import cerberus.data.mapping.GenomeMappingType;
 import cerberus.base.map.MultiHashArrayIntegerMap;
 import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;

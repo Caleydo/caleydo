@@ -9,7 +9,6 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
@@ -40,22 +39,18 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectHeatmap(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	public CmdGlObjectHeatmap(IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 
 		iResolution = new int [3];
-		
-		setAttributesHeatmapWidthHeight( refParameterHandler );
 		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_HEATMAP;
 	}
 
-	private final void setAttributesHeatmapWidthHeight( IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
-		//super.setAttributesBaseParent( refParameterHandler );
-		
+		super.setParameterHandler(refParameterHandler);
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute3,

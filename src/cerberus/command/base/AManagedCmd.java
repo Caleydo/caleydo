@@ -7,12 +7,13 @@ import cerberus.command.ICommand;
 import cerberus.command.ICommandManaged;
 //import cerberus.command.CommandType;
 import cerberus.data.AUniqueManagedObject;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
- * @author kalkusch
+ * @author Micahel Kalkusch
  *
  */
 public abstract class AManagedCmd 
@@ -20,12 +21,27 @@ extends AUniqueManagedObject
 implements ICommandManaged {
 
 	/**
+	 * Reference ot ICommandManager
+	 * 
+	 * Used to
+	 * 
+	 * @see cerberus.manager.ICommandManager#runDoCommand(ICommand)
+	 * @see cerberus.manager.ICommandManager#runUndoCommand(ICommand)
+	 * @see cerberus.command.ICommand#doCommand()
+	 * @see cerberus.command.ICommand#undoCommand()
+	 * 
+	 */
+	protected ICommandManager refCommandManager;
+	
+	/**
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
 	 */
-	protected AManagedCmd(int iSetCollectionId,
-			IGeneralManager setGeneralManager) {
+	protected AManagedCmd(final int iSetCollectionId,
+			final IGeneralManager setGeneralManager) {
 		super(iSetCollectionId, setGeneralManager);
+		
+		refCommandManager = setGeneralManager.getSingelton().getCommandManager();
 	}
 
 	/**
@@ -44,6 +60,6 @@ implements ICommandManaged {
 	}
 
 	public void setParameterHandler( IParameterHandler phHandler) {
-		
+		assert false : "Call empty methode!";
 	}
 }

@@ -19,6 +19,7 @@ import cerberus.manager.IEventPublisher;
  * and calls the methods that handle the registration.
  * 
  * @author Marc Streit
+ * @author Michael Kalkusch
  */
 public class CmdEventCreateMediator 
 extends ACmdCreate_IdTargetLabelAttrDetail 
@@ -45,6 +46,8 @@ implements ICommand {
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
 					createMediator(iUniqueTargetId,
 							arSenderIDs, arReceiverIDs, mediatorType);
+		
+		refCommandManager.runDoCommand(this);
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -81,7 +84,6 @@ implements ICommand {
 
 	public void undoCommand() throws CerberusRuntimeException {
 		
-		// TODO Auto-generated method stub
-		
+		refCommandManager.runUndoCommand(this);		
 	}
 }

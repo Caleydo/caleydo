@@ -66,6 +66,8 @@ implements ICommand {
 			final int iSetCallingFrameId,
 			final String sHeaderText ) {
 		
+		super( null);
+		
 		this.refGeneralManager = refGeneralManager;
 		
 		this.iSetCallingFrameId = iSetCallingFrameId;

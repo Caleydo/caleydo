@@ -21,7 +21,7 @@ import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.util.exception.CerberusExceptionType;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 
@@ -209,7 +209,7 @@ implements IGenomeIdManager {
 				throw new CerberusRuntimeException(
 						"buildLUT_startEditingSetTypes(" + 
 						type + ") is not allocated!",
-						CerberusExceptionType.DATAHANDLING);
+						CerberusRuntimeExceptionType.DATAHANDLING);
 			}
 			
 			return true;
