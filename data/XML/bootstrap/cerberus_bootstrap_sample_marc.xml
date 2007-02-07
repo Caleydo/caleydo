@@ -35,25 +35,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="35991"	targetId="65101" label="target Set for file	new" attrib1="15201@25201" attrib2="55301@55301"	detail="CREATE_SET_PLANAR" />
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="INT;ABORT" attrib2="55101" />
-						
-		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
-		   		detail="data/mapping/accession_number_2_gene_id.map"	
-		   		attrib1="ACCESSION_NUMBER_2_GENE_ID INT2INT" 
-		   		attrib2="55101" 
-		   		attrib3="0 -1" />		
-		   		
-		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
-		   		detail="data/mapping/accession_number_2_enzyme_id.map"	
-		   		attrib1="ACCESSION_NUMBER_2_ENZYME_ID MULTI_INT2INT" 
-		   		attrib2="55101" 
-		   		attrib3="0 -1" />			   						   	
-
-		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
-		   		detail="data/mapping/enzyme_code_2_enzyme_id.map"	
-		   		attrib1="ENZYME_CODE_2_ENZYME_ID STRING2INT" 
-		   		attrib2="55101" 
-		   		attrib3="0 -1" />			   						   	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="INT;ABORT" attrib2="55101" />			   						   	
 		
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   
@@ -71,15 +53,33 @@
 							detail="65101" />
 
 		<!-- Window 12331 -->
-     		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="12331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   		
+     		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="12331" label="OpenGL Pathway Window" attrib1="ROW VERTICAL" />   		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="12331" attrib1="12331" attrib2="700 700" />		  
-							 	    
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_MIXER"			cmdId="61993" targetId="11401" label="Mixer"			parent="12331" attrib1="10" attrib2="400 200" />		 	    
   
   		<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
  	  <!--Commands not in use at the moment	  
+ 
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
+		   		detail="data/mapping/accession_number_2_gene_id.map"	
+		   		attrib1="ACCESSION_NUMBER_2_GENE_ID INT2INT" 
+		   		attrib2="55101" 
+		   		attrib3="0 -1" />		
+		   		
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
+		   		detail="data/mapping/accession_number_2_enzyme_id.map"	
+		   		attrib1="ACCESSION_NUMBER_2_ENZYME_ID MULTI_INT2INT" 
+		   		attrib2="55101" 
+		   		attrib3="0 -1" />			   						   	
+
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
+		   		detail="data/mapping/enzyme_code_2_enzyme_id.map"	
+		   		attrib1="ENZYME_CODE_2_ENZYME_ID STRING2INT" 
+		   		attrib2="55101" 
+		   		attrib3="0 -1" />
  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP"        	cmdId="68980" targetId="79401" label="GL Heatmap  C" 	parent="11401" attrib1="1.2 0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>		  
  	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_SCATTERPLOT2D"  	cmdId="68981" targetId="80401" label="GL Scatterplot" 	parent="11401" attrib1="-1.2 -0.4 -1.5" attrib2="0 -1.5 -1.5 1.72" detail="25101" attrib3="200 300 0"/>	
