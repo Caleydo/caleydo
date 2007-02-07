@@ -1,5 +1,6 @@
 package cerberus.view.gui;
 
+import cerberus.command.ICommand;
 import cerberus.view.gui.AViewRep.ViewType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -33,6 +34,10 @@ public interface IView {
 	
 	/**
 	 * Get required settigns from IParameterHandler object.
+	 * 
+	 * @see cerberus.command.ICommand#setParameterHandler(IParameterHandler)
+	 * 
+	 * @deprecated use cerberus.command.ICommand#setParameterHandler(IParameterHandler)
 	 * 
 	 * @param refParameterHandler data from XML paser
 	 */

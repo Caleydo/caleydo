@@ -15,11 +15,9 @@ implements ICommand
 {
 	protected String sLayoutAttributes;
 	
-	public CmdWindowCreate( final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler ) 
+	public CmdWindowCreate( final IGeneralManager refGeneralManager ) 
 	{
-		super( refGeneralManager, refParameterHandler );	
-		setAttributes( refParameterHandler );
+		super( refGeneralManager );	
 	}
 
 	public void doCommand() throws CerberusRuntimeException
@@ -34,8 +32,10 @@ implements ICommand
 	}
 
 	
-	protected void setAttributes( final IParameterHandler refParameterHandler ) 
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) 
 	{						
+		super.setParameterHandler(refParameterHandler);
+		
 		sLayoutAttributes = sAttribute1;
 	}
 }

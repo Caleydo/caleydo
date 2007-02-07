@@ -103,7 +103,7 @@ implements ICommand {
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 
 		StringTokenizer tokenizer = new StringTokenizer( sLUT_info,
-				CommandFactory.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 		
 		sLookupTableType = tokenizer.nextToken();
 		sLookupTableDataType = tokenizer.nextToken();
@@ -209,7 +209,7 @@ implements ICommand {
 					lut_genome_type_OptionalTarget );	
 			
 			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
-				loader.setTokenSeperator( CommandFactory.sDelimiter_Parser_DataType );
+				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );
 			}
 			
 //			loader.setHashMap(

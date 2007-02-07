@@ -26,10 +26,15 @@ implements ICommand
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_IdTargetLabelAttr(final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler)
+	protected ACmdCreate_IdTargetLabelAttr(final IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
+		
+	}
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		sAttribute1 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );

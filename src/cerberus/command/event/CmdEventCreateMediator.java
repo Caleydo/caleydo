@@ -31,17 +31,13 @@ implements ICommand {
 	
 	protected MediatorType mediatorType;
 	
-	public CmdEventCreateMediator(IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler) {
+	public CmdEventCreateMediator(IGeneralManager refGeneralManager) {
 		
 		// set unique ID to -1 because it is unknown at this moment
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
 		
 		arSenderIDs = new ArrayList<Integer>();
 		arReceiverIDs = new ArrayList<Integer>();
-		
-		setAttributes();
-		
 	}
 
 	public void doCommand() throws CerberusRuntimeException {
@@ -56,15 +52,15 @@ implements ICommand {
 	 * Extracts sender and receiver ID of the Event Relation.
 	 *
 	 */
-	protected void setAttributes() {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
 		StringTokenizer senderToken = new StringTokenizer(
 				sAttribute1,
-				CommandFactory.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 
 		StringTokenizer receiverToken = new StringTokenizer(
 				sAttribute2,
-				CommandFactory.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 
 		while (senderToken.hasMoreTokens())
 		{

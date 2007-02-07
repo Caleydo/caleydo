@@ -10,6 +10,7 @@ package cerberus.command.base;
 
 import cerberus.command.ICommand;
 import cerberus.data.AUniqueItem;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * @author Michael Kalkusch
@@ -47,4 +48,7 @@ public abstract class ACommand
 		return false;
 	}
 
+	public void setParameterHandler( IParameterHandler phHandler) {
+		
+	}
 }

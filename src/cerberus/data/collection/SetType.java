@@ -9,6 +9,7 @@
 package cerberus.data.collection;
 
 import cerberus.data.collection.ICollectionType;
+import cerberus.data.collection.SetDataType;
 
 /**
  * Defines different types of sets.
@@ -18,38 +19,53 @@ import cerberus.data.collection.ICollectionType;
  */
 public enum SetType 
 implements ICollectionType {
-
-	/** 1-dimensional set */
-	SET_LINEAR,
-	/** 2-dimensional set */
-	SET_PLANAR,
-	/** 3-dimensional set */
-	SET_CUBIC,
-	
-	/** n-dimensional set */
-	SET_MULTI_DIM,
 	
 	/** variable n-dimensional set, were n may change. */
-	SET_MULTI_DIM_VARIABLE,
+	SET_RAW_DATA(SetDataType.SET_LINEAR),
+	
+	SET_PATHWAY(SetDataType.SET_DATATYPE_NONE),
+	
+	SET_SELECTION(SetDataType.SET_DATATYPE_NONE),
 	
 	/** not specified  */
-	SET_NONE;
+	SET_NONE(SetDataType.SET_DATATYPE_NONE);
+	
+	
+	private final boolean bRawDataType;
+	
+	private SetDataType setDataType;
 	
 	/**
 	 * Default Constructor
 	 */
-	private SetType() {
+	private SetType(final SetDataType defineDataType) {
+				
+		this.setDataType = defineDataType;
 		
+		if ( defineDataType == SetDataType.SET_DATATYPE_NONE )
+		{
+			this.bRawDataType = false;
+		}
+		else
+		{
+			this.bRawDataType = true;
+		}
 	}
 	
 	/**
-	 * 
-	 * @see prometheus.data.collection.ICollectionType#isDataType()
+	 * TRUE if it is a RAW_DATA type, FALSE else
 	 */
 	public boolean isDataType() {
-		if ( this==SetType.SET_NONE) {
-			return false;
-		}
-		return true;
+		return bRawDataType;
+	}
+	
+	public void setDataType( final SetDataType setType) {
+		assert setType != SetDataType.SET_DATATYPE_NONE : "Can not set no data type";
+		
+		setDataType = setType;
+	}
+	
+	public SetDataType getDataType() {
+		return setDataType;
 	}
 }

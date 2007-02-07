@@ -96,7 +96,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			final IParameterHandler refParameterHandler,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super( refGeneralManager, refParameterHandler );
+		super( refGeneralManager );
 		
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
@@ -104,8 +104,6 @@ extends ACmdCreate_IdTargetLabelAttr {
 		llRefSelection_nDim 	= new LinkedList< LinkedList<String> > ();
 		
 		set_type = CommandQueueSaxType.CREATE_SET;
-		
-		setAttributes( refParameterHandler );
 	}
 	
 
@@ -474,25 +472,13 @@ extends ACmdCreate_IdTargetLabelAttr {
 	}
 	
 	/**
-	 * ISet new target ISet.
 	 * 
-	 * excpected format: sUniqueId sLabel [sStorageType_TokenPattern [{datacontainer}*]]
-	 *
-	 * List of expected Strings inside LinkedList <String>: <br>
-	 * sData_CmdId <br>
-	 * sData_Cmd_label <br>
-	 * sData_Cmd_process <br> 
-	 * sData_Cmd_MementoId <br> 
-	 * sData_Cmd_detail <br>
-	 * sData_Cmd_attribute1 <br>
-	 * sData_Cmd_attribute2 <br>
-	 * 
-	 * @param sUniqueId uniqueId of new target ISet
-	 * @return TRUE on successful conversion of Strgin to interger
 	 */
-	protected boolean setAttributes( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
 		assert refParameterHandler != null: "can not handle null object!";		
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		boolean bErrorOnLoadingXMLData = false;
 			
@@ -522,7 +508,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			new StringTokenizer( 
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),	
-					CommandFactory.sDelimiter_Paser_DataItemBlock);
+					IGeneralManager.sDelimiter_Paser_DataItemBlock);
 		
 		while ( strToken_SelectionBlock.hasMoreTokens() ) 
 		{
@@ -532,7 +518,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			StringTokenizer strToken_SelectionId = 
 				new StringTokenizer( 
 						strToken_SelectionBlock.nextToken(),	
-						CommandFactory.sDelimiter_Parser_DataItems); 
+						IGeneralManager.sDelimiter_Parser_DataItems); 
 			
 			/**
 			 * Create buffer list...
@@ -576,7 +562,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			new StringTokenizer( 
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),	
-					CommandFactory.sDelimiter_Paser_DataItemBlock);
+							IGeneralManager.sDelimiter_Paser_DataItemBlock);
 		
 		while ( strToken_StorageBlock.hasMoreTokens() ) 
 		{
@@ -586,7 +572,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			StringTokenizer strToken_StorageId = 
 				new StringTokenizer( 
 						strToken_StorageBlock.nextToken(),	
-						CommandFactory.sDelimiter_Parser_DataItems); 
+						IGeneralManager.sDelimiter_Parser_DataItems); 
 			
 			/**
 			 * Create buffer list...
@@ -637,10 +623,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			wipeLinkedLists();
 			set_type = CommandQueueSaxType.NO_OPERATION;
-			return false;
 		}
-		
-		return true;
 	}
 	
 	public String toString() {

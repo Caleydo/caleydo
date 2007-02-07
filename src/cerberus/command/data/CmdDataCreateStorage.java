@@ -97,9 +97,8 @@ implements ICommand {
 		
 		llDataTypes = new LinkedList<String> ();
 		llDataRaw = new LinkedList<String> ();
-		
-		setAttributes( refParameterHandler );
 	}
+
 	
 
 	/**
@@ -139,7 +138,7 @@ implements ICommand {
 			
 			StringTokenizer tokenizer = 
 				new StringTokenizer( strToParse, 
-						CommandFactory.sDelimiter_Parser_DataItems );
+						IGeneralManager.sDelimiter_Parser_DataItems );
 				
 			int iSizeArray = tokenizer.countTokens();
 			int iTokenIndex = 0;
@@ -308,42 +307,20 @@ implements ICommand {
 	}
 	
 
-//	/* (non-Javadoc)
-//	 * @see cerberus.command.ICommand#getCommandType()
-//	 */
-//	public CommandType getCommandType() throws CerberusRuntimeException {
-//		assert false : "add propper type!";
-//	
-//		return CommandType.SELECT_NEW; 
-//	}
-	
-	
-
-	
-	
 	/**
 	 * ISet new target ISet.
 	 * 
 	 * excpected format: sUniqueId sLabel [sStorageType_TokenPattern [{datacontainer}*]]
 	 *
-	 * List of expected Strings inside LinkedList <String>: <br>
-	 * sData_CmdId <br>
-	 * sData_TargetId <br>
-	 * sData_Cmd_label <br>
-	 * sData_Cmd_process <br> 
-	 * sData_Cmd_MementoId <br> 
-	 * sData_Cmd_detail <br>
-	 * sData_Cmd_attribute1 <br>
-	 * sData_Cmd_attribute2 <br>
 	 * 
 	 * @param sUniqueId uniqueId of new target ISet
 	 * @return TRUE on successful conversion of Strgin to interger
 	 */
-	protected boolean setAttributes( final IParameterHandler refParameterHandler ) {
-		
-		assert refParameterHandler != null: "can not handle null object!";		
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 				
-		//setAttributesBase( refParameterHandler );
+		assert refParameterHandler != null: "can not handle null object!";		
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		/**
 		 * Fill data type pattern...
@@ -353,7 +330,7 @@ implements ICommand {
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
 							
-					CommandFactory.sDelimiter_Parser_DataType); 
+						IGeneralManager.sDelimiter_Parser_DataType); 
 
 		while ( strToken_DataTypes.hasMoreTokens() ) {
 			llDataTypes.add( strToken_DataTypes.nextToken() );
@@ -368,14 +345,12 @@ implements ICommand {
 		StringTokenizer strTokenLine = new StringTokenizer( 
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),
-				CommandFactory.sDelimiter_Paser_DataItemBlock );
+					IGeneralManager.sDelimiter_Paser_DataItemBlock );
 		
 		while ( strTokenLine.hasMoreTokens() ) 
 		{
 			llDataRaw.add( strTokenLine.nextToken() );
 		}	
-		
-		return true;
 	}
 
 }

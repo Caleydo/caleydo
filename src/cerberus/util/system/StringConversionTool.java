@@ -5,6 +5,7 @@ package cerberus.util.system;
 
 import java.util.StringTokenizer;
 
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.command.factory.CommandFactory;
@@ -186,7 +187,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_Parser_DataItems );
+				IGeneralManager.sDelimiter_Parser_DataItems );
 			
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
 		{
@@ -222,7 +223,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_Parser_DataItems );
+				IGeneralManager.sDelimiter_Parser_DataItems );
 		
 		int i=0;
 		for (  ; tokenize.hasMoreTokens(); i++ ) 
@@ -270,7 +271,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_Parser_DataItems );
+				IGeneralManager.sDelimiter_Parser_DataItems );
 			
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
 		{
@@ -308,7 +309,7 @@ public final class StringConversionTool
 		int [] resultIntArray = new int[iDimension];
 		
 		StringTokenizer tokenize = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_Parser_DataItems );
+				IGeneralManager.sDelimiter_Parser_DataItems );
 			
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
 		{
@@ -420,7 +421,7 @@ public final class StringConversionTool
 			final int iDimension ) { 
 		
 		StringTokenizer tokenizer = new StringTokenizer( sInput,
-				CommandFactory.sDelimiter_Parser_DataItems );
+				IGeneralManager.sDelimiter_Parser_DataItems );
 		
 		float [] resultArray = new float [iDimension];
 		

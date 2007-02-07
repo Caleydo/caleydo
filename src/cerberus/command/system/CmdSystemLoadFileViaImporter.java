@@ -105,27 +105,31 @@ implements ICommand {
 //				-1 );	
 //	}
 	
-	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
-			final IParameterHandler phAttributes ) {
+	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager ) {
 		
 		super();
 		
 		this.refGeneralManager = refGeneralManager;		
 		
-		this.setId( phAttributes.getValueInt( 
+
+	}
+	
+	public void setParameterHandler( IParameterHandler refParameterHandler) {
+		
+		this.setId( refParameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
 	
-		this.sFileName = phAttributes.getValueString( 
+		this.sFileName = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-		this.sTokenPattern =  phAttributes.getValueString( 
+		this.sTokenPattern =  refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 		this.iTargetSetId =	StringConversionTool.convertStringToInt(
-				phAttributes.getValueString( 
+				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()),
 				-1 );
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				phAttributes.getValueString( 
+				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				" " );
 		
@@ -149,8 +153,6 @@ implements ICommand {
 			} // if ( iArrayStartStop.length > 0 ) 
 		} // if ( iArrayStartStop.length > 0 ) 
 	}
-	
-	
 	
 //	/**
 //	 * Use 

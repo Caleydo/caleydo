@@ -9,6 +9,7 @@ import cerberus.command.ICommandManaged;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * @author kalkusch
@@ -42,5 +43,7 @@ implements ICommandManaged {
 		return ManagerObjectType.COMMAND;
 	}
 
-
+	public void setParameterHandler( IParameterHandler phHandler) {
+		
+	}
 }

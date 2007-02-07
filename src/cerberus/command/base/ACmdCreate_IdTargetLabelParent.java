@@ -26,13 +26,25 @@ implements ICommand
 	 * @param refParameterHandler
 	 */
 	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler)
+			final IParameterHandler refParameterHandler )
 	{
 		super(refGeneralManager, refParameterHandler);
+	}
+	
+	/**
+	 * @param refGeneralManager
+	 * @param refParameterHandler
+	 */
+	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager refGeneralManager )
+	{
+		super(refGeneralManager);
+	}
+
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		iParentContainerId = refParameterHandler.getValueInt(
 				CommandQueueSaxType.TAG_PARENT.getXmlKey() );
 	}
-
-
 }

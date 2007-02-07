@@ -238,7 +238,7 @@ implements IMementoXML, IParserObject {
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
 
 		final String sTokenPatternParserSeperator = 
-			CommandFactory.sDelimiter_Parser_DataType;
+			IGeneralManager.sDelimiter_Parser_DataType;
 		
 		// wipe former binding...
 		alTokenTargetToParserTokenType.clear();

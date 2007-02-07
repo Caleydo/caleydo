@@ -68,4 +68,9 @@ implements ICommand {
 		
 		// TODO Auto-generated method stub	
 	}
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		super.setParameterHandler(refParameterHandler);
+		
+	}
 }

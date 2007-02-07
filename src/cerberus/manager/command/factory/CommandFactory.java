@@ -81,16 +81,6 @@ extends ACommand
 	protected final IGeneralManager refGeneralManager;
 
 	protected final ICommandManager refCommandManager;
-
-	public static final String sDelimiter_Paser_DataItemBlock 	= "@";	
-	public static final String sDelimiter_Parser_DataItems 		= " ";
-	public static final String sDelimiter_Parser_DataType 		= ";";
-	
-	// public static final String sDelimiter_CreateSelection_DataItems 	= " ";
-	// public static final String sDelimiter_CreateSelection_DataItemBlock = "@";	
-	// public static final String sDelimiter_CreateComposite_Layout 		= " ";
-	// public static final String sDelimiter_CreateView_Size				= " ";	
-	// public static final String sDelimiter_Space							= " ";
 	
 	
 	/**
@@ -203,8 +193,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdSystemLoadFileViaImporter( 
-						refGeneralManager,
-						phAttributes );
+						refGeneralManager );
 			break;
 		}
 		
@@ -241,8 +230,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdDataCreateVirtualArray(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -250,8 +238,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdWindowCreate(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -352,7 +339,9 @@ extends ACommand
 			createdCommand =
 				new CmdViewCreateMixer(
 						refGeneralManager,
-						phAttributes );			
+						phAttributes );
+			
+			
 			break;
 		}
 		
@@ -468,8 +457,7 @@ extends ACommand
 		{
 			createdCommand =
 				new CmdEventCreateMediator(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager );			
 			break;
 		}
 		
@@ -479,6 +467,13 @@ extends ACommand
 					cmdType + "]",
 					CerberusExceptionType.SAXPARSER);
 		} // end switch
+		
+		
+		if ( phAttributes != null ) 
+		{
+			createdCommand.setParameterHandler( phAttributes );	
+		}
+		
 		
 //		/**
 //		 * Create a new uniqueId if nessecary
@@ -800,6 +795,11 @@ extends ACommand
 					pe.toString(),
 					CerberusExceptionType.COMMAND );
 		}
+	}
+
+	public void setParameterHandler(IParameterHandler phHandler) {
+
+		assert false : "Should not be called";	
 	}
 
 }

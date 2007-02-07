@@ -218,7 +218,7 @@ implements ISWTGUIManager {
 		gridLayout.numColumns = 1;
 
 		StringTokenizer token = new StringTokenizer(sLayoutAttributes,
-				CommandFactory.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 
 		layoutType = token.nextToken();
 

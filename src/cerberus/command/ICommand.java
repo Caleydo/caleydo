@@ -9,6 +9,7 @@
 package cerberus.command;
 
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.data.IUniqueObject;
 
 /**
@@ -39,6 +40,10 @@ extends IUniqueObject {
 	 */
 	public abstract void undoCommand() 
 		throws CerberusRuntimeException;
+	
+	public abstract void setParameterHandler( IParameterHandler refParameterHandler);
+	
+	//public abstract void setAttribute( String, int, boolean);
 	
 	/**
 	 * Tests, if two commands are of the same type.

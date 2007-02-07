@@ -39,14 +39,29 @@ implements ICommand
 	 * @param refParameterHandler
 	 */
 	protected ACmdCreate_IdTargetLabelParentXY(
+			final IGeneralManager refGeneralManager )
+	{
+		super(refGeneralManager);
+	}	
+	
+	/**
+	 * 
+	 * @deprecated 
+	 */
+	protected ACmdCreate_IdTargetLabelParentXY(
 			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler)
+			final IParameterHandler refParameterHandler )
 	{
 		super(refGeneralManager, refParameterHandler);
+	}	
+		
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute2,
-				CommandFactory.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 		
 		refParameterHandler.setValueAndTypeAndDefault( 
 				CommandQueueSaxType.TAG_POS_WIDTH_X.getXmlKey(),

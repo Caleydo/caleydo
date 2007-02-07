@@ -23,10 +23,27 @@ extends ACmdCreate_IdTargetLabelParent {
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
+	protected ACmdCreate_IdTargetLabelParentAttr(IGeneralManager refGeneralManager)
+	{
+		super(refGeneralManager);
+	}
+	
+	/**
+	 * @deprecated
+	 * 
+	 * @param refGeneralManager
+	 * @param refParameterHandler
+	 */
 	protected ACmdCreate_IdTargetLabelParentAttr(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+			final IParameterHandler refParameterHandler)
 	{
 		super(refGeneralManager, refParameterHandler);
+	}
+	
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		sAttribute1 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );

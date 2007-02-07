@@ -56,7 +56,7 @@ implements ILookupTableLoader {
 		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
 		
 		refLookupTableLoaderProxy.setTokenSeperator( 
-				CommandFactory.sDelimiter_Parser_DataType);
+				IGeneralManager.sDelimiter_Parser_DataType);
 	}
 
 	protected int loadDataParseFileLUT_oneStringPerLine(BufferedReader brFile,

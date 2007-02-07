@@ -212,6 +212,10 @@ public interface ISet
 	 */
 	public boolean hasCacheChangedReadOnly( final int iCompareCacheId );
 	
+	
+	//public SetType getSetType();
+	
+	
 /////////////////////////////
 //	/**
 //	 * Adds a IVirtualArray to a specific dimension.

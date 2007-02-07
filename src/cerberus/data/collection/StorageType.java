@@ -36,6 +36,9 @@ implements ICollectionType {
 	/** a java object is stored */
 	OBJECT(true,5),
 	
+	/** */
+	ID_LIST(true,6),
+	
 	/** long */
 	LONG(true,-1),
 	/** vec2f, contains of (float,float) */

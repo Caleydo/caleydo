@@ -58,7 +58,7 @@ implements ICommand {
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute3,
-				CommandFactory.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 		
 		int iSizeTokens= token.countTokens();
 		

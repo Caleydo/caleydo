@@ -132,6 +132,12 @@ public interface IGeneralManager {
 		iUniqueId_TypeOffset_MenuItem * iUniqueId_TypeOffsetMultiplyer;;
 
 	
+	public static final String sDelimiter_Paser_DataItemBlock 	= "@";	
+	
+	public static final String sDelimiter_Parser_DataItems 		= " ";
+	
+	public static final String sDelimiter_Parser_DataType 		= ";";
+		
 	/**
 	 * Tests, if a cairtain iItemId is handled by the manager.
 	 * 

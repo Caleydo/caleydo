@@ -19,19 +19,24 @@ implements ICommand
 {
 	/**
 	 * Command Id to identify this command.
+	 * 
+	 * @deprecated remove this
 	 */
 	protected int iCommandId;
 	
 	/**
-	 * Unique Id of the IStorage, that will be created.
+	 * Unique Id of the object, that will be created.
 	 */
 	protected int iUniqueTargetId;
 	
 	/**
-	 * Label of the new IStorage, that will be created.
+	 * Label of the new object, that will be created.
 	 */
 	protected String sLabel = "";
 	
+	/**
+	 * @deprecated remove thie reference
+	 */
 	protected IParameterHandler refParameterHandler;
 
 
@@ -48,7 +53,35 @@ implements ICommand
 		super(-1, refGeneralManager);
 
 		this.refParameterHandler = refParameterHandler;
+	}
 
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 */
+	protected ACmdCreate_IdTargetLabel(IGeneralManager refGeneralManager)
+	{
+		// set unique ID to -1 because it is unknown at this moment
+		super(-1, refGeneralManager);
+	}
+	
+
+	/**
+	 * Method needs to be implemented in the subclass!
+	 */
+	public final CommandType getCommandType()
+	{
+		return null;
+	}
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		/*
+		 * do not call empty method super.setParameterHandler()
+		 */
+		
 		this.setId( 
 				refParameterHandler.getValueInt( 
 						CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
@@ -59,15 +92,6 @@ implements ICommand
 		
 		sLabel = refParameterHandler.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() );
-	}
-
-
-	/**
-	 * Method needs to be implemented in the subclass!
-	 */
-	public final CommandType getCommandType()
-	{
-		return null;
 	}
 	
 }

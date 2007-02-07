@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.exception.CerberusExceptionType;
@@ -316,7 +317,7 @@ implements IParameterHandler
 				case VEC3F:
 				{
 					StringTokenizer tokenizer = new StringTokenizer( value,
-							CommandFactory.sDelimiter_Parser_DataItems);
+							IGeneralManager.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 3 ) {						
 						throw new CerberusRuntimeException( 
@@ -339,7 +340,7 @@ implements IParameterHandler
 				case VEC4F:
 				{
 					StringTokenizer tokenizer = new StringTokenizer( value,
-							CommandFactory.sDelimiter_Parser_DataItems);
+							IGeneralManager.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 4 ) {						
 						throw new CerberusRuntimeException( 

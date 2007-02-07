@@ -59,7 +59,7 @@ extends ACmdCreate_GlCanvasUser
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute3,
-				CommandFactory.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 		
 		int i=0;		
 		for ( ; token.hasMoreTokens(); i++ ) {

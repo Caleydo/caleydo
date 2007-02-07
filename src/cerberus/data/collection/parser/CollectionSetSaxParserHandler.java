@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
+import cerberus.manager.IGeneralManager;
 import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 
@@ -337,7 +338,7 @@ implements ISaxParserHandler
 						int[] iValueBuffer = 
 							StringConversionTool.convertStringToIntArrayVariableLength(
 								sStringBuffer.toString(),
-								CommandFactory.sDelimiter_Parser_DataItems );
+								IGeneralManager.sDelimiter_Parser_DataItems );
 												
 						if ( bXML_Section_DataComponent_details_Select ) {
 							

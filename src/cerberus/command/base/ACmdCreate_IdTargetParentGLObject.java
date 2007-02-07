@@ -38,7 +38,13 @@ implements ICommand
 	public ACmdCreate_IdTargetParentGLObject(IGeneralManager refGeneralManager,
 			IParameterHandler refParameterHandler)
 	{
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager);
+		
+	}
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+		
+		super.setParameterHandler(refParameterHandler);
 		
 		String sAttribute1 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
