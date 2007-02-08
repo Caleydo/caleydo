@@ -26,6 +26,8 @@ implements IView, IMediatorSender {
 	
 	protected int iHTMLBrowserId;
 	
+	protected int iPathwaySetId;
+	
 	protected APathwayGraphViewRep refPathwayGraphViewRep;
 	
 	public Pathway2DViewRep(
@@ -54,15 +56,18 @@ implements IView, IMediatorSender {
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
 		refPathwayGraphViewRep.setWidthAndHeight(iWidth-5, iHeight-75);
 		refPathwayGraphViewRep.setHTMLBrowserId(iHTMLBrowserId);
+		refPathwayGraphViewRep.setPathwaySet(iPathwaySetId);
 		refPathwayGraphViewRep.retrieveGUIContainer();
 		refPathwayGraphViewRep.initView();
 		refPathwayGraphViewRep.drawView();
 	}
 
-	public void setAttributes(int iWidth, int iHeight, int iHTMLBrowserId) {
+	public void setAttributes(int iWidth, int iHeight, 
+			int iPathwaySetId, int iHTMLBrowserId) {
 		
 		super.setAttributes(iWidth, iHeight);
-		
+
+		this.iPathwaySetId = iPathwaySetId;
 		this.iHTMLBrowserId = iHTMLBrowserId;
 	}
 

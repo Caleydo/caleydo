@@ -3,8 +3,8 @@
   <workspace title="primary" server="localhsot">
 
     <!-- External loading of XML files -->
-    <read-xml-file target="data/XML/imagemap/map01100.xml" />
-    <!-- <read-xml-file target="data/XML/pathways/map00271.xml" /> -->
+    <!-- <read-xml-file target="data/XML/imagemap/map01100.xml" />  -->
+    <!-- <read-xml-file target="data/XML/pathways/map00271.xml" />  -->
   
     <Application remote="no" IP="127.0.0.1" port="4000" >
   
@@ -16,14 +16,16 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="45301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="55301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
-						 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="65301" label="Pathway storage" attrib1="STRING" attrib2="260 271 272 280 290" />
+ 												 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="80 0 0 1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="23991"	targetId="55201" label="Select file" attrib1="30 200 0 1"	/>
-												
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="24991"	targetId="65201" label="Pathway Virtual Array" attrib1="3 0 0 1"	/>
+										
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="31991"	targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="32991"	targetId="35101" label="target Set for file	new" attrib1="35201" attrib2="45301" />
@@ -34,12 +36,11 @@
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="35991"	targetId="65101" label="target Set for file	new" attrib1="15201@25201" attrib2="55301@55301"	detail="CREATE_SET_PLANAR" />
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="INT;ABORT" attrib2="55101" />			   						   	
-		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="36991"	targetId="75101" label="Pathway Set" attrib1="65201" attrib2="65301" />			
+					
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="900 1000" detail="85401" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib1="75101" attrib2="900 1000" detail="85401" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="480 -1" />
  
 		<!-- Window 13331 -->
@@ -50,7 +51,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY2D"		cmdId="69992"	targetId="79401" parent="23401" label="GL Pathway 2D" 
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
-							detail="65101" />
+							detail="75101" />
 
 		<!-- Window 12331 -->
      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="12331" label="OpenGL Pathway Window" attrib1="ROW VERTICAL" />   		
@@ -62,6 +63,11 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
  	  <!--Commands not in use at the moment	  
+ 
+ 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="INT;ABORT" attrib2="55101" />			   						   	
+ 
+ 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="65301" label="Pathway storage" attrib1="INT" attrib2="271 272 260" />
  
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
 		   		detail="data/mapping/accession_number_2_gene_id.map"	

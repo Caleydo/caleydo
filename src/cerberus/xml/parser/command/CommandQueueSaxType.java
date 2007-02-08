@@ -38,6 +38,7 @@ public enum CommandQueueSaxType
 	CREATE_SET_MULTIDIM("cmd","type","-1"),
 	CREATE_VIRTUAL_ARRAY("cmd","type","-1"),
 	CREATE_STORAGE("cmd","type","-1"),
+	CREATE_PATHWAY_STORAGE("cmd","type","-1"),
 	
 	CREATE_VIEW_HEATMAP("cmd", "type","-1"),
 	CREATE_VIEW_PATHWAY("cmd", "type","-1"),

@@ -125,7 +125,7 @@ public class CerberusBootloader
 		/**
 		 * create the parser manager..
 		 */
-		refXmlParserManager = new XmlParserManager( refOneForAllManager, false );
+		refXmlParserManager = new XmlParserManager( refOneForAllManager, true );
 		
 		refSingelton.setXmlParserManager(refXmlParserManager);
 		

@@ -23,6 +23,8 @@ implements ICommand {
 	
 	protected int iHTMLBrowserId = 0;
 	
+	protected int iPathwaySetId = 0;
+	
 	/**
 	 * Constructor
 	 * 
@@ -54,7 +56,7 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		pathwayView.setAttributes(iWidthX, iHeightY, iHTMLBrowserId);
+		pathwayView.setAttributes(iWidthX, iHeightY, iPathwaySetId, iHTMLBrowserId);
 		pathwayView.retrieveGUIContainer();
 		pathwayView.initView();
 		pathwayView.drawView();
@@ -75,6 +77,15 @@ implements ICommand {
 				"-1");
 		
 		iHTMLBrowserId = refParameterHandler.getValueInt("iHTMLBrowserId");
+		
+		// Read SET ID 
+		refParameterHandler.setValueAndTypeAndDefault("iPathwaySetId",
+				refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
+				IParameterHandler.ParameterHandlerType.INT,
+				"-1");
+		
+		iPathwaySetId = refParameterHandler.getValueInt("iPathwaySetId");
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {

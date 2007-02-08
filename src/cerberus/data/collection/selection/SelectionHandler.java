@@ -32,10 +32,10 @@ implements IGroupedSelection {
 	
 	//TODO: retrieve new generated IDs instead of static ones
 	protected int iSelectionMediatorId = 95201;
-	protected int iSelectionSetId = 75101;
-	protected int iSelectionVirtualArrayId = 45201;
-	protected int iSelectionIdStorageId = 65301;
-	protected int iSelectionGroupStorageId = 75301;
+	protected int iSelectionSetId = 85101;
+	protected int iSelectionVirtualArrayId = 55201;
+	protected int iSelectionIdStorageId = 85301;
+	protected int iSelectionGroupStorageId = 95301;
 	protected int iSelectionOptionalStorageId = 85301;
 
 	/**

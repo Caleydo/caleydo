@@ -33,6 +33,8 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
 import cerberus.util.system.StringConversionTool;
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -162,7 +164,7 @@ extends APathwayGraphViewRep {
 		       else
 		          return super.isForceMarqueeEvent(event);
 		    } 
-			
+						
 		    public void mousePressed(final MouseEvent event) {
 
 		    	if (refCurrentPathway != null) 
@@ -225,18 +227,18 @@ extends APathwayGraphViewRep {
 						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
 						System.out.println("Load pathway from " +sPathwayFilePath);
 						
-						// Extract pathway clicked pathway ID
-						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
-						System.out.println("Last index: " +iPathwayIdIndex);
-						iPathwayId = StringConversionTool.
-							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
-	
-						refGeneralManager.getSingelton().logMsg(
-								"Load pathway with ID " +iPathwayId,
-								LoggerType.VERBOSE);
-						
-						// Load pathway
-						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
+//						// Extract pathway clicked pathway ID
+//						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+//						System.out.println("Last index: " +iPathwayIdIndex);
+//						iPathwayId = StringConversionTool.
+//							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
+//	
+//						refGeneralManager.getSingelton().logMsg(
+//								"Load pathway with ID " +iPathwayId,
+//								LoggerType.VERBOSE);
+//						
+//						// Load pathway
+//						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
 					
 						bNeighbourhoodShown = false;
 					}
@@ -358,36 +360,22 @@ extends APathwayGraphViewRep {
 		
 		super.drawView();
 		
-		if (refGeneralManager.getSingelton().
-				getPathwayManager().getCurrentPathway() != null)
-		{
-			if (iPathwayId != 0)
-			{
-				HashMap<Integer, Pathway> pathwayLUT = 		
-					((IPathwayManager)refGeneralManager.getSingelton().
-							getPathwayManager()).getPathwayLUT();
-				
-				refCurrentPathway = pathwayLUT.get(iPathwayId);
-			}
-			else if (refCurrentPathway == null)
-			{
-				refCurrentPathway = refGeneralManager.getSingelton().
-					getPathwayManager().getCurrentPathway();
-			}
-			
+		//TODO: add try catch for pathway null object
+		if (refCurrentPathway != null)
+		{			
 			extractVertices(refCurrentPathway);
 			extractEdges(refCurrentPathway);
 
 			finishGraphBuilding();
 		}	    
-		else if (iPathwayLevel == 1)
-		{ 
-			refCurrentPathwayImageMap = 
-				refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
-			
-			loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink(),
-					refCurrentPathway);
-		}
+//		else if (iPathwayLevel == 1)
+//		{ 
+//			refCurrentPathwayImageMap = 
+//				refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
+//			
+//			loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink(),
+//					refCurrentPathway);
+//		}
 		
         // Check if graph is already added to the frame
         if (bGraphSet == false)
@@ -587,40 +575,37 @@ extends APathwayGraphViewRep {
 //				vecReactionEdges.toArray());
 	}
 	
-	public void setPathwayId(int iPathwayId) {
-		
-		this.iPathwayId = iPathwayId;
-	}
-	
 	public Pathway loadPathwayFromFile(String sFilePath) {
 		
-		Pathway refLoadedPathway = super.loadPathwayFromFile(sFilePath);
+//		Pathway refLoadedPathway = super.loadPathwayFromFile(sFilePath);
+//		
+//		refCurrentPathway = null;
+//		refCurrentPathwayImageMap = null;
+//		resetPathway();
+//	
+//		iPathwayId = Integer.parseInt(
+//				sFilePath.substring(sFilePath.lastIndexOf('/')+4, 
+//						sFilePath.lastIndexOf('/')+9));
+//		
+//		drawView();
+//		
+//		refPathwayGraph.setBackgroundImage(null);
+//		
+//		if (bShowBackgroundOverlay == true)
+//		{
+//			// Build current pathway file path of GIF
+//			String sPathwayImageFilePath = refCurrentPathway.getTitle();
+//			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
+//			sPathwayImageFilePath = "data/images/pathways/" 
+//				+sPathwayImageFilePath +".gif";
+//			
+//			loadBackgroundOverlayImage(sPathwayImageFilePath, null);
+//		}
+//		
+//		refGraphLayoutCache.reload();
+//		return refLoadedPathway;
 		
-		refCurrentPathway = null;
-		refCurrentPathwayImageMap = null;
-		resetPathway();
-	
-		iPathwayId = Integer.parseInt(
-				sFilePath.substring(sFilePath.lastIndexOf('/')+4, 
-						sFilePath.lastIndexOf('/')+9));
-		
-		drawView();
-		
-		refPathwayGraph.setBackgroundImage(null);
-		
-		if (bShowBackgroundOverlay == true)
-		{
-			// Build current pathway file path of GIF
-			String sPathwayImageFilePath = refCurrentPathway.getTitle();
-			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
-			sPathwayImageFilePath = "data/images/pathways/" 
-				+sPathwayImageFilePath +".gif";
-			
-			loadBackgroundOverlayImage(sPathwayImageFilePath, null);
-		}
-		
-		refGraphLayoutCache.reload();
-		return refLoadedPathway;
+		return null;
 	}
 	
 	public void loadImageMapFromFile(String sImageMapPath) {
@@ -853,5 +838,20 @@ extends APathwayGraphViewRep {
 				vecReactionEdges.toArray(), false);
 //		refGraphLayoutCache.setVisible(
 //				vecRelationEdges.toArray(), false);
+	}
+	
+	/**
+	 * Method extracts the pathway ID from the pathway storage 
+	 * and sets the local pathway.
+	 */
+	public void setPathwaySet(int iPathwaySetId) {
+
+		super.setPathwaySet(iPathwaySetId);
+		
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+		// Assumes that the storage contains only one pathway item
+		refCurrentPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+			getItem(tmpStorage.getArrayInt()[0]);
 	}
 }

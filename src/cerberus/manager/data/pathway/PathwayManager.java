@@ -113,8 +113,7 @@ implements IPathwayManager {
 
 	public Object getItem(int iItemId) {
 
-		// TODO Auto-generated method stub
-		return null;
+		return(pathwayLUT.get(iItemId));
 	}
 
 	public int size() {

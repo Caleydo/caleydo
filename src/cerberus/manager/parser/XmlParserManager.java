@@ -159,7 +159,9 @@ implements IXmlParserManager {
 			if ( bUseCascadingHandler ) {				
 				if ( this.hashTag2XmlParser.containsKey( qName ) ) {
 					openCurrentTag( hashTag2XmlParser.get( qName ) );
-					return;
+					
+					//MARC: needed to comment out return so that inital tag is processed too. 
+					//return;
 				}
 			}
 			

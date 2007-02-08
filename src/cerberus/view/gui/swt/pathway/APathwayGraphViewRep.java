@@ -1,11 +1,11 @@
 package cerberus.view.gui.swt.pathway;
 
-import java.awt.Color;
 import java.awt.Frame;
 import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.selection.SelectionHandler;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
@@ -36,7 +36,12 @@ implements IPathwayGraphView {
 	
 	protected Composite refEmbeddedFrameComposite;
 	
-	protected int iPathwayId = 0;
+	/**
+	 * @deprecated
+	 */
+	protected int iPathwaySetId = 0;
+	
+	protected ISet refPathwaySet;
 	
 	protected int iHTMLBrowserId;
 	
@@ -299,6 +304,14 @@ implements IPathwayGraphView {
 						getSingelton().getViewGLCanvasManager().
 							getItem(iParentContainerId), 
 								refGeneralManager.getSingelton().
-									getSetManager().getItemSet(75101));
+									getSetManager().getItemSet(85101));
+	}
+	
+	public void setPathwaySet(int iPathwaySetId) {
+		
+		this.iPathwaySetId = iPathwaySetId;
+		
+		refPathwaySet = refGeneralManager.getSingelton().
+			getSetManager().getItemSet(iPathwaySetId);
 	}
 }

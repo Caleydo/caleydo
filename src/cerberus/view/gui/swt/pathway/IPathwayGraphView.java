@@ -20,7 +20,7 @@ extends IView {
 			boolean bDrawArrow,
 			APathwayEdge refPathwayEdge);
 	
-	public void setPathwayId(int iPathwayId);
+	public void setPathwaySet(int iPathwaySetId);
 	
 	public Pathway loadPathwayFromFile(String sFilePath);
 	

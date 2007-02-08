@@ -21,38 +21,26 @@ import cerberus.xml.parser.command.CommandQueueSaxType;
 public class CmdGlObjectPathway3D 
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
-		
-	//replaced by 
-	/**
-	 * ID of the pathway that will be drawn.
-	 */
-	protected int iTargetPathwayId;
+	
+	protected int iPathwaySetId = 0;
 	
 	/**
 	 * Constructor.
 	 * 
 	 * @param refGeneralManager
-	 * @param refParameterHandler
 	 */
-	public CmdGlObjectPathway3D(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	public CmdGlObjectPathway3D(IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
-		
-		setPathwayAttributes(refParameterHandler);
-		
+		super(refGeneralManager);
+				
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_PATHWAY2D;
 	}
 
-	private final void setPathwayAttributes( 
-			IParameterHandler refParameterHandler) {
-		
-		
-		System.out.println( "info = " + iUniqueTargetId );
-		
-		iTargetPathwayId = StringConversionTool.convertStringToInt( 
-				sDetail, 
-				-1 );
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	
+		super.setParameterHandler(refParameterHandler);
+
+		iPathwaySetId = StringConversionTool.convertStringToInt(sDetail, -1);
 	}
 
 	@Override
@@ -62,6 +50,7 @@ implements ICommand {
 			(GLCanvasPathway3D) openGLCanvasUser;		
 		
 		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
+		canvas.setPathwaySet(iPathwaySetId);
 		//canvas.setTargetPathwayId(iTargetPathwayId);
 	}
 

@@ -388,13 +388,13 @@ implements IView, IMediatorReceiver {
 				
 				//TODO: insert selection grouped STORAGE
 				
-				// insert new selection optional STORAGE with ID and label in the tree
-				IStorage refSelectionOptionalStorage = 
-					updatedSelectionSet.getStorageByDimAndIndex(0, 1);
-				StorageModel currentSelectionOptionalStorageModel = 
-					new StorageModel(refSelectionOptionalStorage.getId(), 
-							refSelectionOptionalStorage.getLabel());
-				rootStorageModel.add(currentSelectionOptionalStorageModel);		
+//				// insert new selection optional STORAGE with ID and label in the tree
+//				IStorage refSelectionOptionalStorage = 
+//					updatedSelectionSet.getStorageByDimAndIndex(0, 1);
+//				StorageModel currentSelectionOptionalStorageModel = 
+//					new StorageModel(refSelectionOptionalStorage.getId(), 
+//							refSelectionOptionalStorage.getLabel());
+//				rootStorageModel.add(currentSelectionOptionalStorageModel);		
 				
 				// insert new selection SET with ID and label in the tree
 				DataCollectionModel currentSelectionSetModel = 
@@ -402,7 +402,7 @@ implements IView, IMediatorReceiver {
 							updatedSelectionSet.getLabel());
 				currentSelectionSetModel.add(currentSelectionVirtualArrayModel);
 				currentSelectionSetModel.add(currentSelectionDataStorageModel);
-				currentSelectionSetModel.add(currentSelectionOptionalStorageModel);
+				//currentSelectionSetModel.add(currentSelectionOptionalStorageModel);
 				rootSetModel.add(currentSelectionSetModel);
 			}
 		});	

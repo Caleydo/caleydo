@@ -11,6 +11,7 @@ package cerberus.manager.command.factory;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 
+import cerberus.command.data.CmdDataCreatePathwayStorage;
 import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
@@ -199,6 +200,13 @@ public class CommandFactory
 			break;
 		}
 		
+		case CREATE_PATHWAY_STORAGE:
+		{					
+			createdCommand =
+				new CmdDataCreatePathwayStorage(refGeneralManager);
+			break;
+		}		
+		
 		case CREATE_SET:
 		{
 			createdCommand =
@@ -375,8 +383,7 @@ public class CommandFactory
 		{
  			createdCommand =
 				new CmdGlObjectPathway3D(
-						refGeneralManager,
-						phAttributes );			
+						refGeneralManager);			
 			break;
 		}
 		
@@ -403,7 +410,6 @@ public class CommandFactory
 						refGeneralManager );			
 			break;
 		}
-		
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 

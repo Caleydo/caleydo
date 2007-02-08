@@ -148,11 +148,6 @@ implements IGLCanvasUser {
 	protected boolean bAcordionDirection = false;
 	
 	/**
-	 * Used for the glow effect of highlighted nodes.
-	 */
-	//protected GLUtilities refGlUtilities;
-	
-	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
@@ -208,9 +203,6 @@ implements IGLCanvasUser {
 		refHashPathwayToTexture = new HashMap<Pathway, Texture>();
 		refHashPickID2VertexRep = new HashMap<Integer, IPathwayVertexRep>();
 		refHashDisplayListNodeId2Pathway = new HashMap<Integer, Pathway>();
-		
-//		refGlUtilities = new GLUtilities();
-		
 	}
 	
 	/*
@@ -225,13 +217,16 @@ implements IGLCanvasUser {
 		
 		this.gl = canvas.getGL();
 		
-		// General GL settings
+		// Clearing window and set background to WHITE
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	
 		
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-		//		gl.glDepthFunc(GL.GL_LEQUAL);
+		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
@@ -256,104 +251,108 @@ implements IGLCanvasUser {
 		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
 
 		gl.glEnable(GL.GL_LIGHTING);
-		gl.glEnable(GL.GL_LIGHT0);	
-
-		// Clearing window and set background to WHITE
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);		
+		gl.glEnable(GL.GL_LIGHT0);		
 		
 //		bCanvasInitialized = true;
 		
-		//refGlUtilities.initGlowEffect(gl);
+	    gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);  
+	    gl.glEnable(GL.GL_TEXTURE_2D);
 		
+		initPathwayData();
 		buildPathwayDisplayList();	
 		
 		setInitGLDone();
 
 	}	
 	
+	/**
+	 * Initializing the zLayer value for the layered view
+	 * and loading the overlay texture for each pathway.
+	 *
+	 */
+	protected void initPathwayData() {
+	
+		Pathway refTmpPathway = null;
+		
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+		String sPathwayTexturePath = "";
+		int iPathwayId = 0;
+		
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+		iPathwayIndex++)
+		{
+			System.out.println("Create display list for new pathway");
+		
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				getItem(iArPathwayIDs[iPathwayIndex]);
+			
+			refHashPathwayToZLayerValue.put(refTmpPathway, fZLayerValue);
+			fZLayerValue += 1.5f;
+			
+			iPathwayId = refTmpPathway.getPathwayID();
+			if (iPathwayId < 10)
+			{
+				sPathwayTexturePath = "map0000" + Integer.toString(iPathwayId);
+			}
+			else if (iPathwayId < 100 && iPathwayId >= 10)
+			{
+				sPathwayTexturePath = "map000" + Integer.toString(iPathwayId);
+			}
+			else if (iPathwayId < 1000 && iPathwayId >= 100)
+			{
+				sPathwayTexturePath = "map00" + Integer.toString(iPathwayId);
+			}
+			else if (iPathwayId < 10000 && iPathwayId >= 1000)
+			{
+				sPathwayTexturePath = "map0" + Integer.toString(iPathwayId);
+			}
+			
+			sPathwayTexturePath = "data/images/pathways/" + sPathwayTexturePath +".gif";	
+			
+			loadBackgroundOverlayImage(sPathwayTexturePath, refTmpPathway);		
+		}
+	}	
+
 	protected void buildPathwayDisplayList() {
-		
-		// Loading test pathways for pathway layer test
-
-		Pathway refLoadedPathway;
-		
-		String[] strPathwayPaths = new String[6];		
-		strPathwayPaths[0] = "data/XML/pathways/map00271.xml";
-		strPathwayPaths[1] = "data/XML/pathways/map00260.xml";
-		strPathwayPaths[2] = "data/XML/pathways/map00272.xml";
-		strPathwayPaths[3] = "data/XML/pathways/map00280.xml";
-		strPathwayPaths[4] = "data/XML/pathways/map00290.xml";
-		strPathwayPaths[5] = "data/XML/pathways/map00300.xml";
-		
-		String[] strPathwayTexturePaths = new String[6];		
-		strPathwayTexturePaths[0] = "data/images/pathways/map00271.gif";
-		strPathwayTexturePaths[1] = "data/images/pathways/map00260.gif";
-		strPathwayTexturePaths[2] = "data/images/pathways/map00272.gif";
-		strPathwayTexturePaths[3] = "data/images/pathways/map00280.gif";
-		strPathwayTexturePaths[4] = "data/images/pathways/map00290.gif";
-		strPathwayTexturePaths[5] = "data/images/pathways/map00300.gif";
-		
-		refLoadedPathway = loadPathwayFromFile(strPathwayPaths[0]);
-		loadBackgroundOverlayImage(strPathwayTexturePaths[0], refLoadedPathway);
-		refHashPathwayToZLayerValue.put(refLoadedPathway, fZLayerValue);
-		refPathwayUnderInteraction = refLoadedPathway;
-		fZLayerValue += 1.5f;
-		
-		refLoadedPathway = loadPathwayFromFile(strPathwayPaths[1]);
-		loadBackgroundOverlayImage(strPathwayTexturePaths[1], refLoadedPathway);
-		refHashPathwayToZLayerValue.put(refLoadedPathway, fZLayerValue);
-		fZLayerValue += 1.5f;
-		
-		refLoadedPathway = loadPathwayFromFile(strPathwayPaths[2]);
-		loadBackgroundOverlayImage(strPathwayTexturePaths[2], refLoadedPathway);
-		refHashPathwayToZLayerValue.put(refLoadedPathway, fZLayerValue);
-		
-//		refLoadedPathway = loadPathwayFromFile(strPathwayPaths[3]);
-//		loadBackgroundOverlayImage(strPathwayTexturePaths[3], refLoadedPathway);
-//		refHashPathwayToZLayerValue.put(refLoadedPathway, fZLayerValue);
-//
-//		refLoadedPathway = loadPathwayFromFile(strPathwayPaths[4]);
-//		loadBackgroundOverlayImage(strPathwayTexturePaths[4], refLoadedPathway);
-//		refHashPathwayToZLayerValue.put(refLoadedPathway, fZLayerValue);
-//
-//		refLoadedPathway = loadPathwayFromFile(strPathwayPaths[5]);
-//		loadBackgroundOverlayImage(strPathwayTexturePaths[5], refLoadedPathway);
-//		refHashPathwayToZLayerValue.put(refLoadedPathway, fZLayerValue);
-
-		Iterator<Pathway> iterPathways = 
-//			refGeneralManager.getSingelton().getPathwayManager().getPathwayIterator();
-			refHashPathwayToZLayerValue.keySet().iterator();
 
 		Pathway refTmpPathway = null;
 		Texture refPathwayTexture = null;
 		
 		System.out.println("Create pathway display lists");
 
-		while (iterPathways.hasNext())
-		{		
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+		
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
+		{
 			System.out.println("Create display list for new pathway");
 			
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				getItem(iArPathwayIDs[iPathwayIndex]);
+					
 			// Creating display list for pathways
 			int iVerticesDiplayListId = gl.glGenLists(1);
 			int iEdgeDisplayListId = gl.glGenLists(1);
 			iArPathwayNodeDisplayListIDs.add(iVerticesDiplayListId);
 			iArPathwayEdgeDisplayListIDs.add(iEdgeDisplayListId);
-			
-			refTmpPathway = iterPathways.next();	
-			
+
 			refHashDisplayListNodeId2Pathway.put(iVerticesDiplayListId, refTmpPathway);	
 	
 			//System.out.println("Current pathway: " +refTmpPathway.getTitle());
 			
 			fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
-			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-								
-			// Init scaling factor after pathway texture width/height is known
-			fPathwayTextureAspectRatio = 
-				(float)refPathwayTexture.getImageWidth() / 
-				(float)refPathwayTexture.getImageHeight();
+//			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
+//								
+//			// Init scaling factor after pathway texture width/height is known
+//			fPathwayTextureAspectRatio = 
+//				(float)refPathwayTexture.getImageWidth() / 
+//				(float)refPathwayTexture.getImageHeight();
 						
 			buildEnzymeNodeDisplayList();
 			buildHighlightedEnzymeNodeDisplayList();
@@ -397,26 +396,13 @@ implements IGLCanvasUser {
 			refRenderStyle.getEnzymeNodeWidth() / 2.0f * SCALING_FACTOR_X;
 		fPathwayNodeHeight = 
 			refRenderStyle.getEnzymeNodeHeight() / 2.0f * SCALING_FACTOR_Y;
-		
+				
 		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
 				fHighlightedNodeBlowFactor, fHighlightedNodeBlowFactor);
 		fillNodeDisplayList();
 		gl.glScaled(1.0f/fHighlightedNodeBlowFactor, 
-				1.0f/fHighlightedNodeBlowFactor, 1.0f/fHighlightedNodeBlowFactor);
-        
-//		// Glow effect test
-//        //gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);                  // You should already know what this does
-//        gl.glDisable(GL.GL_DEPTH_TEST);                             // You should already know what this does
-//        gl.glEnable(GL.GL_TEXTURE_2D); 
-//        
-//        //refGlUtilities.renderBigGlow(gl, 0.60f, 0.60f, 0.8f, 1.0f, 
-//        //		new Tuple3f(0.0f,0.0f,-0.1f), 0.1f);
-//        refGlUtilities.renderBigGlow(gl, 1.0f, 1.0f, 1.0f, 1.0f, 
-//        		new Tuple3f(0.0f,0.0f,0.0f), 0.3f);		
-//       
-//        gl.glEnable(GL.GL_DEPTH_TEST);                                        // You should already know what this does
-//        gl.glDisable(GL.GL_TEXTURE_2D);  
+				1.0f/fHighlightedNodeBlowFactor, 1.0f/fHighlightedNodeBlowFactor);  
         
         gl.glEndList();
 	}
@@ -719,14 +705,13 @@ implements IGLCanvasUser {
 				
 				refPathwayTexture.enable();
 				refPathwayTexture.bind();
-				gl.glTexEnvf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+				gl.glTexEnvi(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 	
 				gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
 	
 				TextureCoords texCoords = refPathwayTexture.getImageTexCoords();
 				
 				// Recalculate scaling factor
-				//refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
 				fPathwayTextureAspectRatio = 
 					(float)refPathwayTexture.getImageWidth() / 
 					(float)refPathwayTexture.getImageHeight();								
@@ -756,7 +741,7 @@ implements IGLCanvasUser {
 				gl.glEnd();
 				
 //				gl.glTranslatef(texCoords.right() * 0.0025f, 0.0f, 0.0f);
-
+//
 //				if (bAcordionDirection == false)
 //				{
 //					gl.glRotated(-140, 0, 1, 0);
@@ -767,7 +752,7 @@ implements IGLCanvasUser {
 //					gl.glRotated(140, 0, 1, 0);				
 //					bAcordionDirection = false;
 //				}
-				
+//				
 				refPathwayTexture.disable();
 			}
 		}
@@ -799,7 +784,7 @@ implements IGLCanvasUser {
 //		gl.glTranslatef(0.0f, 0.0f, 2.0f);
 //		fillHighlightedNodeDisplayList();
 		
-		Color nodeColor = refRenderStyle.getHighlightedNodeColor();
+//		Color nodeColor = refRenderStyle.getHighlightedNodeColor();
 		
 //		//Draw selected pathway nodes
 //		if (!iArSelectionStorageVertexIDs.isEmpty())
@@ -973,14 +958,14 @@ implements IGLCanvasUser {
 			if (bHighlightVertex == true)
 			{
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-				gl.glColor4f(tmpNodeColor.getRed(), tmpNodeColor.getGreen(), tmpNodeColor.getBlue(), 1.0f);
 			
+				gl.glColor4f(tmpNodeColor.getRed(), tmpNodeColor.getGreen(), tmpNodeColor.getBlue(), 1.0f);
 			}
 			else 
 			{
-				gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+				gl.glColor4f(131f/255f,111f/255f,1.0f, 1f);
 			}
-				
+			
 			fPathwayNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
 			fPathwayNodeHeight = vertexRep.getHeight() / 2.0f * SCALING_FACTOR_Y;
 
@@ -1145,10 +1130,13 @@ implements IGLCanvasUser {
 		}
 		
 		gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
+		gl.glLineWidth(3);
 		gl.glBegin(GL.GL_LINES);		
 			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, fZLayerValue1); 
 			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, fZLayerValue2);					
 		gl.glEnd();
+		gl.glLineWidth(1);
+
 	}
 	
 	/**
@@ -1157,7 +1145,7 @@ implements IGLCanvasUser {
 	 * 
 	 * @param gl
 	 * @param showText
-	 * @param fx
+	 * @param fx<
 	 * @param fy
 	 * @param fz
 	 */
@@ -1225,12 +1213,6 @@ implements IGLCanvasUser {
 		
 		this.origin   = origin;
 		this.rotation = rotation;
-	}
-
-	public void setPathwayId(int iPathwayId) {
-
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void loadImageMapFromFile(String sImagePath) {
@@ -1311,8 +1293,9 @@ implements IGLCanvasUser {
 		try
 		{
 			refPathwayTexture = TextureIO.newTexture(new File(sPathwayImageFilePath), false);
-			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+			//refPathwayTexture.bind();
+			//refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+			//refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 			
 			refHashPathwayToTexture.put(refTexturedPathway, refPathwayTexture);
 			
@@ -1465,7 +1448,8 @@ implements IGLCanvasUser {
 		int i = 0;
 		int iPickedPathwayDisplayListNodeId = 0;
 		IPathwayVertexRep pickedVertexRep = null;
-		
+		Iterator<PathwayVertex> iterIdenticalVertices = null;
+
 		for (i = 0; i < iHitCount; i++)
 		{
 			iNames = iArPickingBuffer[iPtr];
@@ -1494,7 +1478,7 @@ implements IGLCanvasUser {
 				
 				if (pickedVertexRep == null)
 					return;
-								
+				
 				if (!iArHighlightedVertices.contains(pickedVertexRep))
 				{
 					// Clear currently highlighted vertices when new node was selected
@@ -1509,19 +1493,39 @@ implements IGLCanvasUser {
 				}
 				else
 				{
-					iArHighlightedVertices.remove(pickedVertexRep);		
+					iArHighlightedVertices.remove(pickedVertexRep);
+	
+//					// Remove identical nodes from unselected vertex
+//					iterIdenticalVertices = refGeneralManager.getSingelton().
+//						getPathwayElementManager().getPathwayVertexListByName(
+//							pickedVertexRep.getVertex().getElementTitle()).iterator();
+//	
+//					while(iterIdenticalVertices.hasNext())
+//					{
+//						iArHighlightedVertices.remove(iterIdenticalVertices.next().
+//								getVertexRepByIndex(iVertexRepIndex));
+//					}
 					
 					refGeneralManager.getSingelton().logMsg(
 							"OpenGL Pathway object unselected: " +pickedVertexRep.getName(),
 							LoggerType.VERBOSE);
 				}
 
-				gl.glNewList(iPickedPathwayDisplayListNodeId, GL.GL_COMPILE);	
-				extractVertices(refHashDisplayListNodeId2Pathway.get(iPickedPathwayDisplayListNodeId));
-				gl.glEndList();
+				// Update the currently selected pathway
+				refPathwayUnderInteraction = refHashDisplayListNodeId2Pathway.get(
+						iPickedPathwayDisplayListNodeId);
 				
+				// FIXME: not very efficient
+				// All display lists are newly created
+				iArPathwayNodeDisplayListIDs.clear();
+				iArPathwayEdgeDisplayListIDs.clear();
+				buildPathwayDisplayList();
+				
+//				gl.glNewList(iPickedPathwayDisplayListNodeId, GL.GL_COMPILE);	
+//				extractVertices(refPathwayUnderInteraction);
+//				gl.glEndList();
+								
 				loadNodeInformationInBrowser(pickedVertexRep.getVertex().getVertexLink());
-	
 //			}
 		}
 	}	
@@ -1585,7 +1589,8 @@ implements IGLCanvasUser {
 			iHighlightedNodeIndex++)
 		{
 		
-			refCurrentVertex = ((IPathwayVertexRep)iArHighlightedVertices.get(iHighlightedNodeIndex)).getVertex();
+			refCurrentVertex = ((IPathwayVertexRep)iArHighlightedVertices.
+					get(iHighlightedNodeIndex)).getVertex();
 					
 			while(iterDrawnPathways.hasNext())
 			{
