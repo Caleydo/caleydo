@@ -12,6 +12,7 @@ import javax.media.opengl.GLEventListener;
 
 //import com.sun.opengl.util.Animator;
 
+import cerberus.view.gui.awt.GearsMouse;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.data.AUniqueItem;
 

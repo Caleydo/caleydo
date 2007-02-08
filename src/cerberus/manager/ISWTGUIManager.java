@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.jogl.TriggeredAnimator;
 import cerberus.view.gui.swt.ISWTWidget;
 
 public interface ISWTGUIManager 
@@ -69,4 +70,22 @@ extends IGeneralManager {
 	 * @return Progress bar percentage.
 	 */
 	public int getLoadingProgressBarPercentage();
+	
+	/**
+	 * Set an Animator by it's id.
+	 * 
+	 * @param iAnimatorId
+	 * @return
+	 */
+	public void setAnimatorById(final TriggeredAnimator refAnimator, 
+			final int iAnimatorId);
+	
+	/**
+	 * Get an Animator by it's id.
+	 * 
+	 * @param iAnimatorId
+	 * @return
+	 */
+	public TriggeredAnimator getAnimatorById(final int iAnimatorId);
+	
 }

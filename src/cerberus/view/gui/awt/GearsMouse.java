@@ -1,9 +1,11 @@
-package cerberus.view.gui.awt.jogl;
+package cerberus.view.gui.awt;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
+
+import cerberus.view.gui.awt.jogl.IJoglMouseListener;
 
 
 /**

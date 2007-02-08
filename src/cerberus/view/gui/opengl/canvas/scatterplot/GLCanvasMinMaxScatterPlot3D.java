@@ -382,6 +382,9 @@ implements IGLCanvasUser
 	{
 
 		if ( targetSet.getDimensions() < 2 ) {
+			refGeneralManager.getSingelton().logMsg(
+					"Can not draw 3D scatterplot forom not 3D-Data, Set mut be at least 2-dimesional!",
+					LoggerType.VERBOSE );
 			return;
 		}
 			

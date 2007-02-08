@@ -14,7 +14,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.system.StringConversionTool;
 
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
@@ -53,6 +52,45 @@ implements ICommand {
 	}
 	
 
+	protected void triggerPathwayParsing() {
+
+		Iterator<Integer> iterPathwayIDs = llKEGGPathwayIDs.iterator();
+		String sPathwayFilePath = "";
+		int iPathwayId = 0;
+		
+		while (iterPathwayIDs.hasNext()) {
+
+//			refGeneralManager.getSingelton().logMsg(
+//					"Load pathway with ID " +iPathwayId,
+//					LoggerType.VERBOSE);
+			
+			iPathwayId = iterPathwayIDs.next();
+			
+			if (iPathwayId < 10)
+			{
+				sPathwayFilePath = "map0000" + Integer.toString(iPathwayId);
+			}
+			else if (iPathwayId < 100 && iPathwayId >= 10)
+			{
+				sPathwayFilePath = "map000" + Integer.toString(iPathwayId);
+			}
+			else if (iPathwayId < 1000 && iPathwayId >= 100)
+			{
+				sPathwayFilePath = "map00" + Integer.toString(iPathwayId);
+			}
+			else if (iPathwayId < 10000 && iPathwayId >= 1000)
+			{
+				sPathwayFilePath = "map0" + Integer.toString(iPathwayId);
+			}
+			
+			sPathwayFilePath = "data/XML/pathways/" + sPathwayFilePath +".xml";			
+			
+			refGeneralManager.getSingelton().
+				getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+		}
+	}
+	
+	
 	/**
 	 * Load data from file using a token pattern.
 	 *
@@ -120,6 +158,8 @@ implements ICommand {
 		triggerPathwayParsing();
 	
 		llKEGGPathwayIDs = null;
+		
+		refCommandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -155,49 +195,12 @@ implements ICommand {
 			llKEGGPathwayIDs.add(new Integer(strToken_DataTypes.nextToken()));
 		}		
 	}
-	
-	protected void triggerPathwayParsing() {
 
-		Iterator<Integer> iterPathwayIDs = llKEGGPathwayIDs.iterator();
-		String sPathwayFilePath = "";
-		int iPathwayId = 0;
-		
-		while (iterPathwayIDs.hasNext()) {
-
-//			refGeneralManager.getSingelton().logMsg(
-//					"Load pathway with ID " +iPathwayId,
-//					LoggerType.VERBOSE);
-			
-			iPathwayId = iterPathwayIDs.next();
-			
-			if (iPathwayId < 10)
-			{
-				sPathwayFilePath = "map0000" + Integer.toString(iPathwayId);
-			}
-			else if (iPathwayId < 100 && iPathwayId >= 10)
-			{
-				sPathwayFilePath = "map000" + Integer.toString(iPathwayId);
-			}
-			else if (iPathwayId < 1000 && iPathwayId >= 100)
-			{
-				sPathwayFilePath = "map00" + Integer.toString(iPathwayId);
-			}
-			else if (iPathwayId < 10000 && iPathwayId >= 1000)
-			{
-				sPathwayFilePath = "map0" + Integer.toString(iPathwayId);
-			}
-			
-			sPathwayFilePath = "data/XML/pathways/" + sPathwayFilePath +".xml";			
-			
-			refGeneralManager.getSingelton().
-				getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-		}
-	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
-				
+		refCommandManager.runUndoCommand(this);		
 	}
 }

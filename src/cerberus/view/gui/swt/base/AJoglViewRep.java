@@ -10,10 +10,12 @@ import org.eclipse.swt.widgets.Composite;
 import com.sun.opengl.util.Animator;
 
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.jogl.TriggeredAnimator;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
 //import demos.gears.Gears;
@@ -44,7 +46,7 @@ implements IView {
 	/**
 	 * Aminator for Jogl thead
 	 */
-	protected Animator refAnimator = null;
+	protected TriggeredAnimator refAnimator = null;
 	
 	public AJoglViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
@@ -81,9 +83,10 @@ implements IView {
 	
 	public final void retrieveGUIContainer()
 	{
+		ISWTGUIManager refISWTGUIManager = refGeneralManager.getSingelton().getSWTGUIManager();
+		
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
-			(SWTEmbeddedJoglWidget)refGeneralManager.getSingelton()
-				.getSWTGUIManager().createWidget(
+			(SWTEmbeddedJoglWidget) refISWTGUIManager.createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
 						iParentContainerId, -1, -1);
 				
@@ -92,6 +95,11 @@ implements IView {
 		refSWTEmbeddedJoglWidget.createEmbeddedComposite();
 
 		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
+		
+		//
+		// Currently all Animators are registerd with thier ID's
+		//
+		refAnimator = refISWTGUIManager.getAnimatorById( iUniqueId );
 	}
 	
 	/**
@@ -103,17 +111,23 @@ implements IView {
 		
 		assert refGLCanvas != null : "Can not start GLCanvas Animator thread with refGLCanvas==null!";
 		
-		if ( refAnimator != null ) 
-		{
+		if (( refAnimator != null ) &&( refAnimator.isAnimating() ))
+		{			
 			refGeneralManager.getSingelton().logMsg(
 					"AJoglViewRep.drawView() cas called more than once + " +
 					this.getClass()
 					,LoggerType.ERROR_ONLY );
 		}
 		
+		/*
 		refAnimator = new Animator(refGLCanvas);
 		
 	    refAnimator.start();
+	    */
+		
+		refAnimator.add(refGLCanvas);
+		refAnimator.startEventCount();			
+		
 	    
 	    abEnableRendering.set( true );
 	    

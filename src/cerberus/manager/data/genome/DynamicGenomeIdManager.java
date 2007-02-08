@@ -317,7 +317,7 @@ implements IGenomeIdManager {
 
 	public boolean hasItem(int iItemId) {
 
-		assert false : "methode not implemented";
+		//assert false : "methode not implemented";
 		return false;
 	}
 

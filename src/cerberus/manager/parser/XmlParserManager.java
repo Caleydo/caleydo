@@ -37,6 +37,12 @@ public class XmlParserManager
 extends AXmlParserManager
 implements IXmlParserManager {
 
+  /**
+   * necessary to catch the special pathway XML file case
+	 * when the pathway tag needs to be parsed again.
+   */
+  private static final String xml_tag_for_pathways = "pathway";
+  
 	protected final ILoggerManager refLoggerManager;
 
 	/** Define log level for log inforamtion */
@@ -162,7 +168,7 @@ implements IXmlParserManager {
 					
 					// MARC: this was necessary to catch the special pathway XML file case
 					// when the pathway tag needs to be parsed again.
-					if (qName.equals("pathway"))
+					if (qName.equals(xml_tag_for_pathways))
 					{
 						refLoggerManager.logMsg("Special pathway workaround in parser was called. " +
 								"Method return statement is ommited in this case.",

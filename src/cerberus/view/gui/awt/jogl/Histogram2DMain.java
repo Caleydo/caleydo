@@ -33,6 +33,7 @@ import cerberus.manager.type.ManagerObjectType;
 //import cerberus.view.gui.AViewManagedRep;
 //import cerberus.view.gui.swt.base.AJoglContainerViewRep;
 //import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
+import cerberus.view.gui.awt.GearsMouse;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 //import cerberus.util.exception.CerberusRuntimeException;
 //import cerberus.util.exception.CerberusExceptionType;

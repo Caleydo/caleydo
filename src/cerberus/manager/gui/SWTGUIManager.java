@@ -19,10 +19,10 @@ import org.eclipse.swt.widgets.Shell;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AAbstractManager;
-import cerberus.manager.command.factory.CommandFactory;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.view.gui.jogl.TriggeredAnimator;
 import cerberus.view.gui.swt.ISWTWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
@@ -59,6 +59,8 @@ implements ISWTGUIManager {
 
 	protected final HashMap<Integer, Composite> refCompositeMap;
 
+	protected final HashMap<Integer,TriggeredAnimator> hashAnimator;
+	
 	protected final Vector<ISWTWidget> refWidgetMap;
 	
 	protected Shell refLoadingProgressBarWindow;
@@ -89,6 +91,8 @@ implements ISWTGUIManager {
 		refWindowMap = new HashMap<Integer, Shell>();
 
 		refCompositeMap = new HashMap<Integer, Composite>();
+		
+		hashAnimator = new HashMap<Integer,TriggeredAnimator> ();
 		
 		createLoadingProgressBar();
 	}
@@ -413,5 +417,39 @@ implements ISWTGUIManager {
 
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/**
+	 * @see cerberus.manager.ISWTGUIManager#getAnimatorById(int)
+	 */
+	public synchronized TriggeredAnimator getAnimatorById(int iAnimatorId) {
+
+		if ( hashAnimator.containsKey(iAnimatorId) )
+		{
+			return hashAnimator.get(iAnimatorId);
+		}
+		
+		TriggeredAnimator newTriggeredAnimator = new TriggeredAnimator();		
+		hashAnimator.put(iAnimatorId, newTriggeredAnimator);
+		
+		return newTriggeredAnimator;
+	}
+
+	/**
+	 * @see cerberus.manager.ISWTGUIManager#setAnimatorById(cerberus.view.gui.jogl.TriggeredAnimator, int)
+	 */
+	public synchronized void setAnimatorById(TriggeredAnimator refAnimator, int iAnimatorId) {
+
+		if ( hashAnimator.containsKey(iAnimatorId) ) {
+			assert false : "id:" + iAnimatorId + " for Animator is already registerd!";
+			return;
+		}
+		
+		if ( hashAnimator.containsValue(refAnimator) ) {
+			assert false : "Animator is already registerd!";
+			return;
+		}
+		
+		hashAnimator.put(iAnimatorId, refAnimator);
 	}
 }
