@@ -160,8 +160,18 @@ implements IXmlParserManager {
 				if ( this.hashTag2XmlParser.containsKey( qName ) ) {
 					openCurrentTag( hashTag2XmlParser.get( qName ) );
 					
-					//MARC: needed to comment out return so that inital tag is processed too. 
-					//return;
+					// MARC: this was necessary to catch the special pathway XML file case
+					// when the pathway tag needs to be parsed again.
+					if (qName.equals("pathway"))
+					{
+						refLoggerManager.logMsg("Special pathway workaround in parser was called. " +
+								"Method return statement is ommited in this case.",
+								LoggerType.VERBOSE );
+					}
+					else
+					{
+						return;
+					}
 				}
 			}
 			
