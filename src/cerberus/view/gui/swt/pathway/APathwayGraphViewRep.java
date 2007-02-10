@@ -307,11 +307,24 @@ implements IPathwayGraphView {
 									getSetManager().getItemSet(85101));
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#setPathwaySet(int)
+	 */
 	public void setPathwaySet(int iPathwaySetId) {
 		
 		this.iPathwaySetId = iPathwaySetId;
 		
 		refPathwaySet = refGeneralManager.getSingelton().
 			getSetManager().getItemSet(iPathwaySetId);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.AViewRep#getDataSetId()
+	 */
+	public int getDataSetId() {
+		
+		return iPathwaySetId;
 	}
 }

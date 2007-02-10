@@ -86,4 +86,25 @@ implements IView, IMediatorSender {
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.IView#getDataSetId()
+	 */
+	public int getDataSetId() {
+		
+		return iPathwaySetId;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.AViewRep#setDataSetId(int)
+	 */
+	public void setDataSetId(int iDataSetId) {
+		
+		refPathwayGraphViewRep.setPathwaySet(iDataSetId);
+		refPathwayGraphViewRep.resetPathway();
+		refPathwayGraphViewRep.drawView();
+	}
+
 }

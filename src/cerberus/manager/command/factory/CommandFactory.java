@@ -27,6 +27,7 @@ import cerberus.command.view.opengl.CmdGlObjectTexture2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
+import cerberus.command.view.swt.CmdViewCreateDataExchanger;
 import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
@@ -271,6 +272,13 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdViewCreateDataExplorer(refGeneralManager);			
+			break;
+		}
+		
+		case CREATE_VIEW_DATA_EXCHANGER:
+		{
+			createdCommand =
+				new CmdViewCreateDataExchanger(refGeneralManager);			
 			break;
 		}
 		

@@ -1,7 +1,7 @@
 package cerberus.manager.view;
 
-//import java.util.Enumeration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -35,6 +35,7 @@ import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
+import cerberus.view.gui.swt.data.exchanger.DataExchangerViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.mixer.MixerViewRep;
@@ -221,6 +222,9 @@ implements IViewManager, IViewGLCanvasManager {
 		case VIEW_SWT_DATA_EXPLORER:
 			return new DataExplorerViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
+		case VIEW_SWT_DATA_EXCHANGER:
+			return new DataExchangerViewRep(this.refGeneralManager, iViewId,
+					iParentContainerId, sLabel);			
 		case VIEW_SWT_PROGRESS_BAR:
 			return new ProgressBarViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
@@ -678,5 +682,23 @@ implements IViewManager, IViewGLCanvasManager {
 			DataExplorerViewRep refDataExplorerViewRep) {
 
 		arDataExplorerViewRep.add(refDataExplorerViewRep);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IViewManager#getAllViews()
+	 */
+	public Collection<IView> getAllViews() {
+
+		return hashViewId2View.values();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IViewManager#getAllGLCanvasUsers()
+	 */
+	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
+		
+		return hashGLCanvasUser.values();
 	}
 }

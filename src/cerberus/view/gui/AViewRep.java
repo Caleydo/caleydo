@@ -123,4 +123,32 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		
 		this.viewType = viewType;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.IView#getDataSet()
+	 */
+	public int getDataSetId() {
+	
+		//Implemented in subclass
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.IView#setDataSetId(int)
+	 */
+	public void setDataSetId(int iDataSetId) {
+		
+		//Implemented in subclass
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.IView#getLabel()
+	 */
+	public String getLabel() {
+		
+		return sLabel;
+	}
 }

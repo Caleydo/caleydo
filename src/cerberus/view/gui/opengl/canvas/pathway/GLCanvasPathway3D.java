@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,11 +142,15 @@ implements IGLCanvasUser {
 	
 	protected HashMap<Integer, Pathway> refHashDisplayListNodeId2Pathway;
 	
+	protected HashMap<Pathway, Integer> refHashPathway2DisplayListNodeId;
+	
 	protected boolean bBlowUp = true;
 	
 	protected float fHighlightedNodeBlowFactor = 1.0f;
 	
 	protected boolean bAcordionDirection = false;
+	
+	protected HashMap<Pathway, FloatBuffer> refHashPathway2ModelMatrix;
 	
 	/**
 	 * Constructor
@@ -203,6 +208,8 @@ implements IGLCanvasUser {
 		refHashPathwayToTexture = new HashMap<Pathway, Texture>();
 		refHashPickID2VertexRep = new HashMap<Integer, IPathwayVertexRep>();
 		refHashDisplayListNodeId2Pathway = new HashMap<Integer, Pathway>();
+		refHashPathway2DisplayListNodeId = new HashMap<Pathway, Integer>();
+		refHashPathway2ModelMatrix = new HashMap<Pathway, FloatBuffer>();
 	}
 	
 	/*
@@ -234,7 +241,7 @@ implements IGLCanvasUser {
 	
 		float[] fMatSpecular = { 1.0f, 1.0f, 1.0f, 1.0f};
 		float[] fMatShininess = {25.0f}; 
-		float[] fLightPosition = {-1.0f, 0.0f, 0.0f, 1.0f};
+		float[] fLightPosition = {0.0f, 0.0f, 0.0f, 1.0f};
 		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
 		float[] fModelAmbient = {0.6f, 0.6f, 0.6f, 1.0f};
 		
@@ -290,7 +297,7 @@ implements IGLCanvasUser {
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
 			refHashPathwayToZLayerValue.put(refTmpPathway, fZLayerValue);
-			fZLayerValue += 1.5f;
+			//fZLayerValue += 1.5f;
 			
 			iPathwayId = refTmpPathway.getPathwayID();
 			if (iPathwayId < 10)
@@ -319,8 +326,7 @@ implements IGLCanvasUser {
 	protected void buildPathwayDisplayList() {
 
 		Pathway refTmpPathway = null;
-		Texture refPathwayTexture = null;
-		
+
 		System.out.println("Create pathway display lists");
 
 		// Load pathway storage
@@ -328,38 +334,29 @@ implements IGLCanvasUser {
 		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		
+		buildEnzymeNodeDisplayList();
+		buildHighlightedEnzymeNodeDisplayList();
+		buildCompoundNodeDisplayList();
+		buildHighlightedCompoundNodeDisplayList();
+		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
-		{
-			System.out.println("Create display list for new pathway");
-			
+		{			
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
-					
+		
+			System.out.println("Create display list for pathway "+refTmpPathway.getTitle());
+			
 			// Creating display list for pathways
-			int iVerticesDiplayListId = gl.glGenLists(1);
+			int iVerticesDisplayListId = gl.glGenLists(1);
 			int iEdgeDisplayListId = gl.glGenLists(1);
-			iArPathwayNodeDisplayListIDs.add(iVerticesDiplayListId);
+			iArPathwayNodeDisplayListIDs.add(iVerticesDisplayListId);
 			iArPathwayEdgeDisplayListIDs.add(iEdgeDisplayListId);
 
-			refHashDisplayListNodeId2Pathway.put(iVerticesDiplayListId, refTmpPathway);	
-	
-			//System.out.println("Current pathway: " +refTmpPathway.getTitle());
+			refHashDisplayListNodeId2Pathway.put(iVerticesDisplayListId, refTmpPathway);	
+			refHashPathway2DisplayListNodeId.put(refTmpPathway, iVerticesDisplayListId);
 			
-			fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
-//			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-//								
-//			// Init scaling factor after pathway texture width/height is known
-//			fPathwayTextureAspectRatio = 
-//				(float)refPathwayTexture.getImageWidth() / 
-//				(float)refPathwayTexture.getImageHeight();
-						
-			buildEnzymeNodeDisplayList();
-			buildHighlightedEnzymeNodeDisplayList();
-			buildCompoundNodeDisplayList();
-			buildHighlightedCompoundNodeDisplayList();
-			
-			gl.glNewList(iVerticesDiplayListId, GL.GL_COMPILE);	
+			gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
 			extractVertices(refTmpPathway);
 			gl.glEndList();
 	
@@ -658,102 +655,75 @@ implements IGLCanvasUser {
 			buildHighlightedCompoundNodeDisplayList();		
 		}
 		
-		gl.glPushMatrix();
-		for (int iDisplayListIndex = 0; iDisplayListIndex < 
-			iArPathwayNodeDisplayListIDs.size(); iDisplayListIndex++)
-		{	
-			iDisplayListNodeId = iArPathwayNodeDisplayListIDs.get(iDisplayListIndex);
-			iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
-			
-			//System.out.println("Accessing display list: " +iDisplayListNodeId + " " + iDisplayListEdgeId);
-			
-			//gl.glTranslatef(0.0f, 0.0f, 1.5f);
-			
-			if (bShowPathwayTexture == false)
-			{
-				gl.glCallList(iDisplayListEdgeId);
-			}
+//		gl.glPushMatrix();
+//		//gl.glTranslatef(0.0f, 0.0f, 5.0f);
+//		for (int iDisplayListIndex = 0; iDisplayListIndex < 
+//			iArPathwayNodeDisplayListIDs.size(); iDisplayListIndex++)
+//		{	
+//			iDisplayListNodeId = iArPathwayNodeDisplayListIDs.get(iDisplayListIndex);
+//			iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
+//			
+//			//System.out.println("Accessing display list: " +iDisplayListNodeId + " " + iDisplayListEdgeId);
+//			
+////			gl.glTranslatef(2.0f, 0.0f, 0.0f);
+////			
+////			if (bShowPathwayTexture == false)
+////			{
+////				gl.glCallList(iDisplayListEdgeId);
+////			}
+//			
 //			// Creating hierarchical picking names
 //			// This is the layer of the pathways, therefore we can use the pathway
 //			// node picking ID
-			gl.glPushName(iDisplayListNodeId);	
-			gl.glCallList(iDisplayListNodeId);
-			gl.glPopName();
-		}
-		gl.glPopMatrix();
+//			gl.glPushName(iDisplayListNodeId);	
+//			gl.glCallList(iDisplayListNodeId);
+//			gl.glPopName();
+//		}
+//		gl.glPopMatrix();
 		
 		gl.glPushMatrix();
 		if (bShowPathwayTexture == true)
-		{
-			Iterator<Pathway> iterPathways = 
-				refHashPathwayToZLayerValue.keySet().iterator();
-				
-			Texture refPathwayTexture = null;
+		{				
 			Pathway refTmpPathway = null;
-			float fTmpZLayerValue = 0.0f;
 			
-			float fTextureWidth;
-			float fTextureHeight;
+			// Load pathway storage
+			// Assumes that the set consists of only one storage
+			IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+			int[] iArPathwayIDs = tmpStorage.getArrayInt();
 			
-			while (iterPathways.hasNext())
-			{			
-				//gl.glTranslatef(0.0f, 0.0f, 1.5f);
+			// Render pathway under interaction
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				getItem(iArPathwayIDs[0]);
+			
+			gl.glRotatef(-60, 1.0f, 0.0f, 0.0f);
+
+			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
+
+			FloatBuffer testMatrixBuffer = FloatBuffer.allocate(16);
+			gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, testMatrixBuffer);
+			refHashPathway2ModelMatrix.put(refTmpPathway, testMatrixBuffer);
+			
+			renderPathway(refTmpPathway, iDisplayListNodeId);
+
+			gl.glRotatef(60, 1.0f, 0.0f, 0.0f);
+			
+			gl.glTranslatef(-8.0f, 7.0f, 15.0f);
+			
+			for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+				iPathwayIndex++)
+			{
+				refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+					getItem(iArPathwayIDs[iPathwayIndex]);
+			
+				gl.glTranslatef(3.0f, 0.0f, 0.0f);
+								
+				iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
+
+				testMatrixBuffer = FloatBuffer.allocate(16);
+				gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, testMatrixBuffer);
+				refHashPathway2ModelMatrix.put(refTmpPathway, testMatrixBuffer);
 				
-				refTmpPathway = iterPathways.next();
-				refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-				fTmpZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
-				
-				refPathwayTexture.enable();
-				refPathwayTexture.bind();
-				gl.glTexEnvi(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-	
-				gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
-	
-				TextureCoords texCoords = refPathwayTexture.getImageTexCoords();
-				
-				// Recalculate scaling factor
-				fPathwayTextureAspectRatio = 
-					(float)refPathwayTexture.getImageWidth() / 
-					(float)refPathwayTexture.getImageHeight();								
-				
-				fTextureWidth = 0.0025f * (float)refPathwayTexture.getImageWidth();
-				fTextureHeight = 0.0025f * (float)refPathwayTexture.getImageHeight();				
-				
-				gl.glBegin(GL.GL_QUADS);
-				gl.glTexCoord2f(0, texCoords.top()); 
-				gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);			  
-				gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-				gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);			 
-				gl.glTexCoord2f(texCoords.right(), 0); 
-				gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
-				gl.glTexCoord2f(0, 0); 
-				gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
-				gl.glEnd();	
-				
-				gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-				gl.glLineWidth(1);
-				gl.glBegin(GL.GL_LINE_STRIP); 
-				gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 
-				gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);
-				gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
-				gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
-				gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 				
-				gl.glEnd();
-				
-//				gl.glTranslatef(texCoords.right() * 0.0025f, 0.0f, 0.0f);
-//
-//				if (bAcordionDirection == false)
-//				{
-//					gl.glRotated(-140, 0, 1, 0);
-//					bAcordionDirection = true;
-//				}
-//				else
-//				{
-//					gl.glRotated(140, 0, 1, 0);				
-//					bAcordionDirection = false;
-//				}
-//				
-				refPathwayTexture.disable();
+				renderPathway(refTmpPathway, iDisplayListNodeId);
 			}
 		}
 		gl.glPopMatrix();
@@ -880,6 +850,77 @@ implements IGLCanvasUser {
 //				}
 //			}
 //		}
+	}
+	
+	protected void renderPathway(final Pathway refTmpPathway, int iDisplayListNodeId) {
+		
+		// Creating hierarchical picking names
+		// This is the layer of the pathways, therefore we can use the pathway
+		// node picking ID
+		gl.glPushName(iDisplayListNodeId);	
+		gl.glCallList(iDisplayListNodeId);
+		gl.glPopName();
+		
+		Texture refPathwayTexture = null;
+		float fTmpZLayerValue = 0.0f;
+		float fTextureWidth;
+		float fTextureHeight;
+		
+		refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
+		fTmpZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
+		
+		refPathwayTexture.enable();
+		refPathwayTexture.bind();
+		gl.glTexEnvi(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+
+		gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
+
+		TextureCoords texCoords = refPathwayTexture.getImageTexCoords();
+		
+		// Recalculate scaling factor
+		fPathwayTextureAspectRatio = 
+			(float)refPathwayTexture.getImageWidth() / 
+			(float)refPathwayTexture.getImageHeight();								
+		
+		fTextureWidth = 0.0025f * (float)refPathwayTexture.getImageWidth();
+		fTextureHeight = 0.0025f * (float)refPathwayTexture.getImageHeight();				
+		
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2f(0, texCoords.top()); 
+		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);			  
+		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
+		gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);			 
+		gl.glTexCoord2f(texCoords.right(), 0); 
+		gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
+		gl.glTexCoord2f(0, 0); 
+		gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
+		gl.glEnd();	
+		
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+		gl.glLineWidth(1);
+		gl.glBegin(GL.GL_LINE_STRIP); 
+		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 
+		gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);
+		gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
+		gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
+		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 				
+		gl.glEnd();
+
+		//gl.glTranslatef(texCoords.right() * 0.0025f, 0.0f, 0.0f);
+		
+//
+//		if (bAcordionDirection == false)
+//		{
+//			gl.glRotated(-140, 0, 1, 0);
+//			bAcordionDirection = true;
+//		}
+//		else
+//		{
+//			gl.glRotated(140, 0, 1, 0);				
+//			bAcordionDirection = false;
+//		}
+//		
+		refPathwayTexture.disable();
 	}
 	
 //	public void setTargetPathwayId(final int iTargetPathwayId) {
@@ -1096,11 +1137,21 @@ implements IGLCanvasUser {
 		float fCanvasXPos2 = 0.0f;
 		float fCanvasYPos2 = 0.0f;
 		
-		iterDrawnPathways = refHashPathwayToZLayerValue.keySet().iterator();
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		
-		while(iterDrawnPathways.hasNext())
-		{
-			refTmpPathway = iterDrawnPathways.next();
+		buildEnzymeNodeDisplayList();
+		buildHighlightedEnzymeNodeDisplayList();
+		buildCompoundNodeDisplayList();
+		buildHighlightedCompoundNodeDisplayList();
+		
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
+		{			
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				getItem(iArPathwayIDs[iPathwayIndex]);
 
 			// Recalculate scaling factor
 			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
@@ -1110,7 +1161,7 @@ implements IGLCanvasUser {
 			
 			if(refTmpPathway.isVertexInPathway(refVertexRep1.getVertex()) == true)
 			{					
-				fZLayerValue1 = refHashPathwayToZLayerValue.get(refTmpPathway);
+				//fZLayerValue1 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				
 				fCanvasXPos1 = viewingFrame[X][MIN] + 
 					refVertexRep1.getXPosition() * SCALING_FACTOR_X;
@@ -1120,7 +1171,7 @@ implements IGLCanvasUser {
 			
 			if(refTmpPathway.isVertexInPathway(refVertexRep2.getVertex()) == true)
 			{					
-				fZLayerValue2 = refHashPathwayToZLayerValue.get(refTmpPathway);
+				//fZLayerValue2 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				
 				fCanvasXPos2 = viewingFrame[X][MIN] + 
 					refVertexRep2.getXPosition() * SCALING_FACTOR_X;
@@ -1466,7 +1517,7 @@ implements IGLCanvasUser {
 			
 //			for (int j = 0; j < iNames; j++)
 //			{
-				//System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
+				System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
 
 				iPickedPathwayDisplayListNodeId = iArPickingBuffer[iPtr];
 				
@@ -1530,50 +1581,50 @@ implements IGLCanvasUser {
 		}
 	}	
 	
-    private void drawBezierCurve(GL gl) {
-
-		final int nbCtrlPoints = 4;
-		final int sizeCtrlPoints = nbCtrlPoints * 3;
-
-		float a = 1.0f;
-		float b = 0.f;
-		float ctrlPoints[] =
-		{ -a, -a, 0f, 
-		  -a/2, +a, 2f, 
-		  +a, +2*a, 1f, 
-		  +2*a, -a/4, -1f };
-
-		// Check if the ctrl points array has a legal size.
-		if (ctrlPoints.length != sizeCtrlPoints)
-		{
-			System.out.println("ERROR ctrlPoints\n");
-		}
-		;
-
-		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 4, ctrlPoints, 0);
-		gl.glEnable(GL.GL_MAP1_VERTEX_3);
-
-		// Draw ctrlPoints.
-		gl.glBegin(GL.GL_POINTS);
-		{
-			for (int i = 0; i < sizeCtrlPoints; i += 3)
-			{
-				gl.glVertex3f(ctrlPoints[i], ctrlPoints[i + 1],
-						ctrlPoints[i + 2]);
-			}
-		}
-		gl.glEnd();
-
-		// Draw courve.
-		gl.glBegin(GL.GL_LINE_STRIP);
-		{
-			for (float v = 0; v <= 1; v += 0.01)
-			{
-				gl.glEvalCoord1f(v);
-			}
-		}
-		gl.glEnd();
-	}
+//    private void drawBezierCurve(GL gl) {
+//
+//		final int nbCtrlPoints = 4;
+//		final int sizeCtrlPoints = nbCtrlPoints * 3;
+//
+//		float a = 1.0f;
+//		float b = 0.f;
+//		float ctrlPoints[] =
+//		{ -a, -a, 0f, 
+//		  -a/2, +a, 2f, 
+//		  +a, +2*a, 1f, 
+//		  +2*a, -a/4, -1f };
+//
+//		// Check if the ctrl points array has a legal size.
+//		if (ctrlPoints.length != sizeCtrlPoints)
+//		{
+//			System.out.println("ERROR ctrlPoints\n");
+//		}
+//		;
+//
+//		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 4, ctrlPoints, 0);
+//		gl.glEnable(GL.GL_MAP1_VERTEX_3);
+//
+//		// Draw ctrlPoints.
+//		gl.glBegin(GL.GL_POINTS);
+//		{
+//			for (int i = 0; i < sizeCtrlPoints; i += 3)
+//			{
+//				gl.glVertex3f(ctrlPoints[i], ctrlPoints[i + 1],
+//						ctrlPoints[i + 2]);
+//			}
+//		}
+//		gl.glEnd();
+//
+//		// Draw courve.
+//		gl.glBegin(GL.GL_LINE_STRIP);
+//		{
+//			for (float v = 0; v <= 1; v += 0.01)
+//			{
+//				gl.glEvalCoord1f(v);
+//			}
+//		}
+//		gl.glEnd();
+//	}
     
     void highlightIdenticalNodes() {
     	
@@ -1582,19 +1633,24 @@ implements IGLCanvasUser {
 		PathwayVertex refTmpVertex = null;
 		IPathwayVertexRep refCurrentVertexRep = null;
 		Iterator<PathwayVertex> iterIdenticalVertices = null;
+		
 		Iterator<Pathway> iterDrawnPathways = 
 			refHashPathwayToZLayerValue.keySet().iterator();
+
 		
 		for (int iHighlightedNodeIndex = 0; iHighlightedNodeIndex < iArHighlightedVertices.size(); 
 			iHighlightedNodeIndex++)
 		{
-		
 			refCurrentVertex = ((IPathwayVertexRep)iArHighlightedVertices.
 					get(iHighlightedNodeIndex)).getVertex();
 					
 			while(iterDrawnPathways.hasNext())
 			{
 				refTmpPathway = iterDrawnPathways.next();
+			
+				// Restore matrix
+				gl.glLoadIdentity();
+				gl.glLoadMatrixf(refHashPathway2ModelMatrix.get(refTmpPathway));
 				
 				// Hightlight all identical nodes
 				iterIdenticalVertices = refGeneralManager.getSingelton().
@@ -1607,28 +1663,22 @@ implements IGLCanvasUser {
 					
 					if (refTmpPathway.isVertexInPathway(refTmpVertex) == true)
 					{
-						fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
+						//fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
 					
 						refCurrentVertexRep = refTmpVertex.
 							getVertexRepByIndex(iVertexRepIndex);
 						
 						if (refCurrentVertexRep != null)
-						{
-//							// Recalculate scaling factor
-//							refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-//							fPathwayTextureAspectRatio = 
-//								(float)refPathwayTexture.getImageWidth() / 
-//								(float)refPathwayTexture.getImageHeight();								
-							
+						{												
 							iArHighlightedVertices.add(refCurrentVertexRep);
 							
 							createVertex(refCurrentVertexRep, refTmpPathway);
 							
-							if (!refTmpPathway.equals(refPathwayUnderInteraction))
-							{
-								connectVertices(refCurrentVertexRep, 
-										refCurrentVertex.getVertexRepByIndex(iVertexRepIndex));
-							}
+//							if (!refTmpPathway.equals(refPathwayUnderInteraction))
+//							{
+//								connectVertices(refCurrentVertexRep, 
+//										refCurrentVertex.getVertexRepByIndex(iVertexRepIndex));
+//							}
 						}
 					}
 				}
