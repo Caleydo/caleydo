@@ -9,6 +9,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
+import cerberus.view.gui.ViewType;
 
 import demos.gears.Gears;
 
@@ -22,7 +23,11 @@ implements IView
 	public Scatterplot2DViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_SCATTERPLOT2D);
 
 		initView();
 		retrieveGUIContainer();

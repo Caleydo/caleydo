@@ -15,6 +15,7 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 public class TestTableViewRep 
@@ -26,7 +27,11 @@ implements IView
 	public TestTableViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_DATA_EXPLORER);
 
 		initView();
 		retrieveGUIContainer();

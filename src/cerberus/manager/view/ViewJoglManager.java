@@ -21,7 +21,7 @@ import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.AViewRep.ViewType;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
@@ -53,6 +53,11 @@ import cerberus.view.gui.swt.image.ImageViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 
+/**
+ * Manage all canvas, view, ViewRep's nad GLCanvas objects.
+ * 
+ * @author Michael Kalkusch
+ */
 public class ViewJoglManager 
 extends AAbstractManager
 implements IViewManager, IViewGLCanvasManager {
@@ -278,7 +283,7 @@ implements IViewManager, IViewGLCanvasManager {
 
 	public ArrayList<AViewRep> getViewByType(ViewType viewType) {
 
-		if (viewType.equals(ViewType.DATA_EXPLORER))
+		if (viewType.equals(ViewType.SWT_DATA_EXPLORER))
 			return arDataExplorerViewRep;
 
 		return null;
@@ -677,11 +682,55 @@ implements IViewManager, IViewGLCanvasManager {
 		refGeneralManager.getSingelton().logMsg(
 				"ViewJoglManager.destroyOnExit()  ...[DONE]");
 	}
+	
+	public void addViewRep(final IView refView) {
 
-	public void addDataExplorerViewRep(
-			DataExplorerViewRep refDataExplorerViewRep) {
+		try 
+		{
+		
+			switch ( refView.getViewType() )
+			{
+			
+			case SWT_DATA_EXPLORER:
+				arDataExplorerViewRep.add( (DataExplorerViewRep) refView);
+				return;
+				
+			default:
+				assert false : "unsupported ViewType " + refView.getViewType();
+			} //switch ( refView.getViewType() )
+		}
+		catch ( NullPointerException npe)
+		{
+			System.err.println("addViewRep(IView) getViewType() returned unexpected (class)!");
+			
+			assert false : "Error,  getViewType() returned unexpected (class)";
+		} //try .. catch ( NullPointerException npe)
+	}
+	
+	
+	public void removeViewRep(final IView refView) {
 
-		arDataExplorerViewRep.add(refDataExplorerViewRep);
+		try 
+		{
+		
+			switch ( refView.getViewType() )
+			{
+			
+			case SWT_DATA_EXPLORER:
+				arDataExplorerViewRep.remove( (DataExplorerViewRep) refView);
+				return;
+				
+			default:
+				assert false : "unsupported ViewType " + refView.getViewType();
+			} //switch ( refView.getViewType() )
+			
+		}
+		catch ( NullPointerException npe)
+		{
+			System.err.println("removedViewRep(IView) getViewType() returned unexpected (class)!");
+			
+			assert false : "Error,  getViewType() returned unexpected (class)";
+		} //try .. catch ( NullPointerException npe)
 	}
 
 	/*

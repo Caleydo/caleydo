@@ -8,7 +8,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.AViewRep.ViewType;
+import cerberus.view.gui.ViewType;
 import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.ParameterHandler;
@@ -274,7 +274,7 @@ implements IGroupedSelection {
 			(ViewJoglManager) refGeneralManager.getSingelton().getViewGLCanvasManager();
 		
 		ArrayList<AViewRep> arDataExplorerViews = 
-			viewManager.getViewByType(ViewType.DATA_EXPLORER);
+			viewManager.getViewByType(ViewType.SWT_DATA_EXPLORER);
 		
 		Iterator<AViewRep> iterDataExplorerViewRep = 
 			arDataExplorerViews.iterator();

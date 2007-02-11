@@ -11,6 +11,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.exception.CerberusRuntimeExceptionType;
@@ -62,7 +63,11 @@ implements IView, ISwtJoglContainerViewRep
 	public AJoglContainerViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_SLIDER);	
 	}
 
 	/**

@@ -27,6 +27,7 @@ import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
+import cerberus.view.gui.ViewType;
 
 /**
  * Data Exchanger View makes it possible
@@ -61,7 +62,11 @@ implements IView {
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_DATA_EXCHANGER);	
 
 		arViewData = new ArrayList<String>();
 		arFilteredViews = new ArrayList<String>();

@@ -11,6 +11,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
@@ -40,7 +41,11 @@ implements IView {
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_PROGRESSBAR);	
 	}
 
 	/**

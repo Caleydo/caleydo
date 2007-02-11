@@ -6,8 +6,12 @@ import java.util.Collection;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 
+/**
+ * Manage all canvas, view, ViewRep's nad GLCanvas objects.
+ * 
+ * @author Michael Kalkusch
+ */
 public interface IViewManager 
 extends IGeneralManager {
 	
@@ -16,8 +20,9 @@ extends IGeneralManager {
 	
 	public void destroyOnExit();
 
-	public void addDataExplorerViewRep(
-			DataExplorerViewRep refDataExplorerView);
+	public void addViewRep(IView refView);
+	
+	public void removeViewRep(IView refView) ;
 	
 	public Collection<IView> getAllViews();
 	

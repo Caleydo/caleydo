@@ -24,6 +24,7 @@ import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.swt.data.explorer.model.AModel;
 import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
@@ -68,7 +69,11 @@ implements IView, IMediatorReceiver {
 			int iParentContainerId,
 			String sLabel) {
 
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_DATA_EXPLORER);
 
 		// The simple data table is not created via the view manager
 		// because it is not needed in the global context.

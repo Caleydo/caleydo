@@ -10,6 +10,7 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 import cerberus.view.gui.swt.toolbar.Pathway2DToolbar;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
@@ -36,7 +37,11 @@ implements IView, IMediatorSender {
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId,
+				sLabel,
+				ViewType.SWT_PATHWAY2D);	
 		
 		// Pass the ID of the parent composite to the graph view rep instead of 
 		// the ID of the PathwayViewRep.

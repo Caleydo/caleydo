@@ -24,6 +24,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.view.gui.ViewType;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
@@ -80,7 +81,11 @@ implements IPathwayGraphView {
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_PATHWAY_GRAPH);
 
 		refRenderStyle = new PathwayRenderStyle();
 		

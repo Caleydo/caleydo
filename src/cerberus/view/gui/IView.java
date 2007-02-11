@@ -1,8 +1,9 @@
 package cerberus.view.gui;
 
-import cerberus.command.ICommand;
-import cerberus.data.collection.ISet;
-import cerberus.view.gui.AViewRep.ViewType;
+import cerberus.view.gui.ViewType;
+
+//import cerberus.command.ICommand;
+//import cerberus.data.collection.ISet;
 
 /**
  * Interface for the view representations.
@@ -39,7 +40,7 @@ public interface IView {
 	 */
 	public void setParentContainerId(int iParentContainerId);
 	
-	public void setViewType(ViewType viewType);
+
 	
 	/**
 	 * Returns the ID of the SET that is the base data of that view.
@@ -48,11 +49,22 @@ public interface IView {
 	 */
 	public int getDataSetId();
 	
+
 	public void setDataSetId(int iDataSetId);
+	
 	
 	/**
 	 * Method return the label of the view.
 	 * @return View name
 	 */
 	public String getLabel();
+	
+	
+	/**
+	 * Get the ViewType of this ViewRep.
+	 * 
+	 * @return 
+	 */
+	public ViewType getViewType();
+
 }

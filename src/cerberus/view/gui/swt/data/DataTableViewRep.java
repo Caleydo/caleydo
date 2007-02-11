@@ -26,6 +26,7 @@ import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.ViewType;
 
 public class DataTableViewRep 
 extends AViewRep 
@@ -60,7 +61,11 @@ implements IDataTableView {
 	public DataTableViewRep(IGeneralManager refGeneralManager, 
 			int iParentId) {
 		
-		super(refGeneralManager, -1, iParentId, "");
+		super(refGeneralManager,
+				-1, 
+				iParentId,
+				"",
+				ViewType.SWT_DATA_TABLE);
 
 		bTriggeredUpdateFlag = false;
 		initView();

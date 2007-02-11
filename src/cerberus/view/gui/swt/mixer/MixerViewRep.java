@@ -12,6 +12,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
@@ -21,6 +22,7 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
  * Class is prepared to work together with a connected MIDI device.
  * 
  * @author Marc Streit
+ * @author Michael Kalkusch
  *
  */
 public class MixerViewRep 
@@ -36,7 +38,11 @@ implements IView
 	public MixerViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_MIXER);
 	}
 	
 	/**

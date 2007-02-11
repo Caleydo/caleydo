@@ -6,7 +6,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.AViewRep.ViewType;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -52,9 +51,7 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		viewManager.addDataExplorerViewRep(dataExplorerView);
-		
-		dataExplorerView.setViewType(ViewType.DATA_EXPLORER);
+		viewManager.addViewRep(dataExplorerView);
 		
 		dataExplorerView.setAttributes(iWidthX, iHeightY);
 		dataExplorerView.retrieveGUIContainer();

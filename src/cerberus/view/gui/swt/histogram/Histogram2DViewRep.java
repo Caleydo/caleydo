@@ -8,23 +8,31 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.awt.jogl.Histogram2DMain;
 
-
-public class Heatmap2DViewRep 
+/**
+ * @deprecated
+ *
+ */
+public class Histogram2DViewRep 
 extends AViewRep 
 implements IView
 {
 	protected GLCanvas refGLCanvas;
 	
-	public Heatmap2DViewRep(
+	public Histogram2DViewRep(
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel)
 	{
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);	
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_HISTOGRAM2D);	
 		
 		initView();
 		retrieveGUIContainer();

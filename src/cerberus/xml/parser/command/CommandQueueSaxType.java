@@ -44,6 +44,7 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_PATHWAY("cmd", "type","-1"),
 	CREATE_VIEW_GEARS("cmd", "type","-1"),
 	CREATE_VIEW_DATA_EXPLORER("cmd", "type","-1"),
+	CREATE_VIEW_DATA_EXCHANGER("cmd", "type","-1"),
 	CREATE_VIEW_PROGRESSBAR("cmd", "type","-1"),
 	CREATE_VIEW_STORAGE_SLIDER("cmd", "type","-1"),
 	CREATE_VIEW_SELECTION_SLIDER("cmd", "type","-1"),	

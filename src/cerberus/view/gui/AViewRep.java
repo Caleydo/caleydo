@@ -5,34 +5,25 @@ import org.eclipse.swt.widgets.Composite;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.event.mediator.IMediatorReceiver;
-import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.ViewType;
 
 /**
  * Abstract class that is the base of all view representations.
  * It holds the the own view ID, the parent ID and the attributes that
  * needs to be processed.
  * 
+ * @see cerberus.manager.event.mediator.IMediatorReceiver
+ * @see cerberus.manager.event.mediator.IMediatorSender
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public abstract class AViewRep 
 extends AUniqueManagedObject
-implements IView, IMediatorSender, IMediatorReceiver {
+implements IViewRep {
 	
-	public enum ViewType {
-		DATA_EXPLORER,
-		PATHWAY,
-		HEATMAP
-	}
-	
-	public enum EventState {
-		NONE,
-		NEW_VIRTUAL_ARRAY,
-		VIRTUAL_ARRAY_CHANGED,
-		DATA_CHANGED
-	}
+	protected final ViewType viewType;
 	
 	protected int iParentContainerId;
 	
@@ -48,9 +39,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	 */
 	protected int iHeight;
 	
-	protected ViewType viewType;
-	
-	protected EventState eventState;
+	protected ViewEventStateType eventState;
 	
 	protected Composite refSWTContainer;
 
@@ -66,7 +55,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 			final IGeneralManager refGeneralManager, 
 			final int iViewId, 
 			final int iSetParentContainerId, 
-			final String sLabel) {
+			final String sLabel,
+			final ViewType viewType ) {
 		
 		super ( iViewId, refGeneralManager );
 		
@@ -75,7 +65,9 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		this.iParentContainerId = iSetParentContainerId;
 		this.sLabel = sLabel;
 		
-		eventState = EventState.NONE;
+		eventState = ViewEventStateType.NONE;
+		
+		this.viewType = viewType;
 	}
 	
 
@@ -119,11 +111,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		//Implemented in subclasses
 	}
 	
-	public void setViewType(ViewType viewType) {
-		
-		this.viewType = viewType;
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * @see cerberus.view.gui.IView#getDataSet()
@@ -150,5 +137,21 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	public String getLabel() {
 		
 		return sLabel;
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.IView#setViewType(cerberus.view.gui.ViewType)
+	 */
+	public final void setViewType(ViewType viewType) {
+		
+		assert false : "viewType is final!";
+	}
+	
+	/**
+	 * @see cerberus.view.gui.IViewRep#getViewType()
+	 */
+	public final ViewType getViewType() {
+		return viewType;
 	}
 }
