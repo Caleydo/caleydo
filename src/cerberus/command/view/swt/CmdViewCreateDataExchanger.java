@@ -52,7 +52,7 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-    viewManager.addViewRep(dataExplorerView);
+    viewManager.addViewRep(dataExchangerView);
 
 		dataExchangerView.setAttributes(iWidthX, iHeightY);
 		dataExchangerView.retrieveGUIContainer();

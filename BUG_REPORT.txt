@@ -97,3 +97,5 @@ public void loadNodeInformationInBrowser(final String sUrl) {
 	
 	
 2007_01_05#0008: [OPEN] integrate IPathwayElementManager into IPathwayManager
+
+2007_02_12#0009: [OPEN]  PathwayGraphViewRep generates error (system.err) "Unknown Error during creating edge! SKIP"
