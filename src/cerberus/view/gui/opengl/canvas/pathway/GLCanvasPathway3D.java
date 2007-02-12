@@ -1162,16 +1162,20 @@ implements IGLCanvasUser {
 			if(refTmpPathway.isVertexInPathway(refVertexRep1.getVertex()) == true)
 			{					
 				//fZLayerValue1 = refHashPathwayToZLayerValue.get(refTmpPathway);
+				fZLayerValue1 = 0.0f;
 				
 				fCanvasXPos1 = viewingFrame[X][MIN] + 
 					refVertexRep1.getXPosition() * SCALING_FACTOR_X;
 				fCanvasYPos1 = viewingFrame[Y][MIN] + 
 					refVertexRep1.getYPosition() * SCALING_FACTOR_Y;
+
+				
 			}
 			
 			if(refTmpPathway.isVertexInPathway(refVertexRep2.getVertex()) == true)
 			{					
 				//fZLayerValue2 = refHashPathwayToZLayerValue.get(refTmpPathway);
+				fZLayerValue2 = 0.0f;
 				
 				fCanvasXPos2 = viewingFrame[X][MIN] + 
 					refVertexRep2.getXPosition() * SCALING_FACTOR_X;
@@ -1180,6 +1184,23 @@ implements IGLCanvasUser {
 			}
 		}
 		
+		float[] tmpVec1 = {fCanvasXPos1, fCanvasYPos1, fZLayerValue1, 1.0f};
+		float[] tmpVec2 = {fCanvasXPos2, fCanvasYPos2, fZLayerValue2, 1.0f};
+		
+		float[] resultVec1 = {1.0f, 1.0f, 1.0f, 1.0f};		
+		float[] resultVec2 = {1.0f, 1.0f, 1.0f, 1.0f};
+		
+		vecMatrixMult(tmpVec1, refHashPathway2ModelMatrix.get(refTmpPathway).array(), resultVec1);
+		vecMatrixMult(tmpVec2, refHashPathway2ModelMatrix.get(refTmpPathway).array(), resultVec2);
+		
+		fCanvasXPos1 = resultVec1[0];
+		fCanvasYPos1 = resultVec1[1];
+		fZLayerValue1 = resultVec1[2];
+		
+		fCanvasXPos2 = resultVec2[0];
+		fCanvasYPos2 = resultVec2[1];
+		fZLayerValue2 = resultVec2[2];
+		
 		gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
 		gl.glLineWidth(3);
 		gl.glBegin(GL.GL_LINES);		
@@ -1187,7 +1208,6 @@ implements IGLCanvasUser {
 			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, fZLayerValue2);					
 		gl.glEnd();
 		gl.glLineWidth(1);
-
 	}
 	
 	/**
@@ -1684,5 +1704,18 @@ implements IGLCanvasUser {
 				}
 			}
 	    }
+    }
+    
+    protected void vecMatrixMult(float[] vecIn, float[] matIn, float[] vecOut) {
+    	
+    	vecOut[0] = (vecIn[0]*matIn[ 0]) + (vecIn[1]*matIn[ 1]) + (vecIn[2]*matIn[ 2]) + (vecIn[3]*matIn[ 3]);
+    	vecOut[1] = (vecIn[0]*matIn[ 4]) + (vecIn[1]*matIn[ 5]) + (vecIn[2]*matIn[ 6]) + (vecIn[3]*matIn[ 7]);
+    	vecOut[2] = (vecIn[0]*matIn[ 8]) + (vecIn[1]*matIn[ 9]) + (vecIn[2]*matIn[10]) + (vecIn[3]*matIn[11]);
+    	vecOut[3] = (vecIn[0]*matIn[12]) + (vecIn[1]*matIn[13]) + (vecIn[2]*matIn[14]) + (vecIn[3]*matIn[15]);
+      
+    	vecOut[0] /= vecOut[3];
+    	vecOut[1] /= vecOut[3];
+    	vecOut[2] /= vecOut[3];
+    	vecOut[3] = 1.0f;
     }
 }

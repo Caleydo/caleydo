@@ -40,6 +40,7 @@ import cerberus.command.view.swt.CmdViewCreateSelectionSlider;
 import cerberus.command.view.swt.CmdViewCreateStorageSlider;
 import cerberus.command.view.swt.CmdViewCreateSwtGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateTestTriangle;
+import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.command.window.swt.CmdWindowCreate;
 import cerberus.command.window.swt.CmdContainerCreate;
 
@@ -266,8 +267,6 @@ public class CommandFactory
 			break;
 		}
 		
-		
-		
 		case CREATE_VIEW_DATA_EXPLORER:
 		{
 			createdCommand =
@@ -321,6 +320,13 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdViewCreateHTMLBrowser(refGeneralManager);			
+			break;
+		}
+		
+		case LOAD_URL_IN_BROWSER:
+		{
+			createdCommand =
+				new CmdViewLoadURLInHTMLBrowser(refGeneralManager);			
 			break;
 		}
 		

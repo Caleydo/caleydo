@@ -16,6 +16,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import cerberus.data.IUniqueObject;
 import cerberus.data.collection.ISet;
@@ -76,17 +77,26 @@ implements IView {
 
 	public void initView() {
 
-		refSWTContainer.setLayout(new FillLayout(SWT.HORIZONTAL));
+		refSWTContainer.setLayout(new FillLayout(SWT.VERTICAL));
 
+		Label viewComboLabel = new Label(refSWTContainer, SWT.LEFT);
+		viewComboLabel.setText("Select view:");
+		viewComboLabel.setSize(150, 30);
+				
 		final Combo viewCombo = new Combo(refSWTContainer, SWT.SIMPLE |
                 SWT.V_SCROLL | SWT.H_SCROLL);
+		
+		Label dataComboLabel = new Label(refSWTContainer, SWT.LEFT);
+		dataComboLabel.setText("Select new SET:");
+		dataComboLabel.setSize(150, 30);
+
 		final Combo dataCombo = new Combo(refSWTContainer, SWT.SIMPLE | 
                 SWT.V_SCROLL | SWT.H_SCROLL);
         		
-	    viewCombo.setBounds(50, 85, 150, 65);
+	    viewCombo.setSize(150, 30);
 	    viewCombo.setEnabled(true);
 
-	    dataCombo.setBounds(50, 85, 150, 65);
+	    dataCombo.setSize(150, 30);
 	    dataCombo.setEnabled(false);
 	    
 	    viewCombo.addFocusListener(new FocusAdapter() {

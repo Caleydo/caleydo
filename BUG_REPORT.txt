@@ -33,7 +33,7 @@ public void loadImageMapFromFile(String sImageMapPath) { ... }
 
 
 
-2006_12_19#0004: [OPEN] calling refGraphLayoutCache.setVisible( .. ) twice!
+2006_12_19#0004: [SOLVED] calling refGraphLayoutCache.setVisible( .. ) twice!
 
 cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
 
@@ -56,7 +56,8 @@ public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
 		refGraphLayoutCache.setVisible(
 				vecRelationEdges.toArray(), false);
 	}
-	
+
+MARC: Removed the second setVisible call.
 	
 2006_12_19#0005: [OPEN] nested class! Export to new file probably better!
 
@@ -68,6 +69,11 @@ cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
 		extends BasicMarqueeHandler { ..}
 		
 		}
+		
+MARC: I tried it to put it in an own class.
+      But it turns out that it gets even more nasty than because
+      a lot of members needs to be accessed and the states of that
+      members are changed too.
 		
 		
 2006_12_19#0006: [OPEN] need do create commadn for calling URL in browser!
@@ -90,12 +96,20 @@ public void loadNodeInformationInBrowser(final String sUrl) {
 	
 	
 		
-2006_12_19#0007: [OPEN] error when executing data/XML/bootstrap/cerberus_bootstrap_sample_marc.xml with VM arguments: -ea
+2006_12_19#0007: [SOLVED] error when executing data/XML/bootstrap/cerberus_bootstrap_sample_marc.xml with VM arguments: -ea
 
 	Exception in thread "main" java.lang.AssertionError: Can not read int[] array with length 0!
 	at cerberus.util.system.StringConversionTool.convertStringToIntArrayVariableLength(StringConversionTool.java:394)
 	
+MARC: Problem does not occur using current configuration file (2007_02_12).
 	
 2007_01_05#0008: [OPEN] integrate IPathwayElementManager into IPathwayManager
 
-2007_02_12#0009: [OPEN]  PathwayGraphViewRep generates error (system.err) "Unknown Error during creating edge! SKIP"
+MARC: Why? Please explain.
+
+2007_02_12#0009: [OPEN] PathwayGraphViewRep generates error (system.err) "Unknown Error during creating edge! SKIP"
+
+
+2007_02_12#0010: [OPEN] Application does not kill system thread when closing all windows 
+                        (at leas under linux). After closing the windows it's even impossible
+                        to kill the application in Eclipse.

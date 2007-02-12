@@ -52,7 +52,9 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-    viewManager.addViewRep(dataExchangerView);
+		//MARC: removed line because is not supported yet.
+		//Would result in an assertion when running with -ea VM arguments
+		//viewManager.addViewRep(dataExchangerView);
 
 		dataExchangerView.setAttributes(iWidthX, iHeightY);
 		dataExchangerView.retrieveGUIContainer();
