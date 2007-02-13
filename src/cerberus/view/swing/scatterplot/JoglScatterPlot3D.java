@@ -394,11 +394,11 @@ public class JoglScatterPlot3D extends Demo {
 					}
 					// System.out.print("+");				
 
-					IVirtualArrayIterator iterX = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterX = refSet.getVirtualArrayByDimAndIndex(
 							0, 0).iterator();
-					IVirtualArrayIterator iterY = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterY = refSet.getVirtualArrayByDimAndIndex(
 							1, 0).iterator();
-					IVirtualArrayIterator iterZ = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterZ = refSet.getVirtualArrayByDimAndIndex(
 							2, 0).iterator();
 
 					if (!doMinMaxData.isValid()) {

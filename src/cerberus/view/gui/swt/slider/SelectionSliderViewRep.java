@@ -29,7 +29,7 @@ extends ASliderViewRep {
 		
 		IVirtualArray tmpSelection =
 			refGeneralManager.getSingelton().getVirtualArrayManager()
-				.getItemSelection(iSelectionId);
+				.getItemVirtualArray(iSelectionId);
 		
 		if (sSelectionFieldName.equals("length"))
 		{
@@ -52,7 +52,7 @@ extends ASliderViewRep {
 			public void handleEvent (Event event) {
 				IVirtualArray tmpSelection =
 					refGeneralManager.getSingelton().getVirtualArrayManager()
-						.getItemSelection(iSelectionId);
+						.getItemVirtualArray(iSelectionId);
 				
 				tmpSelection.getWriteToken();
 				

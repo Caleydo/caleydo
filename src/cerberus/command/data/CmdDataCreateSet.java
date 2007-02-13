@@ -53,7 +53,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * Note: llDataRaw.size() == llDataTypes.size() must be equal!
 	 *
 	 * @see cerberus.data.collection.StorageType
-	 * @see cerberus.command.data.CmdDataCreateSet#llRefSelection
+	 * @see cerberus.command.data.CmdDataCreateSet#llRefVirtualArray
 	 * @see cerberus.command.data.CmdDataCreateSet#bDisposeDataAfterDoCommand
 	 */
 	protected LinkedList< LinkedList<String> > llRefStorage_nDim;
@@ -67,7 +67,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * @see cerberus.command.data.CmdDataCreateSet#llRefStorage
 	 * @see cerberus.command.data.CmdDataCreateSet#bDisposeDataAfterDoCommand	 
 	 */
-	protected LinkedList< LinkedList<String> > llRefSelection_nDim;
+	protected LinkedList< LinkedList<String> > llRefVirtualArray_nDim;
 	
 		
 	/**
@@ -99,7 +99,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
 		llRefStorage_nDim 	= new LinkedList< LinkedList<String> > ();
-		llRefSelection_nDim 	= new LinkedList< LinkedList<String> > ();
+		llRefVirtualArray_nDim 	= new LinkedList< LinkedList<String> > ();
 		
 		set_type = CommandQueueSaxType.CREATE_SET;
 	}
@@ -111,9 +111,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 		/**
 		 * Wipe all lists
 		 */
-		if ( ! llRefSelection_nDim.isEmpty() ) 
+		if ( ! llRefVirtualArray_nDim.isEmpty() ) 
 		{
-			llRefSelection_nDim.clear();
+			llRefVirtualArray_nDim.clear();
 		}
 		if ( ! llRefStorage_nDim.isEmpty() ) 
 		{
@@ -125,7 +125,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	private boolean assingLinearSet( ISet newObject )
 	{
 		if (( llRefStorage_nDim.isEmpty() )||
-				( llRefSelection_nDim.isEmpty()))
+				( llRefVirtualArray_nDim.isEmpty()))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
@@ -136,33 +136,33 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		try {
 				
-			LinkedList <String> ll_Selection_1dim = 
-				llRefSelection_nDim.getFirst();
-			Iterator <String> iter_ll_Selection_1dim = 
-				ll_Selection_1dim.iterator();
+			LinkedList <String> ll_VirtualArray_1dim = 
+				llRefVirtualArray_nDim.getFirst();
+			Iterator <String> iter_ll_VirtualArray_1dim = 
+				ll_VirtualArray_1dim.iterator();
 	
-			IVirtualArrayManager refSelectionManager = 
+			IVirtualArrayManager refVirtualArrayManager = 
 				refGeneralManager.getSingelton().getVirtualArrayManager();
 			
 			/**
 			 * init data structures..
 			 */
 			
-			Vector <IVirtualArray> vecSelection = 
-				new Vector <IVirtualArray> ( ll_Selection_1dim.size() );
+			Vector <IVirtualArray> vecVirtualArray = 
+				new Vector <IVirtualArray> ( ll_VirtualArray_1dim.size() );
 			
 			
-			while ( iter_ll_Selection_1dim.hasNext() )
+			while ( iter_ll_VirtualArray_1dim.hasNext() )
 			{
 				int iBufferdId = 
-					Integer.valueOf( iter_ll_Selection_1dim.next() );
+					Integer.valueOf( iter_ll_VirtualArray_1dim.next() );
 				
-				vecSelection.addElement( 
-					refSelectionManager.getItemSelection( iBufferdId ) );	
+				vecVirtualArray.addElement( 
+					refVirtualArrayManager.getItemVirtualArray( iBufferdId ) );	
 					
 			} //while ( iter_ll_Selection_1dim.hasNext() )
 			
-			newObject.setSelectionByDim( vecSelection, 0 );
+			newObject.setVirtualArrayByDim( vecVirtualArray, 0 );
 			
 			
 			/**
@@ -192,7 +192,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			newObject.setStorageByDim( vecStorage, 0 );
 
-			if ( vecStorage.size() != vecSelection.size() ) {
+			if ( vecStorage.size() != vecVirtualArray.size() ) {
 				refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.setAttributes().assingLinearSet() # Selections differs from # Storages! Skip it!",
 						LoggerType.MINOR_ERROR );
@@ -214,7 +214,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	private boolean assingPlanarOrMultiDimensionalSet( ISet newObject )
 	{
 		if (( llRefStorage_nDim.isEmpty() )||
-				( llRefSelection_nDim.isEmpty()))
+				( llRefVirtualArray_nDim.isEmpty()))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
@@ -226,54 +226,54 @@ extends ACmdCreate_IdTargetLabelAttr {
 		boolean bErrorWhileParsing = false;
 		
 		int iIndexDimensionStorage = 0;
-		int iIndexDimensionSelection = 0;		
+		int iIndexDimensionVirtualArray = 0;		
 		
 		
 		try {
 				
-			IVirtualArrayManager refSelectionManager = 
+			IVirtualArrayManager refVirtualArrayManager = 
 				refGeneralManager.getSingelton().getVirtualArrayManager();
 			IStorageManager refStorageManager = 
 				refGeneralManager.getSingelton().getStorageManager();
 			
 			
-			Iterator < LinkedList <String> > iter_Selection_nDim =
-				llRefSelection_nDim.iterator();
+			Iterator < LinkedList <String> > iter_VirtualArray_nDim =
+				llRefVirtualArray_nDim.iterator();
 			Iterator < LinkedList <String> > iter_Storage_nDim =
 				llRefStorage_nDim.iterator();
 			
-			while (( iter_Selection_nDim.hasNext() )&&
+			while (( iter_VirtualArray_nDim.hasNext() )&&
 				( iter_Storage_nDim.hasNext() ))
 			{
 				/**
 				 * read Selection data..
 				 */
-				LinkedList <String> ll_Selection_1dim = 
-					iter_Selection_nDim.next();
-				Iterator <String> iter_ll_Selection_1dim = 
-					ll_Selection_1dim.iterator();
+				LinkedList <String> ll_VirtualArray_1dim = 
+					iter_VirtualArray_nDim.next();
+				Iterator <String> iter_ll_VirtualArray_1dim = 
+					ll_VirtualArray_1dim.iterator();
 							
 				/**
 				 * init data structures..
 				 */
 				
-				Vector <IVirtualArray> vecSelection = 
-					new Vector <IVirtualArray> ( ll_Selection_1dim.size() );
+				Vector <IVirtualArray> vecVirtualArray = 
+					new Vector <IVirtualArray> ( ll_VirtualArray_1dim.size() );
 				
 				
-				while ( iter_ll_Selection_1dim.hasNext() )
+				while ( iter_ll_VirtualArray_1dim.hasNext() )
 				{
 					int iBufferdId = 
-						Integer.valueOf( iter_ll_Selection_1dim.next() );
+						Integer.valueOf( iter_ll_VirtualArray_1dim.next() );
 					
-					vecSelection.addElement( 
-						refSelectionManager.getItemSelection( iBufferdId ) );	
+					vecVirtualArray.addElement( 
+						refVirtualArrayManager.getItemVirtualArray( iBufferdId ) );	
 						
-				} //while ( iter_ll_Selection_1dim.hasNext() )
+				} //while ( iter_ll_VirtualArray_1dim.hasNext() )
 				
-				newObject.setSelectionByDim( vecSelection,
-						iIndexDimensionSelection );				
-				iIndexDimensionSelection++;
+				newObject.setVirtualArrayByDim( vecVirtualArray,
+						iIndexDimensionVirtualArray );				
+				iIndexDimensionVirtualArray++;
 				
 				/**
 				 * read Storage data..
@@ -306,46 +306,46 @@ extends ACmdCreate_IdTargetLabelAttr {
 				/**
 				 * Consistency check...
 				 */
-				if ( vecStorage.size() != vecSelection.size() )
+				if ( vecStorage.size() != vecVirtualArray.size() )
 				{
 					refGeneralManager.getSingelton().logMsg(
 							"SET: #storages=" +
 							ll_Storage_1dim.size() + 
-							" differs from #selections=" +
-							ll_Selection_1dim.size() + 
+							" differs from #VirtualArrays=" +
+							ll_VirtualArray_1dim.size() + 
 							"; storage=[" +	
 							ll_Storage_1dim.toString() +
-							"] selection=[" +
-							ll_Selection_1dim.toString() +
+							"] VirtualArray=[" +
+							ll_VirtualArray_1dim.toString() +
 							"]",
 							LoggerType.VERBOSE );
 					
 					bErrorWhileParsing = true;
-				} // if ( vecStorage.size() != vecSelection.size() )
+				} // if ( vecStorage.size() != vecVirtualArray.size() )
 				
-			} // while (( iter_Selection_nDim.hasNext() )&&( iter_Storage_nDim.hasNext() ))
+			} // while (( iter_VirtualArray_nDim.hasNext() )&&( iter_Storage_nDim.hasNext() ))
 
 			/**
 			 * Consistency check..
 			 */
-			if ( iter_Selection_nDim.hasNext() ) {
+			if ( iter_VirtualArray_nDim.hasNext() ) {
 				refGeneralManager.getSingelton().logMsg(
-						"SET: WARNING: there are more selection-is's available, than storage-id's, skip remainig selection-is's.",
+						"SET: WARNING: there are more VirtualArray-is's available, than storage-id's, skip remainig VirtualArray-is's.",
 						LoggerType.VERBOSE );
 			} 
 			else
 			{
 				if ( iter_Storage_nDim.hasNext() ) {
 				refGeneralManager.getSingelton().logMsg(
-						"SET: WARNING: there are more storage-id's available, than selection-id's, skip remainig storage-id's.",
+						"SET: WARNING: there are more storage-id's available, than VirtualArray-id's, skip remainig storage-id's.",
 						LoggerType.VERBOSE );
 			} 
 			}
 			
-			if ( iIndexDimensionStorage != iIndexDimensionSelection)
+			if ( iIndexDimensionStorage != iIndexDimensionVirtualArray)
 			{
 				refGeneralManager.getSingelton().logMsg(
-						"SET: dimension(storage) != dimension(selection) ",
+						"SET: dimension(storage) != dimension(VirtualArray) ",
 						LoggerType.VERBOSE );
 				
 				bErrorWhileParsing = true;
@@ -503,52 +503,52 @@ extends ACmdCreate_IdTargetLabelAttr {
 		 * Separate "text1@text2"
 		 */
 		
-		StringTokenizer strToken_SelectionBlock = 
+		StringTokenizer strToken_VirtualArrayBlock = 
 			new StringTokenizer( 
 					refParameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),	
 					IGeneralManager.sDelimiter_Paser_DataItemBlock);
 		
-		while ( strToken_SelectionBlock.hasMoreTokens() ) 
+		while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
 		{
 			/**
 			 * Separate "id1 id2 .."
 			 */
-			StringTokenizer strToken_SelectionId = 
+			StringTokenizer strToken_VirtualArrayId = 
 				new StringTokenizer( 
-						strToken_SelectionBlock.nextToken(),	
+						strToken_VirtualArrayBlock.nextToken(),	
 						IGeneralManager.sDelimiter_Parser_DataItems); 
 			
 			/**
 			 * Create buffer list...
 			 */
-			LinkedList<String> llRefSelection_1dim 	= 
+			LinkedList<String> llRefVirtualArray_1dim 	= 
 				new LinkedList<String> ();
 			
-			while ( strToken_SelectionId.hasMoreTokens() ) 
+			while ( strToken_VirtualArrayId.hasMoreTokens() ) 
 			{
-				llRefSelection_1dim.addLast( strToken_SelectionId.nextToken() );
-			} // while ( strToken_SelectionId.hasMoreTokens() ) 
+				llRefVirtualArray_1dim.addLast( strToken_VirtualArrayId.nextToken() );
+			} // while ( strToken_VirtualArrayId.hasMoreTokens() ) 
 			
-			if ( ! llRefSelection_1dim.isEmpty() ) {
+			if ( ! llRefVirtualArray_1dim.isEmpty() ) {
 				/**
 				 * insert this list into global list..
 				 */
-				llRefSelection_nDim.addLast( llRefSelection_1dim );
+				llRefVirtualArray_nDim.addLast( llRefVirtualArray_1dim );
 			}
 			else
 			{
 				refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.setAttributes() empty token inside [" +
 						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() + "]='" +
-						strToken_SelectionBlock.toString() + "'",
+						strToken_VirtualArrayBlock.toString() + "'",
 						LoggerType.STATUS );
 				bErrorOnLoadingXMLData = true;
 			}
 			
-		} // while ( strToken_SelectionBlock.hasMoreTokens() )
+		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() )
 		
-		strToken_SelectionBlock = null;
+		strToken_VirtualArrayBlock = null;
 	
 		/**
 		 * Read TAG_ATTRIBUTE2 "attrib2" for storage!
@@ -582,7 +582,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			while ( strToken_StorageId.hasMoreTokens() ) 
 			{
 				llRefStorage_1dim.addLast( strToken_StorageId.nextToken() );
-			} // while ( strToken_SelectionId.hasMoreTokens() ) 
+			} // while ( strToken_VirtualArrayId.hasMoreTokens() ) 
 			
 			if ( ! llRefStorage_1dim.isEmpty() ) {
 				/**
@@ -600,7 +600,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				bErrorOnLoadingXMLData = true;
 			}
 			
-		} // while ( strToken_SelectionBlock.hasMoreTokens() ) 
+		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
 		
 		/**
 		 * read "detail" key ...

@@ -280,8 +280,8 @@ implements IGLCanvasUser
 			return;
 		}
 		
-		IVirtualArray [] arraySelectionX = targetSet.getSelectionByDim(0);
-		IVirtualArray [] arraySelectionY = targetSet.getSelectionByDim(1);
+		IVirtualArray [] arraySelectionX = targetSet.getVirtualArrayByDim(0);
+		IVirtualArray [] arraySelectionY = targetSet.getVirtualArrayByDim(1);
 		
 		IStorage [] arrayStorageX = targetSet.getStorageByDim(0);
 		IStorage [] arrayStorageY = targetSet.getStorageByDim(1);

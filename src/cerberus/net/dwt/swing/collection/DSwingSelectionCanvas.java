@@ -643,7 +643,7 @@ implements DNetEventComponentInterface, IViewCanvas
 	public void updateAllSelectionsFromGui() {
 		
 		Vector<IVirtualArray> refVecCurrentSelections = 
-			refSelectionManager.getAllSelectionItemsVector();
+			refSelectionManager.getAllVirtualArrayItemsVector();
 		
 		Iterator<IVirtualArray> iterSel = refVecCurrentSelections.iterator();
 		
@@ -674,7 +674,7 @@ implements DNetEventComponentInterface, IViewCanvas
 	public void updateState() {
 		
 		Vector<IVirtualArray> refVecCurrentSelections = 
-			refSelectionManager.getAllSelectionItemsVector();
+			refSelectionManager.getAllVirtualArrayItemsVector();
 		
 		final int iSizeVectorSelections = refVecCurrentSelections.size();
 		

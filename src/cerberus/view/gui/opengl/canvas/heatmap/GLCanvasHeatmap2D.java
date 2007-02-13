@@ -248,7 +248,7 @@ implements IGLCanvasUser
 		  }
 		  
 		  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
-		  IVirtualArray refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
+		  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
 	  		  
 	
 		  if ((targetSet.hasCacheChanged(iSetCacheId))||
@@ -388,7 +388,7 @@ implements IGLCanvasUser
 
 			int[] dataArrayInt = refStorage.getArrayInt();
 
-			IVirtualArray refVArray = this.targetSet.getSelectionByDimAndIndex(
+			IVirtualArray refVArray = this.targetSet.getVirtualArrayByDimAndIndex(
 					0, 0);
 
 			IVirtualArrayIterator iter = refVArray.iterator();

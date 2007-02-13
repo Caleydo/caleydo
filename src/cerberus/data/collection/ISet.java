@@ -23,7 +23,7 @@ import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.xml.IMementoItemXML;
 
 /**
- * Defines a set containing of selections and storage
+ * Defines a set containing of VirtualArrays and storage
  * 
  * @author Michael Kalkusch
  *
@@ -38,69 +38,69 @@ public interface ISet
 	
 	/**
 	 * Adds a IVirtualArray to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
+	 * Note, that addVirtualArray() can not overwrite existing references to other IVirtualArray
 	 * 
-	 * @param addSelection
+	 * @param addVirtualArray
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 	 * 
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDim( final IVirtualArray[] addSelection, 
+	public boolean setVirtualArrayByDim( final IVirtualArray[] addVirtualArray, 
 			final int iAtDimension );
 	
 	/**
 	 * Adds a IVirtualArray to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
+	 * Note, that addVirtualArray() can not overwrite existing references to other IVirtualArray
 	 * 
-	 * @param addSelection
+	 * @param addVirtualArray
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 	 * 
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDim( final Vector<IVirtualArray> addSelection, 
+	public boolean setVirtualArrayByDim( final Vector<IVirtualArray> addVirtualArray, 
 			final int iAtDimension );
 	
 	/**
 	 * Adds a IVirtualArray to a specific dimension.
-	 * Note, that addSelection() can not overwrite existing references to other IVirtualArray
+	 * Note, that addVirtualArray() can not overwrite existing references to other IVirtualArray
 	 * 
-	 * @param addSelection IVirtualArray to be added
+	 * @param addVirtualArray IVirtualArray to be added
 	 * @param iAtDimension range [0.. getDimensionSize()-1 ]
 	 * @param iAtIndex index to put new IVirtualArray to
 	 * @return TRUE if adding was successful
 	 */
-	public boolean setSelectionByDimAndIndex( final IVirtualArray addSelection, 
+	public boolean setVirtualArrayByDimAndIndex( final IVirtualArray addVirtualArray, 
 			final int iAtDimension, 
 			final int iAtIndex );
 	
 	
 	/**
-	 * Removes a selection bound to a dimension.
+	 * Removes a VirtualArray bound to a dimension.
 	 * 
-	 * @param removeSelection IVirtualArray to be removed
-	 * @param iFromDimension address which dimension removeSelection shall be removed from, range [0.. getDimensionSize()-1 ]
-	 * @return TRUE if removeSelection was removed from dimension iFromDimension
+	 * @param removeVirtualArray IVirtualArray to be removed
+	 * @param iFromDimension address which dimension removeVirtualArray shall be removed from, range [0.. getDimensionSize()-1 ]
+	 * @return TRUE if removeVirtualArray was removed from dimension iFromDimension
 	 */
-	public boolean removeSelection( final IVirtualArray[] removeSelection, 
+	public boolean removeVirtualArray( final IVirtualArray[] removeVirtualArray, 
 			final int iFromDimension );
 	
 	/**
-	 * Tests, if testSelection is in a specific dimension addressed by iAtDimension.
+	 * Tests, if testVirtualArray is in a specific dimension addressed by iAtDimension.
 	 * 
-	 * @param testSelection IVirtualArray to search for
+	 * @param testVirtualArray IVirtualArray to search for
 	 * @param iAtDimension address a dimension
-	 * @return TRUE if the testSelection is used for dimension iAtDimension
+	 * @return TRUE if the testVirtualArray is used for dimension iAtDimension
 	 */
-	public boolean hasSelection( final IVirtualArray testSelection, 
+	public boolean hasVirtualArray( final IVirtualArray testVirtualArray, 
 			final int iAtDimension );
 	
 	/**
-	 * Tests if testSelection is in any Selecions of this set. 
+	 * Tests if testVirtualArray is in any Selecions of this set. 
 	 * 
-	 * @param testSelection in any dimension of this set
-	 * @return TRUE if testSelection was in any dimension
+	 * @param testVirtualArray in any dimension of this set
+	 * @return TRUE if testVirtualArray was in any dimension
 	 */
-	public boolean hasSelectionInSet( final IVirtualArray testSelection );
+	public boolean hasVirtualArrayInSet( final IVirtualArray testVirtualArray );
 	
 	
 	/**
@@ -108,7 +108,7 @@ public interface ISet
 	 * 
 	 * @return array containing sizes of dimension
 	 */
-	public int[] getDimensionSizeForAllSelections();
+	public int[] getDimensionSizeForAllVirtualArrays();
 	
 	/**
 	 * Get the size of one dimension addressed by iAtDimension.
@@ -122,10 +122,10 @@ public interface ISet
 	
 	/**
 	 * Get the number of dimensions used in this set. 
-	 * The number of dimension is identical the number of stored Selections and Storages.
+	 * The number of dimension is identical the number of stored VirtualArrays and Storages.
 	 * 
 	 * @return total number of dimensions, which is equal to the total number 
-	 * of handled Selections and Storages. 
+	 * of handled VirtualArrays and Storages. 
 	 */
 	public int getDimensions();
 	
@@ -170,7 +170,7 @@ public interface ISet
 	 * @param iAtDimension requested dimension
 	 * @return iterator for IVirtualArray's
 	 */	
-	public IVirtualArrayIterator iteratorSelectionByDim( final int iAtDimension );
+	public IVirtualArrayIterator iteratorVirtualArrayByDim( final int iAtDimension );
 
 	/**
 	 * Get an Iterator for all IStorage used in this ISet.
@@ -197,11 +197,11 @@ public interface ISet
 	 */
 	public IStorage getStorageByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
-	public IVirtualArray[] getSelectionByDim( final int iAtDimension );
+	public IVirtualArray[] getVirtualArrayByDim( final int iAtDimension );
 	
-	public Vector<IVirtualArray> getSelectionVectorByDim( final int iAtDimension );
+	public Vector<IVirtualArray> getVirtualArrayVectorByDim( final int iAtDimension );
 	
-	public IVirtualArray getSelectionByDimAndIndex( final int iAtDimension, final int iAtIndex );
+	public IVirtualArray getVirtualArrayByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
 	/**
 	 * Test if cache has changed without reevaluating the stats of the cildren.

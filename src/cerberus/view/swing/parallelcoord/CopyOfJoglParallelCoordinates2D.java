@@ -390,9 +390,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 		
 		cleanNodeIntersectionList();		
 
-		IVirtualArrayIterator iterX = useSet.getSelectionByDimAndIndex(0, 0)
+		IVirtualArrayIterator iterX = useSet.getVirtualArrayByDimAndIndex(0, 0)
 				.iterator();
-		IVirtualArrayIterator iterY = useSet.getSelectionByDimAndIndex(1, 0)
+		IVirtualArrayIterator iterY = useSet.getVirtualArrayByDimAndIndex(1, 0)
 				.iterator();
 
 		IStorage refStorageX = useSet.getStorageByDimAndIndex(0, 0);
@@ -443,9 +443,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 			
 			intersectStart(xFix, yFix);
 
-			IVirtualArrayIterator iterX_inner = useSet.getSelectionByDimAndIndex(0,
+			IVirtualArrayIterator iterX_inner = useSet.getVirtualArrayByDimAndIndex(0,
 					0).iterator();
-			IVirtualArrayIterator iterY_inner = useSet.getSelectionByDimAndIndex(1,
+			IVirtualArrayIterator iterY_inner = useSet.getVirtualArrayByDimAndIndex(1,
 					0).iterator();
 
 			int iIndexInner = 0;
@@ -634,9 +634,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 					}
 					// System.out.print("+");				
 
-					IVirtualArrayIterator iterX = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterX = refSet.getVirtualArrayByDimAndIndex(
 							0, 0).iterator();
-					IVirtualArrayIterator iterY = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterY = refSet.getVirtualArrayByDimAndIndex(
 							1, 0).iterator();
 					
 					if (!doMinMaxData.isValid()) {

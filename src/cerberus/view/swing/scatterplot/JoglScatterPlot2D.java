@@ -389,9 +389,9 @@ public class JoglScatterPlot2D extends Demo {
 					}
 					// System.out.print("+");				
 
-					IVirtualArrayIterator iterX = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterX = refSet.getVirtualArrayByDimAndIndex(
 							0, 0).iterator();
-					IVirtualArrayIterator iterY = refSet.getSelectionByDimAndIndex(
+					IVirtualArrayIterator iterY = refSet.getVirtualArrayByDimAndIndex(
 							1, 0).iterator();
 
 					if (!doMinMaxData.isValid()) {

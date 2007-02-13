@@ -68,7 +68,7 @@ public class TesterStuff {
 		IStorage [] helpStore = new IStorage [1];
 		helpStore[0] = refTEST_Storage;
 		
-		refTEST_Set.setSelectionByDim(helpSelect,0);
+		refTEST_Set.setVirtualArrayByDim(helpSelect,0);
 		refTEST_Set.setStorageByDim(helpStore,0);
 		
 		

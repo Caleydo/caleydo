@@ -685,7 +685,7 @@ implements DNetEventComponentInterface, IViewCanvas, ViewingAreaComponent
 		
 		if ( refCurrentSet != null ) {
 			IStorage[] refStorageArray = refCurrentSet.getStorageByDim(0);
-			IVirtualArray[] refSelectionArray = refCurrentSet.getSelectionByDim(0);
+			IVirtualArray[] refSelectionArray = refCurrentSet.getVirtualArrayByDim(0);
 			
 			if ( refStorageArray.length > 0 ) {
 				refStorageFromSet = refStorageArray[0]; 

@@ -271,7 +271,7 @@ public class JoglHistogram extends Demo {
   public void createHistogram(final int iHistogramLevels) {
 	  
 	  IStorage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
-	  IVirtualArray refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
+	  IVirtualArray refBufferSelection = refSet.getVirtualArrayByDimAndIndex(0,0);
   	
 	  System.out.println("Histogram: use IVirtualArray(" +
 			  refBufferSelection.getLabel() + ")");

@@ -416,7 +416,7 @@ implements GLEventListener, IJoglMouseListener
 		createdStorage.setArrayInt( iRawDataArray );
 		
 		IVirtualArray createdSelection = 
-			this.refGeneralManager.getSingelton().getVirtualArrayManager().createSelection( 
+			this.refGeneralManager.getSingelton().getVirtualArrayManager().createVirtualArray( 
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		createdSelection.setLength( 150 );
@@ -429,7 +429,7 @@ implements GLEventListener, IJoglMouseListener
 			this.refGeneralManager.getSingelton().getSetManager().createSet( 
 					CommandQueueSaxType.CREATE_SET );
 		
-		createdSet.setSelectionByDimAndIndex( createdSelection, 0 ,0 );
+		createdSet.setVirtualArrayByDimAndIndex( createdSelection, 0 ,0 );
 		createdSet.setStorageByDimAndIndex( createdStorage, 0, 0 );
 		
 		this.refSet = createdSet;

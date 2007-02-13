@@ -86,8 +86,8 @@ public final class MinMaxDataInteger {
 			    	if (( i_dataValuesX != null )&&
 			    			( i_dataValuesY != null )) {
 			    		
-				    	IVirtualArrayIterator iterX = refSet.getSelectionByDimAndIndex(0,0).iterator();
-				    	IVirtualArrayIterator iterY = refSet.getSelectionByDimAndIndex(1,0).iterator();
+				    	IVirtualArrayIterator iterX = refSet.getVirtualArrayByDimAndIndex(0,0).iterator();
+				    	IVirtualArrayIterator iterY = refSet.getVirtualArrayByDimAndIndex(1,0).iterator();
 			    		
 				    	/**
 				    	 * update ...
@@ -160,7 +160,7 @@ public final class MinMaxDataInteger {
 		    		
 		    		for ( int iIndex = 0; iIndex < iDimensions; iIndex++ ) {
 		    					
-		    			IVirtualArray select = refSet.getSelectionByDimAndIndex(iIndex,0);		    			
+		    			IVirtualArray select = refSet.getVirtualArrayByDimAndIndex(iIndex,0);		    			
 		    			IVirtualArrayIterator iter = select.iterator();
 		    			IStorage refStorage = 
 		    				refSet.getStorageByDimAndIndex(iIndex,0);

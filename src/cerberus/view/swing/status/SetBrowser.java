@@ -162,7 +162,7 @@ public class SetBrowser {
 							selectText += Integer.toString( refSet.getDimensionSize(i) );
 							
 							selectText += " select:[";
-							selBuffer = refSet.getSelectionByDim(i);							
+							selBuffer = refSet.getVirtualArrayByDim(i);							
 							for ( int j=0; j< selBuffer.length;j++ ) {
 								if ( j != 0 ) {
 									selectText += ",";

@@ -116,7 +116,7 @@ implements IView {
 			
 			for(int i=0; i<iDim; i++)
 			{
-				IVirtualArray[] refVA= refSet.getSelectionByDim(i);
+				IVirtualArray[] refVA= refSet.getVirtualArrayByDim(i);
 				IStorage[] refST = refSet.getStorageByDim(i);
 				
 				int iOffset = refVA[0].getOffset();

@@ -65,10 +65,10 @@ implements ICommand {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		IVirtualArrayManager refSelectionManager = 
+		IVirtualArrayManager refVirtualArrayManager = 
 			refGeneralManager.getSingelton().getVirtualArrayManager();
 		
-		IVirtualArray newObject = (IVirtualArray) refSelectionManager.createSelection(
+		IVirtualArray newObject = (IVirtualArray) refVirtualArrayManager.createVirtualArray(
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		newObject.setId( iUniqueTargetId );
@@ -78,7 +78,7 @@ implements ICommand {
 		newObject.setMultiOffset( iMultiOffset );
 		newObject.setMultiRepeat( iMultiRepeat );
 		
-		refSelectionManager.registerItem( newObject, 
+		refVirtualArrayManager.registerItem( newObject, 
 				iUniqueTargetId, 
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 
@@ -116,7 +116,7 @@ implements ICommand {
 			
 			
 		/**
-		 * Handle selection parameters...
+		 * Handle VirtualArray parameters...
 		 */
 		
 		StringTokenizer token = new StringTokenizer(
@@ -125,7 +125,7 @@ implements ICommand {
 						IGeneralManager.sDelimiter_Parser_DataItems );
 		
 		
-		int iSizeSelectionTokens = token.countTokens();
+		int iSizeVirtualArrayTokens = token.countTokens();
 		
 		iLength = StringConversionTool.convertStringToInt( 
 				token.nextToken(), 
@@ -135,7 +135,7 @@ implements ICommand {
 				token.nextToken(), 
 				0 );
 		
-		if ( iSizeSelectionTokens >= 4 ) 
+		if ( iSizeVirtualArrayTokens >= 4 ) 
 		{
 			iMultiRepeat = 
 				StringConversionTool.convertStringToInt( 

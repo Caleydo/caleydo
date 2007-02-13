@@ -251,7 +251,7 @@ implements IGLCanvasUser
 	  }
 	  
 	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
-	  IVirtualArray refBufferSelection = targetSet.getSelectionByDimAndIndex(0,0);
+	  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
   		  
 	  refGeneralManager.getSingelton().logMsg(
 			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",

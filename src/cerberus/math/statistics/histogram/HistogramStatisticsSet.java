@@ -49,7 +49,7 @@ implements IHistogramStatistic {
 	private boolean getReferencesFromSet() {
 		
 		if ( refSet.getReadTokenWait() ) {
-			refSelection = refSet.getSelectionByDimAndIndex(0,0);
+			refSelection = refSet.getVirtualArrayByDimAndIndex(0,0);
 			refStorage = refSet.getStorageByDimAndIndex(0,0);
 			
 			if (( this.refSelection == null )

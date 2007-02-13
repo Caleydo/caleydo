@@ -337,7 +337,7 @@ implements IDataTableView {
 		multiRepeatColumn.setText("MultiRepeat");
 
 		refCurrentSelection = refSelectionManager
-				.getItemSelection(iRequestedSelectionId);
+				.getItemVirtualArray(iRequestedSelectionId);
 
 		item = new TableItem(refTable, SWT.NONE);
 		item.setText(
@@ -455,7 +455,7 @@ implements IDataTableView {
 			int iColumnIndexOfItem) {
 		
 		IVirtualArray tmpSelection =
-			refSelectionManager.getItemSelection(iCurrentlyRequestedCollectionId);
+			refSelectionManager.getItemVirtualArray(iCurrentlyRequestedCollectionId);
 		
 		tmpSelection.getWriteToken();
 		

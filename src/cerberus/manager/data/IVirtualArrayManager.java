@@ -27,17 +27,17 @@ public interface IVirtualArrayManager
 extends IGeneralManager
 {
 	
-	public IVirtualArray createSelection( final ManagerObjectType useSelectionType );
+	public IVirtualArray createVirtualArray( final ManagerObjectType useSelectionType );
 	
-	public boolean deleteSelection( IVirtualArray deleteSelection );
+	public boolean deleteVirtualArray( IVirtualArray deleteSelection );
 	
-	public boolean deleteSelection( final int iItemId  );
+	public boolean deleteVirtualArray( final int iItemId  );
 	
-	public IVirtualArray getItemSelection( final int iItemId );
+	public IVirtualArray getItemVirtualArray( final int iItemId );
 	
-	public IVirtualArray[] getAllSelectionItems();
+	public IVirtualArray[] getAllVirtualArrayItems();
 	
-	public Vector<IVirtualArray> getAllSelectionItemsVector();
+	public Vector<IVirtualArray> getAllVirtualArrayItemsVector();
 	
 	//public ManagerObjectType getManagerType();
 	

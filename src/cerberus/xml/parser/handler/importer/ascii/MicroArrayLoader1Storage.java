@@ -115,7 +115,7 @@ extends AMicroArrayLoader {
 			refDataStorage = 
 				refImportDataToSet.getStorageByDimAndIndex(0,0);
 			refImportDataOverrideSelection = 
-				refImportDataToSet.getSelectionByDimAndIndex(0,0);
+				refImportDataToSet.getVirtualArrayByDimAndIndex(0,0);
 		}
 		
 		
@@ -307,7 +307,7 @@ extends AMicroArrayLoader {
 		    
 		    refImportDataToSet.setStorageByDimAndIndex(
 		    		refDataStorage,0,0);
-		    refImportDataToSet.setSelectionByDimAndIndex(
+		    refImportDataToSet.setVirtualArrayByDimAndIndex(
 		    		refImportDataOverrideSelection,0,0);
 	    }
 	    
@@ -326,7 +326,7 @@ extends AMicroArrayLoader {
 		    
 		    refImportDataToSet.setStorageByDimAndIndex(
 		    		refDataStorage,0,1);
-		    refImportDataToSet.setSelectionByDimAndIndex(
+		    refImportDataToSet.setVirtualArrayByDimAndIndex(
 		    		selFloat,0,1);
 	    }
 	    
@@ -345,7 +345,7 @@ extends AMicroArrayLoader {
 		    
 		    refImportDataToSet.setStorageByDimAndIndex(
 		    		refDataStorage,0,2);
-		    refImportDataToSet.setSelectionByDimAndIndex(
+		    refImportDataToSet.setVirtualArrayByDimAndIndex(
 		    		selFloat,0,2);
 	    }
 	    

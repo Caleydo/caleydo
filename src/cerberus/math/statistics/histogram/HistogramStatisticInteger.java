@@ -326,7 +326,7 @@ implements IHistogramStatistic {
 	}
 	
 	public void addData( final ISet useSet ) {
-		useSet.getSelectionByDimAndIndex(0,0);
+		useSet.getVirtualArrayByDimAndIndex(0,0);
 		useSet.getStorageByDimAndIndex(0,0);
 	}
 

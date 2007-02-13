@@ -402,7 +402,7 @@ implements IGeneralManagerSingelton
 			//return refMementoManager.c();
 			assert false : "not implemented";
 		case VIRTUAL_ARRAY:
-			return refVirtualArrayManager.createSelection(createNewType);
+			return refVirtualArrayManager.createVirtualArray(createNewType);
 		case SET:
 			return refSetManager.createSet( CommandQueueSaxType.CREATE_SET );
 		case STORAGE:
@@ -446,7 +446,7 @@ implements IGeneralManagerSingelton
 		case VIRTUAL_ARRAY:
 		{
 			IMementoXML selectionBuffer = refVirtualArrayManager
-					.createSelection(type);
+					.createVirtualArray(type);
 
 			selectionBuffer.setMementoXML_usingHandler(refSaxHandler);
 			return;

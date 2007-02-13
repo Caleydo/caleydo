@@ -184,7 +184,7 @@ public class SingeltonFrameManager {
 		IStorage [] helpStore = new IStorage [1];
 		helpStore[0] = refTEST_Storage;
 		
-		refTEST_Set.setSelectionByDim(helpSelect,0);
+		refTEST_Set.setVirtualArrayByDim(helpSelect,0);
 		refTEST_Set.setStorageByDim(helpStore,0);
 		
 		
@@ -208,7 +208,7 @@ public class SingeltonFrameManager {
 		VirtualArrayThreadSingleBlock helpSelect2 = new VirtualArrayThreadSingleBlock(0,null,null);
 		
 		helpSet2.setStorageByDimAndIndex(refTEST_Storage2,0,0);
-		helpSet2.setSelectionByDimAndIndex(helpSelect2,0,0);
+		helpSet2.setVirtualArrayByDimAndIndex(helpSelect2,0,0);
 		
 		FileLoader loader_storage2 = new FileLoader();
 		loader_storage2.setSet(helpSet2);
@@ -219,7 +219,7 @@ public class SingeltonFrameManager {
 		VirtualArrayThreadSingleBlock helpSelect3 = new VirtualArrayThreadSingleBlock(0,null,null);
 		
 		helpSet3.setStorageByDimAndIndex(refTEST_Storage3,0,0);
-		helpSet3.setSelectionByDimAndIndex(helpSelect3,0,0);
+		helpSet3.setVirtualArrayByDimAndIndex(helpSelect3,0,0);
 		
 		FileLoader loader_storage3 = new FileLoader();		
 		loader_storage3.setSet(helpSet3);

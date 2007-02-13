@@ -585,7 +585,7 @@ public class HeatMapRefract extends Demo {
 	  
 	  
 	  IStorage refBufferStorage = refSet.getStorageByDimAndIndex(0,0);
-	  IVirtualArray refBufferSelection = refSet.getSelectionByDimAndIndex(0,0);
+	  IVirtualArray refBufferSelection = refSet.getVirtualArrayByDimAndIndex(0,0);
   	
 	  System.out.println("Histogram: use IVirtualArray(" +
 			  refBufferSelection.getLabel() + ")");
@@ -889,7 +889,7 @@ public class HeatMapRefract extends Demo {
 	    			
 	    			iSetCacheId = refSet.getCacheId();
 	    			
-	    			IVirtualArray select = refSet.getSelectionByDimAndIndex(0,0);
+	    			IVirtualArray select = refSet.getVirtualArrayByDimAndIndex(0,0);
 	    			
 	    			System.out.print(" R: " + refSet.getLabel() + " id=" +
 	    					Integer.toString( refSet.getCacheId() ));

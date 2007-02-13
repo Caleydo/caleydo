@@ -73,7 +73,7 @@ public class HistogramCreatorSimple implements HistogramCreator {
 		}
 		
 		IStorage[] refStorage = refSet.getStorageByDim( 0 );
-		IVirtualArray[] refSelection = refSet.getSelectionByDim( 0 );
+		IVirtualArray[] refSelection = refSet.getVirtualArrayByDim( 0 );
 		
 		int [] refArray = refStorage[0].getArrayInt();
 					

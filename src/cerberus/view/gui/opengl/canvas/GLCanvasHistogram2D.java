@@ -172,9 +172,9 @@ implements IGLCanvasUser
 						}
 						// System.out.print("+");				
 
-						IVirtualArrayIterator iterX = targetSet.getSelectionByDimAndIndex(
+						IVirtualArrayIterator iterX = targetSet.getVirtualArrayByDimAndIndex(
 								0, 0).iterator();
-						IVirtualArrayIterator iterY = targetSet.getSelectionByDimAndIndex(
+						IVirtualArrayIterator iterY = targetSet.getVirtualArrayByDimAndIndex(
 								1, 0).iterator();
 
 						if (!doMinMaxData.isValid()) {

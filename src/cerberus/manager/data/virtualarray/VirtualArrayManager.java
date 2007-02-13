@@ -36,7 +36,7 @@ implements IVirtualArrayManager
 	/**
 	 * Vector holds a list of all IVirtualArray's
 	 */
-	protected Vector<IVirtualArray> vecSelection;
+	protected Vector<IVirtualArray> vecVirtualArray;
 	
 	/**
 	 * 
@@ -50,7 +50,7 @@ implements IVirtualArrayManager
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 			
-		vecSelection = new Vector< IVirtualArray > ( iInitSizeContainer );
+		vecVirtualArray = new Vector< IVirtualArray > ( iInitSizeContainer );
 
 		refGeneralManager.getSingelton().setVirtualArrayManager( this );
 		
@@ -79,7 +79,7 @@ implements IVirtualArrayManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#createSelection()
 	 */
-	public IVirtualArray createSelection( final ManagerObjectType useSelectionType ) {
+	public IVirtualArray createVirtualArray( final ManagerObjectType useSelectionType ) {
 		
 		assert useSelectionType!= null: "can not handle null pointer";
 	
@@ -114,16 +114,16 @@ implements IVirtualArrayManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.IVirtualArray)
 	 */
-	public boolean deleteSelection(IVirtualArray deleteSelection ) {
-		return vecSelection.remove( deleteSelection );
+	public boolean deleteVirtualArray(IVirtualArray deleteSelection ) {
+		return vecVirtualArray.remove( deleteSelection );
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.IVirtualArray)
 	 */
-	public boolean deleteSelection( final int iItemId ) {
+	public boolean deleteVirtualArray( final int iItemId ) {
 		try {
-			vecSelection.remove( iItemId );
+			vecVirtualArray.remove( iItemId );
 			return true;
 		}
 		catch (ArrayIndexOutOfBoundsException ae) {
@@ -134,10 +134,10 @@ implements IVirtualArrayManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getItemSelection(int)
 	 */
-	public IVirtualArray getItemSelection( final int iItemId) {
+	public IVirtualArray getItemVirtualArray( final int iItemId) {
 		
 		try {
-			return vecSelection.get( getIndexInVector_byUniqueId( iItemId ) );
+			return vecVirtualArray.get( getIndexInVector_byUniqueId( iItemId ) );
 		} 
 		catch (ArrayIndexOutOfBoundsException ae) {
 			assert false: "SelectionManagerSimple.getItemSelection() ArrayIndexOutOfBoundsException ";
@@ -154,17 +154,17 @@ implements IVirtualArrayManager
 	 * @see cerberus.data.manager.GeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
-		return getItemSelection(iItemId);
+		return getItemVirtualArray(iItemId);
 	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
 	 */
-	public IVirtualArray[] getAllSelectionItems() {
+	public IVirtualArray[] getAllVirtualArrayItems() {
 		
-		IVirtualArray[] resultArray = new IVirtualArray[ vecSelection.size() ];
+		IVirtualArray[] resultArray = new IVirtualArray[ vecVirtualArray.size() ];
 		
-		Iterator<IVirtualArray> iter = vecSelection.iterator();
+		Iterator<IVirtualArray> iter = vecVirtualArray.iterator();
 		for ( int i=0 ; iter.hasNext() ; i++ ) {
 			resultArray[i] = iter.next();
 		}
@@ -175,9 +175,9 @@ implements IVirtualArrayManager
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
 	 */
-	public Vector<IVirtualArray> getAllSelectionItemsVector() {
+	public Vector<IVirtualArray> getAllVirtualArrayItemsVector() {
 		
-		return vecSelection;
+		return vecVirtualArray;
 	}
 
 	/* (non-Javadoc)
@@ -191,14 +191,14 @@ implements IVirtualArrayManager
 	 * @see cerberus.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
-		return vecSelection.size();
+		return vecVirtualArray.size();
 	}
 	
 	public boolean unregisterItem( final int iItemId,
 			final ManagerObjectType type  ) {
 		
 		if ( this.hasItem_withUniqueId( iItemId )) {
-			vecSelection.remove( 
+			vecVirtualArray.remove( 
 					(int) getIndexInVector_byUniqueId( iItemId ));
 			unregisterItem_byUniqueId_insideCollection( iItemId );
 			return true;
@@ -215,12 +215,12 @@ implements IVirtualArrayManager
 			IVirtualArray addItem = (IVirtualArray) registerItem;
 			
 			if ( hasItem_withUniqueId( iItemId ) ) {
-				vecSelection.set( getIndexInVector_byUniqueId( iItemId ), addItem );
+				vecVirtualArray.set( getIndexInVector_byUniqueId( iItemId ), addItem );
 				return true;
 			}
 			
-			registerItem_byUniqueId_insideCollection( iItemId, vecSelection.size() );
-			vecSelection.addElement( addItem );
+			registerItem_byUniqueId_insideCollection( iItemId, vecVirtualArray.size() );
+			vecVirtualArray.addElement( addItem );
 				
 			return true;
 		}

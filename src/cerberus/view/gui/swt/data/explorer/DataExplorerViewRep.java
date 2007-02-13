@@ -182,7 +182,7 @@ implements IView, IMediatorReceiver {
 						try
 						{
 							currentSelectionArray = currentSet
-									.getSelectionByDim(dimIndex);
+									.getVirtualArrayByDim(dimIndex);
 							for (int selectionIndex = 0; selectionIndex < currentSelectionArray.length; selectionIndex++)
 							{
 								currentSelection = (IVirtualArray) currentSelectionArray[selectionIndex];
@@ -271,7 +271,7 @@ implements IView, IMediatorReceiver {
 
 			allSelectionItems = ((IVirtualArrayManager) refGeneralManager
 					.getManagerByBaseType(ManagerObjectType.VIRTUAL_ARRAY))
-					.getAllSelectionItems();
+					.getAllVirtualArrayItems();
 
 			try
 			{
@@ -377,7 +377,7 @@ implements IView, IMediatorReceiver {
 				
 				// insert new selection VIRTUAL_ARRAY with ID and label in the tree
 				IVirtualArray refSelectionVirtualArray = 
-					updatedSelectionSet.getSelectionByDimAndIndex(0, 0);
+					updatedSelectionSet.getVirtualArrayByDimAndIndex(0, 0);
 				SelectionModel currentSelectionVirtualArrayModel = 
 					new SelectionModel(refSelectionVirtualArray.getId(), 
 							refSelectionVirtualArray.getLabel());
