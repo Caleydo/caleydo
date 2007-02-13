@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 
+import cerberus.command.ICommand;
+import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.selection.SelectionHandler;
 import cerberus.data.pathway.Pathway;
@@ -25,6 +27,7 @@ import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.ViewType;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
@@ -267,16 +270,22 @@ implements IPathwayGraphView {
 		return(refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway());
 	}
 	
+	/**
+	 * Triggers the command to load the new URL
+	 * in the HTML browser with a specific ID.
+	 * 
+	 * @param sUrl
+	 */
 	public void loadNodeInformationInBrowser(final String sUrl) {
 		
-		// Load node information in browser
-		final IViewManager tmpViewManager = refGeneralManager.getSingelton().
-			getViewGLCanvasManager();					
-    
 		refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				((HTMLBrowserViewRep)tmpViewManager.
-						getItem(iHTMLBrowserId)).setUrl(sUrl);
+				CmdViewLoadURLInHTMLBrowser createdCmd = 
+					(CmdViewLoadURLInHTMLBrowser)refGeneralManager.getSingelton().getCommandManager().
+						createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
+
+				createdCmd.setAttributes(iHTMLBrowserId, sUrl);
+				createdCmd.doCommand();
 			}
 		});	
 	}
