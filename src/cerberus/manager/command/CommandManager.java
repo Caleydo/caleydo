@@ -9,7 +9,6 @@
 package cerberus.manager.command;
 
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.Vector;
 //import java.util.Iterator;
 
@@ -21,12 +20,12 @@ import cerberus.manager.command.factory.ICommandFactory;
 //import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
+import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
-
+import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;
-import cerberus.command.CommandType;
 import cerberus.command.queue.ICommandQueue;
 
 /**
@@ -190,58 +189,30 @@ public class CommandManager
 		
 		return false;
 	}
+	
+	public ICommand createCommandByType(final CommandQueueSaxType cmdType) {
 
-	public ICommand createCommand( final CommandType useSelectionType, String details ) {
-	
-		return refCommandFactory.createCommand( useSelectionType, details );
+		return refCommandFactory.createCommandByType(cmdType);
 	}
-	
-	
-	
-	public ICommand createCommand( final String useSelectionType ) {
-		
-		return refCommandFactory.createCommand( CommandType.valueOf( useSelectionType ), null );
-	}
-	
-	
-//	/**
-//	 * Create a new command using the CommandType.
-//	 * @param details TODO
-//	 * 
-//	 * @deprecated
-//	 */
-//	public ICommand createCommand( final String  useSelectionType, 
-//			final LinkedList <String> llAttributes ) {
-//		
-//		ICommand createdCommand = 
-//			refCommandFactory.createCommand( useSelectionType,
-//					llAttributes );	
-//		
-//		if ( createdCommand.getId() < 0 ) {
-//			createdCommand.setId( createNewId( ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK ) );
-//		}
-//		
-//		registerItem( createdCommand, 
-//				createdCommand.getId(),
-//				ManagerObjectType.COMMAND );
-//		
-//		return createdCommand;
-//	}
+
 	
 	public ICommand createCommand(final IParameterHandler phAttributes)
 	{
-		return refCommandFactory.createCommand( phAttributes );
+		CommandQueueSaxType cmdType = 
+			CommandQueueSaxType.valueOf( 
+					phAttributes.getValueString( 
+							CommandQueueSaxType.TAG_TYPE.getXmlKey() ) );
+		
+		ICommand createdCommand = createCommandByType(cmdType);
+		
+		if ( phAttributes != null ) 
+		{
+			createdCommand.setParameterHandler( phAttributes );	
+		}
+		
+		return createdCommand;
 	}
 	
-//	/* (non-Javadoc)
-//	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
-//	 */
-//	public int createNewId(ManagerObjectType setNewBaseType) {
-//		
-//		iUniqueId_current += iUniqueId_Increment;
-//		
-//		return iUniqueId_current;
-//	}
 
 	/*
 	 * 
@@ -306,5 +277,12 @@ public class CommandManager
 		vecRedo.addElement( runCmd );
 	}
 
+	public ICommand createCommand(CommandType cmdType, String details) {
+
+		assert false : "update to new command creation strucutre!";
+		return null;
+	}
+
+	
 	
 }

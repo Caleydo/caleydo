@@ -10,13 +10,11 @@ package cerberus.manager.command.factory;
 
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
-
 import cerberus.command.data.CmdDataCreatePathwayStorage;
 import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventCreateMediator;
-
 import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
@@ -28,6 +26,7 @@ import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
 import cerberus.command.view.swt.CmdViewCreateDataExchanger;
+import cerberus.command.view.swt.CmdViewCreateSetEditor;
 import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
@@ -41,26 +40,21 @@ import cerberus.command.view.swt.CmdViewCreateStorageSlider;
 import cerberus.command.view.swt.CmdViewCreateSwtGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateTestTriangle;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
+import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.window.swt.CmdWindowCreate;
 import cerberus.command.window.swt.CmdContainerCreate;
-
 import cerberus.command.queue.CmdSystemRunCmdQueue;
 import cerberus.command.queue.CommandQueueVector;
-
 import cerberus.command.system.CmdSystemExit;
 import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 import cerberus.command.system.CmdSystemLoadFileNStorages;
 import cerberus.command.system.CmdSystemLoadFileLookupTable;
-
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-
 import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
-
 import cerberus.xml.parser.command.CommandQueueSaxType;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class is responsible for creating the commands.
@@ -102,9 +96,8 @@ public class CommandFactory
 		}
 	}
 	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.command.factory.CommandFactoryInterface#createCommand(cerberus.command.CommandType)
+	/**
+	 * @deprecated
 	 */
 	public ICommand createCommand( 
 			final CommandType createCommandByType, 
@@ -152,17 +145,10 @@ public class CommandFactory
 		
 	}
 	
+
 	
-	/**
-	 * @see cerberus.manager.command.factory.ICommandFactory#createCommand(cerberus.xml.parser.parameter.IParameterHandler)
-	 */
-	public ICommand createCommand(final IParameterHandler phAttributes) {
+	public ICommand createCommandByType(final CommandQueueSaxType cmdType) {
 		
-		CommandQueueSaxType cmdType = 
-			CommandQueueSaxType.valueOf( 
-					phAttributes.getValueString( 
-							CommandQueueSaxType.TAG_TYPE.getXmlKey() ) );
-			
 		ICommand createdCommand = null;
 		
 		switch ( cmdType ) {
@@ -281,6 +267,13 @@ public class CommandFactory
 			break;
 		}
 		
+		case CREATE_VIEW_SET_EDITOR:
+		{
+			createdCommand =
+				new CmdViewCreateSetEditor(refGeneralManager);			
+			break;
+		}
+		
 		case CREATE_VIEW_PROGRESSBAR:
 		{
 			createdCommand =
@@ -320,13 +313,6 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdViewCreateHTMLBrowser(refGeneralManager);			
-			break;
-		}
-		
-		case LOAD_URL_IN_BROWSER:
-		{
-			createdCommand =
-				new CmdViewLoadURLInHTMLBrowser(refGeneralManager);			
 			break;
 		}
 		
@@ -425,18 +411,18 @@ public class CommandFactory
 			break;
 		}
 		
+		case LOAD_URL_IN_BROWSER:
+		{
+			createdCommand =
+				new CmdViewLoadURLInHTMLBrowser(refGeneralManager);			
+			break;
+		}
+		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
 					cmdType + "]",
 					CerberusRuntimeExceptionType.SAXPARSER);
 		} // end switch
-		
-		
-		if ( phAttributes != null ) 
-		{
-			createdCommand.setParameterHandler( phAttributes );	
-		}
-		
 		
 //		/**
 //		 * Create a new uniqueId if nessecary

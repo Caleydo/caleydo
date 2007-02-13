@@ -29,6 +29,7 @@ public enum CommandQueueSaxType
 	LOAD_DATA_FILE("cmd","type",""),
 	LOAD_DATA_FILE_N_STORAGES("cmd","type",""),
 	LOAD_LOOKUP_TABLE_FILE("cmd","type",""),
+	LOAD_ON_DEMAND("cmd", "process","LOAD_ON_DEMAND"),
 	//OPEN_VIEW("cmd","type"),
 	
 	NO_OPERATION("cmd","type","NO_OPERATION"),
@@ -54,6 +55,7 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_IMAGE("cmd", "type", "-1"),	
 	CREATE_VIEW_TEST_TRIANGLE("cmd", "type","-1"),
 	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1"),
+	CREATE_VIEW_SET_EDITOR("cmd", "type","-1"),
 	
 	CREATE_GL_TRIANGLE_TEST("cmd","type","-1"),
 	CREATE_GL_TEXTURE2D("cmd","type","-1"),
@@ -72,7 +74,6 @@ public enum CommandQueueSaxType
 	CREATE_EVENT_MEDIATOR("cmd", "type", null),
 	
 	RUN_CMD_NOW("cmd", "process","RUN_CMD_NOW"),	
-	LOAD_ON_DEMAND("cmd", "process","LOAD_ON_DEMAND"),
 	MEMENTO("cmd", "process",null),	
 	
 	TAG_CMD("cmd","Cmd",null),
@@ -114,7 +115,7 @@ public enum CommandQueueSaxType
 	
 	CMD_THREAD_POOL_ID("cmdqueue","queue_thread","-1"),
 	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait","-1");
-	
+
 	
 	/**
 	 *  * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>
@@ -143,9 +144,6 @@ public enum CommandQueueSaxType
 		this.sDefaultValue = sDefaultValue;
 	}
 	
-//	public static final CommandQueueSaxType parse( final String sData) {
-//		
-//	}
 	
 	/**
 	 *  * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>

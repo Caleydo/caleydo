@@ -1,5 +1,6 @@
 package cerberus.view.gui;
 
+import cerberus.data.IUniqueObject;
 import cerberus.view.gui.ViewType;
 
 //import cerberus.command.ICommand;
@@ -11,7 +12,8 @@ import cerberus.view.gui.ViewType;
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public interface IView {
+public interface IView 
+extends IUniqueObject {
 	
 	/**
 	 * Initialization of the view.

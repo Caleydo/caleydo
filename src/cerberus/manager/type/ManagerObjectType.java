@@ -121,6 +121,8 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_SELECTION_SLIDER(ManagerType.VIEW),
 	
+	VIEW_SWT_DATA_SET_EDITOR(ManagerType.VIEW),
+	
 	VIEW_SWT_STORAGE_SLIDER(ManagerType.VIEW),	
 	
 	VIEW_SWT_MIXER(ManagerType.VIEW),

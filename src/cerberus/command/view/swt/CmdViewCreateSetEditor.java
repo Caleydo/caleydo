@@ -6,7 +6,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.swt.data.exchanger.DataExchangerViewRep;
+import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -14,10 +14,9 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * the data exchanger view.
  * 
  * @author Michael Kalkusch
- * @author Marc Streit
  *
  */
-public class CmdViewCreateDataExchanger 
+public class CmdViewCreateSetEditor 
 extends ACmdCreate_IdTargetLabelParentXY 
 implements ICommand {
 	
@@ -26,7 +25,7 @@ implements ICommand {
 	 * 
 	 * @param refGeneralManager
 	 */
-	public CmdViewCreateDataExchanger(
+	public CmdViewCreateSetEditor(
 			final IGeneralManager refGeneralManager) {
 		
 		super(refGeneralManager);
@@ -41,8 +40,8 @@ implements ICommand {
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
-		DataExchangerViewRep dataExchangerView = (DataExchangerViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,
+		SetEditorViewRep dataExchangerView = (SetEditorViewRep)viewManager
+				.createView(ManagerObjectType.VIEW_SWT_DATA_SET_EDITOR,
 							iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);

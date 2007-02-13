@@ -36,6 +36,7 @@ import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.exchanger.DataExchangerViewRep;
+import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.mixer.MixerViewRep;
@@ -229,7 +230,10 @@ implements IViewManager, IViewGLCanvasManager {
 					iParentContainerId, sLabel);
 		case VIEW_SWT_DATA_EXCHANGER:
 			return new DataExchangerViewRep(this.refGeneralManager, iViewId,
-					iParentContainerId, sLabel);			
+					iParentContainerId, sLabel);	
+		case VIEW_SWT_DATA_SET_EDITOR:
+			return new SetEditorViewRep(this.refGeneralManager, iViewId,
+					iParentContainerId, sLabel);
 		case VIEW_SWT_PROGRESS_BAR:
 			return new ProgressBarViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
@@ -691,6 +695,13 @@ implements IViewManager, IViewGLCanvasManager {
 			switch ( refView.getViewType() )
 			{
 			
+			case SWT_SET_EDITOR:
+			case SWT_DATA_EXCHANGER:
+				System.err.println("Ignore: addViewRep("+ 
+						refView.getViewType()+
+						") type SWT_DATA_EXCHANGER!");
+				return;
+				
 			case SWT_DATA_EXPLORER:
 				arDataExplorerViewRep.add( (DataExplorerViewRep) refView);
 				return;

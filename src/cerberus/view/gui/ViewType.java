@@ -27,5 +27,6 @@ public enum ViewType {
 	SWT_MIXER,
 	SWT_IMAGE_VIEWER,
 	SWT_HEATMAP2D,
+	SWT_SET_EDITOR,
 	NONE
 }

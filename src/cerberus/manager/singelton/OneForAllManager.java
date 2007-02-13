@@ -416,7 +416,9 @@ implements IGeneralManagerSingelton
 			return refViewCanvasManager.createCanvas(createNewType,
 					sNewTypeDetails);
 		case COMMAND:
-			return refCommandManager.createCommand(sNewTypeDetails);
+			assert false : "update to new command structure!";		    
+//			return refCommandManager.createCommand(sNewTypeDetails);
+			return null;
 		case D_GUI:
 			return refDComponentManager.createSet( DGuiComponentType.valueOf(sNewTypeDetails) );
 
