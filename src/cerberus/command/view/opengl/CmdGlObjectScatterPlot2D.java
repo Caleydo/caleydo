@@ -4,6 +4,7 @@
 package cerberus.command.view.opengl;
 
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.IGeneralManager;
@@ -13,7 +14,6 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.xml.parser.parameter.IParameterHandler;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
  * @author Michael Kalkusch

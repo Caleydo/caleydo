@@ -1,5 +1,6 @@
 package cerberus.command.view.swt;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.IGeneralManager;
@@ -8,7 +9,6 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

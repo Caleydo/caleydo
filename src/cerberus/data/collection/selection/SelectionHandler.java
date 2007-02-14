@@ -3,13 +3,13 @@ package cerberus.data.collection.selection;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.IGroupedSelection;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.ViewType;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.ParameterHandler;
 

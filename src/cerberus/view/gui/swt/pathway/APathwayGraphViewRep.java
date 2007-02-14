@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.data.collection.ISet;
@@ -27,7 +28,6 @@ import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.ViewType;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep

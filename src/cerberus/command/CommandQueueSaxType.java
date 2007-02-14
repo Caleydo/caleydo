@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.xml.parser.command;
+package cerberus.command;
 
 /**
  * Type of Command Queue "tag's" and "key's"
@@ -30,33 +30,11 @@ public enum CommandQueueSaxType
 	LOAD_DATA_FILE_N_STORAGES("cmd","type",""),
 	LOAD_LOOKUP_TABLE_FILE("cmd","type",""),
 	LOAD_ON_DEMAND("cmd", "process","LOAD_ON_DEMAND"),
-	//OPEN_VIEW("cmd","type"),
-	
-	NO_OPERATION("cmd","type","NO_OPERATION"),
-	
-	CREATE_SET("cmd","type","-1"),
-	CREATE_SET_PLANAR("cmd","type","-1"),
-	CREATE_SET_MULTIDIM("cmd","type","-1"),
-	CREATE_VIRTUAL_ARRAY("cmd","type","-1"),
-	CREATE_STORAGE("cmd","type","-1"),
-	CREATE_PATHWAY_STORAGE("cmd","type","-1"),
-	
-	CREATE_VIEW_HEATMAP("cmd", "type","-1"),
-	CREATE_VIEW_PATHWAY("cmd", "type","-1"),
-	CREATE_VIEW_GEARS("cmd", "type","-1"),
-	CREATE_VIEW_DATA_EXPLORER("cmd", "type","-1"),
-	CREATE_VIEW_DATA_EXCHANGER("cmd", "type","-1"),	
-	CREATE_VIEW_PROGRESSBAR("cmd", "type","-1"),
-	CREATE_VIEW_STORAGE_SLIDER("cmd", "type","-1"),
-	CREATE_VIEW_SELECTION_SLIDER("cmd", "type","-1"),	
-	CREATE_VIEW_MIXER("cmd", "type","-1"),
-	CREATE_VIEW_BROWSER("cmd", "type", "-1"),
 	LOAD_URL_IN_BROWSER("cmd", "type", "-1"),
-	CREATE_VIEW_IMAGE("cmd", "type", "-1"),	
-	CREATE_VIEW_TEST_TRIANGLE("cmd", "type","-1"),
-	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1"),
-	CREATE_VIEW_SET_EDITOR("cmd", "type","-1"),
-	
+	//OPEN_VIEW("cmd","type"),
+
+	CREATE_EVENT_MEDIATOR("cmd", "type", null),
+		
 	CREATE_GL_TRIANGLE_TEST("cmd","type","-1"),
 	CREATE_GL_TEXTURE2D("cmd","type","-1"),
 	CREATE_GL_HEATMAP("cmd","type","-1"),
@@ -68,14 +46,61 @@ public enum CommandQueueSaxType
 	CREATE_GL_MINMAX_SCATTERPLOT3D("cmd","type","-1"),
 	CREATE_GL_ISOSURFACE3D("cmd","type","-1"),
 	
+	CREATE_PATHWAY_STORAGE("cmd","type","-1"),
+	CREATE_SET("cmd","type","-1"),
+	CREATE_SET_PLANAR("cmd","type","-1"),
+	CREATE_SET_MULTIDIM("cmd","type","-1"),
+	CREATE_STORAGE("cmd","type","-1"),	
 	CREATE_SWT_WINDOW("cmd", "type","-1"),
-	CREATE_SWT_CONTAINER("cmd", "type","-1"),
+	CREATE_SWT_CONTAINER("cmd", "type","-1"),	
+	CREATE_VIRTUAL_ARRAY("cmd","type","-1"),
 	
-	CREATE_EVENT_MEDIATOR("cmd", "type", null),
-	
+	CREATE_VIEW_HEATMAP("cmd", "type","-1"),
+	CREATE_VIEW_PATHWAY("cmd", "type","-1"),
+	CREATE_VIEW_GEARS("cmd", "type","-1"),
+	CREATE_VIEW_DATA_EXPLORER("cmd", "type","-1"),
+	CREATE_VIEW_DATA_EXCHANGER("cmd", "type","-1"),	
+	CREATE_VIEW_PROGRESSBAR("cmd", "type","-1"),
+	CREATE_VIEW_STORAGE_SLIDER("cmd", "type","-1"),
+	CREATE_VIEW_SELECTION_SLIDER("cmd", "type","-1"),	
+	CREATE_VIEW_MIXER("cmd", "type","-1"),
+	CREATE_VIEW_BROWSER("cmd", "type", "-1"),	
+	CREATE_VIEW_IMAGE("cmd", "type", "-1"),	
+	CREATE_VIEW_TEST_TRIANGLE("cmd", "type","-1"),
+	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1"),
+	CREATE_VIEW_SET_EDITOR("cmd", "type","-1"),
+
 	RUN_CMD_NOW("cmd", "process","RUN_CMD_NOW"),	
 	MEMENTO("cmd", "process",null),	
 	
+	NO_OPERATION("cmd","type","NO_OPERATION"),
+	
+	
+	
+	/*
+	 * -------  COMMAND QUEUE  --------
+	 */ 
+	COMMAND_QUEUE_OPEN("cmdqueue","type",null),
+	COMMAND_QUEUE_RUN("cmdqueue","type",null),
+	
+	CMD_ID("cmdqueue","cmdId","-1"),
+	CMDQUEUE_ID("cmdqueue","cmdQueueId","-1"),
+	
+	RUN_QUEUE_ON_DEMAND("cmdqueue","process","RUN_QUEUE_ON_DEMAND"),
+	RUN_QUEUE("cmdqueue","process","RUN_QUEUE"),
+
+	
+	CMD_THREAD_POOL_ID("cmdqueue","queue_thread","-1"),
+	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait","-1"),
+
+	
+	
+	
+	/*
+	 * ==================================================
+	 *       TAG's used only while parsing XML files  
+	 * ==================================================
+	 */
 	TAG_CMD("cmd","Cmd",null),
 	TAG_CMD_QUEUE("cmd","CmdQueue",null),
 	TAG_CMD_ID("cmd","cmdId","-1"),
@@ -98,24 +123,9 @@ public enum CommandQueueSaxType
 	TAG_POS_GL_ORIGIN("cmd","GL_ORIGIN","0 0 0"),
 	
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */
-	TAG_POS_GL_ROTATION("cmd","GL_ROTATION","0 0 1 0.0"),
+	TAG_POS_GL_ROTATION("cmd","GL_ROTATION","0 0 1 0.0");
 	
-	/*
-	 * -------  COMMAND QUEUE  --------
-	 */ 
-	COMMAND_QUEUE_OPEN("cmdqueue","type",null),
-	COMMAND_QUEUE_RUN("cmdqueue","type",null),
 	
-	CMD_ID("cmdqueue","cmdId","-1"),
-	CMDQUEUE_ID("cmdqueue","cmdQueueId","-1"),
-	
-	RUN_QUEUE_ON_DEMAND("cmdqueue","process","RUN_QUEUE_ON_DEMAND"),
-	RUN_QUEUE("cmdqueue","process","RUN_QUEUE"),
-
-	
-	CMD_THREAD_POOL_ID("cmdqueue","queue_thread","-1"),
-	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait","-1");
-
 	
 	/**
 	 *  * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>

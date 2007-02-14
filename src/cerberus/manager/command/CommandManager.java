@@ -20,9 +20,9 @@ import cerberus.manager.command.factory.ICommandFactory;
 //import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;

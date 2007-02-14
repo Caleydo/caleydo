@@ -11,6 +11,7 @@ package cerberus.command.data;
 
 import java.util.StringTokenizer;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 import cerberus.data.collection.IVirtualArray;
@@ -20,7 +21,6 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 

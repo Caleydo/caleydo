@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewManager;
@@ -52,7 +53,6 @@ import cerberus.view.gui.swt.slider.StorageSliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.image.ImageViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
  * Manage all canvas, view, ViewRep's nad GLCanvas objects.

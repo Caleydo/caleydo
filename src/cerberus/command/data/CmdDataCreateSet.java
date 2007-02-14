@@ -19,6 +19,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 
 //import cerberus.command.ICommand;
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.IGeneralManager;
@@ -28,7 +29,6 @@ import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.CerberusRuntimeException;
 
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.manager.type.ManagerObjectType;

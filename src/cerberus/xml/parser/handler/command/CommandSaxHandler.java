@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 //import org.xml.sax.helpers.DefaultHandler;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
@@ -18,7 +19,6 @@ import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.manager.IMenuManager;
 //import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 //import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;

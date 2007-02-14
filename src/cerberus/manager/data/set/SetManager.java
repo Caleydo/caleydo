@@ -19,8 +19,8 @@ import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;

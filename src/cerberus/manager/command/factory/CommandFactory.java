@@ -8,6 +8,7 @@
  */
 package cerberus.manager.command.factory;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.data.CmdDataCreatePathwayStorage;
@@ -53,7 +54,6 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
  * Class is responsible for creating the commands.

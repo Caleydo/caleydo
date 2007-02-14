@@ -8,12 +8,12 @@
  */
 package cerberus.manager;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;
 import cerberus.command.ICommandActionListener;
 import cerberus.command.queue.ICommandQueue;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 //import prometheus.data.xml.MementoXML;
 

@@ -3,13 +3,13 @@
  */
 package cerberus.command.view.opengl;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.xml.parser.parameter.IParameterHandler;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
  * @author Michael Kalkusch

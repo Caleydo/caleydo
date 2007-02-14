@@ -6,11 +6,11 @@ package cerberus.manager;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
 /**
  * Make Jogl GLCanvas adressable by id and provide ground for XML bootstraping of 

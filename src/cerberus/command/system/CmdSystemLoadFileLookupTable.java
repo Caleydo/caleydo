@@ -13,6 +13,7 @@ package cerberus.command.system;
 import java.util.StringTokenizer;
 
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -26,7 +27,6 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 import cerberus.xml.parser.parameter.IParameterHandler;
 

@@ -11,7 +11,7 @@ package cerberus.manager.data;
 import java.util.Collection;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.xml.parser.command.CommandQueueSaxType;
+import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.ISet;
 
 

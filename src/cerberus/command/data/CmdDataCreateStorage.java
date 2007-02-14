@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 //import cerberus.command.window.CmdWindowPopupInfo;
@@ -24,7 +25,6 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.CerberusRuntimeException;
 
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.manager.type.ManagerObjectType;

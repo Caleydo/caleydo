@@ -11,6 +11,7 @@ package cerberus.manager.singelton;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.IStorage;
 import cerberus.data.xml.IMementoXML;
 import cerberus.manager.ICommandManager;
@@ -50,7 +51,6 @@ import cerberus.manager.type.ManagerType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.net.dwt.base.DGuiComponentType;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 
 //import prometheus.data.collection.SelectionType; 
 //import prometheus.data.collection.SetType;

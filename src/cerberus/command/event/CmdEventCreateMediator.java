@@ -3,6 +3,7 @@ package cerberus.command.event;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.IGeneralManager;
@@ -10,7 +11,6 @@ import cerberus.manager.IEventPublisher.MediatorType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.manager.IEventPublisher;
 

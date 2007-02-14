@@ -6,9 +6,9 @@ package cerberus.command.base;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.manager.IGeneralManager;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 

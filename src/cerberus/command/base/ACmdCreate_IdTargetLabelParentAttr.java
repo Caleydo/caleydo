@@ -3,8 +3,8 @@
  */
 package cerberus.command.base;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IGeneralManager;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

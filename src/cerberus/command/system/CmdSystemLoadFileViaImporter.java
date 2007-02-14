@@ -11,6 +11,7 @@ package cerberus.command.system;
 //import java.util.LinkedList;
 //import java.util.Iterator;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -21,7 +22,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 import cerberus.xml.parser.parameter.IParameterHandler;
 

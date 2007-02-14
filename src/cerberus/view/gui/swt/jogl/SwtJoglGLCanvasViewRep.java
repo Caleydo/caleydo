@@ -11,6 +11,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewGLCanvasManager;
@@ -19,7 +20,6 @@ import cerberus.view.gui.IView;
 import cerberus.view.gui.awt.jogl.CanvasForwarder;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 
