@@ -72,15 +72,19 @@ implements ICommand , ICommandQueue
 	
 	
 	/**
+	 * Constructor.
 	 * 
 	 */
 	public CommandQueueVector(final int iUniqueCmdId, 
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType,
 			final int iCmdQueuId ) {
+		
 		super( iUniqueCmdId, 
 				refGeneralManager, 
 				refCommandManager,
+				refCommandQueueSaxType,
 				iCmdQueuId );
 		
 		vecCommandsInQueue = 

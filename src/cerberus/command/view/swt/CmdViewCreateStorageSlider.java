@@ -28,12 +28,15 @@ implements ICommand {
 	/**
 	 * Constructor
 	 * 
-	 * @param refGeneralManager
 	 */
-	public CmdViewCreateStorageSlider(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdViewCreateStorageSlider(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 
 	/**

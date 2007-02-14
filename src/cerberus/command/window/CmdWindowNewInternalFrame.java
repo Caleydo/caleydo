@@ -49,7 +49,7 @@ implements ICommand {
 	public CmdWindowNewInternalFrame( final IGeneralManager refGeneralManager,
 			final int iCallingFrameId,
 			final String sHeaderText ) {
-		super( -1,refGeneralManager,refGeneralManager.getSingelton().getCommandManager());
+		super( -1,refGeneralManager,refGeneralManager.getSingelton().getCommandManager(), null);
 		
 		this.refGeneralManage = refGeneralManager;
 		this.iCallingFrameId = iCallingFrameId;		

@@ -29,12 +29,15 @@ implements ICommand {
 	/**
 	 * Constructor
 	 * 
-	 * @param refGeneralManager
 	 */
-	public CmdViewCreatePathway(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdViewCreatePathway(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 
 	/**

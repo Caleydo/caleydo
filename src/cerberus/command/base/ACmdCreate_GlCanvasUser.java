@@ -30,12 +30,14 @@ implements ICommand
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_GlCanvasUser(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	protected ACmdCreate_GlCanvasUser(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
 		super(refGeneralManager,
-				refCommandManager);
-
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 
 	/**

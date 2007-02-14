@@ -21,8 +21,8 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public abstract class ACommand 
-	extends AUniqueManagedObject
-	implements ICommand {
+extends AUniqueManagedObject
+implements ICommand {
 
 	/**
 	 * Reference ot ICommandManager
@@ -42,15 +42,14 @@ public abstract class ACommand
 	
 	public ACommand(final int iSetCollectionId,
 			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
+		
+		
 		super( iSetCollectionId, refGeneralManager );
 		
 		this.refCommandManager = refCommandManager;
-		
-		/*
-		 * TODO: remove next assignment!
-		 */
-		refCommandQueueSaxType = CommandQueueSaxType.NO_OPERATION;
+		this.refCommandQueueSaxType = refCommandQueueSaxType;
 	}
 
 	
@@ -65,21 +64,40 @@ public abstract class ACommand
 		return false;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.data.IUniqueManagedObject#getBaseType()
+	 */
 	public final ManagerObjectType getBaseType() {
 		return ManagerObjectType.COMMAND;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.command.ICommand#getCommandType()
+	 */
 	public final CommandQueueSaxType getCommandType() {
 		return refCommandQueueSaxType;
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.command.ICommand#setParameterHandler(cerberus.xml.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler( IParameterHandler phHandler) {
 		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.command.ICommand#getInfoText()
+	 */
+	public String getInfoText() {
+		
+		return refCommandQueueSaxType.getInfoText();
 	}
 	
 	protected final void setCommandQueueSaxType( final CommandQueueSaxType refCommandQueueSaxType) {
 		this.refCommandQueueSaxType  =refCommandQueueSaxType;
 	}
-
 }

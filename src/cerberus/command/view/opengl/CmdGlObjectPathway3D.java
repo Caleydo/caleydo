@@ -28,12 +28,15 @@ implements ICommand {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
 	 */
-	public CmdGlObjectPathway3D(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	public CmdGlObjectPathway3D(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 				
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_PATHWAY2D;
 	}

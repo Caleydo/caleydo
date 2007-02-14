@@ -33,7 +33,7 @@ implements ICommand {
 	 * Does not set the reference to the parent JComponent.
 	 */
 	public CmdWindowPopupCredits() {
-		super( -1,null,null);
+		super( -1,null,null,null);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ implements ICommand {
 	 * @param setParentComonent parent JComponenet
 	 */
 	public CmdWindowPopupCredits( final JComponent setParentComonent ) {
-		super( -1,null,null);
+		super( -1,null,null,null);
 		parentComponent = setParentComonent;
 	}
 

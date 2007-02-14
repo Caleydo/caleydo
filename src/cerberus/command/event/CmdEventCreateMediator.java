@@ -32,12 +32,14 @@ implements ICommand {
 	
 	protected MediatorType mediatorType;
 	
-	public CmdEventCreateMediator(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
-		
-		// set unique ID to -1 because it is unknown at this moment
+	public CmdEventCreateMediator(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
+
 		super(refGeneralManager,
-				refCommandManager);
+				refCommandManager,
+				refCommandQueueSaxType);
 		
 		arSenderIDs = new ArrayList<Integer>();
 		arReceiverIDs = new ArrayList<Integer>();

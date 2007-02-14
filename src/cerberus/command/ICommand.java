@@ -65,5 +65,14 @@ extends IUniqueObject {
 	 * @see cerberus.command.factory.CommandFactory.getCommandType()
 	 */
 	public abstract CommandQueueSaxType getCommandType();	
+	
+	/**
+	 * Method returns a description of the command.
+	 * This is mainly used for the UNDO/REDO GUI component 
+	 * to show what the command is about.
+	 * 
+	 * @return
+	 */
+	public abstract String getInfoText();
 
 }

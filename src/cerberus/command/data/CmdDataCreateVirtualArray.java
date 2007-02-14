@@ -50,12 +50,18 @@ implements ICommand {
 	protected String sTokenPattern;
 
 
+	/**
+	 * Constructor.
+	 * 
+	 */
+	public CmdDataCreateVirtualArray(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 	
-	public CmdDataCreateVirtualArray(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
-	
-		super( refGeneralManager,refCommandManager);		
-				
+		super(refGeneralManager,
+				refCommandManager,
+				refCommandQueueSaxType);			
 	}
 
 	/**

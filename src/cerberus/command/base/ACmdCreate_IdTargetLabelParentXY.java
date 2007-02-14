@@ -6,6 +6,7 @@ package cerberus.command.base;
 import java.util.StringTokenizer;
 
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.ICommandManager;
@@ -33,14 +34,18 @@ implements ICommand
 	protected int iHeightY;
 	
 	/**
+	 * Constructor.
+	 * 
 	 * @param refGeneralManager
-	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_IdTargetLabelParentXY(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	protected ACmdCreate_IdTargetLabelParentXY(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
 		super(refGeneralManager,
-				refCommandManager);
+				refCommandManager,
+				refCommandQueueSaxType);
 	}	
 		
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

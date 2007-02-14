@@ -33,12 +33,14 @@ implements ICommand
 	protected String sAttribute3;
 
 	
-	public ACmdCreate_IdTargetParentGLObject(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	public ACmdCreate_IdTargetParentGLObject(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
 		super(refGeneralManager,
-				refCommandManager);
-		
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

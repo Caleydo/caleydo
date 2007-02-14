@@ -46,9 +46,12 @@ implements ICommand {
 	 */
 	public CmdDataCreatePathwayStorage( 
 			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 		
 		llKEGGPathwayIDs = new LinkedList<Integer> ();
 	}

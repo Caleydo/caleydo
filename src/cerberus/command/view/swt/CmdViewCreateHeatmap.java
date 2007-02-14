@@ -1,5 +1,6 @@
 package cerberus.command.view.swt;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.ICommandManager;
@@ -22,14 +23,17 @@ extends ACmdCreate_IdTargetLabelParentAttr
 implements ICommand {
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
-	 * @param refGeneralManager
 	 */
-	public CmdViewCreateHeatmap(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdViewCreateHeatmap(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 
 	/**

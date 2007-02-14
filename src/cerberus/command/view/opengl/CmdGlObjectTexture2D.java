@@ -29,13 +29,18 @@ implements ICommand {
 	protected String color;
 	
 	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
+	 * Constructor.
+	 * 
 	 */
-	public CmdGlObjectTexture2D(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdGlObjectTexture2D(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);		
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
+		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_TEXTURE2D;
 	}
 

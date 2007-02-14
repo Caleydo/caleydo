@@ -37,13 +37,17 @@ extends ACmdCreate_GlCanvasUser
 	protected String color;
 	
 	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
+	 * Constructor.
+	 * 
 	 */
-	public CmdGlObjectHeatmap(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	public CmdGlObjectHeatmap(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 
 		iResolution = new int [3];
 		

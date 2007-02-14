@@ -26,15 +26,19 @@ implements ICommand {
 	protected int iCommandQueueId;
 	
 	/**
-	 * @param iSetCmdCollectionId
+	 * Constructor.
+	 * 
 	 */
 	public CmdSystemRunCmdQueue(int iSetCmdId, 			
 			final IGeneralManager setGeneralManager,
 			final ICommandManager setCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType,
 			final int iCommandQueueId ) {
+		
 		super(iSetCmdId, 
 				setGeneralManager, 
-				setCommandManager);
+				setCommandManager,
+				refCommandQueueSaxType);
 		
 		this.iCommandQueueId = iCommandQueueId;
 		

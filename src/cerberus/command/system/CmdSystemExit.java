@@ -27,6 +27,7 @@ extends AUniqueItem
 implements ICommand {
 
 	/**
+	 * Constrcutor.
 	 * 
 	 */
 	public CmdSystemExit() {
@@ -67,6 +68,12 @@ implements ICommand {
 
 	public CommandQueueSaxType getCommandType() {
 		return CommandQueueSaxType.SYSTEM_SHUT_DOWN;
+	}
+	
+	public String getInfoText() {
+		assert false : "Must not be called for this calss.";
+	
+		return null;
 	}
 
 }

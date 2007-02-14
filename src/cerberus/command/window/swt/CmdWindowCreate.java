@@ -1,6 +1,7 @@
 package cerberus.command.window.swt;
 
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 import cerberus.manager.ICommandManager;
@@ -23,12 +24,23 @@ implements ICommand
 {
 	protected String sLayoutAttributes;
 	
-	public CmdWindowCreate( final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) 
-	{
-		super(refGeneralManager, refCommandManager);	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 * @param refCommandManager
+	 * @param refCommandQueueSaxType
+	 */
+	public CmdWindowCreate(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
+		
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
-
+	
 	public void doCommand() throws CerberusRuntimeException
 	{
 		refGeneralManager.getSingelton().

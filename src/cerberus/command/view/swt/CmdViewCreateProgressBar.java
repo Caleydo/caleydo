@@ -27,12 +27,15 @@ implements ICommand {
 	/**
 	 * Constructor
 	 * 
-	 * @param refGeneralManager
 	 */
-	public CmdViewCreateProgressBar(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdViewCreateProgressBar(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 
 	/**

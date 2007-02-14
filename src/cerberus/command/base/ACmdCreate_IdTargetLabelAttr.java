@@ -28,12 +28,14 @@ implements ICommand
 	 * 
 	 * @param refGeneralManager
 	 */
-	protected ACmdCreate_IdTargetLabelAttr(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	protected ACmdCreate_IdTargetLabelAttr(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
 		super(refGeneralManager,
-				refCommandManager);
-		
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

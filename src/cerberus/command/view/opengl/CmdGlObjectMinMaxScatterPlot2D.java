@@ -33,13 +33,18 @@ implements ICommand
 	
 	
 	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
+	 * Constructor.
+	 * 
 	 */
-	public CmdGlObjectMinMaxScatterPlot2D(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	public CmdGlObjectMinMaxScatterPlot2D(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
+		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_MINMAX_SCATTERPLOT2D;
 	}
 

@@ -39,13 +39,18 @@ implements ICommand {
 	protected String color;
 	
 	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
+	 * Constructor.
+	 * 
 	 */
-	public CmdGlObjectHeatmap2D(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdGlObjectHeatmap2D(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
+		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_HEATMAP2D;
 	}
 

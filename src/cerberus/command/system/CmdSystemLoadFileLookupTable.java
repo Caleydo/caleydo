@@ -83,13 +83,22 @@ implements ICommand {
 	
 	protected int iTargetSetId;
 	
-	
-	public CmdSystemLoadFileLookupTable( final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager ) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 * @param refCommandManager
+	 * @param refCommandQueueSaxType
+	 */
+	public CmdSystemLoadFileLookupTable( 
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
 		super(-1,
 				refGeneralManager,
-				refCommandManager);
+				refCommandManager,
+				refCommandQueueSaxType);
 		
 		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE_N_STORAGES);
 	}

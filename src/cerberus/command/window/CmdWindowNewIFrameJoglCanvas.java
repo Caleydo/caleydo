@@ -68,7 +68,8 @@ implements ICommand {
 		
 		super( -1, 
 				refGeneralManager,
-				refGeneralManager.getSingelton().getCommandManager());
+				refGeneralManager.getSingelton().getCommandManager(),
+				null);
 		
 		this.refGeneralManager = refGeneralManager;
 		

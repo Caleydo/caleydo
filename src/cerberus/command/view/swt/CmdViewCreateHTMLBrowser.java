@@ -1,5 +1,6 @@
 package cerberus.command.view.swt;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.ICommandManager;
@@ -23,14 +24,17 @@ extends ACmdCreate_IdTargetLabelParentXY
 implements ICommand {
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
-	 * @param refGeneralManager
 	 */
-	public CmdViewCreateHTMLBrowser(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdViewCreateHTMLBrowser(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 
 	/**

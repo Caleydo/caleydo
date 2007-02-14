@@ -74,24 +74,17 @@ implements ICommand {
 	private final boolean bDisposeDataAfterDoCommand;
 	
 	/**
-	 * 
-	 * List of expected Strings inside LinkedList <String>: <br>
-	 * sData_CmdId <br>
-	 * sData_TargetId <br>
-	 * sData_Cmd_label <br>
-	 * sData_Cmd_process <br> 
-	 * sData_Cmd_MementoId <br> 
-	 * sData_Cmd_detail <br>
-	 * sData_Cmd_attribute1 <br>
-	 * sData_Cmd_attribute2 <br>
-	 * 
-	 * 
+	 * Constructor.
 	 */
-	public CmdDataCreateStorage( final IGeneralManager refGeneralManager,
+	public CmdDataCreateStorage( 
+			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super( refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 			
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		

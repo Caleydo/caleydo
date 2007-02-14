@@ -151,7 +151,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdSystemLoadFileLookupTable( 
 						refGeneralManager,
-						refCommandManager );
+						refCommandManager,
+						cmdType);
 			break;
 		}
 		
@@ -160,7 +161,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdSystemLoadFileViaImporter(
 						refGeneralManager,
-						refCommandManager);
+						refCommandManager,
+						cmdType);
 			break;
 		}
 		
@@ -169,7 +171,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdSystemLoadFileNStorages( 
 						refGeneralManager,
-						refCommandManager );
+						refCommandManager,
+						cmdType);
 			break;
 		}
 
@@ -179,7 +182,8 @@ public class CommandFactory
 				new CmdDataCreateStorage(
 						refGeneralManager,
 						refCommandManager,
-						true );
+						cmdType,
+						true);
 			break;
 		}
 		
@@ -188,7 +192,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdDataCreatePathwayStorage(
 						refGeneralManager,
-						refCommandManager);
+						refCommandManager,
+						cmdType);
 			break;
 		}		
 		
@@ -198,7 +203,8 @@ public class CommandFactory
 				new CmdDataCreateSet(
 						refGeneralManager,
 						refCommandManager,
-						true );
+						cmdType,
+						true);
 			break;
 		}
 		
@@ -207,7 +213,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdDataCreateVirtualArray(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -216,16 +223,18 @@ public class CommandFactory
 			createdCommand =
 				new CmdWindowCreate(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
 		case CREATE_SWT_CONTAINER:
 		{
 			createdCommand =
-				new CmdContainerCreate(
+				new CmdContainerCreate(						
 						refGeneralManager,
-						refCommandManager);	
+						refCommandManager,
+						cmdType);
 			break;
 		}
 		
@@ -234,7 +243,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateHeatmap(
 						refGeneralManager,
-						refCommandManager);		
+						refCommandManager,
+						cmdType);	
 			break;
 		}
 		
@@ -243,7 +253,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateGears(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -252,7 +263,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateTestTriangle(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -261,7 +273,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateSwtGLCanvas(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -270,7 +283,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateDataExplorer(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -279,7 +293,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateDataExchanger(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -288,7 +303,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateSetEditor(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -297,7 +313,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateProgressBar(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);			
 			break;
 		}
 		
@@ -306,7 +323,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreatePathway(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 
@@ -315,7 +333,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateStorageSlider(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -324,7 +343,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateSelectionSlider(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -333,7 +353,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateMixer(
 						refGeneralManager,
-						refCommandManager);
+						refCommandManager,
+						cmdType);
 			break;
 		}
 		
@@ -342,7 +363,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateHTMLBrowser(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -351,7 +373,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewCreateImage(
 						refGeneralManager,
-						refCommandManager);		
+						refCommandManager,
+						cmdType);		
 			break;
 		}		
 		
@@ -360,7 +383,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdGlObjectTriangleTest(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);			
 			break;
 		}
 		
@@ -369,7 +393,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdGlObjectHeatmap(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);	
 			break;
 		}
 		
@@ -378,7 +403,8 @@ public class CommandFactory
  			createdCommand =
 				new CmdGlObjectHistogram2D(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -387,7 +413,8 @@ public class CommandFactory
  			createdCommand =
 				new CmdGlObjectIsosurface3D(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -396,7 +423,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdGlObjectScatterPlot2D(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -405,7 +433,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdGlObjectTexture2D(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -414,7 +443,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdGlObjectHeatmap2D(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);			
 			break;
 		}
 		
@@ -423,7 +453,8 @@ public class CommandFactory
  			createdCommand =
 				new CmdGlObjectPathway3D(
 						refGeneralManager,
-						refCommandManager);		
+						refCommandManager,
+						cmdType);	
 			break;
 		}
 		
@@ -432,7 +463,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdGlObjectMinMaxScatterPlot2D(
 						refGeneralManager,
-						refCommandManager);	
+						refCommandManager,
+						cmdType);
 			break;
 		}
 		
@@ -441,7 +473,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdGlObjectMinMaxScatterPlot3D(
 						refGeneralManager,
-						refCommandManager);	
+						refCommandManager,
+						cmdType);
 			break;
 		}
 		
@@ -450,7 +483,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdEventCreateMediator(
 						refGeneralManager,
-						refCommandManager);			
+						refCommandManager,
+						cmdType);		
 			break;
 		}
 		
@@ -459,7 +493,8 @@ public class CommandFactory
 			createdCommand =
 				new CmdViewLoadURLInHTMLBrowser(
 						refGeneralManager,
-						refCommandManager);
+						refCommandManager,
+						cmdType);
 			break;
 		}
 		
@@ -521,6 +556,7 @@ public class CommandFactory
 			ICommand cmdQueue = new CommandQueueVector(iNewUniqueId, 
 					refGeneralManager,
 					refCommandManager,
+					queueType,
 					iCmdQueueId);				
 			return cmdQueue;
 		}
@@ -529,6 +565,7 @@ public class CommandFactory
 			return new CmdSystemRunCmdQueue(iNewUniqueId,
 					refGeneralManager,
 					refCommandManager,
+					queueType,
 					iCmdQueueId);
 			
 			default:
@@ -598,7 +635,7 @@ public class CommandFactory
 				
 			case SYSTEM_NEW_FRAME:
 				return new CmdSystemNewFrame( refGeneralManager,
-						refCommandManager);
+						refCommandManager, null);
 				
 			default:
 				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+

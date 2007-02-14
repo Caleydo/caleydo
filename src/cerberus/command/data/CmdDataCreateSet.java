@@ -80,23 +80,16 @@ extends ACmdCreate_IdTargetLabelAttr {
 	private final boolean bDisposeDataAfterDoCommand;
 	
 	/**
-	 * 
-	 * List of expected Strings inside LinkedList <String>: <br>
-	 * sData_CmdId <br>
-	 * sData_Cmd_label <br>
-	 * sData_Cmd_process <br> 
-	 * sData_Cmd_MementoId <br> 
-	 * sData_Cmd_detail <br>
-	 * sData_Cmd_attribute1 <br>
-	 * sData_Cmd_attribute2 <br>
-	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
+	 * Constructor.
 	 */
 	public CmdDataCreateSet( final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super( refGeneralManager, refCommandManager );
+		super(refGeneralManager,
+				refCommandManager,
+				refCommandQueueSaxType);
 		
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		

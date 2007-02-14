@@ -14,6 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -35,12 +36,18 @@ implements ICommand {
 	private JComponent parentComponent = null;
 	
 	/**
-	 * Does not set the reference to the parent JComponent.
+	 * Constructor.
+	 * 
 	 */
-	public CmdSystemNewFrame(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdSystemNewFrame(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(-1,refGeneralManager,refCommandManager);
+		super(-1,
+				refGeneralManager,
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 	
 	/**
@@ -50,8 +57,14 @@ implements ICommand {
 	 */
 	public CmdSystemNewFrame(final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType,
 			final JComponent setParentComonent ) {
-		super(-1,refGeneralManager,refCommandManager);
+		
+		super(-1,
+				refGeneralManager,
+				refCommandManager,
+				refCommandQueueSaxType);
+		
 		parentComponent = setParentComonent;
 	}
 

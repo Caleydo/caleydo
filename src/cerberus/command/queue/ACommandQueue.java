@@ -8,6 +8,7 @@
  */
 package cerberus.command.queue;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 import cerberus.manager.ICommandManager;
@@ -35,10 +36,13 @@ public abstract class ACommandQueue
 	protected ACommandQueue(final int iUniqueId,
 			final IGeneralManager refGeneralManager,	
 			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType,
 			final int iCmdQueueId) {
+		
 		super( iUniqueId,
 				refGeneralManager, 
-				refCommandManager );
+				refCommandManager,
+				refCommandQueueSaxType);
 		
 		this.iCmdQueueId = iCmdQueueId;
 	}

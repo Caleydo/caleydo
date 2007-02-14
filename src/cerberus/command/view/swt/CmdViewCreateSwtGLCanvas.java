@@ -30,12 +30,15 @@ implements ICommand {
 	/**
 	 * Constructor
 	 * 
-	 * @param refGeneralManager
 	 */
-	public CmdViewCreateSwtGLCanvas(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager) {
+	public CmdViewCreateSwtGLCanvas(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType) {
 		
-		super(refGeneralManager, refCommandManager);
+		super(refGeneralManager, 
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 	
 	/**

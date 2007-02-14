@@ -40,13 +40,16 @@ implements ICommand
 	 * 
 	 * @param refGeneralManager
 	 */
-	protected ACmdCreate_IdTargetLabel(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager)
+	protected ACmdCreate_IdTargetLabel(
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final CommandQueueSaxType refCommandQueueSaxType)
 	{
 		// set unique ID to -1 because it is unknown at this moment
 		super(-1, 
 				refGeneralManager,
-				refCommandManager);
+				refCommandManager,
+				refCommandQueueSaxType);
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
