@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -39,9 +40,10 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectHeatmap(IGeneralManager refGeneralManager)
+	public CmdGlObjectHeatmap(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager);
+		super(refGeneralManager, refCommandManager);
 
 		iResolution = new int [3];
 		

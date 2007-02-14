@@ -158,7 +158,8 @@ public class CommandFactory
 		case LOAD_DATA_FILE: 
 		{
 			createdCommand =
-				new CmdSystemLoadFileViaImporter(refGeneralManager,
+				new CmdSystemLoadFileViaImporter(
+						refGeneralManager,
 						refCommandManager);
 			break;
 		}
@@ -185,7 +186,9 @@ public class CommandFactory
 		case CREATE_PATHWAY_STORAGE:
 		{					
 			createdCommand =
-				new CmdDataCreatePathwayStorage(refGeneralManager);
+				new CmdDataCreatePathwayStorage(
+						refGeneralManager,
+						refCommandManager);
 			break;
 		}		
 		
@@ -202,7 +205,8 @@ public class CommandFactory
 		case CREATE_VIRTUAL_ARRAY:
 		{
 			createdCommand =
-				new CmdDataCreateVirtualArray(refGeneralManager,
+				new CmdDataCreateVirtualArray(
+						refGeneralManager,
 						refCommandManager);			
 			break;
 		}
@@ -210,7 +214,8 @@ public class CommandFactory
 		case CREATE_SWT_WINDOW:
 		{
 			createdCommand =
-				new CmdWindowCreate(refGeneralManager,
+				new CmdWindowCreate(
+						refGeneralManager,
 						refCommandManager);			
 			break;
 		}
@@ -218,49 +223,62 @@ public class CommandFactory
 		case CREATE_SWT_CONTAINER:
 		{
 			createdCommand =
-				new CmdContainerCreate(refGeneralManager);			
+				new CmdContainerCreate(
+						refGeneralManager,
+						refCommandManager);	
 			break;
 		}
 		
 		case CREATE_VIEW_HEATMAP:
 		{
 			createdCommand =
-				new CmdViewCreateHeatmap(refGeneralManager);			
+				new CmdViewCreateHeatmap(
+						refGeneralManager,
+						refCommandManager);		
 			break;
 		}
 		
 		case CREATE_VIEW_GEARS:
 		{
 			createdCommand =
-				new CmdViewCreateGears(refGeneralManager);			
+				new CmdViewCreateGears(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_TEST_TRIANGLE:
 		{
 			createdCommand =
-				new CmdViewCreateTestTriangle(refGeneralManager);			
+				new CmdViewCreateTestTriangle(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_SWT_GLCANVAS:
 		{
 			createdCommand =
-				new CmdViewCreateSwtGLCanvas(refGeneralManager);			
+				new CmdViewCreateSwtGLCanvas(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_DATA_EXPLORER:
 		{
 			createdCommand =
-				new CmdViewCreateDataExplorer(refGeneralManager);			
+				new CmdViewCreateDataExplorer(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_DATA_EXCHANGER:
 		{
 			createdCommand =
-				new CmdViewCreateDataExchanger(refGeneralManager,
+				new CmdViewCreateDataExchanger(
+						refGeneralManager,
 						refCommandManager);			
 			break;
 		}
@@ -268,56 +286,72 @@ public class CommandFactory
 		case CREATE_VIEW_SET_EDITOR:
 		{
 			createdCommand =
-				new CmdViewCreateSetEditor(refGeneralManager);			
+				new CmdViewCreateSetEditor(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_PROGRESSBAR:
 		{
 			createdCommand =
-				new CmdViewCreateProgressBar(refGeneralManager);			
+				new CmdViewCreateProgressBar(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_PATHWAY:
 		{
 			createdCommand =
-				new CmdViewCreatePathway(refGeneralManager);			
+				new CmdViewCreatePathway(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 
 		case CREATE_VIEW_STORAGE_SLIDER:
 		{
 			createdCommand =
-				new CmdViewCreateStorageSlider(refGeneralManager);			
+				new CmdViewCreateStorageSlider(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_SELECTION_SLIDER:
 		{
 			createdCommand =
-				new CmdViewCreateSelectionSlider(refGeneralManager);			
+				new CmdViewCreateSelectionSlider(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_MIXER:
 		{
 			createdCommand =
-				new CmdViewCreateMixer(refGeneralManager);	
+				new CmdViewCreateMixer(
+						refGeneralManager,
+						refCommandManager);
 			break;
 		}
 		
 		case CREATE_VIEW_BROWSER:
 		{
 			createdCommand =
-				new CmdViewCreateHTMLBrowser(refGeneralManager);			
+				new CmdViewCreateHTMLBrowser(
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_VIEW_IMAGE:
 		{
 			createdCommand =
-				new CmdViewCreateImage(refGeneralManager);			
+				new CmdViewCreateImage(
+						refGeneralManager,
+						refCommandManager);		
 			break;
 		}		
 		
@@ -325,7 +359,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdGlObjectTriangleTest(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -333,7 +368,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -341,7 +377,8 @@ public class CommandFactory
 		{
  			createdCommand =
 				new CmdGlObjectHistogram2D(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -349,7 +386,8 @@ public class CommandFactory
 		{
  			createdCommand =
 				new CmdGlObjectIsosurface3D(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -357,7 +395,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdGlObjectScatterPlot2D(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -365,7 +404,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdGlObjectTexture2D(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -373,7 +413,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap2D(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -381,7 +422,8 @@ public class CommandFactory
 		{
  			createdCommand =
 				new CmdGlObjectPathway3D(
-						refGeneralManager);			
+						refGeneralManager,
+						refCommandManager);		
 			break;
 		}
 		
@@ -389,7 +431,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdGlObjectMinMaxScatterPlot2D(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);	
 			break;
 		}
 		
@@ -397,7 +440,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdGlObjectMinMaxScatterPlot3D(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);	
 			break;
 		}
 		
@@ -413,7 +457,9 @@ public class CommandFactory
 		case LOAD_URL_IN_BROWSER:
 		{
 			createdCommand =
-				new CmdViewLoadURLInHTMLBrowser(refGeneralManager);			
+				new CmdViewLoadURLInHTMLBrowser(
+						refGeneralManager,
+						refCommandManager);
 			break;
 		}
 		

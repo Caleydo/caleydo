@@ -83,15 +83,13 @@ implements IView {
 		viewComboLabel.setText("Select view:");
 		viewComboLabel.setSize(150, 30);
 				
-		final Combo viewCombo = new Combo(refSWTContainer, SWT.SIMPLE |
-                SWT.V_SCROLL | SWT.H_SCROLL);
+		final Combo viewCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
 		
 		Label dataComboLabel = new Label(refSWTContainer, SWT.LEFT);
 		dataComboLabel.setText("Select new SET:");
 		dataComboLabel.setSize(150, 30);
 
-		final Combo dataCombo = new Combo(refSWTContainer, SWT.SIMPLE | 
-                SWT.V_SCROLL | SWT.H_SCROLL);
+		final Combo dataCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
         		
 	    viewCombo.setSize(150, 30);
 	    viewCombo.setEnabled(true);

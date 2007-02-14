@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -40,9 +41,10 @@ implements ICommand {
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectIsosurface3D(IGeneralManager refGeneralManager) {
+	public CmdGlObjectIsosurface3D(final IGeneralManager refGeneralManager, 
+			final ICommandManager refCommandManager) {
 		
-		super(refGeneralManager);
+		super(refGeneralManager, refCommandManager);
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_ISOSURFACE3D;
 	}
 

@@ -3,6 +3,7 @@ package cerberus.command.view.swt;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -24,15 +25,14 @@ implements ICommand {
 	int iNumberOfSliders = 1;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param refGeneralManager
-	 * @param listAttributes List of attributes
 	 */
-	public CmdViewCreateMixer(
-			IGeneralManager refGeneralManager) {
+	public CmdViewCreateMixer(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
 		
-		super(refGeneralManager);
+		super(refGeneralManager, refCommandManager);
 	}
 
 	/**

@@ -49,22 +49,6 @@ implements ICommand
 				refCommandManager);
 	}
 	
-	/**
-	 * Constructor.
-	 * 
-	 * @param refGeneralManager
-	 * 
-	 * @deprecated
-	 */
-	protected ACmdCreate_IdTargetLabel(final IGeneralManager refGeneralManager)
-	{
-		// set unique ID to -1 because it is unknown at this moment
-		super(-1, 
-				refGeneralManager,
-				refGeneralManager.getSingelton().getCommandManager());
-	}
-	
-	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
 		/*

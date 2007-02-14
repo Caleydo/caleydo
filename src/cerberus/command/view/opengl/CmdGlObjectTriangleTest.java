@@ -5,6 +5,7 @@ package cerberus.command.view.opengl;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
@@ -26,9 +27,10 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectTriangleTest(IGeneralManager refGeneralManager)
+	public CmdGlObjectTriangleTest(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager);
+		super(refGeneralManager, refCommandManager);
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_TRIANGLE_TEST;
 	}
 

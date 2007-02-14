@@ -7,6 +7,7 @@ package cerberus.command.view.opengl;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.manager.command.factory.CommandFactory;
@@ -39,9 +40,10 @@ extends ACmdCreate_GlCanvasUser
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	public CmdGlObjectScatterPlot2D(IGeneralManager refGeneralManager)
+	public CmdGlObjectScatterPlot2D(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager);
+		super(refGeneralManager, refCommandManager);
 		
 		iResolution = new int[3];
 		

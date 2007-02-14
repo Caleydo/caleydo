@@ -37,18 +37,6 @@ implements ICommand
 				refCommandManager);
 
 	}
-	
-	/**
-	 * @deprecated
-	 * 
-	 * @param refGeneralManager
-	 */
-	protected ACmdCreate_GlCanvasUser(final IGeneralManager refGeneralManager)
-	{
-		super(refGeneralManager,
-				refGeneralManager.getSingelton().getCommandManager());
-
-	}
 
 	/**
 	 * registers to ViewManager, calls doCommandPart()

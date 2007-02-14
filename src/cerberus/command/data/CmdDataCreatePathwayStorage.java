@@ -11,6 +11,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IStorageManager;
@@ -44,9 +45,10 @@ implements ICommand {
 	 * @param refGeneralManager
 	 */
 	public CmdDataCreatePathwayStorage( 
-			final IGeneralManager refGeneralManager) {
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
 		
-		super(refGeneralManager);
+		super(refGeneralManager, refCommandManager);
 		
 		llKEGGPathwayIDs = new LinkedList<Integer> ();
 	}

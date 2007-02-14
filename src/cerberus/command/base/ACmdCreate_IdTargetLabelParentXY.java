@@ -42,18 +42,6 @@ implements ICommand
 		super(refGeneralManager,
 				refCommandManager);
 	}	
-	
-
-	/**
-	 * @deprecated
-	 * 
-	 * @param refGeneralManager
-	 */
-	protected ACmdCreate_IdTargetLabelParentXY(final IGeneralManager refGeneralManager)
-	{
-		super(refGeneralManager,
-				refGeneralManager.getSingelton().getCommandManager());
-	}	
 		
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		

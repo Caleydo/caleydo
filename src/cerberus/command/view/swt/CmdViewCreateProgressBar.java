@@ -3,6 +3,7 @@ package cerberus.command.view.swt;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -28,10 +29,10 @@ implements ICommand {
 	 * 
 	 * @param refGeneralManager
 	 */
-	public CmdViewCreateProgressBar(
-			IGeneralManager refGeneralManager) {
+	public CmdViewCreateProgressBar(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
 		
-		super(refGeneralManager);
+		super(refGeneralManager, refCommandManager);
 	}
 
 	/**

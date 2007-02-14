@@ -19,19 +19,6 @@ extends ACmdCreate_IdTargetLabelParent {
 	
 	protected String sAttribute2;
 	
-	
-	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
-	 * 
-	 * @deprecated
-	 */
-	protected ACmdCreate_IdTargetLabelParentAttr(final IGeneralManager refGeneralManager)
-	{
-		super(refGeneralManager,
-				refGeneralManager.getSingelton().getCommandManager());
-	}
-	
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
@@ -39,7 +26,7 @@ extends ACmdCreate_IdTargetLabelParent {
 	protected ACmdCreate_IdTargetLabelParentAttr(final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager,
+		super(refGeneralManager, 
 				refCommandManager);
 	}
 	
