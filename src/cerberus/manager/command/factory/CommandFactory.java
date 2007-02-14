@@ -27,7 +27,6 @@ import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
 import cerberus.command.view.swt.CmdViewCreateDataExchanger;
 import cerberus.command.view.swt.CmdViewCreateSetEditor;
-import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
 import cerberus.command.view.swt.CmdViewCreateHeatmap;
@@ -81,19 +80,13 @@ public class CommandFactory
 	 * @param setCommandType may be null if no command shall be created by the constructor
 	 */
 	public CommandFactory(  final IGeneralManager setRefGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandType setCommandType) {
-		
+			final ICommandManager refCommandManager) {
 		
 		assert setRefGeneralManager != null:"Can not create CommandFactory from null-pointer to IGeneralManager";
 		
 		this.refGeneralManager = setRefGeneralManager;		
 		this.refCommandManager = refCommandManager;
 		
-		/* create new command from constructor parameter. */
-		if ( setCommandType != null ) {
-			refLastCommand = createCommand( setCommandType, "" );
-		}
 	}
 	
 	/**

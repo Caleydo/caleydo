@@ -4,7 +4,6 @@
 package cerberus.command.base;
 
 import cerberus.command.ICommand;
-import cerberus.command.ICommandManaged;
 //import cerberus.command.CommandType;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.ICommandManager;
@@ -18,7 +17,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  */
 public abstract class AManagedCmd 
 extends AUniqueManagedObject 
-implements ICommandManaged {
+implements ICommand {
 
 	/**
 	 * Reference ot ICommandManager

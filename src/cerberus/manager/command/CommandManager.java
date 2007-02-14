@@ -67,8 +67,7 @@ public class CommandManager
 				ManagerType.COMMAND );
 		
 		refCommandFactory = new CommandFactory( setGeneralManager, 
-				this, 
-				null );
+				this);
 		
 		vecCmd_handle = new Vector<ICommand> ();
 		

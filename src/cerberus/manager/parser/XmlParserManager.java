@@ -27,6 +27,7 @@ import cerberus.xml.parser.handler.importer.kegg.PathwayImageMapSaxHandler;
 /**
  * Administer several XML-SaxHandelers.
  * Switches between several XML-SaxHandeler automatical, based by a registered tag.
+ * Acts as proxy for other derived objects from IXmlParserManager
  * 
  * @see cerberus.xml.parser.handler.IXmlParserHandler
  * 
@@ -104,7 +105,7 @@ implements IXmlParserManager {
 	}
 
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.xml.sax.ContentHandler#startDocument()
 	 */
 	public final void startDocument() throws SAXException {
@@ -112,7 +113,7 @@ implements IXmlParserManager {
 		setXmlFileProcessedNow( true );
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.xml.sax.ContentHandler#endDocument()
 	 */
 	public final void endDocument() throws SAXException {
