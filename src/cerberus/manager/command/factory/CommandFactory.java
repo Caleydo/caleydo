@@ -39,6 +39,7 @@ import cerberus.command.view.swt.CmdViewCreateSelectionSlider;
 import cerberus.command.view.swt.CmdViewCreateStorageSlider;
 import cerberus.command.view.swt.CmdViewCreateSwtGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateTestTriangle;
+import cerberus.command.view.swt.CmdViewCreateUndoRedo;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
 import cerberus.command.window.swt.CmdWindowCreate;
@@ -372,6 +373,16 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdViewCreateImage(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;
+		}	
+		
+		case CREATE_VIEW_UNDO_REDO:
+		{
+			createdCommand =
+				new CmdViewCreateUndoRedo(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);		

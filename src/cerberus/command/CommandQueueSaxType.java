@@ -70,6 +70,7 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_TEST_TRIANGLE("cmd", "type","-1", "No description available!"),
 	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1", "No description available!"),
 	CREATE_VIEW_SET_EDITOR("cmd", "type","-1", "No description available!"),
+	CREATE_VIEW_UNDO_REDO("cmd", "type","-1", "No description available!"),
 
 	RUN_CMD_NOW("cmd", "process","RUN_CMD_NOW", "No description available!"),	
 	MEMENTO("cmd", "process", null, "No description available!"),	

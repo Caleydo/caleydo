@@ -53,6 +53,7 @@ import cerberus.view.gui.swt.slider.StorageSliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
 import cerberus.view.gui.swt.image.ImageViewRep;
 import cerberus.view.gui.swt.test.TestTableViewRep;
+import cerberus.view.gui.swt.undoredo.UndoRedoViewRep;
 
 /**
  * Manage all canvas, view, ViewRep's nad GLCanvas objects.
@@ -271,6 +272,9 @@ implements IViewManager, IViewGLCanvasManager {
 		case VIEW_SWT_IMAGE:
 			return new ImageViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
+		case VIEW_SWT_UNDO_REDO:
+			return new UndoRedoViewRep(this.refGeneralManager, iViewId,
+					iParentContainerId, sLabel);			
 		case VIEW_SWT_JOGL_TEST_TRIANGLE:
 			return new TestTriangleViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);

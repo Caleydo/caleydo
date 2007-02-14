@@ -131,6 +131,8 @@ public enum ManagerObjectType {
 	
 	VIEW_SWT_IMAGE(ManagerType.VIEW),
 	
+	VIEW_SWT_UNDO_REDO(ManagerType.VIEW),
+	
 	VIEW_META_TABLE(ManagerType.VIEW),
 	
 	//deprecated
