@@ -3,6 +3,7 @@ package cerberus.command.window.swt;
 
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 //import cerberus.xml.parser.command.CommandQueueSaxType;
@@ -22,9 +23,10 @@ implements ICommand
 {
 	protected String sLayoutAttributes;
 	
-	public CmdWindowCreate( final IGeneralManager refGeneralManager ) 
+	public CmdWindowCreate( final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) 
 	{
-		super( refGeneralManager );	
+		super(refGeneralManager, refCommandManager);	
 	}
 
 	public void doCommand() throws CerberusRuntimeException

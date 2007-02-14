@@ -5,6 +5,7 @@ package cerberus.command.base;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
@@ -23,26 +24,15 @@ implements ICommand
 	protected String sAttribute2;
 	
 	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
-	 * 
-	 * @deprecated
-	 */
-	protected ACmdCreate_IdTargetLabelAttr(final IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
-	{
-		super(refGeneralManager, refParameterHandler);
-		
-	}
-	
-	/**
 	 * Constructor
 	 * 
 	 * @param refGeneralManager
 	 */
-	protected ACmdCreate_IdTargetLabelAttr(final IGeneralManager refGeneralManager)
+	protected ACmdCreate_IdTargetLabelAttr(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager);
+		super(refGeneralManager,
+				refCommandManager);
 		
 	}
 	

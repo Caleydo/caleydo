@@ -48,6 +48,8 @@ implements ICommand, ICmdHandleSet {
 		super( setRefGeneralManger, 
 				iTargetFrameId,
 				"Heatmap 2D");
+		
+		//CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D;
 	}
 
 	
@@ -85,12 +87,5 @@ implements ICommand, ICmdHandleSet {
 //	public boolean isEqualType(ICommand compareToObject) {		
 //		return compareToObject.getCommandType() == CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D;
 //	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D;
-	}
 
 }

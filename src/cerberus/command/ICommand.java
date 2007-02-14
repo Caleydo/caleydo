@@ -8,9 +8,11 @@
  */
 package cerberus.command;
 
+import cerberus.data.IUniqueObject;
+import cerberus.command.CommandQueueSaxType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
-import cerberus.data.IUniqueObject;
+
 
 /**
  * Design Pattern "Command" ;behaviour pattern
@@ -62,7 +64,6 @@ extends IUniqueObject {
 	 * 
 	 * @see cerberus.command.factory.CommandFactory.getCommandType()
 	 */
-	public abstract CommandType getCommandType() 
-		throws CerberusRuntimeException;	
+	public abstract CommandQueueSaxType getCommandType();	
 
 }

@@ -22,6 +22,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 //import cerberus.command.window.CmdWindowPopupInfo;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IVirtualArrayManager;
@@ -92,9 +93,10 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
 	 */
 	public CmdDataCreateSet( final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super( refGeneralManager );
+		super( refGeneralManager, refCommandManager );
 		
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		

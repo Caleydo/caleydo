@@ -47,6 +47,7 @@ implements ICommand, ICmdHandleSet {
 				iTargetFrameId,
 				"Histogram 2D" );
 
+		//return CommandType.WINDOW_IFRAME_OPEN_HISTOGRAM2D;
 	}
 	
 	
@@ -84,13 +85,6 @@ implements ICommand, ICmdHandleSet {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_OPEN_HISTOGRAM2D;
 	}
 
 }

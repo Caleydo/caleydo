@@ -10,7 +10,6 @@ import org.xml.sax.Attributes;
 //import org.xml.sax.helpers.DefaultHandler;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.ICommandManager;
@@ -317,22 +316,32 @@ implements IXmlParserHandler
 			System.err.println("CommandSaxHandler::readCommandQueueData() ERROR while parsing " + e.toString() );
 		}
 		
+		CommandQueueSaxType currentType = CommandQueueSaxType.valueOf(sData_Queue_type);
 		
+		switch (currentType) // CommandQueueSaxType
+		{
 		
-		if ( sData_Queue_type.equals( CommandType.COMMAND_QUEUE_RUN.toString() )) {
-			
-			if ( sData_Queue_process.equals( "RUN_QUEUE" )) {
-				lastCommand.doCommand();
-				
+		case COMMAND_QUEUE_RUN:
+			if ( CommandQueueSaxType.valueOf(sData_Queue_process) == CommandQueueSaxType.RUN_QUEUE ) 
+			{
+				lastCommand.doCommand();				
 				refCommandQueueIter = null;
 			}
+			break;
 			
-		} 
-		else if ( sData_Queue_type.equals( CommandType.COMMAND_QUEUE_OPEN.toString() )) {
+		case COMMAND_QUEUE_OPEN:
+			if (refCommandQueueIter != null)
+			{
+				assert false : "COMMAND_QUEUE_OPEN: already one queue is beeing processed!";
+			}
 			
 			refCommandQueueIter = (ICommandQueue) lastCommand;
+			break;
 			
-		}
+			//no default section!
+			//default:			
+		} //switch (currentType) {
+		
 
 //			throw new CerberusRuntimeException( "can not create command from [" +
 //					attrs.toString() + "]");

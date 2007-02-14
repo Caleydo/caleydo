@@ -66,7 +66,9 @@ implements ICommand {
 			final int iSetCallingFrameId,
 			final String sHeaderText ) {
 		
-		super( null);
+		super( -1, 
+				refGeneralManager,
+				refGeneralManager.getSingelton().getCommandManager());
 		
 		this.refGeneralManager = refGeneralManager;
 		
@@ -78,6 +80,8 @@ implements ICommand {
 			new CmdWindowNewInternalFrame(refGeneralManager, 
 					iSetCallingFrameId,
 					sHeaderText );
+		
+		//CommandType.WINDOW_IFRAME_OPEN_JOGL_CANVAS;
 	}
 
 
@@ -136,13 +140,6 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_OPEN_JOGL_CANVAS;
 	}
 
 }

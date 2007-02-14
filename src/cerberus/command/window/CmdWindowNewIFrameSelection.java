@@ -40,6 +40,8 @@ implements ICommand, ICmdHandleSet {
 		super( refGeneralManager,
 				iTargetFrameId,
 				"IVirtualArray" );
+		
+		//CommandType.WINDOW_IFRAME_OPEN_SELECTION;
 	}
 	
 	
@@ -66,13 +68,6 @@ implements ICommand, ICmdHandleSet {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_OPEN_SELECTION;
 	}
 
 }

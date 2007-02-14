@@ -3,8 +3,8 @@ package cerberus.command.base;
 
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.CommandType;
 import cerberus.command.ICommand;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -14,7 +14,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public abstract class ACmdCreate_IdTargetLabel 
-extends AManagedCmd
+extends ACommand
 implements ICommand
 {
 	/**
@@ -33,50 +33,37 @@ implements ICommand
 	 * Label of the new object, that will be created.
 	 */
 	protected String sLabel = "";
+
 	
 	/**
-	 * @deprecated remove thie reference
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
 	 */
-	protected IParameterHandler refParameterHandler;
-
-
+	protected ACmdCreate_IdTargetLabel(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
+	{
+		// set unique ID to -1 because it is unknown at this moment
+		super(-1, 
+				refGeneralManager,
+				refCommandManager);
+	}
+	
 	/**
 	 * Constructor.
+	 * 
+	 * @param refGeneralManager
 	 * 
 	 * @deprecated
-	 * 
-	 * @param refGeneralManager
-	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_IdTargetLabel(IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler)
+	protected ACmdCreate_IdTargetLabel(final IGeneralManager refGeneralManager)
 	{
 		// set unique ID to -1 because it is unknown at this moment
-		super(-1, refGeneralManager);
-
-		this.refParameterHandler = refParameterHandler;
-	}
-
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param refGeneralManager
-	 */
-	protected ACmdCreate_IdTargetLabel(IGeneralManager refGeneralManager)
-	{
-		// set unique ID to -1 because it is unknown at this moment
-		super(-1, refGeneralManager);
+		super(-1, 
+				refGeneralManager,
+				refGeneralManager.getSingelton().getCommandManager());
 	}
 	
-
-	/**
-	 * Method needs to be implemented in the subclass!
-	 */
-	public final CommandType getCommandType()
-	{
-		return null;
-	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		

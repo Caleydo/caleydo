@@ -16,6 +16,7 @@ package cerberus.command;
  * @see CommandType
  * @author Michael Kalkusch
  *
+ * @deprecated use CommandQueueSaxType
  */
 public enum CommandTypeGroup {
 	

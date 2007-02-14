@@ -18,6 +18,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -50,9 +51,10 @@ implements ICommand {
 
 
 	
-	public CmdDataCreateVirtualArray( IGeneralManager refGeneralManager ) {
+	public CmdDataCreateVirtualArray(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
 	
-		super( refGeneralManager );		
+		super( refGeneralManager,refCommandManager);		
 				
 	}
 

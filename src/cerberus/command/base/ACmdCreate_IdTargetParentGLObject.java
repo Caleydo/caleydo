@@ -8,6 +8,7 @@ import gleem.linalg.Vec4f;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -30,21 +31,13 @@ implements ICommand
 	protected String sDetail;
 	
 	protected String sAttribute3;
+
 	
-	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
-	 */
-	public ACmdCreate_IdTargetParentGLObject(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
+	public ACmdCreate_IdTargetParentGLObject(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager,refParameterHandler);
-		
-	}
-	
-	public ACmdCreate_IdTargetParentGLObject(IGeneralManager refGeneralManager)
-	{
-		super(refGeneralManager);
+		super(refGeneralManager,
+				refCommandManager);
 		
 	}
 	

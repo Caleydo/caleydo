@@ -7,10 +7,13 @@ import java.util.Vector;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.queue.ACommandQueue;
 import cerberus.command.queue.ICommandQueue;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -71,11 +74,19 @@ implements ICommand , ICommandQueue
 	/**
 	 * 
 	 */
-	public CommandQueueVector( int iUniqueCmdId, int iCmdQueuId ) {
-		super( iUniqueCmdId, iCmdQueuId );
+	public CommandQueueVector(final int iUniqueCmdId, 
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
+			final int iCmdQueuId ) {
+		super( iUniqueCmdId, 
+				refGeneralManager, 
+				refCommandManager,
+				iCmdQueuId );
 		
 		vecCommandsInQueue = 
 			new Vector <ICommand> (iCmdQueueVector_initialLength);
+		
+		setCommandQueueSaxType(CommandQueueSaxType.COMMAND_QUEUE_OPEN);
 	}
 
 	/* (non-Javadoc)
@@ -189,12 +200,6 @@ implements ICommand , ICommandQueue
 		bQueueIsExcecuting = false;
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.COMMAND_QUEUE_OPEN;
-	}
 
 	/**
 	 * Check is QueueID is set.

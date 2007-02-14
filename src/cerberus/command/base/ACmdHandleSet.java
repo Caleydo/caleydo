@@ -57,7 +57,9 @@ implements ICmdHandleSet {
 			final int iTargetFrameId,
 			final String sHeaderText ) {
 				
-		super( setRefGeneralManager.getSingelton().getCommandManager() );
+		super( -1,
+				setRefGeneralManager,
+				setRefGeneralManager.getSingelton().getCommandManager() );
 		
 		refGeneralManager = setRefGeneralManager;
 		this.iTargetFrameId = iTargetFrameId;

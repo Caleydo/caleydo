@@ -18,6 +18,7 @@ import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -36,9 +37,10 @@ implements ICommand {
 	/**
 	 * Does not set the reference to the parent JComponent.
 	 */
-	public CmdSystemNewFrame(final ICommandManager refCommandManager) {
+	public CmdSystemNewFrame(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
 		
-		super(refCommandManager);
+		super(-1,refGeneralManager,refCommandManager);
 	}
 	
 	/**
@@ -46,9 +48,10 @@ implements ICommand {
 	 * 
 	 * @param setParentComonent parent JComponenet
 	 */
-	public CmdSystemNewFrame(final ICommandManager refCommandManager,
+	public CmdSystemNewFrame(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
 			final JComponent setParentComonent ) {
-		super(refCommandManager);
+		super(-1,refGeneralManager,refCommandManager);
 		parentComponent = setParentComonent;
 	}
 
@@ -87,14 +90,6 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_POPUP_CREDITS;
 	}
 
 }

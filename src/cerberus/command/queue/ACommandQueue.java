@@ -10,6 +10,8 @@ package cerberus.command.queue;
 
 import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
+import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
 
 /**
  * @author Michael Kalkusch
@@ -30,8 +32,13 @@ public abstract class ACommandQueue
 	 * @param iUniqueTargetId unique system-wide Id
 	 * @param iCmdQueueId define cmd queue by this id
 	 */
-	protected ACommandQueue( int iUniqueId, int iCmdQueueId ) {
-		super( iUniqueId );
+	protected ACommandQueue(final int iUniqueId,
+			final IGeneralManager refGeneralManager,	
+			final ICommandManager refCommandManager,
+			final int iCmdQueueId) {
+		super( iUniqueId,
+				refGeneralManager, 
+				refCommandManager );
 		
 		this.iCmdQueueId = iCmdQueueId;
 	}

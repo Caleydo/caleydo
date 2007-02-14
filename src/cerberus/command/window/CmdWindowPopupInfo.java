@@ -37,7 +37,7 @@ implements ICommand {
 	 * Does not set the reference to the parent JComponent.
 	 */
 	public CmdWindowPopupInfo( final String details ) {
-		super( null);
+		super( -1, null,null);
 	}
 	
 	/**
@@ -46,7 +46,7 @@ implements ICommand {
 	 * @param setParentComonent parent JComponenet
 	 */
 	public CmdWindowPopupInfo( final JComponent setParentComonent ) {
-		super( null);
+		super( -1,null,null);
 		parentComponent = setParentComonent;
 	}
 
@@ -80,13 +80,6 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_POPUP_CREDITS;
 	}
 
 }

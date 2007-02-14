@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -35,21 +36,23 @@ implements ICommand
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_IdTargetLabelParentXY(
-			final IGeneralManager refGeneralManager )
+	protected ACmdCreate_IdTargetLabelParentXY(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager);
+		super(refGeneralManager,
+				refCommandManager);
 	}	
 	
+
 	/**
+	 * @deprecated
 	 * 
-	 * @deprecated 
+	 * @param refGeneralManager
 	 */
-	protected ACmdCreate_IdTargetLabelParentXY(
-			final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler )
+	protected ACmdCreate_IdTargetLabelParentXY(final IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager,
+				refGeneralManager.getSingelton().getCommandManager());
 	}	
 		
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

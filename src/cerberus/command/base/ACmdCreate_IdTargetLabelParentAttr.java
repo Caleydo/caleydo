@@ -4,6 +4,7 @@
 package cerberus.command.base;
 
 import cerberus.command.CommandQueueSaxType;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -22,22 +23,24 @@ extends ACmdCreate_IdTargetLabelParent {
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
+	 * 
+	 * @deprecated
 	 */
-	protected ACmdCreate_IdTargetLabelParentAttr(IGeneralManager refGeneralManager)
+	protected ACmdCreate_IdTargetLabelParentAttr(final IGeneralManager refGeneralManager)
 	{
-		super(refGeneralManager);
+		super(refGeneralManager,
+				refGeneralManager.getSingelton().getCommandManager());
 	}
 	
 	/**
-	 * @deprecated
-	 * 
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_IdTargetLabelParentAttr(IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler)
+	protected ACmdCreate_IdTargetLabelParentAttr(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager, refParameterHandler);
+		super(refGeneralManager,
+				refCommandManager);
 	}
 	
 	

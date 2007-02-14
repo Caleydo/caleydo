@@ -48,8 +48,6 @@ implements ICommand {
 
 	public static final String sCommaSeperatedFileExtension = ".csv";
 	
-	private final IGeneralManager refGeneralManager;
-	
 	protected String sFileName;
 	
 	protected String sLookupTableType;
@@ -89,9 +87,11 @@ implements ICommand {
 	public CmdSystemLoadFileLookupTable( final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager ) {
 		
-		super(refCommandManager);
+		super(-1,
+				refGeneralManager,
+				refCommandManager);
 		
-		this.refGeneralManager = refGeneralManager;		
+		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE_N_STORAGES);
 	}
 	
 	
@@ -264,14 +264,4 @@ implements ICommand {
 	public void undoCommand() throws CerberusRuntimeException {
 		refCommandManager.runUndoCommand(this);
 	}
-	
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.DATASET_LOAD; 
-	}
-	
-
 }

@@ -37,7 +37,9 @@ implements ICommand {
 	 * Does not set the reference to the parent JComponent.
 	 */
 	public CmdWindowNewIFrameScatterplot2D() {
-		super( null);
+		super( -1,null,null);
+		
+		//CommandType.WINDOW_POPUP_CREDITS;
 	}
 	
 	/**
@@ -46,7 +48,7 @@ implements ICommand {
 	 * @param setParentComonent parent JComponenet
 	 */
 	public CmdWindowNewIFrameScatterplot2D( final JComponent setParentComonent ) {
-		super( null);
+		super( -1,null,null);
 		parentComponent = setParentComonent;
 	}
 
@@ -80,13 +82,6 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_POPUP_CREDITS;
 	}
 
 }

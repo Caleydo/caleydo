@@ -40,8 +40,6 @@ import cerberus.data.collection.ISet;
 public class CmdSystemLoadFileNStorages 
 extends ACommand
 implements ICommand {
-
-	private final IGeneralManager refGeneralManager;
 	
 	protected String sFileName;
 	
@@ -68,12 +66,14 @@ implements ICommand {
 	protected int iTargetSetId;
 	
 	
-	public CmdSystemLoadFileNStorages( IGeneralManager refGeneralManager,
+	public CmdSystemLoadFileNStorages( final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager ) {
 		
-		super(refCommandManager);
+		super(-1,
+				refGeneralManager,
+				refCommandManager);
 		
-		this.refGeneralManager = refGeneralManager;		
+		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE_N_STORAGES);	
 	}
 	
 	
@@ -221,14 +221,4 @@ implements ICommand {
 	public void undoCommand() throws CerberusRuntimeException {
 		// no undo of system shutdown!
 	}
-	
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public final CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.DATASET_LOAD; 
-	}
-	
-
 }

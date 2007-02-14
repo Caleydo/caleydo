@@ -8,6 +8,7 @@
  */
 package cerberus.command.system;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.window.CmdWindowPopupInfo;
@@ -55,13 +56,6 @@ implements ICommand {
 	public void undoCommand() throws CerberusRuntimeException {
 		// no undo of system shutdown!
 	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.SYSTEM_EXIT; 
-	}
 
 	public boolean isEqualType(ICommand compareToObject) {
 		return false;
@@ -69,6 +63,10 @@ implements ICommand {
 
 	public void setParameterHandler(IParameterHandler refParameterHandler) {
 		assert false : "Must not be called for this classs.";
+	}
+
+	public CommandQueueSaxType getCommandType() {
+		return CommandQueueSaxType.SYSTEM_SHUT_DOWN;
 	}
 
 }

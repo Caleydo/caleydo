@@ -5,12 +5,12 @@ package cerberus.command.base;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * @author Michael Kalkusch
@@ -25,26 +25,28 @@ implements ICommand
 	
 	protected CommandQueueSaxType localManagerObjectType;
 	
-	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
-	 * 
-	 * @deprecated
-	 */
-	protected ACmdCreate_GlCanvasUser(IGeneralManager refGeneralManager,
-			IParameterHandler refParameterHandler)
-	{
-		super(refGeneralManager, refParameterHandler);
-
-	}
 	
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
 	 */
-	protected ACmdCreate_GlCanvasUser(IGeneralManager refGeneralManager)
+	protected ACmdCreate_GlCanvasUser(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager);
+		super(refGeneralManager,
+				refCommandManager);
+
+	}
+	
+	/**
+	 * @deprecated
+	 * 
+	 * @param refGeneralManager
+	 */
+	protected ACmdCreate_GlCanvasUser(final IGeneralManager refGeneralManager)
+	{
+		super(refGeneralManager,
+				refGeneralManager.getSingelton().getCommandManager());
 
 	}
 

@@ -20,6 +20,7 @@ import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 //import cerberus.command.window.CmdWindowPopupInfo;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IStorageManager;
@@ -87,9 +88,10 @@ implements ICommand {
 	 * 
 	 */
 	public CmdDataCreateStorage( final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super( refGeneralManager);
+		super( refGeneralManager, refCommandManager);
 			
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		

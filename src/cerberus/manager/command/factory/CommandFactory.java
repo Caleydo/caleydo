@@ -177,6 +177,7 @@ public class CommandFactory
 			createdCommand =
 				new CmdDataCreateStorage(
 						refGeneralManager,
+						refCommandManager,
 						true );
 			break;
 		}
@@ -193,6 +194,7 @@ public class CommandFactory
 			createdCommand =
 				new CmdDataCreateSet(
 						refGeneralManager,
+						refCommandManager,
 						true );
 			break;
 		}
@@ -200,14 +202,16 @@ public class CommandFactory
 		case CREATE_VIRTUAL_ARRAY:
 		{
 			createdCommand =
-				new CmdDataCreateVirtualArray(refGeneralManager );			
+				new CmdDataCreateVirtualArray(refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
 		case CREATE_SWT_WINDOW:
 		{
 			createdCommand =
-				new CmdWindowCreate(refGeneralManager );			
+				new CmdWindowCreate(refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -256,7 +260,8 @@ public class CommandFactory
 		case CREATE_VIEW_DATA_EXCHANGER:
 		{
 			createdCommand =
-				new CmdViewCreateDataExchanger(refGeneralManager);			
+				new CmdViewCreateDataExchanger(refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -400,7 +405,8 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdEventCreateMediator(
-						refGeneralManager );			
+						refGeneralManager,
+						refCommandManager);			
 			break;
 		}
 		
@@ -466,13 +472,17 @@ public class CommandFactory
 		switch (queueType) 
 		{
 		case COMMAND_QUEUE_OPEN: {
-			ICommand cmdQueue = new CommandQueueVector(iNewUniqueId, iCmdQueueId);				
+			ICommand cmdQueue = new CommandQueueVector(iNewUniqueId, 
+					refGeneralManager,
+					refCommandManager,
+					iCmdQueueId);				
 			return cmdQueue;
 		}
 			
 		case COMMAND_QUEUE_RUN:
 			return new CmdSystemRunCmdQueue(iNewUniqueId,
 					refGeneralManager,
+					refCommandManager,
 					iCmdQueueId);
 			
 			default:
@@ -541,7 +551,8 @@ public class CommandFactory
 				return refLastCommand;
 				
 			case SYSTEM_NEW_FRAME:
-				return new CmdSystemNewFrame(refCommandManager);
+				return new CmdSystemNewFrame( refGeneralManager,
+						refCommandManager);
 				
 			default:
 				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+

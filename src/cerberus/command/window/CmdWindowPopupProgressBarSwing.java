@@ -36,7 +36,7 @@ implements ICommand {
 	 * Does not set the reference to the parent JComponent.
 	 */
 	public CmdWindowPopupProgressBarSwing( final String details ) {
-		super( null);
+		super( -1,null,null);
 		progressBar = new JProgressBar(0,100);
 		progressBar.setToolTipText( details );
 		
@@ -107,13 +107,6 @@ implements ICommand {
 		progressBar.setVisible( false );
 		
 		progressBar = null;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_POPUP_CREDITS;
 	}
 
 }

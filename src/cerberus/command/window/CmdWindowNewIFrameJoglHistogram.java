@@ -62,6 +62,8 @@ implements ICommand {
 //				refGLEventListener,
 //				initDSwingJoglCanvas,
 				"Histogram - JOGL");
+		
+		//CommandType.WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM;
 	}
 
 	
@@ -88,13 +90,6 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM;
 	}
 
 }

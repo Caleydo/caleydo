@@ -40,8 +40,6 @@ import cerberus.data.collection.ISet;
 public class CmdSystemLoadFileViaImporter 
 extends ACommand
 implements ICommand {
-
-	private final IGeneralManager refGeneralManager;
 	
 	protected String sFileName;
 	
@@ -72,11 +70,11 @@ implements ICommand {
 	public CmdSystemLoadFileViaImporter( final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager) {
 		
-		super(refCommandManager);
+		super(-1,
+				refGeneralManager,
+				refCommandManager);
 		
-		this.refGeneralManager = refGeneralManager;		
-		
-
+		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE_BY_IMPORTER);
 	}
 	
 	public void setParameterHandler( IParameterHandler refParameterHandler) {
@@ -220,14 +218,4 @@ implements ICommand {
 	public void undoCommand() throws CerberusRuntimeException {
 		refCommandManager.runUndoCommand(this);
 	}
-	
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.DATASET_LOAD; 
-	}
-	
-
 }

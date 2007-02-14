@@ -8,9 +8,12 @@
  */
 package cerberus.command.base;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.data.AUniqueItem;
+import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.ICommandManager;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -18,7 +21,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public abstract class ACommand 
-	extends AUniqueItem
+	extends AUniqueManagedObject
 	implements ICommand {
 
 	/**
@@ -34,24 +37,20 @@ public abstract class ACommand
 	 */
 	protected final ICommandManager refCommandManager;
 	
-	/**
-	 * Default constructor, collectionId is set to -1.
-	 */
-	public ACommand(final ICommandManager refCommandManager) {
-		super( -1 );
+	private CommandQueueSaxType refCommandQueueSaxType;
+	
+	
+	public ACommand(final int iSetCollectionId,
+			final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
+		super( iSetCollectionId, refGeneralManager );
 		
 		this.refCommandManager = refCommandManager;
-	}
-	
-	/**
-	 * ISet CollectionId using this constructor.
-	 * 
-	 * @param iSetCmdCollectionId set collection Id
-	 */
-	public ACommand( int iSetCmdCollectionId) {
-		super( iSetCmdCollectionId );
 		
-		refCommandManager = null;
+		/*
+		 * TODO: remove next assignment!
+		 */
+		refCommandQueueSaxType = CommandQueueSaxType.NO_OPERATION;
 	}
 
 	
@@ -65,9 +64,22 @@ public abstract class ACommand
 		}
 		return false;
 	}
+	
+	public final ManagerObjectType getBaseType() {
+		return ManagerObjectType.COMMAND;
+	}
+	
+	public final CommandQueueSaxType getCommandType() {
+		return refCommandQueueSaxType;
+	}
+
 
 	public void setParameterHandler( IParameterHandler phHandler) {
 		
+	}
+	
+	protected final void setCommandQueueSaxType( final CommandQueueSaxType refCommandQueueSaxType) {
+		this.refCommandQueueSaxType  =refCommandQueueSaxType;
 	}
 
 }

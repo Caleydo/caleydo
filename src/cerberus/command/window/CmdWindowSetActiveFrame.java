@@ -10,6 +10,7 @@ package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewCanvasManager;
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -38,7 +39,9 @@ implements ICommand {
 	 */
 	public CmdWindowSetActiveFrame(final IGeneralManager setRefGeneralManager,
 			final String details ) {
-		super( null);
+		super( -1,
+				setRefGeneralManager,
+				setRefGeneralManager.getSingelton().getCommandManager());
 		
 		refGeneralManager = setRefGeneralManager;
 		
@@ -60,6 +63,8 @@ implements ICommand {
 //			assert false : "CmdWindowSetActiveFrame() can not convert id ["+
 //				details + "] from String to int";
 		}
+		
+		this.setCommandQueueSaxType(CommandQueueSaxType.WINDOW_SET_ACTIVE_FRAME);
 
 	}
 
@@ -95,13 +100,6 @@ implements ICommand {
 	public void undoCommand() throws CerberusRuntimeException {
 		// TODO Auto-generated method stub
 
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_SET_ACTIVE_FRAME;
 	}
 
 }

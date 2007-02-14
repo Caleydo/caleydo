@@ -5,6 +5,7 @@ package cerberus.command.base;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
@@ -19,27 +20,16 @@ implements ICommand
 {
 
 	protected int iParentContainerId;
-	
-	
+
 	/**
 	 * @param refGeneralManager
 	 * @param refParameterHandler
-	 * 
-	 * @deprecated
 	 */
 	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager refGeneralManager,
-			final IParameterHandler refParameterHandler )
+			final ICommandManager refCommandManager)
 	{
-		super(refGeneralManager, refParameterHandler);
-	}
-	
-	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
-	 */
-	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager refGeneralManager )
-	{
-		super(refGeneralManager);
+		super(refGeneralManager,
+				refCommandManager);
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

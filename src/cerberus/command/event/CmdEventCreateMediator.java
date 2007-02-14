@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IEventPublisher.MediatorType;
 import cerberus.manager.type.ManagerObjectType;
@@ -31,10 +32,12 @@ implements ICommand {
 	
 	protected MediatorType mediatorType;
 	
-	public CmdEventCreateMediator(IGeneralManager refGeneralManager) {
+	public CmdEventCreateMediator(final IGeneralManager refGeneralManager,
+			final ICommandManager refCommandManager) {
 		
 		// set unique ID to -1 because it is unknown at this moment
-		super(refGeneralManager);
+		super(refGeneralManager,
+				refCommandManager);
 		
 		arSenderIDs = new ArrayList<Integer>();
 		arReceiverIDs = new ArrayList<Integer>();

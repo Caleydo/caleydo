@@ -58,6 +58,8 @@ implements ICommand //, ICmdHandleSet {
 //				refGLEventListener,
 //				initDSwingJoglCanvas,
 				"Heatmap - JOGL" );
+		
+		//CommandType.WINDOW_IFRAME_OPEN_JOGL_HEATMAP;
 	}
 
 	
@@ -78,13 +80,6 @@ implements ICommand //, ICmdHandleSet {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_OPEN_JOGL_HEATMAP;
 	}
 
 }

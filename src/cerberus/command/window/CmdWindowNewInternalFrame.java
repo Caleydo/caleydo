@@ -13,6 +13,7 @@ package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewCanvasManager;
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
@@ -45,15 +46,18 @@ implements ICommand {
 	/**
 	 * Does not set the reference to the parent JComponent.
 	 */
-	public CmdWindowNewInternalFrame( final IGeneralManager refGeneralManage,
+	public CmdWindowNewInternalFrame( final IGeneralManager refGeneralManager,
 			final int iCallingFrameId,
 			final String sHeaderText ) {
-		super( null);
-		this.refGeneralManage = refGeneralManage;
+		super( -1,refGeneralManager,refGeneralManager.getSingelton().getCommandManager());
+		
+		this.refGeneralManage = refGeneralManager;
 		this.iCallingFrameId = iCallingFrameId;		
 		this.refViewCanvasManager = 
 			refGeneralManage.getSingelton().getViewCanvasManager();
 		this.sHeaderText = sHeaderText;
+		
+		this.setCommandQueueSaxType(CommandQueueSaxType.WINDOW_IFRAME_NEW_INTERNAL_FRAME);
 	}
 
 
@@ -119,13 +123,6 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_NEW_INTERNAL_FRAME;
 	}
 
 }

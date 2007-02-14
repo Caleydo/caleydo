@@ -105,11 +105,4 @@ implements ICommand {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
-	 */
-	public CommandType getCommandType() throws CerberusRuntimeException {
-		return CommandType.WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM;
-	}
-
 }

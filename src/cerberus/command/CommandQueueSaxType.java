@@ -28,6 +28,7 @@ public enum CommandQueueSaxType
 	 */
 	LOAD_DATA_FILE("cmd","type",""),
 	LOAD_DATA_FILE_N_STORAGES("cmd","type",""),
+	LOAD_DATA_FILE_BY_IMPORTER("cmd","type",""),
 	LOAD_LOOKUP_TABLE_FILE("cmd","type",""),
 	LOAD_ON_DEMAND("cmd", "process","LOAD_ON_DEMAND"),
 	LOAD_URL_IN_BROWSER("cmd", "type", "-1"),
@@ -94,7 +95,16 @@ public enum CommandQueueSaxType
 	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait","-1"),
 
 	
+	/*
+	 * =================================================
+	 *    Import from former Type "CommandType"
+	 * =================================================
+	 */
 	
+	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1"),
+	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1"),
+	
+	SYSTEM_SHUT_DOWN("cmd","type","-1"),
 	
 	/*
 	 * ==================================================

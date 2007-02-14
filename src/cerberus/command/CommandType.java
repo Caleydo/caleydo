@@ -16,7 +16,8 @@ import cerberus.command.CommandTypeGroup;
  * Desing Pattern "Command"
  * 
  * @author Michael Kalkusch
- *
+ * 
+ * @deprecated use CommandQueueSaxType
  */
 public enum CommandType {
 
