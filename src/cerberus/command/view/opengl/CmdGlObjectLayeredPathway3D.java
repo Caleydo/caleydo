@@ -10,8 +10,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
-import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway3D;
+import cerberus.view.gui.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -19,7 +18,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * @author Marc Streit
  *
  */
-public class CmdGlObjectPathway3D 
+public class CmdGlObjectLayeredPathway3D 
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
 	
@@ -29,7 +28,7 @@ implements ICommand {
 	 * Constructor.
 	 * 
 	 */
-	public CmdGlObjectPathway3D(
+	public CmdGlObjectLayeredPathway3D(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType)
@@ -38,7 +37,7 @@ implements ICommand {
 				refCommandManager,
 				refCommandQueueSaxType);
 				
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_PATHWAY2D;
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_LAYERED_PATHWAY_3D;
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -51,8 +50,8 @@ implements ICommand {
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException {
 		
-		GLCanvasPathway3D canvas = 
-			(GLCanvasPathway3D) openGLCanvasUser;		
+		GLCanvasLayeredPathway3D canvas = 
+			(GLCanvasLayeredPathway3D) openGLCanvasUser;		
 		
 		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
 		canvas.setPathwaySet(iPathwaySetId);
@@ -61,11 +60,6 @@ implements ICommand {
 
 	@Override
 	public void undoCommandPart() throws CerberusRuntimeException {
-		
-		GLCanvasHistogram2D canvas = 
-			(GLCanvasHistogram2D) openGLCanvasUser;
-		
-		canvas.destroy();
-		canvas = null;
+
 	}
 }

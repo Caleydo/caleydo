@@ -7,17 +7,23 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolItem;
 
-import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway3D;
+import cerberus.view.gui.opengl.canvas.pathway.AGLCanvasPathway3D;
 
 public class Pathway3DToolbar 
 extends AToolbar {
 
-	protected GLCanvasPathway3D refPathwayViewRep;
+	protected AGLCanvasPathway3D refPathwayViewRep;
 	
 	protected ToolItem refShowPathwayTextureItem;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refSWTContainer
+	 * @param refPathwayViewRep
+	 */
 	public Pathway3DToolbar(Composite refSWTContainer,
-			 GLCanvasPathway3D refPathwayViewRep) {
+			 AGLCanvasPathway3D refPathwayViewRep) {
 
 		super(refSWTContainer);
 		

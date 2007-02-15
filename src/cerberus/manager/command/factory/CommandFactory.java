@@ -20,7 +20,8 @@ import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
-import cerberus.command.view.opengl.CmdGlObjectPathway3D;
+import cerberus.command.view.opengl.CmdGlObjectLayeredPathway3D;
+import cerberus.command.view.opengl.CmdGlObjectPanelPathway3D;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectTexture2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
@@ -459,10 +460,20 @@ public class CommandFactory
 			break;
 		}
 		
-		case CREATE_GL_PATHWAY2D:
+		case CREATE_GL_LAYERED_PATHWAY_3D:
 		{
  			createdCommand =
-				new CmdGlObjectPathway3D(
+				new CmdGlObjectLayeredPathway3D(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);	
+			break;
+		}
+		
+		case CREATE_GL_PANEL_PATHWAY_3D:
+		{
+ 			createdCommand =
+				new CmdGlObjectPanelPathway3D(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);	

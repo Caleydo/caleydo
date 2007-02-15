@@ -30,6 +30,8 @@ import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
+import cerberus.view.gui.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
+import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPanelPathway3D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPathway3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
@@ -344,9 +346,19 @@ implements IViewManager, IViewGLCanvasManager {
 					iParentContainerId, 
 					sLabel);
 			
-		case CREATE_GL_PATHWAY2D:
-			return new GLCanvasPathway3D(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+		case CREATE_GL_LAYERED_PATHWAY_3D:
+			return new GLCanvasLayeredPathway3D(
+					refGeneralManager, 
+					iViewId,
+					iParentContainerId, 
+					sLabel);
+			
+		case CREATE_GL_PANEL_PATHWAY_3D:
+			return new GLCanvasPanelPathway3D(
+					refGeneralManager, 
+					iViewId,
+					iParentContainerId, 
+					sLabel);	
 
 		default:
 			throw new CerberusRuntimeException(

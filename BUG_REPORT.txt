@@ -76,7 +76,7 @@ MARC: I tried it to put it in an own class.
       members are changed too.
 		
 		
-2006_12_19#0006: [OPEN] need do create commadn for calling URL in browser!
+2006_12_19#0006: [SOLVED] need do create commadn for calling URL in browser!
 
 cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
 
@@ -103,13 +103,16 @@ public void loadNodeInformationInBrowser(final String sUrl) {
 	
 MARC: Problem does not occur using current configuration file (2007_02_12).
 	
-2007_01_05#0008: [OPEN] integrate IPathwayElementManager into IPathwayManager
+2007_01_05#0008: [SOLVED] integrate IPathwayElementManager into IPathwayManager
 
-MARC: Why? Please explain.
+Differentiation makes sense.
 
 2007_02_12#0009: [OPEN] PathwayGraphViewRep generates error (system.err) "Unknown Error during creating edge! SKIP"
 
 
 2007_02_12#0010: [OPEN] Application does not kill system thread when closing all windows 
-                        (at leas under linux). After closing the windows it's even impossible
+                        under LINUX. After closing the windows it's even impossible
                         to kill the application in Eclipse.
+                        
+2007_02_14#0011: [OPEN] Texture problem with new JOGL version.
+                        They are not displayed at all.
