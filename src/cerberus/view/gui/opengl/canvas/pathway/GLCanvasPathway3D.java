@@ -52,7 +52,7 @@ import cerberus.view.gui.opengl.GLCanvasStatics;
 
 /**
  * @author Marc Streit
- *
+ * @deprecated
  */
 public class GLCanvasPathway3D
 extends APathwayGraphViewRep
@@ -170,7 +170,7 @@ implements IGLCanvasUser {
 				
 		refSWTContainer = ((SwtJoglGLCanvasViewRep)openGLCanvasDirector).getSWTContainer();
 		refSWTContainer.setLayout(new GridLayout(1, false));
-		new Pathway3DToolbar(refSWTContainer, this);
+		//new Pathway3DToolbar(refSWTContainer, this);
 		
 		//FIXME: Is refEmbeddedFrameComposite variable really needed?
 		refEmbeddedFrameComposite = refSWTContainer;
