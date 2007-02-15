@@ -8,6 +8,7 @@
  */
 package cerberus.manager.command;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 //import java.util.Iterator;
@@ -20,6 +21,7 @@ import cerberus.manager.command.factory.ICommandFactory;
 //import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
+import cerberus.view.gui.swt.undoredo.UndoRedoViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.command.CommandQueueSaxType;
@@ -53,10 +55,13 @@ public class CommandManager
 	protected Hashtable<Integer,ICommand> hash_CommandId;
 	
 	protected Vector <ICommand> vecUndo;
-	
+		
 	protected Vector <ICommand> vecRedo;
 	
+	protected ArrayList<UndoRedoViewRep> arUndoRedoViews;
+	
 	private int iCountRedoCommand = 0;
+	
 	
 	/**
 	 * 
@@ -80,6 +85,8 @@ public class CommandManager
 		vecUndo = new Vector <ICommand> (100);
 		
 		vecRedo = new  Vector <ICommand> (100);
+		
+		arUndoRedoViews = new ArrayList<UndoRedoViewRep>();
 	}
 
 	/* (non-Javadoc)
@@ -191,7 +198,15 @@ public class CommandManager
 	
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType) {
 
-		return refCommandFactory.createCommandByType(cmdType);
+		ICommand createdCommand = refCommandFactory.createCommandByType(cmdType);
+		
+		//FIXME: should iterate over all undo/redo views.
+		if (arUndoRedoViews.isEmpty() == false)
+		{
+			arUndoRedoViews.get(0).addCommand(createdCommand);
+		}
+		
+		return createdCommand;
 	}
 
 	
@@ -207,6 +222,12 @@ public class CommandManager
 		if ( phAttributes != null ) 
 		{
 			createdCommand.setParameterHandler( phAttributes );	
+		}
+		
+		//FIXME: should iterate over all undo/redo views.
+		if (arUndoRedoViews.isEmpty() == false)
+		{
+			arUndoRedoViews.get(0).addCommand(createdCommand);
 		}
 		
 		return createdCommand;
@@ -282,6 +303,11 @@ public class CommandManager
 		return null;
 	}
 
-	
+	public void addUndoRedoViewRep(UndoRedoViewRep refUndoRedoViewRep) {
+		
+		arUndoRedoViews.add(refUndoRedoViewRep);		
+		arUndoRedoViews.get(0).updateCommandList(vecUndo);
+
+	}
 	
 }

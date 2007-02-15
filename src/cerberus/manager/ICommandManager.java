@@ -14,6 +14,7 @@ import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;
 import cerberus.command.ICommandActionListener;
 import cerberus.command.queue.ICommandQueue;
+import cerberus.view.gui.swt.undoredo.UndoRedoViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 //import prometheus.data.xml.MementoXML;
 
@@ -138,5 +139,7 @@ extends ICommandActionListener, IGeneralManager {
 	 * @param runCmd
 	 */
 	public void runUndoCommand( ICommand runCmd );
+	
+	public void addUndoRedoViewRep ( UndoRedoViewRep refUndoRedoViewRep);
 	
 }

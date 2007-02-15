@@ -1,11 +1,15 @@
 package cerberus.view.gui.swt.undoredo;
 
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import cerberus.command.ICommand;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
@@ -54,7 +58,7 @@ implements IView {
 		
 		Label viewComboLabel = new Label(refSWTContainer, SWT.LEFT);
 		viewComboLabel.setText("Undo/Redo:");
-		viewComboLabel.setSize(150, 30);
+		viewComboLabel.setSize(300, 30);
 				
 		refUndoRedoCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
 		refUndoRedoCombo.add("Dummy Command");
@@ -81,5 +85,26 @@ implements IView {
 	public void setAttributes(int iWidth, int iHeight, String sImagePath) {
 		
 		super.setAttributes(iWidth, iHeight);
+	}
+	
+	public void updateCommandList(Vector<ICommand> vecCommands) {
+		
+		refUndoRedoCombo.removeAll();
+		
+		Iterator<ICommand> iterCommands = vecCommands.iterator();
+		
+		while(iterCommands.hasNext())
+		{
+			refUndoRedoCombo.add(iterCommands.next().getInfoText());
+		}		
+	}
+	
+	public void addCommand(final ICommand refCommand) {
+	
+		refSWTContainer.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				refUndoRedoCombo.add(refCommand.getInfoText());
+			}
+		});
 	}
 }

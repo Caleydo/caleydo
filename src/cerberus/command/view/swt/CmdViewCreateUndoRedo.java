@@ -61,6 +61,10 @@ implements ICommand {
 		undoRedoView.initView();
 		undoRedoView.drawView();
 		
+		// Register UNDO/REDO view to command manager.
+		refGeneralManager.getSingelton().getCommandManager().
+			addUndoRedoViewRep(undoRedoView);
+		
 		refCommandManager.runDoCommand(this);
 	}
 
