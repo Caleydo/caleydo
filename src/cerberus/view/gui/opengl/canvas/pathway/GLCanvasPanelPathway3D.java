@@ -39,6 +39,12 @@ extends AGLCanvasPathway3D {
 
 		Pathway refTmpPathway = null;
 
+		refHashDisplayListNodeId2Pathway.clear();
+		refHashPathway2DisplayListNodeId.clear();
+		refHashPathwayToZLayerValue.clear();
+		iArPathwayNodeDisplayListIDs.clear();
+		iArPathwayEdgeDisplayListIDs.clear();
+		
 		System.out.println("Create pathway display lists");
 
 		// Load pathway storage
@@ -80,7 +86,7 @@ extends AGLCanvasPathway3D {
 		}
 	}
 
-	public void renderPart(GL gl, int iRenderMode) {
+	protected void renderPart(GL gl, int iRenderMode) {
 		
 		this.gl = gl;
 		
@@ -110,9 +116,11 @@ extends AGLCanvasPathway3D {
 		}
 		
 		gl.glPushMatrix();
+		
 		if (bShowPathwayTexture == true)
 		{				
 			Pathway refTmpPathway = null;
+			refHashPathway2ModelMatrix.clear();
 			
 			// Load pathway storage
 			// Assumes that the set consists of only one storage
@@ -213,44 +221,10 @@ extends AGLCanvasPathway3D {
 		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 				
 		gl.glEnd();
 
-		//gl.glTranslatef(texCoords.right() * 0.0025f, 0.0f, 0.0f);
-		
-//
-//		if (bAcordionDirection == false)
-//		{
-//			gl.glRotated(-140, 0, 1, 0);
-//			bAcordionDirection = true;
-//		}
-//		else
-//		{
-//			gl.glRotated(140, 0, 1, 0);				
-//			bAcordionDirection = false;
-//		}
-//		
 		refPathwayTexture.disable();
 	}
-	
-//	public void setTargetPathwayId(final int iTargetPathwayId) {
-//		
-//		refCurrentPathway = 
-//			refGeneralManager.getSingelton().getPathwayManager().
-//				getCurrentPathway();
-//		
-//		if (refCurrentPathway == null) 
-//		{
-//			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-//					"GLCanvasPathway2D.setPathwayId(" +
-//					iTargetPathwayId + ") failed, because Pathway does not exist!");
-//
-//			return;
-//		}
-//		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-//				"GLCanvasPathway2D.setPathwayId(" +
-//				iTargetPathwayId + ") done!");
-//	}
     
-    void highlightIdenticalNodes() {
+    protected void highlightIdenticalNodes() {
     	
 		Pathway refTmpPathway = null;
 		PathwayVertex refCurrentVertex = null;
@@ -259,7 +233,7 @@ extends AGLCanvasPathway3D {
 		Iterator<PathwayVertex> iterIdenticalVertices = null;
 		
 		Iterator<Pathway> iterDrawnPathways = 
-			refHashPathwayToTexture.keySet().iterator();
+			refHashPathway2DisplayListNodeId.keySet().iterator();
 
 		for (int iHighlightedNodeIndex = 0; iHighlightedNodeIndex < iArHighlightedVertices.size(); 
 			iHighlightedNodeIndex++)
@@ -307,18 +281,5 @@ extends AGLCanvasPathway3D {
 				}
 			}
 	    }
-    }
-    
-    protected void vecMatrixMult(float[] vecIn, float[] matIn, float[] vecOut) {
-    	
-    	vecOut[0] = (vecIn[0]*matIn[ 0]) + (vecIn[1]*matIn[ 1]) + (vecIn[2]*matIn[ 2]) + (vecIn[3]*matIn[ 3]);
-    	vecOut[1] = (vecIn[0]*matIn[ 4]) + (vecIn[1]*matIn[ 5]) + (vecIn[2]*matIn[ 6]) + (vecIn[3]*matIn[ 7]);
-    	vecOut[2] = (vecIn[0]*matIn[ 8]) + (vecIn[1]*matIn[ 9]) + (vecIn[2]*matIn[10]) + (vecIn[3]*matIn[11]);
-    	vecOut[3] = (vecIn[0]*matIn[12]) + (vecIn[1]*matIn[13]) + (vecIn[2]*matIn[14]) + (vecIn[3]*matIn[15]);
-      
-    	vecOut[0] /= vecOut[3];
-    	vecOut[1] /= vecOut[3];
-    	vecOut[2] /= vecOut[3];
-    	vecOut[3] = 1.0f;
     }
 }

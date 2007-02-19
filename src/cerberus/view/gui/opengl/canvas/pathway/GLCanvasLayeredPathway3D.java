@@ -36,6 +36,13 @@ extends AGLCanvasPathway3D {
 	protected void buildPathwayDisplayList() {
 
 		Pathway refTmpPathway = null;
+		fZLayerValue = 0.0f;
+		
+		refHashDisplayListNodeId2Pathway.clear();
+		refHashPathway2DisplayListNodeId.clear();
+		refHashPathwayToZLayerValue.clear();
+		iArPathwayNodeDisplayListIDs.clear();
+		iArPathwayEdgeDisplayListIDs.clear();
 		
 		System.out.println("Create pathway display lists");
 
@@ -53,7 +60,6 @@ extends AGLCanvasPathway3D {
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
 			refHashPathwayToZLayerValue.put(refTmpPathway, fZLayerValue);
-			fZLayerValue += 1.5f;
 					
 			// Creating display list for pathways
 			int iVerticesDiplayListId = gl.glGenLists(1);
@@ -65,9 +71,9 @@ extends AGLCanvasPathway3D {
 	
 			//System.out.println("Current pathway: " +refTmpPathway.getTitle());
 			
-			fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
+			//fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
 //			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-//								
+								
 //			// Init scaling factor after pathway texture width/height is known
 //			fPathwayTextureAspectRatio = 
 //				(float)refPathwayTexture.getImageWidth() / 
@@ -85,10 +91,12 @@ extends AGLCanvasPathway3D {
 			gl.glNewList(iEdgeDisplayListId, GL.GL_COMPILE);	
 			extractEdges(refTmpPathway);
 			gl.glEndList();
+			
+			fZLayerValue += 1.5f;
 		}
 	}
 
-	public void renderPart(GL gl, int iRenderMode) {
+	protected void renderPart(GL gl, int iRenderMode) {
 		
 		this.gl = gl;
 		
@@ -145,8 +153,9 @@ extends AGLCanvasPathway3D {
 		if (bShowPathwayTexture == true)
 		{
 			Iterator<Pathway> iterPathways = 
-				refHashPathwayToZLayerValue.keySet().iterator();
+				refHashPathwayToTexture.keySet().iterator();
 				
+			//refHashPathway2ModelMatrix.clear();
 			Texture refPathwayTexture = null;
 			Pathway refTmpPathway = null;
 			float fTmpZLayerValue = 0.0f;
@@ -208,6 +217,65 @@ extends AGLCanvasPathway3D {
 		
 		highlightIdenticalNodes();
 	}
+	
+	protected void renderPathway(final Pathway refTmpPathway, 
+			int iDisplayListNodeId) {
+		
+		// Creating hierarchical picking names
+		// This is the layer of the pathways, therefore we can use the pathway
+		// node picking ID
+		gl.glPushName(iDisplayListNodeId);	
+		gl.glCallList(iDisplayListNodeId);
+		gl.glPopName();
+		
+		Texture refPathwayTexture = null;
+		float fTmpZLayerValue = 0.0f;
+		float fTextureWidth;
+		float fTextureHeight;
+		
+		refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
+		fTmpZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
+		System.out.println("z-Layer value: " +fTmpZLayerValue);
+		
+		refPathwayTexture.enable();
+		refPathwayTexture.bind();
+		gl.glTexEnvi(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+
+		gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
+
+		TextureCoords texCoords = refPathwayTexture.getImageTexCoords();
+		
+		// Recalculate scaling factor
+		fPathwayTextureAspectRatio = 
+			(float)refPathwayTexture.getImageWidth() / 
+			(float)refPathwayTexture.getImageHeight();								
+		
+		fTextureWidth = 0.0025f * (float)refPathwayTexture.getImageWidth();
+		fTextureHeight = 0.0025f * (float)refPathwayTexture.getImageHeight();				
+		
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2f(0, texCoords.top()); 
+		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);			  
+		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
+		gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);			 
+		gl.glTexCoord2f(texCoords.right(), 0); 
+		gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
+		gl.glTexCoord2f(0, 0); 
+		gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
+		gl.glEnd();	
+		
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+		gl.glLineWidth(1);
+		gl.glBegin(GL.GL_LINE_STRIP); 
+		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 
+		gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);
+		gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
+		gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
+		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 				
+		gl.glEnd();
+
+		refPathwayTexture.disable();
+	}
 
 	protected void connectVertices(IPathwayVertexRep refVertexRep1, 
 			IPathwayVertexRep refVertexRep2) {
@@ -265,7 +333,7 @@ extends AGLCanvasPathway3D {
 
 	}
 
-    void highlightIdenticalNodes() {
+    protected void highlightIdenticalNodes() {
     	
 		Pathway refTmpPathway = null;
 		PathwayVertex refCurrentVertex = null;
