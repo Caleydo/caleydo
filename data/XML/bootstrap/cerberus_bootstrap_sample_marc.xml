@@ -74,19 +74,19 @@
  			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="65301" label="Pathway storage" attrib1="INT" attrib2="271 272 260" />
  
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
-		   		detail="data/mapping/accession_number_2_gene_id.map"	
+		   		detail="data/MicroarrayData/mapping/accession_number_2_gene_id.map"	
 		   		attrib1="ACCESSION_NUMBER_2_GENE_ID INT2INT" 
 		   		attrib2="55101" 
 		   		attrib3="0 -1" />		
 		   		
 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
-		   		detail="data/mapping/accession_number_2_enzyme_id.map"	
+		   		detail="data/MicroarrayData/mapping/accession_number_2_enzyme_id.map"	
 		   		attrib1="ACCESSION_NUMBER_2_ENZYME_ID MULTI_INT2INT" 
 		   		attrib2="55101" 
 		   		attrib3="0 -1" />			   						   	
 
 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" 		cmdId="99010"	targetId="-1"	
-		   		detail="data/mapping/enzyme_code_2_enzyme_id.map"	
+		   		detail="data/MicroarrayData/mapping/enzyme_code_2_enzyme_id.map"	
 		   		attrib1="ENZYME_CODE_2_ENZYME_ID STRING2INT" 
 		   		attrib2="55101" 
 		   		attrib3="0 -1" />
