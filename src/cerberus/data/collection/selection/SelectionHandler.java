@@ -7,6 +7,7 @@ import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.IGroupedSelection;
 import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.IEventPublisher.MediatorType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.ViewType;
@@ -90,13 +91,13 @@ implements IGroupedSelection {
 
 		// Type
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
-				"CREATE_VIRTUAL_ARRAY",
+				CommandQueueSaxType.CREATE_VIRTUAL_ARRAY.name(),
 				IParameterHandler.ParameterHandlerType.STRING);
 		
-		// Label
-		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Virtual Array", 
-				IParameterHandler.ParameterHandlerType.STRING);
+//		// Label
+//		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+//				"Pathway Selection Virtual Array", 
+//				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
@@ -128,13 +129,13 @@ implements IGroupedSelection {
 
 		// Type
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
-				"CREATE_STORAGE",
+				CommandQueueSaxType.CREATE_STORAGE.name(),
 				IParameterHandler.ParameterHandlerType.STRING);
 		
-		// Label
-		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Storage", 
-				IParameterHandler.ParameterHandlerType.STRING);
+//		// Label
+//		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+//				"Pathway Selection Storage", 
+//				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
@@ -182,13 +183,13 @@ implements IGroupedSelection {
 
 		// Type
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
-				"CREATE_STORAGE",
+				CommandQueueSaxType.CREATE_STORAGE.name(),
 				IParameterHandler.ParameterHandlerType.STRING);
 		
-		// Label
-		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Optional Data Storage", 
-				IParameterHandler.ParameterHandlerType.STRING);
+//		// Label
+//		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+//				"Pathway Selection Optional Data Storage", 
+//				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
@@ -226,7 +227,7 @@ implements IGroupedSelection {
 
 		// Type
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
-				"CREATE_SET",
+				CommandQueueSaxType.CREATE_SET.name(),
 				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// Label
@@ -253,7 +254,7 @@ implements IGroupedSelection {
 		
 		// Detail
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
-				"CREATE_SET_PLANAR", 
+				CommandQueueSaxType.CREATE_SET_PLANAR.name(), 
 				IParameterHandler.ParameterHandlerType.STRING);
 
 		refGeneralManager.getSingelton().getCommandManager().
@@ -296,13 +297,13 @@ implements IGroupedSelection {
 		
 		// Type
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
-				"CREATE_EVENT_MEDIATOR",
+				CommandQueueSaxType.CREATE_EVENT_MEDIATOR.name(),
 				IParameterHandler.ParameterHandlerType.STRING);
 
-		// Label
-		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
-				"Pathway Selection Mediator", 
-				IParameterHandler.ParameterHandlerType.STRING);
+//		// Label
+//		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_LABEL.getXmlKey(), 
+//				"Pathway Selection Mediator", 
+//				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// TargetID
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(), 
@@ -318,7 +319,7 @@ implements IGroupedSelection {
 				IParameterHandler.ParameterHandlerType.STRING);
 		
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
-				"SELECTION_MEDIATOR", 
+				MediatorType.SELECTION_MEDIATOR.name(), 
 				IParameterHandler.ParameterHandlerType.STRING);
 		
 		refGeneralManager.getSingelton().getCommandManager().

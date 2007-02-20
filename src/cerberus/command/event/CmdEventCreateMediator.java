@@ -41,6 +41,9 @@ implements ICommand {
 				refCommandManager,
 				refCommandQueueSaxType);
 		
+		super.setId( refGeneralManager.getSingelton().getEventPublisher().createNewId( 
+				ManagerObjectType.CREATE_EVENT_MEDIATOR));
+		
 		arSenderIDs = new ArrayList<Integer>();
 		arReceiverIDs = new ArrayList<Integer>();
 	}
@@ -90,5 +93,9 @@ implements ICommand {
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);		
+	}
+	
+	public String getInfoText() {
+		return super.getInfoText() + " -> " + this.iUniqueTargetId + ": " + this.sLabel;
 	}
 }

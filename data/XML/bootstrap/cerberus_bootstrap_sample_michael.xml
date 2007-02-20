@@ -40,35 +40,35 @@
 			-->
 			
 		 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
-		   detail="data/MicroarrayData/lookup_table_id/enzyme_code_2_cerberusEnzymeId.txt"	
+		   detail="data/MicroarrayData/mapping/enzyme_code_2_cerberusEnzymeId.txt"	
 		   attrib1="ENZYME_CODE_2_ENZYME STRING2INT" 
 		   attrib2="55101" 
 		   attrib3="0 -1" />
 		   
 		 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
-		   detail="data/MicroarrayData/lookup_table_id/ncbi_2_kegg_geneid_INT2INT.txt"	
+		   detail="data/MicroarrayData/mapping/ncbi_2_kegg_geneid_INT2INT.txt"	
 		   attrib1="NCBI_GENEID_2_KEGG INT2INT" 
 		   attrib2="55101" 
 		   attrib3="0 -1" />
 		   
 		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
-		   detail="data/MicroarrayData/lookup_table_id/MICROARRAY_CODE_2_MICROARRAY.csv"	
+		   detail="data/MicroarrayData/mapping/MICROARRAY_CODE_2_MICROARRAY.csv"	
 		   attrib1="MICROARRAY_2_ACCESSION STRING2INT" 
 		   attrib2="55101" 
 		   attrib3="0 -1" />
 		   
 		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="99010"	targetId="-1"	
-		   detail="data/MicroarrayData/lookup_table_id/MICROARRAY_2_MICROARRAY_CODE.csv"	
+		   detail="data/MicroarrayData/mapping/MICROARRAY_2_MICROARRAY_CODE.csv"	
 		   attrib1="ACCESSION_2_MICROARRAY INT2STRING" 
 		   attrib2="55101" 
 		   attrib3="0 -1" />
 		  
 		
 		
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
 			
 			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" attrib2="55101" attrib3="32 -1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" attrib2="55101" attrib3="32 -1" />
 			
 			
 			<!-- Window	10331	-->
@@ -101,13 +101,14 @@
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 4.0f"								
 							detail="45101" />
 							
-							
+			<!--		
+								
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="68982"	targetId="78401" parent="11401" label="GL Triangle	A"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -3.0f  0.0f     30 4.0f"								
-							detail="45101" />
+							detail="35991" />
 			
-			<!--				
+				
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_ISOSURFACE3D"		cmdId="68982"	targetId="78401" parent="11401" label="GL isosurface"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"

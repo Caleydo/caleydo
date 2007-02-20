@@ -95,7 +95,8 @@ implements IView {
 		
 		while(iterCommands.hasNext())
 		{
-			refUndoRedoCombo.add(iterCommands.next().getInfoText());
+			//ICommand bufferCmd = iterCommands.next();
+			refUndoRedoCombo.add( iterCommands.next().getInfoText() );
 		}		
 	}
 	
@@ -104,6 +105,7 @@ implements IView {
 		refSWTContainer.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				refUndoRedoCombo.add(refCommand.getInfoText());
+				System.err.println( "DEBUG: " + refCommand.getInfoText() + " " + refCommand.toString() );
 			}
 		});
 	}

@@ -94,7 +94,7 @@ implements ICommand {
 	 */
 	public String getInfoText() {
 		
-		return refCommandQueueSaxType.getInfoText();
+		return refCommandQueueSaxType.getInfoText() + " [" + this.getId() + "]";
 	}
 	
 	protected final void setCommandQueueSaxType( final CommandQueueSaxType refCommandQueueSaxType) {

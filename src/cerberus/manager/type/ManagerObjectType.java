@@ -20,6 +20,12 @@ package cerberus.manager.type;
  */
 public enum ManagerObjectType {
 
+	
+	/**
+	 * see cerberus.command.CommandQueueSaxType.CREATE_EVENT_MEDIATOR
+	 */
+	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER),
+	
 	/*
 	 * STORAGE
 	 */
