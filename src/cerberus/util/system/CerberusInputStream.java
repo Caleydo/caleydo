@@ -8,10 +8,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.xml.sax.DTDHandler;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.HandlerBase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.manager.ILoggerManager;
@@ -76,9 +80,16 @@ public class CerberusInputStream
 		
 		try 
 		{			
-			XMLReader reader = XMLReaderFactory.createXMLReader();			
+			XMLReader reader = XMLReaderFactory.createXMLReader();
+
+			// Entity resolver avoids the XML Reader 
+			// to check external DTDs. 
+			DefaultHandler entityResolver = new DefaultHandler();
+			reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
+					false);
+			reader.setEntityResolver(entityResolver);
 			reader.setContentHandler( handler );
-			
+
 			try 
 			{						
 				reader.parse( inStream );

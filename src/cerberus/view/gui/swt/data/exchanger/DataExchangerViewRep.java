@@ -14,6 +14,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -77,24 +79,24 @@ implements IView {
 
 	public void initView() {
 
-		refSWTContainer.setLayout(new FillLayout(SWT.VERTICAL));
+		refSWTContainer.setLayout(new RowLayout(SWT.VERTICAL));
 
 		Label viewComboLabel = new Label(refSWTContainer, SWT.LEFT);
 		viewComboLabel.setText("Select view:");
-		viewComboLabel.setSize(150, 30);
+		viewComboLabel.setLayoutData(new RowData(150, 30));
 				
 		final Combo viewCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
 		
 		Label dataComboLabel = new Label(refSWTContainer, SWT.LEFT);
 		dataComboLabel.setText("Select new SET:");
-		dataComboLabel.setSize(150, 30);
+		dataComboLabel.setLayoutData(new RowData(150, 30));
 
 		final Combo dataCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
         		
-	    viewCombo.setSize(150, 30);
+		viewCombo.setLayoutData(new RowData(150, 30));
 	    viewCombo.setEnabled(true);
 
-	    dataCombo.setSize(150, 30);
+		dataCombo.setLayoutData(new RowData(150, 30));
 	    dataCombo.setEnabled(false);
 	    
 	    viewCombo.addFocusListener(new FocusAdapter() {
@@ -192,13 +194,6 @@ implements IView {
 				arViewData.add(Integer.toString(tmpView.getDataSetId()));
 			}
 		}
-		
-//		while (iterGLCanvasUsers.hasNext())
-//		{
-//			tmpGLCanvasUser = iterGLCanvasUsers.next();
-//			
-//			if (tmpGLCanvasUser.get)
-//		}
 
 		viewComboItems = arFilteredViews.toArray(new String[arFilteredViews.size()]);
 	}
