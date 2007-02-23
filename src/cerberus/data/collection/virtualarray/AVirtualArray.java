@@ -12,6 +12,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.EventPublisher;
 //import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.IMetaData;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;
 import cerberus.data.collection.thread.lock.ICollectionLock;
@@ -135,6 +136,15 @@ implements IVirtualArray {
 				+ iSelectionLength + " ()]";
 
 		return result;
+	}
+	
+
+	public void update(Object eventTrigger) {
+		assert false : "update() has no effect";
+	}
+
+	public void updateSelection(Object eventTrigger, ISet updatedSelectionSet) {
+		assert false : "updateSelection() has no effect";
 	}
 
 }

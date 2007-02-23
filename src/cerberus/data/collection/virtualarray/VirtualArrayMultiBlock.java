@@ -11,6 +11,7 @@ package cerberus.data.collection.virtualarray;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.VirtualArrayType;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import cerberus.data.collection.ISet;
+import cerberus.manager.IEventPublisher;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care 
@@ -20,6 +21,8 @@ public class LockableMediator
 extends ALockableMediator 
 implements IMediator {
 
+	protected final IEventPublisher refEventPublisher;
+	
 	protected ArrayList<IMediatorReceiver> arReceiver;
 
 	protected ArrayList<IMediatorSender> arSender;
@@ -27,10 +30,13 @@ implements IMediator {
 	/**
 	 * 
 	 */
-	public LockableMediator(int iMediatorId) {
+	public LockableMediator(final IEventPublisher refEventPublisher,
+			int iMediatorId) {
 
 		super(iMediatorId);
 
+		this.refEventPublisher = refEventPublisher;
+		
 		arReceiver = new ArrayList<IMediatorReceiver>();
 		arSender = new ArrayList<IMediatorSender>();
 	}
@@ -39,7 +45,7 @@ implements IMediator {
 	 * @see cerberus.observer.mediator.IMediator#destroyMediator(cerberus.observer.mediator.IMediatorSender)
 	 */
 	protected void destroyMediatorDerivedObject(final IMediatorSender sender) {
-
+		
 		updateStall();
 
 		this.arReceiver.clear();
@@ -51,7 +57,8 @@ implements IMediator {
 	 */
 	@Override
 	public void updateReceiver(Object eventTrigger) {
-
+		assert eventTrigger != null : "can not handle null-pointer";
+		
 		Iterator<IMediatorReceiver> iter = arReceiver.iterator();
 
 		while (iter.hasNext())
@@ -74,7 +81,9 @@ implements IMediator {
 	@Override
 	public void updateReceiverSelection(Object eventTrigger,
 			ISet selectionSet) {
-
+		assert eventTrigger != null : "can not handle eventTrigger null-pointer";
+		assert selectionSet != null : "can not handle selectionSet null-pointer";
+		
 		Iterator<IMediatorReceiver> iter = arReceiver.iterator();
 
 		while (iter.hasNext())
@@ -93,7 +102,8 @@ implements IMediator {
 	 * @see cerberus.observer.mediator.IMediator#register(cerberus.observer.mediator.IMediatorSender)
 	 */
 	public boolean register(IMediatorSender sender) {
-
+		assert sender != null : "can not register null-pointer";
+		
 		if (arSender.contains(sender))
 		{
 			//throw new CerberusRuntimeException("LockableMediator.register() receiver that is already registered!");
@@ -101,7 +111,6 @@ implements IMediator {
 		}
 
 		arSender.add(sender);
-
 		return true;
 	}
 
@@ -109,7 +118,8 @@ implements IMediator {
 	 * @see cerberus.observer.mediator.IMediator#register(cerberus.observer.mediator.IMediatorReceiver)
 	 */
 	public boolean register(IMediatorReceiver receiver) {
-
+		assert receiver != null : "can not register null-pointer";
+		
 		if (arReceiver.contains(receiver))
 		{
 			//throw new CerberusRuntimeException("LockableMediator.register() receiver that is already registered!");
@@ -117,7 +127,6 @@ implements IMediator {
 		}
 
 		arReceiver.add(receiver);
-
 		return true;
 	}
 
@@ -125,7 +134,8 @@ implements IMediator {
 	 * @see cerberus.observer.mediator.IMediator#unregister(cerberus.observer.mediator.IMediatorSender)
 	 */
 	public boolean unregister(IMediatorSender sender) {
-
+		assert sender != null : "can not register null-pointer";
+		
 		return arSender.remove(sender);
 	}
 
@@ -133,7 +143,8 @@ implements IMediator {
 	 * @see cerberus.observer.mediator.IMediator#unregister(cerberus.observer.mediator.IMediatorReceiver)
 	 */
 	public boolean unregister(IMediatorReceiver receiver) {
-
+		assert receiver != null : "can not register null-pointer";
+		
 		return arReceiver.remove(receiver);
 	}
 

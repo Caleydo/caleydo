@@ -53,7 +53,9 @@ implements ICommand {
 		((IEventPublisher)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
 					createMediator(iUniqueTargetId,
-							arSenderIDs, arReceiverIDs, mediatorType);
+							arSenderIDs, 
+							arReceiverIDs, 
+							mediatorType);
 		
 		refCommandManager.runDoCommand(this);
 	}

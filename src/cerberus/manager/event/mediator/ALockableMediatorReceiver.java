@@ -65,7 +65,7 @@ implements ILockableMediatorReceiver {
 	/* (non-Javadoc)
 	 * @see cerberus.observer.mediator.IMediatorReceiver#updateStall()
 	 */
-	public final void updateStall() {
+	public synchronized final void updateStall() {
 		
 		bUpdateIsStalled.set( true );
 	}

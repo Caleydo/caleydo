@@ -187,14 +187,14 @@ implements IView, IGLCanvasDirector {
 			if ( ! iter.hasNext() ) 
 			{
 				refGeneralManager.getSingelton().logMsg(
-						"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+						"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
 						this.getClass().toString() + "  no GLCanvasUSer yet!",
 						LoggerType.MINOR_ERROR);
 				return;
 			}
 			
 			refGeneralManager.getSingelton().logMsg(
-					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
 					this.getClass().toString() + "  init GLCanvasUSer ..",
 					LoggerType.STATUS);
 			
@@ -212,7 +212,7 @@ implements IView, IGLCanvasDirector {
 		} // if ( abEnableRendering.get() ) 
 		
 		refGeneralManager.getSingelton().logMsg(
-				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
 				this.getClass().toString() + "  no GLCanvas yet!",
 				LoggerType.MINOR_ERROR);
 	}

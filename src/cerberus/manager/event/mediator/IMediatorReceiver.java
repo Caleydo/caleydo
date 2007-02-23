@@ -19,6 +19,12 @@ public interface IMediatorReceiver {
 	 */
 	public void update(Object eventTrigger);	
 	
+	/**
+	 * Update called by Mediator triggered by IMediatorSender.
+	 * 
+	 * @param eventTrigger Calling object, that created the update
+	 * @param updatedSelectionSet Set containing update information
+	 */
 	public void updateSelection(Object eventTrigger, 
 			ISet updatedSelectionSet);
 	

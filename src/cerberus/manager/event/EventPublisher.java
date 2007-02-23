@@ -7,7 +7,7 @@ import java.util.Iterator;
 import cerberus.data.collection.ISet;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISingelton;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.IMediatorReceiver;
@@ -43,7 +43,7 @@ implements IEventPublisher {
 	 * 
 	 * @param refGeneralManager
 	 */
-	public EventPublisher(IGeneralManager refGeneralManager) {
+	public EventPublisher(final IGeneralManager refGeneralManager) {
 
 		super( refGeneralManager,  
 				IGeneralManager.iUniqueId_TypeOffset_EventPublisher,
@@ -68,10 +68,13 @@ implements IEventPublisher {
 			new HashMap<IMediatorSender, ArrayList<IMediator>> ();
 	}
 
-	private void insertReceiver( HashMap<IMediatorReceiver, ArrayList<IMediator>> insertIntoHashMap, 
+	private synchronized void insertReceiver( HashMap<IMediatorReceiver, ArrayList<IMediator>> insertIntoHashMap, 
 			IMediatorReceiver receiver,
 			IMediator newMediator ) {
-	
+		assert insertIntoHashMap != null : "can not handle insertIntoHashMap null-pointer";
+		assert receiver != null : "can not handle receiver null-pointer";
+		assert newMediator != null : "can not handle newMediator null-pointer";
+		
 		if (!insertIntoHashMap.containsKey(receiver))
 		{
 			insertIntoHashMap.put(receiver, new ArrayList<IMediator>());
@@ -79,10 +82,14 @@ implements IEventPublisher {
 		insertIntoHashMap.get(receiver).add(newMediator);	
 	}
 	
-	private void insertSender( HashMap<IMediatorSender, ArrayList<IMediator>> insertIntoHashMap, 
+	private synchronized void insertSender( 
+			HashMap<IMediatorSender, ArrayList<IMediator>> insertIntoHashMap, 
 			IMediatorSender sender,
 			IMediator newMediator ) {
-	
+		assert insertIntoHashMap != null : "can not handle insertIntoHashMap null-pointer";
+		assert sender != null : "can not handle sender null-pointer";
+		assert newMediator != null : "can not handle newMediator null-pointer";
+		
 		if (!insertIntoHashMap.containsKey(sender))
 		{
 			insertIntoHashMap.put(sender, new ArrayList<IMediator>());
@@ -94,7 +101,8 @@ implements IEventPublisher {
 		if ( bufferArrayList.contains( sender ) ) {
 			throw new CerberusRuntimeException("Try to insert an existing object! " + 
 					sender.toString() + " ==> " + newMediator.toString() + 
-					" inside map" + bufferArrayList.toString() );
+					" inside map" + bufferArrayList.toString(),
+					CerberusRuntimeExceptionType.OBSERVER);
 		}
 		
 		bufferArrayList.add(newMediator);
@@ -103,101 +111,204 @@ implements IEventPublisher {
 //		insertIntoHashMap.get(sender).add(newMediator);
 	}
 	
-	public void createMediator(int iMediatorId, 
+	public synchronized void createMediator(int iMediatorId, 
 			ArrayList<Integer> arSenderIDs,
 			ArrayList<Integer> arReceiverIDs, 
 			MediatorType mediatorType) {
 
-		IMediator newMediator = new LockableMediator(iMediatorId);
+		IMediator newMediator = 
+			new LockableMediator(this, iMediatorId);
 
 		Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
-		Iterator<Integer> iterReceiverIDs = arReceiverIDs.iterator();
 
+		boolean bHasValidSender = false;
+		
 		// Register sender
 		while (iterSenderIDs.hasNext())
 		{
-			IMediatorSender sender = (IMediatorSender) refGeneralManager
-					.getItem(iterSenderIDs.next());
+			int iCurrentSenderId = iterSenderIDs.next();
+			IMediatorSender sender = null;
+			
+			try
+			{
+				sender = (IMediatorSender) refGeneralManager
+						.getItem(iCurrentSenderId);
+			} 
+			catch ( ClassCastException cce)
+			{
+				refSingelton.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
+						iCurrentSenderId + 
+						"] does not implement interface IMediatorSender " +
+						refGeneralManager.getItem(iCurrentSenderId).getClass(),
+						LoggerType.ERROR_ONLY);
+				
+				assert false : "receiver object does not implement interface IMediatorSender";
+				break;
+			}
 
-			newMediator.register(sender);
+			if ( sender == null ) {
+				refSingelton.logMsg("EventPublisher: invalid SenderId=[" +
+						iCurrentSenderId + "] => receiverId=" + 
+						arReceiverIDs.toString() + 
+						" ignore sender!",
+						LoggerType.MINOR_ERROR);
+			}
+			else 
+			{
+				bHasValidSender = true;
+				
+				newMediator.register(sender);
+				
+				switch ( mediatorType ) {
+				
+				case DATA_MEDIATOR:
+					
+					//assert false : "test this code!";
+					
+					if (!hashSender2DataMediators.containsKey(sender))
+					{
+						hashSender2DataMediators.put(sender, 
+								new ArrayList<IMediator>());
+					}
+					hashSender2DataMediators.get(sender).add(newMediator);
+					
+					insertSender(hashSender2DataMediators,sender,newMediator);
+					break;
+					
+				case SELECTION_MEDIATOR:
+					insertSender(hashSender2SelectionMediators,sender,newMediator);
+					
+					//BUG??
+					insertSender(hashSender2SelectionMediators,sender,newMediator);
+					
+	//				if (!hashSender2SelectionMediators.containsKey(sender))
+	//				{
+	//					hashSender2SelectionMediators.put(sender, new ArrayList<IMediator>());
+	//				}
+	//				hashSender2SelectionMediators.get(sender).add(newMediator);
+					break;
+					
+				case VIEW_MEDIATOR:
+					insertSender(hashSender2ViewMediators,sender,newMediator);
+	//				if (!hashSender2ViewMediators.containsKey(sender))
+	//				{
+	//					hashSender2ViewMediators.put(sender, new ArrayList<IMediator>());
+	//				}
+	//				hashSender2ViewMediators.get(sender).add(newMediator);
+					break;
+					
+				default:
+					throw new CerberusRuntimeException(
+							"createMediator() unknown type sender: " + 
+							mediatorType.toString(),
+							CerberusRuntimeExceptionType.OBSERVER);
+				
+				} //switch ( mediatorType ) {
 			
-			switch ( mediatorType ) {
-			
-			case DATA_MEDIATOR:
-				
-				//assert false : "test this code!";
-				
-				if (!hashSender2DataMediators.containsKey(sender))
-				{
-					hashSender2DataMediators.put(sender, new ArrayList<IMediator>());
-				}
-				hashSender2DataMediators.get(sender).add(newMediator);
-				
-				insertSender(hashSender2DataMediators,sender,newMediator);
-				break;
-				
-			case SELECTION_MEDIATOR:
-				insertSender(hashSender2SelectionMediators,sender,newMediator);
-				
-				insertSender(hashSender2SelectionMediators,sender,newMediator);
-//				if (!hashSender2SelectionMediators.containsKey(sender))
-//				{
-//					hashSender2SelectionMediators.put(sender, new ArrayList<IMediator>());
-//				}
-//				hashSender2SelectionMediators.get(sender).add(newMediator);
-				break;
-				
-			case VIEW_MEDIATOR:
-				insertSender(hashSender2ViewMediators,sender,newMediator);
-//				if (!hashSender2ViewMediators.containsKey(sender))
-//				{
-//					hashSender2ViewMediators.put(sender, new ArrayList<IMediator>());
-//				}
-//				hashSender2ViewMediators.get(sender).add(newMediator);
-				break;
-				
-			default:
-				throw new CerberusRuntimeException("createMediator() unknown type sender: " + mediatorType.toString() );
-			
-			} //switch ( mediatorType ) {
+			} //if ( sender == null ) {...} else {..
 			
 		} //while (iterSenderIDs.hasNext())
 
+		// are there any valid senders?
+		if ( ! bHasValidSender ) 
+		{
+			refSingelton.logMsg("EventPublisher: all SenderId(s)=" +
+					arSenderIDs.toString() + " are invalid; ignore all receivers=" +
+					arReceiverIDs.toString() + " also!",
+					LoggerType.MINOR_ERROR);
+			return;
+		}
+		
+
+		Iterator<Integer> iterReceiverIDs = arReceiverIDs.iterator();
+		boolean bHasValidReceiver = false;
+		
 		// Register receiver
 		while (iterReceiverIDs.hasNext())
 		{
-			IMediatorReceiver receiver = (IMediatorReceiver) refGeneralManager
-					.getItem(iterReceiverIDs.next());
-
-			newMediator.register(receiver);
-
-			switch ( mediatorType ) {
+			int iCurrentReceiverId = iterReceiverIDs.next();
 			
-			case DATA_MEDIATOR:
-				if (!hashReceiver2DataMediators.containsKey(receiver))
-				{
-					hashReceiver2DataMediators.put(receiver, new ArrayList<IMediator>());
-				}
-				hashReceiver2DataMediators.get(receiver).add(newMediator);
+			IMediatorReceiver receiver = null;
+			try 
+			{
+				receiver = (IMediatorReceiver) refGeneralManager
+					.getItem(iCurrentReceiverId);
+			} 
+			catch ( ClassCastException cce)
+			{
+				refSingelton.logMsg("EventPublisher.createMediator() failed because referenced receiver object id=[" +
+						iCurrentReceiverId + 
+						"] does not implement interface IMediatorReceiver " +
+						refGeneralManager.getItem(iCurrentReceiverId).getClass(),
+						LoggerType.ERROR_ONLY);
 				
-				//assert false : "test this code!";
-				
-				insertReceiver( hashReceiver2DataMediators,receiver,newMediator);
+				assert false : "receiver object does not implement interface IMediatorReceiver";
 				break;
+			}
+
+			if ( receiver == null ) {
+				refSingelton.logMsg("EventPublisher: invalid ReceiverId=[" +
+						iCurrentReceiverId + "] <= sender(s)" +
+						arSenderIDs.toString() + " ignore receiver!",
+						LoggerType.MINOR_ERROR);
+			}
+			else 
+			{
+				bHasValidReceiver = true;
+				
+				newMediator.register(receiver);
+	
+				switch ( mediatorType ) {
+				
+				case DATA_MEDIATOR:
+					if (!hashReceiver2DataMediators.containsKey(receiver))
+					{
+						hashReceiver2DataMediators.put(receiver, new ArrayList<IMediator>());
+					}
+					hashReceiver2DataMediators.get(receiver).add(newMediator);
+					
+					//assert false : "test this code!";
+					
+					insertReceiver( hashReceiver2DataMediators,receiver,newMediator);
+					break;
+				
+				case SELECTION_MEDIATOR:
+					insertReceiver( hashReceiver2SelectionMediators,receiver,newMediator);		
+					break;
+					
+				case VIEW_MEDIATOR:
+					insertReceiver( hashReceiver2SelectionMediators,receiver,newMediator);				
+					break;
+					
+					default:
+						throw new CerberusRuntimeException(
+								"createMediator() unknown type receiver: " + 
+								mediatorType.toString(),
+								CerberusRuntimeExceptionType.OBSERVER);
+				} // switch ( mediatorType ) {
 			
-			case SELECTION_MEDIATOR:
-				insertReceiver( hashReceiver2SelectionMediators,receiver,newMediator);		
-				break;
+				refSingelton.logMsg("EventPublisher: successful added senderId(s)" +
+						arSenderIDs.toString() + " => [" +
+						iCurrentReceiverId + "]",
+						LoggerType.VERBOSE);
 				
-			case VIEW_MEDIATOR:
-				insertReceiver( hashReceiver2SelectionMediators,receiver,newMediator);				
-				break;
-				
-				default:
-					throw new CerberusRuntimeException("createMediator() unknown type receiver: " + mediatorType.toString() );
-			} // switch ( mediatorType ) {
+			} // if ( receiver == null ) {...} else {..
 			
 		} // while (iterReceiverIDs.hasNext())
+		
+		if ( ! bHasValidReceiver )
+		{
+			refSingelton.logMsg("EventPublisher: ignore command with senderId(s)=[" +
+					arSenderIDs.toString() + "] and receiverId(s)=[" +
+					arReceiverIDs.toString() + "] because no valid receiver was found!",
+					LoggerType.MINOR_ERROR);
+			return;
+		}
+		
+		refSingelton.logMsg("EventPublisher: success registering senderId(s)=[" +
+				arSenderIDs.toString() + "] and receiverId(s)=[" +
+				arReceiverIDs.toString() + "]",
+				LoggerType.VERBOSE);
 	}
 
 	public void registerSenderToMediator(int iMediatorId, IMediatorSender sender) {
@@ -268,7 +379,13 @@ implements IEventPublisher {
 
 		// Dont't do anything if sender is not registered
 		if (!hashSender2DataMediators.containsKey((IMediatorSender) eventTrigger))
+		{
+//			assert false : "Sender is not registered and calls update(); " +
+//				eventTrigger.toString() + "]";
+			/* work around! */
+			
 			return;
+		}
 		
 		ArrayList<IMediator> arMediators = hashSender2DataMediators
 				.get((IMediatorSender) eventTrigger);
@@ -287,6 +404,8 @@ implements IEventPublisher {
 			} else
 			{
 				// TODO: print message
+				assert false : "Mediator is null while calling update(); " +
+				eventTrigger.toString() + "]";
 			}
 		}
 	}

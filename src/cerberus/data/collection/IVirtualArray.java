@@ -16,8 +16,8 @@ import cerberus.data.collection.VirtualArrayType;
 import cerberus.data.collection.thread.ICollectionThreadObject;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.xml.IMementoItemXML;
-
-//import prometheus.util.exception.PrometheusVirtualArrayException;
+import cerberus.manager.event.mediator.IMediatorReceiver;
+import cerberus.manager.event.mediator.IMediatorSender;
 
 
 /**
@@ -27,7 +27,9 @@ import cerberus.data.xml.IMementoItemXML;
 public interface IVirtualArray  
 	extends IMetaDataHandler, 
 	IMementoItemXML,
-	ICollectionThreadObject
+	ICollectionThreadObject,
+	IMediatorSender,
+	IMediatorReceiver
 {
 
 	/**

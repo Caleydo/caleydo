@@ -40,7 +40,9 @@ implements IGLCanvasUser
 		openGLCanvasDirector =
 			setGeneralManager.getSingelton().getViewGLCanvasManager().getGLCanvasDirector( iParentContainerId );
 		
-		assert openGLCanvasDirector != null : "parent GLCanvas Director is null!";
+		assert openGLCanvasDirector != null : 
+			"parent GLCanvas Director is null! Maybe parentID=" + 
+			iParentContainerId + " in XML file is invalid.";
 		
 		this.canvas = openGLCanvasDirector.getGLCanvas();
 		

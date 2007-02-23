@@ -3,9 +3,9 @@
  */
 package cerberus.view.gui.opengl.canvas.heatmap;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+//import java.util.Iterator;
+//import java.util.LinkedList;
+//import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -22,10 +22,11 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.event.mediator.IMediatorReceiver;
+import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
-import cerberus.manager.ILoggerManager.LoggerType;
 
 /**
  * @author Michael Kalkusch
@@ -33,7 +34,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
  */
 public class GLCanvasHeatmap2D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
+implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 {
 	
 	private boolean bUseGLWireframe = false;
@@ -485,5 +486,15 @@ implements IGLCanvasUser
 
 		this.render( drawable );
 		
+	}
+	
+	public void update(Object eventTrigger) {
+		System.err.println( "UPDATE BINGO !");
+	}
+	
+	
+	public void updateSelection(Object eventTrigger, 
+			ISet updatedSelectionSet) {
+		System.err.println( "UPDATE BINGO !");
 	}
 }
