@@ -48,13 +48,16 @@ extends AbstractLoader {
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public LookupTableLoaderProxy(IGeneralManager setGeneralManager,
+	public LookupTableLoaderProxy(final IGeneralManager setGeneralManager,
 			final String setFileName,
 			final GenomeMappingType genometype,
 			final GenomeMappingDataType type,
-			final GenomeMappingType genometype_optionlalTarget ) {
+			final GenomeMappingType genometype_optionlalTarget,
+			final boolean enableMultipeThreads) {
 		
-		super(setGeneralManager,setFileName);
+		super(setGeneralManager,
+				setFileName,
+				enableMultipeThreads);
 		
 		refLoggerManager = setGeneralManager.getSingelton().getLoggerManager();
 		

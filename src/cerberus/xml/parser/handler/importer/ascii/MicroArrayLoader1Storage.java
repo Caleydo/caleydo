@@ -43,24 +43,19 @@ extends AMicroArrayLoader {
 	private IVirtualArray refImportDataOverrideSelection;
 	
 	
-	/**
-	 * 
-	 * @param setGeneralManager
-	 */
-	public MicroArrayLoader1Storage(IGeneralManager setGeneralManager) {
-		super( setGeneralManager );
-		
-		this.bRequiredSizeOfReadableLines = true;
-	}
 	
 	/**
 	 * 
 	 */
-	public MicroArrayLoader1Storage(IGeneralManager setGeneralManager,
-			String setFileName) {
+	public MicroArrayLoader1Storage(final IGeneralManager setGeneralManager,
+			final String setFileName,
+			final boolean enableMultipeThreads) {
 
-		super(setGeneralManager, setFileName); 
-		// TODO Auto-generated constructor stub
+		super(setGeneralManager, 
+				setFileName,
+				enableMultipeThreads); 
+		
+		this.bRequiredSizeOfReadableLines = true;
 	}
 	
 	

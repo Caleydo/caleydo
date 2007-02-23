@@ -95,16 +95,13 @@ implements IMementoXML, IParserObject {
 	protected int iIndexPerArray[];
 	
 	
-	public AMicroArrayLoader(IGeneralManager setGeneralManager) {
-				
-		this(setGeneralManager, "");
-		
-	}
-	
-	
-	public AMicroArrayLoader(IGeneralManager setGeneralManager, String setFileName) {
+	protected AMicroArrayLoader(final IGeneralManager setGeneralManager, 
+			final String setFileName,
+			final boolean enableMultipeThreads) {
 
-		super(setGeneralManager, setFileName);
+		super(setGeneralManager,
+				setFileName, 
+				enableMultipeThreads);
 		
 		alTokenPattern =
 			new ArrayList(iInitialParseTokenSize);
@@ -117,16 +114,6 @@ implements IMementoXML, IParserObject {
 		init();
 	}
 	
-
-//	/**
-//	 * 
-//	 * @deprecated use setTargetSet(ISet) instead
-//	 * 
-//	 * @param setDataStorage reference to IStorage
-//	 */
-//	public final void setFileDataStorage(IStorage setDataStorage) {
-//		this.refDataStorage = setDataStorage;
-//	}
 	
 	/**
 	 * Assign a ISet to write the data to.

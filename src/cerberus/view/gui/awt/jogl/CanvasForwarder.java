@@ -12,9 +12,12 @@ import javax.media.opengl.GLEventListener;
 
 //import com.sun.opengl.util.Animator;
 
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.view.gui.awt.GearsMouse;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.data.AUniqueItem;
+import cerberus.data.AUniqueManagedObject;
 
 /**
  * Gears.java <BR>
@@ -24,7 +27,7 @@ import cerberus.data.AUniqueItem;
  */
 
 public class CanvasForwarder 
-extends AUniqueItem
+extends AUniqueManagedObject
 implements GLEventListener, IJoglMouseListener {
 
 	private final IGLCanvasDirector refGLCanvasDirector;
@@ -41,9 +44,11 @@ implements GLEventListener, IJoglMouseListener {
 	
 
 
-	public CanvasForwarder( final IGLCanvasDirector refGLCanvasDirector, final int iUniqueId) {
+	public CanvasForwarder( final IGeneralManager refGeneralManager,
+			final IGLCanvasDirector refGLCanvasDirector, 
+			final int iUniqueId) {
 
-		super(iUniqueId);
+		super(iUniqueId, refGeneralManager);
 		
 		refMouseHandler = new GearsMouse(this);
 
@@ -157,15 +162,19 @@ implements GLEventListener, IJoglMouseListener {
 		// Use debug pipeline
 		// drawable.setGL(new DebugGL(drawable.getGL()));
 
-		System.out.println("CanvasForwarder [" + iUniqueId + "] init() ... ");
+		refGeneralManager.getSingelton().logMsg(
+				"CanvasForwarder [" + iUniqueId + "] init() ... ",
+				LoggerType.STATUS);
 		
 		if  ( bCallInitOpenGL ) {
 			bCallInitOpenGL = false;
 			
 			GL gl = drawable.getGL();
 	
-			System.out.println("CanvasForwarder [" + iUniqueId +
-					"] INIT GL IS: ");
+			refGeneralManager.getSingelton().logMsg(
+					"CanvasForwarder [" + iUniqueId +
+					"] INIT GL IS: ",
+					LoggerType.STATUS);
 	
 			//gl.resizeGLScene();                      // Initialize the GL viewport
 	
@@ -191,13 +200,17 @@ implements GLEventListener, IJoglMouseListener {
 			}
 			else 
 			{
-				System.err.println("CanvasForwarder init() can not call director, becaus director==null!");
+				refGeneralManager.getSingelton().logMsg(
+						"CanvasForwarder init() can not call director, becaus director==null!",
+						LoggerType.MINOR_ERROR);
 			}
 			
 		} // if  ( bCallInitOpenGL ) {
 		else
 		{			
-			System.err.println("CanvasForwarder [" + iUniqueId + "] init() ... done");
+			refGeneralManager.getSingelton().logMsg(
+					"CanvasForwarder [" + iUniqueId + "] init() ... done",
+					LoggerType.STATUS);
 		}
 				
 	}
@@ -208,7 +221,9 @@ implements GLEventListener, IJoglMouseListener {
 			int width,
 			int height) {
 
-		System.out.println("CanvasForwarder  RESHAPE GL");
+		refGeneralManager.getSingelton().logMsg(
+				"CanvasForwarder  RESHAPE GL",
+				LoggerType.MINOR_ERROR);
 
 		GL gl = drawable.getGL();
 
@@ -216,9 +231,12 @@ implements GLEventListener, IJoglMouseListener {
 
 		gl.glMatrixMode(GL.GL_PROJECTION);
 
-		System.err.println("GL_VENDOR: " + gl.glGetString(GL.GL_VENDOR));
-		System.err.println("GL_RENDERER: " + gl.glGetString(GL.GL_RENDERER));
-		System.err.println("GL_VERSION: " + gl.glGetString(GL.GL_VERSION));
+		refGeneralManager.getSingelton().logMsg(
+				"CanvasForwarder  RESHAPE GL" +
+				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
+				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
+				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
+				LoggerType.STATUS);
 
 		gl.glLoadIdentity();
 		gl.glFrustum(-1.0f, 1.0f, -h, h, 5.0f, 60.0f);
@@ -280,5 +298,9 @@ implements GLEventListener, IJoglMouseListener {
 			final boolean deviceChanged) {
 
 		refGLCanvasDirector.displayGLChanged( drawable, modeChanged, deviceChanged);
+	}
+	
+	public final ManagerObjectType getBaseType() {
+		return ManagerObjectType.VIEW_CANVAS_FORWARDER;
 	}
 }

@@ -207,7 +207,8 @@ implements ICommand {
 			
 			GenomeMappingType lut_genome_type_OptionalTarget = null;
 			
-			if ( sLookupTableTypeOptionalTarget.length() > 0 ) {
+			if ((sLookupTableTypeOptionalTarget != null)&&( sLookupTableTypeOptionalTarget.length() > 0 ))
+			{
 				lut_genome_type_OptionalTarget = GenomeMappingType.valueOf( sLookupTableTypeOptionalTarget );
 			}
 			
@@ -220,7 +221,8 @@ implements ICommand {
 					sFileName,
 					lut_genome_type,
 					genomeDataType,
-					lut_genome_type_OptionalTarget );	
+					lut_genome_type_OptionalTarget,
+					IGeneralManager.bEnableMultipelThreads );	
 			
 			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
 				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );

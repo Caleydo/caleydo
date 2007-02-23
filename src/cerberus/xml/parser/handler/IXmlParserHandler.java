@@ -4,17 +4,22 @@
 package cerberus.xml.parser.handler;
 
 //import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
+import cerberus.xml.parser.handler.IXmlBaseHandler;
 
 //import cerberus.xml.parser.manager.IXmlParserManager;
 
 
 /**
+ * Interface for all XML Handler's registered 
+ * to the cerberus.manager.IXmlParserManager
+ * 
+ * @see cerberus.manager.IXmlParserManager
+ *  
  * @author Michael Kalkusch
  *
  */
 public interface IXmlParserHandler
-extends ContentHandler
+extends IXmlBaseHandler
 {
 
 
@@ -34,8 +39,11 @@ extends ContentHandler
 	public void destroyHandler();
 	
 	/**
+	 * Get the XmlActivationTag, which makes this Handler the current XMLHandler, 
+	 * that receives all events from the cerberus.manager.IXmlParserManager.
+	 * XmlActivationTag is set via the Constructor.
 	 * 
-	 * @return
+	 * @return tag that enables this Handler inside the cerberus.manager.IXmlParserManager
 	 */
 	public String getXmlActivationTag();
 	

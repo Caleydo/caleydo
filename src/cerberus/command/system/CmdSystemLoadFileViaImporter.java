@@ -182,9 +182,11 @@ implements ICommand {
 		
 		try 
 		{
-			loader = new MicroArrayLoader1Storage( refGeneralManager );
+			loader = new MicroArrayLoader1Storage( refGeneralManager, 
+					sFileName,
+					IGeneralManager.bEnableMultipelThreads );
 			
-			loader.setFileName( sFileName );
+			//loader.setFileName( sFileName );
 			loader.setTokenPattern( sTokenPattern );
 			loader.setTargetSet( useSet );
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine,

@@ -35,7 +35,8 @@ implements IUniqueManagedObject {
 	/**
 	 * 
 	 */
-	protected AUniqueManagedObject( final int iUniqueId, final IGeneralManager setGeneralManager ) {
+	protected AUniqueManagedObject( final int iUniqueId, 
+			final IGeneralManager setGeneralManager ) {
 
 		super( iUniqueId );
 		

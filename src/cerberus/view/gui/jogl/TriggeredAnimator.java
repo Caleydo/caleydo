@@ -56,7 +56,7 @@ public class TriggeredAnimator extends Animator {
 		if ( iEventCounter.getAndIncrement() == 0 ) 
 		{
 			this.start();
-			System.err.println(" === START ANIMATOR === ");
+			System.out.println("X: TriggeredAnimator:  === START ANIMATOR === ");
 		}
 	}
 

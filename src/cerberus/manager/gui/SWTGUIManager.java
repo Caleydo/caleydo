@@ -120,6 +120,29 @@ implements ISWTGUIManager {
 
 		assert iUniqueId != 0 :"createWindow() iUniqueId must not be 0!";
 		
+//		/* Multi Threaded Version */
+//		refDisplay.asyncExec(
+//				new Runnable() {
+//					public void run() {
+//						
+//						Shell refNewShell = new Shell(refDisplay);
+//						refNewShell.setLayout(new GridLayout());
+//						refNewShell.setMaximized(true);
+//						refNewShell.setImage(new Image(refDisplay, "data/icons/Cerberus.ico"));
+//						refNewShell.setText( "Bla Bla Label");
+//
+//						refWindowMap.put( 20 , refNewShell);
+//
+//						//refMenuBar = createMenuBar(refShell);
+//						//refShell.setMenuBar(refMenuBar); 
+//
+//						setUpLayout(refNewShell, "HORIZONTAL");
+//						
+//					}
+//				});
+//		
+//		return null;
+		
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
 		refNewShell.setMaximized(true);
@@ -364,10 +387,12 @@ implements ISWTGUIManager {
 		return true;
 	}
 	
-	public String setLoadingProgressBarTitle(final String sText, final int iPosition ) {
+	public synchronized String setLoadingProgressBarTitle(final String sText, final int iPosition ) {
+		
+		assert sText != null : "can not set 'null' text";
 		
 		if (refLoadingProgressBarWindow == null)
-			return null;
+			return "--";
 		
 		refLoadingProgressBar.setSelection( iPosition );
 		
@@ -375,7 +400,21 @@ implements ISWTGUIManager {
 		
 		refLoadingProgressBarWindow.setText( sText );
 		refLoadingProgressBarWindow.update();
-					
+		
+//		/* Multi Threaded version */
+//		refLoadingProgressBarWindow.getDisplay().asyncExec(new Runnable() {
+//			public void run() {
+//			refLoadingProgressBar.setSelection( iPosition );
+//			
+//			String sCurrentText = refLoadingProgressBarWindow.getText();
+//			
+//			refLoadingProgressBarWindow.setText( sText );
+//			refLoadingProgressBarWindow.update();
+//					
+//			}
+//		});
+		
+		
 		return sCurrentText;
 	}
 	
@@ -383,7 +422,7 @@ implements ISWTGUIManager {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
 	 */
-	public int getLoadingProgressBarPercentage() {
+	public synchronized int getLoadingProgressBarPercentage() {
 		
 		return refLoadingProgressBar.getSelection();
 	}

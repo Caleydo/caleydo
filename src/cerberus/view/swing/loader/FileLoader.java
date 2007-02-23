@@ -83,7 +83,9 @@ public class FileLoader {
 		
 		refStorage = new FlatThreadStorageSimple(3,regGeneralManager,null);
 		
-		loader = new MicroArrayLoader1Storage(regGeneralManager);
+		loader = new MicroArrayLoader1Storage(regGeneralManager,
+				"",
+				IGeneralManager.bEnableMultipelThreads);
 	}
 	
 	public void setText( String sUseText) {

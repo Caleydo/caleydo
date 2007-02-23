@@ -53,22 +53,17 @@ extends AMicroArrayLoader {
 	 */
 	private IVirtualArray refImportDataOverrideSelection;
 	
-	
-	/**
-	 * 
-	 * @param setGeneralManager
-	 */
-	public MicroArrayLoaderValues2MultipleStorages(IGeneralManager setGeneralManager) {
-		super( setGeneralManager );
-	}
-	
+		
 	/**
 	 * 
 	 */
-	public MicroArrayLoaderValues2MultipleStorages(IGeneralManager setGeneralManager,
-			String setFileName) {
+	public MicroArrayLoaderValues2MultipleStorages(final IGeneralManager setGeneralManager,
+			final String setFileName,
+			final boolean enableMultipeThreads) {
 
-		super(setGeneralManager, setFileName); 
+		super(setGeneralManager, 
+				setFileName,
+				enableMultipeThreads); 
 	
 		super.bRequiredSizeOfReadableLines = true;
 	}
@@ -78,9 +73,7 @@ extends AMicroArrayLoader {
 	protected void allocateStorageBufferForTokenPattern( ) {
 		
 		allocateStorageBufferForTokenPatternAbstractClass();
-		
 	}
-	
 	
 	
 	
@@ -294,6 +287,7 @@ extends AMicroArrayLoader {
 						.listIterator();
 
 				int iDataArrayIndexPerLine = 0;
+				ParserTokenHandler bufferIter = null;
 
 				while ((strToken.hasMoreTokens()) && (bMaintainLoop))
 				{
@@ -301,7 +295,7 @@ extends AMicroArrayLoader {
 
 					try
 					{
-						ParserTokenHandler bufferIter = iterPerLine.next();
+						bufferIter = iterPerLine.next();
 
 						// switch ( iterPerLine.next().getType() ) {
 						switch (bufferIter.getType())
@@ -359,7 +353,22 @@ extends AMicroArrayLoader {
 						bMaintainLoop = false;
 					}
 					catch (NumberFormatException nfe) {
-						System.err.println("Can not parse element " + nfe.getMessage() );
+						
+						if ( bufferIter == null ) 
+						{
+							refGeneralManager.getSingelton().logMsg(
+								"Can not parse element, skip value: " + 
+								nfe.getMessage(),
+								LoggerType.ERROR_ONLY );
+						}
+						else
+						{
+							refGeneralManager.getSingelton().logMsg(
+									"Can not parse element, skip value: Assumed type=[" + 
+									bufferIter.getType() + "] => " + 
+									nfe.getMessage(),
+									LoggerType.ERROR_ONLY );							
+						}
 					}
 
 				} // end of: while (( strToken.hasMoreTokens()

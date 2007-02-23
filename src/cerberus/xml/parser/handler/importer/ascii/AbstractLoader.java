@@ -30,6 +30,12 @@ public abstract class AbstractLoader
 implements IMementoXML, IParserObject {
 
 	/**
+	 * Work around, disabel progressbar, 
+	 * because it is not threadsafe yet.
+	 */
+	private final boolean bUseMultipleThreads;
+	
+	/**
 	 *  file name of *.gpr file
 	 */  
 	private String sFileName = "";
@@ -120,13 +126,13 @@ implements IMementoXML, IParserObject {
 	 * Define the speperator
 	 * TAB is the default token.
 	 */
-	protected String sTokenSeperator = "\t";
+	protected String sTokenSeperator = IGeneralManager.sDelimiter_Parser_DataItems_Tab;
 	
 	/**
 	 * Define the speperator
 	 * TAB is the default token.
 	 */
-	protected String sTokenInnerLoopSeperator = " ";
+	protected String sTokenInnerLoopSeperator = IGeneralManager.sDelimiter_Parser_DataItems;
 	
 	/**
 	 * Define, if exact file size need to be computed prior to loading the file.
@@ -142,7 +148,9 @@ implements IMementoXML, IParserObject {
 
 
 	
-	public AbstractLoader(IGeneralManager setGeneralManager, String setFileName) {
+	public AbstractLoader(final IGeneralManager setGeneralManager, 
+			final String setFileName,
+			final boolean enableMultipeThreads) {
 
 		refGeneralManager = setGeneralManager;
 		
@@ -151,6 +159,8 @@ implements IMementoXML, IParserObject {
 		assert refGeneralManager!= null :"null-pointer in constructor";		
 		
 		this.sFileName = setFileName;
+		
+		bUseMultipleThreads = enableMultipeThreads;
 		
 		init();
 	}
@@ -446,6 +456,7 @@ implements IMementoXML, IParserObject {
 			iMaxPosition = SWTGUIManager.PROGRESSBAR_MAXIMUM;
 		}
 		
+		assert sText != null : "can not init text with 'null'";
 		assert iMaxPosition > iCurrentProgressBarPosition : "iMaxPosition is smaller than iCurrentProgressBarPosition !";
 		
 		iProgressBarLastPosition = refSWTGUIManager.getLoadingProgressBarPercentage();
@@ -470,19 +481,26 @@ implements IMementoXML, IParserObject {
 	protected final void progressBarSetStoreInitTitle(final String sText, 
 			final int iCurrentProgressBarPosition,
 			final int iStepsTill100_Percent ) {
-		
-		progressBarSetStoreInitTitle(sText,
-				iCurrentProgressBarPosition,
-				SWTGUIManager.PROGRESSBAR_MAXIMUM ,
-				iStepsTill100_Percent);
+		/* Multi Threaded Version: remove next lines or make call thread safe */
+		if ( !bUseMultipleThreads )
+		{
+			progressBarSetStoreInitTitle(sText,
+					iCurrentProgressBarPosition,
+					SWTGUIManager.PROGRESSBAR_MAXIMUM ,
+					iStepsTill100_Percent);
+		}
 	}
 	
 	public final void progressBarStoredIncrement() {
-		fProgressBarIndex += fProgressBarInc;
-		
-		if ( (int)fProgressBarIndex != iProgressBarCurrentPosition ) {
-			iProgressBarCurrentPosition = (int)fProgressBarIndex;			
-			refSWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
+		/* Multi Threaded Version: remove next lines or make call thread safe */
+		if ( !bUseMultipleThreads )
+		{
+			fProgressBarIndex += fProgressBarInc;
+			
+			if ( (int)fProgressBarIndex != iProgressBarCurrentPosition ) {
+				iProgressBarCurrentPosition = (int)fProgressBarIndex;			
+				refSWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
+			}
 		}
 	}
 	
@@ -491,13 +509,17 @@ implements IMementoXML, IParserObject {
 	 *
 	 */
 	protected final void progressBarResetTitle() {
-		refSWTGUIManager.setLoadingProgressBarTitle(sLastProgressBarText,iProgressBarLastPosition);
-		
-		assert fProgressBarInc != 0.0f : "call progressBarResetTitle() without calling progressBarSetStoreInitTitle() first!";
-		
-		fProgressBarInc = 0.0f;
-		fProgressBarIndex = iProgressBarCurrentPosition;		
-		iProgressBarCurrentPosition = iProgressBarLastPosition;
+		/* Multi Threaded Version: remove next lines or make call thread safe */		
+		if ( !bUseMultipleThreads )
+		{
+			refSWTGUIManager.setLoadingProgressBarTitle(sLastProgressBarText,iProgressBarLastPosition);
+			
+			assert fProgressBarInc != 0.0f : "call progressBarResetTitle() without calling progressBarSetStoreInitTitle() first!";
+			
+			fProgressBarInc = 0.0f;
+			fProgressBarIndex = iProgressBarCurrentPosition;		
+			iProgressBarCurrentPosition = iProgressBarLastPosition;
+		}
 	}
 	
 	/**
@@ -505,8 +527,12 @@ implements IMementoXML, IParserObject {
 	 * @param iTicks must be in the range of: currentPercentage - [0..200]
 	 */
 	protected final void progressBarIncrement( int iTicks ) {
-		iProgressBarCurrentPosition += iTicks;
-		refSWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );		
+		/* Multi Threaded Version: remove next lines or make call thread safe */
+		if ( !bUseMultipleThreads )
+		{
+			iProgressBarCurrentPosition += iTicks;
+			refSWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
+		}
 	}
 	
 	protected final int progressBarCurrentPosition() {

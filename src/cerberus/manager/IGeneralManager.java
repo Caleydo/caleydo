@@ -6,6 +6,8 @@ import cerberus.manager.type.ManagerType;
 
 public interface IGeneralManager {
 
+	public static final boolean bEnableMultipelThreads = false;
+	
 	/**
 	 * Used to create a unique networkwide identification numbers.
 	 * This defines the lowest numbers to address applications over the network.
@@ -137,6 +139,8 @@ public interface IGeneralManager {
 	public static final String sDelimiter_Parser_DataItems 		= " ";
 	
 	public static final String sDelimiter_Parser_DataType 		= ";";
+	
+	public static final String sDelimiter_Parser_DataItems_Tab	= "\t";
 		
 	/**
 	 * Tests, if a cairtain iItemId is handled by the manager.

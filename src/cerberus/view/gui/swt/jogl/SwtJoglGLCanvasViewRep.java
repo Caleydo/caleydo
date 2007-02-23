@@ -35,7 +35,7 @@ implements IView, IGLCanvasDirector {
 	
 	protected Vector <IGLCanvasUser> vecGLCanvasUser;
 	
-	public SwtJoglGLCanvasViewRep(IGeneralManager refGeneralManager, 
+	public SwtJoglGLCanvasViewRep(final IGeneralManager refGeneralManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel ) {
@@ -66,7 +66,9 @@ implements IView, IGLCanvasDirector {
 				
 		assert refGLEventListener == null : "initView() called more than once! refGLEventListener!=null !";
 		
-		refGLEventListener = new CanvasForwarder( this, iGLEventListernerId );
+		refGLEventListener = new CanvasForwarder(refGeneralManager,
+				this, 
+				iGLEventListernerId );
 		
 		IViewGLCanvasManager canvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
@@ -175,20 +177,26 @@ implements IView, IGLCanvasDirector {
 		
 		if ( abEnableRendering.get() ) 
 		{
-			System.out.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
-					this.getClass().toString() );
+			refGeneralManager.getSingelton().logMsg(
+					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
+					this.getClass().toString(),
+					LoggerType.STATUS);
 			
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 			
 			if ( ! iter.hasNext() ) 
 			{
-				System.err.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
-						this.getClass().toString() + "  no GLCanvasUSer yet!" );
+				refGeneralManager.getSingelton().logMsg(
+						"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+						this.getClass().toString() + "  no GLCanvasUSer yet!",
+						LoggerType.MINOR_ERROR);
 				return;
 			}
 			
-			System.err.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
-					this.getClass().toString() + "  init GLCanvasUSer .." );
+			refGeneralManager.getSingelton().logMsg(
+					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+					this.getClass().toString() + "  init GLCanvasUSer ..",
+					LoggerType.STATUS);
 			
 			while ( iter.hasNext() ) {
 
@@ -203,8 +211,10 @@ implements IView, IGLCanvasDirector {
 			return;
 		} // if ( abEnableRendering.get() ) 
 		
-		System.err.println("SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
-				this.getClass().toString() + "  no GLCanvas yet!");
+		refGeneralManager.getSingelton().logMsg(
+				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "]" + 
+				this.getClass().toString() + "  no GLCanvas yet!",
+				LoggerType.MINOR_ERROR);
 	}
 	
 	/*
@@ -300,7 +310,8 @@ implements IView, IGLCanvasDirector {
 		
 		refGLEventListener = null;
 		
-		refGeneralManager.getSingelton().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
+		refGeneralManager.getSingelton().logMsg(
+				"SwtJoglCanvasViewRep.destroyDirector()  id=" +
 				iUniqueId + " ...[DONE]",
 				LoggerType.STATUS );
 	}

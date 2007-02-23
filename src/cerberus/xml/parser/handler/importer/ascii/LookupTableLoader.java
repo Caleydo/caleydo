@@ -32,10 +32,13 @@ public class LookupTableLoader extends AbstractLoader {
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public LookupTableLoader(IGeneralManager setGeneralManager,
-			String setFileName) {
+	public LookupTableLoader(final IGeneralManager setGeneralManager,
+			final String setFileName,
+			final boolean enableMultipeThreads) {
 
-		super(setGeneralManager, setFileName);
+		super(setGeneralManager, 
+				setFileName,
+				enableMultipeThreads);
 		
 		super.bRequiredSizeOfReadableLines = true;		
 	}

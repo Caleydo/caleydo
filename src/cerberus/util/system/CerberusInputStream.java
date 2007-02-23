@@ -8,18 +8,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.xml.sax.DTDHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.HandlerBase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.xml.parser.handler.IXmlBaseHandler;
 
 /**
  * @author Michael Kalkusch
@@ -63,9 +59,22 @@ public class CerberusInputStream
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @see cerberus.manager.IXmlParserManager
+	 * @see org.xml.sax.ContentHandler
+	 * @see org.xml.sax.EntityResolver;
+	 * @see org.xml.sax.DTDHandler;
+	 * 
+	 * @param inStream
+	 * @param sInputStreamLabel
+	 * @param handler
+	 * @param refLoggerManager
+	 * @return
+	 */
 	public static boolean parseOnce( InputSource inStream,
 			final String sInputStreamLabel,
-			ContentHandler handler,
+			IXmlBaseHandler handler,
 			final ILoggerManager refLoggerManager ) {
 		
 		if ( handler == null ) 
@@ -84,11 +93,10 @@ public class CerberusInputStream
 
 			// Entity resolver avoids the XML Reader 
 			// to check external DTDs. 
-			DefaultHandler entityResolver = new DefaultHandler();
-			reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
-					false);
-			reader.setEntityResolver(entityResolver);
-			reader.setContentHandler( handler );
+			//reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
+//					false);
+			//reader.setEntityResolver(handler);
+			reader.setContentHandler(handler);
 
 			try 
 			{						

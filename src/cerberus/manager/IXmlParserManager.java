@@ -4,20 +4,24 @@
 package cerberus.manager;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+//import org.xml.sax.SAXException;
 
+import cerberus.xml.parser.handler.IXmlBaseHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 
 
 /**
+ * Forwarded/proxy fro several XMLHandlers.
+ * 
  * @author Michael Kalkusch
- *
+ * 
+ * @see org.xml.sax.ContentHandler;
+ * @see org.xml.sax.EntityResolver;
  */
 public interface IXmlParserManager 
-extends ContentHandler
+extends IXmlBaseHandler
 {
 
 	/**

@@ -82,6 +82,8 @@ public enum ManagerObjectType {
 	 */
 	VIEW(ManagerType.VIEW),
 	
+	VIEW_CANVAS_FORWARDER(ManagerType.VIEW),
+	
 	VIEW_HISTOGRAM(ManagerType.VIEW),
 	
 	// VIEW_OPENGL_CANVAS(ManagerType.VIEW),
