@@ -93,9 +93,9 @@ public class CerberusInputStream
 
 			// Entity resolver avoids the XML Reader 
 			// to check external DTDs. 
-			//reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
-//					false);
-			//reader.setEntityResolver(handler);
+			reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
+					false);
+			reader.setEntityResolver(handler);
 			reader.setContentHandler(handler);
 
 			try 
