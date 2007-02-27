@@ -100,6 +100,7 @@ implements IViewRep {
 	public void update( Object eventTrigger ) {
 		
 		//Implemented in subclasses		
+		assert false : "This methode must be overloaded in sub-class";
 	}
 	
 	/*
@@ -109,6 +110,7 @@ implements IViewRep {
 	public void updateSelection(Object eventTrigger, ISet updatedSelectionSet) {
 
 		//Implemented in subclasses
+		assert false : "This methode must be overloaded in sub-class";
 	}
 	
 	/*
@@ -134,7 +136,7 @@ implements IViewRep {
 	 * (non-Javadoc)
 	 * @see cerberus.view.gui.IView#getLabel()
 	 */
-	public String getLabel() {
+	public final String getLabel() {
 		
 		return sLabel;
 	}
