@@ -32,6 +32,17 @@ extends IGeneralManager {
 			MediatorType mediatorType);
 	
 	/**
+	 * Creates a specialised mediator and registers the senders and receivers
+	 * to this mediator.
+	 * The specialized mediator supports selection filtering.
+	 */
+	public void createMediator (int iMediatorId, 
+			ArrayList<Integer> arSenderIDs, 
+			ArrayList<Integer> arReceiverIDs,
+			MediatorType mediatorType,
+			boolean bEnableFilteredMediator);	
+	
+	/**
 	 * Adds a sender to an existing mediator. 
 	 */
 	public void registerSenderToMediator (int iMediatorId, 
