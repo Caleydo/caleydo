@@ -46,6 +46,8 @@ implements IView, IGLCanvasDirector {
 		
 		refGeneralManager.getSingelton().getViewGLCanvasManager(
 				).registerGLCanvasDirector( this, iViewId );
+		
+		iGLCanvasId = iParentContainerId;
 	}
 	
 	/**
@@ -63,8 +65,24 @@ implements IView, IGLCanvasDirector {
 	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#initView()
 	 */
 	public void initView() {
-				
+			
 		assert refGLEventListener == null : "initView() called more than once! refGLEventListener!=null !";
+				
+		/* Start Animator thread, if anaimort is not running already. */
+		refGeneralManager.getSingelton().logMsg(
+				"SwtJoglGLCanvasViewRep [" +
+				getId() + "] start Animator; start thread ...",
+				LoggerType.TRANSITION );
+		
+		refGLEventListener = new CanvasForwarder(refGeneralManager,
+				this, 
+				iGLEventListernerId );
+		super.initView();
+		
+		refGeneralManager.getSingelton().logMsg(
+				"SwtJoglGLCanvasViewRep [" +
+				getId() + "] Animator started, thread running.",
+				LoggerType.TRANSITION );
 		
 		refGLEventListener = new CanvasForwarder(refGeneralManager,
 				this, 
@@ -91,7 +109,12 @@ implements IView, IGLCanvasDirector {
 				getId() + "] was initalized!",
 				LoggerType.TRANSITION );
 		
-		super.initView();
+//		super.initView();
+//		
+//		refGeneralManager.getSingelton().logMsg(
+//				"SwtJoglGLCanvasViewRep [" +
+//				getId() + "] Animator started, thread running.",
+//				LoggerType.TRANSITION );
 	}
 	
 	/* (non-Javadoc)
@@ -107,13 +130,13 @@ implements IView, IGLCanvasDirector {
 		 * 
 		 * Critical section:
 		 */
-		abEnableRendering.set( false );
+		super.abEnableRendering.set( false );
 		
 		vecGLCanvasUser.addElement( user );
 		
 		initGLCanvasUser();
 		
-		abEnableRendering.set( true );		
+		super.abEnableRendering.set( true );		
 		/**
 		 * End of critical section
 		 */
@@ -173,9 +196,10 @@ implements IView, IGLCanvasDirector {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser()
 	 */
-	public void initGLCanvasUser() {
+	public synchronized void initGLCanvasUser() {
 		
-		if ( abEnableRendering.get() ) 
+		//if ( abEnableRendering.get() )
+		if ( this.refGLCanvas != null ) 
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
@@ -320,7 +344,14 @@ implements IView, IGLCanvasDirector {
 		
 		super.setAttributes(iWidth, iHeight);
 		
-		this.iGLCanvasId = iGLCanvasId;
-		this.iGLEventListernerId = iGLEventListenerId;
+		if ( iGLCanvasId != -1 ) 
+		{
+			this.iGLCanvasId = iGLCanvasId;
+		}
+		
+		if ( iGLEventListenerId != -1 ) 
+		{
+			this.iGLEventListernerId = iGLEventListenerId;
+		}
 	}
 }

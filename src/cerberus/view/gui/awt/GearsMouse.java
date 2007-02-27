@@ -37,6 +37,8 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
   private boolean bMouseMiddleButtonDown = false;
 
 	public GearsMouse( final IJoglMouseListener refParentGearsMain) {
+		assert refParentGearsMain != null : "Can not handle null-pointer";
+		
 		this.refGearsMain = refParentGearsMain;
 	}
 	

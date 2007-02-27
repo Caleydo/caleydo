@@ -33,7 +33,7 @@ extends ASWTEmbeddedWidget {
 	/**
 	 * GLCanvas.
 	 */
-	protected GLCanvas refGLCanvas;
+	protected GLCanvas refGLCanvas = null;
 	
 	protected Animator refAnimator = null;
 	
@@ -48,14 +48,14 @@ extends ASWTEmbeddedWidget {
 			int iWidth, int iHeight) {
 	
 		super(refParentComposite,iWidth, iHeight);
-		
-		refGLCanvas = null;
 	}
 	
 	public void createEmbeddedComposite() {
 		super.createEmbeddedComposite();
 		
 		try {
+			assert refGLCanvas == null : "GLCanvas was already created!";
+			
 			refGLCanvas = new GLCanvas();
 		} 
 		catch (UnsatisfiedLinkError ule) {
@@ -69,6 +69,7 @@ extends ASWTEmbeddedWidget {
 					CerberusRuntimeExceptionType.JOGL_SWT );
 		}
 		
+		/* Add GLCanvas to SWT embedded composit..*/
 		refEmbeddedFrame.add(refGLCanvas);
 	}
 

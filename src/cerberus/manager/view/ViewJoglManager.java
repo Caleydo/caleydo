@@ -172,7 +172,7 @@ implements IViewManager, IViewGLCanvasManager {
 		return 0;
 	}
 
-	public boolean registerItem(Object registerItem, int iItemId,
+	public synchronized boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
 
 		assert iItemId != 0 : "registerItem(Object,int) must not use iItemId==0";
@@ -210,7 +210,8 @@ implements IViewManager, IViewGLCanvasManager {
 	 * type parameter.
 	 */
 	public IView createView(ManagerObjectType useViewType, int iViewId,
-			int iParentContainerId, String sLabel) {
+			int iParentContainerId, 
+			String sLabel) {
 
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{
@@ -282,7 +283,8 @@ implements IViewManager, IViewGLCanvasManager {
 					iParentContainerId, sLabel);
 		case VIEW_SWT_JOGL_MULTI_GLCANVAS:
 			return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+					iParentContainerId, 
+					sLabel);
 
 		default:
 			throw new CerberusRuntimeException(
@@ -627,7 +629,7 @@ implements IViewManager, IViewGLCanvasManager {
 		return this.hashGLCanvasDirector.get(iId);
 	}
 
-	public boolean registerGLCanvasDirector(final IGLCanvasDirector director,
+	public synchronized boolean registerGLCanvasDirector(final IGLCanvasDirector director,
 			final int iId) {
 
 		if (hashGLCanvasDirector.containsKey(iId))

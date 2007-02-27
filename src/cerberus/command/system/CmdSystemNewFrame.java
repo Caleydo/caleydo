@@ -16,7 +16,6 @@ import javax.swing.JFrame;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;

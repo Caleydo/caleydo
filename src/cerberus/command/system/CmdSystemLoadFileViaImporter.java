@@ -13,7 +13,6 @@ package cerberus.command.system;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
 //import cerberus.command.window.CmdWindowPopupInfo;
@@ -172,7 +171,7 @@ implements ICommand {
 					errorMsg,
 					LoggerType.ERROR_ONLY );
 			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
+			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
 			exitWarning.setText("ERROR",errorMsg);
 			exitWarning.doCommand();
 			return;
@@ -207,7 +206,7 @@ implements ICommand {
 					errorMsg,
 					LoggerType.ERROR_ONLY );
 			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
+			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
 			exitWarning.setText("ERROR",errorMsg);
 			exitWarning.doCommand();
 		} // catch

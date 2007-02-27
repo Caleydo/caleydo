@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
+import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
@@ -36,8 +37,8 @@ implements ICommand {
 	/**
 	 * Does not set the reference to the parent JComponent.
 	 */
-	public CmdWindowPopupInfo( final String details ) {
-		super( -1, null,null,null);
+	public CmdWindowPopupInfo( final IGeneralManager refGeneralManager, final String details ) {
+		super( -1, refGeneralManager,null,null);
 	}
 	
 	/**

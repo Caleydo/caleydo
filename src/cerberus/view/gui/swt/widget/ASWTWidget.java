@@ -35,12 +35,12 @@ implements IUniqueObject, ISWTWidget {
 		this.refParentComposite = refParentComposite;
 	}
 	
-	public void setId(int iUniqueId) {
+	public final void setId(int iUniqueId) {
 		
 		this.iUniqueId = iUniqueId;
 	}
 
-	public int getId() {
+	public final int getId() {
 		
 		return iUniqueId;
 	}

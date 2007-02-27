@@ -198,16 +198,17 @@ implements ISWTGUIManager {
 		}
 
 		return (createWidget(useWidgetType, refComposite, iWidth, iHeight));
-
 	}
 
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.ISWTGUIManager#createWidget(cerberus.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
 	 */
-	public ISWTWidget createWidget(final ManagerObjectType useWidgetType,
+	public synchronized ISWTWidget createWidget(final ManagerObjectType useWidgetType,
 			final Composite refExternalParentComposite, int iWidth, int iHeight) {
 
+		assert refExternalParentComposite != null : "can not handel null-pointer";
+		
 		final int iUniqueId = this.createNewId(useWidgetType);
 		ASWTWidget newSWTWidget;
 

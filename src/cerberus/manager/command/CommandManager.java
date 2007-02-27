@@ -10,6 +10,7 @@ package cerberus.manager.command;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 //import java.util.Iterator;
 
@@ -200,11 +201,12 @@ public class CommandManager
 
 		ICommand createdCommand = refCommandFactory.createCommandByType(cmdType);
 		
-		//FIXME: should iterate over all undo/redo views.
-		if (arUndoRedoViews.isEmpty() == false)
-		{
-			arUndoRedoViews.get(0).addCommand(createdCommand);
-		}
+		//BUG! creating command is not executing command!
+//		//FIXME: should iterate over all undo/redo views.
+//		if ( ! arUndoRedoViews.isEmpty() )
+//		{
+//			arUndoRedoViews.get(0).addCommand(createdCommand);
+//		}
 		
 		return createdCommand;
 	}
@@ -224,11 +226,12 @@ public class CommandManager
 			createdCommand.setParameterHandler( phAttributes );	
 		}
 		
-		//FIXME: should iterate over all undo/redo views.
-		if (arUndoRedoViews.isEmpty() == false)
-		{
-			arUndoRedoViews.get(0).addCommand(createdCommand);
-		}
+		//BUG! creating command is not executing command!
+//		//FIXME: should iterate over all undo/redo views.
+//		if (arUndoRedoViews.isEmpty() == false)
+//		{
+//			arUndoRedoViews.get(0).addCommand(createdCommand);
+//		}
 		
 		return createdCommand;
 	}
@@ -284,6 +287,17 @@ public class CommandManager
 			vecRedo.remove(runCmd);
 			iCountRedoCommand--;
 		}		
+		
+		//FIXME: think of multipel tread support! current Version is not thread safe!
+		Iterator <UndoRedoViewRep> iter = arUndoRedoViews.iterator();
+		
+		assert iter != null : "arUndoRedoViews was not inizalized! Iterator ist null-pointer";		
+		
+		while ( iter.hasNext() )
+		{
+			iter.next().addCommand(runCmd);
+		}
+		
 	}
 
 	/**

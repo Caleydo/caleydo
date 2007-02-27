@@ -652,7 +652,7 @@ public class CommandFactory
 			final String details ) {
 		switch (setCommandType) {
 			case SYSTEM_EXIT :
-				refLastCommand = new CmdSystemExit();
+				refLastCommand = new CmdSystemExit(refGeneralManager);
 				return refLastCommand;
 				
 			case SYSTEM_NEW_FRAME:

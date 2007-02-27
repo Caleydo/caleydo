@@ -22,6 +22,8 @@ public class CmdViewCreateHeatmap
 extends ACmdCreate_IdTargetLabelParentAttr 
 implements ICommand {
 	
+	protected int iGLCanvasId = 0;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -48,8 +50,8 @@ implements ICommand {
 		Heatmap2DViewRep heatmapView = (Heatmap2DViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_HEATMAP2D,
 						iUniqueTargetId, 
-							iParentContainerId, 
-							sLabel);
+						iParentContainerId, 
+						sLabel);
 		
 		viewManager.registerItem(
 				heatmapView, 

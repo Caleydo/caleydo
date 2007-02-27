@@ -9,7 +9,6 @@ import java.util.ListIterator;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.queue.ACommandQueue;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.ICommandManager;

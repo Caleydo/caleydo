@@ -5,7 +5,6 @@ package cerberus.command.queue;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.ICommandManager;

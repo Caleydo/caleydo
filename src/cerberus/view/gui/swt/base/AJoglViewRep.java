@@ -42,7 +42,7 @@ implements IView {
 	/**
 	 * This flag indicates, that the canvas was created.
 	 */
-	protected final AtomicBoolean abEnableRendering = new AtomicBoolean( false );
+	protected AtomicBoolean abEnableRendering;
 	
 	/**
 	 * Aminator for Jogl thead
@@ -57,6 +57,8 @@ implements IView {
 				iParentContainerId, 
 				sLabel,
 				ViewType.SWT_JOGL_VIEW);
+		
+		abEnableRendering = new AtomicBoolean( false );
 	}
 
 	/**
@@ -101,10 +103,25 @@ implements IView {
 
 		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
 		
+		assert refGLCanvas != null : "GLCanvas was not be created";
+		
 		//
 		// Currently all Animators are registerd with thier ID's
 		//
 		refAnimator = refISWTGUIManager.getAnimatorById( iUniqueId );
+		
+		if (( refAnimator != null ) &&( refAnimator.isAnimating() ))
+		{			
+			refGeneralManager.getSingelton().logMsg(
+					"AJoglViewRep.retrieveGUIContainer() cas called more than once + " +
+					this.getClass()
+					,LoggerType.ERROR_ONLY );
+		}
+		
+		refAnimator.add(refGLCanvas);
+		refAnimator.startEventCount();			
+			    
+	    abEnableRendering.set( true );
 	}
 	
 	/**
@@ -114,27 +131,26 @@ implements IView {
 	 */
 	public void initView() {
 		
-		assert refGLCanvas != null : "Can not start GLCanvas Animator thread with refGLCanvas==null!";
-		
-		if (( refAnimator != null ) &&( refAnimator.isAnimating() ))
-		{			
-			refGeneralManager.getSingelton().logMsg(
-					"AJoglViewRep.drawView() cas called more than once + " +
-					this.getClass()
-					,LoggerType.ERROR_ONLY );
-		}
-		
-		/*
-		refAnimator = new Animator(refGLCanvas);
-		
-	    refAnimator.start();
-	    */
-		
-		refAnimator.add(refGLCanvas);
-		refAnimator.startEventCount();			
-		
-	    
-	    abEnableRendering.set( true );
+//		assert refGLCanvas != null : "Can not start GLCanvas Animator thread with refGLCanvas==null!";
+//		
+//		if (( refAnimator != null ) &&( refAnimator.isAnimating() ))
+//		{			
+//			refGeneralManager.getSingelton().logMsg(
+//					"AJoglViewRep.drawView() cas called more than once + " +
+//					this.getClass()
+//					,LoggerType.ERROR_ONLY );
+//		}
+//		
+//		/*
+//		refAnimator = new Animator(refGLCanvas);
+//		
+//	    refAnimator.start();
+//	    */
+//		
+//		refAnimator.add(refGLCanvas);
+//		refAnimator.startEventCount();		
+//		
+//	    abEnableRendering.set( true );
 	    
 	    refGeneralManager.getSingelton().logMsg(
 				"AJoglViewRep.intView() [" + 

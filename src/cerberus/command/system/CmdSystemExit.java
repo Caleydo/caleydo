@@ -10,9 +10,10 @@ package cerberus.command.system;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.window.CmdWindowPopupInfo;
-import cerberus.data.AUniqueItem;
+import cerberus.data.AUniqueManagedObject;
+import cerberus.manager.IGeneralManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -23,15 +24,15 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CmdSystemExit 
-extends AUniqueItem
+extends AUniqueManagedObject
 implements ICommand {
 
 	/**
 	 * Constrcutor.
 	 * 
 	 */
-	public CmdSystemExit() {
-		super (-1);
+	public CmdSystemExit(final IGeneralManager refGeneralManager) {
+		super (-1,refGeneralManager);
 	}
 
 	/* (non-Javadoc)
@@ -40,7 +41,7 @@ implements ICommand {
 	public void doCommand() throws CerberusRuntimeException {
 		System.out.println("shut down application...");
 		
-		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
+		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
 		exitWarning.setText("WARNING","Close application. Current state is stored..");
 		exitWarning.doCommand();
 		
@@ -74,6 +75,10 @@ implements ICommand {
 		assert false : "Must not be called for this calss.";
 	
 		return null;
+	}
+
+	public final ManagerObjectType getBaseType() {
+		return ManagerObjectType.COMMAND;
 	}
 
 }
