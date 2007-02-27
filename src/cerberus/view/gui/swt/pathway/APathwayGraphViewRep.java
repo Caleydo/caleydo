@@ -21,6 +21,7 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.type.ManagerObjectType;
@@ -77,6 +78,8 @@ implements IPathwayGraphView {
 	protected int iPathwayLevel = 1;
 	
 	protected SelectionHandler refSelectionHandler;
+	
+	protected ISet refSelectionSet;
 
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
@@ -290,35 +293,33 @@ implements IPathwayGraphView {
 		});	
 	}
 	
-	public void createSelectionSet(int[] arSelectionVertexId,
+	public void updateSelectionSet(int[] arSelectionVertexId,
 			int[] arSelectionGroup,
 			int[] arNeighborVertices) {
 	
-		// Selection handler will be iniitailly created.
-		// If selection handler exists already it is not necessary to create it again.
-		// Just the data needs to be set.
-		if (refSelectionHandler == null)
-		{
-			refSelectionHandler = new SelectionHandler(refGeneralManager, 
-					this.iParentContainerId, 
-					arSelectionVertexId, 
+		try {
+	
+	 		refSelectionHandler.setSelectionData(arSelectionVertexId, 
 					arSelectionGroup, 
 					arNeighborVertices);
-		}		
-		else
-		{
-			refSelectionHandler.setSelectionIdArray(arSelectionVertexId);
-			//refSelectionHandler.setGroupArray(arSelectionGroup);
-			refSelectionHandler.setOptionalDataArray(arNeighborVertices);
-		}
+			
+	 		//refSelectionSet = refSelectionHandler.getSelectionSet();
 		
-		// Calls update with the ID of the PathwayViewRep
-		((EventPublisher)refGeneralManager.getSingelton().
+	 		// Calls update with the ID of the PathwayViewRep
+	 		((EventPublisher)refGeneralManager.getSingelton().
 				getEventPublisher()).updateSelection(refGeneralManager.
 						getSingelton().getViewGLCanvasManager().
-							getItem(iParentContainerId), 
-								refGeneralManager.getSingelton().
-									getSetManager().getItemSet(85101));
+							getItem(iParentContainerId), refSelectionSet);
+
+		} catch (Exception e)
+		{
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): No SelectionHandler is set in ViewRep.",
+					LoggerType.MINOR_ERROR );
+	
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -340,5 +341,11 @@ implements IPathwayGraphView {
 	public int getDataSetId() {
 		
 		return iPathwaySetId;
+	}
+	
+	//TODO: Add to ViewRep interface after talking with Michael
+	public void registerSelectionHandler(SelectionHandler refSelectionHandler) {
+		
+		this.refSelectionHandler = refSelectionHandler;
 	}
 }

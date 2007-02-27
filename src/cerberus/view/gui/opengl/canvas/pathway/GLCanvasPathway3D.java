@@ -906,42 +906,8 @@ implements IGLCanvasUser {
 		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 				
 		gl.glEnd();
 
-		//gl.glTranslatef(texCoords.right() * 0.0025f, 0.0f, 0.0f);
-		
-//
-//		if (bAcordionDirection == false)
-//		{
-//			gl.glRotated(-140, 0, 1, 0);
-//			bAcordionDirection = true;
-//		}
-//		else
-//		{
-//			gl.glRotated(140, 0, 1, 0);				
-//			bAcordionDirection = false;
-//		}
-//		
 		refPathwayTexture.disable();
 	}
-	
-//	public void setTargetPathwayId(final int iTargetPathwayId) {
-//		
-//		refCurrentPathway = 
-//			refGeneralManager.getSingelton().getPathwayManager().
-//				getCurrentPathway();
-//		
-//		if (refCurrentPathway == null) 
-//		{
-//			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-//					"GLCanvasPathway2D.setPathwayId(" +
-//					iTargetPathwayId + ") failed, because Pathway does not exist!");
-//
-//			return;
-//		}
-//		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-//				"GLCanvasPathway2D.setPathwayId(" +
-//				iTargetPathwayId + ") done!");
-//	}
 	
 	public void update(GLAutoDrawable canvas) {
 

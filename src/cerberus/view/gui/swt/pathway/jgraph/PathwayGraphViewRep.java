@@ -295,7 +295,8 @@ extends APathwayGraphViewRep {
 					    	iArNeighborDistance[i] = iter_I.next().intValue();
 					    }
 						
-						createSelectionSet(iArSelectedVertices, new int[0], iArNeighborDistance);
+						updateSelectionSet(iArSelectedVertices, 
+								new int[0], iArNeighborDistance);
 						
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
