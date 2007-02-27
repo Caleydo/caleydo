@@ -327,20 +327,38 @@ implements IGroupedSelection {
 	}
 
 	public void setSelectionIdArray(int[] iArSelectionId) {
-
+		assert iArSelectionId != null : "setSelectionIdArray() called with null-pointer";
+		
 		((IStorage)refGeneralManager.getItem(iSelectionIdStorageId)).
 			setArrayInt(iArSelectionId);
 	}
 
 	public void setGroupArray(int[] iArSelectionGroup) {
-
+		assert iArSelectionGroup != null : "setGroupArray() called with null-pointer";
+		
 		((IStorage)refGeneralManager.getItem(iSelectionGroupStorageId)).
 			setArrayInt(iArSelectionGroup);
 	}
 
 	public void setOptionalDataArray(int[] iArSelectionOptionalData) {
-
+		assert iArSelectionOptionalData != null : "setOptionalDataArray() called with null-pointer";
+		
 		((IStorage)refGeneralManager.getItem(iSelectionOptionalStorageId)).
 			setArrayInt(iArSelectionOptionalData);	
+	}
+
+	public final void setAllSelectionDataArrays(int[] iArSelectionId, int[] iArSelectionGroup, int[] iArSelectionOptionalData) {
+				
+		setSelectionIdArray(iArSelectionId);
+		
+		if ( iArSelectionGroup != null )
+		{
+			setGroupArray(iArSelectionGroup);
+		}
+		
+		if ( iArSelectionOptionalData != null ) 
+		{
+			setOptionalDataArray(iArSelectionOptionalData);
+		}
 	}
 }

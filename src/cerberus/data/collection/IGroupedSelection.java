@@ -14,4 +14,8 @@ public interface IGroupedSelection {
 	public void setGroupArray( int[] iArSelectionGroup );
 	
 	public void setOptionalDataArray( int[] iArSelectionOptionalData );
+	
+	public void setAllSelectionDataArrays(  int[] iArSelectionId,
+			int[] iArSelectionGroup,
+			int[] iArSelectionOptionalData );
 }

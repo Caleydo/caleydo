@@ -9,7 +9,7 @@ import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.selection.SelectionHandler;
+import cerberus.data.collection.IGroupedSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -77,7 +77,7 @@ implements IPathwayGraphView {
 	 */
 	protected int iPathwayLevel = 1;
 	
-	protected SelectionHandler refSelectionHandler;
+	protected IGroupedSelection refSelectionHandler;
 	
 	protected ISet refSelectionSet;
 
@@ -299,7 +299,7 @@ implements IPathwayGraphView {
 	
 		try {
 	
-	 		refSelectionHandler.setSelectionData(arSelectionVertexId, 
+	 		refSelectionHandler.setAllSelectionDataArrays(arSelectionVertexId, 
 					arSelectionGroup, 
 					arNeighborVertices);
 			
@@ -344,7 +344,7 @@ implements IPathwayGraphView {
 	}
 	
 	//TODO: Add to ViewRep interface after talking with Michael
-	public void registerSelectionHandler(SelectionHandler refSelectionHandler) {
+	public void registerSelectionHandler(final IGroupedSelection refSelectionHandler) {
 		
 		this.refSelectionHandler = refSelectionHandler;
 	}
