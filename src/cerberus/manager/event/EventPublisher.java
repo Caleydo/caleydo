@@ -13,6 +13,9 @@ import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.event.mediator.LockableMediator;
+import cerberus.manager.event.mediator.LockableExclusivFilterMediator;
+import cerberus.manager.event.mediator.LockableIngoreFilterMediator;
+import cerberus.manager.event.mediator.MediatorUpdateType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
@@ -114,10 +117,37 @@ implements IEventPublisher {
 	public synchronized void createMediator(int iMediatorId, 
 			ArrayList<Integer> arSenderIDs,
 			ArrayList<Integer> arReceiverIDs, 
-			MediatorType mediatorType) {
+			MediatorType mediatorType,
+			MediatorUpdateType mediatorUpdateType) {
 
-		IMediator newMediator = 
-			new LockableMediator(this, iMediatorId);
+		IMediator newMediator = null;
+		
+		switch (mediatorUpdateType) {
+		case MEDIATOR_DEFAULT:
+			newMediator = 
+				new LockableMediator(this, 
+						iMediatorId, 
+						MediatorUpdateType.MEDIATOR_DEFAULT);
+			break;
+			
+		case MEDIATOR_FILTER_ONLY_SET:
+			newMediator = 
+				new LockableExclusivFilterMediator(this, 
+						iMediatorId, 
+						null);
+			break;
+			
+		case MEDIATOR_FILTER_ALL_EXPECT_SET:
+			newMediator = 
+				new LockableIngoreFilterMediator(this, 
+						iMediatorId, 
+						null);
+			break;
+			default:
+				assert false : "unknown type";
+			return;
+		}
+		
 
 		Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
 
@@ -487,5 +517,5 @@ implements IEventPublisher {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 }

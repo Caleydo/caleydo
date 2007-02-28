@@ -211,9 +211,9 @@ public interface ISet
 	 * @param iCompareCacheId
 	 */
 	public boolean hasCacheChangedReadOnly( final int iCompareCacheId );
-	
-	
-	//public SetType getSetType();
+
+
+	public SetType getSetType();
 	
 	
 /////////////////////////////

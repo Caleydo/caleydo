@@ -5,6 +5,8 @@
 
 package cerberus.manager.event.mediator;
 
+import cerberus.manager.event.mediator.MediatorUpdateType;
+
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
  * 
@@ -15,18 +17,36 @@ public abstract class ALockableMediator
 extends ALockableMediatorReceiver
 implements IMediator {
 	
+	private final MediatorUpdateType mediatorUpdateType;
+		
 	public final int iMediatorId;
 	
 	/**
 	 * 
+	 * @param iMediatorId
+	 * @param mediatorUpdateType if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT is used as default 
 	 */
-	protected ALockableMediator(int iMediatorId) {
+	protected ALockableMediator(int iMediatorId,
+			final MediatorUpdateType mediatorUpdateType) {
 		
 		super();
 		
 		this.iMediatorId = iMediatorId;
+		
+		if ( mediatorUpdateType == null ) 
+		{
+			this.mediatorUpdateType = MediatorUpdateType.MEDIATOR_DEFAULT;
+		}
+		else 
+		{
+			this.mediatorUpdateType = mediatorUpdateType;
+		}
 	}
 
+	public final MediatorUpdateType getMediatorUpdateTypeType() {
+		return mediatorUpdateType;
+	}
+	
 	/**
 	 * Implement cleanup inside this function.
 	 * 

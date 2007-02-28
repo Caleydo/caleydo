@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IEventPublisher;
+import cerberus.manager.event.mediator.MediatorUpdateType;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care 
@@ -31,9 +32,10 @@ implements IMediator {
 	 * 
 	 */
 	public LockableMediator(final IEventPublisher refEventPublisher,
-			int iMediatorId) {
+			int iMediatorId,
+			final MediatorUpdateType mediatorType ) {
 
-		super(iMediatorId);
+		super(iMediatorId, mediatorType);
 
 		this.refEventPublisher = refEventPublisher;
 		

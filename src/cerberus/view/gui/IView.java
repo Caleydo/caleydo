@@ -1,6 +1,7 @@
 package cerberus.view.gui;
 
 import cerberus.data.IUniqueObject;
+import cerberus.data.collection.SetType;
 import cerberus.view.gui.ViewType;
 
 //import cerberus.command.ICommand;
@@ -48,12 +49,54 @@ extends IUniqueObject {
 	 * Returns the ID of the SET that is the base data of that view.
 	 * If no SET is stored 0 is returned.
 	 *
+	 * @deprecated use getAllSetId() instead
 	 */
 	public int getDataSetId();
+		
 	
-
+	/**
+	 * @deprecated use addSetId(int []) instead
+	 * 
+	 * @param iDataSetId
+	 */
 	public void setDataSetId(int iDataSetId);
 	
+	
+	/**
+	 * Add a new Set to the view via its SetId
+	 * 
+	 * @param iDataSetId array of SetId's to be added
+	 */
+	public void addSetId( int [] iSet);
+	
+	/**
+	 * Remove a Set from the view via its SetId
+	 * 
+	 * @param iDataSetId array of SetId's to be added
+	 */
+	public void removeSetId( int [] iSet);
+	
+	/**
+	 * Removes all Set of a given type from the View.
+	 *  
+	 * @param setType define which type of Set shall be removed
+	 */
+	public void removeAllSetIdByType( SetType setType );
+	
+	/**
+	 * Get all the SetId's assigned to this View.
+	 * 
+	 * @return array of all SetId's
+	 */
+	public int[] getAllSetId();
+	
+	/**
+	 * Ask if a cairtain Set is used by this view.
+	 * 
+	 * @param iSetId define a Set vai its Id
+	 * @return TRUE if teh cset is used by the view
+	 */
+	public boolean hasSetId( int iSetId);
 	
 	/**
 	 * Method return the label of the view.

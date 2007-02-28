@@ -9,6 +9,7 @@ import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IEventPublisher.MediatorType;
+import cerberus.manager.event.mediator.MediatorUpdateType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
@@ -55,7 +56,8 @@ implements ICommand {
 					createMediator(iUniqueTargetId,
 							arSenderIDs, 
 							arReceiverIDs, 
-							mediatorType);
+							mediatorType,
+							MediatorUpdateType.MEDIATOR_DEFAULT);
 		
 		refCommandManager.runDoCommand(this);
 	}

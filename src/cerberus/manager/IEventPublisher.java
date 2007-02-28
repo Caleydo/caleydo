@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import cerberus.data.collection.ISet;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
+import cerberus.manager.event.mediator.MediatorUpdateType;
 
 /**
  * Handle events using Publish subsrib design pattern.
@@ -25,22 +26,13 @@ extends IGeneralManager {
 	/**
 	 * Creates a mediator and registers the senders and receivers
 	 * to this mediator.
-	 */
-	public void createMediator (int iMediatorId, 
-			ArrayList<Integer> arSenderIDs, 
-			ArrayList<Integer> arReceiverIDs,
-			MediatorType mediatorType);
-	
-	/**
-	 * Creates a specialised mediator and registers the senders and receivers
-	 * to this mediator.
-	 * The specialized mediator supports selection filtering.
+	 * mediatorUpdateType defines wether selection filtering is supported or not.
 	 */
 	public void createMediator (int iMediatorId, 
 			ArrayList<Integer> arSenderIDs, 
 			ArrayList<Integer> arReceiverIDs,
 			MediatorType mediatorType,
-			boolean bEnableFilteredMediator);	
+			MediatorUpdateType mediatorUpdateType);
 	
 	/**
 	 * Adds a sender to an existing mediator. 

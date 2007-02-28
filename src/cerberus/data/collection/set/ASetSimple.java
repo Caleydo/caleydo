@@ -10,14 +10,14 @@ package cerberus.data.collection.set;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.thread.impl.ACollectionThreadItem;
+import cerberus.data.collection.set.ASetRawData;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public abstract class ASetSimple 
-extends ACollectionThreadItem
+extends ASetRawData
 implements ISet {
 	
 
@@ -34,7 +34,6 @@ implements ISet {
 		super( iSetCollectionId, setGeneralManager, null );
 		
 	}
-	
 
 //	/* (non-Javadoc)
 //	 * @see cerberus.data.collection.ISet#getStorage()
