@@ -56,6 +56,7 @@ public enum CommandQueueSaxType
 	CREATE_SWT_WINDOW("cmd", "type","-1", "Create Window"),
 	CREATE_SWT_CONTAINER("cmd", "type","-1", "Create SWTContainer"),	
 	CREATE_VIRTUAL_ARRAY("cmd","type","-1", "Create VirtualArray"),
+	CREATE_SELECTION_SET_MAKRO("cmd", "type","-1", "Create Selection Handler"),
 	
 	CREATE_VIEW_HEATMAP("cmd", "type","-1", "Create Heatmap"),
 	CREATE_VIEW_PATHWAY("cmd", "type","-1", "Create Pathway 2D"),

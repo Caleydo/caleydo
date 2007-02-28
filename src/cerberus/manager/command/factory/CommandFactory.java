@@ -12,6 +12,7 @@ import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.data.CmdDataCreatePathwayStorage;
+import cerberus.command.data.CmdDataCreateSelectionSetMakro;
 import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
@@ -214,6 +215,16 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdDataCreateVirtualArray(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;
+		}
+
+		case CREATE_SELECTION_SET_MAKRO:
+		{
+			createdCommand =
+				new CmdDataCreateSelectionSetMakro(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);		

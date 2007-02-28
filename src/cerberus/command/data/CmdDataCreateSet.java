@@ -620,6 +620,130 @@ extends ACmdCreate_IdTargetLabelAttr {
 		}
 	}
 	
+	public void setAttributes(int iSetId, 
+			String sVirtualArrayIDs, 
+			String sStorageIDs) {
+		
+		iUniqueTargetId = iSetId;
+				
+		/**
+		 * Wipe all lists
+		 */
+		wipeLinkedLists();
+		
+		/**
+		 * Read TAG_ATTRIBUTE1 "attrib1" for storage!
+		 */
+		
+		/**
+		String sDetail = 
+			refParameterHandler.getValueString( 
+					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
+	
+		if ( sDetail.length() > 0 ) {
+			this.set_type = CommandQueueSaxType.valueOf( sDetail );
+		}
+		
+		/**
+		 * Separate "text1@text2"
+		 */
+		
+		StringTokenizer strToken_VirtualArrayBlock = 
+			new StringTokenizer(sVirtualArrayIDs,	
+					IGeneralManager.sDelimiter_Paser_DataItemBlock);
+		
+		while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
+		{
+			/**
+			 * Separate "id1 id2 .."
+			 */
+			StringTokenizer strToken_VirtualArrayId = 
+				new StringTokenizer( 
+						strToken_VirtualArrayBlock.nextToken(),	
+						IGeneralManager.sDelimiter_Parser_DataItems); 
+			
+			/**
+			 * Create buffer list...
+			 */
+			LinkedList<String> llRefVirtualArray_1dim 	= 
+				new LinkedList<String> ();
+			
+			while ( strToken_VirtualArrayId.hasMoreTokens() ) 
+			{
+				llRefVirtualArray_1dim.addLast( strToken_VirtualArrayId.nextToken() );
+			} // while ( strToken_VirtualArrayId.hasMoreTokens() ) 
+			
+			if ( ! llRefVirtualArray_1dim.isEmpty() ) {
+				/**
+				 * insert this list into global list..
+				 */
+				llRefVirtualArray_nDim.addLast( llRefVirtualArray_1dim );
+			}
+			else
+			{
+				refGeneralManager.getSingelton().logMsg(
+						"CmdDataCreateSet.setAttributes() empty token inside [" +
+						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() + "]='" +
+						strToken_VirtualArrayBlock.toString() + "'",
+						LoggerType.STATUS );
+			}
+			
+		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() )
+		
+		strToken_VirtualArrayBlock = null;
+	
+		/**
+		 * Read TAG_ATTRIBUTE2 "attrib2" for storage!
+		 */
+		
+		/**
+		 * Separate "text1@text2"
+		 */
+		StringTokenizer strToken_StorageBlock = 
+			new StringTokenizer(sStorageIDs,	
+				IGeneralManager.sDelimiter_Paser_DataItemBlock);
+		
+		while ( strToken_StorageBlock.hasMoreTokens() ) 
+		{
+			/**
+			 * Separate "id1 id2 .."
+			 */
+			StringTokenizer strToken_StorageId = 
+				new StringTokenizer( 
+						strToken_StorageBlock.nextToken(),	
+						IGeneralManager.sDelimiter_Parser_DataItems); 
+			
+			/**
+			 * Create buffer list...
+			 */
+			LinkedList<String> llRefStorage_1dim 	= 
+				new LinkedList<String> ();
+			
+			while ( strToken_StorageId.hasMoreTokens() ) 
+			{
+				llRefStorage_1dim.addLast( strToken_StorageId.nextToken() );
+			} // while ( strToken_VirtualArrayId.hasMoreTokens() ) 
+			
+			if ( ! llRefStorage_1dim.isEmpty() ) {
+				/**
+				 * insert this list into global list..
+				 */
+				llRefStorage_nDim.addLast( llRefStorage_1dim );
+			}
+			else
+			{
+				refGeneralManager.getSingelton().logMsg(
+						"CmdDataCreateSet.setAttributes() empty token inside [" +
+						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() + "]='" +
+						strToken_StorageBlock.toString() + "'",
+						LoggerType.STATUS );
+			}
+			
+		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
+		
+		set_type = CommandQueueSaxType.NO_OPERATION;
+	}
+	
 	public String toString() {
 		String result = this.getClass().getSimpleName();
 		

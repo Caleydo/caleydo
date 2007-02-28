@@ -27,9 +27,9 @@ public class CmdEventCreateMediator
 extends ACmdCreate_IdTargetLabelAttrDetail 
 implements ICommand {
 	
-	protected ArrayList<Integer> arSenderIDs;
+	protected ArrayList<Integer> iArSenderIDs;
 
-	protected ArrayList<Integer> arReceiverIDs;
+	protected ArrayList<Integer> iArReceiverIDs;
 	
 	protected MediatorType mediatorType;
 	
@@ -45,8 +45,8 @@ implements ICommand {
 		super.setId( refGeneralManager.getSingelton().getEventPublisher().createNewId( 
 				ManagerObjectType.CREATE_EVENT_MEDIATOR));
 		
-		arSenderIDs = new ArrayList<Integer>();
-		arReceiverIDs = new ArrayList<Integer>();
+		iArSenderIDs = new ArrayList<Integer>();
+		iArReceiverIDs = new ArrayList<Integer>();
 	}
 
 	public void doCommand() throws CerberusRuntimeException {
@@ -54,8 +54,8 @@ implements ICommand {
 		((IEventPublisher)refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
 					createMediator(iUniqueTargetId,
-							arSenderIDs, 
-							arReceiverIDs, 
+							iArSenderIDs, 
+							iArReceiverIDs, 
 							mediatorType,
 							MediatorUpdateType.MEDIATOR_DEFAULT);
 		
@@ -78,13 +78,13 @@ implements ICommand {
 
 		while (senderToken.hasMoreTokens())
 		{
-			arSenderIDs.add(StringConversionTool.convertStringToInt(
+			iArSenderIDs.add(StringConversionTool.convertStringToInt(
 					senderToken.nextToken(), -1));
 		}
 		
 		while (receiverToken.hasMoreTokens())
 		{
-			arReceiverIDs.add(StringConversionTool.convertStringToInt(
+			iArReceiverIDs.add(StringConversionTool.convertStringToInt(
 					receiverToken.nextToken(), -1));
 		}
 		
@@ -96,6 +96,17 @@ implements ICommand {
 		mediatorType = MediatorType.valueOf( sMediatorType );
 	}
 
+	public void setAttributes(int iEventMediatorId,
+			ArrayList<Integer> iArSenderIDs,
+			ArrayList<Integer> iArReceiverIDs, 
+			MediatorType mediatorType) {
+		
+		this.iUniqueTargetId = iEventMediatorId;
+		this.iArSenderIDs = iArSenderIDs;
+		this.iArReceiverIDs = iArReceiverIDs;
+		this.mediatorType = mediatorType;
+	}
+	
 	public void undoCommand() throws CerberusRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);		

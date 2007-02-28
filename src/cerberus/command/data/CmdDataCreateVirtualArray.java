@@ -157,4 +157,16 @@ implements ICommand {
 		}
 	}
 
+	public void setAttributes(int iVirtualArrayId,
+			int iLength, 
+			int iOffset,
+			int iMultiRepeat,
+			int iMultiOffset) {
+		
+		iUniqueTargetId = iVirtualArrayId;
+		this.iLength = iLength;
+		this.iOffset = iOffset;
+		this.iMultiRepeat = iMultiRepeat;
+		this.iMultiOffset = iMultiOffset;
+	}
 }

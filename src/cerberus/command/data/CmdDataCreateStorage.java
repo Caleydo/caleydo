@@ -304,15 +304,6 @@ implements ICommand {
 	}
 	
 
-	/**
-	 * ISet new target ISet.
-	 * 
-	 * excpected format: sUniqueId sLabel [sStorageType_TokenPattern [{datacontainer}*]]
-	 *
-	 * 
-	 * @param sUniqueId uniqueId of new target ISet
-	 * @return TRUE on successful conversion of Strgin to interger
-	 */
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 				
 		assert refParameterHandler != null: "can not handle null object!";		
@@ -350,4 +341,35 @@ implements ICommand {
 		}	
 	}
 
+	public void setAttributes(int iStorageID, 
+			String sDataTypes, String sRawData) {
+
+		iUniqueTargetId = iStorageID;
+		
+		/**
+		 * Fill data type pattern...
+		 */
+		StringTokenizer strToken_DataTypes = 
+			new StringTokenizer(sDataTypes,
+				IGeneralManager.sDelimiter_Parser_DataType); 
+
+		while ( strToken_DataTypes.hasMoreTokens() ) {
+			llDataTypes.add( strToken_DataTypes.nextToken() );
+		}
+
+		/* Free memory.. */
+		strToken_DataTypes = null;
+		
+		/** 
+		 * Fill raw data...
+		 */
+		StringTokenizer strTokenLine = 
+			new StringTokenizer(sRawData,
+				IGeneralManager.sDelimiter_Paser_DataItemBlock );
+		
+		while ( strTokenLine.hasMoreTokens() ) 
+		{
+			llDataRaw.add( strTokenLine.nextToken() );
+		}	
+	}
 }
