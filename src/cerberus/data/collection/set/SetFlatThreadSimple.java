@@ -18,6 +18,7 @@ import cerberus.data.collection.IMetaData;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.SetType;
 import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
 import cerberus.data.collection.set.ASetRawData;
 import cerberus.data.collection.thread.lock.ICollectionLock;
@@ -57,10 +58,14 @@ implements ISet {
 	/**
 	 * 
 	 */
-	public SetFlatThreadSimple( int iSetCollectionId, IGeneralManager setGeneralManager,
+	public SetFlatThreadSimple( int iSetCollectionId, 
+			final IGeneralManager setGeneralManager,
 			ICollectionLock setCollectionLock) {
 
-		super( iSetCollectionId, setGeneralManager, setCollectionLock );
+		super( iSetCollectionId, 
+				setGeneralManager, 
+				setCollectionLock,
+				SetType.SET_RAW_DATA);
 		
 		refFlatSelection = new IVirtualArray[1];
 		

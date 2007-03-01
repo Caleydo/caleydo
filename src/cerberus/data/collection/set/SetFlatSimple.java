@@ -18,6 +18,7 @@ import cerberus.data.collection.IMetaData;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.SetType;
 import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
 //import cerberus.data.collection.selection.iterator.SelectionVectorIterator;
 import cerberus.data.collection.set.ASetSimple;
@@ -60,12 +61,25 @@ implements ISet {
 	/**
 	 * 
 	 */
-	public SetFlatSimple( int iSetCollectionId, IGeneralManager setGeneralManager) {
+	protected SetFlatSimple( int iSetCollectionId, 
+			final IGeneralManager setGeneralManager,
+			final SetType setType) {
 
-		super( iSetCollectionId, setGeneralManager );
+		super( iSetCollectionId, 
+				setGeneralManager, 
+				setType );
 		
 	}
 
+	public SetFlatSimple( int iSetCollectionId, 
+			final IGeneralManager setGeneralManager) {
+
+		super( iSetCollectionId, 
+				setGeneralManager, 
+				SetType.SET_RAW_DATA );
+		
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.ISet#setSelection(cerberus.data.collection.IVirtualArray, int)
 	 */

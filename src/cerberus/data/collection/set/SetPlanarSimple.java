@@ -20,6 +20,7 @@ import cerberus.data.collection.IMetaData;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.SetType;
 import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
 import cerberus.data.collection.set.ASetSimple;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
@@ -73,12 +74,13 @@ implements ISet {
 	protected int[] iSizeDimension = {0,0};
 	
 	
-	/**
-	 * 
-	 */
-	public SetPlanarSimple( int iSetCollectionId, IGeneralManager setGeneralManager) {
+	protected SetPlanarSimple( int iSetCollectionId, 
+			final IGeneralManager setGeneralManager,
+			final SetType setType) {
 		
-		super( iSetCollectionId, setGeneralManager );
+		super( iSetCollectionId, 
+				setGeneralManager,
+				setType);
 		
 		vecRefSelection_Array = new Vector< Vector<IVirtualArray> > (2);
 		vecRefSelection_Array.add(0, new Vector<IVirtualArray> (2));
@@ -87,6 +89,17 @@ implements ISet {
 		vecRefStorage_Array = new Vector< Vector<IStorage> > (2);
 		vecRefStorage_Array.add(0, new Vector<IStorage> (2));
 		vecRefStorage_Array.add(1, new Vector<IStorage> (2));
+	}
+	
+	/**
+	 * 
+	 */
+	public SetPlanarSimple( int iSetCollectionId, 
+			final IGeneralManager setGeneralManager) {
+		
+		this( iSetCollectionId, 
+				setGeneralManager,
+				SetType.SET_RAW_DATA);				
 	}
 
 	/* (non-Javadoc)

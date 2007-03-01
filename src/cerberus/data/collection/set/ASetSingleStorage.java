@@ -30,7 +30,7 @@ implements ISet {
 	/**
 	 * 
 	 */
-	public ASetSingleStorage( final int iSetCollectionId, 
+	protected ASetSingleStorage( final int iSetCollectionId, 
 			final IGeneralManager setGeneralManager,
 			final ICollectionLock setCollectionLock ) {
 		

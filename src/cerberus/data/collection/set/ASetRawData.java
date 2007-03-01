@@ -18,23 +18,30 @@ public abstract class ASetRawData
 extends ACollectionThreadItem 
 implements ISet {
 
+	private final SetType setType;
+	
 	/**
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
 	 * @param setCollectionLock
 	 */
-	public ASetRawData(int iSetCollectionId,
-			IGeneralManager setGeneralManager,
-			ICollectionLock setCollectionLock) {
+	protected ASetRawData(int iSetCollectionId,
+			final IGeneralManager setGeneralManager,
+			ICollectionLock setCollectionLock,
+			final SetType setType) {
 
-		super(iSetCollectionId, setGeneralManager, setCollectionLock);
+		super(iSetCollectionId, 
+				setGeneralManager, 
+				setCollectionLock);
+		
+		this.setType = setType;
 	}
 
 	/* (non-Javadoc)
 	 * @see cerberus.data.collection.ISet#getSetType()
 	 */
 	public final SetType getSetType() {
-		return SetType.SET_RAW_DATA;
+		return setType;
 	}
 
 }

@@ -10,6 +10,7 @@ package cerberus.data.collection.set;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.ASetRawData;
 
 /**
@@ -29,9 +30,14 @@ implements ISet {
 	/**
 	 * 
 	 */
-	public ASetSimple( int iSetCollectionId, IGeneralManager setGeneralManager) {
+	protected ASetSimple( int iSetCollectionId, 
+			final IGeneralManager setGeneralManager,
+			final SetType setType) {
 		
-		super( iSetCollectionId, setGeneralManager, null );
+		super( iSetCollectionId, 
+				setGeneralManager, 
+				null, 
+				setType );
 		
 	}
 
