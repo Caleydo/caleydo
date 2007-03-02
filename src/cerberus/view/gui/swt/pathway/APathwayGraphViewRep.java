@@ -6,7 +6,7 @@ import java.util.Iterator;
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
+//import cerberus.command.ICommand;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IGroupedSelection;
@@ -20,13 +20,13 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewManager;
+//import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
+//import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.ViewType;
 
@@ -40,13 +40,6 @@ implements IPathwayGraphView {
 	protected Frame refEmbeddedFrame;
 	
 	protected Composite refEmbeddedFrameComposite;
-	
-	/**
-	 * @deprecated
-	 */
-	protected int iPathwaySetId = 0;
-	
-	protected ISet refPathwaySet;
 	
 	protected int iHTMLBrowserId;
 	
@@ -98,12 +91,12 @@ implements IPathwayGraphView {
 //		bShowRelationEdges = true;
 //		bShowReactionEdges = true;
 	}
-
+	
 	public void drawView() {
 		
-
+		//Nothing to do here.
 	}
-
+	
 	public void retrieveGUIContainer() {
 		
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
@@ -264,11 +257,42 @@ implements IPathwayGraphView {
 		return iPathwayLevel;
 	}
 	
-	public Pathway loadPathwayFromFile(String sFilePath) {
+	public Pathway loadPathwayFromFile(int iNewPathwayId) {
+		
+		// Check if Pathway is already loaded and return it
+		if (refGeneralManager.getSingelton().getPathwayManager().hasItem(iNewPathwayId))
+		{
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": loadPathwayFromFile(): Pathway is already loaded. No parsing needed.",
+					LoggerType.MINOR_ERROR );
+			
+			return (Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iNewPathwayId);
+		}
+		
+		String sPathwayFilePath = "";
+		
+		if (iNewPathwayId < 10)
+		{
+			sPathwayFilePath = "map0000" + Integer.toString(iNewPathwayId);
+		}
+		else if (iNewPathwayId < 100 && iNewPathwayId >= 10)
+		{
+			sPathwayFilePath = "map000" + Integer.toString(iNewPathwayId);
+		}
+		else if (iNewPathwayId < 1000 && iNewPathwayId >= 100)
+		{
+			sPathwayFilePath = "map00" + Integer.toString(iNewPathwayId);
+		}
+		else if (iNewPathwayId < 10000 && iNewPathwayId >= 1000)
+		{
+			sPathwayFilePath = "map0" + Integer.toString(iNewPathwayId);
+		}
+		
+		sPathwayFilePath = "data/XML/pathways/" + sPathwayFilePath +".xml";		
 		
 		refGeneralManager.getSingelton().
-			getXmlParserManager().parseXmlFileByName(sFilePath);
-		
+			getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 		
 		return(refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway());
 	}
@@ -320,32 +344,5 @@ implements IPathwayGraphView {
 	
 			e.printStackTrace();
 		}
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#setPathwaySet(int)
-	 */
-	public void setPathwaySet(int iPathwaySetId) {
-		
-		this.iPathwaySetId = iPathwaySetId;
-		
-		refPathwaySet = refGeneralManager.getSingelton().
-			getSetManager().getItemSet(iPathwaySetId);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.view.gui.AViewRep#getDataSetId()
-	 */
-	public int getDataSetId() {
-		
-		return iPathwaySetId;
-	}
-	
-	//TODO: Add to ViewRep interface after talking with Michael
-	public void registerSelectionHandler(final IGroupedSelection refSelectionHandler) {
-		
-		this.refSelectionHandler = refSelectionHandler;
 	}
 }

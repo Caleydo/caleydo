@@ -49,7 +49,7 @@ extends AGLCanvasPathway3D {
 
 		// Load pathway storage
 		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+		IStorage tmpStorage = null;//refPathwaySet.getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		
 		buildEnzymeNodeDisplayList();
@@ -124,7 +124,7 @@ extends AGLCanvasPathway3D {
 			
 			// Load pathway storage
 			// Assumes that the set consists of only one storage
-			IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+			IStorage tmpStorage = null;//refPathwaySet.getStorageByDimAndIndex(0, 0);
 			int[] iArPathwayIDs = tmpStorage.getArrayInt();
 			
 			// Render pathway under interaction

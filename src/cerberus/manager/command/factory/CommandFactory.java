@@ -221,7 +221,7 @@ public class CommandFactory
 			break;
 		}
 
-		case CREATE_SELECTION_SET_MAKRO:
+		case CREATE_SET_SELECTION_MAKRO:
 		{
 			createdCommand =
 				new CmdDataCreateSelectionSetMakro(

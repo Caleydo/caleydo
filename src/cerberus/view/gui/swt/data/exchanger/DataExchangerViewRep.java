@@ -13,7 +13,6 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -28,7 +27,6 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.ViewType;
 
@@ -58,6 +56,8 @@ implements IView {
     protected HashMap<String, IView> hashComboText2View;
 
     protected boolean bIsDataInitialized = false;
+    
+    protected int iCurrentSelectedSetId = 0;
     
 	public DataExchangerViewRep(
 			IGeneralManager refGeneralManager, 
@@ -116,11 +116,21 @@ implements IView {
 	    viewCombo.addSelectionListener(new SelectionAdapter() {
 	    	public void widgetSelected(SelectionEvent e) {
 
-	    		fillDataSets(viewCombo, dataCombo);
 	    	    viewCombo.select(viewCombo.getSelectionIndex());
-
-//	    		dataCombo.select(arViewData.get(viewCombo.getSelectionIndex()));
-	    		//dataCombo.select();
+				
+//	    		dataCombo.add(Integer.toString(iCurrentSelectedSetId), 0);
+//	    		
+//	    		dataCombo.select(0);
+	    		
+	    		fillDataSets(viewCombo, dataCombo);
+	    		
+//	    	    refGeneralManager.getSingelton().getViewCanvasManager().getItemCanvas(
+//	    	    		new Integer(arViewData.get(viewCombo.getSelectionIndex())));
+//	    	    
+//	    		dataCombo.add(new Integer(
+//	    			arViewData.get(viewCombo.getSelectionIndex()))).
+//	    				getDataSetId()));
+	    		
 	    	}
 	    });
 	    
@@ -130,11 +140,11 @@ implements IView {
 	    		int iSelectedViewDataSetId = StringConversionTool.convertStringToInt( 
 	    				arSetIDs.get(dataCombo.getSelectionIndex()), 
 	    				0);
-
-	    		hashComboText2View.get(
-	    				arFilteredViews.get(viewCombo.getSelectionIndex())).
-	    					setDataSetId(iSelectedViewDataSetId);
 	    		
+	    		//FIXME: adjust to new SET concept of ViewRep
+//	    		hashComboText2View.get(arFilteredViews.get(viewCombo.getSelectionIndex())).
+//	    			setDataSetId(iSelectedViewDataSetId);
+
 	    		bIsDataInitialized = false;
 	    	}	    	
 	    });
@@ -178,22 +188,24 @@ implements IView {
 
 		String sItemText = "";
 		arFilteredViews.clear();
-		
-		while (iterViews.hasNext())
-		{
-			tmpView = iterViews.next();
-			
-			if (tmpView.getDataSetId() != 0)
-			{
-				sItemText = Integer.toString(((IUniqueObject)tmpView).getId()) 
-							+ " - " 
-							+ tmpView.getLabel();
-				
-				arFilteredViews.add(sItemText);
-				hashComboText2View.put(sItemText, tmpView);
-				arViewData.add(Integer.toString(tmpView.getDataSetId()));
-			}
-		}
+
+		//FIXME: adjust to new SET concept of ViewRep
+
+//		while (iterViews.hasNext())
+//		{
+//			tmpView = iterViews.next();
+//			
+//			if (tmpView.getDataSetId() != 0)
+//			{
+//				sItemText = Integer.toString(((IUniqueObject)tmpView).getId()) 
+//							+ " - " 
+//							+ tmpView.getLabel();
+//				
+//				arFilteredViews.add(sItemText);
+//				hashComboText2View.put(sItemText, tmpView);
+//				arViewData.add(Integer.toString(tmpView.getDataSetId()));
+//			}
+//		}
 
 		viewComboItems = arFilteredViews.toArray(new String[arFilteredViews.size()]);
 	}
@@ -205,12 +217,21 @@ implements IView {
 		
 		Iterator<ISet> iterSets = allSets.iterator();
 		int iTmpSetId = 0;
+		int iCurrentSelectedSetIndex = 0;
 
 		arSetIDs.clear();
 		
 		while (iterSets.hasNext())
 		{
 			iTmpSetId = iterSets.next().getId();
+			
+    		//FIXME: adjust to new SET concept of ViewRep
+//			iCurrentSelectedSetId = hashComboText2View.get(
+//					arFilteredViews.get(viewCombo.getSelectionIndex())).
+//						getDataSetId();
+			
+			if (iTmpSetId == iCurrentSelectedSetId)
+				iCurrentSelectedSetIndex = arSetIDs.size();
 			
 //			//FIXME: why is the loop entered in every iteration?
 //			if (iTmpSetId == hashComboText2View.get(arFilteredViews.get(viewCombo.getSelectionIndex())).getDataSetId());
@@ -222,6 +243,6 @@ implements IView {
 		dataComboItems = arSetIDs.toArray(new String[arSetIDs.size()]);
 		dataCombo.removeAll();
 		dataCombo.setItems(dataComboItems);
-
+		dataCombo.select(iCurrentSelectedSetIndex);
 	}
 }

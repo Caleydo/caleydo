@@ -54,7 +54,7 @@ implements ICommand {
 			(GLCanvasPanelPathway3D) openGLCanvasUser;		
 		
 		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
-		canvas.setPathwaySet(iPathwaySetId);
+		//canvas.setPathwaySet(iPathwaySetId);
 		//canvas.setTargetPathwayId(iTargetPathwayId);
 	}
 

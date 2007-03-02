@@ -1,5 +1,8 @@
 package cerberus.command.view.swt;
 
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
@@ -8,6 +11,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.pathway.Pathway2DViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -23,9 +27,9 @@ extends ACmdCreate_IdTargetLabelParentXY
 implements ICommand {
 	
 	protected int iHTMLBrowserId = 0;
-	
-	protected int iPathwaySetId = 0;
-	
+
+	protected ArrayList<Integer> iArSetIDs;
+
 	/**
 	 * Constructor
 	 * 
@@ -38,6 +42,8 @@ implements ICommand {
 		super(refGeneralManager, 
 				refCommandManager,
 				refCommandQueueSaxType);
+		
+		iArSetIDs = new ArrayList<Integer>();
 	}
 
 	/**
@@ -60,7 +66,12 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		pathwayView.setAttributes(iWidthX, iHeightY, iPathwaySetId, iHTMLBrowserId);
+		int[] iArTmp = new int[iArSetIDs.size()];
+		for(int index = 0; index < iArSetIDs.size(); index++)
+			iArTmp[index] = iArSetIDs.get(index);
+		
+		pathwayView.setAttributes(iWidthX, iHeightY, iHTMLBrowserId);
+		pathwayView.addSetId(iArTmp);
 		pathwayView.retrieveGUIContainer();
 		pathwayView.initView();
 		pathwayView.drawView();
@@ -73,23 +84,35 @@ implements ICommand {
 		assert refParameterHandler != null: "ParameterHandler object is null!";	
 		
 		super.setParameterHandler(refParameterHandler);	
+	
+		//TODO: load browser ID dynamically
+//		refParameterHandler.setValueAndTypeAndDefault("iHTMLBrowserId",
+//				refParameterHandler.getValueString( 
+//						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
+//				IParameterHandler.ParameterHandlerType.INT,
+//				"-1");
+//		
+//		iHTMLBrowserId = refParameterHandler.getValueInt("iHTMLBrowserId");
 		
-		refParameterHandler.setValueAndTypeAndDefault("iHTMLBrowserId",
+		// Read SET IDs (Data and Selection) 
+		String sPathwaySets = "";
+		refParameterHandler.setValueAndTypeAndDefault("sPathwaySets",
 				refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
-				IParameterHandler.ParameterHandlerType.INT,
+				IParameterHandler.ParameterHandlerType.STRING,
 				"-1");
 		
-		iHTMLBrowserId = refParameterHandler.getValueInt("iHTMLBrowserId");
+		sPathwaySets = refParameterHandler.getValueString("sPathwaySets");
 		
-		// Read SET ID 
-		refParameterHandler.setValueAndTypeAndDefault("iPathwaySetId",
-				refParameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
-				IParameterHandler.ParameterHandlerType.INT,
-				"-1");
-		
-		iPathwaySetId = refParameterHandler.getValueInt("iPathwaySetId");
+		StringTokenizer setToken = new StringTokenizer(
+				sPathwaySets,
+				IGeneralManager.sDelimiter_Parser_DataItems);
+
+		while (setToken.hasMoreTokens())
+		{
+			iArSetIDs.add(StringConversionTool.convertStringToInt(
+					setToken.nextToken(), -1));
+		}
 	}
 
 	public void undoCommand() throws CerberusRuntimeException {

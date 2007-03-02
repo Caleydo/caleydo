@@ -73,8 +73,14 @@ implements ISet {
 	 */
 	protected int[] iSizeDimension = {0,0};
 	
-	
-	protected SetPlanarSimple( int iSetCollectionId, 
+	/**
+	 * Constructor.
+	 * 
+	 * @param iSetCollectionId
+	 * @param setGeneralManager
+	 * @param setType
+	 */
+	public SetPlanarSimple( int iSetCollectionId, 
 			final IGeneralManager setGeneralManager,
 			final SetType setType) {
 		
@@ -92,7 +98,7 @@ implements ISet {
 	}
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public SetPlanarSimple( int iSetCollectionId, 
 			final IGeneralManager setGeneralManager) {

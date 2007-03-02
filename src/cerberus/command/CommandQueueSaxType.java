@@ -50,13 +50,14 @@ public enum CommandQueueSaxType
 	
 	CREATE_PATHWAY_STORAGE("cmd","type","-1", "Create Storage Pathway"),
 	CREATE_SET("cmd","type","-1", "Create SET"),
-	CREATE_SET_PLANAR("cmd","type","-1", "Create SET Planar"),
+	CREATE_SET_PLANAR("cmd","type","-1", "Create Planar SET"),
 	CREATE_SET_MULTIDIM("cmd","type","-1", "No description available!"),
+	CREATE_SET_SELECTION("cmd","type","-1", "Create Selection SET!"),
+	CREATE_SET_SELECTION_MAKRO("cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
 	CREATE_STORAGE("cmd","type","-1", "Create Storage"),	
 	CREATE_SWT_WINDOW("cmd", "type","-1", "Create Window"),
 	CREATE_SWT_CONTAINER("cmd", "type","-1", "Create SWTContainer"),	
 	CREATE_VIRTUAL_ARRAY("cmd","type","-1", "Create VirtualArray"),
-	CREATE_SELECTION_SET_MAKRO("cmd", "type","-1", "Create Selection Handler"),
 	
 	CREATE_VIEW_HEATMAP("cmd", "type","-1", "Create Heatmap"),
 	CREATE_VIEW_PATHWAY("cmd", "type","-1", "Create Pathway 2D"),

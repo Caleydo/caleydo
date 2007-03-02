@@ -408,6 +408,13 @@ extends ACmdCreate_IdTargetLabelAttr {
 			assingPlanarOrMultiDimensionalSet( newObject );
 			break;
 			
+		case CREATE_SET_SELECTION:
+			newObject = (ISet) refSetManager.createSet(
+					set_type );
+			
+			assingPlanarOrMultiDimensionalSet( newObject );
+			break;
+			
 		default:
 			refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.doCommand() failed because type=[" +
@@ -622,9 +629,11 @@ extends ACmdCreate_IdTargetLabelAttr {
 	
 	public void setAttributes(int iSetId, 
 			String sVirtualArrayIDs, 
-			String sStorageIDs) {
+			String sStorageIDs,
+			CommandQueueSaxType setType) {
 		
 		iUniqueTargetId = iSetId;
+		set_type = setType;
 				
 		/**
 		 * Wipe all lists
@@ -741,7 +750,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
 		
-		set_type = CommandQueueSaxType.NO_OPERATION;
+		//set_type = CommandQueueSaxType.NO_OPERATION;
 	}
 	
 	public String toString() {

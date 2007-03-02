@@ -61,7 +61,6 @@ implements IView {
 		viewComboLabel.setSize(300, 30);
 				
 		refUndoRedoCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
-		refUndoRedoCombo.add("Dummy Command");
 	}
 
 	public void drawView() {

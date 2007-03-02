@@ -27,8 +27,6 @@ implements IView, IMediatorSender {
 	
 	protected int iHTMLBrowserId;
 	
-	protected int iPathwaySetId;
-	
 	protected APathwayGraphViewRep refPathwayGraphViewRep;
 	
 	public Pathway2DViewRep(
@@ -61,18 +59,28 @@ implements IView, IMediatorSender {
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
 		refPathwayGraphViewRep.setWidthAndHeight(iWidth-5, iHeight-75);
 		refPathwayGraphViewRep.setHTMLBrowserId(iHTMLBrowserId);
-		refPathwayGraphViewRep.setPathwaySet(iPathwaySetId);
+		
+		// Convert ArrayList<Integer> to int[]
+		int[] iArSetDataTmp = new int[alSetData.size()];
+		for(int index = 0; index < alSetData.size(); index++)
+			iArSetDataTmp[index] = alSetData.get(index).getId();
+		
+		int[] iArSetSelectionTmp = new int[alSetData.size()];
+		for(int index = 0; index < alSetData.size(); index++)
+			iArSetSelectionTmp[index] = alSetData.get(index).getId();
+				
+		refPathwayGraphViewRep.addSetId(iArSetDataTmp);
+		refPathwayGraphViewRep.addSetId(iArSetDataTmp);
 		refPathwayGraphViewRep.retrieveGUIContainer();
 		refPathwayGraphViewRep.initView();
 		refPathwayGraphViewRep.drawView();
 	}
 
-	public void setAttributes(int iWidth, int iHeight, 
-			int iPathwaySetId, int iHTMLBrowserId) {
+	public void setAttributes(int iWidth, int iHeight,
+			int iHTMLBrowserId) {
 		
 		super.setAttributes(iWidth, iHeight);
 
-		this.iPathwaySetId = iPathwaySetId;
 		this.iHTMLBrowserId = iHTMLBrowserId;
 	}
 
@@ -91,25 +99,4 @@ implements IView, IMediatorSender {
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.view.gui.IView#getDataSetId()
-	 */
-	public int getDataSetId() {
-		
-		return iPathwaySetId;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.view.gui.AViewRep#setDataSetId(int)
-	 */
-	public void setDataSetId(int iDataSetId) {
-		
-		refPathwayGraphViewRep.setPathwaySet(iDataSetId);
-		refPathwayGraphViewRep.resetPathway();
-		refPathwayGraphViewRep.drawView();
-	}
-
 }

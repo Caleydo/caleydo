@@ -1,6 +1,5 @@
 package cerberus.view.gui.swt.pathway;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import cerberus.data.pathway.Pathway;
@@ -19,10 +18,8 @@ extends IView {
 			int iVertexId2, 
 			boolean bDrawArrow,
 			APathwayEdge refPathwayEdge);
-	
-	public void setPathwaySet(int iPathwaySetId);
-	
-	public Pathway loadPathwayFromFile(String sFilePath);
+		
+	public Pathway loadPathwayFromFile(int iNewPathwayId);
 	
 	public void loadImageMapFromFile(String sImagePath); 
 	

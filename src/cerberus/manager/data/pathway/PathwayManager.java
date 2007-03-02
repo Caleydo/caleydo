@@ -107,7 +107,9 @@ implements IPathwayManager {
 
 	public boolean hasItem(int iItemId) {
 
-		// TODO Auto-generated method stub
+		if (pathwayLUT.containsKey(iItemId))
+			return true;
+		
 		return false;
 	}
 

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -35,6 +36,8 @@ import org.jgraph.graph.GraphUndoManager;
 import cerberus.util.system.StringConversionTool;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
+import cerberus.data.collection.set.SetFlatSimple;
+import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -154,6 +157,8 @@ extends APathwayGraphViewRep {
 
 	public void initView() {
 		
+		extractCurrentPathwayFromSet();
+		
 		class PathwayMarqueeHandler 
 		extends BasicMarqueeHandler {
 
@@ -216,35 +221,9 @@ extends APathwayGraphViewRep {
 						return;
 					}
 					
-					String sSearchPattern = "pathway/map/";
-					String sPathwayFilePath;
-					
-					// Check if clicked cell is another pathway
-					if (sUrl.contains((CharSequence)sSearchPattern))
+					if (extractClickedPathway(sUrl) == false);
 					{
-						int iFilePathStartIndex = sUrl.lastIndexOf(sSearchPattern) + sSearchPattern.length();
-						sPathwayFilePath = sUrl.substring(iFilePathStartIndex);
-						sPathwayFilePath = sPathwayFilePath.replaceFirst("html", "xml");
-						System.out.println("Load pathway from " +sPathwayFilePath);
-						
-//						// Extract pathway clicked pathway ID
-//						int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
-//						System.out.println("Last index: " +iPathwayIdIndex);
-//						iPathwayId = StringConversionTool.
-//							convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
-//	
-//						refGeneralManager.getSingelton().logMsg(
-//								"Load pathway with ID " +iPathwayId,
-//								LoggerType.VERBOSE);
-//						
-//						// Load pathway
-//						loadPathwayFromFile("data/XML/pathways/" + sPathwayFilePath);	
-					
-						bNeighbourhoodShown = false;
-					}
-					else
-					{
-						loadNodeInformationInBrowser(sUrl);
+						//loadNodeInformationInBrowser(sUrl);
 	
 						// UNDO old neighborhood visualization
 						if (bNeighbourhoodShown == true)
@@ -279,24 +258,24 @@ extends APathwayGraphViewRep {
 							bNeighbourhoodShown = true;
 						}
 						
-						int[] iArSelectedVertices = null;
-						int[] iArNeighborDistance = null;
-
-						// Convert Link List to int[]
-					    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
-					    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
-					    for ( int i=0; iter_I.hasNext() ;i++ ) {
-					    	iArSelectedVertices[i] = iter_I.next().intValue();
-					    }
-					    
-					    iter_I = iLLNeighborDistance.iterator();		    
-					    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
-					    for ( int i=0; iter_I.hasNext() ;i++ ) {
-					    	iArNeighborDistance[i] = iter_I.next().intValue();
-					    }
-						
-						updateSelectionSet(iArSelectedVertices, 
-								new int[0], iArNeighborDistance);
+//						int[] iArSelectedVertices = null;
+//						int[] iArNeighborDistance = null;
+//
+//						// Convert Link List to int[]
+//					    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+//					    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+//					    for ( int i=0; iter_I.hasNext() ;i++ ) {
+//					    	iArSelectedVertices[i] = iter_I.next().intValue();
+//					    }
+//					    
+//					    iter_I = iLLNeighborDistance.iterator();		    
+//					    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
+//					    for ( int i=0; iter_I.hasNext() ;i++ ) {
+//					    	iArNeighborDistance[i] = iter_I.next().intValue();
+//					    }
+//						
+//						updateSelectionSet(iArSelectedVertices, 
+//								new int[0], iArNeighborDistance);
 						
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
@@ -319,8 +298,9 @@ extends APathwayGraphViewRep {
 		    		if (iPathwayLevel >= 3)
 		    		{
 		    			//fScalingFactor = SCALING_FACTOR;
-		    			bShowBackgroundOverlay = true;
-		    			loadPathwayFromFile(sLink);
+		    			//bShowBackgroundOverlay = true;
+		    			extractClickedPathway(sLink);
+		    			//loadPathwayFromFile(sLink);
 		    		}	
 		    		else
 		    		{
@@ -358,9 +338,7 @@ extends APathwayGraphViewRep {
 	}
 	
 	public void drawView() {
-		
-		super.drawView();
-		
+
 		//TODO: add try catch for pathway null object
 		if (refCurrentPathway != null)
 		{			
@@ -576,37 +554,34 @@ extends APathwayGraphViewRep {
 //				vecReactionEdges.toArray());
 	}
 	
-	public Pathway loadPathwayFromFile(String sFilePath) {
+	public Pathway loadPathwayFromFile(int iNewPathwayId) {
 		
-//		Pathway refLoadedPathway = super.loadPathwayFromFile(sFilePath);
-//		
-//		refCurrentPathway = null;
-//		refCurrentPathwayImageMap = null;
-//		resetPathway();
-//	
-//		iPathwayId = Integer.parseInt(
-//				sFilePath.substring(sFilePath.lastIndexOf('/')+4, 
-//						sFilePath.lastIndexOf('/')+9));
-//		
-//		drawView();
-//		
-//		refPathwayGraph.setBackgroundImage(null);
-//		
-//		if (bShowBackgroundOverlay == true)
-//		{
-//			// Build current pathway file path of GIF
-//			String sPathwayImageFilePath = refCurrentPathway.getTitle();
-//			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
-//			sPathwayImageFilePath = "data/images/pathways/" 
-//				+sPathwayImageFilePath +".gif";
-//			
-//			loadBackgroundOverlayImage(sPathwayImageFilePath, null);
-//		}
-//		
-//		refGraphLayoutCache.reload();
-//		return refLoadedPathway;
+		Pathway refLoadedPathway = super.loadPathwayFromFile(iNewPathwayId);
 		
-		return null;
+		refCurrentPathway = null;
+		refCurrentPathwayImageMap = null;
+		resetPathway();
+
+		extractCurrentPathwayFromSet();
+		
+		drawView();
+		
+		refPathwayGraph.setBackgroundImage(null);
+		
+		if (bShowBackgroundOverlay == true)
+		{
+			// Build current pathway file path of GIF
+			String sPathwayImageFilePath = refCurrentPathway.getTitle();
+			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
+			sPathwayImageFilePath = "data/images/pathways/" 
+				+sPathwayImageFilePath +".gif";
+			
+			loadBackgroundOverlayImage(sPathwayImageFilePath, null);
+		}
+		
+		refGraphLayoutCache.reload();
+		
+		return refLoadedPathway;
 	}
 	
 	public void loadImageMapFromFile(String sImageMapPath) {
@@ -840,17 +815,79 @@ extends APathwayGraphViewRep {
 	}
 	
 	/**
-	 * Method extracts the pathway ID from the pathway storage 
+	 * Method extracts the current pathway from the pathway storage 
 	 * and sets the local pathway.
+	 * 
 	 */
-	public void setPathwaySet(int iPathwaySetId) {
-
-		super.setPathwaySet(iPathwaySetId);
+	protected void extractCurrentPathwayFromSet() {
 		
 		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
+		IStorage tmpStorage = ((SetFlatSimple)alSetData.get(0)).
+			getStorageByDimAndIndex(0, 0);
+		
 		// Assumes that the storage contains only one pathway item
 		refCurrentPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(tmpStorage.getArrayInt()[0]);
+	}
+	
+	/**
+	 * Method checks is the clicked URL is a pathway.
+	 * If it is it calls the extraction method.
+	 * 
+	 * @param sUrl
+	 * @return TRUE if a contained pathway was clicked.
+	 */
+	protected boolean extractClickedPathway(String sUrl) {
+		
+		String sSearchPattern1 = "pathway/map/";
+		String sSearchPattern2 = "XML/pathways/";
+		
+		// Check if clicked cell is another pathway
+		if (!sUrl.contains((CharSequence)sSearchPattern1) && 
+				!sUrl.contains((CharSequence)sSearchPattern2))
+		{
+			return false;
+		}
+		
+		// Extract pathway clicked pathway ID
+		int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+		int iNewPathwayId = StringConversionTool.
+			convertStringToInt(sUrl.substring(iPathwayIdIndex, iPathwayIdIndex+3), 0);
+		
+		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		//int[] iArPathwayIDs = refTmpStorage.getArrayInt();
+		
+		int[] tmp = new int[1];
+		tmp[0] = iNewPathwayId;
+		refTmpStorage.setArrayInt(tmp);
+		
+//		// Pathway needs to be added (if user selects pathway in upper layer)
+//		if (sUrl.contains((CharSequence)sSearchPattern2))
+//		{
+//			int[] tmp = new int[iArPathwayIDs.length + 1];
+//			for(int i = 0; i < iArPathwayIDs.length; i++)
+//				tmp[i] = iArPathwayIDs[i];
+//			tmp[iArPathwayIDs.length] = iNewPathwayId;
+//		}
+//		// Current pathway needs to be replaced
+//		else
+//		{
+//			//Replace old pathway ID with new ID
+//			for (int index = 0; index < iArPathwayIDs.length; index++)
+//			{
+//				if (iArPathwayIDs[index] == refCurrentPathway.getPathwayID())
+//				{
+//					iArPathwayIDs[index] = iNewPathwayId;
+//					break;
+//				}
+//			}	
+//		}
+		
+		//refTmpStorage.setArrayInt(iArPathwayIDs);
+		
+		// Load pathway
+		loadPathwayFromFile(iNewPathwayId);	
+	
+		return true;
 	}
 }

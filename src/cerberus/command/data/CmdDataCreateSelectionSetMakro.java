@@ -3,7 +3,6 @@ package cerberus.command.data;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import cerberus.data.collection.ISet;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -22,7 +21,7 @@ public class CmdDataCreateSelectionSetMakro
 extends ACmdCreate_IdTargetLabelAttrDetail 
 implements ICommand {
 	
-	ISet refSelectionSet;
+//	ISet refSelectionSet;
 	
 	protected int iSelectionSetId = -1;
 	protected int iSelectionVirtualArrayId = -1;
@@ -105,6 +104,7 @@ implements ICommand {
 				.createCommandByType(CommandQueueSaxType.CREATE_VIRTUAL_ARRAY);
 		
 		createdCommand.setAttributes(iSelectionVirtualArrayId, 3, 0, 0, 1);	
+		createdCommand.doCommand();
 	}
 	
 	/**
@@ -124,6 +124,7 @@ implements ICommand {
 		// The storage will be empty after creation.
 		// The real data values are filled in afterwards.
 		createdCommand.setAttributes(iSelectionIdStorageId, "INT", "0");
+		createdCommand.doCommand();
 	}
 	
 	/**
@@ -143,7 +144,7 @@ implements ICommand {
 		// The storage will be empty after creation.
 		// The real data values are filled in afterwards.
 		createdCommand.setAttributes(iSelectionGroupStorageId, "INT", "0");
-
+		createdCommand.doCommand();
 	}
 
 	/**
@@ -164,6 +165,7 @@ implements ICommand {
 		// The storage will be empty after creation.
 		// The real data values are filled in afterwards.
 		createdCommand.setAttributes(iSelectionOptionalStorageId, "INT", "0");
+		createdCommand.doCommand();
 	}
 
 	/**
@@ -190,9 +192,11 @@ implements ICommand {
 		
 		createdCommand.setAttributes(iSelectionSetId, 
 				sVirtualArrayIDs, 
-				sStorageIDs);
+				sStorageIDs,
+				CommandQueueSaxType.CREATE_SET_SELECTION);
+		createdCommand.doCommand();
 		
-		refSelectionSet = (ISet)refGeneralManager.getSingelton().getSetManager()
-			.getItem(iSelectionSetId);
+//		refSelectionSet = (ISet)refGeneralManager.getSingelton().getSetManager()
+//			.getItem(iSelectionSetId);
 	}
 }

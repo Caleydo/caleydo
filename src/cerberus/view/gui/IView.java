@@ -43,25 +43,6 @@ extends IUniqueObject {
 	 */
 	public void setParentContainerId(int iParentContainerId);
 	
-
-	
-	/**
-	 * Returns the ID of the SET that is the base data of that view.
-	 * If no SET is stored 0 is returned.
-	 *
-	 * @deprecated use getAllSetId() instead
-	 */
-	public int getDataSetId();
-		
-	
-	/**
-	 * @deprecated use addSetId(int []) instead
-	 * 
-	 * @param iDataSetId
-	 */
-	public void setDataSetId(int iDataSetId);
-	
-	
 	/**
 	 * Add a new Set to the view via its SetId
 	 * 
