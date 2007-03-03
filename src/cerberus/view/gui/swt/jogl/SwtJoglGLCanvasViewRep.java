@@ -198,9 +198,8 @@ implements IView, IGLCanvasDirector {
 	 */
 	public synchronized void initGLCanvasUser() {
 		
-		//MARC: replaced the if statement with the former statement (abEnableRendering)
-		if ( abEnableRendering.get() )
-		//if ( this.refGLCanvas != null ) 
+		//if ( abEnableRendering.get() )
+		if ( this.refGLCanvas != null ) 
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
