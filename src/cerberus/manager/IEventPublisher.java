@@ -2,7 +2,7 @@ package cerberus.manager;
 
 import java.util.ArrayList;
 
-import cerberus.data.collection.ISet;
+import cerberus.data.collection.selection.SetSelection;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.event.mediator.MediatorUpdateType;
@@ -90,7 +90,7 @@ extends IGeneralManager {
 	 */
 	public void update(Object triggerObject);
 	
-	public void updateSelection(Object triggerObject, ISet selectionSet);
+	public void updateSelection(Object triggerObject, SetSelection selectionSet);
 	
 	/**
 	 * Called only by Sender.

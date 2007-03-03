@@ -13,6 +13,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
+import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPanelPathway3D;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -88,5 +89,10 @@ implements ICommand {
 	@Override
 	public void undoCommandPart() throws CerberusRuntimeException {
 
+		GLCanvasPanelPathway3D canvas = 
+			(GLCanvasPanelPathway3D) openGLCanvasUser;
+		
+		canvas.destroy();
+		canvas = null;
 	}
 }

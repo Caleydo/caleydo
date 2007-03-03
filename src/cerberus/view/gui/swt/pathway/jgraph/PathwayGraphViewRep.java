@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -36,11 +35,12 @@ import org.jgraph.graph.GraphUndoManager;
 import cerberus.util.system.StringConversionTool;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
-import cerberus.data.collection.set.SetFlatSimple;
-import cerberus.data.collection.set.SetPlanarSimple;
+import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
+import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
@@ -50,7 +50,6 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineSty
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
@@ -138,6 +137,8 @@ extends APathwayGraphViewRep {
 	 */
 	protected boolean bNeighbourhoodShown = false;
 	
+	protected HashMap<IPathwayVertexRep, DefaultGraphCell> hashVertexRep2GraphCell;
+	
 	public PathwayGraphViewRep(IGeneralManager refGeneralManager, 
 			int iParentContainerId) {
 		
@@ -153,6 +154,8 @@ extends APathwayGraphViewRep {
 		
 		iLLSelectedVertices = new LinkedList<Integer>();
 		iLLNeighborDistance = new LinkedList<Integer>();
+		
+		hashVertexRep2GraphCell = new HashMap<IPathwayVertexRep, DefaultGraphCell>();
 	}
 
 	public void initView() {
@@ -258,24 +261,24 @@ extends APathwayGraphViewRep {
 							bNeighbourhoodShown = true;
 						}
 						
-//						int[] iArSelectedVertices = null;
-//						int[] iArNeighborDistance = null;
-//
-//						// Convert Link List to int[]
-//					    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
-//					    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
-//					    for ( int i=0; iter_I.hasNext() ;i++ ) {
-//					    	iArSelectedVertices[i] = iter_I.next().intValue();
-//					    }
-//					    
-//					    iter_I = iLLNeighborDistance.iterator();		    
-//					    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
-//					    for ( int i=0; iter_I.hasNext() ;i++ ) {
-//					    	iArNeighborDistance[i] = iter_I.next().intValue();
-//					    }
-//						
-//						updateSelectionSet(iArSelectedVertices, 
-//								new int[0], iArNeighborDistance);
+						int[] iArSelectedVertices = null;
+						int[] iArNeighborDistance = null;
+
+						// Convert Link List to int[]
+					    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+					    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+					    for ( int i=0; iter_I.hasNext() ;i++ ) {
+					    	iArSelectedVertices[i] = iter_I.next().intValue();
+					    }
+					    
+					    iter_I = iLLNeighborDistance.iterator();		    
+					    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
+					    for ( int i=0; iter_I.hasNext() ;i++ ) {
+					    	iArNeighborDistance[i] = iter_I.next().intValue();
+					    }
+						
+						updateSelectionSet(iArSelectedVertices, 
+								new int[0], iArNeighborDistance);
 						
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
@@ -383,6 +386,8 @@ extends APathwayGraphViewRep {
 		
 		//create node
 		refGraphCell = new DefaultGraphCell(vertexRep);
+		
+		hashVertexRep2GraphCell.put(vertexRep, refGraphCell);
 		
 		AttributeMap changedMap = refGraphCell.getAttributes(); 
 			
@@ -822,7 +827,7 @@ extends APathwayGraphViewRep {
 	protected void extractCurrentPathwayFromSet() {
 		
 		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = ((SetFlatSimple)alSetData.get(0)).
+		IStorage tmpStorage = ((SetFlatThreadSimple)alSetData.get(0)).
 			getStorageByDimAndIndex(0, 0);
 		
 		// Assumes that the storage contains only one pathway item
@@ -889,5 +894,44 @@ extends APathwayGraphViewRep {
 		loadPathwayFromFile(iNewPathwayId);	
 	
 		return true;
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 */
+	public void updateSelection(Object eventTrigger, SetSelection selectionSet) {
+		
+		refGeneralManager.getSingelton().logMsg(
+				"2D Pathway update called by " + eventTrigger.getClass().getSimpleName(),
+				LoggerType.VERBOSE);
+
+    	// Remove old selected vertices
+    	iLLSelectedVertices.clear();
+    	//iLLNeighborDistance.clear();
+		
+		// Read selected vertex IDs
+		int[] iArSelectedElements = selectionSet.getSelectionIdArray();
+		
+		// Read neighbor data
+		//int[] iArSelectionNeighborDistance = selectionSet.getOptionalDataArray();
+		
+		for (int iSelectedVertexIndex = 0; 
+			iSelectedVertexIndex < ((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
+			iSelectedVertexIndex++)
+		{			
+	    	
+			PathwayVertex selectedVertex = refGeneralManager.getSingelton().getPathwayElementManager().
+				getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]);
+			
+	    	iLLSelectedVertices.add(selectedVertex.getElementId());
+
+	    	//ATTENTION: Performance problem!
+	    	resetPathway();
+	    	drawView();
+	    	
+			highlightCell(hashVertexRep2GraphCell.get(
+					selectedVertex.getVertexRepByIndex(0)), Color.RED);
+		}
 	}
 }

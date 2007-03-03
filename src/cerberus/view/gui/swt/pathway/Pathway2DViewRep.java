@@ -5,7 +5,9 @@ package cerberus.view.gui.swt.pathway;
 
 import org.eclipse.swt.layout.GridLayout;
 
+import cerberus.data.collection.selection.SetSelection;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
@@ -23,7 +25,7 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
  */
 public class Pathway2DViewRep 
 extends AViewRep 
-implements IView, IMediatorSender {
+implements IView, IMediatorSender, IMediatorReceiver {
 	
 	protected int iHTMLBrowserId;
 	
@@ -65,12 +67,14 @@ implements IView, IMediatorSender {
 		for(int index = 0; index < alSetData.size(); index++)
 			iArSetDataTmp[index] = alSetData.get(index).getId();
 		
-		int[] iArSetSelectionTmp = new int[alSetData.size()];
-		for(int index = 0; index < alSetData.size(); index++)
-			iArSetSelectionTmp[index] = alSetData.get(index).getId();
-				
+		int[] iArSetSelectionTmp = new int[alSetSelection.size()];
+		for(int index = 0; index < alSetSelection.size(); index++)
+			iArSetSelectionTmp[index] = alSetSelection.get(index).getId();
+		
+		// Forwarding selection data to the JGraph ViewRep
 		refPathwayGraphViewRep.addSetId(iArSetDataTmp);
-		refPathwayGraphViewRep.addSetId(iArSetDataTmp);
+		refPathwayGraphViewRep.addSetId(iArSetSelectionTmp);
+		
 		refPathwayGraphViewRep.retrieveGUIContainer();
 		refPathwayGraphViewRep.initView();
 		refPathwayGraphViewRep.drawView();
@@ -98,5 +102,16 @@ implements IView, IMediatorSender {
 						iParentContainerId, iWidth, iHeight);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.AViewRep#updateSelection(java.lang.Object, cerberus.data.collection.selection.SetSelection)
+	 */
+	public void updateSelection(Object eventTrigger, 
+			SetSelection updatedSelectionSet) {
+		
+		// Just pass on to embedded JGraph 2D Pathway ViewRep
+		refPathwayGraphViewRep.updateSelection(eventTrigger, updatedSelectionSet);
 	}
 }

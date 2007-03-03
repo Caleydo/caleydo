@@ -4,6 +4,7 @@
 package cerberus.manager.event.mediator;
 
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.selection.SetSelection;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 
@@ -47,7 +48,7 @@ extends LockableMediator {
 	 * is not equal the calling selectionSet.
 	 */
 	public void updateReceiverSelection(Object eventTrigger,
-			ISet selectionSet) {
+			SetSelection selectionSet) {
 		
 		assert selectionSet != null : "can not handle selectionSet null-pointer";
 		

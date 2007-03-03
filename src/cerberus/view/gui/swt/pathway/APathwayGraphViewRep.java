@@ -6,10 +6,10 @@ import java.util.Iterator;
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.command.CommandQueueSaxType;
-//import cerberus.command.ICommand;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import cerberus.data.collection.ISet;
-import cerberus.data.collection.IGroupedSelection;
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
+import cerberus.data.collection.selection.SetSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -20,19 +20,19 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
-//import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.event.EventPublisher;
+import cerberus.manager.event.mediator.IMediatorReceiver;
+import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
-//import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
-import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 import cerberus.view.gui.ViewType;
+import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
-implements IPathwayGraphView {
+implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 
 	public static final String KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH = 
 		"data/XML/imagemap/map01100.xml";
@@ -70,10 +70,6 @@ implements IPathwayGraphView {
 	 */
 	protected int iPathwayLevel = 1;
 	
-	protected IGroupedSelection refSelectionHandler;
-	
-	protected ISet refSelectionSet;
-
 	public APathwayGraphViewRep(
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
@@ -317,29 +313,40 @@ implements IPathwayGraphView {
 		});	
 	}
 	
-	public void updateSelectionSet(int[] arSelectionVertexId,
-			int[] arSelectionGroup,
-			int[] arNeighborVertices) {
+	public void updateSelectionSet(int[] iArSelectionVertexId,
+			int[] iArSelectionGroup,
+			int[] iArNeighborVertices) {
 	
 		try {
-	
-	 		refSelectionHandler.setAllSelectionDataArrays(arSelectionVertexId, 
-					arSelectionGroup, 
-					arNeighborVertices);
+			// Update selection SET data.
+			alSetSelection.get(0).setAllSelectionDataArrays(
+					iArSelectionVertexId, iArSelectionGroup, iArNeighborVertices);
 			
-	 		//refSelectionSet = refSelectionHandler.getSelectionSet();
-		
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): Set selection data and trigger update.",
+					LoggerType.VERBOSE );
+			
+			int iTriggerID = 0;
+			
+			// The distinction is necessary because the JGraph 2D Pathway is embedded
+			// and therefore the parent widget ID is needed for update.
+			if (this.getClass().getSimpleName().equals("PathwayGraphViewRep"))
+				iTriggerID = iParentContainerId;
+			else
+				iTriggerID = iUniqueId;
+			
 	 		// Calls update with the ID of the PathwayViewRep
 	 		((EventPublisher)refGeneralManager.getSingelton().
 				getEventPublisher()).updateSelection(refGeneralManager.
 						getSingelton().getViewGLCanvasManager().
-							getItem(iParentContainerId), refSelectionSet);
-
+							getItem(iTriggerID), alSetSelection.get(0));
+	 		
 		} catch (Exception e)
 		{
 			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
-					": updateSelectionSet(): No SelectionHandler is set in ViewRep.",
+					": updateSelectionSet(): Problem during selection update triggering.",
 					LoggerType.MINOR_ERROR );
 	
 			e.printStackTrace();

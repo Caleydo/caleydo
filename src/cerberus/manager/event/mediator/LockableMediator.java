@@ -6,7 +6,7 @@ package cerberus.manager.event.mediator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import cerberus.data.collection.ISet;
+import cerberus.data.collection.selection.SetSelection;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 
@@ -82,7 +82,8 @@ implements IMediator {
 	 */
 	@Override
 	public void updateReceiverSelection(Object eventTrigger,
-			ISet selectionSet) {
+			SetSelection selectionSet) {
+		
 		assert eventTrigger != null : "can not handle eventTrigger null-pointer";
 		assert selectionSet != null : "can not handle selectionSet null-pointer";
 		
@@ -149,5 +150,4 @@ implements IMediator {
 		
 		return arReceiver.remove(receiver);
 	}
-
 }

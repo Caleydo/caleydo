@@ -1,11 +1,9 @@
 package cerberus.manager.event.mediator;
 
-import cerberus.data.collection.ISet;
-
+import cerberus.data.collection.selection.SetSelection;
 
 public interface IMediator
-extends IMediatorReceiver
-{	
+extends IMediatorReceiver {	
 	
 	public boolean register( IMediatorSender sender );
 	
@@ -32,5 +30,5 @@ extends IMediatorReceiver
 	public void updateReceiver( Object eventTrigger );
 	
 	public void updateReceiverSelection(Object eventTrigger, 
-			ISet selectionSet);
+			SetSelection selectionSet);
 }

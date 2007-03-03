@@ -5,8 +5,7 @@ package cerberus.manager.event.mediator;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cerberus.data.collection.ISet;
-
+import cerberus.data.collection.selection.SetSelection;
 
 /**
  * Threadsafe Mediator receiver.
@@ -54,7 +53,7 @@ implements ILockableMediatorReceiver {
 	}
 
 	public final void updateSelection(Object eventTrigger, 
-			ISet selectionSet) {
+			SetSelection selectionSet) {
 		
 		if ( bUpdateIsStalled.get() ) {
 			updateReceiverSelection(eventTrigger, selectionSet);
@@ -103,6 +102,6 @@ implements ILockableMediatorReceiver {
 	
 
 	public abstract void updateReceiverSelection(Object eventTrigger,
-			ISet selectionSet);
+			SetSelection selectionSet);
 
 }

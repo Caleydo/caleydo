@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
+import cerberus.data.collection.selection.SetSelection;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
@@ -39,7 +40,7 @@ implements IViewRep {
 	/**
 	 * List for all ISet objects providing data related to interactive selection for this ViewRep.	
 	 */
-	protected ArrayList <ISet> alSetSelection;
+	protected ArrayList <SetSelection> alSetSelection;
 	
 	protected final ViewType viewType;
 	
@@ -88,7 +89,7 @@ implements IViewRep {
 		this.viewType = viewType;
 		
 		alSetData = new ArrayList <ISet> ();
-		alSetSelection = new ArrayList <ISet> ();
+		alSetSelection = new ArrayList <SetSelection> ();
 		
 		refSetManager = refGeneralManager.getSingelton().getSetManager();
 	}
@@ -130,7 +131,7 @@ implements IViewRep {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, ISet updatedSelectionSet) {
+	public void updateSelection(Object eventTrigger, SetSelection updatedSelectionSet) {
 
 		//Implemented in subclasses
 		assert false : "This methode must be overloaded in sub-class";
@@ -187,7 +188,7 @@ implements IViewRep {
 					break;
 					
 				case SET_SELECTION:
-					alSetSelection.add(refCurrentSet);
+					alSetSelection.add((SetSelection)refCurrentSet);
 					break;
 					
 				default:
@@ -293,7 +294,7 @@ implements IViewRep {
 			resultArray[i] = iter.next().getId();
 		}
 		
-		iter = alSetSelection.iterator();		
+		Iterator <SetSelection> iterSelectionSet = alSetSelection.iterator();		
 		for (;iter.hasNext();i++)
 		{
 			resultArray[i] = iter.next().getId();
