@@ -80,7 +80,7 @@ implements ISet {
 	 * @param setGeneralManager
 	 * @param setType
 	 */
-	public SetPlanarSimple( int iSetCollectionId, 
+	protected SetPlanarSimple( int iSetCollectionId, 
 			final IGeneralManager setGeneralManager,
 			final SetType setType) {
 		

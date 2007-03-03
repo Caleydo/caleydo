@@ -27,7 +27,8 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.SetType;
-import cerberus.data.collection.set.SetFlatSimple;
+import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.set.SetMultiDim;
 
@@ -115,7 +116,9 @@ implements ISetManager {
 			
 		switch ( useStorageType ) {
 			case CREATE_SET:
-				return new SetFlatSimple(4, getGeneralManager());
+				return new SetFlatThreadSimple(4, 
+						getGeneralManager(),
+						null);
 				
 			case CREATE_SET_PLANAR:
 				return new SetPlanarSimple(4, getGeneralManager());
@@ -127,8 +130,7 @@ implements ISetManager {
 						3 );
 				
 			case CREATE_SET_SELECTION:
-				return new SetPlanarSimple(4, getGeneralManager(), 
-						SetType.SET_SELECTION);
+				return new SetSelection(4, getGeneralManager());
 				
 			default:
 				throw new RuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
