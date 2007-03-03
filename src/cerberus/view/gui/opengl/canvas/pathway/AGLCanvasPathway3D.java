@@ -287,7 +287,8 @@ implements IGLCanvasUser {
 		
 		// Load pathway storage
 		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = null;//refPathwaySet.getStorageByDimAndIndex(0, 0);
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		String sPathwayTexturePath = "";
 		int iPathwayId = 0;
@@ -997,7 +998,7 @@ implements IGLCanvasUser {
 		
 		iArHighlightedVertices.clear();
 		
-		IStorage refTmpStorage = null;//refPathwaySet.getStorageByDimAndIndex(0, 0);
+		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = refTmpStorage.getArrayInt();
 		
 		//Replace old pathway ID with new ID
@@ -1060,7 +1061,7 @@ implements IGLCanvasUser {
 		
 		// Load pathway storage
 		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = null;//refPathwaySet.getStorageByDimAndIndex(0, 0);
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		
 		buildEnzymeNodeDisplayList();

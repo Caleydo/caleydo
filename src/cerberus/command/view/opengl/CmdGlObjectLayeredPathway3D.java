@@ -3,6 +3,9 @@
  */
 package cerberus.command.view.opengl;
 
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
@@ -22,7 +25,7 @@ public class CmdGlObjectLayeredPathway3D
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
 	
-	protected int iPathwaySetId = 0;
+	protected ArrayList<Integer> iArSetIDs;
 	
 	/**
 	 * Constructor.
@@ -37,6 +40,8 @@ implements ICommand {
 				refCommandManager,
 				refCommandQueueSaxType);
 				
+		iArSetIDs = new ArrayList<Integer>();
+		
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_LAYERED_PATHWAY_3D;
 	}
 
@@ -44,7 +49,25 @@ implements ICommand {
 	
 		super.setParameterHandler(refParameterHandler);
 
-		iPathwaySetId = StringConversionTool.convertStringToInt(sDetail, -1);
+		// Read SET IDs (Data and Selection) 
+		String sPathwaySets = "";
+		refParameterHandler.setValueAndTypeAndDefault("sPathwaySets",
+				refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
+				IParameterHandler.ParameterHandlerType.STRING,
+				"-1");
+		
+		sPathwaySets = refParameterHandler.getValueString("sPathwaySets");
+		
+		StringTokenizer setToken = new StringTokenizer(
+				sPathwaySets,
+				IGeneralManager.sDelimiter_Parser_DataItems);
+
+		while (setToken.hasMoreTokens())
+		{
+			iArSetIDs.add(StringConversionTool.convertStringToInt(
+					setToken.nextToken(), -1));
+		}
 	}
 
 	@Override
@@ -54,8 +77,12 @@ implements ICommand {
 			(GLCanvasLayeredPathway3D) openGLCanvasUser;		
 		
 		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
-		//canvas.setPathwaySet(iPathwaySetId);
-		//canvas.setTargetPathwayId(iTargetPathwayId);
+		
+		int[] iArTmp = new int[iArSetIDs.size()];
+		for(int index = 0; index < iArSetIDs.size(); index++)
+			iArTmp[index] = iArSetIDs.get(index);
+		
+		canvas.addSetId(iArTmp);
 	}
 
 	@Override
