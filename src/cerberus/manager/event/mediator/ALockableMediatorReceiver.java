@@ -45,7 +45,7 @@ implements ILockableMediatorReceiver {
 	public final void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
 		
-		if ( bUpdateIsStalled.get() ) {
+		if ( ! bUpdateIsStalled.get() ) {
 			updateReceiverSpecialMediator(eventTrigger, updatedSet);
 		}
 	}

@@ -141,6 +141,7 @@ implements IView, IGLCanvasDirector {
 			//condition: abEnableRendering == ture
 			super.abEnableRendering.set( false );
 			vecGLCanvasUser.addElement( user );
+			initGLCanvasUser();
 			super.abEnableRendering.set( true );	
 		}
 			
@@ -211,10 +212,8 @@ implements IView, IGLCanvasDirector {
 					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
 					this.getClass().toString(),
 					LoggerType.STATUS);
-			
-			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-			
-			if ( ! iter.hasNext() ) 
+						
+			if ( vecGLCanvasUser.isEmpty() ) 
 			{
 				refGeneralManager.getSingelton().logMsg(
 						"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
@@ -222,6 +221,8 @@ implements IView, IGLCanvasDirector {
 						LoggerType.MINOR_ERROR);
 				return;
 			}
+			
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 			
 			refGeneralManager.getSingelton().logMsg(
 					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
