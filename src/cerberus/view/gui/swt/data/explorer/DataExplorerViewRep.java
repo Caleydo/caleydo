@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Text;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.SetType;
+import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IVirtualArrayManager;
@@ -363,10 +365,17 @@ implements IView, IMediatorReceiver {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, final ISet updatedSelectionSet) {
+	public void updateReceiver(Object eventTrigger, final ISet updatedSet) {
 
+		if ( updatedSet.getSetType() != SetType.SET_SELECTION ) 
+		{
+			return;
+		}
+		
+		final ISetSelection refSetSelection = (ISetSelection)updatedSet;
+		
 		refGeneralManager.getSingelton().logMsg(
 				"Data Explorer selection update called by " 
 				+ eventTrigger.getClass().getSimpleName(),
@@ -377,7 +386,7 @@ implements IView, IMediatorReceiver {
 				
 				// insert new selection VIRTUAL_ARRAY with ID and label in the tree
 				IVirtualArray refSelectionVirtualArray = 
-					updatedSelectionSet.getVirtualArrayByDimAndIndex(0, 0);
+					refSetSelection.getVirtualArrayByDimAndIndex(0, 0);
 				SelectionModel currentSelectionVirtualArrayModel = 
 					new SelectionModel(refSelectionVirtualArray.getId(), 
 							refSelectionVirtualArray.getLabel());
@@ -385,7 +394,7 @@ implements IView, IMediatorReceiver {
 				
 				// insert new selection data STORAGE with ID and label in the tree
 				IStorage refSelectionDataStorage = 
-					updatedSelectionSet.getStorageByDimAndIndex(0, 0);
+					refSetSelection.getStorageByDimAndIndex(0, 0);
 				StorageModel currentSelectionDataStorageModel = 
 					new StorageModel(refSelectionDataStorage.getId(), 
 							refSelectionDataStorage.getLabel());
@@ -403,8 +412,8 @@ implements IView, IMediatorReceiver {
 				
 				// insert new selection SET with ID and label in the tree
 				DataCollectionModel currentSelectionSetModel = 
-					new DataCollectionModel(updatedSelectionSet.getId(),
-							updatedSelectionSet.getLabel());
+					new DataCollectionModel(refSetSelection.getId(),
+							refSetSelection.getLabel());
 				currentSelectionSetModel.add(currentSelectionVirtualArrayModel);
 				currentSelectionSetModel.add(currentSelectionDataStorageModel);
 				//currentSelectionSetModel.add(currentSelectionOptionalStorageModel);

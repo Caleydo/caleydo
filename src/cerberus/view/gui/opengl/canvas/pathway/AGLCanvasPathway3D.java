@@ -22,8 +22,10 @@ import javax.media.opengl.glu.GLU;
 
 import org.eclipse.swt.layout.GridLayout;
 
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
+import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
@@ -1311,9 +1313,11 @@ implements IGLCanvasUser {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, SetSelection selectionSet) {
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+		
+		ISetSelection refSetSelection = (ISetSelection)updatedSet;
 		
 		refGeneralManager.getSingelton().logMsg(
 				"OpenGL Pathway update called by " + eventTrigger.getClass().getSimpleName(),
@@ -1325,13 +1329,13 @@ implements IGLCanvasUser {
 		//iArSelectionStorageNeighborDistance.clear();
 		
 		// Read selected vertex IDs
-		int[] iArSelectedElements = selectionSet.getSelectionIdArray();
+		int[] iArSelectedElements = refSetSelection.getSelectionIdArray();
 		
 		// Read neighbor data
-		int[] iArSelectionNeighborDistance = selectionSet.getOptionalDataArray();
+		int[] iArSelectionNeighborDistance = refSetSelection.getOptionalDataArray();
 		
 		for (int iSelectedVertexIndex = 0; 
-			iSelectedVertexIndex < ((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
+			iSelectedVertexIndex < ((IStorage)refSetSelection.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
 			iSelectedVertexIndex++)
 		{			
 			iArHighlightedVertices.add(refGeneralManager.getSingelton().getPathwayElementManager().

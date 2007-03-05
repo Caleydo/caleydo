@@ -129,7 +129,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 

@@ -154,7 +154,7 @@ implements IVirtualArray {
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
-		assert false : "updateSelection() has no effect";
+		assert false : "updateReceiver() has no effect";
 	}
 
 }

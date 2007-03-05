@@ -33,9 +33,11 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
 import cerberus.util.system.StringConversionTool;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
+import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
@@ -898,9 +900,11 @@ extends APathwayGraphViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, SetSelection selectionSet) {
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+		
+		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 		
 		refGeneralManager.getSingelton().logMsg(
 				"2D Pathway update called by " + eventTrigger.getClass().getSimpleName(),
@@ -911,13 +915,13 @@ extends APathwayGraphViewRep {
     	//iLLNeighborDistance.clear();
 		
 		// Read selected vertex IDs
-		int[] iArSelectedElements = selectionSet.getSelectionIdArray();
+		int[] iArSelectedElements = refSetSelection.getSelectionIdArray();
 		
 		// Read neighbor data
 		//int[] iArSelectionNeighborDistance = selectionSet.getOptionalDataArray();
 		
 		for (int iSelectedVertexIndex = 0; 
-			iSelectedVertexIndex < ((IStorage)selectionSet.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
+			iSelectedVertexIndex < ((IStorage)refSetSelection.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
 			iSelectedVertexIndex++)
 		{			
 	    	

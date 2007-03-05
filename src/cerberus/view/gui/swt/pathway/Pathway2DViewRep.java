@@ -106,7 +106,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.gui.AViewRep#updateSelection(java.lang.Object, cerberus.data.collection.selection.SetSelection)
+	 * @see cerberus.view.gui.AViewRep#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
