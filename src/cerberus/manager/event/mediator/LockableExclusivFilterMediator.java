@@ -4,7 +4,7 @@
 package cerberus.manager.event.mediator;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 
@@ -20,7 +20,7 @@ import cerberus.manager.event.mediator.MediatorUpdateType;
 public class LockableExclusivFilterMediator 
 extends LockableMediator {
 
-	protected ISet refExclusiveSelectionSet;
+	protected ISet refExclusiveSet;
 	
 	/**
 	 * @param refEventPublisher
@@ -32,28 +32,30 @@ extends LockableMediator {
 
 		super(refEventPublisher, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
 		
-		this.refExclusiveSelectionSet = setExclusiveSelectionSet;
+		this.refExclusiveSet = setExclusiveSelectionSet;
 	}
 	
-	public ISet getExclusiveSelectionSet() {
-		return this.refExclusiveSelectionSet;
+	public ISet getExclusiveSet() {
+		return this.refExclusiveSet;
 	}
 	
-	public void setExclusiveSelectionSet(ISet setExclusiveSelectionSet) {
-		this.refExclusiveSelectionSet = setExclusiveSelectionSet;
+	public void setExclusiveSet(ISet setExclusiveSelectionSet) {
+		this.refExclusiveSet = setExclusiveSelectionSet;
 	}
 	
 	/**
 	 * The update is only forwareded if the exclusiveSelectionSet (internal)
 	 * is equal tio the calling selectionSet.
+	 * 
+	 * @see cerberus.manager.event.mediator.LockableMediator#updateReceiverSpecialMediator(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateReceiverSelection(Object eventTrigger,
-			SetSelection selectionSet) {
+	public final void updateReceiverSpecialMediator(Object eventTrigger,
+			ISet updatedSet) {
 		
-		assert selectionSet != null : "can not handle selectionSet null-pointer";
+		assert updatedSet != null : "can not handle selectionSet null-pointer";
 		
-		if (refExclusiveSelectionSet == selectionSet) {
-			super.updateReceiverSelection(eventTrigger, selectionSet);
+		if (refExclusiveSet == updatedSet) {
+			super.updateReceiver(eventTrigger, updatedSet);
 		}		
 	}
 

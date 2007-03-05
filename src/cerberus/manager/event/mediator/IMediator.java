@@ -1,12 +1,32 @@
 package cerberus.manager.event.mediator;
 
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.manager.event.mediator.IMediatorReceiver;
 
+/**
+ * 
+ * @see
+ * 
+ * @author Michael Kalkusch
+ * @author MArc Streit
+ *
+ */
 public interface IMediator
 extends IMediatorReceiver {	
 	
+	/**
+	 * Register a new event sender to the mediator.
+	 * 
+	 * @param sender new event sender
+	 * @return TRUE on success
+	 */
 	public boolean register( IMediatorSender sender );
 	
+	/**
+	 * Register a new event receiver to the mediator.
+	 * 
+	 * @param receiver new event receiver
+	 * @return TRUE on success
+	 */
 	public boolean register( IMediatorReceiver receiver );
 	
 	
@@ -20,6 +40,10 @@ extends IMediatorReceiver {
 	
 	public boolean unregister( IMediatorReceiver receiver );
 	
+	public boolean hasReceiver( IMediatorReceiver receiver );
+	
+	public boolean hasSender( IMediatorSender sender );
+	
 	/**
 	 * Called before destruction of Mediator.
 	 * Only creator of teh Mediator my call this methode.
@@ -27,8 +51,4 @@ extends IMediatorReceiver {
 	 */
 	public void destroyMediator(  final IMediatorSender sender );
 	
-	public void updateReceiver( Object eventTrigger );
-	
-	public void updateReceiverSelection(Object eventTrigger, 
-			SetSelection selectionSet);
 }

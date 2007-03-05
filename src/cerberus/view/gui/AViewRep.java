@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
@@ -131,7 +131,7 @@ implements IViewRep {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, SetSelection updatedSelectionSet) {
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
 		//Implemented in subclasses
 		assert false : "This methode must be overloaded in sub-class";
@@ -163,7 +163,10 @@ implements IViewRep {
 	}
 	
 
-	public void addSetId( int [] iSet) {
+	/**
+	 * @see cerberus.view.gui.IView#addSetId(int[])
+	 */
+	public final void addSetId( int [] iSet) {
 		
 		assert iSet != null : "Can not handle null-pointer!";
 		
@@ -208,7 +211,10 @@ implements IViewRep {
 		} //for ( int i=0; i < iSet.length; i++)
 	}
 	
-	public void removeAllSetIdByType( SetType setType ) {
+	/**
+	 * @see cerberus.view.gui.IView#removeAllSetIdByType(cerberus.data.collection.SetType)
+	 */
+	public final void removeAllSetIdByType( SetType setType ) {
 		
 		switch (setType) {
 		case SET_RAW_DATA:
@@ -226,7 +232,10 @@ implements IViewRep {
 		} // switch (setType) {
 	}
 	
-	public void removeSetId( int [] iSet) {
+	/**
+	 * @see cerberus.view.gui.IView#removeSetId(int[])
+	 */
+	public final void removeSetId( int [] iSet) {
 		
 		assert iSet != null : "Can not handle null-pointer!";
 		
@@ -273,7 +282,10 @@ implements IViewRep {
 	}
 	
 
-	public synchronized int[] getAllSetId() {
+	/**
+	 * @see cerberus.view.gui.IView#getAllSetId()
+	 */
+	public final synchronized int[] getAllSetId() {
 		
 		//FIXME: thread safe access to ArrayLists!
 		int iTotalSizeResultArray = alSetData.size() + alSetSelection.size();
@@ -304,7 +316,10 @@ implements IViewRep {
 	}
 	
 
-	public boolean hasSetId( int iSetId) {
+	/**
+	 * @see cerberus.view.gui.IView#hasSetId(int)
+	 */
+	public final boolean hasSetId( int iSetId) {
 		ISet refCurrentSet = refSetManager.getItemSet(iSetId);
 		
 		if ( refCurrentSet == null )
@@ -322,7 +337,7 @@ implements IViewRep {
 	 * @param refSet test if this ISet is refered to
 	 * @return TRUE if exists in any of the two ArrayList's
 	 */
-	public boolean hasSetId_ByReference( final ISet refSet) {
+	public final boolean hasSetId_ByReference(final ISet refSet) {
 		
 		assert refSet != null : "Can not handle null-pointer";
 			

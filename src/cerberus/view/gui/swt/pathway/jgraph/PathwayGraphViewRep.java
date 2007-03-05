@@ -35,8 +35,8 @@ import org.jgraph.graph.GraphUndoManager;
 import cerberus.util.system.StringConversionTool;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
-import cerberus.data.collection.selection.SetSelection;
 import cerberus.data.collection.set.SetFlatThreadSimple;
+import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -647,7 +647,7 @@ extends APathwayGraphViewRep {
 		
 		// Color mapping will start with red (neigborhood = 1)
 		// For graph parts far away the color will turn to yellow.
-		float fGreenPortion = fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
+		float fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
 		
 		if (fGreenPortion < 0.0)
 			fGreenPortion = 0.0f;

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.selection.SetSelection;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -428,7 +427,7 @@ implements IEventPublisher {
 
 			if (tmpMediator != null)
 			{
-				tmpMediator.updateReceiver(eventTrigger);
+				tmpMediator.update(eventTrigger);
 			} else
 			{
 				// TODO: print message
@@ -440,9 +439,9 @@ implements IEventPublisher {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.IEventPublisher#updateSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see cerberus.manager.IEventPublisher#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateSelection(Object eventTrigger, SetSelection selectionSet) {
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		
 		// Prevent update during initialization of data.
 		if (hashSender2SelectionMediators.isEmpty())
@@ -463,8 +462,9 @@ implements IEventPublisher {
 
 			if (tmpMediator != null)
 			{
-				tmpMediator.updateReceiverSelection(
-						eventTrigger, selectionSet);
+				tmpMediator.updateReceiver(
+						eventTrigger, 
+						updatedSet);
 			} else
 			{
 				// TODO: print message

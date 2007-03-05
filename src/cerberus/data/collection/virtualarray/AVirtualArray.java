@@ -12,8 +12,8 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.EventPublisher;
 //import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.IMetaData;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
-import cerberus.data.collection.selection.SetSelection;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;
 import cerberus.data.collection.thread.lock.ICollectionLock;
 
@@ -139,11 +139,21 @@ implements IVirtualArray {
 	}
 	
 
+	/**
+	 * Default implementation of IMediatorReceiver, must be overloaded by derived class if used.
+	 * 
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
+	 */
 	public void update(Object eventTrigger) {
 		assert false : "update() has no effect";
 	}
 
-	public void updateSelection(Object eventTrigger, SetSelection updatedSelectionSet) {
+	/**
+	 * Default implementation of IMediatorReceiver, must be overloaded by derived class if used.
+	 * 
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 */
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		assert false : "updateSelection() has no effect";
 	}
 

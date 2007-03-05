@@ -4,7 +4,7 @@
 package cerberus.manager.event.mediator;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 
@@ -20,7 +20,7 @@ import cerberus.manager.event.mediator.MediatorUpdateType;
 public class LockableIngoreFilterMediator 
 extends LockableMediator {
 
-	protected ISet refIgnoreSelectionSet;
+	protected ISet refIgnoreSet;
 	
 	/**
 	 * @param refEventPublisher
@@ -28,32 +28,35 @@ extends LockableMediator {
 	 */
 	public LockableIngoreFilterMediator(IEventPublisher refEventPublisher,
 			int iMediatorId,
-			final ISet setExclusiveSelectionSet) {
+			final ISet setExclusiveSet) {
 
 		super(refEventPublisher, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
 		
-		this.refIgnoreSelectionSet = setExclusiveSelectionSet;
+		this.refIgnoreSet = setExclusiveSet;
 	}
 	
-	public ISet getIgnoreSelectionSet() {
-		return this.refIgnoreSelectionSet;
+	public ISet getIgnoreSet() {
+		return this.refIgnoreSet;
 	}
 	
-	public void setIgnoreSelectionSet(ISet setIgnoreSelectionSet) {
-		this.refIgnoreSelectionSet = setIgnoreSelectionSet;
+	public void setIgnoreSet(ISet setIgnoreSet) {
+		this.refIgnoreSet = setIgnoreSet;
 	}
 	
+
 	/**
 	 * The update is only forwareded if the ignoreSelectionSet (internal)
 	 * is not equal the calling selectionSet.
+	 * 	 
+	 * @see cerberus.manager.event.mediator.LockableMediator#updateReceiverSpecialMediator(java.lang.Object, cerberus.data.collection.ISet)
 	 */
-	public void updateReceiverSelection(Object eventTrigger,
-			SetSelection selectionSet) {
+	public final void updateReceiverSpecialMediator(Object eventTrigger,
+			ISet updatedSet) {
 		
-		assert selectionSet != null : "can not handle selectionSet null-pointer";
+		assert updatedSet != null : "can not handle selectionSet null-pointer";
 		
-		if (refIgnoreSelectionSet != selectionSet) {
-			super.updateReceiverSelection(eventTrigger, selectionSet);
+		if (refIgnoreSet != updatedSet) {
+			super.updateReceiver(eventTrigger, updatedSet);
 		}		
 	}
 

@@ -7,9 +7,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import cerberus.data.collection.IStorage;
-import cerberus.data.collection.StorageType;
-import cerberus.data.collection.selection.SetSelection;
+//import cerberus.data.collection.IStorage;
+//import cerberus.data.collection.StorageType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -338,7 +337,7 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 			
 	 		// Calls update with the ID of the PathwayViewRep
 	 		((EventPublisher)refGeneralManager.getSingelton().
-				getEventPublisher()).updateSelection(refGeneralManager.
+				getEventPublisher()).updateReceiver(refGeneralManager.
 						getSingelton().getViewGLCanvasManager().
 							getItem(iTriggerID), alSetSelection.get(0));
 	 		

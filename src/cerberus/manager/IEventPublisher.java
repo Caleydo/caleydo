@@ -2,7 +2,6 @@ package cerberus.manager;
 
 import java.util.ArrayList;
 
-import cerberus.data.collection.selection.SetSelection;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.event.mediator.MediatorUpdateType;
@@ -15,7 +14,7 @@ import cerberus.manager.event.mediator.MediatorUpdateType;
  * 
  */
 public interface IEventPublisher 
-extends IGeneralManager {
+extends IGeneralManager, IMediatorReceiver {
 
 	public enum MediatorType {
 		DATA_MEDIATOR,
@@ -83,22 +82,19 @@ extends IGeneralManager {
 			int iMediatorReceiverId);
 	
 	/**
-	 * Casts the event trigger object to ISender and looks up the Mediator for
-	 * this sender. On the mediator object then the update method is called.
-	 * 
-	 * @param eventTrigger
-	 */
-	public void update(Object triggerObject);
-	
-	public void updateSelection(Object triggerObject, SetSelection selectionSet);
-	
-	/**
 	 * Called only by Sender.
 	 * 
 	 * @param sender
 	 */
 	public void removeMediator( IMediatorSender sender );
 	
+	/**
+	 * Test if there is a relation between sender and receiver.
+	 * 
+	 * @param sender
+	 * @param receiver
+	 * @return TRUE if sender is linked to receiver 
+	 */
 	public boolean hasRelation( IMediatorSender sender,
 			IMediatorReceiver receiver );
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.data.collection.selection;
+package cerberus.data.collection.set.selection;
 
 import cerberus.data.collection.ISet;
 
@@ -18,7 +18,7 @@ import cerberus.data.collection.ISet;
  * @author Marc Streit
  *
  */
-public interface ISelectionSet 
+public interface ISetSelection 
 extends ISet {
 
 	public void setSelectionIdArray(int[] iArSelectionId);

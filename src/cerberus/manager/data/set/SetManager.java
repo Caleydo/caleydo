@@ -27,10 +27,10 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.SetType;
-import cerberus.data.collection.selection.SetSelection;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.set.SetMultiDim;
+import cerberus.data.collection.set.selection.SetSelection;
 
 
 /**

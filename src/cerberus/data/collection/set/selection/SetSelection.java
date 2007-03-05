@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.data.collection.selection;
+package cerberus.data.collection.set.selection;
 
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetPlanarSimple;
@@ -18,7 +18,7 @@ import cerberus.manager.IGeneralManager;
  */
 public class SetSelection 
 extends SetPlanarSimple 
-implements ISelectionSet {
+implements ISetSelection {
 
 	/**
 	 * Constructor.
@@ -29,13 +29,14 @@ implements ISelectionSet {
 	public SetSelection(int iSetCollectionId, 
 			IGeneralManager refGeneralManager) {
 
-		super(iSetCollectionId, refGeneralManager, 
+		super(iSetCollectionId, 
+				refGeneralManager, 
 				SetType.SET_SELECTION);
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISelectionSet#setSelectionIdArray(int[])
+	 * @see cerberus.data.collection.selection.ISetSelection#setSelectionIdArray(int[])
 	 */
 	public void setSelectionIdArray(int[] iArSelectionId) {
 		
@@ -46,7 +47,7 @@ implements ISelectionSet {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISelectionSet#setGroupArray(int[])
+	 * @see cerberus.data.collection.selection.ISetSelection#setGroupArray(int[])
 	 */
 	public void setGroupArray(int[] iArSelectionGroup) {
 		
@@ -57,7 +58,7 @@ implements ISelectionSet {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISelectionSet#setOptionalDataArray(int[])
+	 * @see cerberus.data.collection.selection.ISetSelection#setOptionalDataArray(int[])
 	 */
 	public void setOptionalDataArray(int[] iArSelectionOptionalData) {
 		
@@ -68,7 +69,7 @@ implements ISelectionSet {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISelectionSet#setAllSelectionDataArrays(int[], int[], int[])
+	 * @see cerberus.data.collection.selection.ISetSelection#setAllSelectionDataArrays(int[], int[], int[])
 	 */
 	public void setAllSelectionDataArrays(int[] iArSelectionId, 
 			int[] iArSelectionGroup, 
@@ -83,7 +84,7 @@ implements ISelectionSet {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISelectionSet#getSelectionIdArray()
+	 * @see cerberus.data.collection.selection.ISetSelection#getSelectionIdArray()
 	 */
 	public int[] getSelectionIdArray() {
 		
@@ -96,7 +97,7 @@ implements ISelectionSet {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISelectionSet#getGroupArray()
+	 * @see cerberus.data.collection.selection.ISetSelection#getGroupArray()
 	 */
 	public int[] getGroupArray() {	
 
@@ -109,7 +110,7 @@ implements ISelectionSet {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISelectionSet#getOptionalDataArray()
+	 * @see cerberus.data.collection.selection.ISetSelection#getOptionalDataArray()
 	 */
 	public int[] getOptionalDataArray() {
 

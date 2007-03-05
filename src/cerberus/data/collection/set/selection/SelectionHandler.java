@@ -1,4 +1,4 @@
-package cerberus.data.collection.selection;
+package cerberus.data.collection.set.selection;
 
 import java.util.ArrayList;
 import java.util.Iterator;

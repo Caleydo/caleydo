@@ -19,7 +19,6 @@ import com.sun.opengl.util.GLUT;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.selection.SetSelection;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -494,8 +493,8 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 	}
 	
 	
-	public void updateSelection(Object eventTrigger, 
-			SetSelection updatedSelectionSet) {
+	public void updateReceiver(Object eventTrigger, 
+			ISet updatedSet) {
 		
 		System.err.println( "UPDATE BINGO !");
 	}

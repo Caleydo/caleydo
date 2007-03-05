@@ -5,7 +5,7 @@ package cerberus.view.gui.swt.pathway;
 
 import org.eclipse.swt.layout.GridLayout;
 
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
@@ -108,10 +108,10 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	 * (non-Javadoc)
 	 * @see cerberus.view.gui.AViewRep#updateSelection(java.lang.Object, cerberus.data.collection.selection.SetSelection)
 	 */
-	public void updateSelection(Object eventTrigger, 
-			SetSelection updatedSelectionSet) {
+	public void updateReceiver(Object eventTrigger, 
+			ISet updatedSet) {
 		
 		// Just pass on to embedded JGraph 2D Pathway ViewRep
-		refPathwayGraphViewRep.updateSelection(eventTrigger, updatedSelectionSet);
+		refPathwayGraphViewRep.updateReceiver(eventTrigger, updatedSet);
 	}
 }

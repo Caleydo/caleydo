@@ -24,7 +24,7 @@ import org.eclipse.swt.layout.GridLayout;
 
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;

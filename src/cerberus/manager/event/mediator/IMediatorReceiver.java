@@ -1,7 +1,7 @@
 
 package cerberus.manager.event.mediator;
 
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.ISet;
 
 /**
  * Object that shall receive an event.
@@ -19,14 +19,14 @@ public interface IMediatorReceiver {
 	 */
 	public void update(Object eventTrigger);	
 	
+	
 	/**
 	 * Update called by Mediator triggered by IMediatorSender.
 	 * 
 	 * @param eventTrigger Calling object, that created the update
-	 * @param updatedSelectionSet Set containing update information
+	 * @param updatedSet Set containing update information
 	 */
-	public void updateSelection(Object eventTrigger, 
-			SetSelection updatedSelectionSet);
+	public void updateReceiver(Object eventTrigger, 
+			ISet updatedSet);
 	
-	//public void updateViewingData(Object eventTrigger, ***);
 }

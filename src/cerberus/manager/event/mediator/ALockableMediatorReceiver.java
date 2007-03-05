@@ -5,7 +5,7 @@ package cerberus.manager.event.mediator;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import cerberus.data.collection.selection.SetSelection;
+import cerberus.data.collection.ISet;
 
 /**
  * Threadsafe Mediator receiver.
@@ -52,11 +52,15 @@ implements ILockableMediatorReceiver {
 		}
 	}
 
-	public final void updateSelection(Object eventTrigger, 
-			SetSelection selectionSet) {
+	/**
+	 * 
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 */
+	public final void updateReceiver(Object eventTrigger, 
+			ISet updatedSet) {
 		
 		if ( bUpdateIsStalled.get() ) {
-			updateReceiverSelection(eventTrigger, selectionSet);
+			updateReceiverSpecialMediator(eventTrigger, updatedSet);
 		}
 	}
 	
@@ -67,6 +71,15 @@ implements ILockableMediatorReceiver {
 	public synchronized final void updateStall() {
 		
 		bUpdateIsStalled.set( true );
+	}
+	
+	/**
+	 * Frees lock called by updateStall()
+	 *
+	 */
+	public synchronized final void updateContinue() {
+		
+		bUpdateIsStalled.set( false );
 	}
 
 	/**
@@ -90,7 +103,6 @@ implements ILockableMediatorReceiver {
 		return bUpdateIsStalled.get();
 	}
 	
-	
 	/**
 	 * Derived classes must implement this method instead of update(Object).
 	 * 
@@ -100,8 +112,16 @@ implements ILockableMediatorReceiver {
 	 */
 	public abstract void updateReceiver(Object eventTrigger);
 	
-
-	public abstract void updateReceiverSelection(Object eventTrigger,
-			SetSelection selectionSet);
+	/**
+	 * Called by cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet) 
+	 * inside this abstract class.
+	 *  
+	 * @param eventTrigger
+	 * @param updateSet
+	 * 
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 */
+	public abstract void updateReceiverSpecialMediator(Object eventTrigger,
+			ISet updateSet);
 
 }
