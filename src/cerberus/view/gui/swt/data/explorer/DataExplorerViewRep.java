@@ -350,7 +350,7 @@ implements IView, IMediatorReceiver {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
 	 */
-	public void update(Object eventTrigger) {
+	public void updateReceiver(Object eventTrigger) {
 
 		
 		//int triggerId = ((IVirtualArray) eventTrigger).getId();

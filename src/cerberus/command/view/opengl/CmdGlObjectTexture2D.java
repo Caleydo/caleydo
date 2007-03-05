@@ -84,7 +84,7 @@ implements ICommand {
 		GLCanvasTexture2D canvas = 
 			(GLCanvasTexture2D) openGLCanvasUser;
 		
-		canvas.destroy();
+		canvas.destroyGLCanvas();
 		canvas = null;
 	}
 }

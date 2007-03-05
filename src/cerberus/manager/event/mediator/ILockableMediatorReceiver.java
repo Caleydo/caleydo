@@ -14,7 +14,7 @@ extends IMediatorReceiver {
 	/**
 	 * Blocks update() until methode updateRunPipe() is called.
 	 * 
-	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#update(Object)
+	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
 	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
 	 * 
 	 * @param eventTrigger calling object, that created the update
@@ -34,7 +34,7 @@ extends IMediatorReceiver {
 	/**
 	 * calls update() and frees lock from updateStall().
 	 * 
-	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#update(Object)
+	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
 	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateStall()
  	 * 
 	 * @param eventTrigger calling object, that created the update

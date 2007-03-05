@@ -130,7 +130,7 @@ implements IGLCanvasUser
 		System.err.println(" GLCanvasHeatmap.update(GLCanvas canvas)");
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		// TODO Auto-generated method stub
 		System.err.println(" GLCanvasHeatmap.destroy(GLCanvas canvas)");

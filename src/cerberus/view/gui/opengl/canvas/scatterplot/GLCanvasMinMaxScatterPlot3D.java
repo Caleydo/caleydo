@@ -549,7 +549,7 @@ implements IGLCanvasUser
 		updateMinMax();
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		// TODO Auto-generated method stub
 		System.err.println(" GLCanvasMinMaxScatterPlot3D.destroy(GLCanvas canvas)");

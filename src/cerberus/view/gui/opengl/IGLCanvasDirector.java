@@ -5,8 +5,6 @@ import java.util.Collection;
 import javax.media.opengl.GLAutoDrawable;
 
 public interface IGLCanvasDirector {
-
-	public abstract void initView();
 	
 	public abstract void addGLCanvasUser(IGLCanvasUser user);
 

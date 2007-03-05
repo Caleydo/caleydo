@@ -120,26 +120,35 @@ implements IMediator {
 		return arSender.contains(sender);
 	}
 
-	/* (non-Javadoc)
+
+
+	/**
+	 * Notification of update events.
+	 * Calles updateReceiver(IMediatorSender) internal if updates are not stalled.
+	 * 
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
 	 * @see cerberus.observer.mediator.AThreadedMediatorReceiver#updateReceiver(cerberus.observer.mediator.IMediatorSender)
 	 */
 	@Override
 	public void updateReceiver(Object eventTrigger) {
 		assert eventTrigger != null : "can not handle null-pointer";
 		
-		Iterator<IMediatorReceiver> iter = arReceiver.iterator();
-
-		while (iter.hasNext())
-		{
-
-			IMediatorReceiver currentReceiver = (IMediatorReceiver) iter.next();
-
-			// Prevent circular updates
-			if (!currentReceiver.getClass().equals(eventTrigger.getClass()))
+		if ( bUpdateIsStalled.get() ) {
+			Iterator<IMediatorReceiver> iter = arReceiver.iterator();
+	
+			while (iter.hasNext())
 			{
-				currentReceiver.update(eventTrigger);
-			}
-		}
+	
+				IMediatorReceiver currentReceiver = (IMediatorReceiver) iter.next();
+	
+				// Prevent circular updates
+				if (!currentReceiver.getClass().equals(eventTrigger.getClass()))
+				{
+					currentReceiver.updateReceiver(eventTrigger);
+				}
+			} //while (iter.hasNext())
+			
+		} //if ( bUpdateIsStalled.get() ) {
 	}
 	
 	

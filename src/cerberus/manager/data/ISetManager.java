@@ -13,6 +13,7 @@ import java.util.Collection;
 import cerberus.manager.IGeneralManager;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.SetDataType;
 
 
 /**

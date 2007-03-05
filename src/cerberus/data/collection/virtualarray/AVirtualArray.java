@@ -84,7 +84,7 @@ implements IVirtualArray {
 		this.iSelectionOffset = iSetOffset;
 		
 		((EventPublisher)refGeneralManager.getSingelton().
-				getEventPublisher()).update(this);
+				getEventPublisher()).updateReceiver(this);
 	}
 
 	/* (non-Javadoc)
@@ -95,7 +95,7 @@ implements IVirtualArray {
 		this.iSelectionLength = iSetLength;
 		
 		((EventPublisher)refGeneralManager.getSingelton().
-				getEventPublisher()).update(this);
+				getEventPublisher()).updateReceiver(this);
 	}
 
 	/* (non-Javadoc)
@@ -142,9 +142,9 @@ implements IVirtualArray {
 	/**
 	 * Default implementation of IMediatorReceiver, must be overloaded by derived class if used.
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object)
 	 */
-	public void update(Object eventTrigger) {
+	public void updateReceiver(Object eventTrigger) {
 		assert false : "update() has no effect";
 	}
 

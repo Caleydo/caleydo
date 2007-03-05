@@ -16,10 +16,13 @@ import com.sun.opengl.util.GLUT;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.set.viewdata.ISetViewData;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.GLCanvasStatics;
@@ -31,7 +34,7 @@ import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
  */
 public class GLCanvasMinMaxScatterPlot2D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
+implements IGLCanvasUser, IMediatorReceiver
 {
 	
 	protected MinMaxDataInteger minMaxSeaker;
@@ -404,7 +407,7 @@ implements IGLCanvasUser
 		updateMinMax();
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		refGeneralManager.getSingelton().logMsg( "GLCanvasMinMaxScatterPlot2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
 	}
@@ -444,6 +447,21 @@ implements IGLCanvasUser
 			final boolean deviceChanged) {
 
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateReceiver(Object eventTrigger) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+
+		if ( updatedSet.getSetType() == SetType.SET_VIEW_DATA ) 
+		{
+			ISetViewData refSetViewData = (ISetViewData) updatedSet;
+		}
 		
 	}
 }

@@ -17,7 +17,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.view.gui.swt.base.AJoglViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.awt.jogl.CanvasForwarder;
+import cerberus.view.gui.jogl.CanvasForwarder;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.xml.parser.parameter.IParameterHandler;
@@ -130,13 +130,20 @@ implements IView, IGLCanvasDirector {
 		 * 
 		 * Critical section:
 		 */
-		super.abEnableRendering.set( false );
-		
-		vecGLCanvasUser.addElement( user );
-		
-		initGLCanvasUser();
-		
-		super.abEnableRendering.set( true );		
+		if ( ! super.abEnableRendering.get() ) 
+		{
+			//condition: abEnableRendering == false
+			vecGLCanvasUser.addElement( user );
+			initGLCanvasUser();
+		}
+		else
+		{
+			//condition: abEnableRendering == ture
+			super.abEnableRendering.set( false );
+			vecGLCanvasUser.addElement( user );
+			super.abEnableRendering.set( true );	
+		}
+			
 		/**
 		 * End of critical section
 		 */
@@ -157,7 +164,7 @@ implements IView, IGLCanvasDirector {
 		if ( ! vecGLCanvasUser.remove( user ) ) {
 			throw new CerberusRuntimeException("removeGLCanvasUser() failed, because the user is not registered!");
 		}
-		user.destroy();
+		user.destroyGLCanvas();
 	}
 	
 	/* (non-Javadoc)
@@ -171,7 +178,7 @@ implements IView, IGLCanvasDirector {
 		
 		while ( iter.hasNext() ) {		
 			IGLCanvasUser refIGLCanvasUser = iter.next();
-			refIGLCanvasUser.destroy();
+			refIGLCanvasUser.destroyGLCanvas();
 			refIGLCanvasUser = null;
 		}
 		vecGLCanvasUser.clear();
@@ -198,7 +205,6 @@ implements IView, IGLCanvasDirector {
 	 */
 	public synchronized void initGLCanvasUser() {
 		
-		//if ( abEnableRendering.get() )
 		if ( this.refGLCanvas != null ) 
 		{
 			refGeneralManager.getSingelton().logMsg(
@@ -233,7 +239,7 @@ implements IView, IGLCanvasDirector {
 			} // while ( iter.hasNext() ) {
 			
 			return;
-		} // if ( abEnableRendering.get() ) 
+		} // if ( this.refGLCanvas != null ) 
 		
 		refGeneralManager.getSingelton().logMsg(
 				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 

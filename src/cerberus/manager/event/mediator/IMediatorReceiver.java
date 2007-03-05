@@ -17,7 +17,7 @@ public interface IMediatorReceiver {
 	 * 
 	 * @param eventTrigger Calling object, that created the update
 	 */
-	public void update(Object eventTrigger);	
+	public void updateReceiver(Object eventTrigger);	
 	
 	
 	/**

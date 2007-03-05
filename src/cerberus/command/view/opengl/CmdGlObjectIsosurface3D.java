@@ -101,7 +101,7 @@ implements ICommand {
 		GLCanvasIsoSurface3D canvas = 
 			(GLCanvasIsoSurface3D) openGLCanvasUser;
 		
-		canvas.destroy();
+		canvas.destroyGLCanvas();
 		canvas = null;
 	}
 }

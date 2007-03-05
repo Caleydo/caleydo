@@ -221,7 +221,7 @@ implements IGLCanvasUser
 		System.err.println(" GLCanvasScatterPlot2D.update(GLCanvas canvas)");
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		System.err.println(" GLCanvasScatterPlot2D.destroy(GLCanvas canvas)");
 	}

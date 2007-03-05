@@ -88,7 +88,7 @@ extends ASliderViewRep {
 	}
 	
 	// TODO: retrieve locking token!
-	public void update(Object eventTrigger) {
+	public void updateReceiver(Object eventTrigger) {
 		
 		int triggerId = ((IVirtualArray)eventTrigger).getId();	
 		refGeneralManager.getSingelton().logMsg( 

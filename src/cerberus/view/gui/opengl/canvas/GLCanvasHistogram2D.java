@@ -295,7 +295,7 @@ implements IGLCanvasUser
 		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
 	}

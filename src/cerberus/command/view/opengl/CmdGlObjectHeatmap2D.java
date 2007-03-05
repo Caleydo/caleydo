@@ -102,7 +102,7 @@ implements ICommand {
 		GLCanvasHeatmap2D canvas = 
 			(GLCanvasHeatmap2D) openGLCanvasUser;
 		
-		canvas.destroy();
+		canvas.destroyGLCanvas();
 		canvas = null;
 	}
 }

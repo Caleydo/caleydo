@@ -69,7 +69,7 @@ implements IGLCanvasUser
 		System.err.println(" TestTriangle.update(GLCanvas canvas)");
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		// TODO Auto-generated method stub
 		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");

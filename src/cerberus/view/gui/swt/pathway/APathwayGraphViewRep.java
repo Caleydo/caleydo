@@ -18,6 +18,9 @@ import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
+
+import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
+
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IPathwayElementManager;
@@ -330,7 +333,8 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 			
 			// The distinction is necessary because the JGraph 2D Pathway is embedded
 			// and therefore the parent widget ID is needed for update.
-			if (this.getClass().getSimpleName().equals("PathwayGraphViewRep"))
+			if (this.getClass().getSimpleName().equals(
+					PathwayGraphViewRep.class.getSimpleName()))
 				iTriggerID = iParentContainerId;
 			else
 				iTriggerID = iUniqueId;

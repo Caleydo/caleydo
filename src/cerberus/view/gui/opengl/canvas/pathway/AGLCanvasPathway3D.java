@@ -797,7 +797,7 @@ implements IGLCanvasUser {
 
 	}
 
-	public void destroy() {
+	public void destroyGLCanvas() {
 		
 		System.err.println(" GLCanvasPathway2D.destroy(GLCanvas canvas)");
 	}

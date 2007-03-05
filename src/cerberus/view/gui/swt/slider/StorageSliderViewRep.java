@@ -23,7 +23,7 @@ extends ASliderViewRep {
 		this.iSetId = iSetId;
 	}
 	
-	public void update(Object eventTrigger) {
+	public void updateReceiver(Object eventTrigger) {
 		
 		if (eventTrigger instanceof IVirtualArray)
 		{

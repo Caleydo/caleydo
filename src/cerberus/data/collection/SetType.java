@@ -27,6 +27,8 @@ implements ICollectionType {
 	
 	SET_SELECTION(SetDataType.SET_DATATYPE_NONE),
 	
+	SET_VIEW_DATA(SetDataType.SET_DATATYPE_NONE),
+	
 	/** not specified  */
 	SET_NONE(SetDataType.SET_DATATYPE_NONE);
 	

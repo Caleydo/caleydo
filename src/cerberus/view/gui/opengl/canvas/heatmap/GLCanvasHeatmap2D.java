@@ -304,7 +304,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 		
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		refGeneralManager.getSingelton().logMsg( 
 				"GLCanvasHeatmap2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
@@ -488,7 +488,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 		
 	}
 	
-	public void update(Object eventTrigger) {
+	public void updateReceiver(Object eventTrigger) {
 		System.err.println( "UPDATE BINGO !");
 	}
 	

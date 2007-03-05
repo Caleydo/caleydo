@@ -121,7 +121,7 @@ implements IViewRep {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
 	 */
-	public void update( Object eventTrigger ) {
+	public void updateReceiver( Object eventTrigger ) {
 		
 		//Implemented in subclasses		
 		assert false : "This methode must be overloaded in sub-class";

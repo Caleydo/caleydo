@@ -92,7 +92,7 @@ implements ICommand
 		
 		canvasDirector.removeGLCanvasUser( openGLCanvasUser );		
 			
-		openGLCanvasUser.destroy();
+		openGLCanvasUser.destroyGLCanvas();
 		
 
 		refCommandManager.runUndoCommand(this);

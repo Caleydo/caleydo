@@ -12,7 +12,6 @@ import cerberus.data.collection.ISet;
  * Exchange update(Object) with updateReceiver(Object)
  * in derived classes.
  * 
- * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
  * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
  * 
  * @author Michael Kalkusch
@@ -38,19 +37,6 @@ implements ILockableMediatorReceiver {
 		bUpdateIsStalled = new AtomicBoolean( false );
 	}
 
-	/**
-	 * Notification of update events.
-	 * Calles updateReceiver(IMediatorSender) internal if updates are not stalled.
-	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
-	 */
-	public final void update(Object eventTrigger)
-	{		
-		if ( bUpdateIsStalled.get() ) {
-			updateReceiver( eventTrigger );
-		}
-	}
 
 	/**
 	 * 
@@ -92,7 +78,7 @@ implements ILockableMediatorReceiver {
 		
 		bUpdateIsStalled.set( false );
 
-		update( eventTrigger );
+		updateReceiver( eventTrigger );
 	}
 	
 	/**
@@ -106,7 +92,7 @@ implements ILockableMediatorReceiver {
 	/**
 	 * Derived classes must implement this method instead of update(Object).
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(Object)
+	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
 	 * 	 
 	 * @param eventTrigger
 	 */

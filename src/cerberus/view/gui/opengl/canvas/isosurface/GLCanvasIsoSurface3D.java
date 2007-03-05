@@ -273,7 +273,7 @@ implements IGLCanvasUser
 		createIsoSurface( iCurrentHistogramLength );
 	}
 
-	public void destroy()
+	public void destroyGLCanvas()
 	{
 		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
 				LoggerType.STATUS );

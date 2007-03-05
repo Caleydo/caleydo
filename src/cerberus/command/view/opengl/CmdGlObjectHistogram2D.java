@@ -101,7 +101,7 @@ implements ICommand {
 		GLCanvasHistogram2D canvas = 
 			(GLCanvasHistogram2D) openGLCanvasUser;
 		
-		canvas.destroy();
+		canvas.destroyGLCanvas();
 		canvas = null;
 	}
 }

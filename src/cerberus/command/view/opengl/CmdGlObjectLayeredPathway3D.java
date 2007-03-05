@@ -92,7 +92,7 @@ implements ICommand {
 		GLCanvasLayeredPathway3D canvas = 
 			(GLCanvasLayeredPathway3D) openGLCanvasUser;
 		
-		canvas.destroy();
+		canvas.destroyGLCanvas();
 		canvas = null;
 	}
 }

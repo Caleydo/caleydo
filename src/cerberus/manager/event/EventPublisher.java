@@ -396,7 +396,7 @@ implements IEventPublisher {
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.IEventPublisher#update(java.lang.Object)
 	 */
-	public void update(Object eventTrigger) {
+	public void updateReceiver(Object eventTrigger) {
 
 		// Prevent update during initialization of data.
 		if (hashSender2DataMediators.isEmpty())
@@ -427,7 +427,7 @@ implements IEventPublisher {
 
 			if (tmpMediator != null)
 			{
-				tmpMediator.update(eventTrigger);
+				tmpMediator.updateReceiver(eventTrigger);
 			} else
 			{
 				// TODO: print message
