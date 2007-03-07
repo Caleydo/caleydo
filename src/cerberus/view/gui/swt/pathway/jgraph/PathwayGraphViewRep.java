@@ -57,6 +57,7 @@ import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
+import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
  * In this class the real drawing of the Pathway happens.
@@ -160,6 +161,21 @@ extends APathwayGraphViewRep {
 		hashVertexRep2GraphCell = new HashMap<IPathwayVertexRep, DefaultGraphCell>();
 	}
 
+	public void retrieveGUIContainer() {
+		
+		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
+			(SWTEmbeddedGraphWidget) refGeneralManager
+				.getSingelton().getSWTGUIManager().createWidget(
+						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
+						refEmbeddedFrameComposite,
+						iWidth, 
+						iHeight);
+
+		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
+		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
+	}
+	
+	
 	public void initView() {
 		
 		extractCurrentPathwayFromSet();

@@ -5,13 +5,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-//import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
-import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewGLCanvasManager;
@@ -20,9 +17,18 @@ import cerberus.view.gui.IView;
 import cerberus.view.gui.jogl.CanvasForwarder;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 
+/**
+ * 
+ * Attention: Each IGLCanvasUser object has to take care of its  initGLCanvas(GLCanvas canvas); method is called.
+ * The IGLCanvasDirector tries to call it once inside the initGLCanvasUser(), if the IGLCanvasUser is registered 
+ * by that time to the Vector <IGLCanvasUser> vecGLCanvasUser;
+ * 
+ * @author Michael Kalkusch
+ * @author Marc Streit
+ *
+ */
 public class SwtJoglGLCanvasViewRep 
 extends AJoglViewRep 
 implements IView, IGLCanvasDirector {
@@ -130,25 +136,15 @@ implements IView, IGLCanvasDirector {
 		 * 
 		 * Critical section:
 		 */
-		if ( ! super.abEnableRendering.get() ) 
-		{
-			//condition: abEnableRendering == false
-			vecGLCanvasUser.addElement( user );
-			initGLCanvasUser();
-		}
-		else
-		{
-			//condition: abEnableRendering == ture
-			super.abEnableRendering.set( false );
-			vecGLCanvasUser.addElement( user );
-			initGLCanvasUser();
-			super.abEnableRendering.set( true );	
-		}
-			
+		
+		//FIXME: test adding of IGLCanvasUser later on
+		//super.abEnableRendering.set( false );
+						
+		vecGLCanvasUser.addElement( user );
+		
 		/**
 		 * End of critical section
-		 */
-		
+		 */		
 		
 		refGeneralManager.getSingelton().logMsg(
 				"SwtJoglGLCanvasViewRep [" +
@@ -240,6 +236,7 @@ implements IView, IGLCanvasDirector {
 			} // while ( iter.hasNext() ) {
 			
 			return;
+			
 		} // if ( this.refGLCanvas != null ) 
 		
 		refGeneralManager.getSingelton().logMsg(
@@ -259,11 +256,15 @@ implements IView, IGLCanvasDirector {
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 			
 			while ( iter.hasNext() ) {
-				IGLCanvasUser glCanvas = iter.next();
-				if ( glCanvas.isInitGLDone() )
-				{
-					glCanvas.render( drawable );
-				}
+				
+//				//old code: test if canvas was initialized
+//				IGLCanvasUser glCanvas = iter.next();
+//				if ( glCanvas.isInitGLDone() )
+//				{
+//					glCanvas.render( drawable );
+//				}
+				
+				iter.next().render( drawable );
 			}
 		}
 	}

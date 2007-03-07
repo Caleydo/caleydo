@@ -27,10 +27,8 @@ import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep
@@ -95,19 +93,19 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		//Nothing to do here.
 	}
 	
-	public void retrieveGUIContainer() {
-		
-		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
-			(SWTEmbeddedGraphWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
-						refEmbeddedFrameComposite,
-						iWidth, 
-						iHeight);
-
-		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
-		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-	}
+//	public void retrieveGUIContainer() {
+//		
+//		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
+//			(SWTEmbeddedGraphWidget) refGeneralManager
+//				.getSingelton().getSWTGUIManager().createWidget(
+//						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
+//						refEmbeddedFrameComposite,
+//						iWidth, 
+//						iHeight);
+//
+//		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
+//		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
+//	}
 	
 	public void setExternalGUIContainer(Composite refSWTContainer) {
 		

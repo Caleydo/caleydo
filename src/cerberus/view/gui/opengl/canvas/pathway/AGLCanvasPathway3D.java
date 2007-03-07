@@ -26,7 +26,6 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
-import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -37,12 +36,14 @@ import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
+import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
@@ -51,6 +52,7 @@ import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * @author Marc Streit
+ * @author Michael Kalkusch
  *
  */
 public abstract class AGLCanvasPathway3D
@@ -62,6 +64,8 @@ implements IGLCanvasUser {
 	protected float[][] fAspectRatio;
 	
 	protected boolean bInitGLcanvawsWasCalled = false;
+	
+	
 	
 	protected static final int X = GLCanvasStatics.X;
 	protected static final int Y = GLCanvasStatics.Y;
@@ -600,6 +604,11 @@ implements IGLCanvasUser {
 	public final void render(GLAutoDrawable canvas) {
 		
 		this.gl = canvas.getGL();
+		
+		// isInitGLDone() == bInitGLcanvawsWasCalled 
+		if  ( ! bInitGLcanvawsWasCalled ) {
+			initGLCanvas( (GLCanvas) canvas);
+		}
 		
 		// Clear The Screen And The Depth Buffer
 		gl.glPushMatrix();
@@ -1301,6 +1310,20 @@ implements IGLCanvasUser {
 		
 	}
 
+	public void retrieveGUIContainer() {
+		
+		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
+			(SWTEmbeddedGraphWidget) refGeneralManager
+				.getSingelton().getSWTGUIManager().createWidget(
+						ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
+						refEmbeddedFrameComposite,
+						iWidth, 
+						iHeight);
+
+		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
+		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
+	}
+	
 	public void initView() {
 		
 	}
@@ -1352,7 +1375,7 @@ implements IGLCanvasUser {
 		return this.bInitGLcanvawsWasCalled;
 	}
 	
-	protected final void setInitGLDone() 
+	public final void setInitGLDone() 
 	{
 		if ( bInitGLcanvawsWasCalled ) {
 			System.err.println(" called setInitGLDone() for more than once! " + 

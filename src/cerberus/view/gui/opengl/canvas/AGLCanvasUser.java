@@ -54,7 +54,7 @@ implements IGLCanvasUser
 		return this.bInitGLcanvawsWasCalled;
 	}
 	
-	protected final void setInitGLDone() 
+	public final void setInitGLDone() 
 	{
 		if ( bInitGLcanvawsWasCalled ) {
 			System.err.println(" called setInitGLDone() for more than once! " + 

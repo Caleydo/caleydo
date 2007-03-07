@@ -33,6 +33,8 @@ extends IUniqueObject {
 	 * the SWT GUI Manager.
 	 * Method is implemented in the subclasses because only there
 	 * the type of the needed widget is available.
+	 * 
+	 * @deprecated use initView()
 	 */
 	public void retrieveGUIContainer();
 	
