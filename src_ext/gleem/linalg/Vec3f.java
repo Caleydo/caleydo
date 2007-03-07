@@ -39,7 +39,10 @@
 
 package gleem.linalg;
 
-/** 3-element single-precision vector */
+/** 3-element single-precision vector
+  *
+  * Added new static variables VEC_NULL and VEC_ONE (Micahel Kalkusch) 
+  */
 
 public class Vec3f {
 	

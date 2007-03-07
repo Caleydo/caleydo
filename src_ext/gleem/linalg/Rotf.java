@@ -39,7 +39,10 @@
 
 package gleem.linalg;
 
-/** Represents a rotation with single-precision components */
+/** Represents a rotation with single-precision components 
+ *
+ * Added new method getAxisAndAngle() (Micahel Kalkusch)
+ */
 
 public class Rotf {
   private static float EPSILON = 1.0e-7f;
@@ -191,6 +194,13 @@ public class Rotf {
     return tmp;
   }
 
+  /** Returns this * b, in that order; creates new rotation */
+  public void mulSelf(Rotf b) {
+    Rotf tmp = new Rotf();
+    tmp.mul(this, b);
+    return tmp;
+  }
+  
   /** Compose two rotations: this = A * B in that order. NOTE that
       because we assume a column vector representation that this
       implies that a vector rotated by the cumulative rotation will be
@@ -293,6 +303,19 @@ public class Rotf {
     return tmp;
   }
 
+  /**
+   * Get Vec4f with Axis and quaternion-rotation,
+   * Vec4f.x = Axis.x
+   * Vec4f.y = Axis.y
+   * Vec4f.z = Axis.z
+   * Vec4f.w = q0 rotation angle around axis
+   * 
+   * @return Vec4f containing (axis, angle of rotation around axis)
+   */
+  public Vec4f getAxisAndAngle() {
+	  return new Vec4f( q1, q2, q3, q0);	  
+  }
+  
   public String toString() {
     return "(" + q0 + ", " + q1 + ", " + q2 + ", " + q3 + ")";
   }
