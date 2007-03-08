@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -13,6 +14,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -140,6 +143,8 @@ extends APathwayGraphViewRep {
 	 */
 	protected boolean bNeighbourhoodShown = false;
 	
+	protected HashSet<DefaultGraphCell> hashSetVisitedNeighbors;
+	
 	protected HashMap<IPathwayVertexRep, DefaultGraphCell> hashVertexRep2GraphCell;
 	
 	public PathwayGraphViewRep(IGeneralManager refGeneralManager, 
@@ -159,6 +164,8 @@ extends APathwayGraphViewRep {
 		iLLNeighborDistance = new LinkedList<Integer>();
 		
 		hashVertexRep2GraphCell = new HashMap<IPathwayVertexRep, DefaultGraphCell>();
+	
+		hashSetVisitedNeighbors = new HashSet<DefaultGraphCell>();
 	}
 
 	public void retrieveGUIContainer() {
@@ -273,8 +280,10 @@ extends APathwayGraphViewRep {
 						
 						if (iNeighbourhoodDistance != 0)
 						{	
-							showNeighbourhood(clickedCell, 
-								iNeighbourhoodDistance, null);
+							hashSetVisitedNeighbors.clear();
+							
+							showNeighbourhoodBFS(clickedCell, 
+								iNeighbourhoodDistance);
 					
 							bNeighbourhoodShown = true;
 						}
@@ -295,8 +304,8 @@ extends APathwayGraphViewRep {
 					    	iArNeighborDistance[i] = iter_I.next().intValue();
 					    }
 						
-						updateSelectionSet(iArSelectedVertices, 
-								new int[0], iArNeighborDistance);
+//						updateSelectionSet(iArSelectedVertices, 
+//								new int[0], iArNeighborDistance);
 						
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
@@ -639,40 +648,40 @@ extends APathwayGraphViewRep {
 	/**
 	 * Method visualizes the neighborhood of a certain cell.
 	 * 
+	 * BFS Algorithm:
+	 * for each vertex v in Q do
+	 * for all edges e incident on v do
+	 * if edge e is unexplored then
+	 * let w be the other endpoint of e.
+	 * if vertex w is unexpected then
+	 * - mark e as a discovery edge
+	 * - insert w into Q
+	 * 
 	 * @param cell Cell around the neighborhood is shown.
 	 * @param iDistance Neighborhood distance.
-	 * @param parentCell The cell that should be excluded. This is needed 
 	 * because the method is called recursive.
 	 */
-	protected void showNeighbourhood(DefaultGraphCell cell, 
-			int iDistance, DefaultGraphCell parentCell) {
+	protected void showNeighbourhoodBFS(DefaultGraphCell cell,
+			int iDistance) {
 		
-		HashSet<DefaultGraphCell> excludeParent = 
-			new HashSet<DefaultGraphCell>();
-		excludeParent.add(parentCell);
-
-		List<DefaultGraphCell> neighbourCells = 
-			refGraphLayoutCache.getNeighbours(cell, 
-					excludeParent, false, false);
+//		LinkedList<DefaultGraphCell> stackBFS = new LinkedList<DefaultGraphCell>();
+//		LinkedList<DefaultGraphCell> stackBFSNext = new LinkedList<DefaultGraphCell>();
 	
-		Iterator<DefaultGraphCell> cellIter = neighbourCells.iterator();
 		
 		Map<DefaultGraphCell, Map> nested = 
 			new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 		
-		DefaultGraphCell tmpCell;
-		
-		// Color mapping will start with red (neigborhood = 1)
-		// For graph parts far away the color will turn to yellow.
-		float fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
-		
-		if (fGreenPortion < 0.0)
-			fGreenPortion = 0.0f;
-		else if (fGreenPortion > 1.0f)
-			fGreenPortion = 1.0f;
-		GraphConstants.setBackground(
-				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
+//		// Color mapping will start with red (neigborhood = 1)
+//		// For graph parts far away the color will turn to yellow.
+//		float fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
+//		
+//		if (fGreenPortion < 0.0)
+//			fGreenPortion = 0.0f;
+//		else if (fGreenPortion > 1.0f)
+//			fGreenPortion = 1.0f;
+//		GraphConstants.setBackground(
+//				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
 		
 //		Color nodeColor;
 //		if (iDistance == 1)
@@ -685,27 +694,62 @@ extends APathwayGraphViewRep {
 //			nodeColor = Color.BLACK;
 //		
 //		GraphConstants.setBackground(attributeMap, nodeColor);
+		
+		ArrayList<DefaultGraphCell> queueBFS = new ArrayList<DefaultGraphCell>();
+		ArrayList<DefaultGraphCell> queueBFSNext = new ArrayList<DefaultGraphCell>();
+		queueBFS.add(cell);
+		
+		DefaultGraphCell tmpCell = null;
+		List<DefaultGraphCell> neighbourCells = null;
+		Iterator<DefaultGraphCell> iterCells = null;
+		Color nodeColor = null;
+		
+		for (int iDistanceIndex = 0; iDistanceIndex <= iDistance; iDistanceIndex++)
+		{	
+			iterCells = queueBFS.iterator();
+			nested.clear();
+		
+			if (iDistanceIndex == 0)
+				nodeColor = refRenderStyle.getHighlightedNodeColor();
+			if (iDistanceIndex == 1)
+				nodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
+			else if (iDistanceIndex == 2)
+				nodeColor = refRenderStyle.getNeighborhoodNodeColor_2();
+			else if (iDistanceIndex == 3)
+				nodeColor = refRenderStyle.getNeighborhoodNodeColor_3();
 
-		while (cellIter.hasNext())
-		{
-			tmpCell = cellIter.next();
-		
-			// Add selected vertex
-			iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
-					getUserObject()).getVertex().getElementId());
-			iLLNeighborDistance.add(iDistance);
+			GraphConstants.setBackground(attributeMap, nodeColor);
 			
-			nested.put(tmpCell, attributeMap);
-			
-			for (int iDistanceCount = 1; iDistanceCount < iDistance; iDistanceCount++)
+			while (iterCells.hasNext())
 			{
-				showNeighbourhood(tmpCell, iDistance-1, cell);
+				tmpCell = iterCells.next();
+
+				if (!hashSetVisitedNeighbors.contains(tmpCell))
+				{
+					hashSetVisitedNeighbors.add(tmpCell);
+					
+					neighbourCells = refGraphLayoutCache
+						.getNeighbours(tmpCell, hashSetVisitedNeighbors, false, false);
+
+					queueBFSNext.addAll(neighbourCells);
+
+					// Mark cell
+					nested.put(tmpCell, attributeMap);
+					
+					// // Add selected vertex to selection arrays
+					// iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
+					// getUserObject()).getVertex().getElementId());
+					// iLLNeighborDistance.add(iDistance);
+				}
 			}
+			
+			refGraphLayoutCache.edit(nested, null, null, null);
+			iNeighbourhoodUndoCount++;
+			queueBFS = (ArrayList<DefaultGraphCell>) queueBFSNext.clone();
+			queueBFSNext.clear();
 		}
-		
-		refGraphLayoutCache.edit(nested, null, null, null);
-		
-		iNeighbourhoodUndoCount++;
+
+		return;
 	}
 	
 	public void highlightCell(final DefaultGraphCell refCell, 

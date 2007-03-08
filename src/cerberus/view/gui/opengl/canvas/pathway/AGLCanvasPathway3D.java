@@ -153,6 +153,8 @@ implements IGLCanvasUser {
 	
 	protected HashMap<Pathway, FloatBuffer> refHashPathway2ModelMatrix;
 	
+	protected boolean bSelectionDataChanged = false;
+	
 	/**
 	 * Constructor
 	 * 
@@ -268,7 +270,6 @@ implements IGLCanvasUser {
 		buildPathwayDisplayList();	
 		
 		setInitGLDone();
-
 	}	
 	
 	/**
@@ -610,6 +611,12 @@ implements IGLCanvasUser {
 			initGLCanvas( (GLCanvas) canvas);
 		}
 		
+		if (bSelectionDataChanged)
+		{
+			buildPathwayDisplayList();
+			bSelectionDataChanged = false;
+		}
+			
 		// Clear The Screen And The Depth Buffer
 		gl.glPushMatrix();
 
@@ -1367,7 +1374,8 @@ implements IGLCanvasUser {
 			iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
 		}
 		
-		getGLCanvas().display();
+		bSelectionDataChanged = true;
+		//getGLCanvas().display();
 	}
 	
 	public final boolean isInitGLDone() 

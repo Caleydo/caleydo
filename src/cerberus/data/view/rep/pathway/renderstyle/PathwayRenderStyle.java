@@ -85,9 +85,9 @@ extends ARenderStyle {
 		compoundNodeColor = Color.GREEN;
 		pathwayNodeColor = new Color(1, 0.65f, 0.31f);
 		highlightedNodeColor = Color.RED;
-		neighborhoodNodeColor_1 = Color.RED;
-		neighborhoodNodeColor_2 = Color.ORANGE;
-		neighborhoodNodeColor_3 = Color.YELLOW;
+		neighborhoodNodeColor_1 = Color.ORANGE;
+		neighborhoodNodeColor_2 = Color.YELLOW;
+		neighborhoodNodeColor_3 = Color.LIGHT_GRAY;
 		
 		relationEdgeLineStyle = EdgeLineStyle.NORMAL;
 		reactionEdgeLineStyle = EdgeLineStyle.NORMAL;
