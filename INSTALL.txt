@@ -15,8 +15,32 @@ last change: 12-09-2006
   WIN32
  -------
 
- JOGL:
+ JOGL 1.0.0:
  
+ copy jogl.jar and *.dll to [my_java_folder]/[jre]/lib/
+   (jar file plus native libraries)
+    
+ for Eclipse: 
+   Properties -> "Java Build Path" -> 
+   "JRE System Library [..]" ->
+   "Native libraray location: .." + [Edit..] ->
+   Dialog "Native libraray location Configuration" ->
+   
+   add path to:  [my_java_folder]/[jre]/lib
+   
+   this results in teh following lines in teh .classpath file:
+   
+   <classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/[my_java_folder]/[jre]/lib"/>
+		</attributes>
+	</classpathentry>
+   
+
+ JOGL 1.1.0:
+ (maybe this is not nesseccary any more. 
+  Try with new version of jogl and insert commend here)
+  
  1) copy "jogl.jar" and "gluegen-rt.jar" to
     [drive:][folder]\jre1.6\jre\lib\ext
     
