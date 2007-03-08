@@ -90,25 +90,33 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	targetId="12401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
 			
 			
-			
 			<!-- Doku:
 			Cmd type="CREATE_GL_MINMAX_SCATTERPLOT2D"	
 			 attrib3="x_min x_may    y_min y_max    x_offset y_offset   view_X_min view_X_max view_Y_min view_Y_max gridSize pointSize" 
 			 --> 
 			 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="11401" label="GL Triangle	A"	
-							attrib1="0 2 0" attrib2="0 0 1 0.85"
-							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 4.0f"								
+							attrib1="0 -2 0" attrib2="0 0 1 0.85"
+							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -1.0f 1.0f   -1.0f  0.0f     30 4.0f"								
 							detail="45101" />
 							
-			<!--		
-								
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT3D"		cmdId="68982"	targetId="78401" parent="11401" label="GL Triangle	A"	
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="92401" parent="11401" label="GL Triangle	A"	
+							attrib1="0 0 0" attrib2="0 0 1 0.85"
+							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -2.0f 2.0f   -2.0f  2.0f     30 4.0f"								
+							detail="45101" />
+							
+	
+			<!--															
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="70991"	targetId="13401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
+		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68982"	targetId="79401" parent="13401" label="GL Triangle	A"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -3.0f  0.0f     30 4.0f"								
-							detail="35991" />
+							detail="45101" />
+			-->
 			
-				
+			<!--	
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_ISOSURFACE3D"		cmdId="68982"	targetId="78401" parent="11401" label="GL isosurface"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"
@@ -134,6 +142,7 @@
 	
 			-->		
 	
+		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	targetId="79401" parent="12401" label="GL Triangle	C"	
 							attrib1="0 2 0" attrib2="0 0 1 0.85"						
 							attrib3="0 20 0 20   -0.5f -0.5f    -3.0f 3.0f   -5.0f 1.0f    -7.0f 1.0f   1000"				
@@ -171,13 +180,45 @@
 							
 
 			<!-- Container 11341 -->
+
+			<!-- Window	10331	-->
 			<!--
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="51991"	targetId="10331" parent="19401" label="swt	container	2"	attrib2="ROW	VERTICAL"	/>			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER"	cmdId="60993"	targetId="10401" parent="11341" label="Data Explorer"			attrib1="11341" attrib2="700	500" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	targetId="11331" 
+			label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="51991"	targetId="14331" 
+		 	parent="11331" label="swt	container	2"	attrib2="ROW	VERTICAL"	/>			
 		
-			<Cmd mementoId="0" process="ON_LOAD"     type="CREATE_VIEW_GEARS"					cmdId="68994"	targetId="31401" parent="11341" label="Gears"						attrib2="300	300" />			
-				-->
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	targetId="91401" 
+		  parent="14331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
+
 			
+			
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68992"	targetId="78401" parent="91401" 
+					label="GL Triangle	A"	
+							attrib1="0 2 0" attrib2="0 0 1 0.85"
+							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 4.0f"								
+							detail="45101" />
+			-->
+							
+			<!-- Container 10341 -->
+			<!--
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="51991"	targetId="10441" parent="10331" label="swt	container	1"	attrib2="ROW	HORIZONTAL"	/>
+		
+			
+			
+				
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR"		cmdId="64991"	targetId="14401" parent="10331" label="Progress Bar 1"		attrib2="300	30"	detail="30"	/>
+	   	-->
+
+		<!--
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	targetId="11401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
+
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER"	cmdId="60993"	targetId="10401" parent="11341" label="Data Explorer"			attrib1="11341" attrib2="700	500" />
+		  
+		  
+			<Cmd mementoId="0" process="ON_LOAD"     type="CREATE_VIEW_GEARS"					cmdId="68994"	targetId="31401" parent="14331" label="Gears"						attrib2="300	300" />			
+      -->
 			
 			<!-- Window	11331	-->
 			<!--
