@@ -316,6 +316,20 @@ public class Rotf {
 	  return new Vec4f( q1, q2, q3, q0);	  
   }
   
+  public void applyEulerAngles(float x, float y, float z) {
+	  
+	  Rotf rotX = new Rotf( (float) Math.cos(x/2),
+			  (float) Math.sin(x/2), 0,0 );
+	  Rotf rotY = new Rotf( (float) Math.cos(y/2),
+			  0,(float) Math.sin(y/2),0 );
+	  Rotf rotZ = new Rotf( (float) Math.cos(y/2),
+			  0,0,(float) Math.sin(z/2) );
+	  Rotf rotXY = rotX.mulSelf(rotY);
+	  Rotf rotRes = rotZ.mulSelf(rotXY);
+	  
+	  this.set(rotRes);
+  }
+  
   public String toString() {
     return "(" + q0 + ", " + q1 + ", " + q2 + ", " + q3 + ")";
   }
