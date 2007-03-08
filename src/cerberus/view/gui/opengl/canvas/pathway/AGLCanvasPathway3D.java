@@ -65,8 +65,6 @@ implements IGLCanvasUser {
 	
 	protected boolean bInitGLcanvawsWasCalled = false;
 	
-	
-	
 	protected static final int X = GLCanvasStatics.X;
 	protected static final int Y = GLCanvasStatics.Y;
 //	private static final int Z = GLCanvasStatics.Z;
@@ -294,7 +292,7 @@ implements IGLCanvasUser {
 			iPathwayIndex++)
 		{
 			System.out.println("Create display list for new pathway");
-		
+			
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
@@ -1268,8 +1266,8 @@ implements IGLCanvasUser {
 		
 		bShowPathwayTexture = bTurnOn;
 		
-		//buildPathwayDisplayList();
-		getGLCanvas().display();
+		buildPathwayDisplayList();
+		//getGLCanvas().display();
 	}
 
 	/*
@@ -1375,7 +1373,6 @@ implements IGLCanvasUser {
 		}
 		
 		bSelectionDataChanged = true;
-		//getGLCanvas().display();
 	}
 	
 	public final boolean isInitGLDone() 

@@ -253,9 +253,9 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		return iPathwayLevel;
 	}
 	
-	public Pathway loadPathwayFromFile(int iNewPathwayId) {
+	public void loadPathwayFromFile(int iNewPathwayId) {
 		
-		// Check if Pathway is already loaded and return it
+		// Check if Pathway is already loaded
 		if (refGeneralManager.getSingelton().getPathwayManager().hasItem(iNewPathwayId))
 		{
 			refGeneralManager.getSingelton().logMsg(
@@ -263,7 +263,7 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 					": loadPathwayFromFile(): Pathway is already loaded. No parsing needed.",
 					LoggerType.MINOR_ERROR );
 			
-			return (Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iNewPathwayId);
+			return;
 		}
 		
 		String sPathwayFilePath = "";
@@ -289,8 +289,6 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-		
-		return(refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway());
 	}
 	
 	/**

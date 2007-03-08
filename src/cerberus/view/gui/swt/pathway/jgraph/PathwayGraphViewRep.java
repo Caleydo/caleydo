@@ -109,6 +109,8 @@ extends APathwayGraphViewRep {
 	
 	protected Vector<DefaultGraphCell> vecVertices;
 	
+	protected ArrayList<DefaultGraphCell> arSelectedVertices;
+ 	
 	/**
 	 * Integer storage of selected vertices
 	 * Container is needed for selection updates.
@@ -166,6 +168,8 @@ extends APathwayGraphViewRep {
 		hashVertexRep2GraphCell = new HashMap<IPathwayVertexRep, DefaultGraphCell>();
 	
 		hashSetVisitedNeighbors = new HashSet<DefaultGraphCell>();
+		
+		arSelectedVertices = new ArrayList<DefaultGraphCell>();
 	}
 
 	public void retrieveGUIContainer() {
@@ -208,6 +212,7 @@ extends APathwayGraphViewRep {
 			    	// Remove old selected vertices
 			    	iLLSelectedVertices.clear();
 			    	iLLNeighborDistance.clear();
+			    	arSelectedVertices.clear();
 			    	
 			    	// Check if a node or edge was hit.
 			    	// If not undo neighborhood visualization and return.
@@ -232,8 +237,8 @@ extends APathwayGraphViewRep {
 						return;						
 					}
 	
-					if (!clickedCell.getUserObject().
-							getClass().getSimpleName().equals("PathwayVertexRep"))
+					if (!clickedCell.getUserObject().getClass().getSimpleName()
+							.equals(PathwayVertexRep.class.getSimpleName()))
 					{
 						super.mousePressed(event);
 						return;
@@ -278,6 +283,8 @@ extends APathwayGraphViewRep {
 						iLLSelectedVertices.add(((PathwayVertexRep)clickedCell.
 								getUserObject()).getVertex().getElementId());
 						
+						arSelectedVertices.add(clickedCell);
+						
 						if (iNeighbourhoodDistance != 0)
 						{	
 							hashSetVisitedNeighbors.clear();
@@ -304,8 +311,8 @@ extends APathwayGraphViewRep {
 					    	iArNeighborDistance[i] = iter_I.next().intValue();
 					    }
 						
-//						updateSelectionSet(iArSelectedVertices, 
-//								new int[0], iArNeighborDistance);
+						updateSelectionSet(iArSelectedVertices, 
+								new int[0], iArNeighborDistance);
 						
 					}// if(sUrl.contains((CharSequence)sSearchPattern))
 				}// if(refCurrentPathway != 0) 
@@ -586,9 +593,9 @@ extends APathwayGraphViewRep {
 //				vecReactionEdges.toArray());
 	}
 	
-	public Pathway loadPathwayFromFile(int iNewPathwayId) {
+	public void loadPathwayFromFile(int iNewPathwayId) {
 		
-		Pathway refLoadedPathway = super.loadPathwayFromFile(iNewPathwayId);
+		super.loadPathwayFromFile(iNewPathwayId);
 		
 		refCurrentPathway = null;
 		refCurrentPathwayImageMap = null;
@@ -596,24 +603,11 @@ extends APathwayGraphViewRep {
 
 		extractCurrentPathwayFromSet();
 		
-		drawView();
-		
 		refPathwayGraph.setBackgroundImage(null);
 		
-		if (bShowBackgroundOverlay == true)
-		{
-			// Build current pathway file path of GIF
-			String sPathwayImageFilePath = refCurrentPathway.getTitle();
-			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
-			sPathwayImageFilePath = "data/images/pathways/" 
-				+sPathwayImageFilePath +".gif";
-			
-			loadBackgroundOverlayImage(sPathwayImageFilePath, null);
-		}
+		showBackgroundOverlay(bShowBackgroundOverlay);
 		
-		refGraphLayoutCache.reload();
-		
-		return refLoadedPathway;
+		//refGraphLayoutCache.reload();
 	}
 	
 	public void loadImageMapFromFile(String sImageMapPath) {
@@ -787,6 +781,13 @@ extends APathwayGraphViewRep {
 	public void setNeighbourhoodDistance(int iNeighbourhoodDistance) {
 	
 		this.iNeighbourhoodDistance = iNeighbourhoodDistance;
+		
+//		//Apply newly selected distance to current selection
+//		Iterator<DefaultGraphCell> iterSelectedCells = arSelectedVertices.iterator();
+//		while (iterSelectedCells.hasNext())
+//		{
+//			showNeighbourhoodBFS(iterSelectedCells.next(), iNeighbourhoodDistance);
+//		}
 	}
 	
 	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
@@ -830,9 +831,9 @@ extends APathwayGraphViewRep {
 			refPathwayGraph.setBackgroundImage(null);
 			fScalingFactor = SCALING_FACTOR;
 		}
-					
-		resetPathway();
 		
+		resetPathway();
+		extractCurrentPathwayFromSet();
 		// Attention: Performance problem.
 		drawView();
 		
@@ -841,6 +842,7 @@ extends APathwayGraphViewRep {
 				vecReactionEdges.toArray(), !bTurnOn);
 		refGraphLayoutCache.setVisible(
 				vecRelationEdges.toArray(), !bTurnOn);
+
 	}
 	
 	public void resetPathway() {
@@ -996,6 +998,10 @@ extends APathwayGraphViewRep {
 	    	
 			highlightCell(hashVertexRep2GraphCell.get(
 					selectedVertex.getVertexRepByIndex(0)), Color.RED);
+			
+			bNeighbourhoodShown = true;
+			iNeighbourhoodUndoCount++;
+			
 		}
 	}
 }

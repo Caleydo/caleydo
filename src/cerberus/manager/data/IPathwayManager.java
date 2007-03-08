@@ -17,8 +17,6 @@ extends IGeneralManager {
 
 	public Iterator<Pathway> getPathwayIterator();
 	
-	public Pathway getCurrentPathway();
-	
 	public void createPathwayImageMap(String sLink);
 	
 	public PathwayImageMap getCurrentPathwayImageMap();

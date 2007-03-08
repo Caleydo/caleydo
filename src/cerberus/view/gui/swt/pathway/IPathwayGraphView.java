@@ -19,7 +19,7 @@ extends IView {
 			boolean bDrawArrow,
 			APathwayEdge refPathwayEdge);
 		
-	public Pathway loadPathwayFromFile(int iNewPathwayId);
+	public void loadPathwayFromFile(int iNewPathwayId);
 	
 	public void loadImageMapFromFile(String sImagePath); 
 	
@@ -37,8 +37,6 @@ extends IView {
 			EdgeType edgeType);
 	
 	public void showBackgroundOverlay(boolean bTurnOn);
-	
-	public void finishGraphBuilding();
 	
 	public void loadBackgroundOverlayImage(String sPathwayImageFilePath,
 			Pathway refTexturedPathway);

@@ -82,7 +82,7 @@ implements IPathwayManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayManager#getCurrentPathway()
 	 */
-	public Pathway getCurrentPathway() {
+	protected Pathway getCurrentPathway() {
 
 		return refCurrentPathway;
 	}
