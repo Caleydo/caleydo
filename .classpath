@@ -23,6 +23,5 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Cerberus/bin/ext_jar/jogl"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="bin/ext_jar/jogl/gluegen-rt.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>
