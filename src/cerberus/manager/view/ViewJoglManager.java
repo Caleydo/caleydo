@@ -38,6 +38,7 @@ import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.view.gui.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.exchanger.DataExchangerViewRep;
+import cerberus.view.gui.swt.data.exchanger.NewSetEditorViewRep;
 import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
@@ -235,7 +236,7 @@ implements IViewManager, IViewGLCanvasManager {
 			return new DataExchangerViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);	
 		case VIEW_SWT_DATA_SET_EDITOR:
-			return new SetEditorViewRep(this.refGeneralManager, iViewId,
+			return new NewSetEditorViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_PROGRESS_BAR:
 			return new ProgressBarViewRep(this.refGeneralManager, iViewId,

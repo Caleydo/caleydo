@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -54,7 +54,7 @@ implements IView {
 
 	public void initView() {
 		
-		refSWTContainer.setLayout(new FillLayout(SWT.HORIZONTAL));
+		refSWTContainer.setLayout(new RowLayout(SWT.HORIZONTAL));
 		
 		Label viewComboLabel = new Label(refSWTContainer, SWT.LEFT);
 		viewComboLabel.setText("Undo/Redo:");

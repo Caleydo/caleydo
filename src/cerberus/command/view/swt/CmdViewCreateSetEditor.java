@@ -8,7 +8,8 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
+import cerberus.view.gui.swt.data.exchanger.NewSetEditorViewRep;
+//import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -45,23 +46,23 @@ implements ICommand {
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
-		SetEditorViewRep dataExchangerView = (SetEditorViewRep)viewManager
+		NewSetEditorViewRep setEditorView = (NewSetEditorViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_SET_EDITOR,
 							iUniqueTargetId, 
 							iParentContainerId, 
 							sLabel);
 		
 		viewManager.registerItem(
-				dataExchangerView, 
+				setEditorView, 
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 
-		viewManager.addViewRep(dataExchangerView);
+		viewManager.addViewRep(setEditorView);
 
-		dataExchangerView.setAttributes(iWidthX, iHeightY);
-		dataExchangerView.retrieveGUIContainer();
-		dataExchangerView.initView();
-		dataExchangerView.drawView();
+		setEditorView.setAttributes(iWidthX, iHeightY);
+		setEditorView.retrieveGUIContainer();
+		setEditorView.initView();
+		setEditorView.drawView();
 		
 		refCommandManager.runDoCommand(this);
 	}

@@ -157,7 +157,7 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
-		vecRefStorage_Array.get(iAtDimension).insertElementAt(addStorage,iAtIndex);
+		vecRefStorage_Array.get(iAtDimension).set(iAtIndex, addStorage);
 		
 		return true;
 	}
@@ -170,7 +170,7 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
-		vecRefSelection_Array.get(iAtDimension).insertElementAt(addVirtualArray,iAtIndex);
+		vecRefSelection_Array.get(iAtDimension).set(iAtIndex, addVirtualArray);
 		
 		return true;
 	}
