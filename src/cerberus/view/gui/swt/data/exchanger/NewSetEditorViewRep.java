@@ -3,6 +3,8 @@
  */
 package cerberus.view.gui.swt.data.exchanger;
 
+import gov.nih.nlm.ncbi.www.soap.eutils.efetch.SsType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -70,6 +72,10 @@ implements IView {
 	
 	protected Combo setDataCombo;
 	
+	protected Button createSetButton;
+	
+	protected Button setFinishedButton;
+	
 	protected int iSelectedSetId = 0;
 	
 	/**
@@ -87,7 +93,11 @@ implements IView {
 	 * with the newly selected.
 	 */
 	protected HashMap<IVirtualArray, Integer> hashVirtualArray2VirtualArraySetIndex;
- 
+ 	
+	protected ArrayList<IStorage> iArStorageToAdd;
+	
+	protected ArrayList<IVirtualArray> iArVirtualArrayToAdd;
+	
 	public NewSetEditorViewRep(
 			IGeneralManager refGeneralManager, 
 			int iViewId, 
@@ -103,36 +113,68 @@ implements IView {
 		arSetIDs = new ArrayList<String>();
 		hashStorage2StorageSetIndex = new HashMap<IStorage, Integer> ();
 		hashVirtualArray2VirtualArraySetIndex = new HashMap<IVirtualArray, Integer>();
-	
+		iArStorageToAdd = new ArrayList<IStorage>();
+		iArVirtualArrayToAdd = new ArrayList<IVirtualArray>();
+		
 	}
 	
 	public void initView() {
 
 		refSWTContainer.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Button createSetButton = new Button(refSWTContainer, SWT.LEFT);
+		createSetButton = new Button(refSWTContainer, SWT.LEFT);
 		createSetButton.setText("Create new SET");
 		createSetButton.setLayoutData(new RowData(120, 30));
-		createSetButton.setEnabled(false);
-		createSetButton.addSelectionListener(new SelectionListener() {
-			
+		createSetButton.setEnabled(true);
+		createSetButton.addSelectionListener(new SelectionListener() {				
 	        public void widgetSelected(SelectionEvent e) {
 
+	        	createSetButton.setEnabled(false);
+	        	
 	        	storageTable.removeAll();
 	        	virtualArrayTable.removeAll();
+	        	
+	        	setFinishedButton.setEnabled(true);
 	        	
 	    	    String[] itemData = new String[3];
 				itemData[0] = "0";
 				itemData[1] = "ID?";
 				itemData[2] = "Label?";
 
-				// Create fresh row for storage and virtual array
-	        	TableItem tableItem = new TableItem(storageTable, SWT.NONE);;
-			    tableItem.setText(itemData);
-			    tableItem = new TableItem(virtualArrayTable, SWT.NONE);;
-			    tableItem.setText(itemData);     	
+			    for (int i = 0; i < 4; i++) 
+			    {			
+					// Create fresh row for storage and virtual array
+		        	TableItem tableItem = new TableItem(storageTable, SWT.NONE);;
+				    tableItem.setText(itemData);
+				    tableItem = new TableItem(virtualArrayTable, SWT.NONE);;
+				    tableItem.setText(itemData);  
 			    
-			    iSelectedSetId = createNewSet();
+//			      // Create the editor and button
+//				TableEditor finishedEditor = new TableEditor(storageTable);
+//				Button finishedButton = new Button(storageTable, SWT.PUSH);
+//
+//				// Set attributes of the button
+//				finishedButton.setText("Color...");
+//				finishedButton.computeSize(SWT.DEFAULT, storageTable
+//						.getItemHeight());
+//
+//				// Set attributes of the editor
+//				finishedEditor.grabHorizontal = true;
+//				finishedEditor.minimumHeight = finishedButton.getSize().y;
+//				finishedEditor.minimumWidth = finishedButton.getSize().x;
+//
+//				// Set the editor for the first column in the row
+//				finishedEditor.setEditor(finishedButton, tableItem, 3);
+//
+//				// Create a handler for the button
+//				finishedButton.addSelectionListener(new SelectionAdapter() {
+//
+//					public void widgetSelected(SelectionEvent event) {
+//						
+//					}
+//				});
+			    }
+//			    iSelectedSetId = createNewSet();
 	        }
 
 	        public void widgetDefaultSelected(SelectionEvent e) {
@@ -176,6 +218,23 @@ implements IView {
 	    		reloadDataTablesForSet(iSelectedSetId);
 	    	}
 	    });
+	    
+	      // Create SET finished button
+		setFinishedButton = new Button(refSWTContainer, SWT.PUSH);
+		setFinishedButton.setText("Finish SET");
+		setFinishedButton.setLayoutData(new RowData(150, 30));
+		setFinishedButton.setEnabled(false);
+		setFinishedButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent event) {
+				
+				int iCreatedSetId = createNewSet();
+				
+				setFinishedButton.setEnabled(false);
+				createSetButton.setEnabled(true);
+				setDataCombo.add(new Integer(iCreatedSetId).toString());
+				arSetIDs.add(new Integer(iCreatedSetId).toString());
+			}
+		});
 	}
 	
 	public void drawView() {
@@ -207,24 +266,25 @@ implements IView {
 	        | SWT.HIDE_SELECTION);
 	    virtualArrayTable.setHeaderVisible(true);
 	    virtualArrayTable.setLinesVisible(true);
-		virtualArrayTable.setLayoutData(new RowData(300, 100));
+		virtualArrayTable.setLayoutData(new RowData(300, 110));
 
 	    storageTable = new Table(refSWTContainer, SWT.SINGLE | SWT.FULL_SELECTION
 		        | SWT.HIDE_SELECTION);
 	    storageTable.setHeaderVisible(true);
 	    storageTable.setLinesVisible(true);
-		storageTable.setLayoutData(new RowData(300, 100));
+		storageTable.setLayoutData(new RowData(300, 110));
 	    
-	    String[] iArColumnCaptions = {"Dimension", "   ID   ", "Label"};
+	    String[] sArColumnCaptions = {"Dimension", "   ID   ", "Label"};
 	    
-	    // Create five columns
-	    for (int i = 0; i < iArColumnCaptions.length; i++) {
+	    // Create columns
+	    for (int i = 0; i < sArColumnCaptions.length; i++) 
+	    {
 	      TableColumn column = new TableColumn(virtualArrayTable, SWT.CENTER);
-	      column.setText(iArColumnCaptions[i]);
+	      column.setText(sArColumnCaptions[i]);
 	      column.pack();
 	      
 	      column = new TableColumn(storageTable, SWT.CENTER);
-	      column.setText(iArColumnCaptions[i]);
+	      column.setText(sArColumnCaptions[i]);
 	      column.pack();
 	    }
 	}
@@ -370,9 +430,16 @@ implements IView {
 			            	combo.add(iter.next().toString());
 			            }
 			            
-			            // Select the previously selected item from the cell
-			            combo.select(combo.indexOf(item.getText(column)));
-			            
+						if (!item.getText(1).equals("ID?"))
+						{
+							// Select the previously selected item from the cell
+							combo.select(combo.indexOf(item.getText(column)));
+						}
+						else
+						{
+							combo.select(0);
+						}
+							
 			            // Compute the width for the editor
 			            // Also, compute the column width, so that the dropdown
 						// fits
@@ -394,29 +461,40 @@ implements IView {
 								IStorage tmpStorage = 
 									refGeneralManager.getSingelton().getStorageManager().getItemStorage(new Integer(combo.getText()));
 								
-								// Save changed storage ID to SET
-					    		int iSelectedSetDataId = StringConversionTool.convertStringToInt( 
-					    				arSetIDs.get(setDataCombo.getSelectionIndex()), 
-					    				0);
-					    		
-					        	// Save previously selected storage for updating in SET
-					        	IStorage oldStorage = refGeneralManager.getSingelton().getStorageManager().getItemStorage(
-					        			new Integer(item.getText(1)));
-					    		
-					    		if (hashStorage2StorageSetIndex.isEmpty())
-					    			return;
-					    		
-					    		ISet tmpSet = refGeneralManager.getSingelton().getSetManager().getItemSet(iSelectedSetDataId);
-					    		int iStorageIndexInSet = hashStorage2StorageSetIndex.get(oldStorage);
-					    		
-					    		tmpSet.getWriteToken();
-								tmpSet.setStorageByDimAndIndex(tmpStorage, new Integer(item.getText(0)), iStorageIndexInSet);
-					    		tmpSet.returnWriteToken();
-					    		
-					    		hashStorage2StorageSetIndex.remove(oldStorage);
-					    		hashStorage2StorageSetIndex.put(tmpStorage, iStorageIndexInSet);
-					    		
+								if (item.getText(1).equals("ID?"))
+								{
+									// Condition: Create new virtual array
+									iArStorageToAdd.add(tmpStorage);
+								}
+								else
+								{
+									// Condition: Edit existing virtual array
+									
+									// Save changed storage ID to SET
+						    		int iSelectedSetDataId = StringConversionTool.convertStringToInt( 
+						    				arSetIDs.get(setDataCombo.getSelectionIndex()), 
+						    				0);
+						    		
+						        	// Save previously selected storage for updating in SET
+						        	IStorage oldStorage = refGeneralManager.getSingelton().getStorageManager().getItemStorage(
+						        			new Integer(item.getText(1)));
+						    		
+						    		if (hashStorage2StorageSetIndex.isEmpty())
+						    			return;
+						    		
+						    		ISet tmpSet = refGeneralManager.getSingelton().getSetManager().getItemSet(iSelectedSetDataId);
+						    		int iStorageIndexInSet = hashStorage2StorageSetIndex.get(oldStorage);
+						    		
+						    		tmpSet.getWriteToken();
+									tmpSet.setStorageByDimAndIndex(tmpStorage, new Integer(item.getText(0)), iStorageIndexInSet);
+						    		tmpSet.returnWriteToken();
+						    		
+						    		hashStorage2StorageSetIndex.remove(oldStorage);
+						    		hashStorage2StorageSetIndex.put(tmpStorage, iStorageIndexInSet);
+								}
+								
 								item.setText(col, combo.getText());
+								item.setText(2, tmpStorage.getLabel());
 								
 								// They selected an item; end the editing
 								// session
@@ -494,8 +572,15 @@ implements IView {
 			            	combo.add(iter.next().toString());
 			            }
 			            
-			            // Select the previously selected item from the cell
-			            combo.select(combo.indexOf(item.getText(column)));
+						if (!item.getText(1).equals("ID?"))
+						{
+							// Select the previously selected item from the cell
+							combo.select(combo.indexOf(item.getText(column)));
+						}
+						else
+						{
+							combo.select(0);
+						}
 			            
 			            // Compute the width for the editor
 			            // Also, compute the column width, so that the dropdown
@@ -518,24 +603,35 @@ implements IView {
 								IVirtualArray tmpVirtualArray = 
 									refGeneralManager.getSingelton().getVirtualArrayManager().getItemVirtualArray(new Integer(combo.getText()));
 					    		
-					        	// Save previously virtual array virtual array for updating in SET
-					    		IVirtualArray oldVirtualArray = refGeneralManager.getSingelton().getVirtualArrayManager().getItemVirtualArray(
-					        			new Integer(item.getText(1)));
-					    		
-					    		if (hashVirtualArray2VirtualArraySetIndex.isEmpty())
-					    			return;
-					    		
-					    		ISet tmpSet = refGeneralManager.getSingelton().getSetManager().getItemSet(iSelectedSetId);
-					    		int iVirtualArrayIndexInSet = hashVirtualArray2VirtualArraySetIndex.get(oldVirtualArray);
-					    		
-					    		tmpSet.getWriteToken();
-								tmpSet.setVirtualArrayByDimAndIndex(tmpVirtualArray, new Integer(item.getText(0)), iVirtualArrayIndexInSet);
-					    		tmpSet.returnWriteToken();
-					    		
-					    		hashVirtualArray2VirtualArraySetIndex.remove(oldVirtualArray);
-					    		hashVirtualArray2VirtualArraySetIndex.put(tmpVirtualArray, iVirtualArrayIndexInSet);	
+								if (item.getText(1).equals("ID?"))
+								{
+									// Condition: Create new virtual array
+									iArVirtualArrayToAdd.add(tmpVirtualArray);
+								}
+								else
+								{
+									// Condition: Edit existing virtual array
+									
+						        	// Save previously virtual array virtual array for updating in SET
+						    		IVirtualArray oldVirtualArray = refGeneralManager.getSingelton().getVirtualArrayManager().getItemVirtualArray(
+						        			new Integer(item.getText(1)));
+						    		
+						    		if (hashVirtualArray2VirtualArraySetIndex.isEmpty())
+						    			return;
+						    		
+						    		ISet tmpSet = refGeneralManager.getSingelton().getSetManager().getItemSet(iSelectedSetId);
+						    		int iVirtualArrayIndexInSet = hashVirtualArray2VirtualArraySetIndex.get(oldVirtualArray);
+						    		
+						    		tmpSet.getWriteToken();
+									tmpSet.setVirtualArrayByDimAndIndex(tmpVirtualArray, new Integer(item.getText(0)), iVirtualArrayIndexInSet);
+						    		tmpSet.returnWriteToken();
+						    		
+						    		hashVirtualArray2VirtualArraySetIndex.remove(oldVirtualArray);
+						    		hashVirtualArray2VirtualArraySetIndex.put(tmpVirtualArray, iVirtualArrayIndexInSet);	
+								}
 								
 								item.setText(col, combo.getText());
+								item.setText(2, tmpVirtualArray.getLabel());
 								
 								// They selected an item; end the editing
 								// session
@@ -586,6 +682,18 @@ implements IView {
 
 		String sStorageIDs = "";
 		String sVirtualArrayIDs = "";
+		
+		Iterator<IStorage> iterStorageIDs = iArStorageToAdd.iterator();
+		while(iterStorageIDs.hasNext()) 
+		{
+			sStorageIDs += new Integer(iterStorageIDs.next().getId()).toString() + " ";
+		}
+
+		Iterator<IVirtualArray> iterVirtualArrayIDs = iArVirtualArrayToAdd.iterator();
+		while(iterVirtualArrayIDs.hasNext())
+		{
+			sVirtualArrayIDs += new Integer(iterVirtualArrayIDs.next().getId()).toString() + " ";
+		}
 		
 		createdCommand.setAttributes(iNewSetId, 
 				sVirtualArrayIDs, 
