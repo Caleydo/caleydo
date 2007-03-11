@@ -16,39 +16,34 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="45301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="65301" label="Pathway storage" attrib1="STRING" attrib2="271 260 272 280 290" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="21301" label="Pathway storage 1" attrib1="STRING" attrib2="271 260 272 280 290" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="22301" label="Pathway storage 2" attrib1="STRING" attrib2="271" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="23301" label="Pathway storage 3" attrib1="STRING" attrib2="280" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="24301" label="Pathway storage 4" attrib1="STRING" attrib2="260 280 290 271" />
  												 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="20991"	targetId="15201" label="my Selection"	attrib1="80 0 0 1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="21991"	targetId="25201" label="my Selection2" attrib1="80 10	0	1" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="22991"	targetId="35201" label="Select file" attrib1="30 200 0 1"	/>
-
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="23991"	targetId="55201" label="Select file" attrib1="30 200 0 1"	/>
-
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="24991"	targetId="65201" label="Pathway Virtual Array" attrib1="3 0 0 1"	/>
 										
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301 15301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="31991"	targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="32991"	targetId="35101" label="target Set for file	new" attrib1="35201" attrib2="45301" />
-
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="32991"	targetId="55101" label="target Set for file	new" attrib1="55201" attrib2="55301" />
-
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="34991"	targetId="45101" label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="CREATE_SET_PLANAR" />
-
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="35991"	targetId="65101" label="target Set for file	new" attrib1="15201@25201" attrib2="55301@55301"	detail="CREATE_SET_PLANAR" />
-			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="36991"	targetId="75101" label="Pathway Set"   attrib1="65201" attrib2="65301" />			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="36991"	targetId="75101" label="Pathway Set"   attrib1="65201" attrib2="21301" />			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET"					cmdId="37991"	targetId="34101" label="Pathway Set 2" attrib1="65201" attrib2="22301" />							
-			
+				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   targetId="85101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   targetId="95101" />
-			
-					
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   targetId="95101" />				
+				
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="900 1000" detail="34101 95101" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="480 -1" />
- 
+
 		<!-- Window 13331 -->
 		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="13331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
                  
@@ -58,7 +53,6 @@
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="75101 85101" /> 	
-							
 		<!-- Window 14331 -->
 		<!-- 
 		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="14331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
@@ -74,17 +68,19 @@
 		<!-- Window 12331 -->
      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="12331" label="OpenGL Pathway Window" attrib1="ROW VERTICAL" />   		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" 	cmdId="60993" targetId="10401" label="Data Explorer" 	parent="12331" attrib1="12331" attrib2="700 500" />		  
-		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_MIXER"			cmdId="61993" targetId="11401" label="Mixer"			parent="12331" attrib1="10" attrib2="400 200" />		 	    
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_MIXER"			cmdId="61993" targetId="11401" label="Mixer"			parent="12331" attrib1="10" attrib2="400 200" />
 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXCHANGER"	cmdId="62993" targetId="12401" label="Data Exchanger"	parent="12331" attrib2="400 200" />		 	    
-		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_UNDO_REDO"		cmdId="63993" targetId="13401" label="UNDO/REDO"		parent="12331" attrib2="400 30" />		 	     
- 
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SET_EDITOR"		cmdId="64993" targetId="14401" label="Set Editor"		parent="12331" attrib2="300 400" />		 	     
+		 	<!-- 
+		 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_UNDO_REDO"		cmdId="63993" targetId="13401" label="UNDO/REDO"		parent="12331" attrib2="400 30" />		 	     
+  			-->
   		<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" attrib1="84401" attrib2="79401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway Reverse" attrib1="79401" attrib2="84401" detail="SELECTION_MEDIATOR" /> 
-
+ 
  	  <!--Commands not in use at the moment	
  	    
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION_HANDLER"   	cmdId="69991" targetId="94501" label="Selection Handler"	attrib1="84401" attrib2="79401" />

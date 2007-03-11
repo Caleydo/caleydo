@@ -1,5 +1,7 @@
 package cerberus.command.view.swt;
 
+import java.util.Iterator;
+
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
@@ -9,6 +11,9 @@ import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -45,21 +50,22 @@ implements ICommand {
 	}
 
 	/**
-	 * Method retrieves the target browser ViewRep by the given ID
+	 * Method retrieves the the browser ViewReps
 	 * and sets the new URL.
 	 * The URL is then automatically reloaded.
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
-		
 		try {
 			
-			HTMLBrowserViewRep refHTMLBrowserViewRep = 
-				(HTMLBrowserViewRep)viewManager.getItem(iTargetHTMLBrowserViewId);
+			Iterator<AViewRep> iterHTMLBrowser =
+				refGeneralManager.getSingelton().getViewGLCanvasManager().
+				getViewByType(ViewType.SWT_HTML_BROWSER).iterator();
 
-			refHTMLBrowserViewRep.setUrl(sTargetURL);
+			while (iterHTMLBrowser.hasNext())
+			{
+				((HTMLBrowserViewRep)iterHTMLBrowser.next()).setUrl(sTargetURL);
+			}
 
 		} catch (Exception e)
 		{
@@ -81,9 +87,8 @@ implements ICommand {
 		super.setParameterHandler(refParameterHandler);	
 	}
 	
-	public void setAttributes(int iTargetHTMLBrowserViewId, String sTargetURL) {
-		
-		this.iTargetHTMLBrowserViewId = iTargetHTMLBrowserViewId;
+	public void setAttributes(String sTargetURL) {
+
 		this.sTargetURL = sTargetURL;
 	}
 	

@@ -153,6 +153,8 @@ implements IGLCanvasUser {
 	
 	protected boolean bSelectionDataChanged = false;
 	
+	protected float fMouseIdleTime = 0.0f;
+	
 	/**
 	 * Constructor
 	 * 
@@ -175,19 +177,32 @@ implements IGLCanvasUser {
 		//FIXME: Is refEmbeddedFrameComposite variable really needed?
 		refEmbeddedFrameComposite = refSWTContainer;
 		
-		//FIXME: Browser id should be specified in the XML bootstrap file.
-		iHTMLBrowserId = 85401;
-		
 		this.canvas = openGLCanvasDirector.getGLCanvas();
 		
 		canvas.addMouseListener(new MouseAdapter() {
 
-			public void mouseClicked(MouseEvent mouseEvent) {
+			public void mousePressed(MouseEvent mouseEvent) {
 
 				if (mouseEvent.getButton() == MouseEvent.BUTTON2)
 				{
 					pickPoint = mouseEvent.getPoint();
 				}
+			}
+			
+			public void mouseMoved(MouseEvent mouseEvent) {
+				
+//				
+//				if (fMouseIdleTime != 0.0f)
+//				{
+//					fMouseIdleTime = fMouseIdleTime - System.currentTimeMillis();
+//					
+//					if (fMouseIdleTime >= 3000.0f)
+//						return;
+//						
+//					fMouseIdleTime = 0.0f;
+//				}
+//				else
+//					fMouseIdleTime = System.currentTimeMillis();
 			}
 		});
 		
@@ -861,7 +876,7 @@ implements IGLCanvasUser {
 			// if vertex should be highlighted then the highlight color is taken.
 			// else the standard color for that node type is taken.
 			if (bHighlightVertex == true)
-			{
+			{				
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
 			
 				gl.glColor4f(tmpNodeColor.getRed(), tmpNodeColor.getGreen(), tmpNodeColor.getBlue(), 1.0f);
@@ -1354,7 +1369,7 @@ implements IGLCanvasUser {
 		// Clear old selected vertices
 		iArHighlightedVertices.clear();
 		// Clear old neighborhood distances
-		//iArSelectionStorageNeighborDistance.clear();
+		iArSelectionStorageNeighborDistance.clear();
 		
 		// Read selected vertex IDs
 		int[] iArSelectedElements = refSetSelection.getSelectionIdArray();
@@ -1515,8 +1530,11 @@ implements IGLCanvasUser {
 				if (!iArHighlightedVertices.contains(pickedVertexRep))
 				{
 					// Clear currently highlighted vertices when new node was selected
-					if(!iArHighlightedVertices.isEmpty())
+					if(!iArHighlightedVertices.isEmpty()) 
+					{
 						iArHighlightedVertices.clear();
+						iArSelectionStorageNeighborDistance.clear();
+					}
 					
 					iArHighlightedVertices.add(pickedVertexRep);
 					

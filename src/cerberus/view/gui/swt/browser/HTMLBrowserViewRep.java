@@ -49,7 +49,7 @@ implements IView {
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
-				ViewType.SWT_HTML_BRWOSER);	
+				ViewType.SWT_HTML_BROWSER);	
 	}
 
 	public void initView() {

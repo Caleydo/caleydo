@@ -60,7 +60,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		// Graph initialization
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
 		refPathwayGraphViewRep.setWidthAndHeight(iWidth-5, iHeight-75);
-		refPathwayGraphViewRep.setHTMLBrowserId(iHTMLBrowserId);
 		
 		// Convert ArrayList<Integer> to int[]
 		int[] iArSetDataTmp = new int[alSetData.size()];

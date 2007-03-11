@@ -94,9 +94,14 @@ implements IViewManager, IViewGLCanvasManager {
 
 	/**
 	 * List of data explorer view reps (needed for mediator registration 
-	 * when data is created.
+	 * when data is created).
 	 */
 	protected ArrayList<AViewRep> arDataExplorerViewRep;
+	
+	/**
+	 * List of HTML browser view reps
+	 */
+	protected ArrayList<AViewRep> arHTMLBrowserViewRep;
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
@@ -124,6 +129,7 @@ implements IViewManager, IViewGLCanvasManager {
 		hashGLCanvasDirector_revert = new Hashtable<IGLCanvasDirector, Integer>();
 
 		arDataExplorerViewRep = new ArrayList<AViewRep>();
+		arHTMLBrowserViewRep = new ArrayList<AViewRep>();
 
 		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
@@ -297,6 +303,8 @@ implements IViewManager, IViewGLCanvasManager {
 
 		if (viewType.equals(ViewType.SWT_DATA_EXPLORER))
 			return arDataExplorerViewRep;
+		else if (viewType.equals(ViewType.SWT_HTML_BROWSER))
+			return arHTMLBrowserViewRep;
 
 		return null;
 	}
@@ -708,8 +716,7 @@ implements IViewManager, IViewGLCanvasManager {
 	public void addViewRep(final IView refView) {
 
 		try 
-		{
-		
+		{	
 			switch ( refView.getViewType() )
 			{
 			
@@ -722,6 +729,9 @@ implements IViewManager, IViewGLCanvasManager {
 				
 			case SWT_DATA_EXPLORER:
 				arDataExplorerViewRep.add( (DataExplorerViewRep) refView);
+				return;
+			case SWT_HTML_BROWSER:
+				arHTMLBrowserViewRep.add( (HTMLBrowserViewRep) refView);
 				return;
 				
 			default:
@@ -740,12 +750,14 @@ implements IViewManager, IViewGLCanvasManager {
 	public void removeViewRep(final IView refView) {
 
 		try 
-		{
-		
+		{	
 			switch ( refView.getViewType() )
 			{
 			
 			case SWT_DATA_EXPLORER:
+				arDataExplorerViewRep.remove( (DataExplorerViewRep) refView);
+				return;
+			case SWT_HTML_BROWSER:
 				arDataExplorerViewRep.remove( (DataExplorerViewRep) refView);
 				return;
 				

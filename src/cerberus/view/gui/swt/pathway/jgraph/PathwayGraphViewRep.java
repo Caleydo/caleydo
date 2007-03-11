@@ -256,7 +256,7 @@ extends APathwayGraphViewRep {
 					
 					if (extractClickedPathway(sUrl) == false);
 					{
-						//loadNodeInformationInBrowser(sUrl);
+						loadNodeInformationInBrowser(sUrl);
 	
 						// UNDO old neighborhood visualization
 						if (bNeighbourhoodShown == true)
@@ -657,11 +657,7 @@ extends APathwayGraphViewRep {
 	 */
 	protected void showNeighbourhoodBFS(DefaultGraphCell cell,
 			int iDistance) {
-		
-//		LinkedList<DefaultGraphCell> stackBFS = new LinkedList<DefaultGraphCell>();
-//		LinkedList<DefaultGraphCell> stackBFSNext = new LinkedList<DefaultGraphCell>();
-	
-		
+				
 		Map<DefaultGraphCell, Map> nested = 
 			new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
@@ -676,18 +672,6 @@ extends APathwayGraphViewRep {
 //			fGreenPortion = 1.0f;
 //		GraphConstants.setBackground(
 //				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
-		
-//		Color nodeColor;
-//		if (iDistance == 1)
-//			nodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
-//		else if (iDistance == 2)
-//			nodeColor = refRenderStyle.getNeighborhoodNodeColor_2();
-//		else if (iDistance == 3)
-//			nodeColor = refRenderStyle.getNeighborhoodNodeColor_3();
-//		else
-//			nodeColor = Color.BLACK;
-//		
-//		GraphConstants.setBackground(attributeMap, nodeColor);
 		
 		ArrayList<DefaultGraphCell> queueBFS = new ArrayList<DefaultGraphCell>();
 		ArrayList<DefaultGraphCell> queueBFSNext = new ArrayList<DefaultGraphCell>();
@@ -723,7 +707,8 @@ extends APathwayGraphViewRep {
 					hashSetVisitedNeighbors.add(tmpCell);
 					
 					neighbourCells = refGraphLayoutCache
-						.getNeighbours(tmpCell, hashSetVisitedNeighbors, false, false);
+						.getNeighbours(tmpCell, hashSetVisitedNeighbors, 
+								false, false);
 
 					queueBFSNext.addAll(neighbourCells);
 
@@ -731,9 +716,9 @@ extends APathwayGraphViewRep {
 					nested.put(tmpCell, attributeMap);
 					
 					// // Add selected vertex to selection arrays
-					// iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
-					// getUserObject()).getVertex().getElementId());
-					// iLLNeighborDistance.add(iDistance);
+					iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
+							getUserObject()).getVertex().getElementId());
+					iLLNeighborDistance.add(iDistance);
 				}
 			}
 			

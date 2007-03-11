@@ -41,8 +41,6 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 	
 	protected Composite refEmbeddedFrameComposite;
 	
-	protected int iHTMLBrowserId;
-	
 	protected PathwayRenderStyle refRenderStyle;
 	
 	//protected Pathway refCurrentPathway;
@@ -118,11 +116,6 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		this.iHeight = iHeight;
 	}
 
-	public void setHTMLBrowserId(int iHTMLBrowserId) {
-		
-		this.iHTMLBrowserId = iHTMLBrowserId;
-	}
-	
 	protected void extractVertices(Pathway refPathwayToExtract) {
 		
 	    Iterator<PathwayVertex> vertexIterator;
@@ -305,7 +298,7 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 					(CmdViewLoadURLInHTMLBrowser)refGeneralManager.getSingelton().getCommandManager().
 						createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
 
-				createdCmd.setAttributes(iHTMLBrowserId, sUrl);
+				createdCmd.setAttributes(sUrl);
 				createdCmd.doCommand();
 			}
 		});	

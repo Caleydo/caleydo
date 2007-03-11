@@ -1,10 +1,13 @@
 package cerberus.manager;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 
 /**
@@ -29,4 +32,6 @@ extends IGeneralManager {
 	public Collection<IView> getAllViews();
 	
 	public Collection<IGLCanvasUser> getAllGLCanvasUsers();
+	
+	public ArrayList<AViewRep> getViewByType(ViewType viewType);
 }
