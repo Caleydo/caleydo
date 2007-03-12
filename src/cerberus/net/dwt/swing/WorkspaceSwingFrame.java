@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.net.dwt.swing.jogl;
+package cerberus.net.dwt.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -101,7 +101,7 @@ implements IUniqueManagedObject {
 		 * Register new frame to menu of all other frames..
 		 */
 		Iterator<WorkspaceSwingFrame> iter = 
-			this.manager.getSingelton().getViewCanvasManager().getWorkspaceIterator();
+			this.manager.getSingelton().getViewGLCanvasManager().getWorkspaceIterator();
 		
 		final String sMenuIdPrefix = "SYSTEM_WINDOW_SET_FRAME_";
 		

@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.data.collection.view.IViewCanvas;
-import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
+import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
 /**
@@ -60,7 +60,7 @@ extends IGeneralManager {
 	 * @param iTargetFrameId unique Id ot address Frame
 	 * @param sAditionalParameter additional parameters
 	 * 
-	 * @see cerberus.manager.canvas.ViewCanvasManager#createCanvas(ManagerObjectType, String)
+	 * @see cerberus.manager.view.ViewCanvasManager#createCanvas(ManagerObjectType, String)
 	 * @see cerberus.manager.IViewCanvasManager#createCanvas(ManagerObjectType, String)
 	 * 
 	 * @return new DInternalFrame as child of frame addressed via iTargetFrameId

@@ -307,9 +307,9 @@ implements IViewRep {
 		}
 		
 		Iterator <SetSelection> iterSelectionSet = alSetSelection.iterator();		
-		for (;iter.hasNext();i++)
+		for (;iterSelectionSet.hasNext();i++)
 		{
-			resultArray[i] = iter.next().getId();
+			resultArray[i] = iterSelectionSet.next().getId();
 		}
 		
 		return resultArray;

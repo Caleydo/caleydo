@@ -26,7 +26,6 @@ import cerberus.manager.ISingelton;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
-import cerberus.manager.canvas.ViewCanvasManager;
 import cerberus.manager.command.CommandManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.IPathwayElementManager;
@@ -101,7 +100,7 @@ implements IGeneralManagerSingelton
 
 	protected IDistComponentManager refDComponentManager;
 
-	protected IViewCanvasManager refViewCanvasManager;
+//	protected IViewCanvasManager refViewCanvasManager;
 
 	protected ICommandManager refCommandManager;
 
@@ -109,7 +108,7 @@ implements IGeneralManagerSingelton
 	
 	protected IGenomeIdManager refGenomeIdManager;
 
-	protected IViewGLCanvasManager refViewGLManager;
+	protected IViewGLCanvasManager refViewGLCanvasManager;
 
 	protected ISWTGUIManager refSWTGUIManager;
 
@@ -201,11 +200,11 @@ implements IGeneralManagerSingelton
 		refMementoManager = new MementoManager(this);
 		
 		refDComponentManager = new DComponentSwingFactoryManager(this);
-		refViewCanvasManager = new ViewCanvasManager(this);
+		//refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);
 		
-		refViewGLManager = new ViewJoglManager(this);
+		refViewGLCanvasManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refPathwayManager = new PathwayManager(this);
 		refPathwayElementManager = new PathwayElementManager(this);
@@ -225,7 +224,7 @@ implements IGeneralManagerSingelton
 		llAllManagerObjects.add( refGenomeIdManager );
 		
 		llAllManagerObjects.add( refEventPublisher );
-		llAllManagerObjects.add( refViewGLManager );
+		llAllManagerObjects.add( refViewGLCanvasManager );
 		llAllManagerObjects.add( refSWTGUIManager );
 		
 		llAllManagerObjects.add( refMenuManager );
@@ -245,12 +244,11 @@ implements IGeneralManagerSingelton
 		
 		refSingeltonManager.setCommandManager(refCommandManager);
 		refSingeltonManager.setDComponentManager(refDComponentManager);
-		refSingeltonManager.setViewCanvasManager(refViewCanvasManager);
 		refSingeltonManager.setVirtualArrayManager(refVirtualArrayManager);
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
 		refSingeltonManager.setMenuManager(refMenuManager);
-		refSingeltonManager.setViewGLCanvasManager(refViewGLManager);
+		refSingeltonManager.setViewGLCanvasManager(refViewGLCanvasManager);
 		refSingeltonManager.setSWTGUIManager(refSWTGUIManager);
 		refSingeltonManager.setPathwayElementManager(refPathwayElementManager);
 		refSingeltonManager.setPathwayManager(refPathwayManager);
@@ -311,7 +309,7 @@ implements IGeneralManagerSingelton
 
 		return (refSetManager.size() + refStorageManager.size()
 				+ refVirtualArrayManager.size() + refMementoManager.size()
-				+ refDComponentManager.size() + refViewCanvasManager.size() + refSWTGUIManager
+				+ refDComponentManager.size() + refViewGLCanvasManager.size() + refSWTGUIManager
 				.size());
 	}
 
@@ -407,14 +405,14 @@ implements IGeneralManagerSingelton
 			return refSetManager.createSet( CommandQueueSaxType.CREATE_SET );
 		case STORAGE:
 			return refStorageManager.createStorage(createNewType);
-		case VIEW:
-			if (createNewType == ManagerObjectType.VIEW_NEW_FRAME)
-			{
-				return refViewCanvasManager.createWorkspace(createNewType,
-						sNewTypeDetails);
-			}
-			return refViewCanvasManager.createCanvas(createNewType,
-					sNewTypeDetails);
+//		case VIEW:
+//			if (createNewType == ManagerObjectType.VIEW_NEW_FRAME)
+//			{
+//				return refViewGLCanvasManager.createWorkspace(createNewType,
+//						sNewTypeDetails);
+//			}
+//			return refViewGLCanvasManager.createCanvas(createNewType,
+//					sNewTypeDetails);
 		case COMMAND:
 			assert false : "update to new command structure!";		    
 //			return refCommandManager.createCommand(sNewTypeDetails);
@@ -464,23 +462,23 @@ implements IGeneralManagerSingelton
 			storageBuffer.setMementoXML_usingHandler(refSaxHandler);
 			return;
 
-		case VIEW:
-
-			if (type == ManagerObjectType.VIEW_NEW_FRAME)
-			{
-				Object setFrame = refViewCanvasManager.createCanvas(type,
-						details);
-
-				//setFrame.setMementoXML_usingHandler( refSaxHandler );
-				return;
-			} else
-			{
-				IViewCanvas setCanvas = (IViewCanvas) refViewCanvasManager
-						.createCanvas(type, details);
-
-				setCanvas.setMementoXML_usingHandler(refSaxHandler);
-				return;
-			}
+//		case VIEW:
+//
+//			if (type == ManagerObjectType.VIEW_NEW_FRAME)
+//			{
+//				Object setFrame = refViewCanvasManager.createCanvas(type,
+//						details);
+//
+//				//setFrame.setMementoXML_usingHandler( refSaxHandler );
+//				return;
+//			} else
+//			{
+//				IViewCanvas setCanvas = (IViewCanvas) refViewCanvasManager
+//						.createCanvas(type, details);
+//
+//				setCanvas.setMementoXML_usingHandler(refSaxHandler);
+//				return;
+//			}
 
 		default:
 			throw new CerberusRuntimeException(
@@ -516,7 +514,8 @@ implements IGeneralManagerSingelton
 		case SINGELTON:
 			return this;
 		case VIEW:
-			return refViewGLManager;
+		case VIEW_GL_CANVAS:
+			return refViewGLCanvasManager;
 		case COMMAND:
 			return refCommandManager;
 		case GUI_SWT:
@@ -527,8 +526,6 @@ implements IGeneralManagerSingelton
 			return refPathwayElementManager;
 		case EVENT_PUBLISHER:
 			return refEventPublisher;
-		case VIEW_GL_CANVAS:
-			return refViewGLManager;
 		case GENOME_ID:
 			return refGenomeIdManager;
 			
@@ -539,10 +536,10 @@ implements IGeneralManagerSingelton
 		} // end switch ( type.getGroupType() )
 	}
 
-	public IViewCanvasManager getViewCanvasManager()
-	{
-		return refViewCanvasManager;
-	}
+//	public IViewCanvasManager getViewCanvasManager()
+//	{
+//		return refViewCanvasManager;
+//	}
 
 	/**
 	 * ISet curretn state of SWT.
@@ -581,7 +578,7 @@ implements IGeneralManagerSingelton
 		
 		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
 		
-		this.refViewGLManager.destroyOnExit();
+		this.refViewGLCanvasManager.destroyOnExit();
 		
 		Iterator <IGeneralManager> iter = llAllManagerObjects.iterator();
 		

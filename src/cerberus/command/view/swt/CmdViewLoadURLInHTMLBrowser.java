@@ -9,10 +9,8 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
+import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
@@ -58,9 +56,9 @@ implements ICommand {
 		
 		try {
 			
-			Iterator<AViewRep> iterHTMLBrowser =
+			Iterator<IViewRep> iterHTMLBrowser =
 				refGeneralManager.getSingelton().getViewGLCanvasManager().
-				getViewByType(ViewType.SWT_HTML_BROWSER).iterator();
+				getViewRepByType(ViewType.SWT_HTML_BROWSER).iterator();
 
 			while (iterHTMLBrowser.hasNext())
 			{

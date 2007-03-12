@@ -12,7 +12,7 @@ package cerberus.command.window;
 //import javax.swing.JOptionPane;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
@@ -39,7 +39,7 @@ implements ICommand {
 	
 	protected final IGeneralManager refGeneralManage;
 	
-	protected final IViewCanvasManager refViewCanvasManager;
+	protected final IViewGLCanvasManager refViewGLCanvasManager;
 	
 	protected String sHeaderText;
 	
@@ -53,8 +53,8 @@ implements ICommand {
 		
 		this.refGeneralManage = refGeneralManager;
 		this.iCallingFrameId = iCallingFrameId;		
-		this.refViewCanvasManager = 
-			refGeneralManage.getSingelton().getViewCanvasManager();
+		this.refViewGLCanvasManager = 
+			refGeneralManage.getSingelton().getViewGLCanvasManager();
 		this.sHeaderText = sHeaderText;
 		
 		this.setCommandQueueSaxType(CommandQueueSaxType.WINDOW_IFRAME_NEW_INTERNAL_FRAME);

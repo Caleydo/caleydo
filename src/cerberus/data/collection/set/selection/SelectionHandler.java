@@ -9,7 +9,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IEventPublisher.MediatorType;
 import cerberus.manager.view.ViewJoglManager;
-import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.ViewType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.ParameterHandler;
@@ -275,10 +275,10 @@ implements IGroupedSelection {
 		ViewJoglManager viewManager = 
 			(ViewJoglManager) refGeneralManager.getSingelton().getViewGLCanvasManager();
 		
-		ArrayList<AViewRep> arDataExplorerViews = 
-			viewManager.getViewByType(ViewType.SWT_DATA_EXPLORER);
+		ArrayList<IViewRep> arDataExplorerViews = 
+			viewManager.getViewRepByType(ViewType.SWT_DATA_EXPLORER);
 		
-		Iterator<AViewRep> iterDataExplorerViewRep = 
+		Iterator<IViewRep> iterDataExplorerViewRep = 
 			arDataExplorerViews.iterator();
 		
 		String strDataExplorerConcatenation = ""; 

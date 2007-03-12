@@ -19,8 +19,9 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
+import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
@@ -39,7 +40,7 @@ import cerberus.view.gui.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
 import cerberus.view.gui.swt.data.exchanger.DataExchangerViewRep;
 import cerberus.view.gui.swt.data.exchanger.NewSetEditorViewRep;
-import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
+//import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
 import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 //import cerberus.view.gui.swt.data.DataTableViewRep;
 import cerberus.view.gui.swt.mixer.MixerViewRep;
@@ -96,12 +97,14 @@ implements IViewManager, IViewGLCanvasManager {
 	 * List of data explorer view reps (needed for mediator registration 
 	 * when data is created).
 	 */
-	protected ArrayList<AViewRep> arDataExplorerViewRep;
+	protected ArrayList<IViewRep> arDataExplorerViewRep;
 	
 	/**
 	 * List of HTML browser view reps
 	 */
-	protected ArrayList<AViewRep> arHTMLBrowserViewRep;
+	protected ArrayList<IViewRep> arHTMLBrowserViewRep;
+	
+	protected ArrayList<WorkspaceSwingFrame> arWorkspaceSwingFrame;
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
@@ -128,8 +131,9 @@ implements IViewManager, IViewGLCanvasManager {
 		hashGLCanvasDirector = new HashMap<Integer, IGLCanvasDirector>();
 		hashGLCanvasDirector_revert = new Hashtable<IGLCanvasDirector, Integer>();
 
-		arDataExplorerViewRep = new ArrayList<AViewRep>();
-		arHTMLBrowserViewRep = new ArrayList<AViewRep>();
+		arDataExplorerViewRep = new ArrayList<IViewRep>();
+		arHTMLBrowserViewRep = new ArrayList<IViewRep>();
+		arWorkspaceSwingFrame = new ArrayList<WorkspaceSwingFrame>();
 
 		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
@@ -187,6 +191,15 @@ implements IViewManager, IViewGLCanvasManager {
 
 		hashViewId2View.put(iItemId, registerView);
 
+		switch ( registerView.getViewType() ) {
+			case SWT_DATA_EXPLORER:
+			case SWT_HTML_BROWSER:
+				this.addViewRep(registerView);
+				break;
+				
+			//default: // do nothing			
+		} // switch ( registerView.getViewType() ) {
+		
 		refGeneralManager.getSingelton().logMsg(
 				"registerItem( " + iItemId + " ) as View", 
 				LoggerType.VERBOSE);
@@ -299,14 +312,21 @@ implements IViewManager, IViewGLCanvasManager {
 		}
 	}
 
-	public ArrayList<AViewRep> getViewByType(ViewType viewType) {
+	public ArrayList<IViewRep> getViewRepByType(ViewType viewType) {
 
-		if (viewType.equals(ViewType.SWT_DATA_EXPLORER))
+		switch (viewType)
+		{
+		case SWT_DATA_EXPLORER:
 			return arDataExplorerViewRep;
-		else if (viewType.equals(ViewType.SWT_HTML_BROWSER))
+			
+		case SWT_HTML_BROWSER:
 			return arHTMLBrowserViewRep;
-
-		return null;
+			
+		default:
+			assert false : "unsupportet view Type";
+			return null;
+		} //switch (viewType)
+		
 	}
 
 	public IGLCanvasUser createGLCanvasUser(CommandQueueSaxType useViewType,
@@ -709,6 +729,12 @@ implements IViewManager, IViewGLCanvasManager {
 			} // while
 		} // if
 
+		Iterator <WorkspaceSwingFrame> iterFrame = arWorkspaceSwingFrame.iterator();		
+		while ( iterFrame.hasNext())
+		{
+			iterFrame.next().dispose();
+		}
+		
 		refGeneralManager.getSingelton().logMsg(
 				"ViewJoglManager.destroyOnExit()  ...[DONE]");
 	}
@@ -790,5 +816,31 @@ implements IViewManager, IViewGLCanvasManager {
 	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
 		
 		return hashGLCanvasUser.values();
+	}
+
+
+	public WorkspaceSwingFrame createWorkspace(ManagerObjectType useViewCanvasType, String sAditionalParameter) {
+
+		switch (useViewCanvasType)
+		{
+		case VIEW_NEW_FRAME:
+			WorkspaceSwingFrame newJFrame = 
+				new WorkspaceSwingFrame( refGeneralManager, true);
+			arWorkspaceSwingFrame.add(newJFrame);
+			
+			return newJFrame;
+			
+		default:
+			assert false : "unsupported type!";
+			return null;
+			
+		} //switch (useViewCanvasType)
+	
+	}
+
+
+	public Iterator<WorkspaceSwingFrame> getWorkspaceIterator() {
+
+		return arWorkspaceSwingFrame.iterator();
 	}
 }

@@ -53,10 +53,10 @@ import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
+import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
 import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
@@ -752,8 +752,10 @@ extends APathwayGraphViewRep {
 	 */
 	public void showOverviewMapInNewWindow(Dimension dim) {
 		
-		IViewCanvasManager refViewCanvasMng = refGeneralManager.getSingelton().getViewCanvasManager();
-		WorkspaceSwingFrame workspaceFrame = refViewCanvasMng.createWorkspace(ManagerObjectType.VIEW_NEW_FRAME, "");
+		IViewGLCanvasManager refViewCanvasMng = 
+			refGeneralManager.getSingelton().getViewGLCanvasManager();
+		WorkspaceSwingFrame workspaceFrame = 
+			refViewCanvasMng.createWorkspace(ManagerObjectType.VIEW_NEW_FRAME, "");
 		
         JFrame wnd = (JFrame) workspaceFrame;
         wnd.setLocation(800, 500);

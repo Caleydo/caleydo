@@ -17,7 +17,7 @@ import javax.swing.JMenuBar;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
-import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
@@ -40,7 +40,7 @@ public class SwingMenuManager
  extends AAbstractManager
  implements IMenuManager {
 	
-	private final IViewCanvasManager refViewCanvasManager;
+	private final IViewGLCanvasManager refViewGLCanvasManager;
 	
 	private final ICommandManager refCommandManager;
 	
@@ -63,8 +63,8 @@ public class SwingMenuManager
 				ManagerType.MENU );
 
 		
-		refViewCanvasManager = 
-			setGeneralManager.getSingelton().getViewCanvasManager();
+		refViewGLCanvasManager = 
+			setGeneralManager.getSingelton().getViewGLCanvasManager();
 		
 		refCommandManager = 
 			setGeneralManager.getSingelton().getCommandManager();
@@ -101,7 +101,7 @@ public class SwingMenuManager
 		
 		//TODO: this is not checked currently!! 2006-07-11
 		JMenuBar gui_menuBar = 
-			(JMenuBar) refViewCanvasManager.getItem( iFrameId );
+			(JMenuBar) refViewGLCanvasManager.getItem( iFrameId );
 		
 		/**
 		 * SEPERATOR does not need its own Menu-Object

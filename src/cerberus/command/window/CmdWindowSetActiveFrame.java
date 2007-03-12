@@ -9,7 +9,7 @@
 package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.command.CommandType;
@@ -27,7 +27,7 @@ implements ICommand {
 
 	private final IGeneralManager refGeneralManager;
 	
-	private final IViewCanvasManager refViewCanvasManager;
+	private final IViewGLCanvasManager refViewGLCanvasManager;
 	
 	private int iTargetFrameId = -1;
 	
@@ -46,7 +46,7 @@ implements ICommand {
 		
 		refGeneralManager = setRefGeneralManager;
 		
-		refViewCanvasManager = refGeneralManager.getSingelton().getViewCanvasManager();
+		refViewGLCanvasManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
 		
 		if ( details == null ) {
 			return;

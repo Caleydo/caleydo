@@ -6,30 +6,40 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.canvas;
+package cerberus.manager.view;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.Hashtable;
 //import java.awt.Component;
 //import java.awt.BorderLayout;
 
+import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewCanvasManager;
+import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
+import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.view.IViewCanvas;
+import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
 //import cerberus.net.dwt.swing.mdi.DDesktopPane;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
 import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
-import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
 import cerberus.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.view.gui.IView;
+import cerberus.view.gui.IViewRep;
+import cerberus.view.gui.ViewType;
+import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.view.gui.opengl.IGLCanvasUser;
 
 /**
  * Manage several IViewCanvas items.
@@ -39,7 +49,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  */
 public class ViewCanvasManager 
 extends ACollectionManager
-implements IViewCanvasManager,
+implements IViewGLCanvasManager,
 		IGeneralManager {
 
 	private int iIdIncrement = IGeneralManager.iUniqueId_Increment;
@@ -73,7 +83,7 @@ implements IViewCanvasManager,
 		
 		hashWorkspaceId2IndexLookup = new Hashtable<Integer,Integer> ();
 		
-		refGeneralManager.getSingelton().setViewCanvasManager( this );
+		refGeneralManager.getSingelton().setViewGLCanvasManager( this );
 	}
 
 	private boolean hasLookupValueWorkspaceById( final int iItemId ) {
@@ -87,7 +97,7 @@ implements IViewCanvasManager,
 	 * @param iTargetFrameId unique Id ot address Frame
 	 * @param sAditionalParameter additional parameters
 	 * 
-	 * @see cerberus.manager.canvas.ViewCanvasManager#createCanvas(ManagerObjectType, String)
+	 * @see cerberus.manager.view.ViewCanvasManager#createCanvas(ManagerObjectType, String)
 	 * 
 	 * @return new DInternalFrame as child of frame addressed via iTargetFrameId
 	 */
@@ -399,6 +409,130 @@ implements IViewCanvasManager,
 //			}
 //		}
 	}
+
+
+	/* ------------------------ */
+	
+	public IGLCanvasUser createGLCanvasUser(CommandQueueSaxType useViewType, int iViewId, int iParentContainerId, String sLabel) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public GLCanvas getGLCanvas(int iId) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean registerGLCanvas(GLCanvas canvas, int iCanvasId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean unregisterGLCanvas(GLCanvas canvas) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean registerGLCanvasUser(IGLCanvasUser canvas, int iCanvasId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean unregisterGLCanvasUser(IGLCanvasUser canvas) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public GLEventListener getGLEventListener(int iId) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean registerGLEventListener(GLEventListener canvasListener, int iId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean unregisterGLEventListener(GLEventListener canvasListener) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addGLEventListener2GLCanvasById(int iCanvasListenerId, int iCanvasId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean removeGLEventListener2GLCanvasById(int iCanvasListenerId, int iCanvasId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public IGLCanvasDirector getGLCanvasDirector(int iId) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean registerGLCanvasDirector(IGLCanvasDirector director, int iId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean unregisterGLCanvasDirector(IGLCanvasDirector director) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public IView createView(ManagerObjectType useViewType, int iViewId, int iParentContainerId, String sLabel) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addViewRep(IView refView) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeViewRep(IView refView) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Collection<IView> getAllViews() {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ArrayList<IViewRep> getViewRepByType(ViewType viewType) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 
 }

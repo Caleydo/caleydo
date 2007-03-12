@@ -17,7 +17,7 @@ import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ISingelton;
-import cerberus.manager.IViewCanvasManager;
+//import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -46,7 +46,7 @@ implements ISingelton {
 	
 	protected IDistComponentManager refDComponentManager;
 	
-	protected IViewCanvasManager refViewCanvasManager;
+//	protected IViewCanvasManager refViewCanvasManager;
 	
 	protected IStorageManager refStorageManager;
 	/**
@@ -143,12 +143,12 @@ implements ISingelton {
 		return refSetManager;
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getViewCanvasManager()
-	 */
-	public IViewCanvasManager getViewCanvasManager() {
-		return refViewCanvasManager;
-	}
+//	/* (non-Javadoc)
+//	 * @see cerberus.manager.singelton.Singelton#getViewCanvasManager()
+//	 */
+//	public IViewCanvasManager getViewCanvasManager() {
+//		return refViewCanvasManager;
+//	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getViewGLCanvasManager()
@@ -252,11 +252,11 @@ implements ISingelton {
 		refSetManager = setSetManager;
 	}
 	
-	public void setViewCanvasManager( IViewCanvasManager setViewCanvasManager ) {
-		assert setViewCanvasManager != null : "IViewCanvasManager was null";
-		
-		refViewCanvasManager = setViewCanvasManager;
-	}
+//	public void setViewCanvasManager( IViewCanvasManager setViewCanvasManager ) {
+//		assert setViewCanvasManager != null : "IViewCanvasManager was null";
+//		
+//		refViewCanvasManager = setViewCanvasManager;
+//	}
 	
 	public void setViewGLCanvasManager( IViewGLCanvasManager setViewManager ) {
 		assert setViewManager != null : "IViewManager was null";

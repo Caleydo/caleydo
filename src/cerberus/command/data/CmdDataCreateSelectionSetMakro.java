@@ -15,6 +15,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * and the virtual array.
  * This commands act as a MAKRO.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class CmdDataCreateSelectionSetMakro 
@@ -23,7 +24,6 @@ implements ICommand {
 	
 //	ISet refSelectionSet;
 	
-	protected int iSelectionSetId = -1;
 	protected int iSelectionVirtualArrayId = -1;
 	protected int iSelectionIdStorageId = -1;
 	protected int iSelectionGroupStorageId = -1;
@@ -175,28 +175,25 @@ implements ICommand {
 	 * 
 	 */
 	protected void createSelectionSet() {
-		
-		iSelectionSetId = iUniqueTargetId;
-//		iSelectionSetId = refGeneralManager.getSingelton().getSetManager()
-//			.createNewId(ManagerObjectType.SET_PLANAR);
 			
 		CmdDataCreateSet createdCommand = 
 			(CmdDataCreateSet) refGeneralManager.getSingelton().getCommandManager()
 				.createCommandByType(CommandQueueSaxType.CREATE_SET);
 
-		String sStorageIDs = Integer.toString(iSelectionIdStorageId) + " " + 
-							Integer.toString(iSelectionGroupStorageId) + " " + 
-							Integer.toString(iSelectionOptionalStorageId);
+		StringBuffer stBuffer = new StringBuffer();
+		
+		stBuffer.append(Integer.toString(iSelectionIdStorageId));
+		stBuffer.append(" "); 
+		stBuffer.append(Integer.toString(iSelectionGroupStorageId));
+		stBuffer.append(" ");
+		stBuffer.append(Integer.toString(iSelectionOptionalStorageId));
 		
 		String sVirtualArrayIDs = Integer.toString(iSelectionVirtualArrayId);
 		
-		createdCommand.setAttributes(iSelectionSetId, 
+		createdCommand.setAttributes(iUniqueTargetId, 
 				sVirtualArrayIDs, 
-				sStorageIDs,
+				stBuffer.toString(),
 				CommandQueueSaxType.CREATE_SET_SELECTION);
 		createdCommand.doCommand();
-		
-//		refSelectionSet = (ISet)refGeneralManager.getSingelton().getSetManager()
-//			.getItem(iSelectionSetId);
 	}
 }

@@ -28,7 +28,7 @@ public interface ISingelton {
 
 	public abstract ISetManager getSetManager();
 
-	public abstract IViewCanvasManager getViewCanvasManager();
+//	public abstract IViewCanvasManager getViewCanvasManager();
 
 	public abstract ICommandManager getCommandManager();
 
@@ -75,8 +75,8 @@ public interface ISingelton {
 
 	public abstract void setSetManager(ISetManager setSetManager);
 
-	public abstract void setViewCanvasManager(
-			IViewCanvasManager setViewCanvasManager);
+//	public abstract void setViewCanvasManager(
+//			IViewCanvasManager setViewCanvasManager);
 
 	public abstract void setCommandManager(ICommandManager setCommandManager);
 
