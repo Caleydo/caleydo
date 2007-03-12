@@ -192,7 +192,10 @@ implements IGLCanvasUser, IMediatorReceiver
 			drawScatterPlotGrid( gl ,iGridSize );
 		}
 		
-		drawScatterPlotInteger( gl );		
+		if ( targetSet != null ) 
+		{
+			drawScatterPlotInteger( gl );		
+		}
 	
 		//System.err.println(" MinMax ScatterPlot2D .render(GLCanvas canvas)");
 	}
@@ -238,7 +241,6 @@ implements IGLCanvasUser, IMediatorReceiver
 	}
 	
 	protected void drawScatterPlotInteger(GL gl) {
-
 		
 		/**
 		 * Box..

@@ -10,21 +10,21 @@ package cerberus.data.view.camera;
 
 import gleem.linalg.Plane;
 
-import cerberus.data.view.camera.ViewCamera;
+import cerberus.data.view.camera.IViewCamera;
 
 /**
  * @author Michael Kalkusch
  *
  */
-public interface ViewFrustum {
+public interface IViewFrustum {
 	
 	/**
 	 * Returns ture if ViewFrustum or camera view point has changed.
 	 * 
 	 * @return TRUE if either camera view point or ViewFrustum-settings has changed.
 	 * 
-	 * @see prometheus.data.collection.view.camera.ViewFrustum#hasFrustumChanged()
-	 * @see prometheus.data.collection.view.camera.ViewCamera#hasChanged()
+	 * @see prometheus.data.collection.view.camera.IViewFrustum#hasFrustumChanged()
+	 * @see prometheus.data.collection.view.camera.IViewCamera#hasViewCameraChanged()
 	 */
 	public boolean hasChanged();
 	
@@ -34,9 +34,9 @@ public interface ViewFrustum {
 	 * 
 	 * @return TURE if the ViewFrustum has changed.
 	 * 
-	 * @see prometheus.data.collection.view.camera.ViewCamera#hasChanged()
-	 * @see prometheus.data.collection.view.camera.ViewFrustum#hasChanged()
-	 * @see prometheus.data.collection.view.camera.ViewFrustum#setHasFrustumChanged(boolean)
+	 * @see prometheus.data.collection.view.camera.IViewCamera#hasViewCameraChanged()
+	 * @see prometheus.data.collection.view.camera.IViewFrustum#hasViewCameraChanged()
+	 * @see prometheus.data.collection.view.camera.IViewFrustum#setHasFrustumChanged(boolean)
 	 */
 	public boolean hasFrustumChanged();
 	
@@ -44,7 +44,7 @@ public interface ViewFrustum {
 	 * 
 	 * @param bSetHasFrustumChanged
 	 * 
-	 * @see prometheus.data.collection.view.camera.ViewFrustum#hasFrustumChanged()
+	 * @see prometheus.data.collection.view.camera.IViewFrustum#hasFrustumChanged()
 	 */
 	public void setHasFrustumChanged( final boolean bSetHasFrustumChanged );
 	
@@ -65,9 +65,9 @@ public interface ViewFrustum {
 	public float getFocalLengthFarPlane();
 	
 	
-	public void setViewCamera( final ViewCamera setViewCamera );
+	public void setViewCamera( final IViewCamera setViewCamera );
 	
-	public ViewCamera getViewCamera();
+	public IViewCamera getViewCamera();
 	
 	
 }

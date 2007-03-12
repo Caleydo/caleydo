@@ -27,6 +27,20 @@ extends IUniqueObject {
 	 */
 	public void drawView();
 	
+//	//method moved to AViewRep and AJoglViewRep
+	
+//	/**
+//	 * Method takes uses the parent container ID to retrieve the 
+//	 * GUI widget by calling the createWidget method from
+//	 * the SWT GUI Manager.
+//	 * Method is implemented in the subclasses because only there
+//	 * the type of the needed widget is available.
+//	 * 
+//	 * @deprecated use initView()
+//	 */
+//	public void retrieveGUIContainer();
+	
+	
 	/**
 	 * Sets the unique ID of the parent container.
 	 * Normally it is already set in the constructor.

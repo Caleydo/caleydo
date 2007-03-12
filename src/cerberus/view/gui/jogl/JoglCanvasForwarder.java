@@ -4,6 +4,9 @@ package cerberus.view.gui.jogl;
 //import java.awt.event.WindowAdapter;
 //import java.awt.event.WindowEvent;
 
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 //import javax.media.opengl.GLCanvas;
 //import javax.media.opengl.GLJPanel;
@@ -15,10 +18,10 @@ import javax.media.opengl.GLEventListener;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.view.gui.awt.GearsMouse;
-import cerberus.view.gui.awt.jogl.IJoglMouseListener;
+import cerberus.view.gui.jogl.JoglMouseListener;
+import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.data.AUniqueManagedObject;
+//import cerberus.data.view.camera.IViewCamera;
 
 /**
  * Gears.java <BR>
@@ -27,123 +30,57 @@ import cerberus.data.AUniqueManagedObject;
  * This version is equal to Brian Paul's version 1.2 1999/10/21
  */
 
-public class CanvasForwarder 
-extends AUniqueManagedObject
+public class JoglCanvasForwarder 
+extends AViewCameraListenerObject
 implements GLEventListener, IJoglMouseListener {
 
 	private final IGLCanvasDirector refGLCanvasDirector;
 
 	private boolean bCallInitOpenGL = true;
 	
-	private GearsMouse refMouseHandler;
+	private JoglMouseListener refMouseHandler;
 
-	private float view_rotx = 00.0f, view_roty = 00.0f, view_rotz = 0.0f;
-
-	private float view_x = 0.0f, view_y = 0.0f, view_z = 0.0f;
+//	private float view_rotx = 0.0f, view_roty = 0.0f, view_rotz = 0.0f;
+//
+//	private float view_x = 0.0f, view_y = 0.0f, view_z = 0.0f;
 
 	//private Animator refAnimator = null;
 	
 
 
-	public CanvasForwarder( final IGeneralManager refGeneralManager,
+	public JoglCanvasForwarder( final IGeneralManager refGeneralManager,
 			final IGLCanvasDirector refGLCanvasDirector, 
 			final int iUniqueId) {
 
 		super(iUniqueId, refGeneralManager);
 		
-		refMouseHandler = new GearsMouse(this);
+		refMouseHandler = new JoglMouseListener(this);
 
 		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
 	
-	
-//	/**
-//	 * This methode is just for test purpose!
-//	 * 
-//	 * @deprecated use this code only for test purpose
-//	 * 
-//	 */
-//	public static void main(String[] args) {
-//
-//		CanvasForwarder refGearsMainRoot = new CanvasForwarder( null, 10701 );
-//
-//		refGearsMainRoot.runMain();
-//
-//	}
-//	
-//	/**
-//	 * This methode is just for test purpose!
-//	 * 
-//	 * @deprecated use this code only for test purpose
-//	 */
-//	public void runMain() {
-//
-//		CanvasForwarder refmyGrears = new CanvasForwarder( null, 10701 );
-//
-//		Frame frame = new Frame("GL Canvas Forwarder");
-//		GLCanvas canvas = new GLCanvas();
-//
-//		canvas.addGLEventListener(refmyGrears);
-//
-//		frame.add(canvas);
-//		frame.setSize(300, 300);
-//
-//		Animator refAnimator = new Animator(canvas);
-//		
-//		final Animator animatorHelper = refAnimator;
-//		
-//		frame.addWindowListener(new WindowAdapter() {
-//
-//			public void windowClosing(WindowEvent e) {
-//
-//				// Run this on another thread than the AWT event queue to
-//				// make sure the call to Animator.stop() completes before
-//				// exiting
-//				new Thread(new Runnable() {
-//
-//					public void run() {
-//
-//						animatorHelper.stop();
-//						System.exit(0);
-//					}
-//				}).start();
-//			}
-//		});
-//
-//		frame.setVisible(true);
-//
-//		//animatorHelper.start();
-//		
-//		refAnimator.start();
-//	}
 
-	public synchronized void setViewAngles(float fView_RotX, float fView_RotY,
-			float fView_RotZ) {
-
-		view_rotx = fView_RotX;
-		view_roty = fView_RotY;
-		view_rotz = fView_RotZ;
+	protected void drawXYZ( GL gl ) {
+		float fMax = 200;
+		
+		gl.glBegin(GL.GL_LINES);
+			gl.glColor3f(1, 0, 0);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(fMax, 0, 0);
+			
+			gl.glColor3f(0, 1, 0);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, fMax, 0);
+			
+			gl.glColor3f(0, 0, 1);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, 0, fMax);
+		gl.glEnd();
 	}
 
-	public synchronized void setTranslation(float fView_X, float fView_Y,
-			float fView_Z) {
-
-		view_x = fView_X;
-		view_y = fView_Y;
-		view_z = fView_Z;
-	}
-
-	public void renderTestTriangle(GL gl) {
-
-		/* Clear The Screen And The Depth Buffer */
-		gl.glLoadIdentity(); // Reset the current modelview matrix
-
-		gl.glTranslatef(view_x, view_y, view_z - 10.0f);
+	protected void renderTestTriangle(GL gl) {
 
 		gl.glPushMatrix();
-		gl.glRotatef(view_rotx, 1.0f, 0.0f, 0.0f);
-		gl.glRotatef(view_roty, 0.0f, 1.0f, 0.0f);
-		gl.glRotatef(view_rotz, 0.0f, 0.0f, 1.0f);
 
 		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
 		gl.glColor3f(1.0f, 0.0f, 0.0f); // Set the color to red
@@ -157,6 +94,32 @@ implements GLEventListener, IJoglMouseListener {
 		gl.glPopMatrix();
 
 	}
+	
+
+//	/**
+//	 * @see cerberus.view.gui.awt.jogl.IJoglMouseListener#setViewAngles(float, float, float)
+//	 */
+//	public synchronized void setViewAngles(float fView_RotX, float fView_RotY,
+//			float fView_RotZ) {
+//
+//		view_rotx = fView_RotX;
+//		view_roty = fView_RotY;
+//		view_rotz = fView_RotZ;
+//	}
+//
+//	/**
+//	 * 
+//	 * @see cerberus.view.gui.awt.jogl.IJoglMouseListener#setTranslation(float, float, float)
+//	 */
+//	public synchronized void setTranslation(float fView_X, float fView_Y,
+//			float fView_Z) {
+//
+//		view_x = fView_X;
+//		view_y = fView_Y;
+//		view_z = fView_Z;
+//	}
+
+
 
 	public void init(GLAutoDrawable drawable) {
 
@@ -164,7 +127,7 @@ implements GLEventListener, IJoglMouseListener {
 		// drawable.setGL(new DebugGL(drawable.getGL()));
 
 		refGeneralManager.getSingelton().logMsg(
-				"CanvasForwarder [" + iUniqueId + "] init() ... ",
+				"JoglCanvasForwarder [" + iUniqueId + "] init() ... ",
 				LoggerType.STATUS);
 		
 		if  ( bCallInitOpenGL ) {
@@ -173,7 +136,7 @@ implements GLEventListener, IJoglMouseListener {
 			GL gl = drawable.getGL();
 	
 			refGeneralManager.getSingelton().logMsg(
-					"CanvasForwarder [" + iUniqueId +
+					"JoglCanvasForwarder [" + iUniqueId +
 					"] INIT GL IS: ",
 					LoggerType.STATUS);
 	
@@ -202,7 +165,7 @@ implements GLEventListener, IJoglMouseListener {
 			else 
 			{
 				refGeneralManager.getSingelton().logMsg(
-						"CanvasForwarder init() can not call director, becaus director==null!",
+						"JoglCanvasForwarder init() can not call director, becaus director==null!",
 						LoggerType.MINOR_ERROR);
 			}
 			
@@ -210,7 +173,7 @@ implements GLEventListener, IJoglMouseListener {
 		else
 		{			
 			refGeneralManager.getSingelton().logMsg(
-					"CanvasForwarder [" + iUniqueId + "] init() ... done",
+					"JoglCanvasForwarder [" + iUniqueId + "] init() ... done",
 					LoggerType.STATUS);
 		}
 				
@@ -223,7 +186,7 @@ implements GLEventListener, IJoglMouseListener {
 			int height) {
 
 		refGeneralManager.getSingelton().logMsg(
-				"CanvasForwarder  RESHAPE GL",
+				"JoglCanvasForwarder  RESHAPE GL",
 				LoggerType.MINOR_ERROR);
 
 		GL gl = drawable.getGL();
@@ -233,7 +196,7 @@ implements GLEventListener, IJoglMouseListener {
 		gl.glMatrixMode(GL.GL_PROJECTION);
 
 		refGeneralManager.getSingelton().logMsg(
-				"CanvasForwarder  RESHAPE GL" +
+				"JoglCanvasForwarder  RESHAPE GL" +
 				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
 				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
 				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
@@ -257,8 +220,6 @@ implements GLEventListener, IJoglMouseListener {
 
 	public void display(GLAutoDrawable drawable) {
 
-		//System.err.println("DISPLAY GL    TrinagleMain!");
-
 		GL gl = drawable.getGL();
 		
 //		if ((drawable instanceof GLJPanel)
@@ -274,23 +235,54 @@ implements GLEventListener, IJoglMouseListener {
 
 		/* Clear The Screen And The Depth Buffer */
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity(); // Reset the current modelview matrix
 
-		gl.glTranslatef(view_x, view_y, view_z - 10.0f);
+		
+		float distanceZ_move_Center = 10;		
+		float distanceZ = 2;
 
-		gl.glPushMatrix();
-		gl.glRotatef(view_rotx, 1.0f, 0.0f, 0.0f);
-		gl.glRotatef(view_roty, 0.0f, 1.0f, 0.0f);
-		gl.glRotatef(view_rotz, 0.0f, 0.0f, 1.0f);
+		//view_rotx += 0.9f;
+		
+		/** Read viewing parameters... */
+		Vec3f rot_Vec3f = new Vec3f();
+		Vec3f position = refViewCamera.getCameraPosition();
+		Rotf rotation = refViewCamera.getCameraRotation();
+		//Vec3f positionZoom = refViewCamera.getCameraScale();
+		
+		float w = rotation.get(rot_Vec3f) * 180.0f / (float) Math.PI;
+		
+	
+		/** Translation */
+		gl.glTranslatef(position.x(),
+				position.y(),
+				position.z() - distanceZ_move_Center );
+		
+		
+		/** Rotation */		
+		gl.glRotatef( w, 
+				rot_Vec3f.x(), 
+				rot_Vec3f.y(), 
+				rot_Vec3f.z());
+		
+		/** visual debugging ...*/
+		drawXYZ(gl);
+		
+		renderTestTriangle(gl);
+		
+		gl.glTranslatef(0,
+				0,
+				distanceZ );
+		
+		renderTestTriangle(gl);
+		
+		/** end: visual debugging ...*/
 
-		//renderTestTriangle( gl );
-
+		
 		if (refGLCanvasDirector != null)
 		{
 			refGLCanvasDirector.renderGLCanvasUser(drawable);
 		}
-
-		gl.glPopMatrix();
 
 	}
 
@@ -304,4 +296,5 @@ implements GLEventListener, IJoglMouseListener {
 	public final ManagerObjectType getBaseType() {
 		return ManagerObjectType.VIEW_CANVAS_FORWARDER;
 	}
+
 }

@@ -12,23 +12,28 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import cerberus.data.view.camera.ViewCamera;
+import cerberus.data.view.camera.IViewCamera;
 
 /**
  * @author Michael Kalkusch
  *
  */
-public class ViewCameraBase implements ViewCamera {
+public class ViewCameraBase implements IViewCamera {
 
 	/**
 	 * Zoom is equal to scaling in a 4x4 matrix
 	 */
-	protected Vec3f v3fCameraScale = Vec3f.VEC_ONE ;
+	protected Vec3f v3fCameraScale = Vec3f.VEC_NULL ;
 	
 	/**
 	 * Pan used to translate.
 	 */
 	protected Vec3f v3fCameraPosition = Vec3f.VEC_NULL;
+	
+	/**
+	 * Rotation in euler angles
+	 */
+	protected Vec3f v3fCameraRotationEuler = Vec3f.VEC_NULL;
 	
 	/**
 	 * Rotation stored as qaternion.
@@ -41,14 +46,14 @@ public class ViewCameraBase implements ViewCamera {
 	protected boolean bHasChanged = true;
 	
 	
-	public boolean hasChanged() {
+	public boolean hasViewCameraChanged() {
 		return bHasChanged;
 	}
 	
 	
 	/**
 	 * Matrix created by pan, zoom and rotation.
-	 * Is updated ba setter methodes.
+	 * Is updated by setter methodes.
 	 * 
 	 * @see prometheus.app.observer.view.MVC_ViewFrustumBase#updateMatrix()
 	 */
@@ -81,17 +86,23 @@ public class ViewCameraBase implements ViewCamera {
 	 *  (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewPan(gleem.linalg.Vec3f)
 	 */
-	public void setCameraPosition(Vec3f setPan) {
+	public void setCameraPosition(final Vec3f setPan) {
 		System.out.println( "   +-> set camera pos! [" + setPan.toString()  + "]");
 		
 		v3fCameraPosition = setPan;
 		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
 	}
 
+	public void addCameraPosition( final Vec3f setPos ) {
+		
+		this.v3fCameraPosition.add(setPos);
+		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
+	}
+	
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewRotate(gleem.linalg.Rotf)
 	 */
-	public void setCameraRotation(Rotf setRot) {
+	public void setCameraRotation(final Rotf setRot) {
 		rotfCameraRotation = setRot;
 		mat4fCameraViewMatrix.setRotation( rotfCameraRotation );
 		mat4fCameraViewMatrix.setScale( v3fCameraScale );
@@ -100,7 +111,7 @@ public class ViewCameraBase implements ViewCamera {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewZoom(gleem.linalg.Vec3f)
 	 */
-	public void setCameraScale(Vec3f setZoom) {
+	public void setCameraScale(final Vec3f setZoom) {
 		v3fCameraScale = setZoom;
 		mat4fCameraViewMatrix.setScale( v3fCameraScale );
 	}
@@ -108,7 +119,9 @@ public class ViewCameraBase implements ViewCamera {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewPanZoomRotate(gleem.linalg.Vec3f, gleem.linalg.Vec3f, gleem.linalg.Rotf)
 	 */
-	public void setCameraAll(Vec3f setPan, Vec3f setZoom, Rotf setRot) {
+	public void setCameraAll(final Vec3f setPan, 
+			final Vec3f setZoom, 
+			final Rotf setRot) {
 		v3fCameraPosition = setPan;
 		v3fCameraScale = setZoom;
 		rotfCameraRotation = setRot;
@@ -144,7 +157,7 @@ public class ViewCameraBase implements ViewCamera {
 	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewMatrix()
 	 */
 	public Mat4f getCameraMatrix() {
-		//updateMatrix();
+		updateMatrix();
 		
 		return this.mat4fCameraViewMatrix;
 	}
@@ -153,5 +166,111 @@ public class ViewCameraBase implements ViewCamera {
 		return  "p:" + this.v3fCameraPosition.toString() +
 			" z:" + this.v3fCameraScale.toString() +
 			" r:" + this.rotfCameraRotation.toString();
+	}
+
+	public final void setCameraRotationVec3f(final Vec3f setRotVec3f) {
+
+		/**
+		 * compute Quaternion from input vector assuming vector Vec3f
+		 * describs 3 rotations alpha, betha, gamma 
+		 */
+		Vec3f helpRot_cos = new Vec3f( (float) Math.cos( (setRotVec3f.x() * 0.5f)),
+				(float) Math.cos( (setRotVec3f.y() * 0.5f)),
+				(float) Math.cos( (setRotVec3f.z() * 0.5f)));
+		Vec3f helpRot_sin = new Vec3f( (float) Math.sin( (setRotVec3f.x() * 0.5f)),
+				(float) Math.sin( (setRotVec3f.y() * 0.5f)),
+				(float) Math.sin( (setRotVec3f.z() * 0.5f)));
+		
+		float w = helpRot_cos.x()*helpRot_cos.y()*helpRot_cos.z()
+			- helpRot_sin.x()*helpRot_sin.y()*helpRot_sin.z();
+		
+		rotfCameraRotation.set( 
+				new Vec3f( helpRot_cos.x()*helpRot_sin.y()*helpRot_cos.z() +
+						helpRot_sin.x()*helpRot_sin.y()*helpRot_sin.z(),
+						
+						helpRot_sin.x()*helpRot_sin.y()*helpRot_cos.z() -
+						helpRot_cos.x()*helpRot_sin.y()*helpRot_sin.z(),
+						
+						helpRot_sin.x()*helpRot_cos.y()*helpRot_cos.z() +
+						helpRot_cos.x()*helpRot_cos.y()*helpRot_sin.z()),
+						
+						w );
+	}
+	
+	public final void addCameraRotationVec3f(final Vec3f setRotVec3f) {
+
+		assert false : "Not teste yet!";
+	
+		/**
+		 * compute Quaternion from input vector assuming vector Vec3f
+		 * describs 3 rotations alpha, betha, gamma 
+		 */
+		Vec3f helpRot_cos = new Vec3f( (float) Math.cos( (setRotVec3f.x() * 0.5f)),
+				(float) Math.cos( (setRotVec3f.y() * 0.5f)),
+				(float) Math.cos( (setRotVec3f.z() * 0.5f)));
+		Vec3f helpRot_sin = new Vec3f( (float) Math.sin( (setRotVec3f.x() * 0.5f)),
+				(float) Math.sin( (setRotVec3f.y() * 0.5f)),
+				(float) Math.sin( (setRotVec3f.z() * 0.5f)));
+		
+		float w = helpRot_cos.x()*helpRot_cos.y()*helpRot_cos.z()
+			- helpRot_sin.x()*helpRot_sin.y()*helpRot_sin.z();
+		
+		Rotf temp = new Rotf();
+		temp.set( 
+				new Vec3f( helpRot_cos.x()*helpRot_sin.y()*helpRot_cos.z() +
+						helpRot_sin.x()*helpRot_sin.y()*helpRot_sin.z(),
+						
+						helpRot_sin.x()*helpRot_sin.y()*helpRot_cos.z() -
+						helpRot_cos.x()*helpRot_sin.y()*helpRot_sin.z(),
+						
+						helpRot_sin.x()*helpRot_cos.y()*helpRot_cos.z() +
+						helpRot_cos.x()*helpRot_cos.y()*helpRot_sin.z()),
+						
+						w );
+		
+		rotfCameraRotation.times(temp);
+	}
+
+	public Vec3f getCameraRotationEuler() {
+
+		return v3fCameraRotationEuler;
+	}
+
+	public void setCameraRotationEuler(final Vec3f setRotEuler) {
+
+		v3fCameraRotationEuler = setRotEuler;
+		
+	}
+	
+	public void addCameraRotationEuler(final Vec3f addRotEuler) {
+
+		v3fCameraRotationEuler.add(addRotEuler);
+	}
+
+	public void addCameraRotation(final Rotf setRot) {
+
+		Rotf buffer = rotfCameraRotation.times(setRot);
+
+		System.out.println( "now =" + 
+				rotfCameraRotation.toString() + 
+				"\n  +  " + 
+				setRot.toString() + 
+				"\n ==> " + 
+				buffer.toString() );
+	
+		rotfCameraRotation = buffer;
+	}
+
+	public void addCameraScale(final Vec3f setScale) {
+
+		v3fCameraScale.add(setScale);
+		v3fCameraPosition.add(setScale);
+	}
+	
+	public final Vec3f addCameraScaleAndGet(final Vec3f setScale) {
+
+		addCameraScale(setScale);
+		
+		return v3fCameraScale;
 	}
 }

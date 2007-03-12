@@ -4,7 +4,7 @@ package cerberus.view.gui.swt.jogl.sample;
 //import javax.media.opengl.GLEventListener;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.swt.base.AJoglViewRep;
+import cerberus.view.gui.swt.jogl.AJoglViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.awt.jogl.TriangleMain;
 

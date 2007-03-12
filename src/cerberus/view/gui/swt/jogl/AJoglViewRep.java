@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.base;
+package cerberus.view.gui.swt.jogl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -7,7 +7,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.sun.opengl.util.Animator;
+//import com.sun.opengl.util.Animator;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISWTGUIManager;
@@ -62,7 +62,7 @@ implements IView {
 	}
 
 	/**
-	 * Needs to be callled before calling drawView().
+	 * Needs to be called before calling drawView().
 	 * Either call this methode from Constructor or inside initView().
 	 * 
 	 * @see cerberus.view.gui.swt.base.AJoglViewRep#drawView()

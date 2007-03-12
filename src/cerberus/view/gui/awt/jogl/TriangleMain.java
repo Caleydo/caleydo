@@ -12,7 +12,11 @@ import javax.media.opengl.GLEventListener;
 
 import com.sun.opengl.util.Animator;
 
-import cerberus.view.gui.awt.GearsMouse;
+import cerberus.manager.singelton.OneForAllManager;
+import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.jogl.AViewCameraListenerObject;
+import cerberus.view.gui.jogl.JoglMouseListener;
+import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 
 /**
@@ -22,12 +26,14 @@ import cerberus.view.gui.opengl.IGLCanvasDirector;
  * This version is equal to Brian Paul's version 1.2 1999/10/21
  */
 
-public class TriangleMain implements GLEventListener, IJoglMouseListener
+public class TriangleMain 
+extends AViewCameraListenerObject 
+implements GLEventListener, IJoglMouseListener
 {
 
 	private final IGLCanvasDirector refGLCanvasDirector;
 	
-	private GearsMouse refMouseHandler;
+	private JoglMouseListener refMouseHandler;
 
 	private float view_rotx = 00.0f, view_roty = 00.0f, view_rotz = 0.0f;
 
@@ -44,14 +50,17 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 
 	public TriangleMain()
 	{
-		refMouseHandler = new GearsMouse(this);
+		super(-1, new OneForAllManager( null ));
+		refMouseHandler = new JoglMouseListener(this);
 		
 		this.refGLCanvasDirector = null;
 	}
 	
 	public TriangleMain( IGLCanvasDirector refGLCanvasDirector)
 	{
-		refMouseHandler = new GearsMouse(this);
+		super(-1, new OneForAllManager( null ));
+		
+		refMouseHandler = new JoglMouseListener(this);
 		
 		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
@@ -93,23 +102,23 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 		animator.start();
 	}
 
-	public synchronized void setViewAngles(float fView_RotX, 
-			float fView_RotY,
-			float fView_RotZ)
-	{
-		view_rotx = fView_RotX;
-		view_roty = fView_RotY;
-		view_rotz = fView_RotZ;
-	}
-
-	public synchronized void setTranslation(float fView_X, 
-			float fView_Y,
-			float fView_Z)
-	{
-		view_x = fView_X;
-		view_y = fView_Y;
-		view_z = fView_Z;
-	}
+//	public synchronized void setViewAngles(float fView_RotX, 
+//			float fView_RotY,
+//			float fView_RotZ)
+//	{
+//		view_rotx = fView_RotX;
+//		view_roty = fView_RotY;
+//		view_rotz = fView_RotZ;
+//	}
+//
+//	public synchronized void setTranslation(float fView_X, 
+//			float fView_Y,
+//			float fView_Z)
+//	{
+//		view_x = fView_X;
+//		view_y = fView_Y;
+//		view_z = fView_Z;
+//	}
 
 	public void init(GLAutoDrawable drawable)
 	{
@@ -216,6 +225,10 @@ public class TriangleMain implements GLEventListener, IJoglMouseListener
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
 			boolean deviceChanged)
 	{
+	}
+
+	public final ManagerObjectType getBaseType() {
+		return ManagerObjectType.VIEW;
 	}
 
 }

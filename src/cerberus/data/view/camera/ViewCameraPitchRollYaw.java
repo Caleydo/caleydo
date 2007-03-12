@@ -14,7 +14,7 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import cerberus.data.view.camera.ViewCamera;
+import cerberus.data.view.camera.IViewCamera;
 import cerberus.data.view.camera.ViewCameraBase;
 
 
@@ -27,7 +27,7 @@ import cerberus.data.view.camera.ViewCameraBase;
  *
  */
 public class ViewCameraPitchRollYaw extends ViewCameraBase implements
-		ViewCamera {
+		IViewCamera {
 
 	protected float fRollZ = 0.0f;
 	

@@ -23,7 +23,6 @@ import com.sun.opengl.util.Animator;
 
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
@@ -34,7 +33,9 @@ import cerberus.manager.type.ManagerObjectType;
 //import cerberus.view.gui.AViewManagedRep;
 //import cerberus.view.gui.swt.base.AJoglContainerViewRep;
 //import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
-import cerberus.view.gui.awt.GearsMouse;
+import cerberus.view.gui.jogl.AViewCameraListenerObject;
+import cerberus.view.gui.jogl.IJoglMouseListener;
+import cerberus.view.gui.jogl.JoglMouseListener;
 //import cerberus.util.exception.CerberusRuntimeException;
 //import cerberus.util.exception.CerberusExceptionType;
 
@@ -51,7 +52,7 @@ import cerberus.math.statistics.histogram.StatisticHistogramType;
  */
 
 public class Histogram2DMain 
-extends AUniqueManagedObject 
+extends AViewCameraListenerObject 
 implements GLEventListener, IJoglMouseListener
 {
 
@@ -66,7 +67,7 @@ implements GLEventListener, IJoglMouseListener
 	protected ISet refSet = null;
 	
 	
-	private GearsMouse refMouseHandler;
+	private JoglMouseListener refMouseHandler;
 
 	private float view_rotx = 00.0f, view_roty = 00.0f, view_rotz = 0.0f;
 
@@ -103,7 +104,7 @@ implements GLEventListener, IJoglMouseListener
 		
 		refHistogramCreator = new HistogramStatisticInteger( iBorderIntervallLength );
 		
-		refMouseHandler = new GearsMouse(this);
+		refMouseHandler = new JoglMouseListener(this);
 
 	}
 	
@@ -145,21 +146,21 @@ implements GLEventListener, IJoglMouseListener
 		animator.start();
 	}
 
-	public synchronized void setViewAngles(float fView_RotX, float fView_RotY,
-			float fViewRotZ)
-	{
-		view_rotx = fView_RotX;
-		view_roty = fView_RotY;
-		view_rotz = fViewRotZ;
-	}
-
-	public synchronized void setTranslation(float fView_X, float fView_Y,
-			float fView_Z)
-	{
-		view_x = fView_X;
-		view_y = fView_Y;
-		//	  view_rotz = fView_Z;
-	}
+//	public synchronized void setViewAngles(float fView_RotX, float fView_RotY,
+//			float fViewRotZ)
+//	{
+//		view_rotx = fView_RotX;
+//		view_roty = fView_RotY;
+//		view_rotz = fViewRotZ;
+//	}
+//
+//	public synchronized void setTranslation(float fView_X, float fView_Y,
+//			float fView_Z)
+//	{
+//		view_x = fView_X;
+//		view_y = fView_Y;
+//		//	  view_rotz = fView_Z;
+//	}
 
 	public void init(GLAutoDrawable drawable)
 	{

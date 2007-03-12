@@ -10,7 +10,7 @@ package cerberus.data.view.camera;
 
 import gleem.linalg.Plane;
 
-import cerberus.data.view.camera.ViewCamera;
+import cerberus.data.view.camera.IViewCamera;
 import cerberus.data.view.camera.ViewCameraBase;
 
 
@@ -18,9 +18,9 @@ import cerberus.data.view.camera.ViewCameraBase;
  * @author Michael Kalkusch
  *
  */
-public class ViewFrustumBase implements ViewFrustum {
+public class ViewFrustumBase implements IViewFrustum {
 
-	protected ViewCamera refViewCamera;
+	protected IViewCamera refViewCamera;
 	
 	protected boolean bViewFrustumHasChanged = true;
 	
@@ -41,7 +41,7 @@ public class ViewFrustumBase implements ViewFrustum {
 	public boolean hasChanged() {
 		if ( bViewFrustumHasChanged ) return true;
 		
-		return refViewCamera.hasChanged();
+		return refViewCamera.hasViewCameraChanged();
 	}
 
 	/* (non-Javadoc)
@@ -120,7 +120,7 @@ public class ViewFrustumBase implements ViewFrustum {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewFrustum#setViewCamera(prometheus.data.collection.view.camera.ViewCamera)
 	 */
-	public void setViewCamera( final ViewCamera setViewCamera) {
+	public void setViewCamera( final IViewCamera setViewCamera) {
 		refViewCamera = setViewCamera;
 		
 		refViewCamera.setHasChanged( true );
@@ -129,7 +129,7 @@ public class ViewFrustumBase implements ViewFrustum {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewFrustum#getViewCamera()
 	 */
-	public ViewCamera getViewCamera() {
+	public IViewCamera getViewCamera() {
 		return refViewCamera;
 	}
 

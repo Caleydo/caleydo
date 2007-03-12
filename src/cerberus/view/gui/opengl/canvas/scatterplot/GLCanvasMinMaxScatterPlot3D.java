@@ -380,6 +380,10 @@ implements IGLCanvasUser
 		
 	protected void drawScatterPlotInteger(GL gl) 
 	{
+		
+		if ( targetSet== null ) {
+			return;
+		}
 
 		if ( targetSet.getDimensions() < 2 ) {
 			refGeneralManager.getSingelton().logMsg(

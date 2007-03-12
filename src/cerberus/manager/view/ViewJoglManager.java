@@ -46,11 +46,10 @@ import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
 import cerberus.view.gui.swt.mixer.MixerViewRep;
 import cerberus.view.gui.swt.pathway.Pathway2DViewRep;
 import cerberus.view.gui.swt.progressbar.ProgressBarViewRep;
-import cerberus.view.gui.swt.gears.jogl.GearsViewRep;
+import cerberus.view.gui.swt.jogl.gears.GearsViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.SwtJogHistogram2DViewRep;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.view.gui.swt.jogl.sample.TestTriangleViewRep;
-import cerberus.view.gui.swt.scatterplot.jogl.Scatterplot2DViewRep;
 import cerberus.view.gui.swt.slider.SelectionSliderViewRep;
 import cerberus.view.gui.swt.slider.StorageSliderViewRep;
 import cerberus.view.gui.swt.heatmap.jogl.Heatmap2DViewRep;
@@ -273,12 +272,7 @@ implements IViewManager, IViewGLCanvasManager {
 			return new SwtJogHistogram2DViewRep(this.refGeneralManager,
 					iViewId, iParentContainerId, sLabel);
 		//return new Heatmap2DViewRep(iNewId, this.refGeneralManager);
-		case VIEW_SWT_SCATTERPLOT2D:
-			return new Scatterplot2DViewRep(this.refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_SCATTERPLOT3D:
-			return new Scatterplot2DViewRep(this.refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			
 		case VIEW_SWT_SELECTION_SLIDER:
 			return new SelectionSliderViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId, sLabel);

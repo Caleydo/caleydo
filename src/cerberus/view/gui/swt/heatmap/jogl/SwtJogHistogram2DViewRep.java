@@ -17,8 +17,8 @@ import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.swt.base.AJoglContainerViewRep;
-import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
+import cerberus.view.gui.swt.jogl.AJoglContainerViewRep;
+import cerberus.view.gui.swt.jogl.ISwtJoglContainerViewRep;
 //import cerberus.util.exception.CerberusRuntimeException;
 //import cerberus.util.exception.CerberusExceptionType;
 

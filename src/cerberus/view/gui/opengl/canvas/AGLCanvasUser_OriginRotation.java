@@ -43,8 +43,8 @@ implements IGLCanvasUser
 
 	public final void setOriginRotation( final Vec3f origin,	
 		final Vec4f rotation ) {
-		this.origin   = origin;
-		this.rotation = rotation;
+//		this.origin   = origin;
+//		this.rotation = rotation;
 	}
 	
 	public final Vec3f getOrigin( ) {
@@ -62,11 +62,11 @@ implements IGLCanvasUser
 		/* Clear The Screen And The Depth Buffer */
 		gl.glPushMatrix();
 
-		gl.glTranslatef( origin.x(), origin.y(), origin.z() );
-		gl.glRotatef( rotation.x(), 
-				rotation.y(),
-				rotation.z(),
-				rotation.w() );
+//		gl.glTranslatef( origin.x(), origin.y(), origin.z() );
+//		gl.glRotatef( rotation.x(), 
+//				rotation.y(),
+//				rotation.z(),
+//				rotation.w() );
 		
 		this.renderPart( gl );
 

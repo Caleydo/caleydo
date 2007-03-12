@@ -1,12 +1,14 @@
-package cerberus.view.gui.swt.gears.jogl;
+package cerberus.view.gui.swt.jogl.gears;
 
 import javax.media.opengl.GLCanvas;
+
+import com.sun.opengl.util.Animator;
 
 //import com.sun.opengl.util.Animator;
 
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.swt.base.AJoglViewRep;
+import cerberus.view.gui.swt.jogl.AJoglViewRep;
 import cerberus.view.gui.IView;
 //import cerberus.view.gui.awt.jogl.GearsMain;
 //import cerberus.view.gui.awt.jogl.TriangleMain;
@@ -32,6 +34,19 @@ implements IView
 		retrieveGUIContainer();
 		
 		Gears gears = new Gears();		
-		super.setGLEventListener( gears );		
+		setGLEventListener( gears );		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.IView#drawView()
+	 */
+	public void drawView() {
+		
+//	    final Animator animator = new Animator(refGLCanvas);
+//	    animator.start();
+		
 	}
 }
+	
+	

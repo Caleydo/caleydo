@@ -12,9 +12,9 @@ import javax.media.opengl.GLEventListener;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.IViewGLCanvasManager;
-import cerberus.view.gui.swt.base.AJoglViewRep;
+import cerberus.view.gui.swt.jogl.AJoglViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.jogl.CanvasForwarder;
+import cerberus.view.gui.jogl.JoglCanvasForwarder;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -82,7 +82,7 @@ implements IView, IGLCanvasDirector {
 				getId() + "] start Animator; start thread ...",
 				LoggerType.TRANSITION );
 		
-		refGLEventListener = new CanvasForwarder(refGeneralManager,
+		refGLEventListener = new JoglCanvasForwarder(refGeneralManager,
 				this, 
 				iGLEventListernerId );
 		super.initView();
@@ -92,7 +92,7 @@ implements IView, IGLCanvasDirector {
 				getId() + "] Animator started, thread running.",
 				LoggerType.TRANSITION );
 		
-		refGLEventListener = new CanvasForwarder(refGeneralManager,
+		refGLEventListener = new JoglCanvasForwarder(refGeneralManager,
 				this, 
 				iGLEventListernerId );
 		
