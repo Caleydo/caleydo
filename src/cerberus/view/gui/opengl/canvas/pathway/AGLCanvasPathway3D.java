@@ -14,8 +14,10 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
+
+//use timer of Animator!
+//import java.util.Timer;
+//import java.util.TimerTask;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -62,7 +64,7 @@ public abstract class AGLCanvasPathway3D
 extends APathwayGraphViewRep
 implements IGLCanvasUser {
 		  	 
-	protected static long MOUSE_PICKING_IDLE_TIME = 3000; // 0.3s
+	//protected static long MOUSE_PICKING_IDLE_TIME = 3000; // 0.3s
 	
 	protected float [][] viewingFrame;
 	
@@ -160,7 +162,7 @@ implements IGLCanvasUser {
 	
 	protected PickingTriggerMouseAdapter pickingTriggerMouseAdapter;
 	
-	protected Timer pickingTimer; 
+//	protected Timer pickingTimer; 
 	
 	/**
 	 * Constructor
@@ -1630,24 +1632,29 @@ implements IGLCanvasUser {
     	
 	    if (pickingTriggerMouseAdapter.wasMouseMoved())
 	    {
-	    	if (pickingTimer != null) 
-	    	{
-	    		pickingTimer.cancel();
-	    		pickingTimer.purge();
-	    		pickingTimer = null;
-	    	}
 	    	
-		    pickingTimer = new Timer();	
-
-		    class PickingTimerTask extends TimerTask {
-		    	
-		        public void run() {    
-					pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-		        }
-		    }
-		    
-		    pickingTimer.schedule(new PickingTimerTask(), (long)0, //initial delay
-			        (long)(MOUSE_PICKING_IDLE_TIME)); //subsequent rate
+	    	//use Animator!
+	    	
+//	    	if (pickingTimer != null) 
+//	    	{
+//	    		pickingTimer.cancel();
+//	    		pickingTimer.purge();
+//	    		pickingTimer = null;
+//	    	}
+//	    	
+//		    pickingTimer = new Timer();	
+//
+//		    class PickingTimerTask extends TimerTask {
+//		    	
+//		        public void run() {    
+//					pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+//		        }
+//		    }
+//		    
+//		    pickingTimer.schedule(new PickingTimerTask(), (long)0, //initial delay
+//			        (long)(MOUSE_PICKING_IDLE_TIME)); //subsequent rate
+	    	
+	    	
 	    }
 		
 //		if (pickingTriggerMouseAdapter.wasMousePressed())
@@ -1656,7 +1663,8 @@ implements IGLCanvasUser {
 	    if (pickPoint != null)
 	    {
 			pickObjects(gl);
-            pickingTimer.cancel(); //Terminate the timer thread
+            
+			//pickingTimer.cancel(); //Terminate the timer thread
 	    }
     }
 }
