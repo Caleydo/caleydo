@@ -12,37 +12,32 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
-import cerberus.view.gui.swt.data.explorer.model.AModel;
-import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
-import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
-import cerberus.view.gui.swt.data.explorer.model.StorageModel;
-import cerberus.view.gui.swt.data.explorer.DataExplorerContentProvider;
-import cerberus.view.gui.swt.data.explorer.DataExplorerLabelProvider;
 import cerberus.view.gui.swt.data.DataTableViewRep;
+import cerberus.view.gui.swt.data.explorer.model.AModel;
+import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
+import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
+import cerberus.view.gui.swt.data.explorer.model.StorageModel;
 
 public class DataExplorerViewRep 
 extends AViewRep 
 implements IView, IMediatorReceiver {
 
 	protected static final Object StorageModel = null;
-
-	protected Composite refSWTContainer;
 
 	protected DataTableViewRep refDataTableViewRep;
 
@@ -108,22 +103,6 @@ implements IView, IMediatorReceiver {
 
 		refDataTableViewRep.setExternalGUIContainer(refSWTContainer);
 		refDataTableViewRep.initTable();
-	}
-
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 
 	/**

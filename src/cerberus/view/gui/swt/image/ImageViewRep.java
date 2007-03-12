@@ -5,15 +5,12 @@ package cerberus.view.gui.swt.image;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * Image view.
@@ -24,8 +21,6 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
 public class ImageViewRep 
 extends AViewRep 
 implements IView {
-	
-	protected Composite refSWTContainer;
 	
 	protected String sImagePath;
 	
@@ -59,22 +54,6 @@ implements IView {
 //				this.getClass().getSimpleName() + 
 //				": drawView(): Load "+sUrl, 
 //				LoggerType.VERBOSE );		
-	}
-
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 	
 	public void setAttributes(int iWidth, int iHeight, String sImagePath) {

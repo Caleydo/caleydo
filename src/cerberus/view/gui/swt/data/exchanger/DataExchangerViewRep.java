@@ -16,18 +16,14 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import cerberus.data.IUniqueObject;
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.ViewType;
 
 /**
@@ -40,8 +36,6 @@ import cerberus.view.gui.ViewType;
 public class DataExchangerViewRep 
 extends AViewRep 
 implements IView {
-	
-	protected Composite refSWTContainer;
 	
     protected String viewComboItems[];
     
@@ -158,22 +152,6 @@ implements IView {
 				this.getClass().getSimpleName() + 
 				": drawView()", 
 				LoggerType.VERBOSE );		
-	}
-
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 	
 	public void setAttributes(int iWidth, int iHeight, String sImagePath) {

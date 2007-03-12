@@ -6,7 +6,6 @@ package cerberus.view.gui.swt.browser;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -15,11 +14,9 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * Simple HTML browser.
@@ -30,8 +27,6 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
 public class HTMLBrowserViewRep 
 extends AViewRep 
 implements IView {
-	
-	protected Composite refSWTContainer;
 
     protected Browser refBrowser;
     
@@ -147,22 +142,6 @@ implements IView {
 						": error while setURL ["+sUrl + "]", 
 						LoggerType.STATUS );
 		}
-	}
-
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 	
 	public void setUrl(String sUrl) {

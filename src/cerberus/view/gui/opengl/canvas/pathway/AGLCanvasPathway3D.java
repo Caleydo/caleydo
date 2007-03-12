@@ -14,6 +14,8 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -37,6 +39,7 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
@@ -59,6 +62,8 @@ public abstract class AGLCanvasPathway3D
 extends APathwayGraphViewRep
 implements IGLCanvasUser {
 		  	 
+	protected static long MOUSE_PICKING_IDLE_TIME = 3000; // 0.3s
+	
 	protected float [][] viewingFrame;
 	
 	protected float[][] fAspectRatio;
@@ -153,7 +158,9 @@ implements IGLCanvasUser {
 	
 	protected boolean bSelectionDataChanged = false;
 	
-	protected long lMouseMoveTimeStamp = 0;
+	protected PickingTriggerMouseAdapter pickingTriggerMouseAdapter;
+	
+	protected Timer pickingTimer; 
 	
 	/**
 	 * Constructor
@@ -179,43 +186,9 @@ implements IGLCanvasUser {
 		
 		this.canvas = openGLCanvasDirector.getGLCanvas();
 		
-		canvas.addMouseListener(new MouseAdapter() {
-
-			public void mousePressed(MouseEvent mouseEvent) {
-
-				if (mouseEvent.getButton() == MouseEvent.BUTTON2)
-				{
-					pickPoint = mouseEvent.getPoint();
-				}
-			}
-		});
-		
-		canvas.addMouseMotionListener(new MouseAdapter() {
-			public void mouseMoved(MouseEvent mouseEvent) {
-					
-				long lMouseIdleTime = 0;
-				
-				if (lMouseMoveTimeStamp != 0.0f)
-				{
-					lMouseIdleTime = System.nanoTime() - lMouseMoveTimeStamp;
-					//System.out.println("Mouse idle time in seconds: " +lMouseIdleTime*1e-9);
-					
-					if (lMouseIdleTime >= 100000000)	// 0.1 seconds in nano unit
-					{
-						// Set pick point to the current point.
-						// In the render method the real picking action will be triggered.
-						pickPoint = (mouseEvent.getPoint());
-					}
-					
-					lMouseMoveTimeStamp = System.nanoTime();
-				}
-				else
-				{
-					lMouseMoveTimeStamp = System.nanoTime();
-					System.out.println("Initial setting of time stamp to: "+lMouseMoveTimeStamp);
-				}
-			}
-		});
+		pickingTriggerMouseAdapter = new PickingTriggerMouseAdapter();
+		canvas.addMouseListener(pickingTriggerMouseAdapter);
+		canvas.addMouseMotionListener(pickingTriggerMouseAdapter);
 		
 		viewingFrame = new float [2][2];
 		
@@ -650,10 +623,7 @@ implements IGLCanvasUser {
 				rotation.z(),
 				rotation.w() );
 
-		if (pickPoint != null)
-		{
-			pickObjects(gl);
-		}
+		handlePicking();
 		
 		renderPart(gl, GL.GL_RENDER);
 
@@ -1654,5 +1624,39 @@ implements IGLCanvasUser {
     	vecOut[1] /= vecOut[3];
     	vecOut[2] /= vecOut[3];
     	vecOut[3] = 1.0f;
+    }
+    
+    protected void handlePicking() {
+    	
+	    if (pickingTriggerMouseAdapter.wasMouseMoved())
+	    {
+	    	if (pickingTimer != null) 
+	    	{
+	    		pickingTimer.cancel();
+	    		pickingTimer.purge();
+	    		pickingTimer = null;
+	    	}
+	    	
+		    pickingTimer = new Timer();	
+
+		    class PickingTimerTask extends TimerTask {
+		    	
+		        public void run() {    
+					pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		        }
+		    }
+		    
+		    pickingTimer.schedule(new PickingTimerTask(), (long)0, //initial delay
+			        (long)(MOUSE_PICKING_IDLE_TIME)); //subsequent rate
+	    }
+		
+//		if (pickingTriggerMouseAdapter.wasMousePressed())
+//			pickPoing = pickingTriggerMouseAdapter.getPickedPoint();
+
+	    if (pickPoint != null)
+	    {
+			pickObjects(gl);
+            pickingTimer.cancel(); //Terminate the timer thread
+	    }
     }
 }

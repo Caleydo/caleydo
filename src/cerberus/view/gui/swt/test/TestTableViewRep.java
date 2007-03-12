@@ -5,28 +5,22 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
-
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 public class TestTableViewRep 
 extends AViewRep 
-implements IView
-{
-	protected Composite refSWTContainer;
+implements IView {
 	
 	public TestTableViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, int iParentContainerId, String sLabel)
-	{
+			int iViewId, int iParentContainerId, String sLabel) {
+		
 		super(refGeneralManager, 
 				iViewId, 
 				iParentContainerId, 
@@ -34,29 +28,18 @@ implements IView
 				ViewType.SWT_DATA_EXPLORER);
 
 		initView();
-		retrieveGUIContainer();
 		drawView();
 	}
 	
-	public void initView()
-	{
-		// TODO Auto-generated method stub
+	public void initView() {
+		
+		retrieveGUIContainer();
 		
 	}
 
-	public void drawView()
-	{
+	public void drawView() {
+		
 		createTable();
-	}
-
-	public void retrieveGUIContainer()
-	{
-		SWTNativeWidget refSWTNativeWidget = 
-			(SWTNativeWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
-				iParentContainerId, -1, -1);
-		
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 
 	protected void createTable()

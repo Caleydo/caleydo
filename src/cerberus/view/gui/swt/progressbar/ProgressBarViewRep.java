@@ -4,15 +4,12 @@
 package cerberus.view.gui.swt.progressbar;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * Simple slider view that can be set between 0 and 100 percent.
@@ -29,8 +26,6 @@ implements IView {
 	protected int iProgressBarMaxValue = 200;
 
 	protected int iProgressBarCurrentValue = 0;
-
-	protected Composite refSWTContainer;
 
 	protected ProgressBar refProgressBar;
 
@@ -131,22 +126,6 @@ implements IView {
 	public void drawView() {
 		
 		refProgressBar.setSelection(this.iProgressBarCurrentValue);
-	}
-
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 
 	public void setProgressBarPercentage(int iProgressBarCurrentValue) {

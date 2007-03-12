@@ -3,8 +3,6 @@
  */
 package cerberus.view.gui.swt.data.exchanger;
 
-import gov.nih.nlm.ncbi.www.soap.eutils.efetch.SsType;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,7 +24,6 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -45,7 +42,6 @@ import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * Data Exchanger View makes it possible
@@ -57,8 +53,6 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
 public class NewSetEditorViewRep 
 extends AViewRep 
 implements IView {
-	
-	protected Composite refSWTContainer;
     
     protected String sArSetDataComboItems[];
     	
@@ -245,22 +239,6 @@ implements IView {
 				this.getClass().getSimpleName() + 
 				": drawView()", 
 				LoggerType.VERBOSE );		
-	}
-
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 	
 	public void setAttributes(int iWidth, int iHeight, String sImagePath) {

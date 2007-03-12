@@ -91,20 +91,6 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		//Nothing to do here.
 	}
 	
-//	public void retrieveGUIContainer() {
-//		
-//		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
-//			(SWTEmbeddedGraphWidget) refGeneralManager
-//				.getSingelton().getSWTGUIManager().createWidget(
-//						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
-//						refEmbeddedFrameComposite,
-//						iWidth, 
-//						iHeight);
-//
-//		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
-//		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-//	}
-	
 	public void setExternalGUIContainer(Composite refSWTContainer) {
 		
 		refEmbeddedFrameComposite = refSWTContainer;

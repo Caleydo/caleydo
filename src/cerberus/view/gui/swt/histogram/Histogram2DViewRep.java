@@ -2,15 +2,13 @@ package cerberus.view.gui.swt.histogram;
 
 import javax.media.opengl.GLCanvas;
 
-import com.sun.opengl.util.Animator;
-
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.awt.jogl.Histogram2DMain;
+
+import com.sun.opengl.util.Animator;
 
 /**
  * @deprecated
@@ -18,56 +16,38 @@ import cerberus.view.gui.awt.jogl.Histogram2DMain;
  */
 public class Histogram2DViewRep 
 extends AViewRep 
-implements IView
-{
+implements IView {
+
 	protected GLCanvas refGLCanvas;
-	
-	public Histogram2DViewRep(
-			IGeneralManager refGeneralManager, 
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel)
-	{
-		super(refGeneralManager, 
-				iViewId, 
-				iParentContainerId, 
-				sLabel,
-				ViewType.SWT_HISTOGRAM2D);	
-		
+
+	public Histogram2DViewRep(IGeneralManager refGeneralManager,
+			int iViewId,
+			int iParentContainerId,
+			String sLabel) {
+
+		super(refGeneralManager, iViewId, iParentContainerId, sLabel,
+				ViewType.SWT_HISTOGRAM2D);
+
 		initView();
-		retrieveGUIContainer();
 		drawView();
 	}
-	
-	public void initView()
-	{
-		// TODO Auto-generated method stub
-		
+
+	public void initView() {
+
+		retrieveGUIContainer();
 	}
 
-	public void drawView()
-	{
+	public void drawView() {
+
 		Histogram2DMain newCanvas = new Histogram2DMain();
 		newCanvas.runMain();
-		
-	    refGLCanvas.addGLEventListener( newCanvas );
 
-	    final Animator animator = new Animator(refGLCanvas);
-	    animator.start();
-	    
-	    //newCanvas.runMain();
-		
-	}
+		refGLCanvas.addGLEventListener(newCanvas);
 
-	public void retrieveGUIContainer()
-	{
-		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
-			(SWTEmbeddedJoglWidget)refGeneralManager.getSingelton()
-		.getSWTGUIManager().createWidget(
-				ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
-				iParentContainerId, -1, -1);
+		final Animator animator = new Animator(refGLCanvas);
+		animator.start();
 
-		refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
-		
+		//newCanvas.runMain();
+
 	}
 }

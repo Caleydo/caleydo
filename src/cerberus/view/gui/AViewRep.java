@@ -14,6 +14,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.ViewType;
+import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * Abstract class that is the base of all view representations.
@@ -115,6 +116,22 @@ implements IViewRep {
 	public void setParentContainerId(int iParentContainerId) {
 		
 		this.iParentContainerId = iParentContainerId;
+	}
+	
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	protected void retrieveGUIContainer() {
+		
+		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
+				.getSingelton().getSWTGUIManager().createWidget(
+						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
+						iParentContainerId, iWidth, iHeight);
+
+		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 	
 	/*

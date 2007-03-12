@@ -14,8 +14,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Stack;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -35,13 +33,11 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
-import cerberus.util.system.StringConversionTool;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.selection.ISetSelection;
-import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -57,9 +53,8 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.net.dwt.swing.WorkspaceSwingFrame;
+import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
-import cerberus.view.gui.swt.pathway.jgraph.GPCellViewFactory;
-import cerberus.view.gui.swt.pathway.jgraph.GPOverviewPanel;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
@@ -178,7 +173,7 @@ extends APathwayGraphViewRep {
 	 * the SWT GUI Manager.
 	 * 
 	 */
-	private void retrieveGUIContainer() {
+	protected void retrieveGUIContainer() {
 		
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
 			(SWTEmbeddedGraphWidget) refGeneralManager

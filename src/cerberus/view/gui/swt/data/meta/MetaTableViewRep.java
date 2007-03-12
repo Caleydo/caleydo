@@ -29,12 +29,6 @@ public class MetaTableViewRep extends AViewRep implements IDataTableView
 		
 	}
 
-	public void retrieveGUIContainer()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void initTable()
 	{
 		// TODO Auto-generated method stub

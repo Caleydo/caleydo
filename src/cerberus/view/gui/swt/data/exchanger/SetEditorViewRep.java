@@ -19,24 +19,20 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageData;
 
-import cerberus.data.IUniqueObject;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 import cerberus.view.gui.ViewType;
 
 /**
@@ -48,8 +44,6 @@ import cerberus.view.gui.ViewType;
 public class SetEditorViewRep 
 extends AViewRep 
 implements IView {
-	
-	protected Composite refSWTContainer;
 	
     protected String viewComboItems[];
     
@@ -219,16 +213,6 @@ implements IView {
 				this.getClass().getSimpleName() + 
 				": drawView()", 
 				LoggerType.VERBOSE );		
-	}
-
-	public void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 	
 	public void setAttributes(int iWidth, int iHeight, String sImagePath) {

@@ -9,13 +9,11 @@ import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 import cerberus.view.gui.swt.toolbar.Pathway2DToolbar;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * Pathway view.
@@ -92,22 +90,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 		// TODO Auto-generated method stub
 
-	}
-	
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 	
 	/*

@@ -38,8 +38,6 @@ implements IDataTableView {
 
 	protected IVirtualArrayManager refSelectionManager;
 
-	protected Composite refSWTContainer;
-
 	protected IStorage[] refAllStorageItems;
 
 	protected IStorage refCurrentStorage;
@@ -81,11 +79,6 @@ implements IDataTableView {
 	}
 
 	public void drawView() {
-		
-		// not implemented in this class
-	}
-
-	public void retrieveGUIContainer() {
 		
 		// not implemented in this class
 	}

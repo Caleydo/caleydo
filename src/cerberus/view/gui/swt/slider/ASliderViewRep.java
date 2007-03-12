@@ -1,17 +1,14 @@
 package cerberus.view.gui.swt.slider;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
 
 /**
  * The view representation of a slider.
@@ -25,8 +22,6 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
 public abstract class ASliderViewRep 
 extends AViewRep 
 implements IView, IMediatorSender, IMediatorReceiver {
-	
-	protected Composite refSWTContainer;
 	
 	protected Slider refSlider;
 	
@@ -68,21 +63,5 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		
 	   // Set current slider value
 	   refSlider.setSelection(iCurrentSliderValue);
-	}
-
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
-	 */
-	private void retrieveGUIContainer() {
-		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-		.getSingelton().getSWTGUIManager().createWidget(
-				ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-				iParentContainerId, iWidth, iHeight);
-
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 	}
 }
