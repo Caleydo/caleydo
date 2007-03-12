@@ -59,7 +59,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		progressBarView.setAttributes(iProgressBarCurrentValue);
-		progressBarView.retrieveGUIContainer();
 		progressBarView.initView();
 		progressBarView.drawView();
 		

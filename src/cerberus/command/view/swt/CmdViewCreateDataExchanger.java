@@ -60,7 +60,6 @@ implements ICommand {
 		viewManager.addViewRep(dataExchangerView);
 
 		dataExchangerView.setAttributes(iWidthX, iHeightY);
-		dataExchangerView.retrieveGUIContainer();
 		dataExchangerView.initView();
 		dataExchangerView.drawView();
 		

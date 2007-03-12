@@ -29,8 +29,9 @@ implements IView
 	
 	public void initView()
 	{
+		retrieveGUIContainer();
+		
 		Gears gears = new Gears();		
 		super.setGLEventListener( gears );		
 	}
-	
 }

@@ -88,8 +88,14 @@ implements IView {
 		this.refGLCanvas.removeGLEventListener( refGLEventListener );
 	}
 	
-	public final void retrieveGUIContainer()
-	{
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	protected void retrieveGUIContainer() {
+		
 		ISWTGUIManager refISWTGUIManager = refGeneralManager.getSingelton().getSWTGUIManager();
 		
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 

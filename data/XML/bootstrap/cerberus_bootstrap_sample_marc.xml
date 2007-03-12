@@ -53,8 +53,8 @@
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="75101 85101" /> 	
+
 		<!-- Window 14331 -->
-		<!-- 
 		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="14331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
                  
  	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="28401" parent="14331" label="Canvas" attrib2="500 300" detail=""	/>
@@ -63,7 +63,7 @@
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="75101 85101" /> 	
-		-->
+
 					
 		<!-- Window 12331 -->
      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="12331" label="OpenGL Pathway Window" attrib1="ROW VERTICAL" />   		

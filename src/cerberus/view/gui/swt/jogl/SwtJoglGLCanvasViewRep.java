@@ -72,6 +72,8 @@ implements IView, IGLCanvasDirector {
 	 */
 	public void initView() {
 			
+		retrieveGUIContainer();
+		
 		assert refGLEventListener == null : "initView() called more than once! refGLEventListener!=null !";
 				
 		/* Start Animator thread, if anaimort is not running already. */

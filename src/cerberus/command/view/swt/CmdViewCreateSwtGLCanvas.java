@@ -70,7 +70,6 @@ implements ICommand {
 			
 			
 			swtGLCanvasView.setAttributes(iWidthX, iHeightY, iGLCanvasId, iGLEventListernerId);
-			swtGLCanvasView.retrieveGUIContainer();
 			swtGLCanvasView.initView();
 			swtGLCanvasView.drawView();
 			

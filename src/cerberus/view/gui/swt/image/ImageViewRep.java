@@ -44,6 +44,8 @@ implements IView {
 
 	public void initView() {
 		
+		retrieveGUIContainer();
+		
 		Image image = new Image(refSWTContainer.getDisplay(), sImagePath);
 
 		Label label = new Label(refSWTContainer, SWT.BORDER);
@@ -59,7 +61,13 @@ implements IView {
 //				LoggerType.VERBOSE );		
 	}
 
-	public void retrieveGUIContainer() {
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(

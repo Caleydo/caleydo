@@ -57,7 +57,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 		
 		gearsView.setAttributes(iWidthX, iHeightY);
-		gearsView.retrieveGUIContainer();
 		gearsView.initView();
 		gearsView.drawView();
 		

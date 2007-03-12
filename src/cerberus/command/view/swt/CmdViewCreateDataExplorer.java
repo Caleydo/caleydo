@@ -59,7 +59,6 @@ implements ICommand {
 		viewManager.addViewRep(dataExplorerView);
 		
 		dataExplorerView.setAttributes(iWidthX, iHeightY);
-		dataExplorerView.retrieveGUIContainer();
 		dataExplorerView.initView();
 		dataExplorerView.drawView();
 		

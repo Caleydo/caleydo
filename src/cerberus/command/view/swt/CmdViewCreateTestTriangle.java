@@ -57,7 +57,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 		
 		triangleView.setAttributes(iWidthX, iHeightY);
-		triangleView.retrieveGUIContainer();
 		triangleView.initView();
 		triangleView.drawView();	
 		

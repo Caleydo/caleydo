@@ -84,6 +84,8 @@ implements IView, IMediatorReceiver {
 
 	public void initView() {
 
+		retrieveGUIContainer();
+		
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.type = SWT.HORIZONTAL;
 		refSWTContainer.setLayout(fillLayout);
@@ -108,7 +110,13 @@ implements IView, IMediatorReceiver {
 		refDataTableViewRep.initTable();
 	}
 
-	public void retrieveGUIContainer() {
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
 
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(

@@ -62,7 +62,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		sliderView.setAttributes(iWidthX, iHeightY, iSelectionId, sSelectionFieldName);
-		sliderView.retrieveGUIContainer();
 		sliderView.initView();
 		sliderView.drawView();
 		

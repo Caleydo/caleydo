@@ -120,6 +120,8 @@ implements IView {
 	
 	public void initView() {
 
+		retrieveGUIContainer();
+		
 		refSWTContainer.setLayout(new RowLayout(SWT.VERTICAL));
 
 		createSetButton = new Button(refSWTContainer, SWT.LEFT);
@@ -245,7 +247,13 @@ implements IView {
 				LoggerType.VERBOSE );		
 	}
 
-	public void retrieveGUIContainer() {
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(

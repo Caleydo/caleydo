@@ -22,6 +22,8 @@ implements IView
 	
 	public void initView()
 	{
+		retrieveGUIContainer();
+		
 		TriangleMain renderer = new TriangleMain();		
 		
 		refGLEventListener = renderer;

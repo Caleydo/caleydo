@@ -58,7 +58,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		browserView.setAttributes(iWidthX, iHeightY);
-		browserView.retrieveGUIContainer();
 		browserView.initView();
 		browserView.drawView();
 		

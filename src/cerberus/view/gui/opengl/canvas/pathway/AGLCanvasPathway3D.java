@@ -153,7 +153,7 @@ implements IGLCanvasUser {
 	
 	protected boolean bSelectionDataChanged = false;
 	
-	protected float fMouseIdleTime = 0.0f;
+	protected long lMouseMoveTimeStamp = 0;
 	
 	/**
 	 * Constructor
@@ -188,21 +188,32 @@ implements IGLCanvasUser {
 					pickPoint = mouseEvent.getPoint();
 				}
 			}
-			
+		});
+		
+		canvas.addMouseMotionListener(new MouseAdapter() {
 			public void mouseMoved(MouseEvent mouseEvent) {
+					
+				long lMouseIdleTime = 0;
 				
-//				
-//				if (fMouseIdleTime != 0.0f)
-//				{
-//					fMouseIdleTime = fMouseIdleTime - System.currentTimeMillis();
-//					
-//					if (fMouseIdleTime >= 3000.0f)
-//						return;
-//						
-//					fMouseIdleTime = 0.0f;
-//				}
-//				else
-//					fMouseIdleTime = System.currentTimeMillis();
+				if (lMouseMoveTimeStamp != 0.0f)
+				{
+					lMouseIdleTime = System.nanoTime() - lMouseMoveTimeStamp;
+					//System.out.println("Mouse idle time in seconds: " +lMouseIdleTime*1e-9);
+					
+					if (lMouseIdleTime >= 100000000)	// 0.1 seconds in nano unit
+					{
+						// Set pick point to the current point.
+						// In the render method the real picking action will be triggered.
+						pickPoint = (mouseEvent.getPoint());
+					}
+					
+					lMouseMoveTimeStamp = System.nanoTime();
+				}
+				else
+				{
+					lMouseMoveTimeStamp = System.nanoTime();
+					System.out.println("Initial setting of time stamp to: "+lMouseMoveTimeStamp);
+				}
 			}
 		});
 		

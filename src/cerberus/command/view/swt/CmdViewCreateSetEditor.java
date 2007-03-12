@@ -60,7 +60,6 @@ implements ICommand {
 		viewManager.addViewRep(setEditorView);
 
 		setEditorView.setAttributes(iWidthX, iHeightY);
-		setEditorView.retrieveGUIContainer();
 		setEditorView.initView();
 		setEditorView.drawView();
 		

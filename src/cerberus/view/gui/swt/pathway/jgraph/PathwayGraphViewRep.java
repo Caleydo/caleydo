@@ -172,7 +172,13 @@ extends APathwayGraphViewRep {
 		arSelectedVertices = new ArrayList<DefaultGraphCell>();
 	}
 
-	public void retrieveGUIContainer() {
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
 		
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
 			(SWTEmbeddedGraphWidget) refGeneralManager
@@ -189,6 +195,7 @@ extends APathwayGraphViewRep {
 	
 	public void initView() {
 		
+		retrieveGUIContainer();
 		extractCurrentPathwayFromSet();
 		
 		class PathwayMarqueeHandler 
@@ -977,12 +984,20 @@ extends APathwayGraphViewRep {
 			PathwayVertex selectedVertex = refGeneralManager.getSingelton().getPathwayElementManager().
 				getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]);
 			
+	    	// FIXME: name of the method is not good because inside 
+			// resetPathway() and drawPathway() are called.
+			showBackgroundOverlay(bShowBackgroundOverlay);
+			
+//	    	//ATTENTION: Performance problem!
+//	    	resetPathway();
+//	    	drawView();
+			
+			// Ignore vertex if is NOT in the current pathway!
+	    	if (!refCurrentPathway.isVertexInPathway(selectedVertex))
+	    		return;
+			
 	    	iLLSelectedVertices.add(selectedVertex.getElementId());
-
-	    	//ATTENTION: Performance problem!
-	    	resetPathway();
-	    	drawView();
-	    	
+	    	    		
 			highlightCell(hashVertexRep2GraphCell.get(
 					selectedVertex.getVertexRepByIndex(0)), Color.RED);
 			

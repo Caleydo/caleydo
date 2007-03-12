@@ -112,6 +112,8 @@ implements IView {
 
 	public void initView() {
 		
+		retrieveGUIContainer();
+		
 		if (this.refProgressBar != null)
 		{
 			System.err.println("call initView() more than once!");
@@ -131,7 +133,13 @@ implements IView {
 		refProgressBar.setSelection(this.iProgressBarCurrentValue);
 	}
 
-	public void retrieveGUIContainer() {
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(

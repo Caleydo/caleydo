@@ -57,7 +57,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		undoRedoView.setAttributes(iWidthX, iHeightY);
-		undoRedoView.retrieveGUIContainer();
 		undoRedoView.initView();
 		undoRedoView.drawView();
 		

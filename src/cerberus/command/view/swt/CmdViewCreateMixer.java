@@ -59,7 +59,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		mixerView.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
-		mixerView.retrieveGUIContainer();
 		mixerView.initView();
 		mixerView.drawView();
 		

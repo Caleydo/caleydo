@@ -27,8 +27,8 @@ import cerberus.view.gui.swt.widget.SWTNativeWidget;
  */
 public class MixerViewRep 
 extends AViewRep 
-implements IView
-{
+implements IView {
+	
 	protected Composite refSWTContainer;
 	
 	protected ArrayList<Slider> refSliderList;
@@ -36,8 +36,7 @@ implements IView
 	protected int iNumberOfSliders = 0;
 	
 	public MixerViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, int iParentContainerId, String sLabel)
-	{
+			int iViewId, int iParentContainerId, String sLabel) {
 		super(refGeneralManager, 
 				iViewId, 
 				iParentContainerId, 
@@ -52,8 +51,10 @@ implements IView
 	 * Maximum slider value = 100.
 	 * We use a fill layout to fill the available space optimally.
 	 */
-	public void initView()
-	{
+	public void initView() {
+		
+		retrieveGUIContainer();
+		
 		refSliderList = new ArrayList<Slider>();
 		refSWTContainer.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
@@ -69,13 +70,18 @@ implements IView
 		}
 	}
 
-	public void drawView()
-	{
-	   // TODO: set slider to current position
+	public void drawView() {
+
 	}
 	
-	public void retrieveGUIContainer()
-	{
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
+
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 		.getSingelton().getSWTGUIManager().createWidget(
 				ManagerObjectType.GUI_SWT_NATIVE_WIDGET,

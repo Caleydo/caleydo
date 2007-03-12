@@ -58,20 +58,8 @@ implements ICommand {
 				iUniqueTargetId, 
 				ManagerObjectType.VIEW);
 		
-		heatmapView.retrieveGUIContainer();
 		heatmapView.initView();
 		heatmapView.drawView();
-		
-//		GearsViewRep gearsView = (GearsViewRep) ((IViewManager)refGeneralManager.
-//				getManagerByBaseType(ManagerObjectType.VIEW)).
-//					createView(ManagerObjectType.VIEW_SWT_GEARS, 
-//							iViewId, iParentContainerId, sLabel);
-//		
-//		gearsView.setAttributes(refVecAttributes);
-//		gearsView.extractAttributes();
-//		gearsView.retrieveGUIContainer();
-//		gearsView.initView();
-//		gearsView.drawView();
 		
 		refCommandManager.runDoCommand(this);
 	}

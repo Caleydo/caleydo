@@ -72,7 +72,6 @@ implements ICommand {
 		
 		pathwayView.setAttributes(iWidthX, iHeightY, iHTMLBrowserId);
 		pathwayView.addSetId(iArTmp);
-		pathwayView.retrieveGUIContainer();
 		pathwayView.initView();
 		pathwayView.drawView();
 		

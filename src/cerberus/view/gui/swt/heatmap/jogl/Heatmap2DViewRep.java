@@ -25,17 +25,13 @@ implements IView, GLEventListener
 			int iViewId, int iParentContainerId, String sLabel)
 	{
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
-		
-		
-		
-//		initView();
-//		retrieveGUIContainer();
-//		drawView();
 	}
 	
 	public void initView()
 	{
 		System.err.println("Heatmap2DViewRep.initView()");
+	
+		retrieveGUIContainer();
 		
 		TriangleMain renderer = new TriangleMain();
 		
@@ -43,7 +39,7 @@ implements IView, GLEventListener
 	}
 	
 	public void init(GLAutoDrawable drawable)
-	{
+	{	
 		System.err.println("Heatmap2DViewRep.init( GL )");
 		
 		GL gl = drawable.getGL();

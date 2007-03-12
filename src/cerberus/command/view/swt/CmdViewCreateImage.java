@@ -60,7 +60,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		imageView.setAttributes(iWidthX, iHeightY, sImagePath);
-		imageView.retrieveGUIContainer();
 		imageView.initView();
 		imageView.drawView();
 		

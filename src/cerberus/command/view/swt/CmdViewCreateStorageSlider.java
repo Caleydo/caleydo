@@ -60,7 +60,6 @@ implements ICommand {
 				ManagerObjectType.VIEW);
 
 		sliderView.setAttributes(iWidthX, iHeightY, iSetId);
-		sliderView.retrieveGUIContainer();
 		sliderView.initView();
 		sliderView.drawView();
 		

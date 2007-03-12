@@ -53,6 +53,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 	public void initView() {
 
+		retrieveGUIContainer();
+		
 		refSWTContainer.setLayout(new GridLayout(1, false));
 		
 		new Pathway2DToolbar(refSWTContainer, refPathwayGraphViewRep);
@@ -74,7 +76,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		refPathwayGraphViewRep.addSetId(iArSetDataTmp);
 		refPathwayGraphViewRep.addSetId(iArSetSelectionTmp);
 		
-		refPathwayGraphViewRep.retrieveGUIContainer();
 		refPathwayGraphViewRep.initView();
 		refPathwayGraphViewRep.drawView();
 	}
@@ -93,7 +94,13 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 	}
 	
-	final public void retrieveGUIContainer() {
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(

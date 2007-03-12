@@ -44,6 +44,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	public void initView() {
 		
+		retrieveGUIContainer();
+		
 	    refSlider = new Slider(refSWTContainer, SWT.HORIZONTAL);
 	    //slider.setBounds(115, 50, 25, 15);
 	    refSlider.setSize(iWidth, iHeight);
@@ -68,7 +70,13 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	   refSlider.setSelection(iCurrentSliderValue);
 	}
 
-	public void retrieveGUIContainer() {
+	/**
+	 * Method uses the parent container ID to retrieve the 
+	 * GUI widget by calling the createWidget method from
+	 * the SWT GUI Manager.
+	 * 
+	 */
+	private void retrieveGUIContainer() {
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
 		.getSingelton().getSWTGUIManager().createWidget(
