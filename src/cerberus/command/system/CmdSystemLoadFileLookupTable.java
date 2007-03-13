@@ -55,6 +55,8 @@ implements ICommand {
 	
 	protected String sLookupTableTypeOptionalTarget;
 	
+	protected String sLookupTableTargetType;
+	
 	/**
 	 * Define type of lookup table to be created.
 	 * 
@@ -81,6 +83,10 @@ implements ICommand {
 	protected int iStopPareseFileAtLine = -1;
 	
 	protected int iTargetSetId;
+	
+	protected boolean bCreateReverseMap = false;
+	
+	
 	
 	/**
 	 * Constructor.
@@ -120,6 +126,12 @@ implements ICommand {
 		
 		sLookupTableType = tokenizer.nextToken();
 		sLookupTableDataType = tokenizer.nextToken();
+		
+		if  (tokenizer.hasMoreTokens()) 
+		{
+			sLookupTableTargetType = tokenizer.nextToken();
+			bCreateReverseMap = true;
+		}
 		
 		if ( tokenizer.hasMoreTokens() )
 		{
@@ -237,6 +249,47 @@ implements ICommand {
 			refGenomeIdManager.buildLUT_startEditing( lut_genome_type );
 			loader.loadData();
 			refGenomeIdManager.buildLUT_stopEditing( lut_genome_type );
+			
+			/* ---  create reverse Map ... --- */
+			if (bCreateReverseMap)
+			{
+				GenomeMappingType lut_genome_reverse_type = 
+					GenomeMappingType.valueOf(sLookupTableTargetType);
+				
+				if ( lut_genome_reverse_type.isMultiMap() ) 
+				{
+					switch (lut_genome_reverse_type.getTypeOrigin().getStorageType()) 
+					{
+					case INT:
+						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapInt(
+								refGeneralManager, 
+								lut_genome_type, 
+								lut_genome_reverse_type);
+						break;
+						
+					case STRING:
+						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapInt(
+								refGeneralManager, 
+								lut_genome_type, 
+								lut_genome_reverse_type);
+						break;
+						
+					default:
+						assert false : "unsupported type! " + 
+							lut_genome_reverse_type.toString() + " " + 
+							lut_genome_reverse_type.getTypeOrigin().getStorageType().toString();
+					
+					} //switch (lut_genome_reverse_type.getTypeOrigin().getStorageType()) 
+					
+				} //if ( lut_genome_reverse_type.isMultiMap() ) 
+				else
+				{
+					assert false : "lut_genome_reverse_type= " + 
+					lut_genome_reverse_type.toString() + " is not a Multimap! ";
+				
+				} //if ( lut_genome_reverse_type.isMultiMap() ) {...} else {
+				
+			} //if (bCreateReverseMap)
 			
 			refCommandManager.runDoCommand(this);
 			

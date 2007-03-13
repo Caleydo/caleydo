@@ -55,12 +55,9 @@ implements ILookupTableLoader {
 		
 		refGenomeIdManager = 
 			refGeneralManager.getSingelton().getGenomeIdManager();
-
-		
 	}
 	
 
-	
 
 	/**
 	 * empty methode, must be overrwitten by sub-class, 
@@ -124,17 +121,14 @@ implements ILookupTableLoader {
 	 * 
 	 * @param iInitialSizeHashMap
 	 */
-	public void setInitialSizeHashMap( final int iSetInitialSizeHashMap ) {
+	public final void setInitialSizeHashMap( final int iSetInitialSizeHashMap ) {
 		
 		this.iInitialSizeMultiHashMap = iSetInitialSizeHashMap;
 	}
+	
 	
 	protected final int getiInitialSizeHashMap( ) {
 		
 		return this.iInitialSizeMultiHashMap;
 	}
-
-
-
-
 }

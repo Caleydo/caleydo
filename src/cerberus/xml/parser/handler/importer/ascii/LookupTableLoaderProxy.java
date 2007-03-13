@@ -5,6 +5,9 @@ package cerberus.xml.parser.handler.importer.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 //import java.util.HashMap;
 //import java.util.ListIterator;
 //import java.util.NoSuchElementException;
@@ -233,4 +236,121 @@ extends AbstractLoader {
 		refProxyLookupTableLoader.destroyLUT();
 	}
 
+	/**
+	 * Creates a new MultiHashArrayIntegerMap inside the DynamicGenomeIdManager.
+	 * Fills the new MultiMap with data from originMultiMapType.
+	 * 
+	 * @param refGeneralManager
+	 * @param originMultiMapType
+	 * @param targetMultiMapType
+	 * @return new MultiHashArrayIntegerMap
+	 */
+	public static final MultiHashArrayIntegerMap createReverseMultiMapFromMultiMapInt( 
+			final IGeneralManager refGeneralManager,
+			final GenomeMappingType originMultiMapType,
+			final GenomeMappingType targetMultiMapType) {
+		
+		/* consistency check */
+		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())||
+			 (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin())||
+			 (originMultiMapType.getDataMapppingType() != GenomeMappingDataType.MULTI_INT2INT))
+		{
+			assert false : "Can not create reverse multimap, because originMultMapType and targetMultMapType do not match!";
+			return null;
+		}
+		
+		DynamicGenomeIdManager dgi_mng = 
+			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		MultiHashArrayIntegerMap refIntMultiMapOrigin = 
+			dgi_mng.getMultiMapByType(originMultiMapType);
+		
+		dgi_mng.createMapByType(targetMultiMapType, 
+				targetMultiMapType.getDataMapppingType(), 
+				refIntMultiMapOrigin.size());
+		
+		MultiHashArrayIntegerMap refIntMultiMapTarget = 
+			dgi_mng.getMultiMapByType(targetMultiMapType);
+
+		Set<Integer> setKeysOrigin = refIntMultiMapOrigin.keySet();
+		
+		Iterator <Integer> iterKeysOrigin = setKeysOrigin.iterator();
+		while ( iterKeysOrigin.hasNext())
+		{
+			int iKeyOrigin = iterKeysOrigin.next().intValue();
+			
+			ArrayList<Integer> buffer = refIntMultiMapOrigin.get(iKeyOrigin);			
+			Iterator <Integer> iterValues = buffer.iterator();				
+			//Iterator <Integer> iterValues = refIntMultiMapOrigin.get(iKeyOrigin).iterator();		
+			while (iterValues.hasNext())
+			{				
+				refIntMultiMapTarget.put(
+						iterValues.next().intValue(), 
+						iKeyOrigin);
+				
+			} //while (iterValues.hasNext())
+			
+		} //while ( iterKeysOrigin.hasNext())
+		
+		return refIntMultiMapTarget;
+	}
+	
+	/**
+	 * Creates a new MultiHashArrayStringMap inside the DynamicGenomeIdManager.
+	 * Fills the new MultiMap with data from originMultiMapType.
+	 * 
+	 * @param refGeneralManager
+	 * @param originMultiMapType
+	 * @param targetMultiMapType
+	 * @return new MultiHashArrayStringMap
+	 */
+	public static final MultiHashArrayStringMap createReverseMultiMapFromMultiMapString( 
+			final IGeneralManager refGeneralManager,
+			final GenomeMappingType originMultiMapType,
+			final GenomeMappingType targetMultiMapType) {
+		
+		/* consistency check */
+		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())||
+			 (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin())||
+			 (originMultiMapType.getDataMapppingType() != GenomeMappingDataType.MULTI_INT2INT))
+		{
+			assert false : "Can not create reverse multimap, because originMultMapType and targetMultMapType do not match!";
+			return null;
+		}
+		
+		DynamicGenomeIdManager dgi_mng = 
+			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		MultiHashArrayStringMap refStringMultiMapOrigin = 
+			dgi_mng.getMultiMapStringByType(originMultiMapType);
+		
+		dgi_mng.createMapByType(targetMultiMapType, 
+				targetMultiMapType.getDataMapppingType(), 
+				refStringMultiMapOrigin.size());
+		
+		MultiHashArrayStringMap refStringMultiMapTarget = 
+			dgi_mng.getMultiMapStringByType(targetMultiMapType);
+
+		Set<String> setKeysOrigin = refStringMultiMapOrigin.keySet();
+		
+		Iterator <String> iterKeysOrigin = setKeysOrigin.iterator();
+		while ( iterKeysOrigin.hasNext())
+		{
+			String sKeyOrigin = iterKeysOrigin.next();
+			
+			ArrayList<String> buffer = refStringMultiMapOrigin.get(sKeyOrigin);			
+			Iterator <String> iterValues = buffer.iterator();
+			//Iterator <String> iterValues = refIntMultiMapOrigin.get(sKeyOrigin).iterator();
+			while (iterValues.hasNext())
+			{				
+				refStringMultiMapTarget.put(iterValues.next(), 
+						sKeyOrigin);
+				
+			} //while (iterValues.hasNext())
+			
+		} //while ( iterKeysOrigin.hasNext())
+		
+		return refStringMultiMapTarget;
+	}
+	
 }
