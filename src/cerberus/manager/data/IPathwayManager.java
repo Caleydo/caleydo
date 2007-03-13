@@ -24,4 +24,8 @@ extends IGeneralManager {
 	public String getPathwayImagePath();
 	
 	public void setPathwayImagePath(String sPathwayImagePath);
+	
+	public String getPathwayXMLPath();
+	
+	public void setPathwayXMLPath(String sPathwayImagePath);
 }

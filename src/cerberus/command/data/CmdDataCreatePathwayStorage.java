@@ -88,7 +88,8 @@ implements ICommand {
 				sPathwayFilePath = "map0" + Integer.toString(iPathwayId);
 			}
 			
-			sPathwayFilePath = "data/XML/pathways/" + sPathwayFilePath +".xml";			
+			sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath() 
+				+ sPathwayFilePath +".xml";			
 			
 			refGeneralManager.getSingelton().
 				getXmlParserManager().parseXmlFileByName(sPathwayFilePath);

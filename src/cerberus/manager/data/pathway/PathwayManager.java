@@ -24,7 +24,9 @@ public class PathwayManager
 extends AAbstractManager
 implements IPathwayManager {
 
-	protected String sPathwayImagePath = "data/GenomeData/pathways/images";
+	protected String sPathwayImagePath = "data/GenomeData/pathways/";
+	
+	protected String sPathwayXMLPath = "data/XML/pathways/";
 	
 	protected HashMap<Integer, Pathway> pathwayLUT;
 
@@ -115,6 +117,17 @@ implements IPathwayManager {
 		
 		this.sPathwayImagePath = sPathwayImagePath;
 	}
+	
+	public final String getPathwayXMLPath() {
+		
+		return sPathwayXMLPath;
+	}
+	
+	public void setPathwayXMLPath(String sPathwayXMLPath) {
+		
+		this.sPathwayXMLPath = sPathwayXMLPath;
+	}
+	
 	
 	public boolean hasItem(int iItemId) {
 
