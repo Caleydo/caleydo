@@ -12,61 +12,99 @@ import cerberus.data.mapping.GenomeIdType;
  */
 public enum GenomeMappingType
 {
-
+	/* --- Accession Id --- */
 	ACCESSION_CODE_2_ACCESSION (
 			GenomeIdType.ACCESSION_CODE,
 			GenomeIdType.ACCESSION, 
 			GenomeMappingDataType.STRING2INT),
+			
+	ACCESSION_2_ACCESSION_CODE (
+			GenomeIdType.ACCESSION,
+			GenomeIdType.ACCESSION_CODE, 
+			GenomeMappingDataType.INT2STRING),
 	
 	ACCESSION_2_NCBI_GENEID (
 			GenomeIdType.ACCESSION,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.INT2INT),
 			
-	ACCESSION_2_NCBI_GENEID_REVERSE (
-			GenomeIdType.NCBI_GENEID,
-			GenomeIdType.ACCESSION,
-			GenomeMappingDataType.INT2INT),
-
 	ACCESSION_2_MICROARRAY (
 			GenomeIdType.MICROARRAY,
 			GenomeIdType.ACCESSION,
 			GenomeMappingDataType.INT2STRING),
+		
 			
+	/* --- KEGG Gene Id --- */
+	/**
+	 * @deprecated use NCBI_GENEID_2*
+	 */
 	KEGG_CODE_2_KEGG (
 			GenomeIdType.KEGG,
 			GenomeIdType.KEGG,
 			GenomeMappingDataType.STRING2INT),
-					
-	KEGG_2_ENZYMEID (
+				
+	/**
+	 * @deprecated use NCBI_GENEID_2*
+	 */
+	KEGG_2_ENZYME (
 			GenomeIdType.KEGG,
 			GenomeIdType.ENZYME,
 			GenomeMappingDataType.MULTI_INT2INT),
 			
-	KEGG_2_ENZYMEID_R (
-			GenomeIdType.ENZYME,
+	/**
+	 * @deprecated use NCBI_GENEID_2*
+	 */
+	ENZYME_2_KEGG (
 			GenomeIdType.KEGG,
+			GenomeIdType.ENZYME,
 			GenomeMappingDataType.MULTI_INT2INT),
-	
+				
+	/**
+	 * @deprecated do not use KEGG Id; use NCBI_GENEID_2
+	 * Note: this is the mapping between NCBI_GENEID and KEGG 
+	 */
 	NCBI_GENEID_2_KEGG  (
 			GenomeIdType.NCBI_GENEID,
 			GenomeIdType.KEGG,
 			GenomeMappingDataType.INT2INT),
-			
+					
+					
+	/* --- NCBI GeneId --- */
 	NCBI_GENEID_CODE_2_NCBI_GENEID  (
 			GenomeIdType.NCBI_GENEID_CODE,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.STRING2INT),
+					
+	NCBI_GENEID_2_ACCESSION (
+			GenomeIdType.ACCESSION,
+			GenomeIdType.NCBI_GENEID,
+			GenomeMappingDataType.INT2INT),
 	
+	NCBI_GENEID_2_ENZYME  (
+			GenomeIdType.NCBI_GENEID,
+			GenomeIdType.ENZYME,
+			GenomeMappingDataType.INT2INT),
+
+					
+	/* --- Pathway --- */
+	PATHWAY_CODE_2_PATHWAY  (
+			GenomeIdType.PATHWAY_CODE,
+			GenomeIdType.PATHWAY,
+			GenomeMappingDataType.STRING2INT),
+			
 	PATHWAY_2_NCBI_GENEID  (
 			GenomeIdType.PATHWAY,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.INT2INT),
 			
+			
+	/* --- Metabolit --- */
 	METABOLIT_CODE_2_METABOLIT (GenomeIdType.METABOLIT_CODE,
 			GenomeIdType.METABOLIT,
 			GenomeMappingDataType.STRING2INT),
-					
+			
+			
+	/* --- Microarray --- */
 	MICROARRAY_2_NCBI_GENEID (GenomeIdType.MICROARRAY,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.STRING2INT),
@@ -74,7 +112,7 @@ public enum GenomeMappingType
 	MICROARRAY_2_ACCESSION (
 			GenomeIdType.MICROARRAY,
 			GenomeIdType.ACCESSION,
-			GenomeMappingDataType.STRING2STRING),
+			GenomeMappingDataType.INT2INT),			
 			
 	MICROARRAY_CODE_2_ACCESSION (
 			GenomeIdType.MICROARRAY,
@@ -86,31 +124,35 @@ public enum GenomeMappingType
 			GenomeIdType.ACCESSION_CODE,
 			GenomeMappingDataType.MULTI_STRING2STRING ),
 
-	MICROARRAY_CODE_2_ACCESSION_CODE_USE_LUT (
-			GenomeIdType.MICROARRAY_CODE,
-			GenomeIdType.ACCESSION_CODE,
-			GenomeMappingDataType.MULTI_STRING2STRING_USE_LUT ),
+//  // Loader handles lookup table!
+//	MICROARRAY_CODE_2_ACCESSION_CODE_USE_LUT (
+//			GenomeIdType.MICROARRAY_CODE,
+//			GenomeIdType.ACCESSION_CODE,
+//			GenomeMappingDataType.MULTI_STRING2STRING_USE_LUT ),
 					
 	MICROARRAY_CODE_2_MICROARRAY (
 			GenomeIdType.MICROARRAY,
 			GenomeIdType.MICROARRAY,
 			GenomeMappingDataType.STRING2INT),
-					
-	MICROARRAY_2_ACCESSION_STRING( 
-			GenomeIdType.MICROARRAY,
-			GenomeIdType.ACCESSION,
-			GenomeMappingDataType.MULTI_STRING2STRING),
-	
+			
+			
+	/* --- Enzyme --- */
 	ENZYME_CODE_2_ENZYME  (
 			GenomeIdType.ENZYME_CODE,
 			GenomeIdType.ENZYME,
 			GenomeMappingDataType.STRING2INT),
 	
-	ENZYME_CODE_2_ENZYME_R (
+	ENZYME_2_ENZYME_CODE (
 			GenomeIdType.ENZYME,
 			GenomeIdType.ENZYME_CODE,
 			GenomeMappingDataType.INT2STRING),
 	
+	ENZYME_2_NCBI_GENEID  (
+			GenomeIdType.ENZYME,
+			GenomeIdType.NCBI_GENEID,
+			GenomeMappingDataType.MULTI_INT2INT),
+					
+			
 	NON_MAPPING(GenomeIdType.NONE,
 			GenomeIdType.NONE,
 			GenomeMappingDataType.NONE);

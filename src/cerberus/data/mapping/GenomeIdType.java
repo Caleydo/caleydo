@@ -15,42 +15,66 @@ import cerberus.data.mapping.GenomeMappingType;
 public enum GenomeIdType
 {
 
-	ACCESSION    (StorageType.INT, GenomeMappingType.ACCESSION_CODE_2_ACCESSION,
+	ACCESSION    (StorageType.INT, 
+			GenomeMappingType.ACCESSION_CODE_2_ACCESSION,
 			"acc","accession"),
-	ACCESSION_CODE    (StorageType.STRING,GenomeMappingType.ACCESSION_CODE_2_ACCESSION,
+	ACCESSION_CODE    (StorageType.STRING,
+			GenomeMappingType.ACCESSION_CODE_2_ACCESSION,
 			"acc","accession_code"),
 			
-	ENZYME       (StorageType.INT,GenomeMappingType.ENZYME_CODE_2_ENZYME,
+	ENZYME       (StorageType.INT,
+			GenomeMappingType.ENZYME_CODE_2_ENZYME,
 			"ec","EC_number"),
-	ENZYME_CODE  (StorageType.STRING,GenomeMappingType.ENZYME_CODE_2_ENZYME,
+	ENZYME_CODE  (StorageType.STRING,
+			GenomeMappingType.ENZYME_CODE_2_ENZYME,
 			"ec","EC_number as String"),
 			
-	METABOLIT   (StorageType.INT,GenomeMappingType.METABOLIT_CODE_2_METABOLIT,
+	METABOLIT   (StorageType.INT,
+			GenomeMappingType.METABOLIT_CODE_2_METABOLIT,
 			"ko","methobliot"),
-	METABOLIT_CODE   (StorageType.STRING,GenomeMappingType.METABOLIT_CODE_2_METABOLIT,
+	METABOLIT_CODE   (StorageType.STRING,
+			GenomeMappingType.METABOLIT_CODE_2_METABOLIT,
 			"ko","methobliot"),
 			
-	MICROARRAY   (StorageType.INT,GenomeMappingType.MICROARRAY_CODE_2_MICROARRAY,
+	MICROARRAY   (StorageType.INT,
+			GenomeMappingType.MICROARRAY_CODE_2_MICROARRAY,
 			"IMAGp","Microarray LUT"),
-	MICROARRAY_CODE   (StorageType.STRING,GenomeMappingType.MICROARRAY_CODE_2_MICROARRAY,
+	MICROARRAY_CODE   (StorageType.STRING,
+			GenomeMappingType.MICROARRAY_CODE_2_MICROARRAY,
 			"IMAGp","Microarray LUT"),
 			
-	NCBI_GENEID  (StorageType.INT,GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,
+	NCBI_GENEID  (StorageType.INT,
+			GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,
 			"ncbi-geneid","ncbi-geneid"),
 			
-	NCBI_GENEID_CODE  (StorageType.STRING,GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,
+	NCBI_GENEID_CODE  (StorageType.STRING,
+			GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,
 			"ncbi-geneid","ncbi-geneid"),
-			
-	NCBI_GI      (StorageType.INT,GenomeMappingType.NON_MAPPING,
+		
+	/**
+	 * @deprecated use NCBI_GENEID instead
+	 */
+	NCBI_GI      (StorageType.INT,
+			GenomeMappingType.NON_MAPPING,
 			"ncbi-gi","ncbi-gi"),
 	
-	PATHWAY      (StorageType.INT,GenomeMappingType.NON_MAPPING,
+	PATHWAY      (StorageType.INT,
+			GenomeMappingType.NON_MAPPING,
 			"path","pathway-id"),
 			
-	KEGG      (StorageType.INT,GenomeMappingType.KEGG_CODE_2_KEGG,
+	PATHWAY_CODE      (StorageType.STRING,
+			GenomeMappingType.NON_MAPPING,
+			"path","pathway-id"),
+			
+	/**
+	 * @deprecated use NCBI_GENEID instead
+	 */
+	KEGG      (StorageType.INT,
+			GenomeMappingType.KEGG_CODE_2_KEGG,
 			"kegg","kegg-id"),
 			
-	NONE         (StorageType.NONE,GenomeMappingType.NON_MAPPING,
+	NONE         (StorageType.NONE,
+			GenomeMappingType.NON_MAPPING,
 			"none","none");
 	
 	
