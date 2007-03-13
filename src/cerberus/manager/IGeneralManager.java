@@ -97,11 +97,13 @@ public interface IGeneralManager {
 	
 	public static final int iUniqueId_TypeOffset_GenomeId_ENZYME = 72;
 	
-	public static final int iUniqueId_TypeOffset_GenomeId_METHABOLIT = 73;
+	public static final int iUniqueId_TypeOffset_GenomeId_METHBOLIT = 73;
 	
 	public static final int iUniqueId_TypeOffset_GenomeId_NCBI_GENE = 74;
 	
 	public static final int iUniqueId_TypeOffset_GenomeId_PATHWAY = 75;
+	
+	public static final int iUniqueId_TypeOffset_GenomeId_MICROARRAY = 76;	
 	
 	public static final int iUniqueId_TypeOffset_EventPublisher = 90;
 	

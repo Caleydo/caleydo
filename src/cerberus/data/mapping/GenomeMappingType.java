@@ -42,7 +42,7 @@ public enum GenomeMappingType
 			GenomeIdType.KEGG,
 			GenomeIdType.KEGG,
 			GenomeMappingDataType.STRING2INT),
-				
+			
 	/**
 	 * @deprecated use NCBI_GENEID_2*
 	 */
@@ -74,6 +74,11 @@ public enum GenomeMappingType
 			GenomeIdType.NCBI_GENEID_CODE,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.STRING2INT),
+	
+	NCBI_GENEID_2_NCBI_GENEID_CODE  (
+			GenomeIdType.NCBI_GENEID,
+			GenomeIdType.NCBI_GENEID_CODE,
+			GenomeMappingDataType.INT2STRING),			
 					
 	NCBI_GENEID_2_ACCESSION (
 			GenomeIdType.ACCESSION,
@@ -91,6 +96,11 @@ public enum GenomeMappingType
 			GenomeIdType.PATHWAY_CODE,
 			GenomeIdType.PATHWAY,
 			GenomeMappingDataType.STRING2INT),
+	
+	PATHWAY_2_PATHWAY_CODE (
+			GenomeIdType.PATHWAY,
+			GenomeIdType.PATHWAY_CODE,
+			GenomeMappingDataType.INT2STRING),			
 			
 	PATHWAY_2_NCBI_GENEID  (
 			GenomeIdType.PATHWAY,
@@ -99,13 +109,29 @@ public enum GenomeMappingType
 			
 			
 	/* --- Metabolit --- */
-	METABOLIT_CODE_2_METABOLIT (GenomeIdType.METABOLIT_CODE,
+	METABOLIT_CODE_2_METABOLIT (
+			GenomeIdType.METABOLIT_CODE,
 			GenomeIdType.METABOLIT,
 			GenomeMappingDataType.STRING2INT),
-			
+	
+	METABOLIT_2_METABOLIT_CODE (
+			GenomeIdType.METABOLIT,
+			GenomeIdType.METABOLIT_CODE,
+			GenomeMappingDataType.INT2STRING),			
 			
 	/* --- Microarray --- */
-	MICROARRAY_2_NCBI_GENEID (GenomeIdType.MICROARRAY,
+	MICROARRAY_CODE_2_MICROARRAY (
+			GenomeIdType.MICROARRAY_CODE,
+			GenomeIdType.MICROARRAY,
+			GenomeMappingDataType.STRING2INT),			
+
+	MICROARRAY_2_MICROARRAY_CODE (
+			GenomeIdType.MICROARRAY,
+			GenomeIdType.MICROARRAY_CODE,
+			GenomeMappingDataType.INT2STRING),			
+			
+	MICROARRAY_2_NCBI_GENEID (
+			GenomeIdType.MICROARRAY,
 			GenomeIdType.NCBI_GENEID,
 			GenomeMappingDataType.STRING2INT),
 			
@@ -129,13 +155,7 @@ public enum GenomeMappingType
 //			GenomeIdType.MICROARRAY_CODE,
 //			GenomeIdType.ACCESSION_CODE,
 //			GenomeMappingDataType.MULTI_STRING2STRING_USE_LUT ),
-					
-	MICROARRAY_CODE_2_MICROARRAY (
-			GenomeIdType.MICROARRAY,
-			GenomeIdType.MICROARRAY,
-			GenomeMappingDataType.STRING2INT),
-			
-			
+				
 	/* --- Enzyme --- */
 	ENZYME_CODE_2_ENZYME  (
 			GenomeIdType.ENZYME_CODE,
