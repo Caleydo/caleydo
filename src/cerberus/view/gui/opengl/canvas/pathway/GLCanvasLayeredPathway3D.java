@@ -171,7 +171,7 @@ extends AGLCanvasPathway3D {
 				refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
 				fTmpZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
 				
-				//refPathwayTexture.enable();
+				refPathwayTexture.enable();
 				refPathwayTexture.bind();
 				//gl.glTexEnvi(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 	
