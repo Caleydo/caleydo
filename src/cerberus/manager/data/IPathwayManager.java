@@ -20,4 +20,8 @@ extends IGeneralManager {
 	public void createPathwayImageMap(String sLink);
 	
 	public PathwayImageMap getCurrentPathwayImageMap();
+	
+	public String getPathwayImagePath();
+	
+	public void setPathwayImagePath(String sPathwayImagePath);
 }

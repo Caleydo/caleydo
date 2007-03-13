@@ -6,7 +6,6 @@ import java.util.Iterator;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISingelton;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -25,6 +24,8 @@ public class PathwayManager
 extends AAbstractManager
 implements IPathwayManager {
 
+	protected String sPathwayImagePath = "data/GenomeData/pathways/images";
+	
 	protected HashMap<Integer, Pathway> pathwayLUT;
 
 	protected Pathway refCurrentPathway;
@@ -105,6 +106,16 @@ implements IPathwayManager {
 		return refCurrentPathwayImageMap;
 	}
 
+	public final String getPathwayImagePath() {
+		
+		return sPathwayImagePath;
+	}
+	
+	public void setPathwayImagePath(String sPathwayImagePath) {
+		
+		this.sPathwayImagePath = sPathwayImagePath;
+	}
+	
 	public boolean hasItem(int iItemId) {
 
 		if (pathwayLUT.containsKey(iItemId))

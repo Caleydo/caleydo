@@ -802,7 +802,8 @@ extends APathwayGraphViewRep {
 			// Build current pathway file path of GIF
 			String sPathwayImageFilePath = refCurrentPathway.getTitle();
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
-			sPathwayImageFilePath = "data/images/pathways/" +sPathwayImageFilePath +".gif";
+			sPathwayImageFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
+				+sPathwayImageFilePath +".gif";
 
 			refGeneralManager.getSingelton().logMsg(
 					"Load background pathway from file: " +sPathwayImageFilePath,

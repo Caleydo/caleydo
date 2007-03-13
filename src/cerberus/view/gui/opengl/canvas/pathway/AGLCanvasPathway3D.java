@@ -6,18 +6,12 @@ import gleem.linalg.Vec4f;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
-//use timer of Animator!
-//import java.util.Timer;
-//import java.util.TimerTask;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -41,6 +35,7 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.util.system.SystemTime;
 import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
@@ -162,8 +157,10 @@ implements IGLCanvasUser {
 	
 	protected PickingTriggerMouseAdapter pickingTriggerMouseAdapter;
 	
-//	protected Timer pickingTimer; 
+	protected float fLastMouseMovedTimeStamp = 0;
 	
+	protected SystemTime systemTime = new SystemTime();
+		
 	/**
 	 * Constructor
 	 * 
@@ -315,7 +312,8 @@ implements IGLCanvasUser {
 				sPathwayTexturePath = "map0" + Integer.toString(iPathwayId);
 			}
 			
-			sPathwayTexturePath = "data/images/pathways/" + sPathwayTexturePath +".gif";	
+			sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
+				+ sPathwayTexturePath +".gif";	
 			
 			loadBackgroundOverlayImage(sPathwayTexturePath, refTmpPathway);		
 		}
@@ -1290,9 +1288,9 @@ implements IGLCanvasUser {
 		try
 		{
 			refPathwayTexture = TextureIO.newTexture(new File(sPathwayImageFilePath), false);
-			//refPathwayTexture.bind();
-			//refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-			//refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+//			refPathwayTexture.bind();
+//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
 			refHashPathwayToTexture.put(refTexturedPathway, refPathwayTexture);
 			
 			refGeneralManager.getSingelton().logMsg(
@@ -1629,42 +1627,22 @@ implements IGLCanvasUser {
     }
     
     protected void handlePicking() {
-    	
+    
 	    if (pickingTriggerMouseAdapter.wasMouseMoved())
 	    {
-	    	
-	    	//use Animator!
-	    	
-//	    	if (pickingTimer != null) 
-//	    	{
-//	    		pickingTimer.cancel();
-//	    		pickingTimer.purge();
-//	    		pickingTimer = null;
-//	    	}
-//	    	
-//		    pickingTimer = new Timer();	
-//
-//		    class PickingTimerTask extends TimerTask {
-//		    	
-//		        public void run() {    
-//					pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-//		        }
-//		    }
-//		    
-//		    pickingTimer.schedule(new PickingTimerTask(), (long)0, //initial delay
-//			        (long)(MOUSE_PICKING_IDLE_TIME)); //subsequent rate
-	    	
-	    	
+	    	// Restart timer
+	    	fLastMouseMovedTimeStamp = System.nanoTime();
 	    }
-		
-//		if (pickingTriggerMouseAdapter.wasMousePressed())
-//			pickPoing = pickingTriggerMouseAdapter.getPickedPoint();
-
-	    if (pickPoint != null)
+	    else if (System.nanoTime() - fLastMouseMovedTimeStamp >= 0.3 * 1e9)
 	    {
-			pickObjects(gl);
-            
-			//pickingTimer.cancel(); //Terminate the timer thread
+	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			
+	    	// Check if a object was picked
+	    	if (pickPoint != null)
+	    	{
+	    		pickObjects(gl);
+	    	}
 	    }
+	    //System.out.println("Picking idle time: " + ((System.nanoTime() - fLastMouseMovedTimeStamp)) * 1e-9);
     }
 }
