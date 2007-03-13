@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
  * This mechanism is used to trigger the picking 
  * timer mechanism.
  * 
+ * @deprecated use PickingJoglMouseListener instead
+ * 
  * @author Marc Streit
  *
  */
@@ -20,6 +22,10 @@ extends MouseAdapter {
 	protected Point pickedPoint;
 	
 	protected boolean bMousePressed = false;
+	
+	public PickingTriggerMouseAdapter() {
+		super();
+	}
 	
 	public void mousePressed(MouseEvent mouseEvent) {
 

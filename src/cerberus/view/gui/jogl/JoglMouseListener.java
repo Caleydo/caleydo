@@ -21,39 +21,23 @@ import cerberus.util.system.MathUtil;
  */
 
 public class JoglMouseListener implements MouseListener, MouseMotionListener {
-  
-
-//	private static final float fPI = 1.0f; //(float) Math.PI / 32;
 	
-  private IJoglMouseListener refGearsMain;
+	
+  private IJoglMouseListener refParentGearsMain;
+  
+  protected float fZoomScale = 1.2f;
 
-  //private GearsMain refGearsMain;
-
-//  private Rotf view_rot = new Rotf( new Vec3f(0.1f, 0.2f, 0.0f), 0.01f);
+  protected int prevMouseX, prevMouseY;
   
-//  private Rotf view_rot_inc = new Rotf();
-//  private float fconstant_rotation_angle = 1.0f;
+  protected Point pressedMousePosition;
   
+  protected boolean bMouseRightButtonDown = false;
   
-//  private float view_rotx = 20.0f, view_roty = 30.0f, view_rotz = 0.0f;
+  protected boolean bMouseMiddleButtonDown = false;
   
-//  private float view_x = 0.0f, view_y = 0.0f, view_z = 0.0f;
+  protected boolean bMouseLeft_StandbyZoom = false;
   
-  private float fZoomScale = 1.2f;
-  
-  //private float angle = 0.0f;
-
-  private int prevMouseX, prevMouseY;
-  
-  private Point pressedMousePosition;
-  
-  private boolean bMouseRightButtonDown = false;
-  
-  private boolean bMouseMiddleButtonDown = false;
-  
-  private boolean bMouseLeft_StandbyZoom = false;
-  
-  private boolean bMouseRight_StandbyRotate = false;
+  protected boolean bMouseRight_StandbyRotate = false;
 
   /**
    * Define mouse sensitivity. 
@@ -61,12 +45,13 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
    * Default value 1.0
    * 
    */
-  private float fMouseSensitivityRotation = 1.0f;
+  protected float fMouseSensitivityRotation = 1.0f;
 
+  
 	public JoglMouseListener( final IJoglMouseListener refParentGearsMain) {
 		assert refParentGearsMain != null : "Can not handle null-pointer";
 		
-		this.refGearsMain = refParentGearsMain;
+		this.refParentGearsMain = refParentGearsMain;
 		
 		pressedMousePosition = new Point();
 	}
@@ -86,14 +71,22 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
   
   public final boolean isMouseMiddleButtondown() {
 	  return bMouseMiddleButtonDown;
+  }  
+
+  public final Point getPressedMousePosition() {
+	  return pressedMousePosition;
   }
   
 
-  // Methods required for the implementation of MouseListener
+  /* Methods required for the implementation of MouseListener */
   public void mouseEntered(MouseEvent e) {}
   
   public void mouseExited(MouseEvent e) {}
-
+  
+  public void mouseClicked(MouseEvent e) {}
+  
+  public void mouseMoved(MouseEvent e) {}  
+  
   public void mousePressed(MouseEvent e) {
     prevMouseX = e.getX();
     prevMouseY = e.getY();
@@ -103,7 +96,7 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     
     /* --- Left -- Mouse Button --- */
     if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
-    	System.err.println(" -- Left --");
+    	//System.err.println(" -- Left --");
     	
     	if (bMouseRight_StandbyRotate) {
     		/* first button was "right" and 
@@ -119,7 +112,7 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     
     /* --- Right -- Mouse Button --- */
     if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-    	System.err.println(" -- Right --");
+    	//System.err.println(" -- Right --");
     	
     	if ( bMouseLeft_StandbyZoom ) 
     	{
@@ -138,9 +131,9 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     }
     
     /* --- Middle -- Mouse Button --- */
-    if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0) {
-    	bMouseMiddleButtonDown = true;
-    	System.err.println(" -- Middle --");
+    if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0) {    	
+    	bMouseMiddleButtonDown = true;    	
+    	//System.err.println(" -- Middle --");
       }
   }
     
@@ -158,7 +151,7 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 				 * ==> same state as if only "right" button was pressed. */
 				bMouseRightButtonDown = true;
 			}
-			System.err.println(" -- End Left --");
+			//System.err.println(" -- End Left --");
 		}
 
 		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
@@ -179,19 +172,16 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 				 * ==> no more standby RightButton. */
 				bMouseRight_StandbyRotate = false;
 			}
-			System.err.println(" -- End Right --");
+			//System.err.println(" -- End Right --");
 		}
 		
 		if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0)
 		{
 			bMouseMiddleButtonDown = false;
-			System.err.println(" -- END Middle --");
+			//System.err.println(" -- END Middle --");
 		}
 	}
-    
-  public void mouseClicked(MouseEvent e) {}
-    
-
+  
   
   // Methods required for the implementation of MouseMotionListener
   public void mouseDragged(MouseEvent e) {
@@ -225,13 +215,13 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 	    prevMouseX = x;
 	    prevMouseY = y;
 	 
-	    System.out.println("dragging... -rot-" +
-	    		currentRotX.toString() +
-	    		 //refGearsMain.getViewCamera().getCameraRotationEuler().toString() + 
-	    		 "  fpercent=" +  fpercentX);
+//	    System.out.println("dragging... -rot-" +
+//	    		currentRotX.toString() +
+//	    		 //refGearsMain.getViewCamera().getCameraRotationEuler().toString() + 
+//	    		 "  fpercent=" +  fpercentX);
 	    
 	    /* set new paramters to ViewCamera */
-	    refGearsMain.getViewCamera().addCameraRotation(currentRotX);
+	    refParentGearsMain.getViewCamera().addCameraRotation(currentRotX);
 	    
     	}
 	    else
@@ -247,10 +237,10 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 	    	prevMouseX = x;
 		    prevMouseY = y;
 		    		   
-		    System.out.println("dragging -zoom-...");
+		    //System.out.println("dragging -zoom-...");
 		    
 		    /* set new paramters to ViewCamera */
-		    refGearsMain.getViewCamera().addCameraScale(
+		    refParentGearsMain.getViewCamera().addCameraScale(
 		    		new Vec3f( 0, 
 		    				0, 
 		    				zoomY +zoomX) );
@@ -268,19 +258,11 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 	    prevMouseX = x;
 	    prevMouseY = y;	    
 	   
-	    System.out.println("dragging -PAN-...");
+	    //System.out.println("dragging -PAN-...");
 	    
 	    /* set new paramters to ViewCamera */
-	    refGearsMain.getViewCamera().addCameraPosition(addVec3f);
-    	
-    	
+	    refParentGearsMain.getViewCamera().addCameraPosition(addVec3f);
     }
-  }
-    
-  public void mouseMoved(MouseEvent e) {}
-  
-  public Point getPressedMousePosition() {
-	  return pressedMousePosition;
   }
   
 }

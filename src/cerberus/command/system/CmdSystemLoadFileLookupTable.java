@@ -105,7 +105,7 @@ implements ICommand {
 				refCommandManager,
 				refCommandQueueSaxType);
 		
-		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE_N_STORAGES);
+		setCommandQueueSaxType(CommandQueueSaxType.LOAD_LOOKUP_TABLE_FILE);
 	}
 	
 	
@@ -235,6 +235,8 @@ implements ICommand {
 					lut_genome_type_OptionalTarget,
 					IGeneralManager.bEnableMultipelThreads );	
 			
+			loader.setTokenSeperator(sLUT_Target);
+			
 			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
 				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );
 			}
@@ -296,10 +298,10 @@ implements ICommand {
 		} //try
 		catch ( Exception e ) 
 		{
-			String errorMsg = "Could not load data via MicroArrayLoader1Storage, error during loading! file=["+
+			String errorMsg = "Could not load data via LookupTableLoaderProxy, error during loading! file=["+
 				sFileName + "] LUT-type:[" +
 				sLookupTableType + "]  targetSet(s)=[" +
-				iTargetSetId + "]) CmdSystemLoadFileLookupTable " + e.getMessage();
+				iTargetSetId + "]) CmdSystemLoadFileLookupTable \n   error-message=" + e.getMessage();
 			
 			refGeneralManager.getSingelton().logMsg(
 					errorMsg,

@@ -61,7 +61,7 @@ extends AbstractLoader {
 		super(setGeneralManager,
 				setFileName,
 				enableMultipeThreads);
-		
+
 		refLoggerManager = setGeneralManager.getSingelton().getLoggerManager();
 		
 		bRequiredSizeOfReadableLines = true;

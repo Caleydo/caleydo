@@ -31,12 +31,16 @@ import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
+import cerberus.data.view.camera.IViewCamera;
+import cerberus.data.view.camera.ViewCameraBase;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.SystemTime;
-import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
+//import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
+import cerberus.view.gui.jogl.PickingJoglMouseListener;
+import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
@@ -57,9 +61,11 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public abstract class AGLCanvasPathway3D
 extends APathwayGraphViewRep
-implements IGLCanvasUser {
+implements IGLCanvasUser, IJoglMouseListener {
 		  	 
 	//protected static long MOUSE_PICKING_IDLE_TIME = 3000; // 0.3s
+	
+	protected IViewCamera refViewCamera;
 	
 	protected float [][] viewingFrame;
 	
@@ -155,7 +161,9 @@ implements IGLCanvasUser {
 	
 	protected boolean bSelectionDataChanged = false;
 	
-	protected PickingTriggerMouseAdapter pickingTriggerMouseAdapter;
+//	protected PickingTriggerMouseAdapter pickingTriggerMouseAdapter;
+	
+	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
 	protected float fLastMouseMovedTimeStamp = 0;
 	
@@ -185,7 +193,7 @@ implements IGLCanvasUser {
 		
 		this.canvas = openGLCanvasDirector.getGLCanvas();
 		
-		pickingTriggerMouseAdapter = new PickingTriggerMouseAdapter();
+		pickingTriggerMouseAdapter = new PickingJoglMouseListener(this);
 		canvas.addMouseListener(pickingTriggerMouseAdapter);
 		canvas.addMouseMotionListener(pickingTriggerMouseAdapter);
 		
@@ -207,6 +215,8 @@ implements IGLCanvasUser {
 		refHashDisplayListNodeId2Pathway = new HashMap<Integer, Pathway>();
 		refHashPathway2DisplayListNodeId = new HashMap<Pathway, Integer>();
 		refHashPathway2ModelMatrix = new HashMap<Pathway, FloatBuffer>();
+		
+		refViewCamera = new ViewCameraBase();
 	}
 	
 	/*
@@ -1646,4 +1656,29 @@ implements IGLCanvasUser {
 	    }
 	    //System.out.println("Picking idle time: " + ((System.nanoTime() - fLastMouseMovedTimeStamp)) * 1e-9);
     }
+    
+
+
+    /**
+     * @see cerberus.view.gui.jogl.IJoglMouseListener#getViewCamera()
+     */
+	public final IViewCamera getViewCamera() {
+		return refViewCamera;
+	}
+
+	/**
+	 * @see cerberus.view.gui.jogl.IJoglMouseListener#hasViewCameraChanged()
+	 */
+	public final boolean hasViewCameraChanged() {
+
+		return refViewCamera.hasViewCameraChanged();
+	}
+
+	/**
+	 * @see cerberus.view.gui.jogl.IJoglMouseListener#setViewCamera(cerberus.data.view.camera.IViewCamera)
+	 */
+	public final void setViewCamera(IViewCamera set) {
+
+		refViewCamera = set;		
+	}
 }

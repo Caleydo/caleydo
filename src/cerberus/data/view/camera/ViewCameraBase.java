@@ -251,12 +251,12 @@ public class ViewCameraBase implements IViewCamera {
 
 		Rotf buffer = rotfCameraRotation.times(setRot);
 
-		System.out.println( "now =" + 
-				rotfCameraRotation.toString() + 
-				"\n  +  " + 
-				setRot.toString() + 
-				"\n ==> " + 
-				buffer.toString() );
+//		System.out.println( "now =" + 
+//				rotfCameraRotation.toString() + 
+//				"\n  +  " + 
+//				setRot.toString() + 
+//				"\n ==> " + 
+//				buffer.toString() );
 	
 		rotfCameraRotation = buffer;
 	}

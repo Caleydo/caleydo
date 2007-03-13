@@ -114,25 +114,25 @@ extends IXmlBaseHandler
 	
 
 	
-	/**
-	 * Special case of recursive xml file parser/reader.
-	 * Attention: beware of side effect due to return value of this methode, because
-	 * if TRUE is returened newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib )
-	 * has top be called!
-	 * IF FALSE is returned only currentHandler.startElement( uri,localName,qName,attrib ) has to be called. 
-	 * This is implemented as a final methode inside cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
-	 * so please derive from cerberus.manager.parser.AXmlParserManager .
-	 *  
-	 * 
-	 * @param newHandler add new recursive reader
-	 * @param refIXmlParserManager retefence to SmlParserManager to ensure, that only this class can call this methode!
-	 * @return TRUE indicates that newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib ) must be called whiel FALSE indicates that only currentHandler.startElement( uri,localName,qName,attrib ) must be called
-	 * 
-	 * @see cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
-	 */
-	public boolean openCurrentTagForRecursiveReader( 
-			OpenExternalXmlFileSaxHandler newHandler,
-			final IXmlParserManager refIXmlParserManager );
+//	/**
+//	 * Special case of recursive xml file parser/reader.
+//	 * Attention: beware of side effect due to return value of this methode, because
+//	 * if TRUE is returened newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib )
+//	 * has top be called!
+//	 * IF FALSE is returned only currentHandler.startElement( uri,localName,qName,attrib ) has to be called. 
+//	 * This is implemented as a final methode inside cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
+//	 * so please derive from cerberus.manager.parser.AXmlParserManager .
+//	 *  
+//	 * 
+//	 * @param newHandler add new recursive reader
+//	 * @param refIXmlParserManager retefence to SmlParserManager to ensure, that only this class can call this methode!
+//	 * @return TRUE indicates that newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib ) must be called whiel FALSE indicates that only currentHandler.startElement( uri,localName,qName,attrib ) must be called
+//	 * 
+//	 * @see cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
+//	 */
+//	public boolean openCurrentTagForRecursiveReader( 
+//			OpenExternalXmlFileSaxHandler newHandler,
+//			final IXmlParserManager refIXmlParserManager );
 	
 	/**
 	 * Get the current XmlSaxParser handler or null if no handler ist active.

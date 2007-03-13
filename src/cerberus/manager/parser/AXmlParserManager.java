@@ -94,7 +94,6 @@ implements IXmlParserManager, IManagedObject
 		
 		if ( ! llXmlParserStack.isEmpty() ) {
 			
-			
 			//llXmlParserStack.removeLast();
 			
 			if ( ! llXmlParserStack.remove( buffer ) ) {
@@ -150,74 +149,58 @@ implements IXmlParserManager, IManagedObject
 		return true;
 	}
 	
-	protected final void openCurrentTag( IXmlParserHandler newHandler ) {
-		
-		if ( newHandler == null ) {
-			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTag() new handler is null!");
-		}
-		
-		refGeneralManager.getSingelton().logMsg(
-				"AXmlParserManager.openCurrentTag( key=[" + 
-				newHandler.getXmlActivationTag() + "] " +
-				newHandler.getClass().getSimpleName() +	" )",
-				LoggerType.VERBOSE );
-		
-		llXmlParserStack.add( newHandler );				
-		currentHandler = newHandler;				
-	}
-	
-	/**
-	 * Special case for recursive opening of files.
-	 * 
-	 * @param filename filename for recursive XML file
-	 * @param openFileHandler reference to SaxHandler opening the file
-	 * @return TRUE if  startElement(String,String,String,Attributes) should be called twice, else FALSE
-	 *
-	 */
-	public final boolean openCurrentTagForRecursiveReader( 
-			OpenExternalXmlFileSaxHandler newHandler,
-			final IXmlParserManager refIXmlParserManager ) {
-		
-		if ( ! refIXmlParserManager.equals( this) ) 
-		{
-			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
-		}
-		
-		if ( newHandler == null ) 
-		{
-			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
-		}
-		
-		if ( currentHandler != null ) 
-		{
-			/**
-			 * insert OpenExternalXmlFileSaxHandler in front of currentHandler...
-			 */
-			llXmlParserStack.remove( currentHandler );		
-			llXmlParserStack.add( newHandler );		
-			llXmlParserStack.add( currentHandler );
-			
-			/**
-			 * trigger calling startElement(String,String,String,Attributes) twice!
-			 */
-			return true;
-		}
-		else 
-		{
-			/**
-			 * Empty queue, no swapping necessary!
-			 */
-			llXmlParserStack.add( newHandler );	
-			
-			currentHandler = newHandler;
-			
-			/**
-			 * avoid calling startElement(String,String,String,Attributes) twice!
-			 */
-			return false;
-		}
-				
-	}
+//	/**
+//	 * Special case for recursive opening of files.
+//	 * 
+//	 * @param filename filename for recursive XML file
+//	 * @param openFileHandler reference to SaxHandler opening the file
+//	 * @return TRUE if  startElement(String,String,String,Attributes) should be called twice, else FALSE
+//	 *
+//	 */
+//	public final boolean openCurrentTagForRecursiveReader( 
+//			OpenExternalXmlFileSaxHandler newHandler,
+//			final IXmlParserManager refIXmlParserManager ) {
+//		
+//		if ( ! refIXmlParserManager.equals( this) ) 
+//		{
+//			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
+//		}
+//		
+//		if ( newHandler == null ) 
+//		{
+//			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
+//		}
+//		
+//		if ( currentHandler != null ) 
+//		{
+//			/**
+//			 * insert OpenExternalXmlFileSaxHandler in front of currentHandler...
+//			 */
+//			llXmlParserStack.remove( currentHandler );		
+//			llXmlParserStack.add( newHandler );		
+//			llXmlParserStack.add( currentHandler );
+//			
+//			/**
+//			 * trigger calling startElement(String,String,String,Attributes) twice!
+//			 */
+//			return true;
+//		}
+//		else 
+//		{
+//			/**
+//			 * Empty queue, no swapping necessary!
+//			 */
+//			llXmlParserStack.add( newHandler );	
+//			
+//			currentHandler = newHandler;
+//			
+//			/**
+//			 * avoid calling startElement(String,String,String,Attributes) twice!
+//			 */
+//			return false;
+//		}
+//				
+//	}
 	
 	/**
 	 * @see cerberus.data.collection.UniqueManagedInterface#getManager()

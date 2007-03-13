@@ -40,10 +40,6 @@ implements GLEventListener, IJoglMouseListener {
 	
 	private JoglMouseListener refMouseHandler;
 
-//	private float view_rotx = 0.0f, view_roty = 0.0f, view_rotz = 0.0f;
-//
-//	private float view_x = 0.0f, view_y = 0.0f, view_z = 0.0f;
-
 	//private Animator refAnimator = null;
 	
 
@@ -79,9 +75,7 @@ implements GLEventListener, IJoglMouseListener {
 	}
 
 	protected void renderTestTriangle(GL gl) {
-
-		gl.glPushMatrix();
-
+		
 		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
 		gl.glColor3f(1.0f, 0.0f, 0.0f); // Set the color to red
 		gl.glVertex3f(0.0f, 1.0f, 0.0f); // Top
@@ -90,36 +84,8 @@ implements GLEventListener, IJoglMouseListener {
 		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to blue
 		gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
 		gl.glEnd(); // Finish drawing the triangle
-
-		gl.glPopMatrix();
-
 	}
 	
-
-//	/**
-//	 * @see cerberus.view.gui.awt.jogl.IJoglMouseListener#setViewAngles(float, float, float)
-//	 */
-//	public synchronized void setViewAngles(float fView_RotX, float fView_RotY,
-//			float fView_RotZ) {
-//
-//		view_rotx = fView_RotX;
-//		view_roty = fView_RotY;
-//		view_rotz = fView_RotZ;
-//	}
-//
-//	/**
-//	 * 
-//	 * @see cerberus.view.gui.awt.jogl.IJoglMouseListener#setTranslation(float, float, float)
-//	 */
-//	public synchronized void setTranslation(float fView_X, float fView_Y,
-//			float fView_Z) {
-//
-//		view_x = fView_X;
-//		view_y = fView_Y;
-//		view_z = fView_Z;
-//	}
-
-
 
 	public void init(GLAutoDrawable drawable) {
 
@@ -241,8 +207,7 @@ implements GLEventListener, IJoglMouseListener {
 		
 		float distanceZ_move_Center = 10;		
 		float distanceZ = 2;
-
-		//view_rotx += 0.9f;
+		
 		
 		/** Read viewing parameters... */
 		Vec3f rot_Vec3f = new Vec3f();
@@ -266,15 +231,15 @@ implements GLEventListener, IJoglMouseListener {
 				rot_Vec3f.z());
 		
 		/** visual debugging ...*/
-		drawXYZ(gl);
-		
-		renderTestTriangle(gl);
+//		drawXYZ(gl);
+//		
+//		renderTestTriangle(gl);
 		
 		gl.glTranslatef(0,
 				0,
 				distanceZ );
 		
-		renderTestTriangle(gl);
+//		renderTestTriangle(gl);
 		
 		/** end: visual debugging ...*/
 

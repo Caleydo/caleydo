@@ -880,13 +880,20 @@ extends APathwayGraphViewRep {
 	 */
 	protected void extractCurrentPathwayFromSet() {
 		
-		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = ((SetFlatThreadSimple)alSetData.get(0)).
-			getStorageByDimAndIndex(0, 0);
+		if  (!alSetData.isEmpty()) {
+			// Assumes that the set consists of only one storage
+			IStorage tmpStorage = ((SetFlatThreadSimple)alSetData.get(0)).
+				getStorageByDimAndIndex(0, 0);
+			
+			// Assumes that the storage contains only one pathway item
+			refCurrentPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				getItem(tmpStorage.getArrayInt()[0]);
+			
+			return;
+		}
 		
-		// Assumes that the storage contains only one pathway item
-		refCurrentPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-			getItem(tmpStorage.getArrayInt()[0]);
+		refGeneralManager.getSingelton().logMsg("no valid Set",
+				LoggerType.ERROR_ONLY);
 	}
 	
 	/**

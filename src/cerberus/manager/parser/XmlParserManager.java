@@ -158,35 +158,32 @@ implements IXmlParserManager {
 					qName,
 					attrib);
 			
+			if ( currentHandler != null )
+			{
+				currentHandler.startElement( uri, 
+						localName, 
+						qName,
+						attrib );
+			} //if ( currentHandler != null )
+			
+			/* early return from if ()*/
 			return;
 			
 		} // if ( currentHandler == null ) 
-		else 
-		{
-			if ( bUseCascadingHandler ) {				
-				if ( this.hashTag2XmlParser.containsKey( qName ) ) {
-					openCurrentTag( hashTag2XmlParser.get( qName ) );
-					
-					// MARC: this was necessary to catch the special pathway XML file case
-					// when the pathway tag needs to be parsed again.
-					if (qName.equals(xml_tag_for_pathways))
-					{
-						refLoggerManager.logMsg("Special pathway workaround in parser was called. " +
-								"Method return statement is ommited in this case.",
-								LoggerType.VERBOSE );
-					}
-					else
-					{
-						return;
-					}
-				}
-			}
-			
-			currentHandler.startElement( uri, 
+		
+		/* else; regular case with valid current Handler */ 
+		
+		if ( bUseCascadingHandler ) {		
+			startElement_search4Tag(uri,
 					localName, 
 					qName,
-					attrib );
-		}
+					attrib);	
+		}  //if ( bUseCascadingHandler ) {
+		
+		currentHandler.startElement( uri, 
+				localName, 
+				qName,
+				attrib );		
 
 	}
 
@@ -200,6 +197,9 @@ implements IXmlParserManager {
 		
 		if ( hashTag2XmlParser.containsKey( qName ) ) 
 		{
+			/**
+			 * Get handler registered to this "qName" ..
+			 */
 			IXmlParserHandler handler = hashTag2XmlParser.get( qName );
 			
 			try // catch (SAXException se) 
@@ -217,41 +217,36 @@ implements IXmlParserManager {
 					 * Open new file, but do not register new handler...
 					 * Attention: do not call  sectionFinishedByHandler() from FileLoaderSaxHandler !
 					 */
-					if ( openCurrentTagForRecursiveReader( 
-							(OpenExternalXmlFileSaxHandler) handler, 
-							this ) ) 
-					{
 						/**
-						 * List of handler was not empty!
-						 * call startElement( .. ) once for OpenExternalXmlFileSaxHandler 
-						 * and once for currentHandler
+						 * 
+						 * pass event to current handler
 						 */
 						handler.startElement( uri,
 								localName,
 								qName,
 								attrib );
-					}
-				
-					currentHandler.startElement(  uri,
-							localName,
-							qName,
-							attrib );		
+						
+						/* early exit from try-catch block and if */
+						return;
+						
 				} // if ( handler.getClass().getName().equals(OpenExternalXmlFileSaxHandler.class.getName()) ) 						
-				else 
-				{
-					
-					/**
-					 * Regular case: register new handler ...
-					 */
-					
-					this.openCurrentTag( handler );
 				
-					handler.startElement( uri,
-							localName,
-							qName,
-							attrib );
 				
-				} // else .. if ( handler.getClass().getName().equals( OpenExternalXmlFileSaxHandler.class.getName()) ) 
+				/**
+				 * Regular case: register new handler ...
+				 */
+				
+				refGeneralManager.getSingelton().logMsg(
+						"AXmlParserManager.openCurrentTag( key=[" + 
+						handler.getXmlActivationTag() + "] " +
+						handler.getClass().getSimpleName() +	" )",
+						LoggerType.VERBOSE );
+				
+				/**
+				 * register new handler ...
+				 */
+				llXmlParserStack.add( handler );				
+				currentHandler = handler;	
 				
 			} // try
 			catch (SAXException se) 
@@ -262,20 +257,8 @@ implements IXmlParserManager {
 				
 			} // try .. catch (SAXException se) 		
 			
-			
-//			if ( hander.getClass().getName().equals( 
-//					OpenExternalXmlFileSaxHandler.class.getName()) ) 
-//			{
-//				
-//				/**
-//				 * execute opening tag..
-//				 */
-//				hander.startElement( uri,
-//						localName,
-//						qName,
-//						attrib );
-//			}
-		}
+		} // if ( hashTag2XmlParser.containsKey( qName ) ) 
+		
 	}
 	
 	/* (non-Javadoc)
@@ -296,10 +279,6 @@ implements IXmlParserManager {
 			currentHandler.endElement( uri, 
 					localName,
 					qName);
-			
-//			if (qName == "read-xml-file")
-//				currentHandler = null;
-			
 		}
 
 	}
@@ -312,17 +291,7 @@ implements IXmlParserManager {
 			String localName, 
 			String qName) {
 		
-//		try
-//		{
-//		} // try
-//		catch (SAXException se) 
-//		{
-//			refLoggerManager.logMsg( "XmlParserManager.startElement_search4Tag() SAX error: " +
-//					se.toString(),
-//					LoggerType.ERROR_ONLY );
-//			
-//		} // try .. catch (SAXException se) 		
-		
+		assert false : "should not be called but overloaded by derived class.";
 	}
 
 	/* (non-Javadoc)
@@ -354,8 +323,7 @@ implements IXmlParserManager {
 					CerberusRuntimeExceptionType.SAXPARSER);
 		}
 				
-		closeCurrentTag();		
-		
+		closeCurrentTag();				
 		
 		/**
 		 * enable processing flag again. Return "token".		 

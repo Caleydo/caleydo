@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -102,6 +103,16 @@ public class CerberusInputStream
 			{						
 				reader.parse( inStream );
 			} 
+			catch (SAXParseException saxe)
+			{
+				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+						sInputStreamLabel +
+						") SAXParser-error during parsing: line=" + saxe.getLineNumber() +
+						" at column=" + saxe.getColumnNumber() +
+						"  SAXParser-error during parsing:" + 
+						saxe.toString(),
+						LoggerType.ERROR_ONLY );
+			}
 			catch ( IOException e) 
 			{
 				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +

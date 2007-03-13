@@ -73,9 +73,6 @@ implements IXmlParserHandler
 				/**
 				 * Recursion...
 				 */
-//				refXmlParserManager.parseXmlFileByNameAndHandler( 
-//						sTargetFileName, this );				
-//				
 				refXmlParserManager.parseXmlFileByName( sTargetFileName);
 				
 			}

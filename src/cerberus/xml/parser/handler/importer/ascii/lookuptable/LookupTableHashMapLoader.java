@@ -53,7 +53,8 @@ implements ILookupTableLoader {
 		
 		int iLineInFile = 1;
 		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
-		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();
+		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();		
+		String sOuterTokenSeperator = refLookupTableLoaderProxy.getTokenSeperator();
 		
 	    while ( ((sLine = brFile.readLine()) != null)&&
 	    		( iLineInFile <= iStopParsingAtLine) )  
@@ -67,8 +68,7 @@ implements ILookupTableLoader {
 				
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = 
-					new StringTokenizer(sLine, 
-							refLookupTableLoaderProxy.getTokenSeperator() );
+					new StringTokenizer(sLine, sOuterTokenSeperator );
 				
 				/**
 				 * Read all tokens
@@ -90,7 +90,7 @@ implements ILookupTableLoader {
 						{
 							refGeneralManager.getSingelton().logMsg(
 									"(Key,Value) [" +
-									buffer + ", ?? ] value is missing in line " +
+									buffer + ", ?? ] value is missing (ignore key-value pair) in line " +
 									iLineInFile,
 									LoggerType.MINOR_ERROR);
 						}

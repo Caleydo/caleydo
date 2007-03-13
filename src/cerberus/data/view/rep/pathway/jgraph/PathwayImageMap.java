@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * a link that should followed when the user clicks in
  * the (rectangular) region.
  * 
+ * @author	Michael Kalkusch
  * @author	Marc Streit
  */
 
@@ -48,6 +49,11 @@ public class PathwayImageMap {
 	public String getImageLink() {
 	
 		return sImageLink;
+	}
+	
+	public void setImageLink(final String setImageLink) {
+		
+		sImageLink = setImageLink;		
 	}
 
 

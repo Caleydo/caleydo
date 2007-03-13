@@ -24,9 +24,9 @@ public class PathwayManager
 extends AAbstractManager
 implements IPathwayManager {
 
-	protected String sPathwayImagePath = "data/GenomeData/pathways/";
+	protected String sPathwayImagePath = "data/GenomeData/pathway/images/";
 	
-	protected String sPathwayXMLPath = "data/XML/pathways/";
+	protected String sPathwayXMLPath = "data/GenomeData/pathway/XML/";
 	
 	protected HashMap<Integer, Pathway> pathwayLUT;
 

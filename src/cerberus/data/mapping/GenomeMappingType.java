@@ -33,7 +33,10 @@ public enum GenomeMappingType
 			GenomeIdType.ACCESSION,
 			GenomeMappingDataType.INT2STRING),
 		
-			
+	ACCESSION_CODE_2_NCBI_GENEID (
+			GenomeIdType.ACCESSION_CODE,
+			GenomeIdType.NCBI_GENEID,
+			GenomeMappingDataType.STRING2INT),			
 	/* --- KEGG Gene Id --- */
 	/**
 	 * @deprecated use NCBI_GENEID_2*

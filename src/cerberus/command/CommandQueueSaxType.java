@@ -27,9 +27,9 @@ public enum CommandQueueSaxType
 	 * XML-value  ( XML-Tag , XML-key ) 
 	 */
 	LOAD_DATA_FILE("cmd","type","", "No description available!"),
-	LOAD_DATA_FILE_N_STORAGES("cmd","type","", "No description available!"),
-	LOAD_DATA_FILE_BY_IMPORTER("cmd","type","", "No description available!"),
-	LOAD_LOOKUP_TABLE_FILE("cmd","type","", "No description available!"),
+	LOAD_DATA_FILE_N_STORAGES("cmd","type","", "Load a file into n storages"),
+	LOAD_DATA_FILE_BY_IMPORTER("cmd","type","", "Load a file via importer"),
+	LOAD_LOOKUP_TABLE_FILE("cmd","type","", "Load a lookup table"),
 	LOAD_ON_DEMAND("cmd", "process","LOAD_ON_DEMAND", "No description available!"),
 	LOAD_URL_IN_BROWSER("cmd", "type", "-1", "Load URL in browser"),
 	//OPEN_VIEW("cmd","type"),
@@ -50,12 +50,12 @@ public enum CommandQueueSaxType
 	
 	CREATE_PATHWAY_STORAGE("cmd","type","-1", "Create Storage Pathway"),
 	CREATE_SET("cmd","type","-1", "Create SET"),
-	CREATE_SET_PLANAR("cmd","type","-1", "Create Planar SET"),
-	CREATE_SET_MULTIDIM("cmd","type","-1", "No description available!"),
+	CREATE_SET_PLANAR("cmd","type","-1", "Create planar SET"),
+	CREATE_SET_MULTIDIM("cmd","type","-1", "Create multi-dim SET"),
 	CREATE_SET_SELECTION("cmd","type","-1", "Create Selection SET!"),
 	CREATE_SET_SELECTION_MAKRO("cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
 	CREATE_STORAGE("cmd","type","-1", "Create Storage"),	
-	CREATE_SWT_WINDOW("cmd", "type","-1", "Create Window"),
+	CREATE_SWT_WINDOW("cmd", "type","-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER("cmd", "type","-1", "Create SWTContainer"),	
 	CREATE_VIRTUAL_ARRAY("cmd","type","-1", "Create VirtualArray"),
 	
@@ -85,8 +85,8 @@ public enum CommandQueueSaxType
 	/*
 	 * -------  COMMAND QUEUE  --------
 	 */ 
-	COMMAND_QUEUE_OPEN("cmdqueue","type",null, "No description available!"),
-	COMMAND_QUEUE_RUN("cmdqueue","type",null, "No description available!"),
+	COMMAND_QUEUE_OPEN("cmdqueue","type",null, "Open a command queue"),
+	COMMAND_QUEUE_RUN("cmdqueue","type",null, "execute a command queue"),
 	
 	CMD_ID("cmdqueue","cmdId","-1", "No description available!"),
 	CMDQUEUE_ID("cmdqueue","cmdQueueId","-1", "No description available!"),
@@ -108,36 +108,36 @@ public enum CommandQueueSaxType
 	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1", "No description available!"),
 	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1", "No description available!"),
 	
-	SYSTEM_SHUT_DOWN("cmd","type","-1", "No description available!"),
+	SYSTEM_SHUT_DOWN("cmd","type","-1", "Cerberus system shut down"),
 	
 	/*
 	 * ==================================================
 	 *       TAG's used only while parsing XML files  
 	 * ==================================================
 	 */
-	TAG_CMD("cmd","Cmd",null, "No description available!"),
-	TAG_CMD_QUEUE("cmd","CmdQueue",null, "No description available!"),
-	TAG_CMD_ID("cmd","cmdId","-1", "No description available!"),
-	TAG_TARGET_ID("cmd","targetId","-1", "No description available!"),
-	TAG_MEMENTO_ID("cmd","mementoId","-1", "No description available!"),
-	TAG_TYPE("cmd","type","NO_OPERATION", "No description available!"),
-	TAG_ATTRIBUTE1("cmd","attrib1","", "No description available!"),	
-	TAG_ATTRIBUTE2("cmd","attrib2","", "No description available!"),
-	TAG_ATTRIBUTE3("cmd","attrib3","", "No description available!"),	
-	TAG_DETAIL("cmd","detail","", "No description available!"),
-	TAG_PARENT("cmd","parent","-1", "No description available!"),
-	TAG_GLCANVAS("cmd","glcanvas","-1", "No description available!"),
-	TAG_GLCANVAS_LISTENER("cmd","gllistener","-1", "No description available!"),
-	TAG_PROCESS("cmd","process","RUN_CMD_NOW", "No description available!"),
-	TAG_LABEL("cmd","label","", "No description available!"),
+	TAG_CMD("cmd","Cmd",null),
+	TAG_CMD_QUEUE("cmd","CmdQueue",null),
+	TAG_CMD_ID("cmd","cmdId","-1"),
+	TAG_TARGET_ID("cmd","targetId","-1"),
+	TAG_MEMENTO_ID("cmd","mementoId","-1"),
+	TAG_TYPE("cmd","type","NO_OPERATION"),
+	TAG_ATTRIBUTE1("cmd","attrib1",""),	
+	TAG_ATTRIBUTE2("cmd","attrib2",""),
+	TAG_ATTRIBUTE3("cmd","attrib3",""),	
+	TAG_DETAIL("cmd","detail",""),
+	TAG_PARENT("cmd","parent","-1"),
+	TAG_GLCANVAS("cmd","glcanvas","-1"),
+	TAG_GLCANVAS_LISTENER("cmd","gllistener","-1"),
+	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),
+	TAG_LABEL("cmd","label",""),
 	
-	TAG_POS_WIDTH_X("cmd","iWidthX","-1", "No description available!"),
-	TAG_POS_HEIGHT_Y("cmd","iHeightY","-1", "No description available!"),
+	TAG_POS_WIDTH_X("cmd","iWidthX","-1"),
+	TAG_POS_HEIGHT_Y("cmd","iHeightY","-1"),
 	
-	TAG_POS_GL_ORIGIN("cmd","GL_ORIGIN","0 0 0", "No description available!"),
+	TAG_POS_GL_ORIGIN("cmd","GL_ORIGIN","0 0 0"),
 	
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */
-	TAG_POS_GL_ROTATION("cmd","GL_ROTATION","0 0 1 0.0", "No description available!");
+	TAG_POS_GL_ROTATION("cmd","GL_ROTATION","0 0 1 0.0");
 	
 	
 	
@@ -183,6 +183,16 @@ public enum CommandQueueSaxType
 		this.sXmlKey = sXmlKey;
 		this.sDefaultValue = sDefaultValue;
 		this.sInfoText = sInfoText;
+	}
+	
+	private CommandQueueSaxType( String sXmlTag, 
+			String sXmlKey,
+			String sDefaultValue) 
+	{
+		this.sXmlTag = sXmlTag;		
+		this.sXmlKey = sXmlKey;
+		this.sDefaultValue = sDefaultValue;
+		this.sInfoText = "Description is not valid! This is a TAG.";
 	}
 	
 	
