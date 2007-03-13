@@ -17,8 +17,10 @@ last change: 12-09-2006
 
  JOGL 1.0.0:
  
- copy jogl.jar and *.dll to [my_java_folder]/[jre]/lib/
+ copy *.dll to [my_java_folder]/[jre]/lib/
    (jar file plus native libraries)
+   
+ copy jogl.jar to [cerberus]/bin/ext_jar/jogl/
     
  for Eclipse: 
    Properties -> "Java Build Path" -> 
@@ -28,7 +30,7 @@ last change: 12-09-2006
    
    add path to:  [my_java_folder]/[jre]/lib
    
-   this results in teh following lines in teh .classpath file:
+   this results in teh following lines in the .classpath file:
    
    <classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
