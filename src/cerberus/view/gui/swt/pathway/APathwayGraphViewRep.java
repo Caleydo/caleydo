@@ -34,9 +34,6 @@ public abstract class APathwayGraphViewRep
 extends AViewRep
 implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 
-	public static final String KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH = 
-		"data/XML/imagemap/map01100.xml";
-	
 	protected Frame refEmbeddedFrame;
 	
 	protected Composite refEmbeddedFrameComposite;

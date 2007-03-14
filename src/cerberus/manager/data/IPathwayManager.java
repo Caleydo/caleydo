@@ -21,11 +21,15 @@ extends IGeneralManager {
 	
 	public PathwayImageMap getCurrentPathwayImageMap();
 	
-	public String getPathwayImagePath();
-	
-	public void setPathwayImagePath(String sPathwayImagePath);
-	
 	public String getPathwayXMLPath();
 	
-	public void setPathwayXMLPath(String sPathwayImagePath);
+	public void setPathwayXMLPath(String sPathwayXMLPath);
+	
+	public String getPathwayImageMapPath();
+	
+	public void setPathwayImageMapPath(String sPathwayImageMapPath);
+	
+	public String getPathwayImagePath();
+	
+	public void setPathwayImagePath(String sPathwayImagePath);	
 }

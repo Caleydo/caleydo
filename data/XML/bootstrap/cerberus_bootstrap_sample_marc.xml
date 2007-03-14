@@ -8,15 +8,13 @@
   
     <Application remote="no" IP="127.0.0.1" port="4000" >
   
-    <CommandBuffer>
-         
-      <!-- file for GenomeId mapping -->
-		  <read-xml-file target="data/XML/bootstrap/load_genome_id_mapping.xml" />	   		
-		  		        
-      
-		<!-- Creating	Data -->
-			
+    <CommandBuffer>  			
+
+		<!-- Creating Data -->
 			<read-xml-file target="data/XML/bootstrap/load_set_storage_virtual-array_for_pathways.xml" />	   				
+
+      	<!-- Creating GenomeId mapping -->
+		  	<read-xml-file target="data/XML/bootstrap/load_genome_id_mapping.xml" />	   				
 			
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   

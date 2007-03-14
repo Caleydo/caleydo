@@ -14,12 +14,15 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
+import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 
 public class Pathway2DToolbar 
 extends AToolbar {
 
 	protected APathwayGraphViewRep refPathwayGraphViewRep;
+	
+	protected IGeneralManager refGeneralManager;
 	
 	protected ToolItem refAddEnzymeNodeItem;
 	protected ToolItem refZoomOrigItem;
@@ -34,11 +37,13 @@ extends AToolbar {
 	protected ToolItem refKeggMetabolicPathwaysMapItem;
 	
 	public Pathway2DToolbar(Composite refSWTContainer,
-			APathwayGraphViewRep refPathwayGraphViewRep) {
+			APathwayGraphViewRep refPathwayGraphViewRep,
+			IGeneralManager refGeneralManager) {
 
 		super(refSWTContainer);
 		
 		this.refPathwayGraphViewRep = refPathwayGraphViewRep;
+		this.refGeneralManager = refGeneralManager;
 
 		initToolbar();
 		createActionListener();
@@ -254,7 +259,8 @@ extends AToolbar {
 	        	  refPathwayGraphViewRep.setPathwayLevel(1);
 	        	  
 	        	  refPathwayGraphViewRep.loadImageMapFromFile(
-	        			  APathwayGraphViewRep.KEGG_OVERVIEW_PATHWAY_IMAGE_MAP_PATH);
+	        			  refGeneralManager.getSingelton().getPathwayManager().
+	        			  	getPathwayImageMapPath() + "map01100.xml");
 	          }
 	        }
 	      };

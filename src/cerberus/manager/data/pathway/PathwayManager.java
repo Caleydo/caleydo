@@ -24,9 +24,11 @@ public class PathwayManager
 extends AAbstractManager
 implements IPathwayManager {
 
-	protected String sPathwayImagePath = "data/GenomeData/pathway/images/";
+	protected String sPathwayXMLPath = "";	
 	
-	protected String sPathwayXMLPath = "data/GenomeData/pathway/XML/";
+	protected String sPathwayImagePath = "";
+	
+	protected String sPathwayImageMapPath = "";
 	
 	protected HashMap<Integer, Pathway> pathwayLUT;
 
@@ -108,26 +110,65 @@ implements IPathwayManager {
 		return refCurrentPathwayImageMap;
 	}
 
-	public final String getPathwayImagePath() {
-		
-		return sPathwayImagePath;
-	}
-	
-	public void setPathwayImagePath(String sPathwayImagePath) {
-		
-		this.sPathwayImagePath = sPathwayImagePath;
-	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getPathwayXMLPath()
+	 */
 	public final String getPathwayXMLPath() {
+		
+		assert !sPathwayXMLPath.isEmpty() : "Pathway XML path is not set!";
 		
 		return sPathwayXMLPath;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayXMLPath(java.lang.String)
+	 */
 	public void setPathwayXMLPath(String sPathwayXMLPath) {
-		
+
 		this.sPathwayXMLPath = sPathwayXMLPath;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getPathwayImagePath()
+	 */
+	public final String getPathwayImagePath() {
+
+		assert !sPathwayImagePath.isEmpty() : "Pathway image path is not set!";
+		
+		return sPathwayImagePath;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayImagePath(java.lang.String)
+	 */
+	public void setPathwayImagePath(String sPathwayImagePath) {
+		
+		this.sPathwayImagePath = sPathwayImagePath;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getPathwayImageMapPath()
+	 */
+	public final String getPathwayImageMapPath() {
+		
+		assert !sPathwayImageMapPath.isEmpty() : "Pathway image map path is not set!";
+		
+		return sPathwayImageMapPath;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayImageMapPath(java.lang.String)
+	 */
+	public void setPathwayImageMapPath(String sPathwayImageMapPath) {
+		
+		this.sPathwayImageMapPath = sPathwayImageMapPath;
+	}
 	
 	public boolean hasItem(int iItemId) {
 

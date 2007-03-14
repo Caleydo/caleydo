@@ -53,6 +53,7 @@ import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 import cerberus.command.system.CmdSystemLoadFileNStorages;
 import cerberus.command.system.CmdSystemLoadFileLookupTable;
+import cerberus.command.system.path.CmdSetPathwayPaths;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeExceptionType;
@@ -530,6 +531,16 @@ public class CommandFactory
 						cmdType);
 			break;
 		}
+		
+		case  SET_PATHWAY_PATHS:
+		{
+			createdCommand =
+				new CmdSetPathwayPaths(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);
+			break;
+		}		
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 

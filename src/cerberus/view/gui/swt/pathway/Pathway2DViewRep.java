@@ -55,7 +55,9 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		
 		refSWTContainer.setLayout(new GridLayout(1, false));
 		
-		new Pathway2DToolbar(refSWTContainer, refPathwayGraphViewRep);
+		new Pathway2DToolbar(refSWTContainer, 
+				refPathwayGraphViewRep,
+				refGeneralManager);
 		
 		// Graph initialization
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);

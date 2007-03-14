@@ -5,6 +5,12 @@
 	
 	<read-xml-file target="data/XML/bootstrap/load_set_storage_virtual-array_for_data-examiner-viewer.xml" />
 
+	<!-- Setting paths -->	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_PATHWAY_PATHS" 			cmdId="" targetId="11331" label="Set Pathway Paths" 
+		attrib1="data/GenomeData/pathway/XML/" 
+		attrib2="data/GenomeData/pathway/images/" 
+		attrib3="data/GenomeData/pathway/imagemap/" /> 
+
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="45301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="14993"	targetId="55301" label="Storage	file2"	attrib1="STRING" attrib2="test data	from file" />												 
