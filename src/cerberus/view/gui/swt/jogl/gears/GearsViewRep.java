@@ -2,8 +2,6 @@ package cerberus.view.gui.swt.jogl.gears;
 
 import javax.media.opengl.GLCanvas;
 
-import com.sun.opengl.util.Animator;
-
 //import com.sun.opengl.util.Animator;
 
 import cerberus.manager.IGeneralManager;

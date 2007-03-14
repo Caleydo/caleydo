@@ -223,9 +223,9 @@ implements ICommand {
 				lut_genome_type_OptionalTarget = GenomeMappingType.valueOf( sLookupTableTypeOptionalTarget );
 			}
 			
-			refGenomeIdManager.createMapByType( lut_genome_type,
-					genomeDataType,
-					1000 );
+//			refGenomeIdManager.createMapByType( lut_genome_type,
+//					genomeDataType,
+//					1000 );
 			
 			loader = new LookupTableLoaderProxy( 
 					refGeneralManager, 

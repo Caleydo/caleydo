@@ -43,6 +43,20 @@ public interface ILookupTableLoader {
 	public void destroyLUT();
 	
 	/**
+	 * Write data back to IGenomeIdManager.
+	 * This mehtode is called by LookupTableLoaderProxy#copyDataToInternalDataStructures(), which
+	 * is derived from AbstractLoader#copyDataToInternalDataStructures().
+	 * 
+	 * @see cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy
+	 * @see cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy#copyDataToInternalDataStructures()
+	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see cerberus.manager.data.IGenomeIdManager
+	 * 
+	 * @return TRUE on success.
+	 */
+	public abstract void wirteBackMapToGenomeIdManager();
+	
+	/**
 	 * set the reference to teh hashmap
 	 * 
 	 * @param setHashMap

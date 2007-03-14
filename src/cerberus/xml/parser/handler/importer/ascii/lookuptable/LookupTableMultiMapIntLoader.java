@@ -30,11 +30,10 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	 */
 	public LookupTableMultiMapIntLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genometype,
+			final GenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
 
-		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
-		
+		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
 	}
 
 	/* (non-Javadoc)
@@ -120,5 +119,15 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 		//refGenomeIdManager.
 		this.refMultiHashMapInteger = setMultiHashMap;
 	}	
+	
+	/**
+	 * Write back data to IGenomeIdManager
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see cerberus.manager.data.IGenomeIdManager
+	 */
+	public void wirteBackMapToGenomeIdManager() {
+
+		refGenomeIdManager.setMapByType(currentGenomeIdType, refMultiHashMapInteger);
+	}
 
 }

@@ -27,7 +27,7 @@ implements ILookupTableLoader {
 	
 	protected String sFileName;
 	
-	protected GenomeMappingType genomeType;
+	protected GenomeMappingType currentGenomeIdType;
 	
 	protected final IGeneralManager refGeneralManager;
 	
@@ -44,17 +44,20 @@ implements ILookupTableLoader {
 	 */
 	public ALookupTableLoader( final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genometype,
+			final GenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
 
 		refGeneralManager = setGeneralManager;
 		refLookupTableLoaderProxy = setLookupTableLoaderProxy;
 		sFileName = setFileName;	
 	
-		this.genomeType = genometype;
+		this.currentGenomeIdType = genomeIdType;
 		
 		refGenomeIdManager = 
 			refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		refLookupTableLoaderProxy.setTokenSeperator( 
+				IGeneralManager.sDelimiter_Parser_DataType);
 	}
 	
 

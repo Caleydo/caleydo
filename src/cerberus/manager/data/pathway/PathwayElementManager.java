@@ -10,7 +10,6 @@ import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ISingelton;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.type.ManagerObjectType;

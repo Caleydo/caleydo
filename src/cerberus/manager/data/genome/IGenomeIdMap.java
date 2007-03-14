@@ -3,6 +3,14 @@ package cerberus.manager.data.genome;
 //import cerberus.data.mapping.GenomeMappingDataType;
 
 
+/**
+ * Interface for Map
+ * 
+ * @author Michael Kalkusch
+ * 
+ * @see cerberus.base.map.MultiHashArrayStringMap
+ * @see cerberus.base.map.MultiHashArrayIntegerMap
+ */
 public interface IGenomeIdMap {
 
 //	public Object getObjectByType( final Object byObject, GenomeMappingDataType type );

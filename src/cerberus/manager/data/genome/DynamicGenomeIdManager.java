@@ -17,6 +17,7 @@ import cerberus.data.mapping.GenomeMappingType;
 import cerberus.base.map.MultiHashArrayIntegerMap;
 import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -41,7 +42,7 @@ implements IGenomeIdManager {
 	
 	protected HashMap<GenomeMappingType, IGenomeIdMap> hashType2Map;
 	
-	protected HashMap<GenomeMappingType, MultiHashArrayIntegerMap> hashType2MultiMap;
+	protected HashMap<GenomeMappingType, MultiHashArrayIntegerMap> hashType2MultiMapInt;
 	
 	protected HashMap<GenomeMappingType, MultiHashArrayStringMap> hashType2MultiMapString;
 	
@@ -62,7 +63,7 @@ implements IGenomeIdManager {
 		
 		hashType2Map = new HashMap<GenomeMappingType, IGenomeIdMap> (iInitialCountAllLookupTables);
 		
-		hashType2MultiMap = new  HashMap<GenomeMappingType, MultiHashArrayIntegerMap> (iInitialCountMultiMapLookupTables);
+		hashType2MultiMapInt = new  HashMap<GenomeMappingType, MultiHashArrayIntegerMap> (iInitialCountMultiMapLookupTables);
 		
 		hashType2MultiMapString = new HashMap<GenomeMappingType, MultiHashArrayStringMap> (iInitialCountMultiMapLookupTables);
 	}
@@ -78,17 +79,33 @@ implements IGenomeIdManager {
 	
 	public boolean createMapByType( final GenomeMappingType codingLutType, 
 			final GenomeMappingDataType dataType,
-			final int iInitialSizeHashMap ) {
+			final int iSetInitialSizeHashMap ) {
 		
 		/* conisitency check */
+		int iCurrentInitialSizeHashMap = iSetInitialSizeHashMap;
 		
 		if ( hashType2Map.containsKey( codingLutType ) ) 
 		{
+			refGeneralManager.getSingelton().logMsg(
+					"createMapByType(" + 
+					codingLutType.toString() + "," +
+					dataType.toString() + ",*) WARNING! type is already registered!",
+					LoggerType.VERBOSE);
+			
 			return false;
+		}
+		
+		if  (iSetInitialSizeHashMap < 2)
+		{
+			iCurrentInitialSizeHashMap = iInitialSizeHashMap;
 		}
 		
 		IGenomeIdMap newMap = null;
 		
+		refSingelton.logMsg("createMapByType(" +
+				codingLutType.toString() + "," +
+				dataType.toString() + ",*) ...",
+				LoggerType.VERBOSE);
 		
 		try //catch ( OutOfMemoryError oee ) 
 		{
@@ -96,32 +113,32 @@ implements IGenomeIdManager {
 			switch ( dataType ) 
 			{
 			case INT2INT:
-				newMap = new GenomeIdMapInt2Int(iInitialSizeHashMap);
+				newMap = new GenomeIdMapInt2Int(iCurrentInitialSizeHashMap);
 				break;
 				
 			case INT2STRING:
-				newMap = new GenomeIdMapInt2String(iInitialSizeHashMap);
+				newMap = new GenomeIdMapInt2String(iCurrentInitialSizeHashMap);
 				break;
 				
 			case STRING2INT:
-				newMap = new GenomeIdMapString2Int(iInitialSizeHashMap);
+				newMap = new GenomeIdMapString2Int(iCurrentInitialSizeHashMap);
 				break;
 				
 			case STRING2STRING:
-				newMap = new GenomeIdMapString2String(iInitialSizeHashMap);
+				newMap = new GenomeIdMapString2String(iCurrentInitialSizeHashMap);
 				break;
 		
 			/* Multi Map's */
 				
 			case MULTI_STRING2STRING:
-				MultiHashArrayStringMap newMultiMapString = new MultiHashArrayStringMap(iInitialSizeHashMap);
+				MultiHashArrayStringMap newMultiMapString = new MultiHashArrayStringMap(iCurrentInitialSizeHashMap);
 				hashType2MultiMapString.put( codingLutType, newMultiMapString );
 				return true;
 				
 			case MULTI_INT2INT:
 			case MULTI_STRING2STRING_USE_LUT:
-				MultiHashArrayIntegerMap newMultiMap = new MultiHashArrayIntegerMap(iInitialSizeHashMap);
-				hashType2MultiMap.put( codingLutType, newMultiMap );
+				MultiHashArrayIntegerMap newMultiMap = new MultiHashArrayIntegerMap(iCurrentInitialSizeHashMap);
+				hashType2MultiMapInt.put( codingLutType, newMultiMap );
 				return true;
 				
 			default:
@@ -130,7 +147,6 @@ implements IGenomeIdManager {
 				
 			} // switch ( dataType ) 
 			
-
 			hashType2Map.put( codingLutType, newMap );
 			
 		} 
@@ -151,9 +167,9 @@ implements IGenomeIdManager {
 		return hashType2Map.get( type );
 	}
 	
-	public final MultiHashArrayIntegerMap getMultiMapByType( final GenomeMappingType type ) {
+	public final MultiHashArrayIntegerMap getMultiMapIntegerByType( final GenomeMappingType type ) {
 		
-		return hashType2MultiMap.get( type );
+		return hashType2MultiMapInt.get( type );
 	}
 	
 	public final MultiHashArrayStringMap getMultiMapStringByType( final GenomeMappingType type ) {
@@ -161,7 +177,17 @@ implements IGenomeIdManager {
 		return hashType2MultiMapString.get( type );
 	}
 	
-	
+	/**
+	 * @see cerberus.manager.data.IGenomeIdManager#hasAnyMapByType(cerberus.data.mapping.GenomeMappingType)
+	 */
+	public final boolean hasAnyMapByType( final GenomeMappingType codingLutType ) {
+		
+		if (  hasMapByType( codingLutType ) ) {
+			return true;
+		}
+		
+		return hasMultiMapByType(codingLutType);
+	}
 	
 	public final boolean hasMapByType( final GenomeMappingType codingLutType ) {
 		
@@ -170,7 +196,7 @@ implements IGenomeIdManager {
 	
 	public final boolean hasMultiMapByType( final GenomeMappingType codingLutType ) {
 		
-		if ( hashType2MultiMap.containsKey( codingLutType ) ) 
+		if ( hashType2MultiMapInt.containsKey( codingLutType ) ) 
 		{
 			return true;
 		}
@@ -255,7 +281,7 @@ implements IGenomeIdManager {
 	}
 
 	
-	public int getIdFromStringByMapping(
+	public int getIdIntFromStringByMapping(
 			final String sCerberusId, 
 			final GenomeMappingType type) {
 
@@ -267,7 +293,7 @@ implements IGenomeIdManager {
 	}
 
 
-	public int getIdFromIntByMapping(
+	public int getIdIntFromIntByMapping(
 			final int iCerberusId, 
 			final GenomeMappingType type) {
 
@@ -278,7 +304,7 @@ implements IGenomeIdManager {
 		return buffer.getIntByInt( iCerberusId );
 	}
 	
-	public String getStringIdFromStringByMapping(
+	public String getIdStringFromStringByMapping(
 			final String sCerberusId, 
 			final GenomeMappingType type) {
 
@@ -290,7 +316,7 @@ implements IGenomeIdManager {
 	}
 
 
-	public String getStringIdFromIntByMapping(
+	public String getIdStringFromIntByMapping(
 			final int iCerberusId, 
 			final GenomeMappingType type) {
 
@@ -309,7 +335,7 @@ implements IGenomeIdManager {
 	}
 
 
-	public boolean isBuildLUTinProgress() {
+	public final boolean isBuildLUTinProgress() {
 
 		return bHasMapActiveWriter.get();
 	}
@@ -346,6 +372,37 @@ implements IGenomeIdManager {
 
 		assert false : "methode not implemented";
 		return false;
+	}
+
+
+	/**
+	 * @see cerberus.manager.data.IGenomeIdManager#setMapByType(cerberus.data.mapping.GenomeMappingType, java.lang.Object)
+	 * 
+	 * @see cerberus.manager.data.genome.IGenomeIdMap
+	 * @see cerberus.base.map.MultiHashArrayStringMap
+	 * @see cerberus.base.map.MultiHashArrayIntegerMap
+	 */
+	public void setMapByType(final GenomeMappingType codingLutType, 
+			Object map) {
+		
+		if (map.getClass().equals(MultiHashArrayIntegerMap.class)) {
+			hashType2MultiMapInt.put(codingLutType, (MultiHashArrayIntegerMap)map);
+			return;
+		}
+		
+		if (map.getClass().equals(MultiHashArrayStringMap.class)) {
+			hashType2MultiMapString.put(codingLutType, (MultiHashArrayStringMap)map);
+			return;
+		}
+		
+		try {
+			hashType2Map.put(codingLutType, (IGenomeIdMap) map);
+		}
+		catch (NullPointerException npe) {
+			throw new CerberusRuntimeException("setMapByType(final GenomeMappingType codingLutType, Object map) unsupported object=" +
+					map.getClass().toString(),
+					CerberusRuntimeExceptionType.DATAHANDLING);		
+		}
 	}
 
 }

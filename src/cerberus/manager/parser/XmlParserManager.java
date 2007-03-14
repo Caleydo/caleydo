@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
+//import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 import cerberus.manager.IGeneralManager;
@@ -38,11 +38,11 @@ public class XmlParserManager
 extends AXmlParserManager
 implements IXmlParserManager {
 
-  /**
-   * necessary to catch the special pathway XML file case
-	 * when the pathway tag needs to be parsed again.
-   */
-  private static final String xml_tag_for_pathways = "pathway";
+//  /**
+//   * necessary to catch the special pathway XML file case
+//	 * when the pathway tag needs to be parsed again.
+//   */
+//  private static final String xml_tag_for_pathways = "pathway";
   
 	protected final ILoggerManager refLoggerManager;
 
@@ -59,12 +59,6 @@ implements IXmlParserManager {
 	 */
 	private int iCountOpenedFiles = 0;		
 	
-	/**
-	 * TRUE defines, that handles may be cascaded.
-	 * Optimization!
-	 */
-	protected boolean bUseCascadingHandler = false;
-	
 	protected boolean bUnloadSaxHandlerAfterBootstraping = false;
 	
 	/**
@@ -73,16 +67,13 @@ implements IXmlParserManager {
 	 * @param generalManager reference to IGeneralManager
 	 * @param bUseCascadingHandler TRUE enabeld cascading handlers and slows down parsing speed.
 	 */
-	public XmlParserManager( final IGeneralManager generalManager,
-			final boolean bUseCascadingHandler ) {
+	public XmlParserManager(final IGeneralManager generalManager) {
 		
 		super( generalManager );
 		
 		refLoggerManager = generalManager.getSingelton().getLoggerManager();
 		
 		this.logLevel = LoggerType.VERBOSE;
-		
-		this.bUseCascadingHandler = bUseCascadingHandler;
 		
 		OpenExternalXmlFileSaxHandler externalFileHandler =
 			new OpenExternalXmlFileSaxHandler( generalManager, this );
@@ -160,6 +151,7 @@ implements IXmlParserManager {
 			
 			if ( currentHandler != null )
 			{
+				/* forwared event if currentHandler was set inside startElement_search4Tag(..) */
 				currentHandler.startElement( uri, 
 						localName, 
 						qName,
@@ -171,20 +163,17 @@ implements IXmlParserManager {
 			
 		} // if ( currentHandler == null ) 
 		
-		/* else; regular case with valid current Handler */ 
-		
-		if ( bUseCascadingHandler ) {		
-			startElement_search4Tag(uri,
-					localName, 
-					qName,
-					attrib);	
-		}  //if ( bUseCascadingHandler ) {
+		/* else; regular case with valid current Handler */ 			
+		/* test, if new Handler has to be activated. */
+		startElement_search4Tag(uri,
+				localName, 
+				qName,
+				attrib);	
 		
 		currentHandler.startElement( uri, 
 				localName, 
 				qName,
 				attrib );		
-
 	}
 
 	/**

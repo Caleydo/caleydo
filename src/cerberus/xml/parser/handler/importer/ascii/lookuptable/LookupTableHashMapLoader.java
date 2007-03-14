@@ -32,14 +32,10 @@ implements ILookupTableLoader {
 	 */
 	public LookupTableHashMapLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genometype,
+			final GenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
 
-		super(setGeneralManager, setFileName, genometype, setLookupTableLoaderProxy);
-
-		IGenomeIdMap bufferMap = refGenomeIdManager.getMapByType( genomeType );
-		
-		setHashMap( bufferMap, genomeType );
+		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
 	}
 
 
@@ -132,7 +128,7 @@ implements ILookupTableLoader {
 	public final void setHashMap( final IGenomeIdMap setHashMap,
 			final GenomeMappingType type) {
 		
-		assert type == genomeType : "must use same type as in constructor!";
+		assert type == currentGenomeIdType : "must use same type as in constructor!";
 		
 		if ( type.isMultiMap() )
 		{
@@ -141,5 +137,16 @@ implements ILookupTableLoader {
 		}
 		
 		refGenomeIdMap = setHashMap;		
+	}
+
+
+	/**
+	 * Write back data to IGenomeIdManager
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see cerberus.manager.data.IGenomeIdManager
+	 */
+	public void wirteBackMapToGenomeIdManager() {
+		
+		refGenomeIdManager.setMapByType(currentGenomeIdType, refGenomeIdMap);
 	}
 }

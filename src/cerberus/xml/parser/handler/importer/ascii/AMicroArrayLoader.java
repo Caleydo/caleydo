@@ -140,7 +140,7 @@ implements IMementoXML, IParserObject {
 			final int iNumberOfLinesInFile )
 		throws IOException; 
 	
-	protected abstract boolean copyDataToInternalDataStructures();
+	//protected abstract boolean copyDataToInternalDataStructures();
 
 	
 //	public boolean loadData() {			

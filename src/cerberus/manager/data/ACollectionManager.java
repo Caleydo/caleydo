@@ -13,12 +13,10 @@ import java.util.Hashtable;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerType;
-import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.singelton.SingeltonManager;
 
 //import prometheus.manager.SetManager;
 //import prometheus.manager.StorageManager;
-import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.CerberusRuntimeException;
 
 /**
  * Base interface for all manger objects.

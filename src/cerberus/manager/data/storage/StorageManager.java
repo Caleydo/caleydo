@@ -10,7 +10,7 @@ package cerberus.manager.data.storage;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.LinkedList;
 
 import cerberus.manager.IGeneralManager;
@@ -19,13 +19,10 @@ import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.singelton.SingeltonManager;
-//import java.util.Hashtable;
 
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.StorageType;
-import cerberus.data.collection.set.SetPlanarSimple;
+//import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -37,11 +34,14 @@ public class StorageManager
 extends ACollectionManager
 implements IStorageManager {
 	
-	private IStorage testStorage;
 	/**
-	 * Vector holds a list of all IStorage's
+	 * Hashtable holds a list of all IStorage's.
 	 */
 	protected Hashtable<Integer,IStorage> vecStorage;
+	
+	/**
+	 * Hashtable holds a list of all IStorage's for reverse lookup.
+	 */
 	protected Hashtable<IStorage,Integer> vecStorage_reverse;
 	
 	/**

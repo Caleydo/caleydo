@@ -10,8 +10,7 @@ package cerberus.manager.data.set;
 
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Vector;
-import java.util.Iterator;
+//import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -21,11 +20,10 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.data.collection.IStorage;
-import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.IStorage;
+//import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.SetType;
-import cerberus.data.collection.StorageType;
+//import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.SetPlanarSimple;

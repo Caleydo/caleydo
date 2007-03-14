@@ -6,7 +6,7 @@ package cerberus.xml.parser;
 /**
  * Provides methodes vor initialization aund cleanup of parser.
  * 
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  */
 public interface IParserObject

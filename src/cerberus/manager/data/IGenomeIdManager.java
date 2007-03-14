@@ -3,13 +3,10 @@
  */
 package cerberus.manager.data;
 
-import java.util.ArrayList;
-import java.util.Map;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
-import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 
@@ -36,7 +33,7 @@ public interface IGenomeIdManager extends IGeneralManager {
 //			final GenomeIdType type );
 	
 	
-	public int getIdFromStringByMapping( final String sCerberusId, 
+	public int getIdIntFromStringByMapping( final String sCerberusId, 
 			final GenomeMappingType type );
 	
 	/**
@@ -47,7 +44,7 @@ public interface IGenomeIdManager extends IGeneralManager {
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public int getIdFromIntByMapping( final int iCerberusId, 
+	public int getIdIntFromIntByMapping( final int iCerberusId, 
 			final GenomeMappingType type );
 	
 	/**
@@ -58,7 +55,7 @@ public interface IGenomeIdManager extends IGeneralManager {
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public String getStringIdFromStringByMapping(final String sCerberusId, 
+	public String getIdStringFromStringByMapping(final String sCerberusId, 
 			final GenomeMappingType type);
 	
 	/**
@@ -69,7 +66,7 @@ public interface IGenomeIdManager extends IGeneralManager {
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public String getStringIdFromIntByMapping(final int iCerberusId, 
+	public String getIdStringFromIntByMapping(final int iCerberusId, 
 			final GenomeMappingType type);
 
 	
@@ -112,9 +109,34 @@ public interface IGenomeIdManager extends IGeneralManager {
 	 * @param type specify the IGenomeIdMap assinged to this type
 	 * @return IGenomeIdMap assigned to the type
 	 */
-	public IGenomeIdMap getMapByType(GenomeMappingType type) ;
+	public IGenomeIdMap getMapByType(GenomeMappingType type);
+	
+	/**
+	 * Test if any map is registered to the type, no matter if it is a MultiMap or a regular Map.
+	 * 
+	 * @param type type to be testet
+	 * @return TRUE if any Map or MultiMap is registered to that type
+	 */
+	public boolean hasAnyMapByType(GenomeMappingType type);
+	
 	
 	public boolean createMapByType( final GenomeMappingType codingLutType, 
 			final GenomeMappingDataType dataType,
 			final int iInitialSizeHashMap );
+	
+	/**
+	 * Set a Map and register it to a GenomeMappingType.
+	 * 
+	 * Note: (Object) map must be an object of type:
+	 * IGenomeIdMap, MultiHashArrayStringMap or MultiHashArrayIntegerMap
+	 * 
+	 * @param codingLutType define GenomeMappingType used for identifying
+	 * @param map to be added, must be IGenomeIdMap
+	 * 
+	 * @see cerberus.manager.data.genome.IGenomeIdMap
+	 * @see cerberus.base.map.MultiHashArrayStringMap
+	 * @see cerberus.base.map.MultiHashArrayIntegerMap
+	 */
+	public void setMapByType( final GenomeMappingType codingLutType, Object map );
+	
 }

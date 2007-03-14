@@ -6,7 +6,7 @@ package cerberus.math.statistics.minmax;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.set.SetMultiDim;
+//import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 /**
@@ -57,88 +57,88 @@ public final class MinMaxDataInteger {
 		return this.iDimensions;
 	}
 	
-	/**
-	 * @deprecated
-	 * 
-	 * @return true if ok
-	 */
-	private boolean updateDataOld() {
-		
-		bIsValid = false;
-		
-		  if ( refSet != null ) {
-		    	
-			  if ( refSet.getDimensions() < iDimensions ) {
-	    			System.out.println("MinMaxDataInteger.updateDataOld() deprecated methode! Can not use a ISet with only one dimension!");
-	    			return false;
-			  }
-			  
-		    	if ( refSet.getReadToken() ) {
-		    		
-		    		//allocateMinMax( refSet.getDimensions() );
-		    	
-			    	IStorage refStorageX = refSet.getStorageByDimAndIndex(0,0);
-			    	IStorage refStorageY = refSet.getStorageByDimAndIndex(1,0);
-			    			    	
-			    	int[] i_dataValuesX = refStorageX.getArrayInt();
-			    	int[] i_dataValuesY = refStorageY.getArrayInt();
-			    	
-			    	if (( i_dataValuesX != null )&&
-			    			( i_dataValuesY != null )) {
-			    		
-				    	IVirtualArrayIterator iterX = refSet.getVirtualArrayByDimAndIndex(0,0).iterator();
-				    	IVirtualArrayIterator iterY = refSet.getVirtualArrayByDimAndIndex(1,0).iterator();
-			    		
-				    	/**
-				    	 * update ...
-				    	 */		
-				    	
-				    	int iMinX = i_dataValuesX[iterX.next()];
-				    	int iMaxX = iMinX;
-				    	int iMinY = i_dataValuesX[iterX.next()];
-				    	int iMaxY = iMinY;
-				    	
-				    	int iSumX = iMinX;
-				    	int iSumY = iMaxX;
-				    	
-				    	int i = 0;
-				    	while (( iterX.hasNext() )&&
-				    			( iterY.hasNext() )) {	    
-				    		int iBufferX = i_dataValuesX[iterX.next()];
-				        	int iBufferY = i_dataValuesY[iterY.next()];
-				        	
-				        	if (iBufferX < iMinX) { iMinX = iBufferX; }
-				        	else if ( iBufferX > iMaxX ) {iMaxX = iBufferX; }
-				        	
-				        	if (iBufferY < iMinY) { iMinY = iBufferY; }
-				        	else if ( iBufferY > iMaxY ) {iMaxY = iBufferY; }
-				        	
-				    		iSumX += iBufferX;
-				    		iSumY += iBufferY;
-				    		i++;
-				    	} //end: while (( iterX.hasNext() )&&( iterY.hasNext() )) {
-				    	
-				    	fMinValue[0] = iMinX;
-				    	fMaxValue[0] = iMaxX;
-				    	fMinValue[1] = iMinY;
-				    	fMaxValue[1] = iMaxY;
-				    	
-				    	fMeanValue[0] = (float) iSumX / (float) i;
-				    	fMeanValue[1] = (float) iSumY / (float) i;
-				    	
-				    	refSet.returnReadToken();	
-				    	bIsValid = true;
-				    	return true;
-			    	} //end: if (( i_dataValuesX != null )&&( i_dataValuesY != null )) {
-			    	
-			    	refSet.returnReadToken();
-			    	return false;
-		    	} //end: if ( refSet.getReadToken() ) {
-		    	
-		  } //end: if (refSet != null) {
-		  
-		  return false;
-	}
+//	/**
+//	 * @deprecated
+//	 * 
+//	 * @return true if ok
+//	 */
+//	private boolean updateDataOld() {
+//		
+//		bIsValid = false;
+//		
+//		  if ( refSet != null ) {
+//		    	
+//			  if ( refSet.getDimensions() < iDimensions ) {
+//	    			System.out.println("MinMaxDataInteger.updateDataOld() deprecated methode! Can not use a ISet with only one dimension!");
+//	    			return false;
+//			  }
+//			  
+//		    	if ( refSet.getReadToken() ) {
+//		    		
+//		    		//allocateMinMax( refSet.getDimensions() );
+//		    	
+//			    	IStorage refStorageX = refSet.getStorageByDimAndIndex(0,0);
+//			    	IStorage refStorageY = refSet.getStorageByDimAndIndex(1,0);
+//			    			    	
+//			    	int[] i_dataValuesX = refStorageX.getArrayInt();
+//			    	int[] i_dataValuesY = refStorageY.getArrayInt();
+//			    	
+//			    	if (( i_dataValuesX != null )&&
+//			    			( i_dataValuesY != null )) {
+//			    		
+//				    	IVirtualArrayIterator iterX = refSet.getVirtualArrayByDimAndIndex(0,0).iterator();
+//				    	IVirtualArrayIterator iterY = refSet.getVirtualArrayByDimAndIndex(1,0).iterator();
+//			    		
+//				    	/**
+//				    	 * update ...
+//				    	 */		
+//				    	
+//				    	int iMinX = i_dataValuesX[iterX.next()];
+//				    	int iMaxX = iMinX;
+//				    	int iMinY = i_dataValuesX[iterX.next()];
+//				    	int iMaxY = iMinY;
+//				    	
+//				    	int iSumX = iMinX;
+//				    	int iSumY = iMaxX;
+//				    	
+//				    	int i = 0;
+//				    	while (( iterX.hasNext() )&&
+//				    			( iterY.hasNext() )) {	    
+//				    		int iBufferX = i_dataValuesX[iterX.next()];
+//				        	int iBufferY = i_dataValuesY[iterY.next()];
+//				        	
+//				        	if (iBufferX < iMinX) { iMinX = iBufferX; }
+//				        	else if ( iBufferX > iMaxX ) {iMaxX = iBufferX; }
+//				        	
+//				        	if (iBufferY < iMinY) { iMinY = iBufferY; }
+//				        	else if ( iBufferY > iMaxY ) {iMaxY = iBufferY; }
+//				        	
+//				    		iSumX += iBufferX;
+//				    		iSumY += iBufferY;
+//				    		i++;
+//				    	} //end: while (( iterX.hasNext() )&&( iterY.hasNext() )) {
+//				    	
+//				    	fMinValue[0] = iMinX;
+//				    	fMaxValue[0] = iMaxX;
+//				    	fMinValue[1] = iMinY;
+//				    	fMaxValue[1] = iMaxY;
+//				    	
+//				    	fMeanValue[0] = (float) iSumX / (float) i;
+//				    	fMeanValue[1] = (float) iSumY / (float) i;
+//				    	
+//				    	refSet.returnReadToken();	
+//				    	bIsValid = true;
+//				    	return true;
+//			    	} //end: if (( i_dataValuesX != null )&&( i_dataValuesY != null )) {
+//			    	
+//			    	refSet.returnReadToken();
+//			    	return false;
+//		    	} //end: if ( refSet.getReadToken() ) {
+//		    	
+//		  } //end: if (refSet != null) {
+//		  
+//		  return false;
+//	}
 	
 	
 	public boolean updateData() {

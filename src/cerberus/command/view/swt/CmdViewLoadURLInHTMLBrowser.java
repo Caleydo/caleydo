@@ -7,7 +7,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewManager;
+//import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IViewRep;

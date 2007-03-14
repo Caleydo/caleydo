@@ -5,8 +5,8 @@ package cerberus.manager.logger;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
-import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.ISingelton;
+//import cerberus.manager.ILoggerManager.LoggerType;
+//import cerberus.manager.ISingelton;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;

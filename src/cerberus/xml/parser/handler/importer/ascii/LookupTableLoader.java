@@ -19,7 +19,7 @@ import cerberus.xml.parser.handler.importer.ascii.AbstractLoader;
 
 
 /**
- * @author kalkusch
+ * @author Michael Kalkusch
  *
  * @deprecated use LookupTableLoaderProxy instead!
  *

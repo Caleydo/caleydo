@@ -2,7 +2,7 @@ package cerberus.view.gui.swt.data.explorer;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+//import java.util.Map;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.LabelProvider;

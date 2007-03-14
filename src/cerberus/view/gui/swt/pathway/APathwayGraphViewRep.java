@@ -264,7 +264,8 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 			sPathwayFilePath = "map0" + Integer.toString(iNewPathwayId);
 		}
 		
-		sPathwayFilePath = "data/XML/pathways/" + sPathwayFilePath +".xml";		
+		sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath()
+			+ sPathwayFilePath +".xml";		
 		
 		refGeneralManager.getSingelton().
 			getXmlParserManager().parseXmlFileByName(sPathwayFilePath);

@@ -15,6 +15,8 @@ import java.util.Set;
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.base.map.MultiHashArrayIntegerMap
+ * @see cerberus.manager.data.genome.IGenomeIdMap
  */
 public class MultiHashArrayStringMap 
 extends HashMap <String,ArrayList<String>> 

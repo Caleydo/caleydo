@@ -19,10 +19,9 @@ public class XmlParserManagerThread extends XmlParserManager
 	 * @param generalManager
 	 * @param bUseCascadingHandler
 	 */
-	public XmlParserManagerThread(IGeneralManager generalManager,
-			boolean bUseCascadingHandler) {
+	public XmlParserManagerThread(IGeneralManager generalManager) {
 
-		super(generalManager, bUseCascadingHandler);
+		super(generalManager);
 	}
 
 	/* (non-Javadoc)

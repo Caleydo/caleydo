@@ -32,9 +32,6 @@ import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableHashMap
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapIntLoader;
 import cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader;
 
-
-
-
 /**
  * @author Michael Kalkusch
  *
@@ -53,9 +50,9 @@ extends AbstractLoader {
 	 */
 	public LookupTableLoaderProxy(final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genometype,
+			final GenomeMappingType genomeIdType,
 			final GenomeMappingDataType type,
-			final GenomeMappingType genometype_optionlalTarget,
+			final GenomeMappingType genomeIdType_optionalTarget,
 			final boolean enableMultipeThreads) {
 		
 		super(setGeneralManager,
@@ -78,13 +75,13 @@ extends AbstractLoader {
 			refProxyLookupTableLoader = new LookupTableHashMapLoader(
 					setGeneralManager,
 					setFileName,
-					genometype,
+					genomeIdType,
 					this );
-			dgi_mng.createMapByType( genometype, genometype.getDataMapppingType() );
+			dgi_mng.createMapByType( genomeIdType, genomeIdType.getDataMapppingType() );
 			
-			IGenomeIdMap setCurrentMap = dgi_mng.getMapByType( genometype );
+			IGenomeIdMap setCurrentMap = dgi_mng.getMapByType( genomeIdType );
 			
-			refProxyLookupTableLoader.setHashMap( setCurrentMap, genometype );
+			refProxyLookupTableLoader.setHashMap( setCurrentMap, genomeIdType );
 			
 			break;
 			
@@ -92,33 +89,33 @@ extends AbstractLoader {
 			refProxyLookupTableLoader = new LookupTableMultiMapIntLoader(
 					setGeneralManager,
 					setFileName,
-					genometype,
+					genomeIdType,
 					this  );
 			
-			dgi_mng.createMapByType( genometype, genometype.getDataMapppingType() );
+			dgi_mng.createMapByType( genomeIdType, genomeIdType.getDataMapppingType() );
 			
 			MultiHashArrayIntegerMap setCurrentMultiMap = 
-				dgi_mng.getMultiMapByType( genometype );
+				dgi_mng.getMultiMapIntegerByType( genomeIdType );
 			
-			refProxyLookupTableLoader.setMultiMapInteger( setCurrentMultiMap, genometype );
+			refProxyLookupTableLoader.setMultiMapInteger( setCurrentMultiMap, genomeIdType );
 			break;
 			
 		case MULTI_STRING2STRING_USE_LUT:
 			refProxyLookupTableLoader = new LookupTableMultiMapStringLoader(
 					setGeneralManager,
 					setFileName,
-					genometype,
+					genomeIdType,
 					this  );
 			refProxyLookupTableLoader.setInitialSizeHashMap( 1000 );
 			
-			dgi_mng.createMapByType( genometype_optionlalTarget, 
-					genometype_optionlalTarget.getDataMapppingType() );
+			dgi_mng.createMapByType( genomeIdType, 
+					genomeIdType.getDataMapppingType() );
 			
 			MultiHashArrayIntegerMap mha_IntegerMap = 
-				dgi_mng.getMultiMapByType( genometype_optionlalTarget );
+				dgi_mng.getMultiMapIntegerByType( genomeIdType_optionalTarget );
 			
 			refProxyLookupTableLoader.setMultiMapInteger( mha_IntegerMap, 
-					genometype_optionlalTarget );
+					genomeIdType_optionalTarget );
 			
 			break;
 			
@@ -126,18 +123,18 @@ extends AbstractLoader {
 			refProxyLookupTableLoader = new LookupTableMultiMapStringLoader(
 					setGeneralManager,
 					setFileName,
-					genometype,
+					genomeIdType,
 					this  );
 			refProxyLookupTableLoader.setInitialSizeHashMap( 1000 );
 			
-			dgi_mng.createMapByType( genometype_optionlalTarget, 
-					genometype_optionlalTarget.getDataMapppingType() );
+			dgi_mng.createMapByType( genomeIdType_optionalTarget, 
+					genomeIdType_optionalTarget.getDataMapppingType() );
 			
 			MultiHashArrayStringMap mha_StringMap = 
-				dgi_mng.getMultiMapStringByType( genometype_optionlalTarget );
+				dgi_mng.getMultiMapStringByType( genomeIdType_optionalTarget );
 			
 			refProxyLookupTableLoader.setMultiMapString( mha_StringMap, 
-					genometype_optionlalTarget );
+					genomeIdType_optionalTarget );
 			
 			break;
 			
@@ -205,13 +202,29 @@ extends AbstractLoader {
 		return iTotalNumerOfLinesRed;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Writes back Map to IGenomeIdManager by calling cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * 
+	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see cerberus.manager.data.IGenomeIdManager
 	 */
 	@Override
 	protected boolean copyDataToInternalDataStructures() {
 
-		return true;
+		try {
+			refProxyLookupTableLoader.wirteBackMapToGenomeIdManager();
+			return true;
+		}
+		catch (Exception e) {
+
+			refLoggerManager.logMsg("copyDataToInternalDataStructures() calling wirteBackMapToGenomeIdManager() failed!\n  error=" + 
+					e.toString(), 
+					LoggerType.ERROR_ONLY);
+			
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -263,14 +276,14 @@ extends AbstractLoader {
 			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
 		
 		MultiHashArrayIntegerMap refIntMultiMapOrigin = 
-			dgi_mng.getMultiMapByType(originMultiMapType);
+			dgi_mng.getMultiMapIntegerByType(originMultiMapType);
 		
 		dgi_mng.createMapByType(targetMultiMapType, 
 				targetMultiMapType.getDataMapppingType(), 
 				refIntMultiMapOrigin.size());
 		
 		MultiHashArrayIntegerMap refIntMultiMapTarget = 
-			dgi_mng.getMultiMapByType(targetMultiMapType);
+			dgi_mng.getMultiMapIntegerByType(targetMultiMapType);
 
 		Set<Integer> setKeysOrigin = refIntMultiMapOrigin.keySet();
 		

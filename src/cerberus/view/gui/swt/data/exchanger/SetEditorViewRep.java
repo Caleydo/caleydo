@@ -5,11 +5,11 @@ package cerberus.view.gui.swt.data.exchanger;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.eclipse.core.internal.resources.Container;
+//import org.eclipse.core.internal.resources.Container;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -22,17 +22,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.ImageData;
+//import org.eclipse.swt.graphics.ImageData;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.util.system.StringConversionTool;
+//import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
-import cerberus.view.gui.opengl.IGLCanvasUser;
+//import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.ViewType;
 
 /**
@@ -102,8 +102,6 @@ implements IView {
 	public void setPercantage(final ISet refSet) {
 		
 		if ( refSet.getReadToken() ) {
-			
-			int iHeight = 20;
 			
 			int iDim = refSet.getDimensions();
 			iDim = 1;

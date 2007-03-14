@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import cerberus.command.CommandQueueSaxType;
+import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.xml.IMementoXML;
 import cerberus.manager.ICommandManager;
@@ -24,7 +25,7 @@ import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.ISWTGUIManager;
-import cerberus.manager.IViewCanvasManager;
+//import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.command.CommandManager;
 import cerberus.manager.data.IGenomeIdManager;
@@ -50,19 +51,11 @@ import cerberus.manager.type.ManagerType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
 import cerberus.net.dwt.base.DGuiComponentType;
-
-//import prometheus.data.collection.SelectionType; 
-//import prometheus.data.collection.SetType;
-//import prometheus.data.collection.StorageType;
-
-//import prometheus.data.collection.Selection;
-import cerberus.data.collection.ISet;
-
-import cerberus.data.collection.view.IViewCanvas;
-
-//import prometheus.net.dwt.swing.DHistogramCanvas;
-import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.xml.parser.ISaxParserHandler;
+//import prometheus.net.dwt.swing.DHistogramCanvas;
+
+
 
 /**
  * @author Michael Kalkusch
@@ -453,7 +446,7 @@ implements IGeneralManagerSingelton
 		{
 			ISet setBuffer = this.refSetManager.createSet( CommandQueueSaxType.CREATE_SET );
 
-			//setBuffer.setMementoXML_usingHandler( refSaxHandler );
+			setBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;
 		}
 		case STORAGE:

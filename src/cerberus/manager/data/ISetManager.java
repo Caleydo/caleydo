@@ -10,11 +10,10 @@ package cerberus.manager.data;
 
 import java.util.Collection;
 
-import cerberus.manager.IGeneralManager;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.SetDataType;
-
+//import cerberus.data.collection.SetDataType;
+import cerberus.manager.IGeneralManager;
 
 /**
  * Manges all ISet's.

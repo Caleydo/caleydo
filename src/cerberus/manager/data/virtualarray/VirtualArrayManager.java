@@ -12,18 +12,18 @@ import java.util.Vector;
 import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
+//import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
+//import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 
 import cerberus.data.collection.IVirtualArray;
-import cerberus.data.collection.set.SetPlanarSimple;
+//import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.virtualarray.VirtualArrayMultiBlock;
 import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
-import cerberus.data.collection.IVirtualArray;
+//import cerberus.data.collection.IVirtualArray;
 
 /**
  * @author Michael Kalkusch
