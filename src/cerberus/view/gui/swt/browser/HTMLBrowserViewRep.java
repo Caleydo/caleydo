@@ -105,6 +105,14 @@ implements IView {
 				drawView();
 			}
 		});
+		
+		refSWTContainer.getDisplay().addFilter(SWT.FocusIn, new Listener() {
+		    public void handleEvent(Event event) {
+		    	
+		        if(!(event.widget.getClass().getName().equals(this.getClass().getName()))) 
+		        	return;
+		    }
+		});
 	}
 
 	public void drawView() {
