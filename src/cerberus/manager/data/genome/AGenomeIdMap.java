@@ -83,6 +83,9 @@ implements IGenomeIdMap {
 		return hashGeneric.size();
 	}
 	
+	/**
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getReversedMap()
+	 */
 	public final IGenomeIdMap getReversedMap() {
 		IGenomeIdMap reversedMap = null;
 		

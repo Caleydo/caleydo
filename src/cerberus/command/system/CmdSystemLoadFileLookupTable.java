@@ -209,17 +209,8 @@ implements ICommand {
 		refGeneralManager.getSingelton().logMsg(
 	    		"load file via importer: [LUT-tpye:[" +
 				sLookupTableType + "]  cast=[" + 
-//				sLookupTableDataType + "] targetSet(s)=[" +
 				iTargetSetId + "])",
 				LoggerType.VERBOSE );
-		
-
-//			if ( ?? ) {
-//			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo("");
-//			exitWarning.setText("ERROR",errorMsg);
-//			exitWarning.doCommand();
-//			return;
-//		}
 		
 		LookupTableLoaderProxy loader = null;
 		
@@ -246,7 +237,6 @@ implements ICommand {
 					sFileName,
 					lut_genome_type,
 					genomeDataType,
-					//lut_genome_type_OptionalTarget,
 					IGeneralManager.bEnableMultipelThreads );	
 			
 			loader.setTokenSeperator(sLUT_Target);
@@ -268,6 +258,16 @@ implements ICommand {
 				GenomeMappingType lut_genome_reverse_type = 
 					lut_genome_type.getReverseMappingType();
 				
+				if (lut_genome_reverse_type.equals(GenomeMappingType.NON_MAPPING))
+				{
+					assert false : "Reverse mapping: type=" + 
+					lut_genome_reverse_type.toString() + " has no valid reverse type.";
+					
+					throw new RuntimeException("Reverse mapping: type=" +
+							lut_genome_type.toString() +
+							" has no valid reverse type.");
+				} //if (lut_genome_reverse_type.equals(GenomeMappingType.NON_MAPPING))
+				
 				if ( lut_genome_reverse_type.isMultiMap() ) 
 				{
 					switch (lut_genome_reverse_type.getTypeOrigin().getStorageType()) 
@@ -287,11 +287,11 @@ implements ICommand {
 						break;
 						
 					default:
-						System.err.println("Reverse mapping not suported yet for this type.");
-						
-//						assert false : "unsupported type! " + 
-//							lut_genome_reverse_type.toString() + " " + 
-//							lut_genome_reverse_type.getTypeOrigin().getStorageType().toString();
+						assert false : "Reverse mapping not suported yet for this type=" + 
+							lut_genome_reverse_type.toString();
+					
+						throw new RuntimeException("Reverse mapping not suported yet for this type=" +
+								lut_genome_reverse_type.toString());
 					
 					} //switch (lut_genome_reverse_type.getTypeOrigin().getStorageType()) 
 					
@@ -300,11 +300,7 @@ implements ICommand {
 				{			
 					LookupTableLoaderProxy.createReverseMapFromMap(refGeneralManager, 
 							lut_genome_type, 
-							lut_genome_reverse_type);
-					
-//					System.err.println("Only reverse multi maps are supported yet!");
-					//assert false : "lut_genome_reverse_type= " + 
-					//lut_genome_reverse_type.toString() + " is not a Multimap! ";
+							lut_genome_reverse_type);				
 				
 				} //if ( lut_genome_reverse_type.isMultiMap() ) {...} else {
 				

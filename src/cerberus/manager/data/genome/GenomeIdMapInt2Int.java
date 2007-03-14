@@ -25,8 +25,8 @@ implements IGenomeIdMap {
 	/**
 	 * @param iSizeHashMap
 	 */
-	public GenomeIdMapInt2Int(final GenomeMappingDataType dataType,int iSizeHashMap) {
-		super(dataType,iSizeHashMap);
+	public GenomeIdMapInt2Int(final GenomeMappingDataType dataType, int iSizeHashMap) {
+		super(dataType, iSizeHashMap);
 	
 	}
 
