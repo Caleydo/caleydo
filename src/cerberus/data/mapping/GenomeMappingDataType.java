@@ -12,21 +12,22 @@ public enum GenomeMappingDataType
 	STRING2STRING ( false, false ),
 	
 	MULTI_INT2INT ( true, false ),
-	/**
-	 * Reads a Integer-2-Integer Multimap and uses a 
-	 * lookup table to create the final Integer Multimap.
-	 */
-	MULTI_INT2INT_USE_LUT ( true, true ),
+	
+//	/**
+//	 * Reads a Integer-2-Integer Multimap and uses a 
+//	 * lookup table to create the final Integer Multimap.
+//	 */
+//	MULTI_INT2INT_USE_LUT ( true, true ),
 	
 	MULTI_STRING2STRING ( true, false ),
 	
-	/**
-	 * Reads a String-2-String Multimap and uses a 
-	 * lookup table to create the final String Multimap.
-	 */
-	MULTI_STRING2STRING_USE_LUT ( true, true ),
-	
-	MULTI_STRING2STRING_CREATE_REVERSE ( true, false ),
+//	/**
+//	 * Reads a String-2-String Multimap and uses a 
+//	 * lookup table to create the final String Multimap.
+//	 */
+//	MULTI_STRING2STRING_USE_LUT ( true, true ),
+//	
+//	MULTI_STRING2STRING_CREATE_REVERSE ( true, false ),
 	
 	NONE( false, false );
 	

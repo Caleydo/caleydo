@@ -1,5 +1,7 @@
 package cerberus.manager.data.genome;
 
+import java.util.HashMap;
+
 //import cerberus.data.mapping.GenomeMappingDataType;
 
 
@@ -37,5 +39,25 @@ public interface IGenomeIdMap {
 //	public int getInt( final Object byObject);
 //	
 //	public String getString( final Object byObject);
+	
+	/**
+	 * Get size of the map.
+	 * 
+	 * @see java.util.Map#size()
+	 * 
+	 * @return size of the Map
+	 */
+	public int size();	
+	
+	/**
+	 * Creates a copy of this HashMap by adding 
+	 * each <Key,Value> as <Value,Key> to the new HashMap.
+	 * 
+	 * Not very efficient, since each <Key,Value> is converted to a 
+	 * String and than cast to either (String) or (int)
+	 * 
+	 * @return reversed HashMap of this HashMap
+	 */
+	public IGenomeIdMap getReversedMap();
 	
 }

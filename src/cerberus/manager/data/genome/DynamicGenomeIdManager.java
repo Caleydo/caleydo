@@ -113,19 +113,19 @@ implements IGenomeIdManager {
 			switch ( dataType ) 
 			{
 			case INT2INT:
-				newMap = new GenomeIdMapInt2Int(iCurrentInitialSizeHashMap);
+				newMap = new GenomeIdMapInt2Int(dataType,iCurrentInitialSizeHashMap);
 				break;
 				
 			case INT2STRING:
-				newMap = new GenomeIdMapInt2String(iCurrentInitialSizeHashMap);
+				newMap = new GenomeIdMapInt2String(dataType, iCurrentInitialSizeHashMap);
 				break;
 				
 			case STRING2INT:
-				newMap = new GenomeIdMapString2Int(iCurrentInitialSizeHashMap);
+				newMap = new GenomeIdMapString2Int(dataType, iCurrentInitialSizeHashMap);
 				break;
 				
 			case STRING2STRING:
-				newMap = new GenomeIdMapString2String(iCurrentInitialSizeHashMap);
+				newMap = new GenomeIdMapString2String(dataType,iCurrentInitialSizeHashMap);
 				break;
 		
 			/* Multi Map's */
@@ -136,10 +136,10 @@ implements IGenomeIdManager {
 				return true;
 				
 			case MULTI_INT2INT:
-			case MULTI_STRING2STRING_USE_LUT:
-				MultiHashArrayIntegerMap newMultiMap = new MultiHashArrayIntegerMap(iCurrentInitialSizeHashMap);
-				hashType2MultiMapInt.put( codingLutType, newMultiMap );
-				return true;
+//			case MULTI_STRING2STRING_USE_LUT:
+//				MultiHashArrayIntegerMap newMultiMap = new MultiHashArrayIntegerMap(iCurrentInitialSizeHashMap);
+//				hashType2MultiMapInt.put( codingLutType, newMultiMap );
+//				return true;
 				
 			default:
 				assert false : "createMap() type=" + dataType + " is not supported";

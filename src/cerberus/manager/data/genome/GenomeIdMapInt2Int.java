@@ -3,6 +3,7 @@
  */
 package cerberus.manager.data.genome;
 
+import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.data.genome.AGenomeIdMap;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
@@ -17,19 +18,17 @@ implements IGenomeIdMap {
 	/**
 	 * 
 	 */
-	public GenomeIdMapInt2Int() {
-		super();
+	public GenomeIdMapInt2Int(final GenomeMappingDataType dataType) {
+		super(dataType);
 	}
 
 	/**
 	 * @param iSizeHashMap
 	 */
-	public GenomeIdMapInt2Int(int iSizeHashMap) {
-		super(iSizeHashMap);
-		
+	public GenomeIdMapInt2Int(final GenomeMappingDataType dataType,int iSizeHashMap) {
+		super(dataType,iSizeHashMap);
+	
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see cerberus.manager.event.IEventPublisherMap#getStringByInt(int)
@@ -43,5 +42,5 @@ implements IGenomeIdMap {
 			final String value) {
 		hashGeneric.put( Integer.valueOf(key), Integer.valueOf(value));
 	}
-
+	
 }

@@ -3,6 +3,7 @@
  */
 package cerberus.manager.data.genome;
 
+import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.data.genome.AGenomeIdMap;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
@@ -17,15 +18,15 @@ implements IGenomeIdMap {
 	/**
 	 * 
 	 */
-	public GenomeIdMapInt2String() {
-		super();
+	public GenomeIdMapInt2String(final GenomeMappingDataType dataType) {
+		super(dataType);
 	}
 
 	/**
 	 * @param iSizeHashMap
 	 */
-	public GenomeIdMapInt2String(int iSizeHashMap) {
-		super(iSizeHashMap);
+	public GenomeIdMapInt2String(final GenomeMappingDataType dataType, final int iSizeHashMap) {
+		super(dataType, iSizeHashMap);
 		
 	}
 	

@@ -223,16 +223,12 @@ implements ICommand {
 				lut_genome_type_OptionalTarget = GenomeMappingType.valueOf( sLookupTableTypeOptionalTarget );
 			}
 			
-//			refGenomeIdManager.createMapByType( lut_genome_type,
-//					genomeDataType,
-//					1000 );
-			
 			loader = new LookupTableLoaderProxy( 
 					refGeneralManager, 
 					sFileName,
 					lut_genome_type,
 					genomeDataType,
-					lut_genome_type_OptionalTarget,
+					//lut_genome_type_OptionalTarget,
 					IGeneralManager.bEnableMultipelThreads );	
 			
 			loader.setTokenSeperator(sLUT_Target);
@@ -240,10 +236,6 @@ implements ICommand {
 			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
 				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );
 			}
-			
-//			loader.setHashMap(
-//					refGenomeIdManager.getMapByType(lut_genome_type),
-//					lut_genome_type );
 			
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine,
 					iStopPareseFileAtLine );
@@ -270,7 +262,7 @@ implements ICommand {
 						break;
 						
 					case STRING:
-						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapInt(
+						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapString(
 								refGeneralManager, 
 								lut_genome_type, 
 								lut_genome_reverse_type);
