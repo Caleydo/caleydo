@@ -4,9 +4,12 @@
 package cerberus.manager.data;
 
 
+import java.util.Collection;
+
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
+import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 
@@ -139,4 +142,12 @@ public interface IGenomeIdManager extends IGeneralManager {
 	 */
 	public void setMapByType( final GenomeMappingType codingLutType, Object map );
 	
+	public Collection<Integer> getIdIntListByType(int iId, GenomeIdType type);
+	
+	public Collection<String> getIdStringListByType(String sId, GenomeIdType type);
+	
+	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, GenomeIdType type);
+	
+	public Collection<String> getIdStringListFromIdListByType(Collection<String > sIdList, GenomeIdType type);
+
 }

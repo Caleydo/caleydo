@@ -4,7 +4,9 @@
 package cerberus.manager.data.genome;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 //import java.util.Iterator;
 //import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,6 +36,8 @@ public class DynamicGenomeIdManager
 extends AAbstractManager
 implements IGenomeIdManager {
 
+	private static final int iSortBufferInitialsize = 200;
+	
 	private AtomicBoolean bHasMapActiveWriter = new AtomicBoolean(false); 
 	
 	private GenomeMappingType currentEditingType;
@@ -328,10 +332,14 @@ implements IGenomeIdManager {
 	}
 
 
-	public ArrayList<Integer> getIdListByType(int iCerberusId, GenomeIdType type) {
+	public ArrayList<Integer> getIdIntListByType(int iId, GenomeIdType type) {
 
-		// TODO Auto-generated method stub
-		return null;
+		return hashType2MultiMapInt.get(type).get(iId);
+	}
+	
+	public ArrayList<String> getIdStringListByType(String sId, GenomeIdType type) {
+		
+		return hashType2MultiMapString.get(type).get(sId);
 	}
 
 
@@ -403,6 +411,68 @@ implements IGenomeIdManager {
 					map.getClass().toString(),
 					CerberusRuntimeExceptionType.DATAHANDLING);		
 		}
+	}
+
+
+	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, GenomeIdType type) {
+
+		assert iIdList != null : "can not handle null pointer";
+		
+		HashMap <Integer,Integer> sortBuffer = new HashMap <Integer,Integer>(iSortBufferInitialsize);
+		
+		Integer constantValue = new Integer(-1);
+		
+		Iterator <Integer> iterInputList = iIdList.iterator();
+		while ( iterInputList.hasNext() )
+		{
+			ArrayList<Integer> buffer = getIdIntListByType(
+					iterInputList.next().intValue(),
+					type);
+			
+			if (buffer!= null)
+			{
+				Iterator <Integer> iterInnerArrayList = buffer.iterator();
+				while ( iterInnerArrayList.hasNext() )
+				{
+					sortBuffer.put(iterInnerArrayList.next(),constantValue);
+				} //while ( iterInnerArrayList.hasNext() )
+				
+			} //if (buffer!= null))
+			
+		} //while ( iterInputList.hasNext() )
+		
+		return sortBuffer.keySet();
+	}
+
+
+	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList, GenomeIdType type) {
+
+		assert sIdList != null : "can not handle null pointer";
+		
+		HashMap <String,String> sortBuffer = new HashMap <String,String>(iSortBufferInitialsize);
+		
+		String constantValue = "-1";
+		
+		Iterator <String> iterInputList = sIdList.iterator();
+		while ( iterInputList.hasNext() )
+		{
+			ArrayList<String> buffer = getIdStringListByType(
+					iterInputList.next(),
+					type);
+			
+			if (buffer!= null)
+			{
+				Iterator <String> iterInnerArrayList = buffer.iterator();
+				while ( iterInnerArrayList.hasNext() )
+				{
+					sortBuffer.put(iterInnerArrayList.next(),constantValue);
+				} //while ( iterInnerArrayList.hasNext() )
+				
+			} //if (buffer!= null))
+			
+		} //while ( iterInputList.hasNext() )
+		
+		return sortBuffer.keySet();
 	}
 
 }
