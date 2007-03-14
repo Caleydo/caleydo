@@ -254,10 +254,10 @@ extends AbstractLoader {
 			final GenomeMappingType targetMultiMapType) {
 	
 		/* consistency check */
-		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())||
+		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget()) ||
 			 (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin()))
 		{
-			assert false : "Can not create reverse multimap, because originMultMapType and targetMultMapType do not match!";
+			assert false : "Can not create reverse multimap, because originMapType and targetMapType do not match!";
 			return null;
 		}
 		
