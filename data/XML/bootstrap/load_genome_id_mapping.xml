@@ -26,26 +26,27 @@
 		   		detail="data/GenomeData/mapping/microarray_2_microarray_code.map"	
 		   		attrib1="MICROARRAY_2_MICROARRAY_CODE REVERSE" 
 		   		attrib2=";" 
-		   		attrib3="1 -1" />		   		
- 	
- 	  		<!-- 
- 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	targetId="-1"	
-		   		detail="data/GenomeData/mapping/ncbi_geneid_code_2_enzyme_code.map"	
-		   		attrib1="NCBI_GENEID_2_ENZYME STRING2STRING" 
-		   		attrib2=";" 
-		   		attrib3="1 -1" />	
-		   		
- 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="699010"	targetId="-1"	
-		   		detail="data/GenomeData/mapping/accession_code_2_ncbi_geneid_code.map"	
-		   		attrib1="ACCESSION_2_NCBI_GENEID STRING2STRING" 
-		   		attrib2=";" 
-		   		attrib3="1 -1" />
-		   				   			   		
+		   		attrib3="1 -1" />		   			
+
  			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="799010"	targetId="-1"	
 		   		detail="data/GenomeData/mapping/microarray_code_2_accession_code.map"	
-		   		attrib1="MICROARRAY_2_ACCESSION STRING2STRING" 
+		   		attrib1="MICROARRAY_2_ACCESSION REVERSE LUT_2" 
 		   		attrib2=";" 
-		   		attrib3="1 -1" />
-		   	 -->
-		   		
+		   		attrib3="1 -1" 
+		   		attrib4="MICROARRAY_CODE_2_MICROARRAY ACCESSION_CODE_2_ACCESSION" />
+
+ 	 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="699010"	targetId="-1"	
+		   		detail="data/GenomeData/mapping/accession_code_2_ncbi_geneid_code.map"	
+		   		attrib1="ACCESSION_2_NCBI_GENEID REVERSE LUT_2" 
+		   		attrib2=";" 
+		   		attrib3="1 -1" 
+		   		attrib4="ACCESSION_CODE_2_ACCESSION NCBI_GENEID_CODE_2_NCBI_GENEID" />
+
+ 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	targetId="-1"	
+		   		detail="data/GenomeData/mapping/ncbi_geneid_code_2_enzyme_code.map"	
+		   		attrib1="NCBI_GENEID_2_ENZYME REVERSE LUT_2" 
+		   		attrib2=";" 
+		   		attrib3="1 -1" 
+		   		attrib4="NCBI_GENEID_CODE_2_NCBI_GENEID ENZYME_CODE_2_ENZYME" />		   		
+
 </details>
