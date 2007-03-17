@@ -42,7 +42,16 @@ implements IGenomeIdMap {
 	 */
 	public String getStringByInt(int key) {
 
-		return hashGeneric.get(key);
+		// Check if the ID has a mapping
+		if (hashGeneric.containsKey(key))
+		{
+			return hashGeneric.get(key);
+		}
+		else
+		{
+			System.err.println("No mapping found for requested code: " +key);
+			return "Invalid";
+		}
 	}
 
 }

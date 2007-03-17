@@ -37,7 +37,16 @@ implements IGenomeIdMap {
 	 */
 	public String getStringByString(String key) {
 
-		return hashGeneric.get( key );
+		// Check if the code has a mapping
+		if (hashGeneric.containsKey(key))
+		{
+			return hashGeneric.get(key);
+		}
+		else
+		{
+			System.err.println("No mapping found for requested code: " +key);
+			return "Invalid";
+		}
 	}
 	
 	public void put( final String key, 

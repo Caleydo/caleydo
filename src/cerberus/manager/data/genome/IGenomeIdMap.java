@@ -1,7 +1,9 @@
 package cerberus.manager.data.genome;
 
-import java.util.HashMap;
+//import java.util.HashMap;
 
+import cerberus.data.mapping.GenomeMappingType;
+import cerberus.manager.data.IGenomeIdManager;
 //import cerberus.data.mapping.GenomeMappingDataType;
 
 
@@ -9,6 +11,7 @@ import java.util.HashMap;
  * Interface for Map
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  * 
  * @see cerberus.base.map.MultiHashArrayStringMap
  * @see cerberus.base.map.MultiHashArrayIntegerMap
@@ -60,4 +63,19 @@ public interface IGenomeIdMap {
 	 */
 	public IGenomeIdMap getReversedMap();
 	
+	/**
+	 * Method reolves the codes in the map.
+	 * That means all codes are looked up the mapping tables
+	 * (Code -> ID) and the Codes are replaced by the internal
+	 * IDs.
+	 * 
+	 * @param refGenomeIdManager
+	 * @param genomeMappingLUT_1
+	 * @param genomeMappingLUT_2
+	 * @return
+	 */
+	public IGenomeIdMap getCodeResolvedMap(
+			IGenomeIdManager refGenomeIdManager,
+			GenomeMappingType genomeMappingLUT_1,
+			GenomeMappingType genomeMappingLUT_2);
 }

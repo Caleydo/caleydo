@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import cerberus.data.mapping.GenomeMappingDataType;
+import cerberus.data.mapping.GenomeMappingType;
+import cerberus.manager.data.IGenomeIdManager;
 
 
 /**
@@ -128,14 +130,66 @@ implements IGenomeIdMap {
 		
 		while ( iterOrigin.hasNext() ) 
 		{
-			Entry<K,V> EntryBuffer = iterOrigin.next();
+			Entry<K,V> entryBuffer = iterOrigin.next();
 			
 			reversedMap.put( 
-					EntryBuffer.getValue().toString() , 
-					EntryBuffer.getKey().toString() );
+					entryBuffer.getValue().toString() , 
+					entryBuffer.getKey().toString() );
 		}
 			
 		return reversedMap;
-	}
+	}	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(cerberus.manager.data.IGenomeIdManager, cerberus.data.mapping.GenomeMappingType, cerberus.data.mapping.GenomeMappingType)
+	 */
+	public IGenomeIdMap getCodeResolvedMap(
+			IGenomeIdManager refGenomeIdManager,
+			GenomeMappingType genomeMappingLUT_1,
+			GenomeMappingType genomeMappingLUT_2) {
 		
+		IGenomeIdMap codeResolvedMap = null;
+		
+			switch ( dataType ) 
+			{
+			case STRING2STRING:
+				codeResolvedMap = new GenomeIdMapInt2Int(GenomeMappingDataType.INT2INT,
+						this.size());
+				
+				break;
+				
+				default:
+					System.err.println("unsupported data type= " +dataType.toString());
+					//assert false : "unsupported data type=" + dataType.toString();
+			}	
+	
+		/** 
+		 * Read HashMap and write it to new HashMap
+		 */
+		Set <Entry<K,V>> entrySet = hashGeneric.entrySet();			
+		Iterator <Entry<K,V>> iterOrigin = entrySet.iterator();
+		int iResolvedID_1 = 0;
+		int iResolvedID_2 = 0;
+		
+		Entry<K,V> entryBuffer = null;
+		
+		while ( iterOrigin.hasNext() ) 
+		{
+			entryBuffer = iterOrigin.next();
+						
+			iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
+					entryBuffer.getKey().toString(), 
+					genomeMappingLUT_1);
+			
+			iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
+					entryBuffer.getValue().toString(),
+					genomeMappingLUT_2);
+			
+			codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
+					new Integer(iResolvedID_2).toString());
+		}
+			
+		return codeResolvedMap;
+	}	
 }

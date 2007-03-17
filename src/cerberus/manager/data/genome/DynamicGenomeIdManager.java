@@ -140,6 +140,10 @@ implements IGenomeIdManager {
 				return true;
 				
 			case MULTI_INT2INT:
+				MultiHashArrayIntegerMap newMultiMapInt = new MultiHashArrayIntegerMap(iCurrentInitialSizeHashMap);
+				hashType2MultiMapInt.put( codingLutType, newMultiMapInt );
+				return true;
+				
 //			case MULTI_STRING2STRING_USE_LUT:
 //				MultiHashArrayIntegerMap newMultiMap = new MultiHashArrayIntegerMap(iCurrentInitialSizeHashMap);
 //				hashType2MultiMapInt.put( codingLutType, newMultiMap );
@@ -304,7 +308,7 @@ implements IGenomeIdManager {
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
 		assert buffer != null : "getIdFromIntByMapping(" + type +") type is not allocated";
-		
+
 		return buffer.getIntByInt( iCerberusId );
 	}
 	
@@ -331,15 +335,18 @@ implements IGenomeIdManager {
 		return buffer.getStringByInt( iCerberusId );
 	}
 
+	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
+	// Because in the hashType2MultiMapInt the maps are stored with the GenomeMappingType as key.
+	public ArrayList<Integer> getIdIntListByType(int iId, GenomeMappingType genomeMappingType) {
 
-	public ArrayList<Integer> getIdIntListByType(int iId, GenomeIdType type) {
-
-		return hashType2MultiMapInt.get(type).get(iId);
+		return hashType2MultiMapInt.get(genomeMappingType).get(iId);
 	}
 	
-	public ArrayList<String> getIdStringListByType(String sId, GenomeIdType type) {
+	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
+	// Because in the hashType2MultiMapString the maps are stored with the GenomeMappingType as key.	
+	public ArrayList<String> getIdStringListByType(String sId, GenomeMappingType genomeMappingType) {
 		
-		return hashType2MultiMapString.get(type).get(sId);
+		return hashType2MultiMapString.get(genomeMappingType).get(sId);
 	}
 
 
@@ -413,8 +420,30 @@ implements IGenomeIdManager {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IGenomeIdManager#removeMapByType(cerberus.data.mapping.GenomeMappingType)
+	 */
+	public void removeMapByType(final GenomeMappingType codingLutType) {
+		
+		if (hashType2MultiMapInt.containsKey(codingLutType))
+		{
+			hashType2MultiMapInt.remove(codingLutType);
+			return;
+		}
+		else if (hashType2MultiMapString.containsKey(codingLutType)) 
+		{
+			hashType2MultiMapString.remove(codingLutType);
+			return;
+		}
+		else if (hashType2Map.containsKey(codingLutType))
+		{
+			hashType2Map.remove(codingLutType);
+			return;
+		}
+	}	
 
-	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, GenomeIdType type) {
+	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, GenomeMappingType type) {
 
 		assert iIdList != null : "can not handle null pointer";
 		
@@ -445,7 +474,7 @@ implements IGenomeIdManager {
 	}
 
 
-	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList, GenomeIdType type) {
+	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList, GenomeMappingType type) {
 
 		assert sIdList != null : "can not handle null pointer";
 		
