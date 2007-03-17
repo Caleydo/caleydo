@@ -10,7 +10,10 @@ package cerberus.command.system;
 
 //import java.util.HashMap;
 //import java.util.Iterator;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 
 
 import cerberus.command.CommandQueueSaxType;
@@ -24,6 +27,8 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
+import cerberus.manager.data.genome.GenomeIdMapInt2Int;
+import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
@@ -37,6 +42,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * Command, load lookup table from file using one delimiter and a target Collection.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  * @see cerberus.data.collection.ISet
  * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
@@ -63,7 +69,7 @@ implements ICommand {
 	
 //	protected String sLookupTableTypeOptionalTarget;
 	
-	protected String sLookupTableTargetType;
+//	protected String sLookupTableTargetType;
 	
 	/**
 	 * Define type of lookup table to be created.
@@ -94,6 +100,18 @@ implements ICommand {
 	
 	protected boolean bCreateReverseMap = false;
 	
+	protected boolean bResolveCodeMappingUsingCodeToIdLUTs = false;
+	
+	/**
+	 * Variable contains the lookup table types 
+	 * that are needed to resolve mapping tables that 
+	 * contain codes instead of internal IDs.
+	 */
+	protected String sCodeResolvingLUTTypes;
+	
+	protected String sCodeResolvingLUTMappingType_1;
+	
+	protected String sCodeResolvingLUTMappingType_2;
 	
 	
 	/**
@@ -134,13 +152,38 @@ implements ICommand {
 		
 		sLookupTableType = tokenizer.nextToken();
 		
-		if (tokenizer.hasMoreTokens())
+		while (tokenizer.hasMoreTokens())
 		{
 			sLookupTableOptions = tokenizer.nextToken();
 		
 			if (sLookupTableOptions.equals("REVERSE"))
 			{
 				bCreateReverseMap = true;
+			}
+			else if (sLookupTableOptions.equals("LUT"))
+			{
+				sCodeResolvingLUTTypes =	refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
+				
+				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
+						IGeneralManager.sDelimiter_Parser_DataItems);
+				
+				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
+				
+				bResolveCodeMappingUsingCodeToIdLUTs = true;
+			}
+			else if (sLookupTableOptions.equals("LUT_2"))
+			{
+				sCodeResolvingLUTTypes = refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
+				
+				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
+						IGeneralManager.sDelimiter_Parser_DataItems);
+				
+				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
+				sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
+				
+				bResolveCodeMappingUsingCodeToIdLUTs = true;
 			}
 		}
 		
@@ -217,21 +260,31 @@ implements ICommand {
 		IGenomeIdManager refGenomeIdManager = 
 			refGeneralManager.getSingelton().getGenomeIdManager();
 		
-		
 		try 
 		{
 			GenomeMappingType lut_genome_type = 
 				GenomeMappingType.valueOf( sLookupTableType );
 			
-			GenomeMappingDataType genomeDataType = lut_genome_type.getDataMapppingType();
+			GenomeMappingDataType genomeDataType;
 			
-//			GenomeMappingType lut_genome_type_OptionalTarget = null;
-			
-//			if ((sLookupTableTypeOptionalTarget != null)&&( sLookupTableTypeOptionalTarget.length() > 0 ))
+//			if (!bResolveCodeMappingUsingCodeToIdLUTs)
 //			{
-//				lut_genome_type_OptionalTarget = GenomeMappingType.valueOf( sLookupTableTypeOptionalTarget );
+				genomeDataType = lut_genome_type.getDataMapppingType();
+//			}
+//			else
+//			{
+//				genomeDataType = GenomeMappingDataType.STRING2STRING;
 //			}
 			
+			if (genomeDataType == GenomeMappingDataType.INT2INT)
+			{
+				genomeDataType = GenomeMappingDataType.STRING2STRING;
+			}
+			else if (genomeDataType == GenomeMappingDataType.MULTI_INT2INT)
+			{
+				genomeDataType = GenomeMappingDataType.MULTI_STRING2STRING;
+			}
+				
 			loader = new LookupTableLoaderProxy( 
 					refGeneralManager, 
 					sFileName,
@@ -252,11 +305,46 @@ implements ICommand {
 			loader.loadData();
 			refGenomeIdManager.buildLUT_stopEditing( lut_genome_type );
 			
+			
+			/* --- Map codes in LUT to IDs --- */
+			if (bResolveCodeMappingUsingCodeToIdLUTs)
+			{
+				GenomeMappingType genomeMappingLUT_1 = 
+					GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_1 );
+				
+				GenomeMappingType genomeMappingLUT_2 = 
+					GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_2 );
+				
+				// Reset genomeDataType to real type
+				genomeDataType = lut_genome_type.getDataMapppingType();
+				
+				if (genomeDataType == GenomeMappingDataType.MULTI_INT2INT)
+				{
+					LookupTableLoaderProxy.createCodeResolvedMultiMapFromMultiMapString(
+							refGeneralManager, 
+							lut_genome_type, 
+							genomeMappingLUT_1, 
+							genomeMappingLUT_2);
+				}
+				else 
+				{
+					LookupTableLoaderProxy.createCodeResolvedMapFromMap(
+							refGeneralManager, 
+							lut_genome_type, 
+							genomeMappingLUT_1, 
+							genomeMappingLUT_2);
+				}
+			}
+			
 			/* ---  create reverse Map ... --- */
 			if (bCreateReverseMap)
 			{
-				GenomeMappingType lut_genome_reverse_type = 
-					lut_genome_type.getReverseMappingType();
+				// Concatenate genome id type target and origin type in swapped 
+				// order to determine reverse genome mapping type.
+				GenomeMappingType lut_genome_reverse_type = GenomeMappingType.valueOf(
+					lut_genome_type.getTypeTarget().toString()
+					+ "_2_"
+					+ lut_genome_type.getTypeOrigin().toString());
 				
 				if (lut_genome_reverse_type.equals(GenomeMappingType.NON_MAPPING))
 				{
@@ -301,7 +389,7 @@ implements ICommand {
 					LookupTableLoaderProxy.createReverseMapFromMap(refGeneralManager, 
 							lut_genome_type, 
 							lut_genome_reverse_type);				
-				
+					
 				} //if ( lut_genome_reverse_type.isMultiMap() ) {...} else {
 				
 			} //if (bCreateReverseMap)
@@ -331,9 +419,7 @@ implements ICommand {
 				loader.destroy();
 				loader = null;
 			}
-		} // finally
-		
-		
+		} // finally		
 	}
 
 	/* (non-Javadoc)

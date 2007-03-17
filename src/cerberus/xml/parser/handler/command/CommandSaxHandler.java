@@ -158,6 +158,11 @@ implements IXmlParserHandler
 					CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey(), 
 					CommandQueueSaxType.TAG_ATTRIBUTE3.getDefault(),
 					ParameterHandlerType.STRING );	
+			
+			phAttributes.setValueBySaxAttributes( attrs,
+					CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey(), 
+					CommandQueueSaxType.TAG_ATTRIBUTE4.getDefault(),
+					ParameterHandlerType.STRING );	
 				
 			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 

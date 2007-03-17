@@ -9,6 +9,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
+
+import cerberus.data.mapping.GenomeMappingDataType;
+import cerberus.data.mapping.GenomeMappingType;
+import cerberus.manager.data.IGenomeIdManager;
+import cerberus.manager.data.genome.GenomeIdMapInt2Int;
+import cerberus.manager.data.genome.IGenomeIdMap;
 
 
 
@@ -78,112 +85,114 @@ implements GenericMultiMap <String>  {
 	}
 	
 
-	 public void putAll( Map mapToPut )
-	    {
-	        super.putAll( (MultiStringMap) mapToPut );
-	    }
-	 
-	 
-	 public Object put( String key, String value )
-	    {
-	        // NOTE:: put might be called during deserialization !!!!!!
-	        //        so we must provide a hook to handle this case
-	        //        This means that we cannot make MultiMaps of ArrayLists !!!
-	        
-		 	ArrayList<String> bufferArrayList = super.get( key );
-		 			 	
-	        if ( bufferArrayList == null ) {
-	        	/**
-	        	 * new value!
-	        	 */
-	        	bufferArrayList = 
-	        		new ArrayList<String> (iDefaultLengthInternalArrayList);	        	
-	        }
-	        
-	        bufferArrayList.add( value );
-	        return super.put( key, bufferArrayList );
-	    }
-	 
-	 /**
-	  * Checkes if value is already registerd to the key.
-	  * 
-	  * @param key
-	  * @param value
-	  * @return
-	  */
-	 public Object putChecked( String key, String value )
-	    {
-	        // NOTE:: put might be called during deserialization !!!!!!
-	        //        so we must provide a hook to handle this case
-	        //        This means that we cannot make MultiMaps of ArrayLists !!!
-	        
-		 	ArrayList<String> bufferArrayList = super.get( key );
-		 			 	
-	        if ( bufferArrayList == null ) {
-	        	/**
-	        	 * new value!
-	        	 */
-	        	bufferArrayList = new ArrayList<String> (iDefaultLengthInternalArrayList);
-	        	bufferArrayList.add( value );
-	            return ( super.put( key, bufferArrayList ) );
-	        }
-	        
-	        if  ( ! bufferArrayList.contains( value )) 
-	        {
-		        bufferArrayList.add( value );
-		        return super.put( key, bufferArrayList );
-	        }
-	        return null;
-	    }
-	 
-	 public boolean containsValue( Object value )
-	    {
-	        Set<Entry <String,ArrayList<String>>> pairs = 
-	        	super.entrySet();
-	        
-	        if ( pairs == null )
-	            return false;
-	        
-	        Iterator <Entry <String,ArrayList<String>>> pairsIterator = 
-	        	pairs.iterator();
-	        
-	        while ( pairsIterator.hasNext() ) {
-	            Map.Entry <String,ArrayList<String>> keyValuePair = 
-	            	pairsIterator.next();
-	            
-	            ArrayList<String> list = keyValuePair.getValue();
-	            
-	            if( list.contains( value ) )
-	                return true;
-	        }
-	        return false;
-	    }
-	 
-	 public void clear()
-	    {
-		 Set<Entry <String,ArrayList<String>>> pairs = 
-	        	super.entrySet();
-	        
-		 Iterator <Entry <String,ArrayList<String>>> pairsIterator = 
-	        	pairs.iterator();
-		 
-	        while ( pairsIterator.hasNext() ) {
-	        	 Map.Entry <String,ArrayList<String>> keyValuePair = 
-		            	pairsIterator.next();
-	        	 
-	        	 ArrayList<String> list = keyValuePair.getValue();
-	            list.clear();
-	        }
-	        
-	        super.clear();
-	    }
-	 
-	 public Collection <ArrayList<String>> values()
-	    {
-		 assert false : "values() in not implemented yet!";
-	 
-	       return null;
-	    }
+	 public void putAll(Map mapToPut) {
+
+		super.putAll((MultiStringMap) mapToPut);
+	}
+
+	public Object put(String key, String value) {
+
+		// NOTE:: put might be called during deserialization !!!!!!
+		// so we must provide a hook to handle this case
+		// This means that we cannot make MultiMaps of ArrayLists !!!
+
+		ArrayList<String> bufferArrayList = super.get(key);
+
+		if (bufferArrayList == null)
+		{
+			/**
+			 * new value!
+			 */
+			bufferArrayList = new ArrayList<String>(
+					iDefaultLengthInternalArrayList);
+		}
+
+		bufferArrayList.add(value);
+		return super.put(key, bufferArrayList);
+	}
+
+	/**
+	 * Checkes if value is already registerd to the key.
+	 * 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Object putChecked(String key, String value) {
+
+		// NOTE:: put might be called during deserialization !!!!!!
+		// so we must provide a hook to handle this case
+		// This means that we cannot make MultiMaps of ArrayLists !!!
+
+		ArrayList<String> bufferArrayList = super.get(key);
+
+		if (bufferArrayList == null)
+		{
+			/**
+			 * new value!
+			 */
+			bufferArrayList = new ArrayList<String>(
+					iDefaultLengthInternalArrayList);
+			bufferArrayList.add(value);
+			return (super.put(key, bufferArrayList));
+		}
+
+		if (!bufferArrayList.contains(value))
+		{
+			bufferArrayList.add(value);
+			return super.put(key, bufferArrayList);
+		}
+		return null;
+	}
+
+	public boolean containsValue(Object value) {
+
+		Set<Entry<String, ArrayList<String>>> pairs = super.entrySet();
+
+		if (pairs == null)
+			return false;
+
+		Iterator<Entry<String, ArrayList<String>>> pairsIterator = pairs
+				.iterator();
+
+		while (pairsIterator.hasNext())
+		{
+			Map.Entry<String, ArrayList<String>> keyValuePair = pairsIterator
+					.next();
+
+			ArrayList<String> list = keyValuePair.getValue();
+
+			if (list.contains(value))
+				return true;
+		}
+		return false;
+	}
+
+	public void clear() {
+
+		Set<Entry<String, ArrayList<String>>> pairs = super.entrySet();
+
+		Iterator<Entry<String, ArrayList<String>>> pairsIterator = pairs
+				.iterator();
+
+		while (pairsIterator.hasNext())
+		{
+			Map.Entry<String, ArrayList<String>> keyValuePair = pairsIterator
+					.next();
+
+			ArrayList<String> list = keyValuePair.getValue();
+			list.clear();
+		}
+
+		super.clear();
+	}
+
+	public Collection<ArrayList<String>> values() {
+
+		assert false : "values() in not implemented yet!";
+
+		return null;
+	}
 	 
 	 
 	 public static ArrayList<String> mergeRemoveCopies( 
@@ -202,5 +211,53 @@ implements GenericMultiMap <String>  {
 		 
 		 return first;
 	 }
+	 
+	/**
+	 * Method takes a map that contains identifier codes and creates a new
+	 * resolved codes. Resolving means mapping from code to internal ID.
+	 * 
+	 * TODO: Maybe this method should moved to outside of this class.
+	 */
+	public MultiHashArrayIntegerMap getCodeResolvedMap(
+			IGenomeIdManager refGenomeIdManager,
+			GenomeMappingType genomeMappingLUT_1,
+			GenomeMappingType genomeMappingLUT_2) {
+		
+		MultiHashArrayIntegerMap codeResolvedMultMapInt = 
+			new MultiHashArrayIntegerMap();
+		
+		System.out.println(genomeMappingLUT_1.getTypeOrigin().toString());
 
+		/** 
+		 * Read HashMap and write it to new HashMap
+		 */
+		Set<Map.Entry<String,ArrayList<String>>> entrySet = this.entrySet();	
+		Iterator <Entry<String,ArrayList<String>>> iterEntries = entrySet.iterator();
+		int iResolvedID_1 = 0;
+		int iResolvedID_2 = 0;
+		Entry<String,ArrayList<String>> entryBuffer = null;
+		Iterator<String> iterValues;
+		
+		while ( iterEntries.hasNext() ) 
+		{
+			entryBuffer = iterEntries.next();
+								
+			iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
+					entryBuffer.getKey().toString(), 
+					genomeMappingLUT_1);
+			
+			ArrayList<String> tmp = entryBuffer.getValue();
+			iterValues = tmp.iterator();
+			while (iterValues.hasNext())
+			{
+				iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
+						iterValues.next().toString(),
+						genomeMappingLUT_2);
+			
+				codeResolvedMultMapInt.putChecked(iResolvedID_1, iResolvedID_2);
+			}
+		}
+			
+		return codeResolvedMultMapInt;
+	}	
 }

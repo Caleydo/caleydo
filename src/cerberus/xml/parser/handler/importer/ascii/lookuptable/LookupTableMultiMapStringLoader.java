@@ -327,11 +327,12 @@ implements ILookupTableLoader {
 				iStopParsingAtLine);
 	}
 	
-
-	public void setMultiMapInteger( final MultiHashArrayIntegerMap setHashMap,
+	//MARC: Changed method from Integer to String because we are
+	//in the MultiMapString class.
+	public void setMultiMapString( final MultiHashArrayStringMap setHashMap,
 			final GenomeMappingType type) {
 	
-		refMultiHashMapInteger = setHashMap;
+		refMultiHashMapString = setHashMap;
 	}
 	
 	/**

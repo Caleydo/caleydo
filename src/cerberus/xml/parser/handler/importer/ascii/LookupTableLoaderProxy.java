@@ -78,7 +78,9 @@ extends AbstractLoader {
 					setFileName,
 					genomeIdType,
 					this );
-			dgi_mng.createMapByType( genomeIdType, genomeIdType.getDataMapppingType() );
+			
+			//dgi_mng.createMapByType( genomeIdType, genomeIdType.getDataMapppingType() );
+			dgi_mng.createMapByType( genomeIdType, type );
 			
 			IGenomeIdMap setCurrentMap = dgi_mng.getMapByType( genomeIdType );
 			
@@ -93,7 +95,7 @@ extends AbstractLoader {
 					genomeIdType,
 					this  );
 			
-			dgi_mng.createMapByType( genomeIdType, genomeIdType.getDataMapppingType() );
+			dgi_mng.createMapByType( genomeIdType, type);// genomeIdType.getDataMapppingType() );
 			
 			MultiHashArrayIntegerMap setCurrentMultiMap = 
 				dgi_mng.getMultiMapIntegerByType( genomeIdType );
@@ -128,7 +130,7 @@ extends AbstractLoader {
 					this  );
 			refProxyLookupTableLoader.setInitialSizeHashMap( 1000 );
 			
-			dgi_mng.createMapByType( genomeIdType, genomeIdType.getDataMapppingType() );
+			dgi_mng.createMapByType( genomeIdType, type);//genomeIdType.getDataMapppingType() );
 			
 			MultiHashArrayStringMap mha_StringMap = 
 				dgi_mng.getMultiMapStringByType( genomeIdType );
@@ -390,4 +392,47 @@ extends AbstractLoader {
 		return refStringMultiMapTarget;
 	}
 	
+	public static final IGenomeIdMap createCodeResolvedMapFromMap( 
+			final IGeneralManager refGeneralManager,		
+			GenomeMappingType originMapMappingType,
+			GenomeMappingType genomeMappingLUT_1,
+			GenomeMappingType genomeMappingLUT_2) {
+	
+		DynamicGenomeIdManager dgi_mng = 
+			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		IGenomeIdMap refMapToConvert = dgi_mng.getMapByType(originMapMappingType);
+		
+		IGenomeIdMap refTargetMap = refMapToConvert.getCodeResolvedMap(
+				dgi_mng, genomeMappingLUT_1, genomeMappingLUT_2);
+		
+		// Removes old map that contains the codes instead of the IDs
+		dgi_mng.removeMapByType(originMapMappingType);
+		
+		dgi_mng.setMapByType(originMapMappingType, refTargetMap);
+		
+		return refTargetMap;
+	}
+	
+	public static final MultiHashArrayIntegerMap createCodeResolvedMultiMapFromMultiMapString( 
+			final IGeneralManager refGeneralManager,		
+			GenomeMappingType originMapMappingType,
+			GenomeMappingType genomeMappingLUT_1,
+			GenomeMappingType genomeMappingLUT_2) {
+	
+		DynamicGenomeIdManager dgi_mng = 
+			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		MultiHashArrayStringMap refMapToConvert = dgi_mng.getMultiMapStringByType(originMapMappingType);
+		
+		MultiHashArrayIntegerMap refTargetMap = refMapToConvert.getCodeResolvedMap(
+				dgi_mng, genomeMappingLUT_1, genomeMappingLUT_2);
+		
+		// Removes old map that contains the codes instead of the IDs
+		dgi_mng.removeMapByType(originMapMappingType);
+		
+		dgi_mng.setMapByType(originMapMappingType, refTargetMap);
+		
+		return refTargetMap;
+	}
 }

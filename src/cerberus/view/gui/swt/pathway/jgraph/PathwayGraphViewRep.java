@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -38,10 +39,13 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.selection.ISetSelection;
+import cerberus.data.mapping.GenomeIdType;
+import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
+import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
@@ -51,6 +55,7 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineSty
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.util.system.StringConversionTool;
@@ -273,6 +278,8 @@ extends APathwayGraphViewRep {
 						
 						// Highlight current cell
 						highlightCell(clickedCell, Color.RED);
+						dataMappingTest(((PathwayVertexRep)clickedCell.
+								getUserObject()));
 						
 						// The clicked vertex will be added with neighborhood distance of 0
 						iLLNeighborDistance.add(0);
@@ -1007,6 +1014,73 @@ extends APathwayGraphViewRep {
 			bNeighbourhoodShown = true;
 			iNeighbourhoodUndoCount++;
 			
+		}
+	}
+	
+	/**
+	 * Method is for testing the mapping from enzymes to genes.
+	 * It takes a selected vertex and looks up the IDs in the proper
+	 * order.
+	 * 
+	 * @param refTmpVertexRep Selected vertex
+	 */
+	protected void dataMappingTest(PathwayVertexRep refTmpVertexRep) {
+		
+		// Check if vertex is an enzyme.
+		// If not leave. Because only enzymes needs to be mapped.
+		if (!refTmpVertexRep.getVertex().getVertexType().
+				equals(PathwayVertexType.enzyme))
+		{
+			return;
+		}
+		
+		String sEnzymeCode = refTmpVertexRep.getVertex().getElementTitle().substring(3);
+		
+		//Just for testing mapping!
+		IGenomeIdManager refGenomeIdManager = 
+			refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
+				GenomeMappingType.ENZYME_CODE_2_ENZYME);
+		
+		if (iEnzymeID == -1)
+			return;
+		
+		Collection<Integer> tmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
+				GenomeMappingType.ENZYME_2_NCBI_GENEID);
+		
+		if(tmpGeneId == null)
+			return;
+		
+		Iterator<Integer> iterTmpGeneId = tmpGeneId.iterator();
+		Iterator<Integer> iterTmpAccessionId = null;
+		while (iterTmpGeneId.hasNext())
+		{
+			int iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iterTmpGeneId.next(), 
+					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+			
+			if (iAccessionID == -1)
+				break;
+			
+			String sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
+					GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+			
+			System.out.println("Accession Code for Enzyme "+sEnzymeCode +": " +sAccessionCode);
+			
+			Collection<Integer> tmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
+					GenomeMappingType.ACCESSION_2_MICROARRAY);
+			
+			if(tmpAccessionId == null)
+				continue;
+			
+			iterTmpAccessionId = tmpAccessionId.iterator();
+			while (iterTmpAccessionId.hasNext())
+			{
+				String sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iterTmpAccessionId.next(), 
+						GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
+				
+				System.out.println("MicroArray Code for Enzyme "+sEnzymeCode +": "+sMicroArrayCode);
+			}
 		}
 	}
 }

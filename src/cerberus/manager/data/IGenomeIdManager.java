@@ -9,15 +9,18 @@ import java.util.Collection;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
-import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 
 /**
+ * Generic interface for genome ID managers.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public interface IGenomeIdManager extends IGeneralManager {
+public interface IGenomeIdManager 
+extends IGeneralManager {
 
 //	/**
 //	 * Search inside all Map's for the id.
@@ -142,12 +145,34 @@ public interface IGenomeIdManager extends IGeneralManager {
 	 */
 	public void setMapByType( final GenomeMappingType codingLutType, Object map );
 	
-	public Collection<Integer> getIdIntListByType(int iId, GenomeIdType type);
+	/**
+	 * Remove a Map using the GenomeMappingType.
+	 * 
+	 * Note: (Object) map must be an object of type:
+	 * IGenomeIdMap, MultiHashArrayStringMap or MultiHashArrayIntegerMap
+	 * 
+	 * @param codingLutType define GenomeMappingType used for identifying
+	 * 
+	 * @see cerberus.manager.data.genome.IGenomeIdMap
+	 * @see cerberus.base.map.MultiHashArrayStringMap
+	 * @see cerberus.base.map.MultiHashArrayIntegerMap
+	 */
+	public void removeMapByType(final GenomeMappingType codingLutType);
 	
-	public Collection<String> getIdStringListByType(String sId, GenomeIdType type);
+	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
+	// Because in the hashType2MultiMapInt the maps are stored with the GenomeMappingType as key.
+	public Collection<Integer> getIdIntListByType(int iId, GenomeMappingType type);
 	
-	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, GenomeIdType type);
+	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
+	// Because in the hashType2MultiMapInt the maps are stored with the GenomeMappingType as key.
+	public Collection<String> getIdStringListByType(String sId, GenomeMappingType type);
 	
-	public Collection<String> getIdStringListFromIdListByType(Collection<String > sIdList, GenomeIdType type);
+	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
+	// Because in the hashType2MultiMapInt the maps are stored with the GenomeMappingType as key.
+	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, GenomeMappingType type);
+	
+	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
+	// Because in the hashType2MultiMapInt the maps are stored with the GenomeMappingType as key.
+	public Collection<String> getIdStringListFromIdListByType(Collection<String > sIdList, GenomeMappingType type);
 
 }

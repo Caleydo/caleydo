@@ -126,6 +126,7 @@ public enum CommandQueueSaxType
 	TAG_ATTRIBUTE1("cmd","attrib1",""),	
 	TAG_ATTRIBUTE2("cmd","attrib2",""),
 	TAG_ATTRIBUTE3("cmd","attrib3",""),	
+	TAG_ATTRIBUTE4("cmd","attrib4",""),
 	TAG_DETAIL("cmd","detail",""),
 	TAG_PARENT("cmd","parent","-1"),
 	TAG_GLCANVAS("cmd","glcanvas","-1"),
