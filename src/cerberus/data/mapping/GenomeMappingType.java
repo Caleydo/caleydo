@@ -182,7 +182,12 @@ public enum GenomeMappingType
 	ENZYME_2_NCBI_GENEID  (
 			GenomeIdType.ENZYME,
 			GenomeIdType.NCBI_GENEID,
-			GenomeMappingDataType.MULTI_INT2INT),			
+			GenomeMappingDataType.MULTI_INT2INT),
+			
+	ACCESSION_2_GENE_NAME (
+			GenomeIdType.ACCESSION,
+			GenomeIdType.GENE_NAME,
+			GenomeMappingDataType.INT2STRING),
 					
 	NON_MAPPING(GenomeIdType.NONE,
 			GenomeIdType.NONE,

@@ -404,7 +404,9 @@ extends AbstractLoader {
 		IGenomeIdMap refMapToConvert = dgi_mng.getMapByType(originMapMappingType);
 		
 		IGenomeIdMap refTargetMap = refMapToConvert.getCodeResolvedMap(
-				dgi_mng, genomeMappingLUT_1, genomeMappingLUT_2);
+				dgi_mng, genomeMappingLUT_1, 
+				genomeMappingLUT_2,
+				originMapMappingType.getDataMapppingType());
 		
 		// Removes old map that contains the codes instead of the IDs
 		dgi_mng.removeMapByType(originMapMappingType);
@@ -426,7 +428,8 @@ extends AbstractLoader {
 		MultiHashArrayStringMap refMapToConvert = dgi_mng.getMultiMapStringByType(originMapMappingType);
 		
 		MultiHashArrayIntegerMap refTargetMap = refMapToConvert.getCodeResolvedMap(
-				dgi_mng, genomeMappingLUT_1, genomeMappingLUT_2);
+				dgi_mng, genomeMappingLUT_1, 
+				genomeMappingLUT_2);
 		
 		// Removes old map that contains the codes instead of the IDs
 		dgi_mng.removeMapByType(originMapMappingType);

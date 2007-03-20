@@ -2,6 +2,7 @@ package cerberus.manager.data.genome;
 
 //import java.util.HashMap;
 
+import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.data.IGenomeIdManager;
 //import cerberus.data.mapping.GenomeMappingDataType;
@@ -72,10 +73,12 @@ public interface IGenomeIdMap {
 	 * @param refGenomeIdManager
 	 * @param genomeMappingLUT_1
 	 * @param genomeMappingLUT_2
+	 * @param targetMappingDataType
 	 * @return
 	 */
 	public IGenomeIdMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
 			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2);
+			GenomeMappingType genomeMappingLUT_2,
+			GenomeMappingDataType targetMappingDataType);
 }

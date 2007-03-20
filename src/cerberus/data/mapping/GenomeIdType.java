@@ -66,6 +66,10 @@ public enum GenomeIdType
 			GenomeMappingType.NON_MAPPING,
 			"path","pathway-id"),
 			
+	GENE_NAME      (StorageType.STRING,
+			GenomeMappingType.NON_MAPPING,
+			"gene-name","gene pseudo name"),	
+			
 	/**
 	 * @deprecated use NCBI_GENEID instead
 	 */

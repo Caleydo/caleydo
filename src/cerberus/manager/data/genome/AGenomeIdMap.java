@@ -147,49 +147,81 @@ implements IGenomeIdMap {
 	public IGenomeIdMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
 			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2) {
+			GenomeMappingType genomeMappingLUT_2,
+			GenomeMappingDataType targetMappingDataType) {
 		
 		IGenomeIdMap codeResolvedMap = null;
 		
-			switch ( dataType ) 
+			switch ( targetMappingDataType ) 
 			{
-			case STRING2STRING:
-				codeResolvedMap = new GenomeIdMapInt2Int(GenomeMappingDataType.INT2INT,
+			case INT2INT:
+			{
+				codeResolvedMap = new GenomeIdMapInt2Int(targetMappingDataType,
 						this.size());
 				
-				break;
+				/** 
+				 * Read HashMap and write it to new HashMap
+				 */
+				Set <Entry<K,V>> entrySet = hashGeneric.entrySet();			
+				Iterator <Entry<K,V>> iterOrigin = entrySet.iterator();
+				int iResolvedID_1 = 0;
+				int iResolvedID_2 = 0;
 				
-				default:
-					System.err.println("unsupported data type= " +dataType.toString());
-					//assert false : "unsupported data type=" + dataType.toString();
+				Entry<K,V> entryBuffer = null;
+				
+				while ( iterOrigin.hasNext() ) 
+				{
+					entryBuffer = iterOrigin.next();
+								
+					iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
+							entryBuffer.getKey().toString(), 
+							genomeMappingLUT_1);
+					
+					iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
+							entryBuffer.getValue().toString(),
+							genomeMappingLUT_2);
+					
+					codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
+							new Integer(iResolvedID_2).toString());
+				}
+						
+				break;
+			}
+			case INT2STRING:
+			{
+				codeResolvedMap = new GenomeIdMapInt2String(targetMappingDataType,
+						this.size());	
+				
+				/** 
+				 * Read HashMap and write it to new HashMap
+				 */
+				Set <Entry<K,V>> entrySet = hashGeneric.entrySet();			
+				Iterator <Entry<K,V>> iterOrigin = entrySet.iterator();
+				int iResolvedID_1 = 0;
+				
+				Entry<K,V> entryBuffer = null;
+				
+				while ( iterOrigin.hasNext() ) 
+				{
+					entryBuffer = iterOrigin.next();
+								
+					iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
+							entryBuffer.getKey().toString(), 
+							genomeMappingLUT_1);
+					
+					codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
+							entryBuffer.getValue().toString());
+				}
+					
+				break;
+			}
+				
+			default:
+				System.err.println("unsupported data type= " +dataType.toString());
+				//assert false : "unsupported data type=" + dataType.toString();
 			}	
 	
-		/** 
-		 * Read HashMap and write it to new HashMap
-		 */
-		Set <Entry<K,V>> entrySet = hashGeneric.entrySet();			
-		Iterator <Entry<K,V>> iterOrigin = entrySet.iterator();
-		int iResolvedID_1 = 0;
-		int iResolvedID_2 = 0;
-		
-		Entry<K,V> entryBuffer = null;
-		
-		while ( iterOrigin.hasNext() ) 
-		{
-			entryBuffer = iterOrigin.next();
-						
-			iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
-					entryBuffer.getKey().toString(), 
-					genomeMappingLUT_1);
-			
-			iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
-					entryBuffer.getValue().toString(),
-					genomeMappingLUT_2);
-			
-			codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
-					new Integer(iResolvedID_2).toString());
-		}
-			
+
 		return codeResolvedMap;
 	}	
 }

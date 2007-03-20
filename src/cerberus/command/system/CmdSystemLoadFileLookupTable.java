@@ -100,7 +100,17 @@ implements ICommand {
 	
 	protected boolean bCreateReverseMap = false;
 	
-	protected boolean bResolveCodeMappingUsingCodeToIdLUTs = false;
+	/**
+	 * Boolean indicates if one column of the mapping needs
+	 * to be resolved. Resolving means replacing codes by internal IDs. 
+	 */	
+	protected boolean bResolveCodeMappingUsingCodeToId_LUT = false;
+	
+	/**
+	 * Boolean indicates if both columns of the mapping needs
+	 * to be resolved. Resolving means replacing codes by internal IDs. 
+	 */
+	protected boolean bResolveCodeMappingUsingCodeToId_LUT_2 = false;
 	
 	/**
 	 * Variable contains the lookup table types 
@@ -170,7 +180,7 @@ implements ICommand {
 				
 				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
 				
-				bResolveCodeMappingUsingCodeToIdLUTs = true;
+				bResolveCodeMappingUsingCodeToId_LUT = true;
 			}
 			else if (sLookupTableOptions.equals("LUT_2"))
 			{
@@ -183,7 +193,7 @@ implements ICommand {
 				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
 				sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
 				
-				bResolveCodeMappingUsingCodeToIdLUTs = true;
+				bResolveCodeMappingUsingCodeToId_LUT_2 = true;
 			}
 		}
 		
@@ -267,24 +277,27 @@ implements ICommand {
 			
 			GenomeMappingDataType genomeDataType;
 			
-//			if (!bResolveCodeMappingUsingCodeToIdLUTs)
-//			{
-				genomeDataType = lut_genome_type.getDataMapppingType();
-//			}
-//			else
-//			{
-//				genomeDataType = GenomeMappingDataType.STRING2STRING;
-//			}
+			genomeDataType = lut_genome_type.getDataMapppingType();
+
+			if (bResolveCodeMappingUsingCodeToId_LUT_2)
+			{
+				if (genomeDataType == GenomeMappingDataType.INT2INT)
+				{
+					genomeDataType = GenomeMappingDataType.STRING2STRING;
+				}
+				else if (genomeDataType == GenomeMappingDataType.MULTI_INT2INT)
+				{
+					genomeDataType = GenomeMappingDataType.MULTI_STRING2STRING;
+				}
+			}
+			else if (bResolveCodeMappingUsingCodeToId_LUT)
+			{
+				if (genomeDataType == GenomeMappingDataType.INT2STRING)
+				{
+					genomeDataType = GenomeMappingDataType.STRING2STRING;
+				}
+			}
 			
-			if (genomeDataType == GenomeMappingDataType.INT2INT)
-			{
-				genomeDataType = GenomeMappingDataType.STRING2STRING;
-			}
-			else if (genomeDataType == GenomeMappingDataType.MULTI_INT2INT)
-			{
-				genomeDataType = GenomeMappingDataType.MULTI_STRING2STRING;
-			}
-				
 			loader = new LookupTableLoaderProxy( 
 					refGeneralManager, 
 					sFileName,
@@ -307,13 +320,17 @@ implements ICommand {
 			
 			
 			/* --- Map codes in LUT to IDs --- */
-			if (bResolveCodeMappingUsingCodeToIdLUTs)
+			if (bResolveCodeMappingUsingCodeToId_LUT || bResolveCodeMappingUsingCodeToId_LUT_2)
 			{
 				GenomeMappingType genomeMappingLUT_1 = 
 					GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_1 );
 				
-				GenomeMappingType genomeMappingLUT_2 = 
-					GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_2 );
+				GenomeMappingType genomeMappingLUT_2 = null;
+				
+				if(bResolveCodeMappingUsingCodeToId_LUT_2)
+				{
+					genomeMappingLUT_2 = GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_2 );
+				}
 				
 				// Reset genomeDataType to real type
 				genomeDataType = lut_genome_type.getDataMapppingType();
