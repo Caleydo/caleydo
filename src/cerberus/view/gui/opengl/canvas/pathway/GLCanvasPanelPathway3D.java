@@ -42,7 +42,6 @@ extends AGLCanvasPathway3D {
 		refHashDisplayListNodeId2Pathway.clear();
 		refHashPathway2DisplayListNodeId.clear();
 		refHashPathwayToZLayerValue.clear();
-		iArPathwayNodeDisplayListIDs.clear();
 		iArPathwayEdgeDisplayListIDs.clear();
 		
 		System.out.println("Create pathway display lists");
@@ -70,7 +69,6 @@ extends AGLCanvasPathway3D {
 			// Creating display list for pathways
 			int iVerticesDisplayListId = gl.glGenLists(1);
 			int iEdgeDisplayListId = gl.glGenLists(1);
-			iArPathwayNodeDisplayListIDs.add(iVerticesDisplayListId);
 			iArPathwayEdgeDisplayListIDs.add(iEdgeDisplayListId);
 
 			refHashDisplayListNodeId2Pathway.put(iVerticesDisplayListId, refTmpPathway);	

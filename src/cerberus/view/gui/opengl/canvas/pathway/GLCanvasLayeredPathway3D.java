@@ -38,11 +38,16 @@ extends AGLCanvasPathway3D {
 		Pathway refTmpPathway = null;
 		fZLayerValue = 0.0f;
 		
-		refHashDisplayListNodeId2Pathway.clear();
-		refHashPathway2DisplayListNodeId.clear();
-		refHashPathwayToZLayerValue.clear();
-		iArPathwayNodeDisplayListIDs.clear();
-		iArPathwayEdgeDisplayListIDs.clear();
+		//refHashDisplayListNodeId2Pathway.clear();
+		//refHashPathway2DisplayListNodeId.clear();
+		//refHashPathwayToZLayerValue.clear();
+		//iArPathwayNodeDisplayListIDs.clear();
+		//iArPathwayEdgeDisplayListIDs.clear();
+		
+		buildEnzymeNodeDisplayList();
+		buildHighlightedEnzymeNodeDisplayList();
+		buildCompoundNodeDisplayList();
+		buildHighlightedCompoundNodeDisplayList();
 		
 		System.out.println("Create pathway display lists");
 
@@ -53,49 +58,20 @@ extends AGLCanvasPathway3D {
 		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
-		{
-			System.out.println("Create display list for new pathway");
-			
+		{			
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
+			System.out.println("Create display list for pathway " +refTmpPathway.getTitle());
+			
 			refHashPathwayToZLayerValue.put(refTmpPathway, fZLayerValue);
-					
-			// Creating display list for pathways
-			int iVerticesDiplayListId = gl.glGenLists(1);
-			int iEdgeDisplayListId = gl.glGenLists(1);
-			iArPathwayNodeDisplayListIDs.add(iVerticesDiplayListId);
-			iArPathwayEdgeDisplayListIDs.add(iEdgeDisplayListId);
 
-			refHashDisplayListNodeId2Pathway.put(iVerticesDiplayListId, refTmpPathway);	
-	
-			//System.out.println("Current pathway: " +refTmpPathway.getTitle());
-			
-			//fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
-//			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-								
-//			// Init scaling factor after pathway texture width/height is known
-//			fPathwayTextureAspectRatio = 
-//				(float)refPathwayTexture.getImageWidth() / 
-//				(float)refPathwayTexture.getImageHeight();
-						
-			buildEnzymeNodeDisplayList();
-			buildHighlightedEnzymeNodeDisplayList();
-			buildCompoundNodeDisplayList();
-			buildHighlightedCompoundNodeDisplayList();
-			
-			gl.glNewList(iVerticesDiplayListId, GL.GL_COMPILE);	
-			extractVertices(refTmpPathway);
-			gl.glEndList();
-	
-			gl.glNewList(iEdgeDisplayListId, GL.GL_COMPILE);	
-			extractEdges(refTmpPathway);
-			gl.glEndList();
-			
+			createPathwayDisplayList(refTmpPathway);
+
 			fZLayerValue += 1.5f;
 		}
 	}
-
+	
 	protected void renderPart(GL gl, int iRenderMode) {
 		
 		this.gl = gl;
@@ -126,11 +102,28 @@ extends AGLCanvasPathway3D {
 		}
 		
 		gl.glPushMatrix();
-		for (int iDisplayListIndex = 0; iDisplayListIndex < 
-			iArPathwayNodeDisplayListIDs.size(); iDisplayListIndex++)
-		{	
-			iDisplayListNodeId = iArPathwayNodeDisplayListIDs.get(iDisplayListIndex);
-			iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
+		
+		
+		Pathway refTmpPathway = null;
+		
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+		String sPathwayTexturePath = "";
+		int iPathwayId = 0;
+		
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
+		{
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				getItem(iArPathwayIDs[iPathwayIndex]);
+			
+//		for (int iDisplayListIndex = 0; iDisplayListIndex < 
+//			iArPathwayNodeDisplayListIDs.size(); iDisplayListIndex++)
+//		{	
+			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
+			//iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
 			
 			//System.out.println("Accessing display list: " +iDisplayListNodeId + " " + iDisplayListEdgeId);
 			
@@ -157,7 +150,6 @@ extends AGLCanvasPathway3D {
 				
 			//refHashPathway2ModelMatrix.clear();
 			Texture refPathwayTexture = null;
-			Pathway refTmpPathway = null;
 			float fTmpZLayerValue = 0.0f;
 			
 			float fTextureWidth;

@@ -38,8 +38,5 @@ extends IView {
 	
 	public void showBackgroundOverlay(boolean bTurnOn);
 	
-	public void loadBackgroundOverlayImage(String sPathwayImageFilePath,
-			Pathway refTexturedPathway);
-	
 	public void resetPathway();
 }

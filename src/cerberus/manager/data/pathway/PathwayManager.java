@@ -75,6 +75,34 @@ implements IPathwayManager {
 		pathwayLUT.put(iPathwayID, refCurrentPathway);
 	}
 	
+	public void loadPathwayById(int iPathwayID) {
+		
+		String sPathwayFilePath = "";
+		
+		if (iPathwayID < 10)
+		{
+			sPathwayFilePath = "map0000" + Integer.toString(iPathwayID);
+		}
+		else if (iPathwayID < 100 && iPathwayID >= 10)
+		{
+			sPathwayFilePath = "map000" + Integer.toString(iPathwayID);
+		}
+		else if (iPathwayID < 1000 && iPathwayID >= 100)
+		{
+			sPathwayFilePath = "map00" + Integer.toString(iPathwayID);
+		}
+		else if (iPathwayID < 10000 && iPathwayID >= 1000)
+		{
+			sPathwayFilePath = "map0" + Integer.toString(iPathwayID);
+		}
+		
+		sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath()
+			+ sPathwayFilePath +".xml";		
+		
+		refGeneralManager.getSingelton().
+		getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+	}
+	
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.manager.data.IPathwayManager#getPathwayIterator()

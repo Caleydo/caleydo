@@ -7,6 +7,7 @@ import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.manager.IGeneralManager;
 
+
 public interface IPathwayManager 
 extends IGeneralManager {
 
@@ -18,6 +19,8 @@ extends IGeneralManager {
 	public Iterator<Pathway> getPathwayIterator();
 	
 	public void createPathwayImageMap(String sLink);
+	
+	public void loadPathwayById(int iPathwayID);
 	
 	public PathwayImageMap getCurrentPathwayImageMap();
 	

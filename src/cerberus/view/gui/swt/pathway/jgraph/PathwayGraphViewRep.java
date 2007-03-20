@@ -631,7 +631,7 @@ extends APathwayGraphViewRep {
 		refCurrentPathwayImageMap = 
 			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
 		
-		loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink(), null);
+		loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink());
 	}
 	
 	public void zoomOrig() {
@@ -860,8 +860,7 @@ extends APathwayGraphViewRep {
 		bNeighbourhoodShown = false;
 	}
 	
-	public void loadBackgroundOverlayImage(String sPathwayImageFilePath, 
-			Pathway refCurrentPathway) {
+	public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
 		
 		refGeneralManager.getSingelton().logMsg(
 				"Load background pathway image from file: " 
@@ -1035,6 +1034,10 @@ extends APathwayGraphViewRep {
 		}
 		
 		String sEnzymeCode = refTmpVertexRep.getVertex().getElementTitle().substring(3);
+		String sAccessionCode = "";
+		String sTmpGeneName = "";
+		int iAccessionID = 0;
+		Collection<Integer> iArTmpAccessionId = null;
 		
 		//Just for testing mapping!
 		IGenomeIdManager refGenomeIdManager = 
@@ -1046,34 +1049,39 @@ extends APathwayGraphViewRep {
 		if (iEnzymeID == -1)
 			return;
 		
-		Collection<Integer> tmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
+		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
 				GenomeMappingType.ENZYME_2_NCBI_GENEID);
 		
-		if(tmpGeneId == null)
+		if(iTmpGeneId == null)
 			return;
 		
-		Iterator<Integer> iterTmpGeneId = tmpGeneId.iterator();
+		Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
 		Iterator<Integer> iterTmpAccessionId = null;
 		while (iterTmpGeneId.hasNext())
 		{
-			int iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iterTmpGeneId.next(), 
+			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iterTmpGeneId.next(), 
 					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
 			
 			if (iAccessionID == -1)
 				break;
 			
-			String sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
+			sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
 					GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 			
 			System.out.println("Accession Code for Enzyme "+sEnzymeCode +": " +sAccessionCode);
 			
-			Collection<Integer> tmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
+			sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
+					GenomeMappingType.ACCESSION_2_GENE_NAME);
+	
+			System.out.println("Gene name for Enzyme "+sEnzymeCode +": "+sTmpGeneName);
+			
+			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
 					GenomeMappingType.ACCESSION_2_MICROARRAY);
 			
-			if(tmpAccessionId == null)
+			if(iArTmpAccessionId == null)
 				continue;
-			
-			iterTmpAccessionId = tmpAccessionId.iterator();
+					
+			iterTmpAccessionId = iArTmpAccessionId.iterator();
 			while (iterTmpAccessionId.hasNext())
 			{
 				String sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iterTmpAccessionId.next(), 

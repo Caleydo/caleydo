@@ -10,6 +10,7 @@ import java.io.File;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -24,6 +25,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
+import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
@@ -36,6 +38,7 @@ import cerberus.data.view.camera.ViewCameraBase;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.SystemTime;
 //import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
@@ -53,6 +56,7 @@ import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
+
 
 /**
  * @author Marc Streit
@@ -97,7 +101,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 	protected float fZLayerValue = 0.0f;
 	
-	protected ArrayList<Integer> iArPathwayNodeDisplayListIDs;
+	//protected ArrayList<Integer> iArPathwayNodeDisplayListIDs;
 	
 	protected ArrayList<Integer> iArPathwayEdgeDisplayListIDs;
 	
@@ -161,13 +165,15 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 	protected boolean bSelectionDataChanged = false;
 	
-//	protected PickingTriggerMouseAdapter pickingTriggerMouseAdapter;
-	
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
+	
+	protected boolean bIsMouseOverPickingEvent = false;
 	
 	protected float fLastMouseMovedTimeStamp = 0;
 	
 	protected SystemTime systemTime = new SystemTime();
+	
+	protected ArrayList<String> refInfoAreaContent;
 		
 	/**
 	 * Constructor
@@ -205,7 +211,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		viewingFrame[Y][MAX] = 1.0f; 
 	
 		iArSelectionStorageNeighborDistance = new ArrayList<Integer>();
-		iArPathwayNodeDisplayListIDs = new ArrayList<Integer>();
+		//iArPathwayNodeDisplayListIDs = new ArrayList<Integer>();
 		iArPathwayEdgeDisplayListIDs = new ArrayList<Integer>();
 		iArHighlightedVertices = new ArrayList<IPathwayVertexRep>();
 
@@ -215,6 +221,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 		refHashDisplayListNodeId2Pathway = new HashMap<Integer, Pathway>();
 		refHashPathway2DisplayListNodeId = new HashMap<Pathway, Integer>();
 		refHashPathway2ModelMatrix = new HashMap<Pathway, FloatBuffer>();
+		
+		refInfoAreaContent = new ArrayList<String>();
 		
 		refViewCamera = new ViewCameraBase();
 	}
@@ -246,10 +254,10 @@ implements IGLCanvasUser, IJoglMouseListener {
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		gl.glLineWidth(1.0f);
 	
-		float[] fMatSpecular = { 1.0f, 1.0f, 1.0f, 1.0f};
-		float[] fMatShininess = {25.0f}; 
-		float[] fLightPosition = {0.0f, 0.0f, 0.0f, 1.0f};
-		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
+//		float[] fMatSpecular = { 1.0f, 1.0f, 1.0f, 1.0f};
+//		float[] fMatShininess = {25.0f}; 
+//		float[] fLightPosition = {0.0f, 0.0f, 0.0f, 1.0f};
+//		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
 		float[] fModelAmbient = {0.6f, 0.6f, 0.6f, 1.0f};
 		
 //		gl.glEnable(GL.GL_COLOR_MATERIAL);
@@ -259,7 +267,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 //		
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fMatSpecular, 0);
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fMatShininess, 0);
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fLightPosition, 0);		
+		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fLightPosition, 0);		
 //		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fWhiteLight, 0);
 //		gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fWhiteLight, 0);
 		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
@@ -287,14 +295,11 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 		Pathway refTmpPathway = null;
 		
-		refHashPathwayToTexture.clear();
-		
 		// Load pathway storage
 		// Assumes that the set consists of only one storage
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		String sPathwayTexturePath = "";
-		int iPathwayId = 0;
 		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
@@ -304,76 +309,15 @@ implements IGLCanvasUser, IJoglMouseListener {
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
-			iPathwayId = refTmpPathway.getPathwayID();
-			if (iPathwayId < 10)
-			{
-				sPathwayTexturePath = "map0000" + Integer.toString(iPathwayId);
-			}
-			else if (iPathwayId < 100 && iPathwayId >= 10)
-			{
-				sPathwayTexturePath = "map000" + Integer.toString(iPathwayId);
-			}
-			else if (iPathwayId < 1000 && iPathwayId >= 100)
-			{
-				sPathwayTexturePath = "map00" + Integer.toString(iPathwayId);
-			}
-			else if (iPathwayId < 10000 && iPathwayId >= 1000)
-			{
-				sPathwayTexturePath = "map0" + Integer.toString(iPathwayId);
-			}
+			// Do not load texture if pathway texture was already loaded before.
+			if (refHashPathwayToTexture.containsValue(refTmpPathway))
+				break;
 			
-			sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
-				+ sPathwayTexturePath +".gif";	
-			
-			loadBackgroundOverlayImage(sPathwayTexturePath, refTmpPathway);		
+			loadBackgroundOverlayImage(refTmpPathway);		
 		}
 	}
 	
 	protected abstract void buildPathwayDisplayList();
-//
-//		Pathway refTmpPathway = null;
-//
-//		refHashDisplayListNodeId2Pathway.clear();
-//		refHashPathway2DisplayListNodeId.clear();
-//		
-//		System.out.println("Create pathway display lists");
-//
-//		// Load pathway storage
-//		// Assumes that the set consists of only one storage
-//		IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
-//		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-//		
-//		buildEnzymeNodeDisplayList();
-//		buildHighlightedEnzymeNodeDisplayList();
-//		buildCompoundNodeDisplayList();
-//		buildHighlightedCompoundNodeDisplayList();
-//		
-//		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
-//			iPathwayIndex++)
-//		{			
-//			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-//				getItem(iArPathwayIDs[iPathwayIndex]);
-//		
-//			System.out.println("Create display list for pathway "+refTmpPathway.getTitle());
-//			
-//			// Creating display list for pathways
-//			int iVerticesDisplayListId = gl.glGenLists(1);
-//			int iEdgeDisplayListId = gl.glGenLists(1);
-//			iArPathwayNodeDisplayListIDs.add(iVerticesDisplayListId);
-//			iArPathwayEdgeDisplayListIDs.add(iEdgeDisplayListId);
-//
-//			refHashDisplayListNodeId2Pathway.put(iVerticesDisplayListId, refTmpPathway);	
-//			refHashPathway2DisplayListNodeId.put(refTmpPathway, iVerticesDisplayListId);
-//			
-//			gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
-//			extractVertices(refTmpPathway);
-//			gl.glEndList();
-//	
-//			gl.glNewList(iEdgeDisplayListId, GL.GL_COMPILE);	
-//			extractEdges(refTmpPathway);
-//			gl.glEndList();
-//		}
-//	}
 
 	protected void buildEnzymeNodeDisplayList() {
 
@@ -634,184 +578,19 @@ implements IGLCanvasUser, IJoglMouseListener {
 				rotation.w() );
 
 		handlePicking();
-		
+				
 		renderPart(gl, GL.GL_RENDER);
 
+		renderInfoArea(0.0f, 0.0f, 0.0f);
+		
 		//gl.glFlush();
 		gl.glPopMatrix();	
 	}
 
 	protected abstract void renderPart(GL gl, int iRenderMode);
-//		
-//		this.gl = gl;
-//		
-//		int iDisplayListNodeId = 0;
-//		int iDisplayListEdgeId = 0;
-//		
-//		// Rebuild highlight node display list using the new scaling factor
-//		if (!iArHighlightedVertices.isEmpty())
-//		{
-//			if (bBlowUp == true)
-//			{
-//				fHighlightedNodeBlowFactor += 0.010f;
-//				
-//				if (fHighlightedNodeBlowFactor >= 1.3f)
-//					bBlowUp = false;
-//			}
-//			else
-//			{
-//				fHighlightedNodeBlowFactor -= 0.010;
-//				
-//				if (fHighlightedNodeBlowFactor <= 1.0f)
-//					bBlowUp = true;
-//			}
-//			
-//			buildHighlightedEnzymeNodeDisplayList();
-//			buildHighlightedCompoundNodeDisplayList();		
-//		}
-//		
-//		gl.glPushMatrix();
-//		if (bShowPathwayTexture == true)
-//		{				
-//			Pathway refTmpPathway = null;
-//			refHashPathway2ModelMatrix.clear();
-//			
-//			// Load pathway storage
-//			// Assumes that the set consists of only one storage
-//			IStorage tmpStorage = refPathwaySet.getStorageByDimAndIndex(0, 0);
-//			int[] iArPathwayIDs = tmpStorage.getArrayInt();
-//			
-//			// Render pathway under interaction
-//			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-//				getItem(iArPathwayIDs[0]);
-//			
-//			gl.glRotatef(-60, 1.0f, 0.0f, 0.0f);
-//
-//			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
-//
-//			FloatBuffer testMatrixBuffer = FloatBuffer.allocate(16);
-//			gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, testMatrixBuffer);
-//			refHashPathway2ModelMatrix.put(refTmpPathway, testMatrixBuffer);
-//			
-//			renderPathway(refTmpPathway, iDisplayListNodeId);
-//
-//			gl.glRotatef(60, 1.0f, 0.0f, 0.0f);
-//			
-//			gl.glTranslatef(-8.0f, 7.0f, 15.0f);
-//			
-//			for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
-//				iPathwayIndex++)
-//			{
-//				refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-//					getItem(iArPathwayIDs[iPathwayIndex]);
-//			
-//				gl.glTranslatef(3.0f, 0.0f, 0.0f);
-//								
-//				iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
-//
-//				testMatrixBuffer = FloatBuffer.allocate(16);
-//				gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, testMatrixBuffer);
-//				refHashPathway2ModelMatrix.put(refTmpPathway, testMatrixBuffer);
-//				
-//				renderPathway(refTmpPathway, iDisplayListNodeId);
-//			}
-//		}
-//		gl.glPopMatrix();
-//
-//		highlightIdenticalNodes();
-//	}
 	
 	protected abstract void renderPathway(final Pathway refTmpPathway, 
 			int iDisplayListNodeId);
-		
-//		// Creating hierarchical picking names
-//		// This is the layer of the pathways, therefore we can use the pathway
-//		// node picking ID
-//		gl.glPushName(iDisplayListNodeId);	
-//		gl.glCallList(iDisplayListNodeId);
-//		gl.glPopName();
-//		
-//		Texture refPathwayTexture = null;
-//		float fTmpZLayerValue = 0.0f;
-//		float fTextureWidth;
-//		float fTextureHeight;
-//		
-//		refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-//		fTmpZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
-//		
-//		refPathwayTexture.enable();
-//		refPathwayTexture.bind();
-//		gl.glTexEnvi(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-//
-//		gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
-//
-//		TextureCoords texCoords = refPathwayTexture.getImageTexCoords();
-//		
-//		// Recalculate scaling factor
-//		fPathwayTextureAspectRatio = 
-//			(float)refPathwayTexture.getImageWidth() / 
-//			(float)refPathwayTexture.getImageHeight();								
-//		
-//		fTextureWidth = 0.0025f * (float)refPathwayTexture.getImageWidth();
-//		fTextureHeight = 0.0025f * (float)refPathwayTexture.getImageHeight();				
-//		
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glTexCoord2f(0, texCoords.top()); 
-//		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);			  
-//		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-//		gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);			 
-//		gl.glTexCoord2f(texCoords.right(), 0); 
-//		gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
-//		gl.glTexCoord2f(0, 0); 
-//		gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
-//		gl.glEnd();	
-//		
-//		gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-//		gl.glLineWidth(1);
-//		gl.glBegin(GL.GL_LINE_STRIP); 
-//		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 
-//		gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);
-//		gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
-//		gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
-//		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);; 				
-//		gl.glEnd();
-//
-//		//gl.glTranslatef(texCoords.right() * 0.0025f, 0.0f, 0.0f);
-//		
-////
-////		if (bAcordionDirection == false)
-////		{
-////			gl.glRotated(-140, 0, 1, 0);
-////			bAcordionDirection = true;
-////		}
-////		else
-////		{
-////			gl.glRotated(140, 0, 1, 0);				
-////			bAcordionDirection = false;
-////		}
-////		
-//		refPathwayTexture.disable();
-//	}
-	
-//	public void setTargetPathwayId(final int iTargetPathwayId) {
-//		
-//		refCurrentPathway = 
-//			refGeneralManager.getSingelton().getPathwayManager().
-//				getCurrentPathway();
-//		
-//		if (refCurrentPathway == null) 
-//		{
-//			refGeneralManager.getSingelton().getLoggerManager().logMsg(
-//					"GLCanvasPathway2D.setPathwayId(" +
-//					iTargetPathwayId + ") failed, because Pathway does not exist!");
-//
-//			return;
-//		}
-//		
-//		refGeneralManager.getSingelton().getLoggerManager().logMsg(
-//				"GLCanvasPathway2D.setPathwayId(" +
-//				iTargetPathwayId + ") done!");
-//	}
 	
 	public void update(GLAutoDrawable canvas) {
 
@@ -1002,12 +781,28 @@ implements IGLCanvasUser, IJoglMouseListener {
 				+" with " +iNewPathwayId,
 				LoggerType.MINOR_ERROR );
 		
-		// Throw away old pathway from local hash maps
-		refHashPathway2ModelMatrix.remove(refPathwayToReplace);
-//		refHashPathway2DisplayListNodeId.remove(refPathwayToReplace);
-//		refHashPathwayToTexture.remove(refPathwayToReplace);
-		refHashPathwayToZLayerValue.remove(refPathwayToReplace);
+		refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iNewPathwayId);
 		
+		Pathway refNewPathway = (Pathway)refGeneralManager.getSingelton().
+			getPathwayManager().getItem(iNewPathwayId);
+		
+		// Replace old pathway with new one in hash maps
+		FloatBuffer tmpModelMatrix = refHashPathway2ModelMatrix.get(refPathwayToReplace);
+		refHashPathway2ModelMatrix.remove(refPathwayToReplace);
+		refHashPathway2ModelMatrix.put(refNewPathway, tmpModelMatrix);
+
+		float fZLayer = refHashPathwayToZLayerValue.get(refPathwayToReplace);
+		refHashPathwayToZLayerValue.remove(refPathwayToReplace);
+		refHashPathwayToZLayerValue.put(refNewPathway, fZLayer);	
+		
+		Texture tmpTexture = refHashPathwayToTexture.get(refPathwayToReplace);
+		refHashPathwayToTexture.remove(refPathwayToReplace);
+		refHashPathwayToTexture.put(refNewPathway, tmpTexture);			
+		
+		int iTmpDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refPathwayToReplace);
+		refHashPathway2DisplayListNodeId.remove(refPathwayToReplace);
+		refHashDisplayListNodeId2Pathway.remove(iTmpDisplayListNodeId);
+
 		iArHighlightedVertices.clear();
 		
 		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
@@ -1025,38 +820,29 @@ implements IGLCanvasUser, IJoglMouseListener {
 		
 		refTmpStorage.setArrayInt(iArPathwayIDs);
 		
-		String sPathwayFilePath = "";
+		loadBackgroundOverlayImage(refNewPathway);
 		
-		//-----------------------
-		//Just for testing!
-		if (iNewPathwayId < 10)
-		{
-			sPathwayFilePath = "map0000" + Integer.toString(iNewPathwayId);
-		}
-		else if (iNewPathwayId < 100 && iNewPathwayId >= 10)
-		{
-			sPathwayFilePath = "map000" + Integer.toString(iNewPathwayId);
-		}
-		else if (iNewPathwayId < 1000 && iNewPathwayId >= 100)
-		{
-			sPathwayFilePath = "map00" + Integer.toString(iNewPathwayId);
-		}
-		else if (iNewPathwayId < 10000 && iNewPathwayId >= 1000)
-		{
-			sPathwayFilePath = "map0" + Integer.toString(iNewPathwayId);
-		}
+		createPathwayDisplayList(refNewPathway);
+	}
+
+	protected void createPathwayDisplayList(Pathway refTmpPathway) {
 		
-		sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath()
-			+ sPathwayFilePath +".xml";		
+		// Creating display list for pathways
+		int iVerticesDiplayListId = gl.glGenLists(1);
+		int iEdgeDisplayListId = gl.glGenLists(1);
+		//iArPathwayNodeDisplayListIDs.add(iVerticesDiplayListId);
+		iArPathwayEdgeDisplayListIDs.add(iEdgeDisplayListId);
+
+		refHashDisplayListNodeId2Pathway.put(iVerticesDiplayListId, refTmpPathway);	
+		refHashPathway2DisplayListNodeId.put(refTmpPathway, iVerticesDiplayListId);
 		
-		refGeneralManager.getSingelton().
-			getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-		//----------------------------
-		
-		initPathwayData();
-		
-		//FIXME: not good to rebuild all display lists
-		buildPathwayDisplayList();	
+		gl.glNewList(iVerticesDiplayListId, GL.GL_COMPILE);	
+		extractVertices(refTmpPathway);
+		gl.glEndList();
+
+		gl.glNewList(iEdgeDisplayListId, GL.GL_COMPILE);	
+		extractEdges(refTmpPathway);
+		gl.glEndList();	
 	}
 	
 	protected void connectVertices(IPathwayVertexRep refVertexRep1, 
@@ -1145,13 +931,54 @@ implements IGLCanvasUser, IJoglMouseListener {
 		gl.glLineWidth(1);
 	}
 	
+	public void renderInfoArea(float fx, 
+			float fy, 
+			float fz) {
+		
+		float fHeight = 0.5f;
+		float fWidth = 2.0f;		
+		
+		gl.glPushMatrix();
+		
+		gl.glLoadIdentity();
+		
+		fx -= 2.03f;
+		fy += 0.84;
+		
+		gl.glTranslatef(0, 0, -10);
+		
+		gl.glDisable(GL.GL_LIGHTING);
+
+		for (int iLineNumber = 0; iLineNumber < refInfoAreaContent.size(); iLineNumber++)
+		{
+			renderText(refInfoAreaContent.get(iLineNumber), 
+					fx+0.1f, 
+					fy + fHeight - 0.05f - 0.1f * iLineNumber, 
+					fz);
+		}
+		
+//		gl.glLineWidth(4);
+//		gl.glColor4f(0f, 0f, 1f, 1.0f);
+//		gl.glBegin(GL.GL_LINE);
+//		gl.glVertex3f(fx, fy, fz);
+//		gl.glVertex3f(fx+fWidth, fy, fz);
+//		gl.glVertex3f(fx-fWidth, fy-fHeight, fz);
+//		gl.glEnd();
+		
+		gl.glColor4f(0f, 0f, 1f, 0.2f);
+		gl.glRectf(fx, fy, fx + fWidth, fy + fHeight);
+		
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glPopMatrix();
+	}
+	
 	/**
 	 * Method for rendering text in OpenGL.
 	 * TODO: Move method to some kind of GL Utility class.
 	 * 
 	 * @param gl
 	 * @param showText
-	 * @param fx<
+	 * @param fx
 	 * @param fy
 	 * @param fz
 	 */
@@ -1160,7 +987,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 			final float fy, 
 			final float fz ) {
 		
-		final float fFontSizeOffset = 0.01f;
+		final float fFontSizeOffset = 0.02f;
 
 		GLUT glut = new GLUT();
 
@@ -1291,14 +1118,35 @@ implements IGLCanvasUser, IJoglMouseListener {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(java.lang.String)
 	 */
-	public void loadBackgroundOverlayImage(String sPathwayImageFilePath, 
-			Pathway refTexturedPathway) {
+	public void loadBackgroundOverlayImage(Pathway refTexturedPathway) {
 		
+		int iPathwayId = refTexturedPathway.getPathwayID();
+		String sPathwayTexturePath = "";
 		Texture refPathwayTexture;
+		
+		if (iPathwayId < 10)
+		{
+			sPathwayTexturePath = "map0000" + Integer.toString(iPathwayId);
+		}
+		else if (iPathwayId < 100 && iPathwayId >= 10)
+		{
+			sPathwayTexturePath = "map000" + Integer.toString(iPathwayId);
+		}
+		else if (iPathwayId < 1000 && iPathwayId >= 100)
+		{
+			sPathwayTexturePath = "map00" + Integer.toString(iPathwayId);
+		}
+		else if (iPathwayId < 10000 && iPathwayId >= 1000)
+		{
+			sPathwayTexturePath = "map0" + Integer.toString(iPathwayId);
+		}
+		
+		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
+			+ sPathwayTexturePath +".gif";	
 		
 		try
 		{
-			refPathwayTexture = TextureIO.newTexture(new File(sPathwayImageFilePath), false);
+			refPathwayTexture = TextureIO.newTexture(new File(sPathwayTexturePath), false);
 //			refPathwayTexture.bind();
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
@@ -1311,7 +1159,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 			
 		} catch (Exception e)
 		{
-			System.out.println("Error loading texture " + sPathwayImageFilePath);
+			System.out.println("Error loading texture " + sPathwayTexturePath);
 			e.printStackTrace();
 		}
 	}
@@ -1439,9 +1287,6 @@ implements IGLCanvasUser, IJoglMouseListener {
 		glu.gluPickMatrix((double) pickPoint.x,
 				(double) (viewport[3] - pickPoint.y),// 
 				5.0, 5.0, viewport, 0); // pick width and height is set to 10 (i.e. picking tolerance)
-
-//		glu.gluPerspective(17.0f, (float) (viewport[2]-viewport[0]) / // magic occurs here!!
-//				(float) (viewport[3]-viewport[1]), 0.1f, 100.0f);
 		
 		float h = (float) (float) (viewport[3]-viewport[1]) / 
 			(float) (viewport[2]-viewport[0]);
@@ -1469,13 +1314,12 @@ implements IGLCanvasUser, IJoglMouseListener {
 	protected void processHits(int iHitCount, int iArPickingBuffer[]) {
 
 		//System.out.println("Number of hits: " +iHitCount);
+		IPathwayVertexRep refPickedVertexRep;
 		
 		int iNames = 0;
 		int iPtr = 0;
 		int i = 0;
 		int iPickedPathwayDisplayListNodeId = 0;
-		IPathwayVertexRep pickedVertexRep = null;
-		Iterator<PathwayVertex> iterIdenticalVertices = null;
 
 		for (i = 0; i < iHitCount; i++)
 		{
@@ -1501,9 +1345,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 
 				//System.out.println("Object pick ID: " + iArPickingBuffer[iPtr]);
 
-				pickedVertexRep = refHashPickID2VertexRep.get(iArPickingBuffer[iPtr]);
+				refPickedVertexRep = refHashPickID2VertexRep.get(iArPickingBuffer[iPtr]);
 				
-				if (pickedVertexRep == null)
+				if (refPickedVertexRep == null)
 					return;
 				
 				// Update the currently selected pathway
@@ -1512,70 +1356,171 @@ implements IGLCanvasUser, IJoglMouseListener {
 				
 				// Check if the clicked node is a pathway
 				// If this is the case the current pathway will be replaced by the clicked one.
-				if(pickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
+				if(refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
 				{
-					int iNewPathwayId = new Integer(pickedVertexRep.getVertex().getElementTitle().substring(8));
+					int iNewPathwayId = new Integer(refPickedVertexRep.getVertex().getElementTitle().substring(8));
 					replacePathway(refPathwayUnderInteraction, iNewPathwayId);
 					return;
 				}
 				
-				if (!iArHighlightedVertices.contains(pickedVertexRep))
-				{
-					// Clear currently highlighted vertices when new node was selected
-					if(!iArHighlightedVertices.isEmpty()) 
+				fillInfoAreaContent(refPickedVertexRep);
+
+				// Perform real element picking
+				// That means the picked node will be highlighted.
+				// Otherwise the picking action was only mouse over.
+				if (!bIsMouseOverPickingEvent)
+				{ 
+					if (!iArHighlightedVertices.contains(refPickedVertexRep))
 					{
-						iArHighlightedVertices.clear();
-						iArSelectionStorageNeighborDistance.clear();
+						// Clear currently highlighted vertices when new node was selected
+						if(!iArHighlightedVertices.isEmpty()) 
+						{
+							iArHighlightedVertices.clear();
+							iArSelectionStorageNeighborDistance.clear();
+						}
+						
+						iArHighlightedVertices.add(refPickedVertexRep);
+						
+						// Convert to int[]
+						int[] iArTmp = new int[iArHighlightedVertices.size()];
+						for(int index = 0; index < iArHighlightedVertices.size(); index++)
+							iArTmp[index] = iArHighlightedVertices.get(index).getVertex().getElementId();
+						
+						updateSelectionSet(iArTmp, 
+								new int[0], new int[0]);
+						
+						refGeneralManager.getSingelton().logMsg(
+								"OpenGL Pathway object selected: " +refPickedVertexRep.getName(),
+								LoggerType.VERBOSE);
+					}
+					else
+					{
+						iArHighlightedVertices.remove(refPickedVertexRep);
+		
+	//					// Remove identical nodes from unselected vertex
+	//					iterIdenticalVertices = refGeneralManager.getSingelton().
+	//						getPathwayElementManager().getPathwayVertexListByName(
+	//							pickedVertexRep.getVertex().getElementTitle()).iterator();
+	//	
+	//					while(iterIdenticalVertices.hasNext())
+	//					{
+	//						iArHighlightedVertices.remove(iterIdenticalVertices.next().
+	//								getVertexRepByIndex(iVertexRepIndex));
+	//					}
+						
+						refGeneralManager.getSingelton().logMsg(
+								"OpenGL Pathway object unselected: " +refPickedVertexRep.getName(),
+								LoggerType.VERBOSE);
 					}
 					
-					iArHighlightedVertices.add(pickedVertexRep);
+					fillInfoAreaContent(refPickedVertexRep);
 					
-					// Convert to int[]
-					int[] iArTmp = new int[iArHighlightedVertices.size()];
-					for(int index = 0; index < iArHighlightedVertices.size(); index++)
-						iArTmp[index] = iArHighlightedVertices.get(index).getVertex().getElementId();
+					// FIXME: not very efficient
+					// All display lists are newly created
+					//iArPathwayNodeDisplayListIDs.clear();
+					iArPathwayEdgeDisplayListIDs.clear();
+					buildPathwayDisplayList();
 					
-					updateSelectionSet(iArTmp, 
-							new int[0], new int[0]);
-					
-					refGeneralManager.getSingelton().logMsg(
-							"OpenGL Pathway object selected: " +pickedVertexRep.getName(),
-							LoggerType.VERBOSE);
+	//				gl.glNewList(iPickedPathwayDisplayListNodeId, GL.GL_COMPILE);	
+	//				extractVertices(refPathwayUnderInteraction);
+	//				gl.glEndList();
+									
+					loadNodeInformationInBrowser(refPickedVertexRep.getVertex().getVertexLink());
 				}
-				else
-				{
-					iArHighlightedVertices.remove(pickedVertexRep);
-	
-//					// Remove identical nodes from unselected vertex
-//					iterIdenticalVertices = refGeneralManager.getSingelton().
-//						getPathwayElementManager().getPathwayVertexListByName(
-//							pickedVertexRep.getVertex().getElementTitle()).iterator();
-//	
-//					while(iterIdenticalVertices.hasNext())
-//					{
-//						iArHighlightedVertices.remove(iterIdenticalVertices.next().
-//								getVertexRepByIndex(iVertexRepIndex));
-//					}
-					
-					refGeneralManager.getSingelton().logMsg(
-							"OpenGL Pathway object unselected: " +pickedVertexRep.getName(),
-							LoggerType.VERBOSE);
-				}
-				
-				// FIXME: not very efficient
-				// All display lists are newly created
-				iArPathwayNodeDisplayListIDs.clear();
-				iArPathwayEdgeDisplayListIDs.clear();
-				buildPathwayDisplayList();
-				
-//				gl.glNewList(iPickedPathwayDisplayListNodeId, GL.GL_COMPILE);	
-//				extractVertices(refPathwayUnderInteraction);
-//				gl.glEndList();
-								
-				loadNodeInformationInBrowser(pickedVertexRep.getVertex().getVertexLink());
-//			}
+	//			}
 		}
 	}	
+	
+	protected void fillInfoAreaContent(IPathwayVertexRep refPickedVertexRep) {
+		
+		// Do nothing if picked node is invalid.
+		if (refPickedVertexRep == null)
+			return;
+
+		refInfoAreaContent.clear();
+		
+		// Check if vertex is an compound
+		if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.compound))
+		{
+			refInfoAreaContent.add("Compound: " +refPickedVertexRep.getVertex().getElementTitle());
+		}
+		// Check if vertex is an enzyme.
+		if (refPickedVertexRep.getVertex().getVertexType().
+				equals(PathwayVertexType.enzyme))
+		{
+			String sEnzymeCode = refPickedVertexRep.getVertex().getElementTitle().substring(3);
+			String sAccessionCode = "";
+			String sTmpGeneName = "";
+			String sMicroArrayCode = "";
+			int iAccessionID = 0;
+			int iGeneID = 0;
+			Collection<Integer> iArTmpAccessionId = null;
+			
+			refInfoAreaContent.add("Enzyme: " +sEnzymeCode);
+			
+			//Just for testing mapping!
+			IGenomeIdManager refGenomeIdManager = 
+				refGeneralManager.getSingelton().getGenomeIdManager();
+			
+			int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
+					GenomeMappingType.ENZYME_CODE_2_ENZYME);
+			
+			if (iEnzymeID == -1)
+				return;
+			
+			Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
+					GenomeMappingType.ENZYME_2_NCBI_GENEID);
+			
+			if(iTmpGeneId == null)
+				return;
+			
+			Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
+			Iterator<Integer> iterTmpAccessionId = null;
+			while (iterTmpGeneId.hasNext())
+			{
+				iGeneID = iterTmpGeneId.next();
+				
+				String sNCBIGeneId = refGenomeIdManager.getIdStringFromIntByMapping(iGeneID, 
+						GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+				
+				refInfoAreaContent.add("NCBI GeneID: " +sNCBIGeneId);
+				
+				iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
+						GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+		
+				if (iAccessionID == -1)
+					break;
+				
+				sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
+						GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+				
+				System.out.println("Accession Code for Enzyme "+sEnzymeCode +": " +sAccessionCode);
+				refInfoAreaContent.add("Accession: " +sAccessionCode);
+				
+				sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
+						GenomeMappingType.ACCESSION_2_GENE_NAME);
+		
+				System.out.println("Gene name for Enzyme "+sEnzymeCode +": "+sTmpGeneName);
+				refInfoAreaContent.add("Gene name: " +sTmpGeneName);
+				
+				iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
+						GenomeMappingType.ACCESSION_2_MICROARRAY);
+				
+				if(iArTmpAccessionId == null)
+					continue;
+						
+				iterTmpAccessionId = iArTmpAccessionId.iterator();
+				while (iterTmpAccessionId.hasNext())
+				{
+					sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iterTmpAccessionId.next(), 
+							GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
+					
+					System.out.println("MicroArray Code for Enzyme "+sEnzymeCode +": "+sMicroArrayCode);
+					refInfoAreaContent.add("MicroArray: " +sMicroArrayCode);
+				}
+			}
+		}
+	}
 	
 //    private void drawBezierCurve(GL gl) {
 //
@@ -1639,21 +1584,29 @@ implements IGLCanvasUser, IJoglMouseListener {
     
     protected void handlePicking() {
     
+    	if (pickingTriggerMouseAdapter.wasMousePressed())
+    	{
+    		pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+    		bIsMouseOverPickingEvent = false;
+    	}
+    	
 	    if (pickingTriggerMouseAdapter.wasMouseMoved())
 	    {
 	    	// Restart timer
 	    	fLastMouseMovedTimeStamp = System.nanoTime();
+	    	bIsMouseOverPickingEvent = true;
 	    }
 	    else if (System.nanoTime() - fLastMouseMovedTimeStamp >= 0.3 * 1e9)
 	    {
 	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			
-	    	// Check if a object was picked
-	    	if (pickPoint != null)
-	    	{
-	    		pickObjects(gl);
-	    	}
+	    	fLastMouseMovedTimeStamp = System.nanoTime();
 	    }
+	    
+    	// Check if a object was picked
+    	if (pickPoint != null)
+    	{
+    		pickObjects(gl);
+    	}
 	    //System.out.println("Picking idle time: " + ((System.nanoTime() - fLastMouseMovedTimeStamp)) * 1e-9);
     }
     
