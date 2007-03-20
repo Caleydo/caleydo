@@ -297,7 +297,7 @@ implements IGenomeIdManager {
 		
 		assert buffer != null : "getIdFromStringByMapping(" + type +") type is not allocated";
 		
-		return buffer.getIntByString( sCerberusId );
+		return buffer.getIntByStringChecked( sCerberusId );
 	}
 
 
@@ -309,7 +309,7 @@ implements IGenomeIdManager {
 		
 		assert buffer != null : "getIdFromIntByMapping(" + type +") type is not allocated";
 
-		return buffer.getIntByInt( iCerberusId );
+		return buffer.getIntByIntChecked( iCerberusId );
 	}
 	
 	public String getIdStringFromStringByMapping(
@@ -320,7 +320,7 @@ implements IGenomeIdManager {
 		
 		assert buffer != null : "getStringIdFromStringByMapping(" + type +") type is not allocated";
 		
-		return buffer.getStringByString( sCerberusId );
+		return buffer.getStringByStringChecked( sCerberusId );
 	}
 
 
@@ -332,7 +332,7 @@ implements IGenomeIdManager {
 		
 		assert buffer != null : "getStringIdFromIntByMapping(" + type +") type is not allocated";
 		
-		return buffer.getStringByInt( iCerberusId );
+		return buffer.getStringByIntChecked( iCerberusId );
 	}
 
 	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
