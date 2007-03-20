@@ -40,8 +40,9 @@ implements IGenomeIdMap {
 		return hashGeneric.get(key);
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getStringByStringChecked(java.lang.String)
 	 */
 	public String getStringByStringChecked(String key) {
 
