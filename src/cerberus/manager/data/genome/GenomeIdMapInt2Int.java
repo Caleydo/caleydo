@@ -35,6 +35,15 @@ implements IGenomeIdMap {
 	 */
 	public int getIntByInt(int key) {
 
+		return hashGeneric.get(key);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getIntByIntChecked(int)
+	 */
+	public int getIntByIntChecked(int key) {
+
 		// Check if the ID has a mapping
 		if (hashGeneric.containsKey(key))
 		{

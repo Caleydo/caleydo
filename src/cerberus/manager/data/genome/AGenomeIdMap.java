@@ -77,6 +77,42 @@ implements IGenomeIdMap {
 		return "";
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByIntChecked(int)
+	 */
+	public int getIntByIntChecked(int key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByStringChecked(java.lang.String)
+	 */
+	public int getIntByStringChecked(String key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByIntChecked(int)
+	 */
+	public String getStringByIntChecked(int key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return "";
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByStringChecked(java.lang.String)
+	 */
+	public String getStringByStringChecked(String key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return "";
+	}
+	
 	/**
 	 * @see cerberus.manager.data.genome.IGenomeIdMap#size()
 	 * @see java.util.Map#size()

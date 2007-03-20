@@ -35,6 +35,14 @@ implements IGenomeIdMap {
 	 */
 	public int getIntByString(String key) {
 
+		return hashGeneric.get(key);
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByInt(int)
+	 */
+	public int getIntByStringChecked(String key) {
+
 		// Check if the ID has a mapping
 		if (hashGeneric.containsKey(key))
 		{

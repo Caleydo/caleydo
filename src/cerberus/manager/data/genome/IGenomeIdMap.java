@@ -29,6 +29,15 @@ public interface IGenomeIdMap {
 	
 	public String getStringByString( final String key);
 
+	
+	public int getIntByIntChecked( final int key);
+	
+	public int getIntByStringChecked( final String key);
+	
+	public String getStringByIntChecked( final int key);
+	
+	public String getStringByStringChecked( final String key);
+	
 	/**
 	 * Adds a key-value pair. 
 	 * Each implementation has to cast to the propper types.
