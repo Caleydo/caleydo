@@ -3,6 +3,7 @@
 	<name>Cerberus</name>
 	<comment></comment>
 	<projects>
+		<project>Muddleware_raw</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
