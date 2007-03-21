@@ -110,8 +110,8 @@ extends AGLCanvasPathway3D {
 		// Assumes that the set consists of only one storage
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-		String sPathwayTexturePath = "";
-		int iPathwayId = 0;
+//		String sPathwayTexturePath = "";
+//		int iPathwayId = 0;
 		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)

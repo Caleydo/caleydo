@@ -173,6 +173,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 	protected SystemTime systemTime = new SystemTime();
 	
+	protected ArrayList<String> refInfoAreaCaption;
 	protected ArrayList<String> refInfoAreaContent;
 		
 	/**
@@ -222,6 +223,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		refHashPathway2DisplayListNodeId = new HashMap<Pathway, Integer>();
 		refHashPathway2ModelMatrix = new HashMap<Pathway, FloatBuffer>();
 		
+		refInfoAreaCaption = new ArrayList<String>();
 		refInfoAreaContent = new ArrayList<String>();
 		
 		refViewCamera = new ViewCameraBase();
@@ -235,7 +237,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		
 		//FIXME: derive from AGLCanvasUser !
 
-		System.err.println(" init GLPAthway 3D...");
+		System.err.println("Init called from " +this.getClass().getSimpleName());
 		
 		this.gl = canvas.getGL();
 		
@@ -299,7 +301,6 @@ implements IGLCanvasUser, IJoglMouseListener {
 		// Assumes that the set consists of only one storage
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-		String sPathwayTexturePath = "";
 		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
@@ -313,7 +314,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 			if (refHashPathwayToTexture.containsValue(refTmpPathway))
 				break;
 			
-			loadBackgroundOverlayImage(refTmpPathway);		
+			if (bShowPathwayTexture)
+				loadBackgroundOverlayImage(refTmpPathway);		
 		}
 	}
 	
@@ -552,7 +554,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 					1.0f / (1.0f + (float)iGlowIndex / 20.0f));
 		}
 	}
-	
+
 	public final void render(GLAutoDrawable canvas) {
 		
 		this.gl = canvas.getGL();
@@ -560,6 +562,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		// isInitGLDone() == bInitGLcanvawsWasCalled 
 		if  ( ! bInitGLcanvawsWasCalled ) {
 			initGLCanvas( (GLCanvas) canvas);
+			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
 		}
 		
 		if (bSelectionDataChanged)
@@ -581,7 +584,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 				
 		renderPart(gl, GL.GL_RENDER);
 
-		renderInfoArea(0.0f, 0.0f, 0.0f);
+		renderInfoArea(0.0f, 0.2f, 0.0f);
 		
 		//gl.glFlush();
 		gl.glPopMatrix();	
@@ -820,7 +823,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 		
 		refTmpStorage.setArrayInt(iArPathwayIDs);
 		
-		loadBackgroundOverlayImage(refNewPathway);
+		if (bShowPathwayTexture)
+			loadBackgroundOverlayImage(refNewPathway);
 		
 		createPathwayDisplayList(refNewPathway);
 	}
@@ -935,25 +939,30 @@ implements IGLCanvasUser, IJoglMouseListener {
 			float fy, 
 			float fz) {
 		
-		float fHeight = 0.5f;
-		float fWidth = 2.0f;		
+		float fHeight = 0.3f;
+		float fWidth = 5f;		
 		
 		gl.glPushMatrix();
 		
 		gl.glLoadIdentity();
 		
-		fx -= 2.03f;
-		fy += 0.84;
+		fx -= 1.2f;
+		fy += 0.3f;
 		
-		gl.glTranslatef(0, 0, -10);
+		gl.glTranslatef(0, 0, -6f);
 		
 		gl.glDisable(GL.GL_LIGHTING);
 
 		for (int iLineNumber = 0; iLineNumber < refInfoAreaContent.size(); iLineNumber++)
 		{
+			renderText(refInfoAreaCaption.get(iLineNumber),
+					fx+0.05f,
+					fy + fHeight - 0.03f - 0.025f * iLineNumber,
+					fz);
+			
 			renderText(refInfoAreaContent.get(iLineNumber), 
-					fx+0.1f, 
-					fy + fHeight - 0.05f - 0.1f * iLineNumber, 
+					fx+0.2f, 
+					fy + fHeight -0.03f - 0.025f * iLineNumber, 
 					fz);
 		}
 		
@@ -965,7 +974,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 //		gl.glVertex3f(fx-fWidth, fy-fHeight, fz);
 //		gl.glEnd();
 		
-		gl.glColor4f(0f, 0f, 1f, 0.2f);
+		gl.glColor4f(1f, 1f, 0f, 0.2f);
 		gl.glRectf(fx, fy, fx + fWidth, fy + fHeight);
 		
 		gl.glEnable(GL.GL_LIGHTING);
@@ -1010,7 +1019,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		// Take a string and make it a bitmap, put it in the 'gl' passed over
 		// and pick
 		// the GLUT font, then provide the string to show
-		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, showText);    
+		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 
 	}
 
 	/* (non-Javadoc)
@@ -1337,7 +1346,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 			
 //			for (int j = 0; j < iNames; j++)
 //			{
-				System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
+				//System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
 
 				iPickedPathwayDisplayListNodeId = iArPickingBuffer[iPtr];
 				
@@ -1349,27 +1358,27 @@ implements IGLCanvasUser, IJoglMouseListener {
 				
 				if (refPickedVertexRep == null)
 					return;
-				
-				// Update the currently selected pathway
-				refPathwayUnderInteraction = refHashDisplayListNodeId2Pathway.get(
-						iPickedPathwayDisplayListNodeId);
-				
-				// Check if the clicked node is a pathway
-				// If this is the case the current pathway will be replaced by the clicked one.
-				if(refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
-				{
-					int iNewPathwayId = new Integer(refPickedVertexRep.getVertex().getElementTitle().substring(8));
-					replacePathway(refPathwayUnderInteraction, iNewPathwayId);
-					return;
-				}
-				
+								
 				fillInfoAreaContent(refPickedVertexRep);
 
 				// Perform real element picking
 				// That means the picked node will be highlighted.
 				// Otherwise the picking action was only mouse over.
 				if (!bIsMouseOverPickingEvent)
-				{ 
+				{
+					// Update the currently selected pathway
+					refPathwayUnderInteraction = refHashDisplayListNodeId2Pathway.get(
+							iPickedPathwayDisplayListNodeId);
+					
+					// Check if the clicked node is a pathway
+					// If this is the case the current pathway will be replaced by the clicked one.
+					if(refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
+					{
+						int iNewPathwayId = new Integer(refPickedVertexRep.getVertex().getElementTitle().substring(8));
+						replacePathway(refPathwayUnderInteraction, iNewPathwayId);
+						return;
+					}
+					
 					if (!iArHighlightedVertices.contains(refPickedVertexRep))
 					{
 						// Clear currently highlighted vertices when new node was selected
@@ -1437,15 +1446,23 @@ implements IGLCanvasUser, IJoglMouseListener {
 		if (refPickedVertexRep == null)
 			return;
 
+		refInfoAreaCaption.clear();
 		refInfoAreaContent.clear();
 		
-		// Check if vertex is an compound
-		if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.compound))
+		// Check if vertex is an pathway
+		if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
 		{
-			refInfoAreaContent.add("Compound: " +refPickedVertexRep.getVertex().getElementTitle());
+			refInfoAreaCaption.add("Pathway: ");
+			refInfoAreaContent.add(refPickedVertexRep.getVertex().getVertexReps()[0].getName());
+		}		
+		// Check if vertex is an compound
+		else if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.compound))
+		{
+			refInfoAreaCaption.add("Compound: ");
+			refInfoAreaContent.add(refPickedVertexRep.getVertex().getVertexReps()[0].getName());
 		}
 		// Check if vertex is an enzyme.
-		if (refPickedVertexRep.getVertex().getVertexType().
+		else if (refPickedVertexRep.getVertex().getVertexType().
 				equals(PathwayVertexType.enzyme))
 		{
 			String sEnzymeCode = refPickedVertexRep.getVertex().getElementTitle().substring(3);
@@ -1456,7 +1473,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 			int iGeneID = 0;
 			Collection<Integer> iArTmpAccessionId = null;
 			
-			refInfoAreaContent.add("Enzyme: " +sEnzymeCode);
+			refInfoAreaCaption.add("Enzyme: ");
+			refInfoAreaContent.add(sEnzymeCode);
 			
 			//Just for testing mapping!
 			IGenomeIdManager refGenomeIdManager = 
@@ -1483,7 +1501,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 				String sNCBIGeneId = refGenomeIdManager.getIdStringFromIntByMapping(iGeneID, 
 						GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 				
-				refInfoAreaContent.add("NCBI GeneID: " +sNCBIGeneId);
+				refInfoAreaCaption.add("NCBI GeneID: ");
+				refInfoAreaContent.add(sNCBIGeneId);
 				
 				iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
 						GenomeMappingType.NCBI_GENEID_2_ACCESSION);
@@ -1493,15 +1512,15 @@ implements IGLCanvasUser, IJoglMouseListener {
 				
 				sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
 						GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-				
-				System.out.println("Accession Code for Enzyme "+sEnzymeCode +": " +sAccessionCode);
-				refInfoAreaContent.add("Accession: " +sAccessionCode);
+								
+				refInfoAreaCaption.add("Accession: ");
+				refInfoAreaContent.add(sAccessionCode);
 				
 				sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
 						GenomeMappingType.ACCESSION_2_GENE_NAME);
 		
-				System.out.println("Gene name for Enzyme "+sEnzymeCode +": "+sTmpGeneName);
-				refInfoAreaContent.add("Gene name: " +sTmpGeneName);
+				refInfoAreaCaption.add("Gene name: ");
+				refInfoAreaContent.add(sTmpGeneName);
 				
 				iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
 						GenomeMappingType.ACCESSION_2_MICROARRAY);
@@ -1515,8 +1534,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 					sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iterTmpAccessionId.next(), 
 							GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
 					
-					System.out.println("MicroArray Code for Enzyme "+sEnzymeCode +": "+sMicroArrayCode);
-					refInfoAreaContent.add("MicroArray: " +sMicroArrayCode);
+					refInfoAreaCaption.add("MicroArray: ");
+					refInfoAreaContent.add(sMicroArrayCode);
 				}
 			}
 		}
@@ -1596,7 +1615,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 	    	fLastMouseMovedTimeStamp = System.nanoTime();
 	    	bIsMouseOverPickingEvent = true;
 	    }
-	    else if (System.nanoTime() - fLastMouseMovedTimeStamp >= 0.3 * 1e9)
+	    else if (bIsMouseOverPickingEvent == true && 
+	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.3 * 1e9)
 	    {
 	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 	    	fLastMouseMovedTimeStamp = System.nanoTime();
@@ -1606,6 +1626,7 @@ implements IGLCanvasUser, IJoglMouseListener {
     	if (pickPoint != null)
     	{
     		pickObjects(gl);
+    		bIsMouseOverPickingEvent = false;
     	}
 	    //System.out.println("Picking idle time: " + ((System.nanoTime() - fLastMouseMovedTimeStamp)) * 1e-9);
     }
