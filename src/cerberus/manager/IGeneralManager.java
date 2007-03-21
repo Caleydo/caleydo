@@ -105,6 +105,8 @@ public interface IGeneralManager {
 	
 	public static final int iUniqueId_TypeOffset_GenomeId_MICROARRAY = 76;	
 	
+	public static final int iUniqueId_TypeOffset_GenomeId_MICROARRAY_EXPRESSION = 77;
+	
 	public static final int iUniqueId_TypeOffset_EventPublisher = 90;
 	
 	public static final int iUniqueId_TypeOffset_Memento = 95;

@@ -38,22 +38,22 @@
                  
  	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="23401" parent="13331" label="Canvas" attrib2="500 300" detail="1177991"	/>
  	  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PANEL_PATHWAY_3D"		cmdId="69992"	targetId="79401" parent="23401" label="GL Layerd Pathway 3D" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_LAYERED_PATHWAY_3D"		cmdId="69992"	targetId="79401" parent="23401" label="GL Layerd Pathway 3D" 
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="33101 85101" /> 
 		
 		<!-- Window 14331 -->
-		<!--
+		<!-- 
 		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="14331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
                  
  	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="28401" parent="14331" label="Canvas" attrib2="500 300" detail=""	/>
  	  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PANEL_PATHWAY_3D"		cmdId="69992"	targetId="80401" parent="28401" label="GL Layerd Pathway 3D" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_LAYERED_PATHWAY_3D"		cmdId="69992"	targetId="80401" parent="28401" label="GL Layerd Pathway 3D" 
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="75101 85101" /> 	
-		-->  
+ 		-->
 		<!-- Window 15331 -->
 		<!-- 
   		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="15331" label="OpenGL Test Window" attrib1="ROW HORIZONTAL" />   

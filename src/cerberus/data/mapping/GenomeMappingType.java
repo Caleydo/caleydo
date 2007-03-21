@@ -161,6 +161,11 @@ public enum GenomeMappingType
 			GenomeIdType.MICROARRAY_CODE,
 			GenomeIdType.ACCESSION_CODE,
 			GenomeMappingDataType.MULTI_STRING2STRING),
+			
+	MICROARRAY_2_MICROARRAY_EXPRESSION (
+			GenomeIdType.MICROARRAY,
+			GenomeIdType.MICROARRAY_EXPRESSION,
+			GenomeMappingDataType.INT2INT),	
 
 //  // Loader handles lookup table!
 //	MICROARRAY_CODE_2_ACCESSION_CODE_USE_LUT (

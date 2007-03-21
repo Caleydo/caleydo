@@ -296,6 +296,10 @@ implements ICommand {
 				{
 					genomeDataType = GenomeMappingDataType.STRING2STRING;
 				}
+				else if (genomeDataType == GenomeMappingDataType.INT2INT)
+				{
+					genomeDataType = GenomeMappingDataType.STRING2INT;
+				}
 			}
 			
 			loader = new LookupTableLoaderProxy( 
@@ -332,6 +336,8 @@ implements ICommand {
 					genomeMappingLUT_2 = GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_2 );
 				}
 				
+				GenomeMappingDataType targetMappingDataType = genomeDataType;
+				
 				// Reset genomeDataType to real type
 				genomeDataType = lut_genome_type.getDataMapppingType();
 				
@@ -349,8 +355,9 @@ implements ICommand {
 							refGeneralManager, 
 							lut_genome_type, 
 							genomeMappingLUT_1, 
-							genomeMappingLUT_2);
-				}
+							genomeMappingLUT_2,
+							targetMappingDataType);					
+				}				
 			}
 			
 			/* ---  create reverse Map ... --- */

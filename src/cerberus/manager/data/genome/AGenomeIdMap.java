@@ -184,7 +184,8 @@ implements IGenomeIdMap {
 			IGenomeIdManager refGenomeIdManager,
 			GenomeMappingType genomeMappingLUT_1,
 			GenomeMappingType genomeMappingLUT_2,
-			GenomeMappingDataType targetMappingDataType) {
+			GenomeMappingDataType targetMappingDataType,
+			GenomeMappingDataType sourceMappingDataType) {
 		
 		IGenomeIdMap codeResolvedMap = null;
 		
@@ -213,12 +214,20 @@ implements IGenomeIdMap {
 							entryBuffer.getKey().toString(), 
 							genomeMappingLUT_1);
 					
-					iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
-							entryBuffer.getValue().toString(),
-							genomeMappingLUT_2);
-					
-					codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
-							new Integer(iResolvedID_2).toString());
+					if (sourceMappingDataType == GenomeMappingDataType.STRING2INT)
+					{						
+						codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
+								entryBuffer.getValue().toString());
+					}
+					else if (sourceMappingDataType == GenomeMappingDataType.STRING2STRING)
+					{
+						iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
+								entryBuffer.getValue().toString(),
+								genomeMappingLUT_2);
+
+						codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
+								new Integer(iResolvedID_2).toString());
+					}
 				}
 						
 				break;

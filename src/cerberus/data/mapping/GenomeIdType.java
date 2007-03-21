@@ -42,6 +42,11 @@ public enum GenomeIdType
 	MICROARRAY_CODE   (StorageType.STRING,
 			GenomeMappingType.MICROARRAY_CODE_2_MICROARRAY,
 			"IMAGp","Microarray LUT"),
+	MICROARRAY_EXPRESSION   (StorageType.INT,
+			GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION,
+			"expression","Microarray Expression Value"),
+			
+			
 			
 	NCBI_GENEID  (StorageType.INT,
 			GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,

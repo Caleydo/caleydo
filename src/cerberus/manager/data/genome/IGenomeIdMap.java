@@ -83,11 +83,13 @@ public interface IGenomeIdMap {
 	 * @param genomeMappingLUT_1
 	 * @param genomeMappingLUT_2
 	 * @param targetMappingDataType
+	 * @param sourceMappingDataType
 	 * @return
 	 */
 	public IGenomeIdMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
 			GenomeMappingType genomeMappingLUT_1,
 			GenomeMappingType genomeMappingLUT_2,
-			GenomeMappingDataType targetMappingDataType);
+			GenomeMappingDataType targetMappingDataType,
+			GenomeMappingDataType sourceMappingDataType);
 }

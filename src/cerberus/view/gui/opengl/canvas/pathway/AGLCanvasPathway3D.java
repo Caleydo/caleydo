@@ -1473,6 +1473,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 			int iGeneID = 0;
 			Collection<Integer> iArTmpAccessionId = null;
 			
+			// FIXME: From where can we get the storage ID?
+			int iExpressionStorageId = 45301;
+			
 			refInfoAreaCaption.add("Enzyme: ");
 			refInfoAreaContent.add(sEnzymeCode);
 			
@@ -1531,11 +1534,26 @@ implements IGLCanvasUser, IJoglMouseListener {
 				iterTmpAccessionId = iArTmpAccessionId.iterator();
 				while (iterTmpAccessionId.hasNext())
 				{
-					sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iterTmpAccessionId.next(), 
+					int iMicroArrayId = iterTmpAccessionId.next();
+					
+					sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iMicroArrayId, 
 							GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
 					
 					refInfoAreaCaption.add("MicroArray: ");
 					refInfoAreaContent.add(sMicroArrayCode);
+					
+					//Get expression value by MicroArrayID
+					IStorage refExpressionStorage = refGeneralManager.getSingelton().
+						getStorageManager().getItemStorage(iExpressionStorageId);
+					int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
+							iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+					
+					// Get rid of 770 internal ID identifier
+					iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
+					
+					int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
+					refInfoAreaCaption.add("Expression value: ");
+					refInfoAreaContent.add(new Integer(iExpressionValue).toString());
 				}
 			}
 		}

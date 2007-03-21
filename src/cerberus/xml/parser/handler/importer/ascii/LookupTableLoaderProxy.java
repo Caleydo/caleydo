@@ -396,7 +396,8 @@ extends AbstractLoader {
 			final IGeneralManager refGeneralManager,		
 			GenomeMappingType originMapMappingType,
 			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2) {
+			GenomeMappingType genomeMappingLUT_2,
+			GenomeMappingDataType sourceMapMappingType) {
 	
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
@@ -406,7 +407,8 @@ extends AbstractLoader {
 		IGenomeIdMap refTargetMap = refMapToConvert.getCodeResolvedMap(
 				dgi_mng, genomeMappingLUT_1, 
 				genomeMappingLUT_2,
-				originMapMappingType.getDataMapppingType());
+				originMapMappingType.getDataMapppingType(),
+				sourceMapMappingType);
 		
 		// Removes old map that contains the codes instead of the IDs
 		dgi_mng.removeMapByType(originMapMappingType);
