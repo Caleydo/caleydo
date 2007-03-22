@@ -42,18 +42,14 @@
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="33101 85101" /> 
-		
-		<!-- Window 14331 -->
-		<!-- 
-		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="14331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
-                 
- 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="28401" parent="14331" label="Canvas" attrib2="500 300" detail=""	/>
+            
+ 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="28401" parent="13331" label="Canvas" attrib2="500 300" detail=""	/>
  	  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_LAYERED_PATHWAY_3D"		cmdId="69992"	targetId="80401" parent="28401" label="GL Layerd Pathway 3D" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PANEL_PATHWAY_3D"		cmdId="69992"	targetId="80401" parent="28401" label="GL Layerd Pathway 3D" 
 							attrib1="0 0 0" attrib2="180 1 0 0"
 							attrib3="0 20 0 20 -0.5f -3f -1.0f 1.0f -3.0f -1.0f 30 4.0f"								
 							detail="75101 85101" /> 	
- 		-->
+
 		<!-- Window 15331 -->
 		<!-- 
   		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="15331" label="OpenGL Test Window" attrib1="ROW HORIZONTAL" />   
@@ -66,12 +62,12 @@
 							detail="45101" />
   		-->
   		<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" attrib1="84401" attrib2="79401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway Reverse" attrib1="79401" attrib2="84401" detail="SELECTION_MEDIATOR" /> 
- 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" attrib1="84401" attrib2="79401 80401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator Pathway Reverse" attrib1="79401" attrib2="84401 80401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="95501" label="Mediator Pathway" attrib1="80401" attrib2="79401 84401" detail="SELECTION_MEDIATOR" />  
 
 
  	  <!--Commands not in use at the moment	

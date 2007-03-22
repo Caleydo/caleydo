@@ -40,6 +40,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.util.colormapping.ColorMapping;
 import cerberus.util.system.SystemTime;
 //import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
@@ -175,6 +176,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 	protected ArrayList<String> refInfoAreaCaption;
 	protected ArrayList<String> refInfoAreaContent;
+	
+	protected ColorMapping expressionColorMapping;
 		
 	/**
 	 * Constructor
@@ -227,6 +230,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 		refInfoAreaContent = new ArrayList<String>();
 		
 		refViewCamera = new ViewCameraBase();
+		
+		expressionColorMapping = new ColorMapping(0, 25000);
+		expressionColorMapping.createLookupTable();
 	}
 	
 	/*
@@ -584,7 +590,12 @@ implements IGLCanvasUser, IJoglMouseListener {
 				
 		renderPart(gl, GL.GL_RENDER);
 
+		//FIXME:
+		//fullscreen seetings
 		renderInfoArea(0.0f, 0.2f, 0.0f);
+		
+		//split window settings
+		renderInfoArea(0.0f, -0.2f, 0.0f);
 		
 		//gl.glFlush();
 		gl.glPopMatrix();	
@@ -702,7 +713,20 @@ implements IGLCanvasUser, IJoglMouseListener {
 			}
 			else 
 			{
-				gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+				tmpNodeColor = getMappingColor(vertexRep);
+				
+				// Check if the mapping gave a valid color
+				if (!tmpNodeColor.equals(Color.BLACK))
+				{
+					gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+							tmpNodeColor.getGreen() / 255.0f, 
+							tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				
+				}else
+				{
+					gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+				}
+				
 				gl.glCallList(iEnzymeNodeDisplayListId);
 			}
 		}
@@ -855,7 +879,6 @@ implements IGLCanvasUser, IJoglMouseListener {
 		float fZLayerValue1 = 0.0f; 
 		float fZLayerValue2 = 0.0f;
 		Pathway refTmpPathway = null;
-		Iterator<Pathway> iterDrawnPathways = null;
 		Texture refPathwayTexture = null;
 		float fCanvasXPos1 = 0.0f;
 		float fCanvasYPos1 = 0.0f;
@@ -893,8 +916,6 @@ implements IGLCanvasUser, IJoglMouseListener {
 					refVertexRep1.getXPosition() * SCALING_FACTOR_X;
 				fCanvasYPos1 = viewingFrame[Y][MIN] + 
 					refVertexRep1.getYPosition() * SCALING_FACTOR_Y;
-
-				
 			}
 			
 			if(refTmpPathway.isVertexInPathway(refVertexRep2.getVertex()) == true)
@@ -1233,7 +1254,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 			iArHighlightedVertices.add(refGeneralManager.getSingelton().getPathwayElementManager().
 					getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]).getVertexRepByIndex(0));
 			
-			iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
+			//iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
 		}
 		
 		bSelectionDataChanged = true;
@@ -1373,10 +1394,16 @@ implements IGLCanvasUser, IJoglMouseListener {
 					// Check if the clicked node is a pathway
 					// If this is the case the current pathway will be replaced by the clicked one.
 					if(refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
-					{
+					{		
 						int iNewPathwayId = new Integer(refPickedVertexRep.getVertex().getElementTitle().substring(8));
-						replacePathway(refPathwayUnderInteraction, iNewPathwayId);
-						return;
+
+						//Check if picked pathway is alread displayed
+						if (!refHashPathway2DisplayListNodeId.containsKey(refGeneralManager.getSingelton().
+								getPathwayManager().getItem(iNewPathwayId)))
+						{
+							replacePathway(refPathwayUnderInteraction, iNewPathwayId);
+							return;							
+						}
 					}
 					
 					if (!iArHighlightedVertices.contains(refPickedVertexRep))
@@ -1422,7 +1449,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 								LoggerType.VERBOSE);
 					}
 					
-					fillInfoAreaContent(refPickedVertexRep);
+					//fillInfoAreaContent(refPickedVertexRep);
 					
 					// FIXME: not very efficient
 					// All display lists are newly created
@@ -1554,10 +1581,96 @@ implements IGLCanvasUser, IJoglMouseListener {
 					int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
 					refInfoAreaCaption.add("Expression value: ");
 					refInfoAreaContent.add(new Integer(iExpressionValue).toString());
+					
+					Color testColor = expressionColorMapping.colorMappingLookup(iExpressionValue);
+					System.out.println("Result color mapping: " +testColor.getRed() +"," 
+							+testColor.getGreen() +","+testColor.getBlue());
 				}
 			}
 		}
 	}
+	
+	protected Color getMappingColor(IPathwayVertexRep refPickedVertexRep) {
+		
+		int iCummulatedExpressionValue = 0;
+		int iNumberOfExpressionValues = 0;
+		
+		// Do nothing if picked node is invalid.
+		if (refPickedVertexRep == null)
+			return Color.BLACK;
+		
+		String sEnzymeCode = refPickedVertexRep.getVertex().getElementTitle().substring(3);
+		int iAccessionID = 0;
+		int iGeneID = 0;
+		Collection<Integer> iArTmpAccessionId = null;
+		
+		// FIXME: From where can we get the storage ID?
+		int iExpressionStorageId = 45301;
+		
+		//Just for testing mapping!
+		IGenomeIdManager refGenomeIdManager = 
+			refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
+				GenomeMappingType.ENZYME_CODE_2_ENZYME);
+		
+		if (iEnzymeID == -1)
+			return Color.BLACK;
+		
+		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
+				GenomeMappingType.ENZYME_2_NCBI_GENEID);
+		
+		if(iTmpGeneId == null)
+			return Color.BLACK;
+		
+		Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
+		Iterator<Integer> iterTmpAccessionId = null;
+		while (iterTmpGeneId.hasNext())
+		{
+			iGeneID = iterTmpGeneId.next();
+						
+			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
+					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+	
+			if (iAccessionID == -1)
+				break;
+							
+			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
+					GenomeMappingType.ACCESSION_2_MICROARRAY);
+			
+			if(iArTmpAccessionId == null)
+				continue;
+					
+			iterTmpAccessionId = iArTmpAccessionId.iterator();
+			while (iterTmpAccessionId.hasNext())
+			{
+				int iMicroArrayId = iterTmpAccessionId.next();
+								
+				//Get expression value by MicroArrayID
+				IStorage refExpressionStorage = refGeneralManager.getSingelton().
+					getStorageManager().getItemStorage(iExpressionStorageId);
+				int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
+						iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+				
+				// Get rid of 770 internal ID identifier
+				iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
+				
+				int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
+				
+				iCummulatedExpressionValue += iExpressionValue;
+				iNumberOfExpressionValues++;
+			}
+		}
+		
+		if (iNumberOfExpressionValues != 0)
+		{
+			return(expressionColorMapping.colorMappingLookup(iCummulatedExpressionValue 
+					/ iNumberOfExpressionValues));
+		}
+		
+		return Color.BLACK;
+	}
+
 	
 //    private void drawBezierCurve(GL gl) {
 //
