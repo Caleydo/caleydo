@@ -231,7 +231,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		
 		refViewCamera = new ViewCameraBase();
 		
-		expressionColorMapping = new ColorMapping(0, 25000);
+		expressionColorMapping = new ColorMapping(0, 65000);
 		expressionColorMapping.createLookupTable();
 	}
 	
