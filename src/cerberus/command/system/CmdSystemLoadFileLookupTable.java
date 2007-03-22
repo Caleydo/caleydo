@@ -428,6 +428,8 @@ implements ICommand {
 				sLookupTableType + "]  targetSet(s)=[" +
 				iTargetSetId + "]) CmdSystemLoadFileLookupTable \n   error-message=" + e.getMessage();
 			
+			e.printStackTrace();
+			
 			refGeneralManager.getSingelton().logMsg(
 					errorMsg,
 					LoggerType.ERROR_ONLY );

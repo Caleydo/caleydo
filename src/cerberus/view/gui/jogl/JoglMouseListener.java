@@ -10,7 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.Point;
 
 import cerberus.view.gui.jogl.IJoglMouseListener;
-import cerberus.util.system.MathUtil;
+import cerberus.math.MathUtil;
 
 
 /**

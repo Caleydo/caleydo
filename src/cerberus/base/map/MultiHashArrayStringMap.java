@@ -250,11 +250,22 @@ implements GenericMultiMap <String>  {
 			iterValues = tmp.iterator();
 			while (iterValues.hasNext())
 			{
-				iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
-						iterValues.next().toString(),
-						genomeMappingLUT_2);
-			
-				codeResolvedMultMapInt.putChecked(iResolvedID_1, iResolvedID_2);
+				String sTargetString = iterValues.next().toString();
+				
+				if ( sTargetString.length() > 0) {
+					iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
+							sTargetString,
+							genomeMappingLUT_2);
+				
+					codeResolvedMultMapInt.putChecked(iResolvedID_1, iResolvedID_2);
+				}
+				else
+				{
+					System.err.println("Skip: (key,value)=[" + 
+							Integer.toString(iResolvedID_1) +
+							"," + sTargetString +
+							"] on loading");
+				}
 			}
 		}
 			

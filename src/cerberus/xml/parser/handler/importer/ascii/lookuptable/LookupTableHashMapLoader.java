@@ -88,7 +88,7 @@ implements ILookupTableLoader {
 									"(Key,Value) [" +
 									buffer + ", ?? ] value is missing (ignore key-value pair) in line " +
 									iLineInFile,
-									LoggerType.MINOR_ERROR);
+									LoggerType.FULL);
 						}
 						
 					

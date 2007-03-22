@@ -331,10 +331,16 @@ implements IGLCanvasUser, IMediatorReceiver
 			IVirtualArray selectX = arraySelectionX[iOuterLoop];
 			IVirtualArray selectY = arraySelectionY[iOuterLoop];
 			
+			assert selectX != null : "selectX is NULL!";
+			assert selectY != null : "selectY is NULL!";
+			
 			if (( selectX.getReadToken())&&(selectY.getReadToken()))
 			{
 				IVirtualArrayIterator iterSelectX = selectX.iterator();
 				IVirtualArrayIterator iterSelectY = selectY.iterator();
+				
+				assert iterSelectX != null : "iterSelectX = null!";
+				assert iterSelectY != null : "iterSelectY = null!";
 				
 				IStorage storeX = arrayStorageX[iOuterLoop];
 				IStorage storeY = arrayStorageY[iOuterLoop];

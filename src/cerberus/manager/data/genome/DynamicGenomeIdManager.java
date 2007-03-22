@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 //import cerberus.base.map.MultiHashArrayMap;
-import cerberus.data.mapping.GenomeIdType;
+//import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 //import cerberus.base.map.MultiHashArrayStringMap;
@@ -298,6 +298,17 @@ implements IGenomeIdManager {
 		assert buffer != null : "getIdFromStringByMapping(" + type +") type is not allocated";
 		
 		return buffer.getIntByStringChecked( sCerberusId );
+	}
+	
+	public int getIdIntFromStringByMappingNotChecked(
+			final String sCerberusId, 
+			final GenomeMappingType type) {
+
+		IGenomeIdMap buffer = hashType2Map.get( type );
+		
+		assert buffer != null : "getIdFromStringByMapping(" + type +") type is not allocated";
+		
+		return buffer.getIntByString( sCerberusId );
 	}
 
 

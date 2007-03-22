@@ -82,9 +82,12 @@ implements IView, IGLCanvasDirector {
 				getId() + "] start Animator; start thread ...",
 				LoggerType.TRANSITION );
 		
+		//refGLEventListener = new JoglCanvasTextureForwarder();
+		
 		refGLEventListener = new JoglCanvasForwarder(refGeneralManager,
 				this, 
 				iGLEventListernerId );
+		
 		super.initView();
 		
 		refGeneralManager.getSingelton().logMsg(
