@@ -44,16 +44,18 @@ implements IGenomeIdMap {
 	 */
 	public int getIntByIntChecked(int key) {
 
+		Integer dummy = hashGeneric.get(key);
+		
 		// Check if the ID has a mapping
-		if (hashGeneric.containsKey(key))
+		if (dummy==null)
 		{
-			return hashGeneric.get(key);
-		}
-		else
-		{
-			System.err.println("No mapping found for requested ID: " +key);
+			if  (ENABLE_DEBUG) {
+				System.err.println("No mapping found for requested ID: " +key);
+			}
 			return -1;
 		}
+		
+		return dummy.intValue();
 	}
 	
 	public void put( final String key, 

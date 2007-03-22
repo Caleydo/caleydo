@@ -300,17 +300,6 @@ implements IGenomeIdManager {
 		return buffer.getIntByStringChecked( sCerberusId );
 	}
 	
-	public int getIdIntFromStringByMappingNotChecked(
-			final String sCerberusId, 
-			final GenomeMappingType type) {
-
-		IGenomeIdMap buffer = hashType2Map.get( type );
-		
-		assert buffer != null : "getIdFromStringByMapping(" + type +") type is not allocated";
-		
-		return buffer.getIntByString( sCerberusId );
-	}
-
 
 	public int getIdIntFromIntByMapping(
 			final int iCerberusId, 

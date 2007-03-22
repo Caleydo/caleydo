@@ -210,7 +210,7 @@ implements IGenomeIdMap {
 			{
 				entryBuffer = iterOrigin.next();
 												
-				iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMappingNotChecked(
+				iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
 						entryBuffer.getKey().toString(), 
 						genomeMappingLUT_1);
 				

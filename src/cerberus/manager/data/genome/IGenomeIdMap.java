@@ -19,6 +19,8 @@ import cerberus.manager.data.IGenomeIdManager;
  */
 public interface IGenomeIdMap {
 
+	public static final boolean ENABLE_DEBUG = false;
+	
 //	public Object getObjectByType( final Object byObject, GenomeMappingDataType type );
 	
 	public int getIntByInt( final int key);

@@ -41,9 +41,6 @@ extends IGeneralManager {
 	
 	public int getIdIntFromStringByMapping( final String sCerberusId, 
 			final GenomeMappingType type );
-
-	public int getIdIntFromStringByMappingNotChecked( final String sCerberusId, 
-			final GenomeMappingType type );
 	
 	
 	/**

@@ -6,6 +6,7 @@ package cerberus.view.gui.swt.browser;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -51,14 +52,26 @@ implements IView {
 		
 		retrieveGUIContainer();
 		
-		if (iWidth == -1)
-			iWidth = 500;
-		
-		if (iHeight == -1)
-			iHeight = 1000;
-		
+
 		refBrowser = new Browser (refSWTContainer, SWT.NONE);
-		refBrowser.setBounds(5, 75, iWidth, iHeight);
+				
+//		if ((iWidth == -1)&&(iHeight == -1)) 
+//		{
+//			Rectangle rec = refSWTContainer.getBounds();
+//			
+//			refBrowser.setBounds(5, 75, rec.width, rec.height);
+//		}
+//		else 
+//		{
+			if (iWidth == -1)
+				iWidth = 1000;
+			
+			if (iHeight == -1)
+				iHeight = 1000;
+	
+			refBrowser.setBounds(5, 75, iWidth, iHeight);
+//		}
+		
 		
 	    ToolBar toolbar = new ToolBar(refSWTContainer, SWT.NONE);
 	    toolbar.setBounds(0, 0, 300, 30);
