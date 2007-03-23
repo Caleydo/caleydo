@@ -9,7 +9,7 @@ import cerberus.data.IUniqueObject;
 public interface IGLCanvasUser
 extends IUniqueObject {
 
-	public abstract void link2GLCanvasDirector( IGLCanvasDirector parentView );
+	//public abstract void link2GLCanvasDirector( IGLCanvasDirector parentView );
 
 	public abstract void initGLCanvas(GLCanvas canvas);
 	

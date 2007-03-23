@@ -88,6 +88,8 @@ implements IView, IGLCanvasDirector {
 				this, 
 				iGLEventListernerId );
 		
+		//this.vecGLCanvasUser.add(refGLEventListener);
+		
 		super.initView();
 		
 		refGeneralManager.getSingelton().logMsg(

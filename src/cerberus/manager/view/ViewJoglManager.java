@@ -557,6 +557,7 @@ implements IViewManager, IViewGLCanvasManager {
 		}
 
 		hashGLEventListener.put(iGLEventListenerId, canvasListener);
+		hashGLEventListener_revert.put(canvasListener, iGLEventListenerId);
 
 		return true;
 	}

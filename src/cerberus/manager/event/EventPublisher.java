@@ -452,6 +452,12 @@ implements IEventPublisher {
 		ArrayList<IMediator> arMediators = hashSender2SelectionMediators
 				.get((IMediatorSender) eventTrigger);
 		
+		if (arMediators == null) 
+		{
+			assert false : "empty (ArrayList) arMediators from hashSender2SelectionMediators.get( eventTrigger)";
+			return;
+		}
+		
 		Iterator<IMediator> iterMediators = arMediators.iterator();
 
 		IMediator tmpMediator;

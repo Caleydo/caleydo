@@ -3,6 +3,7 @@
  */
 package cerberus.view.gui.opengl.canvas;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 
@@ -70,17 +71,17 @@ implements IGLCanvasUser
 		bInitGLcanvawsWasCalled = true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.gui.opengl.IGLCanvasDirector)
-	 */
-	public final void link2GLCanvasDirector(IGLCanvasDirector parentView)
-	{
-		if ( openGLCanvasDirector == null ) {
-			openGLCanvasDirector = parentView;
-		}
-		
-		parentView.addGLCanvasUser( this );
-	}
+//	/* (non-Javadoc)
+//	 * @see cerberus.view.gui.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.gui.opengl.IGLCanvasDirector)
+//	 */
+//	public final void link2GLCanvasDirector(IGLCanvasDirector parentView)
+//	{
+//		if ( openGLCanvasDirector == null ) {
+//			openGLCanvasDirector = parentView;
+//		}
+//		
+//		parentView.addGLCanvasUser( this );
+//	}
 
 
 	/* (non-Javadoc)
@@ -108,4 +109,42 @@ implements IGLCanvasUser
 	{
 		setInitGLDone();
 	}
+
+	
+	public abstract void renderPart(GL gl);
+	
+	
+	public final void render(GLAutoDrawable canvas)
+	{
+		GL gl = canvas.getGL();
+		
+//		/* Clear The Screen And The Depth Buffer */
+//		gl.glPushMatrix();
+
+//		gl.glTranslatef( origin.x(), origin.y(), origin.z() );
+//		gl.glRotatef( rotation.x(), 
+//				rotation.y(),
+//				rotation.z(),
+//				rotation.w() );
+		
+		this.renderPart( gl );
+
+//		gl.glPopMatrix();		
+//		
+		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
+	}
+	
+	public void reshape(GLAutoDrawable drawable, 
+			final int x,
+			final int y,
+			final int width,
+			final int height) {
+		
+		GL gl = drawable.getGL();
+		
+		System.out.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
+		
+		this.renderPart( gl );
+	}
+	
 }
