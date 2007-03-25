@@ -138,10 +138,10 @@ extends AToolbar {
 	protected void createActionListener() {
 		
 		final Menu filterEdgeMenu = new Menu (refSWTContainer.getShell(), SWT.POP_UP);
-		MenuItem refShowRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
+		final MenuItem refShowRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
 		refShowRelationsItem.setText ("Show relations");
 		refShowRelationsItem.setSelection(true);
-		MenuItem refShowReactionsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
+		final MenuItem refShowReactionsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
 		refShowReactionsItem.setText ("Show reactions");
 		refShowReactionsItem.setSelection(true);	
 		
@@ -252,6 +252,17 @@ extends AToolbar {
 	          {
 	        	  refPathwayGraphViewRep.showBackgroundOverlay(
 	        			  refBackgroundOverlayItem.getSelection());
+	        	  
+	        	  if (refBackgroundOverlayItem.getSelection() == true)
+	        	  {
+	        		  refShowReactionsItem.setSelection(false);
+	        		  refShowRelationsItem.setSelection(false);
+	        	  }
+	        	  else
+	        	  {
+	        		  refShowReactionsItem.setSelection(true);
+	        		  refShowRelationsItem.setSelection(true);
+	        	  }
 	          }
 	          else if (sToolItemIdentifier.equals("" +
 	          		"Go to KEGG Metabolic Pathways Overview Map"))

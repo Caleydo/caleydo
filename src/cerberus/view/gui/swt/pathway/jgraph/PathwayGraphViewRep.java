@@ -39,7 +39,6 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.selection.ISetSelection;
-import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
@@ -91,8 +90,6 @@ extends APathwayGraphViewRep {
 	
 	protected JGraph refPathwayGraph;
 	
-	protected DefaultGraphCell refGraphCell;
-	
 	protected HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
 	
 	protected boolean bGraphSet = false;
@@ -110,6 +107,13 @@ extends APathwayGraphViewRep {
 	protected Vector<DefaultGraphCell> vecVertices;
 	
 	protected ArrayList<DefaultGraphCell> arSelectedVertices;
+	
+	/**
+	 * Holds the cell that was recently clicked by the user using the mouse.
+	 * The variable is needed for updating the neighborhood distance in the menu
+	 * on the fly without selecting a new cell.
+	 */
+	protected DefaultGraphCell lastClickedVertex;
  	
 	/**
 	 * Integer storage of selected vertices
@@ -213,148 +217,66 @@ extends APathwayGraphViewRep {
 
 		    	if (refCurrentPathway != null) 
 		    	{		    	
-			    	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
-							.getFirstCellForLocation(event.getX(), event.getY());
-	
-			    	// Remove old selected vertices
-			    	iLLSelectedVertices.clear();
-			    	iLLNeighborDistance.clear();
-			    	arSelectedVertices.clear();
-			    	
-			    	// Check if a node or edge was hit.
-			    	// If not undo neighborhood visualization and return.
-			    	if (clickedCell == null)
-			    	{
-						for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
-						{
-							refUndoManager.undo(refGraphLayoutCache);
-						}
-						
-						iNeighbourhoodUndoCount = 0;
-						bNeighbourhoodShown = false;
-			    		return;
-			    	}
-			    	
-	//				if (event.getClickCount() == 2)
-	//				{	
-			    		// Check if cell has an user object attached
-					if (clickedCell.getUserObject() == null)
-					{
-						super.mousePressed(event);
-						return;						
-					}
-	
-					if (!clickedCell.getUserObject().getClass().getSimpleName()
-							.equals(PathwayVertexRep.class.getSimpleName()))
-					{
-						super.mousePressed(event);
-						return;
-					}
-					
-					final String sUrl = 
-						((PathwayVertexRep)clickedCell.getUserObject()).
-							getVertex().getVertexLink();
-					
-					if (sUrl == "") 
-					{
-						super.mousePressed(event);
-						return;
-					}
-					
-					if (extractClickedPathway(sUrl) == false);
-					{
-						loadNodeInformationInBrowser(sUrl);
-	
-						// UNDO old neighborhood visualization
-						if (bNeighbourhoodShown == true)
-						{
-							for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
-							{
-								refUndoManager.undo(refGraphLayoutCache);
-							}
-							iNeighbourhoodUndoCount = 0;
-							bNeighbourhoodShown = false;
-						}
-						
-						// Highlight current cell
-						highlightCell(clickedCell, Color.RED);
-						dataMappingTest(((PathwayVertexRep)clickedCell.
-								getUserObject()));
-						
-						// The clicked vertex will be added with neighborhood distance of 0
-						iLLNeighborDistance.add(0);
-						
-						bNeighbourhoodShown = true;
-						iNeighbourhoodUndoCount++;
-	
-						// Add selected vertex itself because neighborhood algorithm
-						// only adds neighbor vertices.
-						iLLSelectedVertices.add(((PathwayVertexRep)clickedCell.
-								getUserObject()).getVertex().getElementId());
-						
-						arSelectedVertices.add(clickedCell);
-						
-						if (iNeighbourhoodDistance != 0)
-						{	
-							hashSetVisitedNeighbors.clear();
-							
-							showNeighbourhoodBFS(clickedCell, 
-								iNeighbourhoodDistance);
-					
-							bNeighbourhoodShown = true;
-						}
-						
-						int[] iArSelectedVertices = null;
-						int[] iArNeighborDistance = null;
-
-						// Convert Link List to int[]
-					    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
-					    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
-					    for ( int i=0; iter_I.hasNext() ;i++ ) {
-					    	iArSelectedVertices[i] = iter_I.next().intValue();
-					    }
-					    
-					    iter_I = iLLNeighborDistance.iterator();		    
-					    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
-					    for ( int i=0; iter_I.hasNext() ;i++ ) {
-					    	iArNeighborDistance[i] = iter_I.next().intValue();
-					    }
-						
-						updateSelectionSet(iArSelectedVertices, 
-								new int[0], iArNeighborDistance);
-						
-					}// if(sUrl.contains((CharSequence)sSearchPattern))
-				}// if(refCurrentPathway != 0) 
-		    	else if (refCurrentPathwayImageMap != null)
-		    	{
-		    		String sLink = refCurrentPathwayImageMap.processPoint(
-		    				new Point(event.getX(), event.getY()));
+		        	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
+						.getFirstCellForLocation(event.getX(), event.getY());
+		        	
+		        	lastClickedVertex = clickedCell;
 		    		
-		    		if (sLink == null || sLink.equals(""))
+					// Check if cell has an user object attached
+		    		if (lastClickedVertex.getUserObject() == null)
 		    		{
-		    			refGeneralManager.getSingelton().logMsg(
-		    					this.getClass().getSimpleName() +
-		    					":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
-		    					LoggerType.VERBOSE);
-
+		    			super.mousePressed(event);
+		    			return;						
+		    		}
+		    		
+		    		if (!clickedCell.getUserObject().getClass().getSimpleName()
+		    				.equals(PathwayVertexRep.class.getSimpleName()))
+		    		{
+		    			super.mousePressed(event);
+		    			return;
+		    		}
+		        	
+		    		final String sUrl = 
+		    			((PathwayVertexRep)lastClickedVertex.getUserObject()).
+		    				getVertex().getVertexLink();
+		    		
+		    		if (sUrl == "") 
+		    		{
+		    			super.mousePressed(event);
 		    			return;
 		    		}
 		    		
-		    		iPathwayLevel++;
-		    		if (iPathwayLevel >= 3)
-		    		{
-		    			//fScalingFactor = SCALING_FACTOR;
-		    			//bShowBackgroundOverlay = true;
-		    			extractClickedPathway(sLink);
-		    			//loadPathwayFromFile(sLink);
-		    		}	
-		    		else
-		    		{
-		    			loadImageMapFromFile(sLink);
-		    		}
-		    	}
+		    		processSelectedCell();
 		    		
-				//super.mousePressed(event);
+				}// if(refCurrentPathway != 0) 
+				else if (refCurrentPathwayImageMap != null)
+				{
+					String sLink = refCurrentPathwayImageMap.processPoint(
+							new Point(event.getX(), event.getY()));
+					
+					if (sLink == null || sLink.equals(""))
+					{
+						refGeneralManager.getSingelton().logMsg(
+								this.getClass().getSimpleName() +
+								":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
+								LoggerType.VERBOSE);
+					
+						return;
+					}
+					
+					iPathwayLevel++;
+					if (iPathwayLevel >= 3)
+					{
+						//fScalingFactor = SCALING_FACTOR;
+						//bShowBackgroundOverlay = true;
+						extractClickedPathway(sLink);
+						//loadPathwayFromFile(sLink);
+					}	
+					else
+					{
+						loadImageMapFromFile(sLink);
+					}
+				}
 		    }
 		}
 		
@@ -383,6 +305,92 @@ extends APathwayGraphViewRep {
 		refGraphModel.addUndoableEditListener(refUndoManager);
 	}
 	
+	protected void processSelectedCell() {
+
+		// Remove old selected vertices
+		iLLSelectedVertices.clear();
+		iLLNeighborDistance.clear();
+		arSelectedVertices.clear();
+		
+		// Check if a node or edge was hit.
+		// If not undo neighborhood visualization and return.
+		if (lastClickedVertex == null)
+		{
+			for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
+			{
+				refUndoManager.undo(refGraphLayoutCache);
+			}
+			
+			iNeighbourhoodUndoCount = 0;
+			bNeighbourhoodShown = false;
+			return;
+		}
+		
+		final String sUrl = 
+			((PathwayVertexRep)lastClickedVertex.getUserObject()).
+				getVertex().getVertexLink();
+		
+		if (extractClickedPathway(sUrl) == false);
+		{
+			loadNodeInformationInBrowser(sUrl);
+		
+			// UNDO old neighborhood visualization
+			if (bNeighbourhoodShown == true)
+			{
+				for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
+				{
+					refUndoManager.undo(refGraphLayoutCache);
+				}
+				iNeighbourhoodUndoCount = 0;
+				bNeighbourhoodShown = false;
+			}
+			
+			// Highlight current cell
+			highlightCell(lastClickedVertex, Color.RED);
+			dataMappingTest(((PathwayVertexRep)lastClickedVertex.
+					getUserObject()));
+			
+			// The clicked vertex will be added with neighborhood distance of 0
+			iLLNeighborDistance.add(0);
+			
+			bNeighbourhoodShown = true;
+			iNeighbourhoodUndoCount++;
+		
+			// Add selected vertex itself because neighborhood algorithm
+			// only adds neighbor vertices.
+			iLLSelectedVertices.add(((PathwayVertexRep)lastClickedVertex.
+					getUserObject()).getVertex().getElementId());
+			
+			arSelectedVertices.add(lastClickedVertex);
+			
+			if (iNeighbourhoodDistance != 0)
+			{	
+				showNeighbourhoodBFS(iNeighbourhoodDistance);
+				bNeighbourhoodShown = true;
+			}
+			
+			int[] iArSelectedVertices = null;
+			int[] iArNeighborDistance = null;
+		
+			// Convert Link List to int[]
+		    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+		    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+		    for ( int i=0; iter_I.hasNext() ;i++ ) {
+		    	iArSelectedVertices[i] = iter_I.next().intValue();
+		    }
+		    
+		    iter_I = iLLNeighborDistance.iterator();		    
+		    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
+		    for ( int i=0; iter_I.hasNext() ;i++ ) {
+		    	iArNeighborDistance[i] = iter_I.next().intValue();
+		    }
+			
+			updateSelectionSet(iArSelectedVertices, 
+					new int[0], iArNeighborDistance);
+			
+		}// if(sUrl.contains((CharSequence)sSearchPattern))
+	}	
+
 	public void drawView() {
 
 		//TODO: add try catch for pathway null object
@@ -428,7 +436,7 @@ extends APathwayGraphViewRep {
 	public void createVertex(IPathwayVertexRep vertexRep, Pathway refContainingPathway) {
 		
 		//create node
-		refGraphCell = new DefaultGraphCell(vertexRep);
+		DefaultGraphCell refGraphCell = new DefaultGraphCell(vertexRep);
 		
 		hashVertexRep2GraphCell.put(vertexRep, refGraphCell);
 		
@@ -650,6 +658,8 @@ extends APathwayGraphViewRep {
 	
 	/**
 	 * Method visualizes the neighborhood of a certain cell.
+	 * The last clicked cell is stored in the lastClickedVertex
+	 * member variable.
 	 * 
 	 * BFS Algorithm:
 	 * for each vertex v in Q do
@@ -660,16 +670,17 @@ extends APathwayGraphViewRep {
 	 * - mark e as a discovery edge
 	 * - insert w into Q
 	 * 
-	 * @param cell Cell around the neighborhood is shown.
 	 * @param iDistance Neighborhood distance.
 	 * because the method is called recursive.
 	 */
-	protected void showNeighbourhoodBFS(DefaultGraphCell cell,
-			int iDistance) {
+	public void showNeighbourhoodBFS(int iDistance) {
 				
 		Map<DefaultGraphCell, Map> nested = 
 			new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
+		
+		hashSetVisitedNeighbors.clear();
+		//hashSetVisitedNeighbors.add(lastClickedVertex);
 		
 //		// Color mapping will start with red (neigborhood = 1)
 //		// For graph parts far away the color will turn to yellow.
@@ -684,7 +695,7 @@ extends APathwayGraphViewRep {
 		
 		ArrayList<DefaultGraphCell> queueBFS = new ArrayList<DefaultGraphCell>();
 		ArrayList<DefaultGraphCell> queueBFSNext = new ArrayList<DefaultGraphCell>();
-		queueBFS.add(cell);
+		queueBFS.add(lastClickedVertex);
 		
 		DefaultGraphCell tmpCell = null;
 		List<DefaultGraphCell> neighbourCells = null;
@@ -697,7 +708,7 @@ extends APathwayGraphViewRep {
 			nested.clear();
 		
 			if (iDistanceIndex == 0)
-				nodeColor = refRenderStyle.getHighlightedNodeColor();
+				nodeColor = Color.RED;
 			if (iDistanceIndex == 1)
 				nodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
 			else if (iDistanceIndex == 2)
@@ -778,12 +789,8 @@ extends APathwayGraphViewRep {
 	
 		this.iNeighbourhoodDistance = iNeighbourhoodDistance;
 		
-//		//Apply newly selected distance to current selection
-//		Iterator<DefaultGraphCell> iterSelectedCells = arSelectedVertices.iterator();
-//		while (iterSelectedCells.hasNext())
-//		{
-//			showNeighbourhoodBFS(iterSelectedCells.next(), iNeighbourhoodDistance);
-//		}
+		// Update neighborhood visualization on the fly
+  	  	processSelectedCell();
 	}
 	
 	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
@@ -834,7 +841,7 @@ extends APathwayGraphViewRep {
 		// Attention: Performance problem.
 		drawView();
 		
-		// Set edges to visible
+		// Adapt edge visiblitly state
 		refGraphLayoutCache.setVisible(
 				vecReactionEdges.toArray(), !bTurnOn);
 		refGraphLayoutCache.setVisible(

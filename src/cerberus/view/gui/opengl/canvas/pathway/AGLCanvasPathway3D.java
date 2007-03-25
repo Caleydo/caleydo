@@ -266,7 +266,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 //		float[] fMatShininess = {25.0f}; 
 //		float[] fLightPosition = {0.0f, 0.0f, 0.0f, 1.0f};
 //		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
-		float[] fModelAmbient = {0.6f, 0.6f, 0.6f, 1.0f};
+		float[] fModelAmbient = {0.8f, 0.8f, 0.8f, 1.0f};
 		
 //		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		
@@ -663,11 +663,15 @@ implements IGLCanvasUser, IJoglMouseListener {
 			{				
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
 			
-				gl.glColor4f(tmpNodeColor.getRed(), tmpNodeColor.getGreen(), tmpNodeColor.getBlue(), 1.0f);
-			}
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);			}
 			else 
 			{
-				gl.glColor4f(131f/255f,111f/255f,1.0f, 1f);
+				tmpNodeColor = refRenderStyle.getPathwayNodeColor();
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
 			}
 			
 			fPathwayNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
@@ -686,13 +690,18 @@ implements IGLCanvasUser, IJoglMouseListener {
 			if (bHighlightVertex == true)
 			{
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-				gl.glColor4f(tmpNodeColor.getRed(), tmpNodeColor.getGreen(), tmpNodeColor.getBlue(), 1.0f);
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
 			
 			}
 			else 
 			{
-				gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f); // green
+				tmpNodeColor = refRenderStyle.getCompoundNodeColor();
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);				//gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f); // green
 				gl.glCallList(iCompoundNodeDisplayListId);
 			}
 		}	
@@ -707,7 +716,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 			if (bHighlightVertex == true)
 			{
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-				gl.glColor4f(tmpNodeColor.getRed(), tmpNodeColor.getGreen(), tmpNodeColor.getBlue(), 1.0f);
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 		
 			}
@@ -724,8 +735,13 @@ implements IGLCanvasUser, IJoglMouseListener {
 				
 				}else
 				{
-					gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+					//gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+					tmpNodeColor = refRenderStyle.getEnzymeNodeColor();
 				}
+				
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
 				
 				gl.glCallList(iEnzymeNodeDisplayListId);
 			}

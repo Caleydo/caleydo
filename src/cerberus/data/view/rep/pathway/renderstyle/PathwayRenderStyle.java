@@ -81,10 +81,10 @@ extends ARenderStyle {
 		compoundNodeShape = NodeShape.ROUND;
 		pathwayNodeShape = NodeShape.ROUNDRECTANGULAR;
 		
-		enzymeNodeColor = Color.BLUE;
-		compoundNodeColor = Color.GREEN;
-		pathwayNodeColor = new Color(1, 0.65f, 0.31f);
-		highlightedNodeColor = Color.RED;
+		enzymeNodeColor = Color.GRAY;
+		compoundNodeColor = Color.DARK_GRAY;
+		pathwayNodeColor = new Color(0.51f, 0.44f, 1.0f);
+		highlightedNodeColor = Color.YELLOW;
 		neighborhoodNodeColor_1 = Color.ORANGE;
 		neighborhoodNodeColor_2 = Color.YELLOW;
 		neighborhoodNodeColor_3 = Color.LIGHT_GRAY;

@@ -145,6 +145,8 @@ extends AGLCanvasPathway3D {
 		gl.glPushMatrix();
 		if (bShowPathwayTexture == true)
 		{
+			//gl.glDisable(GL.GL_LIGHTING);
+			
 			Iterator<Pathway> iterPathways = 
 				refHashPathwayToTexture.keySet().iterator();
 				
@@ -204,6 +206,8 @@ extends AGLCanvasPathway3D {
 //				
 				refPathwayTexture.disable();
 			}
+			
+			//gl.glEnable(GL.GL_LIGHTING);
 		}
 		gl.glPopMatrix();
 		
