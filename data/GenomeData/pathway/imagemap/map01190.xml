@@ -1,19 +1,19 @@
-<imagemap image="data/images/pathways/map01190.gif">
+<imagemap image="map01190.gif">
 
-  <area shape="rect"	coords="283,313,337,465"	link="data/XML/pathways/map00750.xml" />
-  <area shape="rect"	coords="47,468,337,632"		link="data/XML/pathways/map00750.xml" />
-  <area shape="rect"	coords="47,468,337,632"		link="data/XML/pathways/map00750.xml" />
-  <area shape="rect"	coords="47,468,337,632"		link="data/XML/pathways/map00750.xml" />
-  <area shape="rect"	coords="437,359,569,482"	link="data/XML/pathways/map00670.xml" />
-  <area shape="rect"	coords="344,289,490,359"	link="data/XML/pathways/map00790.xml" />
-  <area shape="rect"	coords="347,208,505,286"	link="data/XML/pathways/map00740.xml" />
-  <area shape="rect"	coords="505,208,567,232"	link="data/XML/pathways/map00760.xml" />
-  <area shape="rect"	coords="455,70,569,207"		link="data/XML/pathways/map00760.xml" />
-  <area shape="rect"	coords="343,103,453,207"	link="data/XML/pathways/map00730.xml" />
-  <area shape="rect"	coords="265,161,340,311"	link="data/XML/pathways/map00130.xml" />
-  <area shape="rect"	coords="149,174,262,434"	link="data/XML/pathways/map00770.xml" />
-  <area shape="rect"	coords="26,319,132,441"		link="data/XML/pathways/map00780.xml" />
-  <area shape="rect"	coords="345,359,437,482"	link="data/XML/pathways/map00790.xml" />
-  <area shape="rect"	coords="19,36,144,168"		link="data/XML/pathways/map00830.xml" />
+  <area shape="rect"	coords="283,313,337,465"	link="map00750.xml" />
+  <area shape="rect"	coords="47,468,337,632"		link="map00750.xml" />
+  <area shape="rect"	coords="47,468,337,632"		link="map00750.xml" />
+  <area shape="rect"	coords="47,468,337,632"		link="map00750.xml" />
+  <area shape="rect"	coords="437,359,569,482"	link="map00670.xml" />
+  <area shape="rect"	coords="344,289,490,359"	link="map00790.xml" />
+  <area shape="rect"	coords="347,208,505,286"	link="map00740.xml" />
+  <area shape="rect"	coords="505,208,567,232"	link="map00760.xml" />
+  <area shape="rect"	coords="455,70,569,207"		link="map00760.xml" />
+  <area shape="rect"	coords="343,103,453,207"	link="map00730.xml" />
+  <area shape="rect"	coords="265,161,340,311"	link="map00130.xml" />
+  <area shape="rect"	coords="149,174,262,434"	link="map00770.xml" />
+  <area shape="rect"	coords="26,319,132,441"		link="map00780.xml" />
+  <area shape="rect"	coords="345,359,437,482"	link="map00790.xml" />
+  <area shape="rect"	coords="19,36,144,168"		link="map00830.xml" />
 
 </imagemap>

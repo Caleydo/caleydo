@@ -264,9 +264,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 //		float[] fMatSpecular = { 1.0f, 1.0f, 1.0f, 1.0f};
 //		float[] fMatShininess = {25.0f}; 
-//		float[] fLightPosition = {0.0f, 0.0f, 0.0f, 1.0f};
-//		float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
-		float[] fModelAmbient = {0.8f, 0.8f, 0.8f, 1.0f};
+		//float[] fLightPosition = {0.0f, 0.0f, 10.0f, 1.0f};
+		//float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
+		float[] fModelAmbient = {0.9f, 0.9f, 0.9f, 1.0f};
 		
 //		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		
@@ -276,8 +276,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fMatSpecular, 0);
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fMatShininess, 0);
 		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fLightPosition, 0);		
-//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fWhiteLight, 0);
-//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fWhiteLight, 0);
+		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fWhiteLight, 0);
+		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fWhiteLight, 0);
 		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
 
 		gl.glEnable(GL.GL_LIGHTING);
@@ -595,7 +595,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		renderInfoArea(0.0f, 0.2f, 0.0f);
 		
 		//split window settings
-		renderInfoArea(0.0f, -0.2f, 0.0f);
+		//renderInfoArea(0.0f, -0.2f, 0.0f);
 		
 		//gl.glFlush();
 		gl.glPopMatrix();	

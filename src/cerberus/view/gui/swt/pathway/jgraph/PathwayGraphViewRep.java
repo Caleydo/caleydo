@@ -94,7 +94,7 @@ extends APathwayGraphViewRep {
 	
 	protected boolean bGraphSet = false;
 	
-	protected boolean bShowBackgroundOverlay = false;
+	protected boolean bShowBackgroundOverlay = true;
 	
 	protected GraphUndoManager refUndoManager;
 	
@@ -113,7 +113,7 @@ extends APathwayGraphViewRep {
 	 * The variable is needed for updating the neighborhood distance in the menu
 	 * on the fly without selecting a new cell.
 	 */
-	protected DefaultGraphCell lastClickedVertex;
+	protected DefaultGraphCell lastClickedGraphCell;
  	
 	/**
 	 * Integer storage of selected vertices
@@ -220,10 +220,10 @@ extends APathwayGraphViewRep {
 		        	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
 						.getFirstCellForLocation(event.getX(), event.getY());
 		        	
-		        	lastClickedVertex = clickedCell;
+		        	lastClickedGraphCell = clickedCell;
 		    		
 					// Check if cell has an user object attached
-		    		if (lastClickedVertex.getUserObject() == null)
+		    		if (lastClickedGraphCell.getUserObject() == null)
 		    		{
 		    			super.mousePressed(event);
 		    			return;						
@@ -237,7 +237,7 @@ extends APathwayGraphViewRep {
 		    		}
 		        	
 		    		final String sUrl = 
-		    			((PathwayVertexRep)lastClickedVertex.getUserObject()).
+		    			((PathwayVertexRep)lastClickedGraphCell.getUserObject()).
 		    				getVertex().getVertexLink();
 		    		
 		    		if (sUrl == "") 
@@ -263,6 +263,9 @@ extends APathwayGraphViewRep {
 					
 						return;
 					}
+					
+					// Append file path
+					sLink = refGeneralManager.getSingelton().getPathwayManager().getPathwayImageMapPath() + sLink;
 					
 					iPathwayLevel++;
 					if (iPathwayLevel >= 3)
@@ -296,7 +299,7 @@ extends APathwayGraphViewRep {
 		refPathwayGraph.setCloneable(true);
 		
 		// Turn on anti-aliasing
-		//refPathwayGraph.setAntiAliased(true);
+		refPathwayGraph.setAntiAliased(true);
 		
 		refPathwayGraph.setMarqueeHandler(new PathwayMarqueeHandler());
 		
@@ -314,7 +317,7 @@ extends APathwayGraphViewRep {
 		
 		// Check if a node or edge was hit.
 		// If not undo neighborhood visualization and return.
-		if (lastClickedVertex == null)
+		if (lastClickedGraphCell == null)
 		{
 			for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
 			{
@@ -327,10 +330,10 @@ extends APathwayGraphViewRep {
 		}
 		
 		final String sUrl = 
-			((PathwayVertexRep)lastClickedVertex.getUserObject()).
+			((PathwayVertexRep)lastClickedGraphCell.getUserObject()).
 				getVertex().getVertexLink();
 		
-		if (extractClickedPathway(sUrl) == false);
+		if (extractClickedPathway(sUrl) == false)
 		{
 			loadNodeInformationInBrowser(sUrl);
 		
@@ -346,8 +349,8 @@ extends APathwayGraphViewRep {
 			}
 			
 			// Highlight current cell
-			highlightCell(lastClickedVertex, Color.RED);
-			dataMappingTest(((PathwayVertexRep)lastClickedVertex.
+			highlightCell(lastClickedGraphCell, Color.RED);
+			dataMappingTest(((PathwayVertexRep)lastClickedGraphCell.
 					getUserObject()));
 			
 			// The clicked vertex will be added with neighborhood distance of 0
@@ -358,10 +361,10 @@ extends APathwayGraphViewRep {
 		
 			// Add selected vertex itself because neighborhood algorithm
 			// only adds neighbor vertices.
-			iLLSelectedVertices.add(((PathwayVertexRep)lastClickedVertex.
+			iLLSelectedVertices.add(((PathwayVertexRep)lastClickedGraphCell.
 					getUserObject()).getVertex().getElementId());
 			
-			arSelectedVertices.add(lastClickedVertex);
+			arSelectedVertices.add(lastClickedGraphCell);
 			
 			if (iNeighbourhoodDistance != 0)
 			{	
@@ -614,8 +617,10 @@ extends APathwayGraphViewRep {
 		
 		super.loadPathwayFromFile(iNewPathwayId);
 		
+		// Clean up
 		refCurrentPathway = null;
 		refCurrentPathwayImageMap = null;
+		lastClickedGraphCell = null;
 		resetPathway();
 
 		extractCurrentPathwayFromSet();
@@ -639,7 +644,9 @@ extends APathwayGraphViewRep {
 		refCurrentPathwayImageMap = 
 			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
 		
-		loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink());
+		loadBackgroundOverlayImage(
+				refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath() 
+				+ refCurrentPathwayImageMap.getImageLink());
 	}
 	
 	public void zoomOrig() {
@@ -658,7 +665,7 @@ extends APathwayGraphViewRep {
 	
 	/**
 	 * Method visualizes the neighborhood of a certain cell.
-	 * The last clicked cell is stored in the lastClickedVertex
+	 * The last clicked cell is stored in the lastClickedGraphCell
 	 * member variable.
 	 * 
 	 * BFS Algorithm:
@@ -680,7 +687,7 @@ extends APathwayGraphViewRep {
 		Map attributeMap = new Hashtable();
 		
 		hashSetVisitedNeighbors.clear();
-		//hashSetVisitedNeighbors.add(lastClickedVertex);
+		//hashSetVisitedNeighbors.add(lastClickedGraphCell);
 		
 //		// Color mapping will start with red (neigborhood = 1)
 //		// For graph parts far away the color will turn to yellow.
@@ -695,7 +702,7 @@ extends APathwayGraphViewRep {
 		
 		ArrayList<DefaultGraphCell> queueBFS = new ArrayList<DefaultGraphCell>();
 		ArrayList<DefaultGraphCell> queueBFSNext = new ArrayList<DefaultGraphCell>();
-		queueBFS.add(lastClickedVertex);
+		queueBFS.add(lastClickedGraphCell);
 		
 		DefaultGraphCell tmpCell = null;
 		List<DefaultGraphCell> neighbourCells = null;
@@ -809,6 +816,9 @@ extends APathwayGraphViewRep {
 	
 	public void showBackgroundOverlay(boolean bTurnOn) {
 		
+		if (refCurrentPathway == null)
+			return;
+		
 		bShowBackgroundOverlay = bTurnOn;
 		
 		if (bShowBackgroundOverlay == true)
@@ -837,7 +847,8 @@ extends APathwayGraphViewRep {
 		}
 		
 		resetPathway();
-		extractCurrentPathwayFromSet();
+		hashVertexRep2GraphCell.clear();
+		//extractCurrentPathwayFromSet();
 		// Attention: Performance problem.
 		drawView();
 		
@@ -846,7 +857,16 @@ extends APathwayGraphViewRep {
 				vecReactionEdges.toArray(), !bTurnOn);
 		refGraphLayoutCache.setVisible(
 				vecRelationEdges.toArray(), !bTurnOn);
-
+		
+		if (lastClickedGraphCell != null)
+		{
+			// Map previously selected cell to new pathway JGraph.
+			lastClickedGraphCell = hashVertexRep2GraphCell.get(
+				(IPathwayVertexRep)lastClickedGraphCell.getUserObject());
+			
+			// Rehighlight previously selected cells
+			processSelectedCell();
+		}
 	}
 	
 	public void resetPathway() {
@@ -857,6 +877,9 @@ extends APathwayGraphViewRep {
 		refGraphModel = new DefaultGraphModel();
 		refPathwayGraph.setModel(refGraphModel);
 		refGraphLayoutCache.setModel(refGraphModel);
+		
+		// Recreate and register Undo Manager
+		//refUndoManager = new GraphUndoManager();
 		refGraphModel.addUndoableEditListener(refUndoManager);
 		
 		vecVertices.removeAllElements();
@@ -918,12 +941,12 @@ extends APathwayGraphViewRep {
 	 */
 	protected boolean extractClickedPathway(String sUrl) {
 		
-		String sSearchPattern1 = "pathway/map/";
-		String sSearchPattern2 = "XML/pathways/";
-		
+//		String sSearchPattern1 = "http://www.genome.jp/kegg/pathway/map/";
+//		String sSearchPattern2 = "XML/pathways/";
+//		
 		// Check if clicked cell is another pathway
-		if (!sUrl.contains((CharSequence)sSearchPattern1) && 
-				!sUrl.contains((CharSequence)sSearchPattern2))
+		// If not: return
+		if (!sUrl.contains("map00"))
 		{
 			return false;
 		}

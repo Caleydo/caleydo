@@ -77,7 +77,10 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		refPathwayGraphViewRep.addSetId(iArSetSelectionTmp);
 		
 		refPathwayGraphViewRep.initView();
-		refPathwayGraphViewRep.drawView();
+		
+		// Inside this method drawView is called
+		// (which is not optimal)
+		refPathwayGraphViewRep.showBackgroundOverlay(true);
 	}
 
 	public void setAttributes(int iWidth, int iHeight,

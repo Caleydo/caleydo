@@ -119,6 +119,7 @@ extends AToolbar {
 				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/background_image.gif"),
 				null,
 				"Show background overlay");
+		refBackgroundOverlayItem.setSelection(true);
 		
 		refFilterEdgesItem = createToolItem(refToolBar, 
 				SWT.DROP_DOWN, 
