@@ -248,6 +248,25 @@ extends APathwayGraphViewRep {
 		    		
 		    		processSelectedCell();
 		    		
+					int[] iArSelectedVertices = null;
+					int[] iArNeighborDistance = null;
+				
+					// Convert Link List to int[]
+				    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+				    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+				    for ( int i=0; iter_I.hasNext() ;i++ ) {
+				    	iArSelectedVertices[i] = iter_I.next().intValue();
+				    }
+				    
+				    iter_I = iLLNeighborDistance.iterator();		    
+				    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
+				    for ( int i=0; iter_I.hasNext() ;i++ ) {
+				    	iArNeighborDistance[i] = iter_I.next().intValue();
+				    }
+					
+					updateSelectionSet(iArSelectedVertices, 
+							new int[0], iArNeighborDistance);
+		    		
 				}// if(refCurrentPathway != 0) 
 				else if (refCurrentPathwayImageMap != null)
 				{
@@ -371,26 +390,6 @@ extends APathwayGraphViewRep {
 				showNeighbourhoodBFS(iNeighbourhoodDistance);
 				bNeighbourhoodShown = true;
 			}
-			
-			int[] iArSelectedVertices = null;
-			int[] iArNeighborDistance = null;
-		
-			// Convert Link List to int[]
-		    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
-		    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
-		    for ( int i=0; iter_I.hasNext() ;i++ ) {
-		    	iArSelectedVertices[i] = iter_I.next().intValue();
-		    }
-		    
-		    iter_I = iLLNeighborDistance.iterator();		    
-		    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
-		    for ( int i=0; iter_I.hasNext() ;i++ ) {
-		    	iArNeighborDistance[i] = iter_I.next().intValue();
-		    }
-			
-			updateSelectionSet(iArSelectedVertices, 
-					new int[0], iArNeighborDistance);
-			
 		}// if(sUrl.contains((CharSequence)sSearchPattern))
 	}	
 
@@ -745,7 +744,7 @@ extends APathwayGraphViewRep {
 					// // Add selected vertex to selection arrays
 					iLLSelectedVertices.add(((PathwayVertexRep)tmpCell.
 							getUserObject()).getVertex().getElementId());
-					iLLNeighborDistance.add(iDistance);
+					iLLNeighborDistance.add(iDistanceIndex);
 				}
 			}
 			
@@ -798,6 +797,25 @@ extends APathwayGraphViewRep {
 		
 		// Update neighborhood visualization on the fly
   	  	processSelectedCell();
+  	  	
+		int[] iArSelectedVertices = null;
+		int[] iArNeighborDistance = null;
+	
+		// Convert Link List to int[]
+	    Iterator<Integer> iter_I = iLLSelectedVertices.iterator();		    
+	    iArSelectedVertices = new int[iLLSelectedVertices.size()];		    
+	    for ( int i=0; iter_I.hasNext() ;i++ ) {
+	    	iArSelectedVertices[i] = iter_I.next().intValue();
+	    }
+	    
+	    iter_I = iLLNeighborDistance.iterator();		    
+	    iArNeighborDistance = new int[iLLNeighborDistance.size()];		    
+	    for ( int i=0; iter_I.hasNext() ;i++ ) {
+	    	iArNeighborDistance[i] = iter_I.next().intValue();
+	    }
+		
+		updateSelectionSet(iArSelectedVertices, 
+				new int[0], iArNeighborDistance);
 	}
 	
 	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
@@ -941,9 +959,6 @@ extends APathwayGraphViewRep {
 	 */
 	protected boolean extractClickedPathway(String sUrl) {
 		
-//		String sSearchPattern1 = "http://www.genome.jp/kegg/pathway/map/";
-//		String sSearchPattern2 = "XML/pathways/";
-//		
 		// Check if clicked cell is another pathway
 		// If not: return
 		if (!sUrl.contains("map00"))

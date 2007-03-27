@@ -84,10 +84,10 @@ extends ARenderStyle {
 		enzymeNodeColor = Color.GRAY;
 		compoundNodeColor = Color.DARK_GRAY;
 		pathwayNodeColor = new Color(0.51f, 0.44f, 1.0f);
-		highlightedNodeColor = Color.YELLOW;
-		neighborhoodNodeColor_1 = Color.ORANGE;
-		neighborhoodNodeColor_2 = Color.YELLOW;
-		neighborhoodNodeColor_3 = Color.LIGHT_GRAY;
+		highlightedNodeColor = new Color(1.0f, 0.0f, 0.0f);
+		neighborhoodNodeColor_1 = new Color(1.0f, 0.5f, 0.0f);
+		neighborhoodNodeColor_2 = new Color(1.0f, 1.0f, 0.0f);
+		neighborhoodNodeColor_3 = new Color(1.0f, 1.0f, 0.5f);
 		
 		relationEdgeLineStyle = EdgeLineStyle.NORMAL;
 		reactionEdgeLineStyle = EdgeLineStyle.NORMAL;

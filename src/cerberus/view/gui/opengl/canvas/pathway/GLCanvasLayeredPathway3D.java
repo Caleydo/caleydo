@@ -369,6 +369,9 @@ extends AGLCanvasPathway3D {
 						if (refCurrentVertexRep != null)
 						{
 							iArHighlightedVertices.add(refCurrentVertexRep);
+							// Highlighted nodes in foreign pathways should get 
+							// neighbor distance of 0 (normal highlig color)
+							iArSelectionStorageNeighborDistance.add(0);
 							
 							createVertex(refCurrentVertexRep, refTmpPathway);
 							

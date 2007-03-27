@@ -344,11 +344,11 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 	protected void buildHighlightedEnzymeNodeDisplayList() {
 		
-		if (iHighlightedEnzymeNodeDisplayListId == -1)
-		{
+//		if (iHighlightedEnzymeNodeDisplayListId == -1)
+//		{
 			// Creating display list for node cube objects
 			iHighlightedEnzymeNodeDisplayListId = gl.glGenLists(1);
-		}
+//		}
 		
 		fPathwayNodeWidth = 
 			refRenderStyle.getEnzymeNodeWidth() / 2.0f * SCALING_FACTOR_X;
@@ -619,6 +619,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		
 		boolean bHighlightVertex = false;
 		Color tmpNodeColor = null;
+		int iNeighborDistance = 0;
 		
 //		refGeneralManager.getSingelton().logMsg(
 //				"OpenGL Pathway creating vertex for node " +vertexRep.getName(),
@@ -642,7 +643,23 @@ implements IGLCanvasUser, IJoglMouseListener {
 		
 		if (iArHighlightedVertices.contains(vertexRep))
 		{
+			iNeighborDistance = iArSelectionStorageNeighborDistance.get(
+					iArHighlightedVertices.indexOf(vertexRep));
+			
 			bHighlightVertex = true;
+			
+			if (iNeighborDistance == 0)
+				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+			else if (iNeighborDistance == 1)
+				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
+			else if (iNeighborDistance == 2)
+				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColor_2();
+			else if (iNeighborDistance == 3)
+				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColor_3();	
+			
+			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+					tmpNodeColor.getGreen() / 255.0f, 
+					tmpNodeColor.getBlue() / 255.0f, 1.0f);
 		}
 		
 		String sShapeType = vertexRep.getShapeType();
@@ -657,16 +674,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 //					fCanvasYPos + 0.02f, 
 //					-0.001f);
 
-			// if vertex should be highlighted then the highlight color is taken.
-			// else the standard color for that node type is taken.
-			if (bHighlightVertex == true)
-			{				
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-			
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);			}
-			else 
+			if (bHighlightVertex == false)
 			{
 				tmpNodeColor = refRenderStyle.getPathwayNodeColor();
 				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
@@ -689,10 +697,6 @@ implements IGLCanvasUser, IJoglMouseListener {
 			
 			if (bHighlightVertex == true)
 			{
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
 			
 			}
@@ -714,11 +718,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 //					-0.001f);
 		
 			if (bHighlightVertex == true)
-			{
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+			{	
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 		
 			}
@@ -847,6 +847,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		refHashDisplayListNodeId2Pathway.remove(iTmpDisplayListNodeId);
 
 		iArHighlightedVertices.clear();
+		iArSelectionStorageNeighborDistance.clear();
 		
 		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = refTmpStorage.getArrayInt();
@@ -1270,7 +1271,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 			iArHighlightedVertices.add(refGeneralManager.getSingelton().getPathwayElementManager().
 					getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]).getVertexRepByIndex(0));
 			
-			//iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
+			iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
 		}
 		
 		bSelectionDataChanged = true;
@@ -1313,6 +1314,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 
 		// Deselect all highlighted nodes.
 		iArHighlightedVertices.clear();
+		iArSelectionStorageNeighborDistance.clear();
 		
 		// if (button != GLUT_LEFT_BUTTON || state != GLUT_DOWN) return;
 
@@ -1432,6 +1434,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 						}
 						
 						iArHighlightedVertices.add(refPickedVertexRep);
+						iArSelectionStorageNeighborDistance.add(0);
 						
 						// Convert to int[]
 						int[] iArTmp = new int[iArHighlightedVertices.size()];
