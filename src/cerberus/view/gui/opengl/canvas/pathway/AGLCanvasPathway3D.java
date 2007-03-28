@@ -1341,7 +1341,9 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		
 		float h = (float) (float) (viewport[3]-viewport[1]) / 
 			(float) (viewport[2]-viewport[0]);
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 5.0f, 60.0f);
+
+		//FIXME: The frustum should be calculated from the XML parameters in the future
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
@@ -1375,6 +1377,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		int iPickedPathwayDisplayListNodeId = 0;
 
 		for (i = 0; i < iHitCount; i++)
+			
 		{
 			iNames = iArPickingBuffer[iPtr];
 			//System.out.println(" number of names for this hit = " + iNames);
