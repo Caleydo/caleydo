@@ -13,6 +13,7 @@ import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
+
 /**
  * @author Marc Streit
  *
@@ -33,7 +34,7 @@ extends AGLCanvasPathway3D {
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 	}	
 
-	protected void buildPathwayDisplayList() {
+	protected void buildPathwayDisplayList(final GL gl) {
 
 		Pathway refTmpPathway = null;
 		fZLayerValue = 0.0f;
@@ -44,10 +45,10 @@ extends AGLCanvasPathway3D {
 		//iArPathwayNodeDisplayListIDs.clear();
 		//iArPathwayEdgeDisplayListIDs.clear();
 		
-		buildEnzymeNodeDisplayList();
-		buildHighlightedEnzymeNodeDisplayList();
-		buildCompoundNodeDisplayList();
-		buildHighlightedCompoundNodeDisplayList();
+		buildEnzymeNodeDisplayList(gl);
+		buildHighlightedEnzymeNodeDisplayList(gl);
+		buildCompoundNodeDisplayList(gl);
+		buildHighlightedCompoundNodeDisplayList(gl);
 		
 		System.out.println("Create pathway display lists");
 
@@ -66,15 +67,25 @@ extends AGLCanvasPathway3D {
 			
 			refHashPathwayToZLayerValue.put(refTmpPathway, fZLayerValue);
 
-			createPathwayDisplayList(refTmpPathway);
+			createPathwayDisplayList(gl, refTmpPathway);
 
 			fZLayerValue += 1.5f;
 		}
 	}
-	
-	protected void renderPart(GL gl, int iRenderMode) {
 		
-		this.gl = gl;
+	public void renderPart(GL gl) {
+	
+		handlePicking(gl);
+				
+		//FIXME:
+		//fullscreen seetings
+		renderInfoArea(gl, 0.0f, 0.2f, 0.0f);
+		
+		if (bSelectionDataChanged)
+		{
+			buildPathwayDisplayList(gl);
+			bSelectionDataChanged = false;
+		}
 		
 		int iDisplayListNodeId = 0;
 		int iDisplayListEdgeId = 0;
@@ -97,12 +108,11 @@ extends AGLCanvasPathway3D {
 					bBlowUp = true;
 			}
 			
-			buildHighlightedEnzymeNodeDisplayList();
-			buildHighlightedCompoundNodeDisplayList();		
+			buildHighlightedEnzymeNodeDisplayList(gl);
+			buildHighlightedCompoundNodeDisplayList(gl);		
 		}
 		
 		gl.glPushMatrix();
-		
 		
 		Pathway refTmpPathway = null;
 		
@@ -118,10 +128,7 @@ extends AGLCanvasPathway3D {
 		{
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
-			
-//		for (int iDisplayListIndex = 0; iDisplayListIndex < 
-//			iArPathwayNodeDisplayListIDs.size(); iDisplayListIndex++)
-//		{	
+		
 			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
 			//iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
 			
@@ -211,10 +218,11 @@ extends AGLCanvasPathway3D {
 		}
 		gl.glPopMatrix();
 		
-		highlightIdenticalNodes();
+		highlightIdenticalNodes(gl);
 	}
 	
-	protected void renderPathway(final Pathway refTmpPathway, 
+	protected void renderPathway(final GL gl,
+			final Pathway refTmpPathway, 
 			int iDisplayListNodeId) {
 		
 		// Creating hierarchical picking names
@@ -273,7 +281,8 @@ extends AGLCanvasPathway3D {
 		refPathwayTexture.disable();
 	}
 
-	protected void connectVertices(IPathwayVertexRep refVertexRep1, 
+	protected void connectVertices(final GL gl,
+			IPathwayVertexRep refVertexRep1, 
 			IPathwayVertexRep refVertexRep2) {
 
 		float fZLayerValue1 = 0.0f; 
@@ -329,7 +338,7 @@ extends AGLCanvasPathway3D {
 
 	}
 
-    protected void highlightIdenticalNodes() {
+    protected void highlightIdenticalNodes(final GL gl) {
     	
 		Pathway refTmpPathway = null;
 		PathwayVertex refCurrentVertex = null;
@@ -373,11 +382,11 @@ extends AGLCanvasPathway3D {
 							// neighbor distance of 0 (normal highlig color)
 							iArSelectionStorageNeighborDistance.add(0);
 							
-							createVertex(refCurrentVertexRep, refTmpPathway);
+							createVertex(gl, refCurrentVertexRep, refTmpPathway);
 							
 							if (!refTmpPathway.equals(refPathwayUnderInteraction))
 							{
-								connectVertices(refCurrentVertexRep, 
+								connectVertices(gl, refCurrentVertexRep, 
 										refCurrentVertex.getVertexRepByIndex(iVertexRepIndex));
 							}
 						}

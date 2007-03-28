@@ -1,11 +1,7 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
-import gleem.linalg.Rotf;
-import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
-
 import java.awt.Color;
-import java.awt.Dimension;
+
 import java.awt.Point;
 import java.io.File;
 import java.nio.FloatBuffer;
@@ -20,8 +16,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
-import org.eclipse.swt.layout.GridLayout;
-
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
@@ -29,32 +23,28 @@ import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
-import cerberus.data.view.camera.IViewCamera;
-import cerberus.data.view.camera.ViewCameraBase;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.manager.type.ManagerObjectType;
-import cerberus.math.MathUtil;
+import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.event.EventPublisher;
+import cerberus.manager.event.mediator.IMediatorReceiver;
+import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.colormapping.ColorMapping;
 import cerberus.util.system.SystemTime;
-//import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
-import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
-import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
-import cerberus.view.gui.swt.toolbar.Pathway3DToolbar;
-import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
@@ -68,40 +58,28 @@ import com.sun.opengl.util.texture.TextureIO;
  *
  */
 public abstract class AGLCanvasPathway3D
-extends APathwayGraphViewRep
-implements IGLCanvasUser, IJoglMouseListener {
-		  	 
-	//protected static long MOUSE_PICKING_IDLE_TIME = 3000; // 0.3s
-	
-	protected IViewCamera refViewCamera;
+extends AGLCanvasUser_OriginRotation
+implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	
 	protected float [][] viewingFrame;
 	
 	protected float[][] fAspectRatio;
 	
+	protected float[] fResolution;
+	
 	protected boolean bInitGLcanvawsWasCalled = false;
 	
 	protected static final int X = GLCanvasStatics.X;
 	protected static final int Y = GLCanvasStatics.Y;
-//	private static final int Z = GLCanvasStatics.Z;
+	private static final int Z = GLCanvasStatics.Z;
 	protected static final int MIN = GLCanvasStatics.MIN;
 	protected static final int MAX = GLCanvasStatics.MAX;
-//	private static final int OFFSET = GLCanvasStatics.OFFSET;
+	private static final int OFFSET = GLCanvasStatics.OFFSET;
 	
 	protected static final float SCALING_FACTOR_X = 0.0025f;
 	protected static final float SCALING_FACTOR_Y = 0.0025f;
 	
 	protected int iVertexRepIndex = 0;
-
-	protected GLAutoDrawable canvas;
-	
-	protected IGLCanvasDirector openGLCanvasDirector;
-	
-//	protected Vec3f origin;
-//	
-//	protected Vec4f rotation;
-	
-	protected GL gl;
 	
 	protected float fZLayerValue = 0.0f;
 	
@@ -181,6 +159,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 	protected ArrayList<String> refInfoAreaContent;
 	
 	protected ColorMapping expressionColorMapping;
+	
+	protected PathwayRenderStyle refRenderStyle;
 		
 	/**
 	 * Constructor
@@ -192,39 +172,20 @@ implements IGLCanvasUser, IJoglMouseListener {
 			String sLabel ) {
 				
 		super(refGeneralManager, iViewId, iParentContainerId, "");
-		
-		openGLCanvasDirector =
-			refGeneralManager.getSingelton().
-				getViewGLCanvasManager().getGLCanvasDirector( iParentContainerId );
-				
-		refSWTContainer = ((SwtJoglGLCanvasViewRep)openGLCanvasDirector).getSWTContainer();
-		refSWTContainer.setLayout(new GridLayout(1, false));
-		new Pathway3DToolbar(refSWTContainer, this);
-		
-		//FIXME: Is refEmbeddedFrameComposite variable really needed?
-		refEmbeddedFrameComposite = refSWTContainer;
-		
-
-		this.canvas = openGLCanvasDirector.getGLCanvas();
-		
+					
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
 			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
-		
-		pickingTriggerMouseAdapter.setJoglMouseListener(this);
+		//pickingTriggerMouseAdapter.setJoglMouseListener(this);
 		pickingTriggerMouseAdapter.addMouseListenerAll(canvas);
 //		
 //		pickingTriggerMouseAdapter = new PickingJoglMouseListener(this);
 //		
 //		
-//		canvas.addMouseListener(pickingTriggerMouseAdapter);
-//		canvas.addMouseMotionListener(pickingTriggerMouseAdapter);
+		canvas.addMouseListener(pickingTriggerMouseAdapter);
+		canvas.addMouseMotionListener(pickingTriggerMouseAdapter);
 		
-		viewingFrame = new float [2][2];
-		
-		viewingFrame[X][MIN] = 0.0f;
-		viewingFrame[X][MAX] = 1.0f; 
-		viewingFrame[Y][MIN] = 0.0f; 
-		viewingFrame[Y][MAX] = 1.0f; 
+		fAspectRatio = new float [2][3];
+		viewingFrame = new float [3][2];
 	
 		iArSelectionStorageNeighborDistance = new ArrayList<Integer>();
 		//iArPathwayNodeDisplayListIDs = new ArrayList<Integer>();
@@ -241,10 +202,10 @@ implements IGLCanvasUser, IJoglMouseListener {
 		refInfoAreaCaption = new ArrayList<String>();
 		refInfoAreaContent = new ArrayList<String>();
 		
-		refViewCamera = new ViewCameraBase();
-		
 		expressionColorMapping = new ColorMapping(0, 65000);
 		expressionColorMapping.createLookupTable();
+		
+		refRenderStyle = new PathwayRenderStyle();
 	}
 	
 	/*
@@ -252,12 +213,10 @@ implements IGLCanvasUser, IJoglMouseListener {
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void initGLCanvas( GLCanvas canvas ) {
-		
-		//FIXME: derive from AGLCanvasUser !
-
+	
 		System.err.println("Init called from " +this.getClass().getSimpleName());
 		
-		this.gl = canvas.getGL();
+		GL gl = canvas.getGL();
 		
 		// Clearing window and set background to WHITE
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -301,7 +260,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 	    gl.glEnable(GL.GL_TEXTURE_2D);
 		
 		initPathwayData();
-		buildPathwayDisplayList();	
+		buildPathwayDisplayList(gl);	
 		
 		setInitGLDone();
 	}	
@@ -337,9 +296,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 		}
 	}
 	
-	protected abstract void buildPathwayDisplayList();
+	protected abstract void buildPathwayDisplayList(final GL gl);
 
-	protected void buildEnzymeNodeDisplayList() {
+	protected void buildEnzymeNodeDisplayList(final GL gl) {
 
 		// Creating display list for node cube objects
 		iEnzymeNodeDisplayListId = gl.glGenLists(1);
@@ -350,11 +309,11 @@ implements IGLCanvasUser, IJoglMouseListener {
 			refRenderStyle.getEnzymeNodeHeight() / 2.0f * SCALING_FACTOR_Y;
 			
 		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
-		fillNodeDisplayList();
+		fillNodeDisplayList(gl);
         gl.glEndList();
 	}
 	
-	protected void buildHighlightedEnzymeNodeDisplayList() {
+	protected void buildHighlightedEnzymeNodeDisplayList(final GL gl) {
 		
 //		if (iHighlightedEnzymeNodeDisplayListId == -1)
 //		{
@@ -370,14 +329,14 @@ implements IGLCanvasUser, IJoglMouseListener {
 		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
 				fHighlightedNodeBlowFactor, fHighlightedNodeBlowFactor);
-		fillNodeDisplayList();
+		fillNodeDisplayList(gl);
 		gl.glScaled(1.0f/fHighlightedNodeBlowFactor, 
 				1.0f/fHighlightedNodeBlowFactor, 1.0f/fHighlightedNodeBlowFactor);  
         
         gl.glEndList();
 	}
 	
-	protected void buildCompoundNodeDisplayList() {
+	protected void buildCompoundNodeDisplayList(final GL gl) {
 
 		// Creating display list for node cube objects
 		iCompoundNodeDisplayListId = gl.glGenLists(1);
@@ -388,11 +347,11 @@ implements IGLCanvasUser, IJoglMouseListener {
 			refRenderStyle.getCompoundNodeHeight() / 2.0f * SCALING_FACTOR_Y;
 		
 		gl.glNewList(iCompoundNodeDisplayListId, GL.GL_COMPILE);
-		fillNodeDisplayList();
+		fillNodeDisplayList(gl);
         gl.glEndList();
 	}
 	
-	protected void buildHighlightedCompoundNodeDisplayList() {
+	protected void buildHighlightedCompoundNodeDisplayList(final GL gl) {
 
 		if (iHighlightedCompoundNodeDisplayListId == -1)
 		{
@@ -408,14 +367,14 @@ implements IGLCanvasUser, IJoglMouseListener {
 		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
 				fHighlightedNodeBlowFactor, fHighlightedNodeBlowFactor);
-		fillNodeDisplayList();
+		fillNodeDisplayList(gl);
 		gl.glScaled(1.0f/fHighlightedNodeBlowFactor, 
 				1.0f/fHighlightedNodeBlowFactor, 1.0f/fHighlightedNodeBlowFactor);
 		
         gl.glEndList();
 	}
 	
-	protected void fillNodeDisplayList() {
+	protected void fillNodeDisplayList(final GL gl) {
 		
 		gl.glBegin(GL.GL_QUADS);
 		
@@ -488,7 +447,7 @@ implements IGLCanvasUser, IJoglMouseListener {
         gl.glEnd();
 	}
 	
-	protected void fillHighlightedNodeDisplayList() {
+	protected void fillHighlightedNodeDisplayList(final GL gl) {
 		
 		int iGlowIterations = 15;
 		
@@ -573,65 +532,57 @@ implements IGLCanvasUser, IJoglMouseListener {
 		}
 	}
 
-	public final void render(GLAutoDrawable canvas) {
+//	public void render(GLAutoDrawable canvas) {
+//		
+//		GL gl = canvas.getGL();
+//		
+//		// isInitGLDone() == bInitGLcanvawsWasCalled 
+//		if  ( ! bInitGLcanvawsWasCalled ) {
+//			initGLCanvas( (GLCanvas) canvas);
+//			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
+//		}
 		
-		this.gl = canvas.getGL();
-		
-		// isInitGLDone() == bInitGLcanvawsWasCalled 
-		if  ( ! bInitGLcanvawsWasCalled ) {
-			initGLCanvas( (GLCanvas) canvas);
-			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
-		}
-		
-		if (bSelectionDataChanged)
-		{
-			buildPathwayDisplayList();
-			bSelectionDataChanged = false;
-		}
+//		if (bSelectionDataChanged)
+//		{
+//			buildPathwayDisplayList(gl);
+//			bSelectionDataChanged = false;
+//		}
 			
 		// Clear The Screen And The Depth Buffer
 		//gl.glPushMatrix();
 
-		Vec3f cam_position = refViewCamera.getCameraPosition();
-		Vec3f cam_roation_axis = new Vec3f();
-		float cam_roation_angle = refViewCamera.getCameraRotationGrad(cam_roation_axis);
-		
-		gl.glTranslatef( cam_position.x(), cam_position.y(), cam_position.z() );
-		gl.glRotatef( cam_roation_axis.x(), 
-				cam_roation_axis.y(),
-				cam_roation_axis.z(),
-				cam_roation_angle );
+//		Vec3f cam_position = refViewCamera.getCameraPosition();
+//		Vec3f cam_roation_axis = new Vec3f();
+//		float cam_roation_angle = refViewCamera.getCameraRotationGrad(cam_roation_axis);
+//		
+//		gl.glTranslatef( cam_position.x(), cam_position.y(), cam_position.z() );
+//		gl.glRotatef( cam_roation_axis.x(), 
+//				cam_roation_axis.y(),
+//				cam_roation_axis.z(),
+//				cam_roation_angle );
 
-		handlePicking();
-				
-		renderPart(gl, GL.GL_RENDER);
-
-		//FIXME:
-		//fullscreen seetings
-		renderInfoArea(0.0f, 0.2f, 0.0f);
+//		handlePicking();
+//				
+//		renderPart(gl, GL.GL_RENDER);
+//
+//		//FIXME:
+//		//fullscreen seetings
+//		renderInfoArea(0.0f, 0.2f, 0.0f);
 		
 		//split window settings
 		//renderInfoArea(0.0f, -0.2f, 0.0f);
 		
 		//gl.glFlush();
 		//gl.glPopMatrix();	
-	}
+//	}
 
-	protected abstract void renderPart(GL gl, int iRenderMode);
-	
-	protected abstract void renderPathway(final Pathway refTmpPathway, 
+	protected abstract void renderPathway(final GL gl,
+			final Pathway refTmpPathway, 
 			int iDisplayListNodeId);
 	
-	public void update(GLAutoDrawable canvas) {
-
-	}
-
-	public void destroyGLCanvas() {
-		
-		System.err.println(" GLCanvasPathway2D.destroy(GLCanvas canvas)");
-	}
-
-	public void createVertex(IPathwayVertexRep vertexRep, Pathway refContainingPathway) {
+	public void createVertex(final GL gl, 
+			IPathwayVertexRep vertexRep, 
+			Pathway refContainingPathway) {
 		
 		boolean bHighlightVertex = false;
 		Color tmpNodeColor = null;
@@ -701,7 +652,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 			fPathwayNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
 			fPathwayNodeHeight = vertexRep.getHeight() / 2.0f * SCALING_FACTOR_Y;
 
-			fillNodeDisplayList();
+			fillNodeDisplayList(gl);
 		}
 		// Compounds
 		else if (sShapeType.equals("circle"))
@@ -769,7 +720,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 			gl.glPopName();
 	}
 	
-	public void createEdge(
+	public void createEdge(final GL gl,
 			int iVertexId1, 
 			int iVertexId2, 
 			boolean bDrawArrow,
@@ -832,7 +783,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 		gl.glEnd();				
 	}
 	
-	protected void replacePathway(Pathway refPathwayToReplace, int iNewPathwayId) {
+	protected void replacePathway(final GL gl,
+			Pathway refPathwayToReplace, 
+			int iNewPathwayId) {
 		
 		refGeneralManager.getSingelton().logMsg(
 				this.getClass().getSimpleName() + 
@@ -883,10 +836,11 @@ implements IGLCanvasUser, IJoglMouseListener {
 		if (bShowPathwayTexture)
 			loadBackgroundOverlayImage(refNewPathway);
 		
-		createPathwayDisplayList(refNewPathway);
+		createPathwayDisplayList(gl, refNewPathway);
 	}
 
-	protected void createPathwayDisplayList(Pathway refTmpPathway) {
+	protected void createPathwayDisplayList(final GL gl, 
+			Pathway refTmpPathway) {
 		
 		// Creating display list for pathways
 		int iVerticesDiplayListId = gl.glGenLists(1);
@@ -898,15 +852,145 @@ implements IGLCanvasUser, IJoglMouseListener {
 		refHashPathway2DisplayListNodeId.put(refTmpPathway, iVerticesDiplayListId);
 		
 		gl.glNewList(iVerticesDiplayListId, GL.GL_COMPILE);	
-		extractVertices(refTmpPathway);
+		extractVertices(gl, refTmpPathway);
 		gl.glEndList();
 
 		gl.glNewList(iEdgeDisplayListId, GL.GL_COMPILE);	
-		extractEdges(refTmpPathway);
+		extractEdges(gl, refTmpPathway);
 		gl.glEndList();	
 	}
 	
-	protected void connectVertices(IPathwayVertexRep refVertexRep1, 
+	protected void extractVertices(final GL gl,
+			Pathway refPathwayToExtract) {
+		
+	    Iterator<PathwayVertex> vertexIterator;
+	    PathwayVertex vertex;
+	    IPathwayVertexRep vertexRep;
+		
+        vertexIterator = refPathwayToExtract.getVertexListIterator();
+        while (vertexIterator.hasNext())
+        {
+        	vertex = vertexIterator.next();
+        	vertexRep = vertex.getVertexRepByIndex(iVertexRepIndex);
+
+        	if (vertexRep != null)
+        	{
+        		createVertex(gl,
+        				vertexRep, 
+        				refPathwayToExtract);        	
+        	}
+        }   
+	}
+	
+	protected void extractEdges(final GL gl,
+			Pathway refPathwayToExtract) {
+		
+		// Process relation edges
+	    Iterator<PathwayRelationEdge> relationEdgeIterator;
+        relationEdgeIterator = refPathwayToExtract.getRelationEdgeIterator();
+        while (relationEdgeIterator.hasNext())
+        {
+        	extractRelationEdges(gl, relationEdgeIterator.next()); 		
+        }
+		
+	    // Process reaction edges
+        PathwayReactionEdge reactionEdge;
+	    Iterator<PathwayVertex> vertexIterator;
+	    PathwayVertex vertex;
+		IPathwayElementManager pathwayElementManager = 
+			((IPathwayElementManager)refGeneralManager.getSingelton().
+				getPathwayElementManager());
+		
+        vertexIterator = refPathwayToExtract.getVertexListIterator();
+	    
+	    while (vertexIterator.hasNext())
+	    {
+	    	vertex = vertexIterator.next();	   
+	
+	    	if (vertex.getVertexType() == PathwayVertexType.enzyme)
+	    	{	
+//	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
+	    		
+	    		reactionEdge = (PathwayReactionEdge)pathwayElementManager.getEdgeLUT().
+	    			get(pathwayElementManager.getReactionName2EdgeIdLUT().
+	    				get(vertex.getVertexReactionName()));
+	
+	    		// FIXME: problem with multiple reactions per enzyme
+	    		if (reactionEdge != null)
+	    		{
+	            	extractReactionEdges(gl, reactionEdge, vertex);
+	    		}// if (edge != null)
+	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
+	    }
+	}
+	
+	protected void extractRelationEdges(final GL gl,
+			PathwayRelationEdge relationEdge) {
+		
+		// Direct connection between nodes
+		if (relationEdge.getCompoundId() == -1)
+		{
+			createEdge(gl,
+					relationEdge.getElementId1(), 
+					relationEdge.getElementId2(), 
+					false, 
+					relationEdge);
+		}
+		// Edge is routed over a compound
+		else 
+		{
+			createEdge(gl,
+					relationEdge.getElementId1(), 
+					relationEdge.getCompoundId(), 
+					false, 
+					relationEdge);
+			
+			if (relationEdge.getEdgeRelationType() 
+					== EdgeRelationType.ECrel)
+			{
+    			createEdge(gl,
+    					relationEdge.getCompoundId(), 
+    					relationEdge.getElementId2(), 
+    					false,
+    					relationEdge);
+			}
+			else
+			{
+    			createEdge(gl,
+    					relationEdge.getElementId2(),
+    					relationEdge.getCompoundId(),
+    					true,
+    					relationEdge);
+			}
+		}
+	}
+	
+	protected void extractReactionEdges(final GL gl,
+			PathwayReactionEdge reactionEdge, 
+			PathwayVertex vertex) {
+		
+		if (!reactionEdge.getSubstrates().isEmpty())
+		{
+			//FIXME: interate over substrates and products
+			createEdge(gl,
+					reactionEdge.getSubstrates().get(0), 
+					vertex.getElementId(), 
+					false,
+					reactionEdge);	
+		}
+		
+		if (!reactionEdge.getProducts().isEmpty())
+		{
+			createEdge(gl,
+					vertex.getElementId(),
+					reactionEdge.getProducts().get(0), 
+					true,
+					reactionEdge);
+		}	  
+	}
+	
+	protected void connectVertices(final GL gl,
+			IPathwayVertexRep refVertexRep1, 
 			IPathwayVertexRep refVertexRep2) {
 
 		float fZLayerValue1 = 0.0f; 
@@ -923,10 +1007,10 @@ implements IGLCanvasUser, IJoglMouseListener {
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		
-		buildEnzymeNodeDisplayList();
-		buildHighlightedEnzymeNodeDisplayList();
-		buildCompoundNodeDisplayList();
-		buildHighlightedCompoundNodeDisplayList();
+		buildEnzymeNodeDisplayList(gl);
+		buildHighlightedEnzymeNodeDisplayList(gl);
+		buildCompoundNodeDisplayList(gl);
+		buildHighlightedCompoundNodeDisplayList(gl);
 		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
@@ -989,7 +1073,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 		gl.glLineWidth(1);
 	}
 	
-	public void renderInfoArea(float fx, 
+	public void renderInfoArea(final GL gl,
+			float fx, 
 			float fy, 
 			float fz) {
 		
@@ -1009,12 +1094,14 @@ implements IGLCanvasUser, IJoglMouseListener {
 
 		for (int iLineNumber = 0; iLineNumber < refInfoAreaContent.size(); iLineNumber++)
 		{
-			renderText(refInfoAreaCaption.get(iLineNumber),
+			renderText(gl,
+					refInfoAreaCaption.get(iLineNumber),
 					fx+0.05f,
 					fy + fHeight - 0.03f - 0.025f * iLineNumber,
 					fz);
 			
-			renderText(refInfoAreaContent.get(iLineNumber), 
+			renderText(gl,
+					refInfoAreaContent.get(iLineNumber), 
 					fx+0.2f, 
 					fy + fHeight -0.03f - 0.025f * iLineNumber, 
 					fz);
@@ -1045,7 +1132,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 	 * @param fy
 	 * @param fz
 	 */
-	public void renderText(final String showText,
+	public void renderText(final GL gl,
+			final String showText,
 			final float fx, 
 			final float fy, 
 			final float fz ) {
@@ -1088,71 +1176,6 @@ implements IGLCanvasUser, IJoglMouseListener {
 		parentView.addGLCanvasUser( this );
 	}
 
-	/* (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvasDirector()
-	 */
-	public final IGLCanvasDirector getGLCanvasDirector() {
-		
-		return openGLCanvasDirector;
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvas()
-	 */
-	public final GLAutoDrawable getGLCanvas() {
-		
-		return canvas;
-	}
-	
-	public final void setOriginRotation( final Vec3f origin,	
-			final Rotf rotation ) {
-		
-		refViewCamera.setCameraPosition(origin);
-		refViewCamera.setCameraRotation(rotation);
-	}
-
-	public void loadImageMapFromFile(String sImagePath) {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setNeighbourhoodDistance(int iNeighbourhoodDistance) {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void zoomOrig() {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void zoomIn() {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void zoomOut() {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void showOverviewMapInNewWindow(Dimension dim) {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
-
-		// TODO Auto-generated method stub
-		
-	}
-
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#showBackgroundOverlay(boolean)
@@ -1162,8 +1185,8 @@ implements IGLCanvasUser, IJoglMouseListener {
 		System.err.println("SHOW BACKGROUND OVERLAY: " + bTurnOn);	
 		
 		bShowPathwayTexture = bTurnOn;
-		
-		buildPathwayDisplayList();
+//		
+//		buildPathwayDisplayList(gl);
 		//getGLCanvas().display();
 	}
 
@@ -1226,39 +1249,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 			e.printStackTrace();
 		}
 	}
-	
-	public void resetPathway() {
 
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void retrieveGUIContainer() {
-		
-		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = 
-			(SWTEmbeddedGraphWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
-						refEmbeddedFrameComposite,
-						iWidth, 
-						iHeight);
-
-		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
-		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-	}
-	
-	public void initView() {
-		
-	}
-
-	public void displayChanged(GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
-
-		// TODO Auto-generated method stub
-		
-	}
-	
 	/*
-	 *  (non-Javadoc)
+	 * (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
@@ -1287,33 +1280,27 @@ implements IGLCanvasUser, IJoglMouseListener {
 			iArHighlightedVertices.add(refGeneralManager.getSingelton().getPathwayElementManager().
 					getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]).getVertexRepByIndex(0));
 			
-			iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
+			if (iArSelectionNeighborDistance.length > 0)
+				iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
+			else
+				iArSelectionStorageNeighborDistance.add(0);
 		}
 		
 		bSelectionDataChanged = true;
 	}
 	
-	public final boolean isInitGLDone() 
-	{
-		return this.bInitGLcanvawsWasCalled;
-	}
-	
-	public final void setInitGLDone() 
-	{
-		if ( bInitGLcanvawsWasCalled ) {
-			System.err.println(" called setInitGLDone() for more than once! " + 
-					this.getClass().getSimpleName()  +
-					" " + this.getId());
-		}
-		else 
-		{
-			System.out.println(" called setInitGLDone() " + 
-					this.getClass().getSimpleName() + 
-					" " + this.getId() );
-		}
-		bInitGLcanvawsWasCalled = true;
+	public void update(GLAutoDrawable canvas){
+		
+		System.err.println(" AGLCanvasPathway3D.update(GLAutoDrawable canvas)");		
 	}
 
+	public void destroyGLCanvas() {
+		
+		refGeneralManager.getSingelton().logMsg( 
+				"AGLCanvasPathway3D.destroy(GLCanvas canvas) id=" + this.iUniqueId,
+				LoggerType.FULL );
+	}
+	
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		//FIXME this is just a work around! derive from AGLCanvasUser or AGLCanvasUser_OriginRotation!
@@ -1321,7 +1308,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		
 	}
 	
-	protected void pickObjects(GL gl) {
+	protected void pickObjects(final GL gl) {
 
 		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
 		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
@@ -1361,7 +1348,10 @@ implements IGLCanvasUser, IJoglMouseListener {
 //		System.out.println("Viewport: " +viewport[0] +" " +viewport[1] +" " +viewport[2] +" " +viewport[3]);
 //		System.out.println("Picked point: " +pickPoint.x +" " +pickPoint.y);
 		
-		renderPart(gl, GL.GL_SELECT);
+		// Reset picked point 
+		pickPoint = null;
+		
+		renderPart(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
@@ -1369,13 +1359,12 @@ implements IGLCanvasUser, IJoglMouseListener {
 
 		iHitCount = gl.glRenderMode(GL.GL_RENDER);
 		pickingBuffer.get(iArPickingBuffer);
-		processHits(iHitCount, iArPickingBuffer);
-		
-		// Reset picked point 
-		pickPoint = null;
+		processHits(gl, iHitCount, iArPickingBuffer);
 	}
 	
-	protected void processHits(int iHitCount, int iArPickingBuffer[]) {
+	protected void processHits(final GL gl,
+			int iHitCount, 
+			int iArPickingBuffer[]) {
 
 		//System.out.println("Number of hits: " +iHitCount);
 		IPathwayVertexRep refPickedVertexRep;
@@ -1435,7 +1424,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 						if (!refHashPathway2DisplayListNodeId.containsKey(refGeneralManager.getSingelton().
 								getPathwayManager().getItem(iNewPathwayId)))
 						{
-							replacePathway(refPathwayUnderInteraction, iNewPathwayId);
+							replacePathway(gl, 
+									refPathwayUnderInteraction, 
+									iNewPathwayId);
 							return;							
 						}
 					}
@@ -1490,13 +1481,14 @@ implements IGLCanvasUser, IJoglMouseListener {
 					// All display lists are newly created
 					//iArPathwayNodeDisplayListIDs.clear();
 					iArPathwayEdgeDisplayListIDs.clear();
-					buildPathwayDisplayList();
+					buildPathwayDisplayList(gl);
 					
 	//				gl.glNewList(iPickedPathwayDisplayListNodeId, GL.GL_COMPILE);	
 	//				extractVertices(refPathwayUnderInteraction);
 	//				gl.glEndList();
 									
-					loadNodeInformationInBrowser(refPickedVertexRep.getVertex().getVertexLink());
+//					loadNodeInformationInBrowser(
+//							refPickedVertexRep.getVertex().getVertexLink());
 				}
 	//			}
 		}
@@ -1752,7 +1744,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 //		gl.glEnd();
 //	}
     
-    protected abstract void highlightIdenticalNodes();
+    protected abstract void highlightIdenticalNodes(final GL gl);
 
     protected void vecMatrixMult(float[] vecIn, float[] matIn, float[] vecOut) {
     	
@@ -1767,8 +1759,8 @@ implements IGLCanvasUser, IJoglMouseListener {
     	vecOut[3] = 1.0f;
     }
     
-    protected void handlePicking() {
-    
+    protected void handlePicking(final GL gl) {
+    	
     	if (pickingTriggerMouseAdapter.wasMousePressed())
     	{
     		pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
@@ -1797,28 +1789,74 @@ implements IGLCanvasUser, IJoglMouseListener {
 	    //System.out.println("Picking idle time: " + ((System.nanoTime() - fLastMouseMovedTimeStamp)) * 1e-9);
     }
     
-
-
-    /**
-     * @see cerberus.view.gui.jogl.IJoglMouseListener#getViewCamera()
-     */
-	public final IViewCamera getViewCamera() {
-		return refViewCamera;
+	public void setResolution( float[] setResolution ) {
+		
+//		if ( fResolution.length < 6 ) {
+//			throw new RuntimeException("GLCanvasMinMaxScatterPlot2D.setResolution() array must contain 3 items.");
+//		}
+		
+		this.fResolution = setResolution;
+		
+		fAspectRatio[X][MIN] = fResolution[0];
+		fAspectRatio[X][MAX] = fResolution[1]; 
+		fAspectRatio[Y][MIN] = fResolution[2]; 
+		fAspectRatio[Y][MAX] = fResolution[3]; 
+		
+		fAspectRatio[X][OFFSET] = fResolution[4]; 
+		fAspectRatio[Y][OFFSET] = fResolution[5];
+		
+		viewingFrame[X][MIN] = fResolution[6];
+		viewingFrame[X][MAX] = fResolution[7]; 
+		viewingFrame[Y][MIN] = fResolution[8]; 
+		viewingFrame[Y][MAX] = fResolution[9];
+		viewingFrame[Z][MIN] = fResolution[10]; 
+		viewingFrame[Z][MAX] = fResolution[11]; 
+				
+//		iValuesInRow = (int) fResolution[12]; 
+		
 	}
+	
+	public void displayChanged(GLAutoDrawable drawable, 
+			final boolean modeChanged, 
+			final boolean deviceChanged) {
 
-	/**
-	 * @see cerberus.view.gui.jogl.IJoglMouseListener#hasViewCameraChanged()
-	 */
-	public final boolean hasViewCameraChanged() {
-
-		return refViewCamera.hasViewCameraChanged();
+		this.render( drawable );
+		
 	}
-
-	/**
-	 * @see cerberus.view.gui.jogl.IJoglMouseListener#setViewCamera(cerberus.data.view.camera.IViewCamera)
-	 */
-	public final void setViewCamera(IViewCamera set) {
-
-		refViewCamera = set;		
+	
+	public void updateReceiver(Object eventTrigger) {
+		System.err.println( "UPDATE BINGO !");
+	}
+	
+	//FIXME: Method is also implemented in APathwayGraphViewRep for 2D pathway
+	public void updateSelectionSet(int[] iArSelectionVertexId,
+			int[] iArSelectionGroup,
+			int[] iArNeighborVertices) {
+	
+		try {
+			// Update selection SET data.
+			alSetSelection.get(0).setAllSelectionDataArrays(
+					iArSelectionVertexId, iArSelectionGroup, iArNeighborVertices);
+			
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): Set selection data and trigger update.",
+					LoggerType.VERBOSE );
+						
+	 		// Calls update with the ID of the PathwayViewRep
+	 		((EventPublisher)refGeneralManager.getSingelton().
+				getEventPublisher()).updateReceiver(refGeneralManager.
+						getSingelton().getViewGLCanvasManager().
+							getItem(iUniqueId), alSetSelection.get(0));
+	 		
+		} catch (Exception e)
+		{
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): Problem during selection update triggering.",
+					LoggerType.MINOR_ERROR );
+	
+			e.printStackTrace();
+		}
 	}
 }

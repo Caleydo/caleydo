@@ -27,6 +27,8 @@ implements ICommand {
 	
 	protected ArrayList<Integer> iArSetIDs;
 	
+	protected float [] fResolution;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -68,6 +70,15 @@ implements ICommand {
 			iArSetIDs.add(StringConversionTool.convertStringToInt(
 					setToken.nextToken(), -1));
 		}
+		
+		StringTokenizer token = new StringTokenizer(
+				sAttribute3,
+				IGeneralManager.sDelimiter_Parser_DataItems);
+		
+		int iSizeTokens= token.countTokens();
+		
+		fResolution = 
+			StringConversionTool.convertStringToFloatArray(sAttribute3,iSizeTokens);
 	}
 
 	@Override

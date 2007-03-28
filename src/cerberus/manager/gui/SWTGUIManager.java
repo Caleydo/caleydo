@@ -332,7 +332,7 @@ implements ISWTGUIManager {
 		while (shellIterator.hasNext())
 		{
 			refCurrentShell = shellIterator.next();
-			refCurrentShell.open();
+			refCurrentShell.setVisible(true);//open();
 		}
 
 		shellIterator = refWindowMap.values().iterator();
