@@ -8,6 +8,19 @@ package cerberus.math;
 public final class MathUtil {
 
 	/**
+	 * define PI as float
+	 */
+	public static final float PI = (float) Math.PI;
+	
+	private static final float OPERAND_RAD_2_GRAD = 180.0f / (float) Math.PI;
+	
+	private static final float OPERAND_GRAD_2_RAD = (float) Math.PI / 180.0f;
+	
+	private static final double OPERAND_RAD_2_GRAD_DOUBLE = 180.0 / Math.PI;
+	
+	private static final double OPERAND_GRAD_2_RAD_DOUBLE = Math.PI / 180.0;
+	
+	/**
 	 * Define lowest bits for Application Id
 	 */
 	private static final int POST_SET_SHIFTER_APP = 2;
@@ -26,10 +39,6 @@ public final class MathUtil {
 	 */
 	public static final int MAX_ID_POSTSET = 1024;		
 	
-	/**
-	 * define PI as float
-	 */
-	public static final float PI = (float) Math.PI;
 	
 	/**
 	 * Private constructor
@@ -192,4 +201,49 @@ public final class MathUtil {
 		return testSuccessful;
 	}
 		
+	/**
+	 * Convert radiant for example: [ 0 .. 2*PI ] to degree [0.. 360°]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * 
+	 * @param fRad radiant
+	 * @return degree
+	 */
+	public static float radiant2Grad( final float fRad) {
+		return fRad * OPERAND_RAD_2_GRAD;
+	}
+	
+	/**
+	 * Convert degrees for example: [0.. 360°] to radiant [ 0 .. 2*PI ]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * 
+	 * @param fDegree degree, that will be converted to radiant
+	 * @return radiant
+	 */
+	public static float grad2radiant( final float fDegree) {
+		return fDegree * OPERAND_GRAD_2_RAD;
+	}
+	
+	
+	/**
+	 * Convert radiant for example: [ 0 .. 2*PI ] to degree [0.. 360°]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * 
+	 * @param fRad radiant
+	 * @return degree
+	 */
+	public static float radiant2Grad_doublePrecission( final float fRad) {
+		return (float) ((double) fRad * OPERAND_RAD_2_GRAD_DOUBLE);
+	}
+	
+	/**
+	 * Convert degrees for example: [0.. 360°] to radiant [ 0 .. 2*PI ]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * 
+	 * @param fDegree degree, that will be converted to radiant
+	 * @return radiant
+	 */
+	public static float grad2radiant_doublePrecission( final float fDegree) {
+		return (float) ((double) fDegree * OPERAND_GRAD_2_RAD_DOUBLE);
+	}
+	
 }

@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.media.opengl.GLAutoDrawable;
 
+import cerberus.view.gui.jogl.JoglCanvasForwarder;
+
 public interface IGLCanvasDirector {
 	
 	public abstract void addGLCanvasUser(IGLCanvasUser user);
@@ -31,4 +33,6 @@ public interface IGLCanvasDirector {
 			boolean deviceChanged);
 		
 	public void destroyDirector();
+	
+	public JoglCanvasForwarder getJoglCanvasForwarder();
 }

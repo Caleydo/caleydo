@@ -3,6 +3,9 @@
  */
 package cerberus.command.view.opengl;
 
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -11,6 +14,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.math.MathUtil;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
@@ -77,7 +81,12 @@ implements ICommand {
 		GLCanvasLayeredPathway3D canvas = 
 			(GLCanvasLayeredPathway3D) openGLCanvasUser;		
 		
-		canvas.setOriginRotation(vec3fOrigin, vec4fRotation);
+		Rotf cam_rotation = new Rotf( new Vec3f( vec4fRotation.y(),
+				vec4fRotation.z(),
+				vec4fRotation.w() ),
+				MathUtil.grad2radiant(vec4fRotation.x()));
+		  
+		canvas.setOriginRotation(vec3fOrigin, cam_rotation);
 		
 		int[] iArTmp = new int[iArSetIDs.size()];
 		for(int index = 0; index < iArSetIDs.size(); index++)

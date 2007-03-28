@@ -97,9 +97,9 @@ implements IView, IGLCanvasDirector {
 				getId() + "] Animator started, thread running.",
 				LoggerType.TRANSITION );
 		
-		refGLEventListener = new JoglCanvasForwarder(refGeneralManager,
-				this, 
-				iGLEventListernerId );
+//		refGLEventListener = new JoglCanvasForwarder(refGeneralManager,
+//				this, 
+//				iGLEventListernerId );
 		
 		IViewGLCanvasManager canvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
@@ -368,5 +368,10 @@ implements IView, IGLCanvasDirector {
 		{
 			this.iGLEventListernerId = iGLEventListenerId;
 		}
+	}
+
+	public final JoglCanvasForwarder getJoglCanvasForwarder() {
+
+		return (JoglCanvasForwarder) this.refGLEventListener;
 	}
 }

@@ -1,5 +1,6 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
@@ -36,10 +37,12 @@ import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.data.view.camera.ViewCameraBase;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.math.MathUtil;
 import cerberus.util.colormapping.ColorMapping;
 import cerberus.util.system.SystemTime;
 //import cerberus.view.gui.awt.PickingTriggerMouseAdapter;
@@ -94,9 +97,9 @@ implements IGLCanvasUser, IJoglMouseListener {
 	
 	protected IGLCanvasDirector openGLCanvasDirector;
 	
-	protected Vec3f origin;
-	
-	protected Vec4f rotation;
+//	protected Vec3f origin;
+//	
+//	protected Vec4f rotation;
 	
 	protected GL gl;
 	
@@ -201,11 +204,20 @@ implements IGLCanvasUser, IJoglMouseListener {
 		//FIXME: Is refEmbeddedFrameComposite variable really needed?
 		refEmbeddedFrameComposite = refSWTContainer;
 		
+
 		this.canvas = openGLCanvasDirector.getGLCanvas();
 		
-		pickingTriggerMouseAdapter = new PickingJoglMouseListener(this);
-		canvas.addMouseListener(pickingTriggerMouseAdapter);
-		canvas.addMouseMotionListener(pickingTriggerMouseAdapter);
+		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
+			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
+		
+		pickingTriggerMouseAdapter.setJoglMouseListener(this);
+		pickingTriggerMouseAdapter.addMouseListenerAll(canvas);
+//		
+//		pickingTriggerMouseAdapter = new PickingJoglMouseListener(this);
+//		
+//		
+//		canvas.addMouseListener(pickingTriggerMouseAdapter);
+//		canvas.addMouseMotionListener(pickingTriggerMouseAdapter);
 		
 		viewingFrame = new float [2][2];
 		
@@ -578,13 +590,17 @@ implements IGLCanvasUser, IJoglMouseListener {
 		}
 			
 		// Clear The Screen And The Depth Buffer
-		gl.glPushMatrix();
+		//gl.glPushMatrix();
 
-		gl.glTranslatef( origin.x(), origin.y(), origin.z() );
-		gl.glRotatef( rotation.x(), 
-				rotation.y(),
-				rotation.z(),
-				rotation.w() );
+		Vec3f cam_position = refViewCamera.getCameraPosition();
+		Vec3f cam_roation_axis = new Vec3f();
+		float cam_roation_angle = refViewCamera.getCameraRotationGrad(cam_roation_axis);
+		
+		gl.glTranslatef( cam_position.x(), cam_position.y(), cam_position.z() );
+		gl.glRotatef( cam_roation_axis.x(), 
+				cam_roation_axis.y(),
+				cam_roation_axis.z(),
+				cam_roation_angle );
 
 		handlePicking();
 				
@@ -598,7 +614,7 @@ implements IGLCanvasUser, IJoglMouseListener {
 		//renderInfoArea(0.0f, -0.2f, 0.0f);
 		
 		//gl.glFlush();
-		gl.glPopMatrix();	
+		//gl.glPopMatrix();	
 	}
 
 	protected abstract void renderPart(GL gl, int iRenderMode);
@@ -648,14 +664,14 @@ implements IGLCanvasUser, IJoglMouseListener {
 			
 			bHighlightVertex = true;
 			
-			if (iNeighborDistance == 0)
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-			else if (iNeighborDistance == 1)
-				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
-			else if (iNeighborDistance == 2)
-				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColor_2();
-			else if (iNeighborDistance == 3)
-				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColor_3();	
+			if (iNeighborDistance < PathwayRenderStyle.neighborhoodNodeColorArraysize) 
+			{
+				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iNeighborDistance);
+			}
+			else 
+			{
+				assert false : "can not find color for selection depth";
+			}
 			
 			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 					tmpNodeColor.getGreen() / 255.0f, 
@@ -1089,10 +1105,10 @@ implements IGLCanvasUser, IJoglMouseListener {
 	}
 	
 	public final void setOriginRotation( final Vec3f origin,	
-			final Vec4f rotation ) {
+			final Rotf rotation ) {
 		
-		this.origin   = origin;
-		this.rotation = rotation;
+		refViewCamera.setCameraPosition(origin);
+		refViewCamera.setCameraRotation(rotation);
 	}
 
 	public void loadImageMapFromFile(String sImagePath) {

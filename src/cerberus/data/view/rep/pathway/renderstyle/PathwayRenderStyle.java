@@ -3,6 +3,7 @@ package cerberus.data.view.rep.pathway.renderstyle;
 import java.awt.Color;
 
 import cerberus.data.ARenderStyle;
+import cerberus.util.exception.CerberusRuntimeException;
 
 public class PathwayRenderStyle 
 extends ARenderStyle {
@@ -34,21 +35,29 @@ extends ARenderStyle {
 	
 	/**
 	 * The color of the neighborhood node with the distance 
-	 * to the clicked node of 1
+	 * to the clicked node of [1..neighborhoodNodeColorArraysize]
 	 */
-	protected Color neighborhoodNodeColor_1;
+	protected Color [] neighborhoodNodeColorArray;
 	
-	/**
-	 * The color of the neighborhood node with the distance 
-	 * to the clicked node of 2
-	 */
-	protected Color neighborhoodNodeColor_2;
-
-	/**
-	 * The color of the neighborhood node with the distance 
-	 * to the clicked node of 3
-	 */
-	protected Color neighborhoodNodeColor_3;
+	public static final int neighborhoodNodeColorArraysize = 4;
+	
+//	/**
+//	 * The color of the neighborhood node with the distance 
+//	 * to the clicked node of 1
+//	 */
+//	protected Color neighborhoodNodeColor_1;
+//	
+//	/**
+//	 * The color of the neighborhood node with the distance 
+//	 * to the clicked node of 2
+//	 */
+//	protected Color neighborhoodNodeColor_2;
+//
+//	/**
+//	 * The color of the neighborhood node with the distance 
+//	 * to the clicked node of 3
+//	 */
+//	protected Color neighborhoodNodeColor_3;
 	
 	protected EdgeLineStyle relationEdgeLineStyle;
 	protected EdgeLineStyle reactionEdgeLineStyle;
@@ -85,9 +94,15 @@ extends ARenderStyle {
 		compoundNodeColor = Color.DARK_GRAY;
 		pathwayNodeColor = new Color(0.51f, 0.44f, 1.0f);
 		highlightedNodeColor = new Color(1.0f, 0.0f, 0.0f);
-		neighborhoodNodeColor_1 = new Color(1.0f, 0.5f, 0.0f);
-		neighborhoodNodeColor_2 = new Color(1.0f, 1.0f, 0.0f);
-		neighborhoodNodeColor_3 = new Color(1.0f, 1.0f, 0.5f);
+		neighborhoodNodeColorArray = new Color [neighborhoodNodeColorArraysize];
+		neighborhoodNodeColorArray[0] = highlightedNodeColor;
+		neighborhoodNodeColorArray[1] = new Color(1.0f, 0.5f, 0.0f);
+		neighborhoodNodeColorArray[2] = new Color(1.0f, 1.0f, 0.0f);
+		neighborhoodNodeColorArray[3] = new Color(1.0f, 1.0f, 0.5f);
+		
+//		neighborhoodNodeColor_1 = new Color(1.0f, 0.5f, 0.0f);
+//		neighborhoodNodeColor_2 = new Color(1.0f, 1.0f, 0.0f);
+//		neighborhoodNodeColor_3 = new Color(1.0f, 1.0f, 0.5f);
 		
 		relationEdgeLineStyle = EdgeLineStyle.NORMAL;
 		reactionEdgeLineStyle = EdgeLineStyle.NORMAL;
@@ -339,20 +354,35 @@ extends ARenderStyle {
 		return highlightedNodeColor;
 	}
 	
-	public Color getNeighborhoodNodeColor_1() {
-	
-		return neighborhoodNodeColor_1;
+	/**
+	 * 
+	 * @see cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle#neighborhoodNodeColorArraysize
+	 * @see cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle#highlightedNodeColor
+	 * 
+	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0 highlightedNodeColor is returened
+	 * @return
+	 */
+	public Color getNeighborhoodNodeColorByDepth( final int depth ) {
+		if ( depth >= neighborhoodNodeColorArraysize) {
+			throw new CerberusRuntimeException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
+		}
+		return this.neighborhoodNodeColorArray[depth];
 	}
-
 	
-	public Color getNeighborhoodNodeColor_2() {
-	
-		return neighborhoodNodeColor_2;
-	}
-
-	
-	public Color getNeighborhoodNodeColor_3() {
-	
-		return neighborhoodNodeColor_3;
-	}
+//	public Color getNeighborhoodNodeColor_1() {
+//	
+//		return neighborhoodNodeColor_1;
+//	}
+//
+//	
+//	public Color getNeighborhoodNodeColor_2() {
+//	
+//		return neighborhoodNodeColor_2;
+//	}
+//
+//	
+//	public Color getNeighborhoodNodeColor_3() {
+//	
+//		return neighborhoodNodeColor_3;
+//	}
 }

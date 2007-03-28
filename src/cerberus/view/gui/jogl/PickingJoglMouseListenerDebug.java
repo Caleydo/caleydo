@@ -5,6 +5,7 @@ package cerberus.view.gui.jogl;
 
 import java.awt.event.MouseEvent;
 import cerberus.view.gui.jogl.JoglMouseListener;
+import cerberus.view.gui.jogl.PickingJoglMouseListener;
 
 /**
  * Print debug messages to System.*
@@ -12,24 +13,24 @@ import cerberus.view.gui.jogl.JoglMouseListener;
  * @author Michael Kalkusch
  *
  */
-public class JoglMouseListenerDebug extends JoglMouseListener {
+public class PickingJoglMouseListenerDebug extends PickingJoglMouseListener {
 
 	/**
 	 * @param refParentGearsMain
 	 */
-	public JoglMouseListenerDebug(IJoglMouseListener refParentGearsMain) {
+	public PickingJoglMouseListenerDebug(IJoglMouseListener refParentGearsMain) {
 
 		super(refParentGearsMain);
-		
-		System.err.println("  JoglMouseListenerDebug: " + this.toString() + "  parent=" + refParentGearsMain.toString());
 	}
 
 	public void mousePressed(MouseEvent e) {
 
+		super.mousePressed(e);
+
 		/* --- Left -- Mouse Button --- */
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 		{
-			System.err.println(" -- Left --" + this.toString());
+			System.err.println(" -- Left --" + this.toString() );
 		}
 
 		/* --- Right -- Mouse Button --- */
@@ -43,13 +44,11 @@ public class JoglMouseListenerDebug extends JoglMouseListener {
 		{
 			System.err.println(" -- Middle --" + this.toString() );
 		}
-		
-		super.mousePressed(e);
-
-		
 	}
 
 	public void mouseReleased(MouseEvent e) {
+
+		super.mouseReleased(e);
 
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 		{
@@ -65,10 +64,6 @@ public class JoglMouseListenerDebug extends JoglMouseListener {
 		{
 			System.err.println(" -- END Middle --" + this.toString() );
 		}
-		
-		super.mouseReleased(e);
-
-		
 	}
 
 	// Methods required for the implementation of MouseMotionListener

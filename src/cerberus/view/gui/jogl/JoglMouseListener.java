@@ -9,6 +9,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
 import java.awt.Point;
 
+import javax.media.opengl.GLAutoDrawable;
+
 import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.math.MathUtil;
 
@@ -56,6 +58,13 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 		pressedMousePosition = new Point();
 	}
 	
+	public final IJoglMouseListener getJoglMouseListener() {
+		return this.refParentGearsMain;
+	}
+	
+	public final void setJoglMouseListener(final IJoglMouseListener setJoglMouseListener) {
+		this.refParentGearsMain = setJoglMouseListener;
+	}
 	
   public final void setMouseSensitivityRotation( float fSetMouseSensitivityRotation ) {
 	  this.fMouseSensitivityRotation = fSetMouseSensitivityRotation;
@@ -77,6 +86,14 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 	  return pressedMousePosition;
   }
   
+  /**
+   * Register this Listener to the canvas as MouseListener and MouseMotionListener.
+   * @param canvas
+   */
+  public void addMouseListenerAll(GLAutoDrawable canvas) {
+	  canvas.addMouseListener(this);
+	  canvas.addMouseMotionListener(this);
+  }
 
   /* Methods required for the implementation of MouseListener */
   public void mouseEntered(MouseEvent e) {}
@@ -245,11 +262,10 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 		    				0, 
 		    				zoomY +zoomX) );
     	}
-	    
+    	
     }
     else 
     {
-    	
 		Vec3f addVec3f = new Vec3f( 
 				fZoomScale * ( (float)(x-prevMouseX)/(float)size.width),
 				fZoomScale * ( (float)(prevMouseY-y)/(float)size.height),

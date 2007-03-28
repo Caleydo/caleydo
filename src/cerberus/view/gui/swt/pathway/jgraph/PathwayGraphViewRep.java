@@ -49,6 +49,7 @@ import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
+import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
@@ -713,14 +714,14 @@ extends APathwayGraphViewRep {
 			iterCells = queueBFS.iterator();
 			nested.clear();
 		
-			if (iDistanceIndex == 0)
-				nodeColor = Color.RED;
-			if (iDistanceIndex == 1)
-				nodeColor = refRenderStyle.getNeighborhoodNodeColor_1();
-			else if (iDistanceIndex == 2)
-				nodeColor = refRenderStyle.getNeighborhoodNodeColor_2();
-			else if (iDistanceIndex == 3)
-				nodeColor = refRenderStyle.getNeighborhoodNodeColor_3();
+			if (iDistanceIndex < PathwayRenderStyle.neighborhoodNodeColorArraysize) 
+			{
+				refRenderStyle.getNeighborhoodNodeColorByDepth(iDistanceIndex);
+			}
+			else 
+			{
+				assert false : "can not find color for selection depth";
+			}
 
 			GraphConstants.setBackground(attributeMap, nodeColor);
 			

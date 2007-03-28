@@ -18,7 +18,9 @@ import javax.media.opengl.GLEventListener;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.math.MathUtil;
 import cerberus.view.gui.jogl.JoglMouseListener;
+import cerberus.view.gui.jogl.PickingJoglMouseListenerDebug;
 import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 //import cerberus.data.view.camera.IViewCamera;
@@ -50,11 +52,11 @@ implements GLEventListener, IJoglMouseListener {
 
 		super(iUniqueId, refGeneralManager);
 		
-		refMouseHandler = new JoglMouseListener(this);
+//		refMouseHandler = new JoglMouseListenerDebug(this);
+		refMouseHandler = new PickingJoglMouseListenerDebug(this);
 
 		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
-	
 
 	protected void drawXYZ( GL gl ) {
 		float fMax = 200;
@@ -87,6 +89,10 @@ implements GLEventListener, IJoglMouseListener {
 	}
 	
 
+	public final JoglMouseListener getJoglMouseListener() {
+		return this.refMouseHandler;
+	}
+	
 	public void init(GLAutoDrawable drawable) {
 
 		// Use debug pipeline
@@ -212,10 +218,7 @@ implements GLEventListener, IJoglMouseListener {
 		/** Read viewing parameters... */
 		Vec3f rot_Vec3f = new Vec3f();
 		Vec3f position = refViewCamera.getCameraPosition();
-		Rotf rotation = refViewCamera.getCameraRotation();
-		//Vec3f positionZoom = refViewCamera.getCameraScale();
-		
-		float w = rotation.get(rot_Vec3f) * 180.0f / (float) Math.PI;
+		float w = refViewCamera.getCameraRotationGrad(rot_Vec3f);
 		
 	
 		/** Translation */

@@ -13,6 +13,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import cerberus.data.view.camera.IViewCamera;
+import cerberus.math.MathUtil;
 
 /**
  * @author Michael Kalkusch
@@ -151,6 +152,14 @@ public class ViewCameraBase implements IViewCamera {
 	 */
 	public Rotf getCameraRotation() {
 		return this.rotfCameraRotation;
+	}
+	
+	public float getCameraRotationGrad(Vec3f axis) {
+		return MathUtil.radiant2Grad( rotfCameraRotation.get(axis) );
+	}
+	
+	public float getCameraRotationRadiant(Vec3f axis) {
+		return rotfCameraRotation.get(axis);
 	}
 
 	/* (non-Javadoc)

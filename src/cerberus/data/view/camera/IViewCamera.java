@@ -8,6 +8,7 @@
  */
 package cerberus.data.view.camera;
 
+import cerberus.math.MathUtil;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -74,6 +75,28 @@ public interface IViewCamera {
 	 * @param addRotEuler with euler angles x,y,z
 	 */
 	public void addCameraRotationEuler(Vec3f addRotEuler);
+	
+	/**
+	 * Get camera rotation as axis and rotation angle in degrees.
+	 * Note: uses cerberus.math.MathUtil#radiant2Grad(float)
+	 * 
+	 * @see gleem.linalg.Rotf#get(Vec3f)
+	 * @see cerberus.math.MathUtil#radiant2Grad(float)
+	 * 
+	 * @param axis 
+	 * @return angel of rotation around axis (quaternion)
+	 */
+	public float getCameraRotationGrad(Vec3f axis);
+	
+	/**
+	 * Get camera rotation as axis and rotation angle in degrees.
+	 * 
+	 * @see gleem.linalg.Rotf#get(Vec3f)
+	 * 
+	 * @param axis
+	 * @return angel of rotation around axis (quaternion)
+	 */
+	public float getCameraRotationRadiant(Vec3f axis);
 	
 	/**
 	 * Apply a new rotation using Vec3f. Updates the ViewMatrix using the
