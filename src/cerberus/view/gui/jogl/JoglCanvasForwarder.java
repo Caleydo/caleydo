@@ -113,7 +113,8 @@ implements GLEventListener, IJoglMouseListener {
 					LoggerType.STATUS);
 	
 			//gl.resizeGLScene();                      // Initialize the GL viewport
-	
+
+			
 			gl.glShadeModel(GL.GL_SMOOTH); // Enables Smooth Shading
 			gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black Background
 			gl.glClearDepth(1.0f); // Depth Buffer Setup
@@ -164,20 +165,64 @@ implements GLEventListener, IJoglMouseListener {
 		GL gl = drawable.getGL();
 
 		float h = (float) height / (float) width;
-
+		
 		gl.glMatrixMode(GL.GL_PROJECTION);
-
+		
 		refGeneralManager.getSingelton().logMsg(
 				"JoglCanvasForwarder  RESHAPE GL" +
 				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
 				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
 				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
 				LoggerType.STATUS);
-
+		
 		gl.glLoadIdentity();
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 5.0f, 60.0f);
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();
+		
+////		/* Begin Default Setup */
+//		gl.glMatrixMode(GL.GL_PROJECTION);
+//		gl.glLoadIdentity();
+//		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+////		gl.glMatrixMode(GL.GL_MODELVIEW);
+////		gl.glLoadIdentity();
+////		
+////		
+////		gl.glMatrixMode(GL.GL_PROJECTION);
+////		gl.glLoadIdentity();
+//////		gl.glFrustum(-1.0, 1.0, -1.0, 1.0, 1, 10000);
+////		/* END Default Setup */
+//		
+//		/* Manuelas Setup ... */
+////		gl.glMatrixMode(GL.GL_PROJECTION);
+////		gl.glLoadIdentity();
+////		gl.glOrtho(-0.5, 0.5, -0.5, 0.5, 0.01, 1000.0); 			
+//		
+//		gl.glMatrixMode(GL.GL_MODELVIEW);
+//		gl.glLoadIdentity();
+//		
+//		float [] homography_matrix = {
+//				0.767400f,
+//				0.017298f,
+//				0.000000f,
+//				0.130714f,
+//				0.017507f,
+//				0.641607f,
+//				0.000000f,
+//				0.107709f,
+//				0.000000f,
+//				0.000000f,
+//				1.000000f,
+//				0.000000f,
+//				0.072922f,
+//				0.039414f,
+//				0.000000f,
+//				1.119212f }; 
+//	
+//		gl.glLoadMatrixf(homography_matrix, 0);
+//		
+//		/* ENDE: Manuelas Setup ... */
+		
 		gl.glTranslatef(0.0f, 0.0f, -40.0f);
 		
 		if (refGLCanvasDirector != null)

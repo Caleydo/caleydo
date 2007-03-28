@@ -418,7 +418,9 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 		  fColorMappingLowRangeDivisor = 1.0f / (fColorMappingLowRange * (1.0f + fColorMappingPercentageStretch));
 		  
 		  
-		  iValuesInColum = (int)( (float) refMinMaxDataInteger.getItems( 0 ) / (float) (iValuesInRow) ) ;
+		  float fValuesInColum = (float) refMinMaxDataInteger.getItems( 0 ) / (float) iValuesInRow;
+		  
+		  iValuesInColum = (int)( fValuesInColum ) ;
 	  }
 	  else
 	  {
@@ -492,7 +494,7 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 				float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 						/ (float) (iValuesInRow + 1);
 				float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
-						/ (float) (iValuesInColum + 1);
+						/ (float) (iValuesInColum );
 
 				float fNowX = viewingFrame[X][MIN];
 				float fNextX = fNowX + fIncX;
@@ -519,6 +521,7 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 					fNowX = fNextX;
 					fNextX += fIncX;
 					iCountValuesInRow++;
+					
 
 					if (iCountValuesInRow > iValuesInRow)
 					{
@@ -528,9 +531,10 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 						fNowX = viewingFrame[X][MIN];
 						fNextX = fNowX + fIncX;
 
-						iCountValuesInRow = 0;
+						iCountValuesInRow = 1;
 					} // if (iCountValuesInRow > iValuesInRow)
 
+					
 				} //while (iter.hasNext())
 
 				gl.glEnable(GL.GL_DEPTH_TEST);
