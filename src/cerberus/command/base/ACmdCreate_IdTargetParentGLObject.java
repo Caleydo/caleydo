@@ -3,6 +3,7 @@
  */
 package cerberus.command.base;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
@@ -10,6 +11,7 @@ import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.math.MathUtil;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 
@@ -26,11 +28,15 @@ implements ICommand
 
 	protected Vec3f vec3fOrigin;
 	
-	protected Vec4f vec4fRotation;
+	//protected Vec4f vec4fRotation;
+	
+	protected Rotf cameraRotation;
 	
 	protected String sDetail;
 	
 	protected String sAttribute3;
+	
+	protected String sAttribute4;
 
 	
 	public ACmdCreate_IdTargetParentGLObject(
@@ -41,6 +47,8 @@ implements ICommand
 		super(refGeneralManager,
 				refCommandManager,
 				refCommandQueueSaxType);
+		
+		cameraRotation = new Rotf();
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -55,6 +63,9 @@ implements ICommand
 		
 		sAttribute3 = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() );
+		
+		sAttribute4 = refParameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey() );
 		
 		sDetail = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
@@ -76,8 +87,12 @@ implements ICommand
 		vec3fOrigin = refParameterHandler.getValueVec3f( 
 				CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey() );
 		
-		vec4fRotation = refParameterHandler.getValueVec4f( 
+		/* convert Vec4f to roation Rotf */
+		Vec4f vec4fRotation = refParameterHandler.getValueVec4f( 
 				CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey() );
+		
+		cameraRotation.set( new Vec3f(vec4fRotation.x(),vec4fRotation.y(),vec4fRotation.z()),
+				MathUtil.grad2radiant(vec4fRotation.w()));
 	}
 
 }

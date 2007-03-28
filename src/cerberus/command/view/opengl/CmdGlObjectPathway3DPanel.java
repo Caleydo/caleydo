@@ -3,9 +3,6 @@
  */
 package cerberus.command.view.opengl;
 
-import gleem.linalg.Rotf;
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -14,10 +11,8 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.math.MathUtil;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPanelPathway3D;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -26,7 +21,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * @author Marc Streit
  *
  */
-public class CmdGlObjectPanelPathway3D 
+public class CmdGlObjectPathway3DPanel 
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
 
@@ -36,7 +31,7 @@ implements ICommand {
 	 * Constructor.
 	 * 
 	 */
-	public CmdGlObjectPanelPathway3D(
+	public CmdGlObjectPathway3DPanel(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType)
@@ -81,12 +76,7 @@ implements ICommand {
 		GLCanvasPanelPathway3D canvas = 
 			(GLCanvasPanelPathway3D) openGLCanvasUser;		
 		
-		Rotf cam_rotation = new Rotf( new Vec3f( vec4fRotation.y(),
-				vec4fRotation.z(),
-				vec4fRotation.w() ),
-				MathUtil.grad2radiant(vec4fRotation.x()));
-		
-		canvas.setOriginRotation(vec3fOrigin, cam_rotation);
+		canvas.setOriginRotation(vec3fOrigin, cameraRotation);
 		
 		int[] iArTmp = new int[iArSetIDs.size()];
 		for(int index = 0; index < iArSetIDs.size(); index++)

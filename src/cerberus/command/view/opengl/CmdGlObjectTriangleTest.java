@@ -53,7 +53,7 @@ extends ACmdCreate_GlCanvasUser
 		GLCanvasTestTriangle canvas = 
 			(GLCanvasTestTriangle) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
+		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
 		
 	}
 

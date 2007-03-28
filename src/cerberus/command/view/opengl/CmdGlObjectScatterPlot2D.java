@@ -75,7 +75,7 @@ extends ACmdCreate_GlCanvasUser
 		GLCanvasScatterPlot2D canvas = 
 			(GLCanvasScatterPlot2D) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
+		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
 		canvas.setResolution( iResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
 	}

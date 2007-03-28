@@ -41,7 +41,7 @@ package gleem.linalg;
 
 /** Represents a rotation with single-precision components 
  *
- * Added new method getAxisAndAngle() (Micahel Kalkusch)
+ * Added new method getAxisAndAngle() (Michael Kalkusch)
  */
 
 public class Rotf {

@@ -94,7 +94,7 @@ extends ACmdCreate_GlCanvasUser
 		GLCanvasHeatmap canvas = 
 			(GLCanvasHeatmap) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
+		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
 		canvas.setResolution( iResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
 		

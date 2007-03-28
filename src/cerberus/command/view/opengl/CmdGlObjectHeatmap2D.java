@@ -25,6 +25,13 @@ public class CmdGlObjectHeatmap2D
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
 	
+	/**
+	 * Contains values for selection.
+	 * Note: should be replaced by VirtualArray
+	 */
+	protected int[] selectionArrayX;
+	protected int[] selectionArrayY;
+	
 	protected float [] fResolution;
 	
 	/**
@@ -72,16 +79,81 @@ implements ICommand {
 		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 				sDetail, 
 				-1 );
+		
+		if ( sAttribute4.length() > 0) 
+		{
+			if ( sAttribute4.contains( IGeneralManager.sDelimiter_Parser_DataType )) {
+				
+				StringTokenizer splitter = 
+					new StringTokenizer(sAttribute4, IGeneralManager.sDelimiter_Parser_DataType);
+								
+				String bufferOne = splitter.nextToken();
+				
+				if ( bufferOne.length() > 0 ) {
+					selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
+							refGeneralManager.getSingelton().getLoggerManager(), 
+							bufferOne, 
+							IGeneralManager.sDelimiter_Parser_DataItems);
+				}  //if ( bufferOne.length() > 0 ) {
+				else
+				{
+					selectionArrayX = null;
+				}  //if ( bufferOne.length() > 0 ) {..} else {..}
+				
+				if  (splitter.hasMoreTokens()) {
+					selectionArrayY = StringConversionTool.convertStringToIntArrayVariableLength(
+							refGeneralManager.getSingelton().getLoggerManager(), 
+							splitter.nextToken(), 
+							IGeneralManager.sDelimiter_Parser_DataItems);
+				} //if  (splitter.hasMoreTokens()) {
+				else 
+				{
+					selectionArrayY = null;
+				} //if  (splitter.hasMoreTokens()) {..} else {..}
+				
+			}  //if ( sAttribute4.contains( IGeneralManager.sDelimiter_Parser_DataType )) {
+			else 
+			{
+				
+				selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
+						refGeneralManager.getSingelton().getLoggerManager(), 
+						this.sAttribute4, 
+						IGeneralManager.sDelimiter_Parser_DataItems);
+				
+				selectionArrayY = null;
+				
+			}  //if ( sAttribute4.contains( IGeneralManager.sDelimiter_Parser_DataType )) {
+			
+		} //if ( sAttribute4.length() > 0) 
 	}
 	
 
+	private void convertSelectionArrays( final int [] inSelectionArray, 
+			int inSelectionArray_HalfSize,
+			int[] outSelectionIndex,
+			int[] outSelectionLength) {
+		
+		/* is it possible to create an two arrays from input array? */
+		if ( inSelectionArray_HalfSize > 0) {
+			
+			int j = 0;
+			for( int i=0; i < inSelectionArray_HalfSize; i++ ) 
+			{
+				outSelectionIndex[i]  = inSelectionArray[j++];
+				outSelectionLength[i] = inSelectionArray[j++];
+			}  //for( int i=0; i < inSelectionArray_HalfSize; i++ ) 
+
+		} //if ( halfLengthSelectionArray > 0) {		
+	} 
+	
+	
 	@Override
 	public void doCommandPart() throws CerberusRuntimeException {
 		
 		GLCanvasHeatmap2D canvas = 
 			(GLCanvasHeatmap2D) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
+		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		
 		if ( iTargetCollectionSetId > -1 ) {
@@ -93,7 +165,49 @@ implements ICommand {
 					LoggerType.ERROR_ONLY );
 		}
 		
-		//canvas.setHistogramLength( iHistogramLevel );
+		/**
+		 * Handle selection via XML file..
+		 */
+		if  ((selectionArrayX != null )||(selectionArrayY != null))
+		{
+			int [] bufferSelectionIndexArrayX = null;
+			int [] bufferSelectionLengthArrayX = null;		
+			int [] bufferSelectionIndexArrayY = null;
+			int [] bufferSelectionLengthArrayY = null;	
+			
+			if  (selectionArrayX != null ) {
+				
+				int iHalfSize = (int) selectionArrayX.length / 2;
+				bufferSelectionIndexArrayX  = new int [iHalfSize];
+				bufferSelectionLengthArrayX = new int [iHalfSize];
+				
+				convertSelectionArrays(selectionArrayX,
+						iHalfSize,
+						bufferSelectionIndexArrayX,
+						bufferSelectionLengthArrayX );
+				
+			} //if  (selectionArrayX != null ) {
+			
+			if  (selectionArrayY != null ) {
+				
+				int iHalfSize = (int) selectionArrayY.length / 2;
+				bufferSelectionIndexArrayY  = new int [iHalfSize];
+				bufferSelectionLengthArrayY = new int [iHalfSize];
+				
+				convertSelectionArrays(selectionArrayY,
+						iHalfSize,
+						bufferSelectionIndexArrayY,
+						bufferSelectionLengthArrayY );
+			
+			} //if  (selectionArrayY != null ) {
+				
+			canvas.setSelectionItems(bufferSelectionIndexArrayX,
+					bufferSelectionLengthArrayX,
+					bufferSelectionIndexArrayY,
+					bufferSelectionLengthArrayY );
+			
+		}  //if ((selectionArrayX != null )||(selectionArrayY != null))
+		
 	}
 
 	@Override

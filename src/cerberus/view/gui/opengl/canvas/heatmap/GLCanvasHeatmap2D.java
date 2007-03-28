@@ -3,18 +3,18 @@
  */
 package cerberus.view.gui.opengl.canvas.heatmap;
 
-//import java.util.Iterator;
-//import java.util.LinkedList;
-//import java.util.List;
+// import java.util.Iterator;
+// import java.util.LinkedList;
+// import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
-//import javax.media.opengl.GLCanvas;
+// import javax.media.opengl.GLCanvas;
 
-//import gleem.linalg.Vec3f;
-//import gleem.linalg.Vec4f;
+// import gleem.linalg.Vec3f;
+// import gleem.linalg.Vec4f;
 
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
@@ -30,107 +30,175 @@ import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
- *
+ * 
  */
-public class GLCanvasHeatmap2D 
-extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
-{
+public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
+		implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 
 	private boolean bUseGLWireframe = false;
-	
+
 	private int iSetCacheId = 0;
 
 	private float fColorMappingShiftFromMean = 1.0f;
-	
+
 	private float fColorMappingHighValue = 1.0f;
+
 	private float fColorMappingLowValue = 0.0f;
+
 	private float fColorMappingMiddleValue = 0.25f;
-	
+
 	private float fColorMappingHighRangeDivisor = 1 / 0.75f;
+
 	private float fColorMappingLowRangeDivisor = 1 / 0.25f;
+
 	private float fColorMappingLowRange = 0.25f;
-	
+
 	/**
 	 * Stretch lowest color in order to be not Back!
 	 */
 	private float fColorMappingPercentageStretch = 0.2f;
-	
-	
-	private float [][] viewingFrame;
-	
+
+	private int[] iSelectionStartAtIndexX;
+
+	private int[] iSelectionStartAtIndexY;
+
+	private int[] iSelectionLengthX;
+
+	private int[] iSelectionLengthY;
+
+	private float[][] viewingFrame;
+
 	private MinMaxDataInteger refMinMaxDataInteger;
-	
+
 	private int iHeatmapDisplayListId = -1;
-	
-	//private int iGridSize = 40;
-	
-	//private float fPointSize = 1.0f;
-	
+
+	// private int iGridSize = 40;
+
+	// private float fPointSize = 1.0f;
+
 	/**
-	 * Color for grid (0,1,2) 
-	 * grid text (3,4,5)
-	 * and point color (6,7,8)
+	 * Color for grid (0,1,2) grid text (3,4,5) and point color (6,7,8)
 	 */
-	private float[] colorGrid = { 0.1f, 0.1f , 0.9f, 
-			0.1f, 0.9f, 0.1f,
-			0.9f, 0.1f, 0.1f };
-	
-	
+	private float[] colorGrid =
+	{ 0.1f, 0.1f, 0.9f, 0.1f, 0.9f, 0.1f, 0.9f, 0.1f, 0.1f };
+
 	private int iValuesInRow = 10;
-	
+
 	private int iValuesInColum = 10;
-	
+
 	protected float[][] fAspectRatio;
-	
+
 	protected float[] fResolution;
-	
+
 	protected ISet targetSet;
-	
-	
+
 	public static final int X = 0;
+
 	public static final int Y = 1;
+
 	public static final int Z = 2;
+
 	public static final int MIN = 0;
+
 	public static final int MAX = 1;
+
 	public static final int OFFSET = 2;
 
-	
 	/**
 	 * @param setGeneralManager
 	 */
-	public GLCanvasHeatmap2D( final IGeneralManager setGeneralManager,
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel )
-	{
-		super( setGeneralManager, 
-				iViewId,  
-				iParentContainerId, 
-				sLabel );
-		
-		fAspectRatio = new float [2][3];
-		viewingFrame = new float [3][2];
-		
+	public GLCanvasHeatmap2D(final IGeneralManager setGeneralManager,
+			int iViewId,
+			int iParentContainerId,
+			String sLabel) {
+
+		super(setGeneralManager, iViewId, iParentContainerId, sLabel);
+
+		fAspectRatio = new float[2][3];
+		viewingFrame = new float[3][2];
+
 		fAspectRatio[X][MIN] = 0.0f;
-		fAspectRatio[X][MAX] = 20.0f; 
-		fAspectRatio[Y][MIN] = 0.0f; 
-		fAspectRatio[Y][MAX] = 20.0f; 
-		
-		fAspectRatio[Y][OFFSET] = 0.0f; 
-		fAspectRatio[Y][OFFSET] = -2.0f; 
-		
+		fAspectRatio[X][MAX] = 20.0f;
+		fAspectRatio[Y][MIN] = 0.0f;
+		fAspectRatio[Y][MAX] = 20.0f;
+
+		fAspectRatio[Y][OFFSET] = 0.0f;
+		fAspectRatio[Y][OFFSET] = -2.0f;
+
 		viewingFrame[X][MIN] = -1.0f;
-		viewingFrame[X][MAX] = 1.0f; 
-		viewingFrame[Y][MIN] = 1.0f; 
-		viewingFrame[Y][MAX] = -1.0f; 
-		
-		viewingFrame[Z][MIN] = 0.0f; 
-		viewingFrame[Z][MAX] = 0.0f; 
-		
-		refMinMaxDataInteger = new MinMaxDataInteger( 1 );
+		viewingFrame[X][MAX] = 1.0f;
+		viewingFrame[Y][MIN] = 1.0f;
+		viewingFrame[Y][MAX] = -1.0f;
+
+		viewingFrame[Z][MIN] = 0.0f;
+		viewingFrame[Z][MAX] = 0.0f;
+
+		refMinMaxDataInteger = new MinMaxDataInteger(1);
 	}
-	
+
+	private void drawSelectionX(GL gl, final float fStartX,
+			final float fStartY, final float fEndX, final float fEndY,
+			final float fIncX, final float fIncY) {
+
+		gl.glColor4f(0.0f, 0.0f, 1.0f, 0.4f);
+
+		float fNowY = fStartY - 0.01f;
+		float fNextY = fEndY + 0.01f;
+
+		float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
+
+		for (int i = 0; i < this.iSelectionStartAtIndexX.length; i++)
+		{
+
+			float fNowX = fStartX + fIncX * iSelectionStartAtIndexX[i];
+			float fNextX = fNowX + fIncX * iSelectionLengthX[i];
+
+			gl.glBegin(GL.GL_TRIANGLE_FAN);
+			// gl.glBegin( GL.GL_LINE_LOOP );
+
+			gl.glVertex3f(fNowX, fNowY, fBias_Z);
+			gl.glVertex3f(fNextX, fNowY, fBias_Z);
+			gl.glVertex3f(fNextX, fNextY, fBias_Z);
+			gl.glVertex3f(fNowX, fNextY, fBias_Z);
+
+			gl.glEnd();
+
+		} // for ( int i=0; i < this.iSelectionStartAtIndex.length; i++ ) {
+
+	}
+
+	private void drawSelectionY(GL gl, final float fStartX,
+			final float fStartY, final float fEndX, final float fEndY,
+			final float fIncX, final float fIncY) {
+
+		gl.glColor4f(0.0f, 0.0f, 1.0f, 0.4f);
+
+		float fNowX = fStartX - 0.01f;
+		float fNextX = fEndX + 0.01f;
+
+		float fBias_Z = viewingFrame[Z][MIN] + 0.0002f;
+
+		for (int i = 0; i < this.iSelectionStartAtIndexY.length; i++)
+		{
+
+			float fNowY = fStartY + fIncY * iSelectionStartAtIndexY[i];
+			float fNextY = fNowY + fIncY * iSelectionLengthY[i];
+
+			gl.glBegin(GL.GL_TRIANGLE_FAN);
+			// gl.glBegin( GL.GL_LINE_LOOP );
+
+			gl.glVertex3f(fNowX, fNowY, fBias_Z);
+			gl.glVertex3f(fNextX, fNowY, fBias_Z);
+			gl.glVertex3f(fNextX, fNextY, fBias_Z);
+			gl.glVertex3f(fNowX, fNextY, fBias_Z);
+
+			gl.glEnd();
+
+		} // for ( int i=0; i < this.iSelectionStartAtIndex.length; i++ ) {
+
+	}
+	    
+	    
 	public void renderText( GL gl, 
 			final String showText,
 			final float fx, 
@@ -142,9 +210,9 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 		
 	        GLUT glut = new GLUT();
 	        
-//	        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-//	        gl.glLoadIdentity();
-//	        gl.glTranslatef(0.0f,0.0f,-1.0f);
+// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+// gl.glLoadIdentity();
+// gl.glTranslatef(0.0f,0.0f,-1.0f);
 	        
 	        // Pulsing Colors Based On Text Position
 	        gl.glColor3fv( colorGrid, 3);
@@ -231,6 +299,8 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 	@Override
 	public void renderPart(GL gl)
 	{
+		
+		
 		gl.glTranslatef( 0,0, 0.01f);
 	
 		  if ( targetSet == null ) 
@@ -434,7 +504,6 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 
 				while (iter.hasNext())
 				{
-
 					gl.glBegin(GL.GL_TRIANGLE_FAN);
 					// gl.glBegin( GL.GL_LINE_LOOP );
 
@@ -464,10 +533,43 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 
 				} //while (iter.hasNext())
 
+				gl.glEnable(GL.GL_DEPTH_TEST);
+				gl.glEnable(GL.GL_BLEND);
+				gl.glBlendFunc( GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				
+				/* Selection ? */
+				if (iSelectionStartAtIndexY != null) {
+					drawSelectionY(gl, 
+							viewingFrame[X][MIN], 
+							viewingFrame[Y][MIN], 
+							viewingFrame[X][MAX],
+							viewingFrame[Y][MAX],
+							fIncX, 
+							fIncY);
+				}
+				
+				if (iSelectionStartAtIndexX != null) {
+					
+					
+					drawSelectionX(gl, 
+							viewingFrame[X][MIN], 
+							viewingFrame[Y][MIN], 
+							viewingFrame[X][MAX],
+							viewingFrame[Y][MAX],
+							fIncX, 
+							fIncY);
+				}
+				
+				gl.glDisable(GL.GL_BLEND);
+				gl.glDisable(GL.GL_DEPTH_TEST);
+				
 			} // if (i_dataValues != null)
 
 			float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
 
+		
+			
+			/* Sourrounding box */
 			gl.glColor3f(1.0f, 1.0f, 0.1f);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], fBias_Z);
@@ -479,6 +581,36 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender
 		} // if (this.targetSet != null)
 
 	}
+  
+  
+    
+    
+    public void setSelectionItems( int[] selectionStartAtIndexX, 
+    		int[] selectionLengthX,
+    		int[] selectionStartAtIndexY, 
+    		int[] selectionLengthY ) {
+    	   	
+    	if  (selectionStartAtIndexX != null ) 
+    	{
+    		/* consistency */ 
+        	assert selectionLengthX != null : "selectionStartAtIndex is null-pointer";    	
+        	assert selectionStartAtIndexX.length == selectionLengthX.length : "both arrays must have equal length";
+        	
+	    	iSelectionStartAtIndexX = selectionStartAtIndexX;    	
+	    	iSelectionLengthX = selectionLengthX;
+    	}
+    	
+    	if  (selectionStartAtIndexY != null ) 
+    	{
+    		/* consistency */ 
+        	assert selectionLengthY != null : "selectionStartAtIndex is null-pointer";    	
+        	assert selectionStartAtIndexX.length == selectionLengthX.length : "both arrays must have equal length";
+        	
+	    	iSelectionStartAtIndexY = selectionStartAtIndexY;    	
+	    	iSelectionLengthY = selectionLengthY;
+    	}
+    	
+    }
   
 	public void displayChanged(GLAutoDrawable drawable, 
 			final boolean modeChanged, 

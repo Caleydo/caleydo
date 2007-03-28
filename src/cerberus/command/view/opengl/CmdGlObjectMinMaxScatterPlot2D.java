@@ -67,7 +67,7 @@ implements ICommand
 		GLCanvasMinMaxScatterPlot2D canvas = 
 			(GLCanvasMinMaxScatterPlot2D) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, vec4fRotation );
+		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
 		

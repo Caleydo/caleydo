@@ -27,7 +27,9 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 	
   private IJoglMouseListener refParentGearsMain;
   
-  protected float fZoomScale = 1.2f;
+  protected float fZoomScale = 0.072f;
+  
+  protected float fPanScale = 3.1f;
 
   protected int prevMouseX, prevMouseY;
   
@@ -210,6 +212,10 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     	
     	if ( ! bMouseMiddleButtonDown ) {
 	    
+		/**
+    	 *   --- ROTATION ---
+    	 */
+    		
     	Rotf currentRotX = new Rotf();
     	Rotf currentRotY = new Rotf();
    	    
@@ -231,11 +237,6 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
    	    
 	    prevMouseX = x;
 	    prevMouseY = y;
-	 
-//	    System.out.println("dragging... -rot-" +
-//	    		currentRotX.toString() +
-//	    		 //refGearsMain.getViewCamera().getCameraRotationEuler().toString() + 
-//	    		 "  fpercent=" +  fpercentX);
 	    
 	    /* set new paramters to ViewCamera */
 	    refParentGearsMain.getViewCamera().addCameraRotation(currentRotX);
@@ -243,8 +244,15 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     	}
 	    else
     	{
-	    	float zoomX = fZoomScale * ( (float)(x-prevMouseX)/(float)size.width);
-		    float zoomY = fZoomScale * ( (float)(prevMouseY-y)/(float)size.height);
+	    	/**
+	    	 *   --- ZOOMING ---
+	    	 */
+	    	
+//	    	float zoomX = fZoomScale * ( (float)(x-prevMouseX)/(float)size.width);
+//		    float zoomY = fZoomScale * ( (float)(prevMouseY-y)/(float)size.height);
+		    
+		    float zoomX = fZoomScale * (float)(x-prevMouseX);
+		    float zoomY = fZoomScale * (float)(prevMouseY-y);
 		    
 		    /* take abs(zoomX) */
 		    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
@@ -253,8 +261,6 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 		    
 	    	prevMouseX = x;
 		    prevMouseY = y;
-		    		   
-		    //System.out.println("dragging -zoom-...");
 		    
 		    /* set new paramters to ViewCamera */
 		    refParentGearsMain.getViewCamera().addCameraScale(
@@ -266,15 +272,16 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     }
     else 
     {
+    	/**
+    	 *   --- PANING ---
+    	 */
 		Vec3f addVec3f = new Vec3f( 
-				fZoomScale * ( (float)(x-prevMouseX)/(float)size.width),
-				fZoomScale * ( (float)(prevMouseY-y)/(float)size.height),
+				fPanScale * ( (float)(x-prevMouseX)/(float)size.width),
+				fPanScale * ( (float)(prevMouseY-y)/(float)size.height),
 				0.0f);
 	    
 	    prevMouseX = x;
 	    prevMouseY = y;	    
-	   
-	    //System.out.println("dragging -PAN-...");
 	    
 	    /* set new paramters to ViewCamera */
 	    refParentGearsMain.getViewCamera().addCameraPosition(addVec3f);
