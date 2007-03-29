@@ -720,7 +720,7 @@ extends APathwayGraphViewRep {
 		
 			if (iDistanceIndex < PathwayRenderStyle.neighborhoodNodeColorArraysize) 
 			{
-				refRenderStyle.getNeighborhoodNodeColorByDepth(iDistanceIndex);
+				nodeColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iDistanceIndex);
 			}
 			else 
 			{
