@@ -61,7 +61,7 @@ public final class StringConversionTool
 			final String sInput, 
 			final int iDefault ) {
 		try {
-			return Integer.valueOf(sInput);
+			return Integer.valueOf(sInput).intValue();
 		}
 		catch ( NumberFormatException nfe ) 
 		{			
@@ -84,7 +84,7 @@ public final class StringConversionTool
 			final String sInput, 
 			final float fDefault ) {
 		try {
-			return Float.valueOf(sInput);
+			return Float.valueOf(sInput).floatValue();
 		}
 		catch ( NumberFormatException nfe ) 
 		{			
@@ -103,7 +103,7 @@ public final class StringConversionTool
 			final String sInput, 
 			final double dDefault ) {
 		try {
-			return Double.valueOf(sInput);
+			return Double.valueOf(sInput).doubleValue();
 		}
 		catch ( NumberFormatException nfe ) 
 		{			
@@ -122,7 +122,7 @@ public final class StringConversionTool
 			final String sInput, 
 			final long lDefault ) {
 		try {
-			return Long.valueOf(sInput);
+			return Long.valueOf(sInput).longValue();
 		}
 		catch ( NumberFormatException nfe ) 
 		{			
@@ -159,7 +159,7 @@ public final class StringConversionTool
 			final String sInput, 
 			final boolean bDefault ) {
 		try {
-			return Boolean.valueOf(sInput);
+			return Boolean.valueOf(sInput).booleanValue();
 		}
 		catch ( NumberFormatException nfe ) 
 		{			
@@ -406,9 +406,11 @@ public final class StringConversionTool
 	
 	/**
 	 * Convert a String sInput into an array of floats.
-	 * The Float array size is asigns dynamically depending on the size of provided float values inside the string sInput.
+	 * The Float array size is assigns by iDimension.
 	 * If number of float values in sInput is smaller than iDimension the remaining values are "0".
 	 * Also if a non-float value is found it is replaced by "0".
+	 * 
+	 * @see cerberus.util.system.StringConversionTool#convertStringToFloatArrayVariableLength(String)
 	 * 
 	 * @param sInput input to be converted into an array of int[]
 	 * @param iDimension size of flaot array
@@ -433,6 +435,39 @@ public final class StringConversionTool
 				break;
 			}
 			
+			resultArray[i] = convertStringToFloat( 
+					tokenizer.nextToken(),
+					0.0f );
+		} //for
+		
+		return resultArray;
+	}
+	
+	/**
+	 * Convert a String sInput into an array of floats.
+	 * The Float array size is asigned dynamically depending on the size of provided float values inside the string sInput.
+	 * If number of float values in sInput is smaller than iDimension the remaining values are "0".
+	 * Also if a non-float value is found it is replaced by "0".
+	 * 
+	 * @see cerberus.util.system.StringConversionTool#convertStringToFloatArray(String, int)
+	 * 
+	 * @param sInput input to be converted into an array of int[]
+	 * @param iDimension size of flaot array
+	 * 
+	 * @return a new array of int[]
+	 */
+	public static final float[] convertStringToFloatArrayVariableLength(
+			final String sInput ) { 
+		StringTokenizer tokenizer = new StringTokenizer( sInput,
+				IGeneralManager.sDelimiter_Parser_DataItems );
+		
+		int iDimension = tokenizer.countTokens();
+		
+		float [] resultArray = new float [iDimension];
+		
+		int i=0;
+		for ( ; tokenizer.hasMoreTokens(); i++ ) 
+		{
 			resultArray[i] = convertStringToFloat( 
 					tokenizer.nextToken(),
 					0.0f );
