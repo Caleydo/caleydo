@@ -42,11 +42,15 @@ implements IJoglMouseListener {
 	 */
 	protected AViewCameraListenerObject(int iUniqueId,
 			final IGeneralManager setGeneralManager,
-			IViewCamera setViewCamera) {
+			final IViewCamera setViewCamera) {
 
 		super(iUniqueId, setGeneralManager);
 		
-		assert setViewCamera != null : "No ViewCamera defefined; null-pointer!";
+		if ( setViewCamera == null ) {
+			this.refViewCamera = new ViewCameraBase();
+			return;
+		}
+
 		this.refViewCamera = setViewCamera;
 	}
 

@@ -163,7 +163,17 @@ implements IXmlParserHandler
 					CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey(), 
 					CommandQueueSaxType.TAG_ATTRIBUTE4.getDefault(),
 					ParameterHandlerType.STRING );	
-				
+			
+			phAttributes.setValueBySaxAttributes( attrs,
+					CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey(), 
+					CommandQueueSaxType.TAG_POS_GL_ORIGIN.getDefault(),
+					ParameterHandlerType.VEC3F );	
+			
+			phAttributes.setValueBySaxAttributes( attrs,
+					CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey(), 
+					CommandQueueSaxType.TAG_POS_GL_ROTATION.getDefault(),
+					ParameterHandlerType.VEC4F );	
+			
 			phAttributes.setValueBySaxAttributes( attrs,
 					CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
 					CommandQueueSaxType.TAG_DETAIL.getDefault(),

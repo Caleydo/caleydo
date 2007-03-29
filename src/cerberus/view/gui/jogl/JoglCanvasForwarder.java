@@ -152,6 +152,7 @@ implements GLEventListener, IJoglMouseListener {
 				
 	}
 
+	
 	public void reshape(GLAutoDrawable drawable, 
 			int x, 
 			int y, 
@@ -235,6 +236,11 @@ implements GLEventListener, IJoglMouseListener {
 		}
 	}
 
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
 	public void display(GLAutoDrawable drawable) {
 
 		GL gl = drawable.getGL();

@@ -3,6 +3,8 @@
  */
 package cerberus.view.gui.opengl.canvas;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,14 +12,15 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 
-import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.selection.SetSelection;
+import cerberus.data.view.camera.IViewCamera;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.gui.jogl.AViewCameraListenerObject;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 
@@ -26,7 +29,8 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
  *
  */
 public abstract class AGLCanvasUser 
-extends AUniqueManagedObject 
+//extends AUniqueManagedObject 
+extends AViewCameraListenerObject
 implements IGLCanvasUser {
 	
 	protected GLAutoDrawable canvas;
@@ -51,11 +55,12 @@ implements IGLCanvasUser {
 	 * @param setGeneralManager
 	 */
 	protected AGLCanvasUser( final IGeneralManager setGeneralManager,
+			final IViewCamera setViewCamera,
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel )
 	{
-		super( iViewId, setGeneralManager );
+		super( iViewId, setGeneralManager, setViewCamera);
 		
 		openGLCanvasDirector =
 			setGeneralManager.getSingelton().getViewGLCanvasManager().getGLCanvasDirector( iParentContainerId );
@@ -129,53 +134,6 @@ implements IGLCanvasUser {
 		return null;
 	}
 
-	public void initGLCanvas(GLCanvas canvas)
-	{
-		setInitGLDone();
-	}
-
-	
-	public abstract void renderPart(GL gl);
-	
-	
-	public final void render(GLAutoDrawable canvas)
-	{
-		GL gl = canvas.getGL();
-		
-//		/* Clear The Screen And The Depth Buffer */
-//		gl.glPushMatrix();
-
-//		gl.glTranslatef( origin.x(), origin.y(), origin.z() );
-//		gl.glRotatef( rotation.x(), 
-//				rotation.y(),
-//				rotation.z(),
-//				rotation.w() );
-		
-		// isInitGLDone() == bInitGLcanvawsWasCalled 
-		if  ( ! bInitGLcanvawsWasCalled ) {
-			initGLCanvas( (GLCanvas) canvas);
-			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
-		}
-		
-		this.renderPart( gl );
-
-//		gl.glPopMatrix();		
-//		
-		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
-	}
-	
-	public void reshape(GLAutoDrawable drawable, 
-			final int x,
-			final int y,
-			final int width,
-			final int height) {
-		
-		GL gl = drawable.getGL();
-		
-		System.out.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
-		
-		this.renderPart( gl );
-	}
 	
 	/**
 	 * @see cerberus.view.gui.IView#addSetId(int[])
@@ -365,5 +323,78 @@ implements IGLCanvasUser {
 		}
 		
 		return false;			
+	}
+	
+
+	/**
+	 * Forwards render(GLAutoDrawable) to derived class.
+	 * 
+	 * @see cerberus.view.gui.opengl.canvas.AGLCanvasUser#render(GLAutoDrawable)
+	 * 
+	 * @param gl canvas created from GLAutoDrawable
+	 */
+	public abstract void renderPart(GL gl);
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
+	 */
+	public void initGLCanvas(GLCanvas canvas)
+	{
+		setInitGLDone();
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
+	 */
+	public final void render(GLAutoDrawable canvas)
+	{
+		GL gl = canvas.getGL();
+		
+		/** Read viewing parameters... */
+		Vec3f rot_Vec3f = new Vec3f();
+		Vec3f position = refViewCamera.getCameraPosition();
+		float w = refViewCamera.getCameraRotationGrad(rot_Vec3f);
+		
+	
+		/** Translation */
+		gl.glTranslatef(position.x(),
+				position.y(),
+				position.z() );
+		
+		
+		/** Rotation */		
+		gl.glRotatef( w, 
+				rot_Vec3f.x(), 
+				rot_Vec3f.y(), 
+				rot_Vec3f.z());
+		
+		// isInitGLDone() == bInitGLcanvawsWasCalled 
+		if  ( ! bInitGLcanvawsWasCalled ) {
+			initGLCanvas( (GLCanvas) canvas);
+			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
+		}
+		
+		this.renderPart( gl );
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, 
+			final int x,
+			final int y,
+			final int width,
+			final int height) {
+		
+		GL gl = drawable.getGL();
+		
+		System.out.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
+		
+		this.renderPart( gl );
 	}
 }

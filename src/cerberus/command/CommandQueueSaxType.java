@@ -137,10 +137,10 @@ public enum CommandQueueSaxType
 	TAG_POS_WIDTH_X("cmd","iWidthX","-1"),
 	TAG_POS_HEIGHT_Y("cmd","iHeightY","-1"),
 	
-	TAG_POS_GL_ORIGIN("cmd","GL_ORIGIN","0 0 0"),
+	TAG_POS_GL_ORIGIN("cmd","gl_origin","0 0 0"),
 	
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */
-	TAG_POS_GL_ROTATION("cmd","GL_ROTATION","0 0 1 0.0");
+	TAG_POS_GL_ROTATION("cmd","gl_rotation","0 0 1 0.0");
 	
 	
 	

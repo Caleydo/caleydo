@@ -80,7 +80,7 @@ implements ICommand {
 		GLCanvasHistogram2D canvas = 
 			(GLCanvasHistogram2D) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
+		canvas.setOriginRotation( cameraOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		
 		if ( iTargetCollectionSetId > -1 ) {

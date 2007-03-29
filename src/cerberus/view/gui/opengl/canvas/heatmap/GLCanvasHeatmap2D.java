@@ -299,8 +299,6 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 	@Override
 	public void renderPart(GL gl)
 	{
-		
-		
 		gl.glTranslatef( 0,0, 0.01f);
 	
 		  if ( targetSet == null ) 

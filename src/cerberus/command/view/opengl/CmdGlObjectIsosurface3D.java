@@ -80,7 +80,7 @@ implements ICommand {
 		GLCanvasIsoSurface3D canvas = 
 			(GLCanvasIsoSurface3D) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
+		canvas.setOriginRotation( cameraOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		
 		if ( iTargetCollectionSetId > -1 ) {

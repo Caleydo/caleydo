@@ -82,7 +82,7 @@ implements ICommand {
 		GLCanvasLayeredPathway3D canvas = 
 			(GLCanvasLayeredPathway3D) openGLCanvasUser;		
 		  
-		canvas.setOriginRotation(vec3fOrigin, cameraRotation);
+		canvas.setOriginRotation(cameraOrigin, cameraRotation);
 		
 		int[] iArTmp = new int[iArSetIDs.size()];
 		for(int index = 0; index < iArSetIDs.size(); index++)

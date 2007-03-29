@@ -67,7 +67,7 @@ implements ICommand
 		GLCanvasMinMaxScatterPlot3D canvas = 
 			(GLCanvasMinMaxScatterPlot3D) openGLCanvasUser;
 				
-		canvas.setOriginRotation( vec3fOrigin, cameraRotation );
+		canvas.setOriginRotation( cameraOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
 	}
