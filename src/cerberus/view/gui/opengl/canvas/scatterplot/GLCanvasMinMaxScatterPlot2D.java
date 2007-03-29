@@ -37,6 +37,8 @@ extends AGLCanvasUser_OriginRotation
 implements IGLCanvasUser, IMediatorReceiver
 {
 	
+	protected boolean bShowGrid = true;
+	
 	protected MinMaxDataInteger minMaxSeaker;
 	
 	private float [][] viewingFrame;
@@ -44,6 +46,8 @@ implements IGLCanvasUser, IMediatorReceiver
 	private int iGridSize = 40;
 	
 	private float fPointSize = 1.0f;
+	
+	protected float [] colorDataPoints = { 1.0f, 0.0f, 0.0f };
 	
 	/**
 	 * Color for grid (0,1,2) 
@@ -99,6 +103,25 @@ implements IGLCanvasUser, IMediatorReceiver
 		viewingFrame[Y][MAX] = -1.0f;
 		viewingFrame[Z][MIN] = 0.0f; 
 		viewingFrame[Z][MAX] = 0.0f; 
+	}
+	
+	public final void setShowGrid( boolean bSetShowGrid) {
+		this.bShowGrid = bSetShowGrid;	
+	}
+	
+	public final boolean getShowGrid() {
+		return bShowGrid;	
+	}
+	
+	public void setcolorDataPoints( final float [] setColorDataPoints) {
+		assert setColorDataPoints != null : "can not handle null poitner";
+		
+		if ( setColorDataPoints.length < 3 ) {
+			assert false : "can not handle array with less than 3 values";
+			return;
+		}
+		
+		this.colorDataPoints = setColorDataPoints;
 	}
 	
 	public void renderText( GL gl, 
@@ -187,7 +210,7 @@ implements IGLCanvasUser, IMediatorReceiver
 	{
 		gl.glTranslatef( 0,0, 0.01f);
 		
-		if ( iGridSize > 1 ) 
+		if (( iGridSize > 1 )&&(bShowGrid))
 		{
 			drawScatterPlotGrid( gl ,iGridSize );
 		}
@@ -212,6 +235,22 @@ implements IGLCanvasUser, IMediatorReceiver
 		float fYhoricontal = viewingFrame[Y][MIN] + fIncY;
 		
 		
+		/**
+		 * Box..
+		 */
+		
+		gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+		gl.glEnd(); // Finish drawing the triangle
+		
+		/**
+		 * End draw Box
+		 */
+		
+		
 		for ( int i=0; i < iResolution; i++ )
 		{
 			gl.glBegin(GL.GL_LINES); // Drawing using triangles
@@ -227,10 +266,11 @@ implements IGLCanvasUser, IMediatorReceiver
 			fYhoricontal += fIncY;
 		}
 		
+		gl.glTranslatef(0, 0, viewingFrame[Z][MIN]);
 		
 		renderText( gl, "Y-Axis",
-				viewingFrame[X][MIN], 
-				-2.0f, 
+				viewingFrame[X][MAX], 
+				viewingFrame[Y][MIN] - viewingFrame[Y][MAX], 
 				viewingFrame[Z][MIN] );
 		
 		renderText( gl, "X-Axis", 
@@ -238,25 +278,11 @@ implements IGLCanvasUser, IMediatorReceiver
 				viewingFrame[Y][MIN], 
 				viewingFrame[Z][MIN] );
 		
+		gl.glTranslatef(0, 0, - viewingFrame[Z][MIN]);
+		
 	}
 	
 	protected void drawScatterPlotInteger(GL gl) {
-		
-		/**
-		 * Box..
-		 */
-		
-		gl.glColor3fv( colorGrid, 0); // Set the color to red
-		gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
-		gl.glEnd(); // Finish drawing the triangle
-		
-		/**
-		 * End draw Box
-		 */
 		
 		
 		if ( targetSet.getDimensions() < 2 ) {
@@ -323,7 +349,7 @@ implements IGLCanvasUser, IMediatorReceiver
 		
 		gl.glPointSize( fPointSize );		
 		gl.glDisable( GL.GL_LIGHTING );
-		gl.glColor3fv( colorGrid, 6); // Set the color to blue one time only	
+		gl.glColor3fv( colorDataPoints, 0); // Set the color for all points
 		
 		
 		for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 

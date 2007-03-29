@@ -22,7 +22,11 @@ extends ACmdCreate_GlCanvasUser
 implements ICommand
 {
 
+	protected float[] fColorSpots = { 1.0f, 0, 0};
+	
 	protected float[] fResolution;
+	
+	protected String sGridDetails = "";
 	
 	/**
 	 * If of Set to be read data from
@@ -59,6 +63,18 @@ implements ICommand
 		fResolution = StringConversionTool.convertStringToFloatArray( 
 				sAttribute3,
 				14 );
+		
+		String sColor = refParameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
+		
+		sGridDetails = refParameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
+		
+		if ( sColor != null ) 
+		{
+			fColorSpots = StringConversionTool.convertStringToFloatArrayVariableLength(
+					sColor );
+		}
 	}
 
 	@Override
@@ -70,6 +86,11 @@ implements ICommand
 		canvas.setOriginRotation( cameraOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		canvas.setTargetSetId( iTargetCollectionSetId );
+		canvas.setcolorDataPoints(fColorSpots);
+		
+		if ( sGridDetails.startsWith("no_grid") ) {
+			canvas.setShowGrid(false);
+		}
 		
 	}
 
