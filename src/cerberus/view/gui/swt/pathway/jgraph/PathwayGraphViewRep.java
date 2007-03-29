@@ -221,6 +221,10 @@ extends APathwayGraphViewRep {
 		        	DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
 						.getFirstCellForLocation(event.getX(), event.getY());
 		        	
+		        	// Do nothing when there no specific node was clicked.
+		        	if (clickedCell == null)
+		        		return;
+		        	
 		        	lastClickedGraphCell = clickedCell;
 		    		
 					// Check if cell has an user object attached
