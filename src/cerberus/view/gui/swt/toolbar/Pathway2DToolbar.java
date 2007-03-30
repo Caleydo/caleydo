@@ -141,10 +141,8 @@ extends AToolbar {
 		final Menu filterEdgeMenu = new Menu (refSWTContainer.getShell(), SWT.POP_UP);
 		final MenuItem refShowRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
 		refShowRelationsItem.setText ("Show relations");
-		refShowRelationsItem.setSelection(true);
 		final MenuItem refShowReactionsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
-		refShowReactionsItem.setText ("Show reactions");
-		refShowReactionsItem.setSelection(true);	
+		refShowReactionsItem.setText ("Show reactions");	
 		
 		refFilterEdgesItem.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event event) {
@@ -178,6 +176,11 @@ extends AToolbar {
 							clickedMenuItem.getSelection(),
 							EdgeType.REACTION);
 				}					
+
+				
+				// Get current states of edge filter
+				refShowReactionsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.REACTION));
+				refShowRelationsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.RELATION));
 			}
 		};	
 		

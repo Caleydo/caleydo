@@ -154,6 +154,10 @@ extends APathwayGraphViewRep {
 	
 	protected HashMap<IPathwayVertexRep, DefaultGraphCell> hashVertexRep2GraphCell;
 	
+	protected boolean bShowReactionEdges = true;
+	
+	protected boolean bShowRelationEdges = true;
+	
 	public PathwayGraphViewRep(IGeneralManager refGeneralManager, 
 			int iParentContainerId) {
 		
@@ -693,17 +697,6 @@ extends APathwayGraphViewRep {
 		hashSetVisitedNeighbors.clear();
 		//hashSetVisitedNeighbors.add(lastClickedGraphCell);
 		
-//		// Color mapping will start with red (neigborhood = 1)
-//		// For graph parts far away the color will turn to yellow.
-//		float fGreenPortion = 1.0f - (iDistance / 10.0f * 3.0f) + 0.3f;
-//		
-//		if (fGreenPortion < 0.0)
-//			fGreenPortion = 0.0f;
-//		else if (fGreenPortion > 1.0f)
-//			fGreenPortion = 1.0f;
-//		GraphConstants.setBackground(
-//				attributeMap, new Color(1.0f, fGreenPortion, 0.0f));
-		
 		ArrayList<DefaultGraphCell> queueBFS = new ArrayList<DefaultGraphCell>();
 		ArrayList<DefaultGraphCell> queueBFSNext = new ArrayList<DefaultGraphCell>();
 		queueBFS.add(lastClickedGraphCell);
@@ -825,16 +818,39 @@ extends APathwayGraphViewRep {
 	
 	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
 
+		refGraphModel.removeUndoableEditListener(refUndoManager);
+		
 		if (edgeType == EdgeType.REACTION)
 		{
 			refGraphLayoutCache.setVisible(
-					vecRelationEdges.toArray(), bShowEdges);			
+					vecRelationEdges.toArray(), bShowEdges);	
+			
+			bShowReactionEdges = bShowEdges;
 		}
 		else if (edgeType == EdgeType.RELATION)
 		{
 			refGraphLayoutCache.setVisible(
 					vecReactionEdges.toArray(), bShowEdges);
+			
+			bShowRelationEdges = bShowEdges;
 		}	
+		
+		refGraphModel.addUndoableEditListener(refUndoManager);			
+	}
+	
+	public boolean getEdgeVisibilityStateByType(EdgeType edgeType) {
+		
+		if (edgeType == EdgeType.REACTION)
+		{
+			return (bShowReactionEdges);
+		}
+		else if (edgeType == EdgeType.RELATION)
+		{
+			return (bShowRelationEdges);
+		}
+		
+		assert false : "Invalid edge type specified!";
+		return false;
 	}
 	
 	public void showBackgroundOverlay(boolean bTurnOn) {
@@ -876,19 +892,22 @@ extends APathwayGraphViewRep {
 		drawView();
 		
 		// Adapt edge visiblitly state
-		refGraphLayoutCache.setVisible(
-				vecReactionEdges.toArray(), !bTurnOn);
-		refGraphLayoutCache.setVisible(
-				vecRelationEdges.toArray(), !bTurnOn);
+		showHideEdgesByType(!bTurnOn, EdgeType.REACTION);
+		showHideEdgesByType(!bTurnOn, EdgeType.RELATION);
 		
 		if (lastClickedGraphCell != null)
 		{
-			// Map previously selected cell to new pathway JGraph.
-			lastClickedGraphCell = hashVertexRep2GraphCell.get(
-				(IPathwayVertexRep)lastClickedGraphCell.getUserObject());
+			// Check if selected cell is a vertex and if it is valid
+			if (lastClickedGraphCell.getUserObject().getClass().equals(
+					cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep.class))
+			{
+				// Map previously selected cell to new pathway JGraph.
+				lastClickedGraphCell = hashVertexRep2GraphCell.get(
+						(IPathwayVertexRep)lastClickedGraphCell.getUserObject());
 			
-			// Rehighlight previously selected cells
-			processSelectedCell();
+				// Rehighlight previously selected cells
+				processSelectedCell();
+			}
 		}
 	}
 	
@@ -927,9 +946,9 @@ extends APathwayGraphViewRep {
 		// Set scaling factor so that background image is an direct overlay
 		fScalingFactor = 1.0f;
 		
-		// Set edges to visible
-		refGraphLayoutCache.setVisible(
-				vecReactionEdges.toArray(), false);
+//		// Set edges to visible
+//		refGraphLayoutCache.setVisible(
+//				vecReactionEdges.toArray(), false);
 	}
 	
 	/**

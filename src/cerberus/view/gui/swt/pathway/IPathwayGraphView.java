@@ -36,6 +36,8 @@ extends IView {
 	public void showHideEdgesByType(boolean bShowEdges,
 			EdgeType edgeType);
 	
+	public boolean getEdgeVisibilityStateByType(EdgeType edgeType);
+	
 	public void showBackgroundOverlay(boolean bTurnOn);
 	
 	public void resetPathway();
