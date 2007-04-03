@@ -215,6 +215,9 @@ public interface ISet
 
 	public SetType getSetType();
 	
+	public SetDetailedDataType getRawDataSetType();
+	
+	public void setRawDataSetType(SetDetailedDataType set);
 	
 /////////////////////////////
 //	/**

@@ -116,8 +116,8 @@ implements IGLCanvasUser, IMediatorReceiver
 	public void setcolorDataPoints( final float [] setColorDataPoints) {
 		assert setColorDataPoints != null : "can not handle null poitner";
 		
-		if ( setColorDataPoints.length < 3 ) {
-			assert false : "can not handle array with less than 3 values";
+		if ( setColorDataPoints.length != 3 ) {
+			//assert false : "can not handle array with less than 3 values";
 			return;
 		}
 		

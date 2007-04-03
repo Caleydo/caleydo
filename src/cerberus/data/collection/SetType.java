@@ -23,8 +23,6 @@ implements ICollectionType {
 	/** variable n-dimensional set, were n may change. */
 	SET_RAW_DATA(SetDataType.SET_LINEAR),
 	
-	SET_PATHWAY(SetDataType.SET_DATATYPE_NONE),
-	
 	SET_SELECTION(SetDataType.SET_DATATYPE_NONE),
 	
 	SET_VIEW_DATA(SetDataType.SET_DATATYPE_NONE),
@@ -57,17 +55,17 @@ implements ICollectionType {
 	/**
 	 * TRUE if it is a RAW_DATA type, FALSE else
 	 */
-	public boolean isDataType() {
+	public final boolean isDataType() {
 		return bRawDataType;
 	}
 	
-	public void setDataType( final SetDataType setType) {
+	public final void setDataType( final SetDataType setType) {
 		assert setType != SetDataType.SET_DATATYPE_NONE : "Can not set no data type";
 		
 		setDataType = setType;
 	}
 	
-	public SetDataType getDataType() {
+	public final SetDataType getDataType() {
 		return setDataType;
 	}
 }

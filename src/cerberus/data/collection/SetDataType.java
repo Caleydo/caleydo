@@ -40,7 +40,7 @@ public enum SetDataType
 			return SetDataType.SET_LINEAR;
 			
 		case SET_DATA_PLANAR:
-			return SetDataType.SET_LINEAR;
+			return SetDataType.SET_PLANAR;
 			
 		case SET_DATA_MULTIDIM:
 			return SetDataType.SET_MULTI_DIM;
