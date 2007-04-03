@@ -13,6 +13,7 @@ import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.data.CmdDataCreatePathwayStorage;
 import cerberus.command.data.CmdDataCreateSelectionSetMakro;
+import cerberus.command.data.CmdDataCreateSetViewdata;
 import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
@@ -150,6 +151,12 @@ public class CommandFactory
 		
 		switch ( cmdType ) {
 		
+		/*
+		 * ----------------------
+		 *        LAODING...
+		 * ----------------------
+		 */
+		
 		case LOAD_LOOKUP_TABLE_FILE: 
 		{
 			createdCommand =
@@ -179,7 +186,24 @@ public class CommandFactory
 						cmdType);
 			break;
 		}
+		
+		case LOAD_URL_IN_BROWSER:
+		{
+			createdCommand =
+				new CmdViewLoadURLInHTMLBrowser(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);
+			break;
+		}
+		
 
+		/*
+		 * ----------------------
+		 *    DATA CONTAINERS
+		 * ----------------------
+		 */
+		
 		case CREATE_STORAGE:
 		{					
 			createdCommand =
@@ -199,9 +223,19 @@ public class CommandFactory
 						refCommandManager,
 						cmdType);
 			break;
-		}		
+		}				
+
+		case CREATE_VIRTUAL_ARRAY:
+		{
+			createdCommand =
+				new CmdDataCreateVirtualArray(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;
+		}
 		
-		case CREATE_SET:
+		case CREATE_SET_DATA:
 		{
 			createdCommand =
 				new CmdDataCreateSet(
@@ -212,15 +246,16 @@ public class CommandFactory
 			break;
 		}
 		
-		case CREATE_VIRTUAL_ARRAY:
+		case CREATE_SET_VIEW:
 		{
 			createdCommand =
-				new CmdDataCreateVirtualArray(
+				new CmdDataCreateSetViewdata(
 						refGeneralManager,
 						refCommandManager,
-						cmdType);		
+						cmdType);
 			break;
 		}
+		
 
 		case CREATE_SET_SELECTION_MAKRO:
 		{
@@ -231,6 +266,14 @@ public class CommandFactory
 						cmdType);		
 			break;
 		}
+		
+
+		
+		/*
+		 * ----------------------
+		 *        SWT
+		 * ----------------------
+		 */
 		
 		case CREATE_SWT_WINDOW:
 		{
@@ -251,6 +294,12 @@ public class CommandFactory
 						cmdType);
 			break;
 		}
+		
+		/*
+		 * ----------------------
+		 *        VIEW
+		 * ----------------------
+		 */
 		
 		case CREATE_VIEW_HEATMAP:
 		{
@@ -402,6 +451,13 @@ public class CommandFactory
 			break;
 		}		
 		
+		/*
+		 * ----------------------
+		 *        OPEN GL
+		 * ----------------------
+		 */
+		
+		
 		case CREATE_GL_TRIANGLE_TEST:
 		{
 			createdCommand =
@@ -512,6 +568,14 @@ public class CommandFactory
 			break;
 		}
 		
+		
+		/*
+		 * ----------------------
+		 *        SYSTEM
+		 * ----------------------
+		 */
+		
+		
 		case CREATE_EVENT_MEDIATOR:
 		{
 			createdCommand =
@@ -522,17 +586,10 @@ public class CommandFactory
 			break;
 		}
 		
-		case LOAD_URL_IN_BROWSER:
-		{
-			createdCommand =
-				new CmdViewLoadURLInHTMLBrowser(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);
-			break;
-		}
-		
-		case  SET_PATHWAY_PATHS:
+		/**
+		 * Set path for pathway XML files, images and imagemaps.
+		 */
+		case  SET_SYSTEM_PATH_PATHWAYS:
 		{
 			createdCommand =
 				new CmdSetPathwayPaths(
@@ -540,7 +597,9 @@ public class CommandFactory
 						refCommandManager,
 						cmdType);
 			break;
-		}		
+		}	
+		
+		
 		
 		default: 
 			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 

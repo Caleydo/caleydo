@@ -17,6 +17,8 @@ import java.util.Vector;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.SetType;
 
 //import cerberus.command.ICommand;
 import cerberus.command.CommandQueueSaxType;
@@ -44,7 +46,7 @@ import cerberus.manager.type.ManagerObjectType;
 public class CmdDataCreateSet 
 extends ACmdCreate_IdTargetLabelAttr {
 	
-	private CommandQueueSaxType set_type;
+	private SetDataType set_type;
 
 	private ISet newObject = null;
 	
@@ -96,7 +98,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		llRefStorage_nDim 	= new LinkedList< LinkedList<String> > ();
 		llRefVirtualArray_nDim 	= new LinkedList< LinkedList<String> > ();
 		
-		set_type = CommandQueueSaxType.CREATE_SET;
+		set_type = SetDataType.SET_LINEAR;
 	}
 	
 
@@ -385,44 +387,53 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		newObject = null;
 		
-		switch ( set_type ) 
-		{
-		case CREATE_SET:
-			newObject = (ISet) refSetManager.createSet(
-					set_type );
+		if ( set_type != null ) {
 			
-			assingLinearSet( newObject );
-			break;
-			
-		case CREATE_SET_PLANAR:
-			newObject = (ISet) refSetManager.createSet(
-					set_type );
-			
-			assingPlanarOrMultiDimensionalSet( newObject );
-			break;
-			
-		case CREATE_SET_MULTIDIM:
-			newObject = (ISet) refSetManager.createSet(
-					set_type );
-			
-			assingPlanarOrMultiDimensionalSet( newObject );
-			break;
-			
-		case CREATE_SET_SELECTION:
-			newObject = (ISet) refSetManager.createSet(
-					set_type );
-			
-			assingPlanarOrMultiDimensionalSet( newObject );
-			break;
-			
-		default:
-			refGeneralManager.getSingelton().logMsg(
-						"CmdDataCreateSet.doCommand() failed because type=[" +
-						set_type + "] is not supported!",
-						LoggerType.ERROR_ONLY );
-			return;
-		}
+			switch ( set_type ) 
+			{
+			case SET_LINEAR:
+				newObject = (ISet) refSetManager.createSet(
+						set_type );
 				
+				assingLinearSet( newObject );
+				break;
+				
+			case SET_PLANAR:
+				newObject = (ISet) refSetManager.createSet(
+						set_type );
+				
+				assingPlanarOrMultiDimensionalSet( newObject );
+				break;
+				
+			case SET_MULTI_DIM:
+				newObject = (ISet) refSetManager.createSet(
+						set_type );
+				
+				assingPlanarOrMultiDimensionalSet( newObject );
+				break;
+				
+			case SET_MULTI_DIM_VARIABLE:
+			case SET_CUBIC:
+				refGeneralManager.getSingelton().logMsg(
+						"CmdDataCreateSet.doCommand() known type=[" +
+						set_type + "] but yet now usb-class exists",
+						LoggerType.VERBOSE );
+				
+			default:
+				refGeneralManager.getSingelton().logMsg(
+							"CmdDataCreateSet.doCommand() failed because type=[" +
+							set_type + "] is not supported!",
+							LoggerType.ERROR_ONLY );
+				return;
+			}
+		}  //if ( set_type != null ) {
+		else
+		{  //if ( set_type != null ) {..} else
+			newObject = (ISet) refSetManager.createSet( SetType.SET_SELECTION, null);
+			
+			assingPlanarOrMultiDimensionalSet( newObject );
+		} //if ( set_type != null ) {..} else {..}
+		
 		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
 		
@@ -611,7 +622,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );		
 		if ( sDetailTag.length() > 0 ) 
 		{
-			set_type = CommandQueueSaxType.valueOf( sDetailTag );
+			set_type = SetDataType.convert( CommandQueueSaxType.valueOf( sDetailTag ) );
 		}
 		
 		
@@ -623,14 +634,16 @@ extends ACmdCreate_IdTargetLabelAttr {
 			bErrorOnLoadingXMLData = true;
 			
 			wipeLinkedLists();
-			set_type = CommandQueueSaxType.NO_OPERATION;
+			
+			assert false : "did not test assigning set_type= null!";
+			set_type = null;
 		}
 	}
 	
 	public void setAttributes(int iSetId, 
 			String sVirtualArrayIDs, 
 			String sStorageIDs,
-			CommandQueueSaxType setType) {
+			SetDataType setType) {
 		
 		iUniqueTargetId = iSetId;
 		set_type = setType;

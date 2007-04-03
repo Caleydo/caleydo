@@ -613,12 +613,23 @@ extends APathwayGraphViewRep {
 	
 	public void finishGraphBuilding() {
 		
-		refPathwayGraph.getGraphLayoutCache().insert(
-				vecVertices.toArray());
-//		refPathwayGraph.getGraphLayoutCache().insert(
-//				vecRelationEdges.toArray());
-//		refPathwayGraph.getGraphLayoutCache().insert(
-//				vecReactionEdges.toArray());
+		
+		try {
+				refPathwayGraph.getGraphLayoutCache().insert(
+						vecVertices.toArray());
+//				refPathwayGraph.getGraphLayoutCache().insert(
+//						vecRelationEdges.toArray());
+//				refPathwayGraph.getGraphLayoutCache().insert(
+//						vecReactionEdges.toArray());
+				
+			} catch (NullPointerException npe) {
+				refGeneralManager.getSingelton().logMsg("Error while rendering JGraph part!",
+						LoggerType.ERROR_ONLY);
+				
+				System.out.println("ERROR! : " + vecVertices.toString() );
+				
+				npe.printStackTrace();
+			}		
 	}
 	
 	public void loadPathwayFromFile(int iNewPathwayId) {

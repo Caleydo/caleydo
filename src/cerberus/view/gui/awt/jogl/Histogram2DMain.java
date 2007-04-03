@@ -21,11 +21,10 @@ import javax.media.opengl.GLEventListener;
 
 import com.sun.opengl.util.Animator;
 
-
-import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.SetDataType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -428,7 +427,7 @@ implements GLEventListener, IJoglMouseListener
 		
 		ISet createdSet = 
 			this.refGeneralManager.getSingelton().getSetManager().createSet( 
-					CommandQueueSaxType.CREATE_SET );
+					SetDataType.SET_LINEAR );
 		
 		createdSet.setVirtualArrayByDimAndIndex( createdSelection, 0 ,0 );
 		createdSet.setStorageByDimAndIndex( createdStorage, 0, 0 );

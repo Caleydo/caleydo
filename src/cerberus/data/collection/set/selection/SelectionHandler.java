@@ -228,7 +228,7 @@ implements IGroupedSelection {
 
 		// Type
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_TYPE.getXmlKey(),
-				CommandQueueSaxType.CREATE_SET.name(),
+				CommandQueueSaxType.SET_DATA_LINEAR.name(),
 				IParameterHandler.ParameterHandlerType.STRING);
 		
 		// Label
@@ -255,7 +255,7 @@ implements IGroupedSelection {
 		
 		// Detail
 		refParameterHandler.setValueAndType(CommandQueueSaxType.TAG_DETAIL.getXmlKey(), 
-				CommandQueueSaxType.CREATE_SET_PLANAR.name(), 
+				CommandQueueSaxType.SET_DATA_PLANAR.name(), 
 				IParameterHandler.ParameterHandlerType.STRING);
 
 		refGeneralManager.getSingelton().getCommandManager().

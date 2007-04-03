@@ -30,11 +30,13 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+//import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.SetDataType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
@@ -664,7 +666,7 @@ implements IView {
 
 		CmdDataCreateSet createdCommand = 
 			(CmdDataCreateSet) refGeneralManager.getSingelton().getCommandManager()
-				.createCommandByType(CommandQueueSaxType.CREATE_SET);
+				.createCommandByType(CommandQueueSaxType.CREATE_SET_DATA);
 
 		String sStorageIDs = "";
 		String sVirtualArrayIDs = "";
@@ -684,7 +686,7 @@ implements IView {
 		createdCommand.setAttributes(iNewSetId, 
 				sVirtualArrayIDs, 
 				sStorageIDs,
-				CommandQueueSaxType.CREATE_SET_PLANAR);
+				SetDataType.SET_PLANAR);
 		createdCommand.doCommand();
 		
 		return iNewSetId;

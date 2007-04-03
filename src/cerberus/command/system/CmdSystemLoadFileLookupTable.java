@@ -8,12 +8,7 @@
  */
 package cerberus.command.system;
 
-//import java.util.HashMap;
-//import java.util.Iterator;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Map.Entry;
 
 
 import cerberus.command.CommandQueueSaxType;
@@ -27,8 +22,8 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.manager.data.genome.GenomeIdMapInt2Int;
-import cerberus.manager.data.genome.IGenomeIdMap;
+//import cerberus.manager.data.genome.GenomeIdMapInt2Int;
+//import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;

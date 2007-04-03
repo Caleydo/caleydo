@@ -1,5 +1,7 @@
 package cerberus.data.collection;
 
+import cerberus.command.CommandQueueSaxType;
+
 
 public enum SetDataType
 {
@@ -24,5 +26,34 @@ public enum SetDataType
 	 */
 	private SetDataType() {
 		
+	}
+	
+	/**
+	 * Convert a CommandQueueSaxType to SetDataType if a mappign exists.
+	 * 
+	 * @param type input type
+	 * @return SetDataType if mapping with type exists
+	 */
+	public static final SetDataType convert( final CommandQueueSaxType type) {
+		switch ( type ) {
+		case SET_DATA_LINEAR:
+			return SetDataType.SET_LINEAR;
+			
+		case SET_DATA_PLANAR:
+			return SetDataType.SET_LINEAR;
+			
+		case SET_DATA_MULTIDIM:
+			return SetDataType.SET_MULTI_DIM;
+			
+		case SET_DATA_MULTIDIM_VARIABLE:
+			return SetDataType.SET_MULTI_DIM_VARIABLE;
+			
+		case SET_DATA_CUBIC:
+			return SetDataType.SET_CUBIC;
+			
+		default:
+			assert false : "unsupported type " + type.name();
+			return null;
+		}
 	}
 }

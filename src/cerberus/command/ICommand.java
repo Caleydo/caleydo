@@ -9,7 +9,6 @@
 package cerberus.command;
 
 import cerberus.data.IUniqueObject;
-import cerberus.command.CommandQueueSaxType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
 

@@ -178,7 +178,7 @@ implements ICommand {
 			
 		CmdDataCreateSet createdCommand = 
 			(CmdDataCreateSet) refGeneralManager.getSingelton().getCommandManager()
-				.createCommandByType(CommandQueueSaxType.CREATE_SET);
+				.createCommandByType(CommandQueueSaxType.CREATE_SET_DATA);
 
 		StringBuffer stBuffer = new StringBuffer();
 		
@@ -193,7 +193,8 @@ implements ICommand {
 		createdCommand.setAttributes(iUniqueTargetId, 
 				sVirtualArrayIDs, 
 				stBuffer.toString(),
-				CommandQueueSaxType.CREATE_SET_SELECTION);
+				null);  // use null because we what to create a SelectionSet! 
+		
 		createdCommand.doCommand();
 	}
 }

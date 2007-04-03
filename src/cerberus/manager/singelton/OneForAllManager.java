@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.SetDataType;
 import cerberus.data.xml.IMementoXML;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IDistComponentManager;
@@ -395,7 +396,7 @@ implements IGeneralManagerSingelton
 		case VIRTUAL_ARRAY:
 			return refVirtualArrayManager.createVirtualArray(createNewType);
 		case SET:
-			return refSetManager.createSet( CommandQueueSaxType.CREATE_SET );
+			return refSetManager.createSet( SetDataType.SET_LINEAR );
 		case STORAGE:
 			return refStorageManager.createStorage(createNewType);
 //		case VIEW:
@@ -444,7 +445,7 @@ implements IGeneralManagerSingelton
 		}
 		case SET:
 		{
-			ISet setBuffer = this.refSetManager.createSet( CommandQueueSaxType.CREATE_SET );
+			ISet setBuffer = this.refSetManager.createSet( SetDataType.SET_LINEAR );
 
 			setBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;

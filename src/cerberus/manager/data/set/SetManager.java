@@ -19,10 +19,12 @@ import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
-import cerberus.command.CommandQueueSaxType;
+//import cerberus.command.CommandQueueSaxType;
 //import cerberus.data.collection.IStorage;
 //import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.SetType;
 //import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
@@ -110,25 +112,26 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#createSet()
 	 */
-	public ISet createSet( final CommandQueueSaxType useStorageType ) {
+	public ISet createSet( final SetDataType useStorageType ) {
 			
 		switch ( useStorageType ) {
-			case CREATE_SET:
+			case SET_LINEAR:
 				return new SetFlatThreadSimple(4, 
 						getGeneralManager(),
 						null);
 				
-			case CREATE_SET_PLANAR:
+			case SET_PLANAR: 
 				return new SetPlanarSimple(4, getGeneralManager());
 			
-			case CREATE_SET_MULTIDIM:
+			case SET_MULTI_DIM:  
 				return new SetMultiDim(4, 
 						getGeneralManager(),
 						null,
 						3 );
 				
-			case CREATE_SET_SELECTION:
-				return new SetSelection(4, getGeneralManager());
+				/* Sets not implemented yet.. */
+			case SET_MULTI_DIM_VARIABLE:  
+			case SET_CUBIC:
 				
 			default:
 				throw new RuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
@@ -136,6 +139,27 @@ implements ISetManager {
 		}
 		
 		//return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.data.manager.SetManager#createSet()
+	 */
+	public ISet createSet( final SetType useSetType, final SetDataType useStorageType ) {
+			
+		switch ( useSetType ) {
+			case SET_RAW_DATA:
+				return createSet(useStorageType);
+				
+			case SET_SELECTION:				
+				return new SetSelection(4, getGeneralManager());
+				
+			case SET_VIEW_DATA:  //CREATE_SET_SELECTION:
+				return null;
+				
+			default:
+				throw new RuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
+						useStorageType.toString() + "]");
+		}
 	}
 
 	/* (non-Javadoc)
