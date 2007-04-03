@@ -16,8 +16,8 @@
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="21991" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
 
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Window 2" attrib1="ROW HORIZONTAL" />   
      
@@ -104,7 +104,7 @@
 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\tests\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 
      <!--
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    
      -->
      
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" detail="data\MicroarrayData\gpr_format\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
