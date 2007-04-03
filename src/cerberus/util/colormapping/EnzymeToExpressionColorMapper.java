@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.SetDetailedDataType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
@@ -45,10 +46,17 @@ public class EnzymeToExpressionColorMapper {
 	
 	protected void extractMappingData(ArrayList<ISet> alSetData) {
 		
-		// FIXME: Mapping Set should be retrieved by type and not by a static index
-		alMappingStorage.add(alSetData.get(1).getStorageByDimAndIndex(0, 0));
-		alMappingStorage.add(alSetData.get(2).getStorageByDimAndIndex(0, 0));
-		alMappingStorage.add(alSetData.get(3).getStorageByDimAndIndex(0, 0));
+		Iterator<ISet> iterSetData = alSetData.iterator();
+		
+		while (iterSetData.hasNext())
+		{
+			ISet tmpSet = iterSetData.next();
+			
+			if (tmpSet.getRawDataSetType().equals(SetDetailedDataType.GENE_EXPRESSION_DATA))
+			{
+				alMappingStorage.add(tmpSet.getStorageByDimAndIndex(0, 0));
+			}
+		}
 	}
 	
 	public ArrayList<Color> getMappingColorArrayByVertex(

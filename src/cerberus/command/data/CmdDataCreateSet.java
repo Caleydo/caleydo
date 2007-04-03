@@ -18,6 +18,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.SetDetailedDataType;
 import cerberus.data.collection.SetType;
 
 //import cerberus.command.ICommand;
@@ -46,7 +47,9 @@ import cerberus.manager.type.ManagerObjectType;
 public class CmdDataCreateSet 
 extends ACmdCreate_IdTargetLabelAttr {
 	
-	private SetDataType set_type;
+	private SetDataType setDataType;
+	
+	private SetDetailedDataType setDetailedDataType;
 
 	private ISet newObject = null;
 	
@@ -98,7 +101,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		llRefStorage_nDim 	= new LinkedList< LinkedList<String> > ();
 		llRefVirtualArray_nDim 	= new LinkedList< LinkedList<String> > ();
 		
-		set_type = SetDataType.SET_LINEAR;
+		setDataType = SetDataType.SET_LINEAR;
 	}
 	
 
@@ -387,27 +390,27 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		newObject = null;
 		
-		if ( set_type != null ) {
+		if ( setDataType != null ) {
 			
-			switch ( set_type ) 
+			switch ( setDataType ) 
 			{
 			case SET_LINEAR:
 				newObject = (ISet) refSetManager.createSet(
-						set_type );
+						setDataType);
 				
 				assingLinearSet( newObject );
 				break;
 				
 			case SET_PLANAR:
 				newObject = (ISet) refSetManager.createSet(
-						set_type );
+						setDataType );
 				
 				assingPlanarOrMultiDimensionalSet( newObject );
 				break;
 				
 			case SET_MULTI_DIM:
 				newObject = (ISet) refSetManager.createSet(
-						set_type );
+						setDataType );
 				
 				assingPlanarOrMultiDimensionalSet( newObject );
 				break;
@@ -416,23 +419,23 @@ extends ACmdCreate_IdTargetLabelAttr {
 			case SET_CUBIC:
 				refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.doCommand() known type=[" +
-						set_type + "] but yet now usb-class exists",
+						setDataType + "] but yet now usb-class exists",
 						LoggerType.VERBOSE );
 				
 			default:
 				refGeneralManager.getSingelton().logMsg(
 							"CmdDataCreateSet.doCommand() failed because type=[" +
-							set_type + "] is not supported!",
+							setDataType + "] is not supported!",
 							LoggerType.ERROR_ONLY );
 				return;
 			}
-		}  //if ( set_type != null ) {
+		}  //if ( setDataType != null ) {
 		else
-		{  //if ( set_type != null ) {..} else
+		{  //if ( setDataType != null ) {..} else
 			newObject = (ISet) refSetManager.createSet( SetType.SET_SELECTION, null);
 			
 			assingPlanarOrMultiDimensionalSet( newObject );
-		} //if ( set_type != null ) {..} else {..}
+		} //if ( setDataType != null ) {..} else {..}
 		
 		newObject.setId( iUniqueTargetId );
 		newObject.setLabel( sLabel );
@@ -458,6 +461,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 				"DO new SET: " + 
 				iUniqueTargetId,
 				LoggerType.VERBOSE );
+		
+		// Set detailed set data type
+		newObject.setRawDataSetType(setDetailedDataType);
 		
 		refCommandManager.runDoCommand(this);
 	}
@@ -509,7 +515,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 	
 		if ( sDetail.length() > 0 ) {
-			this.set_type = CommandQueueSaxType.valueOf( sDetail );
+			this.setDataType = CommandQueueSaxType.valueOf( sDetail );
 		}
 		
 		/**
@@ -622,7 +628,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );		
 		if ( sDetailTag.length() > 0 ) 
 		{
-			set_type = SetDataType.convert( CommandQueueSaxType.valueOf( sDetailTag ) );
+			setDataType = SetDataType.convert( CommandQueueSaxType.valueOf( sDetailTag ) );
 		}
 		
 		
@@ -635,8 +641,23 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			wipeLinkedLists();
 			
-			assert false : "did not test assigning set_type= null!";
-			set_type = null;
+			assert false : "did not test assigning setDataType= null!";
+			setDataType = null;
+		}
+		
+		/**
+		 * read "attrib3" key ...
+		 */
+		String sAttrib3 = refParameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() );
+		
+		if ( sAttrib3.length() > 0 ) 
+		{
+			setDetailedDataType = SetDetailedDataType.valueOf(sAttrib3);
+		}
+		else
+		{
+			setDetailedDataType = SetDetailedDataType.NONE;
 		}
 	}
 	
@@ -646,7 +667,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			SetDataType setType) {
 		
 		iUniqueTargetId = iSetId;
-		set_type = setType;
+		setDataType = setType;
 				
 		/**
 		 * Wipe all lists
@@ -663,7 +684,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 	
 		if ( sDetail.length() > 0 ) {
-			this.set_type = CommandQueueSaxType.valueOf( sDetail );
+			this.setDataType = CommandQueueSaxType.valueOf( sDetail );
 		}
 		
 		/**
@@ -763,7 +784,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
 		
-		//set_type = CommandQueueSaxType.NO_OPERATION;
+		//setDataType = CommandQueueSaxType.NO_OPERATION;
 	}
 	
 	public String toString() {
