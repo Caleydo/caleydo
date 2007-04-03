@@ -39,6 +39,7 @@ import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.colormapping.ColorMapping;
+import cerberus.util.colormapping.EnzymeToExpressionColorMapper;
 import cerberus.util.system.SystemTime;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.GLCanvasStatics;
@@ -115,7 +116,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	protected HashMap<Pathway, Texture> refHashPathwayToTexture;
 	
 	/**
-	 * Pathway that is currently under user interaction in the 2D pathway view.
+	 * Pathway that is currently under user interaction in the 2D pathway view.2
 	 */
 	protected Pathway refPathwayUnderInteraction;
 	
@@ -158,7 +159,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	protected ArrayList<String> refInfoAreaCaption;
 	protected ArrayList<String> refInfoAreaContent;
 	
-	protected ColorMapping expressionColorMapping;
+//	protected ColorMapping expressionColorMapping;
 	
 	protected PathwayRenderStyle refRenderStyle;
 		
@@ -202,8 +203,8 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		refInfoAreaCaption = new ArrayList<String>();
 		refInfoAreaContent = new ArrayList<String>();
 		
-		expressionColorMapping = new ColorMapping(0, 65000);
-		expressionColorMapping.createLookupTable();
+//		expressionColorMapping = new ColorMapping(0, 60000);
+//		expressionColorMapping.createLookupTable();
 		
 		refRenderStyle = new PathwayRenderStyle();
 	}
@@ -532,50 +533,6 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		}
 	}
 
-//	public void render(GLAutoDrawable canvas) {
-//		
-//		GL gl = canvas.getGL();
-//		
-//		// isInitGLDone() == bInitGLcanvawsWasCalled 
-//		if  ( ! bInitGLcanvawsWasCalled ) {
-//			initGLCanvas( (GLCanvas) canvas);
-//			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
-//		}
-		
-//		if (bSelectionDataChanged)
-//		{
-//			buildPathwayDisplayList(gl);
-//			bSelectionDataChanged = false;
-//		}
-			
-		// Clear The Screen And The Depth Buffer
-		//gl.glPushMatrix();
-
-//		Vec3f cam_position = refViewCamera.getCameraPosition();
-//		Vec3f cam_roation_axis = new Vec3f();
-//		float cam_roation_angle = refViewCamera.getCameraRotationGrad(cam_roation_axis);
-//		
-//		gl.glTranslatef( cam_position.x(), cam_position.y(), cam_position.z() );
-//		gl.glRotatef( cam_roation_axis.x(), 
-//				cam_roation_axis.y(),
-//				cam_roation_axis.z(),
-//				cam_roation_angle );
-
-//		handlePicking();
-//				
-//		renderPart(gl, GL.GL_RENDER);
-//
-//		//FIXME:
-//		//fullscreen seetings
-//		renderInfoArea(0.0f, 0.2f, 0.0f);
-		
-		//split window settings
-		//renderInfoArea(0.0f, -0.2f, 0.0f);
-		
-		//gl.glFlush();
-		//gl.glPopMatrix();	
-//	}
-
 	protected abstract void renderPathway(final GL gl,
 			final Pathway refTmpPathway, 
 			int iDisplayListNodeId);
@@ -691,26 +648,80 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 			}
 			else 
 			{
-				tmpNodeColor = getMappingColor(vertexRep);
+				EnzymeToExpressionColorMapper enzymeToExpressionColorMapper =
+					new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
 				
-				// Check if the mapping gave a valid color
-				if (!tmpNodeColor.equals(Color.BLACK))
+				ArrayList<Color> arMappingColor = 
+					enzymeToExpressionColorMapper.getMappingColorArrayByVertex(vertexRep);
+				
+				// Factor indicates how often the enzyme needs to be split
+				// so that all genes can be mapped.
+				int iSplitFactor = arMappingColor.size();
+				
+				fPathwayNodeWidth = 
+					refRenderStyle.getEnzymeNodeWidth() * SCALING_FACTOR_X;
+					
+				gl.glPushMatrix();
+				double bla = 0;
+				
+				if (iSplitFactor > 1)
 				{
+//					System.out.println("Node width: " +fPathwayNodeWidth);
+//					System.out.println("Number of genes to map: " +iSplitFactor);
+//					System.out.println("Start position: "+bla);
+					gl.glTranslatef(-(fPathwayNodeWidth / 2.0f), 0.0f, 0.0f);
+					gl.glTranslatef(fPathwayNodeWidth / (iSplitFactor * 2.0f), 0.0f, 0.0f);
+				
+					bla = bla -fPathwayNodeWidth / 2.0f + fPathwayNodeWidth / (iSplitFactor * 2.0f);
+//					System.out.println("Initial position:" +bla);
+				}
+				
+				for (int iSplitIndex = 0; iSplitIndex < iSplitFactor; iSplitIndex++)
+				{
+					tmpNodeColor = arMappingColor.get(iSplitIndex);
+				
+					// Check if the mapping gave back a valid color
+					if (!tmpNodeColor.equals(Color.BLACK))
+					{
+						gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+								tmpNodeColor.getGreen() / 255.0f, 
+								tmpNodeColor.getBlue() / 255.0f, 1.0f);
+					
+					}
+					// Take the default color
+					else
+					{
+						//gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+						tmpNodeColor = refRenderStyle.getEnzymeNodeColor();
+					}
+					
 					gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 							tmpNodeColor.getGreen() / 255.0f, 
 							tmpNodeColor.getBlue() / 255.0f, 1.0f);
-				
-				}else
-				{
-					//gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
-					tmpNodeColor = refRenderStyle.getEnzymeNodeColor();
+					
+					gl.glScalef(1.0f / iSplitFactor, 1.0f, 1.0f);
+					gl.glCallList(iEnzymeNodeDisplayListId);
+					gl.glScalef(iSplitFactor, 1.0f, 1.0f);
+
+					if (iSplitFactor > 1)
+					{
+						bla = bla + fPathwayNodeWidth / iSplitFactor;
+//						System.out.println("Intermediate position: "+bla);
+					
+						gl.glTranslatef(fPathwayNodeWidth / iSplitFactor, 0.0f, 0.0f);
+					}
 				}
-				
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
-				
-				gl.glCallList(iEnzymeNodeDisplayListId);
+
+				gl.glPopMatrix();
+//				if (iSplitFactor > 1) 
+//				{
+////					gl.glTranslatef((fPathwayNodeWidth / (float)iSplitFactor*2.0f), 0.0f, 0.0f);
+//					gl.glTranslatef(-fPathwayNodeWidth, 0.0f, 0.0f);
+//					gl.glTranslatef(fPathwayNodeWidth / (iSplitFactor * 2.0f), 0.0f, 0.0f);
+//					
+//					bla = bla - fPathwayNodeWidth + fPathwayNodeWidth / (iSplitFactor * 2.0f);
+//					System.out.println("End position: " +bla);
+//				}
 			}
 		}
 
@@ -1078,7 +1089,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 			float fy, 
 			float fz) {
 		
-		float fHeight = 0.3f;
+		float fHeight = 0.9f;
 		float fWidth = 5f;		
 		
 		gl.glPushMatrix();
@@ -1086,9 +1097,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		gl.glLoadIdentity();
 		
 		fx -= 1.2f;
-		fy += 0.3f;
-		
-		gl.glTranslatef(0, 0, -6f);
+		fy += 0.1f;
 		
 		gl.glDisable(GL.GL_LIGHTING);
 
@@ -1096,27 +1105,21 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		{
 			renderText(gl,
 					refInfoAreaCaption.get(iLineNumber),
-					fx+0.05f,
-					fy + fHeight - 0.03f - 0.025f * iLineNumber,
+					fx+0.05f -0.7f,
+					fy + fHeight - 0.1f * iLineNumber + 0.8f,
 					fz);
 			
 			renderText(gl,
 					refInfoAreaContent.get(iLineNumber), 
-					fx+0.2f, 
-					fy + fHeight -0.03f - 0.025f * iLineNumber, 
+					fx+0.8f - 0.7f, 
+					fy + fHeight - 0.1f * iLineNumber + 0.8f, 
 					fz);
 		}
-		
-//		gl.glLineWidth(4);
-//		gl.glColor4f(0f, 0f, 1f, 1.0f);
-//		gl.glBegin(GL.GL_LINE);
-//		gl.glVertex3f(fx, fy, fz);
-//		gl.glVertex3f(fx+fWidth, fy, fz);
-//		gl.glVertex3f(fx-fWidth, fy-fHeight, fz);
-//		gl.glEnd();
-		
+	
 		gl.glColor4f(1f, 1f, 0f, 0.2f);
+		gl.glTranslated(fx, fy, fz);
 		gl.glRectf(fx, fy, fx + fWidth, fy + fHeight);
+		//gl.glTranslated(-fx, -fy, -fz);
 		
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glPopMatrix();
@@ -1611,141 +1614,10 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 					int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
 					refInfoAreaCaption.add("Expression value: ");
 					refInfoAreaContent.add(new Integer(iExpressionValue).toString());
-					
-					Color testColor = expressionColorMapping.colorMappingLookup(iExpressionValue);
-					System.out.println("Result color mapping: " +testColor.getRed() +"," 
-							+testColor.getGreen() +","+testColor.getBlue());
 				}
 			}
 		}
 	}
-	
-	protected Color getMappingColor(IPathwayVertexRep refPickedVertexRep) {
-		
-		int iCummulatedExpressionValue = 0;
-		int iNumberOfExpressionValues = 0;
-		
-		// Do nothing if picked node is invalid.
-		if (refPickedVertexRep == null)
-			return Color.BLACK;
-		
-		String sEnzymeCode = refPickedVertexRep.getVertex().getElementTitle().substring(3);
-		int iAccessionID = 0;
-		int iGeneID = 0;
-		Collection<Integer> iArTmpAccessionId = null;
-		
-		// FIXME: From where can we get the storage ID?
-		int iExpressionStorageId = 45301;
-		
-		//Just for testing mapping!
-		IGenomeIdManager refGenomeIdManager = 
-			refGeneralManager.getSingelton().getGenomeIdManager();
-		
-		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
-				GenomeMappingType.ENZYME_CODE_2_ENZYME);
-		
-		if (iEnzymeID == -1)
-			return Color.BLACK;
-		
-		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
-				GenomeMappingType.ENZYME_2_NCBI_GENEID);
-		
-		if(iTmpGeneId == null)
-			return Color.BLACK;
-		
-		Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
-		Iterator<Integer> iterTmpAccessionId = null;
-		while (iterTmpGeneId.hasNext())
-		{
-			iGeneID = iterTmpGeneId.next();
-						
-			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
-					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
-	
-			if (iAccessionID == -1)
-				break;
-							
-			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
-					GenomeMappingType.ACCESSION_2_MICROARRAY);
-			
-			if(iArTmpAccessionId == null)
-				continue;
-					
-			iterTmpAccessionId = iArTmpAccessionId.iterator();
-			while (iterTmpAccessionId.hasNext())
-			{
-				int iMicroArrayId = iterTmpAccessionId.next();
-								
-				//Get expression value by MicroArrayID
-				IStorage refExpressionStorage = refGeneralManager.getSingelton().
-					getStorageManager().getItemStorage(iExpressionStorageId);
-				int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
-						iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
-				
-				// Get rid of 770 internal ID identifier
-				iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
-				
-				int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
-				
-				iCummulatedExpressionValue += iExpressionValue;
-				iNumberOfExpressionValues++;
-			}
-		}
-		
-		if (iNumberOfExpressionValues != 0)
-		{
-			return(expressionColorMapping.colorMappingLookup(iCummulatedExpressionValue 
-					/ iNumberOfExpressionValues));
-		}
-		
-		return Color.BLACK;
-	}
-
-	
-//    private void drawBezierCurve(GL gl) {
-//
-//		final int nbCtrlPoints = 4;
-//		final int sizeCtrlPoints = nbCtrlPoints * 3;
-//
-//		float a = 1.0f;
-//		float b = 0.f;
-//		float ctrlPoints[] =
-//		{ -a, -a, 0f, 
-//		  -a/2, +a, 2f, 
-//		  +a, +2*a, 1f, 
-//		  +2*a, -a/4, -1f };
-//
-//		// Check if the ctrl points array has a legal size.
-//		if (ctrlPoints.length != sizeCtrlPoints)
-//		{
-//			System.out.println("ERROR ctrlPoints\n");
-//		}
-//		;
-//
-//		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 4, ctrlPoints, 0);
-//		gl.glEnable(GL.GL_MAP1_VERTEX_3);
-//
-//		// Draw ctrlPoints.
-//		gl.glBegin(GL.GL_POINTS);
-//		{
-//			for (int i = 0; i < sizeCtrlPoints; i += 3)
-//			{
-//				gl.glVertex3f(ctrlPoints[i], ctrlPoints[i + 1],
-//						ctrlPoints[i + 2]);
-//			}
-//		}
-//		gl.glEnd();
-//
-//		// Draw courve.
-//		gl.glBegin(GL.GL_LINE_STRIP);
-//		{
-//			for (float v = 0; v <= 1; v += 0.01)
-//			{
-//				gl.glEvalCoord1f(v);
-//			}
-//		}
-//		gl.glEnd();
-//	}
     
     protected abstract void highlightIdenticalNodes(final GL gl);
 

@@ -1,5 +1,7 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
+import gleem.linalg.Vec3f;
+
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
@@ -74,12 +76,10 @@ extends AGLCanvasPathway3D {
 	}
 		
 	public void renderPart(GL gl) {
-	
+		
 		handlePicking(gl);
-				
-		//FIXME:
-		//fullscreen seetings
-		renderInfoArea(gl, 0.0f, 0.2f, 0.0f);
+
+		renderInfoArea(gl, 0.0f, 0.9f, -2.0f);
 		
 		if (bSelectionDataChanged)
 		{

@@ -88,9 +88,7 @@ extends AGLCanvasPathway3D {
 		
 		handlePicking(gl);
 		
-		//FIXME:
-		//fullscreen seetings
-		renderInfoArea(gl, 0.0f, 0.2f, 0.0f);
+		renderInfoArea(gl, 0.0f, 0.9f, -2.0f);
 		
 		if (bSelectionDataChanged)
 		{

@@ -229,45 +229,6 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		return iPathwayLevel;
 	}
 	
-	public void loadPathwayFromFile(int iNewPathwayId) {
-		
-		// Check if Pathway is already loaded
-		if (refGeneralManager.getSingelton().getPathwayManager().hasItem(iNewPathwayId))
-		{
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName() + 
-					": loadPathwayFromFile(): Pathway is already loaded. No parsing needed.",
-					LoggerType.MINOR_ERROR );
-			
-			return;
-		}
-		
-		String sPathwayFilePath = "";
-		
-		if (iNewPathwayId < 10)
-		{
-			sPathwayFilePath = "map0000" + Integer.toString(iNewPathwayId);
-		}
-		else if (iNewPathwayId < 100 && iNewPathwayId >= 10)
-		{
-			sPathwayFilePath = "map000" + Integer.toString(iNewPathwayId);
-		}
-		else if (iNewPathwayId < 1000 && iNewPathwayId >= 100)
-		{
-			sPathwayFilePath = "map00" + Integer.toString(iNewPathwayId);
-		}
-		else if (iNewPathwayId < 10000 && iNewPathwayId >= 1000)
-		{
-			sPathwayFilePath = "map0" + Integer.toString(iNewPathwayId);
-		}
-		
-		sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath()
-			+ sPathwayFilePath +".xml";		
-		
-		refGeneralManager.getSingelton().
-			getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-	}
-	
 	/**
 	 * Triggers the command to load the new URL
 	 * in the HTML browser with a specific ID.

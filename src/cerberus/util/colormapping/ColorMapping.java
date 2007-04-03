@@ -25,9 +25,11 @@ public class ColorMapping {
 		this.iMax = iMax;
 		
 		fArColorLookupTable = new float[MAPPING_WIDTH][3];
+		
+		createLookupTable();
 	}
 	
-	public void createLookupTable() {
+	protected void createLookupTable() {
 		
 		int iMin = this.iMin / MAPPING_WIDTH;
 		int iMax = this.iMax / MAPPING_WIDTH;
@@ -47,21 +49,7 @@ public class ColorMapping {
 //					fArColorLookupTable[iLookupIndex][1] + "," +
 //					fArColorLookupTable[iLookupIndex][2]);
 		}
-		
-//		int iTextureId = genTexture(gl);
-//		
-//		gl.glEnable(GL.GL_TEXTURE_1D);
-//		gl.glBindTexture(GL.GL_TEXTURE_1D, iTextureId);
-//		gl.glTexImage1D(GL.GL_TEXTURE_1D, 0, GL.GL_RGB, iTextureWidth, 0, GL.GL_RGB, GL.GL_FLOAT, arTexture);
-
 	}
-	
-//    private int genTexture(GL gl) {
-//    	
-//        final int[] tmp = new int[1];
-//        gl.glGenTextures(1, tmp, 0);
-//        return tmp[0];
-//    }
 	
 	public Color colorMappingLookup(int iLookupValue) {
 		

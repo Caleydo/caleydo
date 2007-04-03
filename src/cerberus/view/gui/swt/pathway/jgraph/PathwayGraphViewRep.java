@@ -634,7 +634,8 @@ extends APathwayGraphViewRep {
 	
 	public void loadPathwayFromFile(int iNewPathwayId) {
 		
-		super.loadPathwayFromFile(iNewPathwayId);
+		refGeneralManager.getSingelton().getPathwayManager().
+			loadPathwayById(iNewPathwayId);
 		
 		// Clean up
 		refCurrentPathway = null;
