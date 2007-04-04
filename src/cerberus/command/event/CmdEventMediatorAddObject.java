@@ -9,6 +9,7 @@ import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IEventPublisher.MediatorType;
+import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -51,13 +52,21 @@ implements ICommand {
 
 	public void doCommand() throws CerberusRuntimeException {
 			
-		((IEventPublisher)refGeneralManager.
-				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
-					createMediator(iUniqueTargetId,
-							iArSenderIDs, 
-							iArReceiverIDs, 
-							mediatorType,
-							MediatorUpdateType.MEDIATOR_DEFAULT);
+		IEventPublisher refEventPublisher = (IEventPublisher) refGeneralManager.
+				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER);
+				
+		IMediator refMediator = refEventPublisher.getItemMediator(iUniqueTargetId);
+		
+		if  (refMediator == null ) {
+			assert false : "can not find mediator";
+			return;
+		}
+		
+		refEventPublisher.addSendersAndReceiversToMediator( refMediator,
+				iArSenderIDs, 
+				iArReceiverIDs, 
+				mediatorType,
+				MediatorUpdateType.MEDIATOR_DEFAULT);
 		
 		refCommandManager.runDoCommand(this);
 	}

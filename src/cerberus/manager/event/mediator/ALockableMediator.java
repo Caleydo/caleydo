@@ -5,7 +5,10 @@
 
 package cerberus.manager.event.mediator;
 
+import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.MediatorUpdateType;
+import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.CerberusRuntimeExceptionType;
 
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
@@ -17,6 +20,8 @@ public abstract class ALockableMediator
 extends ALockableMediatorReceiver
 implements IMediator {
 	
+	protected final IEventPublisher refEventPublisher;
+	
 	private final MediatorUpdateType mediatorUpdateType;
 		
 	public final int iMediatorId;
@@ -26,11 +31,13 @@ implements IMediator {
 	 * @param iMediatorId
 	 * @param mediatorUpdateType if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT is used as default 
 	 */
-	protected ALockableMediator(int iMediatorId,
+	protected ALockableMediator(final IEventPublisher refEventPublisher,
+			int iMediatorId,
 			final MediatorUpdateType mediatorUpdateType) {
 		
 		super();
 		
+		this.refEventPublisher = refEventPublisher;
 		this.iMediatorId = iMediatorId;
 		
 		if ( mediatorUpdateType == null ) 
@@ -50,12 +57,12 @@ implements IMediator {
 	/**
 	 * Implement cleanup inside this function.
 	 * 
-	 * @see cerberus.manager.event.mediator.ALockableMediator#destroyMediator(IMediatorSender)
+	 * @see cerberus.manager.event.mediator.ALockableMediator#destroyMediator(IEventPublisher)
 	 * 
 	 * @param sender callling object 
 	 */
 	protected abstract void destroyMediatorDerivedObject( 
-			final IMediatorSender sender );
+			final IEventPublisher sender );
 
 	
 	/**
@@ -64,14 +71,36 @@ implements IMediator {
 	 * @see cerberus.manager.event.mediator.IMediator#destroyMediator()
 	 * @see cerberus.manager.event.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
 	 */
-	public final void destroyMediator( final IMediatorSender sender )
+	public final void destroyMediator( final IEventPublisher sender )
 	{
-//		if ( sender != this.refSender ) {
-//			throw new CerberusRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
-//		}
-//
-//		destroyMediatorDerivedObject( sender );
+		if ( ! refEventPublisher.equals(sender)) {
+			throw new CerberusRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
+		}
+
+		destroyMediatorDerivedObject( sender );
 	}
 	
+
+	/**
+	 * @see cerberus.data.IUniqueObject#getId()
+	 */
+	public final int getId() {
+
+		return iMediatorId;
+	}
+
+	/**
+	 * Since the MediatorId is final this method must not be called.
+	 * 
+	 * @see cerberus.data.IUniqueObject#setId(int)
+	 */
+	public final void setId(int isetId) {
+		
+		throw new CerberusRuntimeException("setId() must not be called.",
+				CerberusRuntimeExceptionType.OBSERVER);
+		
+		//this.iMediatorId = isetId;
+		
+	}
 
 }

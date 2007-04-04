@@ -27,6 +27,8 @@ extends AAbstractManager
 implements IEventPublisher {
 
 	protected HashMap<Integer, IMediator> hashMediatorId2Mediator;
+	
+	protected HashMap<IMediator, Integer> hashMediatorId2Mediator_reverse;
 
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2DataMediators;
 
@@ -69,6 +71,11 @@ implements IEventPublisher {
 			new HashMap<IMediatorReceiver, ArrayList<IMediator>> ();		
 		hashSender2ViewMediators =
 			new HashMap<IMediatorSender, ArrayList<IMediator>> ();
+		
+		hashMediatorId2Mediator = 
+			new HashMap<Integer, IMediator> ();	
+		hashMediatorId2Mediator_reverse = 
+			new HashMap<IMediator, Integer> ();		
 	}
 
 	private synchronized void insertReceiver( HashMap<IMediatorReceiver, ArrayList<IMediator>> insertIntoHashMap, 
@@ -122,33 +129,49 @@ implements IEventPublisher {
 
 		IMediator newMediator = null;
 		
-		switch (mediatorUpdateType) {
-		case MEDIATOR_DEFAULT:
-			newMediator = 
-				new LockableMediator(this, 
-						iMediatorId, 
-						MediatorUpdateType.MEDIATOR_DEFAULT);
-			break;
+		if ( hashMediatorId2Mediator.containsKey(iMediatorId) ) 
+		{
+			newMediator = hashMediatorId2Mediator.get(iMediatorId);
 			
-		case MEDIATOR_FILTER_ONLY_SET:
-			newMediator = 
-				new LockableExclusivFilterMediator(this, 
-						iMediatorId, 
-						null);
-			break;
-			
-		case MEDIATOR_FILTER_ALL_EXPECT_SET:
-			newMediator = 
-				new LockableIngoreFilterMediator(this, 
-						iMediatorId, 
-						null);
-			break;
-			default:
-				assert false : "unknown type";
-			return;
+			refSingelton.logMsg("createMediator(" + iMediatorId + 
+					") mediator already exists. add Senders and Receivers now.",
+					LoggerType.VERBOSE);
 		}
+		else
+		{  //if ( hashMediatorId2Mediator.containsKey(iMediatorId) ) {..} else
+			
 		
-
+			switch (mediatorUpdateType) {
+			case MEDIATOR_DEFAULT:
+				newMediator = 
+					new LockableMediator(this, 
+							iMediatorId, 
+							MediatorUpdateType.MEDIATOR_DEFAULT);
+				break;
+				
+			case MEDIATOR_FILTER_ONLY_SET:
+				newMediator = 
+					new LockableExclusivFilterMediator(this, 
+							iMediatorId, 
+							null);
+				break;
+				
+			case MEDIATOR_FILTER_ALL_EXPECT_SET:
+				newMediator = 
+					new LockableIngoreFilterMediator(this, 
+							iMediatorId, 
+							null);
+				break;
+				default:
+					assert false : "unknown type";
+				return;
+			} //switch (mediatorUpdateType) {
+			
+			hashMediatorId2Mediator.put(iMediatorId, newMediator);
+			hashMediatorId2Mediator_reverse.put(newMediator, iMediatorId);
+			
+		}  //if ( hashMediatorId2Mediator.containsKey(iMediatorId) ) {..} else {..}
+		
 		Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
 
 		boolean bHasValidSender = false;
@@ -236,6 +259,112 @@ implements IEventPublisher {
 			
 		} //while (iterSenderIDs.hasNext())
 
+		addSendersAndReceiversToMediator(newMediator, 
+				arSenderIDs, 
+				arReceiverIDs, 
+				mediatorType, 
+				mediatorUpdateType);
+		
+		refSingelton.logMsg("EventPublisher: success registering senderId(s)=[" +
+				arSenderIDs.toString() + "] and receiverId(s)=[" +
+				arReceiverIDs.toString() + "]",
+				LoggerType.VERBOSE);
+	}
+
+	
+	public void addSendersAndReceiversToMediator( IMediator newMediator,
+			ArrayList<Integer> arSenderIDs,
+			ArrayList<Integer> arReceiverIDs, 
+			MediatorType mediatorType,
+			MediatorUpdateType mediatorUpdateType) {
+		
+		Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
+
+		boolean bHasValidSender = false;
+		
+		// Register sender
+		while (iterSenderIDs.hasNext())
+		{
+			int iCurrentSenderId = iterSenderIDs.next();
+			IMediatorSender sender = null;
+			
+			try
+			{
+				sender = (IMediatorSender) refGeneralManager
+						.getItem(iCurrentSenderId);
+			} 
+			catch ( ClassCastException cce)
+			{
+				refSingelton.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
+						iCurrentSenderId + 
+						"] does not implement interface IMediatorSender " +
+						refGeneralManager.getItem(iCurrentSenderId).getClass(),
+						LoggerType.ERROR_ONLY);
+				
+				assert false : "receiver object does not implement interface IMediatorSender";
+				break;
+			}
+	
+			if ( sender == null ) {
+				refSingelton.logMsg("EventPublisher: invalid SenderId=[" +
+						iCurrentSenderId + "] => receiverId=" + 
+						arReceiverIDs.toString() + 
+						" ignore sender!",
+						LoggerType.MINOR_ERROR);
+			}
+			else 
+			{
+				bHasValidSender = true;
+				
+				newMediator.register(sender);
+				
+				switch ( mediatorType ) {
+				
+				case DATA_MEDIATOR:
+					
+					//assert false : "test this code!";
+					
+					if (!hashSender2DataMediators.containsKey(sender))
+					{
+						hashSender2DataMediators.put(sender, 
+								new ArrayList<IMediator>());
+					}
+					hashSender2DataMediators.get(sender).add(newMediator);
+					
+					insertSender(hashSender2DataMediators,sender,newMediator);
+					break;
+					
+				case SELECTION_MEDIATOR:
+					insertSender(hashSender2SelectionMediators,sender,newMediator);
+					
+	//				if (!hashSender2SelectionMediators.containsKey(sender))
+	//				{
+	//					hashSender2SelectionMediators.put(sender, new ArrayList<IMediator>());
+	//				}
+	//				hashSender2SelectionMediators.get(sender).add(newMediator);
+					break;
+					
+				case VIEW_MEDIATOR:
+					insertSender(hashSender2ViewMediators,sender,newMediator);
+	//				if (!hashSender2ViewMediators.containsKey(sender))
+	//				{
+	//					hashSender2ViewMediators.put(sender, new ArrayList<IMediator>());
+	//				}
+	//				hashSender2ViewMediators.get(sender).add(newMediator);
+					break;
+					
+				default:
+					throw new CerberusRuntimeException(
+							"createMediator() unknown type sender: " + 
+							mediatorType.toString(),
+							CerberusRuntimeExceptionType.OBSERVER);
+				
+				} //switch ( mediatorType ) {
+			
+			} //if ( sender == null ) {...} else {..
+			
+		} //while (iterSenderIDs.hasNext())
+	
 		// are there any valid senders?
 		if ( ! bHasValidSender ) 
 		{
@@ -246,7 +375,7 @@ implements IEventPublisher {
 			return;
 		}
 		
-
+	
 		Iterator<Integer> iterReceiverIDs = arReceiverIDs.iterator();
 		boolean bHasValidReceiver = false;
 		
@@ -272,7 +401,7 @@ implements IEventPublisher {
 				assert false : "receiver object does not implement interface IMediatorReceiver";
 				break;
 			}
-
+	
 			if ( receiver == null ) {
 				refSingelton.logMsg("EventPublisher: invalid ReceiverId=[" +
 						iCurrentReceiverId + "] <= sender(s)" +
@@ -332,7 +461,8 @@ implements IEventPublisher {
 			return;
 		}
 		
-		refSingelton.logMsg("EventPublisher: success registering senderId(s)=[" +
+		refSingelton.logMsg("EventPublisher: Mediator " + newMediator.toString() + 
+				" success registering senderId(s)=[" +
 				arSenderIDs.toString() + "] and receiverId(s)=[" +
 				arReceiverIDs.toString() + "]",
 				LoggerType.VERBOSE);
@@ -499,14 +629,17 @@ implements IEventPublisher {
 
 	public Object getItem(int iItemId) {
 
-		// TODO Auto-generated method stub
-		return null;
+		return this.hashMediatorId2Mediator.get(iItemId);
+	}
+	
+	public IMediator getItemMediator(int iItemId) {
+
+		return this.hashMediatorId2Mediator.get(iItemId);
 	}
 
 	public int size() {
 
-		// TODO Auto-generated method stub
-		return 0;
+		return hashMediatorId2Mediator.size();
 	}
 
 	public boolean registerItem(Object registerItem, int iItemId,
@@ -518,7 +651,10 @@ implements IEventPublisher {
 
 	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
 
-		// TODO Auto-generated method stub
+		IMediator buffer = hashMediatorId2Mediator.get(iItemId);
+		
+		buffer.destroyMediator(this);
+		
 		return false;
 	}
 	

@@ -1,5 +1,7 @@
 package cerberus.manager.event.mediator;
 
+import cerberus.data.IUniqueObject;
+import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 
 /**
@@ -11,7 +13,7 @@ import cerberus.manager.event.mediator.IMediatorReceiver;
  *
  */
 public interface IMediator
-extends IMediatorReceiver {	
+extends IMediatorReceiver, IUniqueObject {	
 	
 	/**
 	 * Register a new event sender to the mediator.
@@ -49,6 +51,6 @@ extends IMediatorReceiver {
 	 * Only creator of teh Mediator my call this methode.
 	 *
 	 */
-	public void destroyMediator(  final IMediatorSender sender );
+	public void destroyMediator(  final IEventPublisher sender );
 	
 }

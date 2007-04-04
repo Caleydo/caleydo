@@ -2,6 +2,7 @@ package cerberus.manager;
 
 import java.util.ArrayList;
 
+import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.event.mediator.MediatorUpdateType;
@@ -32,6 +33,23 @@ extends IGeneralManager, IMediatorReceiver {
 			ArrayList<Integer> arReceiverIDs,
 			MediatorType mediatorType,
 			MediatorUpdateType mediatorUpdateType);
+	
+	
+	/**
+	 * Addes a list of senders and or receivers to a Mediator.
+	 * 
+	 * @param newMediator
+	 * @param arSenderIDs
+	 * @param arReceiverIDs
+	 * @param mediatorType
+	 * @param mediatorUpdateType
+	 */
+	public void addSendersAndReceiversToMediator( IMediator newMediator,
+			ArrayList<Integer> arSenderIDs,
+			ArrayList<Integer> arReceiverIDs, 
+			MediatorType mediatorType,
+			MediatorUpdateType mediatorUpdateType);
+	
 	
 	/**
 	 * Adds a sender to an existing mediator. 
@@ -97,4 +115,12 @@ extends IGeneralManager, IMediatorReceiver {
 	 */
 	public boolean hasRelation( IMediatorSender sender,
 			IMediatorReceiver receiver );
+	
+	/**
+	 * Get the IMediator assigned to the id iItemId
+	 * 
+	 * @param iItemId id to identify the Mediator
+	 * @return mediator 
+	 */
+	public IMediator getItemMediator(int iItemId);
 }

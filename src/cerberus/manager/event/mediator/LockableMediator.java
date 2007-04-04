@@ -21,8 +21,6 @@ import cerberus.manager.event.mediator.MediatorUpdateType;
 public class LockableMediator 
 extends ALockableMediator 
 implements IMediator {
-
-	protected final IEventPublisher refEventPublisher;
 	
 	protected ArrayList<IMediatorReceiver> arReceiver;
 
@@ -35,9 +33,9 @@ implements IMediator {
 			int iMediatorId,
 			final MediatorUpdateType mediatorType ) {
 
-		super(iMediatorId, mediatorType);
-
-		this.refEventPublisher = refEventPublisher;
+		super(refEventPublisher, 
+				iMediatorId, 
+				mediatorType);
 		
 		arReceiver = new ArrayList<IMediatorReceiver>();
 		arSender = new ArrayList<IMediatorSender>();
@@ -46,7 +44,7 @@ implements IMediator {
 	/* (non-Javadoc)
 	 * @see cerberus.observer.mediator.IMediator#destroyMediator(cerberus.observer.mediator.IMediatorSender)
 	 */
-	protected final void destroyMediatorDerivedObject(final IMediatorSender sender) {
+	protected final void destroyMediatorDerivedObject(final IEventPublisher sender) {
 		
 		updateStall();
 
