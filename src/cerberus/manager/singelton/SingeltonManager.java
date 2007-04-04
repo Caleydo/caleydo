@@ -321,11 +321,11 @@ implements ISingelton {
 		{
 			case COMMAND: return this.refCommandManager;
 		
-			case SET: return this.refSetManager;
+			case DATA_SET: return this.refSetManager;
 		
-			case STORAGE: return this.refStorageManager;
+			case DATA_STORAGE: return this.refStorageManager;
 		
-			case VIRTUAL_ARRAY: return this.refVirtualArrayManager;
+			case DATA_VIRTUAL_ARRAY: return this.refVirtualArrayManager;
 		
 			case MEMENTO: return this.refMementoManager;
 				
@@ -333,7 +333,7 @@ implements ISingelton {
 		
 			case MENU: return this.refMenuManager;
 			
-			case GUI_SWT: return this.refSWTGUIManager;
+			case VIEW_GUI_SWT: return this.refSWTGUIManager;
 		
 			case NONE: 
 				throw new CerberusRuntimeException("No Manager for type 'NONE' available!");

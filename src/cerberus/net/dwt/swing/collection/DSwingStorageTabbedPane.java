@@ -253,7 +253,7 @@ public class DSwingStorageTabbedPane extends JPanel {
 	 */
 	private boolean setGuiByBaseType(final ManagerObjectType setType){
 		
-		if ( setType.getGroupType() != ManagerType.STORAGE ) {
+		if ( setType.getGroupType() != ManagerType.DATA_STORAGE ) {
 			return false;
 		}
 		

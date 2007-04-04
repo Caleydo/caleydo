@@ -70,11 +70,6 @@ public interface IGeneralManager {
 	
 	public static final int iUniqueId_TypeOffset_MenuItem = 42;
 
-	/** 
-	 * @deprecated use Set, Virtual Array or Storage 
-	 */
-	public static final int iUniqueId_TypeOffset_Collection = 50;
-
 	public static final int iUniqueId_TypeOffset_Set = 51;
 	
 	public static final int iUniqueId_TypeOffset_VirtualArray = 52;
@@ -227,7 +222,7 @@ public interface IGeneralManager {
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
 	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
-	public int createNewId( final ManagerObjectType setNewBaseType );
+	public int createId( final ManagerObjectType setNewBaseType );
 
 	/**
 	 * Set the current Id, what is incremented once the next time createNewId() is called.

@@ -45,7 +45,7 @@ implements IVirtualArrayManager
 			final int iInitSizeContainer ) {
 		super( setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_VirtualArray,
-				ManagerType.VIRTUAL_ARRAY );
+				ManagerType.DATA_VIRTUAL_ARRAY );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -86,10 +86,10 @@ implements IVirtualArrayManager
 		
 		switch ( useSelectionType ) {
 			case VIRTUAL_ARRAY_SINGLE_BLOCK:
-				return new VirtualArraySingleBlock( createNewId(ManagerObjectType.VIRTUAL_ARRAY), this, null );
+				return new VirtualArraySingleBlock( createId(ManagerObjectType.VIRTUAL_ARRAY), this, null );
 				
 			case VIRTUAL_ARRAY_MULTI_BLOCK:
-				return new VirtualArrayMultiBlock( createNewId(ManagerObjectType.VIRTUAL_ARRAY), this, null );	
+				return new VirtualArrayMultiBlock( createId(ManagerObjectType.VIRTUAL_ARRAY), this, null );	
 				
 //			case VIRTUAL_ARRAY_LOAD_MICROARRAY:
 //				System.err.println("ISelectionManager.createSelection() VIRTUAL_ARRAY_LOAD_MICROARRAY is deprecated!");

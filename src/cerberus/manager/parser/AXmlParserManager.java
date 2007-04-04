@@ -297,52 +297,52 @@ implements IXmlParserManager, IManagedObject
 		return false;
 	}
 
-	/**
-	 * Swap two IXmlParserHandler.
-	 * 
-	 * @deprecated not used any more. use openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) instead.
-	 * 
-	 * @see cerberus.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
-	 */
-	protected final void swapXmlParserHandler( IXmlParserHandler from, 
-			IXmlParserHandler to ) {
-		int iIndexFrom = llXmlParserStack.indexOf( from );
-		
-		if ( iIndexFrom == -1 ) {
-			refGeneralManager.getSingelton().logMsg( 
-					"Error: can not find IXmlParserHandler 'from' in AXmlParserManager! " +
-					from.getXmlActivationTag(),
-					LoggerType.ERROR_ONLY );
-			return;
-		} // if
-		
-		int iIndexTo = llXmlParserStack.indexOf( to );
-		
-		if ( iIndexTo == -1 ) {
-			refGeneralManager.getSingelton().logMsg( 
-					"Error: can not find IXmlParserHandler 'to' in AXmlParserManager! " +
-					from.getXmlActivationTag(),
-					LoggerType.ERROR_ONLY );
-			return;
-		} // if
-		
-		if ( iIndexFrom < iIndexTo ) 
-		{
-			llXmlParserStack.remove( iIndexFrom );
-			llXmlParserStack.add( iIndexFrom, to );
-			
-			llXmlParserStack.remove( iIndexTo );
-			llXmlParserStack.add( iIndexTo, from );
-		}
-		else 
-		{
-			llXmlParserStack.remove( iIndexTo );
-			llXmlParserStack.add( iIndexTo, from );
-			
-			llXmlParserStack.remove( iIndexFrom );
-			llXmlParserStack.add( iIndexFrom, to );
-		} // else
-	}
+//	/**
+//	 * Swap two IXmlParserHandler.
+//	 * 
+//	 * @deprecated not used any more. use openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) instead.
+//	 * 
+//	 * @see cerberus.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
+//	 */
+//	protected final void swapXmlParserHandler( IXmlParserHandler from, 
+//			IXmlParserHandler to ) {
+//		int iIndexFrom = llXmlParserStack.indexOf( from );
+//		
+//		if ( iIndexFrom == -1 ) {
+//			refGeneralManager.getSingelton().logMsg( 
+//					"Error: can not find IXmlParserHandler 'from' in AXmlParserManager! " +
+//					from.getXmlActivationTag(),
+//					LoggerType.ERROR_ONLY );
+//			return;
+//		} // if
+//		
+//		int iIndexTo = llXmlParserStack.indexOf( to );
+//		
+//		if ( iIndexTo == -1 ) {
+//			refGeneralManager.getSingelton().logMsg( 
+//					"Error: can not find IXmlParserHandler 'to' in AXmlParserManager! " +
+//					from.getXmlActivationTag(),
+//					LoggerType.ERROR_ONLY );
+//			return;
+//		} // if
+//		
+//		if ( iIndexFrom < iIndexTo ) 
+//		{
+//			llXmlParserStack.remove( iIndexFrom );
+//			llXmlParserStack.add( iIndexFrom, to );
+//			
+//			llXmlParserStack.remove( iIndexTo );
+//			llXmlParserStack.add( iIndexTo, from );
+//		}
+//		else 
+//		{
+//			llXmlParserStack.remove( iIndexTo );
+//			llXmlParserStack.add( iIndexTo, from );
+//			
+//			llXmlParserStack.remove( iIndexFrom );
+//			llXmlParserStack.add( iIndexFrom, to );
+//		} // else
+//	}
 	
 
 	/*

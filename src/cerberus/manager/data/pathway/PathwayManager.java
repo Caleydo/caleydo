@@ -48,7 +48,7 @@ implements IPathwayManager {
 
 		super( refGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
-				ManagerType.PATHWAY_ELEMENT );
+				ManagerType.DATA_PATHWAY_ELEMENT );
 		
 		pathwayLUT = new HashMap<Integer, Pathway>();
 	}

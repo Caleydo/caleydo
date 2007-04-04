@@ -22,6 +22,11 @@ import org.jgraph.graph.VertexView;
 public class JGraphEllipseView extends VertexView {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5506596593140314052L;
+	
+	/**
 	 */
 	public static transient JGraphEllipseRenderer renderer = new JGraphEllipseRenderer();
 
@@ -110,6 +115,11 @@ public class JGraphEllipseView extends VertexView {
 	/**
 	 */
 	public static class JGraphEllipseRenderer extends VertexRenderer {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -3840986733778682358L;
 
 		/**
 		 * Return a slightly larger preferred size than for a rectangle.

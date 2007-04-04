@@ -90,10 +90,20 @@ public abstract class AAbstractManager implements IAbstractManager  {
 		throw new RuntimeException("AAbstractManager::setSingelton() is not supported!");
 	}
 
+//	/* (non-Javadoc)
+//	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
+//	 */
+//	public final int createNewId(ManagerObjectType setNewBaseType) {
+//		
+//		iUniqueId_current += IGeneralManager.iUniqueId_Increment;
+//		
+//		return iUniqueId_current;
+//	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
 	 */
-	public int createNewId(ManagerObjectType setNewBaseType) {
+	public int createId(ManagerObjectType setNewBaseType) {
 		
 		iUniqueId_current += IGeneralManager.iUniqueId_Increment;
 		

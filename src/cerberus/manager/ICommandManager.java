@@ -9,7 +9,7 @@
 package cerberus.manager;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.CommandType;
+//import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;
 import cerberus.command.ICommandActionListener;
@@ -76,8 +76,8 @@ extends ICommandActionListener, IGeneralManager {
 	 */
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType);
 	
-	public ICommand createCommand(final CommandType cmdType, 
-			String details);
+//	public ICommand createCommand(final CommandType cmdType, 
+//			String details);
 
 	
 	/**

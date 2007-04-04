@@ -26,7 +26,6 @@ import cerberus.view.gui.swt.undoredo.UndoRedoViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;
 import cerberus.command.queue.ICommandQueue;
@@ -267,7 +266,7 @@ public class CommandManager
 			sQueueThread,
 			sQueueThreadWait );
 		
-		int iNewCmdId = createNewId( ManagerObjectType.COMMAND );
+		int iNewCmdId = createId( ManagerObjectType.COMMAND );
 		newCmd.setId( iNewCmdId );
 		
 		registerItem( newCmd, iNewCmdId, ManagerObjectType.COMMAND );
@@ -311,20 +310,20 @@ public class CommandManager
 		vecRedo.addElement( runCmd );
 	}
 
-	/**
-	 * @deprecated use createCommandByType(final CommandQueueSaxType cmdType)
-	 */
-	public ICommand createCommand(CommandType cmdType, String details) {
-
-		assert false : "update to new command creation strucutre!";
-		return null;
-	}
+//	/**
+//	 * @deprecated use createCommandByType(final CommandQueueSaxType cmdType)
+//	 */
+//	public ICommand createCommand(CommandType cmdType, String details) {
+//
+//		assert false : "update to new command creation strucutre!";
+//		return null;
+//	}
 
 	public void addUndoRedoViewRep(UndoRedoViewRep refUndoRedoViewRep) {
 		
 		arUndoRedoViews.add(refUndoRedoViewRep);		
 		arUndoRedoViews.get(0).updateCommandList(vecUndo);
 
-	}
+	}	
 	
 }

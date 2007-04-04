@@ -52,7 +52,7 @@ implements IStorageManager {
 		
 		super( setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Storage,
-				ManagerType.STORAGE);
+				ManagerType.DATA_STORAGE);
 		
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
@@ -68,12 +68,12 @@ implements IStorageManager {
 	 */
 	public IStorage createStorage( final ManagerObjectType useStorageType ) {
 		
-		if ( useStorageType.getGroupType() != ManagerType.STORAGE ) {
+		if ( useStorageType.getGroupType() != ManagerType.DATA_STORAGE ) {
 			throw new CerberusRuntimeException("try to create object with wrong type " + useStorageType.name() );
 		}
 
 		
-		final int iNewId = this.createNewId( useStorageType );
+		final int iNewId = this.createId( useStorageType );
 		
 		switch ( useStorageType ) {
 			case STORAGE:

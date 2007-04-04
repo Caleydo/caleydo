@@ -78,7 +78,7 @@ implements ISWTGUIManager {
 
 		super(setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GUI_SWT,
-				ManagerType.GUI_SWT );
+				ManagerType.VIEW_GUI_SWT );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
@@ -104,7 +104,7 @@ implements ISWTGUIManager {
 	public Shell createWindow() {
 
 		// Register shell in the window map
-		final int iUniqueId = this.createNewId(ManagerObjectType.GUI_SWT_WINDOW);
+		final int iUniqueId = this.createId(ManagerObjectType.GUI_SWT_WINDOW);
 
 		// use default layout
 		return createWindow(iUniqueId, "Cerberus", "ROW VERTICAL");
@@ -209,7 +209,7 @@ implements ISWTGUIManager {
 
 		assert refExternalParentComposite != null : "can not handel null-pointer";
 		
-		final int iUniqueId = this.createNewId(useWidgetType);
+		final int iUniqueId = this.createId(useWidgetType);
 		ASWTWidget newSWTWidget;
 
 		switch (useWidgetType)

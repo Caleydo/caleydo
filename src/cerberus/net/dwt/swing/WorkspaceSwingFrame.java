@@ -24,6 +24,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.type.ManagerObjectType;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.window.CmdWindowNewIFrameHistogram2D;
@@ -119,9 +120,8 @@ implements IUniqueManagedObject {
 //					Integer.toString( iCollectionId );
 				
 				CmdWindowSetActiveFrame cmd_iter = 
-					(CmdWindowSetActiveFrame) refCommandManager.createCommand( 
-						CommandType.WINDOW_SET_ACTIVE_FRAME, 
-						"" );
+					(CmdWindowSetActiveFrame) refCommandManager.createCommandByType( 
+						CommandQueueSaxType.WINDOW_SET_ACTIVE_FRAME );
 				
 				/* ISet own farme as current frame */
 				cmd_iter.setCallerAndTargetFrameId( iCollectionId, iCollectionId );
@@ -144,9 +144,8 @@ implements IUniqueManagedObject {
 				int iIdOfOtherWorkspaceFrame = refWorkspaceFrame.getId();
 				
 				CmdWindowSetActiveFrame cmd_iter = 
-					(CmdWindowSetActiveFrame) refCommandManager.createCommand( 
-						CommandType.WINDOW_SET_ACTIVE_FRAME, 
-						"" );
+					(CmdWindowSetActiveFrame) refCommandManager.createCommandByType( 
+							CommandQueueSaxType.WINDOW_SET_ACTIVE_FRAME);
 				
 				/* ISet own farme as current frame */
 				cmd_iter.setCallerAndTargetFrameId( iCollectionId, iIdOfOtherWorkspaceFrame );
@@ -269,8 +268,8 @@ implements IUniqueManagedObject {
 	
 
 		ICommand bufferCmd = 
-			this.refCommandManager.createCommand(
-				CommandType.WINDOW_POPUP_INFO, "" );
+			this.refCommandManager.createCommandByType(
+					CommandQueueSaxType.WINDOW_POPUP_INFO);
 				
 //		menuCreator.createMenu( iCollectionId,
 //				"SYSTEM_ACTIVE",
@@ -300,7 +299,7 @@ implements IUniqueManagedObject {
 				"Load, save, exit application",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				false, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 	
 		
@@ -310,14 +309,14 @@ implements IUniqueManagedObject {
 				"Load from several files..",
 				'*',
 				"SYSTEM_FILE",
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				false, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_SAVE",
 				"save..",
 				"Save to several file formats..",
 				'*',
 				"SYSTEM_FILE",
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "") );
+				false, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_SAVE_XML",
@@ -325,14 +324,14 @@ implements IUniqueManagedObject {
 				"Save all settings to a XML file.",
 				'A',
 				"SYSTEM_FILE_SAVE",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "") );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_SAVE_SNAPSHOT_XML",
 				"save Snapshot (XML)",
 				"Save a snap shot of the current application sate to a XML file.",
 				'S',
 				"SYSTEM_FILE_SAVE",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "") );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand(DMenuBootStraper.MENU_SEPERATOR,
 				"-",
@@ -347,7 +346,7 @@ implements IUniqueManagedObject {
 					"exit from Application",
 					'X',
 					"SYSTEM_FILE",
-					true, refCommandManager.createCommand( CommandType.SYSTEM_EXIT, "" ) );
+					true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_SHUT_DOWN));
 		}
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_FILE_LOAD_JPG",
@@ -355,7 +354,7 @@ implements IUniqueManagedObject {
 				"load jpg-file..",
 				'J',
 				"SYSTEM_FILE_LOAD",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand(DMenuBootStraper.MENU_SEPERATOR,
 				"-",
@@ -370,7 +369,7 @@ implements IUniqueManagedObject {
 				"load gpr-file..",
 				'G',
 				"SYSTEM_FILE_LOAD",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 
 		
 		/*
@@ -381,32 +380,32 @@ implements IUniqueManagedObject {
 				"Edit parameters",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				false, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 //		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_SET",
 //				"ISet..",
 //				"Edit sets",
 //				'*',
 //				"SYSTEM_EDIT",
-//				true, refCommandManager.createCommand( CommandType.WINDOW_IFRAME_OPEN_SET ) );
+//				true, refCommandManager.createCommandByType( CommandQueueSaxType.WINDOW_IFRAME_OPEN_SET ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_SELECTION",
 				"IVirtualArray..",
 				"Edit selection",
 				'*',
 				"SYSTEM_EDIT",
-				true, refCommandManager.createCommand( 
-						CommandType.WINDOW_IFRAME_OPEN_SELECTION, 
-						sCollectionId ) );
+				true, refCommandManager.createCommandByType( 
+						CommandQueueSaxType.WINDOW_IFRAME_OPEN_SELECTION)); 
+						//,sCollectionId ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_EDIT_STORAGE",
 				"IStorage..",
 				"Edit storage",
 				'*',
 				"SYSTEM_EDIT",
-				true, refCommandManager.createCommand( 
-						CommandType.WINDOW_IFRAME_OPEN_STORAGE, 
-						sCollectionId ) );
+				true, refCommandManager.createCommandByType( 
+						CommandQueueSaxType.WINDOW_IFRAME_OPEN_STORAGE)); 
+						//,sCollectionId ) );
 		
 		
 		/*
@@ -417,14 +416,14 @@ implements IUniqueManagedObject {
 				"Handle views",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				false, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_VIEW_ADD_VIEW",
 				"add View",
 				"adds a bew view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand(DMenuBootStraper.MENU_SEPERATOR,
 				"-",
@@ -439,21 +438,21 @@ implements IUniqueManagedObject {
 				"adds a Histogram to the current view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_VIEW_ADD_HEATMAP",
 				"add Heatmap",
 				"adds a Heatmap to the current view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_VIEW_ADD_SCATTERPLOT",
 				"add Scatterplot",
 				"adds a Scatterplot to the current view",
 				'*',
 				"SYSTEM_VIEW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 
 		
 		/*
@@ -464,14 +463,14 @@ implements IUniqueManagedObject {
 				"Handel windows",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				false, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_WINDOW_NEW_FRAME",
 				"new Frame",
 				"create a new Frame",
 				'*',
 				"SYSTEM_WINDOW",
-				true, refCommandManager.createCommand( CommandType.SYSTEM_NEW_FRAME, "" ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NEW_FRAME));
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_WINDOW_SET_FRAME",
 				"set Frame..",
@@ -491,17 +490,17 @@ implements IUniqueManagedObject {
 				"heatMap",
 				"show heatMap",
 				'M',
-				"SYSTEM_WINDOW",
-				true, refCommandManager.createCommand( 
-						CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D, 
-						sCollectionId ) );
+				"SYSTEM_WINDOW",				
+				true, refCommandManager.createCommandByType( 
+						CommandQueueSaxType.WINDOW_IFRAME_OPEN_HEATMAP2D)); 
+						//,sCollectionId ) );
 		
 		
 		CmdWindowNewIFrameHistogram2D newCmdWindowNewIFrameHistogram2D =
 			(CmdWindowNewIFrameHistogram2D) 
-			refCommandManager.createCommand( 
-					CommandType.WINDOW_IFRAME_OPEN_HISTOGRAM2D, 
-					sCollectionId );
+			refCommandManager.createCommandByType( 
+					CommandQueueSaxType.WINDOW_IFRAME_OPEN_HISTOGRAM2D); 
+					//,sCollectionId );
 		
 		//TODO: removed next line! Does code still work?
 		//newCmdWindowNewIFrameHistogram2D.setParent( this.mainDesktop );
@@ -535,27 +534,27 @@ implements IUniqueManagedObject {
 				"create a JavaOpenGL canvas 3D",
 				'*',
 				"SYSTEM_WINDOW",
-				true, refCommandManager.createCommand( 
-						CommandType.WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM, 
-						sCollectionId ) );
+				true, refCommandManager.createCommandByType( 
+						CommandQueueSaxType.WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM));
+						//,sCollectionId ) );
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_WINDOW_JOGL_HEATMAP",
 				"Jogl Heatmap 3D",
 				"create a JavaOpenGL canvas 3D",
 				'*',
 				"SYSTEM_WINDOW",
-				true, refCommandManager.createCommand( 
-						CommandType.WINDOW_IFRAME_OPEN_JOGL_HEATMAP, 
-						sCollectionId ) );
+				true, refCommandManager.createCommandByType( 
+						CommandQueueSaxType.WINDOW_IFRAME_OPEN_JOGL_HEATMAP));
+						//,sCollectionId ) );
 	
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_WINDOW_JOGL_SCATTERPLOT",
 				"Jogl ScatterPlot",
 				"show JavaOpneGL canvas Scatterplot 3D",
 				'3',
 				"SYSTEM_WINDOW",
-				true, refCommandManager.createCommand(
-						CommandType.WINDOW_IFRAME_OPEN_JOGL_SCATTERPLOT, 
-						sCollectionId ) );
+				true, refCommandManager.createCommandByType(
+						CommandQueueSaxType.WINDOW_IFRAME_OPEN_JOGL_SCATTERPLOT)); 
+						//,sCollectionId ) );
 	
 			
 		/*
@@ -566,7 +565,7 @@ implements IUniqueManagedObject {
 				"Show credits",
 				'*',
 				DMenuBootStraper.MENU_ROOT,
-				false, refCommandManager.createCommand( CommandType.SYSTEM_NOP, "" ) );
+				false, refCommandManager.createCommandByType( CommandQueueSaxType.SYSTEM_NOP));
 		
 		
 		refJMenuBar.addMenuItemWithCommand("SYSTEM_CREDITS",
@@ -574,7 +573,8 @@ implements IUniqueManagedObject {
 				"Show credits..",
 				'*',
 				"SYSTEM_ABOUT",
-				true, refCommandManager.createCommand( CommandType.WINDOW_POPUP_CREDITS, sCollectionId ) );
+				true, refCommandManager.createCommandByType( CommandQueueSaxType.WINDOW_POPUP_CREDITS));
+				//, sCollectionId ) );
 		
 		
 		refJMenuBar.getMenuBar().setLayout( new FlowLayout( FlowLayout.LEFT ));

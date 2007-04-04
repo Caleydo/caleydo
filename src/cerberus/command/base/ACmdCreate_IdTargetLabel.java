@@ -20,7 +20,7 @@ implements ICommand
 	/**
 	 * Command Id to identify this command.
 	 * 
-	 * @deprecated remove this
+	 * identify this command by its id
 	 */
 	protected int iCommandId;
 	

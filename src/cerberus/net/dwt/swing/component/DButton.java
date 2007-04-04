@@ -283,29 +283,29 @@ implements DNetEventComponentInterface {
 		
 	}
 	
-	public static void main(String[] args) {
-		
-		DButton test = new DButton();
-		
-		try {
-			File inputFile = new File( args[0] );
-			
-			FileReader inReader = new FileReader( inputFile );
-			
-			InputSource inStream = new InputSource( inReader );
-			
-			//test.setMementoXML( inStream );
-	
-			System.out.println("DONE");
-		
-		}
-		catch (FileNotFoundException fnf_e) {
-			fnf_e.printStackTrace();
-		}
-		catch (Exception e) {
-			System.out.println(" error " + e.toString());
-		}
-	}
+//	public static void main(String[] args) {
+//		
+//		DButton test = new DButton();
+//		
+//		try {
+//			File inputFile = new File( args[0] );
+//			
+//			FileReader inReader = new FileReader( inputFile );
+//			
+//			InputSource inStream = new InputSource( inReader );
+//			
+//			//test.setMementoXML( inStream );
+//	
+//			System.out.println("DONE");
+//		
+//		}
+//		catch (FileNotFoundException fnf_e) {
+//			fnf_e.printStackTrace();
+//		}
+//		catch (Exception e) {
+//			System.out.println(" error " + e.toString());
+//		}
+//	}
 	
 	/**
 	 * formating XML output.

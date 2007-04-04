@@ -18,6 +18,7 @@ import cerberus.command.data.CmdDataCreateVirtualArray;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.command.data.CmdDataCreateStorage;
 import cerberus.command.event.CmdEventCreateMediator;
+import cerberus.command.event.CmdEventMediatorAddObject;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
@@ -94,54 +95,54 @@ public class CommandFactory
 		
 	}
 	
-	/**
-	 * @deprecated
-	 */
-	public ICommand createCommand( 
-			final CommandType createCommandByType, 
-			final String details ) {
-		
-		assert createCommandByType != null:"Can not create command from null-pointer.";
-		
-		switch ( createCommandByType.getGroup()) {
-		
-		case APPLICATION:
-			break;
-			
-		case DATASET:
-			return createDatasetCommand(createCommandByType,details);
-			
-		case DATA_COLLECTION:
-			return createDatasetCommand(createCommandByType,details);
-		
-		case HOST:
-			break;
-			
-		case SELECT:
-			return createSelectionCommand(createCommandByType,details);
-			
-		case SELECT_VALUE:
-			return createSelectionValueCommand(createCommandByType,details);
-			
-		case SERVER:
-			break;
-			
-		case SYSTEM:
-			return createSystemCommand(createCommandByType,details);	
-			
-		case WINDOW:
-			return createWindowCommand(createCommandByType,details);
-			
-		default:
-			System.err.println("CommandFactory(CommandType) failed, because CommandTypeGroup ["+
-					createCommandByType.getGroup() +"] is not known by factory.");
-			refLastCommand = null;
-			return null;			
-		}
-		
-		return null;
-		
-	}
+//	/**
+//	 * @deprecated
+//	 */
+//	public ICommand createCommand( 
+//			final CommandType createCommandByType, 
+//			final String details ) {
+//		
+//		assert createCommandByType != null:"Can not create command from null-pointer.";
+//		
+//		switch ( createCommandByType.getGroup()) {
+//		
+//		case APPLICATION:
+//			break;
+//			
+//		case DATASET:
+//			return createDatasetCommand(createCommandByType,details);
+//			
+//		case DATA_COLLECTION:
+//			return createDatasetCommand(createCommandByType,details);
+//		
+//		case HOST:
+//			break;
+//			
+//		case SELECT:
+//			return createSelectionCommand(createCommandByType,details);
+//			
+//		case SELECT_VALUE:
+//			return createSelectionValueCommand(createCommandByType,details);
+//			
+//		case SERVER:
+//			break;
+//			
+//		case SYSTEM:
+//			return createSystemCommand(createCommandByType,details);	
+//			
+//		case WINDOW:
+//			return createWindowCommand(createCommandByType,details);
+//			
+//		default:
+//			System.err.println("CommandFactory(CommandType) failed, because CommandTypeGroup ["+
+//					createCommandByType.getGroup() +"] is not known by factory.");
+//			refLastCommand = null;
+//			return null;			
+//		}
+//		
+//		return null;
+//		
+//	}
 	
 
 	
@@ -576,6 +577,12 @@ public class CommandFactory
 		 */
 		
 		
+		
+		/*
+		 * ----------------------
+		 *     EVENT - SYSTEM
+		 * ----------------------
+		 */
 		case CREATE_EVENT_MEDIATOR:
 		{
 			createdCommand =
@@ -585,6 +592,18 @@ public class CommandFactory
 						cmdType);		
 			break;
 		}
+		
+		case EVENT_MEDIATOR_ADD_OBJECT:
+		{
+			createdCommand =
+				new CmdEventMediatorAddObject(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;
+		}
+		
+		
 		
 		/**
 		 * Set path for pathway XML files, images and imagemaps.
@@ -637,7 +656,7 @@ public class CommandFactory
 		 */
 		int iNewUniqueId = iCmdId;		
 		if ( iCmdId < 0 ) {
-			iNewUniqueId = refCommandManager.createNewId( null );
+			iNewUniqueId = refCommandManager.createId( null );
 		}
 		/**
 		 * End: Create a new uniqueId if necessary

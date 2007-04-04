@@ -343,7 +343,7 @@ implements IGeneralManagerSingelton
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewId(cerberus.data.manager.BaseManagerType)
 	 */
-	public final int createNewId(final ManagerObjectType type)
+	public final int createId(final ManagerObjectType type)
 	{
 
 		assert type != null : "registerItem called with type == null!";
@@ -351,7 +351,7 @@ implements IGeneralManagerSingelton
 		IGeneralManager buffer = this.getManagerByBaseType( type );		
 		assert buffer != null : "createNewId type does not address manager!";
 		
-		return buffer.createNewId(type);
+		return buffer.createId(type);
 	}
 
 	public boolean unregisterItem(final int iItemId,
@@ -393,11 +393,11 @@ implements IGeneralManagerSingelton
 		case MEMENTO:
 			//return refMementoManager.c();
 			assert false : "not implemented";
-		case VIRTUAL_ARRAY:
+		case DATA_VIRTUAL_ARRAY:
 			return refVirtualArrayManager.createVirtualArray(createNewType);
-		case SET:
+		case DATA_SET:
 			return refSetManager.createSet( SetDataType.SET_LINEAR );
-		case STORAGE:
+		case DATA_STORAGE:
 			return refStorageManager.createStorage(createNewType);
 //		case VIEW:
 //			if (createNewType == ManagerObjectType.VIEW_NEW_FRAME)
@@ -411,7 +411,7 @@ implements IGeneralManagerSingelton
 			assert false : "update to new command structure!";		    
 //			return refCommandManager.createCommand(sNewTypeDetails);
 			return null;
-		case D_GUI:
+		case VIEW_DISTRIBUTE_GUI:
 			return refDComponentManager.createSet( DGuiComponentType.valueOf(sNewTypeDetails) );
 
 		default:
@@ -435,7 +435,7 @@ implements IGeneralManagerSingelton
 		case MEMENTO:
 			//return refMementoManager.c();
 			assert false : "not implemented";
-		case VIRTUAL_ARRAY:
+		case DATA_VIRTUAL_ARRAY:
 		{
 			IMementoXML selectionBuffer = refVirtualArrayManager
 					.createVirtualArray(type);
@@ -443,14 +443,14 @@ implements IGeneralManagerSingelton
 			selectionBuffer.setMementoXML_usingHandler(refSaxHandler);
 			return;
 		}
-		case SET:
+		case DATA_SET:
 		{
 			ISet setBuffer = this.refSetManager.createSet( SetDataType.SET_LINEAR );
 
 			setBuffer.setMementoXML_usingHandler( refSaxHandler );
 			return;
 		}
-		case STORAGE:
+		case DATA_STORAGE:
 			IStorage storageBuffer = refStorageManager.createStorage(type);
 
 			storageBuffer.setMementoXML_usingHandler(refSaxHandler);
@@ -497,30 +497,29 @@ implements IGeneralManagerSingelton
 		{
 		case MEMENTO:
 			return refMementoManager;
-		case D_GUI:
+		case VIEW_DISTRIBUTE_GUI:
 			return refDComponentManager;
-		case VIRTUAL_ARRAY:
+		case DATA_VIRTUAL_ARRAY:
 			return refVirtualArrayManager;
-		case SET:
+		case DATA_SET:
 			return refSetManager;
-		case STORAGE:
+		case DATA_STORAGE:
 			return refStorageManager;
 		case SINGELTON:
 			return this;
 		case VIEW:
-		case VIEW_GL_CANVAS:
 			return refViewGLCanvasManager;
 		case COMMAND:
 			return refCommandManager;
-		case GUI_SWT:
+		case VIEW_GUI_SWT:
 			return refSWTGUIManager;
-		case PATHWAY:
+		case DATA_PATHWAY:
 			return refPathwayManager;
-		case PATHWAY_ELEMENT:
+		case DATA_PATHWAY_ELEMENT:
 			return refPathwayElementManager;
 		case EVENT_PUBLISHER:
 			return refEventPublisher;
-		case GENOME_ID:
+		case DATA_GENOME_ID:
 			return refGenomeIdManager;
 			
 		default:
@@ -599,5 +598,11 @@ implements IGeneralManagerSingelton
 		}
 		
 		return true;
+	}
+
+	public int createId(CommandQueueSaxType setNewBaseType) {
+
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

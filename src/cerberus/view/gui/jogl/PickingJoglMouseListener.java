@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import cerberus.view.gui.jogl.JoglMouseListener;
 
 /**
- * @author michael
+ * @author Michael Kalkusch
  *
  */
 public class PickingJoglMouseListener extends JoglMouseListener {

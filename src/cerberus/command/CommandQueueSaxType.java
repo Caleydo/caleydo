@@ -3,6 +3,8 @@
  */
 package cerberus.command;
 
+import cerberus.manager.type.ManagerType;
+
 /**
  * Type of Command Queue "tag's" and "key's"
  * 
@@ -26,53 +28,56 @@ public enum CommandQueueSaxType
 	/**
 	 * XML-value  ( XML-Tag , XML-key ) 
 	 */
-	LOAD_DATA_FILE("cmd","type","", "No description available!"),
-	LOAD_DATA_FILE_N_STORAGES("cmd","type","", "Load a file into n storages"),
-	LOAD_DATA_FILE_BY_IMPORTER("cmd","type","", "Load a file via importer"),
-	LOAD_LOOKUP_TABLE_FILE("cmd","type","", "Load a lookup table"),
-	LOAD_ON_DEMAND("cmd", "process","LOAD_ON_DEMAND", "No description available!"),
-	LOAD_URL_IN_BROWSER("cmd", "type", "-1", "Load URL in browser"),
+	LOAD_DATA_FILE(ManagerType.SYSTEM,"cmd","type","", "No description available!"),
+	LOAD_DATA_FILE_N_STORAGES(ManagerType.SYSTEM,"cmd","type","", "Load a file into n storages"),
+	LOAD_DATA_FILE_BY_IMPORTER(ManagerType.SYSTEM,"cmd","type","", "Load a file via importer"),
+	LOAD_LOOKUP_TABLE_FILE(ManagerType.SYSTEM,"cmd","type","", "Load a lookup table"),
+	LOAD_ON_DEMAND(ManagerType.SYSTEM,"cmd", "process","LOAD_ON_DEMAND", "No description available!"),
+	LOAD_URL_IN_BROWSER(ManagerType.EVENT_PUBLISHER,"cmd", "type", "-1", "Load URL in browser"),
 	//OPEN_VIEW("cmd","type"),
 
-	CREATE_EVENT_MEDIATOR("cmd", "type", null, "Create Event Mediator"),
+	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
+	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 		
-	CREATE_GL_TRIANGLE_TEST("cmd","type","-1", "No description available!"),
-	CREATE_GL_TEXTURE2D("cmd","type","-1", "No description available!"),
-	CREATE_GL_HEATMAP("cmd","type","-1", "No description available!"),
-	CREATE_GL_HEATMAP2D("cmd","type","-1", "No description available!"),
-	CREATE_GL_HISTOGRAM2D("cmd","type","-1", "No description available!"),
-	CREATE_GL_SCATTERPLOT2D("cmd","type","-1", "No description available!"),
-	CREATE_GL_LAYERED_PATHWAY_3D("cmd","type","-1", "Create Layered Pathway 3D"),
-	CREATE_GL_PANEL_PATHWAY_3D("cmd","type","-1", "Create Panel Pathway 3D"),	
-	CREATE_GL_MINMAX_SCATTERPLOT2D("cmd","type","-1", "No description available!"),
-	CREATE_GL_MINMAX_SCATTERPLOT3D("cmd","type","-1", "No description available!"),
-	CREATE_GL_ISOSURFACE3D("cmd","type","-1", "No description available!"),
+	CREATE_GL_TRIANGLE_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_HEATMAP(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_HEATMAP2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_LAYERED_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Layered Pathway 3D"),
+	CREATE_GL_PANEL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Panel Pathway 3D"),	
+	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	
-	CREATE_PATHWAY_STORAGE("cmd","type","-1", "Create Storage Pathway"),
-	CREATE_SET_DATA("cmd","type","-1", "Create SET"),	
-	CREATE_SET_SELECTION("cmd","type","-1", "Create Selection SET!"),
-	CREATE_SET_SELECTION_MAKRO("cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
-	CREATE_SET_VIEW("cmd", "type","-1", "Create Set for a view"),
-	CREATE_STORAGE("cmd","type","-1", "Create Storage"),	
-	CREATE_SWT_WINDOW("cmd", "type","-1", "Create SWT window"),
-	CREATE_SWT_CONTAINER("cmd", "type","-1", "Create SWTContainer"),	
-	CREATE_VIRTUAL_ARRAY("cmd","type","-1", "Create VirtualArray"),
-	CREATE_VIEW_HEATMAP("cmd", "type","-1", "Create Heatmap"),
-	CREATE_VIEW_PATHWAY("cmd", "type","-1", "Create Pathway 2D"),
-	CREATE_VIEW_GEARS("cmd", "type","-1", "Create Gears Demo"),
-	CREATE_VIEW_DATA_EXPLORER("cmd", "type","-1", "Create Data Explorer"),
-	CREATE_VIEW_DATA_EXCHANGER("cmd", "type","-1", "Create Data Exchanger"),	
-	CREATE_VIEW_PROGRESSBAR("cmd", "type","-1", "Create Progress Bar"),
-	CREATE_VIEW_STORAGE_SLIDER("cmd", "type","-1", "Create Slider"),
-	CREATE_VIEW_SELECTION_SLIDER("cmd", "type","-1", "Create Slider"),	
-	CREATE_VIEW_MIXER("cmd", "type","-1", "Create Mixer"),
-	CREATE_VIEW_BROWSER("cmd", "type", "-1", "Create Browser"),	
-	CREATE_VIEW_IMAGE("cmd", "type", "-1", "Create Image"),	
-	CREATE_VIEW_TEST_TRIANGLE("cmd", "type","-1", "No description available!"),
-	CREATE_VIEW_SWT_GLCANVAS("cmd", "type","-1", "Create SWT GL Canvas"),
-	CREATE_VIEW_SET_EDITOR("cmd", "type","-1", "No description available!"),
-	CREATE_VIEW_UNDO_REDO("cmd", "type","-1", "Create UNDO/REDO"),
+	CREATE_PATHWAY_STORAGE(ManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage Pathway"),
+	CREATE_SET_DATA(ManagerType.DATA,"cmd","type","-1", "Create SET"),	
+	CREATE_SET_SELECTION(ManagerType.DATA_SET,"cmd","type","-1", "Create Selection SET!"),
+	CREATE_SET_SELECTION_MAKRO(ManagerType.DATA_SET,"cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
+	CREATE_SET_VIEW(ManagerType.DATA_SET,"cmd", "type","-1", "Create Set for a view"),
+	CREATE_STORAGE(ManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage"),		
+	CREATE_VIRTUAL_ARRAY(ManagerType.DATA_VIRTUAL_ARRAY,"cmd","type","-1", "Create VirtualArray"),
+
+	CREATE_SWT_WINDOW(ManagerType.VIEW,"cmd", "type","-1", "Create SWT window"),
+	CREATE_SWT_CONTAINER(ManagerType.VIEW,"cmd", "type","-1", "Create SWTContainer"),
+	CREATE_VIEW_HEATMAP(ManagerType.VIEW,"cmd", "type","-1", "Create Heatmap"),
+	CREATE_VIEW_PATHWAY(ManagerType.VIEW,"cmd", "type","-1", "Create Pathway 2D"),
+	CREATE_VIEW_GEARS(ManagerType.VIEW,"cmd", "type","-1", "Create Gears Demo"),
+	CREATE_VIEW_DATA_EXPLORER(ManagerType.VIEW,"cmd", "type","-1", "Create Data Explorer"),
+	CREATE_VIEW_DATA_EXCHANGER(ManagerType.VIEW,"cmd", "type","-1", "Create Data Exchanger"),	
+	CREATE_VIEW_PROGRESSBAR(ManagerType.VIEW,"cmd", "type","-1", "Create Progress Bar"),
+	CREATE_VIEW_STORAGE_SLIDER(ManagerType.VIEW,"cmd", "type","-1", "Create Slider"),
+	CREATE_VIEW_SELECTION_SLIDER(ManagerType.VIEW,"cmd", "type","-1", "Create Slider"),	
+	CREATE_VIEW_MIXER(ManagerType.VIEW,"cmd", "type","-1", "Create Mixer"),
+	CREATE_VIEW_BROWSER(ManagerType.VIEW,"cmd", "type", "-1", "Create Browser"),	
+	CREATE_VIEW_IMAGE(ManagerType.VIEW,"cmd", "type", "-1", "Create Image"),	
+	CREATE_VIEW_TEST_TRIANGLE(ManagerType.VIEW,"cmd", "type","-1", "No description available!"),
+	CREATE_VIEW_SWT_GLCANVAS(ManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
+	CREATE_VIEW_SET_EDITOR(ManagerType.VIEW,"cmd", "type","-1", "No description available!"),
+	CREATE_VIEW_UNDO_REDO(ManagerType.VIEW,"cmd", "type","-1", "Create UNDO/REDO"),
 	
+	/* switches to create different Set's */
 	SET_DATA_LINEAR("cmd","type","-1", "Create planar SET"),
 	SET_DATA_PLANAR("cmd","type","-1", "Create planar SET"),
 	SET_DATA_CUBIC("cmd","type","-1", "Create cubic-dim SET"),
@@ -94,8 +99,8 @@ public enum CommandQueueSaxType
 	/*
 	 * -------  COMMAND QUEUE  --------
 	 */ 
-	COMMAND_QUEUE_OPEN("cmdqueue","type",null, "Open a command queue"),
-	COMMAND_QUEUE_RUN("cmdqueue","type",null, "execute a command queue"),
+	COMMAND_QUEUE_OPEN(ManagerType.SYSTEM,"cmdqueue","type",null, "Open a command queue"),
+	COMMAND_QUEUE_RUN(ManagerType.SYSTEM,"cmdqueue","type",null, "execute a command queue"),
 	
 	CMD_ID("cmdqueue","cmdId","-1", "No description available!"),
 	CMDQUEUE_ID("cmdqueue","cmdQueueId","-1", "No description available!"),
@@ -117,7 +122,49 @@ public enum CommandQueueSaxType
 	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1", "No description available!"),
 	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1", "No description available!"),
 	
-	SYSTEM_SHUT_DOWN("cmd","type","-1", "Cerberus system shut down"),
+	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "Cerberus system shut down"),
+	
+	WINDOW_IFRAME_OPEN_HEATMAP2D(),
+	WINDOW_IFRAME_OPEN_HISTOGRAM2D(),
+	WINDOW_IFRAME_OPEN_SELECTION(),
+	WINDOW_IFRAME_OPEN_STORAGE(),
+	WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM(),
+	WINDOW_IFRAME_OPEN_JOGL_HEATMAP(),
+	WINDOW_IFRAME_OPEN_JOGL_SCATTERPLOT(),
+	WINDOW_POPUP_CREDITS(),
+	WINDOW_POPUP_INFO(),
+	SYSTEM_NEW_FRAME(),
+	SYSTEM_NOP(),
+	
+//	/*
+//	 * ==================================================
+//	 *           enumeration used internal
+//	 * ==================================================
+//	 */
+//	M_PATHWAY_VERTEX(ManagerType.DATA_PATHWAY_ELEMENT,"select or identify a vertex inside a pathway"),
+//	M_PATHWAY_ELEMENT(ManagerType.DATA_PATHWAY_ELEMENT,"select or identify a vertex or edge inside a pathway"),
+//	M_COMMAND(ManagerType.COMMAND),
+//	M_MEMENTO(ManagerType.MEMENTO),
+//	
+//	/*
+//	 * SET
+//	 */
+//	M_SET_LINEAR(ManagerType.DATA_SET),
+//	M_SET_PLANAR(ManagerType.DATA_SET),	
+//	M_SET_CUBIC(ManagerType.DATA_SET),	
+//	M_SET_MULTI_DIM(ManagerType.DATA_SET),	
+//	M_SET_MULTI_DIM_VARIABLE(ManagerType.DATA_SET),
+//	
+//	M_STORAGE_FLAT(ManagerType.DATA_STORAGE),	
+//	
+//	/*
+//	 * SELECTION
+//	 */
+//	M_VIRTUAL_ARRAY(ManagerType.DATA_VIRTUAL_ARRAY),
+//	M_VIRTUAL_ARRAY_SINGLE_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
+//	M_VIRTUAL_ARRAY_MULTI_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
+//	M_VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.DATA_VIRTUAL_ARRAY),
+//	M_VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
 	
 	/*
 	 * ==================================================
@@ -149,7 +196,7 @@ public enum CommandQueueSaxType
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */
 	TAG_POS_GL_ROTATION("cmd","gl_rotation","0 0 1 0.0");
 	
-	
+
 	
 	/**
 	 *  * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>
@@ -177,6 +224,70 @@ public enum CommandQueueSaxType
 	private String sInfoText;
 	
 	/**
+	 * Define type of manager group
+	 */
+	private final ManagerType eGroupType;
+	
+	private CommandQueueSaxType() 
+	{
+		this.sXmlTag = null;		
+		this.sXmlKey = null;
+		this.sDefaultValue = null;
+		this.sInfoText = null;
+		this.eGroupType = null;
+		
+	}
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param type
+	 * @param sXmlTag
+	 * @param sXmlKey
+	 * @param sDefaultValue
+	 * @param sInfoText
+	 */
+	private CommandQueueSaxType( ManagerType type,
+			String sXmlTag, 
+			String sXmlKey,
+			String sDefaultValue,
+			String sInfoText) 
+	{
+		this.sXmlTag = sXmlTag;		
+		this.sXmlKey = sXmlKey;
+		this.sDefaultValue = sDefaultValue;
+		this.sInfoText = sInfoText;
+		this.eGroupType = type;
+		
+	}
+	
+	/**
+	 * Constructor for internal use.
+	 * 
+	 * @param type
+	 */
+	private CommandQueueSaxType( ManagerType type,
+			String sInfoText ) 
+	{
+		this.sXmlTag = null;		
+		this.sXmlKey = null;
+		this.sDefaultValue = null;
+		this.sInfoText = sInfoText;
+		this.eGroupType = type;
+		
+	}
+	
+	/**
+	 * Constructor for internal use.
+	 * 
+	 * @param type
+	 */
+	private CommandQueueSaxType( ManagerType type ) 
+	{
+		this(type,"...");		
+	}
+	
+	/**
 	 * Constructor.
 	 * 
 	 * @param sXmlTag
@@ -189,22 +300,33 @@ public enum CommandQueueSaxType
 			String sDefaultValue,
 			String sInfoText) 
 	{
-		this.sXmlTag = sXmlTag;		
-		this.sXmlKey = sXmlKey;
-		this.sDefaultValue = sDefaultValue;
-		this.sInfoText = sInfoText;
+		this( ManagerType.NONE,
+				sXmlTag, 
+				sXmlKey,
+				sDefaultValue,
+				sInfoText);
+		
 	}
 	
 	private CommandQueueSaxType( String sXmlTag, 
 			String sXmlKey,
 			String sDefaultValue) 
 	{
-		this.sXmlTag = sXmlTag;		
-		this.sXmlKey = sXmlKey;
-		this.sDefaultValue = sDefaultValue;
-		this.sInfoText = "Description is not valid! This is a TAG.";
+		this( ManagerType.NONE,
+				sXmlTag, 
+				sXmlKey,
+				sDefaultValue,
+				"Description is not valid! This is a TAG.");
 	}
 	
+	/**
+	 * Get the group type for this manager.
+	 * 
+	 * @return group type
+	 */
+	public final ManagerType getGroupType() {
+		return this.eGroupType;
+	}
 	
 	/**
 	 *  * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>

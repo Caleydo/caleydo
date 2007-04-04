@@ -56,12 +56,12 @@ public enum GenomeIdType
 			GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,
 			"ncbi-geneid","ncbi-geneid"),
 		
-	/**
-	 * @deprecated use NCBI_GENEID instead
-	 */
-	NCBI_GI      (StorageType.INT,
-			GenomeMappingType.NON_MAPPING,
-			"ncbi-gi","ncbi-gi"),
+//	/**
+//	 * @deprecated use NCBI_GENEID instead
+//	 */
+//	NCBI_GI      (StorageType.INT,
+//			GenomeMappingType.NON_MAPPING,
+//			"ncbi-gi","ncbi-gi"),
 	
 	PATHWAY      (StorageType.INT,
 			GenomeMappingType.NON_MAPPING,
@@ -76,7 +76,7 @@ public enum GenomeIdType
 			"gene-name","gene pseudo name"),	
 			
 	/**
-	 * @deprecated use NCBI_GENEID instead
+	 * use NCBI_GENEID instead
 	 */
 	KEGG      (StorageType.INT,
 			GenomeMappingType.KEGG_CODE_2_KEGG,

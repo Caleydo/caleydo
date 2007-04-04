@@ -63,7 +63,7 @@ implements IGenomeIdManager {
 	 */
 	public DynamicGenomeIdManager(IGeneralManager setGeneralManager) {
 
-		super(setGeneralManager, 66, ManagerType.GENOME_ID );
+		super(setGeneralManager, 66, ManagerType.DATA_GENOME_ID );
 		
 		hashType2Map = new HashMap<GenomeMappingType, IGenomeIdMap> (iInitialCountAllLookupTables);
 		

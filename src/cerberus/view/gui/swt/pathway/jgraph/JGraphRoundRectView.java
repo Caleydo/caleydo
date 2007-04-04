@@ -12,6 +12,11 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 public class JGraphRoundRectView extends VertexView {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6927958561452408170L;
+	
 	public static transient ActivityRenderer renderer = new ActivityRenderer();
 
 	public JGraphRoundRectView() {
@@ -60,6 +65,11 @@ public class JGraphRoundRectView extends VertexView {
 	}
 
 	public static class ActivityRenderer extends VertexRenderer {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3100741770794295221L;
 
 		/**
 		 * Return a slightly larger preferred size than for a rectangle.

@@ -21,7 +21,7 @@
  */
 package cerberus.view.gui.swt.pathway.jgraph;
 
-import java.awt.BasicStroke;
+//import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -67,6 +67,11 @@ import org.jgraph.graph.VertexView;
  */
 public class JGraphMultilineView extends VertexView {
     
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1057488833884340593L;
+	
 	protected static transient MultiLinedRenderer renderer = new MultiLinedRenderer();
     protected static transient MultiLinedEditor editor = new MultiLinedEditor();
     
@@ -119,9 +124,22 @@ public class JGraphMultilineView extends VertexView {
 	}
     
     public static class MultiLinedEditor extends DefaultGraphCellEditor {
-        public class RealCellEditor extends AbstractCellEditor implements GraphCellEditor {
-            JTextArea editorComponent = new JTextArea();
-            public RealCellEditor() {
+    	
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -687484239632778374L;
+
+		public class RealCellEditor extends AbstractCellEditor implements GraphCellEditor {
+			
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1494405876665957529L;
+			
+			JTextArea editorComponent = new JTextArea();
+            @SuppressWarnings("serial")
+			public RealCellEditor() {
                 editorComponent.setBorder(UIManager.getBorder("Tree.editorBorder"));
                 editorComponent.setLineWrap(true);
                 editorComponent.setWrapStyleWord(true);
@@ -230,7 +248,8 @@ public class JGraphMultilineView extends VertexView {
             return new MultiLinedEditor.ModifiedEditorContainer();
         }
 
-        class ModifiedEditorContainer extends EditorContainer {
+        @SuppressWarnings("serial")
+		class ModifiedEditorContainer extends EditorContainer {
             public void doLayout() {
                 super.doLayout();
                 //substract 2 pixels that were added to the preferred size of the container for the border.
@@ -246,7 +265,12 @@ public class JGraphMultilineView extends VertexView {
 
     public static class MultiLinedRenderer extends JTextArea implements CellViewRenderer {
     	
-    	protected transient JGraph graph = null;
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4248607485548265343L;
+
+		protected transient JGraph graph = null;
 
     	transient protected Color gradientColor = null;
     	

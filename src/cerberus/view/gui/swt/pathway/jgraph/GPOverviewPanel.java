@@ -62,6 +62,11 @@ public class GPOverviewPanel
 	extends JPanel
 	implements ComponentListener, GraphModelListener, GraphLayoutCacheListener,
 										PropertyChangeListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8507053390513155066L;
+	
 	protected JGraph graph;
 	protected JGraph originalGraph;
 	protected PannerViewfinder v;
@@ -187,6 +192,11 @@ public class GPOverviewPanel
 
 	public class ViewRedirector extends GraphLayoutCache {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -128387130610378373L;
+		
 		protected GraphLayoutCache realView;
 
 		public ViewRedirector(GraphLayoutCache realView) {

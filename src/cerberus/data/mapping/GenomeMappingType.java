@@ -41,7 +41,7 @@ public enum GenomeMappingType
 			
 	/* --- KEGG Gene Id --- */
 	/**
-	 * @deprecated use NCBI_GENEID_2*
+	 * use NCBI_GENEID_2* if possible
 	 */
 	KEGG_CODE_2_KEGG (
 			GenomeIdType.KEGG,
@@ -49,7 +49,7 @@ public enum GenomeMappingType
 			GenomeMappingDataType.STRING2INT),
 			
 	/**
-	 * @deprecated use NCBI_GENEID_2*
+	 * use NCBI_GENEID_2* if possible
 	 */
 	KEGG_2_KEGG_CODE (
 			GenomeIdType.KEGG,
@@ -57,7 +57,7 @@ public enum GenomeMappingType
 			GenomeMappingDataType.INT2STRING),			
 			
 	/**
-	 * @deprecated use NCBI_GENEID_2*
+	 * use NCBI_GENEID_2* if possible
 	 */
 	KEGG_2_ENZYME (
 			GenomeIdType.KEGG,
@@ -65,7 +65,7 @@ public enum GenomeMappingType
 			GenomeMappingDataType.MULTI_INT2INT),
 			
 	/**
-	 * @deprecated use NCBI_GENEID_2*
+	 * use NCBI_GENEID_2* if possible
 	 */
 	ENZYME_2_KEGG (
 			GenomeIdType.KEGG,
@@ -73,7 +73,7 @@ public enum GenomeMappingType
 			GenomeMappingDataType.MULTI_INT2INT),
 				
 	/**
-	 * @deprecated do not use KEGG Id; use NCBI_GENEID_2
+	 * do not use KEGG Id; use NCBI_GENEID_2
 	 * Note: this is the mapping between NCBI_GENEID and KEGG 
 	 */
 	NCBI_GENEID_2_KEGG  (

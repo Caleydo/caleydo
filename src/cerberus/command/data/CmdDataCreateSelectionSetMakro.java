@@ -97,7 +97,7 @@ implements ICommand {
 		
 		// Retrieve new ID
 		iSelectionVirtualArrayId = refGeneralManager.getSingelton().getVirtualArrayManager()
-			.createNewId(ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
+			.createId(ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
 		
 		CmdDataCreateVirtualArray createdCommand = 
 			(CmdDataCreateVirtualArray) refGeneralManager.getSingelton().getCommandManager()
@@ -115,7 +115,7 @@ implements ICommand {
 
 		// Retrieve new ID
 		iSelectionIdStorageId = refGeneralManager.getSingelton().getStorageManager()
-			.createNewId(ManagerObjectType.STORAGE_FLAT);
+			.createId(ManagerObjectType.STORAGE_FLAT);
 				
 		CmdDataCreateStorage createdCommand = 
 			(CmdDataCreateStorage) refGeneralManager.getSingelton().getCommandManager()
@@ -135,7 +135,7 @@ implements ICommand {
 	
 		// Retrieve new ID
 		iSelectionGroupStorageId = refGeneralManager.getSingelton().getStorageManager()
-			.createNewId(ManagerObjectType.STORAGE_FLAT);
+			.createId(ManagerObjectType.STORAGE_FLAT);
 			
 		CmdDataCreateStorage createdCommand = 
 			(CmdDataCreateStorage) refGeneralManager.getSingelton().getCommandManager()
@@ -156,7 +156,7 @@ implements ICommand {
 
 		// Retrieve new ID
 		iSelectionOptionalStorageId = refGeneralManager.getSingelton().getStorageManager()
-			.createNewId(ManagerObjectType.STORAGE_FLAT);
+			.createId(ManagerObjectType.STORAGE_FLAT);
 			
 		CmdDataCreateStorage createdCommand = 
 			(CmdDataCreateStorage) refGeneralManager.getSingelton().getCommandManager()

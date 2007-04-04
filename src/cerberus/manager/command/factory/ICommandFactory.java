@@ -25,18 +25,18 @@ public interface ICommandFactory {
 
 	
 	
-	/**
-	 * Creates a new command using the information from createCommandByType
-	 * 
-	 * @param createCommandByType define, which command shall be created
-	 * @param details details for command creation
-	 * @return new created Command
-	 * 
-	 * @deprecated use createCommandByType(CommandQueueSaxType)
-	 */
-	public ICommand createCommand( 
-			final CommandType createCommandByType, 
-			final String details);
+//	/**
+//	 * Creates a new command using the information from createCommandByType
+//	 * 
+//	 * @param createCommandByType define, which command shall be created
+//	 * @param details details for command creation
+//	 * @return new created Command
+//	 * 
+//	 * @deprecated use createCommandByType(CommandQueueSaxType)
+//	 */
+//	public ICommand createCommand( 
+//			final CommandType createCommandByType, 
+//			final String details);
 
 
 	

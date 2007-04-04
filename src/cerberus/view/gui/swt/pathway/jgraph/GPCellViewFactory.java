@@ -18,9 +18,18 @@ import org.jgraph.graph.VertexView;
  */
 public class GPCellViewFactory extends DefaultCellViewFactory {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9075157924693207495L;
+	
 	public static final String VIEW_CLASS_KEY = "viewClassKey";
 	
-	public static final void setViewClass(Map map, String viewClass) {
+	public GPCellViewFactory() {
+		super();		
+	}
+	
+	public static final void setViewClass(Map <String,String> map, String viewClass) {
 		map.put(VIEW_CLASS_KEY, viewClass);
 	}
 

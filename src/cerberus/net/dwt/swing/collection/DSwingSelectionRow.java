@@ -207,7 +207,7 @@ public class DSwingSelectionRow {
 	 */
 	private boolean setGuiByBaseType(final ManagerObjectType setType){
 		
-		if ( setType.getGroupType() != ManagerType.VIRTUAL_ARRAY ) {
+		if ( setType.getGroupType() != ManagerType.DATA_VIRTUAL_ARRAY ) {
 			return false;
 		}
 		

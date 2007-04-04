@@ -181,17 +181,17 @@ implements IView {
 		refAnimator.stop();
 	}
 	
-	/**
-	 * Work around, fix as soon as possible!
-	 * 
-	 * FIXME: Work around, fix as soon as possible
-	 * 
-	 * @deprecated work around, fix as soon as possible
-	 * 
-	 * @return
-	 */
-	public Composite getSWTContainer() {
-		
-		return refSWTContainer;
-	}
+//	/**
+//	 * Work around, fix as soon as possible!
+//	 * 
+//	 * FIXME: Work around, fix as soon as possible
+//	 * 
+//	 * @deprecated work around, fix as soon as possible
+//	 * 
+//	 * @return
+//	 */
+//	public Composite getSWTContainer() {
+//		
+//		return refSWTContainer;
+//	}
 }

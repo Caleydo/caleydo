@@ -23,7 +23,7 @@ import cerberus.manager.IEventPublisher;
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class CmdEventCreateMediator 
+public class CmdEventMediatorAddObject 
 extends ACmdCreate_IdTargetLabelAttrDetail 
 implements ICommand {
 	
@@ -33,7 +33,7 @@ implements ICommand {
 	
 	protected MediatorType mediatorType;
 	
-	public CmdEventCreateMediator(
+	public CmdEventMediatorAddObject(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType) {
@@ -43,7 +43,7 @@ implements ICommand {
 				refCommandQueueSaxType);
 		
 		super.setId( refGeneralManager.getSingelton().getEventPublisher().createId( 
-				ManagerObjectType.EVENT_MEDIATOR_CREATE));
+				ManagerObjectType.EVENT_MEDIATOR_ADD_OBJECT));
 		
 		iArSenderIDs = new ArrayList<Integer>();
 		iArReceiverIDs = new ArrayList<Integer>();

@@ -429,6 +429,8 @@ implements IGLCanvasUser, IMediatorReceiver
 			
 		} // for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 			
 		
+		gl.glEnable( GL.GL_LIGHTING );
+		
 		// if ( targetSet.getReadToken() )
 		targetSet.returnReadToken();
 	}

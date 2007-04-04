@@ -12,6 +12,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Iterator;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.base.AAbstractManager;
@@ -53,7 +54,7 @@ public class DComponentSwingFactoryManager
 		
 		super( setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GuiComponent,
-				ManagerType.D_GUI );
+				ManagerType.VIEW_DISTRIBUTE_GUI );
 		
 		assert setGeneralManager != null: "DComponentSwingFactoryManager.DComponentSwingFactoryManager() init with null-pointer.";
 		
@@ -91,7 +92,7 @@ public class DComponentSwingFactoryManager
 				//return null;
 		}
 		
-		final int iNewUniqueId = this.createNewId( ManagerObjectType.MEMENTO );
+		final int iNewUniqueId = this.createId( ManagerObjectType.MEMENTO );
 		refResult.setId( iNewUniqueId );
 		
 		vecGuiComponents.add( refResult );

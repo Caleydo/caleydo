@@ -20,49 +20,41 @@ public enum ManagerType {
 		
 		COMMAND("command manager", 99),
 		
-		MEMENTO("memento manager", 95),
+		DATA("abstract data manager", ManagerType.DATA, 50),
+		
+		DATA_GENOME_ID("genome id manager", ManagerType.DATA, 70 ),
+				
+		DATA_PATHWAY("pathway manager", ManagerType.DATA, 60),
+		
+		DATA_PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA_PATHWAY, 61),
+		
+		DATA_SET("set manager", ManagerType.DATA, 51 ),		
+		
+		DATA_STORAGE("storage manager", ManagerType.DATA, 53 ),
+		
+		DATA_VIRTUAL_ARRAY("selection manager", ManagerType.DATA, 53 ),		
+		
+		EVENT_PUBLISHER("event publisher", 80 ),
 		
 		LOGGER("logger manager", -1),
-				
-		VIEW_GL_CANVAS("view GL canvas manager", 35),	
+		
+		MEMENTO("memento manager", 95),		
+		
+		MENU("view menu manager", ManagerType.VIEW, 39 ),							
+		
+		NONE("no type set", -1),
+		
+		SINGELTON("onyl used for singelton", 1 ),
+		
+		SYSTEM("run system or thread requests",7),
 		
 		VIEW("view manager", 30),
 		
-		GUI_AWT("Sing GUI manager", 31),
+		VIEW_GUI_AWT("Sing GUI manager",ManagerType.VIEW, 31),
 		
-		GUI_SWT("SWT GUI manager",ManagerType.VIEW, 32 ),		
+		VIEW_GUI_SWT("SWT GUI manager",ManagerType.VIEW, 32 ),	
 		
-		GENOME_ID("genome id manager", ManagerType.DATA, 70 ),
-		
-		D_GUI("distributed GUI", 29),
-		
-		MENU("view menu manager", ManagerType.VIEW, 39 ),
-		
-		DATA("abstract data manager", ManagerType.DATA, 50),
-		
-		SET("set manager", ManagerType.DATA, 51 ),
-		
-		VIRTUAL_ARRAY("selection manager", ManagerType.DATA, 53 ),
-		
-		STORAGE("storage manager", ManagerType.DATA, 53 ),
-		
-		SHAREDOBJECT("shared objects", ManagerType.DATA, 59 ),
-				
-		SINGELTON("onyl used for singelton", 1 ),
-		
-		PATHWAY("pathway manager", 60),
-		
-		PATHWAY_ELEMENT("pathway element manager", ManagerType.PATHWAY, 61),
-		
-		EVENT_PUBLISHER("event publisher", 80 ),
-							
-		NONE("no type set", -1);
-		
-
-//		/**
-//		 * @deprecated repalced by "VIEW"
-//		 */
-//		GUI_COMPONENT("use 'VIEW' instead!");
+		VIEW_DISTRIBUTE_GUI("distributed GUI", 29);
 
 
 		

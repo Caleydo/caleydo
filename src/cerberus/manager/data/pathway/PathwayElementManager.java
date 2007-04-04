@@ -53,7 +53,7 @@ implements IPathwayElementManager {
 		
 		super( refGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Pathways_Vertex,
-				ManagerType.D_GUI );
+				ManagerType.VIEW_DISTRIBUTE_GUI );
 		
 		vertexLUT = new HashMap<Integer, PathwayVertex>();
 		edgeLUT = new HashMap<Integer, APathwayEdge>();
@@ -73,7 +73,7 @@ implements IPathwayElementManager {
 			String sLink,
 			String sReactionId) {
 
-		int iGeneratedId = createNewId( ManagerObjectType.PATHWAY_VERTEX );;
+		int iGeneratedId = createId( ManagerObjectType.PATHWAY_VERTEX );;
 				
 		PathwayVertex newVertex = 
 			new PathwayVertex(iGeneratedId, sName, sType, sLink, sReactionId);
@@ -136,7 +136,7 @@ implements IPathwayElementManager {
 			int iVertexId2, 
 			String sType) {
 		
-		int iGeneratedId = createNewId( ManagerObjectType.PATHWAY_ELEMENT );
+		int iGeneratedId = createId( ManagerObjectType.PATHWAY_ELEMENT );
 		
 		PathwayRelationEdge newEdge = 
 			new PathwayRelationEdge(iVertexId1, iVertexId2, sType);
@@ -169,7 +169,7 @@ implements IPathwayElementManager {
 	 */
 	public void createReactionEdge(String sReactionName, String sReactionType) {
 
-		int iGeneratedId = createNewId( ManagerObjectType.PATHWAY_ELEMENT );;
+		int iGeneratedId = createId( ManagerObjectType.PATHWAY_ELEMENT );;
 		currentReactionEdge = null;
 		
 		PathwayReactionEdge newEdge = 
@@ -227,7 +227,7 @@ implements IPathwayElementManager {
 //		return iCurrentUniqueElementId++;
 //	}
 	
-	public final int createNewId(ManagerObjectType setNewBaseType) {
+	public final int createId(ManagerObjectType setNewBaseType) {
 		
 		if ( setNewBaseType == ManagerObjectType.PATHWAY_VERTEX ) 
 		{

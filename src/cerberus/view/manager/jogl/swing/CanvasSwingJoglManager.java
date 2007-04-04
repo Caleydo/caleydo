@@ -234,7 +234,7 @@ public class CanvasSwingJoglManager
 		
 		super( setManager,
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
-				ManagerType.GUI_AWT );
+				ManagerType.VIEW_GUI_AWT );
 
 		//TODO: check why the constructors differ!
 		
@@ -257,7 +257,7 @@ public class CanvasSwingJoglManager
 		
 		super( setManager,				
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
-				ManagerType.GUI_AWT );
+				ManagerType.VIEW_GUI_AWT );
 		
 		//TODO: check why the constructors differ!
 		

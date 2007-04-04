@@ -74,7 +74,7 @@ public class MementoManager
 	 * @see prometheus.command.memento.manager.MementoManager#setMemento(prometheus.command.memento.Memento)
 	 */
 	public final int pushMemento( final IMemento addMemento) {
-		final int iUniqueId = createNewId( ManagerObjectType.MEMENTO );
+		final int iUniqueId = createId( ManagerObjectType.MEMENTO );
 		
 		try {
 			vecMemento.add(addMemento);

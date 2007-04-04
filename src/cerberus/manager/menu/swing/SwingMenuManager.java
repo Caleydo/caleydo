@@ -210,7 +210,7 @@ public class SwingMenuManager
 		} // end  if ( sMenuParentLookupName.equalsIgnoreCase( MENU_ROOT ) )  ... else
 		
 		
-		final int iNewMenuId = this.createNewId(null);
+		final int iNewMenuId = this.createId(null);
 		
 		hashMenu.put( iNewMenuId ,newMenuObject );
 		

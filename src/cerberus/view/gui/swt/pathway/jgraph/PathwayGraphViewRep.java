@@ -444,6 +444,7 @@ extends APathwayGraphViewRep {
         }
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void createVertex(IPathwayVertexRep vertexRep, Pathway refContainingPathway) {
 		
 		//create node
@@ -700,6 +701,7 @@ extends APathwayGraphViewRep {
 	 * @param iDistance Neighborhood distance.
 	 * because the method is called recursive.
 	 */
+	@SuppressWarnings("unchecked")
 	public void showNeighbourhoodBFS(int iDistance) {
 				
 		Map<DefaultGraphCell, Map> nested = 

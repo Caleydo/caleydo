@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-//import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.data.CmdDataCreateSet;
 import cerberus.data.collection.ISet;
@@ -662,7 +661,7 @@ implements IView {
 		
 	    // Create new SET
 	    int iNewSetId = refGeneralManager.getSingelton().getSetManager().
-	    	createNewId(ManagerObjectType.SET_PLANAR);
+	    	createId(ManagerObjectType.SET_PLANAR);
 
 		CmdDataCreateSet createdCommand = 
 			(CmdDataCreateSet) refGeneralManager.getSingelton().getCommandManager()

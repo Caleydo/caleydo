@@ -64,7 +64,7 @@ implements ISetManager {
 			final int iInitSizeContainer ) {
 		super( setSingelton , 
 				IGeneralManager.iUniqueId_TypeOffset_Set,
-				ManagerType.SET );
+				ManagerType.DATA_SET );
 
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";

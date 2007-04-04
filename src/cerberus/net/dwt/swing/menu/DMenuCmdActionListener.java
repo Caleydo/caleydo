@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 
 import cerberus.manager.ICommandManager;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 
@@ -51,10 +52,10 @@ public class DMenuCmdActionListener implements ActionListener {
 	 * @param createCommandByType type of Command
 	 */
 	public DMenuCmdActionListener(final ICommandManager setCommandManager,
-			final CommandType createCommandByType) {
+			final CommandQueueSaxType createCommandByType) {
 		
 		refCommandManager = setCommandManager;
-		refCommand = refCommandManager.createCommand(createCommandByType, "");
+		refCommand = refCommandManager.createCommandByType(createCommandByType);
 	}
 
 	/* (non-Javadoc)

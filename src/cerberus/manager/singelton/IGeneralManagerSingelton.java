@@ -11,18 +11,18 @@ public interface IGeneralManagerSingelton
 extends IGeneralManager, IMementoCallbackXML {
 
 
-	/**
-	 * Creates a new unique Id with the type, that was set previouse.
-	 * This methode returns and creates a unique Id.
-	 * 
-	 * @param define type of object ot be created.
-	 * 
-	 * @return int new unique Id
-	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#setNewType(ManagerObjectType)
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
-	 */
-	public abstract int createNewId(ManagerObjectType setNewBaseType);
+//	/**
+//	 * Creates a new unique Id with the type, that was set previouse.
+//	 * This methode returns and creates a unique Id.
+//	 * 
+//	 * @param define type of object ot be created.
+//	 * 
+//	 * @return int new unique Id
+//	 * 
+//	 * @see cerberus.manager.singelton.OneForAllManager#setNewType(ManagerObjectType)
+//	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
+//	 */
+//	public abstract int createNewId(ManagerObjectType setNewBaseType);
 
 	/**
 	 * Create a new item.
@@ -58,15 +58,15 @@ extends IGeneralManager, IMementoCallbackXML {
 	 */
 	public IGeneralManager getManagerByType(ManagerType managerType);
 	
-	/**
-	 * Get the reference to the managers using the ManagerObjectType.
-	 * Note: Instead of writing one get-methode for all Managers this methode
-	 * handles all differnt types of managers.
-	 * 
-	 * @param managerType define type of manger that is requested
-	 * @return manager for a certain type.
-	 */
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType);
+//	/**
+//	 * Get the reference to the managers using the ManagerObjectType.
+//	 * Note: Instead of writing one get-methode for all Managers this methode
+//	 * handles all differnt types of managers.
+//	 * 
+//	 * @param managerType define type of manger that is requested
+//	 * @return manager for a certain type.
+//	 */
+//	public IGeneralManager getManagerByBaseType(CommandQueueSaxType managerType);
 	
 	
 	/**

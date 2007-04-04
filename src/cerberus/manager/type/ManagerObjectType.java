@@ -24,7 +24,8 @@ public enum ManagerObjectType {
 	/**
 	 * see cerberus.command.CommandQueueSaxType.CREATE_EVENT_MEDIATOR
 	 */
-	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER),
+	EVENT_MEDIATOR_CREATE(ManagerType.EVENT_PUBLISHER),
+	EVENT_MEDIATOR_ADD_OBJECT(ManagerType.EVENT_PUBLISHER),
 	
 	/*
 	 * STORAGE
@@ -33,26 +34,26 @@ public enum ManagerObjectType {
 	/**
 	 * This class is the fabrik itself befor assinging a type.
 	 */
-	STORAGE(ManagerType.STORAGE),
+	STORAGE(ManagerType.DATA_STORAGE),
 	
 	/**
 	 * sub of IStorage
 	 */
-	STORAGE_FLAT(ManagerType.STORAGE),
+	STORAGE_FLAT(ManagerType.DATA_STORAGE),
 	
 	
 	/*
 	 * SELECTION
 	 */
-	VIRTUAL_ARRAY(ManagerType.VIRTUAL_ARRAY),
+	VIRTUAL_ARRAY(ManagerType.DATA_VIRTUAL_ARRAY),
 	
-	VIRTUAL_ARRAY_SINGLE_BLOCK(ManagerType.VIRTUAL_ARRAY),
+	VIRTUAL_ARRAY_SINGLE_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
 	
-	VIRTUAL_ARRAY_MULTI_BLOCK(ManagerType.VIRTUAL_ARRAY),
+	VIRTUAL_ARRAY_MULTI_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
 	
-	VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.VIRTUAL_ARRAY),
+	VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.DATA_VIRTUAL_ARRAY),
 	
-	VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.VIRTUAL_ARRAY),
+	VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
 	
 //	/**
 //	 * Load a microarray dataset. Is defined as IVirtualArray, because 
@@ -64,17 +65,17 @@ public enum ManagerObjectType {
 	/*
 	 * SET
 	 */
-	SET(ManagerType.SET),
+	SET(ManagerType.DATA_SET),
 	
-	SET_LINEAR(ManagerType.SET),
+	SET_LINEAR(ManagerType.DATA_SET),
 	
-	SET_PLANAR(ManagerType.SET),
+	SET_PLANAR(ManagerType.DATA_SET),
 	
-	SET_CUBIC(ManagerType.SET),
+	SET_CUBIC(ManagerType.DATA_SET),
 	
-	SET_MULTI_DIM(ManagerType.SET),
+	SET_MULTI_DIM(ManagerType.DATA_SET),
 	
-	SET_MULTI_DIM_VARIABLE(ManagerType.SET),
+	SET_MULTI_DIM_VARIABLE(ManagerType.DATA_SET),
 	
 	
 	/*
@@ -168,17 +169,17 @@ public enum ManagerObjectType {
 	 */
 //	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
 	
-	GUI_AWT(ManagerType.GUI_AWT),
+	GUI_AWT(ManagerType.VIEW_GUI_AWT),
 	
-	GUI_SWT(ManagerType.GUI_SWT),
+	GUI_SWT(ManagerType.VIEW_GUI_SWT),
 	
-	GUI_SWT_WINDOW(ManagerType.GUI_SWT),
+	GUI_SWT_WINDOW(ManagerType.VIEW_GUI_SWT),
 	
-	GUI_SWT_NATIVE_WIDGET(ManagerType.GUI_SWT),
+	GUI_SWT_NATIVE_WIDGET(ManagerType.VIEW_GUI_SWT),
 	
-	GUI_SWT_EMBEDDED_JOGL_WIDGET(ManagerType.GUI_SWT),
+	GUI_SWT_EMBEDDED_JOGL_WIDGET(ManagerType.VIEW_GUI_SWT),
 	
-	GUI_SWT_EMBEDDED_JGRAPH_WIDGET(ManagerType.GUI_SWT),
+	GUI_SWT_EMBEDDED_JGRAPH_WIDGET(ManagerType.VIEW_GUI_SWT),
 	
 	/*
 	 * COMMAND QUEUE
@@ -210,13 +211,13 @@ public enum ManagerObjectType {
 	 * Pathway
 	 */
 	
-	PATHWAY(ManagerType.PATHWAY),
+	PATHWAY(ManagerType.DATA_PATHWAY),
 	
-	PATHWAY_ELEMENT(ManagerType.PATHWAY_ELEMENT),
+	PATHWAY_ELEMENT(ManagerType.DATA_PATHWAY_ELEMENT),
 	
-	PATHWAY_EDGE(ManagerType.PATHWAY_ELEMENT, 62),
+	PATHWAY_EDGE(ManagerType.DATA_PATHWAY_ELEMENT, 62),
 	
-	PATHWAY_VERTEX(ManagerType.PATHWAY_ELEMENT, 63),
+	PATHWAY_VERTEX(ManagerType.DATA_PATHWAY_ELEMENT, 63),
 	
 	/*
 	 * Event Publisher

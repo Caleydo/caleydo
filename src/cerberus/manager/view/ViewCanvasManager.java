@@ -75,7 +75,7 @@ implements IViewGLCanvasManager,
 	public ViewCanvasManager( IGeneralManager refSingelton ) {
 		super(refSingelton,
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
-				ManagerType.GUI_SWT );
+				ManagerType.VIEW_GUI_SWT );
 		
 		vecViewCanvas = new Vector<IViewCanvas>(10);
 		

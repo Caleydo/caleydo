@@ -30,7 +30,7 @@ import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.set.SetFlatSimple;
+import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.virtualarray.VirtualArraySingleBlock;
 
@@ -77,7 +77,7 @@ public class FileLoader {
 		regGeneralManager = new OneForAllManager(null);		
 		((OneForAllManager) regGeneralManager).initAll();
 		
-		refSet = new SetFlatSimple(1,regGeneralManager);
+		refSet = new SetFlatThreadSimple(1,regGeneralManager,null);
 		
 		refSelection = new VirtualArraySingleBlock(2,regGeneralManager,null);
 		
