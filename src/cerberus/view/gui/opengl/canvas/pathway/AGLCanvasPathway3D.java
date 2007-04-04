@@ -1319,10 +1319,8 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		int viewport[] = new int[4];
 
 		// Deselect all highlighted nodes.
-		iArHighlightedVertices.clear();
-		iArSelectionStorageNeighborDistance.clear();
-		
-		// if (button != GLUT_LEFT_BUTTON || state != GLUT_DOWN) return;
+//		iArHighlightedVertices.clear();
+//		iArSelectionStorageNeighborDistance.clear();
 
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 
