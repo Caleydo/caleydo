@@ -35,8 +35,11 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="30991"	targetId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301	15301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="31991"	targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="32991"	targetId="35101" label="target Set for file	new" attrib1="35201" attrib2="45301" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="34991"	targetId="45101" label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="SET_DATA_PLANAR" />			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="35991"	targetId="55101" label="target Set for LOAD_DATA_FILE_N_STORAGES" attrib1="45201@55201@65201" attrib2="55301@65301@75301"	detail="CREATE_SET_MULTIDIM" detail="PATHWAY" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="34991"	targetId="45101" 
+			  label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="SET_DATA_PLANAR" />	
+			  		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="35991"	targetId="55101" 
+				label="target Set for LOAD_DATA_FILE_N_STORAGES" attrib1="45201@55201@65201" attrib2="55301@65301@75301"	detail="SET_DATA_MULTIDIM" />
 			
 			
 			<!-- <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" attrib3="start_at_line stop_at_line" > 
@@ -317,6 +320,8 @@
 				cmdId="68981"	targetId="80401" label="GL Histogram2D"		parent="11401" 
 				gl_origin="-0.2 0.2 -0.5" gl_rotation="0	-1.5 -1.5	1.72"	detail="35101" attrib3="100	100	0"/>	
 		 -->
+		 
+		 <read-xml-file target="data/XML/bootstrap/mediator_heatmap_scatterplot.xml" />
 		 
 	 </CommandBuffer>
 		
