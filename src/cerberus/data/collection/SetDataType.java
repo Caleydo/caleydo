@@ -18,6 +18,14 @@ public enum SetDataType
 	/** variable n-dimensional set, were n may change. */
 	SET_MULTI_DIM_VARIABLE,
 	
+	/** 
+	 * Set for handlein IViewCamera 
+	 * 
+	 * @see cerberus.data.view.camera.IViewCamera
+	 * @see cerberus.data.collection.set.viewdata.ISetViewData
+	 */
+	SET_VIEWCAMERA,
+	
 	/** not specified  */
 	SET_DATATYPE_NONE;
 	

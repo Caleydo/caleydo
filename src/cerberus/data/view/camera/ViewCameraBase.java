@@ -12,6 +12,7 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
+import cerberus.data.AUniqueItem;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.math.MathUtil;
 
@@ -19,7 +20,9 @@ import cerberus.math.MathUtil;
  * @author Michael Kalkusch
  *
  */
-public class ViewCameraBase implements IViewCamera {
+public class ViewCameraBase 
+extends AUniqueItem
+implements IViewCamera {
 
 	/**
 	 * Zoom is equal to scaling in a 4x4 matrix
@@ -45,12 +48,7 @@ public class ViewCameraBase implements IViewCamera {
 	 * Flag indicates update state.
 	 */
 	protected boolean bHasChanged = true;
-	
-	
-	public boolean hasViewCameraChanged() {
-		return bHasChanged;
-	}
-	
+
 	
 	/**
 	 * Matrix created by pan, zoom and rotation.
@@ -66,13 +64,22 @@ public class ViewCameraBase implements IViewCamera {
 	 * zoom to (1,1,1)
 	 * and rotation to (1,0,0,0) using null-vector (0,0,0)
 	 */
-	public ViewCameraBase() {
+	public ViewCameraBase( int iId ) {
+		super( iId );
 		
 		rotfCameraRotation = new Rotf();
 		
 		mat4fCameraViewMatrix = Mat4f.MAT4F_UNITY;		
 	}
 
+	/**
+	 * Default constructor calls ViewCameraBase(int)
+	 *
+	 */
+	public ViewCameraBase() {
+		this(-1);
+	}
+	
 	/**
 	 * Updates the matrix using Roatation Pan and Zoom. 
 	 * Note: Does not influence homogenouse coordinates.	 
@@ -82,6 +89,11 @@ public class ViewCameraBase implements IViewCamera {
 		mat4fCameraViewMatrix.setScale( v3fCameraScale );
 		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
 	}
+		
+	public boolean hasViewCameraChanged() {
+		return bHasChanged;
+	}
+	
 	
 	/*
 	 *  (non-Javadoc)

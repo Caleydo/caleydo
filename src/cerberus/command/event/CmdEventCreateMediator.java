@@ -91,7 +91,16 @@ implements ICommand {
 		String sMediatorType = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
 		
-		mediatorType = MediatorType.valueOf( sMediatorType );
+		System.out.println(" TYPE= [" + sMediatorType + "]");
+		
+		if ( sMediatorType.length() > 0 ) 
+		{
+			mediatorType = MediatorType.valueOf( sMediatorType );
+		}
+		else {
+			/* assume DATA_MEDIATOR as default */
+			mediatorType = MediatorType.DATA_MEDIATOR;
+		}
 	}
 
 	public void setAttributes(int iEventMediatorId,

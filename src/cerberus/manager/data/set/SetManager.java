@@ -31,6 +31,7 @@ import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.set.selection.SetSelection;
+import cerberus.data.collection.set.viewdata.SetViewData;
 
 
 /**
@@ -128,11 +129,18 @@ implements ISetManager {
 						getGeneralManager(),
 						null,
 						3 );
+			
+			case SET_VIEWCAMERA:
+				return new SetViewData(4, 
+						getGeneralManager(),
+						SetType.SET_VIEW_DATA,
+						null);
 				
 				/* Sets not implemented yet.. */
 			case SET_MULTI_DIM_VARIABLE:  
 			case SET_CUBIC:
 				
+			
 			default:
 				throw new RuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
 						useStorageType.toString() + "]");

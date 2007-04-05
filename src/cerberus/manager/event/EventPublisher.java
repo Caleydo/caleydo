@@ -278,6 +278,8 @@ implements IEventPublisher {
 			MediatorType mediatorType,
 			MediatorUpdateType mediatorUpdateType) {
 		
+		assert mediatorType != null : "can not handel no MediatorType (==null)";
+		
 		Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
 
 		boolean bHasValidSender = false;

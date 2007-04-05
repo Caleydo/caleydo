@@ -77,6 +77,8 @@ public enum ManagerObjectType {
 	
 	SET_MULTI_DIM_VARIABLE(ManagerType.DATA_SET),
 	
+	SET_VIEWDATA(ManagerType.DATA_VIEWDATA),
+	
 	
 	/*
 	 * VIEW

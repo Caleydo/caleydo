@@ -100,7 +100,13 @@ implements ICommand {
 		String sMediatorType = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
 		
-		mediatorType = MediatorType.valueOf( sMediatorType );
+		if ( sMediatorType.length() < 1 ) {
+			mediatorType = MediatorType.DATA_MEDIATOR;
+		}
+		else
+		{
+			mediatorType = MediatorType.valueOf( sMediatorType );
+		}
 	}
 
 	public void setAttributes(int iEventMediatorId,

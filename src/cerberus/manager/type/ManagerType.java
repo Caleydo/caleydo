@@ -32,6 +32,8 @@ public enum ManagerType {
 		
 		DATA_STORAGE("storage manager", ManagerType.DATA, 53 ),
 		
+		DATA_VIEWDATA("viewdata manager", ManagerType.DATA, 53 ),		
+		
 		DATA_VIRTUAL_ARRAY("selection manager", ManagerType.DATA, 53 ),		
 		
 		EVENT_PUBLISHER("event publisher", 80 ),

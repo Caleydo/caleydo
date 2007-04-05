@@ -20,7 +20,11 @@ extends IGeneralManager, IMediatorReceiver {
 	public enum MediatorType {
 		DATA_MEDIATOR,
 		SELECTION_MEDIATOR,
-		VIEW_MEDIATOR //for future usage
+		VIEW_MEDIATOR; //for future usage
+		
+		private MediatorType() {
+			
+		}
 	}
 	
 	/**

@@ -5,9 +5,14 @@ package cerberus.command.data;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import cerberus.command.base.ACmdCreate_IdTargetParentGLObject;
+import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.set.viewdata.ISetViewData;
+import cerberus.data.view.camera.IViewCamera;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.data.ISetManager;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 
@@ -16,7 +21,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  *
  */
 public class CmdDataCreateSetViewdata
-extends ACmdCreate_IdTargetLabelAttrDetail 
+extends ACmdCreate_IdTargetParentGLObject 
 implements ICommand {
 
 	/**
@@ -29,7 +34,7 @@ implements ICommand {
 			CommandQueueSaxType refCommandQueueSaxType) {
 
 		super(refGeneralManager, refCommandManager, refCommandQueueSaxType);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/* (non-Javadoc)
@@ -37,8 +42,19 @@ implements ICommand {
 	 */
 	public void doCommand() throws CerberusRuntimeException {
 
-		// TODO Auto-generated method stub
-
+		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
+		ISetViewData refISetViewData = (ISetViewData) refISetManager.createSet(SetDataType.SET_VIEWCAMERA);
+		
+		IViewCamera refViewCamera = refISetViewData.getViewCamera();
+		
+		refViewCamera.setCameraPosition(cameraOrigin);
+		refViewCamera.setCameraRotation(cameraRotation);
+		
+		refViewCamera.setId( iUniqueTargetId );
+		
+		refISetManager.registerItem(refViewCamera, 
+				iUniqueTargetId, 
+				ManagerObjectType.SET_VIEWDATA);
 	}
 
 	/* (non-Javadoc)
@@ -46,7 +62,8 @@ implements ICommand {
 	 */
 	public void undoCommand() throws CerberusRuntimeException {
 
-		// TODO Auto-generated method stub
+		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
+		refISetManager.unregisterItem(iUniqueTargetId, ManagerObjectType.SET_VIEWDATA);
 
 	}
 

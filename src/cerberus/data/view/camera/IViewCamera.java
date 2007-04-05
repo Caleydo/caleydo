@@ -8,18 +8,24 @@
  */
 package cerberus.data.view.camera;
 
-import cerberus.math.MathUtil;
+//import cerberus.math.MathUtil;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
+import cerberus.data.IUniqueObject;
+
 /**
  * View camera interface
  * 
+ * @see cerberus.data.collection.SetDataType
+ * @see cerberus.data.collection.set.viewdata.ISetViewData
+ *  
  * @author Michael Kalkusch
  *
  */
-public interface IViewCamera {
+public interface IViewCamera 
+extends IUniqueObject {
 
 	/**
 	 * Returns true if any data of the camera has changed.

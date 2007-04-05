@@ -4,6 +4,7 @@
 package cerberus.data.collection.set.viewdata;
 
 import cerberus.data.collection.ISet;
+import cerberus.data.view.camera.IViewCamera;
 import cerberus.view.gui.jogl.IJoglMouseListener;
 
 /**
@@ -11,6 +12,7 @@ import cerberus.view.gui.jogl.IJoglMouseListener;
  * IJoglMouseListener provieds acces to cerberus.data.view.camera.IViewCamera
  * 
  * @see cerberus.data.view.camera.IViewCamera
+ * @see cerberus.data.collection.SetDataType
  * 
  * @author Michael Kalkusch
  *
@@ -18,4 +20,8 @@ import cerberus.view.gui.jogl.IJoglMouseListener;
 public interface ISetViewData 
 extends ISet, IJoglMouseListener {
 
+	public IViewCamera getViewCamera();
+	
+	public void setViewCamera( IViewCamera setViewCamera );
+	
 }
