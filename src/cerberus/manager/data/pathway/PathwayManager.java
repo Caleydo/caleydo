@@ -6,6 +6,7 @@ import java.util.Iterator;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -77,6 +78,17 @@ implements IPathwayManager {
 	
 	public void loadPathwayById(int iPathwayID) {
 		
+		// Check if pathway was previously loaded
+		if (pathwayLUT.containsKey(iPathwayID))
+		{
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": loadPathwayById(): Pathway "+ iPathwayID + " is already loaded. SKIP.",
+					LoggerType.VERBOSE);
+			
+			return;
+		}
+
 		String sPathwayFilePath = "";
 		
 		if (iPathwayID < 10)

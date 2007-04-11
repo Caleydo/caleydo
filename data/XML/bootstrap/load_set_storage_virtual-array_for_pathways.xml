@@ -38,7 +38,7 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="35991"	targetId="65101" label="target Set for file	new" attrib1="15201@25201" attrib2="55301@55301"	detail="SET_DATA_PLANAR" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="36991"	targetId="75101" label="Pathway Set"   attrib1="65201" attrib2="21301" attrib3="PATHWAY_DATA" />			
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="37991"	targetId="34101" label="Pathway Set 2" attrib1="65201" attrib2="22301" attrib3="PATHWAY_DATA" />							
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="37991"	targetId="33101" label="Pathway Set 3" attrib1="65201" attrib2="21301" attrib3="PATHWAY_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="37991"	targetId="33101" label="Pathway Set 3" attrib1="65201" attrib2="23301" attrib3="PATHWAY_DATA" />
 				
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   targetId="85101" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   targetId="95101" />
