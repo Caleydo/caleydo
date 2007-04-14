@@ -6,9 +6,9 @@ In this chapter first pathways are described in general followed by a detailed c
 
 \subsection{Medical Pathways}
 
-[Metabolism is defined in the book Metabolism at a glance and is cited in \citep{Bourqui2006}]
+[Metabolism is defined in the book Metabolism at a glance and is cited in \cite{Bourqui2006}]
 
-Metabolic networks are defined in \citep{Bourqui2006} as interconnected metabolic pathways.
+Metabolic networks are defined in \cite{Bourqui2006} as interconnected metabolic pathways.
 [Write some more sentences about metabolic networks and why they are important to be investigated globally.]
 Figure \stdref{gfx:RocheAppliedScience_MetabolicPathways_WallChart} shows a whole snapshot of a metabolic pathway. The fact that these posters of the global metabolic network are still mounted on the wall in numerous laboratories illustrates why alternative ways of visualization needs to be explored. 
 
@@ -23,19 +23,19 @@ Figure \stdref{gfx:RocheAppliedScience_MetabolicPathways_WallChart} shows a whol
 
 Metabolic pathways aim on modelling cellular functions in graphs. Basic building blocks of pathways are chemical compounds (so called metabolites) and enzymes. The chemical compounds act as substrates and products of chemical reactions. Enzymes catalyze these reactions by using substrates as input. The output of the chemical reaction is a product which is in turn a compound. This process is described in LINK. 
 
-Pathways can be divided in metabolic pathways and regulatory pathways such as signal transduction cycles. The former are in the scope of that paper because metabolism can be modeled in reference pathways which are valid for several organisms\citep{Kanehisa2000}. Outgoing from that reference map KEGG can generate organism specific pathways. On the other hand regulatory pathways vary in detail for specific organism and it is much harder to find a common reference pathway\citep{Kanehisa2000}.
+Pathways can be divided in metabolic pathways and regulatory pathways such as signal transduction cycles. The former are in the scope of that paper because metabolism can be modeled in reference pathways which are valid for several organisms\cite{Kanehisa2000}. Outgoing from that reference map KEGG can generate organism specific pathways. On the other hand regulatory pathways vary in detail for specific organism and it is much harder to find a common reference pathway\cite{Kanehisa2000}.
 
 [Describe additional information as co-factors etc.]
 
 \subsubsection{Layouting and graph drawing algorithms}
 
-[Defintion of metabolic networks regarding graph theory is presented in \citep{Bourqui2006}.]
-A very good explaination of metabolic networks and pathways in respect of graph theory is given by Bourqui et al.\citep{Bourqui2006}.
+[Defintion of metabolic networks regarding graph theory is presented in \cite{Bourqui2006}.]
+A very good explaination of metabolic networks and pathways in respect of graph theory is given by Bourqui et al.\cite{Bourqui2006}.
 The metabolic network is a bipartite graph where the set of nodes is divided in two disjoint subsets of nodes whereas no nodes inside a group are connected. In the case of metabolism that means that enzymes are not directly connected to other enzymes. The same applies for chemical compounds. 
 Metabolic pathways are partially cyclic graphs. Directed and undirected edges are present.
 Nodes can occure in multiple times in the same graph as well as in foreign graphs.
 
-Determined by historical development metabolic networks are often handmade. I.e. experts incorporate their meta-knowledge in the specific domain to position nodes and route edges. Still this approach is widely spread in the community due to the complexity of the graphs. Graph drawing algorithms are needed for automatic generation of pathways. Common graph drawing algorithms do not provide sufficient results in respect of metabolic pathways because they focus on different constraints\citep{Becker2001}. Becker et al. state that common graph layouting alogrithms are optimized to fullfil the following cirterias:
+Determined by historical development metabolic networks are often handmade. I.e. experts incorporate their meta-knowledge in the specific domain to position nodes and route edges. Still this approach is widely spread in the community due to the complexity of the graphs. Graph drawing algorithms are needed for automatic generation of pathways. Common graph drawing algorithms do not provide sufficient results in respect of metabolic pathways because they focus on different constraints\cite{Becker2001}. Becker et al. state that common graph layouting alogrithms are optimized to fullfil the following cirterias:
 \begin{itemize}
  \item Planarity
  \item Minimal edge crossings
@@ -44,9 +44,9 @@ Determined by historical development metabolic networks are often handmade. I.e.
 \end{itemize}
 In matters of metabolic graphs it is hard to define a simple set of criterias and constraints because the complexity and diversity. Therfore special algorithms need to be developed that are capable of handling the biochemical properties.
 
-One of the first attempts to dynamically model metabolic networks was done by Karp et al. starting in 1993\citep{Karp1993, Karp1994, Karp1994a}. As metabolic network became more and more diversified and complex over time also graph drawing approaches needed to be adapted and enhanced. Becker et al. proposed an algorithm that builds up on the ideas of Kerp et al. and enhances them by including the topological structure. As a starting point the method seeks for the longest cycle inside the graph. The rest of the nodes are classified as inner and outer components which are positioned using a spring embedded algorithm.
+One of the first attempts to dynamically model metabolic networks was done by Karp et al. starting in 1993\cite{Karp1993, Karp1994, Karp1994a}. As metabolic network became more and more diversified and complex over time also graph drawing approaches needed to be adapted and enhanced. Becker et al. proposed an algorithm that builds up on the ideas of Kerp et al. and enhances them by including the topological structure. As a starting point the method seeks for the longest cycle inside the graph. The rest of the nodes are classified as inner and outer components which are positioned using a spring embedded algorithm.
 
-In the recently published work by \citep{Bourqui2006} a graph drawing algorithm is published that addresses the visual identification of reaction cascades among distinct metabolic pathways by forming a single concatenated graph [should I put a figure here?].
+In the recently published work by \cite{Bourqui2006} a graph drawing algorithm is published that addresses the visual identification of reaction cascades among distinct metabolic pathways by forming a single concatenated graph [should I put a figure here?].
 
 \subsubsection{2.5D and 3D pathway visualization}
 
@@ -55,14 +55,14 @@ In the recently published work by \citep{Bourqui2006} a graph drawing algorithm 
 
 [Insert short definition of virtual reality - Judith bringt Referenz.]
 
-In 2002 Rojdestvenski et al. (\citep{Rojdestvenski2002, Rojdestvenski2003}) proposed a tool called Metabolic Network Visualizer (MNV) for the usage of virtual reality in context of metabolic pathways by using Virtual Reality Modeling Language (VRML). They also discuss advantages and possible problems when using a real 3D representation of the biomedical network. Finally a hierarchical postitioning of the graphs in 3D space as flat 2D graphs is proposed to keep the 2D graphs with that the biologists are familiar with. 
-\citep{Dickerson2003}:[paper contains a good definition of metabolic pathways as graphs]
-In \citep{Yang2006} the MetNetVR is presented which focuses on hierarchical relationships in pathways (-> also in \citep{Dogrusoz2004}). The root node of the graph could
+In 2002 Rojdestvenski et al. (\cite{Rojdestvenski2002, Rojdestvenski2003}) proposed a tool called Metabolic Network Visualizer (MNV) for the usage of virtual reality in context of metabolic pathways by using Virtual Reality Modeling Language (VRML). They also discuss advantages and possible problems when using a real 3D representation of the biomedical network. Finally a hierarchical postitioning of the graphs in 3D space as flat 2D graphs is proposed to keep the 2D graphs with that the biologists are familiar with. 
+\cite{Dickerson2003}:[paper contains a good definition of metabolic pathways as graphs]
+In \cite{Yang2006} the MetNetVR is presented which focuses on hierarchical relationships in pathways (-> also in \cite{Dogrusoz2004}). The root node of the graph could
 be the metabolic network. Childs of the network are several pathways which subnodes are their molecules. For exploring the information space detail-on-demand techique (-> link to other section) is applied. Using a tracked input device orientation and position for  ray-picking in an virtual environment the user can expand a single node pathway representation to show all contained molecules.
 
 \subsection{State-of-the-art Frameworks}
 
-Brandes et al. propesed a 2.5D method to visualize differences accross pathways for different spzecies\citep{Brandes2004}. This method enables the user to see evolutionary developments and relations amoung different species.
+Brandes et al. propesed a 2.5D method to visualize differences accross pathways for different spzecies\cite{Brandes2004}. This method enables the user to see evolutionary developments and relations amoung different species.
 
 \section{Gene Expression Visualization}
 
@@ -72,7 +72,7 @@ Describe the Genome.
 Human genome is sequenced since year by name -> Reference 
 Describe how genes code enzymes (special proteins).
 
-Hierarchical clustering\citep{Seo2002}
+Hierarchical clustering\cite{Seo2002}
 
 \subsection{State-of-the-art frameworks}
 
@@ -178,7 +178,7 @@ During the last decade biochemical database projects sprang up like mushrooms. S
 There were many attempts over the time to get this issue under control.
 
 \minisec{Enzyme ID}
-The Nomenclature Committee of the International Union of Biochemistry and Molecular Biology (NC-IUBMB) agreed on the Enzyme Commission number (EC number)\footnote{http://www.chem.qmul.ac.uk/iubmb/enzyme/}\citep{Bairoch2000}. Enzymes are divided by classes and a couple of subclasses which are seperated by a ``.'' (e.g.: 3.1.1.1). The Enzyme nomenclature database\footnote{http://www.expasy.org/enzyme/} is online provided by the Swiss-Prot platform.
+The Nomenclature Committee of the International Union of Biochemistry and Molecular Biology (NC-IUBMB) agreed on the Enzyme Commission number (EC number)\footnote{http://www.chem.qmul.ac.uk/iubmb/enzyme/}\cite{Bairoch2000}. Enzymes are divided by classes and a couple of subclasses which are seperated by a ``.'' (e.g.: 3.1.1.1). The Enzyme nomenclature database\footnote{http://www.expasy.org/enzyme/} is online provided by the Swiss-Prot platform.
 The release of 03-Apr-2007 contains 4026 active entries. 
 Each entry contains:
 \begin{itemize}
@@ -198,9 +198,9 @@ Several identifcation systems are still under usage but the main problem is the 
 
 \section{Information Visualization Methods}
 
-\citep{Bederson2003}
-\citep{Spence2007}
-\citep{Schumann2000}
+\cite{Bederson2003}
+\cite{Spence2007}
+\cite{Schumann2000}
 
 \subsection{2D vs. 3D}
 
