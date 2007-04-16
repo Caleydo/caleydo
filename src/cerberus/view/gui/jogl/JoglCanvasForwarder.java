@@ -177,7 +177,8 @@ implements GLEventListener, IJoglMouseListener {
 				LoggerType.STATUS);
 		
 		gl.glLoadIdentity();
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 60.0f);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		

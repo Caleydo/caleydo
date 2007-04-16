@@ -41,11 +41,10 @@ extends AGLCanvasPathway3D {
 		Pathway refTmpPathway = null;
 		fZLayerValue = 0.0f;
 		
-		//refHashDisplayListNodeId2Pathway.clear();
-		//refHashPathway2DisplayListNodeId.clear();
-		//refHashPathwayToZLayerValue.clear();
-		//iArPathwayNodeDisplayListIDs.clear();
-		//iArPathwayEdgeDisplayListIDs.clear();
+		refHashDisplayListNodeId2Pathway.clear();
+		refHashPathway2DisplayListNodeId.clear();
+		refHashPathwayToZLayerValue.clear();
+		iArPathwayEdgeDisplayListIDs.clear();
 		
 		buildEnzymeNodeDisplayList(gl);
 		buildHighlightedEnzymeNodeDisplayList(gl);
@@ -79,13 +78,13 @@ extends AGLCanvasPathway3D {
 		
 		handlePicking(gl);
 
-		renderInfoArea(gl, 0.0f, 0.9f, -2.0f);
+		renderInfoArea(gl, 0.0f, 0.0f, 0.0f);
 		
-		if (bSelectionDataChanged)
-		{
-			buildPathwayDisplayList(gl);
-			bSelectionDataChanged = false;
-		}
+//		if (bSelectionDataChanged)
+//		{
+//			buildPathwayDisplayList(gl);
+//			bSelectionDataChanged = false;
+//		}
 		
 		int iDisplayListNodeId = 0;
 		int iDisplayListEdgeId = 0;

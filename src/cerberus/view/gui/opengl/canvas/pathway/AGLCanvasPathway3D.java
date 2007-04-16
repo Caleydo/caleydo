@@ -283,8 +283,6 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
-			System.out.println("Create display list for new pathway");
-			
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
@@ -1338,13 +1336,14 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		GLU glu = new GLU();
 		glu.gluPickMatrix((double) pickPoint.x,
 				(double) (viewport[3] - pickPoint.y),// 
-				5.0, 5.0, viewport, 0); // pick width and height is set to 10 (i.e. picking tolerance)
+				1.0, 1.0, viewport, 0); // pick width and height is set to 5 (i.e. picking tolerance)
 		
 		float h = (float) (float) (viewport[3]-viewport[1]) / 
 			(float) (viewport[2]-viewport[0]);
 
 		//FIXME: The frustum should be calculated from the XML parameters in the future
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 60.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
@@ -1378,123 +1377,123 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		int iPickedPathwayDisplayListNodeId = 0;
 
 		for (i = 0; i < iHitCount; i++)
-			
 		{
 			iNames = iArPickingBuffer[iPtr];
-			//System.out.println(" number of names for this hit = " + iNames);
+			System.out.println(" number of names for this hit = " + iNames);
 			iPtr++;
-			//System.out.println(" z1 is  " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
+			System.out.println(" z1 is  " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
 			iPtr++;
-			//System.out.println(" z2 is " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
+			System.out.println(" z2 is " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
 			iPtr++;
-			//System.out.println(" names are ");
+			System.out.println(" names are ");
 			
-			if (iNames != 2)
-				return;
+//			if (iNames != 2)
+//				return;
 			
 //			for (int j = 0; j < iNames; j++)
 //			{
-				//System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
+//				System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
+//				iPtr++;
+//			}
+			
+			iPickedPathwayDisplayListNodeId = iArPickingBuffer[iPtr];
+			
+			iPtr++;
 
-				iPickedPathwayDisplayListNodeId = iArPickingBuffer[iPtr];
+			//System.out.println("Object pick ID: " + iArPickingBuffer[iPtr]);
+
+			refPickedVertexRep = refHashPickID2VertexRep.get(iArPickingBuffer[iPtr]);
+			
+			if (refPickedVertexRep == null)
+				return;
+							
+			fillInfoAreaContent(refPickedVertexRep);
+
+			// Perform real element picking
+			// That means the picked node will be highlighted.
+			// Otherwise the picking action was only mouse over.
+			if (!bIsMouseOverPickingEvent)
+			{
+				// Update the currently selected pathway
+				refPathwayUnderInteraction = refHashDisplayListNodeId2Pathway.get(
+						iPickedPathwayDisplayListNodeId);
 				
-				iPtr++;
+				// Check if the clicked node is a pathway
+				// If this is the case the current pathway will be replaced by the clicked one.
+				if(refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
+				{		
+					int iNewPathwayId = new Integer(refPickedVertexRep.getVertex().getElementTitle().substring(8));
 
-				//System.out.println("Object pick ID: " + iArPickingBuffer[iPtr]);
-
-				refPickedVertexRep = refHashPickID2VertexRep.get(iArPickingBuffer[iPtr]);
-				
-				if (refPickedVertexRep == null)
-					return;
-								
-				fillInfoAreaContent(refPickedVertexRep);
-
-				// Perform real element picking
-				// That means the picked node will be highlighted.
-				// Otherwise the picking action was only mouse over.
-				if (!bIsMouseOverPickingEvent)
-				{
-					// Update the currently selected pathway
-					refPathwayUnderInteraction = refHashDisplayListNodeId2Pathway.get(
-							iPickedPathwayDisplayListNodeId);
-					
-					// Check if the clicked node is a pathway
-					// If this is the case the current pathway will be replaced by the clicked one.
-					if(refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
-					{		
-						int iNewPathwayId = new Integer(refPickedVertexRep.getVertex().getElementTitle().substring(8));
-
-						//Check if picked pathway is alread displayed
-						if (!refHashPathway2DisplayListNodeId.containsKey(refGeneralManager.getSingelton().
-								getPathwayManager().getItem(iNewPathwayId)))
-						{
-							replacePathway(gl, 
-									refPathwayUnderInteraction, 
-									iNewPathwayId);
-							return;							
-						}
-					}
-					
-					if (!iArHighlightedVertices.contains(refPickedVertexRep))
+					//Check if picked pathway is alread displayed
+					if (!refHashPathway2DisplayListNodeId.containsKey(refGeneralManager.getSingelton().
+							getPathwayManager().getItem(iNewPathwayId)))
 					{
-						// Clear currently highlighted vertices when new node was selected
-						if(!iArHighlightedVertices.isEmpty()) 
-						{
-							iArHighlightedVertices.clear();
-							iArSelectionStorageNeighborDistance.clear();
-						}
-						
-						iArHighlightedVertices.add(refPickedVertexRep);
-						iArSelectionStorageNeighborDistance.add(0);
-						
-						// Convert to int[]
-						int[] iArTmp = new int[iArHighlightedVertices.size()];
-						for(int index = 0; index < iArHighlightedVertices.size(); index++)
-							iArTmp[index] = iArHighlightedVertices.get(index).getVertex().getElementId();
-						
-						updateSelectionSet(iArTmp, 
-								new int[0], new int[0]);
-						
-						refGeneralManager.getSingelton().logMsg(
-								"OpenGL Pathway object selected: " +refPickedVertexRep.getName(),
-								LoggerType.VERBOSE);
+						replacePathway(gl, 
+								refPathwayUnderInteraction, 
+								iNewPathwayId);
+						return;							
 					}
-					else
-					{
-						iArHighlightedVertices.remove(refPickedVertexRep);
-		
-	//					// Remove identical nodes from unselected vertex
-	//					iterIdenticalVertices = refGeneralManager.getSingelton().
-	//						getPathwayElementManager().getPathwayVertexListByName(
-	//							pickedVertexRep.getVertex().getElementTitle()).iterator();
-	//	
-	//					while(iterIdenticalVertices.hasNext())
-	//					{
-	//						iArHighlightedVertices.remove(iterIdenticalVertices.next().
-	//								getVertexRepByIndex(iVertexRepIndex));
-	//					}
-						
-						refGeneralManager.getSingelton().logMsg(
-								"OpenGL Pathway object unselected: " +refPickedVertexRep.getName(),
-								LoggerType.VERBOSE);
-					}
-					
-					//fillInfoAreaContent(refPickedVertexRep);
-					
-					// FIXME: not very efficient
-					// All display lists are newly created
-					//iArPathwayNodeDisplayListIDs.clear();
-					iArPathwayEdgeDisplayListIDs.clear();
-					buildPathwayDisplayList(gl);
-					
-	//				gl.glNewList(iPickedPathwayDisplayListNodeId, GL.GL_COMPILE);	
-	//				extractVertices(refPathwayUnderInteraction);
-	//				gl.glEndList();
-									
-//					loadNodeInformationInBrowser(
-//							refPickedVertexRep.getVertex().getVertexLink());
 				}
-	//			}
+				
+				if (!iArHighlightedVertices.contains(refPickedVertexRep))
+				{
+					// Clear currently highlighted vertices when new node was selected
+					if(!iArHighlightedVertices.isEmpty()) 
+					{
+						iArHighlightedVertices.clear();
+						iArSelectionStorageNeighborDistance.clear();
+					}
+					
+					iArHighlightedVertices.add(refPickedVertexRep);
+					iArSelectionStorageNeighborDistance.add(0);
+					
+					// Convert to int[]
+					int[] iArTmp = new int[iArHighlightedVertices.size()];
+					for(int index = 0; index < iArHighlightedVertices.size(); index++)
+						iArTmp[index] = iArHighlightedVertices.get(index).getVertex().getElementId();
+					
+					updateSelectionSet(iArTmp, 
+							new int[0], new int[0]);
+					
+					refGeneralManager.getSingelton().logMsg(
+							"OpenGL Pathway object selected: " +refPickedVertexRep.getName(),
+							LoggerType.VERBOSE);
+				}
+				else
+				{
+					iArHighlightedVertices.remove(refPickedVertexRep);
+	
+//					// Remove identical nodes from unselected vertex
+//					iterIdenticalVertices = refGeneralManager.getSingelton().
+//						getPathwayElementManager().getPathwayVertexListByName(
+//							pickedVertexRep.getVertex().getElementTitle()).iterator();
+//	
+//					while(iterIdenticalVertices.hasNext())
+//					{
+//						iArHighlightedVertices.remove(iterIdenticalVertices.next().
+//								getVertexRepByIndex(iVertexRepIndex));
+//					}
+					
+					refGeneralManager.getSingelton().logMsg(
+							"OpenGL Pathway object unselected: " +refPickedVertexRep.getName(),
+							LoggerType.VERBOSE);
+				}
+				
+				fillInfoAreaContent(refPickedVertexRep);
+				
+				// FIXME: not very efficient
+				// All display lists are newly created
+				//iArPathwayNodeDisplayListIDs.clear();
+				iArPathwayEdgeDisplayListIDs.clear();
+				buildPathwayDisplayList(gl);
+				
+//				gl.glNewList(iPickedPathwayDisplayListNodeId, GL.GL_COMPILE);	
+//				extractVertices(refPathwayUnderInteraction);
+//				gl.glEndList();
+								
+//				loadNodeInformationInBrowser(
+//						refPickedVertexRep.getVertex().getVertexLink());
+			}
 		}
 	}	
 	
@@ -1647,7 +1646,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	    	bIsMouseOverPickingEvent = true;
 	    }
 	    else if (bIsMouseOverPickingEvent == true && 
-	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.3 * 1e9)
+	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 2 * 1e9)
 	    {
 	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 	    	fLastMouseMovedTimeStamp = System.nanoTime();

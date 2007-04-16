@@ -149,9 +149,9 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 
 	protected HashMap<IPathwayVertexRep, DefaultGraphCell> hashVertexRep2GraphCell;
 
-	protected boolean bShowReactionEdges = true;
+	protected boolean bShowReactionEdges = false;
 
-	protected boolean bShowRelationEdges = true;
+	protected boolean bShowRelationEdges = false;
 
 	public PathwayGraphViewRep(IGeneralManager refGeneralManager,
 			int iParentContainerId) {
@@ -912,8 +912,8 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 		drawView();
 
 		// Adapt edge visiblitly state
-		showHideEdgesByType(!bTurnOn, EdgeType.REACTION);
-		showHideEdgesByType(!bTurnOn, EdgeType.RELATION);
+		showHideEdgesByType(bShowReactionEdges, EdgeType.REACTION);
+		showHideEdgesByType(bShowRelationEdges, EdgeType.RELATION);
 
 		if (lastClickedGraphCell != null)
 		{
@@ -1085,7 +1085,7 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 			PathwayVertex selectedVertex = refGeneralManager.getSingelton()
 					.getPathwayElementManager().getVertexLUT().get(
 							iArSelectedElements[iSelectedVertexIndex]);
-
+			
 			// FIXME: name of the method is not good because inside
 			// resetPathway() and drawPathway() are called.
 			showBackgroundOverlay(bShowBackgroundOverlay);
@@ -1101,7 +1101,7 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 			iLLSelectedVertices.add(selectedVertex.getElementId());
 
 			highlightCell(hashVertexRep2GraphCell.get(selectedVertex
-					.getVertexRepByIndex(0)), Color.RED);
+					.getVertexRepByIndex(0)), refRenderStyle.getHighlightedNodeColor());
 
 			bNeighbourhoodShown = true;
 			iNeighbourhoodUndoCount++;

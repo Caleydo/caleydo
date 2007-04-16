@@ -57,7 +57,6 @@
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"								
 							detail="33101 35101 36101 37101 85101" /> 
 
-		<!-- 
  	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" targetId="28401" parent="13331" label="Canvas" 
  	  			gl_origin="0 0 0" gl_rotation="0 0 0 0"
  	  			attrib2="500 300" detail="1177991"	/>
@@ -67,7 +66,6 @@
 							gl_rotation="1 0 0 180"							
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 1.0f"								
 							detail="75101 35101 36101 37101 95101" /> 
-		-->
 		 		
 		<!-- Window 14331 -->
 		<!-- 

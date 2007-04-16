@@ -261,11 +261,17 @@ extends AToolbar {
 	        	  {
 	        		  refShowReactionsItem.setSelection(false);
 	        		  refShowRelationsItem.setSelection(false);
+	        		  
+	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.REACTION);
+	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.RELATION);	        		  
 	        	  }
 	        	  else
 	        	  {
 	        		  refShowReactionsItem.setSelection(true);
 	        		  refShowRelationsItem.setSelection(true);
+
+	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.REACTION);
+	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.RELATION);	        		  
 	        	  }
 	          }
 	          else if (sToolItemIdentifier.equals("" +

@@ -16,7 +16,7 @@ public void showOverviewMapInNewWindow(Dimension dim) {
 	}
 	
 	
-2006_12_19#0002: [OPEN] Loading from file ist not done via Command
+2006_12_19#0002: [SOLVED] Loading from file ist not done via Command
 
 cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
 
@@ -25,7 +25,7 @@ public void loadPathwayFromFile(String sFilePath) { ... }
 
 
 	
-2006_12_19#0003: [OPEN] Loading image ist not done via Command
+2006_12_19#0003: [SOLVED] Loading image ist not done via Command
 
 cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep
 
@@ -116,3 +116,44 @@ Differentiation makes sense.
                         
 2007_02_14#0011: [OPEN] Texture problem with new JOGL version.
                         They are not displayed at all.
+                        
+2007_04_16#0012: [OPEN] Race condition problem with JOGL.
+
+Exception in thread "Thread-3" javax.media.opengl.GLException: javax.media.opengl.GLException: Error making context current
+	at javax.media.opengl.Threading.invokeOnOpenGLThread(Threading.java:271)
+	at javax.media.opengl.GLCanvas.maybeDoSingleThreadedWorkaround(GLCanvas.java:256)
+	at javax.media.opengl.GLCanvas.display(GLCanvas.java:130)
+	at com.sun.opengl.util.Animator.display(Animator.java:144)
+	at com.sun.opengl.util.Animator$MainLoop.run(Animator.java:181)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: javax.media.opengl.GLException: Error making context current
+	at com.sun.opengl.impl.x11.X11GLContext.makeCurrentImpl(X11GLContext.java:141)
+	at com.sun.opengl.impl.x11.X11OnscreenGLContext.makeCurrentImpl(X11OnscreenGLContext.java:69)
+	at com.sun.opengl.impl.GLContextImpl.makeCurrent(GLContextImpl.java:127)
+	at com.sun.opengl.impl.GLDrawableHelper.invokeGL(GLDrawableHelper.java:182)
+	at javax.media.opengl.GLCanvas$DisplayOnEventDispatchThreadAction.run(GLCanvas.java:298)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:199)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:597)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+	
+2007_04_16#0013: [OPEN] Misrouted relation edges in 2D pathway graph.
+                        Edges end in nowhere.
+                        
+2007_04_16#0014: [OPEN] Unknown exception that happens rarely.
+                        
+ Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+     at org.jgraph.graph.EdgeView.getPoint(EdgeView.java:397)
+     at org.jgraph.graph.EdgeRenderer.getLabelPosition(EdgeRenderer.java:438)
+     at org.jgraph.graph.EdgeRenderer.getLabelPosition(EdgeRenderer.java:417)
+     at org.jgraph.graph.EdgeRenderer.getLabelBounds(EdgeRenderer.java:340)
+     at org.jgraph.graph.EdgeRenderer.getBounds(EdgeRenderer.java:236)
+     at org.jgraph.graph.EdgeView.getBounds(EdgeView.java:245)
+     
+2007_04_16#0015: [OPEN] Problem with forwarding neighborhood selection from 2D pathway
+                        to 3D layered view (3d pathway panel view works without problems).
+

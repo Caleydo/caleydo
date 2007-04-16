@@ -88,7 +88,7 @@ extends AGLCanvasPathway3D {
 		
 		handlePicking(gl);
 		
-		renderInfoArea(gl, 0.0f, 0.9f, -2.0f);
+		//renderInfoArea(gl, 0.0f, 0.9f, -2.0f);
 		
 		if (bSelectionDataChanged)
 		{
@@ -122,7 +122,6 @@ extends AGLCanvasPathway3D {
 		}
 		
 		gl.glPushMatrix();
-		
 		if (bShowPathwayTexture == true)
 		{				
 			Pathway refTmpPathway = null;
@@ -258,6 +257,7 @@ extends AGLCanvasPathway3D {
 				refTmpPathway = iterDrawnPathways.next();
 			
 				// Restore matrix
+				gl.glPushMatrix();
 				gl.glLoadIdentity();
 				gl.glLoadMatrixf(refHashPathway2ModelMatrix.get(refTmpPathway));
 				
@@ -294,6 +294,8 @@ extends AGLCanvasPathway3D {
 						}
 					}
 				}
+				
+				gl.glPopMatrix();
 			}
 	    }
     }
