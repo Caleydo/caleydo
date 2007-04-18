@@ -17,9 +17,9 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="47301" label="Storage	file for expression mapping 3" 	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="14993"	targetId="55301" label="Storage file"	attrib1="STRING" attrib2="test data	from file" />												 
 	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="21301" label="Pathway storage 1" attrib1="STRING" attrib2="271 272 920" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="22301" label="Pathway storage 2" attrib1="STRING" attrib2="271" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="23301" label="Pathway storage 3" attrib1="STRING" attrib2="271 260 280" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="21301" label="Pathway storage 1" attrib1="STRING" attrib2="272 271 260" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="22301" label="Pathway storage 2" attrib1="STRING" attrib2="272" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="23301" label="Pathway storage 3" attrib1="STRING" attrib2="272 271 280" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="24301" label="Pathway storage 4" attrib1="STRING" attrib2="300 310 311 350 360 380" />
 									 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="20991"	targetId="15201" label="my Selection"	attrib1="90 5 0 1" />

@@ -88,16 +88,13 @@ extends AGLCanvasPathway3D {
 		
 		handlePicking(gl);
 		
-		//renderInfoArea(gl, 0.0f, 0.9f, -2.0f);
+		renderInfoArea(gl);
 		
 		if (bSelectionDataChanged)
 		{
 			buildPathwayDisplayList(gl);
 			bSelectionDataChanged = false;
 		}
-		
-		int iDisplayListNodeId = 0;
-		//int iDisplayListEdgeId = 0;
 		
 		// Rebuild highlight node display list using the new scaling factor
 		if (!iArHighlightedVertices.isEmpty())
@@ -120,12 +117,22 @@ extends AGLCanvasPathway3D {
 			buildHighlightedEnzymeNodeDisplayList(gl);
 			buildHighlightedCompoundNodeDisplayList(gl);		
 		}
+	
+		renderScene(gl);
+		
+		highlightIdenticalNodes(gl);
+	}
+	
+	protected void renderScene(final GL gl) {
 		
 		gl.glPushMatrix();
+		
 		if (bShowPathwayTexture == true)
 		{				
 			Pathway refTmpPathway = null;
 			refHashPathway2ModelMatrix.clear();
+			int iDisplayListNodeId = 0;
+			//int iDisplayListEdgeId = 0;
 			
 			// Load pathway storage
 			// Assumes that the set consists of only one storage
@@ -136,7 +143,7 @@ extends AGLCanvasPathway3D {
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[0]);
 			
-			gl.glRotatef(-60, 1.0f, 0.0f, 0.0f);
+			gl.glRotatef(-50, 1.0f, 0.0f, 0.0f);
 
 			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
 
@@ -148,9 +155,9 @@ extends AGLCanvasPathway3D {
 					refTmpPathway, 
 					iDisplayListNodeId);
 
-			gl.glRotatef(60, 1.0f, 0.0f, 0.0f);
+			gl.glRotatef(50, 1.0f, 0.0f, 0.0f);
 			
-			gl.glTranslatef(-8.0f, 7.0f, 15.0f);
+			gl.glTranslatef(-5.0f, -3.0f, 0.0f);
 			
 			for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 				iPathwayIndex++)
@@ -172,8 +179,6 @@ extends AGLCanvasPathway3D {
 			}
 		}
 		gl.glPopMatrix();
-		
-		highlightIdenticalNodes(gl);
 	}
 	
 	protected void renderPathway(final GL gl,

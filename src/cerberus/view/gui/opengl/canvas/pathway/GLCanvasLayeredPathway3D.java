@@ -78,16 +78,13 @@ extends AGLCanvasPathway3D {
 		
 		handlePicking(gl);
 
-		renderInfoArea(gl, 0.0f, 0.0f, 0.0f);
+		renderInfoArea(gl);
 		
 //		if (bSelectionDataChanged)
 //		{
 //			buildPathwayDisplayList(gl);
 //			bSelectionDataChanged = false;
 //		}
-		
-		int iDisplayListNodeId = 0;
-		int iDisplayListEdgeId = 0;
 		
 		// Rebuild highlight node display list using the new scaling factor
 		if (!iArHighlightedVertices.isEmpty())
@@ -111,44 +108,11 @@ extends AGLCanvasPathway3D {
 			buildHighlightedCompoundNodeDisplayList(gl);		
 		}
 		
-		gl.glPushMatrix();
-		
-		Pathway refTmpPathway = null;
-		
-		// Load pathway storage
-		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-//		String sPathwayTexturePath = "";
-//		int iPathwayId = 0;
-		
-		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
-			iPathwayIndex++)
-		{
-			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-				getItem(iArPathwayIDs[iPathwayIndex]);
-		
-			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
-			//iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
-			
-			//System.out.println("Accessing display list: " +iDisplayListNodeId + " " + iDisplayListEdgeId);
-			
-			//gl.glTranslatef(0.0f, 0.0f, 1.5f);
-			
-			if (bShowPathwayTexture == false)
-			{
-				gl.glCallList(iDisplayListEdgeId);
-			}
-//			// Creating hierarchical picking names
-//			// This is the layer of the pathways, therefore we can use the pathway
-//			// node picking ID
-			gl.glPushName(iDisplayListNodeId);	
-			gl.glCallList(iDisplayListNodeId);
-			gl.glPopName();
-		}
-		gl.glPopMatrix();
+		renderScene(gl);
 		
 		gl.glPushMatrix();
+		
+		Pathway refTmpPathway = null;		
 		if (bShowPathwayTexture == true)
 		{
 			//gl.glDisable(GL.GL_LIGHTING);
@@ -218,6 +182,49 @@ extends AGLCanvasPathway3D {
 		gl.glPopMatrix();
 		
 		highlightIdenticalNodes(gl);
+	}
+	
+	protected void renderScene(final GL gl) {
+		
+		gl.glPushMatrix();
+		
+		int iDisplayListNodeId = 0;
+		int iDisplayListEdgeId = 0;
+		Pathway refTmpPathway = null;		
+		
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+//		String sPathwayTexturePath = "";
+//		int iPathwayId = 0;
+		
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
+		{
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				getItem(iArPathwayIDs[iPathwayIndex]);
+		
+			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
+			//iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
+			
+			//System.out.println("Accessing display list: " +iDisplayListNodeId + " " + iDisplayListEdgeId);
+			
+			//gl.glTranslatef(0.0f, 0.0f, 1.5f);
+			
+			if (bShowPathwayTexture == false)
+			{
+				gl.glCallList(iDisplayListEdgeId);
+			}
+//			// Creating hierarchical picking names
+//			// This is the layer of the pathways, therefore we can use the pathway
+//			// node picking ID
+			gl.glPushName(iDisplayListNodeId);	
+			gl.glCallList(iDisplayListNodeId);
+			gl.glPopName();
+		}
+		gl.glPopMatrix();
+		
 	}
 	
 	protected void renderPathway(final GL gl,

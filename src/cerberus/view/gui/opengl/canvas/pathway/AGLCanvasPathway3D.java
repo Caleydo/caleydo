@@ -1,6 +1,7 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import java.awt.Point;
 import java.io.File;
@@ -534,7 +535,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	protected abstract void renderPathway(final GL gl,
 			final Pathway refTmpPathway, 
 			int iDisplayListNodeId);
-	
+		
 	public void createVertex(final GL gl, 
 			IPathwayVertexRep vertexRep, 
 			Pathway refContainingPathway) {
@@ -1082,45 +1083,34 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		gl.glLineWidth(1);
 	}
 	
-	public void renderInfoArea(final GL gl,
-			float fx, 
-			float fy, 
-			float fz) {
-		
-		float fHeight = 0.9f;
-		float fWidth = 5f;		
-		
-		gl.glPushMatrix();
-		
-		gl.glLoadIdentity();
-		
-		fx -= 1.2f;
-		fy += 0.1f;
+	protected abstract void renderScene(final GL gl);
+	
+	public void renderInfoArea(final GL gl) {
 		
 		gl.glDisable(GL.GL_LIGHTING);
 
 		for (int iLineNumber = 0; iLineNumber < refInfoAreaContent.size(); iLineNumber++)
 		{
-			renderText(gl,
+			renderStaticText(gl,
 					refInfoAreaCaption.get(iLineNumber),
-					fx+0.05f -0.7f,
-					fy + fHeight - 0.1f * iLineNumber + 0.8f,
-					fz);
+					10,
+					(refInfoAreaContent.size() - iLineNumber) * 15);
 			
-			renderText(gl,
+			renderStaticText(gl,
 					refInfoAreaContent.get(iLineNumber), 
-					fx+0.8f - 0.7f, 
-					fy + fHeight - 0.1f * iLineNumber + 0.8f, 
-					fz);
+					150, 
+					(refInfoAreaContent.size() - iLineNumber) * 15);
 		}
-	
-		gl.glColor4f(1f, 1f, 0f, 0.2f);
-		gl.glTranslated(fx, fy, fz);
-		gl.glRectf(fx, fy, fx + fWidth, fy + fHeight);
-		//gl.glTranslated(-fx, -fy, -fz);
+
+//		float fHeight = 0.7f;
+//		float fWidth = 5.0f;		
 		
+//		gl.glColor4f(1f, 1.0f, 0.2f, 0.2f);
+////		gl.glTranslated(fx, fy, fz);
+//		gl.glRectf(fx, fy, fx + fWidth, fy + fHeight);
+//		//gl.glTranslated(-fx, -fy, -fz);
+//		
 		gl.glEnable(GL.GL_LIGHTING);
-		gl.glPopMatrix();
 	}
 	
 	/**
@@ -1158,13 +1148,31 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		// can
 		// set it if you would like :)
 		gl.glRasterPos3f(fx - fFontSizeOffset, fy - fFontSizeOffset, fz);
-
+		
 		// Take a string and make it a bitmap, put it in the 'gl' passed over
 		// and pick
 		// the GLUT font, then provide the string to show
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 
 	}
 
+	public void renderStaticText(final GL gl,
+			final String showText,
+			final int iWindowPosX, 
+			final int iWindowPosY) { 
+		
+		GLUT glut = new GLUT();
+
+		// Pulsing Colors Based On Text Position
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
+
+		gl.glWindowPos2i(iWindowPosX, iWindowPosY);
+		
+		// Take a string and make it a bitmap, put it in the 'gl' passed over
+		// and pick
+		// the GLUT font, then provide the string to show
+		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.gui.opengl.IGLCanvasDirector)
 	 */
@@ -1353,7 +1361,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		// Reset picked point 
 		pickPoint = null;
 		
-		renderPart(gl);
+		renderScene(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
@@ -1461,8 +1469,9 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 				}
 				else
 				{
-					iArHighlightedVertices.remove(refPickedVertexRep);
-	
+					//iArHighlightedVertices.remove(refPickedVertexRep);
+					iArHighlightedVertices.clear();
+					
 //					// Remove identical nodes from unselected vertex
 //					iterIdenticalVertices = refGeneralManager.getSingelton().
 //						getPathwayElementManager().getPathwayVertexListByName(
@@ -1479,7 +1488,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 							LoggerType.VERBOSE);
 				}
 				
-				fillInfoAreaContent(refPickedVertexRep);
+				//fillInfoAreaContent(refPickedVertexRep);
 				
 				// FIXME: not very efficient
 				// All display lists are newly created
@@ -1646,7 +1655,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	    	bIsMouseOverPickingEvent = true;
 	    }
 	    else if (bIsMouseOverPickingEvent == true && 
-	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 2 * 1e9)
+	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.3 * 1e9)
 	    {
 	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 	    	fLastMouseMovedTimeStamp = System.nanoTime();

@@ -93,8 +93,9 @@
 							attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -1.0f 1.0f   -1.0f  0.0f     30 4.0f"								
 							detail="45101" />
   		-->
-		
+
 		<!-- Window	10331	-->
+		<!-- 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	targetId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 				 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	targetId="16401" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
@@ -104,7 +105,7 @@
 				attrib3="0 10 0 40   -0.5f -0.5f    -3.0f 3.0f   -3.0f 3.0f    2.0f 1.0f   400"			
 				attrib4="10 50  120 50  200 90;1 4   9 2   19 7  54 12"	
 				detail="38101" />
-  		
+  		-->
   		<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
