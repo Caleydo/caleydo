@@ -15,7 +15,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;

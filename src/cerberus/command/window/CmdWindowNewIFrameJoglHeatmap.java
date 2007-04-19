@@ -14,7 +14,6 @@ package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 ////import cerberus.command.factory.CommandFactory;
 ////import cerberus.command.base.CmdHandleSetInterface;
 ////import cerberus.command.window.CmdHandleSetBase;

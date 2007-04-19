@@ -9,7 +9,7 @@
 package cerberus.command.system.path;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
+//import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;

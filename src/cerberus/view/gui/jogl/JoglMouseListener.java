@@ -16,10 +16,9 @@ import cerberus.math.MathUtil;
 
 
 /**
- * Gears.java <BR>
- * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel) <P>
- *
- * This version is equal to Brian Paul's version 1.2 1999/10/21
+ * Jogl mouse event listener
+ * 
+ * @author Michael Kalkusch
  */
 
 public class JoglMouseListener implements MouseListener, MouseMotionListener {

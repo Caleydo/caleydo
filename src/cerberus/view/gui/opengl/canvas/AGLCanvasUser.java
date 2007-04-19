@@ -327,9 +327,9 @@ implements IGLCanvasUser {
 	
 
 	/**
-	 * Forwards render(GLAutoDrawable) to derived class.
+	 * Forwards render(GL) to derived class.
 	 * 
-	 * @see cerberus.view.gui.opengl.canvas.AGLCanvasUser#render(GLAutoDrawable)
+	 * @see cerberus.view.gui.opengl.canvas.AGLCanvasUser#render(GL)
 	 * 
 	 * @param gl canvas created from GLAutoDrawable
 	 */
@@ -340,24 +340,22 @@ implements IGLCanvasUser {
 	 * (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
 	 */
-	public void initGLCanvas(GLCanvas canvas)
+	public void initGLCanvas(GL gl)
 	{
-		setInitGLDone();
+		setInitGLDone();		
 	}
 
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
 	 */
-	public final void render(GLAutoDrawable canvas)
-	{
-		GL gl = canvas.getGL();
-		
+	public final void render( GL gl)
+	{		
 		/** Read viewing parameters... */
-		Vec3f rot_Vec3f = new Vec3f();
-		Vec3f position = refViewCamera.getCameraPosition();
-		float w = refViewCamera.getCameraRotationGrad(rot_Vec3f);
+		final Vec3f rot_Vec3f = new Vec3f();
+		final Vec3f position = refViewCamera.getCameraPosition();
+		final float w = refViewCamera.getCameraRotationGrad(rot_Vec3f);
 		
 	
 		/** Translation */
@@ -374,7 +372,7 @@ implements IGLCanvasUser {
 		
 		// isInitGLDone() == bInitGLcanvawsWasCalled 
 		if  ( ! bInitGLcanvawsWasCalled ) {
-			initGLCanvas( (GLCanvas) canvas);
+			initGLCanvas(gl);
 			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
 		}
 		
@@ -385,16 +383,34 @@ implements IGLCanvasUser {
 	 * (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
 	 */
-	public void reshape(GLAutoDrawable drawable, 
+	public void reshape(GL gl, 
 			final int x,
 			final int y,
 			final int width,
 			final int height) {
 		
-		GL gl = drawable.getGL();
-		
 		System.out.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
 		
 		this.renderPart( gl );
+	}
+	
+
+	public void destroyGLCanvas() {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public final void displayChanged(GL gl, 
+			boolean modeChanged, 
+			boolean deviceChanged) {
+		
+		this.render( gl );		
+	}
+
+	public void update(GL gl) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }

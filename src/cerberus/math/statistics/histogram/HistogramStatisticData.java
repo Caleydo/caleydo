@@ -16,8 +16,11 @@ public class HistogramStatisticData <T extends Number > {
 
 	private boolean bHistoramRangeIsSet = false;
 	
-	private boolean bHistoramDataIsValid = false;
+//	private boolean bHistoramDataIsValid = false;
 
+	/**
+	 * TRUE if we handel Integer or Long data; FALSE if we handel Flaot or Double data.
+	 */
 	private boolean bIsIntLongData = true;
 	
 	/**
@@ -82,7 +85,7 @@ public class HistogramStatisticData <T extends Number > {
 		this.iHistogramIntervalCounter = 
 			new int[iHistogramBorderLength];
 		
-		this.bHistoramDataIsValid = false;
+//		this.bHistoramDataIsValid = false;
 	}
 	
 	/* (non-Javadoc)
@@ -166,8 +169,8 @@ public class HistogramStatisticData <T extends Number > {
 		/**
 		 * Float and Double data...
 		 */
-		if (( bufferClassName.equals( Integer.class.getName()) )
-				||( bufferClassName.equals( Long.class.getName() )) ) {
+		if (( bufferClassName.equals( Float.class.getName()) )
+				||( bufferClassName.equals( Double.class.getName() )) ) {
 			
 			bIsIntLongData = false;
 			
@@ -264,5 +267,25 @@ public class HistogramStatisticData <T extends Number > {
 	
 	public T getMeanValue() {
 		return null;
+	}
+
+
+	
+	/**
+	 * @return the bIsIntLongData
+	 */
+	public final boolean isIntLongData() {
+	
+		return bIsIntLongData;
+	}
+
+
+	
+	/**
+	 * @return the bHistoramRangeIsSet
+	 */
+	public final boolean isHistoramRangeSet() {
+	
+		return bHistoramRangeIsSet;
 	}
 }

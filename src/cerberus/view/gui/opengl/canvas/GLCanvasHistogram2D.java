@@ -289,22 +289,4 @@ implements IGLCanvasUser
 		//System.err.println(" GLCanvasHistogram2D.render(GLCanvas canvas)");
 	}
 
-	public void update(GLAutoDrawable canvas)
-	{
-		// TODO Auto-generated method stub
-		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");
-	}
-
-	public void destroyGLCanvas()
-	{
-		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
-	}
-	
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		// TODO Auto-generated method stub
-		
-	}
 }

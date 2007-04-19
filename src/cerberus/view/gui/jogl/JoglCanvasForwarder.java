@@ -4,7 +4,7 @@ package cerberus.view.gui.jogl;
 //import java.awt.event.WindowAdapter;
 //import java.awt.event.WindowEvent;
 
-import gleem.linalg.Rotf;
+//import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
@@ -18,7 +18,7 @@ import javax.media.opengl.GLEventListener;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.math.MathUtil;
+//import cerberus.math.MathUtil;
 import cerberus.view.gui.jogl.JoglMouseListener;
 import cerberus.view.gui.jogl.PickingJoglMouseListenerDebug;
 import cerberus.view.gui.jogl.IJoglMouseListener;
@@ -54,6 +54,7 @@ implements GLEventListener, IJoglMouseListener {
 		
 //		refMouseHandler = new JoglMouseListenerDebug(this);
 		refMouseHandler = new PickingJoglMouseListenerDebug(this);
+//		refMouseHandler = new PickingJoglMouseListener(this);
 
 		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
@@ -133,7 +134,7 @@ implements GLEventListener, IJoglMouseListener {
 			
 			if (refGLCanvasDirector != null)
 			{
-				refGLCanvasDirector.initGLCanvasUser();
+				refGLCanvasDirector.initGLCanvasUser(gl);
 			}
 			else 
 			{
@@ -179,6 +180,8 @@ implements GLEventListener, IJoglMouseListener {
 		gl.glLoadIdentity();
 		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 60.0f);
+		
+		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		
@@ -229,7 +232,7 @@ implements GLEventListener, IJoglMouseListener {
 		
 		if (refGLCanvasDirector != null)
 		{
-			refGLCanvasDirector.reshapeGLCanvasUser(drawable,
+			refGLCanvasDirector.reshapeGLCanvasUser(gl,
 					x, 
 					y, 
 					width,
@@ -268,9 +271,9 @@ implements GLEventListener, IJoglMouseListener {
 		
 		
 		/** Read viewing parameters... */
-		Vec3f rot_Vec3f = new Vec3f();
-		Vec3f position = refViewCamera.getCameraPosition();
-		float w = refViewCamera.getCameraRotationGrad(rot_Vec3f);
+		final Vec3f rot_Vec3f = new Vec3f();
+		final Vec3f position = refViewCamera.getCameraPosition();
+		final float w = refViewCamera.getCameraRotationGrad(rot_Vec3f);
 		
 	
 		/** Translation */
@@ -301,7 +304,7 @@ implements GLEventListener, IJoglMouseListener {
 		
 		if (refGLCanvasDirector != null)
 		{
-			refGLCanvasDirector.renderGLCanvasUser(drawable);
+			refGLCanvasDirector.renderGLCanvasUser_GL(gl);
 		}
 
 	}
@@ -310,7 +313,9 @@ implements GLEventListener, IJoglMouseListener {
 			final boolean modeChanged,
 			final boolean deviceChanged) {
 
-		refGLCanvasDirector.displayGLChanged( drawable, modeChanged, deviceChanged);
+		GL gl = drawable.getGL();
+		
+		refGLCanvasDirector.displayGLChanged( gl, modeChanged, deviceChanged);
 	}
 	
 	public final ManagerObjectType getBaseType() {

@@ -5,7 +5,6 @@ package cerberus.view.gui.opengl.canvas.scatterplot;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
-//import javax.media.opengl.GLCanvas;
 
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
@@ -27,7 +26,6 @@ import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
  */
 public class GLCanvasScatterPlot2D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
 {
 	
 	protected float[][] fAspectRatio;
@@ -215,22 +213,6 @@ implements IGLCanvasUser
 		} // for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 			
 
 	}
-	
-	public void update(GLAutoDrawable canvas)
-	{
-		System.err.println(" GLCanvasScatterPlot2D.update(GLCanvas canvas)");
-	}
 
-	public void destroyGLCanvas()
-	{
-		System.err.println(" GLCanvasScatterPlot2D.destroy(GLCanvas canvas)");
-	}
 	
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		// TODO Auto-generated method stub
-		
-	}
 }

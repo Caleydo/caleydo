@@ -42,7 +42,6 @@ import cerberus.command.view.swt.CmdViewCreateProgressBar;
 import cerberus.command.view.swt.CmdViewCreateSelectionSlider;
 import cerberus.command.view.swt.CmdViewCreateStorageSlider;
 import cerberus.command.view.swt.CmdViewCreateSwtGLCanvas;
-import cerberus.command.view.swt.CmdViewCreateTestTriangle;
 import cerberus.command.view.swt.CmdViewCreateUndoRedo;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.command.view.swt.CmdViewCreateHTMLBrowser;
@@ -316,16 +315,6 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdViewCreateGears(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);		
-			break;
-		}
-		
-		case CREATE_VIEW_TEST_TRIANGLE:
-		{
-			createdCommand =
-				new CmdViewCreateTestTriangle(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);		

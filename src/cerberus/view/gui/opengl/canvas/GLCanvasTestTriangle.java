@@ -63,23 +63,5 @@ implements IGLCanvasUser
 		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
 	}
 
-	public void update(GLAutoDrawable canvas)
-	{
-		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.update(GLCanvas canvas)");
-	}
-
-	public void destroyGLCanvas()
-	{
-		// TODO Auto-generated method stub
-		System.err.println(" TestTriangle.destroy(GLCanvas canvas)");
-	}
 	
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		// TODO Auto-generated method stub
-		
-	}
 }

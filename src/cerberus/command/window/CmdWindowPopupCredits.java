@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 
 
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 import cerberus.util.exception.CerberusRuntimeException;
 

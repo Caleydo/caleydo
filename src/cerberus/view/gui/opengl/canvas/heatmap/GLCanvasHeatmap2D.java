@@ -11,7 +11,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
-// import javax.media.opengl.GLCanvas;
 
 // import gleem.linalg.Vec3f;
 // import gleem.linalg.Vec4f;
@@ -365,12 +364,6 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 	}
 
 	
-	public void update(GLAutoDrawable canvas)
-	{
-		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");	
-		
-		
-	}
 
 	public void destroyGLCanvas()
 	{
@@ -383,14 +376,8 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 	
  //public int[] createHistogram(final int iHistogramLevels) {
   public void renderHeatmap(final int iHistogramLevels) {
-	  
-	
 
-
-	 
 	  refGeneralManager.getSingelton().logMsg( "HEATMAP: set  ", LoggerType.FULL );
-
-
 	  
   }
 
@@ -614,13 +601,7 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
     	
     }
   
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		this.render( drawable );
-		
-	}
+	
 	
 	public void updateReceiver(Object eventTrigger) {
 		System.err.println( "UPDATE BINGO !");

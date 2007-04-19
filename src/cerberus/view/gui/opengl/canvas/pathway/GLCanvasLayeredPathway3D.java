@@ -199,30 +199,51 @@ extends AGLCanvasPathway3D {
 //		String sPathwayTexturePath = "";
 //		int iPathwayId = 0;
 		
-		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
-			iPathwayIndex++)
-		{
-			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-				getItem(iArPathwayIDs[iPathwayIndex]);
 		
-			iDisplayListNodeId = refHashPathway2DisplayListNodeId.get(refTmpPathway);
-			//iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
-			
-			//System.out.println("Accessing display list: " +iDisplayListNodeId + " " + iDisplayListEdgeId);
-			
-			//gl.glTranslatef(0.0f, 0.0f, 1.5f);
-			
-			if (bShowPathwayTexture == false)
+		try
+		{
+			for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+				iPathwayIndex++)
 			{
-				gl.glCallList(iDisplayListEdgeId);
-			}
-//			// Creating hierarchical picking names
-//			// This is the layer of the pathways, therefore we can use the pathway
-//			// node picking ID
-			gl.glPushName(iDisplayListNodeId);	
-			gl.glCallList(iDisplayListNodeId);
-			gl.glPopName();
+				refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+					getItem(iArPathwayIDs[iPathwayIndex]);
+			
+				Integer buffer = refHashPathway2DisplayListNodeId.get(refTmpPathway);
+				
+				if ( buffer != null ) 
+				{
+					iDisplayListNodeId = buffer.intValue(); 
+					//iDisplayListEdgeId = iArPathwayEdgeDisplayListIDs.get(iDisplayListIndex);
+					
+					//System.out.println("Accessing display list: " +iDisplayListNodeId + " " + iDisplayListEdgeId);
+					
+					//gl.glTranslatef(0.0f, 0.0f, 1.5f);
+					
+					if (bShowPathwayTexture == false)
+					{
+						gl.glCallList(iDisplayListEdgeId);
+					}
+	//			// Creating hierarchical picking names
+	//			// This is the layer of the pathways, therefore we can use the pathway
+	//			// node picking ID
+					gl.glPushName(iDisplayListNodeId);	
+					gl.glCallList(iDisplayListNodeId);
+					gl.glPopName();
+				} //if ( buffer != null ) 
+				else 
+				{
+					System.out.println("ERORR: null-pointer! id=" + refTmpPathway.getPathwayID() + "  " + refTmpPathway.toString());
+				
+				}  //if ( buffer != null ) {..} else {..}
+				
+			} //for (int iPathwayIndex = 0;
+			
+		} catch (NullPointerException npe)
+		{
+			System.out.print("ERROR: "+ refTmpPathway.toString() );
+			npe.printStackTrace();
 		}
+		
 		gl.glPopMatrix();
 		
 	}

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
@@ -81,8 +82,6 @@ implements IView, IGLCanvasDirector {
 				"SwtJoglGLCanvasViewRep [" +
 				getId() + "] start Animator; start thread ...",
 				LoggerType.TRANSITION );
-		
-		//refGLEventListener = new JoglCanvasTextureForwarder();
 		
 		refGLEventListener = new JoglCanvasForwarder(refGeneralManager,
 				this, 
@@ -207,7 +206,7 @@ implements IView, IGLCanvasDirector {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser()
 	 */
-	public synchronized void initGLCanvasUser() {
+	public synchronized void initGLCanvasUser(GL gl) {
 		
 		if ( this.refGLCanvas != null ) 
 		{
@@ -237,7 +236,7 @@ implements IView, IGLCanvasDirector {
 				IGLCanvasUser glCanvas = iter.next();
 				if  ( ! glCanvas.isInitGLDone() )
 				{
-					glCanvas.initGLCanvas( refGLCanvas );
+					glCanvas.initGLCanvas( gl );
 				}
 				
 			} // while ( iter.hasNext() ) {
@@ -256,7 +255,7 @@ implements IView, IGLCanvasDirector {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void renderGLCanvasUser(GLAutoDrawable drawable) {
+	public void renderGLCanvasUser(GL gl) {
 		
 		if ( abEnableRendering.get() ) 
 		{
@@ -271,12 +270,36 @@ implements IView, IGLCanvasDirector {
 //					glCanvas.render( drawable );
 //				}
 				
-				iter.next().render( drawable );
+				iter.next().render( gl );
 			}
 		}
 	}
 	
-	public void reshapeGLCanvasUser(GLAutoDrawable drawable, 
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void renderGLCanvasUser_GL( GL gl) {
+		
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				
+//				//old code: test if canvas was initialized
+//				IGLCanvasUser glCanvas = iter.next();
+//				if ( glCanvas.isInitGLDone() )
+//				{
+//					glCanvas.render( drawable );
+//				}
+				
+				iter.next().render( gl );
+			}
+		}
+	}
+	
+	public void reshapeGLCanvasUser(GL gl, 
 			final int x, final int y, 
 			final int width, final int height) {
 
@@ -288,7 +311,7 @@ implements IView, IGLCanvasDirector {
 				IGLCanvasUser glCanvas = iter.next();
 				if ( glCanvas.isInitGLDone() )
 				{
-					glCanvas.reshape( drawable, x, y, width, height );
+					glCanvas.reshape( gl, x, y, width, height );
 				}
 			}
 		}
@@ -298,26 +321,28 @@ implements IView, IGLCanvasDirector {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void updateGLCanvasUser(GLAutoDrawable drawable) {
+	public void updateGLCanvasUser(GL gl) {
 		
 		if ( abEnableRendering.get() ) 
 		{
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 			
 			while ( iter.hasNext() ) {
-				iter.next().update( drawable );
+				iter.next().update( gl );
 			}
 		}
 	}
 	
-	public void displayGLChanged(GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
+	public void displayGLChanged(GL gl, 
+			final boolean modeChanged, 
+			final boolean deviceChanged) {
 
 		if ( abEnableRendering.get() ) 
 		{
 			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
 			
 			while ( iter.hasNext() ) {
-				iter.next().displayChanged(drawable, modeChanged, deviceChanged);
+				iter.next().displayChanged(gl, modeChanged, deviceChanged);
 			}
 		}
 		

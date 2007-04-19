@@ -21,7 +21,7 @@ import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
  */
 public class GLCanvasHeatmap 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
+//implements IGLCanvasUser
 {
 	
 	protected int[] iResolution;
@@ -124,23 +124,4 @@ implements IGLCanvasUser
 		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
 	}
 
-	public void update(GLAutoDrawable canvas)
-	{
-		// TODO Auto-generated method stub
-		System.err.println(" GLCanvasHeatmap.update(GLCanvas canvas)");
-	}
-
-	public void destroyGLCanvas()
-	{
-		// TODO Auto-generated method stub
-		System.err.println(" GLCanvasHeatmap.destroy(GLCanvas canvas)");
-	}
-	
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		// TODO Auto-generated method stub
-		
-	}
 }

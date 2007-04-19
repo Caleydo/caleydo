@@ -23,7 +23,7 @@ import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.genome.AGenomeIdMap;
+//import cerberus.manager.data.genome.AGenomeIdMap;
 import cerberus.manager.data.genome.DynamicGenomeIdManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.xml.parser.ISaxParserHandler;

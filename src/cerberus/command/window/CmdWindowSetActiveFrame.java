@@ -9,10 +9,9 @@
 package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.IViewGLCanvasManager;
+//import cerberus.manager.IViewGLCanvasManager;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -24,14 +23,12 @@ import cerberus.util.exception.CerberusRuntimeException;
 public class CmdWindowSetActiveFrame 
 extends ACommand
 implements ICommand {
-
-	private final IGeneralManager refGeneralManager;
 	
-	private final IViewGLCanvasManager refViewGLCanvasManager;
+//	protected final IViewGLCanvasManager refViewGLCanvasManager;
 	
-	private int iTargetFrameId = -1;
+	protected int iTargetFrameId = -1;
 	
-	private int iCallerFrameId = -1;
+	protected int iCallerFrameId = -1;
 
 	
 	/**
@@ -42,11 +39,9 @@ implements ICommand {
 		super( -1,
 				setRefGeneralManager,
 				setRefGeneralManager.getSingelton().getCommandManager(),
-				null);
+				null);		
 		
-		refGeneralManager = setRefGeneralManager;
-		
-		refViewGLCanvasManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
+//		refViewGLCanvasManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
 		
 		if ( details == null ) {
 			return;

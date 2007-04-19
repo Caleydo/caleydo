@@ -1,7 +1,6 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import java.awt.Point;
 import java.io.File;
@@ -14,7 +13,6 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
 import cerberus.data.collection.ISet;
@@ -45,7 +43,6 @@ import cerberus.util.system.SystemTime;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 import com.sun.opengl.util.BufferUtil;
@@ -57,11 +54,12 @@ import com.sun.opengl.util.texture.TextureIO;
 /**
  * @author Marc Streit
  * @author Michael Kalkusch
- *
+ * 
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
  */
 public abstract class AGLCanvasPathway3D
 extends AGLCanvasUser_OriginRotation
-implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
+implements IMediatorReceiver, IMediatorSender {
 	
 	protected float [][] viewingFrame;
 	
@@ -214,11 +212,11 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void initGLCanvas( GLCanvas canvas ) {
+	public void initGLCanvas( GL gl ) {
 	
 		System.err.println("Init called from " +this.getClass().getSimpleName());
 		
-		GL gl = canvas.getGL();
+		//GL gl = canvas.getGL();
 		
 		// Clearing window and set background to WHITE
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1298,24 +1296,6 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		bSelectionDataChanged = true;
 	}
 	
-	public void update(GLAutoDrawable canvas){
-		
-		System.err.println(" AGLCanvasPathway3D.update(GLAutoDrawable canvas)");		
-	}
-
-	public void destroyGLCanvas() {
-		
-		refGeneralManager.getSingelton().logMsg( 
-				"AGLCanvasPathway3D.destroy(GLCanvas canvas) id=" + this.iUniqueId,
-				LoggerType.FULL );
-	}
-	
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-
-		//FIXME this is just a work around! derive from AGLCanvasUser or AGLCanvasUser_OriginRotation!
-		this.render( drawable );
-		
-	}
 	
 	protected void pickObjects(final GL gl) {
 
@@ -1696,14 +1676,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 //		iValuesInRow = (int) fResolution[12]; 
 		
 	}
-	
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
 
-		this.render( drawable );
-		
-	}
 	
 	public void updateReceiver(Object eventTrigger) {
 		System.err.println( "UPDATE BINGO !");

@@ -14,7 +14,6 @@ package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.command.ICommand;
-import cerberus.command.CommandType;
 import cerberus.command.base.ACommand;
 //import cerberus.command.base.CmdHandleSetInterface;
 import cerberus.command.window.CmdWindowNewInternalFrame;
@@ -44,17 +43,15 @@ public class CmdWindowNewIFrameJoglCanvas
 extends ACommand //ACmdHandleSet 
 implements ICommand {
 
-	private int iCountCanvas = 1;
-		
-	private final IGeneralManager refGeneralManager;
+	private int iCountCanvas = 1;		
 	
 //	private DSwingJoglCanvas refDSwingJoglCanvas = null;
 	
-	private CmdWindowNewInternalFrame subCmdWindowNewInternalFrame;
+	protected CmdWindowNewInternalFrame subCmdWindowNewInternalFrame;
 	
 //	private final GLEventForwardListener refGLEventListener;
 	
-	private int iSetCallingFrameId;
+	protected int iSetCallingFrameId;
 	
 	/**
 	 * ISet the reference to the parent JComponent.
@@ -70,8 +67,6 @@ implements ICommand {
 				refGeneralManager,
 				refGeneralManager.getSingelton().getCommandManager(),
 				null);
-		
-		this.refGeneralManager = refGeneralManager;
 		
 		this.iSetCallingFrameId = iSetCallingFrameId;
 		

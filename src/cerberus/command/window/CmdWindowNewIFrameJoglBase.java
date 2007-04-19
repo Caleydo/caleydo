@@ -29,13 +29,13 @@ implements ICommand {
 	 * Reference to the sub command to create a new Jogl canvas.
 	 * Is null if an existing frame is used instead of creating a new one
 	 */
-	private final CmdWindowNewIFrameJoglCanvas refCmdWindowNewIFrameJoglCanvas;
+	protected final CmdWindowNewIFrameJoglCanvas refCmdWindowNewIFrameJoglCanvas;
 		
 	/**
 	 * Define if a new frame shall be created each time the command is executed or
 	 * if an existing frame shall be used!
 	 */
-	private final boolean bEnableCreationOfNewIFrame;
+	protected final boolean bEnableCreationOfNewIFrame;
 	
 	/**
 	 * Reference to singelton.

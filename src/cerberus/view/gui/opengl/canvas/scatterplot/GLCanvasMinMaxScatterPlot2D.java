@@ -8,7 +8,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
-//import javax.media.opengl.GLCanvas;
 
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
@@ -435,7 +434,7 @@ implements IGLCanvasUser, IMediatorReceiver
 		targetSet.returnReadToken();
 	}
 	
-	public void update(GLAutoDrawable canvas)
+	public void update(GL gl)
 	{
 		// TODO Auto-generated method stub
 		System.err.println(" GLCanvasMinMaxScatterPlot2D.update(GLCanvas canvas)");
@@ -478,13 +477,6 @@ implements IGLCanvasUser, IMediatorReceiver
 //		fAspectRatio[Y][MAX] = minMaxSeaker.getMax(1);
 	}
 	
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		// TODO Auto-generated method stub
-		
-	}
 
 	public void updateReceiver(Object eventTrigger) {
 

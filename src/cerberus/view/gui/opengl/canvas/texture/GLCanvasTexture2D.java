@@ -276,7 +276,7 @@ implements IGLCanvasUser
 	}
 
 	
-	public void update(GLAutoDrawable canvas)
+	public void update(GL gl)
 	{
 		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");	
 		
@@ -411,11 +411,4 @@ implements IGLCanvasUser
 	    //gl.glPopMatrix();
 	  }
   
-	public void displayChanged(GLAutoDrawable drawable, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		// TODO Auto-generated method stub
-		
-	}
 }

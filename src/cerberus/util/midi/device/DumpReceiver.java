@@ -2,11 +2,11 @@ package cerberus.util.midi.device;
 
 import	java.io.PrintStream;
 
-import	javax.sound.midi.MidiSystem;
-import	javax.sound.midi.InvalidMidiDataException;
-import	javax.sound.midi.Sequence;
-import	javax.sound.midi.Track;
-import	javax.sound.midi.MidiEvent;
+//import	javax.sound.midi.MidiSystem;
+//import	javax.sound.midi.InvalidMidiDataException;
+//import	javax.sound.midi.Sequence;
+//import	javax.sound.midi.Track;
+//import	javax.sound.midi.MidiEvent;
 import	javax.sound.midi.MidiMessage;
 import	javax.sound.midi.ShortMessage;
 import	javax.sound.midi.MetaMessage;
@@ -76,7 +76,6 @@ public class DumpReceiver
 	};
 
 	private PrintStream		m_printStream;
-	private boolean			m_bDebug;
 	private boolean			m_bPrintTimeStampAsTicks;
 
 	private IMidiCallback callbackObject;
@@ -93,7 +92,6 @@ public class DumpReceiver
 			    boolean bPrintTimeStampAsTicks)
 	{
 		m_printStream = printStream;
-		m_bDebug = false;
 		m_bPrintTimeStampAsTicks = bPrintTimeStampAsTicks;
 	}
 
@@ -289,7 +287,9 @@ public class DumpReceiver
 		int	nDataLength = message.getLength();
 		String	strMessage = null;
 		
-		System.out.println("data array length: " + abData.length);
+		System.out.println("data array length: " + abData.length + "  nDataLength="  + nDataLength);		
+		System.out.println("data array length: " + abMessage.toString());
+		System.out.println("data array length: " + abData.toString());
 		
 		switch (message.getType())
 		{
@@ -413,10 +413,10 @@ public class DumpReceiver
 
 
 
-	private static int signedByteToUnsigned(byte b)
-	{
-		return b & 0xFF;
-	}
+//	private static int signedByteToUnsigned(byte b)
+//	{
+//		return b & 0xFF;
+//	}
 
 	// convert from microseconds per quarter note to beats per minute and vice versa
 	private static float convertTempo(float value) {

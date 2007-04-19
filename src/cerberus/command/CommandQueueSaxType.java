@@ -72,7 +72,6 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_MIXER(ManagerType.VIEW,"cmd", "type","-1", "Create Mixer"),
 	CREATE_VIEW_BROWSER(ManagerType.VIEW,"cmd", "type", "-1", "Create Browser"),	
 	CREATE_VIEW_IMAGE(ManagerType.VIEW,"cmd", "type", "-1", "Create Image"),	
-	CREATE_VIEW_TEST_TRIANGLE(ManagerType.VIEW,"cmd", "type","-1", "No description available!"),
 	CREATE_VIEW_SWT_GLCANVAS(ManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_SET_EDITOR(ManagerType.VIEW,"cmd", "type","-1", "No description available!"),
 	CREATE_VIEW_UNDO_REDO(ManagerType.VIEW,"cmd", "type","-1", "Create UNDO/REDO"),
@@ -261,31 +260,31 @@ public enum CommandQueueSaxType
 		
 	}
 	
-	/**
-	 * Constructor for internal use.
-	 * 
-	 * @param type
-	 */
-	private CommandQueueSaxType( ManagerType type,
-			String sInfoText ) 
-	{
-		this.sXmlTag = null;		
-		this.sXmlKey = null;
-		this.sDefaultValue = null;
-		this.sInfoText = sInfoText;
-		this.eGroupType = type;
-		
-	}
+//	/**
+//	 * Constructor for internal use.
+//	 * 
+//	 * @param type
+//	 */
+//	private CommandQueueSaxType( ManagerType type,
+//			String sInfoText ) 
+//	{
+//		this.sXmlTag = null;		
+//		this.sXmlKey = null;
+//		this.sDefaultValue = null;
+//		this.sInfoText = sInfoText;
+//		this.eGroupType = type;
+//		
+//	}
 	
-	/**
-	 * Constructor for internal use.
-	 * 
-	 * @param type
-	 */
-	private CommandQueueSaxType( ManagerType type ) 
-	{
-		this(type,"...");		
-	}
+//	/**
+//	 * Constructor for internal use.
+//	 * 
+//	 * @param type
+//	 */
+//	private CommandQueueSaxType( ManagerType type ) 
+//	{
+//		this(type,"...");		
+//	}
 	
 	/**
 	 * Constructor.
