@@ -13,8 +13,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-//import com.sun.opengl.util.Animator;
-
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -41,20 +39,17 @@ implements GLEventListener, IJoglMouseListener {
 	private boolean bCallInitOpenGL = true;
 	
 	private JoglMouseListener refMouseHandler;
-
-	//private Animator refAnimator = null;
 	
-
 
 	public JoglCanvasForwarder( final IGeneralManager refGeneralManager,
 			final IGLCanvasDirector refGLCanvasDirector, 
 			final int iUniqueId) {
 
-		super(iUniqueId, refGeneralManager);
+		super(iUniqueId, refGeneralManager,null);
 		
 //		refMouseHandler = new JoglMouseListenerDebug(this);
-		refMouseHandler = new PickingJoglMouseListenerDebug(this);
-//		refMouseHandler = new PickingJoglMouseListener(this);
+//		refMouseHandler = new PickingJoglMouseListenerDebug(this);
+		refMouseHandler = new PickingJoglMouseListener(this);
 
 		this.refGLCanvasDirector = refGLCanvasDirector;
 	}
@@ -304,7 +299,7 @@ implements GLEventListener, IJoglMouseListener {
 		
 		if (refGLCanvasDirector != null)
 		{
-			refGLCanvasDirector.renderGLCanvasUser_GL(gl);
+			refGLCanvasDirector.renderGLCanvasUser(gl);
 		}
 
 	}

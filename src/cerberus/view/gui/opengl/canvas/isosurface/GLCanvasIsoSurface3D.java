@@ -10,7 +10,6 @@ import gleem.linalg.Vec3f;
 //import java.util.List;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
@@ -27,17 +26,16 @@ import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.statistics.histogram.HistogramStatisticsSet;
 //import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
  */
 public class GLCanvasIsoSurface3D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
 {
 	
 	private CTDataLoader loader = null;
@@ -100,6 +98,7 @@ implements IGLCanvasUser
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );

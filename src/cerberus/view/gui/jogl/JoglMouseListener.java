@@ -12,6 +12,7 @@ import java.awt.Point;
 import javax.media.opengl.GLAutoDrawable;
 
 import cerberus.view.gui.jogl.IJoglMouseListener;
+import cerberus.data.view.camera.IViewCamera;
 import cerberus.math.MathUtil;
 
 
@@ -91,10 +92,10 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
    * Register this Listener to the canvas as MouseListener and MouseMotionListener.
    * @param canvas
    */
-  public void addMouseListenerAll(GLAutoDrawable canvas) {
-	  canvas.addMouseListener(this);
-	  canvas.addMouseMotionListener(this);
-  }
+//  public void addMouseListenerAll(GLAutoDrawable canvas) {
+//	  canvas.addMouseListener(this);
+//	  canvas.addMouseMotionListener(this);
+//  }
 
   /* Methods required for the implementation of MouseListener */
   public void mouseEntered(MouseEvent e) {}
@@ -207,6 +208,8 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     int y = e.getY();
     Dimension size = e.getComponent().getSize();
 
+    //System.out.println("  +--> dragging... " + this.toString() );
+    
     if  ( ! bMouseRightButtonDown ) {
     	
     	if ( ! bMouseMiddleButtonDown ) {
@@ -262,10 +265,22 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 		    prevMouseY = y;
 		    
 		    /* set new paramters to ViewCamera */
-		    refParentGearsMain.getViewCamera().addCameraScale(
+		    IViewCamera bufferCamera = refParentGearsMain.getViewCamera();
+		    bufferCamera.addCameraScale(
 		    		new Vec3f( 0, 
 		    				0, 
 		    				zoomY +zoomX) );
+		    
+		    System.err.println(" zoom:A " + bufferCamera.getId() + "] ==> " + 
+		    		refParentGearsMain.toString() + " ==> " +
+		    		refParentGearsMain.getViewCamera().toString() + 
+		    		" <== " + refParentGearsMain.getViewCamera().getId());
+		    
+		    System.err.println(" zoom:B " + bufferCamera.getId() + "] ==> " + 
+		    		bufferCamera.toString() + " ==> " +
+		    		bufferCamera.getId() + 
+		    		" <== " + refParentGearsMain.getViewCamera().getId());
+
     	}
     	
     }
@@ -283,7 +298,11 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
 	    prevMouseY = y;	    
 	    
 	    /* set new paramters to ViewCamera */
-	    refParentGearsMain.getViewCamera().addCameraPosition(addVec3f);
+	    IViewCamera bufferCamera = refParentGearsMain.getViewCamera();
+	    
+	    //System.err.println("  pan: " + bufferCamera.getId() + "]");
+	    
+	    bufferCamera.addCameraPosition(addVec3f);	   
     }
   }
   

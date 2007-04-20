@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
 import cerberus.manager.IGeneralManager;
@@ -55,6 +54,7 @@ implements IView, IGLCanvasDirector {
 				).registerGLCanvasDirector( this, iViewId );
 		
 		iGLCanvasId = iParentContainerId;
+		iGLEventListernerId = iGLCanvasId + iGLEventListernerId;
 	}
 	
 	/**
@@ -195,10 +195,8 @@ implements IView, IGLCanvasDirector {
 		return new LinkedList <IGLCanvasUser> ();
 	}	
 	
-	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#getGLCanvas()
-	 */
-	public GLCanvas getGLCanvas() {
+
+	public GLAutoDrawable getGLDrawable() {
 		return this.refGLCanvas;
 	}
 
@@ -251,35 +249,12 @@ implements IView, IGLCanvasDirector {
 				LoggerType.MINOR_ERROR);
 	}
 	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void renderGLCanvasUser(GL gl) {
-		
-		if ( abEnableRendering.get() ) 
-		{
-			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-			
-			while ( iter.hasNext() ) {
-				
-//				//old code: test if canvas was initialized
-//				IGLCanvasUser glCanvas = iter.next();
-//				if ( glCanvas.isInitGLDone() )
-//				{
-//					glCanvas.render( drawable );
-//				}
-				
-				iter.next().render( gl );
-			}
-		}
-	}
 	
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void renderGLCanvasUser_GL( GL gl) {
+	public void renderGLCanvasUser( GL gl) {
 		
 		if ( abEnableRendering.get() ) 
 		{

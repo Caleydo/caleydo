@@ -10,11 +10,9 @@ package cerberus.data.view.camera;
 
 import java.lang.IndexOutOfBoundsException;
 
-import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import cerberus.data.view.camera.IViewCamera;
 import cerberus.data.view.camera.ViewCameraBase;
 
 
@@ -23,11 +21,13 @@ import cerberus.data.view.camera.ViewCameraBase;
  * 
  * Note: using OpenGL camera convention. camera viewing in -z direction onto the x-y plane.
  * 
+ * @see cerberus.data.view.camera.IViewCamera
+ * 
  * @author Michael Kalkusch
  *
  */
-public class ViewCameraPitchRollYaw extends ViewCameraBase implements
-		IViewCamera {
+public class ViewCameraPitchRollYaw 
+extends ViewCameraBase {
 
 	protected float fRollZ = 0.0f;
 	
@@ -54,8 +54,8 @@ public class ViewCameraPitchRollYaw extends ViewCameraBase implements
 	/**
 	 * 
 	 */
-	public ViewCameraPitchRollYaw() {
-		super();
+	public ViewCameraPitchRollYaw(int iId, Object caller) {
+		super(iId, caller);
 	}
 	
 	private void updateRollZ( final float fSetRadiant ) {
@@ -265,17 +265,11 @@ public class ViewCameraPitchRollYaw extends ViewCameraBase implements
 		return bEnableImmediateCameraUpdate;
 	}
 	
-	public Mat4f getCameraMatrix() {
-		//updateMatrix();
-		
-		return this.mat4fCameraViewMatrix;
-	}
-	
 	/**
 	 * Creates a clone of this camera by copying all settings.
 	 */
 	public ViewCameraBase clone() {
-		ViewCameraBase exportClone = new ViewCameraBase();
+		ViewCameraBase exportClone = new ViewCameraBase(this.iUniqueId, this);
 		
 		exportClone.setCameraAll( v3fCameraPosition, v3fCameraScale, rotfCameraRotation );
 		

@@ -19,22 +19,10 @@ implements IJoglMouseListener {
 
 	protected IViewCamera refViewCamera;
 	
-	/**
-	 * Constructor, as IViewCamera a new cerberus.data.view.camera.ViewCameraBase is created. 
-	 * 
-	 * @param iUniqueId
-	 * @param setGeneralManager
-	 */
-	protected AViewCameraListenerObject(int iUniqueId,
-			IGeneralManager setGeneralManager) {
-
-		super(iUniqueId, setGeneralManager);
-		
-		this.refViewCamera = new ViewCameraBase();
-	}
 	
 	/**
 	 * Constructor uses refIViewCamera as IViewCamera.
+	 * If refViewCamera==null a new cerberus.data.view.camera.ViewCameraBase is created. 
 	 * 
 	 * @param iUniqueId
 	 * @param setGeneralManager
@@ -47,11 +35,12 @@ implements IJoglMouseListener {
 		super(iUniqueId, setGeneralManager);
 		
 		if ( setViewCamera == null ) {
-			this.refViewCamera = new ViewCameraBase();
+			this.refViewCamera = new ViewCameraBase(iUniqueId, this);
 			return;
 		}
 
 		this.refViewCamera = setViewCamera;
+		refViewCamera.setCaller(this);
 	}
 
 	public final IViewCamera getViewCamera() {

@@ -11,17 +11,11 @@ import java.io.IOException;
 //import java.util.List;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLException;
-import javax.media.opengl.GLCanvas;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
-//import javax.media.opengl.GLCanvas;
-
-//import gleem.linalg.Vec3f;
-//import gleem.linalg.Vec4f;
 
 //import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
@@ -33,27 +27,26 @@ import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.statistics.histogram.HistogramStatisticsSet;
 //import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
  */
 public class GLCanvasTexture2D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
 {
 	
 	private boolean bUseGLWireframe = false;
 	
 	private boolean bGLBindTextureOnInitGL = true;
 	
-	private int iTextureId;
+	//private int iTextureId;
 	
-	private int iSetCacheId = 0;
+	//private int iSetCacheId = 0;
 	 
-	private String sTextureFileName = "";
+	//private String sTextureFileName = "";
 	
 	/**
 	 * Defien number of histogram slots.
@@ -74,9 +67,9 @@ implements IGLCanvasUser
 	 * grid text (3,4,5)
 	 * and point color (6,7,8)
 	 */
-	private float[] colorGrid = { 0.1f, 0.1f , 0.9f, 
-			0.1f, 0.9f, 0.1f,
-			0.9f, 0.1f, 0.1f };
+//	private float[] colorGrid = { 0.1f, 0.1f , 0.9f, 
+//			0.1f, 0.9f, 0.1f,
+//			0.9f, 0.1f, 0.1f };
 	
 	protected float[][] fAspectRatio;
 	
@@ -107,6 +100,7 @@ implements IGLCanvasUser
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );
@@ -238,13 +232,12 @@ implements IGLCanvasUser
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void initGLCanvas( GLCanvas canvas ) {
+	public void initGLCanvasUser( GL gl ) {
 		setInitGLDone();
 		System.err.println(" Texture2D ! init( * )");
 		reloadTexture();
 		
 		if ( bGLBindTextureOnInitGL ) {
-			final GL gl = canvas.getGL();
 			gl.glEnable(GL.GL_TEXTURE_2D);
 //			iTextureId = genTextures_Id(gl);
 //			gl.glBindTexture(GL.GL_TEXTURE_2D, iTextureId);
@@ -253,11 +246,11 @@ implements IGLCanvasUser
 		}
 	}	
 	
-	private int genTextures_Id(GL gl) {
-        final int[] tmp = new int[1];
-        gl.glGenTextures(1, tmp, 0);
-        return tmp[0];
-    }
+//	private int genTextures_Id(GL gl) {
+//        final int[] tmp = new int[1];
+//        gl.glGenTextures(1, tmp, 0);
+//        return tmp[0];
+//    }
 	
 	@Override
 	public void renderPart(GL gl)
@@ -319,11 +312,11 @@ implements IGLCanvasUser
 	  
 	    	
     	
-    	float fNowX = viewingFrame[X][MIN];
-    	float fNextX = viewingFrame[X][MAX];
-    	
-    	float fNowY = viewingFrame[Y][MIN];
-    	float fNextY = viewingFrame[Y][MAX];
+//    	float fNowX = viewingFrame[X][MIN];
+//    	float fNextX = viewingFrame[X][MAX];
+//    	
+//    	float fNowY = viewingFrame[Y][MIN];
+//    	float fNextY = viewingFrame[Y][MAX];
     	
     	gl.glNormal3f( 0.0f, 0.0f, 1.0f );
 

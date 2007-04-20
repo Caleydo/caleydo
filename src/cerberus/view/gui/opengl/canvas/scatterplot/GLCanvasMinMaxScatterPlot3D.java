@@ -3,11 +3,10 @@
  */
 package cerberus.view.gui.opengl.canvas.scatterplot;
 
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.Random;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
@@ -23,16 +22,15 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
  */
 public class GLCanvasMinMaxScatterPlot3D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
 {
 	
 	protected MinMaxDataInteger minMaxSeaker;
@@ -76,6 +74,7 @@ implements IGLCanvasUser
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );
@@ -454,7 +453,7 @@ implements IGLCanvasUser
 		//gl.glDisable( GL.GL_LIGHTING );
 		gl.glColor3fv( colorGrid, 6); // Set the color to blue one time only	
 		
-		//gl.glPointSize( 30.0f );	
+		gl.glPointSize( fPointSize );	
 		
 		for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 
 		{

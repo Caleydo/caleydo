@@ -61,7 +61,6 @@ public enum CommandQueueSaxType
 
 	CREATE_SWT_WINDOW(ManagerType.VIEW,"cmd", "type","-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER(ManagerType.VIEW,"cmd", "type","-1", "Create SWTContainer"),
-	CREATE_VIEW_HEATMAP(ManagerType.VIEW,"cmd", "type","-1", "Create Heatmap"),
 	CREATE_VIEW_PATHWAY(ManagerType.VIEW,"cmd", "type","-1", "Create Pathway 2D"),
 	CREATE_VIEW_GEARS(ManagerType.VIEW,"cmd", "type","-1", "Create Gears Demo"),
 	CREATE_VIEW_DATA_EXPLORER(ManagerType.VIEW,"cmd", "type","-1", "Create Data Explorer"),
@@ -183,7 +182,7 @@ public enum CommandQueueSaxType
 	TAG_DETAIL("cmd","detail",""),
 	TAG_PARENT("cmd","parent","-1"),
 	TAG_GLCANVAS("cmd","glcanvas","-1"),
-	TAG_GLCANVAS_LISTENER("cmd","gllistener","-1"),
+	TAG_GLCANVAS_LISTENER("cmd","gl_listener","-1"),
 	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),
 	TAG_LABEL("cmd","label",""),
 	

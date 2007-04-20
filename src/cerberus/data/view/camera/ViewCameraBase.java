@@ -24,6 +24,8 @@ public class ViewCameraBase
 extends AUniqueItem
 implements IViewCamera {
 
+	private Object caller;
+	
 	/**
 	 * Zoom is equal to scaling in a 4x4 matrix
 	 */
@@ -54,7 +56,6 @@ implements IViewCamera {
 	 * Matrix created by pan, zoom and rotation.
 	 * Is updated by setter methodes.
 	 * 
-	 * @see prometheus.app.observer.view.MVC_ViewFrustumBase#updateMatrix()
 	 */
 	protected Mat4f mat4fCameraViewMatrix;
 	
@@ -64,21 +65,25 @@ implements IViewCamera {
 	 * zoom to (1,1,1)
 	 * and rotation to (1,0,0,0) using null-vector (0,0,0)
 	 */
-	public ViewCameraBase( int iId ) {
-		super( iId );
+	public ViewCameraBase( int iId, Object caller ) {
+		super( iId );		
 		
 		rotfCameraRotation = new Rotf();
 		
 		mat4fCameraViewMatrix = Mat4f.MAT4F_UNITY;		
+		
+		System.err.println("ViewCameraBase constructor [" + Integer.toString(iId) + "]");
+		
+		this.setCaller(caller);
 	}
 
-	/**
-	 * Default constructor calls ViewCameraBase(int)
-	 *
-	 */
-	public ViewCameraBase() {
-		this(-1);
-	}
+//	/**
+//	 * Default constructor calls ViewCameraBase(int)
+//	 *
+//	 */
+//	public ViewCameraBase() {
+//		this(-1);
+//	}
 	
 	/**
 	 * Updates the matrix using Roatation Pan and Zoom. 
@@ -100,9 +105,10 @@ implements IViewCamera {
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewPan(gleem.linalg.Vec3f)
 	 */
 	public void setCameraPosition(final Vec3f setPan) {
-		System.out.println( "   +-> set camera pos! [" + setPan.toString()  + "]");
+		System.out.println( "   +-> set camera pos! [" + setPan.toString() + "] id=[" +
+				getId() + "] " + caller.toString());
 		
-		v3fCameraPosition = setPan;
+		v3fCameraPosition = new Vec3f(setPan);
 		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
 	}
 
@@ -125,7 +131,7 @@ implements IViewCamera {
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewZoom(gleem.linalg.Vec3f)
 	 */
 	public void setCameraScale(final Vec3f setZoom) {
-		v3fCameraScale = setZoom;
+		v3fCameraScale = new Vec3f(setZoom);
 		mat4fCameraViewMatrix.setScale( v3fCameraScale );
 	}
 
@@ -135,9 +141,9 @@ implements IViewCamera {
 	public void setCameraAll(final Vec3f setPan, 
 			final Vec3f setZoom, 
 			final Rotf setRot) {
-		v3fCameraPosition = setPan;
-		v3fCameraScale = setZoom;
-		rotfCameraRotation = setRot;
+		v3fCameraPosition = new Vec3f(setPan);
+		v3fCameraScale = new Vec3f(setZoom);
+		rotfCameraRotation = new Rotf(setRot);
 		updateMatrix();
 	}
 
@@ -148,39 +154,44 @@ implements IViewCamera {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewZoom()
 	 */
-	public Vec3f getCameraScale() {
-		return this.v3fCameraScale;
+	public final Vec3f getCameraScale() {
+		return new Vec3f(v3fCameraScale);
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewPan()
 	 */
-	public Vec3f getCameraPosition() {
-		return this.v3fCameraPosition;
+	public final Vec3f getCameraPosition() {
+		//return this.v3fCameraPosition;
+		
+//		System.err.println("ViewCameraBase.getCameraPosition  [" + 
+//				Integer.toString(getId()) + "]");
+		
+		return new Vec3f(v3fCameraPosition);
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewRotate()
 	 */
-	public Rotf getCameraRotation() {
-		return this.rotfCameraRotation;
+	public final Rotf getCameraRotation() {
+		return new Rotf(this.rotfCameraRotation);
 	}
 	
-	public float getCameraRotationGrad(Vec3f axis) {
+	public final float getCameraRotationGrad(Vec3f axis) {
 		return MathUtil.radiant2Grad( rotfCameraRotation.get(axis) );
 	}
 	
-	public float getCameraRotationRadiant(Vec3f axis) {
+	public final float getCameraRotationRadiant(Vec3f axis) {
 		return rotfCameraRotation.get(axis);
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewMatrix()
 	 */
-	public Mat4f getCameraMatrix() {
+	public final Mat4f getCameraMatrix() {
 		updateMatrix();
 		
-		return this.mat4fCameraViewMatrix;
+		return new Mat4f(this.mat4fCameraViewMatrix);
 	}
 
 	public String toString() {
@@ -252,7 +263,7 @@ implements IViewCamera {
 		rotfCameraRotation.times(temp);
 	}
 
-	public Vec3f getCameraRotationEuler() {
+	public final Vec3f getCameraRotationEuler() {
 
 		return v3fCameraRotationEuler;
 	}
@@ -277,13 +288,16 @@ implements IViewCamera {
 //				"\n  +  " + 
 //				setRot.toString() + 
 //				"\n ==> " + 
-//				buffer.toString() );
+//				buffer.toString() );c
 	
 		rotfCameraRotation = buffer;
 	}
 
 	public void addCameraScale(final Vec3f setScale) {
 
+		System.err.println("    +--> addCamera() " + this.getId() + "  " + 
+				caller.toString() + "  " + caller.getClass().getSimpleName() );
+		
 		v3fCameraScale.add(setScale);
 		v3fCameraPosition.add(setScale);
 	}
@@ -292,6 +306,27 @@ implements IViewCamera {
 
 		addCameraScale(setScale);
 		
-		return v3fCameraScale;
+		return new Vec3f(v3fCameraScale);
+	}
+
+	public void clone(IViewCamera cloneFromCamera) {
+
+		this.v3fCameraPosition = new Vec3f(cloneFromCamera.getCameraPosition());
+		this.v3fCameraScale = new Vec3f(cloneFromCamera.getCameraScale());
+		this.rotfCameraRotation = new Rotf(cloneFromCamera.getCameraRotation());
+		
+		bHasChanged = true;
+	}
+
+	
+	/**
+	 * @param caller the caller to set
+	 */
+	public final void setCaller(Object caller) {
+			
+		this.caller = caller;
+		
+		System.err.println("  setCaller " + this.getId() + "  " + 
+				caller.toString() + "  " + caller.getClass().getSimpleName() );
 	}
 }

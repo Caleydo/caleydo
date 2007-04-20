@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCanvas;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
@@ -29,11 +27,10 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
  *
  */
 public abstract class AGLCanvasUser 
-//extends AUniqueManagedObject 
 extends AViewCameraListenerObject
 implements IGLCanvasUser {
 	
-	protected GLAutoDrawable canvas;
+	protected GL canvas;
 	
 	protected IGLCanvasDirector openGLCanvasDirector;
 	
@@ -69,9 +66,9 @@ implements IGLCanvasUser {
 			"parent GLCanvas Director is null! Maybe parentID=" + 
 			iParentContainerId + " in XML file is invalid.";
 		
-		this.canvas = openGLCanvasDirector.getGLCanvas();
+		//this.canvas = openGLCanvasDirector.getGLCanvas();
 		
-		assert canvas != null : "canvas from parten ist null!";
+		//assert canvas != null : "canvas from parten ist null!";
 		
 		alSetData = new ArrayList <ISet> ();
 		alSetSelection = new ArrayList <SetSelection> ();
@@ -113,14 +110,25 @@ implements IGLCanvasUser {
 //	}
 
 
-	/* (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvas()
+	/**
+	 * Canvas must not be read from outside.
+	 * 
 	 */
-	public final GLAutoDrawable getGLCanvas()
+	public final GL getGLCanvas()
 	{
 		return canvas;
 	}
 
+	/**
+	 * Canvas must not be set from outside!
+	 * 
+	 * @param canvas
+	 */
+	protected final void setGLCanvas(GL canvas)
+	{
+		assert false : "Canvas must not be set!";
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvasDirector()
 	 */
@@ -326,18 +334,10 @@ implements IGLCanvasUser {
 	}
 	
 
+
+	
+	
 	/**
-	 * Forwards render(GL) to derived class.
-	 * 
-	 * @see cerberus.view.gui.opengl.canvas.AGLCanvasUser#render(GL)
-	 * 
-	 * @param gl canvas created from GLAutoDrawable
-	 */
-	public abstract void renderPart(GL gl);
-	
-	
-	/*
-	 * (non-Javadoc)
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
 	 */
 	public void initGLCanvas(GL gl)
@@ -346,8 +346,7 @@ implements IGLCanvasUser {
 	}
 
 	
-	/*
-	 * (non-Javadoc)
+	/**
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
 	 */
 	public final void render( GL gl)
@@ -379,8 +378,7 @@ implements IGLCanvasUser {
 		this.renderPart( gl );
 	}
 	
-	/*
-	 * (non-Javadoc)
+	/**
 	 * @see cerberus.view.gui.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
 	 */
 	public void reshape(GL gl, 
@@ -395,12 +393,16 @@ implements IGLCanvasUser {
 	}
 	
 
+	/**
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#destroyGLCanvas()
+	 */
 	public void destroyGLCanvas() {
-
-		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
+	 */
 	public final void displayChanged(GL gl, 
 			boolean modeChanged, 
 			boolean deviceChanged) {
@@ -408,9 +410,19 @@ implements IGLCanvasUser {
 		this.render( gl );		
 	}
 
+	/**
+	 * @see cerberus.view.gui.opengl.IGLCanvasUser#update(javax.media.opengl.GL)
+	 */
 	public void update(GL gl) {
-
-		// TODO Auto-generated method stub
-		
+		this.render( gl );	
 	}
+	
+	/*
+	 * Forwards render(GL) to derived class.
+	 * 
+	 * @see cerberus.view.gui.opengl.canvas.AGLCanvasUser#render(GL)
+	 * 
+	 * @param gl canvas created from GLAutoDrawable
+	 */
+	public abstract void renderPart(GL gl);
 }

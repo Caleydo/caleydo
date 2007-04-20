@@ -13,7 +13,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.GLCanvasHeatmap;
+import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

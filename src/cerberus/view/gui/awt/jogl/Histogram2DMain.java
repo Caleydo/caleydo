@@ -95,7 +95,7 @@ implements GLEventListener, IJoglMouseListener
 	public Histogram2DMain( final int iNewId,
 			final IGeneralManager setRefGeneralManager)
 	{
-		super(iNewId, setRefGeneralManager);
+		super(iNewId, setRefGeneralManager,null);
 		
 		vecSet = new Vector <ISet> (); 
 		
@@ -248,7 +248,7 @@ implements GLEventListener, IJoglMouseListener
 	}
 	
 	public ManagerObjectType getBaseType() {
-		return ManagerObjectType.VIEW_SWT_HEATMAP2D;
+		return null;
 	}
 	
 	protected void renderTriangle( GL gl ) {

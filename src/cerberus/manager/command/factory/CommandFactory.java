@@ -34,7 +34,6 @@ import cerberus.command.view.swt.CmdViewCreateDataExchanger;
 import cerberus.command.view.swt.CmdViewCreateSetEditor;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
 import cerberus.command.view.swt.CmdViewCreateGears;
-import cerberus.command.view.swt.CmdViewCreateHeatmap;
 import cerberus.command.view.swt.CmdViewCreateImage;
 import cerberus.command.view.swt.CmdViewCreateMixer;
 import cerberus.command.view.swt.CmdViewCreatePathway;
@@ -300,16 +299,6 @@ public class CommandFactory
 		 *        VIEW
 		 * ----------------------
 		 */
-		
-		case CREATE_VIEW_HEATMAP:
-		{
-			createdCommand =
-				new CmdViewCreateHeatmap(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);	
-			break;
-		}
 		
 		case CREATE_VIEW_GEARS:
 		{

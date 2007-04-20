@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
@@ -25,17 +24,15 @@ import cerberus.math.statistics.histogram.HistogramData;
 import cerberus.math.statistics.histogram.HistogramStatisticsSet;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
-import cerberus.manager.ILoggerManager.LoggerType;
 
 /**
  * @author Michael Kalkusch
- *
+ * 
+ * @see  cerberus.view.gui.opengl.IGLCanvasUser
  */
 public class GLCanvasHistogram2D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
 {
 	
 	private boolean bUseGLWireframe = false;
@@ -95,9 +92,12 @@ implements IGLCanvasUser
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );
+		
+		this.refViewCamera.setCaller(this);
 		
 		fAspectRatio = new float [2][3];
 		viewingFrame = new float [3][2];

@@ -1,18 +1,15 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas;
+package cerberus.view.gui.opengl.canvas.heatmap;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-//import javax.media.opengl.GLCanvas;
 
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
@@ -37,6 +34,7 @@ extends AGLCanvasUser_OriginRotation
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );

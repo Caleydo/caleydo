@@ -8,7 +8,6 @@ package cerberus.view.gui.opengl.canvas.heatmap;
 // import java.util.List;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
@@ -24,15 +23,15 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  * 
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
  */
 public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
-		implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
+		implements IMediatorReceiver, IMediatorSender {
 
 	private boolean bUseGLWireframe = false;
 
@@ -111,7 +110,11 @@ public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 			int iParentContainerId,
 			String sLabel) {
 
-		super(setGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(setGeneralManager, 
+				null,
+				iViewId, 
+				iParentContainerId, 
+				sLabel);
 
 		fAspectRatio = new float[2][3];
 		viewingFrame = new float[3][2];

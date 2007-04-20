@@ -32,7 +32,6 @@ public class TriggeredAnimator extends Animator {
 	public TriggeredAnimator(GLAutoDrawable drawable) {
 
 		super(drawable);
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**

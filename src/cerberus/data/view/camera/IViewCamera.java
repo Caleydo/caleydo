@@ -199,6 +199,15 @@ extends IUniqueObject {
 	public Mat4f getCameraMatrix();
 	
 	/**
+	 * clone parameters of this camera.
+	 * 
+	 * @param cloneFromCamera
+	 */
+	public void clone( IViewCamera cloneFromCamera);
+	
+	public void setCaller(Object caller);
+	
+	/**
 	 * Get debug info as String.
 	 * 
 	 * @return details in ViewCamera

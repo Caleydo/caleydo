@@ -16,12 +16,13 @@ public interface IGLCanvasDirector {
 	public abstract void removeAllGLCanvasUsers();
 
 	public abstract Collection<IGLCanvasUser> getAllGLCanvasUsers();
-
-	public abstract GLAutoDrawable getGLCanvas();
+	
+	public abstract GLAutoDrawable getGLDrawable();
 	
 	public abstract void initGLCanvasUser(GL gl);
 	
-	public abstract void renderGLCanvasUser_GL( GL gl ); 
+	
+	public abstract void renderGLCanvasUser( GL gl ); 
 	
 	public abstract void updateGLCanvasUser( GL gl );
 	

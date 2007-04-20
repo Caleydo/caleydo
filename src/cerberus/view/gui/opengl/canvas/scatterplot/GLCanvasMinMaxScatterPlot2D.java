@@ -5,7 +5,6 @@ package cerberus.view.gui.opengl.canvas.scatterplot;
 
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.GLUT;
 
@@ -15,25 +14,24 @@ import com.sun.opengl.util.GLUT;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.set.viewdata.ISetViewData;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.event.mediator.IMediatorReceiver;
+
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.manager.event.mediator.IMediatorReceiver
  */
 public class GLCanvasMinMaxScatterPlot2D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser, IMediatorReceiver
+//implements IMediatorReceiver
 {
 	
 	protected boolean bShowGrid = true;
@@ -81,6 +79,7 @@ implements IGLCanvasUser, IMediatorReceiver
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );
@@ -477,19 +476,4 @@ implements IGLCanvasUser, IMediatorReceiver
 //		fAspectRatio[Y][MAX] = minMaxSeaker.getMax(1);
 	}
 	
-
-	public void updateReceiver(Object eventTrigger) {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
-
-		if ( updatedSet.getSetType() == SetType.SET_VIEW_DATA ) 
-		{
-			ISetViewData refSetViewData = (ISetViewData) updatedSet;
-		}
-		
-	}
 }

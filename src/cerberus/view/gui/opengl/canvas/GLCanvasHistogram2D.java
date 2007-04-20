@@ -4,8 +4,6 @@
 package cerberus.view.gui.opengl.canvas;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-//import javax.media.opengl.GLCanvas;
 
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
@@ -18,16 +16,15 @@ import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
  */
 public class GLCanvasHistogram2D 
 extends AGLCanvasUser_OriginRotation 
-implements IGLCanvasUser
 {
 	
 	private StatisticHistogramType enumCurrentHistogramMode = 
@@ -56,6 +53,7 @@ implements IGLCanvasUser
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );

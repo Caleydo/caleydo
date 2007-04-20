@@ -1,7 +1,5 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
-import gleem.linalg.Vec3f;
-
 import java.util.Iterator;
 
 import javax.media.opengl.GL;

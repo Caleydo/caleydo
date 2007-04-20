@@ -4,7 +4,6 @@
 package cerberus.view.gui.jogl;
 
 import java.awt.event.MouseEvent;
-import cerberus.view.gui.jogl.JoglMouseListener;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 
 /**

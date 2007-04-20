@@ -37,7 +37,7 @@ import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.util.colormapping.ColorMapping;
+//import cerberus.util.colormapping.ColorMapping;
 import cerberus.util.colormapping.EnzymeToExpressionColorMapper;
 import cerberus.util.system.SystemTime;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
@@ -171,18 +171,24 @@ implements IMediatorReceiver, IMediatorSender {
 			int iParentContainerId, 
 			String sLabel ) {
 				
-		super(refGeneralManager, iViewId, iParentContainerId, "");
+		super(refGeneralManager, 
+				null,
+				iViewId, 
+				iParentContainerId, 
+				"");
+		
+		this.refViewCamera.setCaller(this);
 					
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
 			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
 		//pickingTriggerMouseAdapter.setJoglMouseListener(this);
-		pickingTriggerMouseAdapter.addMouseListenerAll(canvas);
-//		
-//		pickingTriggerMouseAdapter = new PickingJoglMouseListener(this);
-//		
-//		
-		canvas.addMouseListener(pickingTriggerMouseAdapter);
-		canvas.addMouseMotionListener(pickingTriggerMouseAdapter);
+		
+//		GLAutoDrawable canvasObject = this.getGLCanvasDirector().getGLDrawable();
+		
+//		pickingTriggerMouseAdapter.addMouseListenerAll(canvasObject);
+//
+//		canvasObject.addMouseListener(pickingTriggerMouseAdapter);
+//		canvasObject.addMouseMotionListener(pickingTriggerMouseAdapter);
 		
 		fAspectRatio = new float [2][3];
 		viewingFrame = new float [3][2];
@@ -454,7 +460,8 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glColor4f(1.0f, 1.0f, 0.0f, 0.3f / (float)iGlowIndex);
 			gl.glScalef(1.0f + (float)iGlowIndex / 20.0f, 1.0f + (float)iGlowIndex / 20.0f, 
 					1.0f + (float)iGlowIndex / 20.0f);
-			gl.glBegin(GL.GL_QUADS);
+			//gl.glBegin(GL.GL_QUADS);
+			gl.glBegin(GL.GL_LINE_LOOP);
 			
 	        // FRONT FACE
 			gl.glNormal3f( 0.0f, 0.0f, 1.0f);	
@@ -468,6 +475,8 @@ implements IMediatorReceiver, IMediatorSender {
 	        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.015f);
 	
 	        // BACK FACE
+	        gl.glEnd();
+	        gl.glBegin(GL.GL_LINE_LOOP);
 	        gl.glNormal3f( 0.0f, 0.0f,-1.0f);
 	        // Bottom Left Of The Quad (Back)
 	        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.015f);	
@@ -480,6 +489,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 			// TOP FACE
 	        gl.glNormal3f( 0.0f, 1.0f, 0.0f);	
+	        gl.glEnd();
+	        gl.glBegin(GL.GL_LINE_LOOP);
 	        // Top Right Of The Quad (Top)
 	        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.015f);	
 	        // Top Left Of The Quad (Top)
@@ -490,7 +501,9 @@ implements IMediatorReceiver, IMediatorSender {
 	        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight, 0.015f);			
 	
 	        // BOTTOM FACE
-	        gl.glNormal3f( 0.0f,-1.0f, 0.0f);	
+	        gl.glNormal3f( 0.0f,-1.0f, 0.0f);
+	        gl.glEnd();
+	        gl.glBegin(GL.GL_LINE_LOOP);
 	        // Top Right Of The Quad (Bottom)
 	        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight, 0.015f);
 	        // Top Left Of The Quad (Bottom)
@@ -502,6 +515,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	        // RIGHT FACE
 	        gl.glNormal3f( 1.0f, 0.0f, 0.0f);	
+	        gl.glEnd();
+	        gl.glBegin(GL.GL_LINE_LOOP);
 	        // Top Right Of The Quad (Right)
 	        gl.glVertex3f(fPathwayNodeWidth, fPathwayNodeHeight,-0.015f);
 	        // Top Left Of The Quad (Right)
@@ -512,6 +527,8 @@ implements IMediatorReceiver, IMediatorSender {
 	        gl.glVertex3f(fPathwayNodeWidth, -fPathwayNodeHeight,-0.015f);			
 	        
 	        // LEFT FACE
+	        gl.glEnd();
+	        gl.glBegin(GL.GL_LINE_LOOP);
 	        gl.glNormal3f(-1.0f, 0.0f, 0.0f);	
 	        // Top Right Of The Quad (Left)
 	        gl.glVertex3f(-fPathwayNodeWidth, fPathwayNodeHeight, 0.015f);	

@@ -4,7 +4,6 @@
 package cerberus.view.gui.opengl.canvas.scatterplot;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 //import gleem.linalg.Vec3f;
 //import gleem.linalg.Vec4f;
@@ -17,12 +16,12 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
+ * @see cerberus.view.gui.opengl.IGLCanvasUser
  */
 public class GLCanvasScatterPlot2D 
 extends AGLCanvasUser_OriginRotation 
@@ -50,6 +49,7 @@ extends AGLCanvasUser_OriginRotation
 			String sLabel )
 	{
 		super( setGeneralManager, 
+				null,
 				iViewId,  
 				iParentContainerId, 
 				sLabel );

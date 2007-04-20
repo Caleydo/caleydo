@@ -1,7 +1,6 @@
 package cerberus.view.gui.opengl;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.data.IUniqueObject;
@@ -40,7 +39,7 @@ extends IUniqueObject {
 			final boolean modeChanged, 
 			final boolean deviceChanged);
 
-	public abstract GLAutoDrawable getGLCanvas();
+	public abstract GL getGLCanvas();
 
 	public abstract IGLCanvasDirector getGLCanvasDirector();
 

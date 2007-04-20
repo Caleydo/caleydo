@@ -35,7 +35,7 @@ implements ISetViewData {
 		
 		if ( setViewCamera == null ) 
 		{
-			this.refIViewCamera = new ViewCameraPitchRollYaw();
+			this.refIViewCamera = new ViewCameraPitchRollYaw(iSetCollectionId, this);
 		} //if ( setViewCamera == null ) 
 		else
 		{

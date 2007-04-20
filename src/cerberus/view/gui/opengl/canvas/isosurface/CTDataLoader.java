@@ -133,8 +133,9 @@ public class CTDataLoader {
 				}
 				
 				int testN= -1;
-				int iResult = GeneralByteReader.toByteArrayLSB(80,headerBuffer,testN);
 				
+				int iResult = GeneralByteReader.toByteArrayLSB(80,headerBuffer,testN);
+				System.err.println(" iResult=" + iResult );
 				
 				short iReadDimensionDatabase = (short) headerBuffer[40];
 				
