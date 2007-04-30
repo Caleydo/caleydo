@@ -50,6 +50,7 @@ public enum CommandQueueSaxType
 	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_WIDGET(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	
 	CREATE_PATHWAY_STORAGE(ManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage Pathway"),
 	CREATE_SET_DATA(ManagerType.DATA,"cmd","type","-1", "Create SET"),	

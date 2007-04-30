@@ -30,6 +30,7 @@ import cerberus.command.view.opengl.CmdGlObjectTexture2D;
 import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
+import cerberus.command.view.opengl.CmdGlObjectWidget;
 import cerberus.command.view.swt.CmdViewCreateDataExchanger;
 import cerberus.command.view.swt.CmdViewCreateSetEditor;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
@@ -536,6 +537,17 @@ public class CommandFactory
 						cmdType);
 			break;
 		}
+		
+		case CREATE_GL_WIDGET:
+		{
+			createdCommand =
+				new CmdGlObjectWidget(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);
+			break;
+		}
+				
 		
 		case CREATE_GL_MINMAX_SCATTERPLOT3D:
 		{

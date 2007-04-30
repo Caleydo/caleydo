@@ -109,6 +109,14 @@ solution:
 			swt-wgl-win32-3232.dll
 			swt-win32-3232.dll
 
+  If error still occurs, check if the versions of swt-*.dll and swt.jar match
+
+  you can refere to the swt-*.dll using the PATH variable or set in in the project settings:
+
+  VM arguments:  
+    -Djava.library.path=[java]\bin
+    -Dsun.java2d.noddraw=true
+
 
 Weblink:
 
