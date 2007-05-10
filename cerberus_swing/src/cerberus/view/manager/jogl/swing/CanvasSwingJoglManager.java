@@ -108,7 +108,7 @@ import cerberus.manager.type.ManagerType;
 import cerberus.net.dwt.swing.menu.DMenuBootStraper;
 import cerberus.view.FrameBaseType;
 import cerberus.view.manager.swing.CerberusJStatusBar;
-import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
+import cerberus.view.gui.swing.jogl.ISwingJoglJComponent;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.util.SwingJoglWindowAdapter;

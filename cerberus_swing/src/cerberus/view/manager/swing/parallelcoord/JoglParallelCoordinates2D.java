@@ -83,6 +83,8 @@ import cerberus.view.swing.loader.FileLoader;
 
 import org.jgraph.graph.DefaultGraphCell;
 
+import cerberus.view.swing.parallelcoord.ParallelDotsFactory;
+
 /**
   Wavelength-dependent refraction demo<br>
   It's a chromatic aberration!<br>
@@ -95,14 +97,14 @@ import org.jgraph.graph.DefaultGraphCell;
   Ported to Java and ARB_fragment_program by Kenneth Russell
 */
 
-public class CopyOfJoglParallelCoordinates2D extends Demo {
+public class JoglParallelCoordinates2D extends Demo {
 	
   public static void main(String[] args) {
     GLCanvas canvas = new GLCanvas();
     final Animator animator = new Animator(canvas);
     
-    CopyOfJoglParallelCoordinates2D demo = 
-    	new CopyOfJoglParallelCoordinates2D(canvas,animator);
+    JoglParallelCoordinates2D demo = 
+    	new JoglParallelCoordinates2D(canvas,animator);
     canvas.addGLEventListener(demo);
     
     demo.setDemoListener(new DemoListener() {
@@ -170,7 +172,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
   
   private CerberusFrameManager refManager;
   
-  public CopyOfJoglParallelCoordinates2D( GLCanvas canvas, final Animator animator ) {
+  private ParallelDotsFactory dotFactory;
+  
+  public JoglParallelCoordinates2D( GLCanvas canvas, final Animator animator ) {
 	  
 	  initClass();
 	  
@@ -205,20 +209,21 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 	    frame.setJMenuBar( menuBar );
   }
   
-  public CopyOfJoglParallelCoordinates2D( ) {
+  public JoglParallelCoordinates2D( ) {
 	  initClass();
   }
   
-  public CopyOfJoglParallelCoordinates2D(CerberusFrameManager refManager ) {
-	  
-	  initClass();
+  public JoglParallelCoordinates2D(CerberusFrameManager refManager ) {
+	  	  
 	  this.refManager = refManager;
+	  initClass();	  	 
   }
   
   private void initClass() {
 	  doMinMaxData = new MinMaxDataInteger(2);  
 	  vec_NodeIntersection = new Hashtable< Integer, LinkedList<Integer>> (10);
 	  vec_GraphCell = new Hashtable < Integer, DefaultGraphCell> (10);
+	  dotFactory = new ParallelDotsFactory( refManager.graphViewer );
   }
   
   public void init(GLAutoDrawable drawable) {
@@ -297,10 +302,10 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 	    } 
   }
 
-  private void cleanNodeIntersectionList() {
-	  vec_NodeIntersection.clear();
-	  vec_GraphCell.clear();
-  }
+//  private void cleanNodeIntersectionList() {
+//	  vec_NodeIntersection.clear();
+//	  vec_GraphCell.clear();
+//  }
 
   private void addIntersectionNodes( Integer source, Integer target ) {
 	  
@@ -344,6 +349,7 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 			  target.toString() + " ==>" +
 			  list2.toString() );
 	  
+	  /*
 	  if ( refManager != null ) {
 		    DefaultGraphCell sourceCell = vec_GraphCell.get( source );
 		    DefaultGraphCell targetCell = vec_GraphCell.get( target );
@@ -359,6 +365,7 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 			
 			refManager.graphViewer.createEdge(sourceCell,targetCell);
 	  }
+	  */
 	  
 	  System.out.println("  BUFFER: "+ vec_GraphCell.toString() );
   }
@@ -380,15 +387,14 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
   //public int[] createHistogram(final int iHistogramLevels) {
   public void createMinMax() {
 	  
-	  doMinMaxData.useSet( this.refSet );
-	  
+	  doMinMaxData.useSet( this.refSet );	  
   }
   
   	protected void createIntersectionPoints(SetMultiDim useSet) {
 
-		vecPoint.clear();
+  		dotFactory.clearAll();
 		
-		cleanNodeIntersectionList();		
+		//cleanNodeIntersectionList();		
 
 		IVirtualArrayIterator iterX = useSet.getVirtualArrayByDimAndIndex(0, 0)
 				.iterator();
@@ -436,10 +442,10 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 			float xFix = (float) i_dataValuesX[iSourceId] * fIncX + fMinX;
 			float yFix = (float) i_dataValuesY[iterY.next()] * fIncY + fMinY;
 
-			if ( ! iterX.hasNext() ) {
-				/* Skip last point..*/
-				return;
-			}
+//			if ( ! iterX.hasNext() ) {
+//				/* Skip last point..*/
+//				break;
+//			}
 			
 			intersectStart(xFix, yFix);
 
@@ -454,16 +460,22 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 				if (iIndexInner != iIndexOuter) {
 					int iTargetId = iterX_inner.next();
 					
-					if ( ! hasIntersectionOfNodes(iSourceId, iTargetId ) ) {					
+					//if ( ! hasIntersectionOfNodes(iSourceId, iTargetId ) ) {					
 						float xNow = (float) i_dataValuesX[iTargetId]
 								* fIncX + fMinX;
 						float yNow = (float) i_dataValuesY[iterY_inner.next()]
 								* fIncY + fMinY;
 	
 						if ( intersect(xNow, yNow) ) {
-							addIntersectionNodes(iSourceINT, new Integer(iTargetId) );
+							
+							if ( dotFactory.addDotFromLines( iSourceINT, 
+									new Integer(iTargetId),
+									xNow, yNow ) != null ) {
+							
+								//addIntersectionNodes(iSourceINT, new Integer(iTargetId) );
+							}
 						}
-					}
+					//}
 				}
 				iIndexInner++;
 			} // end while inner loop...
@@ -472,7 +484,9 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 
 		}// end while outer loop...
 		
+		System.out.println("INFO:---\n" + dotFactory.toString() + "\n--------");
 		
+		dotFactory.registerAllDots();
 
 	}
   
@@ -608,7 +622,7 @@ public class CopyOfJoglParallelCoordinates2D extends Demo {
 
 				if (refSet.getDimensions() < 2) {
 					System.out
-							.println("GLCanvasHistogram2D.displayHistogram()   Can not use a ISet with only one dimension!");
+							.println("Can not use a ISet with only one dimension!");
 				}
 
 				IStorage refStorageX = this.refSet.getStorageByDimAndIndex(0, 0);

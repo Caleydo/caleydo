@@ -1,4 +1,4 @@
-package cerberus.view.manager.jogl.swing;
+package cerberus.view.gui.swing.jogl;
 
 
 //import javax.swing.JPanel;

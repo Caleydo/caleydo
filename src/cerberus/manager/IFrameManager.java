@@ -1,7 +1,7 @@
 package cerberus.manager;
 
 import cerberus.view.FrameBaseType;
-import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
+import cerberus.view.gui.swing.jogl.ISwingJoglJComponent;
 
 public interface IFrameManager {
 
@@ -9,7 +9,7 @@ public interface IFrameManager {
 	 * Creats a new internal or external frame.
 	 * 
 	 * @param which type of new frame
-	 * @param iUniqueViewId froma id must be larger than 0
+	 * @param iUniqueViewId from id must be larger than 0
 	 * @param iUniquePartenViewId if < 0 this is a external frame
 	 * @return
 	 */

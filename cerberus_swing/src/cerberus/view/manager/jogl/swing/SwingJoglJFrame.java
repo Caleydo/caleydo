@@ -24,6 +24,7 @@ import javax.swing.event.InternalFrameAdapter;
 import cerberus.view.FrameBaseType;
 
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
+import cerberus.view.gui.swing.jogl.ISwingJoglJComponent;
 
 //import com.sun.opengl.util.FPSAnimator;
 

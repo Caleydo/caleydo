@@ -12,4 +12,4 @@
 2007-01-16 kalkusch:   jogl has 64 bit support now!
 2007-01-16 kalkusch: update to java 1.6 !
 2007-01-16 kalkusch: update to eclipse 3.2
-
+2007-05-10 kalkusch: migrate old swing code to own eclipse projects

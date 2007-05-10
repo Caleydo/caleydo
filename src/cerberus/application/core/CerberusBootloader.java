@@ -41,9 +41,9 @@ public class CerberusBootloader
 	/**
 	 * Switch for loading XML file from Muddelware server.
 	 * Default is FALSE and indicate, that the local XML file is used for bootstrapping.
-	 * TRUE wil get teh XML file from the Muddleware server.
+	 * TRUE will get the XML file from the Muddleware server.
 	 * 
-	 * TODO: softcode Muddleware server and Muddleware server XPath.
+	 * TODO: soft code Muddleware server and Muddleware server XPath.
 	 */
 	private boolean bEnableBootstrapViaMuddleware = false;
 	

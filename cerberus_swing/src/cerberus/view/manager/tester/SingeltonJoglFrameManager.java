@@ -68,7 +68,7 @@ import cerberus.manager.IMenuManager;
 import cerberus.manager.singelton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
-import cerberus.view.manager.jogl.swing.ISwingJoglJComponent;
+import cerberus.view.gui.swing.jogl.ISwingJoglJComponent;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.SingeltonJoglWindowAdapter;
