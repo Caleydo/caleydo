@@ -60,7 +60,7 @@ implements ISaxParserHandler
 	
 	
 	/**
-	 * Handle start tag. Only call super methode.
+	 * Handle start tag. Only call super method.
 	 * 
 	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
@@ -74,7 +74,7 @@ implements ISaxParserHandler
 	} // end startElement(String,Attributes) 
 	
 	/**
-	 * Handle end-Tag. Only call super methode.
+	 * Handle end-Tag. Only call super method.
 	 * 
 	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
 	 */

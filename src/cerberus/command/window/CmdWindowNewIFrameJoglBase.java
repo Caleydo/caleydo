@@ -46,7 +46,7 @@ implements ICommand {
 	 * Current Jogl canvas.
 	 * If initDSwingJoglCanvas == null this varaibel holds the reference 
 	 * to the current GL canvas after calling
-	 * methode prometheus.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame() 
+	 * method prometheus.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame() 
 	 * which has to be done befor accessing the variable inside a doCommand() statement.
 	 * 
 	 * See prometheus.command.window.CmdWindowNewIFrameJoglHistogram#doCommand() as

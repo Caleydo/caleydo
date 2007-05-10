@@ -100,7 +100,7 @@ public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 	}
 	
 	/**
-	 * Any methode of this object.
+	 * Any method of this object.
 	 *
 	 */
 	public void doSomething() {

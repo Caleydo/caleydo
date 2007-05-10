@@ -51,7 +51,7 @@ implements IMementoXML, IParserObject {
 	private int iLinesInFileToBeRead = -1;
 		
 	/**
-	 * Position of progress bar stored in methode progressBarSetStoreInitTitle()
+	 * Position of progress bar stored in method progressBarSetStoreInitTitle()
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#progressBarResetTitle()
@@ -60,7 +60,7 @@ implements IMementoXML, IParserObject {
 	private int iProgressBarLastPosition;
 	
 	/**
-	 * Text progress bar stored in methode progressBarSetStoreInitTitle()
+	 * Text progress bar stored in method progressBarSetStoreInitTitle()
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#progressBarResetTitle()
@@ -78,7 +78,7 @@ implements IMementoXML, IParserObject {
 	
 
 	/**
-	 * Stores the current positon of teh progress bar after calling
+	 * Stores the current positon of the progress bar after calling
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
 	 * @see cerberus.xml.parser.handler.importer.ascii.AbstractLoader#progressBarStoredIncrement()
@@ -427,7 +427,7 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Sets the progress bar to iPosition [0..199] and 
 	 * define the number of incremetns iStepsTill100_Percent [>0] needed to 
-	 * teh the progressbar to iMaxProgressBarPosition
+	 * the the progressbar to iMaxProgressBarPosition
 	 * 
 	 * Call progressBarIncrement() to incremetn the progressabr using the settings.
 	 * 

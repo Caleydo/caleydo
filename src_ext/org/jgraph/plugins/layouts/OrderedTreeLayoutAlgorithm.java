@@ -90,7 +90,7 @@ public class OrderedTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
      * none is specified
      */
 	public List getChildren(CellView view) {
-	    //call in the getChildren methode of the TreeLayoutAlgorithm
+	    //call in the getChildren method of the TreeLayoutAlgorithm
 	    List children = super.getChildren(view);
 
 		//Sort the list using the provided comparator

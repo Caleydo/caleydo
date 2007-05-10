@@ -203,7 +203,7 @@ implements ISaxParserHandler
 	
 	/**
 	 * Parsing details that are contained in each DComponent.
-	 * Important: Each derived class has to call this methode also.
+	 * Important: Each derived class has to call this method also.
 	 *  
 	 * @return TRUE if the token was pased already, else false
 	 * 

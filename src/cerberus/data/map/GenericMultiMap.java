@@ -1,14 +1,15 @@
 /**
  * 
  */
-package cerberus.base.map;
+package cerberus.data.map;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 
 /** 
  * This is simply a Map with slightly different semantics.
- * Instead of returning an Object, it returns a Collection.
+ * Instead of returning an Object, it returns a Collection with Integer.
  * So for example, you can put( key, new Integer(1) ); 
  * and then a Object get( key ); will return you a Collection 
  * instead of an Integer.
@@ -16,7 +17,8 @@ import java.util.Map;
  *
  * @author Michael Kalkusch
  */
-public interface IMultiMap extends Map {
+public interface GenericMultiMap <T>
+extends Map < T ,ArrayList<T>> {
     
     public Object remove( Object key, Object item );
    

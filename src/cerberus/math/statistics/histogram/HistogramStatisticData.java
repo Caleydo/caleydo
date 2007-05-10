@@ -33,7 +33,7 @@ public class HistogramStatisticData <T extends Number > {
 	/**
 	 * iHistogramIntervalLength = iHistogramBorderLength + 1;
 	 * 
-	 * Note: always use setter methode. do not assing directly!
+	 * Note: always use setter method. do not assing directly!
 	 * 
 	 * @see cerberus.math.statistics.histogram.HistogramStatisticData#iHistogramBorderLength
 	 */

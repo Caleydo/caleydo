@@ -1,11 +1,12 @@
 /**
  * 
  */
-package cerberus.base.map;
+package cerberus.data.map;
 
-import java.util.ArrayList;
-import java.util.Map;
+//import java.util.ArrayList;
+//import java.util.Map;
 
+import cerberus.data.map.GenericMultiMap;
 
 /** 
  * This is simply a Map with slightly different semantics.
@@ -17,8 +18,9 @@ import java.util.Map;
  *
  * @author Michael Kalkusch
  */
-public interface GenericMultiMap <T>
-extends Map < T ,ArrayList<T>> {
+public interface MultiStringMap 
+extends GenericMultiMap <String> {
+//extends Map <String,ArrayList<String>> {
     
     public Object remove( Object key, Object item );
    

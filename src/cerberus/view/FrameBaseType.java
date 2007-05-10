@@ -8,7 +8,7 @@
  */
 package cerberus.view;
 
-import cerberus.base.type.WindowToolkitType;
+import cerberus.manager.WindowToolkitType;
 
 /**
  * Enumeration of internal and external Frame commands.

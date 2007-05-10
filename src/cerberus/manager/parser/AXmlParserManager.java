@@ -15,7 +15,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.util.exception.CerberusRuntimeException;
 /**
  * @author Michael Kalkusch

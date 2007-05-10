@@ -34,7 +34,7 @@ public interface IDimensionGroup {
 	 * row is addressed by iIndex.
 	 * Items contained in Collection are IDataItem-items. 
 	 */
-	Collection getRowCollectionByIndex( int iIndex );
+	Collection<IDataItem> getRowCollectionByIndex( int iIndex );
 	
 	
 	/*

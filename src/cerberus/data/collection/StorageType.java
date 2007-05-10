@@ -20,7 +20,7 @@ public enum StorageType
 implements ICollectionType {
 
 	/*
-	 * Note: When adding a type also check all methodes!
+	 * Note: When adding a type also check all methods!
 	 */
 	
 	/** integer */
@@ -63,7 +63,7 @@ implements ICollectionType {
 	ITERATOR(false,-1);
 	
 	/*
-	 * Note: When adding a type also check all methodes!
+	 * Note: When adding a type also check all methods!
 	 */
 	
 	

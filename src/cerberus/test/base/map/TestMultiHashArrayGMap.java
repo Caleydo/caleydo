@@ -5,7 +5,7 @@ package cerberus.test.base.map;
 
 import java.util.ArrayList;
 
-import cerberus.base.map.MultiHashArrayGMap;
+import cerberus.data.map.MultiHashArrayGMap;
 
 /**
  * @author Michael Kalkusch

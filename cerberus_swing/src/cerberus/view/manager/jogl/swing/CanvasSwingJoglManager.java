@@ -580,7 +580,7 @@ public class CanvasSwingJoglManager
 //		final SwingJoglJFrame outer;
 		
 		/** 
-		 * In order to be able to put this function inside a methode this variabel is used.
+		 * In order to be able to put this function inside a method this variabel is used.
 		 */
 		final ISwingJoglJComponent newFrame;
 		

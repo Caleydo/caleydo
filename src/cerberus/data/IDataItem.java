@@ -37,7 +37,7 @@ public interface IDataItem {
 	IDimensionGroup getDimensionGroup( int iDimensionGroupId );
 	
 	/// return collection of "data values".
-	Collection getDataValueList( );
+	Collection<IDataItem> getDataValueList( );
 	
 	
 	/// get data point position in 3D
@@ -64,7 +64,7 @@ public interface IDataItem {
 			IDimensionGroup setDimensionGroup );
 	
 	/// set collection of "data values".
-	boolean setDataValueList( Collection setDataValueCollection );
+	boolean setDataValueList( Collection<IDataItem> setDataValueCollection );
 	
 	/// set data point position in 3D
 	void setPoint( Vec3f SetPoint );

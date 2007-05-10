@@ -179,7 +179,7 @@ extends ViewCameraBase {
 	
 
 	/**
-	 * Call set methode by index.
+	 * Call set method by index.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addPitchY(float)
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setRollZ(float)
@@ -235,7 +235,7 @@ extends ViewCameraBase {
 	
 	/**
 	 * Get resulting rotation from pitch, roll and yaw.
-	 * Note: This value is updated with each set methode.
+	 * Note: This value is updated with each set method.
 	 * 
 	 * @return current rotation calculated from pitch, roll and yaw.
 	 */

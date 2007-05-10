@@ -97,7 +97,7 @@ extends IGeneralManager {
 	
 	/**
 	 * After calling buildLUT_startEditing(GenomeMappingType) this closes the map and frees the lock.
-	 * Now anotehr map can be filled with data.
+	 * Now another map can be filled with data.
 	 * 
 	 * @return true if stop editing was successful.
 	 */
@@ -141,8 +141,8 @@ extends IGeneralManager {
 	 * @param map to be added, must be IGenomeIdMap
 	 * 
 	 * @see cerberus.manager.data.genome.IGenomeIdMap
-	 * @see cerberus.base.map.MultiHashArrayStringMap
-	 * @see cerberus.base.map.MultiHashArrayIntegerMap
+	 * @see cerberus.data.map.MultiHashArrayStringMap
+	 * @see cerberus.data.map.MultiHashArrayIntegerMap
 	 */
 	public void setMapByType( final GenomeMappingType codingLutType, Object map );
 	
@@ -155,8 +155,8 @@ extends IGeneralManager {
 	 * @param codingLutType define GenomeMappingType used for identifying
 	 * 
 	 * @see cerberus.manager.data.genome.IGenomeIdMap
-	 * @see cerberus.base.map.MultiHashArrayStringMap
-	 * @see cerberus.base.map.MultiHashArrayIntegerMap
+	 * @see cerberus.data.map.MultiHashArrayStringMap
+	 * @see cerberus.data.map.MultiHashArrayIntegerMap
 	 */
 	public void removeMapByType(final GenomeMappingType codingLutType);
 	

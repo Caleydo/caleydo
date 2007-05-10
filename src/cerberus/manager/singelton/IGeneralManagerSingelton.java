@@ -13,7 +13,7 @@ extends IGeneralManager, IMementoCallbackXML {
 
 //	/**
 //	 * Creates a new unique Id with the type, that was set previouse.
-//	 * This methode returns and creates a unique Id.
+//	 * This method returns and creates a unique Id.
 //	 * 
 //	 * @param define type of object ot be created.
 //	 * 
@@ -50,7 +50,7 @@ extends IGeneralManager, IMementoCallbackXML {
 	
 	/**
 	 * Get the reference to the managers using the ManagerType.
-	 * Note: Instead of writing one get-methode for all Managers this methode
+	 * Note: Instead of writing one get-method for all Managers this method
 	 * handles all differnt types of managers.
 	 * 
 	 * @param managerType define type of manger that is requested
@@ -60,7 +60,7 @@ extends IGeneralManager, IMementoCallbackXML {
 	
 //	/**
 //	 * Get the reference to the managers using the ManagerObjectType.
-//	 * Note: Instead of writing one get-methode for all Managers this methode
+//	 * Note: Instead of writing one get-method for all Managers this method
 //	 * handles all differnt types of managers.
 //	 * 
 //	 * @param managerType define type of manger that is requested

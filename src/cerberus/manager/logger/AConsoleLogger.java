@@ -85,14 +85,14 @@ public abstract class AConsoleLogger
 	 * @see cerberus.manager.IGeneralManager#hasItem(int)
 	 */
 	public final boolean hasItem(final int iItemId) {
-		throw new CerberusRuntimeException("LOGGER: does not support this methode hasItem()");
+		throw new CerberusRuntimeException("LOGGER: does not support this method hasItem()");
 	}
 
 	/**
 	 * @see cerberus.manager.IGeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
-		throw new CerberusRuntimeException("LOGGER: does not support this methode getItem()");
+		throw new CerberusRuntimeException("LOGGER: does not support this method getItem()");
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public abstract class AConsoleLogger
 			final int iItemId , 
 			final ManagerObjectType type )
 	{
-		throw new CerberusRuntimeException("LOGGER: does not support this methode registerItem()");
+		throw new CerberusRuntimeException("LOGGER: does not support this method registerItem()");
 	}
 	
 	
@@ -119,7 +119,7 @@ public abstract class AConsoleLogger
 	 * @see cerberus.manager.IGeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
 	 */
 	public final boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
-		throw new CerberusRuntimeException("LOGGER: does not support this methode unregisterItem()");
+		throw new CerberusRuntimeException("LOGGER: does not support this method unregisterItem()");
 	}
 
 }

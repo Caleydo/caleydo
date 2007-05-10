@@ -4,7 +4,7 @@
 package cerberus.xml.parser;
 
 /**
- * Provides methodes vor initialization aund cleanup of parser.
+ * Provides methods vor initialization aund cleanup of parser.
  * 
  * @author Michael Kalkusch
  *

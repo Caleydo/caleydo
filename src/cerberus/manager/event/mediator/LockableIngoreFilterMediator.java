@@ -4,7 +4,6 @@
 package cerberus.manager.event.mediator;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 

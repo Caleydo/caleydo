@@ -14,7 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import cerberus.manager.ICommandManager;
+//import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.IViewGLCanvasManager;
@@ -42,7 +42,7 @@ public class SwingMenuManager
 	
 	private final IViewGLCanvasManager refViewGLCanvasManager;
 	
-	private final ICommandManager refCommandManager;
+	//private final ICommandManager refCommandManager;
 	
 	private Hashtable<Integer,JMenuItem> hashMenu;
 	
@@ -66,8 +66,8 @@ public class SwingMenuManager
 		refViewGLCanvasManager = 
 			setGeneralManager.getSingelton().getViewGLCanvasManager();
 		
-		refCommandManager = 
-			setGeneralManager.getSingelton().getCommandManager();
+//		refCommandManager = 
+//			setGeneralManager.getSingelton().getCommandManager();
 			
 		hashMenu = new Hashtable<Integer,JMenuItem> (iInitSizeMenuItems);
 		

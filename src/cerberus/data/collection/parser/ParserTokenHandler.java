@@ -42,7 +42,7 @@ public final class ParserTokenHandler {
 	//private final ParserTokenType enumDataType;
 	
 	
-//		 =====   public methodes  =====
+//		 =====   public methods  =====
 	
 	
 	/**
@@ -215,6 +215,6 @@ public final class ParserTokenHandler {
 	}
 	
 	
-//		 =====   private methodes  =====
+//		 =====   private methods  =====
 	
 }

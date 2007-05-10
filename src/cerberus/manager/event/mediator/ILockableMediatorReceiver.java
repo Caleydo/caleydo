@@ -12,7 +12,7 @@ public interface ILockableMediatorReceiver
 extends IMediatorReceiver {
 
 	/**
-	 * Blocks update() until methode updateRunPipe() is called.
+	 * Blocks update() until method updateRunPipe() is called.
 	 * 
 	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
 	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
@@ -27,7 +27,7 @@ extends IMediatorReceiver {
 	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateStall()
 	 * @see cerberus.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
 	 * 	
-	 * @return TRUE if upate() methodes are stalled, fales if update() methodes are preocessed
+	 * @return TRUE if upate() methods are stalled, fales if update() methods are preocessed
 	 */
 	public boolean isUpdateStalled();
 	

@@ -161,7 +161,7 @@ implements IViewCanvas
 	}
 	
 	/**
-	 * Must override this methode in derived class.
+	 * Must override this method in derived class.
 	 * 
 	 * @see cerberus.data.IStatefulItem#updateState()
 	 */

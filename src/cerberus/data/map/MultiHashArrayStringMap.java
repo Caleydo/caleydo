@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.base.map;
+package cerberus.data.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import cerberus.manager.data.genome.IGenomeIdMap;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.base.map.MultiHashArrayIntegerMap
+ * @see cerberus.data.map.MultiHashArrayIntegerMap
  * @see cerberus.manager.data.genome.IGenomeIdMap
  */
 public class MultiHashArrayStringMap 

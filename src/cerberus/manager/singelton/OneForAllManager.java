@@ -41,7 +41,6 @@ import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.data.set.SetManager;
 import cerberus.manager.data.storage.StorageManager;
 import cerberus.manager.data.virtualarray.VirtualArrayManager;
-import cerberus.manager.dcomponent.DComponentSwingFactoryManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.logger.ConsoleLogger;
 //import cerberus.manager.logger.ConsoleSimpleLogger;
@@ -165,7 +164,7 @@ implements IGeneralManagerSingelton
 	}
 
 	/**
-	 * Must be called right after teh constructor before using this class.
+	 * Must be called right after the constructor before using this class.
 	 * Initialzes all Mangeger obejcts.
 	 *
 	 */
@@ -193,7 +192,8 @@ implements IGeneralManagerSingelton
 		
 		refMementoManager = new MementoManager(this);
 		
-		refDComponentManager = new DComponentSwingFactoryManager(this);
+		//refDComponentManager = new DComponentSwingFactoryManager(this);
+		refDComponentManager = null;
 		//refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);

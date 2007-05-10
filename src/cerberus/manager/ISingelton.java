@@ -13,7 +13,7 @@ public interface ISingelton {
 
 	/**
 	 * Initialize the singelton. 
-	 * Call this methode before using the singelton.
+	 * Call this method before using the singelton.
 	 *
 	 */
 	public void initManager();

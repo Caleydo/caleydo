@@ -14,7 +14,7 @@ import cerberus.data.IUniqueManagedObject;
 import cerberus.data.AUniqueItem;
 
 /**
- * Abstract class providing methodes defiend in IUniqueManagedObject.
+ * Abstract class providing methods defiend in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
  * Same as cerberus.data.AUniqueManagedObject but GeneralManger may be reassinged.

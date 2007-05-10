@@ -129,7 +129,7 @@ public abstract class AAbstractManager implements IAbstractManager  {
 	}
 
 	public final IGeneralManager getManagerByBaseType(ManagerObjectType managerType) {
-		assert false : "Do not call this methode. use singelton only.";
+		assert false : "Do not call this method. use singelton only.";
 		return null;
 	}
 	

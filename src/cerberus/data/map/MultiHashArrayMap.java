@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.base.map;
+package cerberus.data.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,14 +15,12 @@ import java.util.Set;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.base.map.MultiHashArrayStringMap
- * @see cerberus.manager.data.genome.IGenomeIdMap
  */
-public class MultiHashArrayIntegerMap 
+public class MultiHashArrayMap 
 extends HashMap <Integer,ArrayList<Integer>> 
 implements GenericMultiMap <Integer>  {
 
-	static final long serialVersionUID = 80806678;
+	static final long serialVersionUID = 80806677;
 	
 	final int iDefaultLengthInternalArrayList = 3;
 	
@@ -30,7 +28,7 @@ implements GenericMultiMap <Integer>  {
 	 * @param arg0
 	 * @param arg1
 	 */
-	public MultiHashArrayIntegerMap(int arg0, float arg1) {
+	public MultiHashArrayMap(int arg0, float arg1) {
 
 		super(arg0, arg1);
 		
@@ -39,7 +37,7 @@ implements GenericMultiMap <Integer>  {
 	/**
 	 * @param arg0
 	 */
-	public MultiHashArrayIntegerMap(int arg0) {
+	public MultiHashArrayMap(int arg0) {
 
 		super(arg0);
 		
@@ -48,7 +46,7 @@ implements GenericMultiMap <Integer>  {
 	/**
 	 * 
 	 */
-	public MultiHashArrayIntegerMap() {
+	public MultiHashArrayMap() {
 
 		super();
 		// TODO Auto-generated constructor stub
@@ -57,7 +55,7 @@ implements GenericMultiMap <Integer>  {
 	/**
 	 * @param arg0
 	 */
-	public MultiHashArrayIntegerMap(Map <Integer,ArrayList<Integer>>  arg0) {
+	public MultiHashArrayMap(Map <Integer,ArrayList<Integer>>  arg0) {
 
 		super(arg0);
 		// TODO Auto-generated constructor stub
@@ -193,10 +191,10 @@ implements GenericMultiMap <Integer>  {
 		 first.ensureCapacity( first.size() + second.size() );		 		 
 		 Iterator <Integer> iter = second.iterator();
 		 
-		 Integer sBuffer;
+		 int iBuffer;
 		 while ( iter.hasNext() ) {			 
-			 if ( ! first.contains( sBuffer = iter.next() ) ) {
-				 first.add( sBuffer );
+			 if ( ! first.contains( iBuffer = iter.next() ) ) {
+				 first.add( iBuffer );
 			 }
 		 }
 		 

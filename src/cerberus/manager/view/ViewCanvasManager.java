@@ -31,7 +31,7 @@ import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.net.dwt.swing.canvas.DSwingHistogramCanvas;
 //import cerberus.net.dwt.swing.mdi.DDesktopPane;
 import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
+//import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
 import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
 import cerberus.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -137,22 +137,22 @@ implements IViewGLCanvasManager,
 				listenerGL = 
 					new GLEventListenerMultiSource();
 				
-			case VIEW_JOGL_CANVAS_MULTIPLE:
-				listenerGL = 
-					new GLEventListenerMultiSource();
-				
-				try {
-					int iTargetFrameId = Integer.valueOf( sAditionalParameter );
-					
-					GLEventListenerSingleSource listenerSingle = 
-						new GLEventListenerSingleSource(null);
-					newView = new DSwingJoglCanvas(refGeneralManager,
-							listenerSingle,
-							iTargetFrameId );
-				} catch (NumberFormatException nfe) {
-					assert false: "Error converting [" + sAditionalParameter + "] to int!";
-				}
-				break;
+//			case VIEW_JOGL_CANVAS_MULTIPLE:
+//				listenerGL = 
+//					new GLEventListenerMultiSource();
+//				
+//				try {
+//					int iTargetFrameId = Integer.valueOf( sAditionalParameter );
+//					
+//					GLEventListenerSingleSource listenerSingle = 
+//						new GLEventListenerSingleSource(null);
+//					newView = new DSwingJoglCanvas(refGeneralManager,
+//							listenerSingle,
+//							iTargetFrameId );
+//				} catch (NumberFormatException nfe) {
+//					assert false: "Error converting [" + sAditionalParameter + "] to int!";
+//				}
+//				break;
 										
 			case VIEW_HEATMAP2D:
 //				return new SetPlanarSimple(4,getGeneralManager());

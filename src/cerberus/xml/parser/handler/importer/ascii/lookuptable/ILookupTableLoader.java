@@ -3,9 +3,9 @@ package cerberus.xml.parser.handler.importer.ascii.lookuptable;
 import java.io.BufferedReader;
 import java.io.IOException;
 //import java.util.HashMap;
-import cerberus.base.map.MultiHashArrayIntegerMap;
-import cerberus.base.map.MultiHashArrayStringMap;
 //import cerberus.base.map.MultiHashArrayMap;
+import cerberus.data.map.MultiHashArrayIntegerMap;
+import cerberus.data.map.MultiHashArrayStringMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
@@ -57,7 +57,7 @@ public interface ILookupTableLoader {
 	public abstract void wirteBackMapToGenomeIdManager();
 	
 	/**
-	 * set the reference to teh hashmap
+	 * set the reference to the hashmap
 	 * 
 	 * @param setHashMap
 	 * @param type specify the type of mapping
@@ -66,7 +66,7 @@ public interface ILookupTableLoader {
 			final GenomeMappingType type);
 	
 	/**
-	 * set the reference to teh hashmap
+	 * set the reference to the hashmap
 	 * 
 	 * @param setHashMap
 	 * @param type specify the type of mapping

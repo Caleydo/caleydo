@@ -12,10 +12,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import cerberus.data.map.MultiHashArrayIntegerMap;
+import cerberus.data.map.MultiHashArrayStringMap;
 import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingType;
-import cerberus.base.map.MultiHashArrayIntegerMap;
-import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.genome.IGenomeIdMap;

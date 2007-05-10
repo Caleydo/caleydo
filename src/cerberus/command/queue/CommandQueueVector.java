@@ -57,8 +57,8 @@ implements ICommand , ICommandQueue
 	protected boolean bQueueCanBeExecutedSeveralTimes = false;
 	
 	/**
-	 * If "undo" is called on queue, the undo() methode is called 
-	 * in reverse order to the do() methode.
+	 * If "undo" is called on queue, the undo() method is called 
+	 * in reverse order to the do() method.
 	 * Default is TURE.
 	 * 
 	 */
@@ -182,7 +182,7 @@ implements ICommand , ICommandQueue
 			/* undo for last item in list.. */
 			lastCommandInList.undoCommand();
 			
-			/* undo for all otehr items in list in reverse order... */
+			/* undo for all other items in list in reverse order... */
 			while ( iter.hasPrevious() ) {
 				iter.previous().undoCommand();
 			}
@@ -206,7 +206,7 @@ implements ICommand , ICommandQueue
 
 	/**
 	 * Check is QueueID is set.
-	 * Attention: This methode is expensive, because getId() is called on
+	 * Attention: This method is expensive, because getId() is called on
 	 * all elements inside the Vector.
 	 * 
 	 * @param testCmdQueueId uniwue command id to seek for

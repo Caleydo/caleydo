@@ -9,7 +9,6 @@ import org.xml.sax.InputSource;
 
 import cerberus.xml.parser.handler.IXmlBaseHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 
 
 /**
@@ -116,16 +115,16 @@ extends IXmlBaseHandler
 	
 //	/**
 //	 * Special case of recursive xml file parser/reader.
-//	 * Attention: beware of side effect due to return value of this methode, because
+//	 * Attention: beware of side effect due to return value of this method, because
 //	 * if TRUE is returened newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib )
 //	 * has top be called!
 //	 * IF FALSE is returned only currentHandler.startElement( uri,localName,qName,attrib ) has to be called. 
-//	 * This is implemented as a final methode inside cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
+//	 * This is implemented as a final method inside cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
 //	 * so please derive from cerberus.manager.parser.AXmlParserManager .
 //	 *  
 //	 * 
 //	 * @param newHandler add new recursive reader
-//	 * @param refIXmlParserManager retefence to SmlParserManager to ensure, that only this class can call this methode!
+//	 * @param refIXmlParserManager retefence to SmlParserManager to ensure, that only this class can call this method!
 //	 * @return TRUE indicates that newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib ) must be called whiel FALSE indicates that only currentHandler.startElement( uri,localName,qName,attrib ) must be called
 //	 * 
 //	 * @see cerberus.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
@@ -143,7 +142,7 @@ extends IXmlBaseHandler
 	
 	
 	/**
-	 * Call this methode if the current tag was not handled by 
+	 * Call this method if the current tag was not handled by 
 	 * endElement(java.lang.String, java.lang.String, java.lang.String)
 	 * of cerberus.xml.parser.handler.IXmlParserHandler
 	 * 
@@ -157,7 +156,7 @@ extends IXmlBaseHandler
 	
 	
 	/**
-	 * Call this methode, if current tag was not handled by 
+	 * Call this method, if current tag was not handled by 
 	 * startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 * of cerberus.xml.parser.handler.IXmlParserHandler
 	 * 

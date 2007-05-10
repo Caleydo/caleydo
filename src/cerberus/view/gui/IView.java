@@ -18,7 +18,7 @@ extends IUniqueObject {
 	
 	/**
 	 * Initialization of the view.
-	 * All initialization sets must be accomplished in theis methode.
+	 * All initialization sets must be accomplished in theis method.
 	 */
 	public void initView();
 
@@ -80,7 +80,7 @@ extends IUniqueObject {
 	 * Ask if a cairtain Set is used by this view.
 	 * 
 	 * @param iSetId define a Set vai its Id
-	 * @return TRUE if teh cset is used by the view
+	 * @return TRUE if the cset is used by the view
 	 */
 	public boolean hasSetId( int iSetId);
 	

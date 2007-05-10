@@ -877,7 +877,7 @@ public class CommandFactory
 	
 	/**
 	 * Since the last created command is stored its reference is returned.
-	 * Note: be carefull with this methode, becaus maybe the commadn was already executed or distryed, or a new command was created meanwhile
+	 * Note: be carefull with this method, becaus maybe the commadn was already executed or distryed, or a new command was created meanwhile
 	 * @return reference to last created command
 	 */
 	protected ICommand getLastCreatedCommand() {

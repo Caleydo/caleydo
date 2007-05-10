@@ -14,8 +14,8 @@ import cerberus.manager.data.IGenomeIdManager;
  * @author Michael Kalkusch
  * @author Marc Streit
  * 
- * @see cerberus.base.map.MultiHashArrayStringMap
- * @see cerberus.base.map.MultiHashArrayIntegerMap
+ * @see cerberus.data.map.MultiHashArrayStringMap
+ * @see cerberus.data.map.MultiHashArrayIntegerMap
  */
 public interface IGenomeIdMap {
 

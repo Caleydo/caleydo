@@ -227,7 +227,7 @@ public interface IGeneralManager {
 	/**
 	 * Set the current Id, what is incremented once the next time createNewId() is called.
 	 * 
-	 * Attention: this methode must be called from a synchronized block on the actual manager!
+	 * Attention: this method must be called from a synchronized block on the actual manager!
 	 * 
 	 * @param setNewBaseType test if manager may create such an id
 	 * @param iCurrentId set the new current Id

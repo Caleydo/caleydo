@@ -21,7 +21,7 @@ import cerberus.util.exception.CerberusRuntimeExceptionType;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Base class for SAX Parser containing several useful methodes.
+ * Base class for SAX Parser containing several useful methods.
  * 
  * @author Michael Kalkusch
  *
@@ -182,7 +182,7 @@ extends DefaultHandler
 	/**
 	 * Returns the error message. An error message also always sets
 	 * prometheus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true,
-	 * which can be tested via the methode 
+	 * which can be tested via the method 
 	 * prometheus.net.dwt.swing.DParseBaseSaxHandler#hasErrorWhileParsing() .
 	 * 
 	 * @return text of error message. If no error occured this String is empty.

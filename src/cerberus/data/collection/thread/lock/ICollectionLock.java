@@ -9,7 +9,7 @@ package cerberus.data.collection.thread.lock;
 public interface ICollectionLock {
 
 	/**
-	 * Before reading this methode has to be called.
+	 * Before reading this method has to be called.
 	 * 
 	 * @see prometheus.data.collection.thread.ICollectionReadWriteLock#getReadTokenWait()
 	 * @see prometheus.data.collection.thread.ICollectionReadWriteLock#returnReadToken()
@@ -47,7 +47,7 @@ public interface ICollectionLock {
 	public void returnWriteToken();
 
 	/**
-	 * Before reading this methode has to be called.
+	 * Before reading this method has to be called.
 	 * 
 	 * @see prometheus.data.collection.thread.ICollectionReadWriteLock
 	 * 

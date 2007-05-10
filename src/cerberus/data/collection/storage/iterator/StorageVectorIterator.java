@@ -65,14 +65,14 @@ public class StorageVectorIterator {
 	
 	/**
 	 * Assign a hole Vector <IStorage> to this iterator.
-	 * Note: begin() is called inside this methode.
+	 * Note: begin() is called inside this method.
 	 * 
 	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param setStorageVector
 	 */
-	public void setStorageVector( final Vector <IStorage> setStorageVector) {
-		vecStorage = (Vector <IStorage>) setStorageVector.clone();
+	public void setStorageVector( final Vector <IStorage> setStorageVectorRef) {
+		vecStorage = setStorageVectorRef;
 		
 		begin();
 	}

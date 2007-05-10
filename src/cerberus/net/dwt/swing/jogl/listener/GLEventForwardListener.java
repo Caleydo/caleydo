@@ -16,7 +16,7 @@ import javax.media.opengl.GLEventListener;
 import cerberus.net.dwt.swing.jogl.listener.GLEventObserverListener;
 
 /**
- * Forwards net.java.games.jogl.GLEventListener methodes.
+ * Forwards net.java.games.jogl.GLEventListener methods.
  * 
  * @author Michael Kalkusch
  * 

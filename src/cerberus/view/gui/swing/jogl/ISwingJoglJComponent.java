@@ -92,7 +92,7 @@ public interface ISwingJoglJComponent {
 	public void doDefaultCloseAction();
 	
 	/**
-	 * Add listener for window closing event. Use this methode for JFrame objects.
+	 * Add listener for window closing event. Use this method for JFrame objects.
 	 * 
 	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addDefaultListenerForClosingWindow(InternalFrameAdapter)
 	 * 
@@ -101,7 +101,7 @@ public interface ISwingJoglJComponent {
 	public void addDefaultListenerForClosingWindow( WindowAdapter adapter );
 	
 	/**
-	 * Add listener for window closing event. Use this methode for JFrame objects.
+	 * Add listener for window closing event. Use this method for JFrame objects.
 	 * 
 	 * @see cerberus.view.manager.jogl.swing.ISwingJoglJComponent#addDefaultListenerForClosingWindow(WindowAdapter)
 	 * 

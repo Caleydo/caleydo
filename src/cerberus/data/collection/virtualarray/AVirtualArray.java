@@ -19,7 +19,7 @@ import cerberus.data.collection.thread.lock.ICollectionLock;
 
 /**
  * Abstract calss for all virtual arrays.
- * Implements several methodes, that are suitable for all virtual arrays.
+ * Implements several methods, that are suitable for all virtual arrays.
  * 
  * @author Michael Kalkusch
  */

@@ -474,7 +474,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	 * @see cerberus.data.collection.IStorage#getNumberArrays()
 	 */
 	public final int getNumberArrays() {
-		return this.iNumerOfUsedArrays;
+		return FlatThreadStorageSimple.iNumerOfUsedArrays;
 	}
 
 	/* (non-Javadoc)

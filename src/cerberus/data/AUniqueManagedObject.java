@@ -15,7 +15,7 @@ import cerberus.data.AUniqueItem;
 import cerberus.util.exception.CerberusRuntimeException;
 
 /**
- * Abstract class providing methodes defiend in IUniqueManagedObject.
+ * Abstract class providing methods defiend in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
  * @author Michael Kalkusch

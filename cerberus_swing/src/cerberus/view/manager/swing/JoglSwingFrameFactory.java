@@ -956,7 +956,7 @@ public class JoglSwingFrameFactory {
 //	
 //	private JFrame addExternalWindow(FrameBaseType which) {
 //		
-//		//assert !which.getInternalFrameState() : "try to create internal frame inside externale frame generation methode.";
+//		//assert !which.getInternalFrameState() : "try to create internal frame inside externale frame generation method.";
 //		
 //		final JFrame outer = new JFrame( which.getFrameTitle() + " external" );
 //		outer.setResizable(true);
@@ -1086,7 +1086,7 @@ public class JoglSwingFrameFactory {
 //
 //		String str = which.getFrameTitle();
 //
-//		//assert which.getInternalFrameState() : "try to create external frame inside internale frame generation methode.";
+//		//assert which.getInternalFrameState() : "try to create external frame inside internale frame generation method.";
 //		
 //		final JInternalFrame inner = new JInternalFrame(str);
 //		inner.setResizable(true);

@@ -557,7 +557,7 @@ implements IViewManager, IViewGLCanvasManager {
 	}
 
 	/**
-	 * Attention: Unregister GLEventListener at GLCanvas before callint this methode.
+	 * Attention: Unregister GLEventListener at GLCanvas before callint this method.
 	 * 
 	 */
 	public boolean unregisterGLEventListener(GLEventListener canvasListener) {

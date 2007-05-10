@@ -192,7 +192,7 @@ extends IUniqueObject {
 	
 	/**
 	 * Get the current ViewMatrix.
-	 * Note: This matrix is updated each time a set methode is called.
+	 * Note: This matrix is updated each time a set method is called.
 	 * 
 	 * @return current view matrix
 	 */

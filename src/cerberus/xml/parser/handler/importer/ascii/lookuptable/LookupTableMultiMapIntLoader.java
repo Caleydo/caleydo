@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import cerberus.base.map.MultiHashArrayIntegerMap;
+import cerberus.data.map.MultiHashArrayIntegerMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.ILoggerManager.LoggerType;

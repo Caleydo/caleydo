@@ -70,7 +70,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	
 	/**
 	 * Assign a hole Vector <IVirtualArray> to this iterator.
-	 * Note: begin() is called inside this methode.
+	 * Note: begin() is called inside this method.
 	 * 
 	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 

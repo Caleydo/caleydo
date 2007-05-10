@@ -35,7 +35,7 @@ public abstract class AbstractMiddleNode extends AbstractNode {
 	}
 
 	public final int getIndex() {
-		assert false : "do not call this methode";
+		assert false : "do not call this method";
 		return -1;
 	}
 }

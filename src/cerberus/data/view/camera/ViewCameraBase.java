@@ -54,7 +54,7 @@ implements IViewCamera {
 	
 	/**
 	 * Matrix created by pan, zoom and rotation.
-	 * Is updated by setter methodes.
+	 * Is updated by setter methods.
 	 * 
 	 */
 	protected Mat4f mat4fCameraViewMatrix;

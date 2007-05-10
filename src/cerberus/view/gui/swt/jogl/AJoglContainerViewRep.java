@@ -28,7 +28,7 @@ import cerberus.util.exception.CerberusRuntimeExceptionType;
  * that getAnimator() does not return null.
  *  
  * This could be either done inside the dericed mehtode initView() or
- * inside the derived methode drawView()
+ * inside the derived method drawView()
  * 
  * @see cerberus.view.gui.swt.base.ISwtJoglContainerViewRep
  * 
@@ -58,7 +58,7 @@ implements IView, ISwtJoglContainerViewRep
 	/**
 	 * Default constructor.
 	 * 
-	 * After calling the construtor the follogwing methodes should 
+	 * After calling the construtor the follogwing methods should 
 	 */
 	public AJoglContainerViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
@@ -91,7 +91,7 @@ implements IView, ISwtJoglContainerViewRep
 	}
 
 	/**
-	 * Empyt default methode.
+	 * Empyt default method.
 	 * Shall suit inteface cerberus.view.gui.IView
 	 * 
 	 * @see cerberus.view.gui.IView#retrieveExistingGUIContainer()

@@ -52,14 +52,14 @@ public interface IMemento {
 	/**
 	 * Overwrite toString() to get valueable debug information.
 	 * 
-	 * Note: This methode is used by IMementoManager.toString()
+	 * Note: This method is used by IMementoManager.toString()
 	 */
 	public String toString();
 
 	/**
 	 * Overwrite toString() to get valueable debug information.
 	 * 
-	 * Note: This methode is used by IMementoManager.toString()
+	 * Note: This method is used by IMementoManager.toString()
 	 */
 	public String toStringRecursive();
 

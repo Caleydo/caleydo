@@ -63,7 +63,7 @@ implements IView {
 
 	/**
 	 * Needs to be called before calling drawView().
-	 * Either call this methode from Constructor or inside initView().
+	 * Either call this method from Constructor or inside initView().
 	 * 
 	 * @see cerberus.view.gui.swt.base.AJoglViewRep#drawView()
 	 * @see cerberus.view.gui.swt.base.AJoglViewRep#initView()

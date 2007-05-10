@@ -11,7 +11,7 @@ package cerberus.data;
 import cerberus.data.IUniqueObject;
 
 /**
- * Abstract class providing methodes defined in IUniqueManagedObject.
+ * Abstract class providing methods defined in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
  * @author Michael Kalkusch

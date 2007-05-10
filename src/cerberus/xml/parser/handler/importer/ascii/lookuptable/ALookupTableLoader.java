@@ -4,8 +4,8 @@
 package cerberus.xml.parser.handler.importer.ascii.lookuptable;
 
 
-import cerberus.base.map.MultiHashArrayIntegerMap;
-import cerberus.base.map.MultiHashArrayStringMap;
+import cerberus.data.map.MultiHashArrayIntegerMap;
+import cerberus.data.map.MultiHashArrayStringMap;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IGenomeIdManager;
@@ -63,7 +63,7 @@ implements ILookupTableLoader {
 
 
 	/**
-	 * empty methode, must be overrwitten by sub-class, 
+	 * empty method, must be overrwitten by sub-class, 
 	 * if required by logic of sub-class.
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
@@ -74,7 +74,7 @@ implements ILookupTableLoader {
 	}
 	
 	/**
-	 * empty methode, must be overrwitten by sub-class,
+	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
@@ -85,7 +85,7 @@ implements ILookupTableLoader {
 	}
 	
 	/**
-	 * empty methode, must be overrwitten by sub-class,
+	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, GenomeMappingType)
@@ -98,7 +98,7 @@ implements ILookupTableLoader {
 	/**
 	 * Per default the LUT needs not to be initialized.
 	 * If internal data strucutres need to be allocated, 
-	 * the sub-class must implement this methode.
+	 * the sub-class must implement this method.
 	 *
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#initLUT()
 	 */
@@ -109,7 +109,7 @@ implements ILookupTableLoader {
 	/**
 	 * Per default the LUT needs not to be destoryed.
 	 * If internal data strucutres were allocated, 
-	 * the sub-class must implement this methode.
+	 * the sub-class must implement this method.
 	 * 
 	 * @see cerberus.xml.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#destroyLUT()
 	 */

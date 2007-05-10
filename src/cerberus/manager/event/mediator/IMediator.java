@@ -48,7 +48,7 @@ extends IMediatorReceiver, IUniqueObject {
 	
 	/**
 	 * Called before destruction of Mediator.
-	 * Only creator of teh Mediator my call this methode.
+	 * Only creator of the Mediator my call this method.
 	 *
 	 */
 	public void destroyMediator(  final IEventPublisher sender );

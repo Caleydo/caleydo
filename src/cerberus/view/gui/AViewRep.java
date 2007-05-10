@@ -141,7 +141,7 @@ implements IViewRep {
 	public void updateReceiver( Object eventTrigger ) {
 		
 		//Implemented in subclasses		
-		assert false : "This methode must be overloaded in sub-class";
+		assert false : "This method must be overloaded in sub-class";
 	}
 	
 	/*
@@ -151,7 +151,7 @@ implements IViewRep {
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
 		//Implemented in subclasses
-		assert false : "This methode must be overloaded in sub-class";
+		assert false : "This method must be overloaded in sub-class";
 	}
 	
 	/*

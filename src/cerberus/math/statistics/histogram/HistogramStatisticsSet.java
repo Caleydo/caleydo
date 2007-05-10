@@ -112,7 +112,7 @@ implements IHistogramStatistic {
 	protected synchronized double calculateVarianceDouble( final double dUseEstimate ) {
 		assert false : "Not supported yet";
 
-		throw new RuntimeException("methode addDataValues(int[] setData) not supported.");
+		throw new RuntimeException("method addDataValues(int[] setData) not supported.");
 	}
 
 	/* (non-Javadoc)
@@ -121,7 +121,7 @@ implements IHistogramStatistic {
 	public void addDataValues(int[] setData) {
 		assert false : "Not supported yet";
 
-		throw new RuntimeException("methode addDataValues(int[] setData) not supported.");
+		throw new RuntimeException("method addDataValues(int[] setData) not supported.");
 	}
 
 	/*
@@ -131,7 +131,7 @@ implements IHistogramStatistic {
 	public void addDataValues(Number[] setData) {
 		assert false : "Not supported yet";
 
-		throw new RuntimeException("methode addDataValues(Number[] setData) not supported.");
+		throw new RuntimeException("method addDataValues(Number[] setData) not supported.");
 	}
 
 	

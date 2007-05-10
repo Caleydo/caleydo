@@ -13,11 +13,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 //import cerberus.base.map.MultiHashArrayMap;
 //import cerberus.data.mapping.GenomeIdType;
+import cerberus.data.map.MultiHashArrayIntegerMap;
+import cerberus.data.map.MultiHashArrayStringMap;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 //import cerberus.base.map.MultiHashArrayStringMap;
-import cerberus.base.map.MultiHashArrayIntegerMap;
-import cerberus.base.map.MultiHashArrayStringMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.base.AAbstractManager;
@@ -358,14 +358,14 @@ implements IGenomeIdManager {
 
 	public boolean hasItem(int iItemId) {
 
-		//assert false : "methode not implemented";
+		//assert false : "method not implemented";
 		return false;
 	}
 
 
 	public Object getItem(int iItemId) {
 
-		assert false : "methode not implemented";
+		assert false : "method not implemented";
 		return null;
 	}
 
@@ -378,14 +378,14 @@ implements IGenomeIdManager {
 
 	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type) {
 
-		assert false : "methode not implemented";
+		assert false : "method not implemented";
 		return false;
 	}
 
 
 	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
 
-		assert false : "methode not implemented";
+		assert false : "method not implemented";
 		return false;
 	}
 
@@ -394,8 +394,8 @@ implements IGenomeIdManager {
 	 * @see cerberus.manager.data.IGenomeIdManager#setMapByType(cerberus.data.mapping.GenomeMappingType, java.lang.Object)
 	 * 
 	 * @see cerberus.manager.data.genome.IGenomeIdMap
-	 * @see cerberus.base.map.MultiHashArrayStringMap
-	 * @see cerberus.base.map.MultiHashArrayIntegerMap
+	 * @see cerberus.data.map.MultiHashArrayStringMap
+	 * @see cerberus.data.map.MultiHashArrayIntegerMap
 	 */
 	public void setMapByType(final GenomeMappingType codingLutType, 
 			Object map) {

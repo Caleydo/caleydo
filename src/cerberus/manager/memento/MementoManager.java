@@ -17,10 +17,8 @@ import java.util.Hashtable;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMementoManager;
 import cerberus.manager.base.AAbstractManager;
-import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.manager.singelton.SingeltonManager;
 //import java.util.Enumeration;
 
 import cerberus.command.memento.IMemento;
