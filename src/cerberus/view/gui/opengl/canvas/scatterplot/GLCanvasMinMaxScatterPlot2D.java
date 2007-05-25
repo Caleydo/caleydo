@@ -208,6 +208,7 @@ extends AGLCanvasUser_OriginRotation
 	{
 		gl.glTranslatef( 0,0, 0.01f);
 		
+		gl.glDisable( GL.GL_LIGHTING );
 		if (( iGridSize > 1 )&&(bShowGrid))
 		{
 			drawScatterPlotGrid( gl ,iGridSize );
@@ -216,8 +217,9 @@ extends AGLCanvasUser_OriginRotation
 		if ( targetSet != null ) 
 		{
 			drawScatterPlotInteger( gl );		
-		}
-	
+		}	
+		gl.glEnable( GL.GL_LIGHTING );
+		
 		//System.err.println(" MinMax ScatterPlot2D .render(GLCanvas canvas)");
 	}
 
@@ -346,7 +348,6 @@ extends AGLCanvasUser_OriginRotation
 		//gl.glTranslatef( 0, -2.5f, 0);
 		
 		gl.glPointSize( fPointSize );		
-		gl.glDisable( GL.GL_LIGHTING );
 		gl.glColor3fv( colorDataPoints, 0); // Set the color for all points
 		
 		
@@ -427,7 +428,6 @@ extends AGLCanvasUser_OriginRotation
 			
 		} // for ( int iOuterLoop = 0; iOuterLoop < iLoopXY; iOuterLoop++  ) 			
 		
-		gl.glEnable( GL.GL_LIGHTING );
 		
 		// if ( targetSet.getReadToken() )
 		targetSet.returnReadToken();

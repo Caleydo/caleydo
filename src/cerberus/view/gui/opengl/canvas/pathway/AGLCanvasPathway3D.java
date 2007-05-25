@@ -158,6 +158,8 @@ implements IMediatorReceiver, IMediatorSender {
 	protected ArrayList<String> refInfoAreaCaption;
 	protected ArrayList<String> refInfoAreaContent;
 	
+	protected float fTextureTransparency = 1.0f; 
+	
 //	protected ColorMapping expressionColorMapping;
 	
 	protected PathwayRenderStyle refRenderStyle;
@@ -1730,4 +1732,14 @@ implements IMediatorReceiver, IMediatorSender {
 			e.printStackTrace();
 		}
 	}
+	
+	public void setTextureTransparency( float setTextureTransparency) {
+		this.fTextureTransparency = setTextureTransparency;
+	}
+	
+	
+	public float getTextureTransparency() {
+		return this.fTextureTransparency;
+	}
+	
 }
