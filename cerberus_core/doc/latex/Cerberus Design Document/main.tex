@@ -1,0 +1,157 @@
+%************************************************************************
+%
+%  Project: Cerberus
+%  Title: Cerberus Design Document
+%  Author: Marc Streit, Michael Kalkusch
+%  Advisor:
+%  
+%  Filneame: main.tex
+%  Contents: main file, LaTeX layouts, includes
+%
+%  Original version: 24.07.2006
+%  Original author: Marc Streit
+%  Supporting author:
+%  Version number: 1
+%  Last change: 24.07.2006
+%  Last change by: Marc Streit
+%
+%************************************************************************
+
+%************************************************************************
+%
+%  !!! Important NOTE !!! To use these templates (including this file and
+%  the main.tex file) you have to copy the folder custom_styles to your texmf
+%  and then execute "mktexlsr ~/texmf/"
+%
+%************************************************************************
+
+\documentclass[a4paper, 12pt, BCOR5mm, footsepline, parskip+, chapterprefix, smallheadings, footexclude, headexclude, DIV14, abstracton, pointlessnumbers, tablecaptionabove]{scrreprt}
+
+%===========================================================
+% 
+\usepackage[english, german]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+\usepackage[latin1]{inputenc}
+%===========================================================
+
+%===========================================================
+% including graphical packages
+\usepackage[pdftex]{graphicx}
+\usepackage{wrapfig}
+%===========================================================
+
+% Hyperrefs
+\usepackage{url}
+%\usepackage[hyperindex, plainpages=false, pdfpagelabels]{hyperref}
+\usepackage[]{dino_references}
+
+% Bibliographic Package
+\usepackage{natbib}
+
+% Packages for Source Code
+\usepackage{listings}
+\lstset{
+  language=Matlab,
+  showstringspaces=false,
+  numbers=left,
+  frame=single
+  breaklines=true
+}
+
+% set how many hirachies should be in the table of contents
+\setcounter{tocdepth}{3}
+
+% set how many hirachies should be numbered 
+\setcounter{secnumdepth}{4}
+
+%===========================================================
+% page layout
+
+\usepackage{scrpage2}
+\pagestyle{scrheadings}
+\renewcommand*{\chapterpagestyle}{scrheadings}
+\renewcommand*{\partpagestyle}{empty}
+\renewcommand{\headfont}{\normalfont\sffamily\bfseries}
+\renewcommand{\pnumfont}{\normalfont\sffamily\bfseries}
+\automark{chapter}
+\cfoot{}
+\chead{}
+%\lefoot{\pagemark}
+\ofoot{\headmark \hspace{1em}|\hspace{1em}\pagemark}
+\ohead{}
+
+\usepackage{lscape}
+%===========================================================
+
+%===========================================================
+% paragrgaph layout
+\setlength{\parskip}{1ex} % distance between paragraphs
+
+% distance between lines
+%\usepackage{setspace}
+%\doublespacing
+
+%===========================================================
+% table formatting
+%\usepackage{longtable} % for long tables (more than a page)
+%\usepackage{capt-of}   % for 
+%\usepackage{rccol}
+%===========================================================
+
+
+%===========================================================
+% Author Data
+\subject{Design Document \\ Institute for Computer Graphics and Vision \\ Graz University of Technology \\ Graz}
+\title{Cerberus\\ \large Design Document}
+\author{Marc Streit \\ marc.streit@student.tugraz.at \and  DI Michael Kalkusch \\ kalkusch@icg.tugraz.at}
+\date{July 2006}
+%\publishers{Supervision: }
+%===========================================================
+
+%===========================================================
+\begin{document}
+
+% for english
+\selectlanguage{english}
+% for german
+%\selectlanguage{german}
+%===========================================================
+\maketitle
+
+%\include{abstract}            % Abstracts, Pledge
+ 
+%\include{acknowledgements}
+
+\tableofcontents             % Table of Contents
+
+%--chapters-------------------
+
+\include{content}
+%\include{demo}
+
+\appendix
+
+\listoffigures
+
+%\listoftables
+
+%use only if you want to list all!!! entrys in your bibliography
+\nocite{*} 
+\bibliography{biblio/biblio}
+% for german use this:
+%\bibliographystyle{/usr/share/texmf/custom_styles/alphadin}
+% for english this:
+\bibliographystyle{/usr/share/texmf/custom_styles/alphadin_en}
+
+%=========================================================== 
+ 
+
+%===========================================================
+\end{document}
+%===========================================================
+
+%%% Local Variables: 
+%%% mode: pdflatex
+%%% TeX-master: t
+%%% End: 

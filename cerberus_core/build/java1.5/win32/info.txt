@@ -1,0 +1,10 @@
+
+---  Cerberus Tester  ---
+
+
+  now in ..\..\src
+
+compile C:\Compiler\JAVA\jdk1.5.0_04\bin\javac.exe -XLint:deprecation -classpath jogl.jar;. -d ..\bin\class cerberus/view/manager/tester/CanvasFromXMLFileTester.java ...
+
+
+D:_>C:\Compiler\JAVA\jdk1.5.0_04\bin\javac.exe -d ..\bin\class cerberus/view/manager/tester/CanvasFromXMLFileTester.java 

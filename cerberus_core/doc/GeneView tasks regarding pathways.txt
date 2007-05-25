@@ -1,0 +1,60 @@
+GenView TASKS regarding pathway part
+=====================================
+
+- ViewRep
+  - Extend Date Explorer (pathway list, view list, maybe also update structure)
+  - MIDI interface + Mixer ViewRep
+  - ViewRep for creating new Sets/Storages/Selections
+  - Drag & drop of data on view
+  - Command implementation for each important ViewRep with key value pair for int
+  - New ViewRep for Patient information (table)
+
+- 2D PathwayViewer
+  - Connection of pathway nodes to foreign nodes (concept!)
+  - Mouse-over item highlighting (+ identical visible items)
+  - Correct pathway neighborhood visualization (i.e. indirect connections)
+  - New JGraph pathway layer view
+  - Semantic-zoom, collapsing (concept!) - also in OpenGL
+
+- Data structure
+  - Implementing selections data structure (for pathways, heatmaps, scatterplots)
+  - Enyzme -> Gene mapping (request a special mapping from Mr. Asslaber)
+  - New edge implementation to consider multiple connections
+  - Search for Enzyme/Compound/Gene + highlighting
+  - Import SBML data
+
+- OpenGL pathways
+  - Multiple pathway layer view - including cross-references
+  - OpenGL pathway update (e.g. on neighborhood visualization in JGraph pathway)
+  - Improve OpenGL pathway view (styles, alignment, etc.)
+  - Pathway image loading in OpenGL pathway view (TGA - with transparency)
+  - Cone Tree concept (some kind of)  
+
+- WEKA
+  - Integration of pathway data
+  - Dendrogram data structure
+
+- Research
+  - Further research to keep global view on topic
+  - Papers: When should we start? What can we publish? Where can I participate?
+  - Meeting with LKH partners - find out useful pathway/heatmap scenario
+
+- Others
+  - Progress bar on application bootstrapping (sticky)
+  - Command Serialization (for exporting/saving and network app.)
+  - Extending CommandManager with seperate UNDO stacks for data and view
+  - Multiple work station setup
+  - Multi-monitor setup - including new input devices
+  
+- several concepts: (mk 12-01-2007)
+  - edit Graph
+  - write out XML fiel with alterned or created Graph
+  - Layouting Graph (internal vs external)
+  
+  - create new: Set, Storage, Virtual array
+  - Several Sldiers in one SWT widget
+  - serach for other graphs, that are similar to our pathways
+  - new widget: shwo table with selected nodes of graph
+  - new widget: list of enzymes, list of compounds/metabolits
+  
+

@@ -1,0 +1,478 @@
+\chapter{Introduction}
+
+We focus on investigation of existing pathways and not the creation of new ones (references?).
+
+\chapter{Problem Definiton}
+
+[Interesting term: post-genomics - paper: Tracking the Shift to postgenomics]
+
+Tool that supports biologists and pathologists to understand the results of their experiments.
+
+%Some types of cancer are suspected to either originate in or else being influenced by genetic disposition. Though human DNA has been examined and broken down to sequences of genes the meaning of most genes and their influence on each other is still unknown. The Cerberus application enables doctors to get an overview over patients' gene-expression data as well as clinical data like the history of the disease. It uses clustering techniques to provide information visualization, thereby allowing doctors to systematically search for coincidences. The aim of this thesis is to extend the application with a metabolic pathway module to take the connection between metabolic pathways and genes into account. 
+
+[Describe data increase rate - specially in context of high-throughput methods]
+
+\chapter{Related Work}
+
+In this chapter first pathways are described in general followed by a detailed consideration of pathway visualization and current tools and frameworks. Next the term gene expression is introduced and again state-of-the art framework are described roughly. [Missing introductory sentence for information visualization]. The combination of these two ermerging research areas leads to gene-expression application on biochemical pathways. Finally related work in the field of information visualization that is needed in respect of the former described fields is discussed.
+
+\section{Metabolic Pathway Visualization}
+
+\subsection{Medical Pathways}
+
+[Metabolism is defined in the book Metabolism at a glance and is cited in \citep{Bourqui2006}]
+
+Metabolic networks are defined in \citep{Bourqui2006} as interconnected metabolic pathways.
+[Write some more sentences about metabolic networks and why they are important to be investigated globally.]
+Figure \stdref{gfx:RocheAppliedScience_MetabolicPathways_WallChart} shows a whole snapshot of a metabolic pathway. The fact that these posters of the global metabolic network are still mounted on the wall in numerous laboratories illustrates why alternative ways of visualization needs to be explored. 
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.43}{\includegraphics{gfx/RocheAppliedScience_MetabolicPathways_WallChart}} 
+\caption[Roche Applied Science wall chart on metabolic pathways]{\textit{Roche Applied Science wall chart on metabolic pathways TODO Insert Reference}} 
+\label{gfx:RocheAppliedScience_MetabolicPathways_WallChart}
+\end{figure}
+
+\subsubsection{Definition}
+
+Metabolic pathways aim on modelling cellular functions in graphs. Basic building blocks of pathways are chemical compounds (so called metabolites) and enzymes. The chemical compounds act as substrates and products of chemical reactions. Enzymes catalyze these reactions by using substrates as input. The output of the chemical reaction is a product which is in turn a compound. This process is described in LINK. 
+
+Pathways can be divided in metabolic pathways and regulatory pathways such as signal transduction cycles. The former are in the scope of that paper because metabolism can be modeled in reference pathways which are valid for several organisms\citep{Kanehisa2000}. Outgoing from that reference map KEGG can generate organism specific pathways. On the other hand regulatory pathways vary in detail for specific organism and it is much harder to find a common reference pathway\citep{Kanehisa2000}.
+
+[Describe additional information as co-factors etc.]
+
+\subsubsection{Layouting and graph drawing algorithms}
+
+[Defintion of metabolic networks regarding graph theory is presented in \citep{Bourqui2006}.]
+A very good explaination of metabolic networks and pathways in respect of graph theory is given by Bourqui et al.\citep{Bourqui2006}. 
+Metabolic pathways are partially cyclic graphs. Directed and undirected edges are present.
+Nodes can occure in multiple times in the same graph as well as in foreign graphs.
+
+Determined by historical development metabolic networks are often handmade. I.e. experts incorporate their meta-knowledge in the specific domain to position nodes and route edges. Still this approach is widely spread in the community due to the complexity of the graphs. Graph drawing algorithms are needed for automatic generation of pathways. Common graph drawing algorithms do not provide sufficient results in respect of metabolic pathways because they focus on different constraints\citep{Becker2001}. Becker et al. state that common graph layouting alogrithms are optimized to fullfil the following cirterias:
+\begin{itemize}
+ \item Planarity
+ \item Minimal edge crossings
+ \item Minimal drawing area
+ \item Maximal symmetry
+\end{itemize}
+In matters of metabolic graphs it is hard to define a simple set of criterias and constraints because the complexity and diversity. Therfore special algorithms need to be developed that are capable of handling the biochemical properties.
+
+One of the first attempts to dynamically model metabolic networks was done by Karp et al. starting in 1993\citep{Karp1993, Karp1994, Karp1994a}. As metabolic network became more and more diversified and complex over time also graph drawing approaches needed to be adapted and enhanced. Becker et al. proposed an algorithm that builds up on the ideas of Kerp et al. and enhances them by including the topological structure. As a starting point the method seeks for the longest cycle inside the graph. The rest of the nodes are classified as inner and outer components which are positioned using a spring embedded algorithm.
+
+In the recently published work by \citep{Bourqui2006} a graph drawing algorithm is published that addresses the visual identification of reaction cascades among distinct metabolic pathways by forming a single concatenated graph [should I put a figure here?].
+
+\subsubsection{2.5D and 3D pathway visualization}
+
+
+\subsubsection{Pathways visualization using Virtual Reality (VR)}
+
+[Insert short definition of virtual reality - Judith bringt Referenz.]
+
+In 2002 Rojdestvenski et al. (\citep{Rojdestvenski2002, Rojdestvenski2003}) proposed a tool called Metabolic Network Visualizer (MNV) for the usage of virtual reality in context of metabolic pathways by using Virtual Reality Modeling Language (VRML). They also discuss advantages and possible problems when using a real 3D representation of the biomedical network. Finally a hierarchical postitioning of the graphs in 3D space as flat 2D graphs is proposed to keep the 2D graphs with that the biologists are familiar with. 
+\citep{Dickerson2003}:[paper contains a good definition of metabolic pathways as graphs]
+In \citep{Yang2006} the MetNetVR is presented which focuses on hierarchical relationships in pathways (-> also in \citep{Dogrusoz2004}). The root node of the graph could
+be the metabolic network. Childs of the network are several pathways which subnodes are their molecules. For exploring the information space detail-on-demand techique (-> link to other section) is applied. Using a tracked input device orientation and position for  ray-picking in an virtual environment the user can expand a single node pathway representation to show all contained molecules.
+
+\subsection{State-of-the-art Frameworks}
+
+Brandes et al. propesed a 2.5D method to visualize differences accross pathways for different spzecies\citep{Brandes2004}. This method enables the user to see evolutionary developments and relations amoung different species.
+
+\section{Gene Expression Visualization}
+
+\subsection{Gene-Expression Analysis}
+
+Describe the Genome.
+Human genome is sequenced since year by name -> Reference 
+Describe how genes code enzymes (special proteins).
+
+Hierarchical clustering\citep{Seo2002}
+
+\subsection{State-of-the-art frameworks}
+
+http://www.genome.jp/kegg/expression/
+
+\minisec{GeneSpring}
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.4}{\includegraphics{gfx/screenshot_gene_spring}} 
+\caption[Screenshot of GeneSpring]{\textit{Screenshot of GeneSpring}} 
+\label{gfx:screenshot_gene_spring}
+\end{figure}
+
+\minisec{Panther}
+
+The PANTHER (Protein ANalysis THrough Evolutionary Relationships) classifies genes by functions\footnote{http://www.pantherdb.org}.
+[Reference?]
+
+Pathway drawing tool called CellDesigner\footnote{http://www.celldesigner.org}.
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.4}{\includegraphics{gfx/screenshot_cell_designer}} 
+\caption[Screenshot of CellDesigner]{\textit{Screenshot of CellDesigner}} 
+\label{gfx:screenshot_cell_designer}
+\end{figure}
+
+\section{Biomedical Databases}
+
+Criterias for successful databases are: 
+\begin{itemize}
+ \item Availability
+ \item Update rate / update process
+ \item ID Management (Unique Key)
+ \item Links to other databases
+ \item Software to access database (SOAP)
+ \item Documentation
+ \item Full data dump 
+ \item etc.
+\end{itemize}
+
+\subsection{Gene centered databases}
+
+\subsubsection{International Nucleotide Sequence Database Collaboration (INSDC)}
+
+The INSDC is a collaborative network of DNA sequence databases that consists of three major members:
+\begin{itemize}
+ \item \textbf{GenBank:} \\
+ GenBank is a part of the National Center for Biotechnology Information (NCBI) which is intergrated in the United States National Library of Medicine (NLM). NLM belongs to the National Institutes of Health (NIH) that is self-described as the focal point for medical research in the United States.
+ \item \textbf{European Molecular Biology Laboratory (EMBL):} \\
+ EMBL
+ \item \textbf{DNA Data Bank of Japan (DDBJ)} \\
+\end{itemize}
+
+INSERT table with current data sets in various databases
+Number of genes, proteins, enzymes.
+
+\subsubsection{Entrez}
+
+\subsubsection{Gene Ontology (GO)}
+
+\subsection{Pathway centered databases}
+
+\subsubsection{Kyoto Encyclopedia of Genes and Genomes (KEGG)}
+
+The Kyoto Encyclopedia of Genes and Genomes (KEGG)\footnote{http://www.genome.jp/kegg/} is a biomedical resource that started its online service in 1995 and belongs to the Japanese GenomeNet.
+
+Provide 140 metabolic pathways for over ?? organisms.
+
+KEGG pathways are represented by graphs which are layouted by hand and stored in static images (reference?). [Images are generated, how?]
+ok
+In the graph enzymes are visualized by rectangular nodes and compounds are modelled by small circles. Round rectangular nodes depict linked pathways. This circumstance points to the fact that a pathway is only an artificial subset of a huge complex network. 
+
+When a cellular function is valid throughout different organisms it is called strongly preserved. These general pathways are stored in the KEGG database as reference pathways. Each reference pathway can then be specialized for a specific organism. Figure BLA shows the methionine metabolism for home sapiens. Light green color coded enzymes depict proteins where the generating genes are known. 
+
+[Describe possiblities of KEGG in terms of database information and relation browsing - pathway coloring - hierarchical division of metabolic network]
+
+Throughout the paper Methionine Metabolism serves as prime example. This special amino acid pathway is of average size and includes all types of nodes and edges as well as cyclic reaction cascades. \stdref{gfx:KEGG_methionine_metabolism_271_reference_pathway} shows the reference pathways of Methionine Metabolism while \stdref{gfx:KEGG_methionine_metabolism_271_pathway_hsa} depicts the specialized cellular function cycle for homo sapiens. The graphs share the same composition and connection of nodes but vary in the color coding of enzymes. Human genes that produce enzymes in the pathway are highlighted yellowish. 
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.4}{\includegraphics{gfx/KEGG_methionine_metabolism_271_reference_pathway}} 
+\caption[KEGG methionine metabolism reference pathway]{\textit{KEGG methionine metabolism reference pathway}} 
+\label{gfx:KEGG_methionine_metabolism_271_reference_pathway}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.4}{\includegraphics{gfx/KEGG_methionine_metabolism_271_pathway_hsa}} 
+\caption[KEGG methionine metabolism pathway for home sapiens]{\textit{KEGG methionine metabolism pathway for home sapiens}} 
+\label{gfx:KEGG_methionine_metabolism_271_pathway_hsa}
+\end{figure}
+
+\subsubsection{BioCyc}
+\subsubsection{ExPASy Molecular Biology Server}
+
+Reference: A new generation of information retrieval tools for biologists: the example of the ExPASy WWW server (Appel et al.)
+
+\subsection{Biomedical Identification Numbers}
+
+During the last decade biochemical database projects sprang up like mushrooms. Some projects has proven their value and achieved to manifest themeselves inside the community. Each database project introduced their own identification numbers for genes, proteins, nucleotids, etc. The obvious problem is how to map these data and interconnect them among the misscellaneous databases. 
+There were many attempts over the time to get this issue under control.
+
+\minisec{Enzyme ID}
+The Nomenclature Committee of the International Union of Biochemistry and Molecular Biology (NC-IUBMB) agreed on the Enzyme Commission number (EC number)\footnote{http://www.chem.qmul.ac.uk/iubmb/enzyme/}\citep{Bairoch2000}. Enzymes are divided by classes and a couple of subclasses which are seperated by a ``.'' (e.g.: 3.1.1.1). The Enzyme nomenclature database\footnote{http://www.expasy.org/enzyme/} is online provided by the Swiss-Prot platform.
+The release of 03-Apr-2007 contains 4026 active entries. 
+Each entry contains:
+\begin{itemize}
+ \item EC-number
+ \item Official name
+ \item Alternative names
+ \item Reactions catalyzed
+ \item Co-factors (if any)
+ \item Cross-links to other databases
+\end{itemize}
+
+\minisec{Gene ID}
+The nomenclature for enzymes become widely accepted however inn the case of genes unique identifiers are much more silvered.
+Several identifcation systems are still under usage but the main problem is the uniquity of the gene identifiers.
+
+\minisec{Pathway ID}
+
+\section{Information Visualization Methods}
+
+\citep{Bederson2003}
+\citep{Spence2007}
+\citep{Schumann2000}
+
+\subsection{2D vs. 3D}
+
+\subsection{Multiple Views}
+
+\subsection{Focus + Context}
+
+\subsection{Linking \& Brushing}
+
+\subsection{Detail on demand}
+
+\subsection{Semantic Zooom}
+
+\section{Application of Gene-Expression Data onto Metabolic Pathways}
+
+
+\subsection{State-of-the-art frameworks}
+
+\minisec{PathwayExplorer [2005]}
+
+The PathwayExplorer is able to map genes on enzymes in pathways from various databases.
+Positive: Can handle all kind of identifiers (for example RefSeq, ...).
+Negative: Needs time to map genes on pathways. The result are static PNG images.
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.43}{\includegraphics{gfx/screenshot_pathway_explorer}} 
+\caption[PathwayExplorer]{\textit{PathwayExplorer}} 
+\label{gfx:pathway_explorer}
+\end{figure}
+
+
+\chapter{System Architecture}
+
+[Reference to Cerberus framework]
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.4}{\includegraphics{gfx/application_block_chart}} 
+\caption[Application block chart]{\textit{Application block chart}} 
+\label{gfx:application_block_chart}
+\end{figure}
+
+\section{Overall Design}
+
+Platform independent
+
+\section{Pathway Data Management}
+
+From information point of view metablic pathways are graphs. The nodes are enzymes and compounds. The edges can be differenciated in relations and reactions.
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.5\linewidth]{gfx/model_view_data_diagram}
+  \caption{Model abstraction into data and visual representations}
+  \label{fig:model_view_data_diagram}
+\end{figure}
+
+[The problem description why this solution is needed is very good described in \citep{Bourqui2006}.]
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.5\linewidth]{gfx/data_block_diagram_new}
+  \caption{Data block diagram showing the data loading process}
+  \label{fig:data_block_diagram}
+\end{figure}
+
+%\subsection{Set / Storage / Virtual Array}
+
+%Referenz auf Michaels Thesis
+
+\section{Graphical User Interface (GUI)}
+
+\section{Data Update Mechanism}
+
+%Selection handling included 
+
+\section{Enzyme-Gene Mapping (??)}
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.35}{\includegraphics{gfx/enzyme_gene_mapping}} 
+\caption[Enzyme-Gene Mapping]{\textit{Enzyme-Gene Mapping}} 
+\label{gfx:enzyme_gene_mapping}
+\end{figure}
+
+\chapter{Implementation}
+
+\section{Used Technologies}
+\subsection{Standard Widget Toolkit (SWT)}
+
+SWT\footnote{http://www.eclipse.org/swt/} is an open source library for creating graphical user interfaces. The project was initiated 2001 by IBM under within the scope of the Eclipse framework\footnote{http://www.eclipse.org}. In contrast to the standard Java toolkits like the Abstract Widget Toolkit (AWT) and Swing took the SWT designer an approach which is closer to the native operating system widgets. This results in a better performance and a native look of the widgets.
+
+\subsection{JOGL}
+
+Java OpenGL library\footnote{https://jogl.dev.java.net/}
+[Compare to Java3D]
+
+%\subsection{OpenGL integration in Java}
+\subsection{JGraph}
+
+\section{Data Loading}
+
+KEGG provides the data the XML (Extensible Markup Language) file format which made the job easy to parse the data in Java. We had to face the choice between between several ways of parsing offered by the Java Standard API. 
+Most relavant methods are\citep{Niemeyer2002}:
+\begin{itemize}
+ \item \textbf{Simple API for XML (SAX):}\\
+  TODO: Describe SAX here
+ \item \textbf{Document Object Model (DOM):}\\
+  TODO: Describe DOM here
+\end{itemize}
+
+XML loading
+XML files are provided by KEGG.
+
+KEGG pathway are defined in the KEGG Markup Language (KGML)\footnote{http://www.genome.jp/kegg/docs/xml/}.
+KGML mixes information about the map structure and the visual representation (like colors, shapes, etc.).
+Here is a snip of the example pathways Methionine Metabolism in KGML stored in a XML file:
+
+\begin{verbatim}
+<pathway name="path:map00271" org="map" number="00271" 
+title="Methionine metabolism" 
+image="http://www.genome.jp/kegg/pathway/map/map00271.gif" 
+link="http://www.genome.jp/dbget-bin/show_pathway?map00271">
+
+  <entry id="1" name="ec:2.6.1.-" type="enzyme" reaction="rn:R07396"
+  link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.6.1.-">
+    <graphics name="2.6.1.-" fgcolor="#000000" bgcolor="#FFFFFF" type="rectangle" 
+    x="335" y="571" width="45" height="17"/>
+  </entry>
+
+  <entry id="2" name="cpd:C08276" type="compound" 
+  link="http://www.genome.jp/dbget-bin/www_bget?compound+C08276">
+    <graphics name="C08276" fgcolor="#000000" bgcolor="#FFFFFF" type="circle" 
+    x="466" y="494" width="8" height="8"/>
+  </entry>
+  ...
+  <reaction name="rn:R01402" type="irreversible">
+    <substrate name="cpd:C00170"/>
+    <product name="cpd:C04188"/>
+  </reaction>
+  ...
+</pathway>
+\end{verbatim}
+
+Also a SOAP interface for KEGG information retrieval is provided on the KEGG platform. Due to the fact that real-time behaviour of the application is in the main focus the SOAP alternative was too slow.
+
+Problem of double data keeping. 
+
+\section{Visualization Techniques}
+
+In the upcoming section used visualization methods are described and their realization is going to be discussed. Basically the section is divided in 2D pathway implementation and the 3D OpenGL pathways.
+
+\subsection{2D Pathway Implementation}
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.7\linewidth]{gfx/sample_pathway_jgraph}
+  \caption{Sample pathway without any layouting modification.}
+  \label{fig:sample_pathway_jgraph}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.7\linewidth]{gfx/sample_pathway_jgraph_background}
+  \caption{Sample pathway with background texture overlay.}
+  \label{fig:sample_pathway_jgraph_background}
+\end{figure}
+
+The context information where in the hierarchical KEGG levels the presented piece of information is located would lead to a better orientation inside the metabolic network \citep{Jourdan2003}. Therefore this feature can be seen as a valuable extension for the future. 
+
+\subsubsection{Pathway Switching}
+
+Pathways are linked to related pathways. In the KEGG drawing style linked maps are represented by roundrectangular nodes inside pathway graphs. Therefore it is important to support fast switching between them. We implementing the switching action by replacing the currently shown graph which is triggered by a mouse event. This mechanism enables the user to freely navigate inside the metabolic network.
+
+\subsubsection{Hierarchical Pathways}
+
+KEGG added two abstraction levels above the metabolic pathways. The pathways are categorized in 10 groups which represent the highest layer. The middle level...
+\stdref{gfx:KEGG_abstraction_chain} shows the three KEGG abstraction levels. 
+In the webbased KEGG version each abstract level has an imagemap in the back. In the imagemap rectangular portions are defined and provided with a hyperlink to the next layer below. We use the same mechanism for linking pathways between abstraction levels. In contrast to KEGG we store the imagemap information in XML which is parsed at bootstrapping. During runtime when a mouse event is triggered on the 2D pathway the clicked position is checked if it is contained in a predefined area. If a positive match is found the link for this area is returned and the requested next layer map can be loaded.
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.35}{\includegraphics{gfx/KEGG_abstraction_chain}} 
+\caption[KEGG abstraction chain]{\textit{KEGG abstraction chain}} 
+\label{gfx:KEGG_abstraction_chain}
+\end{figure}
+
+\subsubsection{Neighborhood Visualization}
+
+In graphs where the layout aims on the positioning of nodes and edges to circumvent intersections neighborhood visualization occupies an important role. The geographic position of nodes is independent from their relational distance. Hence far away positioned nodes can be directly related to a node in focus whereas near nodes are e.g. several indirections away. 
+
+We implemented the neighborhood visualization using a modified Breadth-first-search (BFS) approach\citep{Cormen2001}. The BFS algorithm visits all direct neighbors. After that procedure for each neighbor the same strategy is applied. If an already visited node is inspected it will be ignored. This assures that only the shortest path to a node is considered (for unweighted graphs). The algorithm is applicable on undirected and directed graphs.
+The alogrithm can be executed for arbitrary depth. Neighborhood coloring up to the depth of 3 seems to be the limit. The application of farer away neighborhood distances entails confusion at user's side because of the cyclic charakter of the graphs. 
+The neighborhood algorithm for a distance of 3 is applied on the sample Methionine Metabolism pathway in \stdref{gfx:neighborhood_visualization_distance_3}. The selected node is colored red. The neighboring nodes are shaded from orange (distance 1) to light yellow (distance 3).
+
+\begin{figure}[ht]
+\centering
+\scalebox{0.5}{\includegraphics{gfx/neighborhood_visualization_distance_3}} 
+\caption[Distance 3 neighborhood visualization]{\textit{Distance 3 neighborhood visualization}} 
+\label{gfx:neighborhood_visualization_distance_3}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.5\linewidth]{gfx/overview_method}
+  \caption{Portion of a sample pathway that can be interactively selected in the overview map.}
+  \label{fig:overview_method}
+\end{figure}
+
+\subsection{3D OpenGL Pathways}
+
+\begin{figure}
+  \centering
+    \includegraphics[width=0.7\linewidth]{gfx/opengl_layered_pathway_without_texture}
+  \caption{2.5-D OpenGL layered pathway with a user selection}
+  \label{fig:opengl_layered_pathway_without_texture}
+\end{figure}
+
+\subsubsection{Hierarchical Display Lists}
+
+
+\subsubsection{Pathway Texture Overlay}
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.7\linewidth]{gfx/opengl_layered_pathway}
+  \caption{2.5-D OpenGL layered pathway with a blended texture overlay. The node in the middle layer is picked by a mouse-click event. Identical nodes in dependent graphs are interactively highlighted and connected to the selected one.}
+  \label{fig:opengl_layered_pathway}
+\end{figure}
+
+\subsubsection{Pathway Linking and Switching}
+
+
+
+\subsubsection{Pathway Element Picking}
+
+Picking is the operation of selecting a previously rendered node. 
+-> Highlighting
+
+\citep{Shreiner2005}
+
+\subsubsection{Showcase layouts}
+
+Caching the model-view matrix per pathway allows a free aranchement of the planar graphs in 3D space.
+This approaches enabled us to implemented two simple exemplary setups.
+
+\minisec{Layered pathway setup}
+
+\minisec{Planar pathway setup}
+
+\chapter{Results}
+
+[Reflections from Zatloukal]
+
+\chapter{Conclusions}
+
+\chapter{Future Work}
+
+\index{bla}
+
+

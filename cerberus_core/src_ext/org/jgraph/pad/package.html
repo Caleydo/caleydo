@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+
+  JGraphpad Community Edition as a whole is distributed under the GPL license.
+  However, this file is package as LGPL as stated by the Free Software foundation.
+
+-->
+</head>
+<body bgcolor="white">
+<p>
+a JGraphpad is a Swing JPanel providing a feature rich toolkit to edit JGraph diagrams. JGraph graphs follow the MVC pattern of Swing, making them very suitable to store custom graph models while providing the topmost diagram visualization features and user interface.
+</p>
+<p>
+a JGraphpad is a modular component. You can tune it to your needs via a properties configuration file and even subclass it. High level of customization is also available: JGraph core objects like the graph model, the graph view, the toolars, the marquee handler, the file format are handled via interfaces and a general implementation provider let you register (via the settings.xml file) your custom implementations of those interfaces.
+</p>
+<p>
+a JGraphpad can either be embedded inside any JComponent of a custom application, either can embed your whole multi document application inside a JFrame. JGraphpad can be deployed as an application, as a webstart application or as an applet. When hosted on a server, JGraphpad can upload files/pictures to the server (used to work in TikiWiki, now works with MoinMoin). When used as an applet, you could get parameters from the server or also handle the JGraphpad with javascript calls (open a given file at startup for instance).
+</p>
+
+
+<h2>Package Specification</h2>
+<p>
+Encapsulates the minimum source tree required to run JGraphpad Community Edition.
+THIS PACKAGE MUSN'T ONLY DEPENDS ON THE JGRAPH LIBRARY (e.g. DOESN'T DEPEND ON PLUGIN FILES) IN ORDER TO WARRANTY ONE CAN ADD OR REMOVE PLUGINS FREELY TO ACHIEVE A SMALL AND SCALABLE DISTRIBUTION. Instead, features that JGraphpad can invoke at run time  but that aren't required for a minimal use should go into the "plugin" package. Plugins features are either triggered by GUI actions you register in the properties file or are either registered as replacement subclassers in a custom properties configuration file.
+</p>
+<p>
+An other the contract files of the packages should respect is that they doesn't require any secrurity permission when they are loaded. Thus JGraphpad can be used as an applet or with webstart without any permission requirement. Instead, we can use the JNLP Webstart API to avoid the security sandbox warnings until file operations are invoked by the user.
+</p>
+
+<h2>Related Documentation</h2>
+
+For overviews, tutorials, examples, guides, and tool documentation, please see:
+
+<ul>
+  <li><a href="http://www.jgraph.com">http://www.jgraph.com</a>
+  <li><a href="http://www.jgraph.com/forum">http://www.jgraph.com/forum</a>
+  <li><a href="http://emsim.sf.net/jgraphpad.html">http://emsim.sf.net/jgraphpad.html</a>
+</ul>
+
+<!-- Put @see and @since tags down here. -->
+
+</body>
+</html>

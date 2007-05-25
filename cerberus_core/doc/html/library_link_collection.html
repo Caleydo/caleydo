@@ -1,0 +1,183 @@
+<html>
+<title>Cerberus URL Link Collection</title>
+
+<body>
+
+/*************************************** <br>
+/***           CERBERUS              *** <br>
+/*************************************** <br>
+/***                                 *** <br>
+/*** List of external packages       *** <br>
+/*** required for CERBERUS           *** <br>
+/***                                 *** <br>
+/*** author: Michael Kalkusch        *** <br>
+/*** creation:    2006-07-27         *** <br>
+/*** last update: 2006-08-03         *** <br>
+/*************************************** <br>
+
+
+
+(0) Java JRE 1.5  <br>
+-----------------------------  <br>
+	<a href="http://java.sun.com/">http://java.sun.com/</a>  <br>
+	version: jre 1.5 or higher	 <br>
+	status: mandatory <br>
+		 <br>
+	remark: this project requires Java 1.5 or higher <br>
+	 <br>
+ <br>
+ 
+(1) Eclipse SWT  <br>
+(Standard Widget Toolkit) <br>
+----------------------------- <br>
+	web: <a href="http://www.eclipse.org/swt/">http://www.eclipse.org/swt/</a> <br>
+	version: 2006-08-01 <br>
+	status: mandatory <br>
+ <br>
+	path:  <br>
+		cerberus\bin\ext_jar\swt\linux <br>
+		cerberus\bin\ext_jar\swt\win32 <br>
+	 <br>
+	files: <br>
+  	swt.jar (linux& win32) <br>
+ <br>
+ <br>
+ <br>
+ 
+ 
+(2) JOGL <br>
+OpenGL binding for Java <br>
+----------------------------- <br>
+	web: <a href="https://jogl.dev.java.net/">https://jogl.dev.java.net/</a> <br>
+	version: 2006-08-01 <br>
+	status: mandatory <br>
+	     <br>
+	path:  <br>
+		cerberus\bin\ext_jar\jogl <br>
+		cerberus\bin\ext_jar\jogl\linux <br>
+		cerberus\bin\ext_jar\jogl\win32 <br>
+	 <br>
+	files required: <br>
+	  jogl.jar	   <br>
+	  jogl-natives-linux-i586.jar			(linux) <br>
+	  jogl-natives-windows-i586.jar		(win32) <br>
+	   <br>
+	files optional: <br>
+		jogl-demos-data.jar <br>
+		jogl-demos-src.zip <br>
+		jogl-demos-util.jar <br>
+		jogl-demos-util_mod.jar <br>
+		jogl-demos.jar <br>
+		jogl-src.zip <br>
+ <br>
+ <br>
+ <br>
+ 
+ 
+(3) SWT Jogl binding 0.5 win only <br>
+----------------------------- <br>
+	web: <a href="http://opengl.j3d.org/swt/download.html">http://opengl.j3d.org/swt/download.html</a> <br>
+	version: v0.5 <br>
+	status: optional <br>
+	description: Eclipse windowing toolkit for Java <br>
+  remark: v0.5 works for windows only <br>
+   <br>
+  path: <br> 
+  	cerberus\bin\ext_jar\swt\swt_jogl <br>
+   <br>
+  files required: <br>
+		opengl-swt-win32-0.5.zip <br>
+		 <br>
+	files optional: <br>
+		opengl-swt-examples-0.5.zip <br>
+		opengl-swt-src-0.5.zip <br>
+   <br>
+   <br>
+   <br>
+   
+   
+(4) WEKA (Data Minig Tool): <br>
+--------------------------- <br>
+  web: <a href="http://www.cs.waikato.ac.nz/ml/weka/">http://www.cs.waikato.ac.nz/ml/weka/</a> <br>
+  version: 2006-07-12 <br>
+  status: optional <br>
+  description: data minig tool <br>
+  remark: <br>
+   <br>
+  path: <br> 
+  	cerberus\bin\ext_jar\weka <br>
+   <br>
+  files required: <br>
+  	weka.jar <br>
+   <br> 
+   <br>
+   <br>
+
+
+(5) JFace: <br>
+---------- <br>
+  web:  <br>
+  version: v3.1.2  2006-07-12 <br>
+  status: optional <br>
+  description: extends SWT, Eclipse plugins (import) <br>
+  remark: requires SWT [3] <br>
+   <br>
+   <br>
+  path: <br> 
+  	cerberus\bin\ext_jar\jface <br>
+   <br>
+  files required: <br>
+		org.eclipse.core.resources_3.1.2.jar <br>
+		org.eclipse.core.runtime_3.1.2.jar <br>
+		org.eclipse.jface.text_3.1.2.jar <br>
+		org.eclipse.jface_3.1.1.jar <br>
+		org.eclipse.osgi_3.1.2.jar <br>
+		org.eclipse.ui.workbench_3.1.2.jar <br>
+	 <br>
+	 <br>
+	 <br>
+	 
+	 
+(6) KEGG: <br>
+--------- <br>
+  web: <a href="http://www.genome.jp/kegg/">http://www.genome.jp/kegg/</a> <br>
+	     <a href="http://www.genome.jp/kegg/soap/">http://www.genome.jp/kegg/soap/ (API)</a> <br>
+  version:  <br>
+  status: optional <br>
+  description: API to access pathway database <br>
+  remark: requires axis [7] <br>
+   <br>
+	 <br>
+	 <br>
+	 
+	 
+(7) axis: <br>
+---------- <br>
+	web: <a href="http://ws.apache.org/axis/">http://ws.apache.org/axis/</a> <br>
+	version: v3.1.2  2006-07-12 <br>
+  status: optional <br>
+  description: Apache Axis is an implementation of the SOAP ("Simple Object Access Protocol") <br>
+  remark: required for KEGG [6] <br>
+   <br>
+  path: <br> 
+  	cerberus\bin\ext_jar\axis <br>
+   <br>
+  files required: <br>
+  	axis.jar <br>
+  	jaxrpc.jar <br>
+  	log4j-1.2.8.jar <br>
+  	log4j.properties <br>
+  	 <br>
+	files optional:  	 <br>
+  	axis-ant.jar		 <br>
+		commons-discovery-0.2.jar <br>
+		commons-logging-1.0.4.jar			 <br>			
+		saaj.jar <br>
+		wsdl4j-1.5.1.jar <br>
+		
+		 <br>
+		 <br>
+		 
+ </body>
+</html>
+  

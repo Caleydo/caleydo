@@ -1,0 +1,65 @@
+/**
+ * 
+ */
+package cerberus.view.gui.swt.image;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Label;
+
+import cerberus.manager.IGeneralManager;
+import cerberus.view.gui.AViewRep;
+import cerberus.view.gui.IView;
+import cerberus.view.gui.ViewType;
+
+/**
+ * Image view.
+ * 
+ * @author Michael Kalkusch
+ * @author Marc Streit
+ */
+public class ImageViewRep 
+extends AViewRep 
+implements IView {
+	
+	protected String sImagePath;
+	
+	public ImageViewRep(
+			IGeneralManager refGeneralManager, 
+			int iViewId, 
+			int iParentContainerId, 
+			String sLabel) {
+		
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				sLabel,
+				ViewType.SWT_IMAGE_VIEWER);	
+	}
+
+	public void initView() {
+		
+		retrieveGUIContainer();
+		
+		Image image = new Image(refSWTContainer.getDisplay(), sImagePath);
+
+		Label label = new Label(refSWTContainer, SWT.BORDER);
+		label.setSize(iWidth, iHeight);
+	    label.setImage(image);
+	}
+
+	public void drawView() {
+		
+//		refGeneralManager.getSingelton().logMsg(
+//				this.getClass().getSimpleName() + 
+//				": drawView(): Load "+sUrl, 
+//				LoggerType.VERBOSE );		
+	}
+	
+	public void setAttributes(int iWidth, int iHeight, String sImagePath) {
+		
+		super.setAttributes(iWidth, iHeight);
+		
+		this.sImagePath = sImagePath;
+	}
+}
