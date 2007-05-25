@@ -1,0 +1,89 @@
+<cerberus	version="0.1">
+
+	 
+	    <!-- file for GenomeId mapping 
+	    <read-xml-file target="data/XML/bootstrap/load_genome_id_mapping.xml" />
+	    -->
+	    
+			<!-- Creating	Data -->
+			
+		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="645301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
+			
+						 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="20991"	targetId="615201" label="my Selection"	attrib1="90 5 0 1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="21991"	targetId="625201" label="my Selection2" attrib1="80 10	0	1" />			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"			cmdId="22991"	targetId="635201" label="Select file" attrib1="30 200 0 1"	/>
+											
+												
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="32991"	targetId="635101" label="target Set for file	new" 
+			  attrib1="635201" 
+			  attrib2="645301" />
+			  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"						cmdId="34991"	targetId="645101" label="target Set for file	new" 
+				attrib1="615201@625201" 
+				attrib2="645301@645301"	
+				detail="SET_DATA_PLANAR" />	
+			
+			
+			
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	
+			  detail="data/GenomeData/MicroarrayData/gpr_format/test_dataset_001.gpr"	
+				attrib1="SKIP;SKIP;INT;ABORT" 
+				attrib2="635101" 
+				attrib3="1 -1" />
+				
+	
+			
+
+			<!-- Container 11341 -->
+
+			<!-- Window	10331	-->
+
+		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="640991"	targetId="611331" 
+			  label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="651991"	targetId="614331" 
+		 	  parent="611331" label="swt	container	2"	attrib2="ROW	VERTICAL"	/>			
+		
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	targetId="691401" 
+		    parent="614331" label="Canvas"						attrib2="300	300" detail="1077991"
+		    gl_origin="0 0 0" gl_rotation="0 0 1 -10"	/>
+
+			
+			
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="668992"	targetId="678401" parent="691401" 
+					label="GL Triangle	A"	
+					attrib1="0 1.0 0"		
+					attrib2="no_grid"
+							gl_origin="0 0 0" gl_rotation="1 0 0 25"
+							attrib3="20 150 0 150 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 8.0f"								
+							detail="645101" />
+							
+							
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68993"	targetId="678402" parent="691401" 
+					label="GL Triangle	A"	
+					attrib1="1.0 1.0 0"		
+					attrib2="no_grid"
+							gl_origin="0.1 0 0" gl_rotation="0 0 0 0"
+							attrib3="20 150 0 150 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 8.0f"								
+							detail="645101" />
+							
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68993"	targetId="678402" parent="691401" 
+					label="GL Triangle	A"	
+					attrib1="1.0 0 0"		
+					attrib2="no_grid"
+							gl_origin="0.1 0 0" gl_rotation="0 0 0 0"
+							attrib3="20 150 0 150 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 8.0f"								
+							detail="645101" />
+	
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_MINMAX_SCATTERPLOT2D"		cmdId="68993"	targetId="678402" parent="691401" 
+					label="GL Triangle	A"	
+					attrib1="1.0 0 0"		
+							gl_origin="0.2 0.0 0" gl_rotation="0 0 0 0"
+							attrib3="20 150 0 150 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 8.0f"								
+							detail="" />
+							
+
+</cerberus>
