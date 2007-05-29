@@ -39,7 +39,7 @@ import cerberus.util.exception.CerberusRuntimeException;
  * @author Michael Kalkusch
  *
  */
-public class SingeltonManager 
+public class SingletonManager 
 implements ISingelton {
 
 //	private final IGeneralManager refGeneralManager;
@@ -92,7 +92,7 @@ implements ISingelton {
 	/**
 	 * Constructor
 	 */
-	public SingeltonManager( final IGeneralManager refGeneralManager ) {
+	public SingletonManager( final IGeneralManager refGeneralManager ) {
 				
 //		this.refGeneralManager = refGeneralManager;			
 		

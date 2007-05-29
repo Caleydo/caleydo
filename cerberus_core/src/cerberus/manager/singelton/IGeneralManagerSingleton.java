@@ -7,7 +7,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.data.xml.IMementoCallbackXML;
 
-public interface IGeneralManagerSingelton 
+public interface IGeneralManagerSingleton 
 extends IGeneralManager, IMementoCallbackXML {
 
 

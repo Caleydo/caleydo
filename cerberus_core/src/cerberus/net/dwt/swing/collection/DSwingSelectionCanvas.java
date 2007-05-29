@@ -37,7 +37,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
-import cerberus.manager.singelton.IGeneralManagerSingelton;
+import cerberus.manager.singelton.IGeneralManagerSingleton;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;
@@ -127,7 +127,7 @@ implements DNetEventComponentInterface, IViewCanvas
 	
 	protected final IGeneralManager refGeneralManager;
 	
-	private IGeneralManagerSingelton refGeneralManagerSingelton;
+	private IGeneralManagerSingleton refGeneralManagerSingelton;
 	private IVirtualArrayManager refSelectionManager;
 	private ISetManager refSetManager;
 	private IStorageManager refStorageManager;
@@ -218,7 +218,7 @@ implements DNetEventComponentInterface, IViewCanvas
 		
 		try {
 			refGeneralManagerSingelton = 
-				(IGeneralManagerSingelton) this.refGeneralManager;
+				(IGeneralManagerSingleton) this.refGeneralManager;
 			
 			refSelectionManager = (IVirtualArrayManager)
 				refGeneralManagerSingelton.getManagerByBaseType(

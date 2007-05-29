@@ -62,7 +62,7 @@ import cerberus.xml.parser.ISaxParserHandler;
  *
  */
 public class OneForAllManager 
-implements IGeneralManagerSingelton
+implements IGeneralManagerSingleton
 {
 
 	/**
@@ -79,7 +79,7 @@ implements IGeneralManagerSingelton
 
 	private LinkedList <IGeneralManager> llAllManagerObjects;
 	
-	protected SingeltonManager refSingeltonManager;
+	protected SingletonManager refSingeltonManager;
 
 	protected ISetManager refSetManager;
 
@@ -130,12 +130,12 @@ implements IGeneralManagerSingelton
 	 * 
 	 * @see cerberus.data.manager.singelton.OneForAllManager#initAll()
 	 */
-	public OneForAllManager(final SingeltonManager sef_SingeltonManager)
+	public OneForAllManager(final SingletonManager sef_SingeltonManager)
 	{
 
 		if (refSingeltonManager == null)
 		{
-			refSingeltonManager = new SingeltonManager(this);
+			refSingeltonManager = new SingletonManager(this);
 			refSingeltonManager.initManager();
 		} else
 		{

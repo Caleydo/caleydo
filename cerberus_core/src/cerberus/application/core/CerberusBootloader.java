@@ -13,7 +13,7 @@ import cerberus.manager.ISingelton;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.parser.XmlParserManager;
 import cerberus.manager.singelton.OneForAllManager;
-import cerberus.manager.singelton.IGeneralManagerSingelton;
+import cerberus.manager.singelton.IGeneralManagerSingleton;
 //import cerberus.util.system.CerberusInputStream;
 
 //import cerberus.xml.parser.handler.IXmlParserHandler;
@@ -59,7 +59,7 @@ public class CerberusBootloader
 	 * 
 	 * @see import cerberus.manager.IGeneralManager
 	 */
-	protected IGeneralManagerSingelton refOneForAllManager;
+	protected IGeneralManagerSingleton refOneForAllManager;
 	
 	//protected final IGeneralManager refGeneralManager;
 	

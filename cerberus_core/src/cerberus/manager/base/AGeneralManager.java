@@ -5,7 +5,7 @@ package cerberus.manager.base;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
-import cerberus.manager.singelton.SingeltonManager;
+import cerberus.manager.singelton.SingletonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
@@ -33,7 +33,7 @@ public abstract class AGeneralManager implements IGeneralManager {
 		if ( dummySingelton != null ) {
 			this.refSingelton = dummySingelton;
 		} else {
-			this.refSingelton = new SingeltonManager( this );	
+			this.refSingelton = new SingletonManager( this );	
 		}
 		
 	}
@@ -42,7 +42,7 @@ public abstract class AGeneralManager implements IGeneralManager {
 	 * Creates a new ISingelton. 
 	 */
 	public AGeneralManager( IGeneralManager refGeneralManager,
-			SingeltonManager refSingeltonManager) {
+			SingletonManager refSingeltonManager) {
 		
 		this.refGeneralManager = refGeneralManager;
 		
