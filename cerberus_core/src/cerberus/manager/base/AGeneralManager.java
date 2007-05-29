@@ -5,7 +5,7 @@ package cerberus.manager.base;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ISingelton;
-import cerberus.manager.singelton.SingletonManager;
+import cerberus.manager.singleton.SingletonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 

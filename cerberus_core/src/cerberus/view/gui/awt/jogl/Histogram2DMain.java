@@ -26,7 +26,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.SetDataType;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.singelton.OneForAllManager;
+import cerberus.manager.singleton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 //import cerberus.view.gui.IView;
 //import cerberus.view.gui.AViewManagedRep;

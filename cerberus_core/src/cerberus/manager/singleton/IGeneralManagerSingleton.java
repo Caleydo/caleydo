@@ -1,4 +1,4 @@
-package cerberus.manager.singelton;
+package cerberus.manager.singleton;
 
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;

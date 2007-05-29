@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.singelton;
+package cerberus.manager.singleton;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -68,7 +68,7 @@ implements IGeneralManagerSingleton
 	/**
 	 * Defines, if initAll() was called.
 	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#initAll()
+	 * @see cerberus.manager.singleton.OneForAllManager#initAll()
 	 */
 	private boolean bAllManagersInizailized = false;
 
@@ -115,7 +115,7 @@ implements IGeneralManagerSingleton
 	 * Used to create a new item by a Fabrik.
 	 * used by cerberus.data.manager.OneForAllManager#createNewId(ManagerObjectType)
 	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
+	 * @see cerberus.manager.singleton.OneForAllManager#createNewId(ManagerObjectType)
 	 */
 	protected ManagerObjectType setCurrentType = ManagerObjectType.ALL_IN_ONE;
 
@@ -539,8 +539,8 @@ implements IGeneralManagerSingleton
 	 * Must be set before initAll() is called!
 	 * Default is FALSE.
 	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#initAll()
-	 * @see cerberus.manager.singelton.OneForAllManager#getStateSWT()
+	 * @see cerberus.manager.singleton.OneForAllManager#initAll()
+	 * @see cerberus.manager.singleton.OneForAllManager#getStateSWT()
 	 * 
 	 * @param bEnableSWT TRUE to enable SWT
 	 */
@@ -558,7 +558,7 @@ implements IGeneralManagerSingleton
 	 * Get current state of SWT. 
 	 * TURE indicates that SWT is used.
 	 * 
-	 * @see cerberus.manager.singelton.OneForAllManager#setStateSWT(boolean)
+	 * @see cerberus.manager.singleton.OneForAllManager#setStateSWT(boolean)
 	 * 
 	 * @return TRUE is SWT is enabled.
 	 */

@@ -37,7 +37,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
-import cerberus.manager.singelton.IGeneralManagerSingleton;
+import cerberus.manager.singleton.IGeneralManagerSingleton;
 import cerberus.manager.type.ManagerObjectType;
 
 //import org.xml.sax.InputSource;

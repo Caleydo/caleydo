@@ -4,7 +4,7 @@
 package cerberus.manager;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.singelton.OneForAllManager;
+import cerberus.manager.singleton.OneForAllManager;
 
 /**
  * Create or assign a Singleton.

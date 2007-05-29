@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.manager.singelton;
+package cerberus.manager.singleton;
 
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IDistComponentManager;

@@ -12,8 +12,8 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ISingelton;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.parser.XmlParserManager;
-import cerberus.manager.singelton.OneForAllManager;
-import cerberus.manager.singelton.IGeneralManagerSingleton;
+import cerberus.manager.singleton.IGeneralManagerSingleton;
+import cerberus.manager.singleton.OneForAllManager;
 //import cerberus.util.system.CerberusInputStream;
 
 //import cerberus.xml.parser.handler.IXmlParserHandler;
