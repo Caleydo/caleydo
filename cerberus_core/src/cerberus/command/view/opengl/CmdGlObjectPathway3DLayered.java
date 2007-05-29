@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_GlCanvasUser;
+import cerberus.command.view.opengl.ACmdGLObjectPathway3D;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.CerberusRuntimeException;
@@ -22,7 +22,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  *
  */
 public class CmdGlObjectPathway3DLayered 
-extends ACmdCreate_GlCanvasUser
+extends ACmdGLObjectPathway3D
 implements ICommand {
 	
 	protected ArrayList<Integer> iArSetIDs;
@@ -74,6 +74,8 @@ implements ICommand {
 		fResolution = 
 			StringConversionTool.convertStringToFloatArrayVariableLength(
 					sAttribute3);
+		
+		setParameterHandler_DetailsPathway3D();
 	}
 
 	@Override
@@ -89,6 +91,7 @@ implements ICommand {
 			iArTmp[index] = iArSetIDs.get(index);
 		
 		canvas.addSetId(iArTmp);
+		canvas.setTextureTransparency(fSetTransparencyValue);
 	}
 
 	@Override
