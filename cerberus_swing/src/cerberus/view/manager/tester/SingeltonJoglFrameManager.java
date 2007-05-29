@@ -65,7 +65,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IFrameManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IMenuManager;
-import cerberus.manager.singelton.OneForAllManager;
+import cerberus.manager.singleton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
 import cerberus.view.gui.swing.jogl.ISwingJoglJComponent;
@@ -73,7 +73,7 @@ import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.SingeltonJoglWindowAdapter;
 
-import cerberus.base.type.WindowToolkitType;
+import cerberus.manager.WindowToolkitType;
 import cerberus.view.manager.swing.CerberusJStatusBar;
 import cerberus.view.swing.texture.TestTexture;
 //import cerberus.view.swing.heatmap.HeatMapWarp;

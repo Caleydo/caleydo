@@ -31,7 +31,7 @@
  *
  */
 
-package cerberus.view.swing.parallelcoord;
+package cerberus.view.manager.swing.parallelcoord;
 
 
 import java.awt.geom.Point2D;
