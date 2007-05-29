@@ -20,7 +20,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.singelton.OneForAllManager;
+import cerberus.manager.singleton.OneForAllManager;
 import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 //import javax.swing.JMenu;
 //import javax.swing.JMenuBar;

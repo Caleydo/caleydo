@@ -56,7 +56,7 @@ import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.singelton.IGeneralManagerSingelton;
+import cerberus.manager.singleton.IGeneralManagerSingleton;
 import cerberus.view.swing.loader.FileLoader;
 
 /**
@@ -77,7 +77,7 @@ public class SwingWindowBase implements AWTEventListener {
 	
 	private HashMap framemap_externalFrame;
 
-	private final IGeneralManagerSingelton refGeneralManagerSingelton;
+	private final IGeneralManagerSingleton refGeneralManagerSingelton;
 
 	protected final String sTitle;
 	
@@ -94,7 +94,7 @@ public class SwingWindowBase implements AWTEventListener {
 	private JInternalFrame refParentInternalFrame = null;
 	
 	
-	public SwingWindowBase( final IGeneralManagerSingelton refGeneralManager,
+	public SwingWindowBase( final IGeneralManagerSingleton refGeneralManager,
 			JFrame setRefParentExternalFrame, 
 			final String sSetTitle,
 			final String sSetWindowName ) {
@@ -118,7 +118,7 @@ public class SwingWindowBase implements AWTEventListener {
 
 	}
 	
-	public SwingWindowBase( final IGeneralManagerSingelton refGeneralManager,
+	public SwingWindowBase( final IGeneralManagerSingleton refGeneralManager,
 			JInternalFrame setRefParentInternalFrame,
 			final String sSetTitle,
 			final String sSetWindowName  ) {

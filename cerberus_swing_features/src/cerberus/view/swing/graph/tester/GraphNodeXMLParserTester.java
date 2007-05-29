@@ -30,7 +30,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.manager.ICommandManager;
-import cerberus.manager.singelton.OneForAllManager;
+import cerberus.manager.singleton.OneForAllManager;
 import cerberus.view.swing.graph.DualNode;
 import cerberus.view.swing.graph.parser.NodeSaxDefaultHandler;
 import cerberus.view.swing.graph.visitor.NodeVisitorRenderer;
