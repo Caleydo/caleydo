@@ -28,14 +28,14 @@ public class BasicGraphTransferable
 	static {
 		try {
 			htmlFlavors = new DataFlavor[3];
-			htmlFlavors[0] = new DataFlavor("text/html;class=java.lang.String");
+			htmlFlavors[0] = new DataFlavor("text/html;class=Stringt");
 			htmlFlavors[1] = new DataFlavor("text/html;class=java.io.Reader");
 			htmlFlavors[2] =
 				new DataFlavor("text/html;charset=unicode;class=java.io.InputStream");
 
 			plainFlavors = new DataFlavor[3];
 			plainFlavors[0] =
-				new DataFlavor("text/plain;class=java.lang.String");
+				new DataFlavor("text/plain;class=Stringt");
 			plainFlavors[1] = new DataFlavor("text/plain;class=java.io.Reader");
 			plainFlavors[2] =
 				new DataFlavor("text/plain;charset=unicode;class=java.io.InputStream");
@@ -44,7 +44,7 @@ public class BasicGraphTransferable
 			stringFlavors[0] =
 				new DataFlavor(
 					DataFlavor.javaJVMLocalObjectMimeType
-						+ ";class=java.lang.String");
+						+ ";class=Stringt");
 			stringFlavors[1] = DataFlavor.stringFlavor;
 
 		} catch (ClassNotFoundException cle) {

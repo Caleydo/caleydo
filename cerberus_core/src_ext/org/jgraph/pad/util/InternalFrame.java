@@ -173,7 +173,7 @@ public class InternalFrame extends JInternalFrame {
      *  position manager.
      *  
      *  @param name the new name
-     *  @see java.awt.Component#setName(java.lang.String)
+     *  @see java.awt.Component#setName(Stringt)
      * 
      */
     public void setName(String name) {

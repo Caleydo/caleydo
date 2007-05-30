@@ -112,7 +112,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createWindow(int, java.lang.String, java.lang.String)
+	 * @see cerberus.manager.ISWTGUIManager#createWindow(int, Stringt, Stringt)
 	 */
 	public Shell createWindow(int iUniqueId,
 			String sLabel,
@@ -161,7 +161,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createComposite(int, int, java.lang.String)
+	 * @see cerberus.manager.ISWTGUIManager#createComposite(int, int, Stringt)
 	 */
 	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
 			String refLayoutAttributes) {

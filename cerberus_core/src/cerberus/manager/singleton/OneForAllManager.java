@@ -387,7 +387,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewItem(cerberus.data.manager.BaseManagerType, java.lang.String)
+	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewItem(cerberus.data.manager.BaseManagerType, Stringt)
 	 */
 	public Object createNewItem(final ManagerObjectType createNewType,
 			final String sNewTypeDetails)

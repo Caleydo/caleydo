@@ -33,7 +33,7 @@ implements IGenomeIdMap {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(java.lang.String)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(Stringt)
 	 */
 	public String getStringByString(String key) {
 
@@ -42,7 +42,7 @@ implements IGenomeIdMap {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.genome.IGenomeIdMap#getStringByStringChecked(java.lang.String)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getStringByStringChecked(Stringt)
 	 */
 	public String getStringByStringChecked(String key) {
 

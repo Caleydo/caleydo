@@ -305,7 +305,7 @@ implements ISaxParserHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.swing.DParseSaxHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see cerberus.net.dwt.swing.DParseSaxHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public abstract void startElement(String uri, 
 			String localName, 
@@ -313,7 +313,7 @@ implements ISaxParserHandler
 			Attributes attributes);
 	
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.swing.DParseSaxHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see cerberus.net.dwt.swing.DParseSaxHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	public abstract void endElement(String uri, String localName, String qName );
 

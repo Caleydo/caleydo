@@ -1356,7 +1356,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(java.lang.String)
+	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(Stringt)
 	 */
 	public void loadBackgroundOverlayImage(Pathway refTexturedPathway) {
 		

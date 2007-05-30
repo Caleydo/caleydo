@@ -8,7 +8,7 @@
 package keggapi;
 
 public interface KEGG extends javax.xml.rpc.Service {
-    public java.lang.String getKEGGPortAddress();
+    public String getKEGGPortAddress();
 
     public keggapi.KEGGPortType getKEGGPort() throws javax.xml.rpc.ServiceException;
 

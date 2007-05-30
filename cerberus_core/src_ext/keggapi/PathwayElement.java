@@ -18,7 +18,12 @@ import org.apache.axis.description.ElementDesc;
 public class PathwayElement  
 implements Serializable {
 
-		private int element_id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private int element_id;
 
     private String type;
 
@@ -225,7 +230,8 @@ implements Serializable {
     /**
      * Get Custom Serializer
      */
-    public static Serializer getSerializer(
+    @SuppressWarnings("unchecked")
+	public static Serializer getSerializer(
            String mechType, 
            Class _javaType,  
            QName _xmlType) {
@@ -237,7 +243,8 @@ implements Serializable {
     /**
      * Get Custom Deserializer
      */
-    public static Deserializer getDeserializer(
+    @SuppressWarnings("unchecked")
+	public static Deserializer getDeserializer(
            String mechType, 
            Class _javaType,  
            QName _xmlType) {

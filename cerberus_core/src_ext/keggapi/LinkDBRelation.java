@@ -7,23 +7,33 @@
 
 package keggapi;
 
+import javax.xml.namespace.QName;
+
+import org.apache.axis.description.ElementDesc;
+import org.apache.axis.description.TypeDesc;
+import org.apache.axis.encoding.Deserializer;
+import org.apache.axis.encoding.Serializer;
+import org.apache.axis.encoding.ser.BeanDeserializer;
+import org.apache.axis.encoding.ser.BeanSerializer;
+
+@SuppressWarnings("serial")
 public class LinkDBRelation  implements java.io.Serializable {
-    private java.lang.String entry_id1;
+    private String entry_id1;
 
-    private java.lang.String entry_id2;
+    private String entry_id2;
 
-    private java.lang.String type;
+    private String type;
 
-    private java.lang.String path;
+    private String path;
 
     public LinkDBRelation() {
     }
 
     public LinkDBRelation(
-           java.lang.String entry_id1,
-           java.lang.String entry_id2,
-           java.lang.String type,
-           java.lang.String path) {
+           String entry_id1,
+           String entry_id2,
+           String type,
+           String path) {
            this.entry_id1 = entry_id1;
            this.entry_id2 = entry_id2;
            this.type = type;
@@ -36,7 +46,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @return entry_id1
      */
-    public java.lang.String getEntry_id1() {
+    public String getEntry_id1() {
         return entry_id1;
     }
 
@@ -46,7 +56,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @param entry_id1
      */
-    public void setEntry_id1(java.lang.String entry_id1) {
+    public void setEntry_id1(String entry_id1) {
         this.entry_id1 = entry_id1;
     }
 
@@ -56,7 +66,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @return entry_id2
      */
-    public java.lang.String getEntry_id2() {
+    public String getEntry_id2() {
         return entry_id2;
     }
 
@@ -66,7 +76,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @param entry_id2
      */
-    public void setEntry_id2(java.lang.String entry_id2) {
+    public void setEntry_id2(String entry_id2) {
         this.entry_id2 = entry_id2;
     }
 
@@ -76,7 +86,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @return type
      */
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
@@ -86,7 +96,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @param type
      */
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -96,7 +106,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @return path
      */
-    public java.lang.String getPath() {
+    public String getPath() {
         return path;
     }
 
@@ -106,7 +116,7 @@ public class LinkDBRelation  implements java.io.Serializable {
      * 
      * @param path
      */
-    public void setPath(java.lang.String path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
@@ -166,29 +176,29 @@ public class LinkDBRelation  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(LinkDBRelation.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("SOAP/KEGG", "LinkDBRelation"));
-        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        typeDesc.setXmlType(new QName("SOAP/KEGG", "LinkDBRelation"));
+        ElementDesc elemField = new ElementDesc();
         elemField.setFieldName("entry_id1");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "entry_id1"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setXmlName(new QName("", "entry_id1"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
+        elemField = new ElementDesc();
         elemField.setFieldName("entry_id2");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "entry_id2"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setXmlName(new QName("", "entry_id2"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
+        elemField = new ElementDesc();
         elemField.setFieldName("type");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "type"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setXmlName(new QName("", "type"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
+        elemField = new ElementDesc();
         elemField.setFieldName("path");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "path"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setXmlName(new QName("", "path"));
+        elemField.setXmlType(new QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
@@ -196,31 +206,33 @@ public class LinkDBRelation  implements java.io.Serializable {
     /**
      * Return type metadata object
      */
-    public static org.apache.axis.description.TypeDesc getTypeDesc() {
+    public static TypeDesc getTypeDesc() {
         return typeDesc;
     }
 
     /**
      * Get Custom Serializer
      */
-    public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
+    @SuppressWarnings("unchecked")
+	public static Serializer getSerializer(
+           String mechType, 
+           Class _javaType,  
+           QName _xmlType) {
         return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
+          new  BeanSerializer(
             _javaType, _xmlType, typeDesc);
     }
 
     /**
      * Get Custom Deserializer
      */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
+    @SuppressWarnings("unchecked")
+	public static Deserializer getDeserializer(
+           String mechType, 
+           Class _javaType,  
+           QName _xmlType) {
         return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
+          new  BeanDeserializer(
             _javaType, _xmlType, typeDesc);
     }
 

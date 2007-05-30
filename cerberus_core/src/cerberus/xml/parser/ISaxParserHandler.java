@@ -29,7 +29,7 @@ public interface ISaxParserHandler {
 	/**
 	 * startElement() for pareser callbacks
 	 * 
-	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
 	 * 
 	 * @param uri URI @see org.xml.sax.helpers.DefaultHandler
@@ -43,7 +43,7 @@ public interface ISaxParserHandler {
 	/**
 	 * endElement for pareser callbacks
 	 * 
-	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(Stringt, Stringt, Stringt)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
 	 * 
 	 * @param uri URI @see org.xml.sax.helpers.DefaultHandler

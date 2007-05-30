@@ -250,7 +250,7 @@ implements IXmlParserManager, IManagedObject
 	
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#unregisterSaxHandler(java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#unregisterSaxHandler(Stringt)
 	 */
 	public final boolean unregisterSaxHandler( final String sActivationXmlTag)
 	{

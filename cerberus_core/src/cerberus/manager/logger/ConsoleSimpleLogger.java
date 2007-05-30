@@ -30,7 +30,7 @@ public class ConsoleSimpleLogger
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)
+	 * @see cerberus.manager.ILoggerManager#logMsg(Stringt, short)
 	 */
 	public void logMsg(String info, LoggerType logLevel) {
 		System.out.println( logLevel + ": " + info );

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
-	<classpathentry excluding="**/.svn/|*.html|gleem/" kind="src" path="src_ext"/>
+	<classpathentry excluding="**/.svn/|*.html|gleem/|org/" kind="src" path="src_ext"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Compiler/java/jre1.6/jre/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="bin/ext_jar/axis/axis.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/axis/axis.jar" sourcepath="bin/ext_jar_src/axis/axis-src-1_4.zip"/>
 	<classpathentry kind="lib" path="bin/ext_jar/axis/jaxrpc.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/axis/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="bin/ext_jar/jogl/jogl-demos.jar"/>
@@ -28,5 +28,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="bin/ext_jar/muddleware/muddleware.jar" sourcepath="bin/ext_jar/muddleware/muddleware.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jgraph/jgraph-latest-stable_5_9.jar" sourcepath="bin/ext_jar_src/jgraph/jgraph-latest-stable-src_5_9.jar"/>
+	<classpathentry kind="lib" path="bin/ext_jar/jgraph/jgraph.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

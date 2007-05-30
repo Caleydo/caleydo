@@ -7,17 +7,21 @@
 
 package keggapi;
 
+@SuppressWarnings("serial")
 public class Definition  implements java.io.Serializable {
-    private java.lang.String entry_id;
 
-    private java.lang.String definition;
+
+
+	private String entry_id;
+
+    private String definition;
 
     public Definition() {
     }
 
     public Definition(
-           java.lang.String entry_id,
-           java.lang.String definition) {
+           String entry_id,
+           String definition) {
            this.entry_id = entry_id;
            this.definition = definition;
     }
@@ -28,7 +32,7 @@ public class Definition  implements java.io.Serializable {
      * 
      * @return entry_id
      */
-    public java.lang.String getEntry_id() {
+    public String getEntry_id() {
         return entry_id;
     }
 
@@ -38,7 +42,7 @@ public class Definition  implements java.io.Serializable {
      * 
      * @param entry_id
      */
-    public void setEntry_id(java.lang.String entry_id) {
+    public void setEntry_id(String entry_id) {
         this.entry_id = entry_id;
     }
 
@@ -48,7 +52,7 @@ public class Definition  implements java.io.Serializable {
      * 
      * @return definition
      */
-    public java.lang.String getDefinition() {
+    public String getDefinition() {
         return definition;
     }
 
@@ -58,7 +62,7 @@ public class Definition  implements java.io.Serializable {
      * 
      * @param definition
      */
-    public void setDefinition(java.lang.String definition) {
+    public void setDefinition(String definition) {
         this.definition = definition;
     }
 
@@ -131,9 +135,10 @@ public class Definition  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
+    @SuppressWarnings("unchecked")
+	public static org.apache.axis.encoding.Serializer getSerializer(
+           String mechType, 
+           Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
           new  org.apache.axis.encoding.ser.BeanSerializer(
@@ -143,9 +148,10 @@ public class Definition  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
+    @SuppressWarnings("unchecked")
+	public static org.apache.axis.encoding.Deserializer getDeserializer(
+           String mechType, 
+           Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
           new  org.apache.axis.encoding.ser.BeanDeserializer(

@@ -7,20 +7,21 @@
 
 package keggapi;
 
+@SuppressWarnings("serial")
 public class Subtype  implements java.io.Serializable {
-    private java.lang.String relation;
+    private String relation;
 
     private int element_id;
 
-    private java.lang.String type;
+    private String type;
 
     public Subtype() {
     }
 
     public Subtype(
-           java.lang.String relation,
+           String relation,
            int element_id,
-           java.lang.String type) {
+           String type) {
            this.relation = relation;
            this.element_id = element_id;
            this.type = type;
@@ -32,7 +33,7 @@ public class Subtype  implements java.io.Serializable {
      * 
      * @return relation
      */
-    public java.lang.String getRelation() {
+    public String getRelation() {
         return relation;
     }
 
@@ -42,7 +43,7 @@ public class Subtype  implements java.io.Serializable {
      * 
      * @param relation
      */
-    public void setRelation(java.lang.String relation) {
+    public void setRelation(String relation) {
         this.relation = relation;
     }
 
@@ -72,7 +73,7 @@ public class Subtype  implements java.io.Serializable {
      * 
      * @return type
      */
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
@@ -82,7 +83,7 @@ public class Subtype  implements java.io.Serializable {
      * 
      * @param type
      */
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -163,8 +164,9 @@ public class Subtype  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
+    @SuppressWarnings("unchecked")
     public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
+           String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
@@ -175,8 +177,9 @@ public class Subtype  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
+    @SuppressWarnings("unchecked")
     public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
+           String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 

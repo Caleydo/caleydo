@@ -79,14 +79,14 @@ public class SwingMenuManager
 	}
 	
 	/* (non-Javadoc)
-	 * @see prometheus.manager.MenuManager#getMenuBarById(java.lang.String)
+	 * @see prometheus.manager.MenuManager#getMenuBarById(Stringt)
 	 */
 	public JMenuItem getMenuBarById(int iMenuId) {
 		return hashMenu.get( iMenuId );
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.manager.MenuManager#createMenu(int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, char, boolean, prometheus.command.CommandType)
+	 * @see prometheus.manager.MenuManager#createMenu(int, Stringt, Stringt, Stringt, Stringt, char, boolean, prometheus.command.CommandType)
 	 */
 	public int createMenu(final int iFrameId, 
 			final String sMenuId, 
@@ -237,14 +237,14 @@ public class SwingMenuManager
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.manager.MenuManager#setMenuEnabled(java.lang.String, boolean)
+	 * @see prometheus.manager.MenuManager#setMenuEnabled(Stringt, boolean)
 	 */
 	public void setMenuEnabled(int iMenuId, boolean bSetEnabled) {
 		hashMenu.get( iMenuId ).setEnabled( bSetEnabled );
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.manager.MenuManager#setMenuVisible(java.lang.String, boolean)
+	 * @see prometheus.manager.MenuManager#setMenuVisible(Stringt, boolean)
 	 */
 	public void setMenuVisible(int iMenuId, boolean bSetVisible) {
 		hashMenu.get( iMenuId ).setVisible( bSetVisible );

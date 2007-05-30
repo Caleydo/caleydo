@@ -292,7 +292,7 @@ implements ISaxParserHandler
 	 * @return TRUE if the token was pased already, else false
 	 * 
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String) 
-	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)	 
+	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)	 
 	 * @see prometheus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 */
 	final protected boolean endElement_DComponent( final String uri, 
@@ -405,7 +405,7 @@ implements ISaxParserHandler
 	 * Note: do not forget to call startElement_DComponent(String, String, String, Attributes)!
 	 * 
 	 * @see prometheus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
-	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) {
@@ -415,7 +415,7 @@ implements ISaxParserHandler
 	
 	/**
 	 * 
-	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	public void endElement(String uri, String localName, String qName) {
 		

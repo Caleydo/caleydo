@@ -7,61 +7,84 @@
 
 package keggapi;
 
-public class KEGGLocator extends org.apache.axis.client.Service implements keggapi.KEGG {
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.Remote;
+import java.util.HashSet;
+import java.util.Iterator;
 
+import javax.xml.namespace.QName;
+import javax.xml.rpc.ServiceException;
+
+import org.apache.axis.AxisFault;
+import org.apache.axis.EngineConfiguration;
+import org.apache.axis.client.Service;
+
+import keggapi.KEGGPortType;
+import keggapi.KEGG;
+import keggapi.KEGGBindingStub;
+
+@SuppressWarnings("serial")
+public class KEGGLocator extends Service implements KEGG {
+
+	private HashSet <QName> ports = null;
+	
+	 // The WSDD service name defaults to the port name.
+    private String KEGGPortWSDDServiceName = "KEGGPort";
+
+    // Use to get a proxy class for KEGGPort
+    private String KEGGPort_address = "http://soap.genome.jp/keggapi/request_v5.0.cgi";
+
+    
     public KEGGLocator() {
     }
 
 
-    public KEGGLocator(org.apache.axis.EngineConfiguration config) {
+    public KEGGLocator(EngineConfiguration config) {
         super(config);
     }
 
-    public KEGGLocator(java.lang.String wsdlLoc, javax.xml.namespace.QName sName) throws javax.xml.rpc.ServiceException {
+    public KEGGLocator(String wsdlLoc, QName sName) throws ServiceException {
         super(wsdlLoc, sName);
     }
 
-    // Use to get a proxy class for KEGGPort
-    private java.lang.String KEGGPort_address = "http://soap.genome.jp/keggapi/request_v5.0.cgi";
-
-    public java.lang.String getKEGGPortAddress() {
+   
+    public String getKEGGPortAddress() {
         return KEGGPort_address;
     }
 
-    // The WSDD service name defaults to the port name.
-    private java.lang.String KEGGPortWSDDServiceName = "KEGGPort";
-
-    public java.lang.String getKEGGPortWSDDServiceName() {
+   
+    public String getKEGGPortWSDDServiceName() {
         return KEGGPortWSDDServiceName;
     }
 
-    public void setKEGGPortWSDDServiceName(java.lang.String name) {
+    public void setKEGGPortWSDDServiceName(String name) {
         KEGGPortWSDDServiceName = name;
     }
 
-    public keggapi.KEGGPortType getKEGGPort() throws javax.xml.rpc.ServiceException {
-       java.net.URL endpoint;
+    public KEGGPortType getKEGGPort() throws ServiceException {
+       URL endpoint;
         try {
-            endpoint = new java.net.URL(KEGGPort_address);
+            endpoint = new URL(KEGGPort_address);
         }
-        catch (java.net.MalformedURLException e) {
-            throw new javax.xml.rpc.ServiceException(e);
+        catch (MalformedURLException e) {
+            throw new ServiceException(e);
         }
         return getKEGGPort(endpoint);
     }
 
-    public keggapi.KEGGPortType getKEGGPort(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public KEGGPortType getKEGGPort(URL portAddress) throws ServiceException {
         try {
-            keggapi.KEGGBindingStub _stub = new keggapi.KEGGBindingStub(portAddress, this);
+            KEGGBindingStub _stub = new KEGGBindingStub(portAddress, this);
             _stub.setPortName(getKEGGPortWSDDServiceName());
             return _stub;
         }
-        catch (org.apache.axis.AxisFault e) {
+        catch (AxisFault e) {
             return null;
         }
     }
 
-    public void setKEGGPortEndpointAddress(java.lang.String address) {
+    public void setKEGGPortEndpointAddress(String address) {
         KEGGPort_address = address;
     }
 
@@ -70,18 +93,19 @@ public class KEGGLocator extends org.apache.axis.client.Service implements kegga
      * If this service has no port for the given interface,
      * then ServiceException is thrown.
      */
-    public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    @SuppressWarnings("unchecked")
+	public Remote getPort(Class serviceEndpointInterface) throws ServiceException {
         try {
-            if (keggapi.KEGGPortType.class.isAssignableFrom(serviceEndpointInterface)) {
-                keggapi.KEGGBindingStub _stub = new keggapi.KEGGBindingStub(new java.net.URL(KEGGPort_address), this);
+            if (KEGGPortType.class.isAssignableFrom(serviceEndpointInterface)) {
+                KEGGBindingStub _stub = new KEGGBindingStub(new URL(KEGGPort_address), this);
                 _stub.setPortName(getKEGGPortWSDDServiceName());
                 return _stub;
             }
         }
         catch (java.lang.Throwable t) {
-            throw new javax.xml.rpc.ServiceException(t);
+            throw new ServiceException(t);
         }
-        throw new javax.xml.rpc.ServiceException("There is no stub implementation for the interface:  " + (serviceEndpointInterface == null ? "null" : serviceEndpointInterface.getName()));
+        throw new ServiceException("There is no stub implementation for the interface:  " + (serviceEndpointInterface == null ? "null" : serviceEndpointInterface.getName()));
     }
 
     /**
@@ -89,31 +113,32 @@ public class KEGGLocator extends org.apache.axis.client.Service implements kegga
      * If this service has no port for the given interface,
      * then ServiceException is thrown.
      */
-    public java.rmi.Remote getPort(javax.xml.namespace.QName portName, Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
+    @SuppressWarnings("unchecked")
+    public Remote getPort(QName portName, Class serviceEndpointInterface) throws ServiceException {
         if (portName == null) {
             return getPort(serviceEndpointInterface);
         }
-        java.lang.String inputPortName = portName.getLocalPart();
+        String inputPortName = portName.getLocalPart();
         if ("KEGGPort".equals(inputPortName)) {
             return getKEGGPort();
         }
         else  {
-            java.rmi.Remote _stub = getPort(serviceEndpointInterface);
+            Remote _stub = getPort(serviceEndpointInterface);
             ((org.apache.axis.client.Stub) _stub).setPortName(portName);
             return _stub;
         }
     }
 
-    public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("SOAP/KEGG", "KEGG");
+    public QName getServiceName() {
+        return new QName("SOAP/KEGG", "KEGG");
     }
 
-    private java.util.HashSet ports = null;
+    
 
-    public java.util.Iterator getPorts() {
+    public Iterator <QName> getPorts() {
         if (ports == null) {
-            ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("SOAP/KEGG", "KEGGPort"));
+            ports = new HashSet <QName> ();
+            ports.add(new QName("SOAP/KEGG", "KEGGPort"));
         }
         return ports.iterator();
     }
@@ -121,22 +146,26 @@ public class KEGGLocator extends org.apache.axis.client.Service implements kegga
     /**
     * Set the endpoint address for the specified port name.
     */
-    public void setEndpointAddress(java.lang.String portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
+    public void setEndpointAddress(String portName, String address) throws ServiceException {
         
-if ("KEGGPort".equals(portName)) {
+    	if ("KEGGPort".equals(portName)) {
             setKEGGPortEndpointAddress(address);
         }
         else 
-{ // Unknown Port Name
-            throw new javax.xml.rpc.ServiceException(" Cannot set Endpoint Address for Unknown Port" + portName);
+        { // Unknown Port Name
+            throw new ServiceException(" Cannot set Endpoint Address for Unknown Port" + portName);
         }
     }
 
     /**
     * Set the endpoint address for the specified port name.
     */
-    public void setEndpointAddress(javax.xml.namespace.QName portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
-        setEndpointAddress(portName.getLocalPart(), address);
+    public void setEndpointAddress(QName portName, String address) throws ServiceException {
+    	if  (portName!= null) {
+    		setEndpointAddress(portName.getLocalPart(), address);
+    		return;
+    	}
+    	assert false : "setEndpointAddress( portName==null ," + address + ")";
     }
 
 }

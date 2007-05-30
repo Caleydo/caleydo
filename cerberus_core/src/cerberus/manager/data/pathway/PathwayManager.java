@@ -63,7 +63,7 @@ implements IPathwayManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayManager#createPathway(java.lang.String, java.lang.String, java.lang.String, int)
+	 * @see cerberus.manager.data.pathway.IPathwayManager#createPathway(Stringt, Stringt, Stringt, int)
 	 */
 	public void createPathway(String sTitle, 
 			String sImageLink, 
@@ -163,7 +163,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayXMLPath(java.lang.String)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayXMLPath(Stringt)
 	 */
 	public void setPathwayXMLPath(String sPathwayXMLPath) {
 
@@ -183,7 +183,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayImagePath(java.lang.String)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayImagePath(Stringt)
 	 */
 	public void setPathwayImagePath(String sPathwayImagePath) {
 		
@@ -203,7 +203,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayImageMapPath(java.lang.String)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayImageMapPath(Stringt)
 	 */
 	public void setPathwayImageMapPath(String sPathwayImageMapPath) {
 		

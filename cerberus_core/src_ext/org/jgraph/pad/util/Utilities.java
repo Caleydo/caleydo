@@ -112,7 +112,7 @@ public final class Utilities {
 
 	/**
 	 * Returns the classname without the package. Example: If the input class is
-	 * java.lang.String than the return value is String.
+	 * Stringt than the return value is String.
 	 * 
 	 * @param cl
 	 *            The class to inspect

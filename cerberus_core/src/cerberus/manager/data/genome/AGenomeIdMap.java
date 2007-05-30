@@ -51,7 +51,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getIntByString(java.lang.String)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByString(Stringt)
 	 */
 	public int getIntByString(String key) {
 
@@ -69,7 +69,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(java.lang.String)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(Stringt)
 	 */
 	public String getStringByString(String key) {
 
@@ -87,7 +87,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getIntByStringChecked(java.lang.String)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByStringChecked(Stringt)
 	 */
 	public int getIntByStringChecked(String key) {
 
@@ -105,7 +105,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByStringChecked(java.lang.String)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByStringChecked(Stringt)
 	 */
 	public String getStringByStringChecked(String key) {
 

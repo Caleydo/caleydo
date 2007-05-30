@@ -7,12 +7,13 @@
 
 package keggapi;
 
+@SuppressWarnings("serial")
 public class MotifResult  implements java.io.Serializable {
-    private java.lang.String motif_id;
+    private String motif_id;
 
-    private java.lang.String definition;
+    private String definition;
 
-    private java.lang.String genes_id;
+    private String genes_id;
 
     private int start_position;
 
@@ -26,9 +27,9 @@ public class MotifResult  implements java.io.Serializable {
     }
 
     public MotifResult(
-           java.lang.String motif_id,
-           java.lang.String definition,
-           java.lang.String genes_id,
+           String motif_id,
+           String definition,
+           String genes_id,
            int start_position,
            int end_position,
            float score,
@@ -48,7 +49,7 @@ public class MotifResult  implements java.io.Serializable {
      * 
      * @return motif_id
      */
-    public java.lang.String getMotif_id() {
+    public String getMotif_id() {
         return motif_id;
     }
 
@@ -58,7 +59,7 @@ public class MotifResult  implements java.io.Serializable {
      * 
      * @param motif_id
      */
-    public void setMotif_id(java.lang.String motif_id) {
+    public void setMotif_id(String motif_id) {
         this.motif_id = motif_id;
     }
 
@@ -68,7 +69,7 @@ public class MotifResult  implements java.io.Serializable {
      * 
      * @return definition
      */
-    public java.lang.String getDefinition() {
+    public String getDefinition() {
         return definition;
     }
 
@@ -78,7 +79,7 @@ public class MotifResult  implements java.io.Serializable {
      * 
      * @param definition
      */
-    public void setDefinition(java.lang.String definition) {
+    public void setDefinition(String definition) {
         this.definition = definition;
     }
 
@@ -88,7 +89,7 @@ public class MotifResult  implements java.io.Serializable {
      * 
      * @return genes_id
      */
-    public java.lang.String getGenes_id() {
+    public String getGenes_id() {
         return genes_id;
     }
 
@@ -98,7 +99,7 @@ public class MotifResult  implements java.io.Serializable {
      * 
      * @param genes_id
      */
-    public void setGenes_id(java.lang.String genes_id) {
+    public void setGenes_id(String genes_id) {
         this.genes_id = genes_id;
     }
 
@@ -295,9 +296,10 @@ public class MotifResult  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
+    @SuppressWarnings("unchecked")
+	public static org.apache.axis.encoding.Serializer getSerializer(
+           String mechType, 
+           Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
           new  org.apache.axis.encoding.ser.BeanSerializer(
@@ -307,8 +309,9 @@ public class MotifResult  implements java.io.Serializable {
     /**
      * Get Custom Deserializer
      */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
+    @SuppressWarnings("unchecked")
+	public static org.apache.axis.encoding.Deserializer getDeserializer(
+           String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 

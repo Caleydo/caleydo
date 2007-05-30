@@ -70,7 +70,7 @@ implements IParameterHandler
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValue(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValue(Stringt)
 	 */
 	public Object getValue( final String key ) {
 		
@@ -92,14 +92,14 @@ implements IParameterHandler
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueType(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueType(Stringt)
 	 */
 	public ParameterHandlerType getValueType( final String key ) {		
 		return hashPrimarySwitch.get( key );
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public int getValueInt( final String key ) {
 		try {
@@ -112,7 +112,7 @@ implements IParameterHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public Vec3f getValueVec3f( final String key ) {
 		try {
@@ -127,7 +127,7 @@ implements IParameterHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public Vec4f getValueVec4f( final String key ) {
 		try {
@@ -145,28 +145,28 @@ implements IParameterHandler
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueFloat(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueFloat(Stringt)
 	 */
 	public float getValueFloat( final String key ) {
 		return hashKey2Float.getValue(key);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueString(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueString(Stringt)
 	 */
 	public String getValueString( final String key ) {
 		return hashKey2String.getValue(key);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueBoolean(java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#getValueBoolean(Stringt)
 	 */
 	public boolean getValueBoolean( final String key ) {		
 		return hashKey2Boolean.getValue(key);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#setValue(java.lang.String, java.lang.String)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#setValue(Stringt, Stringt)
 	 */
 	public void setValue( final String key, 
 			final String value ) {
@@ -205,7 +205,7 @@ implements IParameterHandler
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#setValueAndType(java.lang.String, java.lang.String, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#setValueAndType(Stringt, Stringt, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setValueAndType( final String key, 
 			final String value, 
@@ -242,7 +242,7 @@ implements IParameterHandler
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#setValueAndType(java.lang.String, java.lang.String, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#setValueAndType(Stringt, Stringt, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setValueAndTypeAndDefault( final String key, 
 			final String value, 
@@ -374,7 +374,7 @@ implements IParameterHandler
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#setDefaultValue(java.lang.String, java.lang.String, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#setDefaultValue(Stringt, Stringt, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setDefaultValueAnyType( final String key, 
 			final String value, 
@@ -409,7 +409,7 @@ implements IParameterHandler
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.parameter.IParameterHandler#setDefaultType(java.lang.String, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see cerberus.xml.parser.parameter.IParameterHandler#setDefaultType(Stringt, cerberus.xml.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setDefaultType( final String key, 
 			final ParameterHandlerType type ) {

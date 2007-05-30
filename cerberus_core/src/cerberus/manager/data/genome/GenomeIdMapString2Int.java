@@ -40,7 +40,7 @@ implements IGenomeIdMap {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.genome.IGenomeIdMap#getIntByStringChecked(java.lang.String)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getIntByStringChecked(Stringt)
 	 */
 	public int getIntByStringChecked(String key) {
 

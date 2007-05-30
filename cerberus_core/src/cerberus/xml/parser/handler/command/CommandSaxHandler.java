@@ -364,7 +364,7 @@ implements IXmlParserHandler
 	
 	
 	/**
-	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement(String namespaceURI, String localName,
 			String qName, Attributes attrs) throws SAXException {
@@ -478,7 +478,7 @@ implements IXmlParserHandler
 	}
 
 	/**
-	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	public void endElement(String namespaceURI, String localName, String qName)
 			throws SAXException {

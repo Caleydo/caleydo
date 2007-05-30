@@ -65,7 +65,7 @@ implements IPathwayElementManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertex(java.lang.String, java.lang.String)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertex(Stringt, Stringt)
 	 */
 	public int createVertex(
 			String sName, 
@@ -103,7 +103,7 @@ implements IPathwayElementManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertexRepresentation(java.lang.String, int, int, int, int)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createVertexRepresentation(Stringt, int, int, int, int)
 	 */
 	public void createVertexRepresentation(
 			String sName, 
@@ -129,7 +129,7 @@ implements IPathwayElementManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createEdge(int, int, java.lang.String)
+	 * @see cerberus.manager.data.pathway.IPathwayElementManager#createEdge(int, int, Stringt)
 	 */
 	public void createRelationEdge(
 			int iVertexId1, 
@@ -165,7 +165,7 @@ implements IPathwayElementManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayElementManager#createReactionEdge(java.lang.String, java.lang.String)
+	 * @see cerberus.manager.data.IPathwayElementManager#createReactionEdge(Stringt, Stringt)
 	 */
 	public void createReactionEdge(String sReactionName, String sReactionType) {
 
@@ -213,7 +213,7 @@ implements IPathwayElementManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayElementManager#getPathwayVertexListByName(java.lang.String)
+	 * @see cerberus.manager.data.IPathwayElementManager#getPathwayVertexListByName(Stringt)
 	 */
 	public final LinkedList<PathwayVertex> getPathwayVertexListByName(
 			final String sVertexName) {

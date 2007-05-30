@@ -40,7 +40,7 @@ implements ILoggerManager {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#logMsg(java.lang.String, short)
+	 * @see cerberus.manager.ILoggerManager#logMsg(Stringt, short)
 	 */
 	public void logMsg( final String info, 
 			final LoggerType useLogLevel) {

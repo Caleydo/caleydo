@@ -177,7 +177,7 @@ public class MetaData implements IMetaData {
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.collection.CollectionMetaData#setAll(boolean, boolean, boolean, boolean, java.lang.String)
+	 * @see prometheus.data.collection.CollectionMetaData#setAll(boolean, boolean, boolean, boolean, Stringt)
 	 */
 	public void setAll(boolean bSetLocked, boolean bSetHidden,
 			boolean bSetSelect, boolean bSetSelectFuzzy, String label) {
@@ -198,7 +198,7 @@ public class MetaData implements IMetaData {
 	}
 
 	/* (non-Javadoc)
-	 * @see prometheus.data.collection.CollectionMetaData#setLabel(java.lang.String)
+	 * @see prometheus.data.collection.CollectionMetaData#setLabel(Stringt)
 	 */
 	public void setLabel(String sSetLabel) {
 		this.sLabel = sSetLabel;

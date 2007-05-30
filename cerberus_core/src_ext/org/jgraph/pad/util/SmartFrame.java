@@ -135,7 +135,7 @@ public class SmartFrame extends JFrame {
 	 *  position manager.
 	 *  
 	 *  @param name the new name
-	 *  @see java.awt.Component#setName(java.lang.String)
+	 *  @see java.awt.Component#setName(Stringt)
 	 */
 	public void setName(String name) {
 		super.setName(name);

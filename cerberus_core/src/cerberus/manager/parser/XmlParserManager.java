@@ -132,7 +132,7 @@ implements IXmlParserManager {
 
 
 	/* (non-Javadoc)
-	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement(String uri, 
 			String localName, 
@@ -177,7 +177,7 @@ implements IXmlParserManager {
 	}
 
 	/**
-	 * @see cerberus.manager.IXmlParserManager#startElement_search4Tag(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see cerberus.manager.IXmlParserManager#startElement_search4Tag(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement_search4Tag(String uri, 
 			String localName, 
@@ -251,7 +251,7 @@ implements IXmlParserManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
@@ -274,7 +274,7 @@ implements IXmlParserManager {
 	
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#endElement_search4Tag(java.lang.String, java.lang.String, java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#endElement_search4Tag(Stringt, Stringt, Stringt)
 	 */
 	public void endElement_search4Tag(String uri, 
 			String localName, 
@@ -322,7 +322,7 @@ implements IXmlParserManager {
 
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(Stringt)
 	 */
 	public boolean parseXmlFileByName( final String filename ) {
 		
@@ -346,7 +346,7 @@ implements IXmlParserManager {
 	}
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(Stringt)
 	 */
 	public boolean parseXmlFileByNameAndHandler( final String filename, 
 			final OpenExternalXmlFileSaxHandler openFileHandler ) {

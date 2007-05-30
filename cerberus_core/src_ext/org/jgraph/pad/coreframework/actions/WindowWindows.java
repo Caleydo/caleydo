@@ -80,7 +80,7 @@ public class WindowWindows
 	}
 
 	/**
-	 * @see org.jgraph.pad.actions.GPAbstractActionDefault#getPresentationText(java.lang.String)
+	 * @see org.jgraph.pad.actions.GPAbstractActionDefault#getPresentationText(Stringt)
 	 */
 	public String getPresentationText(String actionCommand) {
 		return actionCommand;

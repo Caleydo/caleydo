@@ -78,7 +78,7 @@ extends IXmlBaseHandler
 	 * Callback called by cerberus.xml.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
 	 * 
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler
-	 * @see orl.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 * @param handler calling handler, that just read its closing tag
 	 * 
@@ -143,11 +143,11 @@ extends IXmlBaseHandler
 	
 	/**
 	 * Call this method if the current tag was not handled by 
-	 * endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * endElement(Stringt, Stringt, Stringt)
 	 * of cerberus.xml.parser.handler.IXmlParserHandler
 	 * 
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler
-	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 */
 	public void endElement_search4Tag(String uri, 
@@ -157,11 +157,11 @@ extends IXmlBaseHandler
 	
 	/**
 	 * Call this method, if current tag was not handled by 
-	 * startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * of cerberus.xml.parser.handler.IXmlParserHandler
 	 * 
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler
-	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * 
 	 */
 	public void startElement_search4Tag(String uri, 

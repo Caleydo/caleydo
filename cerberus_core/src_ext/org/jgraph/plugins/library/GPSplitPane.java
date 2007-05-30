@@ -128,7 +128,7 @@ public class GPSplitPane extends JSplitPane {
 	 *  @param name the new name
 	 *  @see PositionManager#updateComponent(Component)
 	 *  @see LocaleChangeAdapter#updateComponent(Component)
-	 *  @see java.awt.Component#setName(java.lang.String)
+	 *  @see java.awt.Component#setName(Stringt)
 	 * 
 	 */
 	public void setName(String name) {

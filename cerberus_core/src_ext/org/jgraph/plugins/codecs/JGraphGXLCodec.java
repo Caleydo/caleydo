@@ -612,7 +612,7 @@ public class JGraphGXLCodec {
         // Error During DTD validation : can't find www.gupro.de
         // Forget validation
         db.setEntityResolver(new EntityResolver() {
-            public InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId)
+            public InputSource resolveEntity(Stringt publicId, Stringt systemId)
             throws SAXException, java.io.IOException {
                 InputSource is = null;
                 try {

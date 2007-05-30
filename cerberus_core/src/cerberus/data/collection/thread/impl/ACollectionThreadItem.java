@@ -142,7 +142,7 @@ public abstract class ACollectionThreadItem
 	}
 	
 	/**
-	 * @see prometheus.data.collection.ICollection#setLabel(java.lang.String)
+	 * @see prometheus.data.collection.ICollection#setLabel(Stringt)
 	 */
 	public final void setLabel( final String setLabel) {
 		this.sLabel = setLabel;
