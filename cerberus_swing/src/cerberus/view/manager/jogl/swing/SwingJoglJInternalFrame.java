@@ -13,7 +13,7 @@ import javax.swing.event.InternalFrameAdapter;
 //import javax.swing.event.InternalFrameEvent;
 
 import cerberus.view.FrameBaseType;
-import cerberus.view.gui.swing.jogl.ISwingJoglJComponent;
+import cerberus.view.swing.ISwingJoglJComponent;
 
 /**
  * @author Michael Kalkusch

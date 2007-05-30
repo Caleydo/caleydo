@@ -68,13 +68,13 @@ import cerberus.manager.IMenuManager;
 import cerberus.manager.singleton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.FrameBaseType;
-import cerberus.view.gui.swing.jogl.ISwingJoglJComponent;
 import cerberus.view.manager.jogl.swing.SwingJoglJFrame;
 import cerberus.view.manager.jogl.swing.SwingJoglJInternalFrame;
 import cerberus.view.manager.jogl.swing.SingeltonJoglWindowAdapter;
 
 import cerberus.manager.WindowToolkitType;
 import cerberus.view.manager.swing.CerberusJStatusBar;
+import cerberus.view.swing.ISwingJoglJComponent;
 import cerberus.view.swing.texture.TestTexture;
 //import cerberus.view.swing.heatmap.HeatMapWarp;
 import cerberus.view.swing.heatmap.HeatMapRefract;

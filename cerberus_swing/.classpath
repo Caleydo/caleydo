@@ -3,8 +3,7 @@
 	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Cerberus"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Cerberus Swing features"/>
-	<classpathentry kind="lib" path="/Cerberus Swing features/lib/jogl/jogl-demos.jar"/>
-	<classpathentry kind="lib" path="/Cerberus Swing features/lib/jogl/jogl-demos-util_mod.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/jogl-demos.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/jogl-demos-util_mod.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
