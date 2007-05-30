@@ -35,7 +35,7 @@ public class Gears implements GLEventListener, MouseListener, MouseMotionListene
             }).start();
         }
       });
-    frame.show();
+    frame.setVisible(true);
     animator.start();
   }
   
@@ -60,7 +60,7 @@ public class Gears implements GLEventListener, MouseListener, MouseMotionListene
             }).start();
         }
       });
-    frame.show();
+    frame.setVisible(true);
     animator.start();
   }
 
@@ -297,13 +297,13 @@ public class Gears implements GLEventListener, MouseListener, MouseMotionListene
   public void mousePressed(MouseEvent e) {
     prevMouseX = e.getX();
     prevMouseY = e.getY();
-    if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       mouseRButtonDown = true;
     }
   }
     
   public void mouseReleased(MouseEvent e) {
-    if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       mouseRButtonDown = false;
     }
   }
@@ -326,6 +326,10 @@ public class Gears implements GLEventListener, MouseListener, MouseMotionListene
     view_roty += thetaY;
   }
     
+  protected boolean isRightMouseButtonDown() {
+	  return mouseRButtonDown;
+  }
+  
   public void mouseMoved(MouseEvent e) {}
 }
 

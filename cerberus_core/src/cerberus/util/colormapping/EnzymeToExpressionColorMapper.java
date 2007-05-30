@@ -11,6 +11,7 @@ import cerberus.data.collection.SetDetailedDataType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 
 
@@ -122,6 +123,15 @@ public class EnzymeToExpressionColorMapper {
 				
 				iterTmpAccessionId = iArTmpAccessionId.iterator();
 				
+				int [] bufferIntArray = refExpressionStorage.getArrayInt();
+				
+				if ( bufferIntArray == null ) {
+					this.refGeneralManager.getSingelton().logMsg("color mapping failed, Storage=[" +
+							refExpressionStorage.getLabel() + "][" +
+							refExpressionStorage.toString() +
+							"] does not contain int[]!",LoggerType.ERROR_ONLY);
+				}
+				
 				while (iterTmpAccessionId.hasNext())
 				{
 					int iMicroArrayId = iterTmpAccessionId.next();
@@ -132,7 +142,7 @@ public class EnzymeToExpressionColorMapper {
 					// Get rid of 770 internal ID identifier
 					iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
 					
-						int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
+						int iExpressionValue = bufferIntArray[iExpressionStorageIndex];
 						
 						iCummulatedExpressionValue += iExpressionValue;
 						iNumberOfExpressionValues++;					

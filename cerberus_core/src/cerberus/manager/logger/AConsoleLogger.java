@@ -68,7 +68,9 @@ public abstract class AConsoleLogger
 	public final void setSystemLogLevel(LoggerType systemLogLevel)
 	{
 		this.systemLogLevel = systemLogLevel;
-		logMsg("Set Logger systemLogLevel to [" + systemLogLevel + "]", LoggerType.VERBOSE );
+		logMsg("Set logger systemLogLevel to [" + 
+				systemLogLevel.name() + "] ==> [" + 
+				systemLogLevel + "] (up to this level messages will be visible)", LoggerType.VERBOSE );
 	}
 
 	/**

@@ -2,11 +2,8 @@ package demos.jgears;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.awt.image.*;
-import java.io.*;
 import java.text.*;
-import javax.imageio.*;
 import javax.swing.*;
 
 import javax.media.opengl.*;
@@ -21,6 +18,11 @@ import demos.gears.Gears;
  */
 
 public class JGears extends GLJPanel {
+  /**
+	 * 
+	 */
+  private static final long serialVersionUID = -4688831202679471561L;
+	
   private static GLCapabilities caps;
   private long startTime;
   private int frameCount;
@@ -81,6 +83,7 @@ public class JGears extends GLJPanel {
   }
 
   // Helper routine for various demos
+  @SuppressWarnings("serial")
   public static JPanel createGradientPanel() {
     JPanel gradientPanel = new JPanel() {
         public void paintComponent(Graphics g) {
@@ -93,16 +96,16 @@ public class JGears extends GLJPanel {
     return gradientPanel;
   }
 
-  private BufferedImage scaleImage(BufferedImage img, float xScale, float yScale) {
-    BufferedImage scaled = new BufferedImage((int) (img.getWidth() * xScale),
-                                             (int) (img.getHeight() * yScale),
-                                             BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g = scaled.createGraphics();
-    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-    g.drawRenderedImage(img, AffineTransform.getScaleInstance(xScale, yScale));
-    return scaled;
-  }
+//  private BufferedImage scaleImage(BufferedImage img, float xScale, float yScale) {
+//    BufferedImage scaled = new BufferedImage((int) (img.getWidth() * xScale),
+//                                             (int) (img.getHeight() * yScale),
+//                                             BufferedImage.TYPE_INT_ARGB);
+//    Graphics2D g = scaled.createGraphics();
+//    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+//    g.drawRenderedImage(img, AffineTransform.getScaleInstance(xScale, yScale));
+//    return scaled;
+//  }
 
   public static void main(String[] args) {
     JFrame frame = new JFrame("Gear Demo");
@@ -137,7 +140,7 @@ public class JGears extends GLJPanel {
             }).start();
         }
       });
-    frame.show();
+    frame.setVisible(true);
     animator.start();
   }
 }

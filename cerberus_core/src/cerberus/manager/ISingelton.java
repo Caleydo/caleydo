@@ -32,7 +32,7 @@ public interface ISingelton {
 
 	public abstract ICommandManager getCommandManager();
 
-	public abstract IDistComponentManager getDComponentManager();
+//	public abstract IDistComponentManager getDComponentManager();
 
 	public abstract ILoggerManager getLoggerManager();
 
@@ -80,8 +80,8 @@ public interface ISingelton {
 
 	public abstract void setCommandManager(ICommandManager setCommandManager);
 
-	public abstract void setDComponentManager(
-			IDistComponentManager setDComponentManager);
+//	public abstract void setDComponentManager(
+//			IDistComponentManager setDComponentManager);
 
 	public abstract void setLoggerManager(ILoggerManager refLoggerManager);
 

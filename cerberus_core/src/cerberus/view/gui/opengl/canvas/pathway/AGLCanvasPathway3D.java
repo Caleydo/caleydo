@@ -1,7 +1,6 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import java.awt.Point;
 import java.io.File;
@@ -13,8 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
 import cerberus.data.collection.ISet;
@@ -792,6 +789,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 			}
 			else 
 			{
+				//FIXME: why not use ColorMapping.java ??
 				EnzymeToExpressionColorMapper enzymeToExpressionColorMapper =
 					new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
 				

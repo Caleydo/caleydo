@@ -55,8 +55,7 @@ public class GearsMain implements GLEventListener, MouseListener, MouseMotionLis
             }).start();
         }
       });
-    frame.show();
-
+    frame.setVisible(true);
   
     animator.start();
   }

@@ -33,6 +33,7 @@ import org.eclipse.swt.awt.SWT_AWT;
 
 public class SWTEmbeddedSwing {
 
+	@SuppressWarnings("serial")
 	static class FileTableModel extends AbstractTableModel {		
 		File[] files;        
 		String[] columnsName = {"Name", "Size", "Date Modified"};
@@ -43,6 +44,7 @@ public class SWTEmbeddedSwing {
 		public int getColumnCount () {
 			return columnsName.length;
 		}
+		@SuppressWarnings("unchecked")
 		public Class getColumnClass (int col) {
 			if (col == 1) return Long.class;
 			if (col == 2) return Date.class;

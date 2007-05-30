@@ -7,7 +7,6 @@ import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchResult;
 import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GeneCommentaryType;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
@@ -17,7 +16,6 @@ import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 
 /**
  * Class generates a file that contains a mapping 

@@ -9,7 +9,6 @@
 package cerberus.manager.command.factory;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 //import cerberus.command.queue.ICommandQueue;
 

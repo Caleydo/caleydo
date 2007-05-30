@@ -3,6 +3,7 @@ package cerberus.view.gui.swt.pathway.jgraph;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -57,7 +58,7 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.net.dwt.swing.WorkspaceSwingFrame;
+//import cerberus.net.dwt.swing.IWorkspaceSwingFrame;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
@@ -797,7 +798,7 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 
 		IViewGLCanvasManager refViewCanvasMng = refGeneralManager
 				.getSingelton().getViewGLCanvasManager();
-		WorkspaceSwingFrame workspaceFrame = refViewCanvasMng.createWorkspace(
+		Frame workspaceFrame = refViewCanvasMng.createWorkspace(
 				ManagerObjectType.VIEW_NEW_FRAME, "");
 
 		JFrame wnd = (JFrame) workspaceFrame;

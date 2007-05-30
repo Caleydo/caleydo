@@ -2,23 +2,14 @@ package cerberus.application.gui.swt;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Dimension2D;
-import java.awt.image.BufferedImage;
 
 import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLJPanel;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.eclipse.swt.SWT;
@@ -31,7 +22,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.sun.opengl.util.Animator;
 
-import demos.jgears.JGears;
 import demos.gears.Gears;
 
 public class SWTEmbeddedAWTGears
@@ -51,7 +41,7 @@ public class SWTEmbeddedAWTGears
 		shell.setSize(800, 600);
 		
 		Composite composite = new Composite(shell, SWT.EMBEDDED);
-		java.awt.Frame frame = SWT_AWT.new_Frame(composite);
+		Frame frame = SWT_AWT.new_Frame(composite);
 		
 		Button ok = new Button (composite, SWT.PUSH);
 		ok.setText ("OK");
@@ -76,7 +66,7 @@ public class SWTEmbeddedAWTGears
 	            }).start();
 	        }
 	      });
-	    frame.show();
+	    frame.setVisible(true);
 	    animator.start();
 
 		shell.open();
@@ -91,6 +81,7 @@ public class SWTEmbeddedAWTGears
 	}
 
 	// Helper routine for various demos
+	@SuppressWarnings("serial")
 	public static JPanel createGradientPanel() {
 	  JPanel gradientPanel = new JPanel() {
 	      public void paintComponent(Graphics g) {

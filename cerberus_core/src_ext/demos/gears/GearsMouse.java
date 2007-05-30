@@ -3,8 +3,8 @@ package demos.gears;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.media.opengl.*;
-import com.sun.opengl.util.*;
+//import javax.media.opengl.*;
+//import com.sun.opengl.util.*;
 
 /**
  * Gears.java <BR>
@@ -54,13 +54,13 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
   public void mousePressed(MouseEvent e) {
     prevMouseX = e.getX();
     prevMouseY = e.getY();
-    if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       mouseRButtonDown = true;
     }
   }
     
   public void mouseReleased(MouseEvent e) {
-    if ((e.getModifiers() & e.BUTTON3_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
       mouseRButtonDown = false;
     }
   }

@@ -1,19 +1,17 @@
 package cerberus.application.mapping;
 
-import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceLocator;
-import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceSoap;
-import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchRequest;
-import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchResult;
-import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GeneCommentaryType;
+//import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceLocator;
+//import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceSoap;
+//import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchRequest;
+//import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchResult;
+//import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GeneCommentaryType;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
 import javax.xml.rpc.ServiceException;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.command.factory.CommandFactory;
 
 import keggapi.Definition;
 import keggapi.KEGGLocator;

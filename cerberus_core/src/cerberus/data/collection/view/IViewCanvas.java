@@ -14,7 +14,7 @@ import cerberus.data.IUniqueManagedObject;
 //import cerberus.data.collection.ISet;
 //import prometheus.data.collection.BaseManagerItemInterface;
 import cerberus.data.xml.IMementoItemXML;
-import cerberus.net.dwt.DNetEventComponentInterface;
+//import cerberus.net.dwt.DNetEventComponentInterface;
 
 /**
  * Defines a set containing of selections and storage
@@ -25,8 +25,7 @@ import cerberus.net.dwt.DNetEventComponentInterface;
 public interface IViewCanvas
 	extends 
 	IUniqueManagedObject, 
-	IMementoItemXML,
-	DNetEventComponentInterface
+	IMementoItemXML
 {
 	
 	/**

@@ -80,7 +80,7 @@ public class DataExplorerLabelProvider extends LabelProvider
 
 	public void dispose() 
 	{
-		for (Iterator i = imageCache.values().iterator(); i.hasNext();) {
+		for (Iterator <Image> i = imageCache.values().iterator(); i.hasNext();) {
 			((Image) i.next()).dispose();
 		}
 		imageCache.clear();

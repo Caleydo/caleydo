@@ -88,6 +88,14 @@ public class CerberusInputStream
 			return false;
 		} //if
 		
+		if ( inStream==null ) {
+			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+					sInputStreamLabel +
+					") error no input stream; skip file",
+					LoggerType.ERROR_ONLY );
+			return false;
+		}
+		
 		try 
 		{			
 			XMLReader reader = XMLReaderFactory.createXMLReader();

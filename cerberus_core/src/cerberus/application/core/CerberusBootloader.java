@@ -115,7 +115,10 @@ public class CerberusBootloader
 		final ISingelton refSingelton = refOneForAllManager.getSingelton();
 		
 		logger = refSingelton.getLoggerManager();		
+		logger.logMsg("===========================", LoggerType.STATUS);
 		logger.logMsg("... Start Cerberus Core ...", LoggerType.STATUS);
+		logger.logMsg("===========================", LoggerType.STATUS);
+		logger.logMsg(" ", LoggerType.STATUS);
 		
 		//refViewManager = (IViewManager) refSingelton.getViewGLCanvasManager();
 		

@@ -9,7 +9,7 @@
 package cerberus.manager.singleton;
 
 import cerberus.manager.ICommandManager;
-import cerberus.manager.IDistComponentManager;
+//import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
@@ -44,7 +44,7 @@ implements ISingelton {
 
 //	private final IGeneralManager refGeneralManager;
 	
-	protected IDistComponentManager refDComponentManager;
+//	protected IDistComponentManager refDComponentManager;
 	
 //	protected IViewCanvasManager refViewCanvasManager;
 	
@@ -182,12 +182,12 @@ implements ISingelton {
 		return refSWTGUIManager;
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getDComponentManager()
-	 */
-	public IDistComponentManager getDComponentManager() {
-		return refDComponentManager;
-	}
+//	/* (non-Javadoc)
+//	 * @see cerberus.manager.singelton.Singelton#getDComponentManager()
+//	 */
+//	public IDistComponentManager getDComponentManager() {
+//		return refDComponentManager;
+//	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getEventManager()
@@ -276,11 +276,11 @@ implements ISingelton {
 		refCommandManager = setCommandManager;
 	}
 	
-	public void setDComponentManager( IDistComponentManager setDComponentManager ) {
-		assert setDComponentManager!=null: "IDistComponentManager was null";
-		
-		refDComponentManager = setDComponentManager;	
-	}
+//	public void setDComponentManager( IDistComponentManager setDComponentManager ) {
+//		assert setDComponentManager!=null: "IDistComponentManager was null";
+//		
+//		refDComponentManager = setDComponentManager;	
+//	}
 	
 	public void setLoggerManager( ILoggerManager refLoggerManager ) {
 		assert refLoggerManager != null : "ILoggerManager was null";

@@ -5,18 +5,13 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Dimension2D;
-import java.awt.image.BufferedImage;
 
 import javax.media.opengl.GLJPanel;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.eclipse.swt.SWT;
@@ -88,7 +83,7 @@ public class GUITest
 	      });
 	    
 	    //frame.setSize(400, 400);
-	    frame.show();
+	    frame.setVisible(true);
 	    animator.start();
 
 		shell.open();
@@ -103,6 +98,7 @@ public class GUITest
 	}
 
 	// Helper routine for various demos
+	@SuppressWarnings("serial")
 	public static JPanel createGradientPanel() {
 	  JPanel gradientPanel = new JPanel() {
 	      public void paintComponent(Graphics g) {

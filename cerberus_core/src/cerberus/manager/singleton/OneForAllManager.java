@@ -17,7 +17,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.SetDataType;
 import cerberus.data.xml.IMementoXML;
 import cerberus.manager.ICommandManager;
-import cerberus.manager.IDistComponentManager;
+//import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
@@ -50,7 +50,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
-import cerberus.net.dwt.base.DGuiComponentType;
+//import cerberus.net.dwt.base.DGuiComponentType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.ISaxParserHandler;
 //import prometheus.net.dwt.swing.DHistogramCanvas;
@@ -91,7 +91,7 @@ implements IGeneralManagerSingleton
 
 	protected IMenuManager refMenuManager;
 
-	protected IDistComponentManager refDComponentManager;
+//	protected IDistComponentManager refDComponentManager;
 
 //	protected IViewCanvasManager refViewCanvasManager;
 
@@ -193,7 +193,7 @@ implements IGeneralManagerSingleton
 		refMementoManager = new MementoManager(this);
 		
 		//refDComponentManager = new DComponentSwingFactoryManager(this);
-		refDComponentManager = null;
+		//refDComponentManager = null;
 		//refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);
@@ -224,7 +224,7 @@ implements IGeneralManagerSingleton
 		llAllManagerObjects.add( refMenuManager );
 		llAllManagerObjects.add( refCommandManager );
 		llAllManagerObjects.add( refMementoManager );
-		llAllManagerObjects.add( refDComponentManager );
+		//llAllManagerObjects.add( refDComponentManager );
 		
 		/**
 		 * Make sure SWT is only used, when needed!
@@ -237,7 +237,7 @@ implements IGeneralManagerSingleton
 		 */
 		
 		refSingeltonManager.setCommandManager(refCommandManager);
-		refSingeltonManager.setDComponentManager(refDComponentManager);
+		//refSingeltonManager.setDComponentManager(refDComponentManager);
 		refSingeltonManager.setVirtualArrayManager(refVirtualArrayManager);
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
@@ -301,9 +301,14 @@ implements IGeneralManagerSingleton
 	public int size()
 	{
 
+//		return (refSetManager.size() + refStorageManager.size()
+//				+ refVirtualArrayManager.size() + refMementoManager.size()
+//				+ refDComponentManager.size() + refViewGLCanvasManager.size() + refSWTGUIManager
+//				.size());
+		
 		return (refSetManager.size() + refStorageManager.size()
 				+ refVirtualArrayManager.size() + refMementoManager.size()
-				+ refDComponentManager.size() + refViewGLCanvasManager.size() + refSWTGUIManager
+				+ refViewGLCanvasManager.size() + refSWTGUIManager
 				.size());
 	}
 
@@ -412,7 +417,9 @@ implements IGeneralManagerSingleton
 //			return refCommandManager.createCommand(sNewTypeDetails);
 			return null;
 		case VIEW_DISTRIBUTE_GUI:
-			return refDComponentManager.createSet( DGuiComponentType.valueOf(sNewTypeDetails) );
+			assert false : "removed from package!";
+			return null;
+			//return refDComponentManager.createSet( DGuiComponentType.valueOf(sNewTypeDetails) );
 
 		default:
 			throw new CerberusRuntimeException(
@@ -497,8 +504,8 @@ implements IGeneralManagerSingleton
 		{
 		case MEMENTO:
 			return refMementoManager;
-		case VIEW_DISTRIBUTE_GUI:
-			return refDComponentManager;
+//		case VIEW_DISTRIBUTE_GUI:
+//			return refDComponentManager;
 		case DATA_VIRTUAL_ARRAY:
 			return refVirtualArrayManager;
 		case DATA_SET:

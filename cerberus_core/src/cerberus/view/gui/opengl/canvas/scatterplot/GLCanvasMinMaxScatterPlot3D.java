@@ -42,6 +42,14 @@ extends AGLCanvasUser_OriginRotation
 	private float fPointSize = 1.5f;
 	
 	/**
+	 * Avoid that error message during rendering is shown each rendered frame.
+	 * 
+	 * @see cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#setTargetSetId(int)
+	 * @see cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#drawScatterPlotInteger(GL)
+	 */
+	private boolean bShowRenderingErrorMsgOnylOnce = true;
+	
+	/**
 	 * Color for grid (0,1,2) 
 	 * grid text (3,4,5)
 	 * and point color (6,7,8)
@@ -176,6 +184,9 @@ extends AGLCanvasUser_OriginRotation
 				iTargetCollectionSetId + ") done!");
 		
 		updateMinMax();
+		
+		/** reset error message. */
+		bShowRenderingErrorMsgOnylOnce = true;
 	}
 	
 	
@@ -470,6 +481,16 @@ extends AGLCanvasUser_OriginRotation
 				
 				int [] arrayIntX = storeX.getArrayInt();
 				int [] arrayIntY = storeY.getArrayInt();
+				
+				if  ((arrayIntX==null)||(arrayIntY==null)) {
+					
+					if  (bShowRenderingErrorMsgOnylOnce) {
+						this.refGeneralManager.getSingelton().logMsg("No valid data for scatter plot! Skip rendering. (show error message only once!)",
+							LoggerType.ERROR_ONLY);
+						bShowRenderingErrorMsgOnylOnce = false;
+					}
+					return;
+				}
 				
 				float fTri = 0.02f;
 				

@@ -66,11 +66,6 @@ implements IMementoXML, IParserObject {
 	 * uses first storage and overwrites first selection.
 	 */
 	protected ISet refImportDataToSet;
-	
-	/** 
-	 * Define the pattern for with values shall be paresed.
-	 */
-	protected ArrayList alTokenPattern;
 
 	
 	/**
@@ -102,9 +97,6 @@ implements IMementoXML, IParserObject {
 		super(setGeneralManager,
 				setFileName, 
 				enableMultipeThreads);
-		
-		alTokenPattern =
-			new ArrayList(iInitialParseTokenSize);
 		
 		alTokenTargetToParserTokenType = 
 			new ArrayList<ParserTokenHandler> (iInitialParseTokenSize);
@@ -347,9 +339,6 @@ implements IMementoXML, IParserObject {
 			LLString.clear();
 		}
 		
-		if ( alTokenPattern != null ) {
-			alTokenPattern.clear();
-		}
 		if ( alTokenTargetToParserTokenType != null ) {
 			alTokenTargetToParserTokenType.clear();
 		}
@@ -358,7 +347,6 @@ implements IMementoXML, IParserObject {
 		LLFloat = null;		
 		LLString = null;
 		
-		alTokenPattern = null;
 		alTokenTargetToParserTokenType = null;
 		
 		iIndexPerArray = null;

@@ -18,7 +18,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.MathUtil;
 import cerberus.view.gui.jogl.JoglMouseListener;
-import cerberus.view.gui.jogl.PickingJoglMouseListenerDebug;
+//import cerberus.view.gui.jogl.PickingJoglMouseListenerDebug;
 import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 //import cerberus.data.view.camera.IViewCamera;

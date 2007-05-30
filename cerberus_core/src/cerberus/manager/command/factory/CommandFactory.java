@@ -9,7 +9,6 @@
 package cerberus.manager.command.factory;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.CommandType;
 import cerberus.command.ICommand;
 import cerberus.command.data.CmdDataCreatePathwayStorage;
 import cerberus.command.data.CmdDataCreateSelectionSetMakro;
@@ -50,7 +49,6 @@ import cerberus.command.window.swt.CmdContainerCreate;
 import cerberus.command.queue.CmdSystemRunCmdQueue;
 import cerberus.command.queue.CommandQueueVector;
 import cerberus.command.system.CmdSystemExit;
-import cerberus.command.system.CmdSystemNewFrame;
 import cerberus.command.system.CmdSystemLoadFileViaImporter;
 import cerberus.command.system.CmdSystemLoadFileNStorages;
 import cerberus.command.system.CmdSystemLoadFileLookupTable;
@@ -93,55 +91,6 @@ public class CommandFactory
 		this.refCommandManager = refCommandManager;
 		
 	}
-	
-//	/**
-//	 * @deprecated
-//	 */
-//	public ICommand createCommand( 
-//			final CommandType createCommandByType, 
-//			final String details ) {
-//		
-//		assert createCommandByType != null:"Can not create command from null-pointer.";
-//		
-//		switch ( createCommandByType.getGroup()) {
-//		
-//		case APPLICATION:
-//			break;
-//			
-//		case DATASET:
-//			return createDatasetCommand(createCommandByType,details);
-//			
-//		case DATA_COLLECTION:
-//			return createDatasetCommand(createCommandByType,details);
-//		
-//		case HOST:
-//			break;
-//			
-//		case SELECT:
-//			return createSelectionCommand(createCommandByType,details);
-//			
-//		case SELECT_VALUE:
-//			return createSelectionValueCommand(createCommandByType,details);
-//			
-//		case SERVER:
-//			break;
-//			
-//		case SYSTEM:
-//			return createSystemCommand(createCommandByType,details);	
-//			
-//		case WINDOW:
-//			return createWindowCommand(createCommandByType,details);
-//			
-//		default:
-//			System.err.println("CommandFactory(CommandType) failed, because CommandTypeGroup ["+
-//					createCommandByType.getGroup() +"] is not known by factory.");
-//			refLastCommand = null;
-//			return null;			
-//		}
-//		
-//		return null;
-//		
-//	}
 	
 
 	
@@ -594,6 +543,11 @@ public class CommandFactory
 		}
 		
 		
+		case SYSTEM_SHUT_DOWN:
+		{
+			createdCommand = new CmdSystemExit(refGeneralManager);
+			break;
+		}
 		
 		/**
 		 * Set path for pathway XML files, images and imagemaps.
@@ -615,6 +569,8 @@ public class CommandFactory
 					cmdType + "]",
 					CerberusRuntimeExceptionType.SAXPARSER);
 		} // end switch
+		
+		//FIXME: create new command id! use lookup table for XML matching of cmd id's 
 		
 //		/**
 //		 * Create a new uniqueId if nessecary
@@ -687,193 +643,6 @@ public class CommandFactory
 		
 	}
 	
-	protected ICommand createDatasetCommand( 
-			final CommandType setCommandType,
-			final String details ) {
-		switch (setCommandType) {
-			case DATA_COLLECTION_LOAD :
-				break;
-			case DATA_COLLECTION_SAVE :
-				break;	
-			case DATASET_RELOAD :
-				break;
-			case DATASET_LOAD :
-				break;
-			case DATASET_SAVE :
-				break;
-				
-			default:
-				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
-						setCommandType +"] is not known by factory.");
-				refLastCommand = null;
-			return null;
-		}
-		
-		return null;
-	}
-	
-	protected ICommand createSelectionCommand( 
-			final CommandType setCommandType,
-			final String details ) {
-		switch (setCommandType) {
-			case SELECT_NEW :
-				break;
-			case SELECT_DEL :
-				break;	
-			case SELECT_ADD :
-				break;
-			case SELECT_LOAD :
-				break;
-			case SELECT_SAVE :
-				break;
-				
-			default:
-				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
-						setCommandType +"] is not known by factory.");
-				refLastCommand = null;
-			return null;
-		}
-		
-		return null;
-	}
-	
-	protected ICommand createSystemCommand( 
-			final CommandType setCommandType,
-			final String details ) {
-		switch (setCommandType) {
-			case SYSTEM_EXIT :
-				refLastCommand = new CmdSystemExit(refGeneralManager);
-				return refLastCommand;
-				
-			case SYSTEM_NEW_FRAME:
-				return new CmdSystemNewFrame( refGeneralManager,
-						refCommandManager, null);
-				
-			default:
-				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
-						setCommandType +"] is not known by factory.");
-				refLastCommand = null;
-		}
-		
-		return null;
-	}
-	
-	protected ICommand createWindowCommand( 
-			final CommandType setCommandType,
-			final String details ) {
-		
-//		int iWorkspaceTargetId = -1;
-//		//JComponent refJComponent = null;
-//		DDesktopPane refDDesktopPane = null;
-//		
-//		if ( details != null ) {
-//			try {
-//				iWorkspaceTargetId = Integer.valueOf( details );
-//				WorkspaceSwingFrame targetFrame = 
-//					this.refGeneralManager.getSingelton().getViewCanvasManager().getItemWorkspace( iWorkspaceTargetId );
-//				refDDesktopPane = targetFrame.getDesktopPane();
-//				
-//			} catch (NumberFormatException nfe ) {
-//				assert false:"Can not handle detail [" +
-//				details +
-//				"] in createWindowCommand()";
-//			}
-//		}
-//		
-//		switch (setCommandType) {
-//			case WINDOW_POPUP_CREDITS :
-//				refCommand = new CmdWindowPopupCredits();
-//				return refCommand;
-//				
-//			case WINDOW_POPUP_INFO :
-//				refCommand = new CmdWindowPopupInfo(details);
-//				return refCommand;
-//				
-//			case WINDOW_NEW_INTERNAL_FRAME:
-//				return  new CmdWindowNewInternalFrame(refGeneralManager,
-//						iWorkspaceTargetId, 
-//						details );
-//				
-//			case WINDOW_IFRAME_OPEN_HEATMAP2D:
-//				return new CmdWindowNewIFrameHeatmap2D(refGeneralManager, iWorkspaceTargetId);
-//				
-//			case WINDOW_IFRAME_OPEN_HISTOGRAM2D:
-//				return new CmdWindowNewIFrameHistogram2D(refGeneralManager,iWorkspaceTargetId);
-//				
-//			case WINDOW_IFRAME_OPEN_SCATTERPLOT2D:
-//				return new CmdWindowNewIFrameScatterplot2D();
-//				
-//			case WINDOW_IFRAME_OPEN_SELECTION:
-//				return new CmdWindowNewIFrameSelection(refGeneralManager,iWorkspaceTargetId);
-//			
-//			case WINDOW_IFRAME_OPEN_STORAGE:
-//				return new CmdWindowNewIFrameStorage(refGeneralManager,iWorkspaceTargetId);
-//				
-//			case WINDOW_IFRAME_OPEN_JOGL_CANVAS:
-//				
-//				return new CmdWindowNewIFrameJoglCanvas(refGeneralManager, 
-//						null, 
-//						iWorkspaceTargetId,
-//						details );
-//				
-//			case WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM:
-//				return new CmdWindowNewIFrameJoglHistogram( refGeneralManager, 
-//						iWorkspaceTargetId,
-//						null, 
-//						null );
-//				
-//			case WINDOW_IFRAME_OPEN_JOGL_HEATMAP:
-//				return new CmdWindowNewIFrameJoglHeatmap( refGeneralManager, 
-//						iWorkspaceTargetId, 
-//						null, 						
-//						null );
-//			
-//			case WINDOW_IFRAME_OPEN_JOGL_SCATTERPLOT:
-//				return new CmdWindowNewIFrameJoglScatterplot( refGeneralManager, 
-//						iWorkspaceTargetId, 
-//						null, 						
-//						null );
-//				
-//			case WINDOW_SET_ACTIVE_FRAME:
-//				return new CmdWindowSetActiveFrame( refGeneralManager, details );
-//				
-//			case WINDOW_IFRAME_OPEN_SET:
-//				//return new CmdWindowNewIFrameSet(refGeneralManager);
-//				
-//			
-//			default:
-//				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
-//						setCommandType +"] is not known by factory.");
-//				refCommand = null;
-//		}
-		
-		return null;
-	}
-	
-	
-	
-	protected ICommand createSelectionValueCommand( 
-			final CommandType setCommandType,
-			final String details ) {
-		switch (setCommandType) {
-			case SELECT_SHOW:
-				break;
-			case SELECT_HIDE:
-				break;
-			case SELECT_LOCK:
-				break;
-			case SELECT_UNLOCK:
-				break;
-				
-			default:
-				System.err.println("CommandFactory(CommandType) failed, because CommandType ["+
-						setCommandType +"] is not known by factory.");
-				refLastCommand = null;
-			return null;
-		}
-		
-		return null;
-	}
 	
 	/**
 	 * Since the last created command is stored its reference is returned.

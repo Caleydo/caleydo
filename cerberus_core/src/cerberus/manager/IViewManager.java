@@ -1,12 +1,12 @@
 package cerberus.manager;
 
 
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
@@ -44,7 +44,7 @@ extends IGeneralManager {
 	 * @param sAditionalParameter
 	 * @return
 	 */
-	public WorkspaceSwingFrame createWorkspace( 
+	public Frame createWorkspace( 
 			final ManagerObjectType useViewCanvasType,
 			final String sAditionalParameter );
 	
@@ -53,5 +53,5 @@ extends IGeneralManager {
 	 * 
 	 * @return
 	 */
-	public Iterator<WorkspaceSwingFrame> getWorkspaceIterator();
+	public Iterator<Frame> getWorkspaceIterator();
 }

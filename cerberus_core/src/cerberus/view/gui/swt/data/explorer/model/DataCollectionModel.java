@@ -146,22 +146,22 @@ public class DataCollectionModel extends AModel {
 		fireAdd(pathway);
 	}	
 	
-	public List getSets() {
+	public List<DataCollectionModel> getSets() {
 
 		return setList;
 	}
 
-	public List getStorages() {
+	public List<StorageModel> getStorages() {
 
 		return storageList;
 	}
 
-	public List getSelections() {
+	public List<SelectionModel> getSelections() {
 
 		return selectionList;
 	}
 	
-	public List getPathways() {
+	public List<PathwayModel> getPathways() {
 
 		return pathwayList;
 	}

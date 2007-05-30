@@ -58,7 +58,7 @@ implements ITreeContentProvider, IDeltaListener
 	protected void removeListenerFrom(DataCollectionModel set) 
 	{
 		set.removeListener(this);
-		for (Iterator iterator = set.getSets().iterator(); iterator.hasNext();) {
+		for (Iterator <DataCollectionModel> iterator = set.getSets().iterator(); iterator.hasNext();) {
 			DataCollectionModel aSet = (DataCollectionModel) iterator.next();
 			removeListenerFrom(aSet);
 		}
@@ -70,7 +70,7 @@ implements ITreeContentProvider, IDeltaListener
 	protected void addListenerTo(DataCollectionModel set) 
 	{
 		set.addListener(this);
-		for (Iterator iterator = set.getSets().iterator(); iterator.hasNext();) {
+		for (Iterator <DataCollectionModel> iterator = set.getSets().iterator(); iterator.hasNext();) {
 			DataCollectionModel aSet = (DataCollectionModel) iterator.next();
 			addListenerTo(aSet);
 		}

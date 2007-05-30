@@ -1,5 +1,6 @@
 package cerberus.manager.view;
 
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.net.dwt.swing.WorkspaceSwingFrame;
+//import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.IView;
@@ -100,8 +101,9 @@ implements IViewManager, IViewGLCanvasManager {
 	 * List of HTML browser view reps
 	 */
 	protected ArrayList<IViewRep> arHTMLBrowserViewRep;
-	
-	protected ArrayList<WorkspaceSwingFrame> arWorkspaceSwingFrame;
+		
+	//protected ArrayList<WorkspaceSwingFrame> arWorkspaceSwingFrame;
+	protected ArrayList<Frame> arWorkspaceSwingFrame;
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
@@ -130,7 +132,7 @@ implements IViewManager, IViewGLCanvasManager {
 
 		arDataExplorerViewRep = new ArrayList<IViewRep>();
 		arHTMLBrowserViewRep = new ArrayList<IViewRep>();
-		arWorkspaceSwingFrame = new ArrayList<WorkspaceSwingFrame>();
+		arWorkspaceSwingFrame = new ArrayList<Frame>();
 
 		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
@@ -718,7 +720,7 @@ implements IViewManager, IViewGLCanvasManager {
 			} // while
 		} // if
 
-		Iterator <WorkspaceSwingFrame> iterFrame = arWorkspaceSwingFrame.iterator();		
+		Iterator <Frame> iterFrame = arWorkspaceSwingFrame.iterator();		
 		while ( iterFrame.hasNext())
 		{
 			iterFrame.next().dispose();
@@ -808,13 +810,15 @@ implements IViewManager, IViewGLCanvasManager {
 	}
 
 
-	public WorkspaceSwingFrame createWorkspace(ManagerObjectType useViewCanvasType, String sAditionalParameter) {
+	public Frame createWorkspace(ManagerObjectType useViewCanvasType, String sAditionalParameter) {
 
 		switch (useViewCanvasType)
 		{
 		case VIEW_NEW_FRAME:
-			WorkspaceSwingFrame newJFrame = 
-				new WorkspaceSwingFrame( refGeneralManager, true);
+//			WorkspaceSwingFrame newJFrame = 
+//				new WorkspaceSwingFrame( refGeneralManager, true);
+			Frame newJFrame = 
+				new Frame();
 			arWorkspaceSwingFrame.add(newJFrame);
 			
 			return newJFrame;
@@ -828,7 +832,7 @@ implements IViewManager, IViewGLCanvasManager {
 	}
 
 
-	public Iterator<WorkspaceSwingFrame> getWorkspaceIterator() {
+	public Iterator<Frame> getWorkspaceIterator() {
 
 		return arWorkspaceSwingFrame.iterator();
 	}

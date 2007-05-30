@@ -133,7 +133,12 @@ implements IView {
 	    dataCombo.addSelectionListener(new SelectionAdapter() {
 	    	public void widgetSelected(SelectionEvent e) {
 
-	    		int iSelectedViewDataSetId = StringConversionTool.convertStringToInt( 
+	    	
+//	    		int iSelectedViewDataSetId = StringConversionTool.convertStringToInt( 
+//	    				arSetIDs.get(dataCombo.getSelectionIndex()), 
+//	    				0);
+	    		
+	    		iCurrentSelectedSetId = StringConversionTool.convertStringToInt( 
 	    				arSetIDs.get(dataCombo.getSelectionIndex()), 
 	    				0);
 	    		
@@ -161,18 +166,18 @@ implements IView {
 	
 	protected void fillCombos() {
 		
-		Collection<IView> arViews = refGeneralManager.getSingelton().
-			getViewGLCanvasManager().getAllViews();
-		
+//		Collection<IView> arViews = refGeneralManager.getSingelton().
+//			getViewGLCanvasManager().getAllViews();
+//		
 //		Collection<IGLCanvasUser> arGLCanvasUsers = refGeneralManager.getSingelton().
 //			getViewGLCanvasManager().getAllGLCanvasUsers();
-
-		Iterator<IView> iterViews = arViews.iterator();
-//		Iterator<IGLCanvasUser> iterGLCanvasUsers = arGLCanvasUsers.iterator();
-		IView tmpView = null;
-//		IGLCanvasUser tmpGLCanvasUser = null;
-
-		String sItemText = "";
+//
+//		Iterator<IView> iterViews = arViews.iterator();
+////		Iterator<IGLCanvasUser> iterGLCanvasUsers = arGLCanvasUsers.iterator();
+//		IView tmpView = null;
+////		IGLCanvasUser tmpGLCanvasUser = null;
+//
+//		String sItemText = "";
 		arFilteredViews.clear();
 
 		//FIXME: adjust to new SET concept of ViewRep

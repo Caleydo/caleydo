@@ -9,8 +9,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
 import java.awt.Point;
 
-import javax.media.opengl.GLAutoDrawable;
-
 import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.math.MathUtil;

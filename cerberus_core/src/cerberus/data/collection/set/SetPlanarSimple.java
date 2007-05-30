@@ -477,13 +477,15 @@ implements ISet {
 		//assert false : "not implemented update yet";
 	    //TODO check if storage need to be tested also?
 		
-		SetUpdateChacheId updateSelection = new SetUpdateChacheId <IVirtualArray> () ;		
+		SetUpdateChacheId <IVirtualArray, IStorage> updateSelection = new SetUpdateChacheId <IVirtualArray, IStorage> () ;		
 		iCacheId = updateSelection.updateCacheId( vecRefSelection_Array,
 				iCacheId );
 		
-		SetUpdateChacheId updateStorage = new SetUpdateChacheId <IStorage> ();		
-		iCacheId = updateSelection.updateCacheId( vecRefStorage_Array,
+		//SetUpdateChacheId <IStorage> updateStorage = new SetUpdateChacheId <IStorage> ();		
+		iCacheId = updateSelection.updateCacheIdSecondary( vecRefStorage_Array,
 				iCacheId );
+		
+		//FIXME: test this code!!
 		
 		return this.iCacheId;
 	}
