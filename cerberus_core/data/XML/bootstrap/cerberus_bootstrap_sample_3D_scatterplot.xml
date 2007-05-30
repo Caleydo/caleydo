@@ -126,8 +126,8 @@
  	    
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION_HANDLER"   	cmdId="69991" targetId="94501" label="Selection Handler"	attrib1="84401" attrib2="79401" />
  
- 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="INT;ABORT" attrib2="55101" />			   						   	
+ 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30_100sets_edited.gpr"	attrib1="INT;ABORT" attrib2="55101" />			   						   	
  
  			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="65301" label="Pathway storage" attrib1="INT" attrib2="271 272 260" />
  

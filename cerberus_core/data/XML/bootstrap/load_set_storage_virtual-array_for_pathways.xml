@@ -47,11 +47,11 @@
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_VIEW" 	cmdId="69991"   targetId="105101" />
 	-->
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
 			attrib1="SKIP;SKIP;SKIP;INT;ABORT" attrib2="36101" attrib3="32 -1" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/MicroarrayData/gpr_format/slide30.gpr"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="37101" attrib3="32 -1" />						
 							
 </details>
