@@ -42,6 +42,18 @@ public class BitmapLoader {
             int nYPixelsMeter = bytesToInt(bitmapInfoHeader, 28);
             int nImportantColours = bytesToInt(bitmapInfoHeader, 36);
 
+            System.out.println(" All details: nSize=" + nSize +
+            		"\n nWidth=" + nWidth +
+            		"\n nHeight=" + nHeight + 
+            		"\n nBiSize=" + nBiSize +
+            		"\n nPlanes=" + nPlanes + 
+            		"\n nBitCount=" + nBitCount + 
+            		"\n nSizeImage=" + nSizeImage + 
+            		"\n nCompression=" + nCompression +
+            		"\n nColoursUsed=" + nColoursUsed + 
+            		"\n nXPixelsMeter=" + nXPixelsMeter +
+            		"\n nYPixelsMeter=" + nYPixelsMeter +
+            		"\n nImportantColours=" + nImportantColours );            
             if (nBitCount == 24) {
                 image = read24BitBitmap(nSizeImage, nHeight, nWidth, input);
             } else if (nBitCount == 8) {

@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
+//import java.util.Map.Entry;
 
-import cerberus.data.mapping.GenomeMappingDataType;
+//import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.manager.data.genome.GenomeIdMapInt2Int;
-import cerberus.manager.data.genome.IGenomeIdMap;
+//import cerberus.manager.data.genome.GenomeIdMapInt2Int;
+//import cerberus.manager.data.genome.IGenomeIdMap;
 
 
 

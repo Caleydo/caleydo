@@ -2,8 +2,8 @@ package cerberus.util.midi.device;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -16,17 +16,17 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
-import javax.sound.midi.Synthesizer;
+//import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.SysexMessage;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
+//import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
-import javax.swing.JComboBox;
+//import javax.swing.JComboBox;
 
 
 
@@ -51,6 +51,7 @@ public class MidiConnectorSwingSliders
  	*/
 	private boolean		DEBUG = true;
 	
+	@SuppressWarnings("unused")
 	private MidiMessage lastMidiMessage = null;
 	
 	private ShortMessage lastShortMidiMessage = null;  
@@ -59,7 +60,7 @@ public class MidiConnectorSwingSliders
 	
 	private int iNumberActiveMidiDevices = 0;
 	
-	private int iNumberAllocatedMidiDevices = 0;
+	protected int iNumberAllocatedMidiDevices = 0;
 	
 	protected MidiDevice.Info	info[];
 	protected MidiDevice 		inputDevice []; 	
@@ -86,7 +87,7 @@ public class MidiConnectorSwingSliders
 	
 	protected Hashtable <Integer,Integer> hashMidiDeviceIdLoopupTable;
 	
-	private String [][] settingsArray;
+	//private String [][] settingsArray;
 	
 	public MidiConnectorSwingSliders() {
 		
@@ -342,9 +343,9 @@ public class MidiConnectorSwingSliders
 			inputDevice[i].close();
 		}
 		
-		out("Received "+((DumpReceiver) midiReceiver).seCount+" sysex messages with a total of "+((DumpReceiver) midiReceiver).seByteCount+" bytes");
-		out("Received "+((DumpReceiver) midiReceiver).smCount+" short messages with a total of "+((DumpReceiver) midiReceiver).smByteCount+" bytes");
-		out("Received a total of "+(((DumpReceiver) midiReceiver).smByteCount + ((DumpReceiver) midiReceiver).seByteCount)+" bytes");
+		out("Received "+DumpReceiver.seCount+" sysex messages with a total of "+DumpReceiver.seByteCount+" bytes");
+		out("Received "+DumpReceiver.smCount+" short messages with a total of "+DumpReceiver.smByteCount+" bytes");
+		out("Received a total of "+(DumpReceiver.smByteCount + DumpReceiver.seByteCount)+" bytes");
 		
 		
 		try
@@ -412,7 +413,7 @@ public class MidiConnectorSwingSliders
 	}
 	
 	
-	private void printUsageAndExit() {
+	public void printUsage() {
 		out("MidiInDump: usage:");
 		out("  java MidiInDump -h");
 		out("    gives help information");
@@ -422,7 +423,6 @@ public class MidiConnectorSwingSliders
 		out("    -d <input device name>\treads from named device (see '-l')");
 		out("    -n <input device index>\treads from device with given index(see '-l')");
 		out("    -D\tenables debugging output");
-		System.exit(1);
 	}
 	
 	

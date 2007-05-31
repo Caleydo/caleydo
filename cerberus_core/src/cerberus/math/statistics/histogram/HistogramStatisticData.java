@@ -208,6 +208,8 @@ public class HistogramStatisticData <T extends Number > {
 				for ( int i=0; i<iHistogramIntervalLength; i++) {
 					iHistogramIntervalCounter[i] = (int) dCurrentBorder;
 					
+					assert false : "tst what shoudl happen here!";
+					//FIXME: test this for loop!
 					T buffer = (T) new Object();
 //					buffer.
 //					t_histogramBorder[i] = 

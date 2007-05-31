@@ -8,8 +8,8 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
-import javax.sound.midi.Synthesizer;
+//import javax.sound.midi.Receiver;
+//import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 
 import cerberus.util.midi.device.IMidiCallback;
@@ -195,9 +195,9 @@ public class CoreMidiConnector
 			inputDevice[i].close();
 		}
 		
-		out("Received "+((DumpReceiver) midiReceiver).seCount+" sysex messages with a total of "+((DumpReceiver) midiReceiver).seByteCount+" bytes");
-		out("Received "+((DumpReceiver) midiReceiver).smCount+" short messages with a total of "+((DumpReceiver) midiReceiver).smByteCount+" bytes");
-		out("Received a total of "+(((DumpReceiver) midiReceiver).smByteCount + ((DumpReceiver) midiReceiver).seByteCount)+" bytes");
+		out("Received "+DumpReceiver.seCount+" sysex messages with a total of "+DumpReceiver.seByteCount+" bytes");
+		out("Received "+DumpReceiver.smCount+" short messages with a total of "+DumpReceiver.smByteCount+" bytes");
+		out("Received a total of "+(DumpReceiver.smByteCount + DumpReceiver.seByteCount)+" bytes");
 		
 		
 		try
@@ -265,7 +265,7 @@ public class CoreMidiConnector
 	}
 	
 	
-	private void printUsageAndExit() {
+	public void printUsage() {
 		out("MidiInDump: usage:");
 		out("  java MidiInDump -h");
 		out("    gives help information");
@@ -275,10 +275,11 @@ public class CoreMidiConnector
 		out("    -d <input device name>\treads from named device (see '-l')");
 		out("    -n <input device index>\treads from device with given index(see '-l')");
 		out("    -D\tenables debugging output");
-		System.exit(1);
 	}
 	
-	
+	public int getNumberAllocatedMidiDevices() {
+		return iNumberAllocatedMidiDevices;
+	}
 	
 	private void out(String strMessage) {
 		System.out.println(strMessage);

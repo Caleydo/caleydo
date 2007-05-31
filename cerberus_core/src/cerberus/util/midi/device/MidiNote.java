@@ -89,9 +89,10 @@ public class MidiNote
 		 *	best resolution you can expect are 10 ms.
 		 */
 		int	nDuration = 0;
-		int	nArgumentIndexOffset = 0;
 		String	strDeviceName = null;
 		
+//		int	nArgumentIndexOffset = 0;
+//				
 //		if (args.length == 4)
 //		{
 //			strDeviceName = args[0];
@@ -240,7 +241,7 @@ public class MidiNote
 
 
 
-	private static void printUsageAndExit()
+	public static void printUsage()
 	{
 		out("MidiNote: usage:");
 		out("  java MidiNote [<device name>] <note number> <velocity> <duration>");
