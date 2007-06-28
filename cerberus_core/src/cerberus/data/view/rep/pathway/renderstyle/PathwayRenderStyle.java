@@ -28,9 +28,15 @@ extends ARenderStyle {
 	protected NodeShape compoundNodeShape;
 	protected NodeShape pathwayNodeShape;
 	
+	// Colors for pathway elements.
+	// Separate colors are provided if gene mapping is turned on.
 	protected Color enzymeNodeColor;
+	protected Color enzymeNodeColorGeneMapped;
 	protected Color compoundNodeColor;
+	protected Color compoundNodeColorGeneMapped;
 	protected Color pathwayNodeColor;
+	protected Color pathwayNodeColorGeneMapped;
+	
 	protected Color highlightedNodeColor;
 	
 	/**
@@ -86,16 +92,19 @@ extends ARenderStyle {
 	 */
 	public PathwayRenderStyle() {
 		
-		enzymeNodeShape = NodeShape.RECTANGULAR;
-		compoundNodeShape = NodeShape.ROUND;
-		pathwayNodeShape = NodeShape.ROUNDRECTANGULAR;
+		enzymeNodeShape 	= NodeShape.RECTANGULAR;
+		compoundNodeShape 	= NodeShape.ROUND;
+		pathwayNodeShape 	= NodeShape.ROUNDRECTANGULAR;
 		
-		enzymeNodeColor = Color.GRAY;
-		compoundNodeColor = Color.DARK_GRAY;
-		pathwayNodeColor = new Color(0.51f, 0.44f, 1.0f);
-		highlightedNodeColor = new Color(0.0f, 0.0f, 1.0f);
-		//highlightedNodeColor = new Color(1.0f, 0.0f, 0.0f);
-		neighborhoodNodeColorArray = new Color [neighborhoodNodeColorArraysize];
+		enzymeNodeColor 			= new Color(0.53f, 0.81f, 1.0f);
+		enzymeNodeColorGeneMapped 	= Color.GRAY;
+		compoundNodeColor 			= Color.GREEN;
+		compoundNodeColorGeneMapped = Color.DARK_GRAY;
+		pathwayNodeColor 			= new Color(0.51f, 0.44f, 1.0f);
+		pathwayNodeColorGeneMapped 	= new Color(1, 0.65f, 0.31f);
+		highlightedNodeColor 		= new Color(0.0f, 0.0f, 1.0f);
+		//highlightedNodeColor 		= new Color(1.0f, 0.0f, 0.0f);
+		neighborhoodNodeColorArray 	= new Color [neighborhoodNodeColorArraysize];
 		
 		/* current highlighted */
 		neighborhoodNodeColorArray[0] = new Color(1.0f, 0.0f, 0.0f);  //highlightedNodeColor;
@@ -112,28 +121,31 @@ extends ARenderStyle {
 //		neighborhoodNodeColor_2 = new Color(1.0f, 1.0f, 0.0f);
 //		neighborhoodNodeColor_3 = new Color(1.0f, 1.0f, 0.5f);
 		
-		relationEdgeLineStyle = EdgeLineStyle.NORMAL;
-		reactionEdgeLineStyle = EdgeLineStyle.NORMAL;
-		maplinkEdgeLineStyle = EdgeLineStyle.DASHED;
+		relationEdgeLineStyle 	= EdgeLineStyle.NORMAL;
+		reactionEdgeLineStyle 	= EdgeLineStyle.NORMAL;
+		maplinkEdgeLineStyle 	= EdgeLineStyle.DASHED;
 		
-		relationEdgeArrowHeadStyle = EdgeArrowHeadStyle.FILLED;
-		reactionEdgeArrowHeadStyle = EdgeArrowHeadStyle.FILLED;
-		mapEdgeArrowHeadStyle = EdgeArrowHeadStyle.EMPTY;
+		relationEdgeArrowHeadStyle 	= EdgeArrowHeadStyle.FILLED;
+		reactionEdgeArrowHeadStyle 	= EdgeArrowHeadStyle.FILLED;
+		mapEdgeArrowHeadStyle 		= EdgeArrowHeadStyle.EMPTY;
 		
-		relationEdgeColor = Color.GREEN;
-		reactionEdgeColor = Color.BLUE;
-		maplinkEdgeColor = Color.MAGENTA;
+		relationEdgeColor 	= Color.GREEN;
+		reactionEdgeColor 	= Color.BLUE;
+		maplinkEdgeColor 	= Color.MAGENTA;
 		
-		fEnzymeNodeWidth = 45;
-		fEnzymeNodeHeight = 17;
-		fCompoundNodeWidth = 8;
+		fEnzymeNodeWidth 	= 45;
+		fEnzymeNodeHeight 	= 17;
+		fCompoundNodeWidth 	= 8;
 		fCompoundNodeHeight = 8;
-		fPathwayNodeWidth = 70;
-		fPathwayNodeHeight = 27;
+		fPathwayNodeWidth 	= 70;
+		fPathwayNodeHeight 	= 27;
 	}
 
-	public Color getCompoundNodeColor() {
+	public Color getCompoundNodeColor(boolean bGeneMappingEnabled) {
 	
+		if (bGeneMappingEnabled)
+			return compoundNodeColorGeneMapped;
+		
 		return compoundNodeColor;
 	}
 
@@ -152,8 +164,11 @@ extends ARenderStyle {
 		this.compoundNodeShape = compoundNodeShape;
 	}
 
-	public Color getEnzymeNodeColor() {
+	public Color getEnzymeNodeColor(boolean bGeneMappingEnabled) {
 	
+		if (bGeneMappingEnabled)
+			return enzymeNodeColorGeneMapped;
+		
 		return enzymeNodeColor;
 	}
 
@@ -203,8 +218,11 @@ extends ARenderStyle {
 		this.maplinkEdgeLineStyle = maplinkEdgeLineStyle;
 	}
 
-	public Color getPathwayNodeColor() {
+	public Color getPathwayNodeColor(boolean bGeneMappingEnabled) {
 	
+		if (bGeneMappingEnabled)
+			return pathwayNodeColorGeneMapped;
+		
 		return pathwayNodeColor;
 	}
 

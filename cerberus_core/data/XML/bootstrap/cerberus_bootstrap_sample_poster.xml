@@ -14,7 +14,9 @@
 			<read-xml-file target="data/XML/bootstrap/load_set_storage_virtual-array_for_pathways_poster.xml" />	   				
 
       	<!-- Creating GenomeId mapping -->
+      	<!--
 		  	<read-xml-file target="data/XML/bootstrap/load_genome_id_mapping.xml" />	   				
+		-->
 			
 		<!-- Creating Heatmap Data -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	targetId="38101" label="target Set for file	new" 
@@ -63,9 +65,9 @@
  	  
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PANEL_PATHWAY_3D"		cmdId="69992"	targetId="80401" parent="28401" label="GL Layerd Pathway 3D" 
 							gl_origin="-1 0 5" 
-							gl_rotation="1 0 0 180"			
-							atrib4="transparency 0.4"				
-							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 1.0f"								
+							gl_rotation="1 0 0 180"							
+							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 1.0f"
+							attrib4="transparency 0.4"								
 							detail="75101 35101 36101 37101 95101" /> 
 	
 		<!-- Window 14331 -->
@@ -79,7 +81,8 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_LAYERED_PATHWAY_3D"		cmdId="69992"	targetId="81401" parent="24401" label="GL Layerd Pathway 3D" 
 							gl_origin="-1 1 6.6" 
 							gl_rotation="1 0 0 180"						
-							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"								
+							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
+							attrib4="transparency 0.4"								
 							detail="34101" /> 
 		-->					
 		
@@ -117,9 +120,9 @@
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_LAYERED_PATHWAY_3D"		cmdId="69994"	targetId="82401" parent="16401" label="GL Layerd Pathway 3D" 
 							gl_origin="-1 1 6.6" 
-							gl_rotation="1 0 0 180"		
-							atrib4="transparency 0.4" 				
-							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"								
+							gl_rotation="1 0 0 180"					
+							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
+							attrib4="transparency 0.5" 								
 							detail="33101 35101 36101 37101 85101" /> 
 							
 							

@@ -140,6 +140,8 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	
 	protected boolean bBlowUp = true;
 	
+	protected boolean bEnableGeneMapping = false;
+	
 	protected float fHighlightedNodeBlowFactor = 1.1f;
 	
 	protected boolean bAcordionDirection = false;
@@ -741,7 +743,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 
 			if (bHighlightVertex == false)
 			{
-				tmpNodeColor = refRenderStyle.getPathwayNodeColor();
+				tmpNodeColor = refRenderStyle.getPathwayNodeColor(bEnableGeneMapping);
 				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 						tmpNodeColor.getGreen() / 255.0f, 
 						tmpNodeColor.getBlue() / 255.0f, 1.0f);
@@ -767,7 +769,7 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 			}
 			else 
 			{
-				tmpNodeColor = refRenderStyle.getCompoundNodeColor();
+				tmpNodeColor = refRenderStyle.getCompoundNodeColor(bEnableGeneMapping);
 				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 						tmpNodeColor.getGreen() / 255.0f, 
 						tmpNodeColor.getBlue() / 255.0f, 1.0f);				//gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f); // green
@@ -784,89 +786,101 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		
 			if (bHighlightVertex == true)
 			{	
+				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);	
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 		
 			}
 			else 
 			{
-				//FIXME: why not use ColorMapping.java ??
-				EnzymeToExpressionColorMapper enzymeToExpressionColorMapper =
-					new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
-				
-				ArrayList<Color> arMappingColor = 
-					enzymeToExpressionColorMapper.getMappingColorArrayByVertex(vertexRep);
-				
-				// Factor indicates how often the enzyme needs to be split
-				// so that all genes can be mapped.
-				int iSplitFactor = arMappingColor.size();
-				
-				fPathwayNodeWidth = 
-					refRenderStyle.getEnzymeNodeWidth() * SCALING_FACTOR_X;
-					
-				gl.glPushMatrix();
-				double bla = 0;
-				
-				if (iSplitFactor > 1)
+				if (bEnableGeneMapping == false)
 				{
-//					System.out.println("Node width: " +fPathwayNodeWidth);
-//					System.out.println("Number of genes to map: " +iSplitFactor);
-//					System.out.println("Start position: "+bla);
-					gl.glTranslatef(-(fPathwayNodeWidth / 2.0f), 0.0f, 0.0f);
-					gl.glTranslatef(fPathwayNodeWidth / (iSplitFactor * 2.0f), 0.0f, 0.0f);
-				
-					bla = bla -fPathwayNodeWidth / 2.0f + fPathwayNodeWidth / (iSplitFactor * 2.0f);
-//					System.out.println("Initial position:" +bla);
+					tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
+					gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+							tmpNodeColor.getGreen() / 255.0f, 
+							tmpNodeColor.getBlue() / 255.0f, 1.0f);	
+					gl.glCallList(iEnzymeNodeDisplayListId);
 				}
-				
-				for (int iSplitIndex = 0; iSplitIndex < iSplitFactor; iSplitIndex++)
+				else
 				{
-					tmpNodeColor = arMappingColor.get(iSplitIndex);
-				
-					// Check if the mapping gave back a valid color
-					if (!tmpNodeColor.equals(Color.BLACK))
+					EnzymeToExpressionColorMapper enzymeToExpressionColorMapper =
+						new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
+					
+					ArrayList<Color> arMappingColor = 
+						enzymeToExpressionColorMapper.getMappingColorArrayByVertex(vertexRep);
+					
+					// Factor indicates how often the enzyme needs to be split
+					// so that all genes can be mapped.
+					int iSplitFactor = arMappingColor.size();
+					
+					fPathwayNodeWidth = 
+						refRenderStyle.getEnzymeNodeWidth() * SCALING_FACTOR_X;
+						
+					gl.glPushMatrix();
+	//				double bla = 0;
+					
+					if (iSplitFactor > 1)
 					{
+	//					System.out.println("Node width: " +fPathwayNodeWidth);
+	//					System.out.println("Number of genes to map: " +iSplitFactor);
+	//					System.out.println("Start position: "+bla);
+						gl.glTranslatef(-(fPathwayNodeWidth / 2.0f), 0.0f, 0.0f);
+						gl.glTranslatef(fPathwayNodeWidth / (iSplitFactor * 2.0f), 0.0f, 0.0f);
+					
+	//					bla = bla -fPathwayNodeWidth / 2.0f + fPathwayNodeWidth / (iSplitFactor * 2.0f);
+	//					System.out.println("Initial position:" +bla);
+					}
+					
+					for (int iSplitIndex = 0; iSplitIndex < iSplitFactor; iSplitIndex++)
+					{
+						tmpNodeColor = arMappingColor.get(iSplitIndex);
+					
+						// Check if the mapping gave back a valid color
+						if (!tmpNodeColor.equals(Color.BLACK))
+						{
+							gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+									tmpNodeColor.getGreen() / 255.0f, 
+									tmpNodeColor.getBlue() / 255.0f, 1.0f);
+						
+						}
+						// Take the default color
+						else
+						{
+							//gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+							tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
+						}
+						
 						gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 								tmpNodeColor.getGreen() / 255.0f, 
 								tmpNodeColor.getBlue() / 255.0f, 1.0f);
-					
+						
+						gl.glScalef(1.0f / iSplitFactor, 1.0f, 1.0f);
+						gl.glCallList(iEnzymeNodeDisplayListId);
+						gl.glScalef(iSplitFactor, 1.0f, 1.0f);
+	
+						if (iSplitFactor > 1)
+						{
+	//						bla = bla + fPathwayNodeWidth / iSplitFactor;
+	//						System.out.println("Intermediate position: "+bla);
+						
+							gl.glTranslatef(fPathwayNodeWidth / iSplitFactor, 0.0f, 0.0f);
+						}
 					}
-					// Take the default color
-					else
-					{
-						//gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
-						tmpNodeColor = refRenderStyle.getEnzymeNodeColor();
-					}
-					
-					gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-							tmpNodeColor.getGreen() / 255.0f, 
-							tmpNodeColor.getBlue() / 255.0f, 1.0f);
-					
-					gl.glScalef(1.0f / iSplitFactor, 1.0f, 1.0f);
-					gl.glCallList(iEnzymeNodeDisplayListId);
-					gl.glScalef(iSplitFactor, 1.0f, 1.0f);
-
-					if (iSplitFactor > 1)
-					{
-						bla = bla + fPathwayNodeWidth / iSplitFactor;
-//						System.out.println("Intermediate position: "+bla);
-					
-						gl.glTranslatef(fPathwayNodeWidth / iSplitFactor, 0.0f, 0.0f);
-					}
+	
+					gl.glPopMatrix();
+	//				if (iSplitFactor > 1) 
+	//				{
+	////					gl.glTranslatef((fPathwayNodeWidth / (float)iSplitFactor*2.0f), 0.0f, 0.0f);
+	//					gl.glTranslatef(-fPathwayNodeWidth, 0.0f, 0.0f);
+	//					gl.glTranslatef(fPathwayNodeWidth / (iSplitFactor * 2.0f), 0.0f, 0.0f);
+	//					
+	//					bla = bla - fPathwayNodeWidth + fPathwayNodeWidth / (iSplitFactor * 2.0f);
+	//					System.out.println("End position: " +bla);
+	//				}
 				}
-
-				gl.glPopMatrix();
-//				if (iSplitFactor > 1) 
-//				{
-////					gl.glTranslatef((fPathwayNodeWidth / (float)iSplitFactor*2.0f), 0.0f, 0.0f);
-//					gl.glTranslatef(-fPathwayNodeWidth, 0.0f, 0.0f);
-//					gl.glTranslatef(fPathwayNodeWidth / (iSplitFactor * 2.0f), 0.0f, 0.0f);
-//					
-//					bla = bla - fPathwayNodeWidth + fPathwayNodeWidth / (iSplitFactor * 2.0f);
-//					System.out.println("End position: " +bla);
-//				}
-		
-			}
-		
+			}		
 		}
 
 		gl.glTranslatef(-fCanvasXPos, -fCanvasYPos, -fZLayerValue);
@@ -1506,21 +1520,21 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		//System.out.println("Number of hits: " +iHitCount);
 		IPathwayVertexRep refPickedVertexRep;
 		
-		int iNames = 0;
+		//int iNames = 0;
 		int iPtr = 0;
 		int i = 0;
 		int iPickedPathwayDisplayListNodeId = 0;
 
 		for (i = 0; i < iHitCount; i++)
 		{
-			iNames = iArPickingBuffer[iPtr];
-			System.out.println(" number of names for this hit = " + iNames);
+			//iNames = iArPickingBuffer[iPtr];
+			//System.out.println(" number of names for this hit = " + iNames);
 			iPtr++;
-			System.out.println(" z1 is  " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
+			//System.out.println(" z1 is  " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
 			iPtr++;
-			System.out.println(" z2 is " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
+			//System.out.println(" z2 is " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
 			iPtr++;
-			System.out.println(" names are ");
+			//System.out.println(" names are ");
 			
 //			if (iNames != 2)
 //				return;
@@ -1659,94 +1673,97 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 				equals(PathwayVertexType.enzyme))
 		{
 			String sEnzymeCode = refPickedVertexRep.getVertex().getElementTitle().substring(3);
-			String sAccessionCode = "";
-			String sTmpGeneName = "";
-			String sMicroArrayCode = "";
-			int iAccessionID = 0;
-			int iGeneID = 0;
-			Collection<Integer> iArTmpAccessionId = null;
-			
-			// FIXME: From where can we get the storage ID?
-			int iExpressionStorageId = 45301;
-			
 			refInfoAreaCaption.add("Enzyme: ");
 			refInfoAreaContent.add(sEnzymeCode);
 			
-			//Just for testing mapping!
-			IGenomeIdManager refGenomeIdManager = 
-				refGeneralManager.getSingelton().getGenomeIdManager();
-			
-			int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
-					GenomeMappingType.ENZYME_CODE_2_ENZYME);
-			
-			if (iEnzymeID == -1)
-				return;
-			
-			Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
-					GenomeMappingType.ENZYME_2_NCBI_GENEID);
-			
-			if(iTmpGeneId == null)
-				return;
-			
-			Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
-			Iterator<Integer> iterTmpAccessionId = null;
-			while (iterTmpGeneId.hasNext())
+			if (bEnableGeneMapping)
 			{
-				iGeneID = iterTmpGeneId.next();
+				String sAccessionCode = "";
+				String sTmpGeneName = "";
+				String sMicroArrayCode = "";
+				int iAccessionID = 0;
+				int iGeneID = 0;
+				Collection<Integer> iArTmpAccessionId = null;
 				
-				String sNCBIGeneId = refGenomeIdManager.getIdStringFromIntByMapping(iGeneID, 
-						GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+				// FIXME: From where can we get the storage ID?
+				int iExpressionStorageId = 45301;
 				
-				refInfoAreaCaption.add("NCBI GeneID: ");
-				refInfoAreaContent.add(sNCBIGeneId);
+				//Just for testing mapping!
+				IGenomeIdManager refGenomeIdManager = 
+					refGeneralManager.getSingelton().getGenomeIdManager();
 				
-				iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
-						GenomeMappingType.NCBI_GENEID_2_ACCESSION);
-		
-				if (iAccessionID == -1)
-					break;
+				int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
+						GenomeMappingType.ENZYME_CODE_2_ENZYME);
 				
-				sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
-						GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-								
-				refInfoAreaCaption.add("Accession: ");
-				refInfoAreaContent.add(sAccessionCode);
+				if (iEnzymeID == -1)
+					return;
 				
-				sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
-						GenomeMappingType.ACCESSION_2_GENE_NAME);
-		
-				refInfoAreaCaption.add("Gene name: ");
-				refInfoAreaContent.add(sTmpGeneName);
+				Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
+						GenomeMappingType.ENZYME_2_NCBI_GENEID);
 				
-				iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
-						GenomeMappingType.ACCESSION_2_MICROARRAY);
+				if(iTmpGeneId == null)
+					return;
 				
-				if(iArTmpAccessionId == null)
-					continue;
-						
-				iterTmpAccessionId = iArTmpAccessionId.iterator();
-				while (iterTmpAccessionId.hasNext())
+				Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
+				Iterator<Integer> iterTmpAccessionId = null;
+				while (iterTmpGeneId.hasNext())
 				{
-					int iMicroArrayId = iterTmpAccessionId.next();
+					iGeneID = iterTmpGeneId.next();
 					
-					sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iMicroArrayId, 
-							GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
+					String sNCBIGeneId = refGenomeIdManager.getIdStringFromIntByMapping(iGeneID, 
+							GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 					
-					refInfoAreaCaption.add("MicroArray: ");
-					refInfoAreaContent.add(sMicroArrayCode);
+					refInfoAreaCaption.add("NCBI GeneID: ");
+					refInfoAreaContent.add(sNCBIGeneId);
 					
-					//Get expression value by MicroArrayID
-					IStorage refExpressionStorage = refGeneralManager.getSingelton().
-						getStorageManager().getItemStorage(iExpressionStorageId);
-					int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
-							iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+					iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
+							GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+			
+					if (iAccessionID == -1)
+						break;
 					
-					// Get rid of 770 internal ID identifier
-					iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
+					sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
+							GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+									
+					refInfoAreaCaption.add("Accession: ");
+					refInfoAreaContent.add(sAccessionCode);
 					
-					int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
-					refInfoAreaCaption.add("Expression value: ");
-					refInfoAreaContent.add(new Integer(iExpressionValue).toString());
+					sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
+							GenomeMappingType.ACCESSION_2_GENE_NAME);
+			
+					refInfoAreaCaption.add("Gene name: ");
+					refInfoAreaContent.add(sTmpGeneName);
+					
+					iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
+							GenomeMappingType.ACCESSION_2_MICROARRAY);
+					
+					if(iArTmpAccessionId == null)
+						continue;
+							
+					iterTmpAccessionId = iArTmpAccessionId.iterator();
+					while (iterTmpAccessionId.hasNext())
+					{
+						int iMicroArrayId = iterTmpAccessionId.next();
+						
+						sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iMicroArrayId, 
+								GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
+						
+						refInfoAreaCaption.add("MicroArray: ");
+						refInfoAreaContent.add(sMicroArrayCode);
+						
+						//Get expression value by MicroArrayID
+						IStorage refExpressionStorage = refGeneralManager.getSingelton().
+							getStorageManager().getItemStorage(iExpressionStorageId);
+						int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
+								iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+						
+						// Get rid of 770 internal ID identifier
+						iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
+						
+						int iExpressionValue = (refExpressionStorage.getArrayInt())[iExpressionStorageIndex];
+						refInfoAreaCaption.add("Expression value: ");
+						refInfoAreaContent.add(new Integer(iExpressionValue).toString());
+					}
 				}
 			}
 		}

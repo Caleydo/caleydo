@@ -246,6 +246,7 @@ extends AGLCanvasPathway3D {
 		
 	}
 	
+	// FIXME: method not used????
 	protected void renderPathway(final GL gl,
 			final Pathway refTmpPathway, 
 			int iDisplayListNodeId) {
