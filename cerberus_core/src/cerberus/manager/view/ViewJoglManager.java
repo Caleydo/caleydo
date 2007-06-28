@@ -1,6 +1,6 @@
 package cerberus.manager.view;
 
-import java.awt.Frame;
+//import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.Enumeration;
 
+import javax.swing.JFrame;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
@@ -103,7 +104,7 @@ implements IViewManager, IViewGLCanvasManager {
 	protected ArrayList<IViewRep> arHTMLBrowserViewRep;
 		
 	//protected ArrayList<WorkspaceSwingFrame> arWorkspaceSwingFrame;
-	protected ArrayList<Frame> arWorkspaceSwingFrame;
+	protected ArrayList<JFrame> arWorkspaceJFrame;
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
@@ -132,7 +133,7 @@ implements IViewManager, IViewGLCanvasManager {
 
 		arDataExplorerViewRep = new ArrayList<IViewRep>();
 		arHTMLBrowserViewRep = new ArrayList<IViewRep>();
-		arWorkspaceSwingFrame = new ArrayList<Frame>();
+		arWorkspaceJFrame = new ArrayList<JFrame>();
 
 		refGeneralManager.getSingelton().setViewGLCanvasManager(this);
 	}
@@ -720,7 +721,7 @@ implements IViewManager, IViewGLCanvasManager {
 			} // while
 		} // if
 
-		Iterator <Frame> iterFrame = arWorkspaceSwingFrame.iterator();		
+		Iterator <JFrame> iterFrame = arWorkspaceJFrame.iterator();		
 		while ( iterFrame.hasNext())
 		{
 			iterFrame.next().dispose();
@@ -810,16 +811,16 @@ implements IViewManager, IViewGLCanvasManager {
 	}
 
 
-	public Frame createWorkspace(ManagerObjectType useViewCanvasType, String sAditionalParameter) {
+	public JFrame createWorkspace(ManagerObjectType useViewCanvasType, String sAditionalParameter) {
 
 		switch (useViewCanvasType)
 		{
 		case VIEW_NEW_FRAME:
 //			WorkspaceSwingFrame newJFrame = 
 //				new WorkspaceSwingFrame( refGeneralManager, true);
-			Frame newJFrame = 
-				new Frame();
-			arWorkspaceSwingFrame.add(newJFrame);
+			JFrame newJFrame = 
+				new JFrame();
+			arWorkspaceJFrame.add(newJFrame);
 			
 			return newJFrame;
 			
@@ -832,8 +833,8 @@ implements IViewManager, IViewGLCanvasManager {
 	}
 
 
-	public Iterator<Frame> getWorkspaceIterator() {
+	public Iterator<JFrame> getWorkspaceIterator() {
 
-		return arWorkspaceSwingFrame.iterator();
+		return arWorkspaceJFrame.iterator();
 	}
 }

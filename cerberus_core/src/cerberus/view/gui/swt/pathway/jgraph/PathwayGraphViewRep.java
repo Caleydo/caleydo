@@ -798,7 +798,7 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 
 		IViewGLCanvasManager refViewCanvasMng = refGeneralManager
 				.getSingelton().getViewGLCanvasManager();
-		Frame workspaceFrame = refViewCanvasMng.createWorkspace(
+		JFrame workspaceFrame = refViewCanvasMng.createWorkspace(
 				ManagerObjectType.VIEW_NEW_FRAME, "");
 
 		JFrame wnd = (JFrame) workspaceFrame;
