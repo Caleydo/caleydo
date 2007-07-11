@@ -47,6 +47,7 @@ public enum CommandQueueSaxType
 	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_LAYERED_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Layered Pathway 3D"),
 	CREATE_GL_PANEL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Panel Pathway 3D"),	
+	CREATE_GL_JUKEBOX_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox Pathway 3D"),		
 	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),

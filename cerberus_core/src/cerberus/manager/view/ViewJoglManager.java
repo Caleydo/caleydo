@@ -33,6 +33,7 @@ import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap;
 import cerberus.view.gui.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.gui.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
+import cerberus.view.gui.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasPanelPathway3D;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
@@ -381,6 +382,13 @@ implements IViewManager, IViewGLCanvasManager {
 					iParentContainerId, 
 					sLabel);	
 
+		case CREATE_GL_JUKEBOX_PATHWAY_3D:
+			return new GLCanvasJukeboxPathway3D(
+					refGeneralManager, 
+					iViewId,
+					iParentContainerId, 
+					sLabel);
+			
 		default:
 			throw new CerberusRuntimeException(
 					"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["

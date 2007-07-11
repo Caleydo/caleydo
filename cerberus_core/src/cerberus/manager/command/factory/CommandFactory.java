@@ -22,6 +22,7 @@ import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
+import cerberus.command.view.opengl.CmdGlObjectPathway3DJukebox;
 import cerberus.command.view.opengl.CmdGlObjectPathway3DLayered;
 import cerberus.command.view.opengl.CmdGlObjectPathway3DPanel;
 import cerberus.command.view.opengl.CmdGlObjectScatterPlot2D;
@@ -471,6 +472,16 @@ public class CommandFactory
 		{
  			createdCommand =
 				new CmdGlObjectPathway3DPanel(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);	
+			break;
+		}
+		
+		case CREATE_GL_JUKEBOX_PATHWAY_3D:
+		{
+ 			createdCommand =
+				new CmdGlObjectPathway3DJukebox(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);	
