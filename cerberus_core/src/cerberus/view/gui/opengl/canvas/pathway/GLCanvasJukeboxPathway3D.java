@@ -1,6 +1,8 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
+import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
 
 import java.io.File;
 import java.nio.FloatBuffer;
@@ -18,10 +20,7 @@ import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.slerp.Slerp;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
-
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureIO;
-
+import cerberus.util.opengl.GLTextUtils;
 
 /**
  * Jukebox setup that supports slerp animation.
@@ -32,21 +31,10 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLCanvasJukeboxPathway3D
 extends AGLCanvasUser_OriginRotation
-implements IMediatorReceiver, IMediatorSender {
-	
-	protected float fZLayerValue = 0.0f;
-	
-	protected float fPathwayTextureAspectRatio = 1.0f;
-	
-	protected HashMap<Pathway, Float> refHashPathwayToZLayerValue;
+implements IMediatorReceiver, IMediatorSender {	
 	
 	protected float fTextureTransparency = 1.0f; 
-	
-	/**
-	 * Holds the pathways with the corresponding pathway textures.
-	 */
-	protected HashMap<Pathway, Texture> refHashPathwayToTexture;
-	
+
 	/**
 	 * Pathway that is currently under user interaction in the 2D pathway view.2
 	 */
@@ -54,9 +42,11 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected boolean bShowPathwayTexture = true;
 			
-	protected HashMap<Pathway, FloatBuffer> refHashPathway2ModelMatrix;	
+	protected HashMap<Integer, Mat4f> refHashPathwayIdToModelMatrix;	
 	
 	protected float fSlerpFactor = 0f;
+	
+	protected GLPathwayTextureManager refPathwayTextureManager;
 		
 	/**
 	 * Constructor
@@ -75,9 +65,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		this.refViewCamera.setCaller(this);
 	
-		refHashPathwayToZLayerValue = new HashMap<Pathway, Float>();
-		refHashPathwayToTexture = new HashMap<Pathway, Texture>();
-		refHashPathway2ModelMatrix = new HashMap<Pathway, FloatBuffer>();
+		refHashPathwayIdToModelMatrix = new HashMap<Integer, Mat4f>();
+		refPathwayTextureManager = new GLPathwayTextureManager(refGeneralManager);
 	}
 	
 	/*
@@ -88,7 +77,6 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		// Clearing window and set background to WHITE
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	
 		
 		gl.glEnable(GL.GL_DEPTH_TEST);
@@ -105,27 +93,23 @@ implements IMediatorReceiver, IMediatorSender {
 //		float[] fMatShininess = {25.0f}; 
 		//float[] fLightPosition = {0.0f, 0.0f, 10.0f, 1.0f};
 		//float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
-		float[] fModelAmbient = {0.9f, 0.9f, 0.9f, 1.0f};
-		
-//		gl.glEnable(GL.GL_COLOR_MATERIAL);
+		//float[] fModelAmbient = {0.9f, 0.9f, 0.9f, 1.0f};
 		
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
-//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 //		
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fMatSpecular, 0);
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fMatShininess, 0);
 		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fLightPosition, 0);		
 		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fWhiteLight, 0);
 		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fWhiteLight, 0);
-		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
+		//gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
 
-		gl.glEnable(GL.GL_LIGHTING);
-		gl.glEnable(GL.GL_LIGHT0);		
-		
-//		bCanvasInitialized = true;
-		
-	    gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);  
-	    gl.glEnable(GL.GL_TEXTURE_2D);
+		//gl.glEnable(GL.GL_LIGHTING);
+		//gl.glEnable(GL.GL_LIGHT0);		
+
+	    //gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);  
+	    //gl.glEnable(GL.GL_TEXTURE_2D);
 		
 		initPathwayData();
 		
@@ -134,84 +118,84 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData() {
 	
-		Pathway refTmpPathway = null;
-		
-		// Load pathway storage
-		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-		
-		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
-			iPathwayIndex++)
-		{
-			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-				getItem(iArPathwayIDs[iPathwayIndex]);
-			
-			// Do not load texture if pathway texture was already loaded before.
-			if (refHashPathwayToTexture.containsValue(refTmpPathway))
-				break;
-			
-			if (bShowPathwayTexture)
-				loadBackgroundOverlayImage(refTmpPathway);		
-		}
+
 	}
 
 	
 	public void renderPart(GL gl) {
 
-		slerpTest(gl);
+		//slerpTest(gl);
+		//renderPathwayList(gl);
+		renderLayeredPathways(gl);
+
+		slerpPathwayById(gl, 4310);
+//		slerpPathwayById(gl, 4012);
 	}
 	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(Stringt)
-	 */
-	public void loadBackgroundOverlayImage(Pathway refTexturedPathway) {
+	public void renderLayeredPathways(final GL gl) {
 		
-		int iPathwayId = refTexturedPathway.getPathwayID();
-		String sPathwayTexturePath = "";
-		Texture refPathwayTexture;
+		float fTiltAngleDegree = 57; // degree
+		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		
-		if (iPathwayId < 10)
-		{
-			sPathwayTexturePath = "map0000" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 100 && iPathwayId >= 10)
-		{
-			sPathwayTexturePath = "map000" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 1000 && iPathwayId >= 100)
-		{
-			sPathwayTexturePath = "map00" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 10000 && iPathwayId >= 1000)
-		{
-			sPathwayTexturePath = "map0" + Integer.toString(iPathwayId);
-		}
+		float fLayerYPos = -1f;
 		
-		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
-			+ sPathwayTexturePath +".gif";	
+		gl.glTranslatef(2.5f, fLayerYPos, 0f);
 		
-		try
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+				
+		for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
 		{
-			refPathwayTexture = TextureIO.newTexture(new File(sPathwayTexturePath), false);
-//			refPathwayTexture.bind();
-//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-			refHashPathwayToTexture.put(refTexturedPathway, refPathwayTexture);
+//			Pathway refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+//				getItem(iArPathwayIDs[iPathwayIndex]);
 			
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName() + 
-					": loadBackgroundOverlay(): Loaded Texture for Pathway" +refTexturedPathway.getTitle(),
-					LoggerType.VERBOSE );
-			
-		} catch (Exception e)
-		{
-			System.out.println("Error loading texture " + sPathwayTexturePath);
-			e.printStackTrace();
+			if (bShowPathwayTexture)
+			{				
+				gl.glRotatef(fTiltAngleDegree, -1, 0, 0);
+				gl.glScalef(0.7f, 0.7f, 1.0f);
+				refPathwayTextureManager.renderPathway(gl,iArPathwayIDs[iPathwayIndex], fTextureTransparency);
+				
+				// Store current model-view matrix
+				//FloatBuffer tmpMatrixBuffer = FloatBuffer.allocate(16);
+				//gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, tmpMatrixBuffer);
+				Mat4f refModelViewMatrix = new Mat4f(Mat4f.MAT4F_UNITY);
+				//refModelViewMatrix.set(tmpMatrixBuffer.array());
+				refModelViewMatrix.setRotation(new Rotf(fTiltAngleRad, -1, 0, 0));
+				refModelViewMatrix.setTranslation(new Vec3f(2.5f, fLayerYPos, 0f));
+				refModelViewMatrix.setScale(new Vec3f(0.7f, 0.7f, 0.7f));
+				refHashPathwayIdToModelMatrix.put(iArPathwayIDs[iPathwayIndex], refModelViewMatrix);
+				gl.glScalef(1/0.7f, 1/0.7f, 1.0f);
+				gl.glRotatef(-fTiltAngleDegree, -1, 0, 0);
+				gl.glTranslatef(0f, 1.5f, 0f);
+				fLayerYPos += 1.5f;
+			}
 		}
+
+		gl.glTranslatef(-2.5f, -3.5f, 0f);
 	}
 
+	public void renderPathwayList(final GL gl) {
+		
+		gl.glLineWidth(2);
+		gl.glColor3f(1, 0, 0);
+				
+		for(int iLineIndex = 0; iLineIndex < 320; iLineIndex++) 
+		{
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0.5f, 0, 0);
+			gl.glEnd();
+			
+			gl.glTranslatef(0, -0.03f, 0);
+			
+			if (iLineIndex == 160)
+				gl.glTranslatef(0.55f, 0.03f * iLineIndex, 0);
+		}
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
@@ -229,58 +213,161 @@ implements IMediatorReceiver, IMediatorSender {
 			int[] iArNeighborVertices) {
 	}
 
-	protected void slerpTest(final GL gl) {
-
-		gl.glColor4f(0, 1, 0, 1);
-		
-		gl.glRotatef(57, 1, 0, 0);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(0f, 0f, 0f);			  
-		gl.glVertex3f(0f, 0.5f, 0f);			  
-		gl.glVertex3f(0.5f, 0.5f, 0f);			  
-		gl.glVertex3f(0.5f, 0f, 0f);			  
-		gl.glEnd();	
-		gl.glRotatef(-57, 1, 0, 0);
-		
-		Slerp slerp = new Slerp();
-		Rotf quatResult = null;
-		
-		//slerp.setTranslationOrigin(1.2f, 1.2f, 0f);
-		slerp.setTranslationDestination(-2, 2, 0);
-		slerp.setScaleDestination(3, 3, 3);
-		
-		if (fSlerpFactor < 1)
-		{
-			fSlerpFactor += 0.002f;
-		}
-		else
-			fSlerpFactor = 0f;
-				
-		quatResult = slerp.interpolate(new Rotf(1, 1, 0, 0), new Rotf(0, 0, 0, 0), 
-				fSlerpFactor);
-		
-		gl.glColor4f(1, 0, 0, 1);
-		gl.glRotatef(quatResult.getAngle() * 180 / (float)Math.PI, 
-				quatResult.getX(), 
-				quatResult.getY(), 
-				quatResult.getZ());
-		
-		gl.glTranslatef(slerp.getTranslationResult().x(), 
-				slerp.getTranslationResult().y(), 
-				slerp.getTranslationResult().z());
-				
-		gl.glScalef(slerp.getScaleResult().x(), 
-				slerp.getScaleResult().y(),
-				slerp.getScaleResult().z());
-		
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(0f, 0f, 0f);			  
-		gl.glVertex3f(0f, 0.5f, 0f);			  
-		gl.glVertex3f(0.5f, 0.5f, 0f);			  
-		gl.glVertex3f(0.5f, 0f, 0f);			  
-		gl.glEnd();	
-	}
+//	protected void slerpTest(final GL gl) {
+//
+//		// Draw source objects
+//		gl.glColor4f(0, 1, 0, 1);
+//		
+//		gl.glTranslatef(2.5f, 0f, 0f);
+//		gl.glRotatef(57, -1, 0, 0);
+//		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0f, 0f, 0f);			  
+//		gl.glVertex3f(0f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 0f, 0f);			  
+//		gl.glEnd();	
+//		
+//		gl.glRotatef(-57, -1, 0, 0);
+//		gl.glTranslatef(0f, 1f, 0f);
+//		gl.glRotatef(57, -1, 0, 0);
+//		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0f, 0f, 0f);			  
+//		gl.glVertex3f(0f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 0f, 0f);			  
+//		gl.glEnd();	
+//
+//		gl.glRotatef(-57, -1, 0, 0);
+//		gl.glTranslatef(0f, 1f, 0f);
+//		gl.glRotatef(57, -1, 0, 0);
+//		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0f, 0f, 0f);			  
+//		gl.glVertex3f(0f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 0f, 0f);			  
+//		gl.glEnd();	
+//
+//		gl.glRotatef(-57, -1, 0, 0);
+//		gl.glTranslatef(0f, 1f, 0f);
+//		gl.glRotatef(57, -1, 0, 0);
+//		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0f, 0f, 0f);			  
+//		gl.glVertex3f(0f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 0f, 0f);			  
+//		gl.glEnd();	
+//
+//		gl.glRotatef(-57, -1, 0, 0);
+//		gl.glTranslatef(-2.5f, -3f, 0f);
+//
+//		// Draw destination object
+//		gl.glTranslatef(-2f, 0.5f, 0f);
+//		gl.glScaled(3, 3, 3);
+//		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0f, 0f, 0f);			  
+//		gl.glVertex3f(0f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 0f, 0f);			  
+//		gl.glEnd();	
+//
+//		gl.glScaled(1f/3f, 1f/3f, 1f/3f);
+//		gl.glTranslatef(2f, -0.5f, 0f);
+//		
+//		Slerp slerp = new Slerp();
+//		Rotf quatResult = null;
+//		
+//		slerp.setTranslationOrigin(2.5f, 1f, 0f);
+//		slerp.setTranslationDestination(-2, 0.5f, 0f);
+//		slerp.setScaleDestination(3, 3, 3);
+//		
+//		if (fSlerpFactor < 1)
+//		{
+//			fSlerpFactor += 0.002f;
+//		}
+//		else
+//			fSlerpFactor = 0f;
+//				
+//		quatResult = slerp.interpolate(new Rotf(1, -1, 0, 0), new Rotf(0, 0, 0, 0), 
+//				fSlerpFactor);
+//		
+//		gl.glColor4f(1, 0, 0, 1);
+//		
+//		gl.glTranslatef(slerp.getTranslationResult().x(), 
+//				slerp.getTranslationResult().y(), 
+//				slerp.getTranslationResult().z());
+//		
+//		gl.glRotatef(quatResult.getAngle() * 180 / (float)Math.PI, 
+//				quatResult.getX(), 
+//				quatResult.getY(), 
+//				quatResult.getZ());
+//				
+//		gl.glScalef(slerp.getScaleResult().x(), 
+//				slerp.getScaleResult().y(),
+//				slerp.getScaleResult().z());
+//		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0f, 0f, 0f);			  
+//		gl.glVertex3f(0f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 1f, 0f);			  
+//		gl.glVertex3f(1f, 0f, 0f);			  
+//		gl.glEnd();	
+//	}
 	
+	public void slerpPathwayById(final GL gl, int iPathwayID) {
+		
+		if (refHashPathwayIdToModelMatrix.containsKey(iPathwayID))
+		{
+			Rotf quatOrigin = new Rotf();
+			Rotf quatResult = new Rotf();
+			Mat4f matOrigin = refHashPathwayIdToModelMatrix.get(iPathwayID);
+			
+			quatOrigin.fromMatrix(matOrigin);
+			
+			Slerp slerp = new Slerp();
+			
+			slerp.setTranslationOrigin(matOrigin.get(0,3), matOrigin.get(1,3), matOrigin.get(2,3));
+			slerp.setTranslationDestination(-3, -1, 0f);
+			slerp.setScaleOrigin(matOrigin.get(0,0), matOrigin.get(1, 1), matOrigin.get(2,2));
+			slerp.setScaleDestination(1.7f, 1.7f, 1.7f);
+			
+			if (fSlerpFactor < 1)
+			{
+				fSlerpFactor += 0.001f;
+			}
+			else
+			{
+				fSlerpFactor = 0f;
+			}
+			
+			quatResult = slerp.interpolate(quatOrigin,
+					new Rotf(0, 0, 0, 0), 
+					fSlerpFactor);
+			
+			//gl.glLoadIdentity();
+			//gl.glTranslatef(0, 0, -8);	// why is this needed?
+			
+			gl.glTranslatef(slerp.getTranslationResult().x(), 
+					slerp.getTranslationResult().y(), 
+					slerp.getTranslationResult().z());
+			
+			gl.glRotatef(Vec3f.convertRadiant2Grad(quatResult.getAngle()), 
+					quatResult.getX(), 
+					quatResult.getY(), 
+					quatResult.getZ());
+					
+			gl.glScalef(slerp.getScaleResult().x(), 
+					slerp.getScaleResult().y(),
+					slerp.getScaleResult().z());
+			
+			refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency);
+		}
+	}
+
 	/**
 	 * @param textureTransparency the fTextureTransparency to set
 	 */
