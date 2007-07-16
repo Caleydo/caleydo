@@ -41,8 +41,6 @@ import cerberus.util.colormapping.EnzymeToExpressionColorMapper;
 import cerberus.util.system.SystemTime;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 import com.sun.opengl.util.BufferUtil;
@@ -58,7 +56,7 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public abstract class AGLCanvasPathway3D
 extends AGLCanvasUser_OriginRotation
-implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
+implements IMediatorReceiver, IMediatorSender {
 	
 	protected float [][] viewingFrame;
 	
@@ -66,14 +64,12 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	
 	protected float[] fResolution;
 	
-	protected boolean bInitGLcanvawsWasCalled = false;
-	
 	protected static final int X = GLCanvasStatics.X;
 	protected static final int Y = GLCanvasStatics.Y;
-	private static final int Z = GLCanvasStatics.Z;
+	protected static final int Z = GLCanvasStatics.Z;
 	protected static final int MIN = GLCanvasStatics.MIN;
 	protected static final int MAX = GLCanvasStatics.MAX;
-	private static final int OFFSET = GLCanvasStatics.OFFSET;
+	protected static final int OFFSET = GLCanvasStatics.OFFSET;
 	
 	protected static final float SCALING_FACTOR_X = 0.0025f;
 	protected static final float SCALING_FACTOR_Y = 0.0025f;
@@ -143,8 +139,6 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 	protected boolean bEnableGeneMapping = false;
 	
 	protected float fHighlightedNodeBlowFactor = 1.1f;
-	
-	protected boolean bAcordionDirection = false;
 	
 	protected HashMap<Pathway, FloatBuffer> refHashPathway2ModelMatrix;
 	
@@ -340,17 +334,16 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
 				fHighlightedNodeBlowFactor, fHighlightedNodeBlowFactor);
-		//fillNodeDisplayList(gl);
 		
-		//mpk
-		fillNodeDisplayListFrame(gl);
+		fillNodeDisplayList(gl);
+		
+		//use alternatively frame highlight version created by Michael
+		//fillNodeDisplayListFrame(gl);
 		
 		gl.glScaled(1.0f/fHighlightedNodeBlowFactor, 
 				1.0f/fHighlightedNodeBlowFactor, 1.0f/fHighlightedNodeBlowFactor);  
         
         gl.glEndList();
-        
-        System.out.println("  buildHighlightedEnzymeNodeDisplayList()");
 	}
 	
 	protected void buildCompoundNodeDisplayList(final GL gl) {
@@ -786,10 +779,10 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		
 			if (bHighlightVertex == true)
 			{	
-				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);	
+//				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+//				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+//						tmpNodeColor.getGreen() / 255.0f, 
+//						tmpNodeColor.getBlue() / 255.0f, 1.0f);	
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 		
 			}
@@ -1331,18 +1324,6 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 		// the GLUT font, then provide the string to show
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 
 	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.gui.opengl.IGLCanvasDirector)
-	 */
-	public final void link2GLCanvasDirector(IGLCanvasDirector parentView) {
-		
-		if ( openGLCanvasDirector == null ) {
-			openGLCanvasDirector = parentView;
-		}
-		
-		parentView.addGLCanvasUser( this );
-	}
 
 	/*
 	 *  (non-Javadoc)
@@ -1356,16 +1337,6 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 //		
 //		buildPathwayDisplayList(gl);
 		//getGLCanvas().display();
-	}
-
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#finishGraphBuilding()
-	 */
-	public void finishGraphBuilding() {
-
-		// Draw title
-//		renderText(refCurrentPathway.getTitle(), 0.0f, 0.0f, fZLayerValue);	
 	}
 
 	/*
@@ -1488,11 +1459,12 @@ implements IGLCanvasUser, IMediatorReceiver, IMediatorSender {
 				1.0, 1.0, viewport, 0); // pick width and height is set to 5 (i.e. picking tolerance)
 		
 		float h = (float) (float) (viewport[3]-viewport[1]) / 
-			(float) (viewport[2]-viewport[0]);
+			(float) (viewport[2]-viewport[0]) * 4.0f;
 
 		//FIXME: The frustum should be calculated from the XML parameters in the future
 		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 60.0f);
+		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 60.0f);
+		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 

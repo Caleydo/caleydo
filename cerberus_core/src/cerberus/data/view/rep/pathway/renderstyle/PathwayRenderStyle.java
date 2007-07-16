@@ -83,6 +83,9 @@ extends ARenderStyle {
 	protected float fCompoundNodeHeight;
 	protected float fPathwayNodeWidth;
 	protected float fPathwayNodeHeight;
+	
+	private static final float SCALING_FACTOR_X = 0.0025f;
+	private static final float SCALING_FACTOR_Y = 0.0025f;
 
 	/**
 	 * Constructor.
@@ -133,12 +136,12 @@ extends ARenderStyle {
 		reactionEdgeColor 	= Color.BLUE;
 		maplinkEdgeColor 	= Color.MAGENTA;
 		
-		fEnzymeNodeWidth 	= 45;
-		fEnzymeNodeHeight 	= 17;
-		fCompoundNodeWidth 	= 8;
-		fCompoundNodeHeight = 8;
-		fPathwayNodeWidth 	= 70;
-		fPathwayNodeHeight 	= 27;
+		fEnzymeNodeWidth 	= 45 * SCALING_FACTOR_X / 2.0f;
+		fEnzymeNodeHeight 	= 17 * SCALING_FACTOR_Y / 2.0f;
+		fCompoundNodeWidth 	= 8 * SCALING_FACTOR_X / 2.0f;
+		fCompoundNodeHeight = 8 * SCALING_FACTOR_Y / 2.0f;
+		fPathwayNodeWidth 	= 70 * SCALING_FACTOR_X / 2.0f;
+		fPathwayNodeHeight 	= 27 * SCALING_FACTOR_Y / 2.0f;
 	}
 
 	public Color getCompoundNodeColor(boolean bGeneMappingEnabled) {
