@@ -306,10 +306,8 @@ implements IMediatorReceiver, IMediatorSender {
 		// Creating display list for node cube objects
 		iEnzymeNodeDisplayListId = gl.glGenLists(1);
 		
-		fPathwayNodeWidth = 
-			refRenderStyle.getEnzymeNodeWidth() / 2.0f * SCALING_FACTOR_X;
-		fPathwayNodeHeight = 
-			refRenderStyle.getEnzymeNodeHeight() / 2.0f * SCALING_FACTOR_Y;
+		fPathwayNodeWidth = refRenderStyle.getEnzymeNodeWidth();
+		fPathwayNodeHeight = refRenderStyle.getEnzymeNodeHeight();;
 			
 		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl);		
@@ -326,10 +324,8 @@ implements IMediatorReceiver, IMediatorSender {
 			iHighlightedEnzymeNodeDisplayListId = gl.glGenLists(1);
 //		}
 		
-		fPathwayNodeWidth = 
-			refRenderStyle.getEnzymeNodeWidth() / 2.0f * SCALING_FACTOR_X;
-		fPathwayNodeHeight = 
-			refRenderStyle.getEnzymeNodeHeight() / 2.0f * SCALING_FACTOR_Y;
+		fPathwayNodeWidth = refRenderStyle.getEnzymeNodeWidth();
+		fPathwayNodeHeight = refRenderStyle.getEnzymeNodeHeight();
 				
 		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
@@ -351,10 +347,8 @@ implements IMediatorReceiver, IMediatorSender {
 		// Creating display list for node cube objects
 		iCompoundNodeDisplayListId = gl.glGenLists(1);
 		
-		fPathwayNodeWidth = 
-			refRenderStyle.getCompoundNodeWidth() / 2.0f * SCALING_FACTOR_X;
-		fPathwayNodeHeight = 
-			refRenderStyle.getCompoundNodeHeight() / 2.0f * SCALING_FACTOR_Y;
+		fPathwayNodeWidth = refRenderStyle.getCompoundNodeWidth();
+		fPathwayNodeHeight = refRenderStyle.getCompoundNodeHeight();
 		
 		gl.glNewList(iCompoundNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl);
@@ -369,10 +363,8 @@ implements IMediatorReceiver, IMediatorSender {
 			iHighlightedCompoundNodeDisplayListId = gl.glGenLists(1);
 		}
 		
-		fPathwayNodeWidth = 
-			refRenderStyle.getCompoundNodeWidth() / 2.0f * SCALING_FACTOR_X;
-		fPathwayNodeHeight = 
-			refRenderStyle.getCompoundNodeHeight() / 2.0f * SCALING_FACTOR_Y;
+		fPathwayNodeWidth = refRenderStyle.getCompoundNodeWidth();
+		fPathwayNodeHeight = refRenderStyle.getCompoundNodeHeight();
 		
 		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
