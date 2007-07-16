@@ -4,21 +4,30 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
 import java.io.File;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+
+import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.texture.TextureIO;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.pathway.Pathway;
+import cerberus.data.pathway.element.PathwayVertexType;
+import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.slerp.Slerp;
+import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 import cerberus.util.opengl.GLTextUtils;
 
@@ -33,20 +42,23 @@ public class GLCanvasJukeboxPathway3D
 extends AGLCanvasUser_OriginRotation
 implements IMediatorReceiver, IMediatorSender {	
 	
-	protected float fTextureTransparency = 1.0f; 
-
-	/**
-	 * Pathway that is currently under user interaction in the 2D pathway view.2
-	 */
-	protected Pathway refPathwayUnderInteraction;
+	private float fTextureTransparency = 1.0f; 
+				
+	private float fSlerpFactor = 0f;
 	
-	protected boolean bShowPathwayTexture = true;
-			
-	protected HashMap<Integer, Mat4f> refHashPathwayIdToModelMatrix;	
+	private float fLastMouseMovedTimeStamp = 0;
 	
-	protected float fSlerpFactor = 0f;
+	private boolean bIsMouseOverPickingEvent = false;
 	
-	protected GLPathwayTextureManager refPathwayTextureManager;
+	private GLPathwayManager refPathwayManager;
+	
+	private GLPathwayTextureManager refPathwayTextureManager;
+	
+	private boolean bShowPathwayTexture = true;
+	
+	private PickingJoglMouseListener pickingTriggerMouseAdapter;
+	
+	private HashMap<Integer, Mat4f> refHashPathwayIdToModelMatrix;	
 		
 	/**
 	 * Constructor
@@ -66,7 +78,11 @@ implements IMediatorReceiver, IMediatorSender {
 		this.refViewCamera.setCaller(this);
 	
 		refHashPathwayIdToModelMatrix = new HashMap<Integer, Mat4f>();
+		refPathwayManager = new GLPathwayManager(refGeneralManager);
 		refPathwayTextureManager = new GLPathwayTextureManager(refGeneralManager);
+
+		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
+			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
 	}
 	
 	/*
@@ -88,51 +104,53 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		gl.glLineWidth(1.0f);
-	
-//		float[] fMatSpecular = { 1.0f, 1.0f, 1.0f, 1.0f};
-//		float[] fMatShininess = {25.0f}; 
-		//float[] fLightPosition = {0.0f, 0.0f, 10.0f, 1.0f};
-		//float[] fWhiteLight = {1.0f, 1.0f, 1.0f, 1.0f};
-		//float[] fModelAmbient = {0.9f, 0.9f, 0.9f, 1.0f};
 		
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
-//		
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fMatSpecular, 0);
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fMatShininess, 0);
-		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fLightPosition, 0);		
-		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fWhiteLight, 0);
-		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fWhiteLight, 0);
-		//gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fModelAmbient, 0);
-
-		//gl.glEnable(GL.GL_LIGHTING);
-		//gl.glEnable(GL.GL_LIGHT0);		
-
-	    //gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);  
-	    //gl.glEnable(GL.GL_TEXTURE_2D);
 		
-		initPathwayData();
+		initPathwayData(gl);
 		
 		setInitGLDone();
 	}	
 	
-	protected void initPathwayData() {
+	protected void initPathwayData(final GL gl) {
 	
-
+		refPathwayManager.init(gl);
+		buildPathways(gl);
 	}
 
 	
 	public void renderPart(GL gl) {
-
-		//slerpTest(gl);
+		
+		handlePicking(gl);		
+		renderScene(gl);
+	}
+	
+	public void renderScene(final GL gl) {
+		
 		//renderPathwayList(gl);
 		renderLayeredPathways(gl);
 
-		slerpPathwayById(gl, 4310);
-//		slerpPathwayById(gl, 4012);
+		//slerpPathwayById(gl, 4310);
+		slerpPathwayById(gl, 4012);
 	}
 	
-	public void renderLayeredPathways(final GL gl) {
+	private void buildPathways(final GL gl) {
+		
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+				
+		for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
+		{
+			int iPathwayID = iArPathwayIDs[iPathwayIndex];
+			refPathwayManager.buildPathwayDisplayList(gl, iPathwayID);
+		}
+	}
+	
+	private void renderLayeredPathways(final GL gl) {
 		
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
@@ -149,26 +167,27 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
-//			Pathway refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
-//				getItem(iArPathwayIDs[iPathwayIndex]);
+			int iPathwayID = iArPathwayIDs[iPathwayIndex];
 			
 			if (bShowPathwayTexture)
 			{				
-				gl.glRotatef(fTiltAngleDegree, -1, 0, 0);
+				gl.glRotatef(fTiltAngleDegree, -1, -1, 0);
 				gl.glScalef(0.7f, 0.7f, 1.0f);
-				refPathwayTextureManager.renderPathway(gl,iArPathwayIDs[iPathwayIndex], fTextureTransparency);
+				
+				refPathwayManager.renderPathway(gl, iPathwayID);
+				refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency);
 				
 				// Store current model-view matrix
 				//FloatBuffer tmpMatrixBuffer = FloatBuffer.allocate(16);
 				//gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, tmpMatrixBuffer);
 				Mat4f refModelViewMatrix = new Mat4f(Mat4f.MAT4F_UNITY);
 				//refModelViewMatrix.set(tmpMatrixBuffer.array());
-				refModelViewMatrix.setRotation(new Rotf(fTiltAngleRad, -1, 0, 0));
+				refModelViewMatrix.setRotation(new Rotf(fTiltAngleRad, -1, -1, 0));
 				refModelViewMatrix.setTranslation(new Vec3f(2.5f, fLayerYPos, 0f));
 				refModelViewMatrix.setScale(new Vec3f(0.7f, 0.7f, 0.7f));
-				refHashPathwayIdToModelMatrix.put(iArPathwayIDs[iPathwayIndex], refModelViewMatrix);
+				refHashPathwayIdToModelMatrix.put(iPathwayID, refModelViewMatrix);
 				gl.glScalef(1/0.7f, 1/0.7f, 1.0f);
-				gl.glRotatef(-fTiltAngleDegree, -1, 0, 0);
+				gl.glRotatef(-fTiltAngleDegree, -1, -1, 0);
 				gl.glTranslatef(0f, 1.5f, 0f);
 				fLayerYPos += 1.5f;
 			}
@@ -177,7 +196,7 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glTranslatef(-2.5f, -3.5f, 0f);
 	}
 
-	public void renderPathwayList(final GL gl) {
+	private void renderPathwayList(final GL gl) {
 		
 		gl.glLineWidth(2);
 		gl.glColor3f(1, 0, 0);
@@ -212,111 +231,6 @@ implements IMediatorReceiver, IMediatorSender {
 			int[] iArSelectionGroup,
 			int[] iArNeighborVertices) {
 	}
-
-//	protected void slerpTest(final GL gl) {
-//
-//		// Draw source objects
-//		gl.glColor4f(0, 1, 0, 1);
-//		
-//		gl.glTranslatef(2.5f, 0f, 0f);
-//		gl.glRotatef(57, -1, 0, 0);
-//		
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0f, 0f, 0f);			  
-//		gl.glVertex3f(0f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 0f, 0f);			  
-//		gl.glEnd();	
-//		
-//		gl.glRotatef(-57, -1, 0, 0);
-//		gl.glTranslatef(0f, 1f, 0f);
-//		gl.glRotatef(57, -1, 0, 0);
-//		
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0f, 0f, 0f);			  
-//		gl.glVertex3f(0f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 0f, 0f);			  
-//		gl.glEnd();	
-//
-//		gl.glRotatef(-57, -1, 0, 0);
-//		gl.glTranslatef(0f, 1f, 0f);
-//		gl.glRotatef(57, -1, 0, 0);
-//		
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0f, 0f, 0f);			  
-//		gl.glVertex3f(0f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 0f, 0f);			  
-//		gl.glEnd();	
-//
-//		gl.glRotatef(-57, -1, 0, 0);
-//		gl.glTranslatef(0f, 1f, 0f);
-//		gl.glRotatef(57, -1, 0, 0);
-//		
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0f, 0f, 0f);			  
-//		gl.glVertex3f(0f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 0f, 0f);			  
-//		gl.glEnd();	
-//
-//		gl.glRotatef(-57, -1, 0, 0);
-//		gl.glTranslatef(-2.5f, -3f, 0f);
-//
-//		// Draw destination object
-//		gl.glTranslatef(-2f, 0.5f, 0f);
-//		gl.glScaled(3, 3, 3);
-//		
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0f, 0f, 0f);			  
-//		gl.glVertex3f(0f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 0f, 0f);			  
-//		gl.glEnd();	
-//
-//		gl.glScaled(1f/3f, 1f/3f, 1f/3f);
-//		gl.glTranslatef(2f, -0.5f, 0f);
-//		
-//		Slerp slerp = new Slerp();
-//		Rotf quatResult = null;
-//		
-//		slerp.setTranslationOrigin(2.5f, 1f, 0f);
-//		slerp.setTranslationDestination(-2, 0.5f, 0f);
-//		slerp.setScaleDestination(3, 3, 3);
-//		
-//		if (fSlerpFactor < 1)
-//		{
-//			fSlerpFactor += 0.002f;
-//		}
-//		else
-//			fSlerpFactor = 0f;
-//				
-//		quatResult = slerp.interpolate(new Rotf(1, -1, 0, 0), new Rotf(0, 0, 0, 0), 
-//				fSlerpFactor);
-//		
-//		gl.glColor4f(1, 0, 0, 1);
-//		
-//		gl.glTranslatef(slerp.getTranslationResult().x(), 
-//				slerp.getTranslationResult().y(), 
-//				slerp.getTranslationResult().z());
-//		
-//		gl.glRotatef(quatResult.getAngle() * 180 / (float)Math.PI, 
-//				quatResult.getX(), 
-//				quatResult.getY(), 
-//				quatResult.getZ());
-//				
-//		gl.glScalef(slerp.getScaleResult().x(), 
-//				slerp.getScaleResult().y(),
-//				slerp.getScaleResult().z());
-//		
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0f, 0f, 0f);			  
-//		gl.glVertex3f(0f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 1f, 0f);			  
-//		gl.glVertex3f(1f, 0f, 0f);			  
-//		gl.glEnd();	
-//	}
 	
 	public void slerpPathwayById(final GL gl, int iPathwayID) {
 		
@@ -337,12 +251,12 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			if (fSlerpFactor < 1)
 			{
-				fSlerpFactor += 0.001f;
+				fSlerpFactor += 0.005f;
 			}
-			else
-			{
-				fSlerpFactor = 0f;
-			}
+//			else
+//			{
+//				fSlerpFactor = 0f;
+//			}
 			
 			quatResult = slerp.interpolate(quatOrigin,
 					new Rotf(0, 0, 0, 0), 
@@ -363,10 +277,147 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glScalef(slerp.getScaleResult().x(), 
 					slerp.getScaleResult().y(),
 					slerp.getScaleResult().z());
+
+//			// Only render labels if pathway reached destination
+//			boolean bRenderLabels = false;
+//			boolean bPickingRendering = false;
+//			
+//			if (fSlerpFactor >= 1)
+//			{
+//				bRenderLabels = true;
+//				bPickingRendering = true;
+//			}
 			
+			refPathwayManager.renderPathway(gl, iPathwayID);
 			refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency);
 		}
 	}
+	
+    private void handlePicking(final GL gl) {
+    	
+    	Point pickPoint = null;
+    	
+    	if (pickingTriggerMouseAdapter.wasMousePressed())
+    	{
+    		pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+    		bIsMouseOverPickingEvent = false;
+    	}
+    	
+	    if (pickingTriggerMouseAdapter.wasMouseMoved())
+	    {
+	    	// Restart timer
+	    	fLastMouseMovedTimeStamp = System.nanoTime();
+	    	bIsMouseOverPickingEvent = true;
+	    }
+	    else if (bIsMouseOverPickingEvent == true && 
+	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.3 * 1e9)
+	    {
+	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+	    	fLastMouseMovedTimeStamp = System.nanoTime();
+	    }
+	    
+    	// Check if a object was picked
+    	if (pickPoint != null)
+    	{
+    		pickObjects(gl, pickPoint);
+    		bIsMouseOverPickingEvent = false;
+    	}
+    }
+    
+	private void pickObjects(final GL gl, Point pickPoint) {
+
+		int PICKING_BUFSIZE = 1024;
+		
+		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
+		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
+		int iHitCount = -1;
+		int viewport[] = new int[4];
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+
+		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
+		gl.glRenderMode(GL.GL_SELECT);
+
+		gl.glInitNames();
+		
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+		
+		/* create 5x5 pixel picking region near cursor location */
+		GLU glu = new GLU();
+		glu.gluPickMatrix((double) pickPoint.x,
+				(double) (viewport[3] - pickPoint.y),// 
+				1.0, 1.0, viewport, 0); // pick width and height is set to 5 (i.e. picking tolerance)
+		
+		float h = (float) (float) (viewport[3]-viewport[1]) / 
+			(float) (viewport[2]-viewport[0]) * 4.0f;
+
+		// FIXME: values have to be taken from XML file!!
+		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
+		
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		// Reset picked point 
+		pickPoint = null;
+		
+		renderScene(gl);
+		
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPopMatrix();
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		iHitCount = gl.glRenderMode(GL.GL_RENDER);
+		pickingBuffer.get(iArPickingBuffer);
+		processHits(gl, iHitCount, iArPickingBuffer);
+	}
+	
+	protected void processHits(final GL gl,
+			int iHitCount, 
+			int iArPickingBuffer[]) {
+
+		System.out.println("Number of hits: " +iHitCount);
+		IPathwayVertexRep refPickedVertexRep;
+		
+		int iNames = 0;
+		int iPtr = 0;
+		int i = 0;
+		int iPickedPathwayDisplayListId = 0;
+		int iPickedNodeDisplayListId = 0;
+		
+		System.out.println("------------------------------------------");
+		
+		for (i = 0; i < iHitCount; i++)
+		{
+			iNames = iArPickingBuffer[iPtr];
+			System.out.println(" number of names for this hit = " + iNames);
+			iPtr++;
+			System.out.println(" z1 is  " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
+			iPtr++;
+			System.out.println(" z2 is " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
+			iPtr++;
+			//System.out.println(" names are ");
+
+//			for (int j = 0; j < iNames; j++)
+//			{
+//				System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
+//				iPtr++;
+//			}
+			
+			iPickedPathwayDisplayListId = iArPickingBuffer[iPtr];
+			iPtr++;
+			iPickedNodeDisplayListId = iArPickingBuffer[iPtr];
+			
+			refPickedVertexRep = refPathwayManager.getVertexRepByPickID(iPickedNodeDisplayListId);
+			
+			if (refPickedVertexRep == null)
+				return;
+			
+			System.out.println("Picked node:" +refPickedVertexRep.getName());
+		}
+
+		//fillInfoAreaContent(refPickedVertexRep);
+	}	
+    
 
 	/**
 	 * @param textureTransparency the fTextureTransparency to set

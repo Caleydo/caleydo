@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import cerberus.data.pathway.Pathway;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 
@@ -106,13 +105,13 @@ public class GLPathwayTextureManager {
 		float fTextureHeight = 0.0025f * (float)refTmpPathwayTexture.getImageHeight();				
 		
 		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2f(0, texCoords.top()); 
-		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);			  
-		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);			 
-		gl.glTexCoord2f(texCoords.right(), 0); 
-		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
 		gl.glTexCoord2f(0, 0); 
+		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);			  
+		gl.glTexCoord2f(texCoords.right(), 0); 
+		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);			 
+		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
+		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
+		gl.glTexCoord2f(0, texCoords.top()); 
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glEnd();	
 
