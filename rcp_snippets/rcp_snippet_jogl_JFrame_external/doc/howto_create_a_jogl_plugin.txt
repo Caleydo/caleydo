@@ -36,4 +36,20 @@
   ==> Exported Pacakges ==> "Add.."
   
   ==> org.geneview.rcp.jogl.awt.snippet.gears
+  
+
+## Use features
+
+ start "Overview"
+   ==> Launche an Eclipse application 
+   
+   --> start new eclipse instance
+   
+   ==> "Window" 
+   ==> "Show View" 
+   ==> "Others..."
+   ==> "GeneView"
+    ==> "..."
+    
+
  

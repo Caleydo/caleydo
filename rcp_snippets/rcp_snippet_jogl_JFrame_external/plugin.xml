@@ -9,7 +9,7 @@
             id="org.geneview.rcp.jogl.view.jframe">
       </category>
       <view
-            name="SnippetJFrameView"
+            name="SnippetJFrameView ext"
             icon="icons/sample.gif"
             category="org.geneview.rcp.jogl.view.jframe"
             class="org.geneview.rcp.jogl.view.jframe.views.SnippetJFrameView"
