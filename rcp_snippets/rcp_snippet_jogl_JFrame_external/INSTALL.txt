@@ -1,0 +1,17 @@
+Install RCP:
+ 
+Eclipse 3.3
+
+Help -> Software Updates -> Find and install 
+Choose "The Eclipse Project Updates" 
+Choose "Eclipse Platform Plug-in Developer...." -> Install this package
+
+--------------------------
+
+Problem:
+
+jogl.jar error when starting RCP application:
+
+Copy jogl dll files to <your_java_path>/bin
+or 
+copy jogl dll files to <your_java_path>/lib and include path in project (not tested!)
