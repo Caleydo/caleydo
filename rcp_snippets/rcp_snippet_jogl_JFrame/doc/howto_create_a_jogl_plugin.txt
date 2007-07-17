@@ -1,0 +1,39 @@
+
+1) 
+ "Runtime" 
+  ==> Classpath ==> "add..."
+
+  ==> lib/jogl/jogl.jar
+  
+  [optional für das sample "Gears"]
+  ==> lib/jogl/jogl-demos.jar
+      
+2) 
+ "Runtime"
+  ==> Exported Pacakges ==> "Add.."
+ 
+  ==> com.sun.gluegen.runtime
+     javax.media.opengl
+     javax.media.opengl.glu
+     
+  [optional für das sample "Gears"]
+  ==>
+     demos.common
+     demos.greas
+     
+     
+## daraus werden dann die folgenden setting files erzeugt
+
+ MANIFEST.MF
+ plugin.xml
+ build.properties
+ 
+ 
+ 
+## Beispiel neue Klasse   org.geneview.rcp.jogl.awt.snippet.gears.Gears
+ 
+  "Runtime"
+  ==> Exported Pacakges ==> "Add.."
+  
+  ==> org.geneview.rcp.jogl.awt.snippet.gears
+ 
