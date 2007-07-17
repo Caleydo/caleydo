@@ -1,5 +1,13 @@
 package cerberus.util.slerp;
 
+import java.io.File;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
@@ -157,4 +165,22 @@ public class Slerp {
     	
     	return scaleResult;
     }
+    
+	public void playSlerpSound() {
+		
+		try{
+            AudioInputStream audioInputStream = 
+            	AudioSystem.getAudioInputStream(new File("C:/slerp.wav"));
+            AudioFormat af     = audioInputStream.getFormat();
+            int size      = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
+            byte[] audio       = new byte[size];
+            DataLine.Info info      = new DataLine.Info(Clip.class, af, size);
+            audioInputStream.read(audio, 0, size);
+            
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(af, audio, 0, size);
+            clip.start();
+
+		}catch(Exception e){ e.printStackTrace(); }
+	}
 }

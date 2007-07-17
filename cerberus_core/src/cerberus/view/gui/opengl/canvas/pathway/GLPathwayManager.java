@@ -31,7 +31,7 @@ public class GLPathwayManager {
 	
 	private PathwayRenderStyle refRenderStyle;
 	
-	private boolean bRenderLabels = false;
+	private boolean bRenderLabels = true;
 	
 	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
 	
@@ -60,9 +60,18 @@ public class GLPathwayManager {
 		Pathway refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(iPathwayID);
 		
-		// Creating display list for pathways
-		int iVerticesDiplayListId = gl.glGenLists(1);
-		refHashPathwayId2DisplayListId.put(iPathwayID, iVerticesDiplayListId);
+		int iVerticesDiplayListId = -1;
+		if (refHashPathwayId2DisplayListId.containsKey(iPathwayID))
+		{
+			// Replace current display list if a display list exists
+			iVerticesDiplayListId = refHashPathwayId2DisplayListId.get(iPathwayID);
+		}
+		else
+		{
+			// Creating display list for pathways
+			iVerticesDiplayListId = gl.glGenLists(1);
+			refHashPathwayId2DisplayListId.put(iPathwayID, iVerticesDiplayListId);			
+		}
 		
 		gl.glNewList(iVerticesDiplayListId, GL.GL_COMPILE);	
 		extractVertices(gl, refTmpPathway);
@@ -225,11 +234,12 @@ public class GLPathwayManager {
 
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 			
-			if (bRenderLabels)
-			{	gl.glTranslated(-fNodeWidth + 0.01f, 0.01f, 0);
-				GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 0, 0, -0.03f, fNodeWidth, fNodeHeight);
-				gl.glTranslated(fNodeWidth - 0.01f, -0.01f, 0);
-			}
+//			if (bRenderLabels)
+//			{	gl.glTranslated(-fNodeWidth + 0.01f, 0.01f, 0);
+//				//GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 0, 0, -0.03f, fNodeWidth, fNodeHeight);
+//				GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0, -0.03f);
+//				gl.glTranslated(fNodeWidth - 0.01f, -0.01f, 0);
+//			}
 		}
 		// Compound
 		else if (sShapeType.equals("circle"))
@@ -261,7 +271,7 @@ public class GLPathwayManager {
 		gl.glPopName();
 	}
 	
-	public void renderPathway(final GL gl, final int iPathwayID) {
+	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels) {
 		
 		// Creating hierarchical picking names
 		// This is the layer of the pathways, therefore we can use the pathway
@@ -270,6 +280,39 @@ public class GLPathwayManager {
 		gl.glPushName(iTmpDisplayListID);	
 		gl.glCallList(iTmpDisplayListID);
 		gl.glPopName();
+		
+		if (bRenderLabels)
+			renderLabels(gl, iPathwayID);
+	}
+	
+	private void renderLabels(final GL gl, final int iPathwayID) {
+
+	    Iterator<PathwayVertex> vertexIterator;
+	    PathwayVertex vertex;
+	    IPathwayVertexRep vertexRep;
+		Pathway refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+			getItem(iPathwayID);
+        
+		vertexIterator = refTmpPathway.getVertexListIterator();
+        while (vertexIterator.hasNext())
+        {
+        	vertex = vertexIterator.next();
+        	vertexRep = vertex.getVertexRepByIndex(0);
+
+        	if (vertexRep != null)
+        	{
+        		float fNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
+        		float fNodeHeight = vertexRep.getHeight() / 2.0f * SCALING_FACTOR_Y;
+        		float fCanvasXPos = (vertexRep.getXPosition() * SCALING_FACTOR_X);
+        		float fCanvasYPos =	(vertexRep.getYPosition() * SCALING_FACTOR_Y);
+ 
+        		gl.glTranslated(fCanvasXPos - fNodeWidth + 0.01f, fCanvasYPos + 0.01f, 0);
+    			GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 0, 0, -0.03f, fNodeWidth, fNodeHeight);
+    			//GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0, -0.03f);
+    			gl.glTranslated(-fCanvasXPos + fNodeWidth - 0.01f, -fCanvasYPos - 0.01f, 0);      	
+        	}
+        }  
+		
 	}
 	
 	public IPathwayVertexRep getVertexRepByPickID(int iPickID) {

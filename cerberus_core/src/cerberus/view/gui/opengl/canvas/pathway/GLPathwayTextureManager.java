@@ -89,7 +89,9 @@ public class GLPathwayTextureManager {
 		return null;
 	}
 	
-	public void renderPathway(final GL gl, int iPathwayID, float fTextureTransparency) {
+	public void renderPathway(final GL gl, int iPathwayID, 
+			float fTextureTransparency,
+			boolean bHighlight) {
 		
 		Texture refTmpPathwayTexture = 
 			getPathwayTexture(iPathwayID);
@@ -97,8 +99,11 @@ public class GLPathwayTextureManager {
 		refTmpPathwayTexture.enable();
 		refTmpPathwayTexture.bind();
 
-		gl.glColor4f(0.8f, 0.8f, 0.8f, fTextureTransparency);
-
+		if (bHighlight)
+			gl.glColor4f(1f, 0.8f, 0.8f, fTextureTransparency);
+		else
+			gl.glColor4f(0.8f, 0.8f, 0.8f, fTextureTransparency);
+		
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
 		
 		float fTextureWidth = 0.0025f * (float)refTmpPathwayTexture.getImageWidth();
@@ -117,8 +122,17 @@ public class GLPathwayTextureManager {
 
 		refTmpPathwayTexture.disable();
 		
-		gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-		gl.glLineWidth(1);
+		if (bHighlight)
+		{
+			gl.glColor4f(1, 0, 0, 1);
+			gl.glLineWidth(3);			
+		}
+		else
+		{
+			gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+			gl.glLineWidth(1);	
+		}
+		
 		gl.glBegin(GL.GL_LINE_STRIP); 
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);; 
 		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);

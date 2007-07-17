@@ -6,20 +6,23 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.io.File;
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 
 import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.texture.TextureIO;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
-import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
@@ -29,7 +32,6 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.slerp.Slerp;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
-import cerberus.util.opengl.GLTextUtils;
 
 /**
  * Jukebox setup that supports slerp animation.
@@ -44,7 +46,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private float fTextureTransparency = 1.0f; 
 				
-	private float fSlerpFactor = 0f;
+	private int iSlerpFactor = 0;
 	
 	private float fLastMouseMovedTimeStamp = 0;
 	
@@ -59,6 +61,10 @@ implements IMediatorReceiver, IMediatorSender {
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
 	private HashMap<Integer, Mat4f> refHashPathwayIdToModelMatrix;	
+	
+	private ArrayList<Integer> iArPathwaysToSlerp;
+	
+	private int iPathwayUnderInteraction = -1;
 		
 	/**
 	 * Constructor
@@ -80,6 +86,7 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashPathwayIdToModelMatrix = new HashMap<Integer, Mat4f>();
 		refPathwayManager = new GLPathwayManager(refGeneralManager);
 		refPathwayTextureManager = new GLPathwayTextureManager(refGeneralManager);
+		iArPathwaysToSlerp = new ArrayList<Integer>();
 
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
 			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
@@ -131,8 +138,10 @@ implements IMediatorReceiver, IMediatorSender {
 		//renderPathwayList(gl);
 		renderLayeredPathways(gl);
 
+		doSlerpActions(gl);
 		//slerpPathwayById(gl, 4310);
-		slerpPathwayById(gl, 4012);
+		//slerpPathwayById(gl, 4012);
+		//slerpPathwayById(gl, 4010);
 	}
 	
 	private void buildPathways(final GL gl) {
@@ -142,7 +151,7 @@ implements IMediatorReceiver, IMediatorSender {
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 				
-		for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
 			int iPathwayID = iArPathwayIDs[iPathwayIndex];
@@ -157,6 +166,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		float fLayerYPos = -1f;
 		
+		gl.glPushMatrix();
 		gl.glTranslatef(2.5f, fLayerYPos, 0f);
 		
 		// Load pathway storage
@@ -164,36 +174,43 @@ implements IMediatorReceiver, IMediatorSender {
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 				
-		for (int iPathwayIndex = 1; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
 			int iPathwayID = iArPathwayIDs[iPathwayIndex];
 			
 			if (bShowPathwayTexture)
 			{				
-				gl.glRotatef(fTiltAngleDegree, -1, -1, 0);
+				gl.glRotatef(fTiltAngleDegree, -1, -0.7f, 0);
 				gl.glScalef(0.7f, 0.7f, 1.0f);
 				
-				refPathwayManager.renderPathway(gl, iPathwayID);
-				refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency);
+				refPathwayManager.renderPathway(gl, iPathwayID, false);
+				
+				if (iPathwayID == iPathwayUnderInteraction)
+					refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency, true);
+				else
+					refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency, false);
 				
 				// Store current model-view matrix
 				//FloatBuffer tmpMatrixBuffer = FloatBuffer.allocate(16);
 				//gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, tmpMatrixBuffer);
 				Mat4f refModelViewMatrix = new Mat4f(Mat4f.MAT4F_UNITY);
 				//refModelViewMatrix.set(tmpMatrixBuffer.array());
-				refModelViewMatrix.setRotation(new Rotf(fTiltAngleRad, -1, -1, 0));
+				refModelViewMatrix.setRotation(new Rotf(fTiltAngleRad, -1, -0.7f, 0));
+				//refModelViewMatrix.setRotation(new Rotf(0,0,0,0));
 				refModelViewMatrix.setTranslation(new Vec3f(2.5f, fLayerYPos, 0f));
 				refModelViewMatrix.setScale(new Vec3f(0.7f, 0.7f, 0.7f));
+				//refModelViewMatrix.setScale(new Vec3f(1,1,1));
 				refHashPathwayIdToModelMatrix.put(iPathwayID, refModelViewMatrix);
 				gl.glScalef(1/0.7f, 1/0.7f, 1.0f);
-				gl.glRotatef(-fTiltAngleDegree, -1, -1, 0);
-				gl.glTranslatef(0f, 1.5f, 0f);
-				fLayerYPos += 1.5f;
+				gl.glRotatef(-fTiltAngleDegree, -1, -0.7f, 0);
+				gl.glTranslatef(0f, 1f, 0f);
+				fLayerYPos += 1f;
 			}
 		}
 
-		gl.glTranslatef(-2.5f, -3.5f, 0f);
+		gl.glPopMatrix();
+		//gl.glTranslatef(-2.5f, -3.0f, 0f);
 	}
 
 	private void renderPathwayList(final GL gl) {
@@ -232,39 +249,56 @@ implements IMediatorReceiver, IMediatorSender {
 			int[] iArNeighborVertices) {
 	}
 	
-	public void slerpPathwayById(final GL gl, int iPathwayID) {
+	private void doSlerpActions(final GL gl) {
+		
+		if (iSlerpFactor < 1000)
+		{
+			// Slerp current pathway back to layered view.
+			slerpPathwayById(gl, iPathwayUnderInteraction, false);
+		}
+		
+		for (int iSlerpIndex = 0; iSlerpIndex < iArPathwaysToSlerp.size(); iSlerpIndex++) 
+		{
+			slerpPathwayById(gl, iArPathwaysToSlerp.get(iSlerpIndex), true);
+		}
+		
+		// If slerp actions are done - update pathway under interaction variable. 
+		if (iSlerpFactor >= 1000)
+			iPathwayUnderInteraction = iArPathwaysToSlerp.get(0);
+	}
+	
+	private void slerpPathwayById(final GL gl, int iPathwayID, boolean bSlerpDirection) {
 		
 		if (refHashPathwayIdToModelMatrix.containsKey(iPathwayID))
 		{
+			Slerp slerp = new Slerp();
+			
+			if (iSlerpFactor == 0)
+				slerp.playSlerpSound();
+			
 			Rotf quatOrigin = new Rotf();
 			Rotf quatResult = new Rotf();
 			Mat4f matOrigin = refHashPathwayIdToModelMatrix.get(iPathwayID);
-			
+		
 			quatOrigin.fromMatrix(matOrigin);
 			
-			Slerp slerp = new Slerp();
-			
 			slerp.setTranslationOrigin(matOrigin.get(0,3), matOrigin.get(1,3), matOrigin.get(2,3));
-			slerp.setTranslationDestination(-3, -1, 0f);
 			slerp.setScaleOrigin(matOrigin.get(0,0), matOrigin.get(1, 1), matOrigin.get(2,2));
-			slerp.setScaleDestination(1.7f, 1.7f, 1.7f);
+			slerp.setTranslationDestination(-3, -0.4f, 0f);
+			slerp.setScaleDestination(1.6f, 1.6f, 1.6f);
 			
-			if (fSlerpFactor < 1)
-			{
-				fSlerpFactor += 0.005f;
-			}
-//			else
-//			{
-//				fSlerpFactor = 0f;
-//			}
+			int iSlerpTmp = 0;
+			if (bSlerpDirection == false)
+				iSlerpTmp = 1000 - iSlerpFactor;
+			else 
+				iSlerpTmp = iSlerpFactor;
 			
 			quatResult = slerp.interpolate(quatOrigin,
 					new Rotf(0, 0, 0, 0), 
-					fSlerpFactor);
+					(float)iSlerpTmp / 1000.0f);
 			
 			//gl.glLoadIdentity();
-			//gl.glTranslatef(0, 0, -8);	// why is this needed?
-			
+			gl.glPushMatrix();
 			gl.glTranslatef(slerp.getTranslationResult().x(), 
 					slerp.getTranslationResult().y(), 
 					slerp.getTranslationResult().z());
@@ -277,7 +311,6 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glScalef(slerp.getScaleResult().x(), 
 					slerp.getScaleResult().y(),
 					slerp.getScaleResult().z());
-
 //			// Only render labels if pathway reached destination
 //			boolean bRenderLabels = false;
 //			boolean bPickingRendering = false;
@@ -288,8 +321,19 @@ implements IMediatorReceiver, IMediatorSender {
 //				bPickingRendering = true;
 //			}
 			
-			refPathwayManager.renderPathway(gl, iPathwayID);
-			refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency);
+			// Render labels only in final position
+			if (iSlerpFactor == 1000)
+				refPathwayManager.renderPathway(gl, iPathwayID, true);
+			else
+				refPathwayManager.renderPathway(gl, iPathwayID, false);
+			
+			refPathwayTextureManager.renderPathway(gl, iPathwayID, fTextureTransparency, true);
+			gl.glPopMatrix();
+			
+			if (iSlerpFactor < 1000)
+			{
+				iSlerpFactor += 10;
+			}
 		}
 	}
 	
@@ -378,32 +422,19 @@ implements IMediatorReceiver, IMediatorSender {
 		System.out.println("Number of hits: " +iHitCount);
 		IPathwayVertexRep refPickedVertexRep;
 		
-		int iNames = 0;
+
 		int iPtr = 0;
 		int i = 0;
-		int iPickedPathwayDisplayListId = 0;
+
 		int iPickedNodeDisplayListId = 0;
 		
 		System.out.println("------------------------------------------");
 		
 		for (i = 0; i < iHitCount; i++)
 		{
-			iNames = iArPickingBuffer[iPtr];
-			System.out.println(" number of names for this hit = " + iNames);
 			iPtr++;
-			System.out.println(" z1 is  " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
 			iPtr++;
-			System.out.println(" z2 is " + (float) iArPickingBuffer[iPtr] / 0x7fffffff);
-			iPtr++;
-			//System.out.println(" names are ");
-
-//			for (int j = 0; j < iNames; j++)
-//			{
-//				System.out.println("Pathway pick node ID:" + iArPickingBuffer[iPtr]);
-//				iPtr++;
-//			}
-			
-			iPickedPathwayDisplayListId = iArPickingBuffer[iPtr];
+			iPtr++;	
 			iPtr++;
 			iPickedNodeDisplayListId = iArPickingBuffer[iPtr];
 			
@@ -413,8 +444,18 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 			
 			System.out.println("Picked node:" +refPickedVertexRep.getName());
+			
+			if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
+			{
+				String strTmp = "";
+				strTmp = refPickedVertexRep.getVertex().getElementTitle();
+				int iPathwayID = Integer.parseInt(strTmp.substring(strTmp.length()-4));
+				System.out.println("PathwayID: " +iPathwayID);
+				iArPathwaysToSlerp.clear();
+				iArPathwaysToSlerp.add(iPathwayID);
+				iSlerpFactor = 0;
+			}
 		}
-
 		//fillInfoAreaContent(refPickedVertexRep);
 	}	
     
