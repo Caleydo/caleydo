@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jgraph/jgraph.jar" sourcepath="lib_src/jgraph/jgraph-latest-stable-src_5_9.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
