@@ -34,7 +34,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="35991"	targetId="65101" label="target Set for file	new" attrib1="15201@25201" attrib2="55301@55301"	detail="SET_DATA_PLANAR" />
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30_100sets_noheader.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30_100sets_noheader2.gpr"	attrib1="INT;ABORT" attrib2="55101" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	targetId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30_100sets_noheader.gpr"	attrib1="INT;ABORT" attrib2="55101" />
 			   	
 		<!-- Window 10331 -->
      		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" targetId="10331" label="Cerberus Window 1"
