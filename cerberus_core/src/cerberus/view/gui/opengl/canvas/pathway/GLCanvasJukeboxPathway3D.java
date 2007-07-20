@@ -23,6 +23,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.slerp.Slerp;
+import cerberus.util.slerp.SlerpAction;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 

@@ -1,6 +1,7 @@
-package cerberus.view.gui.opengl.canvas.pathway;
+package cerberus.util.slerp;
 
 import cerberus.application.core.CerberusBootloader;
+import cerberus.view.gui.opengl.canvas.pathway.JukeboxHierarchyLayer;
 
 
 public class SlerpAction {
