@@ -27,7 +27,9 @@ public class GLPathwayManager {
 	
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
-	private int iUniqueObjectPickId = 0;
+	
+	// First hundred IDs are reserved for picking of non pathway objects in the scene
+	private int iUniqueObjectPickId = 100;
 	
 	private PathwayRenderStyle refRenderStyle;
 	
@@ -216,7 +218,7 @@ public class GLPathwayManager {
 //		if (bPickingRendering)
 //		{
 			iUniqueObjectPickId++;
-			gl.glPushName(iUniqueObjectPickId);
+			gl.glLoadName(iUniqueObjectPickId);
 			refHashPickID2VertexRep.put(iUniqueObjectPickId, vertexRep);			
 //		}
 		
@@ -268,7 +270,7 @@ public class GLPathwayManager {
 
 		gl.glTranslatef(-fCanvasXPos, -fCanvasYPos, 0);
 		
-		gl.glPopName();
+		//gl.glPopName();
 	}
 	
 	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels) {
@@ -277,9 +279,10 @@ public class GLPathwayManager {
 		// This is the layer of the pathways, therefore we can use the pathway
 		// node picking ID
 		int iTmpDisplayListID = refHashPathwayId2DisplayListId.get(iPathwayID);
-		gl.glPushName(iTmpDisplayListID);	
+		// FIXME: must be a unique ID!!!
+//		gl.glPushName(iTmpDisplayListID);	
 		gl.glCallList(iTmpDisplayListID);
-		gl.glPopName();
+//		gl.glPopName();
 		
 		if (bRenderLabels)
 			renderLabels(gl, iPathwayID);

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: Sep 27 2006 18:35:54 +0900 (JST) -->
+<!-- Creation date: Nov 09 2006 07:15:20 +0900 (JST) -->
 <pathway name="path:map04910" org="map" number="04910"
          title="Insulin signaling pathway"
          image="http://www.genome.jp/kegg/pathway/map/map04910.gif"
@@ -14,10 +14,6 @@
         link="http://www.genome.jp/kegg/pathway/map/map04070.html">
         <graphics name="Phosphatidylinositol signaling system" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="356" y="458" width="110" height="38"/>
-    </entry>
-    <entry id="3" name="hsa:51763 mmu:19062" type="gene">
-        <graphics name="SKIP..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="340" y="223" width="45" height="17"/>
     </entry>
     <entry id="4" name="ko:K03084" type="ortholog">
         <graphics name="SHIP" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -83,7 +79,8 @@
         <graphics name="Fatty acid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="1087" y="216" width="106" height="38"/>
     </entry>
-    <entry id="19" name="path:map04010hsa" type="map">
+    <entry id="19" name="path:map04010" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map04010.html">
         <graphics name="MAPK signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="371" y="608" width="111" height="38"/>
     </entry>
@@ -193,8 +190,8 @@
         <graphics name="TSC2" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="622" y="457" width="45" height="17"/>
     </entry>
-    <entry id="46" name="ko:K04366" type="ortholog">
-        <graphics name="RAF1" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="46" name="ko:K08845 ko:K04365 ko:K04366" type="ortholog">
+        <graphics name="ARAF..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="504" y="675" width="45" height="17"/>
     </entry>
     <entry id="47" name="ko:K01596" type="ortholog">
@@ -208,10 +205,6 @@
     <entry id="49" name="ko:K07203" type="ortholog">
         <graphics name="FRAP" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="517" y="591" width="45" height="17"/>
-    </entry>
-    <entry id="50" name="hsa:5139 hsa:5140 rno:50678 rno:29516 mmu:54611 mmu:18576" type="gene">
-        <graphics name="PDE3A..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="776" y="491" width="45" height="17"/>
     </entry>
     <entry id="51" name="ko:K03841" type="ortholog">
         <graphics name="FBP1" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -303,8 +296,8 @@
              type="rectangle" x="141" y="109" width="45" height="17"/>
     </entry>
     <entry id="73" name="path:map04910" type="map"
-        link="http://www.genome.jp/kegg/pathway/map/map04910.html">
-        <graphics name="Insulin signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map04910">
+        <graphics name="TITLE:Insulin signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="168" y="40" width="241" height="24"/>
     </entry>
     <entry id="74" name="undefined" type="group">
@@ -335,285 +328,4 @@
         <component id="45"/>
         <component id="77"/>
     </entry>
-    <relation entry1="54" entry2="72" type="PPrel">
-        <subtype name="binding/association" value="---"/>
-    </relation>
-    <relation entry1="66" entry2="69" type="PPrel">
-        <subtype name="binding/association" value="---"/>
-    </relation>
-    <relation entry1="62" entry2="69" type="PPrel">
-        <subtype name="binding/association" value="---"/>
-    </relation>
-    <relation entry1="52" entry2="58" type="PPrel">
-        <subtype name="binding/association" value="---"/>
-    </relation>
-    <relation entry1="40" entry2="58" type="PPrel">
-        <subtype name="binding/association" value="---"/>
-    </relation>
-    <relation entry1="41" entry2="66" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="41" entry2="69" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="41" entry2="39" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="41" entry2="70" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="21" entry2="41" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="7" entry2="41" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="dephosphorylation" value="-p"/>
-    </relation>
-    <relation entry1="7" entry2="70" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="dephosphorylation" value="-p"/>
-    </relation>
-    <relation entry1="7" entry2="39" type="PPrel">
-        <subtype name="indirect" value="..>"/>
-    </relation>
-    <relation entry1="70" entry2="43" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="70" entry2="57" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="65" entry2="68" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="68" entry2="56" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="68" entry2="42" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="56" entry2="50" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="56" entry2="49" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="56" entry2="33" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="56" entry2="59" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="56" entry2="44" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="56" entry2="45" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="56" entry2="24" type="PPrel">
-        <subtype name="indirect" value="..>"/>
-    </relation>
-    <relation entry1="56" entry2="67" type="PPrel">
-        <subtype name="indirect" value="..>"/>
-    </relation>
-    <relation entry1="65" entry2="67" type="PPrel">
-        <subtype name="indirect" value="..>"/>
-    </relation>
-    <relation entry1="65" entry2="60" type="PPrel">
-        <subtype name="indirect" value="..>"/>
-    </relation>
-    <relation entry1="52" entry2="67" type="PPrel">
-        <subtype name="indirect" value="..>"/>
-    </relation>
-    <relation entry1="40" entry2="67" type="PPrel">
-        <subtype name="indirect" value="..>"/>
-    </relation>
-    <relation entry1="59" entry2="26" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="24" entry2="27" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="dephosphorylation" value="-p"/>
-    </relation>
-    <relation entry1="24" entry2="26" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="dephosphorylation" value="-p"/>
-    </relation>
-    <relation entry1="27" entry2="32" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="26" entry2="16" type="PCrel"/>
-    <relation entry1="28" entry2="23" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="55" entry2="49" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="49" entry2="42" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="49" entry2="30" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="30" entry2="37" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-    </relation>
-    <relation entry1="42" entry2="31" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="39" entry2="43" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="43" entry2="35" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="35" entry2="36" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="36" entry2="46" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="46" entry2="38" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="38" entry2="12" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="12" entry2="11" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="12" entry2="10" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="11" entry2="37" type="PPrel">
-        <subtype name="activation" value="-->"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="33" entry2="53" type="PPrel">
-        <subtype name="dissociation" value="-+-"/>
-    </relation>
-    <relation entry1="14" entry2="29" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="62" entry2="58" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="64" entry2="58" type="PPrel">
-        <subtype name="activation" value="-->"/>
-    </relation>
-    <relation entry1="9" entry2="41" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="dephosphorylation" value="-p"/>
-    </relation>
-    <relation entry1="8" entry2="41" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="dephosphorylation" value="-p"/>
-    </relation>
-    <relation entry1="8" entry2="70" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="dephosphorylation" value="-p"/>
-    </relation>
-    <relation entry1="6" entry2="70" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="5" entry2="70" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-        <subtype name="phosphorylation" value="+p"/>
-    </relation>
-    <relation entry1="32" entry2="16" type="PCrel"/>
-    <relation entry1="67" entry2="22" type="PCrel"/>
-    <relation entry1="57" entry2="65" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="57" entry2="68" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="49" entry2="57" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="28" entry2="50" type="PPrel">
-        <subtype name="compound" value="17"/>
-    </relation>
-    <relation entry1="60" entry2="29" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="60" entry2="13" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="60" entry2="61" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="60" entry2="25" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="60" entry2="63" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="33" entry2="48" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="33" entry2="51" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="33" entry2="47" type="GErel">
-        <subtype name="expression" value="-->"/>
-    </relation>
-    <relation entry1="78" entry2="55" type="PPrel">
-        <subtype name="inhibition" value="--|"/>
-    </relation>
-    <relation entry1="4" entry2="65" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="3" entry2="65" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="49" entry2="65" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="3" entry2="4" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="4" entry2="57" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="4" entry2="49" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="4" entry2="68" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="3" entry2="57" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="3" entry2="49" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="3" entry2="68" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
-    <relation entry1="49" entry2="68" type="PPrel">
-        <subtype name="compound" value="71"/>
-    </relation>
 </pathway>

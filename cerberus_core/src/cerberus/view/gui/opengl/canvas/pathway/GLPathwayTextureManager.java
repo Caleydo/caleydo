@@ -43,7 +43,7 @@ public class GLPathwayTextureManager {
 		return loadPathwayTexture(iPathwayID);
 	}
 	
-	private Texture loadPathwayTexture(int iPathwayID) {
+	public Texture loadPathwayTexture(int iPathwayID) {
 		
 		String sPathwayTexturePath = "";
 		Texture refPathwayTexture;
@@ -100,9 +100,9 @@ public class GLPathwayTextureManager {
 		refTmpPathwayTexture.bind();
 
 		if (bHighlight)
-			gl.glColor4f(1f, 0.8f, 0.8f, fTextureTransparency);
+			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
 		else
-			gl.glColor4f(0.8f, 0.8f, 0.8f, fTextureTransparency);
+			gl.glColor4f(0.85f, 0.85f, 0.85f, fTextureTransparency);
 		
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
 		

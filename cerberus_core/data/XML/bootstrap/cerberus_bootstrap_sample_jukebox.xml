@@ -25,7 +25,7 @@
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	targetId="82401" parent="16401" label="GL Jukebox Pathway 3D" 
 							gl_origin="0 0 0" 
-							gl_rotation="0 0 0 0"					
+							gl_rotation="1 0 0 180"					
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
 							attrib4="transparency 0.5" 								
 							detail="33101 35101 36101 37101 85101" /> 

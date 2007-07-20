@@ -2,13 +2,16 @@ package cerberus.util.slerp;
 
 import java.io.File;
 
+import javax.media.opengl.GL;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
+import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
+import gleem.linalg.Transform;
 import gleem.linalg.Vec3f;
 
 /**
@@ -19,33 +22,50 @@ import gleem.linalg.Vec3f;
  */
 public class Slerp {
 	
-	Rotf quatOrigin;
-	Rotf quatDestination;
+	Rotf quatResult;
 	
-	Vec3f translationOrigin;
-	Vec3f translationDestination;
 	Vec3f translationResult;
 	
-	Vec3f scaleOrigin;
-	Vec3f scaleDestination;
 	Vec3f scaleResult;
 
 	public Slerp() {
 		
-		translationOrigin = new Vec3f(0, 0, 0);
-		translationDestination = new Vec3f(0, 0, 0);
-		
-		scaleOrigin = new Vec3f(1, 1, 1);
-		scaleDestination = new Vec3f(1, 1, 1);
+		quatResult = new Rotf();
 	}
 	
-	public Rotf interpolate(Rotf quatOrigin, Rotf quatDestination, float delta) {
+	public Transform interpolate(Transform transformOrigin, Transform transformDestination, float delta) {
 
-		translationResult = interpolate(translationOrigin, translationDestination, delta);
-		scaleResult = interpolate(scaleOrigin, scaleDestination, delta);
+		translationResult = interpolate(transformOrigin.getTranslation(), 
+				transformDestination.getTranslation(), delta);
+		scaleResult = interpolate(transformOrigin.getScale(), transformDestination.getScale(), delta);
 		
         // Return the interpolated quaternion
-		return slerp(quatOrigin, quatDestination, delta);
+		quatResult = slerp(transformOrigin.getRotation(), 
+				transformDestination.getRotation(), delta);
+		
+		Transform resultTransform = new Transform();
+		resultTransform.setRotation(quatResult);
+		resultTransform.setTranslation(translationResult);
+		resultTransform.setScale(scaleResult);
+		
+		return resultTransform;
+	}
+	
+	public void applySlerp(final GL gl, final Transform transform) {
+		
+		Vec3f translation = transform.getTranslation();
+		gl.glTranslatef(translation.x(),
+				translation.y(),
+				translation.z());
+		
+		Vec3f scale = transform.getScale();
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+		
+		Rotf rot = transform.getRotation();
+		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()),
+				rot.getX(),
+				rot.getY(),
+				rot.getZ());
 	}
 
 	   /**
@@ -128,34 +148,6 @@ public class Slerp {
         return result;
     }
     
-    public void setTranslationOrigin(float x, float y, float z) {
- 
-    	translationOrigin.setX(x);
-    	translationOrigin.setY(y);
-    	translationOrigin.setZ(z);
-    }
-    
-    public void setTranslationDestination(float x, float y, float z) {
-    	 
-    	translationDestination.setX(x);
-    	translationDestination.setY(y);
-    	translationDestination.setZ(z);
-    }
-
-    public void setScaleOrigin(float x, float y, float z) {
-    	 
-    	scaleOrigin.setX(x);
-    	scaleOrigin.setY(y);
-    	scaleOrigin.setZ(z);
-    }
-    
-    public void setScaleDestination(float x, float y, float z) {
-    	 
-    	scaleDestination.setX(x);
-    	scaleDestination.setY(y);
-    	scaleDestination.setZ(z);
-    }
-   
     public Vec3f getTranslationResult() {
     	
     	return translationResult;
