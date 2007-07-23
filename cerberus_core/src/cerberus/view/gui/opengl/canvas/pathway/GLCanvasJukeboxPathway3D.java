@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import javax.media.opengl.GL;
@@ -17,11 +18,13 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.pathway.element.PathwayVertexType;
+import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
+import cerberus.util.opengl.GLTextUtils;
 import cerberus.util.slerp.Slerp;
 import cerberus.util.slerp.SlerpAction;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
@@ -47,6 +50,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private boolean bShowPathwayTexture = true;
 	
+	private int iMouseOverPickedPathwayId = -1;
+	
 	private GLPathwayManager refPathwayManager;
 	
 	private GLPathwayTextureManager refPathwayTextureManager;
@@ -59,11 +64,6 @@ implements IMediatorReceiver, IMediatorSender {
 	 * Slerp factor 0 = source; 1 = destination
 	 */
 	private int iSlerpFactor = 0;
-	
-	/**
-	 * TOP hierarchy level pathway (under interaction)
-	 */ 
-	private int iPathwayUnderInteraction = -1;
 
 	private HashMap<Integer, Integer> refHashPoolLinePickId2PathwayId;
 	
@@ -145,7 +145,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData(final GL gl) {
 	
-		refPathwayManager.init(gl);
+		refPathwayManager.init(gl, alSetData);
 		buildPathwayPool(gl);
 		buildLayeredPathways(gl);
 	}
@@ -163,13 +163,6 @@ implements IMediatorReceiver, IMediatorSender {
 		renderPathwayLayered(gl);
 
 		doSlerpActions(gl);
-		
-		//slerpPathwayById(gl, 4310, true);
-		//slerpPathwayById(gl, 4012);
-		//slerpPathwayById(gl, 4010);
-		
-		//slerpPathway(gl, pathwayPoolLayer, pathwayLayeredLayer, 0, 0);
-		//slerpPathway(gl, pathwayLayeredLayer, pathwayUnderInteractionLayer, 2, 0);
 	}
 	
 	private void buildLayeredPathways(final GL gl) {
@@ -229,15 +222,6 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void renderPathwayLayered(final GL gl) {
 		
-		// Load pathway storage
-		// Assumes that the set consists of only one storage
-//		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-//		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-				
-//		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
-//			iPathwayIndex++)
-//		{
-		
 		LinkedList<Integer> pathwayElementList = pathwayLayeredLayer.getElementList();
 		for (int iPathwayIndex = 0; iPathwayIndex < pathwayElementList.size(); iPathwayIndex++)
 		{
@@ -277,21 +261,48 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void renderPathwayPool(final GL gl) {
 		
-		gl.glLineWidth(2);
-		gl.glColor3f(0, 0, 0);
-		//gl.glPushName(0);
-		
+		// Initialize magnification factors with 0 (minimized)
+		ArrayList<Integer> alMagnificationFactor = new ArrayList<Integer>();
+		for (int i = 0; i < alSetData.get(0).getStorageByDimAndIndex(0, 0).getSize(StorageType.INT); i++)
+		{
+			alMagnificationFactor.add(0);			
+		}
+			
 		// Load pathway storage
 		// Assumes that the set consists of only one storage
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+		
+		int iPathwayId = 0;		
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
+		{	
+			iPathwayId = iArPathwayIDs[iPathwayIndex];	
+
+			if (iMouseOverPickedPathwayId == iPathwayId || pathwayUnderInteractionLayer.containsElement(iPathwayId))
+			{	
+				if ((iPathwayIndex-2 >= 0) && (alMagnificationFactor.get(iPathwayIndex-2) < 1))
+					alMagnificationFactor.set(iPathwayIndex-2, 1);
+
+				if ((iPathwayIndex-1 >= 0) && (alMagnificationFactor.get(iPathwayIndex-1) < 2))
+					alMagnificationFactor.set(iPathwayIndex-1, 2);
 				
+				alMagnificationFactor.set(iPathwayIndex, 3);
+				
+				if ((iPathwayIndex+1 < alMagnificationFactor.size()) && (alMagnificationFactor.get(iPathwayIndex+1) < 2))
+					alMagnificationFactor.set(iPathwayIndex+1, 2);
+				
+				if ((iPathwayIndex+2 < alMagnificationFactor.size()) && (alMagnificationFactor.get(iPathwayIndex+2) < 1))
+					alMagnificationFactor.set(iPathwayIndex+2, 1);
+			}	
+		}
+
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
 			gl.glPushMatrix();
 			
-			int iPathwayId = iArPathwayIDs[iPathwayIndex];		
+			iPathwayId = iArPathwayIDs[iPathwayIndex];		
 			
 			Transform transform = pathwayPoolLayer.getTransformByElementId(iPathwayId);
 			Vec3f translation = transform.getTranslation();
@@ -299,30 +310,46 @@ implements IMediatorReceiver, IMediatorSender {
 					translation.y(),
 					translation.z());
 			
-//			Vec3f scale = transform.getScale();
-//			gl.glScalef(scale.x(), scale.y(), scale.z());
-			
-//			Rotf rot = transform.getRotation();
-//			gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()),
-//					rot.getX(),
-//					rot.getY(),
-//					rot.getZ());
-			
 			gl.glLoadName(iPathwayIndex);
 			
 			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex))
 				refHashPoolLinePickId2PathwayId.put(iPathwayIndex, iPathwayId);
 						
-			// Highlight pathway under interaction
-			if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
-					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
+			if (alMagnificationFactor.get(iPathwayIndex) == 3)
 			{
-				gl.glColor3f(1, 0, 0);
+				gl.glColor3f(0 ,0 ,0);
+				GLTextUtils.renderText(gl,
+						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
+						18,
+						0, 0.025f, 0);
+				gl.glColor4f(0, 0, 0, 0);				
 			}
-			else
+			else if (alMagnificationFactor.get(iPathwayIndex) == 2)
 			{
-				gl.glColor3f(0, 0, 0);
+				gl.glColor3f(0 ,0 ,0);
+				GLTextUtils.renderText(gl,
+						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
+						10,
+						0, 0.025f, 0);
+				gl.glColor4f(0, 0, 0, 0);				
 			}
+			else if (alMagnificationFactor.get(iPathwayIndex) == 1)
+			{
+				gl.glScaled(0.5f, 0.5f, 0.5f);
+				gl.glColor3f(0, 1, 0);
+			}
+			else if (alMagnificationFactor.get(iPathwayIndex) == 0)
+			{
+				gl.glScaled(0.2f, 0.2f, 0.2f);
+				gl.glColor3f(0, 0, 1);
+			}
+			
+			//			// Highlight pathway under interaction
+//			else if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
+//					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
+//			{
+//				gl.glColor3f(1, 0, 0);
+//			}
 			
 			gl.glBegin(GL.GL_QUADS);
 	        gl.glVertex3f(0, 0, 0);		
@@ -334,6 +361,67 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glPopMatrix();
 		}
 	}
+	
+//	private void renderPathwayPool(final GL gl) {
+//		
+//		gl.glColor3f(0, 0, 0);
+//		//gl.glPushName(0);
+//		
+//		// Load pathway storage
+//		// Assumes that the set consists of only one storage
+//		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+//		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+//				
+//		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+//			iPathwayIndex++)
+//		{
+//			gl.glPushMatrix();
+//			
+//			int iPathwayId = iArPathwayIDs[iPathwayIndex];		
+//			
+//			Transform transform = pathwayPoolLayer.getTransformByElementId(iPathwayId);
+//			Vec3f translation = transform.getTranslation();
+//			gl.glTranslatef(translation.x(),
+//					translation.y(),
+//					translation.z());
+//			
+//			gl.glLoadName(iPathwayIndex);
+//			
+//			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex))
+//				refHashPoolLinePickId2PathwayId.put(iPathwayIndex, iPathwayId);
+//						
+//			if (iMouseOverPickedPathwayId == iPathwayId)
+//			{
+//				GLTextUtils.renderText(gl, 
+//						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
+//						0, 0.025f, 0);
+//				gl.glColor4f(0, 0, 0, 0);				
+//			}
+//			// Highlight pathway under interaction
+//			else if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
+//					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
+//			{
+//				gl.glColor3f(1, 0, 0);
+////				GLTextUtils.renderText(gl, 
+////						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
+////						0, 0.025f, 0);
+////				gl.glColor4f(0, 0, 0, 0);
+//			}
+//			else
+//			{
+//				gl.glColor3f(0, 0, 0);
+//			}			
+//			
+//			gl.glBegin(GL.GL_QUADS);
+//	        gl.glVertex3f(0, 0, 0);		
+//	        gl.glVertex3f(0, 0.03f, 0);			
+//	        gl.glVertex3f(0.5f, 0.03f, 0f);
+//	        gl.glVertex3f(0.5f, 0, 0f);
+//	        gl.glEnd();
+//
+//			gl.glPopMatrix();
+//		}
+//	}
 	
 	/*
 	 * (non-Javadoc)
@@ -442,7 +530,7 @@ implements IMediatorReceiver, IMediatorSender {
 	    	bIsMouseOverPickingEvent = true;
 	    }
 	    else if (bIsMouseOverPickingEvent == true && 
-	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.1 * 1e9)
+	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.0 * 1e9)
 	    {
 	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 	    	fLastMouseMovedTimeStamp = System.nanoTime();
@@ -509,16 +597,15 @@ implements IMediatorReceiver, IMediatorSender {
 			int iHitCount, 
 			int iArPickingBuffer[]) {
 
-		System.out.println("Number of hits: " +iHitCount);
+		//System.out.println("Number of hits: " +iHitCount);
 		IPathwayVertexRep refPickedVertexRep;
-		
 
 		int iPtr = 0;
 		int i = 0;
 
 		int iPickedObjectId = 0;
 		
-		System.out.println("------------------------------------------");
+		//System.out.println("------------------------------------------");
 		
 		for (i = 0; i < iHitCount; i++)
 		{
@@ -533,12 +620,20 @@ implements IMediatorReceiver, IMediatorSender {
 			// Check if picked object a non-pathway object (like pathway pool lines, navigation handles, etc.)
 			if (iPickedObjectId < 100)
 			{
+				int iPathwayId = refHashPoolLinePickId2PathwayId.get(iPickedObjectId);
+				System.out.println("PathwayID: " +iPathwayId);
+				
+				// If mouse over event - just highlight pathway line
+				if (bIsMouseOverPickingEvent)
+				{
+					iMouseOverPickedPathwayId = iPathwayId;
+					return;
+				}
+				
 				// Check if other slerp action is currently running
 				if (iSlerpFactor > 0 && iSlerpFactor < 1000)
 					return;
 				
-				int iPathwayId = refHashPoolLinePickId2PathwayId.get(iPickedObjectId);
-				System.out.println("PathwayID: " +iPathwayId);
 				arSlerpActions.clear();
 				
 				// Slerp current pathway back to layered view
@@ -561,6 +656,7 @@ implements IMediatorReceiver, IMediatorSender {
 						false,
 						false,
 						pathwayLayeredLayer.getElementList().size()); // append to the end
+				
 				arSlerpActions.add(slerpAction);
 								
 				iSlerpFactor = 0;

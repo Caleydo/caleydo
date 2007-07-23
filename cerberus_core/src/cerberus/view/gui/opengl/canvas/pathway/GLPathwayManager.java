@@ -1,16 +1,19 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
+import cerberus.data.collection.ISet;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
+import cerberus.util.colormapping.EnzymeToExpressionColorMapper;
 import cerberus.util.opengl.GLTextUtils;
 
 /**
@@ -32,12 +35,14 @@ public class GLPathwayManager {
 	private int iUniqueObjectPickId = 100;
 	
 	private PathwayRenderStyle refRenderStyle;
-	
-	private boolean bRenderLabels = true;
+
+	private boolean bEnableGeneMapping = false;
 	
 	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
 	
 	private HashMap<Integer, Integer> refHashPathwayId2DisplayListId;
+	
+	private EnzymeToExpressionColorMapper enzymeToExpressionColorMapper;
 	
 	/**
 	 * Constructor.
@@ -51,10 +56,13 @@ public class GLPathwayManager {
 		refHashPathwayId2DisplayListId = new HashMap<Integer, Integer>();
 	}
 	
-	public void init(final GL gl) {
+	public void init(final GL gl, ArrayList<ISet> alSetData) {
 		
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
+		
+		enzymeToExpressionColorMapper =
+			new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
 	}
 	
 	public void buildPathwayDisplayList(final GL gl, final int iPathwayID) {
@@ -235,13 +243,6 @@ public class GLPathwayManager {
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
 
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
-			
-//			if (bRenderLabels)
-//			{	gl.glTranslated(-fNodeWidth + 0.01f, 0.01f, 0);
-//				//GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 0, 0, -0.03f, fNodeWidth, fNodeHeight);
-//				GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0, -0.03f);
-//				gl.glTranslated(fNodeWidth - 0.01f, -0.01f, 0);
-//			}
 		}
 		// Compound
 		else if (sShapeType.equals("circle"))
@@ -255,17 +256,18 @@ public class GLPathwayManager {
 		// Enzyme
 		else if (sShapeType.equals("rectangle"))
 		{	
-			tmpNodeColor = refRenderStyle.getCompoundNodeColor(false);
-			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+			if (bEnableGeneMapping)
+			{
+				mapExpressionToGene(gl, vertexRep, fNodeWidth);
+			}
+			else
+			{
+				tmpNodeColor = refRenderStyle.getCompoundNodeColor(false);
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 					tmpNodeColor.getGreen() / 255.0f, 
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
-			gl.glCallList(iEnzymeNodeDisplayListId);
-
-//			if (bRenderLabels)
-//			{	gl.glTranslated(-0.05f, 0.01f, 0);
-//				GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0, -0.03f);
-//				gl.glTranslated(0.05f, -0.01f, 0);
-//			}
+				gl.glCallList(iEnzymeNodeDisplayListId);
+			}
 		}
 
 		gl.glTranslatef(-fCanvasXPos, -fCanvasYPos, 0);
@@ -310,12 +312,67 @@ public class GLPathwayManager {
         		float fCanvasYPos =	(vertexRep.getYPosition() * SCALING_FACTOR_Y);
  
         		gl.glTranslated(fCanvasXPos - fNodeWidth + 0.01f, fCanvasYPos + 0.01f, 0);
-    			GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 0, 0, -0.03f, fNodeWidth, fNodeHeight);
+        		gl.glColor3f(0, 0 , 0);
+    			GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 10, 0, 0, -0.03f, fNodeWidth, fNodeHeight);
     			//GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0, -0.03f);
     			gl.glTranslated(-fCanvasXPos + fNodeWidth - 0.01f, -fCanvasYPos - 0.01f, 0);      	
         	}
         }  
+	}
+	
+	private void mapExpressionToGene(final GL gl, IPathwayVertexRep vertexRep, float fNodeWidth) {
 		
+		ArrayList<Color> arMappingColor = 
+			enzymeToExpressionColorMapper.getMappingColorArrayByVertex(vertexRep);
+		
+		// Factor indicates how often the enzyme needs to be split
+		// so that all genes can be mapped.
+		int iSplitFactor = arMappingColor.size();
+		Color tmpNodeColor = null;
+		
+		gl.glPushMatrix();
+//				double bla = 0;
+		
+		if (iSplitFactor > 1)
+		{
+			gl.glTranslatef(-fNodeWidth, 0.0f, 0.0f);
+			gl.glTranslatef(fNodeWidth * 2.0f / (iSplitFactor * 2.0f), 0.0f, 0.0f);
+		}
+		
+		for (int iSplitIndex = 0; iSplitIndex < iSplitFactor; iSplitIndex++)
+		{
+			tmpNodeColor = arMappingColor.get(iSplitIndex);
+		
+			// Check if the mapping gave back a valid color
+			if (!tmpNodeColor.equals(Color.BLACK))
+			{
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+			
+			}
+			// Take the default color
+			else
+			{
+				//gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
+				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
+			}
+			
+			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+					tmpNodeColor.getGreen() / 255.0f, 
+					tmpNodeColor.getBlue() / 255.0f, 1.0f);
+			
+			gl.glScalef(1.0f / iSplitFactor, 1.0f, 1.0f);
+			gl.glCallList(iEnzymeNodeDisplayListId);
+			gl.glScalef(iSplitFactor, 1.0f, 1.0f);
+
+			if (iSplitFactor > 1)
+			{
+				gl.glTranslatef(fNodeWidth * 2.0f / iSplitFactor, 0.0f, 0.0f);
+			}
+		}
+
+		gl.glPopMatrix();
 	}
 	
 	public IPathwayVertexRep getVertexRepByPickID(int iPickID) {

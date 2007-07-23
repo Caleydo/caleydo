@@ -12,46 +12,24 @@ import com.sun.opengl.util.GLUT;
  */
 public class GLTextUtils {
 	
-	/**
-	 * Method for rendering text in OpenGL.
-	 * TODO: Move method to some kind of GL Utility class.
-	 * 
-	 * @param gl
-	 * @param showText
-	 * @param fx
-	 * @param fy
-	 * @param fz
-	 */
 	public static void renderText(final GL gl,
 			final String showText,
+			final int iSize,
 			final float fx, 
 			final float fy, 
 			final float fz ) {
 		
-		// final float fFontSizeOffset = 0.02f;
-
 		GLUT glut = new GLUT();
-
-		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		// gl.glLoadIdentity();
-		// gl.glTranslatef(0.0f,0.0f,-1.0f);
-
-		// Pulsing Colors Based On Text Position
-		gl.glColor3f(0.0f, 0.0f, 0.0f);
-
-		// Position The Text On The Screen...fullscreen goes much slower than
-		// the other
-		// way so this is kind of necessary to not just see a blur in smaller
-		// windows
-		// and even in the 640x480 method it will be a bit blurry...oh well you
-		// can
-		// set it if you would like :)
 		gl.glRasterPos3f(fx, fy, fz);
 		
-		// Take a string and make it a bitmap, put it in the 'gl' passed over
-		// and pick
-		// the GLUT font, then provide the string to show
-		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 
+		if (iSize == 10)
+			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 		
+		else if (iSize == 12)
+			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, showText); 		
+		else if (iSize == 18)
+			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, showText); 		
+		else 
+			return;
 	}
 	
 	public static void renderStaticText(final GL gl,
@@ -74,6 +52,7 @@ public class GLTextUtils {
 	
 	public static void renderTextInRegion(final GL gl, 
 			String showText,
+			final int iSize,
 			final float fx, 
 			final float fy, 
 			final float fz,
@@ -93,7 +72,7 @@ public class GLTextUtils {
 		for (int iLineIndex = 0; iLineIndex <= iTotalLines; iLineIndex++)
 		{		
 			if (showText.length() <= iMaxLineChars)
-				renderText(gl, showText, fx, fy, fz);
+				renderText(gl, showText, iSize, fx, fy, fz);
 			else
 			{
 				sTmpText = showText.subSequence(0, iMaxLineChars).toString();
@@ -101,7 +80,7 @@ public class GLTextUtils {
 				if (sTmpText.contains(" "))
 					sTmpText = sTmpText.substring(0, sTmpText.lastIndexOf(' '));
 				
-				renderText(gl, sTmpText, fx, fy - fLineHeight, fz);
+				renderText(gl, sTmpText, iSize, fx, fy - fLineHeight, fz);
 				
 				// store rest for next line
 				showText = showText.substring(sTmpText.length()+1, showText.length());	
