@@ -64,7 +64,7 @@ extends AGLCanvasPathway3D {
 			
 			refHashPathwayToZLayerValue.put(refTmpPathway, fZLayerValue);
 		
-			System.out.println("Create display list for pathway "+refTmpPathway.getTitle());
+			System.out.println("Create display list for pathway "+refTmpPathway.getName());
 			
 			// Creating display list for pathways
 			int iVerticesDisplayListId = gl.glGenLists(1);

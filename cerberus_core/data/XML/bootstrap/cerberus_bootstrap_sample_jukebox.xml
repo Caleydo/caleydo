@@ -30,16 +30,15 @@
 							gl_rotation="1 0 0 180"					
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
 							attrib4="transparency 0.5" 								
-							detail="33101 35101 36101 37101 85101" /> 
+							detail="44101 35101 36101 37101 85101" /> 
 							
-	  		<!-- Mediator -->
+	  	<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="79401 80401 81401 82401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator Pathway Reverse" attrib1="79401" attrib2="84401 80401 81401 82401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="95501" label="Mediator Pathway" 		attrib1="80401" attrib2="79401 84401 81401 82401" detail="SELECTION_MEDIATOR" />  
-
      
    </CommandBuffer>
     

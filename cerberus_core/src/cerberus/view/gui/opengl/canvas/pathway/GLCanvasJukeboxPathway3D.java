@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import javax.media.opengl.GL;
@@ -192,7 +191,7 @@ implements IMediatorReceiver, IMediatorSender {
 		float fLineHeight = 0.05f;
 		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		int iMaxLines = 10;
+		int iMaxLines = 100;
 		
 		// Create free pathway spots
 		Transform transform; 
@@ -200,7 +199,7 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			transform = new Transform();
 			transform.setRotation(new Rotf(fTiltAngleRad, -1, 0, 0));
-			transform.setTranslation(new Vec3f(-3.95f, -iLineIndex * fLineHeight, 0f));
+//			transform.setTranslation(new Vec3f(-4.0f, -iLineIndex * fLineHeight, 10));
 			transform.setScale(new Vec3f(0.1f,0.1f,0.1f));	
 			pathwayPoolLayer.setTransformByPositionIndex(iLineIndex, transform);
 		}
@@ -213,9 +212,13 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
-			iPathwayId = iArPathwayIDs[iPathwayIndex];	
+			iPathwayId = iArPathwayIDs[iPathwayIndex];
+			
+			//Load pathway
+			refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iPathwayId);
+			
 			refPathwayManager.buildPathwayDisplayList(gl, iPathwayId);
-			refPathwayTextureManager.loadPathwayTexture(iPathwayId);
+			//refPathwayTextureManager.loadPathwayTexture(iPathwayId);
 			pathwayPoolLayer.addElement(iPathwayId);		
 		}
 	}
@@ -272,14 +275,13 @@ implements IMediatorReceiver, IMediatorSender {
 		// Assumes that the set consists of only one storage
 		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-		
 		int iPathwayId = 0;		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{	
 			iPathwayId = iArPathwayIDs[iPathwayIndex];	
 
-			if (iMouseOverPickedPathwayId == iPathwayId || pathwayUnderInteractionLayer.containsElement(iPathwayId))
+			if (iMouseOverPickedPathwayId == iPathwayId)
 			{	
 				if ((iPathwayIndex-2 >= 0) && (alMagnificationFactor.get(iPathwayIndex-2) < 1))
 					alMagnificationFactor.set(iPathwayIndex-2, 1);
@@ -295,8 +297,15 @@ implements IMediatorReceiver, IMediatorSender {
 				if ((iPathwayIndex+2 < alMagnificationFactor.size()) && (alMagnificationFactor.get(iPathwayIndex+2) < 1))
 					alMagnificationFactor.set(iPathwayIndex+2, 1);
 			}	
+			else if (pathwayLayeredLayer.containsElement(iPathwayId))
+			{
+				 alMagnificationFactor.set(iPathwayIndex, 3);
+			}
 		}
 
+		recalculatePathwayPoolTransformation(alMagnificationFactor);
+		
+		float fYPos = 0;
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
@@ -304,124 +313,102 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			iPathwayId = iArPathwayIDs[iPathwayIndex];		
 			
+			gl.glLoadName(iPathwayIndex);
+
+			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex))
+				refHashPoolLinePickId2PathwayId.put(iPathwayIndex, iPathwayId);
+			
 			Transform transform = pathwayPoolLayer.getTransformByElementId(iPathwayId);
 			Vec3f translation = transform.getTranslation();
 			gl.glTranslatef(translation.x(),
 					translation.y(),
 					translation.z());
 			
-			gl.glLoadName(iPathwayIndex);
+			gl.glColor4f(0, 0, 0, 1);
 			
-			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex))
-				refHashPoolLinePickId2PathwayId.put(iPathwayIndex, iPathwayId);
-						
 			if (alMagnificationFactor.get(iPathwayIndex) == 3)
 			{
-				gl.glColor3f(0 ,0 ,0);
 				GLTextUtils.renderText(gl,
 						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
 						18,
-						0, 0.025f, 0);
-				gl.glColor4f(0, 0, 0, 0);				
+						0, -0.06f, 1);
+				fYPos = -0.15f;
 			}
 			else if (alMagnificationFactor.get(iPathwayIndex) == 2)
 			{
-				gl.glColor3f(0 ,0 ,0);
 				GLTextUtils.renderText(gl,
 						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
-						10,
-						0, 0.025f, 0);
-				gl.glColor4f(0, 0, 0, 0);				
+						12,
+						0, -0.04f, 1);
+				fYPos = -0.1f;
 			}
 			else if (alMagnificationFactor.get(iPathwayIndex) == 1)
 			{
-				gl.glScaled(0.5f, 0.5f, 0.5f);
-				gl.glColor3f(0, 1, 0);
+				GLTextUtils.renderText(gl,
+						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
+						10,
+						0, -0.02f, 1);
+				fYPos = -0.07f;			
 			}
 			else if (alMagnificationFactor.get(iPathwayIndex) == 0)
 			{
-				gl.glScaled(0.2f, 0.2f, 0.2f);
-				gl.glColor3f(0, 0, 1);
-			}
-			
-			//			// Highlight pathway under interaction
-//			else if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
-//					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
-//			{
-//				gl.glColor3f(1, 0, 0);
-//			}
-			
-			gl.glBegin(GL.GL_QUADS);
-	        gl.glVertex3f(0, 0, 0);		
-	        gl.glVertex3f(0, 0.03f, 0);			
-	        gl.glVertex3f(0.5f, 0.03f, 0f);
-	        gl.glVertex3f(0.5f, 0, 0f);
-	        gl.glEnd();
+				fYPos = -0.03f;
+				
+		        gl.glColor3f(0, 0, 0);
 
+				gl.glBegin(GL.GL_QUADS);
+		        gl.glVertex3f(0, 0, 0);		
+		        gl.glVertex3f(0, fYPos, 0);			
+		        gl.glVertex3f(0.1f, fYPos, 0);
+		        gl.glVertex3f(0.1f, 0, 0);
+		        gl.glEnd();
+			}
+
+			gl.glColor4f(0, 0, 0, 0);			
+
+			gl.glBegin(GL.GL_QUADS);
+	        gl.glVertex3f(0, 0, 0.1f);		
+	        gl.glVertex3f(0, fYPos, 0.1f);			
+	        gl.glVertex3f(0.5f, fYPos, 0.1f);
+	        gl.glVertex3f(0.5f, 0, 0.1f);
+	        gl.glEnd();
+	        
 			gl.glPopMatrix();
 		}
 	}
 	
-//	private void renderPathwayPool(final GL gl) {
-//		
-//		gl.glColor3f(0, 0, 0);
-//		//gl.glPushName(0);
-//		
-//		// Load pathway storage
-//		// Assumes that the set consists of only one storage
-//		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-//		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-//				
-//		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
-//			iPathwayIndex++)
-//		{
-//			gl.glPushMatrix();
-//			
-//			int iPathwayId = iArPathwayIDs[iPathwayIndex];		
-//			
-//			Transform transform = pathwayPoolLayer.getTransformByElementId(iPathwayId);
-//			Vec3f translation = transform.getTranslation();
-//			gl.glTranslatef(translation.x(),
-//					translation.y(),
-//					translation.z());
-//			
-//			gl.glLoadName(iPathwayIndex);
-//			
-//			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex))
-//				refHashPoolLinePickId2PathwayId.put(iPathwayIndex, iPathwayId);
-//						
-//			if (iMouseOverPickedPathwayId == iPathwayId)
-//			{
-//				GLTextUtils.renderText(gl, 
-//						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
-//						0, 0.025f, 0);
-//				gl.glColor4f(0, 0, 0, 0);				
-//			}
-//			// Highlight pathway under interaction
-//			else if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
-//					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
-//			{
-//				gl.glColor3f(1, 0, 0);
-////				GLTextUtils.renderText(gl, 
-////						((Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getTitle(), 
-////						0, 0.025f, 0);
-////				gl.glColor4f(0, 0, 0, 0);
-//			}
-//			else
-//			{
-//				gl.glColor3f(0, 0, 0);
-//			}			
-//			
-//			gl.glBegin(GL.GL_QUADS);
-//	        gl.glVertex3f(0, 0, 0);		
-//	        gl.glVertex3f(0, 0.03f, 0);			
-//	        gl.glVertex3f(0.5f, 0.03f, 0f);
-//	        gl.glVertex3f(0.5f, 0, 0f);
-//	        gl.glEnd();
-//
-//			gl.glPopMatrix();
-//		}
-//	}
+	private void recalculatePathwayPoolTransformation(
+			final ArrayList<Integer> alMagnificationFactor) {
+		
+		Transform transform; 
+		float fPathwayPoolHeight = -2.0f;
+		// Load pathway storage
+		// Assumes that the set consists of only one storage
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		for (int iLineIndex = 0; iLineIndex < tmpStorage.getSize(StorageType.INT); iLineIndex++)
+		{
+			transform = pathwayPoolLayer.getTransformByPositionIndex(iLineIndex);
+			
+			if (alMagnificationFactor.get(iLineIndex) == 3)
+			{
+				fPathwayPoolHeight += 0.15;
+			}
+			else if (alMagnificationFactor.get(iLineIndex) == 2)
+			{
+				fPathwayPoolHeight += 0.1;
+			}
+			else if (alMagnificationFactor.get(iLineIndex) == 1)
+			{
+				fPathwayPoolHeight += 0.07;
+			}
+			else if (alMagnificationFactor.get(iLineIndex) == 0)
+			{
+				fPathwayPoolHeight += 0.03;
+			}
+			
+			transform.setTranslation(new Vec3f(-4.0f, fPathwayPoolHeight, -7));
+		}	
+	}
 	
 	/*
 	 * (non-Javadoc)

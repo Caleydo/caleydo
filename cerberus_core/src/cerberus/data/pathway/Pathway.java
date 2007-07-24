@@ -20,6 +20,8 @@ public class Pathway {
 
 	protected int iPathwayID;
 
+	protected String sName;
+	
 	protected String sTitle;
 
 	protected String sImageLink;
@@ -34,7 +36,8 @@ public class Pathway {
 	
 	protected ArrayList<PathwayReactionEdge> refArReactionEdges;
 	
-	public Pathway(String sTitle,
+	public Pathway(String sName,
+			String sTitle,
 			String sImageLink,
 			String sLink,
 			int iPathwayID) {
@@ -44,6 +47,7 @@ public class Pathway {
 		refArRelationEdges = new ArrayList<PathwayRelationEdge>();
 		refArReactionEdges = new ArrayList<PathwayReactionEdge>();
 
+		this.sName = sName;
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
 		this.sInformationLink = sLink;
@@ -87,6 +91,11 @@ public class Pathway {
 	public String getTitle() {
 	
 		return sTitle;
+	}
+	
+	public String getName() {
+		
+		return sName;
 	}
 	
 	public Iterator<PathwayVertex> getVertexListIterator() {

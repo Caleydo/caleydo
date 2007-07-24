@@ -1371,7 +1371,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
-					": loadBackgroundOverlay(): Loaded Texture for Pathway" +refTexturedPathway.getTitle(),
+					": loadBackgroundOverlay(): Loaded Texture for Pathway" +refTexturedPathway.getName(),
 					LoggerType.VERBOSE );
 			
 		} catch (Exception e)

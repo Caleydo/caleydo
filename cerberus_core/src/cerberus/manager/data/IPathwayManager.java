@@ -13,7 +13,8 @@ extends IGeneralManager {
 
 	public HashMap<Integer, Pathway> getPathwayLUT();
 
-	public void createPathway(String sTitle, String sImageLink,
+	public void createPathway(String sName, 
+			String sTitle, String sImageLink,
 			String sLink, int iPathwayID);
 
 	public Iterator<Pathway> getPathwayIterator();

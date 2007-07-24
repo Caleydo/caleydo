@@ -884,7 +884,7 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 		if (bShowBackgroundOverlay == true)
 		{
 			// Build current pathway file path of GIF
-			String sPathwayImageFilePath = refCurrentPathway.getTitle();
+			String sPathwayImageFilePath = refCurrentPathway.getName();
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
 			sPathwayImageFilePath = refGeneralManager.getSingelton()
 					.getPathwayManager().getPathwayImagePath()

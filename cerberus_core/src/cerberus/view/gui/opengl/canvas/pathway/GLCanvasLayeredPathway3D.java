@@ -62,7 +62,7 @@ extends AGLCanvasPathway3D {
 			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
-			System.out.println("Create display list for pathway " +refTmpPathway.getTitle());
+			System.out.println("Create display list for pathway " +refTmpPathway.getName());
 			
 			refHashPathwayToZLayerValue.put(refTmpPathway, fZLayerValue);
 

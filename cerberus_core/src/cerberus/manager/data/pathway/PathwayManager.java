@@ -65,13 +65,14 @@ implements IPathwayManager {
 	/* (non-Javadoc)
 	 * @see cerberus.manager.data.pathway.IPathwayManager#createPathway(Stringt, Stringt, Stringt, int)
 	 */
-	public void createPathway(String sTitle, 
+	public void createPathway(String sName,
+			String sTitle, 
 			String sImageLink, 
 			String sLink,
 			int iPathwayID) {
 
 		refCurrentPathway = new Pathway(
-				sTitle, sImageLink, sLink, iPathwayID);
+				sName, sTitle, sImageLink, sLink, iPathwayID);
 
 		pathwayLUT.put(iPathwayID, refCurrentPathway);
 	}

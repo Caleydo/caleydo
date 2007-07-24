@@ -112,6 +112,7 @@ implements IXmlParserHandler {
 	 */
     protected void handlePathwayTag() {
     	
+    	String sName = "";
     	String sTitle = "";
     	String sImageLink = "";
     	String sLink = "";
@@ -127,8 +128,10 @@ implements IXmlParserHandler {
 			}
 				
 			if (sAttributeName.equals("name"))
+				sName = attributes.getValue(iAttributeIndex); 
+			else if (sAttributeName.equals("title"))
 				sTitle = attributes.getValue(iAttributeIndex); 
-   			else if (sAttributeName.equals("number"))
+			else if (sAttributeName.equals("number"))
   				iPathwayID = new Integer(attributes.getValue(iAttributeIndex)); 
    			else if (sAttributeName.equals("image"))
     			sImageLink = attributes.getValue(iAttributeIndex); 
@@ -140,7 +143,7 @@ implements IXmlParserHandler {
    		}
 		
 		refGeneralManager.getSingelton().getPathwayManager().
-			createPathway(sTitle, sImageLink, sLink, iPathwayID);
+			createPathway(sName, sTitle, sImageLink, sLink, iPathwayID);
     }
     
 	/**
