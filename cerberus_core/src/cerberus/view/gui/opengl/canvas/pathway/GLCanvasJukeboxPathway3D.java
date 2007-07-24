@@ -5,6 +5,7 @@ import gleem.linalg.Transform;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
+import java.io.File;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,11 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
@@ -129,8 +135,8 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		gl.glDepthFunc(GL.GL_LEQUAL);
-		//gl.glEnable(GL.GL_LINE_SMOOTH);
-		//gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		//gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		gl.glLineWidth(1.0f);
 		
@@ -200,7 +206,7 @@ implements IMediatorReceiver, IMediatorSender {
 			transform = new Transform();
 			transform.setRotation(new Rotf(fTiltAngleRad, -1, 0, 0));
 //			transform.setTranslation(new Vec3f(-4.0f, -iLineIndex * fLineHeight, 10));
-			transform.setScale(new Vec3f(0.1f,0.1f,0.1f));	
+//			transform.setScale(new Vec3f(0.1f,0.1f,0.1f));	
 			pathwayPoolLayer.setTransformByPositionIndex(iLineIndex, transform);
 		}
 		
@@ -299,7 +305,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}	
 			else if (pathwayLayeredLayer.containsElement(iPathwayId))
 			{
-				 alMagnificationFactor.set(iPathwayIndex, 3);
+				 alMagnificationFactor.set(iPathwayIndex, 2);
 			}
 		}
 
@@ -448,9 +454,6 @@ implements IMediatorReceiver, IMediatorSender {
 		Transform transform = slerp.interpolate(slerpAction.getOriginHierarchyLayer().getTransformByPositionIndex(slerpAction.getOriginPosIndex()), 
 				slerpAction.getDestinationHierarchyLayer().getTransformByPositionIndex(slerpAction.getDestinationPosIndex()), iSlerpFactor / 1000f);
 		
-		if (iSlerpFactor == 0)
-			slerp.playSlerpSound();
-		
 		gl.glPushMatrix();
 		slerp.applySlerp(gl, transform);
 		
@@ -477,6 +480,7 @@ implements IMediatorReceiver, IMediatorSender {
 			slerpAction.setSlerpDone(true);
 			arSlerpActions.remove(slerpAction);
 			slerpAction = null;
+			//return;
 		}
 		else
 		{
@@ -497,7 +501,11 @@ implements IMediatorReceiver, IMediatorSender {
 				slerpAction = null;
 				iSlerpFactor = 0;
 			}
+			//return;
 		}
+		
+		if ((iSlerpFactor == 0))
+			slerp.playSlerpSound();
 	}
 	
     private void handlePicking(final GL gl) {
@@ -523,7 +531,7 @@ implements IMediatorReceiver, IMediatorSender {
 	    	fLastMouseMovedTimeStamp = System.nanoTime();
 	    }
 	    
-    	// Check if a object was picked
+    	// Check if an object was picked
     	if (pickPoint != null)
     	{
     		pickObjects(gl, pickPoint);
@@ -613,7 +621,13 @@ implements IMediatorReceiver, IMediatorSender {
 				// If mouse over event - just highlight pathway line
 				if (bIsMouseOverPickingEvent)
 				{
-					iMouseOverPickedPathwayId = iPathwayId;
+					// Check if mouse moved to another pathway in the pathway pool list
+					if (iMouseOverPickedPathwayId != iPathwayId)
+					{
+						iMouseOverPickedPathwayId = iPathwayId;
+						playPathwayPoolTickSound();						
+					}
+					
 					return;
 				}
 				
@@ -659,6 +673,9 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
 			{
+				// Remove pathway pool fisheye
+	    		iMouseOverPickedPathwayId = -1;
+				
 				// Check if other slerp action is currently running
 				if (iSlerpFactor > 0 && iSlerpFactor < 1000)
 					return;
@@ -720,6 +737,24 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 	}	
     
+	public void playPathwayPoolTickSound() {
+		
+		try{
+            AudioInputStream audioInputStream = 
+            	AudioSystem.getAudioInputStream(new File("data/sounds/tick.wav"));
+            AudioFormat af     = audioInputStream.getFormat();
+            int size      = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
+            byte[] audio       = new byte[size];
+            DataLine.Info info      = new DataLine.Info(Clip.class, af, size);
+            audioInputStream.read(audio, 0, size);
+            
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(af, audio, 0, size);
+            clip.start();
+
+		}catch(Exception e){ e.printStackTrace(); }
+	}
+	
 	/**
 	 * @param textureTransparency the fTextureTransparency to set
 	 */

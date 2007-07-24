@@ -162,7 +162,7 @@ public class Slerp {
 		
 		try{
             AudioInputStream audioInputStream = 
-            	AudioSystem.getAudioInputStream(new File("C:/slerp.wav"));
+            	AudioSystem.getAudioInputStream(new File("data/sounds/slerp.wav"));
             AudioFormat af     = audioInputStream.getFormat();
             int size      = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
             byte[] audio       = new byte[size];

@@ -55,7 +55,6 @@
 00473	D-Alanine metabolism
 00480	Glutathione metabolism
 00500	Starch and sucrose metabolism
-00510	N-Glycan biosynthesis
 00512	O-Glycan biosynthesis
 00520	Nucleotide sugars metabolism
 00521	Streptomycin biosynthesis
