@@ -19,6 +19,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
+import cerberus.command.CommandQueueSaxType;
+import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
@@ -160,6 +162,22 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		handlePicking(gl);		
 		renderScene(gl);
+		
+//		int viewport[] = new int[4];
+//		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+//
+//		GLProjectionUtils.orthogonalStart(gl, 1, 1);
+//		
+//		gl.glColor3f(1,0,0);
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex2f(0, 0);
+//		gl.glVertex2f(0, 1);
+//		gl.glVertex2f(1, 1);
+//		gl.glVertex2f(1, 0);
+//		gl.glEnd();
+//		
+//		GLProjectionUtils.orthogonalEnd(gl);
+
 	}
 	
 	public void renderScene(final GL gl) {
@@ -254,6 +272,9 @@ implements IMediatorReceiver, IMediatorSender {
 					rot.getZ());
 
 			refPathwayManager.renderPathway(gl, iPathwayId, false);
+			
+//            gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+//            gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 			
 			if (bShowPathwayTexture)
 			{	
@@ -602,8 +623,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		//System.out.println("------------------------------------------");
 		
-		for (i = 0; i < iHitCount; i++)
-		{
+//		for (i = 0; i < iHitCount; i++)
+//		{
 			iPtr++;
 			iPtr++;
 			iPtr++;	
@@ -613,7 +634,7 @@ implements IMediatorReceiver, IMediatorSender {
 			System.out.println("Pick ID: "+iPickedObjectId);
 			
 			// Check if picked object a non-pathway object (like pathway pool lines, navigation handles, etc.)
-			if (iPickedObjectId < 100)
+			if (iPickedObjectId <= 100)
 			{
 				int iPathwayId = refHashPoolLinePickId2PathwayId.get(iPickedObjectId);
 				System.out.println("PathwayID: " +iPathwayId);
@@ -663,19 +684,25 @@ implements IMediatorReceiver, IMediatorSender {
 				iSlerpFactor = 0;
 				return;
 			}
+			else if (iPickedObjectId == 101) // Picked object is just a pathway texture -> do nothing
+			{
+				return;
+			}
 			
 			refPickedVertexRep = refPathwayManager.getVertexRepByPickID(iPickedObjectId);
 			
+			// Remove pathway pool fisheye
+    		iMouseOverPickedPathwayId = -1;
+			
 			if (refPickedVertexRep == null)
 				return;
-			
+						
 			System.out.println("Picked node:" +refPickedVertexRep.getName());
-			
+
+			loadNodeInformationInBrowser(refPickedVertexRep.getVertex().getVertexLink());
+						
 			if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
-			{
-				// Remove pathway pool fisheye
-	    		iMouseOverPickedPathwayId = -1;
-				
+			{	
 				// Check if other slerp action is currently running
 				if (iSlerpFactor > 0 && iSlerpFactor < 1000)
 					return;
@@ -734,7 +761,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				iSlerpFactor = 0;
 			}
-		}
+//		}
 	}	
     
 	public void playPathwayPoolTickSound() {
@@ -753,6 +780,48 @@ implements IMediatorReceiver, IMediatorSender {
             clip.start();
 
 		}catch(Exception e){ e.printStackTrace(); }
+	}
+	
+	public void loadNodeInformationInBrowser(String sUrl) {
+
+		if (sUrl.isEmpty())
+			return;
+		
+		CmdViewLoadURLInHTMLBrowser createdCmd = 
+			(CmdViewLoadURLInHTMLBrowser)refGeneralManager.getSingelton().getCommandManager().
+				createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
+
+		createdCmd.setAttributes(sUrl);
+		createdCmd.doCommand();
+	}
+	
+	public void drawPolygon(final GL gl, 
+			int iNumberVertices, int iCenterX, int iCenterY) {
+		
+	    int rotation = 15;        // degrees to rotate the shape (0-359), default 0, slider
+	    int stars = 1;            // 1=normal, 2=stars (integer, range 1 to less than verticies/2)
+		int radius = 1;
+		
+	    double th = 360.0/iNumberVertices;
+	    double X1 = 0, Y1 = 0, X2 = 0, Y2 = 0;
+	    double angle = 0;
+
+	    for (int P = 0; P<=iNumberVertices; P++)
+	    {
+	       // Find the starting point (X1,Y1)
+	        angle = Math.PI * ((th * P) + rotation) / 180.0;
+	        X1 = (radius * Math.cos(angle)) + iCenterX;
+	        Y1 = (radius * Math.sin(angle)) + iCenterY;
+	        // Find next end point (X2,Y2)
+	        angle = Math.PI * ((th * (P+stars)) + rotation) / 180.0;
+	        X2 = (radius * Math.cos(angle)) + iCenterX;
+	        Y2 = (radius * Math.sin(angle)) + iCenterY;
+	        
+	        gl.glBegin(GL.GL_LINE);
+	        gl.glVertex3d(X1, Y1, 0);
+	        gl.glVertex3d(X2, Y2, 0);
+	        gl.glEnd();
+	    } 
 	}
 	
 	/**

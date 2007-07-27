@@ -124,7 +124,9 @@ public class Rotf {
    */
   public void set(float angle, float axisX, float axisY, float axisZ) {
 	float halfTheta = angle / 2.0f;
-	q0 = (float) Math.cos(halfTheta);
+	//FIXME: We need to look on this again.
+	//       It will be checked it that the version on SVN is working.
+	q0 = angle;//(float) Math.cos(halfTheta);
 	float sinHalfTheta = (float) Math.sin(halfTheta);
 //	Vec3f realAxis = new Vec3f(axis);
 //	realAxis.normalize();
@@ -343,6 +345,38 @@ public class Rotf {
 	  return new Vec4f( q1, q2, q3, q0);	  
   }
   
+  public float getX() {
+	  return q1;
+  }
+  
+  public float getY() {
+	  return q2;
+  }
+  
+  public float getZ() {
+	  return q3;
+  }
+  
+  public float getAngle() {
+	  return q0;
+  }
+  
+  public void setX(float x) {
+	  q1 = x;
+  }
+
+  public void setY(float y) {
+	  q2 = y;
+  }
+
+  public void setZ(float z) {
+	  q3 = z;
+  }
+  
+  public void setAngle(float angle) {
+	  q0 = angle;
+  }  
+
   public void applyEulerAngles(float x, float y, float z) {
 	  
 	  Rotf rotX = new Rotf( (float) Math.cos(x/2),

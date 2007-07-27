@@ -50,19 +50,19 @@ public class GLPathwayTextureManager {
 		
 		if (iPathwayID < 10)
 		{
-			sPathwayTexturePath = "map0000" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa0000" + Integer.toString(iPathwayID);
 		}
 		else if (iPathwayID < 100 && iPathwayID >= 10)
 		{
-			sPathwayTexturePath = "map000" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa000" + Integer.toString(iPathwayID);
 		}
 		else if (iPathwayID < 1000 && iPathwayID >= 100)
 		{
-			sPathwayTexturePath = "map00" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa00" + Integer.toString(iPathwayID);
 		}
 		else if (iPathwayID < 10000 && iPathwayID >= 1000)
 		{
-			sPathwayTexturePath = "map0" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa0" + Integer.toString(iPathwayID);
 		}
 		
 		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
@@ -102,12 +102,20 @@ public class GLPathwayTextureManager {
 		if (bHighlight)
 			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
 		else
-			gl.glColor4f(0.85f, 0.85f, 0.85f, fTextureTransparency);
+			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
 		
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
 		
 		float fTextureWidth = 0.0025f * (float)refTmpPathwayTexture.getImageWidth();
 		float fTextureHeight = 0.0025f * (float)refTmpPathwayTexture.getImageHeight();				
+		
+//		int viewport[] = new int[4];
+//		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+//
+//		float h = (float) (float) (viewport[3]-viewport[1]) / 
+//			(float) (viewport[2]-viewport[0]) * 4.0f;
+		
+		gl.glLoadName(101);
 		
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(0, 0); 

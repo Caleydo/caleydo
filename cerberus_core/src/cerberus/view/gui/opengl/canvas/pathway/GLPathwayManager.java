@@ -32,11 +32,11 @@ public class GLPathwayManager {
 	private int iCompoundNodeDisplayListId = -1;
 	
 	// First hundred IDs are reserved for picking of non pathway objects in the scene
-	private int iUniqueObjectPickId = 100;
+	private int iUniqueObjectPickId = 101;
 	
 	private PathwayRenderStyle refRenderStyle;
 
-	private boolean bEnableGeneMapping = false;
+	private boolean bEnableGeneMapping = true;
 	
 	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
 	

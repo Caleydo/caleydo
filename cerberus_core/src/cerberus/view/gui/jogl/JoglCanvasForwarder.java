@@ -161,7 +161,7 @@ implements GLEventListener, IJoglMouseListener {
 
 		GL gl = drawable.getGL();
 
-		float h = (float) height / (float) width;
+		float h = (float) height / (float) width * 4.0f;
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		
@@ -174,8 +174,9 @@ implements GLEventListener, IJoglMouseListener {
 		
 		gl.glLoadIdentity();
 		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 60.0f);
 		
+		//FIXME: It must be considered in the new 
+		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();

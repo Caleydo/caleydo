@@ -94,19 +94,19 @@ implements IPathwayManager {
 		
 		if (iPathwayID < 10)
 		{
-			sPathwayFilePath = "map0000" + Integer.toString(iPathwayID);
+			sPathwayFilePath = "hsa0000" + Integer.toString(iPathwayID);
 		}
 		else if (iPathwayID < 100 && iPathwayID >= 10)
 		{
-			sPathwayFilePath = "map000" + Integer.toString(iPathwayID);
+			sPathwayFilePath = "hsa000" + Integer.toString(iPathwayID);
 		}
 		else if (iPathwayID < 1000 && iPathwayID >= 100)
 		{
-			sPathwayFilePath = "map00" + Integer.toString(iPathwayID);
+			sPathwayFilePath = "hsa00" + Integer.toString(iPathwayID);
 		}
 		else if (iPathwayID < 10000 && iPathwayID >= 1000)
 		{
-			sPathwayFilePath = "map0" + Integer.toString(iPathwayID);
+			sPathwayFilePath = "hsa0" + Integer.toString(iPathwayID);
 		}
 		
 		sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath()

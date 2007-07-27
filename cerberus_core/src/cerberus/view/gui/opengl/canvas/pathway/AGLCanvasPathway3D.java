@@ -136,7 +136,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected boolean bBlowUp = true;
 	
-	protected boolean bEnableGeneMapping = false;
+	protected boolean bEnableGeneMapping = true;
 	
 	protected float fHighlightedNodeBlowFactor = 1.1f;
 	

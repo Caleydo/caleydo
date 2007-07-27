@@ -16,15 +16,10 @@
 00140	C21-Steroid hormone metabolism
 00150	Androgen and estrogen metabolism
 00190	Oxidative phosphorylation
-00195	Photosynthesis
-00196	Photosynthesis - antenna proteins
 00220	Urea cycle and metabolism of amino groups
-00230	Purine metabolism
-00231	Puromycin biosynthesis
 00240	Pyrimidine metabolism
 00251	Glutamate metabolism
 00252	Alanine and aspartate metabolism
-00253	Tetracycline biosynthesis
 00260	Glycine, serine and threonine metabolism
 00271	Methionine metabolism
 00272	Cysteine metabolism
@@ -32,9 +27,7 @@
 00290	Valine, leucine and isoleucine biosynthesis
 00300	Lysine biosynthesis
 00310	Lysine degradation
-00311	Penicillin and cephalosporin biosynthesis
 00330	Arginine and proline metabolism
-00331	Clavulanic acid biosynthesis
 00340	Histidine metabolism
 00350	Tyrosine metabolism
 00351	1,1,1-Trichloro-2,2-bis(4-chlorophenyl)ethane (DDT) degradation
@@ -52,43 +45,4 @@
 00460	Cyanoamino acid metabolism
 00471	D-Glutamine and D-glutamate metabolism
 00472	D-Arginine and D-ornithine metabolism
-00473	D-Alanine metabolism
 00480	Glutathione metabolism
-00500	Starch and sucrose metabolism
-00512	O-Glycan biosynthesis
-00520	Nucleotide sugars metabolism
-00521	Streptomycin biosynthesis
-00522	Biosynthesis of 12-, 14- and 16-membered macrolides
-00523	Polyketide sugar unit biosynthesis
-00530	Aminosugars metabolism
-00531	Glycosaminoglycan degradation
-00532	Chondroitin sulfate biosynthesis
-00534	Heparan sulfate biosynthesis
-00540	Lipopolysaccharide biosynthesis
-00550	Peptidoglycan biosynthesis
-00561	Glycerolipid metabolism
-00562	Inositol phosphate metabolism
-00563	Glycosylphosphatidylinositol(GPI)-anchor biosynthesis
-00564	Glycerophospholipid metabolism
-00565	Ether lipid metabolism
-00590	Arachidonic acid metabolism
-00591	Linoleic acid metabolism
-00600	Sphingolipid metabolism
-00601	Glycosphingolipid biosynthesis - lactoseries
-00602	Glycosphingolipid biosynthesis - neo-lactoseries
-00603	Glycosphingolipid biosynthesis - globoseries
-00604	Glycosphingolipid biosynthesis - ganglioseries
-00620	Pyruvate metabolism
-00621	Biphenyl degradation
-00622	Toluene and xylene degradation
-00623	2,4-Dichlorobenzoate degradation
-00624	1- and 2-Methylnaphthalene degradation
-00625	Tetrachloroethene degradation
-00626	Nitrobenzene degradation
-00627	1,4-Dichlorobenzene degradation
-00628	Fluorene degradation
-00629	Carbazole degradation
-00630	Glyoxylate and dicarboxylate metabolism
-00631	1,2-Dichloroethane degradation
-00632	Benzoate degradation via CoA ligation
-00640	Propanoate metabolism

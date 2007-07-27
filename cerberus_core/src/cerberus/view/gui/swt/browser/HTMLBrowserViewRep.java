@@ -51,7 +51,6 @@ implements IView {
 		
 		retrieveGUIContainer();
 		
-
 		refBrowser = new Browser (refSWTContainer, SWT.NONE);
 				
 //		if ((iWidth == -1)&&(iHeight == -1)) 
@@ -151,10 +150,14 @@ implements IView {
 //		}
 		
 		try {
-			refTextField.setText(sUrl);				
-			refBrowser.setUrl(sUrl);
-			//refBrowser.refresh();
-		} 
+			refSWTContainer.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					refTextField.setText(sUrl);				
+					refBrowser.setUrl(sUrl);
+					//refBrowser.refresh();
+				}
+			});
+		}
 			catch (SWTException swte) 
 		{
 				refGeneralManager.getSingelton().logMsg(

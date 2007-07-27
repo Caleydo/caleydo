@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Dec 27 2006 18:48:31 +0900 (JST) -->
+<pathway name="path:hsa05030" org="hsa" number="05030"
+         title="Amyotrophic lateral sclerosis (ALS)"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa05030.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?hsa05030">
+    <entry id="1" name="cpd:C00001" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00001">
+        <graphics name="C00001" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="555" y="96" width="8" height="8"/>
+    </entry>
+    <entry id="3" name="cpd:C00027" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00027">
+        <graphics name="C00027" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="439" y="96" width="8" height="8"/>
+    </entry>
+    <entry id="4" name="cpd:C00704" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00704">
+        <graphics name="C00704" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="352" y="96" width="8" height="8"/>
+    </entry>
+    <entry id="5" name="cpd:C00070" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00070">
+        <graphics name="C00070" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="64" y="252" width="8" height="8"/>
+    </entry>
+    <entry id="6" name="hsa:2876" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2876">
+        <graphics name="GPX1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="488" y="82" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:847" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+847">
+        <graphics name="CAT" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="488" y="108" width="46" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:6647" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6647">
+        <graphics name="SOD1, ALS, ALS1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="387" y="166" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:6647" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6647">
+        <graphics name="SOD1, ALS, ALS1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="390" y="82" width="46" height="17"/>
+    </entry>
+    <entry id="10" name="path:hsa04210" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04210.html">
+        <graphics name="Apoptosis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="455" y="369" width="65" height="30"/>
+    </entry>
+    <entry id="11" name="hsa:4741" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+4741">
+        <graphics name="NEFM, NEF3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="723" y="230" width="45" height="17"/>
+    </entry>
+    <entry id="12" name="hsa:572" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+572">
+        <graphics name="BAD" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="303" y="361" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:4744" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+4744">
+        <graphics name="NEFH" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="723" y="253" width="45" height="16"/>
+    </entry>
+    <entry id="14" name="hsa:4747" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+4747">
+        <graphics name="NEFL" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="723" y="208" width="45" height="17"/>
+    </entry>
+    <entry id="15" name="hsa:581" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+581">
+        <graphics name="BAX" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="303" y="380" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="hsa:5530" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5530">
+        <graphics name="PPP3CA, CALN, CALNA" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="88" y="373" width="46" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:598" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+598">
+        <graphics name="BCL2L1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="303" y="416" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:57679" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+57679">
+        <graphics name="ALS2, ALS2CR6" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="161" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:596" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+596">
+        <graphics name="BCL2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="303" y="437" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:9973" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+9973">
+        <graphics name="CCS" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="96" y="235" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:6506" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6506">
+        <graphics name="SLC1A2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="154" y="374" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="path:hsa05030" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+hsa05030">
+        <graphics name="TITLE:Amyotrophic lateral sclerosis (ALS)" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="162" y="41" width="235" height="26"/>
+    </entry>
+    <entry id="23" name="hsa:6748" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6748">
+        <graphics name="SSR4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="234" y="219" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="hsa:7157" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+7157">
+        <graphics name="TP53" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="303" y="335" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="hsa:3735" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3735">
+        <graphics name="KARS" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="217" y="190" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="hsa:6647" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6647">
+        <graphics name="SOD1, ALS, ALS1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="161" y="251" width="45" height="17"/>
+    </entry>
+    <relation entry1="25" entry2="26" type="PPrel">
+        <subtype name="binding/association" value="---"/>
+    </relation>
+    <relation entry1="23" entry2="26" type="PPrel">
+        <subtype name="binding/association" value="---"/>
+    </relation>
+    <relation entry1="26" entry2="21" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="26" entry2="16" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="26" entry2="24" type="PPrel">
+        <subtype name="indirect" value="..>"/>
+    </relation>
+    <relation entry1="20" entry2="26" type="PPrel">
+        <subtype name="compound" value="5"/>
+    </relation>
+    <relation entry1="7" entry2="9" type="PPrel">
+        <subtype name="compound" value="3"/>
+    </relation>
+    <relation entry1="6" entry2="9" type="PPrel">
+        <subtype name="compound" value="3"/>
+    </relation>
+    <relation entry1="9" entry2="4" type="PCrel"/>
+    <relation entry1="6" entry2="1" type="PCrel"/>
+    <relation entry1="7" entry2="1" type="PCrel"/>
+</pathway>
