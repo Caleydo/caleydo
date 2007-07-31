@@ -340,10 +340,10 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			iPathwayId = iArPathwayIDs[iPathwayIndex];		
 			
-			gl.glLoadName(iPathwayIndex);
+			gl.glLoadName(iPathwayIndex+1);
 
-			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex))
-				refHashPoolLinePickId2PathwayId.put(iPathwayIndex, iPathwayId);
+			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex+1))
+				refHashPoolLinePickId2PathwayId.put(iPathwayIndex+1, iPathwayId);
 			
 			Transform transform = pathwayPoolLayer.getTransformByElementId(iPathwayId);
 			Vec3f translation = transform.getTranslation();
@@ -631,10 +631,17 @@ implements IMediatorReceiver, IMediatorSender {
 			//iPtr++;
 			iPickedObjectId = iArPickingBuffer[iPtr];
 			
+			if (iPickedObjectId == 0)
+			{
+				// Remove pathway pool fisheye
+	    		iMouseOverPickedPathwayId = -1;
+				return;
+			}
+			
 			System.out.println("Pick ID: "+iPickedObjectId);
 			
 			// Check if picked object a non-pathway object (like pathway pool lines, navigation handles, etc.)
-			if (iPickedObjectId <= 100)
+			if (iPickedObjectId < 101)
 			{
 				int iPathwayId = refHashPoolLinePickId2PathwayId.get(iPickedObjectId);
 				System.out.println("PathwayID: " +iPathwayId);
