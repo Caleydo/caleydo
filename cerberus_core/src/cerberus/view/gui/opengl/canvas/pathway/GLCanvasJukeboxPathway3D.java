@@ -103,9 +103,9 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashPoolLinePickId2PathwayId = new HashMap<Integer, Integer>();
 		
 		// Create Jukebox hierarchy
-		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer();
-		pathwayLayeredLayer = new JukeboxHierarchyLayer();
-		pathwayPoolLayer = new JukeboxHierarchyLayer();
+		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(1);
+		pathwayLayeredLayer = new JukeboxHierarchyLayer(4);
+		pathwayPoolLayer = new JukeboxHierarchyLayer(200);
 		pathwayUnderInteractionLayer.setParentLayer(pathwayLayeredLayer);
 		pathwayLayeredLayer.setChildLayer(pathwayUnderInteractionLayer);
 		pathwayLayeredLayer.setParentLayer(pathwayPoolLayer);
@@ -116,7 +116,6 @@ implements IMediatorReceiver, IMediatorSender {
 		transformPathwayUnderInteraction.setScale(new Vec3f(1.5f, 1.5f, 1.5f));
 		transformPathwayUnderInteraction.setRotation(new Rotf(0, 0, 0, 0));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0, transformPathwayUnderInteraction);
-		//pathwayUnderInteractionLayer.addElement(0);
 		
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
 			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
@@ -212,7 +211,6 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void buildPathwayPool(final GL gl) {
 		
-		float fLineHeight = 0.05f;
 		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		int iMaxLines = 100;
@@ -239,10 +237,8 @@ implements IMediatorReceiver, IMediatorSender {
 			iPathwayId = iArPathwayIDs[iPathwayIndex];
 			
 			//Load pathway
-			refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iPathwayId);
-			
+			refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iPathwayId);			
 			refPathwayManager.buildPathwayDisplayList(gl, iPathwayId);
-			//refPathwayTextureManager.loadPathwayTexture(iPathwayId);
 			pathwayPoolLayer.addElement(iPathwayId);		
 		}
 	}
@@ -472,8 +468,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		int iPathwayId = slerpAction.getElementId();
 		Slerp slerp = new Slerp();
-		Transform transform = slerp.interpolate(slerpAction.getOriginHierarchyLayer().getTransformByPositionIndex(slerpAction.getOriginPosIndex()), 
-				slerpAction.getDestinationHierarchyLayer().getTransformByPositionIndex(slerpAction.getDestinationPosIndex()), iSlerpFactor / 1000f);
+		Transform transform = slerp.interpolate(slerpAction.getOriginHierarchyLayer().
+				getTransformByPositionIndex(slerpAction.getOriginPosIndex()), 
+				slerpAction.getDestinationHierarchyLayer().getTransformByPositionIndex(
+						slerpAction.getDestinationPosIndex()), iSlerpFactor / 1000f);
 		
 		gl.glPushMatrix();
 		slerp.applySlerp(gl, transform);
@@ -522,7 +520,6 @@ implements IMediatorReceiver, IMediatorSender {
 				slerpAction = null;
 				iSlerpFactor = 0;
 			}
-			//return;
 		}
 		
 		if ((iSlerpFactor == 0))
@@ -638,7 +635,7 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 			}
 			
-			System.out.println("Pick ID: "+iPickedObjectId);
+			//System.out.println("Pick ID: "+iPickedObjectId);
 			
 			// Check if picked object a non-pathway object (like pathway pool lines, navigation handles, etc.)
 			if (iPickedObjectId < 101)

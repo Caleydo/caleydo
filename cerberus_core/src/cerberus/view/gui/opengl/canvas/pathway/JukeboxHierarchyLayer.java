@@ -9,15 +9,24 @@ import java.util.LinkedList;
 public class JukeboxHierarchyLayer {
 	
 	private HashMap<Integer, Transform> hashElementPositionIndexToTransform;
+	
+	/**
+	 * Index in list determines position in stack
+	 */
 	private LinkedList<Integer> llElementId;
+	private LinkedList<Integer> llElementIdImportanceQueue;
 	
 	private JukeboxHierarchyLayer parentLayer;
 	private JukeboxHierarchyLayer childLayer;
 	
-	public JukeboxHierarchyLayer() {
+	private int iCapacity = 0;
+	
+	public JukeboxHierarchyLayer(int iCapacity) {
 		
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
 		llElementId = new LinkedList<Integer>();
+		llElementIdImportanceQueue = new LinkedList<Integer>();
+		this.iCapacity = iCapacity;
 	}
 	
 	public void setParentLayer(final JukeboxHierarchyLayer parentLayer) {
@@ -42,7 +51,23 @@ public class JukeboxHierarchyLayer {
 	
 	public int addElement(int iElementId) {
 		
-		llElementId.addLast(iElementId);
+		// Check if element limit is reached
+		if (llElementId.size() >= iCapacity)
+		{
+			// Find and remove least important element
+			int iLeastImportantElementId = llElementIdImportanceQueue.removeLast();
+
+			int iReplacePosition = llElementId.indexOf(iLeastImportantElementId);
+			llElementId.set(iReplacePosition, iElementId);
+			
+			llElementIdImportanceQueue.addFirst(iElementId);			
+		}
+		else
+		{
+			// Add to the end of the stack (because there is free space)
+			llElementId.addLast(iElementId);
+			llElementIdImportanceQueue.addLast(iElementId);
+		}
 		
 		return llElementId.size() - 1;
 	}
@@ -73,6 +98,7 @@ public class JukeboxHierarchyLayer {
 	public void removeElement(int iElementId) {
 		
 		llElementId.remove((Integer)iElementId);
+		llElementIdImportanceQueue.remove((Integer)iElementId);
 	}
 	
 	public boolean containsElement(int iElementId) {
@@ -92,6 +118,6 @@ public class JukeboxHierarchyLayer {
 	
 	public final int getPositionIndexByElementId(int iElementId) {
 		
-		return llElementId.lastIndexOf(iElementId);
+		return llElementId.indexOf(iElementId);
 	}
 }

@@ -1,8 +1,6 @@
 package cerberus.util.slerp;
 
-import cerberus.application.core.CerberusBootloader;
 import cerberus.view.gui.opengl.canvas.pathway.JukeboxHierarchyLayer;
-
 
 public class SlerpAction {
 
@@ -47,26 +45,26 @@ public class SlerpAction {
 			this.iDestinationPosIndex = iDestinationPosIndex;
 	}
 	
-	public SlerpAction(int iElementId, 
-			JukeboxHierarchyLayer originHierarchyLayer,
-			JukeboxHierarchyLayer destinationHierarchyLayer,
-			boolean bReverseSlerp,
-			int iDestinationPosIndex) {
-		
-		this.iElementId = iElementId;
-		this.originHierarchyLayer = originHierarchyLayer;
-		this.bSlerpUpInHierarchy = true;
-		this.bReverseSlerp = bReverseSlerp;
-		
-		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
-		this.destinationHierarchyLayer = destinationHierarchyLayer;
-		
-		// If pathway is already in this layer - slerp to the existing position.
-		if (destinationHierarchyLayer.containsElement(iElementId))
-			this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(iElementId);
-		else
-			this.iDestinationPosIndex = iDestinationPosIndex;
-	}
+//	public SlerpAction(int iElementId, 
+//			JukeboxHierarchyLayer originHierarchyLayer,
+//			JukeboxHierarchyLayer destinationHierarchyLayer,
+//			boolean bReverseSlerp,
+//			int iDestinationPosIndex) {
+//		
+//		this.iElementId = iElementId;
+//		this.originHierarchyLayer = originHierarchyLayer;
+//		this.bSlerpUpInHierarchy = true;
+//		this.bReverseSlerp = bReverseSlerp;
+//		
+//		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
+//		this.destinationHierarchyLayer = destinationHierarchyLayer;
+//		
+//		// If pathway is already in this layer - slerp to the existing position.
+//		if (destinationHierarchyLayer.containsElement(iElementId))
+//			this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(iElementId);
+//		else
+//			this.iDestinationPosIndex = iDestinationPosIndex;
+//	}
 	
 	public int getElementId() {
 	
