@@ -43,18 +43,17 @@ public interface IGraphItem {
 	 */
 	public void setIsNode( boolean enable );
 	
-	public Collection<IGraphItem> getAllEdges();
+	public Collection<IGraphItem> getAllGraphItemsByProp();
 	
-	public Collection<IGraphItem> getAllGraphObject();
+	public Collection<IGraphItem> getAllGraphItems();
 	
-	public Collection<IGraphItem> getAllNodes();
-	
-	
-	public void addGraphObject(IGraphItem add);
+	public void addGraphItem(IGraphItem add, EGraphItemProperty prop);
 	
 	public boolean removeGraphObject(IGraphItem remove);
 	
-	public boolean containsGraphObject(IGraphItem test);
+	public boolean containsGraphItem(IGraphItem test);
+	
+	public boolean containsGraphItemByProp(IGraphItem test, EGraphItemProperty prop);
 	
 	/* --- parent graphs --- */
 	

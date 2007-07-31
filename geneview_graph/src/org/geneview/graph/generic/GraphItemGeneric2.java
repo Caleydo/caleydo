@@ -1,12 +1,15 @@
 /**
  * 
  */
-package org.geneview.graph;
+package org.geneview.graph.generic;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.geneview.graph.IGraph;
+import org.geneview.graph.EGraphItemProperty;
 
 /**
  * @author java

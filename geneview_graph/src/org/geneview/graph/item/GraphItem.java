@@ -5,6 +5,7 @@ package org.geneview.graph.item;
 
 import java.util.Collection;
 
+import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
 import org.geneview.graph.generic.IGraphItemGeneric;
@@ -29,7 +30,7 @@ public class GraphItem implements IGraphItem {
 	 * @see org.geneview.graph.IGraphItem#addGraphObject(org.geneview.graph.IGraphItem)
 	 */
 	@Override
-	public void addGraphObject(IGraphItem add) {
+	public void addGraphItem(IGraphItem add, EGraphItemProperty prop) {
 		
 		graphItem.addGraphItemByType( add, EGraphItemHierarchy.ITEM_NEIGHBOUR);
 
@@ -66,7 +67,7 @@ public class GraphItem implements IGraphItem {
 	 * @see org.geneview.graph.IGraphItem#containsGraphObject(org.geneview.graph.IGraphItem)
 	 */
 	@Override
-	public boolean containsGraphObject(IGraphItem test) {
+	public boolean containsGraphItem(IGraphItem test) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -84,7 +85,7 @@ public class GraphItem implements IGraphItem {
 	 * @see org.geneview.graph.IGraphItem#getAllEdges()
 	 */
 	@Override
-	public Collection<IGraphItem> getAllEdges() {
+	public Collection<IGraphItem> getAllGraphItemsByProp() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -93,7 +94,7 @@ public class GraphItem implements IGraphItem {
 	 * @see org.geneview.graph.IGraphItem#getAllGraphObject()
 	 */
 	@Override
-	public Collection<IGraphItem> getAllGraphObject() {
+	public Collection<IGraphItem> getAllGraphItems() {
 		// TODO Auto-generated method stub
 		return null;
 	}

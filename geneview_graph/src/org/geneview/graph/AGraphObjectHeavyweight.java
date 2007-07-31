@@ -82,7 +82,7 @@ public abstract class AGraphObjectHeavyweight extends AGraphObject {
 
 	}
 
-	public void addGraphObject(IGraphItem add) {
+	public void addGraphItem(IGraphItem add, EGraphItemProperty prop) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -101,7 +101,7 @@ public abstract class AGraphObjectHeavyweight extends AGraphObject {
 		return listData.contains( data );
 	}
 
-	public boolean containsGraphObject(IGraphItem test) {
+	public boolean containsGraphItem(IGraphItem test) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -120,12 +120,12 @@ public abstract class AGraphObjectHeavyweight extends AGraphObject {
 		return clone;
 	}
 
-	public Collection<IGraphItem> getAllEdges() {
+	public Collection<IGraphItem> getAllGraphItemsByProp() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Collection<IGraphItem> getAllGraphObject() {
+	public Collection<IGraphItem> getAllGraphItems() {
 		// TODO Auto-generated method stub
 		return null;
 	}
