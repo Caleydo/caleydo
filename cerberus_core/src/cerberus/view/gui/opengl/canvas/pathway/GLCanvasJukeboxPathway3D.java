@@ -31,6 +31,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
+import cerberus.util.opengl.GLStarEffect;
 import cerberus.util.opengl.GLTextUtils;
 import cerberus.util.slerp.Slerp;
 import cerberus.util.slerp.SlerpAction;
@@ -267,7 +268,7 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()),
 				rot.getX(),
 				rot.getY(),
-				rot.getZ());
+				rot.getZ());		
 
 		refPathwayManager.renderPathway(gl, iPathwayId, true);
 		refPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);

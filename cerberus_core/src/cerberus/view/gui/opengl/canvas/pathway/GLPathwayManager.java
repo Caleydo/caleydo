@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.pathway.Pathway;
@@ -14,6 +15,7 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.colormapping.EnzymeToExpressionColorMapper;
+import cerberus.util.opengl.GLStarEffect;
 import cerberus.util.opengl.GLTextUtils;
 
 /**
@@ -36,7 +38,7 @@ public class GLPathwayManager {
 	
 	private PathwayRenderStyle refRenderStyle;
 
-	private boolean bEnableGeneMapping = false;
+	private boolean bEnableGeneMapping = true;
 	
 	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
 	
@@ -258,7 +260,7 @@ public class GLPathwayManager {
 		{	
 			if (bEnableGeneMapping)
 			{
-				mapExpressionToGene(gl, vertexRep, fNodeWidth);
+				mapExpressionToGene(gl, vertexRep.getVertex(), fNodeWidth);
 			}
 			else
 			{
@@ -320,10 +322,10 @@ public class GLPathwayManager {
         }  
 	}
 	
-	private void mapExpressionToGene(final GL gl, IPathwayVertexRep vertexRep, float fNodeWidth) {
+	private void mapExpressionToGene(final GL gl, PathwayVertex pathwayVertex, float fNodeWidth) {
 		
 		ArrayList<Color> arMappingColor = 
-			enzymeToExpressionColorMapper.getMappingColorArrayByVertex(vertexRep);
+			enzymeToExpressionColorMapper.getMappingColorArrayByVertex(pathwayVertex);
 		
 		// Factor indicates how often the enzyme needs to be split
 		// so that all genes can be mapped.
@@ -331,7 +333,6 @@ public class GLPathwayManager {
 		Color tmpNodeColor = null;
 		
 		gl.glPushMatrix();
-//				double bla = 0;
 		
 		if (iSplitFactor > 1)
 		{
@@ -343,6 +344,26 @@ public class GLPathwayManager {
 		{
 			tmpNodeColor = arMappingColor.get(iSplitIndex);
 		
+			// Just for testing!!!
+			if (tmpNodeColor.equals(Color.YELLOW))
+			{					
+				GLStarEffect.drawStar(gl, 
+						GLStarEffect.calculateStarPoints(5, 0.2f, 0, 0));
+				
+				gl.glTranslatef(0,0,-0.1f);
+				gl.glColor4f(1,0,0,0.2f);
+				GLU glu = new GLU();
+				glu.gluDisk(glu.gluNewQuadric(), 0.5f, 0, 10, 10);
+//
+//				
+//				gl.glBegin(GL.GL_POLYGON);
+//				gl.glVertex3f(-0.5f, 0.5f,0f);
+//				gl.glVertex3f(-0.5f, -0.5f, 0);
+//				gl.glVertex3f(0.5f, -0.5f, 0);
+//				gl.glVertex3f(0.5f, 0.5f, 0);
+//				gl.glEnd();
+			}
+			
 			// Check if the mapping gave back a valid color
 			if (!tmpNodeColor.equals(Color.BLACK))
 			{

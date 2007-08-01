@@ -794,7 +794,8 @@ implements IMediatorReceiver, IMediatorSender {
 						new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
 					
 					ArrayList<Color> arMappingColor = 
-						enzymeToExpressionColorMapper.getMappingColorArrayByVertex(vertexRep);
+						enzymeToExpressionColorMapper.getMappingColorArrayByVertex(
+								vertexRep.getVertex());
 					
 					// Factor indicates how often the enzyme needs to be split
 					// so that all genes can be mapped.
