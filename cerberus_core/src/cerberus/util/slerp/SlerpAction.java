@@ -23,8 +23,7 @@ public class SlerpAction {
 	public SlerpAction(int iElementId, 
 			JukeboxHierarchyLayer originHierarchyLayer,
 			boolean bSlerpUpInHierarchy,
-			boolean bReverseSlerp,
-			int iDestinationPosIndex) {
+			boolean bReverseSlerp) {
 		
 		this.iElementId = iElementId;
 		this.originHierarchyLayer = originHierarchyLayer;
@@ -42,7 +41,7 @@ public class SlerpAction {
 		if (destinationHierarchyLayer.containsElement(iElementId))
 			this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(iElementId);
 		else
-			this.iDestinationPosIndex = iDestinationPosIndex;
+			this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();
 	}
 	
 //	public SlerpAction(int iElementId, 
@@ -104,9 +103,10 @@ public class SlerpAction {
 	public void setSlerpDone(boolean bSlerpDone) {
 
 		this.bSlerpDone = bSlerpDone;
-		
+	
+		// Only add element if it is not contained already in this layer
 		if (!destinationHierarchyLayer.containsElement(iElementId))
-			destinationHierarchyLayer.setElement(iDestinationPosIndex, iElementId);
+			destinationHierarchyLayer.addElement(iElementId);
 	}
 	
 	public JukeboxHierarchyLayer getDestinationHierarchyLayer() {

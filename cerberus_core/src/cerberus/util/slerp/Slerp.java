@@ -9,7 +9,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
-import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Transform;
 import gleem.linalg.Vec3f;

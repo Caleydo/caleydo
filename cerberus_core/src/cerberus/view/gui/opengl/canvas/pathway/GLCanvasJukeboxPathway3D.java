@@ -113,7 +113,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		Transform transformPathwayUnderInteraction = new Transform();
 		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f, -2f, 0f));
-		transformPathwayUnderInteraction.setScale(new Vec3f(1.5f, 1.5f, 1.5f));
+		transformPathwayUnderInteraction.setScale(new Vec3f(1.7f, 1.7f, 1.7f));
 		transformPathwayUnderInteraction.setRotation(new Rotf(0, 0, 0, 0));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0, transformPathwayUnderInteraction);
 		
@@ -183,6 +183,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		renderPathwayPool(gl);
 		renderPathwayLayered(gl);
+		renderPathwayUnderInteraction(gl);
 
 		doSlerpActions(gl);
 	}
@@ -241,6 +242,37 @@ implements IMediatorReceiver, IMediatorSender {
 			refPathwayManager.buildPathwayDisplayList(gl, iPathwayId);
 			pathwayPoolLayer.addElement(iPathwayId);		
 		}
+	}
+	
+	private void renderPathwayUnderInteraction(final GL gl) {
+		
+		// Check if a pathway is currently under interaction
+		if (pathwayUnderInteractionLayer.getElementList().size() == 0)
+			return;
+		
+		int iPathwayId = pathwayUnderInteractionLayer.getElementIdByPositionIndex(0);
+		
+		gl.glPushMatrix();
+		
+		Transform transform = pathwayUnderInteractionLayer.getTransformByElementId(iPathwayId);
+		Vec3f translation = transform.getTranslation();
+		gl.glTranslatef(translation.x(),
+				translation.y(),
+				translation.z());
+		
+		Vec3f scale = transform.getScale();
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+		
+		Rotf rot = transform.getRotation();
+		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()),
+				rot.getX(),
+				rot.getY(),
+				rot.getZ());
+
+		refPathwayManager.renderPathway(gl, iPathwayId, true);
+		refPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);
+		
+		gl.glPopMatrix();
 	}
 	
 	private void renderPathwayLayered(final GL gl) {
@@ -476,10 +508,10 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glPushMatrix();
 		slerp.applySlerp(gl, transform);
 		
-		// Render labels only in pathway under interaction layer (in focus)
-		if (iSlerpFactor >= 1000 && slerpAction.getDestinationHierarchyLayer().equals(pathwayUnderInteractionLayer))
-			refPathwayManager.renderPathway(gl, iPathwayId, true);
-		else
+//		// Render labels only in pathway under interaction layer (in focus)
+//		if (iSlerpFactor >= 1000 && slerpAction.getDestinationHierarchyLayer().equals(pathwayUnderInteractionLayer))
+//			refPathwayManager.renderPathway(gl, iPathwayId, true);
+//		else
 			refPathwayManager.renderPathway(gl, iPathwayId, false);
 		
 		// Disable pathway highlighting for slerping back pathways.
@@ -513,13 +545,15 @@ implements IMediatorReceiver, IMediatorSender {
 					iPathwayId,
 					pathwayLayeredLayer,
 					false,
-					false,
-					0);
+					false);
+				
 				arSlerpActions.add(slerpActionUnderInteraction);
 				arSlerpActions.remove(slerpAction);
 				slerpAction = null;
 				iSlerpFactor = 0;
 			}
+			
+			arSlerpActions.remove(slerpAction);
 		}
 		
 		if ((iSlerpFactor == 0))
@@ -669,9 +703,10 @@ implements IMediatorReceiver, IMediatorSender {
 							pathwayUnderInteractionLayer.getElementIdByPositionIndex(0),
 							pathwayUnderInteractionLayer,
 							true,
-							true,
-							0);
+							true);
 					
+					pathwayUnderInteractionLayer.removeElement(
+							pathwayUnderInteractionLayer.getElementIdByPositionIndex(0));
 					arSlerpActions.add(reverseSlerpAction);
 				}
 				
@@ -680,8 +715,7 @@ implements IMediatorReceiver, IMediatorSender {
 						iPathwayId,
 						pathwayPoolLayer,
 						false,
-						false,
-						pathwayLayeredLayer.getElementList().size()); // append to the end
+						false);
 				
 				arSlerpActions.add(slerpAction);
 								
@@ -736,9 +770,11 @@ implements IMediatorReceiver, IMediatorSender {
 							pathwayUnderInteractionLayer.getElementIdByPositionIndex(0),
 							pathwayUnderInteractionLayer,
 							true,
-							true,
-							0);
+							true);
 					
+					pathwayUnderInteractionLayer.removeElement(
+							pathwayUnderInteractionLayer.getElementIdByPositionIndex(0));
+
 					arSlerpActions.add(reverseSlerpAction);
 				}
 				
@@ -749,8 +785,7 @@ implements IMediatorReceiver, IMediatorSender {
 							iPathwayId,
 							pathwayLayeredLayer,
 							false,
-							false,
-							0); 
+							false); 
 				}
 				else
 				{
@@ -758,8 +793,7 @@ implements IMediatorReceiver, IMediatorSender {
 							iPathwayId,
 							pathwayPoolLayer,
 							false,
-							false,
-							pathwayLayeredLayer.getElementList().size()); // append to the end 
+							false); // append to the end 
 				}
 				arSlerpActions.add(slerpAction);
 				

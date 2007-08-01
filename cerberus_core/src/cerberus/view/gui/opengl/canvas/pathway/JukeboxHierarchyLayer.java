@@ -49,8 +49,8 @@ public class JukeboxHierarchyLayer {
 		return childLayer;
 	}
 	
-	public int addElement(int iElementId) {
-		
+	public void addElement(int iElementId) {
+			
 		// Check if element limit is reached
 		if (llElementId.size() >= iCapacity)
 		{
@@ -60,16 +60,15 @@ public class JukeboxHierarchyLayer {
 			int iReplacePosition = llElementId.indexOf(iLeastImportantElementId);
 			llElementId.set(iReplacePosition, iElementId);
 			
+			// FIFO replace strategy
 			llElementIdImportanceQueue.addFirst(iElementId);			
 		}
 		else
 		{
 			// Add to the end of the stack (because there is free space)
 			llElementId.addLast(iElementId);
-			llElementIdImportanceQueue.addLast(iElementId);
+			llElementIdImportanceQueue.addFirst(iElementId);
 		}
-		
-		return llElementId.size() - 1;
 	}
 	
 	public void setElement(int iPosIndex, int iElementId) {
@@ -119,5 +118,20 @@ public class JukeboxHierarchyLayer {
 	public final int getPositionIndexByElementId(int iElementId) {
 		
 		return llElementId.indexOf(iElementId);
+	}
+	
+	public final int getNextPositionIndex() {
+		
+		// Check if a spot is free
+		if (llElementId.size() < iCapacity)
+		{	
+			// Append to the end of the list
+			return llElementId.size(); 
+		}
+		else 
+		{
+			// Get index of least imporant element for replacement
+			return llElementId.indexOf(llElementIdImportanceQueue.getLast());
+		}
 	}
 }
