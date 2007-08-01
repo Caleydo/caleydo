@@ -10,6 +10,8 @@ import java.util.Iterator;
 
 import org.geneview.graph.IGraph;
 import org.geneview.graph.EGraphItemProperty;
+import org.geneview.graph.IGraphData;
+import org.geneview.graph.IGraphItem;
 
 /**
  * @author java

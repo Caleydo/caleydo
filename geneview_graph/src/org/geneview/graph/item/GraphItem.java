@@ -14,10 +14,10 @@ import org.geneview.graph.generic.EGraphItemHierarchy;
 
 
 /**
- * @author michael
+ * @author Michael Kalkusch
  *
  */
-public class GraphItem implements IGraphItem {
+public class GraphItem extends AGraphObjectHeavyweight implements IGraphItem {
 
 	protected IGraphItemGeneric<IGraph, IGraphItem, Object> graphItem;
 	
@@ -28,8 +28,7 @@ public class GraphItem implements IGraphItem {
 	
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.IGraphItem#addGraphObject(org.geneview.graph.IGraphItem)
-	 */
-	@Override
+	 */	
 	public void addGraphItem(IGraphItem add, EGraphItemProperty prop) {
 		
 		graphItem.addGraphItemByType( add, EGraphItemHierarchy.ITEM_NEIGHBOUR);

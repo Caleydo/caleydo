@@ -17,8 +17,10 @@ public class ABaseGraphObject extends AGraphObject {
 	 * @param edgeSize
 	 */
 	public ABaseGraphObject(int dataSize, int nodeSize, int edgeSize) {
-		super(dataSize, nodeSize, edgeSize);
+		// super(dataSize, nodeSize, edgeSize);
 		// TODO Auto-generated constructor stub
+		
+		super();
 	}
 
 }

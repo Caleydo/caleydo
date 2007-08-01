@@ -46,41 +46,41 @@ public abstract class AGraphObjectHeavyweight extends AGraphObject {
 		addParentGraph(parentGraph);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geneview.graph.AGraphObject#addGraphEdge()
-	 */
-	@Override
-	protected void addGraphEdge() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.geneview.graph.AGraphObject#addGraphNode()
-	 */
-	@Override
-	protected void addGraphNode() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.geneview.graph.AGraphObject#removeGraphEdge()
-	 */
-	@Override
-	protected void removeGraphEdge() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.geneview.graph.AGraphObject#removeGraphNode()
-	 */
-	@Override
-	protected void removeGraphNode() {
-		// TODO Auto-generated method stub
-
-	}
+//	/* (non-Javadoc)
+//	 * @see org.geneview.graph.AGraphObject#addGraphEdge()
+//	 */
+//	@Override
+//	protected void addGraphEdge() {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see org.geneview.graph.AGraphObject#addGraphNode()
+//	 */
+//	@Override
+//	protected void addGraphNode() {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see org.geneview.graph.AGraphObject#removeGraphEdge()
+//	 */
+//	@Override
+//	protected void removeGraphEdge() {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see org.geneview.graph.AGraphObject#removeGraphNode()
+//	 */
+//	@Override
+//	protected void removeGraphNode() {
+//		// TODO Auto-generated method stub
+//
+//	}
 
 	public void addGraphItem(IGraphItem add, EGraphItemProperty prop) {
 		// TODO Auto-generated method stub

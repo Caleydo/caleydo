@@ -29,13 +29,13 @@ public abstract class AGraphObject implements IGraphItem {
 		this.bIsNodeNotEdge = enable;		
 	}
 	
-	protected abstract void addGraphNode();
-	
-	protected abstract void addGraphEdge();
-	
-	protected abstract void removeGraphNode();
-	
-	protected abstract void removeGraphEdge();
+//	protected abstract void addGraphNode();
+//	
+//	protected abstract void addGraphEdge();
+//	
+//	protected abstract void removeGraphNode();
+//	
+//	protected abstract void removeGraphEdge();
 
 
 	

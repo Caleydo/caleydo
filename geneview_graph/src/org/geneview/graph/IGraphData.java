@@ -6,5 +6,7 @@ public interface IGraphData {
 	
 	public void setIdentifier( String identifier );
 	
+	public Object getData();
 	
+	public void setData( Object data);
 }
