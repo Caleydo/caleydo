@@ -1,0 +1,387 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Mar 17 2007 10:47:15 +0900 (JST) -->
+<pathway name="path:hsa00730" org="hsa" number="00730"
+         title="Thiamine metabolism"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa00730.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?hsa00730">
+    <entry id="1" name="cpd:C00037" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00037">
+        <graphics name="C00037" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="595" y="238" width="8" height="8"/>
+    </entry>
+    <entry id="2" name="cpd:C00082" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00082">
+        <graphics name="C00082" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="529" y="291" width="8" height="8"/>
+    </entry>
+    <entry id="3" name="cpd:C15809" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15809">
+        <graphics name="C15809" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="595" y="309" width="8" height="8"/>
+    </entry>
+    <entry id="4" name="cpd:C11437" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C11437">
+        <graphics name="C11437" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="449" y="310" width="8" height="8"/>
+    </entry>
+    <entry id="5" name="cpd:C15815" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15815">
+        <graphics name="C15815" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="496" y="261" width="8" height="8"/>
+    </entry>
+    <entry id="6" name="cpd:C15814" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15814">
+        <graphics name="C15814" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="348" y="261" width="8" height="8"/>
+    </entry>
+    <entry id="7" name="cpd:C15813" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15813">
+        <graphics name="C15813" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="223" y="259" width="8" height="8"/>
+    </entry>
+    <entry id="8" name="cpd:C15812" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15812">
+        <graphics name="C15812" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="272" y="223" width="8" height="8"/>
+    </entry>
+    <entry id="9" name="cpd:C15811" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15811">
+        <graphics name="C15811" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="175" y="222" width="8" height="8"/>
+    </entry>
+    <entry id="10" name="cpd:C00097" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00097">
+        <graphics name="C00097" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="196" y="194" width="8" height="8"/>
+    </entry>
+    <entry id="11" name="cpd:C15810" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15810">
+        <graphics name="C15810" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="105" y="260" width="8" height="8"/>
+    </entry>
+    <entry id="12" name="path:hsa00260" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa00260.html">
+        <graphics name="Glycine, serine and threonine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="563" y="173" width="115" height="26"/>
+    </entry>
+    <entry id="13" name="path:hsa00400" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa00400.html">
+        <graphics name="Phenylalanine, tyrosine and tryptophan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="527" y="204" width="129" height="25"/>
+    </entry>
+    <entry id="14" name="path:hsa00100" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa00100.html">
+        <graphics name="Biosynthesis of steroids" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="292" y="311" width="137" height="25"/>
+    </entry>
+    <entry id="15" name="path:hsa00272" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa00272.html">
+        <graphics name="Cysteine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="82" y="194" width="123" height="25"/>
+    </entry>
+    <entry id="16" name="ko:K03149" type="ortholog">
+        <graphics name="THIG" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="567" y="337" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="ko:K03149" type="ortholog">
+        <graphics name="THIG" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="518" y="337" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="ko:K03150" type="ortholog">
+        <graphics name="THIH" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="473" y="337" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="ec:1.4.3.19" type="enzyme">
+        <graphics name="1.4.3.19" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="595" y="268" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="ko:K03148" type="ortholog">
+        <graphics name="THIF" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="433" y="259" width="46" height="17"/>
+    </entry>
+    <entry id="21" name="ko:K03151" type="ortholog">
+        <graphics name="THII" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="303" y="261" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="hsa:9054" type="gene" reaction="rn:R07460"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+9054">
+        <graphics name="NFS1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="225" y="222" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="ko:K03148" type="ortholog">
+        <graphics name="THIF" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="160" y="260" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="ko:K03147" type="ortholog">
+        <graphics name="THIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="322" y="146" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="path:hsa00730" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+hsa00730">
+        <graphics name="TITLE:Thiamine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="492" y="58" width="188" height="27"/>
+    </entry>
+    <entry id="26" name="path:hsa00010" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa00010.html">
+        <graphics name="Glycolysis / Gluconeogenesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="139" y="390" width="71" height="25"/>
+    </entry>
+    <entry id="27" name="path:hsa00230" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa00230.html">
+        <graphics name="Purine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="156" y="147" width="115" height="26"/>
+    </entry>
+    <entry id="28" name="ec:2.5.1.2" type="enzyme">
+        <graphics name="2.5.1.2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="713" y="502" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="ec:1.1.3.23" type="enzyme">
+        <graphics name="1.1.3.23" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="761" y="465" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="hsa:27010" type="gene" reaction="rn:R00619"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+27010">
+        <graphics name="TPK1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="820" y="433" width="45" height="17"/>
+    </entry>
+    <entry id="31" name="ec:2.7.1.89" type="enzyme">
+        <graphics name="2.7.1.89" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="428" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="hsa:29085 hsa:8776 hsa:8898 hsa:9107" type="gene" reaction="rn:R02135"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+29085+8776+8898+9107">
+        <graphics name="PHPT1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="690" y="428" width="45" height="17"/>
+    </entry>
+    <entry id="33" name="hsa:79178" type="gene" reaction="rn:R00618"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+79178">
+        <graphics name="THTPA" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="876" y="389" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="hsa:27010" type="gene" reaction="rn:R00616"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+27010">
+        <graphics name="TPK1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="876" y="356" width="45" height="17"/>
+    </entry>
+    <entry id="35" name="ec:3.6.1.15" type="enzyme">
+        <graphics name="3.6.1.15" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="766" y="398" width="45" height="17"/>
+    </entry>
+    <entry id="36" name="ec:2.7.4.16" type="enzyme">
+        <graphics name="2.7.4.16" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="766" y="379" width="45" height="17"/>
+    </entry>
+    <entry id="37" name="ec:3.5.99.2" type="enzyme">
+        <graphics name="3.5.99.2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="503" y="465" width="45" height="17"/>
+    </entry>
+    <entry id="38" name="ec:2.5.1.3" type="enzyme">
+        <graphics name="2.5.1.3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="664" y="391" width="46" height="17"/>
+    </entry>
+    <entry id="39" name="ec:2.7.1.50" type="enzyme">
+        <graphics name="2.7.1.50" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="434" y="389" width="45" height="17"/>
+    </entry>
+    <entry id="40" name="ec:2.7.4.7" type="enzyme">
+        <graphics name="2.7.4.7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="562" y="146" width="45" height="17"/>
+    </entry>
+    <entry id="41" name="ec:2.7.1.49" type="enzyme">
+        <graphics name="2.7.1.49" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="438" y="146" width="45" height="17"/>
+    </entry>
+    <entry id="42" name="ec:2.7.4.15" type="enzyme">
+        <graphics name="2.7.4.15" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="876" y="335" width="45" height="17"/>
+    </entry>
+    <entry id="43" name="ec:1.1.3.23" type="enzyme">
+        <graphics name="1.1.3.23" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="871" y="465" width="45" height="17"/>
+    </entry>
+    <entry id="44" name="cpd:C03373" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C03373">
+        <graphics name="C03373" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="279" y="147" width="8" height="8"/>
+    </entry>
+    <entry id="45" name="cpd:C01279" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01279">
+        <graphics name="C01279" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="376" y="147" width="8" height="8"/>
+    </entry>
+    <entry id="46" name="cpd:C04556" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C04556">
+        <graphics name="C04556" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="510" y="147" width="8" height="8"/>
+    </entry>
+    <entry id="47" name="cpd:C04752" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C04752">
+        <graphics name="C04752" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="631" y="147" width="8" height="8"/>
+    </entry>
+    <entry id="48" name="cpd:C00118" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00118">
+        <graphics name="C00118" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="217" y="360" width="8" height="8"/>
+    </entry>
+    <entry id="49" name="cpd:C00022" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00022">
+        <graphics name="C00022" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="217" y="421" width="8" height="8"/>
+    </entry>
+    <entry id="50" name="cpd:C04294" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C04294">
+        <graphics name="C04294" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="329" y="390" width="8" height="8"/>
+    </entry>
+    <entry id="51" name="cpd:C04327" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C04327">
+        <graphics name="C04327" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="496" y="390" width="8" height="8"/>
+    </entry>
+    <entry id="52" name="cpd:C01081" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01081">
+        <graphics name="C01081" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="714" y="390" width="8" height="8"/>
+    </entry>
+    <entry id="53" name="cpd:C02691" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02691">
+        <graphics name="C02691" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="714" y="546" width="8" height="8"/>
+    </entry>
+    <entry id="54" name="cpd:C02892" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02892">
+        <graphics name="C02892" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="927" y="465" width="8" height="8"/>
+    </entry>
+    <entry id="55" name="cpd:C00068" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00068">
+        <graphics name="C00068" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="820" y="389" width="8" height="8"/>
+    </entry>
+    <entry id="56" name="cpd:C03028" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C03028">
+        <graphics name="C03028" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="931" y="389" width="8" height="8"/>
+    </entry>
+    <entry id="57" name="cpd:C00378" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00378">
+        <graphics name="C00378" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="714" y="465" width="8" height="8"/>
+    </entry>
+    <entry id="58" name="cpd:C05856" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C05856">
+        <graphics name="C05856" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="820" y="465" width="8" height="8"/>
+    </entry>
+    <entry id="59" name="hsa:10606" type="gene" map="27"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00230+hsa:10606"/>
+    <entry id="60" name="hsa:2618" type="gene" map="27"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00230+hsa:2618"/>
+    <entry id="61" name="hsa:1036" type="gene" map="15"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00272+hsa:1036"/>
+    <entry id="62" name="ec:1.8.1.10" type="enzyme" map="15"/>
+    <entry id="63" name="ec:1.8.1.6" type="enzyme" map="15"/>
+    <entry id="64" name="ec:1.8.4.4" type="enzyme" map="15"/>
+    <entry id="65" name="ec:2.5.1.47" type="enzyme" map="15"/>
+    <entry id="66" name="ec:2.5.1.49" type="enzyme" map="15"/>
+    <entry id="67" name="hsa:2805 hsa:2806" type="gene" map="15"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00272+hsa:2805+hsa:2806"/>
+    <entry id="68" name="ec:2.6.1.3" type="enzyme" map="15"/>
+    <entry id="69" name="hsa:1491" type="gene" map="15"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00272+hsa:1491"/>
+    <entry id="70" name="ec:4.4.1.10" type="enzyme" map="15"/>
+    <entry id="71" name="ec:4.4.1.8" type="enzyme" map="15"/>
+    <entry id="72" name="ec:5.1.1.10" type="enzyme" map="15"/>
+    <entry id="73" name="hsa:79587 hsa:833" type="gene" map="15"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00272+hsa:79587+hsa:833"/>
+    <entry id="74" name="ec:1.1.1.267" type="enzyme" map="14"/>
+    <entry id="75" name="ec:2.2.1.7" type="enzyme" map="14"/>
+    <entry id="76" name="hsa:2597 hsa:26330" type="gene" map="26"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00010+hsa:2597+hsa:26330"/>
+    <entry id="77" name="hsa:226 hsa:229 hsa:230" type="gene" map="26"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00010+hsa:226+hsa:229+hsa:230"/>
+    <entry id="78" name="hsa:7167" type="gene" map="26"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00010+hsa:7167"/>
+    <entry id="79" name="hsa:160287 hsa:3939 hsa:3945 hsa:3948 hsa:92483" type="gene" map="26"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00010+hsa:160287+hsa:3939+hsa:3945+hsa:3948+hsa:92483"/>
+    <entry id="80" name="ec:1.2.1.51" type="enzyme" map="26"/>
+    <entry id="81" name="hsa:5160 hsa:5161 hsa:5162" type="gene" map="26"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00010+hsa:5160+hsa:5161+hsa:5162"/>
+    <entry id="82" name="hsa:5313 hsa:5315" type="gene" map="26"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00010+hsa:5313+hsa:5315"/>
+    <entry id="83" name="ec:4.1.1.1" type="enzyme" map="26"/>
+    <entry id="84" name="ec:1.4.2.1" type="enzyme" map="12"/>
+    <entry id="85" name="hsa:1610" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:1610"/>
+    <entry id="86" name="hsa:2731" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:2731"/>
+    <entry id="87" name="hsa:51268" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:51268"/>
+    <entry id="88" name="hsa:1757" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:1757"/>
+    <entry id="89" name="hsa:27232" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:27232"/>
+    <entry id="90" name="ec:2.1.2.-" type="enzyme" map="12"/>
+    <entry id="91" name="hsa:6470 hsa:6472" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:6470+hsa:6472"/>
+    <entry id="92" name="hsa:2628" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:2628"/>
+    <entry id="93" name="hsa:23464" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:23464"/>
+    <entry id="94" name="hsa:211 hsa:212" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:211+hsa:212"/>
+    <entry id="95" name="ec:2.6.1.4" type="enzyme" map="12"/>
+    <entry id="96" name="hsa:189 hsa:64902" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:189+hsa:64902"/>
+    <entry id="97" name="ec:2.6.1.45" type="enzyme" map="12"/>
+    <entry id="98" name="ec:4.1.2.5" type="enzyme" map="12"/>
+    <entry id="99" name="hsa:2617" type="gene" map="12"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00260+hsa:2617"/>
+    <entry id="100" name="hsa:5053" type="gene" map="13"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00400+hsa:5053"/>
+    <entry id="101" name="ec:1.3.1.43" type="enzyme" map="13"/>
+    <entry id="102" name="ec:1.4.3.2" type="enzyme" map="13"/>
+    <entry id="103" name="hsa:2805 hsa:2806" type="gene" map="13"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00400+hsa:2805+hsa:2806"/>
+    <entry id="104" name="hsa:6898" type="gene" map="13"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00400+hsa:6898"/>
+    <entry id="105" name="ec:2.6.1.57" type="enzyme" map="13"/>
+    <entry id="106" name="ec:2.6.1.9" type="enzyme" map="13"/>
+    <entry id="107" name="hsa:51067 hsa:8565" type="gene" map="13"
+        link="http://www.genome.jp/dbget-bin/show_pathway?hsa00400+hsa:51067+hsa:8565"/>
+    <relation entry1="30" entry2="33" type="ECrel">
+        <subtype name="compound" value="55"/>
+    </relation>
+    <relation entry1="30" entry2="34" type="ECrel">
+        <subtype name="compound" value="55"/>
+    </relation>
+    <relation entry1="30" entry2="32" type="ECrel">
+        <subtype name="compound" value="57"/>
+    </relation>
+    <relation entry1="22" entry2="15" type="maplink">
+        <subtype name="compound" value="10"/>
+    </relation>
+    <reaction name="rn:R07460" type="irreversible">
+        <substrate name="cpd:C15811"/>
+        <substrate name="cpd:C00097"/>
+        <product name="cpd:C15812"/>
+    </reaction>
+    <reaction name="rn:R00619" type="irreversible">
+        <substrate name="cpd:C00378"/>
+        <product name="cpd:C00068"/>
+    </reaction>
+    <reaction name="rn:R02135" type="irreversible">
+        <substrate name="cpd:C01081"/>
+        <product name="cpd:C00378"/>
+    </reaction>
+    <reaction name="rn:R00618" type="irreversible">
+        <substrate name="cpd:C03028"/>
+        <product name="cpd:C00068"/>
+    </reaction>
+    <reaction name="rn:R00616" type="irreversible">
+        <substrate name="cpd:C00068"/>
+        <product name="cpd:C03028"/>
+    </reaction>
+</pathway>

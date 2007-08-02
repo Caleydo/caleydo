@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: Mar 16 2007 16:10:02 +0900 (JST) -->
+<!-- Creation date: Jul 29 2007 20:48:11 +0900 (JST) -->
 <pathway name="path:hsa04612" org="hsa" number="04612"
          title="Antigen processing and presentation"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04612.gif"
@@ -120,8 +120,8 @@
         <graphics name="B2M" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="284" y="307" width="45" height="17"/>
     </entry>
-    <entry id="27" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="27" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="454" y="724" width="45" height="17"/>
     </entry>
@@ -140,18 +140,18 @@
         <graphics name="HLA-DMA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="252" y="577" width="45" height="17"/>
     </entry>
-    <entry id="31" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="31" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="664" y="289" width="45" height="17"/>
     </entry>
-    <entry id="32" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="32" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="505" y="290" width="45" height="17"/>
     </entry>
-    <entry id="33" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="33" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="284" y="290" width="45" height="17"/>
     </entry>
@@ -160,8 +160,8 @@
         <graphics name="TAP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="429" y="225" width="45" height="17"/>
     </entry>
-    <entry id="35" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="35" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="184" y="290" width="45" height="17"/>
     </entry>

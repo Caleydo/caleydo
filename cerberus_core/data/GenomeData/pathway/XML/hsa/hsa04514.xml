@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: Nov 13 2006 14:55:20 +0900 (JST) -->
+<!-- Creation date: Jul 29 2007 20:47:12 +0900 (JST) -->
 <pathway name="path:hsa04514" org="hsa" number="04514"
          title="Cell adhesion molecules (CAMs)"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04514.gif"
@@ -900,8 +900,8 @@
         <graphics name="ITGAL" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="272" y="318" width="45" height="17"/>
     </entry>
-    <entry id="181" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="181" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="357" y="256" width="45" height="17"/>
     </entry>
@@ -1100,8 +1100,8 @@
         <graphics name="CDH5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="464" y="298" width="45" height="17"/>
     </entry>
-    <entry id="221" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="221" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="82" y="353" width="45" height="17"/>
     </entry>

@@ -7,12 +7,12 @@
          link="http://www.genome.jp/dbget-bin/show_pathway?hsa00400">
     <entry id="1" name="path:hsa00940" type="map"
         link="http://www.genome.jp/kegg/pathway/hsa/hsa00940.html">
-        <graphics name="Coumarine and phenylpropanoid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="Phenylpropanoid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="298" y="246" width="167" height="34"/>
     </entry>
     <entry id="2" name="path:hsa00940" type="map"
         link="http://www.genome.jp/kegg/pathway/hsa/hsa00940.html">
-        <graphics name="Coumarine and phenylpropanoid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="Phenylpropanoid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="662" y="106" width="167" height="34"/>
     </entry>
     <entry id="3" name="path:map01053" type="map"
@@ -440,7 +440,7 @@
     <entry id="107" name="ec:4.3.1.5" type="enzyme" map="9"/>
     <entry id="108" name="ec:2.1.1.111" type="enzyme" map="4"/>
     <entry id="109" name="ec:5.4.4.2" type="enzyme" map="55"/>
-    <entry id="110" name="ec:4.1.3.-" type="enzyme" map="55"/>
+    <entry id="110" name="ec:4.1.3.40" type="enzyme" map="55"/>
     <entry id="111" name="ec:6.3.5.8" type="enzyme" map="18"/>
     <entry id="112" name="ec:5.4.4.2" type="enzyme" map="3"
         link="http://www.genome.jp/dbget-bin/show_pathway?map01053+5.4.4.2"/>

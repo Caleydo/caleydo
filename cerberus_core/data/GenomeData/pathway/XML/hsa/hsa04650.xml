@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: Nov 13 2006 15:49:19 +0900 (JST) -->
+<!-- Creation date: Jul 29 2007 20:49:09 +0900 (JST) -->
 <pathway name="path:hsa04650" org="hsa" number="04650"
          title="Natural killer cell mediated cytotoxicity"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04650.gif"
@@ -230,8 +230,8 @@
         <graphics name="NCR1, LY94" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="425" y="418" width="45" height="17"/>
     </entry>
-    <entry id="47" name="hsa:2214 hsa:2215" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2214+2215">
+    <entry id="47" name="hsa:2214 hsa:2215 hsa:652578" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2214+2215+652578">
         <graphics name="FCGR3A, FCGR3, FCG3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="425" y="449" width="45" height="17"/>
     </entry>

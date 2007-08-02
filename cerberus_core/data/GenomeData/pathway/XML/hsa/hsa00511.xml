@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:46 +0900 (JST) -->
+<pathway name="path:hsa00511" org="hsa" number="00511"
+         title="N-Glycan degradation"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa00511.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?hsa00511">
+    <entry id="1" name="path:hsa00511" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+hsa00511">
+        <graphics name="TITLE:N-Glycan degradation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="171" y="63" width="199" height="27"/>
+    </entry>
+    <entry id="2" name="hsa:175" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+175">
+        <graphics name="AGA" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="548" y="267" width="45" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:3073 hsa:3074" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3073+3074">
+        <graphics name="HEXA..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="383" y="332" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="hsa:64772" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+64772">
+        <graphics name="FLJ21865" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="464" y="291" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="hsa:23324 hsa:4123 hsa:4125" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+23324+4123+4125">
+        <graphics name="MAN2B2..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="312" y="229" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="hsa:2517 hsa:2519" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2517+2519">
+        <graphics name="FUCA1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="521" y="177" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:4126" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+4126">
+        <graphics name="MANBA" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="401" y="291" width="45" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:2720 hsa:3938" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2720+3938">
+        <graphics name="GLB1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="177" y="217" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:3073 hsa:3074" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3073+3074">
+        <graphics name="HEXA..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="241" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+10825+129807+4758+4759">
+        <graphics name="NEU3..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="112" y="217" width="45" height="17"/>
+    </entry>
+</pathway>

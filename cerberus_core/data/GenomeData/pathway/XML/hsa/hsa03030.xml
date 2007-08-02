@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:53 +0900 (JST) -->
+<pathway name="path:hsa03030" org="hsa" number="03030"
+         title="DNA polymerase"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa03030.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?hsa03030">
+    <entry id="1" name="path:hsa03030" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+hsa03030">
+        <graphics name="TITLE:DNA polymerase" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="114" y="37" width="144" height="26"/>
+    </entry>
+    <entry id="2" name="hsa:51455" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+51455">
+        <graphics name="REV1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="822" y="584" width="45" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:27343" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+27343">
+        <graphics name="POLL" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="641" y="584" width="46" height="17"/>
+    </entry>
+    <entry id="4" name="hsa:27434" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+27434">
+        <graphics name="POLM" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="686" y="584" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="hsa:11044" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+11044">
+        <graphics name="POLS" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="731" y="584" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="hsa:11201" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+11201">
+        <graphics name="POLI" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="776" y="527" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:51426" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+51426">
+        <graphics name="POLK" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="821" y="527" width="45" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:5429" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5429">
+        <graphics name="POLH" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="686" y="527" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:57804" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+57804">
+        <graphics name="POLD4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="685" y="473" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="hsa:10714" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+10714">
+        <graphics name="POLD3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="685" y="456" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="hsa:56655" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+56655">
+        <graphics name="POLE4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="730" y="473" width="45" height="17"/>
+    </entry>
+    <entry id="12" name="hsa:54107" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+54107">
+        <graphics name="POLE3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="730" y="456" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:5985" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5985">
+        <graphics name="RFC5" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="640" y="98" width="45" height="17"/>
+    </entry>
+    <entry id="14" name="hsa:5422" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5422">
+        <graphics name="POLA1, POLA" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="640" y="422" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="hsa:23649" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+23649">
+        <graphics name="POLA2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="640" y="439" width="46" height="17"/>
+    </entry>
+    <entry id="16" name="hsa:5557" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5557">
+        <graphics name="PRIM1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="640" y="456" width="46" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:5558" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5558">
+        <graphics name="PRIM2A" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="640" y="473" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:5424" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5424">
+        <graphics name="POLD1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="685" y="422" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:5425" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5425">
+        <graphics name="POLD2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="685" y="439" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:5426" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5426">
+        <graphics name="POLE" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="730" y="422" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:5427" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5427">
+        <graphics name="POLE2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="730" y="439" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="hsa:5428" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5428">
+        <graphics name="POLG" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="776" y="422" width="46" height="17"/>
+    </entry>
+    <entry id="23" name="hsa:11232" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+11232">
+        <graphics name="POLG2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="776" y="439" width="46" height="17"/>
+    </entry>
+    <entry id="24" name="hsa:5423" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5423">
+        <graphics name="POLB" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="821" y="422" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="hsa:5980" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5980">
+        <graphics name="REV3L" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="640" y="527" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="hsa:10721" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+10721">
+        <graphics name="POLQ" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="731" y="527" width="46" height="17"/>
+    </entry>
+    <entry id="27" name="ko:K02331" type="ortholog">
+        <graphics name="POL5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="777" y="584" width="46" height="17"/>
+    </entry>
+    <entry id="28" name="ko:K03508" type="ortholog">
+        <graphics name="POLZ2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="544" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="ko:K03507" type="ortholog">
+        <graphics name="DPB11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="730" y="490" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="ko:K03502" type="ortholog">
+        <graphics name="DPO5C" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="778" y="156" width="46" height="17"/>
+    </entry>
+    <entry id="31" name="ko:K02346" type="ortholog">
+        <graphics name="DPO4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="732" y="156" width="46" height="17"/>
+    </entry>
+    <entry id="32" name="ko:K02337" type="ortholog">
+        <graphics name="DPO3A1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="81" width="45" height="17"/>
+    </entry>
+    <entry id="33" name="ko:K02342" type="ortholog">
+        <graphics name="DPO3E" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="685" y="81" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="ko:K02345" type="ortholog">
+        <graphics name="DPO3T" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="731" y="81" width="46" height="17"/>
+    </entry>
+    <entry id="35" name="ko:K02341" type="ortholog">
+        <graphics name="DPO3D2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="685" y="98" width="45" height="17"/>
+    </entry>
+    <entry id="36" name="ko:K02340" type="ortholog">
+        <graphics name="DPO3D1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="731" y="98" width="46" height="17"/>
+    </entry>
+    <entry id="37" name="ko:K02339" type="ortholog">
+        <graphics name="DPO3C" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="115" width="45" height="17"/>
+    </entry>
+    <entry id="38" name="ko:K02344" type="ortholog">
+        <graphics name="DPO3P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="685" y="115" width="45" height="17"/>
+    </entry>
+    <entry id="39" name="ko:K02338" type="ortholog">
+        <graphics name="DPO3B" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="731" y="115" width="46" height="17"/>
+    </entry>
+    <entry id="40" name="ko:K02335" type="ortholog">
+        <graphics name="DPO1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="156" width="45" height="17"/>
+    </entry>
+    <entry id="41" name="ko:K02336" type="ortholog">
+        <graphics name="DPO2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="686" y="156" width="46" height="17"/>
+    </entry>
+    <entry id="42" name="ko:K02334" type="ortholog">
+        <graphics name="DPO" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="223" width="45" height="17"/>
+    </entry>
+    <entry id="43" name="ko:K02322" type="ortholog">
+        <graphics name="DPB1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="297" width="45" height="17"/>
+    </entry>
+    <entry id="44" name="ko:K02323" type="ortholog">
+        <graphics name="DPB2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="314" width="45" height="17"/>
+    </entry>
+    <entry id="45" name="ko:K02319" type="ortholog">
+        <graphics name="DPA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="685" y="297" width="45" height="17"/>
+    </entry>
+    <entry id="46" name="ko:K04478" type="ortholog">
+        <graphics name="K04478" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="731" y="297" width="46" height="17"/>
+    </entry>
+</pathway>

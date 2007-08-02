@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: Feb 21 2007 07:54:17 +0900 (JST) -->
+<!-- Creation date: Jul 24 2007 11:21:38 +0900 (JST) -->
 <pathway name="path:hsa05216" org="hsa" number="05216"
          title="Thyroid cancer"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa05216.gif"
@@ -80,9 +80,9 @@
         <graphics name="TITLE:Thyroid cancer" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="127" y="39" width="155" height="25"/>
     </entry>
-    <entry id="16" name="path:hsa04110" type="map"
-        link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
-        <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="16" name="path:hsa04115" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04115.html">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="773" y="557" width="102" height="38"/>
     </entry>
     <entry id="17" name="path:hsa03320" type="map"

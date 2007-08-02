@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: May 30 2007 08:27:22 +0900 (JST) -->
+<!-- Creation date: Jul 31 2007 07:07:23 +0900 (JST) -->
 <pathway name="path:hsa00362" org="hsa" number="00362"
          title="Benzoate degradation via hydroxylation"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00362.gif"
@@ -245,8 +245,8 @@
         <graphics name="5.3.3.-" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="79" y="387" width="45" height="17"/>
     </entry>
-    <entry id="54" name="path:hsa00629" type="map"
-        link="http://www.genome.jp/kegg/pathway/hsa/hsa00629.html">
+    <entry id="54" name="path:map00629" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00629.html">
         <graphics name="Carbazole degradation" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="542" y="185" width="124" height="26"/>
     </entry>

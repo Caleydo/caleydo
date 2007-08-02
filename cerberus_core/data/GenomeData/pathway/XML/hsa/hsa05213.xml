@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: Apr 04 2007 21:05:43 +0900 (JST) -->
+<!-- Creation date: Jul 24 2007 11:21:01 +0900 (JST) -->
 <pathway name="path:hsa05213" org="hsa" number="05213"
          title="Endometrial cancer"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa05213.gif"
@@ -50,8 +50,7 @@
         <graphics name="CTNNB1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="293" y="340" width="45" height="17"/>
     </entry>
-    <entry id="10" name="path:hsa04210" type="map"
-        link="http://www.genome.jp/kegg/pathway/hsa/hsa04210.html">
+    <entry id="10" name="path:map04210" type="map">
         <graphics name="Apoptosis" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="897" y="521" width="102" height="38"/>
     </entry>
@@ -193,7 +192,7 @@
     <entry id="38" name="path:hsa04110" type="map"
         link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
         <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="897" y="467" width="102" height="38"/>
+             type="roundrectangle" x="897" y="521" width="102" height="38"/>
     </entry>
     <entry id="39" name="hsa:5594 hsa:5595" type="gene"
         link="http://www.genome.jp/dbget-bin/www_bget?hsa+5594+5595">
@@ -222,6 +221,11 @@
         <component id="5"/>
         <component id="6"/>
         <component id="7"/>
+    </entry>
+    <entry id="44" name="path:hsa04115" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04115.html">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="897" y="467" width="102" height="38"/>
     </entry>
     <relation entry1="21" entry2="34" type="PPrel">
         <subtype name="compound" value="25"/>

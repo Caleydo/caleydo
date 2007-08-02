@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
-<!-- Creation date: Nov 09 2006 07:15:51 +0900 (JST) -->
+<!-- Creation date: Jul 29 2007 20:52:09 +0900 (JST) -->
 <pathway name="path:hsa04940" org="hsa" number="04940"
          title="Type I diabetes mellitus"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04940.gif"
@@ -75,8 +75,8 @@
         <graphics name="HLA-DMA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="458" y="199" width="45" height="17"/>
     </entry>
-    <entry id="18" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
-        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135">
+    <entry id="18" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:649853" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3105+3106+3107+3133+3134+3135+649853">
         <graphics name="HLA-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="207" y="387" width="45" height="17"/>
     </entry>
