@@ -14,7 +14,7 @@
 			
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="1200 1000" detail="34101 95101" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="1200 1000" detail="49101 95101" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="480 -1" />
 
 		<!-- Window	10331	-->
@@ -36,9 +36,8 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="79401 80401 81401 82401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator Pathway Reverse" attrib1="79401" attrib2="84401 80401 81401 82401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="95501" label="Mediator Pathway" 		attrib1="80401" attrib2="79401 84401 81401 82401" detail="SELECTION_MEDIATOR" />  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401" detail="SELECTION_MEDIATOR" />  
      
    </CommandBuffer>
     

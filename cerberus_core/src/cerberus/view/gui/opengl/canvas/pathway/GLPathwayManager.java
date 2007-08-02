@@ -34,7 +34,7 @@ public class GLPathwayManager {
 	private int iCompoundNodeDisplayListId = -1;
 	
 	// First hundred IDs are reserved for picking of non pathway objects in the scene
-	private int iUniqueObjectPickId = 101;
+	private int iUniqueObjectPickId = 201;
 	
 	private PathwayRenderStyle refRenderStyle;
 
@@ -239,7 +239,11 @@ public class GLPathwayManager {
 		// Pathway link
 		if (sShapeType.equals("roundrectangle"))
 		{		
-			tmpNodeColor = refRenderStyle.getPathwayNodeColor(false);
+			if (bEnableGeneMapping)
+				tmpNodeColor = refRenderStyle.getPathwayNodeColor(true);
+			else
+				tmpNodeColor = refRenderStyle.getPathwayNodeColor(false);
+				
 			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 					tmpNodeColor.getGreen() / 255.0f, 
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
@@ -249,7 +253,11 @@ public class GLPathwayManager {
 		// Compound
 		else if (sShapeType.equals("circle"))
 		{				
-			tmpNodeColor = refRenderStyle.getCompoundNodeColor(false);
+			if (bEnableGeneMapping)
+				tmpNodeColor = refRenderStyle.getCompoundNodeColor(true);
+			else
+				tmpNodeColor = refRenderStyle.getCompoundNodeColor(false);
+			
 			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 					tmpNodeColor.getGreen() / 255.0f, 
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
@@ -260,7 +268,7 @@ public class GLPathwayManager {
 		{	
 			if (bEnableGeneMapping)
 			{
-				mapExpressionToGene(gl, vertexRep.getVertex(), fNodeWidth);
+				mapExpression(gl, vertexRep.getVertex(), fNodeWidth);
 			}
 			else
 			{
@@ -322,7 +330,7 @@ public class GLPathwayManager {
         }  
 	}
 	
-	private void mapExpressionToGene(final GL gl, PathwayVertex pathwayVertex, float fNodeWidth) {
+	private void mapExpression(final GL gl, PathwayVertex pathwayVertex, float fNodeWidth) {
 		
 		ArrayList<Color> arMappingColor = 
 			enzymeToExpressionColorMapper.getMappingColorArrayByVertex(pathwayVertex);
@@ -344,25 +352,24 @@ public class GLPathwayManager {
 		{
 			tmpNodeColor = arMappingColor.get(iSplitIndex);
 		
-			// Just for testing!!!
-			if (tmpNodeColor.equals(Color.YELLOW))
-			{					
-				GLStarEffect.drawStar(gl, 
-						GLStarEffect.calculateStarPoints(5, 0.2f, 0, 0));
-				
-				gl.glTranslatef(0,0,-0.1f);
-				gl.glColor4f(1,0,0,0.2f);
-				GLU glu = new GLU();
-				glu.gluDisk(glu.gluNewQuadric(), 0.5f, 0, 10, 10);
-//
+//			// Just for testing!!!
+//			if (tmpNodeColor.equals(Color.BLACK))
+//			{					
+////				GLStarEffect.drawStar(gl, 
+////						GLStarEffect.calculateStarPoints(5, 0.2f, 0, 0));
+////				
+////				gl.glTranslatef(0,0,-0.1f);
+////				gl.glColor4f(1,0,0,0.2f);
+////				GLU glu = new GLU();
+////				glu.gluDisk(glu.gluNewQuadric(), 0.5f, 0, 10, 10);
 //				
-//				gl.glBegin(GL.GL_POLYGON);
-//				gl.glVertex3f(-0.5f, 0.5f,0f);
-//				gl.glVertex3f(-0.5f, -0.5f, 0);
-//				gl.glVertex3f(0.5f, -0.5f, 0);
-//				gl.glVertex3f(0.5f, 0.5f, 0);
-//				gl.glEnd();
-			}
+////				gl.glBegin(GL.GL_POLYGON);
+////				gl.glVertex3f(-0.5f, 0.5f,0f);
+////				gl.glVertex3f(-0.5f, -0.5f, 0);
+////				gl.glVertex3f(0.5f, -0.5f, 0);
+////				gl.glVertex3f(0.5f, 0.5f, 0);
+////				gl.glEnd();
+//			}
 			
 			// Check if the mapping gave back a valid color
 			if (!tmpNodeColor.equals(Color.BLACK))

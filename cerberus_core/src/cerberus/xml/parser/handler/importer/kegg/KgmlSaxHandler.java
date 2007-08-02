@@ -316,7 +316,16 @@ implements IXmlParserHandler {
 			if (sAttributeName.equals("name"))
 				sName = attributes.getValue(iAttributeIndex); 
    			else if (sAttributeName.equals("value"))
-  				iCompoundId = new Integer(attributes.getValue(iAttributeIndex)); 
+   			{
+   				// TODO: handle special case of value "-->" in signalling pathways
+   				if (attributes.getValue(iAttributeIndex).contains("-") || 
+   						attributes.getValue(iAttributeIndex).contains("+") ||
+						attributes.getValue(iAttributeIndex).contains("."))
+   					iCompoundId = 0;
+   				else
+   	  				iCompoundId = new Integer(attributes.getValue(iAttributeIndex)); 
+   			}
+
  
    			//System.out.println("Attribute name: " +sAttributeName);
    			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));

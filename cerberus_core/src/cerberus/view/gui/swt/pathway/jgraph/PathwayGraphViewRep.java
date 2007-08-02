@@ -982,11 +982,14 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 		{
 			// Assumes that the set consists of only one storage
 			IStorage tmpStorage = ((SetFlatThreadSimple) alSetData.get(0))
-					.getStorageByDimAndIndex(0, 0);
+				.getStorageByDimAndIndex(0, 0);
 
 			// Assumes that the storage contains only one pathway item
+			refGeneralManager.getSingelton()
+				.getPathwayManager().loadPathwayById(tmpStorage.getArrayInt()[0]);
+
 			refCurrentPathway = (Pathway) refGeneralManager.getSingelton()
-					.getPathwayManager().getItem(tmpStorage.getArrayInt()[0]);
+				.getPathwayManager().getItem(tmpStorage.getArrayInt()[0]);
 
 			return;
 		}
@@ -1004,48 +1007,31 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 	 */
 	protected boolean extractClickedPathway(String sUrl) {
 
-		// Check if clicked cell is another pathway
-		// If not: return
-		if (!sUrl.contains("map00"))
+		int iPathwayIdIndex = 0;
+
+		// Extract clicked pathway ID
+		if (sUrl.contains("map00"))
 		{
+			iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+		}
+		else if (sUrl.contains("hsa00"))
+		{
+			iPathwayIdIndex = sUrl.lastIndexOf("hsa00") + 5;			
+		}
+		else
+		{
+			// Do nothing if pathway is not reference and not HSA
 			return false;
 		}
-
-		// Extract pathway clicked pathway ID
-		int iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+		
 		int iNewPathwayId = StringConversionTool.convertStringToInt(sUrl
 				.substring(iPathwayIdIndex, iPathwayIdIndex + 3), 0);
 
 		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		// int[] iArPathwayIDs = refTmpStorage.getArrayInt();
 
 		int[] tmp = new int[1];
 		tmp[0] = iNewPathwayId;
 		refTmpStorage.setArrayInt(tmp);
-
-		// // Pathway needs to be added (if user selects pathway in upper layer)
-		// if (sUrl.contains((CharSequence)sSearchPattern2))
-		// {
-		// int[] tmp = new int[iArPathwayIDs.length + 1];
-		// for(int i = 0; i < iArPathwayIDs.length; i++)
-		// tmp[i] = iArPathwayIDs[i];
-		// tmp[iArPathwayIDs.length] = iNewPathwayId;
-		// }
-		// // Current pathway needs to be replaced
-		// else
-		// {
-		// //Replace old pathway ID with new ID
-		// for (int index = 0; index < iArPathwayIDs.length; index++)
-		// {
-		// if (iArPathwayIDs[index] == refCurrentPathway.getPathwayID())
-		// {
-		// iArPathwayIDs[index] = iNewPathwayId;
-		// break;
-		// }
-		// }
-		// }
-
-		// refTmpStorage.setArrayInt(iArPathwayIDs);
 
 		// Load pathway
 		loadPathwayFromFile(iNewPathwayId);
@@ -1068,46 +1054,53 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 						+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 
-		// Remove old selected vertices
-		iLLSelectedVertices.clear();
-		// iLLNeighborDistance.clear();
+		// TODO: Make own selection array for pathway ID 
+		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] tmp = new int[1];
+		tmp[0] = refSetSelection.getOptionalDataArray()[0];
+		refTmpStorage.setArrayInt(tmp);
+		loadPathwayFromFile(tmp[0]);
 
-		// Read selected vertex IDs
-		int[] iArSelectedElements = refSetSelection.getSelectionIdArray();
-
-		// Read neighbor data
-		// int[] iArSelectionNeighborDistance =
-		// selectionSet.getOptionalDataArray();
-
-		for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) refSetSelection
-				.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT); iSelectedVertexIndex++)
-		{
-
-			PathwayVertex selectedVertex = refGeneralManager.getSingelton()
-					.getPathwayElementManager().getVertexLUT().get(
-							iArSelectedElements[iSelectedVertexIndex]);
-			
-			// FIXME: name of the method is not good because inside
-			// resetPathway() and drawPathway() are called.
-			showBackgroundOverlay(bShowBackgroundOverlay);
-
-			// //ATTENTION: Performance problem!
-			// resetPathway();
-			// drawView();
-
-			// Ignore vertex if is NOT in the current pathway!
-			if (!refCurrentPathway.isVertexInPathway(selectedVertex))
-				return;
-
-			iLLSelectedVertices.add(selectedVertex.getElementId());
-
-			highlightCell(hashVertexRep2GraphCell.get(selectedVertex
-					.getVertexRepByIndex(0)), refRenderStyle.getHighlightedNodeColor());
-
-			bNeighbourhoodShown = true;
-			iNeighbourhoodUndoCount++;
-
-		}
+//		// Remove old selected vertices
+//		iLLSelectedVertices.clear();
+//		// iLLNeighborDistance.clear();
+//
+//		// Read selected vertex IDs
+//		//int[] iArSelectedElements = refSetSelection.getSelectionIdArray();
+//		
+//		// Read neighbor data
+//		// int[] iArSelectionNeighborDistance =
+//		// selectionSet.getOptionalDataArray();
+//
+//		for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) refSetSelection
+//				.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT); iSelectedVertexIndex++)
+//		{
+//
+//			PathwayVertex selectedVertex = refGeneralManager.getSingelton()
+//					.getPathwayElementManager().getVertexLUT().get(
+//							iArSelectedElements[iSelectedVertexIndex]);
+//			
+//			// FIXME: name of the method is not good because inside
+//			// resetPathway() and drawPathway() are called.
+//			showBackgroundOverlay(bShowBackgroundOverlay);
+//
+//			// //ATTENTION: Performance problem!
+//			// resetPathway();
+//			// drawView();
+//
+//			// Ignore vertex if is NOT in the current pathway!
+//			if (!refCurrentPathway.isVertexInPathway(selectedVertex))
+//				return;
+//
+//			iLLSelectedVertices.add(selectedVertex.getElementId());
+//
+//			highlightCell(hashVertexRep2GraphCell.get(selectedVertex
+//					.getVertexRepByIndex(0)), refRenderStyle.getHighlightedNodeColor());
+//
+//			bNeighbourhoodShown = true;
+//			iNeighbourhoodUndoCount++;
+//
+//		}
 	}
 
 	/**

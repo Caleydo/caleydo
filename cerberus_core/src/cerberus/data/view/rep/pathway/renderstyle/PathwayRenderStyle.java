@@ -104,7 +104,7 @@ extends ARenderStyle {
 		compoundNodeColor 			= Color.GREEN;
 		compoundNodeColorGeneMapped = Color.DARK_GRAY;
 		pathwayNodeColor 			= new Color(0.51f, 0.44f, 1.0f);
-		pathwayNodeColorGeneMapped 	= new Color(1, 0.65f, 0.31f);
+		pathwayNodeColorGeneMapped 	= Color.LIGHT_GRAY;
 		highlightedNodeColor 		= new Color(0.0f, 0.0f, 1.0f);
 		//highlightedNodeColor 		= new Color(1.0f, 0.0f, 0.0f);
 		neighborhoodNodeColorArray 	= new Color [neighborhoodNodeColorArraysize];

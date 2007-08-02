@@ -87,36 +87,22 @@ public class EnzymeToExpressionColorMapper {
 		
 		ArrayList<Color> arMappingColor = new ArrayList<Color>();
 		
-//		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
-//				GenomeMappingType.ENZYME_CODE_2_ENZYME);
-//		
-//		if (iEnzymeID == -1)
-//		{	
-//			arMappingColor.add(Color.BLACK);
-//			return arMappingColor;
-//		}
-//		
-//		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
-//				GenomeMappingType.ENZYME_2_NCBI_GENEID);
-//		
-//		if(iTmpGeneId == null)
-//		{	
-//			arMappingColor.add(Color.BLACK);
-//			return arMappingColor;
-//		}
-//		
-//		Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
-//		Iterator<Integer> iterTmpAccessionId = null;
-//		while (iterTmpGeneId.hasNext())
-//		{
-		
 		String sGeneID = pathwayVertex.getElementTitle().substring(4);
+		
+		// Check for multiple genes per enzyme
+		if (sGeneID.contains(" "))
+		{	
+			arMappingColor.add(Color.YELLOW);
+			return arMappingColor;
+			//sGeneID = sGeneID.substring(0, sGeneID.indexOf(' '));
+		}
+		
 		int iGeneID = refGenomeIdManager.getIdIntFromStringByMapping(sGeneID, 
 				GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
 		if (iGeneID == -1)
 		{	
-			arMappingColor.add(Color.YELLOW);
+			arMappingColor.add(Color.BLACK);
 			return arMappingColor;
 		}
 		

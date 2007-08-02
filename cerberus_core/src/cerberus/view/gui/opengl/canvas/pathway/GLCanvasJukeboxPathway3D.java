@@ -29,6 +29,7 @@ import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.opengl.GLStarEffect;
@@ -135,7 +136,8 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
+		//gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
+		
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
@@ -215,7 +217,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		int iMaxLines = 100;
+		int iMaxLines = 200;
 		
 		// Create free pathway spots
 		Transform transform; 
@@ -408,7 +410,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 			else if (alMagnificationFactor.get(iPathwayIndex) == 0)
 			{
-				fYPos = -0.03f;
+				fYPos = -0.02f;
 				
 		        gl.glColor3f(0, 0, 0);
 
@@ -459,7 +461,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 			else if (alMagnificationFactor.get(iLineIndex) == 0)
 			{
-				fPathwayPoolHeight += 0.03;
+				fPathwayPoolHeight += 0.02;
 			}
 			
 			transform.setTranslation(new Vec3f(-4.0f, fPathwayPoolHeight, -7));
@@ -481,6 +483,32 @@ implements IMediatorReceiver, IMediatorSender {
 	public void updateSelectionSet(int[] iArSelectionVertexId,
 			int[] iArSelectionGroup,
 			int[] iArNeighborVertices) {
+	
+		try {
+			// Update selection SET data.
+			alSetSelection.get(0).setAllSelectionDataArrays(
+					iArSelectionVertexId, iArSelectionGroup, iArNeighborVertices);
+			
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): Set selection data and trigger update.",
+					LoggerType.VERBOSE );
+						
+	 		// Calls update with the ID of the PathwayViewRep
+	 		((EventPublisher)refGeneralManager.getSingelton().
+				getEventPublisher()).updateReceiver(refGeneralManager.
+						getSingelton().getViewGLCanvasManager().
+							getItem(iUniqueId), alSetSelection.get(0));
+	 		
+		} catch (Exception e)
+		{
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): Problem during selection update triggering.",
+					LoggerType.MINOR_ERROR );
+	
+			e.printStackTrace();
+		}
 	}
 	
 	private void doSlerpActions(final GL gl) {
@@ -673,7 +701,7 @@ implements IMediatorReceiver, IMediatorSender {
 			//System.out.println("Pick ID: "+iPickedObjectId);
 			
 			// Check if picked object a non-pathway object (like pathway pool lines, navigation handles, etc.)
-			if (iPickedObjectId < 101)
+			if (iPickedObjectId < 201)
 			{
 				int iPathwayId = refHashPoolLinePickId2PathwayId.get(iPickedObjectId);
 				System.out.println("PathwayID: " +iPathwayId);
@@ -721,6 +749,12 @@ implements IMediatorReceiver, IMediatorSender {
 				arSlerpActions.add(slerpAction);
 								
 				iSlerpFactor = 0;
+				
+				// Trigger update with current pathway for dependent views
+				int[] tmp = new int[1];
+				tmp[0] = iPathwayId;
+				updateSelectionSet(new int[0], new int[0], tmp);
+				
 				return;
 			}
 			else if (iPickedObjectId == 101) // Picked object is just a pathway texture -> do nothing
@@ -832,35 +866,6 @@ implements IMediatorReceiver, IMediatorSender {
 
 		createdCmd.setAttributes(sUrl);
 		createdCmd.doCommand();
-	}
-	
-	public void drawPolygon(final GL gl, 
-			int iNumberVertices, int iCenterX, int iCenterY) {
-		
-	    int rotation = 15;        // degrees to rotate the shape (0-359), default 0, slider
-	    int stars = 1;            // 1=normal, 2=stars (integer, range 1 to less than verticies/2)
-		int radius = 1;
-		
-	    double th = 360.0/iNumberVertices;
-	    double X1 = 0, Y1 = 0, X2 = 0, Y2 = 0;
-	    double angle = 0;
-
-	    for (int P = 0; P<=iNumberVertices; P++)
-	    {
-	       // Find the starting point (X1,Y1)
-	        angle = Math.PI * ((th * P) + rotation) / 180.0;
-	        X1 = (radius * Math.cos(angle)) + iCenterX;
-	        Y1 = (radius * Math.sin(angle)) + iCenterY;
-	        // Find next end point (X2,Y2)
-	        angle = Math.PI * ((th * (P+stars)) + rotation) / 180.0;
-	        X2 = (radius * Math.cos(angle)) + iCenterX;
-	        Y2 = (radius * Math.sin(angle)) + iCenterY;
-	        
-	        gl.glBegin(GL.GL_LINE);
-	        gl.glVertex3d(X1, Y1, 0);
-	        gl.glVertex3d(X2, Y2, 0);
-	        gl.glEnd();
-	    } 
 	}
 	
 	/**
