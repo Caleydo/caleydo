@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:53 +0900 (JST) -->
+<pathway name="path:map02060" org="map" number="02060"
+         title="Phosphotransferase system (PTS)"
+         image="http://www.genome.jp/kegg/pathway/map/map02060.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map02060">
+    <entry id="1" name="cpd:C01135" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01135">
+        <graphics name="C01135" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="243" width="232" height="486"/>
+    </entry>
+    <entry id="2" name="cpd:C00072" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00072">
+        <graphics name="C00072" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="183" width="436" height="367"/>
+    </entry>
+    <entry id="3" name="cpd:C00352" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00352">
+        <graphics name="C00352" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="298" y="159" width="589" height="318"/>
+    </entry>
+    <entry id="4" name="cpd:C00329" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00329">
+        <graphics name="C00329" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="159" width="436" height="318"/>
+    </entry>
+    <entry id="5" name="cpd:C01096" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01096">
+        <graphics name="C01096" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="298" y="138" width="589" height="276"/>
+    </entry>
+    <entry id="6" name="cpd:C00794" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00794">
+        <graphics name="C00794" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="138" width="436" height="276"/>
+    </entry>
+    <entry id="7" name="cpd:C02888" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02888">
+        <graphics name="C02888" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="298" y="91" width="589" height="182"/>
+    </entry>
+    <entry id="8" name="cpd:C01452" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01452">
+        <graphics name="C01452" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="91" width="436" height="182"/>
+    </entry>
+    <entry id="9" name="cpd:C00022" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00022">
+        <graphics name="C00022" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="314" y="220" width="620" height="440"/>
+    </entry>
+    <entry id="10" name="cpd:C00074" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00074">
+        <graphics name="C00074" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="314" y="258" width="620" height="516"/>
+    </entry>
+    <entry id="11" name="cpd:C00697" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00697">
+        <graphics name="C00697" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="206" width="436" height="413"/>
+    </entry>
+    <entry id="12" name="cpd:C06311" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06311">
+        <graphics name="C06311" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="298" y="119" width="589" height="238"/>
+    </entry>
+    <entry id="13" name="cpd:C01697" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01697">
+        <graphics name="C01697" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="119" width="436" height="238"/>
+    </entry>
+    <entry id="14" name="cpd:C00357" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00357">
+        <graphics name="C00357" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="298" y="59" width="589" height="118"/>
+    </entry>
+    <entry id="15" name="cpd:C01074" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01074">
+        <graphics name="C01074" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="59" width="437" height="118"/>
+    </entry>
+    <entry id="16" name="cpd:C00644" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00644">
+        <graphics name="C00644" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="301" width="232" height="602"/>
+    </entry>
+    <entry id="17" name="cpd:C00392" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00392">
+        <graphics name="C00392" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="301" width="79" height="603"/>
+    </entry>
+    <entry id="18" name="cpd:C00185" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00185">
+        <graphics name="C00185" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="44" y="320" width="80" height="641"/>
+    </entry>
+    <entry id="19" name="cpd:C00275" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00275">
+        <graphics name="C00275" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="344" width="232" height="688"/>
+    </entry>
+    <entry id="20" name="cpd:C00392" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00392">
+        <graphics name="C00392" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="344" width="79" height="688"/>
+    </entry>
+    <entry id="21" name="cpd:C02976" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02976">
+        <graphics name="C02976" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="282" width="232" height="564"/>
+    </entry>
+    <entry id="22" name="cpd:C00095" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00095">
+        <graphics name="C00095" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="282" width="79" height="564"/>
+    </entry>
+    <entry id="23" name="cpd:C06187 cpd:C06188" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06187+C06188">
+        <graphics name="C06187..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="263" width="232" height="526"/>
+    </entry>
+    <entry id="24" name="cpd:C06186 cpd:C01451" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06186+C01451">
+        <graphics name="C06186..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="263" width="79" height="526"/>
+    </entry>
+    <entry id="25" name="cpd:C00963" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00963">
+        <graphics name="C00963" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="44" y="243" width="80" height="487"/>
+    </entry>
+    <entry id="26" name="cpd:C00689" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00689">
+        <graphics name="C00689" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="223" width="232" height="447"/>
+    </entry>
+    <entry id="27" name="cpd:C01083" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01083">
+        <graphics name="C01083" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="44" y="223" width="80" height="447"/>
+    </entry>
+    <entry id="28" name="cpd:C02591" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02591">
+        <graphics name="C02591" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="205" width="232" height="410"/>
+    </entry>
+    <entry id="29" name="cpd:C00089" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00089">
+        <graphics name="C00089" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="44" y="205" width="80" height="410"/>
+    </entry>
+    <entry id="30" name="cpd:C06187" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06187">
+        <graphics name="C06187" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="186" width="232" height="372"/>
+    </entry>
+    <entry id="31" name="cpd:C06186" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06186">
+        <graphics name="C06186" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="186" width="79" height="372"/>
+    </entry>
+    <entry id="32" name="cpd:C00357" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00357">
+        <graphics name="C00357" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="166" width="232" height="332"/>
+    </entry>
+    <entry id="33" name="cpd:C00140" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00140">
+        <graphics name="C00140" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="44" y="166" width="80" height="333"/>
+    </entry>
+    <entry id="34" name="cpd:C05737" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C05737">
+        <graphics name="C05737" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="147" width="232" height="294"/>
+    </entry>
+    <entry id="35" name="cpd:C00208" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00208">
+        <graphics name="C00208" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="147" width="79" height="294"/>
+    </entry>
+    <entry id="36" name="cpd:C05396" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C05396">
+        <graphics name="C05396" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="126" width="232" height="252"/>
+    </entry>
+    <entry id="37" name="cpd:C00243" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00243">
+        <graphics name="C00243" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="125" width="79" height="251"/>
+    </entry>
+    <entry id="38" name="cpd:C00092" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00092">
+        <graphics name="C00092" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="120" y="104" width="232" height="209"/>
+    </entry>
+    <entry id="39" name="cpd:C00293" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00293">
+        <graphics name="C00293" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="43" y="104" width="79" height="209"/>
+    </entry>
+    <entry id="40" name="cpd:C00074" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00074">
+        <graphics name="C00074" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="141" y="81" width="274" height="163"/>
+    </entry>
+    <entry id="41" name="cpd:C00022" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00022">
+        <graphics name="C00022" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="141" y="43" width="274" height="87"/>
+    </entry>
+    <entry id="42" name="path:map02060" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02060">
+        <graphics name="TITLE:Phosphotransferase system (PTS)" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="255" y="40" width="286" height="26"/>
+    </entry>
+    <entry id="43" name="ko:K02806" type="ortholog">
+        <graphics name="PTS-Ntr-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="535" y="413" width="45" height="17"/>
+    </entry>
+    <entry id="44" name="ko:K03475" type="ortholog">
+        <graphics name="PTS-Ula-EIIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="367" width="45" height="17"/>
+    </entry>
+    <entry id="45" name="ko:K02821" type="ortholog">
+        <graphics name="PTS-Ula-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="536" y="375" width="45" height="17"/>
+    </entry>
+    <entry id="46" name="ko:K02822" type="ortholog">
+        <graphics name="PTS-Ula-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="536" y="358" width="45" height="17"/>
+    </entry>
+    <entry id="47" name="ko:K02782" type="ortholog">
+        <graphics name="PTS-Gut-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="276" width="45" height="17"/>
+    </entry>
+    <entry id="48" name="ko:K02781" type="ortholog">
+        <graphics name="PTS-Gut-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="536" y="276" width="45" height="17"/>
+    </entry>
+    <entry id="49" name="ko:K02775" type="ortholog">
+        <graphics name="PTS-Gat-EIIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="238" width="45" height="17"/>
+    </entry>
+    <entry id="50" name="ko:K02774" type="ortholog">
+        <graphics name="PTS-Gat-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="537" y="246" width="46" height="17"/>
+    </entry>
+    <entry id="51" name="ko:K02773" type="ortholog">
+        <graphics name="PTS-Gat-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="537" y="229" width="46" height="17"/>
+    </entry>
+    <entry id="52" name="ko:K02747" type="ortholog">
+        <graphics name="PTS-Aga-EIID" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="126" width="45" height="17"/>
+    </entry>
+    <entry id="53" name="ko:K02746" type="ortholog">
+        <graphics name="PTS-Aga-EIIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="109" width="45" height="17"/>
+    </entry>
+    <entry id="54" name="ko:K02745" type="ortholog">
+        <graphics name="PTS-Aga-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="536" y="118" width="45" height="17"/>
+    </entry>
+    <entry id="55" name="ko:K02796" type="ortholog">
+        <graphics name="PTS-Man-EIID" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="696" width="45" height="17"/>
+    </entry>
+    <entry id="56" name="ko:K02795" type="ortholog">
+        <graphics name="PTS-Man-EIIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="679" width="45" height="17"/>
+    </entry>
+    <entry id="57" name="ko:K02793" type="ortholog">
+        <graphics name="PTS-Man-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="688" width="46" height="17"/>
+    </entry>
+    <entry id="58" name="ko:K02761" type="ortholog">
+        <graphics name="PTS-Cel-EIIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="641" width="45" height="17"/>
+    </entry>
+    <entry id="59" name="ko:K02760" type="ortholog">
+        <graphics name="PTS-Cel-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="649" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="ko:K02759" type="ortholog">
+        <graphics name="PTS-Cel-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="632" width="46" height="17"/>
+    </entry>
+    <entry id="61" name="ko:K02798" type="ortholog">
+        <graphics name="PTS-Mtl-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="602" width="45" height="17"/>
+    </entry>
+    <entry id="62" name="ko:K02769" type="ortholog">
+        <graphics name="PTS-Fru-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="563" width="45" height="17"/>
+    </entry>
+    <entry id="63" name="ko:K02768" type="ortholog">
+        <graphics name="PTS-Fru-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="563" width="46" height="17"/>
+    </entry>
+    <entry id="64" name="ko:K02752" type="ortholog">
+        <graphics name="PTS-Asc-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="525" width="45" height="17"/>
+    </entry>
+    <entry id="65" name="ko:K02755" type="ortholog">
+        <graphics name="PTS-Bgl-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="486" width="45" height="17"/>
+    </entry>
+    <entry id="66" name="ko:K02818" type="ortholog">
+        <graphics name="PTS-Tre-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="447" width="45" height="17"/>
+    </entry>
+    <entry id="67" name="ko:K02808" type="ortholog">
+        <graphics name="PTS-Scr-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="409" width="45" height="17"/>
+    </entry>
+    <entry id="68" name="ko:K02750" type="ortholog">
+        <graphics name="PTS-Arb-EIIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="371" width="45" height="17"/>
+    </entry>
+    <entry id="69" name="ko:K02802" type="ortholog">
+        <graphics name="PTS-Nag-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="135" y="332" width="46" height="17"/>
+    </entry>
+    <entry id="70" name="ko:K02790" type="ortholog">
+        <graphics name="PTS-Mal-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="294" width="45" height="17"/>
+    </entry>
+    <entry id="71" name="ko:K02777" type="ortholog">
+        <graphics name="PTS-Glc-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="179" y="209" width="45" height="17"/>
+    </entry>
+    <entry id="72" name="ko:K02778" type="ortholog">
+        <graphics name="PTS-Glc-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="209" width="45" height="17"/>
+    </entry>
+    <entry id="73" name="ko:K08484" type="ortholog">
+        <graphics name="PTS-EI.PTSP" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="623" y="486" width="45" height="17"/>
+    </entry>
+    <entry id="74" name="ko:K08485" type="ortholog">
+        <graphics name="PTS-HPR.PTSO" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="538" y="486" width="45" height="17"/>
+    </entry>
+    <entry id="75" name="ko:K08483" type="ortholog">
+        <graphics name="PTS-EI.PTSI" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="277" y="132" width="45" height="17"/>
+    </entry>
+    <entry id="76" name="ko:K02784" type="ortholog">
+        <graphics name="PTS-HPR" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="192" y="132" width="45" height="17"/>
+    </entry>
+    <entry id="77" name="ko:K02749" type="ortholog">
+        <graphics name="PTS-Arb-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="179" y="371" width="45" height="17"/>
+    </entry>
+    <entry id="78" name="ko:K02815" type="ortholog">
+        <graphics name="PTS-Sor-EIID" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="199" width="45" height="17"/>
+    </entry>
+    <entry id="79" name="ko:K02814" type="ortholog">
+        <graphics name="PTS-Sor-EIIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="165" width="45" height="17"/>
+    </entry>
+    <entry id="80" name="ko:K02813" type="ortholog">
+        <graphics name="PTS-Sor-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="182" width="45" height="17"/>
+    </entry>
+    <entry id="81" name="ko:K02812" type="ortholog">
+        <graphics name="PTS-Sor-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="536" y="182" width="45" height="17"/>
+    </entry>
+    <entry id="82" name="ko:K02763" type="ortholog">
+        <graphics name="PTS-Dgl-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="491" y="318" width="45" height="17"/>
+    </entry>
+    <entry id="83" name="ko:K02787" type="ortholog">
+        <graphics name="PTS-Lac-EIIB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="134" y="251" width="45" height="17"/>
+    </entry>
+    <entry id="84" name="ko:K02786" type="ortholog">
+        <graphics name="PTS-Lac-EIIA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="179" y="251" width="45" height="17"/>
+    </entry>
+</pathway>

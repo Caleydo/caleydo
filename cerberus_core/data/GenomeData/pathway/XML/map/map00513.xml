@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:46 +0900 (JST) -->
+<pathway name="path:map00513" org="map" number="00513"
+         title="High-mannose type N-glycan biosynthesis"
+         image="http://www.genome.jp/kegg/pathway/map/map00513.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map00513">
+    <entry id="1" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="785" y="867" width="45" height="17"/>
+    </entry>
+    <entry id="2" name="path:map00510" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00510.html">
+        <graphics name="N-Glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="229" y="94" width="136" height="25"/>
+    </entry>
+    <entry id="3" name="glycan:G11040" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?glycan+G11040">
+        <graphics name="G11040" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="116" y="330" width="224" height="660"/>
+    </entry>
+    <entry id="4" name="glycan:G10841" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?glycan+G10841">
+        <graphics name="G10841" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="116" y="269" width="224" height="539"/>
+    </entry>
+    <entry id="5" name="glycan:G01813" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?glycan+G01813">
+        <graphics name="G01813" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="116" y="208" width="224" height="417"/>
+    </entry>
+    <entry id="6" name="glycan:G12625" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?glycan+G12625">
+        <graphics name="G12625" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="395" y="40" width="782" height="81"/>
+    </entry>
+    <entry id="7" name="glycan:G12626" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?glycan+G12626">
+        <graphics name="G12626" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="394" y="124" width="781" height="248"/>
+    </entry>
+    <entry id="8" name="glycan:G10694" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?glycan+G10694">
+        <graphics name="G10694" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="116" y="146" width="224" height="292"/>
+    </entry>
+    <entry id="9" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="763" y="50" width="46" height="17"/>
+    </entry>
+    <entry id="10" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="786" y="214" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="785" y="364" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="228" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="ec:2.7.-.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.7.-.-">
+        <graphics name="2.7.-.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="785" y="698" width="46" height="17"/>
+    </entry>
+    <entry id="14" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="832" y="197" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="808" y="50" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="ec:3.2.1.113" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+3.2.1.113">
+        <graphics name="3.2.1.113" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="229" y="237" width="46" height="17"/>
+    </entry>
+    <entry id="17" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="741" y="207" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="228" y="489" width="46" height="17"/>
+    </entry>
+    <entry id="19" name="ec:2.4.1.232" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.232">
+        <graphics name="2.4.1.232" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="228" y="363" width="46" height="17"/>
+    </entry>
+    <entry id="20" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="785" y="530" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="832" y="214" width="46" height="17"/>
+    </entry>
+    <entry id="22" name="ec:2.4.1.-" type="enzyme"
+        link="http://www.genome.jp/dbget-bin/www_bget?enzyme+2.4.1.-">
+        <graphics name="2.4.1.-" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="786" y="197" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="path:map00513" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map00513">
+        <graphics name="TITLE:High-mannose type N-glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="210" y="30" width="355" height="28"/>
+    </entry>
+    <entry id="24" name="glycan:G00011" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?glycan+G00011">
+        <graphics name="G00011" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="116" y="84" width="224" height="169"/>
+    </entry>
+</pathway>

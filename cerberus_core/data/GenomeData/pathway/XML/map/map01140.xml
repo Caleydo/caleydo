@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01140" org="map" number="01140"
+         title="Nucleotide Metabolism"
+         image="http://www.genome.jp/kegg/pathway/map/map01140.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01140">
+    <entry id="1" name="path:map00230" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00230.html">
+        <graphics name="Purine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="304" y="174" width="297" height="167"/>
+    </entry>
+    <entry id="2" name="path:map00240" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00240.html">
+        <graphics name="Pyrimidine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="306" y="350" width="263" height="173"/>
+    </entry>
+    <entry id="3" name="path:map00230" type="map">
+        <graphics name="Purine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="338" y="323" width="259" height="137"/>
+    </entry>
+    <entry id="4" name="path:map00240" type="map">
+        <graphics name="Pyrimidine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="382" y="174" width="230" height="144"/>
+    </entry>
+    <entry id="5" name="path:map00520" type="map">
+        <graphics name="Nucleotide sugars metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="139" y="125" width="218" height="196"/>
+    </entry>
+</pathway>

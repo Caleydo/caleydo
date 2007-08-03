@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01170" org="map" number="01170"
+         title="Glycan Biosynthesis and Metabolism"
+         image="http://www.genome.jp/kegg/pathway/map/map01170.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01170">
+    <entry id="1" name="path:hsa00563" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa00563.html">
+        <graphics name="Glycosylphosphatidylinositol(GPI)-anchor biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="337" y="133" width="149" height="132"/>
+    </entry>
+    <entry id="2" name="path:map00531" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00531.html">
+        <graphics name="Glycosaminoglycan degradation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="551" y="459" width="51" height="76"/>
+    </entry>
+    <entry id="3" name="path:map00604" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00604.html">
+        <graphics name="Glycosphingolipid biosynthesis - ganglioseries" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="102" y="614" width="143" height="151"/>
+    </entry>
+    <entry id="4" name="path:map00603" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00603.html">
+        <graphics name="Glycosphingolipid biosynthesis - globoseries" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="107" y="476" width="129" height="120"/>
+    </entry>
+    <entry id="5" name="path:map00602" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00602.html">
+        <graphics name="Glycosphingolipid biosynthesis - neo-lactoseries" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="247" y="563" width="134" height="218"/>
+    </entry>
+    <entry id="6" name="path:map00601" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00601.html">
+        <graphics name="Glycosphingolipid biosynthesis - lactoseries" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="266" y="374" width="92" height="138"/>
+    </entry>
+    <entry id="7" name="path:map00600" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00600.html">
+        <graphics name="Sphingolipid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="134" y="357" width="155" height="109"/>
+    </entry>
+    <entry id="8" name="path:map00540" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00540.html">
+        <graphics name="Lipopolysaccharide biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="495" y="442" width="53" height="36"/>
+    </entry>
+    <entry id="9" name="path:map00550" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00550.html">
+        <graphics name="Peptidoglycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="472" y="688" width="178" height="158"/>
+    </entry>
+    <entry id="10" name="path:map00550" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00550.html">
+        <graphics name="Peptidoglycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="516" y="585" width="89" height="47"/>
+    </entry>
+    <entry id="11" name="path:map00540" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00540.html">
+        <graphics name="Lipopolysaccharide biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="398" y="515" width="141" height="183"/>
+    </entry>
+    <entry id="12" name="path:map00533" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00533.html">
+        <graphics name="Keratan sulfate biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="372" y="290" width="81" height="177"/>
+    </entry>
+    <entry id="13" name="path:map00532" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00532.html">
+        <graphics name="Chondroitin sulfate biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="498" y="219" width="160" height="191"/>
+    </entry>
+    <entry id="14" name="path:map00531" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00531.html">
+        <graphics name="Glycosaminoglycan degradation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="499" y="369" width="155" height="103"/>
+    </entry>
+    <entry id="15" name="path:map00512" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00512.html">
+        <graphics name="O-Glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="497" y="74" width="161" height="93"/>
+    </entry>
+    <entry id="16" name="path:map00511" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00511.html">
+        <graphics name="N-Glycan degradation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="291" y="249" width="76" height="93"/>
+    </entry>
+    <entry id="17" name="path:map00510" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00510.html">
+        <graphics name="N-Glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="146" y="203" width="226" height="186"/>
+    </entry>
+</pathway>

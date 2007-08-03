@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01180" org="map" number="01180"
+         image="http://www.genome.jp/kegg/pathway/map/map01180.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01180">
+    <entry id="1" name="path:map00602" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00602.html">
+        <graphics name="Glycosphingolipid biosynthesis - neo-lactoseries" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="306" y="644" width="152" height="221"/>
+    </entry>
+    <entry id="2" name="path:map00590" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00590.html">
+        <graphics name="Arachidonic acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="125" y="692" width="196" height="125"/>
+    </entry>
+    <entry id="3" name="path:map00601" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00601.html">
+        <graphics name="Glycosphingolipid biosynthesis - lactoseries" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="137" y="583" width="176" height="83"/>
+    </entry>
+    <entry id="4" name="path:map00603" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00603.html">
+        <graphics name="Glycosphingolipid biosynthesis - globoseries" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="69" y="467" width="83" height="141"/>
+    </entry>
+    <entry id="5" name="path:map00600" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00600.html">
+        <graphics name="Sphingolipid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="337" y="399" width="187" height="49"/>
+    </entry>
+    <entry id="6" name="path:map00600" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00600.html">
+        <graphics name="Sphingolipid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="179" y="456" width="129" height="163"/>
+    </entry>
+    <entry id="7" name="path:map00570" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00570.html">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="302" y="479" width="108" height="102"/>
+    </entry>
+    <entry id="8" name="path:map00590" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00590.html">
+        <graphics name="Arachidonic acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="236" y="129" width="250" height="49"/>
+    </entry>
+    <entry id="9" name="path:map00580" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00580.html">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="93" y="263" width="131" height="212"/>
+    </entry>
+    <entry id="10" name="path:map00562" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00562.html">
+        <graphics name="Inositol phosphate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="410" y="143" width="64" height="77"/>
+    </entry>
+    <entry id="11" name="path:map00562" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00562.html">
+        <graphics name="Inositol phosphate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="322" y="63" width="240" height="84"/>
+    </entry>
+    <entry id="12" name="path:map00561" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00561.html">
+        <graphics name="Glycerolipid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="275" y="263" width="224" height="213"/>
+    </entry>
+</pathway>

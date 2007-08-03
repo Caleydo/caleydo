@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:53 +0900 (JST) -->
+<pathway name="path:map02040" org="map" number="02040"
+         title="Flagellar assembly"
+         image="http://www.genome.jp/kegg/pathway/map/map02040.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map02040">
+    <entry id="1" name="path:map03070" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map03070.html">
+        <graphics name="Type III secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="172" y="568" width="140" height="26"/>
+    </entry>
+    <entry id="2" name="path:map02030" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map02030.html">
+        <graphics name="Bacterial chemotaxis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="450" y="562" width="122" height="26"/>
+    </entry>
+    <entry id="3" name="path:map02040" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02040">
+        <graphics name="TITLE:Flagellar assembly" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="118" y="65" width="138" height="25"/>
+    </entry>
+    <entry id="4" name="ko:K02556" type="ortholog">
+        <graphics name="MOTA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="205" y="444" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="ko:K02557" type="ortholog">
+        <graphics name="MOTB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="182" y="400" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="ko:K02401" type="ortholog">
+        <graphics name="FLHB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="318" y="497" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="ko:K02400" type="ortholog">
+        <graphics name="FLHA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="251" y="497" width="45" height="17"/>
+    </entry>
+    <entry id="8" name="ko:K02403" type="ortholog">
+        <graphics name="FLHD" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="314" y="655" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="ko:K02402" type="ortholog">
+        <graphics name="FLHC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="314" y="638" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="ko:K02398" type="ortholog">
+        <graphics name="FLGM" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="314" y="689" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="ko:K02386" type="ortholog">
+        <graphics name="FLGA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="114" y="661" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="ko:K02399" type="ortholog">
+        <graphics name="FLGN" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="113" y="638" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="ko:K02423" type="ortholog">
+        <graphics name="FLIT" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="248" y="638" width="45" height="17"/>
+    </entry>
+    <entry id="14" name="ko:K02413" type="ortholog">
+        <graphics name="FLIJ" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="158" y="638" width="45" height="17"/>
+    </entry>
+    <entry id="15" name="ko:K02422" type="ortholog">
+        <graphics name="FLIS" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="203" y="638" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="ko:K02421" type="ortholog">
+        <graphics name="FLIR" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="318" y="591" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="ko:K02419" type="ortholog">
+        <graphics name="FLIP" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="591" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="ko:K02420" type="ortholog">
+        <graphics name="FLIQ" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="318" y="574" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="ko:K02418" type="ortholog">
+        <graphics name="FLIOZ" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="574" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="ko:K02412" type="ortholog">
+        <graphics name="FLII" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="557" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="ko:K02411" type="ortholog">
+        <graphics name="FLIH" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="540" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="ko:K02417" type="ortholog">
+        <graphics name="FLINY" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="410" y="501" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="ko:K02416" type="ortholog">
+        <graphics name="FLIM" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="410" y="484" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="ko:K02410" type="ortholog">
+        <graphics name="FLIG" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="410" y="467" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="ko:K02409" type="ortholog">
+        <graphics name="FLIF" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="410" y="443" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="ko:K02408" type="ortholog">
+        <graphics name="FLIE" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="408" width="45" height="17"/>
+    </entry>
+    <entry id="27" name="ko:K02414" type="ortholog">
+        <graphics name="FLIK" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="534" y="260" width="45" height="17"/>
+    </entry>
+    <entry id="28" name="ko:K02406" type="ortholog">
+        <graphics name="FLIC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="461" y="141" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="ko:K02389" type="ortholog">
+        <graphics name="FLGD" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="534" y="277" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="ko:K02388" type="ortholog">
+        <graphics name="FLGC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="455" y="408" width="45" height="17"/>
+    </entry>
+    <entry id="31" name="ko:K02387" type="ortholog">
+        <graphics name="FLGB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="410" y="408" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="ko:K02391" type="ortholog">
+        <graphics name="FLGF" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="206" y="330" width="45" height="17"/>
+    </entry>
+    <entry id="33" name="ko:K02394" type="ortholog">
+        <graphics name="FLGI" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="379" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="ko:K02393" type="ortholog">
+        <graphics name="FLGH" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="356" width="45" height="17"/>
+    </entry>
+    <entry id="35" name="ko:K02392" type="ortholog">
+        <graphics name="FLGG" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="330" width="45" height="17"/>
+    </entry>
+    <entry id="36" name="ko:K02390" type="ortholog">
+        <graphics name="FLGE" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="268" width="45" height="17"/>
+    </entry>
+    <entry id="37" name="ko:K02396" type="ortholog">
+        <graphics name="FLGK" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="437" y="218" width="45" height="17"/>
+    </entry>
+    <entry id="38" name="ko:K02397" type="ortholog">
+        <graphics name="FLGL" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="437" y="195" width="45" height="17"/>
+    </entry>
+    <entry id="39" name="ko:K02407" type="ortholog">
+        <graphics name="FLID" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="508" y="48" width="45" height="17"/>
+    </entry>
+</pathway>

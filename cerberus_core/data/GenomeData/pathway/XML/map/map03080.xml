@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:54 +0900 (JST) -->
+<pathway name="path:map03080" org="map" number="03080"
+         title="Type IV secretion system"
+         image="http://www.genome.jp/kegg/pathway/map/map03080.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map03080">
+    <entry id="1" name="path:map03080" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map03080">
+        <graphics name="TITLE:Type IV secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="296" y="42" width="236" height="25"/>
+    </entry>
+    <entry id="2" name="ko:K03205" type="ortholog">
+        <graphics name="VIRD4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="544" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="3" name="ko:K03196" type="ortholog">
+        <graphics name="VIRB11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="499" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="ko:K03203" type="ortholog">
+        <graphics name="VIRB8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="363" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="ko:K03204" type="ortholog">
+        <graphics name="VIRB9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="408" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="ko:K03195" type="ortholog">
+        <graphics name="VIRB10" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="454" y="572" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="ko:K03201" type="ortholog">
+        <graphics name="VIRB6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="572" width="46" height="17"/>
+    </entry>
+    <entry id="8" name="ko:K03200" type="ortholog">
+        <graphics name="VIRB5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="ko:K03198" type="ortholog">
+        <graphics name="VIRB3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="137" y="572" width="46" height="17"/>
+    </entry>
+    <entry id="10" name="ko:K03199" type="ortholog">
+        <graphics name="VIRB4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="182" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="ko:K03197" type="ortholog">
+        <graphics name="VIRB2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="91" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="12" name="ko:K03194" type="ortholog">
+        <graphics name="VIRB1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="572" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="ko:K03202" type="ortholog">
+        <graphics name="VIRB7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="318" y="572" width="45" height="17"/>
+    </entry>
+</pathway>

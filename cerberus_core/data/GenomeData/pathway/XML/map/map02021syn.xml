@@ -1,0 +1,314 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:53 +0900 (JST) -->
+<pathway name="path:map02021syn" org="map" number="02021syn"
+         image="http://www.genome.jp/kegg/pathway/map/map02021syn.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map02021syn">
+    <entry id="1" name="cpd:C01330" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01330">
+        <graphics name="C01330" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="285" y="132" width="563" height="265"/>
+    </entry>
+    <entry id="2" name="cpd:C06906" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06906">
+        <graphics name="C06906" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="286" y="113" width="564" height="226"/>
+    </entry>
+    <entry id="3" name="cpd:C06547" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06547">
+        <graphics name="C06547" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="286" y="96" width="565" height="192"/>
+    </entry>
+    <entry id="4" name="cpd:C00291" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00291">
+        <graphics name="C00291" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="286" y="68" width="565" height="136"/>
+    </entry>
+    <entry id="5" name="cpd:C00034" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00034">
+        <graphics name="C00034" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="286" y="47" width="565" height="95"/>
+    </entry>
+    <entry id="6" name="cpd:C00533" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00533">
+        <graphics name="C00533" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="40" y="216" width="73" height="433"/>
+    </entry>
+    <entry id="7" name="cpd:C00237" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00237">
+        <graphics name="C00237" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="40" y="207" width="73" height="415"/>
+    </entry>
+    <entry id="8" name="cpd:C00007" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00007">
+        <graphics name="C00007" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="40" y="199" width="72" height="398"/>
+    </entry>
+    <entry id="9" name="cpd:C00009" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00009">
+        <graphics name="C00009" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="39" y="183" width="71" height="366"/>
+    </entry>
+    <entry id="10" name="cpd:C01330" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01330">
+        <graphics name="C01330" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="40" y="151" width="72" height="303"/>
+    </entry>
+    <entry id="11" name="path:map02021" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02021">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="194" y="35" width="171" height="26"/>
+    </entry>
+    <entry id="12" name="syn:slr1730" type="ortholog">
+        <graphics name="slr1730" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="938" y="292" width="46" height="17"/>
+    </entry>
+    <entry id="13" name="syn:slr1729" type="ortholog">
+        <graphics name="slr1729" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="892" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="14" name="syn:slr1728" type="ortholog">
+        <graphics name="slr1728" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="847" y="292" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="syn:sll0396" type="ortholog">
+        <graphics name="sll0396" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="syn:slr1731" type="ortholog">
+        <graphics name="slr1731" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="syn:sll1229" type="ortholog">
+        <graphics name="sll1229" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="531" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="syn:sll1228" type="ortholog">
+        <graphics name="sll1228" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="531" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="syn:slr1982" type="ortholog">
+        <graphics name="slr1982" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="497" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="syn:sll1871" type="ortholog">
+        <graphics name="sll1871" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="497" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="syn:sll1673" type="ortholog">
+        <graphics name="sll1673" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="464" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="syn:sll1672" type="ortholog">
+        <graphics name="sll1672" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="464" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="syn:sll1291" type="ortholog">
+        <graphics name="sll1291" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="245" y="657" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="syn:sll1292" type="ortholog">
+        <graphics name="sll1292" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="628" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="syn:sll1296" type="ortholog">
+        <graphics name="sll1296" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="641" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="syn:sll1441" type="ortholog">
+        <graphics name="sll1441" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="958" y="240" width="45" height="17"/>
+    </entry>
+    <entry id="27" name="syn:sll0038" type="ortholog">
+        <graphics name="sll0038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="849" y="239" width="45" height="17"/>
+    </entry>
+    <entry id="28" name="syn:sll1905" type="ortholog">
+        <graphics name="sll1905" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="239" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="syn:sll0789" type="ortholog">
+        <graphics name="sll0789" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="430" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="syn:sll0790" type="ortholog">
+        <graphics name="sll0790" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="430" width="45" height="17"/>
+    </entry>
+    <entry id="31" name="syn:slr0796" type="ortholog">
+        <graphics name="slr0796" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="983" y="136" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="syn:slr0795" type="ortholog">
+        <graphics name="slr0795" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="938" y="136" width="46" height="17"/>
+    </entry>
+    <entry id="33" name="syn:slr0794" type="ortholog">
+        <graphics name="slr0794" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="892" y="136" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="syn:slr0793" type="ortholog">
+        <graphics name="slr0793" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="847" y="136" width="46" height="17"/>
+    </entry>
+    <entry id="35" name="syn:sll1600" type="ortholog">
+        <graphics name="sll1600" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="938" y="95" width="46" height="17"/>
+    </entry>
+    <entry id="36" name="syn:sll1599" type="ortholog">
+        <graphics name="sll1599" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="892" y="95" width="45" height="17"/>
+    </entry>
+    <entry id="37" name="syn:sll1598" type="ortholog">
+        <graphics name="sll1598" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="847" y="95" width="46" height="17"/>
+    </entry>
+    <entry id="38" name="syn:slr1760" type="ortholog">
+        <graphics name="slr1760" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="398" width="45" height="17"/>
+    </entry>
+    <entry id="39" name="syn:slr1759" type="ortholog">
+        <graphics name="slr1759" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="398" width="45" height="17"/>
+    </entry>
+    <entry id="40" name="syn:slr0312" type="ortholog">
+        <graphics name="slr0312" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="366" width="45" height="17"/>
+    </entry>
+    <entry id="41" name="syn:slr0311" type="ortholog">
+        <graphics name="slr0311" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="366" width="45" height="17"/>
+    </entry>
+    <entry id="42" name="syn:sll1592" type="ortholog">
+        <graphics name="sll1592" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="334" width="45" height="17"/>
+    </entry>
+    <entry id="43" name="syn:sll1590" type="ortholog">
+        <graphics name="sll1590" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="334" width="45" height="17"/>
+    </entry>
+    <entry id="44" name="syn:sll0698" type="ortholog">
+        <graphics name="sll0698" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="240" width="45" height="17"/>
+    </entry>
+    <entry id="45" name="syn:slr1212" type="ortholog">
+        <graphics name="slr1212" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="192" width="45" height="17"/>
+    </entry>
+    <entry id="46" name="syn:sll0797" type="ortholog">
+        <graphics name="sll0797" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="136" width="45" height="17"/>
+    </entry>
+    <entry id="47" name="syn:sll0798" type="ortholog">
+        <graphics name="sll0798" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="136" width="45" height="17"/>
+    </entry>
+    <entry id="48" name="syn:slr1837" type="ortholog">
+        <graphics name="slr1837" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="737" y="95" width="45" height="17"/>
+    </entry>
+    <entry id="49" name="syn:slr0640" type="ortholog">
+        <graphics name="slr0640" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="624" y="95" width="45" height="17"/>
+    </entry>
+    <entry id="50" name="syn:slr1042" type="ortholog">
+        <graphics name="slr1042" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="245" y="596" width="45" height="17"/>
+    </entry>
+    <entry id="51" name="syn:slr0322" type="ortholog">
+        <graphics name="slr0322" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="580" width="45" height="17"/>
+    </entry>
+    <entry id="52" name="syn:slr1041" type="ortholog">
+        <graphics name="slr1041" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="567" width="45" height="17"/>
+    </entry>
+    <entry id="53" name="syn:slr1214" type="ortholog">
+        <graphics name="slr1214" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="537" width="45" height="17"/>
+    </entry>
+    <entry id="54" name="syn:sll1292" type="ortholog">
+        <graphics name="sll1292" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="509" width="45" height="17"/>
+    </entry>
+    <entry id="55" name="syn:sll1624" type="ortholog">
+        <graphics name="sll1624" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="477" width="45" height="17"/>
+    </entry>
+    <entry id="56" name="syn:slr2100" type="ortholog">
+        <graphics name="slr2100" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="57" name="syn:slr2099" type="ortholog">
+        <graphics name="slr2099" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="444" width="45" height="17"/>
+    </entry>
+    <entry id="58" name="syn:slr2104" type="ortholog">
+        <graphics name="slr2104" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="418" width="45" height="17"/>
+    </entry>
+    <entry id="59" name="syn:slr2098" type="ortholog">
+        <graphics name="slr2098" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="415" width="45" height="17"/>
+    </entry>
+    <entry id="60" name="syn:slr0081" type="ortholog">
+        <graphics name="slr0081" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="366" width="45" height="17"/>
+    </entry>
+    <entry id="61" name="syn:sll0337" type="ortholog">
+        <graphics name="sll0337" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="366" width="45" height="17"/>
+    </entry>
+    <entry id="62" name="syn:slr1285" type="ortholog">
+        <graphics name="slr1285" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="332" width="45" height="17"/>
+    </entry>
+    <entry id="63" name="syn:sll1229" type="ortholog">
+        <graphics name="sll1229" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="302" width="45" height="17"/>
+    </entry>
+    <entry id="64" name="syn:slr1805" type="ortholog">
+        <graphics name="slr1805" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="303" width="45" height="17"/>
+    </entry>
+    <entry id="65" name="syn:slr0758" type="ortholog">
+        <graphics name="slr0758" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="270" width="45" height="17"/>
+    </entry>
+    <entry id="66" name="syn:sll0790" type="ortholog">
+        <graphics name="sll0790" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="270" width="45" height="17"/>
+    </entry>
+    <entry id="67" name="syn:slr0474" type="ortholog">
+        <graphics name="slr0474" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="245" y="239" width="45" height="17"/>
+    </entry>
+    <entry id="68" name="syn:slr0473" type="ortholog">
+        <graphics name="slr0473" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="238" width="45" height="17"/>
+    </entry>
+    <entry id="69" name="syn:sll1124" type="ortholog">
+        <graphics name="sll1124" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="207" width="45" height="17"/>
+    </entry>
+    <entry id="70" name="syn:slr0947" type="ortholog">
+        <graphics name="slr0947" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="179" width="45" height="17"/>
+    </entry>
+    <entry id="71" name="syn:slr0115" type="ortholog">
+        <graphics name="slr0115" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="152" width="45" height="17"/>
+    </entry>
+    <entry id="72" name="syn:sll0039" type="ortholog">
+        <graphics name="sll0039" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="122" width="45" height="17"/>
+    </entry>
+    <entry id="73" name="syn:sll0038" type="ortholog">
+        <graphics name="sll0038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="244" y="94" width="45" height="17"/>
+    </entry>
+    <entry id="74" name="syn:sll0043" type="ortholog">
+        <graphics name="sll0043" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="131" y="107" width="45" height="17"/>
+    </entry>
+</pathway>

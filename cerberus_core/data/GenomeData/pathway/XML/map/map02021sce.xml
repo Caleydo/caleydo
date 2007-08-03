@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:53 +0900 (JST) -->
+<pathway name="path:map02021sce" org="map" number="02021sce"
+         image="http://www.genome.jp/kegg/pathway/map/map02021sce.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map02021sce">
+    <entry id="1" name="path:sce04010" type="map"
+        link="http://www.genome.jp/kegg/pathway/sce/sce04010.html">
+        <graphics name="MAPK signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="429" y="102" width="98" height="38"/>
+    </entry>
+    <entry id="2" name="path:map02021" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02021">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="197" y="38" width="171" height="25"/>
+    </entry>
+    <entry id="3" name="sce:YIL147C" type="ortholog">
+        <graphics name="YIL147C" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="132" y="100" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="sce:YDL235C" type="ortholog">
+        <graphics name="YDL235C" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="246" y="100" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="sce:YLR006C" type="ortholog">
+        <graphics name="YLR006C" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="321" y="100" width="45" height="17"/>
+    </entry>
+</pathway>

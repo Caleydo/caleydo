@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:54 +0900 (JST) -->
+<pathway name="path:map04614" org="map" number="04614"
+         title="Renin-angiotensin system"
+         image="http://www.genome.jp/kegg/pathway/map/map04614.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map04614">
+    <entry id="1" name="cpd:C02135" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02135">
+        <graphics name="C02135" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="229" y="153" width="451" height="307"/>
+    </entry>
+    <entry id="2" name="cpd:C15849" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15849">
+        <graphics name="C15849" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="229" y="236" width="451" height="473"/>
+    </entry>
+    <entry id="3" name="cpd:C15848" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15848">
+        <graphics name="C15848" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="229" y="195" width="451" height="390"/>
+    </entry>
+    <entry id="4" name="cpd:C15850" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15850">
+        <graphics name="C15850" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="229" y="89" width="451" height="178"/>
+    </entry>
+    <entry id="5" name="cpd:C15852" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15852">
+        <graphics name="C15852" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="229" y="47" width="451" height="95"/>
+    </entry>
+    <entry id="6" name="cpd:C15851" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C15851">
+        <graphics name="C15851" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="168" y="89" width="328" height="178"/>
+    </entry>
+    <entry id="7" name="cpd:C00873" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00873">
+        <graphics name="C00873" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="117" y="153" width="226" height="307"/>
+    </entry>
+    <entry id="8" name="path:map04610" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map04610.html">
+        <graphics name="Complement and coagulation cascades" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="171" y="441" width="109" height="40"/>
+    </entry>
+    <entry id="9" name="path:map04614" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map04614">
+        <graphics name="TITLE:Renin-angiotensin system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="168" y="39" width="240" height="25"/>
+    </entry>
+    <entry id="10" name="ko:K09708" type="ortholog">
+        <graphics name="ACEH" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="480" y="246" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="ko:K09708" type="ortholog">
+        <graphics name="ACEH" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="267" y="211" width="45" height="17"/>
+    </entry>
+    <entry id="12" name="ko:K01283" type="ortholog">
+        <graphics name="3.4.15.1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="480" y="141" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="ko:K01283" type="ortholog">
+        <graphics name="3.4.15.1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="388" y="146" width="45" height="17"/>
+    </entry>
+    <entry id="14" name="ko:K01283" type="ortholog">
+        <graphics name="3.4.15.1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="326" y="364" width="45" height="17"/>
+    </entry>
+    <entry id="15" name="ko:K04166" type="ortholog">
+        <graphics name="AGTR1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="330" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="ko:K04167" type="ortholog">
+        <graphics name="AGTR2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="283" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="ko:K01393" type="ortholog">
+        <graphics name="3.4.24.16" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="244" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="ko:K01392" type="ortholog">
+        <graphics name="3.4.24.15" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="224" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="ko:K01389" type="ortholog">
+        <graphics name="3.4.24.11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="365" y="264" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="ko:K01256" type="ortholog">
+        <graphics name="3.4.11.2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="429" y="427" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="ko:K01261" type="ortholog">
+        <graphics name="3.4.11.7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="429" y="345" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="ko:K01287" type="ortholog">
+        <graphics name="3.4.16.5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="267" y="231" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="ko:K08780" type="ortholog">
+        <graphics name="CPA3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="267" y="251" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="ko:K04303" type="ortholog">
+        <graphics name="MAS1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="177" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="ko:K01389" type="ortholog">
+        <graphics name="3.4.24.11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="388" y="166" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="ko:K01257" type="ortholog">
+        <graphics name="3.4.11.3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="472" width="45" height="17"/>
+    </entry>
+    <entry id="27" name="ko:K01329" type="ortholog">
+        <graphics name="3.4.21.39" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="327" y="318" width="45" height="17"/>
+    </entry>
+    <entry id="28" name="ko:K01319" type="ortholog">
+        <graphics name="3.4.21.20" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="327" y="338" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="ko:K09821" type="ortholog">
+        <graphics name="AGT" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="92" y="306" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="ko:K01380" type="ortholog">
+        <graphics name="3.4.23.15" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="167" y="318" width="45" height="17"/>
+    </entry>
+</pathway>

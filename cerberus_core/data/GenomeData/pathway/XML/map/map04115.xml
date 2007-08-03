@@ -1,0 +1,477 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 24 2007 11:19:35 +0900 (JST) -->
+<pathway name="path:map04115" org="map" number="04115"
+         image="http://www.genome.jp/kegg/pathway/map/map04115.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map04115">
+    <entry id="1" name="hsa:6477 mmu:20437 mmu:20438 rno:140941" type="other">
+        <graphics name="SIAH1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="773" y="603" width="45" height="17"/>
+    </entry>
+    <entry id="2" name="hsa:3486 mmu:16009 rno:24484" type="other">
+        <graphics name="IGFBP3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="524" width="45" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:10912 hsa:1647 hsa:4616 mmu:13197 mmu:17873 mmu:23882" type="other">
+        <graphics name="GADD45G..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="483" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="hsa:4194 mmu:17248 rno:304798" type="other">
+        <graphics name="MDM4..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="306" y="426" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="hsa:1111 mmu:12649 rno:10583" type="other">
+        <graphics name="CHEK1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="411" y="203" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="hsa:545" type="other">
+        <graphics name="ATR" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="332" y="202" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:11200 mmu:50883 rno:114212" type="other">
+        <graphics name="CHEK2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="455" y="175" width="45" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:472 mmu:11920 rno:300711" type="other">
+        <graphics name="ATM, ATA, ATDC, ATC, ATD..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="332" y="175" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:56475 mmu:67874 rno:680110" type="other">
+        <graphics name="RPRM..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="150" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="hsa:2810 mmu:55948" type="other">
+        <graphics name="SFN..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="126" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="hsa:1017 mmu:12566 rno:362817" type="other">
+        <graphics name="CDK2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="115" width="45" height="17"/>
+    </entry>
+    <entry id="12" name="hsa:898 hsa:9134 mmu:12447 mmu:12448" type="other">
+        <graphics name="CCNE1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="98" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="path:hsa04110" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
+        <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="306" y="477" width="103" height="38"/>
+    </entry>
+    <entry id="14" name="path:hsa04210" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04210.html">
+        <graphics name="Apoptosis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="1075" y="271" width="103" height="38"/>
+    </entry>
+    <entry id="15" name="hsa:7249 mmu:22084 rno:24855" type="other">
+        <graphics name="TSC2, TSC4..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="524" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="hsa:8493 mmu:53892 rno:287585" type="other">
+        <graphics name="PPM1D..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="826" y="603" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:7161 mmu:22062 rno:362675" type="other">
+        <graphics name="TP73..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="878" y="603" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:900 mmu:12450 rno:25405 hsa:901 mmu:12452" type="other">
+        <graphics name="CCNG1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="721" y="603" width="46" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:64326 mmu:26374" type="other">
+        <graphics name="RFWD2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="603" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:50484 hsa:6241 mmu:20135 mmu:382985 rno:362720" type="other">
+        <graphics name="RRM2B..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="483" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:1643 mmu:107986" type="other">
+        <graphics name="DDB2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="483" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="hsa:55240 mmu:68428 rno:170824" type="other">
+        <graphics name="STEAP3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="563" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="hsa:5728 mmu:19211 rno:50557" type="other">
+        <graphics name="PTEN, BZS, MHAM..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="524" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="hsa:5268 mmu:20724 rno:116589" type="other">
+        <graphics name="SERPINB5..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="826" y="442" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="hsa:3732 mmu:12521 rno:83628" type="other">
+        <graphics name="CD82, ST6, KAI1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="442" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="hsa:" type="other">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="721" y="442" width="46" height="17"/>
+    </entry>
+    <entry id="27" name="hsa:7057 mmu:21825" type="other">
+        <graphics name="THBS1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="773" y="442" width="45" height="17"/>
+    </entry>
+    <entry id="28" name="hsa:3486 mmu:16009 rno:24484" type="other">
+        <graphics name="IGFBP3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="401" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="hsa:3479 mmu:16000 rno:24482" type="other">
+        <graphics name="IGF1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="673" y="401" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="hsa:5054 mmu:18787 rno:24617" type="other">
+        <graphics name="SERPINE1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="442" width="45" height="17"/>
+    </entry>
+    <entry id="31" name="hsa:575 mmu:107831" type="other">
+        <graphics name="BAI1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="442" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="hsa:1029 rno:25163" type="other">
+        <graphics name="CDKN2A, CDKN2, MLM..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="238" y="362" width="45" height="17"/>
+    </entry>
+    <entry id="33" name="hsa:1026 mmu:12575 rno:114851" type="other">
+        <graphics name="CDKN1A, CDKN1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="91" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="hsa:64393 mmu:22401" type="other">
+        <graphics name="ZMAT3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="363" width="45" height="17"/>
+    </entry>
+    <entry id="35" name="hsa:637 mmu:12122 rno:64625" type="other">
+        <graphics name="BID..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="776" y="274" width="45" height="17"/>
+    </entry>
+    <entry id="36" name="hsa:9540 hsa:9538 mmu:13663 rno:300514" type="other">
+        <graphics name="TP53I3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="331" width="45" height="17"/>
+    </entry>
+    <entry id="37" name="hsa:355 mmu:14102 rno:246097" type="other">
+        <graphics name="FAS..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="240" width="45" height="17"/>
+    </entry>
+    <entry id="38" name="hsa:51512 mmu:458984 mmu:29870" type="other">
+        <graphics name="GTSE1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="206" width="45" height="17"/>
+    </entry>
+    <entry id="39" name="hsa:581 mmu:12028 rno:24887" type="other">
+        <graphics name="BAX..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="296" width="45" height="17"/>
+    </entry>
+    <entry id="40" name="hsa:55367 mmu:57913 rno:293625" type="other">
+        <graphics name="LRDD..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="262" width="45" height="17"/>
+    </entry>
+    <entry id="41" name="hsa:8795" type="other">
+        <graphics name="TNFRSF10B" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="250" width="45" height="17"/>
+    </entry>
+    <entry id="42" name="hsa:841 mmu:12370 rno:64044" type="other">
+        <graphics name="CASP8..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="701" y="250" width="46" height="17"/>
+    </entry>
+    <entry id="43" name="hsa:983 mmu:12534 rno:54237" type="other">
+        <graphics name="CDC2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="183" width="45" height="16"/>
+    </entry>
+    <entry id="44" name="hsa:317 mmu:11783 rno:78963" type="other">
+        <graphics name="APAF1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="907" y="348" width="45" height="17"/>
+    </entry>
+    <entry id="45" name="hsa:54205 mmu:13063 rno:25309" type="other">
+        <graphics name="CYCS..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="906" y="316" width="45" height="17"/>
+    </entry>
+    <entry id="46" name="hsa:842 mmu:12371 rno:58918" type="other">
+        <graphics name="CASP9..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1009" y="332" width="45" height="17"/>
+    </entry>
+    <entry id="47" name="hsa:4193 mmu:17246 rno:314856" type="other">
+        <graphics name="MDM2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="306" y="362" width="45" height="17"/>
+    </entry>
+    <entry id="48" name="hsa:7157 mmu:22059 rno:24842" type="other">
+        <graphics name="TP53..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="396" y="362" width="45" height="17"/>
+    </entry>
+    <entry id="49" name="hsa:4193 mmu:17246" type="other">
+        <graphics name="MDM2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="603" width="45" height="17"/>
+    </entry>
+    <entry id="50" name="hsa:25898 mmu:68098 rno:289508" type="other">
+        <graphics name="RCHY1, ZNF363..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="603" width="45" height="17"/>
+    </entry>
+    <entry id="51" name="hsa:10912 hsa:1647 hsa:4616 mmu:13197 mmu:17873 mmu:23882" type="other">
+        <graphics name="GADD45G..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="182" width="45" height="17"/>
+    </entry>
+    <entry id="52" name="hsa:1019 mmu:12567 rno:94201 hsa:1021 mmu:12571 rno:114483" type="other">
+        <graphics name="CDK4..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="70" width="45" height="17"/>
+    </entry>
+    <entry id="53" name="hsa:595 mmu:12443 rno:58919" type="other">
+        <graphics name="CCND1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="53" width="45" height="17"/>
+    </entry>
+    <entry id="54" name="hsa:64065 rno:292949" type="other">
+        <graphics name="PERP..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="363" width="45" height="17"/>
+    </entry>
+    <entry id="55" name="hsa:51246 mmu:66940" type="other">
+        <graphics name="SCOTIN..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="363" width="45" height="17"/>
+    </entry>
+    <entry id="56" name="hsa:27244 hsa:83667 hsa:143686 mmu:140741 mmu:230784 mmu:75747" type="other">
+        <graphics name="SESN1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="721" y="483" width="46" height="17"/>
+    </entry>
+    <entry id="57" name="hsa:85417 hsa:891 hsa:9133 mmu:12442 mmu:209091 mmu:268697 rno:25203 rno:363088" type="other">
+        <graphics name="CCNB3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="166" width="45" height="17"/>
+    </entry>
+    <entry id="58" name="hsa:836 mmu:12367 rno:25402" type="other">
+        <graphics name="CASP3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1085" y="331" width="45" height="17"/>
+    </entry>
+    <entry id="59" name="path:map04115" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map04115">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="152" y="42" width="198" height="27"/>
+    </entry>
+    <entry id="60" name="path:hsa04110" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
+        <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="1074" y="170" width="103" height="38"/>
+    </entry>
+    <entry id="61" name="hsa:6477 mmu:20437 mmu:20438 rno:140941" type="other">
+        <graphics name="SIAH1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="721" y="363" width="46" height="17"/>
+    </entry>
+    <entry id="62" name="hsa:63970" type="other">
+        <graphics name="P53AIP1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="721" y="296" width="46" height="17"/>
+    </entry>
+    <entry id="63" name="hsa:27113 mmu:170770 rno:317673" type="other">
+        <graphics name="BBC3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="296" width="45" height="17"/>
+    </entry>
+    <entry id="64" name="hsa:5366 mmu:58801 rno:492821" type="other">
+        <graphics name="PMAIP1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="296" width="45" height="17"/>
+    </entry>
+    <entry id="65" name="undefined" type="group">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="62" width="65" height="54"/>
+        <component id="52"/>
+        <component id="53"/>
+    </entry>
+    <entry id="66" name="undefined" type="group">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="107" width="65" height="54"/>
+        <component id="11"/>
+        <component id="12"/>
+    </entry>
+    <entry id="67" name="undefined" type="group">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="692" y="174" width="65" height="53"/>
+        <component id="43"/>
+        <component id="57"/>
+    </entry>
+    <relation entry1="8" entry2="7" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="6" entry2="5" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="6" entry2="48" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="5" entry2="48" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="7" entry2="48" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="8" entry2="48" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="32" entry2="47" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="4" entry2="47" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="47" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="4" entry2="48" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="33" entry2="65" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="33" entry2="66" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="10" entry2="67" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="51" entry2="67" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="28" entry2="29" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+    </relation>
+    <relation entry1="48" entry2="33" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="10" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="9" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="51" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="38" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="37" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="40" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="41" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="39" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="64" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="63" entry2="48" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="63" entry2="62" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="36" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="55" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="54" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="34" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="61" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="28" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="30" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="31" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="25" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="26" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="27" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="24" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="21" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="20" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="3" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="56" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="23" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="15" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="2" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="22" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="49" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="19" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="50" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="18" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="1" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="16" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="48" entry2="17" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="35" entry2="45" type="PPrel">
+        <subtype name="indirect" value="..>"/>
+    </relation>
+    <relation entry1="62" entry2="45" type="PPrel">
+        <subtype name="indirect" value="..>"/>
+    </relation>
+    <relation entry1="61" entry2="45" type="PPrel">
+        <subtype name="indirect" value="..>"/>
+    </relation>
+    <relation entry1="45" entry2="46" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="44" entry2="46" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="46" entry2="58" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="42" entry2="58" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="41" entry2="42" type="PPrel">
+        <subtype name="indirect" value="..>"/>
+    </relation>
+</pathway>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01100" org="map" number="01100"
+         image="http://www.genome.jp/kegg/pathway/map/map01100.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01100">
+    <entry id="1" name="path:map01196" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01196.html">
+        <graphics name="Xenobiotics Biodegradation and Metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="498" y="80" width="119" height="35"/>
+    </entry>
+    <entry id="2" name="path:map01195" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01195.html">
+        <graphics name="Biosynthesis of Secondary Metabolites" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="382" y="675" width="147" height="35"/>
+    </entry>
+    <entry id="3" name="path:map01110" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01110.html">
+        <graphics name="Carbohydrate Metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="245" y="343" width="103" height="35"/>
+    </entry>
+    <entry id="4" name="path:map01150" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01150.html">
+        <graphics name="Amino Acid Metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="395" y="488" width="92" height="34"/>
+    </entry>
+    <entry id="5" name="path:map01160" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01160.html">
+        <graphics name="Metabolism of Other Amino Acids" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="511" y="400" width="129" height="35"/>
+    </entry>
+    <entry id="6" name="path:map01140" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01140.html">
+        <graphics name="Nucleotide Metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="351" y="157" width="88" height="35"/>
+    </entry>
+    <entry id="7" name="path:map01190" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01190.html">
+        <graphics name="Metabolism of Cofactors and Vitamins" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="490" y="606" width="154" height="36"/>
+    </entry>
+    <entry id="8" name="path:map01120" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01120.html">
+        <graphics name="Energy Metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="119" y="619" width="86" height="34"/>
+    </entry>
+    <entry id="9" name="path:map01130" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01130.html">
+        <graphics name="Lipid Metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="120" y="424" width="84" height="36"/>
+    </entry>
+    <entry id="10" name="path:map01170" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01170.html">
+        <graphics name="Glycan Biosynthesis and Metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="145" y="82" width="160" height="36"/>
+    </entry>
+</pathway>

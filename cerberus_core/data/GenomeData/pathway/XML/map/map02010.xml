@@ -1,0 +1,1176 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 31 2007 13:26:29 +0900 (JST) -->
+<pathway name="path:map02010" org="map" number="02010"
+         title="ABC transporters</a>"
+         image="http://www.genome.jp/kegg/pathway/map/map02010.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map02010">
+    <entry id="1" name="cpd:C00064" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00064">
+        <graphics name="C00064" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="304" width="185" height="608"/>
+    </entry>
+    <entry id="2" name="cpd:C00062 cpd:C00077" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00062+C00077">
+        <graphics name="C00062..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="457" width="184" height="914"/>
+    </entry>
+    <entry id="3" name="cpd:C00491" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00491">
+        <graphics name="C00491" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="438" width="184" height="876"/>
+    </entry>
+    <entry id="4" name="cpd:C00025" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00025">
+        <graphics name="C00025" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="418" width="184" height="837"/>
+    </entry>
+    <entry id="5" name="cpd:C00151" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00151">
+        <graphics name="C00151" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="395" width="184" height="791"/>
+    </entry>
+    <entry id="6" name="cpd:C04137 cpd:C01682" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C04137+C01682">
+        <graphics name="C04137..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="372" width="184" height="744"/>
+    </entry>
+    <entry id="7" name="cpd:C00025 cpd:C00049" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00025+C00049">
+        <graphics name="C00025..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="349" width="184" height="698"/>
+    </entry>
+    <entry id="8" name="cpd:C00062" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00062">
+        <graphics name="C00062" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="325" width="185" height="651"/>
+    </entry>
+    <entry id="9" name="cpd:C00135" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00135">
+        <graphics name="C00135" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="286" width="185" height="572"/>
+    </entry>
+    <entry id="10" name="cpd:C00047 cpd:C00062 cpd:C00077" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00047+C00062+C00077">
+        <graphics name="C00047..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="262" width="184" height="525"/>
+    </entry>
+    <entry id="11" name="cpd:C06767" type="compound">
+        <graphics name="C06767" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="1039" width="184" height="2079"/>
+    </entry>
+    <entry id="12" name="cpd:C01834" type="compound">
+        <graphics name="C01834" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="1087" width="184" height="2175"/>
+    </entry>
+    <entry id="13" name="cpd:C01330" type="compound">
+        <graphics name="C01330" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="1006" width="184" height="2013"/>
+    </entry>
+    <entry id="14" name="cpd:C06706" type="compound">
+        <graphics name="C06706" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="991" width="184" height="1983"/>
+    </entry>
+    <entry id="15" name="cpd:C06707" type="compound">
+        <graphics name="C06707" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="975" width="184" height="1951"/>
+    </entry>
+    <entry id="16" name="cpd:C00338" type="compound">
+        <graphics name="C00338" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="960" width="184" height="1920"/>
+    </entry>
+    <entry id="17" name="cpd:C14818 cpd:C14819 cpd:C00034" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14818+C14819+C00034">
+        <graphics name="C14818..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="778" width="184" height="1557"/>
+    </entry>
+    <entry id="18" name="cpd:C00032" type="compound">
+        <graphics name="C00032" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="1022" width="184" height="2045"/>
+    </entry>
+    <entry id="19" name="cpd:C06705" type="compound">
+        <graphics name="C06705" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="944" width="184" height="1888"/>
+    </entry>
+    <entry id="20" name="cpd:C06232" type="compound">
+        <graphics name="C06232" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="847" width="184" height="1694"/>
+    </entry>
+    <entry id="21" name="cpd:C00175" type="compound">
+        <graphics name="C00175" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="829" width="184" height="1658"/>
+    </entry>
+    <entry id="22" name="cpd:C06228 cpd:C06227 cpd:C06229 cpd:C06230 cpd:C06704" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06228+C06227+C06229+C06230+C06704">
+        <graphics name="C06228..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="813" width="184" height="1627"/>
+    </entry>
+    <entry id="23" name="cpd:C14819" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14819">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="798" width="184" height="1596"/>
+    </entry>
+    <entry id="24" name="cpd:C00038" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00038">
+        <graphics name="C00038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="758" width="184" height="1517"/>
+    </entry>
+    <entry id="25" name="cpd:C00753" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00753">
+        <graphics name="C00753" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="742" width="184" height="1484"/>
+    </entry>
+    <entry id="26" name="cpd:C00012 cpd:C00291" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00012+C00291">
+        <graphics name="C00012..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="723" width="184" height="1446"/>
+    </entry>
+    <entry id="27" name="cpd:C05776" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C05776">
+        <graphics name="C05776" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="704" width="184" height="1408"/>
+    </entry>
+    <entry id="28" name="cpd:C00855" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00855">
+        <graphics name="C00855" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="688" width="185" height="1376"/>
+    </entry>
+    <entry id="29" name="cpd:C00059 cpd:C00244 cpd:C00245" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00059+C00244+C00245">
+        <graphics name="C00059..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="674" width="184" height="1348"/>
+    </entry>
+    <entry id="30" name="cpd:C00059 cpd:C00320" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00059+C00320">
+        <graphics name="C00059..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="659" width="184" height="1318"/>
+    </entry>
+    <entry id="31" name="cpd:C00059 cpd:C00320" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00059+C00320">
+        <graphics name="C00059..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="641" width="184" height="1282"/>
+    </entry>
+    <entry id="32" name="cpd:C06235" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06235">
+        <graphics name="C06235" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="616" width="184" height="1233"/>
+    </entry>
+    <entry id="33" name="cpd:C00009" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00009">
+        <graphics name="C00009" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="591" width="184" height="1183"/>
+    </entry>
+    <entry id="34" name="cpd:C00093" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00093">
+        <graphics name="C00093" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="569" width="184" height="1138"/>
+    </entry>
+    <entry id="35" name="cpd:C00719 cpd:C00148 cpd:C00114 cpd:C00919 cpd:C00487 cpd:C11458 cpd:C11459" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00719+C00148+C00114+C00919+C00487+C11458+C11459">
+        <graphics name="C00719..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="551" width="184" height="1102"/>
+    </entry>
+    <entry id="36" name="cpd:C00719 cpd:C00148 cpd:C00114 cpd:C00919 cpd:C00487 cpd:C11458 cpd:C11459" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00719+C00148+C00114+C00919+C00487+C11458+C11459">
+        <graphics name="C00719..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="536" width="184" height="1072"/>
+    </entry>
+    <entry id="37" name="cpd:C00378" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00378">
+        <graphics name="C00378" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="521" width="184" height="1042"/>
+    </entry>
+    <entry id="38" name="cpd:C00315 cpd:C00134" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00315+C00134">
+        <graphics name="C00315..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="503" width="184" height="1006"/>
+    </entry>
+    <entry id="39" name="cpd:C00183 cpd:C00123 cpd:C00407 cpd:C00188 cpd:C00135 cpd:C00086" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00183+C00123+C00407+C00188+C00135+C00086">
+        <graphics name="C00183..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="480" width="185" height="960"/>
+    </entry>
+    <entry id="40" name="cpd:C00208 cpd:C01935 cpd:C00031 cpd:C00973 cpd:C00259 cpd:C11546" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00208+C01935+C00031+C00973+C00259+C11546">
+        <graphics name="C00208..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="239" width="184" height="479"/>
+    </entry>
+    <entry id="41" name="cpd:C00121 cpd:C00124 cpd:C00181 cpd:C00259 cpd:C01487" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00121+C00124+C00181+C00259+C01487">
+        <graphics name="C00121..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="216" width="184" height="433"/>
+    </entry>
+    <entry id="42" name="path:map02010" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02010">
+        <graphics name="TITLE:ABC transporters</a>" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="429" y="47" width="166" height="27"/>
+    </entry>
+    <entry id="43" name="ko:K05664" type="ortholog">
+        <graphics name="ABCB11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="754" y="599" width="46" height="17"/>
+    </entry>
+    <entry id="44" name="ko:K05684" type="ortholog">
+        <graphics name="ABCG8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="1029" width="46" height="17"/>
+    </entry>
+    <entry id="45" name="ko:K05683" type="ortholog">
+        <graphics name="ABCG5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="1004" width="46" height="17"/>
+    </entry>
+    <entry id="46" name="ko:K05681" type="ortholog">
+        <graphics name="ABCG2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="1004" width="46" height="17"/>
+    </entry>
+    <entry id="47" name="ko:K05680" type="ortholog">
+        <graphics name="ABCG4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1028" width="46" height="17"/>
+    </entry>
+    <entry id="48" name="ko:K05679" type="ortholog">
+        <graphics name="ABCG1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1003" width="46" height="17"/>
+    </entry>
+    <entry id="49" name="ko:K05678" type="ortholog">
+        <graphics name="ABCD4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="967" width="46" height="17"/>
+    </entry>
+    <entry id="50" name="ko:K05677" type="ortholog">
+        <graphics name="ABCD3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="942" width="46" height="17"/>
+    </entry>
+    <entry id="51" name="ko:K05676" type="ortholog">
+        <graphics name="ABCD2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="917" width="46" height="17"/>
+    </entry>
+    <entry id="52" name="ko:K05675" type="ortholog">
+        <graphics name="ABCD1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="892" width="46" height="17"/>
+    </entry>
+    <entry id="53" name="ko:K05674" type="ortholog">
+        <graphics name="ABCC10" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="754" y="782" width="46" height="17"/>
+    </entry>
+    <entry id="54" name="ko:K05031" type="ortholog">
+        <graphics name="CFTR" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="754" y="757" width="46" height="17"/>
+    </entry>
+    <entry id="55" name="ko:K05673" type="ortholog">
+        <graphics name="ABCC4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="754" y="732" width="46" height="17"/>
+    </entry>
+    <entry id="56" name="ko:K05672" type="ortholog">
+        <graphics name="ABCC12" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="807" width="46" height="17"/>
+    </entry>
+    <entry id="57" name="ko:K05671" type="ortholog">
+        <graphics name="ABCC11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="782" width="46" height="17"/>
+    </entry>
+    <entry id="58" name="ko:K05033" type="ortholog">
+        <graphics name="ABCC9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="757" width="46" height="17"/>
+    </entry>
+    <entry id="59" name="ko:K05032" type="ortholog">
+        <graphics name="ABCC8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="732" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="ko:K05669" type="ortholog">
+        <graphics name="ABCC6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="831" width="46" height="17"/>
+    </entry>
+    <entry id="61" name="ko:K05668" type="ortholog">
+        <graphics name="ABCC5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="807" width="46" height="17"/>
+    </entry>
+    <entry id="62" name="ko:K05667" type="ortholog">
+        <graphics name="ABCC3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="782" width="46" height="17"/>
+    </entry>
+    <entry id="63" name="ko:K05666" type="ortholog">
+        <graphics name="ABCC2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="757" width="46" height="17"/>
+    </entry>
+    <entry id="64" name="ko:K05665" type="ortholog">
+        <graphics name="ABCC1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="732" width="46" height="17"/>
+    </entry>
+    <entry id="65" name="ko:K05662" type="ortholog">
+        <graphics name="ABCB7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="623" width="46" height="17"/>
+    </entry>
+    <entry id="66" name="ko:K05661" type="ortholog">
+        <graphics name="ABCB6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="599" width="46" height="17"/>
+    </entry>
+    <entry id="67" name="ko:K05660" type="ortholog">
+        <graphics name="ABCB5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="647" width="46" height="17"/>
+    </entry>
+    <entry id="68" name="ko:K05659" type="ortholog">
+        <graphics name="ABCB4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="623" width="46" height="17"/>
+    </entry>
+    <entry id="69" name="ko:K05658" type="ortholog">
+        <graphics name="ABCB1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="599" width="46" height="17"/>
+    </entry>
+    <entry id="70" name="ko:K05657" type="ortholog">
+        <graphics name="ABCB10" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="695" width="46" height="17"/>
+    </entry>
+    <entry id="71" name="ko:K05656" type="ortholog">
+        <graphics name="ABCB9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="671" width="46" height="17"/>
+    </entry>
+    <entry id="72" name="ko:K05655" type="ortholog">
+        <graphics name="ABCB8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="647" width="46" height="17"/>
+    </entry>
+    <entry id="73" name="ko:K05654" type="ortholog">
+        <graphics name="ABCB3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="623" width="46" height="17"/>
+    </entry>
+    <entry id="74" name="ko:K05653" type="ortholog">
+        <graphics name="ABCB2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="599" width="46" height="17"/>
+    </entry>
+    <entry id="75" name="ko:K05652" type="ortholog">
+        <graphics name="ABCA10" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="517" width="46" height="17"/>
+    </entry>
+    <entry id="76" name="ko:K05651" type="ortholog">
+        <graphics name="ABCA9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="493" width="46" height="17"/>
+    </entry>
+    <entry id="77" name="ko:K05650" type="ortholog">
+        <graphics name="ABCA8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="470" width="46" height="17"/>
+    </entry>
+    <entry id="78" name="ko:K05649" type="ortholog">
+        <graphics name="ABCA6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="447" width="46" height="17"/>
+    </entry>
+    <entry id="79" name="ko:K05648" type="ortholog">
+        <graphics name="ABCA5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="423" width="46" height="17"/>
+    </entry>
+    <entry id="80" name="ko:K05647" type="ortholog">
+        <graphics name="ABCA13" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="564" width="46" height="17"/>
+    </entry>
+    <entry id="81" name="ko:K05646" type="ortholog">
+        <graphics name="ABCA12" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="540" width="46" height="17"/>
+    </entry>
+    <entry id="82" name="ko:K05645" type="ortholog">
+        <graphics name="ABCA7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="517" width="46" height="17"/>
+    </entry>
+    <entry id="83" name="ko:K05644" type="ortholog">
+        <graphics name="ABCA4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="493" width="46" height="17"/>
+    </entry>
+    <entry id="84" name="ko:K05643" type="ortholog">
+        <graphics name="ABCA3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="470" width="46" height="17"/>
+    </entry>
+    <entry id="85" name="ko:K05642" type="ortholog">
+        <graphics name="ABCA2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="447" width="46" height="17"/>
+    </entry>
+    <entry id="86" name="ko:K05641" type="ortholog">
+        <graphics name="ABCA1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="423" width="46" height="17"/>
+    </entry>
+    <entry id="87" name="ko:K05682" type="ortholog">
+        <graphics name="ABCG3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="1030" width="46" height="19"/>
+    </entry>
+    <entry id="88" name="ko:K05663" type="ortholog">
+        <graphics name="ABC.ATM" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="647" width="46" height="17"/>
+    </entry>
+    <entry id="89" name="ko:K02069" type="ortholog">
+        <graphics name="ABC.X2.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1792" width="46" height="17"/>
+    </entry>
+    <entry id="90" name="ko:K02065" type="ortholog">
+        <graphics name="ABC.X1.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1762" width="46" height="17"/>
+    </entry>
+    <entry id="91" name="ko:K02194" type="ortholog">
+        <graphics name="CCMB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2053" width="46" height="17"/>
+    </entry>
+    <entry id="92" name="ko:K02195" type="ortholog">
+        <graphics name="CCMC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2036" width="46" height="17"/>
+    </entry>
+    <entry id="93" name="ko:K02006" type="ortholog">
+        <graphics name="ABC.CO.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1658" width="46" height="17"/>
+    </entry>
+    <entry id="94" name="ko:K05776" type="ortholog">
+        <graphics name="ABC.MO.A1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1702" width="46" height="17"/>
+    </entry>
+    <entry id="95" name="ko:K10038" type="ortholog">
+        <graphics name="ABC.GLN.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="320" y="608" width="46" height="17"/>
+    </entry>
+    <entry id="96" name="ko:K10037" type="ortholog">
+        <graphics name="ABC.GLN.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="274" y="608" width="46" height="17"/>
+    </entry>
+    <entry id="97" name="ko:K10036" type="ortholog">
+        <graphics name="ABC.GLN.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="228" y="608" width="46" height="17"/>
+    </entry>
+    <entry id="98" name="ko:K10010" type="ortholog">
+        <graphics name="ABC.CYST.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="875" width="46" height="17"/>
+    </entry>
+    <entry id="99" name="ko:K10009" type="ortholog">
+        <graphics name="ABC.CYST.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="875" width="46" height="17"/>
+    </entry>
+    <entry id="100" name="ko:K02424" type="ortholog">
+        <graphics name="FLIY" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="875" width="45" height="17"/>
+    </entry>
+    <entry id="101" name="ko:K09972" type="ortholog">
+        <graphics name="ABC.AAP.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="790" width="46" height="17"/>
+    </entry>
+    <entry id="102" name="ko:K09971" type="ortholog">
+        <graphics name="ABC.AAP.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="799" width="46" height="17"/>
+    </entry>
+    <entry id="103" name="ko:K09970" type="ortholog">
+        <graphics name="ABC.AAP.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="782" width="46" height="17"/>
+    </entry>
+    <entry id="104" name="ko:K09969" type="ortholog">
+        <graphics name="ABC.AAP.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="790" width="45" height="17"/>
+    </entry>
+    <entry id="105" name="ko:K10004" type="ortholog">
+        <graphics name="ABC.GLT.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="697" width="46" height="17"/>
+    </entry>
+    <entry id="106" name="ko:K10003" type="ortholog">
+        <graphics name="ABC.GLT.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="705" width="46" height="17"/>
+    </entry>
+    <entry id="107" name="ko:K10002" type="ortholog">
+        <graphics name="ABC.GLT.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="688" width="46" height="17"/>
+    </entry>
+    <entry id="108" name="ko:K10001" type="ortholog">
+        <graphics name="ABC.GLT.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="697" width="46" height="17"/>
+    </entry>
+    <entry id="109" name="ko:K10000" type="ortholog">
+        <graphics name="ABC.ART.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="651" width="46" height="17"/>
+    </entry>
+    <entry id="110" name="ko:K09999" type="ortholog">
+        <graphics name="ABC.ART.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="659" width="46" height="17"/>
+    </entry>
+    <entry id="111" name="ko:K09998" type="ortholog">
+        <graphics name="ABC.ART.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="642" width="46" height="17"/>
+    </entry>
+    <entry id="112" name="ko:K09997" type="ortholog">
+        <graphics name="ABC.ART.S1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="659" width="45" height="17"/>
+    </entry>
+    <entry id="113" name="ko:K09996" type="ortholog">
+        <graphics name="ABC.ART.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="642" width="45" height="17"/>
+    </entry>
+    <entry id="114" name="ko:K10017" type="ortholog">
+        <graphics name="ABC.HIS.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="571" width="46" height="17"/>
+    </entry>
+    <entry id="115" name="ko:K10016" type="ortholog">
+        <graphics name="ABC.HIS.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="580" width="46" height="17"/>
+    </entry>
+    <entry id="116" name="ko:K10015" type="ortholog">
+        <graphics name="ABC.HIS.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="563" width="46" height="17"/>
+    </entry>
+    <entry id="117" name="ko:K10014" type="ortholog">
+        <graphics name="ABC.HIS.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="571" width="45" height="17"/>
+    </entry>
+    <entry id="118" name="ko:K10017" type="ortholog">
+        <graphics name="ABC.HIS.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="525" width="46" height="17"/>
+    </entry>
+    <entry id="119" name="ko:K10016" type="ortholog">
+        <graphics name="ABC.HIS.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="533" width="46" height="17"/>
+    </entry>
+    <entry id="120" name="ko:K10015" type="ortholog">
+        <graphics name="ABC.HIS.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="516" width="46" height="17"/>
+    </entry>
+    <entry id="121" name="ko:K10013" type="ortholog">
+        <graphics name="ABC.ARG.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="524" width="45" height="17"/>
+    </entry>
+    <entry id="122" name="ko:K09812" type="ortholog">
+        <graphics name="ABC.FTS.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="2110" width="46" height="17"/>
+    </entry>
+    <entry id="123" name="ko:K09811" type="ortholog">
+        <graphics name="ABC.FTS.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2110" width="46" height="17"/>
+    </entry>
+    <entry id="124" name="ko:K09810" type="ortholog">
+        <graphics name="ABC.LPT.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="2175" width="46" height="17"/>
+    </entry>
+    <entry id="125" name="ko:K09808" type="ortholog">
+        <graphics name="ABC.LPT.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2183" width="46" height="17"/>
+    </entry>
+    <entry id="126" name="ko:K09808" type="ortholog">
+        <graphics name="ABC.LPT.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2166" width="46" height="17"/>
+    </entry>
+    <entry id="127" name="ko:K09687" type="ortholog">
+        <graphics name="ABC-2.AB.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1855" width="46" height="17"/>
+    </entry>
+    <entry id="128" name="ko:K09686" type="ortholog">
+        <graphics name="ABC-2.AB.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1855" width="46" height="17"/>
+    </entry>
+    <entry id="129" name="ko:K02068" type="ortholog">
+        <graphics name="ABC.X2.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1792" width="46" height="17"/>
+    </entry>
+    <entry id="130" name="ko:K02066" type="ortholog">
+        <graphics name="ABC.X1.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1762" width="46" height="17"/>
+    </entry>
+    <entry id="131" name="ko:K02067" type="ortholog">
+        <graphics name="ABC.X1.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1762" width="46" height="17"/>
+    </entry>
+    <entry id="132" name="ko:K05779" type="ortholog">
+        <graphics name="ABC.VB1X.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1731" width="46" height="17"/>
+    </entry>
+    <entry id="133" name="ko:K05778" type="ortholog">
+        <graphics name="ABC.VB1X.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1731" width="46" height="17"/>
+    </entry>
+    <entry id="134" name="ko:K05777" type="ortholog">
+        <graphics name="ABC.VB1X.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1731" width="46" height="17"/>
+    </entry>
+    <entry id="135" name="ko:K06726" type="ortholog">
+        <graphics name="ABC.SS.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="440" width="46" height="17"/>
+    </entry>
+    <entry id="136" name="path:map02011" type="map">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="128" y="89" width="145" height="37"/>
+    </entry>
+    <entry id="137" name="ko:K06147" type="ortholog">
+        <graphics name="ABCB-BAC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="816" y="599" width="46" height="17"/>
+    </entry>
+    <entry id="138" name="ko:K02471" type="ortholog">
+        <graphics name="ABC.YDDA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1172" width="46" height="17"/>
+    </entry>
+    <entry id="139" name="ko:K06159" type="ortholog">
+        <graphics name="ABC.YOJI" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1102" width="46" height="17"/>
+    </entry>
+    <entry id="140" name="ko:K05685" type="ortholog">
+        <graphics name="ABC.MAC.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1065" width="46" height="17"/>
+    </entry>
+    <entry id="141" name="ko:K06148" type="ortholog">
+        <graphics name="ABCC-BAC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="732" width="46" height="17"/>
+    </entry>
+    <entry id="142" name="ko:K02193" type="ortholog">
+        <graphics name="CCMA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="2045" width="46" height="17"/>
+    </entry>
+    <entry id="143" name="ko:K02003" type="ortholog">
+        <graphics name="ABC.CD.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="2142" width="46" height="17"/>
+    </entry>
+    <entry id="144" name="ko:K02004" type="ortholog">
+        <graphics name="ABC.CD.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2142" width="46" height="17"/>
+    </entry>
+    <entry id="145" name="ko:K02017" type="ortholog">
+        <graphics name="ABC.MO.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1685" width="46" height="17"/>
+    </entry>
+    <entry id="146" name="ko:K02018" type="ortholog">
+        <graphics name="ABC.MO.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1693" width="46" height="17"/>
+    </entry>
+    <entry id="147" name="ko:K02020" type="ortholog">
+        <graphics name="ABC.MO.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1693" width="46" height="17"/>
+    </entry>
+    <entry id="148" name="ko:K02013" type="ortholog">
+        <graphics name="ABC.FEV.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1626" width="46" height="17"/>
+    </entry>
+    <entry id="149" name="ko:K02015" type="ortholog">
+        <graphics name="ABC.FEV.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1626" width="46" height="17"/>
+    </entry>
+    <entry id="150" name="ko:K02016" type="ortholog">
+        <graphics name="ABC.FEV.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1626" width="46" height="17"/>
+    </entry>
+    <entry id="151" name="ko:K02010" type="ortholog">
+        <graphics name="ABC.FE.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1595" width="46" height="17"/>
+    </entry>
+    <entry id="152" name="ko:K02011" type="ortholog">
+        <graphics name="ABC.FE.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1595" width="46" height="17"/>
+    </entry>
+    <entry id="153" name="ko:K09817" type="ortholog">
+        <graphics name="ABC.ZN.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1516" width="46" height="17"/>
+    </entry>
+    <entry id="154" name="ko:K09816" type="ortholog">
+        <graphics name="ABC.ZN.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1516" width="46" height="17"/>
+    </entry>
+    <entry id="155" name="ko:K09815" type="ortholog">
+        <graphics name="ABC.ZN.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1516" width="46" height="17"/>
+    </entry>
+    <entry id="156" name="ko:K02032" type="ortholog">
+        <graphics name="ABC.PE.A1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1454" width="46" height="17"/>
+    </entry>
+    <entry id="157" name="ko:K02031" type="ortholog">
+        <graphics name="ABC.PE.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1437" width="46" height="17"/>
+    </entry>
+    <entry id="158" name="ko:K02034" type="ortholog">
+        <graphics name="ABC.PE.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1454" width="46" height="17"/>
+    </entry>
+    <entry id="159" name="ko:K02033" type="ortholog">
+        <graphics name="ABC.PE.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1437" width="46" height="17"/>
+    </entry>
+    <entry id="160" name="ko:K02035" type="ortholog">
+        <graphics name="ABC.PE.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1446" width="46" height="17"/>
+    </entry>
+    <entry id="161" name="ko:K06074" type="ortholog">
+        <graphics name="ABC.VB12.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1407" width="46" height="17"/>
+    </entry>
+    <entry id="162" name="ko:K06073" type="ortholog">
+        <graphics name="ABC.VB12.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1407" width="46" height="17"/>
+    </entry>
+    <entry id="163" name="ko:K06858" type="ortholog">
+        <graphics name="ABC.VB12.S1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1407" width="46" height="17"/>
+    </entry>
+    <entry id="164" name="ko:K02071" type="ortholog">
+        <graphics name="ABC.MET.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1376" width="46" height="17"/>
+    </entry>
+    <entry id="165" name="ko:K02072" type="ortholog">
+        <graphics name="ABC.MET.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1376" width="46" height="17"/>
+    </entry>
+    <entry id="166" name="ko:K02073" type="ortholog">
+        <graphics name="ABC.MET.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1376" width="46" height="17"/>
+    </entry>
+    <entry id="167" name="ko:K02049" type="ortholog">
+        <graphics name="ABC.SN.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1347" width="46" height="17"/>
+    </entry>
+    <entry id="168" name="ko:K02050" type="ortholog">
+        <graphics name="ABC.SN.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1347" width="46" height="17"/>
+    </entry>
+    <entry id="169" name="ko:K02051" type="ortholog">
+        <graphics name="ABC.SN.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1347" width="46" height="17"/>
+    </entry>
+    <entry id="170" name="ko:K02045" type="ortholog">
+        <graphics name="ABC.S.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1282" width="46" height="17"/>
+    </entry>
+    <entry id="171" name="ko:K02047" type="ortholog">
+        <graphics name="ABC.S.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1290" width="46" height="17"/>
+    </entry>
+    <entry id="172" name="ko:K02046" type="ortholog">
+        <graphics name="ABC.S.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1273" width="46" height="17"/>
+    </entry>
+    <entry id="173" name="ko:K02048" type="ortholog">
+        <graphics name="ABC.S.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1282" width="46" height="17"/>
+    </entry>
+    <entry id="174" name="ko:K05781" type="ortholog">
+        <graphics name="ABC.POR.A2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1250" width="46" height="17"/>
+    </entry>
+    <entry id="175" name="ko:K05780" type="ortholog">
+        <graphics name="ABC.POR.A1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1233" width="46" height="17"/>
+    </entry>
+    <entry id="176" name="ko:K02041" type="ortholog">
+        <graphics name="ABC.POR.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1216" width="46" height="17"/>
+    </entry>
+    <entry id="177" name="ko:K02042" type="ortholog">
+        <graphics name="ABC.POR.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1233" width="46" height="17"/>
+    </entry>
+    <entry id="178" name="ko:K02044" type="ortholog">
+        <graphics name="ABC.POR.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1233" width="46" height="17"/>
+    </entry>
+    <entry id="179" name="ko:K02036" type="ortholog">
+        <graphics name="ABC.PO4.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1183" width="46" height="17"/>
+    </entry>
+    <entry id="180" name="ko:K02038" type="ortholog">
+        <graphics name="ABC.PO4.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1191" width="46" height="17"/>
+    </entry>
+    <entry id="181" name="ko:K02037" type="ortholog">
+        <graphics name="ABC.PO4.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1174" width="46" height="17"/>
+    </entry>
+    <entry id="182" name="ko:K02040" type="ortholog">
+        <graphics name="ABC.PO4.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1183" width="46" height="17"/>
+    </entry>
+    <entry id="183" name="ko:K05816" type="ortholog">
+        <graphics name="ABC.GR.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1138" width="46" height="17"/>
+    </entry>
+    <entry id="184" name="ko:K05815" type="ortholog">
+        <graphics name="ABC.GR.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1146" width="46" height="17"/>
+    </entry>
+    <entry id="185" name="ko:K05814" type="ortholog">
+        <graphics name="ABC.GR.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1129" width="46" height="17"/>
+    </entry>
+    <entry id="186" name="ko:K05813" type="ortholog">
+        <graphics name="ABC.GR.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1138" width="46" height="17"/>
+    </entry>
+    <entry id="187" name="ko:K05847" type="ortholog">
+        <graphics name="ABC.BCP1.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1102" width="46" height="17"/>
+    </entry>
+    <entry id="188" name="ko:K05846" type="ortholog">
+        <graphics name="ABC.BCP1.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1102" width="46" height="17"/>
+    </entry>
+    <entry id="189" name="ko:K05845" type="ortholog">
+        <graphics name="ABC.BCP1.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1102" width="46" height="17"/>
+    </entry>
+    <entry id="190" name="ko:K02000" type="ortholog">
+        <graphics name="ABC.BCP.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1072" width="46" height="17"/>
+    </entry>
+    <entry id="191" name="ko:K02001" type="ortholog">
+        <graphics name="ABC.BCP.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1072" width="46" height="17"/>
+    </entry>
+    <entry id="192" name="ko:K02002" type="ortholog">
+        <graphics name="ABC.BCP.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1072" width="46" height="17"/>
+    </entry>
+    <entry id="193" name="ko:K02062" type="ortholog">
+        <graphics name="ABC.VB1.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1041" width="46" height="17"/>
+    </entry>
+    <entry id="194" name="ko:K02063" type="ortholog">
+        <graphics name="ABC.VB1.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1041" width="46" height="17"/>
+    </entry>
+    <entry id="195" name="ko:K02064" type="ortholog">
+        <graphics name="ABC.VB1.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1041" width="46" height="17"/>
+    </entry>
+    <entry id="196" name="ko:K02052" type="ortholog">
+        <graphics name="ABC.SP.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1006" width="46" height="17"/>
+    </entry>
+    <entry id="197" name="ko:K02054" type="ortholog">
+        <graphics name="ABC.SP.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1014" width="46" height="17"/>
+    </entry>
+    <entry id="198" name="ko:K02053" type="ortholog">
+        <graphics name="ABC.SP.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="997" width="46" height="17"/>
+    </entry>
+    <entry id="199" name="ko:K02055" type="ortholog">
+        <graphics name="ABC.SP.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1006" width="46" height="17"/>
+    </entry>
+    <entry id="200" name="ko:K01996" type="ortholog">
+        <graphics name="ABC.BA.A1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="968" width="46" height="17"/>
+    </entry>
+    <entry id="201" name="ko:K01995" type="ortholog">
+        <graphics name="ABC.BA.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="951" width="46" height="17"/>
+    </entry>
+    <entry id="202" name="ko:K01998" type="ortholog">
+        <graphics name="ABC.BA.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="968" width="46" height="17"/>
+    </entry>
+    <entry id="203" name="ko:K01997" type="ortholog">
+        <graphics name="ABC.BA.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="951" width="46" height="17"/>
+    </entry>
+    <entry id="204" name="ko:K01999" type="ortholog">
+        <graphics name="ABC.BA.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="960" width="46" height="17"/>
+    </entry>
+    <entry id="205" name="ko:K02023" type="ortholog">
+        <graphics name="ABC.MS.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="479" width="46" height="17"/>
+    </entry>
+    <entry id="206" name="ko:K02026" type="ortholog">
+        <graphics name="ABC.MS.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="487" width="46" height="17"/>
+    </entry>
+    <entry id="207" name="ko:K02025" type="ortholog">
+        <graphics name="ABC.MS.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="470" width="46" height="17"/>
+    </entry>
+    <entry id="208" name="ko:K02027" type="ortholog">
+        <graphics name="ABC.MS.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="479" width="46" height="17"/>
+    </entry>
+    <entry id="209" name="ko:K02056" type="ortholog">
+        <graphics name="ABC.SS.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="432" width="46" height="17"/>
+    </entry>
+    <entry id="210" name="ko:K02057" type="ortholog">
+        <graphics name="ABC.SS.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="423" width="46" height="17"/>
+    </entry>
+    <entry id="211" name="ko:K02058" type="ortholog">
+        <graphics name="ABC.SS.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="432" width="46" height="17"/>
+    </entry>
+    <entry id="212" name="ko:K02008" type="ortholog">
+        <graphics name="ABC.CO.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1658" width="46" height="17"/>
+    </entry>
+    <entry id="213" name="ko:K02012" type="ortholog">
+        <graphics name="ABC.FE.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1595" width="46" height="17"/>
+    </entry>
+    <entry id="214" name="ko:K09688" type="ortholog">
+        <graphics name="ABC-2.CPSE.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1895" width="46" height="17"/>
+    </entry>
+    <entry id="215" name="ko:K09689" type="ortholog">
+        <graphics name="ABC-2.CPSE.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1886" width="46" height="17"/>
+    </entry>
+    <entry id="216" name="ko:K09688" type="ortholog">
+        <graphics name="ABC-2.CPSE.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1879" width="46" height="16"/>
+    </entry>
+    <entry id="217" name="ko:K09820" type="ortholog">
+        <graphics name="ABC.MN.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1556" width="46" height="17"/>
+    </entry>
+    <entry id="218" name="ko:K09819" type="ortholog">
+        <graphics name="ABC.MN.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1565" width="46" height="17"/>
+    </entry>
+    <entry id="219" name="ko:K09819" type="ortholog">
+        <graphics name="ABC.MN.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1548" width="46" height="17"/>
+    </entry>
+    <entry id="220" name="ko:K09818" type="ortholog">
+        <graphics name="ABC.MN.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1556" width="46" height="17"/>
+    </entry>
+    <entry id="221" name="ko:K09691" type="ortholog">
+        <graphics name="ABC-2.LPSE.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1918" width="46" height="17"/>
+    </entry>
+    <entry id="222" name="ko:K09690" type="ortholog">
+        <graphics name="ABC-2.LPSE.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1918" width="46" height="17"/>
+    </entry>
+    <entry id="223" name="ko:K06160" type="ortholog">
+        <graphics name="ABC.PVDE" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1125" width="46" height="17"/>
+    </entry>
+    <entry id="224" name="ko:K09697" type="ortholog">
+        <graphics name="ABC-2.NA.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="2012" width="46" height="17"/>
+    </entry>
+    <entry id="225" name="ko:K09696" type="ortholog">
+        <graphics name="ABC-2.NA.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2012" width="46" height="17"/>
+    </entry>
+    <entry id="226" name="ko:K09695" type="ortholog">
+        <graphics name="ABC-2.LOSE.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1981" width="46" height="17"/>
+    </entry>
+    <entry id="227" name="ko:K09694" type="ortholog">
+        <graphics name="ABC-2.LOSE.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1981" width="46" height="17"/>
+    </entry>
+    <entry id="228" name="ko:K06857" type="ortholog">
+        <graphics name="ABC.TG.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1484" width="46" height="17"/>
+    </entry>
+    <entry id="229" name="ko:K05773" type="ortholog">
+        <graphics name="ABC.TG.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1484" width="46" height="17"/>
+    </entry>
+    <entry id="230" name="ko:K05772" type="ortholog">
+        <graphics name="ABC.TG.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1484" width="46" height="17"/>
+    </entry>
+    <entry id="231" name="ko:K10025" type="ortholog">
+        <graphics name="ABC.AOT.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="914" width="46" height="17"/>
+    </entry>
+    <entry id="232" name="ko:K10024" type="ortholog">
+        <graphics name="ABC.AOT.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="922" width="46" height="17"/>
+    </entry>
+    <entry id="233" name="ko:K10023" type="ortholog">
+        <graphics name="ABC.AOT.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="905" width="46" height="17"/>
+    </entry>
+    <entry id="234" name="ko:K10022" type="ortholog">
+        <graphics name="ABC.AOT.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="913" width="45" height="17"/>
+    </entry>
+    <entry id="235" name="ko:K06161" type="ortholog">
+        <graphics name="ABC.SYRD" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1148" width="46" height="17"/>
+    </entry>
+    <entry id="236" name="ko:K02059" type="ortholog">
+        <graphics name="ABC.SX.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1317" width="46" height="17"/>
+    </entry>
+    <entry id="237" name="ko:K10008" type="ortholog">
+        <graphics name="ABC.GLU.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="837" width="46" height="17"/>
+    </entry>
+    <entry id="238" name="ko:K10007" type="ortholog">
+        <graphics name="ABC.GLU.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="845" width="46" height="17"/>
+    </entry>
+    <entry id="239" name="ko:K10006" type="ortholog">
+        <graphics name="ABC.GLU.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="828" width="46" height="17"/>
+    </entry>
+    <entry id="240" name="ko:K10005" type="ortholog">
+        <graphics name="ABC.GLU.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="836" width="45" height="17"/>
+    </entry>
+    <entry id="241" name="ko:K10021" type="ortholog">
+        <graphics name="ABC.OCC.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="744" width="46" height="17"/>
+    </entry>
+    <entry id="242" name="ko:K10020" type="ortholog">
+        <graphics name="ABC.OCC.P1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="752" width="46" height="17"/>
+    </entry>
+    <entry id="243" name="ko:K10019" type="ortholog">
+        <graphics name="ABC.OCC.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="735" width="46" height="17"/>
+    </entry>
+    <entry id="244" name="ko:K10018" type="ortholog">
+        <graphics name="ABC.OCC.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="743" width="45" height="17"/>
+    </entry>
+    <entry id="245" name="ko:K09814" type="ortholog">
+        <graphics name="ABC.HRT.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="2078" width="46" height="17"/>
+    </entry>
+    <entry id="246" name="ko:K09813" type="ortholog">
+        <graphics name="ABC.HRT.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="2078" width="46" height="17"/>
+    </entry>
+    <entry id="247" name="ko:K09693" type="ortholog">
+        <graphics name="ABC-2.TAE.A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1949" width="46" height="17"/>
+    </entry>
+    <entry id="248" name="ko:K09692" type="ortholog">
+        <graphics name="ABC-2.TAE.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1949" width="46" height="17"/>
+    </entry>
+    <entry id="249" name="ko:K05670" type="ortholog">
+        <graphics name="ABCC13" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="855" width="46" height="17"/>
+    </entry>
+    <entry id="250" name="ko:K02060" type="ortholog">
+        <graphics name="ABC.SX.P" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="1317" width="46" height="17"/>
+    </entry>
+    <entry id="251" name="ko:K02061" type="ortholog">
+        <graphics name="ABC.SX.S" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="1317" width="46" height="17"/>
+    </entry>
+    <entry id="252" name="cpd:C06767" type="compound">
+        <graphics name="C06767" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="860" width="184" height="1720"/>
+    </entry>
+    <entry id="253" name="cpd:C01834" type="compound">
+        <graphics name="C01834" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="908" width="184" height="1816"/>
+    </entry>
+    <entry id="254" name="cpd:C01330" type="compound">
+        <graphics name="C01330" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="827" width="184" height="1654"/>
+    </entry>
+    <entry id="255" name="cpd:C06706" type="compound">
+        <graphics name="C06706" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="812" width="184" height="1624"/>
+    </entry>
+    <entry id="256" name="cpd:C06707" type="compound">
+        <graphics name="C06707" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="796" width="184" height="1592"/>
+    </entry>
+    <entry id="257" name="cpd:C00338" type="compound">
+        <graphics name="C00338" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="780" width="184" height="1561"/>
+    </entry>
+    <entry id="258" name="cpd:C14818" type="compound">
+        <graphics name="C14818" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="573" width="184" height="1147"/>
+    </entry>
+    <entry id="259" name="cpd:C00032" type="compound">
+        <graphics name="C00032" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="843" width="184" height="1686"/>
+    </entry>
+    <entry id="260" name="cpd:C06705" type="compound">
+        <graphics name="C06705" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="764" width="184" height="1529"/>
+    </entry>
+    <entry id="261" name="cpd:C06232" type="compound">
+        <graphics name="C06232" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="642" width="184" height="1284"/>
+    </entry>
+    <entry id="262" name="cpd:C00175" type="compound">
+        <graphics name="C00175" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="624" width="184" height="1248"/>
+    </entry>
+    <entry id="263" name="cpd:C06228" type="compound">
+        <graphics name="C06228" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="608" width="184" height="1217"/>
+    </entry>
+    <entry id="264" name="cpd:C14819" type="compound">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="593" width="184" height="1186"/>
+    </entry>
+    <entry id="265" name="cpd:C00038" type="compound">
+        <graphics name="C00038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="553" width="184" height="1107"/>
+    </entry>
+    <entry id="266" name="cpd:C00753" type="compound">
+        <graphics name="C00753" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="537" width="184" height="1074"/>
+    </entry>
+    <entry id="267" name="cpd:C00012" type="compound">
+        <graphics name="C00012" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="518" width="184" height="1036"/>
+    </entry>
+    <entry id="268" name="cpd:C05776" type="compound">
+        <graphics name="C05776" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="499" width="184" height="998"/>
+    </entry>
+    <entry id="269" name="cpd:C00855" type="compound">
+        <graphics name="C00855" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="483" width="185" height="966"/>
+    </entry>
+    <entry id="270" name="cpd:C00059" type="compound">
+        <graphics name="C00059" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="468" width="184" height="936"/>
+    </entry>
+    <entry id="271" name="cpd:C00059" type="compound">
+        <graphics name="C00059" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="454" width="184" height="908"/>
+    </entry>
+    <entry id="272" name="cpd:C00059" type="compound">
+        <graphics name="C00059" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="436" width="184" height="872"/>
+    </entry>
+    <entry id="273" name="cpd:C06235" type="compound">
+        <graphics name="C06235" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="411" width="184" height="823"/>
+    </entry>
+    <entry id="274" name="cpd:C00009" type="compound">
+        <graphics name="C00009" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="386" width="184" height="773"/>
+    </entry>
+    <entry id="275" name="cpd:C00093" type="compound">
+        <graphics name="C00093" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="364" width="184" height="728"/>
+    </entry>
+    <entry id="276" name="cpd:C00719" type="compound">
+        <graphics name="C00719" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="346" width="184" height="692"/>
+    </entry>
+    <entry id="277" name="cpd:C00719" type="compound">
+        <graphics name="C00719" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="331" width="184" height="662"/>
+    </entry>
+    <entry id="278" name="cpd:C00378" type="compound">
+        <graphics name="C00378" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="316" width="184" height="632"/>
+    </entry>
+    <entry id="279" name="cpd:C00315" type="compound">
+        <graphics name="C00315" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="298" width="184" height="596"/>
+    </entry>
+    <entry id="280" name="cpd:C00183" type="compound">
+        <graphics name="C00183" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="276" width="184" height="552"/>
+    </entry>
+    <entry id="281" name="cpd:C00064" type="compound">
+        <graphics name="C00064" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="257" width="184" height="515"/>
+    </entry>
+    <entry id="282" name="cpd:C00064" type="ortholog">
+        <graphics name="C00064" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1292" width="46" height="17"/>
+    </entry>
+    <entry id="283" name="cpd:C00064" type="ortholog">
+        <graphics name="C00064" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="319" y="1044" width="46" height="17"/>
+    </entry>
+    <entry id="284" name="cpd:C00064" type="ortholog">
+        <graphics name="C00064" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="515" width="46" height="17"/>
+    </entry>
+</pathway>

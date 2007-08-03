@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:49 +0900 (JST) -->
+<pathway name="path:map01430" org="map" number="01430"
+         title="Cell Communication"
+         image="http://www.genome.jp/kegg/pathway/map/map01430.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01430">
+    <entry id="1" name="path:hsa04020" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04020.html">
+        <graphics name="Calcium signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="674" y="176" width="102" height="37"/>
+    </entry>
+    <entry id="2" name="path:hsa04080" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04080.html">
+        <graphics name="Neuroactive ligand-receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="675" y="94" width="110" height="37"/>
+    </entry>
+    <entry id="3" name="path:hsa04350" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04350.html">
+        <graphics name="TGF-beta signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="436" y="94" width="103" height="37"/>
+    </entry>
+    <entry id="4" name="path:hsa04510" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04510.html">
+        <graphics name="Focal adhesion" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="657" y="585" width="110" height="35"/>
+    </entry>
+    <entry id="5" name="path:hsa04540" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04540.html">
+        <graphics name="Gap junction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="115" y="381" width="110" height="35"/>
+    </entry>
+    <entry id="6" name="path:hsa04520" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04520.html">
+        <graphics name="Adherens junction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="116" y="291" width="110" height="35"/>
+    </entry>
+    <entry id="7" name="path:hsa04530" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04530.html">
+        <graphics name="Tight junction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="115" y="181" width="110" height="35"/>
+    </entry>
+    <entry id="8" name="ko04516.kegjam" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/hfind_www_sub?foldflag=F&amp;localfiledir=files&amp;htext=ko04516.keg&amp;keywords=jam&amp;option=-g">
+        <graphics name="ko04516.kegjam" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="209" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="path:hsa04512" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04512.html">
+        <graphics name="ECM-receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="465" y="559" width="88" height="37"/>
+    </entry>
+    <entry id="10" name="path:hsa04060" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04060.html">
+        <graphics name="Cytokine-cytokine receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="554" y="94" width="110" height="37"/>
+    </entry>
+    <entry id="11" name="path:hsa04070" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04070.html">
+        <graphics name="Phosphatidylinositol signaling system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="473" y="148" width="110" height="37"/>
+    </entry>
+    <entry id="12" name="path:hsa04010" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04010.html">
+        <graphics name="MAPK signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="674" y="421" width="102" height="37"/>
+    </entry>
+    <entry id="13" name=" :hsa04010" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04516.keg+-e+L+A+-s+F+-f+F+A2_A5#L2">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="583" y="529" width="17" height="47"/>
+    </entry>
+    <entry id="14" name=" :hsa04010" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04516.keg+-e+L+A+-s+F+-f+F+A2_A5#L2">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="566" y="529" width="17" height="47"/>
+    </entry>
+    <entry id="15" name="ko04516.kegcldn" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/hfind_www_sub?foldflag=F&amp;localfiledir=files&amp;htext=ko04516.keg&amp;keywords=cldn&amp;option=-g">
+        <graphics name="ko04516.kegcldn" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="150" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="ko04516.kegpvrl" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/hfind_www_sub?foldflag=F&amp;localfiledir=files&amp;htext=ko04516.keg&amp;keywords=pvrl&amp;option=-g">
+        <graphics name="ko04516.kegpvrl" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="278" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="ko04516.kegocln" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/hfind_www_sub?foldflag=F&amp;localfiledir=files&amp;htext=ko04516.keg&amp;keywords=ocln&amp;option=-g">
+        <graphics name="ko04516.kegocln" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="180" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="path:map01430" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map01430">
+        <graphics name="TITLE:Cell Communication" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="144" y="37" width="160" height="25"/>
+    </entry>
+    <entry id="19" name="path:hsa04810" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04810.html">
+        <graphics name="Regulation of actin cytoskeleton" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="564" y="236" width="110" height="37"/>
+    </entry>
+    <entry id="20" name="path:hsa04210" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04210.html">
+        <graphics name="Apoptosis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="674" y="360" width="88" height="37"/>
+    </entry>
+    <entry id="21" name="path:hsa04310" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04310.html">
+        <graphics name="Wnt signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="330" y="94" width="88" height="37"/>
+    </entry>
+    <entry id="22" name="path:hsa04110" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
+        <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="674" y="305" width="88" height="37"/>
+    </entry>
+    <entry id="23" name=" :hsa04110" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04516.keg+-e+L+A+-s+F+-f+F+A5_A2#L5">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="308" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="ko:K07604" type="ortholog">
+        <graphics name="KRT1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="316" y="465" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="ko:K06525" type="ortholog">
+        <graphics name="ITGB4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="372" y="531" width="17" height="47"/>
+    </entry>
+    <entry id="26" name="ko:K07596" type="ortholog">
+        <graphics name="DSG1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="446" width="45" height="17"/>
+    </entry>
+    <entry id="27" name="ko:K05692" type="ortholog">
+        <graphics name="ACTB_G" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="544" y="472" width="46" height="17"/>
+    </entry>
+    <entry id="28" name="ko:K07372" type="ortholog">
+        <graphics name="GJA1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="379" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="ko:K06236" type="ortholog">
+        <graphics name="COL1AS" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="464" y="594" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="ko:K06485" type="ortholog">
+        <graphics name="ITGA6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="355" y="531" width="17" height="47"/>
+    </entry>
+    <entry id="31" name="ko:K07600" type="ortholog">
+        <graphics name="DSC1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="475" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="ko:K07603" type="ortholog">
+        <graphics name="COL17A1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="331" y="531" width="18" height="47"/>
+    </entry>
+    <entry id="33" name="ko:K05692" type="ortholog">
+        <graphics name="ACTB_G" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="369" y="211" width="46" height="17"/>
+    </entry>
+</pathway>

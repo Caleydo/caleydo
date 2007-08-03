@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:49 +0900 (JST) -->
+<pathway name="path:map01330" org="map" number="01330"
+         image="http://www.genome.jp/kegg/pathway/map/map01330.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01330">
+    <entry id="1" name="" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04031+-n">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="607" y="513" width="155" height="60"/>
+    </entry>
+    <entry id="2" name="path:hsa04514" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04514.html">
+        <graphics name="Cell adhesion molecules (CAMs)" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="178" y="443" width="155" height="59"/>
+    </entry>
+    <entry id="3" name=" :hsa04514" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04040+-n">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="920" y="250" width="155" height="60"/>
+    </entry>
+    <entry id="4" name=" :hsa04514" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?co04040+-n">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="921" y="158" width="156" height="59"/>
+    </entry>
+    <entry id="5" name=" :hsa04514" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04030+-n">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="711" y="250" width="155" height="60"/>
+    </entry>
+    <entry id="6" name=" :hsa04514" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04052+-n">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="531" y="158" width="155" height="59"/>
+    </entry>
+    <entry id="7" name=" :hsa04514" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04050+-n">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="529" y="250" width="155" height="60"/>
+    </entry>
+    <entry id="8" name=" :hsa04514" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04090+-n">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="332" y="250" width="155" height="60"/>
+    </entry>
+    <entry id="9" name=" :hsa04514" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/get_htext?ko04516+-n">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="163" y="609" width="155" height="59"/>
+    </entry>
+    <entry id="10" name="path:hsa04662" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04662.html">
+        <graphics name="B cell receptor signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="252" y="364" width="103" height="37"/>
+    </entry>
+    <entry id="11" name="path:hsa04020" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04020.html">
+        <graphics name="Calcium signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="949" y="362" width="103" height="37"/>
+    </entry>
+    <entry id="12" name="path:hsa04630" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04630.html">
+        <graphics name="Jak-STAT signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="863" y="453" width="102" height="37"/>
+    </entry>
+    <entry id="13" name="path:hsa04350" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04350.html">
+        <graphics name="TGF-beta signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="661" y="453" width="103" height="37"/>
+    </entry>
+    <entry id="14" name="path:hsa04530" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04530.html">
+        <graphics name="Tight junction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="371" y="414" width="88" height="37"/>
+    </entry>
+    <entry id="15" name="path:hsa04520" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04520.html">
+        <graphics name="Adherens junction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="371" y="463" width="88" height="37"/>
+    </entry>
+    <entry id="16" name="path:hsa04510" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04510.html">
+        <graphics name="Focal adhesion" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="371" y="513" width="88" height="37"/>
+    </entry>
+    <entry id="17" name="path:hsa04360" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04360.html">
+        <graphics name="Axon guidance" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="274" y="513" width="88" height="37"/>
+    </entry>
+    <entry id="18" name="path:hsa04080" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04080.html">
+        <graphics name="Neuroactive ligand-receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="711" y="85" width="155" height="59"/>
+    </entry>
+    <entry id="19" name="path:hsa04512" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04512.html">
+        <graphics name="ECM-receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="331" y="609" width="155" height="59"/>
+    </entry>
+    <entry id="20" name="path:hsa04060" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04060.html">
+        <graphics name="Cytokine-cytokine receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="532" y="84" width="155" height="59"/>
+    </entry>
+    <entry id="21" name="path:hsa04070" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04070.html">
+        <graphics name="Phosphatidylinositol signaling system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="863" y="407" width="110" height="37"/>
+    </entry>
+    <entry id="22" name="path:hsa04010" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04010.html">
+        <graphics name="MAPK signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="482" y="397" width="103" height="37"/>
+    </entry>
+    <entry id="23" name="path:map01330" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map01330">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="217" y="38" width="306" height="26"/>
+    </entry>
+    <entry id="24" name="path:hsa04810" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04810.html">
+        <graphics name="Regulation of actin cytoskeleton" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="545" y="453" width="110" height="37"/>
+    </entry>
+    <entry id="25" name="path:hsa04210" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04210.html">
+        <graphics name="Apoptosis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="751" y="363" width="88" height="37"/>
+    </entry>
+    <entry id="26" name="path:hsa04660" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04660.html">
+        <graphics name="T cell receptor signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="363" y="364" width="103" height="37"/>
+    </entry>
+    <entry id="27" name="path:hsa04920" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04920.html">
+        <graphics name="Adipocytokine signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="863" y="499" width="102" height="37"/>
+    </entry>
+</pathway>
