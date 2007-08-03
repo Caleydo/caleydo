@@ -4,6 +4,8 @@
 package org.geneview.graph;
 
 /**
+ * Graph properties like "INCOMING,OUTGOING" and "ALIAS" as well as "NONE"
+ * 
  * @author Michael Kalkusch
  *
  */
@@ -11,7 +13,7 @@ public enum EGraphItemProperty {
 
 	INCOMING(),
 	OUTGOING(),
-	HIERARCHY(),
+	//HIERARCHY(),
 	ALIAS(),
 	NONE();
 	

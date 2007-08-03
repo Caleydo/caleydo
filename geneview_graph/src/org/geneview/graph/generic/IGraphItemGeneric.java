@@ -3,13 +3,16 @@ package org.geneview.graph.generic;
 import java.util.Collection;
 
 import org.geneview.graph.generic.EGraphItemHierarchy;
+import org.geneview.graph.EGraphItemProperty;
 
 public interface IGraphItemGeneric <GraphParent, GraphItem, GraphData> {
 
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.AGraphObject#addGraphEdge()
 	 */
-	public void addGraphItemByType(GraphItem item, EGraphItemHierarchy type);
+	public void addGraphItemByType(GraphItem item,
+			EGraphItemProperty prop, 
+			EGraphItemHierarchy type);
 
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.AGraphObject#addGraphEdge()
@@ -23,9 +26,19 @@ public interface IGraphItemGeneric <GraphParent, GraphItem, GraphData> {
 	public Collection<GraphItem> getAllGraphItemByType(GraphItem item,
 			EGraphItemHierarchy type);
 
+	public Collection<GraphItem> getAllGraphItemByProperty(GraphItem item,
+			EGraphItemProperty prop);
+	
 	public boolean containsGraphItemByType(GraphItem item,
 			EGraphItemHierarchy type);
 
+	public boolean containsGraphItemByProp(GraphItem item,
+			EGraphItemProperty prop);
+	
+	/* ------------------- */
+	/* ---  GRAPH DATA --- */
+	/* ------------------- */
+	
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.AGraphObject#addGraphEdge()
 	 */
@@ -52,12 +65,33 @@ public interface IGraphItemGeneric <GraphParent, GraphItem, GraphData> {
 
 	public void removeAllGraphItem();
 
-	public boolean addParentGraph(GraphParent parent);
+	
+	/* ----------------------------- */
+	/* ---  GRAPH HIERARCHY DATA --- */
+	/* ----------------------------- */
+	
+	public boolean addGraph(GraphParent parent, EGraphItemHierarchy type);
 
-	public void setParentGraph(GraphParent parent);
+	public void setGraph(GraphParent parent, EGraphItemHierarchy type);
 
-	public boolean removeParentGraph(GraphParent parent);
+	public boolean removeGraphAsType(GraphParent parent, EGraphItemHierarchy type);
 
-	public boolean containsParentGraph(GraphParent parent);
+	/**
+	 * Remove this graph from all instances no matter if parent, child or neighbor.
+	 * 
+	 * @param parent
+	 * @return
+	 */
+	public boolean removeGraph(GraphParent parent);
+	
+	/** 
+	 * removes all references to parent graphs, children graphs, and neighborhood graphs. 
+	 * */
+	public boolean removeAllGraphs();
+	
+	public boolean containsGraph(GraphParent parent);
+	
+	public boolean containsGraphAsType(GraphParent parent, EGraphItemHierarchy type);
 
+	public Collection <EGraphItemHierarchy> containsGraphAnyType(GraphParent parent);
 }

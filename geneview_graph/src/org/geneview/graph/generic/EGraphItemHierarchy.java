@@ -1,14 +1,20 @@
 package org.geneview.graph.generic;
 
+/**
+ * 
+ * Graph hierarchy properties like "PARENT, CHILD, NEIGHBOUR" as well as "GRAPH_ALIAS" and "GRAPH_NONE".
+ * Describe properties of a graph.
+ * 
+ * @author Michael Kalkusch
+ *
+ */
 public enum EGraphItemHierarchy {
 	
-	ITEM_PARENT,
-	ITEM_CHILDREN,
-	ITEM_NEIGHBOUR,
+	GRAPH_PARENT,
+	GRAPH_CHILDREN,
+	GRAPH_NEIGHBOUR,
 	
-	ITEM_DATA,
-	
-	HIERARCHY_PARENT,
-	HIERARCHY_CHILDREN,
-	HIERARCHY_ROOT;
+	GRAPH_ALIAS,
+	//GRAPH_DATA,
+	GRAPH_NONE;
 }

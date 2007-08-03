@@ -15,7 +15,7 @@ public enum EGraphType {
 	/**
 	 * Consists of NODES and EDGES
 	 */
-	GRAPH_OBJECTs(),
+	GRAPH_OBJECT(),
 	
 	SUB_GRAPHS();
 	
