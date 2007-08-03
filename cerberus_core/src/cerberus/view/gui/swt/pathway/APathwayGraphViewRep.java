@@ -248,45 +248,4 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 			}
 		});	
 	}
-	
-	public void updateSelectionSet(int[] iArSelectionVertexId,
-			int[] iArSelectionGroup,
-			int[] iArNeighborVertices) {
-	
-		try {
-			// Update selection SET data.
-			alSetSelection.get(0).setAllSelectionDataArrays(
-					iArSelectionVertexId, iArSelectionGroup, iArNeighborVertices);
-			
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName() + 
-					": updateSelectionSet(): Set selection data and trigger update.",
-					LoggerType.VERBOSE );
-			
-			int iTriggerID = 0;
-			
-			// The distinction is necessary because the JGraph 2D Pathway is embedded
-			// and therefore the parent widget ID is needed for update.
-			if (this.getClass().getSimpleName().equals(
-					PathwayGraphViewRep.class.getSimpleName()))
-				iTriggerID = iParentContainerId;
-			else
-				iTriggerID = iUniqueId;
-			
-	 		// Calls update with the ID of the PathwayViewRep
-	 		((EventPublisher)refGeneralManager.getSingelton().
-				getEventPublisher()).updateReceiver(refGeneralManager.
-						getSingelton().getViewGLCanvasManager().
-							getItem(iTriggerID), alSetSelection.get(0));
-	 		
-		} catch (Exception e)
-		{
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName() + 
-					": updateSelectionSet(): Problem during selection update triggering.",
-					LoggerType.MINOR_ERROR );
-	
-			e.printStackTrace();
-		}
-	}
 }

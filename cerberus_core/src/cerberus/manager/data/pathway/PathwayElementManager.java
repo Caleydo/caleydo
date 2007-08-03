@@ -7,6 +7,7 @@ import cerberus.data.pathway.element.PathwayReactionEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.APathwayEdge;
+import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
@@ -112,6 +113,10 @@ implements IPathwayElementManager {
 			int iXPosition, 
 			int iYPosition, 
 			String sType) {
+		
+    	// Dont't handle entries from type group
+    	if (currentVertex.getVertexType().equals(PathwayVertexType.group))
+    		return;
 		
 		IPathwayVertexRep newVertexRep = 
 			new PathwayVertexRep(

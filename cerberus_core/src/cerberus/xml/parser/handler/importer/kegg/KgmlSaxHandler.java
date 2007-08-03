@@ -319,6 +319,7 @@ implements IXmlParserHandler {
    			{
    				// TODO: handle special case of value "-->" in signalling pathways
    				if (attributes.getValue(iAttributeIndex).contains("-") || 
+   						attributes.getValue(iAttributeIndex).contains("=") ||
    						attributes.getValue(iAttributeIndex).contains("+") ||
 						attributes.getValue(iAttributeIndex).contains("."))
    					iCompoundId = 0;

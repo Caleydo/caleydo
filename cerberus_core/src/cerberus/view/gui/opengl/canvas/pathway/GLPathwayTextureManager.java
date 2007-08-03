@@ -115,7 +115,7 @@ public class GLPathwayTextureManager {
 //		float h = (float) (float) (viewport[3]-viewport[1]) / 
 //			(float) (viewport[2]-viewport[0]) * 4.0f;
 		
-		gl.glLoadName(101);
+		gl.glLoadName(301);
 		
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(0, 0); 

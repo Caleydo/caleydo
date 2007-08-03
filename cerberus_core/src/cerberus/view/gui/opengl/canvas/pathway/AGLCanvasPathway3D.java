@@ -306,8 +306,8 @@ implements IMediatorReceiver, IMediatorSender {
 		// Creating display list for node cube objects
 		iEnzymeNodeDisplayListId = gl.glGenLists(1);
 		
-		fPathwayNodeWidth = refRenderStyle.getEnzymeNodeWidth();
-		fPathwayNodeHeight = refRenderStyle.getEnzymeNodeHeight();;
+		fPathwayNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
+		fPathwayNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
 			
 		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl);		
@@ -324,8 +324,8 @@ implements IMediatorReceiver, IMediatorSender {
 			iHighlightedEnzymeNodeDisplayListId = gl.glGenLists(1);
 //		}
 		
-		fPathwayNodeWidth = refRenderStyle.getEnzymeNodeWidth();
-		fPathwayNodeHeight = refRenderStyle.getEnzymeNodeHeight();
+		fPathwayNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
+		fPathwayNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
 				
 		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
@@ -347,8 +347,8 @@ implements IMediatorReceiver, IMediatorSender {
 		// Creating display list for node cube objects
 		iCompoundNodeDisplayListId = gl.glGenLists(1);
 		
-		fPathwayNodeWidth = refRenderStyle.getCompoundNodeWidth();
-		fPathwayNodeHeight = refRenderStyle.getCompoundNodeHeight();
+		fPathwayNodeWidth = refRenderStyle.getCompoundNodeWidth(true);
+		fPathwayNodeHeight = refRenderStyle.getCompoundNodeHeight(true);
 		
 		gl.glNewList(iCompoundNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl);
@@ -363,8 +363,8 @@ implements IMediatorReceiver, IMediatorSender {
 			iHighlightedCompoundNodeDisplayListId = gl.glGenLists(1);
 		}
 		
-		fPathwayNodeWidth = refRenderStyle.getCompoundNodeWidth();
-		fPathwayNodeHeight = refRenderStyle.getCompoundNodeHeight();
+		fPathwayNodeWidth = refRenderStyle.getCompoundNodeWidth(true);
+		fPathwayNodeHeight = refRenderStyle.getCompoundNodeHeight(true);
 		
 		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL.GL_COMPILE);
 		gl.glScaled(fHighlightedNodeBlowFactor, 
@@ -802,7 +802,7 @@ implements IMediatorReceiver, IMediatorSender {
 					int iSplitFactor = arMappingColor.size();
 					
 					fPathwayNodeWidth = 
-						refRenderStyle.getEnzymeNodeWidth() * SCALING_FACTOR_X;
+						refRenderStyle.getEnzymeNodeWidth(true) * SCALING_FACTOR_X;
 						
 					gl.glPushMatrix();
 	//				double bla = 0;

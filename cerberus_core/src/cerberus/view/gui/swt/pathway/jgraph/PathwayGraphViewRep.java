@@ -3,12 +3,10 @@ package cerberus.view.gui.swt.pathway.jgraph;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -37,15 +35,11 @@ import org.jgraph.graph.GraphUndoManager;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.selection.ISetSelection;
-import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayRelationEdge;
-import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
@@ -56,9 +50,7 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineSty
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
-//import cerberus.net.dwt.swing.IWorkspaceSwingFrame;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
@@ -73,7 +65,8 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
  * 
  */
 
-public class PathwayGraphViewRep extends APathwayGraphViewRep {
+public class PathwayGraphViewRep 
+extends APathwayGraphViewRep {
 
 	/**
 	 * Pathway element positions are read from XML files. The scaling factor can
@@ -81,6 +74,8 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 	 */
 	protected static final float SCALING_FACTOR = 1.15f;
 
+	protected float fScalingFactor = 1.0f;
+	
 	protected Pathway refCurrentPathway;
 
 	protected GraphModel refGraphModel;
@@ -131,8 +126,6 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 	 * surrounding elements. Default value is 0.
 	 */
 	protected int iNeighbourhoodDistance = 0;
-
-	protected float fScalingFactor;
 
 	/**
 	 * Counts how often the neighbour recursion is called. This is needed for
@@ -256,7 +249,8 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 						iArNeighborDistance[i] = iter_I.next().intValue();
 					}
 
-					updateSelectionSet(iArSelectedVertices, new int[0],
+					alSetSelection.get(0).updateSelectionSet(iParentContainerId,
+							iArSelectedVertices, new int[0],
 							iArNeighborDistance);
 
 				}// if(refCurrentPathway != 0)
@@ -369,8 +363,8 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 
 			// Highlight current cell
 			highlightCell(lastClickedGraphCell, Color.RED);
-			dataMappingTest(((PathwayVertexRep) lastClickedGraphCell
-					.getUserObject()));
+//			dataMappingTest(((PathwayVertexRep) lastClickedGraphCell
+//					.getUserObject()));
 
 			// The clicked vertex will be added with neighborhood distance of 0
 			iLLNeighborDistance.add(0);
@@ -448,21 +442,28 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 
 		String sShapeType = vertexRep.getShapeType();
 
-		Rectangle2D vertexRect = new Rectangle2D.Double(
-				(int) ((vertexRep.getXPosition() - (vertexRep.getWidth() / 2)) * fScalingFactor),
-				(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
-				vertexRep.getWidth(), vertexRep.getHeight());
+		Rectangle2D vertexRect = null;
 
 		if (sShapeType.equals("roundrectangle"))
 		{
+			vertexRect = new Rectangle2D.Double(
+						(int) ((vertexRep.getXPosition() - (vertexRep.getWidth() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
+						vertexRep.getWidth(), vertexRep.getHeight());
+			
 			// Set vertex type to round rect
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
 					"cerberus.view.gui.swt.pathway.jgraph.JGraphMultilineView");
-			// "cerberus.view.gui.swt.pathway.jgraph.JGraphRoundRectView");
 
 			GraphConstants.setBackground(changedMap, Color.MAGENTA);
-		} else if (sShapeType.equals("circle"))
+		} 
+		else if (sShapeType.equals("circle"))
 		{
+			vertexRect = new Rectangle2D.Double(
+						(int) ((vertexRep.getXPosition() - (vertexRep.getWidth() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
+						vertexRep.getWidth(), vertexRep.getHeight());
+			
 			// Set vertex type to ellipse
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
 					"cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView");
@@ -473,8 +474,14 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 			}
 
 			GraphConstants.setBackground(changedMap, Color.green);
-		} else if (sShapeType.equals("rectangle"))
+		} 
+		else if (sShapeType.equals("rectangle"))
 		{
+			vertexRect = new Rectangle2D.Double(
+						(int) ((vertexRep.getXPosition() - (vertexRep.getWidth() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
+						refRenderStyle.getEnzymeNodeWidth(false), refRenderStyle.getEnzymeNodeHeight(false));
+			
 			GraphConstants.setBackground(changedMap, new Color(0.53f, 0.81f,
 					1.0f)); // ligth blue
 		}
@@ -624,8 +631,12 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 
 	public void loadPathwayFromFile(int iNewPathwayId) {
 
-		refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(
-				iNewPathwayId);
+		//Load pathway
+		boolean bLoadingOK = 
+			refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iNewPathwayId);
+		
+		if (!bLoadingOK)
+			return;
 
 		// Clean up
 		refCurrentPathway = null;
@@ -638,8 +649,6 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 		refPathwayGraph.setBackgroundImage(null);
 
 		showBackgroundOverlay(bShowBackgroundOverlay);
-
-		// refGraphLayoutCache.reload();
 	}
 
 	public void loadImageMapFromFile(String sImageMapPath) {
@@ -834,7 +843,8 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 			iArNeighborDistance[i] = iter_I.next().intValue();
 		}
 
-		updateSelectionSet(iArSelectedVertices, new int[0], iArNeighborDistance);
+		alSetSelection.get(0).updateSelectionSet(iParentContainerId,
+				iArSelectedVertices, new int[0], iArNeighborDistance);
 	}
 
 	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
@@ -898,7 +908,7 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 			refPathwayGraph.setBackgroundImage(new ImageIcon(
 					sPathwayImageFilePath));
 
-			// Set scaling factor so that background image is an direct overlay
+			// Set scaling factor so that background image is a direct overlay
 			fScalingFactor = 1.0f;
 		} else
 		{
@@ -985,8 +995,14 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 				.getStorageByDimAndIndex(0, 0);
 
 			// Assumes that the storage contains only one pathway item
-			refGeneralManager.getSingelton()
-				.getPathwayManager().loadPathwayById(tmpStorage.getArrayInt()[0]);
+			
+			//Load pathway
+			boolean bLoadingOK = 
+				refGeneralManager.getSingelton()
+					.getPathwayManager().loadPathwayById(tmpStorage.getArrayInt()[0]);
+			
+			if (!bLoadingOK)
+				return;
 
 			refCurrentPathway = (Pathway) refGeneralManager.getSingelton()
 				.getPathwayManager().getItem(tmpStorage.getArrayInt()[0]);
@@ -1010,13 +1026,13 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 		int iPathwayIdIndex = 0;
 
 		// Extract clicked pathway ID
-		if (sUrl.contains("map00"))
+		if (sUrl.contains("map0"))
 		{
-			iPathwayIdIndex = sUrl.lastIndexOf("map00") + 5;
+			iPathwayIdIndex = sUrl.lastIndexOf("map0") + 4;
 		}
-		else if (sUrl.contains("hsa00"))
+		else if (sUrl.contains("hsa0"))
 		{
-			iPathwayIdIndex = sUrl.lastIndexOf("hsa00") + 5;			
+			iPathwayIdIndex = sUrl.lastIndexOf("hsa0") + 4;			
 		}
 		else
 		{
@@ -1025,7 +1041,7 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 		}
 		
 		int iNewPathwayId = StringConversionTool.convertStringToInt(sUrl
-				.substring(iPathwayIdIndex, iPathwayIdIndex + 3), 0);
+				.substring(iPathwayIdIndex, sUrl.lastIndexOf('.')), 0);
 
 		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 
@@ -1033,6 +1049,11 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 		tmp[0] = iNewPathwayId;
 		refTmpStorage.setArrayInt(tmp);
 
+		// Trigger update with current pathway that dependent pathways 
+		// know which pathway is currently under interaction
+		alSetSelection.get(0).updateSelectionSet(iParentContainerId,
+				new int[0], new int[0], tmp);
+		
 		// Load pathway
 		loadPathwayFromFile(iNewPathwayId);
 
@@ -1101,87 +1122,5 @@ public class PathwayGraphViewRep extends APathwayGraphViewRep {
 //			iNeighbourhoodUndoCount++;
 //
 //		}
-	}
-
-	/**
-	 * Method is for testing the mapping from enzymes to genes. It takes a
-	 * selected vertex and looks up the IDs in the proper order.
-	 * 
-	 * @param refTmpVertexRep
-	 *            Selected vertex
-	 */
-	protected void dataMappingTest(PathwayVertexRep refTmpVertexRep) {
-
-		// Check if vertex is an enzyme.
-		// If not leave. Because only enzymes needs to be mapped.
-		if (!refTmpVertexRep.getVertex().getVertexType().equals(
-				PathwayVertexType.enzyme))
-		{
-			return;
-		}
-
-		String sEnzymeCode = refTmpVertexRep.getVertex().getElementTitle()
-				.substring(3);
-		String sAccessionCode = "";
-		String sTmpGeneName = "";
-		int iAccessionID = 0;
-		Collection<Integer> iArTmpAccessionId = null;
-
-		// Just for testing mapping!
-		IGenomeIdManager refGenomeIdManager = refGeneralManager.getSingelton()
-				.getGenomeIdManager();
-
-		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(
-				sEnzymeCode, GenomeMappingType.ENZYME_CODE_2_ENZYME);
-
-		if (iEnzymeID == -1)
-			return;
-
-		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(
-				iEnzymeID, GenomeMappingType.ENZYME_2_NCBI_GENEID);
-
-		if (iTmpGeneId == null)
-			return;
-
-		Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
-		Iterator<Integer> iterTmpAccessionId = null;
-		while (iterTmpGeneId.hasNext())
-		{
-			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(
-					iterTmpGeneId.next(),
-					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
-
-			if (iAccessionID == -1)
-				break;
-
-			sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(
-					iAccessionID, GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-
-			System.out.println("Accession Code for Enzyme " + sEnzymeCode
-					+ ": " + sAccessionCode);
-
-			sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(
-					iAccessionID, GenomeMappingType.ACCESSION_2_GENE_NAME);
-
-			System.out.println("Gene name for Enzyme " + sEnzymeCode + ": "
-					+ sTmpGeneName);
-
-			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(
-					iAccessionID, GenomeMappingType.ACCESSION_2_MICROARRAY);
-
-			if (iArTmpAccessionId == null)
-				continue;
-
-			iterTmpAccessionId = iArTmpAccessionId.iterator();
-			while (iterTmpAccessionId.hasNext())
-			{
-				String sMicroArrayCode = refGenomeIdManager
-						.getIdStringFromIntByMapping(iterTmpAccessionId.next(),
-								GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
-
-				System.out.println("MicroArray Code for Enzyme " + sEnzymeCode
-						+ ": " + sMicroArrayCode);
-			}
-		}
 	}
 }

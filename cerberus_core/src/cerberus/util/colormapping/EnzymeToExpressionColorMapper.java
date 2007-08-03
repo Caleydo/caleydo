@@ -12,6 +12,7 @@ import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+import cerberus.data.view.rep.pathway.jgraph.PathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
@@ -263,5 +264,87 @@ public class EnzymeToExpressionColorMapper {
 		}
 		
 		return arMappingColor;
+	}
+	
+	/**
+	 * Method is for testing the mapping from enzymes to genes. It takes a
+	 * selected vertex and looks up the IDs in the proper order.
+	 * 
+	 * @param refTmpVertexRep
+	 *            Selected vertex
+	 */
+	protected void expressionMappingTest(PathwayVertexRep refTmpVertexRep) {
+
+		// Check if vertex is an enzyme.
+		// If not leave. Because only enzymes needs to be mapped.
+		if (!refTmpVertexRep.getVertex().getVertexType().equals(
+				PathwayVertexType.enzyme))
+		{
+			return;
+		}
+
+		String sEnzymeCode = refTmpVertexRep.getVertex().getElementTitle()
+				.substring(3);
+		String sAccessionCode = "";
+		String sTmpGeneName = "";
+		int iAccessionID = 0;
+		Collection<Integer> iArTmpAccessionId = null;
+
+		// Just for testing mapping!
+		IGenomeIdManager refGenomeIdManager = refGeneralManager.getSingelton()
+				.getGenomeIdManager();
+
+		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(
+				sEnzymeCode, GenomeMappingType.ENZYME_CODE_2_ENZYME);
+
+		if (iEnzymeID == -1)
+			return;
+
+		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(
+				iEnzymeID, GenomeMappingType.ENZYME_2_NCBI_GENEID);
+
+		if (iTmpGeneId == null)
+			return;
+
+		Iterator<Integer> iterTmpGeneId = iTmpGeneId.iterator();
+		Iterator<Integer> iterTmpAccessionId = null;
+		while (iterTmpGeneId.hasNext())
+		{
+			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(
+					iterTmpGeneId.next(),
+					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+
+			if (iAccessionID == -1)
+				break;
+
+			sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(
+					iAccessionID, GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+
+			System.out.println("Accession Code for Enzyme " + sEnzymeCode
+					+ ": " + sAccessionCode);
+
+			sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(
+					iAccessionID, GenomeMappingType.ACCESSION_2_GENE_NAME);
+
+			System.out.println("Gene name for Enzyme " + sEnzymeCode + ": "
+					+ sTmpGeneName);
+
+			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(
+					iAccessionID, GenomeMappingType.ACCESSION_2_MICROARRAY);
+
+			if (iArTmpAccessionId == null)
+				continue;
+
+			iterTmpAccessionId = iArTmpAccessionId.iterator();
+			while (iterTmpAccessionId.hasNext())
+			{
+				String sMicroArrayCode = refGenomeIdManager
+						.getIdStringFromIntByMapping(iterTmpAccessionId.next(),
+								GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
+
+				System.out.println("MicroArray Code for Enzyme " + sEnzymeCode
+						+ ": " + sMicroArrayCode);
+			}
+		}
 	}
 }

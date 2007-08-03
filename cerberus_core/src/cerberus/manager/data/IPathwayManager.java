@@ -21,7 +21,13 @@ extends IGeneralManager {
 	
 	public void createPathwayImageMap(String sLink);
 	
-	public void loadPathwayById(int iPathwayID);
+	/**
+	 * Methods checks if pathway is already loaded.
+	 * If not the pathway will be loaded.
+	 * If the pathway doesn't exist FALSE will be returned.
+	 * If everything is ok TRUE will be returned.
+	 */
+	public boolean loadPathwayById(int iPathwayID);
 	
 	public PathwayImageMap getCurrentPathwayImageMap();
 	

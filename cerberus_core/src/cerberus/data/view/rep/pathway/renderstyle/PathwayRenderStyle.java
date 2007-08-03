@@ -47,24 +47,6 @@ extends ARenderStyle {
 	
 	public static final int neighborhoodNodeColorArraysize = 4;
 	
-//	/**
-//	 * The color of the neighborhood node with the distance 
-//	 * to the clicked node of 1
-//	 */
-//	protected Color neighborhoodNodeColor_1;
-//	
-//	/**
-//	 * The color of the neighborhood node with the distance 
-//	 * to the clicked node of 2
-//	 */
-//	protected Color neighborhoodNodeColor_2;
-//
-//	/**
-//	 * The color of the neighborhood node with the distance 
-//	 * to the clicked node of 3
-//	 */
-//	protected Color neighborhoodNodeColor_3;
-	
 	protected EdgeLineStyle relationEdgeLineStyle;
 	protected EdgeLineStyle reactionEdgeLineStyle;
 	protected EdgeLineStyle maplinkEdgeLineStyle;
@@ -81,8 +63,10 @@ extends ARenderStyle {
 	protected float fEnzymeNodeHeight;
 	protected float fCompoundNodeWidth;
 	protected float fCompoundNodeHeight;
-	protected float fPathwayNodeWidth;
-	protected float fPathwayNodeHeight;
+	protected float fEnzymeNodeWidthGL;
+	protected float fEnzymeNodeHeightGL;
+	protected float fCompoundNodeWidthGL;
+	protected float fCompoundNodeHeightGL;
 	
 	private static final float SCALING_FACTOR_X = 0.0025f;
 	private static final float SCALING_FACTOR_Y = 0.0025f;
@@ -136,12 +120,15 @@ extends ARenderStyle {
 		reactionEdgeColor 	= Color.BLUE;
 		maplinkEdgeColor 	= Color.MAGENTA;
 		
-		fEnzymeNodeWidth 	= 45 * SCALING_FACTOR_X / 2.0f;
-		fEnzymeNodeHeight 	= 17 * SCALING_FACTOR_Y / 2.0f;
-		fCompoundNodeWidth 	= 8 * SCALING_FACTOR_X / 2.0f;
-		fCompoundNodeHeight = 8 * SCALING_FACTOR_Y / 2.0f;
-		fPathwayNodeWidth 	= 70 * SCALING_FACTOR_X / 2.0f;
-		fPathwayNodeHeight 	= 27 * SCALING_FACTOR_Y / 2.0f;
+		fEnzymeNodeWidth 	= 45;
+		fEnzymeNodeHeight 	= 17;
+		fCompoundNodeWidth 	= 8;
+		fCompoundNodeHeight = 8;
+		
+		fEnzymeNodeWidthGL 	= fEnzymeNodeWidth * SCALING_FACTOR_X / 2.0f;
+		fEnzymeNodeHeightGL 	= fEnzymeNodeHeight * SCALING_FACTOR_Y / 2.0f;
+		fCompoundNodeWidthGL 	= fCompoundNodeWidth * SCALING_FACTOR_X / 2.0f;
+		fCompoundNodeHeightGL = fCompoundNodeHeight * SCALING_FACTOR_Y / 2.0f;
 	}
 
 	public Color getCompoundNodeColor(boolean bGeneMappingEnabled) {
@@ -306,76 +293,56 @@ extends ARenderStyle {
 		this.relationEdgeLineStyle = relationEdgeLineStyle;
 	}
 
+	public float getCompoundNodeHeight(boolean bForGL) {
 	
-	public float getCompoundNodeHeight() {
-	
+		if (bForGL)
+			return fCompoundNodeHeightGL;
+		
 		return fCompoundNodeHeight;
 	}
 
-	
 	public void setCompoundNodeHeight(float compoundNodeHeight) {
 	
 		fCompoundNodeHeight = compoundNodeHeight;
 	}
-
 	
-	public float getCompoundNodeWidth() {
+	public float getCompoundNodeWidth(boolean bForGL) {
 	
+		if (bForGL)
+			return fCompoundNodeWidthGL;
+		
 		return fCompoundNodeWidth;
 	}
 
-	
 	public void setCompoundNodeWidth(float compoundNodeWidth) {
 	
 		fCompoundNodeWidth = compoundNodeWidth;
 	}
 
+	public float getEnzymeNodeWidth(boolean bForGL) {
 	
-	public float getEnzymeNodeWidth() {
-	
+		if (bForGL)
+			return fEnzymeNodeWidthGL;
+		
 		return fEnzymeNodeWidth;
 	}
 
-	
 	public void setEnzymeNodeWidth(float enzymeNodeWidth) {
 	
 		fEnzymeNodeWidth = enzymeNodeWidth;
 	}
-
 	
-	public float getEnzymeNodeHeight() {
+	public float getEnzymeNodeHeight(boolean bForGL) {
 	
+		if (bForGL)
+			return fEnzymeNodeHeightGL;
+		
 		return fEnzymeNodeHeight;
 	}
 
-	
 	public void setEnzymeNodeHeight(float enzymeNodeHeight) {
 	
 		fEnzymeNodeHeight = enzymeNodeHeight;
-	}
-
-	
-	public float getPathwayNodeHeight() {
-	
-		return fPathwayNodeHeight;
-	}
-
-	
-	public void setPathwayNodeHeight(float pathwayNodeHeight) {
-	
-		fPathwayNodeHeight = pathwayNodeHeight;
-	}
-
-	
-	public float getPathwayNodeWidth() {
-	
-		return fPathwayNodeWidth;
-	}
-
-	
-	public void setPathwayNodeWidth(float pathwayNodeWidth) {
-	
-		fPathwayNodeWidth = pathwayNodeWidth;
 	}
 
 	public Color getHighlightedNodeColor() {

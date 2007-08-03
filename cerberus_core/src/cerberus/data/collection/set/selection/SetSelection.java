@@ -6,6 +6,9 @@ package cerberus.data.collection.set.selection;
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.event.EventPublisher;
+import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 
 
 /**
@@ -119,5 +122,50 @@ implements ISetSelection {
 		this.returnReadToken();
 		
 		return tmp;	
+	}
+	
+	
+	/**
+	 * The selection set will be filled 
+	 * with arrays that are given as parameter.
+	 * The selection event will be triggered
+	 * with the unique ID parameter.
+	 * 
+	 * @param setSelection
+	 * @param iUniqueTriggerID
+	 * @param iArSelectionVertexId
+	 * @param iArSelectionGroup
+	 * @param iArNeighborVertices
+	 */
+	public void updateSelectionSet(int iUniqueTriggerID, 
+			int[] iArSelectionVertexId,
+			int[] iArSelectionGroup,
+			int[] iArNeighborVertices) {
+	
+		try {
+			// Update selection SET data.
+			this.setAllSelectionDataArrays(
+					iArSelectionVertexId, iArSelectionGroup, iArNeighborVertices);
+			
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): Set selection data and trigger update.",
+					LoggerType.VERBOSE );
+			
+	 		// Calls update with the ID of the view
+	 		((EventPublisher)refGeneralManager.getSingelton().
+				getEventPublisher()).updateReceiver(refGeneralManager.
+						getSingelton().getViewGLCanvasManager().
+							getItem(iUniqueTriggerID), this);
+	 		
+		} catch (Exception e)
+		{
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + 
+					": updateSelectionSet(): Problem during selection update triggering.",
+					LoggerType.MINOR_ERROR );
+	
+			e.printStackTrace();
+		}
 	}
 }

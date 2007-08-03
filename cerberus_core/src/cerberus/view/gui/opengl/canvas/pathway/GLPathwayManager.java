@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.pathway.Pathway;
@@ -33,8 +32,8 @@ public class GLPathwayManager {
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
 	
-	// First hundred IDs are reserved for picking of non pathway objects in the scene
-	private int iUniqueObjectPickId = 201;
+	// First 200 IDs are reserved for picking of non pathway objects in the scene
+	private int iUniqueObjectPickId = 301;
 	
 	private PathwayRenderStyle refRenderStyle;
 
@@ -95,8 +94,8 @@ public class GLPathwayManager {
 		// Creating display list for node cube objects
 		iEnzymeNodeDisplayListId = gl.glGenLists(1);
 		
-		float fNodeWidth = refRenderStyle.getEnzymeNodeWidth();
-		float fNodeHeight = refRenderStyle.getEnzymeNodeHeight();
+		float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
+		float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
 		
 		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);		
@@ -108,8 +107,8 @@ public class GLPathwayManager {
 		// Creating display list for node cube objects
 		iCompoundNodeDisplayListId = gl.glGenLists(1);
 		
-		float fNodeWidth = refRenderStyle.getCompoundNodeWidth();
-		float fNodeHeight = refRenderStyle.getCompoundNodeHeight();
+		float fNodeWidth = refRenderStyle.getCompoundNodeWidth(true);
+		float fNodeHeight = refRenderStyle.getCompoundNodeHeight(true);
 		
 		gl.glNewList(iCompoundNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);

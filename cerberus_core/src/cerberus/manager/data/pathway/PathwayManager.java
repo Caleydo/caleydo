@@ -77,7 +77,11 @@ implements IPathwayManager {
 		pathwayLUT.put(iPathwayID, refCurrentPathway);
 	}
 	
-	public void loadPathwayById(int iPathwayID) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#loadPathwayById(int)
+	 */
+	public boolean loadPathwayById(int iPathwayID) {
 		
 		// Check if pathway was previously loaded
 		if (pathwayLUT.containsKey(iPathwayID))
@@ -87,10 +91,11 @@ implements IPathwayManager {
 					": loadPathwayById(): Pathway "+ iPathwayID + " is already loaded. SKIP.",
 					LoggerType.VERBOSE);
 			
-			return;
+			return true;
 		}
 
 		String sPathwayFilePath = "";
+		boolean bLoadingOK = false;
 		
 		if (iPathwayID < 10)
 		{
@@ -112,8 +117,21 @@ implements IPathwayManager {
 		sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath()
 			+ sPathwayFilePath +".xml";		
 		
-		refGeneralManager.getSingelton().
-		getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+		bLoadingOK = refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+
+		if (bLoadingOK)
+			return true;
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName() + 
+				": loadPathwayById(): No HSA pathway available - " +
+				"try to load reference pathway.",
+				LoggerType.VERBOSE);
+		
+		// Replace HSA with MAP and therefore try to load reference pathway
+		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
+		
+		return refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 	}
 	
 	/*
