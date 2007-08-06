@@ -33,17 +33,10 @@ public class GLPathwayTextureManager {
 		refHashPathwayIdToTexture = new HashMap<Integer, Texture>();
 	}
 	
-	public Texture getPathwayTexture(int iPathwayID) {
+	public Texture loadPathwayTextureById(int iPathwayID) {
 		
 		if (refHashPathwayIdToTexture.containsKey(iPathwayID))
-		{
 			return refHashPathwayIdToTexture.get(iPathwayID);
-		}
-			
-		return loadPathwayTexture(iPathwayID);
-	}
-	
-	public Texture loadPathwayTexture(int iPathwayID) {
 		
 		String sPathwayTexturePath = "";
 		Texture refPathwayTexture;
@@ -92,9 +85,8 @@ public class GLPathwayTextureManager {
 	public void renderPathway(final GL gl, int iPathwayID, 
 			float fTextureTransparency,
 			boolean bHighlight) {
-		
-		Texture refTmpPathwayTexture = 
-			getPathwayTexture(iPathwayID);
+
+		Texture refTmpPathwayTexture = loadPathwayTextureById(iPathwayID);
 		
 		refTmpPathwayTexture.enable();
 		refTmpPathwayTexture.bind();
@@ -106,8 +98,8 @@ public class GLPathwayTextureManager {
 		
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
 		
-		float fTextureWidth = 0.0025f * (float)refTmpPathwayTexture.getImageWidth();
-		float fTextureHeight = 0.0025f * (float)refTmpPathwayTexture.getImageHeight();				
+		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * refTmpPathwayTexture.getImageWidth();
+		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * refTmpPathwayTexture.getImageHeight();				
 		
 //		int viewport[] = new int[4];
 //		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
@@ -115,8 +107,8 @@ public class GLPathwayTextureManager {
 //		float h = (float) (float) (viewport[3]-viewport[1]) / 
 //			(float) (viewport[2]-viewport[0]) * 4.0f;
 		
-		gl.glLoadName(301);
-		
+		gl.glLoadName(GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS);
+				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(0, 0); 
 		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);			  

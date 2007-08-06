@@ -37,6 +37,8 @@ public class SlerpAction {
 		else
 			destinationHierarchyLayer = originHierarchyLayer.getChildLayer(); 
 		
+		destinationHierarchyLayer.addElementIdIncomingTransitionState(iElementId);
+		
 		// If pathway is already in this layer - slerp to the existing position.
 		if (destinationHierarchyLayer.containsElement(iElementId))
 			this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(iElementId);
@@ -106,7 +108,9 @@ public class SlerpAction {
 	
 		// Only add element if it is not contained already in this layer
 		if (!destinationHierarchyLayer.containsElement(iElementId))
+		{
 			destinationHierarchyLayer.addElement(iElementId);
+		}
 	}
 	
 	public JukeboxHierarchyLayer getDestinationHierarchyLayer() {

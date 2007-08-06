@@ -26,24 +26,27 @@ public class GLPathwayManager {
 
 	private IGeneralManager refGeneralManager;
 	
-	private static final float SCALING_FACTOR_X = 0.0025f;
-	private static final float SCALING_FACTOR_Y = 0.0025f;
+	public static final float SCALING_FACTOR_X = 0.0025f;
+	public static final float SCALING_FACTOR_Y = 0.0025f;
 	
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
+	private int iHighlightedEnzymeNodeDisplayListId = -1;
 	
 	// First 200 IDs are reserved for picking of non pathway objects in the scene
-	private int iUniqueObjectPickId = 301;
+	private int iUniqueObjectPickId = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS;
 	
 	private PathwayRenderStyle refRenderStyle;
 
-	private boolean bEnableGeneMapping = true;
+	private boolean bEnableGeneMapping = false;
 	
 	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
 	
 	private HashMap<Integer, Integer> refHashPathwayId2DisplayListId;
 	
 	private EnzymeToExpressionColorMapper enzymeToExpressionColorMapper;
+	
+	private ArrayList<Integer> iAlSelectedElements;
 	
 	/**
 	 * Constructor.
@@ -57,10 +60,15 @@ public class GLPathwayManager {
 		refHashPathwayId2DisplayListId = new HashMap<Integer, Integer>();
 	}
 	
-	public void init(final GL gl, ArrayList<ISet> alSetData) {
+	public void init(final GL gl, 
+			final ArrayList<ISet> alSetData,
+			final ArrayList<Integer> iAlSelectedElements) {
 		
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
+		buildHighlightedEnzymeNodeDisplayList(gl);
+		
+		this.iAlSelectedElements = iAlSelectedElements;
 		
 		enzymeToExpressionColorMapper =
 			new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
@@ -99,6 +107,19 @@ public class GLPathwayManager {
 		
 		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);		
+	    gl.glEndList();
+	}
+	
+	protected void buildHighlightedEnzymeNodeDisplayList(final GL gl) {
+		
+		// Creating display list for node cube objects
+		iHighlightedEnzymeNodeDisplayListId = gl.glGenLists(1);
+		
+		float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
+		float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
+		
+		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
+		fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);		
 	    gl.glEndList();
 	}
 	
@@ -189,6 +210,19 @@ public class GLPathwayManager {
         gl.glEnd();
 	}
 	
+	protected void fillNodeDisplayListFrame(final GL gl,
+			final float fNodeWidth, final float fNodeHeight) {
+	
+		gl.glLineWidth(3);
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(-fNodeWidth, fNodeHeight, -0.02f);
+		gl.glVertex3f(fNodeWidth, fNodeHeight, -0.02f);
+		gl.glVertex3f(fNodeWidth, -fNodeHeight, -0.02f);
+		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -0.02f);		
+        gl.glEnd();
+	}
+	
 	private void extractVertices(final GL gl,
 			Pathway refPathwayToExtract) {
 		
@@ -264,22 +298,36 @@ public class GLPathwayManager {
 		}	
 		// Enzyme
 		else if (sShapeType.equals("rectangle"))
-		{	
+		{		
+			// Handle selection highlighting of enzyme
+			if (iAlSelectedElements.contains(
+					vertexRep.getVertex().getElementId()))
+			{
+				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+			}
+			
 			if (bEnableGeneMapping)
 			{
 				mapExpression(gl, vertexRep.getVertex(), fNodeWidth);
 			}
 			else
 			{
-				tmpNodeColor = refRenderStyle.getCompoundNodeColor(false);
+				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(false);
 				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 					tmpNodeColor.getGreen() / 255.0f, 
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				
 				gl.glCallList(iEnzymeNodeDisplayListId);
 			}
 		}
 
 		gl.glTranslatef(-fCanvasXPos, -fCanvasYPos, 0);
+		
+		// Draw Frame
 		
 		//gl.glPopName();
 	}
@@ -297,6 +345,7 @@ public class GLPathwayManager {
 		
 		if (bRenderLabels)
 			renderLabels(gl, iPathwayID);
+		
 	}
 	
 	private void renderLabels(final GL gl, final int iPathwayID) {

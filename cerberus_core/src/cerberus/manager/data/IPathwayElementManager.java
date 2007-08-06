@@ -50,6 +50,8 @@ public interface IPathwayElementManager extends IGeneralManager {
 	 * Method returnd all vertices that exists with the same name.
 	 * This method is needed for the finding (and highlighting) of identical vertices.
 	 * 
+	 * FIXME: Will be replaced with new graph structure.
+	 * 
 	 * @param sVertexName
 	 * @return
 	 */

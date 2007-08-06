@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.media.opengl.GL;
@@ -25,6 +26,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
+import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
@@ -51,6 +53,8 @@ public class GLCanvasJukeboxPathway3D
 extends AGLCanvasUser_OriginRotation
 implements IMediatorReceiver, IMediatorSender {	
 	
+	public static final int MAX_LOADED_PATHWAYS = 300;
+	
 	private float fTextureTransparency = 1.0f; 
 	
 	private float fLastMouseMovedTimeStamp = 0;
@@ -68,6 +72,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
 	private ArrayList<SlerpAction> arSlerpActions;
+	
+	private ArrayList<Integer> iAlSelectedElements;
 		
 	/**
 	 * Slerp factor 0 = source; 1 = destination
@@ -101,6 +107,7 @@ implements IMediatorReceiver, IMediatorSender {
 		refPathwayManager = new GLPathwayManager(refGeneralManager);
 		refPathwayTextureManager = new GLPathwayTextureManager(refGeneralManager);
 		arSlerpActions = new ArrayList<SlerpAction>();
+		iAlSelectedElements = new ArrayList<Integer>(); 
 		
 		refHashPoolLinePickId2PathwayId = new HashMap<Integer, Integer>();
 		
@@ -154,7 +161,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData(final GL gl) {
 	
-		refPathwayManager.init(gl, alSetData);
+		refPathwayManager.init(gl, alSetData, iAlSelectedElements);
 		buildPathwayPool(gl);
 		buildLayeredPathways(gl);
 	}
@@ -246,8 +253,8 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			if (!bLoadingOK)
 				return;
-			
-			refPathwayManager.buildPathwayDisplayList(gl, iPathwayId);
+		
+			refPathwayManager.buildPathwayDisplayList(gl, iPathwayId);			
 			pathwayPoolLayer.addElement(iPathwayId);		
 		}
 	}
@@ -294,23 +301,27 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			Transform transform = pathwayLayeredLayer.getTransformByElementId(iPathwayId);
 			Vec3f translation = transform.getTranslation();
+			
+			// Pathway texture height is subtracted from Y to align pathways to front level
 			gl.glTranslatef(translation.x(),
 					translation.y(),
 					translation.z());
 			
-			Vec3f scale = transform.getScale();
-			gl.glScalef(scale.x(), scale.y(), scale.z());
+			//gl.glTranslatef(0f, GLPathwayManager.SCALING_FACTOR_Y * 1000 -GLPathwayManager.SCALING_FACTOR_Y * refPathwayTextureManager.loadPathwayTextureById(iPathwayId).getImageHeight(), 0f);
 			
 			Rotf rot = transform.getRotation();
 			gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()),
 					rot.getX(),
 					rot.getY(),
 					rot.getZ());
+			
+			Vec3f scale = transform.getScale();
+			gl.glScalef(scale.x(), scale.y(), scale.z());
 
 			refPathwayManager.renderPathway(gl, iPathwayId, false);
 			
-//            gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-//            gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+//          gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+//          gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 			
 			if (bShowPathwayTexture)
 			{	
@@ -690,7 +701,7 @@ implements IMediatorReceiver, IMediatorSender {
 			//System.out.println("Pick ID: "+iPickedObjectId);
 			
 			// Check if picked object a non-pathway object (like pathway pool lines, navigation handles, etc.)
-			if (iPickedObjectId < 301)
+			if (iPickedObjectId < MAX_LOADED_PATHWAYS)
 			{
 				int iPathwayId = refHashPoolLinePickId2PathwayId.get(iPickedObjectId);
 				System.out.println("PathwayID: " +iPathwayId);
@@ -712,7 +723,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				return;
 			}
-			else if (iPickedObjectId == 301) // Picked object is just a pathway texture -> do nothing
+			else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is just a pathway texture -> do nothing
 			{
 				return;
 			}
@@ -728,19 +739,6 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 						
 			System.out.println("Picked node:" +refPickedVertexRep.getName());
-						
-//			// Deselect previous highlighted elements
-//			if (alSetSelection.get(0).getSelectionIdArray().length > 0)
-//			{
-//				((IPathwayVertexRep)refGeneralManager.getSingelton().getPathwayElementManager().getItem(
-//						alSetSelection.get(0).getSelectionIdArray()[0])).setHighlighted(false);
-//			}
-//			// Highlight selected element
-//			refPickedVertexRep.setHighlighted(true);
-//			int[] tmpSelection = new int[1];
-//			tmpSelection[0] = refPickedVertexRep.getVertex().getElementId();
-//			alSetSelection.get(0).setSelectionIdArray(tmpSelection);
-//			buildPathwayPool(gl); //FIXME: BAD PERFORMANCE!
 			
 			if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
 			{					
@@ -755,11 +753,22 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 				
 				loadPathwayToUnderInteractionPosition(iPathwayId);
+				
+				return;
 			}
+			
+			loadDependentPathwayContainingVertex(gl, refPickedVertexRep.getVertex());
+			highlightIdenticalNodes(gl, refPickedVertexRep.getVertex());
 //		}
 	}	
 	
 	private void loadPathwayToUnderInteractionPosition(int iPathwayId) {
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName() + 
+				": loadPathwayToUnderInteractionPosition(): Pathway with ID " +iPathwayId
+				+ " is under interaction.",
+				LoggerType.VERBOSE);
 		
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < 1000)
@@ -785,15 +794,30 @@ implements IMediatorReceiver, IMediatorSender {
 			arSlerpActions.add(reverseSlerpAction);
 		}
 		
-		// Slerp to layered pathway view
-		SlerpAction slerpAction = new SlerpAction(
-				iPathwayId,
-				pathwayPoolLayer,
-				false,
-				false);
+		SlerpAction slerpAction;
 		
-		arSlerpActions.add(slerpAction);
-						
+		// Prevent slerp action if pathway is already in layered view
+		if (!pathwayLayeredLayer.containsElement(iPathwayId) ||
+			!pathwayLayeredLayer.containsElementInTransitionState(iPathwayId))
+		{
+			// Slerp to layered pathway view
+			slerpAction = new SlerpAction(
+					iPathwayId,
+					pathwayPoolLayer,
+					false,
+					false);
+		}
+		else
+		{
+			// Slerp from layered to under interaction position
+			slerpAction = new SlerpAction(
+					iPathwayId,
+					pathwayLayeredLayer,
+					false,
+					false);
+		}
+		
+		arSlerpActions.add(slerpAction);				
 		iSlerpFactor = 0;
 		
 		// Trigger update with current pathway that dependent pathways 
@@ -803,7 +827,116 @@ implements IMediatorReceiver, IMediatorSender {
 		alSetSelection.get(0).updateSelectionSet(iUniqueId,
 				new int[0], new int[0], tmp);		
 	}
+	
+    protected void highlightIdenticalNodes(final GL gl,
+    		final PathwayVertex refVertex) {
+    	
+    	// Remove previous selection
+    	iAlSelectedElements.clear();
+    	
+		Pathway refTmpPathway = null;
+		PathwayVertex refTmpVertex = null;
+		Iterator<PathwayVertex> iterIdenticalVertices = null;
+		int iPathwayId = 0;	
+		Iterator<Integer> iterVisiblePathway = pathwayLayeredLayer.getElementList().iterator();		
+
+		while (iterVisiblePathway.hasNext()){
+			iPathwayId = iterVisiblePathway.next();
+			
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId);
+		
+			iterIdenticalVertices = refGeneralManager.getSingelton().
+					getPathwayElementManager().getPathwayVertexListByName(
+							refVertex.getElementTitle()).iterator();
+			
+			while(iterIdenticalVertices.hasNext())
+			{
+				refTmpVertex = iterIdenticalVertices.next();
+				
+				if (refTmpPathway.isVertexInPathway(refTmpVertex) == true)
+				{	
+					if (refTmpVertex != null)
+					{												
+						iAlSelectedElements.add(refTmpVertex.getElementId());
+					}
+				}
+			}
+	    }
+		
+//		int[] iArTmp = new int[iAlSelectedElements.size()];
+//		for(int i = 0; i <  iArTmp.length; i++)
+//		{
+//			iArTmp[i] = ((Integer)iAlSelectedElements.get(i)).intValue();
+//		}
+//		alSetSelection.get(0).setSelectionIdArray(iArTmp);
+		
+		// Rebuild display lists for visible pathways
+		iterVisiblePathway = pathwayLayeredLayer.getElementList().iterator();		
+		
+		while (iterVisiblePathway.hasNext())
+		{
+			refPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway.next());
+		}
+    }
     
+    public void loadDependentPathwayContainingVertex(final GL gl,
+    		final PathwayVertex refVertex) {
+    	
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] iArPathwayIDs = tmpStorage.getArrayInt();
+		Iterator<PathwayVertex> iterIdenticalVertices = null;
+		Pathway refTmpPathway = null;
+		PathwayVertex refTmpVertex = null;
+		int iPathwayId = 0;	
+		int iMaxPathways = 4;
+		int iMaxPathwayCount = 0;
+		
+		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
+			iPathwayIndex++)
+		{
+			iPathwayId = iArPathwayIDs[iPathwayIndex];
+			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId);
+
+			iterIdenticalVertices = refGeneralManager.getSingelton().
+				getPathwayElementManager().getPathwayVertexListByName(
+					refVertex.getElementTitle()).iterator();
+			
+			while(iterIdenticalVertices.hasNext())
+			{
+				refTmpVertex = iterIdenticalVertices.next();
+				
+				if (refTmpPathway.isVertexInPathway(refTmpVertex) == true)
+				{	
+					if (refTmpVertex != null)
+					{												
+						SlerpAction slerpAction;
+						
+						// Prevent slerp action if pathway is already in layered view
+						if (!pathwayLayeredLayer.containsElement(iPathwayId) &&
+								!pathwayLayeredLayer.containsElementInTransitionState(iPathwayId))
+						{
+
+							if (iMaxPathwayCount >= iMaxPathways)
+								return;
+							
+							iMaxPathwayCount++;
+							
+							// Slerp to layered pathway view
+							slerpAction = new SlerpAction(
+									iPathwayId,
+									pathwayPoolLayer,
+									false,
+									false);
+							
+							arSlerpActions.add(slerpAction);				
+							iSlerpFactor = 0;
+						}
+					}
+				}
+			}	
+		}
+	}
+	
 	public void playPathwayPoolTickSound() {
 		
 		try{

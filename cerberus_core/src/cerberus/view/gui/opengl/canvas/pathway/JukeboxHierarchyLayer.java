@@ -14,6 +14,13 @@ public class JukeboxHierarchyLayer {
 	 * Index in list determines position in stack
 	 */
 	private LinkedList<Integer> llElementId;
+	
+	/**
+	 * Pathways that are currently slerped or need to be slerped.
+	 */
+	private LinkedList<Integer> llElementIdIncomingTransistionState;
+	private LinkedList<Integer> llElementIdOutgoingTransistionState;
+	
 	private LinkedList<Integer> llElementIdImportanceQueue;
 	
 	private JukeboxHierarchyLayer parentLayer;
@@ -25,6 +32,8 @@ public class JukeboxHierarchyLayer {
 		
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
 		llElementId = new LinkedList<Integer>();
+		llElementIdIncomingTransistionState = new LinkedList<Integer>();
+		llElementIdOutgoingTransistionState = new LinkedList<Integer>();
 		llElementIdImportanceQueue = new LinkedList<Integer>();
 		this.iCapacity = iCapacity;
 	}
@@ -49,8 +58,15 @@ public class JukeboxHierarchyLayer {
 		return childLayer;
 	}
 	
+	/**
+	 * Add the element permanently to that layer.
+	 * 
+	 * @param iElementId
+	 */
 	public void addElement(int iElementId) {
-			
+		
+		llElementIdIncomingTransistionState.remove((Integer)iElementId);
+		
 		// Check if element limit is reached
 		if (llElementId.size() >= iCapacity)
 		{
@@ -69,6 +85,11 @@ public class JukeboxHierarchyLayer {
 			llElementId.addLast(iElementId);
 			llElementIdImportanceQueue.addFirst(iElementId);
 		}
+	}
+	
+	public void addElementIdIncomingTransitionState(int iElementId) {
+		
+		llElementIdIncomingTransistionState.add(iElementId);
 	}
 	
 	public void setElement(int iPosIndex, int iElementId) {
@@ -105,6 +126,12 @@ public class JukeboxHierarchyLayer {
 		return llElementId.contains(iElementId);
 	}
 	
+	public boolean containsElementInTransitionState(int iElementId) {
+		
+		return llElementIdIncomingTransistionState.contains(iElementId)
+			|| llElementIdOutgoingTransistionState.contains(iElementId);
+	}
+	
 	public final Transform getTransformByElementId(int iElementId) {
 		
 		return hashElementPositionIndexToTransform.get(getPositionIndexByElementId(iElementId));
@@ -129,8 +156,8 @@ public class JukeboxHierarchyLayer {
 			return llElementId.size(); 
 		}
 		else 
-		{
-			// Get index of least imporant element for replacement
+		{	
+			// Get index of least important element for replacement
 			return llElementId.indexOf(llElementIdImportanceQueue.getLast());
 		}
 	}
