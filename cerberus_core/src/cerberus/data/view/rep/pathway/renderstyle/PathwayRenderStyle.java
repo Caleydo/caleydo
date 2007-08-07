@@ -87,7 +87,7 @@ extends ARenderStyle {
 		enzymeNodeColorGeneMapped 	= Color.GRAY;
 		compoundNodeColor 			= Color.GREEN;
 		compoundNodeColorGeneMapped = Color.DARK_GRAY;
-		pathwayNodeColor 			= new Color(0.51f, 0.44f, 1.0f);
+		pathwayNodeColor 			= Color.MAGENTA;
 		pathwayNodeColorGeneMapped 	= Color.LIGHT_GRAY;
 		highlightedNodeColor 		= new Color(0.0f, 0.0f, 1.0f);
 		//highlightedNodeColor 		= new Color(1.0f, 0.0f, 0.0f);

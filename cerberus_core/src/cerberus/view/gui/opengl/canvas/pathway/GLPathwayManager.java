@@ -298,8 +298,8 @@ public class GLPathwayManager {
 		}	
 		// Enzyme
 		else if (sShapeType.equals("rectangle"))
-		{		
-			// Handle selection highlighting of enzyme
+		{	
+			// Handle selection highlighting of element
 			if (iAlSelectedElements.contains(
 					vertexRep.getVertex().getElementId()))
 			{
@@ -324,7 +324,7 @@ public class GLPathwayManager {
 				gl.glCallList(iEnzymeNodeDisplayListId);
 			}
 		}
-
+		
 		gl.glTranslatef(-fCanvasXPos, -fCanvasYPos, 0);
 		
 		// Draw Frame

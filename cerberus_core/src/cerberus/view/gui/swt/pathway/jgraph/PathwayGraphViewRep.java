@@ -455,7 +455,7 @@ extends APathwayGraphViewRep {
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
 					"cerberus.view.gui.swt.pathway.jgraph.JGraphMultilineView");
 
-			GraphConstants.setBackground(changedMap, Color.MAGENTA);
+			GraphConstants.setBackground(changedMap, refRenderStyle.getPathwayNodeColor(false));
 		} 
 		else if (sShapeType.equals("circle"))
 		{
@@ -473,7 +473,7 @@ extends APathwayGraphViewRep {
 				GraphConstants.setAutoSize(changedMap, true);
 			}
 
-			GraphConstants.setBackground(changedMap, Color.green);
+			GraphConstants.setBackground(changedMap, refRenderStyle.getCompoundNodeColor(false));
 		} 
 		else if (sShapeType.equals("rectangle"))
 		{
@@ -482,8 +482,7 @@ extends APathwayGraphViewRep {
 						(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
 						refRenderStyle.getEnzymeNodeWidth(false), refRenderStyle.getEnzymeNodeHeight(false));
 			
-			GraphConstants.setBackground(changedMap, new Color(0.53f, 0.81f,
-					1.0f)); // ligth blue
+			GraphConstants.setBackground(changedMap, refRenderStyle.getEnzymeNodeColor(false));
 		}
 
 		GraphConstants.setBounds(changedMap, vertexRect);
@@ -1006,7 +1005,7 @@ extends APathwayGraphViewRep {
 
 			refCurrentPathway = (Pathway) refGeneralManager.getSingelton()
 				.getPathwayManager().getItem(tmpStorage.getArrayInt()[0]);
-
+			
 			return;
 		}
 
@@ -1042,22 +1041,25 @@ extends APathwayGraphViewRep {
 		
 		int iNewPathwayId = StringConversionTool.convertStringToInt(sUrl
 				.substring(iPathwayIdIndex, sUrl.lastIndexOf('.')), 0);
-
-		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-
-		int[] tmp = new int[1];
-		tmp[0] = iNewPathwayId;
-		refTmpStorage.setArrayInt(tmp);
-
-		// Trigger update with current pathway that dependent pathways 
-		// know which pathway is currently under interaction
-		alSetSelection.get(0).updateSelectionSet(iParentContainerId,
-				new int[0], new int[0], tmp);
 		
 		// Load pathway
 		loadPathwayFromFile(iNewPathwayId);
-
+		
+		triggerPathwayUpdate(iNewPathwayId);
+		
 		return true;
+	}
+	
+	private void triggerPathwayUpdate(final int iPathwayId) 
+	{
+		// Trigger update with current pathway that dependent pathways 
+		// know which pathway is currently under interaction
+		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] tmp = new int[1];
+		tmp[0] = iPathwayId;
+		refTmpStorage.setArrayInt(tmp);
+		alSetSelection.get(0).updateSelectionSet(iParentContainerId,
+				new int[0], new int[0], tmp);
 	}
 
 	/*

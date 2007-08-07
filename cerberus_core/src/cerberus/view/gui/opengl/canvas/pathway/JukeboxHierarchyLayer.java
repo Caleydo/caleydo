@@ -15,13 +15,9 @@ public class JukeboxHierarchyLayer {
 	 */
 	private LinkedList<Integer> llElementId;
 	
-	/**
-	 * Pathways that are currently slerped or need to be slerped.
-	 */
-	private LinkedList<Integer> llElementIdIncomingTransistionState;
-	private LinkedList<Integer> llElementIdOutgoingTransistionState;
-	
 	private LinkedList<Integer> llElementIdImportanceQueue;
+	
+	private LinkedList<Boolean> llElementIdVisibleState;
 	
 	private JukeboxHierarchyLayer parentLayer;
 	private JukeboxHierarchyLayer childLayer;
@@ -32,9 +28,8 @@ public class JukeboxHierarchyLayer {
 		
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
 		llElementId = new LinkedList<Integer>();
-		llElementIdIncomingTransistionState = new LinkedList<Integer>();
-		llElementIdOutgoingTransistionState = new LinkedList<Integer>();
 		llElementIdImportanceQueue = new LinkedList<Integer>();
+		llElementIdVisibleState = new LinkedList<Boolean>();
 		this.iCapacity = iCapacity;
 	}
 	
@@ -65,8 +60,6 @@ public class JukeboxHierarchyLayer {
 	 */
 	public void addElement(int iElementId) {
 		
-		llElementIdIncomingTransistionState.remove((Integer)iElementId);
-		
 		// Check if element limit is reached
 		if (llElementId.size() >= iCapacity)
 		{
@@ -75,30 +68,27 @@ public class JukeboxHierarchyLayer {
 
 			int iReplacePosition = llElementId.indexOf(iLeastImportantElementId);
 			llElementId.set(iReplacePosition, iElementId);
+			llElementIdVisibleState.set(iReplacePosition, false);
 			
 			// FIFO replace strategy
-			llElementIdImportanceQueue.addFirst(iElementId);			
+			llElementIdImportanceQueue.addFirst(iElementId);	
 		}
 		else
 		{
 			// Add to the end of the stack (because there is free space)
 			llElementId.addLast(iElementId);
+			llElementIdVisibleState.addLast(false);
 			llElementIdImportanceQueue.addFirst(iElementId);
 		}
 	}
-	
-	public void addElementIdIncomingTransitionState(int iElementId) {
-		
-		llElementIdIncomingTransistionState.add(iElementId);
-	}
-	
-	public void setElement(int iPosIndex, int iElementId) {
-		
-		if (llElementId.size() <= iPosIndex)
-			addElement(iElementId);
-		else
-			llElementId.set(iPosIndex, iElementId);
-	}
+
+//	public void setElement(int iPosIndex, int iElementId) {
+//		
+//		if (llElementId.size() <= iPosIndex)
+//			addElement(iElementId);
+//		else
+//			llElementId.set(iPosIndex, iElementId);
+//	}
 	
 	public int getElementIdByPositionIndex(int iPosIndex) {
 		
@@ -124,12 +114,6 @@ public class JukeboxHierarchyLayer {
 	public boolean containsElement(int iElementId) {
 		
 		return llElementId.contains(iElementId);
-	}
-	
-	public boolean containsElementInTransitionState(int iElementId) {
-		
-		return llElementIdIncomingTransistionState.contains(iElementId)
-			|| llElementIdOutgoingTransistionState.contains(iElementId);
 	}
 	
 	public final Transform getTransformByElementId(int iElementId) {
@@ -160,5 +144,22 @@ public class JukeboxHierarchyLayer {
 			// Get index of least important element for replacement
 			return llElementId.indexOf(llElementIdImportanceQueue.getLast());
 		}
+	}
+	
+	public void setElementVisibilityById(final boolean bVisibility,
+			final int iElementId) {
+		
+//		if (!llElementId.contains(iElementId))
+//			return;
+			
+		llElementIdVisibleState.set(llElementId.indexOf(iElementId), bVisibility);
+	}
+	
+	public final boolean getElementVisibilityById(final int iElementId) {
+
+//		if (!llElementId.contains(iElementId))
+//			return true;
+		
+		return llElementIdVisibleState.get(llElementId.indexOf(iElementId));
 	}
 }
