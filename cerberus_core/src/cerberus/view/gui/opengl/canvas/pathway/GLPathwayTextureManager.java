@@ -62,8 +62,13 @@ public class GLPathwayTextureManager {
 			+ sPathwayTexturePath +".gif";	
 		
 		try
-		{
-			refPathwayTexture = TextureIO.newTexture(new File(sPathwayTexturePath), false);
+		{			
+			refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
+					new File(sPathwayTexturePath), true, "GIF"));
+		
+//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR); 
+//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+			
 			refHashPathwayIdToTexture.put(iPathwayID, refPathwayTexture);
 			
 			refGeneralManager.getSingelton().logMsg(
@@ -110,13 +115,13 @@ public class GLPathwayTextureManager {
 		gl.glLoadName(GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS);
 				
 		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2f(0, 0); 
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
 		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);			  
-		gl.glTexCoord2f(texCoords.right(), 0); 
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
 		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);			 
 		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
 		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
-		gl.glTexCoord2f(0, texCoords.top()); 
+		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glEnd();	
 

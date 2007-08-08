@@ -22,14 +22,20 @@ public class GLTextUtils {
 		GLUT glut = new GLUT();
 		gl.glRasterPos3f(fx, fy, fz);
 		
-		if (iSize == 10)
-			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 		
-		else if (iSize == 12)
-			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, showText); 		
-		else if (iSize == 18)
-			glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, showText); 		
-		else 
-			return;
+		switch(iSize) 
+		{
+			case 10:
+				glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 	
+				break;
+			case 12:
+				glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, showText); 		
+				break;
+			case 18:
+				glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, showText); 		
+				break;
+			default: 
+				glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, showText); 	
+		}
 	}
 	
 	public static void renderStaticText(final GL gl,
@@ -48,6 +54,8 @@ public class GLTextUtils {
 		// and pick
 		// the GLUT font, then provide the string to show
 		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText); 
+		glut.glutSolidCube(3);
+		
 	}
 	
 	public static void renderTextInRegion(final GL gl, 

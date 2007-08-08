@@ -20,6 +20,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
+import sun.java2d.pipe.GlyphListPipe;
+
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.data.collection.ISet;
@@ -34,6 +36,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
+import cerberus.util.opengl.GLInfoAreaRenderer;
 import cerberus.util.opengl.GLStarEffect;
 import cerberus.util.opengl.GLTextUtils;
 import cerberus.util.slerp.Slerp;
@@ -90,6 +93,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private PathwayVertex selectedVertex = null;
 	
+	private GLInfoAreaRenderer infoAreaRenderer;
+	
 	/**
 	 * Constructor
 	 * 
@@ -132,6 +137,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
 			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
+
+		infoAreaRenderer = new GLInfoAreaRenderer();
 	}
 	
 	/*
@@ -148,6 +155,13 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		//gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
+		//gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		
+		//gl.glEnable(GL.GL_ALPHA_TEST);
+		//gl.glAlphaFunc(GL.GL_GREATER, 0);  
+		
+		//gl.glEnable(GL.GL_TEXTURE_2D); 
+		//gl.glTexEnvf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 		
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -175,6 +189,11 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		handlePicking(gl);		
 		renderScene(gl);
+		
+		if (selectedVertex != null && infoAreaRenderer.getPoint() != null)
+		{
+			infoAreaRenderer.drawPickedObjectInfo(gl, selectedVertex);
+		}
 		
 //		int viewport[] = new int[4];
 //		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
@@ -534,7 +553,7 @@ implements IMediatorReceiver, IMediatorSender {
 		else if (arSlerpActions.isEmpty() && bSelectionChanged)
 		{
 			highlightIdenticalNodes(gl, selectedVertex);
-			selectedVertex = null;
+			//selectedVertex = null;
 			bSelectionChanged = false;
 			
 			// Update display list if something changed
@@ -626,7 +645,7 @@ implements IMediatorReceiver, IMediatorSender {
 	    	bIsMouseOverPickingEvent = true;
 	    }
 	    else if (bIsMouseOverPickingEvent == true && 
-	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.0 * 1e9)
+	    		System.nanoTime() - fLastMouseMovedTimeStamp >= 0.0)// * 1e9)
 	    {
 	    	pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 	    	fLastMouseMovedTimeStamp = System.nanoTime();
@@ -675,6 +694,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
+		// Store picked point
+		Point tmpPickPoint = (Point)pickPoint.clone();
 		// Reset picked point 
 		pickPoint = null;
 		
@@ -686,12 +707,13 @@ implements IMediatorReceiver, IMediatorSender {
 
 		iHitCount = gl.glRenderMode(GL.GL_RENDER);
 		pickingBuffer.get(iArPickingBuffer);
-		processHits(gl, iHitCount, iArPickingBuffer);
+		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint);
 	}
 	
 	protected void processHits(final GL gl,
 			int iHitCount, 
-			int iArPickingBuffer[]) {
+			int iArPickingBuffer[],
+			final Point pickPoint) {
 
 		//System.out.println("Number of hits: " +iHitCount);
 		IPathwayVertexRep refPickedVertexRep;
@@ -718,8 +740,8 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 			}
 			
-			// Check if handling of last selection is finished
-			if (selectedVertex != null)
+			// Do not handle picking if a slerp action is in progress
+			if (!arSlerpActions.isEmpty())
 				return;
 			
 			//System.out.println("Pick ID: "+iPickedObjectId);
@@ -761,13 +783,21 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			if (refPickedVertexRep == null)
 				return;
+			
+			// Reset pick point 
+			infoAreaRenderer.setPoint(null);
 									
 			System.out.println("Picked node:" +refPickedVertexRep.getName());
+						
+			infoAreaRenderer.setPoint(pickPoint);
 			
 			// If event is just mouse over (and not real picking) 
 			// highlight the object under the cursor
 			if (bIsMouseOverPickingEvent)
 			{
+				if (selectedVertex != null && !selectedVertex.equals(refPickedVertexRep.getVertex()))
+					infoAreaRenderer.resetAnimation();
+				
 				selectedVertex = refPickedVertexRep.getVertex();
 				bSelectionChanged = true;
 				return;
@@ -831,9 +861,9 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		SlerpAction slerpAction;
 		
-		// Prevent slerp action if pathway is already in layered view
-		if (pathwayLayeredLayer.containsElement(iPathwayId))
-			return;
+//		// Prevent slerp action if pathway is already in layered view
+//		if (pathwayLayeredLayer.containsElement(iPathwayId))
+//			return;
 		
 		// Slerp to layered pathway view
 		slerpAction = new SlerpAction(
@@ -967,8 +997,8 @@ implements IMediatorReceiver, IMediatorSender {
 			}	
 		}
 	}
-	
-	public void playPathwayPoolTickSound() {
+    
+	private void playPathwayPoolTickSound() {
 		
 		try{
             AudioInputStream audioInputStream = 
