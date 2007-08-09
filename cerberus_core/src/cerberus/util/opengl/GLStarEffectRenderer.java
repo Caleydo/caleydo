@@ -8,28 +8,24 @@ import javax.media.opengl.GL;
  * 
  * @author Marc Streit
  */
-public class GLStarEffect {
+public class GLStarEffectRenderer {
 	
-	public static void main(String [ ] args) {
-		
-		calculateStarPoints(3, 1, 0, 0);
-	}
+	private ArrayList<float[]> fAlStarPoints = new ArrayList<float[]>();
 	
-	public static final ArrayList<float[]> calculateStarPoints(int iVertexCount,
+	public void calculateStarPoints(int iVertexCount,
 			float fRadius,
 			float fCenterPointX, 
 			float fCenterPointY) {
 		
 		float fAngleRad = (float) (2 * Math.PI / iVertexCount);
-		ArrayList<float[]> alStarPoints = new ArrayList<float[]>();
-
 		float[] fArPoint = null;
+		fAlStarPoints.clear();
 		
 		// Store center point in index 0
 		fArPoint = new float[2];
 		fArPoint[0] = fCenterPointX;
 		fArPoint[1] = fCenterPointY;
-		alStarPoints.add(fArPoint);
+		fAlStarPoints.add(fArPoint);
 		
 		fCenterPointY += fRadius;
 		
@@ -42,11 +38,14 @@ public class GLStarEffect {
 			fArPoint[1] = (float) (fCenterPointY * Math.cos(fAngleRad * iVertexIndex) + 
 					fCenterPointX * Math.sin(fAngleRad * iVertexIndex));
 			
-			alStarPoints.add(fArPoint);
+			fAlStarPoints.add(fArPoint);
 			
 		}
+	}
+	
+	public ArrayList<float[]> getStarPoints() {
 		
-		return alStarPoints;
+		return fAlStarPoints;
 	}
 	
 	public static void drawStar(final GL gl,
@@ -55,7 +54,7 @@ public class GLStarEffect {
 		float[] fArPoint = new float[2];
 
 		gl.glLineWidth(3);
-		gl.glColor3f(1, 0, 0);
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
 		
 		float[] fArCenterPoint = alStarPoints.get(0);
 
@@ -64,8 +63,8 @@ public class GLStarEffect {
 		{
 			fArPoint = alStarPoints.get(iVertexIndex);
 
-			gl.glVertex3f(fArCenterPoint[0], fArCenterPoint[1], 0);
-			gl.glVertex3f(fArPoint[0], fArPoint[1], 0);
+			gl.glVertex3f(fArCenterPoint[0], fArCenterPoint[1], 0f);
+			gl.glVertex3f(fArPoint[0], fArPoint[1], -1f);
 		}
 		gl.glEnd();	
 	}

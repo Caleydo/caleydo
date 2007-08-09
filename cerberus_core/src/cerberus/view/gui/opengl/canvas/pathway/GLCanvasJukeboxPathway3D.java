@@ -5,7 +5,6 @@ import gleem.linalg.Transform;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
-import java.io.File;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,13 +13,6 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-
-import sun.java2d.pipe.GlyphListPipe;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
@@ -37,10 +29,10 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.opengl.GLInfoAreaRenderer;
-import cerberus.util.opengl.GLStarEffect;
 import cerberus.util.opengl.GLTextUtils;
 import cerberus.util.slerp.Slerp;
 import cerberus.util.slerp.SlerpAction;
+import cerberus.util.sound.SoundPlayer;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
@@ -58,6 +50,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	public static final int MAX_LOADED_PATHWAYS = 300;
 	
+	public static final String TICK_SOUND = "data/sounds/tick.wav";
+	
 	private float fTextureTransparency = 1.0f; 
 	
 	private float fLastMouseMovedTimeStamp = 0;
@@ -68,9 +62,9 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private int iMouseOverPickedPathwayId = -1;
 	
-	private GLPathwayManager refPathwayManager;
+	private GLPathwayManager refGLPathwayManager;
 	
-	private GLPathwayTextureManager refPathwayTextureManager;
+	private GLPathwayTextureManager refGLPathwayTextureManager;
 		
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
@@ -113,8 +107,8 @@ implements IMediatorReceiver, IMediatorSender {
 		this.refViewCamera.setCaller(this);
 	
 		//refHashPathwayIdToModelMatrix = new HashMap<Integer, Mat4f>();
-		refPathwayManager = new GLPathwayManager(refGeneralManager);
-		refPathwayTextureManager = new GLPathwayTextureManager(refGeneralManager);
+		refGLPathwayManager = new GLPathwayManager(refGeneralManager);
+		refGLPathwayTextureManager = new GLPathwayTextureManager(refGeneralManager);
 		arSlerpActions = new ArrayList<SlerpAction>();
 		iAlSelectedElements = new ArrayList<Integer>(); 
 		
@@ -138,7 +132,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
 			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
 
-		infoAreaRenderer = new GLInfoAreaRenderer();
+		infoAreaRenderer = new GLInfoAreaRenderer(refGLPathwayManager);
 	}
 	
 	/*
@@ -179,7 +173,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData(final GL gl) {
 	
-		refPathwayManager.init(gl, alSetData, iAlSelectedElements);
+		refGLPathwayManager.init(gl, alSetData, iAlSelectedElements);
 		buildPathwayPool(gl);
 		buildLayeredPathways(gl);
 	}
@@ -187,13 +181,9 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	public void renderPart(GL gl) {
 		
-		handlePicking(gl);		
+		handlePicking(gl);
 		renderScene(gl);
-		
-		if (selectedVertex != null && infoAreaRenderer.getPoint() != null)
-		{
-			infoAreaRenderer.drawPickedObjectInfo(gl, selectedVertex);
-		}
+		renderInfoArea(gl);
 		
 //		int viewport[] = new int[4];
 //		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
@@ -277,7 +267,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if (!bLoadingOK)
 				return;
 		
-			refPathwayManager.buildPathwayDisplayList(gl, iPathwayId);			
+			refGLPathwayManager.buildPathwayDisplayList(gl, iPathwayId);			
 			pathwayPoolLayer.addElement(iPathwayId);		
 		}
 	}
@@ -311,8 +301,8 @@ implements IMediatorReceiver, IMediatorSender {
 				rot.getY(),
 				rot.getZ());		
 
-		refPathwayManager.renderPathway(gl, iPathwayId, true);
-		refPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);
+		refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+		refGLPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);
 		
 		gl.glPopMatrix();
 	}
@@ -349,18 +339,15 @@ implements IMediatorReceiver, IMediatorSender {
 			Vec3f scale = transform.getScale();
 			gl.glScalef(scale.x(), scale.y(), scale.z());
 
-			refPathwayManager.renderPathway(gl, iPathwayId, false);
-			
-//          gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-//          gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-			
+			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+				
 			if (bShowPathwayTexture)
 			{	
 				if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
 						&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
-					refPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);
+					refGLPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);
 				else
-					refPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, false);
+					refGLPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, false);
 			}
 			
 			gl.glPopMatrix();
@@ -515,6 +502,14 @@ implements IMediatorReceiver, IMediatorSender {
 		}	
 	}
 	
+	private void renderInfoArea(final GL gl) {
+		
+		if (selectedVertex != null && infoAreaRenderer.isPositionValid())
+		{
+			infoAreaRenderer.renderInfoArea(gl, selectedVertex);
+		}
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
@@ -544,11 +539,10 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void doSlerpActions(final GL gl) {
 		
-//		for (int iSlerpIndex = 0; iSlerpIndex < arSlerpActions.size(); iSlerpIndex++) 
-//		{
 		if (!arSlerpActions.isEmpty())
 		{
 			slerpPathway(gl, arSlerpActions.get(0));
+			selectedVertex = null;
 		}
 		else if (arSlerpActions.isEmpty() && bSelectionChanged)
 		{
@@ -563,11 +557,11 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			while (iterVisiblePathway.hasNext())
 			{
-				refPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway.next());
+				refGLPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway.next());
 			}
 			
 			// Rebuild display lists for visible pathways in focus position
-			refPathwayManager.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
+			refGLPathwayManager.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
 				.getElementIdByPositionIndex(0));
 		}
 		
@@ -590,32 +584,13 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glPushMatrix();
 		slerp.applySlerp(gl, transform);
 		
-//		// Render labels only in pathway under interaction layer (in focus)
-//		if (iSlerpFactor >= 1000 && slerpAction.getDestinationHierarchyLayer().equals(pathwayUnderInteractionLayer))
-//			refPathwayManager.renderPathway(gl, iPathwayId, true);
-//		else
-			refPathwayManager.renderPathway(gl, iPathwayId, false);
+		refGLPathwayManager.renderPathway(gl, iPathwayId, false);
 		
-		// Disable pathway highlighting for slerping back pathways.
-//		if (slerpAction.isReversSlerp())
-//			refPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, false);
-//		else
-			refPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);			
+		refGLPathwayTextureManager.renderPathway(gl, iPathwayId, fTextureTransparency, true);			
 			
 		gl.glPopMatrix();
 		
-		if (iSlerpFactor < 1000)
-		{
-			//iSlerpFactor += 10;
-		}
-//		else if(slerpAction.isReversSlerp())
-//		{
-//			arSlerpActions.remove(slerpAction);
-//			slerpAction = null;
-//			//return;
-//			iSlerpFactor = 0;
-//		}
-		else
+		if (iSlerpFactor >= 1000)
 		{
 			slerpAction.getDestinationHierarchyLayer()
 				.setElementVisibilityById(true, iPathwayId);
@@ -737,13 +712,17 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				// Remove pathway pool fisheye
 	    		iMouseOverPickedPathwayId = -1;
+	    		
+				selectedVertex = null;
+				infoAreaRenderer.resetAnimation();
+				
 				return;
 			}
 			
 			// Do not handle picking if a slerp action is in progress
 			if (!arSlerpActions.isEmpty())
 				return;
-			
+									
 			//System.out.println("Pick ID: "+iPickedObjectId);
 			
 			// Check if picked object a non-pathway object (like pathway pool lines, navigation handles, etc.)
@@ -774,22 +753,20 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 			}
 			
-			refPickedVertexRep = refPathwayManager.getVertexRepByPickID(iPickedObjectId);
-			
+			refPickedVertexRep = refGLPathwayManager.getVertexRepByPickID(iPickedObjectId);
+
+			if (refPickedVertexRep == null)
+				return;
+						
 			loadNodeInformationInBrowser(refPickedVertexRep.getVertex().getVertexLink());
 			
 			// Remove pathway pool fisheye
     		iMouseOverPickedPathwayId = -1;
-			
-			if (refPickedVertexRep == null)
-				return;
+												
+			System.out.println("Picked node:" +refPickedVertexRep.getName());
 			
 			// Reset pick point 
-			infoAreaRenderer.setPoint(null);
-									
-			System.out.println("Picked node:" +refPickedVertexRep.getName());
-						
-			infoAreaRenderer.setPoint(pickPoint);
+			infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl, pickPoint.x, pickPoint.y);
 			
 			// If event is just mouse over (and not real picking) 
 			// highlight the object under the cursor
@@ -800,6 +777,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				selectedVertex = refPickedVertexRep.getVertex();
 				bSelectionChanged = true;
+				
 				return;
 			}
 			
@@ -1000,20 +978,7 @@ implements IMediatorReceiver, IMediatorSender {
     
 	private void playPathwayPoolTickSound() {
 		
-		try{
-            AudioInputStream audioInputStream = 
-            	AudioSystem.getAudioInputStream(new File("data/sounds/tick.wav"));
-            AudioFormat af     = audioInputStream.getFormat();
-            int size      = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
-            byte[] audio       = new byte[size];
-            DataLine.Info info      = new DataLine.Info(Clip.class, af, size);
-            audioInputStream.read(audio, 0, size);
-            
-            Clip clip = (Clip) AudioSystem.getLine(info);
-            clip.open(af, audio, 0, size);
-            clip.start();
-
-		}catch(Exception e){ e.printStackTrace(); }
+		SoundPlayer.playSoundByFilename(TICK_SOUND);
 	}
 	
 	public void loadNodeInformationInBrowser(String sUrl) {

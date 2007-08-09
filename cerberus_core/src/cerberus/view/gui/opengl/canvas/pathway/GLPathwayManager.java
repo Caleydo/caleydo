@@ -14,7 +14,6 @@ import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.colormapping.EnzymeToExpressionColorMapper;
-import cerberus.util.opengl.GLStarEffect;
 import cerberus.util.opengl.GLTextUtils;
 
 /**
@@ -48,6 +47,8 @@ public class GLPathwayManager {
 	
 	private ArrayList<Integer> iAlSelectedElements;
 	
+	private HashMap<Integer, ArrayList<Color>> refHashElementId2MappingColorArray;
+	
 	/**
 	 * Constructor.
 	 */
@@ -58,6 +59,7 @@ public class GLPathwayManager {
 		refRenderStyle = new PathwayRenderStyle();
 		refHashPickID2VertexRep = new HashMap<Integer, IPathwayVertexRep>();
 		refHashPathwayId2DisplayListId = new HashMap<Integer, Integer>();
+		refHashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Color>>();
 	}
 	
 	public void init(final GL gl, 
@@ -378,14 +380,43 @@ public class GLPathwayManager {
         }  
 	}
 	
-	private void mapExpression(final GL gl, PathwayVertex pathwayVertex, float fNodeWidth) {
+	public void mapExpression(final GL gl, 
+			final PathwayVertex pathwayVertex, 
+			final float fNodeWidth) {
 		
-		ArrayList<Color> arMappingColor = 
-			enzymeToExpressionColorMapper.getMappingColorArrayByVertex(pathwayVertex);
+		ArrayList<Color> alMappingColor;
+		
+		// Check if vertex is already mapped 
+		if (refHashElementId2MappingColorArray.containsKey(pathwayVertex.getElementId()))
+		{
+			// Load existing mapping
+			alMappingColor = refHashElementId2MappingColorArray.get(pathwayVertex.getElementId());
+		}
+		else
+		{
+			// Request mapping
+			alMappingColor = enzymeToExpressionColorMapper.getMappingColorArrayByVertex(pathwayVertex);
+			refHashElementId2MappingColorArray.put((Integer)pathwayVertex.getElementId(), alMappingColor);
+		}
+		
+		drawMapping(gl, alMappingColor, fNodeWidth);
+	}
+	
+	public void mapExpressionByGeneId(final GL gl, 
+			String sGeneID, final float fNodeWidth) {
+
+		drawMapping(gl, 
+				enzymeToExpressionColorMapper.getMappingColorArrayByGeneID(sGeneID),
+				fNodeWidth);
+	}
+	
+	private void drawMapping(final GL gl,
+			final ArrayList<Color> alMappingColor,
+			final float fNodeWidth) {
 		
 		// Factor indicates how often the enzyme needs to be split
 		// so that all genes can be mapped.
-		int iSplitFactor = arMappingColor.size();
+		int iSplitFactor = alMappingColor.size();
 		Color tmpNodeColor = null;
 		
 		gl.glPushMatrix();
@@ -394,30 +425,10 @@ public class GLPathwayManager {
 		{
 			gl.glTranslatef(-fNodeWidth, 0.0f, 0.0f);
 			gl.glTranslatef(fNodeWidth * 2.0f / (iSplitFactor * 2.0f), 0.0f, 0.0f);
-		}
-		
+		}		
 		for (int iSplitIndex = 0; iSplitIndex < iSplitFactor; iSplitIndex++)
 		{
-			tmpNodeColor = arMappingColor.get(iSplitIndex);
-		
-//			// Just for testing!!!
-//			if (tmpNodeColor.equals(Color.BLACK))
-//			{					
-////				GLStarEffect.drawStar(gl, 
-////						GLStarEffect.calculateStarPoints(5, 0.2f, 0, 0));
-////				
-////				gl.glTranslatef(0,0,-0.1f);
-////				gl.glColor4f(1,0,0,0.2f);
-////				GLU glu = new GLU();
-////				glu.gluDisk(glu.gluNewQuadric(), 0.5f, 0, 10, 10);
-//				
-////				gl.glBegin(GL.GL_POLYGON);
-////				gl.glVertex3f(-0.5f, 0.5f,0f);
-////				gl.glVertex3f(-0.5f, -0.5f, 0);
-////				gl.glVertex3f(0.5f, -0.5f, 0);
-////				gl.glVertex3f(0.5f, 0.5f, 0);
-////				gl.glEnd();
-//			}
+			tmpNodeColor = alMappingColor.get(iSplitIndex);
 			
 			// Check if the mapping gave back a valid color
 			if (!tmpNodeColor.equals(Color.BLACK))
@@ -449,6 +460,7 @@ public class GLPathwayManager {
 		}
 
 		gl.glPopMatrix();
+
 	}
 	
 	public IPathwayVertexRep getVertexRepByPickID(int iPickID) {

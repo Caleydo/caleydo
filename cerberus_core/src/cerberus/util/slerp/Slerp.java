@@ -1,13 +1,8 @@
 package cerberus.util.slerp;
 
-import java.io.File;
-
 import javax.media.opengl.GL;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
+
+import cerberus.util.sound.SoundPlayer;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Transform;
@@ -21,11 +16,13 @@ import gleem.linalg.Vec3f;
  */
 public class Slerp {
 	
-	Rotf quatResult;
+	private static final String SLERP_SOUND = "data/sounds/slerp.wav";
 	
-	Vec3f translationResult;
+	private Rotf quatResult;
 	
-	Vec3f scaleResult;
+	private Vec3f translationResult;
+	
+	private Vec3f scaleResult;
 
 	public Slerp() {
 		
@@ -157,21 +154,8 @@ public class Slerp {
     	return scaleResult;
     }
     
-	public void playSlerpSound() {
-		
-		try{
-            AudioInputStream audioInputStream = 
-            	AudioSystem.getAudioInputStream(new File("data/sounds/slerp.wav"));
-            AudioFormat af     = audioInputStream.getFormat();
-            int size      = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
-            byte[] audio       = new byte[size];
-            DataLine.Info info      = new DataLine.Info(Clip.class, af, size);
-            audioInputStream.read(audio, 0, size);
-            
-            Clip clip = (Clip) AudioSystem.getLine(info);
-            clip.open(af, audio, 0, size);
-            clip.start();
-
-		}catch(Exception e){ e.printStackTrace(); }
-	}
+    public void playSlerpSound() {
+    	
+    	SoundPlayer.playSoundByFilename(SLERP_SOUND);
+    }
 }

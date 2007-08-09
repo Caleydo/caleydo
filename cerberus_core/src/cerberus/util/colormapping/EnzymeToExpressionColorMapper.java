@@ -50,6 +50,9 @@ public class EnzymeToExpressionColorMapper {
 	
 	protected void extractMappingData(ArrayList<ISet> alSetData) {
 		
+		if (alSetData == null)
+			return;
+		
 		Iterator<ISet> iterSetData = alSetData.iterator();
 		
 		while (iterSetData.hasNext())
@@ -73,22 +76,19 @@ public class EnzymeToExpressionColorMapper {
 		}
 		
 		if (pathwayVertex.getVertexType().equals(PathwayVertexType.gene))
-			return getMappingColorArrayByGene(pathwayVertex);
+			return getMappingColorArrayByGeneVertex(pathwayVertex);
 		else if (pathwayVertex.getVertexType().equals(PathwayVertexType.enzyme))
-			return getMappingColorArrayByEnzyme(pathwayVertex);
+			return getMappingColorArrayByEnzymeVertex(pathwayVertex);
 		
 		return new ArrayList<Color>();
 	}
 	
-	private ArrayList<Color> getMappingColorArrayByGene(
+	private ArrayList<Color> getMappingColorArrayByGeneVertex(
 			PathwayVertex pathwayVertex) {
-		
-		int iCummulatedExpressionValue = 0;
-		int iNumberOfExpressionValues = 0;
 		
 		ArrayList<Color> arMappingColor = new ArrayList<Color>();
 		
-		String sGeneID = pathwayVertex.getElementTitle().substring(4);
+		String sGeneID = pathwayVertex.getElementTitle();
 		
 		// Check for multiple genes per enzyme
 		if (sGeneID.contains(" "))
@@ -97,6 +97,18 @@ public class EnzymeToExpressionColorMapper {
 			return arMappingColor;
 			//sGeneID = sGeneID.substring(0, sGeneID.indexOf(' '));
 		}
+	
+		return getMappingColorArrayByGeneID(sGeneID);
+	}
+	
+	public ArrayList<Color> getMappingColorArrayByGeneID(String sGeneID) {
+		
+		// Remove prefix ("hsa:")
+		sGeneID = sGeneID.substring(4);
+		
+		ArrayList<Color> arMappingColor = new ArrayList<Color>();
+		int iCummulatedExpressionValue = 0;
+		int iNumberOfExpressionValues = 0;
 		
 		int iGeneID = refGenomeIdManager.getIdIntFromStringByMapping(sGeneID, 
 				GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
@@ -173,7 +185,8 @@ public class EnzymeToExpressionColorMapper {
 		return arMappingColor;
 	}
 	
-	private ArrayList<Color> getMappingColorArrayByEnzyme(PathwayVertex pathwayVertex) {
+	private ArrayList<Color> getMappingColorArrayByEnzymeVertex(
+			PathwayVertex pathwayVertex) {
 		
 		int iCummulatedExpressionValue = 0;
 		int iNumberOfExpressionValues = 0;
