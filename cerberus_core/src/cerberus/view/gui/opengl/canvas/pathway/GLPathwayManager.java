@@ -467,4 +467,14 @@ public class GLPathwayManager {
 		
 		return refHashPickID2VertexRep.get(iPickID);
 	}
+	
+//	public void clearOldPickingIDs(final GL gl) {
+//		
+//		//gl.glDeleteLists(GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS, refHashPickID2VertexRep.size());
+//		refHashPickID2VertexRep.clear();
+//		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS;
+//		
+////		gl.glInitNames();
+////		gl.glPushName(0);
+//	}
 }

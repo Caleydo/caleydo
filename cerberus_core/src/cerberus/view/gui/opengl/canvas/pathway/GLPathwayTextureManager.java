@@ -64,7 +64,7 @@ public class GLPathwayTextureManager {
 		try
 		{			
 			refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
-					new File(sPathwayTexturePath), false, "GIF"));
+					new File(sPathwayTexturePath), true, "GIF"));
 		
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR); 
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);

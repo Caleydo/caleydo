@@ -52,7 +52,8 @@ public class GLInfoAreaRenderer {
     		extractMultipleGeneMapping(pickedVertex);
     	
     	// Check if vertex has multiple mapping and draw info areas in star formation
-    	if (pickedVertex.getElementTitle().contains(" "))
+    	if (pickedVertex.getElementTitle().contains(" ") 
+    			&& pickedVertex.getElementTitle().contains("hsa"))
     	{
     		drawPickedObjectInfoStar(gl, pickedVertex);
     	}
@@ -134,36 +135,40 @@ public class GLInfoAreaRenderer {
 			return;
 		}
 		
-		gl.glColor3f(1, 1, 1);
-		GLTextUtils.renderText(gl, "ID: " +pickedVertex.getElementTitle(), 12,
-				-fHalfWidth + 0.05f, 
-				-fHalfHeight + 0.09f, -0.01f);
-
-		
-		float fLineHeight = 0.1f;
-		gl.glTranslatef(0.0f, fLineHeight, 0.0f);
-		
-		GLTextUtils.renderText(gl, "Name: " +pickedVertex.getVertexRepByIndex(0).getName(), 12,
-				-fHalfWidth + 0.05f, 
-				-fHalfHeight + 0.09f, -0.01f);		
+//		float fLineHeight = 0.1f;
+//		gl.glTranslatef(0.0f, fLineHeight, 0.0f);
+//		
+//		GLTextUtils.renderText(gl, "Name: " +pickedVertex.getVertexRepByIndex(0).getName(), 12,
+//				-fHalfWidth + 0.05f, 
+//				-fHalfHeight + 0.09f, -0.01f);		
 
 		// Mapping
-		gl.glScalef(3.0f, 3.0f, 3.0f);
     	
 		float fNodeWidth = pickedVertex.getVertexRepByIndex(0).getWidth() / 2.0f 
 			* GLPathwayManager.SCALING_FACTOR_X;
 		
+		String sElementId;
+
+		gl.glScalef(3.0f, 3.0f, 3.0f);
 		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
-		{
+		{			
+			sElementId = sLLMultipleGeneMappingID.getFirst();
+			
 			refGLPathwayManager.mapExpressionByGeneId(
 					gl, sLLMultipleGeneMappingID.removeFirst(), fNodeWidth);
 		}
 		else
 		{
+	    	sElementId = pickedVertex.getElementTitle();
 
-	    	
 	    	refGLPathwayManager.mapExpression(gl, pickedVertex, fNodeWidth);
 		}
+		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
+		
+		gl.glColor3f(1, 1, 1);
+		GLTextUtils.renderText(gl, "ID: " +sElementId, 12,
+				-fHalfWidth + 0.05f, 
+				-fHalfHeight + 0.09f, -0.01f);
 			
 		gl.glPopMatrix();
 	}

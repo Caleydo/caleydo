@@ -321,7 +321,8 @@ implements IXmlParserHandler {
    				if (attributes.getValue(iAttributeIndex).contains("-") || 
    						attributes.getValue(iAttributeIndex).contains("=") ||
    						attributes.getValue(iAttributeIndex).contains("+") ||
-						attributes.getValue(iAttributeIndex).contains("."))
+   						attributes.getValue(iAttributeIndex).contains(":") ||
+   						attributes.getValue(iAttributeIndex).contains("."))
    					iCompoundId = 0;
    				else
    	  				iCompoundId = new Integer(attributes.getValue(iAttributeIndex)); 
