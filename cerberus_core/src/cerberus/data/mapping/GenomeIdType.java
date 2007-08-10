@@ -73,8 +73,12 @@ public enum GenomeIdType
 			
 	GENE_NAME      (StorageType.STRING,
 			GenomeMappingType.NON_MAPPING,
-			"gene-name","gene pseudo name"),	
+			"gene-name","gene pseudo name"),
 			
+	GENE_SHORT_NAME(StorageType.STRING,
+			GenomeMappingType.NON_MAPPING,
+			"gene-short-name","gene pseudo short name"),
+					
 	/**
 	 * use NCBI_GENEID instead
 	 */

@@ -193,6 +193,11 @@ public enum GenomeMappingType
 			GenomeIdType.ACCESSION,
 			GenomeIdType.GENE_NAME,
 			GenomeMappingDataType.INT2STRING),
+			
+	NCBI_GENEID_2_GENE_SHORT_NAME (
+				GenomeIdType.NCBI_GENEID,
+				GenomeIdType.GENE_SHORT_NAME,
+				GenomeMappingDataType.INT2STRING),			
 					
 	NON_MAPPING(GenomeIdType.NONE,
 			GenomeIdType.NONE,
