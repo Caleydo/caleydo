@@ -13,7 +13,7 @@ import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
-import cerberus.util.colormapping.EnzymeToExpressionColorMapper;
+import cerberus.util.mapping.EnzymeToExpressionColorMapper;
 import cerberus.util.opengl.GLTextUtils;
 
 /**

@@ -66,7 +66,7 @@
 		   	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	targetId="-1"	
 		   		detail="data/GenomeData/mapping/ncbi_geneid_code_2_gene_short_name.map"	
 		   		attrib1="NCBI_GENEID_2_GENE_SHORT_NAME LUT" 
-		   		attrib2="#" 
+		   		attrib2=";" 
 		   		attrib3="1 -1" 
 		   		attrib4="NCBI_GENEID_CODE_2_NCBI_GENEID" />		 		
 

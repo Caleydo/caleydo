@@ -105,12 +105,20 @@ public class GLPathwayTextureManager {
 		
 		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * refTmpPathwayTexture.getImageWidth();
 		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * refTmpPathwayTexture.getImageHeight();				
-		
+
+//		float fTextureWidth = 8;//GLPathwayManager.SCALING_FACTOR_X * refTmpPathwayTexture.getImageWidth();
+//		float fTextureHeight = 8;//GLPathwayManager.SCALING_FACTOR_Y * refTmpPathwayTexture.getImageHeight();				
 //		int viewport[] = new int[4];
 //		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-//
+//		
+//		float fImageWidthRatio = refTmpPathwayTexture.getImageWidth() / (float)(viewport[2]-viewport[0]);
+//		float fImageHeightRatio = refTmpPathwayTexture.getImageHeight() / (float)(viewport[3]-viewport[1]);		
+//		
 //		float h = (float) (float) (viewport[3]-viewport[1]) / 
 //			(float) (viewport[2]-viewport[0]) * 4.0f;
+//		
+//		fTextureHeight = fImageHeightRatio * 2*h;
+//		fTextureWidth *= fImageWidthRatio;
 		
 		gl.glLoadName(GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS);
 				

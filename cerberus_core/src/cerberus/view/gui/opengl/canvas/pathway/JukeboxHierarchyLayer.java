@@ -149,8 +149,8 @@ public class JukeboxHierarchyLayer {
 	public void setElementVisibilityById(final boolean bVisibility,
 			final int iElementId) {
 		
-//		if (!llElementId.contains(iElementId))
-//			return;
+		if (!llElementId.contains(iElementId))
+			return;
 			
 		llElementIdVisibleState.set(llElementId.indexOf(iElementId), bVisibility);
 	}
@@ -161,5 +161,10 @@ public class JukeboxHierarchyLayer {
 //			return true;
 		
 		return llElementIdVisibleState.get(llElementId.indexOf(iElementId));
+	}
+	
+	public final int getCapacity() {
+		
+		return iCapacity;
 	}
 }

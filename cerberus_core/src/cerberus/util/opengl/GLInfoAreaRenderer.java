@@ -15,10 +15,14 @@ import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
 //import com.sun.opengl.*;
 //import com.sun.opengl.util.j2d.TextRenderer;
+import cerberus.manager.IGeneralManager;
+import cerberus.util.mapping.GeneAnnotationMapper;
 import cerberus.view.gui.opengl.canvas.pathway.GLPathwayManager;
 
 public class GLInfoAreaRenderer {
 
+	private IGeneralManager refGeneralManager;
+	
 	private float[] fArWorldCoordinatePosition;
 	
 	private float fScaleFactor = 0.0f;
@@ -31,7 +35,15 @@ public class GLInfoAreaRenderer {
 	
 	private LinkedList<String> sLLMultipleGeneMappingID;
 	
-	public GLInfoAreaRenderer(final GLPathwayManager refGLPathwayManager) {
+	private GeneAnnotationMapper geneAnnotationMapper;
+	
+	private float fHalfWidth = 0.5f;
+	private float fHalfHeight = 0.2f;
+	
+	public GLInfoAreaRenderer(final IGeneralManager refGeneralManager,
+			final GLPathwayManager refGLPathwayManager) {
+		
+		this.refGeneralManager = refGeneralManager;
 		
 		fArWorldCoordinatePosition = new float[3];
 		starEffectRenderer = new GLStarEffectRenderer();		
@@ -39,6 +51,9 @@ public class GLInfoAreaRenderer {
 		this.refGLPathwayManager = refGLPathwayManager;
 		
 		sLLMultipleGeneMappingID = new LinkedList<String>();
+
+		geneAnnotationMapper = 
+			new GeneAnnotationMapper(refGeneralManager);
 	}
 	
     
@@ -72,9 +87,6 @@ public class GLInfoAreaRenderer {
     		return;
     	
     	gl.glPushMatrix();		
-    	
-		float fHalfWidth = 0.5f;
-		float fHalfHeight = 0.2f;
 
 		float fOffsetX = 1.0f;
 		float fOffsetY = -0.5f;
@@ -141,34 +153,8 @@ public class GLInfoAreaRenderer {
 //		GLTextUtils.renderText(gl, "Name: " +pickedVertex.getVertexRepByIndex(0).getName(), 12,
 //				-fHalfWidth + 0.05f, 
 //				-fHalfHeight + 0.09f, -0.01f);		
-
-		// Mapping
-    	
-		float fNodeWidth = pickedVertex.getVertexRepByIndex(0).getWidth() / 2.0f 
-			* GLPathwayManager.SCALING_FACTOR_X;
 		
-		String sElementId;
-
-		gl.glScalef(3.0f, 3.0f, 3.0f);
-		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
-		{			
-			sElementId = sLLMultipleGeneMappingID.getFirst();
-			
-			refGLPathwayManager.mapExpressionByGeneId(
-					gl, sLLMultipleGeneMappingID.removeFirst(), fNodeWidth);
-		}
-		else
-		{
-	    	sElementId = pickedVertex.getElementTitle();
-
-	    	refGLPathwayManager.mapExpression(gl, pickedVertex, fNodeWidth);
-		}
-		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
-		
-		gl.glColor3f(1, 1, 1);
-		GLTextUtils.renderText(gl, "ID: " +sElementId, 12,
-				-fHalfWidth + 0.05f, 
-				-fHalfHeight + 0.09f, -0.01f);
+		drawMappingAnnotation(gl, pickedVertex);
 			
 		gl.glPopMatrix();
 	}
@@ -207,6 +193,45 @@ public class GLInfoAreaRenderer {
 		
 		gl.glPopMatrix();
 
+    }
+    
+    private void drawMappingAnnotation(final GL gl,
+    		final PathwayVertex pickedVertex) {
+    	
+    	
+		float fNodeWidth = pickedVertex.getVertexRepByIndex(0).getWidth() / 2.0f 
+			* GLPathwayManager.SCALING_FACTOR_X;
+		
+		String sElementId;
+
+		gl.glScalef(3.0f, 3.0f, 3.0f);
+		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+		{			
+			sElementId = sLLMultipleGeneMappingID.getFirst();
+			
+			refGLPathwayManager.mapExpressionByGeneId(
+					gl, sLLMultipleGeneMappingID.removeFirst(), fNodeWidth);
+		}
+		else
+		{
+	    	sElementId = pickedVertex.getElementTitle();
+
+	    	refGLPathwayManager.mapExpression(gl, pickedVertex, fNodeWidth);
+		}
+		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
+		
+		gl.glColor3f(1, 1, 1);
+		GLTextUtils.renderText(gl, "ID: " +sElementId, 12,
+				-fHalfWidth + 0.05f, 
+				-fHalfHeight + 0.09f, -0.01f);
+		
+		if (!pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+			return;
+		
+		GLTextUtils.renderText(gl, "Gene short name: " 
+				+geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId), 12,
+				-fHalfWidth + 0.05f, 
+				-fHalfHeight + 0.35f, -0.01f);	
     }
     
     public void convertWindowCoordinatesToWorldCoordinates(final GL gl, 

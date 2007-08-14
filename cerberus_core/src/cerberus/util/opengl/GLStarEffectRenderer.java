@@ -54,7 +54,7 @@ public class GLStarEffectRenderer {
 		float[] fArPoint = new float[2];
 
 		gl.glLineWidth(3);
-		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
+		gl.glColor4f(0.2f, 0.2f, 0.2f, 1f);
 		
 		float[] fArCenterPoint = alStarPoints.get(0);
 
