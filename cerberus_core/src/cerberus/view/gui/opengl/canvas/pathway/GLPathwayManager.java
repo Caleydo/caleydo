@@ -218,10 +218,10 @@ public class GLPathwayManager {
 		gl.glLineWidth(3);
 		
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, -0.02f);
-		gl.glVertex3f(fNodeWidth, fNodeHeight, -0.02f);
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, -0.02f);
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -0.02f);		
+		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
+		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.02f);
+		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.02f);
+		gl.glVertex3f(-fNodeWidth, -fNodeHeight, 0.02f);		
         gl.glEnd();
 	}
 	
@@ -269,7 +269,7 @@ public class GLPathwayManager {
 		
 		String sShapeType = vertexRep.getShapeType();
 		
-		gl.glTranslatef(fCanvasXPos, fCanvasYPos, 0);
+		gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 		// Pathway link
 		if (sShapeType.equals("roundrectangle"))
@@ -327,7 +327,7 @@ public class GLPathwayManager {
 			}
 		}
 		
-		gl.glTranslatef(-fCanvasXPos, -fCanvasYPos, 0);
+		gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		
 		// Draw Frame
 		
@@ -371,11 +371,11 @@ public class GLPathwayManager {
         		float fCanvasXPos = (vertexRep.getXPosition() * SCALING_FACTOR_X);
         		float fCanvasYPos =	(vertexRep.getYPosition() * SCALING_FACTOR_Y);
  
-        		gl.glTranslated(fCanvasXPos - fNodeWidth + 0.01f, fCanvasYPos + 0.01f, 0);
+        		gl.glTranslated(fCanvasXPos - fNodeWidth + 0.01f, -fCanvasYPos - 0.01f, 0);
         		gl.glColor3f(0, 0 , 0);
-    			GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 10, 0, 0, -0.03f, fNodeWidth, fNodeHeight);
+    			GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 10, 0, 0, 0.03f, fNodeWidth, fNodeHeight);
     			//GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0, -0.03f);
-    			gl.glTranslated(-fCanvasXPos + fNodeWidth - 0.01f, -fCanvasYPos - 0.01f, 0);      	
+    			gl.glTranslated(-fCanvasXPos + fNodeWidth - 0.01f, fCanvasYPos + 0.01f, 0);      	
         	}
         }  
 	}

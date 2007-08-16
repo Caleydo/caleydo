@@ -124,13 +124,13 @@ public class GLPathwayTextureManager {
 				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
-		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);			  
+		gl.glVertex3f(0.0f, 0.0f, 0.0f);			  
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
-		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);			 
+		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);			 
 		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
+		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
-		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
 		gl.glEnd();	
 
 		refTmpPathwayTexture.disable();
@@ -153,5 +153,10 @@ public class GLPathwayTextureManager {
 		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);; 				
 		gl.glEnd();
+	}
+	
+	public Texture getTextureByPathwayId(final int iPathwayId) {
+		
+		return refHashPathwayIdToTexture.get(iPathwayId);
 	}
 }

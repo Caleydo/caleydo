@@ -1,6 +1,6 @@
 package cerberus.util.opengl;
 
-//import java.awt.Font;
+import java.awt.Font;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
@@ -13,8 +13,8 @@ import com.sun.org.apache.bcel.internal.generic.SALOAD;
 
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
-//import com.sun.opengl.*;
-//import com.sun.opengl.util.j2d.TextRenderer;
+import com.sun.opengl.*;
+import com.sun.opengl.util.j2d.TextRenderer;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.mapping.GeneAnnotationMapper;
 import cerberus.view.gui.opengl.canvas.pathway.GLPathwayManager;
@@ -29,7 +29,7 @@ public class GLInfoAreaRenderer {
 
 	private GLStarEffectRenderer starEffectRenderer;
 	
-	private float fZValue = -1f;
+	private float fZValue = 1f;
 	
 	private GLPathwayManager refGLPathwayManager;
 	
@@ -89,7 +89,7 @@ public class GLInfoAreaRenderer {
     	gl.glPushMatrix();		
 
 		float fOffsetX = 1.0f;
-		float fOffsetY = -0.5f;
+		float fOffsetY = 0.5f;
 
 		gl.glTranslatef(fArWorldCoordinatePosition[0], fArWorldCoordinatePosition[1], fZValue);
 				
@@ -131,28 +131,11 @@ public class GLInfoAreaRenderer {
 		gl.glVertex3f(-fHalfWidth, fHalfHeight, 0);
 		gl.glEnd();
 		
-//		TextRenderer textRenderer = new TextRenderer(
-//				new Font("Arial", Font.BOLD, 12), true);
-//		textRenderer.begin3DRendering();
-//		textRenderer.setColor(1,1,1,1);
-//		
-//		textRenderer.draw3D("ID: " +pickedVertex.getElementTitle(), 
-//				(float)wcoord[0] + 0.05f, (float)wcoord[1] + 0.1f, fZValue - 0.01f, 0.01f);
-//		
-//		textRenderer.end3DRendering();
-		
 		if (fScaleFactor < 0.8f)
 		{
 			gl.glPopMatrix();
 			return;
-		}
-		
-//		float fLineHeight = 0.1f;
-//		gl.glTranslatef(0.0f, fLineHeight, 0.0f);
-//		
-//		GLTextUtils.renderText(gl, "Name: " +pickedVertex.getVertexRepByIndex(0).getName(), 12,
-//				-fHalfWidth + 0.05f, 
-//				-fHalfHeight + 0.09f, -0.01f);		
+		}	
 		
 		drawMappingAnnotation(gl, pickedVertex);
 			
@@ -198,40 +181,65 @@ public class GLInfoAreaRenderer {
     private void drawMappingAnnotation(final GL gl,
     		final PathwayVertex pickedVertex) {
     	
+		TextRenderer textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 12), true);
+		textRenderer.begin3DRendering();
+		//textRenderer.setColor(0, 0, 0, 1);
     	
 		float fNodeWidth = pickedVertex.getVertexRepByIndex(0).getWidth() / 2.0f 
 			* GLPathwayManager.SCALING_FACTOR_X;
 		
 		String sElementId;
+		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+			sElementId = sLLMultipleGeneMappingID.getFirst();
+		else
+	    	sElementId = pickedVertex.getElementTitle();
+		
+		gl.glColor3f(1, 1, 1);
+//		GLTextUtils.renderText(gl, "ID: " +sElementId, 12,
+//				-fHalfWidth + 0.05f, 
+//				-fHalfHeight + 0.09f, -0.01f);
+		textRenderer.draw3D("ID: " +sElementId,
+				fArWorldCoordinatePosition[0] +fHalfWidth + 0.05f, 
+				fArWorldCoordinatePosition[1] +fHalfHeight + 0.09f, -0.01f,
+				0.01f);
+		
+		String sTmp = "";
+		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))		
+		{
+			sTmp = "Gene short name:" +geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId);
+		}
+		else if (pickedVertex.getVertexType().equals(PathwayVertexType.map))
+		{
+			sTmp = pickedVertex.getVertexRepByIndex(0).getName();
+			
+			// Remove "TITLE: "
+			if (sTmp.contains("TITLE:"))
+				sTmp = sTmp.substring(6);
+			
+			sTmp = "Pathway name: " + sTmp;
+		}
 
+		textRenderer.draw3D(sTmp,
+				fArWorldCoordinatePosition[0]+fHalfWidth + 0.05f, 
+				fArWorldCoordinatePosition[1]+fHalfHeight + 0.20f, -0.01f,
+				0.01f);
+
+		// Render mapping if available
 		gl.glScalef(3.0f, 3.0f, 3.0f);
+		gl.glTranslated(0, 0.035f, 0);
 		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
 		{			
-			sElementId = sLLMultipleGeneMappingID.getFirst();
-			
 			refGLPathwayManager.mapExpressionByGeneId(
 					gl, sLLMultipleGeneMappingID.removeFirst(), fNodeWidth);
 		}
-		else
-		{
-	    	sElementId = pickedVertex.getElementTitle();
-
-	    	refGLPathwayManager.mapExpression(gl, pickedVertex, fNodeWidth);
-		}
+//		else
+//		{
+//	    	refGLPathwayManager.mapExpression(gl, pickedVertex, fNodeWidth);
+//		}
 		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
 		
-		gl.glColor3f(1, 1, 1);
-		GLTextUtils.renderText(gl, "ID: " +sElementId, 12,
-				-fHalfWidth + 0.05f, 
-				-fHalfHeight + 0.09f, -0.01f);
-		
-		if (!pickedVertex.getVertexType().equals(PathwayVertexType.gene))
-			return;
-		
-		GLTextUtils.renderText(gl, "Gene short name: " 
-				+geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId), 12,
-				-fHalfWidth + 0.05f, 
-				-fHalfHeight + 0.35f, -0.01f);	
+		textRenderer.end3DRendering();
     }
     
     public void convertWindowCoordinatesToWorldCoordinates(final GL gl, 
