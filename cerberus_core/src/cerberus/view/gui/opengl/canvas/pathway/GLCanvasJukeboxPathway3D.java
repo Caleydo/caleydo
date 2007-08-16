@@ -310,15 +310,16 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()), rot.getX(), rot
 				.getY(), rot.getZ());
 
-		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-				fTextureTransparency, true);
-
 		float tmp = refGLPathwayTextureManager
 				.getTextureByPathwayId(iPathwayId).getImageHeight()
 				* GLPathwayManager.SCALING_FACTOR_Y;
 		gl.glTranslatef(0, tmp, 0);
 		refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+		gl.glTranslatef(0, -tmp, 0);
 
+		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+				fTextureTransparency, true);
+		
 		gl.glPopMatrix();
 	}
 
@@ -351,6 +352,13 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			Vec3f scale = transform.getScale();
 			gl.glScalef(scale.x(), scale.y(), scale.z());
 
+			float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
+					iPathwayId).getImageHeight()
+					* GLPathwayManager.SCALING_FACTOR_Y;
+			gl.glTranslatef(0, tmp, 0);
+			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+			gl.glTranslatef(0, -tmp, 0);
+
 			if (bShowPathwayTexture)
 			{
 				if (!pathwayUnderInteractionLayer.getElementList().isEmpty()
@@ -362,13 +370,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
 							fTextureTransparency, false);
 			}
-
-			float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
-					iPathwayId).getImageHeight()
-					* GLPathwayManager.SCALING_FACTOR_Y;
-			gl.glTranslatef(0, tmp, 0);
-			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
-
+			
 			gl.glPopMatrix();
 		}
 	}
@@ -466,19 +468,19 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 			if (alMagnificationFactor.get(iPathwayIndex) == 3)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 18, 0, -0.06f, 1);
-				fYPos = -0.15f;
+				GLTextUtils.renderText(gl, sRenderText, 18, 0, 0.06f, 1);
+				fYPos = 0.15f;
 			} else if (alMagnificationFactor.get(iPathwayIndex) == 2)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 12, 0, -0.04f, 1);
-				fYPos = -0.1f;
+				GLTextUtils.renderText(gl, sRenderText, 12, 0, 0.04f, 1);
+				fYPos = 0.1f;
 			} else if (alMagnificationFactor.get(iPathwayIndex) == 1)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 10, 0, -0.02f, 1);
-				fYPos = -0.07f;
+				GLTextUtils.renderText(gl, sRenderText, 10, 0, 0.02f, 1);
+				fYPos = 0.07f;
 			} else if (alMagnificationFactor.get(iPathwayIndex) == 0)
 			{
-				fYPos = -0.02f;
+				fYPos = 0.02f;
 
 				gl.glColor3f(0, 0, 0);
 
@@ -531,7 +533,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 				fPathwayPoolHeight += 0.02;
 			}
 
-			transform.setTranslation(new Vec3f(-4.0f, fPathwayPoolHeight, -7));
+			transform.setTranslation(new Vec3f(-4.0f, -fPathwayPoolHeight, -7));
 		}
 	}
 
@@ -752,7 +754,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		if (!arSlerpActions.isEmpty())
 			return;
 
-		System.out.println("Pick ID: " + iPickedObjectId);
+		//System.out.println("Pick ID: " + iPickedObjectId);
 
 		// Check if picked object a non-pathway object (like pathway pool lines,
 		// navigation handles, etc.)

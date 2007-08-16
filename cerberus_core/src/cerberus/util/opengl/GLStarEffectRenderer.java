@@ -64,7 +64,7 @@ public class GLStarEffectRenderer {
 			fArPoint = alStarPoints.get(iVertexIndex);
 
 			gl.glVertex3f(fArCenterPoint[0], fArCenterPoint[1], 0f);
-			gl.glVertex3f(fArPoint[0], fArPoint[1], -1f);
+			gl.glVertex3f(fArPoint[0], fArPoint[1], 1f);
 		}
 		gl.glEnd();	
 	}

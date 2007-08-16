@@ -37,8 +37,8 @@ public class GLInfoAreaRenderer {
 	
 	private GeneAnnotationMapper geneAnnotationMapper;
 	
-	private float fHalfWidth = 0.5f;
-	private float fHalfHeight = 0.2f;
+	private float fHeight = 0.4f;
+	private float fWidth = 1.0f;
 	
 	public GLInfoAreaRenderer(final IGeneralManager refGeneralManager,
 			final GLPathwayManager refGLPathwayManager) {
@@ -87,58 +87,62 @@ public class GLInfoAreaRenderer {
     		return;
     	
     	gl.glPushMatrix();		
-
-		float fOffsetX = 1.0f;
-		float fOffsetY = 0.5f;
-
+		
 		gl.glTranslatef(fArWorldCoordinatePosition[0], fArWorldCoordinatePosition[1], fZValue);
 				
     	if (bDrawDisplaced)
     	{   
+    		float fOffsetX = 1.0f;
+    		float fOffsetY = 1.0f;
+    		
     		gl.glScalef(fScaleFactor, fScaleFactor, fScaleFactor);
         	
 			gl.glLineWidth(2);
 			gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
 			gl.glBegin(GL.GL_TRIANGLES);
 			gl.glVertex3f(0, 0, -fZValue);
-			gl.glVertex3f(fOffsetX - fHalfWidth, fOffsetY + fHalfHeight, 0);
-			gl.glVertex3f(fOffsetX - fHalfWidth, fOffsetY - fHalfHeight, 0);
+			gl.glVertex3f(fOffsetX, fOffsetY - fHeight, 0);
+			gl.glVertex3f(fOffsetX, fOffsetY, 0);
 			gl.glEnd();
 			
 			gl.glColor3f(0.2f, 0.2f, 0.2f);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(0, 0, -fZValue);
-			gl.glVertex3f(fOffsetX - fHalfWidth, fOffsetY + fHalfHeight, 0);
-			gl.glVertex3f(fOffsetX - fHalfWidth, fOffsetY - fHalfHeight, 0);
+			gl.glVertex3f(fOffsetX, fOffsetY - fHeight, 0);
+			gl.glVertex3f(fOffsetX, fOffsetY, 0);
 			gl.glEnd();
 			
 			gl.glTranslatef(fOffsetX, fOffsetY, 0.0f);
     	}
 		
+		if (fScaleFactor < 1.0f)
+		{
+			gl.glPopMatrix();
+			return;
+		}		
+		
+		// FIXME: Workflow is not optimal
+		// Do composition of info label string only once and store them (heading + text)
+		float fMaxWidth = calculateInfoAreaWidth(pickedVertex);
+
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(-fHalfWidth, -fHalfHeight, 0);
-		gl.glVertex3f(fHalfWidth, -fHalfHeight, 0);
-		gl.glVertex3f(fHalfWidth, fHalfHeight, 0);
-		gl.glVertex3f(-fHalfWidth, fHalfHeight, 0);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(fMaxWidth, 0, 0);
+		gl.glVertex3f(fMaxWidth, -fHeight, 0);
+		gl.glVertex3f(0, -fHeight, 0);
 		gl.glEnd();
 		
 		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(-fHalfWidth, -fHalfHeight, 0);
-		gl.glVertex3f(fHalfWidth, -fHalfHeight, 0);
-		gl.glVertex3f(fHalfWidth, fHalfHeight, 0);
-		gl.glVertex3f(-fHalfWidth, fHalfHeight, 0);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(fMaxWidth, 0, 0);
+		gl.glVertex3f(fMaxWidth, -fHeight, 0);
+		gl.glVertex3f(0, -fHeight, 0);
 		gl.glEnd();
 		
-		if (fScaleFactor < 0.8f)
-		{
-			gl.glPopMatrix();
-			return;
-		}	
-		
 		drawMappingAnnotation(gl, pickedVertex);
-			
+					
 		gl.glPopMatrix();
 	}
     
@@ -169,25 +173,71 @@ public class GLInfoAreaRenderer {
 		while(iterStarPoints.hasNext()) 
 		{
 			fArTmpPosition = iterStarPoints.next();
-			gl.glTranslatef(fArTmpPosition[0], fArTmpPosition[1], 0);				
+			gl.glTranslatef(fArTmpPosition[0]-fWidth/2f, 
+					fArTmpPosition[1]+fHeight/2f, 0);				
 			drawPickedObjectInfoSingle(gl, pickedVertex, false);
-			gl.glTranslatef(-fArTmpPosition[0], -fArTmpPosition[1], 0);
+			gl.glTranslatef(-fArTmpPosition[0]+fWidth/2f, 
+					-fArTmpPosition[1]-fHeight/2f, 0);
 		}
 		
 		gl.glPopMatrix();
 
     }
     
+    private float calculateInfoAreaWidth(final PathwayVertex pickedVertex) {
+    	
+		TextRenderer textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 16), false);
+		textRenderer.begin3DRendering();
+		
+		float fMaxWidth = 0.0f;
+		String sElementId;
+		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+			sElementId = sLLMultipleGeneMappingID.getFirst();
+		else
+	    	sElementId = pickedVertex.getElementTitle();
+		
+		// Save text length as new width if it bigger than previous one
+		float fCurrentWidth = 2.2f * (float)textRenderer.getBounds("ID: " +sElementId).getWidth() * GLPathwayManager.SCALING_FACTOR_X;
+		if (fMaxWidth < fCurrentWidth)
+			fMaxWidth = fCurrentWidth;
+
+		String sTmp = "";
+		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))		
+		{
+			sTmp = "Gene short name:" +geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId);
+		}
+		else if (pickedVertex.getVertexType().equals(PathwayVertexType.map))
+		{
+			sTmp = pickedVertex.getVertexRepByIndex(0).getName();
+			
+			// Remove "TITLE: "
+			if (sTmp.contains("TITLE:"))
+				sTmp = sTmp.substring(6);
+			
+			sTmp = "Pathway name: " + sTmp;
+		}
+		
+		// Save text length as new width if it bigger than previous one
+		fCurrentWidth = 2.2f * (float)textRenderer.getBounds(sTmp).getWidth() * GLPathwayManager.SCALING_FACTOR_X;
+		if (fMaxWidth < fCurrentWidth)
+			fMaxWidth = fCurrentWidth;
+		
+		textRenderer.end3DRendering();
+		
+    	return fMaxWidth;
+    }
+    
     private void drawMappingAnnotation(final GL gl,
     		final PathwayVertex pickedVertex) {
     	
 		TextRenderer textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 12), true);
+				Font.BOLD, 16), false);
 		textRenderer.begin3DRendering();
-		//textRenderer.setColor(0, 0, 0, 1);
     	
-		float fNodeWidth = pickedVertex.getVertexRepByIndex(0).getWidth() / 2.0f 
-			* GLPathwayManager.SCALING_FACTOR_X;
+		float fLineHeight = 2.3f * (float)textRenderer.getBounds("A").getHeight() * GLPathwayManager.SCALING_FACTOR_Y;
+		float fXOffset = 0.03f;
+		float fYOffset = -0.03f;
 		
 		String sElementId;
 		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
@@ -200,9 +250,10 @@ public class GLInfoAreaRenderer {
 //				-fHalfWidth + 0.05f, 
 //				-fHalfHeight + 0.09f, -0.01f);
 		textRenderer.draw3D("ID: " +sElementId,
-				fArWorldCoordinatePosition[0] +fHalfWidth + 0.05f, 
-				fArWorldCoordinatePosition[1] +fHalfHeight + 0.09f, -0.01f,
-				0.01f);
+				fXOffset, 
+				fYOffset - fLineHeight, 
+				0.01f,
+				0.005f);  // scale factor
 		
 		String sTmp = "";
 		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))		
@@ -219,17 +270,22 @@ public class GLInfoAreaRenderer {
 			
 			sTmp = "Pathway name: " + sTmp;
 		}
-
 		textRenderer.draw3D(sTmp,
-				fArWorldCoordinatePosition[0]+fHalfWidth + 0.05f, 
-				fArWorldCoordinatePosition[1]+fHalfHeight + 0.20f, -0.01f,
-				0.01f);
-
+				fXOffset, 
+				fYOffset - 2*fLineHeight, 
+				0.01f,
+				0.005f);  // scale factor
+		
+		textRenderer.end3DRendering();
+		
 		// Render mapping if available
+		gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, 0.02f);
 		gl.glScalef(3.0f, 3.0f, 3.0f);
-		gl.glTranslated(0, 0.035f, 0);
 		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
-		{			
+		{					
+			float fNodeWidth = pickedVertex.getVertexRepByIndex(0).getWidth() / 2.0f 
+				* GLPathwayManager.SCALING_FACTOR_X;
+			
 			refGLPathwayManager.mapExpressionByGeneId(
 					gl, sLLMultipleGeneMappingID.removeFirst(), fNodeWidth);
 		}
@@ -238,8 +294,6 @@ public class GLInfoAreaRenderer {
 //	    	refGLPathwayManager.mapExpression(gl, pickedVertex, fNodeWidth);
 //		}
 		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
-		
-		textRenderer.end3DRendering();
     }
     
     public void convertWindowCoordinatesToWorldCoordinates(final GL gl, 
