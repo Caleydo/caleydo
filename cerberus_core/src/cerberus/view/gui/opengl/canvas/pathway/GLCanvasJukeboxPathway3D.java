@@ -399,21 +399,29 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			{
 				if ((iPathwayIndex - 2 >= 0)
 						&& (alMagnificationFactor.get(iPathwayIndex - 2) < 1))
+				{
 					alMagnificationFactor.set(iPathwayIndex - 2, 1);
+				}
 
 				if ((iPathwayIndex - 1 >= 0)
 						&& (alMagnificationFactor.get(iPathwayIndex - 1) < 2))
+				{
 					alMagnificationFactor.set(iPathwayIndex - 1, 2);
+				}
 
 				alMagnificationFactor.set(iPathwayIndex, 3);
 
 				if ((iPathwayIndex + 1 < alMagnificationFactor.size())
 						&& (alMagnificationFactor.get(iPathwayIndex + 1) < 2))
+				{
 					alMagnificationFactor.set(iPathwayIndex + 1, 2);
+				}
 
 				if ((iPathwayIndex + 2 < alMagnificationFactor.size())
 						&& (alMagnificationFactor.get(iPathwayIndex + 2) < 1))
+				{
 					alMagnificationFactor.set(iPathwayIndex + 2, 1);
+				}
 			} else if (pathwayLayeredLayer.containsElement(iPathwayId)
 					|| pathwayUnderInteractionLayer.containsElement(iPathwayId))
 			{
@@ -468,15 +476,15 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 			if (alMagnificationFactor.get(iPathwayIndex) == 3)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 18, 0, 0.06f, 1);
+				GLTextUtils.renderText(gl, sRenderText, 18, 0, 0.06f, 0);
 				fYPos = 0.15f;
 			} else if (alMagnificationFactor.get(iPathwayIndex) == 2)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 12, 0, 0.04f, 1);
+				GLTextUtils.renderText(gl, sRenderText, 12, 0, 0.04f, 0);
 				fYPos = 0.1f;
 			} else if (alMagnificationFactor.get(iPathwayIndex) == 1)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 10, 0, 0.02f, 1);
+				GLTextUtils.renderText(gl, sRenderText, 10, 0, 0.02f, 0);
 				fYPos = 0.07f;
 			} else if (alMagnificationFactor.get(iPathwayIndex) == 0)
 			{
@@ -1058,6 +1066,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
 
+		refGLPathwayManager.clearOldPickingIDs();
+		
 		// Update display list if something changed
 		// Rebuild display lists for visible pathways in layered view
 		Iterator<Integer> iterVisiblePathway = pathwayLayeredLayer

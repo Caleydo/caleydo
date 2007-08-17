@@ -8,12 +8,8 @@ import java.util.StringTokenizer;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import com.sun.org.apache.bcel.internal.generic.IALOAD;
-import com.sun.org.apache.bcel.internal.generic.SALOAD;
-
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
-import com.sun.opengl.*;
 import com.sun.opengl.util.j2d.TextRenderer;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.mapping.GeneAnnotationMapper;
@@ -92,8 +88,8 @@ public class GLInfoAreaRenderer {
 				
     	if (bDrawDisplaced)
     	{   
-    		float fOffsetX = 1.0f;
-    		float fOffsetY = 1.0f;
+    		float fOffsetX = 0.5f;
+    		float fOffsetY = 0.7f;
     		
     		gl.glScalef(fScaleFactor, fScaleFactor, fScaleFactor);
         	

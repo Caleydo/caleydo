@@ -37,7 +37,7 @@ public class GLPathwayManager {
 	
 	private PathwayRenderStyle refRenderStyle;
 
-	private boolean bEnableGeneMapping = true;
+	private boolean bEnableGeneMapping = false;
 	
 	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
 	
@@ -468,13 +468,9 @@ public class GLPathwayManager {
 		return refHashPickID2VertexRep.get(iPickID);
 	}
 	
-//	public void clearOldPickingIDs(final GL gl) {
-//		
-//		//gl.glDeleteLists(GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS, refHashPickID2VertexRep.size());
-//		refHashPickID2VertexRep.clear();
-//		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS;
-//		
-////		gl.glInitNames();
-////		gl.glPushName(0);
-//	}
+	public void clearOldPickingIDs() {
+		
+		refHashPickID2VertexRep.clear();
+		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS;
+	}
 }

@@ -81,7 +81,7 @@ public class GLTextUtils {
 		{		
 			if (showText.length() <= iMaxLineChars)
 			{
-				renderText(gl, showText, iSize, fx, fy + iLineIndex * fLineHeight, fz);
+				renderText(gl, showText, iSize, fx, fy - iLineIndex * fLineHeight, fz);
 				showText = "";
 			}
 			else
@@ -91,7 +91,7 @@ public class GLTextUtils {
 				if (sTmpText.contains(" "))
 					sTmpText = sTmpText.substring(0, sTmpText.lastIndexOf(' '));
 				
-				renderText(gl, sTmpText, iSize, fx, fy + iLineIndex * fLineHeight, fz);
+				renderText(gl, sTmpText, iSize, fx, fy - iLineIndex * fLineHeight, fz);
 				
 				// store rest for next line
 				showText = showText.substring(sTmpText.length(), showText.length());	
