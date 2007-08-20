@@ -20,15 +20,17 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
+import cerberus.data.pathway.Pathway;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.data.pathway.element.PathwayVertexType;
-import cerberus.data.pathway.Pathway;
 import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
+import cerberus.util.opengl.GLDragAndDrop;
 import cerberus.util.opengl.GLInfoAreaRenderer;
+import cerberus.util.opengl.GLPathwayMemoPad;
 import cerberus.util.opengl.GLTextUtils;
 import cerberus.util.slerp.Slerp;
 import cerberus.util.slerp.SlerpAction;
@@ -48,6 +50,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		implements IMediatorReceiver, IMediatorSender {
 
 	public static final int MAX_LOADED_PATHWAYS = 300;
+	public static final int MEMO_PAD_PICKING_ID = 301;
+	public static final int FREE_PICKING_ID_RANGE_START = 400;
 
 	public static final String TICK_SOUND = "data/sounds/tick.wav";
 
@@ -58,6 +62,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 	private boolean bIsMouseOverPickingEvent = false;
 
 	private boolean bShowPathwayTexture = true;
+	
+	private boolean bMouseOverMemoPad = false;
 
 	private int iMouseOverPickedPathwayId = -1;
 
@@ -97,6 +103,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 	 */
 	private HashMap<Integer, Integer> refHashPathwayContainingSelectedVertex2VertexCount;
 
+	private GLPathwayMemoPad memoPad;
+	
+	private GLDragAndDrop dragAndDrop;
+	
 	/**
 	 * Constructor
 	 * 
@@ -130,8 +140,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		pathwayPoolLayer.setChildLayer(pathwayLayeredLayer);
 
 		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f, -2f,
-				0f));
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f, -2.8f,0f));
 		transformPathwayUnderInteraction.setScale(new Vec3f(1.8f, 1.8f, 1.8f));
 		transformPathwayUnderInteraction.setRotation(new Rotf(0, 0, 0, 0));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
@@ -142,6 +151,11 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				refGLPathwayManager);
+		
+		memoPad = new GLPathwayMemoPad(refGLPathwayManager, 
+				refGLPathwayTextureManager);
+		
+		dragAndDrop = new GLDragAndDrop();
 	}
 
 	/*
@@ -217,6 +231,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		renderPathwayPool(gl);
 		renderPathwayLayered(gl);
 		renderPathwayUnderInteraction(gl);
+		
+		memoPad.renderMemoPad(gl);
 
 		doSlerpActions(gl);
 	}
@@ -647,7 +663,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 		Point pickPoint = null;
 
-		if (pickingTriggerMouseAdapter.wasMousePressed())
+		//boolean bMouseReleased = pickingTriggerMouseAdapter.wasMouseReleased();
+		if (pickingTriggerMouseAdapter.wasMousePressed() || pickingTriggerMouseAdapter.wasMouseDragged())
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			bIsMouseOverPickingEvent = false;
@@ -658,19 +675,33 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			// Restart timer
 			fLastMouseMovedTimeStamp = System.nanoTime();
 			bIsMouseOverPickingEvent = true;
-		} else if (bIsMouseOverPickingEvent == true
-				&& System.nanoTime() - fLastMouseMovedTimeStamp >= 0.0)// *
-																		// 1e9)
+		} 
+		else if (bIsMouseOverPickingEvent == true
+				&& System.nanoTime() - fLastMouseMovedTimeStamp >= 0)// 1e9)
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			fLastMouseMovedTimeStamp = System.nanoTime();
 		}
-
+		
 		// Check if an object was picked
 		if (pickPoint != null)
 		{
 			pickObjects(gl, pickPoint);
 			bIsMouseOverPickingEvent = false;
+		}
+		
+		// Check if a drag&drop action was performed
+		if (bMouseOverMemoPad && dragAndDrop.isDragActionRunning()) 
+		{
+			if (dragAndDrop.getDraggedObjectedId() != -1)
+				memoPad.addPathwayToMemoPad(dragAndDrop.getDraggedObjectedId());
+			
+			dragAndDrop.stopDragAction();			
+		}
+		// Stop drag and drop action if mouse isn't released over the memo pad area.
+		else if (!bMouseOverMemoPad)
+		{
+			dragAndDrop.stopDragAction();
 		}
 	}
 
@@ -758,11 +789,11 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			return;
 		}
 
-		// Do not handle picking if a slerp action is in progress
-		if (!arSlerpActions.isEmpty())
-			return;
-
-		//System.out.println("Pick ID: " + iPickedObjectId);
+//		// Do not handle picking if a slerp action is in progress
+//		if (!arSlerpActions.isEmpty())
+//			return;
+		
+		System.out.println("Pick ID: " + iPickedObjectId);
 
 		// Check if picked object a non-pathway object (like pathway pool lines,
 		// navigation handles, etc.)
@@ -785,18 +816,31 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 				return;
 			}
-
+			
 			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
+			
+//			// Just for testing
+//			memoPad.addPathwayToMemoPad(iPathwayId);
 
 			return;
-		} else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is
-															// just a pathway
-															// texture -> do
-															// nothing
+		} 
+		else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is
+			// just a pathway
+			// texture -> do
+			// nothing
 		{
 			return;
 		}
-
+		
+		if (iPickedObjectId == MEMO_PAD_PICKING_ID)
+		{
+			bMouseOverMemoPad = true;
+		}
+		else
+		{
+			bMouseOverMemoPad = false;
+		}
+		
 		refPickedVertexRep = refGLPathwayManager
 				.getVertexRepByPickID(iPickedObjectId);
 
@@ -846,6 +890,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			}
 
 			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
+			
+			// Just for testing!
+			dragAndDrop.startDragAction();
+			dragAndDrop.setDraggedObjectId(iPathwayId);
 
 			return;
 		} else if (refPickedVertexRep.getVertex().getVertexType().equals(

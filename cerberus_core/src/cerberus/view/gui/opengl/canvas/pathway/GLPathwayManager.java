@@ -33,7 +33,7 @@ public class GLPathwayManager {
 	private int iHighlightedEnzymeNodeDisplayListId = -1;
 	
 	// First 200 IDs are reserved for picking of non pathway objects in the scene
-	private int iUniqueObjectPickId = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS;
+	private int iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
 	
 	private PathwayRenderStyle refRenderStyle;
 
@@ -471,6 +471,6 @@ public class GLPathwayManager {
 	public void clearOldPickingIDs() {
 		
 		refHashPickID2VertexRep.clear();
-		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS;
+		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
 	}
 }

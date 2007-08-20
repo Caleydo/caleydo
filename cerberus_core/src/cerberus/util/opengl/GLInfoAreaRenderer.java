@@ -36,6 +36,8 @@ public class GLInfoAreaRenderer {
 	private float fHeight = 0.4f;
 	private float fWidth = 1.0f;
 	
+	private TextRenderer textRenderer;
+	
 	public GLInfoAreaRenderer(final IGeneralManager refGeneralManager,
 			final GLPathwayManager refGLPathwayManager) {
 		
@@ -50,6 +52,9 @@ public class GLInfoAreaRenderer {
 
 		geneAnnotationMapper = 
 			new GeneAnnotationMapper(refGeneralManager);
+		
+		textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 16), false);
 	}
 	
     
@@ -182,8 +187,6 @@ public class GLInfoAreaRenderer {
     
     private float calculateInfoAreaWidth(final PathwayVertex pickedVertex) {
     	
-		TextRenderer textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 16), false);
 		textRenderer.begin3DRendering();
 		
 		float fMaxWidth = 0.0f;
@@ -227,8 +230,6 @@ public class GLInfoAreaRenderer {
     private void drawMappingAnnotation(final GL gl,
     		final PathwayVertex pickedVertex) {
     	
-		TextRenderer textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 16), false);
 		textRenderer.begin3DRendering();
     	
 		float fLineHeight = 2.3f * (float)textRenderer.getBounds("A").getHeight() * GLPathwayManager.SCALING_FACTOR_Y;
