@@ -24,7 +24,7 @@ import org.geneview.graph.IGraphComponent;
  * @author Michael Kalkusch
  *
  */
-public class GGraphContainer <GraphComponent extends IGraphComponent,GraphEnum> {
+public class GraphGenericContainer <GraphComponent extends IGraphComponent,GraphEnum> {
 
 	private static final int iInitialSizeHierarchyArray = 4;
 	
@@ -38,13 +38,13 @@ public class GGraphContainer <GraphComponent extends IGraphComponent,GraphEnum> 
 	 * @param colGraphEnum Collection of all Enumeration that will be used; Skip type NONE or GRAPH_NONE
 	 * @param iInitialSizeGraphComponents specify initial size of ArrayList<GraphComponent>
 	 */
-	public GGraphContainer( Collection <GraphEnum> colGraphEnum, int iInitialSizeGraphComponents ) {
+	public GraphGenericContainer( Collection <GraphEnum> colGraphEnum, int iInitialSizeGraphComponents ) {
 		
-		assert colGraphEnum != null : "Can not create a GGraphContainer with no GraphEnum elements and empty Collection";
+		assert colGraphEnum != null : "Can not create a GraphGenericContainer with no GraphEnum elements and empty Collection";
 		
 		/* count number of Enum's to be registered */
 		int iCountGraphEnumItems = colGraphEnum.size();
-		assert iCountGraphEnumItems > 0 : "can not create a GGraphContainer with no GraphEnum elements";
+		assert iCountGraphEnumItems > 0 : "can not create a GraphGenericContainer with no GraphEnum elements";
 		
 		/* create new HashMap */
 		type2ArrayList = new HashMap <GraphEnum, ArrayList<GraphComponent> > (iCountGraphEnumItems);
@@ -96,7 +96,7 @@ public class GGraphContainer <GraphComponent extends IGraphComponent,GraphEnum> 
 			/** Handle case if type2ArrayList.get(key) returns null */
 			
 			throw new GraphRuntimeException( " key: " + key.toString() + 
-					" is not registered. Check type and Constructor GGraphContainer(..,..); ERROR= " +
+					" is not registered. Check type and Constructor GraphGenericContainer(..,..); ERROR= " +
 					npe.toString() );
 		}
 	}

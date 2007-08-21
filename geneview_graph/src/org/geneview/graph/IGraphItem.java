@@ -61,10 +61,25 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	 * 
 	 * Note, if prop == EGraphItemProperty.NONE or null a GraphRuntimeException is thrown
 	 * 
+	 * @see org.geneview.graph.IGraphItem#addItemDoubleLinked(IGraphItem, EGraphItemProperty)
+	 * 
 	 * @param item new IGraphItem to be added
 	 * @param prop property linked to the added item
 	 */
 	public void addItem(IGraphItem item, EGraphItemProperty prop) throws GraphRuntimeException;
+	
+	/**
+	 * Adds a new IGraphItem similar to addItem(IGraphItem, EGraphItemProperty) and also adds this item as reverse link to the new item.
+	 * Revert entry is done for prop==(EGraphItemProperty.INCOMING, EGraphItemProperty.OUTGOING, EGraphItemProperty.ALIAS)  
+	 * Note:  EGraphItemProperty.NONE causes a GraphRuntimeException.
+	 * 
+	 * @see org.geneview.graph.IGraphItem#addItem(IGraphItem, EGraphItemProperty)
+	 * 
+	 * @param item new IGraphItem to be added and to be linked reverse to this item; 
+	 * @param prop property linked to the added item
+	 * @throws GraphRuntimeException
+	 */
+	public void addItemDoubleLinked(IGraphItem item, EGraphItemProperty prop) throws GraphRuntimeException;
 	
 	/**
 	 * 

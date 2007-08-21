@@ -3,6 +3,7 @@
  */
 package org.geneview.graph.core;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.geneview.graph.EGraphItemHierarchy;
@@ -10,7 +11,7 @@ import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.GraphRuntimeException;
 import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
-import org.geneview.graph.item.GGraphContainer;
+import org.geneview.graph.item.GraphGenericContainer;
 
 /**
  * @author Michael Kalkusch
@@ -22,9 +23,9 @@ public class Graph extends AGraph {
 	
 	static final int initialSizeGraph = 3;
 	
-	protected GGraphContainer <IGraphItem,EGraphItemKind> items;
+	protected GraphGenericContainer <IGraphItem,EGraphItemKind> items;
 	
-	protected GGraphContainer <IGraph,EGraphItemHierarchy> graphs;
+	protected GraphGenericContainer <IGraph,EGraphItemHierarchy> graphs;
 
 	
 	/**
@@ -35,11 +36,11 @@ public class Graph extends AGraph {
 		super();
 		
 		/** create container for items */
-		items = new GGraphContainer <IGraphItem,EGraphItemKind> 
+		items = new GraphGenericContainer <IGraphItem,EGraphItemKind> 
 		(EGraphItemKind.getActiveItems(), Graph.initialSizeItems);
 		
 		/** create container for graphs */
-		graphs = new GGraphContainer <IGraph,EGraphItemHierarchy> 
+		graphs = new GraphGenericContainer <IGraph,EGraphItemHierarchy> 
 		(EGraphItemHierarchy.getActiveItems(), Graph.initialSizeGraph);
 	}
 
@@ -170,5 +171,14 @@ public class Graph extends AGraph {
 		/** new kind is NODES thus old kind was EDGES */
 		return items.removeGraphComponent(item, EGraphItemKind.EDGES);		
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.IGraph#getAllItemsByKind(org.geneview.graph.EGraphItemKind)
+	 */
+	public Collection<IGraphItem> getAllItemsByKind(EGraphItemKind kind) {		
+		return items.getAllGraphComponent(kind);
+	}
+
 
 }

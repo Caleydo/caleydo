@@ -12,7 +12,7 @@ import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.GraphRuntimeException;
 import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
-import org.geneview.graph.item.GGraphContainer;
+import org.geneview.graph.item.GraphGenericContainer;
 
 /**
  * @author Michael Kalkusch
@@ -20,9 +20,9 @@ import org.geneview.graph.item.GGraphContainer;
  */
 public class GraphItem extends AGraphDataHandler implements IGraphItem {
 
-	protected GGraphContainer <IGraphItem,EGraphItemProperty> items;
+	protected GraphGenericContainer <IGraphItem,EGraphItemProperty> items;
 	
-	protected GGraphContainer <IGraph,EGraphItemHierarchy> graphs;
+	protected GraphGenericContainer <IGraph,EGraphItemHierarchy> graphs;
 	
 	private EGraphItemKind itemKind = null;
 	
@@ -37,12 +37,34 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 		super(initialSizeItems);
 		
 		/** create container for items */
-		items = new GGraphContainer <IGraphItem,EGraphItemProperty> 
+		items = new GraphGenericContainer <IGraphItem,EGraphItemProperty> 
 		(EGraphItemProperty.getActiveItems(), initialSizeItems);
 		
 		/** create container for graphs */
-		graphs = new GGraphContainer <IGraph,EGraphItemHierarchy> 
+		graphs = new GraphGenericContainer <IGraph,EGraphItemHierarchy> 
 		(EGraphItemHierarchy.getActiveItems(), iInitalSizeGraphs);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.IGraphItem#addItemDoubleLinked(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 */
+	public final void addItemDoubleLinked(IGraphItem item, EGraphItemProperty prop)
+	throws GraphRuntimeException {
+		try {
+			/** assign prop.getInvertProperty() to test if prop has an inverse EGraphItemProperty */
+			EGraphItemProperty prop_inverted = prop.getInvertProperty();
+			
+			/** add item */
+			this.addItem(item, prop);
+			
+			/** add reverse with inverted property */
+			item.addItem(this, prop_inverted );
+			
+		} catch ( GraphRuntimeException ge ) {
+			throw new GraphRuntimeException("Exception during addItemDoubleLinked(); " + ge.toString() );
+		}
+	
 	}
 
 	/* (non-Javadoc)

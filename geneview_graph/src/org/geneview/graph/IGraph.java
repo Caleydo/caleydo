@@ -3,6 +3,8 @@
  */
 package org.geneview.graph;
 
+import java.util.Collection;
+
 import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.IGraphComponent;
 import org.geneview.graph.GraphRuntimeException;
@@ -49,6 +51,13 @@ public interface IGraph extends IGraphComponent {
 	 */
 	public boolean containsItem(IGraphItem item);
 	
+	/**
+	 * Get all items matching a EGraphItemKind; if EGraphItemKind prop==null all stored IGraphItem will be returned.
+	 * 
+	 * @param kind define which items, if prop==null all IGraphItem objects will be returned.
+	 * @return list of IGraphItem
+	 */
+	public Collection<IGraphItem> getAllItemsByKind(EGraphItemKind kind);
 
 
 	/* ---  IGraph --- */	
