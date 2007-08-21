@@ -62,7 +62,7 @@ public class GLInfoAreaRenderer {
     		final PathwayVertex pickedVertex) {
     	
     	if (fScaleFactor < 1.0)
-    		fScaleFactor += 0.04;
+    		fScaleFactor += 0.06;
     	
     	if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
     		extractMultipleGeneMapping(pickedVertex);

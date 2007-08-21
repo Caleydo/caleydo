@@ -19,6 +19,10 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 	
 	protected boolean bMousePressed = false;
 	
+	protected boolean bMouseReleased = false;
+	
+	protected boolean bMouseDragged = false;
+	
 	/**
 	 * @param refParentGearsMain
 	 */
@@ -26,7 +30,6 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 
 		super(refParentGearsMain);
 	}
-	
 	
 	public void mousePressed(MouseEvent mouseEvent) {
 
@@ -47,6 +50,20 @@ public class PickingJoglMouseListener extends JoglMouseListener {
     	pickedPoint = mouseEvent.getPoint();
     }
     
+	public void mouseReleased(MouseEvent mouseEvent) {
+	
+		super.mouseReleased(mouseEvent);
+		
+		bMouseReleased = true;
+	}
+	
+	public void mouseDragged(MouseEvent mouseEvent) {
+	
+		super.mouseDragged(mouseEvent);
+
+		bMouseDragged = true;
+	}
+    
     public final boolean wasMousePressed() {
     	
     	boolean bTmp = bMousePressed;
@@ -58,6 +75,20 @@ public class PickingJoglMouseListener extends JoglMouseListener {
     	
     	boolean bTmp = bMouseMoved;
     	bMouseMoved = false;
+    	return bTmp;
+    }
+    
+    public final boolean wasMouseReleased() {
+    	
+    	boolean bTmp = bMouseReleased;
+    	bMouseReleased = false;
+    	return bTmp;
+    }
+    
+    public final boolean wasMouseDragged() {
+    	
+    	boolean bTmp = bMouseDragged;
+    	bMouseDragged = false;
     	return bTmp;
     }
     

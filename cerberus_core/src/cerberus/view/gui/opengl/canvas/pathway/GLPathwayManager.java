@@ -37,7 +37,7 @@ public class GLPathwayManager {
 	
 	private PathwayRenderStyle refRenderStyle;
 
-	private boolean bEnableGeneMapping = false;
+	private boolean bEnableGeneMapping = true;
 	
 	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
 	

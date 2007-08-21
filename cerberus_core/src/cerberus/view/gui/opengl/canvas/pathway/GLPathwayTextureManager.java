@@ -2,6 +2,9 @@ package cerberus.view.gui.opengl.canvas.pathway;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -64,7 +67,7 @@ public class GLPathwayTextureManager {
 		try
 		{			
 			refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
-					new File(sPathwayTexturePath), true, "GIF"));
+					new File(sPathwayTexturePath), false, "GIF"));
 		
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR); 
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
@@ -158,5 +161,28 @@ public class GLPathwayTextureManager {
 	public Texture getTextureByPathwayId(final int iPathwayId) {
 		
 		return refHashPathwayIdToTexture.get(iPathwayId);
+	}
+	
+	public void unloadUnusedTextures(LinkedList<Integer> iLLVisiblePathways) {
+
+		int iTmpPathwayId = 0;
+		Integer[] iArPathwayId = refHashPathwayIdToTexture.keySet()
+			.toArray(new Integer[refHashPathwayIdToTexture.size()]);
+		
+		for (int iPathwayIndex = 0; iPathwayIndex < iArPathwayId.length; iPathwayIndex++)
+		{
+			iTmpPathwayId = iArPathwayId[iPathwayIndex];
+			
+			if (!iLLVisiblePathways.contains(iTmpPathwayId))
+			{
+				// Remove and dispose texture
+				refHashPathwayIdToTexture.remove(iTmpPathwayId).dispose();
+
+				refGeneralManager.getSingelton().logMsg(
+						this.getClass().getSimpleName() 
+						+": unloadUnusedTextures(): Unloading pathway texture with ID " + iTmpPathwayId,
+						LoggerType.VERBOSE);
+			}
+		}
 	}
 }

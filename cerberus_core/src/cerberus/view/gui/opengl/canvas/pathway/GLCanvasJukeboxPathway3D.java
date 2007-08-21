@@ -50,7 +50,9 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		implements IMediatorReceiver, IMediatorSender {
 
 	public static final int MAX_LOADED_PATHWAYS = 300;
+
 	public static final int MEMO_PAD_PICKING_ID = 301;
+
 	public static final int FREE_PICKING_ID_RANGE_START = 400;
 
 	public static final String TICK_SOUND = "data/sounds/tick.wav";
@@ -62,7 +64,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 	private boolean bIsMouseOverPickingEvent = false;
 
 	private boolean bShowPathwayTexture = true;
-	
+
 	private boolean bMouseOverMemoPad = false;
 
 	private int iMouseOverPickedPathwayId = -1;
@@ -83,7 +85,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 	private int iSlerpFactor = 0;
 
 	private JukeboxHierarchyLayer pathwayUnderInteractionLayer; // contains only
-																// one pathway
+
+	// one pathway
 
 	private JukeboxHierarchyLayer pathwayLayeredLayer;
 
@@ -104,9 +107,9 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 	private HashMap<Integer, Integer> refHashPathwayContainingSelectedVertex2VertexCount;
 
 	private GLPathwayMemoPad memoPad;
-	
+
 	private GLDragAndDrop dragAndDrop;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -140,7 +143,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		pathwayPoolLayer.setChildLayer(pathwayLayeredLayer);
 
 		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f, -2.8f,0f));
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f,
+				-2.8f, 0f));
 		transformPathwayUnderInteraction.setScale(new Vec3f(1.8f, 1.8f, 1.8f));
 		transformPathwayUnderInteraction.setRotation(new Rotf(0, 0, 0, 0));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
@@ -151,10 +155,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				refGLPathwayManager);
-		
-		memoPad = new GLPathwayMemoPad(refGLPathwayManager, 
+
+		memoPad = new GLPathwayMemoPad(refGLPathwayManager,
 				refGLPathwayTextureManager);
-		
+
 		dragAndDrop = new GLDragAndDrop();
 	}
 
@@ -231,7 +235,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		renderPathwayPool(gl);
 		renderPathwayLayered(gl);
 		renderPathwayUnderInteraction(gl);
-		
+
 		memoPad.renderMemoPad(gl);
 
 		doSlerpActions(gl);
@@ -335,7 +339,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
 				fTextureTransparency, true);
-		
+
 		gl.glPopMatrix();
 	}
 
@@ -386,7 +390,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
 							fTextureTransparency, false);
 			}
-			
+
 			gl.glPopMatrix();
 		}
 	}
@@ -453,6 +457,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 		String sRenderText;
 		float fYPos = 0;
+		float fZPos = 8;
 
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage
 				.getSize(StorageType.INT); iPathwayIndex++)
@@ -470,7 +475,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			Transform transform = pathwayPoolLayer
 					.getTransformByElementId(iPathwayId);
 			Vec3f translation = transform.getTranslation();
-			gl.glTranslatef(translation.x(), translation.y(), translation.z());
+			gl.glTranslatef(translation.x(), translation.y(), translation.z()
+					+ fZPos);
 
 			sRenderText = ((Pathway) refGeneralManager.getSingelton()
 					.getPathwayManager().getItem(iPathwayId)).getTitle();
@@ -610,8 +616,6 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			highlightIdenticalNodes(gl, selectedVertex);
 
 			rebuildVisiblePathwayDisplayLists(gl);
-
-			// selectedVertex = null;
 		}
 
 		if (iSlerpFactor < 1000)
@@ -663,14 +667,16 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 		Point pickPoint = null;
 
-		//boolean bMouseReleased = pickingTriggerMouseAdapter.wasMouseReleased();
-		if (pickingTriggerMouseAdapter.wasMousePressed() || pickingTriggerMouseAdapter.wasMouseDragged())
+		// boolean bMouseReleased =
+		// pickingTriggerMouseAdapter.wasMouseReleased();
+		if (pickingTriggerMouseAdapter.wasMousePressed())
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			bIsMouseOverPickingEvent = false;
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseMoved())
+		if (pickingTriggerMouseAdapter.wasMouseMoved()) 
+//				|| pickingTriggerMouseAdapter.wasMouseDragged())
 		{
 			// Restart timer
 			fLastMouseMovedTimeStamp = System.nanoTime();
@@ -682,23 +688,24 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			fLastMouseMovedTimeStamp = System.nanoTime();
 		}
-		
+
 		// Check if an object was picked
 		if (pickPoint != null)
 		{
 			pickObjects(gl, pickPoint);
 			bIsMouseOverPickingEvent = false;
 		}
-		
+
 		// Check if a drag&drop action was performed
-		if (bMouseOverMemoPad && dragAndDrop.isDragActionRunning()) 
+		if (bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
 		{
 			if (dragAndDrop.getDraggedObjectedId() != -1)
 				memoPad.addPathwayToMemoPad(dragAndDrop.getDraggedObjectedId());
-			
-			dragAndDrop.stopDragAction();			
+
+			dragAndDrop.stopDragAction();
 		}
-		// Stop drag and drop action if mouse isn't released over the memo pad area.
+		// Stop drag and drop action if mouse isn't released over the memo pad
+		// area.
 		else if (!bMouseOverMemoPad)
 		{
 			dragAndDrop.stopDragAction();
@@ -731,7 +738,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		glu.gluPickMatrix((double) pickPoint.x,
 				(double) (viewport[3] - pickPoint.y),// 
 				1.0, 1.0, viewport, 0); // pick width and height is set to 5
-										// (i.e. picking tolerance)
+		// (i.e. picking tolerance)
 
 		float h = (float) (float) (viewport[3] - viewport[1])
 				/ (float) (viewport[2] - viewport[0]) * 4.0f;
@@ -789,11 +796,11 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			return;
 		}
 
-//		// Do not handle picking if a slerp action is in progress
-//		if (!arSlerpActions.isEmpty())
-//			return;
-		
-		System.out.println("Pick ID: " + iPickedObjectId);
+		// Do not handle picking if a slerp action is in progress
+		if (!arSlerpActions.isEmpty())
+			return;
+
+		//System.out.println("Pick ID: " + iPickedObjectId);
 
 		// Check if picked object a non-pathway object (like pathway pool lines,
 		// navigation handles, etc.)
@@ -816,31 +823,29 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 				return;
 			}
-			
+
 			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
-			
-//			// Just for testing
-//			memoPad.addPathwayToMemoPad(iPathwayId);
+
+			// Just for testing
+			memoPad.addPathwayToMemoPad(iPathwayId);
 
 			return;
-		} 
-		else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is
-			// just a pathway
-			// texture -> do
-			// nothing
+		} else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is
+		// just a pathway
+		// texture -> do
+		// nothing
 		{
 			return;
 		}
-		
+
 		if (iPickedObjectId == MEMO_PAD_PICKING_ID)
 		{
 			bMouseOverMemoPad = true;
-		}
-		else
+		} else
 		{
 			bMouseOverMemoPad = false;
 		}
-		
+
 		refPickedVertexRep = refGLPathwayManager
 				.getVertexRepByPickID(iPickedObjectId);
 
@@ -890,7 +895,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			}
 
 			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
-			
+
 			// Just for testing!
 			dragAndDrop.startDragAction();
 			dragAndDrop.setDraggedObjectId(iPathwayId);
@@ -904,7 +909,6 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			loadDependentPathwayContainingVertex(gl, refPickedVertexRep
 					.getVertex());
 		}
-		// }
 	}
 
 	private void loadPathwayToUnderInteractionPosition(final GL gl,
@@ -917,6 +921,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 								+ ": loadPathwayToUnderInteractionPosition(): Pathway with ID "
 								+ iPathwayId + " is under interaction.",
 						LoggerType.VERBOSE);
+
+		// Check if pathway is already under interaction
+		if (pathwayUnderInteractionLayer.containsElement(iPathwayId))
+			return;
 
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < 1000)
@@ -957,6 +965,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		iSlerpFactor = 0;
 
 		rebuildVisiblePathwayDisplayLists(gl);
+		selectedVertex = null;
+
+		// Cleanup unused textures
+		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 
 		// Trigger update with current pathway that dependent pathways
 		// know which pathway is currently under interaction
@@ -966,7 +978,6 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 				new int[0], tmp);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void highlightIdenticalNodes(final GL gl,
 			final PathwayVertex refVertex) {
 
@@ -978,46 +989,23 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		Iterator<PathwayVertex> iterIdenticalVertices = null;
 		int iPathwayId = 0;
 
-		LinkedList<Integer> tmpVisiblePathways = (LinkedList<Integer>) pathwayLayeredLayer
-				.getElementList().clone();
-
-		// Add pathway under interaction to pathways in layered view
-		if (!tmpVisiblePathways.contains(pathwayUnderInteractionLayer
-				.getElementIdByPositionIndex(0)))
-			tmpVisiblePathways.add(pathwayUnderInteractionLayer
-					.getElementIdByPositionIndex(0));
-
-		Iterator<Integer> iterVisiblePathway = tmpVisiblePathways.iterator();
+		Iterator<Integer> iterVisiblePathway = getVisiblePathways().iterator();
 
 		while (iterVisiblePathway.hasNext())
 		{
 			iPathwayId = iterVisiblePathway.next();
-			// System.out.println("Inspecting pathway " +iPathwayId + " for
-			// multiple nodes");
 
 			refTmpPathway = (Pathway) refGeneralManager.getSingelton()
 					.getPathwayManager().getItem(iPathwayId);
 
-			if (refVertex == null)
+			// FIXME: Why does this case occur?
+			if (refVertex == null || refVertex.getElementTitle() == null)
 			{
-				System.err.println("PANIC 1 !!!");
+				refGeneralManager.getSingelton().logMsg(
+						"highlightIdenticalNodes(): Unknown error!",
+						LoggerType.MINOR_ERROR);
 				break;
 			}
-
-			if (refVertex.getElementTitle() == null)
-				System.err.println("PANIC 2 !!!");
-			//			
-			// if (refGeneralManager.getSingelton().
-			// getPathwayElementManager().getPathwayVertexListByName(
-			// refVertex.getElementTitle()) == null)
-			// {
-			// refGeneralManager.getSingelton().logMsg(
-			// this.getClass().getSimpleName() +
-			// ": highlightIdenticalNodes: " +
-			// "No identical vertices found for "+refVertex.getElementTitle(),
-			// LoggerType.MINOR_ERROR);
-			// break;
-			// }
 
 			iterIdenticalVertices = refGeneralManager.getSingelton()
 					.getPathwayElementManager().getPathwayVertexListByName(
@@ -1031,8 +1019,6 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 						&& refTmpVertex.getVertexRepByIndex(0) != null)
 				{
 					iAlSelectedElements.add(refTmpVertex.getElementId());
-					// System.out.println("Adding vertex "
-					// +refTmpVertex.getElementTitle() + " to selection.");
 				}
 			}
 		}
@@ -1043,6 +1029,24 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		// iArTmp[i] = ((Integer)iAlSelectedElements.get(i)).intValue();
 		// }
 		// alSetSelection.get(0).setSelectionIdArray(iArTmp);
+	}
+
+	@SuppressWarnings("unchecked")
+	public LinkedList<Integer> getVisiblePathways() {
+
+		LinkedList<Integer> tmpVisiblePathways = (LinkedList<Integer>) pathwayLayeredLayer
+				.getElementList().clone();
+
+		// Add pathway under interaction to pathways in layered view
+		if (!pathwayUnderInteractionLayer.getElementList().isEmpty()
+				&& !tmpVisiblePathways.contains(pathwayUnderInteractionLayer
+						.getElementIdByPositionIndex(0)))
+		{
+			tmpVisiblePathways.add(pathwayUnderInteractionLayer
+					.getElementIdByPositionIndex(0));
+		}
+
+		return tmpVisiblePathways;
 	}
 
 	public void loadDependentPathwayContainingVertex(final GL gl,
@@ -1110,12 +1114,15 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		}
 
 		rebuildVisiblePathwayDisplayLists(gl);
+
+		// Cleanup unused textures
+		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 	}
 
 	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
 
 		refGLPathwayManager.clearOldPickingIDs();
-		
+
 		// Update display list if something changed
 		// Rebuild display lists for visible pathways in layered view
 		Iterator<Integer> iterVisiblePathway = pathwayLayeredLayer
