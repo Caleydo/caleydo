@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jgraph/jgraph.jar" sourcepath="lib_src/jgraph/jgraph-latest-stable-src_5_9.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:lib_src/jgraph/jgraph-latest-stable-src_5_9.jar!/doc/api"/>
+		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jgraph/jgraph.jar" sourcepath="lib_src/jgraph/jgraph-latest-stable-src_5_9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
