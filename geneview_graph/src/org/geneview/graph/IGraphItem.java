@@ -38,7 +38,7 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	/**
 	 * Set the type of this GraphItem.
 	 * 
-	 * @see org.geneview.graphB.IGraphItem#getGraphKind()
+	 * @see org.geneview.graph.IGraphItem#getGraphKind()
 	 * 
 	 * @param kind type for this GraphItem
 	 */
