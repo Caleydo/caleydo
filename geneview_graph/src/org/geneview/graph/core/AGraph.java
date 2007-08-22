@@ -89,7 +89,7 @@ public abstract class AGraph implements IGraph {
 	 * @see org.geneview.graph.IGraphComponent#disposeItem()
 	 */
 	public final void disposeItem() {
-
+		/** Graph does not dispose other objects; only IGraphItem need to dispose objects */
 	}
 
 }

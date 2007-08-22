@@ -26,7 +26,7 @@ public final class GraphItemDataSequenzer {
 	 * Hide constructor.
 	 */
 	private GraphItemDataSequenzer() {
-		
+		/** hide constructor */
 	}
 	
 	/**
@@ -56,14 +56,14 @@ public final class GraphItemDataSequenzer {
 	}
 	
 	public static final int getIdentifier( final String key ) {
-		return identifier_key_value.get(key);
+		return identifier_key_value.get(key).intValue();
 	}
 	
 	public static final boolean setIdentifier( final String key, final int value) {
 		if ( identifier_key_value.containsKey(key)) {
 			return false;
 		}
-		identifier_key_value.put(key, value);
+		identifier_key_value.put(key, new Integer(value));
 		return true;
 	}
 	

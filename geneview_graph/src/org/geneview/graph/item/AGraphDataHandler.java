@@ -40,7 +40,7 @@ public abstract class AGraphDataHandler implements IGraphDataHandler {
 	 * @see org.geneview.graph.item.IGraphDataHandler#containsData(int)
 	 */
 	public final boolean containsData(int key) {
-		return key_2_data.containsKey(key);
+		return key_2_data.containsKey(new Integer(key));
 	}
 
 	/* (non-Javadoc)
@@ -61,7 +61,7 @@ public abstract class AGraphDataHandler implements IGraphDataHandler {
 	 * @see org.geneview.graph.item.IGraphDataHandler#getData(int)
 	 */
 	public final Object getData(int key) {
-		return key_2_data.get(key);
+		return key_2_data.get(new Integer(key));
 	}
 
 	/* (non-Javadoc)
@@ -75,14 +75,14 @@ public abstract class AGraphDataHandler implements IGraphDataHandler {
 	 * @see org.geneview.graph.item.IGraphDataHandler#removeData(int)
 	 */
 	public final Object removeData(int key) {
-		return key_2_data.remove(key);
+		return key_2_data.remove(new Integer(key));
 	}
 
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.item.IGraphDataHandler#setData(int, java.lang.Object)
 	 */
 	public final boolean setData(int key, Object data) {
-		return (key_2_data.put(key, data) == null ) ? false : true;
+		return (key_2_data.put(new Integer(key), data) == null ) ? false : true;
 	}
 	
 }

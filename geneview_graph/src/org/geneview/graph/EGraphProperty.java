@@ -19,7 +19,7 @@ public enum EGraphProperty {
 	HAS_SUB_GRAPH();
 	
 	private EGraphProperty() {
-		
+		/** no local variables necessary yet! */
 	}
 	
 	/**

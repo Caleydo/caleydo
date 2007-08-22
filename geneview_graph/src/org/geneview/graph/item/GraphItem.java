@@ -15,34 +15,68 @@ import org.geneview.graph.IGraphItem;
 import org.geneview.graph.item.GraphGenericContainer;
 
 /**
+ * Base class for IGraphItem.
  * @author Michael Kalkusch
  *
  */
 public class GraphItem extends AGraphDataHandler implements IGraphItem {
 
+	/**
+	 * initial size for org.geneview.graph.item.GraphItem#items
+	 * 
+	 * @see org.geneview.graph.item.GraphItem#items
+	 */
+	private static final int iInitialSizeItemsDefault = 3;
+	
+	/**
+	 * initial size for org.geneview.graph.item.GraphItem#graphs
+	 * 
+	 * @see org.geneview.graph.item.GraphItem#graphs
+	 */
+	private static final int iInitalSizeGraphsDefault = 2;
+	
 	protected GraphGenericContainer <IGraphItem,EGraphItemProperty> items;
 	
 	protected GraphGenericContainer <IGraph,EGraphItemHierarchy> graphs;
 	
 	private EGraphItemKind itemKind = null;
 	
+	/**
+	 * Calls GraphItem(EGraphItemKind, int, int) with default settings.
+	 * 
+	 * @see org.geneview.graph.item.GraphItem#GraphItem(EGraphItemKind, int, int)
+	 * @param kind use EGraphItemKind.NODE or EGraphItemKind.EDGE
+	 */
+	public GraphItem(EGraphItemKind kind) {
+		this(kind,
+				GraphItem.iInitialSizeItemsDefault,
+				GraphItem.iInitalSizeGraphsDefault);
+		
+	}
 
 	/**
-	 * @param initialSizeItems estimated number of items
+	 * Specify initial size of IGraphItems and IGraphs.
+	 * 
+	 * @param iInitialSizeItems estimated number of items
 	 * @param iInitalSizeGraphs estimated number of graphs
+	 * @param kind use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
-	public GraphItem(int initialSizeItems, int iInitalSizeGraphs) {
+	public GraphItem(EGraphItemKind kind, 
+			int iInitialSizeItems, 
+			int iInitalSizeGraphs) {
 		
 		/** create graph-data objects .. */
-		super(initialSizeItems);
+		super(iInitialSizeItems);
 		
 		/** create container for items */
 		items = new GraphGenericContainer <IGraphItem,EGraphItemProperty> 
-		(EGraphItemProperty.getActiveItems(), initialSizeItems);
+		(EGraphItemProperty.getActiveItems(), iInitialSizeItems);
 		
 		/** create container for graphs */
 		graphs = new GraphGenericContainer <IGraph,EGraphItemHierarchy> 
 		(EGraphItemHierarchy.getActiveItems(), iInitalSizeGraphs);
+		
+		this.itemKind = kind;
 	}
 	
 	/*

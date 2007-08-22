@@ -3,6 +3,7 @@
  */
 package org.geneview.data.graph.item;
 
+import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.item.GraphItem;
 
 /**
@@ -14,11 +15,10 @@ import org.geneview.graph.item.GraphItem;
 public class SampleGraphItem extends GraphItem {
 
 	/**
-	 * @param initialSizeItems
-	 * @param initalSizeGraphs
+	 * @param kind define NODE or EDGE
 	 */
-	public SampleGraphItem(int initialSizeItems, int initalSizeGraphs) {
-		super(initialSizeItems, initalSizeGraphs);
+	public SampleGraphItem(EGraphItemKind kind) {
+		super(kind);
 		
 		/** extend the Graph Item based on your requirements */
 	}

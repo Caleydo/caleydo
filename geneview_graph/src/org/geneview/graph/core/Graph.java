@@ -71,13 +71,13 @@ public class Graph extends AGraph {
 		
 		/** items .. */
 		Iterator <IGraphItem> iter = 
-			items.getAllGraphComponent(EGraphItemKind.NODES).iterator();
+			items.getAllGraphComponent(EGraphItemKind.NODE).iterator();
 
 		while ( iter.hasNext() ) {
 			iter.next().removeGraph(this, null);
 		}
 		
-		iter = items.getAllGraphComponent(EGraphItemKind.EDGES).iterator();
+		iter = items.getAllGraphComponent(EGraphItemKind.EDGE).iterator();
 
 		while ( iter.hasNext() ) {
 			iter.next().removeGraph(this, null);
@@ -116,10 +116,10 @@ public class Graph extends AGraph {
 	public void removeAllByKind(EGraphItemKind kind) {
 		
 		switch (kind) {
-		case EDGES:
+		case EDGE:
 			break;
 			
-		case NODES:
+		case NODE:
 			break;
 				
 		default:
@@ -161,15 +161,15 @@ public class Graph extends AGraph {
 		items.addGraphComponent(item, itemNewKind);
 		
 		/** remove item from old list .. */
-		if ( itemNewKind.equals(EGraphItemKind.EDGES)) {
-			/** new kind is EDGES thus old kind was NODES */
-			return items.removeGraphComponent(item, EGraphItemKind.NODES);
+		if ( itemNewKind.equals(EGraphItemKind.EDGE)) {
+			/** new kind is EDGE thus old kind was NODE */
+			return items.removeGraphComponent(item, EGraphItemKind.NODE);
 			
 			/** do not use else but use early "return" and avoid "else" */
 		}
 		
-		/** new kind is NODES thus old kind was EDGES */
-		return items.removeGraphComponent(item, EGraphItemKind.EDGES);		
+		/** new kind is NODE thus old kind was EDGE */
+		return items.removeGraphComponent(item, EGraphItemKind.EDGE);		
 	}
 
 	/*

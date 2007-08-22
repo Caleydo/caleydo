@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Define GRAPH or GRAPH_ITEM as well as NODES and EDGES.
+ * Define GRAPH or GRAPH_ITEM as well as NODE and EDGE.
  * 
  * @see org.geneview.graph.EGraphProperty
  * @see org.geneview.graph.EGraphItemHierarchy
@@ -17,13 +17,13 @@ import java.util.Collection;
  */
 public enum EGraphItemKind {
 
-	NODES( false ),
-	EDGES( false ),
+	NODE( false ),
+	EDGE( false ),
 	
-	/**
-	 * Consists of NODES and EDGES
-	 */
-	GRAPH_ITEM( false ),
+//	/**
+//	 * Consists of NODE and EDGE
+//	 */
+//	GRAPH_ITEM( false ),
 	
 	GRAPH( true );
 	
@@ -44,9 +44,9 @@ public enum EGraphItemKind {
 	
 	/**
 	 * Test if this is a graph item or a graph.
-	 * NODES, EDGES, and GRAPH_ITEM will return FLASE; GRAPH will return TRUE.
+	 * NODE and EDGE will return FLASE; GRAPH will return TRUE.
 	 *
-	 * @return NODES, EDGES, and GRAPH_ITEM will return FLASE; GRAPH will return TRUE
+	 * @return NODE, EDGE will return FLASE; GRAPH will return TRUE
 	 */
 	public final boolean isGraphObject() {
 		return this.bIsGraph;
@@ -63,8 +63,8 @@ public enum EGraphItemKind {
 	public static final Collection<EGraphItemKind> getActiveItems() {
 		
 		Collection<EGraphItemKind>  resultList = new ArrayList<EGraphItemKind> (3);
-		resultList.add(EGraphItemKind.EDGES);
-		resultList.add(EGraphItemKind.NODES);
+		resultList.add(EGraphItemKind.EDGE);
+		resultList.add(EGraphItemKind.NODE);
 		
 		return resultList;
 	}

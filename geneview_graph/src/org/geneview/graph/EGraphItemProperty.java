@@ -25,8 +25,11 @@ public enum EGraphItemProperty {
 	ALIAS(),
 	NONE();
 	
+	/**
+	 * Constructor; no values necessary yet.
+	 */
 	private EGraphItemProperty() {
-		
+		/** no values necessary yet. */
 	}
 	
 	
@@ -59,7 +62,7 @@ public enum EGraphItemProperty {
 	/**
 	 * Get a list of active EGraphItemProperty items.
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#GraphItem(int,int)
+	 * @see org.geneview.graph.item.GraphItem#GraphItem(EGraphItemKind)
 	 * @see org.geneview.graph.EGraphItemHierarchy#getActiveItems()
 	 * @see org.geneview.graph.EGraphItemKind#getActiveItems()
 	 * 
