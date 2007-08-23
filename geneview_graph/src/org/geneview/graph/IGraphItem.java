@@ -70,7 +70,7 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	
 	/**
 	 * Adds a new IGraphItem similar to addItem(IGraphItem, EGraphItemProperty) and also adds this item as reverse link to the new item.
-	 * Revert entry is done for prop==(EGraphItemProperty.INCOMING, EGraphItemProperty.OUTGOING, EGraphItemProperty.ALIAS)  
+	 * Revert entry is done for prop==(EGraphItemProperty.INCOMING, EGraphItemProperty.OUTGOING, EGraphItemProperty.ALIAS_PARENT,EGraphItemProperty.ALIAS_CHILD )  
 	 * Note:  EGraphItemProperty.NONE causes a GraphRuntimeException.
 	 * 
 	 * @see org.geneview.graph.IGraphItem#addItem(IGraphItem, EGraphItemProperty)
