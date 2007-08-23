@@ -17,12 +17,14 @@ public abstract class AGraphVisitorSearch {
 	 */
 	protected IGraph graph;
 	
+	
 	/**
 	 * @see AGraphVisitorSearch#getItemSource()
 	 * @see AGraphVisitorSearch#setItemSource(IGraphItem)
 	 */
 	protected IGraphItem itemSource;
 
+	
 	/**
 	 * search depth; -1, default; 0.. local, self references; 1.. primary adjacent IGraphItems, etc.
 	 * 
@@ -37,13 +39,14 @@ public abstract class AGraphVisitorSearch {
 	}
 
 	protected AGraphVisitorSearch(final int iSearchDepth) {
-		this.iSearchDepth = iSearchDepth;	
+		setSearchDepth(iSearchDepth);	
 	}
 	
 	protected AGraphVisitorSearch(IGraphItem itemSource, final int iSearchDepth) {
-		this.itemSource = itemSource;
-		this.iSearchDepth = iSearchDepth;	
+		setItemSource(itemSource);
+		setSearchDepth(iSearchDepth);	
 	}
+	
 	
 	public final IGraph getGraph() {
 		return graph;
@@ -53,7 +56,7 @@ public abstract class AGraphVisitorSearch {
 		this.graph = graph;		
 	}
 
-	public final void setSearchDepth(final int iDepth) {
+	public void setSearchDepth(final int iDepth) {
 		this.iSearchDepth = iDepth;
 	}
 
