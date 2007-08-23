@@ -132,20 +132,6 @@ public interface IGraph extends IGraphComponent {
 	
 	/* --- define a group of graphs by assigning the same Type Id. --- */
 	
-	/**
-	 * Get Graph Type Id.
-	 * Define a group of graphs by assigning the same Type Id.
-	 * Default Id == 0 assigned by constructor.
-	 */
-	public int getGraphId();
-	
-	
-	/**
-	 * Set Type Id.
-	 * Define a group of graphs by assigning the same Type Id.
-	 * 
-	 * @param type  Default Id == 0 assigned by constructor.
-	 */
-	public void setGraphId( int type);
+
 	
 }

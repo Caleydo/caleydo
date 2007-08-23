@@ -24,8 +24,8 @@ public abstract class AGraph implements IGraph {
 	private static final int iInitialSizeProperties = 3;
 	
 	/**
-	 * @see org.geneview.graph.core.AGraph#getGraphId()
-	 * @see org.geneview.graph.core.AGraph#setGraphId(int)
+	 * @see org.geneview.graph.core.AGraph#getId()
+	 * @see org.geneview.graph.core.AGraph#setId(int)
 	 */
 	private int iGraphId = 0;
 	
@@ -49,7 +49,7 @@ public abstract class AGraph implements IGraph {
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.IGraph#getTypeId()
 	 */
-	public final int getGraphId() {
+	public final int getId() {
 		return iGraphId;
 	}
 
@@ -72,7 +72,7 @@ public abstract class AGraph implements IGraph {
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.IGraph#setTypeId(int)
 	 */
-	public final void setGraphId(int type) {
+	public final void setId(int type) {
 		if (type >= 0) {
 			iGraphId = type;
 			return;

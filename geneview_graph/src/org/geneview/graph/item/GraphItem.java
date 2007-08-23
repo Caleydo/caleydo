@@ -171,8 +171,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	 * @see org.geneview.graph.IGraphItemHierarchy#containsOtherGraph(org.geneview.graph.IGraph)
 	 */
 	public boolean containsOtherGraph(IGraph graph) {
-		// TODO Auto-generated method stub
-		return false;
+		return graphs.containsGraphComponentAtAll(graph);
 	}
 
 	/* (non-Javadoc)
@@ -199,6 +198,18 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 		while ( iter.hasNext() ) {
 			iter.next().removeItem(this);
 		}
+	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setId(int type) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

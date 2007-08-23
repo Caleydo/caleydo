@@ -19,13 +19,6 @@ public final class GraphRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = 5290845775175543483L;
 
 	/**
-	 * 
-	 */
-	public GraphRuntimeException() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
 	 * @param message
 	 */
 	public GraphRuntimeException(String message) {

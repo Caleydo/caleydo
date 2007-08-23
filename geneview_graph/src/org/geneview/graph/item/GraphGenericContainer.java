@@ -26,6 +26,11 @@ import org.geneview.graph.IGraphComponent;
  */
 public class GraphGenericContainer <GraphComponent extends IGraphComponent,GraphEnum> {
 
+	/**
+	 * initial size for type2ArrayList.
+	 * 
+	 * @see org.geneview.graph.item.GraphGenericContainer#type2ArrayList
+	 */
 	private static final int iInitialSizeHierarchyArray = 4;
 	
 	//private ArrayList <GraphEnum> keyList;
@@ -61,8 +66,9 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		//keyList = new ArrayList <GraphEnum> (iCountGraphEnumItems);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geneview.graph.generic.IGraphContainerGeneric#addGraphItemByType(java.lang.Object, org.geneview.graph.EGraphItemProperty, org.geneview.graph.generic.EGraphItemHierarchy)
+	/**
+	 * @see org.geneview.graph.item.GraphItem#addGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.graph.item.GraphItem#addItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
 	 */
 	public void addGraphComponent(GraphComponent item, final GraphEnum key) {
 		
@@ -84,8 +90,9 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		 }		
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geneview.graph.generic.IGraphContainerGeneric#containsGraphItemByProp(java.lang.Object, org.geneview.graph.EGraphItemProperty)
+	/**
+	 * @see org.geneview.graph.item.GraphItem#containsGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.graph.item.GraphItem#containsItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
 	 */
 	public boolean containsGraphComponent(final GraphComponent item, final GraphEnum key) {
 		
@@ -100,7 +107,28 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 					npe.toString() );
 		}
 	}
+	
+	/**
+	 * @see org.geneview.graph.item.GraphItem#containsGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.graph.item.GraphItem#containsItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 */
+	public boolean containsGraphComponentAtAll(final GraphComponent item) {
+		Iterator <ArrayList <GraphComponent>> iter =
+			type2ArrayList.values().iterator();
+		
+		while ( iter.hasNext() ) {
+			if ( iter.next().contains(item) ) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
+	/**
+	 * @see org.geneview.graph.item.GraphItem#getAllGraphByType(org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.graph.item.GraphItem#getAllItemsByProp(org.geneview.graph.EGraphItemProperty)
+	 */
 	public Collection <GraphComponent> getAllGraphComponent( final GraphEnum key ) {
 		
 		
@@ -134,9 +162,11 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		return ( buffer != null ) ? buffer :  new ArrayList <GraphComponent> (0);
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see org.geneview.graph.generic.IGraphContainerGeneric#removeGraphItemByType(java.lang.Object, org.geneview.graph.generic.EGraphItemHierarchy)
+
+	/**
+	 * @see org.geneview.graph.item.GraphItem#removeGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.graph.item.GraphItem#removeItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * 
 	 */
 	public boolean removeGraphComponent(final GraphComponent item, GraphEnum key) {
 		
@@ -166,6 +196,9 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		return ( buffer != null ) ? buffer.remove(item) :  false;
 	}
 	
+	/**
+	 * @see org.geneview.graph.item.GraphItem#disposeItem()
+	 */
 	public void disposeItem() {
 		/** fill result array .. */
 		Iterator <ArrayList <GraphComponent>> bufferArrayListIter = 
@@ -180,9 +213,15 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		}
 	}
 	
+	/**
+	 * are there any items stored inside this object?
+	 * 
+	 * @return TRUE if at least one item is stored
+	 */
 	public boolean isEmpty() {
 		Iterator <ArrayList<GraphComponent>> iter = 
 			type2ArrayList.values().iterator();
+		
 		while ( iter.hasNext() ) {
 			if ( ! iter.next().isEmpty() ) {
 				return false;

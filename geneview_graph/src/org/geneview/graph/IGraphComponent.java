@@ -31,4 +31,21 @@ public interface IGraphComponent {
 	 */
 	public void disposeItem();
 	
+	
+	/**
+	 * Get Graph Type Id.
+	 * Define a group of graphs by assigning the same Type Id.
+	 * Default Id == 0 assigned by constructor.
+	 */
+	public int getId();
+	
+	
+	/**
+	 * Set Type Id.
+	 * Define a group of graphs by assigning the same Type Id.
+	 * 
+	 * @param type  Default Id == 0 assigned by constructor.
+	 */
+	public void setId( int type);
+	
 }
