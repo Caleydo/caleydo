@@ -17,7 +17,6 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.SetDataType;
 import cerberus.data.xml.IMementoXML;
 import cerberus.manager.ICommandManager;
-//import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
@@ -30,13 +29,13 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.command.CommandManager;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.data.IPathwayItemManager;
 import cerberus.manager.data.IPathwayManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.data.genome.DynamicGenomeIdManager;
-import cerberus.manager.data.pathway.PathwayElementManager;
+import cerberus.manager.data.pathway.PathwayItemManager;
 import cerberus.manager.data.pathway.PathwayManager;
 import cerberus.manager.data.set.SetManager;
 import cerberus.manager.data.storage.StorageManager;
@@ -50,11 +49,8 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
-//import cerberus.net.dwt.base.DGuiComponentType;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.xml.parser.ISaxParserHandler;
-//import prometheus.net.dwt.swing.DHistogramCanvas;
-
 
 
 /**
@@ -91,8 +87,6 @@ implements IGeneralManagerSingleton
 
 	protected IMenuManager refMenuManager;
 
-//	protected IDistComponentManager refDComponentManager;
-
 //	protected IViewCanvasManager refViewCanvasManager;
 
 	protected ICommandManager refCommandManager;
@@ -106,9 +100,9 @@ implements IGeneralManagerSingleton
 	protected ISWTGUIManager refSWTGUIManager;
 
 	protected IPathwayManager refPathwayManager;
-
-	protected IPathwayElementManager refPathwayElementManager;
-
+	
+	protected IPathwayItemManager refPathwayItemManager;
+	
 	protected IEventPublisher refEventPublisher;
 
 	/**
@@ -118,12 +112,6 @@ implements IGeneralManagerSingleton
 	 * @see cerberus.manager.singleton.OneForAllManager#createNewId(ManagerObjectType)
 	 */
 	protected ManagerObjectType setCurrentType = ManagerObjectType.ALL_IN_ONE;
-
-	//	protected VirtualArrayType initSelectionType;
-	//	
-	//	protected SetType 		initSetType;
-	//	
-	//	protected StorageType 	initStorageType;
 
 	/**
 	 * Call initAll() before using this class!
@@ -192,8 +180,6 @@ implements IGeneralManagerSingleton
 		
 		refMementoManager = new MementoManager(this);
 		
-		//refDComponentManager = new DComponentSwingFactoryManager(this);
-		//refDComponentManager = null;
 		//refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);
@@ -201,7 +187,7 @@ implements IGeneralManagerSingleton
 		refViewGLCanvasManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refPathwayManager = new PathwayManager(this);
-		refPathwayElementManager = new PathwayElementManager(this);
+		refPathwayItemManager = new PathwayItemManager(this);
 		refEventPublisher = new EventPublisher(this);
 		refGenomeIdManager = new DynamicGenomeIdManager(this);
 		
@@ -214,7 +200,7 @@ implements IGeneralManagerSingleton
 		llAllManagerObjects.add( refStorageManager );
 		
 		llAllManagerObjects.add( refPathwayManager );
-		llAllManagerObjects.add( refPathwayElementManager );
+		llAllManagerObjects.add( refPathwayItemManager );
 		llAllManagerObjects.add( refGenomeIdManager );
 		
 		llAllManagerObjects.add( refEventPublisher );
@@ -224,7 +210,6 @@ implements IGeneralManagerSingleton
 		llAllManagerObjects.add( refMenuManager );
 		llAllManagerObjects.add( refCommandManager );
 		llAllManagerObjects.add( refMementoManager );
-		//llAllManagerObjects.add( refDComponentManager );
 		
 		/**
 		 * Make sure SWT is only used, when needed!
@@ -237,19 +222,17 @@ implements IGeneralManagerSingleton
 		 */
 		
 		refSingeltonManager.setCommandManager(refCommandManager);
-		//refSingeltonManager.setDComponentManager(refDComponentManager);
 		refSingeltonManager.setVirtualArrayManager(refVirtualArrayManager);
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
 		refSingeltonManager.setMenuManager(refMenuManager);
 		refSingeltonManager.setViewGLCanvasManager(refViewGLCanvasManager);
 		refSingeltonManager.setSWTGUIManager(refSWTGUIManager);
-		refSingeltonManager.setPathwayElementManager(refPathwayElementManager);
 		refSingeltonManager.setPathwayManager(refPathwayManager);
+		refSingeltonManager.setPathwayItemManager(refPathwayItemManager);
 		refSingeltonManager.setEventPublisher(refEventPublisher);
 		refSingeltonManager.setGenomeIdManager( refGenomeIdManager );
 		
-
 		refSetManager.initManager();
 	}
 
@@ -299,13 +282,7 @@ implements IGeneralManagerSingleton
 	 * @see cerberus.data.manager.GeneralManager#size()
 	 */
 	public int size()
-	{
-
-//		return (refSetManager.size() + refStorageManager.size()
-//				+ refVirtualArrayManager.size() + refMementoManager.size()
-//				+ refDComponentManager.size() + refViewGLCanvasManager.size() + refSWTGUIManager
-//				.size());
-		
+	{	
 		return (refSetManager.size() + refStorageManager.size()
 				+ refVirtualArrayManager.size() + refMementoManager.size()
 				+ refViewGLCanvasManager.size() + refSWTGUIManager
@@ -520,10 +497,6 @@ implements IGeneralManagerSingleton
 			return refCommandManager;
 		case VIEW_GUI_SWT:
 			return refSWTGUIManager;
-		case DATA_PATHWAY:
-			return refPathwayManager;
-		case DATA_PATHWAY_ELEMENT:
-			return refPathwayElementManager;
 		case EVENT_PUBLISHER:
 			return refEventPublisher;
 		case DATA_GENOME_ID:

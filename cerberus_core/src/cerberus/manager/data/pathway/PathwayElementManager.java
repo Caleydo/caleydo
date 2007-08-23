@@ -22,6 +22,8 @@ import cerberus.util.exception.CerberusRuntimeException;
  * The element manager is in charge for handling the elements. Elements are
  * vertices and edges. The class is implemented as a Singleton.
  * 
+ * @deprecated Use PathwayItemManager instead
+ * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */

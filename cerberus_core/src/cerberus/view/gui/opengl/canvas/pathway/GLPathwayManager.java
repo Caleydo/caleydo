@@ -7,10 +7,14 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
+import org.geneview.graph.EGraphItemKind;
+import org.geneview.graph.IGraphItem;
+
 import cerberus.data.collection.ISet;
-import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+import cerberus.data.graph.core.PathwayGraph;
+import cerberus.data.graph.item.vertex.EPathwayVertexShape;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
@@ -39,7 +43,7 @@ public class GLPathwayManager {
 
 	private boolean bEnableGeneMapping = true;
 	
-	private HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
+	private HashMap<Integer, PathwayVertexGraphItemRep> refHashPickID2VertexRep;
 	
 	private HashMap<Integer, Integer> refHashPathwayId2DisplayListId;
 	
@@ -57,7 +61,7 @@ public class GLPathwayManager {
 		this.refGeneralManager = refGeneralManager;
 		
 		refRenderStyle = new PathwayRenderStyle();
-		refHashPickID2VertexRep = new HashMap<Integer, IPathwayVertexRep>();
+		refHashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 		refHashPathwayId2DisplayListId = new HashMap<Integer, Integer>();
 		refHashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Color>>();
 	}
@@ -78,7 +82,7 @@ public class GLPathwayManager {
 	
 	public void buildPathwayDisplayList(final GL gl, final int iPathwayID) {
 
-		Pathway refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(iPathwayID);
 		
 		int iVerticesDiplayListId = -1;
@@ -226,30 +230,28 @@ public class GLPathwayManager {
 	}
 	
 	private void extractVertices(final GL gl,
-			Pathway refPathwayToExtract) {
+			PathwayGraph pathwayToExtract) {
 		
-	    Iterator<PathwayVertex> vertexIterator;
-	    PathwayVertex vertex;
-	    IPathwayVertexRep vertexRep;
+	    Iterator<IGraphItem> vertexIterator;
+	    IGraphItem vertexRep;
 		
-        vertexIterator = refPathwayToExtract.getVertexListIterator();
+        vertexIterator = pathwayToExtract.getAllItemsByKind(EGraphItemKind.NODE).iterator();
         while (vertexIterator.hasNext())
         {
-        	vertex = vertexIterator.next();
-        	vertexRep = vertex.getVertexRepByIndex(0);
+        	vertexRep = vertexIterator.next();
 
         	if (vertexRep != null)
         	{
         		createVertex(gl,
-        				vertexRep, 
-        				refPathwayToExtract);        	
+        				(PathwayVertexGraphItemRep)vertexRep, 
+        				pathwayToExtract);        	
         	}
         }   
 	}
 	
 	private void createVertex(final GL gl, 
-			IPathwayVertexRep vertexRep, 
-			Pathway refContainingPathway) {
+			PathwayVertexGraphItemRep vertexRep, 
+			PathwayGraph refContainingPathway) {
 		
 		Color tmpNodeColor = null;
 		
@@ -267,12 +269,12 @@ public class GLPathwayManager {
 			refHashPickID2VertexRep.put(iUniqueObjectPickId, vertexRep);			
 //		}
 		
-		String sShapeType = vertexRep.getShapeType();
+		EPathwayVertexShape shape = vertexRep.getShapeType();
 		
 		gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 		// Pathway link
-		if (sShapeType.equals("roundrectangle"))
+		if (shape.equals(EPathwayVertexShape.roundrectangle))
 		{		
 			if (bEnableGeneMapping)
 				tmpNodeColor = refRenderStyle.getPathwayNodeColor(true);
@@ -286,7 +288,7 @@ public class GLPathwayManager {
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 		}
 		// Compound
-		else if (sShapeType.equals("circle"))
+		else if (shape.equals(EPathwayVertexShape.circle))
 		{				
 			if (bEnableGeneMapping)
 				tmpNodeColor = refRenderStyle.getCompoundNodeColor(true);
@@ -299,11 +301,11 @@ public class GLPathwayManager {
 			gl.glCallList(iCompoundNodeDisplayListId);
 		}	
 		// Enzyme
-		else if (sShapeType.equals("rectangle"))
+		else if (shape.equals(EPathwayVertexShape.rectangle))
 		{	
 			// Handle selection highlighting of element
 			if (iAlSelectedElements.contains(
-					vertexRep.getVertex().getElementId()))
+					vertexRep.getPathwayVertexGraphItem().getId()))
 			{
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
 				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
@@ -314,7 +316,7 @@ public class GLPathwayManager {
 			
 			if (bEnableGeneMapping)
 			{
-				mapExpression(gl, vertexRep.getVertex(), fNodeWidth);
+				mapExpression(gl, vertexRep.getPathwayVertexGraphItem(), fNodeWidth);
 			}
 			else
 			{
@@ -328,10 +330,6 @@ public class GLPathwayManager {
 		}
 		
 		gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
-		
-		// Draw Frame
-		
-		//gl.glPopName();
 	}
 	
 	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels) {
@@ -352,17 +350,16 @@ public class GLPathwayManager {
 	
 	private void renderLabels(final GL gl, final int iPathwayID) {
 
-	    Iterator<PathwayVertex> vertexIterator;
-	    PathwayVertex vertex;
-	    IPathwayVertexRep vertexRep;
-		Pathway refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+	    PathwayVertexGraphItemRep vertexRep;
+		PathwayGraph tmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(iPathwayID);
         
-		vertexIterator = refTmpPathway.getVertexListIterator();
-        while (vertexIterator.hasNext())
+	    Iterator<IGraphItem> vertexRepIterator = tmpPathway.getAllItemsByKind(
+				EGraphItemKind.NODE).iterator();
+
+	    while (vertexRepIterator.hasNext())
         {
-        	vertex = vertexIterator.next();
-        	vertexRep = vertex.getVertexRepByIndex(0);
+        	vertexRep = (PathwayVertexGraphItemRep) vertexRepIterator.next();
 
         	if (vertexRep != null)
         	{
@@ -381,22 +378,22 @@ public class GLPathwayManager {
 	}
 	
 	public void mapExpression(final GL gl, 
-			final PathwayVertex pathwayVertex, 
+			final PathwayVertexGraphItem pathwayVertex, 
 			final float fNodeWidth) {
 		
 		ArrayList<Color> alMappingColor;
 		
 		// Check if vertex is already mapped 
-		if (refHashElementId2MappingColorArray.containsKey(pathwayVertex.getElementId()))
+		if (refHashElementId2MappingColorArray.containsKey(pathwayVertex.getId()))
 		{
 			// Load existing mapping
-			alMappingColor = refHashElementId2MappingColorArray.get(pathwayVertex.getElementId());
+			alMappingColor = refHashElementId2MappingColorArray.get(pathwayVertex.getId());
 		}
 		else
 		{
 			// Request mapping
 			alMappingColor = enzymeToExpressionColorMapper.getMappingColorArrayByVertex(pathwayVertex);
-			refHashElementId2MappingColorArray.put((Integer)pathwayVertex.getElementId(), alMappingColor);
+			refHashElementId2MappingColorArray.put((Integer)pathwayVertex.getId(), alMappingColor);
 		}
 		
 		drawMapping(gl, alMappingColor, fNodeWidth);
@@ -463,7 +460,7 @@ public class GLPathwayManager {
 
 	}
 	
-	public IPathwayVertexRep getVertexRepByPickID(int iPickID) {
+	public PathwayVertexGraphItemRep getVertexRepByPickID(int iPickID) {
 		
 		return refHashPickID2VertexRep.get(iPickID);
 	}

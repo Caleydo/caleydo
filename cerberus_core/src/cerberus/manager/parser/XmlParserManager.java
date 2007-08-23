@@ -22,7 +22,7 @@ import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.command.CommandSaxHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
 import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler;
-import cerberus.xml.parser.handler.importer.kegg.PathwayImageMapSaxHandler;
+//import cerberus.xml.parser.handler.importer.kegg.PathwayImageMapSaxHandler;
 
 /**
  * Administer several XML-SaxHandelers.
@@ -81,15 +81,15 @@ implements IXmlParserManager {
 		KgmlSaxHandler kgmlParser = 
 			new KgmlSaxHandler( generalManager, this );	
 		
-		PathwayImageMapSaxHandler pathwayImageMapParser =
-			new PathwayImageMapSaxHandler ( generalManager, this );
+//		PathwayImageMapSaxHandler pathwayImageMapParser =
+//			new PathwayImageMapSaxHandler ( generalManager, this );
 		
 		CommandSaxHandler cmdHandler = 
 			new CommandSaxHandler( generalManager, this );
 		
 		registerAndInitSaxHandler( externalFileHandler );		
 		registerAndInitSaxHandler( kgmlParser );
-		registerAndInitSaxHandler( pathwayImageMapParser );
+//		registerAndInitSaxHandler( pathwayImageMapParser );
 		registerAndInitSaxHandler( cmdHandler );
 		
 		//openCurrentTag( cmdHandler );

@@ -214,6 +214,8 @@ public enum ManagerObjectType {
 	
 	PATHWAY_VERTEX(ManagerType.DATA_PATHWAY_ELEMENT, 63),
 	
+	PATHWAY_VERTEX_REP(ManagerType.DATA_PATHWAY_ELEMENT, 64),
+	
 	/*
 	 * Event Publisher
 	 */

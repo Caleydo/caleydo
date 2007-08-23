@@ -2,11 +2,11 @@ package cerberus.manager;
 
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.data.IPathwayItemManager;
 import cerberus.manager.data.IPathwayManager;
-import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerType;
 
 public interface ISingelton {
@@ -32,8 +32,6 @@ public interface ISingelton {
 
 	public abstract ICommandManager getCommandManager();
 
-//	public abstract IDistComponentManager getDComponentManager();
-
 	public abstract ILoggerManager getLoggerManager();
 
 	public abstract ISWTGUIManager getSWTGUIManager();
@@ -48,7 +46,7 @@ public interface ISingelton {
 	
 	public abstract IPathwayManager getPathwayManager();
 	
-	public abstract IPathwayElementManager getPathwayElementManager();
+	public abstract IPathwayItemManager getPathwayItemManager();
 
 	public abstract IGenomeIdManager getGenomeIdManager();
 	
@@ -79,9 +77,6 @@ public interface ISingelton {
 //			IViewCanvasManager setViewCanvasManager);
 
 	public abstract void setCommandManager(ICommandManager setCommandManager);
-
-//	public abstract void setDComponentManager(
-//			IDistComponentManager setDComponentManager);
 
 	public abstract void setLoggerManager(ILoggerManager refLoggerManager);
 

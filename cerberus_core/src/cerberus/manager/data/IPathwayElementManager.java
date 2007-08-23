@@ -7,6 +7,12 @@ import cerberus.data.pathway.element.APathwayEdge;
 import cerberus.data.pathway.element.PathwayVertex;
 import cerberus.manager.IGeneralManager;
 
+/**
+ * @deprecated Use IPathwayItemManager instead
+ * 
+ * @author Marc Streit
+ *
+ */
 public interface IPathwayElementManager extends IGeneralManager {
 	
 	public int createVertex(

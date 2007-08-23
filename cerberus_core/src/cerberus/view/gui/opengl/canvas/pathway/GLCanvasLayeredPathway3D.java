@@ -4,15 +4,14 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
-
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
-import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+import cerberus.data.graph.core.PathwayGraph;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 
 /**
  * @author Marc Streit
@@ -36,7 +35,7 @@ extends AGLCanvasPathway3D {
 
 	protected void buildPathwayDisplayList(final GL gl) {
 
-		Pathway refTmpPathway = null;
+		PathwayGraph refTmpPathway = null;
 		fZLayerValue = 0.0f;
 		
 		refHashDisplayListNodeId2Pathway.clear();
@@ -59,7 +58,7 @@ extends AGLCanvasPathway3D {
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{			
-			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+			refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
 			System.out.println("Create display list for pathway " +refTmpPathway.getName());
@@ -110,12 +109,12 @@ extends AGLCanvasPathway3D {
 		
 		gl.glPushMatrix();
 		
-		Pathway refTmpPathway = null;		
+		PathwayGraph refTmpPathway = null;		
 		if (bShowPathwayTexture == true)
 		{
 			//gl.glDisable(GL.GL_LIGHTING);
 			
-			Iterator<Pathway> iterPathways = 
+			Iterator<PathwayGraph> iterPathways = 
 				refHashPathwayToTexture.keySet().iterator();
 				
 			//refHashPathway2ModelMatrix.clear();
@@ -188,7 +187,7 @@ extends AGLCanvasPathway3D {
 		
 		int iDisplayListNodeId = 0;
 		int iDisplayListEdgeId = 0;
-		Pathway refTmpPathway = null;		
+		PathwayGraph refTmpPathway = null;		
 		
 		// Load pathway storage
 		// Assumes that the set consists of only one storage
@@ -203,7 +202,7 @@ extends AGLCanvasPathway3D {
 			for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 				iPathwayIndex++)
 			{
-				refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+				refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 					getItem(iArPathwayIDs[iPathwayIndex]);
 			
 				Integer buffer = refHashPathway2DisplayListNodeId.get(refTmpPathway);
@@ -230,7 +229,7 @@ extends AGLCanvasPathway3D {
 				} //if ( buffer != null ) 
 				else 
 				{
-					System.out.println("ERORR: null-pointer! id=" + refTmpPathway.getPathwayID() + "  " + refTmpPathway.toString());
+					System.out.println("ERORR: null-pointer! id=" + refTmpPathway.getKeggId() + "  " + refTmpPathway.toString());
 				
 				}  //if ( buffer != null ) {..} else {..}
 				
@@ -248,7 +247,7 @@ extends AGLCanvasPathway3D {
 	
 	// FIXME: method not used????
 	protected void renderPathway(final GL gl,
-			final Pathway refTmpPathway, 
+			final PathwayGraph refTmpPathway, 
 			int iDisplayListNodeId) {
 		
 		// Creating hierarchical picking names
@@ -308,13 +307,13 @@ extends AGLCanvasPathway3D {
 	}
 
 	protected void connectVertices(final GL gl,
-			IPathwayVertexRep refVertexRep1, 
-			IPathwayVertexRep refVertexRep2) {
+			PathwayVertexGraphItemRep refVertexRep1, 
+			PathwayVertexGraphItemRep refVertexRep2) {
 
 		float fZLayerValue1 = 0.0f; 
 		float fZLayerValue2 = 0.0f;
-		Pathway refTmpPathway = null;
-		Iterator<Pathway> iterDrawnPathways = null;
+		PathwayGraph refTmpPathway = null;
+		Iterator<PathwayGraph> iterDrawnPathways = null;
 		Texture refPathwayTexture = null;
 		float fCanvasXPos1 = 0.0f;
 		float fCanvasYPos1 = 0.0f;
@@ -333,7 +332,7 @@ extends AGLCanvasPathway3D {
 				(float)refPathwayTexture.getImageWidth() / 
 				(float)refPathwayTexture.getImageHeight();								
 			
-			if(refTmpPathway.isVertexInPathway(refVertexRep1.getVertex()) == true)
+			if(refTmpPathway.containsItem(refVertexRep1.getPathwayVertexGraphItem()) == true)
 			{					
 				fZLayerValue1 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				
@@ -343,7 +342,7 @@ extends AGLCanvasPathway3D {
 					refVertexRep1.getYPosition() * SCALING_FACTOR_Y;
 			}
 			
-			if(refTmpPathway.isVertexInPathway(refVertexRep2.getVertex()) == true)
+			if(refTmpPathway.containsItem(refVertexRep2.getPathwayVertexGraphItem()) == true)
 			{					
 				fZLayerValue2 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				
@@ -366,59 +365,59 @@ extends AGLCanvasPathway3D {
 
     protected void highlightIdenticalNodes(final GL gl) {
     	
-		Pathway refTmpPathway = null;
-		PathwayVertex refCurrentVertex = null;
-		PathwayVertex refTmpVertex = null;
-		IPathwayVertexRep refCurrentVertexRep = null;
-		Iterator<PathwayVertex> iterIdenticalVertices = null;
-		Iterator<Pathway> iterDrawnPathways = 
-			refHashPathwayToZLayerValue.keySet().iterator();
-		
-		for (int iHighlightedNodeIndex = 0; iHighlightedNodeIndex < iArHighlightedVertices.size(); 
-			iHighlightedNodeIndex++)
-		{
-		
-			refCurrentVertex = ((IPathwayVertexRep)iArHighlightedVertices.
-					get(iHighlightedNodeIndex)).getVertex();
-					
-			while(iterDrawnPathways.hasNext())
-			{
-				refTmpPathway = iterDrawnPathways.next();
-				
-				// Hightlight all identical nodes
-				iterIdenticalVertices = refGeneralManager.getSingelton().
-						getPathwayElementManager().getPathwayVertexListByName(
-								refCurrentVertex.getElementTitle()).iterator();
-				
-				while(iterIdenticalVertices.hasNext())
-				{
-					refTmpVertex = iterIdenticalVertices.next();
-					
-					if (refTmpPathway.isVertexInPathway(refTmpVertex) == true)
-					{
-						fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
-					
-						refCurrentVertexRep = refTmpVertex.
-							getVertexRepByIndex(iVertexRepIndex);
-						
-						if (refCurrentVertexRep != null)
-						{
-							iArHighlightedVertices.add(refCurrentVertexRep);
-							// Highlighted nodes in foreign pathways should get 
-							// neighbor distance of 0 (normal highlig color)
-							iArSelectionStorageNeighborDistance.add(0);
-							
-							createVertex(gl, refCurrentVertexRep, refTmpPathway);
-							
-							if (!refTmpPathway.equals(refPathwayUnderInteraction))
-							{
-								connectVertices(gl, refCurrentVertexRep, 
-										refCurrentVertex.getVertexRepByIndex(iVertexRepIndex));
-							}
-						}
-					}
-				}
-			}
-	    }
+//		PathwayGraph refTmpPathway = null;
+//		PathwayVertexGraphItem refCurrentVertex = null;
+//		PathwayVertexGraphItem refTmpVertex = null;
+//		PathwayVertexGraphItemRep refCurrentVertexRep = null;
+//		Iterator<PathwayVertexGraphItem> iterIdenticalVertices = null;
+//		Iterator<PathwayGraph> iterDrawnPathways = 
+//			refHashPathwayToZLayerValue.keySet().iterator();
+//		
+//		for (int iHighlightedNodeIndex = 0; iHighlightedNodeIndex < iArHighlightedVertices.size(); 
+//			iHighlightedNodeIndex++)
+//		{
+//		
+//			refCurrentVertex = ((PathwayVertexGraphItemRep)iArHighlightedVertices.
+//					get(iHighlightedNodeIndex)).getVertex();
+//					
+//			while(iterDrawnPathways.hasNext())
+//			{
+//				refTmpPathway = iterDrawnPathways.next();
+//				
+//				// Hightlight all identical nodes
+//				iterIdenticalVertices = refGeneralManager.getSingelton().
+//						getPathwayElementManager().getPathwayVertexListByName(
+//								refCurrentVertex.getElementTitle()).iterator();
+//				
+//				while(iterIdenticalVertices.hasNext())
+//				{
+//					refTmpVertex = iterIdenticalVertices.next();
+//					
+//					if (refTmpPathway.contains(refTmpVertex) == true)
+//					{
+//						fZLayerValue = refHashPathwayToZLayerValue.get(refTmpPathway);
+//					
+//						refCurrentVertexRep = refTmpVertex.
+//							getVertexRepByIndex(iVertexRepIndex);
+//						
+//						if (refCurrentVertexRep != null)
+//						{
+//							iArHighlightedVertices.add(refCurrentVertexRep);
+//							// Highlighted nodes in foreign pathways should get 
+//							// neighbor distance of 0 (normal highlig color)
+//							iArSelectionStorageNeighborDistance.add(0);
+//							
+//							createVertex(gl, refCurrentVertexRep, refTmpPathway);
+//							
+//							if (!refTmpPathway.equals(refPathwayUnderInteraction))
+//							{
+//								connectVertices(gl, refCurrentVertexRep, 
+//										refCurrentVertex.getVertexRepByIndex(iVertexRepIndex));
+//							}
+//						}
+//					}
+//				}
+//			}
+//	    }
     }
 }

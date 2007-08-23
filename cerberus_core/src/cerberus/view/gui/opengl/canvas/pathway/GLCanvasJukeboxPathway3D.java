@@ -7,6 +7,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,16 +15,24 @@ import java.util.LinkedList;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.geneview.graph.EGraphItemHierarchy;
+import org.geneview.graph.EGraphItemKind;
+import org.geneview.graph.EGraphItemProperty;
+import org.geneview.graph.IGraph;
+import org.geneview.graph.IGraphItem;
+import org.geneview.graph.algorithm.GraphVisitorGetLinkedGraphItems;
+import org.geneview.graph.algorithm.IGraphVisitorSearch;
+
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
-import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
-import cerberus.data.view.rep.pathway.IPathwayVertexRep;
+import cerberus.data.graph.core.PathwayGraph;
+import cerberus.data.graph.item.vertex.EPathwayVertexType;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
@@ -46,12 +55,11 @@ import com.sun.opengl.util.BufferUtil;
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
-		implements IMediatorReceiver, IMediatorSender {
+public class GLCanvasJukeboxPathway3D 
+extends AGLCanvasUser_OriginRotation
+implements IMediatorReceiver, IMediatorSender {
 
 	public static final int MAX_LOADED_PATHWAYS = 300;
-
-	public static final int MEMO_PAD_PICKING_ID = 301;
 
 	public static final int FREE_PICKING_ID_RANGE_START = 400;
 
@@ -94,7 +102,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 	private boolean bSelectionChanged = false;
 
-	private PathwayVertex selectedVertex = null;
+	private PathwayVertexGraphItemRep selectedVertex = null;
 
 	private GLInfoAreaRenderer infoAreaRenderer;
 
@@ -195,6 +203,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 
+		memoPad.init(gl);
 		initPathwayData(gl);
 
 		setInitGLDone();
@@ -239,6 +248,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		memoPad.renderMemoPad(gl);
 
 		doSlerpActions(gl);
+		
+		gl.glFlush();
 	}
 
 	private void buildLayeredPathways(final GL gl) {
@@ -478,7 +489,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			gl.glTranslatef(translation.x(), translation.y(), translation.z()
 					+ fZPos);
 
-			sRenderText = ((Pathway) refGeneralManager.getSingelton()
+			sRenderText = ((PathwayGraph) refGeneralManager.getSingelton()
 					.getPathwayManager().getItem(iPathwayId)).getTitle();
 
 			// Append identical vertex count to pathway title
@@ -612,8 +623,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		} else if (arSlerpActions.isEmpty() && bSelectionChanged)
 		{
 			bSelectionChanged = false;
-
-			highlightIdenticalNodes(gl, selectedVertex);
+			
+			iAlSelectedElements.clear();
+			iAlSelectedElements.add(
+					selectedVertex.getPathwayVertexGraphItem().getId());
 
 			rebuildVisiblePathwayDisplayLists(gl);
 		}
@@ -667,16 +680,17 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 		Point pickPoint = null;
 
-		// boolean bMouseReleased =
-		// pickingTriggerMouseAdapter.wasMouseReleased();
-		if (pickingTriggerMouseAdapter.wasMousePressed())
+		boolean bMouseReleased =
+			pickingTriggerMouseAdapter.wasMouseReleased();
+		
+		if (pickingTriggerMouseAdapter.wasMousePressed()
+				|| bMouseReleased)
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			bIsMouseOverPickingEvent = false;
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseMoved()) 
-//				|| pickingTriggerMouseAdapter.wasMouseDragged())
+		if (pickingTriggerMouseAdapter.wasMouseMoved())
 		{
 			// Restart timer
 			fLastMouseMovedTimeStamp = System.nanoTime();
@@ -704,9 +718,8 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 
 			dragAndDrop.stopDragAction();
 		}
-		// Stop drag and drop action if mouse isn't released over the memo pad
-		// area.
-		else if (!bMouseOverMemoPad)
+		// Cancel drag&drop action if mouse isn't released over the memo pad area.
+		else if (bMouseReleased && !bMouseOverMemoPad)
 		{
 			dragAndDrop.stopDragAction();
 		}
@@ -768,7 +781,6 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			int iArPickingBuffer[], final Point pickPoint) {
 
 		// System.out.println("Number of hits: " +iHitCount);
-		IPathwayVertexRep refPickedVertexRep;
 
 		int iPtr = 0;
 		int i = 0;
@@ -800,7 +812,7 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		if (!arSlerpActions.isEmpty())
 			return;
 
-		//System.out.println("Pick ID: " + iPickedObjectId);
+		System.out.println("Pick ID: " + iPickedObjectId);
 
 		// Check if picked object a non-pathway object (like pathway pool lines,
 		// navigation handles, etc.)
@@ -808,7 +820,6 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		{
 			int iPathwayId = refHashPoolLinePickId2PathwayId
 					.get(iPickedObjectId);
-			// System.out.println("PathwayID: " +iPathwayId);
 
 			// If mouse over event - just highlight pathway line
 			if (bIsMouseOverPickingEvent)
@@ -825,12 +836,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			}
 
 			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
-
-			// Just for testing
-			memoPad.addPathwayToMemoPad(iPathwayId);
-
+			
 			return;
-		} else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is
+		} 
+		else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is
 		// just a pathway
 		// texture -> do
 		// nothing
@@ -838,22 +847,29 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			return;
 		}
 
-		if (iPickedObjectId == MEMO_PAD_PICKING_ID)
+		if (iPickedObjectId == GLPathwayMemoPad.MEMO_PAD_PICKING_ID)
 		{
 			bMouseOverMemoPad = true;
-		} else
+		} 
+		else if (iPickedObjectId == GLPathwayMemoPad.MEMO_PAD_TRASH_CAN_PICKING_ID)
+		{
+			// Remove dragged object from memo pad
+			memoPad.removePathwayFromMemoPad(
+					dragAndDrop.getDraggedObjectedId());
+		}
+		else
 		{
 			bMouseOverMemoPad = false;
 		}
 
-		refPickedVertexRep = refGLPathwayManager
-				.getVertexRepByPickID(iPickedObjectId);
+		PathwayVertexGraphItemRep pickedVertexRep
+			= refGLPathwayManager.getVertexRepByPickID(iPickedObjectId);
 
-		if (refPickedVertexRep == null)
+		if (pickedVertexRep == null)
 			return;
 
-		loadNodeInformationInBrowser(refPickedVertexRep.getVertex()
-				.getVertexLink());
+//		loadNodeInformationInBrowser(pickedVertexRep.getAllItemsByProp(
+//				EGraphItemProperty.ALIAS_PARENT).getVertexLink());
 
 		// Remove pathway pool fisheye
 		iMouseOverPickedPathwayId = -1;
@@ -869,20 +885,21 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		if (bIsMouseOverPickingEvent)
 		{
 			if (selectedVertex != null
-					&& !selectedVertex.equals(refPickedVertexRep.getVertex()))
+					&& !selectedVertex.equals(pickedVertexRep))
 				infoAreaRenderer.resetAnimation();
 
-			selectedVertex = refPickedVertexRep.getVertex();
+			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
 
 			return;
 		}
 
-		if (refPickedVertexRep.getVertex().getVertexType().equals(
-				PathwayVertexType.map))
+		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
+				EPathwayVertexType.map))
 		{
-			String strTmp = "";
-			strTmp = refPickedVertexRep.getVertex().getElementTitle();
+			String strTmp = pickedVertexRep.getPathwayVertexGraphItem().getName();
+			
+			//.getElementTitle();
 
 			int iPathwayId = -1;
 			try
@@ -901,13 +918,12 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 			dragAndDrop.setDraggedObjectId(iPathwayId);
 
 			return;
-		} else if (refPickedVertexRep.getVertex().getVertexType().equals(
-				PathwayVertexType.enzyme))
+		} else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
+				EPathwayVertexType.enzyme))
 		{
-			selectedVertex = refPickedVertexRep.getVertex();
+			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
-			loadDependentPathwayContainingVertex(gl, refPickedVertexRep
-					.getVertex());
+			loadDependentPathwayContainingVertex(gl, pickedVertexRep);
 		}
 	}
 
@@ -933,9 +949,10 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 		arSlerpActions.clear();
 
 		// Check if selected pathway is loaded.
-		if (!refGeneralManager.getSingelton().getPathwayManager().hasItem(
-				iPathwayId))
+		if (!refGeneralManager.getSingelton().getPathwayManager().hasItem(iPathwayId))
+		{
 			return;
+		}
 
 		// Slerp current pathway back to layered view
 		if (!pathwayUnderInteractionLayer.getElementList().isEmpty())
@@ -978,59 +995,6 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 				new int[0], tmp);
 	}
 
-	protected void highlightIdenticalNodes(final GL gl,
-			final PathwayVertex refVertex) {
-
-		// Remove previous selection
-		iAlSelectedElements.clear();
-
-		Pathway refTmpPathway = null;
-		PathwayVertex refTmpVertex = null;
-		Iterator<PathwayVertex> iterIdenticalVertices = null;
-		int iPathwayId = 0;
-
-		Iterator<Integer> iterVisiblePathway = getVisiblePathways().iterator();
-
-		while (iterVisiblePathway.hasNext())
-		{
-			iPathwayId = iterVisiblePathway.next();
-
-			refTmpPathway = (Pathway) refGeneralManager.getSingelton()
-					.getPathwayManager().getItem(iPathwayId);
-
-			// FIXME: Why does this case occur?
-			if (refVertex == null || refVertex.getElementTitle() == null)
-			{
-				refGeneralManager.getSingelton().logMsg(
-						"highlightIdenticalNodes(): Unknown error!",
-						LoggerType.MINOR_ERROR);
-				break;
-			}
-
-			iterIdenticalVertices = refGeneralManager.getSingelton()
-					.getPathwayElementManager().getPathwayVertexListByName(
-							refVertex.getElementTitle()).iterator();
-
-			while (iterIdenticalVertices.hasNext())
-			{
-				refTmpVertex = iterIdenticalVertices.next();
-
-				if (refTmpPathway.isVertexInPathway(refTmpVertex) == true
-						&& refTmpVertex.getVertexRepByIndex(0) != null)
-				{
-					iAlSelectedElements.add(refTmpVertex.getElementId());
-				}
-			}
-		}
-
-		// int[] iArTmp = new int[iAlSelectedElements.size()];
-		// for(int i = 0; i < iArTmp.length; i++)
-		// {
-		// iArTmp[i] = ((Integer)iAlSelectedElements.get(i)).intValue();
-		// }
-		// alSetSelection.get(0).setSelectionIdArray(iArTmp);
-	}
-
 	@SuppressWarnings("unchecked")
 	public LinkedList<Integer> getVisiblePathways() {
 
@@ -1050,67 +1014,46 @@ public class GLCanvasJukeboxPathway3D extends AGLCanvasUser_OriginRotation
 	}
 
 	public void loadDependentPathwayContainingVertex(final GL gl,
-			final PathwayVertex refVertex) {
+			final PathwayVertexGraphItemRep vertexRep) {
 
 		refHashPathwayContainingSelectedVertex2VertexCount.clear();
 
-		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-		Iterator<PathwayVertex> iterIdenticalVertices = null;
-		Pathway refTmpPathway = null;
-		PathwayVertex refTmpVertex = null;
+		IGraphVisitorSearch graphSearch = 
+			new GraphVisitorGetLinkedGraphItems(vertexRep, 1);
+		
+		Iterator<IGraphItem> iterIdenticalPathwayGraphItemReps = 
+			graphSearch.getSearchResult().iterator();
+		
+		IGraphItem identicalPathwayGraphItemRep;
 		int iPathwayId = 0;
 		int iMaxPathwayCount = 0;
 		int iVertexOccurenceCount = 0;
-
-		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage
-				.getSize(StorageType.INT); iPathwayIndex++)
+		
+		while (iterIdenticalPathwayGraphItemReps.hasNext())
 		{
-			iPathwayId = iArPathwayIDs[iPathwayIndex];
-			iVertexOccurenceCount = 0;
+			identicalPathwayGraphItemRep = iterIdenticalPathwayGraphItemReps.next();
+	
+			iPathwayId = ((PathwayGraph)identicalPathwayGraphItemRep
+					.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getKeggId();
 
-			refTmpPathway = (Pathway) refGeneralManager.getSingelton()
-					.getPathwayManager().getItem(iPathwayId);
-
-			iterIdenticalVertices = refGeneralManager.getSingelton()
-					.getPathwayElementManager().getPathwayVertexListByName(
-							refVertex.getElementTitle()).iterator();
-
-			while (iterIdenticalVertices.hasNext())
+			// Prevent slerp action if pathway is already in layered view
+			if (!pathwayLayeredLayer.containsElement(iPathwayId))
 			{
-				refTmpVertex = iterIdenticalVertices.next();
+				if (iMaxPathwayCount >= pathwayLayeredLayer
+						.getCapacity())
+					break;
 
-				if (refTmpPathway.isVertexInPathway(refTmpVertex) == true
-						&& refTmpVertex.getVertexRepByIndex(0) != null)
-				{
-					// System.out.println("Picked vertex is contained in "
-					// +iPathwayId);
+				iMaxPathwayCount++;
 
-					// Prevent slerp action if pathway is already in layered
-					// view
-					if (!pathwayLayeredLayer.containsElement(iPathwayId))
-					{
-						if (iMaxPathwayCount >= pathwayLayeredLayer
-								.getCapacity())
-							break;
+				// Slerp to layered pathway view
+				SlerpAction slerpAction = new SlerpAction(iPathwayId,
+						pathwayPoolLayer, false);
 
-						iMaxPathwayCount++;
-
-						// Slerp to layered pathway view
-						SlerpAction slerpAction = new SlerpAction(iPathwayId,
-								pathwayPoolLayer, false);
-
-						arSlerpActions.add(slerpAction);
-						iSlerpFactor = 0;
-					}
-
-					iVertexOccurenceCount++;
-				}
+				arSlerpActions.add(slerpAction);
+				iSlerpFactor = 0;
 			}
 
-			if (iVertexOccurenceCount != 0)
-				refHashPathwayContainingSelectedVertex2VertexCount.put(
-						iPathwayId, iVertexOccurenceCount);
+			iVertexOccurenceCount++;
 		}
 
 		rebuildVisiblePathwayDisplayLists(gl);

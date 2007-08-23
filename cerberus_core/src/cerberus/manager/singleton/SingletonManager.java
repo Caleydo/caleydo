@@ -9,7 +9,6 @@
 package cerberus.manager.singleton;
 
 import cerberus.manager.ICommandManager;
-//import cerberus.manager.IDistComponentManager;
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
@@ -17,17 +16,15 @@ import cerberus.manager.IMementoManager;
 import cerberus.manager.IMenuManager;
 import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ISingelton;
-//import cerberus.manager.IViewCanvasManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.manager.data.IPathwayElementManager;
+import cerberus.manager.data.IPathwayItemManager;
 import cerberus.manager.data.IPathwayManager;
-import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
-//import prometheus.net.dwt.swing.mdi.DDesktopPane;
+import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.CerberusRuntimeException;
 
@@ -44,8 +41,6 @@ implements ISingelton {
 
 //	private final IGeneralManager refGeneralManager;
 	
-//	protected IDistComponentManager refDComponentManager;
-	
 //	protected IViewCanvasManager refViewCanvasManager;
 	
 	protected IStorageManager refStorageManager;
@@ -57,8 +52,6 @@ implements ISingelton {
 	protected IVirtualArrayManager refVirtualArrayManager;
 	
 	protected ISetManager refSetManager;
-	
-	//protected DDesktopPane refDDesktopPane;
 	
 	protected ICommandManager refCommandManager;
 	
@@ -72,7 +65,7 @@ implements ISingelton {
 	
 	protected IPathwayManager refPathwayManager;
 	
-	protected IPathwayElementManager refPathwayElementManager;
+	protected IPathwayItemManager refPathwayItemManager;
 	
 	protected IEventPublisher refEventPublisher;
 	
@@ -113,9 +106,7 @@ implements ISingelton {
 		return refMementoManager;
 	}
 	
-	/* (non-Javadoc)	public void setMenuManager( MenuManager setMenuManager ) {
-		this.refMenuManager = setMenuManager;
-	}
+	/* (non-Javadoc)	
 	 * @see cerberus.manager.singelton.Singelton#getStorageManager()
 	 */
 	public IStorageManager getStorageManager() {
@@ -158,7 +149,7 @@ implements ISingelton {
 	}
 	
 	/*
-	 *  (non-Javadoc)
+	 * (non-Javadoc)
 	 * @see cerberus.manager.ISingelton#getPathwayManager()
 	 */
 	public IPathwayManager getPathwayManager() {
@@ -167,12 +158,12 @@ implements ISingelton {
 	}
 	
 	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISingelton#getPathwayElementManager()
+	 * (non-Javadoc)
+	 * @see cerberus.manager.ISingelton#getPathwayItemManager()
 	 */
-	public IPathwayElementManager getPathwayElementManager() {
+	public IPathwayItemManager getPathwayItemManager() {
 		
-		return refPathwayElementManager;
+		return refPathwayItemManager;
 	}
 	
 	/* (non-Javadoc)
@@ -181,13 +172,6 @@ implements ISingelton {
 	public ISWTGUIManager getSWTGUIManager() {
 		return refSWTGUIManager;
 	}
-	
-//	/* (non-Javadoc)
-//	 * @see cerberus.manager.singelton.Singelton#getDComponentManager()
-//	 */
-//	public IDistComponentManager getDComponentManager() {
-//		return refDComponentManager;
-//	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getEventManager()
@@ -220,9 +204,6 @@ implements ISingelton {
 	public IGenomeIdManager getGenomeIdManager() {
 		return this.refIGenomeIdManager;
 	}
-	
-	
-
 	
 	public void setMenuManager( IMenuManager setMenuManager ) {
 		this.refMenuManager = setMenuManager;
@@ -276,12 +257,6 @@ implements ISingelton {
 		refCommandManager = setCommandManager;
 	}
 	
-//	public void setDComponentManager( IDistComponentManager setDComponentManager ) {
-//		assert setDComponentManager!=null: "IDistComponentManager was null";
-//		
-//		refDComponentManager = setDComponentManager;	
-//	}
-	
 	public void setLoggerManager( ILoggerManager refLoggerManager ) {
 		assert refLoggerManager != null : "ILoggerManager was null";
 		
@@ -298,9 +273,9 @@ implements ISingelton {
 		this.refPathwayManager = refPathwayManager;
 	}
 	
-	public void setPathwayElementManager(IPathwayElementManager refPathwayElementManager) {
-		this.refPathwayElementManager = refPathwayElementManager;
-	}
+	public void setPathwayItemManager(IPathwayItemManager refPathwayItemManager) {
+		this.refPathwayItemManager = refPathwayItemManager;
+	}	
 	
 	public void setEventPublisher(IEventPublisher refEventPublisher)
 	{
@@ -346,34 +321,6 @@ implements ISingelton {
 						type.toString() + "] available!");
 		}
 	}
-	
-//	/**
-//	 * Get a reference to the desktop pane. 
-//	 * Needed to create new windows in the multi document environment.
-//	 *  
-//	 * @see javax.swing.JDeskopPane
-//	 * @see javax.swing.JInternalFrame
-//	 * 
-//	 * @return reference to JDesktopPane
-//	 */
-//	public DDesktopPane getDDesktopPane() {	
-//		assert refDDesktopPane != null: "ASSERT because JDesktopPane has not been set! (null-pointer)";
-//		
-//		return refDDesktopPane;
-//	}
-//	
-//	/**
-//	 * ISet a reference to the desktop pane. 
-//	 * Needed to create new windows in the multi document environment.
-//	 * 
-//	 * @see javax.swing.JDeskopPane
-//	 * @see javax.swing.JInternalFrame
-//	 * 
-//	 * @param setDDesktopPane reference to JDesktopPane
-//	 */
-//	public void setDDesktopPane( final DDesktopPane setDDesktopPane ) {
-//		refDDesktopPane = setDDesktopPane;
-//	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.singelton.Singelton#getNetworkPostfix()

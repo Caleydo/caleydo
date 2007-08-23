@@ -66,6 +66,12 @@ public class JukeboxHierarchyLayer {
 	 */
 	public int addElement(int iElementId) {
 		
+		// Check if element is already contained and do nothing in this case
+		if (llElementId.contains(iElementId))
+		{
+			return 0;
+		}
+		
 		// Check if element limit is reached
 		if (llElementId.size() >= iCapacity)
 		{

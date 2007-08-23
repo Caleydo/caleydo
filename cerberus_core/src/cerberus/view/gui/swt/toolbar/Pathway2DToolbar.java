@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 
-import cerberus.data.pathway.element.APathwayEdge.EdgeType;
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
 
@@ -164,23 +163,22 @@ extends AToolbar {
 	
 				MenuItem clickedMenuItem = ((MenuItem)event.widget);
 				
-				if (((MenuItem)event.widget).getText().equals("Show relations"))
-				{
-					refPathwayGraphViewRep.showHideEdgesByType(
-							clickedMenuItem.getSelection(),
-							EdgeType.RELATION);
-				}
-				else if (((MenuItem)event.widget).getText().equals("Show reactions"))
-				{
-					refPathwayGraphViewRep.showHideEdgesByType(
-							clickedMenuItem.getSelection(),
-							EdgeType.REACTION);
-				}					
-
+//				if (((MenuItem)event.widget).getText().equals("Show relations"))
+//				{
+//					refPathwayGraphViewRep.showHideEdgesByType(
+//							clickedMenuItem.getSelection(),
+//							EdgeType.RELATION);
+//				}
+//				else if (((MenuItem)event.widget).getText().equals("Show reactions"))
+//				{
+//					refPathwayGraphViewRep.showHideEdgesByType(
+//							clickedMenuItem.getSelection(),
+//							EdgeType.REACTION);
+//				}					
 				
-				// Get current states of edge filter
-				refShowReactionsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.REACTION));
-				refShowRelationsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.RELATION));
+//				// Get current states of edge filter
+//				refShowReactionsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.REACTION));
+//				refShowRelationsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.RELATION));
 			}
 		};	
 		
@@ -262,16 +260,16 @@ extends AToolbar {
 	        		  refShowReactionsItem.setSelection(false);
 	        		  refShowRelationsItem.setSelection(false);
 	        		  
-	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.REACTION);
-	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.RELATION);	        		  
+//	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.REACTION);
+//	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.RELATION);	        		  
 	        	  }
 	        	  else
 	        	  {
 	        		  refShowReactionsItem.setSelection(true);
 	        		  refShowRelationsItem.setSelection(true);
 
-	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.REACTION);
-	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.RELATION);	        		  
+//	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.REACTION);
+//	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.RELATION);	        		  
 	        	  }
 	          }
 	          else if (sToolItemIdentifier.equals("" +

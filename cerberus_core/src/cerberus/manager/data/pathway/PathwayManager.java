@@ -1,10 +1,10 @@
 package cerberus.manager.data.pathway;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
-import cerberus.data.pathway.Pathway;
-import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
+import org.geneview.graph.core.Graph;
+
+import cerberus.data.graph.core.PathwayGraph;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.base.AAbstractManager;
@@ -13,78 +13,69 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
 /**
- * The pathway manager is in charge for handling
- * the pathways.
- * The class is implemented as a Singleton.
- *  
+ * The pathway manager is in charge for 
+ * creating and handling the pathways.
+ * The class is implemented as a singleton.
+ * 
  * @author Marc Streit
- * @author Michael Kalkusch
+ *
  */
-
 public class PathwayManager 
 extends AAbstractManager
 implements IPathwayManager {
 
-	protected String sPathwayXMLPath = "";	
+	private HashMap<Integer, PathwayGraph> hashPathwayLUT;
 	
-	protected String sPathwayImagePath = "";
+	private String sPathwayXMLPath;	
 	
-	protected String sPathwayImageMapPath = "";
+	private String sPathwayImagePath;
 	
-	protected HashMap<Integer, Pathway> pathwayLUT;
-
-	protected Pathway refCurrentPathway;
+	private String sPathwayImageMapPath;
 	
 	/**
-	 * Used for pathways where only images
-	 * can be loaded. The image map defines the clickable
-	 * regions on that pathway image.
+	 * Root pathway contains all nodes that are loaded into the system.
+	 * Therefore it represents the overall topological network.
+	 * (The root pathway is independent from the representation of the nodes.)
 	 */
-	protected PathwayImageMap refCurrentPathwayImageMap;
-
+	private Graph rootPathwayGraph;
+	
 	/**
 	 * Constructor
 	 */
-	public PathwayManager(IGeneralManager refGeneralManager) {
+	public PathwayManager(final IGeneralManager refGeneralManager) {
 
-		super( refGeneralManager, 
-				IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
-				ManagerType.DATA_PATHWAY_ELEMENT );
+		super(refGeneralManager, 
+			IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
+			ManagerType.DATA_PATHWAY_ELEMENT );
 		
-		pathwayLUT = new HashMap<Integer, Pathway>();
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayManager#getPathwayLUT()
-	 */
-	public HashMap<Integer, Pathway> getPathwayLUT() {
-
-		return pathwayLUT;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayManager#createPathway(Stringt, Stringt, Stringt, int)
-	 */
-	public void createPathway(String sName,
-			String sTitle, 
-			String sImageLink, 
-			String sLink,
-			int iPathwayID) {
-
-		refCurrentPathway = new Pathway(
-				sName, sTitle, sImageLink, sLink, iPathwayID);
-
-		pathwayLUT.put(iPathwayID, refCurrentPathway);
+		hashPathwayLUT = new HashMap<Integer, PathwayGraph>();
+		
+		rootPathwayGraph = new Graph(0);
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#loadPathwayById(int)
+	 * @see cerberus.manager.data.IPathwayManagerNew#createPathway(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
+	public PathwayGraph createPathway(
+			final int iKEGGId,
+			final String sName,
+			final String sTitle, 
+			final String sImageLink, 
+			final String sExternalLink) {
+
+		PathwayGraph pathway = new PathwayGraph(
+				iKEGGId, sName, sTitle, sImageLink, sExternalLink);
+
+		hashPathwayLUT.put(iKEGGId, pathway);
+		
+		return pathway;
+	}
+	
 	public boolean loadPathwayById(int iPathwayID) {
 		
 		// Check if pathway was previously loaded
-		if (pathwayLUT.containsKey(iPathwayID))
+		if (hashPathwayLUT.containsKey(iPathwayID))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
@@ -114,8 +105,7 @@ implements IPathwayManager {
 			sPathwayFilePath = "hsa0" + Integer.toString(iPathwayID);
 		}
 		
-		sPathwayFilePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayXMLPath()
-			+ sPathwayFilePath +".xml";		
+		sPathwayFilePath = sPathwayXMLPath + sPathwayFilePath +".xml";		
 		
 		bLoadingOK = refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 
@@ -134,65 +124,18 @@ implements IPathwayManager {
 		return refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 	}
 	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getPathwayIterator()
-	 */
-	public Iterator<Pathway> getPathwayIterator() {
+	public Graph getRootPathway() {
 		
-		return pathwayLUT.values().iterator();
+		return rootPathwayGraph;
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.data.pathway.IPathwayManager#getCurrentPathway()
-	 */
-	protected Pathway getCurrentPathway() {
-
-		return refCurrentPathway;
-	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#createPathwayImageMap()
-	 */
-	public void createPathwayImageMap(String sImageLink) {
-		
-		refCurrentPathwayImageMap = new PathwayImageMap(sImageLink);
-	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getCurrentPathwayImageMap()
-	 */
-	public PathwayImageMap getCurrentPathwayImageMap () {
-		
-		return refCurrentPathwayImageMap;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getPathwayXMLPath()
-	 */
-	public final String getPathwayXMLPath() {
+	public String getPathwayXMLPath() {
 		
 		assert !sPathwayXMLPath.isEmpty() : "Pathway XML path is not set!";
 		
 		return sPathwayXMLPath;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayXMLPath(Stringt)
-	 */
-	public void setPathwayXMLPath(String sPathwayXMLPath) {
-
-		this.sPathwayXMLPath = sPathwayXMLPath;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getPathwayImagePath()
-	 */
 	public final String getPathwayImagePath() {
 
 		assert !sPathwayImagePath.isEmpty() : "Pathway image path is not set!";
@@ -200,19 +143,11 @@ implements IPathwayManager {
 		return sPathwayImagePath;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayImagePath(Stringt)
-	 */
 	public void setPathwayImagePath(String sPathwayImagePath) {
 		
 		this.sPathwayImagePath = sPathwayImagePath;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getPathwayImageMapPath()
-	 */
 	public final String getPathwayImageMapPath() {
 		
 		assert !sPathwayImageMapPath.isEmpty() : "Pathway image map path is not set!";
@@ -220,42 +155,48 @@ implements IPathwayManager {
 		return sPathwayImageMapPath;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayImageMapPath(Stringt)
-	 */
 	public void setPathwayImageMapPath(String sPathwayImageMapPath) {
 		
 		this.sPathwayImageMapPath = sPathwayImageMapPath;
 	}
 	
+	public Object getItem(int iItemId) {
+
+		return(hashPathwayLUT.get(iItemId));
+	}
+
+
+	public void setPathwayXMLPath(final String sPathwayXMLPath) {
+
+		this.sPathwayXMLPath = sPathwayXMLPath;
+	}
+	
+	@Override
 	public boolean hasItem(int iItemId) {
 
-		if (pathwayLUT.containsKey(iItemId))
+		if (hashPathwayLUT.containsKey(iItemId))
 			return true;
-		
+			
 		return false;
 	}
 
-	public Object getItem(int iItemId) {
-
-		return(pathwayLUT.get(iItemId));
-	}
-
-	public int size() {
-
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public boolean registerItem(Object registerItem, int iItemId,
+	@Override
+	public boolean registerItem(Object registerItem, int itemId,
 			ManagerObjectType type) {
 
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
+	@Override
+	public int size() {
+
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean unregisterItem(int itemId, ManagerObjectType type) {
 
 		// TODO Auto-generated method stub
 		return false;

@@ -1,7 +1,6 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
 import java.awt.Color;
-
 import java.awt.Point;
 import java.io.File;
 import java.nio.FloatBuffer;
@@ -14,29 +13,25 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.geneview.graph.EGraphItemKind;
+import org.geneview.graph.IGraphItem;
+
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
+import cerberus.data.graph.core.PathwayGraph;
+import cerberus.data.graph.item.vertex.EPathwayVertexShape;
+import cerberus.data.graph.item.vertex.EPathwayVertexType;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.mapping.GenomeMappingType;
-import cerberus.data.pathway.Pathway;
-import cerberus.data.pathway.element.APathwayEdge;
-import cerberus.data.pathway.element.PathwayReactionEdge;
-import cerberus.data.pathway.element.PathwayRelationEdge;
-import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
-import cerberus.data.pathway.element.APathwayEdge.EdgeType;
-import cerberus.data.pathway.element.PathwayRelationEdge.EdgeRelationType;
-import cerberus.data.view.rep.pathway.IPathwayVertexRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.manager.data.IPathwayElementManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-//import cerberus.util.colormapping.ColorMapping;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
 import cerberus.util.system.SystemTime;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
@@ -102,19 +97,19 @@ implements IMediatorReceiver, IMediatorSender {
 
 	protected ArrayList<Integer> iArSelectionStorageNeighborDistance;
 	
-	protected HashMap<Pathway, Float> refHashPathwayToZLayerValue;
+	protected HashMap<PathwayGraph, Float> refHashPathwayToZLayerValue;
 	
 	protected float fTextureTransparency = 1.0f; 
 	
 	/**
 	 * Holds the pathways with the corresponding pathway textures.
 	 */
-	protected HashMap<Pathway, Texture> refHashPathwayToTexture;
+	protected HashMap<PathwayGraph, Texture> refHashPathwayToTexture;
 	
 	/**
 	 * Pathway that is currently under user interaction in the 2D pathway view.2
 	 */
-	protected Pathway refPathwayUnderInteraction;
+	protected PathwayGraph refPathwayUnderInteraction;
 	
 	protected boolean bShowPathwayTexture = true;
 		
@@ -126,13 +121,13 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected int iUniqueObjectPickId = 0;
 	
-	protected HashMap<Integer, IPathwayVertexRep> refHashPickID2VertexRep;
+	protected HashMap<Integer, PathwayVertexGraphItemRep> refHashPickID2VertexRep;
 		
-	protected ArrayList<IPathwayVertexRep> iArHighlightedVertices;
+	protected ArrayList<PathwayVertexGraphItemRep> iArHighlightedVertices;
 	
-	protected HashMap<Integer, Pathway> refHashDisplayListNodeId2Pathway;
+	protected HashMap<Integer, PathwayGraph> refHashDisplayListNodeId2Pathway;
 	
-	protected HashMap<Pathway, Integer> refHashPathway2DisplayListNodeId;
+	protected HashMap<PathwayGraph, Integer> refHashPathway2DisplayListNodeId;
 	
 	protected boolean bBlowUp = true;
 	
@@ -140,7 +135,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected float fHighlightedNodeBlowFactor = 1.1f;
 	
-	protected HashMap<Pathway, FloatBuffer> refHashPathway2ModelMatrix;
+	protected HashMap<PathwayGraph, FloatBuffer> refHashPathway2ModelMatrix;
 	
 	protected boolean bSelectionDataChanged = false;
 	
@@ -193,14 +188,14 @@ implements IMediatorReceiver, IMediatorSender {
 		iArSelectionStorageNeighborDistance = new ArrayList<Integer>();
 		//iArPathwayNodeDisplayListIDs = new ArrayList<Integer>();
 		iArPathwayEdgeDisplayListIDs = new ArrayList<Integer>();
-		iArHighlightedVertices = new ArrayList<IPathwayVertexRep>();
+		iArHighlightedVertices = new ArrayList<PathwayVertexGraphItemRep>();
 
-		refHashPathwayToZLayerValue = new HashMap<Pathway, Float>();
-		refHashPathwayToTexture = new HashMap<Pathway, Texture>();
-		refHashPickID2VertexRep = new HashMap<Integer, IPathwayVertexRep>();
-		refHashDisplayListNodeId2Pathway = new HashMap<Integer, Pathway>();
-		refHashPathway2DisplayListNodeId = new HashMap<Pathway, Integer>();
-		refHashPathway2ModelMatrix = new HashMap<Pathway, FloatBuffer>();
+		refHashPathwayToZLayerValue = new HashMap<PathwayGraph, Float>();
+		refHashPathwayToTexture = new HashMap<PathwayGraph, Texture>();
+		refHashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
+		refHashDisplayListNodeId2Pathway = new HashMap<Integer, PathwayGraph>();
+		refHashPathway2DisplayListNodeId = new HashMap<PathwayGraph, Integer>();
+		refHashPathway2ModelMatrix = new HashMap<PathwayGraph, FloatBuffer>();
 		
 		refInfoAreaCaption = new ArrayList<String>();
 		refInfoAreaContent = new ArrayList<String>();
@@ -275,7 +270,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	protected void initPathwayData() {
 	
-		Pathway refTmpPathway = null;
+		PathwayGraph refTmpPathway = null;
 		
 		// Load pathway storage
 		// Assumes that the set consists of only one storage
@@ -285,7 +280,7 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{
-			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+			refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
 			// Do not load texture if pathway texture was already loaded before.
@@ -661,13 +656,13 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 	protected abstract void renderPathway(final GL gl,
-			final Pathway refTmpPathway, 
+			final PathwayGraph refTmpPathway, 
 			int iDisplayListNodeId);
 		
 	
 	public void createVertex(final GL gl, 
-			IPathwayVertexRep vertexRep, 
-			Pathway refContainingPathway) {
+			PathwayVertexGraphItemRep vertexRep, 
+			PathwayGraph refContainingPathway) {
 		
 		boolean bHighlightVertex = false;
 		Color tmpNodeColor = null;
@@ -714,12 +709,12 @@ implements IMediatorReceiver, IMediatorSender {
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
 		}
 		
-		String sShapeType = vertexRep.getShapeType();
+		EPathwayVertexShape shapeType = vertexRep.getShapeType();
 
 		gl.glTranslatef(fCanvasXPos, fCanvasYPos, fZLayerValue);
 
 		// Pathway link
-		if (sShapeType.equals("roundrectangle"))
+		if (shapeType.equals(EPathwayVertexShape.roundrectangle))
 		{				
 //			renderText(vertexRep.getName(), 
 //					fCanvasXPos - fCanvasWidth + 0.02f, 
@@ -740,7 +735,7 @@ implements IMediatorReceiver, IMediatorSender {
 			fillNodeDisplayList(gl);
 		}
 		// Compounds
-		else if (sShapeType.equals("circle"))
+		else if (shapeType.equals(EPathwayVertexShape.circle))
 		{				
 //			renderText(vertexRep.getName(), 
 //					fCanvasXPos - 0.04f, 
@@ -762,7 +757,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}	
 		// Enzyme
-		else if (sShapeType.equals("rectangle"))
+		else if (shapeType.equals(EPathwayVertexShape.rectangle))
 		{	
 //			renderText(vertexRep.getName(), 
 //					fCanvasXPos - fCanvasWidth + 0.02f, 
@@ -795,7 +790,7 @@ implements IMediatorReceiver, IMediatorSender {
 					
 					ArrayList<Color> arMappingColor = 
 						enzymeToExpressionColorMapper.getMappingColorArrayByVertex(
-								vertexRep.getVertex());
+								vertexRep.getPathwayVertexGraphItem());
 					
 					// Factor indicates how often the enzyme needs to be split
 					// so that all genes can be mapped.
@@ -875,82 +870,82 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glPopName();
 	}
 	
-	public void createEdge(final GL gl,
-			int iVertexId1, 
-			int iVertexId2, 
-			boolean bDrawArrow,
-			APathwayEdge refPathwayEdge) {
-		
-		IPathwayVertexRep vertexRep1, vertexRep2;
-		
-		PathwayVertex vertex1 = 
-			refGeneralManager.getSingelton().getPathwayElementManager().
-				getVertexLUT().get(iVertexId1);
-		
-		PathwayVertex vertex2 = 
-			refGeneralManager.getSingelton().getPathwayElementManager().
-				getVertexLUT().get(iVertexId2);
-		
-		vertexRep1 = vertex1.getVertexRepByIndex(iVertexRepIndex);
-		vertexRep2 = vertex2.getVertexRepByIndex(iVertexRepIndex);
-		
-		float fCanvasXPos1 = viewingFrame[X][MIN] + 
-			vertexRep1.getXPosition() * SCALING_FACTOR_X;
-		float fCanvasYPos1 = viewingFrame[Y][MIN] + 
-			vertexRep1.getYPosition() * SCALING_FACTOR_Y;
-
-		float fCanvasXPos2 = viewingFrame[X][MIN] + 
-			vertexRep2.getXPosition() * SCALING_FACTOR_X;
-		float fCanvasYPos2 = viewingFrame[Y][MIN] + 
-			vertexRep2.getYPosition() * SCALING_FACTOR_Y;
-		
-		Color tmpColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-		// Differentiate between Relations and Reactions
-		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
-		{
-//			edgeLineStyle = refRenderStyle.getReactionEdgeLineStyle();
-//			edgeArrowHeadStyle = refRenderStyle.getReactionEdgeArrowHeadStyle();
-			tmpColor = refRenderStyle.getReactionEdgeColor();
-		}
-		else if (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
-		{
-			// In case when relations are maplinks
-			if (((PathwayRelationEdge)refPathwayEdge).getEdgeRelationType() 
-					== EdgeRelationType.maplink)
-			{
-//				edgeLineStyle = refRenderStyle.getMaplinkEdgeLineStyle();
-//				edgeArrowHeadStyle = refRenderStyle.getMaplinkEdgeArrowHeadStyle();
-				tmpColor = refRenderStyle.getMaplinkEdgeColor();
-			}
-			else 
-			{
-//				edgeLineStyle = refRenderStyle.getRelationEdgeLineStyle();
-//				edgeArrowHeadStyle = refRenderStyle.getRelationEdgeArrowHeadStyle();
-				tmpColor = refRenderStyle.getRelationEdgeColor();
-			}
-		}
-		
-		gl.glColor4f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue(), 1.0f);
-		gl.glBegin(GL.GL_LINES);		
-			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, fZLayerValue); 
-			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, fZLayerValue);					
-		gl.glEnd();				
-	}
+//	public void createEdge(final GL gl,
+//			int iVertexId1, 
+//			int iVertexId2, 
+//			boolean bDrawArrow,
+//			APathwayEdge refPathwayEdge) {
+//		
+//		IPathwayVertexRep vertexRep1, vertexRep2;
+//		
+//		PathwayVertex vertex1 = 
+//			refGeneralManager.getSingelton().getPathwayElementManager().
+//				getVertexLUT().get(iVertexId1);
+//		
+//		PathwayVertex vertex2 = 
+//			refGeneralManager.getSingelton().getPathwayElementManager().
+//				getVertexLUT().get(iVertexId2);
+//		
+//		vertexRep1 = vertex1.getVertexRepByIndex(iVertexRepIndex);
+//		vertexRep2 = vertex2.getVertexRepByIndex(iVertexRepIndex);
+//		
+//		float fCanvasXPos1 = viewingFrame[X][MIN] + 
+//			vertexRep1.getXPosition() * SCALING_FACTOR_X;
+//		float fCanvasYPos1 = viewingFrame[Y][MIN] + 
+//			vertexRep1.getYPosition() * SCALING_FACTOR_Y;
+//
+//		float fCanvasXPos2 = viewingFrame[X][MIN] + 
+//			vertexRep2.getXPosition() * SCALING_FACTOR_X;
+//		float fCanvasYPos2 = viewingFrame[Y][MIN] + 
+//			vertexRep2.getYPosition() * SCALING_FACTOR_Y;
+//		
+//		Color tmpColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+//
+//		// Differentiate between Relations and Reactions
+//		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
+//		{
+////			edgeLineStyle = refRenderStyle.getReactionEdgeLineStyle();
+////			edgeArrowHeadStyle = refRenderStyle.getReactionEdgeArrowHeadStyle();
+//			tmpColor = refRenderStyle.getReactionEdgeColor();
+//		}
+//		else if (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+//		{
+//			// In case when relations are maplinks
+//			if (((PathwayRelationEdge)refPathwayEdge).getEdgeRelationType() 
+//					== EdgeRelationType.maplink)
+//			{
+////				edgeLineStyle = refRenderStyle.getMaplinkEdgeLineStyle();
+////				edgeArrowHeadStyle = refRenderStyle.getMaplinkEdgeArrowHeadStyle();
+//				tmpColor = refRenderStyle.getMaplinkEdgeColor();
+//			}
+//			else 
+//			{
+////				edgeLineStyle = refRenderStyle.getRelationEdgeLineStyle();
+////				edgeArrowHeadStyle = refRenderStyle.getRelationEdgeArrowHeadStyle();
+//				tmpColor = refRenderStyle.getRelationEdgeColor();
+//			}
+//		}
+//		
+//		gl.glColor4f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue(), 1.0f);
+//		gl.glBegin(GL.GL_LINES);		
+//			gl.glVertex3f(fCanvasXPos1, fCanvasYPos1, fZLayerValue); 
+//			gl.glVertex3f(fCanvasXPos2, fCanvasYPos2, fZLayerValue);					
+//		gl.glEnd();				
+//	}
 	
 	protected void replacePathway(final GL gl,
-			Pathway refPathwayToReplace, 
+			PathwayGraph refPathwayToReplace, 
 			int iNewPathwayId) {
 		
 		refGeneralManager.getSingelton().logMsg(
 				this.getClass().getSimpleName() + 
-				": replacePathway(): Replace pathway "+refPathwayToReplace.getPathwayID() 
+				": replacePathway(): Replace pathway "+refPathwayToReplace.getKeggId() 
 				+" with " +iNewPathwayId,
 				LoggerType.MINOR_ERROR );
 		
 		refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iNewPathwayId);
 		
-		Pathway refNewPathway = (Pathway)refGeneralManager.getSingelton().
+		PathwayGraph refNewPathway = (PathwayGraph)refGeneralManager.getSingelton().
 			getPathwayManager().getItem(iNewPathwayId);
 		
 		// Replace old pathway with new one in hash maps
@@ -979,7 +974,7 @@ implements IMediatorReceiver, IMediatorSender {
 		//Replace old pathway ID with new ID
 		for (int index = 0; index < iArPathwayIDs.length; index++)
 		{
-			if (iArPathwayIDs[index] == refPathwayToReplace.getPathwayID())
+			if (iArPathwayIDs[index] == refPathwayToReplace.getId())
 			{
 				iArPathwayIDs[index] = iNewPathwayId;
 				break;
@@ -995,7 +990,7 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 	protected void createPathwayDisplayList(final GL gl, 
-			Pathway refTmpPathway) {
+			PathwayGraph refTmpPathway) {
 		
 		// Creating display list for pathways
 		int iVerticesDiplayListId = gl.glGenLists(1);
@@ -1010,147 +1005,145 @@ implements IMediatorReceiver, IMediatorSender {
 		extractVertices(gl, refTmpPathway);
 		gl.glEndList();
 
-		gl.glNewList(iEdgeDisplayListId, GL.GL_COMPILE);	
-		extractEdges(gl, refTmpPathway);
-		gl.glEndList();	
+//		gl.glNewList(iEdgeDisplayListId, GL.GL_COMPILE);	
+//		extractEdges(gl, refTmpPathway);
+//		gl.glEndList();	
 	}
 	
 	protected void extractVertices(final GL gl,
-			Pathway refPathwayToExtract) {
+			PathwayGraph pathwayToExtract) {
 		
-	    Iterator<PathwayVertex> vertexIterator;
-	    PathwayVertex vertex;
-	    IPathwayVertexRep vertexRep;
+	    Iterator<IGraphItem> vertexIterator;
+	    IGraphItem vertexRep;
 		
-        vertexIterator = refPathwayToExtract.getVertexListIterator();
+        vertexIterator = pathwayToExtract.getAllItemsByKind(EGraphItemKind.NODE).iterator();
         while (vertexIterator.hasNext())
         {
-        	vertex = vertexIterator.next();
-        	vertexRep = vertex.getVertexRepByIndex(iVertexRepIndex);
+        	vertexRep = vertexIterator.next();
 
         	if (vertexRep != null)
         	{
         		createVertex(gl,
-        				vertexRep, 
-        				refPathwayToExtract);        	
+        				(PathwayVertexGraphItemRep)vertexRep, 
+        				pathwayToExtract);        	
         	}
         }   
 	}
 	
-	protected void extractEdges(final GL gl,
-			Pathway refPathwayToExtract) {
-		
-		// Process relation edges
-	    Iterator<PathwayRelationEdge> relationEdgeIterator;
-        relationEdgeIterator = refPathwayToExtract.getRelationEdgeIterator();
-        while (relationEdgeIterator.hasNext())
-        {
-        	extractRelationEdges(gl, relationEdgeIterator.next()); 		
-        }
-		
-	    // Process reaction edges
-        PathwayReactionEdge reactionEdge;
-	    Iterator<PathwayVertex> vertexIterator;
-	    PathwayVertex vertex;
-		IPathwayElementManager pathwayElementManager = 
-			((IPathwayElementManager)refGeneralManager.getSingelton().
-				getPathwayElementManager());
-		
-        vertexIterator = refPathwayToExtract.getVertexListIterator();
-	    
-	    while (vertexIterator.hasNext())
-	    {
-	    	vertex = vertexIterator.next();	   
-	
-	    	if (vertex.getVertexType() == PathwayVertexType.enzyme)
-	    	{	
-//	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
-	    		
-	    		reactionEdge = (PathwayReactionEdge)pathwayElementManager.getEdgeLUT().
-	    			get(pathwayElementManager.getReactionName2EdgeIdLUT().
-	    				get(vertex.getVertexReactionName()));
-	
-	    		// FIXME: problem with multiple reactions per enzyme
-	    		if (reactionEdge != null)
-	    		{
-	            	extractReactionEdges(gl, reactionEdge, vertex);
-	    		}// if (edge != null)
-	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
-	    }
-	}
-	
-	protected void extractRelationEdges(final GL gl,
-			PathwayRelationEdge relationEdge) {
-		
-		// Direct connection between nodes
-		if (relationEdge.getCompoundId() == -1)
-		{
-			createEdge(gl,
-					relationEdge.getElementId1(), 
-					relationEdge.getElementId2(), 
-					false, 
-					relationEdge);
-		}
-		// Edge is routed over a compound
-		else 
-		{
-			createEdge(gl,
-					relationEdge.getElementId1(), 
-					relationEdge.getCompoundId(), 
-					false, 
-					relationEdge);
-			
-			if (relationEdge.getEdgeRelationType() 
-					== EdgeRelationType.ECrel)
-			{
-    			createEdge(gl,
-    					relationEdge.getCompoundId(), 
-    					relationEdge.getElementId2(), 
-    					false,
-    					relationEdge);
-			}
-			else
-			{
-    			createEdge(gl,
-    					relationEdge.getElementId2(),
-    					relationEdge.getCompoundId(),
-    					true,
-    					relationEdge);
-			}
-		}
-	}
-	
-	protected void extractReactionEdges(final GL gl,
-			PathwayReactionEdge reactionEdge, 
-			PathwayVertex vertex) {
-		
-		if (!reactionEdge.getSubstrates().isEmpty())
-		{
-			//FIXME: interate over substrates and products
-			createEdge(gl,
-					reactionEdge.getSubstrates().get(0), 
-					vertex.getElementId(), 
-					false,
-					reactionEdge);	
-		}
-		
-		if (!reactionEdge.getProducts().isEmpty())
-		{
-			createEdge(gl,
-					vertex.getElementId(),
-					reactionEdge.getProducts().get(0), 
-					true,
-					reactionEdge);
-		}	  
-	}
+//	protected void extractEdges(final GL gl,
+//			Pathway refPathwayToExtract) {
+//		
+//		// Process relation edges
+//	    Iterator<PathwayRelationEdge> relationEdgeIterator;
+//        relationEdgeIterator = refPathwayToExtract.getRelationEdgeIterator();
+//        while (relationEdgeIterator.hasNext())
+//        {
+//        	extractRelationEdges(gl, relationEdgeIterator.next()); 		
+//        }
+//		
+//	    // Process reaction edges
+//        PathwayReactionEdge reactionEdge;
+//	    Iterator<PathwayVertex> vertexIterator;
+//	    PathwayVertex vertex;
+//		IPathwayElementManager pathwayElementManager = 
+//			((IPathwayElementManager)refGeneralManager.getSingelton().
+//				getPathwayElementManager());
+//		
+//        vertexIterator = refPathwayToExtract.getVertexListIterator();
+//	    
+//	    while (vertexIterator.hasNext())
+//	    {
+//	    	vertex = vertexIterator.next();	   
+//	
+//	    	if (vertex.getVertexType() == PathwayVertexType.enzyme)
+//	    	{	
+////	    		System.out.println("Vertex title: " +vertex.getVertexReactionName());
+//	    		
+//	    		reactionEdge = (PathwayReactionEdge)pathwayElementManager.getEdgeLUT().
+//	    			get(pathwayElementManager.getReactionName2EdgeIdLUT().
+//	    				get(vertex.getVertexReactionName()));
+//	
+//	    		// FIXME: problem with multiple reactions per enzyme
+//	    		if (reactionEdge != null)
+//	    		{
+//	            	extractReactionEdges(gl, reactionEdge, vertex);
+//	    		}// if (edge != null)
+//	    	}// if (vertex.getVertexType() == PathwayVertexType.enzyme)
+//	    }
+//	}
+//	
+//	protected void extractRelationEdges(final GL gl,
+//			PathwayRelationEdge relationEdge) {
+//		
+//		// Direct connection between nodes
+//		if (relationEdge.getCompoundId() == -1)
+//		{
+//			createEdge(gl,
+//					relationEdge.getElementId1(), 
+//					relationEdge.getElementId2(), 
+//					false, 
+//					relationEdge);
+//		}
+//		// Edge is routed over a compound
+//		else 
+//		{
+//			createEdge(gl,
+//					relationEdge.getElementId1(), 
+//					relationEdge.getCompoundId(), 
+//					false, 
+//					relationEdge);
+//			
+//			if (relationEdge.getEdgeRelationType() 
+//					== EdgeRelationType.ECrel)
+//			{
+//    			createEdge(gl,
+//    					relationEdge.getCompoundId(), 
+//    					relationEdge.getElementId2(), 
+//    					false,
+//    					relationEdge);
+//			}
+//			else
+//			{
+//    			createEdge(gl,
+//    					relationEdge.getElementId2(),
+//    					relationEdge.getCompoundId(),
+//    					true,
+//    					relationEdge);
+//			}
+//		}
+//	}
+//	
+//	protected void extractReactionEdges(final GL gl,
+//			PathwayReactionEdge reactionEdge, 
+//			PathwayVertex vertex) {
+//		
+//		if (!reactionEdge.getSubstrates().isEmpty())
+//		{
+//			//FIXME: interate over substrates and products
+//			createEdge(gl,
+//					reactionEdge.getSubstrates().get(0), 
+//					vertex.getElementId(), 
+//					false,
+//					reactionEdge);	
+//		}
+//		
+//		if (!reactionEdge.getProducts().isEmpty())
+//		{
+//			createEdge(gl,
+//					vertex.getElementId(),
+//					reactionEdge.getProducts().get(0), 
+//					true,
+//					reactionEdge);
+//		}	  
+//	}
 	
 	protected void connectVertices(final GL gl,
-			IPathwayVertexRep refVertexRep1, 
-			IPathwayVertexRep refVertexRep2) {
+			PathwayVertexGraphItemRep refVertexRep1, 
+			PathwayVertexGraphItemRep refVertexRep2) {
 
 		float fZLayerValue1 = 0.0f; 
 		float fZLayerValue2 = 0.0f;
-		Pathway refTmpPathway = null;
+		PathwayGraph refTmpPathway = null;
 		Texture refPathwayTexture = null;
 		float fCanvasXPos1 = 0.0f;
 		float fCanvasYPos1 = 0.0f;
@@ -1170,7 +1163,7 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
 		{			
-			refTmpPathway = (Pathway)refGeneralManager.getSingelton().getPathwayManager().
+			refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 
 			// Recalculate scaling factor
@@ -1179,7 +1172,7 @@ implements IMediatorReceiver, IMediatorSender {
 				(float)refPathwayTexture.getImageWidth() / 
 				(float)refPathwayTexture.getImageHeight();								
 			
-			if(refTmpPathway.isVertexInPathway(refVertexRep1.getVertex()) == true)
+			if(refTmpPathway.containsItem(refVertexRep1.getPathwayVertexGraphItem()) == true)
 			{					
 				//fZLayerValue1 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				fZLayerValue1 = 0.0f;
@@ -1190,7 +1183,7 @@ implements IMediatorReceiver, IMediatorSender {
 					refVertexRep1.getYPosition() * SCALING_FACTOR_Y;
 			}
 			
-			if(refTmpPathway.isVertexInPathway(refVertexRep2.getVertex()) == true)
+			if(refTmpPathway.containsItem(refVertexRep2.getPathwayVertexGraphItem()) == true)
 			{					
 				//fZLayerValue2 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				fZLayerValue2 = 0.0f;
@@ -1336,9 +1329,9 @@ implements IMediatorReceiver, IMediatorSender {
 	 *  (non-Javadoc)
 	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(Stringt)
 	 */
-	public void loadBackgroundOverlayImage(Pathway refTexturedPathway) {
+	public void loadBackgroundOverlayImage(PathwayGraph refTexturedPathway) {
 		
-		int iPathwayId = refTexturedPathway.getPathwayID();
+		int iPathwayId = refTexturedPathway.getId();
 		String sPathwayTexturePath = "";
 		Texture refPathwayTexture;
 		
@@ -1402,21 +1395,21 @@ implements IMediatorReceiver, IMediatorSender {
 		// Read selected vertex IDs
 		int[] iArSelectedElements = refSetSelection.getSelectionIdArray();
 		
-		// Read neighbor data
-		int[] iArSelectionNeighborDistance = refSetSelection.getOptionalDataArray();
-		
-		for (int iSelectedVertexIndex = 0; 
-			iSelectedVertexIndex < ((IStorage)refSetSelection.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
-			iSelectedVertexIndex++)
-		{			
-			iArHighlightedVertices.add(refGeneralManager.getSingelton().getPathwayElementManager().
-					getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]).getVertexRepByIndex(0));
-			
-			if (iArSelectionNeighborDistance.length > 0)
-				iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
-			else
-				iArSelectionStorageNeighborDistance.add(0);
-		}
+//		// Read neighbor data
+//		int[] iArSelectionNeighborDistance = refSetSelection.getOptionalDataArray();
+//		
+//		for (int iSelectedVertexIndex = 0; 
+//			iSelectedVertexIndex < ((IStorage)refSetSelection.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT);
+//			iSelectedVertexIndex++)
+//		{			
+//			iArHighlightedVertices.add(refGeneralManager.getSingelton().getPathwayElementManager().
+//					getVertexLUT().get(iArSelectedElements[iSelectedVertexIndex]).getVertexRepByIndex(0));
+//			
+//			if (iArSelectionNeighborDistance.length > 0)
+//				iArSelectionStorageNeighborDistance.add(iArSelectionNeighborDistance[iSelectedVertexIndex]);
+//			else
+//				iArSelectionStorageNeighborDistance.add(0);
+//		}
 		
 		bSelectionDataChanged = true;
 	}
@@ -1483,7 +1476,7 @@ implements IMediatorReceiver, IMediatorSender {
 			int iArPickingBuffer[]) {
 
 		//System.out.println("Number of hits: " +iHitCount);
-		IPathwayVertexRep refPickedVertexRep;
+		PathwayVertexGraphItemRep refPickedVertexRep;
 		
 		//int iNames = 0;
 		int iPtr = 0;
@@ -1534,9 +1527,9 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				// Check if the clicked node is a pathway
 				// If this is the case the current pathway will be replaced by the clicked one.
-				if(refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
+				if(refPickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.map))
 				{		
-					int iNewPathwayId = new Integer(refPickedVertexRep.getVertex().getElementTitle().substring(8));
+					int iNewPathwayId = new Integer(refPickedVertexRep.getPathwayVertexGraphItem().getName().substring(8));
 
 					//Check if picked pathway is alread displayed
 					if (!refHashPathway2DisplayListNodeId.containsKey(refGeneralManager.getSingelton().
@@ -1564,7 +1557,7 @@ implements IMediatorReceiver, IMediatorSender {
 					// Convert to int[]
 					int[] iArTmp = new int[iArHighlightedVertices.size()];
 					for(int index = 0; index < iArHighlightedVertices.size(); index++)
-						iArTmp[index] = iArHighlightedVertices.get(index).getVertex().getElementId();
+						iArTmp[index] = iArHighlightedVertices.get(index).getPathwayVertexGraphItem().getId();
 					
 					updateSelectionSet(iArTmp, 
 							new int[0], new int[0]);
@@ -1612,7 +1605,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 	}	
 	
-	protected void fillInfoAreaContent(IPathwayVertexRep refPickedVertexRep) {
+	protected void fillInfoAreaContent(PathwayVertexGraphItemRep refPickedVertexRep) {
 		
 		// Do nothing if picked node is invalid.
 		if (refPickedVertexRep == null)
@@ -1622,22 +1615,21 @@ implements IMediatorReceiver, IMediatorSender {
 		refInfoAreaContent.clear();
 		
 		// Check if vertex is an pathway
-		if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.map))
+		if (refPickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.map))
 		{
 			refInfoAreaCaption.add("Pathway: ");
-			refInfoAreaContent.add(refPickedVertexRep.getVertex().getVertexReps()[0].getName());
+			refInfoAreaContent.add(refPickedVertexRep.getName());
 		}		
 		// Check if vertex is an compound
-		else if (refPickedVertexRep.getVertex().getVertexType().equals(PathwayVertexType.compound))
+		else if (refPickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.compound))
 		{
 			refInfoAreaCaption.add("Compound: ");
-			refInfoAreaContent.add(refPickedVertexRep.getVertex().getVertexReps()[0].getName());
+			refInfoAreaContent.add(refPickedVertexRep.getName());
 		}
 		// Check if vertex is an enzyme.
-		else if (refPickedVertexRep.getVertex().getVertexType().
-				equals(PathwayVertexType.enzyme))
+		else if (refPickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.enzyme))
 		{
-			String sEnzymeCode = refPickedVertexRep.getVertex().getElementTitle().substring(3);
+			String sEnzymeCode = refPickedVertexRep.getPathwayVertexGraphItem().getName().substring(3);
 			refInfoAreaCaption.add("Enzyme: ");
 			refInfoAreaContent.add(sEnzymeCode);
 			

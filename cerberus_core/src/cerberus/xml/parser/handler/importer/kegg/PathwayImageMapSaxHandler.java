@@ -95,7 +95,7 @@ implements IXmlParserHandler {
 				"Load image map from: " + sImageLink,
 				LoggerType.FULL );
 		
-		((PathwayManager)(refGeneralManager.getSingelton().getPathwayManager())).
+		refGeneralManager.getSingelton().getPathwayManager().
 			createPathwayImageMap(sImageLink);
 	}
 

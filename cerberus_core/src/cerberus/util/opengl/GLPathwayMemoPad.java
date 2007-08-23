@@ -1,11 +1,15 @@
 package cerberus.util.opengl;
 
 import java.awt.Font;
+import java.io.File;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.j2d.TextRenderer;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureIO;
 
 import cerberus.view.gui.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import cerberus.view.gui.opengl.canvas.pathway.GLPathwayManager;
@@ -25,6 +29,12 @@ import gleem.linalg.Vec3f;
  */
 public class GLPathwayMemoPad {
 
+	private static String TRASH_BIN_PATH = "data/icons/trashcan_empty.png";
+	
+	public static final int MEMO_PAD_PICKING_ID = 301;
+	
+	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 302;
+	
 	private JukeboxHierarchyLayer memoPad;
 	
 	private GLPathwayManager refGLPathwayManager;
@@ -32,6 +42,8 @@ public class GLPathwayMemoPad {
 	private GLPathwayTextureManager refGLPathwayTextureManager;
 	
 	private TextRenderer textRenderer;
+	
+	private Texture trashCanTexture;
 	
 	public GLPathwayMemoPad(
 			final GLPathwayManager refGLPathwayManager,
@@ -41,14 +53,9 @@ public class GLPathwayMemoPad {
 		
 		this.refGLPathwayManager = refGLPathwayManager;
 		this.refGLPathwayTextureManager = refGLPathwayTextureManager;
-		
-		textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 24), false);
-		
-		init();
 	}
 	
-	private void init() {
+	public void init(final GL gl) {
 		
 		// Create free memo spots
 		Transform transform;
@@ -64,6 +71,19 @@ public class GLPathwayMemoPad {
 
 			fMemoPos += 1f;
 		}
+		
+		try {			
+			trashCanTexture = TextureIO.newTexture(TextureIO
+					.newTextureData(new File(TRASH_BIN_PATH), false, "PNG"));
+	
+		} catch (Exception e)
+		{
+			System.out.println("Error loading texture from " + TRASH_BIN_PATH);
+			e.printStackTrace();
+		}		
+		
+		textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 24), false);
 	}
 	
 	public void addPathwayToMemoPad(final int iPathwayId) {
@@ -71,9 +91,14 @@ public class GLPathwayMemoPad {
 		memoPad.addElement(iPathwayId);
 	}
 	
+	public void removePathwayFromMemoPad(final int iPathwayId) {
+		
+		memoPad.removeElement(iPathwayId);
+	}
+	
 	public void renderMemoPad(final GL gl) {
-				
-		gl.glLoadName(GLCanvasJukeboxPathway3D.MEMO_PAD_PICKING_ID);
+		
+		gl.glLoadName(MEMO_PAD_PICKING_ID);
 		
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -91,6 +116,9 @@ public class GLPathwayMemoPad {
 		gl.glVertex3f(4.0f, 3.0f, 0.0f);
 		gl.glVertex3f(4.0f, 2.0f, 0.0f);
 		gl.glEnd();
+		
+		if (textRenderer == null)
+			return;
 		
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1.0f);
@@ -124,11 +152,41 @@ public class GLPathwayMemoPad {
 			float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
 					iPathwayId).getImageHeight()
 					* GLPathwayManager.SCALING_FACTOR_Y;
-			gl.glTranslatef(0, tmp, 0);
+			gl.glTranslatef(0, tmp, 0.01f);
 			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
-			gl.glTranslatef(0, -tmp, 0);
+			gl.glTranslatef(0, -tmp, 0.01f);
 			
 			gl.glPopMatrix();
-		}		
+		}	
+		
+		renderTrashCan(gl);
+	}
+	
+	public void renderTrashCan(final GL gl) {
+
+		if (trashCanTexture == null)
+			return;
+		
+		TextureCoords texCoords = trashCanTexture.getImageTexCoords();
+
+		gl.glLoadName(MEMO_PAD_TRASH_CAN_PICKING_ID);
+		
+		trashCanTexture.enable();
+		trashCanTexture.bind();
+
+		gl.glColor3f(1, 1, 1);
+		
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(3.4f, 1.4f, 0.5f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(3.9f, 1.4f, 0.5f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(3.9f, 1.9f, 0.5f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(3.4f, 1.9f, 0.5f);
+		gl.glEnd();
+
+		trashCanTexture.disable();
 	}
 }

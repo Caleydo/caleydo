@@ -1,35 +1,24 @@
 package cerberus.manager.data;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import org.geneview.graph.core.Graph;
 
-import cerberus.data.pathway.Pathway;
-import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
+import cerberus.data.graph.core.PathwayGraph;
 import cerberus.manager.IGeneralManager;
 
 
-public interface IPathwayManager 
+public interface IPathwayManager
 extends IGeneralManager {
 
-	public HashMap<Integer, Pathway> getPathwayLUT();
-
-	public void createPathway(String sName, 
-			String sTitle, String sImageLink,
-			String sLink, int iPathwayID);
-
-	public Iterator<Pathway> getPathwayIterator();
+	public PathwayGraph createPathway(
+			final int iKeggId,
+			final String sName, 
+			final String sTitle, 
+			final String sImageLink,
+			final String sExternalLink);
 	
-	public void createPathwayImageMap(String sLink);
-	
-	/**
-	 * Methods checks if pathway is already loaded.
-	 * If not the pathway will be loaded.
-	 * If the pathway doesn't exist FALSE will be returned.
-	 * If everything is ok TRUE will be returned.
-	 */
 	public boolean loadPathwayById(int iPathwayID);
 	
-	public PathwayImageMap getCurrentPathwayImageMap();
+	public Graph getRootPathway();
 	
 	public String getPathwayXMLPath();
 	
@@ -41,5 +30,5 @@ extends IGeneralManager {
 	
 	public String getPathwayImagePath();
 	
-	public void setPathwayImagePath(String sPathwayImagePath);	
+	public void setPathwayImagePath(String sPathwayImagePath); 
 }

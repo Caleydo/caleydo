@@ -8,16 +8,16 @@ import java.util.StringTokenizer;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import cerberus.data.pathway.element.PathwayVertex;
-import cerberus.data.pathway.element.PathwayVertexType;
-import com.sun.opengl.util.j2d.TextRenderer;
+import cerberus.data.graph.item.vertex.EPathwayVertexType;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.mapping.GeneAnnotationMapper;
 import cerberus.view.gui.opengl.canvas.pathway.GLPathwayManager;
 
-public class GLInfoAreaRenderer {
+import com.sun.opengl.util.j2d.TextRenderer;
 
-	private IGeneralManager refGeneralManager;
+public class GLInfoAreaRenderer {
 	
 	private float[] fArWorldCoordinatePosition;
 	
@@ -41,8 +41,6 @@ public class GLInfoAreaRenderer {
 	public GLInfoAreaRenderer(final IGeneralManager refGeneralManager,
 			final GLPathwayManager refGLPathwayManager) {
 		
-		this.refGeneralManager = refGeneralManager;
-		
 		fArWorldCoordinatePosition = new float[3];
 		starEffectRenderer = new GLStarEffectRenderer();		
 		
@@ -59,29 +57,33 @@ public class GLInfoAreaRenderer {
 	
     
     public void renderInfoArea(final GL gl,
-    		final PathwayVertex pickedVertex) {
+    		final PathwayVertexGraphItemRep pickedVertexRep) {
     	
     	if (fScaleFactor < 1.0)
     		fScaleFactor += 0.06;
     	
-    	if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+    	PathwayVertexGraphItem pickedVertex = pickedVertexRep.getPathwayVertexGraphItem();
+    	
+    	if (pickedVertex.getType().equals(EPathwayVertexType.gene))
+    	{
     		extractMultipleGeneMapping(pickedVertex);
+    	}
     	
     	// Check if vertex has multiple mapping and draw info areas in star formation
-    	if (pickedVertex.getElementTitle().contains(" ") 
-    			&& pickedVertex.getElementTitle().contains("hsa"))
+    	if (pickedVertex.getName().contains(" ") 
+    			&& pickedVertex.getName().contains("hsa"))
     	{
-    		drawPickedObjectInfoStar(gl, pickedVertex);
+    		drawPickedObjectInfoStar(gl, pickedVertexRep);
     	}
     	// In case of single mapping draw singe info area
     	else
     	{
-        	drawPickedObjectInfoSingle(gl, pickedVertex, true);
+        	drawPickedObjectInfoSingle(gl, pickedVertexRep, true);
     	}
     }
 	
     private void drawPickedObjectInfoSingle(final GL gl,
-			final PathwayVertex pickedVertex,
+			final PathwayVertexGraphItemRep pickedVertexRep,
 			final boolean bDrawDisplaced) {
 
     	if (fArWorldCoordinatePosition == null)
@@ -124,7 +126,7 @@ public class GLInfoAreaRenderer {
 		
 		// FIXME: Workflow is not optimal
 		// Do composition of info label string only once and store them (heading + text)
-		float fMaxWidth = calculateInfoAreaWidth(pickedVertex);
+		float fMaxWidth = calculateInfoAreaWidth(pickedVertexRep);
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -142,13 +144,13 @@ public class GLInfoAreaRenderer {
 		gl.glVertex3f(0, -fHeight, 0);
 		gl.glEnd();
 		
-		drawMappingAnnotation(gl, pickedVertex);
+		drawMappingAnnotation(gl, pickedVertexRep);
 					
 		gl.glPopMatrix();
 	}
     
     private void drawPickedObjectInfoStar(final GL gl,
-    		final PathwayVertex pickedVertex) {
+    		final PathwayVertexGraphItemRep pickedVertexRep) {
     	
     	// Calculate star points by taking the gene number as edge count
 		starEffectRenderer.calculateStarPoints(sLLMultipleGeneMappingID.size(), 1.2f, 0, 0);
@@ -176,7 +178,7 @@ public class GLInfoAreaRenderer {
 			fArTmpPosition = iterStarPoints.next();
 			gl.glTranslatef(fArTmpPosition[0]-fWidth/2f, 
 					fArTmpPosition[1]+fHeight/2f, 0);				
-			drawPickedObjectInfoSingle(gl, pickedVertex, false);
+			drawPickedObjectInfoSingle(gl, pickedVertexRep, false);
 			gl.glTranslatef(-fArTmpPosition[0]+fWidth/2f, 
 					-fArTmpPosition[1]-fHeight/2f, 0);
 		}
@@ -185,30 +187,37 @@ public class GLInfoAreaRenderer {
 
     }
     
-    private float calculateInfoAreaWidth(final PathwayVertex pickedVertex) {
+    private float calculateInfoAreaWidth(
+    		final PathwayVertexGraphItemRep pickedVertexRep) {
     	
 		textRenderer.begin3DRendering();
 		
 		float fMaxWidth = 0.0f;
 		String sElementId;
-		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
+		{
 			sElementId = sLLMultipleGeneMappingID.getFirst();
+		}
 		else
-	    	sElementId = pickedVertex.getElementTitle();
+		{
+			sElementId = pickedVertexRep.getName();
+		}
 		
 		// Save text length as new width if it bigger than previous one
-		float fCurrentWidth = 2.2f * (float)textRenderer.getBounds("ID: " +sElementId).getWidth() * GLPathwayManager.SCALING_FACTOR_X;
+		float fCurrentWidth = 2.2f * (float)textRenderer.getBounds("ID: " 
+				+sElementId).getWidth() * GLPathwayManager.SCALING_FACTOR_X;
+		
 		if (fMaxWidth < fCurrentWidth)
 			fMaxWidth = fCurrentWidth;
 
 		String sTmp = "";
-		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))		
+		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))		
 		{
 			sTmp = "Gene short name:" +geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId);
 		}
-		else if (pickedVertex.getVertexType().equals(PathwayVertexType.map))
+		else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.map))
 		{
-			sTmp = pickedVertex.getVertexRepByIndex(0).getName();
+			sTmp = pickedVertexRep.getName();
 			
 			// Remove "TITLE: "
 			if (sTmp.contains("TITLE:"))
@@ -228,7 +237,7 @@ public class GLInfoAreaRenderer {
     }
     
     private void drawMappingAnnotation(final GL gl,
-    		final PathwayVertex pickedVertex) {
+    		final PathwayVertexGraphItemRep pickedVertexRep) {
     	
 		textRenderer.begin3DRendering();
     	
@@ -237,10 +246,14 @@ public class GLInfoAreaRenderer {
 		float fYOffset = -0.03f;
 		
 		String sElementId;
-		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
+		{
 			sElementId = sLLMultipleGeneMappingID.getFirst();
+		}
 		else
-	    	sElementId = pickedVertex.getElementTitle();
+		{
+			sElementId = pickedVertexRep.getPathwayVertexGraphItem().getName();
+		}
 		
 		gl.glColor3f(1, 1, 1);
 //		GLTextUtils.renderText(gl, "ID: " +sElementId, 12,
@@ -253,13 +266,13 @@ public class GLInfoAreaRenderer {
 				0.005f);  // scale factor
 		
 		String sTmp = "";
-		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))		
+		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))		
 		{
 			sTmp = "Gene short name:" +geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId);
 		}
-		else if (pickedVertex.getVertexType().equals(PathwayVertexType.map))
+		else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.map))
 		{
-			sTmp = pickedVertex.getVertexRepByIndex(0).getName();
+			sTmp = pickedVertexRep.getName();
 			
 			// Remove "TITLE: "
 			if (sTmp.contains("TITLE:"))
@@ -278,9 +291,9 @@ public class GLInfoAreaRenderer {
 		// Render mapping if available
 		gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, 0.02f);
 		gl.glScalef(3.0f, 3.0f, 3.0f);
-		if (pickedVertex.getVertexType().equals(PathwayVertexType.gene))
+		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
 		{					
-			float fNodeWidth = pickedVertex.getVertexRepByIndex(0).getWidth() / 2.0f 
+			float fNodeWidth = pickedVertexRep.getWidth() / 2.0f 
 				* GLPathwayManager.SCALING_FACTOR_X;
 			
 			refGLPathwayManager.mapExpressionByGeneId(
@@ -354,9 +367,9 @@ public class GLInfoAreaRenderer {
     	return true;
     }
     
-    private void extractMultipleGeneMapping(final PathwayVertex pickedVertex) {
+    private void extractMultipleGeneMapping(final PathwayVertexGraphItem pickedVertex) {
     	
-		StringTokenizer tokenizer = new StringTokenizer(pickedVertex.getElementTitle());
+		StringTokenizer tokenizer = new StringTokenizer(pickedVertex.getName());
 		sLLMultipleGeneMappingID.clear();
 		
 		while (tokenizer.hasMoreTokens())
