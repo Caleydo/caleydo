@@ -1,6 +1,6 @@
 package org.geneview.graph;
 
-import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -21,9 +21,9 @@ public interface IGraphItemHierarchy {
 	 * Note, if prop == EGraphItemHierarchy.GRAPH_NONE or null all types are matched.
 	 * 
 	 * @param type define type; if prop == EGraphItemHierarchy.NONE or null all types are matched.
-	 * @return Collection of IGraph matching type; if no match is found an empty Collection is returned, null is never retrunred.
+	 * @return List of IGraph matching type; if no match is found an empty List is returned, null is never retrunred.
 	 */
-	public Collection<IGraph> getAllGraphByType(EGraphItemHierarchy type);
+	public List<IGraph> getAllGraphByType(EGraphItemHierarchy type);
 	
 	/**
 	 * 

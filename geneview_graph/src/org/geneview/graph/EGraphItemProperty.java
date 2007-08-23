@@ -4,7 +4,7 @@
 package org.geneview.graph;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.geneview.graph.GraphRuntimeException;
 
@@ -75,9 +75,9 @@ public enum EGraphItemProperty {
 	 * 
 	 * @return list of active EGraphItemHierarchy items
 	 */
-	public static final Collection<EGraphItemProperty> getActiveItems() {
+	public static final List<EGraphItemProperty> getActiveItems() {
 		
-		Collection<EGraphItemProperty>  resultList = new ArrayList<EGraphItemProperty> (3);
+		List<EGraphItemProperty>  resultList = new ArrayList<EGraphItemProperty> (3);
 		resultList.add(EGraphItemProperty.INCOMING );
 		resultList.add(EGraphItemProperty.OUTGOING);
 		resultList.add(EGraphItemProperty.ALIAS_PARENT);

@@ -3,11 +3,10 @@
  */
 package org.geneview.graph.algorithm;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Iterator;
 
 import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
 import org.geneview.graph.algorithm.IGraphVisitorSearch;
 
@@ -21,27 +20,23 @@ public class GraphVisitorGetLinkedGraphItems
 extends AGraphVisitorSearch 
 implements IGraphVisitorSearch {
 
-	protected IGraphItem itemSource;
-	
 	/**
 	 * 
 	 */
-	public GraphVisitorGetLinkedGraphItems(final IGraph graph,
-			IGraphItem itemSource) {
-		super(graph);
-		setSourceItem(itemSource);
+	public GraphVisitorGetLinkedGraphItems( final IGraphItem itemSource, final int iSearchDepth ) {
+		super(itemSource,iSearchDepth);
 	}
 
-	protected Collection<IGraphItem> getSearchResultFromGraphItem(IGraphItem item) {
-		Collection<IGraphItem> buffer = 
+	protected List<IGraphItem> getSearchResultFromGraphItem(IGraphItem item) {
+		List<IGraphItem> buffer = 
 			item.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
 	
-		Collection<IGraphItem> resultBuffer = null;
+		List<IGraphItem> resultBuffer = null;
 		
 		Iterator <IGraphItem> iter = buffer.iterator();
 		
 		while (iter.hasNext()) {
-			Collection<IGraphItem> listAllChildren_fromParent = 
+			List<IGraphItem> listAllChildren_fromParent = 
 				iter.next().getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 			
 			if  ( ! listAllChildren_fromParent.isEmpty() ) {
@@ -56,15 +51,19 @@ implements IGraphVisitorSearch {
 		return resultBuffer;
 	}
 	
-	public final void setSourceItem( IGraphItem item ) {
-		this.itemSource = item;
+	public final boolean init() {
+		return false;	
+	}
+
+	public final void search() {
+		/** algorithm is done inside method getSearchResult() */
+	}
+
+	public final void wipeTemporalDataFromGraph() {
+		/** not temporal data was created inside the graphs. */	
 	}
 	
-	public final IGraphItem getSourceItem() {
-		return this.itemSource;
-	}
-	
-	public Collection<IGraphItem> getSearchResult() {
+	public List<IGraphItem> getSearchResult() {
 		
 		if ( this.iSearchDepth == 1) {
 			return getSearchResultFromGraphItem(this.itemSource);
@@ -73,21 +72,6 @@ implements IGraphVisitorSearch {
 		assert false : "not implemented yet";
 		
 		return null;
-	}
-
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void search() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void wipeTemporalDataFromGraph() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

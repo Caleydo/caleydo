@@ -3,7 +3,7 @@
  */
 package org.geneview.graph;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.IGraphComponent;
@@ -57,7 +57,7 @@ public interface IGraph extends IGraphComponent {
 	 * @param kind define which items, if prop==null all IGraphItem objects will be returned.
 	 * @return list of IGraphItem
 	 */
-	public Collection<IGraphItem> getAllItemsByKind(EGraphItemKind kind);
+	public List<IGraphItem> getAllItemsByKind(EGraphItemKind kind);
 
 
 	/* ---  IGraph --- */	

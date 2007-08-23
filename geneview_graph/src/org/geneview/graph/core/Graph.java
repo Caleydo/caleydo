@@ -3,7 +3,7 @@
  */
 package org.geneview.graph.core;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Iterator;
 
 import org.geneview.graph.EGraphItemHierarchy;
@@ -176,7 +176,7 @@ public class Graph extends AGraph {
 	 * (non-Javadoc)
 	 * @see org.geneview.graph.IGraph#getAllItemsByKind(org.geneview.graph.EGraphItemKind)
 	 */
-	public Collection<IGraphItem> getAllItemsByKind(EGraphItemKind kind) {		
+	public List<IGraphItem> getAllItemsByKind(EGraphItemKind kind) {		
 		return items.getAllGraphComponent(kind);
 	}
 

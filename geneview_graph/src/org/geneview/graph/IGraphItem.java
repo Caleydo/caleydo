@@ -3,7 +3,7 @@
  */
 package org.geneview.graph;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.EGraphItemProperty;
@@ -48,13 +48,13 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	/* ---------------- */
 
 	/**
-	 * Get a Collection of IGraphItem with respect to their EGraphItemProperty.
+	 * Get a List of IGraphItem with respect to their EGraphItemProperty.
 	 * Note, if prop == EGraphItemProperty.NONE or null all IGraphItem's are returned.
 	 *  
 	 * @param prop specify, which IGraphItem's should be returned; if prop == EGraphItemProperty.NONE or null all IGraphItem's are returned.
 	 * @return collection of IGraphItems matching prop
 	 */
-	public Collection<IGraphItem> getAllItemsByProp(EGraphItemProperty prop);
+	public List<IGraphItem> getAllItemsByProp(EGraphItemProperty prop);
 	
 	/**
 	 * Adds a new IGraphItem with prop.

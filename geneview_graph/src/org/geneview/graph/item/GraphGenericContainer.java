@@ -4,7 +4,7 @@
 package org.geneview.graph.item;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -40,12 +40,12 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	/**
 	 * Constructor.
 	 * 
-	 * @param colGraphEnum Collection of all Enumeration that will be used; Skip type NONE or GRAPH_NONE
+	 * @param colGraphEnum List of all Enumeration that will be used; Skip type NONE or GRAPH_NONE
 	 * @param iInitialSizeGraphComponents specify initial size of ArrayList<GraphComponent>
 	 */
-	public GraphGenericContainer( Collection <GraphEnum> colGraphEnum, int iInitialSizeGraphComponents ) {
+	public GraphGenericContainer( List <GraphEnum> colGraphEnum, int iInitialSizeGraphComponents ) {
 		
-		assert colGraphEnum != null : "Can not create a GraphGenericContainer with no GraphEnum elements and empty Collection";
+		assert colGraphEnum != null : "Can not create a GraphGenericContainer with no GraphEnum elements and empty List";
 		
 		/* count number of Enum's to be registered */
 		int iCountGraphEnumItems = colGraphEnum.size();
@@ -129,7 +129,7 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	 * @see org.geneview.graph.item.GraphItem#getAllGraphByType(org.geneview.graph.EGraphItemHierarchy)
 	 * @see org.geneview.graph.item.GraphItem#getAllItemsByProp(org.geneview.graph.EGraphItemProperty)
 	 */
-	public Collection <GraphComponent> getAllGraphComponent( final GraphEnum key ) {
+	public List <GraphComponent> getAllGraphComponent( final GraphEnum key ) {
 		
 		
 		if ( key == null ) {
@@ -157,7 +157,7 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		
 		/** regular case */
 		
-		Collection <GraphComponent> buffer = type2ArrayList.get(key);
+		List <GraphComponent> buffer = type2ArrayList.get(key);
 		
 		return ( buffer != null ) ? buffer :  new ArrayList <GraphComponent> (0);
 	}
@@ -191,7 +191,7 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		
 		/** regular case */
 		
-		Collection <GraphComponent> buffer = type2ArrayList.get(key);
+		List <GraphComponent> buffer = type2ArrayList.get(key);
 		
 		return ( buffer != null ) ? buffer.remove(item) :  false;
 	}

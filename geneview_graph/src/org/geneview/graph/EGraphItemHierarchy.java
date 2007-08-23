@@ -1,7 +1,7 @@
 package org.geneview.graph;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 
@@ -38,9 +38,9 @@ public enum EGraphItemHierarchy {
 	 * 
 	 * @return list of active EGraphItemHierarchy items
 	 */
-	public static final Collection<EGraphItemHierarchy> getActiveItems() {
+	public static final List<EGraphItemHierarchy> getActiveItems() {
 		
-		Collection<EGraphItemHierarchy>  resultList = new ArrayList<EGraphItemHierarchy> (4);
+		List<EGraphItemHierarchy>  resultList = new ArrayList<EGraphItemHierarchy> (4);
 		resultList.add(EGraphItemHierarchy.GRAPH_PARENT );
 		resultList.add(EGraphItemHierarchy.GRAPH_NEIGHBOUR);
 		resultList.add(EGraphItemHierarchy.GRAPH_CHILDREN);

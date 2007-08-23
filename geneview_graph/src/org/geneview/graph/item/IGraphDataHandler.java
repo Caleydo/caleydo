@@ -23,9 +23,9 @@ public interface IGraphDataHandler {
 	
 	/**
 	 * Get all objects.
-	 * Does not return NULL but an empty Collection in case no objects are registered.
+	 * Does not return NULL but an empty List in case no objects are registered.
 	 * 
-	 * @return Collection of objects of empty collection
+	 * @return List of objects of empty collection
 	 */
 	public Collection <Object> getAllData();
 	

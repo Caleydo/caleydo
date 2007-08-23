@@ -4,7 +4,7 @@
 package org.geneview.graph;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Define GRAPH or GRAPH_ITEM as well as NODE and EDGE.
@@ -60,9 +60,9 @@ public enum EGraphItemKind {
 	 * 
 	 * @return list of active EGraphItemHierarchy items
 	 */
-	public static final Collection<EGraphItemKind> getActiveItems() {
+	public static final List<EGraphItemKind> getActiveItems() {
 		
-		Collection<EGraphItemKind>  resultList = new ArrayList<EGraphItemKind> (3);
+		List<EGraphItemKind>  resultList = new ArrayList<EGraphItemKind> (3);
 		resultList.add(EGraphItemKind.EDGE);
 		resultList.add(EGraphItemKind.NODE);
 		

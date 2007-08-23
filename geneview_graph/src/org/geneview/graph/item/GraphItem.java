@@ -3,7 +3,7 @@
  */
 package org.geneview.graph.item;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Iterator;
 
 import org.geneview.graph.EGraphItemHierarchy;
@@ -141,7 +141,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.IGraphItem#getAllItemsByProp(org.geneview.graph.EGraphItemProperty)
 	 */
-	public Collection<IGraphItem> getAllItemsByProp(EGraphItemProperty prop) {
+	public List<IGraphItem> getAllItemsByProp(EGraphItemProperty prop) {
 		return items.getAllGraphComponent(prop);
 	}
 
@@ -199,7 +199,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.IGraphItemHierarchy#getAllGraphByType(org.geneview.graph.EGraphItemHierarchy)
 	 */
-	public Collection<IGraph> getAllGraphByType(EGraphItemHierarchy type) {
+	public List<IGraph> getAllGraphByType(EGraphItemHierarchy type) {
 		return graphs.getAllGraphComponent(type);	
 	}
 
