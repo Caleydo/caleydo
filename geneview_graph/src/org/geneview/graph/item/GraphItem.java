@@ -21,6 +21,8 @@ import org.geneview.graph.item.GraphGenericContainer;
  */
 public class GraphItem extends AGraphDataHandler implements IGraphItem {
 
+	private int iGraphItemId = 0;
+	
 	/**
 	 * initial size for org.geneview.graph.item.GraphItem#items
 	 * 
@@ -42,13 +44,15 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	private EGraphItemKind itemKind = null;
 	
 	/**
-	 * Calls GraphItem(EGraphItemKind, int, int) with default settings.
+	 * Calls GraphItem(int, EGraphItemKind, int, int) with default settings.
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#GraphItem(EGraphItemKind, int, int)
+	 * @see org.geneview.graph.item.GraphItem#GraphItem(int, EGraphItemKind, int, int)
 	 * @param kind use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
-	public GraphItem(EGraphItemKind kind) {
-		this(kind,
+	public GraphItem(final int id,
+			final EGraphItemKind kind) {
+		this(id, 
+				kind,
 				GraphItem.iInitialSizeItemsDefault,
 				GraphItem.iInitalSizeGraphsDefault);
 		
@@ -61,9 +65,10 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	 * @param iInitalSizeGraphs estimated number of graphs
 	 * @param kind use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
-	public GraphItem(EGraphItemKind kind, 
-			int iInitialSizeItems, 
-			int iInitalSizeGraphs) {
+	public GraphItem(final int id,
+			final EGraphItemKind kind, 
+			final int iInitialSizeItems, 
+			final int iInitalSizeGraphs) {
 		
 		/** create graph-data objects .. */
 		super(iInitialSizeItems);
@@ -76,7 +81,24 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 		graphs = new GraphGenericContainer <IGraph,EGraphItemHierarchy> 
 		(EGraphItemHierarchy.getActiveItems(), iInitalSizeGraphs);
 		
+		this.iGraphItemId = id;
 		this.itemKind = kind;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.IGraphComponent#getId()
+	 */
+	public final int getId() {		
+		return iGraphItemId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.IGraphComponent#setId(int)
+	 */
+	public final void setId(final int id) {
+		iGraphItemId = id;		
 	}
 	
 	/*
@@ -198,18 +220,6 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 		while ( iter.hasNext() ) {
 			iter.next().removeItem(this);
 		}
-	}
-
-	@Override
-	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setId(int type) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

@@ -69,7 +69,7 @@ public enum EGraphItemProperty {
 	/**
 	 * Get a list of active EGraphItemProperty items.
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#GraphItem(EGraphItemKind)
+	 * @see org.geneview.graph.item.GraphItem#GraphItem(int,EGraphItemKind)
 	 * @see org.geneview.graph.EGraphItemHierarchy#getActiveItems()
 	 * @see org.geneview.graph.EGraphItemKind#getActiveItems()
 	 * 

@@ -32,7 +32,7 @@ public enum EGraphItemHierarchy {
 	/**
 	 * Get a list of active EGraphItemHierarchy items.
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#GraphItem(EGraphItemKind)
+	 * @see org.geneview.graph.item.GraphItem#GraphItem(int,EGraphItemKind)
 	 * @see org.geneview.graph.EGraphItemProperty#getActiveItems()
 	 * @see org.geneview.graph.EGraphItemKind#getActiveItems()
 	 * 

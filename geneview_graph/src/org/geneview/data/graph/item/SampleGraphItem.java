@@ -18,7 +18,7 @@ public class SampleGraphItem extends GraphItem {
 	 * @param kind define NODE or EDGE
 	 */
 	public SampleGraphItem(EGraphItemKind kind) {
-		super(kind);
+		super(666,kind);
 		
 		/** extend the Graph Item based on your requirements */
 	}
