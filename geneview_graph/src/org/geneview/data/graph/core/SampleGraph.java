@@ -16,7 +16,8 @@ public class SampleGraph extends Graph {
 	/**
 	 * 
 	 */
-	public SampleGraph() {
+	public SampleGraph(final int id) {
+		super(id);
 		
 		/** extend the Graph based on your requirements */
 	}

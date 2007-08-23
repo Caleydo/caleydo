@@ -31,9 +31,9 @@ public class Graph extends AGraph {
 	/**
 	 * 
 	 */
-	public Graph() {
+	public Graph(final int id) {
 		
-		super();
+		super(id);
 		
 		/** create container for items */
 		items = new GraphGenericContainer <IGraphItem,EGraphItemKind> 
@@ -179,6 +179,5 @@ public class Graph extends AGraph {
 	public Collection<IGraphItem> getAllItemsByKind(EGraphItemKind kind) {		
 		return items.getAllGraphComponent(kind);
 	}
-
 
 }

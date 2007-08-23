@@ -42,8 +42,10 @@ public abstract class AGraph implements IGraph {
 	/**
 	 * 
 	 */
-	protected AGraph() {
+	protected AGraph(final int id) {
 		hashGraphProperties = new HashMap <EGraphProperty,Boolean> (iInitialSizeProperties);
+		
+		this.iGraphId = id;
 	}
 
 	/* (non-Javadoc)
