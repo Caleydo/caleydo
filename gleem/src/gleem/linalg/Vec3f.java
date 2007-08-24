@@ -41,7 +41,7 @@ package gleem.linalg;
 
 /** 3-element single-precision vector
   *
-  * Added new static variables VEC_NULL and VEC_ONE (Micahel Kalkusch) 
+  * @author Michael Kalkusch: Added new static variables VEC_NULL and VEC_ONE 
   */
 
 public class Vec3f {
@@ -59,7 +59,6 @@ public class Vec3f {
    * PI stored in a float.
    * Note: from (double) Math.PI
    * 
-   * @author Patch by Michael Kalkusch.
    */
   public static final float fPI = (float) Math.PI;
   
@@ -79,10 +78,8 @@ public class Vec3f {
   
   /**
    * Convert grad to radiant (eg: [-360° .. +360°] ==> [-2PI .. 2PI]).
-   * 
-   * @author Patch by Michael Kalkusch.
    *  
-   * @param angle in grad
+   * @param fGrad in grad
    * @return grad converted to radiant
    */
   public static final float convertGrad2Radiant( final float fGrad ) {

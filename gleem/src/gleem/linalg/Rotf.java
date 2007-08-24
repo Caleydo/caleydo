@@ -41,9 +41,8 @@ package gleem.linalg;
 
 /** Represents a rotation with single-precision components 
  *
- * Added new method getAxisAndAngle() (Micahel Kalkusch)
+ * Added new method getAxisAndAngle() (Michael Kalkusch)
  */
-
 public class Rotf {
   private static float EPSILON = 1.0e-7f;
 
@@ -75,6 +74,18 @@ public class Rotf {
   public Rotf(Vec3f from, Vec3f to) {
     set(from, to);
   }
+  
+  /**
+   * Attention: Vec3f( axisX, axisY, axisZ) must be normalized!
+   * 
+   * @param axisX axis.x component
+   * @param axisY axis.y component
+   * @param axisZ axis.z component
+   * @param angle rotation angle around axis
+   */
+  public Rotf(float angle, float axisX, float axisY, float axisZ) {
+	  set(angle, axisX, axisY, axisZ);
+  }
 
   /** Re-initialize this quaternion to be the identity quaternion "e"
       (i.e., no rotation) */
@@ -104,6 +115,23 @@ public class Rotf {
     q1 = realAxis.x() * sinHalfTheta;
     q2 = realAxis.y() * sinHalfTheta;
     q3 = realAxis.z() * sinHalfTheta;
+  }
+  
+  /** Axis does not need to be normalized but must not be the zero
+   * vector. Angle is in radians. 
+   * Attention: Vec3f( axisX, axisY, axisZ) must be normalized!
+   */
+  public void set(float angle, float axisX, float axisY, float axisZ) {
+	float halfTheta = angle / 2.0f;
+	//FIXME: We need to look on this again.
+	//       It will be checked it that the version on SVN is working.
+	q0 = angle;//(float) Math.cos(halfTheta);
+	float sinHalfTheta = (float) Math.sin(halfTheta);
+//	Vec3f realAxis = new Vec3f(axis);
+//	realAxis.normalize();
+	q1 = axisX * sinHalfTheta;
+	q2 = axisY * sinHalfTheta;
+	q3 = axisZ * sinHalfTheta;
   }
 
   public void set(Rotf arg) {
@@ -195,7 +223,7 @@ public class Rotf {
   }
 
   /** Returns this * b, in that order; creates new rotation */
-  public void mulSelf(Rotf b) {
+  public Rotf mulSelf(Rotf b) {
     Rotf tmp = new Rotf();
     tmp.mul(this, b);
     return tmp;
@@ -316,6 +344,38 @@ public class Rotf {
 	  return new Vec4f( q1, q2, q3, q0);	  
   }
   
+  public float getX() {
+	  return q1;
+  }
+  
+  public float getY() {
+	  return q2;
+  }
+  
+  public float getZ() {
+	  return q3;
+  }
+  
+  public float getAngle() {
+	  return q0;
+  }
+  
+  public void setX(float x) {
+	  q1 = x;
+  }
+
+  public void setY(float y) {
+	  q2 = y;
+  }
+
+  public void setZ(float z) {
+	  q3 = z;
+  }
+  
+  public void setAngle(float angle) {
+	  q0 = angle;
+  }  
+
   public void applyEulerAngles(float x, float y, float z) {
 	  
 	  Rotf rotX = new Rotf( (float) Math.cos(x/2),
@@ -328,6 +388,16 @@ public class Rotf {
 	  Rotf rotRes = rotZ.mulSelf(rotXY);
 	  
 	  this.set(rotRes);
+  }
+  
+  public Rotf applyEulerAnglesX(float x) {
+	  
+	  Rotf rotX = new Rotf( 
+			  (float) Math.cos(x/2),
+			  (float) Math.sin(x/2), 0,0);
+	  Rotf rotRes = this.mulSelf(rotX);
+	  
+	  return rotRes;
   }
   
   public String toString() {
