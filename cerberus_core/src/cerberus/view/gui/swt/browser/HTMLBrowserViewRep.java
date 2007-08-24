@@ -5,7 +5,6 @@ package cerberus.view.gui.swt.browser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -17,6 +16,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
+import cerberus.view.gui.swt.browser.HookedBrowser;
 
 /**
  * Simple HTML browser.
@@ -28,7 +28,7 @@ public class HTMLBrowserViewRep
 extends AViewRep 
 implements IView {
 
-    protected Browser refBrowser;
+    protected HookedBrowser refBrowser;
     
     protected String sUrl = "";
     
@@ -51,7 +51,7 @@ implements IView {
 		
 		retrieveGUIContainer();
 		
-		refBrowser = new Browser (refSWTContainer, SWT.NONE);
+		refBrowser = new HookedBrowser (refSWTContainer, SWT.NONE);
 				
 //		if ((iWidth == -1)&&(iHeight == -1)) 
 //		{
