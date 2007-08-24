@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
 	<classpathentry excluding="**/.svn/|*.html|gleem/|org/" kind="src" path="src_ext"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.graph"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Compiler/java/jre1.6/jre/lib"/>
@@ -34,6 +33,11 @@
 	<classpathentry kind="lib" path="lib/gleem/gleem_mod_class.jar" sourcepath="lib_src/gleem/gleem_mod_src_doc.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Cerberus/lib_src/gleem/gleem_mod_src_doc.jar!/javadoc"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/org.geneview.graph_bin.jar" sourcepath="lib_src/org.geneview.graph_src_javadoc.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Cerberus/lib_src/org.geneview.graph_src_javadoc.zip!/javadoc"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin/class"/>
