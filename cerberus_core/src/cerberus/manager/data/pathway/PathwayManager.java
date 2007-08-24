@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.geneview.graph.core.Graph;
 
 import cerberus.data.graph.core.PathwayGraph;
+import cerberus.data.view.rep.pathway.jgraph.PathwayImageMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.base.AAbstractManager;
@@ -40,6 +41,14 @@ implements IPathwayManager {
 	private Graph rootPathwayGraph;
 	
 	/**
+	 * Used for pathways where only images
+	 * can be loaded. The image map defines the clickable
+	 * regions on that pathway image.
+	 */
+	protected PathwayImageMap refCurrentPathwayImageMap;
+
+	
+	/**
 	 * Constructor
 	 */
 	public PathwayManager(final IGeneralManager refGeneralManager) {
@@ -72,7 +81,11 @@ implements IPathwayManager {
 		return pathway;
 	}
 	
-	public boolean loadPathwayById(int iPathwayID) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#loadPathwayById(int)
+	 */
+	public boolean loadPathwayById(final int iPathwayID) {
 		
 		// Check if pathway was previously loaded
 		if (hashPathwayLUT.containsKey(iPathwayID))
@@ -124,11 +137,19 @@ implements IPathwayManager {
 		return refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getRootPathway()
+	 */
 	public Graph getRootPathway() {
 		
 		return rootPathwayGraph;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getPathwayXMLPath()
+	 */
 	public String getPathwayXMLPath() {
 		
 		assert !sPathwayXMLPath.isEmpty() : "Pathway XML path is not set!";
@@ -136,6 +157,19 @@ implements IPathwayManager {
 		return sPathwayXMLPath;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayXMLPath(java.lang.String)
+	 */
+	public void setPathwayXMLPath(final String sPathwayXMLPath) {
+
+		this.sPathwayXMLPath = sPathwayXMLPath;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getPathwayImagePath()
+	 */
 	public final String getPathwayImagePath() {
 
 		assert !sPathwayImagePath.isEmpty() : "Pathway image path is not set!";
@@ -143,11 +177,19 @@ implements IPathwayManager {
 		return sPathwayImagePath;
 	}
 	
-	public void setPathwayImagePath(String sPathwayImagePath) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayImagePath(java.lang.String)
+	 */
+	public void setPathwayImagePath(final String sPathwayImagePath) {
 		
 		this.sPathwayImagePath = sPathwayImagePath;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getPathwayImageMapPath()
+	 */
 	public final String getPathwayImageMapPath() {
 		
 		assert !sPathwayImageMapPath.isEmpty() : "Pathway image map path is not set!";
@@ -155,23 +197,46 @@ implements IPathwayManager {
 		return sPathwayImageMapPath;
 	}
 	
-	public void setPathwayImageMapPath(String sPathwayImageMapPath) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#setPathwayImageMapPath(java.lang.String)
+	 */
+	public void setPathwayImageMapPath(final String sPathwayImageMapPath) {
 		
 		this.sPathwayImageMapPath = sPathwayImageMapPath;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#createPathwayImageMap(java.lang.String)
+	 */
+	public void createPathwayImageMap(final String sImageLink) {
+		
+		refCurrentPathwayImageMap = new PathwayImageMap(sImageLink);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.IPathwayManager#getCurrentPathwayImageMap()
+	 */
+	public PathwayImageMap getCurrentPathwayImageMap () {
+		
+		return refCurrentPathwayImageMap;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IGeneralManager#getItem(int)
+	 */
 	public Object getItem(int iItemId) {
 
 		return(hashPathwayLUT.get(iItemId));
 	}
-
-
-	public void setPathwayXMLPath(final String sPathwayXMLPath) {
-
-		this.sPathwayXMLPath = sPathwayXMLPath;
-	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IGeneralManager#hasItem(int)
+	 */
 	public boolean hasItem(int iItemId) {
 
 		if (hashPathwayLUT.containsKey(iItemId))
@@ -180,7 +245,10 @@ implements IPathwayManager {
 		return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IGeneralManager#registerItem(java.lang.Object, int, cerberus.manager.type.ManagerObjectType)
+	 */
 	public boolean registerItem(Object registerItem, int itemId,
 			ManagerObjectType type) {
 
@@ -188,14 +256,20 @@ implements IPathwayManager {
 		return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IGeneralManager#size()
+	 */
 	public int size() {
 
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IGeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
+	 */
 	public boolean unregisterItem(int itemId, ManagerObjectType type) {
 
 		// TODO Auto-generated method stub
