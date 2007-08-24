@@ -52,6 +52,38 @@ import com.sun.opengl.util.texture.TextureIO;
 public abstract class AGLCanvasPathway3D
 extends AGLCanvasUser_OriginRotation
 implements IMediatorReceiver, IMediatorSender {
+		
+	/**
+	 * default for sPathwayName_prefix.
+	 * 
+	 * @see AGLCanvasPathway3D#AGLCanvasPathway3D(IGeneralManager, int, int, String)
+	 * @see AGLCanvasPathway3D#sPathwayName_prefix
+	 * @see AGLCanvasPathway3D#loadBackgroundOverlayImage(PathwayGraph)
+	 */
+	private static final String sPathwayName_prefix_default= "hsa";
+	
+	/**
+	 * Extension for pathway file names
+	 * 
+	 * @see AGLCanvasPathway3D#loadBackgroundOverlayImage(PathwayGraph)
+	 */
+	private static final String sPathwayName_extension= ".gif";
+	
+	/**
+	 * @see AGLCanvasPathway3D#loadBackgroundOverlayImage(PathwayGraph)
+	 */
+	private static final int iPathwayName_FormatLength_LeadingZeros = 5;
+	
+	/**
+	 * Default is "hsa"
+	 * 
+	 * @see AGLCanvasPathway3D#sPathwayName_prefix_default;
+	 * @see AGLCanvasPathway3D#loadBackgroundOverlayImage(PathwayGraph)
+	 * @see AGLCanvasPathway3D#AGLCanvasPathway3D(IGeneralManager, int, int, String, String)
+	 * @see AGLCanvasPathway3D#AGLCanvasPathway3D(IGeneralManager, int, int, String)
+	 */
+	private final String sPathwayName_prefix;
+	
 	
 	protected float [][] viewingFrame;
 	
@@ -154,6 +186,18 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected PathwayRenderStyle refRenderStyle;
 		
+	public AGLCanvasPathway3D( final IGeneralManager refGeneralManager,
+			int iViewId, 
+			int iParentContainerId, 
+			final String sLabel) {
+		
+		this(refGeneralManager,
+				iViewId,
+				iParentContainerId, 
+				sLabel,
+				AGLCanvasPathway3D.sPathwayName_prefix_default);
+	}
+	
 	/**
 	 * Constructor
 	 * 
@@ -161,7 +205,8 @@ implements IMediatorReceiver, IMediatorSender {
 	public AGLCanvasPathway3D( final IGeneralManager refGeneralManager,
 			int iViewId, 
 			int iParentContainerId, 
-			String sLabel ) {
+			final String sLabel,
+			final String sPathwayName_prefix) {
 				
 		super(refGeneralManager, 
 				null,
@@ -169,6 +214,7 @@ implements IMediatorReceiver, IMediatorSender {
 				iParentContainerId, 
 				"");
 		
+		this.sPathwayName_prefix = sPathwayName_prefix;
 		this.refViewCamera.setCaller(this);
 					
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
@@ -1331,33 +1377,48 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void loadBackgroundOverlayImage(PathwayGraph refTexturedPathway) {
 		
-		int iPathwayId = refTexturedPathway.getId();
-		String sPathwayTexturePath = "";
+		//int iPathwayId = refTexturedPathway.getId();
+		//String sPathwayTexturePath = "";
 		Texture refPathwayTexture;
 		
-		if (iPathwayId < 10)
-		{
-			sPathwayTexturePath = "hsa0000" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 100 && iPathwayId >= 10)
-		{
-			sPathwayTexturePath = "hsa000" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 1000 && iPathwayId >= 100)
-		{
-			sPathwayTexturePath = "hsa00" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 10000 && iPathwayId >= 1000)
-		{
-			sPathwayTexturePath = "hsa0" + Integer.toString(iPathwayId);
-		}
+		/** convert int to String; use this for length to */
+		String bufferValue = Integer.toString(refTexturedPathway.getId());		
+		/** calculate number of leading "0"s .. */
+		int iFillFrontwithZero = AGLCanvasPathway3D.iPathwayName_FormatLength_LeadingZeros 
+			- bufferValue.length();		
 		
-		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
-			+ sPathwayTexturePath +".gif";	
+		StringBuffer zerobuffer = new StringBuffer(refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath());
+		zerobuffer.append(sPathwayName_prefix);
+		/** create leading "0"s .. */
+		for( int i=0; i< iFillFrontwithZero; i++) {
+			zerobuffer.append("0");
+		}
+		zerobuffer.append(bufferValue);
+		zerobuffer.append(AGLCanvasPathway3D.sPathwayName_extension);
+		
+//		if (iPathwayId < 10)
+//		{
+//			sPathwayTexturePath = "hsa0000" + Integer.toString(iPathwayId);
+//		}
+//		else if (iPathwayId < 100 && iPathwayId >= 10)
+//		{
+//			sPathwayTexturePath = "hsa000" + Integer.toString(iPathwayId);
+//		}
+//		else if (iPathwayId < 1000 && iPathwayId >= 100)
+//		{
+//			sPathwayTexturePath = "hsa00" + Integer.toString(iPathwayId);
+//		}
+//		else if (iPathwayId < 10000 && iPathwayId >= 1000)
+//		{
+//			sPathwayTexturePath = "hsa0" + Integer.toString(iPathwayId);
+//		}
+//		
+//		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
+//			+ sPathwayTexturePath +".gif";	
 		
 		try
 		{
-			refPathwayTexture = TextureIO.newTexture(new File(sPathwayTexturePath), false);
+			refPathwayTexture = TextureIO.newTexture(new File(zerobuffer.toString()), false);
 //			refPathwayTexture.bind();
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
@@ -1370,7 +1431,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 		} catch (Exception e)
 		{
-			System.out.println("Error loading texture " + sPathwayTexturePath);
+			System.out.println("Error loading texture " + zerobuffer.toString());
 			e.printStackTrace();
 		}
 	}
