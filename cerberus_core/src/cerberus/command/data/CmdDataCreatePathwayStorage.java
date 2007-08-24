@@ -73,19 +73,19 @@ implements ICommand {
 			
 			if (iPathwayId < 10)
 			{
-				sPathwayFilePath = "map0000" + Integer.toString(iPathwayId);
+				sPathwayFilePath = "hsa0000" + Integer.toString(iPathwayId);
 			}
 			else if (iPathwayId < 100 && iPathwayId >= 10)
 			{
-				sPathwayFilePath = "map000" + Integer.toString(iPathwayId);
+				sPathwayFilePath = "hsa000" + Integer.toString(iPathwayId);
 			}
 			else if (iPathwayId < 1000 && iPathwayId >= 100)
 			{
-				sPathwayFilePath = "map00" + Integer.toString(iPathwayId);
+				sPathwayFilePath = "hsa00" + Integer.toString(iPathwayId);
 			}
 			else if (iPathwayId < 10000 && iPathwayId >= 1000)
 			{
-				sPathwayFilePath = "map0" + Integer.toString(iPathwayId);
+				sPathwayFilePath = "hsa0" + Integer.toString(iPathwayId);
 			}
 			
 			sPathwayFilePath = refGeneralManager.getSingelton()

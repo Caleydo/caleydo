@@ -131,7 +131,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected boolean bBlowUp = true;
 	
-	protected boolean bEnableGeneMapping = true;
+	protected boolean bEnableGeneMapping = false;
 	
 	protected float fHighlightedNodeBlowFactor = 1.1f;
 	
@@ -279,7 +279,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage.getSize(StorageType.INT); 
 			iPathwayIndex++)
-		{
+		{	
 			refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 			
@@ -1337,19 +1337,19 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if (iPathwayId < 10)
 		{
-			sPathwayTexturePath = "map0000" + Integer.toString(iPathwayId);
+			sPathwayTexturePath = "hsa0000" + Integer.toString(iPathwayId);
 		}
 		else if (iPathwayId < 100 && iPathwayId >= 10)
 		{
-			sPathwayTexturePath = "map000" + Integer.toString(iPathwayId);
+			sPathwayTexturePath = "hsa000" + Integer.toString(iPathwayId);
 		}
 		else if (iPathwayId < 1000 && iPathwayId >= 100)
 		{
-			sPathwayTexturePath = "map00" + Integer.toString(iPathwayId);
+			sPathwayTexturePath = "hsa00" + Integer.toString(iPathwayId);
 		}
 		else if (iPathwayId < 10000 && iPathwayId >= 1000)
 		{
-			sPathwayTexturePath = "map0" + Integer.toString(iPathwayId);
+			sPathwayTexturePath = "hsa0" + Integer.toString(iPathwayId);
 		}
 		
 		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()

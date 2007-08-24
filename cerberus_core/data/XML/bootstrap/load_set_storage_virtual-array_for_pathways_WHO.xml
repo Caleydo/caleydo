@@ -7,8 +7,8 @@
 
 	<!-- Setting paths -->	
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" targetId="11331" label="Set Pathway Paths" 
-		attrib1="data/GenomeData/pathway/XML/" 
-		attrib2="data/GenomeData/pathway/images/" 
+		attrib1="data/GenomeData/pathway/XML/hsa/" 
+		attrib2="data/GenomeData/pathway/images/hsa/" 
 		attrib3="data/GenomeData/pathway/imagemap/" /> 
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>

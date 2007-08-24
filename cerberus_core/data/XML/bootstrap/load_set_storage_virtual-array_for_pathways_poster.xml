@@ -7,8 +7,8 @@
 
 	<!-- Setting paths -->	
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" targetId="11331" label="Set Pathway Paths" 
-		attrib1="data/GenomeData/pathway/XML/" 
-		attrib2="data/GenomeData/pathway/images/" 
+		attrib1="data/GenomeData/pathway/XML/hsa/" 
+		attrib2="data/GenomeData/pathway/images/hsa/" 
 		attrib3="data/GenomeData/pathway/imagemap/" /> 
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	targetId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
@@ -17,9 +17,9 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	targetId="47301" label="Storage	file for expression mapping 3" 	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="14993"	targetId="55301" label="Storage file"	attrib1="STRING" attrib2="test data	from file" />												 
 	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="21301" label="Pathway storage 1" attrib1="STRING" attrib2="20 720 630" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="21301" label="Pathway storage 1" attrib1="STRING" attrib2="720 630" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="22301" label="Pathway storage 2" attrib1="STRING" attrib2="720" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="23301" label="Pathway storage 3" attrib1="STRING" attrib2="20 720 630 710 620" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="23301" label="Pathway storage 3" attrib1="STRING" attrib2="720 630 710 620" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_PATHWAY_STORAGE"		cmdId="14993"	targetId="24301" label="Pathway storage 4" attrib1="STRING" attrib2="720 20 630 710 620" />
 									 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="20991"	targetId="15201" label="my Selection"	attrib1="90 5 0 1" />

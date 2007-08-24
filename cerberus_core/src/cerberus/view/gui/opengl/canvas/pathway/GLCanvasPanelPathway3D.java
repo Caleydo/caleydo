@@ -214,13 +214,13 @@ extends AGLCanvasPathway3D {
 		fTextureHeight = 0.0025f * (float)refPathwayTexture.getImageHeight();				
 		
 		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2f(0, texCoords.top()); 
+		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
 		gl.glVertex3f(0.0f, 0.0f, fTmpZLayerValue);			  
 		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
 		gl.glVertex3f(fTextureWidth, 0.0f, fTmpZLayerValue);			 
-		gl.glTexCoord2f(texCoords.right(), 0); 
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
 		gl.glVertex3f(fTextureWidth, fTextureHeight, fTmpZLayerValue);
-		gl.glTexCoord2f(0, 0); 
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
 		gl.glVertex3f(0.0f, fTextureHeight, fTmpZLayerValue);
 		gl.glEnd();	
 		
