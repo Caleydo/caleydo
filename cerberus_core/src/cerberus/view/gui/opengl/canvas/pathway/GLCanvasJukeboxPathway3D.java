@@ -1,8 +1,8 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
 import gleem.linalg.Rotf;
-import gleem.linalg.Transform;
 import gleem.linalg.Vec3f;
+import gleem.linalg.open.Transform;
 
 import java.awt.Point;
 import java.nio.IntBuffer;
@@ -41,7 +41,7 @@ import cerberus.util.opengl.GLDragAndDrop;
 import cerberus.util.opengl.GLInfoAreaRenderer;
 import cerberus.util.opengl.GLPathwayMemoPad;
 import cerberus.util.opengl.GLTextUtils;
-import cerberus.util.slerp.Slerp;
+import cerberus.util.slerp.SlerpMod;
 import cerberus.util.slerp.SlerpAction;
 import cerberus.util.sound.SoundPlayer;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
@@ -640,8 +640,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private void slerpPathway(final GL gl, SlerpAction slerpAction) {
 
 		int iPathwayId = slerpAction.getElementId();
-		Slerp slerp = new Slerp();
-		Transform transform = slerp.interpolate(slerpAction
+		SlerpMod slerpMod = new SlerpMod();
+		Transform transform = slerpMod.interpolate(slerpAction
 				.getOriginHierarchyLayer().getTransformByPositionIndex(
 						slerpAction.getOriginPosIndex()), slerpAction
 				.getDestinationHierarchyLayer().getTransformByPositionIndex(
@@ -649,7 +649,7 @@ implements IMediatorReceiver, IMediatorSender {
 				iSlerpFactor / 1000f);
 
 		gl.glPushMatrix();
-		slerp.applySlerp(gl, transform);
+		slerpMod.applySlerp(gl, transform);
 
 		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
 				fTextureTransparency, true);
@@ -673,7 +673,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 
 		if ((iSlerpFactor == 0))
-			slerp.playSlerpSound();
+			slerpMod.playSlerpSound();
 	}
 
 	private void handlePicking(final GL gl) {

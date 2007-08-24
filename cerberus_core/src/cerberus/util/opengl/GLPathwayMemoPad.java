@@ -16,8 +16,8 @@ import cerberus.view.gui.opengl.canvas.pathway.GLPathwayManager;
 import cerberus.view.gui.opengl.canvas.pathway.GLPathwayTextureManager;
 import cerberus.view.gui.opengl.canvas.pathway.JukeboxHierarchyLayer;
 
-import gleem.linalg.Transform;
 import gleem.linalg.Vec3f;
+import gleem.linalg.open.Transform;
 
 /**
  * Class that implements the memo pad that
@@ -67,7 +67,7 @@ public class GLPathwayMemoPad {
 			transform.setTranslation(new Vec3f(fMemoPos, 2.2f, 0.1f));
 			transform.setScale(new Vec3f(0.3f, 0.3f, 0.3f));
 			memoPad.setTransformByPositionIndex(iMemoIndex,
-					transform);
+					transform);			
 
 			fMemoPos += 1f;
 		}

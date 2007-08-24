@@ -1,6 +1,6 @@
 package cerberus.view.gui.opengl.canvas.pathway;
 
-import gleem.linalg.Transform;
+import gleem.linalg.open.Transform;
 
 import java.util.HashMap;
 import java.util.LinkedList;
