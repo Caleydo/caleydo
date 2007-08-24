@@ -2,11 +2,16 @@ package cerberus.xml.parser.handler.importer.kegg;
 
 import java.util.HashMap;
 
+import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItem;
+import cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.xml.parser.handler.AXmlParserHandler;
@@ -20,27 +25,30 @@ implements IXmlParserHandler {
 	
 	private String sAttributeName = "";
 	
-	private HashMap<Integer, Integer> kgmlIdToElementIdLUT;
+	private HashMap<Integer, IGraphItem> hashKgmlEntryIdToVertexRepId;
 	
-	private boolean bVertexExists = false;
+	private HashMap<String, IGraphItem> hashKgmlNameToVertexRepId;
+	
+	private HashMap<String, IGraphItem> hashKgmlReactionIdToVertexRepId;	
 	
 	private IGraph currentPathway;
 	
-	private IGraphItem currentPathwayVertex;
+	private IGraphItem currentVertex;
 	
-	/**
-	 * Map that stores the KEGG entry names and the internal entry ID
-	 */
-	protected HashMap<String, Integer> kgmlEntryNameToElementIdLUT;
+	private IGraphItem currentReactionEdgeRep;
+	
+	private int iCurrentEntryId;
 	
 	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
 			final IXmlParserManager refXmlParserManager)
 	{		
 		super( refGeneralManager, refXmlParserManager);
 		
-		kgmlIdToElementIdLUT = new HashMap<Integer, Integer>();
+		hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
+			
+		hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();
 		
-		kgmlEntryNameToElementIdLUT = new HashMap<String, Integer>();
+		hashKgmlReactionIdToVertexRepId = new HashMap<String, IGraphItem>();
 		
 		setXmlActivationTag("pathway");
 	}
@@ -67,16 +75,16 @@ implements IXmlParserHandler {
 				handleEntryTag();
 			else if (sElementName.equals("graphics"))
 				handleGraphicsTag();
-//			else if (sElementName.equals("relation"))
-//				handleRelationTag();
+			else if (sElementName.equals("relation"))
+				handleRelationTag();
 //			else if (sElementName.equals("subtype"))
 //				handleSubtypeTag();
-//			else if (sElementName.equals("reaction"))
-//				handleReactionTag();
-//			else if (sElementName.equals("product"))
-//				handleReactionProductTag();
-//			else if (sElementName.equals("substrate"))
-//				handleReactionSubstrateTag();
+			else if (sElementName.equals("reaction"))
+				handleReactionTag();
+			else if (sElementName.equals("product"))
+				handleReactionProductTag();
+			else if (sElementName.equals("substrate"))
+				handleReactionSubstrateTag();
 		}
     }
 
@@ -196,8 +204,9 @@ implements IXmlParserHandler {
 		   }
 	   	}
     	
-    	currentPathwayVertex = refGeneralManager.getSingelton().getPathwayItemManager()
-    		.createVertex(sName, sType, sExternalLink);
+    	iCurrentEntryId = iEntryId;
+    	currentVertex = refGeneralManager.getSingelton().getPathwayItemManager()
+    		.createVertex(sName, sType, sExternalLink, sReactionId);
     }
 	
 	/**
@@ -252,61 +261,67 @@ implements IXmlParserHandler {
    			}
    		}
 
-		refGeneralManager.getSingelton().getPathwayItemManager().createVertexRep(
+		IGraphItem vertexRep = refGeneralManager.getSingelton()
+			.getPathwayItemManager().createVertexRep(
 				currentPathway, 
-				currentPathwayVertex, 
+				currentVertex, 
 				sName, 
 				sShapeType, 
 				iHeight, 
 				iWidth, 
 				iXPosition, 
 				iYPosition);
+    	
+    	hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
+    	hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getName(), vertexRep);
+    	hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getReactionId(), vertexRep);
     }
     
-//	/**
-//	 * Reacts on the elements of the relation tag.
-//	 * 
-//	 * An example relation tag looks like this:
-//	 * <relation entry1="28" entry2="32" type="ECrel">
-//	 */
-//    protected void handleRelationTag() {
-//    	
-//    	int iEntry1 = 0;
-//    	int iEntry2 = 0;
-//    	String sType = "";
-//		
-//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
-//		{
-//			 sAttributeName = attributes.getLocalName(iAttributeIndex);
-//		
-//			if ("".equals(sAttributeName))
-//			{
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//				
-//			if (sAttributeName.equals("type"))
-//				sType = attributes.getValue(iAttributeIndex); 
-//   			else if (sAttributeName.equals("entry1"))
-//  				iEntry1 = new Integer(attributes.getValue(iAttributeIndex)); 
-//   			else if (sAttributeName.equals("entry2"))
-//    			iEntry2 = new Integer(attributes.getValue(iAttributeIndex)); 
-//			
-//   			//System.out.println("Attribute name: " +sAttributeName);
-//   			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
-//   		}  	    	
-//		
-////		if (!kgmlIdToElementIdLUT.containsKey(iEntry1) 
-////				|| !kgmlIdToElementIdLUT.containsKey(iEntry2))
-////		{
-////			return;
-////		}
-//		
-//    	int iElementId1 = kgmlIdToElementIdLUT.get(iEntry1);
-//    	int iElementId2 = kgmlIdToElementIdLUT.get(iEntry2);
-//
-//		refGeneralManager.getSingelton().getPathwayElementManager().
-//			createRelationEdge(iElementId1, iElementId2, sType);
-//    }
+	/**
+	 * Reacts on the elements of the relation tag.
+	 * 
+	 * An example relation tag looks like this:
+	 * <relation entry1="28" entry2="32" type="ECrel">
+	 */
+    protected void handleRelationTag() {
+    	
+    	int iSourceVertexId = 0;
+    	int iTargetVertexId = 0;
+    	String sType = "";
+		
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("type"))
+				sType = attributes.getValue(iAttributeIndex); 
+   			else if (sAttributeName.equals("entry1"))
+  				iSourceVertexId = new Integer(attributes.getValue(iAttributeIndex)); 
+   			else if (sAttributeName.equals("entry2"))
+    			iTargetVertexId = new Integer(attributes.getValue(iAttributeIndex)); 
+			
+   			//System.out.println("Attribute name: " +sAttributeName);
+   			//System.out.println("Attribute value: " +attributes.getValue(iAttributeIndex));
+   		}  	    	
+
+		IGraphItem graphItemIn = hashKgmlEntryIdToVertexRepId.get(iSourceVertexId);
+		IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
+		
+		// Create edge (data)
+		IGraphItem relationEdge = refGeneralManager.getSingelton().getPathwayItemManager().
+			createRelationEdge(((PathwayVertexGraphItemRep)graphItemIn).getPathwayVertexGraphItem(), 
+					((PathwayVertexGraphItemRep)graphItemOut).getPathwayVertexGraphItem(), sType);
+    
+		// Create edge representation
+		refGeneralManager.getSingelton().getPathwayItemManager().
+			createRelationEdgeRep(currentPathway, relationEdge, graphItemIn, graphItemOut);
+		
+    }
 //    	
 //    protected void handleSubtypeTag() {
 //    	
@@ -350,105 +365,157 @@ implements IXmlParserHandler {
 //		}
 //    }
 //    
-//	/**
-//	 * Reacts on the elements of the reaction tag.
-//	 * 
-//	 * An example reaction tag looks like this:
-//	 * <reaction name="rn:R01001" type="irreversible">
-//	 */
-//    protected void handleReactionTag() {
-//    	
-//    	String sReactionName = "";
-//    	String sReactionType = "";
-//    	
-//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
-//		{
-//			 sAttributeName = attributes.getLocalName(iAttributeIndex);
-//		
-//			if ("".equals(sAttributeName))
-//			{
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//				
-//			if (sAttributeName.equals("type"))
-//				sReactionType = attributes.getValue(iAttributeIndex); 
-//			else if (sAttributeName.equals("name"))
-//				sReactionName = attributes.getValue(iAttributeIndex); 	
-//		}  	
-//		
-//		refGeneralManager.getSingelton().getPathwayElementManager().
-//			createReactionEdge(sReactionName, sReactionType);
-//    }
-//    
-//	/**
-//	 * Reacts on the elements of the reaction substrate tag.
-//	 * 
-//	 * An example reaction substrate tag looks like this:
-//	 * <substrate name="cpd:C01118"/>
-//	 */
-//    protected void handleReactionSubstrateTag() {
-//    	
-//    	String sReactionSubstrateName = "";
-//    	
-//    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
-//		{
-//			 sAttributeName = attributes.getLocalName(iAttributeIndex);
-//		
-//			if ("".equals(sAttributeName))
-//			{
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//				
-//			if (sAttributeName.equals("name"))
-//				sReactionSubstrateName = attributes.getValue(iAttributeIndex); 
-//		}  	
-//    	
-//    	// If substrate is not included in pathway - ignore!
-//    	if (kgmlEntryNameToElementIdLUT.containsKey(sReactionSubstrateName))
-//    	{
-//        	// Lookup for internal comound ID
-//    		int iReactionSubstrateId = 
-//    			kgmlEntryNameToElementIdLUT.get(sReactionSubstrateName);
-//    	
-//    		refGeneralManager.getSingelton().getPathwayElementManager().
-//				addReactionSubstrate(iReactionSubstrateId);
-//    	}
-//	}
-//
-//	/**
-//	 * Reacts on the elements of the reaction product tag.
-//	 * 
-//	 * An example reaction product tag looks like this:
-//	 * <product name="cpd:C02291"/>
-//	 */
-//	protected void handleReactionProductTag() {
-//		
-//    	String sReactionProductName = "";
-//    	
-//    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
-//		{
-//			 sAttributeName = attributes.getLocalName(iAttributeIndex);
-//		
-//			if ("".equals(sAttributeName))
-//			{
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//				
-//			if (sAttributeName.equals("name"))
-//				sReactionProductName = attributes.getValue(iAttributeIndex); 
-//		}  	
-//
-//    	// If product is not included in pathway - ignore!
-//    	if (kgmlEntryNameToElementIdLUT.containsKey(sReactionProductName))
-//    	{
-//    		// Lookup for internal comound ID
-//    		int iReactionProductId = 
-//    			kgmlEntryNameToElementIdLUT.get(sReactionProductName);
-//    	
-//    		refGeneralManager.getSingelton().getPathwayElementManager().
-//				addReactionProduct(iReactionProductId);  
-//    	}
-//	}
+	/**
+	 * Reacts on the elements of the reaction tag.
+	 * 
+	 * An example reaction tag looks like this:
+	 * <reaction name="rn:R01001" type="irreversible">
+	 */
+    protected void handleReactionTag() {
+    	
+    	String sReactionName = "";
+    	String sReactionType = "";
+    	
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("type"))
+			{
+				sReactionType = attributes.getValue(iAttributeIndex); 				
+			}
+			else if (sAttributeName.equals("name"))
+			{
+				sReactionName = attributes.getValue(iAttributeIndex); 	
+			}
+		}  	
+		
+		currentReactionEdgeRep = refGeneralManager.getSingelton().getPathwayItemManager().
+			createReactionEdge(currentPathway, sReactionName, sReactionType);
+    }
+    
+	/**
+	 * Reacts on the elements of the reaction substrate tag.
+	 * 
+	 * An example reaction substrate tag looks like this:
+	 * <substrate name="cpd:C01118"/>
+	 */
+    protected void handleReactionSubstrateTag() {
+    	
+    	String sReactionSubstrateName = "";
+    	
+    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("name"))
+			{
+				sReactionSubstrateName = attributes.getValue(iAttributeIndex); 
+			}
+		}  	
+    	
+    	IGraphItem graphItemIn = 
+    		hashKgmlReactionIdToVertexRepId.get(sReactionSubstrateName);
+    	
+    	IGraphItem graphItemOut =
+    		hashKgmlNameToVertexRepId.get(
+    				((PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+        					EGraphItemProperty.ALIAS_PARENT).toArray()[0]).getReactionId());
+    	
+    	if (graphItemIn == null || graphItemOut == null)
+    	{
+    		return;
+    	}
+    	
+    	currentReactionEdgeRep.addItemDoubleLinked(graphItemIn, 
+    			EGraphItemProperty.INCOMING);
+    	
+    	currentReactionEdgeRep.addItemDoubleLinked(graphItemOut,
+    			EGraphItemProperty.OUTGOING);
+  
+    	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).toArray()[0];
+    	
+    	tmpReactionEdge.addItemDoubleLinked(
+    			(IGraphItem)graphItemIn.getAllItemsByProp(
+    					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+				EGraphItemProperty.INCOMING);
+    	
+    	tmpReactionEdge.addItemDoubleLinked(
+    			(IGraphItem)graphItemOut.getAllItemsByProp(
+    					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+				EGraphItemProperty.OUTGOING);
+ 	}
+
+	/**
+	 * Reacts on the elements of the reaction product tag.
+	 * 
+	 * An example reaction product tag looks like this:
+	 * <product name="cpd:C02291"/>
+	 */
+	protected void handleReactionProductTag() {
+		
+    	String sReactionProductName = "";
+    	
+    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		{
+			 sAttributeName = attributes.getLocalName(iAttributeIndex);
+		
+			if ("".equals(sAttributeName))
+			{
+				sAttributeName = attributes.getQName(iAttributeIndex);
+			}
+				
+			if (sAttributeName.equals("name"))
+			{
+				sReactionProductName = attributes.getValue(iAttributeIndex); 				
+			}
+		}  	
+
+    	// Compound
+    	IGraphItem graphItemOut = 
+    		hashKgmlNameToVertexRepId.get(sReactionProductName);
+    	
+    	// Enzyme
+    	IGraphItem graphItemIn =
+    		hashKgmlReactionIdToVertexRepId.get(
+    				((PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+        					EGraphItemProperty.ALIAS_PARENT).toArray()[0]).getReactionId());
+    	
+    	if (graphItemIn == null || graphItemOut == null)
+    	{
+    		return;
+    	}
+   	
+    	currentReactionEdgeRep.addItemDoubleLinked(graphItemIn, 
+    			EGraphItemProperty.INCOMING);
+    	
+    	currentReactionEdgeRep.addItemDoubleLinked(graphItemOut,
+    			EGraphItemProperty.OUTGOING);
+  
+    	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).toArray()[0];
+    	
+    	tmpReactionEdge.addItemDoubleLinked(
+    			(IGraphItem)graphItemIn.getAllItemsByProp(
+    					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+				EGraphItemProperty.INCOMING);
+    	
+    	tmpReactionEdge.addItemDoubleLinked(
+    			(IGraphItem)graphItemOut.getAllItemsByProp(
+    					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+				EGraphItemProperty.OUTGOING);
+	}
 
 	/**
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()
@@ -456,8 +523,6 @@ implements IXmlParserHandler {
 	 * 
 	 */
 	public void destroyHandler() {
-		
-		kgmlIdToElementIdLUT = null;
 		
 		super.destroyHandler();
 	}

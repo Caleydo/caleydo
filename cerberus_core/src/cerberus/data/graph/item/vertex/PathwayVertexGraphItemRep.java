@@ -2,7 +2,6 @@ package cerberus.data.graph.item.vertex;
 
 import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraphItem;
 import org.geneview.graph.item.GraphItem;
 
 public class PathwayVertexGraphItemRep 

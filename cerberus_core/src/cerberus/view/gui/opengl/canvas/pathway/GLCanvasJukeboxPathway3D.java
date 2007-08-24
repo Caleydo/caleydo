@@ -932,8 +932,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		refGeneralManager
 				.getSingelton()
-				.logMsg(
-						this.getClass().getSimpleName()
+				.logMsg(this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): Pathway with ID "
 								+ iPathwayId + " is under interaction.",
 						LoggerType.VERBOSE);

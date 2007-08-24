@@ -4,19 +4,24 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
+import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemKind;
+import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.graph.core.PathwayGraph;
+import cerberus.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
 import cerberus.data.graph.item.vertex.EPathwayVertexShape;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
 import cerberus.util.opengl.GLTextUtils;
 
@@ -43,15 +48,17 @@ public class GLPathwayManager {
 
 	private boolean bEnableGeneMapping = true;
 	
-	private HashMap<Integer, PathwayVertexGraphItemRep> refHashPickID2VertexRep;
+	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
 	
-	private HashMap<Integer, Integer> refHashPathwayId2DisplayListId;
+	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
+	
+	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;	
 	
 	private EnzymeToExpressionColorMapper enzymeToExpressionColorMapper;
 	
 	private ArrayList<Integer> iAlSelectedElements;
 	
-	private HashMap<Integer, ArrayList<Color>> refHashElementId2MappingColorArray;
+	private HashMap<Integer, ArrayList<Color>> hashElementId2MappingColorArray;
 	
 	/**
 	 * Constructor.
@@ -61,9 +68,10 @@ public class GLPathwayManager {
 		this.refGeneralManager = refGeneralManager;
 		
 		refRenderStyle = new PathwayRenderStyle();
-		refHashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
-		refHashPathwayId2DisplayListId = new HashMap<Integer, Integer>();
-		refHashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Color>>();
+		hashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
+		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
+		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();		
+		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Color>>();
 	}
 	
 	public void init(final GL gl, 
@@ -80,26 +88,44 @@ public class GLPathwayManager {
 			new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
 	}
 	
-	public void buildPathwayDisplayList(final GL gl, final int iPathwayID) {
+	public void buildPathwayDisplayList(final GL gl, final int iPathwayId) {
 
 		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
-			getItem(iPathwayID);
+			getItem(iPathwayId);
 		
-		int iVerticesDiplayListId = -1;
-		if (refHashPathwayId2DisplayListId.containsKey(iPathwayID))
+		int iVerticesDisplayListId = -1;
+		int iEdgesDisplayListId = -1;
+		
+		if (hashPathwayId2VerticesDisplayListId.containsKey(iPathwayId))
 		{
 			// Replace current display list if a display list exists
-			iVerticesDiplayListId = refHashPathwayId2DisplayListId.get(iPathwayID);
+			iVerticesDisplayListId = hashPathwayId2VerticesDisplayListId.get(iPathwayId);
 		}
 		else
 		{
-			// Creating display list for pathways
-			iVerticesDiplayListId = gl.glGenLists(1);
-			refHashPathwayId2DisplayListId.put(iPathwayID, iVerticesDiplayListId);			
+			// Creating vertex display list for pathways
+			iVerticesDisplayListId = gl.glGenLists(1);
+			hashPathwayId2VerticesDisplayListId.put(iPathwayId, iVerticesDisplayListId);			
 		}
 		
-		gl.glNewList(iVerticesDiplayListId, GL.GL_COMPILE);	
+		if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
+		{
+			// Replace current display list if a display list exists
+			iEdgesDisplayListId = hashPathwayId2EdgesDisplayListId.get(iPathwayId);
+		}
+		else
+		{		
+			// Creating edge display list for pathways
+			iEdgesDisplayListId = gl.glGenLists(1);
+			hashPathwayId2EdgesDisplayListId.put(iPathwayId, iEdgesDisplayListId);			
+		}
+		
+		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
 		extractVertices(gl, refTmpPathway);
+		gl.glEndList();
+		
+		gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);	
+		extractEdges(gl, refTmpPathway);
 		gl.glEndList();
 	}
 
@@ -232,10 +258,10 @@ public class GLPathwayManager {
 	private void extractVertices(final GL gl,
 			PathwayGraph pathwayToExtract) {
 		
-	    Iterator<IGraphItem> vertexIterator;
+	    Iterator<IGraphItem> vertexIterator =
+	    	pathwayToExtract.getAllItemsByKind(EGraphItemKind.NODE).iterator();;
 	    IGraphItem vertexRep;
 		
-        vertexIterator = pathwayToExtract.getAllItemsByKind(EGraphItemKind.NODE).iterator();
         while (vertexIterator.hasNext())
         {
         	vertexRep = vertexIterator.next();
@@ -245,6 +271,25 @@ public class GLPathwayManager {
         		createVertex(gl,
         				(PathwayVertexGraphItemRep)vertexRep, 
         				pathwayToExtract);        	
+        	}
+        }   
+	}
+	
+	private void extractEdges(final GL gl,
+			PathwayGraph pathwayToExtract) {
+		
+	    Iterator<IGraphItem> edgeIterator =
+	    	pathwayToExtract.getAllItemsByKind(EGraphItemKind.EDGE).iterator();
+      
+	    IGraphItem edgeRep;
+		
+        while (edgeIterator.hasNext())
+        {
+        	edgeRep = edgeIterator.next();
+
+        	if (edgeRep != null)
+        	{
+        		createEdge(gl, edgeRep, pathwayToExtract);        	        			
         	}
         }   
 	}
@@ -266,7 +311,7 @@ public class GLPathwayManager {
 //		{
 			iUniqueObjectPickId++;
 			gl.glLoadName(iUniqueObjectPickId);
-			refHashPickID2VertexRep.put(iUniqueObjectPickId, vertexRep);			
+			hashPickID2VertexRep.put(iUniqueObjectPickId, vertexRep);			
 //		}
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
@@ -332,20 +377,59 @@ public class GLPathwayManager {
 		gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 	}
 	
+	private void createEdge(final GL gl, 
+			IGraphItem edgeRep, 
+			PathwayGraph refContainingPathway) {
+
+		List<IGraphItem> listGraphItemsIn = edgeRep.getAllItemsByProp(EGraphItemProperty.INCOMING);
+		List<IGraphItem> listGraphItemsOut = edgeRep.getAllItemsByProp(EGraphItemProperty.OUTGOING);
+		
+		if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
+		{
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName()
+							+ ": createEdge(): Edge has either no incoming or outcoming vertex.",
+					LoggerType.VERBOSE);
+			
+			return;
+		}
+		
+//		// Check if edge is a reaction
+//		if (edgeRep.getClass().getName().equals(
+//				cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItemRep.class.getName()))
+//		{
+//		}
+//		// Check if edge is a relation
+//		else if (edgeRep.getClass().getName().equals(
+//				cerberus.data.graph.item.edge.PathwayRelationEdgeGraphItemRep.class.getName()))
+//		{
+//		}
+		
+		PathwayVertexGraphItemRep sourceGraphItem = ((PathwayVertexGraphItemRep)listGraphItemsIn.get(0));
+		PathwayVertexGraphItemRep targetGraphItem = ((PathwayVertexGraphItemRep)listGraphItemsOut.get(0));
+		
+		gl.glColor3f(1.0f, 0.0f, 0.0f);
+		gl.glLineWidth(1.0f);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(sourceGraphItem.getXPosition() * SCALING_FACTOR_X,
+				-sourceGraphItem.getYPosition() * SCALING_FACTOR_Y,
+				0.05f);
+		gl.glVertex3f(targetGraphItem.getXPosition() * SCALING_FACTOR_X,
+				-targetGraphItem.getYPosition() * SCALING_FACTOR_Y,
+				0.05f);
+		gl.glEnd();
+	}
+	
 	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels) {
 		
-		// Creating hierarchical picking names
-		// This is the layer of the pathways, therefore we can use the pathway
-		// node picking ID
-		int iTmpDisplayListID = refHashPathwayId2DisplayListId.get(iPathwayID);
-		// FIXME: must be a unique ID!!!
-//		gl.glPushName(iTmpDisplayListID);	
-		gl.glCallList(iTmpDisplayListID);
-//		gl.glPopName();
+		int iTmpEdgesDisplayListID = hashPathwayId2EdgesDisplayListId.get(iPathwayID);
+		gl.glCallList(iTmpEdgesDisplayListID);
+		
+		int iTmpVerticesDisplayListID = hashPathwayId2VerticesDisplayListId.get(iPathwayID);
+		gl.glCallList(iTmpVerticesDisplayListID);
 		
 		if (bRenderLabels)
 			renderLabels(gl, iPathwayID);
-		
 	}
 	
 	private void renderLabels(final GL gl, final int iPathwayID) {
@@ -384,16 +468,16 @@ public class GLPathwayManager {
 		ArrayList<Color> alMappingColor;
 		
 		// Check if vertex is already mapped 
-		if (refHashElementId2MappingColorArray.containsKey(pathwayVertex.getId()))
+		if (hashElementId2MappingColorArray.containsKey(pathwayVertex.getId()))
 		{
 			// Load existing mapping
-			alMappingColor = refHashElementId2MappingColorArray.get(pathwayVertex.getId());
+			alMappingColor = hashElementId2MappingColorArray.get(pathwayVertex.getId());
 		}
 		else
 		{
 			// Request mapping
 			alMappingColor = enzymeToExpressionColorMapper.getMappingColorArrayByVertex(pathwayVertex);
-			refHashElementId2MappingColorArray.put((Integer)pathwayVertex.getId(), alMappingColor);
+			hashElementId2MappingColorArray.put((Integer)pathwayVertex.getId(), alMappingColor);
 		}
 		
 		drawMapping(gl, alMappingColor, fNodeWidth);
@@ -462,12 +546,12 @@ public class GLPathwayManager {
 	
 	public PathwayVertexGraphItemRep getVertexRepByPickID(int iPickID) {
 		
-		return refHashPickID2VertexRep.get(iPickID);
+		return hashPickID2VertexRep.get(iPickID);
 	}
 	
 	public void clearOldPickingIDs() {
 		
-		refHashPickID2VertexRep.clear();
+		hashPickID2VertexRep.clear();
 		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
 	}
 }

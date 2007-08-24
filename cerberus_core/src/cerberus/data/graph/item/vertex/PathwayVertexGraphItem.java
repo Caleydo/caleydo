@@ -13,11 +13,14 @@ extends GraphItem {
 	
 	final String sExternalLink;
 	
+	final String sReactionId;
+	
 	public PathwayVertexGraphItem(
 			final int iId,
 			final String sName,
 			final String sType,
-			final String sExternalLink) {
+			final String sExternalLink,
+			final String sReactionId) {
 		
 		super(iId, EGraphItemKind.NODE);
 
@@ -25,6 +28,7 @@ extends GraphItem {
 		
 		this.sName = sName;
 		this.sExternalLink = sExternalLink;
+		this.sReactionId = sReactionId;
 	}
 	
 	public String getName() {
@@ -40,5 +44,19 @@ extends GraphItem {
 	public String getExternalLink() {
 		
 		return sExternalLink;
+	}
+	
+	public String getReactionId() {
+		
+		return sReactionId;
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		
+		return sName;
 	}
 }
