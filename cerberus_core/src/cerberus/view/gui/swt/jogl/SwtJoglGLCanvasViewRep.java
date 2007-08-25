@@ -16,6 +16,7 @@ import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
+import cerberus.view.gui.jogl.JoglCanvasDirectForwarder;
 import cerberus.view.gui.jogl.JoglCanvasForwarder;
 import cerberus.view.gui.jogl.TriggeredAnimator;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
@@ -74,6 +75,17 @@ implements IView, IGLCanvasDirector {
 	}
 	
 	/**
+	 * @see SwtJoglGLCanvasViewRep#initView()
+	 * @see cerberus.view.gui.jogl.JoglCanvasDirectForwarder
+	 * @see cerberus.view.gui.swt.jogl.gears.GearsViewRep
+	 */
+	protected void useJoglCanvasDirectForwarder() {
+		forwarder_GLEventListener = new JoglCanvasDirectForwarder(refGeneralManager,
+				this, 
+				iGLEventListernerId );
+	}
+	
+	/**
 	 * Attention, side effect! Call this before calling initView() !
 	 * 
 	 * @param iOpenGLCanvasId
@@ -89,9 +101,11 @@ implements IView, IGLCanvasDirector {
 	 */
 	public void initView() {
 			
-		forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
-				this, 
-				iGLEventListernerId );
+		if  (forwarder_GLEventListener == null) {
+			forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
+					this, 
+					iGLEventListernerId );
+		}
 		
 		retrieveGUIContainer();
 		

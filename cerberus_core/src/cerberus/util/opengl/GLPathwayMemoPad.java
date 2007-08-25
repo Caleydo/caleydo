@@ -11,7 +11,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
 
-import cerberus.view.gui.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
+//import cerberus.view.gui.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import cerberus.view.gui.opengl.canvas.pathway.GLPathwayManager;
 import cerberus.view.gui.opengl.canvas.pathway.GLPathwayTextureManager;
 import cerberus.view.gui.opengl.canvas.pathway.JukeboxHierarchyLayer;

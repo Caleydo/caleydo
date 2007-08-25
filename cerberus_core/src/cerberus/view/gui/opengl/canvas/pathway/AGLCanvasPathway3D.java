@@ -212,13 +212,14 @@ implements IMediatorReceiver, IMediatorSender {
 				null,
 				iViewId, 
 				iParentContainerId, 
-				"");
+				sLabel);
 		
 		this.sPathwayName_prefix = sPathwayName_prefix;
 		this.refViewCamera.setCaller(this);
 					
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) 
-			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
+			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();		
+		
 		//pickingTriggerMouseAdapter.setJoglMouseListener(this);
 		
 //		GLAutoDrawable canvasObject = this.getGLCanvasDirector().getGLDrawable();
@@ -1476,6 +1477,11 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 	
 	
+	/**
+	 * Method / logic should be moved to JoglForwarder!
+	 * 
+	 * @param gl
+	 */
 	protected void pickObjects(final GL gl) {
 
 		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
@@ -1802,6 +1808,11 @@ implements IMediatorReceiver, IMediatorSender {
     	vecOut[3] = 1.0f;
     }
     
+    /**
+     * Method / logic should be moved to JoglForwarder!
+     * 
+     * @param gl
+     */
     protected void handlePicking(final GL gl) {
     	
     	if (pickingTriggerMouseAdapter.wasMousePressed())

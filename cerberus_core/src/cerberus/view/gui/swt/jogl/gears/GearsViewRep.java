@@ -2,20 +2,19 @@ package cerberus.view.gui.swt.jogl.gears;
 
 import javax.media.opengl.GLCanvas;
 
-//import com.sun.opengl.util.Animator;
-
 import cerberus.manager.IGeneralManager;
-//import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.opengl.GLCanvasUserWrapper;
+import cerberus.view.gui.jogl.JoglCanvasDirectForwarder;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.view.gui.IView;
-//import cerberus.view.gui.awt.jogl.GearsMain;
-//import cerberus.view.gui.awt.jogl.TriangleMain;
-//import cerberus.view.gui.awt.jogl.Histogram2DMain;
-//import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 
 import demos.gears.Gears;
 
+/**
+ * Sample for running Gears demo. Alter it to fit any 
+ * 
+ * @author Michael Kalkusch
+ *
+ */
 public class GearsViewRep 
 extends SwtJoglGLCanvasViewRep 
 implements IView
@@ -26,32 +25,22 @@ implements IView
 			int iViewId, int iParentContainerId, String sLabel)
 	{
 		super(refGeneralManager, iViewId, iParentContainerId, iParentContainerId, sLabel);
+		
+		useJoglCanvasDirectForwarder();
 	}
 	
 	public void initView()
 	{
 		retrieveGUIContainer();
 		
-		Gears gears = new Gears();			
-		GLCanvasUserWrapper wrapper = new GLCanvasUserWrapper(refGeneralManager,
-				iUniqueId,
-				iParentContainerId,
-				sLabel );
-		wrapper.addGL( gears );
+		Gears gears = new Gears();
+				
+		JoglCanvasDirectForwarder forwarder = 
+			(JoglCanvasDirectForwarder) this.getJoglCanvasForwarder();
 		
-		addGLCanvasUser( wrapper );		
+		forwarder.setDirectGLEventListener( gears );	
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.view.gui.IView#drawView()
-	 */
-	public void drawView() {
-		
-//	    final Animator animator = new Animator(refGLCanvas);
-//	    animator.start();
-		
-	}
 }
 	
 	

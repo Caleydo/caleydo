@@ -1,8 +1,5 @@
 package cerberus.util.mapping;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IGenomeIdManager;

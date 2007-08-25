@@ -1,6 +1,5 @@
 package cerberus.manager.view;
 
-//import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,12 +15,10 @@ import javax.media.opengl.GLEventListener;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.IViewManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-//import cerberus.net.dwt.swing.WorkspaceSwingFrame;
 import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.IView;

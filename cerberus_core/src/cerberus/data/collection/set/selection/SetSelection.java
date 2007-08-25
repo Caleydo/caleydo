@@ -8,7 +8,6 @@ import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.EventPublisher;
-import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
 
 
 /**
