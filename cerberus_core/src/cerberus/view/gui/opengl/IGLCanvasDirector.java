@@ -3,7 +3,7 @@ package cerberus.view.gui.opengl;
 import java.util.Collection;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+//import javax.media.opengl.GLAutoDrawable;
 
 import cerberus.view.gui.jogl.JoglCanvasForwarder;
 
@@ -17,10 +17,9 @@ public interface IGLCanvasDirector {
 
 	public abstract Collection<IGLCanvasUser> getAllGLCanvasUsers();
 	
-	public abstract GLAutoDrawable getGLDrawable();
+	//public abstract GLAutoDrawable getGLDrawable();
 	
-	public abstract void initGLCanvasUser(GL gl);
-	
+	public abstract void initGLCanvasUser(GL gl);	
 	
 	public abstract void renderGLCanvasUser( GL gl ); 
 	

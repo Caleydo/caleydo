@@ -65,7 +65,7 @@ import cerberus.view.gui.swt.undoredo.UndoRedoViewRep;
  */
 public class ViewJoglManager 
 extends AAbstractManager
-implements IViewManager, IViewGLCanvasManager {
+implements IViewGLCanvasManager {
 
 	/**
 	 * Stores, which GLEventListener are registered to one GLCanvas.
@@ -290,7 +290,8 @@ implements IViewManager, IViewGLCanvasManager {
 					iParentContainerId, sLabel);	
 		case VIEW_SWT_JOGL_MULTI_GLCANVAS:
 			return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iViewId,
-					iParentContainerId, 
+					iParentContainerId,
+					iParentContainerId,
 					sLabel);
 
 		default:
@@ -396,10 +397,10 @@ implements IViewManager, IViewGLCanvasManager {
 		}
 	}
 
-	public GLCanvas getGLCanvas(final int iId) {
-
-		return hashGLCanvas.get(iId);
-	}
+//	public GLCanvas getGLCanvas(final int iId) {
+//
+//		return hashGLCanvas.get(iId);
+//	}
 
 	public boolean registerGLCanvas(final GLCanvas canvas, final int iCanvasId) {
 

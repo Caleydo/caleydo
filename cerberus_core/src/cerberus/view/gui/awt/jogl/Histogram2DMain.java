@@ -30,7 +30,6 @@ import cerberus.manager.singleton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
 //import cerberus.view.gui.IView;
 //import cerberus.view.gui.AViewManagedRep;
-//import cerberus.view.gui.swt.base.AJoglContainerViewRep;
 //import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
 import cerberus.view.gui.jogl.AViewCameraListenerObject;
 import cerberus.view.gui.jogl.IJoglMouseListener;

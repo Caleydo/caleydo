@@ -6,7 +6,8 @@ import javax.media.opengl.GLCanvas;
 
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.swt.jogl.AJoglViewRep;
+import cerberus.view.gui.opengl.GLCanvasUserWrapper;
+import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.view.gui.IView;
 //import cerberus.view.gui.awt.jogl.GearsMain;
 //import cerberus.view.gui.awt.jogl.TriangleMain;
@@ -16,7 +17,7 @@ import cerberus.view.gui.IView;
 import demos.gears.Gears;
 
 public class GearsViewRep 
-extends AJoglViewRep 
+extends SwtJoglGLCanvasViewRep 
 implements IView
 {
 	protected GLCanvas refGLCanvas;
@@ -24,15 +25,21 @@ implements IView
 	public GearsViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(refGeneralManager, iViewId, iParentContainerId, iParentContainerId, sLabel);
 	}
 	
 	public void initView()
 	{
 		retrieveGUIContainer();
 		
-		Gears gears = new Gears();		
-		setGLEventListener( gears );		
+		Gears gears = new Gears();			
+		GLCanvasUserWrapper wrapper = new GLCanvasUserWrapper(refGeneralManager,
+				iUniqueId,
+				iParentContainerId,
+				sLabel );
+		wrapper.addGL( gears );
+		
+		addGLCanvasUser( wrapper );		
 	}
 
 	/*

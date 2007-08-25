@@ -5,6 +5,12 @@ package cerberus.view.gui.jogl;
 //import java.awt.event.WindowEvent;
 
 //import gleem.linalg.Rotf;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
@@ -17,19 +23,19 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.MathUtil;
+import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.jogl.JoglMouseListener;
 //import cerberus.view.gui.jogl.PickingJoglMouseListenerDebug;
 import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 //import cerberus.data.view.camera.IViewCamera;
+import cerberus.view.gui.opengl.IGLCanvasUser;
 
 /**
- * Gears.java <BR>
- * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel) <P>
- *
- * This version is equal to Brian Paul's version 1.2 1999/10/21
+ *JoglCanvasForwarder handles several objects and forwards the OpenGL events to them.
+ * 
+ * @author Michael Kalkusch
  */
-
 public class JoglCanvasForwarder 
 extends AViewCameraListenerObject
 implements GLEventListener, IJoglMouseListener {
@@ -40,7 +46,13 @@ implements GLEventListener, IJoglMouseListener {
 	
 	private JoglMouseListener refMouseHandler;
 	
-
+	protected Vector <IGLCanvasUser> vecGLCanvasUser;
+	
+	/**
+	 * This flag indicates, that the canvas was created.
+	 */
+	protected AtomicBoolean abEnableRendering;
+	
 	public JoglCanvasForwarder( final IGeneralManager refGeneralManager,
 			final IGLCanvasDirector refGLCanvasDirector, 
 			final int iUniqueId) {
@@ -52,6 +64,10 @@ implements GLEventListener, IJoglMouseListener {
 		refMouseHandler = new PickingJoglMouseListener(this);
 
 		this.refGLCanvasDirector = refGLCanvasDirector;
+		
+		vecGLCanvasUser = new Vector <IGLCanvasUser> ();	
+		
+		abEnableRendering = new AtomicBoolean( true );
 	}
 
 	protected void drawXYZ( GL gl ) {
@@ -88,6 +104,8 @@ implements GLEventListener, IJoglMouseListener {
 	public final JoglMouseListener getJoglMouseListener() {
 		return this.refMouseHandler;
 	}
+	
+	/* -----  BEGIN GLEvent forwarding ----- */
 	
 	public void init(GLAutoDrawable drawable) {
 
@@ -127,24 +145,21 @@ implements GLEventListener, IJoglMouseListener {
 			drawable.addMouseListener(this.refMouseHandler);
 			drawable.addMouseMotionListener(this.refMouseHandler);
 			
-			if (refGLCanvasDirector != null)
-			{
-				refGLCanvasDirector.initGLCanvasUser(gl);
-			}
-			else 
-			{
+			if ( vecGLCanvasUser.isEmpty() ) {
 				refGeneralManager.getSingelton().logMsg(
-						"JoglCanvasForwarder init() can not call director, becaus director==null!",
+						"JoglCanvasForwarder init() can not call director, because director==null!",
 						LoggerType.MINOR_ERROR);
 			}
-			
-		} // if  ( bCallInitOpenGL ) {
-		else
-		{			
-			refGeneralManager.getSingelton().logMsg(
+		
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();				
+			while( iter.hasNext() ) {
+				iter.next().initGLCanvas(gl);				
+			}
+		}	
+		
+		refGeneralManager.getSingelton().logMsg(
 					"JoglCanvasForwarder [" + iUniqueId + "] init() ... done",
 					LoggerType.STATUS);
-		}
 				
 	}
 
@@ -226,14 +241,15 @@ implements GLEventListener, IJoglMouseListener {
 		
 		gl.glTranslatef(0.0f, 0.0f, -40.0f);
 		
-		if (refGLCanvasDirector != null)
-		{
-			refGLCanvasDirector.reshapeGLCanvasUser(gl,
+		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();		
+		while ( iter.hasNext() ) {		
+			iter.next().reshape(gl,
 					x, 
 					y, 
 					width,
 					height);
-		}
+		} //end while ( iter.hasNext() )
+		
 	}
 
 	
@@ -297,10 +313,9 @@ implements GLEventListener, IJoglMouseListener {
 		
 		/** end: visual debugging ...*/
 
-		
-		if (refGLCanvasDirector != null)
-		{
-			refGLCanvasDirector.renderGLCanvasUser(gl);
+		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();		
+		while ( iter.hasNext() ) {
+			iter.next().render(gl);
 		}
 
 	}
@@ -311,11 +326,206 @@ implements GLEventListener, IJoglMouseListener {
 
 		GL gl = drawable.getGL();
 		
-		refGLCanvasDirector.displayGLChanged( gl, modeChanged, deviceChanged);
+		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();		
+		while ( iter.hasNext() ) {
+			iter.next().displayChanged(gl, modeChanged, deviceChanged);
+		}
+		
 	}
+	
+	/* -----  END GLEvent forwarding ----- */
 	
 	public final ManagerObjectType getBaseType() {
 		return ManagerObjectType.VIEW_CANVAS_FORWARDER;
 	}
 
+	/* (non-Javadoc)
+	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.gui.opengl.IGLCanvasUser)
+	 */
+	public void addGLCanvasUser( IGLCanvasUser user ) {
+
+		if ( vecGLCanvasUser.contains( user ) ) {
+			throw new CerberusRuntimeException("addGLCanvasUser() try to same user twice!");
+		}
+		
+		/**
+		 * Try to avoid java.util.ConcurrentModificationException
+		 * 
+		 * Critical section:
+		 */
+		
+		//FIXME: test adding of IGLCanvasUser later on
+		//super.abEnableRendering.set( false );
+						
+		vecGLCanvasUser.addElement( user );
+		
+		/**
+		 * End of critical section
+		 */		
+		
+		refGeneralManager.getSingelton().logMsg(
+				"SwtJoglGLCanvasViewRep [" +
+				getId() + "] added GLCanvas user=[" +
+				user.getId() + "] " + 
+				user.toString() ,
+				LoggerType.TRANSITION );
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.gui.opengl.IGLCanvasUser)
+	 */
+	public void removeGLCanvasUser( IGLCanvasUser user ) {
+		if ( ! vecGLCanvasUser.remove( user ) ) {
+			throw new CerberusRuntimeException("removeGLCanvasUser() failed, because the user is not registered!");
+		}
+		user.destroyGLCanvas();
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
+	 */
+	public void removeAllGLCanvasUsers() {
+		
+		abEnableRendering.set( false );
+		
+		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+		
+		while ( iter.hasNext() ) {		
+			IGLCanvasUser refIGLCanvasUser = iter.next();
+			refIGLCanvasUser.destroyGLCanvas();
+			refIGLCanvasUser = null;
+		}
+		vecGLCanvasUser.clear();
+	}
+	
+	
+	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
+		return new ArrayList <IGLCanvasUser> (this.vecGLCanvasUser);
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser()
+	 */
+	public synchronized void initGLCanvasUser(GL gl) {
+		
+		refGeneralManager.getSingelton().logMsg(
+				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
+				this.getClass().toString(),
+				LoggerType.STATUS);
+					
+		if ( vecGLCanvasUser.isEmpty() ) 
+		{
+			refGeneralManager.getSingelton().logMsg(
+					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
+					this.getClass().toString() + "  no GLCanvasUSer yet!",
+					LoggerType.MINOR_ERROR);
+			return;
+		}
+		
+		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+		
+		refGeneralManager.getSingelton().logMsg(
+				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
+				this.getClass().toString() + "  init GLCanvasUSer ..",
+				LoggerType.STATUS);
+		
+		while ( iter.hasNext() ) {
+
+			IGLCanvasUser glCanvas = iter.next();
+			if  ( ! glCanvas.isInitGLDone() )
+			{
+				glCanvas.initGLCanvas( gl );
+			}
+			
+		} // while ( iter.hasNext() ) {
+		
+		return;
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void renderGLCanvasUser( GL gl) {
+		
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				
+//				//old code: test if canvas was initialized
+//				IGLCanvasUser glCanvas = iter.next();
+//				if ( glCanvas.isInitGLDone() )
+//				{
+//					glCanvas.render( drawable );
+//				}
+				
+				iter.next().render( gl );
+			}
+		}
+	}
+	
+	public void reshapeGLCanvasUser(GL gl, 
+			final int x, final int y, 
+			final int width, final int height) {
+
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				IGLCanvasUser glCanvas = iter.next();
+				if ( glCanvas.isInitGLDone() )
+				{
+					glCanvas.reshape( gl, x, y, width, height );
+				}
+			}
+		}
+	}
+	
+	/*
+	 *  (non-Javadoc)
+	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void updateGLCanvasUser(GL gl) {
+		
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				iter.next().update( gl );
+			}
+		}
+	}
+	
+	
+	public void displayGLChanged(GL gl, 
+			final boolean modeChanged, 
+			final boolean deviceChanged) {
+
+		if ( abEnableRendering.get() ) 
+		{
+			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			
+			while ( iter.hasNext() ) {
+				iter.next().displayChanged(gl, modeChanged, deviceChanged);
+			}
+		}
+		
+	}
+
+	
+	/**
+	 * @return the refGLCanvasDirector
+	 */
+	public final IGLCanvasDirector getRefGLCanvasDirector() {
+	
+		assert false : "probably it is not necessary to expose this object!";
+	
+		return refGLCanvasDirector;
+	}
+	
 }
