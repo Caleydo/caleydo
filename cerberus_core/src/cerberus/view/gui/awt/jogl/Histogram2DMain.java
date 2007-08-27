@@ -31,9 +31,9 @@ import cerberus.manager.type.ManagerObjectType;
 //import cerberus.view.gui.IView;
 //import cerberus.view.gui.AViewManagedRep;
 //import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
-import cerberus.view.gui.jogl.AViewCameraListenerObject;
 import cerberus.view.gui.jogl.IJoglMouseListener;
-import cerberus.view.gui.jogl.JoglMouseListener;
+import cerberus.view.gui.jogl.mouse.AViewCameraListenerObject;
+import cerberus.view.gui.jogl.mouse.JoglMouseListener;
 //import cerberus.util.exception.CerberusRuntimeException;
 //import cerberus.util.exception.CerberusExceptionType;
 

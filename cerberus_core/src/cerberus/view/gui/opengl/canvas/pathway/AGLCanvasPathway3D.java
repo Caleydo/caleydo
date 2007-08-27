@@ -34,7 +34,7 @@ import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
 import cerberus.util.system.SystemTime;
-import cerberus.view.gui.jogl.PickingJoglMouseListener;
+import cerberus.view.gui.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.GLCanvasStatics;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 

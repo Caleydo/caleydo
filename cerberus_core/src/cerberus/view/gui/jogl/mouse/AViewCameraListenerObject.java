@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.jogl;
+package cerberus.view.gui.jogl.mouse;
 
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.view.camera.IViewCamera;

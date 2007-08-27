@@ -39,7 +39,7 @@ import cerberus.util.opengl.GLTextUtils;
 import cerberus.util.slerp.SlerpAction;
 import cerberus.util.slerp.SlerpMod;
 import cerberus.util.sound.SoundPlayer;
-import cerberus.view.gui.jogl.PickingJoglMouseListener;
+import cerberus.view.gui.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 import com.sun.opengl.util.BufferUtil;

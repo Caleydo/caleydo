@@ -1,4 +1,4 @@
-package cerberus.view.gui.jogl;
+package cerberus.view.gui.jogl.mouse;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Rotf;

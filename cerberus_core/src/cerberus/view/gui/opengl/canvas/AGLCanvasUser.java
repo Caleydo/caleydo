@@ -18,7 +18,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.jogl.AViewCameraListenerObject;
+import cerberus.view.gui.jogl.mouse.AViewCameraListenerObject;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 
