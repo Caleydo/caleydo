@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import cerberus.data.collection.IVirtualArray;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.virtualarray.iterator.VirtualArrayNullIterator;
 
@@ -124,7 +124,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(final int iSetVirtualIndex)
-			throws CerberusRuntimeException {
+			throws GeneViewRuntimeException {
 		iterator.setVirtualIndex( iSetVirtualIndex );
 	}
 

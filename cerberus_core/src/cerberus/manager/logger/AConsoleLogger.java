@@ -10,15 +10,19 @@ import cerberus.manager.ILoggerManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
+ * 
+ * @see cerberus.manager.ILoggerManager
+ * @see cerberus.manager.IGeneralManager
+ * 
  * @author Michael Kalkusch
  *
  */
 public abstract class AConsoleLogger 
 	extends AAbstractManager 
-	implements ILoggerManager, IGeneralManager {
+	implements ILoggerManager {
 
 	protected LoggerType logLevel = LoggerType.ERROR_ONLY;
 	
@@ -29,7 +33,7 @@ public abstract class AConsoleLogger
 	/**
 	 * @param setGeneralManager
 	 */
-	public AConsoleLogger(final IGeneralManager setGeneralManager,
+	protected AConsoleLogger(final IGeneralManager setGeneralManager,
 			final int iUniqueId_type_offset) {
 		super(setGeneralManager,
 				IGeneralManager.iUniqueId_TypeOffset_Logger,
@@ -87,14 +91,14 @@ public abstract class AConsoleLogger
 	 * @see cerberus.manager.IGeneralManager#hasItem(int)
 	 */
 	public final boolean hasItem(final int iItemId) {
-		throw new CerberusRuntimeException("LOGGER: does not support this method hasItem()");
+		throw new GeneViewRuntimeException("LOGGER: does not support this method hasItem()");
 	}
 
 	/**
 	 * @see cerberus.manager.IGeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
-		throw new CerberusRuntimeException("LOGGER: does not support this method getItem()");
+		throw new GeneViewRuntimeException("LOGGER: does not support this method getItem()");
 	}
 	
 	/**
@@ -112,7 +116,7 @@ public abstract class AConsoleLogger
 			final int iItemId , 
 			final ManagerObjectType type )
 	{
-		throw new CerberusRuntimeException("LOGGER: does not support this method registerItem()");
+		throw new GeneViewRuntimeException("LOGGER: does not support this method registerItem()");
 	}
 	
 	
@@ -121,7 +125,7 @@ public abstract class AConsoleLogger
 	 * @see cerberus.manager.IGeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
 	 */
 	public final boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
-		throw new CerberusRuntimeException("LOGGER: does not support this method unregisterItem()");
+		throw new GeneViewRuntimeException("LOGGER: does not support this method unregisterItem()");
 	}
 
 }

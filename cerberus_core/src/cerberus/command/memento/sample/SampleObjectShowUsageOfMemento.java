@@ -12,8 +12,8 @@ import cerberus.command.memento.IGeneralMemento;
 import cerberus.command.memento.IMemento;
 import cerberus.command.memento.IMementoCreator;
 import cerberus.command.memento.sample.SampleMementoState;
-import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
 
 
 /**
@@ -79,7 +79,7 @@ public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 	 * @see prometheus.command.memento.MementoCreator#setMemento(prometheus.command.memento.Memento)
 	 */
 	public void setMemento(IMemento setMemento)
-			throws CerberusRuntimeException {
+			throws GeneViewRuntimeException {
 		
 		SampleMementoState 	bufferMementoState 	= null;
 		
@@ -93,8 +93,8 @@ public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 			this.fMyData = bufferMementoState.getPostData();
 				
 		} catch (Exception e) {
-			throw new CerberusRuntimeException("setMemento() with wrong IMementoState! "+ e.toString(),
-					CerberusRuntimeExceptionType.MEMENTO );
+			throw new GeneViewRuntimeException("setMemento() with wrong IMementoState! "+ e.toString(),
+					GeneViewRuntimeExceptionType.MEMENTO );
 		}
 
 	}

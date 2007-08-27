@@ -16,8 +16,8 @@ import cerberus.manager.ILoggerManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.system.CerberusInputStream;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 import cerberus.xml.parser.handler.command.CommandSaxHandler;
 import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
@@ -308,8 +308,8 @@ implements IXmlParserManager {
 		 * 
 		 */
 		if ( currentHandler != handler ) {
-			throw new CerberusRuntimeException("sectionFinishedByHandler() called by wrong handler!",
-					CerberusRuntimeExceptionType.SAXPARSER);
+			throw new GeneViewRuntimeException("sectionFinishedByHandler() called by wrong handler!",
+					GeneViewRuntimeExceptionType.SAXPARSER);
 		}
 				
 		closeCurrentTag();				

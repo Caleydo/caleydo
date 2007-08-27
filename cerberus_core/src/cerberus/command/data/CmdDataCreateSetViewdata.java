@@ -13,7 +13,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 
 /**
@@ -40,7 +40,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 
 		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
 		ISetViewData refISetViewData = (ISetViewData) refISetManager.createSet(SetDataType.SET_VIEWCAMERA);
@@ -60,7 +60,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 
 		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
 		refISetManager.unregisterItem(iUniqueTargetId, ManagerObjectType.SET_VIEWDATA);

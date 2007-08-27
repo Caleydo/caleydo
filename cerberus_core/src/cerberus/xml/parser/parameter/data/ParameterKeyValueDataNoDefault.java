@@ -6,7 +6,7 @@ package cerberus.xml.parser.parameter.data;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.parameter.IParameterKeyValuePair;
 
 /**
@@ -99,7 +99,7 @@ public final class ParameterKeyValueDataNoDefault < T > implements IParameterKey
 	public void setDefaultValue( final String key,
 			final T value ) {
 		if ( bDefaultValuesSetFinished ) {
-			throw new CerberusRuntimeException("setDefaultValue() is callled after writing data to this class! Once data valeus are written setDefaultValue() must not be called any more!");
+			throw new GeneViewRuntimeException("setDefaultValue() is callled after writing data to this class! Once data valeus are written setDefaultValue() must not be called any more!");
 		}
 		hashKey2Generic.put( key, value );
 	}

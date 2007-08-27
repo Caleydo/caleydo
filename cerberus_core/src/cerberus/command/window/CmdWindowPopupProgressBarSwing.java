@@ -14,7 +14,7 @@ import javax.swing.JProgressBar;
 
 import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Creates a popup window dispaying info.
@@ -91,7 +91,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		
 		progressBar.setStringPainted( true );
@@ -102,7 +102,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		progressBar.setVisible( false );
 		
 		progressBar = null;

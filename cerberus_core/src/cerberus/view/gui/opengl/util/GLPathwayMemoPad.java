@@ -1,4 +1,4 @@
-package cerberus.util.opengl;
+package cerberus.view.gui.opengl.util;
 
 import java.awt.Font;
 import java.io.File;

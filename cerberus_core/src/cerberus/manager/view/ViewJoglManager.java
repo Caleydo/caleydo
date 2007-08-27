@@ -19,7 +19,7 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
@@ -235,7 +235,7 @@ implements IViewGLCanvasManager {
 
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"try to create object with wrong type "
 							+ useViewType.name());
 		}
@@ -296,7 +296,7 @@ implements IViewGLCanvasManager {
 					JoglCanvasForwarderType.DEFAULT_FORWARDER);
 
 		default:
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"StorageManagerSimple.createView() failed due to unhandled type ["
 							+ useViewType.toString() + "]");
 		}
@@ -392,7 +392,7 @@ implements IViewGLCanvasManager {
 					sLabel);
 			
 		default:
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
 							+ useViewType.toString() + "]");
 		}

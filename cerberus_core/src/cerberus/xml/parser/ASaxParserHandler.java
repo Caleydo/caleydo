@@ -17,8 +17,8 @@ import org.xml.sax.Locator;
 import org.xml.sax.helpers.LocatorImpl;
 
 import cerberus.data.xml.IMementoCallbackXML;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Base class for SAX Parser containing several useful methods.
@@ -60,7 +60,7 @@ implements ISaxParserHandler
 	
 	/**
 	 * This variabel defines, if a parsing error shall throw a org.xml.sax.SAXParseException.
-	 * If an parsing error occures the variabel cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing
+	 * If an parsing error occurs the variabel cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing
 	 * is set to true. 
 	 * 
 	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
@@ -68,7 +68,7 @@ implements ISaxParserHandler
 	protected boolean bError_HaltParsingOnError = true;
 	
 	/**
-	 * This variable indicates, that an error has occured.
+	 * This variable indicates, that an error has occurred.
 	 * With respect to the variabel cerberus.net.dwt.swing.DParseBaseSaxHandler#bError_HaltParsingOnError 
 	 * the parsing is interrupted.
 	 * 
@@ -154,9 +154,9 @@ implements ISaxParserHandler
 	}
 	
 	/**
-	 * Appand an error message and set the "error-has-occured"-flag true.
+	 * Append an error message and set the "error-has-occurred"-flag true.
 	 * In comparision cerberus.net.dwt.swing.DParseBaseSaxHandler#appandInfoMsg(String) sets an info message
-	 * without setting the "error-has-occured"-flag true.
+	 * without setting the "error-has-occurred"-flag true.
 	 * 
 	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
 	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
@@ -179,8 +179,8 @@ implements ISaxParserHandler
 								refLocator ));
 			}
 			catch (SAXException s_e) {
-				throw new CerberusRuntimeException(s_e.toString(),
-						CerberusRuntimeExceptionType.SAXPARSER );
+				throw new GeneViewRuntimeException(s_e.toString(),
+						GeneViewRuntimeExceptionType.SAXPARSER );
 			}
 		}
 		if ( ! bErrorWhileParsing )
@@ -208,7 +208,7 @@ implements ISaxParserHandler
 	 * which can be tested via the method 
 	 * cerberus.net.dwt.swing.DParseBaseSaxHandler#hasErrorWhileParsing() .
 	 * 
-	 * @return text of error message. If no error occured this String is empty.
+	 * @return text of error message. If no error occurred this String is empty.
 	 * 
 	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#hasErrorWhileParsing()
 	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getInfoMessage()
@@ -235,7 +235,7 @@ implements ISaxParserHandler
 	 * 
 	 * To get error message call  cerberus.net.dwt.swing.DButtonSaxHandler#getErrorMessage()
 	 * 
-	 * @return TRUE if an error occured on parsing. 
+	 * @return TRUE if an error occurred on parsing. 
 	 * 
 	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
 	 */
@@ -244,8 +244,8 @@ implements ISaxParserHandler
 	}
 	
 	/**
-	 * Trys to convert a String to an int.
-	 * Creates a suitabel error messsage in case of an error.
+	 * Tries to convert a String to an int.
+	 * Creates a suitable error message in case of an error.
 	 * 
 	 * @param parsingString String to be converted to int
 	 * @return value of String
@@ -255,15 +255,15 @@ implements ISaxParserHandler
 			return Integer.valueOf( parsingString );
 		}
 		catch (NumberFormatException ne) {
-			appandErrorMsg("ERROR in convertion of [" +
+			appandErrorMsg("ERROR in conversion of [" +
 					parsingString + "] to integer value" );
 			return 0;
 		}
 	}
 	
 	/**
-	 * Trys to convert a String to an boolean.
-	 * Creates a suitabel error messsage in case of an error.
+	 * Tries to convert a String to an boolean.
+	 * Creates a suitable error message in case of an error.
 	 * 
 	 * @param parsingString String to be converted to int
 	 * @return boolean value of String
@@ -273,7 +273,7 @@ implements ISaxParserHandler
 			return Boolean.valueOf( parsingString );
 		}
 		catch (NumberFormatException ne) {
-			appandErrorMsg("ERROR in convertion of [" +
+			appandErrorMsg("ERROR in conversion of [" +
 					parsingString + "] to boolean value" );
 			return false;
 		}

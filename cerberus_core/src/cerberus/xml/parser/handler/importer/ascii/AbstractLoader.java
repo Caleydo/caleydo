@@ -267,7 +267,7 @@ implements IMementoXML, IParserObject {
 	 * Reads the file and counts the numbers of lines to be read.
 	 * 
 	 * @param sFileName file name
-	 * @return number of lines in file to be read or -1 if an error occured.
+	 * @return number of lines in file to be read or -1 if an error occurred.
 	 * @throws IOException
 	 */
 	protected final int loadData_TestLinesToBeRead(final String sFileName) 

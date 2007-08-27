@@ -23,7 +23,7 @@ import cerberus.command.base.ICmdHandleSet;
 //import cerberus.data.collection.ISet;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 //import cerberus.net.dwt.swing.DSwingHeatMap2DCanvas;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D heatmap.
@@ -55,7 +55,7 @@ implements ICommand, ICmdHandleSet {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 //		DInternalFrame newDInternalFrame = subCmdNewIFrame.doCommand_getDInternalFrame();
 //		
@@ -76,7 +76,7 @@ implements ICommand, ICmdHandleSet {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 	}
 	

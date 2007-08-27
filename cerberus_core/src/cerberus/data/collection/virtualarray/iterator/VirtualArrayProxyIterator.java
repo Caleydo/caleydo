@@ -11,8 +11,8 @@ package cerberus.data.collection.virtualarray.iterator;
 import cerberus.data.collection.IVirtualArray;
 //import prometheus.data.collection.SelectionType;
 
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Automatical creates the suitable iterator for several IVirtualArray's.
@@ -57,9 +57,9 @@ implements IVirtualArrayIterator {
 			
 		default:
 			refSelectionIterator = null;
-			throw new CerberusRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
+			throw new GeneViewRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
 					setSelection.getSelectionType() + "] !",
-					CerberusRuntimeExceptionType.VIRTUALARRAY );
+					GeneViewRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
 	}
@@ -89,7 +89,7 @@ implements IVirtualArrayIterator {
 	 * @see prometheus.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
-			throws CerberusRuntimeException {
+			throws GeneViewRuntimeException {
 		refSelectionIterator.setVirtualIndex( iSetVirtualIndex );
 	}
 

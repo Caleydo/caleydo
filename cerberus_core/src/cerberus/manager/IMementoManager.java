@@ -13,7 +13,7 @@ import java.io.ObjectOutputStream;
 
 
 import cerberus.command.memento.IMemento;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Administration of IMemento's
@@ -34,7 +34,7 @@ extends IGeneralManager
 	 * @throws exception on errors
 	 */
 	public abstract int pushMemento(IMemento addMemento)
-		throws CerberusRuntimeException;
+		throws GeneViewRuntimeException;
 	
 	
 	/**

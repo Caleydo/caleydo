@@ -4,16 +4,18 @@
 package cerberus.manager.logger;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager;
 import cerberus.manager.logger.AConsoleLogger;
 
 /**
+ * 
+ * @see cerberus.manager.ILoggerManager
+ * @see cerberus.manager.IGeneralManager
+ * 
  * @author Michael Kalkusch
  *
  */
 public class ConsoleSimpleLogger 
-	extends AConsoleLogger
-	implements ILoggerManager, IGeneralManager {
+	extends AConsoleLogger {
 
 	
 	/**

@@ -8,7 +8,7 @@ import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 
@@ -46,7 +46,7 @@ implements ICommand
 	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#doCommandPart()
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public final void doCommand() throws CerberusRuntimeException
+	public final void doCommand() throws GeneViewRuntimeException
 	{
 		IViewGLCanvasManager glCanvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
@@ -80,7 +80,7 @@ implements ICommand
 	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#undoCommandPart()
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public final void undoCommand() throws CerberusRuntimeException
+	public final void undoCommand() throws GeneViewRuntimeException
 	{
 		IViewGLCanvasManager glCanvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
@@ -103,13 +103,13 @@ implements ICommand
 	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#doCommand()
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public abstract void doCommandPart() throws CerberusRuntimeException;
+	public abstract void doCommandPart() throws GeneViewRuntimeException;
 	
 	/**
 	 * 
 	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#undoCommand()
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public abstract void undoCommandPart() throws CerberusRuntimeException;
+	public abstract void undoCommandPart() throws GeneViewRuntimeException;
 
 }

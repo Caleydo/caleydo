@@ -20,7 +20,7 @@ import cerberus.command.base.ICmdHandleSet;
 //import cerberus.net.dwt.swing.DSwingHistogramCanvas;
 ////import cerberus.net.dwt.swing.mdi.DDesktopPane;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram.
@@ -53,7 +53,7 @@ implements ICommand, ICmdHandleSet {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		assert refGeneralManager != null:"can not handle null-pointer to IGeneralManager";
 
@@ -82,7 +82,7 @@ implements ICommand, ICmdHandleSet {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 	}
 

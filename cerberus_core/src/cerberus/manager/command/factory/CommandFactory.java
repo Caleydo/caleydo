@@ -56,8 +56,8 @@ import cerberus.command.system.CmdSystemLoadFileLookupTable;
 import cerberus.command.system.path.CmdSetPathwayPaths;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Class is responsible for creating the commands.
@@ -576,9 +576,9 @@ public class CommandFactory
 		
 		
 		default: 
-			throw new CerberusRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
+			throw new GeneViewRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
 					cmdType + "]",
-					CerberusRuntimeExceptionType.SAXPARSER);
+					GeneViewRuntimeExceptionType.SAXPARSER);
 		} // end switch
 		
 		//FIXME: create new command id! use lookup table for XML matching of cmd id's 
@@ -625,8 +625,8 @@ public class CommandFactory
 		}
 		catch ( IllegalArgumentException iae ) 
 		{
-			throw new CerberusRuntimeException("Undefined CommandQueue key= [" + sCmdType + "]",
-					CerberusRuntimeExceptionType.SAXPARSER);
+			throw new GeneViewRuntimeException("Undefined CommandQueue key= [" + sCmdType + "]",
+					GeneViewRuntimeExceptionType.SAXPARSER);
 		}
 			
 		switch (queueType) 
@@ -648,8 +648,8 @@ public class CommandFactory
 					iCmdQueueId);
 			
 			default:
-				throw new CerberusRuntimeException("Unsupported CommandQueue key= [" + sCmdType + "]",
-						CerberusRuntimeExceptionType.SAXPARSER);
+				throw new GeneViewRuntimeException("Unsupported CommandQueue key= [" + sCmdType + "]",
+						GeneViewRuntimeExceptionType.SAXPARSER);
 		}
 		
 	}
@@ -669,21 +669,21 @@ public class CommandFactory
 	 * Call doCommand() inside a try catch block.
 	 * 
 	 * @param refCommand
-	 * @throws CerberusRuntimeException
+	 * @throws GeneViewRuntimeException
 	 */
-	public static final void doCommandSafe(ICommand refCommand) throws CerberusRuntimeException {
+	public static final void doCommandSafe(ICommand refCommand) throws GeneViewRuntimeException {
 		try {
 			refCommand.doCommand();
-		} catch (CerberusRuntimeException pe) {
-			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+		} catch (GeneViewRuntimeException pe) {
+			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
 					"doCommand() failed with "+
 					pe.toString(),
-					CerberusRuntimeExceptionType.COMMAND );
+					GeneViewRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
 					"doCommand() failed with "+
 					e.toString(),
-					CerberusRuntimeExceptionType.COMMAND );
+					GeneViewRuntimeExceptionType.COMMAND );
 		}
 	}
 
@@ -692,21 +692,21 @@ public class CommandFactory
 	 * Call undoCommand() inside a try catch block.
 	 * 
 	 * @param refCommand
-	 * @throws CerberusRuntimeException
+	 * @throws GeneViewRuntimeException
 	 */
-	public static final void undoCommandSafe(ICommand refCommand) throws CerberusRuntimeException {
+	public static final void undoCommandSafe(ICommand refCommand) throws GeneViewRuntimeException {
 		try {
 			refCommand.undoCommand();
-		} catch (CerberusRuntimeException pe) {
-			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+		} catch (GeneViewRuntimeException pe) {
+			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
 					"undoCommand() failed with "+
 					pe.toString(),
-					CerberusRuntimeExceptionType.COMMAND );
+					GeneViewRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new CerberusRuntimeException( refCommand.getClass().getName() +
+			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
 					"undoCommand() failed with "+
 					e.toString(),
-					CerberusRuntimeExceptionType.COMMAND );
+					GeneViewRuntimeExceptionType.COMMAND );
 		}
 	}
 	

@@ -1,6 +1,6 @@
 package cerberus.command.memento;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 
 /**
@@ -28,18 +28,18 @@ public interface IMemento {
 	/**
 	 * Each class sets it's state to be able to restore it's current status.
 	 * 
-	 * Throws CerberusRuntimeException if an inappropriate MementoStateInterface-object
+	 * Throws GeneViewRuntimeException if an inappropriate MementoStateInterface-object
 	 * is passed a parameter. 
 	 * Derived class has to check, if MementoStateInterface-object fits.
 	 * 
 	 * @param setMementoCreator reference to the object, that created the memento
 	 * @param setMemetoState details for restoring the state of the creator object setMementoCreator
 	 * 
-	 * @throws CerberusRuntimeException are thrown in case of full storage or maximum number of mementos 
+	 * @throws GeneViewRuntimeException are thrown in case of full storage or maximum number of mementos 
 	 */
 	public void setMementoState(final Object setMementoCreator,
 			final IMementoState setMemetoState)
-			throws CerberusRuntimeException;
+			throws GeneViewRuntimeException;
 
 	/**
 	 * Each class is be able to restore it's previouse status using the information stored 

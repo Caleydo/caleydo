@@ -26,7 +26,7 @@ import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Global object contining and handling several managers.
@@ -311,13 +311,13 @@ implements ISingelton {
 			case VIEW_GUI_SWT: return this.refSWTGUIManager;
 		
 			case NONE: 
-				throw new CerberusRuntimeException("No Manager for type 'NONE' available!");
+				throw new GeneViewRuntimeException("No Manager for type 'NONE' available!");
 	
 			case LOGGER: return this.refLoggerManager;
 				
 			
 			default: 
-				throw new CerberusRuntimeException("No Manager for type [" + 
+				throw new GeneViewRuntimeException("No Manager for type [" + 
 						type.toString() + "] available!");
 		}
 	}

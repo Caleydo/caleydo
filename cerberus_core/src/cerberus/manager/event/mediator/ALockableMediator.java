@@ -7,18 +7,19 @@ package cerberus.manager.event.mediator;
 
 import cerberus.manager.IEventPublisher;
 import cerberus.manager.event.mediator.MediatorUpdateType;
-import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
 
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
+ * 
+ * @see cerberus.manager.event.mediator.IMediator
  * 
  * @author Micheal Kalkusch
  * @author Marc Streit
  */
 public abstract class ALockableMediator 
-extends ALockableMediatorReceiver
-implements IMediator {
+extends ALockableMediatorReceiver {
 	
 	protected final IEventPublisher refEventPublisher;
 	
@@ -74,7 +75,7 @@ implements IMediator {
 	public final void destroyMediator( final IEventPublisher sender )
 	{
 		if ( ! refEventPublisher.equals(sender)) {
-			throw new CerberusRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
+			throw new GeneViewRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
 		}
 
 		destroyMediatorDerivedObject( sender );
@@ -96,8 +97,8 @@ implements IMediator {
 	 */
 	public final void setId(int isetId) {
 		
-		throw new CerberusRuntimeException("setId() must not be called.",
-				CerberusRuntimeExceptionType.OBSERVER);
+		throw new GeneViewRuntimeException("setId() must not be called.",
+				GeneViewRuntimeExceptionType.OBSERVER);
 		
 		//this.iMediatorId = isetId;
 		

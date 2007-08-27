@@ -20,7 +20,7 @@ import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -71,7 +71,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		IVirtualArrayManager refVirtualArrayManager = 
 			refGeneralManager.getSingelton().getVirtualArrayManager();
@@ -101,7 +101,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueTargetId,

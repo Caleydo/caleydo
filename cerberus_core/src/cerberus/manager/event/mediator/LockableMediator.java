@@ -60,7 +60,7 @@ implements IMediator {
 		
 		if (arSender.contains(sender))
 		{
-			//throw new CerberusRuntimeException("LockableMediator.register() receiver that is already registered!");
+			//throw new GeneViewRuntimeException("LockableMediator.register() receiver that is already registered!");
 			return false;
 		}
 
@@ -76,7 +76,7 @@ implements IMediator {
 		
 		if (arReceiver.contains(receiver))
 		{
-			//throw new CerberusRuntimeException("LockableMediator.register() receiver that is already registered!");
+			//throw new GeneViewRuntimeException("LockableMediator.register() receiver that is already registered!");
 			return false;
 		}
 

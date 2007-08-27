@@ -12,7 +12,7 @@ import cerberus.manager.IGeneralManager;
 //import cerberus.manager.type.BaseManagerType;
 import cerberus.data.IUniqueManagedObject;
 import cerberus.data.AUniqueItem;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Abstract class providing methods defiend in IUniqueManagedObject.
@@ -60,7 +60,7 @@ implements IUniqueManagedObject {
 	 * @see cerberus.data.IUniqueManagedObject#getGeneralManager()
 	 */
 	final protected void setManager( final IGeneralManager setGeneralManager) {
-		throw new CerberusRuntimeException("setManager() prohibited inside this class!");
+		throw new GeneViewRuntimeException("setManager() prohibited inside this class!");
 		//this.refGeneralManager = setGeneralManager;
 	}
 	

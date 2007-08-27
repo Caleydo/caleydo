@@ -11,7 +11,7 @@ import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
 import cerberus.xml.parser.parameter.IParameterHandler;
@@ -75,7 +75,7 @@ implements ICommand {
 
 
 	@Override
-	public void doCommandPart() throws CerberusRuntimeException {
+	public void doCommandPart() throws GeneViewRuntimeException {
 		
 		GLCanvasIsoSurface3D canvas = 
 			(GLCanvasIsoSurface3D) openGLCanvasUser;
@@ -96,7 +96,7 @@ implements ICommand {
 	}
 
 	@Override
-	public void undoCommandPart() throws CerberusRuntimeException {
+	public void undoCommandPart() throws GeneViewRuntimeException {
 		
 		GLCanvasIsoSurface3D canvas = 
 			(GLCanvasIsoSurface3D) openGLCanvasUser;

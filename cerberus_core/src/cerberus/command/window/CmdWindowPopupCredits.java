@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Creates a About - cridts box.
@@ -58,7 +58,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		JOptionPane.showMessageDialog( parentComponent,
 				"project: GenView\n" +
 				"http://www.icg.tu-graz.ac.at/genview/\n\n" +				
@@ -73,7 +73,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 	}
 

@@ -23,8 +23,8 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.command.memento.IMemento;
 //import prometheus.data.collection.Set;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Simple IMemento Manager, that stores all IMemento's in a Vector.
@@ -81,8 +81,8 @@ public class MementoManager
 			return iUniqueId;
 
 		} catch (Exception e) {
-			throw new CerberusRuntimeException("setMemento(IMemento) failed. " + e.toString(),
-					CerberusRuntimeExceptionType.MEMENTO );
+			throw new GeneViewRuntimeException("setMemento(IMemento) failed. " + e.toString(),
+					GeneViewRuntimeExceptionType.MEMENTO );
 		}
 	}
 

@@ -9,8 +9,8 @@
 package cerberus.data.collection.virtualarray.iterator;
 
 import cerberus.data.collection.IVirtualArray;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Iterator for Selecion VirtualArrayMultiBlock
@@ -66,12 +66,12 @@ implements IVirtualArrayIterator {
 	 * @see prometheus.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(final int iSetVirtualIndex)
-			throws CerberusRuntimeException {
+			throws GeneViewRuntimeException {
 		
 		if (( iSetVirtualIndex < 0 ) || 
 				( iSetVirtualIndex >= iSelectionLength) ) {
-			throw new CerberusRuntimeException("setVirtualIndex() with index that was out of bounds.",
-							CerberusRuntimeExceptionType.VIRTUALARRAY );
+			throw new GeneViewRuntimeException("setVirtualIndex() with index that was out of bounds.",
+							GeneViewRuntimeExceptionType.VIRTUALARRAY );
 		}				
 		
 		final int iCountMultiBlocks = (int) ( (float) iCurrentVirtualIndex % (float) iVirtualBlockRepeat );

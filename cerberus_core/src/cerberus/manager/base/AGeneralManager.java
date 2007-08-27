@@ -9,7 +9,7 @@ import cerberus.manager.singleton.SingletonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -48,7 +48,7 @@ public abstract class AGeneralManager implements IGeneralManager {
 		
 		/** Check for inconsistency... */
 		if ( refGeneralManager.getSingelton() != null ) {
-			throw new CerberusRuntimeException("AGeneralManager() refGeneralManager already has a  proper ISingelton!");
+			throw new GeneViewRuntimeException("AGeneralManager() refGeneralManager already has a  proper ISingelton!");
 		}
 		
 		this.refSingelton = refSingeltonManager;
@@ -81,7 +81,7 @@ public abstract class AGeneralManager implements IGeneralManager {
 		switch ( setManagerType ) {
 			case COMMAND:
 			
-			default: throw new CerberusRuntimeException("AGeneralManager: Can not handle type [" +
+			default: throw new GeneViewRuntimeException("AGeneralManager: Can not handle type [" +
 					setManagerType.toString() + "]");
 		}				
 	}

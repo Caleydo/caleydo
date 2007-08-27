@@ -6,7 +6,7 @@ import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -46,7 +46,7 @@ implements ICommand {
 				refCommandQueueSaxType);
 	}
 
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		// First the storages and virtual arrays are created.
 		createSelectionVirtualArray();
@@ -61,7 +61,7 @@ implements ICommand {
 		refCommandManager.runDoCommand(this);
 	}
 	
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);		
 	}

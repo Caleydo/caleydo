@@ -7,7 +7,6 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
 
 /**
@@ -16,12 +15,14 @@ import cerberus.view.gui.ViewType;
  * selection and the first storage in the specified Set.
  * The Set is represented by the local variable setId.
  * 
+ * @see cerberus.view.gui.IView
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public abstract class ASliderViewRep 
 extends AViewRep 
-implements IView, IMediatorSender, IMediatorReceiver {
+implements IMediatorSender, IMediatorReceiver {
 	
 	protected Slider refSlider;
 	

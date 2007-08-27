@@ -24,8 +24,8 @@ import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 
 /**
@@ -240,10 +240,10 @@ implements IGenomeIdManager {
 			currentGenomeIdMap = hashType2Map.get( type );
 			
 			if ( currentGenomeIdMap == null ) {
-				throw new CerberusRuntimeException(
+				throw new GeneViewRuntimeException(
 						"buildLUT_startEditingSetTypes(" + 
 						type + ") is not allocated!",
-						CerberusRuntimeExceptionType.DATAHANDLING);
+						GeneViewRuntimeExceptionType.DATAHANDLING);
 			}
 			
 			return true;
@@ -278,7 +278,7 @@ implements IGenomeIdManager {
 		
 		if ( ! currentEditingType.equals( type ) ) 
 		{
-			throw new CerberusRuntimeException("buildLUT_stopEditing(" + type +
+			throw new GeneViewRuntimeException("buildLUT_stopEditing(" + type +
 					") differs from current type=[" +
 					currentEditingType + "]");
 		}
@@ -414,9 +414,9 @@ implements IGenomeIdManager {
 			hashType2Map.put(codingLutType, (IGenomeIdMap) map);
 		}
 		catch (NullPointerException npe) {
-			throw new CerberusRuntimeException("setMapByType(final GenomeMappingType codingLutType, Object map) unsupported object=" +
+			throw new GeneViewRuntimeException("setMapByType(final GenomeMappingType codingLutType, Object map) unsupported object=" +
 					map.getClass().toString(),
-					CerberusRuntimeExceptionType.DATAHANDLING);		
+					GeneViewRuntimeExceptionType.DATAHANDLING);		
 		}
 	}
 

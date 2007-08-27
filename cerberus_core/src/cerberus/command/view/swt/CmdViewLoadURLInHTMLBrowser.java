@@ -9,7 +9,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.ViewType;
 import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
@@ -52,7 +52,7 @@ implements ICommand {
 	 * and sets the new URL.
 	 * The URL is then automatically reloaded.
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		try {
 			
@@ -90,7 +90,7 @@ implements ICommand {
 		this.sTargetURL = sTargetURL;
 	}
 	
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 
 		refCommandManager.runUndoCommand(this);
 	}

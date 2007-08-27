@@ -12,10 +12,9 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.IViewGLCanvasManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
 import cerberus.view.gui.jogl.JoglCanvasDirectForwarder;
 import cerberus.view.gui.jogl.JoglCanvasForwarder;
@@ -23,7 +22,7 @@ import cerberus.view.gui.jogl.JoglCanvasForwarderType;
 import cerberus.view.gui.jogl.TriggeredAnimator;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
-//import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * 
@@ -31,6 +30,7 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
  * The IGLCanvasDirector tries to call it once inside the initGLCanvasUser(), if the IGLCanvasUser is registered 
  * by that time to the Vector <IGLCanvasUser> vecGLCanvasUser;
  * 
+ * @see import cerberus.view.gui.IView
  * @author Michael Kalkusch
  * @author Marc Streit
  *
@@ -38,7 +38,7 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
 public class SwtJoglGLCanvasViewRep 
 extends AViewRep
 //extends AJoglViewRep 
-implements IView, IGLCanvasDirector {
+implements IGLCanvasDirector {
 	
 	protected int iGLEventListernerId = 99000;
 	
@@ -118,7 +118,7 @@ implements IView, IGLCanvasDirector {
 				break;
 				
 				default:
-					throw new CerberusRuntimeException("initView() unsupported JoglCanvasForwarderType=[" +
+					throw new GeneViewRuntimeException("initView() unsupported JoglCanvasForwarderType=[" +
 							canvasForwarderType.toString() + "]");
 			}
 			

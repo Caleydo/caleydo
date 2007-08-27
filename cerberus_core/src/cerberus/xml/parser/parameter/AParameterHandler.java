@@ -9,7 +9,7 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
 //import cerberus.xml.parser.parameter.IParameterKeyValuePair;
 //import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -42,7 +42,7 @@ implements IParameterHandler {
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new CerberusRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
+			new GeneViewRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
 					") no valid enumeration type!");
 			
 		}
@@ -57,7 +57,7 @@ implements IParameterHandler {
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new CerberusRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
+			new GeneViewRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
 					") no valid enumeration type!");
 			
 		}

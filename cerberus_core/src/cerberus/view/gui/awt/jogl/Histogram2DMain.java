@@ -34,7 +34,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.jogl.mouse.AViewCameraListenerObject;
 import cerberus.view.gui.jogl.mouse.JoglMouseListener;
-//import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.GeneViewRuntimeException;
 //import cerberus.util.exception.CerberusExceptionType;
 
 //import cerberus.math.statistics.histogram.IHistogramStatistic;

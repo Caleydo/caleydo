@@ -6,7 +6,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 //import cerberus.xml.parser.command.CommandQueueSaxType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -41,7 +41,7 @@ implements ICommand
 				refCommandQueueSaxType);
 	}
 	
-	public void doCommand() throws CerberusRuntimeException
+	public void doCommand() throws GeneViewRuntimeException
 	{
 		refGeneralManager.getSingelton().
 			getSWTGUIManager().createWindow( 
@@ -59,7 +59,7 @@ implements ICommand
 		sLayoutAttributes = sAttribute1;
 	}
 	
-	public void undoCommand() throws CerberusRuntimeException
+	public void undoCommand() throws GeneViewRuntimeException
 	{
 		refCommandManager.runUndoCommand(this);
 	}

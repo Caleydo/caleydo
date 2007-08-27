@@ -9,7 +9,7 @@
 package cerberus.command;
 
 import cerberus.data.IUniqueObject;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 
@@ -29,18 +29,18 @@ extends IUniqueObject {
 	/**
 	 * execute a command.
 	 * 
-	 * @throws PrometheusCommandException if an error occures.
+	 * @throws PrometheusCommandException if an error occurs.
 	 */
 	public abstract void doCommand() 
-		throws CerberusRuntimeException;
+		throws GeneViewRuntimeException;
 	
 	/**
 	 * Undo the command.
 	 *
-	 * @throws PrometheusCommandException if an error occures.
+	 * @throws PrometheusCommandException if an error occurs.
 	 */
 	public abstract void undoCommand() 
-		throws CerberusRuntimeException;
+		throws GeneViewRuntimeException;
 	
 	public abstract void setParameterHandler( IParameterHandler refParameterHandler);
 	

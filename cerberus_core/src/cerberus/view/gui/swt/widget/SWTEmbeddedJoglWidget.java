@@ -15,8 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 import com.sun.opengl.util.Animator;
 
 import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
-import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
 
 
 /**
@@ -64,9 +64,9 @@ extends ASWTEmbeddedWidget {
 			System.err.println("SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: "				
 					+ ule.toString() );		
 			
-			throw new CerberusRuntimeException( "SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: " + 
+			throw new GeneViewRuntimeException( "SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: " + 
 					ule.toString(),
-					CerberusRuntimeExceptionType.JOGL_SWT );
+					GeneViewRuntimeExceptionType.JOGL_SWT );
 		}
 		
 		/* Add GLCanvas to SWT embedded composit..*/

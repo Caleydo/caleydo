@@ -14,7 +14,7 @@ package cerberus.util.exception;
  * @author Michael Kalkusch
  *
  */
-public enum CerberusRuntimeExceptionType {
+public enum GeneViewRuntimeExceptionType {
 	
 	ANY_ERROR("cerberus-error"),
 	COMMAND("Command"),
@@ -30,7 +30,7 @@ public enum CerberusRuntimeExceptionType {
 	
 	private String sExceptionDetail;
 	
-	private CerberusRuntimeExceptionType( String ssExceptionDetail ) {
+	private GeneViewRuntimeExceptionType( String ssExceptionDetail ) {
 		sExceptionDetail = ssExceptionDetail;
 	}
 	

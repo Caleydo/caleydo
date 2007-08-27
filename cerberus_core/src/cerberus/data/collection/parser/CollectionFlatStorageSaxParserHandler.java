@@ -22,8 +22,8 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.data.collection.StorageType;
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.ASaxParserHandler;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 
 //import cerberus.util.exception.PrometheusSaxParserException;
@@ -526,8 +526,8 @@ implements ISaxParserHandler
 			
 			
 			default:
-				throw new CerberusRuntimeException("Can not handle unkonw type [" + details + "]",
-						CerberusRuntimeExceptionType.SAXPARSER );
+				throw new GeneViewRuntimeException("Can not handle unkonw type [" + details + "]",
+						GeneViewRuntimeExceptionType.SAXPARSER );
 			
 			} // end switch
 		

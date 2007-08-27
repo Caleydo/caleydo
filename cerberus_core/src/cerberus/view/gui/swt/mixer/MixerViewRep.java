@@ -7,7 +7,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Slider;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
@@ -84,7 +84,7 @@ implements IView {
 			refSliderList.get(iSliderIndex).setSelection(iSliderValue);
 
 		}catch(Exception e) {
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"Mixer Slider with index " +iSliderIndex +" does not exist!");
 		}
 	}
@@ -102,7 +102,7 @@ implements IView {
 			return refSliderList.get(iSliderIndex).getSelection();
 
 		}catch(Exception e) {
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"Mixer Slider with index " +iSliderIndex +" does not exist!");
 		}	
 	}

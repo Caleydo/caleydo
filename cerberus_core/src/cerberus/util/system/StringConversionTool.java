@@ -9,7 +9,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.util.exception.CerberusExceptionType;
-//import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.GeneViewRuntimeException;
 //import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

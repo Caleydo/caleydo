@@ -10,7 +10,7 @@ import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Runs a command queue.
@@ -47,12 +47,12 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		ICommandQueue cmdQueue = 
 			this.refGeneralManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
-			throw new CerberusRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
+			throw new GeneViewRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
 		}
 		
 		cmdQueue.doCommand();
@@ -61,13 +61,13 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 		ICommandQueue cmdQueue = 
 			this.refGeneralManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
-			throw new CerberusRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
+			throw new GeneViewRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
 		}
 		
 		cmdQueue.doCommand();

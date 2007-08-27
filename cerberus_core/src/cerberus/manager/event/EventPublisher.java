@@ -19,8 +19,8 @@ import cerberus.manager.event.mediator.MediatorUpdateType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 public class EventPublisher 
 extends AAbstractManager
@@ -109,10 +109,10 @@ implements IEventPublisher {
 		ArrayList <IMediator> bufferArrayList = insertIntoHashMap.get(sender);
 		
 		if ( bufferArrayList.contains( sender ) ) {
-			throw new CerberusRuntimeException("Try to insert an existing object! " + 
+			throw new GeneViewRuntimeException("Try to insert an existing object! " + 
 					sender.toString() + " ==> " + newMediator.toString() + 
 					" inside map" + bufferArrayList.toString(),
-					CerberusRuntimeExceptionType.OBSERVER);
+					GeneViewRuntimeExceptionType.OBSERVER);
 		}
 		
 		bufferArrayList.add(newMediator);
@@ -248,10 +248,10 @@ implements IEventPublisher {
 //					break;
 //					
 //				default:
-//					throw new CerberusRuntimeException(
+//					throw new GeneViewRuntimeException(
 //							"createMediator() unknown type sender: " + 
 //							mediatorType.toString(),
-//							CerberusRuntimeExceptionType.OBSERVER);
+//							GeneViewRuntimeExceptionType.OBSERVER);
 //				
 //				} //switch ( mediatorType ) {
 //			
@@ -356,10 +356,10 @@ implements IEventPublisher {
 					break;
 					
 				default:
-					throw new CerberusRuntimeException(
+					throw new GeneViewRuntimeException(
 							"createMediator() unknown type sender: " + 
 							mediatorType.toString(),
-							CerberusRuntimeExceptionType.OBSERVER);
+							GeneViewRuntimeExceptionType.OBSERVER);
 				
 				} //switch ( mediatorType ) {
 			
@@ -439,10 +439,10 @@ implements IEventPublisher {
 					break;
 					
 					default:
-						throw new CerberusRuntimeException(
+						throw new GeneViewRuntimeException(
 								"createMediator() unknown type receiver: " + 
 								mediatorType.toString(),
-								CerberusRuntimeExceptionType.OBSERVER);
+								GeneViewRuntimeExceptionType.OBSERVER);
 				} // switch ( mediatorType ) {
 			
 				refSingelton.logMsg("EventPublisher: successful added senderId(s)" +

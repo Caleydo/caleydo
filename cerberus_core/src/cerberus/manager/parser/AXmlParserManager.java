@@ -15,7 +15,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 /**
  * @author Michael Kalkusch
  *
@@ -79,7 +79,7 @@ implements IXmlParserManager, IManagedObject
 	protected final boolean closeCurrentTag() {
 		
 		if ( this.currentHandler == null ) {
-			throw new CerberusRuntimeException("AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
+			throw new GeneViewRuntimeException("AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
 			//return false;
 		}
 		
@@ -162,12 +162,12 @@ implements IXmlParserManager, IManagedObject
 //		
 //		if ( ! refIXmlParserManager.equals( this) ) 
 //		{
-//			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
+//			throw new GeneViewRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
 //		}
 //		
 //		if ( newHandler == null ) 
 //		{
-//			throw new CerberusRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
+//			throw new GeneViewRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
 //		}
 //		
 //		if ( currentHandler != null ) 
@@ -216,19 +216,19 @@ implements IXmlParserManager, IManagedObject
 		assert handler != null : "Can not handle null pointer as handler";
 		
 		if ( bProcessingXmlDataNow ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");			
+			throw new GeneViewRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");			
 			//return false;
 		}
 		
 		if ( hashTag2XmlParser.contains( handler ) ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
+			throw new GeneViewRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
 			//return false;
 		}
 		
 		String key = handler.getXmlActivationTag();
 		
 		if ( hashTag2XmlParser.containsKey( key ) ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String [" + 
+			throw new GeneViewRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String [" + 
 					handler.getXmlActivationTag() + 
 					"] is already registered!");
 			//return false;
@@ -257,12 +257,12 @@ implements IXmlParserManager, IManagedObject
 		assert sActivationXmlTag != null : "Can not handle null pointer as handler";
 		
 		if ( bProcessingXmlDataNow ) {
-			throw new CerberusRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");			
+			throw new GeneViewRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");			
 			//return false;
 		}
 		
 		if ( ! hashTag2XmlParser.containsKey( sActivationXmlTag ) ) {
-			throw new CerberusRuntimeException("AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
+			throw new GeneViewRuntimeException("AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
 			//return false;
 		}
 		

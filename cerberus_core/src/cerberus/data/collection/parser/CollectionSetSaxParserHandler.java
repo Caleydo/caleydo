@@ -22,8 +22,8 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.xml.parser.ASaxParserHandler;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 
 /**
@@ -216,8 +216,8 @@ implements ISaxParserHandler
 				if ( qName.equals( sTag_XML_DataCollection_details ) ) {
 					
 					if ( attributes.getLength() < 2 ) {
-						throw new CerberusRuntimeException("need attributes <... type=\"\" dim=\"*\">",
-								CerberusRuntimeExceptionType.SAXPARSER );
+						throw new GeneViewRuntimeException("need attributes <... type=\"\" dim=\"*\">",
+								GeneViewRuntimeExceptionType.SAXPARSER );
 					}
 					
 					final String bufferType = attributes.getValue(sTag_XML_DataCollection_details_attr_A_type);
@@ -231,8 +231,8 @@ implements ISaxParserHandler
 							iCurrentDim = Integer.valueOf( bufferDim ).intValue();
 						}
 						catch ( NumberFormatException nfe ) {
-							throw new CerberusRuntimeException("attributes <... dim=\"" + bufferDim + "\"> mut be an integer",
-									CerberusRuntimeExceptionType.SAXPARSER );
+							throw new GeneViewRuntimeException("attributes <... dim=\"" + bufferDim + "\"> mut be an integer",
+									GeneViewRuntimeExceptionType.SAXPARSER );
 						}
 						bXML_Section_DataComponent_details_Select = true;
 					}

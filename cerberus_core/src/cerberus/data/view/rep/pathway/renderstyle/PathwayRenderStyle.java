@@ -3,7 +3,7 @@ package cerberus.data.view.rep.pathway.renderstyle;
 import java.awt.Color;
 
 import cerberus.data.ARenderStyle;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 public class PathwayRenderStyle 
 extends ARenderStyle {
@@ -360,7 +360,7 @@ extends ARenderStyle {
 	 */
 	public Color getNeighborhoodNodeColorByDepth( final int depth ) {
 		if ( depth >= neighborhoodNodeColorArraysize) {
-			throw new CerberusRuntimeException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
+			throw new GeneViewRuntimeException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
 		}
 		return this.neighborhoodNodeColorArray[depth];
 	}

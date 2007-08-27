@@ -13,7 +13,7 @@ import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IPathwayManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -51,7 +51,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		IPathwayManager pathwayManager = 
 			refGeneralManager.getSingelton().getPathwayManager();
@@ -66,7 +66,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 
 		
 		refCommandManager.runUndoCommand(this);

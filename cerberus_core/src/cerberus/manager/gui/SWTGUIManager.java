@@ -21,7 +21,7 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.jogl.TriggeredAnimator;
 import cerberus.view.gui.swt.ISWTWidget;
 import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
@@ -231,7 +231,7 @@ implements ISWTGUIManager {
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"StorageManagerSimple.createView() failed due to unhandled type ["
 							+ useWidgetType.toString() + "]");
 		}

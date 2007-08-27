@@ -14,7 +14,7 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.MathUtil;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -56,7 +56,7 @@ implements ICommand {
 	 * Method creates a test triangle view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		try
 		{
@@ -96,7 +96,7 @@ implements ICommand {
 			refCommandManager.runDoCommand(this);
 			
 		} 	
-		catch ( CerberusRuntimeException ce)
+		catch ( GeneViewRuntimeException ce)
 		{
 			refGeneralManager.getSingelton().logMsg("Can not open Jogl frame inside SWT container! " + ce.toString(),
 					LoggerType.ERROR_ONLY );
@@ -157,7 +157,7 @@ implements ICommand {
 		
 	}
 	
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);
 	}

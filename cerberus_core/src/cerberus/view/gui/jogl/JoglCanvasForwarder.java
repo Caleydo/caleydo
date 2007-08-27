@@ -23,7 +23,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.MathUtil;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 //import cerberus.view.gui.jogl.PickingJoglMouseListenerDebug;
 import cerberus.view.gui.jogl.IJoglMouseListener;
 import cerberus.view.gui.jogl.mouse.AViewCameraListenerObject;
@@ -347,7 +347,7 @@ implements GLEventListener, IJoglMouseListener {
 	public void addGLCanvasUser( IGLCanvasUser user ) {
 
 		if ( vecGLCanvasUser.contains( user ) ) {
-			throw new CerberusRuntimeException("addGLCanvasUser() try to same user twice!");
+			throw new GeneViewRuntimeException("addGLCanvasUser() try to same user twice!");
 		}
 		
 		/**
@@ -378,7 +378,7 @@ implements GLEventListener, IJoglMouseListener {
 	 */
 	public void removeGLCanvasUser( IGLCanvasUser user ) {
 		if ( ! vecGLCanvasUser.remove( user ) ) {
-			throw new CerberusRuntimeException("removeGLCanvasUser() failed, because the user is not registered!");
+			throw new GeneViewRuntimeException("removeGLCanvasUser() failed, because the user is not registered!");
 		}
 		user.destroyGLCanvas();
 	}

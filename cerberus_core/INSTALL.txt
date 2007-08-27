@@ -157,3 +157,9 @@ X) Switches for application:
   
   Default directory to run the 
   cerberus-application (cerberus root folder): [cererus]
+  
+  
+ JAVA Heap Space
+-----------------
+  java heap space exceeded: solution: VM argument
+   -Xms256m -Xmx512m

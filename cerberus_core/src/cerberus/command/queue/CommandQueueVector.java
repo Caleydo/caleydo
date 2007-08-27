@@ -13,8 +13,8 @@ import cerberus.command.queue.ACommandQueue;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Create a queue of command's, that can be executed in a row.
@@ -95,18 +95,18 @@ implements ICommand , ICommandQueue
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		if ( bQueueIsExcecuting ) {
-			throw new CerberusRuntimeException("Can not execute command queue, that is already processed!", 
-					CerberusRuntimeExceptionType.COMMAND );
+			throw new GeneViewRuntimeException("Can not execute command queue, that is already processed!", 
+					GeneViewRuntimeExceptionType.COMMAND );
 			//return;
 		}
 				
 		if (( ! bQueueCanBeExecutedSeveralTimes )&&
 				( bQueueWasExcecuted )) {
-			throw new CerberusRuntimeException("Can not execute command queue, that is already processed!",
-					CerberusRuntimeExceptionType.COMMAND );
+			throw new GeneViewRuntimeException("Can not execute command queue, that is already processed!",
+					GeneViewRuntimeExceptionType.COMMAND );
 		}
 		/**
 		 * critical section
@@ -121,7 +121,7 @@ implements ICommand , ICommandQueue
 				iter.next().doCommand();
 			}
 		
-		} catch (CerberusRuntimeException pre) {
+		} catch (GeneViewRuntimeException pre) {
 			System.err.print("Exception during execution of CommandQueue [" + 
 					this.iCmdQueueId + "] with exception:[" +
 					pre.toString() + "]" );
@@ -137,16 +137,16 @@ implements ICommand , ICommandQueue
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 		if ( this.bQueueCanBeExecutedSeveralTimes ) {
-			throw new CerberusRuntimeException("Can not call undo() on command queue, that can be executed several times!", 
-					CerberusRuntimeExceptionType.COMMAND );
+			throw new GeneViewRuntimeException("Can not call undo() on command queue, that can be executed several times!", 
+					GeneViewRuntimeExceptionType.COMMAND );
 		}
 		
 		if ( this.bQueueIsExcecuting ) {
-			throw new CerberusRuntimeException("Can not execute command queue, that is already processed!", 
-					CerberusRuntimeExceptionType.COMMAND );
+			throw new GeneViewRuntimeException("Can not execute command queue, that is already processed!", 
+					GeneViewRuntimeExceptionType.COMMAND );
 		}		
 
 		

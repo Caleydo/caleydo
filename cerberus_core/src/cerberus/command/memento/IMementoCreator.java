@@ -8,7 +8,7 @@
  */
 package cerberus.command.memento;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Interface for creator-object's of IMemento's.
@@ -45,5 +45,5 @@ public interface IMementoCreator {
 	 * @param setMemento prometheus.command.memento.Memento to reset the obejct in a previouse state
 	 */
 	public void setMemento( IMemento setMemento )
-		throws CerberusRuntimeException;
+		throws GeneViewRuntimeException;
 }

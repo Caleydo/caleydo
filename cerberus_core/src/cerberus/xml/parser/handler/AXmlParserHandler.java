@@ -9,8 +9,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -44,8 +44,8 @@ implements IXmlParserHandler
 		assert tag != null : "can not assing null as tag";
 		
 		if ( tag.length() < 2 ) {
-			throw new CerberusRuntimeException("setXmlActivationTag() tag must be at least one char!",
-					CerberusRuntimeExceptionType.SAXPARSER);
+			throw new GeneViewRuntimeException("setXmlActivationTag() tag must be at least one char!",
+					GeneViewRuntimeExceptionType.SAXPARSER);
 		}
 		
 		this.sOpeningTag = tag;

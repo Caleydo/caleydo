@@ -24,7 +24,7 @@ import cerberus.data.collection.IStorage;
 //import cerberus.data.collection.StorageType;
 //import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -69,7 +69,7 @@ implements IStorageManager {
 	public IStorage createStorage( final ManagerObjectType useStorageType ) {
 		
 		if ( useStorageType.getGroupType() != ManagerType.DATA_STORAGE ) {
-			throw new CerberusRuntimeException("try to create object with wrong type " + useStorageType.name() );
+			throw new GeneViewRuntimeException("try to create object with wrong type " + useStorageType.name() );
 		}
 
 		
@@ -81,7 +81,7 @@ implements IStorageManager {
 				return new FlatThreadStorageSimple( iNewId, refGeneralManager, null );				
 				
 			default:
-				throw new CerberusRuntimeException("StorageManagerSimple.createStorage() failed due to unhandled type [" +
+				throw new GeneViewRuntimeException("StorageManagerSimple.createStorage() failed due to unhandled type [" +
 						useStorageType.toString() + "]");
 		}
 		

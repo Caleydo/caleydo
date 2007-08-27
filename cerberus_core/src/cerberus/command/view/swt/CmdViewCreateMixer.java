@@ -7,7 +7,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.swt.mixer.MixerViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -42,7 +42,7 @@ implements ICommand {
 	 * Method creates a slider view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		IViewManager viewManager = ((IViewManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
@@ -78,7 +78,7 @@ implements ICommand {
 		iNumberOfSliders = refParameterHandler.getValueInt("iNumberOfSliders");
 	}
 	
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);
 	}

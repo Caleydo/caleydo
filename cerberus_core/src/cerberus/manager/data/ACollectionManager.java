@@ -16,7 +16,7 @@ import cerberus.manager.type.ManagerType;
 
 //import prometheus.manager.SetManager;
 //import prometheus.manager.StorageManager;
-//import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Base interface for all manger objects.

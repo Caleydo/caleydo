@@ -24,7 +24,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 //import cerberus.manager.data.genome.GenomeIdMapInt2Int;
 //import cerberus.manager.data.genome.IGenomeIdMap;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.handler.importer.ascii.LookupTableLoaderProxy;
 import cerberus.xml.parser.parameter.IParameterHandler;
@@ -247,7 +247,7 @@ implements ICommand {
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		refGeneralManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
@@ -446,7 +446,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		refCommandManager.runUndoCommand(this);
 	}
 }

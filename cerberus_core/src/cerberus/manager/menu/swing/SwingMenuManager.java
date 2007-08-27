@@ -25,7 +25,7 @@ import cerberus.manager.type.ManagerType;
 //import prometheus.command.CommandType;
 import cerberus.command.ICommand;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 //import prometheus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 
@@ -179,7 +179,7 @@ public class SwingMenuManager
 				gui_menuBar.add( newMenuObject );
 //			}
 //			else {
-//				throw new CerberusRuntimeException("DMenuBootStraper::add.. try to assign root menu a second time");
+//				throw new GeneViewRuntimeException("DMenuBootStraper::add.. try to assign root menu a second time");
 //			}	
 			
 		}
@@ -191,7 +191,7 @@ public class SwingMenuManager
 				parentMenuObject.add( newMenuObject );
 			}
 			else {
-				throw new CerberusRuntimeException("DMenuBootStraper::add.. can not find parent menu ["+
+				throw new GeneViewRuntimeException("DMenuBootStraper::add.. can not find parent menu ["+
 						sRootMenuId + "] for child menu [" +
 						sMenuId + "]" );			
 			} // end if ( parentMenuObject != null ) ... else 
@@ -202,7 +202,7 @@ public class SwingMenuManager
 					return 0;
 				}
 				catch (NullPointerException npe) {
-					throw  new CerberusRuntimeException("DMenuBootStraper::add.. can not add Seperator to non Menu item ["+
+					throw  new GeneViewRuntimeException("DMenuBootStraper::add.. can not add Seperator to non Menu item ["+
 							sRootMenuId + "]");
 				}
 			} // end if ( sMenuParentLookupName.equalsIgnoreCase( MENU_SEPERATOR ) ) {

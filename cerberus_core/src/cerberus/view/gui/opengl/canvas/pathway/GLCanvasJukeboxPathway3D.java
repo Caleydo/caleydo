@@ -32,15 +32,15 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.util.opengl.GLDragAndDrop;
-import cerberus.util.opengl.GLInfoAreaRenderer;
-import cerberus.util.opengl.GLPathwayMemoPad;
-import cerberus.util.opengl.GLTextUtils;
 import cerberus.util.slerp.SlerpAction;
 import cerberus.util.slerp.SlerpMod;
 import cerberus.util.sound.SoundPlayer;
 import cerberus.view.gui.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.gui.opengl.util.GLDragAndDrop;
+import cerberus.view.gui.opengl.util.GLInfoAreaRenderer;
+import cerberus.view.gui.opengl.util.GLPathwayMemoPad;
+import cerberus.view.gui.opengl.util.GLTextUtils;
 
 import com.sun.opengl.util.BufferUtil;
 

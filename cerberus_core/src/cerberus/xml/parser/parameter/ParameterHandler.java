@@ -12,8 +12,8 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeException;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.AParameterHandler;
 import cerberus.xml.parser.parameter.IParameterKeyValuePair;
@@ -87,7 +87,7 @@ implements IParameterHandler
 				return getValueString(key);
 			
 			default:
-				throw new CerberusRuntimeException("ParameterHandler.getValue("+ key + ") uses unregistered enumeration!");
+				throw new GeneViewRuntimeException("ParameterHandler.getValue("+ key + ") uses unregistered enumeration!");
 		}
 	}
 	
@@ -107,7 +107,7 @@ implements IParameterHandler
 		}
 		catch ( NullPointerException npe) 
 		{
-			throw new CerberusRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+			throw new GeneViewRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
 		}
 	}
 
@@ -122,7 +122,7 @@ implements IParameterHandler
 		}
 		catch ( NullPointerException npe) 
 		{
-			throw new CerberusRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+			throw new GeneViewRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
 		}
 	}
 
@@ -139,7 +139,7 @@ implements IParameterHandler
 		}
 		catch ( NullPointerException npe) 
 		{
-			throw new CerberusRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+			throw new GeneViewRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
 		}
 	}
 	
@@ -175,7 +175,7 @@ implements IParameterHandler
 			hashPrimarySwitch.get( key );
 		
 		if ( currentType== null ) {
-			throw new CerberusRuntimeException("ParameterHandler.setValue("+ key + " , * ) key was not registered as type!");			
+			throw new GeneViewRuntimeException("ParameterHandler.setValue("+ key + " , * ) key was not registered as type!");			
 		}
 		
 		try 
@@ -191,13 +191,13 @@ implements IParameterHandler
 					hashKey2String.setValue(key, value );break;
 				
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValue("+ key + ",*) uses unregistered enumeration!");
+					throw new GeneViewRuntimeException("ParameterHandler.setValue("+ key + ",*) uses unregistered enumeration!");
 			}
 			
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new CerberusRuntimeException("ParameterHandler.setValue("+ key + "," + value + 
+			new GeneViewRuntimeException("ParameterHandler.setValue("+ key + "," + value + 
 					") value was not valid due to enumeration type=" + 
 					currentType.toString() + " !");
 			
@@ -223,12 +223,12 @@ implements IParameterHandler
 					hashKey2String.setValue(key, value );break;
 				
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
+					throw new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
+			new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
 					") value was not valid due to enumeration type=" + 
 					type.toString() + " !");
 			
@@ -318,12 +318,12 @@ implements IParameterHandler
 							IGeneralManager.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 3 ) {						
-						throw new CerberusRuntimeException( 
+						throw new GeneViewRuntimeException( 
 								"Error in parameter " +
 								key +
 								"=[" + value + 
 								"] needs three float values!",
-								CerberusRuntimeExceptionType.CONVERSION );
+								GeneViewRuntimeExceptionType.CONVERSION );
 					} // if
 					
 					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 
@@ -341,12 +341,12 @@ implements IParameterHandler
 							IGeneralManager.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 4 ) {						
-						throw new CerberusRuntimeException( 
+						throw new GeneViewRuntimeException( 
 								"Error in parameter " +
 								key +
 								"=[" + value + 
 								"] needs four float values!",
-								CerberusRuntimeExceptionType.CONVERSION );
+								GeneViewRuntimeExceptionType.CONVERSION );
 					} // if
 					
 					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 
@@ -359,12 +359,12 @@ implements IParameterHandler
 					break;
 					
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
+					throw new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new CerberusRuntimeException("ParameterHandler.setValueAndTypeAndDefault("+ key + "," + defaultValue + 
+			new GeneViewRuntimeException("ParameterHandler.setValueAndTypeAndDefault("+ key + "," + defaultValue + 
 					") defaultValue was not valid due to enumeration type=" + 
 					type.toString() + " !");
 			
@@ -392,12 +392,12 @@ implements IParameterHandler
 					hashKey2String.setDefaultValue(key, value );break;
 				
 				default:
-					throw new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
+					throw new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new CerberusRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
+			new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
 					") value was not valid due to enumeration type=" + 
 					type.toString() + " !");
 			

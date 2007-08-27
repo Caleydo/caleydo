@@ -13,7 +13,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 //import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
 //import cerberus.net.dwt.swing.jogl.listener.GLEventForwardListener;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Base class for Jogl classes provinding a GL rendering contexst inside an internal frame.
@@ -105,7 +105,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see prometheus.command.ICommand#doCommand()
 	 */
-	protected void doCommand_IFrame() throws CerberusRuntimeException {
+	protected void doCommand_IFrame() throws GeneViewRuntimeException {
 		
 //		if ( bEnableCreationOfNewIFrame ) {
 //			refCmdWindowNewIFrameJoglCanvas.doCommand();

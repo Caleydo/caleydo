@@ -7,8 +7,8 @@ import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
 
@@ -66,8 +66,8 @@ implements IXmlParserHandler
 					attributes.getValue( sXML_attribute_target );
 					
 				if ( sTargetFileName == null ) {
-					throw new CerberusRuntimeException( "no XML-file specified!",
-							CerberusRuntimeExceptionType.SAXPARSER );
+					throw new GeneViewRuntimeException( "no XML-file specified!",
+							GeneViewRuntimeExceptionType.SAXPARSER );
 				}
 				
 				/**
@@ -76,13 +76,13 @@ implements IXmlParserHandler
 				refXmlParserManager.parseXmlFileByName( sTargetFileName);
 				
 			}
-			catch ( CerberusRuntimeException cre)
+			catch ( GeneViewRuntimeException cre)
 			{
-				throw new CerberusRuntimeException( "file [" +
+				throw new GeneViewRuntimeException( "file [" +
 						sTargetFileName + 
 						"] could not be loaded! Skip file... (Error=" +
 						cre.toString() + ")",
-						CerberusRuntimeExceptionType.SAXPARSER );
+						GeneViewRuntimeExceptionType.SAXPARSER );
 			}
 				
 		

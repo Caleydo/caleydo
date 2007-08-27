@@ -9,8 +9,8 @@
 package cerberus.data.collection.virtualarray.iterator;
 
 import cerberus.data.collection.IVirtualArray;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -48,8 +48,8 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 	protected AVirtualArrayIterator( IVirtualArray setSelection ) {
 		
 		if ( setSelection == null ) {
-			throw new CerberusRuntimeException("AVirtualArrayIterator.Constructor init with null-pointer to IVirtualArray.",
-					CerberusRuntimeExceptionType.VIRTUALARRAY );
+			throw new GeneViewRuntimeException("AVirtualArrayIterator.Constructor init with null-pointer to IVirtualArray.",
+					GeneViewRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
 		refSelection = setSelection;

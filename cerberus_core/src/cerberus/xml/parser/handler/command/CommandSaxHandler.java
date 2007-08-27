@@ -17,7 +17,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.manager.IMenuManager;
-//import cerberus.util.exception.CerberusRuntimeException;
+//import cerberus.util.exception.GeneViewRuntimeException;
 //import cerberus.xml.parser.ACerberusDefaultSaxHandler;
 import cerberus.xml.parser.handler.AXmlParserHandler;
 import cerberus.xml.parser.handler.IXmlParserHandler;
@@ -358,7 +358,7 @@ implements IXmlParserHandler
 		} //switch (currentType) {
 		
 
-//			throw new CerberusRuntimeException( "can not create command from [" +
+//			throw new GeneViewRuntimeException( "can not create command from [" +
 //					attrs.toString() + "]");
 	}
 	

@@ -15,7 +15,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IStorageManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -102,7 +102,7 @@ implements ICommand {
 	 * Load data from file using a token pattern.
 	 *
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		assert llKEGGPathwayIDs != null : "Probably this doCommand() was already executed once!";
 		
@@ -207,7 +207,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		refCommandManager.runUndoCommand(this);		
 	}
 }

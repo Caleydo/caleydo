@@ -12,7 +12,7 @@ import cerberus.manager.IEventPublisher.MediatorType;
 import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.manager.IEventPublisher;
@@ -50,7 +50,7 @@ implements ICommand {
 		iArReceiverIDs = new ArrayList<Integer>();
 	}
 
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 			
 		IEventPublisher refEventPublisher = (IEventPublisher) refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER);
@@ -120,7 +120,7 @@ implements ICommand {
 		this.mediatorType = mediatorType;
 	}
 	
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);		
 	}

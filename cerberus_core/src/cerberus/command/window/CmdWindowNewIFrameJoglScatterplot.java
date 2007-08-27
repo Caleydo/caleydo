@@ -29,7 +29,7 @@ import cerberus.command.window.CmdWindowNewIFrameJoglBase;
 ////import cerberus.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
 ////import cerberus.net.dwt.swing.mdi.DDesktopPane;
 ////import cerberus.net.dwt.swing.mdi.DInternalFrame;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram in JOGL.
@@ -72,7 +72,7 @@ implements ICommand {
 	 * @see cerberus.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {	
+	public void doCommand() throws GeneViewRuntimeException {	
 		
 		super.doCommand_IFrame();
 
@@ -100,7 +100,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 	}
 

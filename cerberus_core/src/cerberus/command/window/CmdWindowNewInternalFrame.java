@@ -20,7 +20,7 @@ import cerberus.command.base.ACommand;
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Creates a popup window dispaying info.
@@ -107,7 +107,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 //		WorkspaceSwingFrame refCallingFrame =
 //			this.refViewCanvasManager.getItemWorkspace( iCallingFrameId );
@@ -120,7 +120,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		
 	}
 

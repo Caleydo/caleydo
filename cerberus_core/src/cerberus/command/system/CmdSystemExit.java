@@ -14,7 +14,7 @@ import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
@@ -38,7 +38,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		System.out.println("shut down application...");
 		
 		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
@@ -55,7 +55,7 @@ implements ICommand {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		// no undo of system shutdown!
 	}
 

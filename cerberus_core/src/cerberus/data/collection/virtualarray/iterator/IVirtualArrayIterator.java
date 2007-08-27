@@ -10,7 +10,7 @@ package cerberus.data.collection.virtualarray.iterator;
 
 
 import cerberus.data.collection.iterator.ICollectionIterator;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 
 /**
@@ -50,10 +50,10 @@ extends ICollectionIterator {
 	 * Sets a new current virtual indexs.
 	 * 
 	 * @param iSetVirtualIndex new virtual index
-	 * @throws CerberusRuntimeException if iSetVirtualIndex can not be set
+	 * @throws GeneViewRuntimeException if iSetVirtualIndex can not be set
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
-			throws CerberusRuntimeException;
+			throws GeneViewRuntimeException;
 	
 	/**
 	 * Sets iterator at + 1 element and terminates the iteration.

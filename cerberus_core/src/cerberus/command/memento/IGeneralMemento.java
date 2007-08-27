@@ -5,8 +5,8 @@
 package cerberus.command.memento;
 
 //import cerberus.manager.IMementoManager;
-import cerberus.util.exception.CerberusRuntimeExceptionType;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeExceptionType;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * One base implementation of the IMemento interface.
@@ -97,11 +97,11 @@ public class IGeneralMemento
 	 */
 	public void setMementoState(final Object setMementoCreator,
 			final IMementoState setMemetoState) 
-	throws CerberusRuntimeException 
+	throws GeneViewRuntimeException 
 	{
 		if ( refMementoCreator != setMementoCreator) {
-			throw new CerberusRuntimeException("IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
-					CerberusRuntimeExceptionType.MEMENTO );
+			throw new GeneViewRuntimeException("IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
+					GeneViewRuntimeExceptionType.MEMENTO );
 		}
 		//assert  refMementoCreator == setMementoCreator: "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.";
 		

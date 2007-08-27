@@ -31,7 +31,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.data.IStorageManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 import cerberus.xml.parser.parameter.IParameterHandler;
 
@@ -381,7 +381,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CerberusRuntimeException {
+	public void doCommand() throws GeneViewRuntimeException {
 		
 		assert llRefStorage_nDim != null : "Probably this doCommand() was already executed once!";
 		
@@ -474,7 +474,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	/* (non-Javadoc)
 	 * @see cerberus.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CerberusRuntimeException {
+	public void undoCommand() throws GeneViewRuntimeException {
 		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );

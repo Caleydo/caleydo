@@ -11,7 +11,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.manager.command.factory.CommandFactory;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.xml.parser.parameter.IParameterHandler;
@@ -70,7 +70,7 @@ extends ACmdCreate_GlCanvasUser
 
 
 	@Override
-	public void doCommandPart() throws CerberusRuntimeException
+	public void doCommandPart() throws GeneViewRuntimeException
 	{
 		GLCanvasScatterPlot2D canvas = 
 			(GLCanvasScatterPlot2D) openGLCanvasUser;
@@ -81,7 +81,7 @@ extends ACmdCreate_GlCanvasUser
 	}
 
 	@Override
-	public void undoCommandPart() throws CerberusRuntimeException
+	public void undoCommandPart() throws GeneViewRuntimeException
 	{
 		
 	}

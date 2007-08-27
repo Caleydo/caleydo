@@ -7,7 +7,7 @@ import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.xml.parser.parameter.IParameterHandler;
@@ -47,7 +47,7 @@ extends ACmdCreate_GlCanvasUser
 				IParameterHandler.ParameterHandlerType.STRING);
 	}
 	
-	public void doCommandPart() throws CerberusRuntimeException
+	public void doCommandPart() throws GeneViewRuntimeException
 	{
 
 		GLCanvasTestTriangle canvas = 
@@ -58,7 +58,7 @@ extends ACmdCreate_GlCanvasUser
 	}
 
 	@Override
-	public void undoCommandPart() throws CerberusRuntimeException
+	public void undoCommandPart() throws GeneViewRuntimeException
 	{
 		
 	}

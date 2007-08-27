@@ -23,7 +23,7 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
-import cerberus.util.opengl.GLTextUtils;
+import cerberus.view.gui.opengl.util.GLTextUtils;
 
 /**
  * 

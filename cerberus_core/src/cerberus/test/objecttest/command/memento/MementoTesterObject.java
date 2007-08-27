@@ -12,7 +12,7 @@ import cerberus.command.memento.IMemento;
 //import cerberus.command.memento.MementoState;
 import cerberus.command.memento.IMementoCreator;
 
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Class for testing IMemento.
@@ -50,7 +50,7 @@ public final class MementoTesterObject {
 				refCreator.setMemento( testMementos[i] );
 			}
 		}
-		catch (CerberusRuntimeException pe) {
+		catch (GeneViewRuntimeException pe) {
 			return false;
 		}
 		catch (Exception e) {

@@ -49,7 +49,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
-import cerberus.util.exception.CerberusRuntimeException;
+import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.xml.parser.ISaxParserHandler;
 
 
@@ -161,7 +161,7 @@ implements IGeneralManagerSingleton
 
 		if (bAllManagersInizailized)
 		{
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"initAll() was called at least twice!");
 		}
 		bAllManagersInizailized = true;
@@ -399,7 +399,7 @@ implements IGeneralManagerSingleton
 			//return refDComponentManager.createSet( DGuiComponentType.valueOf(sNewTypeDetails) );
 
 		default:
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"Error in OneForAllManager.createNewId() unknown type "
 							+ createNewType.toString());
 		} // end switch
@@ -459,7 +459,7 @@ implements IGeneralManagerSingleton
 //			}
 
 		default:
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"Error in OneForAllManager.createNewId() unknown type "
 							+ type.name());
 		} // end switch ( type.getGroupType() )
@@ -503,7 +503,7 @@ implements IGeneralManagerSingleton
 			return refGenomeIdManager;
 			
 		default:
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"Error in OneForAllManager.getManagerByBaseType() unsupported type "
 							+ managerType.name());
 		} // end switch ( type.getGroupType() )
@@ -528,7 +528,7 @@ implements IGeneralManagerSingleton
 	{
 		if (bAllManagersInizailized)
 		{
-			throw new CerberusRuntimeException(
+			throw new GeneViewRuntimeException(
 					"setStateSWT() was called after initAll() was called, which has no influence!");
 		}
 		this.bEnableSWT = bEnableSWT;
