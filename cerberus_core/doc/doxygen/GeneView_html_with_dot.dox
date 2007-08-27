@@ -17,7 +17,7 @@
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded 
 # by quotes) that should identify the project.
 
-PROJECT_NAME           = "Cerberus - MicroArray Visualization Workspace"
+PROJECT_NAME           = "GeneView - MicroArray Visualization Workspace"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. 
 # This could be handy for archiving the generated documentation or 
@@ -448,7 +448,7 @@ WARN_FORMAT            =
 # and error messages should be written. If left blank the output is written 
 # to stderr.
 
-WARN_LOGFILE           = doxygen_warning_Cerberus.txt
+WARN_LOGFILE           = doxygen_warning_GeneView.txt
 
 #---------------------------------------------------------------------------
 # configuration options related to the input files
@@ -643,13 +643,13 @@ HTML_FILE_EXTENSION    = .html
 # each generated HTML page. If it is left blank doxygen will generate a 
 # standard header.
 
-HTML_HEADER            = html_doxygen/Cerberus_header.html
+HTML_HEADER            = html_doxygen/GeneView_header.html
 
 # The HTML_FOOTER tag can be used to specify a personal HTML footer for 
 # each generated HTML page. If it is left blank doxygen will generate a 
 # standard footer.
 
-HTML_FOOTER            = html_doxygen/Cerberus_footer.html
+HTML_FOOTER            = html_doxygen/GeneView_footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading 
 # style sheet that is used by each HTML page. It can be used to 
@@ -743,7 +743,7 @@ GENERATE_LATEX         = NO
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
 # put in front of it. If left blank `latex' will be used as the default path.
 
-LATEX_OUTPUT           = ./Cerberus_latex
+LATEX_OUTPUT           = ./GeneView_latex
 
 # The LATEX_CMD_NAME tag can be used to specify the LaTeX command name to be 
 # invoked. If left blank `latex' will be used as the default command name.
