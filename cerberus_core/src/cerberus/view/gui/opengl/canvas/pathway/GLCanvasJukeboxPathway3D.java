@@ -7,7 +7,6 @@ import gleem.linalg.open.Transform;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -16,9 +15,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.geneview.graph.EGraphItemHierarchy;
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
 import org.geneview.graph.algorithm.GraphVisitorGetLinkedGraphItems;
 import org.geneview.graph.algorithm.IGraphVisitorSearch;
@@ -31,7 +27,6 @@ import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.graph.core.PathwayGraph;
 import cerberus.data.graph.item.vertex.EPathwayVertexType;
-import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -41,8 +36,8 @@ import cerberus.util.opengl.GLDragAndDrop;
 import cerberus.util.opengl.GLInfoAreaRenderer;
 import cerberus.util.opengl.GLPathwayMemoPad;
 import cerberus.util.opengl.GLTextUtils;
-import cerberus.util.slerp.SlerpMod;
 import cerberus.util.slerp.SlerpAction;
+import cerberus.util.slerp.SlerpMod;
 import cerberus.util.sound.SoundPlayer;
 import cerberus.view.gui.jogl.PickingJoglMouseListener;
 import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
@@ -60,8 +55,10 @@ extends AGLCanvasUser_OriginRotation
 implements IMediatorReceiver, IMediatorSender {
 
 	public static final int MAX_LOADED_PATHWAYS = 300;
+	
+	public static final int PATHWAY_TEXTURE_PICKING_ID_RANGE_START = 320;
 
-	public static final int FREE_PICKING_ID_RANGE_START = 400;
+	public static final int FREE_PICKING_ID_RANGE_START = 600;
 
 	public static final String TICK_SOUND = "data/sounds/tick.wav";
 
@@ -711,7 +708,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 
 		// Check if a drag&drop action was performed
-		if (bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
+		if (bMouseReleased && bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
 		{
 			if (dragAndDrop.getDraggedObjectedId() != -1)
 				memoPad.addPathwayToMemoPad(dragAndDrop.getDraggedObjectedId());
@@ -787,16 +784,22 @@ implements IMediatorReceiver, IMediatorSender {
 
 		int iPickedObjectId = 0;
 
-		// System.out.println("------------------------------------------");
-
-		// for (i = 0; i < iHitCount; i++)
-		// {
-		iPtr++;
-		iPtr++;
-		iPtr++;
-		// iPtr++;
-		iPickedObjectId = iArPickingBuffer[iPtr];
-
+		// Only pick object that is nearest
+		int iMinimumZValue = Integer.MAX_VALUE;
+		for (i = 0; i < iHitCount; i++)
+		{
+			iPtr++;
+			// Check if object is nearer than previous objects
+			if (iArPickingBuffer[iPtr] < iMinimumZValue)
+			{
+				iMinimumZValue = iArPickingBuffer[iPtr];
+				iPtr++;
+				iPtr++;
+				iPickedObjectId = iArPickingBuffer[iPtr];
+			}
+			iPtr++;
+		}
+		
 		if (iPickedObjectId == 0)
 		{
 			// Remove pathway pool fisheye
@@ -839,11 +842,13 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			return;
 		} 
-		else if (iPickedObjectId == MAX_LOADED_PATHWAYS) // Picked object is
-		// just a pathway
-		// texture -> do
-		// nothing
+		else if (iPickedObjectId >= PATHWAY_TEXTURE_PICKING_ID_RANGE_START 
+				&& iPickedObjectId < FREE_PICKING_ID_RANGE_START)
 		{
+			dragAndDrop.startDragAction();
+			dragAndDrop.setDraggedObjectId(
+					refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId));
+			
 			return;
 		}
 
@@ -856,6 +861,8 @@ implements IMediatorReceiver, IMediatorSender {
 			// Remove dragged object from memo pad
 			memoPad.removePathwayFromMemoPad(
 					dragAndDrop.getDraggedObjectedId());
+			
+			dragAndDrop.stopDragAction();
 		}
 		else
 		{
@@ -912,10 +919,6 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 
 			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
-
-			// Just for testing!
-			dragAndDrop.startDragAction();
-			dragAndDrop.setDraggedObjectId(iPathwayId);
 
 			return;
 		} else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(

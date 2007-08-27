@@ -2,9 +2,7 @@ package cerberus.view.gui.opengl.canvas.pathway;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -22,10 +20,17 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLPathwayTextureManager {
 
-	protected IGeneralManager refGeneralManager;
+	private IGeneralManager refGeneralManager;
 	
-	protected HashMap<Integer, Texture> refHashPathwayIdToTexture;
+	private HashMap<Integer, Texture> hashPathwayIdToTexture;
 	
+	private HashMap<Integer, Integer> hashPathwayIdToPathwayTexturePickingId;
+	
+	private HashMap<Integer, Integer> hashPathwayIdToPathwayTexturePickingId_REVERSE;
+	
+	private int iPathwayTexturePickingId = 
+		GLCanvasJukeboxPathway3D.PATHWAY_TEXTURE_PICKING_ID_RANGE_START;
+
 	/**
 	 * Constructor.
 	 */
@@ -33,32 +38,39 @@ public class GLPathwayTextureManager {
 		
 		this.refGeneralManager = refGeneralManager;
 		
-		refHashPathwayIdToTexture = new HashMap<Integer, Texture>();
+		hashPathwayIdToTexture = new HashMap<Integer, Texture>();
+		hashPathwayIdToPathwayTexturePickingId = new HashMap<Integer, Integer>();
+		hashPathwayIdToPathwayTexturePickingId_REVERSE = new HashMap<Integer, Integer>();
+
 	}
 	
-	public Texture loadPathwayTextureById(int iPathwayID) {
+	public Texture loadPathwayTextureById(int iPathwayId) {
 		
-		if (refHashPathwayIdToTexture.containsKey(iPathwayID))
-			return refHashPathwayIdToTexture.get(iPathwayID);
+		if (hashPathwayIdToTexture.containsKey(iPathwayId))
+			return hashPathwayIdToTexture.get(iPathwayId);
+		
+		hashPathwayIdToPathwayTexturePickingId.put(iPathwayId, iPathwayTexturePickingId);
+		hashPathwayIdToPathwayTexturePickingId_REVERSE.put(iPathwayTexturePickingId, iPathwayId);
+		iPathwayTexturePickingId++;
 		
 		String sPathwayTexturePath = "";
 		Texture refPathwayTexture;
 		
-		if (iPathwayID < 10)
+		if (iPathwayId < 10)
 		{
-			sPathwayTexturePath = "hsa0000" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa0000" + Integer.toString(iPathwayId);
 		}
-		else if (iPathwayID < 100 && iPathwayID >= 10)
+		else if (iPathwayId < 100 && iPathwayId >= 10)
 		{
-			sPathwayTexturePath = "hsa000" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa000" + Integer.toString(iPathwayId);
 		}
-		else if (iPathwayID < 1000 && iPathwayID >= 100)
+		else if (iPathwayId < 1000 && iPathwayId >= 100)
 		{
-			sPathwayTexturePath = "hsa00" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa00" + Integer.toString(iPathwayId);
 		}
-		else if (iPathwayID < 10000 && iPathwayID >= 1000)
+		else if (iPathwayId < 10000 && iPathwayId >= 1000)
 		{
-			sPathwayTexturePath = "hsa0" + Integer.toString(iPathwayID);
+			sPathwayTexturePath = "hsa0" + Integer.toString(iPathwayId);
 		}
 		
 		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
@@ -72,11 +84,11 @@ public class GLPathwayTextureManager {
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR); 
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 			
-			refHashPathwayIdToTexture.put(iPathwayID, refPathwayTexture);
+			hashPathwayIdToTexture.put(iPathwayId, refPathwayTexture);
 			
 			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
-					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayID,
+					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayId,
 					LoggerType.VERBOSE );
 			
 			return refPathwayTexture;
@@ -90,11 +102,11 @@ public class GLPathwayTextureManager {
 		return null;
 	}
 	
-	public void renderPathway(final GL gl, int iPathwayID, 
+	public void renderPathway(final GL gl, int iPathwayId, 
 			float fTextureTransparency,
 			boolean bHighlight) {
 
-		Texture refTmpPathwayTexture = loadPathwayTextureById(iPathwayID);
+		Texture refTmpPathwayTexture = loadPathwayTextureById(iPathwayId);
 		
 		refTmpPathwayTexture.enable();
 		refTmpPathwayTexture.bind();
@@ -108,22 +120,8 @@ public class GLPathwayTextureManager {
 		
 		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * refTmpPathwayTexture.getImageWidth();
 		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * refTmpPathwayTexture.getImageHeight();				
-
-//		float fTextureWidth = 8;//GLPathwayManager.SCALING_FACTOR_X * refTmpPathwayTexture.getImageWidth();
-//		float fTextureHeight = 8;//GLPathwayManager.SCALING_FACTOR_Y * refTmpPathwayTexture.getImageHeight();				
-//		int viewport[] = new int[4];
-//		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-//		
-//		float fImageWidthRatio = refTmpPathwayTexture.getImageWidth() / (float)(viewport[2]-viewport[0]);
-//		float fImageHeightRatio = refTmpPathwayTexture.getImageHeight() / (float)(viewport[3]-viewport[1]);		
-//		
-//		float h = (float) (float) (viewport[3]-viewport[1]) / 
-//			(float) (viewport[2]-viewport[0]) * 4.0f;
-//		
-//		fTextureHeight = fImageHeightRatio * 2*h;
-//		fTextureWidth *= fImageWidthRatio;
 		
-		gl.glLoadName(GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS);
+		gl.glLoadName(hashPathwayIdToPathwayTexturePickingId.get(iPathwayId));
 				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
@@ -160,14 +158,14 @@ public class GLPathwayTextureManager {
 	
 	public Texture getTextureByPathwayId(final int iPathwayId) {
 		
-		return refHashPathwayIdToTexture.get(iPathwayId);
+		return hashPathwayIdToTexture.get(iPathwayId);
 	}
 	
 	public void unloadUnusedTextures(LinkedList<Integer> iLLVisiblePathways) {
 
 		int iTmpPathwayId = 0;
-		Integer[] iArPathwayId = refHashPathwayIdToTexture.keySet()
-			.toArray(new Integer[refHashPathwayIdToTexture.size()]);
+		Integer[] iArPathwayId = hashPathwayIdToTexture.keySet()
+			.toArray(new Integer[hashPathwayIdToTexture.size()]);
 		
 		for (int iPathwayIndex = 0; iPathwayIndex < iArPathwayId.length; iPathwayIndex++)
 		{
@@ -176,7 +174,7 @@ public class GLPathwayTextureManager {
 			if (!iLLVisiblePathways.contains(iTmpPathwayId))
 			{
 				// Remove and dispose texture
-				refHashPathwayIdToTexture.remove(iTmpPathwayId).dispose();
+				hashPathwayIdToTexture.remove(iTmpPathwayId).dispose();
 
 				refGeneralManager.getSingelton().logMsg(
 						this.getClass().getSimpleName() 
@@ -184,5 +182,10 @@ public class GLPathwayTextureManager {
 						LoggerType.VERBOSE);
 			}
 		}
+	}
+	
+	public int getPathwayIdByPathwayTexturePickingId(final int iPickingId) {
+		
+		return hashPathwayIdToPathwayTexturePickingId_REVERSE.get(iPickingId);
 	}
 }

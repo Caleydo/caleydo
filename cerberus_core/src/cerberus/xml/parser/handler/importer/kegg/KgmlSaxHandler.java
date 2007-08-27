@@ -9,7 +9,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItem;
-import cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
@@ -35,7 +34,9 @@ implements IXmlParserHandler {
 	
 	private IGraphItem currentVertex;
 	
-	private IGraphItem currentReactionEdgeRep;
+	private IGraphItem currentReactionSubstrateEdgeRep;
+	
+	private IGraphItem currentReactionProductEdgeRep;
 	
 	private int iCurrentEntryId;
 	
@@ -395,8 +396,12 @@ implements IXmlParserHandler {
 			}
 		}  	
 		
-		currentReactionEdgeRep = refGeneralManager.getSingelton().getPathwayItemManager().
+		currentReactionSubstrateEdgeRep = refGeneralManager.getSingelton().getPathwayItemManager().
 			createReactionEdge(currentPathway, sReactionName, sReactionType);
+
+		currentReactionProductEdgeRep = refGeneralManager.getSingelton().getPathwayItemManager().
+			createReactionEdge(currentPathway, sReactionName, sReactionType);
+    
     }
     
 	/**
@@ -425,11 +430,11 @@ implements IXmlParserHandler {
 		}  	
     	
     	IGraphItem graphItemIn = 
-    		hashKgmlReactionIdToVertexRepId.get(sReactionSubstrateName);
+    		hashKgmlNameToVertexRepId.get(sReactionSubstrateName);
     	
     	IGraphItem graphItemOut =
-    		hashKgmlNameToVertexRepId.get(
-    				((PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+    		hashKgmlReactionIdToVertexRepId.get(
+    				((PathwayReactionEdgeGraphItem)currentReactionSubstrateEdgeRep.getAllItemsByProp(
         					EGraphItemProperty.ALIAS_PARENT).toArray()[0]).getReactionId());
     	
     	if (graphItemIn == null || graphItemOut == null)
@@ -437,13 +442,17 @@ implements IXmlParserHandler {
     		return;
     	}
     	
-    	currentReactionEdgeRep.addItemDoubleLinked(graphItemIn, 
+    	currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn, 
     			EGraphItemProperty.INCOMING);
     	
-    	currentReactionEdgeRep.addItemDoubleLinked(graphItemOut,
-    			EGraphItemProperty.OUTGOING);
+    	if (!currentReactionSubstrateEdgeRep.getAllItemsByProp(
+    			EGraphItemProperty.OUTGOING).contains(graphItemOut))
+    	{
+    		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
+        			EGraphItemProperty.OUTGOING);
+    	}
   
-    	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+    	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionSubstrateEdgeRep.getAllItemsByProp(
 				EGraphItemProperty.ALIAS_PARENT).toArray()[0];
     	
     	tmpReactionEdge.addItemDoubleLinked(
@@ -451,11 +460,16 @@ implements IXmlParserHandler {
     					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
 				EGraphItemProperty.INCOMING);
     	
-    	tmpReactionEdge.addItemDoubleLinked(
+    	if (!tmpReactionEdge.getAllItemsByProp(
+    			EGraphItemProperty.OUTGOING).contains((IGraphItem)graphItemOut.getAllItemsByProp(
+    					EGraphItemProperty.ALIAS_PARENT).toArray()[0]))
+    	{
+    		tmpReactionEdge.addItemDoubleLinked(
     			(IGraphItem)graphItemOut.getAllItemsByProp(
     					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
 				EGraphItemProperty.OUTGOING);
- 	}
+    	}
+    }
 
 	/**
 	 * Reacts on the elements of the reaction product tag.
@@ -489,7 +503,7 @@ implements IXmlParserHandler {
     	// Enzyme
     	IGraphItem graphItemIn =
     		hashKgmlReactionIdToVertexRepId.get(
-    				((PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+    				((PathwayReactionEdgeGraphItem)currentReactionProductEdgeRep.getAllItemsByProp(
         					EGraphItemProperty.ALIAS_PARENT).toArray()[0]).getReactionId());
     	
     	if (graphItemIn == null || graphItemOut == null)
@@ -497,13 +511,17 @@ implements IXmlParserHandler {
     		return;
     	}
    	
-    	currentReactionEdgeRep.addItemDoubleLinked(graphItemIn, 
+    	currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn, 
     			EGraphItemProperty.INCOMING);
     	
-    	currentReactionEdgeRep.addItemDoubleLinked(graphItemOut,
+    	if (!currentReactionSubstrateEdgeRep.getAllItemsByProp(
+    			EGraphItemProperty.OUTGOING).contains(graphItemOut))
+    	{
+    		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut,
     			EGraphItemProperty.OUTGOING);
-  
-    	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionEdgeRep.getAllItemsByProp(
+    	}
+    	
+    	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionProductEdgeRep.getAllItemsByProp(
 				EGraphItemProperty.ALIAS_PARENT).toArray()[0];
     	
     	tmpReactionEdge.addItemDoubleLinked(
@@ -511,11 +529,16 @@ implements IXmlParserHandler {
     					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
 				EGraphItemProperty.INCOMING);
     	
-    	tmpReactionEdge.addItemDoubleLinked(
+    	if (!tmpReactionEdge.getAllItemsByProp(
+    			EGraphItemProperty.OUTGOING).contains((IGraphItem)graphItemOut.getAllItemsByProp(
+    					EGraphItemProperty.ALIAS_PARENT).toArray()[0]))
+    	{
+    		tmpReactionEdge.addItemDoubleLinked(
     			(IGraphItem)graphItemOut.getAllItemsByProp(
     					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
 				EGraphItemProperty.OUTGOING);
-	}
+    	}
+    }
 
 	/**
 	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()

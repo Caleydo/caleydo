@@ -394,30 +394,56 @@ public class GLPathwayManager {
 			return;
 		}
 		
-//		// Check if edge is a reaction
-//		if (edgeRep.getClass().getName().equals(
-//				cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItemRep.class.getName()))
-//		{
-//		}
-//		// Check if edge is a relation
-//		else if (edgeRep.getClass().getName().equals(
-//				cerberus.data.graph.item.edge.PathwayRelationEdgeGraphItemRep.class.getName()))
-//		{
-//		}
+		Color tmpColor;
+		float fReactionLineOffset = 0;
 		
-		PathwayVertexGraphItemRep sourceGraphItem = ((PathwayVertexGraphItemRep)listGraphItemsIn.get(0));
-		PathwayVertexGraphItemRep targetGraphItem = ((PathwayVertexGraphItemRep)listGraphItemsOut.get(0));
-		
-		gl.glColor3f(1.0f, 0.0f, 0.0f);
-		gl.glLineWidth(1.0f);
+		// Check if edge is a reaction
+		if (edgeRep.getClass().getName().equals(
+				cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItemRep.class.getName()))
+		{
+			tmpColor = refRenderStyle.getReactionEdgeColor();
+			fReactionLineOffset = 0.01f;
+		}
+		// Check if edge is a relation
+		else if (edgeRep.getClass().getName().equals(
+				cerberus.data.graph.item.edge.PathwayRelationEdgeGraphItemRep.class.getName()))
+		{
+			tmpColor = refRenderStyle.getRelationEdgeColor();
+		}
+		else
+		{
+			tmpColor = Color.BLACK;
+		}
+
+		gl.glLineWidth(2.0f);
+		gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(sourceGraphItem.getXPosition() * SCALING_FACTOR_X,
-				-sourceGraphItem.getYPosition() * SCALING_FACTOR_Y,
-				0.05f);
-		gl.glVertex3f(targetGraphItem.getXPosition() * SCALING_FACTOR_X,
-				-targetGraphItem.getYPosition() * SCALING_FACTOR_Y,
-				0.05f);
-		gl.glEnd();
+		
+		Iterator<IGraphItem> iterSourceGraphItem = 
+			listGraphItemsIn.iterator();
+		Iterator<IGraphItem> iterTargetGraphItem = 
+			listGraphItemsOut.iterator();
+		
+		PathwayVertexGraphItemRep tmpSourceGraphItem;
+		PathwayVertexGraphItemRep tmpTargetGraphItem;
+		while(iterSourceGraphItem.hasNext()) {
+			
+			tmpSourceGraphItem = (PathwayVertexGraphItemRep)iterSourceGraphItem.next();
+			
+			while (iterTargetGraphItem.hasNext())
+			{
+				tmpTargetGraphItem = (PathwayVertexGraphItemRep)iterTargetGraphItem.next();
+				
+				gl.glVertex3f(tmpSourceGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
+						-tmpSourceGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
+						0.05f);
+				gl.glVertex3f(tmpTargetGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
+						-tmpTargetGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
+						0.05f);		
+			}
+		}
+		
+		gl.glEnd();	
 	}
 	
 	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels) {

@@ -88,6 +88,9 @@ public class GLPathwayMemoPad {
 	
 	public void addPathwayToMemoPad(final int iPathwayId) {
 		
+		if (memoPad.containsElement(iPathwayId))
+			return;
+		
 		memoPad.addElement(iPathwayId);
 	}
 	
@@ -178,13 +181,13 @@ public class GLPathwayMemoPad {
 		
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(3.4f, 1.4f, 0.5f);
+		gl.glVertex3f(3.4f, 2.4f, 0.5f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(3.9f, 1.4f, 0.5f);
+		gl.glVertex3f(3.9f, 2.4f, 0.5f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(3.9f, 1.9f, 0.5f);
+		gl.glVertex3f(3.9f, 2.9f, 0.5f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(3.4f, 1.9f, 0.5f);
+		gl.glVertex3f(3.4f, 2.9f, 0.5f);
 		gl.glEnd();
 
 		trashCanTexture.disable();
