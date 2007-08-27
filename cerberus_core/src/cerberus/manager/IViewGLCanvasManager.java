@@ -7,8 +7,9 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.manager.IGeneralManager;
+//import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
+import cerberus.view.gui.jogl.JoglCanvasForwarderType;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 
@@ -54,4 +55,7 @@ extends IViewManager {
 	public boolean registerGLCanvasDirector( final IGLCanvasDirector director, final int iId );
 	
 	public boolean unregisterGLCanvasDirector( final IGLCanvasDirector director );
+	
+	public void setJoglCanvasForwarderType(JoglCanvasForwarderType type);
+	
 }

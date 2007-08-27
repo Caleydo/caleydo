@@ -12,12 +12,14 @@ import cerberus.manager.ISWTGUIManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.IViewGLCanvasManager;
+import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
 import cerberus.view.gui.AViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
 import cerberus.view.gui.jogl.JoglCanvasDirectForwarder;
 import cerberus.view.gui.jogl.JoglCanvasForwarder;
+import cerberus.view.gui.jogl.JoglCanvasForwarderType;
 import cerberus.view.gui.jogl.TriggeredAnimator;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
@@ -46,6 +48,8 @@ implements IView, IGLCanvasDirector {
 	
 	private Composite refSWTContainer;
 	
+	private final JoglCanvasForwarderType canvasForwarderType;
+	
 	//protected Vector <IGLCanvasUser> vecGLCanvasUser;
 	
 	/**
@@ -58,13 +62,16 @@ implements IView, IGLCanvasDirector {
 			int iViewId, 
 			int iParentContainerId, 
 			int iCanvasForwarderId,
-			String sLabel ) {
+			String sLabel,
+			JoglCanvasForwarderType type) {
 		
 		super(refGeneralManager, 
 				iViewId, 
 				iParentContainerId,
 				sLabel, 
 				ViewType.SWT_JOGL_VIEW );
+		
+		canvasForwarderType = type;
 						
 		refGeneralManager.getSingelton().getViewGLCanvasManager(
 				).registerGLCanvasDirector( this, iViewId );
@@ -72,17 +79,6 @@ implements IView, IGLCanvasDirector {
 		iGLCanvasId = iParentContainerId;
 		//iGLEventListernerId = iGLCanvasId + iGLEventListernerId;
 		
-	}
-	
-	/**
-	 * @see SwtJoglGLCanvasViewRep#initView()
-	 * @see cerberus.view.gui.jogl.JoglCanvasDirectForwarder
-	 * @see cerberus.view.gui.swt.jogl.gears.GearsViewRep
-	 */
-	protected void useJoglCanvasDirectForwarder() {
-		forwarder_GLEventListener = new JoglCanvasDirectForwarder(refGeneralManager,
-				this, 
-				iGLEventListernerId );
 	}
 	
 	/**
@@ -102,9 +98,30 @@ implements IView, IGLCanvasDirector {
 	public void initView() {
 			
 		if  (forwarder_GLEventListener == null) {
-			forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
-					this, 
-					iGLEventListernerId );
+			
+			switch (canvasForwarderType) {
+			case DEFAULT_FORWARDER:
+				forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
+						this, 
+						iGLEventListernerId );
+				break;
+			case GLEVENT_LISTENER_FORWARDER:
+				forwarder_GLEventListener = new JoglCanvasDirectForwarder(refGeneralManager,
+						this, 
+						iGLEventListernerId );
+				break;
+				
+			case ONLY_2D_FORWARDER:
+				forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
+						this, 
+						iGLEventListernerId );
+				break;
+				
+				default:
+					throw new CerberusRuntimeException("initView() unsupported JoglCanvasForwarderType=[" +
+							canvasForwarderType.toString() + "]");
+			}
+			
 		}
 		
 		retrieveGUIContainer();

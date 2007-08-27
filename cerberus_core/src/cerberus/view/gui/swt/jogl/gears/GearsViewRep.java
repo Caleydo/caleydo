@@ -4,6 +4,7 @@ import javax.media.opengl.GLCanvas;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.view.gui.jogl.JoglCanvasDirectForwarder;
+import cerberus.view.gui.jogl.JoglCanvasForwarderType;
 import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.view.gui.IView;
 
@@ -24,9 +25,12 @@ implements IView
 	public GearsViewRep(IGeneralManager refGeneralManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(refGeneralManager, iViewId, iParentContainerId, iParentContainerId, sLabel);
-		
-		useJoglCanvasDirectForwarder();
+		super(refGeneralManager, 
+				iViewId, 
+				iParentContainerId, 
+				iParentContainerId, 
+				sLabel,
+				JoglCanvasForwarderType.GLEVENT_LISTENER_FORWARDER);		
 	}
 	
 	public void initView()

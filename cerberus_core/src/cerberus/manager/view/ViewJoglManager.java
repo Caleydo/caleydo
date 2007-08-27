@@ -23,6 +23,7 @@ import cerberus.util.exception.CerberusRuntimeException;
 import cerberus.view.gui.IViewRep;
 import cerberus.view.gui.IView;
 import cerberus.view.gui.ViewType;
+import cerberus.view.gui.jogl.JoglCanvasForwarderType;
 import cerberus.view.gui.opengl.IGLCanvasDirector;
 import cerberus.view.gui.opengl.IGLCanvasUser;
 import cerberus.view.gui.opengl.canvas.GLCanvasTestTriangle;
@@ -103,6 +104,8 @@ implements IViewGLCanvasManager {
 		
 	//protected ArrayList<WorkspaceSwingFrame> arWorkspaceSwingFrame;
 	protected ArrayList<JFrame> arWorkspaceJFrame;
+	
+	private JoglCanvasForwarderType joglCanvasForwarderType;
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
@@ -289,7 +292,8 @@ implements IViewGLCanvasManager {
 			return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iViewId,
 					iParentContainerId,
 					iParentContainerId,
-					sLabel);
+					sLabel,
+					JoglCanvasForwarderType.DEFAULT_FORWARDER);
 
 		default:
 			throw new CerberusRuntimeException(
@@ -842,5 +846,25 @@ implements IViewGLCanvasManager {
 	public Iterator<JFrame> getWorkspaceIterator() {
 
 		return arWorkspaceJFrame.iterator();
+	}
+
+	
+	/**
+	 * @return the joglCanvasForwarderType
+	 */
+	protected final JoglCanvasForwarderType getJoglCanvasForwarderType() {
+	
+		return joglCanvasForwarderType;
+	}
+
+
+	
+	/**
+	 * @param joglCanvasForwarderType the joglCanvasForwarderType to set
+	 */
+	public final void setJoglCanvasForwarderType(
+			JoglCanvasForwarderType type) {
+	
+		this.joglCanvasForwarderType = type;
 	}
 }
