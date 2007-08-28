@@ -56,13 +56,15 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 		super.mouseReleased(mouseEvent);
 		
 		bMouseReleased = true;
+		pickedPoint = mouseEvent.getPoint();
 	}
 	
 	public void mouseDragged(MouseEvent mouseEvent) {
 	
 		super.mouseDragged(mouseEvent);
-
+		
 		bMouseDragged = true;
+		pickedPoint = mouseEvent.getPoint();
 	}
     
     public final boolean wasMousePressed() {
