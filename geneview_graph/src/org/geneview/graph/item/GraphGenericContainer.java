@@ -67,12 +67,11 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	}
 
 	/**
-	 * @see org.geneview.graph.item.GraphItem#addGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
-	 * @see org.geneview.graph.item.GraphItem#addItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * Same as {@link org.geneview.graph.item.GraphGenericContainer#addGraphComponent(IGraphComponent, Object)}
+	 * but it will be checked if the element is already added. In this case an assertion will be triggered.
 	 */
-	public void addGraphComponent(GraphComponent item, final GraphEnum key) {
-		
-		
+	public void addGraphComponentChecked(GraphComponent item, final GraphEnum key) {
+			
 		/* add to hierarchy... */
 		 ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
 		 
@@ -88,6 +87,24 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 			assert false : "Try to add existing element!";
 		 	throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString() );
 		 }		
+	}
+
+	/**
+	 * @see org.geneview.graph.item.GraphItem#addGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.graph.item.GraphItem#addItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 */
+	public void addGraphComponent(GraphComponent item, final GraphEnum key) {
+
+		/* add to hierarchy... */
+		 ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
+		 
+		 if( arrayBuffer == null ) {
+			 throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString() );
+		 }
+		 
+		 if ( ! arrayBuffer.contains(item) ) {
+			 arrayBuffer.add(item);
+		 } 		
 	}
 
 	/**
