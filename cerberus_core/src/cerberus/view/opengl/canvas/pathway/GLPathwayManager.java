@@ -8,14 +8,12 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
-import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.graph.core.PathwayGraph;
-import cerberus.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
 import cerberus.data.graph.item.vertex.EPathwayVertexShape;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
@@ -47,6 +45,8 @@ public class GLPathwayManager {
 	private PathwayRenderStyle refRenderStyle;
 
 	private boolean bEnableGeneMapping = true;
+	
+	private boolean bEnableEdgeRendering = false;
 	
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
 	
@@ -124,9 +124,12 @@ public class GLPathwayManager {
 		extractVertices(gl, refTmpPathway);
 		gl.glEndList();
 		
-		gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);	
-		extractEdges(gl, refTmpPathway);
-		gl.glEndList();
+		if (bEnableEdgeRendering)
+		{
+			gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);	
+			extractEdges(gl, refTmpPathway);
+			gl.glEndList();
+		}
 	}
 
 	private void buildEnzymeNodeDisplayList(final GL gl) {

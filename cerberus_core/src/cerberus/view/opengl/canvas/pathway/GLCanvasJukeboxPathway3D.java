@@ -148,8 +148,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayPoolLayer.setChildLayer(pathwayLayeredLayer);
 
 		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f,
-				-2.8f, 0f));
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f, -2.8f, 0f));
 		transformPathwayUnderInteraction.setScale(new Vec3f(1.8f, 1.8f, 1.8f));
 		transformPathwayUnderInteraction.setRotation(new Rotf(0, 0, 0, 0));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
@@ -577,7 +576,9 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void renderInfoArea(final GL gl) {
 
-		if (selectedVertex != null && infoAreaRenderer.isPositionValid())
+		if (selectedVertex != null
+				&& !bMouseOverMemoPad
+				&& infoAreaRenderer.isPositionValid())
 		{
 			infoAreaRenderer.renderInfoArea(gl, selectedVertex);
 		}
@@ -707,12 +708,18 @@ implements IMediatorReceiver, IMediatorSender {
 			bIsMouseOverPickingEvent = false;
 		}
 
-		// Check if a drag&drop action was performed
+		// Check if a drag&drop action was performed to add a pathway to the memo pad
 		if (bMouseReleased && bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
 		{
 			if (dragAndDrop.getDraggedObjectedId() != -1)
 				memoPad.addPathwayToMemoPad(dragAndDrop.getDraggedObjectedId());
 
+			dragAndDrop.stopDragAction();
+		}
+		// Check if a drag&drop action was performed to replace the pathway under interaction
+		else if (bMouseReleased && !bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
+		{
+			loadPathwayToUnderInteractionPosition(gl, dragAndDrop.getDraggedObjectedId());
 			dragAndDrop.stopDragAction();
 		}
 		// Cancel drag&drop action if mouse isn't released over the memo pad area.
@@ -751,11 +758,11 @@ implements IMediatorReceiver, IMediatorSender {
 		// (i.e. picking tolerance)
 
 		float h = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]) * 4.0f;
+				/ (float) (viewport[2] - viewport[0]);
 
 		// FIXME: values have to be taken from XML file!!
-		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
-
+		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
 		// Store picked point
@@ -815,6 +822,8 @@ implements IMediatorReceiver, IMediatorSender {
 		if (!arSlerpActions.isEmpty())
 			return;
 
+		bMouseOverMemoPad = false;
+		
 		System.out.println("Pick ID: " + iPickedObjectId);
 
 		// Check if picked object a non-pathway object (like pathway pool lines,
@@ -845,9 +854,17 @@ implements IMediatorReceiver, IMediatorSender {
 		else if (iPickedObjectId >= PATHWAY_TEXTURE_PICKING_ID_RANGE_START 
 				&& iPickedObjectId < FREE_PICKING_ID_RANGE_START)
 		{
-			dragAndDrop.startDragAction();
-			dragAndDrop.setDraggedObjectId(
-					refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId));
+			if (dragAndDrop.isDragActionRunning())
+			{
+				iMouseOverPickedPathwayId = 
+					refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId);
+			}
+			else
+			{
+				dragAndDrop.startDragAction();
+				dragAndDrop.setDraggedObjectId(
+						refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId));
+			}
 			
 			return;
 		}
@@ -863,10 +880,6 @@ implements IMediatorReceiver, IMediatorSender {
 					dragAndDrop.getDraggedObjectedId());
 			
 			dragAndDrop.stopDragAction();
-		}
-		else
-		{
-			bMouseOverMemoPad = false;
 		}
 
 		PathwayVertexGraphItemRep pickedVertexRep

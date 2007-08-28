@@ -127,6 +127,9 @@ public class GLInfoAreaRenderer {
 		// FIXME: Workflow is not optimal
 		// Do composition of info label string only once and store them (heading + text)
 		float fMaxWidth = calculateInfoAreaWidth(pickedVertexRep);
+		
+		if (fMaxWidth < 1.0f)
+			fMaxWidth = 1.0f;
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
