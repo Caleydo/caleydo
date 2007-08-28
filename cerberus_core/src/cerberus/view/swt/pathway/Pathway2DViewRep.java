@@ -49,6 +49,11 @@ implements IView, IMediatorSender, IMediatorReceiver {
 			new PathwayGraphViewRep(refGeneralManager, iViewId);
 	}
 
+	/**
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
 
 		retrieveGUIContainer();

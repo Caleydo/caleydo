@@ -77,6 +77,11 @@ implements IView, IMediatorReceiver {
 		refDataTableViewRep = new DataTableViewRep(refGeneralManager, iViewId);
 	}
 
+	/**
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
 
 		retrieveGUIContainer();

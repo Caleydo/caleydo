@@ -37,6 +37,11 @@ implements IView {
 				ViewType.SWT_IMAGE_VIEWER);	
 	}
 
+	/**
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
 		
 		retrieveGUIContainer();

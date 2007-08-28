@@ -1,8 +1,7 @@
-  package cerberus.view.swt.jogl;
+package cerberus.view.swt.jogl;
 
 import java.util.Collection;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GLCanvas;
 
 import org.eclipse.swt.widgets.Composite;
@@ -81,19 +80,54 @@ implements IGLCanvasDirector {
 		
 	}
 	
-	/**
-	 * Attention, side effect! Call this before calling initView() !
-	 * 
-	 * @param iOpenGLCanvasId
+	/* ------------------------------------------------------------------ */
+	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
+	
+	/* (non-Javadoc)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
 	 */
-	public void setOpenGLCanvasId( int iOpenGLCanvasId ) {
-		this.iGLCanvasId = iOpenGLCanvasId;		
+	public final void addGLCanvasUser( IGLCanvasUser user ) {
+		forwarder_GLEventListener.addGLCanvasUser(user);
 	}
 	
+	/* (non-Javadoc)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 */
+	public final void removeGLCanvasUser( IGLCanvasUser user ) {
+		forwarder_GLEventListener.removeGLCanvasUser(user);
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
+	 */
+	public final void removeAllGLCanvasUsers() {
+		
+		forwarder_GLEventListener.removeAllGLCanvasUsers();
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
+	 */
+	public final Collection<IGLCanvasUser> getAllGLCanvasUsers() {
+		
+		return forwarder_GLEventListener.getAllGLCanvasUsers();
+	}	
+	
+	public final JoglCanvasForwarder getJoglCanvasForwarder() {
+
+		return forwarder_GLEventListener;
+	}
+	
+	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
+	/* ------------------------------------------------------------------ */
+	
+
+	
 	/**
-	 * Attension: call setOpenGLCanvasId(int) before calling this method!
+	 * Attention: call setOpenGLCanvasId(int) before calling this method!
 	 * 
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#initView()
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
 	 */
 	public void initView() {
 			
@@ -124,7 +158,9 @@ implements IGLCanvasDirector {
 			
 		}
 		
-		retrieveGUIContainer();
+
+		/* instead of calling AViewRep#retrieveGUIContainer() we request a JOGL widget.. */
+		initGLContainer();
 		
 		assert forwarder_GLEventListener == null : "initView() called more than once! forwarder_GLEventListener!=null !";
 				
@@ -175,84 +211,7 @@ implements IGLCanvasDirector {
 //				LoggerType.TRANSITION );
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
-	 */
-	public void addGLCanvasUser( IGLCanvasUser user ) {
-		forwarder_GLEventListener.addGLCanvasUser(user);
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
-	 */
-	public void removeGLCanvasUser( IGLCanvasUser user ) {
-		forwarder_GLEventListener.removeGLCanvasUser(user);
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
-	 */
-	public void removeAllGLCanvasUsers() {
-		
-		forwarder_GLEventListener.removeAllGLCanvasUsers();
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
-	 */
-	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
-		
-		return forwarder_GLEventListener.getAllGLCanvasUsers();
-	}	
-	
 
-//	public GLAutoDrawable getGLDrawable() {
-//		return this.refGLCanvas;
-//	}
-
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#initGLCanvasUser()
-	 */
-	public synchronized void initGLCanvasUser(GL gl) {
-		
-		forwarder_GLEventListener.initGLCanvasUser(gl);
-	}
-	
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void renderGLCanvasUser( GL gl) {
-		
-		forwarder_GLEventListener.renderGLCanvasUser(gl);
-	}
-	
-	public void reshapeGLCanvasUser(GL gl, 
-			final int x, final int y, 
-			final int width, final int height) {
-
-		forwarder_GLEventListener.reshapeGLCanvasUser( gl, x, y, width, height );
-	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void updateGLCanvasUser(GL gl) {
-		
-		forwarder_GLEventListener.updateGLCanvasUser( gl );
-	}
-	
-	public void displayGLChanged(GL gl, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		forwarder_GLEventListener.displayGLChanged(gl, modeChanged, deviceChanged);
-		
-	}
-	
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.view.opengl.IGLCanvasDirector#destroyDirector()
@@ -285,6 +244,15 @@ implements IGLCanvasDirector {
 				LoggerType.STATUS );
 	}
 
+	/**
+	 * Attention, side effect! Call this before calling initView() !
+	 * 
+	 * @param iOpenGLCanvasId
+	 */
+	public void setOpenGLCanvasId( int iOpenGLCanvasId ) {
+		this.iGLCanvasId = iOpenGLCanvasId;		
+	}
+	
 	public void setAttributes(int iWidth, int iHeight, int iGLCanvasId, int iGLEventListenerId) {
 		
 		super.setAttributes(iWidth, iHeight);
@@ -300,14 +268,24 @@ implements IGLCanvasDirector {
 		}
 	}
 
-	public final JoglCanvasForwarder getJoglCanvasForwarder() {
 
-		return forwarder_GLEventListener;
-	}
 	
 	/* ----- AViewRep stuff .. ----- */
 	
-	protected void retrieveGUIContainer() {
+	
+	/**
+	 * Creates a GLCanvas
+	 * 
+	 * @see javax.media.opengl.GLCanvas
+	 * @see javax.media.opengl.GLEventListener#init(GLAutoDrawable drawable)
+	 * 
+	 * @see com.sun.opengl.util.Animator
+	 * @see com.sun.opengl.util.Animator#start()
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.jogl.TriggeredAnimator#startEventCount()
+	 */
+	protected void initGLContainer() {
 		
 		ISWTGUIManager refISWTGUIManager = refGeneralManager.getSingelton().getSWTGUIManager();
 		
@@ -324,6 +302,9 @@ implements IGLCanvasDirector {
 		
 		assert refGLCanvas != null : "GLCanvas was not be created";
 		
+		/**
+		 * Register GLCanvas; javax.media.opengl.GLEventListener#init(GLAutoDrawable drawable) 
+		 */
 		refGLCanvas.addGLEventListener( forwarder_GLEventListener );
 		
 		//
@@ -352,10 +333,22 @@ implements IGLCanvasDirector {
 					,LoggerType.VERBOSE );
 	}
 	
+	/**
+	 * @see com.sun.opengl.util.Animator
+	 * @see com.sun.opengl.util.Animator#stop()
+	 * @see cerberus.view.jogl.TriggeredAnimator#stopEventCount()
+	 */
 	protected void destroyOnExitViewRep() {
 		
-		//abEnableRendering.set( false );
-		
-		refAnimator.stop();
+		refAnimator.stopEventCount();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.opengl.IGLCanvasDirector#containsGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 */
+	public final boolean containsGLCanvasUser(IGLCanvasUser user) {
+
+		return forwarder_GLEventListener.containsGLCanvasUser(user);		
 	}
 }

@@ -153,7 +153,7 @@ implements IViewRep {
 		//Implemented in subclasses
 		assert false : "This method must be overloaded in sub-class";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see cerberus.view.IView#getLabel()

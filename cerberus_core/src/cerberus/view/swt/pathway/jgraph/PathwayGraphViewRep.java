@@ -171,6 +171,8 @@ extends APathwayGraphViewRep {
 	 * Method uses the parent container ID to retrieve the GUI widget by calling
 	 * the createWidget method from the SWT GUI Manager.
 	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
 	 */
 	protected void retrieveGUIContainer() {
 

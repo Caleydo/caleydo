@@ -71,6 +71,11 @@ implements IView {
 		hashComboText2View = new HashMap<String, IView>();
 	}
 
+	/**
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
 
 		retrieveGUIContainer();

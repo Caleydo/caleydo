@@ -4,20 +4,17 @@ package cerberus.view.jogl;
 //import java.awt.event.WindowAdapter;
 //import java.awt.event.WindowEvent;
 
-//import gleem.linalg.Rotf;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import gleem.linalg.Vec3f;
-
 import javax.media.opengl.GL;
-//import javax.media.opengl.GLCanvas;
-//import javax.media.opengl.GLJPanel;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
+
+import gleem.linalg.Vec3f;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -25,7 +22,6 @@ import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.MathUtil;
 import cerberus.util.exception.GeneViewRuntimeException;
 //import cerberus.view.jogl.PickingJoglMouseListenerDebug;
-import cerberus.view.jogl.IJoglMouseListener;
 import cerberus.view.jogl.mouse.AViewCameraListenerObject;
 import cerberus.view.jogl.mouse.JoglMouseListener;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
@@ -36,11 +32,15 @@ import cerberus.view.opengl.IGLCanvasUser;
 /**
  *JoglCanvasForwarder handles several objects and forwards the OpenGL events to them.
  * 
+ * @see cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep
+ * @see cerberus.view.jogl.IJoglMouseListener
+ * @see cerberus.view.opengl.IGLCanvasDirector
+ * 
  * @author Michael Kalkusch
  */
 public class JoglCanvasForwarder 
 extends AViewCameraListenerObject
-implements GLEventListener, IJoglMouseListener {
+implements GLEventListener {
 
 	private final IGLCanvasDirector refGLCanvasDirector;
 
@@ -341,10 +341,20 @@ implements GLEventListener, IJoglMouseListener {
 		return ManagerObjectType.VIEW_CANVAS_FORWARDER;
 	}
 
+	/**
+	 * Test if a user is registered.
+	 * 
+	 * @param user GLCanvas user to be tested
+	 * @return TRUE if user is registered
+	 */
+	public boolean containsGLCanvasUser( final IGLCanvasUser user ) {
+		return this.vecGLCanvasUser.contains(user);
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
 	 */
-	public void addGLCanvasUser( IGLCanvasUser user ) {
+	public void addGLCanvasUser( final IGLCanvasUser user ) {
 
 		if ( vecGLCanvasUser.contains( user ) ) {
 			throw new GeneViewRuntimeException("addGLCanvasUser() try to same user twice!");

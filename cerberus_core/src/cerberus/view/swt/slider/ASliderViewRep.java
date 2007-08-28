@@ -38,6 +38,11 @@ implements IMediatorSender, IMediatorReceiver {
 				ViewType.SWT_SLIDER);
 	}
 	
+	/**
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
 		
 		retrieveGUIContainer();

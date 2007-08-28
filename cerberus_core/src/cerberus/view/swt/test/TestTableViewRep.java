@@ -31,6 +31,11 @@ implements IView {
 		drawView();
 	}
 	
+	/**
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
 		
 		retrieveGUIContainer();

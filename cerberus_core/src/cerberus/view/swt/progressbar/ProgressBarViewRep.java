@@ -105,6 +105,11 @@ implements IView {
 		return iProgressBarStyle;
 	}
 
+	/**
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
 		
 		retrieveGUIContainer();

@@ -47,8 +47,14 @@ implements IView {
 				ViewType.SWT_HTML_BROWSER);	
 	}
 
+	
+	/**
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
+	 */
 	public void initView() {
-		
+	
+		/* retrieveGUIContainer*/
 		retrieveGUIContainer();
 		
 		refBrowser = new HookedBrowser (refSWTContainer, SWT.NONE);

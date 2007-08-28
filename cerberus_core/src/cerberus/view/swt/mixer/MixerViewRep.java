@@ -45,6 +45,9 @@ implements IView {
 	 * Minimum slider value = 0.
 	 * Maximum slider value = 100.
 	 * We use a fill layout to fill the available space optimally.
+	 * 
+	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * @see cerberus.view.IView#initView()
 	 */
 	public void initView() {
 		
