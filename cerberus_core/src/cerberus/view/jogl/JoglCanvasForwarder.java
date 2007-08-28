@@ -1,8 +1,6 @@
 package cerberus.view.jogl;
 
-//import java.awt.Frame;
-//import java.awt.event.WindowAdapter;
-//import java.awt.event.WindowEvent;
+import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,19 +12,17 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import gleem.linalg.Vec3f;
+import org.geneview.graph.EGraphItemProperty;
+import org.geneview.graph.IGraphItem;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
-//import cerberus.math.MathUtil;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
-//import cerberus.view.jogl.PickingJoglMouseListenerDebug;
 import cerberus.view.jogl.mouse.AViewCameraListenerObject;
 import cerberus.view.jogl.mouse.JoglMouseListener;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.opengl.IGLCanvasDirector;
-//import cerberus.data.view.camera.IViewCamera;
 import cerberus.view.opengl.IGLCanvasUser;
 
 /**
@@ -37,12 +33,11 @@ import cerberus.view.opengl.IGLCanvasUser;
  * @see cerberus.view.opengl.IGLCanvasDirector
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public class JoglCanvasForwarder 
 extends AViewCameraListenerObject
 implements GLEventListener {
-
-	private final IGLCanvasDirector refGLCanvasDirector;
 
 	private boolean bCallInitOpenGL = true;
 	
@@ -64,44 +59,11 @@ implements GLEventListener {
 //		refMouseHandler = new JoglMouseListenerDebug(this);
 //		refMouseHandler = new PickingJoglMouseListenerDebug(this);
 		refMouseHandler = new PickingJoglMouseListener(this);
-
-		this.refGLCanvasDirector = refGLCanvasDirector;
 		
 		vecGLCanvasUser = new Vector <IGLCanvasUser> ();	
 		
 		abEnableRendering = new AtomicBoolean( true );
 	}
-
-	protected void drawXYZ( GL gl ) {
-		float fMax = 200;
-		
-		gl.glBegin(GL.GL_LINES);
-			gl.glColor3f(1, 0, 0);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(fMax, 0, 0);
-			
-			gl.glColor3f(0, 1, 0);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, fMax, 0);
-			
-			gl.glColor3f(0, 0, 1);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, 0, fMax);
-		gl.glEnd();
-	}
-
-	protected void renderTestTriangle(GL gl) {
-		
-		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
-		gl.glColor3f(1.0f, 0.0f, 0.0f); // Set the color to red
-		gl.glVertex3f(0.0f, 1.0f, 0.0f); // Top
-		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set the color to green
-		gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
-		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to blue
-		gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-		gl.glEnd(); // Finish drawing the triangle
-	}
-	
 
 	public final JoglMouseListener getJoglMouseListener() {
 		return this.refMouseHandler;
@@ -178,9 +140,7 @@ implements GLEventListener {
 
 		GL gl = drawable.getGL();
 
-		float h = (float) height / (float) width * 4.0f;
-		
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		float h = (float) height / (float) width;
 		
 		refGeneralManager.getSingelton().logMsg(
 				"JoglCanvasForwarder  RESHAPE GL" +
@@ -189,59 +149,15 @@ implements GLEventListener {
 				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
 				LoggerType.STATUS);
 		
+		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
-		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
-		//FIXME: It must be considered in the new 
-		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
+		//FIXME Perspective/ortho projection should be chosen in XML file
+		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		
-////		/* Begin Default Setup */
-//		gl.glMatrixMode(GL.GL_PROJECTION);
-//		gl.glLoadIdentity();
-//		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-////		gl.glMatrixMode(GL.GL_MODELVIEW);
-////		gl.glLoadIdentity();
-////		
-////		
-////		gl.glMatrixMode(GL.GL_PROJECTION);
-////		gl.glLoadIdentity();
-//////		gl.glFrustum(-1.0, 1.0, -1.0, 1.0, 1, 10000);
-////		/* END Default Setup */
-//		
-//		/* Manuelas Setup ... */
-////		gl.glMatrixMode(GL.GL_PROJECTION);
-////		gl.glLoadIdentity();
-////		gl.glOrtho(-0.5, 0.5, -0.5, 0.5, 0.01, 1000.0); 			
-//		
-//		gl.glMatrixMode(GL.GL_MODELVIEW);
-//		gl.glLoadIdentity();
-//		
-//		float [] homography_matrix = {
-//				0.767400f,
-//				0.017298f,
-//				0.000000f,
-//				0.130714f,
-//				0.017507f,
-//				0.641607f,
-//				0.000000f,
-//				0.107709f,
-//				0.000000f,
-//				0.000000f,
-//				1.000000f,
-//				0.000000f,
-//				0.072922f,
-//				0.039414f,
-//				0.000000f,
-//				1.119212f }; 
-//	
-//		gl.glLoadMatrixf(homography_matrix, 0);
-//		
-//		/* ENDE: Manuelas Setup ... */
-		
-		gl.glTranslatef(0.0f, 0.0f, -40.0f);
 		
 		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();		
 		while ( iter.hasNext() ) {		
@@ -253,7 +169,6 @@ implements GLEventListener {
 		} //end while ( iter.hasNext() )
 		
 	}
-
 	
 	/*
 	 * (non-Javadoc)
@@ -262,17 +177,6 @@ implements GLEventListener {
 	public void display(GLAutoDrawable drawable) {
 
 		GL gl = drawable.getGL();
-		
-//		if ((drawable instanceof GLJPanel)
-//				&& !((GLJPanel) drawable).isOpaque()
-//				&& ((GLJPanel) drawable)
-//						.shouldPreserveColorBufferIfTranslucent())
-//		{
-//			gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-//		} else
-//		{
-//			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-//		}
 
 		/* Clear The Screen And The Depth Buffer */
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -304,14 +208,11 @@ implements GLEventListener {
 		
 		/** visual debugging ...*/
 //		drawXYZ(gl);
-//		
 //		renderTestTriangle(gl);
 		
 		gl.glTranslatef(0,
 				0,
 				distanceZ );
-		
-//		renderTestTriangle(gl);
 		
 		/** end: visual debugging ...*/
 
@@ -413,131 +314,35 @@ implements GLEventListener {
 	
 	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
 		return new ArrayList <IGLCanvasUser> (this.vecGLCanvasUser);
-	}
+	}	
 	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#initGLCanvasUser()
-	 */
-	public synchronized void initGLCanvasUser(GL gl) {
+	protected void drawXYZ( GL gl ) {
+		float fMax = 200;
 		
-		refGeneralManager.getSingelton().logMsg(
-				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
-				this.getClass().toString(),
-				LoggerType.STATUS);
-					
-		if ( vecGLCanvasUser.isEmpty() ) 
-		{
-			refGeneralManager.getSingelton().logMsg(
-					"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
-					this.getClass().toString() + "  no GLCanvasUSer yet!",
-					LoggerType.MINOR_ERROR);
-			return;
-		}
-		
-		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-		
-		refGeneralManager.getSingelton().logMsg(
-				"SwtJoglCanvasViewRep.initGLCanvasUser() [" + iUniqueId + "] " + 
-				this.getClass().toString() + "  init GLCanvasUSer ..",
-				LoggerType.STATUS);
-		
-		while ( iter.hasNext() ) {
-
-			IGLCanvasUser glCanvas = iter.next();
-			if  ( ! glCanvas.isInitGLDone() )
-			{
-				glCanvas.initGLCanvas( gl );
-			}
+		gl.glBegin(GL.GL_LINES);
+			gl.glColor3f(1, 0, 0);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(fMax, 0, 0);
 			
-		} // while ( iter.hasNext() ) {
-		
-		return;
-	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void renderGLCanvasUser( GL gl) {
-		
-		if ( abEnableRendering.get() ) 
-		{
-			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
+			gl.glColor3f(0, 1, 0);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, fMax, 0);
 			
-			while ( iter.hasNext() ) {
-				
-//				//old code: test if canvas was initialized
-//				IGLCanvasUser glCanvas = iter.next();
-//				if ( glCanvas.isInitGLDone() )
-//				{
-//					glCanvas.render( drawable );
-//				}
-				
-				iter.next().render( gl );
-			}
-		}
-	}
-	
-	public void reshapeGLCanvasUser(GL gl, 
-			final int x, final int y, 
-			final int width, final int height) {
-
-		if ( abEnableRendering.get() ) 
-		{
-			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-			
-			while ( iter.hasNext() ) {
-				IGLCanvasUser glCanvas = iter.next();
-				if ( glCanvas.isInitGLDone() )
-				{
-					glCanvas.reshape( gl, x, y, width, height );
-				}
-			}
-		}
-	}
-	
-	/*
-	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
-	 */
-	public void updateGLCanvasUser(GL gl) {
-		
-		if ( abEnableRendering.get() ) 
-		{
-			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-			
-			while ( iter.hasNext() ) {
-				iter.next().update( gl );
-			}
-		}
-	}
-	
-	
-	public void displayGLChanged(GL gl, 
-			final boolean modeChanged, 
-			final boolean deviceChanged) {
-
-		if ( abEnableRendering.get() ) 
-		{
-			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();
-			
-			while ( iter.hasNext() ) {
-				iter.next().displayChanged(gl, modeChanged, deviceChanged);
-			}
-		}
-		
+			gl.glColor3f(0, 0, 1);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, 0, fMax);
+		gl.glEnd();
 	}
 
-	
-	/**
-	 * @return the refGLCanvasDirector
-	 */
-	public final IGLCanvasDirector getRefGLCanvasDirector() {
-	
-		assert false : "probably it is not necessary to expose this object!";
-	
-		return refGLCanvasDirector;
+	protected void renderTestTriangle(GL gl) {
+		
+		gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles
+		gl.glColor3f(1.0f, 0.0f, 0.0f); // Set the color to red
+		gl.glVertex3f(0.0f, 1.0f, 0.0f); // Top
+		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set the color to green
+		gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to blue
+		gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+		gl.glEnd(); // Finish drawing the triangle
 	}
-	
 }

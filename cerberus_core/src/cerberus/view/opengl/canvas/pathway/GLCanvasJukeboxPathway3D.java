@@ -35,7 +35,6 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.slerp.SlerpAction;
 import cerberus.util.slerp.SlerpMod;
 import cerberus.util.sound.SoundPlayer;
-import cerberus.view.jogl.mouse.DragAndDropMouseListener;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 import cerberus.view.opengl.util.GLDragAndDrop;
@@ -79,8 +78,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private GLPathwayTextureManager refGLPathwayTextureManager;
 
-	private DragAndDropMouseListener pickingTriggerMouseAdapter;
-	//private PickingJoglMouseListener pickingTriggerMouseAdapter;
+	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
@@ -115,7 +113,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private GLPathwayMemoPad memoPad;
 
-	//private GLDragAndDrop dragAndDrop;
+	private GLDragAndDrop dragAndDrop;
 
 	/**
 	 * Constructor
@@ -156,18 +154,16 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 
-		pickingTriggerMouseAdapter = (DragAndDropMouseListener) openGLCanvasDirector
-			.getJoglCanvasForwarder().getJoglMouseListener();
-		
-//		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-//				.getJoglCanvasForwarder().getJoglMouseListener();
+		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
+				.getJoglCanvasForwarder().getJoglMouseListener();
 
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				refGLPathwayManager);
 
 		memoPad = new GLPathwayMemoPad(refGLPathwayManager,
 				refGLPathwayTextureManager);
-		
+
+		dragAndDrop = new GLDragAndDrop();
 	}
 
 	/*
@@ -681,9 +677,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private void handlePicking(final GL gl) {
 
 		Point pickPoint = null;
-		
-		GLDragAndDrop dragAndDrop = 
-			 pickingTriggerMouseAdapter.getDragAndDrop();
 
 		boolean bMouseReleased =
 			pickingTriggerMouseAdapter.wasMouseReleased();
@@ -790,9 +783,6 @@ implements IMediatorReceiver, IMediatorSender {
 
 	protected void processHits(final GL gl, int iHitCount,
 			int iArPickingBuffer[], final Point pickPoint) {
-
-		GLDragAndDrop dragAndDrop = 
-			 pickingTriggerMouseAdapter.getDragAndDrop();
 
 		// System.out.println("Number of hits: " +iHitCount);
 

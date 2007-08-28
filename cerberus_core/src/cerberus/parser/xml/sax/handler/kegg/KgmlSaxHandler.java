@@ -14,16 +14,11 @@ import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.parser.xml.sax.handler.AXmlParserHandler;
+import cerberus.parser.xml.sax.handler.IXmlParserHandler;
 
-/**
- * 
- * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
- * 
- * @author Michael Kalkusch
- *
- */
 public class KgmlSaxHandler 
-extends AXmlParserHandler {
+extends AXmlParserHandler 
+implements IXmlParserHandler {
 	
 	private Attributes attributes;
 	
@@ -447,40 +442,31 @@ extends AXmlParserHandler {
     		return;
     	}
     	
-    	currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn, 
-    			EGraphItemProperty.INCOMING);
-    	
-    	if (!currentReactionSubstrateEdgeRep.getAllItemsByProp(
-    			EGraphItemProperty.OUTGOING).contains(graphItemOut))
-    	{
-    		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
-        			EGraphItemProperty.OUTGOING);
-    	}
-  
-    	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionSubstrateEdgeRep.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).toArray()[0];
-    	
-    	tmpReactionEdge.addItemDoubleLinked(
-    			(IGraphItem)graphItemIn.getAllItemsByProp(
-    					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+   		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn,
 				EGraphItemProperty.INCOMING);
-    	
-    	if (!tmpReactionEdge.getAllItemsByProp(
-    			EGraphItemProperty.OUTGOING).contains((IGraphItem)graphItemOut.getAllItemsByProp(
-    					EGraphItemProperty.ALIAS_PARENT).toArray()[0]))
-    	{
-    		tmpReactionEdge.addItemDoubleLinked(
-    			(IGraphItem)graphItemOut.getAllItemsByProp(
-    					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+
+		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
 				EGraphItemProperty.OUTGOING);
-    	}
+
+		IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray()[0];
+
+		tmpReactionEdge.addItemDoubleLinked(
+				(IGraphItem) graphItemIn.getAllItemsByProp(
+						EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+				EGraphItemProperty.INCOMING);
+
+		tmpReactionEdge.addItemDoubleLinked(
+				(IGraphItem) graphItemOut.getAllItemsByProp(
+						EGraphItemProperty.ALIAS_PARENT).toArray()[0],
+				EGraphItemProperty.OUTGOING);
     }
 
 	/**
 	 * Reacts on the elements of the reaction product tag.
 	 * 
-	 * An example reaction product tag looks like this:
-	 * <product name="cpd:C02291"/>
+	 * An example reaction product tag looks like this: <product
+	 * name="cpd:C02291"/>
 	 */
 	protected void handleReactionProductTag() {
 		
@@ -518,36 +504,27 @@ extends AXmlParserHandler {
    	
     	currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn, 
     			EGraphItemProperty.INCOMING);
-    	
-    	if (!currentReactionSubstrateEdgeRep.getAllItemsByProp(
-    			EGraphItemProperty.OUTGOING).contains(graphItemOut))
-    	{
-    		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut,
+ 
+    	currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut,
     			EGraphItemProperty.OUTGOING);
-    	}
     	
     	IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)currentReactionProductEdgeRep.getAllItemsByProp(
 				EGraphItemProperty.ALIAS_PARENT).toArray()[0];
-    	
+
     	tmpReactionEdge.addItemDoubleLinked(
     			(IGraphItem)graphItemIn.getAllItemsByProp(
     					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
 				EGraphItemProperty.INCOMING);
-    	
-    	if (!tmpReactionEdge.getAllItemsByProp(
-    			EGraphItemProperty.OUTGOING).contains((IGraphItem)graphItemOut.getAllItemsByProp(
-    					EGraphItemProperty.ALIAS_PARENT).toArray()[0]))
-    	{
-    		tmpReactionEdge.addItemDoubleLinked(
+
+    	tmpReactionEdge.addItemDoubleLinked(
     			(IGraphItem)graphItemOut.getAllItemsByProp(
     					EGraphItemProperty.ALIAS_PARENT).toArray()[0],
 				EGraphItemProperty.OUTGOING);
-    	}
     }
 
 	/**
-	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
-	 * @see cerberus.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
+	 * @see cerberus.parser.handler.IXmlParserHandler#destroyHandler()
+	 * @see cerberus.parser.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {
