@@ -7,10 +7,10 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.swt.data.exchanger.NewSetEditorViewRep;
 //import cerberus.view.swt.data.exchanger.SetEditorViewRep;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for 

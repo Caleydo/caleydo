@@ -12,8 +12,8 @@ import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.math.MathUtil;
-import cerberus.xml.parser.parameter.IParameterHandler;
-import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
+import cerberus.parser.parameter.IParameterHandler;
+import cerberus.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 
 

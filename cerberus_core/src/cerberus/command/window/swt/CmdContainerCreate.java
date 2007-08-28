@@ -5,8 +5,8 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Command class triggers the creation of

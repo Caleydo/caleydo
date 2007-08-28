@@ -14,7 +14,7 @@ import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.xml.parser.parameter.IParameterHandler;
+import cerberus.parser.parameter.IParameterHandler;
 
 /**
  * @author Michael Kalkusch
@@ -82,7 +82,7 @@ implements ICommand {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.command.ICommand#setParameterHandler(cerberus.xml.parser.parameter.IParameterHandler)
+	 * @see cerberus.command.ICommand#setParameterHandler(cerberus.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( IParameterHandler phHandler) {
 		

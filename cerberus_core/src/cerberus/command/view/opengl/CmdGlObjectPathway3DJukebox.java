@@ -11,10 +11,10 @@ import cerberus.command.ICommand;
 import cerberus.command.view.opengl.ACmdGLObjectPathway3D;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * @author Michael Kalkusch

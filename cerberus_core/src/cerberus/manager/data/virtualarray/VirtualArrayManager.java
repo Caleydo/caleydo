@@ -17,7 +17,7 @@ import cerberus.manager.data.ACollectionManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-//import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
+//import cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 
 import cerberus.data.collection.IVirtualArray;
 //import cerberus.data.collection.set.SetPlanarSimple;

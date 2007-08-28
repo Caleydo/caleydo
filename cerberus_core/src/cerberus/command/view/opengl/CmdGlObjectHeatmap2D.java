@@ -12,10 +12,10 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * @author Michael Kalkusch

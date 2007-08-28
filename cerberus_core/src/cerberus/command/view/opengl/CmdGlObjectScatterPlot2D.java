@@ -9,12 +9,12 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.parser.parameter.IParameterHandler;
 //import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.manager.command.factory.CommandFactory;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * @author Michael Kalkusch

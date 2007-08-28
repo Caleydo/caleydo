@@ -15,21 +15,20 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.parser.handler.IXmlParserHandler;
+import cerberus.parser.handler.command.CommandSaxHandler;
+import cerberus.parser.handler.importer.OpenExternalXmlFileSaxHandler;
+import cerberus.parser.handler.importer.kegg.KgmlSaxHandler;
 import cerberus.util.system.CerberusInputStream;
 import cerberus.util.exception.GeneViewRuntimeExceptionType;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.xml.parser.handler.IXmlParserHandler;
-import cerberus.xml.parser.handler.command.CommandSaxHandler;
-import cerberus.xml.parser.handler.importer.OpenExternalXmlFileSaxHandler;
-import cerberus.xml.parser.handler.importer.kegg.KgmlSaxHandler;
-//import cerberus.xml.parser.handler.importer.kegg.PathwayImageMapSaxHandler;
 
 /**
  * Administer several XML-SaxHandelers.
  * Switches between several XML-SaxHandeler automatical, based by a registered tag.
  * Acts as proxy for other derived objects from IXmlParserManager
  * 
- * @see cerberus.xml.parser.handler.IXmlParserHandler
+ * @see cerberus.parser.handler.IXmlParserHandler
  * 
  * @author Michael Kalkusch
  *

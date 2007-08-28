@@ -14,8 +14,8 @@ import cerberus.manager.event.mediator.MediatorUpdateType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.manager.IEventPublisher;
+import cerberus.parser.parameter.IParameterHandler;
 
 /**
  * Class creates a mediator, extracts the sender and receiver IDs

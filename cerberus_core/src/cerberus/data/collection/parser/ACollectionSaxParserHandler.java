@@ -12,12 +12,12 @@ package cerberus.data.collection.parser;
 import org.xml.sax.Attributes;
 
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.ASaxParserHandler;
+import cerberus.parser.ISaxParserHandler;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
 
-import cerberus.xml.parser.ISaxParserHandler;
-import cerberus.xml.parser.ASaxParserHandler;
 
 //import prometheus.util.exception.PrometheusSaxParserException;
 
@@ -93,7 +93,7 @@ implements ISaxParserHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see cerberus.xml.parser.ISaxParserHandler#reset()
+	 * @see cerberus.parser.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	

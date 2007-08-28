@@ -11,8 +11,8 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.xml.parser.parameter.IParameterHandler;
-import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
+import cerberus.parser.parameter.IParameterHandler;
+import cerberus.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 /**
  * @author Michael Kalkusch

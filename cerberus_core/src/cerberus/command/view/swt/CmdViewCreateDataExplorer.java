@@ -7,9 +7,9 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.swt.data.explorer.DataExplorerViewRep;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a data explorer view.

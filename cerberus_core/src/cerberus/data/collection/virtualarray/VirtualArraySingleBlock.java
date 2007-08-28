@@ -12,10 +12,10 @@ import java.lang.NullPointerException;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.ISaxParserHandler;
 
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.VirtualArrayType;
-import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.CollectionSelectionSaxParserHandler;
 import cerberus.data.collection.thread.lock.ICollectionLock;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;

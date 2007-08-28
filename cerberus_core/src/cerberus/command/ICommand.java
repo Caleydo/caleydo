@@ -9,8 +9,8 @@
 package cerberus.command;
 
 import cerberus.data.IUniqueObject;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 
 /**

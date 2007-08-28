@@ -20,9 +20,9 @@ import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 
 
@@ -33,7 +33,7 @@ import cerberus.xml.parser.parameter.IParameterHandler;
  * @author Michael Kalkusch
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
+ * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage
  */
 public class CmdDataCreateVirtualArray 
 extends ACmdCreate_IdTargetLabel
@@ -67,7 +67,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

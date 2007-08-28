@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.ISaxParserHandler;
 
 import cerberus.data.collection.IMetaData;
 import cerberus.data.collection.IVirtualArray;
@@ -21,7 +22,6 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
 //import cerberus.data.collection.parser.CollectionSetParseSaxHandler;
-import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.set.ASetRawData;
 import cerberus.data.collection.thread.lock.ICollectionLock;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;

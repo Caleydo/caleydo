@@ -11,6 +11,7 @@ package cerberus.data.collection.virtualarray;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.ISaxParserHandler;
 //import cerberus.data.collection.ISet;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.VirtualArrayType;
@@ -19,7 +20,6 @@ import cerberus.data.collection.thread.lock.ICollectionLock;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.virtualarray.iterator.VirtualArrayMultiBlockIterator;
 import cerberus.data.xml.IMementoItemXML;
-import cerberus.xml.parser.ISaxParserHandler;
 
 import java.lang.StringBuffer;
 

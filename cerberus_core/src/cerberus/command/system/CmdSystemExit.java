@@ -14,8 +14,8 @@ import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.data.AUniqueManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Command, shuts down application.

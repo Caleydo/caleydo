@@ -14,10 +14,10 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.MathUtil;
+import cerberus.parser.parameter.IParameterHandler;
+import cerberus.parser.parameter.IParameterHandler.ParameterHandlerType;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep;
-import cerberus.xml.parser.parameter.IParameterHandler;
-import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 /**
  * Class implementes the command for creating a SWT-Jogl canvas.

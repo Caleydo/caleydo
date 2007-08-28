@@ -10,10 +10,10 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
 import cerberus.view.swt.pathway.Pathway2DViewRep;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for creating a pathway view.

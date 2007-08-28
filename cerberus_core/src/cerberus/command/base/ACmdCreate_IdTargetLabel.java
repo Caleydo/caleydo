@@ -6,7 +6,7 @@ import cerberus.command.CommandQueueSaxType;
 import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.xml.parser.parameter.IParameterHandler;
+import cerberus.parser.parameter.IParameterHandler;
 
 /**
  * Abstract command class stores and handles commandId, tragertId and label of object.

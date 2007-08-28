@@ -13,6 +13,7 @@ import java.util.Hashtable;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.ISaxParserHandler;
 
 //import org.xml.sax.InputSource;
 
@@ -20,7 +21,6 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 //import cerberus.data.manager.DComponentManager;
 import cerberus.data.xml.IMementoNetEventXML;
-import cerberus.xml.parser.ISaxParserHandler;
 import cerberus.data.collection.parser.CollectionFlatStorageSaxParserHandler;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;
 import cerberus.data.collection.thread.lock.ICollectionLock;

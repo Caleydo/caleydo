@@ -15,6 +15,7 @@ import java.util.Enumeration;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.ISaxParserHandler;
 
 import cerberus.data.collection.IMetaData;
 import cerberus.data.collection.IVirtualArray;
@@ -25,7 +26,6 @@ import cerberus.data.collection.parser.CollectionSetSaxParserHandler;
 import cerberus.data.collection.set.ASetSimple;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
-import cerberus.xml.parser.ISaxParserHandler;
 
 /**
  * Defines a Planar 2-dimensional set. 

@@ -14,9 +14,8 @@ import cerberus.command.ICommand;
 import cerberus.command.ICommandListener;
 import cerberus.command.ICommandActionListener;
 import cerberus.command.queue.ICommandQueue;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.view.swt.undoredo.UndoRedoViewRep;
-import cerberus.xml.parser.parameter.IParameterHandler;
-//import prometheus.data.xml.MementoXML;
 
 /**
  * One Manager handle all ICommandListener.

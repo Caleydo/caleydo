@@ -13,8 +13,8 @@ import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IPathwayManager;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Command sets relevant file paths in PathwayMaanger.
@@ -74,7 +74,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelAttr#setParameterHandler(cerberus.xml.parser.parameter.IParameterHandler)
+	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelAttr#setParameterHandler(cerberus.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		

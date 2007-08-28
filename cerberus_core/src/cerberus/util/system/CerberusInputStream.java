@@ -16,7 +16,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.xml.parser.handler.IXmlBaseHandler;
+import cerberus.parser.handler.IXmlBaseHandler;
 
 /**
  * @author Michael Kalkusch

@@ -17,9 +17,9 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.GeneViewRuntimeException;
 
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.parameter.IParameterHandler;
 
 /**
  * Command creates a new pathway storage.

@@ -13,8 +13,7 @@ package cerberus.data.xml;
 
 //import prometheus.data.manager.GeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.xml.parser.ISaxParserHandler;
-//import prometheus.data.xml.MementoXML;
+import cerberus.parser.ISaxParserHandler;
 
 /**
  * Interface for loading and saving DNetEventComponentInterface objects to and from XML file.

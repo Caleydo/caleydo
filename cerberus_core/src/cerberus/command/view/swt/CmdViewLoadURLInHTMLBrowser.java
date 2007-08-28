@@ -9,11 +9,11 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 //import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.IViewRep;
 import cerberus.view.ViewType;
 import cerberus.view.swt.browser.HTMLBrowserViewRep;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
  * Class implementes the command for loading an URL 

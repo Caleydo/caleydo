@@ -26,9 +26,9 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IStorageManager;
 import cerberus.util.exception.GeneViewRuntimeException;
 
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.manager.type.ManagerObjectType;
+import cerberus.parser.parameter.IParameterHandler;
 
 /**
  * Command, creates a new storage.
@@ -97,7 +97,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

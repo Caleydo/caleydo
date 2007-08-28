@@ -7,8 +7,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 //import org.xml.sax.SAXException;
 
-import cerberus.xml.parser.handler.IXmlBaseHandler;
-import cerberus.xml.parser.handler.IXmlParserHandler;
+import cerberus.parser.handler.IXmlBaseHandler;
+import cerberus.parser.handler.IXmlParserHandler;
 
 
 /**
@@ -41,9 +41,9 @@ extends IXmlBaseHandler
 	 * registers the handler using this data.
 	 * Also calles initHandler() on the new Handler.
 	 * 
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler#initHandler()
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler#getXmlActivationTag()
+	 * @see cerberus.parser.handler.IXmlParserHandler#initHandler()
+	 * @see cerberus.parser.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @see cerberus.parser.handler.IXmlParserHandler#getXmlActivationTag()
 	 * 
 	 * @param handler register handler to an opening tag.
 	 * @param sOpeningAndClosingTag defines opening and closing tag tiggering the handler to become active.
@@ -56,7 +56,7 @@ extends IXmlBaseHandler
 //	/**
 //	 * Calls cerberus.xml.parser.base.IXmlParserHandler#destroyHandler()
 //	 * 
-//	 * @see cerberus.xml.parser.handler.IXmlParserHandler#destroyHandler()
+//	 * @see cerberus.parser.handler.IXmlParserHandler#destroyHandler()
 //	 * 
 //	 * @param handler handel, that should be unregistered.
 //	 * 
@@ -75,9 +75,9 @@ extends IXmlBaseHandler
 	
 	
 	/**
-	 * Callback called by cerberus.xml.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
+	 * Callback called by cerberus.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
 	 * 
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler
+	 * @see cerberus.parser.handler.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 * @param handler calling handler, that just read its closing tag
@@ -144,9 +144,9 @@ extends IXmlBaseHandler
 	/**
 	 * Call this method if the current tag was not handled by 
 	 * endElement(Stringt, Stringt, Stringt)
-	 * of cerberus.xml.parser.handler.IXmlParserHandler
+	 * of cerberus.parser.handler.IXmlParserHandler
 	 * 
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler
+	 * @see cerberus.parser.handler.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 */
@@ -158,9 +158,9 @@ extends IXmlBaseHandler
 	/**
 	 * Call this method, if current tag was not handled by 
 	 * startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
-	 * of cerberus.xml.parser.handler.IXmlParserHandler
+	 * of cerberus.parser.handler.IXmlParserHandler
 	 * 
-	 * @see cerberus.xml.parser.handler.IXmlParserHandler
+	 * @see cerberus.parser.handler.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * 
 	 */

@@ -19,10 +19,10 @@ import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage;
+import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage;
-import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.data.collection.ISet;
 
@@ -34,7 +34,7 @@ import cerberus.data.collection.ISet;
  * @author Michael Kalkusch
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
+ * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage
  */
 public class CmdSystemLoadFileViaImporter 
 extends ACommand
@@ -47,18 +47,18 @@ implements ICommand {
 	/**
 	 * Default is 32, because gpr files have a header of that size!
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStartParsingAtLine
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStartParsingAtLine()
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStartParsingAtLine
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStartParsingAtLine()
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStartPareseFileAtLine = 32;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStopParsingAtLine
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStopParsingAtLine()
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStopParsingAtLine
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStopParsingAtLine()
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopPareseFileAtLine = -1;
 	
@@ -129,7 +129,7 @@ implements ICommand {
 //	/**
 //	 * Use 
 //	 * 
-//	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage
+//	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage
 //	 */
 //	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 //			String fileName, 
@@ -145,7 +145,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.xml.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

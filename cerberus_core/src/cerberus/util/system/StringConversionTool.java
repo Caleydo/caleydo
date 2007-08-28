@@ -10,7 +10,7 @@ import cerberus.manager.ILoggerManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.util.exception.CerberusExceptionType;
 //import cerberus.util.exception.GeneViewRuntimeException;
-//import cerberus.xml.parser.parameter.IParameterHandler;
+//import cerberus.parser.parameter.IParameterHandler;
 
 /**
  * Conversion of String to int and boolean using default values, 
