@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser.handler.importer.ascii;
+package cerberus.parser.ascii.microarray;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,8 +20,7 @@ import cerberus.data.collection.parser.ParserTokenHandler;
 import cerberus.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.parser.ISaxParserHandler;
-import cerberus.parser.handler.importer.ascii.AMicroArrayLoader;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
@@ -80,7 +79,7 @@ extends AMicroArrayLoader {
 	/**
 	 * Removes all data structures.
 	 * 
-	 * @see cerberus.parser.IParserObject#destroy()
+	 * @see cerberus.parser.ascii.IParserObject#destroy()
 	 */
 	public final void destroy() {		
 		super.destroy();
@@ -393,7 +392,7 @@ extends AMicroArrayLoader {
 	/**
 	 * Init data structues. Use this to reset the stat also!
 	 * 
-	 * @see cerberus.parser.IParserObject#init()
+	 * @see cerberus.parser.ascii.IParserObject#init()
 	 */
 	public void init() {
 		iLineInFile = 1;

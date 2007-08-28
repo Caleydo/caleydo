@@ -22,7 +22,6 @@ import cerberus.util.exception.GeneViewRuntimeExceptionType;
  */
 public final class ParameterHandler
 extends AParameterHandler
-implements IParameterHandler
 {
 
 	private Hashtable <String, ParameterHandlerType > hashPrimarySwitch;

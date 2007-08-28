@@ -7,7 +7,7 @@
  *  
  */
 
-package cerberus.parser.handler.importer.ascii;
+package cerberus.parser.ascii.microarray;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -23,9 +23,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.parser.IParserObject;
-import cerberus.parser.ISaxParserHandler;
-import cerberus.parser.handler.importer.ascii.AbstractLoader;
+import cerberus.parser.ascii.AbstractLoader;
+import cerberus.parser.ascii.IParserObject;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 
 //import java.util.*;
 
@@ -321,8 +321,8 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Removes all data structures.
 	 * 
-	 * @see cerberus.parser.IParserObject#destroy()
-	 * @see cerberus.parser.handler.importer.ascii.AMicroArrayLoader#destroy()
+	 * @see cerberus.parser.ascii.IParserObject#destroy()
+	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#destroy()
 	 */
 	public void destroy() {
 		
