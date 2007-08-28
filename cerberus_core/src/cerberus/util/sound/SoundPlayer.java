@@ -10,7 +10,12 @@ import javax.sound.sampled.DataLine;
 
 public class SoundPlayer {
 
+	private static boolean TURN_ON_SOUND = false;
+	
 	public static void playSoundByFilename(String sFilename) {
+		
+		if (TURN_ON_SOUND == false)
+			return;
 		
 		try{
             AudioInputStream audioInputStream = 
