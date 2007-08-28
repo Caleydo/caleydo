@@ -7,9 +7,9 @@
  *  
  */
 
-package cerberus.view.gui.swt.widget;
+package cerberus.view.swt.widget;
 
-import cerberus.view.gui.swt.widget.ASWTWidget;
+import cerberus.view.swt.widget.ASWTWidget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

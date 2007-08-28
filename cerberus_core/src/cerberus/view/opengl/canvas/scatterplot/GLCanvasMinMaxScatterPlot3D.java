@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.scatterplot;
+package cerberus.view.opengl.canvas.scatterplot;
 
 //import java.util.Iterator;
 import java.util.Random;
@@ -21,13 +21,13 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.GLCanvasStatics;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasMinMaxScatterPlot3D 
 extends AGLCanvasUser_OriginRotation 
@@ -44,8 +44,8 @@ extends AGLCanvasUser_OriginRotation
 	/**
 	 * Avoid that error message during rendering is shown each rendered frame.
 	 * 
-	 * @see cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#setTargetSetId(int)
-	 * @see cerberus.view.gui.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#drawScatterPlotInteger(GL)
+	 * @see cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#setTargetSetId(int)
+	 * @see cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#drawScatterPlotInteger(GL)
 	 */
 	private boolean bShowRenderingErrorMsgOnylOnce = true;
 	

@@ -26,7 +26,7 @@
  *  @author Michael Kalkusch
  *  
  */
-package cerberus.view.gui.opengl.canvas.isosurface;
+package cerberus.view.opengl.canvas.isosurface;
 
 import java.io.EOFException;
 //import java.io.IOException;

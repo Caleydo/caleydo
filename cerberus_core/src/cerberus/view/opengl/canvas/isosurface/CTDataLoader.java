@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.canvas.isosurface;
+package cerberus.view.opengl.canvas.isosurface;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -6,8 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import cerberus.view.gui.opengl.canvas.isosurface.GeneralByteReader;
-import cerberus.view.gui.opengl.canvas.isosurface.SoWrapper;
+import cerberus.view.opengl.canvas.isosurface.GeneralByteReader;
+import cerberus.view.opengl.canvas.isosurface.SoWrapper;
 
 public class CTDataLoader {
 

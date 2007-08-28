@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.undoredo;
+package cerberus.view.swt.undoredo;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Label;
 
 import cerberus.command.ICommand;
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
 
 /**
  * UNDO/REDO view.

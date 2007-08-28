@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas;
+package cerberus.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 
@@ -18,9 +18,9 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.jogl.mouse.AViewCameraListenerObject;
-import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.view.jogl.mouse.AViewCameraListenerObject;
+import cerberus.view.opengl.IGLCanvasDirector;
+import cerberus.view.opengl.IGLCanvasUser;
 
 /**
  * @author Michael Kalkusch
@@ -98,7 +98,7 @@ implements IGLCanvasUser {
 	}
 	
 //	/* (non-Javadoc)
-//	 * @see cerberus.view.gui.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.gui.opengl.IGLCanvasDirector)
+//	 * @see cerberus.view.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.opengl.IGLCanvasDirector)
 //	 */
 //	public final void link2GLCanvasDirector(IGLCanvasDirector parentView)
 //	{
@@ -130,7 +130,7 @@ implements IGLCanvasUser {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#getGLCanvasDirector()
+	 * @see cerberus.view.opengl.IGLCanvasUser#getGLCanvasDirector()
 	 */
 	public final IGLCanvasDirector getGLCanvasDirector()
 	{
@@ -144,7 +144,7 @@ implements IGLCanvasUser {
 
 	
 	/**
-	 * @see cerberus.view.gui.IView#addSetId(int[])
+	 * @see cerberus.view.IView#addSetId(int[])
 	 */
 	public final void addSetId( int [] iSet) {
 		
@@ -192,7 +192,7 @@ implements IGLCanvasUser {
 	}
 	
 	/**
-	 * @see cerberus.view.gui.IView#removeAllSetIdByType(cerberus.data.collection.SetType)
+	 * @see cerberus.view.IView#removeAllSetIdByType(cerberus.data.collection.SetType)
 	 */
 	public final void removeAllSetIdByType( SetType setType ) {
 		
@@ -213,7 +213,7 @@ implements IGLCanvasUser {
 	}
 	
 	/**
-	 * @see cerberus.view.gui.IView#removeSetId(int[])
+	 * @see cerberus.view.IView#removeSetId(int[])
 	 */
 	public final void removeSetId( int [] iSet) {
 		
@@ -263,7 +263,7 @@ implements IGLCanvasUser {
 	
 
 	/**
-	 * @see cerberus.view.gui.IView#getAllSetId()
+	 * @see cerberus.view.IView#getAllSetId()
 	 */
 	public final synchronized int[] getAllSetId() {
 		
@@ -297,7 +297,7 @@ implements IGLCanvasUser {
 	
 
 	/**
-	 * @see cerberus.view.gui.IView#hasSetId(int)
+	 * @see cerberus.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
 		ISet refCurrentSet = refSetManager.getItemSet(iSetId);
@@ -338,7 +338,7 @@ implements IGLCanvasUser {
 	
 	
 	/**
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
+	 * @see cerberus.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
 	 */
 	public void initGLCanvas(GL gl)
 	{
@@ -347,7 +347,7 @@ implements IGLCanvasUser {
 
 	
 	/**
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
 	 */
 	public final void render( GL gl)
 	{		
@@ -379,7 +379,7 @@ implements IGLCanvasUser {
 	}
 	
 	/**
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 * @see cerberus.view.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
 	 */
 	public void reshape(GL gl, 
 			final int x,
@@ -394,14 +394,14 @@ implements IGLCanvasUser {
 	
 
 	/**
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#destroyGLCanvas()
+	 * @see cerberus.view.opengl.IGLCanvasUser#destroyGLCanvas()
 	 */
 	public void destroyGLCanvas() {
 		
 	}
 
 	/**
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
+	 * @see cerberus.view.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
 	 */
 	public final void displayChanged(GL gl, 
 			boolean modeChanged, 
@@ -411,7 +411,7 @@ implements IGLCanvasUser {
 	}
 
 	/**
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#update(javax.media.opengl.GL)
+	 * @see cerberus.view.opengl.IGLCanvasUser#update(javax.media.opengl.GL)
 	 */
 	public void update(GL gl) {
 		this.render( gl );	
@@ -420,7 +420,7 @@ implements IGLCanvasUser {
 	/*
 	 * Forwards render(GL) to derived class.
 	 * 
-	 * @see cerberus.view.gui.opengl.canvas.AGLCanvasUser#render(GL)
+	 * @see cerberus.view.opengl.canvas.AGLCanvasUser#render(GL)
 	 * 
 	 * @param gl canvas created from GLAutoDrawable
 	 */

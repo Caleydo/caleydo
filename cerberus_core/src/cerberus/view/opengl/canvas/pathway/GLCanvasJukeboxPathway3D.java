@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.canvas.pathway;
+package cerberus.view.opengl.canvas.pathway;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -35,12 +35,12 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.slerp.SlerpAction;
 import cerberus.util.slerp.SlerpMod;
 import cerberus.util.sound.SoundPlayer;
-import cerberus.view.gui.jogl.mouse.PickingJoglMouseListener;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
-import cerberus.view.gui.opengl.util.GLDragAndDrop;
-import cerberus.view.gui.opengl.util.GLInfoAreaRenderer;
-import cerberus.view.gui.opengl.util.GLPathwayMemoPad;
-import cerberus.view.gui.opengl.util.GLTextUtils;
+import cerberus.view.jogl.mouse.PickingJoglMouseListener;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.util.GLDragAndDrop;
+import cerberus.view.opengl.util.GLInfoAreaRenderer;
+import cerberus.view.opengl.util.GLPathwayMemoPad;
+import cerberus.view.opengl.util.GLTextUtils;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -170,7 +170,7 @@ implements IMediatorReceiver, IMediatorSender {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void initGLCanvas(GL gl) {
 

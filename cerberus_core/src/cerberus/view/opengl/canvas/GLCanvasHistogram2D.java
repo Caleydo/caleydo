@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas;
+package cerberus.view.opengl.canvas;
 
 import javax.media.opengl.GL;
 
@@ -16,12 +16,12 @@ import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHistogram2D 
 extends AGLCanvasUser_OriginRotation 

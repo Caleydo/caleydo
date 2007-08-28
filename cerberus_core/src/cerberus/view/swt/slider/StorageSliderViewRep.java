@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.slider;
+package cerberus.view.swt.slider;
 
 import cerberus.data.collection.IVirtualArray;
 import cerberus.manager.IGeneralManager;

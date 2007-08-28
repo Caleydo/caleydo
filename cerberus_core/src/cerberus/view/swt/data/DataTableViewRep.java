@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.data;
+package cerberus.view.swt.data;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -25,8 +25,8 @@ import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.data.IStorageManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.ViewType;
 
 public class DataTableViewRep 
 extends AViewRep 

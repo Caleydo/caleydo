@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.swt.browser;
+package cerberus.view.swt.browser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -13,10 +13,10 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.browser.HookedBrowser;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
+import cerberus.view.swt.browser.HookedBrowser;
 
 /**
  * Simple HTML browser.

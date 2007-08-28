@@ -6,12 +6,12 @@
  * Creation date: 26-07-2006
  *  
  */
-package cerberus.view.gui.swt.widget;
+package cerberus.view.swt.widget;
 
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.data.IUniqueObject;
-import cerberus.view.gui.swt.ISWTWidget;
+import cerberus.view.swt.ISWTWidget;
 
 abstract public class ASWTWidget 
 implements IUniqueObject, ISWTWidget {

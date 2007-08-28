@@ -9,8 +9,8 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.view.opengl.IGLCanvasUser;
+import cerberus.view.opengl.IGLCanvasDirector;
 
 /**
  * @author Michael Kalkusch

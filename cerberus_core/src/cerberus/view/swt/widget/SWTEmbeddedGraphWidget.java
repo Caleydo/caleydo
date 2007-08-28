@@ -7,11 +7,11 @@
  *  
  */
 
-package cerberus.view.gui.swt.widget;
+package cerberus.view.swt.widget;
 
 import java.awt.Frame;
 
-import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
+import cerberus.view.swt.widget.ASWTEmbeddedWidget;
 
 import org.eclipse.swt.widgets.Composite;
 

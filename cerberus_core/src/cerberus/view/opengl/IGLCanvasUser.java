@@ -1,8 +1,8 @@
-package cerberus.view.gui.opengl;
+package cerberus.view.opengl;
 
 import javax.media.opengl.GL;
 
-import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.view.opengl.IGLCanvasDirector;
 import cerberus.data.IUniqueObject;
 
 public interface IGLCanvasUser
@@ -47,7 +47,7 @@ extends IUniqueObject {
 	
 	/**
 	 * 
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser()
+	 * @see cerberus.view.opengl.IGLCanvasDirector#initGLCanvasUser()
 	 */
 	public abstract void setInitGLDone();
 	

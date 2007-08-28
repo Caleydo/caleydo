@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.swt.widget;
+package cerberus.view.swt.widget;
 
 import java.awt.Frame;
 

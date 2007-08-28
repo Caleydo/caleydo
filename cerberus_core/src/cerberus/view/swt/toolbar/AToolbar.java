@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.toolbar;
+package cerberus.view.swt.toolbar;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;

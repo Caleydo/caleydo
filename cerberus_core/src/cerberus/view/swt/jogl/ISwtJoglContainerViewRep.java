@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.jogl;
+package cerberus.view.swt.jogl;
 
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;

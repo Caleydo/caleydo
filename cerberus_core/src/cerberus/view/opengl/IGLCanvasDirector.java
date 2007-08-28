@@ -1,11 +1,11 @@
-package cerberus.view.gui.opengl;
+package cerberus.view.opengl;
 
 import java.util.Collection;
 
 import javax.media.opengl.GL;
 //import javax.media.opengl.GLAutoDrawable;
 
-import cerberus.view.gui.jogl.JoglCanvasForwarder;
+import cerberus.view.jogl.JoglCanvasForwarder;
 
 public interface IGLCanvasDirector {
 	

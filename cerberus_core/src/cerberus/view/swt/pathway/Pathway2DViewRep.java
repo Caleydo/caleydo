@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.swt.pathway;
+package cerberus.view.swt.pathway;
 
 import org.eclipse.swt.layout.GridLayout;
 
@@ -9,11 +9,11 @@ import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.pathway.jgraph.PathwayGraphViewRep;
-import cerberus.view.gui.swt.toolbar.Pathway2DToolbar;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
+import cerberus.view.swt.pathway.jgraph.PathwayGraphViewRep;
+import cerberus.view.swt.toolbar.Pathway2DToolbar;
 
 /**
  * Pathway view.
@@ -99,7 +99,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.gui.AViewRep#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see cerberus.view.AViewRep#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {

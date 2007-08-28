@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.data.explorer.model;
+package cerberus.view.swt.data.explorer.model;
 
 public interface IModelVisitor {
 	

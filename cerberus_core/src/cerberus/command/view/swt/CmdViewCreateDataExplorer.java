@@ -8,7 +8,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.swt.data.explorer.DataExplorerViewRep;
+import cerberus.view.swt.data.explorer.DataExplorerViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

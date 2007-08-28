@@ -1,4 +1,4 @@
-package cerberus.view.gui.jogl.mouse;
+package cerberus.view.jogl.mouse;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Rotf;
@@ -9,7 +9,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
 import java.awt.Point;
 
-import cerberus.view.gui.jogl.IJoglMouseListener;
+import cerberus.view.jogl.IJoglMouseListener;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.math.MathUtil;
 

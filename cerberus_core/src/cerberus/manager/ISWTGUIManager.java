@@ -4,8 +4,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.jogl.TriggeredAnimator;
-import cerberus.view.gui.swt.ISWTWidget;
+import cerberus.view.jogl.TriggeredAnimator;
+import cerberus.view.swt.ISWTWidget;
 
 public interface ISWTGUIManager 
 extends IGeneralManager {

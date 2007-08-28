@@ -1,4 +1,4 @@
-  package cerberus.view.gui.swt.jogl;
+  package cerberus.view.swt.jogl;
 
 import java.util.Collection;
 
@@ -13,15 +13,15 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.jogl.JoglCanvasDirectForwarder;
-import cerberus.view.gui.jogl.JoglCanvasForwarder;
-import cerberus.view.gui.jogl.JoglCanvasForwarderType;
-import cerberus.view.gui.jogl.TriggeredAnimator;
-import cerberus.view.gui.opengl.IGLCanvasDirector;
-import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.view.swt.widget.SWTEmbeddedJoglWidget;
+import cerberus.view.AViewRep;
+import cerberus.view.ViewType;
+import cerberus.view.jogl.JoglCanvasDirectForwarder;
+import cerberus.view.jogl.JoglCanvasForwarder;
+import cerberus.view.jogl.JoglCanvasForwarderType;
+import cerberus.view.jogl.TriggeredAnimator;
+import cerberus.view.opengl.IGLCanvasDirector;
+import cerberus.view.opengl.IGLCanvasUser;
 //import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
@@ -30,7 +30,7 @@ import cerberus.view.gui.opengl.IGLCanvasUser;
  * The IGLCanvasDirector tries to call it once inside the initGLCanvasUser(), if the IGLCanvasUser is registered 
  * by that time to the Vector <IGLCanvasUser> vecGLCanvasUser;
  * 
- * @see import cerberus.view.gui.IView
+ * @see import cerberus.view.IView
  * @author Michael Kalkusch
  * @author Marc Streit
  *
@@ -93,7 +93,7 @@ implements IGLCanvasDirector {
 	/**
 	 * Attension: call setOpenGLCanvasId(int) before calling this method!
 	 * 
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#initView()
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#initView()
 	 */
 	public void initView() {
 			
@@ -176,21 +176,21 @@ implements IGLCanvasDirector {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.gui.opengl.IGLCanvasUser)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
 	 */
 	public void addGLCanvasUser( IGLCanvasUser user ) {
 		forwarder_GLEventListener.addGLCanvasUser(user);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.gui.opengl.IGLCanvasUser)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
 	 */
 	public void removeGLCanvasUser( IGLCanvasUser user ) {
 		forwarder_GLEventListener.removeGLCanvasUser(user);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
 	 */
 	public void removeAllGLCanvasUsers() {
 		
@@ -198,7 +198,7 @@ implements IGLCanvasDirector {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
 	 */
 	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
 		
@@ -212,7 +212,7 @@ implements IGLCanvasDirector {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser()
+	 * @see cerberus.view.opengl.IGLCanvasDirector#initGLCanvasUser()
 	 */
 	public synchronized void initGLCanvasUser(GL gl) {
 		
@@ -222,7 +222,7 @@ implements IGLCanvasDirector {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void renderGLCanvasUser( GL gl) {
 		
@@ -238,7 +238,7 @@ implements IGLCanvasDirector {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void updateGLCanvasUser(GL gl) {
 		
@@ -255,7 +255,7 @@ implements IGLCanvasDirector {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#destroyDirector()
+	 * @see cerberus.view.opengl.IGLCanvasDirector#destroyDirector()
 	 */
 	public void destroyDirector() {
 		

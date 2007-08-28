@@ -1,4 +1,4 @@
-package cerberus.view.gui.awt.jogl;
+package cerberus.view.awt.jogl;
 
 import java.awt.Frame;
 //import java.awt.event.MouseListener;
@@ -28,12 +28,12 @@ import cerberus.data.collection.SetDataType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.singleton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
-//import cerberus.view.gui.IView;
-//import cerberus.view.gui.AViewManagedRep;
-//import cerberus.view.gui.swt.base.ISwtJoglContainerViewRep;
-import cerberus.view.gui.jogl.IJoglMouseListener;
-import cerberus.view.gui.jogl.mouse.AViewCameraListenerObject;
-import cerberus.view.gui.jogl.mouse.JoglMouseListener;
+//import cerberus.view.IView;
+//import cerberus.view.AViewManagedRep;
+//import cerberus.view.swt.base.ISwtJoglContainerViewRep;
+import cerberus.view.jogl.IJoglMouseListener;
+import cerberus.view.jogl.mouse.AViewCameraListenerObject;
+import cerberus.view.jogl.mouse.JoglMouseListener;
 //import cerberus.util.exception.GeneViewRuntimeException;
 //import cerberus.util.exception.CerberusExceptionType;
 

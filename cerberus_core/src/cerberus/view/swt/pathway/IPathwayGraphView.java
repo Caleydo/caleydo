@@ -1,10 +1,10 @@
-package cerberus.view.gui.swt.pathway;
+package cerberus.view.swt.pathway;
 
 import java.awt.Dimension;
 
 import cerberus.data.graph.core.PathwayGraph;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import cerberus.view.gui.IView;
+import cerberus.view.IView;
 
 public interface IPathwayGraphView 
 extends IView {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.heatmap;
+package cerberus.view.opengl.canvas.heatmap;
 
 import javax.media.opengl.GL;
 
@@ -10,7 +10,7 @@ import javax.media.opengl.GL;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch

@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.pathway.jgraph;
+package cerberus.view.swt.pathway.jgraph;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,8 +49,8 @@ import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
-import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.view.swt.pathway.APathwayGraphViewRep;
+import cerberus.view.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
  * In this class the real drawing of the Pathway happens. For the drawing the
@@ -450,7 +450,7 @@ extends APathwayGraphViewRep {
 			
 			// Set vertex type to round rect
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
-					"cerberus.view.gui.swt.pathway.jgraph.JGraphMultilineView");
+					"cerberus.view.swt.pathway.jgraph.JGraphMultilineView");
 
 			GraphConstants.setBackground(changedMap, refRenderStyle.getPathwayNodeColor(false));
 		} 
@@ -463,7 +463,7 @@ extends APathwayGraphViewRep {
 			
 			// Set vertex type to ellipse
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
-					"cerberus.view.gui.swt.pathway.jgraph.JGraphEllipseView");
+					"cerberus.view.swt.pathway.jgraph.JGraphEllipseView");
 
 			if (!bShowBackgroundOverlay)
 			{

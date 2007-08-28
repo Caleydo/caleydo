@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.canvas.pathway;
+package cerberus.view.opengl.canvas.pathway;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
-import cerberus.view.gui.opengl.util.GLTextUtils;
+import cerberus.view.opengl.util.GLTextUtils;
 
 /**
  * 

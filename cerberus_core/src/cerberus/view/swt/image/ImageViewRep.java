@@ -1,16 +1,16 @@
 /**
  * 
  */
-package cerberus.view.gui.swt.image;
+package cerberus.view.swt.image;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
 
 /**
  * Image view.

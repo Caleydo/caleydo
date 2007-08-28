@@ -1,15 +1,15 @@
 /**
  * 
  */
-package cerberus.view.gui.jogl;
+package cerberus.view.jogl;
 
 /**´
  * Define type of OpenGL canvas forwarder
  * 
- * @see cerberus.view.gui.jogl.JoglCanvasForwarder
+ * @see cerberus.view.jogl.JoglCanvasForwarder
  * @see cerberus.manager.IViewGLCanvasManager#setJoglCanvasForwarderType(JoglCanvasForwarderType)
- * @see cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep#SwtJoglGLCanvasViewRep(cerberus.manager.IGeneralManager, int, int, int, String, JoglCanvasForwarderType)
- * @see cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep#initView()
+ * @see cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep#SwtJoglGLCanvasViewRep(cerberus.manager.IGeneralManager, int, int, int, String, JoglCanvasForwarderType)
+ * @see cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep#initView()
  * 
  * @author Michael Kalkusch
  *

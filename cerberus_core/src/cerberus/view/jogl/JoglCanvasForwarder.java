@@ -1,4 +1,4 @@
-package cerberus.view.gui.jogl;
+package cerberus.view.jogl;
 
 //import java.awt.Frame;
 //import java.awt.event.WindowAdapter;
@@ -24,14 +24,14 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.MathUtil;
 import cerberus.util.exception.GeneViewRuntimeException;
-//import cerberus.view.gui.jogl.PickingJoglMouseListenerDebug;
-import cerberus.view.gui.jogl.IJoglMouseListener;
-import cerberus.view.gui.jogl.mouse.AViewCameraListenerObject;
-import cerberus.view.gui.jogl.mouse.JoglMouseListener;
-import cerberus.view.gui.jogl.mouse.PickingJoglMouseListener;
-import cerberus.view.gui.opengl.IGLCanvasDirector;
+//import cerberus.view.jogl.PickingJoglMouseListenerDebug;
+import cerberus.view.jogl.IJoglMouseListener;
+import cerberus.view.jogl.mouse.AViewCameraListenerObject;
+import cerberus.view.jogl.mouse.JoglMouseListener;
+import cerberus.view.jogl.mouse.PickingJoglMouseListener;
+import cerberus.view.opengl.IGLCanvasDirector;
 //import cerberus.data.view.camera.IViewCamera;
-import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.view.opengl.IGLCanvasUser;
 
 /**
  *JoglCanvasForwarder handles several objects and forwards the OpenGL events to them.
@@ -342,7 +342,7 @@ implements GLEventListener, IJoglMouseListener {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.gui.opengl.IGLCanvasUser)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
 	 */
 	public void addGLCanvasUser( IGLCanvasUser user ) {
 
@@ -374,7 +374,7 @@ implements GLEventListener, IJoglMouseListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.gui.opengl.IGLCanvasUser)
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
 	 */
 	public void removeGLCanvasUser( IGLCanvasUser user ) {
 		if ( ! vecGLCanvasUser.remove( user ) ) {
@@ -384,7 +384,7 @@ implements GLEventListener, IJoglMouseListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
+	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
 	 */
 	public void removeAllGLCanvasUsers() {
 		
@@ -407,7 +407,7 @@ implements GLEventListener, IJoglMouseListener {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#initGLCanvasUser()
+	 * @see cerberus.view.opengl.IGLCanvasDirector#initGLCanvasUser()
 	 */
 	public synchronized void initGLCanvasUser(GL gl) {
 		
@@ -447,7 +447,7 @@ implements GLEventListener, IJoglMouseListener {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasDirector#renderGLCanvasUser(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void renderGLCanvasUser( GL gl) {
 		
@@ -489,7 +489,7 @@ implements GLEventListener, IJoglMouseListener {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasDirector#updateGLCanvasUser(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void updateGLCanvasUser(GL gl) {
 		

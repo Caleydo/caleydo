@@ -10,7 +10,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.widgets.GLCanvasWidget;
+import cerberus.view.opengl.canvas.widgets.GLCanvasWidget;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

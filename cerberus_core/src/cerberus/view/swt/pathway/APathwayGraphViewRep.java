@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.pathway;
+package cerberus.view.swt.pathway;
 
 import java.awt.Frame;
 import java.util.Iterator;
@@ -16,8 +16,8 @@ import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.ViewType;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep

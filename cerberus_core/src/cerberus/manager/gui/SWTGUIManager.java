@@ -22,12 +22,12 @@ import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.jogl.TriggeredAnimator;
-import cerberus.view.gui.swt.ISWTWidget;
-import cerberus.view.gui.swt.widget.SWTEmbeddedGraphWidget;
-import cerberus.view.gui.swt.widget.SWTEmbeddedJoglWidget;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
-import cerberus.view.gui.swt.widget.ASWTWidget;
+import cerberus.view.jogl.TriggeredAnimator;
+import cerberus.view.swt.ISWTWidget;
+import cerberus.view.swt.widget.SWTEmbeddedGraphWidget;
+import cerberus.view.swt.widget.SWTEmbeddedJoglWidget;
+import cerberus.view.swt.widget.SWTNativeWidget;
+import cerberus.view.swt.widget.ASWTWidget;
 
 /**
  * The SWTGUIManager is responsible for the creation 
@@ -476,7 +476,7 @@ implements ISWTGUIManager {
 	}
 
 	/**
-	 * @see cerberus.manager.ISWTGUIManager#setAnimatorById(cerberus.view.gui.jogl.TriggeredAnimator, int)
+	 * @see cerberus.manager.ISWTGUIManager#setAnimatorById(cerberus.view.jogl.TriggeredAnimator, int)
 	 */
 	public synchronized void setAnimatorById(TriggeredAnimator refAnimator, int iAnimatorId) {
 

@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.toolbar;
+package cerberus.view.swt.toolbar;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolItem;
 
-import cerberus.view.gui.opengl.canvas.pathway.AGLCanvasPathway3D;
+import cerberus.view.opengl.canvas.pathway.AGLCanvasPathway3D;
 
 public class Pathway3DToolbar 
 extends AToolbar {

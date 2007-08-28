@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui;
+package cerberus.view;
 
 /**
  * Define the type of the view.

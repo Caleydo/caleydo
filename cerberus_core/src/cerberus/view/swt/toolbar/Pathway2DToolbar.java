@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.toolbar;
+package cerberus.view.swt.toolbar;
 
 import java.awt.Dimension;
 
@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.swt.pathway.APathwayGraphViewRep;
+import cerberus.view.swt.pathway.APathwayGraphViewRep;
 
 public class Pathway2DToolbar 
 extends AToolbar {

@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.test;
+package cerberus.view.swt.test;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
 
 public class TestTableViewRep 
 extends AViewRep 

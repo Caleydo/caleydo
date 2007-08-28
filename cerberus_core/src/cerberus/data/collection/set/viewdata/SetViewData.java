@@ -107,7 +107,7 @@ implements ISetViewData {
 		refIViewCamera = setViewCamera;
 	}
 	/* (non-Javadoc)
-	 * @see cerberus.view.gui.jogl.IJoglMouseListener#hasViewCameraChanged()
+	 * @see cerberus.view.jogl.IJoglMouseListener#hasViewCameraChanged()
 	 */
 	public boolean hasViewCameraChanged() {
 

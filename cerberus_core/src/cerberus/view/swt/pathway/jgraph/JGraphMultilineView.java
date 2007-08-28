@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package cerberus.view.gui.swt.pathway.jgraph;
+package cerberus.view.swt.pathway.jgraph;
 
 //import java.awt.BasicStroke;
 import java.awt.Color;

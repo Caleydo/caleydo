@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas;
+package cerberus.view.opengl.canvas;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -13,12 +13,12 @@ import cerberus.data.view.camera.IViewCamera;
 import cerberus.data.view.camera.ViewCameraBase;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser;
+import cerberus.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.gui.jogl.IJoglMouseListener
+ * @see cerberus.view.jogl.IJoglMouseListener
  */
 public abstract class AGLCanvasUser_OriginRotation 
 extends AGLCanvasUser 

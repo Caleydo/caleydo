@@ -1,8 +1,8 @@
-package cerberus.view.gui;
+package cerberus.view;
 
 import cerberus.data.IUniqueObject;
 import cerberus.data.collection.SetType;
-import cerberus.view.gui.ViewType;
+import cerberus.view.ViewType;
 
 //import cerberus.command.ICommand;
 //import cerberus.data.collection.ISet;

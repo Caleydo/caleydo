@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.pathway.jgraph;
+package cerberus.view.swt.pathway.jgraph;
 
 import java.util.Map;
 

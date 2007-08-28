@@ -1,6 +1,6 @@
-package cerberus.view.gui.swt.data;
+package cerberus.view.swt.data;
 
-import cerberus.view.gui.IView;
+import cerberus.view.IView;
 
 public interface IDataTableView extends IView
 {	

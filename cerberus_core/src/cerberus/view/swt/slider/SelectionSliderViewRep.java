@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.slider;
+package cerberus.view.swt.slider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;

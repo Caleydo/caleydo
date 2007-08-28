@@ -7,10 +7,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.IViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.opengl.IGLCanvasUser;
+import cerberus.view.IViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
+import cerberus.view.opengl.IGLCanvasUser;
 
 /**
  * Manage all canvas, view, ViewRep's nad GLCanvas objects.

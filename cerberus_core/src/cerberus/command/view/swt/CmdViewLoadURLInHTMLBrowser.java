@@ -10,9 +10,9 @@ import cerberus.manager.IGeneralManager;
 //import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.IViewRep;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.browser.HTMLBrowserViewRep;
+import cerberus.view.IViewRep;
+import cerberus.view.ViewType;
+import cerberus.view.swt.browser.HTMLBrowserViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

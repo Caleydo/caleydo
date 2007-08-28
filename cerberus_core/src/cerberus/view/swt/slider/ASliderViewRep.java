@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.slider;
+package cerberus.view.swt.slider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Slider;
@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.Slider;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.ViewType;
 
 /**
  * The view representation of a slider.
@@ -15,7 +15,7 @@ import cerberus.view.gui.ViewType;
  * selection and the first storage in the specified Set.
  * The Set is represented by the local variable setId.
  * 
- * @see cerberus.view.gui.IView
+ * @see cerberus.view.IView
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

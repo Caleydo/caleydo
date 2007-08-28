@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.isosurface;
+package cerberus.view.opengl.canvas.isosurface;
 
 // import javax.media.opengl.*;
 

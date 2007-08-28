@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.jogl;
+package cerberus.view.jogl;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

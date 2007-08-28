@@ -1,15 +1,15 @@
 /**
  * 
  */
-package cerberus.view.gui.swt.progressbar;
+package cerberus.view.swt.progressbar;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
 
 /**
  * Simple slider view that can be set between 0 and 100 percent.
@@ -52,7 +52,7 @@ implements IView {
 	 * 
 	 * @see org.eclipse.swt.SWT
 	 * @see org.eclipse.swt.widgets.ProgressBar
-	 * @see cerberus.view.gui.swt.progressbar.ProgressBarViewRep#retrieveNewGUIContainer()
+	 * @see cerberus.view.swt.progressbar.ProgressBarViewRep#retrieveNewGUIContainer()
 	 * 
 	 * @param setStyle
 	 */

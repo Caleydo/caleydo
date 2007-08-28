@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.mixer;
+package cerberus.view.swt.mixer;
 
 import java.util.ArrayList;
 
@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Slider;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
 
 /**
  * Class implements a slider mixer representation.

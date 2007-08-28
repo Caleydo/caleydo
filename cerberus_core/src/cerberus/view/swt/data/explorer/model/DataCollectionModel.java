@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.data.explorer.model;
+package cerberus.view.swt.data.explorer.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class DataCollectionModel extends AModel {
 		
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitSetModel(cerberus.view.gui.swt.data.explorer.model.DataCollectionModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitSetModel(cerberus.view.swt.data.explorer.model.DataCollectionModel, java.lang.Object)
 		 */
 		public void visitSetModel(DataCollectionModel set, Object argument) {
 
@@ -48,7 +48,7 @@ public class DataCollectionModel extends AModel {
 
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitStorageModel(cerberus.view.gui.swt.data.explorer.model.StorageModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitStorageModel(cerberus.view.swt.data.explorer.model.StorageModel, java.lang.Object)
 		 */
 		public void visitStorageModel(StorageModel storage, Object argument) {
 
@@ -57,7 +57,7 @@ public class DataCollectionModel extends AModel {
 		
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitSelectionModel(cerberus.view.gui.swt.data.explorer.model.SelectionModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitSelectionModel(cerberus.view.swt.data.explorer.model.SelectionModel, java.lang.Object)
 		 */
 		public void visitSelectionModel(SelectionModel selection,
 				Object argument) {
@@ -67,7 +67,7 @@ public class DataCollectionModel extends AModel {
 		
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitPathwayModel(cerberus.view.gui.swt.data.explorer.model.PathwayModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitPathwayModel(cerberus.view.swt.data.explorer.model.PathwayModel, java.lang.Object)
 		 */
 		public void visitPathwayModel(PathwayModel pathway,
 				Object argument) {
@@ -80,7 +80,7 @@ public class DataCollectionModel extends AModel {
 		
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitSetModel(cerberus.view.gui.swt.data.explorer.model.DataCollectionModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitSetModel(cerberus.view.swt.data.explorer.model.DataCollectionModel, java.lang.Object)
 		 */
 		public void visitSetModel(DataCollectionModel setModel, Object argument) {
 
@@ -90,7 +90,7 @@ public class DataCollectionModel extends AModel {
 
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitStorageModel(cerberus.view.gui.swt.data.explorer.model.StorageModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitStorageModel(cerberus.view.swt.data.explorer.model.StorageModel, java.lang.Object)
 		 */
 		public void visitStorageModel(StorageModel storage, Object argument) {
 
@@ -99,7 +99,7 @@ public class DataCollectionModel extends AModel {
 
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitSelectionModel(cerberus.view.gui.swt.data.explorer.model.SelectionModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitSelectionModel(cerberus.view.swt.data.explorer.model.SelectionModel, java.lang.Object)
 		 */
 		public void visitSelectionModel(SelectionModel selection,
 				Object argument) {
@@ -109,7 +109,7 @@ public class DataCollectionModel extends AModel {
 
 		/*
 		 *  (non-Javadoc)
-		 * @see cerberus.view.gui.swt.data.explorer.model.IModelVisitor#visitSelectionModel(cerberus.view.gui.swt.data.explorer.model.SelectionModel, java.lang.Object)
+		 * @see cerberus.view.swt.data.explorer.model.IModelVisitor#visitSelectionModel(cerberus.view.swt.data.explorer.model.SelectionModel, java.lang.Object)
 		 */
 		public void visitPathwayModel(PathwayModel pathway,
 				Object argument) {

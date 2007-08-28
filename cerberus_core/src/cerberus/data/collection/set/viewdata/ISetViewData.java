@@ -5,7 +5,7 @@ package cerberus.data.collection.set.viewdata;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.view.camera.IViewCamera;
-import cerberus.view.gui.jogl.IJoglMouseListener;
+import cerberus.view.jogl.IJoglMouseListener;
 
 /**
  * Create a Set that also is a IJoglMouseListener.

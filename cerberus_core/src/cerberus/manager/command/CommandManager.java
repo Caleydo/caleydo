@@ -22,7 +22,7 @@ import cerberus.manager.command.factory.ICommandFactory;
 //import cerberus.manager.singelton.SingeltonManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
-import cerberus.view.gui.swt.undoredo.UndoRedoViewRep;
+import cerberus.view.swt.undoredo.UndoRedoViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 import cerberus.command.CommandQueueSaxType;

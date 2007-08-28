@@ -7,14 +7,14 @@
  *  
  */
 
-package cerberus.view.gui.swt.widget;
+package cerberus.view.swt.widget;
 
 import javax.media.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sun.opengl.util.Animator;
 
-import cerberus.view.gui.swt.widget.ASWTEmbeddedWidget;
+import cerberus.view.swt.widget.ASWTEmbeddedWidget;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.exception.GeneViewRuntimeExceptionType;
 

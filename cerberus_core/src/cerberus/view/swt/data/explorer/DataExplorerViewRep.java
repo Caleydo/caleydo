@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.data.explorer;
+package cerberus.view.swt.data.explorer;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,14 +24,14 @@ import cerberus.manager.data.IStorageManager;
 import cerberus.manager.data.IVirtualArrayManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.data.DataTableViewRep;
-import cerberus.view.gui.swt.data.explorer.model.AModel;
-import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
-import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
-import cerberus.view.gui.swt.data.explorer.model.StorageModel;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
+import cerberus.view.swt.data.DataTableViewRep;
+import cerberus.view.swt.data.explorer.model.AModel;
+import cerberus.view.swt.data.explorer.model.DataCollectionModel;
+import cerberus.view.swt.data.explorer.model.SelectionModel;
+import cerberus.view.swt.data.explorer.model.StorageModel;
 
 public class DataExplorerViewRep 
 extends AViewRep 

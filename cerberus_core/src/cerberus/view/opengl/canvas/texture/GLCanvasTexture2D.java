@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.texture;
+package cerberus.view.opengl.canvas.texture;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,13 +26,13 @@ import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.statistics.histogram.HistogramData;
 //import cerberus.math.statistics.histogram.HistogramStatisticsSet;
 //import cerberus.math.statistics.histogram.StatisticHistogramType;
-import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.GLCanvasStatics;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasTexture2D 
 extends AGLCanvasUser_OriginRotation 
@@ -52,7 +52,7 @@ extends AGLCanvasUser_OriginRotation
 	 * Defien number of histogram slots.
 	 * Default is 0 to ensure valid settings. 
 	 * 
-	 *  @see cerberus.view.gui.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
+	 *  @see cerberus.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
 	 */
 	private int iCurrentHistogramLength = 0;
 	
@@ -230,7 +230,7 @@ extends AGLCanvasUser_OriginRotation
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void initGLCanvasUser( GL gl ) {
 		setInitGLDone();

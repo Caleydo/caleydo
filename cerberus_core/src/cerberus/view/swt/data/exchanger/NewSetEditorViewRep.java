@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.swt.data.exchanger;
+package cerberus.view.swt.data.exchanger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,9 +40,9 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.IView;
-import cerberus.view.gui.ViewType;
+import cerberus.view.AViewRep;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
 
 /**
  * Data Exchanger View makes it possible

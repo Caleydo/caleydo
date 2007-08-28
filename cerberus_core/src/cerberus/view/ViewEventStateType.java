@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui;
+package cerberus.view;
 
 public enum ViewEventStateType {
 	NONE,

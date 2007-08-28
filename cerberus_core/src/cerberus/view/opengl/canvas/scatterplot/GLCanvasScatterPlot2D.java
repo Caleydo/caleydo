@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.scatterplot;
+package cerberus.view.opengl.canvas.scatterplot;
 
 import javax.media.opengl.GL;
 
@@ -15,13 +15,13 @@ import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.GLCanvasStatics;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasScatterPlot2D 
 extends AGLCanvasUser_OriginRotation 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.heatmap;
+package cerberus.view.opengl.canvas.heatmap;
 
 // import java.util.Iterator;
 // import java.util.LinkedList;
@@ -23,12 +23,12 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  * 
- * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHeatmap2D extends AGLCanvasUser_OriginRotation
 		implements IMediatorReceiver, IMediatorSender {

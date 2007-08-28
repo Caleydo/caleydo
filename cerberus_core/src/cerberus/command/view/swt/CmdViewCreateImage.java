@@ -8,7 +8,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.swt.image.ImageViewRep;
+import cerberus.view.swt.image.ImageViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

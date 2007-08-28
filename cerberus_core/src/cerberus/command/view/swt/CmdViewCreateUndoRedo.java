@@ -8,7 +8,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.swt.undoredo.UndoRedoViewRep;
+import cerberus.view.swt.undoredo.UndoRedoViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

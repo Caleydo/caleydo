@@ -9,9 +9,9 @@ import javax.media.opengl.GLEventListener;
 import cerberus.command.CommandQueueSaxType;
 //import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
-import cerberus.view.gui.jogl.JoglCanvasForwarderType;
-import cerberus.view.gui.opengl.IGLCanvasUser;
-import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.view.jogl.JoglCanvasForwarderType;
+import cerberus.view.opengl.IGLCanvasUser;
+import cerberus.view.opengl.IGLCanvasDirector;
 
 /**
  * Make Jogl GLCanvas adressable by id and provide ground for XML bootstraping of 

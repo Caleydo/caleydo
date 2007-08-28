@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.data.explorer;
+package cerberus.view.swt.data.explorer;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,9 +9,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 
-import cerberus.view.gui.swt.data.explorer.model.SelectionModel;
-import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
-import cerberus.view.gui.swt.data.explorer.model.StorageModel;
+import cerberus.view.swt.data.explorer.model.SelectionModel;
+import cerberus.view.swt.data.explorer.model.DataCollectionModel;
+import cerberus.view.swt.data.explorer.model.StorageModel;
 
 public class DataExplorerLabelProvider extends LabelProvider
 {

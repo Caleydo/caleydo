@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.swt.browser;
+package cerberus.view.swt.browser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl;
+package cerberus.view.opengl;
 
 
 /**

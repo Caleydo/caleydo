@@ -15,7 +15,7 @@
 // ===========================================================================
 
 
-package cerberus.view.gui.opengl.canvas.isosurface;
+package cerberus.view.opengl.canvas.isosurface;
 
 
 
@@ -75,7 +75,7 @@ import gleem.linalg.Vec3f;
 
 import gleem.linalg.open.Vec4fp;
 
-import cerberus.view.gui.opengl.canvas.isosurface.SoMarchBase;
+import cerberus.view.opengl.canvas.isosurface.SoMarchBase;
 
 public class SoWrapper extends SoMarchBase
 //: public SoMarchBase, public LiverPlannerBaseObject

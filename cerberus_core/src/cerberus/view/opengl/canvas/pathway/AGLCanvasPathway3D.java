@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.canvas.pathway;
+package cerberus.view.opengl.canvas.pathway;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -34,9 +34,9 @@ import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
 import cerberus.util.system.SystemTime;
-import cerberus.view.gui.jogl.mouse.PickingJoglMouseListener;
-import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.jogl.mouse.PickingJoglMouseListener;
+import cerberus.view.opengl.GLCanvasStatics;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
@@ -255,7 +255,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see cerberus.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void initGLCanvas( GL gl ) {
 	
@@ -1360,7 +1360,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#showBackgroundOverlay(boolean)
+	 * @see cerberus.view.swt.pathway.IPathwayGraphView#showBackgroundOverlay(boolean)
 	 */
 	public void showBackgroundOverlay(boolean bTurnOn) {
 
@@ -1374,7 +1374,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(Stringt)
+	 * @see cerberus.view.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(Stringt)
 	 */
 	public void loadBackgroundOverlayImage(PathwayGraph refTexturedPathway) {
 		

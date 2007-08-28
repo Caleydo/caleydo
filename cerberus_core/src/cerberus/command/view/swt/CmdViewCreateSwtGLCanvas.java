@@ -15,7 +15,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.MathUtil;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
+import cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 import cerberus.xml.parser.parameter.IParameterHandler.ParameterHandlerType;
 

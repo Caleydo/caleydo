@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.util;
+package cerberus.view.opengl.util;
 
 /**
  * Object stores the pathway that is currently dragged

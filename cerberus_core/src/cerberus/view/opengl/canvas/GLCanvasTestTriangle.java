@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas;
+package cerberus.view.opengl.canvas;
 
 import javax.media.opengl.GL;
 
@@ -9,12 +9,12 @@ import javax.media.opengl.GL;
 //import gleem.linalg.Vec4f;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  * 
- * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasTestTriangle 
 extends AGLCanvasUser_OriginRotation 

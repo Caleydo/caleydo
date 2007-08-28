@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.canvas.pathway;
+package cerberus.view.opengl.canvas.pathway;
 
 import java.util.Iterator;
 

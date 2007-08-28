@@ -8,8 +8,8 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.gui.swt.data.exchanger.NewSetEditorViewRep;
-//import cerberus.view.gui.swt.data.exchanger.SetEditorViewRep;
+import cerberus.view.swt.data.exchanger.NewSetEditorViewRep;
+//import cerberus.view.swt.data.exchanger.SetEditorViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

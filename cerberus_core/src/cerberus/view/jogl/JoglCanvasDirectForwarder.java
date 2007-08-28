@@ -1,13 +1,13 @@
 /**
  * 
  */
-package cerberus.view.gui.jogl;
+package cerberus.view.jogl;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.opengl.IGLCanvasDirector;
+import cerberus.view.opengl.IGLCanvasDirector;
 
 
 /**

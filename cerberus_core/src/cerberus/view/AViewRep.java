@@ -1,4 +1,4 @@
-package cerberus.view.gui;
+package cerberus.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,8 +13,8 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.widget.SWTNativeWidget;
+import cerberus.view.ViewType;
+import cerberus.view.swt.widget.SWTNativeWidget;
 
 /**
  * Abstract class that is the base of all view representations.
@@ -156,7 +156,7 @@ implements IViewRep {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.gui.IView#getLabel()
+	 * @see cerberus.view.IView#getLabel()
 	 */
 	public final String getLabel() {
 		
@@ -165,7 +165,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.gui.IView#setViewType(cerberus.view.gui.ViewType)
+	 * @see cerberus.view.IView#setViewType(cerberus.view.ViewType)
 	 */
 	public final void setViewType(ViewType viewType) {
 		
@@ -173,7 +173,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see cerberus.view.gui.IViewRep#getViewType()
+	 * @see cerberus.view.IViewRep#getViewType()
 	 */
 	public final ViewType getViewType() {
 		return viewType;
@@ -181,7 +181,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see cerberus.view.gui.IView#addSetId(int[])
+	 * @see cerberus.view.IView#addSetId(int[])
 	 */
 	public final void addSetId( int [] iSet) {
 		
@@ -229,7 +229,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see cerberus.view.gui.IView#removeAllSetIdByType(cerberus.data.collection.SetType)
+	 * @see cerberus.view.IView#removeAllSetIdByType(cerberus.data.collection.SetType)
 	 */
 	public final void removeAllSetIdByType( SetType setType ) {
 		
@@ -250,7 +250,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see cerberus.view.gui.IView#removeSetId(int[])
+	 * @see cerberus.view.IView#removeSetId(int[])
 	 */
 	public final void removeSetId( int [] iSet) {
 		
@@ -300,7 +300,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see cerberus.view.gui.IView#getAllSetId()
+	 * @see cerberus.view.IView#getAllSetId()
 	 */
 	public final synchronized int[] getAllSetId() {
 		
@@ -334,7 +334,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see cerberus.view.gui.IView#hasSetId(int)
+	 * @see cerberus.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
 		ISet refCurrentSet = refSetManager.getItemSet(iSetId);

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package cerberus.view.gui.jogl.mouse;
+package cerberus.view.jogl.mouse;
 
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.data.view.camera.ViewCameraBase;
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.jogl.IJoglMouseListener;
+import cerberus.view.jogl.IJoglMouseListener;
 
 /**
  * @author Michael Kalkusch

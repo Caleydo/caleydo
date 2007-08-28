@@ -1,12 +1,12 @@
-package cerberus.view.gui.swt.jogl.gears;
+package cerberus.view.swt.jogl.gears;
 
 import javax.media.opengl.GLCanvas;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.jogl.JoglCanvasDirectForwarder;
-import cerberus.view.gui.jogl.JoglCanvasForwarderType;
-import cerberus.view.gui.swt.jogl.SwtJoglGLCanvasViewRep;
-import cerberus.view.gui.IView;
+import cerberus.view.jogl.JoglCanvasDirectForwarder;
+import cerberus.view.jogl.JoglCanvasForwarderType;
+import cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep;
+import cerberus.view.IView;
 
 import demos.gears.Gears;
 

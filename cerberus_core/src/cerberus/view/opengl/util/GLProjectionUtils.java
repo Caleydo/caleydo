@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.util;
+package cerberus.view.opengl.util;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;

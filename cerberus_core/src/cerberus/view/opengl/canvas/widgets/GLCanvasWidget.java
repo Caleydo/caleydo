@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.view.gui.opengl.canvas.widgets;
+package cerberus.view.opengl.canvas.widgets;
 
 
 import javax.media.opengl.GL;
@@ -20,13 +20,13 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.gui.opengl.GLCanvasStatics;
-import cerberus.view.gui.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.GLCanvasStatics;
+import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.gui.opengl.IGLCanvasUser
+ * @see cerberus.view.opengl.IGLCanvasUser
  * @see cerberus.manager.event.mediator.IMediatorReceiver
  */
 public class GLCanvasWidget 

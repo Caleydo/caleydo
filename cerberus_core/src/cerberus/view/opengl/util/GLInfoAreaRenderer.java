@@ -1,4 +1,4 @@
-package cerberus.view.gui.opengl.util;
+package cerberus.view.opengl.util;
 
 import java.awt.Font;
 import java.util.Iterator;
@@ -13,7 +13,7 @@ import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.util.mapping.GeneAnnotationMapper;
-import cerberus.view.gui.opengl.canvas.pathway.GLPathwayManager;
+import cerberus.view.opengl.canvas.pathway.GLPathwayManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 

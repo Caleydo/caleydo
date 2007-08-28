@@ -1,9 +1,9 @@
-package cerberus.view.gui.swt.data.meta;
+package cerberus.view.swt.data.meta;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.view.gui.AViewRep;
-import cerberus.view.gui.ViewType;
-import cerberus.view.gui.swt.data.IDataTableView;
+import cerberus.view.AViewRep;
+import cerberus.view.ViewType;
+import cerberus.view.swt.data.IDataTableView;
 
 public class MetaTableViewRep extends AViewRep implements IDataTableView
 {	

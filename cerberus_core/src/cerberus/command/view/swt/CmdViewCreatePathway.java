@@ -12,7 +12,7 @@ import cerberus.manager.IViewManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.swt.pathway.Pathway2DViewRep;
+import cerberus.view.swt.pathway.Pathway2DViewRep;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**

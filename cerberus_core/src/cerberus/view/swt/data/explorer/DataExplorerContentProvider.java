@@ -1,4 +1,4 @@
-package cerberus.view.gui.swt.data.explorer;
+package cerberus.view.swt.data.explorer;
 
 import java.util.Iterator;
 
@@ -6,10 +6,10 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-import cerberus.view.gui.swt.data.explorer.model.DeltaEvent;
-import cerberus.view.gui.swt.data.explorer.model.IDeltaListener;
-import cerberus.view.gui.swt.data.explorer.model.AModel;
-import cerberus.view.gui.swt.data.explorer.model.DataCollectionModel;
+import cerberus.view.swt.data.explorer.model.DeltaEvent;
+import cerberus.view.swt.data.explorer.model.IDeltaListener;
+import cerberus.view.swt.data.explorer.model.AModel;
+import cerberus.view.swt.data.explorer.model.DataCollectionModel;
 
 public class DataExplorerContentProvider 
 implements ITreeContentProvider, IDeltaListener

@@ -13,7 +13,7 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.gui.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
+import cerberus.view.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
 import cerberus.xml.parser.parameter.IParameterHandler;
 
 /**
