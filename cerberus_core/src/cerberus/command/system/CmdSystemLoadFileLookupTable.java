@@ -22,7 +22,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
-import cerberus.parser.handler.importer.ascii.LookupTableLoaderProxy;
+import cerberus.parser.ascii.lookuptable.LookupTableLoaderProxy;
 import cerberus.parser.parameter.IParameterHandler;
 //import cerberus.manager.data.genome.GenomeIdMapInt2Int;
 //import cerberus.manager.data.genome.IGenomeIdMap;
@@ -40,7 +40,7 @@ import cerberus.util.system.StringConversionTool;
  * @author Marc Streit
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage
+ * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdSystemLoadFileLookupTable 
 extends ACommand
@@ -76,18 +76,18 @@ implements ICommand {
 	/**
 	 * Default is 32, because gpr files have a header of that size!
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStartParsingAtLine
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStartParsingAtLine()
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#iStartParsingAtLine
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#getStartParsingAtLine()
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStartPareseFileAtLine = 0;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#iStopParsingAtLine
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#getStopParsingAtLine()
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopPareseFileAtLine = -1;
 	
@@ -243,7 +243,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

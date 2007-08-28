@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser.handler.importer.ascii.lookuptable;
+package cerberus.parser.ascii.lookuptable;
 
 
 import cerberus.data.map.MultiHashArrayIntegerMap;
@@ -10,10 +10,7 @@ import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
-import cerberus.parser.handler.importer.ascii.LookupTableLoaderProxy;
-//import cerberus.xml.parser.ISaxParserHandler;
-//import cerberus.parser.handler.importer.ascii.AbstractLoader;
-import cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader;
+import cerberus.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -67,7 +64,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class, 
 	 * if required by logic of sub-class.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
 	 */
 	public void setMultiMapInteger(MultiHashArrayIntegerMap setHashMap, 
 			GenomeMappingType type) {
@@ -78,7 +75,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
 	 */
 	public void setMultiMapString(MultiHashArrayStringMap setHashMap, 
 			GenomeMappingType type) {
@@ -89,7 +86,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, GenomeMappingType)
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, GenomeMappingType)
 	 */
 	public void setHashMap( final IGenomeIdMap setHashMap,
 			final GenomeMappingType type) {
@@ -101,7 +98,7 @@ implements ILookupTableLoader {
 	 * If internal data strucutres need to be allocated, 
 	 * the sub-class must implement this method.
 	 *
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#initLUT()
+	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#initLUT()
 	 */
 	public void initLUT() {
 
@@ -112,7 +109,7 @@ implements ILookupTableLoader {
 	 * If internal data strucutres were allocated, 
 	 * the sub-class must implement this method.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#destroyLUT()
+	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#destroyLUT()
 	 */
 	public void destroyLUT() {
 

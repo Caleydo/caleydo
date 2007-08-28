@@ -1,7 +1,7 @@
 package cerberus.command.queue;
 
 import cerberus.command.ICommand;
-import cerberus.parser.IParserObject;
+import cerberus.parser.ascii.IParserObject;
 
 public interface ICommandQueue 
 extends ICommand, IParserObject {

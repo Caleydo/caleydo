@@ -33,7 +33,7 @@ import cerberus.util.system.StringConversionTool;
  * @author Michael Kalkusch
  *
  * @see cerberus.data.collection.ISet
- * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage
+ * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdDataCreateVirtualArray 
 extends ACmdCreate_IdTargetLabel
@@ -67,7 +67,7 @@ implements ICommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

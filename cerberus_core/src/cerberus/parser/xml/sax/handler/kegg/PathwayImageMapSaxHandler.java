@@ -1,4 +1,4 @@
-package cerberus.parser.handler.importer.kegg;
+package cerberus.parser.xml.sax.handler.kegg;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
@@ -10,11 +10,11 @@ import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.pathway.PathwayManager;
-import cerberus.parser.handler.AXmlParserHandler;
+import cerberus.parser.xml.sax.handler.AXmlParserHandler;
 
 /**
  * 
- * @see cerberus.parser.handler.IXmlParserHandler
+ * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
  * 
  * @author Michael Kalkusch
  *
@@ -154,8 +154,8 @@ extends AXmlParserHandler {
 	}
 	
 	/**
-	 * @see cerberus.parser.handler.IXmlParserHandler#destroyHandler()
-	 * @see cerberus.parser.handler.AXmlParserHandler#destroyHandler()
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see cerberus.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {

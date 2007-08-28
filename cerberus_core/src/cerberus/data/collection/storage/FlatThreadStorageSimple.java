@@ -13,7 +13,7 @@ import java.util.Hashtable;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.parser.ISaxParserHandler;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 
 //import org.xml.sax.InputSource;
 

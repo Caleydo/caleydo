@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser.handler.importer.ascii.lookuptable;
+package cerberus.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,9 +13,8 @@ import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.genome.IGenomeIdMap;
-import cerberus.parser.handler.importer.ascii.LookupTableLoaderProxy;
-import cerberus.parser.handler.importer.ascii.lookuptable.ALookupTableLoader;
-import cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader;
+import cerberus.parser.ascii.lookuptable.ALookupTableLoader;
+import cerberus.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -42,7 +41,7 @@ implements ILookupTableLoader {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
+	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile,
 			int iNumberOfLinesInFile ) throws IOException {
@@ -144,7 +143,7 @@ implements ILookupTableLoader {
 
 	/**
 	 * Write back data to IGenomeIdManager
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
 	 * @see cerberus.manager.data.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {

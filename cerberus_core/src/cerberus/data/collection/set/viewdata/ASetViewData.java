@@ -16,7 +16,7 @@ import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.parser.ISaxParserHandler;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 
 
 /**

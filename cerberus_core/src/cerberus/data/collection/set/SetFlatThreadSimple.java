@@ -13,7 +13,7 @@ import java.util.Vector;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.parser.ISaxParserHandler;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 
 import cerberus.data.collection.IMetaData;
 import cerberus.data.collection.IVirtualArray;

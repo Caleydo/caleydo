@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser.handler;
+package cerberus.parser.xml.sax.handler;
 
 import org.xml.sax.Attributes;
 

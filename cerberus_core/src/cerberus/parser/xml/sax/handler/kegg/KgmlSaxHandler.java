@@ -1,4 +1,4 @@
-package cerberus.parser.handler.importer.kegg;
+package cerberus.parser.xml.sax.handler.kegg;
 
 import java.util.HashMap;
 
@@ -13,12 +13,17 @@ import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
-import cerberus.parser.handler.AXmlParserHandler;
-import cerberus.parser.handler.IXmlParserHandler;
+import cerberus.parser.xml.sax.handler.AXmlParserHandler;
 
+/**
+ * 
+ * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
+ * 
+ * @author Michael Kalkusch
+ *
+ */
 public class KgmlSaxHandler 
-extends AXmlParserHandler 
-implements IXmlParserHandler {
+extends AXmlParserHandler {
 	
 	private Attributes attributes;
 	
@@ -541,8 +546,8 @@ implements IXmlParserHandler {
     }
 
 	/**
-	 * @see cerberus.parser.handler.IXmlParserHandler#destroyHandler()
-	 * @see cerberus.parser.handler.AXmlParserHandler#destroyHandler()
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see cerberus.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {

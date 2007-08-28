@@ -49,7 +49,7 @@ import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.manager.view.ViewJoglManager;
 import cerberus.manager.gui.SWTGUIManager;
-import cerberus.parser.ISaxParserHandler;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 
 

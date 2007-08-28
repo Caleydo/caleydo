@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser.handler.command;
+package cerberus.parser.xml.sax.handler.command;
 
 
 //import javax.xml.parsers.SAXParserFactory;
@@ -16,26 +16,25 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.parser.handler.AXmlParserHandler;
-import cerberus.parser.handler.IXmlParserHandler;
-import cerberus.parser.handler.SXmlParserHandler;
 import cerberus.parser.parameter.IParameterHandler;
 import cerberus.parser.parameter.ParameterHandler;
 import cerberus.parser.parameter.IParameterHandler.ParameterHandlerType;
 //import cerberus.manager.IMenuManager;
 //import cerberus.util.exception.GeneViewRuntimeException;
-//import cerberus.xml.parser.ACerberusDefaultSaxHandler;
+import cerberus.parser.xml.sax.handler.AXmlParserHandler;
+import cerberus.parser.xml.sax.handler.SXmlParserHandler;
 
 
 /**
  * Create Menus in Frames from XML file.
+ * 
+ * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
  * 
  * @author Michael Kalkusch
  *
  */
 public class CommandSaxHandler 
 extends AXmlParserHandler
-implements IXmlParserHandler 
 {
 	
 	/* XML Tags */		

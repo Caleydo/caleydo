@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser.handler.importer.ascii.lookuptable;
+package cerberus.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,9 +19,8 @@ import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
-import cerberus.parser.handler.importer.ascii.LookupTableLoaderProxy;
-import cerberus.parser.handler.importer.ascii.lookuptable.ALookupTableLoader;
-import cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader;
+import cerberus.parser.ascii.lookuptable.ALookupTableLoader;
+import cerberus.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -36,8 +35,8 @@ implements ILookupTableLoader {
 	 * Switch between loadDataParseFileLUT_multipleStringPerLine() == TRUE and
 	 * loadDataParseFileLUT_oneStringPerLine()and == FALSE 
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_oneStringPerLine(BufferedReader, int, int, int)
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_multipleStringPerLine(BufferedReader, int, int, int)
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_oneStringPerLine(BufferedReader, int, int, int)
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_multipleStringPerLine(BufferedReader, int, int, int)
 	 */
 	protected boolean bOneLineConaintsMultipleStrings = true;
 	
@@ -281,7 +280,7 @@ implements ILookupTableLoader {
 	/**
 	 * TRUE if only multple values my be in one line assigned to one key.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#setOneLineHasMultipleStrings(boolean)
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setOneLineHasMultipleStrings(boolean)
 	 * @return
 	 */
 	public final boolean hasOneLineMultipleStrings() {
@@ -297,7 +296,7 @@ implements ILookupTableLoader {
 	 *         .. <br>
 	 *        [key1, value_n] <br>
 	 *        
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.LookupTableMultiMapStringLoader#hasOneLineMultipleStrings()
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#hasOneLineMultipleStrings()
 	 * 
 	 * @param bset TRUE for parsing multiple Strings per line
 	 */
@@ -307,7 +306,7 @@ implements ILookupTableLoader {
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
+	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
@@ -339,7 +338,7 @@ implements ILookupTableLoader {
 	
 	/**
 	 * Write back data to IGenomeIdManager
-	 * @see cerberus.parser.handler.importer.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
 	 * @see cerberus.manager.data.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {

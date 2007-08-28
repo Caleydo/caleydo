@@ -1,14 +1,14 @@
 /**
  * 
  */
-package cerberus.parser.handler.importer;
+package cerberus.parser.xml.sax.handler.recursion;
 
 import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
-import cerberus.parser.handler.AXmlParserHandler;
-import cerberus.parser.handler.IXmlParserHandler;
+import cerberus.parser.xml.sax.handler.AXmlParserHandler;
+import cerberus.parser.xml.sax.handler.IXmlParserHandler;
 import cerberus.util.exception.GeneViewRuntimeExceptionType;
 import cerberus.util.exception.GeneViewRuntimeException;
 

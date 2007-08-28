@@ -11,7 +11,7 @@ package cerberus.data.xml;
 //import java.io.InputStream;
 //import org.xml.sax.InputSource;
 
-import cerberus.parser.ISaxParserHandler;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 
 //import prometheus.net.dwt.DNetEventComponentInterface;
 

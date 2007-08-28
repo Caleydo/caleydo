@@ -49,8 +49,6 @@ implements IGLCanvasDirector {
 	
 	private final JoglCanvasForwarderType canvasForwarderType;
 	
-	//protected Vector <IGLCanvasUser> vecGLCanvasUser;
-	
 	/**
 	 * Animator for Jogl thread
 	 */
@@ -103,6 +101,15 @@ implements IGLCanvasDirector {
 	public final void removeAllGLCanvasUsers() {
 		
 		forwarder_GLEventListener.removeAllGLCanvasUsers();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.opengl.IGLCanvasDirector#containsGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 */
+	public final boolean containsGLCanvasUser(IGLCanvasUser user) {
+
+		return forwarder_GLEventListener.containsGLCanvasUser(user);		
 	}
 	
 	/* (non-Javadoc)
@@ -343,12 +350,5 @@ implements IGLCanvasDirector {
 		refAnimator.stopEventCount();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#containsGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
-	 */
-	public final boolean containsGLCanvasUser(IGLCanvasUser user) {
 
-		return forwarder_GLEventListener.containsGLCanvasUser(user);		
-	}
 }

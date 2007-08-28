@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser.handler;
+package cerberus.parser.xml.sax.handler;
 
 //import org.xml.sax.Locator;
 import org.xml.sax.helpers.DefaultHandler;
@@ -81,7 +81,7 @@ implements IXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see cerberus.parser.handler.IXmlParserHandler#initHandler()
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#initHandler()
 	 */
 	public void initHandler()
 	{
@@ -93,7 +93,7 @@ implements IXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see cerberus.parser.handler.IXmlParserHandler#destroyHandler()
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
 	 */
 	public void destroyHandler()
 	{

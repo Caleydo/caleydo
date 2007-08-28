@@ -1,4 +1,4 @@
-package cerberus.parser.handler.importer.ascii.lookuptable;
+package cerberus.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,14 +31,14 @@ public interface ILookupTableLoader {
 	/**
 	 * initialize the lookup table if neccessary.
 	 * 
-	 * @see cerberus.parser.IParserObject#init()
+	 * @see cerberus.parser.ascii.IParserObject#init()
 	 */
 	public void initLUT();
 	
 	/**
 	 * Destroy and cleanup stored variables of the lookup table if neccessary.
 	 * 
-	 * @see cerberus.parser.IParserObject#destroy()
+	 * @see cerberus.parser.ascii.IParserObject#destroy()
 	 */
 	public void destroyLUT();
 	
@@ -47,9 +47,9 @@ public interface ILookupTableLoader {
 	 * This mehtode is called by LookupTableLoaderProxy#copyDataToInternalDataStructures(), which
 	 * is derived from AbstractLoader#copyDataToInternalDataStructures().
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.LookupTableLoaderProxy
-	 * @see cerberus.parser.handler.importer.ascii.LookupTableLoaderProxy#copyDataToInternalDataStructures()
-	 * @see cerberus.parser.handler.importer.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableLoaderProxy
+	 * @see cerberus.parser.ascii.lookuptable.LookupTableLoaderProxy#copyDataToInternalDataStructures()
+	 * @see cerberus.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
 	 * @see cerberus.manager.data.IGenomeIdManager
 	 * 
 	 * @return TRUE on success.

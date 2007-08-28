@@ -7,8 +7,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 //import org.xml.sax.SAXException;
 
-import cerberus.parser.handler.IXmlBaseHandler;
-import cerberus.parser.handler.IXmlParserHandler;
+import cerberus.parser.xml.sax.handler.IXmlBaseHandler;
+import cerberus.parser.xml.sax.handler.IXmlParserHandler;
 
 
 /**
@@ -41,9 +41,9 @@ extends IXmlBaseHandler
 	 * registers the handler using this data.
 	 * Also calles initHandler() on the new Handler.
 	 * 
-	 * @see cerberus.parser.handler.IXmlParserHandler#initHandler()
-	 * @see cerberus.parser.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
-	 * @see cerberus.parser.handler.IXmlParserHandler#getXmlActivationTag()
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#initHandler()
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#getXmlActivationTag()
 	 * 
 	 * @param handler register handler to an opening tag.
 	 * @param sOpeningAndClosingTag defines opening and closing tag tiggering the handler to become active.
@@ -77,7 +77,7 @@ extends IXmlBaseHandler
 	/**
 	 * Callback called by cerberus.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
 	 * 
-	 * @see cerberus.parser.handler.IXmlParserHandler
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 * @param handler calling handler, that just read its closing tag
@@ -146,7 +146,7 @@ extends IXmlBaseHandler
 	 * endElement(Stringt, Stringt, Stringt)
 	 * of cerberus.parser.handler.IXmlParserHandler
 	 * 
-	 * @see cerberus.parser.handler.IXmlParserHandler
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 */
@@ -160,7 +160,7 @@ extends IXmlBaseHandler
 	 * startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * of cerberus.parser.handler.IXmlParserHandler
 	 * 
-	 * @see cerberus.parser.handler.IXmlParserHandler
+	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * 
 	 */

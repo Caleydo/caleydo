@@ -377,7 +377,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage#loadData()
+	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
 	 * @see cerberus.command.ICommand#doCommand()
 	 */

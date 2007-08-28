@@ -15,8 +15,8 @@ import org.xml.sax.Attributes;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
-import cerberus.parser.ASaxParserHandler;
-import cerberus.parser.ISaxParserHandler;
+import cerberus.parser.xml.sax.ASaxParserHandler;
+import cerberus.parser.xml.sax.ISaxParserHandler;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
@@ -98,7 +98,7 @@ implements ISaxParserHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see cerberus.parser.ISaxParserHandler#reset()
+	 * @see cerberus.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	

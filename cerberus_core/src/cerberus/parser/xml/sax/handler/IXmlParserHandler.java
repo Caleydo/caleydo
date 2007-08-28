@@ -1,10 +1,9 @@
 /**
  * 
  */
-package cerberus.parser.handler;
+package cerberus.parser.xml.sax.handler;
 
 //import org.xml.sax.Attributes;
-import cerberus.parser.handler.IXmlBaseHandler;
 
 //import cerberus.xml.parser.manager.IXmlParserManager;
 

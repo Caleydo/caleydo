@@ -14,7 +14,7 @@ import cerberus.data.IManagedObject;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.parser.handler.IXmlParserHandler;
+import cerberus.parser.xml.sax.handler.IXmlParserHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 /**
  * @author Michael Kalkusch

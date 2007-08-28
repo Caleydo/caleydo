@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cerberus.parser;
+package cerberus.parser.ascii;
 
 /**
  * Provides methods vor initialization aund cleanup of parser.

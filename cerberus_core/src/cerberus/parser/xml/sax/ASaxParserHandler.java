@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package cerberus.parser;
+package cerberus.parser.xml.sax;
 
 //import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
@@ -284,7 +284,7 @@ implements ISaxParserHandler
 	 * Important: all derived classes must call super.reset() inside their reset() call
 	 * to not cause side effects!
 	 * 
-	 * @see cerberus.parser.ISaxParserHandler#reset()
+	 * @see cerberus.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		sErrorMessage = "";

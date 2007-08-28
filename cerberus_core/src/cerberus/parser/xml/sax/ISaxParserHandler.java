@@ -2,7 +2,7 @@
  * Project: GenView
  *  
  */
-package cerberus.parser;
+package cerberus.parser.xml.sax;
 
 import org.xml.sax.Attributes;
 
