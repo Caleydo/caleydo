@@ -31,6 +31,7 @@ import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
 import cerberus.command.view.opengl.CmdGlObjectWidget;
+import cerberus.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateDataExchanger;
 import cerberus.command.view.swt.CmdViewCreateSetEditor;
 import cerberus.command.view.swt.CmdViewCreateDataExplorer;
@@ -265,6 +266,16 @@ public class CommandFactory
 		{
 			createdCommand =
 				new CmdViewCreateSwtGLCanvas(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;
+		}
+		
+		case CREATE_VIEW_RCP_GLCANVAS:
+		{
+			createdCommand =
+				new CmdViewCreateRcpGLCanvas(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);		

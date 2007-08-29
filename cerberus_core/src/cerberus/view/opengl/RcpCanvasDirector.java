@@ -3,10 +3,13 @@ package cerberus.view.opengl;
 import java.util.Collection;
 
 import cerberus.data.AUniqueManagedObject;
+import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.util.exception.GeneViewRuntimeException;
+import cerberus.view.IView;
+import cerberus.view.ViewType;
 import cerberus.view.jogl.JoglCanvasDirectForwarder;
 import cerberus.view.jogl.JoglCanvasForwarder;
 import cerberus.view.jogl.JoglCanvasForwarderType;
@@ -20,7 +23,7 @@ import cerberus.view.jogl.JoglCanvasForwarderType;
  */
 public class RcpCanvasDirector 
 extends AUniqueManagedObject 
-implements IGLCanvasDirector {
+implements IGLCanvasDirector, IView {
 
 	// FIXME: must be loaded from XML file!
 	protected int iGLEventListernerId = 99000;
@@ -116,6 +119,12 @@ implements IGLCanvasDirector {
 		return forwarder_GLEventListener;
 	}
 
+	//**************************************************
+	// FIXME: this code is from the interface IView
+	// RcpCanvasDirector must implement IView so that it 
+	// can be registered in ViewManager.
+	// This needs to be refactored!!
+	
 	@Override
 	public void destroyDirector() {
 
@@ -128,6 +137,75 @@ implements IGLCanvasDirector {
 
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void addSetId(int[] set) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawView() {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int[] getAllSetId() {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLabel() {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ViewType getViewType() {
+
+		return ViewType.NONE;
+	}
+
+	@Override
+	public boolean hasSetId(int setId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void initView() {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeAllSetIdByType(SetType setType) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeSetId(int[] set) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setParentContainerId(int parentContainerId) {
+
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */

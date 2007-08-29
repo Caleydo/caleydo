@@ -74,9 +74,11 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_MIXER(ManagerType.VIEW,"cmd", "type","-1", "Create Mixer"),
 	CREATE_VIEW_BROWSER(ManagerType.VIEW,"cmd", "type", "-1", "Create Browser"),	
 	CREATE_VIEW_IMAGE(ManagerType.VIEW,"cmd", "type", "-1", "Create Image"),	
-	CREATE_VIEW_SWT_GLCANVAS(ManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_SET_EDITOR(ManagerType.VIEW,"cmd", "type","-1", "No description available!"),
 	CREATE_VIEW_UNDO_REDO(ManagerType.VIEW,"cmd", "type","-1", "Create UNDO/REDO"),
+
+	CREATE_VIEW_SWT_GLCANVAS(ManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
+	CREATE_VIEW_RCP_GLCANVAS(ManagerType.VIEW,"cmd", "type", "-1", "Create RCP GL Canvas"),
 	
 	/* switches to create different Set's */
 	SET_DATA_LINEAR("cmd","type","-1", "Create planar SET"),
