@@ -36,7 +36,7 @@ import cerberus.util.slerp.SlerpAction;
 import cerberus.util.slerp.SlerpMod;
 import cerberus.util.sound.SoundPlayer;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
-import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser;
 import cerberus.view.opengl.util.GLDragAndDrop;
 import cerberus.view.opengl.util.GLInfoAreaRenderer;
 import cerberus.view.opengl.util.GLPathwayMemoPad;
@@ -51,7 +51,7 @@ import com.sun.opengl.util.BufferUtil;
  * @author Michael Kalkusch
  */
 public class GLCanvasJukeboxPathway3D 
-extends AGLCanvasUser_OriginRotation
+extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 
 	public static final int MAX_LOADED_PATHWAYS = 300;

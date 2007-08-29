@@ -16,7 +16,6 @@ import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
 
 /**
  * @author Michael Kalkusch
@@ -24,7 +23,7 @@ import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
  * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHistogram2D 
-extends AGLCanvasUser_OriginRotation 
+extends AGLCanvasUser
 {
 	
 	private StatisticHistogramType enumCurrentHistogramMode = 

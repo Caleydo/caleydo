@@ -22,7 +22,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.opengl.GLCanvasStatics;
-import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * @author Michael Kalkusch
@@ -30,7 +30,7 @@ import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
  * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasMinMaxScatterPlot3D 
-extends AGLCanvasUser_OriginRotation 
+extends AGLCanvasUser 
 {
 	
 	protected MinMaxDataInteger minMaxSeaker;

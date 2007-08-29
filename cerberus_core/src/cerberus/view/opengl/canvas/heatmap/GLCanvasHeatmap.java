@@ -10,14 +10,14 @@ import javax.media.opengl.GL;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
-import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * @author Michael Kalkusch
  *
  */
 public class GLCanvasHeatmap 
-extends AGLCanvasUser_OriginRotation 
+extends AGLCanvasUser 
 //implements IGLCanvasUser
 {
 	

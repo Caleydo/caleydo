@@ -36,7 +36,7 @@ import cerberus.util.mapping.EnzymeToExpressionColorMapper;
 import cerberus.util.system.SystemTime;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.opengl.GLCanvasStatics;
-import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
@@ -50,7 +50,7 @@ import com.sun.opengl.util.texture.TextureIO;
  *
  */
 public abstract class AGLCanvasPathway3D
-extends AGLCanvasUser_OriginRotation
+extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 		
 	/**

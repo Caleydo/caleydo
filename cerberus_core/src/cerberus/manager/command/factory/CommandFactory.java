@@ -454,7 +454,19 @@ public class CommandFactory
 				new CmdGlObjectHeatmap2D(
 						refGeneralManager,
 						refCommandManager,
-						cmdType);			
+						cmdType,
+						true);			
+			break;
+		}
+		
+		case CREATE_GL_HEATMAP2DCOLUMN:
+		{
+			createdCommand =
+				new CmdGlObjectHeatmap2D(
+						refGeneralManager,
+						refCommandManager,
+						cmdType,
+						false);			
 			break;
 		}
 		

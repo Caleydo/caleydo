@@ -282,6 +282,90 @@ public class EnzymeToExpressionColorMapper {
 		
 		return arMappingColor;
 	}
+
+	public final ArrayList<Integer> getExpressionValueArrayByGeneID(
+			String sGeneID) {
+		
+		// Remove prefix ("hsa:")
+		sGeneID = sGeneID.substring(4);
+		
+		ArrayList<Integer> arMappingColor = new ArrayList<Integer>();
+		
+		int iCummulatedExpressionValue = 0;
+		int iNumberOfExpressionValues = 0;
+		
+		int iGeneID = refGenomeIdManager.getIdIntFromStringByMapping(sGeneID, 
+				GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+				
+		if (iGeneID == -1)
+		{	
+			return arMappingColor;
+		}
+		
+		int iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
+				GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+	
+		if (iAccessionID == -1)
+		{	
+			return arMappingColor;
+		}
+		
+		Collection<Integer> iArTmpMicroArrayId = null;
+		iArTmpMicroArrayId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
+					GenomeMappingType.ACCESSION_2_MICROARRAY);
+		
+		if (iArTmpMicroArrayId == null)
+		{	
+			return arMappingColor;
+		}
+	
+		Iterator<IStorage> iterMappingStorage = alMappingStorage.iterator();
+		Iterator<Integer> iterTmpMicroArrayId = null;
+		IStorage refExpressionStorage = null;
+		
+		while (iterMappingStorage.hasNext())
+		{
+			//Get expression value by MicroArrayID
+			refExpressionStorage = iterMappingStorage.next();
+			
+			iterTmpMicroArrayId = iArTmpMicroArrayId.iterator();
+			
+			int [] bufferIntArray = refExpressionStorage.getArrayInt();
+			
+			if ( bufferIntArray == null ) {
+				this.refGeneralManager.getSingelton().logMsg("color mapping failed, Storage=[" +
+						refExpressionStorage.getLabel() + "][" +
+						refExpressionStorage.toString() +
+						"] does not contain int[]!",LoggerType.ERROR_ONLY);
+			}
+			
+			while (iterTmpMicroArrayId.hasNext())
+			{
+				int iMicroArrayId = iterTmpMicroArrayId.next();
+								
+				int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
+						iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+				
+				// Get rid of 770 internal ID identifier
+				iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
+				
+					int iExpressionValue = bufferIntArray[iExpressionStorageIndex];
+					
+					arMappingColor.add(iExpressionValue);
+					
+					iCummulatedExpressionValue += iExpressionValue;
+					iNumberOfExpressionValues++;					
+				
+			}
+			
+//			if (iNumberOfExpressionValues != 0)
+//			{
+//				arMappingColor.add(iCummulatedExpressionValue);
+//			}
+		}
+		
+		return arMappingColor;
+	}
 	
 //	/**
 //	 * Method is for testing the mapping from enzymes to genes. It takes a

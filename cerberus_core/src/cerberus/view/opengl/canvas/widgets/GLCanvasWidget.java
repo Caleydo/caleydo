@@ -21,7 +21,7 @@ import cerberus.manager.type.ManagerObjectType;
 
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.opengl.GLCanvasStatics;
-import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * @author Michael Kalkusch
@@ -30,7 +30,7 @@ import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
  * @see cerberus.manager.event.mediator.IMediatorReceiver
  */
 public class GLCanvasWidget 
-extends AGLCanvasUser_OriginRotation 
+extends AGLCanvasUser 
 //implements IMediatorReceiver
 {
 	

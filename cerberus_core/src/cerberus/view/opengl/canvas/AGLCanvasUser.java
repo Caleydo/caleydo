@@ -3,6 +3,7 @@
  */
 package cerberus.view.opengl.canvas;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -13,7 +14,9 @@ import javax.media.opengl.GL;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.selection.SetSelection;
+import cerberus.data.collection.set.viewdata.ISetViewData;
 import cerberus.data.view.camera.IViewCamera;
+import cerberus.data.view.camera.ViewCameraBase;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.ISetManager;
@@ -23,8 +26,10 @@ import cerberus.view.opengl.IGLCanvasDirector;
 import cerberus.view.opengl.IGLCanvasUser;
 
 /**
+ * 
+ * @see cerberus.view.jogl.IJoglMouseListener
+ * 
  * @author Michael Kalkusch
- *
  */
 public abstract class AGLCanvasUser 
 extends AViewCameraListenerObject
@@ -58,6 +63,11 @@ implements IGLCanvasUser {
 			String sLabel )
 	{
 		super( iViewId, setGeneralManager, setViewCamera);
+		
+		if ( refViewCamera==null ) {
+			IViewCamera newViewCamera = new ViewCameraBase(iViewId,this);
+			setViewCamera(newViewCamera);			
+		}
 		
 		openGLCanvasDirector =
 			setGeneralManager.getSingelton().getViewGLCanvasManager().getGLCanvasDirector( iParentContainerId );
@@ -334,15 +344,21 @@ implements IGLCanvasUser {
 	}
 	
 
-
-	
-	
+	public final void setOriginRotation( final Vec3f origin,	
+			final Rotf rotation ) {
+			
+		refViewCamera.setCameraPosition(origin);
+		refViewCamera.setCameraRotation(rotation);			
+	}
+		
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
+	 * @see cerberus.view.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
 	 */
-	public void initGLCanvas(GL gl)
-	{
-		setInitGLDone();		
+	public final void displayChanged(GL gl, 
+			boolean modeChanged, 
+			boolean deviceChanged) {
+		
+		this.render( gl );		
 	}
 
 	
@@ -378,6 +394,17 @@ implements IGLCanvasUser {
 		this.renderPart( gl );
 	}
 	
+	
+	
+	/**
+	 * @see cerberus.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
+	 */
+	public void initGLCanvas(GL gl)
+	{
+		setInitGLDone();		
+	}
+
+	
 	/**
 	 * @see cerberus.view.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
 	 */
@@ -387,7 +414,7 @@ implements IGLCanvasUser {
 			final int width,
 			final int height) {
 		
-		System.out.println(" AGLCanvasUser_OriginRotation.reshape(GLCanvas canvas)");
+		System.out.println(" AGLCanvasUser.reshape(GLCanvas canvas)");
 		
 		this.renderPart( gl );
 	}
@@ -400,15 +427,8 @@ implements IGLCanvasUser {
 		
 	}
 
-	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
-	 */
-	public final void displayChanged(GL gl, 
-			boolean modeChanged, 
-			boolean deviceChanged) {
-		
-		this.render( gl );		
-	}
+
+
 
 	/**
 	 * @see cerberus.view.opengl.IGLCanvasUser#update(javax.media.opengl.GL)
@@ -417,6 +437,22 @@ implements IGLCanvasUser {
 		this.render( gl );	
 	}
 	
+
+	
+	public void updateReceiver(Object eventTrigger) {
+
+	}
+	
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+
+		if ( updatedSet.getSetType() == SetType.SET_VIEW_DATA ) 
+		{
+			ISetViewData refSetViewData = (ISetViewData) updatedSet;
+			
+			refViewCamera.clone(refSetViewData.getViewCamera());
+		}
+		
+	}
 	/*
 	 * Forwards render(GL) to derived class.
 	 * 

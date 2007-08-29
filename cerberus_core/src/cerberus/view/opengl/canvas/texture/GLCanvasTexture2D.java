@@ -27,7 +27,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 //import cerberus.math.statistics.histogram.HistogramStatisticsSet;
 //import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.view.opengl.GLCanvasStatics;
-import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
+import cerberus.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * @author Michael Kalkusch
@@ -35,7 +35,7 @@ import cerberus.view.opengl.canvas.AGLCanvasUser_OriginRotation;
  * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasTexture2D 
-extends AGLCanvasUser_OriginRotation 
+extends AGLCanvasUser 
 {
 	
 	private boolean bUseGLWireframe = false;

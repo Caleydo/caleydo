@@ -43,6 +43,7 @@ public enum CommandQueueSaxType
 	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HEATMAP(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HEATMAP2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_HEATMAP2DCOLUMN(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_LAYERED_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Layered Pathway 3D"),

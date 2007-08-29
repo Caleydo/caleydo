@@ -10,20 +10,27 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-//import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
+import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
+import cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 
 /**
+ * Creates IGLCanvasHeatmap2D or GLCanvasHeatmap2DColumn obejcts.
+ * 
+ * @see cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D
+ * @see cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
+ * 
  * @author Michael Kalkusch
  *
  */
 public class CmdGlObjectHeatmap2D 
 extends ACmdCreate_GlCanvasUser
 implements ICommand {
+	
+	private boolean bUseDefaultHeatmap;
 	
 	/**
 	 * Contains values for selection.
@@ -52,13 +59,21 @@ implements ICommand {
 	public CmdGlObjectHeatmap2D(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final CommandQueueSaxType refCommandQueueSaxType,
+			final boolean useDefaultHeatmap) {
 		
 		super(refGeneralManager, 
 				refCommandManager,
 				refCommandQueueSaxType);
 		
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_HEATMAP2D;
+		this.bUseDefaultHeatmap = useDefaultHeatmap;
+		
+		if  (bUseDefaultHeatmap) {
+			localManagerObjectType = CommandQueueSaxType.CREATE_GL_HEATMAP2D;
+		}
+		else {
+			localManagerObjectType = CommandQueueSaxType.CREATE_GL_HEATMAP2DCOLUMN;
+		}
 	}
 
 
@@ -149,10 +164,17 @@ implements ICommand {
 	
 	@Override
 	public void doCommandPart() throws GeneViewRuntimeException {
+
+		IGLCanvasHeatmap2D canvas;
 		
-		GLCanvasHeatmap2D canvas = 
-			(GLCanvasHeatmap2D) openGLCanvasUser;
-				
+		if  (this.bUseDefaultHeatmap) {
+			canvas = 
+				(IGLCanvasHeatmap2D) openGLCanvasUser;
+		} else {
+			canvas = 
+				(GLCanvasHeatmap2DColumn) openGLCanvasUser;
+		}		
+		
 		canvas.setOriginRotation( cameraOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		
@@ -213,8 +235,15 @@ implements ICommand {
 	@Override
 	public void undoCommandPart() throws GeneViewRuntimeException {
 		
-		GLCanvasHeatmap2D canvas = 
-			(GLCanvasHeatmap2D) openGLCanvasUser;
+		IGLCanvasHeatmap2D canvas;
+		
+		if  (this.bUseDefaultHeatmap) {
+			canvas = 
+				(IGLCanvasHeatmap2D) openGLCanvasUser;
+		} else {
+			canvas = 
+				(GLCanvasHeatmap2DColumn) openGLCanvasUser;
+		}		
 		
 		canvas.destroyGLCanvas();
 		canvas = null;

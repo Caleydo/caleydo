@@ -33,7 +33,7 @@ import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
  * 
  * @see cerberus.view.opengl.IGLCanvasUser
  */
-public class GLCanvasHeatmap2D 
+public class GLCanvasHeatmap2DColumn 
 extends AGLCanvasHeatmap2D
 		implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
@@ -104,7 +104,7 @@ extends AGLCanvasHeatmap2D
 	/**
 	 * @param setGeneralManager
 	 */
-	public GLCanvasHeatmap2D(final IGeneralManager setGeneralManager,
+	public GLCanvasHeatmap2DColumn(final IGeneralManager setGeneralManager,
 			int iViewId,
 			int iParentContainerId,
 			String sLabel) {
