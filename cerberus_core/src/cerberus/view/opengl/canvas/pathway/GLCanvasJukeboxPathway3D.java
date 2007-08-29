@@ -15,6 +15,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.geneview.graph.EGraphItemHierarchy;
+import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
 import org.geneview.graph.algorithm.GraphVisitorGetLinkedGraphItems;
 import org.geneview.graph.algorithm.IGraphVisitorSearch;
@@ -27,6 +28,7 @@ import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.graph.core.PathwayGraph;
 import cerberus.data.graph.item.vertex.EPathwayVertexType;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -824,7 +826,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		bMouseOverMemoPad = false;
 		
-		System.out.println("Pick ID: " + iPickedObjectId);
+		//System.out.println("Pick ID: " + iPickedObjectId);
 
 		// Check if picked object a non-pathway object (like pathway pool lines,
 		// navigation handles, etc.)
@@ -888,8 +890,8 @@ implements IMediatorReceiver, IMediatorSender {
 		if (pickedVertexRep == null)
 			return;
 
-//		loadNodeInformationInBrowser(pickedVertexRep.getAllItemsByProp(
-//				EGraphItemProperty.ALIAS_PARENT).getVertexLink());
+		loadNodeInformationInBrowser(((PathwayVertexGraphItem)pickedVertexRep.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
 
 		// Remove pathway pool fisheye
 		iMouseOverPickedPathwayId = -1;

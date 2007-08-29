@@ -303,11 +303,16 @@ public class CerberusBootloader
 		logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);		
 		refSWTGUIManager.runApplication();
 		
-		logger.logMsg("Cerberus.core   clean up... ", LoggerType.STATUS);		
-		refOneForAllManager.destroyOnExit();
-		
-		logger.logMsg("Cerberus.core   clean up... [done]\n", LoggerType.STATUS);		
-		logger.logMsg("... Stop Cerberus Core ...", LoggerType.STATUS);
+//		logger.logMsg("Cerberus.core   clean up... ", LoggerType.STATUS);		
+//		refOneForAllManager.destroyOnExit();
+//		
+//		logger.logMsg("Cerberus.core   clean up... [done]\n", LoggerType.STATUS);		
+//		logger.logMsg("... Stop Cerberus Core ...", LoggerType.STATUS);
 	}
+
 	
+	public final IGeneralManagerSingleton getGeneralManager() {
+	
+		return refOneForAllManager;
+	}
 }
