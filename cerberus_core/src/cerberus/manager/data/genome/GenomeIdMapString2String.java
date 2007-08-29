@@ -3,6 +3,8 @@
  */
 package cerberus.manager.data.genome;
 
+import java.util.Set;
+
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.data.genome.AGenomeIdMap;
 import cerberus.manager.data.genome.IGenomeIdMap;
@@ -61,6 +63,16 @@ implements IGenomeIdMap {
 	public void put( final String key, 
 			final String value) {
 		hashGeneric.put( key, value);
+	}
+	
+	public final Set<Integer> getKeysInteger() {
+
+		return null;
+	}
+
+	public final Set<String> getKeysString() {
+
+		return this.getKeys();
 	}
 
 }

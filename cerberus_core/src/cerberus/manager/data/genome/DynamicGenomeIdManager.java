@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 //import java.util.Iterator;
 //import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -502,6 +503,90 @@ implements IGenomeIdManager {
 		} //while ( iterInputList.hasNext() )
 		
 		return sortBuffer.keySet();
+	}
+
+
+	private Set <Integer> getKeysFromExposedDataStructues(final GenomeMappingType type) {
+		
+		IGenomeIdMap bufferMap = this.hashType2Map.get( type );
+		
+		if ( bufferMap == null ) {
+			return null;
+		}
+		Set <Integer> keyset = bufferMap.getKeysInteger();		
+	
+		assert keyset == null : "GenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
+		
+		return keyset;			
+	}
+	
+	/**
+	 * Creates a HashMap from the the MultiMap requested using (GenomeMappingType) type; 
+	 * < GenomeMappingType - Id , index from [0.. multiMap.keySet().size()-1) >
+	 * 
+	 * @param type
+	 * @return HashMap with < GenomeMappingType - Id , index from [0.. multiMap.keySet().size()-1) > 
+	 * 
+	 * @see GenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
+	 * @see GenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
+	 */
+	public HashMap<Integer,Integer> getAllKeysByGenomeIdTypeHashMap(final GenomeMappingType type) {
+		
+		try {
+			Set <Integer> keyset = 
+				getKeysFromExposedDataStructues(type);	
+		
+			if  (keyset == null ) {
+				return null;
+			}
+			
+			/* create result data structure.. */
+			HashMap<Integer,Integer> resultHashMap =
+				new HashMap<Integer,Integer> (keyset.size());	
+			
+			Iterator<Integer> iter = keyset.iterator();
+			
+			for ( int i=0;iter.hasNext(); i++) {
+				resultHashMap.put( iter.next(), i );
+			}
+			
+			return resultHashMap;
+			
+		} catch (OutOfMemoryError e) {
+			System.err.println("Out of memroy while allocation of memory! " + e.getStackTrace());			
+			throw e;
+		}
+	}
+	
+	/**
+	 * 
+	 * @see GenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
+	 * @see GenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
+	 */
+	public int[] getAllKeysByGenomeIdType(GenomeMappingType type) {		
+		
+		try {
+			Set <Integer> keyset =
+				getKeysFromExposedDataStructues(type);	
+			
+			if  (keyset == null ) {
+				return null;
+			}
+			
+			/* create result data structure.. */
+			int[] resultArray = new int[keyset.size()];
+			
+			Iterator<Integer> iter = keyset.iterator();
+			
+			for ( int i=0;iter.hasNext(); i++) {
+				resultArray[i] = iter.next().intValue();
+			}
+			return resultArray;
+			
+		} catch (OutOfMemoryError e) {
+			System.err.println("Out of memroy while allocation of memory! " + e.getStackTrace());			
+			throw e;
+		}
 	}
 
 }

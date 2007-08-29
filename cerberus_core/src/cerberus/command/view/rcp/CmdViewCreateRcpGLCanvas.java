@@ -4,8 +4,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -27,16 +26,12 @@ import cerberus.view.opengl.RcpCanvasDirector;
  *
  */
 public class CmdViewCreateRcpGLCanvas 
-extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	
 	protected Vec3f cameraOrigin_GLCanvas;
 	
 	protected Rotf cameraRotation_GLCanvas;
-	
-	protected int iGLCanvasId = 0;
-	 
-	protected int iGLEventListernerId = 0;
+
 	
 	/**
 	 * Constructor
@@ -93,11 +88,11 @@ implements ICommand {
 		
 		super.setParameterHandler(refParameterHandler);	
 		
-		iGLCanvasId = refParameterHandler.getValueInt(
-				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
-		
-		iGLEventListernerId = refParameterHandler.getValueInt( 
-				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
+//		iGLCanvasId = refParameterHandler.getValueInt(
+//				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
+//		
+//		iGLEventListernerId = refParameterHandler.getValueInt( 
+//				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
 
 		String sPositionGLOrigin = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey() );

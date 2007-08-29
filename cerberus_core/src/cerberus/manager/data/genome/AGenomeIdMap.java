@@ -41,6 +41,10 @@ implements IGenomeIdMap {
 		this.dataType = dataType;
 	}
 
+	public Set <K> getKeys() {
+		return hashGeneric.keySet();
+	}
+	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.event.IEventPublisherMap#getIntByInt(int)
 	 */

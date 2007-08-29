@@ -2,6 +2,8 @@ package cerberus.manager.data.genome;
 
 //import java.util.HashMap;
 
+import java.util.Set;
+
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.data.IGenomeIdManager;
@@ -30,7 +32,6 @@ public interface IGenomeIdMap {
 	public String getStringByInt( final int key);
 	
 	public String getStringByString( final String key);
-
 	
 	public int getIntByIntChecked( final int key);
 	
@@ -39,6 +40,10 @@ public interface IGenomeIdMap {
 	public String getStringByIntChecked( final int key);
 	
 	public String getStringByStringChecked( final String key);
+	
+	public Set <Integer> getKeysInteger();
+	
+	public Set <String> getKeysString();
 	
 	/**
 	 * Adds a key-value pair. 

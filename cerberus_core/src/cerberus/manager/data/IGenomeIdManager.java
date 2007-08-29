@@ -5,10 +5,12 @@ package cerberus.manager.data;
 
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
+import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 
@@ -41,6 +43,24 @@ extends IGeneralManager {
 	
 	public int getIdIntFromStringByMapping( final String sCerberusId, 
 			final GenomeMappingType type );
+	
+	/**
+	 *  expose all keys for one GenomeIdType.
+	 *  Note is was required for GenomeIdType.NCBI_GENEID in specific.
+	 *  
+	 * @param type specify one GenomeIdType
+	 * @return HashMap<Integer,Integer> containing all <GenomeIdType id's, incremented index [0.. max] > 
+	 */
+	public HashMap<Integer,Integer> getAllKeysByGenomeIdTypeHashMap(GenomeMappingType type); 
+	
+	/**
+	 *  expose all keys for one GenomeIdType.
+	 *  Note is was required for GenomeIdType.NCBI_GENEID in specific.
+	 *  
+	 * @param type specify one GenomeIdType
+	 * @return int[] containing all GenomeIdType id's
+	 */
+	public int[] getAllKeysByGenomeIdType( final GenomeMappingType type ); 
 	
 	
 	/**

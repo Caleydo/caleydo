@@ -8,6 +8,7 @@ import gleem.linalg.Vec2f;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
@@ -23,6 +24,7 @@ import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
@@ -39,6 +41,8 @@ extends AGLCanvasHeatmap2D
 		implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	//private int[] iIndexPickedCoored = {-1,-1};
+	
+	private HashMap <Integer,Integer> hashNCBI_GENE2index;
 	
 	private ArrayList <Vec2f> fIndexPickedCoored = new ArrayList <Vec2f> (1);
 	
@@ -116,6 +120,8 @@ extends AGLCanvasHeatmap2D
 				iParentContainerId, 
 				sLabel);
 
+		//hashNCBI_GENE2index = new HashMap <Integer,Integer> ();
+		
 		fAspectRatio = new float[2][3];
 		viewingFrame = new float[3][2];
 
@@ -138,8 +144,23 @@ extends AGLCanvasHeatmap2D
 		refMinMaxDataInteger = new MinMaxDataInteger(1);
 		
 		System.err.println("  GLCanvasHeatmap2DColumn()");
+		
+		this.init(null);
 	}
 
+	/** 
+	 * init after IGenomeIdManager has load all its data from file.
+	 */
+	public void init( final IGenomeIdManager readFromIGenomeIdManager ) {
+		IGenomeIdManager refIGenomeIdManager = refGeneralManager.getSingelton().getGenomeIdManager();		
+		
+		hashNCBI_GENE2index = 
+			refIGenomeIdManager.getAllKeysByGenomeIdTypeHashMap(
+					//GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+					GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+
+	}
+	
 	private void drawSelectionX(GL gl, final float fStartX,
 			final float fStartY, final float fEndX, final float fEndY,
 			final float fIncX, final float fIncY) {
@@ -1108,13 +1129,18 @@ extends AGLCanvasHeatmap2D
 			
 			for ( int j=0; j<intBuffer.length; j++) {
 				
-				String ncbi_code = 
-					refGeneralManager.getSingelton().getGenomeIdManager().getIdStringFromIntByMapping(
-						intBuffer[j], 
-						GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+				Integer indexInt = hashNCBI_GENE2index.get(intBuffer[j]);
 				
-				System.err.print( "[" + intBuffer[j] + "=>" + ncbi_code + "], ");
-				
+				if  (indexInt != null ) {
+					System.err.print( "[" + intBuffer[j] + "=>" + indexInt + "], ");
+				} else {
+					System.err.print( "[" + intBuffer[j] + "=> ?? ], ");
+				}
+								
+//				String ncbi_code = 
+//					refGeneralManager.getSingelton().getGenomeIdManager().getIdStringFromIntByMapping(
+//						intBuffer[j], 
+//						GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);				
 			}
 		}
 		
