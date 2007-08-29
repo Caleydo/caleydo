@@ -137,16 +137,16 @@ extends AGLCanvasUser
 		} 
 			catch ( FileNotFoundException fnfe) 
 		{
-			System.out.println("Error: can not find fiel for texture " + sTextureFromFile);
+			System.out.println("GLCanvasTexture2D Error: can not find fiel for texture " + sTextureFromFile);
 		}
 			catch ( GLException gle) 
 		{
-				System.out.println("Error: GLError while accessing texture from file " + 
+				System.out.println("GLCanvasTexture2D Error: GLError while accessing texture from file " + 
 						sTextureFromFile + "  " + gle.toString() );
 		}
 			catch (IOException ioe)
 		{
-			System.out.println("Error loading texture " + sTextureFromFile );
+			System.out.println("GLCanvasTexture2D Error loading texture " + sTextureFromFile );
 		}
 			
 		try {
@@ -155,7 +155,7 @@ extends AGLCanvasUser
 		}
 		catch ( GLException gle) 
 		{
-			System.out.println("Error: GLError while accessing texture from file " + 
+			System.out.println("GLCanvasTexture2D Error: GLError while accessing texture from file " + 
 					sTextureFromFile + "  " + gle.toString() );
 		}
 	}
@@ -338,10 +338,10 @@ extends AGLCanvasUser
 //				
 //				gl.glEnd();
 				
-				System.out.println(" TEXTURE!");
+				System.out.println("GLCanvasTexture2D - TEXTURE!");
 				
 				if ( refGLTexture == null ) {
-					System.err.println(" TEXTURE not bound!");
+					System.err.println("GLCanvasTexture2D TEXTURE not bound!");
 					return;
 				}
 				

@@ -195,7 +195,7 @@ public final class MathUtil {
 		}		
 				
 		if ( testSuccessful ) {
-			System.out.println("class MathUtil passed all tests!");	
+			System.out.println("MathUtil.testConsitency() class MathUtil passed all tests!");	
 		}
 				
 		return testSuccessful;

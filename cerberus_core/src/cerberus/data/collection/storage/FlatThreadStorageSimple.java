@@ -627,7 +627,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 			setMementoXML_usingHandler( refSaxHandler );
 		}
 		
-		System.out.println("STORAGE CALLBACK!");
+		System.out.println("FlatThreadStorageSimple.callbackForParser() STORAGE CALLBACK!");
 	}
 	
 	/**

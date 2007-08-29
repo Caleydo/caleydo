@@ -9,6 +9,8 @@ import javax.media.opengl.GLEventListener;
 import cerberus.command.CommandQueueSaxType;
 //import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
+import cerberus.manager.type.ManagerObjectType;
+import cerberus.view.IView;
 import cerberus.view.jogl.JoglCanvasForwarderType;
 import cerberus.view.opengl.IGLCanvasUser;
 import cerberus.view.opengl.IGLCanvasDirector;

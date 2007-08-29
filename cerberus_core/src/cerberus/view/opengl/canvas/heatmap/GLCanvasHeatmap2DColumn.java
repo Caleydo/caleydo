@@ -20,6 +20,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
@@ -135,6 +136,8 @@ extends AGLCanvasHeatmap2D
 		viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MAX] = 0.0f;
 
 		refMinMaxDataInteger = new MinMaxDataInteger(1);
+		
+		System.err.println("  GLCanvasHeatmap2DColumn()");
 	}
 
 	private void drawSelectionX(GL gl, final float fStartX,
@@ -406,7 +409,7 @@ extends AGLCanvasHeatmap2D
 
 		//int iPickedObjectId = 0;
 
-		System.out.println("  PICK: ----- " );
+		System.out.println("GLCanvasHeatmap2DColumn  PICK: ----- " );
 		
 		// Only pick object that is nearest
 		for (i = 0; i < iHitCount; i++)
@@ -458,7 +461,7 @@ extends AGLCanvasHeatmap2D
 			return false;
 		}
 		
-		System.out.println("  PICKED index=[" +resultPickPointCoord[0] + "," + resultPickPointCoord[1] + "]" );
+		System.out.println("GLCanvasHeatmap2DColumn  PICKED index=[" +resultPickPointCoord[0] + "," + resultPickPointCoord[1] + "]" );
 		 
 		addPickedPoint(fIndexPickedCoored,
 				(float) resultPickPointCoord[0],
@@ -806,7 +809,7 @@ extends AGLCanvasHeatmap2D
 				//	    				System.out.print(";" +
 				//	    						Integer.toString(iHistogramIntervalls[i]) );
 				//	    			}
-				System.out.println(" UPDATED!");
+				System.out.println("GLCanvasHeatmap2DColumn - UPDATED!");
 				
 				createDisplayLists( gl );
 				
@@ -1092,6 +1095,32 @@ extends AGLCanvasHeatmap2D
 			ISet updatedSet) {
 		
 		System.err.println( "UPDATE BINGO !");
+		
+		System.err.println( " UPDATE SET: " + updatedSet.toString() );
+		
+		IStorage[] storage = updatedSet.getStorageByDim(0);
+		IVirtualArray[] virtualArray = updatedSet.getVirtualArrayByDim(0);
+		
+		for ( int i=0; i < virtualArray.length; i++) {
+			IVirtualArray vaBuffer = virtualArray[i];
+			
+			int[] intBuffer = storage[0].getArrayInt();
+			
+			for ( int j=0; j<intBuffer.length; j++) {
+				
+				String ncbi_code = 
+					refGeneralManager.getSingelton().getGenomeIdManager().getIdStringFromIntByMapping(
+						intBuffer[j], 
+						GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+				
+				System.err.print( "[" + intBuffer[j] + "=>" + ncbi_code + "], ");
+				
+			}
+		}
+		
+		
+		
+		
 	}
 
 	

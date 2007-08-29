@@ -406,7 +406,7 @@ extends AGLCanvasHeatmap2D
 
 		//int iPickedObjectId = 0;
 
-		System.out.println("  PICK: ----- " );
+		System.out.println("GLCanvasHeatmap2D  PICK: ----- " );
 		
 		// Only pick object that is nearest
 		for (i = 0; i < iHitCount; i++)
@@ -458,7 +458,7 @@ extends AGLCanvasHeatmap2D
 			return false;
 		}
 		
-		System.out.println("  PICKED index=[" +resultPickPointCoord[0] + "," + resultPickPointCoord[1] + "]" );
+		System.out.println("GLCanvasHeatmap2D  PICKED index=[" +resultPickPointCoord[0] + "," + resultPickPointCoord[1] + "]" );
 		 
 		addPickedPoint(fIndexPickedCoored,
 				(float) resultPickPointCoord[0],
@@ -806,7 +806,7 @@ extends AGLCanvasHeatmap2D
 				//	    				System.out.print(";" +
 				//	    						Integer.toString(iHistogramIntervalls[i]) );
 				//	    			}
-				System.out.println(" UPDATED!");
+				System.out.println("GLCanvasHeatmap2D - UPDATED!");
 				
 				createDisplayLists( gl );
 				

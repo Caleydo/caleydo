@@ -206,7 +206,7 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     int y = e.getY();
     Dimension size = e.getComponent().getSize();
 
-    //System.out.println("  +--> dragging... " + this.toString() );
+    //System.out.println("JoglMouseListener  +--> dragging... " + this.toString() );
     
     if  ( ! bMouseRightButtonDown ) {
     	

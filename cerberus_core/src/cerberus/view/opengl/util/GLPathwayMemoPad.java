@@ -78,7 +78,7 @@ public class GLPathwayMemoPad {
 	
 		} catch (Exception e)
 		{
-			System.out.println("Error loading texture from " + TRASH_BIN_PATH);
+			System.out.println("GLPathwayMemoPad.init() Error loading texture from " + TRASH_BIN_PATH);
 			e.printStackTrace();
 		}		
 		

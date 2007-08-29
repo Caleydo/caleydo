@@ -105,7 +105,7 @@ implements ILookupTableLoader {
 						bMaintainLoop = false;
 					} catch ( NullPointerException npe ) {
 						bMaintainLoop = false;
-						System.out.println( "NullPointerException! " + npe.toString() );
+						System.out.println("LookupTableMultiMapStringLoader NullPointerException! " + npe.toString() );
 						npe.printStackTrace();
 					}
 				
@@ -189,7 +189,7 @@ implements ILookupTableLoader {
 						bMaintainLoop = false;
 					} catch ( NullPointerException npe ) {
 						bMaintainLoop = false;
-						System.out.println( "NullPointerException! " + npe.toString() );
+						System.out.println("LookupTableMultiMapStringLoader NullPointerException! " + npe.toString() );
 						npe.printStackTrace();
 					}
 				

@@ -39,14 +39,14 @@ implements ICommand {
 	 * @see cerberus.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
-		System.out.println("shut down application...");
+		System.out.println("CmdSystemExit: shut down application...");
 		
 		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
 		exitWarning.setText("WARNING","Close application. Current state is stored..");
 		exitWarning.doCommand();
 		
-		System.out.println(" ...cleanup.. ");
-		System.out.println("shut down done!");
+		System.out.println("CmdSystemExit: ...cleanup.. ");
+		System.out.println("CmdSystemExit: shut down done!");
 		
 		
 		System.exit( 0 );

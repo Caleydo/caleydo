@@ -54,7 +54,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_SELECTION_SLIDER,
 							iUniqueTargetId, 
 							iParentContainerId, 
-							sLabel);
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				sliderView, 

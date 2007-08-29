@@ -59,7 +59,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,
 						iUniqueTargetId,
 						iParentContainerId, 
-						sLabel);
+						sLabel,
+						iGLCanvasId,
+						iGLEventListernerId);
 		
 		viewManager.registerItem(
 				pathwayView, 

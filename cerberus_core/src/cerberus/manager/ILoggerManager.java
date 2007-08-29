@@ -21,7 +21,8 @@ extends IGeneralManager
 		
 		ERROR_ONLY	(  0, "E: ", "show error only" ),
 		MINOR_ERROR	(  5, "M: ", "show any errors" ),
-		STATUS		( 10, "S: ", "show errors and status messages" ),
+		MINOR_ERROR_XML	(  9, "X: ", "show xml errors" ),
+		STATUS		( 10, "S: ", "show errors and status messages" ),		
 		TRANSITION	( 20, "T: ", "show errors, status messages and module transitions"),
 		VERBOSE		( 30, "V: ", "show error, status and verbose messages" ),
 		FULL		( 99, "F: ", "show any message");

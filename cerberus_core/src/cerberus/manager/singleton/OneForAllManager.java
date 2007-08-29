@@ -412,7 +412,7 @@ implements IGeneralManagerSingleton
 
 		assert type != null : "type is null!";
 
-		System.out.println("callback in OneForAllManager");
+		System.out.println("OneForAllManager.callbackForParser() callback in OneForAllManager");
 
 		switch (type.getGroupType())
 		{

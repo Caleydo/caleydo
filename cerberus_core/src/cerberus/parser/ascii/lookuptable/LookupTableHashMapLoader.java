@@ -107,7 +107,7 @@ implements ILookupTableLoader {
 						//reset return value to indicate error
 						iStopParsingAtLine = 1;
 						
-						System.out.println( "NullPointerException! " + npe.toString() );
+						System.out.println( "LookupTableHashMapLoader NullPointerException! " + npe.toString() );
 						npe.printStackTrace();
 						
 					}

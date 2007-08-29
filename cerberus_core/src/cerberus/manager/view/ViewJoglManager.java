@@ -226,13 +226,17 @@ implements IViewGLCanvasManager {
 	//		return createView(useViewType, iUniqueId);
 	//	}
 
+	
 	/**
 	 * Method creates a new view representation according to the 
 	 * type parameter.
 	 */
-	public IView createView(ManagerObjectType useViewType, int iViewId,
-			int iParentContainerId, 
-			String sLabel) {
+	public IView createView(final ManagerObjectType useViewType, 
+			final int iViewId,
+			final int iParentContainerId, 
+			final String sLabel,
+			final int iGLcanvasId,
+			final int iGLforwarderId) {
 
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{
@@ -333,9 +337,14 @@ implements IViewGLCanvasManager {
 			return new GLCanvasHeatmap(refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
 
-		case CREATE_GL_HEATMAP2D:			
+		case CREATE_GL_HEATMAP2D:
+			System.err.println("  overwrite: create CREATE_GL_HEATMAP2DCOLUMN instead of requested CREATE_GL_HEATMAP2D");
+			return new GLCanvasHeatmap2DColumn(refGeneralManager, iViewId,
+					iParentContainerId, sLabel);
+			/*
 			return new GLCanvasHeatmap2D(refGeneralManager, iViewId,
 					iParentContainerId, sLabel);
+			*/
 			
 		case CREATE_GL_HEATMAP2DCOLUMN:
 			return new GLCanvasHeatmap2DColumn(refGeneralManager, iViewId,

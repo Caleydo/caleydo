@@ -226,7 +226,7 @@ implements GenericMultiMap <String>  {
 		MultiHashArrayIntegerMap codeResolvedMultMapInt = 
 			new MultiHashArrayIntegerMap();
 		
-		System.out.println(genomeMappingLUT_1.getTypeOrigin().toString());
+		System.out.println("MultiHashArrayStringMap.getCodeResolvedMap() " + genomeMappingLUT_1.getTypeOrigin().toString());
 
 		/** 
 		 * Read HashMap and write it to new HashMap

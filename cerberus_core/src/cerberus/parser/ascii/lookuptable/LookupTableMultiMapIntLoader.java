@@ -88,7 +88,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 						bMaintainLoop = false;
 					} catch ( NullPointerException npe ) {
 						bMaintainLoop = false;
-						System.out.println( "NullPointerException! " + npe.toString() );
+						System.out.println( "LookupTableMultiMapIntLoader NullPointerException! " + npe.toString() );
 						npe.printStackTrace();
 					}
 				

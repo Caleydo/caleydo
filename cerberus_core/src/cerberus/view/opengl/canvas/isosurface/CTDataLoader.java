@@ -107,13 +107,13 @@ public class CTDataLoader {
 					
 					if ( iSizeHeader != iHeaderSizeInByte ) 
 					{
-						System.err.println("readHeader(" + headerFileName + ") Header=" + iSizeHeader + 
+						System.err.println("GLCanvasHistogram2D.readHeader(" + headerFileName + ") Header=" + iSizeHeader + 
 								" is not of excpected size!");
 					}
 				}
 				catch ( IOException ioe) 
 				{
-					System.err.println("readHeader(" + headerFileName + ") error while reading avalable Header");
+					System.err.println("GLCanvasHistogram2D.readHeader(" + headerFileName + ") error while reading avalable Header");
 					return;
 				}
 			
@@ -135,7 +135,7 @@ public class CTDataLoader {
 				int testN= -1;
 				
 				int iResult = GeneralByteReader.toByteArrayLSB(80,headerBuffer,testN);
-				System.err.println(" iResult=" + iResult );
+				System.err.println("GLCanvasHistogram2D.readHeader()  iResult=" + iResult );
 				
 				short iReadDimensionDatabase = (short) headerBuffer[40];
 				
@@ -155,7 +155,7 @@ public class CTDataLoader {
 					sDimensionArray[i] = (short) headerBuffer[40+i];
 					iDimensionArray[i] = (int) sDimensionArray[i];
 					
-					System.out.println( "  header dim[" + i + "] = " + sDimensionArray[i] );
+					System.out.println( "GLCanvasHistogram2D.readHeader()  header dim[" + i + "] = " + sDimensionArray[i] );
 				}
 				
 				setDimensions( iDimensionArray );
@@ -163,7 +163,7 @@ public class CTDataLoader {
 			}
 			catch (IOException ioe2) 
 			{
-				System.err.println("readHeader(" + headerFileName + ") error while reading Header");
+				System.err.println("GLCanvasHistogram2D.readHeader(" + headerFileName + ") error while reading Header");
 				
 			}
 			finally {
@@ -182,7 +182,7 @@ public class CTDataLoader {
 		}
 		catch ( FileNotFoundException fnfe ) 
 		{
-			System.err.println("readHeader(" + headerFileName + ") file not found!");
+			System.err.println("GLCanvasHistogram2D.readHeader(" + headerFileName + ") file not found!");
 			
 		}
 	}

@@ -65,6 +65,7 @@ implements IMediator {
 		}
 
 		arSender.add(sender);
+		System.out.println("LockableMediator.register( Sender " + sender.toString() + " )");
 		return true;
 	}
 
@@ -81,6 +82,7 @@ implements IMediator {
 		}
 
 		arReceiver.add(receiver);
+		System.out.println("LockableMediator.register( Receiver " + receiver.toString() + " )");
 		return true;
 	}
 

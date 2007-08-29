@@ -79,7 +79,7 @@ extends AGLCanvasUser
 		  enumCurrentHistogramMode = 
 			  StatisticHistogramType.getTypeByIndex(iCurrentHistogramMode);	  
 		  
-		  System.out.println(" TOGGLE MODE: " + 
+		  System.out.println("GLCanvasHistogram2D.toggleMode() mode= " + 
 				  Integer.toString(iCurrentHistogramMode) + "  -->" +
 				  enumCurrentHistogramMode.toString() + " DONE");
 		  
@@ -102,7 +102,7 @@ extends AGLCanvasUser
 		  }
 		  else {
 			  
-			  System.out.println("exceed range [3..10000]");
+			  System.out.println("GLCanvasHistogram2D.toggleMode() exceed range [3..10000]");
 			  
 //			  throw new RuntimeException("setHistogramLength(" +
 //					  Integer.toString(iSetLegth) + ") exceeded range [3..10000]");
@@ -163,7 +163,7 @@ extends AGLCanvasUser
 
 							doMinMaxData.useSet( targetSet );
 							
-							System.out.println(" UPDATED!");
+							System.out.println("GLCanvasHistogram2D.renderPart()  UPDATED!");
 							
 							iSetCacheId = targetSet.getCacheId();
 						}

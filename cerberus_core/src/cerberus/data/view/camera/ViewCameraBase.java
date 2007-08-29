@@ -105,7 +105,7 @@ implements IViewCamera {
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewPan(gleem.linalg.Vec3f)
 	 */
 	public void setCameraPosition(final Vec3f setPan) {
-		System.out.println( "   +-> set camera pos! [" + setPan.toString() + "] id=[" +
+		System.out.println( "ViewCameraBase.setCameraPosition()   +-> set camera pos! [" + setPan.toString() + "] id=[" +
 				getId() + "] " + caller.toString());
 		
 		v3fCameraPosition = new Vec3f(setPan);
@@ -283,7 +283,7 @@ implements IViewCamera {
 
 		Rotf buffer = rotfCameraRotation.times(setRot);
 
-//		System.out.println( "now =" + 
+//		System.out.println("ViewCameraBase.addCameraPosition() now =" + 
 //				rotfCameraRotation.toString() + 
 //				"\n  +  " + 
 //				setRot.toString() + 

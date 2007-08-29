@@ -85,11 +85,11 @@ public abstract class ACollectionManager
 	
 	protected boolean unregisterItem_byUniqueId_insideCollection( final int iItemId ) {
 		
-		System.out.println("remove PRE : " + this.hashId2IndexLookup.toString() );
+		System.out.println("ACollectionManager.unregisterItem_byUniqueId_insideCollection() remove PRE : " + this.hashId2IndexLookup.toString() );
 		
 		hashId2IndexLookup.remove( new Integer(iItemId) );
 		
-		System.out.println("remove POST: " + this.hashId2IndexLookup.toString() );
+		System.out.println("ACollectionManager.unregisterItem_byUniqueId_insideCollection() remove POST: " + this.hashId2IndexLookup.toString() );
 		
 		return true;
 		

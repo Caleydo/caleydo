@@ -49,7 +49,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
 							iUniqueTargetId, 
 							iParentContainerId, 
-							sLabel);
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				dataExplorerView, 

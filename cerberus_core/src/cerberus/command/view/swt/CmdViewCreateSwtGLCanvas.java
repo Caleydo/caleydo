@@ -34,10 +34,6 @@ implements ICommand {
 	
 	protected Rotf cameraRotation_SWTGLCanvas;
 	
-	protected int iGLCanvasId = 0;
-	 
-	protected int iGLEventListernerId = 0;
-	
 	/**
 	 * Constructor
 	 * 
@@ -63,11 +59,13 @@ implements ICommand {
 			IViewGLCanvasManager viewManager = ((IViewGLCanvasManager) refGeneralManager
 					.getManagerByBaseType(ManagerObjectType.VIEW));
 			
-			SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager
+			SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager			
 					.createView(ManagerObjectType.VIEW_SWT_JOGL_MULTI_GLCANVAS,
 								iUniqueTargetId, 
 								iParentContainerId, 
-								sLabel);
+								sLabel,
+								iGLCanvasId,
+								iGLEventListernerId );
 
 			assert swtGLCanvasView != null : "SwtJoglCanvasViewRep could not be created!";
 			
@@ -109,12 +107,6 @@ implements ICommand {
 		assert refParameterHandler != null: "ParameterHandler object is null!";	
 		
 		super.setParameterHandler(refParameterHandler);	
-		
-		iGLCanvasId = refParameterHandler.getValueInt(
-				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
-		
-		iGLEventListernerId = refParameterHandler.getValueInt( 
-				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
 		
 		/**
 		 * Same code as cerberus.command.base.ACmdCreate_IdTargetParentGLObject#setParameterHandler( final IParameterHandler refParameterHandler ) 

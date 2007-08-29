@@ -49,7 +49,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_GEARS,
 						iUniqueTargetId, 
 							iParentContainerId, 
-							sLabel);
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				gearsView, 

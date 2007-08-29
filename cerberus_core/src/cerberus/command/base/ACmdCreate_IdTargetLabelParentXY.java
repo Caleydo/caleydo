@@ -11,6 +11,7 @@ import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.parser.parameter.IParameterHandler;
 import cerberus.parser.parameter.IParameterHandler.ParameterHandlerType;
 
@@ -33,6 +34,10 @@ implements ICommand
 	 */
 	protected int iHeightY;
 	
+	protected int iGLCanvasId = 0;
+	 
+	protected int iGLEventListernerId = 0;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -52,6 +57,12 @@ implements ICommand
 		
 		super.setParameterHandler(refParameterHandler);
 		
+		iGLCanvasId = refParameterHandler.getValueInt(
+				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
+				
+		iGLEventListernerId = refParameterHandler.getValueInt( 
+				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );				
+		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute2,
 				IGeneralManager.sDelimiter_Parser_DataItems);
@@ -68,5 +79,20 @@ implements ICommand
 		
 		iWidthX = refParameterHandler.getValueInt("iWidthX");
 		iHeightY = refParameterHandler.getValueInt("iHeightY");
+		
+
+		if ( iGLCanvasId < 1) {
+			this.refGeneralManager.getSingelton().logMsg(" tag [" + 
+					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() +
+					"] is not assinged!",
+					LoggerType.MINOR_ERROR_XML);
+		}
+		
+		if ( iGLEventListernerId < 1) {
+			this.refGeneralManager.getSingelton().logMsg(" tag [" + 
+					CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() +
+					"] is not assinged!",
+					LoggerType.MINOR_ERROR_XML);
+		}
 	}
 }

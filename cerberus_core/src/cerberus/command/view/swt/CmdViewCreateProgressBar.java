@@ -51,7 +51,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR,
 							iUniqueTargetId, 
 							iParentContainerId, 
-							sLabel);
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				progressBarView, 

@@ -204,7 +204,7 @@ extends AGLCanvasUser
 				gl.glEnd(); // Done drawing the quad
 	
 				
-				System.out.println( fX + " ; " + fY );
+				System.out.println("GLCanvasScatterPlot2D "+ fX + " ; " + fY );
 								
 			} // while (( iterSelectX.hasNext() )&&( iterSelectY.hasNext() )) 
 			

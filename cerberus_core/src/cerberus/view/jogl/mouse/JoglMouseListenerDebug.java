@@ -22,7 +22,7 @@ public class JoglMouseListenerDebug extends JoglMouseListener {
 
 		super(refParentGearsMain);
 		
-		System.err.println("  JoglMouseListenerDebug: " + this.toString() + "  parent=" + refParentGearsMain.toString());
+		System.err.println(" JoglMouseListenerDebug: " + this.toString() + "  parent=" + refParentGearsMain.toString());
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -30,19 +30,19 @@ public class JoglMouseListenerDebug extends JoglMouseListener {
 		/* --- Left -- Mouse Button --- */
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 		{
-			System.err.println(" -- Left --" + this.toString());
+			System.err.println("-- Left --" + this.toString());
 		}
 
 		/* --- Right -- Mouse Button --- */
 		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
 		{
-			System.err.println(" -- Right --" + this.toString() );
+			System.err.println("-- Right --" + this.toString() );
 		}
 
 		/* --- Middle -- Mouse Button --- */
 		if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0)
 		{
-			System.err.println(" -- Middle --" + this.toString() );
+			System.err.println("-- Middle --" + this.toString() );
 		}
 		
 		super.mousePressed(e);
@@ -54,17 +54,17 @@ public class JoglMouseListenerDebug extends JoglMouseListener {
 
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 		{
-			System.err.println(" -- End Left --" + this.toString() );
+			System.err.println("-- End Left --" + this.toString() );
 		}
 
 		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
 		{
-			System.err.println(" -- End Right --" + this.toString() );
+			System.err.println("-- End Right --" + this.toString() );
 		}
 
 		if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0)
 		{
-			System.err.println(" -- END Middle --" + this.toString() );
+			System.err.println("-- END Middle --" + this.toString() );
 		}
 		
 		super.mouseReleased(e);

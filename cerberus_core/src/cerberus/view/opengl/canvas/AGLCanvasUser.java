@@ -414,7 +414,7 @@ implements IGLCanvasUser {
 			final int width,
 			final int height) {
 		
-		System.out.println(" AGLCanvasUser.reshape(GLCanvas canvas)");
+		System.out.println("AGLCanvasUser.reshape(GLCanvas canvas)");
 		
 		this.renderPart( gl );
 	}

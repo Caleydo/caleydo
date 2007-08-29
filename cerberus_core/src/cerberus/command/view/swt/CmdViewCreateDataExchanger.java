@@ -49,8 +49,10 @@ implements ICommand {
 		DataExchangerViewRep dataExchangerView = (DataExchangerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,
 							iUniqueTargetId, 
-							iParentContainerId, 
-							sLabel);
+							iParentContainerId,
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				dataExchangerView, 

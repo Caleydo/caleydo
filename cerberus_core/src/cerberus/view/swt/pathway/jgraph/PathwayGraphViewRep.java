@@ -621,7 +621,7 @@ extends APathwayGraphViewRep {
 					.logMsg("Error while rendering JGraph part!",
 							LoggerType.ERROR_ONLY);
 
-			System.out.println("ERROR! : " + vecVertices.toString());
+			System.out.println("PathwayGraphViewRep.finishGraphBuilding() ERROR! : " + vecVertices.toString());
 
 			npe.printStackTrace();
 		}

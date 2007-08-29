@@ -52,7 +52,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_STORAGE_SLIDER,
 							iUniqueTargetId, 
 							iParentContainerId, 
-							sLabel);
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				sliderView, 

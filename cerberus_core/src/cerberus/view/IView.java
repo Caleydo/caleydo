@@ -18,7 +18,7 @@ extends IUniqueObject {
 	
 	/**
 	 * Initialization of the view.
-	 * All initialization sets must be accomplished in theis method.
+	 * All initialization sets must be accomplished in this method.
 	 */
 	public void initView();
 

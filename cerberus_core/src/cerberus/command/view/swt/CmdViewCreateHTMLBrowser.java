@@ -50,7 +50,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_BROWSER,
 							iUniqueTargetId, 
 							iParentContainerId, 
-							sLabel);
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				browserView, 

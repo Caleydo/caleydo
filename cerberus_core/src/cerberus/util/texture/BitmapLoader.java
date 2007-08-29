@@ -42,7 +42,7 @@ public class BitmapLoader {
             int nYPixelsMeter = bytesToInt(bitmapInfoHeader, 28);
             int nImportantColours = bytesToInt(bitmapInfoHeader, 36);
 
-            System.out.println(" All details: nSize=" + nSize +
+            System.out.println("BitmapLoader.loadBitmap() All details: nSize=" + nSize +
             		"\n nWidth=" + nWidth +
             		"\n nHeight=" + nHeight + 
             		"\n nBiSize=" + nBiSize +
@@ -59,7 +59,7 @@ public class BitmapLoader {
             } else if (nBitCount == 8) {
                 image = read8BitBitmap(nColoursUsed, nBitCount, nSizeImage, nWidth, nHeight, input);
             } else {
-                System.out.println("Not a 24-bit or 8-bit Windows Bitmap, aborting...");
+                System.out.println("BitmapLoader.loadBitmap() Not a 24-bit or 8-bit Windows Bitmap, aborting...");
                 image = null;
             }
         } finally {

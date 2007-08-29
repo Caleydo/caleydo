@@ -4,23 +4,22 @@
 package cerberus.manager.logger;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager;
 import cerberus.manager.logger.AConsoleLogger;
 
 /**
  * Hides message that are tagged as not important.
  * 
+ * @see cerberus.manager.ILoggerManager
  * @author Michael Kalkusch
  *
  */
 public class ConsoleLogger 
-extends AConsoleLogger 
-implements ILoggerManager {
+extends AConsoleLogger {
 
 	/**
 	 * Specify LoggerType that will be send to System.err instead of System.out
 	 */
-	private static final LoggerType logLevelForSystemError = LoggerType.MINOR_ERROR;
+	private static final LoggerType logLevelForSystemError = LoggerType.MINOR_ERROR_XML;
 	
 	/**
 	 * @param setGeneralManager

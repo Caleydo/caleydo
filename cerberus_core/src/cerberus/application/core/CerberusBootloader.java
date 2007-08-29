@@ -175,7 +175,7 @@ public class CerberusBootloader
 		connection.setServerNameAndPort( "localhost", 20000 );
 		
 		if ( connection.connect() ) {
-			System.out.println("Can not connect to Muddleware server.");
+			System.out.println("CerberusBootloader Can not connect to Muddleware server.");
 			return false;
 		}
 		
@@ -188,7 +188,7 @@ public class CerberusBootloader
 		Message receiveMsg = connection.sendReceiveMessage( sendMsg );
 		
 		if (( receiveMsg == null )||( receiveMsg.getNumOperations() < 1 )) {
-			System.out.println("XPath does not exist, Muddleware server has no data on canvas settings.");
+			System.out.println("CerberusBootloader XPath does not exist, Muddleware server has no data on canvas settings.");
 			connection.disconnect();
 			return false;
 		}
@@ -207,10 +207,10 @@ public class CerberusBootloader
 			
 			refXmlParserManager.parseXmlFileByInputStream( inStream, configuration );
 			
-			System.out.println("PARSE using Muddleware done.");
+			System.out.println("CerberusBootloader PARSE using Muddleware done.");
 			
 		} else {
-			System.out.println("Muddleware server has no data on canvas settings.");
+			System.out.println("CerberusBootloader Muddleware server has no data on canvas settings.");
 			connection.disconnect();
 			return false;
 		}

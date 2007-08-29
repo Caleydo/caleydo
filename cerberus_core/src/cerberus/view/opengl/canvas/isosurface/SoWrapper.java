@@ -1911,12 +1911,12 @@ public class SoWrapper extends SoMarchBase
 	
 	private void cout( final String msg ) 
 	{
-		System.out.println( msg );
+		System.out.println("SoWrapper " + msg );
 	}
 	
 	private void cout_continoue( final String msg ) 
 	{
-		System.out.println( msg );
+		System.out.println("SoWrapper " + msg );
 	}
 };
 

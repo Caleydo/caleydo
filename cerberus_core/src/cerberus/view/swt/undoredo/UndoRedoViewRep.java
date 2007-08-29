@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Label;
 
 import cerberus.command.ICommand;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.view.AViewRep;
 import cerberus.view.IView;
 import cerberus.view.ViewType;
@@ -95,8 +96,10 @@ implements IView {
 	
 		refSWTContainer.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				refUndoRedoCombo.add(refCommand.getInfoText());
-				System.err.println( "DEBUG: " + refCommand.getInfoText() + " " + refCommand.toString() );
+				refUndoRedoCombo.add(refCommand.getInfoText());				
+				refGeneralManager.getSingelton().logMsg(
+						"DEBUG: " + refCommand.getInfoText() + " " + refCommand.toString(),
+						LoggerType.VERBOSE);
 			}
 		});
 	}

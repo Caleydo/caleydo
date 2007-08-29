@@ -405,9 +405,9 @@ implements IEventPublisher {
 			}
 	
 			if ( receiver == null ) {
-				refSingelton.logMsg("EventPublisher: invalid ReceiverId=[" +
-						iCurrentReceiverId + "] <= sender(s)" +
-						arSenderIDs.toString() + " ignore receiver!",
+				refSingelton.logMsg("EventPublisher: sender(s) " +
+						arSenderIDs.toString() + " ==> invalid ReceiverId=[" +
+						iCurrentReceiverId + "] ignore receiver!",
 						LoggerType.MINOR_ERROR);
 			}
 			else 

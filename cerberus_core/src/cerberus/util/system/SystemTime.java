@@ -32,7 +32,7 @@ public class SystemTime {
 			return new SimpleDateFormat( "yyyy.MM.dd hh.mm.ss"
 						).format(Calendar.getInstance().getTime()).toString();
 		} catch (Exception ex) {
-		    System.err.println("SystemTime::getTime() failed with "+ex);
+		    System.err.println("SystemTime.getTime() failed with "+ex);
 		}	
 	
 		return errorString;
@@ -49,7 +49,7 @@ public class SystemTime {
 			return new SimpleDateFormat( "yyyy.MM.dd hh.mm.ss ,SSS"
 						).format(Calendar.getInstance().getTime()).toString();
 		} catch (Exception ex) {
-		    System.out.println("SystemTime::getTime() failed with "+ex);
+		    System.out.println("SystemTime.getTime() failed with "+ex);
 		}	
 	
 		return errorString;
@@ -66,7 +66,7 @@ public class SystemTime {
 			return new SimpleDateFormat( "yyyy-MM-dd_hh-mm-ss.SSS"
 						).format(Calendar.getInstance().getTime()).toString();
 		} catch (Exception ex) {
-		    System.out.println("SystemTime::getTime() failed with "+ex);
+		    System.out.println("SystemTime.getTime() failed with "+ex);
 		}	
 	
 		return errorString;

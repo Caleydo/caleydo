@@ -110,7 +110,7 @@ implements ICommand {
 		
 		iCountCanvas++;
 		
-		System.out.println("init JOGL");		
+		System.out.println("CmdWindowNewIFrameJoglCanvas: init JOGL");		
 	}
 //	
 //	/**

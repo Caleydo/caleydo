@@ -49,7 +49,9 @@ implements ICommand {
 				.createView(ManagerObjectType.VIEW_SWT_UNDO_REDO,
 							iUniqueTargetId, 
 							iParentContainerId, 
-							sLabel);
+							sLabel,
+							iGLCanvasId,
+							iGLEventListernerId);
 		
 		viewManager.registerItem(
 				undoRedoView, 

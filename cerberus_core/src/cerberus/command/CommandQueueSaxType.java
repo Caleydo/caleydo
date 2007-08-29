@@ -184,7 +184,7 @@ public enum CommandQueueSaxType
 	TAG_ATTRIBUTE4("cmd","attrib4",""),
 	TAG_DETAIL("cmd","detail",""),
 	TAG_PARENT("cmd","parent","-1"),
-	TAG_GLCANVAS("cmd","glcanvas","-1"),
+	TAG_GLCANVAS("cmd","gl_canvas","-1"),
 	TAG_GLCANVAS_LISTENER("cmd","gl_listener","-1"),
 	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),
 	TAG_LABEL("cmd","label",""),

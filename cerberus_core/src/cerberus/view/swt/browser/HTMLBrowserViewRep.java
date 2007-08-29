@@ -35,7 +35,7 @@ implements IView {
     protected Text refTextField;
 	
 	public HTMLBrowserViewRep(
-			IGeneralManager refGeneralManager, 
+			final IGeneralManager refGeneralManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
@@ -57,7 +57,7 @@ implements IView {
 		/* retrieveGUIContainer*/
 		retrieveGUIContainer();
 		
-		refBrowser = new HookedBrowser (refSWTContainer, SWT.NONE);
+		refBrowser = new HookedBrowser (refSWTContainer, SWT.NONE, refGeneralManager);
 				
 //		if ((iWidth == -1)&&(iHeight == -1)) 
 //		{
