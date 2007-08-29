@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.geneview.rcp.Application">
+         </run>
+      </application>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="GeneView"
+            id="org.geneview.rcp.jogl.view.jframe">
+      </category>
+      <view
+            allowMultiple="true"
+            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.geneview.rcp.views.SnippetJFrameView"
+            icon="icons/sample.gif"
+            id="org.geneview.rcp.views.SnippetJFrameView"
+            name="SnippetJFrameView">
+      </view>
+   </extension>   
+   
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="RCP Perspective"
+            class="org.geneview.rcp.Perspective"
+            id="org.geneview.rcp.perspective">
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.geneview.rcp.application"
+            name="GeneView">
+         <property
+               name="windowImages"
+               value="icons/alt_window_16.gif,icons/alt_window_32.gif">
+         </property>
+      </product>
+   </extension>
+
+</plugin>
