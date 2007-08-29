@@ -9,7 +9,6 @@
 package cerberus.command.queue;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -19,8 +18,7 @@ import cerberus.manager.IGeneralManager;
  *
  */
 public abstract class ACommandQueue 
-	extends ACommand
-	implements ICommand {
+	extends ACommand {
 
 	/**
 	 * Commadn QueueId

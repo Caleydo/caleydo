@@ -1,7 +1,6 @@
 package cerberus.command.window.swt;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -17,9 +16,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdContainerCreate
-extends ACmdCreate_IdTargetLabelParentAttr
-implements ICommand 
-{
+extends ACmdCreate_IdTargetLabelParentAttr {
 	protected String sLayoutAttributes;
 	
 	/**

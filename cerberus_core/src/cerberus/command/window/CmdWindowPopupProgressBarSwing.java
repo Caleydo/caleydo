@@ -8,11 +8,8 @@
  */
 package cerberus.command.window;
 
-//import javax.swing.JComponent;
 import javax.swing.JProgressBar;
 
-
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 import cerberus.util.exception.GeneViewRuntimeException;
 
@@ -23,8 +20,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowPopupProgressBarSwing 
-extends ACommand
-implements ICommand {
+extends ACommand {
 
 	private JProgressBar progressBar;
 	

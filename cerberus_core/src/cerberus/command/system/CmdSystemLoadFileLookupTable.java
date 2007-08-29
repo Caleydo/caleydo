@@ -10,12 +10,9 @@ package cerberus.command.system;
 
 import java.util.StringTokenizer;
 
-
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
-//import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.ICommandManager;
@@ -24,13 +21,8 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.data.IGenomeIdManager;
 import cerberus.parser.ascii.lookuptable.LookupTableLoaderProxy;
 import cerberus.parser.parameter.IParameterHandler;
-//import cerberus.manager.data.genome.GenomeIdMapInt2Int;
-//import cerberus.manager.data.genome.IGenomeIdMap;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-
-//import cerberus.data.collection.ISet;
-//import cerberus.base.map.MultiHashArrayMap;
 
 
 /**
@@ -43,8 +35,7 @@ import cerberus.util.system.StringConversionTool;
  * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdSystemLoadFileLookupTable 
-extends ACommand
-implements ICommand {
+extends ACommand {
 
 	public static final String sCommaSeperatedFileExtension = ".csv";
 	

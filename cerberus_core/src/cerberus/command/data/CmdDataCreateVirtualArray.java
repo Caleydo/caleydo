@@ -12,7 +12,6 @@ package cerberus.command.data;
 import java.util.StringTokenizer;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -36,8 +35,7 @@ import cerberus.util.system.StringConversionTool;
  * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdDataCreateVirtualArray 
-extends ACmdCreate_IdTargetLabel
-implements ICommand {
+extends ACmdCreate_IdTargetLabel {
 	
 	protected int iOffset;
 	

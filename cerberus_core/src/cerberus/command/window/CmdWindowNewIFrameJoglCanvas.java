@@ -13,7 +13,6 @@ package cerberus.command.window;
 //import javax.swing.JLabel;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 //import cerberus.command.base.CmdHandleSetInterface;
 import cerberus.command.window.CmdWindowNewInternalFrame;
@@ -40,8 +39,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowNewIFrameJoglCanvas 
-extends ACommand //ACmdHandleSet 
-implements ICommand {
+extends ACommand  {
 
 	private int iCountCanvas = 1;		
 	

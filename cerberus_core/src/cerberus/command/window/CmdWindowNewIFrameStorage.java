@@ -9,9 +9,7 @@
 package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdHandleSet;
-import cerberus.command.base.ICmdHandleSet;
 //import cerberus.command.window.CmdWindowNewInternalFrame;
 //import cerberus.net.dwt.swing.collection.DSwingStorageCanvas;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
@@ -24,8 +22,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowNewIFrameStorage 
-extends ACmdHandleSet 
-implements ICommand, ICmdHandleSet {
+extends ACmdHandleSet  {
 
 //	private DSwingStorageCanvas refDSwingNewIFrameStorage = null;
 	

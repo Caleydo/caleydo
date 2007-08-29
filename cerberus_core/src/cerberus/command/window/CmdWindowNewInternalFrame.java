@@ -14,7 +14,6 @@ package cerberus.command.window;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
@@ -29,8 +28,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowNewInternalFrame 
-extends ACommand
-implements ICommand {
+extends ACommand {
 
 //	private DInternalFrame refNewDInternalFrame = null;
 	

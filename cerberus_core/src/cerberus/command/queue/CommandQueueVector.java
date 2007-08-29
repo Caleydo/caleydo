@@ -26,7 +26,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  */
 public class CommandQueueVector 
 extends ACommandQueue
-implements ICommand , ICommandQueue
+implements ICommandQueue
 {
 
 	/**

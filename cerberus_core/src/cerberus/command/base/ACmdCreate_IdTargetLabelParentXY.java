@@ -5,24 +5,21 @@ package cerberus.command.base;
 
 import java.util.StringTokenizer;
 
-
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.parser.parameter.IParameterHandler;
 import cerberus.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 /**
+ * @see cerberus.command.ICommand
+ * 
  * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetLabelParentXY 
-extends ACmdCreate_IdTargetLabelParentAttr 
-implements ICommand
-{
+extends ACmdCreate_IdTargetLabelParentAttr {
 
 	/**
 	 * Width of the widget.
@@ -34,8 +31,21 @@ implements ICommand
 	 */
 	protected int iHeightY;
 	
+	/**
+	 * Canvas Id used for OpenGL
+	 * 
+	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#setParameterHandler(IParameterHandler)
+	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#checkOpenGLSetting()
+	 */
 	protected int iGLCanvasId = 0;
 	 
+	/**
+	 * GLEventListener Id used for OpenGL
+	 * 
+	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#setParameterHandler(IParameterHandler)
+	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#checkOpenGLSetting()
+	 * 
+	 */
 	protected int iGLEventListernerId = 0;
 	
 	/**
@@ -52,16 +62,11 @@ implements ICommand
 				refCommandManager,
 				refCommandQueueSaxType);
 	}	
-		
+	
+	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
-		super.setParameterHandler(refParameterHandler);
-		
-		iGLCanvasId = refParameterHandler.getValueInt(
-				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
-				
-		iGLEventListernerId = refParameterHandler.getValueInt( 
-				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );				
+		super.setParameterHandler(refParameterHandler);			
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute2,
@@ -79,20 +84,5 @@ implements ICommand
 		
 		iWidthX = refParameterHandler.getValueInt("iWidthX");
 		iHeightY = refParameterHandler.getValueInt("iHeightY");
-		
-
-		if ( iGLCanvasId < 1) {
-			this.refGeneralManager.getSingelton().logMsg(" tag [" + 
-					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() +
-					"] is not assinged!",
-					LoggerType.MINOR_ERROR_XML);
-		}
-		
-		if ( iGLEventListernerId < 1) {
-			this.refGeneralManager.getSingelton().logMsg(" tag [" + 
-					CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() +
-					"] is not assinged!",
-					LoggerType.MINOR_ERROR_XML);
-		}
 	}
 }

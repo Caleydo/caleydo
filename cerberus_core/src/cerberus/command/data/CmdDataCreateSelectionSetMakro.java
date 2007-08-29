@@ -1,7 +1,6 @@
 package cerberus.command.data;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -19,8 +18,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  * @author Marc Streit
  */
 public class CmdDataCreateSelectionSetMakro 
-extends ACmdCreate_IdTargetLabelAttrDetail 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 //	ISet refSelectionSet;
 	

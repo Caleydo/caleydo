@@ -9,7 +9,6 @@ import cerberus.data.collection.IStorage;
 //import cerberus.data.collection.StorageType;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -30,8 +29,7 @@ import cerberus.parser.parameter.IParameterHandler;
  *
  */
 public class CmdDataCreatePathwayStorage 
-extends ACmdCreate_IdTargetLabel
-implements ICommand {
+extends ACmdCreate_IdTargetLabel {
 
 	/**
 	 * List contains KEGG pathway IDs that needs to be loaded

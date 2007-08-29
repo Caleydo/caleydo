@@ -5,8 +5,7 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -20,15 +19,14 @@ import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep;
 
 /**
- * Class implementes the command for creating a SWT-Jogl canvas.
+ * Class implements the command for creating a SWT-Jogl canvas.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public class CmdViewCreateSwtGLCanvas 
-extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	
 	protected Vec3f cameraOrigin_SWTGLCanvas;
 	

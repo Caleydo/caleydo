@@ -13,7 +13,6 @@ package cerberus.command.window;
 //import javax.swing.JLabel;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.command.ICommand;
 ////import cerberus.command.factory.CommandFactory;
 ////import cerberus.command.base.CmdHandleSetInterface;
 ////import cerberus.command.window.CmdHandleSetBase;
@@ -35,9 +34,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowNewIFrameJoglHeatmap 
-extends CmdWindowNewIFrameJoglBase 
-implements ICommand //, ICmdHandleSet {
-{
+extends CmdWindowNewIFrameJoglBase {
 
 		
 	/**

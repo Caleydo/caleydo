@@ -8,7 +8,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.math.MathUtil;
@@ -18,13 +17,13 @@ import cerberus.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 
 /**
+ * @see cerberus.command.ICommand
+ * 
  * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetParentGLObject 
-extends	ACmdCreate_IdTargetLabelParent 
-implements ICommand
-{
+extends	ACmdCreate_IdTargetLabelParent {
 
 	protected Vec3f cameraOrigin;
 	

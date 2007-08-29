@@ -4,20 +4,18 @@
 package cerberus.command.base;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.parser.parameter.IParameterHandler;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 
 /**
+ * @see cerberus.command.ICommand
  * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetLabelAttr 
-extends ACmdCreate_IdTargetLabel
-implements ICommand
-{
+extends ACmdCreate_IdTargetLabel {
 
 	protected String sAttribute1;
 	

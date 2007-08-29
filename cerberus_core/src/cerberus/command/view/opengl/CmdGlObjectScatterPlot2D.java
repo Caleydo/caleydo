@@ -5,7 +5,6 @@ package cerberus.command.view.opengl;
 
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -21,9 +20,7 @@ import cerberus.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
  *
  */
 public class CmdGlObjectScatterPlot2D 
-extends ACmdCreate_GlCanvasUser
-		implements ICommand
-{
+extends ACmdCreate_GlCanvasUser {
 	
 	protected int[] iResolution;
 	

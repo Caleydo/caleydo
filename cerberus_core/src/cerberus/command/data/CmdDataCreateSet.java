@@ -21,7 +21,6 @@ import cerberus.data.collection.SetDataType;
 import cerberus.data.collection.SetDetailedDataType;
 import cerberus.data.collection.SetType;
 
-//import cerberus.command.ICommand;
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
 //import cerberus.command.window.CmdWindowPopupInfo;

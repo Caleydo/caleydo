@@ -3,7 +3,6 @@ package cerberus.command.view.swt;
 import java.util.Iterator;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -26,8 +25,7 @@ import cerberus.view.swt.browser.HTMLBrowserViewRep;
  *
  */
 public class CmdViewLoadURLInHTMLBrowser 
-extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelParentXY {
 	
 	protected int iTargetHTMLBrowserViewId = -1;
 	

@@ -6,7 +6,6 @@ package cerberus.command.view.opengl;
 import java.util.StringTokenizer;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -21,8 +20,7 @@ import cerberus.view.opengl.canvas.histogram.GLCanvasHistogram2D;
  *
  */
 public class CmdGlObjectHistogram2D 
-extends ACmdCreate_GlCanvasUser
-implements ICommand {
+extends ACmdCreate_GlCanvasUser {
 	
 	protected float [] fResolution;
 	

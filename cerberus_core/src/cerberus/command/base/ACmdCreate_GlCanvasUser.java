@@ -4,7 +4,6 @@
 package cerberus.command.base;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
@@ -13,13 +12,13 @@ import cerberus.view.opengl.IGLCanvasUser;
 import cerberus.view.opengl.IGLCanvasDirector;
 
 /**
+ * @see cerberus.command.ICommand
+ * 
  * @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_GlCanvasUser 
-extends ACmdCreate_IdTargetParentGLObject
-implements ICommand
-{
+extends ACmdCreate_IdTargetParentGLObject {
 	
 	protected IGLCanvasUser openGLCanvasUser;
 	

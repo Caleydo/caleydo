@@ -4,7 +4,6 @@
 package cerberus.command.view.opengl;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_GlCanvasUser;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -18,9 +17,7 @@ import cerberus.view.opengl.canvas.widgets.GLCanvasWidget;
  *
  */
 public class CmdGlObjectWidget 
-extends ACmdCreate_GlCanvasUser
-implements ICommand
-{
+extends ACmdCreate_GlCanvasUser {
 
 	protected float[] fColorSpots = { 1.0f, 0, 0};
 	

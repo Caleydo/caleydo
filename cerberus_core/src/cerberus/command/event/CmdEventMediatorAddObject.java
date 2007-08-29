@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -25,8 +24,7 @@ import cerberus.parser.parameter.IParameterHandler;
  * @author Michael Kalkusch
  */
 public class CmdEventMediatorAddObject 
-extends ACmdCreate_IdTargetLabelAttrDetail 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 	protected ArrayList<Integer> iArSenderIDs;
 

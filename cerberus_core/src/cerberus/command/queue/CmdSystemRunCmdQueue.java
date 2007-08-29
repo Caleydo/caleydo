@@ -4,7 +4,6 @@
 package cerberus.command.queue;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 import cerberus.command.queue.ICommandQueue;
 import cerberus.manager.ICommandManager;
@@ -19,8 +18,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdSystemRunCmdQueue 
-extends ACommand 
-implements ICommand {
+extends ACommand {
 
 	protected int iCommandQueueId;
 	

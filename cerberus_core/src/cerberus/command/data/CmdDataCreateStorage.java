@@ -17,7 +17,6 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabel;
 //import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.ICommandManager;
@@ -38,8 +37,7 @@ import cerberus.parser.parameter.IParameterHandler;
  * @see cerberus.data.collection.IStorage
  */
 public class CmdDataCreateStorage 
-extends ACmdCreate_IdTargetLabel
-implements ICommand {
+extends ACmdCreate_IdTargetLabel {
 
 	/**
 	 * This list contains the data types for cerberus.data.collection.StorageType as String.

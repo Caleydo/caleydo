@@ -13,7 +13,6 @@ package cerberus.command.window;
 //import javax.swing.JLabel;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.command.ICommand;
 ////import cerberus.command.factory.CommandFactory;
 ////import cerberus.command.base.CmdHandleSetInterface;
 ////import cerberus.command.base.CommandAbstractBase;
@@ -37,9 +36,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowNewIFrameJoglHistogram 
-extends CmdWindowNewIFrameJoglBase
-//extends ACmdHandleSet
-implements ICommand {
+extends CmdWindowNewIFrameJoglBase {
 
 	/**
 	 * ISet the reference to the parent JComponent.

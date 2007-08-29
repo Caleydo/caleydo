@@ -1,8 +1,7 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
-import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
+import cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
@@ -14,13 +13,14 @@ import cerberus.view.swt.jogl.gears.GearsViewRep;
 /**
  * Class implementes the command for creating a gears view.
  * 
+ * @see cerberus.command.ICommand
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public class CmdViewCreateGears 
-extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
 	
 	/**
 	 * Constructor

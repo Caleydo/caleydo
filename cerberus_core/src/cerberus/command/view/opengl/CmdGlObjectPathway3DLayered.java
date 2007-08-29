@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.view.opengl.ACmdGLObjectPathway3D;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -22,8 +21,7 @@ import cerberus.view.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
  *
  */
 public class CmdGlObjectPathway3DLayered 
-extends ACmdGLObjectPathway3D
-implements ICommand {
+extends ACmdGLObjectPathway3D {
 	
 	protected ArrayList<Integer> iArSetIDs;
 	

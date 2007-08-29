@@ -12,17 +12,7 @@ package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
 
-//import javax.swing.JComponent;
-//import javax.swing.JLabel;
-//import javax.swing.JOptionPane;
-
-
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdHandleSet;
-import cerberus.command.base.ICmdHandleSet;
-//import cerberus.data.collection.ISet;
-//import cerberus.net.dwt.swing.mdi.DInternalFrame;
-//import cerberus.net.dwt.swing.DSwingHeatMap2DCanvas;
 import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
@@ -32,8 +22,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowNewIFrameHeatmap2D 
-extends ACmdHandleSet 
-implements ICommand, ICmdHandleSet {
+extends ACmdHandleSet {
 
 	
 	/**

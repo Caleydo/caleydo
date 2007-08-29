@@ -9,7 +9,6 @@
 package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 //import cerberus.net.dwt.swing.jogl.DSwingJoglCanvas;
 //import cerberus.net.dwt.swing.jogl.listener.GLEventForwardListener;
@@ -22,8 +21,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public abstract class CmdWindowNewIFrameJoglBase 
-extends ACommand
-implements ICommand {
+extends ACommand {
 
 	/**
 	 * Reference to the sub command to create a new Jogl canvas.

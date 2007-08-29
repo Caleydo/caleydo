@@ -9,9 +9,7 @@
 package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
-//import cerberus.manager.IViewGLCanvasManager;
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 //import cerberus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 import cerberus.util.exception.GeneViewRuntimeException;
@@ -21,8 +19,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowSetActiveFrame 
-extends ACommand
-implements ICommand {
+extends ACommand {
 	
 //	protected final IViewGLCanvasManager refViewGLCanvasManager;
 	

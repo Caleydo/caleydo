@@ -1,7 +1,6 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -19,8 +18,7 @@ import cerberus.view.swt.data.explorer.DataExplorerViewRep;
  *
  */
 public class CmdViewCreateDataExplorer 
-extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelParentXY {
 	
 	/**
 	 * Constructor
@@ -36,6 +34,14 @@ implements ICommand {
 				refCommandQueueSaxType);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentXY#checkOpenGLSetting()
+	 */
+	protected final void checkOpenGLSetting() {
+		/** not openGL settings are required */	
+	}
+	
 	/**
 	 * Method creates a data explorer view, sets the attributes 
 	 * and calls the init and draw method.

@@ -12,10 +12,8 @@ package cerberus.command.system;
 //import java.util.Iterator;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 import cerberus.command.window.CmdWindowPopupInfo;
-//import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -37,8 +35,7 @@ import cerberus.data.collection.ISet;
  * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdSystemLoadFileViaImporter 
-extends ACommand
-implements ICommand {
+extends ACommand {
 	
 	protected String sFileName;
 	

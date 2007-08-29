@@ -3,20 +3,19 @@ package cerberus.command.base;
 
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.parser.parameter.IParameterHandler;
 
 /**
  * Abstract command class stores and handles commandId, tragertId and label of object.
- * @author Michael Kalkusch
+ * 
+ *  @see cerberus.command.ICommand
+ *  @author Michael Kalkusch
  *
  */
 public abstract class ACmdCreate_IdTargetLabel 
-extends ACommand
-implements ICommand
-{
+extends ACommand {
 	/**
 	 * Command Id to identify this command.
 	 * 

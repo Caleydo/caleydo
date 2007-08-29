@@ -9,9 +9,7 @@
 package cerberus.command.window;
 
 import cerberus.manager.IGeneralManager;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdHandleSet;
-import cerberus.command.base.ICmdHandleSet;
 //import cerberus.net.dwt.swing.collection.DSwingSelectionCanvas;
 //import cerberus.net.dwt.swing.mdi.DInternalFrame;
 import cerberus.util.exception.GeneViewRuntimeException;
@@ -23,8 +21,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowNewIFrameSelection 
-extends ACmdHandleSet 
-implements ICommand, ICmdHandleSet {
+extends ACmdHandleSet {
 
 //	private DSwingSelectionCanvas refDSwingSelectionCanvas = null;
 

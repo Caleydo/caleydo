@@ -4,7 +4,6 @@
 package cerberus.command.data;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetParentGLObject;
 import cerberus.data.collection.SetDataType;
 import cerberus.data.collection.set.viewdata.ISetViewData;
@@ -21,8 +20,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdDataCreateSetViewdata
-extends ACmdCreate_IdTargetParentGLObject 
-implements ICommand {
+extends ACmdCreate_IdTargetParentGLObject {
 
 	/**
 	 * @param refGeneralManager

@@ -1,7 +1,6 @@
 package cerberus.command.view.swt;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -19,8 +18,7 @@ import cerberus.view.swt.progressbar.ProgressBarViewRep;
  *
  */
 public class CmdViewCreateProgressBar 
-extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelParentXY {
 	
 	int iProgressBarCurrentValue = 0;
 	

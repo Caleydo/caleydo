@@ -4,7 +4,6 @@
 package cerberus.command.view.opengl;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.parser.parameter.IParameterHandler;
@@ -17,9 +16,7 @@ import cerberus.command.base.ACmdCreate_GlCanvasUser;
  *
  */
 public class CmdGlObjectTriangleTest 
-extends ACmdCreate_GlCanvasUser
-		implements ICommand
-{
+extends ACmdCreate_GlCanvasUser {
 	
 	protected String color;
 	

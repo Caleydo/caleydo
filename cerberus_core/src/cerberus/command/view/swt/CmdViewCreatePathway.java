@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import cerberus.command.CommandQueueSaxType;
-import cerberus.command.ICommand;
 import cerberus.command.base.ACmdCreate_IdTargetLabelParentXY;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
@@ -23,8 +22,7 @@ import cerberus.view.swt.pathway.Pathway2DViewRep;
  *
  */
 public class CmdViewCreatePathway 
-extends ACmdCreate_IdTargetLabelParentXY 
-implements ICommand {
+extends ACmdCreate_IdTargetLabelParentXY  {
 	
 	protected int iHTMLBrowserId = 0;
 

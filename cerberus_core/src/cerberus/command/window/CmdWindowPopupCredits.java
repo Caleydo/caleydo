@@ -12,7 +12,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 
-import cerberus.command.ICommand;
 import cerberus.command.base.ACommand;
 import cerberus.util.exception.GeneViewRuntimeException;
 
@@ -23,8 +22,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
  *
  */
 public class CmdWindowPopupCredits 
-extends ACommand
-implements ICommand {
+extends ACommand {
 
 	private JComponent parentComponent = null;
 	
