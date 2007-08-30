@@ -406,7 +406,7 @@ implements IViewGLCanvasManager {
 					iParentContainerId, 
 					sLabel);
 			
-		case CREATE_GL_PARALLEL_COORDINATES:
+		case CREATE_GL_PARALLEL_COORDINATES_3D:
 			return new GLCanvasParCoords(
 					refGeneralManager, 
 					iViewId,

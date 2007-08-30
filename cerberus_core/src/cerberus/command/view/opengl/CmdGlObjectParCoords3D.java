@@ -15,7 +15,7 @@ import cerberus.view.opengl.canvas.parcoords.GLCanvasParCoords;
  * @author Marc Streit
  *
  */
-public class CmdGlObjectParCoords 
+public class CmdGlObjectParCoords3D 
 extends ACmdGLObjectPathway3D {
 
 	//protected ArrayList<Integer> iArSetIDs;
@@ -24,7 +24,7 @@ extends ACmdGLObjectPathway3D {
 	 * Constructor.
 	 * 
 	 */
-	public CmdGlObjectParCoords(
+	public CmdGlObjectParCoords3D(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType)
@@ -35,7 +35,7 @@ extends ACmdGLObjectPathway3D {
 				
 		//iArSetIDs = new ArrayList<Integer>();
 
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_PARALLEL_COORDINATES;
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_PARALLEL_COORDINATES_3D;
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

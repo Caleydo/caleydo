@@ -22,7 +22,7 @@ import cerberus.command.view.opengl.CmdGlObjectHeatmap;
 import cerberus.command.view.opengl.CmdGlObjectHistogram2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
 import cerberus.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
-import cerberus.command.view.opengl.CmdGlObjectParCoords;
+import cerberus.command.view.opengl.CmdGlObjectParCoords3D;
 import cerberus.command.view.opengl.CmdGlObjectPathway3DJukebox;
 import cerberus.command.view.opengl.CmdGlObjectPathway3DLayered;
 import cerberus.command.view.opengl.CmdGlObjectPathway3DPanel;
@@ -512,10 +512,10 @@ public class CommandFactory
 			break;
 		}
 		
-		case CREATE_GL_PARALLEL_COORDINATES:
+		case CREATE_GL_PARALLEL_COORDINATES_3D:
 		{
  			createdCommand =
-				new CmdGlObjectParCoords(
+				new CmdGlObjectParCoords3D(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);	
