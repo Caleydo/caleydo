@@ -108,24 +108,24 @@ public class GLPathwayManager {
 			hashPathwayId2VerticesDisplayListId.put(iPathwayId, iVerticesDisplayListId);			
 		}
 		
-		if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
-		{
-			// Replace current display list if a display list exists
-			iEdgesDisplayListId = hashPathwayId2EdgesDisplayListId.get(iPathwayId);
-		}
-		else
-		{		
-			// Creating edge display list for pathways
-			iEdgesDisplayListId = gl.glGenLists(1);
-			hashPathwayId2EdgesDisplayListId.put(iPathwayId, iEdgesDisplayListId);			
-		}
-		
 		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
 		extractVertices(gl, refTmpPathway);
 		gl.glEndList();
-		
+				
 		if (bEnableEdgeRendering)
 		{
+			if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
+			{
+				// Replace current display list if a display list exists
+				iEdgesDisplayListId = hashPathwayId2EdgesDisplayListId.get(iPathwayId);
+			}
+			else
+			{		
+				// Creating edge display list for pathways
+				iEdgesDisplayListId = gl.glGenLists(1);
+				hashPathwayId2EdgesDisplayListId.put(iPathwayId, iEdgesDisplayListId);			
+			}
+			
 			gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);	
 			extractEdges(gl, refTmpPathway);
 			gl.glEndList();
@@ -451,8 +451,11 @@ public class GLPathwayManager {
 	
 	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels) {
 		
-		int iTmpEdgesDisplayListID = hashPathwayId2EdgesDisplayListId.get(iPathwayID);
-		gl.glCallList(iTmpEdgesDisplayListID);
+		if (bEnableEdgeRendering)
+		{		
+			int iTmpEdgesDisplayListID = hashPathwayId2EdgesDisplayListId.get(iPathwayID);
+			gl.glCallList(iTmpEdgesDisplayListID);
+		}
 		
 		int iTmpVerticesDisplayListID = hashPathwayId2VerticesDisplayListId.get(iPathwayID);
 		gl.glCallList(iTmpVerticesDisplayListID);
@@ -582,5 +585,15 @@ public class GLPathwayManager {
 		
 		hashPickID2VertexRep.clear();
 		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
+	}
+	
+	public void enableEdgeRendering(final boolean bEnableEdgeRendering) {
+		
+		this.bEnableEdgeRendering = bEnableEdgeRendering;
+	}
+	
+	public void enableGeneMapping(final boolean bEnableGeneMappging) {
+		
+		this.bEnableGeneMapping = bEnableGeneMappging;
 	}
 }

@@ -67,6 +67,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private float fTextureTransparency = 1.0f;
 
 	private float fLastMouseMovedTimeStamp = 0;
+	
+	private boolean bRebuildVisiblePathwayDisplayLists = false;
 
 	private boolean bIsMouseOverPickingEvent = false;
 
@@ -216,6 +218,9 @@ implements IMediatorReceiver, IMediatorSender {
 
 	public void renderPart(GL gl) {
 
+		if (bRebuildVisiblePathwayDisplayLists)
+			rebuildVisiblePathwayDisplayLists(gl);
+		
 		handlePicking(gl);
 		renderScene(gl);
 		renderInfoArea(gl);
@@ -1081,6 +1086,9 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
 
+		// Reset rebuild trigger flag
+		bRebuildVisiblePathwayDisplayLists = false;
+		
 		refGLPathwayManager.clearOldPickingIDs();
 
 		// Update display list if something changed
@@ -1090,8 +1098,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		while (iterVisiblePathway.hasNext())
 		{
-			refGLPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway
-					.next());
+			refGLPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway.next());
 		}
 
 		// Rebuild display lists for visible pathways in focus position
@@ -1138,5 +1145,17 @@ implements IMediatorReceiver, IMediatorSender {
 				"setTextureTransparency() failed! value=" + textureTransparency
 						+ " was out of range [0.0f .. 1.0f]",
 				LoggerType.MINOR_ERROR);
+	}
+	
+	public void enableEdgeRendering(final boolean bEnableEdgeRendering) {
+		
+		refGLPathwayManager.enableEdgeRendering(bEnableEdgeRendering);
+		bRebuildVisiblePathwayDisplayLists = true;
+	}
+	
+	public void enableGeneMapping(final boolean bEnableMapping) {
+		
+		refGLPathwayManager.enableGeneMapping(bEnableMapping);
+		bRebuildVisiblePathwayDisplayLists = true;
 	}
 }

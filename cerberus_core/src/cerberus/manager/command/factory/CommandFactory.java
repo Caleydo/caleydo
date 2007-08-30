@@ -32,6 +32,7 @@ import cerberus.command.view.opengl.CmdGlObjectTriangleTest;
 import cerberus.command.view.opengl.CmdGlObjectIsosurface3D;
 import cerberus.command.view.opengl.CmdGlObjectHeatmap2D;
 import cerberus.command.view.opengl.CmdGlObjectWidget;
+import cerberus.command.view.rcp.CmdExternalFlagSetter;
 import cerberus.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import cerberus.command.view.swt.CmdViewCreateDataExchanger;
 import cerberus.command.view.swt.CmdViewCreateSetEditor;
@@ -553,6 +554,15 @@ public class CommandFactory
 			break;
 		}
 		
+		case EXTERNAL_FLAG_SETTER:
+		{
+			createdCommand =
+				new CmdExternalFlagSetter(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);
+			break;
+		}
 		
 		/*
 		 * ----------------------

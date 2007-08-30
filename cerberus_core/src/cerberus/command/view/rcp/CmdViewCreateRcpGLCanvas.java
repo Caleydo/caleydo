@@ -58,11 +58,6 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 
 			IViewGLCanvasManager viewManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
 			
-			if (viewManager == null)
-				System.out.println("View Manager is NULL!");
-			else if (rcpCanvasDirector == null)
-				System.out.println("Canvas Director is NULL!");
-			
 			viewManager.registerItem(
 					rcpCanvasDirector, 
 					iUniqueId, 
