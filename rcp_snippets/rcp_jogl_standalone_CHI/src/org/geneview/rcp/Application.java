@@ -64,4 +64,5 @@ public class Application implements IApplication {
 
 		prototype.run();
 	}
+		
 }

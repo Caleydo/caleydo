@@ -12,23 +12,33 @@
       	<!-- Creating GenomeId mapping -->
 		  	<read-xml-file target="data/XML/bootstrap/load_genome_id_mapping_HSA.xml" />	   				
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	targetId="24" 
-			  	glcanvas="24" gl_listener="25"
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
+			  	gl_listener="25"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	targetId="82401" parent="24" label="GL Jukebox Pathway 3D" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="GL Jukebox Pathway 3D" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
 							attrib4="transparency 1" 								
 							detail="44101 35101 36101 37101 85101" /> 
 
-	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="26" 
+			    gl_listener="27"
+				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
+  		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"			cmdId="68993"	uniqueId="82501" parent="26" label="GL Heatmap 2D"	
+				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
+				attrib3="0 10 0 40   -0.5f -0.5f    -3.0f 3.0f   -3.0f 3.0f    2.0f 1.0f   400"			
+				attrib4="10 50  120 50  200 90;1 4   9 2   19 7  54 12"	
+				detail="38101" />
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401" detail="SELECTION_MEDIATOR" />  
+	  	<!-- Mediator -->
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401" detail="SELECTION_MEDIATOR" />  
      
    </CommandBuffer>
     

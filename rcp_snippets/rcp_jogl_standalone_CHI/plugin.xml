@@ -21,11 +21,30 @@
       <view
             allowMultiple="true"
             category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.SnippetJFrameView"
+            class="org.geneview.rcp.views.GLJukeboxPathwayView"
             icon="icons/sample.gif"
-            id="org.geneview.rcp.views.SnippetJFrameView"
-            name="SnippetJFrameView">
+            id="org.geneview.rcp.views.GLJukeboxPathwayView"
+            name="GLJukeboxPathwayView">
       </view>
+      
+      <view
+            allowMultiple="true"
+            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.geneview.rcp.views.GLHeatmap2DView"
+            icon="icons/sample.gif"
+            id="org.geneview.rcp.views.GLHeatmap2DView"
+            name="GLHeatmap2DView">
+      </view>      
+      
+      <view
+            id="org.geneview.rcp.views.browser.browserView"
+            name="GeneView browser"
+            icon="icons/sample.gif"
+            class="org.geneview.rcp.views.browser.BrowserView"
+            category="org.geneview.rcp.jogl.view.jframe"
+            allowMultiple="true">
+      </view>
+      
    </extension>   
    
    <extension

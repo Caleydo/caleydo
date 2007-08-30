@@ -24,26 +24,26 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	protected void makeActions(IWorkbenchWindow window) {
 		
-		exitAction = ActionFactory.QUIT.create(window);
-		register(exitAction);
-		
-		aboutAction = ActionFactory.ABOUT.create(window);
-		register(aboutAction);
+//		exitAction = ActionFactory.QUIT.create(window);
+//		register(exitAction);
+//		
+//		aboutAction = ActionFactory.ABOUT.create(window);
+//		register(aboutAction);
 	}
 
 	protected void fillMenuBar(IMenuManager menuBar) {
 
-		MenuManager mainMenu = new MenuManager("&Main", "main");
-		mainMenu.add(aboutAction);
-		mainMenu.add(exitAction);
-		menuBar.add(mainMenu);
+//		MenuManager mainMenu = new MenuManager("&Main", "main");
+//		mainMenu.add(aboutAction);
+//		mainMenu.add(exitAction);
+//		menuBar.add(mainMenu);
 	}
 
 	protected void fillCoolBar(ICoolBarManager coolBar) {
 
-		IToolBarManager toolbar = new ToolBarManager(coolBar.getStyle());
-		coolBar.add(toolbar);
-		toolbar.add(exitAction);
-		toolbar.add(new Separator());
+//		IToolBarManager toolbar = new ToolBarManager(coolBar.getStyle());
+//		coolBar.add(toolbar);
+//		toolbar.add(exitAction);
+//		toolbar.add(new Separator());
 	}
 }
