@@ -48,10 +48,10 @@ extends ACmdCreate_IdTargetParentGLObject {
 		refViewCamera.setCameraPosition(cameraOrigin);
 		refViewCamera.setCameraRotation(cameraRotation);
 		
-		refViewCamera.setId( iUniqueTargetId );
+		refViewCamera.setId( iUniqueId );
 		
 		refISetManager.registerItem(refViewCamera, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.SET_VIEWDATA);
 	}
 
@@ -61,7 +61,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	public void undoCommand() throws GeneViewRuntimeException {
 
 		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
-		refISetManager.unregisterItem(iUniqueTargetId, ManagerObjectType.SET_VIEWDATA);
+		refISetManager.unregisterItem(iUniqueId, ManagerObjectType.SET_VIEWDATA);
 
 	}
 

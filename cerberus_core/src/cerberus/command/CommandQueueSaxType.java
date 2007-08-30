@@ -178,7 +178,7 @@ public enum CommandQueueSaxType
 	TAG_CMD("cmd","Cmd",null),
 	TAG_CMD_QUEUE("cmd","CmdQueue",null),
 	TAG_CMD_ID("cmd","cmdId","-1"),
-	TAG_TARGET_ID("cmd","targetId","-1"),
+	TAG_UNIQUE_ID("cmd","uniqueId","-1"),
 	TAG_MEMENTO_ID("cmd","mementoId","-1"),
 	TAG_TYPE("cmd","type","NO_OPERATION"),
 	TAG_ATTRIBUTE1("cmd","attrib1",""),	
@@ -187,8 +187,7 @@ public enum CommandQueueSaxType
 	TAG_ATTRIBUTE4("cmd","attrib4",""),
 	TAG_DETAIL("cmd","detail",""),
 	TAG_PARENT("cmd","parent","-1"),
-	TAG_GLCANVAS("cmd","gl_canvas","-1"),
-	TAG_GLCANVAS_LISTENER("cmd","gl_listener","-1"),
+	TAG_GLCANVAS_FORWARDER("cmd","gl_forwarder","-1"),
 	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),
 	TAG_LABEL("cmd","label",""),
 	

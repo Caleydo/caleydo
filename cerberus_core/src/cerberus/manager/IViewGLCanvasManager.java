@@ -25,8 +25,10 @@ import cerberus.view.opengl.IGLCanvasDirector;
 public interface IViewGLCanvasManager 
 extends IViewManager {
 	
-	public IGLCanvasUser createGLCanvasUser(final CommandQueueSaxType useViewType, 
-			int iViewId, int iParentContainerId, String sLabel);
+	public IGLCanvasUser createGLCanvasUser(CommandQueueSaxType useViewType,
+			final int iUniqueId, 
+			final int iGlForwarderId,
+			String sLabel );
 	
 	//public GLCanvas getGLCanvas( int iId );
 

@@ -78,17 +78,21 @@ implements IView, IMediatorReceiver {
 		refDataTableViewRep = new DataTableViewRep(refGeneralManager, iViewId);
 	}
 
-	/**
-	 * 
-	 * @see cerberus.view.IView#initView()
-	 */
+//	/**
+//	 * 
+//	 * @see cerberus.view.IView#initView()
+//	 */
+//	public void initView() {
+//		
+//	
+//	}
+
 	protected void initViewSwtComposit(Composite swtContainer) {
-		
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.type = SWT.HORIZONTAL;
 		refSWTContainer.setLayout(fillLayout);
 	}
-
+	
 	public void drawView() {
 
 		// Create the tree viewer as a child of the composite parent

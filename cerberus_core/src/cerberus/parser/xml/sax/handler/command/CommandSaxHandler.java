@@ -114,8 +114,8 @@ extends AXmlParserHandler
 					ParameterHandlerType.INT );
 			
 			phAttributes.setValueBySaxAttributes( attrs,
-					CommandQueueSaxType.TAG_TARGET_ID.getXmlKey(),
-					CommandQueueSaxType.TAG_TARGET_ID.getDefault(),
+					CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey(),
+					CommandQueueSaxType.TAG_UNIQUE_ID.getDefault(),
 					ParameterHandlerType.INT );
 			
 			phAttributes.setValueBySaxAttributes( attrs,
@@ -134,13 +134,8 @@ extends AXmlParserHandler
 					ParameterHandlerType.INT );
 			
 			phAttributes.setValueBySaxAttributes( attrs,
-					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey(), 
-					CommandQueueSaxType.TAG_GLCANVAS.getDefault(),
-					ParameterHandlerType.INT );	
-			
-			phAttributes.setValueBySaxAttributes( attrs,
-					CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey(), 
-					CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getDefault(),
+					CommandQueueSaxType.TAG_GLCANVAS_FORWARDER.getXmlKey(), 
+					CommandQueueSaxType.TAG_GLCANVAS_FORWARDER.getDefault(),
 					ParameterHandlerType.INT );				
 			
 			phAttributes.setValueBySaxAttributes( attrs,

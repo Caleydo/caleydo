@@ -54,15 +54,14 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 		
 		DataExchangerViewRep dataExchangerView = (DataExchangerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,
-							iUniqueTargetId, 
+							iUniqueId, 
 							iParentContainerId,
-							sLabel,
-							iGLCanvasId,
-							iGLEventListernerId);
+							iGlForwarderId,
+							sLabel);
 		
 		viewManager.registerItem(
 				dataExchangerView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 
 		viewManager.addViewRep(dataExchangerView);

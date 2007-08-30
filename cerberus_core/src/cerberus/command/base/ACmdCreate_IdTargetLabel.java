@@ -26,7 +26,7 @@ extends ACommand {
 	/**
 	 * Unique Id of the object, that will be created.
 	 */
-	protected int iUniqueTargetId;
+	protected int iUniqueId;
 	
 	/**
 	 * Label of the new object, that will be created.
@@ -61,9 +61,9 @@ extends ACommand {
 				refParameterHandler.getValueInt( 
 						CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
 	
-		iUniqueTargetId = 
+		iUniqueId = 
 			refParameterHandler.getValueInt( 
-					CommandQueueSaxType.TAG_TARGET_ID.getXmlKey() );
+					CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey() );
 		
 		sLabel = refParameterHandler.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() );

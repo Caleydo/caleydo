@@ -78,11 +78,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public void setAttributes(int iSelectionSetId) {
 		
-		this.iUniqueTargetId = iSelectionSetId;
+		this.iUniqueId = iSelectionSetId;
 	}
 		
 	public String getInfoText() {
-		return super.getInfoText() + " -> " + this.iUniqueTargetId + ": " + this.sLabel;
+		return super.getInfoText() + " -> " + this.iUniqueId + ": " + this.sLabel;
 	}
 	
 	/**
@@ -188,7 +188,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		String sVirtualArrayIDs = Integer.toString(iSelectionVirtualArrayId);
 		
-		createdCommand.setAttributes(iUniqueTargetId, 
+		createdCommand.setAttributes(iUniqueId, 
 				sVirtualArrayIDs, 
 				stBuffer.toString(),
 				null);  // use null because we what to create a SelectionSet! 

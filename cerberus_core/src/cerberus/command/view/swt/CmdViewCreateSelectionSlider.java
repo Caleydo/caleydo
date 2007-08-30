@@ -50,15 +50,14 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		SelectionSliderViewRep sliderView = (SelectionSliderViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_SELECTION_SLIDER,
-							iUniqueTargetId, 
+							iUniqueId, 
 							iParentContainerId, 
-							sLabel,
-							iGLCanvasId,
-							iGLEventListernerId);
+							iGlForwarderId,
+							sLabel);
 		
 		viewManager.registerItem(
 				sliderView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 
 		sliderView.setAttributes(iWidthX, iHeightY, iSelectionId, sSelectionFieldName);

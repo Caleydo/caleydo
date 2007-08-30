@@ -13,19 +13,19 @@
 		  	<read-xml-file target="data/XML/bootstrap/load_genome_id_mapping_HSA.xml" />	   				
 			
 		<!-- Window 11331 -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" targetId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" targetId="84401" label="Pathway" 			parent="11331" attrib2="800 950" detail="49101 95101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" targetId="85401" label="Browser"			parent="11331" attrib2="-1 950" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="11331" label="Pathway Viewer" attrib1="ROW HORIZONTAL" />   
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" uniqueId="84401" label="Pathway" 			parent="11331" attrib2="800 950" detail="49101 95101" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"			parent="11331" attrib2="-1 950" />
 
 		<!-- Window	10331	-->
 		
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	targetId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 				 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	targetId="16401" 
-			  	gl_listener="99075"
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
+			  	gl_forwarder="99075"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	targetId="82401" parent="16401" label="GL Jukebox Pathway 3D" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="16401" label="GL Jukebox Pathway 3D" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
@@ -33,11 +33,11 @@
 							detail="44101 35101 36101 37101 85101" /> 
 							
 	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" targetId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401" detail="SELECTION_MEDIATOR" />  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401" detail="SELECTION_MEDIATOR" />  
      
    </CommandBuffer>
     

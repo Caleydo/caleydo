@@ -54,15 +54,14 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_BROWSER,
-							iUniqueTargetId, 
+							iUniqueId, 
 							iParentContainerId, 
-							sLabel,
-							iGLCanvasId,
-							iGLEventListernerId);
+							iGlForwarderId,
+							sLabel);
 		
 		viewManager.registerItem(
 				browserView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 
 		browserView.setAttributes(iWidthX, iHeightY);

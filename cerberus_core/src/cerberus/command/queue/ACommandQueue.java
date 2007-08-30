@@ -28,7 +28,7 @@ public abstract class ACommandQueue
 	/**
 	 * ISet CollectionId using this constructor.
 	 * 
-	 * @param iUniqueTargetId unique system-wide Id
+	 * @param iUniqueId unique system-wide Id
 	 * @param iCmdQueueId define cmd queue by this id
 	 */
 	protected ACommandQueue(final int iUniqueId,

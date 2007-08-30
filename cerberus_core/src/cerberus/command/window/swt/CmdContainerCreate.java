@@ -40,7 +40,7 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 	{
 		refGeneralManager.getSingelton().
 			getSWTGUIManager().createComposite(
-					iUniqueTargetId, 
+					iUniqueId, 
 					iParentContainerId, 
 					sLayoutAttributes);	
 		

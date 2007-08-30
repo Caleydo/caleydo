@@ -53,7 +53,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		IEventPublisher refEventPublisher = (IEventPublisher) refGeneralManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER);
 				
-		IMediator refMediator = refEventPublisher.getItemMediator(iUniqueTargetId);
+		IMediator refMediator = refEventPublisher.getItemMediator(iUniqueId);
 		
 		if  (refMediator == null ) {
 			assert false : "can not find mediator";
@@ -112,7 +112,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			ArrayList<Integer> iArReceiverIDs, 
 			MediatorType mediatorType) {
 		
-		this.iUniqueTargetId = iEventMediatorId;
+		this.iUniqueId = iEventMediatorId;
 		this.iArSenderIDs = iArSenderIDs;
 		this.iArReceiverIDs = iArReceiverIDs;
 		this.mediatorType = mediatorType;
@@ -124,6 +124,6 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	}
 	
 	public String getInfoText() {
-		return super.getInfoText() + " -> " + this.iUniqueTargetId + ": " + this.sLabel;
+		return super.getInfoText() + " -> " + this.iUniqueId + ": " + this.sLabel;
 	}
 }

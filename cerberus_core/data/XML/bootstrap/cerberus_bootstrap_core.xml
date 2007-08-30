@@ -7,63 +7,63 @@
   <Application remote="no" IP="127.0.0.1" port="4000" >
   
    <CommandBuffer>
-   	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15202" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" targetId="15301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25201" label="my Storage3" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />                 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" targetId="25301" label="my Storage4" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="1293" targetId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
+   	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" uniqueId="15202" label="my Storage1" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />             
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="10991" uniqueId="15301" label="my Storage2" attrib1="INT;FLOAT;STRING" attrib2="123 30 45 34@4.3 1.435 -5.34@info bla foo go blabla" />        
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" uniqueId="25201" label="my Storage3" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />                 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="11992" uniqueId="25301" label="my Storage4" attrib1="INT;FLOAT;STRING" attrib2="99 66 77 22@-0.55 1.11 -6.66@bbname bbof bbthe bbbeast kuli muhli" />            
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE" cmdId="1293" uniqueId="35301" label="my Storage fro file" attrib1="STRING" attrib2="test data filled by file" />            
      
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" targetId="15201" label="my Selection" attrib1="0 200 0 10" />             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="21991" targetId="25201" label="my Selection2" attrib1="50 50 0 1" />  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="20991" uniqueId="15201" label="my Selection" attrib1="0 200 0 10" />             
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" cmdId="21991" uniqueId="25201" label="my Selection2" attrib1="50 50 0 1" />  
             
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" cmdId="30991" targetId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" cmdId="31991" targetId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" cmdId="30991" uniqueId="15101" label="my Set1" attrib1="15201 25201" attrib2="15301 15301" /> 
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" cmdId="31991" uniqueId="25101" label="target Set for file" attrib1="15201" attrib2="25301" /> 
 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" targetId="10331" label="Cerberus Window 2" attrib1="ROW HORIZONTAL" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" uniqueId="10331" label="Cerberus Window 2" attrib1="ROW HORIZONTAL" />   
      
      <!--
      no second window 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" targetId="20331" label="Cerberus Window 1" attrib1="ROW VERTICAL" />   
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="41991" uniqueId="20331" label="Cerberus Window 1" attrib1="ROW VERTICAL" />   
      -->
      
      
      <!-- Window 10331 -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" targetId="10341" label="swt container 1" attrib1="10331" attrib2="ROW VERTICAL" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" targetId="11341" label="swt container 2" attrib1="10331" attrib2="ROW VERTICAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="50991" uniqueId="10341" label="swt container 1" attrib1="10331" attrib2="ROW VERTICAL" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" cmdId="51991" uniqueId="11341" label="swt container 2" attrib1="10331" attrib2="ROW VERTICAL" />
 
      <!-- Container 10341 -->
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" targetId="14401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="30" />
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" targetId="15401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="70" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="64991" uniqueId="14401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="30" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PROGRESSBAR" cmdId="65991" uniqueId="15401" label="Progress Bar" attrib1="10341" attrib2="300 30" detail="70" />
  	 
  	 <!--  mute pathway explorer
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" targetId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="61991" uniqueId="11401" label="Pathway" attrib1="10341" attrib2="-1 -1" />
    -->
     
    
      <!-- Container 11341 -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" targetId="10401" label="Data Explorer" attrib1="11341" attrib2="700 500" />		  
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_EXPLORER" cmdId="60991" uniqueId="10401" label="Data Explorer" attrib1="11341" attrib2="700 500" />		  
 
-   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68991" targetId="11401" label="Gears" attrib1="10341" attrib2="500 500" detail="1077991" />		  
+   <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS" cmdId="68991" uniqueId="11401" label="Gears" attrib1="10341" attrib2="500 500" detail="1077991" />		  
     
   <!--
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="67991" targetId="30401" label="Gears" attrib1="11341" attrib2="300 300" />		  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="67991" uniqueId="30401" label="Gears" attrib1="11341" attrib2="300 300" />		  
   --> 
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="68991" targetId="31401" label="Gears" attrib1="11341" attrib2="300 300" />		  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="68991" uniqueId="31401" label="Gears" attrib1="11341" attrib2="300 300" />		  
      
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" cmdId="69991" targetId="32401" label="Heatmap" attrib1="11341" attrib2="300 300" />		  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" cmdId="69991" uniqueId="32401" label="Heatmap" attrib1="11341" attrib2="300 300" />		  
   <!--
-     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="70991" targetId="33401" label="Heatmap" attrib1="11341" attrib2="300 300" />		  
+     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="70991" uniqueId="33401" label="Heatmap" attrib1="11341" attrib2="300 300" />		  
   --> 
 
      <!-- Window 11331 -->
      
    <!--  mute content of second window
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" targetId="18401" label="Pathway" attrib1="20331" attrib2="-1 -1" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER" cmdId="66991" targetId="1901" label="Slider" attrib1="20331" attrib2="400 100" />	 
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="63991" uniqueId="18401" label="Pathway" attrib1="20331" attrib2="-1 -1" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SLIDER" cmdId="66991" uniqueId="1901" label="Slider" attrib1="20331" attrib2="400 100" />	 
    -->
     
 	 <!-- Relations -->
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" cmdId="68991" targetId="10501" label="Event Relation" attrib1="15201" attrib2="14401" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_RELATION" cmdId="68991" uniqueId="10501" label="Event Relation" attrib1="15201" attrib2="14401" />
 
 <!--	
 
@@ -93,15 +93,15 @@
    </JFrameMenuList>
   
 
- 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" targetId="12401" label="Pathway" attrib1="10331" attrib2="400 -1" />
+ 	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" cmdId="62991" uniqueId="12401" label="Pathway" attrib1="10331" attrib2="400 -1" />
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" targetId="55601" label="Gears" attrib1="024001" />
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" targetId="56601" label="Gears" attrib1="024001" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99013" uniqueId="55601" label="Gears" attrib1="024001" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GEARS" cmdId="99014" uniqueId="56601" label="Gears" attrib1="024001" />
 
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="99009" targetId="55301" label="Heatmap" attrib="winId" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_HEATMAP" cmdId="99009" uniqueId="55301" label="Heatmap" attrib="winId" />
 		-->
 		
-	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" targetId="-1" detail="data\MicroarrayData\gpr_format\tests\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
+	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" cmdId="99010" uniqueId="-1" detail="data\MicroarrayData\gpr_format\tests\slide30.gpr" attrib1="SKIP;INT;SKIP;INT" attrib2="15101" />
 
      <!--
      <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" detail="data\MicroarrayData\slide33.gpr" attrib1="25101" attrib2="15101" />    

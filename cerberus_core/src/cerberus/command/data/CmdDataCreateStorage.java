@@ -109,7 +109,7 @@ extends ACmdCreate_IdTargetLabel {
 		IStorage newObject = (IStorage) refStorageManager.createStorage(
 				ManagerObjectType.STORAGE_FLAT );
 		
-		newObject.setId( iUniqueTargetId );
+		newObject.setId( iUniqueId );
 		newObject.setLabel( sLabel );
 		
 		newObject.allocate();
@@ -290,12 +290,12 @@ extends ACmdCreate_IdTargetLabel {
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
-				iUniqueTargetId,
+				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
-				iUniqueTargetId,
+				iUniqueId,
 				LoggerType.VERBOSE );	
 		
 		refCommandManager.runUndoCommand(this);
@@ -342,7 +342,7 @@ extends ACmdCreate_IdTargetLabel {
 	public void setAttributes(int iStorageID, 
 			String sDataTypes, String sRawData) {
 
-		iUniqueTargetId = iStorageID;
+		iUniqueId = iStorageID;
 		
 		/**
 		 * Fill data type pattern...

@@ -36,16 +36,11 @@ import cerberus.view.opengl.IGLCanvasUser;
  */
 public class SwtJoglGLCanvasViewRep 
 extends AViewRep
-//extends AJoglViewRep 
 implements IGLCanvasDirector {
 	
-	protected int iGLEventListernerId = 99000;
-	
-	protected int iGLCanvasId;
+	protected int iGLEventListernerId;  // = 99000;
 	
 	private JoglCanvasForwarder forwarder_GLEventListener = null;
-	
-	private Composite refSWTContainer;
 	
 	private final JoglCanvasForwarderType canvasForwarderType;
 	
@@ -57,7 +52,7 @@ implements IGLCanvasDirector {
 	
 	public SwtJoglGLCanvasViewRep(final IGeneralManager refGeneralManager, 
 			int iViewId, 
-			int iParentContainerId, 
+			int iParentContainerId,
 			int iCanvasForwarderId,
 			String sLabel,
 			JoglCanvasForwarderType type) {
@@ -67,14 +62,15 @@ implements IGLCanvasDirector {
 				iParentContainerId,
 				sLabel, 
 				ViewType.SWT_JOGL_VIEW );
-		
+			
 		canvasForwarderType = type;
 						
 		refGeneralManager.getSingelton().getViewGLCanvasManager(
 				).registerGLCanvasDirector( this, iViewId );
 		
-		iGLCanvasId = iParentContainerId;
-		//iGLEventListernerId = iGLCanvasId + iGLEventListernerId;
+		//iGLCanvasId = iParentContainerId;
+		this.iGLEventListernerId = iCanvasForwarderId;
+		//iGlForwarderId = iGLCanvasId + iGlForwarderId;
 		
 	}
 	
@@ -193,10 +189,10 @@ implements IGLCanvasDirector {
 
 		// next line importatne???
 		//canvasManager.registerGLCanvas( refGLCanvas, iGLCanvasId );
-		canvasManager.registerGLCanvasDirector( this, iGLCanvasId);
+		canvasManager.registerGLCanvasDirector( this, iUniqueId);
 		
 		canvasManager.registerGLEventListener( forwarder_GLEventListener, iGLEventListernerId );
-		canvasManager.addGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
+		canvasManager.addGLEventListener2GLCanvasById( iGLEventListernerId, iUniqueId );
 		
 		//setGLEventListener( forwarder_GLEventListener );
 		
@@ -237,7 +233,7 @@ implements IGLCanvasDirector {
 		canvasManager.unregisterGLCanvasDirector( this );
 		//canvasManager.unregisterGLCanvas( refGLCanvas );		
 		canvasManager.unregisterGLEventListener( forwarder_GLEventListener );
-		canvasManager.removeGLEventListener2GLCanvasById( iGLEventListernerId, iGLCanvasId );
+		canvasManager.removeGLEventListener2GLCanvasById( iGLEventListernerId, iUniqueId );
 		
 		destroyOnExitViewRep();
 		
@@ -251,23 +247,10 @@ implements IGLCanvasDirector {
 				LoggerType.STATUS );
 	}
 
-	/**
-	 * Attention, side effect! Call this before calling initView() !
-	 * 
-	 * @param iOpenGLCanvasId
-	 */
-	public void setOpenGLCanvasId( int iOpenGLCanvasId ) {
-		this.iGLCanvasId = iOpenGLCanvasId;		
-	}
 	
-	public void setAttributes(int iWidth, int iHeight, int iGLCanvasId, int iGLEventListenerId) {
+	public void setAttributes(int iWidth, int iHeight, int iGLEventListenerId) {
 		
 		super.setAttributes(iWidth, iHeight);
-		
-		if ( iGLCanvasId != -1 ) 
-		{
-			this.iGLCanvasId = iGLCanvasId;
-		}
 		
 		if ( iGLEventListenerId != -1 ) 
 		{

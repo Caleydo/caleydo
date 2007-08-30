@@ -31,13 +31,13 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 	 */
 	protected int iHeightY;
 	
-	/**
-	 * Canvas Id used for OpenGL
-	 * 
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#setParameterHandler(IParameterHandler)
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#checkOpenGLSetting()
-	 */
-	protected int iGLCanvasId = 0;
+//	/**
+//	 * Canvas Id used for OpenGL
+//	 * 
+//	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#setParameterHandler(IParameterHandler)
+//	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#checkOpenGLSetting()
+//	 */
+//	protected int iGLCanvasId = 0;
 	 
 	/**
 	 * GLEventListener Id used for OpenGL
@@ -46,7 +46,7 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#checkOpenGLSetting()
 	 * 
 	 */
-	protected int iGLEventListernerId = 0;
+	protected int iGlForwarderId = 0;
 	
 	/**
 	 * Constructor.

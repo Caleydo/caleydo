@@ -20,17 +20,11 @@ import cerberus.view.opengl.IGLCanvasUser;
 public interface IViewManager 
 extends IGeneralManager {
 	
-//	public IView createView(final ManagerObjectType useViewType, 
-//			final int iViewId, 
-//			final int iParentContainerId,
-//			final String sLabel);
-	
 	public IView createView(final ManagerObjectType useViewType, 
-			final int iViewId, 
+			final int iUniqueId,
 			final int iParentContainerId,
-			final String sLabel,
-			final int iGLcanvasId,
-			final int iGLforwarderId);
+			final int iGlForwarderId, 
+			final String sLabel );
 	
 	public void destroyOnExit();
 

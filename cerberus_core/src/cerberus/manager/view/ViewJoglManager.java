@@ -59,19 +59,13 @@ import cerberus.view.swt.test.TestTableViewRep;
 import cerberus.view.swt.undoredo.UndoRedoViewRep;
 
 /**
- * Manage all canvas, view, ViewRep's nad GLCanvas objects.
+ * Manage all canvas, view, ViewRep's and GLCanvas objects.
  * 
  * @author Michael Kalkusch
  */
 public class ViewJoglManager 
 extends AAbstractManager
 implements IViewGLCanvasManager {
-
-	/**
-	 * Stores, which GLEventListener are registered to one GLCanvas.
-	 * hashGLCanvasId2Vector provices mapping of unique-GLCanvas-Id to position inside this vector.
-	 */
-	private HashMap<Integer, Vector<GLEventListener>> hashGLCanvasId_2_vecGLEventListener;
 
 	protected HashMap<Integer, IView> hashViewId2View;
 
@@ -89,7 +83,7 @@ implements IViewGLCanvasManager {
 	protected HashMap<GLCanvas, Integer> hashGLCanvas_revert;
 
 	protected HashMap<Integer, GLEventListener> hashGLEventListener;
-
+	
 	/** speed up removal of GLEventListener objects. */
 	protected HashMap<GLEventListener, Integer> hashGLEventListener_revert;
 
@@ -124,9 +118,6 @@ implements IViewGLCanvasManager {
 
 		hashGLEventListener = new HashMap<Integer, GLEventListener>();
 		hashGLEventListener_revert = new HashMap<GLEventListener, Integer>();
-
-		/** internal datastructure to map GLCanvas to GLEventListeners .. */
-		hashGLCanvasId_2_vecGLEventListener = new HashMap<Integer, Vector<GLEventListener>>();
 
 		hashGLCanvasUser = new HashMap<Integer, IGLCanvasUser>();
 		hashGLCanvasUser_revert = new HashMap<IGLCanvasUser, Integer>();
@@ -233,11 +224,10 @@ implements IViewGLCanvasManager {
 	 * type parameter.
 	 */
 	public IView createView(final ManagerObjectType useViewType, 
-			final int iViewId,
-			final int iParentContainerId, 
-			final String sLabel,
-			final int iGLcanvasId,
-			final int iGLforwarderId) {
+			final int iUniqueId,
+			final int iParentContainerId,
+			final int iGlForwarderId, 
+			final String sLabel ) {
 
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{
@@ -253,51 +243,54 @@ implements IViewGLCanvasManager {
 		case VIEW:
 
 		case VIEW_SWT_PATHWAY:
-			return new Pathway2DViewRep(this.refGeneralManager, iViewId,
+			return new Pathway2DViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_DATA_EXPLORER:
-			return new DataExplorerViewRep(this.refGeneralManager, iViewId,
+			return new DataExplorerViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_DATA_EXCHANGER:
-			return new DataExchangerViewRep(this.refGeneralManager, iViewId,
+			return new DataExchangerViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);	
 		case VIEW_SWT_DATA_SET_EDITOR:
-			return new NewSetEditorViewRep(this.refGeneralManager, iViewId,
+			return new NewSetEditorViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_PROGRESS_BAR:
-			return new ProgressBarViewRep(this.refGeneralManager, iViewId,
+			return new ProgressBarViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_TEST_TABLE:
-			return new TestTableViewRep(this.refGeneralManager, iViewId,
+			return new TestTableViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_GEARS:
-			return new GearsViewRep(this.refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GearsViewRep(this.refGeneralManager, 
+					iUniqueId,
+					iParentContainerId, 
+					sLabel,
+					iGlForwarderId);
 
 		//return new Heatmap2DViewRep(iNewId, this.refGeneralManager);
 			
 		case VIEW_SWT_SELECTION_SLIDER:
-			return new SelectionSliderViewRep(this.refGeneralManager, iViewId,
+			return new SelectionSliderViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_STORAGE_SLIDER:
-			return new StorageSliderViewRep(this.refGeneralManager, iViewId,
+			return new StorageSliderViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_MIXER:
-			return new MixerViewRep(this.refGeneralManager, iViewId,
+			return new MixerViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);			
 		case VIEW_SWT_BROWSER:
-			return new HTMLBrowserViewRep(this.refGeneralManager, iViewId,
+			return new HTMLBrowserViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_IMAGE:
-			return new ImageViewRep(this.refGeneralManager, iViewId,
+			return new ImageViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 		case VIEW_SWT_UNDO_REDO:
-			return new UndoRedoViewRep(this.refGeneralManager, iViewId,
+			return new UndoRedoViewRep(this.refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);	
 		case VIEW_SWT_JOGL_MULTI_GLCANVAS:
-			return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iViewId,
-					iParentContainerId,
-					iParentContainerId,
+			return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iUniqueId,
+					iParentContainerId,					
+					iGlForwarderId,
 					sLabel,
 					JoglCanvasForwarderType.DEFAULT_FORWARDER);
 
@@ -326,91 +319,93 @@ implements IViewGLCanvasManager {
 	}
 
 	public IGLCanvasUser createGLCanvasUser(CommandQueueSaxType useViewType,
-			int iViewId, int iParentContainerId, String sLabel) {
+			final int iUniqueId, 
+			final int iGlForwarderId,
+			String sLabel ) {
 
 		switch (useViewType)
 		{
 		case CREATE_GL_TRIANGLE_TEST:
-			return new GLCanvasTestTriangle(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasTestTriangle(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 
 		case CREATE_GL_HEATMAP:
-			return new GLCanvasHeatmap(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasHeatmap(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 
 		case CREATE_GL_HEATMAP2D:
 			System.err.println("  overwrite: create CREATE_GL_HEATMAP2DCOLUMN instead of requested CREATE_GL_HEATMAP2D");
-			return new GLCanvasHeatmap2DColumn(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasHeatmap2DColumn(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 			/*
-			return new GLCanvasHeatmap2D(refGeneralManager, iViewId,
+			return new GLCanvasHeatmap2D(refGeneralManager, iUniqueId,
 					iParentContainerId, sLabel);
 			*/
 			
 		case CREATE_GL_HEATMAP2DCOLUMN:
-			return new GLCanvasHeatmap2DColumn(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasHeatmap2DColumn(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 			
 		case CREATE_GL_SCATTERPLOT2D:
-			return new GLCanvasScatterPlot2D(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasScatterPlot2D(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 
 		case CREATE_GL_MINMAX_SCATTERPLOT2D:
-			return new GLCanvasMinMaxScatterPlot2D(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasMinMaxScatterPlot2D(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 
 		case CREATE_GL_MINMAX_SCATTERPLOT3D:
-			return new GLCanvasMinMaxScatterPlot3D(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasMinMaxScatterPlot3D(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 			
 		case CREATE_GL_WIDGET:
-			return new GLCanvasWidget(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasWidget(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 
 		case CREATE_GL_HISTOGRAM2D:
-			return new GLCanvasHistogram2D(refGeneralManager, iViewId,
-					iParentContainerId, sLabel);
+			return new GLCanvasHistogram2D(refGeneralManager, iUniqueId,
+					iGlForwarderId, sLabel);
 
 		case CREATE_GL_ISOSURFACE3D:
 			return new GLCanvasIsoSurface3D(
 					refGeneralManager, 
-					iViewId, 
-					iParentContainerId, 
+					iUniqueId, 
+					iGlForwarderId, 
 					sLabel);
 			
 		case CREATE_GL_TEXTURE2D:
 			return new GLCanvasTexture2D(
 					refGeneralManager, 
-					iViewId, 
-					iParentContainerId, 
+					iUniqueId, 
+					iGlForwarderId, 
 					sLabel);
 			
 		case CREATE_GL_LAYERED_PATHWAY_3D:
 			return new GLCanvasLayeredPathway3D(
 					refGeneralManager, 
-					iViewId,
-					iParentContainerId, 
+					iUniqueId,
+					iGlForwarderId, 
 					sLabel);
 			
 		case CREATE_GL_PANEL_PATHWAY_3D:
 			return new GLCanvasPanelPathway3D(
 					refGeneralManager, 
-					iViewId,
-					iParentContainerId, 
+					iUniqueId,
+					iGlForwarderId, 
 					sLabel);	
 
 		case CREATE_GL_JUKEBOX_PATHWAY_3D:
 			return new GLCanvasJukeboxPathway3D(
 					refGeneralManager, 
-					iViewId,
-					iParentContainerId, 
+					iUniqueId,
+					iGlForwarderId, 
 					sLabel);
 			
 		case CREATE_GL_PARALLEL_COORDINATES_3D:
 			return new GLCanvasParCoords(
 					refGeneralManager, 
-					iViewId,
-					iParentContainerId, 
+					iUniqueId,
+					iGlForwarderId, 
 					sLabel);
 			
 		default:
@@ -448,12 +443,6 @@ implements IViewGLCanvasManager {
 		hashGLCanvas.put(iCanvasId, canvas);
 		hashGLCanvas_revert.put(canvas, iCanvasId);
 
-		synchronized (getClass())
-		{
-			hashGLCanvasId_2_vecGLEventListener.put(iCanvasId,
-					new Vector<GLEventListener>());
-		}
-
 		return true;
 	}
 
@@ -466,25 +455,6 @@ implements IViewGLCanvasManager {
 
 			hashGLCanvas.remove(iCanvasId);
 			hashGLCanvas_revert.remove(canvas);
-
-			synchronized (getClass())
-			{
-				/* get all GLEventListeners registered to this GLCanvas... */
-				Vector<GLEventListener> vecListOfRemoveableGLEventListeners = hashGLCanvasId_2_vecGLEventListener
-						.get(iCanvasId);
-
-				Iterator<GLEventListener> iterListeners = vecListOfRemoveableGLEventListeners
-						.iterator();
-
-				while (iterListeners.hasNext())
-				{
-					canvas.removeGLEventListener(iterListeners.next());
-				}
-
-				/* Clean up HashMap with id -> Vector<GLEventListener> .. */
-				hashGLCanvasId_2_vecGLEventListener.remove(iCanvasId);
-			}
-			/** Unregister all GLListeners to! */
 
 			return true;
 		}
@@ -521,12 +491,6 @@ implements IViewGLCanvasManager {
 
 		hashGLCanvasUser.put(iCanvasId, canvas);
 		hashGLCanvasUser_revert.put(canvas, iCanvasId);
-
-		synchronized (getClass())
-		{
-			hashGLCanvasId_2_vecGLEventListener.put(iCanvasId,
-					new Vector<GLEventListener>());
-		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"registerGLCanvasUser() id " + iCanvasId

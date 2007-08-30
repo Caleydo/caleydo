@@ -436,7 +436,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			assingPlanarOrMultiDimensionalSet( newObject );
 		} //if ( setDataType != null ) {..} else {..}
 		
-		newObject.setId( iUniqueTargetId );
+		newObject.setId( iUniqueId );
 		newObject.setLabel( sLabel );
 		
 		
@@ -458,7 +458,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 
 		refGeneralManager.getSingelton().logMsg( 
 				"DO new SET: " + 
-				iUniqueTargetId,
+				iUniqueId,
 				LoggerType.VERBOSE );
 		
 		// Set detailed set data type
@@ -665,7 +665,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			String sStorageIDs,
 			SetDataType setType) {
 		
-		iUniqueTargetId = iSetId;
+		iUniqueId = iSetId;
 		setDataType = setType;
 				
 		/**

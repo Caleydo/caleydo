@@ -110,7 +110,7 @@ extends ACmdCreate_IdTargetLabel {
 		IStorage newObject = (IStorage) refStorageManager.createStorage(
 				ManagerObjectType.STORAGE_FLAT );
 		
-		newObject.setId( iUniqueTargetId );
+		newObject.setId( iUniqueId );
 		newObject.setLabel( sLabel );
 		
 		newObject.allocate();

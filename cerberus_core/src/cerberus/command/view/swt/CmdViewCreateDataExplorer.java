@@ -53,15 +53,14 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
-							iUniqueTargetId, 
+							iUniqueId, 
 							iParentContainerId, 
-							sLabel,
-							iGLCanvasId,
-							iGLEventListernerId);
+							iGlForwarderId,
+							sLabel);
 		
 		viewManager.registerItem(
 				dataExplorerView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 		
 		viewManager.addViewRep(dataExplorerView);

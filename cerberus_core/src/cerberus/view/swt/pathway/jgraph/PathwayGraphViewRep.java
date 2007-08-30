@@ -173,7 +173,7 @@ extends APathwayGraphViewRep {
 	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	protected void retrieveGUIContainer() {
+	public void initView() {
 
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) refGeneralManager
 				.getSingelton().getSWTGUIManager().createWidget(
@@ -182,10 +182,7 @@ extends APathwayGraphViewRep {
 
 		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
-	}
-
-	protected void initViewSwtComposit(Composite swtContainer) {
-
+		
 		extractCurrentPathwayFromSet();
 
 		class PathwayMarqueeHandler extends BasicMarqueeHandler {
@@ -310,6 +307,11 @@ extends APathwayGraphViewRep {
 		// Create and register Undo Manager
 		refUndoManager = new GraphUndoManager();
 		refGraphModel.addUndoableEditListener(refUndoManager);
+	}
+
+	protected void initViewSwtComposit(Composite swtContainer) {
+
+		throw new RuntimeException("Class can not be called via RCP!");
 	}
 
 	protected void processSelectedCell() {

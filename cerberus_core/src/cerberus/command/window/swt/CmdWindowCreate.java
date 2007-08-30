@@ -42,7 +42,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	{
 		refGeneralManager.getSingelton().
 			getSWTGUIManager().createWindow( 
-					iUniqueTargetId, sLabel, sLayoutAttributes);	
+					iUniqueId, sLabel, sLayoutAttributes);	
 		
 		refCommandManager.runDoCommand(this);
 	}

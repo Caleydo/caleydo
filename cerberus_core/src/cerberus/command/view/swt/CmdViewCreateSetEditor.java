@@ -46,15 +46,14 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		NewSetEditorViewRep setEditorView = (NewSetEditorViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_SET_EDITOR,
-							iUniqueTargetId, 
+							iUniqueId, 
 							iParentContainerId, 
-							sLabel,
-							iGLCanvasId,
-							iGLEventListernerId);
+							iGlForwarderId,
+							sLabel);
 		
 		viewManager.registerItem(
 				setEditorView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 
 		viewManager.addViewRep(setEditorView);

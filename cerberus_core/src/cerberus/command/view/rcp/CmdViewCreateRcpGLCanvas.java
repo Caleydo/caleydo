@@ -53,7 +53,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-			RcpCanvasDirector rcpCanvasDirector = new RcpCanvasDirector(iGLCanvasId, iGLEventListernerId,
+			RcpCanvasDirector rcpCanvasDirector = new RcpCanvasDirector(iUniqueId, iGlForwarderId,
 					refGeneralManager, JoglCanvasForwarderType.ONLY_2D_FORWARDER);
 
 			IViewGLCanvasManager viewManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
@@ -65,7 +65,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 			
 			viewManager.registerItem(
 					rcpCanvasDirector, 
-					iUniqueTargetId, 
+					iUniqueId, 
 					ManagerObjectType.VIEW);
 			
 			JoglCanvasForwarder canvasForwarder = rcpCanvasDirector.getJoglCanvasForwarder();
@@ -91,8 +91,8 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 //		iGLCanvasId = refParameterHandler.getValueInt(
 //				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
 //		
-//		iGLEventListernerId = refParameterHandler.getValueInt( 
-//				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
+//		iGlForwarderId = refParameterHandler.getValueInt( 
+//				CommandQueueSaxType.TAG_GLCANVAS_FORWARDER.getXmlKey() );
 
 		String sPositionGLOrigin = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey() );

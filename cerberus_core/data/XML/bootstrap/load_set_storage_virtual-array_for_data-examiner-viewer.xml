@@ -5,14 +5,14 @@
 		
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				
 		cmdId="10991"	
-		targetId="15301" 
+		uniqueId="15301" 
 		label="my Storage1" 
 		attrib1="INT;FLOAT;STRING"	
 		attrib2="123 30	45 34@4.3	1.435	-5.34@info bla foo go	blabla"	/>	
 					
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				
 		cmdId="11992"	
-		targetId="25301" 
+		uniqueId="25301" 
 		label="my Storage2" 
 		attrib1="INT;FLOAT;STRING"	
 		attrib2="99	66 77	22@-0.55 1.11	-6.66@bbname bbof	bbthe	bbbeast	kuli muhli"	/>

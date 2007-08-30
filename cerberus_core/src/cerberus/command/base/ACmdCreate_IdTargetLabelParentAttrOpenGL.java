@@ -33,16 +33,10 @@ public abstract class ACmdCreate_IdTargetLabelParentAttrOpenGL
 	 * Overwrite this in derived classes if OpenGL settings are not required.
 	 */
 	protected void checkOpenGLSetting() {
-		if ( iGLCanvasId < 1) {
-			this.refGeneralManager.getSingelton().logMsg(" tag [" + 
-					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() +
-					"] is not assinged!",
-					LoggerType.MINOR_ERROR_XML);
-		}
 		
-		if ( iGLEventListernerId < 1) {
+		if ( iGlForwarderId < 1) {
 			this.refGeneralManager.getSingelton().logMsg(" tag [" + 
-					CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() +
+					CommandQueueSaxType.TAG_GLCANVAS_FORWARDER.getXmlKey() +
 					"] is not assinged!",
 					LoggerType.MINOR_ERROR_XML);
 		}
@@ -51,12 +45,9 @@ public abstract class ACmdCreate_IdTargetLabelParentAttrOpenGL
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
 		super.setParameterHandler(refParameterHandler);
-		
-		iGLCanvasId = refParameterHandler.getValueInt(
-				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
 				
-		iGLEventListernerId = refParameterHandler.getValueInt( 
-				CommandQueueSaxType.TAG_GLCANVAS_LISTENER.getXmlKey() );
+		iGlForwarderId = refParameterHandler.getValueInt( 
+				CommandQueueSaxType.TAG_GLCANVAS_FORWARDER.getXmlKey() );
 				
 		checkOpenGLSetting();
 	}

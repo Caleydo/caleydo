@@ -73,16 +73,16 @@ implements IViewRep {
 	 */
 	public AViewRep(
 			final IGeneralManager refGeneralManager, 
-			final int iViewId, 
-			final int iSetParentContainerId, 
+			final int iUniqueId,
+			final int iParentContainerId,
 			final String sLabel,
 			final ViewType viewType ) {
 		
-		super ( iViewId, refGeneralManager );
+		super ( iUniqueId, refGeneralManager );
 		
-		assert iSetParentContainerId != 0 : "Constructor iParentContainerId must not be 0!";
+		assert iParentContainerId != 0 : "Constructor iParentContainerId must not be 0!";
 		
-		this.iParentContainerId = iSetParentContainerId;
+		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
 		
 		eventState = ViewEventStateType.NONE;
@@ -129,7 +129,7 @@ implements IViewRep {
 	 * (non-Javadoc)
 	 * @see cerberus.view.IView#initView()
 	 */
-	public final void initView() {
+	public void initView() {
 	
 		/**
 		 * Method uses the parent container ID to retrieve the 
@@ -146,7 +146,8 @@ implements IViewRep {
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
 
-		
+		assert refSWTContainer != null : "empty SWT container";
+				
 		initViewSwtComposit( refSWTContainer );
 	}
 	

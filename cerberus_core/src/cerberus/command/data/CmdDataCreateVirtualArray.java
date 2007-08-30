@@ -77,7 +77,7 @@ extends ACmdCreate_IdTargetLabel {
 		IVirtualArray newObject = (IVirtualArray) refVirtualArrayManager.createVirtualArray(
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		newObject.setId( iUniqueTargetId );
+		newObject.setId( iUniqueId );
 		newObject.setLabel( sLabel );
 		newObject.setOffset( iOffset );
 		newObject.setLength( iLength );
@@ -85,7 +85,7 @@ extends ACmdCreate_IdTargetLabel {
 		newObject.setMultiRepeat( iMultiRepeat );
 		
 		refVirtualArrayManager.registerItem( newObject, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 
 		refGeneralManager.getSingelton().logMsg( 
@@ -102,12 +102,12 @@ extends ACmdCreate_IdTargetLabel {
 	public void undoCommand() throws GeneViewRuntimeException {
 		
 		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
-				iUniqueTargetId,
+				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		refGeneralManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
-				iUniqueTargetId,
+				iUniqueId,
 				LoggerType.VERBOSE );
 		
 		refCommandManager.runUndoCommand(this);
@@ -161,7 +161,7 @@ extends ACmdCreate_IdTargetLabel {
 			int iMultiRepeat,
 			int iMultiOffset) {
 		
-		iUniqueTargetId = iVirtualArrayId;
+		iUniqueId = iVirtualArrayId;
 		this.iLength = iLength;
 		this.iOffset = iOffset;
 		this.iMultiRepeat = iMultiRepeat;

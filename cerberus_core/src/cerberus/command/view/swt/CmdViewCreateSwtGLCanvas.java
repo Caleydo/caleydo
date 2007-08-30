@@ -59,11 +59,10 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 			
 			SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager			
 					.createView(ManagerObjectType.VIEW_SWT_JOGL_MULTI_GLCANVAS,
-								iUniqueTargetId, 
+								iUniqueId, 
 								iParentContainerId, 
-								sLabel,
-								iGLCanvasId,
-								iGLEventListernerId );
+								iGlForwarderId,
+								sLabel );
 
 			assert swtGLCanvasView != null : "SwtJoglCanvasViewRep could not be created!";
 			
@@ -72,11 +71,11 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 			 */
 			viewManager.registerItem(
 					swtGLCanvasView, 
-					iUniqueTargetId, 
+					iUniqueId, 
 					ManagerObjectType.VIEW);
 			
 			
-			swtGLCanvasView.setAttributes(iWidthX, iHeightY, iGLCanvasId, iGLEventListernerId);
+			swtGLCanvasView.setAttributes(iWidthX, iHeightY, iGlForwarderId);
 			swtGLCanvasView.initView();
 			swtGLCanvasView.drawView();
 			

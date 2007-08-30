@@ -201,7 +201,7 @@ extends ACommand {
 		
 		this.iTargetSetId =	StringConversionTool.convertStringToInt(
 				refParameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_TARGET_ID.getXmlKey()),
+						CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey()),
 				-1 );
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(

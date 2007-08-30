@@ -48,15 +48,14 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		ImageViewRep imageView = (ImageViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_IMAGE,
-							iUniqueTargetId, 
+							iUniqueId, 
 							iParentContainerId, 
-							sLabel,
-							iGLCanvasId,
-							iGLEventListernerId);
+							iGlForwarderId,
+							sLabel);
 		
 		viewManager.registerItem(
 				imageView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 
 		imageView.setAttributes(iWidthX, iHeightY, sImagePath);

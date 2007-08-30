@@ -48,15 +48,14 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		StorageSliderViewRep sliderView = (StorageSliderViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_STORAGE_SLIDER,
-							iUniqueTargetId, 
+							iUniqueId, 
 							iParentContainerId, 
-							sLabel,
-							iGLCanvasId,
-							iGLEventListernerId);
+							iGlForwarderId,
+							sLabel);
 		
 		viewManager.registerItem(
 				sliderView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 
 		sliderView.setAttributes(iWidthX, iHeightY, iSetId);

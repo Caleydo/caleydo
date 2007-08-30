@@ -55,15 +55,14 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 		
 		Pathway2DViewRep pathwayView = (Pathway2DViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,
-						iUniqueTargetId,
+						iUniqueId,
 						iParentContainerId, 
-						sLabel,
-						iGLCanvasId,
-						iGLEventListernerId);
+						iGlForwarderId,
+						sLabel);
 		
 		viewManager.registerItem(
 				pathwayView, 
-				iUniqueTargetId, 
+				iUniqueId, 
 				ManagerObjectType.VIEW);
 
 		int[] iArTmp = new int[iArSetIDs.size()];

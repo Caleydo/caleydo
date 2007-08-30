@@ -25,12 +25,15 @@ implements IView
 	protected GLCanvas refGLCanvas;
 	
 	public GearsViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, int iParentContainerId, String sLabel)
+			int iViewId, 
+			int iParentContainerId, 
+			String sLabel,
+			int iGLEventListenerId)
 	{
 		super(refGeneralManager, 
 				iViewId, 
-				iParentContainerId, 
-				iParentContainerId, 
+				iParentContainerId,
+				iGLEventListenerId,
 				sLabel,
 				JoglCanvasForwarderType.GLEVENT_LISTENER_FORWARDER);		
 	}

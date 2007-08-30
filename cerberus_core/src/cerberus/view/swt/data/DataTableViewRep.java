@@ -66,7 +66,9 @@ implements IDataTableView {
 				ViewType.SWT_DATA_TABLE);
 
 		bTriggeredUpdateFlag = false;
-		initView();
+		initViewSwtComposit(null);
+		
+		//initView();
 	}
 
 	/*

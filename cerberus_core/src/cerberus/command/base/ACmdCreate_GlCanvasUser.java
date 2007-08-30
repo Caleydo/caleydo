@@ -55,7 +55,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 		 */
 		openGLCanvasUser = glCanvasManager.createGLCanvasUser(
 				localManagerObjectType,
-				iUniqueTargetId,
+				iUniqueId,
 				iParentContainerId,
 				sLabel );
 
@@ -63,7 +63,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 		
 		glCanvasManager.registerGLCanvasUser( 
 				openGLCanvasUser, 
-				iUniqueTargetId );
+				iUniqueId );
 		
 		IGLCanvasDirector canvasDirector = 
 			glCanvasManager.getGLCanvasDirector( iParentContainerId );
