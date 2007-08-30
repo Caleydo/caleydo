@@ -2,6 +2,7 @@ package cerberus.manager.data.genome;
 
 //import java.util.HashMap;
 
+import java.util.Collection;
 import java.util.Set;
 
 import cerberus.data.mapping.GenomeMappingDataType;
@@ -31,7 +32,7 @@ public interface IGenomeIdMap {
 	
 	public String getStringByInt( final int key);
 	
-	public String getStringByString( final String key);
+	public String getStringByString( final String key);	
 	
 	public int getIntByIntChecked( final int key);
 	
@@ -41,13 +42,59 @@ public interface IGenomeIdMap {
 	
 	public String getStringByStringChecked( final String key);
 	
+	/**
+	 * Expose keys in a Set <Integer>
+	 * Note if values can not be converted an exception is thrown.
+	 * Attention: the internal data type could be Integer or String
+	 * 
+	 * @see IGenomeIdMap#getKeysString()
+	 * @see IGenomeIdMap#getValuesString()
+	 * @see IGenomeIdMap#getValuesInteger()
+	 * 
+	 * @return keys in a set
+	 */
 	public Set <Integer> getKeysInteger();
 	
+	/**
+	 * Expose keys in a Set <String>
+	 * Attention: the internal data type could be Integer or String
+	 * 
+	 * @see IGenomeIdMap#getKeysInteger()
+	 * @see IGenomeIdMap#getValuesString()
+	 * @see IGenomeIdMap#getValuesInteger()
+	 * 
+	 * @return keys exposed as Set <String>
+	 */
 	public Set <String> getKeysString();
 	
 	/**
+	 * Expose keys in a Set <Integer>
+	 * Note if values can not be converted to Integer an exception is thrown.
+	 * Attention: the internal data type could be Integer or String
+	 * 
+	 * @see IGenomeIdMap#getValuesString()
+	 * @see IGenomeIdMap#getKeysInteger()
+	 * @see IGenomeIdMap#getKeysString()
+	 * 
+	 * @return
+	 */
+	public Collection <Integer> getValuesInteger();
+	
+	/**
+	 * Expose keys in a Set <String>
+	 * Attention: the internal data type could be Integer or String
+	 * 
+	 * @see IGenomeIdMap#getValuesInteger()
+	 * @see IGenomeIdMap#getKeysInteger()
+	 * @see IGenomeIdMap#getKeysString()
+	 * 
+	 * @return
+	 */
+	public Collection <String> getValuesString();
+	
+	/**
 	 * Adds a key-value pair. 
-	 * Each implementation has to cast to the propper types.
+	 * Each implementation has to cast to the proper types.
 	 * 
 	 * @param key
 	 * @param value
@@ -99,4 +146,5 @@ public interface IGenomeIdMap {
 			GenomeMappingType genomeMappingLUT_2,
 			GenomeMappingDataType targetMappingDataType,
 			GenomeMappingDataType sourceMappingDataType);
+	
 }

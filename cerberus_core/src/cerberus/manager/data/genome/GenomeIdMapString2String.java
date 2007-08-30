@@ -3,11 +3,13 @@
  */
 package cerberus.manager.data.genome;
 
+import java.util.Collection;
 import java.util.Set;
 
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.data.genome.AGenomeIdMap;
 import cerberus.manager.data.genome.IGenomeIdMap;
+import cerberus.util.ConversionStringInteger;
 
 /**
  * @author Michael Kalkusch
@@ -33,6 +35,42 @@ implements IGenomeIdMap {
 		super(dataType, iSizeHashMap);		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getKeysInteger()
+	 */
+	public final Set<Integer> getKeysInteger() {
+
+		return ConversionStringInteger.convertSet_String2Integer(this.getKeys());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getKeysString()
+	 */
+	public final Set<String> getKeysString() {
+
+		return this.getKeys();
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getValuesInteger()
+	 */
+	public Collection<Integer> getValuesInteger() {
+
+		return ConversionStringInteger.convertCollection_String2Integer(this.getValues());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getValuesString()
+	 */
+	public Collection<String> getValuesString() {
+
+		return this.getValues();
+	}
 	
 	/* (non-Javadoc)
 	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(Stringt)
@@ -65,14 +103,6 @@ implements IGenomeIdMap {
 		hashGeneric.put( key, value);
 	}
 	
-	public final Set<Integer> getKeysInteger() {
 
-		return null;
-	}
-
-	public final Set<String> getKeysString() {
-
-		return this.getKeys();
-	}
 
 }

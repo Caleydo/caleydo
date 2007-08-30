@@ -3,6 +3,7 @@
  */
 package cerberus.manager.data.genome;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -24,6 +25,7 @@ implements IGenomeIdMap {
 	
 	protected final GenomeMappingDataType dataType;
 	
+	
 	/**
 	 * 
 	 */
@@ -41,81 +43,14 @@ implements IGenomeIdMap {
 		this.dataType = dataType;
 	}
 
-	public Set <K> getKeys() {
+	public final Set <K> getKeys() {
 		return hashGeneric.keySet();
 	}
 	
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getIntByInt(int)
-	 */
-	public int getIntByInt(int key) {
-
-		assert false : "getIntByInt() is not overloaded and thus can not be used!";
-		return 0;
+	public final Collection <V> getValues() {
+		return hashGeneric.values();
 	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getIntByString(Stringt)
-	 */
-	public int getIntByString(String key) {
-
-		assert false : "getIntByInt() is not overloaded and thus can not be used!";
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByInt(int)
-	 */
-	public String getStringByInt(int key) {
-
-		assert false : "getIntByInt() is not overloaded and thus can not be used!";
-		return "";
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(Stringt)
-	 */
-	public String getStringByString(String key) {
-
-		assert false : "getIntByInt() is not overloaded and thus can not be used!";
-		return "";
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getIntByIntChecked(int)
-	 */
-	public int getIntByIntChecked(int key) {
-
-		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getIntByStringChecked(Stringt)
-	 */
-	public int getIntByStringChecked(String key) {
-
-		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByIntChecked(int)
-	 */
-	public String getStringByIntChecked(int key) {
-
-		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
-		return "";
-	}
-
-	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByStringChecked(Stringt)
-	 */
-	public String getStringByStringChecked(String key) {
-
-		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
-		return "";
-	}
+	
 	
 	/**
 	 * @see cerberus.manager.data.genome.IGenomeIdMap#size()
@@ -184,7 +119,7 @@ implements IGenomeIdMap {
 	 * (non-Javadoc)
 	 * @see cerberus.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(cerberus.manager.data.IGenomeIdManager, cerberus.data.mapping.GenomeMappingType, cerberus.data.mapping.GenomeMappingType)
 	 */
-	public IGenomeIdMap getCodeResolvedMap(
+	public final IGenomeIdMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
 			GenomeMappingType genomeMappingLUT_1,
 			GenomeMappingType genomeMappingLUT_2,
@@ -271,5 +206,84 @@ implements IGenomeIdMap {
 		}	
 			
 		return codeResolvedMap;
-	}	
+	}
+	
+	/* ----------------------------------------------- */
+	/* -----  Methods to overload in subclasses  ----- */
+	
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByInt(int)
+	 */
+	public int getIntByInt(int key) {
+
+		assert false : "getIntByInt() is not overloaded and thus can not be used!";
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByString(Stringt)
+	 */
+	public int getIntByString(String key) {
+
+		assert false : "getIntByInt() is not overloaded and thus can not be used!";
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByInt(int)
+	 */
+	public String getStringByInt(int key) {
+
+		assert false : "getIntByInt() is not overloaded and thus can not be used!";
+		return "";
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByString(Stringt)
+	 */
+	public String getStringByString(String key) {
+
+		assert false : "getIntByInt() is not overloaded and thus can not be used!";
+		return "";
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByIntChecked(int)
+	 */
+	public int getIntByIntChecked(int key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getIntByStringChecked(Stringt)
+	 */
+	public int getIntByStringChecked(String key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByIntChecked(int)
+	 */
+	public String getStringByIntChecked(int key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return "";
+	}
+
+	/* (non-Javadoc)
+	 * @see cerberus.manager.event.IEventPublisherMap#getStringByStringChecked(Stringt)
+	 */
+	public String getStringByStringChecked(String key) {
+
+		assert false : "getIntByIntChecked() is not overloaded and thus can not be used!";
+		return "";
+	}
+		
+	/* -----  Methods to overload in subclasses  ----- */
+	/* ----------------------------------------------- */
+	
 }

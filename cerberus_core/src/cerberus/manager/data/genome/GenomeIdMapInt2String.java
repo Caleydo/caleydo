@@ -3,11 +3,13 @@
  */
 package cerberus.manager.data.genome;
 
+import java.util.Collection;
 import java.util.Set;
 
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.manager.data.genome.AGenomeIdMap;
 import cerberus.manager.data.genome.IGenomeIdMap;
+import cerberus.util.ConversionStringInteger;
 
 /**
  * @author Michael Kalkusch
@@ -31,6 +33,44 @@ implements IGenomeIdMap {
 		super(dataType, iSizeHashMap);
 		
 	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getKeysInteger()
+	 */
+	public final Set<Integer> getKeysInteger() {
+
+		return this.getKeys();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getKeysString()
+	 */
+	public final Set<String> getKeysString() {
+
+		return ConversionStringInteger.convertSet_Integer2String(this.getKeys());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getValuesInteger()
+	 */
+	public Collection<Integer> getValuesInteger() {
+		
+		return ConversionStringInteger.convertCollection_String2Integer(this.getValues());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.data.genome.IGenomeIdMap#getValuesString()
+	 */
+	public Collection<String> getValuesString() {
+
+		return this.getValues();
+	}
+	
 	
 	public void put( final String key, 
 			final String value) {
@@ -63,16 +103,6 @@ implements IGenomeIdMap {
 			System.err.println("No mapping found for requested code: " +key);
 			return "Invalid";
 		}
-	}
-	
-	public final Set<Integer> getKeysInteger() {
-
-		return this.getKeys();
-	}
-
-	public final Set<String> getKeysString() {
-
-		return null;
 	}
 
 }

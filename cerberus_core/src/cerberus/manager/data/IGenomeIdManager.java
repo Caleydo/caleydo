@@ -10,7 +10,7 @@ import java.util.HashMap;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.data.genome.IGenomeIdMap;
 
-import cerberus.data.mapping.GenomeIdType;
+//import cerberus.data.mapping.GenomeIdType;
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeMappingType;
 
