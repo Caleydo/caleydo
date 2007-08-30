@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import cerberus.command.ICommand;
@@ -50,12 +51,9 @@ implements IView {
 
 	/**
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
-		
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		refSWTContainer.setLayout(new RowLayout(SWT.HORIZONTAL));
 		

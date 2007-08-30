@@ -69,7 +69,11 @@ implements IDataTableView {
 		initView();
 	}
 
-	public void initView() {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.AViewRep#initView(org.eclipse.swt.widgets.Composite)
+	 */
+	public void initViewSwtComposit( Composite swtContainer ) {
 		
 		refStorageManager = (IStorageManager) refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.STORAGE);

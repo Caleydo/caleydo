@@ -1,6 +1,7 @@
 package cerberus.view.swt.slider;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
@@ -23,9 +24,9 @@ extends ASliderViewRep {
 		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
 	}
 	
-	public void initView() {
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		super.initView();
+		super.initViewSwtComposit(swtContainer);
 		
 		IVirtualArray tmpSelection =
 			refGeneralManager.getSingelton().getVirtualArrayManager()

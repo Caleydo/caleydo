@@ -5,6 +5,7 @@ package cerberus.view.swt.browser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -49,13 +50,10 @@ implements IView {
 
 	
 	/**
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
+	 * 
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
-	
-		/* retrieveGUIContainer*/
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		refBrowser = new HookedBrowser (refSWTContainer, SWT.NONE, refGeneralManager);
 				

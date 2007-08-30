@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 //import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import cerberus.data.collection.ISet;
@@ -79,12 +80,9 @@ implements IView, IMediatorReceiver {
 
 	/**
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
-
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.type = SWT.HORIZONTAL;

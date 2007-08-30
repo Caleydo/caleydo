@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 
 import cerberus.manager.IGeneralManager;
@@ -46,12 +47,9 @@ implements IView {
 	 * Maximum slider value = 100.
 	 * We use a fill layout to fill the available space optimally.
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
-		
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		refSliderList = new ArrayList<Slider>();
 		refSWTContainer.setLayout(new FillLayout(SWT.HORIZONTAL));

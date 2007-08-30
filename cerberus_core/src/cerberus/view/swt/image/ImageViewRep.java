@@ -5,6 +5,7 @@ package cerberus.view.swt.image;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import cerberus.manager.IGeneralManager;
@@ -39,12 +40,9 @@ implements IView {
 
 	/**
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
-		
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		Image image = new Image(refSWTContainer.getDisplay(), sImagePath);
 

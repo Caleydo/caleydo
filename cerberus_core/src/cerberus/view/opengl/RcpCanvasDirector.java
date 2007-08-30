@@ -2,6 +2,8 @@ package cerberus.view.opengl;
 
 import java.util.Collection;
 
+import org.eclipse.swt.widgets.Composite;
+
 import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
@@ -181,7 +183,14 @@ implements IGLCanvasDirector, IView {
 	}
 
 	@Override
-	public void initView() {
+	public final void initView() {
+
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public final void initViewRCP(Composite swtContainer) {
 
 		// TODO Auto-generated method stub
 		
@@ -207,6 +216,7 @@ implements IGLCanvasDirector, IView {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
 	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
 	/* ------------------------------------------------------------------ */

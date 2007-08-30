@@ -4,6 +4,7 @@
 package cerberus.view.swt.pathway;
 
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
@@ -51,12 +52,9 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 	/**
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
-
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		refSWTContainer.setLayout(new GridLayout(1, false));
 		

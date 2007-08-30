@@ -4,6 +4,7 @@
 package cerberus.view.swt.progressbar;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import cerberus.manager.IGeneralManager;
@@ -107,12 +108,9 @@ implements IView {
 
 	/**
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
-		
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		if (this.refProgressBar != null)
 		{

@@ -1,5 +1,7 @@
 package cerberus.view;
 
+import org.eclipse.swt.widgets.Composite;
+
 import cerberus.data.IUniqueObject;
 import cerberus.data.collection.SetType;
 import cerberus.view.ViewType;
@@ -17,8 +19,26 @@ public interface IView
 extends IUniqueObject {
 	
 	/**
+	 * Same as initView() but creation of SWT Container via CerberusManager is replaced
+	 * by external creation of SWT Container.
+	 * 
+	 * @see IView#initView()
+	 * @see cerberus.view.AViewRep#initView()
+	 * @see cerberus.view.AViewRep#initViewRCP(Composite)
+	 * @see cerberus.view.AViewRep#initViewSwtComposit(Composite)
+	 * 
+	 * @param swtContainer container to bind View to
+	 */
+	public void initViewRCP(Composite swtContainer);
+	
+	/**
 	 * Initialization of the view.
 	 * All initialization sets must be accomplished in this method.
+	 * 
+	 * @see IView#initViewRCP(Composite)
+	 * @see cerberus.view.AViewRep#initView()
+	 * @see cerberus.view.AViewRep#initViewRCP(Composite)
+	 * @see cerberus.view.AViewRep#initViewSwtComposit(Composite)
 	 */
 	public void initView();
 

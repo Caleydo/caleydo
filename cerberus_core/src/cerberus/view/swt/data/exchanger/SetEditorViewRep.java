@@ -17,6 +17,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.graphics.Image;
@@ -131,7 +132,7 @@ implements IView {
 		
 	}
 	
-	public void initView() {
+	protected void initViewSwtComposit(Composite swtContainer) {
 
 		refSWTContainer.setLayout(new FillLayout(SWT.VERTICAL));
 

@@ -1,5 +1,7 @@
 package cerberus.view.swt.data.meta;
 
+import org.eclipse.swt.widgets.Composite;
+
 import cerberus.manager.IGeneralManager;
 import cerberus.view.AViewRep;
 import cerberus.view.ViewType;
@@ -17,8 +19,7 @@ public class MetaTableViewRep extends AViewRep implements IDataTableView
 				ViewType.SWT_META_TABLE);
 	}
 
-	public void initView()
-	{
+	protected void initViewSwtComposit(Composite swtContainer) {	
 		// TODO Auto-generated method stub
 		
 	}

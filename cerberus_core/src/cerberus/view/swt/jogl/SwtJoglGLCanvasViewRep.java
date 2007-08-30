@@ -136,7 +136,7 @@ implements IGLCanvasDirector {
 	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView() {
+	protected void initViewSwtComposit(Composite swtContainer) {
 			
 		if  (forwarder_GLEventListener == null) {
 			

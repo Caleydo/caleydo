@@ -2,6 +2,8 @@ package cerberus.view.swt.jogl.gears;
 
 import javax.media.opengl.GLCanvas;
 
+import org.eclipse.swt.widgets.Composite;
+
 import cerberus.manager.IGeneralManager;
 import cerberus.view.jogl.JoglCanvasDirectForwarder;
 import cerberus.view.jogl.JoglCanvasForwarderType;
@@ -38,9 +40,7 @@ implements IView
 	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
 	 * @see cerberus.view.IView#initView()
 	 */
-	public void initView()
-	{
-		retrieveGUIContainer();
+	protected void initViewSwtComposit(Composite swtContainer) {
 		
 		Gears gears = new Gears();
 				

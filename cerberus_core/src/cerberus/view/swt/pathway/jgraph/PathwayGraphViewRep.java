@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.swt.widgets.Composite;
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
@@ -183,9 +184,8 @@ extends APathwayGraphViewRep {
 		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
 	}
 
-	public void initView() {
+	protected void initViewSwtComposit(Composite swtContainer) {
 
-		retrieveGUIContainer();
 		extractCurrentPathwayFromSet();
 
 		class PathwayMarqueeHandler extends BasicMarqueeHandler {

@@ -29,7 +29,8 @@ import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
-import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
+//import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
+import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 
 /**
  * @author Michael Kalkusch
@@ -37,7 +38,8 @@ import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
  * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHeatmap2DColumn 
-extends AGLCanvasHeatmap2D
+//extends AGLCanvasHeatmap2D
+extends GLCanvasHeatmap2D
 		implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	//private int[] iIndexPickedCoored = {-1,-1};
@@ -115,7 +117,6 @@ extends AGLCanvasHeatmap2D
 			String sLabel) {
 
 		super(setGeneralManager, 
-				null,
 				iViewId, 
 				iParentContainerId, 
 				sLabel);
@@ -161,7 +162,11 @@ extends AGLCanvasHeatmap2D
 
 	}
 	
-	private void drawSelectionX(GL gl, final float fStartX,
+	public void setKeysForHeatmap( int[] keys ) {
+		
+	}
+	
+	protected void drawSelectionX(GL gl, final float fStartX,
 			final float fStartY, final float fEndX, final float fEndY,
 			final float fIncX, final float fIncY) {
 
@@ -209,209 +214,6 @@ extends AGLCanvasHeatmap2D
 //		gl.glLoadName(id);
 //	}
 
-	private void renderPart4pickingX(GL gl) {
-		
-		/* public void displayHeatmap(GL gl) { */
-
-		gl.glNormal3f(0.0f, 0.0f, 1.0f);
-		
-		/**
-		 * force update ...
-		 */
-
-		float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
-				/ (float) (iValuesInRow );
-
-		float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN];
-		float fNextY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX];
-
-		float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN];
-		float fNextX = fNowX + fIncX;
-
-		
-		
-		/* Y_min .. Y_max*/
-		for (int yCoord_name=0; yCoord_name<iValuesInRow; yCoord_name++)
-		{					
-			//this.setPickingBegin(gl, yCoord_name);
-			gl.glLoadName( yCoord_name );
-			gl.glPushName( yCoord_name );
-			
-			gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-			gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-
-			gl.glEnd();			
-			gl.glPopName();
-			
-			fNowX = fNextX;
-			fNextX += fIncX;
-			
-		} //for (int yCoord_name=0; yCoord_name<iValuesInRow; yCoord_name++)
-  
-	}
-
-	private void renderPart4pickingY(GL gl) {
-
-		/* public void displayHeatmap(GL gl) { */
-
-		gl.glNormal3f(0.0f, 0.0f, 1.0f);
-
-		int ycoord_name = 0;
-
-		/**
-		 * force update ...
-		 */
-
-		float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
-				/ (float) (iValuesInColum);
-
-		float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN];
-		float fNextX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX];
-
-		float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN];
-		float fNextY = fNowY + fIncY;
-
-		/* Y_min .. Y_max */
-		for (int i = 0; i < iValuesInColum; i++)
-		{
-			gl.glLoadName(ycoord_name);
-			gl.glPushName(ycoord_name);
-
-			gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-			gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-
-			gl.glEnd();
-			gl.glPopName();
-
-			fNowY = fNextY;
-			fNextY += fIncY;
-			ycoord_name++;
-
-		} // while (iter.hasNext())
-
-		// /* Selection ? */
-		// if (iSelectionStartAtIndexY != null) {
-		// drawSelectionY(gl,
-		// viewingFrame[X][MIN],
-		// viewingFrame[Y][MIN],
-		// viewingFrame[X][MAX],
-		// viewingFrame[Y][MAX],
-		// fIncX,
-		// fIncY);
-		// }
-		//				
-		// if (iSelectionStartAtIndexX != null) {
-		//					
-		//					
-		// drawSelectionX(gl,
-		// viewingFrame[X][MIN],
-		// viewingFrame[Y][MIN],
-		// viewingFrame[X][MAX],
-		// viewingFrame[Y][MAX],
-		// fIncX,
-		// fIncY);
-		// }
-
-		// float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
-
-	}
-	
-	private void pickObjects(final GL gl, Point pickPoint) {
-
-		int PICKING_BUFSIZE = 1024;
-
-		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
-		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
-		int iHitCount = -1;
-		int viewport[] = new int[4];
-		
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
-		gl.glRenderMode(GL.GL_SELECT);
-		gl.glInitNames();
-
-		//gl.glPushName(0);
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glPushMatrix();		
-		gl.glLoadIdentity();
-		
-		/* create 5x5 pixel picking region near cursor location */
-		GLU glu = new GLU();
-		glu.gluPickMatrix((double) pickPoint.x,
-				(double) (viewport[3] - pickPoint.y),// 
-				1.0, 
-				1.0, 
-				viewport, 
-				0); // pick width and height is set to 5
-		// (i.e. picking tolerance)
-
-		float h = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]) * 4.0f;
-
-		// FIXME: values have to be taken from XML file!!
-		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
-
-		// Store picked point
-		Point tmpPickPoint = (Point) pickPoint.clone();
-		// Reset picked point
-		pickPoint = null;
-
-		renderPart4pickingX(gl);
-	
-		/* second layer of picking.. */
-		gl.glPushMatrix();
-		
-		gl.glTranslatef( 0,0, AGLCanvasHeatmap2D.fPickingBias );
-		renderPart4pickingY(gl);
-		
-		gl.glPopMatrix();
-		
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glPopMatrix();
-		
-	
-
-		iHitCount = gl.glRenderMode(GL.GL_RENDER);
-		pickingBuffer.get(iArPickingBuffer);
-		
-		boolean bPickinedNewObject = 
-			processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, fIndexPickedCoored);
-				
-	}
-
-	private void handlePicking(final GL gl) {
-
-		Point pickPoint = null;
-		
-		/* if no pickingTriggerMouseAdapter was assinged yet, skip it.. */
-		if  (pickingTriggerMouseAdapter==null) {
-			return;
-		}
-		
-		boolean bMouseReleased =
-			pickingTriggerMouseAdapter.wasMouseReleased();
-		
-		if (pickingTriggerMouseAdapter.wasMousePressed()
-				|| bMouseReleased)
-		{
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-		}
-
-		// Check if an object was picked
-		if (pickPoint != null)
-		{
-			pickObjects(gl, pickPoint);
-		}
-
-	}
 	
 	protected boolean processHits(final GL gl, int iHitCount,
 			int iArPickingBuffer[], 
@@ -508,7 +310,7 @@ extends AGLCanvasHeatmap2D
 		setInitGLDone();		
 	}
 	
-	private void drawSelectionY(GL gl, final float fStartX,
+	protected void drawSelectionY(GL gl, final float fStartX,
 			final float fStartY, final float fEndX, final float fEndY,
 			final float fIncX, final float fIncY) {
 
@@ -540,258 +342,11 @@ extends AGLCanvasHeatmap2D
 	}
 	    
 	    
-	public void renderText( GL gl, 
-			final String showText,
-			final float fx, 
-			final float fy, 
-			final float fz ) {
-		
-		
-		final float fFontSizeOffset = 0.09f;
-		
-	        GLUT glut = new GLUT();
-	        
-// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-// gl.glLoadIdentity();
-// gl.glTranslatef(0.0f,0.0f,-1.0f);
-	        
-	        // Pulsing Colors Based On Text Position
-	        gl.glColor3fv( colorGrid, 3);
-	        // Position The Text On The Screen...fullscreen goes much slower than the other
-	        //way so this is kind of necessary to not just see a blur in smaller windows
-	        //and even in the 640x480 method it will be a bit blurry...oh well you can
-	        //set it if you would like :)
-	        gl.glRasterPos2f( fx-fFontSizeOffset, fy-fFontSizeOffset );
-	        
-	        //Take a string and make it a bitmap, put it in the 'gl' passed over and pick
-	        //the GLUT font, then provide the string to show
-	        glut.glutBitmapString( GLUT.BITMAP_TIMES_ROMAN_24,
-	        		showText);
-	         
-	}
-	
+
 
 
 	
-	/* (non-Javadoc)
-	 * @see cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setTargetSetId(int)
-	 */
-	public void setTargetSetId( final int iTargetCollectionSetId ) {
-		
-		targetSet = 
-			refGeneralManager.getSingelton().getSetManager(
-					).getItemSet( iTargetCollectionSetId );
-		
-		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().logMsg(
-					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!",
-					LoggerType.FULL );
-		}
-		
-		refGeneralManager.getSingelton().logMsg(
-				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!",
-				LoggerType.FULL );
-		
-		refMinMaxDataInteger.useSet( targetSet );
-		initColorMapping( fColorMappingShiftFromMean );
 
-	}	
-	
-	protected void createDisplayLists(GL gl) {
-		
-		iHeatmapDisplayListId = gl.glGenLists(1);
-		
-		gl.glNewList(iHeatmapDisplayListId, GL.GL_COMPILE);	
-		displayHeatmap( gl );
-		gl.glEndList();
-		
-		  refGeneralManager.getSingelton().logMsg(
-				  "createHeatmap() create DsiplayList)",
-				  LoggerType.FULL );
-		  
-	}
-	
-	private void renderGLSingleQuad( GL gl, ArrayList <Vec2f> fIndexPickedCoord, int iIndexStart ) {
-	
-		if ( fIndexPickedCoord.isEmpty() ) {
-			return;			
-		}
-		Vec2f current = fIndexPickedCoord.get(iIndexStart);
-		
-		float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
-		/ (float) (iValuesInRow );		
-		float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
-		/ (float) (iValuesInColum );
-
-		float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * current.x();
-		float fNextX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (current.x() +1.0f);
-		float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * current.y();
-		float fNextY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (current.y() +1.0f);
-			
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-			gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-
-		gl.glEnd();			
-	}
-
-	private void addPickedPoint( ArrayList <Vec2f> fIndexPickedCoord, 
-			final float addIndexCoordX, float addIndexCoordY) {
-		
-		int iSize = fIndexPickedCoord.size();
-		
-		if ( (iSize % 2) == 1) {
-			/* one remaining point of last picking */
-			Vec2f lastPickedIndexCoord= fIndexPickedCoord.get(iSize-1);
-			
-			Vec2f lowerLeftPoint = new Vec2f();
-			Vec2f upperRightPoint = new Vec2f();
-			
-			/* create a rectangle with lower.left point and upper,right point */
-			if (lastPickedIndexCoord.x() < addIndexCoordX ) {
-				lowerLeftPoint.setX( lastPickedIndexCoord.x() );
-				upperRightPoint.setX( addIndexCoordX );
-			} else {
-				lowerLeftPoint.setX( addIndexCoordX );
-				upperRightPoint.setX( lastPickedIndexCoord.x());
-			}
-			
-			/* create a rectangle with lower.left point and upper,right point */
-			if (lastPickedIndexCoord.y() < addIndexCoordY) {
-				lowerLeftPoint.setY( lastPickedIndexCoord.y() );
-				upperRightPoint.setY( addIndexCoordY );
-			} else {
-				lowerLeftPoint.setY( addIndexCoordY );
-				upperRightPoint.setY( lastPickedIndexCoord.y());
-			}
-			
-			fIndexPickedCoord.set( iSize-1, lowerLeftPoint);
-			fIndexPickedCoord.add( upperRightPoint );
-			
-		} else {
-			fIndexPickedCoord.add( new Vec2f(addIndexCoordX,addIndexCoordY) );
-		}
-		
-	}
-	
-	private void renderGLAllQuadDots( GL gl, ArrayList <Vec2f> fIndexPickedCoord) {
-		
-		if ( fIndexPickedCoord.isEmpty() ) {
-			return;			
-		}
-		
-		Iterator <Vec2f> iter = fIndexPickedCoord.iterator();
-		
-		while ( iter.hasNext() ) {
-			float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
-			/ (float) (iValuesInRow );		
-			float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
-			/ (float) (iValuesInColum );
-	
-			Vec2f fVec2fMultiplyer =  iter.next();
-			
-			float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyer.x();
-			float fNextX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() +1.0f);
-			float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y();
-			float fNextY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyer.y() +1.0f);
-				
-			gl.glBegin(GL.GL_TRIANGLE_FAN);
-	
-				gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-	
-			gl.glEnd();	
-		}
-	}
-	
-	private void renderGLQuad( GL gl, 
-			final float fX1,
-			final float fX2, 
-			final float fY1, 
-			final float fY2, 
-			final float fZ) {
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
-		
-		gl.glVertex3f(fX1, fY1, fZ);
-		gl.glVertex3f(fX2, fY1, fZ);
-		gl.glVertex3f(fX2, fY2, fZ);
-		gl.glVertex3f(fX1, fY2, fZ);
-
-	gl.glEnd();	
-	}
-	
-	private void renderGLAllQuadRectangle( GL gl, ArrayList <Vec2f> fIndexPickedCoord) {
-		
-		if ( fIndexPickedCoord.isEmpty() ) {
-			return;			
-		}
-		
-		Iterator <Vec2f> iter = fIndexPickedCoord.iterator();
-		int iIndex = 0;
-		
-		while ( iter.hasNext() ) {
-			float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
-			/ (float) (iValuesInRow );		
-			float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
-			/ (float) (iValuesInColum );
-	
-			Vec2f fVec2fMultiplyer =  iter.next();
-			iIndex++;
-			
-			if  ( iter.hasNext() ) {
-				/** Rectangle - mode*/
-				Vec2f fVec2fMultiplyerUpperRight = iter.next();
-				iIndex++;
-				
-				/** first strip */
-				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyer.x(), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() + 1),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				
-				/** second strip */
-				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyerUpperRight.x(), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyerUpperRight.x() + 1),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				
-				
-				/** third strip */
-				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyerUpperRight.x(),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyer.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				
-				/** forth strip */
-				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyerUpperRight.x(),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyerUpperRight.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			}
-			else {
-				/** */
-				renderGLSingleQuad(gl ,fIndexPickedCoord, iIndex-1);
-			}
-			
-		
-			
-		}
-	}
 	
 	@Override
 	public void renderPart(GL gl)
@@ -914,7 +469,7 @@ extends AGLCanvasHeatmap2D
 	  }
   }
   
-  private void colorMapping(final GL gl, final int iValue) {
+  protected void colorMapping(final GL gl, final int iValue) {
 	  
 	  float fValue = fColorMappingMiddleValue - (float) iValue;
 	  
@@ -1149,22 +704,5 @@ extends AGLCanvasHeatmap2D
 		
 	}
 
-	
-	/**
-	 * @return the pickingTriggerMouseAdapter
-	 */
-	public final PickingJoglMouseListener getPickingTriggerMouseAdapter() {
-	
-		return pickingTriggerMouseAdapter;
-	}
 
-	
-	/**
-	 * @param pickingTriggerMouseAdapter the pickingTriggerMouseAdapter to set
-	 */
-	public final void setPickingTriggerMouseAdapter(
-			PickingJoglMouseListener pickingTriggerMouseAdapter) {
-	
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-	}
 }

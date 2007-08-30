@@ -95,7 +95,9 @@ implements IViewRep {
 		refSetManager = refGeneralManager.getSingelton().getSetManager();
 	}
 	
-
+	protected abstract void initViewSwtComposit(Composite swtContainer);
+	
+	
 	public void setAttributes(int iWidth, int iHeight) {
 		
 		this.iWidth = iWidth;
@@ -118,21 +120,36 @@ implements IViewRep {
 		this.iParentContainerId = iParentContainerId;
 	}
 	
-	/**
-	 * Method uses the parent container ID to retrieve the 
-	 * GUI widget by calling the createWidget method from
-	 * the SWT GUI Manager.
-	 * 
+	public final void initViewRCP(Composite swtContainer) {
+		initViewSwtComposit( refSWTContainer );
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.IView#initView()
 	 */
-	protected void retrieveGUIContainer() {
+	public final void initView() {
+	
+		/**
+		 * Method uses the parent container ID to retrieve the 
+		 * GUI widget by calling the createWidget method from
+		 * the SWT GUI Manager.
+		 * 
+		 * formally this was teh method: retrieveGUIContainer() 
+		 */
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
-				.getSingelton().getSWTGUIManager().createWidget(
-						ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
-						iParentContainerId, iWidth, iHeight);
+		.getSingelton().getSWTGUIManager().createWidget(
+				ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
+				iParentContainerId, iWidth, iHeight);
 
 		refSWTContainer = refSWTNativeWidget.getSWTWidget();
+
+		
+		initViewSwtComposit( refSWTContainer );
 	}
+	
 	
 	/*
 	 *  (non-Javadoc)

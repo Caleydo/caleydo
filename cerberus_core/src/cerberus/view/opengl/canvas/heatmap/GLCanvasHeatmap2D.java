@@ -41,42 +41,42 @@ extends AGLCanvasHeatmap2D
 	
 	private ArrayList <Vec2f> fIndexPickedCoored = new ArrayList <Vec2f> (1);
 	
-	private boolean bUseGLWireframe = false;
+	protected boolean bUseGLWireframe = false;
 
 	private int iSetCacheId = 0;
 
-	private float fColorMappingShiftFromMean = 1.0f;
+	protected float fColorMappingShiftFromMean = 1.0f;
 
-	private float fColorMappingHighValue = 1.0f;
+	protected float fColorMappingHighValue = 1.0f;
 
-	private float fColorMappingLowValue = 0.0f;
+	protected float fColorMappingLowValue = 0.0f;
 
-	private float fColorMappingMiddleValue = 0.25f;
+	protected float fColorMappingMiddleValue = 0.25f;
 
-	private float fColorMappingHighRangeDivisor = 1 / 0.75f;
+	protected float fColorMappingHighRangeDivisor = 1 / 0.75f;
 
-	private float fColorMappingLowRangeDivisor = 1 / 0.25f;
+	protected float fColorMappingLowRangeDivisor = 1 / 0.25f;
 
-	private float fColorMappingLowRange = 0.25f;
+	protected float fColorMappingLowRange = 0.25f;
 
 	/**
 	 * Stretch lowest color in order to be not Back!
 	 */
-	private float fColorMappingPercentageStretch = 0.2f;
+	protected float fColorMappingPercentageStretch = 0.2f;
 
-	private int[] iSelectionStartAtIndexX;
+	protected int[] iSelectionStartAtIndexX;
 
-	private int[] iSelectionStartAtIndexY;
+	protected int[] iSelectionStartAtIndexY;
 
-	private int[] iSelectionLengthX;
+	protected int[] iSelectionLengthX;
 
-	private int[] iSelectionLengthY;
+	protected int[] iSelectionLengthY;
 
 	
 
-	private MinMaxDataInteger refMinMaxDataInteger;
+	protected MinMaxDataInteger refMinMaxDataInteger;
 
-	private int iHeatmapDisplayListId = -1;
+	protected int iHeatmapDisplayListId = -1;
 
 	// private int iGridSize = 40;
 
@@ -85,12 +85,8 @@ extends AGLCanvasHeatmap2D
 	/**
 	 * Color for grid (0,1,2) grid text (3,4,5) and point color (6,7,8)
 	 */
-	private float[] colorGrid =
+	protected float[] colorGrid =
 	{ 0.1f, 0.1f, 0.9f, 0.1f, 0.9f, 0.1f, 0.9f, 0.1f, 0.1f };
-
-
-
-
 
 
 	protected ISet targetSet;
@@ -137,7 +133,7 @@ extends AGLCanvasHeatmap2D
 		refMinMaxDataInteger = new MinMaxDataInteger(1);
 	}
 
-	private void drawSelectionX(GL gl, final float fStartX,
+	protected void drawSelectionX(GL gl, final float fStartX,
 			final float fStartY, final float fEndX, final float fEndY,
 			final float fIncX, final float fIncY) {
 
@@ -185,7 +181,7 @@ extends AGLCanvasHeatmap2D
 //		gl.glLoadName(id);
 //	}
 
-	private void renderPart4pickingX(GL gl) {
+	protected void renderPart4pickingX(GL gl) {
 		
 		/* public void displayHeatmap(GL gl) { */
 
@@ -230,7 +226,7 @@ extends AGLCanvasHeatmap2D
   
 	}
 
-	private void renderPart4pickingY(GL gl) {
+	protected void renderPart4pickingY(GL gl) {
 
 		/* public void displayHeatmap(GL gl) { */
 
@@ -300,7 +296,7 @@ extends AGLCanvasHeatmap2D
 
 	}
 	
-	private void pickObjects(final GL gl, Point pickPoint) {
+	protected void pickObjects(final GL gl, Point pickPoint) {
 
 		int PICKING_BUFSIZE = 1024;
 
@@ -363,7 +359,7 @@ extends AGLCanvasHeatmap2D
 				
 	}
 
-	private void handlePicking(final GL gl) {
+	protected void handlePicking(final GL gl) {
 
 		Point pickPoint = null;
 		
@@ -484,7 +480,7 @@ extends AGLCanvasHeatmap2D
 		setInitGLDone();		
 	}
 	
-	private void drawSelectionY(GL gl, final float fStartX,
+	protected void drawSelectionY(GL gl, final float fStartX,
 			final float fStartY, final float fEndX, final float fEndY,
 			final float fIncX, final float fIncY) {
 
@@ -589,7 +585,7 @@ extends AGLCanvasHeatmap2D
 		  
 	}
 	
-	private void renderGLSingleQuad( GL gl, ArrayList <Vec2f> fIndexPickedCoord, int iIndexStart ) {
+	protected void renderGLSingleQuad( GL gl, ArrayList <Vec2f> fIndexPickedCoord, int iIndexStart ) {
 	
 		if ( fIndexPickedCoord.isEmpty() ) {
 			return;			
@@ -616,7 +612,7 @@ extends AGLCanvasHeatmap2D
 		gl.glEnd();			
 	}
 
-	private void addPickedPoint( ArrayList <Vec2f> fIndexPickedCoord, 
+	protected void addPickedPoint( ArrayList <Vec2f> fIndexPickedCoord, 
 			final float addIndexCoordX, float addIndexCoordY) {
 		
 		int iSize = fIndexPickedCoord.size();
@@ -655,7 +651,7 @@ extends AGLCanvasHeatmap2D
 		
 	}
 	
-	private void renderGLAllQuadDots( GL gl, ArrayList <Vec2f> fIndexPickedCoord) {
+	protected void renderGLAllQuadDots( GL gl, ArrayList <Vec2f> fIndexPickedCoord) {
 		
 		if ( fIndexPickedCoord.isEmpty() ) {
 			return;			
@@ -687,7 +683,7 @@ extends AGLCanvasHeatmap2D
 		}
 	}
 	
-	private void renderGLQuad( GL gl, 
+	protected void renderGLQuad( GL gl, 
 			final float fX1,
 			final float fX2, 
 			final float fY1, 
@@ -703,7 +699,7 @@ extends AGLCanvasHeatmap2D
 	gl.glEnd();	
 	}
 	
-	private void renderGLAllQuadRectangle( GL gl, ArrayList <Vec2f> fIndexPickedCoord) {
+	protected void renderGLAllQuadRectangle( GL gl, ArrayList <Vec2f> fIndexPickedCoord) {
 		
 		if ( fIndexPickedCoord.isEmpty() ) {
 			return;			
@@ -890,7 +886,7 @@ extends AGLCanvasHeatmap2D
 	  }
   }
   
-  private void colorMapping(final GL gl, final int iValue) {
+  protected void colorMapping(final GL gl, final int iValue) {
 	  
 	  float fValue = fColorMappingMiddleValue - (float) iValue;
 	  
