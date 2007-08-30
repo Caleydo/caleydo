@@ -42,8 +42,6 @@ import cerberus.data.graph.item.vertex.EPathwayVertexShape;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
-import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeArrowHeadStyle;
-import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle.EdgeLineStyle;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -370,12 +368,39 @@ extends APathwayGraphViewRep {
 
 			bNeighbourhoodShown = true;
 			iNeighbourhoodUndoCount++;
+			
+			// Handle multiple gene mapping in selection
+			String sTmpGene = ((PathwayVertexGraphItemRep) lastClickedGraphCell.getUserObject()).getPathwayVertexGraphItem().getName();
+			
+//			if (!sTmpGene.contains("hsa:"))
+//			{
+//				// Add selected vertex itself because neighborhood algorithm
+//				// only adds neighbor vertices.
+//				iLLSelectedVertices.add(((PathwayVertexGraphItemRep) lastClickedGraphCell
+//						.getUserObject()).getPathwayVertexGraphItem().getId());
+//			}
+			
+			int iTmpGeneId = 0;
+			while (sTmpGene.contains("hsa:"))
+			{
+				if (sTmpGene.contains(" "))
+				{
+					// Multiple genes
+					iTmpGeneId = Integer.valueOf(sTmpGene.substring(
+						sTmpGene.indexOf("hsa:") + 4, sTmpGene.indexOf(' ')));
+					
+					sTmpGene = sTmpGene.substring(sTmpGene.indexOf(' ') + 1);
+				}
+				else
+				{
+					// Only one gene is contained in string
+					iTmpGeneId = Integer.valueOf(sTmpGene.substring(4));
+					sTmpGene = "";
+				}	
 
-			// Add selected vertex itself because neighborhood algorithm
-			// only adds neighbor vertices.
-			iLLSelectedVertices.add(((PathwayVertexGraphItemRep) lastClickedGraphCell
-					.getUserObject()).getPathwayVertexGraphItem().getId());
-
+				iLLSelectedVertices.add(iTmpGeneId);
+			}
+			
 			arSelectedVertices.add(lastClickedGraphCell);
 
 			if (iNeighbourhoodDistance != 0)
