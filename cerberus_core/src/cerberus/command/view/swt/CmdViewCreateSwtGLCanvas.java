@@ -76,7 +76,10 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 			
 			
 			swtGLCanvasView.setAttributes(iWidthX, iHeightY, iGlForwarderId);
-			swtGLCanvasView.initView();
+			
+			//FIXME: not very clean to call this method with null pointer
+			//Maybe the interface should be changed...
+			swtGLCanvasView.initViewSwtComposit(null);
 			swtGLCanvasView.drawView();
 			
 			IViewCamera refViewCamera_CanvasForwarder = 

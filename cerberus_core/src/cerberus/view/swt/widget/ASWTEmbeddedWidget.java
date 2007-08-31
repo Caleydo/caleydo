@@ -7,6 +7,7 @@ import java.awt.Frame;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 //import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -27,22 +28,18 @@ extends ASWTWidget {
 	
 	protected final Composite refParentComposite;
 	
-	protected final int iWidth;
-	
-	protected final int iHeight;
+//	protected final int iWidth;
+//	
+//	protected final int iHeight;
 	
 	/**
 	 * @param refParentComposite
 	 */
-	public ASWTEmbeddedWidget(Composite refParentComposite,
-			final int iWidth, 
-			final int iHeight ) {
+	public ASWTEmbeddedWidget(Composite refParentComposite) {
 		
 		super(refParentComposite);
 		
 		this.refParentComposite = refParentComposite;
-		this.iWidth = iWidth;
-		this.iHeight = iHeight;
 		
 		refEmbeddedFrame = null;
 		refEmbeddedFrameComposite = null;
@@ -52,32 +49,13 @@ extends ASWTWidget {
 		
 		refEmbeddedFrameComposite = 
 			new Composite(refParentComposite, SWT.EMBEDDED);
-		
-		refEmbeddedFrameComposite.setBounds(0, 0, iWidth, iHeight);
-		
+			
 		GridData gridData = new GridData();
 		
-		if (iWidth != -1)
-		{
-			gridData.widthHint = iWidth;
-			gridData.horizontalAlignment = GridData.CENTER;
-		}
-		else
-		{
-			gridData.horizontalAlignment = GridData.FILL;
-			gridData.grabExcessHorizontalSpace = true;
-		}
-		
-		if (iHeight != -1)
-		{
-			gridData.heightHint = iHeight;
-			gridData.verticalAlignment = GridData.CENTER;
-		}
-		else
-		{
-			gridData.verticalAlignment = GridData.FILL;
-			gridData.grabExcessVerticalSpace = true;
-		}
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessVerticalSpace = true;
 		
 		refEmbeddedFrameComposite.setLayoutData(gridData);
 

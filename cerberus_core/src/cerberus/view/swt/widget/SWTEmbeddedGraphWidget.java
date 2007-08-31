@@ -33,11 +33,9 @@ extends ASWTEmbeddedWidget {
 	 * @param Composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTEmbeddedGraphWidget(Composite refParentComposite, 
-			final int iWidth, 
-			final int iHeight) {
+	public SWTEmbeddedGraphWidget(Composite refParentComposite) {
 		
-		super(refParentComposite, iWidth, iHeight);
+		super(refParentComposite);
 	}
 
 	/**

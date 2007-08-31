@@ -44,10 +44,9 @@ extends ASWTEmbeddedWidget {
 	 * @param Composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTEmbeddedJoglWidget(Composite refParentComposite, 
-			int iWidth, int iHeight) {
+	public SWTEmbeddedJoglWidget(Composite refParentComposite) {
 	
-		super(refParentComposite,iWidth, iHeight);
+		super(refParentComposite);
 	}
 	
 	public void createEmbeddedComposite() {

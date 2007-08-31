@@ -222,12 +222,12 @@ implements ISWTGUIManager {
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
 			newSWTWidget = new SWTEmbeddedJoglWidget(
-					refExternalParentComposite, iWidth, iHeight);
+					refExternalParentComposite);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
 			newSWTWidget = new SWTEmbeddedGraphWidget(
-					refExternalParentComposite, iWidth, iHeight);
+					refExternalParentComposite);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
