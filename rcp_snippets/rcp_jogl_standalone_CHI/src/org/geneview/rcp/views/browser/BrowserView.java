@@ -134,7 +134,7 @@ public class BrowserView extends ViewPart {
     }
     
 	/**
-	 * Constructs a new <code>BrowserView</code>.
+	 * Constructs a new <code>HTMLBrowserView</code>.
 	 */
 	public BrowserView() {
 	    initialUrl = "http://www.google.at";//BrowserPlugin.getDefault().getPluginPreferences().getString(IBrowserConstants.PREF_HOME_PAGE);

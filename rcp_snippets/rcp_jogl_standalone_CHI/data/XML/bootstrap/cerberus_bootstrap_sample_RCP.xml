@@ -13,7 +13,7 @@
 		  	<read-xml-file target="data/XML/bootstrap/load_genome_id_mapping_HSA.xml" />	   				
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
-			  	gl_listener="25"
+			  	gl_forwarder="24" gl_listener="25"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="GL Jukebox Pathway 3D" 
@@ -23,8 +23,8 @@
 							attrib4="transparency 1" 								
 							detail="44101 35101 36101 37101 85101" /> 
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="26" 
-			    gl_listener="27"
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="26" 
+			    gl_forwarder="26" gl_listener="27"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
   		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"			cmdId="68993"	uniqueId="82501" parent="26" label="GL Heatmap 2D"	
@@ -32,13 +32,15 @@
 				attrib3="0 10 0 40   -0.5f -0.5f    -3.0f 3.0f   -3.0f 3.0f    2.0f 1.0f   400"			
 				attrib4="10 50  120 50  200 90;1 4   9 2   19 7  54 12"	
 				detail="38101" />
-
+				
 	  	<!-- Mediator -->
+	  	<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401" detail="SELECTION_MEDIATOR" />  
+     	-->
      
    </CommandBuffer>
     

@@ -45,6 +45,24 @@
             allowMultiple="true">
       </view>
       
+      <view
+            id="org.geneview.rcp.views.Pathway2DView"
+            name="Pathway 2D"
+            icon="icons/sample.gif"
+            class="org.geneview.rcp.views.Pathway2DView"
+            category="org.geneview.rcp.jogl.view.jframe"
+            allowMultiple="true">
+      </view>      
+      
+      <view
+            id="org.geneview.rcp.views.HTMLBrowserView"
+            name="Browser"
+            icon="icons/sample.gif"
+            class="org.geneview.rcp.views.HTMLBrowserView"
+            category="org.geneview.rcp.jogl.view.jframe"
+            allowMultiple="true">
+      </view>    
+      
    </extension>   
    
    <extension

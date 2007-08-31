@@ -9,7 +9,6 @@ import javax.media.opengl.GLCanvas;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -57,7 +56,10 @@ public class GLJukeboxPathwayView extends ViewPart {
 	private boolean bEnableEdgeRendering = false;
 	
 	private Action actEnableGeneMapping;
-	private boolean bEnableGeneMapping = false;
+	private boolean bEnableGeneMapping = true;
+	
+	private Action actEnablePathwayTextures;
+	private boolean bEnablePathwayTextures = true;
 	
 	private Animator animatorGL;
 	private GLCanvas canvasGL;
@@ -83,6 +85,7 @@ public class GLJukeboxPathwayView extends ViewPart {
 		createAnimatorToggleAction();
 		createEdgeRenderingToggleAction();
 		createGeneMappingToggleAction();
+		createPathwayTexturesToggleAction();
 		
 		contributeToActionBars();
 
@@ -160,12 +163,14 @@ public class GLJukeboxPathwayView extends ViewPart {
 		manager.add(actToggleAnimatorRunningState);
 		manager.add(actEnableEdgeRendering);
 		manager.add(actEnableGeneMapping);
+		manager.add(actEnablePathwayTextures);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(actToggleAnimatorRunningState);
 		manager.add(actEnableEdgeRendering);
 		manager.add(actEnableGeneMapping);
+		manager.add(actEnablePathwayTextures);
 	}
 
 	private void createAnimatorToggleAction() {
@@ -183,8 +188,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		};
 		actToggleAnimatorRunningState.setText("Turn off/on animator");
 		actToggleAnimatorRunningState.setToolTipText("Turn off/on animator");
-		actToggleAnimatorRunningState.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+//		actToggleAnimatorRunningState.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+//				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		
 //		showMessage("Action 1","executed toggle JOGL frame");
 	}
@@ -202,8 +207,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnableEdgeRendering.setText("Show/hide edges");
 		actEnableEdgeRendering.setToolTipText("Show/hide edges");
-		actEnableEdgeRendering.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
+//		actEnableEdgeRendering.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+//				getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
 	}
 	
 	private void createGeneMappingToggleAction() {
@@ -219,9 +224,27 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnableGeneMapping.setText("Turn on/off gene mapping");
 		actEnableGeneMapping.setToolTipText("Turn on/off gene mapping");
-		actEnableGeneMapping.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
+//		actEnableGeneMapping.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+//				getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
 	}
+	
+	private void createPathwayTexturesToggleAction() {
+		
+		actEnablePathwayTextures = new Action() {
+			public void run() {
+				
+				bEnablePathwayTextures = !bEnablePathwayTextures;
+				triggerCmdSExternalFlagSetter(bEnablePathwayTextures, 
+						EExternalFlagSetterType.PATHWAY_ENABLE_TEXTURES);	
+			}
+		};
+		
+		actEnablePathwayTextures.setText("Turn on/off pathway textures");
+		actEnablePathwayTextures.setToolTipText("Turn on/off pathway textures");
+//		actEnablePathwayTextures.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+//				getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
+	}
+
 	
 	/**
 	 * We can use this method to dispose of any system
