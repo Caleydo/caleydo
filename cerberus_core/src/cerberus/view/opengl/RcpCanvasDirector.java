@@ -1,10 +1,7 @@
 package cerberus.view.opengl;
 
-import java.util.Collection;
-
 import org.eclipse.swt.widgets.Composite;
 
-import cerberus.data.AUniqueManagedObject;
 import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewGLCanvasManager;
@@ -24,13 +21,8 @@ import cerberus.view.jogl.JoglCanvasForwarderType;
  *
  */
 public class RcpCanvasDirector 
-extends AUniqueManagedObject 
+extends AGLCanvasDirector 
 implements IGLCanvasDirector, IView {
-
-	// FIXME: must be loaded from XML file!
-	protected int iGLEventListernerId = 99000;
-	
-	private JoglCanvasForwarder forwarder_GLEventListener = null;
 	
 	/**
 	 * Constructor
@@ -76,64 +68,7 @@ implements IGLCanvasDirector, IView {
 		canvasManager.registerGLCanvasDirector( this, iGLCanvasId);
 		canvasManager.registerGLEventListener( forwarder_GLEventListener, iGLEventListernerId );
 	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
-	 */
-	public final void addGLCanvasUser( IGLCanvasUser user ) {
-		forwarder_GLEventListener.addGLCanvasUser(user);
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
-	 */
-	public final void removeGLCanvasUser( IGLCanvasUser user ) {
-		forwarder_GLEventListener.removeGLCanvasUser(user);
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
-	 */
-	public final void removeAllGLCanvasUsers() {
 		
-		forwarder_GLEventListener.removeAllGLCanvasUsers();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#containsGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
-	 */
-	public final boolean containsGLCanvasUser(IGLCanvasUser user) {
-
-		return forwarder_GLEventListener.containsGLCanvasUser(user);		
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
-	 */
-	public final Collection<IGLCanvasUser> getAllGLCanvasUsers() {
-		
-		return forwarder_GLEventListener.getAllGLCanvasUsers();
-	}	
-	
-	public final JoglCanvasForwarder getJoglCanvasForwarder() {
-
-		return forwarder_GLEventListener;
-	}
-
-	//**************************************************
-	// FIXME: this code is from the interface IView
-	// RcpCanvasDirector must implement IView so that it 
-	// can be registered in ViewManager.
-	// This needs to be refactored!!
-	
-	@Override
-	public void destroyDirector() {
-
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public ManagerObjectType getBaseType() {
 

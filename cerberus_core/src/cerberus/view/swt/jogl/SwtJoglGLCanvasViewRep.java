@@ -45,7 +45,10 @@ implements IGLCanvasDirector {
 	private final JoglCanvasForwarderType canvasForwarderType;
 	
 	/**
-	 * Animator for Jogl thread
+	 * Animator for Jogl thread; namely JoglCanvasForwarder
+	 * 
+	 * @see cerberus.view.jogl.JoglCanvasForwarder
+	 * @see com.sun.opengl.util.Animator
 	 */
 	protected TriggeredAnimator refAnimator = null;
 	
@@ -124,6 +127,46 @@ implements IGLCanvasDirector {
 	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
 	/* ------------------------------------------------------------------ */
 	
+	/**
+	 * Expose Animator for internal GLCanvas
+	 *
+	 * @see cerberus.view.jogl.JoglCanvasForwarder
+	 * @see com.sun.opengl.util.Animator
+	 * 
+	 * @return Animator for GLCanvas
+	 */
+	public final TriggeredAnimator getAnimator() {
+	
+		return refAnimator;
+	}
+	
+
+	/**
+	 * @see cerberus.view.opengl.AGLCanvasDirector#setAnimator(TriggeredAnimator)
+	 * @see cerberus.view.opengl.IGLCanvasDirector#setAnimator(cerberus.view.jogl.TriggeredAnimator)
+	 */
+	public final void setAnimator( final TriggeredAnimator setTriggeredAnimator) {
+
+		if ( refAnimator != null ) {
+			if ( refAnimator.isAnimating() ) {		
+				/* Animator is animating, do not replace it! */
+				refGeneralManager.getSingelton().logMsg("setAnimator(" +
+						setTriggeredAnimator.toString() + ") is ignored, because existing animator=[" +
+						refAnimator.toString() + "] is running!",
+						LoggerType.MINOR_ERROR);
+				
+				return;
+			} else {
+				/* Animator is not animating, replace Animator */
+				refGeneralManager.getSingelton().logMsg("setAnimator(" +
+						setTriggeredAnimator.toString() + ") existing animator=[" +
+						refAnimator.toString() + "] is allocated but is not running; replace it with new Animator-",
+						LoggerType.MINOR_ERROR);
+			}
+		}
+		
+		this.refAnimator = setTriggeredAnimator;				
+	}
 
 	
 	/**
@@ -235,7 +278,19 @@ implements IGLCanvasDirector {
 		canvasManager.unregisterGLEventListener( forwarder_GLEventListener );
 		canvasManager.removeGLEventListener2GLCanvasById( iGLEventListernerId, iUniqueId );
 		
-		destroyOnExitViewRep();
+		/*
+		 * see AGLCanvasDirector.destroyDirector() {
+		 */	
+			if ( refAnimator != null ) {
+				/* stop Animator if Animator was set. */
+				refAnimator.stopEventCount();
+				
+				if ( ! refAnimator.isAnimating() ) {
+					/* If not more listeners are registered 
+					 * to Animator, deallocate the Animator. */
+					refAnimator = null;
+				}
+			}
 		
 		removeAllGLCanvasUsers();
 		
@@ -322,16 +377,5 @@ implements IGLCanvasDirector {
 					this.iUniqueId + "]"
 					,LoggerType.VERBOSE );
 	}
-	
-	/**
-	 * @see com.sun.opengl.util.Animator
-	 * @see com.sun.opengl.util.Animator#stop()
-	 * @see cerberus.view.jogl.TriggeredAnimator#stopEventCount()
-	 */
-	protected void destroyOnExitViewRep() {
-		
-		refAnimator.stopEventCount();
-	}
-
 
 }
