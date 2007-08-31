@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import javax.media.opengl.GLCanvas;
 
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.RowLayout;
+//import org.eclipse.swt.layout.FillLayout;
+//import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.manager.IGeneralManager;
@@ -259,7 +259,16 @@ implements IGLCanvasDirector {
 //				LoggerType.TRANSITION );
 	}
 	
-
+	/**
+	 * This method must not be called.
+	 * It is empty on intention that AViewRep.initView() is not called if SwtJoglGLCanvasViewRep is derived.
+	 * use SwtJoglGLCanvasViewRep.initViewSwtComposit() instead.
+	 * 
+	 */
+	public final void initView() {
+		assert false : "Do not call this method! Call SwtJoglGLCanvasViewRep.initViewSwtComposit()";
+	}
+	
 	/*
 	 *  (non-Javadoc)
 	 * @see cerberus.view.opengl.IGLCanvasDirector#destroyDirector()

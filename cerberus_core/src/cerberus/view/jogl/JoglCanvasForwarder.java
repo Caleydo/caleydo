@@ -12,9 +12,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraphItem;
-
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
@@ -277,7 +274,7 @@ implements GLEventListener {
 		 */		
 		
 		refGeneralManager.getSingelton().logMsg(
-				"SwtJoglGLCanvasViewRep [" +
+				"JoglCanvasForwarder [" +
 				getId() + "] added GLCanvas user=[" +
 				user.getId() + "] " + 
 				user.toString() ,
