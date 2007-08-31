@@ -54,6 +54,10 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			{
 				((GLCanvasJukeboxPathway3D)viewObject).enableGeneMapping(bFlag);
 			}
+			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_TEXTURES))
+			{
+				((GLCanvasJukeboxPathway3D)viewObject).enablePathwayTextures(bFlag);
+			}
 		}
 	}
 

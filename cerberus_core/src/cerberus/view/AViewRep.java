@@ -120,7 +120,8 @@ implements IViewRep {
 		this.iParentContainerId = iParentContainerId;
 	}
 	
-	public final void initViewRCP(Composite swtContainer) {
+	public final void initViewRCP(Composite refSWTContainer) {
+		this.refSWTContainer = refSWTContainer;
 		initViewSwtComposit( refSWTContainer );
 	}
 	

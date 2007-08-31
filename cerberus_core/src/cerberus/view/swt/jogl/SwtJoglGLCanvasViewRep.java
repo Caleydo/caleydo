@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.media.opengl.GLCanvas;
 
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.manager.IGeneralManager;

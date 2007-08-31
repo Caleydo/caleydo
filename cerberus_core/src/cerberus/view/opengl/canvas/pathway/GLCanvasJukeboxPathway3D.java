@@ -57,24 +57,18 @@ extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 
 	public static final int MAX_LOADED_PATHWAYS = 300;
-	
 	public static final int PATHWAY_TEXTURE_PICKING_ID_RANGE_START = 320;
-
 	public static final int FREE_PICKING_ID_RANGE_START = 600;
-
 	public static final String TICK_SOUND = "data/sounds/tick.wav";
 
 	private float fTextureTransparency = 1.0f;
-
 	private float fLastMouseMovedTimeStamp = 0;
 	
 	private boolean bRebuildVisiblePathwayDisplayLists = false;
-
 	private boolean bIsMouseOverPickingEvent = false;
-
-	private boolean bShowPathwayTexture = true;
-
+	private boolean bEnablePathwayTextures = true;
 	private boolean bMouseOverMemoPad = false;
+	private boolean bSelectionChanged = false;
 
 	private int iMouseOverPickedPathwayId = -1;
 
@@ -100,8 +94,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private JukeboxHierarchyLayer pathwayLayeredLayer;
 
 	private JukeboxHierarchyLayer pathwayPoolLayer;
-
-	private boolean bSelectionChanged = false;
 
 	private PathwayVertexGraphItemRep selectedVertex = null;
 
@@ -222,6 +214,10 @@ implements IMediatorReceiver, IMediatorSender {
 			rebuildVisiblePathwayDisplayLists(gl);
 		
 		handlePicking(gl);
+		
+		if (bRebuildVisiblePathwayDisplayLists)
+			rebuildVisiblePathwayDisplayLists(gl);
+		
 		renderScene(gl);
 		renderInfoArea(gl);
 
@@ -323,38 +319,8 @@ implements IMediatorReceiver, IMediatorSender {
 		if (pathwayUnderInteractionLayer.getElementList().size() == 0)
 			return;
 
-		int iPathwayId = pathwayUnderInteractionLayer
-				.getElementIdByPositionIndex(0);
-
-		// If pathway is not visible then render nothing
-		if (!pathwayUnderInteractionLayer.getElementVisibilityById(iPathwayId))
-			return;
-
-		gl.glPushMatrix();
-
-		Transform transform = pathwayUnderInteractionLayer
-				.getTransformByElementId(iPathwayId);
-		Vec3f translation = transform.getTranslation();
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-
-		Vec3f scale = transform.getScale();
-		gl.glScalef(scale.x(), scale.y(), scale.z());
-
-		Rotf rot = transform.getRotation();
-		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()), rot.getX(), rot
-				.getY(), rot.getZ());
-
-		float tmp = refGLPathwayTextureManager
-				.getTextureByPathwayId(iPathwayId).getImageHeight()
-				* GLPathwayManager.SCALING_FACTOR_Y;
-		gl.glTranslatef(0, tmp, 0);
-		refGLPathwayManager.renderPathway(gl, iPathwayId, true);
-		gl.glTranslatef(0, -tmp, 0);
-
-		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-				fTextureTransparency, true);
-
-		gl.glPopMatrix();
+		int iPathwayId = pathwayUnderInteractionLayer.getElementIdByPositionIndex(0);
+		renderPathwayById(gl, iPathwayId, pathwayUnderInteractionLayer);
 	}
 
 	private void renderPathwayLayered(final GL gl) {
@@ -364,49 +330,62 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iPathwayIndex = 0; iPathwayIndex < pathwayElementList.size(); iPathwayIndex++)
 		{
 			int iPathwayId = pathwayElementList.get(iPathwayIndex);
-
-			// If pathway is not visible then render nothing
-			if (!pathwayLayeredLayer.getElementVisibilityById(iPathwayId))
-				continue;
-
-			gl.glPushMatrix();
-
-			Transform transform = pathwayLayeredLayer
-					.getTransformByElementId(iPathwayId);
-			Vec3f translation = transform.getTranslation();
-
-			// Pathway texture height is subtracted from Y to align pathways to
-			// front level
-			gl.glTranslatef(translation.x(), translation.y(), translation.z());
-
-			Rotf rot = transform.getRotation();
-			gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()), rot.getX(),
-					rot.getY(), rot.getZ());
-
-			Vec3f scale = transform.getScale();
-			gl.glScalef(scale.x(), scale.y(), scale.z());
-
-			float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
-					iPathwayId).getImageHeight()
-					* GLPathwayManager.SCALING_FACTOR_Y;
-			gl.glTranslatef(0, tmp, 0);
-			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
-			gl.glTranslatef(0, -tmp, 0);
-
-			if (bShowPathwayTexture)
-			{
-				if (!pathwayUnderInteractionLayer.getElementList().isEmpty()
-						&& pathwayUnderInteractionLayer
-								.getElementIdByPositionIndex(0) == iPathwayId)
-					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-							fTextureTransparency, true);
-				else
-					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-							fTextureTransparency, false);
-			}
-
-			gl.glPopMatrix();
+			renderPathwayById(gl, iPathwayId, pathwayLayeredLayer);
 		}
+	}
+	
+	private void renderPathwayById(final GL gl,
+			final int iPathwayId, 
+			final JukeboxHierarchyLayer layer) {
+		
+		// Check if pathway is visible
+		if(!layer.getElementVisibilityById(iPathwayId))
+			return;
+		
+		gl.glPushMatrix();
+
+		Transform transform = layer.getTransformByElementId(iPathwayId);
+		Vec3f translation = transform.getTranslation();
+
+		// Pathway texture height is subtracted from Y to align pathways to
+		// front level
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+
+		Rotf rot = transform.getRotation();
+		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()), rot.getX(),
+				rot.getY(), rot.getZ());
+
+		Vec3f scale = transform.getScale();
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+
+		float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
+				iPathwayId).getImageHeight()* GLPathwayManager.SCALING_FACTOR_Y;
+		
+		gl.glTranslatef(0, tmp, 0);
+		
+		if (layer.equals(pathwayLayeredLayer))
+			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+		else
+			refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+		
+		gl.glTranslatef(0, -tmp, 0);
+
+		if (bEnablePathwayTextures)
+		{
+			if (!layer.getElementList().isEmpty()
+					&& layer.getElementIdByPositionIndex(0) == iPathwayId)
+			{
+				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+						fTextureTransparency, true);
+			}
+			else
+			{
+				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+						fTextureTransparency, false);
+			}
+		}
+
+		gl.glPopMatrix();
 	}
 
 	private void renderPathwayPool(final GL gl) {
@@ -611,8 +590,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (tmp.length == 0)
 			return;
 
-		// FIXME
-		// loadPathwayToUnderInteractionPosition(refSetSelection.getOptionalDataArray()[0]);
+		loadPathwayToUnderInteractionPosition(refSetSelection.getOptionalDataArray()[0]);
 	}
 
 	public void updateReceiver(Object eventTrigger) {
@@ -633,7 +611,7 @@ implements IMediatorReceiver, IMediatorSender {
 			iAlSelectedElements.add(
 					selectedVertex.getPathwayVertexGraphItem().getId());
 
-			rebuildVisiblePathwayDisplayLists(gl);
+			bRebuildVisiblePathwayDisplayLists = true;
 		}
 
 		if (iSlerpFactor < 1000)
@@ -726,7 +704,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// Check if a drag&drop action was performed to replace the pathway under interaction
 		else if (bMouseReleased && !bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
 		{
-			loadPathwayToUnderInteractionPosition(gl, dragAndDrop.getDraggedObjectedId());
+			loadPathwayToUnderInteractionPosition(dragAndDrop.getDraggedObjectedId());
 			dragAndDrop.stopDragAction();
 		}
 		// Cancel drag&drop action if mouse isn't released over the memo pad area.
@@ -854,7 +832,7 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 			}
 
-			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
+			loadPathwayToUnderInteractionPosition(iPathwayId);
 			
 			return;
 		} 
@@ -938,7 +916,7 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 			}
 
-			loadPathwayToUnderInteractionPosition(gl, iPathwayId);
+			loadPathwayToUnderInteractionPosition(iPathwayId);
 
 			return;
 		} else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
@@ -950,8 +928,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 	}
 
-	private void loadPathwayToUnderInteractionPosition(final GL gl,
-			final int iPathwayId) {
+	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {
 
 		refGeneralManager
 				.getSingelton()
@@ -1003,11 +980,8 @@ implements IMediatorReceiver, IMediatorSender {
 		arSlerpActions.add(slerpAction);
 		iSlerpFactor = 0;
 
-		rebuildVisiblePathwayDisplayLists(gl);
+		bRebuildVisiblePathwayDisplayLists = true;
 		selectedVertex = null;
-
-		// Cleanup unused textures
-		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 
 		// Trigger update with current pathway that dependent pathways
 		// know which pathway is currently under interaction
@@ -1077,11 +1051,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 			iVertexOccurenceCount++;
 		}
-
-		rebuildVisiblePathwayDisplayLists(gl);
-
-		// Cleanup unused textures
-		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
+		
+		bRebuildVisiblePathwayDisplayLists = true;
 	}
 
 	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
@@ -1105,10 +1076,12 @@ implements IMediatorReceiver, IMediatorSender {
 		if (!pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer
 				.getElementIdByPositionIndex(0)))
 		{
-			refGLPathwayManager
-					.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
+			refGLPathwayManager.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
 							.getElementIdByPositionIndex(0));
 		}
+		
+		// Cleanup unused textures
+		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 	}
 
 	private void playPathwayPoolTickSound() {
@@ -1157,5 +1130,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		refGLPathwayManager.enableGeneMapping(bEnableMapping);
 		bRebuildVisiblePathwayDisplayLists = true;
+	}
+	
+	public void enablePathwayTextures(final boolean bEnablePathwayTextures) {
+		
+		this.bEnablePathwayTextures = bEnablePathwayTextures;
 	}
 }
