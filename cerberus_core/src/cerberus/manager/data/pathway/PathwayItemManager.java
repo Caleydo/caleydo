@@ -1,6 +1,8 @@
 package cerberus.manager.data.pathway;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemProperty;
@@ -73,7 +75,7 @@ implements IPathwayItemManager {
 	
 	public IGraphItem createVertexRep(
 			final IGraph parentPathway,
-			final IGraphItem  pathwayVertex,
+			final ArrayList<IGraphItem> alVertexGraphItem,
 			final String sName, 
 			final String sShapeType, 
 			final int iHeight, 
@@ -88,14 +90,21 @@ implements IPathwayItemManager {
 		
 		parentPathway.addItem(pathwayVertexRep);
 		
-		pathwayVertexRep.addItem(pathwayVertex, 
-				EGraphItemProperty.ALIAS_PARENT);
 		pathwayVertexRep.addGraph(parentPathway, 
 				EGraphItemHierarchy.GRAPH_PARENT);
-		
-		pathwayVertex.addItem(pathwayVertexRep, 
+
+		Iterator<IGraphItem> iterVertexGraphItem = alVertexGraphItem.iterator();
+		IGraphItem pathwayVertex;
+		while (iterVertexGraphItem.hasNext())
+		{
+			pathwayVertex = iterVertexGraphItem.next();
+			
+			pathwayVertexRep.addItem(pathwayVertex, 
+				EGraphItemProperty.ALIAS_PARENT);
+				
+			pathwayVertex.addItem(pathwayVertexRep, 
 				EGraphItemProperty.ALIAS_CHILD);
-		
+		}
 		return pathwayVertexRep;
 	}
 	
@@ -202,7 +211,7 @@ implements IPathwayItemManager {
 		
 		return pathwayReactionEdgeRep;
 	}
-
+	
 	@Override
 	public Object getItem(int itemId) {
 

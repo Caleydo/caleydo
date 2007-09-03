@@ -1,6 +1,8 @@
 package cerberus.parser.xml.sax.handler.kegg;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraph;
@@ -34,6 +36,8 @@ implements IXmlParserHandler {
 	
 	private IGraphItem currentVertex;
 	
+	private ArrayList<IGraphItem> alCurrentVertex;
+	
 	private IGraphItem currentReactionSubstrateEdgeRep;
 	
 	private IGraphItem currentReactionProductEdgeRep;
@@ -46,10 +50,10 @@ implements IXmlParserHandler {
 		super( refGeneralManager, refXmlParserManager);
 		
 		hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
-			
 		hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();
-		
 		hashKgmlReactionIdToVertexRepId = new HashMap<String, IGraphItem>();
+		
+		alCurrentVertex = new ArrayList<IGraphItem>();
 		
 		setXmlActivationTag("pathway");
 	}
@@ -206,8 +210,28 @@ implements IXmlParserHandler {
 	   	}
     	
     	iCurrentEntryId = iEntryId;
-    	currentVertex = refGeneralManager.getSingelton().getPathwayItemManager()
-    		.createVertex(sName, sType, sExternalLink, sReactionId);
+    	alCurrentVertex.clear();
+    	
+    	if (sType.equals("gene"))
+    	{
+			StringTokenizer strTokenText = 
+				new StringTokenizer(sName, " ");
+			
+			while (strTokenText.hasMoreTokens()) 
+			{
+	    		currentVertex = refGeneralManager.getSingelton().getPathwayItemManager()
+    				.createVertex(strTokenText.nextToken(), sType, sExternalLink, sReactionId);
+	    		
+	    		alCurrentVertex.add(currentVertex);
+			}	
+    	}
+    	else
+    	{
+    		currentVertex = refGeneralManager.getSingelton().getPathwayItemManager()
+    			.createVertex(sName, sType, sExternalLink, sReactionId);
+    		
+    		alCurrentVertex.add(currentVertex);
+    	}
     }
 	
 	/**
@@ -265,7 +289,7 @@ implements IXmlParserHandler {
 		IGraphItem vertexRep = refGeneralManager.getSingelton()
 			.getPathwayItemManager().createVertexRep(
 				currentPathway, 
-				currentVertex, 
+				alCurrentVertex, 
 				sName, 
 				sShapeType, 
 				iHeight, 

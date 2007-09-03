@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
+import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
@@ -56,7 +57,7 @@ public class GLPathwayManager {
 	
 	private EnzymeToExpressionColorMapper enzymeToExpressionColorMapper;
 	
-	private ArrayList<Integer> iAlSelectedElements;
+	private ArrayList<IGraphItem> alSelectedGraphItems;
 	
 	private HashMap<Integer, ArrayList<Color>> hashElementId2MappingColorArray;
 	
@@ -76,13 +77,13 @@ public class GLPathwayManager {
 	
 	public void init(final GL gl, 
 			final ArrayList<ISet> alSetData,
-			final ArrayList<Integer> iAlSelectedElements) {
+			final ArrayList<IGraphItem> alSelectedGraphItems) {
 		
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
 		buildHighlightedEnzymeNodeDisplayList(gl);
 		
-		this.iAlSelectedElements = iAlSelectedElements;
+		this.alSelectedGraphItems = alSelectedGraphItems;
 		
 		enzymeToExpressionColorMapper =
 			new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
@@ -352,19 +353,29 @@ public class GLPathwayManager {
 		else if (shape.equals(EPathwayVertexShape.rectangle))
 		{	
 			// Handle selection highlighting of element
-			if (iAlSelectedElements.contains(
-					vertexRep.getPathwayVertexGraphItem().getId()))
-			{
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
-				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+			Iterator<IGraphItem> iterGraphItems = 
+				vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).iterator();
+			
+			while(iterGraphItems.hasNext()) {
+				
+				if (alSelectedGraphItems.isEmpty())
+					break;
+				
+				if (iterGraphItems.next().equals(alSelectedGraphItems.get(0)))
+				{
+					tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+					gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+							tmpNodeColor.getGreen() / 255.0f, 
+							tmpNodeColor.getBlue() / 255.0f, 1.0f);
+					gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+
+					break;
+				}
 			}
 			
 			if (bEnableGeneMapping)
 			{
-				mapExpression(gl, vertexRep.getPathwayVertexGraphItem(), fNodeWidth);
+				mapExpression(gl, vertexRep, fNodeWidth);
 			}
 			else
 			{
@@ -494,22 +505,22 @@ public class GLPathwayManager {
 	}
 	
 	public void mapExpression(final GL gl, 
-			final PathwayVertexGraphItem pathwayVertex, 
+			final PathwayVertexGraphItemRep pathwayVertexRep, 
 			final float fNodeWidth) {
 		
 		ArrayList<Color> alMappingColor;
 		
 		// Check if vertex is already mapped 
-		if (hashElementId2MappingColorArray.containsKey(pathwayVertex.getId()))
+		if (hashElementId2MappingColorArray.containsKey(pathwayVertexRep.getId()))
 		{
 			// Load existing mapping
-			alMappingColor = hashElementId2MappingColorArray.get(pathwayVertex.getId());
+			alMappingColor = hashElementId2MappingColorArray.get(pathwayVertexRep.getId());
 		}
 		else
 		{
 			// Request mapping
-			alMappingColor = enzymeToExpressionColorMapper.getMappingColorArrayByVertex(pathwayVertex);
-			hashElementId2MappingColorArray.put((Integer)pathwayVertex.getId(), alMappingColor);
+			alMappingColor = enzymeToExpressionColorMapper.getMappingColorArrayByVertexRep(pathwayVertexRep);
+			hashElementId2MappingColorArray.put((Integer)pathwayVertexRep.getId(), alMappingColor);
 		}
 		
 		drawMapping(gl, alMappingColor, fNodeWidth);

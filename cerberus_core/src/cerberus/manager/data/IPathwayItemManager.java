@@ -1,5 +1,7 @@
 package cerberus.manager.data;
 
+import java.util.ArrayList;
+
 import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
 
@@ -16,7 +18,7 @@ extends IGeneralManager {
 	
 	public IGraphItem createVertexRep(
 			final IGraph parentPathway,
-			final IGraphItem  pathwayVertexGraphItem,
+			final ArrayList<IGraphItem> alVertexGraphItem,
 			final String sName, 
 			final String sShapeType, 
 			final int iHeight, 

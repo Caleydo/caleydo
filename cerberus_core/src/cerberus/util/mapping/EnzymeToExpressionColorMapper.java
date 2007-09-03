@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.geneview.graph.EGraphItemProperty;
+
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.SetDetailedDataType;
 import cerberus.data.graph.item.vertex.EPathwayVertexType;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -65,43 +68,55 @@ public class EnzymeToExpressionColorMapper {
 		}
 	}
 	
-	public final ArrayList<Color> getMappingColorArrayByVertex(
-			final PathwayVertexGraphItem pathwayVertex) {
+	public final ArrayList<Color> getMappingColorArrayByVertexRep(
+			final PathwayVertexGraphItemRep pathwayVertexRep) {
 		
 		// Do nothing if picked node is invalid.
-		if (pathwayVertex == null)
+		if (pathwayVertexRep == null)
 		{
 			return new ArrayList<Color>();
 		}
 		
-		if (pathwayVertex.getType().equals(EPathwayVertexType.gene))
+		if (pathwayVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
 		{
-			return getMappingColorArrayByGeneVertex(pathwayVertex);
+			return getMappingColorArrayByGeneVertexRep(pathwayVertexRep);
 		}
-		else if (pathwayVertex.getType().equals(EPathwayVertexType.enzyme))
+		else if (pathwayVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.enzyme))
 		{
-			return getMappingColorArrayByEnzymeVertex(pathwayVertex);
+			return getMappingColorArrayByEnzymeVertex(pathwayVertexRep.getPathwayVertexGraphItem());
 		}
 		
 		return new ArrayList<Color>();
 	}
 	
-	private final ArrayList<Color> getMappingColorArrayByGeneVertex(
-			final PathwayVertexGraphItem pathwayVertex) {
+	private final ArrayList<Color> getMappingColorArrayByGeneVertexRep(
+			final PathwayVertexGraphItemRep pathwayVertexRep) {
 		
 		ArrayList<Color> arMappingColor = new ArrayList<Color>();
 		
-		String sGeneID = pathwayVertex.getName();
-		
-		// Check for multiple genes per enzyme
-		if (sGeneID.contains(" "))
-		{	
+		if (pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() > 1)
+		{
 			arMappingColor.add(Color.YELLOW);
-			return arMappingColor;
-			//sGeneID = sGeneID.substring(0, sGeneID.indexOf(' '));
 		}
-	
-		return getMappingColorArrayByGeneID(sGeneID);
+		else
+		{
+			arMappingColor = getMappingColorArrayByGeneID(
+					pathwayVertexRep.getPathwayVertexGraphItem().getName());
+		}
+		
+		return arMappingColor;
+		
+//		String sGeneID = pathwayVertex.getName();
+//		
+//		// Check for multiple genes per enzyme
+//		if (sGeneID.contains(" "))
+//		{	
+//			arMappingColor.add(Color.YELLOW);
+//			return arMappingColor;
+//			//sGeneID = sGeneID.substring(0, sGeneID.indexOf(' '));
+//		}
+//	
+//		return getMappingColorArrayByGeneID(sGeneID);
 	}
 	
 	public final ArrayList<Color> getMappingColorArrayByGeneID(

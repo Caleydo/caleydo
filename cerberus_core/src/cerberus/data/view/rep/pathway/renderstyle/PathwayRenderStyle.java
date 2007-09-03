@@ -364,21 +364,4 @@ extends ARenderStyle {
 		}
 		return this.neighborhoodNodeColorArray[depth];
 	}
-	
-//	public Color getNeighborhoodNodeColor_1() {
-//	
-//		return neighborhoodNodeColor_1;
-//	}
-//
-//	
-//	public Color getNeighborhoodNodeColor_2() {
-//	
-//		return neighborhoodNodeColor_2;
-//	}
-//
-//	
-//	public Color getNeighborhoodNodeColor_3() {
-//	
-//		return neighborhoodNodeColor_3;
-//	}
 }

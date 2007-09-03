@@ -80,7 +80,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
-	private ArrayList<Integer> iAlSelectedElements;
+	private ArrayList<IGraphItem> alSelectedGraphItems;
 
 	/**
 	 * Slerp factor 0 = source; 1 = destination
@@ -129,7 +129,7 @@ implements IMediatorReceiver, IMediatorSender {
 		refGLPathwayTextureManager = new GLPathwayTextureManager(
 				refGeneralManager);
 		arSlerpActions = new ArrayList<SlerpAction>();
-		iAlSelectedElements = new ArrayList<Integer>();
+		alSelectedGraphItems = new ArrayList<IGraphItem>();
 
 		refHashPoolLinePickId2PathwayId = new HashMap<Integer, Integer>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
@@ -203,7 +203,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	protected void initPathwayData(final GL gl) {
 
-		refGLPathwayManager.init(gl, alSetData, iAlSelectedElements);
+		refGLPathwayManager.init(gl, alSetData, alSelectedGraphItems);
 		buildPathwayPool(gl);
 		buildLayeredPathways(gl);
 	}
@@ -607,13 +607,13 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			slerpPathway(gl, arSlerpActions.get(0));
 			// selectedVertex = null;
-		} else if (arSlerpActions.isEmpty() && bSelectionChanged)
+		} else if (arSlerpActions.isEmpty() && bSelectionChanged 
+				&& selectedVertex != null)
 		{
 			bSelectionChanged = false;
 			
-			iAlSelectedElements.clear();
-			iAlSelectedElements.add(
-					selectedVertex.getPathwayVertexGraphItem().getId());
+			alSelectedGraphItems.clear();
+			alSelectedGraphItems.add(selectedVertex.getPathwayVertexGraphItem());
 
 			bRebuildVisiblePathwayDisplayLists = true;
 		}
@@ -915,8 +915,6 @@ implements IMediatorReceiver, IMediatorSender {
 				EPathwayVertexType.map))
 		{
 			String strTmp = pickedVertexRep.getPathwayVertexGraphItem().getName();
-			
-			//.getElementTitle();
 
 			int iPathwayId = -1;
 			try
@@ -932,11 +930,14 @@ implements IMediatorReceiver, IMediatorSender {
 
 			return;
 		} else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
-				EPathwayVertexType.enzyme))
+				EPathwayVertexType.enzyme) 
+				|| pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
+				EPathwayVertexType.gene)) // FIXME: must consider that there are more than one gene
 		{
 			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
-			loadDependentPathwayContainingVertex(gl, pickedVertexRep);
+			loadDependentPathwayContainingVertex(gl, 
+					selectedVertex.getPathwayVertexGraphItem());
 		}
 	}
 
@@ -1022,15 +1023,12 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 	public void loadDependentPathwayContainingVertex(final GL gl,
-			final PathwayVertexGraphItemRep vertexRep) {
+			final PathwayVertexGraphItem vertex) {
 
 		refHashPathwayContainingSelectedVertex2VertexCount.clear();
 
-		IGraphVisitorSearch graphSearch = 
-			new GraphVisitorGetLinkedGraphItems(vertexRep, 1);
-		
 		Iterator<IGraphItem> iterIdenticalPathwayGraphItemReps = 
-			graphSearch.getSearchResult().iterator();
+			vertex.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
 		
 		IGraphItem identicalPathwayGraphItemRep;
 		int iPathwayId = 0;
@@ -1066,6 +1064,53 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		bRebuildVisiblePathwayDisplayLists = true;
 	}
+
+	
+//	public void loadDependentPathwayContainingVertex(final GL gl,
+//			final PathwayVertexGraphItemRep vertexRep) {
+//
+//		refHashPathwayContainingSelectedVertex2VertexCount.clear();
+//
+//		IGraphVisitorSearch graphSearch = 
+//			new GraphVisitorGetLinkedGraphItems(vertexRep, 1);
+//		
+//		Iterator<IGraphItem> iterIdenticalPathwayGraphItemReps = 
+//			graphSearch.getSearchResult().iterator();
+//		
+//		IGraphItem identicalPathwayGraphItemRep;
+//		int iPathwayId = 0;
+//		int iMaxPathwayCount = 0;
+//		int iVertexOccurenceCount = 0;
+//		
+//		while (iterIdenticalPathwayGraphItemReps.hasNext())
+//		{
+//			identicalPathwayGraphItemRep = iterIdenticalPathwayGraphItemReps.next();
+//	
+//			iPathwayId = ((PathwayGraph)identicalPathwayGraphItemRep
+//					.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getKeggId();
+//
+//			// Prevent slerp action if pathway is already in layered view
+//			if (!pathwayLayeredLayer.containsElement(iPathwayId))
+//			{
+//				if (iMaxPathwayCount >= pathwayLayeredLayer
+//						.getCapacity())
+//					break;
+//
+//				iMaxPathwayCount++;
+//
+//				// Slerp to layered pathway view
+//				SlerpAction slerpAction = new SlerpAction(iPathwayId,
+//						pathwayPoolLayer, false);
+//
+//				arSlerpActions.add(slerpAction);
+//				iSlerpFactor = 0;
+//			}
+//
+//			iVertexOccurenceCount++;
+//		}
+//		
+//		bRebuildVisiblePathwayDisplayLists = true;
+//	}
 
 	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
 
