@@ -10,6 +10,5 @@
 	<classpathentry kind="lib" path="lib/jogl/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="lib/org.geneview.core_bin_r000.jar" sourcepath="/geneview_core/src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/geneview_core"/>
-	<classpathentry kind="lib" path="lib/data.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

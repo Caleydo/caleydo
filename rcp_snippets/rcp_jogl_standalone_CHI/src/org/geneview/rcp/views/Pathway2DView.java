@@ -50,7 +50,7 @@ extends ViewPart {
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		pathwayView.setAttributes(-1, -1, 85401);
+		pathwayView.setAttributes(85401);
 		pathwayView.addSetId(iArTmp);
 		pathwayView.initViewRCP(parent);
 		pathwayView.drawView();	
