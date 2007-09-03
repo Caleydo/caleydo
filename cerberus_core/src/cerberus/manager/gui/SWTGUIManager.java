@@ -215,19 +215,16 @@ implements ISWTGUIManager {
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refExternalParentComposite,
-					iWidth, iHeight);
+			newSWTWidget = new SWTNativeWidget(refExternalParentComposite);
 			newSWTWidget.setId(iUniqueId);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(
-					refExternalParentComposite);
+			newSWTWidget = new SWTEmbeddedJoglWidget(refExternalParentComposite);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(
-					refExternalParentComposite);
+			newSWTWidget = new SWTEmbeddedGraphWidget(refExternalParentComposite);
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:

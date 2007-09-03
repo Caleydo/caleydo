@@ -5,6 +5,8 @@ package cerberus.view.swt.browser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -14,10 +16,12 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
+import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.AViewRep;
 import cerberus.view.IView;
 import cerberus.view.ViewType;
 import cerberus.view.swt.browser.HookedBrowser;
+import cerberus.view.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
  * Simple HTML browser.
@@ -55,25 +59,8 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		refBrowser = new HookedBrowser (refSWTContainer, SWT.NONE, refGeneralManager);
-				
-//		if ((iWidth == -1)&&(iHeight == -1)) 
-//		{
-//			Rectangle rec = refSWTContainer.getBounds();
-//			
-//			refBrowser.setBounds(5, 75, rec.width, rec.height);
-//		}
-//		else 
-//		{
-			if (iWidth == -1)
-				iWidth = 1000;
-			
-			if (iHeight == -1)
-				iHeight = 1000;
-	
-			refBrowser.setBounds(5, 75, iWidth, iHeight);
-//		}
-		
+		refSWTContainer = swtContainer;
+		refSWTContainer.setLayout(new GridLayout(1, false));
 		
 	    ToolBar toolbar = new ToolBar(refSWTContainer, SWT.NONE);
 	    toolbar.setBounds(0, 0, 300, 30);
@@ -88,9 +75,14 @@ implements IView {
 	    stopButton.setText("Stop");
 
 	    refTextField = new Text(refSWTContainer, SWT.BORDER);
-	    refTextField.setBounds(0, 35, iWidth, 25);
+	    //refTextField.setBounds(0, 30, 300, 25);
 	    refTextField.setText(sUrl);
 
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.FILL;
+		data.grabExcessHorizontalSpace = true;
+		refTextField.setLayoutData(data);
+	    
 		Listener listener = new Listener() {
 			public void handleEvent(Event event)
 			{
@@ -128,6 +120,18 @@ implements IView {
 		        	return;
 		    }
 		});
+		
+		
+		refBrowser = new HookedBrowser (
+				refSWTContainer, 
+				SWT.NONE, refGeneralManager);
+		
+		data = new GridData();
+		data.horizontalAlignment = GridData.FILL;
+		data.verticalAlignment = GridData.FILL;
+		data.grabExcessHorizontalSpace = true;
+		data.grabExcessVerticalSpace = true;
+		refBrowser.setLayoutData(data);
 	}
 
 	public void drawView() {

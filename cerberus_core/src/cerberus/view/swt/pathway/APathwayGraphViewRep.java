@@ -81,12 +81,6 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		
 		refEmbeddedFrameComposite = refSWTContainer;
 	}
-	
-	public void setWidthAndHeight(int iWidth, int iHeight) {
-		
-		this.iWidth = iWidth;
-		this.iHeight = iHeight;
-	}
 
 	protected void extractVertices(PathwayGraph pathwayToExtract) {
 		

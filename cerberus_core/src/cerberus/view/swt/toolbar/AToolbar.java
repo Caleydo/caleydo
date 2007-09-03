@@ -27,7 +27,7 @@ public abstract class AToolbar {
 	protected void initToolbar() {
 		
 		refToolBar = new ToolBar(refSWTContainer, SWT.NONE);
-		refToolBar.setBounds(0, 0, iWidth, 30);
+		//refToolBar.setBounds(0, 0, iWidth, 30);
 	}
 	
 	/**

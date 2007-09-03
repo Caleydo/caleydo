@@ -64,7 +64,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		
 		// Graph initialization
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
-		refPathwayGraphViewRep.setWidthAndHeight(iWidth-5, iHeight-75);
 		
 		// Convert ArrayList<Integer> to int[]
 		int[] iArSetDataTmp = new int[alSetData.size()];
@@ -86,17 +85,12 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		refPathwayGraphViewRep.showBackgroundOverlay(true);
 	}
 
-	public void setAttributes(int iWidth, int iHeight,
-			int iHTMLBrowserId) {
-		
-		super.setAttributes(iWidth, iHeight);
+	public void setAttributes(int iHTMLBrowserId) {
 
 		this.iHTMLBrowserId = iHTMLBrowserId;
 	}
 
 	public void drawView() {
-
-		// TODO Auto-generated method stub
 
 	}
 	

@@ -34,8 +34,7 @@ extends ASWTWidget {
 	 * @param refComposite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTNativeWidget(Composite refParentComposite, 
-			int iWidth, int iHeight) {
+	public SWTNativeWidget(Composite refParentComposite) {
 		
 		super(refParentComposite);
 		
@@ -43,27 +42,10 @@ extends ASWTWidget {
 		
 		GridData gridData = new GridData();
 		
-		if (iWidth != -1)
-		{
-			gridData.widthHint = iWidth;
-			gridData.horizontalAlignment = GridData.CENTER;
-		}
-		else
-		{
-			gridData.horizontalAlignment = GridData.FILL;
-			gridData.grabExcessHorizontalSpace = true;
-		}
-		
-		if (iHeight != -1)
-		{
-			gridData.heightHint = iHeight;
-			gridData.verticalAlignment = GridData.CENTER;
-		}
-		else
-		{
-			gridData.verticalAlignment = GridData.FILL;
-			gridData.grabExcessVerticalSpace = true;
-		}
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessVerticalSpace = true;
 		
 		refComposite.setLayoutData(gridData);
 	}

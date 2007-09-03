@@ -69,7 +69,7 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		pathwayView.setAttributes(iWidthX, iHeightY, iHTMLBrowserId);
+		pathwayView.setAttributes(iHTMLBrowserId);
 		pathwayView.addSetId(iArTmp);
 		pathwayView.initView();
 		pathwayView.drawView();
