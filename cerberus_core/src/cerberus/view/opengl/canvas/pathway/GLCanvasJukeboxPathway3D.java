@@ -159,7 +159,7 @@ implements IMediatorReceiver, IMediatorSender {
 		memoPad = new GLPathwayMemoPad(refGLPathwayManager,
 				refGLPathwayTextureManager);
 
-		dragAndDrop = new GLDragAndDrop();
+		dragAndDrop = new GLDragAndDrop(refGLPathwayTextureManager);
 	}
 
 	/*
@@ -218,6 +218,10 @@ implements IMediatorReceiver, IMediatorSender {
 		if (bRebuildVisiblePathwayDisplayLists)
 			rebuildVisiblePathwayDisplayLists(gl);
 		
+		if (dragAndDrop.isDragActionRunning()) {
+			dragAndDrop.renderDragThumbnailTexture(gl);
+		}
+		
 		renderScene(gl);
 		renderInfoArea(gl);
 
@@ -239,7 +243,7 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 	public void renderScene(final GL gl) {
-
+		
 		renderPathwayPool(gl);
 		renderPathwayLayered(gl);
 		renderPathwayUnderInteraction(gl);
@@ -685,12 +689,17 @@ implements IMediatorReceiver, IMediatorSender {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			fLastMouseMovedTimeStamp = System.nanoTime();
 		}
+		else if (pickingTriggerMouseAdapter.wasMouseDragged())
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		}
 
 		// Check if an object was picked
 		if (pickPoint != null)
-		{
+		{	
 			pickObjects(gl, pickPoint);
 			bIsMouseOverPickingEvent = false;
+			dragAndDrop.setCurrentMousePos(gl, pickPoint);
 		}
 
 		// Check if a drag&drop action was performed to add a pathway to the memo pad
@@ -839,6 +848,9 @@ implements IMediatorReceiver, IMediatorSender {
 		else if (iPickedObjectId >= PATHWAY_TEXTURE_PICKING_ID_RANGE_START 
 				&& iPickedObjectId < FREE_PICKING_ID_RANGE_START)
 		{
+			if (bIsMouseOverPickingEvent)
+				return;
+			
 			if (dragAndDrop.isDragActionRunning())
 			{
 				iMouseOverPickedPathwayId = 
@@ -846,9 +858,9 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 			else
 			{
-				dragAndDrop.startDragAction();
-				dragAndDrop.setDraggedObjectId(
-						refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId));
+				dragAndDrop.startDragAction(
+						refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId),
+						refGLPathwayTextureManager.getTextureByPathwayId(iPickedObjectId));
 			}
 			
 			return;
