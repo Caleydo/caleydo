@@ -58,6 +58,14 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			{
 				((GLCanvasJukeboxPathway3D)viewObject).enablePathwayTextures(bFlag);
 			}
+			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_NEIGHBORHOOD))
+			{
+				((GLCanvasJukeboxPathway3D)viewObject).enableNeighborhood(bFlag);
+			}
+			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_IDENTICAL_NODE_HIGHLIGHTING))
+			{
+				((GLCanvasJukeboxPathway3D)viewObject).enableIdenticalNodeHighlighting(bFlag);
+			}
 		}
 	}
 

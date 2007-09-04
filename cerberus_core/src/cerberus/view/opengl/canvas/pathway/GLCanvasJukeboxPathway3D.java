@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
@@ -17,8 +18,7 @@ import javax.media.opengl.glu.GLU;
 import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
-import org.geneview.graph.algorithm.GraphVisitorGetLinkedGraphItems;
-import org.geneview.graph.algorithm.IGraphVisitorSearch;
+import org.geneview.graph.algorithm.GraphVisitorSearchBFS;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
@@ -69,6 +69,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private boolean bEnablePathwayTextures = true;
 	private boolean bMouseOverMemoPad = false;
 	private boolean bSelectionChanged = false;
+	private boolean bEnableNeighborhood = true;
 
 	private int iMouseOverPickedPathwayId = -1;
 
@@ -79,8 +80,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 
 	private ArrayList<SlerpAction> arSlerpActions;
-
-	private ArrayList<IGraphItem> alSelectedGraphItems;
 
 	/**
 	 * Slerp factor 0 = source; 1 = destination
@@ -95,7 +94,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private JukeboxHierarchyLayer pathwayPoolLayer;
 
-	private PathwayVertexGraphItemRep selectedVertex = null;
+	private PathwayVertexGraphItemRep selectedVertex;
 
 	private GLInfoAreaRenderer infoAreaRenderer;
 
@@ -129,7 +128,6 @@ implements IMediatorReceiver, IMediatorSender {
 		refGLPathwayTextureManager = new GLPathwayTextureManager(
 				refGeneralManager);
 		arSlerpActions = new ArrayList<SlerpAction>();
-		alSelectedGraphItems = new ArrayList<IGraphItem>();
 
 		refHashPoolLinePickId2PathwayId = new HashMap<Integer, Integer>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
@@ -203,7 +201,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	protected void initPathwayData(final GL gl) {
 
-		refGLPathwayManager.init(gl, alSetData, alSelectedGraphItems);
+		refGLPathwayManager.init(gl, alSetData, alSetSelection);
 		buildPathwayPool(gl);
 		buildLayeredPathways(gl);
 	}
@@ -377,7 +375,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (bEnablePathwayTextures)
 		{
 			if (!layer.getElementList().isEmpty()
-					&& layer.getElementIdByPositionIndex(0) == iPathwayId)
+					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
 			{
 				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
 						fTextureTransparency, true);
@@ -607,17 +605,17 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			slerpPathway(gl, arSlerpActions.get(0));
 			// selectedVertex = null;
-		} else if (arSlerpActions.isEmpty() && bSelectionChanged 
+		} 
+		else if (arSlerpActions.isEmpty() && bSelectionChanged 
 				&& selectedVertex != null)
 		{
 			bSelectionChanged = false;
 			
-			alSelectedGraphItems.clear();
-			alSelectedGraphItems.add(selectedVertex.getPathwayVertexGraphItem());
-
+			performNeighborhoodAlgorithm(selectedVertex);
+			
 			bRebuildVisiblePathwayDisplayLists = true;
 		}
-
+		
 		if (iSlerpFactor < 1000)
 		{
 			iSlerpFactor += 15;
@@ -903,7 +901,9 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			if (selectedVertex != null
 					&& !selectedVertex.equals(pickedVertexRep))
+			{
 				infoAreaRenderer.resetAnimation();
+			}
 
 			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
@@ -932,7 +932,7 @@ implements IMediatorReceiver, IMediatorSender {
 		} else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
 				EPathwayVertexType.enzyme) 
 				|| pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
-				EPathwayVertexType.gene)) // FIXME: must consider that there are more than one gene
+				EPathwayVertexType.gene))
 		{
 			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
@@ -1065,53 +1065,6 @@ implements IMediatorReceiver, IMediatorSender {
 		bRebuildVisiblePathwayDisplayLists = true;
 	}
 
-	
-//	public void loadDependentPathwayContainingVertex(final GL gl,
-//			final PathwayVertexGraphItemRep vertexRep) {
-//
-//		refHashPathwayContainingSelectedVertex2VertexCount.clear();
-//
-//		IGraphVisitorSearch graphSearch = 
-//			new GraphVisitorGetLinkedGraphItems(vertexRep, 1);
-//		
-//		Iterator<IGraphItem> iterIdenticalPathwayGraphItemReps = 
-//			graphSearch.getSearchResult().iterator();
-//		
-//		IGraphItem identicalPathwayGraphItemRep;
-//		int iPathwayId = 0;
-//		int iMaxPathwayCount = 0;
-//		int iVertexOccurenceCount = 0;
-//		
-//		while (iterIdenticalPathwayGraphItemReps.hasNext())
-//		{
-//			identicalPathwayGraphItemRep = iterIdenticalPathwayGraphItemReps.next();
-//	
-//			iPathwayId = ((PathwayGraph)identicalPathwayGraphItemRep
-//					.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getKeggId();
-//
-//			// Prevent slerp action if pathway is already in layered view
-//			if (!pathwayLayeredLayer.containsElement(iPathwayId))
-//			{
-//				if (iMaxPathwayCount >= pathwayLayeredLayer
-//						.getCapacity())
-//					break;
-//
-//				iMaxPathwayCount++;
-//
-//				// Slerp to layered pathway view
-//				SlerpAction slerpAction = new SlerpAction(iPathwayId,
-//						pathwayPoolLayer, false);
-//
-//				arSlerpActions.add(slerpAction);
-//				iSlerpFactor = 0;
-//			}
-//
-//			iVertexOccurenceCount++;
-//		}
-//		
-//		bRebuildVisiblePathwayDisplayLists = true;
-//	}
-
 	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
 
 		// Reset rebuild trigger flag
@@ -1139,6 +1092,67 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		// Cleanup unused textures
 		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
+	}
+	
+	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
+		
+		GraphVisitorSearchBFS graphVisitorSearchBFS;
+		
+		if(bEnableNeighborhood)
+			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 3);
+		else
+			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
+		
+		graphVisitorSearchBFS.setProp(EGraphItemProperty.OUTGOING);
+		graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(
+				EGraphItemHierarchy.GRAPH_PARENT).get(0));
+		
+		//List<IGraphItem> lGraphItems = graphVisitorSearchBFS.getSearchResult();
+		graphVisitorSearchBFS.getSearchResult();
+		
+		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS.getDepthResultList();
+		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
+		
+		ArrayList<Integer> iAlTmpGraphItemId = new ArrayList<Integer>();
+		ArrayList<Integer> iAlTmpGraphItemDepth = new ArrayList<Integer>();
+		
+		for(int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++)
+		{
+			lGraphItems = lDepthSearchResult.get(iDepthIndex);
+						
+			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
+			{
+//				// Consider only vertices for now
+//				if (!lGraphItems.get(iItemIndex).getClass().equals
+//						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+//				{
+//					break;
+//				}
+				
+				iAlTmpGraphItemId.add(lGraphItems.get(iItemIndex).getId());
+				iAlTmpGraphItemDepth.add(iDepthIndex);
+			}
+		}
+	
+		int[] iArTmpGraphItemId = new int[iAlTmpGraphItemId.size()+1];  // +1 because of selected element itself
+		int[] iArTmpGraphItemDepth = new int[iAlTmpGraphItemDepth.size()+1];
+
+		iArTmpGraphItemId[0] = selectedVertex.getId();
+		iArTmpGraphItemDepth[0] = 0;
+		
+		for (int iItemIndex = 0; iItemIndex < iAlTmpGraphItemId.size(); iItemIndex++) 
+		{
+			iArTmpGraphItemId[iItemIndex+1] = iAlTmpGraphItemId.get(iItemIndex);
+			iArTmpGraphItemDepth[iItemIndex+1] = iAlTmpGraphItemDepth.get(iItemIndex);
+		}
+		
+		alSetSelection.get(0).getWriteToken();
+		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
+		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
+		alSetSelection.get(0).returnWriteToken();
+		
+		System.out.println("Root vertex of neighborhood algorithm is: " +selectedVertex.getId());
+		System.out.println("Resulting neighboring items: " +iArTmpGraphItemDepth.length);
 	}
 
 	private void playPathwayPoolTickSound() {
@@ -1192,5 +1206,15 @@ implements IMediatorReceiver, IMediatorSender {
 	public void enablePathwayTextures(final boolean bEnablePathwayTextures) {
 		
 		this.bEnablePathwayTextures = bEnablePathwayTextures;
+	}
+	
+	public void enableNeighborhood(final boolean bEnableNeighborhood) {
+		
+		this.bEnableNeighborhood = bEnableNeighborhood;
+	}
+	
+	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
+		
+		refGLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 }

@@ -8,19 +8,17 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
-import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
 
 import cerberus.data.collection.ISet;
+import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.graph.core.PathwayGraph;
 import cerberus.data.graph.item.vertex.EPathwayVertexShape;
-import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
-import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.util.mapping.EnzymeToExpressionColorMapper;
 import cerberus.view.opengl.util.GLTextUtils;
 
@@ -46,8 +44,8 @@ public class GLPathwayManager {
 	private PathwayRenderStyle refRenderStyle;
 
 	private boolean bEnableGeneMapping = true;
-	
 	private boolean bEnableEdgeRendering = false;
+	private boolean bEnableIdenticalNodeHighlighting = false;
 	
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
 	
@@ -57,7 +55,9 @@ public class GLPathwayManager {
 	
 	private EnzymeToExpressionColorMapper enzymeToExpressionColorMapper;
 	
-	private ArrayList<IGraphItem> alSelectedGraphItems;
+	private ArrayList<SetSelection> alSetSelection;
+	
+	private HashMap<Integer, Integer> hashSelectedGraphItemRepId2Depth;
 	
 	private HashMap<Integer, ArrayList<Color>> hashElementId2MappingColorArray;
 	
@@ -77,13 +77,14 @@ public class GLPathwayManager {
 	
 	public void init(final GL gl, 
 			final ArrayList<ISet> alSetData,
-			final ArrayList<IGraphItem> alSelectedGraphItems) {
+			final ArrayList<SetSelection> alSetSelection) {
 		
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
 		buildHighlightedEnzymeNodeDisplayList(gl);
 		
-		this.alSelectedGraphItems = alSelectedGraphItems;
+		this.alSetSelection = alSetSelection;
+		hashSelectedGraphItemRepId2Depth = new HashMap<Integer, Integer>();
 		
 		enzymeToExpressionColorMapper =
 			new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
@@ -113,26 +114,74 @@ public class GLPathwayManager {
 		extractVertices(gl, refTmpPathway);
 		gl.glEndList();
 				
-		if (bEnableEdgeRendering)
+		performNodeHighlighting();
+		
+		if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
 		{
-			if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
-			{
-				// Replace current display list if a display list exists
-				iEdgesDisplayListId = hashPathwayId2EdgesDisplayListId.get(iPathwayId);
-			}
-			else
-			{		
-				// Creating edge display list for pathways
-				iEdgesDisplayListId = gl.glGenLists(1);
-				hashPathwayId2EdgesDisplayListId.put(iPathwayId, iEdgesDisplayListId);			
-			}
-			
-			gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);	
-			extractEdges(gl, refTmpPathway);
-			gl.glEndList();
+			// Replace current display list if a display list exists
+			iEdgesDisplayListId = hashPathwayId2EdgesDisplayListId.get(iPathwayId);
 		}
+		else
+		{		
+			// Creating edge display list for pathways
+			iEdgesDisplayListId = gl.glGenLists(1);
+			hashPathwayId2EdgesDisplayListId.put(iPathwayId, iEdgesDisplayListId);			
+		}
+		
+		gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);	
+		extractEdges(gl, refTmpPathway);
+		gl.glEndList();
 	}
 
+	private void performNodeHighlighting() {
+		
+		hashSelectedGraphItemRepId2Depth.clear();
+		
+		alSetSelection.get(0).getReadToken();
+		int[] iArTmpSelectedGraphItemIds = 
+			alSetSelection.get(0).getSelectionIdArray();
+		int[] iArTmpSelectedGraphItemDepth =
+			alSetSelection.get(0).getGroupArray();
+		alSetSelection.get(0).returnReadToken();
+		
+		if (iArTmpSelectedGraphItemIds.length == 0)
+			return;
+		
+		// Copy selection IDs to array list object
+		for(int iItemIndex = 0; iItemIndex < iArTmpSelectedGraphItemIds.length; iItemIndex++) 
+		{
+			hashSelectedGraphItemRepId2Depth.put(
+					iArTmpSelectedGraphItemIds[iItemIndex],
+					iArTmpSelectedGraphItemDepth[iItemIndex]);
+		}
+		
+//		if (!bEnableIdenticalNodeHighlighting)
+//			return;
+//		
+//		if (!refGeneralManager.getSingelton()
+//				.getPathwayItemManager().hasItem(iArTmpSelectedGraphItemIds[0]))
+//		{
+//			return;
+//		}
+//		
+//		Iterator<IGraphItem> iterGraphItems = 
+//			((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
+//					.getItem(iArTmpSelectedGraphItemIds[0])).getAllItemsByProp(
+//							EGraphItemProperty.ALIAS_PARENT).iterator();
+//		Iterator<IGraphItem> iterIdenticalGraphItemReps;
+//		while(iterGraphItems.hasNext()) 
+//		{
+//			iterIdenticalGraphItemReps = 
+//				iterGraphItems.next().getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
+//
+//			while(iterIdenticalGraphItemReps.hasNext()) 
+//			{
+//				iAlSelectedGraphItemRepIds.add(
+//						iterIdenticalGraphItemReps.next().getId());
+//			}
+//		}
+	}
+	
 	private void buildEnzymeNodeDisplayList(final GL gl) {
 
 		// Creating display list for node cube objects
@@ -353,24 +402,15 @@ public class GLPathwayManager {
 		else if (shape.equals(EPathwayVertexShape.rectangle))
 		{	
 			// Handle selection highlighting of element
-			Iterator<IGraphItem> iterGraphItems = 
-				vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).iterator();
-			
-			while(iterGraphItems.hasNext()) {
-				
-				if (alSelectedGraphItems.isEmpty())
-					break;
-				
-				if (iterGraphItems.next().equals(alSelectedGraphItems.get(0)))
-				{
-					tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-					gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-							tmpNodeColor.getGreen() / 255.0f, 
-							tmpNodeColor.getBlue() / 255.0f, 1.0f);
-					gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
-
-					break;
-				}
+			if (hashSelectedGraphItemRepId2Depth.containsKey(vertexRep.getId()))
+			{
+				int iDepth = hashSelectedGraphItemRepId2Depth.get(vertexRep.getId());
+				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iDepth);
+					
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 			}
 			
 			if (bEnableGeneMapping)
@@ -400,10 +440,10 @@ public class GLPathwayManager {
 		
 		if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
 		{
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName()
-							+ ": createEdge(): Edge has either no incoming or outcoming vertex.",
-					LoggerType.VERBOSE);
+//			refGeneralManager.getSingelton().logMsg(
+//					this.getClass().getSimpleName()
+//							+ ": createEdge(): Edge has either no incoming or outcoming vertex.",
+//					LoggerType.VERBOSE);
 			
 			return;
 		}
@@ -606,5 +646,10 @@ public class GLPathwayManager {
 	public void enableGeneMapping(final boolean bEnableGeneMappging) {
 		
 		this.bEnableGeneMapping = bEnableGeneMappging;
+	}
+	
+	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
+		
+		this.bEnableIdenticalNodeHighlighting = bEnableIdenticalNodeHighlighting;
 	}
 }

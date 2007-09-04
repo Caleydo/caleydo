@@ -32,6 +32,8 @@ public class PathwayItemManager
 extends AAbstractManager
 implements IPathwayItemManager {
 
+	private HashMap<Integer, IGraphItem> hashVertexIdToGraphItem;
+	
 	private HashMap<String, IGraphItem> hashPathwayNameToGraphItem;
 	
 	/**
@@ -44,6 +46,7 @@ implements IPathwayItemManager {
 				IGeneralManager.iUniqueId_TypeOffset_Pathways_Vertex,
 				ManagerType.DATA_PATHWAY_ELEMENT );
 	
+		hashVertexIdToGraphItem = new HashMap<Integer, IGraphItem>();
 		hashPathwayNameToGraphItem = new HashMap<String, IGraphItem>();
 	}
 	
@@ -64,6 +67,8 @@ implements IPathwayItemManager {
 		
     	IGraphItem pathwayVertex = new PathwayVertexGraphItem(
     			iGeneratedId, sName, sType, sExternalLink, sReactionId);
+    	
+		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertex);
     	
     	refGeneralManager.getSingelton().getPathwayManager()
 				.getRootPathway().addItem(pathwayVertex);
@@ -87,6 +92,8 @@ implements IPathwayItemManager {
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(
 				iGeneratedId, sName, sShapeType, iHeight, iWidth,
 				iXPosition, iYPosition);
+		
+		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertexRep);
 		
 		parentPathway.addItem(pathwayVertexRep);
 		
@@ -212,17 +219,27 @@ implements IPathwayItemManager {
 		return pathwayReactionEdgeRep;
 	}
 	
-	@Override
-	public Object getItem(int itemId) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IGeneralManager#getItem(int)
+	 */
+	public Object getItem(int iItemId) {
 
-		// TODO Auto-generated method stub
-		return null;
+		if (!hashVertexIdToGraphItem.containsKey(iItemId))
+			return null;
+		
+		return hashVertexIdToGraphItem.get(iItemId);
 	}
 
-	@Override
-	public boolean hasItem(int itemId) {
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.manager.IGeneralManager#hasItem(int)
+	 */
+	public boolean hasItem(int iItemId) {
 
-		// TODO Auto-generated method stub
+		if (hashVertexIdToGraphItem.containsKey(iItemId))
+			return true;
+		
 		return false;
 	}
 

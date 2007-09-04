@@ -94,15 +94,15 @@ extends ARenderStyle {
 		neighborhoodNodeColorArray 	= new Color [neighborhoodNodeColorArraysize];
 		
 		/* current highlighted */
-		neighborhoodNodeColorArray[0] = new Color(1.0f, 0.0f, 0.0f);  //highlightedNodeColor;
+		neighborhoodNodeColorArray[0] = highlightedNodeColor;
 		
-		neighborhoodNodeColorArray[1] = new Color(1.0f, 0.39f, 0.0f);
-		neighborhoodNodeColorArray[2] = new Color(1.0f, 0.67f, 0.0f);
-		neighborhoodNodeColorArray[3] = new Color(0.95f, 1.0f, 0.0f);
+//		neighborhoodNodeColorArray[1] = new Color(1.0f, 0.39f, 0.0f);
+//		neighborhoodNodeColorArray[2] = new Color(1.0f, 0.67f, 0.0f);
+//		neighborhoodNodeColorArray[3] = new Color(0.95f, 1.0f, 0.0f);
 		
-//		neighborhoodNodeColorArray[1] = new Color(0.2f, 0.2f, 1.0f);
-//		neighborhoodNodeColorArray[2] = new Color(0.5f, 0.5f, 1.0f);
-//		neighborhoodNodeColorArray[3] = new Color(0.8f, 0.8f, 1.0f);
+		neighborhoodNodeColorArray[1] = new Color(0.2f, 0.2f, 1.0f);
+		neighborhoodNodeColorArray[2] = new Color(0.5f, 0.5f, 1.0f);
+		neighborhoodNodeColorArray[3] = new Color(0.8f, 0.8f, 1.0f);
 		
 //		neighborhoodNodeColor_1 = new Color(1.0f, 0.5f, 0.0f);
 //		neighborhoodNodeColor_2 = new Color(1.0f, 1.0f, 0.0f);
