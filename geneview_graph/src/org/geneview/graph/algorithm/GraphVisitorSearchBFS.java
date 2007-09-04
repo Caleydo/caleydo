@@ -12,7 +12,7 @@ import org.geneview.graph.IGraphItem;
 import org.geneview.graph.algorithm.AGraphVisitorSearch;
 
 /**
- * Bread First Search Algorithm.
+ * Breadth First Search Algorithm.
  * 
  * @author Michael Kalkusch
  *
@@ -37,6 +37,9 @@ implements IGraphVisitorSearch {
 
 	@Override
 	public void setSearchDepth(final int iSearchDepth) {
+		
+		super.setSearchDepth(iSearchDepth);
+		
 		if (depthSortedList != null) {
 			if ( depthSortedList.size() == iSearchDepth) {
 				/** List has already the required size */
@@ -65,10 +68,19 @@ implements IGraphVisitorSearch {
 			return new ArrayList <IGraphItem> (0);
 		}
 		
-		List<IGraphItem> resultList = this.itemSource.getAllItemsByProp(prop);
+		List<IGraphItem> resultList = new ArrayList<IGraphItem>(); 
+			
+		List<IGraphItem> tmpList = this.itemSource.getAllItemsByProp(prop);
+		Iterator<IGraphItem> iterTmpGraphItems = tmpList.iterator();
+		while(iterTmpGraphItems.hasNext())
+		{
+			resultList.add(iterTmpGraphItems.next());
+		}
+		
 		
 		if ( iSearchDepth == 1 ) {
 			/** special case; only direct adjacent elements, return list */
+			depthSortedList.add(0, resultList);
 			return resultList;
 		}
 		
@@ -78,7 +90,6 @@ implements IGraphVisitorSearch {
 		
 		/** insert elements with adjacency ==1 */
 		depthSortedList.add(0, currentSourceList);
-		
 		
 		for ( int iCurrentDepthIndex=1; iCurrentDepthIndex< this.iSearchDepth; iCurrentDepthIndex++) {
 			
@@ -112,6 +123,11 @@ implements IGraphVisitorSearch {
 		return resultList;
 	}
 
+	public final List<List<IGraphItem>> getDepthResultList() {
+		
+		return depthSortedList;
+	}
+	
 	/**
 	 * @return the prop
 	 */
