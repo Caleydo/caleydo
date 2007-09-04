@@ -33,7 +33,7 @@ public class Perspective implements IPerspectiveFactory {
 				1.0f, layout.getEditorArea());
 		folder.addPlaceholder(GLJukeboxPathwayView.ID + ":*");
 		folder.addView(GLJukeboxPathwayView.ID + ":1");
-		folder.addView(GLHeatmap2DView.ID + ":1");
+		//folder.addView(GLHeatmap2DView.ID + ":1");
 		folder.addView(Pathway2DView.ID + ":1");
 		folder.addView(HTMLBrowserView.ID + ":1");
 		//folder.addView(IBrowserConstants.BROWSER_VIEW_ID);

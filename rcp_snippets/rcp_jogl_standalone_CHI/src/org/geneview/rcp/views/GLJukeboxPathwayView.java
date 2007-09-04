@@ -10,6 +10,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
@@ -50,6 +51,12 @@ public class GLJukeboxPathwayView extends ViewPart {
 
 	public static final String ID = "org.geneview.rcp.views.GLJukeboxPathwayView";
 	
+	public static final String ACTION_ENABLE_EDGE_RENDERING = "Show/hide edges";
+	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_TEXT = "Turn on/off pathway textures";	
+	public static final String ACTION_ENABLE_GENE_MAPPING = "Turn on/off gene mapping";
+	public static final String ACTION_ENABLE_NEIGHBORHOOD_TEXT = "Turn on/off neighborhood highlighting";
+	public static final String ACTION_ENABLE_NEIGHBORHOOD_ICON = "data/icons/PathwayEditor/three_neighborhood.gif";
+	public static final String ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT = "Turn on/off identical node highlighting";
 	private Action actToggleAnimatorRunningState;
 	
 	private Action actEnableEdgeRendering;
@@ -60,6 +67,12 @@ public class GLJukeboxPathwayView extends ViewPart {
 	
 	private Action actEnablePathwayTextures;
 	private boolean bEnablePathwayTextures = true;
+	
+	private Action actEnableIdenticalNodeHighlighting;
+	private boolean bEnableIdenticalNodeHighlighting = true;
+	
+	private Action actEnableNeighborhood;
+	private boolean bEnableNeighborhood = false;
 	
 	private Animator animatorGL;
 	private GLCanvas canvasGL;
@@ -86,6 +99,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		createEdgeRenderingToggleAction();
 		createGeneMappingToggleAction();
 		createPathwayTexturesToggleAction();
+		createNeighborhoodToggleAction();
+		createIdenticalNodeHighlightingAction();
 		
 		contributeToActionBars();
 
@@ -164,6 +179,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		manager.add(actEnableEdgeRendering);
 		manager.add(actEnableGeneMapping);
 		manager.add(actEnablePathwayTextures);
+		manager.add(actEnableNeighborhood);
+		manager.add(actEnableIdenticalNodeHighlighting);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
@@ -171,6 +188,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		manager.add(actEnableEdgeRendering);
 		manager.add(actEnableGeneMapping);
 		manager.add(actEnablePathwayTextures);
+		manager.add(actEnableNeighborhood);
+		manager.add(actEnableIdenticalNodeHighlighting);
 	}
 
 	private void createAnimatorToggleAction() {
@@ -205,8 +224,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 			}
 		};
 		
-		actEnableEdgeRendering.setText("Show/hide edges");
-		actEnableEdgeRendering.setToolTipText("Show/hide edges");
+		actEnableEdgeRendering.setText(ACTION_ENABLE_EDGE_RENDERING);
+		actEnableEdgeRendering.setToolTipText(ACTION_ENABLE_EDGE_RENDERING);
 //		actEnableEdgeRendering.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 //				getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
 	}
@@ -222,8 +241,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 			}
 		};
 		
-		actEnableGeneMapping.setText("Turn on/off gene mapping");
-		actEnableGeneMapping.setToolTipText("Turn on/off gene mapping");
+		actEnableGeneMapping.setText(ACTION_ENABLE_GENE_MAPPING);
+		actEnableGeneMapping.setToolTipText(ACTION_ENABLE_GENE_MAPPING);
 //		actEnableGeneMapping.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 //				getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
 	}
@@ -239,12 +258,45 @@ public class GLJukeboxPathwayView extends ViewPart {
 			}
 		};
 		
-		actEnablePathwayTextures.setText("Turn on/off pathway textures");
-		actEnablePathwayTextures.setToolTipText("Turn on/off pathway textures");
+		actEnablePathwayTextures.setText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
+		actEnablePathwayTextures.setToolTipText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
 //		actEnablePathwayTextures.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 //				getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
 	}
 
+	private void createNeighborhoodToggleAction() {
+		
+		actEnableNeighborhood = new Action() {
+			public void run() {
+				
+				bEnableNeighborhood = !bEnableNeighborhood;
+				triggerCmdSExternalFlagSetter(bEnableNeighborhood, 
+						EExternalFlagSetterType.PATHWAY_ENABLE_NEIGHBORHOOD);	
+			}
+		};
+		
+		actEnableNeighborhood.setText(ACTION_ENABLE_NEIGHBORHOOD_TEXT);
+		actEnableNeighborhood.setToolTipText(ACTION_ENABLE_NEIGHBORHOOD_TEXT);
+		actEnableNeighborhood.setImageDescriptor(ImageDescriptor.createFromFile(
+				null, ACTION_ENABLE_NEIGHBORHOOD_ICON));
+	}
+	
+	private void createIdenticalNodeHighlightingAction() {
+		
+		actEnableIdenticalNodeHighlighting = new Action() {
+			public void run() {
+				
+				bEnableIdenticalNodeHighlighting = !bEnableIdenticalNodeHighlighting;
+				triggerCmdSExternalFlagSetter(bEnableIdenticalNodeHighlighting, 
+						EExternalFlagSetterType.PATHWAY_ENABLE_IDENTICAL_NODE_HIGHLIGHTING);	
+			}
+		};
+		
+		actEnableIdenticalNodeHighlighting.setText(ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT);
+		actEnableIdenticalNodeHighlighting.setToolTipText(ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT);
+//		actEnableIdenticalNodeHighlighting.setImageDescriptor(ImageDescriptor.createFromFile(
+//				null, ACTION_ENABLE_NEIGHBORHOOD_ICON));
+	}
 	
 	/**
 	 * We can use this method to dispose of any system
