@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos-util_mod.jar"/>
 	<classpathentry kind="lib" path="lib/weka/weka.jar"/>
-	<classpathentry kind="lib" path="lib/swt/swt.jar" sourcepath="lib_src/swt/swt_src_3.2.1.zip"/>
+	<classpathentry kind="lib" path="lib/swt/swt.jar" sourcepath="lib_src/swt/swt-3.2.2_v_3236_src.zip"/>
 	<classpathentry kind="lib" path="lib/jface/org.eclipse.jface_3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
