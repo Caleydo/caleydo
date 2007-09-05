@@ -31,7 +31,7 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="36101" label="Set for expression mapping 2" attrib1="35201" attrib2="46301" attrib3="GENE_EXPRESSION_DATA" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="37101" label="Set for expression mapping 3" attrib1="35201" attrib2="47301" attrib3="GENE_EXPRESSION_DATA" />								
 
-	<!-- Mapping file loading -->     
+	<!-- Data file loading -->     
 	<!-- 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_LIST_FILE"		cmdId="99010"	uniqueId="-1"	detail="data/"	attrib2="38101" attrib3="1 -1" />	
 	 -->
@@ -44,16 +44,6 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;INT;ABORT"			attrib2="37101" attrib3="32 -1" />								
 	
-	<!-- Creating Heatmap Data -->	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	uniqueId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
-	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="38101" label="target Set for file	new" 
-			attrib1="35201" attrib2="35301" />
-		
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	
-			detail="data/GenomeData/MicroarrayData/gpr_format/test_dataset_001.gpr"	
-			attrib1="SKIP;SKIP;INT;ABORT" 
-			attrib2="38101" 
-			attrib3="1 -1" />
+
 
 </details>
