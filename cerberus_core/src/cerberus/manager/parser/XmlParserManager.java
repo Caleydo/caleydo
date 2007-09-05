@@ -18,6 +18,7 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.parser.xml.sax.handler.IXmlParserHandler;
 import cerberus.parser.xml.sax.handler.command.CommandSaxHandler;
 import cerberus.parser.xml.sax.handler.kegg.KgmlSaxHandler;
+import cerberus.parser.xml.sax.handler.kegg.PathwayImageMapSaxHandler;
 import cerberus.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
 import cerberus.util.system.CerberusInputStream;
 import cerberus.util.exception.GeneViewRuntimeExceptionType;
@@ -80,15 +81,15 @@ implements IXmlParserManager {
 		KgmlSaxHandler kgmlParser = 
 			new KgmlSaxHandler( generalManager, this );	
 		
-//		PathwayImageMapSaxHandler pathwayImageMapParser =
-//			new PathwayImageMapSaxHandler ( generalManager, this );
+		PathwayImageMapSaxHandler pathwayImageMapParser =
+			new PathwayImageMapSaxHandler ( generalManager, this );
 		
 		CommandSaxHandler cmdHandler = 
 			new CommandSaxHandler( generalManager, this );
 		
 		registerAndInitSaxHandler( externalFileHandler );		
 		registerAndInitSaxHandler( kgmlParser );
-//		registerAndInitSaxHandler( pathwayImageMapParser );
+		registerAndInitSaxHandler( pathwayImageMapParser );
 		registerAndInitSaxHandler( cmdHandler );
 		
 		//openCurrentTag( cmdHandler );

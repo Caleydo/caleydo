@@ -46,6 +46,7 @@ public class GLPathwayManager {
 	private boolean bEnableGeneMapping = true;
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = false;
+	private boolean bEnableAnnotation = true;
 	
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
 	
@@ -110,11 +111,11 @@ public class GLPathwayManager {
 			hashPathwayId2VerticesDisplayListId.put(iPathwayId, iVerticesDisplayListId);			
 		}
 		
+		performNodeHighlighting();
+		
 		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
 		extractVertices(gl, refTmpPathway);
 		gl.glEndList();
-				
-		performNodeHighlighting();
 		
 		if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
 		{
@@ -490,10 +491,10 @@ public class GLPathwayManager {
 				
 				gl.glVertex3f(tmpSourceGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
 						-tmpSourceGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
-						0.05f);
+						-0.05f);
 				gl.glVertex3f(tmpTargetGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
 						-tmpTargetGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
-						0.05f);		
+						-0.05f);		
 			}
 		}
 		
@@ -511,7 +512,7 @@ public class GLPathwayManager {
 		int iTmpVerticesDisplayListID = hashPathwayId2VerticesDisplayListId.get(iPathwayID);
 		gl.glCallList(iTmpVerticesDisplayListID);
 		
-		if (bRenderLabels)
+		if (bRenderLabels && bEnableAnnotation)
 			renderLabels(gl, iPathwayID);
 	}
 	
@@ -651,5 +652,10 @@ public class GLPathwayManager {
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
 		
 		this.bEnableIdenticalNodeHighlighting = bEnableIdenticalNodeHighlighting;
+	}
+	
+	public void enableAnnotation(final boolean bEnableAnnotation) {
+		
+		this.bEnableAnnotation = bEnableAnnotation;
 	}
 }

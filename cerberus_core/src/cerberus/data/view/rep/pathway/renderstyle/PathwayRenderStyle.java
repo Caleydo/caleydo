@@ -93,7 +93,7 @@ extends ARenderStyle {
 		//highlightedNodeColor 		= new Color(1.0f, 0.0f, 0.0f);
 		neighborhoodNodeColorArray 	= new Color [neighborhoodNodeColorArraysize];
 		
-		/* current highlighted */
+		/* currently highlighted */
 		neighborhoodNodeColorArray[0] = highlightedNodeColor;
 		
 //		neighborhoodNodeColorArray[1] = new Color(1.0f, 0.39f, 0.0f);

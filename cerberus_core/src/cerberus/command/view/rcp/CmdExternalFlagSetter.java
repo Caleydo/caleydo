@@ -66,6 +66,10 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			{
 				((GLCanvasJukeboxPathway3D)viewObject).enableIdenticalNodeHighlighting(bFlag);
 			}
+			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_ANNOTATION))
+			{
+				((GLCanvasJukeboxPathway3D)viewObject).enableAnnotation(bFlag);
+			}
 		}
 	}
 

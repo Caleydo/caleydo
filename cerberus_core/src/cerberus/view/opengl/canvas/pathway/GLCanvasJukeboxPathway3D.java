@@ -69,7 +69,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private boolean bEnablePathwayTextures = true;
 	private boolean bMouseOverMemoPad = false;
 	private boolean bSelectionChanged = false;
-	private boolean bEnableNeighborhood = true;
+	private boolean bEnableNeighborhood = false;
 
 	private int iMouseOverPickedPathwayId = -1;
 
@@ -213,6 +213,15 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		handlePicking(gl);
 		
+		if (arSlerpActions.isEmpty() && bSelectionChanged 
+				&& selectedVertex != null)
+		{
+			bSelectionChanged = false;
+			bRebuildVisiblePathwayDisplayLists = true;
+	
+			performNeighborhoodAlgorithm(selectedVertex);			
+		}
+		
 		if (bRebuildVisiblePathwayDisplayLists)
 			rebuildVisiblePathwayDisplayLists(gl);
 		
@@ -247,10 +256,8 @@ implements IMediatorReceiver, IMediatorSender {
 		renderPathwayUnderInteraction(gl);
 
 		memoPad.renderMemoPad(gl);
-
-		doSlerpActions(gl);
 		
-		gl.glFlush();
+		doSlerpActions(gl);
 	}
 
 	private void buildLayeredPathways(final GL gl) {
@@ -606,15 +613,6 @@ implements IMediatorReceiver, IMediatorSender {
 			slerpPathway(gl, arSlerpActions.get(0));
 			// selectedVertex = null;
 		} 
-		else if (arSlerpActions.isEmpty() && bSelectionChanged 
-				&& selectedVertex != null)
-		{
-			bSelectionChanged = false;
-			
-			performNeighborhoodAlgorithm(selectedVertex);
-			
-			bRebuildVisiblePathwayDisplayLists = true;
-		}
 		
 		if (iSlerpFactor < 1000)
 		{
@@ -1099,7 +1097,7 @@ implements IMediatorReceiver, IMediatorSender {
 		GraphVisitorSearchBFS graphVisitorSearchBFS;
 		
 		if(bEnableNeighborhood)
-			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 3);
+			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 5);
 		else
 			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
 		
@@ -1122,12 +1120,12 @@ implements IMediatorReceiver, IMediatorSender {
 						
 			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
 			{
-//				// Consider only vertices for now
-//				if (!lGraphItems.get(iItemIndex).getClass().equals
-//						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
-//				{
-//					break;
-//				}
+				// Consider only vertices for now
+				if (!lGraphItems.get(iItemIndex).getClass().equals
+						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+				{
+					break;
+				}
 				
 				iAlTmpGraphItemId.add(lGraphItems.get(iItemIndex).getId());
 				iAlTmpGraphItemDepth.add(iDepthIndex);
@@ -1216,5 +1214,10 @@ implements IMediatorReceiver, IMediatorSender {
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
 		
 		refGLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
+	}
+	
+	public void enableAnnotation(final boolean bEnableAnnotation) {
+		
+		refGLPathwayManager.enableAnnotation(bEnableAnnotation);
 	}
 }

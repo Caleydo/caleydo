@@ -678,19 +678,19 @@ extends APathwayGraphViewRep {
 
 	public void loadImageMapFromFile(String sImageMapPath) {
 
-//		refCurrentPathway = null;
-//		refCurrentPathwayImageMap = null;
-//		resetPathway();
-//
-//		refGeneralManager.getSingelton().getXmlParserManager()
-//				.parseXmlFileByName(sImageMapPath);
-//
-//		refCurrentPathwayImageMap = refGeneralManager.getSingelton()
-//				.getPathwayManager().getCurrentPathwayImageMap();
-//
-//		loadBackgroundOverlayImage(refGeneralManager.getSingelton()
-//				.getPathwayManager().getPathwayImagePath()
-//				+ refCurrentPathwayImageMap.getImageLink());
+		refCurrentPathway = null;
+		refCurrentPathwayImageMap = null;
+		resetPathway();
+
+		refGeneralManager.getSingelton().getXmlParserManager()
+				.parseXmlFileByName(sImageMapPath);
+
+		refCurrentPathwayImageMap = refGeneralManager.getSingelton()
+				.getPathwayManager().getCurrentPathwayImageMap();
+
+		loadBackgroundOverlayImage(refGeneralManager.getSingelton()
+				.getPathwayManager().getPathwayImageMapPath()
+				+ refCurrentPathwayImageMap.getImageLink());
 	}
 
 	public void zoomOrig() {
@@ -995,8 +995,7 @@ extends APathwayGraphViewRep {
 						+ sPathwayImageFilePath, LoggerType.VERBOSE);
 
 		// Set background image
-		refPathwayGraph
-				.setBackgroundImage(new ImageIcon(sPathwayImageFilePath));
+		refPathwayGraph.setBackgroundImage(new ImageIcon(sPathwayImageFilePath));
 
 		// Set scaling factor so that background image is an direct overlay
 		fScalingFactor = 1.0f;

@@ -6,6 +6,9 @@
   
     <CommandBuffer>  			
 
+        <!-- External loading of XML files -->
+            <read-xml-file target="data/GenomeData/pathway/imagemap/map01100.xml" />
+
 		<!-- Creating Data -->
 			<read-xml-file target="data/XML/bootstrap/load_set_storage_virtual-array_for_pathways_jukebox.xml" />	   				
 
