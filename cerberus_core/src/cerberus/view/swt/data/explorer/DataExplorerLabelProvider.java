@@ -24,11 +24,11 @@ public class DataExplorerLabelProvider extends LabelProvider
 	public Image getImage(Object element) {
 		ImageDescriptor descriptor;
 		if (element instanceof DataCollectionModel) {
-			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/set.gif"));
+			descriptor = ImageDescriptor.createFromImageData(new ImageData("resources/icons/set.gif"));
 		} else if (element instanceof SelectionModel) {
-			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/selection.gif"));
+			descriptor = ImageDescriptor.createFromImageData(new ImageData("resources/icons/selection.gif"));
 		} else if (element instanceof StorageModel) {
-			descriptor = ImageDescriptor.createFromImageData(new ImageData("data/icons/storage.gif"));
+			descriptor = ImageDescriptor.createFromImageData(new ImageData("resources/icons/storage.gif"));
 		} else {
 			throw unknownElement(element);
 		}

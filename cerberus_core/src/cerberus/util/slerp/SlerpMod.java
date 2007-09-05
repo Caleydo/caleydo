@@ -12,7 +12,7 @@ import gleem.linalg.open.Slerp;
  */
 public class SlerpMod extends Slerp {
 	
-	private static final String SLERP_SOUND = "data/sounds/slerp.wav";
+	private static final String SLERP_SOUND = "resources/sounds/slerp.wav";
 	
 
 

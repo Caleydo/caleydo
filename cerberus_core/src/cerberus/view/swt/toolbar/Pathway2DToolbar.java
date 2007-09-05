@@ -55,28 +55,28 @@ extends AToolbar {
 		refAddEnzymeNodeItem = createToolItem(refToolBar,
 				SWT.PUSH,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/add.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/add.gif"),
 				null,
 				"Add enzyme");
 	
 		refZoomOrigItem = createToolItem(refToolBar,
 				SWT.PUSH,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/zoom100.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/zoom100.gif"),
 				null,
 				"Zoom standard");
 	
 	    refZoomInItem = createToolItem(refToolBar,
 				SWT.PUSH,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/zoomin.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/zoomin.gif"),
 				null,
 				"Zoom in");
 	    
 		refZoomOutItem = createToolItem(refToolBar,
 				SWT.PUSH,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/zoomout.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/zoomout.gif"),
 				null,
 				"Zoom out");
 	    
@@ -85,21 +85,21 @@ extends AToolbar {
 		refOneNeighborhoodItem = createToolItem(refToolBar,
 				SWT.CHECK,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/one_neighborhood.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/one_neighborhood.gif"),
 				null,
 				"Show neighborhood within a distance of 1");
 		
 		refTwoNeighborhoodItem = createToolItem(refToolBar,
 				SWT.CHECK,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/two_neighborhood.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/two_neighborhood.gif"),
 				null,
 				"Show neighborhood within a distance of 2");
 		
 		refThreeNeighborhoodItem = createToolItem(refToolBar,
 				SWT.CHECK,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/three_neighborhood.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/three_neighborhood.gif"),
 				null,
 				"Show neighborhood within a distance of 3");
 		
@@ -108,14 +108,14 @@ extends AToolbar {
 		refShowOverviewMapItem = createToolItem(refToolBar,
 				SWT.PUSH,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/overview_map.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/overview_map.gif"),
 				null,
 				"Show overview map");
 		
 		refBackgroundOverlayItem = createToolItem(refToolBar,
 				SWT.CHECK,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/background_image.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/background_image.gif"),
 				null,
 				"Show background overlay");
 		refBackgroundOverlayItem.setSelection(true);
@@ -130,7 +130,7 @@ extends AToolbar {
 		refKeggMetabolicPathwaysMapItem = createToolItem(refToolBar,
 				SWT.PUSH,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/home.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/home.gif"),
 				null,
 				"Go to KEGG Metabolic Pathways Overview Map");	  
 	}

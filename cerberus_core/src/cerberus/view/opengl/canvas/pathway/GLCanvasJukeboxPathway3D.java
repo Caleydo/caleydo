@@ -59,7 +59,7 @@ implements IMediatorReceiver, IMediatorSender {
 	public static final int MAX_LOADED_PATHWAYS = 300;
 	public static final int PATHWAY_TEXTURE_PICKING_ID_RANGE_START = 320;
 	public static final int FREE_PICKING_ID_RANGE_START = 600;
-	public static final String TICK_SOUND = "data/sounds/tick.wav";
+	public static final String TICK_SOUND = "resources/sounds/tick.wav";
 
 	private float fTextureTransparency = 1.0f;
 	private float fLastMouseMovedTimeStamp = 0;

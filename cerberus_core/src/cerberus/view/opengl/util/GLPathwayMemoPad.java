@@ -29,7 +29,7 @@ import gleem.linalg.open.Transform;
  */
 public class GLPathwayMemoPad {
 
-	private static String TRASH_BIN_PATH = "data/icons/trashcan_empty.png";
+	private static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
 	
 	public static final int MEMO_PAD_PICKING_ID = 301;
 	

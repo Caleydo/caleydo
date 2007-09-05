@@ -40,7 +40,7 @@ extends AToolbar {
 		refShowPathwayTextureItem = createToolItem(refToolBar,
 				SWT.CHECK,
 				"",
-				new Image(refSWTContainer.getDisplay(), "data/icons/PathwayEditor/background_image.gif"),
+				new Image(refSWTContainer.getDisplay(), "resources/icons/PathwayEditor/background_image.gif"),
 				null,
 				"Show pathway texture");
 		refShowPathwayTextureItem.setSelection(true);
