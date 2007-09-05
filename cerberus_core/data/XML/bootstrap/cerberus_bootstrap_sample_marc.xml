@@ -47,21 +47,22 @@
 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_UNDO_REDO"		cmdId="63993" uniqueId="13401" label="UNDO/REDO"		parent="10441" attrib2="500 50" />		 	     
 
 		<!-- Window 13331 -->
-		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" uniqueId="13331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
+		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" 
+		    	uniqueId="13331" label="OpenGL Pathway Window" attrib1="ROW HORIZONTAL" />   
                  
- 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" uniqueId="23401" parent="13331" label="Canvas" 
- 	  		  gl_forwarder="99071"
+ 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" 
+ 	  			uniqueId="23401" parent="13331" gl_forwarder="99071" label="Canvas" 
  	  			gl_origin="0 0 0" gl_rotation="0 0 0 0" 
  	  			attrib2="500 300" detail="1177991"	/>
  	  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_LAYERED_PATHWAY_3D"		cmdId="69992"	uniqueId="79401" parent="23401" label="GL Layerd Pathway 3D" 
-							gl_origin="-1 1 6.6" 
-							gl_rotation="1 0 0 180"			
-							gl_forwarder="99071"				
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_LAYERED_PATHWAY_3D"		cmdId="69992"	
+				uniqueId="79401" parent="23401" gl_forwarder="99071" label="GL Layerd Pathway 3D" 
+							gl_origin="-1 1 6.6" gl_rotation="1 0 0 180"	
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"								
 							detail="33101 35101 36101 37101 85101" /> 
 
- 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" uniqueId="28401" parent="13331" label="Canvas" 
+ 	  		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991" 
+ 	  			uniqueId="28401" parent="13331" label="Canvas" 
  	  			gl_origin="0 0 0" gl_rotation="0 0 0 0"
  	  			gl_forwarder="99071"	
  	  			attrib2="500 300" detail="1177991"	/>
@@ -104,17 +105,19 @@
 
 		<!-- Window	10331	-->
 		
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	
+				uniqueId="10331"
+				label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 				 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
-			  	gl_forwarder="99075"
-				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	 
+			  	uniqueId="16401" parent="10331" gl_forwarder="99075" label="Canvas"
+					attrib2="300 300" detail="1077991"	/>
   		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"			cmdId="68993"	uniqueId="82401" parent="16401" label="GL Triangle	C"	
 				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
 				gl_forwarder="99075"
-				attrib3="0 10 0 40   -0.5f -0.5f    -3.0f 3.0f   -3.0f 3.0f    2.0f 1.0f   400"			
-				attrib4="10 50  120 50  200 90;1 4   9 2   19 7  54 12"	
+				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 1.5f    2.0f 1.0f   400"			
+				attrib4="0 100"	
 				detail="38101" />
 			<!-- 	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="17401" 
