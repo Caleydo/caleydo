@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.widgets.Composite;
+import org.geneview.graph.EGraphItemHierarchy;
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
@@ -36,6 +37,7 @@ import org.jgraph.graph.GraphUndoManager;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
+import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.graph.core.PathwayGraph;
@@ -95,8 +97,6 @@ extends APathwayGraphViewRep {
 	protected Vector<DefaultEdge> vecReactionEdges;
 
 	protected Vector<DefaultGraphCell> vecVertices;
-
-	protected ArrayList<DefaultGraphCell> arSelectedVertices;
 
 	/**
 	 * Holds the cell that was recently clicked by the user using the mouse. The
@@ -162,8 +162,6 @@ extends APathwayGraphViewRep {
 		hashVertexRep2GraphCell = new HashMap<PathwayVertexGraphItemRep, DefaultGraphCell>();
 
 		hashSetVisitedNeighbors = new HashSet<DefaultGraphCell>();
-
-		arSelectedVertices = new ArrayList<DefaultGraphCell>();
 	}
 
 	/**
@@ -243,10 +241,12 @@ extends APathwayGraphViewRep {
 						iArNeighborDistance[i] = iter_I.next().intValue();
 					}
 
+					int[] iArPathway = new int[1];
+					iArPathway[0] = refCurrentPathway.getId();
 					alSetSelection.get(0).updateSelectionSet(iParentContainerId,
 							iArSelectedVertices, 
-							new int[iArSelectedVertices.length],
-							iArNeighborDistance);
+							iArNeighborDistance,
+							iArPathway);
 
 				}// if(refCurrentPathway != 0)
 				else if (refCurrentPathwayImageMap != null)
@@ -320,7 +320,6 @@ extends APathwayGraphViewRep {
 		// Remove old selected vertices
 		iLLSelectedVertices.clear();
 		iLLNeighborDistance.clear();
-		arSelectedVertices.clear();
 
 		// Check if a node or edge was hit.
 		// If not undo neighborhood visualization and return.
@@ -337,8 +336,8 @@ extends APathwayGraphViewRep {
 		}
 
 		// Check if clicked object is a cell
-		if (!lastClickedGraphCell.getUserObject().getClass().getSimpleName()
-				.equals(PathwayVertexGraphItemRep.class.getSimpleName()))
+		if (!lastClickedGraphCell.getUserObject().getClass().equals(
+				PathwayVertexGraphItemRep.class))
 		{
 			return;
 		}
@@ -401,10 +400,11 @@ extends APathwayGraphViewRep {
 					sTmpGene = "";
 				}	
 
-				iLLSelectedVertices.add(iTmpGeneId);
+				//iLLSelectedVertices.add(iTmpGeneId);
 			}
 			
-			arSelectedVertices.add(lastClickedGraphCell);
+			iLLSelectedVertices.add(
+					((PathwayVertexGraphItemRep) lastClickedGraphCell.getUserObject()).getId());
 
 			if (iNeighbourhoodDistance != 0)
 			{
@@ -423,6 +423,7 @@ extends APathwayGraphViewRep {
 			//extractEdges(refCurrentPathway);
 
 			finishGraphBuilding();
+			refPathwayGraph.repaint();
 		}
 		// else if (iPathwayLevel == 1)
 		// {
@@ -692,6 +693,8 @@ extends APathwayGraphViewRep {
 		loadBackgroundOverlayImage(refGeneralManager.getSingelton()
 				.getPathwayManager().getPathwayImageMapPath()
 				+ refCurrentPathwayImageMap.getImageLink());
+
+		refPathwayGraph.repaint();
 	}
 
 	public void zoomOrig() {
@@ -799,7 +802,7 @@ extends APathwayGraphViewRep {
 
 					// // Add selected vertex to selection arrays
 					iLLSelectedVertices.add(((PathwayVertexGraphItemRep) tmpCell
-							.getUserObject()).getPathwayVertexGraphItem().getId());
+							.getUserObject()).getId());
 					iLLNeighborDistance.add(iDistanceIndex);
 				}
 			}
@@ -960,7 +963,7 @@ extends APathwayGraphViewRep {
 			{
 				// Map previously selected cell to new pathway JGraph.
 				lastClickedGraphCell = hashVertexRep2GraphCell
-						.get((PathwayVertexGraphItem) lastClickedGraphCell.getUserObject());
+						.get((PathwayVertexGraphItemRep) lastClickedGraphCell.getUserObject());
 
 				// Rehighlight previously selected cells
 				processSelectedCell();
@@ -1096,59 +1099,63 @@ extends APathwayGraphViewRep {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
-
 		refGeneralManager.getSingelton().logMsg(
 				"2D Pathway update called by "
 						+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 
-		// TODO: Make own selection array for pathway ID 
-		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		int[] tmp = new int[1];
-		tmp[0] = refSetSelection.getOptionalDataArray()[0];
-		refTmpStorage.setArrayInt(tmp);
-		loadPathwayFromFile(tmp[0]);
+		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
-//		// Remove old selected vertices
-//		iLLSelectedVertices.clear();
-//		// iLLNeighborDistance.clear();
-//
-//		// Read selected vertex IDs
-//		//int[] iArSelectedElements = refSetSelection.getSelectionIdArray();
-//		
-//		// Read neighbor data
-//		// int[] iArSelectionNeighborDistance =
-//		// selectionSet.getOptionalDataArray();
-//
-//		for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) refSetSelection
-//				.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT); iSelectedVertexIndex++)
-//		{
-//
-//			PathwayVertex selectedVertex = refGeneralManager.getSingelton()
-//					.getPathwayElementManager().getVertexLUT().get(
-//							iArSelectedElements[iSelectedVertexIndex]);
-//			
-//			// FIXME: name of the method is not good because inside
-//			// resetPathway() and drawPathway() are called.
-//			showBackgroundOverlay(bShowBackgroundOverlay);
-//
-//			// //ATTENTION: Performance problem!
-//			// resetPathway();
-//			// drawView();
-//
-//			// Ignore vertex if is NOT in the current pathway!
-//			if (!refCurrentPathway.isVertexInPathway(selectedVertex))
-//				return;
-//
-//			iLLSelectedVertices.add(selectedVertex.getElementId());
-//
-//			highlightCell(hashVertexRep2GraphCell.get(selectedVertex
-//					.getVertexRepByIndex(0)), refRenderStyle.getHighlightedNodeColor());
-//
-//			bNeighbourhoodShown = true;
-//			iNeighbourhoodUndoCount++;
-//
-//		}
+		refSetSelection.getReadToken();
+		int[] iArOptional = refSetSelection.getOptionalDataArray();
+		if (iArOptional.length != 0)
+		{
+			IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+			refTmpStorage.setArrayInt(iArOptional);
+			loadPathwayFromFile(refSetSelection.getOptionalDataArray()[0]);
+		}
+		
+		int[] iArSelectionId = refSetSelection.getSelectionIdArray();
+		if (iArSelectionId.length != 0)
+		{
+			// Remove old selected vertices
+			iLLSelectedVertices.clear();
+			// iLLNeighborDistance.clear();
+	
+			for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) refSetSelection
+					.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT); iSelectedVertexIndex++)
+			{
+	
+				PathwayVertexGraphItemRep selectedVertex = 
+					(PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
+						.getPathwayItemManager().getItem(
+								iArSelectionId[iSelectedVertexIndex]);
+				
+				// FIXME: name of the method is not good because inside
+				// resetPathway() and drawPathway() are called.
+				showBackgroundOverlay(bShowBackgroundOverlay);
+	
+				// //ATTENTION: Performance problem!
+				// resetPathway();
+				// drawView();
+	
+				// Ignore vertex if is NOT in the current pathway!
+				if (!refCurrentPathway.equals(
+						selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0)))
+				{
+					return;
+				}
+	
+				iLLSelectedVertices.add(selectedVertex.getId());
+	
+				highlightCell(hashVertexRep2GraphCell.get(selectedVertex), 
+						refRenderStyle.getHighlightedNodeColor());
+	
+				bNeighbourhoodShown = true;
+				iNeighbourhoodUndoCount++;
+	
+			}
+			
+		}
 	}
 }

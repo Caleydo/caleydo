@@ -46,11 +46,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		if (viewObject.getClass().getName().equals(
 				cerberus.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D.class.getName()))
 		{
-			if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_EDGE_RENDERING))
-			{
-				((GLCanvasJukeboxPathway3D)viewObject).enableEdgeRendering(bFlag);				
-			}
-			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_GENE_MAPPING))
+			if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_GENE_MAPPING))
 			{
 				((GLCanvasJukeboxPathway3D)viewObject).enableGeneMapping(bFlag);
 			}

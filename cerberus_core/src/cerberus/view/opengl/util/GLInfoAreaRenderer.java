@@ -316,6 +316,9 @@ public class GLInfoAreaRenderer {
 //		System.out.println("World coords at z=0.0 are ( " //
 //				+ wcoord[0] + ", " + wcoord[1] + ", " + wcoord[2]);
 		
+		if (fArWorldCoordinatePosition == null)
+			fArWorldCoordinatePosition = new float[3];
+		
 		fArWorldCoordinatePosition[0] = (float)wcoord[0];
 		fArWorldCoordinatePosition[1] = (float)wcoord[1];
 		fArWorldCoordinatePosition[2] = (float)wcoord[2];
@@ -323,6 +326,9 @@ public class GLInfoAreaRenderer {
     
     public void setWorldCoordinatePosition(float x, float y, float z) {
     	
+		if (fArWorldCoordinatePosition == null)
+			fArWorldCoordinatePosition = new float[3];
+		
     	fArWorldCoordinatePosition[0] = x;
     	fArWorldCoordinatePosition[1] = y;
     	fArWorldCoordinatePosition[2] = z;

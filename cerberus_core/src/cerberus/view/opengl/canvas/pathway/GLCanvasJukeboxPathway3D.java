@@ -595,11 +595,25 @@ implements IMediatorReceiver, IMediatorSender {
 
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
-		int[] tmp = refSetSelection.getOptionalDataArray();
-		if (tmp.length == 0)
-			return;
-
-		loadPathwayToUnderInteractionPosition(refSetSelection.getOptionalDataArray()[0]);
+		refSetSelection.getReadToken();
+		int[] iArOptional = refSetSelection.getOptionalDataArray();
+		if (iArOptional.length != 0)
+		{
+			loadPathwayToUnderInteractionPosition(refSetSelection.getOptionalDataArray()[0]);
+		}
+		
+		int[] iArSelectionId = refSetSelection.getSelectionIdArray();
+		if (iArSelectionId.length != 0)
+		{
+			selectedVertex = (PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
+				.getPathwayItemManager().getItem(iArSelectionId[0]);
+			
+			bRebuildVisiblePathwayDisplayLists = true;
+			bSelectionChanged = true;
+			infoAreaRenderer.resetPoint();
+		}
+		
+		refSetSelection.returnReadToken();		
 	}
 
 	public void updateReceiver(Object eventTrigger) {
@@ -906,6 +920,12 @@ implements IMediatorReceiver, IMediatorSender {
 			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
 
+			// Trigger update with selected vertex
+			int[] iArSelectionId = new int[1];
+			iArSelectionId[0] = selectedVertex.getId();
+			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArSelectionId,
+					new int[0], new int[0]);
+			
 			return;
 		}
 
@@ -996,10 +1016,10 @@ implements IMediatorReceiver, IMediatorSender {
 
 		// Trigger update with current pathway that dependent pathways
 		// know which pathway is currently under interaction
-		int[] tmp = new int[1];
-		tmp[0] = iPathwayId;
+		int[] iArOptional = new int[1];
+		iArOptional[0] = iPathwayId;
 		alSetSelection.get(0).updateSelectionSet(iUniqueId, new int[0],
-				new int[0], tmp);
+				new int[0], iArOptional);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1149,8 +1169,8 @@ implements IMediatorReceiver, IMediatorSender {
 		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
 		alSetSelection.get(0).returnWriteToken();
 		
-		System.out.println("Root vertex of neighborhood algorithm is: " +selectedVertex.getId());
-		System.out.println("Resulting neighboring items: " +iArTmpGraphItemDepth.length);
+//		System.out.println("Root vertex of neighborhood algorithm is: " +selectedVertex.getId());
+//		System.out.println("Resulting neighboring items: " +iArTmpGraphItemDepth.length);
 	}
 
 	private void playPathwayPoolTickSound() {
@@ -1189,12 +1209,6 @@ implements IMediatorReceiver, IMediatorSender {
 				LoggerType.MINOR_ERROR);
 	}
 	
-	public void enableEdgeRendering(final boolean bEnableEdgeRendering) {
-		
-		refGLPathwayManager.enableEdgeRendering(bEnableEdgeRendering);
-		bRebuildVisiblePathwayDisplayLists = true;
-	}
-	
 	public void enableGeneMapping(final boolean bEnableMapping) {
 		
 		refGLPathwayManager.enableGeneMapping(bEnableMapping);
@@ -1202,6 +1216,9 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 	
 	public void enablePathwayTextures(final boolean bEnablePathwayTextures) {
+		
+		refGLPathwayManager.enableEdgeRendering(!bEnablePathwayTextures);
+		bRebuildVisiblePathwayDisplayLists = true;
 		
 		this.bEnablePathwayTextures = bEnablePathwayTextures;
 	}
