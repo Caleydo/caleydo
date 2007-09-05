@@ -16,9 +16,7 @@ import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.rcp.Application;
 
@@ -51,16 +49,19 @@ public class GLJukeboxPathwayView extends ViewPart {
 
 	public static final String ID = "org.geneview.rcp.views.GLJukeboxPathwayView";
 	
-	public static final String ACTION_ENABLE_EDGE_RENDERING = "Show/hide edges";
-	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_TEXT = "Turn on/off pathway textures";	
-	public static final String ACTION_ENABLE_GENE_MAPPING = "Turn on/off gene mapping";
+	public static final String ACTION_ENABLE_ANIMATOR_ICON = "data/icons/PathwayEditor/animator.png";
+	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_TEXT = "Turn on/off pathway textures";
+	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_ICON = "data/icons/PathwayEditor/texture_on_off.gif";
+	public static final String ACTION_ENABLE_GENE_MAPPING_TEXT = "Turn on/off gene mapping";
+	public static final String ACTION_ENABLE_GENE_MAPPING_ICON = "data/icons/PathwayEditor/gene_mapping.gif";
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_TEXT = "Turn on/off neighborhood highlighting";
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_ICON = "data/icons/PathwayEditor/three_neighborhood.gif";
 	public static final String ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT = "Turn on/off identical node highlighting";
-	private Action actToggleAnimatorRunningState;
+	public static final String ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_ICON = "data/icons/PathwayEdtior/identical_node_highlighting.gif";
+	public static final String ACTION_ENABLE_ANNOTATION_TEXT = "Show/hide annotation";
+	public static final String ACTION_ENABLE_ANNOTATION_ICON = "data/icons/PathwayEditor/annotation.png";
 	
-	private Action actEnableEdgeRendering;
-	private boolean bEnableEdgeRendering = false;
+	private Action actToggleAnimatorRunningState;
 	
 	private Action actEnableGeneMapping;
 	private boolean bEnableGeneMapping = true;
@@ -73,6 +74,9 @@ public class GLJukeboxPathwayView extends ViewPart {
 	
 	private Action actEnableNeighborhood;
 	private boolean bEnableNeighborhood = false;
+	
+	private Action actEnableAnnotation;
+	private boolean bEnableAnnotation = true;
 	
 	private Animator animatorGL;
 	private GLCanvas canvasGL;
@@ -96,11 +100,11 @@ public class GLJukeboxPathwayView extends ViewPart {
 		swtComposit = new Composite(parent, SWT.EMBEDDED);
 		
 		createAnimatorToggleAction();
-		createEdgeRenderingToggleAction();
 		createGeneMappingToggleAction();
 		createPathwayTexturesToggleAction();
 		createNeighborhoodToggleAction();
 		createIdenticalNodeHighlightingAction();
+		createAnnotationToggleAction();
 		
 		contributeToActionBars();
 
@@ -176,20 +180,20 @@ public class GLJukeboxPathwayView extends ViewPart {
 
 	private void fillLocalPullDown(IMenuManager manager) {		
 		manager.add(actToggleAnimatorRunningState);
-		manager.add(actEnableEdgeRendering);
 		manager.add(actEnableGeneMapping);
 		manager.add(actEnablePathwayTextures);
 		manager.add(actEnableNeighborhood);
 		manager.add(actEnableIdenticalNodeHighlighting);
+		manager.add(actEnableAnnotation);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(actToggleAnimatorRunningState);
-		manager.add(actEnableEdgeRendering);
 		manager.add(actEnableGeneMapping);
 		manager.add(actEnablePathwayTextures);
 		manager.add(actEnableNeighborhood);
 		manager.add(actEnableIdenticalNodeHighlighting);
+		manager.add(actEnableAnnotation);
 	}
 
 	private void createAnimatorToggleAction() {
@@ -207,27 +211,10 @@ public class GLJukeboxPathwayView extends ViewPart {
 		};
 		actToggleAnimatorRunningState.setText("Turn off/on animator");
 		actToggleAnimatorRunningState.setToolTipText("Turn off/on animator");
-//		actToggleAnimatorRunningState.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-//				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+		actToggleAnimatorRunningState.setImageDescriptor(ImageDescriptor.createFromFile(
+				null, ACTION_ENABLE_ANIMATOR_ICON));
 		
 //		showMessage("Action 1","executed toggle JOGL frame");
-	}
-	
-	private void createEdgeRenderingToggleAction() {
-		
-		actEnableEdgeRendering = new Action() {
-			public void run() {
-				
-				bEnableEdgeRendering = !bEnableEdgeRendering;
-				triggerCmdSExternalFlagSetter(bEnableEdgeRendering, 
-						EExternalFlagSetterType.PATHWAY_ENABLE_EDGE_RENDERING);	
-			}
-		};
-		
-		actEnableEdgeRendering.setText(ACTION_ENABLE_EDGE_RENDERING);
-		actEnableEdgeRendering.setToolTipText(ACTION_ENABLE_EDGE_RENDERING);
-//		actEnableEdgeRendering.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-//				getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
 	}
 	
 	private void createGeneMappingToggleAction() {
@@ -241,10 +228,10 @@ public class GLJukeboxPathwayView extends ViewPart {
 			}
 		};
 		
-		actEnableGeneMapping.setText(ACTION_ENABLE_GENE_MAPPING);
-		actEnableGeneMapping.setToolTipText(ACTION_ENABLE_GENE_MAPPING);
-//		actEnableGeneMapping.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-//				getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
+		actEnableGeneMapping.setText(ACTION_ENABLE_GENE_MAPPING_TEXT);
+		actEnableGeneMapping.setToolTipText(ACTION_ENABLE_GENE_MAPPING_TEXT);
+		actEnableGeneMapping.setImageDescriptor(ImageDescriptor.createFromFile(
+				null, ACTION_ENABLE_GENE_MAPPING_ICON));
 	}
 	
 	private void createPathwayTexturesToggleAction() {
@@ -260,9 +247,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnablePathwayTextures.setText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
 		actEnablePathwayTextures.setToolTipText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
-//		actEnablePathwayTextures.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-//				getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
-	}
+		actEnablePathwayTextures.setImageDescriptor(ImageDescriptor.createFromFile(
+				null, ACTION_ENABLE_PATHWAY_TEXTURES_ICON));	}
 
 	private void createNeighborhoodToggleAction() {
 		
@@ -294,8 +280,25 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnableIdenticalNodeHighlighting.setText(ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT);
 		actEnableIdenticalNodeHighlighting.setToolTipText(ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT);
-//		actEnableIdenticalNodeHighlighting.setImageDescriptor(ImageDescriptor.createFromFile(
-//				null, ACTION_ENABLE_NEIGHBORHOOD_ICON));
+		actEnableIdenticalNodeHighlighting.setImageDescriptor(ImageDescriptor.createFromFile(
+				null, ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_ICON));
+	}
+	
+	private void createAnnotationToggleAction() {
+		
+		actEnableAnnotation = new Action() {
+			public void run() {
+				
+				bEnableAnnotation = !bEnableAnnotation;
+				triggerCmdSExternalFlagSetter(bEnableAnnotation, 
+						EExternalFlagSetterType.PATHWAY_ENABLE_ANNOTATION);	
+			}
+		};
+		
+		actEnableAnnotation.setText(ACTION_ENABLE_ANNOTATION_TEXT);
+		actEnableAnnotation.setToolTipText(ACTION_ENABLE_ANNOTATION_TEXT);
+		actEnableAnnotation.setImageDescriptor(ImageDescriptor.createFromFile(
+				null, ACTION_ENABLE_ANNOTATION_ICON));
 	}
 	
 	/**
