@@ -39,6 +39,8 @@ extends AGLCanvasHeatmap2D
 
 	//private int[] iIndexPickedCoored = {-1,-1};
 	
+	protected boolean bEnablePicking = true;
+	
 	protected ArrayList <Vec2f> fIndexPickedCoored = new ArrayList <Vec2f> (1);
 	
 	protected boolean bUseGLWireframe = false;
@@ -354,8 +356,8 @@ extends AGLCanvasHeatmap2D
 		iHitCount = gl.glRenderMode(GL.GL_RENDER);
 		pickingBuffer.get(iArPickingBuffer);
 		
-		boolean bPickinedNewObject = 
-			processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, fIndexPickedCoored);
+		//boolean bPickinedNewObject = 
+		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, fIndexPickedCoored);
 				
 	}
 
@@ -467,6 +469,21 @@ extends AGLCanvasHeatmap2D
 		return true;
 	}
 
+	/**
+	 * @return the bEnablePicking
+	 */
+	public final boolean isEnablePicking() {
+	
+		return bEnablePicking;
+	}
+	
+	/**
+	 * @param enablePicking the bEnablePicking to set
+	 */
+	public final void setEnablePicking(boolean enablePicking) {
+	
+		bEnablePicking = enablePicking;
+	}
 	
 	/* -----   END: PICKING  ----- */
 	/* --------------------------- */

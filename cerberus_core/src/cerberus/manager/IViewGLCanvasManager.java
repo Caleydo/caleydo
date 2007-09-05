@@ -7,16 +7,13 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
 import cerberus.command.CommandQueueSaxType;
-//import cerberus.manager.IGeneralManager;
 import cerberus.manager.IViewManager;
-import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.IView;
 import cerberus.view.jogl.JoglCanvasForwarderType;
 import cerberus.view.opengl.IGLCanvasUser;
 import cerberus.view.opengl.IGLCanvasDirector;
 
 /**
- * Make Jogl GLCanvas adressable by id and provide ground for XML bootstraping of 
+ * Make Jogl GLCanvas addressable by id and provide ground for XML bootstrapping of 
  * GLCanvas & GLEventListener.
  * 
  * @author Michael Kalkusch
@@ -29,8 +26,6 @@ extends IViewManager {
 			final int iUniqueId, 
 			final int iGlForwarderId,
 			String sLabel );
-	
-	//public GLCanvas getGLCanvas( int iId );
 
 	public boolean registerGLCanvas( final GLCanvas canvas, final int iCanvasId );
 	

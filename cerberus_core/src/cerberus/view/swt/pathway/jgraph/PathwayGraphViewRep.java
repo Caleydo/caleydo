@@ -42,7 +42,7 @@ import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.graph.core.PathwayGraph;
 import cerberus.data.graph.item.vertex.EPathwayVertexShape;
-import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+//import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import cerberus.manager.IGeneralManager;
@@ -1131,27 +1131,29 @@ extends APathwayGraphViewRep {
 						.getPathwayItemManager().getItem(
 								iArSelectionId[iSelectedVertexIndex]);
 				
-				// FIXME: name of the method is not good because inside
-				// resetPathway() and drawPathway() are called.
-				showBackgroundOverlay(bShowBackgroundOverlay);
-	
-				// //ATTENTION: Performance problem!
-				// resetPathway();
-				// drawView();
-	
-				// Ignore vertex if is NOT in the current pathway!
-				if (!refCurrentPathway.equals(
-						selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0)))
-				{
-					return;
+				if ( selectedVertex != null ) {
+					// FIXME: name of the method is not good because inside
+					// resetPathway() and drawPathway() are called.
+					showBackgroundOverlay(bShowBackgroundOverlay);
+		
+					// //ATTENTION: Performance problem!
+					// resetPathway();
+					// drawView();
+		
+					// Ignore vertex if is NOT in the current pathway!
+					if (!refCurrentPathway.equals(
+							selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0)))
+					{
+						return;
+					}
+		
+					iLLSelectedVertices.add(selectedVertex.getId());
+		
+					highlightCell(hashVertexRep2GraphCell.get(selectedVertex), 
+							refRenderStyle.getHighlightedNodeColor());
+		
+					bNeighbourhoodShown = true;
 				}
-	
-				iLLSelectedVertices.add(selectedVertex.getId());
-	
-				highlightCell(hashVertexRep2GraphCell.get(selectedVertex), 
-						refRenderStyle.getHighlightedNodeColor());
-	
-				bNeighbourhoodShown = true;
 				iNeighbourhoodUndoCount++;
 	
 			}

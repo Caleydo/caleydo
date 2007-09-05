@@ -6,16 +6,18 @@ package cerberus.view.opengl.canvas.heatmap;
 import gleem.linalg.Vec2f;
 
 import java.awt.Point;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
 
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.GLUT;
+import org.geneview.graph.EGraphItemHierarchy;
+import org.geneview.graph.EGraphItemProperty;
+import org.geneview.graph.IGraph;
+import org.geneview.graph.IGraphItem;
+
 
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
@@ -23,15 +25,18 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import cerberus.data.mapping.GenomeMappingType;
+import cerberus.data.graph.core.PathwayGraph;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+//import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
+//import cerberus.data.mapping.GenomeMappingType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.data.IGenomeIdManager;
+//import cerberus.manager.data.IGenomeIdManager;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
-import cerberus.math.statistics.minmax.MinMaxDataInteger;
-import cerberus.view.jogl.mouse.PickingJoglMouseListener; //import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
+//import cerberus.math.statistics.minmax.MinMaxDataInteger;
+//import cerberus.view.jogl.mouse.PickingJoglMouseListener; //import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 
 /**
@@ -62,7 +67,11 @@ public class GLCanvasHeatmap2DColumn
 
 	private boolean bRenderingStyleFlat = false;
 	
-	private int iSelectedMode_identifyier = 4;
+	private int iSelectedMode_identifyier = 0;
+	
+	private float fIncX_forSelection;
+	
+	
 	
 	//private int[] iIndexPickedCoored = {-1,-1};
 	
@@ -76,15 +85,15 @@ public class GLCanvasHeatmap2DColumn
 	 */
 	private ArrayList < ArrayList <Integer>> alHighlightSelectionIndex_sortByDepth;
 
-	private HashMap<Integer, Integer> hashNCBI_GENE2index;
+	//private HashMap<Integer, Integer> hashNCBI_GENE2index;
 
 	private int[] selectedIndex;
 
 	private int[] selectedIndexMode;
 
-	private HashMap<Integer, Integer> hashSelectedIndex;
+	private HashMap<Integer, Integer> hashExternalId_2_HeatmapIndex;
 	
-	private HashMap<Integer, Integer> hashSelectedIndex_reverse;
+	private HashMap<Integer, Integer> hashExternalId_2_HeatmapIndex_reverse;
 
 	private int iRenderIndexStart = 0;
 
@@ -104,25 +113,23 @@ public class GLCanvasHeatmap2DColumn
 
 		super(setGeneralManager, iViewId, iParentContainerId, sLabel);
 
-		hashNCBI_GENE2index = new HashMap<Integer, Integer>();
+		//hashNCBI_GENE2index = new HashMap<Integer, Integer>();
 
-		System.err.println("  GLCanvasHeatmap2DColumn()");
-
-		this.init(null);
+		System.err.println("  GLCanvasHeatmap2DColumn()");		
 
 		selectedIndex = new int[0];
 		selectedIndexMode = new int[0];
 
-		hashSelectedIndex = new HashMap<Integer, Integer>(100);
+		//hashExternalId_2_HeatmapIndex = new HashMap<Integer, Integer>(100);
 		alTargetSet = new ArrayList<ISet>(10);
 
 		hashHighlightSelectionIndex = new HashMap <Integer,Boolean> ();
 		
-		int[] selIndex =
-		{ 3, 5, 10, 15 };
-		int[] selIndexMode =
-		{ 0, 1, 2, 3 };
-		this.setSelectedIndex(selIndex, selIndexMode);
+//		int[] selIndex =
+//		{ 3, 5, 10, 15 };
+//		int[] selIndexMode =
+//		{ 0, 1, 2, 3 };
+//		this.setSelectedIndex(selIndex, selIndexMode);
 		
 		alHighlightSelectionIndex_sortByDepth = new ArrayList < ArrayList <Integer>> (5);
 		
@@ -207,48 +214,19 @@ public class GLCanvasHeatmap2DColumn
 			return;
 		}
 
-		boolean bUpdate = false;
-		for (int i = 0; i < updateIndex.size(); i++)
+		/* write local hashExternalId_2_HeatmapIndex to global variables int[] selectedIndex and int[] selectedIndexMode .. */
+		/* does size of arrays fit? */
+		if (selectedIndex.length != updateIndex.size())
 		{
-			if (hashSelectedIndex.containsKey(updateIndex.get(i)))
-			{
-
-				if (hashSelectedIndex.get(updateIndex.get(i)).intValue() != updateIndexMode
-						.get(i))
-				{
-					hashSelectedIndex.put(updateIndex.get(i), updateIndexMode
-							.get(i));
-					bUpdate = true;
-				}
-				/* else .. data is identical to data in HashMap! */
-
-			} else
-			{
-				hashSelectedIndex.put(updateIndex.get(i), updateIndexMode
-						.get(i));
-				bUpdate = true;
-			}
+			selectedIndex = new int[updateIndex.size()];
+			selectedIndexMode = new int[updateIndex.size()];
 		}
 
-		if (bUpdate)
-		{
-			/* write local hashSelectedIndex to global variables int[] selectedIndex and int[] selectedIndexMode .. */
-			/* does size of arrays fit? */
-			if (selectedIndex.length != hashSelectedIndex.size())
-			{
-				selectedIndex = new int[hashSelectedIndex.size()];
-				selectedIndexMode = new int[hashSelectedIndex.size()];
-			}
-
-			Iterator<Integer> keys = hashSelectedIndex.keySet().iterator();
-			Iterator<Integer> values = hashSelectedIndex.values().iterator();
-
-			for (int index = 0; keys.hasNext(); index++)
-			{
-				selectedIndex[index] = keys.next().intValue();
-				selectedIndexMode[index] = values.next().intValue();
-			}
-		} //if ( bUpdate ) {
+		for ( int index=0; index< updateIndex.size(); index++ ) {
+			selectedIndex[index] = updateIndex.get(index);				
+			selectedIndexMode[index] = updateIndexMode.get(index).intValue();
+		
+		}
 
 	}
 
@@ -265,19 +243,19 @@ public class GLCanvasHeatmap2DColumn
 		boolean bUpdate = false;
 		for (int i = 0; i < updateIndex.length; i++)
 		{
-			if (hashSelectedIndex.containsKey(updateIndex[i]))
+			if (hashExternalId_2_HeatmapIndex.containsKey(updateIndex[i]))
 			{
 
-				if (hashSelectedIndex.get(updateIndex[i]).intValue() != updateIndexMode[i])
+				if (hashExternalId_2_HeatmapIndex.get(updateIndex[i]).intValue() != updateIndexMode[i])
 				{
-					hashSelectedIndex.put(updateIndex[i], updateIndexMode[i]);
+					hashExternalId_2_HeatmapIndex.put(updateIndex[i], updateIndexMode[i]);
 					bUpdate = true;
 				}
 				/* else .. data is identical to data in HashMap! */
 
 			} else
 			{
-				hashSelectedIndex.put(updateIndex[i], updateIndexMode[i]);
+				hashExternalId_2_HeatmapIndex.put(updateIndex[i], updateIndexMode[i]);
 				bUpdate = true;
 			}
 		}
@@ -285,14 +263,14 @@ public class GLCanvasHeatmap2DColumn
 		if (bUpdate)
 		{
 			/* does size of arrays fit? */
-			if (selectedIndex.length != hashSelectedIndex.size())
+			if (selectedIndex.length != hashExternalId_2_HeatmapIndex.size())
 			{
-				selectedIndex = new int[hashSelectedIndex.size()];
-				selectedIndexMode = new int[hashSelectedIndex.size()];
+				selectedIndex = new int[hashExternalId_2_HeatmapIndex.size()];
+				selectedIndexMode = new int[hashExternalId_2_HeatmapIndex.size()];
 			}
 
-			Iterator<Integer> keys = hashSelectedIndex.keySet().iterator();
-			Iterator<Integer> values = hashSelectedIndex.values().iterator();
+			Iterator<Integer> keys = hashExternalId_2_HeatmapIndex.keySet().iterator();
+			Iterator<Integer> values = hashExternalId_2_HeatmapIndex.values().iterator();
 
 			for (int index = 0; keys.hasNext(); index++)
 			{
@@ -322,8 +300,8 @@ public class GLCanvasHeatmap2DColumn
 		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 				/ (float) (iValuesInRow);
 
-		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[X][MIN])
-				/ (float) (iValuesInColum);
+//		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[X][MIN])
+//				/ (float) (iValuesInColum);
 
 		/* Y_min .. Y_max*/
 		for (int index = 0; index < selectedIndex.length; index++)
@@ -351,26 +329,46 @@ public class GLCanvasHeatmap2DColumn
 	/** 
 	 * init after IGenomeIdManager has load all its data from file.
 	 */
-	protected void init(final IGenomeIdManager readFromIGenomeIdManager) {
-
-		IGenomeIdManager refIGenomeIdManager = refGeneralManager.getSingelton()
-				.getGenomeIdManager();
-
-		hashNCBI_GENE2index = refIGenomeIdManager
-				.getAllValuesByGenomeIdTypeHashMap(GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
-
-		if ( hashNCBI_GENE2index == null ) {
-			refGeneralManager.getSingelton().logMsg("Can not load NCBI_GENEID mapping!", LoggerType.MINOR_ERROR_XML);
-			
-			return;
-		}
-		
-		/* create HashMap now.. */
-		hashSelectedIndex_reverse = new HashMap<Integer, Integer>();
-		Iterator<Integer> iter = hashNCBI_GENE2index.keySet().iterator();
+	//protected void init(final IGenomeIdManager readFromIGenomeIdManager) {
 	
-		for (int index=0; iter.hasNext(); index++) {
-			hashSelectedIndex_reverse.put(new Integer(index), iter.next());
+	protected void init_External2InternalHashMap() {
+
+		HashMap <Integer,Integer> hashNCBI_GENEID_2_internalGraphVertexId = 
+			refGeneralManager.getSingelton().getPathwayItemManager().getHashNCBIGeneIdToPathwayVertexGraphItemId();
+	
+
+//		IGenomeIdManager refIGenomeIdManager = refGeneralManager.getSingelton()
+//		.getGenomeIdManager();
+//		
+//		hashNCBI_GENE2index = refIGenomeIdManager
+//				.getAllValuesByGenomeIdTypeHashMap(GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+//
+//		if ( hashNCBI_GENE2index == null ) {
+//			refGeneralManager.getSingelton().logMsg("Can not load NCBI_GENEID mapping!", LoggerType.MINOR_ERROR_XML);
+//			
+//			return;
+//		}
+//
+//
+//		/* create HashMap now.. */
+//		hashExternalId_2_HeatmapIndex_reverse = new HashMap<Integer, Integer>();
+//		Iterator<Integer> iter = hashNCBI_GENE2index.keySet().iterator();
+//	
+//		for (int index=0; iter.hasNext(); index++) {
+//			hashExternalId_2_HeatmapIndex_reverse.put(new Integer(index), iter.next());
+//		}
+		
+		hashExternalId_2_HeatmapIndex = new HashMap<Integer, Integer>(hashNCBI_GENEID_2_internalGraphVertexId.size());
+		hashExternalId_2_HeatmapIndex_reverse = new HashMap<Integer, Integer>(hashNCBI_GENEID_2_internalGraphVertexId.size());
+		
+		Iterator<Integer> iter_InternalGraphVertexId = 
+			hashNCBI_GENEID_2_internalGraphVertexId.values().iterator();
+		
+		for ( int index = 0; iter_InternalGraphVertexId.hasNext(); index++ ) {
+			Integer buffer = iter_InternalGraphVertexId.next();
+			
+			hashExternalId_2_HeatmapIndex.put(buffer, new Integer(index));
+			hashExternalId_2_HeatmapIndex_reverse.put(new Integer(index),buffer);
 		}
 	}
 
@@ -519,22 +517,52 @@ public class GLCanvasHeatmap2DColumn
 		selectedIndex = resultSelectedIndex;
 		selectedIndexMode = resultSelectedIndexMode;
 		
+		if ( hashExternalId_2_HeatmapIndex==null ) {
+			this.init_External2InternalHashMap();
+		}
+		
+		
 		/* notify external objects via eventMediator.. */
-		if ( hashSelectedIndex_reverse != null ) {
+		if ( hashExternalId_2_HeatmapIndex_reverse != null ) {
 			/* data for SetSelection.. */
 			SetSelection selectionSet = new SetSelection(-5, refGeneralManager);
 			
-			int[] iArSelectionId = new int[resultPickPointCoord.length];
-			int[] iArSelectionOptionalData = new int[resultPickPointCoord.length];
+			ArrayList <Integer> alSelectionId = new ArrayList <Integer> (resultPickPointCoord.length);
+			ArrayList <Integer> alSelectionId_PathwayId = new ArrayList <Integer> (resultPickPointCoord.length);
 			
 			for ( int i=0; i< resultPickPointCoord.length; i++ ) {
-				Integer lookupValue = hashSelectedIndex_reverse.get(resultPickPointCoord[i]);
+				/* convert internal index to external id.. */
+				Integer lookupValue = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[i]);
 				if ( lookupValue ==  null ) {
 					return;
 				}
 			
-				iArSelectionId[i] = lookupValue.intValue();
-				iArSelectionOptionalData[i] = iModeValue;
+				PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) refGeneralManager.getSingelton()
+					.getPathwayItemManager().getItem(lookupValue.intValue());
+										
+				Iterator <IGraphItem> iterList = 
+					vertexItemBuffer.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
+				
+				while (iterList.hasNext()) {
+					IGraphItem bufferItem = iterList.next();					
+					alSelectionId.add( bufferItem.getId() );
+					//alSelectionId.add( iterList.next().getId() );
+					
+					// get pathway id from graph
+					 List<IGraph> list = bufferItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT);
+					 PathwayGraph buffer = (PathwayGraph) list.get(0);
+					 alSelectionId_PathwayId.add( buffer.getKeggId() );
+				}							
+			}
+
+			int[] iArSelectionId = new int[alSelectionId.size()];
+			int[] iArSelectionDepthData = new int[alSelectionId.size()];
+			int[] iArSelectionOptionalData = new int[alSelectionId.size()];
+			
+			for ( int i=0; i < alSelectionId.size(); i++) {
+				iArSelectionId[i] = alSelectionId.get(i).intValue();
+				iArSelectionDepthData[i] = iModeValue;	
+				iArSelectionOptionalData[i] = alSelectionId_PathwayId.get(i);
 			}
 			
 			IStorage [] storageArray = new IStorage [3];
@@ -543,7 +571,7 @@ public class GLCanvasHeatmap2DColumn
 				selectionSet.setStorageByDim(storageArray, 0);
 			}
 			
-			selectionSet.setAllSelectionDataArrays(iArSelectionId, new int[1], iArSelectionOptionalData);
+			selectionSet.setAllSelectionDataArrays(iArSelectionId, iArSelectionDepthData, iArSelectionOptionalData );
 			
 			// Calls update with the ID of the PathwayViewRep
 	 		((EventPublisher)refGeneralManager.getSingelton().
@@ -556,7 +584,11 @@ public class GLCanvasHeatmap2DColumn
 	@Override
 	public void renderPart(GL gl) {
 
-		handlePicking(gl);
+		gl.glPushMatrix();
+		
+		if ( bEnablePicking ) {
+			handlePicking(gl);
+		}
 
 		gl.glTranslatef(0, 0, 0.01f);
 
@@ -619,6 +651,7 @@ public class GLCanvasHeatmap2DColumn
 
 		gl.glCallList(iHeatmapDisplayListId);
 
+		renderSelection_ownArea(gl);
 		gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
 		gl.glColor3f(1, 1, 0);
 		renderGLAllQuadRectangle(gl, this.fIndexPickedCoored);
@@ -629,12 +662,16 @@ public class GLCanvasHeatmap2DColumn
 		gl.glColor3f(0, 0, 0.8f);
 		renderGL_Selection(gl);
 
-		gl.glTranslatef(0, 0, AGLCanvasHeatmap2D.fPickingBias);
-		renderGL_picketPoints(gl);
-
+		if ( bEnablePicking ) {
+			gl.glTranslatef(0, 0, AGLCanvasHeatmap2D.fPickingBias);
+			renderGL_picketPoints(gl);
+		}
+		
 		gl.glEnable(GL.GL_LIGHTING);
 
 		//System.err.println(" Heatmap2D ! .render(GLCanvas canvas)");
+		
+		gl.glPopMatrix();
 	}
 
 	public void renderGL_picketPoints(GL gl) {
@@ -943,6 +980,8 @@ public class GLCanvasHeatmap2DColumn
 		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 				/ (float) (iRenderIndexRangeX + 1);
 
+		this.fIncX_forSelection = fIncX;
+			
 		float fNowX = viewingFrame[X][MIN];
 		float fNextX = fNowX + fIncX;
 
@@ -962,24 +1001,10 @@ public class GLCanvasHeatmap2DColumn
 
 			IVirtualArrayIterator iter = refVArray.iterator();
 
-			int[] i_dataValues = refStorage.getArrayInt();
+			//int[] i_dataValues = refStorage.getArrayInt();
 
-			if (i_dataValues != null)
+			if (dataArrayInt != null)
 			{
-
-//					if (currentTargetSet.hasCacheChanged(iSetCacheId))
-//					{
-//	
-//						iSetCacheId = currentTargetSet.getCacheId();
-//	
-//						//	    			System.out.print("H:");
-//						//	    			for ( int i=0;i<iHistogramIntervalls.length; i++) {
-//						//	    				System.out.print(";" +
-//						//	    						Integer.toString(iHistogramIntervalls[i]) );
-//						//	    			}
-//						System.err.println(" UPDATED inside DispalyList!");
-//					}
-				//System.out.print("-");
 
 				/**
 				 * force update ...
@@ -1029,6 +1054,128 @@ public class GLCanvasHeatmap2DColumn
 			fNextY += fIncY;
 
 		} //while ( iter.hasNext() )  
+		
+
+	}
+
+	private void renderSelection_ownArea(GL gl) {
+		/* ----------------------------------- */
+		/* ---  Render selected once more  --- */		
+
+//		Iterator < ArrayList <Integer>> iter_sortByDepth = 
+//			alHighlightSelectionIndex_sortByDepth.iterator();
+//		
+//		int iSumItems = 0;
+//		while ( iter_sortByDepth.hasNext() ) {
+//			iSumItems += iter_sortByDepth.next().size();
+//		}
+//		
+//		if ( iSumItems < 1) {
+//			/* no selection to render.. */
+//			return;
+//		}
+		
+		if ( selectedIndex.length < 1 ) {
+			return;
+		}
+		
+		/* reset rendering parameters.. */
+		float fOffsetY= 2.0f; //(viewingFrame[X][MAX] - viewingFrame[X][MIN]);
+		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
+		/ (float) (alTargetSet.size());
+			
+		float fNowY = viewingFrame[Y][MIN] + fOffsetY;
+		float fNextY = fNowY + fIncY;
+		
+		/* use global variable.. */
+		float fIncX = fIncX_forSelection;
+		
+		float fXOffset = ((viewingFrame[X][MAX] - viewingFrame[X][MIN])
+			 - (selectedIndex.length + 1) * fIncX) * 0.5f;
+		
+		float fNowX = viewingFrame[X][MIN] + fXOffset;
+		float fNextX = fNowX + fIncX;
+		
+		
+		/* copy references to raw data int[] .. */
+		ArrayList <int[]> bufferValueArrays = new ArrayList <int[]> ();
+		ArrayList <Integer> bufferValueArrays_Offset = new ArrayList <Integer> ();
+		
+		Iterator <ISet> iterTargetSet = alTargetSet.iterator();
+		
+		while (iterTargetSet.hasNext()) {
+			ISet currentTargetSet = iterTargetSet.next();
+			IVirtualArray refVArray = currentTargetSet.getVirtualArrayByDimAndIndex(0, 0);
+			IVirtualArrayIterator iter = refVArray.iterator();
+			IStorage refStorage = currentTargetSet.getStorageByDimAndIndex(0, 0);
+			int[] dataArrayInt = refStorage.getArrayInt();
+
+			if (dataArrayInt != null)
+			{
+				bufferValueArrays.add(dataArrayInt);
+				bufferValueArrays_Offset.add(iter.next());	
+			}								
+		} //while (iterTargetSet.hasNext()) {
+		
+		/* end: copy references to raw data int[] .. */
+		
+		
+		for ( int i=0; i < selectedIndex.length; i++) {
+			
+					
+				int iCurrentIndex = selectedIndex[i];
+				
+				Iterator<int[]> iterRawDataArrays = bufferValueArrays.iterator();
+				Iterator<Integer> iterRawDataArrays_Offset = bufferValueArrays_Offset.iterator();
+				
+				while (iterRawDataArrays.hasNext()) {
+					int [] currentArrayBuffer = iterRawDataArrays.next();
+					int iCurrentIndex_InArray = 
+						iterRawDataArrays_Offset.next().intValue() 
+						+ iCurrentIndex; 
+					
+					gl.glBegin(GL.GL_TRIANGLE_FAN);
+					
+					try {
+						colorMapping(gl, currentArrayBuffer[iCurrentIndex_InArray] );
+					} catch (ArrayIndexOutOfBoundsException aie) {
+						System.err.println("ERROR! ");
+					}
+					
+					gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
+	
+					gl.glEnd();
+	
+					fNowY = fNextY;
+					fNextY += fIncY;
+				}
+							
+				fNowX = fNextX;
+				fNextX += fIncX;
+				
+				/* reset Y.. */
+				fNowY = viewingFrame[Y][MIN] + fOffsetY;
+				fNextY = fNowY + fIncY;
+				
+				/* search for data values now.. */
+				
+		
+		} //for ( int i=0; i < selectedIndex.length; i++) {
+		
+		/* Sourrounding box */
+		gl.glColor3f(1.0f, 1.0f, 0.1f);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(viewingFrame[X][MIN] + fXOffset, viewingFrame[Y][MIN]+ fOffsetY, viewingFrame[Z][MIN]);
+		gl.glVertex3f(fNowX, viewingFrame[Y][MIN]+ fOffsetY, viewingFrame[Z][MIN]);
+		gl.glVertex3f(fNowX, viewingFrame[Y][MAX]+ fOffsetY, viewingFrame[Z][MIN]);
+		gl.glVertex3f(viewingFrame[X][MIN] + fXOffset, viewingFrame[Y][MAX]+ fOffsetY, viewingFrame[Z][MIN]);
+		gl.glEnd();
+				
+		/* ---  Render selected once more  --- */
+		/* ----------------------------------- */
 	
 	}
 	
@@ -1050,6 +1197,8 @@ public class GLCanvasHeatmap2DColumn
 		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 				/ (float) (iRenderIndexRangeX + 1);
 
+		this.fIncX_forSelection = fIncX;
+		
 		float fNowX = viewingFrame[X][MIN];
 		float fNextX = fNowX + fIncX;
 
@@ -1262,12 +1411,17 @@ public class GLCanvasHeatmap2DColumn
 		System.err.println("UPDATE BINGO !");
 	}
 
+	
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
 		System.err.println("UPDATE BINGO !");
 
 		System.err.println(" UPDATE SET: " + updatedSet.toString());
 
+		if ( this.hashExternalId_2_HeatmapIndex == null ) {
+			init_External2InternalHashMap();
+		}
+		
 		IStorage[] storage = updatedSet.getStorageByDim(0);
 		IVirtualArray[] virtualArray = updatedSet.getVirtualArrayByDim(0);
 
@@ -1276,32 +1430,46 @@ public class GLCanvasHeatmap2DColumn
 
 		for (int i = 0; i < virtualArray.length; i++)
 		{
-			IVirtualArray vaBuffer = virtualArray[i];
+			//IVirtualArray vaBuffer = virtualArray[i];
 
 			int[] intBuffer = storage[0].getArrayInt();
-			int[] intBufferMode = storage[2].getArrayInt();
+			int[] intBufferMode = storage[1].getArrayInt();			
+			//int[] intBufferPathway = storage[2].getArrayInt();
+			
+			
 
 			for (int j = 0; j < intBuffer.length; j++)
 			{
+				/* lookup id..*/
+				Iterator <IGraphItem> iterGraphItemRep = 
+					((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
+					.getItem(intBuffer[j])).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).iterator();
+					
+				while (iterGraphItemRep.hasNext()) {
+					/* convert external id to internal.. */
+					Integer indexInt = hashExternalId_2_HeatmapIndex.get(
+							iterGraphItemRep.next().getId());
+					
+					if (indexInt != null)
+					{
+						System.err.print("GLCanvasHeatmap2DColumn receiveUpdate [" + intBuffer[j] + "=>" + indexInt
+								+ "], ");
 
-				Integer indexInt = hashNCBI_GENE2index.get(intBuffer[j]);
-
-				if (indexInt != null)
-				{
-					System.err.print("GLCanvasHeatmap2DColumn receiveUpdate [" + intBuffer[j] + "=>" + indexInt
-							+ "], ");
-
-					resultBuffer.add(indexInt);
-					resultBufferMode.add(intBufferMode[j]);
-				} else
-				{
-					System.err.print("[" + intBuffer[j] + "=> ?? ], ");
+						resultBuffer.add(indexInt);
+						
+						if ( intBufferMode.length != 0 ) {												
+							resultBufferMode.add(intBufferMode[j]);
+						} else {
+							resultBufferMode.add( iSelectedMode_identifyier );
+						}
+						
+					} else
+					{
+						System.err.print("[" + intBuffer[j] + "=> ?? ], ");
+					}
 				}
-
-//				String ncbi_code = 
-//					refGeneralManager.getSingelton().getGenomeIdManager().getIdStringFromIntByMapping(
-//						intBuffer[j], 
-//						GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);				
+				          				
+			
 			}
 		}
 

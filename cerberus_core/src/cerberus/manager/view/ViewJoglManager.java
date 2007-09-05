@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.Enumeration;
 
 import javax.swing.JFrame;
@@ -28,7 +27,7 @@ import cerberus.view.opengl.IGLCanvasDirector;
 import cerberus.view.opengl.IGLCanvasUser;
 import cerberus.view.opengl.canvas.GLCanvasTestTriangle;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap;
-import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
+//import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import cerberus.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.opengl.canvas.isosurface.GLCanvasIsoSurface3D;

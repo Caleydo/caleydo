@@ -17,7 +17,24 @@ import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 
 /**
- * Creates IGLCanvasHeatmap2D or GLCanvasHeatmap2DColumn obejcts.
+ * Creates IGLCanvasHeatmap2D or GLCanvasHeatmap2DColumn objects.
+ * 
+ * XML format:
+ * 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	
+ *				uniqueId="79401"
+ *				///parent="[int][id of parent SWT container]" 	  [id of parent SWT container]..created with type="CREATE_VIEW_SWT_GLCANVAS" uniqueId="[id of parent SWT container]" 
+ *				parent="12401" 
+ *				///gl_forwarder="[int][id of CanvasForwareder]"   [id of CanvasForwareder]..created with type="CREATE_VIEW_SWT_GLCANVAS" gl_forwarder="[id of CanvasForwareder]"
+ *				gl_forwarder="99078" 
+ *				label="GL Triangle	C"
+ *				///gl_origin OpenGL canvas, origin shift	
+ *				gl_origin="0 0 0" 
+ *				///gl_rotation="x y z rotation" OpenGL canvas, origin rotation	
+ *				gl_rotation="1 0 0 15"		
+ *				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 1.0f    1.5f 1.0f   400" *				
+ *				///attrib4="[int]StartIndex  [int]StopIndex  [int][>0..enable picking; <=0..disable picking | default=enalbe_picking]"			
+ *				attrib4="0 50 1"	
+ *				detail="35101" />		
  * 
  * @see cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D
  * @see cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
@@ -141,23 +158,23 @@ extends ACmdCreate_GlCanvasUser {
 	}
 	
 
-	private void convertSelectionArrays( final int [] inSelectionArray, 
-			int inSelectionArray_HalfSize,
-			int[] outSelectionIndex,
-			int[] outSelectionLength) {
-		
-		/* is it possible to create an two arrays from input array? */
-		if ( inSelectionArray_HalfSize > 0) {
-			
-			int j = 0;
-			for( int i=0; i < inSelectionArray_HalfSize; i++ ) 
-			{
-				outSelectionIndex[i]  = inSelectionArray[j++];
-				outSelectionLength[i] = inSelectionArray[j++];
-			}  //for( int i=0; i < inSelectionArray_HalfSize; i++ ) 
-
-		} //if ( halfLengthSelectionArray > 0) {		
-	} 
+//	private void convertSelectionArrays( final int [] inSelectionArray, 
+//			int inSelectionArray_HalfSize,
+//			int[] outSelectionIndex,
+//			int[] outSelectionLength) {
+//		
+//		/* is it possible to create an two arrays from input array? */
+//		if ( inSelectionArray_HalfSize > 0) {
+//			
+//			int j = 0;
+//			for( int i=0; i < inSelectionArray_HalfSize; i++ ) 
+//			{
+//				outSelectionIndex[i]  = inSelectionArray[j++];
+//				outSelectionLength[i] = inSelectionArray[j++];
+//			}  //for( int i=0; i < inSelectionArray_HalfSize; i++ ) 
+//
+//		} //if ( halfLengthSelectionArray > 0) {		
+//	} 
 	
 	
 	@Override
@@ -194,6 +211,15 @@ extends ACmdCreate_GlCanvasUser {
 		{
 			GLCanvasHeatmap2DColumn canvs2 = (GLCanvasHeatmap2DColumn) canvas;
 			canvs2.setRednerIndexStartStop( selectionArrayX[0], selectionArrayX[1] );
+			
+			if ( selectionArrayX.length > 2) {
+				if  (selectionArrayX[2] > 0) {
+					canvs2.setEnablePicking( true );
+				} else {
+					canvs2.setEnablePicking( false );
+				}
+			}
+			
 		}  //if  (selectionArrayX != null )
 		
 		

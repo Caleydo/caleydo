@@ -16,12 +16,11 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.manager.type.ManagerObjectType;
 import cerberus.view.AViewRep;
 import cerberus.view.IView;
 import cerberus.view.ViewType;
 import cerberus.view.swt.browser.HookedBrowser;
-import cerberus.view.swt.widget.SWTEmbeddedGraphWidget;
+//import cerberus.view.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
  * Simple HTML browser.

@@ -1,6 +1,7 @@
 package cerberus.manager.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
@@ -41,4 +42,13 @@ extends IGeneralManager {
 			final IGraph parentPathway,
 			final String sReactionName, 
 			final String sReactionType);
+	
+	/**
+	 * Expose HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
+	 * 
+	 * @see cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
+	 * 
+	 * @return HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
+	 */
+	public HashMap<Integer, Integer> getHashNCBIGeneIdToPathwayVertexGraphItemId();
 }

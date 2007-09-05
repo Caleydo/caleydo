@@ -367,6 +367,8 @@ implements IGLCanvasUser {
 	 */
 	public final void render( GL gl)
 	{		
+		gl.glPushMatrix();
+		
 		/** Read viewing parameters... */
 		final Vec3f rot_Vec3f = new Vec3f();
 		final Vec3f position = refViewCamera.getCameraPosition();
@@ -392,6 +394,8 @@ implements IGLCanvasUser {
 		}
 		
 		this.renderPart( gl );
+		
+		gl.glPopMatrix();
 	}
 	
 	

@@ -315,8 +315,8 @@ implements IView, IMediatorReceiver {
 				{
 					IStructuredSelection selection = (IStructuredSelection) event
 							.getSelection();
-					for (Iterator iterator = selection.iterator(); iterator
-							.hasNext();)
+					for (Iterator <IStructuredSelection> iterator = selection.iterator();
+						iterator.hasNext(); )
 					{
 						AModel model = (AModel) iterator.next();
 						if (model instanceof StorageModel)

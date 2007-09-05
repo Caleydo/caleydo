@@ -2,7 +2,7 @@ package cerberus.view.opengl.canvas.parcoords;
 
 import javax.media.opengl.GL;
 
-import cerberus.data.view.camera.IViewCamera;
+//import cerberus.data.view.camera.IViewCamera;
 import cerberus.manager.IGeneralManager;
 import cerberus.view.opengl.canvas.AGLCanvasUser;
 
@@ -14,7 +14,7 @@ import cerberus.view.opengl.canvas.AGLCanvasUser;
  */
 public class GLCanvasParCoords extends AGLCanvasUser {
 
-	private IGeneralManager refGeneralManager;
+//	private IGeneralManager refGeneralManager;
 	private float axisSpacing;
 	
 	public GLCanvasParCoords(IGeneralManager refGeneralManager,
@@ -25,7 +25,6 @@ public class GLCanvasParCoords extends AGLCanvasUser {
 		super(refGeneralManager, null, viewId, parentContainerId, label);
 
 		this.refViewCamera.setCaller(this);
-		this.refGeneralManager = refGeneralManager;
 		this.axisSpacing = 2;
 		
 	}

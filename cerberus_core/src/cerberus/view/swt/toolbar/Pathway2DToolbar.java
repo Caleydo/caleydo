@@ -161,8 +161,8 @@ extends AToolbar {
 					return;	
 				}
 	
-				MenuItem clickedMenuItem = ((MenuItem)event.widget);
-				
+//				MenuItem clickedMenuItem = ((MenuItem)event.widget);
+//				
 //				if (((MenuItem)event.widget).getText().equals("Show relations"))
 //				{
 //					refPathwayGraphViewRep.showHideEdgesByType(

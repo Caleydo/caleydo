@@ -150,8 +150,8 @@ public class HistogramStatisticData <T extends Number > {
 				l_rangeValue = lMax - lMin;
 				
 				float fCurrentBorder  = (float) lMin;
-				float fInc = (float) l_rangeValue / 
-					(float) (iHistogramBorderLength);				
+//				float fInc = (float) l_rangeValue / 
+//					(float) (iHistogramBorderLength);				
 				
 				
 				for ( int i=0; i<iHistogramIntervalLength; i++) {
@@ -210,7 +210,7 @@ public class HistogramStatisticData <T extends Number > {
 					
 					assert false : "tst what shoudl happen here!";
 					//FIXME: test this for loop!
-					T buffer = (T) new Object();
+//					T buffer = (T) new Object();
 //					buffer.
 //					t_histogramBorder[i] = 
 //						fCurrentBorder += fInc;
