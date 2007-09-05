@@ -34,7 +34,7 @@ implements IGLCanvasDirector, IView {
 		
 		super(iGLCanvasId, setGeneralManager);
 		
-		this.iGLEventListernerId = iGLEventListenerId;
+		this.iGlEventListernerId = iGLEventListenerId;
 		
 		if  (forwarder_GLEventListener == null) {
 			
@@ -42,18 +42,18 @@ implements IGLCanvasDirector, IView {
 			case DEFAULT_FORWARDER:
 				forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
 						this, 
-						iGLEventListernerId );
+						iGlEventListernerId );
 				break;
 			case GLEVENT_LISTENER_FORWARDER:
 				forwarder_GLEventListener = new JoglCanvasDirectForwarder(refGeneralManager,
 						this, 
-						iGLEventListernerId );
+						iGlEventListernerId );
 				break;
 				
 			case ONLY_2D_FORWARDER:
 				forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
 						this, 
-						iGLEventListernerId );
+						iGlEventListernerId );
 				break;
 				
 				default:
@@ -66,7 +66,7 @@ implements IGLCanvasDirector, IView {
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
 
 		canvasManager.registerGLCanvasDirector( this, iGLCanvasId);
-		canvasManager.registerGLEventListener( forwarder_GLEventListener, iGLEventListernerId );
+		canvasManager.registerGLEventListener( forwarder_GLEventListener, iGlEventListernerId );
 	}
 		
 	@Override

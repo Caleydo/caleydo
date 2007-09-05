@@ -16,7 +16,7 @@ implements IGLCanvasDirector {
 	private TriggeredAnimator refAnimator = null;
 	
 	// FIXME: must be loaded from XML file!
-	protected int iGLEventListernerId = 99000;
+	protected int iGlEventListernerId = 99000;
 
 	protected JoglCanvasForwarder forwarder_GLEventListener = null;
 	
@@ -99,6 +99,14 @@ implements IGLCanvasDirector {
 		
 		return forwarder_GLEventListener.getAllGLCanvasUsers();
 	}	
+	
+	/**
+	 * @return the iGLEventListernerId
+	 */
+	public final int getGlEventListernerId() {
+	
+		return this.iGlEventListernerId;
+	}
 	
 	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
 	/* ------------------------------------------------------------------ */

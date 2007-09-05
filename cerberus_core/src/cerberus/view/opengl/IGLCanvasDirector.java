@@ -82,4 +82,12 @@ public interface IGLCanvasDirector {
 	 */
 	public void setAnimator( TriggeredAnimator setTriggeredAnimator );
 	
+	/**
+	 * Get id for GL EventListener
+	 * 
+	 * @see cerberus.view.jogl.JoglCanvasForwarder#getGlEventListernerId()
+	 * 
+	 * @return
+	 */
+	public int getGlEventListernerId();
 }

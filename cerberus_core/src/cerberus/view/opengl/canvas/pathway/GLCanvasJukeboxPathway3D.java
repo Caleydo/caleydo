@@ -1108,7 +1108,7 @@ implements IMediatorReceiver, IMediatorSender {
 		//List<IGraphItem> lGraphItems = graphVisitorSearchBFS.getSearchResult();
 		graphVisitorSearchBFS.getSearchResult();
 		
-		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS.getDepthResultList();
+		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS.getSearchResultDepthOrdered();
 		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
 		
 		ArrayList<Integer> iAlTmpGraphItemId = new ArrayList<Integer>();

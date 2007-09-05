@@ -178,6 +178,8 @@ extends ACmdCreate_GlCanvasUser {
 		
 		if ( iTargetCollectionSetId > -1 ) {
 			canvas.setTargetSetId( iTargetCollectionSetId );
+			canvas.setTargetSetId( iTargetCollectionSetId );
+			canvas.setTargetSetId( iTargetCollectionSetId );
 		}
 		else 
 		{
@@ -188,45 +190,52 @@ extends ACmdCreate_GlCanvasUser {
 		/**
 		 * Handle selection via XML file..
 		 */
-		if  ((selectionArrayX != null )||(selectionArrayY != null))
+		if  (selectionArrayX != null )
 		{
-			int [] bufferSelectionIndexArrayX = null;
-			int [] bufferSelectionLengthArrayX = null;		
-			int [] bufferSelectionIndexArrayY = null;
-			int [] bufferSelectionLengthArrayY = null;	
-			
-			if  (selectionArrayX != null ) {
-				
-				int iHalfSize = (int) selectionArrayX.length / 2;
-				bufferSelectionIndexArrayX  = new int [iHalfSize];
-				bufferSelectionLengthArrayX = new int [iHalfSize];
-				
-				convertSelectionArrays(selectionArrayX,
-						iHalfSize,
-						bufferSelectionIndexArrayX,
-						bufferSelectionLengthArrayX );
-				
-			} //if  (selectionArrayX != null ) {
-			
-			if  (selectionArrayY != null ) {
-				
-				int iHalfSize = (int) selectionArrayY.length / 2;
-				bufferSelectionIndexArrayY  = new int [iHalfSize];
-				bufferSelectionLengthArrayY = new int [iHalfSize];
-				
-				convertSelectionArrays(selectionArrayY,
-						iHalfSize,
-						bufferSelectionIndexArrayY,
-						bufferSelectionLengthArrayY );
-			
-			} //if  (selectionArrayY != null ) {
-				
-			canvas.setSelectionItems(bufferSelectionIndexArrayX,
-					bufferSelectionLengthArrayX,
-					bufferSelectionIndexArrayY,
-					bufferSelectionLengthArrayY );
-			
-		}  //if ((selectionArrayX != null )||(selectionArrayY != null))
+			GLCanvasHeatmap2DColumn canvs2 = (GLCanvasHeatmap2DColumn) canvas;
+			canvs2.setRednerIndexStartStop( selectionArrayX[0], selectionArrayX[1] );
+		}  //if  (selectionArrayX != null )
+		
+		
+//		if  ((selectionArrayX != null )||(selectionArrayY != null))
+//		{
+//			int [] bufferSelectionIndexArrayX = null;
+//			int [] bufferSelectionLengthArrayX = null;		
+//			int [] bufferSelectionIndexArrayY = null;
+//			int [] bufferSelectionLengthArrayY = null;	
+//			
+//			if  (selectionArrayX != null ) {
+//				
+//				int iHalfSize = (int) selectionArrayX.length / 2;
+//				bufferSelectionIndexArrayX  = new int [iHalfSize];
+//				bufferSelectionLengthArrayX = new int [iHalfSize];
+//				
+//				convertSelectionArrays(selectionArrayX,
+//						iHalfSize,
+//						bufferSelectionIndexArrayX,
+//						bufferSelectionLengthArrayX );
+//				
+//			} //if  (selectionArrayX != null ) {
+//			
+//			if  (selectionArrayY != null ) {
+//				
+//				int iHalfSize = (int) selectionArrayY.length / 2;
+//				bufferSelectionIndexArrayY  = new int [iHalfSize];
+//				bufferSelectionLengthArrayY = new int [iHalfSize];
+//				
+//				convertSelectionArrays(selectionArrayY,
+//						iHalfSize,
+//						bufferSelectionIndexArrayY,
+//						bufferSelectionLengthArrayY );
+//			
+//			} //if  (selectionArrayY != null ) {
+//				
+////			canvas.setSelectionItems(bufferSelectionIndexArrayX,
+////					bufferSelectionLengthArrayX,
+////					bufferSelectionIndexArrayY,
+////					bufferSelectionLengthArrayY );
+//		}  //if ((selectionArrayX != null )||(selectionArrayY != null))
+		
 		
 	}
 

@@ -515,9 +515,37 @@ implements IGenomeIdManager {
 		}
 		Set <Integer> keyset = bufferMap.getKeysInteger();		
 	
-		assert keyset == null : "GenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
+		//assert keyset == null : "GenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
 		
 		return keyset;			
+	}
+	
+	private Collection <Integer> getValuesFromExposedDataStructues(final GenomeMappingType type) {
+		
+		IGenomeIdMap bufferMap = this.hashType2Map.get( type );
+		
+		if ( bufferMap == null ) {
+			return null;
+		}
+		
+		try {
+			Collection <Integer> keyset = bufferMap.getValuesInteger();		
+		
+			assert keyset != null : "GenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
+			
+			return keyset;		
+		} catch ( GeneViewRuntimeException gve ) {
+			refSingelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() +
+					") failed, because String values could not be converted to Integer",
+					LoggerType.MINOR_ERROR_XML );
+			/* more details on exception .. */
+			refSingelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() + 
+					") failed; Exception= " + gve.toString(),
+					LoggerType.VERBOSE );
+			
+			/* return empty collection .. */
+			return new ArrayList <Integer> ();
+		}
 	}
 	
 	/**
@@ -582,6 +610,37 @@ implements IGenomeIdManager {
 				resultArray[i] = iter.next().intValue();
 			}
 			return resultArray;
+			
+		} catch (OutOfMemoryError e) {
+			System.err.println("Out of memroy while allocation of memory! " + e.getStackTrace());			
+			throw e;
+		}
+	}
+
+
+	@Override
+	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(
+			GenomeMappingType type) {
+
+		try {
+			Collection <Integer> keyset = 
+				getValuesFromExposedDataStructues(type);	
+		
+			if  (keyset == null ) {
+				return null;
+			}
+			
+			/* create result data structure.. */
+			HashMap<Integer,Integer> resultHashMap =
+				new HashMap<Integer,Integer> (keyset.size());	
+			
+			Iterator<Integer> iter = keyset.iterator();
+			
+			for ( int i=0;iter.hasNext(); i++) {
+				resultHashMap.put( iter.next(), i );
+			}
+			
+			return resultHashMap;
 			
 		} catch (OutOfMemoryError e) {
 			System.err.println("Out of memroy while allocation of memory! " + e.getStackTrace());			

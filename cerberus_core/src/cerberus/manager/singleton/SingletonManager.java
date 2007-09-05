@@ -31,7 +31,7 @@ import cerberus.util.exception.GeneViewRuntimeException;
 /**
  * Global object contining and handling several managers.
  * 
- * Desing Pattern "ISingelton"
+ * Design Pattern "ISingelton"
  * 
  * @author Michael Kalkusch
  *

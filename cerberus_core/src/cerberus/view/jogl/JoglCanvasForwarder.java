@@ -40,6 +40,8 @@ implements GLEventListener {
 	
 	private JoglMouseListener refMouseHandler;
 	
+	private int iGlForwarederId;
+	
 	protected Vector <IGLCanvasUser> vecGLCanvasUser;
 	
 	/**
@@ -53,6 +55,12 @@ implements GLEventListener {
 
 		super(iUniqueId, refGeneralManager,null);
 		
+		if ( refGLCanvasDirector!= null ) {
+			iGlForwarederId = refGLCanvasDirector.getGlEventListernerId();
+		} else {
+			assert false : "IGLCanvasDirector refGLCanvasDirector==null !";
+		}
+		
 //		refMouseHandler = new JoglMouseListenerDebug(this);
 //		refMouseHandler = new PickingJoglMouseListenerDebug(this);
 		refMouseHandler = new PickingJoglMouseListener(this);
@@ -64,6 +72,10 @@ implements GLEventListener {
 
 	public final JoglMouseListener getJoglMouseListener() {
 		return this.refMouseHandler;
+	}
+	
+	public final int getGlEventListernerId() {
+		return iGlForwarederId;
 	}
 	
 	/* -----  BEGIN GLEvent forwarding ----- */
@@ -108,13 +120,15 @@ implements GLEventListener {
 			
 			if ( vecGLCanvasUser.isEmpty() ) {
 				refGeneralManager.getSingelton().logMsg(
-						"JoglCanvasForwarder init() can not call director, because director==null!",
+						"JoglCanvasForwarder [" + iUniqueId + "] init() no GL Canvas objects registered; can not initiate GL Canvas objects! " +
+						" gl_forwareder=[" + this.iGlForwarederId + "]",
 						LoggerType.MINOR_ERROR);
-			}
-		
-			Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();				
-			while( iter.hasNext() ) {
-				iter.next().initGLCanvas(gl);				
+			} else {			
+				/* there are GL Canvas objects; iterate and initGLCanvas(GL) each one.. */
+				Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();				
+				while( iter.hasNext() ) {
+					iter.next().initGLCanvas(gl);				
+				}
 			}
 		}	
 		

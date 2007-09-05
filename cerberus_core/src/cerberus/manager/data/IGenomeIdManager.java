@@ -45,13 +45,25 @@ extends IGeneralManager {
 			final GenomeMappingType type );
 	
 	/**
-	 *  expose all keys for one GenomeIdType.
+	 *  expose all keys for one GenomeIdType from <key,value>.
 	 *  Note is was required for GenomeIdType.NCBI_GENEID in specific.
 	 *  
+	 * @see IGenomeIdManager#getAllValuesByGenomeIdTypeHashMap(GenomeMappingType)
+	 * 
 	 * @param type specify one GenomeIdType
 	 * @return HashMap<Integer,Integer> containing all <GenomeIdType id's, incremented index [0.. max] > 
 	 */
 	public HashMap<Integer,Integer> getAllKeysByGenomeIdTypeHashMap(GenomeMappingType type); 
+	
+	/**
+	 *  expose all values for one GenomeIdType from <key,value>.
+	 *  Note is was required for GenomeIdType.NCBI_GENEID in specific.
+	 *  
+	 * @see IGenomeIdManager#getAllKeysByGenomeIdTypeHashMap(GenomeMappingType)
+	 * @param type specify one GenomeIdType
+	 * @return HashMap<Integer,Integer> containing all <GenomeIdType id's, incremented index [0.. max] > 
+	 */
+	public HashMap<Integer,Integer> getAllValuesByGenomeIdTypeHashMap(GenomeMappingType type); 
 	
 	/**
 	 *  expose all keys for one GenomeIdType.

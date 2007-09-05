@@ -38,6 +38,8 @@ import org.studierstube.net.protocol.muddleware.Operation;
 public class CerberusBootloader
 {
 	
+	private boolean bIsRunning = false;
+	
 	/**
 	 * Switch for loading XML file from Muddelware server.
 	 * Default is FALSE and indicate, that the local XML file is used for bootstrapping.
@@ -59,7 +61,7 @@ public class CerberusBootloader
 	 * 
 	 * @see import cerberus.manager.IGeneralManager
 	 */
-	protected IGeneralManagerSingleton refOneForAllManager;
+	protected final IGeneralManagerSingleton refOneForAllManager;
 	
 	//protected final IGeneralManager refGeneralManager;
 	
@@ -87,21 +89,7 @@ public class CerberusBootloader
 	//for debugging only:
 	//protected IEventPublisher refEventPublisher;
 	
-	
-	/**
-	 * Run the Cerberus core application ..
-	 */
-	public static void main(String[] args) 
-	{
-		CerberusBootloader prototype = new CerberusBootloader();
-		
-		if ( args.length > 0 ) 
-		{
-			prototype.setXmlFileName( args[0] ); 	
-		}
-		
-		prototype.run();
-	}
+
 	
 	public CerberusBootloader()
 	{
@@ -160,7 +148,7 @@ public class CerberusBootloader
 	 * Not tested yet!
 	 * 
 	 */
-	protected boolean runUsingMuddleWare( final String sXPath ) {
+	protected final boolean runUsingMuddleWare( final String sXPath ) {
 		
 		System.out.print("   bootloader read data from muddleware server.. ");
 		
@@ -221,6 +209,23 @@ public class CerberusBootloader
 	
 
 	/**
+	 * Run the Cerberus core application ..
+	 */
+	public static void main(String[] args) 
+	{
+		CerberusBootloader prototype = new CerberusBootloader();
+		
+		if ( args.length > 0 ) 
+		{
+			prototype.setXmlFileName( args[0] ); 	
+		}
+		
+		prototype.run();
+		prototype.stop();
+	}
+	
+	
+	/**
 	 * Set local XML file name.
 	 * Is case the XML file is received from the Muddleware server
 	 * This is the XPath used to query the Muddleware server.
@@ -230,7 +235,7 @@ public class CerberusBootloader
 	 * 
 	 * @see cerberus.application.core.CerberusBootloader#getXmlFileName()
 	 * 
-	 * @param sFileName 
+	 * @param fileName the sFileName to set
 	 */
 	public final void setXmlFileName( String sFileName ) {
 		this.sFileName = sFileName;
@@ -268,22 +273,58 @@ public class CerberusBootloader
 	 * 
 	 * @return TRUE is config will be loaded via Muddleware or FALSE is config is loaded from local file.
 	 */
-	public final boolean getBootstrapViaMuddleware() {
+	public final boolean getBootstrappingViaMuddleware() {
 		return this.bEnableBootstrapViaMuddleware;
+	}
+
+	
+	public final IGeneralManagerSingleton getGeneralManager() {
+	
+		return refOneForAllManager;
+	}
+
+	
+	/**
+	 * @return the bEnableBootstrapViaMuddleware
+	 */
+	public final boolean isBEnableBootstrapViaMuddleware() {
+	
+		return bEnableBootstrapViaMuddleware;
+	}
+
+	
+	/**
+	 * @param enableBootstrapViaMuddleware the bEnableBootstrapViaMuddleware to set
+	 */
+	public final void setBootstrappingViaMuddleware(
+			boolean enableBootstrapViaMuddleware) {
+	
+		bEnableBootstrapViaMuddleware = enableBootstrapViaMuddleware;
 	}
 	
 	
-	
 	/**
-	 * Start application by parsing a XMl file. 
-	 * XML file is eihter local or received from a Muddleware server.
+	 * Start GeneView core.
 	 * 
-	 * @param filename XML bootstrap file
+	 * @see CerberusBootloader#isRunning()
+	 * @see CerberusBootloader#stop()
 	 */
-	public void run() {
+	public synchronized void run() {
 		
-				
-		if ( bEnableBootstrapViaMuddleware )
+		if ( this.refOneForAllManager == null ) {
+			System.err.println( "FATAL ERROR!  " + 
+					this.getClass().getSimpleName() + 
+					".run() can not be executed, because no GeneralManager has bee created!");
+			return;
+		}
+		
+		/* make sure a logger was fetched.. */
+		if ( logger == null ) {
+			logger = refOneForAllManager.getSingelton().getLoggerManager();
+		}
+		
+		/* use muddleware? */
+		if ( getBootstrappingViaMuddleware() )
 		{
 			/**
 			 * Load configuration from Muddleware server.
@@ -297,22 +338,48 @@ public class CerberusBootloader
 			 * Load configuration from local XML file.
 			 */
 			logger.logMsg("  load config via local XML file ... ", LoggerType.STATUS);			
-			refXmlParserManager.parseXmlFileByName( sFileName );		
+			refXmlParserManager.parseXmlFileByName( getXmlFileName() );		
 		}
 
 		logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);		
 		refSWTGUIManager.runApplication();
+		logger.logMsg("  config loaded ... [DONE]", LoggerType.STATUS);
 		
-//		logger.logMsg("Cerberus.core   clean up... ", LoggerType.STATUS);		
-//		refOneForAllManager.destroyOnExit();
-//		
-//		logger.logMsg("Cerberus.core   clean up... [done]\n", LoggerType.STATUS);		
-//		logger.logMsg("... Stop Cerberus Core ...", LoggerType.STATUS);
+		bIsRunning = true;
 	}
-
 	
-	public final IGeneralManagerSingleton getGeneralManager() {
+	/**
+	 * Stop the GeneView core and clean up all managers.
+	 * 
+	 * @see CerberusBootloader#run()
+	 * @see CerberusBootloader#isRunning()
+	 */
+	public synchronized void stop() {
+		if ( bIsRunning ) {
+		
+			if ( refOneForAllManager!= null ) {
+				logger.logMsg("GeneView core   clean up...", LoggerType.STATUS);	
+				refOneForAllManager.destroyOnExit();
+				
+				logger.logMsg("GeneView core   clean up... [done]\n", LoggerType.STATUS);		
+				logger.logMsg("... Stop GeneView Core ...", LoggerType.STATUS);
+				
+				bIsRunning = false;
+			}
+		} else {
+			logger.logMsg("GeneView Core was not running and can not be stopped!", LoggerType.ERROR_ONLY);
+		}
+	}
 	
-		return refOneForAllManager;
+	/**
+	 * Test if GeneView core is running.
+	 * 
+	 * @see CerberusBootloader#run()
+	 * @see CerberusBootloader#stop()
+	 * 
+	 * @return TRUE if GeneView core is running
+	 */
+	public final synchronized boolean isRunning() {
+		return bIsRunning;
 	}
 }

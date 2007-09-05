@@ -339,7 +339,7 @@ implements IViewGLCanvasManager {
 					iGlForwarderId, sLabel);
 			/*
 			return new GLCanvasHeatmap2D(refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
+					iGlForwarderId, sLabel);
 			*/
 			
 		case CREATE_GL_HEATMAP2DCOLUMN:

@@ -40,7 +40,7 @@ public class SwtJoglGLCanvasViewRep
 extends AViewRep
 implements IGLCanvasDirector {
 	
-	protected int iGLEventListernerId;  // = 99000;
+	protected int iGlEventListernerId;  // = 99000;
 	
 	private JoglCanvasForwarder forwarder_GLEventListener = null;
 	
@@ -74,7 +74,7 @@ implements IGLCanvasDirector {
 				).registerGLCanvasDirector( this, iViewId );
 		
 		//iGLCanvasId = iParentContainerId;
-		this.iGLEventListernerId = iCanvasForwarderId;
+		this.iGlEventListernerId = iCanvasForwarderId;
 		//iGlForwarderId = iGLCanvasId + iGlForwarderId;
 		
 	}
@@ -170,6 +170,16 @@ implements IGLCanvasDirector {
 		this.refAnimator = setTriggeredAnimator;				
 	}
 
+	/**
+	 * 
+	 * @see cerberus.view.opengl.IGLCanvasDirector#getGlEventListernerId()
+	 * 
+	 * @return iGLEventListernerId id for gl_forwarder
+	 */
+	public final int getGlEventListernerId() {
+	
+		return iGlEventListernerId;
+	}
 	
 	/**
 	 * Attention: call setOpenGLCanvasId(int) before calling this method!
@@ -185,18 +195,18 @@ implements IGLCanvasDirector {
 			case DEFAULT_FORWARDER:
 				forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
 						this, 
-						iGLEventListernerId );
+						iGlEventListernerId );
 				break;
 			case GLEVENT_LISTENER_FORWARDER:
 				forwarder_GLEventListener = new JoglCanvasDirectForwarder(refGeneralManager,
 						this, 
-						iGLEventListernerId );
+						iGlEventListernerId );
 				break;
 				
 			case ONLY_2D_FORWARDER:
 				forwarder_GLEventListener = new JoglCanvasForwarder(refGeneralManager,
 						this, 
-						iGLEventListernerId );
+						iGlEventListernerId );
 				break;
 				
 				default:
@@ -210,7 +220,7 @@ implements IGLCanvasDirector {
 		/* instead of calling AViewRep#retrieveGUIContainer() we request a JOGL widget.. */
 		initGLContainer();
 		
-		assert forwarder_GLEventListener == null : "initView() called more than once! forwarder_GLEventListener!=null !";
+		assert forwarder_GLEventListener != null : "initView() called more than once! forwarder_GLEventListener!=null !";
 				
 		/* Start Animator thread, if animator is not running already. */
 		refGeneralManager.getSingelton().logMsg(
@@ -236,8 +246,8 @@ implements IGLCanvasDirector {
 		//canvasManager.registerGLCanvas( refGLCanvas, iGLCanvasId );
 		canvasManager.registerGLCanvasDirector( this, iUniqueId);
 		
-		canvasManager.registerGLEventListener( forwarder_GLEventListener, iGLEventListernerId );
-		canvasManager.addGLEventListener2GLCanvasById( iGLEventListernerId, iUniqueId );
+		canvasManager.registerGLEventListener( forwarder_GLEventListener, iGlEventListernerId );
+		canvasManager.addGLEventListener2GLCanvasById( iGlEventListernerId, iUniqueId );
 		
 		//setGLEventListener( forwarder_GLEventListener );
 		
@@ -287,7 +297,7 @@ implements IGLCanvasDirector {
 		canvasManager.unregisterGLCanvasDirector( this );
 		//canvasManager.unregisterGLCanvas( refGLCanvas );		
 		canvasManager.unregisterGLEventListener( forwarder_GLEventListener );
-		canvasManager.removeGLEventListener2GLCanvasById( iGLEventListernerId, iUniqueId );
+		canvasManager.removeGLEventListener2GLCanvasById( iGlEventListernerId, iUniqueId );
 		
 		/*
 		 * see AGLCanvasDirector.destroyDirector() {
@@ -320,7 +330,7 @@ implements IGLCanvasDirector {
 		
 		if ( iGLEventListenerId != -1 ) 
 		{
-			this.iGLEventListernerId = iGLEventListenerId;
+			this.iGlEventListernerId = iGLEventListenerId;
 		}
 	}
 
@@ -388,5 +398,7 @@ implements IGLCanvasDirector {
 					this.iUniqueId + "]"
 					,LoggerType.VERBOSE );
 	}
+
+	
 
 }

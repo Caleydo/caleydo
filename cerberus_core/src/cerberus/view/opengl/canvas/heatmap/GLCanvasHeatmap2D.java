@@ -39,11 +39,11 @@ extends AGLCanvasHeatmap2D
 
 	//private int[] iIndexPickedCoored = {-1,-1};
 	
-	private ArrayList <Vec2f> fIndexPickedCoored = new ArrayList <Vec2f> (1);
+	protected ArrayList <Vec2f> fIndexPickedCoored = new ArrayList <Vec2f> (1);
 	
 	protected boolean bUseGLWireframe = false;
 
-	private int iSetCacheId = 0;
+	protected int iSetCacheId = 0;
 
 	protected float fColorMappingShiftFromMean = 1.0f;
 
@@ -89,12 +89,12 @@ extends AGLCanvasHeatmap2D
 	{ 0.1f, 0.1f, 0.9f, 0.1f, 0.9f, 0.1f, 0.9f, 0.1f, 0.1f };
 
 
-	protected ISet targetSet;
+	private ISet targetSet;
 
 	/**
-	 * Picking Mosue handler
+	 * Picking Mouse handler
 	 */
-	private PickingJoglMouseListener pickingTriggerMouseAdapter;
+	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 	//private DragAndDropMouseListener pickingTriggerMouseAdapter;
 	
 	/**

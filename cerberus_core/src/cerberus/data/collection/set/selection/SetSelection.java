@@ -68,7 +68,7 @@ implements ISetSelection {
 		this.getStorageByDimAndIndex(0, 2).setArrayInt(iArSelectionOptionalData);
 		this.returnWriteToken();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see cerberus.data.collection.selection.ISetSelection#setAllSelectionDataArrays(int[], int[], int[])

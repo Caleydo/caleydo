@@ -244,7 +244,8 @@ extends APathwayGraphViewRep {
 					}
 
 					alSetSelection.get(0).updateSelectionSet(iParentContainerId,
-							iArSelectedVertices, new int[0],
+							iArSelectedVertices, 
+							new int[iArSelectedVertices.length],
 							iArNeighborDistance);
 
 				}// if(refCurrentPathway != 0)
