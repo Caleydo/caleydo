@@ -51,18 +51,34 @@ implements IGraphVisitorSearch {
 		return resultBuffer;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#init()
+	 */
 	public final boolean init() {
 		return false;	
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#search()
+	 */
 	public final void search() {
 		/** algorithm is done inside method getSearchResult() */
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#wipeTemporalDataFromGraph()
+	 */
 	public final void wipeTemporalDataFromGraph() {
 		/** not temporal data was created inside the graphs. */	
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#getSearchResult()
+	 */
 	public List<IGraphItem> getSearchResult() {
 		
 		if ( this.iSearchDepth == 1) {
@@ -71,6 +87,17 @@ implements IGraphVisitorSearch {
 		
 		assert false : "not implemented yet";
 		
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#getSearchResultDepthOrdered()
+	 */
+	public List<List<IGraphItem>> getSearchResultDepthOrdered() {
+		
+		assert false : "not implemented yet";
+	
 		return null;
 	}
 	

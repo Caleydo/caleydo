@@ -60,5 +60,12 @@ public interface IGraphVisitorSearch {
 	 */
 	public List <IGraphItem> getSearchResult();
 	
+	/**
+	 * Get list of search result ordered by depth starting with lowest level.
+	 * 
+	 * @return list of search results ordered by depth
+	 */
+	public List<List<IGraphItem>> getSearchResultDepthOrdered() ;
+	
 	
 }

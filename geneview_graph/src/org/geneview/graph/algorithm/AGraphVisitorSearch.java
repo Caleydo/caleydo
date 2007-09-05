@@ -55,11 +55,6 @@ public abstract class AGraphVisitorSearch {
 	public final void setGraph(IGraph graph) {
 		this.graph = graph;		
 	}
-
-	public void setSearchDepth(final int iDepth) {
-		this.iSearchDepth = iDepth;
-	}
-
 	
 	public final int getSearchDepth() {
 		return iSearchDepth;
@@ -72,6 +67,11 @@ public abstract class AGraphVisitorSearch {
 	public final void setItemSource( IGraphItem item ) {
 		this.itemSource = item;
 	}
+	
+	public void setSearchDepth(final int iDepth) {
+		this.iSearchDepth = iDepth;
+	}
+
 
 
 }

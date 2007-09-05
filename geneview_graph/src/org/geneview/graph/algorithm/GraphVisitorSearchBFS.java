@@ -34,6 +34,18 @@ implements IGraphVisitorSearch {
 	public GraphVisitorSearchBFS(IGraphItem item, final int iSearchDepth) {
 		super(item, iSearchDepth);
 	}
+	
+	private List < List<IGraphItem> > createDepthSortedList( final int iSetDepth ) {
+		
+		/** create list and initialize it .. */
+		List < List<IGraphItem> > resultDepthSortedList = 
+			new ArrayList < List<IGraphItem> > (iSetDepth);
+		for ( int i=0; i<iSearchDepth; i++ ) {
+			depthSortedList.add(i, new ArrayList <IGraphItem> ()); 
+		}
+		
+		return resultDepthSortedList;
+	}
 
 	@Override
 	public void setSearchDepth(final int iSearchDepth) {
@@ -48,11 +60,7 @@ implements IGraphVisitorSearch {
 		}
 			
 		/** create list and initialize it .. */
-		depthSortedList = new ArrayList < List<IGraphItem> > (iSearchDepth);
-		for ( int i=0; i<iSearchDepth; i++ ) {
-			depthSortedList.add(i, new ArrayList <IGraphItem> ()); 
-		}
-		
+		depthSortedList = createDepthSortedList(iSearchDepth);
 	}
 
 	
@@ -60,7 +68,6 @@ implements IGraphVisitorSearch {
 	/* (non-Javadoc)
 	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#getSearchResult()
 	 */
-	@Override
 	public List<IGraphItem> getSearchResult() {
 			
 		if ( iSearchDepth < 1 ) {
@@ -123,7 +130,24 @@ implements IGraphVisitorSearch {
 		return resultList;
 	}
 
-	public final List<List<IGraphItem>> getDepthResultList() {
+	public final List<List<IGraphItem>> getSearchResultDepthOrdered() {
+		
+		List<List<IGraphItem>> resultList = createDepthSortedList(iSearchDepth);
+		
+		Iterator<List<IGraphItem>> iterDepthLevels = depthSortedList.iterator();
+		
+		for (int i=0;iterDepthLevels.hasNext();i++) {
+			List<IGraphItem> resultListDepthLevels = resultList.get(i);
+			Iterator <IGraphItem> iterInnerLoop = iterDepthLevels.next().iterator();
+			while ( iterInnerLoop.hasNext() ) {
+				resultListDepthLevels.add( iterInnerLoop.next() );
+			}
+		}
+		
+		return resultList;
+	}
+	
+	protected final List<List<IGraphItem>> exposeDepthResultList() {
 		
 		return depthSortedList;
 	}
@@ -142,19 +166,28 @@ implements IGraphVisitorSearch {
 		this.prop = prop;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#init()
+	 */
 	public boolean init() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#search()
+	 */
 	public void search() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.graph.algorithm.IGraphVisitorSearch#wipeTemporalDataFromGraph()
+	 */
 	public void wipeTemporalDataFromGraph() {
 		// TODO Auto-generated method stub
 		
