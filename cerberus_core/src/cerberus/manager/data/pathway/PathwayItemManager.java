@@ -13,6 +13,7 @@ import cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItem;
 import cerberus.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
 import cerberus.data.graph.item.edge.PathwayRelationEdgeGraphItem;
 import cerberus.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
+import cerberus.data.graph.item.vertex.EPathwayVertexType;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.manager.IGeneralManager;
@@ -20,6 +21,7 @@ import cerberus.manager.base.AAbstractManager;
 import cerberus.manager.data.IPathwayItemManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
+import cerberus.util.system.StringConversionTool;
 
 /**
  * The element manager is in charge for handling the items. Items are
@@ -36,6 +38,9 @@ implements IPathwayItemManager {
 	
 	private HashMap<String, IGraphItem> hashPathwayNameToGraphItem;
 	
+	private HashMap<Integer, Integer> hashNCBIGeneIdToPathwayVertexGraphItemId;
+	private boolean bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = true;
+	
 	/**
 	 * Constructor
 	 * 
@@ -48,6 +53,7 @@ implements IPathwayItemManager {
 	
 		hashVertexIdToGraphItem = new HashMap<Integer, IGraphItem>();
 		hashPathwayNameToGraphItem = new HashMap<String, IGraphItem>();
+		hashNCBIGeneIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
 	}
 	
 	public IGraphItem createVertex(
@@ -74,6 +80,21 @@ implements IPathwayItemManager {
 				.getRootPathway().addItem(pathwayVertex);
     	
     	hashPathwayNameToGraphItem.put(sName, pathwayVertex);
+    	
+    	//Check if vertex is gene 
+    	if (sType.equals(EPathwayVertexType.gene.toString()))
+    	{
+    		assert bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid == false : 
+    			"HashMap NCBI GeneId to PathwayVertexGraphItemId migh be invalid!";
+    		
+    		int iGeneId = StringConversionTool.convertStringToInt( 
+    				sName.substring(4), 
+    				0 );
+    		
+    		// Extract NCBI gene ID and add element 
+        	hashNCBIGeneIdToPathwayVertexGraphItemId.put(
+        			iGeneId, iGeneratedId);
+    	}
     	
     	return pathwayVertex;
 	}
@@ -229,6 +250,12 @@ implements IPathwayItemManager {
 			return null;
 		
 		return hashVertexIdToGraphItem.get(iItemId);
+	}
+	
+	public final HashMap<Integer, Integer> getHashNCBIGeneIdToPathwayVertexGraphItemId() {
+		
+		bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = false;
+		return hashNCBIGeneIdToPathwayVertexGraphItemId;
 	}
 
 	/*
