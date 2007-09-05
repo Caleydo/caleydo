@@ -122,5 +122,12 @@ public class GLCanvasParCoords extends AGLCanvasUser {
 		
 		gl.glEnd();
 	}
+	
+	private void renderGraphs(GL gl)
+	{
+		
+		
+	}
+	
 
 }
