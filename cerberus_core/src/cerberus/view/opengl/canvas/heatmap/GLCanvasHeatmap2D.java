@@ -456,9 +456,13 @@ extends AGLCanvasHeatmap2D
 		
 		System.out.println("GLCanvasHeatmap2D  PICKED index=[" +resultPickPointCoord[0] + "," + resultPickPointCoord[1] + "]" );
 		 
-		addPickedPoint(fIndexPickedCoored,
+		int[] selectedIndexArray = addPickedPoint(fIndexPickedCoored,
 				(float) resultPickPointCoord[0],
-				(float) resultPickPointCoord[1] );		
+				(float) resultPickPointCoord[1] );
+		
+		if ( selectedIndexArray != null ) {
+			
+		}
 		
 		return true;
 	}
@@ -612,7 +616,7 @@ extends AGLCanvasHeatmap2D
 		gl.glEnd();			
 	}
 
-	protected void addPickedPoint( ArrayList <Vec2f> fIndexPickedCoord, 
+	protected int[] addPickedPoint( ArrayList <Vec2f> fIndexPickedCoord, 
 			final float addIndexCoordX, float addIndexCoordY) {
 		
 		int iSize = fIndexPickedCoord.size();
@@ -645,8 +649,20 @@ extends AGLCanvasHeatmap2D
 			fIndexPickedCoord.set( iSize-1, lowerLeftPoint);
 			fIndexPickedCoord.add( upperRightPoint );
 			
+			/** Calculate all indices between left and right point and create an array with all these indices.. */
+			int iCurrentIndex = (int) lowerLeftPoint.x();
+			int iLength = (int) upperRightPoint.x() - iCurrentIndex;
+			
+			int[] resultArray = new int[iLength+1];
+			for ( int i=0; i< iLength+1; i++) {
+				resultArray[i] = iCurrentIndex;
+				iCurrentIndex++;
+			}
+			
+			return resultArray;
 		} else {
 			fIndexPickedCoord.add( new Vec2f(addIndexCoordX,addIndexCoordY) );
+			return null;
 		}
 		
 	}
