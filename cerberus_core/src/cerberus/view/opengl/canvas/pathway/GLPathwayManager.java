@@ -45,7 +45,7 @@ public class GLPathwayManager {
 
 	private boolean bEnableGeneMapping = true;
 	private boolean bEnableEdgeRendering = false;
-	private boolean bEnableIdenticalNodeHighlighting = false;
+	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableAnnotation = true;
 	
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
@@ -154,33 +154,32 @@ public class GLPathwayManager {
 			hashSelectedGraphItemRepId2Depth.put(
 					iArTmpSelectedGraphItemIds[iItemIndex],
 					iArTmpSelectedGraphItemDepth[iItemIndex]);
+
+			if (!bEnableIdenticalNodeHighlighting)
+				return;
+			
+			// Perform identical node highlighting only on nodes with depth 0
+			if (iArTmpSelectedGraphItemDepth[iItemIndex] != 0)
+				return;
+			
+			Iterator<IGraphItem> iterGraphItems = 
+				((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
+						.getItem(iArTmpSelectedGraphItemIds[iItemIndex])).getAllItemsByProp(
+								EGraphItemProperty.ALIAS_PARENT).iterator();
+			Iterator<IGraphItem> iterIdenticalGraphItemReps;
+			while(iterGraphItems.hasNext()) 
+			{
+				iterIdenticalGraphItemReps = 
+					iterGraphItems.next().getAllItemsByProp(
+							EGraphItemProperty.ALIAS_CHILD).iterator();
+
+				while(iterIdenticalGraphItemReps.hasNext()) 
+				{
+					hashSelectedGraphItemRepId2Depth.put(
+							iterIdenticalGraphItemReps.next().getId(), 0);
+				}
+			}	
 		}
-		
-//		if (!bEnableIdenticalNodeHighlighting)
-//			return;
-//		
-//		if (!refGeneralManager.getSingelton()
-//				.getPathwayItemManager().hasItem(iArTmpSelectedGraphItemIds[0]))
-//		{
-//			return;
-//		}
-//		
-//		Iterator<IGraphItem> iterGraphItems = 
-//			((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
-//					.getItem(iArTmpSelectedGraphItemIds[0])).getAllItemsByProp(
-//							EGraphItemProperty.ALIAS_PARENT).iterator();
-//		Iterator<IGraphItem> iterIdenticalGraphItemReps;
-//		while(iterGraphItems.hasNext()) 
-//		{
-//			iterIdenticalGraphItemReps = 
-//				iterGraphItems.next().getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
-//
-//			while(iterIdenticalGraphItemReps.hasNext()) 
-//			{
-//				iAlSelectedGraphItemRepIds.add(
-//						iterIdenticalGraphItemReps.next().getId());
-//			}
-//		}
 	}
 	
 	private void buildEnzymeNodeDisplayList(final GL gl) {

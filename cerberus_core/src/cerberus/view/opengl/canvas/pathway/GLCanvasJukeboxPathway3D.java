@@ -1051,7 +1051,6 @@ implements IMediatorReceiver, IMediatorSender {
 		IGraphItem identicalPathwayGraphItemRep;
 		int iPathwayId = 0;
 		int iMaxPathwayCount = 0;
-		int iVertexOccurenceCount = 0;
 		
 		while (iterIdenticalPathwayGraphItemReps.hasNext())
 		{
@@ -1077,7 +1076,17 @@ implements IMediatorReceiver, IMediatorSender {
 				iSlerpFactor = 0;
 			}
 
-			iVertexOccurenceCount++;
+			// Check if pathway has already a vertex counted
+			if (refHashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
+			{
+				// Increase current stored identical vertex count by 1
+				refHashPathwayContainingSelectedVertex2VertexCount.put(
+						iPathwayId, refHashPathwayContainingSelectedVertex2VertexCount.get(iPathwayId) + 1);
+			}
+			else
+			{
+				refHashPathwayContainingSelectedVertex2VertexCount.put(iPathwayId, 1);
+			}
 		}
 		
 		bRebuildVisiblePathwayDisplayLists = true;
@@ -1101,7 +1110,8 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 
 		// Rebuild display lists for visible pathways in focus position
-		if (!pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer
+		if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
+				&& !pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer
 				.getElementIdByPositionIndex(0)))
 		{
 			refGLPathwayManager.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
@@ -1225,11 +1235,13 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	public void enableNeighborhood(final boolean bEnableNeighborhood) {
 		
+		bRebuildVisiblePathwayDisplayLists = true;
 		this.bEnableNeighborhood = bEnableNeighborhood;
 	}
 	
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
 		
+		bRebuildVisiblePathwayDisplayLists = true;
 		refGLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 	
