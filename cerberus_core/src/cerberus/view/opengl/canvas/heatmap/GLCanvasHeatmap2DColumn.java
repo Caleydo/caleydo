@@ -69,6 +69,8 @@ public class GLCanvasHeatmap2DColumn
 	private int[] selectedIndexMode;
 
 	private HashMap<Integer, Integer> hashSelectedIndex;
+	
+	private HashMap<Integer, Integer> hashSelectedIndex_reverse;
 
 	private int iRenderIndexStart = 0;
 
@@ -87,6 +89,7 @@ public class GLCanvasHeatmap2DColumn
 		super(setGeneralManager, iViewId, iParentContainerId, sLabel);
 
 		hashNCBI_GENE2index = new HashMap<Integer, Integer>();
+		hashSelectedIndex_reverse = new HashMap<Integer, Integer>();
 
 		System.err.println("  GLCanvasHeatmap2DColumn()");
 
@@ -268,6 +271,11 @@ public class GLCanvasHeatmap2DColumn
 		hashNCBI_GENE2index = refIGenomeIdManager
 				.getAllValuesByGenomeIdTypeHashMap(GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 
+		Iterator<Integer> iter = hashNCBI_GENE2index.keySet().iterator();
+	
+		for (int index=0; iter.hasNext(); index++) {
+			hashSelectedIndex_reverse.put(new Integer(index), iter.next());
+		}
 	}
 
 	public void setKeysForHeatmap(int[] keys) {
@@ -407,7 +415,7 @@ public class GLCanvasHeatmap2DColumn
 		int[] iArSelectionId = new int[1];
 		int[] iArSelectionOptionalData = new int[1];
 		
-		iArSelectionId[0] = resultPickPointCoord;
+		iArSelectionId[0] = hashSelectedIndex_reverse.get(resultPickPointCoord).intValue();
 		iArSelectionOptionalData[0] = iModeValue;
 		
 		IStorage [] storageArray = new IStorage [3];
