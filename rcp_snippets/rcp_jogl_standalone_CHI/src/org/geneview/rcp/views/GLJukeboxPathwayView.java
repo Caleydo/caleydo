@@ -51,13 +51,13 @@ public class GLJukeboxPathwayView extends ViewPart {
 	
 	public static final String ACTION_ENABLE_ANIMATOR_ICON = "data/icons/PathwayEditor/animator.png";
 	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_TEXT = "Turn on/off pathway textures";
-	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_ICON = "data/icons/PathwayEditor/texture_on_off.gif";
+	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_ICON = "data/icons/PathwayEditor/texture_on_off.png";
 	public static final String ACTION_ENABLE_GENE_MAPPING_TEXT = "Turn on/off gene mapping";
-	public static final String ACTION_ENABLE_GENE_MAPPING_ICON = "data/icons/PathwayEditor/gene_mapping.gif";
+	public static final String ACTION_ENABLE_GENE_MAPPING_ICON = "data/icons/PathwayEditor/gene_mapping.png";
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_TEXT = "Turn on/off neighborhood highlighting";
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_ICON = "data/icons/PathwayEditor/three_neighborhood.gif";
 	public static final String ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT = "Turn on/off identical node highlighting";
-	public static final String ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_ICON = "data/icons/PathwayEdtior/identical_node_highlighting.gif";
+	public static final String ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_ICON = "data/icons/PathwayEditor/identical_node_highlighting.png";
 	public static final String ACTION_ENABLE_ANNOTATION_TEXT = "Show/hide annotation";
 	public static final String ACTION_ENABLE_ANNOTATION_ICON = "data/icons/PathwayEditor/annotation.png";
 	
