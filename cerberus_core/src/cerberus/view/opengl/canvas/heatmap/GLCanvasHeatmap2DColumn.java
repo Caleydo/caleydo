@@ -22,7 +22,6 @@ import org.geneview.graph.IGraphItem;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.collection.storage.FlatThreadStorageSimple;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
@@ -295,7 +294,7 @@ public class GLCanvasHeatmap2DColumn
 			return;
 		}
 
-		/* public void displayHeatmap(GL gl) { */
+		/* public void render_displayListHeatmap(GL gl) { */
 
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
 
@@ -486,7 +485,7 @@ public class GLCanvasHeatmap2DColumn
 		if ( selectedIndexArray != null ) {
 
 			/** notify other listeners .. */
-			notifyReceiver_PickedObject(selectedIndexArray, iSelectedMode_identifyier);
+			notifyReceiver_PickedObject_singleSelection(selectedIndexArray, iSelectedMode_identifyier);
 		}
 
 		
@@ -496,7 +495,95 @@ public class GLCanvasHeatmap2DColumn
 	/* -----   END: PICKING  ----- */
 	/* --------------------------- */
 
-	private void notifyReceiver_PickedObject( final int [] resultPickPointCoord, final int iModeValue) {
+	/* -----   END: PICKING  ----- */
+	/* --------------------------- */
+	
+	private void notifyReceiver_PickedObject_singleSelection( final int [] resultPickPointCoord, final int iModeValue) {
+		
+		if ( resultPickPointCoord.length < 1) {
+			return;
+		}
+		
+		int [] resultSelectedIndex = new int [resultPickPointCoord.length];
+		int [] resultSelectedIndexMode = new int [resultPickPointCoord.length];
+		
+		/* copy new indices to end of existing array.. */
+		for ( int iIndex=0; iIndex<resultPickPointCoord.length; iIndex++) {
+			resultSelectedIndex[iIndex] = resultPickPointCoord[iIndex];
+			resultSelectedIndexMode[iIndex] = iModeValue;
+		}
+		
+		/* swap .. */
+		selectedIndex = resultSelectedIndex;
+		selectedIndexMode = resultSelectedIndexMode;
+		
+		/* hack, check if external hashmap was already created */
+		//TODO: clean up this call, init from outside as soon as data is available!
+		if ( hashExternalId_2_HeatmapIndex==null ) {			
+			this.init_External2InternalHashMap();
+		}
+		
+		
+		/* notify external objects via eventMediator.. */
+		if ( hashExternalId_2_HeatmapIndex_reverse != null ) {
+			/* data for SetSelection.. */
+			SetSelection selectionSet = new SetSelection(-5, refGeneralManager);
+			
+			ArrayList <Integer> alSelectionId = new ArrayList <Integer> (resultPickPointCoord.length);
+			ArrayList <Integer> alSelectionId_PathwayId = new ArrayList <Integer> (resultPickPointCoord.length);
+			
+			for ( int i=0; i< resultPickPointCoord.length; i++ ) {
+				/* convert internal index to external id.. */
+				Integer lookupValue = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[i]);
+				if ( lookupValue ==  null ) {
+					return;
+				}
+			
+				PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) refGeneralManager.getSingelton()
+					.getPathwayItemManager().getItem(lookupValue.intValue());
+										
+				Iterator <IGraphItem> iterList = 
+					vertexItemBuffer.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
+				
+				while (iterList.hasNext()) {
+					IGraphItem bufferItem = iterList.next();					
+					alSelectionId.add( bufferItem.getId() );
+					//alSelectionId.add( iterList.next().getId() );
+					
+					// get pathway id from graph
+					 List<IGraph> list = bufferItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT);
+					 PathwayGraph buffer = (PathwayGraph) list.get(0);
+					 alSelectionId_PathwayId.add( buffer.getKeggId() );
+				}							
+			}
+	
+			int[] iArSelectionId = new int[alSelectionId.size()];
+			int[] iArSelectionDepthData = new int[alSelectionId.size()];
+			int[] iArSelectionOptionalData = new int[alSelectionId.size()];
+			
+			for ( int i=0; i < alSelectionId.size(); i++) {
+				iArSelectionId[i] = alSelectionId.get(i).intValue();
+				iArSelectionDepthData[i] = iModeValue;	
+				iArSelectionOptionalData[i] = alSelectionId_PathwayId.get(i);
+			}
+			
+			IStorage [] storageArray = new IStorage [3];
+			for ( int i=0; i< 3 ; i++ ) {
+				storageArray[i] = new FlatThreadStorageSimple( selectionSet.getId(), refGeneralManager, null);		
+				selectionSet.setStorageByDim(storageArray, 0);
+			}
+			
+			selectionSet.setAllSelectionDataArrays(iArSelectionId, iArSelectionDepthData, iArSelectionOptionalData );
+			
+			// Calls update with the ID of the PathwayViewRep
+	 		((EventPublisher)refGeneralManager.getSingelton().
+				getEventPublisher()).updateReceiver(this, selectionSet);
+	 		refGeneralManager.getSingelton().logMsg("broadcast selection event! " + selectionSet.toString(),
+	 				LoggerType.STATUS);
+		}
+	}
+
+	private void notifyReceiver_PickedObject_multipleSelection( final int [] resultPickPointCoord, final int iModeValue) {
 		
 		if ( resultPickPointCoord.length < 1) {
 			return;
@@ -689,9 +776,6 @@ public class GLCanvasHeatmap2DColumn
 
 		if ((selectedIndex.length > 0) || (!fIndexPickedCoored.isEmpty()))
 		{
-
-		
-			
 			int iRenderIndexRangeX = iRenderIndexStop - iRenderIndexStart;
 
 			float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
@@ -937,7 +1021,7 @@ public class GLCanvasHeatmap2DColumn
 
 	}
 
-	public void displayHeatmap(GL gl) {
+	public void render_displayListHeatmap(GL gl) {
 		
 		if ( alTargetSet.isEmpty())
 		{
@@ -946,9 +1030,9 @@ public class GLCanvasHeatmap2DColumn
 		
 		
 		if ( bRenderingStyleFlat ) {
-			render_dispalylistHeatmap_FlatStyle(gl);
+			render_displaylistHeatmap_FlatStyle(gl);
 		} else {		
-			render_dispalylistHeatmap_SortedStyle(gl);
+			render_displaylistHeatmap_SortedStyle(gl);
 		}
 		
 		/* Sourrounding box */
@@ -985,7 +1069,7 @@ public class GLCanvasHeatmap2DColumn
 		
 	}
 
-	private void render_dispalylistHeatmap_SortedStyle(GL gl) {
+	private void render_displaylistHeatmap_SortedStyle(GL gl) {
 		/**
 		 * Get data from Set...
 		 */
@@ -1123,7 +1207,6 @@ public class GLCanvasHeatmap2DColumn
 		/* copy references to raw data int[] .. */
 		ArrayList <int[]> bufferValueArrays = new ArrayList <int[]> ();
 		ArrayList <Integer> bufferValueArrays_Offset = new ArrayList <Integer> ();
-		ArrayList <int[]> bufferValueArrays_Group = new ArrayList <int[]> ();
 		
 		Iterator <ISet> iterTargetSet = alTargetSet.iterator();
 		
@@ -1261,7 +1344,7 @@ public class GLCanvasHeatmap2DColumn
 	
 	}
 	
-	private void render_dispalylistHeatmap_FlatStyle(GL gl) {
+	private void render_displaylistHeatmap_FlatStyle(GL gl) {
 
 		/**
 		 * Get data from Set...
@@ -1388,7 +1471,7 @@ public class GLCanvasHeatmap2DColumn
 //	}
 	protected final void renderPart4pickingX(GL gl) {
 
-		/* public void displayHeatmap(GL gl) { */
+		/* public void render_displayListHeatmap(GL gl) { */
 
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
 
@@ -1433,7 +1516,7 @@ public class GLCanvasHeatmap2DColumn
 
 	protected final void renderPart4pickingY(GL gl) {
 
-		/* public void displayHeatmap(GL gl) { */
+		/* public void render_displayListHeatmap(GL gl) { */
 
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
 

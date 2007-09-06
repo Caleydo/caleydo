@@ -116,21 +116,21 @@ extends AGLCanvasHeatmap2D
 		fAspectRatio = new float[2][3];
 		viewingFrame = new float[3][2];
 
-		fAspectRatio[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] = 0.0f;
-		fAspectRatio[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] = 20.0f;
-		fAspectRatio[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] = 0.0f;
-		fAspectRatio[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] = 20.0f;
+		fAspectRatio[X][MIN] = 0.0f;
+		fAspectRatio[X][MAX] = 20.0f;
+		fAspectRatio[Y][MIN] = 0.0f;
+		fAspectRatio[Y][MAX] = 20.0f;
 
-		fAspectRatio[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.OFFSET] = 0.0f;
-		fAspectRatio[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.OFFSET] = -2.0f;
+		fAspectRatio[Y][OFFSET] = 0.0f;
+		fAspectRatio[Y][OFFSET] = -2.0f;
 
-		viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] = -1.0f;
-		viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] = 1.0f;
-		viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] = 1.0f;
-		viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] = -1.0f;
+		viewingFrame[X][MIN] = -1.0f;
+		viewingFrame[X][MAX] = 1.0f;
+		viewingFrame[Y][MIN] = 1.0f;
+		viewingFrame[Y][MAX] = -1.0f;
 
-		viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN] = 0.0f;
-		viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MAX] = 0.0f;
+		viewingFrame[Z][MIN] = 0.0f;
+		viewingFrame[Z][MAX] = 0.0f;
 
 		refMinMaxDataInteger = new MinMaxDataInteger(1);
 	}
@@ -144,7 +144,7 @@ extends AGLCanvasHeatmap2D
 		float fNowY = fStartY - 0.01f;
 		float fNextY = fEndY + 0.01f;
 
-		float fBias_Z = viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN] + 0.0001f;
+		float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
 
 		for (int i = 0; i < this.iSelectionStartAtIndexX.length; i++)
 		{
@@ -185,7 +185,7 @@ extends AGLCanvasHeatmap2D
 
 	protected void renderPart4pickingX(GL gl) {
 		
-		/* public void displayHeatmap(GL gl) { */
+		/* public void render_displayListHeatmap(GL gl) { */
 
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
 		
@@ -193,13 +193,13 @@ extends AGLCanvasHeatmap2D
 		 * force update ...
 		 */
 
-		float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
+		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 				/ (float) (iValuesInRow );
 
-		float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN];
-		float fNextY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX];
+		float fNowY = viewingFrame[Y][MIN];
+		float fNextY = viewingFrame[Y][MAX];
 
-		float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN];
+		float fNowX = viewingFrame[X][MIN];
 		float fNextX = fNowX + fIncX;
 
 		
@@ -213,10 +213,10 @@ extends AGLCanvasHeatmap2D
 			
 			gl.glBegin(GL.GL_TRIANGLE_FAN);
 
-			gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+			gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
 
 			gl.glEnd();			
 			gl.glPopName();
@@ -230,7 +230,7 @@ extends AGLCanvasHeatmap2D
 
 	protected void renderPart4pickingY(GL gl) {
 
-		/* public void displayHeatmap(GL gl) { */
+		/* public void render_displayListHeatmap(GL gl) { */
 
 		gl.glNormal3f(0.0f, 0.0f, 1.0f);
 
@@ -240,13 +240,13 @@ extends AGLCanvasHeatmap2D
 		 * force update ...
 		 */
 
-		float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
+		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 				/ (float) (iValuesInColum);
 
-		float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN];
-		float fNextX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX];
+		float fNowX = viewingFrame[X][MIN];
+		float fNextX = viewingFrame[X][MAX];
 
-		float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN];
+		float fNowY = viewingFrame[Y][MIN];
 		float fNextY = fNowY + fIncY;
 
 		/* Y_min .. Y_max */
@@ -257,10 +257,10 @@ extends AGLCanvasHeatmap2D
 
 			gl.glBegin(GL.GL_TRIANGLE_FAN);
 
-			gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+			gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
 
 			gl.glEnd();
 			gl.glPopName();
@@ -510,7 +510,7 @@ extends AGLCanvasHeatmap2D
 		float fNowX = fStartX - 0.01f;
 		float fNextX = fEndX + 0.01f;
 
-		float fBias_Z = viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN] + 0.0002f;
+		float fBias_Z = viewingFrame[Z][MIN] + 0.0002f;
 
 		for (int i = 0; i < this.iSelectionStartAtIndexY.length; i++)
 		{
@@ -597,7 +597,7 @@ extends AGLCanvasHeatmap2D
 		iHeatmapDisplayListId = gl.glGenLists(1);
 		
 		gl.glNewList(iHeatmapDisplayListId, GL.GL_COMPILE);	
-		displayHeatmap( gl );
+		render_displayListHeatmap( gl );
 		gl.glEndList();
 		
 		  refGeneralManager.getSingelton().logMsg(
@@ -613,22 +613,22 @@ extends AGLCanvasHeatmap2D
 		}
 		Vec2f current = fIndexPickedCoord.get(iIndexStart);
 		
-		float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
+		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 		/ (float) (iValuesInRow );		
-		float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
+		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 		/ (float) (iValuesInColum );
 
-		float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * current.x();
-		float fNextX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (current.x() +1.0f);
-		float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * current.y();
-		float fNextY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (current.y() +1.0f);
+		float fNowX = viewingFrame[X][MIN] + fIncX * current.x();
+		float fNextX = viewingFrame[X][MIN] + fIncX * (current.x() +1.0f);
+		float fNowY = viewingFrame[Y][MIN] + fIncY * current.y();
+		float fNextY = viewingFrame[Y][MIN] + fIncY * (current.y() +1.0f);
 			
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 
-			gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-			gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+			gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+			gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
 
 		gl.glEnd();			
 	}
@@ -693,24 +693,24 @@ extends AGLCanvasHeatmap2D
 		Iterator <Vec2f> iter = fIndexPickedCoord.iterator();
 		
 		while ( iter.hasNext() ) {
-			float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
+			float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 			/ (float) (iValuesInRow );		
-			float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
+			float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 			/ (float) (iValuesInColum );
 	
 			Vec2f fVec2fMultiplyer =  iter.next();
 			
-			float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyer.x();
-			float fNextX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() +1.0f);
-			float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y();
-			float fNextY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyer.y() +1.0f);
+			float fNowX = viewingFrame[X][MIN] + fIncX * fVec2fMultiplyer.x();
+			float fNextX = viewingFrame[X][MIN] + fIncX * (fVec2fMultiplyer.x() +1.0f);
+			float fNowY = viewingFrame[Y][MIN] + fIncY * fVec2fMultiplyer.y();
+			float fNextY = viewingFrame[Y][MIN] + fIncY * (fVec2fMultiplyer.y() +1.0f);
 				
 			gl.glBegin(GL.GL_TRIANGLE_FAN);
 	
-				gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-				gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+				gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+				gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+				gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+				gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
 	
 			gl.glEnd();	
 		}
@@ -742,9 +742,9 @@ extends AGLCanvasHeatmap2D
 		int iIndex = 0;
 		
 		while ( iter.hasNext() ) {
-			float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
+			float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 			/ (float) (iValuesInRow );		
-			float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
+			float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 			/ (float) (iValuesInColum );
 	
 			Vec2f fVec2fMultiplyer =  iter.next();
@@ -757,36 +757,36 @@ extends AGLCanvasHeatmap2D
 				
 				/** first strip */
 				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyer.x(), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() + 1),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+						viewingFrame[X][MIN] + fIncX * fVec2fMultiplyer.x(), 
+						viewingFrame[X][MIN] + fIncX * (fVec2fMultiplyer.x() + 1),
+						viewingFrame[Y][MIN] + fIncY * fVec2fMultiplyer.y(), 
+						viewingFrame[Y][MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
+						viewingFrame[Z][MIN]);
 				
 				/** second strip */
 				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyerUpperRight.x(), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyerUpperRight.x() + 1),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+						viewingFrame[X][MIN] + fIncX * fVec2fMultiplyerUpperRight.x(), 
+						viewingFrame[X][MIN] + fIncX * (fVec2fMultiplyerUpperRight.x() + 1),
+						viewingFrame[Y][MIN] + fIncY * fVec2fMultiplyer.y(), 
+						viewingFrame[Y][MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
+						viewingFrame[Z][MIN]);
 				
 				
 				/** third strip */
 				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyerUpperRight.x(),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyer.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyer.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+						viewingFrame[X][MIN] + fIncX * (fVec2fMultiplyer.x() +1), 
+						viewingFrame[X][MIN] + fIncX * fVec2fMultiplyerUpperRight.x(),
+						viewingFrame[Y][MIN] + fIncY * fVec2fMultiplyer.y(), 
+						viewingFrame[Y][MIN] + fIncY * (fVec2fMultiplyer.y() +1), 
+						viewingFrame[Z][MIN]);
 				
 				/** forth strip */
 				renderGLQuad(gl, 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * (fVec2fMultiplyer.x() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN] + fIncX * fVec2fMultiplyerUpperRight.x(),
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * fVec2fMultiplyerUpperRight.y(), 
-						viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
-						viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+						viewingFrame[X][MIN] + fIncX * (fVec2fMultiplyer.x() +1), 
+						viewingFrame[X][MIN] + fIncX * fVec2fMultiplyerUpperRight.x(),
+						viewingFrame[Y][MIN] + fIncY * fVec2fMultiplyerUpperRight.y(), 
+						viewingFrame[Y][MIN] + fIncY * (fVec2fMultiplyerUpperRight.y() +1), 
+						viewingFrame[Z][MIN]);
 			}
 			else {
 				/** */
@@ -940,7 +940,7 @@ extends AGLCanvasHeatmap2D
 	  
   }
   
-  public void displayHeatmap(GL gl) {
+  public void render_displayListHeatmap(GL gl) {
 
 	  /**
 	   * Get data from Set...
@@ -972,7 +972,7 @@ extends AGLCanvasHeatmap2D
 					//	    				System.out.print(";" +
 					//	    						Integer.toString(iHistogramIntervalls[i]) );
 					//	    			}
-					System.err.println(" UPDATED inside DispalyList!");
+					System.err.println(" UPDATED inside DisplayList!");
 				}
 				//System.out.print("-");
 
@@ -982,15 +982,15 @@ extends AGLCanvasHeatmap2D
 
 				int iCountValuesInRow = 0;
 
-				float fIncX = (viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN])
+				float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 						/ (float) (iValuesInRow + 1);
-				float fIncY = (viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX] - viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN])
+				float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 						/ (float) (iValuesInColum );
 
-				float fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN];
+				float fNowX = viewingFrame[X][MIN];
 				float fNextX = fNowX + fIncX;
 
-				float fNowY = viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN];
+				float fNowY = viewingFrame[Y][MIN];
 				float fNextY = fNowY + fIncY;
 
 				gl.glNormal3f(0.0f, 0.0f, 1.0f);
@@ -1002,10 +1002,10 @@ extends AGLCanvasHeatmap2D
 
 					colorMapping(gl, dataArrayInt[iter.next()]);
 
-					gl.glVertex3f(fNowX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-					gl.glVertex3f(fNextX, fNowY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-					gl.glVertex3f(fNextX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
-					gl.glVertex3f(fNowX, fNextY, viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN]);
+					gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
 
 					gl.glEnd();
 					
@@ -1019,7 +1019,7 @@ extends AGLCanvasHeatmap2D
 						fNowY = fNextY;
 						fNextY += fIncY;
 
-						fNowX = viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN];
+						fNowX = viewingFrame[X][MIN];
 						fNextX = fNowX + fIncX;
 
 						iCountValuesInRow = 1;
@@ -1035,10 +1035,10 @@ extends AGLCanvasHeatmap2D
 				/* Selection ? */
 				if (iSelectionStartAtIndexY != null) {
 					drawSelectionY(gl, 
-							viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN], 
-							viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN], 
-							viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX],
-							viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX],
+							viewingFrame[X][MIN], 
+							viewingFrame[Y][MIN], 
+							viewingFrame[X][MAX],
+							viewingFrame[Y][MAX],
 							fIncX, 
 							fIncY);
 				}
@@ -1047,10 +1047,10 @@ extends AGLCanvasHeatmap2D
 					
 					
 					drawSelectionX(gl, 
-							viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN], 
-							viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN], 
-							viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX],
-							viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX],
+							viewingFrame[X][MIN], 
+							viewingFrame[Y][MIN], 
+							viewingFrame[X][MAX],
+							viewingFrame[Y][MAX],
 							fIncX, 
 							fIncY);
 				}
@@ -1060,17 +1060,17 @@ extends AGLCanvasHeatmap2D
 				
 			} // if (i_dataValues != null)
 
-			float fBias_Z = viewingFrame[AGLCanvasHeatmap2D.Z][AGLCanvasHeatmap2D.MIN] + 0.0001f;
+			float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
 
 		
 			
 			/* Sourrounding box */
 			gl.glColor3f(1.0f, 1.0f, 0.1f);
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN], viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN], fBias_Z);
-			gl.glVertex3f(viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX], viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MIN], fBias_Z);
-			gl.glVertex3f(viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MAX], viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX], fBias_Z);
-			gl.glVertex3f(viewingFrame[AGLCanvasHeatmap2D.X][AGLCanvasHeatmap2D.MIN], viewingFrame[AGLCanvasHeatmap2D.Y][AGLCanvasHeatmap2D.MAX], fBias_Z);
+			gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], fBias_Z);
+			gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], fBias_Z);
+			gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], fBias_Z);
+			gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], fBias_Z);
 			gl.glEnd();
 
 		} // if (this.targetSet != null)
