@@ -21,7 +21,10 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
 import org.geneview.graph.EGraphItemHierarchy;
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
@@ -42,6 +45,7 @@ import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.selection.ISetSelection;
 import cerberus.data.graph.core.PathwayGraph;
 import cerberus.data.graph.item.vertex.EPathwayVertexShape;
+import cerberus.data.graph.item.vertex.EPathwayVertexType;
 //import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import cerberus.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
@@ -344,8 +348,13 @@ extends APathwayGraphViewRep {
 
 		final String sUrl = ((PathwayVertexGraphItemRep) lastClickedGraphCell
 				.getUserObject()).getPathwayVertexGraphItem().getExternalLink();
-
-		if (extractClickedPathway(sUrl) == false)
+		
+		if(((PathwayVertexGraphItemRep) lastClickedGraphCell.getUserObject())
+				.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.map))
+		{
+			extractClickedPathway(sUrl);
+		}
+		else
 		{
 			loadNodeInformationInBrowser(sUrl);
 
@@ -658,13 +667,18 @@ extends APathwayGraphViewRep {
 
 	public void loadPathwayFromFile(int iNewPathwayId) {
 
-		//Load pathway
-		boolean bLoadingOK = 
-			refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iNewPathwayId);
+//		//Load pathway
+//		boolean bLoadingOK = 
+//			refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iNewPathwayId);
+//		
+//		if (!bLoadingOK)
+//			return;
+//		
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		int[] iArTmp = new int[1];
+		iArTmp[0] = iNewPathwayId;
+		tmpStorage.setArrayInt(iArTmp);
 		
-		if (!bLoadingOK)
-			return;
-
 		// Clean up
 		refCurrentPathway = null;
 		refCurrentPathwayImageMap = null;
@@ -1068,15 +1082,42 @@ extends APathwayGraphViewRep {
 			return false;
 		}
 		
-		int iNewPathwayId = StringConversionTool.convertStringToInt(sUrl
-				.substring(iPathwayIdIndex, sUrl.lastIndexOf('.')), 0);
-		
-		// Load pathway
-		loadPathwayFromFile(iNewPathwayId);
-		
-		triggerPathwayUpdate(iNewPathwayId);
-		
-		return true;
+		try {
+			int iNewPathwayId = StringConversionTool.convertStringToInt(sUrl
+					.substring(iPathwayIdIndex, sUrl.lastIndexOf('.')), 0);
+			
+			// Load pathway
+			loadPathwayFromFile(iNewPathwayId);
+			
+			triggerPathwayUpdate(iNewPathwayId);
+			
+			return true;
+			
+		}catch (IndexOutOfBoundsException e) {
+			
+			try {
+				refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						MessageBox messageBox = 
+							new MessageBox(refEmbeddedFrameComposite.getShell(), 
+									SWT.ICON_WARNING | SWT.ABORT);
+				        
+				        messageBox.setText("Warning");
+				        messageBox.setMessage("This pathway cannot be loaded!");
+				        messageBox.open();
+					}
+				});
+			}
+				catch (SWTException swte) 
+			{
+					refGeneralManager.getSingelton().logMsg(
+							this.getClass().getSimpleName() + 
+							": error while setURL ["+sUrl + "]", 
+							LoggerType.STATUS );
+			}
+				
+			return false;
+		}
 	}
 	
 	private void triggerPathwayUpdate(final int iPathwayId) 
