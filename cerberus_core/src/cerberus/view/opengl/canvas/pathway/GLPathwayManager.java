@@ -156,11 +156,11 @@ public class GLPathwayManager {
 					iArTmpSelectedGraphItemDepth[iItemIndex]);
 
 			if (!bEnableIdenticalNodeHighlighting)
-				return;
+				continue;
 			
 			// Perform identical node highlighting only on nodes with depth 0
 			if (iArTmpSelectedGraphItemDepth[iItemIndex] != 0)
-				return;
+				continue;
 			
 			Iterator<IGraphItem> iterGraphItems = 
 				((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
@@ -405,12 +405,32 @@ public class GLPathwayManager {
 			if (hashSelectedGraphItemRepId2Depth.containsKey(vertexRep.getId()))
 			{
 				int iDepth = hashSelectedGraphItemRepId2Depth.get(vertexRep.getId());
-				tmpNodeColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iDepth);
-					
+				//tmpNodeColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iDepth);
+				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				
+				if (iDepth != 0)
+				{
+					gl.glEnable(GL.GL_LINE_STIPPLE);	
+				}
+				
+				if(iDepth == 1)
+				{
+					gl.glLineStipple(4, (short) 0xAAAA);
+				}
+				else if(iDepth == 2)
+				{
+					gl.glLineStipple(2, (short) 0xAAAA);
+				}
+				else if(iDepth == 3)
+				{
+					gl.glLineStipple(1, (short) 0xAAAA);					
+				}
+			
 				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 						tmpNodeColor.getGreen() / 255.0f, 
 						tmpNodeColor.getBlue() / 255.0f, 1.0f);
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+				gl.glDisable(GL.GL_LINE_STIPPLE);
 			}
 			
 			if (bEnableGeneMapping)
@@ -636,6 +656,11 @@ public class GLPathwayManager {
 		
 		hashPickID2VertexRep.clear();
 		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
+	}
+	
+	public void updateSelectionSet(final SetSelection setSelection) 
+	{
+		alSetSelection.add(0, setSelection);
 	}
 	
 	public void enableEdgeRendering(final boolean bEnableEdgeRendering) {

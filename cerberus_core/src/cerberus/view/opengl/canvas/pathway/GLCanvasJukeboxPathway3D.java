@@ -26,6 +26,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.StorageType;
 import cerberus.data.collection.set.selection.ISetSelection;
+import cerberus.data.collection.set.selection.SetSelection;
 import cerberus.data.graph.core.PathwayGraph;
 import cerberus.data.graph.item.vertex.EPathwayVertexType;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
@@ -69,7 +70,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private boolean bEnablePathwayTextures = true;
 	private boolean bMouseOverMemoPad = false;
 	private boolean bSelectionChanged = false;
-	private boolean bEnableNeighborhood = false;
+	private boolean bEnableNeighborhood = true;
 
 	private int iMouseOverPickedPathwayId = -1;
 
@@ -611,6 +612,9 @@ implements IMediatorReceiver, IMediatorSender {
 			bRebuildVisiblePathwayDisplayLists = true;
 			bSelectionChanged = true;
 			infoAreaRenderer.resetPoint();
+			
+			refGLPathwayManager.updateSelectionSet(
+					(SetSelection) refSetSelection);
 		}
 		
 		refSetSelection.returnReadToken();		
@@ -920,11 +924,14 @@ implements IMediatorReceiver, IMediatorSender {
 			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
 
-			// Trigger update with selected vertex
-			int[] iArSelectionId = new int[1];
-			iArSelectionId[0] = selectedVertex.getId();
-			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArSelectionId,
-					new int[0], new int[0]);
+//			// Trigger update with selected vertex
+//			int[] iArSelectionId = new int[1];
+//			iArSelectionId[0] = selectedVertex.getId();
+//			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArSelectionId,
+//					new int[0], new int[0]);
+			
+			// Trigger update on current selection
+			alSetSelection.get(0).updateSelectionSet(iUniqueId);
 			
 			return;
 		}
@@ -1151,18 +1158,16 @@ implements IMediatorReceiver, IMediatorSender {
 			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
 			{
 				// Consider only vertices for now
-				if (!lGraphItems.get(iItemIndex).getClass().equals
+				if (lGraphItems.get(iItemIndex).getClass().equals
 						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
 				{
-					break;
+					iAlTmpGraphItemId.add(lGraphItems.get(iItemIndex).getId());
+					iAlTmpGraphItemDepth.add(iDepthIndex); // Convert node depth while ignoring edges
 				}
-				
-				iAlTmpGraphItemId.add(lGraphItems.get(iItemIndex).getId());
-				iAlTmpGraphItemDepth.add(iDepthIndex);
 			}
 		}
 	
-		int[] iArTmpGraphItemId = new int[iAlTmpGraphItemId.size()+1];  // +1 because of selected element itself
+		int[] iArTmpGraphItemId = new int[iAlTmpGraphItemId.size()+1];  
 		int[] iArTmpGraphItemDepth = new int[iAlTmpGraphItemDepth.size()+1];
 
 		iArTmpGraphItemId[0] = selectedVertex.getId();
@@ -1171,13 +1176,15 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iItemIndex = 0; iItemIndex < iAlTmpGraphItemId.size(); iItemIndex++) 
 		{
 			iArTmpGraphItemId[iItemIndex+1] = iAlTmpGraphItemId.get(iItemIndex);
-			iArTmpGraphItemDepth[iItemIndex+1] = iAlTmpGraphItemDepth.get(iItemIndex);
+			iArTmpGraphItemDepth[iItemIndex+1] = (iAlTmpGraphItemDepth.get(iItemIndex) + 1) / 2; // +1/2 because of selected element itself
 		}
 		
 		alSetSelection.get(0).getWriteToken();
 		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
 		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
 		alSetSelection.get(0).returnWriteToken();
+		
+		//refGLPathwayManager.updateSelectionSet(alSetSelection.get(0));
 		
 //		System.out.println("Root vertex of neighborhood algorithm is: " +selectedVertex.getId());
 //		System.out.println("Resulting neighboring items: " +iArTmpGraphItemDepth.length);

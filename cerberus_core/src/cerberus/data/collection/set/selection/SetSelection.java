@@ -141,11 +141,16 @@ implements ISetSelection {
 			int[] iArSelectionGroup,
 			int[] iArNeighborVertices) {
 	
-		try {
 			// Update selection SET data.
 			this.setAllSelectionDataArrays(
 					iArSelectionVertexId, iArSelectionGroup, iArNeighborVertices);
 			
+			updateSelectionSet(iUniqueTriggerID);
+	}
+	
+	public void updateSelectionSet(int iUniqueTriggerID) {
+		
+		try {	
 			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
 					": updateSelectionSet(): Set selection data and trigger update.",
