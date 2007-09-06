@@ -8,7 +8,7 @@ import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
-import cerberus.view.opengl.canvas.parcoords.GLCanvasParCoords;
+import cerberus.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 
 /**
  * @author Michael Kalkusch
@@ -46,8 +46,8 @@ extends ACmdGLObjectPathway3D {
 	@Override
 	public void doCommandPart() throws GeneViewRuntimeException {
 		
-		GLCanvasParCoords canvas = 
-			(GLCanvasParCoords) openGLCanvasUser;		
+		GLCanvasParCoords3D canvas = 
+			(GLCanvasParCoords3D) openGLCanvasUser;		
 		
 		canvas.setOriginRotation(cameraOrigin, cameraRotation);
 	}
@@ -55,8 +55,8 @@ extends ACmdGLObjectPathway3D {
 	@Override
 	public void undoCommandPart() throws GeneViewRuntimeException {
 
-		GLCanvasParCoords canvas = 
-			(GLCanvasParCoords) openGLCanvasUser;
+		GLCanvasParCoords3D canvas = 
+			(GLCanvasParCoords3D) openGLCanvasUser;
 		
 		canvas.destroyGLCanvas();
 		canvas = null;

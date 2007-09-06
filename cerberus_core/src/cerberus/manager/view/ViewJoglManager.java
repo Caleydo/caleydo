@@ -31,7 +31,7 @@ import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import cerberus.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 import cerberus.view.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
-import cerberus.view.opengl.canvas.parcoords.GLCanvasParCoords;
+import cerberus.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import cerberus.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import cerberus.view.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
 import cerberus.view.opengl.canvas.pathway.GLCanvasPanelPathway3D;
@@ -401,7 +401,7 @@ implements IViewGLCanvasManager {
 					sLabel);
 			
 		case CREATE_GL_PARALLEL_COORDINATES_3D:
-			return new GLCanvasParCoords(
+			return new GLCanvasParCoords3D(
 					refGeneralManager, 
 					iUniqueId,
 					iGlForwarderId, 

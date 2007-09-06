@@ -12,12 +12,12 @@ import cerberus.view.opengl.canvas.AGLCanvasUser;
  * @author Alexander Lex
  *
  */
-public class GLCanvasParCoords extends AGLCanvasUser {
+public class GLCanvasParCoords3D extends AGLCanvasUser {
 
 //	private IGeneralManager refGeneralManager;
 	private float axisSpacing;
 	
-	public GLCanvasParCoords(IGeneralManager refGeneralManager,
+	public GLCanvasParCoords3D(IGeneralManager refGeneralManager,
 			int viewId,
 			int parentContainerId,
 			String label) {
@@ -47,47 +47,14 @@ public class GLCanvasParCoords extends AGLCanvasUser {
 	 * @see cerberus.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
 	 */
 	public void renderPart(GL gl) 
-	{
-		
-		renderCoordinateSystem(gl, 4, 3);
-	/*
-		//int count = 0;
-		//while(count < 100000)
-		//{
-			//gl.glPushMatrix();
-			//gl.glRotatef(0.1f, 0.0f, 0.0f, 1.0f);
-			gl.glPointSize(2.0f);
-			gl.glColor3f(0.0f, 0.0f, 0.0f); // Set the color to red
-			
-			gl.glBegin(GL.GL_TRIANGLES); // Drawing using triangles			
-			gl.glVertex3f(0.1f, 0.0f, 0.0f); // Top
-			gl.glVertex3f(2.0f, 0.0f, 0.0f);
-			
-			//gl.glVertex3f(-0.1f, 0.0f, 0.0f);
-			gl.glColor3f(1.0f, 0.0f, 0.0f);
-			//gl.glVertex3f(-4.0f, 0.0f, 0.0f);
-			
-			gl.glVertex3f(0.0f, 0.1f, 0.0f);
-			gl.glVertex3f(0.0f, 4.0f, 0.0f);
-			
-			gl.glVertex3f(0.0f, -0.1f, 0.0f);
-			gl.glVertex3f(0.0f, -4.0f, 0.0f);
-			gl.glEnd();
-			
-			//gl.glColor3f(0.0f, 2.0f, -1.0f); // Set the color to green
-			//gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
-			//gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color to blue
-			//gl.glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-			//gl.glColor3f(1.0f, 0.0f, 1.0f);
-			//gl.glVertex3f(-2.0f, -2.0f, 0.0f);
-			//gl.glPopMatrix();
-			//count++;
-		//}
-	
-	
-		gl.glEnd(); // Finish drawing the triangle
-
-		*/
+	{		
+		float[] graphData = {0.3f , 0.2f, 1.8f, 2.0f, 3.0f, 0.1f};
+		float[] graphData2 = {0.1f, 0.4f, 1.5f, 2.3f, 1.6f, 0.5f};
+		renderCoordinateSystem(gl, graphData.length, 3);
+		gl.glColor3f(0.0f, 1.0f, 0.0f);
+		renderGraphs(gl, graphData);
+		gl.glColor3f(1.0f, 0.0f, 0.0f);
+		renderGraphs(gl, graphData2);		
 	}
 	
 	private void renderCoordinateSystem(GL gl, int numberParameters, float maxHeight)
@@ -107,24 +74,35 @@ public class GLCanvasParCoords extends AGLCanvasUser {
 		gl.glEnd();
 		
 		// draw all Y-Axis
-		gl.glColor3f(0.0f, 2.0f, 0.0f);
+
 		gl.glLineWidth(1.0f);
 		gl.glBegin(GL.GL_LINES);	
 		
 		int count = 0;
 		while (count <= numberParameters)
 		{
-			gl.glVertex3f(count*axisSpacing, 0.0f, 0.0f);
-			gl.glVertex3f(count*axisSpacing, maxHeight, 0.0f);
+			gl.glVertex3f(count * axisSpacing, 0.0f, 0.0f);
+			gl.glVertex3f(count * axisSpacing, maxHeight, 0.0f);
 			count++;
 		}
 		
-		gl.glEnd();
+		gl.glEnd();	
+		
 	}
 	
-	private void renderGraphs(GL gl)
+	private void renderGraphs(GL gl, float[] graphData)
 	{
+		gl.glBegin(GL.GL_LINE_STRIP);
 		
+		int count = 0;
+		while (count < graphData.length)
+		{
+			gl.glVertex3f(count * axisSpacing, graphData[count], 0.0f);
+			
+			count++;
+		}
+		
+		gl.glEnd();	
 		
 	}
 	
