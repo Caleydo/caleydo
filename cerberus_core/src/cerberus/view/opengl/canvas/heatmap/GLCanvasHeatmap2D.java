@@ -20,6 +20,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
@@ -27,6 +28,8 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
+import cerberus.view.opengl.canvas.pathway.GLPathwayManager;
+import cerberus.view.opengl.util.GLInfoAreaRenderer;
 
 /**
  * @author Michael Kalkusch
@@ -99,6 +102,12 @@ extends AGLCanvasHeatmap2D
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 	//private DragAndDropMouseListener pickingTriggerMouseAdapter;
 	
+	protected GLInfoAreaRenderer infoAreaRenderer;
+	
+	protected PathwayVertexGraphItem pickedGeneVertex;
+	
+	protected boolean bIsMousePickingEvent = false;
+	
 	/**
 	 * @param setGeneralManager
 	 */
@@ -133,6 +142,9 @@ extends AGLCanvasHeatmap2D
 		viewingFrame[Z][MAX] = 0.0f;
 
 		refMinMaxDataInteger = new MinMaxDataInteger(1);
+		
+		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
+				new GLPathwayManager(setGeneralManager));
 	}
 
 	protected void drawSelectionX(GL gl, final float fStartX,
@@ -377,6 +389,12 @@ extends AGLCanvasHeatmap2D
 				|| bMouseReleased)
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			bIsMousePickingEvent = true;
+		}
+		else
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			bIsMousePickingEvent = false;
 		}
 
 		// Check if an object was picked

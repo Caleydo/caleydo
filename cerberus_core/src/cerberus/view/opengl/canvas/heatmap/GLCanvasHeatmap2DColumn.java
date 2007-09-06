@@ -38,6 +38,8 @@ import cerberus.manager.event.mediator.IMediatorSender;
 //import cerberus.math.statistics.minmax.MinMaxDataInteger;
 //import cerberus.view.jogl.mouse.PickingJoglMouseListener; //import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
+import cerberus.view.opengl.canvas.pathway.GLPathwayManager;
+import cerberus.view.opengl.util.GLInfoAreaRenderer;
 
 /**
  * @author Michael Kalkusch
@@ -477,17 +479,29 @@ public class GLCanvasHeatmap2DColumn
 				.println("GLCanvasHeatmap2DColumn  PICKED index=["
 						+ resultPickPointCoord[0] + ","
 						+ resultPickPointCoord[1] + "]");
-
-		int[] selectedIndexArray = addPickedPoint(fIndexPickedCoored,
-				(float) resultPickPointCoord[0],
-				(float) resultPickPointCoord[1] );
 		
-		if ( selectedIndexArray != null ) {
+		// Reset pick point
+		infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl,
+				pickPoint.x, pickPoint.y);
 
-			/** notify other listeners .. */
-			notifyReceiver_PickedObject_singleSelection(selectedIndexArray, iSelectedMode_identifyier);
+		// Check if real picking is performed
+		if (bIsMousePickingEvent)
+		{	
+			int[] selectedIndexArray = addPickedPoint(fIndexPickedCoored,
+					(float) resultPickPointCoord[0],
+					(float) resultPickPointCoord[1] );
+			
+			if ( selectedIndexArray != null ) {
+	
+				/** notify other listeners .. */
+				notifyReceiver_PickedObject_singleSelection(selectedIndexArray, iSelectedMode_identifyier);
+	
+				int iNCBIGeneID = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[0]);
+				pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton().getPathwayItemManager().getItem(iNCBIGeneID);
+			}
+			
+			infoAreaRenderer.resetPoint();
 		}
-
 		
 		return true;
 	}
@@ -758,6 +772,11 @@ public class GLCanvasHeatmap2DColumn
 		if ( bEnablePicking ) {
 			gl.glTranslatef(0, 0, AGLCanvasHeatmap2D.fPickingBias);
 			renderGL_picketPoints(gl);
+		}
+		
+		if (pickedGeneVertex != null && infoAreaRenderer.isPositionValid())
+		{
+			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
 		}
 		
 		gl.glEnable(GL.GL_LIGHTING);

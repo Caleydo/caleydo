@@ -76,11 +76,23 @@ public class GLInfoAreaRenderer {
     	{
     		drawPickedObjectInfoStar(gl);
     	}
-    	// In case of single mapping draw singe info area
+    	// In case of single mapping draw single info area
     	else
     	{
         	drawPickedObjectInfoSingle(gl, true);
     	}
+    }
+    
+    public void renderInfoArea(final GL gl,
+    		final PathwayVertexGraphItem pickedVertex) {
+    	
+    	if (fScaleFactor < 1.0)
+    		fScaleFactor += 0.06;
+    	
+		llMultipleMappingGenes.clear();
+		llMultipleMappingGenes.add(pickedVertex);
+		
+		drawPickedObjectInfoSingle(gl, true);
     }
 	
     private void drawPickedObjectInfoSingle(final GL gl,
@@ -273,18 +285,18 @@ public class GLInfoAreaRenderer {
 		
 		textRenderer.end3DRendering();
 		
-		// Render mapping if available
-		gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, 0.02f);
-		gl.glScalef(3.0f, 3.0f, 3.0f);
-		if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
-		{					
-			float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
-			
-			refGLPathwayManager.mapExpressionByGeneId(
-					gl, llMultipleMappingGenes.get(0).getName(), fNodeWidth);
-			
-			llMultipleMappingGenes.remove(0);
-		}
+//		// Render mapping if available
+//		gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, 0.02f);
+//		gl.glScalef(3.0f, 3.0f, 3.0f);
+//		if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
+//		{					
+//			float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
+//			
+//			refGLPathwayManager.mapExpressionByGeneId(
+//					gl, llMultipleMappingGenes.get(0).getName(), fNodeWidth);
+//			
+//			llMultipleMappingGenes.remove(0);
+//		}
 
 		
 		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
