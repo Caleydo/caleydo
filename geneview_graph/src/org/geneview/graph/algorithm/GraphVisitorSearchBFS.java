@@ -87,7 +87,7 @@ implements IGraphVisitorSearch {
 		
 		if ( iSearchDepth == 1 ) {
 			/** special case; only direct adjacent elements, return list */
-			depthSortedList.add(0, resultList);
+			depthSortedList.set(0, resultList);
 			return resultList;
 		}
 		
@@ -96,7 +96,7 @@ implements IGraphVisitorSearch {
 		List <IGraphItem> currentSourceList = new ArrayList <IGraphItem> (resultList);
 		
 		/** insert elements with adjacency ==1 */
-		depthSortedList.add(0, currentSourceList);
+		depthSortedList.set(0, currentSourceList);
 		
 		for ( int iCurrentDepthIndex=1; iCurrentDepthIndex< this.iSearchDepth; iCurrentDepthIndex++) {
 			
@@ -122,7 +122,7 @@ implements IGraphVisitorSearch {
 			} // while ( iter.hasNext() ) {
 			
 			/** store current level as result */
-			depthSortedList.add(iCurrentDepthIndex, currentLevel);
+			depthSortedList.set(iCurrentDepthIndex, currentLevel);
 			currentSourceList = currentLevel;
 			
 		} // for ( int iCurrentDepthIndex=1; iCurrentDepthIndex< this.iSearchDepth; iCurrentDepthIndex++) {
@@ -139,13 +139,11 @@ implements IGraphVisitorSearch {
 		
 		/* depthSortedList.size() != iSearchDepth */
 		List<List<IGraphItem>> resultList = createDepthSortedList(depthSortedList.size());		
-		Iterator<List<IGraphItem>> iterRawDataTopLevel = depthSortedList.iterator();
 		
-		int index=0;
-		while (iterRawDataTopLevel.hasNext()) {
-			
+		for (int iIndex = 0; iIndex < depthSortedList.size(); iIndex++)
+		{
 			/* raw data */
-			List <IGraphItem> currentRawDataDepthList = iterRawDataTopLevel.next();
+			List <IGraphItem> currentRawDataDepthList = depthSortedList.get(iIndex);
 			Iterator <IGraphItem> iterRawDataInnerLoop = currentRawDataDepthList.iterator();
 
 			/* result list, deep copy */
@@ -157,10 +155,8 @@ implements IGraphVisitorSearch {
 			}
 
 			/* set ArrayList <IGraphItem> resultListDeepCopy ==> resultListDeepCopy[index]= resultListDeepCopy */
-			resultList.set(index, resultListDeepCopy);			
-			index++;
-			
-		} //while (iterRawDataTopLevel.hasNext()) {
+			resultList.set(iIndex, resultListDeepCopy);
+		}
 		
 		return resultList;
 	}
