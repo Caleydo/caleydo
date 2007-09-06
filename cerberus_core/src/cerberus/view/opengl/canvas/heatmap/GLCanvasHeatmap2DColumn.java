@@ -69,7 +69,7 @@ public class GLCanvasHeatmap2DColumn
 
 	private boolean bRenderingStyleFlat = false;
 	
-	private int iSelectedMode_identifyier = 0;
+	private int iSelectedMode_identifyier = 2;
 	
 	private float fIncX_forSelection;
 	
@@ -110,6 +110,10 @@ public class GLCanvasHeatmap2DColumn
 	
 	private ArrayList<ISet> alTargetSet;
 
+	private PathwayVertexGraphItem pickedGeneVertex;
+		
+	private GLInfoAreaRenderer infoAreaRenderer;
+	
 	/**
 	 * @param setGeneralManager
 	 */
@@ -142,6 +146,9 @@ public class GLCanvasHeatmap2DColumn
 		
 		alHighlightSelectionIndex_sortByDepth.add( new ArrayList <Integer> (
 				GLCanvasHeatmap2DColumn.iInitialSizeArrayList_Selection));
+		
+		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
+				new GLPathwayManager(setGeneralManager));
 	}
 	
 	private int addhighlightSelectionIndex_addItem( ArrayList < ArrayList <Integer>> container,
@@ -288,50 +295,50 @@ public class GLCanvasHeatmap2DColumn
 
 	}
 
-	private void renderGL_Selection(GL gl) {
-
-		if (selectedIndex.length < 1)
-		{
-			/* nothing to render.. */
-			return;
-		}
-
-		/* public void render_displayListHeatmap(GL gl) { */
-
-		gl.glNormal3f(0.0f, 0.0f, 1.0f);
-
-		/**
-		 * force update ...
-		 */
-
-		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
-				/ (float) (iValuesInRow);
-
-//		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[X][MIN])
-//				/ (float) (iValuesInColum);
-
-		/* Y_min .. Y_max*/
-		for (int index = 0; index < selectedIndex.length; index++)
-		{
-			float fNowY = viewingFrame[Y][MIN];
-			float fNextY = viewingFrame[Y][MAX];
-
-			float fNowX = viewingFrame[Y][MIN] + fIncX * selectedIndex[index];
-			float fNextX = fNowX + fIncX;
-
-			gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-			gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
-			gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
-			gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
-			gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
-
-			gl.glEnd();
-			gl.glPopName();
-
-		} //for (int yCoord_name=0; yCoord_name<iValuesInRow; yCoord_name++)
-
-	}
+//	private void renderGL_Selection(GL gl) {
+//
+//		if (selectedIndex.length < 1)
+//		{
+//			/* nothing to render.. */
+//			return;
+//		}
+//
+//		/* public void render_displayListHeatmap(GL gl) { */
+//
+//		gl.glNormal3f(0.0f, 0.0f, 1.0f);
+//
+//		/**
+//		 * force update ...
+//		 */
+//
+//		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
+//				/ (float) (iValuesInRow);
+//
+////		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[X][MIN])
+////				/ (float) (iValuesInColum);
+//
+//		/* Y_min .. Y_max*/
+//		for (int index = 0; index < selectedIndex.length; index++)
+//		{
+//			float fNowY = viewingFrame[Y][MIN];
+//			float fNextY = viewingFrame[Y][MAX];
+//
+//			float fNowX = viewingFrame[X][MIN] + fIncX * selectedIndex[index];
+//			float fNextX = fNowX + fIncX;
+//
+//			gl.glBegin(GL.GL_TRIANGLE_FAN);
+//
+//			gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+//			gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+//			gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
+//			gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
+//
+//			gl.glEnd();
+//			gl.glPopName();
+//
+//		} //for (int yCoord_name=0; yCoord_name<iValuesInRow; yCoord_name++)
+//
+//	}
 
 	/** 
 	 * init after IGenomeIdManager has load all its data from file.
@@ -390,25 +397,12 @@ public class GLCanvasHeatmap2DColumn
 	/* --------------------------- */
 	/* -----  BEGEN: PICKING ----- */
 
-//	private void setPickingBegin(GL gl,int id) {
-//		gl.glPushMatrix();
-//		gl.glPushName( id );
-//	}
-//	
-//	private void setPickingEnd(GL gl) {
-//		gl.glPopName();
-//		gl.glPopMatrix();
-//	}
-//
-//	private void setPickingrowAndColum(GL gl,int id) {
-//		gl.glLoadName(id);
-//	}
-
 	protected final boolean processHits(final GL gl, int iHitCount,
 			int iArPickingBuffer[], final Point pickPoint,
 			ArrayList<Vec2f> fIndexPickedCoored) {
 
 		// System.out.println("Number of hits: " +iHitCount);
+
 
 		float fDepthSort = Float.MAX_VALUE;
 		int iResultPickCoordIndex = 0;
@@ -433,7 +427,7 @@ public class GLCanvasHeatmap2DColumn
 //			// Check if object is nearer than previous objects
 //			if (iArPickingBuffer[iPtr] < iMinimumZValue)
 //			{
-//				System.out.print(" nearer than previouse hit! ");				
+//				System.out.print(" nearer than previous hit! ");				
 //			}
 
 			/* ist doch ein float! */
@@ -481,12 +475,13 @@ public class GLCanvasHeatmap2DColumn
 						+ resultPickPointCoord[1] + "]");
 		
 		// Reset pick point
+		//source of problems??		
 		infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl,
 				pickPoint.x, pickPoint.y);
 
-		// Check if real picking is performed
-		if (bIsMousePickingEvent)
-		{	
+//		// Check if real picking is performed
+//		if (bIsMousePickingEvent)
+//		{	
 			int[] selectedIndexArray = addPickedPoint(fIndexPickedCoored,
 					(float) resultPickPointCoord[0],
 					(float) resultPickPointCoord[1] );
@@ -496,12 +491,38 @@ public class GLCanvasHeatmap2DColumn
 				/** notify other listeners .. */
 				notifyReceiver_PickedObject_singleSelection(selectedIndexArray, iSelectedMode_identifyier);
 	
-				int iNCBIGeneID = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[0]);
-				pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton().getPathwayItemManager().getItem(iNCBIGeneID);
+//				Integer iNCBIGeneID = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[0]);
+//				if ( iNCBIGeneID != null) 
+//				{
+//					PathwayVertexGraphItem pickedGeneVertex;
+//					pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton(
+//							).getPathwayItemManager().getItem(iNCBIGeneID.intValue());
+//					
+//					infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
+//				}
 			}
 			
-			infoAreaRenderer.resetPoint();
-		}
+			/* hack, check if external hashmap was already created */
+			//TODO: clean up this call, init from outside as soon as data is available!
+			if ( hashExternalId_2_HeatmapIndex==null ) {			
+				this.init_External2InternalHashMap();
+			}
+			
+			Integer iNCBIGeneID = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[0]);
+			if ( iNCBIGeneID != null) 
+			{
+				//PathwayVertexGraphItem pickedGeneVertex;
+				pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton(
+						).getPathwayItemManager().getItem(iNCBIGeneID.intValue());
+				
+				assert pickedGeneVertex != null : "should not get null-pointer!";
+				
+				infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
+			}
+			
+			//source of problems??		
+			//infoAreaRenderer.resetPoint();
+//		}
 		
 		return true;
 	}
@@ -733,7 +754,7 @@ public class GLCanvasHeatmap2DColumn
 			//	    			}
 			System.out.println("GLCanvasHeatmap2DColumn - UPDATED!");
 
-			createDisplayLists(gl);
+			render_createDisplayLists(gl);
 
 			refGeneralManager.getSingelton().logMsg(
 					"createHistogram() use ISet(" + primaryTargetSet.getId()
@@ -758,26 +779,32 @@ public class GLCanvasHeatmap2DColumn
 
 		gl.glCallList(iHeatmapDisplayListId);
 
-		renderSelection_ownArea(gl);
-		gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
-		gl.glColor3f(1, 1, 0);
-		renderGLAllQuadRectangle(gl, this.fIndexPickedCoored);
-
-		gl.glColor3f(0.8f, 0.8f, 0);
-		renderGLAllQuadDots(gl, this.fIndexPickedCoored);
-
-		gl.glColor3f(0, 0, 0.8f);
-		renderGL_Selection(gl);
-
-		if ( bEnablePicking ) {
-			gl.glTranslatef(0, 0, AGLCanvasHeatmap2D.fPickingBias);
-			renderGL_picketPoints(gl);
-		}
-		
-		if (pickedGeneVertex != null && infoAreaRenderer.isPositionValid())
+		if ( pickedGeneVertex!= null)
 		{
 			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
 		}
+		
+		renderSelection_ownArea(gl);
+		gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
+		
+//		gl.glColor3f(1, 1, 0);
+//		renderGLAllQuadRectangle(gl, this.fIndexPickedCoored);
+//
+//		gl.glColor3f(0.8f, 0.8f, 0);
+//		renderGLAllQuadDots(gl, this.fIndexPickedCoored);
+
+//		gl.glColor3f(0, 0, 0.8f);
+//		renderGL_Selection(gl);
+
+		if ( bEnablePicking ) {
+			gl.glTranslatef(0, 0, AGLCanvasHeatmap2D.fPickingBias);
+			render_picketPoints(gl);
+		}
+		
+//		if (pickedGeneVertex != null && infoAreaRenderer.isPositionValid())
+//		{
+//			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
+//		}
 		
 		gl.glEnable(GL.GL_LIGHTING);
 
@@ -791,7 +818,7 @@ public class GLCanvasHeatmap2DColumn
 	 * 
 	 * @param gl
 	 */
-	public void renderGL_picketPoints(GL gl) {
+	private void render_picketPoints(GL gl) {
 
 		if ((selectedIndex.length > 0) || (!fIndexPickedCoored.isEmpty()))
 		{
@@ -814,7 +841,6 @@ public class GLCanvasHeatmap2DColumn
 
 			if (!fIndexPickedCoored.isEmpty())
 			{
-
 				/* -------------------------- */
 				/* show picked points .. */
 				Iterator<Vec2f> iterPickedPoints = fIndexPickedCoored
@@ -823,6 +849,9 @@ public class GLCanvasHeatmap2DColumn
 				gl.glColor3f(1.0f, 1.0f, 0);
 				for (int i = 0; iterPickedPoints.hasNext(); i++)
 				{
+					/**
+					 * Render a triangle on each selected item in the heatmap.
+					 */
 					Vec2f pickedIndex = iterPickedPoints.next();
 
 					/* TOP */
@@ -835,7 +864,7 @@ public class GLCanvasHeatmap2DColumn
 
 					gl.glBegin(GL.GL_TRIANGLE_FAN);
 					
-					gl.glVertex3f(fNowX + fIncX_halfSize, fNowY, fZ);
+					gl.glVertex3f(fNowX, fNowY, fZ);
 					gl.glVertex3f(fNextX, fNowY, fZ);
 					gl.glVertex3f(fNextX, fNowY + fIncY_halfSize, fZ);
 					//gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
@@ -862,6 +891,11 @@ public class GLCanvasHeatmap2DColumn
 							&& (selectedIndex[index_X_H] < iRenderIndexStop))
 					{
 
+						/** 
+						 * Render one BOX on top, one Box below and connect them with 2 lines 
+						 * of each selected heatmap segment [X , Y_min..Y_max] 
+						 * */
+						
 						fNowX = viewingFrame[X][MIN] + fIncX
 								* selectedIndex[index_X_H];
 						fNextX = fNowX + fIncX;
@@ -878,26 +912,24 @@ public class GLCanvasHeatmap2DColumn
 						gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
 
 						gl.glEnd();
-
-						/* TOP */
-						fNowY = viewingFrame[Y][MIN] - fSelectionPixel
-								* (selectedIndexMode[index_X_H] + 1);
-						fNextY = viewingFrame[Y][MIN];
-
-						gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-						gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
-
-						gl.glEnd();
-
+						
 						/* BOTTOM */
+						render_Selection_Detail(gl,
+								fNowX,
+								fNextX,
+								viewingFrame[Y][MIN],
+								fIncY,
+								viewingFrame[Z][MIN],
+								selectedIndexMode,
+								index_X_H,
+								-1.0f );							
+						
+						/* TOP */
 						fNowY = viewingFrame[Y][MAX];
 						fNextY = viewingFrame[Y][MAX] + fSelectionPixel
-								* (selectedIndexMode[index_X_H] + 1);
-
+								* fIncY;
+						
+						gl.glColor3f(0,0,1);
 						gl.glBegin(GL.GL_TRIANGLE_FAN);
 
 						gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
@@ -1055,7 +1087,7 @@ public class GLCanvasHeatmap2DColumn
 		}
 		
 		/* Sourrounding box */
-		float fBias_Z = viewingFrame[Z][MIN] + 0.0001f;
+		float fBias_Z = viewingFrame[Z][MIN] + fPickingBias;
 		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 		/ (float) (alTargetSet.size());
 
@@ -1067,19 +1099,26 @@ public class GLCanvasHeatmap2DColumn
 		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], fBias_Z);
 		gl.glEnd();
 
-		/** Render each experiment in a row .. */
+		/** 
+		 * Render each experiment in a row .. 
+		 */
 		if ( bRenderEnableDelimiterPerExperiment ) {
 			if (alTargetSet.size() > 1)
 			{
-				gl.glBegin(GL.GL_LINES);
-	
+				/**
+				 * Render lines between each row of experiments 
+				 */
+				float fZ_2 = fBias_Z + fPickingBias;
+				
+				gl.glBegin(GL.GL_LINES);	
+				
 				/* start with index=1 and goto alTargetSet.size() */
 				for (int i = 1; i < alTargetSet.size(); i++)
 				{
 					gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN]
-							+ fIncY * i, fBias_Z);
+							+ fIncY * i, fZ_2);
 					gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN]
-							+ fIncY * i, fBias_Z);
+							+ fIncY * i, fZ_2);
 				}
 	
 				gl.glEnd();
@@ -1183,6 +1222,51 @@ public class GLCanvasHeatmap2DColumn
 
 	}
 
+	private void render_Selection_Detail(GL gl,
+			final float fX,
+			final float fX_next,
+			final float fY,
+			final float fIncY,
+			final float fZ,
+			final int [] selectedIndexModeArray,
+			final int selectedIndexMode_Index,
+			final float fSign ) {
+		
+		//if  (selectedIndexModeArray[selectedIndexMode_Index] > 0 ) {
+		
+			gl.glColor3f(0, 0, 1);
+			gl.glBegin(GL.GL_TRIANGLE_FAN);
+			
+			float fY_a = fY + (selectedIndexModeArray[selectedIndexMode_Index]) 
+				* fIncY * fSelectionPixel * fSign;
+			                         
+			gl.glVertex3f(fX, fY, fZ);
+			gl.glVertex3f(fX_next, fY, fZ);
+			gl.glVertex3f(fX_next, fY_a, fZ);
+			gl.glVertex3f(fX, fY_a, fZ);
+			
+			gl.glEnd();
+			
+			/** 
+			 * Render a line between the selected area and the top of the heatmap 
+			 */
+			
+			/**
+			 * Render a line to indicate depth of selection; from neighborhood 
+			 */
+			gl.glColor3f(1, 1, 1);
+			float fZb = fZ + fPickingBias;
+			for ( int j=1; j < selectedIndexModeArray[selectedIndexMode_Index]; j++ ) {
+				fY_a = fY + j * fIncY * fSelectionPixel * fSign;
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(fX, fY_a, fZb);
+				gl.glVertex3f(fX_next, fY_a, fZb);
+				gl.glEnd();
+			} //for ( int j=1; j < selectedIndexMode[i]; j++ ) {
+			
+		//} //if  (selectedIndexMode[i] > 0 ) {	
+	}
+	
 	private void renderSelection_ownArea(GL gl) {
 		/* ----------------------------------- */
 		/* ---  Render selected once more  --- */		
@@ -1286,28 +1370,17 @@ public class GLCanvasHeatmap2DColumn
 				if  (bEnableGroupHighlighting) {
 					
 					if  (selectedIndexMode[i] > 0 ) {
-						gl.glColor3f(0, 0, 1);
-						gl.glBegin(GL.GL_TRIANGLE_FAN);
 						
-						float fY = fNowY + (selectedIndexMode[i]) * fIncY * 0.2f;
-						                         
-						gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNextX, fY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNowX, fY, viewingFrame[Z][MIN]);
+						render_Selection_Detail(gl,
+								fNowX,
+								fNextX,
+								fNowY,
+								fIncY,
+								viewingFrame[Z][MIN],
+								selectedIndexMode,
+								i,
+								1.0f );					
 						
-						gl.glEnd();
-						
-						gl.glColor3f(1, 1, 1);
-						for ( int j=1; j < selectedIndexMode[i]; j++ ) {
-							fY = fNowY + j * fIncY * 0.2f;
-							gl.glBegin(GL.GL_LINES);
-							gl.glVertex3f(fNextX, fY, viewingFrame[Z][MIN] + fPickingBias);
-							gl.glVertex3f(fNowX, fY, viewingFrame[Z][MIN] + fPickingBias);
-							gl.glEnd();
-							
-							//MPK
-						} //for ( int j=1; j < selectedIndexMode[i]; j++ ) {
 					} //if  (selectedIndexMode[i] > 0 ) {
 				}
 						
@@ -1319,11 +1392,18 @@ public class GLCanvasHeatmap2DColumn
 					fIncX * iRenderTargetLine_Index +
 					fIncX_halfSize;
 				
+				/**
+				 * Render lines connecting Selected area and heatmap
+				 */
 				gl.glColor3f(0.2f, 0.2f, 1);
 				gl.glBegin(GL.GL_LINES);
 				
-				gl.glVertex3f(fNowX + fIncX_halfSize, viewingFrame[Y][MIN] + fOffsetY, viewingFrame[Z][MIN]);
-				gl.glVertex3f(fLineX, viewingFrame[Y][MAX], viewingFrame[Z][MIN]);
+				gl.glVertex3f(fNowX + fIncX_halfSize, 
+						viewingFrame[Y][MIN] + fOffsetY, 
+						viewingFrame[Z][MIN]);
+				gl.glVertex3f(fLineX, 
+						viewingFrame[Y][MAX] + fSelectionPixel * fIncY, 
+						viewingFrame[Z][MIN]);
 				
 				gl.glEnd();
 				/** end: render connection line to target in heatmap */
@@ -1607,20 +1687,19 @@ public class GLCanvasHeatmap2DColumn
 		}
 		
 		IStorage[] storage = updatedSet.getStorageByDim(0);
-		IVirtualArray[] virtualArray = updatedSet.getVirtualArrayByDim(0);
+		//TODO: Fix this after CHI
+		//IVirtualArray[] virtualArray = updatedSet.getVirtualArrayByDim(0);
 
 		ArrayList<Integer> resultBuffer = new ArrayList<Integer>(10);
 		ArrayList<Integer> resultBufferMode = new ArrayList<Integer>(10);
 
-		for (int i = 0; i < virtualArray.length; i++)
+		for (int i = 0; i < storage.length; i++)
 		{
 			//IVirtualArray vaBuffer = virtualArray[i];
 
 			int[] intBuffer = storage[0].getArrayInt();
 			int[] intBufferMode = storage[1].getArrayInt();			
-			//int[] intBufferPathway = storage[2].getArrayInt();
-			
-			
+			//int[] intBufferPathway = storage[2].getArrayInt();					
 
 			for (int j = 0; j < intBuffer.length; j++)
 			{
@@ -1659,6 +1738,8 @@ public class GLCanvasHeatmap2DColumn
 
 		if (!resultBuffer.isEmpty())
 		{
+			System.err.print("GLCanvasHeatmap2DColumn receiveUpdate []    COPY to Heatmap-Selection.. ");
+					
 			/* copy selection into local data structure .. */
 			setSelectedIndex_asArrayList(resultBuffer, resultBufferMode);
 		}

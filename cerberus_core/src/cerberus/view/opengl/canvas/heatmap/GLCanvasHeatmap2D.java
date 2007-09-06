@@ -77,8 +77,8 @@ extends AGLCanvasHeatmap2D
 
 	protected int[] iSelectionLengthY;
 
+	private boolean bEnalbeMultipleSelection = false;
 	
-
 	protected MinMaxDataInteger refMinMaxDataInteger;
 
 	protected int iHeatmapDisplayListId = -1;
@@ -101,12 +101,9 @@ extends AGLCanvasHeatmap2D
 	 */
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 	//private DragAndDropMouseListener pickingTriggerMouseAdapter;
+
 	
-	protected GLInfoAreaRenderer infoAreaRenderer;
-	
-	protected PathwayVertexGraphItem pickedGeneVertex;
-	
-	protected boolean bIsMousePickingEvent = false;
+	private boolean bIsMousePickingEvent = false;
 	
 	/**
 	 * @param setGeneralManager
@@ -143,8 +140,6 @@ extends AGLCanvasHeatmap2D
 
 		refMinMaxDataInteger = new MinMaxDataInteger(1);
 		
-		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
-				new GLPathwayManager(setGeneralManager));
 	}
 
 	protected void drawSelectionX(GL gl, final float fStartX,
@@ -389,13 +384,13 @@ extends AGLCanvasHeatmap2D
 				|| bMouseReleased)
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			bIsMousePickingEvent = true;
+//			bIsMousePickingEvent = true;
 		}
-		else
-		{
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			bIsMousePickingEvent = false;
-		}
+//		else
+//		{
+//			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+//			bIsMousePickingEvent = false;
+//		}
 
 		// Check if an object was picked
 		if (pickPoint != null)
@@ -610,7 +605,7 @@ extends AGLCanvasHeatmap2D
 
 	}	
 	
-	protected void createDisplayLists(GL gl) {
+	protected void render_createDisplayLists(GL gl) {
 		
 		iHeatmapDisplayListId = gl.glGenLists(1);
 		
@@ -681,8 +676,17 @@ extends AGLCanvasHeatmap2D
 				upperRightPoint.setY( lastPickedIndexCoord.y());
 			}
 			
-			fIndexPickedCoord.set( iSize-1, lowerLeftPoint);
-			fIndexPickedCoord.add( upperRightPoint );
+			if  ( bEnalbeMultipleSelection ) 
+			{
+				fIndexPickedCoord.set( iSize-1, lowerLeftPoint);
+				fIndexPickedCoord.add( upperRightPoint );
+			}
+			else 
+			{			
+				fIndexPickedCoord.clear();
+				fIndexPickedCoord.add( lowerLeftPoint);
+				fIndexPickedCoord.add( upperRightPoint );
+			}
 			
 			/** Calculate all indices between left and right point and create an array with all these indices.. */
 			int iCurrentIndex = (int) lowerLeftPoint.x();
@@ -698,8 +702,7 @@ extends AGLCanvasHeatmap2D
 		} else {
 			fIndexPickedCoord.add( new Vec2f(addIndexCoordX,addIndexCoordY) );
 			return null;
-		}
-		
+		}		
 	}
 	
 	protected void renderGLAllQuadDots( GL gl, ArrayList <Vec2f> fIndexPickedCoord) {
@@ -855,7 +858,7 @@ extends AGLCanvasHeatmap2D
 				//	    			}
 				System.out.println("GLCanvasHeatmap2D - UPDATED!");
 				
-				createDisplayLists( gl );
+				render_createDisplayLists( gl );
 				
 				  refGeneralManager.getSingelton().logMsg(
 						  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",

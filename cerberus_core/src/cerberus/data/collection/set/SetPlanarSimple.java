@@ -328,7 +328,7 @@ implements ISet {
 		return vecRefStorage_Array.get(iAtDimension).get(iAtIndex);
 	}
 
-	public Vector<IVirtualArray> getSelectionArray(int iAtDimension) {
+	public Vector<IVirtualArray> getVirtualArray(int iAtDimension) {
 		return vecRefSelection_Array.get(iAtDimension);
 	}
 	

@@ -209,15 +209,27 @@
 					attrib4="0 100 -1"	
 					detail="35101" />	
 					
-									
+				-->					
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	
 				uniqueId="81401" parent="12401" gl_forwarder="99078" label="GL Triangle	E"	
 							gl_origin="0 0 0" gl_rotation="1 0 0 15"	
-							attrib3="0 10 0 40   -0.5f -0.5f    -5.0f 5.0f   -1.4f -1.2f    1.5f 1.0f   400"			
+							attrib3="0 10 0 40   -0.5f -0.5f    -5.0f 5.0f   -1.4f -1.3f    1.5f 1.0f   400"			
 							attrib4="0 12000 -1"
 							detail="35101" />		
-						
-			-->
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	
+				uniqueId="81401" parent="12401" gl_forwarder="99078" label="GL Triangle	E"	
+							gl_origin="0 0 0" gl_rotation="1 0 0 15"	
+							attrib3="0 10 0 40   -0.5f -0.5f    -5.0f 5.0f   -1.55f -1.45f    1.5f 1.0f   400"			
+							attrib4="12001 24000 -1"
+							detail="35101" />		
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"		cmdId="68993"	
+				uniqueId="81401" parent="12401" gl_forwarder="99078" label="GL Triangle	E"	
+							gl_origin="0 0 0" gl_rotation="1 0 0 15"	
+							attrib3="0 10 0 40   -0.5f -0.5f    -5.0f 5.0f   -1.7f -1.6f    1.5f 1.0f   400"			
+							attrib4="24001 36000 -1"
+							detail="35101" />						
 
 			
 					

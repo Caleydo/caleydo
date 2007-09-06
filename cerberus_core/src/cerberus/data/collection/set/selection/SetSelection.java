@@ -3,12 +3,16 @@
  */
 package cerberus.data.collection.set.selection;
 
+import java.util.Vector;
+
+import cerberus.data.collection.IStorage;
+import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.EventPublisher;
-
+import cerberus.util.exception.GeneViewRuntimeException;
 
 /**
  * Selection SET that gives access to
@@ -34,6 +38,10 @@ implements ISetSelection {
 		super(iSetCollectionId, 
 				refGeneralManager, 
 				SetType.SET_SELECTION);
+		
+		/** add missing objects for optional data */
+		vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));		
+		vecRefStorage_Array.add(2, new Vector<IStorage> (2));
 	}
 	
 	/*
@@ -44,6 +52,12 @@ implements ISetSelection {
 		
 		this.getWriteToken();
 		this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
+		
+		//TODO: fix this after CHI!
+//		IVirtualArray bufferVA= this.getVirtualArrayByDimAndIndex(0, 0);
+//		bufferVA.setOffset(0);
+//		bufferVA.setLength(iArSelectionId.length-1);
+		
 		this.returnWriteToken();
 	}
 	
@@ -55,6 +69,12 @@ implements ISetSelection {
 		
 		this.getWriteToken();
 		this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
+		
+		//TODO: fix this after CHI!
+//		IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, 1);
+//		bufferVA.setOffset(0);
+//		bufferVA.setLength(iArSelectionGroup.length-1);
+		
 		this.returnWriteToken();
 	}
 
@@ -66,6 +86,12 @@ implements ISetSelection {
 		
 		this.getWriteToken();
 		this.getStorageByDimAndIndex(0, 2).setArrayInt(iArSelectionOptionalData);
+		
+		//TODO: fix this after CHI!
+//		IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, 2);
+//		bufferVA.setOffset(0);
+//		bufferVA.setLength(iArSelectionOptionalData.length-1);
+		
 		this.returnWriteToken();
 	}
 	
@@ -77,11 +103,33 @@ implements ISetSelection {
 			int[] iArSelectionGroup, 
 			int[] iArSelectionOptionalData) {
 		
+		if (( iArSelectionId.length != iArSelectionGroup.length )&&
+				(iArSelectionGroup.length != iArSelectionOptionalData.length))
+		{
+			throw new GeneViewRuntimeException("Try to set a SetSelection wiht array of different length!");		
+		}
+		
 		this.getWriteToken();
 		this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
 		this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
 		this.getStorageByDimAndIndex(0, 2).setArrayInt(iArSelectionOptionalData);
+		
+		//TODO: fix this after CHI!
+//		for ( int i=0; i<3; i++)
+//		{
+//			IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, i);
+//			bufferVA.setOffset(0);
+//			bufferVA.setLength(iArSelectionId.length);
+//		}
+		
 		this.returnWriteToken();
+	}
+	
+	/* (non-Javadoc)
+	 * @see cerberus.data.collection.ISet#getDimensions()
+	 */
+	public final int getDimensions() {
+		return 3;
 	}
 	
 	/*

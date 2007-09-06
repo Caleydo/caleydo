@@ -1093,7 +1093,11 @@ extends APathwayGraphViewRep {
 			
 			return true;
 			
-		}catch (IndexOutOfBoundsException e) {
+		}catch (StringIndexOutOfBoundsException e) {
+			
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName() + ": ERROR! Can not convert String to Integer! " 
+					+ e.toString(), LoggerType.ERROR_ONLY);
 			
 			try {
 				refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
