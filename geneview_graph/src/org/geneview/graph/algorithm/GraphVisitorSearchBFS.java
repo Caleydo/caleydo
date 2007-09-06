@@ -41,7 +41,7 @@ implements IGraphVisitorSearch {
 		List < List<IGraphItem> > resultDepthSortedList = 
 			new ArrayList < List<IGraphItem> > (iSetDepth);
 		for ( int i=0; i<iSearchDepth; i++ ) {
-			depthSortedList.add(i, new ArrayList <IGraphItem> ()); 
+			resultDepthSortedList.add(i, new ArrayList <IGraphItem> ()); 		
 		}
 		
 		return resultDepthSortedList;
@@ -130,19 +130,37 @@ implements IGraphVisitorSearch {
 		return resultList;
 	}
 
+	/**
+	 * Create a deep copy of teh search result list.
+	 * 
+	 * @return deep copy of the search result list
+	 */
 	public final List<List<IGraphItem>> getSearchResultDepthOrdered() {
 		
-		List<List<IGraphItem>> resultList = createDepthSortedList(iSearchDepth);
+		/* depthSortedList.size() != iSearchDepth */
+		List<List<IGraphItem>> resultList = createDepthSortedList(depthSortedList.size());		
+		Iterator<List<IGraphItem>> iterRawDataTopLevel = depthSortedList.iterator();
 		
-		Iterator<List<IGraphItem>> iterDepthLevels = depthSortedList.iterator();
-		
-		for (int i=0;iterDepthLevels.hasNext();i++) {
-			List<IGraphItem> resultListDepthLevels = resultList.get(i);
-			Iterator <IGraphItem> iterInnerLoop = iterDepthLevels.next().iterator();
-			while ( iterInnerLoop.hasNext() ) {
-				resultListDepthLevels.add( iterInnerLoop.next() );
+		int index=0;
+		while (iterRawDataTopLevel.hasNext()) {
+			
+			/* raw data */
+			List <IGraphItem> currentRawDataDepthList = iterRawDataTopLevel.next();
+			Iterator <IGraphItem> iterRawDataInnerLoop = currentRawDataDepthList.iterator();
+
+			/* result list, deep copy */
+			ArrayList <IGraphItem> resultListDeepCopy = 
+				new ArrayList <IGraphItem> (currentRawDataDepthList.size()); 			
+						
+			while ( iterRawDataInnerLoop.hasNext() ) {
+				resultListDeepCopy.add(iterRawDataInnerLoop.next());
 			}
-		}
+
+			/* set ArrayList <IGraphItem> resultListDeepCopy ==> resultListDeepCopy[index]= resultListDeepCopy */
+			resultList.set(index, resultListDeepCopy);			
+			index++;
+			
+		} //while (iterRawDataTopLevel.hasNext()) {
 		
 		return resultList;
 	}
