@@ -59,13 +59,14 @@ extends ViewPart {
 		ArrayList<Integer> iAlReceiver = new ArrayList<Integer>();
 		iAlSender.add(iUniqueId);
 		iAlReceiver.add(82401); // GLJukeboxPathway3D
-
+		iAlReceiver.add(83401);
+		
 		// Connect 2D pathway with 3D pathway
 		CmdEventCreateMediator cmd = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
 		 	.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
 		cmd.setAttributes(-1, iAlSender, iAlReceiver, MediatorType.SELECTION_MEDIATOR);
 		cmd.doCommand();
-		
+
 		CmdEventCreateMediator cmdReverse = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
 	 		.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
 		cmdReverse.setAttributes(-1, iAlReceiver, iAlSender, MediatorType.SELECTION_MEDIATOR);

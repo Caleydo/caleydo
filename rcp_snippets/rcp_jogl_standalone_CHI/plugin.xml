@@ -22,7 +22,7 @@
             allowMultiple="true"
             category="org.geneview.rcp.jogl.view.jframe"
             class="org.geneview.rcp.views.GLJukeboxPathwayView"
-            icon="icons/sample.gif"
+            icon="resources/icons/pathway3D.png"
             id="org.geneview.rcp.views.GLJukeboxPathwayView"
             name="GLJukeboxPathwayView">
       </view>
@@ -31,10 +31,19 @@
             allowMultiple="true"
             category="org.geneview.rcp.jogl.view.jframe"
             class="org.geneview.rcp.views.GLHeatmap2DView"
-            icon="icons/sample.gif"
+            icon="resources/icons/heatmap.png"
             id="org.geneview.rcp.views.GLHeatmap2DView"
             name="GLHeatmap2DView">
-      </view>      
+      </view>   
+      
+      <view
+            allowMultiple="true"
+            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.geneview.rcp.views.GLHeatmap2DView_second"
+            icon="resources/icons/heatmap.png"
+            id="org.geneview.rcp.views.GLHeatmap2DView_second"
+            name="GLHeatmap2DView_second">
+      </view>            
       
       <view
             id="org.geneview.rcp.views.browser.browserView"
@@ -48,7 +57,7 @@
       <view
             id="org.geneview.rcp.views.Pathway2DView"
             name="Pathway 2D"
-            icon="icons/sample.gif"
+            icon="resources/icons/pathway2D.png"
             class="org.geneview.rcp.views.Pathway2DView"
             category="org.geneview.rcp.jogl.view.jframe"
             allowMultiple="true">
@@ -57,7 +66,7 @@
       <view
             id="org.geneview.rcp.views.HTMLBrowserView"
             name="Browser"
-            icon="icons/sample.gif"
+            icon="resources/icons/browser.png"
             class="org.geneview.rcp.views.HTMLBrowserView"
             category="org.geneview.rcp.jogl.view.jframe"
             allowMultiple="true">
