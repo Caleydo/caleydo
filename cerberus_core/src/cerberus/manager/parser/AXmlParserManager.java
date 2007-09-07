@@ -89,7 +89,7 @@ implements IXmlParserManager, IManagedObject
 				"AXmlParserManger.closeCurrentTag() key=[" +
 				currentHandler.getXmlActivationTag() + "] " +
 				currentHandler.getClass().getSimpleName(),
-				LoggerType.VERBOSE );
+				LoggerType.VERBOSE_EXTRA );
 		
 		if ( ! llXmlParserStack.isEmpty() ) {
 			

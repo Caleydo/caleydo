@@ -19,13 +19,14 @@ extends IGeneralManager
 //		VERBOSE		( 20, "verbose: ", "show error, status and verbose messages" ),
 //		FULL		( 99, "full___: ", "show any message");
 		
-		ERROR_ONLY	(  0, "E: ", "show error only" ),
-		MINOR_ERROR	(  5, "M: ", "show any errors" ),
+		ERROR_ONLY		(  0, "E: ", "show error only" ),
+		MINOR_ERROR		(  5, "M: ", "show any errors" ),
 		MINOR_ERROR_XML	(  9, "X: ", "show xml errors" ),
-		STATUS		( 10, "S: ", "show errors and status messages" ),		
-		TRANSITION	( 20, "T: ", "show errors, status messages and module transitions"),
-		VERBOSE		( 30, "V: ", "show error, status and verbose messages" ),
-		FULL		( 99, "F: ", "show any message");
+		STATUS			( 10, "S: ", "show errors and status messages" ),		
+		TRANSITION		( 20, "T: ", "show errors, status messages and module transitions"),
+		VERBOSE			( 30, "V: ", "show error, status and verbose messages" ),
+		VERBOSE_EXTRA	( 40, "X: ", "show error, status and verbose messages" ),
+		FULL			( 99, "F: ", "show any message");
 		
 		private short level;
 		

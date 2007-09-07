@@ -229,7 +229,7 @@ implements IXmlParserManager {
 						"AXmlParserManager.openCurrentTag( key=[" + 
 						handler.getXmlActivationTag() + "] " +
 						handler.getClass().getSimpleName() +	" )",
-						LoggerType.VERBOSE );
+						LoggerType.VERBOSE_EXTRA );
 				
 				/**
 				 * register new handler ...
@@ -332,7 +332,7 @@ implements IXmlParserManager {
 					refLoggerManager );
 		
 		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
-				LoggerType.VERBOSE );
+				LoggerType.VERBOSE_EXTRA );
 		
 		boolean status = CerberusInputStream.parseOnce( inSource ,
 				filename,
@@ -340,7 +340,7 @@ implements IXmlParserManager {
 				refLoggerManager );
 		
 		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") done.",
-				LoggerType.VERBOSE );
+				LoggerType.STATUS );
 		
 		return 	status;
 	}

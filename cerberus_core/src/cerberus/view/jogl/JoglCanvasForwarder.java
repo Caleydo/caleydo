@@ -147,7 +147,7 @@ implements GLEventListener {
 
 		refGeneralManager.getSingelton().logMsg(
 				"JoglCanvasForwarder  RESHAPE GL",
-				LoggerType.MINOR_ERROR);
+				LoggerType.STATUS);
 
 		GL gl = drawable.getGL();
 

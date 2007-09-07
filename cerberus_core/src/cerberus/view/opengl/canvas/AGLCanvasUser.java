@@ -94,15 +94,19 @@ implements IGLCanvasUser {
 	public final void setInitGLDone() 
 	{
 		if ( bInitGLcanvawsWasCalled ) {
-			System.err.println(" called setInitGLDone() for more than once! " + 
-					this.getClass().getSimpleName()  +
-					" " + this.getId());
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName()+
+					".setInitGLDone() is called more than once! WARNING!" +
+					this.getId(),
+					LoggerType.STATUS );
 		}
 		else 
 		{
-			System.err.println(" called setInitGLDone() " + 
-					this.getClass().getSimpleName() + 
-					" " + this.getId() );
+			refGeneralManager.getSingelton().logMsg(
+					this.getClass().getSimpleName()+
+					".setInitGLDone() is called" +
+					this.getId(),
+					LoggerType.TRANSITION );
 		}
 		bInitGLcanvawsWasCalled = true;
 	}

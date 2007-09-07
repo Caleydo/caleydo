@@ -613,7 +613,8 @@ public class GLCanvasHeatmap2DColumn
 			// Calls update with the ID of the PathwayViewRep
 	 		((EventPublisher)refGeneralManager.getSingelton().
 				getEventPublisher()).updateReceiver(this, selectionSet);
-	 		refGeneralManager.getSingelton().logMsg("broadcast selection event! " + selectionSet.toString(),
+	 		refGeneralManager.getSingelton().logMsg(this.getClass().getSimpleName()+
+	 				".broadcast selection event! " + selectionSet.toString(),
 	 				LoggerType.STATUS);
 		}
 	}
@@ -1671,16 +1672,29 @@ public class GLCanvasHeatmap2DColumn
 	}
 
 	public void updateReceiver(Object eventTrigger) {
-
-		System.err.println("UPDATE BINGO !");
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()+
+				": updateReceiver( (" + 
+				eventTrigger.getClass().getSimpleName() + ") " +
+				eventTrigger.toString() + ")",
+				LoggerType.STATUS );
 	}
 
 	
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		System.err.println("UPDATE BINGO !");
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()+
+				": updateReceiver( (" + 
+				eventTrigger.getClass().getSimpleName() + ") " +
+				eventTrigger.toString() + ")",
+				LoggerType.STATUS );
 
-		System.err.println(" UPDATE SET: " + updatedSet.toString());
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()+
+				": updateReceiver() udateSet: " +  updatedSet.toString(),
+				LoggerType.STATUS );
 
 		if ( this.hashExternalId_2_HeatmapIndex == null ) {
 			init_External2InternalHashMap();

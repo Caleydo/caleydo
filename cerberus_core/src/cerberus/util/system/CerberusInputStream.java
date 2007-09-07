@@ -49,7 +49,7 @@ public class CerberusInputStream
 			InputSource inStream = new InputSource( inReader );
 			
 			refLoggerManager.logMsg("open input stream  [" + sXMLFileName + "]",
-					LoggerType.STATUS );
+					LoggerType.VERBOSE_EXTRA );
 			
 			return inStream;
 		}
@@ -150,7 +150,7 @@ public class CerberusInputStream
 			refLoggerManager.logMsg("close input stream [" + 
 					sInputStreamLabel + 
 					"]",
-					LoggerType.STATUS );
+					LoggerType.VERBOSE_EXTRA );
 			
 		} // try
 		catch (SAXException se) 

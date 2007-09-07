@@ -1134,14 +1134,26 @@ extends AGLCanvasHeatmap2D
 	
 	
 	public void updateReceiver(Object eventTrigger) {
-		System.err.println( "UPDATE BINGO !");
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()+
+				": updateReceiver( (" + 
+				eventTrigger.getClass().getSimpleName() + ") " +
+				eventTrigger.toString() + ")",
+				LoggerType.STATUS );
 	}
 	
 	
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
 		
-		System.err.println( "UPDATE BINGO !");
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()+
+				": updateReceiver( (" + 
+				eventTrigger.getClass().getSimpleName() + ") " +
+				eventTrigger.toString() + ", (ISet) " + 
+				updatedSet.toString() +	")",
+				LoggerType.STATUS );
 	}
 
 	

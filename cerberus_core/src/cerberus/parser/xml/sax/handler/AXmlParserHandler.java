@@ -87,7 +87,7 @@ implements IXmlParserHandler
 	{
 		refGeneralManager.getSingelton().logMsg(
 				this.getClass().getSimpleName() + 
-				": initHandler", LoggerType.VERBOSE );
+				": initHandler", LoggerType.VERBOSE_EXTRA );
 	}
 	
 	/**
