@@ -528,11 +528,14 @@ public class GLPathwayManager {
 			gl.glCallList(iTmpEdgesDisplayListID);
 		}
 		
-		int iTmpVerticesDisplayListID = hashPathwayId2VerticesDisplayListId.get(iPathwayID);
-		gl.glCallList(iTmpVerticesDisplayListID);
+		Integer iTmpVerticesDisplayListID = hashPathwayId2VerticesDisplayListId.get(iPathwayID);
 		
-		if (bRenderLabels && bEnableAnnotation)
-			renderLabels(gl, iPathwayID);
+		if  (iTmpVerticesDisplayListID!=null) {
+			gl.glCallList(iTmpVerticesDisplayListID);
+			
+			if (bRenderLabels && bEnableAnnotation)
+				renderLabels(gl, iPathwayID);
+		}
 	}
 	
 	private void renderLabels(final GL gl, final int iPathwayID) {

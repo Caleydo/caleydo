@@ -69,7 +69,7 @@ public class GLCanvasHeatmap2DColumn
 
 	private boolean bRenderingStyleFlat = false;
 	
-	private int iSelectedMode_identifyier = 2;
+	private int iSelectedMode_identifyier = 0;
 	
 	private float fIncX_forSelection;
 	
