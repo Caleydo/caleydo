@@ -1707,8 +1707,8 @@ public class GLCanvasHeatmap2DColumn
 		ArrayList<Integer> resultBuffer = new ArrayList<Integer>(10);
 		ArrayList<Integer> resultBufferMode = new ArrayList<Integer>(10);
 
-		for (int i = 0; i < storage.length; i++)
-		{
+//		for (int i = 0; i < storage.length; i++)
+//		{
 			//IVirtualArray vaBuffer = virtualArray[i];
 
 			int[] intBuffer = storage[0].getArrayInt();
@@ -1748,7 +1748,7 @@ public class GLCanvasHeatmap2DColumn
 				          				
 			
 			}
-		}
+//		}
 
 		if (!resultBuffer.isEmpty())
 		{
