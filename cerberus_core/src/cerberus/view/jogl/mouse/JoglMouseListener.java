@@ -210,76 +210,76 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     
     if  ( ! bMouseRightButtonDown ) {
     	
-    	if ( ! bMouseMiddleButtonDown ) {
-	    
-		/**
-    	 *   --- ROTATION ---
-    	 */
-    		
-    	Rotf currentRotX = new Rotf();
-    	Rotf currentRotY = new Rotf();
-   	    
-    	float fpercentX = (float)(x-prevMouseX)/(float)(size.width) 
-    		* fMouseSensitivityRotation;
-    	
-    	float fpercentY = (float)(y-prevMouseY)/(float)(size.height) 
-    		* fMouseSensitivityRotation;
-    	
-    	
-   	    currentRotX.set( Vec3f.Y_AXIS, 
-   	    		fpercentX* MathUtil.PI);
-   	    
-   	    currentRotY.set( Vec3f.X_AXIS, 
-	    		fpercentY* MathUtil.PI);
-   	    
-   	    /* concatinate roations.. */
-   	    currentRotX = currentRotX.times(currentRotY);
-   	    
-	    prevMouseX = x;
-	    prevMouseY = y;
-	    
-	    /* set new paramters to ViewCamera */
-	    refParentGearsMain.getViewCamera().addCameraRotation(currentRotX);
-	    
-    	}
-	    else
-    	{
-	    	/**
-	    	 *   --- ZOOMING ---
-	    	 */
-	    	
-//	    	float zoomX = fZoomScale * ( (float)(x-prevMouseX)/(float)size.width);
-//		    float zoomY = fZoomScale * ( (float)(prevMouseY-y)/(float)size.height);
-		    
-		    float zoomX = fZoomScale * (float)(x-prevMouseX);
-		    float zoomY = fZoomScale * (float)(prevMouseY-y);
-		    
-		    /* take abs(zoomX) */
-		    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
-		    	zoomX = -zoomX;
-		    }
-		    
-	    	prevMouseX = x;
-		    prevMouseY = y;
-		    
-		    /* set new paramters to ViewCamera */
-		    IViewCamera bufferCamera = refParentGearsMain.getViewCamera();
-		    bufferCamera.addCameraScale(
-		    		new Vec3f( 0, 
-		    				0, 
-		    				zoomY +zoomX) );
-		    
-		    System.err.println(" zoom:A " + bufferCamera.getId() + "] ==> " + 
-		    		refParentGearsMain.toString() + " ==> " +
-		    		refParentGearsMain.getViewCamera().toString() + 
-		    		" <== " + refParentGearsMain.getViewCamera().getId());
-		    
-		    System.err.println(" zoom:B " + bufferCamera.getId() + "] ==> " + 
-		    		bufferCamera.toString() + " ==> " +
-		    		bufferCamera.getId() + 
-		    		" <== " + refParentGearsMain.getViewCamera().getId());
-
-    	}
+//    	if ( ! bMouseMiddleButtonDown ) {
+//	    
+//		/**
+//    	 *   --- ROTATION ---
+//    	 */
+//    		
+//    	Rotf currentRotX = new Rotf();
+//    	Rotf currentRotY = new Rotf();
+//   	    
+//    	float fpercentX = (float)(x-prevMouseX)/(float)(size.width) 
+//    		* fMouseSensitivityRotation;
+//    	
+//    	float fpercentY = (float)(y-prevMouseY)/(float)(size.height) 
+//    		* fMouseSensitivityRotation;
+//    	
+//    	
+//   	    currentRotX.set( Vec3f.Y_AXIS, 
+//   	    		fpercentX* MathUtil.PI);
+//   	    
+//   	    currentRotY.set( Vec3f.X_AXIS, 
+//	    		fpercentY* MathUtil.PI);
+//   	    
+//   	    /* concatinate roations.. */
+//   	    currentRotX = currentRotX.times(currentRotY);
+//   	    
+//	    prevMouseX = x;
+//	    prevMouseY = y;
+//	    
+//	    /* set new paramters to ViewCamera */
+//	    refParentGearsMain.getViewCamera().addCameraRotation(currentRotX);
+//	    
+//    	}
+//	    else
+//    	{
+//	    	/**
+//	    	 *   --- ZOOMING ---
+//	    	 */
+//	    	
+////	    	float zoomX = fZoomScale * ( (float)(x-prevMouseX)/(float)size.width);
+////		    float zoomY = fZoomScale * ( (float)(prevMouseY-y)/(float)size.height);
+//		    
+//		    float zoomX = fZoomScale * (float)(x-prevMouseX);
+//		    float zoomY = fZoomScale * (float)(prevMouseY-y);
+//		    
+//		    /* take abs(zoomX) */
+//		    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
+//		    	zoomX = -zoomX;
+//		    }
+//		    
+//	    	prevMouseX = x;
+//		    prevMouseY = y;
+//		    
+//		    /* set new paramters to ViewCamera */
+//		    IViewCamera bufferCamera = refParentGearsMain.getViewCamera();
+//		    bufferCamera.addCameraScale(
+//		    		new Vec3f( 0, 
+//		    				0, 
+//		    				zoomY +zoomX) );
+//		    
+//		    System.err.println(" zoom:A " + bufferCamera.getId() + "] ==> " + 
+//		    		refParentGearsMain.toString() + " ==> " +
+//		    		refParentGearsMain.getViewCamera().toString() + 
+//		    		" <== " + refParentGearsMain.getViewCamera().getId());
+//		    
+//		    System.err.println(" zoom:B " + bufferCamera.getId() + "] ==> " + 
+//		    		bufferCamera.toString() + " ==> " +
+//		    		bufferCamera.getId() + 
+//		    		" <== " + refParentGearsMain.getViewCamera().getId());
+//
+//    	}
     	
     }
     else 

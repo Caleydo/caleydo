@@ -156,7 +156,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				refGLPathwayManager);
-
+		infoAreaRenderer.enableColorMappingArea(true);
+		
 		memoPad = new GLPathwayMemoPad(refGLPathwayManager,
 				refGLPathwayTextureManager);
 

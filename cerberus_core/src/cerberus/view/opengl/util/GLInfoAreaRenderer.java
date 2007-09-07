@@ -43,6 +43,8 @@ public class GLInfoAreaRenderer {
 	
 	private PathwayRenderStyle refRenderStyle;
 	
+	private boolean bEnableColorMapping = false;
+	
 	public GLInfoAreaRenderer(final IGeneralManager refGeneralManager,
 			final GLPathwayManager refGLPathwayManager) {
 		
@@ -285,20 +287,21 @@ public class GLInfoAreaRenderer {
 		
 		textRenderer.end3DRendering();
 		
-//		// Render mapping if available
-//		gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, 0.02f);
-//		gl.glScalef(3.0f, 3.0f, 3.0f);
-//		if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
-//		{					
-//			float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
-//			
-//			refGLPathwayManager.mapExpressionByGeneId(
-//					gl, llMultipleMappingGenes.get(0).getName(), fNodeWidth);
-//			
-//			llMultipleMappingGenes.remove(0);
-//		}
-
-		
+		if (bEnableColorMapping) 
+		{
+			// Render mapping if available
+			gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, 0.02f);
+			gl.glScalef(3.0f, 3.0f, 3.0f);
+			if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
+			{					
+				float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
+				
+				refGLPathwayManager.mapExpressionByGeneId(
+						gl, llMultipleMappingGenes.get(0).getName(), fNodeWidth);
+				
+				llMultipleMappingGenes.remove(0);
+			}
+		}
 		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
     }
     
@@ -383,5 +386,10 @@ public class GLInfoAreaRenderer {
 			llMultipleMappingGenes.add(
 					(PathwayVertexGraphItem) iterMappedGeneItems.next());
 		}
+    }
+    
+    public void enableColorMappingArea(boolean bEnableColorMapping) {
+    	
+    	this.bEnableColorMapping = bEnableColorMapping;
     }
 }
