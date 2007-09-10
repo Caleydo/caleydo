@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.media.opengl.GL;
 
+import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemKind;
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
+import org.geneview.graph.algorithm.GraphVisitorSearchBFS;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.set.selection.SetSelection;
@@ -46,6 +50,7 @@ public class GLPathwayManager {
 	private boolean bEnableGeneMapping = true;
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
+	private boolean bEnableNeighborhood = false;
 	private boolean bEnableAnnotation = true;
 	
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
@@ -111,7 +116,7 @@ public class GLPathwayManager {
 			hashPathwayId2VerticesDisplayListId.put(iPathwayId, iVerticesDisplayListId);			
 		}
 		
-		performNodeHighlighting();
+		performIdenticalNodeHighlighting();
 		
 		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
 		extractVertices(gl, refTmpPathway);
@@ -134,7 +139,7 @@ public class GLPathwayManager {
 		gl.glEndList();
 	}
 
-	private void performNodeHighlighting() {
+	private void performIdenticalNodeHighlighting() {
 		
 		hashSelectedGraphItemRepId2Depth.clear();
 		
@@ -167,6 +172,8 @@ public class GLPathwayManager {
 						.getItem(iArTmpSelectedGraphItemIds[iItemIndex])).getAllItemsByProp(
 								EGraphItemProperty.ALIAS_PARENT).iterator();
 			Iterator<IGraphItem> iterIdenticalGraphItemReps;
+			IGraphItem identicalNode;
+			
 			while(iterGraphItems.hasNext()) 
 			{
 				iterIdenticalGraphItemReps = 
@@ -175,10 +182,73 @@ public class GLPathwayManager {
 
 				while(iterIdenticalGraphItemReps.hasNext()) 
 				{
+					identicalNode = iterIdenticalGraphItemReps.next();
+					
 					hashSelectedGraphItemRepId2Depth.put(
-							iterIdenticalGraphItemReps.next().getId(), 0);
+							identicalNode.getId(), 0);
+				
+					performNeighborhoodAlgorithm(identicalNode);
 				}
 			}	
+		}
+		
+		// Store currently selected vertices back to selection set
+		Set<Entry<Integer, Integer>> setAllSelectedVertices = hashSelectedGraphItemRepId2Depth.entrySet();
+		
+		int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];  
+		int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
+		
+		Iterator<Entry<Integer, Integer>> iterAllSelectedVertices = setAllSelectedVertices.iterator();
+		
+		int iItemIndex = 0;
+		Entry<Integer, Integer> tmpEntry;
+		while (iterAllSelectedVertices.hasNext())
+		{
+			tmpEntry = iterAllSelectedVertices.next();
+			iArTmpGraphItemId[iItemIndex] = tmpEntry.getKey();
+			iArTmpGraphItemDepth[iItemIndex] = tmpEntry.getValue();
+			iItemIndex++;
+		}
+	
+		alSetSelection.get(0).getWriteToken();
+		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
+		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
+		alSetSelection.get(0).returnWriteToken();
+	}
+	
+	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
+		
+		GraphVisitorSearchBFS graphVisitorSearchBFS;
+		
+		if(bEnableNeighborhood)
+			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 5);
+		else
+			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
+		
+		graphVisitorSearchBFS.setProp(EGraphItemProperty.OUTGOING);
+		graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(
+				EGraphItemHierarchy.GRAPH_PARENT).get(0));
+		
+		//List<IGraphItem> lGraphItems = graphVisitorSearchBFS.getSearchResult();
+		graphVisitorSearchBFS.getSearchResult();
+		
+		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS.getSearchResultDepthOrdered();
+		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
+		
+		for(int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++)
+		{
+			lGraphItems = lDepthSearchResult.get(iDepthIndex);
+						
+			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
+			{
+				// Consider only vertices for now
+				if (lGraphItems.get(iItemIndex).getClass().equals
+						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+				{			
+					hashSelectedGraphItemRepId2Depth.put(
+							lGraphItems.get(iItemIndex).getId(), (iDepthIndex + 1) / 2); // +1 / 2 because we want to ignore edge depth
+				}
+			}
 		}
 	}
 	
@@ -679,6 +749,11 @@ public class GLPathwayManager {
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
 		
 		this.bEnableIdenticalNodeHighlighting = bEnableIdenticalNodeHighlighting;
+	}
+	
+	public void enableNeighborhood(final boolean bEnableNeighborhood) {
+		
+		this.bEnableNeighborhood = bEnableNeighborhood;
 	}
 	
 	public void enableAnnotation(final boolean bEnableAnnotation) {
