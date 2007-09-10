@@ -4,6 +4,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import javax.media.opengl.glu.GLU;
 import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraphItem;
-import org.geneview.graph.algorithm.GraphVisitorSearchBFS;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.view.swt.CmdViewLoadURLInHTMLBrowser;
@@ -95,6 +95,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private JukeboxHierarchyLayer pathwayLayeredLayer;
 
 	private JukeboxHierarchyLayer pathwayPoolLayer;
+	
+	private ArrayList<float[]> alTextureColorByLayerPos;
 
 	private PathwayVertexGraphItemRep selectedVertex;
 
@@ -161,6 +163,28 @@ implements IMediatorReceiver, IMediatorSender {
 				refGLPathwayTextureManager);
 
 		dragAndDrop = new GLDragAndDrop(refGLPathwayTextureManager);
+		
+		alTextureColorByLayerPos = new ArrayList<float[]>();
+		float[] tmpColor = new float[3];
+		tmpColor[0] = 1;
+		tmpColor[1] = 0.85f;
+		tmpColor[2] = 0.85f;
+		alTextureColorByLayerPos.add(tmpColor);
+		tmpColor = new float[3];
+		tmpColor[0] = 0.85f;
+		tmpColor[1] = 1;
+		tmpColor[2] = 0.85f;
+		alTextureColorByLayerPos.add(tmpColor);
+		tmpColor = new float[3];
+		tmpColor[0] = 0.85f;
+		tmpColor[1] = 0.85f;
+		tmpColor[2] = 1;
+		alTextureColorByLayerPos.add(tmpColor);
+		tmpColor = new float[3];
+		tmpColor[0] = 0.85f;
+		tmpColor[1] = 1;
+		tmpColor[2] = 1;
+		alTextureColorByLayerPos.add(tmpColor);
 	}
 
 	/*
@@ -358,7 +382,20 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		int iPathwayId = pathwayUnderInteractionLayer.getElementIdByPositionIndex(0);
-		renderPathwayById(gl, iPathwayId, pathwayUnderInteractionLayer);
+	
+		if (!pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer.getElementIdByPositionIndex(0)))
+		{
+			renderPathwayById(gl, iPathwayId,
+					pathwayUnderInteractionLayer,
+					alTextureColorByLayerPos.get(0));
+		}
+		else
+		{
+			renderPathwayById(gl, iPathwayId,
+				pathwayUnderInteractionLayer,
+				alTextureColorByLayerPos.get(
+						pathwayLayeredLayer.getPositionIndexByElementId(iPathwayId)));
+		}
 	}
 
 	private void renderPathwayLayered(final GL gl) {
@@ -368,13 +405,17 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iPathwayIndex = 0; iPathwayIndex < pathwayElementList.size(); iPathwayIndex++)
 		{
 			int iPathwayId = pathwayElementList.get(iPathwayIndex);
-			renderPathwayById(gl, iPathwayId, pathwayLayeredLayer);
+			renderPathwayById(gl, iPathwayId,
+					pathwayLayeredLayer,
+					alTextureColorByLayerPos.get(
+							pathwayLayeredLayer.getPositionIndexByElementId(iPathwayId)));
 		}
 	}
 	
 	private void renderPathwayById(final GL gl,
 			final int iPathwayId, 
-			final JukeboxHierarchyLayer layer) {
+			final JukeboxHierarchyLayer layer,
+			final float[] fArTextureColor) {
 		
 		// Check if pathway is visible
 		if(!layer.getElementVisibilityById(iPathwayId))
@@ -402,25 +443,29 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glTranslatef(0, tmp, 0);
 		
 		if (layer.equals(pathwayLayeredLayer))
+		{
 			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+		}
 		else
+		{
 			refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+		}
 		
 		gl.glTranslatef(0, -tmp, 0);
 
 		if (bEnablePathwayTextures)
 		{
-			if (!layer.getElementList().isEmpty()
-					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
-			{
+//			if (!layer.getElementList().isEmpty()
+//					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
+//			{
+//				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+//						fTextureTransparency, true);
+//			}
+//			else
+//			{
 				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-						fTextureTransparency, true);
-			}
-			else
-			{
-				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-						fTextureTransparency, false);
-			}
+						fTextureTransparency, fArTextureColor);
+//			}
 		}
 
 		gl.glPopMatrix();
@@ -681,9 +726,13 @@ implements IMediatorReceiver, IMediatorSender {
 
 		gl.glPushMatrix();
 		slerpMod.applySlerp(gl, transform);
-
+		
+		float[] tmpTextureColor = new float[3];
+		tmpTextureColor[0] = 1;
+		tmpTextureColor[1] = 1;
+		tmpTextureColor[2] = 1;
 		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-				fTextureTransparency, true);
+				fTextureTransparency, tmpTextureColor);
 
 		float tmp = refGLPathwayTextureManager
 				.getTextureByPathwayId(iPathwayId).getImageHeight()

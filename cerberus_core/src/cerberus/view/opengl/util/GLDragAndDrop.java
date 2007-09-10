@@ -1,5 +1,6 @@
 package cerberus.view.opengl.util;
 
+import java.awt.Color;
 import java.awt.Point;
 
 import javax.media.opengl.GL;
@@ -100,8 +101,13 @@ public class GLDragAndDrop {
 		gl.glPushMatrix();
 		gl.glTranslatef(fArCurrentMousePos[0], fArCurrentMousePos[1], 5);
 		gl.glScalef(0.2f, 0.2f, 0.2f);
+		
+		float[] tmpTextureColor = new float[3];
+		tmpTextureColor[0] = 1;
+		tmpTextureColor[1] = 1;
+		tmpTextureColor[2] = 1;
 		pathwayTextureManager.renderPathway(gl, 
-				iDragObjectId, 0.5f, false);
+				iDragObjectId, 0.5f, tmpTextureColor);
 		gl.glPopMatrix();
 	}
 	

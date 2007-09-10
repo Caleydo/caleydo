@@ -1,5 +1,6 @@
 package cerberus.view.opengl.util;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.util.Iterator;
@@ -149,8 +150,13 @@ public class GLPathwayMemoPad {
 			Vec3f scale = transform.getScale();
 			gl.glScalef(scale.x(), scale.y(), scale.z());
 
-			refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-					1, false);
+			
+			float[] tmpTextureColor = new float[3];
+			tmpTextureColor[0] = 1;
+			tmpTextureColor[1] = 1;
+			tmpTextureColor[2] = 1;
+			refGLPathwayTextureManager.renderPathway(gl, 
+					iPathwayId, 1f, tmpTextureColor);
 			
 			float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
 					iPathwayId).getImageHeight()

@@ -590,7 +590,9 @@ public class GLPathwayManager {
 		gl.glEnd();	
 	}
 	
-	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels) {
+	public void renderPathway(final GL gl, 
+			final int iPathwayID, 
+			boolean bRenderLabels) {
 		
 		if (bEnableEdgeRendering)
 		{		
