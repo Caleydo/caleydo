@@ -65,8 +65,8 @@
 			  uniqueId="86401" parent="18401" label="GL HeatMap2D D"	
 			  gl_forwarder="99077"
 				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
-				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 1.5f    2.0f 1.0f   400"			
-				attrib4="0 100"	
+				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 0.3f    2.0f 1.0f   400"			
+				attrib4="1000 2001 1"	
 				detail="38101" />
 				
 	  	<!-- Mediator -->

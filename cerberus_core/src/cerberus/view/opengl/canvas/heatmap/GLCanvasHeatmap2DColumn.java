@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -87,6 +88,14 @@ public class GLCanvasHeatmap2DColumn
 	 */
 	private HashMap <Integer,Boolean> hashHighlightSelectionIndex; 
 	
+	/** 
+	 * remove 	duplicates using a HashMap..
+	 * 
+	 * @see GLCanvasHeatmap2DColumn#setSelectedIndex_asArrayList(ArrayList, ArrayList)
+	 */
+	private HashMap <Integer,Integer> hashRemoveDuplicates;
+	
+	
 	/**
 	 * 
 	 */
@@ -155,12 +164,14 @@ public class GLCanvasHeatmap2DColumn
 			final Integer value, 
 			final int mode, 
 			final int containerSize) {
-		if ( mode < containerSize ) {
+		if ( mode < containerSize ) 
+		{
 			/* allocate new */
 			int iDifference = mode - containerSize;
 			
 			/* insert missing empty ArrayList <Integer> objects .. */
-			for (int i=0; i<iDifference; i++) {
+			for (int i=0; i<iDifference; i++) 
+			{
 				container.add( new ArrayList<Integer> (
 						GLCanvasHeatmap2DColumn.iInitialSizeArrayList_Selection));
 			}
@@ -177,8 +188,10 @@ public class GLCanvasHeatmap2DColumn
 			final Integer value  ) {
 		Iterator <ArrayList <Integer>> iter = container.iterator();
 		
-		while ( iter.hasNext()) {
-			if ( iter.next().remove( value ) ) {
+		while ( iter.hasNext()) 
+		{
+			if ( iter.next().remove( value ) ) 
+			{
 				/* found value, exit immediately */
 				return;
 			}
@@ -195,11 +208,13 @@ public class GLCanvasHeatmap2DColumn
 
 		int iSizeContainer = alHighlightSelectionIndex_sortByDepth.size();
 		
-		while (iterIndex.hasNext()) {
+		while (iterIndex.hasNext()) 
+		{
 			Integer buffer = iterIndex.next();
 			int bufferMode = iterIndexMode.next().intValue();
 			
-			if ( bufferMode > 0 ) {
+			if ( bufferMode > 0 ) 
+			{
 				iSizeContainer = addhighlightSelectionIndex_addItem(
 					this.alHighlightSelectionIndex_sortByDepth,
 					buffer,
@@ -207,7 +222,9 @@ public class GLCanvasHeatmap2DColumn
 					iSizeContainer);
 			
 				hashHighlightSelectionIndex.put(buffer, new Boolean(true));
-			} else {
+			} 
+			else 
+			{
 				removehighlightSelectionIndex_Item(alHighlightSelectionIndex_sortByDepth, buffer);
 				
 				hashHighlightSelectionIndex.remove(buffer);
@@ -228,20 +245,50 @@ public class GLCanvasHeatmap2DColumn
 			return;
 		}
 
-		/* write local hashExternalId_2_HeatmapIndex to global variables int[] selectedIndex and int[] selectedIndexMode .. */
-		/* does size of arrays fit? */
-		if (selectedIndex.length != updateIndex.size())
+		/**
+		 * remove duplicates using a HashMap.. 
+		 */
+		if (hashRemoveDuplicates == null) 
 		{
-			selectedIndex = new int[updateIndex.size()];
-			selectedIndexMode = new int[updateIndex.size()];
+			hashRemoveDuplicates = new HashMap <Integer,Integer>();
 		}
-
-		for ( int index=0; index< updateIndex.size(); index++ ) {
-			selectedIndex[index] = updateIndex.get(index);				
-			selectedIndexMode[index] = updateIndexMode.get(index).intValue();
+		else
+		{
+			hashRemoveDuplicates.clear();
+		}
 		
+		Iterator<Integer> iterIndex = updateIndex.iterator();
+		Iterator<Integer> iterIndexMode = updateIndexMode.iterator();
+		while (iterIndex.hasNext()) 
+		{
+			hashRemoveDuplicates.put(iterIndex.next(), iterIndexMode.next());
+		}
+		
+		/* use keys for selectedIndex[] .. */
+		/* assign set to get Iterator and iNoDuplicatesSize = resultNoDuplicates.size() */
+		Set <Integer> resultNoDuplicates = hashRemoveDuplicates.keySet();		
+		Iterator <Integer> iterNoDuplicatesIndex = resultNoDuplicates.iterator();
+		int iNoDuplicatesSize = resultNoDuplicates.size();
+		
+		/* use values for selectedIndexMode[] .. */
+		Iterator <Integer> iterNoDuplicatesIndexMode = hashRemoveDuplicates.values().iterator();
+		
+		/**
+		 * end: remove duplicates using a HashMap.. 
+		 */
+		
+		/* does size of arrays fit? */
+		if (selectedIndex.length != iNoDuplicatesSize)
+		{
+			selectedIndex = new int[iNoDuplicatesSize];
+			selectedIndexMode = new int[iNoDuplicatesSize];
 		}
 
+		for ( int index=0; index< iNoDuplicatesSize; index++ ) 
+		{
+			selectedIndex[index] = iterNoDuplicatesIndex.next().intValue();			
+			selectedIndexMode[index] = iterNoDuplicatesIndexMode.next().intValue();		
+		}
 	}
 
 	public void setSelectedIndex(final int[] updateIndex,
@@ -834,7 +881,7 @@ public class GLCanvasHeatmap2DColumn
 
 			float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
 					/ (float) (iRenderIndexRangeX + 1);
-			float fIncX_halfSize = fIncX * 0.5f;
+			//float fIncX_halfSize = fIncX * 0.5f;
 			
 			float fNowX = viewingFrame[X][MIN];
 			float fNextX = fNowX + fIncX;
@@ -1729,7 +1776,7 @@ public class GLCanvasHeatmap2DColumn
 					
 					if (indexInt != null)
 					{
-						System.err.print("GLCanvasHeatmap2DColumn receiveUpdate [" + intBuffer[j] + "=>" + indexInt
+						System.err.println("GLCanvasHeatmap2DColumn receiveUpdate [" + intBuffer[j] + "=>" + indexInt
 								+ "], ");
 
 						resultBuffer.add(indexInt);
@@ -1742,7 +1789,7 @@ public class GLCanvasHeatmap2DColumn
 						
 					} else
 					{
-						System.err.print("[" + intBuffer[j] + "=> ?? ], ");
+						System.err.println("[" + intBuffer[j] + "=> ?? ], ");
 					}
 				}
 				          				
@@ -1752,7 +1799,7 @@ public class GLCanvasHeatmap2DColumn
 
 		if (!resultBuffer.isEmpty())
 		{
-			System.err.print("GLCanvasHeatmap2DColumn receiveUpdate []    COPY to Heatmap-Selection.. ");
+			System.err.println("GLCanvasHeatmap2DColumn receiveUpdate []    COPY to Heatmap-Selection.. ");
 					
 			/* copy selection into local data structure .. */
 			setSelectedIndex_asArrayList(resultBuffer, resultBufferMode);

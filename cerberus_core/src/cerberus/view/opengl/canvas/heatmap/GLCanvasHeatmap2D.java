@@ -20,7 +20,7 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
+//import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.IMediatorReceiver;
@@ -28,8 +28,8 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
-import cerberus.view.opengl.canvas.pathway.GLPathwayManager;
-import cerberus.view.opengl.util.GLInfoAreaRenderer;
+//import cerberus.view.opengl.canvas.pathway.GLPathwayManager;
+//import cerberus.view.opengl.util.GLInfoAreaRenderer;
 
 /**
  * @author Michael Kalkusch
@@ -104,6 +104,8 @@ extends AGLCanvasHeatmap2D
 
 	
 	private boolean bIsMousePickingEvent = false;
+	
+	private boolean bMouseOverEvent = false;
 	
 	/**
 	 * @param setGeneralManager
@@ -377,11 +379,14 @@ extends AGLCanvasHeatmap2D
 			return;
 		}
 		
-		boolean bMouseReleased =
-			pickingTriggerMouseAdapter.wasMouseReleased();
 		
-		if (pickingTriggerMouseAdapter.wasMousePressed()
-				|| bMouseReleased)
+//		if ( pickingTriggerMouseAdapter.wasMouseDragged() ) {
+//			this.bMouseOverEvent = false;
+//		}
+//		if ( pickingTriggerMouseAdapter.wasMouseMoved())
+//		pickingTriggerMouseAdapter.wasMouseMoved()
+		
+		if (pickingTriggerMouseAdapter.wasMousePressed())
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 //			bIsMousePickingEvent = true;

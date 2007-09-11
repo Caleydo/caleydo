@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IEventPublisher;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.mediator.MediatorUpdateType;
 
 /**
@@ -172,10 +173,19 @@ implements IMediator {
 		{
 			IMediatorReceiver currentReceiver = (IMediatorReceiver) iter.next();
 
-			// Prevent circular updates
-			if (!currentReceiver.getClass().equals(eventTrigger.getClass()))
+			/*  Prevent circular updates */
+			if (!currentReceiver.equals(eventTrigger))
 			{
 				currentReceiver.updateReceiver(eventTrigger, updatedSet);
+			} 
+			else 
+			{
+				refEventPublisher.getSingelton().logMsg(
+						this.getClass().toString() + 
+						".updateReceiverSpecialMediator(Object eventTrigger=[" +
+						eventTrigger.toString() +
+						"]) is also a receiver! Cycle detected!",
+						LoggerType.MINOR_ERROR);
 			}
 		}
 	}
