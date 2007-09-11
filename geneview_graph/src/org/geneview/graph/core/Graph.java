@@ -73,13 +73,15 @@ public class Graph extends AGraph {
 		Iterator <IGraphItem> iter = 
 			items.getAllGraphComponent(EGraphItemKind.NODE).iterator();
 
-		while ( iter.hasNext() ) {
+		while ( iter.hasNext() ) 
+		{
 			iter.next().removeGraph(this, null);
 		}
 		
 		iter = items.getAllGraphComponent(EGraphItemKind.EDGE).iterator();
 
-		while ( iter.hasNext() ) {
+		while ( iter.hasNext() ) 
+		{
 			iter.next().removeGraph(this, null);
 		}
 		
@@ -87,7 +89,8 @@ public class Graph extends AGraph {
 		Iterator <IGraph> iterGraph = 
 			graphs.getAllGraphComponent(null).iterator();
 
-		while ( iterGraph.hasNext() ) {
+		while ( iterGraph.hasNext() ) 
+		{
 			iterGraph.next().removeGraph(this, null);
 		}
 	}
@@ -104,7 +107,8 @@ public class Graph extends AGraph {
 	 */
 	public final boolean isEmpty() {
 		if (( graphs.isEmpty()) &&
-				(items.isEmpty()) ) {
+				(items.isEmpty()) ) 
+		{
 			return true;
 		}
 		return false;
@@ -115,7 +119,8 @@ public class Graph extends AGraph {
 	 */
 	public void removeAllByKind(EGraphItemKind kind) {
 		
-		switch (kind) {
+		switch (kind) 
+		{
 		case EDGE:
 			break;
 			
@@ -148,7 +153,8 @@ public class Graph extends AGraph {
 	 */
 	public boolean updateItem(IGraphItem item) {
 		EGraphItemKind itemNewKind = item.getGraphKind();
-		if ( items.containsGraphComponent(item, itemNewKind) ) {
+		if ( items.containsGraphComponent(item, itemNewKind) ) 
+		{
 			/** same kind as already registered. no update required */
 			return true;
 			
@@ -161,7 +167,8 @@ public class Graph extends AGraph {
 		items.addGraphComponent(item, itemNewKind);
 		
 		/** remove item from old list .. */
-		if ( itemNewKind.equals(EGraphItemKind.EDGE)) {
+		if ( itemNewKind.equals(EGraphItemKind.EDGE)) 
+		{
 			/** new kind is EDGE thus old kind was NODE */
 			return items.removeGraphComponent(item, EGraphItemKind.NODE);
 			

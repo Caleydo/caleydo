@@ -63,7 +63,8 @@ public abstract class AGraph implements IGraph {
 	}
 	
 	public final void setGraphProperty(final EGraphProperty prop, final boolean value) {
-		if ( value ) {
+		if ( value ) 
+		{
 			hashGraphProperties.put(prop, new Boolean(value));
 			return;
 		}
@@ -75,7 +76,8 @@ public abstract class AGraph implements IGraph {
 	 * @see org.geneview.graph.IGraph#setTypeId(int)
 	 */
 	public final void setId(int type) {
-		if (type >= 0) {
+		if (type >= 0) 
+		{
 			iGraphId = type;
 			return;
 		}

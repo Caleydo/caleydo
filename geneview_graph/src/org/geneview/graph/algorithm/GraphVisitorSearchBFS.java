@@ -40,7 +40,8 @@ implements IGraphVisitorSearch {
 		/** create list and initialize it .. */
 		List < List<IGraphItem> > resultDepthSortedList = 
 			new ArrayList < List<IGraphItem> > (iSetDepth);
-		for ( int i=0; i<iSearchDepth; i++ ) {
+		for ( int i=0; i<iSearchDepth; i++ ) 
+		{
 			resultDepthSortedList.add(i, new ArrayList <IGraphItem> ()); 		
 		}
 		
@@ -52,8 +53,10 @@ implements IGraphVisitorSearch {
 		
 		super.setSearchDepth(iSearchDepth);
 		
-		if (depthSortedList != null) {
-			if ( depthSortedList.size() == iSearchDepth) {
+		if (depthSortedList != null) 
+		{
+			if ( depthSortedList.size() == iSearchDepth) 
+			{
 				/** List has already the required size */
 				return;
 			}		
@@ -70,7 +73,8 @@ implements IGraphVisitorSearch {
 	 */
 	public List<IGraphItem> getSearchResult() {
 			
-		if ( iSearchDepth < 1 ) {
+		if ( iSearchDepth < 1 ) 
+		{
 			/** special case, no elements, return empty list */
 			return new ArrayList <IGraphItem> (0);
 		}
@@ -79,13 +83,14 @@ implements IGraphVisitorSearch {
 			
 		List<IGraphItem> tmpList = this.itemSource.getAllItemsByProp(prop);
 		Iterator<IGraphItem> iterTmpGraphItems = tmpList.iterator();
+		
 		while(iterTmpGraphItems.hasNext())
 		{
 			resultList.add(iterTmpGraphItems.next());
-		}
+		}		
 		
-		
-		if ( iSearchDepth == 1 ) {
+		if ( iSearchDepth == 1 ) 
+		{
 			/** special case; only direct adjacent elements, return list */
 			depthSortedList.set(0, resultList);
 			return resultList;
@@ -98,18 +103,22 @@ implements IGraphVisitorSearch {
 		/** insert elements with adjacency ==1 */
 		depthSortedList.set(0, currentSourceList);
 		
-		for ( int iCurrentDepthIndex=1; iCurrentDepthIndex< this.iSearchDepth; iCurrentDepthIndex++) {
+		for ( int iCurrentDepthIndex=1; iCurrentDepthIndex< this.iSearchDepth; iCurrentDepthIndex++) 
+		{
 			
 			List <IGraphItem> currentLevel = new ArrayList <IGraphItem> ();
 			
 			Iterator <IGraphItem> iter = currentSourceList.iterator();
-			while ( iter.hasNext() ) {
+			while ( iter.hasNext() ) 
+			{
 				Iterator <IGraphItem> iterInner = 
 					iter.next().getAllItemsByProp(prop).iterator();
 				
-				while ( iterInner.hasNext() ) {
+				while ( iterInner.hasNext() ) 
+				{
 					IGraphItem item = iterInner.next();
-					if ( ! resultList.contains(item) ) {
+					if ( ! resultList.contains(item) ) 
+					{
 						/** add to list of visited nodes .. */
 						resultList.add(item);
 						/** add to list of nodes of current level .. */
@@ -131,7 +140,7 @@ implements IGraphVisitorSearch {
 	}
 
 	/**
-	 * Create a deep copy of teh search result list.
+	 * Create a deep copy of the search result list.
 	 * 
 	 * @return deep copy of the search result list
 	 */
@@ -150,7 +159,8 @@ implements IGraphVisitorSearch {
 			ArrayList <IGraphItem> resultListDeepCopy = 
 				new ArrayList <IGraphItem> (currentRawDataDepthList.size()); 			
 						
-			while ( iterRawDataInnerLoop.hasNext() ) {
+			while ( iterRawDataInnerLoop.hasNext() ) 
+			{
 				resultListDeepCopy.add(iterRawDataInnerLoop.next());
 			}
 
@@ -206,6 +216,5 @@ implements IGraphVisitorSearch {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 }

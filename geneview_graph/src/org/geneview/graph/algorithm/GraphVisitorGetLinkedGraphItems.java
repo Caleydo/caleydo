@@ -35,12 +35,15 @@ implements IGraphVisitorSearch {
 		
 		Iterator <IGraphItem> iter = buffer.iterator();
 		
-		while (iter.hasNext()) {
+		while (iter.hasNext()) 
+		{
 			List<IGraphItem> listAllChildren_fromParent = 
 				iter.next().getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 			
-			if  ( ! listAllChildren_fromParent.isEmpty() ) {
-				if ( resultBuffer == null ) {
+			if  ( ! listAllChildren_fromParent.isEmpty() ) 
+			{
+				if ( resultBuffer == null ) 
+				{
 					resultBuffer = listAllChildren_fromParent;
 				} else {
 					resultBuffer.addAll( listAllChildren_fromParent );
@@ -81,7 +84,8 @@ implements IGraphVisitorSearch {
 	 */
 	public List<IGraphItem> getSearchResult() {
 		
-		if ( this.iSearchDepth == 1) {
+		if ( this.iSearchDepth == 1) 
+		{
 			return getSearchResultFromGraphItem(this.itemSource);
 		}
 		

@@ -58,7 +58,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		Iterator <GraphEnum> iter = colGraphEnum.iterator();
 		
 		/* fill hierarchy HashMap ... */
-		for ( ;iter.hasNext();) {
+		while (iter.hasNext())
+		{
 			type2ArrayList.put( iter.next(), 
 				new ArrayList <GraphComponent> (iInitialSizeHierarchyArray));
 		}	
@@ -75,11 +76,13 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		/* add to hierarchy... */
 		 ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
 		 
-		 if( arrayBuffer == null ) {
+		 if( arrayBuffer == null ) 
+		 {
 			 throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString() );
 		 }
 		 
-		 if ( ! arrayBuffer.contains(item) ) {
+		 if ( ! arrayBuffer.contains(item) ) 
+		 {
 			 arrayBuffer.add(item);
 		 } 
 		 else 
@@ -98,11 +101,13 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		/* add to hierarchy... */
 		 ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
 		 
-		 if( arrayBuffer == null ) {
+		 if( arrayBuffer == null ) 
+		 {
 			 throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString() );
 		 }
 		 
-		 if ( ! arrayBuffer.contains(item) ) {
+		 if ( ! arrayBuffer.contains(item) ) 
+		 {
 			 arrayBuffer.add(item);
 		 } 		
 	}
@@ -116,7 +121,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		try {
 			return type2ArrayList.get(key).contains(item);
 		}
-		catch (NullPointerException npe) {
+		catch (NullPointerException npe) 
+		{
 			/** Handle case if type2ArrayList.get(key) returns null */
 			
 			throw new GraphRuntimeException( " key: " + key.toString() + 
@@ -133,7 +139,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		Iterator <ArrayList <GraphComponent>> iter =
 			type2ArrayList.values().iterator();
 		
-		while ( iter.hasNext() ) {
+		while ( iter.hasNext() ) 
+		{
 			if ( iter.next().contains(item) ) {
 				return true;
 			}
@@ -149,14 +156,16 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	public List <GraphComponent> getAllGraphComponent( final GraphEnum key ) {
 		
 		
-		if ( key == null ) {
+		if ( key == null ) 
+		{
 			/** special case: return all GraphComponent from all ArrayList's */
 			
 			/** Calculate total size .. */
 			int iTotalSize = 0;
 			Iterator <ArrayList <GraphComponent>> bufferArrayListIter = 
 				type2ArrayList.values().iterator();
-			while ( bufferArrayListIter.hasNext() ) {
+			while ( bufferArrayListIter.hasNext() ) 
+			{
 				iTotalSize += bufferArrayListIter.next().size();
 			}
 			
@@ -165,7 +174,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 			
 			/** fill result array .. */
 			bufferArrayListIter = type2ArrayList.values().iterator();
-			while ( bufferArrayListIter.hasNext() ) {				
+			while ( bufferArrayListIter.hasNext() ) 
+			{				
 				resultList.addAll(bufferArrayListIter.next());				
 			}
 			
@@ -173,7 +183,6 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		}
 		
 		/** regular case */
-		
 		List <GraphComponent> buffer = type2ArrayList.get(key);
 		
 		return ( buffer != null ) ? buffer :  new ArrayList <GraphComponent> (0);
@@ -187,7 +196,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	 */
 	public boolean removeGraphComponent(final GraphComponent item, GraphEnum key) {
 		
-		if ( key == null ) {
+		if ( key == null ) 
+		{
 			/** special case: remove GraphComponent from all ArrayList's */
 			
 			/** test if item will be removed from any ArrayList .. */
@@ -196,9 +206,10 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 			/** fill result array .. */
 			Iterator <ArrayList <GraphComponent>> bufferArrayListIter = 
 				type2ArrayList.values().iterator();
-			while ( bufferArrayListIter.hasNext() ) {
-				
-					if ( bufferArrayListIter.next().remove(item) ) {
+			while ( bufferArrayListIter.hasNext() ) 
+			{
+					if ( bufferArrayListIter.next().remove(item) ) 
+					{
 						bRemovedFromAnyList = true;
 					}
 			}
@@ -207,7 +218,6 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		}
 		
 		/** regular case */
-		
 		List <GraphComponent> buffer = type2ArrayList.get(key);
 		
 		return ( buffer != null ) ? buffer.remove(item) :  false;
@@ -220,11 +230,13 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		/** fill result array .. */
 		Iterator <ArrayList <GraphComponent>> bufferArrayListIter = 
 			type2ArrayList.values().iterator();
-		while ( bufferArrayListIter.hasNext() ) {
+		while ( bufferArrayListIter.hasNext() ) 
+		{
 			Iterator <GraphComponent> innerIter = 
 				bufferArrayListIter.next().iterator();
 			
-			while ( innerIter.hasNext() ) {
+			while ( innerIter.hasNext() ) 
+			{
 				((IGraphComponent) innerIter).disposeItem();
 			}
 		}
@@ -239,12 +251,13 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 		Iterator <ArrayList<GraphComponent>> iter = 
 			type2ArrayList.values().iterator();
 		
-		while ( iter.hasNext() ) {
-			if ( ! iter.next().isEmpty() ) {
+		while ( iter.hasNext() ) 
+		{
+			if ( ! iter.next().isEmpty() ) 
+			{
 				return false;
 			}
 		}
-		
 		return true;
 	}
 

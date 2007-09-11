@@ -38,17 +38,23 @@ public final class GraphItemDataSequenzer {
 		
 		boolean successfulInit = true;
 		
-		if ( identifier_key_value == null ) {
+		if ( identifier_key_value == null ) 
+		{
 			identifier_key_value = 
 				new HashMap <String, Integer> (iInitialSize);
-		} else {
+		} 
+		else 
+		{
 			successfulInit = false;
 		}
 		
-		if ( identifier_key_value_reverse == null ) {
+		if ( identifier_key_value_reverse == null ) 
+		{
 			identifier_key_value_reverse = 
 				new HashMap <Integer,String> (iInitialSize);
-		} else {
+		} 
+		else 
+		{
 			successfulInit = false;
 		}
 		 
@@ -60,7 +66,8 @@ public final class GraphItemDataSequenzer {
 	}
 	
 	public static final boolean setIdentifier( final String key, final int value) {
-		if ( identifier_key_value.containsKey(key)) {
+		if ( identifier_key_value.containsKey(key)) 
+		{
 			return false;
 		}
 		identifier_key_value.put(key, new Integer(value));
@@ -68,7 +75,8 @@ public final class GraphItemDataSequenzer {
 	}
 	
 	public static final boolean removeIdentifier( final String key ) {
-		if ( identifier_key_value.containsKey(key)) {
+		if ( identifier_key_value.containsKey(key)) 
+		{
 			Integer buffer = identifier_key_value.remove(key);
 			identifier_key_value_reverse.remove(buffer);
 			return true;

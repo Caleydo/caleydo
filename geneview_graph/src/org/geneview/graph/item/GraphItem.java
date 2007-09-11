@@ -117,7 +117,9 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 			/** add reverse with inverted property */
 			item.addItem(this, prop_inverted );
 			
-		} catch ( GraphRuntimeException ge ) {
+		} 
+		catch ( GraphRuntimeException ge )
+		{
 			throw new GraphRuntimeException("Exception during addItemDoubleLinked(); " + ge.toString() );
 		}
 	
@@ -163,11 +165,13 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	 * @see org.geneview.graph.IGraphItem#setGraphKind(org.geneview.graph.EGraphItemType)
 	 */
 	public void setGraphKind(EGraphItemKind type) {
-		if ( itemKind == null ) {
+		if ( itemKind == null ) 
+		{
 			itemKind = type;
 		}
 		
-		if ( ! itemKind.equals( type )) {
+		if ( ! itemKind.equals( type )) 
+		{
 			/** need to update all references! */
 			assert false : "not implemented yet!";
 		
@@ -216,8 +220,8 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	public void disposeItem() {
 		Iterator <IGraph> iter = graphs.getAllGraphComponent(null).iterator();
 		
-		
-		while ( iter.hasNext() ) {
+		while ( iter.hasNext() ) 
+		{
 			iter.next().removeItem(this);
 		}
 	}
