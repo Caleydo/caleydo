@@ -42,9 +42,9 @@ extends AGLCanvasUser
 	private List < HistogramData > listHistogramData;
 	  
 	private StatisticHistogramType enumCurrentHistogramMode = StatisticHistogramType.REGULAR_LINEAR;
-	 
+	
 	/**
-	 * Defien number of histogram slots.
+	 * Define number of histogram slots.
 	 * Default is 0 to ensure valid settings. 
 	 * 
 	 *  @see cerberus.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
