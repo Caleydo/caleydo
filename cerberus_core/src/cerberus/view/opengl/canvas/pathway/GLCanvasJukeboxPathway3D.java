@@ -1,10 +1,11 @@
 package cerberus.view.opengl.canvas.pathway;
 
+import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -285,6 +286,8 @@ implements IMediatorReceiver, IMediatorSender {
 		renderScene(gl);
 		renderInfoArea(gl);
 
+		testConnectingLines(gl);
+		
 		// int viewport[] = new int[4];
 		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 		//
@@ -328,7 +331,8 @@ implements IMediatorReceiver, IMediatorSender {
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-3.3f, fLayerYPos, 0f));
 			transform.setScale(new Vec3f(0.7f, 0.7f, 0.7f));
-			transform.setRotation(new Rotf(fTiltAngleRad, -1, -0.7f, 0));
+			transform.setRotation(new Rotf(fTiltAngleRad, 0, -1f, 0));
+			//transform.setRotation(new Rotf(0, 0,0,0));
 			pathwayLayeredLayer.setTransformByPositionIndex(iLayerIndex,
 					transform);
 
@@ -1324,6 +1328,121 @@ implements IMediatorReceiver, IMediatorSender {
 				"setTextureTransparency() failed! value=" + textureTransparency
 						+ " was out of range [0.0f .. 1.0f]",
 				LoggerType.MINOR_ERROR);
+	}
+	
+	public void testConnectingLines(final GL gl) {
+		
+		if (!arSlerpActions.isEmpty() 
+				|| pathwayLayeredLayer.getElementList().size() < 2 
+				|| selectedVertex == null)
+			return;
+		
+		Iterator<IGraphItem> iterSelectedVertexGraphItems = 
+			selectedVertex.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).iterator();
+
+		ArrayList<IGraphItem> alIdenticalVertexGraphItemReps = new ArrayList<IGraphItem>();
+		
+		while(iterSelectedVertexGraphItems.hasNext()) 
+		{
+			alIdenticalVertexGraphItemReps.addAll(
+					iterSelectedVertexGraphItems.next().getAllItemsByProp(
+						EGraphItemProperty.ALIAS_CHILD));
+		}
+		
+		Mat4f matSrc = pathwayLayeredLayer.getTransformByPositionIndex(0).getMatrix();
+		Mat4f matDest = pathwayLayeredLayer.getTransformByPositionIndex(1).getMatrix();
+		
+		Iterator<IGraphItem> iterIdenticalVertexGraphItemReps;
+		Iterator<IGraphItem> iterIdenticalVertexGraphItemRepsInnerLoop;
+		PathwayVertexGraphItemRep tmpVertexGraphItemRepSrc;
+		PathwayVertexGraphItemRep tmpVertexGraphItemRepDest;
+		int iPathwayIdSrc = 0;
+		int iPathwayIdDest = 0;
+	
+		Vec4f vecMatSrc = new Vec4f(0, 0, 0, 1);
+		Vec4f vecMatDest = new Vec4f(0, 0, 0, 1);
+		Vec4f vecTransformedSrc = new Vec4f(0, 0, 0, 1);
+		Vec4f vecTransformedDest = new Vec4f(0, 0, 0, 1);
+		
+		for (int iLayerIndex = 0; iLayerIndex < 
+			pathwayLayeredLayer.getElementList().size() - 1; iLayerIndex++)	
+		{
+			matSrc = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getMatrix();
+			matDest = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getMatrix();
+			
+			iPathwayIdSrc = pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex);
+			iPathwayIdDest = pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex+1);
+			
+//			if (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest) == null)
+//				continue;
+//			else if (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdSrc) == null)
+//				continue;
+			
+			iterIdenticalVertexGraphItemReps = 
+				alIdenticalVertexGraphItemReps.iterator();
+			
+			while(iterIdenticalVertexGraphItemReps.hasNext())
+			{
+				tmpVertexGraphItemRepSrc =
+					(PathwayVertexGraphItemRep) iterIdenticalVertexGraphItemReps.next();
+				
+				// Leave loop if parent pathway of the graph item is not the current one
+				if (pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex) == 
+					((PathwayGraph)tmpVertexGraphItemRepSrc.getAllGraphByType(
+							EGraphItemHierarchy.GRAPH_PARENT).get(0)).getKeggId())
+				{							
+					iterIdenticalVertexGraphItemRepsInnerLoop = 
+						alIdenticalVertexGraphItemReps.iterator();
+					
+					while (iterIdenticalVertexGraphItemRepsInnerLoop.hasNext())
+					{
+						tmpVertexGraphItemRepDest =
+							(PathwayVertexGraphItemRep) iterIdenticalVertexGraphItemRepsInnerLoop.next();
+						
+						// Leave loop if parent pathway of the graph item is not the current one
+						if (pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex+1) == 
+							((PathwayGraph)tmpVertexGraphItemRepDest.getAllGraphByType(
+									EGraphItemHierarchy.GRAPH_PARENT).get(0)).getKeggId())
+						{		
+							
+//							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+//									tmpVertexGraphItemRepSrc.getYPosition() * GLPathwayManager.SCALING_FACTOR_Y,
+//									 0, 1);
+//							
+//							vecMatDest.set(tmpVertexGraphItemRepDest.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+//									tmpVertexGraphItemRepDest.getYPosition() * GLPathwayManager.SCALING_FACTOR_Y,
+//									0, 1);
+
+							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdSrc)
+										.getImageHeight()-tmpVertexGraphItemRepSrc.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0, 1);
+							
+							vecMatDest.set(tmpVertexGraphItemRepDest.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest)
+									 	.getImageHeight()-tmpVertexGraphItemRepDest.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0, 1);
+							
+//							vecMatSrc.set(1, 0, 0, 1);
+//							
+//							vecMatDest.set(1, 0, 0, 1);
+							
+							matSrc.xformVec(vecMatSrc, vecTransformedSrc);
+							matDest.xformVec(vecMatDest, vecTransformedDest);
+							
+							gl.glLineWidth(5);
+							gl.glColor3i(1, 0, 0);
+							gl.glBegin(GL.GL_LINES);
+							gl.glVertex3f(vecTransformedSrc.x(),
+									vecTransformedSrc.y(),
+									vecTransformedSrc.z());
+							gl.glVertex3f(vecTransformedDest.x(),
+									vecTransformedDest.y(),
+									vecTransformedDest.z());
+							gl.glEnd();		
+						}
+					}
+				}
+			}	
+		}
 	}
 	
 	public void enableGeneMapping(final boolean bEnableMapping) {
