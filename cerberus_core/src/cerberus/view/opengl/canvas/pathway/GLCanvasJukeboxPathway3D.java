@@ -171,6 +171,11 @@ implements IMediatorReceiver, IMediatorSender {
 		tmpColor[2] = 0.85f;
 		alTextureColorByLayerPos.add(tmpColor);
 		tmpColor = new float[3];
+		tmpColor[0] = 1f;
+		tmpColor[1] = 1;
+		tmpColor[2] = 0.85f;
+		alTextureColorByLayerPos.add(tmpColor);
+		tmpColor = new float[3];
 		tmpColor[0] = 0.85f;
 		tmpColor[1] = 1;
 		tmpColor[2] = 0.85f;
@@ -178,11 +183,6 @@ implements IMediatorReceiver, IMediatorSender {
 		tmpColor = new float[3];
 		tmpColor[0] = 0.85f;
 		tmpColor[1] = 0.85f;
-		tmpColor[2] = 1;
-		alTextureColorByLayerPos.add(tmpColor);
-		tmpColor = new float[3];
-		tmpColor[0] = 0.85f;
-		tmpColor[1] = 1;
 		tmpColor[2] = 1;
 		alTextureColorByLayerPos.add(tmpColor);
 	}
@@ -455,17 +455,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 		if (bEnablePathwayTextures)
 		{
-//			if (!layer.getElementList().isEmpty()
-//					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
-//			{
-//				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-//						fTextureTransparency, true);
-//			}
-//			else
-//			{
-				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-						fTextureTransparency, fArTextureColor);
-//			}
+			refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+					fTextureTransparency, fArTextureColor);
 		}
 
 		gl.glPopMatrix();
@@ -566,11 +557,19 @@ implements IMediatorReceiver, IMediatorSender {
 						+ refHashPathwayContainingSelectedVertex2VertexCount
 								.get(iPathwayId).toString();
 			}
-
-			if (pathwayUnderInteractionLayer.containsElement(iPathwayId))
-				gl.glColor4f(1, 0, 0, 1);
-			else
+			
+			if (!pathwayLayeredLayer.containsElement(iPathwayId))
+			{
 				gl.glColor4f(0, 0, 0, 1);
+			}
+			else
+			{
+				float[] tmpColor = alTextureColorByLayerPos.get(
+						pathwayLayeredLayer.getPositionIndexByElementId(iPathwayId));
+				gl.glColor4f(tmpColor[0] * (float)Math.floor(tmpColor[0]), 
+						tmpColor[1] * (float)Math.floor(tmpColor[1]), 
+						tmpColor[2] * (float)Math.floor(tmpColor[2]), 1);				
+			}
 
 			if (alMagnificationFactor.get(iPathwayIndex) == 3)
 			{
