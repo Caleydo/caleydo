@@ -110,7 +110,10 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 				new Vec3f(-centerOfRotation.x(),
 						-centerOfRotation.y(),
 						-centerOfRotation.z()));				
-		rotation.toMatrix(R);				
+		rotation.toMatrix(R);	
+		/* set missing 	homogeneous coordinate */
+		R.set(3, 3, 1.0f);
+		
 		S.setScale( scale );
 		
 		/* build matrix .. */

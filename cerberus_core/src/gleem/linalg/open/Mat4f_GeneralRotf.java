@@ -13,7 +13,7 @@ import gleem.linalg.Vec3f;
  */
 public class Mat4f_GeneralRotf {
 	
-	boolean showMatrix = false;
+	boolean showMatrix = true;
 	
 	protected Vec3f centerOfRotation;
 	
@@ -214,11 +214,13 @@ public class Mat4f_GeneralRotf {
 				new Vec3f(-centerOfRotation.x(),
 						-centerOfRotation.y(),
 						-centerOfRotation.z()));				
-		rotation.toMatrix(R);	
+		rotation.toMatrix(R);
+		/* set missing 	homogeneous coordinate */
+		R.set(3, 3, 1.0f);
 		
 		/* build matrix .. */
 		/* start with T_inv .. */
-		Mat4f Tinv_R =   T_inv.mul(R);
+		Mat4f Tinv_R = T_inv.mul(R);
 		matrix = Tinv_R.mul(T);
 		
 		/* debug output.. */
