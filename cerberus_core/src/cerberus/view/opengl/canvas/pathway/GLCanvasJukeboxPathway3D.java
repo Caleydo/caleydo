@@ -4,6 +4,8 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
+import gleem.linalg.open.Mat4f_GeneraRotfScale;
+import gleem.linalg.open.Mat4f_GeneralRotf;
 import gleem.linalg.open.Transform;
 
 import java.awt.Point;
@@ -147,9 +149,9 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayPoolLayer.setChildLayer(pathwayLayeredLayer);
 
 		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.95f, -2.8f, 0f));
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.5f, -1.3f, 0f));
 		transformPathwayUnderInteraction.setScale(new Vec3f(1.8f, 1.8f, 1.8f));
-		transformPathwayUnderInteraction.setRotation(new Rotf(0, 0, 0, 0));
+		//transformPathwayUnderInteraction.setRotation(new Rotf(new Vec3f(0,0,1), Vec3f.convertGrad2Radiant(30)));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 
@@ -255,9 +257,7 @@ implements IMediatorReceiver, IMediatorSender {
 			alSetSelection.get(0).getWriteToken();
 			alSetSelection.get(0).setSelectionIdArray(iArTmpSelectionId);	
 			alSetSelection.get(0).setGroupArray(iArTmpDepth);
-			alSetSelection.get(0).returnWriteToken();
-			
-			//performNeighborhoodAlgorithm(selectedVertex);			
+			alSetSelection.get(0).returnWriteToken();	
 		}
 		
 		if (bRebuildVisiblePathwayDisplayLists)
@@ -329,14 +329,13 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-3.3f, fLayerYPos, 0f));
+			transform.setTranslation(new Vec3f(-4.4f, fLayerYPos, 0f));
 			transform.setScale(new Vec3f(0.7f, 0.7f, 0.7f));
-			transform.setRotation(new Rotf(fTiltAngleRad, 0, -1f, 0));
-			//transform.setRotation(new Rotf(0, 0,0,0));
+			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
 			pathwayLayeredLayer.setTransformByPositionIndex(iLayerIndex,
 					transform);
 
-			fLayerYPos -= 1f;
+			fLayerYPos -= 1.3f;
 		}
 	}
 
@@ -351,10 +350,10 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iLineIndex = 0; iLineIndex < iMaxLines; iLineIndex++)
 		{
 			transform = new Transform();
-			transform.setRotation(new Rotf(fTiltAngleRad, -1, 0, 0));
+			transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad));
 			// transform.setTranslation(new Vec3f(-4.0f, -iLineIndex *
 			// fLineHeight, 10));
-			// transform.setScale(new Vec3f(0.1f,0.1f,0.1f));
+			transform.setScale(new Vec3f(1f,1f,1f));
 			pathwayPoolLayer.setTransformByPositionIndex(iLineIndex, transform);
 		}
 
@@ -426,24 +425,29 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 		
 		gl.glPushMatrix();
-
+		
+//		// ORIGIN
+//		drawAxis(gl);
+		
 		Transform transform = layer.getTransformByElementId(iPathwayId);
 		Vec3f translation = transform.getTranslation();
+		Rotf rot = transform.getRotation();
+		Vec3f scale = transform.getScale();
+
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		
+		Vec3f axis = new Vec3f();
+		float fAngle = rot.get(axis);
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
+
+//		drawAxis(gl);
+		
+		float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
+				iPathwayId).getImageHeight()* GLPathwayManager.SCALING_FACTOR_Y;
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-
-		Rotf rot = transform.getRotation();
-		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()), rot.getX(),
-				rot.getY(), rot.getZ());
-
-		Vec3f scale = transform.getScale();
-		gl.glScalef(scale.x(), scale.y(), scale.z());
-
-		float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
-				iPathwayId).getImageHeight()* GLPathwayManager.SCALING_FACTOR_Y;
-		
 		gl.glTranslatef(0, tmp, 0);
 		
 		if (layer.equals(pathwayLayeredLayer))
@@ -464,6 +468,44 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 
 		gl.glPopMatrix();
+		
+//		// TEST
+//		Vec3f vecSrc = new Vec3f(0,0,0);
+//		Vec3f vecDest = new Vec3f(1,0,0);
+//		Vec3f vecDest2 = new Vec3f(1,1,0);
+//		
+//		gl.glLineWidth(5);
+//		gl.glColor3f(1,1,0);
+//		gl.glBegin(GL.GL_LINE_LOOP);
+//		gl.glVertex3f(vecSrc.x(), vecSrc.y(), vecSrc.z());
+//		gl.glColor3f(1,0,0);
+//		gl.glVertex3f(vecDest.x(), vecDest.y(), vecDest.z());
+//		gl.glColor3f(0,0,1);
+//		gl.glVertex3f(vecDest2.x(), vecDest2.y(), vecDest2.z());		
+//		gl.glEnd();
+//		
+//		Mat4f_GeneraRotfScale mat = new Mat4f_GeneraRotfScale(translation, scale, rot);
+//		Vec3f vecSrcTrans = mat.xformPt(vecSrc);
+//		Vec3f vecDestTrans = mat.xformPt(vecDest);
+//		Vec3f vecDest2Trans = mat.xformPt(vecDest2);
+//				
+//		vecSrcTrans.add(translation);
+//		vecDestTrans.add(translation);
+//		vecDest2Trans.add(translation);
+//		
+//		vecSrcTrans.componentMul(scale);
+//		vecDestTrans.componentMul(scale);
+//		vecDest2Trans.componentMul(scale);
+//		
+//		gl.glBegin(GL.GL_LINE_LOOP);
+//		gl.glColor3f(1,1,0);
+//		gl.glVertex3f(vecSrcTrans.x(), vecSrcTrans.y(), vecSrcTrans.z());
+//		gl.glColor3f(1,0,0);
+//		gl.glVertex3f(vecDestTrans.x(), vecDestTrans.y(), vecDestTrans.z());
+//		gl.glColor3f(0,0,1);
+//		gl.glVertex3f(vecDest2Trans.x(), vecDest2Trans.y(), vecDest2Trans.z());		
+//		gl.glEnd();
+		
 	}
 
 	private void renderPathwayPool(final GL gl) {
@@ -642,7 +684,8 @@ implements IMediatorReceiver, IMediatorSender {
 				fPathwayPoolHeight += 0.02;
 			}
 
-			transform.setTranslation(new Vec3f(-4.0f, -fPathwayPoolHeight, -7));
+			transform.setTranslation(new Vec3f(-4.0f, -fPathwayPoolHeight, -6));
+			//transform.setTranslation(new Vec3f(1,1,1));
 		}
 	}
 
@@ -1349,34 +1392,46 @@ implements IMediatorReceiver, IMediatorSender {
 						EGraphItemProperty.ALIAS_CHILD));
 		}
 		
-		Mat4f matSrc = pathwayLayeredLayer.getTransformByPositionIndex(0).getMatrix();
-		Mat4f matDest = pathwayLayeredLayer.getTransformByPositionIndex(1).getMatrix();
-		
 		Iterator<IGraphItem> iterIdenticalVertexGraphItemReps;
 		Iterator<IGraphItem> iterIdenticalVertexGraphItemRepsInnerLoop;
 		PathwayVertexGraphItemRep tmpVertexGraphItemRepSrc;
 		PathwayVertexGraphItemRep tmpVertexGraphItemRepDest;
 		int iPathwayIdSrc = 0;
 		int iPathwayIdDest = 0;
+		
+		Mat4f_GeneraRotfScale matGeneralRotSrc = new Mat4f_GeneraRotfScale();
+		Mat4f_GeneraRotfScale matGeneralRotDest = new Mat4f_GeneraRotfScale();
 	
-		Vec4f vecMatSrc = new Vec4f(0, 0, 0, 1);
-		Vec4f vecMatDest = new Vec4f(0, 0, 0, 1);
-		Vec4f vecTransformedSrc = new Vec4f(0, 0, 0, 1);
-		Vec4f vecTransformedDest = new Vec4f(0, 0, 0, 1);
+		Vec3f vecMatSrc = new Vec3f(0, 0, 0);
+		Vec3f vecMatDest = new Vec3f(0, 0, 0);
+		Vec3f vecTransformedSrc = new Vec3f(0, 0, 0);
+		Vec3f vecTransformedDest = new Vec3f(0, 0, 0);
+		
+		Vec3f vecTranslationSrc;
+		Vec3f vecTranslationDest;
+		Vec3f vecScaleSrc;
+		Vec3f vecScaleDest;
+		
+		gl.glLineWidth(3);
+		gl.glColor3f(1, 0, 0);
 		
 		for (int iLayerIndex = 0; iLayerIndex < 
 			pathwayLayeredLayer.getElementList().size() - 1; iLayerIndex++)	
 		{
-			matSrc = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getMatrix();
-			matDest = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getMatrix();
+			vecTranslationSrc = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getTranslation();
+			vecScaleSrc = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getScale();
 			
+			matGeneralRotSrc.setAllAndUpdate(vecTranslationSrc, vecScaleSrc,
+					pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getRotation());
+
+			vecTranslationDest = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getTranslation();
+			vecScaleDest = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getScale();
+			
+			matGeneralRotDest.setAllAndUpdate(vecTranslationDest, vecScaleDest,
+					pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getRotation());
+				
 			iPathwayIdSrc = pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex);
 			iPathwayIdDest = pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex+1);
-			
-//			if (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest) == null)
-//				continue;
-//			else if (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdSrc) == null)
-//				continue;
 			
 			iterIdenticalVertexGraphItemReps = 
 				alIdenticalVertexGraphItemReps.iterator();
@@ -1404,32 +1459,22 @@ implements IMediatorReceiver, IMediatorSender {
 							((PathwayGraph)tmpVertexGraphItemRepDest.getAllGraphByType(
 									EGraphItemHierarchy.GRAPH_PARENT).get(0)).getKeggId())
 						{		
-							
-//							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
-//									tmpVertexGraphItemRepSrc.getYPosition() * GLPathwayManager.SCALING_FACTOR_Y,
-//									 0, 1);
-//							
-//							vecMatDest.set(tmpVertexGraphItemRepDest.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
-//									tmpVertexGraphItemRepDest.getYPosition() * GLPathwayManager.SCALING_FACTOR_Y,
-//									0, 1);
-
 							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
 									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdSrc)
-										.getImageHeight()-tmpVertexGraphItemRepSrc.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0, 1);
+										.getImageHeight()-tmpVertexGraphItemRepSrc.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 							
 							vecMatDest.set(tmpVertexGraphItemRepDest.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
 									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest)
-									 	.getImageHeight()-tmpVertexGraphItemRepDest.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0, 1);
+									 	.getImageHeight()-tmpVertexGraphItemRepDest.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
+		
+							matGeneralRotSrc.xformPt(vecMatSrc, vecTransformedSrc);
+							matGeneralRotDest.xformPt(vecMatDest, vecTransformedDest);
+
+							vecTransformedSrc.add(vecTranslationSrc);
+							vecTransformedSrc.componentMul(vecScaleSrc);
+							vecTransformedDest.add(vecTranslationDest);
+							vecTransformedDest.componentMul(vecScaleDest);
 							
-//							vecMatSrc.set(1, 0, 0, 1);
-//							
-//							vecMatDest.set(1, 0, 0, 1);
-							
-							matSrc.xformVec(vecMatSrc, vecTransformedSrc);
-							matDest.xformVec(vecMatDest, vecTransformedDest);
-							
-							gl.glLineWidth(5);
-							gl.glColor3i(1, 0, 0);
 							gl.glBegin(GL.GL_LINES);
 							gl.glVertex3f(vecTransformedSrc.x(),
 									vecTransformedSrc.y(),
@@ -1474,5 +1519,21 @@ implements IMediatorReceiver, IMediatorSender {
 	public void enableAnnotation(final boolean bEnableAnnotation) {
 		
 		refGLPathwayManager.enableAnnotation(bEnableAnnotation);
+	}
+	
+	private void drawAxis(final GL gl) {
+		
+		gl.glLineWidth(10);
+	    gl.glBegin(GL.GL_LINES);
+	    gl.glColor4f(1, 0, 0, 1);
+	    gl.glVertex3f(0,  0,  0);
+	    gl.glVertex3f(1,  0,  0);
+	    gl.glColor4f(0, 1, 0, 1);
+	    gl.glVertex3f( 0,  0,  0);
+	    gl.glVertex3f( 0, 1,  0);
+	    gl.glColor4f(0, 0, 1, 1);
+	    gl.glVertex3f( 0,  0,  0);
+	    gl.glVertex3f( 0,  0, 1);
+	    gl.glEnd();
 	}
 }
