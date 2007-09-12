@@ -3,9 +3,6 @@ package cerberus.view.opengl.canvas.pathway;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
-import gleem.linalg.open.Mat4f_GeneraRotfScale;
-import gleem.linalg.open.Mat4f_GeneralRotf;
 import gleem.linalg.open.Transform;
 
 import java.awt.Point;
@@ -1398,9 +1395,6 @@ implements IMediatorReceiver, IMediatorSender {
 		PathwayVertexGraphItemRep tmpVertexGraphItemRepDest;
 		int iPathwayIdSrc = 0;
 		int iPathwayIdDest = 0;
-		
-		Mat4f_GeneraRotfScale matGeneralRotSrc = new Mat4f_GeneraRotfScale();
-		Mat4f_GeneraRotfScale matGeneralRotDest = new Mat4f_GeneraRotfScale();
 	
 		Vec3f vecMatSrc = new Vec3f(0, 0, 0);
 		Vec3f vecMatDest = new Vec3f(0, 0, 0);
@@ -1411,6 +1405,12 @@ implements IMediatorReceiver, IMediatorSender {
 		Vec3f vecTranslationDest;
 		Vec3f vecScaleSrc;
 		Vec3f vecScaleDest;
+		Rotf rotSrc;
+		Rotf rotDest;
+		Mat4f matSrc = new Mat4f();
+		Mat4f matDest = new Mat4f();
+		matSrc.makeIdent();
+		matDest.makeIdent();
 		
 		gl.glLineWidth(3);
 		gl.glColor3f(1, 0, 0);
@@ -1420,15 +1420,11 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			vecTranslationSrc = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getTranslation();
 			vecScaleSrc = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getScale();
-			
-			matGeneralRotSrc.setAllAndUpdate(vecTranslationSrc, vecScaleSrc,
-					pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getRotation());
+			rotSrc = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex).getRotation();
 
 			vecTranslationDest = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getTranslation();
 			vecScaleDest = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getScale();
-			
-			matGeneralRotDest.setAllAndUpdate(vecTranslationDest, vecScaleDest,
-					pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getRotation());
+			rotDest = pathwayLayeredLayer.getTransformByPositionIndex(iLayerIndex+1).getRotation();
 				
 			iPathwayIdSrc = pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex);
 			iPathwayIdDest = pathwayLayeredLayer.getElementIdByPositionIndex(iLayerIndex+1);
@@ -1466,10 +1462,13 @@ implements IMediatorReceiver, IMediatorSender {
 							vecMatDest.set(tmpVertexGraphItemRepDest.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
 									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest)
 									 	.getImageHeight()-tmpVertexGraphItemRepDest.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
-		
-							matGeneralRotSrc.xformPt(vecMatSrc, vecTransformedSrc);
-							matGeneralRotDest.xformPt(vecMatDest, vecTransformedDest);
+	
+							rotSrc.toMatrix(matSrc);
+							rotDest.toMatrix(matDest);
 
+							matSrc.xformPt(vecMatSrc, vecTransformedSrc);
+							matDest.xformPt(vecMatDest, vecTransformedDest);
+							
 							vecTransformedSrc.add(vecTranslationSrc);
 							vecTransformedSrc.componentMul(vecScaleSrc);
 							vecTransformedDest.add(vecTranslationDest);
