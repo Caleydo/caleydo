@@ -37,9 +37,9 @@ public class Slerp {
 				transformDestination.getRotation(), delta);
 		
 		Transform resultTransform = new Transform();
-		resultTransform.setRotation(quatResult);
 		resultTransform.setTranslation(translationResult);
 		resultTransform.setScale(scaleResult);
+		resultTransform.setRotation(quatResult);
 		
 		return resultTransform;
 	}
@@ -47,21 +47,82 @@ public class Slerp {
 	public void applySlerp(final GL gl, final Transform transform) {
 		
 		Vec3f translation = transform.getTranslation();
+		Vec3f scale = transform.getScale();
+		Vec3f axis = new Vec3f();
+		float fAngle = transform.getRotation().get(axis);
+
+		gl.glScalef(scale.x(), scale.y(), scale.z());	
+
 		gl.glTranslatef(translation.x(),
 				translation.y(),
-				translation.z());
+				translation.z());	
 		
-		Vec3f scale = transform.getScale();
-		gl.glScalef(scale.x(), scale.y(), scale.z());
-		
-		Rotf rot = transform.getRotation();
-		gl.glRotatef(Vec3f.convertRadiant2Grad(rot.getAngle()),
-				rot.getX(),
-				rot.getY(),
-				rot.getZ());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
 	}
 
-	   /**
+//	   /**
+//     * <code>slerp</code> sets this quaternion's value as an interpolation
+//     * between two other quaternions.
+//     *
+//     * @param q1
+//     *            the first quaternion.
+//     * @param q2
+//     *            the second quaternion.
+//     * @param t
+//     *            the amount to interpolate between the two quaternions.
+//     */
+//    protected Rotf slerp(Rotf q1, Rotf q2, float t) {
+//     
+//    	Rotf quatResult = new Rotf();
+//    	
+//    	// Create a local quaternion to store the interpolated quaternion
+//        if (q1.getX() == q2.getX() && q1.getY() == q2.getY() && q1.getZ() == q2.getZ() && q1.getAngle() == q2.getAngle()) {
+//            quatResult.set(q1);
+//            return quatResult;
+//        }
+//
+//        float result = (q1.getX() * q2.getX()) + (q1.getY() * q2.getY()) + (q1.getZ() * q2.getZ())
+//                + (q1.getAngle() * q2.getAngle());
+//
+//        if (result < 0.0f) {
+//            // Negate the second quaternion and the result of the dot product
+//            q2.setX(-q2.getX());
+//            q2.setY(-q2.getY());
+//            q2.setZ(-q2.getZ());
+//            q2.setAngle(-q2.getAngle());
+//            result = -result;
+//        }
+//
+//        // Set the first and second scale for the interpolation
+//        float scale0 = 1 - t;
+//        float scale1 = t;
+//
+//        // Check if the angle between the 2 quaternions was big enough to
+//        // warrant such calculations
+//        if ((1 - result) > 0.1f) {// Get the angle between the 2 quaternions,
+//            // and then store the sin() of that angle
+//            float theta = (float) Math.acos(result);
+//            float invSinTheta = (float) (1f / Math.sin(theta));
+//
+//            // Calculate the scale for q1 and q2, according to the angle and
+//            // it's sine value
+//            scale0 = (float) (Math.sin((1 - t) * theta) * invSinTheta);
+//            scale1 = (float) (Math.sin((t * theta)) * invSinTheta);
+//        }
+//
+//        // Calculate the x, y, z and w values for the quaternion by using a
+//        // special
+//        // form of linear interpolation for quaternions.
+//        quatResult.setX((scale0 * q1.getX()) + (scale1 * q2.getX()));
+//        quatResult.setY((scale0 * q1.getY()) + (scale1 * q2.getY()));
+//        quatResult.setZ((scale0 * q1.getZ()) + (scale1 * q2.getZ()));
+//        quatResult.setAngle((scale0 * q1.getAngle()) + (scale1 * q2.getAngle()));
+//        
+//        // Return the interpolated quaternion
+//        return quatResult;
+//    }
+    
+	 /**
      * <code>slerp</code> sets this quaternion's value as an interpolation
      * between two other quaternions.
      *
@@ -76,21 +137,25 @@ public class Slerp {
      
     	Rotf quatResult = new Rotf();
     	
+    	Vec3f vecQ1Axis = new Vec3f();
+    	float fQ1Angle = q1.get(vecQ1Axis);
+    	Vec3f vecQ2Axis = new Vec3f();
+    	float fQ2Angle = q2.get(vecQ2Axis);
+    	
     	// Create a local quaternion to store the interpolated quaternion
-        if (q1.getX() == q2.getX() && q1.getY() == q2.getY() && q1.getZ() == q2.getZ() && q1.getAngle() == q2.getAngle()) {
+        if (vecQ1Axis.x() == vecQ2Axis.x() && vecQ1Axis.y() == vecQ2Axis.y() 
+        		&& vecQ1Axis.z() == vecQ2Axis.z() && fQ1Angle == fQ2Angle) {
             quatResult.set(q1);
             return quatResult;
         }
 
-        float result = (q1.getX() * q2.getX()) + (q1.getY() * q2.getY()) + (q1.getZ() * q2.getZ())
-                + (q1.getAngle() * q2.getAngle());
+        float result = (vecQ1Axis.x() * vecQ2Axis.x()) + (vecQ1Axis.y() * vecQ2Axis.y()) 
+        	+ (vecQ1Axis.z() * vecQ2Axis.z()) + (fQ1Angle * fQ2Angle);
 
         if (result < 0.0f) {
             // Negate the second quaternion and the result of the dot product
-            q2.setX(-q2.getX());
-            q2.setY(-q2.getY());
-            q2.setZ(-q2.getZ());
-            q2.setAngle(-q2.getAngle());
+            q2.set(new Vec3f(-vecQ2Axis.x(), -vecQ2Axis.y(), -vecQ2Axis.z()), -fQ2Angle);
+            fQ2Angle = q2.get(vecQ2Axis);
             result = -result;
         }
 
@@ -114,10 +179,11 @@ public class Slerp {
         // Calculate the x, y, z and w values for the quaternion by using a
         // special
         // form of linear interpolation for quaternions.
-        quatResult.setX((scale0 * q1.getX()) + (scale1 * q2.getX()));
-        quatResult.setY((scale0 * q1.getY()) + (scale1 * q2.getY()));
-        quatResult.setZ((scale0 * q1.getZ()) + (scale1 * q2.getZ()));
-        quatResult.setAngle((scale0 * q1.getAngle()) + (scale1 * q2.getAngle()));
+        quatResult.set(new Vec3f(
+        		(scale0 * vecQ1Axis.x()) + (scale1 * vecQ2Axis.x()),
+        		(scale0 * vecQ1Axis.y()) + (scale1 * vecQ2Axis.y()),
+        		(scale0 * vecQ1Axis.z()) + (scale1 * vecQ2Axis.z())), 
+        		(scale0 * fQ1Angle) + (scale1 * fQ2Angle));
         
         // Return the interpolated quaternion
         return quatResult;
