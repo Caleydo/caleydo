@@ -3,6 +3,8 @@
  */
 package cerberus.command.view.opengl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import cerberus.command.CommandQueueSaxType;
@@ -61,11 +63,13 @@ extends ACmdCreate_GlCanvasUser {
 	 * 
 	 * @see cerberus.data.collection.ISet
 	 */
-	protected int iTargetCollectionSetId;
+	//protected int iTargetCollectionSetId;
 	
 	protected int iHistogramLevel = 50;
 	
 	protected String color;
+	
+	protected ArrayList <Integer> iArSetIDs;
 	
 	/**
 	 * Constructor.
@@ -89,6 +93,8 @@ extends ACmdCreate_GlCanvasUser {
 		else {
 			localManagerObjectType = CommandQueueSaxType.CREATE_GL_HEATMAP2DCOLUMN;
 		}
+		
+		iArSetIDs = new ArrayList <Integer> ();
 	}
 
 
@@ -106,9 +112,29 @@ extends ACmdCreate_GlCanvasUser {
 		
 		iHistogramLevel = (int) fResolution[iSizeTokens-1];
 		
-		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
-				sDetail, 
-				-1 );
+		// Read SET IDs (Data and Selection) 
+		String sPathwaySets = "";
+		refParameterHandler.setValueAndTypeAndDefault("sPathwaySets",
+				refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
+				IParameterHandler.ParameterHandlerType.STRING,
+				"-1");
+		
+		sPathwaySets = refParameterHandler.getValueString("sPathwaySets");
+		
+		StringTokenizer setToken = new StringTokenizer(
+				sPathwaySets,
+				IGeneralManager.sDelimiter_Parser_DataItems);
+
+		while (setToken.hasMoreTokens())
+		{
+			iArSetIDs.add(StringConversionTool.convertStringToInt(
+					setToken.nextToken(), -1));
+		}
+		
+//		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
+//				sDetail, 
+//				-1 );
 		
 		if ( sAttribute4.length() > 0) 
 		{
@@ -193,16 +219,20 @@ extends ACmdCreate_GlCanvasUser {
 		canvas.setOriginRotation( cameraOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
 		
-		if ( iTargetCollectionSetId > -1 ) {
-			canvas.setTargetSetId( iTargetCollectionSetId );
-			canvas.setTargetSetId( iTargetCollectionSetId );
-			canvas.setTargetSetId( iTargetCollectionSetId );
+		Iterator<Integer> iter = iArSetIDs.iterator();
+		while ( iter.hasNext() ) {
+			canvas.setTargetSetId(  iter.next());
 		}
-		else 
-		{
-			refGeneralManager.getSingelton().logMsg( "CmdGLObjectHistogram2D no set defined!",
-					LoggerType.ERROR_ONLY );
-		}
+//		if ( iTargetCollectionSetId > -1 ) {
+//			canvas.setTargetSetId( iTargetCollectionSetId );
+//			canvas.setTargetSetId( iTargetCollectionSetId );
+//			canvas.setTargetSetId( iTargetCollectionSetId );
+//		}
+//		else 
+//		{
+//			refGeneralManager.getSingelton().logMsg( "CmdGLObjectHistogram2D no set defined!",
+//					LoggerType.ERROR_ONLY );
+//		}
 		
 		/**
 		 * Handle selection via XML file..

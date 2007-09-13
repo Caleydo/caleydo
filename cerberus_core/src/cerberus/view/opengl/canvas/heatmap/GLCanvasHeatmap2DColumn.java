@@ -6,6 +6,7 @@ package cerberus.view.opengl.canvas.heatmap;
 import gleem.linalg.Vec2f;
 import gleem.linalg.open.Vec4i;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 //import cerberus.math.statistics.minmax.MinMaxDataInteger;
 //import cerberus.view.jogl.mouse.PickingJoglMouseListener; //import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
+import cerberus.util.mapping.ColorMapping;
 import cerberus.view.jogl.mouse.PickingJoglMouseListener;
 import cerberus.view.opengl.IGLCanvasUser;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
@@ -102,6 +104,8 @@ extends AGLCanvasHeatmap2D
 	private int iSelectedMode_identifyier = 0;
 	
 	private float fIncX_forSelection;
+	
+	private ColorMapping colorMapper;
 	
 	/**
 	 * If this limit is exceeded no lines between the data values will be shown 
@@ -247,6 +251,8 @@ extends AGLCanvasHeatmap2D
 		
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				new GLPathwayManager(setGeneralManager));
+		
+		colorMapper = new ColorMapping(0, 60000);
 		
 		hashChildrenWindow = new HashMap <Integer,Vec4i> (4);		
 	}
@@ -1359,28 +1365,41 @@ extends AGLCanvasHeatmap2D
 		{
 			System.err.println("Error while init color mapping for Heatmap!");
 		}
+		
+		fColorMappingLowValue = 0.0f;
+		fColorMappingHighValue = 60000.0f;
+		
+		fColorMappingLowRange = fColorMappingMiddleValue
+		- fColorMappingLowValue;
+		
+		fColorMappingHighRangeDivisor = 1.0f / (fColorMappingHighValue - fColorMappingMiddleValue);
+		fColorMappingLowRangeDivisor = 1.0f / (fColorMappingLowRange * (1.0f + fColorMappingPercentageStretch));
+
 	}
 
 	protected void colorMapping(final GL gl, final int iValue) {
 
-		float fValue = fColorMappingMiddleValue - (float) iValue;
-
-		if (fValue < 0.0f)
-		{
-			// range [fColorMappingLowValue..fColorMappingMiddleValue[
-
-			float fScale = (fColorMappingLowRange + fValue)
-					* fColorMappingLowRangeDivisor;
-			gl.glColor3f(0, 1.0f - fScale, 0);
-
-			return;
-		}
-		//else
-
-		//range [fColorMappingMiddleValue..fColorMappingHighValue]
-		float fScale = (fValue) * fColorMappingHighRangeDivisor;
-
-		gl.glColor3f(fScale, 0, 0);
+//		float fValue = fColorMappingMiddleValue - (float) iValue;
+//
+//		if (fValue < 0.0f)
+//		{
+//			// range [fColorMappingLowValue..fColorMappingMiddleValue[
+//
+//			float fScale = (fColorMappingLowRange + fValue)
+//					* fColorMappingLowRangeDivisor;
+//			gl.glColor3f(0, 1.0f - fScale, 0);
+//
+//			return;
+//		}
+//		//else
+//
+//		//range [fColorMappingMiddleValue..fColorMappingHighValue]
+//		float fScale = (fValue) * fColorMappingHighRangeDivisor;
+		
+		Color tmpNodeColor = colorMapper.colorMappingLookup(iValue);
+		gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+				tmpNodeColor.getGreen() / 255.0f, 
+				tmpNodeColor.getBlue() / 255.0f, 1.0f);
 
 	}
 
