@@ -1,6 +1,5 @@
 package cerberus.view.opengl.canvas.pathway;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -103,25 +102,19 @@ public class GLPathwayTextureManager {
 		return null;
 	}
 	
-	public void renderPathway(final GL gl, 
-			final int iPathwayId, 
-			final float fTextureTransparency,
-			final float[] fArTextureColor) {
+	public void renderPathway(final GL gl, int iPathwayId, 
+			float fTextureTransparency,
+			boolean bHighlight) {
 
 		Texture refTmpPathwayTexture = loadPathwayTextureById(iPathwayId);
 		
 		refTmpPathwayTexture.enable();
 		refTmpPathwayTexture.bind();
 
-//		if (bHighlight)
-//			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
-//		else
-//			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
-		
-		gl.glColor4f(fArTextureColor[0],
-				fArTextureColor[1], 
-				fArTextureColor[2], 
-				fTextureTransparency);
+		if (bHighlight)
+			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
+		else
+			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
 		
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
 		
@@ -143,19 +136,16 @@ public class GLPathwayTextureManager {
 
 		refTmpPathwayTexture.disable();
 		
-//		if (bHighlight)
-//		{
-		gl.glColor4f(fArTextureColor[0] / 2.0f,
-				fArTextureColor[1] / 2.0f, 
-				fArTextureColor[2] / 2.0f, 
-				1);
+		if (bHighlight)
+		{
+			gl.glColor4f(1, 0, 0, 1);
 			gl.glLineWidth(3);			
-//		}
-//		else
-//		{
-//			gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-//			gl.glLineWidth(1);	
-//		}
+		}
+		else
+		{
+			gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+			gl.glLineWidth(1);	
+		}
 		
 		gl.glBegin(GL.GL_LINE_STRIP); 
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);; 

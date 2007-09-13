@@ -70,11 +70,6 @@
         <graphics name="MAPK1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="353" y="322" width="45" height="17"/>
     </entry>
-    <entry id="14" name="path:hsa04110" type="map"
-        link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
-        <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="1254" y="418" width="67" height="27"/>
-    </entry>
     <entry id="15" name="cpd:C00162" type="compound"
         link="http://www.genome.jp/dbget-bin/www_bget?compound+C00162">
         <graphics name="C00162" fgcolor="#000000" bgcolor="#FFFFFF"
@@ -89,16 +84,6 @@
         link="http://www.genome.jp/dbget-bin/www_bget?compound+C00031">
         <graphics name="C00031" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="106" y="522" width="8" height="8"/>
-    </entry>
-    <entry id="18" name="path:hsa04810" type="map"
-        link="http://www.genome.jp/kegg/pathway/hsa/hsa04810.html">
-        <graphics name="Regulation of actin cytoskeleton" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="1251" y="260" width="104" height="38"/>
-    </entry>
-    <entry id="19" name="path:hsa04110" type="map"
-        link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
-        <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="1254" y="646" width="67" height="27"/>
     </entry>
     <entry id="20" name="path:hsa04920" type="map"
         link="http://www.genome.jp/kegg/pathway/hsa/hsa04920.html">
@@ -199,12 +184,6 @@
         link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+hsa04930">
         <graphics name="TITLE:Type II diabetes mellitus" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="168" y="40" width="241" height="24"/>
-    </entry>
-    <entry id="40" name="undefined" type="group">
-        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="270" y="702" width="65" height="54"/>
-        <component id="37"/>
-        <component id="38"/>
     </entry>
     <entry id="41" name="hsa:5313 hsa:5315" type="gene"
         link="http://www.genome.jp/dbget-bin/www_bget?hsa+5313+5315">

@@ -96,7 +96,7 @@ public class EnzymeToExpressionColorMapper {
 		
 		if (pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() > 1)
 		{
-			arMappingColor.add(Color.YELLOW);
+			arMappingColor.add(Color.CYAN);
 		}
 		else
 		{

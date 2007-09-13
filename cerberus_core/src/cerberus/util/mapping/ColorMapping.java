@@ -2,18 +2,32 @@ package cerberus.util.mapping;
 
 import java.awt.Color;
 
+/**
+ * 
+ * Class returns a color for an incoming value.
+ * The mapping uses three colors.
+ * From Red to Yellow to Green
+ * 
+ * TODO: Don't use color - use Vec3f instead with 0-1 range.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class ColorMapping {
 
 	protected int iMin = 0;
 	protected int iMax = 0;
 	
-	protected static final int MAPPING_WIDTH = 256;
+	protected static final int MAPPING_WIDTH = 255;
 	
 	protected Color color_1 = Color.RED;
-	protected Color color_2 = Color.GREEN;
+	protected Color color_2 = Color.YELLOW;
+	protected Color color_3 = Color.GREEN;
+
 	protected Color resultColor;
 	
-	float[][] fArColorLookupTable;
+	float[][] fArColorLookupTable_LEFT;
+	float[][] fArColorLookupTable_RIGHT;
 	
 	/**
 	 * Constructor.
@@ -24,40 +38,46 @@ public class ColorMapping {
 		this.iMin = iMin;
 		this.iMax = iMax;
 		
-		fArColorLookupTable = new float[MAPPING_WIDTH][3];
+		fArColorLookupTable_LEFT = new float[MAPPING_WIDTH][3];
+		fArColorLookupTable_RIGHT = new float[MAPPING_WIDTH][3];
 		
 		createLookupTable();
 	}
 	
 	protected void createLookupTable() {
 		
-		int iMin = this.iMin / MAPPING_WIDTH;
-		int iMax = this.iMax / MAPPING_WIDTH;
-		
 		for (int iLookupIndex = 0; iLookupIndex < MAPPING_WIDTH; iLookupIndex++)
 		{
-			fArColorLookupTable[iLookupIndex][0] = (color_1.getRed() + 
-				((color_2.getRed() - color_1.getRed()) / ((float)iMax - (float)iMin)) * ((float)iLookupIndex - (float)iMin)) / 255.0f; 
+			// Create LUT for color 1 to color 2
+			fArColorLookupTable_LEFT[iLookupIndex][0] = 1;		
+			fArColorLookupTable_LEFT[iLookupIndex][1] = iLookupIndex / 255.0f; 
+			fArColorLookupTable_LEFT[iLookupIndex][2] = 0;
 			
-			fArColorLookupTable[iLookupIndex][1] = (color_1.getGreen() + 
-				((color_2.getGreen() - color_1.getGreen()) / ((float)iMax - (float)iMin)) * ((float)iLookupIndex - (float)iMin)) / 255.0f; 
-	
-			fArColorLookupTable[iLookupIndex][2] = (color_1.getBlue() + 
-				((color_2.getBlue() - color_1.getBlue()) / ((float)iMax - (float)iMin)) * ((float)iLookupIndex - (float)iMin)) / 255.0f; 
-			
-//			System.out.println(fArColorLookupTable[iLookupIndex][0] + "," +
-//					fArColorLookupTable[iLookupIndex][1] + "," +
-//					fArColorLookupTable[iLookupIndex][2]);
+			// Create LUT for color 2 to color 3
+			fArColorLookupTable_RIGHT[iLookupIndex][0] = 1 - iLookupIndex / 255.0f;			
+			fArColorLookupTable_RIGHT[iLookupIndex][1] = 1;		
+			fArColorLookupTable_RIGHT[iLookupIndex][2] = 0;
 		}
 	}
 	
 	public Color colorMappingLookup(int iLookupValue) {
 		
-		if (iLookupValue < iMin || iLookupValue > iMax)
-			return Color.BLACK;
+		int iMid = (iMax - iMin) / 2;
+		
+		if (iLookupValue < iMid)
+		{
+			return new Color(fArColorLookupTable_LEFT[(iLookupValue - iMin) * MAPPING_WIDTH / iMid][0],
+					fArColorLookupTable_LEFT[(iLookupValue - iMin) * MAPPING_WIDTH / iMid][1],
+					fArColorLookupTable_LEFT[(iLookupValue - iMin) * MAPPING_WIDTH / iMid][2]);			
+		}
 
-		return new Color(fArColorLookupTable[(iLookupValue - iMin) / MAPPING_WIDTH][0],
-				fArColorLookupTable[(int)((iLookupValue - iMin) / MAPPING_WIDTH)][1],
-				fArColorLookupTable[(int)((iLookupValue - iMin) / MAPPING_WIDTH)][2]);
+		if (iLookupValue >= iMid)
+		{
+			return new Color(fArColorLookupTable_RIGHT[(iLookupValue - iMin - iMid) * MAPPING_WIDTH / iMid][0],
+					fArColorLookupTable_RIGHT[((iLookupValue - iMin - iMid) * MAPPING_WIDTH / iMid)][1],
+					fArColorLookupTable_RIGHT[((iLookupValue - iMin - iMid) * MAPPING_WIDTH / iMid)][2]);			
+		}
+
+		return Color.WHITE;
 	}
 }
