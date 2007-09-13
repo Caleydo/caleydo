@@ -220,6 +220,33 @@ extends ACmdCreate_GlCanvasUser {
 				}
 			}
 			
+			/**
+			 * register external window.
+			 * link child windows to this parent window..
+			 * 
+			 * TODO: use Event-Mediator and a SetSelection instead of this work around! 
+			 */
+			if ( selectionArrayX.length > 3 ) 
+			{
+				int [] idArray = new int[selectionArrayX.length-3];
+				
+				int j=0;
+				for (int i=3; i < selectionArrayX.length; i++ )
+				{
+					idArray[j] = selectionArrayX[i];
+					j++;
+				}
+				
+				/**
+				 * TODO: use Event-Mediator and a SetSelection instead of this work around! 
+				 */
+				canvs2.link_ChildWindows_to_ParentWindow(idArray);
+			}
+			/**
+			 * end: register external window.
+			 */
+			
+			
 		}  //if  (selectionArrayX != null )
 		
 		

@@ -501,6 +501,11 @@ extends AGLCanvasHeatmap2D
 	public final void setEnablePicking(boolean enablePicking) {
 	
 		bEnablePicking = enablePicking;
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName() + ".setEnablePicking( " +
+				Boolean.toString(enablePicking) + " )",
+				LoggerType.STATUS);
 	}
 	
 	/* -----   END: PICKING  ----- */
@@ -1090,7 +1095,7 @@ extends AGLCanvasHeatmap2D
 
 		
 			
-			/* Sourrounding box */
+			/* Surrounding box */
 			gl.glColor3f(1.0f, 1.0f, 0.1f);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], fBias_Z);

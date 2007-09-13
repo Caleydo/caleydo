@@ -31,7 +31,9 @@ public final class MathUtil {
 	 * Note: [MAX_ID_POSTSET] == 2 ^ [POST_SET_SHIFTER] !
 	 */
 	private static final int POST_SET_SHIFTER = 10;
-		
+	
+	public static final float EPSILON = 0.000000001f;
+	
 	/**
 	 * Define size of post id.
 	 * 

@@ -4,20 +4,27 @@
 package cerberus.view.opengl.canvas.heatmap;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.open.Vec4i;
 
 import java.awt.Point;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
+//import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Arrays;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 
 import org.geneview.graph.EGraphItemHierarchy;
 import org.geneview.graph.EGraphItemProperty;
 import org.geneview.graph.IGraph;
 import org.geneview.graph.IGraphItem;
+
+import com.sun.opengl.util.BufferUtil;
 
 
 import cerberus.data.collection.IVirtualArray;
@@ -36,11 +43,15 @@ import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.event.EventPublisher;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
+import cerberus.math.statistics.minmax.MinMaxDataInteger;
 //import cerberus.math.statistics.minmax.MinMaxDataInteger;
 //import cerberus.view.jogl.mouse.PickingJoglMouseListener; //import cerberus.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
+import cerberus.view.jogl.mouse.PickingJoglMouseListener;
+import cerberus.view.opengl.IGLCanvasUser;
 import cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import cerberus.view.opengl.canvas.pathway.GLPathwayManager;
 import cerberus.view.opengl.util.GLInfoAreaRenderer;
+import cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep;
 
 /**
  * @author Michael Kalkusch
@@ -48,8 +59,8 @@ import cerberus.view.opengl.util.GLInfoAreaRenderer;
  * @see cerberus.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHeatmap2DColumn
-//extends AGLCanvasHeatmap2D
-		extends GLCanvasHeatmap2D
+extends AGLCanvasHeatmap2D
+//		extends GLCanvasHeatmap2D
 		implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	public static final int OFFSET = AGLCanvasHeatmap2D.OFFSET;
@@ -64,6 +75,24 @@ public class GLCanvasHeatmap2DColumn
 
 	public static final int MAX = AGLCanvasHeatmap2D.MAX;
 
+	/* ----  COLOR  ------ */
+	private float fColorMappingShiftFromMean = 1.0f;
+
+	private float fColorMappingHighValue = 1.0f;
+
+	private float fColorMappingLowValue = 0.0f;
+
+	private float fColorMappingMiddleValue = 0.25f;
+
+	private float fColorMappingHighRangeDivisor = 1 / 0.75f;
+
+	private float fColorMappingLowRangeDivisor = 1 / 0.25f;
+
+	private float fColorMappingLowRange = 0.25f;	
+	/* ----  END: COLOR ------ */
+	
+	private int iHeatmapDisplayListId = -1;
+	
 	private float fSelectionPixel = 0.1f;
 
 	private float fSelectionLineWidth = 2.0f;
@@ -95,6 +124,7 @@ public class GLCanvasHeatmap2DColumn
 	 */
 	private HashMap <Integer,Integer> hashRemoveDuplicates;
 	
+	private ArrayList <GLCanvasHeatmap2DColumn> alExternalWindow_Link2Parent;
 	
 	/**
 	 * 
@@ -114,6 +144,8 @@ public class GLCanvasHeatmap2DColumn
 	private int iRenderIndexStart = 0;
 
 	private int iRenderIndexStop = 80;
+	
+	private HashMap <Integer,Vec4i> hashChildrenWindow;
 
 	private static final int iInitialSizeArrayList_Selection = 10;
 	
@@ -123,6 +155,37 @@ public class GLCanvasHeatmap2DColumn
 		
 	private GLInfoAreaRenderer infoAreaRenderer;
 	
+	private boolean bEnablePicking = true;
+	
+	private boolean bUseGLWireframe = false;
+	
+	private boolean bEnalbeMultipleSelection = false;
+	
+	private int iSetCacheId = 0;
+	
+	private MinMaxDataInteger refMinMaxDataInteger;
+	
+	private ArrayList <Vec2f> fIndexPickedCoored = new ArrayList <Vec2f> (1);
+	
+	/**
+	 * Picking Mouse handler
+	 */
+	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
+	
+	protected int[] iSelectionStartAtIndexX;
+
+	protected int[] iSelectionStartAtIndexY;
+
+	protected int[] iSelectionLengthX;
+
+	protected int[] iSelectionLengthY;
+	
+	/**
+	 * Stretch lowest color in order to be not Back!
+	 */
+	private float fColorMappingPercentageStretch = 0.2f;
+	
+	
 	/**
 	 * @param setGeneralManager
 	 */
@@ -130,9 +193,35 @@ public class GLCanvasHeatmap2DColumn
 			int iViewId,
 			int iParentContainerId,
 			String sLabel) {
+		
+		super(setGeneralManager, 
+				null,
+				iViewId, 
+				iParentContainerId, 
+				sLabel);
 
-		super(setGeneralManager, iViewId, iParentContainerId, sLabel);
+		fAspectRatio = new float[2][3];
+		viewingFrame = new float[3][2];
 
+		fAspectRatio[X][MIN] = 0.0f;
+		fAspectRatio[X][MAX] = 20.0f;
+		fAspectRatio[Y][MIN] = 0.0f;
+		fAspectRatio[Y][MAX] = 20.0f;
+
+		fAspectRatio[Y][OFFSET] = 0.0f;
+		fAspectRatio[Y][OFFSET] = -2.0f;
+
+		viewingFrame[X][MIN] = -1.0f;
+		viewingFrame[X][MAX] = 1.0f;
+		viewingFrame[Y][MIN] = 1.0f;
+		viewingFrame[Y][MAX] = -1.0f;
+
+		viewingFrame[Z][MIN] = 0.0f;
+		viewingFrame[Z][MAX] = 0.0f;
+
+		refMinMaxDataInteger = new MinMaxDataInteger(1);
+		
+		
 		//hashNCBI_GENE2index = new HashMap<Integer, Integer>();
 
 		System.err.println("  GLCanvasHeatmap2DColumn()");		
@@ -158,6 +247,29 @@ public class GLCanvasHeatmap2DColumn
 		
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				new GLPathwayManager(setGeneralManager));
+		
+		hashChildrenWindow = new HashMap <Integer,Vec4i> (4);		
+	}
+	
+	/**
+	 * @return the bEnablePicking
+	 */
+	public final boolean isEnablePicking() {
+	
+		return bEnablePicking;
+	}
+	
+	/**
+	 * @param enablePicking the bEnablePicking to set
+	 */
+	public final void setEnablePicking(boolean enablePicking) {
+	
+		bEnablePicking = enablePicking;
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName() + ".setEnablePicking( " +
+				Boolean.toString(enablePicking) + " )",
+				LoggerType.STATUS);
 	}
 	
 	private int addhighlightSelectionIndex_addItem( ArrayList < ArrayList <Integer>> container,
@@ -291,56 +403,57 @@ public class GLCanvasHeatmap2DColumn
 		}
 	}
 
-	public void setSelectedIndex(final int[] updateIndex,
-			final int[] updateIndexMode) {
-
-		/* integrity check.. */
-		if (updateIndex.length != updateIndexMode.length)
-		{
-			assert false : "setSelectedIndex()  int [] updateIndex !=  int [] updateIndexMode !";
-			return;
-		}
-
-		boolean bUpdate = false;
-		for (int i = 0; i < updateIndex.length; i++)
-		{
-			if (hashExternalId_2_HeatmapIndex.containsKey(updateIndex[i]))
-			{
-
-				if (hashExternalId_2_HeatmapIndex.get(updateIndex[i]).intValue() != updateIndexMode[i])
-				{
-					hashExternalId_2_HeatmapIndex.put(updateIndex[i], updateIndexMode[i]);
-					bUpdate = true;
-				}
-				/* else .. data is identical to data in HashMap! */
-
-			} else
-			{
-				hashExternalId_2_HeatmapIndex.put(updateIndex[i], updateIndexMode[i]);
-				bUpdate = true;
-			}
-		}
-
-		if (bUpdate)
-		{
-			/* does size of arrays fit? */
-			if (selectedIndex.length != hashExternalId_2_HeatmapIndex.size())
-			{
-				selectedIndex = new int[hashExternalId_2_HeatmapIndex.size()];
-				selectedIndexMode = new int[hashExternalId_2_HeatmapIndex.size()];
-			}
-
-			Iterator<Integer> keys = hashExternalId_2_HeatmapIndex.keySet().iterator();
-			Iterator<Integer> values = hashExternalId_2_HeatmapIndex.values().iterator();
-
-			for (int index = 0; keys.hasNext(); index++)
-			{
-				selectedIndex[index] = keys.next().intValue();
-				selectedIndexMode[index] = values.next().intValue();
-			}
-		} //if ( bUpdate ) {
-
-	}
+//	public void setSelectedIndex(final int[] updateIndex,
+//			final int[] updateIndexMode) {
+//
+//		/* integrity check.. */
+//		if (updateIndex.length != updateIndexMode.length)
+//		{
+//			assert false : "setSelectedIndex()  int [] updateIndex !=  int [] updateIndexMode !";
+//			return;
+//		}
+//
+//		boolean bUpdate = false;
+//		for (int i = 0; i < updateIndex.length; i++)
+//		{
+//			if (hashExternalId_2_HeatmapIndex.containsKey(updateIndex[i]))
+//			{
+//
+//				if (hashExternalId_2_HeatmapIndex.get(updateIndex[i]).intValue() != updateIndexMode[i])
+//				{
+//					hashExternalId_2_HeatmapIndex.put(updateIndex[i], updateIndexMode[i]);
+//					bUpdate = true;
+//				}
+//				/* else .. data is identical to data in HashMap! */
+//
+//			} else
+//			{
+//				hashExternalId_2_HeatmapIndex.put(updateIndex[i], updateIndexMode[i]);
+//				bUpdate = true;
+//			}
+//		}
+//
+//		if (bUpdate)
+//		{
+//			/* does size of arrays fit? */
+//			if (selectedIndex.length != hashExternalId_2_HeatmapIndex.size())
+//			{
+//				selectedIndex = new int[hashExternalId_2_HeatmapIndex.size()];
+//				selectedIndexMode = new int[hashExternalId_2_HeatmapIndex.size()];
+//			}
+//
+//			Iterator<Integer> keys = hashExternalId_2_HeatmapIndex.keySet().iterator();
+//			Iterator<Integer> values = hashExternalId_2_HeatmapIndex.values().iterator();
+//
+//			for (int index = 0; keys.hasNext(); index++)
+//			{
+//				selectedIndex[index] = keys.next().intValue();
+//				selectedIndexMode[index] = values.next().intValue();
+//			}
+//		} //if ( bUpdate ) {
+//
+//	}
+	
 
 //	private void renderGL_Selection(GL gl) {
 //
@@ -387,6 +500,29 @@ public class GLCanvasHeatmap2DColumn
 //
 //	}
 
+	
+	/**
+	 * @see cerberus.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
+	 */
+	@Override
+	public void initGLCanvas(GL gl)
+	{
+		pickingTriggerMouseAdapter = 
+			(PickingJoglMouseListener) 
+			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
+				
+		setInitGLDone();		
+	}
+	
+	/**
+	 * @param pickingTriggerMouseAdapter the pickingTriggerMouseAdapter to set
+	 */
+	public final void setPickingTriggerMouseAdapter(
+			PickingJoglMouseListener pickingTriggerMouseAdapter) {
+	
+		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+	}
+	
 	/** 
 	 * init after IGenomeIdManager has load all its data from file.
 	 */
@@ -530,7 +666,8 @@ public class GLCanvasHeatmap2DColumn
 //		if (bIsMousePickingEvent)
 //		{	
 			int[] selectedIndexArray = addPickedPoint(fIndexPickedCoored,
-					(float) resultPickPointCoord[0],
+					//(float) resultPickPointCoord[0],
+					(float) resultPickPointCoord[0] + this.iRenderIndexStart,
 					(float) resultPickPointCoord[1] );
 			
 			if ( selectedIndexArray != null ) {
@@ -555,17 +692,23 @@ public class GLCanvasHeatmap2DColumn
 				this.init_External2InternalHashMap();
 			}
 			
-			Integer iNCBIGeneID = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[0]);
-			if ( iNCBIGeneID != null) 
-			{
-				//PathwayVertexGraphItem pickedGeneVertex;
-				pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton(
-						).getPathwayItemManager().getItem(iNCBIGeneID.intValue());
-				
-				assert pickedGeneVertex != null : "should not get null-pointer!";
-				
-				infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
-			}
+			/** 
+			 * Render details on enzyme in heatmap.. 
+			 */
+//			Integer iNCBIGeneID = hashExternalId_2_HeatmapIndex_reverse.get(resultPickPointCoord[0]);
+//			if ( iNCBIGeneID != null) 
+//			{
+//				//PathwayVertexGraphItem pickedGeneVertex;
+//				pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton(
+//						).getPathwayItemManager().getItem(iNCBIGeneID.intValue());
+//				
+//				assert pickedGeneVertex != null : "should not get null-pointer!";
+//				
+//				infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
+//			}
+			/** 
+			 * END: Render details on enzyme in heatmap.. 
+			 */
 			
 			//source of problems??		
 			//infoAreaRenderer.resetPoint();
@@ -574,13 +717,71 @@ public class GLCanvasHeatmap2DColumn
 		return true;
 	}
 
-	/* -----   END: PICKING  ----- */
-	/* --------------------------- */
+	protected int[] addPickedPoint( ArrayList <Vec2f> fIndexPickedCoord, 
+			final float addIndexCoordX, float addIndexCoordY) {
+		
+		int iSize = fIndexPickedCoord.size();
+		
+		if ( (iSize % 2) == 1) {
+			/* one remaining point of last picking */
+			Vec2f lastPickedIndexCoord= fIndexPickedCoord.get(iSize-1);
+			
+			Vec2f lowerLeftPoint = new Vec2f();
+			Vec2f upperRightPoint = new Vec2f();
+			
+			/* create a rectangle with lower.left point and upper,right point */
+			if (lastPickedIndexCoord.x() < addIndexCoordX ) {
+				lowerLeftPoint.setX( lastPickedIndexCoord.x() );
+				upperRightPoint.setX( addIndexCoordX );
+			} else {
+				lowerLeftPoint.setX( addIndexCoordX );
+				upperRightPoint.setX( lastPickedIndexCoord.x());
+			}
+			
+			/* create a rectangle with lower.left point and upper,right point */
+			if (lastPickedIndexCoord.y() < addIndexCoordY) {
+				lowerLeftPoint.setY( lastPickedIndexCoord.y() );
+				upperRightPoint.setY( addIndexCoordY );
+			} else {
+				lowerLeftPoint.setY( addIndexCoordY );
+				upperRightPoint.setY( lastPickedIndexCoord.y());
+			}
+			
+			if  ( bEnalbeMultipleSelection ) 
+			{
+				fIndexPickedCoord.set( iSize-1, lowerLeftPoint);
+				fIndexPickedCoord.add( upperRightPoint );
+			}
+			else 
+			{			
+				fIndexPickedCoord.clear();
+				fIndexPickedCoord.add( lowerLeftPoint);
+				fIndexPickedCoord.add( upperRightPoint );
+			}
+			
+			/** Calculate all indices between left and right point and create an array with all these indices.. */
+			int iCurrentIndex = (int) lowerLeftPoint.x();
+			int iLength = (int) upperRightPoint.x() - iCurrentIndex;
+			
+			int[] resultArray = new int[iLength+1];
+			for ( int i=0; i< iLength+1; i++) {
+				resultArray[i] = iCurrentIndex;
+				iCurrentIndex++;
+			}
+			
+			return resultArray;
+		} else {
+			fIndexPickedCoord.add( new Vec2f(addIndexCoordX,addIndexCoordY) );
+			return null;
+		}		
+	}
+	
 
 	/* -----   END: PICKING  ----- */
 	/* --------------------------- */
 	
-	private void notifyReceiver_PickedObject_singleSelection( final int [] resultPickPointCoord, final int iModeValue) {
+	private void notifyReceiver_PickedObject_singleSelection( final int [] resultPickPointCoord, 
+			final int iModeValue) {
 		
 		if ( resultPickPointCoord.length < 1) {
 			return;
@@ -757,9 +958,113 @@ public class GLCanvasHeatmap2DColumn
 		}
 	}
 
+	protected void handlePicking(final GL gl) {
+
+		Point pickPoint = null;
+		
+		/* if no pickingTriggerMouseAdapter was assinged yet, skip it.. */
+		if  (pickingTriggerMouseAdapter==null) {
+			return;
+		}
+		
+		
+//		if ( pickingTriggerMouseAdapter.wasMouseDragged() ) {
+//			this.bMouseOverEvent = false;
+//		}
+//		if ( pickingTriggerMouseAdapter.wasMouseMoved())
+//		pickingTriggerMouseAdapter.wasMouseMoved()
+		
+		if (pickingTriggerMouseAdapter.wasMousePressed())
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+//			bIsMousePickingEvent = true;
+		}
+//		else
+//		{
+//			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+//			bIsMousePickingEvent = false;
+//		}
+
+		// Check if an object was picked
+		if (pickPoint != null)
+		{
+			pickObjects(gl, pickPoint);
+		}
+
+	}
+
+	protected void pickObjects(final GL gl, Point pickPoint) {
+
+		int PICKING_BUFSIZE = 1024;
+
+		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
+		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
+		int iHitCount = -1;
+		int viewport[] = new int[4];
+		
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
+		gl.glRenderMode(GL.GL_SELECT);
+		gl.glInitNames();
+
+		//gl.glPushName(0);
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPushMatrix();		
+		gl.glLoadIdentity();
+		
+		/* create 5x5 pixel picking region near cursor location */
+		GLU glu = new GLU();
+		glu.gluPickMatrix((double) pickPoint.x,
+				(double) (viewport[3] - pickPoint.y),// 
+				1.0, 
+				1.0, 
+				viewport, 
+				0); // pick width and height is set to 5
+		// (i.e. picking tolerance)
+
+		float h = (float) (float) (viewport[3] - viewport[1])
+				/ (float) (viewport[2] - viewport[0]) * 4.0f;
+
+		// FIXME: values have to be taken from XML file!!
+		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
+
+		// Store picked point
+		Point tmpPickPoint = (Point) pickPoint.clone();
+		// Reset picked point
+		pickPoint = null;
+
+		renderPart4pickingX(gl);
+	
+		/* second layer of picking.. */
+		gl.glPushMatrix();
+		
+		gl.glTranslatef( 0,0, AGLCanvasHeatmap2D.fPickingBias );
+		renderPart4pickingY(gl);
+		
+		gl.glPopMatrix();
+		
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPopMatrix();
+		
+	
+
+		iHitCount = gl.glRenderMode(GL.GL_RENDER);
+		pickingBuffer.get(iArPickingBuffer);
+		
+		//boolean bPickinedNewObject = 
+		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, fIndexPickedCoored);
+				
+	}
+	
 	@Override
 	public void renderPart(GL gl) {
 
+		int iRenderIndexRangeX = iRenderIndexStop - iRenderIndexStart;
+		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
+			/ (float) (alTargetSet.size());
+		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
+			/ (float) (iRenderIndexRangeX + 1);
+		
 		gl.glPushMatrix();
 		
 		if ( bEnablePicking ) {
@@ -832,7 +1137,7 @@ public class GLCanvasHeatmap2DColumn
 			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
 		}
 		
-		renderSelection_ownArea(gl);
+		render_Selection_ownArea(gl, fIncY);
 		gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
 		
 //		gl.glColor3f(1, 1, 0);
@@ -843,16 +1148,20 @@ public class GLCanvasHeatmap2DColumn
 
 //		gl.glColor3f(0, 0, 0.8f);
 //		renderGL_Selection(gl);
+		  
 
-		if ( bEnablePicking ) {
+		render_ExternalChildrenWindows(gl, fIncY, fIncX);
+				
+		//if ( bEnablePicking ) {
 			gl.glTranslatef(0, 0, AGLCanvasHeatmap2D.fPickingBias);
-			render_picketPoints(gl);
-		}
+			render_picketPoints(gl, fIncY, fIncX);
+		//}
 		
 //		if (pickedGeneVertex != null && infoAreaRenderer.isPositionValid())
 //		{
 //			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
 //		}
+		
 		
 		gl.glEnable(GL.GL_LIGHTING);
 
@@ -861,31 +1170,47 @@ public class GLCanvasHeatmap2DColumn
 		gl.glPopMatrix();
 	}
 
+	public void render_createDisplayLists(GL gl) {
+		
+		iHeatmapDisplayListId = gl.glGenLists(1);
+		
+		gl.glNewList(iHeatmapDisplayListId, GL.GL_COMPILE);	
+		render_displayListHeatmap( gl );
+		gl.glEndList();
+		
+		  refGeneralManager.getSingelton().logMsg(
+				  "createHeatmap() create DsiplayList)",
+				  LoggerType.FULL );
+		  
+	}
+	
 	/**
 	 * Render picked points in own area.
 	 * 
 	 * @param gl
 	 */
-	private void render_picketPoints(GL gl) {
+	private void render_picketPoints(GL gl,
+			final float fIncY,
+			final float fIncX) {
 
 		if ((selectedIndex.length > 0) || (!fIndexPickedCoored.isEmpty()))
 		{
-			int iRenderIndexRangeX = iRenderIndexStop - iRenderIndexStart;
+//			int iRenderIndexRangeX = iRenderIndexStop - iRenderIndexStart;
 
-			float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
-					/ (float) (alTargetSet.size());
+//			float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
+//					/ (float) (alTargetSet.size());
 			float fIncY_halfSize = fIncY * 0.5f;
 			
 			float fNowY = viewingFrame[Y][MIN];
 			float fNextY = fNowY + fIncY;
 
-			float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
-					/ (float) (iRenderIndexRangeX + 1);
+//			float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
+//					/ (float) (iRenderIndexRangeX + 1);
 			//float fIncX_halfSize = fIncX * 0.5f;
 			
 			float fNowX = viewingFrame[X][MIN];
 			float fNextX = fNowX + fIncX;
-			float fZ = viewingFrame[Z][MIN] + fPickingBias;
+			float fZ = viewingFrame[Z][MIN] + 3*fPickingBias;
 
 			if (!fIndexPickedCoored.isEmpty())
 			{
@@ -938,7 +1263,6 @@ public class GLCanvasHeatmap2DColumn
 					if ((selectedIndex[index_X_H] >= iRenderIndexStart)
 							&& (selectedIndex[index_X_H] < iRenderIndexStop))
 					{
-
 						/** 
 						 * Render one BOX on top, one Box below and connect them with 2 lines 
 						 * of each selected heatmap segment [X , Y_min..Y_max] 
@@ -968,14 +1292,12 @@ public class GLCanvasHeatmap2DColumn
 								viewingFrame[Y][MIN],
 								fIncY,
 								viewingFrame[Z][MIN],
-								selectedIndexMode,
-								index_X_H,
+								selectedIndexMode[index_X_H],
 								-1.0f );							
 						
 						/* TOP */
 						fNowY = viewingFrame[Y][MAX];
-						fNextY = viewingFrame[Y][MAX] + fSelectionPixel
-								* fIncY;
+						fNextY = viewingFrame[Y][MAX] + fSelectionPixel * fIncY;
 						
 						gl.glColor3f(0,0,1);
 						gl.glBegin(GL.GL_TRIANGLE_FAN);
@@ -1085,6 +1407,7 @@ public class GLCanvasHeatmap2DColumn
 		if ( (iSetRenderIndexStop - iSetRenderIndexStart) > iRenderIndexLength_UpperLimit ) {
 			bRenderEnableDelimiterPerExperiment = false;
 		}
+			
 	}
 
 	/* (non-Javadoc)
@@ -1134,7 +1457,7 @@ public class GLCanvasHeatmap2DColumn
 			render_displaylistHeatmap_SortedStyle(gl);
 		}
 		
-		/* Sourrounding box */
+		/* Surrounding box */
 		float fBias_Z = viewingFrame[Z][MIN] + fPickingBias;
 		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 		/ (float) (alTargetSet.size());
@@ -1276,8 +1599,7 @@ public class GLCanvasHeatmap2DColumn
 			final float fY,
 			final float fIncY,
 			final float fZ,
-			final int [] selectedIndexModeArray,
-			final int selectedIndexMode_Index,
+			final int selectedIndexMode_Value,
 			final float fSign ) {
 		
 		//if  (selectedIndexModeArray[selectedIndexMode_Index] > 0 ) {
@@ -1285,8 +1607,7 @@ public class GLCanvasHeatmap2DColumn
 			gl.glColor3f(0, 0, 1);
 			gl.glBegin(GL.GL_TRIANGLE_FAN);
 			
-			float fY_a = fY + (selectedIndexModeArray[selectedIndexMode_Index]) 
-				* fIncY * fSelectionPixel * fSign;
+			float fY_a = fY + selectedIndexMode_Value * fIncY * fSelectionPixel * fSign;
 			                         
 			gl.glVertex3f(fX, fY, fZ);
 			gl.glVertex3f(fX_next, fY, fZ);
@@ -1304,7 +1625,7 @@ public class GLCanvasHeatmap2DColumn
 			 */
 			gl.glColor3f(1, 1, 1);
 			float fZb = fZ + fPickingBias;
-			for ( int j=1; j < selectedIndexModeArray[selectedIndexMode_Index]; j++ ) {
+			for ( int j=1; j < selectedIndexMode_Value; j++ ) {
 				fY_a = fY + j * fIncY * fSelectionPixel * fSign;
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(fX, fY_a, fZb);
@@ -1315,7 +1636,8 @@ public class GLCanvasHeatmap2DColumn
 		//} //if  (selectedIndexMode[i] > 0 ) {	
 	}
 	
-	private void renderSelection_ownArea(GL gl) {
+	private void render_Selection_ownArea(GL gl, 
+			final float fIncY ) {
 		/* ----------------------------------- */
 		/* ---  Render selected once more  --- */		
 
@@ -1338,8 +1660,7 @@ public class GLCanvasHeatmap2DColumn
 		
 		/* reset rendering parameters.. */
 		float fOffsetY= 2.0f; //(viewingFrame[X][MAX] - viewingFrame[X][MIN]);
-		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
-		/ (float) (alTargetSet.size());
+		
 			
 		float fNowY = viewingFrame[Y][MIN] + fOffsetY;
 		float fNextY = fNowY + fIncY;
@@ -1362,6 +1683,7 @@ public class GLCanvasHeatmap2DColumn
 		Iterator <ISet> iterTargetSet = alTargetSet.iterator();
 		
 		while (iterTargetSet.hasNext()) {
+			/* read ISet and add "selection-data" to internal data structure */
 			ISet currentTargetSet = iterTargetSet.next();
 			IVirtualArray refVArray = currentTargetSet.getVirtualArrayByDimAndIndex(0, 0);
 			IVirtualArrayIterator iter = refVArray.iterator();
@@ -1377,19 +1699,42 @@ public class GLCanvasHeatmap2DColumn
 		
 		/* end: copy references to raw data int[] .. */
 		
+		/* if groups are defined enable the rendering of the groups.. */
 		boolean bEnableGroupHighlighting = false;
 		if  (selectedIndexMode.length > 0 ) {
 			bEnableGroupHighlighting = true;
 		}
 		
+		/**
+		 * sort selected index
+		 * sort selected index in each view; preserve mapping <selected_index,selected_index_mode> using a HashMap
+		 */
+		HashMap <Integer,Integer> hashPreservMapping_selectedIndex_2_selectedIndexMode = 
+			new HashMap <Integer,Integer> ();
+		
+		for ( int i=0; i < selectedIndex.length; i++) {
+			hashPreservMapping_selectedIndex_2_selectedIndexMode.put(selectedIndex[i], selectedIndexMode[i]);
+		}		
+		
+		/* Bubble sort O( n*log(n) )*/
+		Arrays.sort(selectedIndex);
+		
+		/** 
+		 * end: sort selectedIndex
+		 * array (int[]) selectedIndex[] is sorted now
+		 */
+				
+		
 		for ( int i=0; i < selectedIndex.length; i++) {
 			
-					
 				int iCurrentIndex = selectedIndex[i];
 				
 				Iterator<int[]> iterRawDataArrays = bufferValueArrays.iterator();
 				Iterator<Integer> iterRawDataArrays_Offset = bufferValueArrays_Offset.iterator();
 				
+				/**
+				 * Render "selection" on top of heatmap
+				 */
 				while (iterRawDataArrays.hasNext()) {
 					int [] currentArrayBuffer = iterRawDataArrays.next();
 					int iCurrentIndex_InArray = 
@@ -1414,10 +1759,18 @@ public class GLCanvasHeatmap2DColumn
 					fNowY = fNextY;
 					fNextY += fIncY;
 				}
+								
+				/**
+				 * end: Render "selection" on top of heatmap
+				 */
 				
 				if  (bEnableGroupHighlighting) {
 					
-					if  (selectedIndexMode[i] > 0 ) {
+					int selectedIndexMode_currentValue = 
+						hashPreservMapping_selectedIndex_2_selectedIndexMode.get(iCurrentIndex).intValue();
+					
+					if  (selectedIndexMode_currentValue > 0) {
+					//if  (selectedIndexMode[i] > 0 ) {
 						
 						render_Selection_Detail(gl,
 								fNowX,
@@ -1425,8 +1778,7 @@ public class GLCanvasHeatmap2DColumn
 								fNowY,
 								fIncY,
 								viewingFrame[Z][MIN],
-								selectedIndexMode,
-								i,
+								selectedIndexMode_currentValue,
 								1.0f );					
 						
 					} //if  (selectedIndexMode[i] > 0 ) {
@@ -1440,21 +1792,99 @@ public class GLCanvasHeatmap2DColumn
 					fIncX * iRenderTargetLine_Index +
 					fIncX_halfSize;
 				
+				float fLineXleft = viewingFrame[X][MIN] + 
+					fIncX * iRenderTargetLine_Index;
+				float fLineXright = viewingFrame[X][MIN] + 
+					fIncX * (iRenderTargetLine_Index+1);
+				
 				/**
-				 * Render lines connecting Selected area and heatmap
+				 * Render LINES connecting Selected area and heatmap
 				 */
-				gl.glColor3f(0.2f, 0.2f, 1);
+				
+				if  ( (iCurrentIndex > this.iRenderIndexStart) && 
+						(iCurrentIndex < this.iRenderIndexStop )) 
+				{
+					gl.glColor3f(0.1f, 1, 1);
+				}
+				else
+				{
+					gl.glColor3f(0, 1, 84/255);
+				}
+				
 				gl.glBegin(GL.GL_LINES);
 				
 				gl.glVertex3f(fNowX + fIncX_halfSize, 
-						viewingFrame[Y][MIN] + fOffsetY, 
+						viewingFrame[Y][MIN] + fOffsetY - fSelectionPixel * fIncY, 
 						viewingFrame[Z][MIN]);
 				gl.glVertex3f(fLineX, 
 						viewingFrame[Y][MAX] + fSelectionPixel * fIncY, 
 						viewingFrame[Z][MIN]);
 				
 				gl.glEnd();
-				/** end: render connection line to target in heatmap */
+				/** 
+				 * end: render connection line to target in heatmap 
+				 */
+				
+				/** 
+				 * Render triangle below selection area 
+				 */				
+				gl.glBegin(GL.GL_TRIANGLES);				
+					gl.glVertex3f(fNowX, 
+							viewingFrame[Y][MIN] + fOffsetY, 
+							viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNowX + fIncX_halfSize, 
+							viewingFrame[Y][MIN] + fOffsetY - fSelectionPixel * fIncY, 
+							viewingFrame[Z][MIN]);
+					gl.glVertex3f(fNowX + fIncX, 
+							viewingFrame[Y][MIN] + fOffsetY, 
+							viewingFrame[Z][MIN]);				
+				gl.glEnd();		
+				/** 
+				 * END: Render triangle below selection area 
+				 */
+				
+				
+				/**
+				 * Render BlueBox on top of heatmap, were selection is done
+				 */				
+				/** 
+				 * TOP
+				 */
+				gl.glColor3f(0.1f, 1, 1);
+				gl.glBegin(GL.GL_TRIANGLES);				
+					gl.glVertex3f(fLineXleft, 
+							viewingFrame[Y][MAX], 
+							viewingFrame[Z][MIN]);
+					gl.glVertex3f(fLineX, 
+							viewingFrame[Y][MAX] + fSelectionPixel * fIncY, 
+							viewingFrame[Z][MIN]);
+					gl.glVertex3f(fLineXright, 
+							viewingFrame[Y][MAX], 
+							viewingFrame[Z][MIN]);				
+				gl.glEnd();		
+				
+				/** 
+				 * BOTTOM
+				 */
+				gl.glBegin(GL.GL_TRIANGLES);
+				//gl.glBegin(GL.GL_LINE_LOOP);
+				
+					gl.glVertex3f(fLineXleft, 
+							viewingFrame[Y][MIN], 
+							viewingFrame[Z][MIN]);
+					gl.glVertex3f(fLineX, 
+							viewingFrame[Y][MIN] - fSelectionPixel * fIncY, 
+							viewingFrame[Z][MIN]);
+					gl.glVertex3f(fLineXright, 
+							viewingFrame[Y][MIN], 
+							viewingFrame[Z][MIN]);
+				
+				gl.glEnd();	
+				
+				/** 
+				 * end: Render BlueBox on top of heatmap, were selection is done 
+				 */
+				
 				
 //				/** render separation line in selection */
 //				gl.glBegin(GL.GL_LINES);
@@ -1477,7 +1907,9 @@ public class GLCanvasHeatmap2DColumn
 		
 		} //for ( int i=0; i < selectedIndex.length; i++) {
 		
-		/* Sourrounding box */
+		/**
+		 * Surrounding box for "selection" on top of heatmap
+		 */
 		gl.glColor3f(1.0f, 1.0f, 0.1f);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(viewingFrame[X][MIN] + fXOffset, viewingFrame[Y][MIN]+ fOffsetY, viewingFrame[Z][MIN]);
@@ -1713,8 +2145,25 @@ public class GLCanvasHeatmap2DColumn
 			int[] selectionLengthX, int[] selectionStartAtIndexY,
 			int[] selectionLengthY) {
 
-		super.setSelectionItems(selectionStartAtIndexX, selectionLengthX,
-				selectionStartAtIndexY, selectionLengthY);
+		if  (selectionStartAtIndexX != null ) 
+    	{
+    		/* consistency */ 
+        	assert selectionLengthX != null : "selectionStartAtIndex is null-pointer";    	
+        	assert selectionStartAtIndexX.length == selectionLengthX.length : "both arrays must have equal length";
+        	
+	    	iSelectionStartAtIndexX = selectionStartAtIndexX;    	
+	    	iSelectionLengthX = selectionLengthX;
+    	}
+    	
+    	if  (selectionStartAtIndexY != null ) 
+    	{
+    		/* consistency */ 
+        	assert selectionLengthY != null : "selectionStartAtIndex is null-pointer";    	
+        	assert selectionStartAtIndexX.length == selectionLengthX.length : "both arrays must have equal length";
+        	
+	    	iSelectionStartAtIndexY = selectionStartAtIndexY;    	
+	    	iSelectionLengthY = selectionLengthY;
+    	}
 
 	}
 
@@ -1807,4 +2256,239 @@ public class GLCanvasHeatmap2DColumn
 
 	}
 
+	/**
+	 * Set or update a window from a child object.
+	 * 
+	 * @param idChild id of GLcanvasUser
+	 * @param pos new position of window; if null window is removed
+	 */
+	public void setChildWindow( final int idChild, final Vec4i pos) {
+		
+		if ( alExternalWindow_Link2Parent== null ) 
+		{
+			/**
+			 * this is a parent window! 
+			 */			
+			Vec4i currentPos = hashChildrenWindow.get(idChild);
+			
+			if ( currentPos == null ) 
+			{
+				/* add new window.. */
+				hashChildrenWindow.put(idChild, new Vec4i(pos));
+			}
+			else
+			{
+				if ( pos == null) 
+				{
+					/* remove window.. */
+					hashChildrenWindow.remove(idChild);
+				}
+				else
+				{
+					/* update existing window.. */
+					currentPos.set( pos );
+				}
+			}
+			
+			return;
+		}
+		/** 
+		 * This is a child window! 
+		 */
+		assert false : "try to call method for child that is intended for parent objects only!";
+		
+		/** 
+		 * This is a child window! 
+		 */
+		
+		if ( ! alExternalWindow_Link2Parent.isEmpty() ) 
+		{
+			Iterator <GLCanvasHeatmap2DColumn> iter =
+				alExternalWindow_Link2Parent.iterator();
+			
+			while ( iter.hasNext() ) 
+			{
+				GLCanvasHeatmap2DColumn parent = iter.next();
+				parent.setChildWindow(this.getId(), 
+						new Vec4i(iRenderIndexStart, 
+								iRenderIndexStop,
+								0,
+								3));
+				
+				//parent.setChildWindow(this.getId(), pos );
+			}
+		}
+	}
+	
+	private void render_ExternalChildrenWindows(GL gl,
+			final float fXinc, 
+			final float fYinc) {
+		
+		float fTopScale = 0.2f;
+		
+		if  (alExternalWindow_Link2Parent != null) 
+		{
+			/**
+			 * This is a child window!
+			 *   ==> no rendering!
+			 */
+			return;
+		}
+		
+		/**
+		 * This is a parent window!
+		 */
+		
+		float fZ = this.viewingFrame[Z][MIN] + 2*fPickingBias;
+		
+		if ( hashChildrenWindow.isEmpty()) 
+		{
+			/**
+			 * nothing to render yet!
+			 */
+			return;
+		}
+		
+		Iterator<Vec4i> iter = hashChildrenWindow.values().iterator();
+		
+		gl.glColor3f(0, 1, 1);
+		gl.glLineWidth(4);
+		while ( iter.hasNext() ) 
+		{
+			Vec4i windowPos = iter.next();
+			
+			float fX1 = this.viewingFrame[X][MIN] + fYinc * windowPos.x();
+			float fX2 = this.viewingFrame[X][MIN] + fYinc * windowPos.y();
+			
+			float fY1 = this.viewingFrame[Y][MIN] + fXinc * windowPos.z();
+			float fY2 = this.viewingFrame[Y][MIN] + fXinc * windowPos.w();			
+			
+			gl.glBegin(GL.GL_LINE_LOOP);
+			
+			gl.glVertex3f(fX1, fY1, fZ);
+			gl.glVertex3f(fX1, fY2, fZ);
+			gl.glVertex3f(fX2, fY2, fZ);
+			gl.glVertex3f(fX2, fY1, fZ);
+			
+			gl.glEnd();
+		}
+		
+		gl.glLineWidth(1);
+	}
+	
+	/**
+	 * This method is called at the child. It links the child to the parent.
+	 * 
+	 * @param id
+	 */
+	public void addLinkTo_ParentWindow( int id ) {
+		
+		if ( alExternalWindow_Link2Parent==null ) 
+		{
+			alExternalWindow_Link2Parent = new ArrayList <GLCanvasHeatmap2DColumn> ();
+		}
+		
+		GLCanvasHeatmap2DColumn parentHeatmap =
+			(GLCanvasHeatmap2DColumn) refGeneralManager.getSingelton().getViewGLCanvasManager().getItem(id);
+		
+		if ( ! alExternalWindow_Link2Parent.contains(parentHeatmap) ) 
+		{
+			alExternalWindow_Link2Parent.add( parentHeatmap );
+		}	
+	}
+	
+	public void addLinkTo_ParentWindow( GLCanvasHeatmap2DColumn parent ) {
+		
+		if ( alExternalWindow_Link2Parent==null ) 
+		{
+			alExternalWindow_Link2Parent = new ArrayList <GLCanvasHeatmap2DColumn> ();
+		}
+		
+		if ( ! alExternalWindow_Link2Parent.contains(parent) ) 
+		{
+			alExternalWindow_Link2Parent.add( parent );
+		}	
+		
+		parent.setChildWindow(this.getId(), 
+				new Vec4i(iRenderIndexStart,
+						iRenderIndexStop,
+						0,
+						3));
+	}
+	
+	public void link_ChildWindows_to_ParentWindow( int[] idArray ) {	
+		
+		if ( alExternalWindow_Link2Parent!=null ) 
+		{
+			assert false : "Must not call addLinkTo_ChildWindows() on child!";
+		}
+		/**
+		 * Parent code..
+		 */
+		
+		/* read two (int) values at once.. */
+		int i=0;
+		while ( i<(idArray.length) ) 
+		{
+			try
+			{
+				/* get parent container.. */
+				SwtJoglGLCanvasViewRep childHeatmapContainer = 
+					(SwtJoglGLCanvasViewRep) refGeneralManager
+						.getSingelton().getViewGLCanvasManager().getItem(
+								idArray[i]);
+				
+				/* get all IGLCanvasUser objects.. */
+				Iterator<IGLCanvasUser> iterGLCanvasUser = childHeatmapContainer.getAllGLCanvasUsers().iterator();
+				while ( iterGLCanvasUser.hasNext() ) 
+				{
+					IGLCanvasUser canvasUSer = iterGLCanvasUser.next();
+					if ( canvasUSer.getId() ==  idArray[i+1] ) {
+						/* found referred object.. */
+						try
+						{
+							GLCanvasHeatmap2DColumn childHeatmap = (GLCanvasHeatmap2DColumn) canvasUSer;
+							childHeatmap.addLinkTo_ParentWindow(this);
+							
+							refGeneralManager.getSingelton().logMsg(
+									this.getClass().getSimpleName() + " [" +
+									this.getId() + "] (parent of)==> " +
+									"(SwtJoglGLCanvasViewRep)=[" +
+									idArray[i] +									
+									"]-->(GLCanvasHeatmap2DColumn)=[" +
+									idArray[i+1] + "]",
+									LoggerType.STATUS);
+						} 
+						catch (NullPointerException npe2)
+						{
+							refGeneralManager.getSingelton().logMsg(
+									"SwtJoglGLCanvasViewRep id=[" +
+									idArray[i] +									
+									"] matched; second id=[" +
+									idArray[i+1] +
+									"] for GLCanvasHeatmap2DColumn did not match!",
+									LoggerType.MINOR_ERROR_XML);
+						} //try-catch
+						
+					} //if ( canvasUSer.getId() ==  idArray[i+1] ) {
+				} //while ( iterGLCanvasUser.hasNext() )
+			} 
+			catch (NullPointerException npe)
+			{
+				refGeneralManager.getSingelton().logMsg(
+						"SwtJoglGLCanvasViewRep id=[" +
+						idArray[i] +
+						"] did not match; second id=[" +
+						idArray[i+1] +
+						"] was not compared and is ignored!",
+						LoggerType.MINOR_ERROR_XML);
+				
+				//throw npe;
+			} // try-catch		
+			
+			i += 2;
+			
+		} //while ( i<(idArray.length) ) 
+		
+	}
 }
