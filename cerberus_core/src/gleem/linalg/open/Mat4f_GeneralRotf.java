@@ -13,6 +13,10 @@ import gleem.linalg.Vec3f;
  */
 public class Mat4f_GeneralRotf {
 	
+	private static final float EPSILON = 0.00000001f;
+	
+	protected boolean bNoRotation = true;
+	
 	boolean showMatrix = true;
 	
 	protected Vec3f centerOfRotation;
@@ -78,6 +82,15 @@ public class Mat4f_GeneralRotf {
 	public final void setRotation(final Rotf rotation) {
 	
 		this.rotation.set( rotation );
+		
+		if ( Math.abs( rotation.get(new Vec3f())) < EPSILON)
+		{
+			bNoRotation = true;
+		}
+		else
+		{
+			bNoRotation = false;
+		}
 	}
 	
 	/**
@@ -213,10 +226,17 @@ public class Mat4f_GeneralRotf {
 		T_inv.setTranslation(
 				new Vec3f(-centerOfRotation.x(),
 						-centerOfRotation.y(),
-						-centerOfRotation.z()));				
-		rotation.toMatrix(R);
-		/* set missing 	homogeneous coordinate */
-		R.set(3, 3, 1.0f);
+						-centerOfRotation.z()));	
+		
+		if  (bNoRotation) {
+			R.makeIdent();
+		}
+		else
+		{
+			rotation.toMatrix(R);
+			/* set missing 	homogeneous coordinate */
+			R.set(3, 3, 1.0f);
+		}
 		
 		/* build matrix .. */
 		/* start with T_inv .. */
