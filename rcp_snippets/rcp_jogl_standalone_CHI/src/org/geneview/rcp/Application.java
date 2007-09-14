@@ -42,6 +42,11 @@ public class Application implements IApplication {
 	 */
 	public void stop() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
+		
+//		if ( Application.refGeneralManager != null ) {
+//			Application.refGeneralManager.stop();
+//		}
+		
 		if (workbench == null)
 			return;
 		final Display display = workbench.getDisplay();

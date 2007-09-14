@@ -34,7 +34,7 @@
 				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
 				attrib3="0 10 0 40   -0.5f -0.5f    -3.5f 3.5f   -1.0f 0.5f    2.0f 1.0f   400"			
 				attrib4="0 100"	
-				detail="38101" />
+				detail="35101 36101 37101" />
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="28" 
 			    gl_forwarder="28"
@@ -43,13 +43,26 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2DCOLUMN"			cmdId="68993"	uniqueId="85401" parent="28" label="GL Heatmap 3D 2nd"	
 				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
 				attrib3="0 10 0 40   -0.5f -0.5f    -3.5f 3.5f   -1.0f 0.5f    2.0f 1.0f   400"			
-				attrib4="0 100"	
-				detail="38101" />				
+				attrib4="200 300 1"	
+				detail="35101 36101 37101" />	
+				
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="29" 
+			    gl_forwarder="29"
+				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
+	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2DCOLUMN"			cmdId="68993"	uniqueId="86401" parent="29" label="GL Heatmap 3D 2nd"	
+				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
+				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 0.3f    2.0f 1.0f   400"			
+				attrib4="0 2001 1"	
+				detail="35101 36101 37101" />					
+
 				
 	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="83401" attrib2="82401 85401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="83401 85401" detail="SELECTION_MEDIATOR" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="85401" attrib2="83401 82401" detail="SELECTION_MEDIATOR" />     
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="83401" attrib2="82401 85401 86401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="83401 85401 86401" detail="SELECTION_MEDIATOR" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="85401" attrib2="83401 82401 86401" detail="SELECTION_MEDIATOR" />     
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="86401" attrib2="83401 82401 85401" detail="SELECTION_MEDIATOR" />     
      
    </CommandBuffer>
     

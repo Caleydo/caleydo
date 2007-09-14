@@ -43,7 +43,16 @@
             icon="resources/icons/heatmap.png"
             id="org.geneview.rcp.views.GLHeatmap2DView_second"
             name="GLHeatmap2DView_second">
-      </view>            
+      </view>    
+      
+       <view
+            allowMultiple="true"
+            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.geneview.rcp.views.GLHeatmap2DView_third"
+            icon="resources/icons/heatmap.png"
+            id="org.geneview.rcp.views.GLHeatmap2DView_third"
+            name="GLHeatmap2DView_third">
+      </view>              
       
       <view
             id="org.geneview.rcp.views.browser.browserView"
