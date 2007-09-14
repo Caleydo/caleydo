@@ -52,6 +52,17 @@ public class Vec4f {
   public Vec4f(Vec4f arg) {
     set(arg);
   }
+  
+  /**
+   * copy x,y,z from Vec3f to Vec4f and sets w
+   * 
+   * @param arg
+   * @param w
+   */
+  public Vec4f(Vec3f arg, float w) {
+    set(arg,w);
+  }
+
 
   public Vec4f(float x, float y, float z, float w) {
     set(x, y, z, w);
@@ -63,6 +74,15 @@ public class Vec4f {
 
   public void set(Vec4f arg) {
     set(arg.x, arg.y, arg.z, arg.w);
+  }
+
+  /**
+   * copy x,y,z from Vec3f to Vec4f and sets w
+   * @param arg
+   * @param w
+   */
+  public void set(Vec3f arg, float w) {
+	set(arg.x(), arg.y(), arg.z(), w);
   }
 
   public void set(float x, float y, float z, float w) {
@@ -104,6 +124,26 @@ public class Vec4f {
   public void setZ(float z) { this.z = z; }
   public void setW(float w) { this.w = w; }
 
+  /**
+   * all values are set to 0. x=y=z=w=0
+   */
+  public void setZeroVector() {
+	x=0;
+	y=0;
+	z=0;
+	w=0;
+  }
+  
+  /**
+   * all values are set to 1. x=y=z=w=1
+   */
+  public void setAllOneVector() {
+	x=1;
+	y=1;
+	z=1;
+	w=1;
+  }
+  
   public float dot(Vec4f arg) {
     return x * arg.x + y * arg.y + z * arg.z + w * arg.w;
   }

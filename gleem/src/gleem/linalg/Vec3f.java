@@ -77,6 +77,15 @@ public class Vec3f {
   }
   
   /**
+   * Copy x,y,z to Vec3f and ignores arg.w().
+   * 
+   * @param arg
+   */
+  public Vec3f(Vec4f arg) {
+	set(arg.x(), arg.y(),arg.z());
+  }
+  
+  /**
    * Convert grad to radiant (eg: [-360° .. +360°] ==> [-2PI .. 2PI]).
    *  
    * @param fGrad in grad
@@ -100,6 +109,24 @@ public class Vec3f {
     set(x, y, z);
   }
 
+  /**
+   * all values are set to 0. x=y=z=w=0
+   */
+  public void setZeroVector() {
+	x=0;
+	y=0;
+	z=0;
+  }
+  
+  /**
+   * all values are set to 1. x=y=z=w=1
+   */
+  public void setAllOneVector() {
+	x=1;
+	y=1;
+	z=1;
+  }
+  
   public Vec3f copy() {
     return new Vec3f(this);
   }
@@ -111,6 +138,15 @@ public class Vec3f {
 
   public void set(Vec3f arg) {
     set(arg.x, arg.y, arg.z);
+  }
+  
+  /**
+   * Copy x,y,z and ignores arg.w().
+   * 
+   * @param arg
+   */
+  public void set(Vec4f arg) {
+	set(arg.x(), arg.y(), arg.z());
   }
 
   public void set(float x, float y, float z) {
