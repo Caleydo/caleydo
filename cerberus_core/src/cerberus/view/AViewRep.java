@@ -3,6 +3,7 @@ package cerberus.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
 
 import cerberus.data.AUniqueManagedObject;
@@ -180,6 +181,26 @@ implements IViewRep {
 	public final String getLabel() {
 		
 		return sLabel;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.view.IView#getLabel()
+	 */
+	public final void setLabel(String label) {
+				
+		this.sLabel = label;
+		
+		if  (refSWTContainer != null)
+		{
+			try 
+			{
+				refSWTContainer.getShell().setText(label);
+			}
+			catch (SWTException se) {
+				
+			}
+		}
 	}
 	
 	/*
