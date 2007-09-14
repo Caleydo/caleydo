@@ -16,13 +16,15 @@ import java.awt.Color;
  */
 public class ColorMapping extends AColorMappingInt {
 
+	private int iMid;
+	
 	protected static final int MAPPING_WIDTH = 255;
 	
 	protected Color color_1 = Color.RED;
 	protected Color color_2 = Color.YELLOW;
 	protected Color color_3 = Color.GREEN;
 
-	private int iMapping_Width_div_Mid;
+	private float fMappingWidth_div_Mid;
 
 	protected Color resultColor;
 	
@@ -47,7 +49,9 @@ public class ColorMapping extends AColorMappingInt {
 	public void setValueMinMax(final int min, final int max) {
 		super.setValueMinMax(min, max);
 		
-		iMapping_Width_div_Mid = (int) ((float) MAPPING_WIDTH * ((float)(iMax - iMin)) /2.0f);
+		iMid = (iMax - iMin) / 2;
+		fMappingWidth_div_Mid = 2.0f * (float) MAPPING_WIDTH / (float) (iMax - iMin);
+		
 	}
 	
 	protected void createLookupTable() {
@@ -68,26 +72,23 @@ public class ColorMapping extends AColorMappingInt {
 	
 	public Color colorMappingLookup(int iLookupValue) {
 		
-		int iMid = (iMax - iMin) / 2;
-		
 		if (( iLookupValue < iMin )||(iLookupValue > iMax)) {
 			return color_outOfRange;
 		}
 		
 		if (iLookupValue < iMid)
 		{
-			
-			return new Color(fArColorLookupTable_LEFT[(iLookupValue - iMin) * iMapping_Width_div_Mid][0],
-					fArColorLookupTable_LEFT[(iLookupValue - iMin) * iMapping_Width_div_Mid][1],
-					fArColorLookupTable_LEFT[(iLookupValue - iMin) * iMapping_Width_div_Mid][2]);
+			int iIndex = (int) ((float) (iLookupValue - iMin) * fMappingWidth_div_Mid);
+			//int iIndexB = (iLookupValue - iMin) * MAPPING_WIDTH  / iMid;
+			return new Color(fArColorLookupTable_LEFT[iIndex][0],
+					fArColorLookupTable_LEFT[iIndex][1],
+					fArColorLookupTable_LEFT[iIndex][2]);
 		}
 	
-		return new Color(
-					fArColorLookupTable_RIGHT[(iLookupValue - iMin - iMid)
-							* iMapping_Width_div_Mid][0],
-					fArColorLookupTable_RIGHT[((iLookupValue - iMin - iMid)
-							* iMapping_Width_div_Mid)][1],
-					fArColorLookupTable_RIGHT[((iLookupValue - iMin - iMid)
-							* iMapping_Width_div_Mid)][2]);		
+		int iIndex = (int) ((float) (iLookupValue - iMin - iMid) * fMappingWidth_div_Mid);		
+		return new Color(				
+					fArColorLookupTable_RIGHT[iIndex][0],
+					fArColorLookupTable_RIGHT[iIndex][1],
+					fArColorLookupTable_RIGHT[iIndex][2]);		
 	}
 }
