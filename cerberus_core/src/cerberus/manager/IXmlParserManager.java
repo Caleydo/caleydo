@@ -105,6 +105,8 @@ extends IXmlBaseHandler
 	public boolean parseXmlFileByInputStream( InputSource inputStream,
 			final String inputStreamText );
 	
+	public boolean parseXmlString( final String sMuddlewareXPath, 
+			final String xmlString );
 	
 	/**
 	 * Cleanup called by Mananger after Handler is not used any more. 

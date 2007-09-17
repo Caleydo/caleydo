@@ -108,6 +108,12 @@ extends AParameterHandler
 	 * @see cerberus.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public Vec3f getValueVec3f( final String key ) {
+		
+		if ( key == null) 
+		{
+			return new Vec3f();
+		}
+		
 		try {
 			return new Vec3f( hashKey2Float.getValue(key+"_GL0"),
 					hashKey2Float.getValue(key+"_GL1"),
@@ -123,6 +129,13 @@ extends AParameterHandler
 	 * @see cerberus.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public Vec4f getValueVec4f( final String key ) {
+		
+		if ( key == null) 
+		{
+			return new Vec4f();
+		}
+		
+		
 		try {
 			return new Vec4f( 
 					hashKey2Float.getValue(key+"_GLROT0"),

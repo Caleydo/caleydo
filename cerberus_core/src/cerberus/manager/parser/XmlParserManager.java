@@ -3,6 +3,7 @@
  */
 package cerberus.manager.parser;
 
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
 //import java.util.Collection;
@@ -14,7 +15,7 @@ import org.xml.sax.SAXException;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager;
-import cerberus.manager.IXmlParserManager;
+//import cerberus.manager.IXmlParserManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.parser.xml.sax.handler.IXmlParserHandler;
 import cerberus.parser.xml.sax.handler.command.CommandSaxHandler;
@@ -31,13 +32,13 @@ import cerberus.util.exception.GeneViewRuntimeException;
  * Acts as proxy for other derived objects from IXmlParserManager
  * 
  * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
+ * @see cerberus.manager.IXmlParserManager
  * 
  * @author Michael Kalkusch
  *
  */
 public class XmlParserManager 
-extends AXmlParserManager
-implements IXmlParserManager {
+extends AXmlParserManager {
 
 //  /**
 //   * necessary to catch the special pathway XML file case
@@ -321,6 +322,31 @@ implements IXmlParserManager {
 		setXmlFileProcessedNow( true );
 	}
 
+	
+	/**
+	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 */
+	public boolean parseXmlString( final String sMuddlewareXPath, final String xmlString ) {
+		
+		iCountOpenedFiles++;
+		refLoggerManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + ") parse...",
+				LoggerType.VERBOSE );
+		
+		InputSource inStream = new InputSource( xmlString );	
+		
+		refLoggerManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
+				LoggerType.VERBOSE_EXTRA );
+		
+		boolean status = CerberusInputStream.parseOnce( inStream ,
+				sMuddlewareXPath,
+				this,
+				refLoggerManager );
+		
+		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath + "], ..) done.",
+				LoggerType.STATUS );
+		
+		return 	status;
+	}
 	
 	/**
 	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(Stringt)

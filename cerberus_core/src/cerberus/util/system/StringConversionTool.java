@@ -218,6 +218,7 @@ public final class StringConversionTool
 			final int iDimension ) {
 		
 		assert iDimension > 1 : "dimension must be at least 2!";
+		assert sInput != null : "can not handle String null-pointer!";
 		
 		int [] resultIntArray = new int[iDimension];
 		

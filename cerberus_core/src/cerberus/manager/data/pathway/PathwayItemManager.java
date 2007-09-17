@@ -22,6 +22,7 @@ import cerberus.manager.data.IPathwayItemManager;
 import cerberus.manager.type.ManagerObjectType;
 import cerberus.manager.type.ManagerType;
 import cerberus.util.system.StringConversionTool;
+//import cerberus.manager.ILoggerManager.LoggerType;
 
 /**
  * The element manager is in charge for handling the items. Items are
@@ -84,12 +85,21 @@ implements IPathwayItemManager {
     	//Check if vertex is gene 
     	if (sType.equals(EPathwayVertexType.gene.toString()))
     	{
-    		assert bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid == false : 
-    			"HashMap NCBI GeneId to PathwayVertexGraphItemId migh be invalid!";
+//    		assert bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid == false : 
+//    			"HashMap NCBI GeneId to PathwayVertexGraphItemId might be invalid!";
     		
     		int iGeneId = StringConversionTool.convertStringToInt( 
     				sName.substring(4), 
     				0 );
+    		
+//    		if ( bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid ) 
+//    		{
+//    			refSingelton.logMsg("HashMap NCBI GeneId to PathwayVertexGraphItemId might be invalid! NCBI_GeneId=["
+//    					+ sName + "] <key,value>= <" +
+//    					iGeneId +"," +
+//    					iGeneratedId +">",
+//    					LoggerType.MINOR_ERROR_XML);
+//    		}
     		
     		// Extract NCBI gene ID and add element 
         	hashNCBIGeneIdToPathwayVertexGraphItemId.put(
@@ -254,6 +264,7 @@ implements IPathwayItemManager {
 	
 	public final HashMap<Integer, Integer> getHashNCBIGeneIdToPathwayVertexGraphItemId() {
 		
+		assert false : "should not call!!";
 		bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = false;
 		return hashNCBIGeneIdToPathwayVertexGraphItemId;
 	}

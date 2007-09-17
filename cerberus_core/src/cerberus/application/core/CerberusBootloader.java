@@ -1,9 +1,5 @@
 package cerberus.application.core;
 
-import org.xml.sax.InputSource;
-
-import java.io.StringReader;
-
 //import cerberus.manager.IGeneralManager;
 //import cerberus.manager.IViewManager;
 import cerberus.manager.ILoggerManager;
@@ -22,8 +18,11 @@ import cerberus.manager.singleton.OneForAllManager;
 
 
 import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
+import org.studierstube.net.protocol.muddleware.IMessage;
+import org.studierstube.net.protocol.muddleware.IOperation;
 import org.studierstube.net.protocol.muddleware.Message;
 import org.studierstube.net.protocol.muddleware.Operation;
+import org.studierstube.net.protocol.muddleware.OperationEnum;
 
 
 /**
@@ -167,13 +166,13 @@ public class CerberusBootloader
 			return false;
 		}
 		
-		Operation operationSend = new Operation( Operation.OP_ELEMENT_EXISTS );
+		Operation operationSend = new Operation( OperationEnum.OP_ELEMENT_EXISTS );
 		operationSend.setXPath( sXPath );
 		
-		Message sendMsg = new Message();
+		IMessage sendMsg = new Message();
 		sendMsg.addOperation( operationSend );
 		
-		Message receiveMsg = connection.sendReceiveMessage( sendMsg );
+		IMessage receiveMsg = connection.sendReceiveMessage( sendMsg );
 		
 		if (( receiveMsg == null )||( receiveMsg.getNumOperations() < 1 )) {
 			System.out.println("CerberusBootloader XPath does not exist, Muddleware server has no data on canvas settings.");
@@ -183,17 +182,16 @@ public class CerberusBootloader
 		
 		if ( receiveMsg.getOperation( 0 ).getNodeString().equalsIgnoreCase( "true" ) ) {
 			
-			operationSend.setOperation( Operation.OP_GET_ELEMENT );
+			operationSend.setOperation( OperationEnum.OP_GET_ELEMENT );
 			
 			/* get configuration .. */
 			sendMsg.setOperation( operationSend );
 			receiveMsg = connection.sendReceiveMessage( sendMsg );
 			connection.disconnect();
 						
-			String configuration = receiveMsg.getOperation( 0 ).getNodeString();						
-			InputSource inStream = new InputSource(new StringReader(configuration));				
+			IOperation op = receiveMsg.getOperation( 0 );					
 			
-			refXmlParserManager.parseXmlFileByInputStream( inStream, configuration );
+			refXmlParserManager.parseXmlString( op.getXPath(), op.getNodeString() );
 			
 			System.out.println("CerberusBootloader PARSE using Muddleware done.");
 			
