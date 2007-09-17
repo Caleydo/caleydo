@@ -96,10 +96,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.geneview.rcp.application"
-            name="GeneView">
+            name="GeneView Product">
          <property
-               name="windowImages"
-               value="icons/alt_window_16.gif,icons/alt_window_32.gif">
+               name="appName"
+               value="GeneView Product">
          </property>
       </product>
    </extension>
