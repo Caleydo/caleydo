@@ -43,7 +43,13 @@ package gleem.linalg;
     vector. */
 
 public class DimensionMismatchException extends RuntimeException {
-  public DimensionMismatchException() {
+  
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -2573685604627011036L;
+
+public DimensionMismatchException() {
     super();
   }
 

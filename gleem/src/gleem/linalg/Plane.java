@@ -94,6 +94,7 @@ public class Plane {
   /** Project a point onto the plane */
   public void projectPoint(Vec3f pt,
                            Vec3f projPt) {
+	  //TODO: check this code! scale is never read, thus calculation will create wring result! 
     float scale = normal.dot(pt) - c;
     projPt.set(pt.minus(normal.times(normal.dot(point) - c)));
   }

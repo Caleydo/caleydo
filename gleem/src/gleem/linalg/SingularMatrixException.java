@@ -43,7 +43,13 @@ package gleem.linalg;
     related operation. */
 
 public class SingularMatrixException extends RuntimeException {
-  public SingularMatrixException() {
+  
+  /**
+	* 
+	*/
+  private static final long serialVersionUID = 2959512000734583355L;
+
+public SingularMatrixException() {
     super();
   }
 

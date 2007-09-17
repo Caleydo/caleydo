@@ -43,7 +43,13 @@ package gleem.linalg;
     requiring one. */
 
 public class NonSquareMatrixException extends RuntimeException {
-  public NonSquareMatrixException() {
+	
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -7550226421315850917L;
+
+public NonSquareMatrixException() {
     super();
   }
 
