@@ -48,7 +48,7 @@ public class GLPathwayManager {
 	private PathwayRenderStyle refRenderStyle;
 
 	private boolean bEnableGeneMapping = true;
-	private boolean bEnableEdgeRendering = false;
+	private boolean bEnableEdgeRendering = true;
 	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableNeighborhood = false;
 	private boolean bEnableAnnotation = true;
@@ -192,28 +192,29 @@ public class GLPathwayManager {
 			}	
 		}
 		
-		// Store currently selected vertices back to selection set
-		Set<Entry<Integer, Integer>> setAllSelectedVertices = hashSelectedGraphItemRepId2Depth.entrySet();
-		
-		int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];  
-		int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
-		
-		Iterator<Entry<Integer, Integer>> iterAllSelectedVertices = setAllSelectedVertices.iterator();
-		
-		int iItemIndex = 0;
-		Entry<Integer, Integer> tmpEntry;
-		while (iterAllSelectedVertices.hasNext())
-		{
-			tmpEntry = iterAllSelectedVertices.next();
-			iArTmpGraphItemId[iItemIndex] = tmpEntry.getKey();
-			iArTmpGraphItemDepth[iItemIndex] = tmpEntry.getValue();
-			iItemIndex++;
-		}
-	
-		alSetSelection.get(0).getWriteToken();
-		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
-		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
-		alSetSelection.get(0).returnWriteToken();
+		// FIXME: TURN ON AGAIN - Filter edges before - other views are only interested in vertices.
+//		// Store currently selected vertices back to selection set
+//		Set<Entry<Integer, Integer>> setAllSelectedVertices = hashSelectedGraphItemRepId2Depth.entrySet();
+//		
+//		int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];  
+//		int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
+//		
+//		Iterator<Entry<Integer, Integer>> iterAllSelectedVertices = setAllSelectedVertices.iterator();
+//		
+//		int iItemIndex = 0;
+//		Entry<Integer, Integer> tmpEntry;
+//		while (iterAllSelectedVertices.hasNext())
+//		{
+//			tmpEntry = iterAllSelectedVertices.next();
+//			iArTmpGraphItemId[iItemIndex] = tmpEntry.getKey();
+//			iArTmpGraphItemDepth[iItemIndex] = tmpEntry.getValue();
+//			iItemIndex++;
+//		}
+//	
+//		alSetSelection.get(0).getWriteToken();
+//		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
+//		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
+//		alSetSelection.get(0).returnWriteToken();
 	}
 	
 	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
@@ -221,7 +222,7 @@ public class GLPathwayManager {
 		GraphVisitorSearchBFS graphVisitorSearchBFS;
 		
 		if(bEnableNeighborhood)
-			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 5);
+			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 4);
 		else
 			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
 		
@@ -241,13 +242,13 @@ public class GLPathwayManager {
 						
 			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
 			{
-				// Consider only vertices for now
-				if (lGraphItems.get(iItemIndex).getClass().equals
-						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
-				{			
+//				// Consider only vertices for now
+//				if (lGraphItems.get(iItemIndex).getClass().equals
+//						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+//				{			
 					hashSelectedGraphItemRepId2Depth.put(
 							lGraphItems.get(iItemIndex).getId(), (iDepthIndex + 1) / 2); // +1 / 2 because we want to ignore edge depth
-				}
+//				}
 			}
 		}
 	}
@@ -409,9 +410,13 @@ public class GLPathwayManager {
         while (edgeIterator.hasNext())
         {
         	edgeRep = edgeIterator.next();
-
+        	
         	if (edgeRep != null)
         	{
+            	// Render edge if it is contained in the minimum spanning tree of the neighborhoods
+            	if (!hashSelectedGraphItemRepId2Depth.containsKey(edgeRep.getId()))
+            		continue;
+        		
         		createEdge(gl, edgeRep, pathwayToExtract);        	        			
         	}
         }   
@@ -559,7 +564,7 @@ public class GLPathwayManager {
 			tmpColor = Color.BLACK;
 		}
 
-		gl.glLineWidth(2.0f);
+		gl.glLineWidth(3.0f);
 		gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
 		gl.glBegin(GL.GL_LINES);
 		
@@ -580,10 +585,10 @@ public class GLPathwayManager {
 				
 				gl.glVertex3f(tmpSourceGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
 						-tmpSourceGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
-						-0.05f);
+						0.02f);
 				gl.glVertex3f(tmpTargetGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
 						-tmpTargetGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
-						-0.05f);		
+						0.02f);		
 			}
 		}
 		

@@ -69,7 +69,7 @@ public class GLInfoAreaRenderer {
     		final PathwayVertexGraphItemRep pickedVertexRep) {
     	
     	if (fScaleFactor < 1.0)
-    		fScaleFactor += 0.06;
+    		fScaleFactor += 0.1f;
     	
     	extractMultipleGeneMapping(pickedVertexRep);
     	
@@ -169,7 +169,12 @@ public class GLInfoAreaRenderer {
     private void drawPickedObjectInfoStar(final GL gl) {
     	
     	// Calculate star points by taking the gene number as edge count
-		starEffectRenderer.calculateStarPoints(llMultipleMappingGenes.size(), 1.2f, 0, 0);
+    	float fStarRadius = llMultipleMappingGenes.size() / 4.0f;
+    	
+    	if (fStarRadius >= 1.2f)
+    		fStarRadius = 1.2f;
+    	
+		starEffectRenderer.calculateStarPoints(llMultipleMappingGenes.size(), fStarRadius, 0, 0);
     	
 		// Draw star effect 
 		Iterator<float[]>iterStarPoints = starEffectRenderer.getStarPoints().iterator();			
@@ -182,6 +187,7 @@ public class GLInfoAreaRenderer {
 			iterStarPoints.next();
 		}
 		
+    	float fStarElementZDisplacement = 0f;
 		gl.glTranslatef(getWorldCoordinatePosition()[0], 
 				getWorldCoordinatePosition()[1], 0);
     	gl.glScalef(fScaleFactor, fScaleFactor, fScaleFactor);
@@ -193,10 +199,12 @@ public class GLInfoAreaRenderer {
 		{
 			fArTmpPosition = iterStarPoints.next();
 			gl.glTranslatef(fArTmpPosition[0]-fWidth/2f, 
-					fArTmpPosition[1]+fHeight/2f, 0);				
+					fArTmpPosition[1]+fHeight/2f, fStarElementZDisplacement);				
 			drawPickedObjectInfoSingle(gl, false);
 			gl.glTranslatef(-fArTmpPosition[0]+fWidth/2f, 
-					-fArTmpPosition[1]-fHeight/2f, 0);
+					-fArTmpPosition[1]-fHeight/2f, fStarElementZDisplacement);
+			
+			fStarElementZDisplacement += 0.002f;
 		}
 		
 		gl.glPopMatrix();
@@ -260,7 +268,7 @@ public class GLInfoAreaRenderer {
 		textRenderer.draw3D("ID: " +sElementId,
 				fXOffset, 
 				fYOffset - fLineHeight, 
-				0.01f,
+				0.001f,
 				0.005f);  // scale factor
 		
 		String sTmp = "";
@@ -282,7 +290,7 @@ public class GLInfoAreaRenderer {
 		textRenderer.draw3D(sTmp,
 				fXOffset, 
 				fYOffset - 2*fLineHeight, 
-				0.01f,
+				0.001f,
 				0.005f);  // scale factor
 		
 		textRenderer.end3DRendering();
@@ -290,7 +298,7 @@ public class GLInfoAreaRenderer {
 		if (bEnableColorMapping) 
 		{
 			// Render mapping if available
-			gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, 0.02f);
+			gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, -0.045f);
 			gl.glScalef(3.0f, 3.0f, 3.0f);
 			if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
 			{					

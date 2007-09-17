@@ -441,18 +441,21 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		gl.glTranslatef(0, -tmp, 0);
 
-		if (!layer.getElementList().isEmpty()
-				&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
+		if (bEnablePathwayTextures)
 		{
-			refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-					fTextureTransparency, true);
+			if (!layer.getElementList().isEmpty()
+					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
+			{
+				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+						fTextureTransparency, true);
+			}
+			else
+			{
+				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+						fTextureTransparency, false);
+			}
 		}
-		else
-		{
-			refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-					fTextureTransparency, false);
-		}
-
+		
 		gl.glPopMatrix();
 		
 //		// TEST
@@ -1249,67 +1252,6 @@ implements IMediatorReceiver, IMediatorSender {
 		// Trigger update on current selection
 		alSetSelection.get(0).updateSelectionSet(iUniqueId);
 	}
-	
-//	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
-//		
-//		GraphVisitorSearchBFS graphVisitorSearchBFS;
-//		
-//		if(bEnableNeighborhood)
-//			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 5);
-//		else
-//			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
-//		
-//		graphVisitorSearchBFS.setProp(EGraphItemProperty.OUTGOING);
-//		graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(
-//				EGraphItemHierarchy.GRAPH_PARENT).get(0));
-//		
-//		//List<IGraphItem> lGraphItems = graphVisitorSearchBFS.getSearchResult();
-//		graphVisitorSearchBFS.getSearchResult();
-//		
-//		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS.getSearchResultDepthOrdered();
-//		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
-//		
-//		ArrayList<Integer> iAlTmpGraphItemId = new ArrayList<Integer>();
-//		ArrayList<Integer> iAlTmpGraphItemDepth = new ArrayList<Integer>();
-//		
-//		for(int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++)
-//		{
-//			lGraphItems = lDepthSearchResult.get(iDepthIndex);
-//						
-//			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
-//			{
-//				// Consider only vertices for now
-//				if (lGraphItems.get(iItemIndex).getClass().equals
-//						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
-//				{
-//					iAlTmpGraphItemId.add(lGraphItems.get(iItemIndex).getId());
-//					iAlTmpGraphItemDepth.add(iDepthIndex); // Convert node depth while ignoring edges
-//				}
-//			}
-//		}
-//	
-//		int[] iArTmpGraphItemId = new int[iAlTmpGraphItemId.size()+1];  
-//		int[] iArTmpGraphItemDepth = new int[iAlTmpGraphItemDepth.size()+1];
-//
-//		iArTmpGraphItemId[0] = selectedVertex.getId();
-//		iArTmpGraphItemDepth[0] = 0;
-//		
-//		for (int iItemIndex = 0; iItemIndex < iAlTmpGraphItemId.size(); iItemIndex++) 
-//		{
-//			iArTmpGraphItemId[iItemIndex+1] = iAlTmpGraphItemId.get(iItemIndex);
-//			iArTmpGraphItemDepth[iItemIndex+1] = (iAlTmpGraphItemDepth.get(iItemIndex) + 1) / 2; // +1/2 because of selected element itself
-//		}
-//		
-//		alSetSelection.get(0).getWriteToken();
-//		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
-//		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
-//		alSetSelection.get(0).returnWriteToken();
-//		
-//		//refGLPathwayManager.updateSelectionSet(alSetSelection.get(0));
-//		
-////		System.out.println("Root vertex of neighborhood algorithm is: " +selectedVertex.getId());
-////		System.out.println("Resulting neighboring items: " +iArTmpGraphItemDepth.length);
-//	}
 
 	private void playPathwayPoolTickSound() {
 
@@ -1389,7 +1331,7 @@ implements IMediatorReceiver, IMediatorSender {
 		matSrc.makeIdent();
 		matDest.makeIdent();
 		
-		gl.glLineWidth(3);
+		gl.glLineWidth(4);
 		gl.glColor3f(1, 0, 0);
 		
 		for (int iLayerIndex = 0; iLayerIndex < 

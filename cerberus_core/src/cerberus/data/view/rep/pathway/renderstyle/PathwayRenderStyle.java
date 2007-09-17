@@ -116,8 +116,8 @@ extends ARenderStyle {
 		reactionEdgeArrowHeadStyle 	= EdgeArrowHeadStyle.FILLED;
 		mapEdgeArrowHeadStyle 		= EdgeArrowHeadStyle.EMPTY;
 		
-		relationEdgeColor 	= Color.GREEN;
-		reactionEdgeColor 	= Color.BLUE;
+		relationEdgeColor 	= Color.BLUE;//.GREEN;
+		reactionEdgeColor 	= Color.BLUE;//.BLUE;
 		maplinkEdgeColor 	= Color.MAGENTA;
 		
 		fEnzymeNodeWidth 	= 45;
