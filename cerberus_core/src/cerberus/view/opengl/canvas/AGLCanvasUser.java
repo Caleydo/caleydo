@@ -351,8 +351,23 @@ implements IGLCanvasUser {
 	public final void setOriginRotation( final Vec3f origin,	
 			final Rotf rotation ) {
 			
-		refViewCamera.setCameraPosition(origin);
-		refViewCamera.setCameraRotation(rotation);			
+		if ( origin == null ) 
+		{
+			refViewCamera.setCameraPosition(new Vec3f() );
+		}
+		else
+		{
+			refViewCamera.setCameraPosition(origin);
+		}
+		
+		if ( rotation == null ) 
+		{
+			refViewCamera.setCameraRotation( new Rotf() );
+		}
+		else
+		{
+			refViewCamera.setCameraRotation(rotation);
+		}
 	}
 		
 	/**

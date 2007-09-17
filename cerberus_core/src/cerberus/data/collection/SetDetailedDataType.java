@@ -8,6 +8,8 @@
  */
 package cerberus.data.collection;
 
+import cerberus.util.IGeneViewDefaultType;
+
 /**
  * Defines different types of sets containing data.
  * 
@@ -17,7 +19,8 @@ package cerberus.data.collection;
  * @see cerberus.data.collection.SetType;
  *
  */
-public enum SetDetailedDataType {
+public enum SetDetailedDataType 
+implements IGeneViewDefaultType <SetDetailedDataType> {
 	
 	/** raw data without any tag */
 	RAW_DATA(),
@@ -40,6 +43,21 @@ public enum SetDetailedDataType {
 	 * Default Constructor
 	 */
 	private SetDetailedDataType() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public SetDetailedDataType getTypeDefault() {
+
+		return SetDetailedDataType.RAW_DATA;
+	}
+	
+
+	public static SetDetailedDataType getDefault() {
+
+		return SetDetailedDataType.RAW_DATA;
 	}
 	
 //	/**

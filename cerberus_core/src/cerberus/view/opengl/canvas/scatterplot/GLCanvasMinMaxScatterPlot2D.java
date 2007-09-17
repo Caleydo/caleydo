@@ -192,12 +192,14 @@ extends AGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.FULL );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.FULL );
 		
 		updateMinMax();
 	}
@@ -443,7 +445,9 @@ extends AGLCanvasUser
 
 	public void destroyGLCanvas()
 	{
-		refGeneralManager.getSingelton().logMsg( "GLCanvasMinMaxScatterPlot2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId );
+		refGeneralManager.getSingelton().logMsg( 
+				"GLCanvasMinMaxScatterPlot2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
+				LoggerType.FULL );
 	}
 	
 	protected void updateMinMax() {

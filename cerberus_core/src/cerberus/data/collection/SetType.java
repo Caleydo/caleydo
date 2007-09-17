@@ -18,7 +18,7 @@ import cerberus.data.collection.SetDataType;
  *
  */
 public enum SetType 
-implements ICollectionType {
+implements ICollectionType <SetType> {
 	
 	/** variable n-dimensional set, were n may change. */
 	SET_RAW_DATA(SetDataType.SET_LINEAR),
@@ -67,5 +67,14 @@ implements ICollectionType {
 	
 	public final SetDataType getDataType() {
 		return setDataType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public SetType getTypeDefault() {
+
+		return SetType.SET_RAW_DATA;
 	}
 }

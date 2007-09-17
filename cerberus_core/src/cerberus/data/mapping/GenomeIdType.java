@@ -5,6 +5,7 @@ package cerberus.data.mapping;
 
 import cerberus.data.collection.StorageType;
 import cerberus.data.mapping.GenomeMappingType;
+import cerberus.util.IGeneViewDefaultType;
 
 /**
  * Note: *_CODE indicates, that is it a String that is mapped to an integer internally.
@@ -13,7 +14,7 @@ import cerberus.data.mapping.GenomeMappingType;
  *
  */
 public enum GenomeIdType
-{
+implements IGeneViewDefaultType <GenomeIdType> {
 
 	ACCESSION    (StorageType.INT, 
 			GenomeMappingType.ACCESSION_CODE_2_ACCESSION,
@@ -146,6 +147,15 @@ public enum GenomeIdType
 	public String getName() {
 	
 		return sName;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public GenomeIdType getTypeDefault() {
+
+		return GenomeIdType.NONE;
 	}
 
 	

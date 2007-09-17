@@ -14,6 +14,7 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.set.SetMultiDim;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.math.statistics.minmax.MinMaxDataInteger;
 
@@ -118,12 +119,14 @@ extends AGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.FULL );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.FULL );
 	}
 	
 	 public void setSet(SetMultiDim setRefSet) {

@@ -3,13 +3,16 @@
  */
 package cerberus.math.statistics.histogram;
 
+import cerberus.util.IGeneViewDefaultType;
+
 /**
  * Define type of statistic histogram.
  * 
  * @author Michael Kalkusch
  *
  */
-public enum StatisticHistogramType {
+public enum StatisticHistogramType
+implements IGeneViewDefaultType <StatisticHistogramType> {
 
 	REGULAR_LINEAR("Regular spacing, linear distribution"),
 	
@@ -91,5 +94,14 @@ public enum StatisticHistogramType {
 		}
 		
 		return getTypeByIndex( iOrdinal + 1 );
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public StatisticHistogramType getTypeDefault() {
+
+		return StatisticHistogramType.REGULAR_LINEAR;
 	}
 }

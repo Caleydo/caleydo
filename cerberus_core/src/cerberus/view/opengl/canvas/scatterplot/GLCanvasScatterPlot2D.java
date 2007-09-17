@@ -61,14 +61,6 @@ extends AGLCanvasUser
 		fAspectRatio[Y][MIN] = 0.0f; 
 		fAspectRatio[Y][MAX] = 20.0f; 
 	}
-
-	public void setResolution( int[] iResolution ) {
-		this.iResolution = iResolution;
-		
-		if ( iResolution.length < 3 ) {
-			throw new RuntimeException("GLCanvasScatterPlot2D.setResolution() array must contain 3 items.");
-		}
-	}
 	
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
@@ -79,12 +71,14 @@ extends AGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.FULL );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.FULL );
 	}
 	
 	

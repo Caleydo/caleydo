@@ -347,8 +347,4 @@ implements ISingelton {
 	public final void logMsg( final String info, final LoggerType logLevel) {
 		refLoggerManager.logMsg( info, logLevel );		
 	}
-
-	public final void logMsg(String info) {
-		refLoggerManager.logMsg( info, LoggerType.FULL );	
-	}
 }

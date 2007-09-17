@@ -8,6 +8,9 @@
  */
 package cerberus.data.collection.virtualarray.iterator;
 
+//import cerberus.command.CommandQueueSaxType;
+import cerberus.util.IGeneViewDefaultType;
+
 /**
  * Types of selections.
  * 
@@ -15,7 +18,8 @@ package cerberus.data.collection.virtualarray.iterator;
  *
  * @see prometheus.data.set.SelectionInterface
  */
-public enum MultiVirtualArrayIterationType {
+public enum MultiVirtualArrayIterationType 
+implements IGeneViewDefaultType <MultiVirtualArrayIterationType> {
 
 	FIRST_TO_LAST_SUCCESSIVE("Abstract IVirtualArray, that has not been instaniated"),
 	FIRST_COLUMN_EACH_ROW("Abstract Virtual Array, that has not been defined"),
@@ -38,5 +42,14 @@ public enum MultiVirtualArrayIterationType {
 	
 	public String getDescription() {
 		return sDescription;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public MultiVirtualArrayIterationType getTypeDefault() {
+
+		return MultiVirtualArrayIterationType.FIRST_COLUMN_EACH_ROW;
 	}
 }

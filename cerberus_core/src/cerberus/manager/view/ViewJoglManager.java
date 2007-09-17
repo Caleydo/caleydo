@@ -37,6 +37,7 @@ import cerberus.view.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
 import cerberus.view.opengl.canvas.pathway.GLCanvasPanelPathway3D;
 import cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
+//import cerberus.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
 import cerberus.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.view.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.opengl.canvas.widgets.GLCanvasWidget;
@@ -350,6 +351,10 @@ implements IViewGLCanvasManager {
 					iGlForwarderId, sLabel);
 
 		case CREATE_GL_MINMAX_SCATTERPLOT2D:
+			refSingelton.logMsg("CREATE_GL_MINMAX_SCATTERPLOT2D ==> create GLMinMaxScatterplot2Dinteractive instead",LoggerType.MINOR_ERROR_XML);
+			
+//			return new GLMinMaxScatterplot2Dinteractive(refGeneralManager, iUniqueId,
+//					iGlForwarderId, sLabel);
 			return new GLCanvasMinMaxScatterPlot2D(refGeneralManager, iUniqueId,
 					iGlForwarderId, sLabel);
 
@@ -428,14 +433,16 @@ implements IViewGLCanvasManager {
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLCanvas() id " + iCanvasId
-							+ " is already registered!");
+					+ " is already registered!",
+					LoggerType.FULL );
 			return false;
 		}
 		if (hashGLCanvas.containsValue(canvas))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLCanvas() canvas bound to id " + iCanvasId
-							+ " is already registered!");
+					+ " is already registered!",
+					LoggerType.FULL );
 			return false;
 		}
 
@@ -459,9 +466,9 @@ implements IViewGLCanvasManager {
 		}
 
 		refGeneralManager
-				.getSingelton()
-				.logMsg(
-						"unregisterGLCanvas() canvas object was not found inside ViewJogleManager!");
+				.getSingelton().logMsg(
+						"unregisterGLCanvas() canvas object was not found inside ViewJogleManager!",
+						LoggerType.FULL );
 
 		return false;
 	}
@@ -513,9 +520,9 @@ implements IViewGLCanvasManager {
 		}
 
 		refGeneralManager
-				.getSingelton()
-				.logMsg(
-						"unregisterGLCanvasUser() canvas object was not found inside ViewJogleManager!");
+				.getSingelton().logMsg(
+						"unregisterGLCanvasUser() canvas object was not found inside ViewJogleManager!",
+						LoggerType.FULL );
 
 		return false;
 	}
@@ -537,14 +544,16 @@ implements IViewGLCanvasManager {
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLEventListener() id " + iGLEventListenerId
-							+ " is already registered!");
+					+ " is already registered!",
+					LoggerType.FULL );
 			return false;
 		}
 		if (hashGLEventListener.containsValue(canvasListener))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLEventListener() canvas bound to id " + iGLEventListenerId
-							+ " is already registered!");
+					+ " is already registered!",
+					LoggerType.FULL );
 			return false;
 		}
 
@@ -563,9 +572,9 @@ implements IViewGLCanvasManager {
 		if (!hashGLEventListener_revert.containsKey(canvasListener))
 		{
 			refGeneralManager
-					.getSingelton()
-					.logMsg(
-							"unregisterGLEventListener() because GLEventListern is unkown!");
+					.getSingelton().logMsg(
+							"unregisterGLEventListener() because GLEventListern is unkown!",
+							LoggerType.FULL );
 			return false;
 		}
 
@@ -587,9 +596,9 @@ implements IViewGLCanvasManager {
 		if (listener == null)
 		{
 			refGeneralManager
-					.getSingelton()
-					.logMsg(
-							"addGLEventListener2GLCanvasById() because GLEventListern is not registered!");
+					.getSingelton().logMsg(
+							"addGLEventListener2GLCanvasById() because GLEventListern is not registered!",
+							LoggerType.FULL );
 			return false;
 		}
 
@@ -597,10 +606,9 @@ implements IViewGLCanvasManager {
 
 		if (canvas == null)
 		{
-			refGeneralManager
-					.getSingelton()
-					.logMsg(
-							"addGLEventListener2GLCanvasById() because GLCanvas is not registered!");
+			refGeneralManager.getSingelton().logMsg(
+					"addGLEventListener2GLCanvasById() because GLCanvas is not registered!",
+					LoggerType.FULL );
 			return false;
 		}
 
@@ -616,10 +624,9 @@ implements IViewGLCanvasManager {
 
 		if (listener == null)
 		{
-			refGeneralManager
-					.getSingelton()
-					.logMsg(
-							"removeGLEventListener2GLCanvasById() because GLEventListern is not registered!");
+			refGeneralManager.getSingelton().logMsg(
+					"removeGLEventListener2GLCanvasById() because GLEventListern is not registered!",
+					LoggerType.FULL );
 			return false;
 		}
 
@@ -627,10 +634,9 @@ implements IViewGLCanvasManager {
 
 		if (canvas == null)
 		{
-			refGeneralManager
-					.getSingelton()
-					.logMsg(
-							"removeGLEventListener2GLCanvasById() because GLCanvas is not registered!");
+			refGeneralManager.getSingelton().logMsg(
+					"removeGLEventListener2GLCanvasById() because GLCanvas is not registered!",
+					LoggerType.FULL );
 			return false;
 		}
 
@@ -651,14 +657,16 @@ implements IViewGLCanvasManager {
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLCanvasDirector() id " + iId
-							+ " is already registered!");
+					+ " is already registered!",
+					LoggerType.FULL );
 			return false;
 		}
 		if (hashGLCanvasDirector.containsValue(director))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"registerGLCanvasDirector() director bound to id " + iId
-							+ " is already registered!");
+					+ " is already registered!",
+					LoggerType.FULL );
 			return false;
 		}
 
@@ -673,10 +681,9 @@ implements IViewGLCanvasManager {
 
 		if (!hashGLCanvasDirector_revert.containsKey(director))
 		{
-			refGeneralManager
-					.getSingelton()
-					.logMsg(
-							"unregisterGLEventListener() because GLEventListern is unkown!");
+			refGeneralManager.getSingelton().logMsg(
+					"unregisterGLEventListener() because GLEventListern is unkown!",
+					LoggerType.FULL );
 			return false;
 		}
 
@@ -695,7 +702,8 @@ implements IViewGLCanvasManager {
 	public void destroyOnExit() {
 
 		refGeneralManager.getSingelton().logMsg(
-				"ViewJoglManager.destroyOnExit()");
+				"ViewJoglManager.destroyOnExit()",
+				LoggerType.FULL );
 
 		Enumeration<IGLCanvasDirector> enumDirector = this.hashGLCanvasDirector_revert
 				.keys();
@@ -723,7 +731,8 @@ implements IViewGLCanvasManager {
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
-				"ViewJoglManager.destroyOnExit()  ...[DONE]");
+				"ViewJoglManager.destroyOnExit()  ...[DONE]",
+				LoggerType.FULL );
 	}
 	
 	public void addViewRep(final IView refView) {

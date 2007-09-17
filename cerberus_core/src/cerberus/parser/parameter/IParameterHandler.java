@@ -7,9 +7,13 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
+import cerberus.math.statistics.histogram.StatisticHistogramType;
+import cerberus.util.IGeneViewDefaultType;
+
 public interface IParameterHandler {
 
-	public enum ParameterHandlerType {
+	public enum ParameterHandlerType 
+	implements IGeneViewDefaultType <ParameterHandlerType> {
 		
 		BOOL(),
 		INT(),
@@ -20,6 +24,12 @@ public interface IParameterHandler {
 		
 		private ParameterHandlerType() {
 			
+		}
+
+		@Override
+		public ParameterHandlerType getTypeDefault() {
+
+			return ParameterHandlerType.STRING;
 		}
 	}
 

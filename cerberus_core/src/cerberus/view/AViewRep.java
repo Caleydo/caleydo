@@ -60,8 +60,6 @@ implements IViewRep {
 	 */
 	protected int iHeight;
 	
-	protected ViewEventStateType eventState;
-	
 	protected Composite refSWTContainer;
 
 	/**
@@ -85,8 +83,6 @@ implements IViewRep {
 		
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
-		
-		eventState = ViewEventStateType.NONE;
 		
 		this.viewType = viewType;
 		

@@ -17,6 +17,8 @@ import cerberus.data.collection.IStorage;
 import cerberus.data.collection.ISubSet;
 import cerberus.data.collection.IMetaDataHandler;
 import cerberus.data.collection.ICollection;
+import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.SetType;
 import cerberus.data.collection.thread.ICollectionThreadObject;
 import cerberus.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 //import cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
@@ -214,6 +216,8 @@ public interface ISet
 
 
 	public SetType getSetType();
+	
+	public SetDataType getSetDataType();
 	
 	public SetDetailedDataType getRawDataSetType();
 	

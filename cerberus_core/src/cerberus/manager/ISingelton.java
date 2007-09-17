@@ -96,14 +96,4 @@ public interface ISingelton {
 	 */
 	public abstract void logMsg( final String info, final LoggerType logLevel );
 	
-	/**
-	 * Note: each message will be sent with LoggerType.FULL
-	 * 
-	 * @see cerberus.manager.ILoggerManager#logMsg( String )
-	 * 
-	 * @param info log message
-	 */
-	public abstract void logMsg( final String info );
-	
-	
 }

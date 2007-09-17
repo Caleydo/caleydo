@@ -1,11 +1,14 @@
 package cerberus.data.mapping;
 
+import cerberus.util.IGeneViewDefaultType;
+
 /**
  * @author Michael Kalkusch
  *
  */
 public enum GenomeMappingDataType
-{
+implements IGeneViewDefaultType <GenomeMappingDataType> {
+
 	INT2INT ( false, false ),
 	INT2STRING ( false, false ),
 	STRING2INT ( false, false ),
@@ -59,5 +62,14 @@ public enum GenomeMappingDataType
 	 */
 	public boolean isLookupTable() {
 		return bIsLokupTable;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public GenomeMappingDataType getTypeDefault() {
+
+		return GenomeMappingDataType.NONE;
 	}
 }

@@ -17,8 +17,8 @@ import cerberus.data.collection.ICollectionType;
  *
  * @see prometheus.data.set.SelectionInterface
  */
-public enum VirtualArrayType 
-implements ICollectionType {
+public enum VirtualArrayType
+implements ICollectionType <VirtualArrayType> {
 
 	VIRTUAL_ARRAY_ABSTRACT(false,
 			"Abstract IVirtualArray, that has not been instaniated"),
@@ -102,5 +102,14 @@ implements ICollectionType {
 			return VIRTUAL_ARRAY_RANDOM_BLOCK;
 		
 		return VIRTUAL_ARRAY_ABSTRACT;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public VirtualArrayType getTypeDefault() {
+
+		return VirtualArrayType.VIRTUAL_ARRAY_SINGLE_BLOCK;
 	}
 }

@@ -5,6 +5,7 @@ package cerberus.data.mapping;
 
 import cerberus.data.mapping.GenomeMappingDataType;
 import cerberus.data.mapping.GenomeIdType;
+import cerberus.util.IGeneViewDefaultType;
 
 /**
  * @author Michael Kalkusch
@@ -12,7 +13,8 @@ import cerberus.data.mapping.GenomeIdType;
  *
  */
 public enum GenomeMappingType
-{
+implements IGeneViewDefaultType <GenomeMappingType> {
+	
 	/* --- Accession Id --- */
 	ACCESSION_CODE_2_ACCESSION (
 			GenomeIdType.ACCESSION_CODE,
@@ -249,5 +251,14 @@ public enum GenomeMappingType
 	public GenomeIdType getTypeTarget() {
 		
 		return targetType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public GenomeMappingType getTypeDefault() {
+		
+		return GenomeMappingType.NON_MAPPING;
 	}
 }

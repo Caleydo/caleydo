@@ -4,6 +4,7 @@
 package cerberus.command;
 
 import cerberus.manager.type.ManagerType;
+import cerberus.util.IGeneViewDefaultType;
 
 /**
  * Type of Command Queue "tag's" and "key's"
@@ -20,7 +21,8 @@ import cerberus.manager.type.ManagerType;
  *
  */
 public enum CommandQueueSaxType
-{
+implements IGeneViewDefaultType <CommandQueueSaxType> {
+
 	/*
 	 * -------  COMMAND  --------
 	 */ 
@@ -371,6 +373,15 @@ public enum CommandQueueSaxType
 	public String getInfoText() {
 		
 		return this.sInfoText;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public CommandQueueSaxType getTypeDefault() {
+
+		return CommandQueueSaxType.NO_OPERATION;
 	}
 	
 }

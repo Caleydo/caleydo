@@ -10,6 +10,7 @@ import javax.media.opengl.GL;
 
 import cerberus.data.collection.ISet;
 import cerberus.manager.IGeneralManager;
+import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.view.opengl.canvas.AGLCanvasUser;
 
 /**
@@ -57,7 +58,8 @@ extends AGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasObjectHeatmap.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.FULL );
 		}
 	}
 	

@@ -212,7 +212,7 @@ implements ISet {
 	 * @see cerberus.data.collection.ISet#getDimensions()
 	 */
 	public int getDimensions() {
-		return this.vecSelectionDim.size();
+		return this.vecStorageDim.size();
 	}
 
 //	/* (non-Javadoc)
@@ -543,6 +543,7 @@ implements ISet {
 		
 		assert setVecStorage != null: "setStorageVectorByDim() with null-pointer";
 		
+		//TODO: make a deep copy of the Vector setVecStorage
 		this.vecStorageDim.setElementAt( setVecStorage, iAtDimension );
 
 		return true;
@@ -552,6 +553,8 @@ implements ISet {
 		
 		assert setVecSelection != null: "setStorageVectorByDim() with null-pointer";
 		
+		//TODO: deep copy Vector setVecSelection!
+	
 		this.vecSelectionDim.setElementAt( setVecSelection, iAtDimension );
 
 		return true;

@@ -6,6 +6,7 @@ import cerberus.manager.event.mediator.IMediator;
 import cerberus.manager.event.mediator.IMediatorReceiver;
 import cerberus.manager.event.mediator.IMediatorSender;
 import cerberus.manager.event.mediator.MediatorUpdateType;
+import cerberus.util.IGeneViewDefaultType;
 
 /**
  * Handle events using Publish subsrib design pattern.
@@ -17,13 +18,23 @@ import cerberus.manager.event.mediator.MediatorUpdateType;
 public interface IEventPublisher 
 extends IGeneralManager, IMediatorReceiver {
 
-	public enum MediatorType {
+	public enum MediatorType 
+	implements IGeneViewDefaultType <MediatorType> {
 		DATA_MEDIATOR,
 		SELECTION_MEDIATOR,
 		VIEW_MEDIATOR; //for future usage
 		
 		private MediatorType() {
 			
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+		 */
+		public MediatorType getTypeDefault() {
+
+			return MediatorType.DATA_MEDIATOR;
 		}
 	}
 	

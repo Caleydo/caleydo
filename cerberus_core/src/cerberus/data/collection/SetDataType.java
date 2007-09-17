@@ -1,10 +1,19 @@
 package cerberus.data.collection;
 
 import cerberus.command.CommandQueueSaxType;
+import cerberus.util.IGeneViewDefaultType;
 
-
+/**
+ * Specify one type of ISet.
+ * 
+ * @see cerberus.data.collection.ISet#getSetType()
+ * @see cerberus.data.collection.ISet#getSetDataType()
+ * 
+ * @author Michael Kalkusch
+ *
+ */
 public enum SetDataType
-{
+implements IGeneViewDefaultType <SetDataType> {
 
 	/** 1-dimensional set */
 	SET_LINEAR,
@@ -63,5 +72,21 @@ public enum SetDataType
 			assert false : "unsupported type " + type.name();
 			return null;
 		}
+	}
+	
+
+	/**
+	 * Get the default type of SetDataType.
+	 * 
+	 * @return SetDataType.SET_LINEAR
+	 * 
+	 * @see cerberus.util.IGeneViewDefaultType#getDefault()
+	 */
+	public final SetDataType getTypeDefault() {
+		return SetDataType.SET_LINEAR;
+	}
+	
+	public static final SetDataType getDefault() {
+		return SetDataType.SET_LINEAR;
 	}
 }

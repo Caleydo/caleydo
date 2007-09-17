@@ -8,13 +8,16 @@
  */
 package cerberus.util.exception;
 
+import cerberus.util.IGeneViewDefaultType;
+
 /**
  * Enumeration of Exceptions.
  * 
  * @author Michael Kalkusch
  *
  */
-public enum GeneViewRuntimeExceptionType {
+public enum GeneViewRuntimeExceptionType 
+implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
 	
 	ANY_ERROR("cerberus-error"),
 	COMMAND("Command"),
@@ -36,6 +39,15 @@ public enum GeneViewRuntimeExceptionType {
 	
 	public String getExceptionDetail() {
 		return sExceptionDetail;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public GeneViewRuntimeExceptionType getTypeDefault() {
+
+		return GeneViewRuntimeExceptionType.ANY_ERROR;
 	}
 	
 

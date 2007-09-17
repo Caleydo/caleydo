@@ -3,7 +3,9 @@
  */
 package cerberus.manager;
 
+import cerberus.command.CommandQueueSaxType;
 import cerberus.manager.IGeneralManager;
+import cerberus.util.IGeneViewDefaultType;
 
 /**
  * @author Michael Kalkusch
@@ -12,7 +14,8 @@ import cerberus.manager.IGeneralManager;
 public interface ILoggerManager 
 extends IGeneralManager 
 {
-	public static enum LoggerType {
+	public static enum LoggerType 
+	implements IGeneViewDefaultType <LoggerType> {
 		
 //		ERROR_ONLY	(  0, "  error: ", "show error only" ),
 //		STATUS		( 10, " status: ", "show errors and status messages" ),
@@ -72,6 +75,15 @@ extends IGeneralManager
 		
 		public String toString() {
 			return logMessage;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+		 */
+		public LoggerType getTypeDefault() {
+
+			return LoggerType.ERROR_ONLY;
 		}
 	}
 

@@ -17,7 +17,7 @@ import cerberus.data.collection.ICollectionType;
  *
  */
 public enum StorageType 
-implements ICollectionType {
+implements ICollectionType <StorageType> {
 
 	/*
 	 * Note: When adding a type also check all methods!
@@ -149,6 +149,15 @@ implements ICollectionType {
 		}
 		
 		return this.bIsValue;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 */
+	public StorageType getTypeDefault() {
+
+		return StorageType.NONE;
 	}
 	
 }

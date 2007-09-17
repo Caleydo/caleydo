@@ -100,7 +100,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		llRefStorage_nDim 	= new LinkedList< LinkedList<String> > ();
 		llRefVirtualArray_nDim 	= new LinkedList< LinkedList<String> > ();
 		
-		setDataType = SetDataType.SET_LINEAR;
+		setDataType = SetDataType.getDefault();
 	}
 	
 
@@ -270,6 +270,18 @@ extends ACmdCreate_IdTargetLabelAttr {
 						
 				} //while ( iter_ll_VirtualArray_1dim.hasNext() )
 				
+				/**
+				 * Empty Vector indicates miss configuration!
+				 */
+				if ( vecVirtualArray.isEmpty() )
+				{
+					refGeneralManager.getSingelton().logMsg( this.getClass().getSimpleName() + 
+							" parsing; VirtualArray[" + iIndexDimensionVirtualArray +
+							"] contains no data! This is most probably a miss configuration! uniqueId=[" +
+							newObject.getId() + "]", 
+							LoggerType.MINOR_ERROR_XML);
+				}
+				
 				newObject.setVirtualArrayByDim( vecVirtualArray,
 						iIndexDimensionVirtualArray );				
 				iIndexDimensionVirtualArray++;
@@ -288,6 +300,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				Vector <IStorage> vecStorage = 
 					new Vector <IStorage> (ll_Storage_1dim.size());
 				
+				int iIndexStorage = 0;
 				while ( iter_ll_Storage_1dim.hasNext() )
 				{
 					int iBufferdId = 
@@ -296,8 +309,22 @@ extends ACmdCreate_IdTargetLabelAttr {
 					vecStorage.addElement( 
 						refStorageManager.getItemStorage( iBufferdId ) );	
 						
+					//newObject.setStorageByDim(refStorageManager.getItemStorage( iBufferdId ), iIndexStorage);
+					
+					iIndexStorage++;
 				} //while ( iter_ll_Storage_1dim.hasNext() )
 				
+				/**
+				 * Empty Vector indicates miss configuration!
+				 */
+				if ( vecStorage.isEmpty() )
+				{
+					refGeneralManager.getSingelton().logMsg( this.getClass().getSimpleName() + 
+							" parsing; Storage[" + iIndexDimensionVirtualArray +
+							"] contains no data! This is most probably a miss configuration! uniqueId=[" +
+							newObject.getId() + "]", 
+							LoggerType.MINOR_ERROR_XML);
+				}
 				newObject.setStorageByDim( vecStorage,
 						iIndexDimensionStorage );				
 				iIndexDimensionStorage++;
@@ -397,6 +424,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 				newObject = (ISet) refSetManager.createSet(
 						setDataType);
 				
+				/* set id now to make debugging XML file easier in case of an XML miss configuration */
+				newObject.setId( iUniqueId );
 				assingLinearSet( newObject );
 				break;
 				
@@ -404,6 +433,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 				newObject = (ISet) refSetManager.createSet(
 						setDataType );
 				
+				/* set id now to make debugging XML file easier in case of an XML miss configuration */
+				newObject.setId( iUniqueId );
 				assingPlanarOrMultiDimensionalSet( newObject );
 				break;
 				
@@ -411,6 +442,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 				newObject = (ISet) refSetManager.createSet(
 						setDataType );
 				
+				/* set id now to make debugging XML file easier in case of an XML miss configuration */
+				newObject.setId( iUniqueId );
 				assingPlanarOrMultiDimensionalSet( newObject );
 				break;
 				
@@ -435,8 +468,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			assingPlanarOrMultiDimensionalSet( newObject );
 		} //if ( setDataType != null ) {..} else {..}
-		
-		newObject.setId( iUniqueId );
+				
 		newObject.setLabel( sLabel );
 		
 		
@@ -508,13 +540,20 @@ extends ACmdCreate_IdTargetLabelAttr {
 		 * Read TAG_ATTRIBUTE1 "attrib1" for storage!
 		 */
 		
-		/**
+		
 		String sDetail = 
 			refParameterHandler.getValueString( 
 					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 	
 		if ( sDetail.length() > 0 ) {
-			this.setDataType = CommandQueueSaxType.valueOf( sDetail );
+			try 
+			{
+				setDataType = SetDataType.valueOf( sDetail );
+			}
+			catch ( IllegalArgumentException iae )
+			{
+				setDataType = SetDataType.getDefault();
+			}
 		}
 		
 		/**
@@ -620,15 +659,6 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
 		
-		/**
-		 * read "detail" key ...
-		 */
-		String sDetailTag = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );		
-		if ( sDetailTag.length() > 0 ) 
-		{
-			setDataType = SetDataType.convert( CommandQueueSaxType.valueOf( sDetailTag ) );
-		}
 		
 		
 		if ( bErrorOnLoadingXMLData ) 
@@ -640,8 +670,6 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			wipeLinkedLists();
 			
-			assert false : "did not test assigning setDataType= null!";
-			setDataType = null;
 		}
 		
 		/**
@@ -656,7 +684,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		}
 		else
 		{
-			setDetailedDataType = SetDetailedDataType.NONE;
+			setDetailedDataType = SetDetailedDataType.getDefault();
 		}
 	}
 	
@@ -666,8 +694,16 @@ extends ACmdCreate_IdTargetLabelAttr {
 			SetDataType setType) {
 		
 		iUniqueId = iSetId;
-		setDataType = setType;
-				
+		
+		if ( setType== null )
+		{
+			setDataType = SetDataType.getDefault();
+		}
+		else 
+		{
+			setDataType = setType;
+		}
+		
 		/**
 		 * Wipe all lists
 		 */

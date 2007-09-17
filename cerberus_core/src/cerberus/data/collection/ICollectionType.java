@@ -8,13 +8,16 @@
  */
 package cerberus.data.collection;
 
+import cerberus.util.IGeneViewDefaultType;
+
 /**
  * Base calss for typse used to define collections.
  * 
  * @author Michael Kalkusch
  *
  */
-public interface ICollectionType {
+public interface ICollectionType <T> 
+extends IGeneViewDefaultType <T> {
 
 	/**
 	 * Tells if this type provides data.

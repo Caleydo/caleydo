@@ -176,12 +176,14 @@ extends AGLCanvasUser
 		if ( targetSet == null ) {
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasMinMaxScatterPlot3D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!");
+					iTargetCollectionSetId + ") failed, because Set is not registed!",
+					LoggerType.FULL );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(
 				"GLCanvasMinMaxScatterPlot3D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!");
+				iTargetCollectionSetId + ") done!",
+				LoggerType.FULL );
 		
 		updateMinMax();
 		

@@ -273,7 +273,9 @@ extends AGLCanvasUser
 	  HistogramData refResultBuffer = 
 		  histogramCreatorSet.getUpdatedHistogramData();
 	 
-	  this.refGeneralManager.getSingelton().logMsg( "HISTOGRAM:\n  " + refResultBuffer.toString() );
+	  refGeneralManager.getSingelton().logMsg( 
+			  "HISTOGRAM:\n  " + refResultBuffer.toString(),
+			  LoggerType.FULL );
 	  
 	  listHistogramData.clear();
 	  
