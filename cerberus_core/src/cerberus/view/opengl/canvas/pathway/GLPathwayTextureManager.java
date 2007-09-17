@@ -1,6 +1,8 @@
 package cerberus.view.opengl.canvas.pathway;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -54,7 +56,7 @@ public class GLPathwayTextureManager {
 		iPathwayTexturePickingId++;
 		
 		String sPathwayTexturePath = "";
-		Texture refPathwayTexture;
+		Texture refPathwayTexture = null;
 		
 		if (iPathwayId < 10)
 		{
@@ -78,8 +80,16 @@ public class GLPathwayTextureManager {
 		
 		try
 		{			
-			refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
-					new File(sPathwayTexturePath), false, "GIF"));
+			if (this.getClass().getClassLoader().getResource(sPathwayTexturePath) != null)
+			{
+				refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
+						this.getClass().getClassLoader().getResourceAsStream(sPathwayTexturePath), false, "GIF"));
+			}
+			else
+			{
+				refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
+						new File(sPathwayTexturePath), false, "GIF"));			
+			}
 		
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR); 
 //			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);

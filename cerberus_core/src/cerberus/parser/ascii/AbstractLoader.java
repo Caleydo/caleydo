@@ -12,6 +12,7 @@ package cerberus.parser.ascii;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import cerberus.data.xml.IMementoXML;
 import cerberus.manager.IGeneralManager;
@@ -274,9 +275,18 @@ implements IMementoXML, IParserObject {
 		int iNumberOfLinesInFile = -1;
 		
 		try {
-		    BufferedReader brFile = 
-			new BufferedReader( new FileReader( sFileName ) );
-		   
+		    BufferedReader brFile = null;
+		    
+		    if (this.getClass().getClassLoader().getResource(sFileName) != null)
+		    {
+		    	brFile = new BufferedReader(
+		    		new InputStreamReader(this.getClass().getClassLoader().
+		    				getResource(sFileName).openStream()));
+		    }
+		    else
+		    {
+		    	brFile = new BufferedReader(new FileReader(sFileName));
+		    }			   
 		    iNumberOfLinesInFile = 
 		    	loadData_TestLinesToBeRead( brFile );
 		    
@@ -365,9 +375,18 @@ implements IMementoXML, IParserObject {
 		}		
 		
 		try {
-		    BufferedReader brFile = 
-			new BufferedReader( new FileReader( this.sFileName ) );
-		   
+		    BufferedReader brFile = null;
+		    
+		    if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
+		    {
+		    	brFile = new BufferedReader(
+		    		new InputStreamReader(
+		    				this.getClass().getClassLoader().getResourceAsStream(sFileName)));
+		    }
+		    else
+		    {
+		    	brFile = new BufferedReader(new FileReader(sFileName));
+		    }		   
 		    		
 		    // sample line: 1110 Kybernetik
 		    refGeneralManager.getSingelton().logMsg(

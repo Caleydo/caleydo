@@ -78,14 +78,14 @@ public class ColorMapping extends AColorMappingInt {
 		
 		if (iLookupValue < iMid)
 		{
-			int iIndex = (int) ((float) (iLookupValue - iMin) * fMappingWidth_div_Mid);
+			int iIndex = (int) ((float) (iLookupValue - iMin) * fMappingWidth_div_Mid -1);
 			//int iIndexB = (iLookupValue - iMin) * MAPPING_WIDTH  / iMid;
 			return new Color(fArColorLookupTable_LEFT[iIndex][0],
 					fArColorLookupTable_LEFT[iIndex][1],
 					fArColorLookupTable_LEFT[iIndex][2]);
 		}
 	
-		int iIndex = (int) ((float) (iLookupValue - iMin - iMid) * fMappingWidth_div_Mid);		
+		int iIndex = (int) ((float) (iLookupValue - iMin - iMid) * fMappingWidth_div_Mid -1);		
 		return new Color(				
 					fArColorLookupTable_RIGHT[iIndex][0],
 					fArColorLookupTable_RIGHT[iIndex][1],

@@ -3,6 +3,7 @@
  */
 package cerberus.manager.parser;
 
+import java.net.URL;
 import java.util.Iterator;
 //import java.util.Collection;
 
@@ -327,9 +328,17 @@ implements IXmlParserManager {
 	public boolean parseXmlFileByName( final String filename ) {
 		
 		iCountOpenedFiles++;
-		InputSource inSource = 
-			CerberusInputStream.openInputStreamFromFile( filename,
-					refLoggerManager );
+		
+		URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
+		InputSource inSource = null;
+		
+		if (resourceUrl != null) {
+			inSource = CerberusInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+		}
+		else
+		{
+			inSource = CerberusInputStream.openInputStreamFromFile(filename, refLoggerManager);
+		}
 		
 		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
 				LoggerType.VERBOSE_EXTRA );
@@ -354,9 +363,17 @@ implements IXmlParserManager {
 		// this.swapXmlParserHandler( currentHandler, openFileHandler );
 		
 		iCountOpenedFiles++;
-		InputSource inSource = 
-			CerberusInputStream.openInputStreamFromFile( filename,
-					refLoggerManager );
+		
+		URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
+		InputSource inSource = null;
+		
+		if (resourceUrl != null) {
+			inSource = CerberusInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+		}
+		else
+		{
+			inSource = CerberusInputStream.openInputStreamFromFile(filename, refLoggerManager);
+		}
 		
 		return CerberusInputStream.parseOnce( inSource , 
 				filename,

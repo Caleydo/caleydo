@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -36,7 +37,7 @@ public class CerberusInputStream
 	/**
 	 * Opens a file and returns an input stream to that file.
 	 * 
-	 * @param sXMLFileName name abd path of the file
+	 * @param sXMLFileName name and path of the file
 	 * @return input stream of the file, or null
 	 */
 	public static InputSource openInputStreamFromFile( final String sXMLFileName,
@@ -56,6 +57,33 @@ public class CerberusInputStream
 		catch ( FileNotFoundException fnfe) {
 			refLoggerManager.logMsg("CerberusInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
 					LoggerType.ERROR_ONLY );
+		}
+		return null;
+	}
+	
+	/**
+	 * Opens a resource and returns an input stream to that resource.
+	 * 
+	 * @param resourceUrl
+	 * @param refLoggerManager
+	 * @return
+	 */
+	public static InputSource openInputStreamFromUrl( final URL resourceUrl,
+			final ILoggerManager refLoggerManager ) {
+		
+		try {	
+			InputSource inStream = new InputSource(resourceUrl.openStream());
+			
+			refLoggerManager.logMsg("open input stream  [" + resourceUrl.toString() + "]",
+					LoggerType.VERBOSE_EXTRA );
+			
+			return inStream;
+		} catch (IOException e)
+		{
+			refLoggerManager.logMsg("CerberusInputStream.openInputStreamFromUrl(): Error loading resource.",
+					LoggerType.ERROR_ONLY );
+			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -145,7 +173,14 @@ public class CerberusInputStream
 			 * close file...
 			 */
 		
-			inStream.getCharacterStream().close();
+			if (inStream.getByteStream() != null)
+			{
+				inStream.getByteStream().close();
+			}
+			else if(inStream.getCharacterStream() != null)
+			{
+				inStream.getCharacterStream().close();
+			}
 			
 			refLoggerManager.logMsg("close input stream [" + 
 					sInputStreamLabel + 
@@ -176,6 +211,8 @@ public class CerberusInputStream
 					") general error while parsing: " +
 					e.toString(),
 					LoggerType.ERROR_ONLY );
+			
+			e.printStackTrace();
 		} // end try-catch SAXException, IOException
 		
 		
