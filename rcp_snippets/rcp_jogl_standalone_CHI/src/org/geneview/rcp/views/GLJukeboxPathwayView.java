@@ -211,8 +211,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		};
 		actToggleAnimatorRunningState.setText("Turn off/on animator");
 		actToggleAnimatorRunningState.setToolTipText("Turn off/on animator");
-		actToggleAnimatorRunningState.setImageDescriptor(ImageDescriptor.createFromFile(
-				null, ACTION_ENABLE_ANIMATOR_ICON));
+		actToggleAnimatorRunningState.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_ENABLE_ANIMATOR_ICON)));
 		
 //		showMessage("Action 1","executed toggle JOGL frame");
 	}
@@ -230,8 +230,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnableGeneMapping.setText(ACTION_ENABLE_GENE_MAPPING_TEXT);
 		actEnableGeneMapping.setToolTipText(ACTION_ENABLE_GENE_MAPPING_TEXT);
-		actEnableGeneMapping.setImageDescriptor(ImageDescriptor.createFromFile(
-				null, ACTION_ENABLE_GENE_MAPPING_ICON));
+		actEnableGeneMapping.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_ENABLE_GENE_MAPPING_ICON)));
 	}
 	
 	private void createPathwayTexturesToggleAction() {
@@ -247,8 +247,9 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnablePathwayTextures.setText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
 		actEnablePathwayTextures.setToolTipText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
-		actEnablePathwayTextures.setImageDescriptor(ImageDescriptor.createFromFile(
-				null, ACTION_ENABLE_PATHWAY_TEXTURES_ICON));	}
+		actEnablePathwayTextures.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_ENABLE_PATHWAY_TEXTURES_ICON)));
+	}
 
 	private void createNeighborhoodToggleAction() {
 		
@@ -263,8 +264,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnableNeighborhood.setText(ACTION_ENABLE_NEIGHBORHOOD_TEXT);
 		actEnableNeighborhood.setToolTipText(ACTION_ENABLE_NEIGHBORHOOD_TEXT);
-		actEnableNeighborhood.setImageDescriptor(ImageDescriptor.createFromFile(
-				null, ACTION_ENABLE_NEIGHBORHOOD_ICON));
+		actEnableNeighborhood.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_ENABLE_NEIGHBORHOOD_ICON)));
 	}
 	
 	private void createIdenticalNodeHighlightingAction() {
@@ -280,8 +281,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnableIdenticalNodeHighlighting.setText(ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT);
 		actEnableIdenticalNodeHighlighting.setToolTipText(ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_TEXT);
-		actEnableIdenticalNodeHighlighting.setImageDescriptor(ImageDescriptor.createFromFile(
-				null, ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_ICON));
+		actEnableIdenticalNodeHighlighting.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_ICON)));
 	}
 	
 	private void createAnnotationToggleAction() {
@@ -297,8 +298,8 @@ public class GLJukeboxPathwayView extends ViewPart {
 		
 		actEnableAnnotation.setText(ACTION_ENABLE_ANNOTATION_TEXT);
 		actEnableAnnotation.setToolTipText(ACTION_ENABLE_ANNOTATION_TEXT);
-		actEnableAnnotation.setImageDescriptor(ImageDescriptor.createFromFile(
-				null, ACTION_ENABLE_ANNOTATION_ICON));
+		actEnableAnnotation.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_ENABLE_ANNOTATION_ICON)));
 	}
 	
 	/**

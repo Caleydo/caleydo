@@ -16,5 +16,7 @@ Bundle-ClassPath: lib/jogl/jogl.jar,
  lib/gleem/gleem_mod_class.jar,
  lib/data.jar,
  lib/swt/swt.jar,
+ lib/muddleware/muddleware.jar,
  lib/jface/,
- lib/axis/
+ lib/axis/,
+ resources/
