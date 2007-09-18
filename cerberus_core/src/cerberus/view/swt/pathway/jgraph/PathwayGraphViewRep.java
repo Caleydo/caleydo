@@ -23,6 +23,7 @@ import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.geneview.graph.EGraphItemHierarchy;
@@ -948,8 +949,16 @@ extends APathwayGraphViewRep {
 							+ sPathwayImageFilePath, LoggerType.VERBOSE);
 
 			// Set background image
-			refPathwayGraph.setBackgroundImage(new ImageIcon(
-					sPathwayImageFilePath));
+			if (this.getClass().getClassLoader().getResource(sPathwayImageFilePath) != null)
+			{
+				refPathwayGraph.setBackgroundImage(new ImageIcon(
+						this.getClass().getClassLoader().getResource(sPathwayImageFilePath)));
+			}
+			else
+			{
+				refPathwayGraph.setBackgroundImage(new ImageIcon(
+						sPathwayImageFilePath));
+			}
 
 			// Set scaling factor so that background image is a direct overlay
 			fScalingFactor = 1.0f;

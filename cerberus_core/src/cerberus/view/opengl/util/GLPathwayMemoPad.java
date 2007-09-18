@@ -1,6 +1,5 @@
 package cerberus.view.opengl.util;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.util.Iterator;
@@ -12,7 +11,6 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
 
-//import cerberus.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import cerberus.view.opengl.canvas.pathway.GLPathwayManager;
 import cerberus.view.opengl.canvas.pathway.GLPathwayTextureManager;
 import cerberus.view.opengl.canvas.pathway.JukeboxHierarchyLayer;
@@ -74,9 +72,18 @@ public class GLPathwayMemoPad {
 		}
 		
 		try {			
-			trashCanTexture = TextureIO.newTexture(TextureIO
-					.newTextureData(new File(TRASH_BIN_PATH), false, "PNG"));
 	
+			if (this.getClass().getClassLoader().getResource(TRASH_BIN_PATH) != null)
+			{
+				trashCanTexture = TextureIO.newTexture(TextureIO
+						.newTextureData(this.getClass().getClassLoader().getResourceAsStream(TRASH_BIN_PATH), false, "PNG"));
+			}
+			else
+			{
+				trashCanTexture = TextureIO.newTexture(TextureIO
+						.newTextureData(new File(TRASH_BIN_PATH), false, "PNG"));
+			}
+			
 		} catch (Exception e)
 		{
 			System.out.println("GLPathwayMemoPad.init() Error loading texture from " + TRASH_BIN_PATH);

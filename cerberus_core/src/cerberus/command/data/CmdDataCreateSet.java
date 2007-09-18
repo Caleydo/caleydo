@@ -704,6 +704,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 			setDataType = setType;
 		}
 		
+		setDetailedDataType = SetDetailedDataType.getDefault();
+		
 		/**
 		 * Wipe all lists
 		 */
