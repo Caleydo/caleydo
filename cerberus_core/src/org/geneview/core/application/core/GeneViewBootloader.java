@@ -135,7 +135,7 @@ public class GeneViewBootloader
 		/** 
 		 * Default file name
 		 */
-		setXmlFileName( "data/XML/bootstrap/cerberus_bootstrap_sample_demo.xml" );
+		setXmlFileName( "data/bootstrap/cerberus_bootstrap_sample_demo.xml" );
 
 	}
 
