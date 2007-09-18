@@ -9,7 +9,7 @@ import org.geneview.graph.EGraphItemProperty;
 
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.SetDetailedDataType;
+import cerberus.data.collection.SetType;
 import cerberus.data.graph.item.vertex.EPathwayVertexType;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItem;
 import cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep;
@@ -61,7 +61,7 @@ public class EnzymeToExpressionColorMapper {
 		{
 			ISet tmpSet = iterSetData.next();
 			
-			if (tmpSet.getRawDataSetType().equals(SetDetailedDataType.GENE_EXPRESSION_DATA))
+			if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
 			{
 				alMappingStorage.add(tmpSet.getStorageByDimAndIndex(0, 0));
 			}

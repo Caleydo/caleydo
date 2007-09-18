@@ -5,7 +5,7 @@ package cerberus.command.data;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.base.ACmdCreate_IdTargetParentGLObject;
-import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.viewdata.ISetViewData;
 import cerberus.data.view.camera.IViewCamera;
 import cerberus.manager.ICommandManager;
@@ -41,7 +41,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	public void doCommand() throws GeneViewRuntimeException {
 
 		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
-		ISetViewData refISetViewData = (ISetViewData) refISetManager.createSet(SetDataType.SET_VIEWCAMERA);
+		ISetViewData refISetViewData = (ISetViewData) refISetManager.createSet(SetType.SET_VIEW_DATA);
 		
 		IViewCamera refViewCamera = refISetViewData.getViewCamera();
 		

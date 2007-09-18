@@ -60,12 +60,13 @@ implements ISet {
 	 */
 	public SetFlatThreadSimple( int iSetCollectionId, 
 			final IGeneralManager setGeneralManager,
-			ICollectionLock setCollectionLock) {
+			ICollectionLock setCollectionLock,
+			final SetType setType) {
 
 		super( iSetCollectionId, 
 				setGeneralManager, 
 				setCollectionLock,
-				SetType.SET_RAW_DATA);
+				setType);
 		
 		refFlatSelection = new IVirtualArray[1];
 		

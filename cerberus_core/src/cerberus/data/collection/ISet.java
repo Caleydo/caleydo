@@ -219,10 +219,6 @@ public interface ISet
 	
 	public SetDataType getSetDataType();
 	
-	public SetDetailedDataType getRawDataSetType();
-	
-	public void setRawDataSetType(SetDetailedDataType set);
-	
 /////////////////////////////
 //	/**
 //	 * Adds a IVirtualArray to a specific dimension.

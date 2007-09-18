@@ -18,12 +18,10 @@ import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.SetDataType;
-import cerberus.data.collection.SetDetailedDataType;
 import cerberus.data.collection.SetType;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttr;
-//import cerberus.command.window.CmdWindowPopupInfo;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -46,9 +44,7 @@ import cerberus.parser.parameter.IParameterHandler;
 public class CmdDataCreateSet 
 extends ACmdCreate_IdTargetLabelAttr {
 	
-	private SetDataType setDataType;
-	
-	private SetDetailedDataType setDetailedDataType;
+	private SetType setType;
 
 	private ISet newObject = null;
 	
@@ -100,7 +96,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		llRefStorage_nDim 	= new LinkedList< LinkedList<String> > ();
 		llRefVirtualArray_nDim 	= new LinkedList< LinkedList<String> > ();
 		
-		setDataType = SetDataType.getDefault();
+		setType = SetType.SET_NONE;
 	}
 	
 
@@ -415,59 +411,35 @@ extends ACmdCreate_IdTargetLabelAttr {
 			refGeneralManager.getSingelton().getSetManager();
 		
 		newObject = null;
+
+		SetDataType setDataType = setType.getDataType();
 		
-		if ( setDataType != null ) {
+		switch ( setDataType ) 
+		{
+		case SET_LINEAR:
+		case SET_PLANAR:
+		case SET_MULTI_DIM:
+			newObject = (ISet) refSetManager.createSet(setType);
 			
-			switch ( setDataType ) 
-			{
-			case SET_LINEAR:
-				newObject = (ISet) refSetManager.createSet(
-						setDataType);
-				
-				/* set id now to make debugging XML file easier in case of an XML miss configuration */
-				newObject.setId( iUniqueId );
-				assingLinearSet( newObject );
-				break;
-				
-			case SET_PLANAR:
-				newObject = (ISet) refSetManager.createSet(
-						setDataType );
-				
-				/* set id now to make debugging XML file easier in case of an XML miss configuration */
-				newObject.setId( iUniqueId );
-				assingPlanarOrMultiDimensionalSet( newObject );
-				break;
-				
-			case SET_MULTI_DIM:
-				newObject = (ISet) refSetManager.createSet(
-						setDataType );
-				
-				/* set id now to make debugging XML file easier in case of an XML miss configuration */
-				newObject.setId( iUniqueId );
-				assingPlanarOrMultiDimensionalSet( newObject );
-				break;
-				
-			case SET_MULTI_DIM_VARIABLE:
-			case SET_CUBIC:
-				refGeneralManager.getSingelton().logMsg(
-						"CmdDataCreateSet.doCommand() known type=[" +
-						setDataType + "] but yet now usb-class exists",
-						LoggerType.VERBOSE );
-				
-			default:
-				refGeneralManager.getSingelton().logMsg(
-							"CmdDataCreateSet.doCommand() failed because type=[" +
-							setDataType + "] is not supported!",
-							LoggerType.ERROR_ONLY );
-				return;
-			}
-		}  //if ( setDataType != null ) {
-		else
-		{  //if ( setDataType != null ) {..} else
-			newObject = (ISet) refSetManager.createSet( SetType.SET_SELECTION, null);
-			
+			/* set id now to make debugging XML file easier in case of an XML miss configuration */
+			newObject.setId( iUniqueId );
 			assingPlanarOrMultiDimensionalSet( newObject );
-		} //if ( setDataType != null ) {..} else {..}
+			break;
+			
+		case SET_MULTI_DIM_VARIABLE:
+		case SET_CUBIC:
+			refGeneralManager.getSingelton().logMsg(
+					"CmdDataCreateSet.doCommand() known type=[" +
+					setDataType + "] but yet now usb-class exists",
+					LoggerType.VERBOSE );
+			
+		default:
+			refGeneralManager.getSingelton().logMsg(
+						"CmdDataCreateSet.doCommand() failed because type=[" +
+						setDataType + "] is not supported!",
+						LoggerType.ERROR_ONLY );
+			return;
+		}
 				
 		newObject.setLabel( sLabel );
 		
@@ -493,8 +465,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 				iUniqueId,
 				LoggerType.VERBOSE );
 		
-		// Set detailed set data type
-		newObject.setRawDataSetType(setDetailedDataType);
+//		// Set detailed set data type
+//		newObject.set(setDetailedDataType);
 		
 		refCommandManager.runDoCommand(this);
 	}
@@ -536,25 +508,23 @@ extends ACmdCreate_IdTargetLabelAttr {
 		 */
 		wipeLinkedLists();
 		
-		/**
-		 * Read TAG_ATTRIBUTE1 "attrib1" for storage!
-		 */
-		
-		
-		String sDetail = 
-			refParameterHandler.getValueString( 
-					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-	
-		if ( sDetail.length() > 0 ) {
-			try 
-			{
-				setDataType = SetDataType.valueOf( sDetail );
-			}
-			catch ( IllegalArgumentException iae )
-			{
-				setDataType = SetDataType.getDefault();
-			}
-		}
+//		/**
+//		 * Read TAG_ATTRIBUTE1 "attrib1" for storage!
+//		 */		
+//		String sDetail = 
+//			refParameterHandler.getValueString( 
+//					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
+//	
+//		if ( sDetail.length() > 0 ) {
+//			try 
+//			{
+//				setDataType = SetDataType.valueOf( sDetail );
+//			}
+//			catch ( IllegalArgumentException iae )
+//			{
+//				setDataType = SetDataType.getDefault();
+//			}
+//		}
 		
 		/**
 		 * Separate "text1@text2"
@@ -680,31 +650,21 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		if ( sAttrib3.length() > 0 ) 
 		{
-			setDetailedDataType = SetDetailedDataType.valueOf(sAttrib3);
+			setType = SetType.valueOf(sAttrib3);
 		}
 		else
 		{
-			setDetailedDataType = SetDetailedDataType.getDefault();
+			setType = SetType.SET_RAW_DATA;
 		}
 	}
 	
 	public void setAttributes(int iSetId, 
 			String sVirtualArrayIDs, 
 			String sStorageIDs,
-			SetDataType setType) {
+			SetType setType) {
 		
 		iUniqueId = iSetId;
-		
-		if ( setType== null )
-		{
-			setDataType = SetDataType.getDefault();
-		}
-		else 
-		{
-			setDataType = setType;
-		}
-		
-		setDetailedDataType = SetDetailedDataType.getDefault();
+		this.setType = setType;
 		
 		/**
 		 * Wipe all lists

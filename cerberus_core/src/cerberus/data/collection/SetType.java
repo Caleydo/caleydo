@@ -23,9 +23,15 @@ implements ICollectionType <SetType> {
 	/** variable n-dimensional set, were n may change. */
 	SET_RAW_DATA(SetDataType.SET_LINEAR),
 	
-	SET_SELECTION(SetDataType.SET_DATATYPE_NONE),
+	SET_SELECTION(SetDataType.SET_LINEAR),
 	
-	SET_VIEW_DATA(SetDataType.SET_DATATYPE_NONE),
+	SET_VIEW_DATA(SetDataType.SET_VIEWCAMERA),
+	
+	/** Pathway related data */
+	SET_PATHWAY_DATA(SetDataType.SET_LINEAR),
+	
+	/** gene expression data */
+	SET_GENE_EXPRESSION_DATA(SetDataType.SET_LINEAR),
 	
 	/** not specified  */
 	SET_NONE(SetDataType.SET_DATATYPE_NONE);

@@ -180,6 +180,8 @@ implements IGLCanvasUser {
 			if ( ! hasSetId_ByReference(refCurrentSet) )
 			{
 				switch (refCurrentSet.getSetType()) {
+				case SET_PATHWAY_DATA:
+				case SET_GENE_EXPRESSION_DATA:
 				case SET_RAW_DATA:
 					alSetData.add(refCurrentSet);
 					break;

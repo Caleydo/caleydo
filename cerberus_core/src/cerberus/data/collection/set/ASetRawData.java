@@ -6,7 +6,6 @@ package cerberus.data.collection.set;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.SetDataType;
 import cerberus.data.collection.SetType;
-import cerberus.data.collection.SetDetailedDataType;
 import cerberus.data.collection.thread.impl.ACollectionThreadItem;
 import cerberus.data.collection.thread.lock.ICollectionLock;
 import cerberus.manager.IGeneralManager;
@@ -21,8 +20,6 @@ extends ACollectionThreadItem
 implements ISet {
 
 	private final SetType setType;
-	
-	protected SetDetailedDataType setRawDataType;
 	
 	protected SetDataType setDataType;
 	
@@ -48,24 +45,6 @@ implements ISet {
 	 */
 	public final SetType getSetType() {
 		return setType;
-	}
-
-	/**
-	 * Get detailed type for raw data.
-	 *  
-	 * @see cerberus.data.collection.ISet#getRawDataSetType()
-	 */
-	public final SetDetailedDataType getRawDataSetType() {
-		return setRawDataType;
-	}
-	
-	/**
-	 * Set detailed type for raw data.
-	 *  
-	 * @see cerberus.data.collection.ISet#setRawDataSetType(cerberus.data.collection.SetDetailedDataType)
-	 */
-	public final void setRawDataSetType(SetDetailedDataType set) {
-		this.setRawDataType = set;
 	}
 	
 	public final SetDataType getSetDataType() {

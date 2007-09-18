@@ -10,7 +10,6 @@ package cerberus.manager.data.set;
 
 import java.util.Collection;
 import java.util.Hashtable;
-//import java.util.Iterator;
 
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
@@ -23,10 +22,7 @@ import cerberus.manager.type.ManagerType;
 //import cerberus.data.collection.IStorage;
 //import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.SetDataType;
 import cerberus.data.collection.SetType;
-//import cerberus.data.collection.StorageType;
-//import cerberus.data.collection.SetType;
 import cerberus.data.collection.set.SetFlatThreadSimple;
 import cerberus.data.collection.set.SetPlanarSimple;
 import cerberus.data.collection.set.SetMultiDim;
@@ -113,13 +109,22 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see cerberus.data.manager.SetManager#createSet()
 	 */
-	public ISet createSet( final SetDataType useStorageType ) {
+	public ISet createSet( final SetType setType ) {
 			
-		switch ( useStorageType ) {
+		// Check if requested set is a selection set
+		if (setType.equals(SetType.SET_SELECTION))
+		{
+			return new SetSelection(4, getGeneralManager());
+		}
+		else
+		{
+			switch ( setType.getDataType() ) 
+			{
 			case SET_LINEAR:
 				return new SetFlatThreadSimple(4, 
 						getGeneralManager(),
-						null);
+						null,
+						setType);
 				
 			case SET_PLANAR: 
 				return new SetPlanarSimple(4, getGeneralManager());
@@ -128,13 +133,14 @@ implements ISetManager {
 				return new SetMultiDim(4, 
 						getGeneralManager(),
 						null,
-						3 );
+						3,
+						setType);
 			
 			case SET_VIEWCAMERA:
 				return new SetViewData(4, 
 						getGeneralManager(),
-						SetType.SET_VIEW_DATA,
-						null);
+						null,
+						setType);
 				
 				/* Sets not implemented yet.. */
 			case SET_MULTI_DIM_VARIABLE:  
@@ -143,30 +149,9 @@ implements ISetManager {
 			
 			default:
 				throw new RuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
-						useStorageType.toString() + "]");
-		}
+						setType.toString() + "]");
 		
-		//return null;
-	}
-	
-	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#createSet()
-	 */
-	public ISet createSet( final SetType useSetType, final SetDataType useStorageType ) {
-			
-		switch ( useSetType ) {
-			case SET_RAW_DATA:
-				return createSet(useStorageType);
-				
-			case SET_SELECTION:				
-				return new SetSelection(4, getGeneralManager());
-				
-			case SET_VIEW_DATA:  //CREATE_SET_SELECTION:
-				return null;
-				
-			default:
-				throw new RuntimeException("SetManagerSimple.createSet() failed due to unhandled type [" +
-						useStorageType.toString() + "]");
+			}
 		}
 	}
 

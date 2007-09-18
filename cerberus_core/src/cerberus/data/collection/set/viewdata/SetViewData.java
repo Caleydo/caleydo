@@ -28,8 +28,8 @@ implements ISetViewData {
 	 */
 	public SetViewData(int iSetCollectionId,
 			IGeneralManager setGeneralManager,
-			SetType setType,
-			IViewCamera setViewCamera) {
+			IViewCamera setViewCamera,
+			SetType setType) {
 
 		super(iSetCollectionId, setGeneralManager, setType);	
 		

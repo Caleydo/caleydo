@@ -11,7 +11,6 @@ package cerberus.manager.data;
 import java.util.Collection;
 
 import cerberus.data.collection.ISet;
-import cerberus.data.collection.SetDataType;
 import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
 
@@ -28,9 +27,7 @@ public interface ISetManager
 extends IGeneralManager
 {
 	
-	public ISet createSet( final SetDataType useSetType );
-	
-	public ISet createSet( final SetType useSetType, final SetDataType useStorageType );
+	public ISet createSet( final SetType setType );
 	
 	public boolean deleteSet( ISet deleteSet );
 	

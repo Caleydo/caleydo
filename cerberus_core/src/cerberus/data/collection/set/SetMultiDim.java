@@ -66,12 +66,13 @@ implements ISet {
 	public SetMultiDim( int iSetCollectionId, 
 			final IGeneralManager setGeneralManager,
 			ICollectionLock setCollectionLock,
-			final int iSetDimension ) {
+			final int iSetDimension,
+			final SetType setType) {
 
 		super( iSetCollectionId, 
 				setGeneralManager, 
 				setCollectionLock,
-				SetType.SET_RAW_DATA );
+				setType);
 		
 		iSizeDimension = iSetDimension;
 		

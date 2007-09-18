@@ -30,9 +30,9 @@
 							
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="30991"	uniqueId="15101" label="my Set1" attrib1="15201	25201" attrib2="15301 15301" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="31991"	uniqueId="25101" label="target Set for file" attrib1="15201" attrib2="25301" />	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="32991"	uniqueId="35101" label="Set for expression mapping 1" attrib1="35201" attrib2="45301" attrib3="GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="32991"	uniqueId="36101" label="Set for expression mapping 2" attrib1="35201" attrib2="46301" attrib3="GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="32991"	uniqueId="37101" label="Set for expression mapping 3" attrib1="35201" attrib2="47301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="32991"	uniqueId="35101" label="Set for expression mapping 1" attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="32991"	uniqueId="36101" label="Set for expression mapping 2" attrib1="35201" attrib2="46301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="32991"	uniqueId="37101" label="Set for expression mapping 3" attrib1="35201" attrib2="47301" attrib3="SET_GENE_EXPRESSION_DATA" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="32991"	uniqueId="55101" label="target Set for file	new" attrib1="55201" attrib2="55301" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="34991"	uniqueId="45101" label="target Set for file	new" attrib1="15201@25201" attrib2="45301@45301"	detail="SET_DATA_PLANAR" />	
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"					cmdId="35991"	uniqueId="65101" label="target Set for file	new" attrib1="15201@25201" attrib2="55301@55301"	detail="SET_DATA_PLANAR" />

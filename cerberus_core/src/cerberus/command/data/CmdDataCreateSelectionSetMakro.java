@@ -2,6 +2,7 @@ package cerberus.command.data;
 
 import cerberus.command.CommandQueueSaxType;
 import cerberus.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import cerberus.data.collection.SetType;
 import cerberus.manager.ICommandManager;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.type.ManagerObjectType;
@@ -191,7 +192,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		createdCommand.setAttributes(iUniqueId, 
 				sVirtualArrayIDs, 
 				stBuffer.toString(),
-				null);  // use null because we what to create a SelectionSet! 
+				SetType.SET_SELECTION); 
 		
 		createdCommand.doCommand();
 	}

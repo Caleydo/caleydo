@@ -37,6 +37,7 @@ import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
 import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.ILoggerManager.LoggerType;
 import cerberus.manager.type.ManagerObjectType;
@@ -688,7 +689,8 @@ implements IView {
 		createdCommand.setAttributes(iNewSetId, 
 				sVirtualArrayIDs, 
 				sStorageIDs,
-				SetDataType.SET_PLANAR);
+				SetType.SET_RAW_DATA);
+
 		createdCommand.doCommand();
 		
 		return iNewSetId;

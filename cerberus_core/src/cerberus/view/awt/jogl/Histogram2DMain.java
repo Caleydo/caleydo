@@ -1,46 +1,31 @@
 package cerberus.view.awt.jogl;
 
+import java.awt.Dimension;
 import java.awt.Frame;
-//import java.awt.event.MouseListener;
-//import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-//import javax.media.opengl.*;
-//import com.sun.opengl.util.*;
-
 import java.util.Vector;
 
-import java.awt.Dimension;
-
 import javax.media.opengl.GL;
-import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLJPanel;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLJPanel;
 
-import com.sun.opengl.util.Animator;
-
-import cerberus.data.collection.IVirtualArray;
 import cerberus.data.collection.ISet;
 import cerberus.data.collection.IStorage;
-import cerberus.data.collection.SetDataType;
+import cerberus.data.collection.IVirtualArray;
+import cerberus.data.collection.SetType;
 import cerberus.manager.IGeneralManager;
 import cerberus.manager.singleton.OneForAllManager;
 import cerberus.manager.type.ManagerObjectType;
-//import cerberus.view.IView;
-//import cerberus.view.AViewManagedRep;
-//import cerberus.view.swt.base.ISwtJoglContainerViewRep;
+import cerberus.math.statistics.histogram.HistogramStatisticInteger;
+import cerberus.math.statistics.histogram.StatisticHistogramType;
 import cerberus.view.jogl.IJoglMouseListener;
 import cerberus.view.jogl.mouse.AViewCameraListenerObject;
 import cerberus.view.jogl.mouse.JoglMouseListener;
-//import cerberus.util.exception.GeneViewRuntimeException;
-//import cerberus.util.exception.CerberusExceptionType;
 
-//import cerberus.math.statistics.histogram.IHistogramStatistic;
-//import cerberus.math.statistics.histogram.HistogramData;
-import cerberus.math.statistics.histogram.HistogramStatisticInteger;
-import cerberus.math.statistics.histogram.StatisticHistogramType;
+import com.sun.opengl.util.Animator;
 
 /**
  * Gears.java <BR>
@@ -426,7 +411,7 @@ implements GLEventListener, IJoglMouseListener
 		
 		ISet createdSet = 
 			this.refGeneralManager.getSingelton().getSetManager().createSet( 
-					SetDataType.SET_LINEAR );
+					SetType.SET_RAW_DATA);
 		
 		createdSet.setVirtualArrayByDimAndIndex( createdSelection, 0 ,0 );
 		createdSet.setStorageByDimAndIndex( createdStorage, 0, 0 );
