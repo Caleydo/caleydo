@@ -1,6 +1,6 @@
 <cerberus version="0.1">
 
-  <workspace title="primary" server="localhsot">
+  <workspace title="primary" server="localhost">
   
     <Application remote="no" IP="127.0.0.1" port="4000" >
   

@@ -1,21 +1,17 @@
 <cerberus	version="0.1">
 
-	<workspace title="primary" server="localhsot">
-
-	<!-- External	loading	of XML files 
-		<read-xml-file target="data/XML/pathways/hsa/hsa00271.xml" />
-	-->
+	<workspace title="primary" server="localhost">
 	
 	<Application remote="no" IP="127.0.0.1"	port="4000"	>
 	
 		<CommandBuffer>
 	 
 	    <!-- file for GenomeId mapping 
-	    <read-xml-file target="data/XML/bootstrap/load_genome_id_mapping.xml" />
+	    <read-xml-file target="data/bootstrap/load_genome_id_mapping.xml" />
 	    -->
 	    
 			<!-- Creating	Data -->
-			<read-xml-file target="data/XML/bootstrap/load_set_storage_virtual-array_for_data-examiner-viewer.xml" />
+			<read-xml-file target="data/bootstrap/load_set_storage_virtual-array_for_data-examiner-viewer.xml" />
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	uniqueId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="Storage	file"	attrib1="STRING" attrib2="test data	from file" />
@@ -43,7 +39,7 @@
 			
 			
 			<!-- <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE" attrib3="start_at_line stop_at_line" > 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/slide30_100sets.gpr"	attrib1="SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />
 			-->
 		
 		
@@ -56,21 +52,21 @@
 		  
 		  <!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	
-			  detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
+			  detail="data/genome/microarray/gpr_format/slide30.gpr"	
 				attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;INT;ABORT" 
 				attrib2="35101" 
 				attrib3="32 -1" />
 			-->
 				
 		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	
-			  detail="data/GenomeData/MicroarrayData/gpr_format/test_dataset_001.gpr"	
+			  detail="data/genome/microarray/gpr_format/test_dataset_001.gpr"	
 				attrib1="SKIP;SKIP;INT;ABORT" 
 				attrib2="35101" 
 				attrib3="1 -1" />
 			
 			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	uniqueId="-1"	
-				detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
+				detail="data/genome/microarray/gpr_format/slide30.gpr"	
 				attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" 
 				attrib2="55101" attrib3="32 -1" />
 			
@@ -182,13 +178,6 @@
 	
 	
 	    <!--  DETAILED - HEATMAP  --> 
-	
-	    <!--
-	    <read-xml-file target="data/XML/bootstrap/left_01.xml" />
-	    
-	    
-	    <read-xml-file target="data/XML/bootstrap/right_01.xml" />
-	    -->
 	    
 	    <!--
 	      atrtrib3=". . . .   zmin zmax xmin xmax ymin ymax
@@ -367,7 +356,7 @@
 				gl_origin="-0.2 0.2 -0.5" gl_rotation="0	-1.5 -1.5	1.72"	detail="35101" attrib3="100	100	0"/>	
 		 -->
 		 
-		 <read-xml-file target="data/XML/bootstrap/mediator_heatmap_scatterplot.xml" />
+		 <read-xml-file target="data/bootstrap/mediator_heatmap_scatterplot.xml" />
 		 
 	 </CommandBuffer>
 		

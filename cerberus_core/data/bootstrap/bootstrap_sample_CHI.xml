@@ -1,19 +1,19 @@
 <cerberus version="0.1">
 
-  <workspace title="primary" server="localhsot">
+  <workspace title="primary" server="localhost">
   
     <Application remote="no" IP="127.0.0.1" port="4000" >
   
     <CommandBuffer>  			
 
         <!-- External loading of XML files -->
-            <read-xml-file target="data/GenomeData/pathway/imagemap/map01100.xml" />
+            <read-xml-file target="data/genome/pathway/imagemap/map01100.xml" />
 
 		<!-- Creating Data -->
-			<read-xml-file target="data/XML/bootstrap/load_set_storage_virtual-array_for_pathways_CHI.xml" />	   				
+			<read-xml-file target="data/bootstrap/load_set_storage_virtual-array_for_pathways_CHI.xml" />	   				
 
       	<!-- Creating GenomeId mapping -->
-		  	<read-xml-file target="data/XML/bootstrap/load_genome_id_mapping_HSA.xml" />	   				
+		  	<read-xml-file target="data/bootstrap/load_genome_id_mapping_HSA.xml" />	   				
 			
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="11331" label="Pathway 2D" attrib1="ROW HORIZONTAL" />   

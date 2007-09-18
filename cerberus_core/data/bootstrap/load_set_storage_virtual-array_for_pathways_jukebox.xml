@@ -5,9 +5,9 @@
 	<!-- Create Storage, Virtual Arrays and Set objects -->
 		<!-- Setting paths -->	
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Pathway Paths" 
-		attrib1="data/GenomeData/pathway/XML/hsa/" 
-		attrib2="data/GenomeData/pathway/images/hsa/" 
-		attrib3="data/GenomeData/pathway/imagemap/" /> 
+		attrib1="data/genome/pathway/xml/hsa/" 
+		attrib2="data/genome/pathway/images/hsa/" 
+		attrib3="data/genome/pathway/imagemap/" /> 
 	 
     <!-- Set for list of pathways -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="44301" label="Pathway list storage"		attrib1="STRING" attrib2="" />
@@ -35,13 +35,13 @@
 	<!-- 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_LIST_FILE"		cmdId="99010"	uniqueId="-1"	detail="data/"	attrib2="38101" attrib3="1 -1" />	
 	 -->
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/GenomeData/pathway/KEGG_pathway_ID_2_pathway_name.txt"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/pathway/KEGG_pathway_ID_2_pathway_name.txt"	
 			attrib1="INT;SKIP;ABORT" 								attrib2="44101" attrib3="0 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/slide30.gpr"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;INT;ABORT" attrib2="35101" attrib3="32 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/slide30.gpr"	
 			attrib1="SKIP;SKIP;SKIP;INT;ABORT" 						attrib2="36101"	attrib3="32 -1" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/GenomeData/MicroarrayData/gpr_format/slide30.gpr"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/slide30.gpr"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;INT;ABORT"			attrib2="37101" attrib3="32 -1" />								
 	
 
