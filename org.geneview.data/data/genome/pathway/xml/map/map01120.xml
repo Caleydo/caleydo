@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01120" org="map" number="01120"
+         title="Energy Metabolism"
+         image="http://www.genome.jp/kegg/pathway/map/map01120.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01120">
+    <entry id="1" name="path:map00193" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00193.html">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="168" y="396" width="57" height="44"/>
+    </entry>
+    <entry id="2" name="path:map00193" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00193.html">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="227" y="623" width="62" height="40"/>
+    </entry>
+    <entry id="3" name="path:map00195" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00195.html">
+        <graphics name="Photosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="115" y="333" width="165" height="165"/>
+    </entry>
+    <entry id="4" name="path:map00910" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00910.html">
+        <graphics name="Nitrogen metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="396" y="567" width="216" height="182"/>
+    </entry>
+    <entry id="5" name="path:map00920" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00920.html">
+        <graphics name="Sulfur metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="431" y="381" width="144" height="161"/>
+    </entry>
+    <entry id="6" name="path:map00680" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00680.html">
+        <graphics name="Methane metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="364" y="182" width="163" height="238"/>
+    </entry>
+    <entry id="7" name="path:map00190" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00190.html">
+        <graphics name="Oxidative phosphorylation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="146" y="547" width="221" height="194"/>
+    </entry>
+    <entry id="8" name="path:map00720" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00720.html">
+        <graphics name="Reductive carboxylate cycle (CO2 fixation)" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="270" y="410" width="139" height="209"/>
+    </entry>
+    <entry id="9" name="path:map00720" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00720.html">
+        <graphics name="Reductive carboxylate cycle (CO2 fixation)" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="239" y="286" width="76" height="39"/>
+    </entry>
+    <entry id="10" name="path:map00710" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00710.html">
+        <graphics name="Carbon fixation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="200" y="258" width="154" height="17"/>
+    </entry>
+    <entry id="11" name="path:map00710" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00710.html">
+        <graphics name="Carbon fixation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="175" y="158" width="204" height="184"/>
+    </entry>
+</pathway>

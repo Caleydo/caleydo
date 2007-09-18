@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01110" org="map" number="01110"
+         title="Carbohydrate Metabolism"
+         image="http://www.genome.jp/kegg/pathway/map/map01110.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01110">
+    <entry id="1" name="path:map00020" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00020.html">
+        <graphics name="Citrate cycle (TCA cycle)" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="167" y="331" width="194" height="663"/>
+    </entry>
+    <entry id="2" name="path:map00010" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00010.html">
+        <graphics name="Glycolysis / Gluconeogenesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="256" y="388" width="20" height="424"/>
+    </entry>
+    <entry id="3" name="path:map00010" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00010.html">
+        <graphics name="Glycolysis / Gluconeogenesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="221" y="428" width="109" height="30"/>
+    </entry>
+    <entry id="4" name="path:map00030" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00030.html">
+        <graphics name="Pentose phosphate pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="452" y="345" width="76" height="33"/>
+    </entry>
+    <entry id="5" name="path:map00030" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00030.html">
+        <graphics name="Pentose phosphate pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="342" y="315" width="146" height="93"/>
+    </entry>
+    <entry id="6" name="path:map00660" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00660.html">
+        <graphics name="C5-Branched dibasic acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="486" y="595" width="96" height="217"/>
+    </entry>
+    <entry id="7" name="path:map00640" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00640.html">
+        <graphics name="Propanoate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="400" y="627" width="71" height="228"/>
+    </entry>
+    <entry id="8" name="path:map00620" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00620.html">
+        <graphics name="Pyruvate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="296" y="522" width="146" height="171"/>
+    </entry>
+    <entry id="9" name="path:map00530" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00530.html">
+        <graphics name="Aminosugars metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="433" y="457" width="113" height="49"/>
+    </entry>
+    <entry id="10" name="path:map00530" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00530.html">
+        <graphics name="Aminosugars metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="384" y="399" width="212" height="69"/>
+    </entry>
+    <entry id="11" name="path:map00040" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00040.html">
+        <graphics name="Pentose and glucuronate interconversions" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="345" y="269" width="142" height="78"/>
+    </entry>
+    <entry id="12" name="path:map00040" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00040.html">
+        <graphics name="Pentose and glucuronate interconversions" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="439" y="245" width="174" height="123"/>
+    </entry>
+    <entry id="13" name="path:map00053" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00053.html">
+        <graphics name="Ascorbate and aldarate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="424" y="129" width="187" height="102"/>
+    </entry>
+    <entry id="14" name="path:map00052" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00052.html">
+        <graphics name="Galactose metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="197" y="199" width="120" height="128"/>
+    </entry>
+    <entry id="15" name="path:map00520" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00520.html">
+        <graphics name="Nucleotide sugars metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="249" y="161" width="159" height="133"/>
+    </entry>
+    <entry id="16" name="path:map00630" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00630.html">
+        <graphics name="Glyoxylate and dicarboxylate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="244" y="638" width="94" height="62"/>
+    </entry>
+    <entry id="17" name="path:map00630" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00630.html">
+        <graphics name="Glyoxylate and dicarboxylate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="121" y="673" width="154" height="133"/>
+    </entry>
+    <entry id="18" name="path:map00650" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00650.html">
+        <graphics name="Butanoate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="130" y="532" width="180" height="143"/>
+    </entry>
+    <entry id="19" name="path:map00031" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00031.html">
+        <graphics name="Inositol metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="97" y="438" width="130" height="39"/>
+    </entry>
+    <entry id="20" name="path:map00051" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00051.html">
+        <graphics name="Fructose and mannose metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="136" y="339" width="194" height="148"/>
+    </entry>
+    <entry id="21" name="path:map00500" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00500.html">
+        <graphics name="Starch and sucrose metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="81" y="169" width="106" height="183"/>
+    </entry>
+    <entry id="22" name="path:map00562" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00562.html">
+        <graphics name="Inositol phosphate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="268" y="82" width="126" height="20"/>
+    </entry>
+    <entry id="23" name="path:map00562" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00562.html">
+        <graphics name="Inositol phosphate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="355" y="53" width="300" height="39"/>
+    </entry>
+</pathway>

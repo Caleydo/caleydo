@@ -1,0 +1,1538 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01052" org="map" number="01052"
+         title="Type I polyketide structures"
+         image="http://www.genome.jp/kegg/pathway/map/map01052.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01052">
+    <entry id="1" name="" type="map"
+        link="http://www.genome.jp/kegg-bin/mark_pathway_www?@map07020/dr:D02490">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="232" y="1038" width="146" height="27"/>
+    </entry>
+    <entry id="2" name="" type="map"
+        link="http://www.genome.jp/kegg-bin/mark_pathway_www?@map07020/dr:D02186">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="542" y="679" width="146" height="27"/>
+    </entry>
+    <entry id="3" name="" type="map"
+        link="http://www.genome.jp/kegg-bin/mark_pathway_www?@map07020/dr:D00140">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="231" y="679" width="146" height="27"/>
+    </entry>
+    <entry id="4" name="cpd:C12151" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12151">
+        <graphics name="C12151" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="259" y="3090" width="66" height="12"/>
+    </entry>
+    <entry id="5" name="cpd:C12157" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12157">
+        <graphics name="C12157" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="615" y="2847" width="69" height="10"/>
+    </entry>
+    <entry id="6" name="cpd:C12148" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12148">
+        <graphics name="C12148" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="259" y="2847" width="76" height="11"/>
+    </entry>
+    <entry id="7" name="cpd:C11300" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C11300">
+        <graphics name="C11300" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="615" y="2618" width="61" height="10"/>
+    </entry>
+    <entry id="8" name="cpd:C12153" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12153">
+        <graphics name="C12153" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="259" y="2618" width="67" height="10"/>
+    </entry>
+    <entry id="9" name="cpd:C06690" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06690">
+        <graphics name="C06690" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="742" y="2324" width="124" height="12"/>
+    </entry>
+    <entry id="10" name="cpd:C08073" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C08073">
+        <graphics name="C08073" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="248" y="2324" width="51" height="12"/>
+    </entry>
+    <entry id="11" name="cpd:C12155" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12155">
+        <graphics name="C12155" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="740" y="2067" width="59" height="10"/>
+    </entry>
+    <entry id="12" name="cpd:C06573" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06573">
+        <graphics name="C06573" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="247" y="2067" width="81" height="10"/>
+    </entry>
+    <entry id="13" name="cpd:C12176" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12176">
+        <graphics name="C12176" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="543" y="1742" width="85" height="10"/>
+    </entry>
+    <entry id="14" name="cpd:C12045" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12045">
+        <graphics name="C12045" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="232" y="1741" width="81" height="12"/>
+    </entry>
+    <entry id="15" name="cpd:C01375" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01375">
+        <graphics name="C01375" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="839" y="1409" width="37" height="12"/>
+    </entry>
+    <entry id="16" name="cpd:C12102" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12102">
+        <graphics name="C12102" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="543" y="1409" width="36" height="12"/>
+    </entry>
+    <entry id="17" name="cpd:C07909" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C07909">
+        <graphics name="C07909" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="233" y="1410" width="62" height="10"/>
+    </entry>
+    <entry id="18" name="cpd:C11984" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C11984">
+        <graphics name="C11984" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="840" y="967" width="84" height="13"/>
+    </entry>
+    <entry id="19" name="cpd:C12152" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C12152">
+        <graphics name="C12152" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="543" y="967" width="63" height="10"/>
+    </entry>
+    <entry id="20" name="cpd:C01457" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01457">
+        <graphics name="C01457" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="232" y="968" width="37" height="10"/>
+    </entry>
+    <entry id="21" name="cpd:C11999" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C11999">
+        <graphics name="C11999" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="839" y="645" width="59" height="10"/>
+    </entry>
+    <entry id="22" name="cpd:C01946" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01946">
+        <graphics name="C01946" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="543" y="645" width="74" height="11"/>
+    </entry>
+    <entry id="23" name="cpd:C01912" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01912">
+        <graphics name="C01912" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="233" y="645" width="85" height="10"/>
+    </entry>
+    <entry id="24" name="cpd:C11996" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C11996">
+        <graphics name="C11996" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="232" y="326" width="63" height="10"/>
+    </entry>
+    <entry id="25" name="path:map01051" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map01051.html">
+        <graphics name="Biosynthesis of ansamycins" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="231" y="1781" width="157" height="27"/>
+    </entry>
+    <entry id="26" name="up:Q6MZ72" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6MZ72">
+        <graphics name="Q6MZ72" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="332" y="2990" width="46" height="17"/>
+    </entry>
+    <entry id="27" name="up:Q6MZA4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6MZA4">
+        <graphics name="Q6MZA4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="246" y="2897" width="46" height="17"/>
+    </entry>
+    <entry id="28" name="up:Q6MZA5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6MZA5">
+        <graphics name="Q6MZA5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="98" y="2990" width="46" height="17"/>
+    </entry>
+    <entry id="29" name="up:Q93TW6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93TW6">
+        <graphics name="Q93TW6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="755" y="2676" width="46" height="17"/>
+    </entry>
+    <entry id="30" name="up:Q93TW7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93TW7">
+        <graphics name="Q93TW7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="706" y="2690" width="46" height="17"/>
+    </entry>
+    <entry id="31" name="up:Q93TW8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93TW8">
+        <graphics name="Q93TW8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="681" y="2709" width="46" height="17"/>
+    </entry>
+    <entry id="32" name="up:Q93TW9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93TW9">
+        <graphics name="Q93TW9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="2736" width="46" height="17"/>
+    </entry>
+    <entry id="33" name="up:Q93TX0" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93TX0">
+        <graphics name="Q93TX0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="572" y="2695" width="46" height="17"/>
+    </entry>
+    <entry id="34" name="up:Q93TX1" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93TX1">
+        <graphics name="Q93TX1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="572" y="2676" width="46" height="17"/>
+    </entry>
+    <entry id="35" name="up:Q93TX2" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93TX2">
+        <graphics name="Q93TX2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="510" y="2676" width="46" height="17"/>
+    </entry>
+    <entry id="36" name="up:Q8RJY1" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJY1">
+        <graphics name="Q8RJY1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="289" y="2811" width="46" height="17"/>
+    </entry>
+    <entry id="37" name="up:Q8RJX6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJX6">
+        <graphics name="Q8RJX6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="342" y="2833" width="46" height="17"/>
+    </entry>
+    <entry id="38" name="up:Q8RJX8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJX8">
+        <graphics name="Q8RJX8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="386" y="2811" width="46" height="17"/>
+    </entry>
+    <entry id="39" name="up:Q8RJX9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJX9">
+        <graphics name="Q8RJX9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="386" y="2792" width="46" height="17"/>
+    </entry>
+    <entry id="40" name="up:Q8RJX7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJX7">
+        <graphics name="Q8RJX7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="414" y="2693" width="46" height="17"/>
+    </entry>
+    <entry id="41" name="up:Q8RJY0" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJY0">
+        <graphics name="Q8RJY0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="289" y="2687" width="46" height="17"/>
+    </entry>
+    <entry id="42" name="up:Q8RJY2" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJY2">
+        <graphics name="Q8RJY2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="250" y="2668" width="46" height="17"/>
+    </entry>
+    <entry id="43" name="up:Q8RJY3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJY3">
+        <graphics name="Q8RJY3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="214" y="2687" width="46" height="17"/>
+    </entry>
+    <entry id="44" name="up:Q8RJY4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJY4">
+        <graphics name="Q8RJY4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="181" y="2668" width="46" height="17"/>
+    </entry>
+    <entry id="45" name="up:Q8RJY5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJY5">
+        <graphics name="Q8RJY5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="148" y="2687" width="46" height="17"/>
+    </entry>
+    <entry id="46" name="up:Q8RJY6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8RJY6">
+        <graphics name="Q8RJY6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="101" y="2717" width="46" height="17"/>
+    </entry>
+    <entry id="47" name="up:Q9ADL7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ADL7">
+        <graphics name="Q9ADL7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="2597" width="46" height="17"/>
+    </entry>
+    <entry id="48" name="up:Q53840" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q53840">
+        <graphics name="Q53840" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="736" y="2494" width="46" height="17"/>
+    </entry>
+    <entry id="49" name="up:Q9ADL4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ADL4">
+        <graphics name="Q9ADL4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="618" y="2414" width="46" height="17"/>
+    </entry>
+    <entry id="50" name="up:Q9ADL6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ADL6">
+        <graphics name="Q9ADL6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="503" y="2494" width="46" height="17"/>
+    </entry>
+    <entry id="51" name="up:Q9KIZ6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIZ6">
+        <graphics name="Q9KIZ6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="352" y="2572" width="46" height="17"/>
+    </entry>
+    <entry id="52" name="up:Q9KIZ5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIZ5">
+        <graphics name="Q9KIZ5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="253" y="2572" width="46" height="17"/>
+    </entry>
+    <entry id="53" name="up:Q9KIZ8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIZ8">
+        <graphics name="Q9KIZ8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="184" y="2572" width="46" height="17"/>
+    </entry>
+    <entry id="54" name="up:Q9KIZ7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIZ7">
+        <graphics name="Q9KIZ7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="352" y="2440" width="46" height="17"/>
+    </entry>
+    <entry id="55" name="up:C167_POLCB" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+C167_POLCB">
+        <graphics name="C167_POLCB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="253" y="2414" width="46" height="17"/>
+    </entry>
+    <entry id="56" name="up:Q9KIZ9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIZ9">
+        <graphics name="Q9KIZ9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="176" y="2440" width="46" height="17"/>
+    </entry>
+    <entry id="57" name="up:Q9KJ00" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KJ00">
+        <graphics name="Q9KJ00" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="101" y="2477" width="46" height="17"/>
+    </entry>
+    <entry id="58" name="up:Q6W5P6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5P6">
+        <graphics name="Q6W5P6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="2275" width="46" height="17"/>
+    </entry>
+    <entry id="59" name="up:Q6W5P7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5P7">
+        <graphics name="Q6W5P7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="696" y="2275" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="up:Q6W5P8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5P8">
+        <graphics name="Q6W5P8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="593" y="2275" width="46" height="17"/>
+    </entry>
+    <entry id="61" name="up:Q6W5Q7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5Q7">
+        <graphics name="Q6W5Q7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="936" y="2160" width="46" height="17"/>
+    </entry>
+    <entry id="62" name="up:Q6W5Q9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5Q9">
+        <graphics name="Q6W5Q9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="844" y="2122" width="46" height="17"/>
+    </entry>
+    <entry id="63" name="up:Q6W5Q0" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5Q0">
+        <graphics name="Q6W5Q0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="696" y="2161" width="46" height="17"/>
+    </entry>
+    <entry id="64" name="up:Q6W5P9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5P9">
+        <graphics name="Q6W5P9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="584" y="2161" width="46" height="17"/>
+    </entry>
+    <entry id="65" name="up:Q6W5Q3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q6W5Q3">
+        <graphics name="Q6W5Q3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="486" y="2161" width="46" height="17"/>
+    </entry>
+    <entry id="66" name="up:Q9EW94" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9EW94">
+        <graphics name="Q9EW94" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="386" y="2160" width="46" height="17"/>
+    </entry>
+    <entry id="67" name="up:Q9EWA1" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9EWA1">
+        <graphics name="Q9EWA1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="354" y="2272" width="46" height="17"/>
+    </entry>
+    <entry id="68" name="up:Q9EW92" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9EW92">
+        <graphics name="Q9EW92" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="2301" width="46" height="17"/>
+    </entry>
+    <entry id="69" name="up:Q9EWA2" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9EWA2">
+        <graphics name="Q9EWA2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="202" y="2290" width="46" height="17"/>
+    </entry>
+    <entry id="70" name="up:Q9EWA3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9EWA3">
+        <graphics name="Q9EWA3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="153" y="2272" width="46" height="17"/>
+    </entry>
+    <entry id="71" name="up:Q9X992" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9X992">
+        <graphics name="Q9X992" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="2213" width="46" height="17"/>
+    </entry>
+    <entry id="72" name="up:Q9EWA4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9EWA4">
+        <graphics name="Q9EWA4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="296" y="2122" width="46" height="17"/>
+    </entry>
+    <entry id="73" name="up:Q9X993" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9X993">
+        <graphics name="Q9X993" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="186" y="2161" width="46" height="17"/>
+    </entry>
+    <entry id="74" name="up:Q9L4W8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4W8">
+        <graphics name="Q9L4W8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="935" y="1901" width="46" height="17"/>
+    </entry>
+    <entry id="75" name="up:Q9L4X3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4X3">
+        <graphics name="Q9L4X3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="901" y="2021" width="46" height="17"/>
+    </entry>
+    <entry id="76" name="up:Q9L4W6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4W6">
+        <graphics name="Q9L4W6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="844" y="1863" width="46" height="17"/>
+    </entry>
+    <entry id="77" name="up:Q9L4X0" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4X0">
+        <graphics name="Q9L4X0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="795" y="2041" width="46" height="17"/>
+    </entry>
+    <entry id="78" name="up:Q9L4X1" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4X1">
+        <graphics name="Q9L4X1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="645" y="2033" width="46" height="17"/>
+    </entry>
+    <entry id="79" name="up:Q9L4X2" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4X2">
+        <graphics name="Q9L4X2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="714" y="2021" width="46" height="17"/>
+    </entry>
+    <entry id="80" name="up:Q9L4W5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4W5">
+        <graphics name="Q9L4W5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="592" y="2021" width="46" height="17"/>
+    </entry>
+    <entry id="81" name="up:Q9L4W3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4W3">
+        <graphics name="Q9L4W3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="714" y="1901" width="46" height="17"/>
+    </entry>
+    <entry id="82" name="up:Q9L4W4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9L4W4">
+        <graphics name="Q9L4W4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="581" y="1901" width="46" height="17"/>
+    </entry>
+    <entry id="83" name="up:Q93NX9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NX9">
+        <graphics name="Q93NX9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="426" y="2021" width="46" height="17"/>
+    </entry>
+    <entry id="84" name="up:Q93NX6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NX6">
+        <graphics name="Q93NX6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="275" y="2041" width="45" height="17"/>
+    </entry>
+    <entry id="85" name="up:Q93NX8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NX8">
+        <graphics name="Q93NX8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="240" y="2021" width="46" height="17"/>
+    </entry>
+    <entry id="86" name="up:Q93NX7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NX7">
+        <graphics name="Q93NX7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="170" y="2033" width="46" height="17"/>
+    </entry>
+    <entry id="87" name="up:Q93NW8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NW8">
+        <graphics name="Q93NW8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="107" y="2021" width="46" height="17"/>
+    </entry>
+    <entry id="88" name="up:Q93NX1" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NX1">
+        <graphics name="Q93NX1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="454" y="1901" width="46" height="17"/>
+    </entry>
+    <entry id="89" name="up:Q93NW9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NW9">
+        <graphics name="Q93NW9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="368" y="1863" width="46" height="17"/>
+    </entry>
+    <entry id="90" name="up:Q93NW6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NW6">
+        <graphics name="Q93NW6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="240" y="1901" width="46" height="17"/>
+    </entry>
+    <entry id="91" name="up:Q93NW7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q93NW7">
+        <graphics name="Q93NW7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="107" y="1901" width="46" height="17"/>
+    </entry>
+    <entry id="92" name="up:RIFF_AMYMD" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+RIFF_AMYMD">
+        <graphics name="RIFF_AMYMD" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="683" y="1688" width="45" height="17"/>
+    </entry>
+    <entry id="93" name="up:O54593" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O54593">
+        <graphics name="O54593" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="694" y="1613" width="46" height="17"/>
+    </entry>
+    <entry id="94" name="up:O54591" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O54591">
+        <graphics name="O54591" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="1556" width="46" height="17"/>
+    </entry>
+    <entry id="95" name="up:O52790" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O52790">
+        <graphics name="O52790" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="589" y="1533" width="46" height="17"/>
+    </entry>
+    <entry id="96" name="up:O52545" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O52545">
+        <graphics name="O52545" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="496" y="1544" width="46" height="17"/>
+    </entry>
+    <entry id="97" name="up:O54666" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O54666">
+        <graphics name="O54666" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="471" y="1635" width="47" height="17"/>
+    </entry>
+    <entry id="98" name="up:Q8KUG5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUG5">
+        <graphics name="Q8KUG5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="1719" width="46" height="17"/>
+    </entry>
+    <entry id="99" name="up:Q8KUF8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUF8">
+        <graphics name="Q8KUF8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="174" y="1719" width="46" height="17"/>
+    </entry>
+    <entry id="100" name="up:Q8KUG0" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUG0">
+        <graphics name="Q8KUG0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="307" y="1665" width="46" height="17"/>
+    </entry>
+    <entry id="101" name="up:Q8KUG5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUG5">
+        <graphics name="Q8KUG5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="355" y="1637" width="46" height="17"/>
+    </entry>
+    <entry id="102" name="up:Q8KUF7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUF7">
+        <graphics name="Q8KUF7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="355" y="1615" width="46" height="17"/>
+    </entry>
+    <entry id="103" name="up:Q8KUF6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUF6">
+        <graphics name="Q8KUF6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="301" y="1600" width="46" height="17"/>
+    </entry>
+    <entry id="104" name="up:Q8KUF8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUF8">
+        <graphics name="Q8KUF8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="307" y="1637" width="46" height="17"/>
+    </entry>
+    <entry id="105" name="up:Q8KUG9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUG9">
+        <graphics name="Q8KUG9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="80" y="1655" width="45" height="17"/>
+    </entry>
+    <entry id="106" name="up:Q8KUH3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUH3">
+        <graphics name="Q8KUH3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="93" y="1573" width="47" height="17"/>
+    </entry>
+    <entry id="107" name="up:Q8KUG7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUG7">
+        <graphics name="Q8KUG7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="384" y="1549" width="45" height="17"/>
+    </entry>
+    <entry id="108" name="up:Q8KUI0" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUI0">
+        <graphics name="Q8KUI0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="383" y="1521" width="46" height="17"/>
+    </entry>
+    <entry id="109" name="up:Q8KUF9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUF9">
+        <graphics name="Q8KUF9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="335" y="1521" width="46" height="17"/>
+    </entry>
+    <entry id="110" name="up:Q8KUF5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUF5">
+        <graphics name="Q8KUF5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="255" y="1512" width="46" height="17"/>
+    </entry>
+    <entry id="111" name="up:Q8KUH4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUH4">
+        <graphics name="Q8KUH4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="191" y="1512" width="47" height="17"/>
+    </entry>
+    <entry id="112" name="up:Q8KUG5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q8KUG5">
+        <graphics name="Q8KUG5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="81" y="1512" width="46" height="17"/>
+    </entry>
+    <entry id="113" name="up:P95814" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+P95814">
+        <graphics name="P95814" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="944" y="1333" width="47" height="17"/>
+    </entry>
+    <entry id="114" name="up:Q9ZGA4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGA4">
+        <graphics name="Q9ZGA4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="878" y="1155" width="46" height="17"/>
+    </entry>
+    <entry id="115" name="up:Q9ZGA5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGA5">
+        <graphics name="Q9ZGA5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="821" y="1376" width="47" height="17"/>
+    </entry>
+    <entry id="116" name="up:P95815" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+P95815">
+        <graphics name="P95815" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="821" y="1357" width="47" height="17"/>
+    </entry>
+    <entry id="117" name="up:Q9ZGA6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGA6">
+        <graphics name="Q9ZGA6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="750" y="1279" width="46" height="17"/>
+    </entry>
+    <entry id="118" name="up:P74838" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+P74838">
+        <graphics name="P74838" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="701" y="1119" width="47" height="17"/>
+    </entry>
+    <entry id="119" name="up:Q9KID7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KID7">
+        <graphics name="Q9KID7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="634" y="1333" width="47" height="17"/>
+    </entry>
+    <entry id="120" name="up:Q9KID9" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KID9">
+        <graphics name="Q9KID9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="510" y="1376" width="47" height="17"/>
+    </entry>
+    <entry id="121" name="up:Q9KID6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KID6">
+        <graphics name="Q9KID6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="510" y="1357" width="47" height="17"/>
+    </entry>
+    <entry id="122" name="up:Q9KIE1" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIE1">
+        <graphics name="Q9KIE1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="671" y="1260" width="46" height="17"/>
+    </entry>
+    <entry id="123" name="up:Q9KID8" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KID8">
+        <graphics name="Q9KID8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="440" y="1279" width="46" height="17"/>
+    </entry>
+    <entry id="124" name="up:Q9KIE0" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIE0">
+        <graphics name="Q9KIE0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1155" width="46" height="17"/>
+    </entry>
+    <entry id="125" name="up:Q9KID5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KID5">
+        <graphics name="Q9KID5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="392" y="1119" width="47" height="17"/>
+    </entry>
+    <entry id="126" name="up:Q54299" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q54299">
+        <graphics name="Q54299" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="304" y="1350" width="47" height="17"/>
+    </entry>
+    <entry id="127" name="up:Q54302" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q54302">
+        <graphics name="Q54302" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="203" y="1385" width="46" height="17"/>
+    </entry>
+    <entry id="128" name="up:Q59921" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q59921">
+        <graphics name="Q59921" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="155" y="1385" width="46" height="17"/>
+    </entry>
+    <entry id="129" name="up:Q54298" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q54298">
+        <graphics name="Q54298" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="108" y="1297" width="47" height="17"/>
+    </entry>
+    <entry id="130" name="up:Q54296" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q54296">
+        <graphics name="Q54296" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="352" y="1248" width="46" height="17"/>
+    </entry>
+    <entry id="131" name="up:Q54302" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q54302">
+        <graphics name="Q54302" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="296" y="1119" width="46" height="17"/>
+    </entry>
+    <entry id="132" name="up:Q59921" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q59921">
+        <graphics name="Q59921" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="248" y="1119" width="46" height="17"/>
+    </entry>
+    <entry id="133" name="up:Q54297" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q54297">
+        <graphics name="Q54297" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="141" y="1144" width="47" height="17"/>
+    </entry>
+    <entry id="134" name="sma:SAV945" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV945">
+        <graphics name="SAV945" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="962" y="778" width="46" height="17"/>
+    </entry>
+    <entry id="135" name="sma:SAV945" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV945">
+        <graphics name="SAV945" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="964" y="823" width="46" height="17"/>
+    </entry>
+    <entry id="136" name="sma:SAV941" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV941">
+        <graphics name="SAV941" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="915" y="899" width="46" height="17"/>
+    </entry>
+    <entry id="137" name="sma:SAV942" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV942">
+        <graphics name="SAV942" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="877" y="866" width="46" height="17"/>
+    </entry>
+    <entry id="138" name="sma:SAV943" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV943">
+        <graphics name="SAV943" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="845" y="939" width="46" height="17"/>
+    </entry>
+    <entry id="139" name="sma:SAV937" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV937">
+        <graphics name="SAV937" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="720" y="951" width="46" height="17"/>
+    </entry>
+    <entry id="140" name="sma:SAV936" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV936">
+        <graphics name="SAV936" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="720" y="932" width="46" height="17"/>
+    </entry>
+    <entry id="141" name="sma:SAV939" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV939">
+        <graphics name="SAV939" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="817" y="752" width="46" height="17"/>
+    </entry>
+    <entry id="142" name="sma:SAV938" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?sma+SAV938">
+        <graphics name="SAV938" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="726" y="741" width="45" height="17"/>
+    </entry>
+    <entry id="143" name="up:O30767" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O30767">
+        <graphics name="O30767" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="583" y="903" width="46" height="17"/>
+    </entry>
+    <entry id="144" name="up:O30768" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O30768">
+        <graphics name="O30768" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="528" y="903" width="47" height="17"/>
+    </entry>
+    <entry id="145" name="up:O30766" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O30766">
+        <graphics name="O30766" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="605" y="770" width="46" height="17"/>
+    </entry>
+    <entry id="146" name="up:O30764" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O30764">
+        <graphics name="O30764" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="469" y="821" width="46" height="17"/>
+    </entry>
+    <entry id="147" name="up:O30765" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O30765">
+        <graphics name="O30765" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="498" y="770" width="47" height="17"/>
+    </entry>
+    <entry id="148" name="up:Q9XC67" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9XC67">
+        <graphics name="Q9XC67" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="401" y="864" width="45" height="17"/>
+    </entry>
+    <entry id="149" name="up:P95747" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+P95747">
+        <graphics name="P95747" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="366" y="824" width="46" height="17"/>
+    </entry>
+    <entry id="150" name="up:Q59910" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q59910">
+        <graphics name="Q59910" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="414" y="803" width="46" height="17"/>
+    </entry>
+    <entry id="151" name="up:Q9S4D6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9S4D6">
+        <graphics name="Q9S4D6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="366" y="803" width="46" height="17"/>
+    </entry>
+    <entry id="152" name="up:O87830" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O87830">
+        <graphics name="O87830" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="639" y="506" width="46" height="17"/>
+    </entry>
+    <entry id="153" name="up:O87605" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O87605">
+        <graphics name="O87605" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="712" y="506" width="47" height="17"/>
+    </entry>
+    <entry id="154" name="up:Q9ZGI5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGI5">
+        <graphics name="Q9ZGI5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="768" y="443" width="46" height="17"/>
+    </entry>
+    <entry id="155" name="up:O33939" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O33939">
+        <graphics name="O33939" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="234" y="620" width="47" height="17"/>
+    </entry>
+    <entry id="156" name="up:Q9F828" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9F828">
+        <graphics name="Q9F828" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="220" y="591" width="45" height="17"/>
+    </entry>
+    <entry id="157" name="up:O33935" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O33935">
+        <graphics name="O33935" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="342" y="506" width="47" height="17"/>
+    </entry>
+    <entry id="158" name="up:ERY3_SACER" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+ERY3_SACER">
+        <graphics name="ERY3_SACER" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="168" y="591" width="46" height="17"/>
+    </entry>
+    <entry id="159" name="up:Q9F829" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9F829">
+        <graphics name="Q9F829" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="349" y="444" width="45" height="17"/>
+    </entry>
+    <entry id="160" name="up:Q9F830" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9F830">
+        <graphics name="Q9F830" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="160" y="444" width="46" height="17"/>
+    </entry>
+    <entry id="161" name="up:Q9ZGI3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGI3">
+        <graphics name="Q9ZGI3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="251" y="296" width="46" height="17"/>
+    </entry>
+    <entry id="162" name="up:Q9ZGH7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGH7">
+        <graphics name="Q9ZGH7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="359" y="223" width="46" height="17"/>
+    </entry>
+    <entry id="163" name="up:Q9F826" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9F826">
+        <graphics name="Q9F826" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="395" y="506" width="46" height="17"/>
+    </entry>
+    <entry id="164" name="up:Q9ZGI2" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGI2">
+        <graphics name="Q9ZGI2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="785" y="581" width="46" height="17"/>
+    </entry>
+    <entry id="165" name="up:O33958" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O33958">
+        <graphics name="O33958" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="221" y="903" width="47" height="17"/>
+    </entry>
+    <entry id="166" name="up:Q9KIV4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIV4">
+        <graphics name="Q9KIV4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="453" y="444" width="46" height="17"/>
+    </entry>
+    <entry id="167" name="up:Q59819" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q59819">
+        <graphics name="Q59819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="552" y="414" width="45" height="17"/>
+    </entry>
+    <entry id="168" name="up:O70023" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O70023">
+        <graphics name="O70023" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="834" width="46" height="17"/>
+    </entry>
+    <entry id="169" name="up:O33955" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O33955">
+        <graphics name="O33955" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="194" y="770" width="47" height="17"/>
+    </entry>
+    <entry id="170" name="up:O33954" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O33954">
+        <graphics name="O33954" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="138" y="888" width="46" height="17"/>
+    </entry>
+    <entry id="171" name="up:O33956" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O33956">
+        <graphics name="O33956" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="301" y="770" width="46" height="17"/>
+    </entry>
+    <entry id="172" name="up:Q9ZGI4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGI4">
+        <graphics name="Q9ZGI4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="876" y="443" width="46" height="17"/>
+    </entry>
+    <entry id="173" name="up:Q9F823" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9F823">
+        <graphics name="Q9F823" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="288" y="414" width="46" height="17"/>
+    </entry>
+    <entry id="174" name="up:Q9S4D6" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9S4D6">
+        <graphics name="Q9S4D6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="803" width="46" height="17"/>
+    </entry>
+    <entry id="175" name="up:ERY2_SACER" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+ERY2_SACER">
+        <graphics name="ERY2_SACER" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="297" y="444" width="46" height="17"/>
+    </entry>
+    <entry id="176" name="up:Q9ZGI3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGI3">
+        <graphics name="Q9ZGI3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="854" y="581" width="46" height="17"/>
+    </entry>
+    <entry id="177" name="up:Q9KIV3" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9KIV3">
+        <graphics name="Q9KIV3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="591" y="444" width="47" height="17"/>
+    </entry>
+    <entry id="178" name="up:CPXQ_SACER" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+CPXQ_SACER">
+        <graphics name="CPXQ_SACER" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="107" y="475" width="47" height="17"/>
+    </entry>
+    <entry id="179" name="path:map00522" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00522.html">
+        <graphics name="Biosynthesis of 12-, 14- and 16-membered macrolides" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="232" y="1002" width="279" height="27"/>
+    </entry>
+    <entry id="180" name="up:O33957" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O33957">
+        <graphics name="O33957" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="280" y="903" width="46" height="17"/>
+    </entry>
+    <entry id="181" name="up:O87831" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O87831">
+        <graphics name="O87831" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="555" y="620" width="46" height="17"/>
+    </entry>
+    <entry id="182" name="up:CPXJ_SACER" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+CPXJ_SACER">
+        <graphics name="CPXJ_SACER" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="235" y="414" width="47" height="17"/>
+    </entry>
+    <entry id="183" name="up:Q9ZGI4" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGI4">
+        <graphics name="Q9ZGI4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="286" y="165" width="46" height="17"/>
+    </entry>
+    <entry id="184" name="up:Q9ZGI5" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGI5">
+        <graphics name="Q9ZGI5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="177" y="165" width="46" height="17"/>
+    </entry>
+    <entry id="185" name="up:O87605" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+O87605">
+        <graphics name="O87605" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="121" y="223" width="47" height="17"/>
+    </entry>
+    <entry id="186" name="up:Q9F832" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9F832">
+        <graphics name="Q9F832" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="287" y="620" width="46" height="17"/>
+    </entry>
+    <entry id="187" name="up:Q59910" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q59910">
+        <graphics name="Q59910" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="803" width="46" height="17"/>
+    </entry>
+    <entry id="188" name="up:ERY1_SACER" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+ERY1_SACER">
+        <graphics name="ERY1_SACER" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="107" y="444" width="47" height="17"/>
+    </entry>
+    <entry id="189" name="up:Q9ZGH7" type="ortholog"
+        link="http://www.genome.jp/dbget-bin/www_bget?up+Q9ZGH7">
+        <graphics name="Q9ZGH7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="943" y="506" width="46" height="17"/>
+    </entry>
+    <entry id="190" name="path:map01052" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map01052">
+        <graphics name="TITLE:Type I polyketide structures" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="162" y="51" width="244" height="25"/>
+    </entry>
+    <entry id="191" name="cpd:C12151" type="compound">
+        <graphics name="C12151" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="259" y="3045" width="66" height="10"/>
+    </entry>
+    <entry id="192" name="cpd:C12157" type="compound">
+        <graphics name="C12157" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="615" y="2802" width="69" height="10"/>
+    </entry>
+    <entry id="193" name="cpd:C12148" type="compound">
+        <graphics name="C12148" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="259" y="2802" width="73" height="10"/>
+    </entry>
+    <entry id="194" name="cpd:C11300" type="compound">
+        <graphics name="C11300" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="616" y="2573" width="61" height="10"/>
+    </entry>
+    <entry id="195" name="cpd:C12153" type="compound">
+        <graphics name="C12153" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="259" y="2573" width="67" height="10"/>
+    </entry>
+    <entry id="196" name="cpd:C06690" type="compound">
+        <graphics name="C06690" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="741" y="2279" width="123" height="10"/>
+    </entry>
+    <entry id="197" name="cpd:C08073" type="compound">
+        <graphics name="C08073" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="248" y="2279" width="51" height="10"/>
+    </entry>
+    <entry id="198" name="cpd:C12155" type="compound">
+        <graphics name="C12155" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="740" y="2022" width="59" height="10"/>
+    </entry>
+    <entry id="199" name="cpd:C06573" type="compound">
+        <graphics name="C06573" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="247" y="2022" width="81" height="10"/>
+    </entry>
+    <entry id="200" name="cpd:C12176" type="compound">
+        <graphics name="C12176" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="544" y="1697" width="85" height="10"/>
+    </entry>
+    <entry id="201" name="cpd:C12045" type="compound">
+        <graphics name="C12045" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="233" y="1696" width="80" height="10"/>
+    </entry>
+    <entry id="202" name="cpd:C01375" type="compound">
+        <graphics name="C01375" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="839" y="1363" width="36" height="10"/>
+    </entry>
+    <entry id="203" name="cpd:C12102" type="compound">
+        <graphics name="C12102" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="542" y="1362" width="34" height="9"/>
+    </entry>
+    <entry id="204" name="cpd:C07909" type="compound">
+        <graphics name="C07909" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="233" y="1365" width="62" height="10"/>
+    </entry>
+    <entry id="205" name="cpd:C11984" type="compound">
+        <graphics name="C11984" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="840" y="931" width="84" height="9"/>
+    </entry>
+    <entry id="206" name="cpd:C12152" type="compound">
+        <graphics name="C12152" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="543" y="934" width="63" height="10"/>
+    </entry>
+    <entry id="207" name="cpd:C01457" type="compound">
+        <graphics name="C01457" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="233" y="934" width="37" height="10"/>
+    </entry>
+    <entry id="208" name="path:map01051" type="map">
+        <graphics name="Biosynthesis of ansamycins" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="156" y="1736" width="157" height="27"/>
+    </entry>
+    <entry id="209" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="332" y="2945" width="46" height="17"/>
+    </entry>
+    <entry id="210" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="246" y="2852" width="46" height="17"/>
+    </entry>
+    <entry id="211" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="98" y="2945" width="46" height="17"/>
+    </entry>
+    <entry id="212" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="755" y="2631" width="46" height="17"/>
+    </entry>
+    <entry id="213" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="706" y="2645" width="46" height="17"/>
+    </entry>
+    <entry id="214" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="681" y="2664" width="46" height="17"/>
+    </entry>
+    <entry id="215" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="630" y="2691" width="46" height="17"/>
+    </entry>
+    <entry id="216" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="572" y="2650" width="46" height="17"/>
+    </entry>
+    <entry id="217" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="572" y="2631" width="46" height="17"/>
+    </entry>
+    <entry id="218" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="510" y="2631" width="46" height="17"/>
+    </entry>
+    <entry id="219" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="289" y="2766" width="46" height="17"/>
+    </entry>
+    <entry id="220" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="342" y="2788" width="46" height="17"/>
+    </entry>
+    <entry id="221" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="386" y="2766" width="46" height="17"/>
+    </entry>
+    <entry id="222" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="386" y="2747" width="46" height="17"/>
+    </entry>
+    <entry id="223" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="414" y="2648" width="46" height="17"/>
+    </entry>
+    <entry id="224" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="289" y="2642" width="46" height="17"/>
+    </entry>
+    <entry id="225" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="250" y="2623" width="46" height="17"/>
+    </entry>
+    <entry id="226" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="214" y="2642" width="46" height="17"/>
+    </entry>
+    <entry id="227" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="181" y="2623" width="46" height="17"/>
+    </entry>
+    <entry id="228" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="148" y="2642" width="46" height="17"/>
+    </entry>
+    <entry id="229" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="101" y="2672" width="46" height="17"/>
+    </entry>
+    <entry id="230" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="2552" width="46" height="17"/>
+    </entry>
+    <entry id="231" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="736" y="2449" width="46" height="17"/>
+    </entry>
+    <entry id="232" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="618" y="2369" width="46" height="17"/>
+    </entry>
+    <entry id="233" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="503" y="2449" width="46" height="17"/>
+    </entry>
+    <entry id="234" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="352" y="2527" width="46" height="17"/>
+    </entry>
+    <entry id="235" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="253" y="2527" width="46" height="17"/>
+    </entry>
+    <entry id="236" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="184" y="2527" width="46" height="17"/>
+    </entry>
+    <entry id="237" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="352" y="2395" width="46" height="17"/>
+    </entry>
+    <entry id="238" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="253" y="2369" width="46" height="17"/>
+    </entry>
+    <entry id="239" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="176" y="2395" width="46" height="17"/>
+    </entry>
+    <entry id="240" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="101" y="2432" width="46" height="17"/>
+    </entry>
+    <entry id="241" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="2230" width="46" height="17"/>
+    </entry>
+    <entry id="242" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="696" y="2230" width="46" height="17"/>
+    </entry>
+    <entry id="243" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="593" y="2230" width="46" height="17"/>
+    </entry>
+    <entry id="244" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="936" y="2115" width="46" height="17"/>
+    </entry>
+    <entry id="245" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="844" y="2077" width="46" height="17"/>
+    </entry>
+    <entry id="246" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="696" y="2116" width="46" height="17"/>
+    </entry>
+    <entry id="247" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="584" y="2116" width="46" height="17"/>
+    </entry>
+    <entry id="248" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="486" y="2116" width="46" height="17"/>
+    </entry>
+    <entry id="249" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="386" y="2115" width="46" height="17"/>
+    </entry>
+    <entry id="250" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="354" y="2227" width="46" height="17"/>
+    </entry>
+    <entry id="251" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="2256" width="46" height="17"/>
+    </entry>
+    <entry id="252" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="202" y="2245" width="46" height="17"/>
+    </entry>
+    <entry id="253" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="153" y="2227" width="46" height="17"/>
+    </entry>
+    <entry id="254" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="2168" width="46" height="17"/>
+    </entry>
+    <entry id="255" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="296" y="2077" width="46" height="17"/>
+    </entry>
+    <entry id="256" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="186" y="2116" width="46" height="17"/>
+    </entry>
+    <entry id="257" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="935" y="1856" width="46" height="17"/>
+    </entry>
+    <entry id="258" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="901" y="1976" width="46" height="17"/>
+    </entry>
+    <entry id="259" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="844" y="1818" width="46" height="17"/>
+    </entry>
+    <entry id="260" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="795" y="1996" width="46" height="17"/>
+    </entry>
+    <entry id="261" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="645" y="1988" width="46" height="17"/>
+    </entry>
+    <entry id="262" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="714" y="1976" width="46" height="17"/>
+    </entry>
+    <entry id="263" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="592" y="1976" width="46" height="17"/>
+    </entry>
+    <entry id="264" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="714" y="1856" width="46" height="17"/>
+    </entry>
+    <entry id="265" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="581" y="1856" width="46" height="17"/>
+    </entry>
+    <entry id="266" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="426" y="1976" width="46" height="17"/>
+    </entry>
+    <entry id="267" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="275" y="1996" width="45" height="17"/>
+    </entry>
+    <entry id="268" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="240" y="1976" width="46" height="17"/>
+    </entry>
+    <entry id="269" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="170" y="1988" width="46" height="17"/>
+    </entry>
+    <entry id="270" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="107" y="1976" width="46" height="17"/>
+    </entry>
+    <entry id="271" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="454" y="1856" width="46" height="17"/>
+    </entry>
+    <entry id="272" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="368" y="1818" width="46" height="17"/>
+    </entry>
+    <entry id="273" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="240" y="1856" width="46" height="17"/>
+    </entry>
+    <entry id="274" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="107" y="1856" width="46" height="17"/>
+    </entry>
+    <entry id="275" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="683" y="1643" width="45" height="17"/>
+    </entry>
+    <entry id="276" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="694" y="1568" width="46" height="17"/>
+    </entry>
+    <entry id="277" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="668" y="1511" width="46" height="17"/>
+    </entry>
+    <entry id="278" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="589" y="1488" width="46" height="17"/>
+    </entry>
+    <entry id="279" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="496" y="1499" width="46" height="17"/>
+    </entry>
+    <entry id="280" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="471" y="1590" width="47" height="17"/>
+    </entry>
+    <entry id="281" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="222" y="1674" width="46" height="17"/>
+    </entry>
+    <entry id="282" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="174" y="1674" width="46" height="17"/>
+    </entry>
+    <entry id="283" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="307" y="1620" width="46" height="17"/>
+    </entry>
+    <entry id="284" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="355" y="1592" width="46" height="17"/>
+    </entry>
+    <entry id="285" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="355" y="1570" width="46" height="17"/>
+    </entry>
+    <entry id="286" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="301" y="1555" width="46" height="17"/>
+    </entry>
+    <entry id="287" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="307" y="1592" width="46" height="17"/>
+    </entry>
+    <entry id="288" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="80" y="1610" width="45" height="17"/>
+    </entry>
+    <entry id="289" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="93" y="1528" width="47" height="17"/>
+    </entry>
+    <entry id="290" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="384" y="1504" width="45" height="17"/>
+    </entry>
+    <entry id="291" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="383" y="1476" width="46" height="17"/>
+    </entry>
+    <entry id="292" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="335" y="1476" width="46" height="17"/>
+    </entry>
+    <entry id="293" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="255" y="1467" width="46" height="17"/>
+    </entry>
+    <entry id="294" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="191" y="1467" width="47" height="17"/>
+    </entry>
+    <entry id="295" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="81" y="1467" width="46" height="17"/>
+    </entry>
+    <entry id="296" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="944" y="1288" width="47" height="17"/>
+    </entry>
+    <entry id="297" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="878" y="1110" width="46" height="17"/>
+    </entry>
+    <entry id="298" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="821" y="1331" width="47" height="17"/>
+    </entry>
+    <entry id="299" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="821" y="1312" width="47" height="17"/>
+    </entry>
+    <entry id="300" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="750" y="1234" width="46" height="17"/>
+    </entry>
+    <entry id="301" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="701" y="1074" width="47" height="17"/>
+    </entry>
+    <entry id="302" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="634" y="1288" width="47" height="17"/>
+    </entry>
+    <entry id="303" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="510" y="1331" width="47" height="17"/>
+    </entry>
+    <entry id="304" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="510" y="1312" width="47" height="17"/>
+    </entry>
+    <entry id="305" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="671" y="1215" width="46" height="17"/>
+    </entry>
+    <entry id="306" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="440" y="1234" width="46" height="17"/>
+    </entry>
+    <entry id="307" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="568" y="1110" width="46" height="17"/>
+    </entry>
+    <entry id="308" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="392" y="1074" width="47" height="17"/>
+    </entry>
+    <entry id="309" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="304" y="1305" width="47" height="17"/>
+    </entry>
+    <entry id="310" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="203" y="1340" width="46" height="17"/>
+    </entry>
+    <entry id="311" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="155" y="1340" width="46" height="17"/>
+    </entry>
+    <entry id="312" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="108" y="1252" width="47" height="17"/>
+    </entry>
+    <entry id="313" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="352" y="1203" width="46" height="17"/>
+    </entry>
+    <entry id="314" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="296" y="1074" width="46" height="17"/>
+    </entry>
+    <entry id="315" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="248" y="1074" width="46" height="17"/>
+    </entry>
+    <entry id="316" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="141" y="1099" width="47" height="17"/>
+    </entry>
+    <entry id="317" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="583" y="869" width="46" height="17"/>
+    </entry>
+    <entry id="318" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="528" y="869" width="47" height="17"/>
+    </entry>
+    <entry id="319" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="605" y="736" width="46" height="17"/>
+    </entry>
+    <entry id="320" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="469" y="787" width="46" height="17"/>
+    </entry>
+    <entry id="321" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="498" y="736" width="47" height="17"/>
+    </entry>
+    <entry id="322" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="401" y="830" width="45" height="17"/>
+    </entry>
+    <entry id="323" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="366" y="790" width="46" height="17"/>
+    </entry>
+    <entry id="324" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="414" y="769" width="46" height="17"/>
+    </entry>
+    <entry id="325" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="366" y="769" width="46" height="17"/>
+    </entry>
+    <entry id="326" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="220" y="591" width="46" height="17"/>
+    </entry>
+    <entry id="327" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="221" y="869" width="47" height="17"/>
+    </entry>
+    <entry id="328" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="800" width="46" height="17"/>
+    </entry>
+    <entry id="329" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="194" y="736" width="47" height="17"/>
+    </entry>
+    <entry id="330" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="138" y="854" width="46" height="17"/>
+    </entry>
+    <entry id="331" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="301" y="736" width="46" height="17"/>
+    </entry>
+    <entry id="332" name=" cpd:mim01051" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="96" y="769" width="46" height="17"/>
+    </entry>
+    <entry id="333" name="path:map00522" type="map">
+        <graphics name="Biosynthesis of 12-, 14- and 16-membered macrolides" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="214" y="968" width="279" height="27"/>
+    </entry>
+    <entry id="334" name=" cpd:mim00522" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="280" y="869" width="46" height="17"/>
+    </entry>
+    <entry id="335" name=" cpd:mim00522" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="769" width="46" height="17"/>
+    </entry>
+</pathway>

@@ -1,0 +1,752 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:53 +0900 (JST) -->
+<pathway name="path:hsa03010" org="hsa" number="03010"
+         title="Ribosome"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa03010.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?hsa03010">
+    <entry id="1" name="path:hsa03010" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+hsa03010">
+        <graphics name="TITLE:Ribosome" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="182" y="33" width="95" height="26"/>
+    </entry>
+    <entry id="2" name="hsa:2197" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2197">
+        <graphics name="FAU" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="916" y="711" width="46" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:6158" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6158">
+        <graphics name="RPL28" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="598" y="756" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="hsa:6228" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6228">
+        <graphics name="RPS23" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="516" y="460" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="hsa:6235" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6235">
+        <graphics name="RPS29" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="643" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="hsa:6207" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6207">
+        <graphics name="RPS13" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="546" y="552" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:6205" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6205">
+        <graphics name="RPS11" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="417" y="292" width="46" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:440733" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+440733">
+        <graphics name="LOC440733" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="689" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:6194" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6194">
+        <graphics name="RPS6" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="462" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="hsa:6202" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6202">
+        <graphics name="RPS8" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="507" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="hsa:402057" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+402057">
+        <graphics name="LOC402057" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="553" y="711" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="hsa:6229" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6229">
+        <graphics name="RPS24" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="643" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:388720" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+388720">
+        <graphics name="LOC388720" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="825" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="14" name="hsa:6201" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6201">
+        <graphics name="RPS7" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="417" y="800" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="hsa:6204" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6204">
+        <graphics name="RPS10" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="462" y="800" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="hsa:440055 hsa:6206" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+440055+6206">
+        <graphics name="LOC440055..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="507" y="800" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:6227" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6227">
+        <graphics name="RPS21" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="553" y="800" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:401206 hsa:6230" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+401206+6230">
+        <graphics name="hCG_1640785, LOC401206..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="689" y="711" width="46" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:401470 hsa:441377 hsa:6231" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+401470+441377+6231">
+        <graphics name="RPS26P10..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="734" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:6234" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6234">
+        <graphics name="RPS28" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="870" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:6192" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6192">
+        <graphics name="RPS4Y1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="553" y="284" width="46" height="17"/>
+    </entry>
+    <entry id="22" name="hsa:400652 hsa:439992 hsa:6189" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+400652+439992+6189">
+        <graphics name="LOC400652..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="417" y="711" width="46" height="17"/>
+    </entry>
+    <entry id="23" name="hsa:6123" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6123">
+        <graphics name="RPL3L" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="507" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="hsa:6135" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6135">
+        <graphics name="RPL11" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="598" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="hsa:6133" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6133">
+        <graphics name="RPL9" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="734" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="hsa:6136" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6136">
+        <graphics name="RPL12" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="887" y="460" width="45" height="17"/>
+    </entry>
+    <entry id="27" name="hsa:23521 hsa:283340" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+23521+283340">
+        <graphics name="RPL13A..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="836" y="376" width="46" height="17"/>
+    </entry>
+    <entry id="28" name="hsa:28998" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+28998">
+        <graphics name="MRPL13" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="836" y="359" width="46" height="17"/>
+    </entry>
+    <entry id="29" name="hsa:4736" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+4736">
+        <graphics name="RPL10A, NEDD6" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="842" y="460" width="46" height="17"/>
+    </entry>
+    <entry id="30" name="hsa:6132" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6132">
+        <graphics name="RPL8" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="644" y="217" width="46" height="17"/>
+    </entry>
+    <entry id="31" name="hsa:389435 hsa:391124 hsa:6157" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+389435+391124+6157">
+        <graphics name="hCG_21078, LOC389435..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="1006" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="hsa:401904" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+401904">
+        <graphics name="LOC401904" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="598" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="33" name="hsa:400055 hsa:6154" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+400055+6154">
+        <graphics name="hCG_26523, LOC400055..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="507" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="hsa:11224 hsa:390876 hsa:440737 hsa:441246" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+11224+390876+440737+441246">
+        <graphics name="RPL35..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="870" y="217" width="46" height="17"/>
+    </entry>
+    <entry id="35" name="hsa:6129" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6129">
+        <graphics name="RPL7" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="961" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="36" name="hsa:392979 hsa:6141" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+392979+6141">
+        <graphics name="tcag7.23, LOC392979..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="745" y="368" width="45" height="17"/>
+    </entry>
+    <entry id="37" name="hsa:6143" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6143">
+        <graphics name="RPL19" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="825" y="284" width="45" height="17"/>
+    </entry>
+    <entry id="38" name="hsa:6144" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6144">
+        <graphics name="RPL21" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="552" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="39" name="hsa:51187 hsa:6152" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+51187+6152">
+        <graphics name="C15orf15..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="597" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="40" name="hsa:6156" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6156">
+        <graphics name="RPL30" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="561" y="451" width="45" height="17"/>
+    </entry>
+    <entry id="41" name="hsa:6170" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6170">
+        <graphics name="RPL39" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="824" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="42" name="hsa:6171" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6171">
+        <graphics name="RPL41" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="915" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="43" name="hsa:284230 hsa:6166" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+284230+6166">
+        <graphics name="LOC284230..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="960" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="44" name="hsa:6160" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6160">
+        <graphics name="RPL31" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="643" y="668" width="46" height="17"/>
+    </entry>
+    <entry id="45" name="hsa:392447 hsa:6161" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+392447+6161">
+        <graphics name="hCG_1644323, LOC392447..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="780" y="284" width="46" height="17"/>
+    </entry>
+    <entry id="46" name="hsa:342994 hsa:6164" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+342994+6164">
+        <graphics name="LOC342994..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="417" y="368" width="46" height="17"/>
+    </entry>
+    <entry id="47" name="hsa:6165" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6165">
+        <graphics name="RPL35A" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="688" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="48" name="hsa:6167" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6167">
+        <graphics name="RPL37" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="733" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="49" name="hsa:6168" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6168">
+        <graphics name="RPL37A" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="779" y="668" width="46" height="17"/>
+    </entry>
+    <entry id="50" name="hsa:441907 hsa:6128" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+441907+6128">
+        <graphics name="LOC441907..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="417" y="756" width="46" height="17"/>
+    </entry>
+    <entry id="51" name="hsa:285053 hsa:6142" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+285053+6142">
+        <graphics name="LOC285053..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="462" y="756" width="45" height="17"/>
+    </entry>
+    <entry id="52" name="hsa:6155" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6155">
+        <graphics name="RPL27" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="553" y="756" width="46" height="17"/>
+    </entry>
+    <entry id="53" name="hsa:283412 hsa:284064" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+283412+284064">
+        <graphics name="LOC283412..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="644" y="756" width="46" height="17"/>
+    </entry>
+    <entry id="54" name="hsa:6169" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6169">
+        <graphics name="RPL38" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="734" y="756" width="45" height="17"/>
+    </entry>
+    <entry id="55" name="hsa:140801 hsa:284393 hsa:389342" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+140801+284393+389342">
+        <graphics name="RPL10L..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="416" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="56" name="hsa:9045" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+9045">
+        <graphics name="RPL14" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="462" y="368" width="45" height="17"/>
+    </entry>
+    <entry id="57" name="hsa:440589 hsa:6187" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+440589+6187">
+        <graphics name="LOC440589..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="916" y="292" width="46" height="17"/>
+    </entry>
+    <entry id="58" name="hsa:6193" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6193">
+        <graphics name="RPS5" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="471" y="460" width="46" height="17"/>
+    </entry>
+    <entry id="59" name="hsa:391656 hsa:6210" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+391656+6210">
+        <graphics name="LOC391656..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="689" y="292" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="hsa:441876 hsa:6217" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+441876+6217">
+        <graphics name="LOC441876..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="881" y="376" width="45" height="17"/>
+    </entry>
+    <entry id="61" name="hsa:6224" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6224">
+        <graphics name="RPS20" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="462" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="62" name="hsa:389672" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+389672">
+        <graphics name="hCG_1984468, LOC389672" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="417" y="552" width="46" height="17"/>
+    </entry>
+    <entry id="63" name="hsa:6188" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6188">
+        <graphics name="RPS3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="779" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="64" name="hsa:6203" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6203">
+        <graphics name="RPS9" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="667" y="376" width="46" height="17"/>
+    </entry>
+    <entry id="65" name="ko:K02873" type="ortholog">
+        <graphics name="RP-L13e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="461" y="668" width="45" height="17"/>
+    </entry>
+    <entry id="66" name="ko:K02955" type="ortholog">
+        <graphics name="RP-S14e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="621" y="376" width="45" height="17"/>
+    </entry>
+    <entry id="67" name="ko:K02964" type="ortholog">
+        <graphics name="RP-S18e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="576" y="376" width="46" height="17"/>
+    </entry>
+    <entry id="68" name="ko:K02966" type="ortholog">
+        <graphics name="RP-S19e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="69" name="ko:K02978" type="ortholog">
+        <graphics name="RP-S27e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="780" y="711" width="46" height="17"/>
+    </entry>
+    <entry id="70" name="ko:K02941" type="ortholog">
+        <graphics name="RP-LP0" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="796" y="460" width="45" height="17"/>
+    </entry>
+    <entry id="71" name="ko:K02894" type="ortholog">
+        <graphics name="RP-L23e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="462" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="72" name="ko:K02932" type="ortholog">
+        <graphics name="RP-L5e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="870" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="73" name="ko:K02880" type="ortholog">
+        <graphics name="RP-L17e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="734" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="74" name="ko:K02877" type="ortholog">
+        <graphics name="RP-L15e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="507" y="668" width="46" height="17"/>
+    </entry>
+    <entry id="75" name="ko:K02927" type="ortholog">
+        <graphics name="RP-L40e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="870" y="668" width="46" height="17"/>
+    </entry>
+    <entry id="76" name="ko:K02891" type="ortholog">
+        <graphics name="RP-L22e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="507" y="756" width="45" height="17"/>
+    </entry>
+    <entry id="77" name="ko:K02920" type="ortholog">
+        <graphics name="RP-L36e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="689" y="756" width="45" height="17"/>
+    </entry>
+    <entry id="78" name="ko:K02930" type="ortholog">
+        <graphics name="RP-L4e" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="553" y="209" width="46" height="17"/>
+    </entry>
+    <entry id="79" name="ko:K02936" type="ortholog">
+        <graphics name="RP-L7Ae" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="613" y="451" width="46" height="17"/>
+    </entry>
+    <entry id="80" name="ko:K02942" type="ortholog">
+        <graphics name="RP-LP1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="751" y="468" width="46" height="17"/>
+    </entry>
+    <entry id="81" name="ko:K02988" type="ortholog">
+        <graphics name="RP-S5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="916" y="275" width="46" height="17"/>
+    </entry>
+    <entry id="82" name="ko:K02950" type="ortholog">
+        <graphics name="RP-S12" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="516" y="443" width="45" height="17"/>
+    </entry>
+    <entry id="83" name="ko:K01987" type="ortholog">
+        <graphics name="5SrRNAe" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="542" y="104" width="46" height="17"/>
+    </entry>
+    <entry id="84" name="ko:K02864" type="ortholog">
+        <graphics name="RP-L10" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="796" y="443" width="45" height="17"/>
+    </entry>
+    <entry id="85" name="ko:K02867" type="ortholog">
+        <graphics name="RP-L11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="887" y="443" width="45" height="17"/>
+    </entry>
+    <entry id="86" name="ko:K02886" type="ortholog">
+        <graphics name="RP-L2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="644" y="200" width="46" height="17"/>
+    </entry>
+    <entry id="87" name="ko:K02906" type="ortholog">
+        <graphics name="RP-L3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="507" y="200" width="45" height="17"/>
+    </entry>
+    <entry id="88" name="ko:K02931" type="ortholog">
+        <graphics name="RP-L5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="89" name="ko:K02933" type="ortholog">
+        <graphics name="RP-L6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="734" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="90" name="ko:K02874" type="ortholog">
+        <graphics name="RP-L14" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="462" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="91" name="ko:K02876" type="ortholog">
+        <graphics name="RP-L15" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1006" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="92" name="ko:K02881" type="ortholog">
+        <graphics name="RP-L18" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="870" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="93" name="ko:K02890" type="ortholog">
+        <graphics name="RP-L22" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="734" y="200" width="45" height="17"/>
+    </entry>
+    <entry id="94" name="ko:K02892" type="ortholog">
+        <graphics name="RP-L23" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="200" width="45" height="17"/>
+    </entry>
+    <entry id="95" name="ko:K02907" type="ortholog">
+        <graphics name="RP-L30" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="961" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="96" name="ko:K02926" type="ortholog">
+        <graphics name="RP-L4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="553" y="192" width="46" height="17"/>
+    </entry>
+    <entry id="97" name="ko:K02939" type="ortholog">
+        <graphics name="RP-L9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="964" y="526" width="46" height="17"/>
+    </entry>
+    <entry id="98" name="ko:K02935" type="ortholog">
+        <graphics name="RP-L7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="705" y="434" width="46" height="17"/>
+    </entry>
+    <entry id="99" name="ko:K02878" type="ortholog">
+        <graphics name="RP-L16" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="824" y="192" width="45" height="17"/>
+    </entry>
+    <entry id="100" name="ko:K02879" type="ortholog">
+        <graphics name="RP-L17" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="790" y="351" width="45" height="17"/>
+    </entry>
+    <entry id="101" name="ko:K02887" type="ortholog">
+        <graphics name="RP-L20" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="684" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="102" name="ko:K02888" type="ortholog">
+        <graphics name="RP-L21" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="530" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="103" name="ko:K02899" type="ortholog">
+        <graphics name="RP-L27" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="576" y="609" width="46" height="17"/>
+    </entry>
+    <entry id="104" name="ko:K02911" type="ortholog">
+        <graphics name="RP-L32" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="895" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="105" name="ko:K02913" type="ortholog">
+        <graphics name="RP-L33" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="462" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="106" name="ko:K02982" type="ortholog">
+        <graphics name="RP-S3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="779" y="200" width="45" height="17"/>
+    </entry>
+    <entry id="107" name="ko:K02986" type="ortholog">
+        <graphics name="RP-S4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="667" y="359" width="46" height="17"/>
+    </entry>
+    <entry id="108" name="ko:K02992" type="ortholog">
+        <graphics name="RP-S7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="471" y="443" width="46" height="17"/>
+    </entry>
+    <entry id="109" name="ko:K02994" type="ortholog">
+        <graphics name="RP-S8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="689" y="275" width="46" height="17"/>
+    </entry>
+    <entry id="110" name="ko:K02996" type="ortholog">
+        <graphics name="RP-S9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="881" y="359" width="45" height="17"/>
+    </entry>
+    <entry id="111" name="ko:K02946" type="ortholog">
+        <graphics name="RP-S10" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="462" y="200" width="45" height="17"/>
+    </entry>
+    <entry id="112" name="ko:K02948" type="ortholog">
+        <graphics name="RP-S11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="621" y="359" width="45" height="17"/>
+    </entry>
+    <entry id="113" name="ko:K02952" type="ortholog">
+        <graphics name="RP-S13" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="576" y="359" width="46" height="17"/>
+    </entry>
+    <entry id="114" name="ko:K02954" type="ortholog">
+        <graphics name="RP-S14" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="643" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="115" name="ko:K02956" type="ortholog">
+        <graphics name="RP-S15" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="535" width="46" height="17"/>
+    </entry>
+    <entry id="116" name="ko:K02961" type="ortholog">
+        <graphics name="RP-S17" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="417" y="275" width="46" height="17"/>
+    </entry>
+    <entry id="117" name="ko:K02965" type="ortholog">
+        <graphics name="RP-S19" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="689" y="200" width="45" height="17"/>
+    </entry>
+    <entry id="118" name="ko:K02959" type="ortholog">
+        <graphics name="RP-S16" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="694" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="119" name="ko:K02963" type="ortholog">
+        <graphics name="RP-S18" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1009" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="120" name="ko:K02863" type="ortholog">
+        <graphics name="RP-L1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="842" y="443" width="46" height="17"/>
+    </entry>
+    <entry id="121" name="ko:K02897" type="ortholog">
+        <graphics name="RP-L25" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1054" y="609" width="46" height="17"/>
+    </entry>
+    <entry id="122" name="ko:K02902" type="ortholog">
+        <graphics name="RP-L28" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="417" y="609" width="46" height="17"/>
+    </entry>
+    <entry id="123" name="ko:K02919" type="ortholog">
+        <graphics name="RP-L36" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="530" y="351" width="45" height="17"/>
+    </entry>
+    <entry id="124" name="ko:K02972" type="ortholog">
+        <graphics name="RP-S22" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="992" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="125" name="ko:K01985" type="ortholog">
+        <graphics name="5SrRNA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="542" y="87" width="46" height="17"/>
+    </entry>
+    <entry id="126" name="ko:K01980" type="ortholog">
+        <graphics name="23SrRNA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="496" y="87" width="45" height="17"/>
+    </entry>
+    <entry id="127" name="ko:K02895" type="ortholog">
+        <graphics name="RP-L24" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="507" y="275" width="45" height="17"/>
+    </entry>
+    <entry id="128" name="ko:K02904" type="ortholog">
+        <graphics name="RP-L29" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="870" y="200" width="46" height="17"/>
+    </entry>
+    <entry id="129" name="ko:K02884" type="ortholog">
+        <graphics name="RP-L19" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="739" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="130" name="ko:K02909" type="ortholog">
+        <graphics name="RP-L31" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="827" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="131" name="ko:K02914" type="ortholog">
+        <graphics name="RP-L34" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="730" y="526" width="46" height="17"/>
+    </entry>
+    <entry id="132" name="ko:K02916" type="ortholog">
+        <graphics name="RP-L35" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="639" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="133" name="ko:K01977" type="ortholog">
+        <graphics name="16SrRNA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="646" y="87" width="45" height="17"/>
+    </entry>
+    <entry id="134" name="ko:K02945" type="ortholog">
+        <graphics name="RP-S1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="808" y="609" width="46" height="17"/>
+    </entry>
+    <entry id="135" name="ko:K02990" type="ortholog">
+        <graphics name="RP-S6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1054" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="136" name="ko:K02968" type="ortholog">
+        <graphics name="RP-S20" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="869" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="137" name="ko:K02970" type="ortholog">
+        <graphics name="RP-S21" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="931" y="609" width="46" height="17"/>
+    </entry>
+    <entry id="138" name="ko:K02967" type="ortholog">
+        <graphics name="RP-S2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="417" y="535" width="46" height="17"/>
+    </entry>
+    <entry id="139" name="ko:K07590" type="ortholog">
+        <graphics name="RP-L7A" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="613" y="434" width="46" height="17"/>
+    </entry>
+    <entry id="140" name="ko:K01982" type="ortholog">
+        <graphics name="25SrRNAe" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="496" y="104" width="45" height="17"/>
+    </entry>
+    <entry id="141" name="ko:K01984" type="ortholog">
+        <graphics name="5.8SrRNAe" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="587" y="104" width="45" height="17"/>
+    </entry>
+    <entry id="142" name="ko:K02869" type="ortholog">
+        <graphics name="RP-L12" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="751" y="451" width="46" height="17"/>
+    </entry>
+    <entry id="143" name="ko:K01979" type="ortholog">
+        <graphics name="18SrRNAe" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="646" y="104" width="45" height="17"/>
+    </entry>
+    <entry id="144" name="ko:K02944" type="ortholog">
+        <graphics name="RP-LX" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1006" y="711" width="45" height="17"/>
+    </entry>
+    <entry id="145" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="507" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="146" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="741" y="443" width="46" height="17"/>
+    </entry>
+    <entry id="147" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="832" y="443" width="46" height="17"/>
+    </entry>
+    <entry id="148" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="741" y="460" width="46" height="17"/>
+    </entry>
+    <entry id="149" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="832" y="460" width="46" height="17"/>
+    </entry>
+    <entry id="150" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="786" y="460" width="45" height="17"/>
+    </entry>
+    <entry id="151" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="553" y="667" width="46" height="17"/>
+    </entry>
+    <entry id="152" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="153" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="643" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="154" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="870" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="155" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="916" y="667" width="46" height="17"/>
+    </entry>
+    <entry id="156" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="961" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="157" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1006" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="158" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="689" y="667" width="46" height="17"/>
+    </entry>
+    <entry id="159" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="734" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="160" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="779" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="161" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="825" y="667" width="46" height="17"/>
+    </entry>
+    <entry id="162" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="417" y="667" width="46" height="17"/>
+    </entry>
+    <entry id="163" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="462" y="667" width="45" height="17"/>
+    </entry>
+    <entry id="164" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="650" y="434" width="45" height="17"/>
+    </entry>
+    <entry id="165" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="695" y="451" width="45" height="17"/>
+    </entry>
+    <entry id="166" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="695" y="468" width="45" height="17"/>
+    </entry>
+    <entry id="167" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1013" y="609" width="46" height="17"/>
+    </entry>
+    <entry id="168" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="876" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="169" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="944" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="170" name="ko:E" type="ortholog">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="786" y="443" width="45" height="17"/>
+    </entry>
+</pathway>

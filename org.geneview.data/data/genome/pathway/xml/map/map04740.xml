@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Feb 22 2007 16:11:00 +0900 (JST) -->
+<pathway name="path:map04740" org="map" number="04740"
+         title="Olfactory transduction"
+         image="http://www.genome.jp/kegg/pathway/map/map04740.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map04740">
+    <entry id="1" name="cpd:C00942" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00942">
+        <graphics name="C00942" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="405" y="309" width="8" height="8"/>
+    </entry>
+    <entry id="2" name="cpd:C00575" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00575">
+        <graphics name="C00575" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="294" y="388" width="8" height="8"/>
+    </entry>
+    <entry id="3" name="cpd:C00076" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00076">
+        <graphics name="C00076" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="279" y="515" width="8" height="8"/>
+    </entry>
+    <entry id="4" name="cpd:C00115" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00115">
+        <graphics name="C00115" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="618" y="429" width="8" height="8"/>
+    </entry>
+    <entry id="5" name="cpd:C01330" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01330">
+        <graphics name="C01330" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="279" y="576" width="8" height="8"/>
+    </entry>
+    <entry id="6" name="hsa:815 hsa:816 hsa:817 hsa:818 mmu:108058 mmu:12322 mmu:12323 mmu:12325 rno:171140 rno:24245 rno:24246 rno:25400" type="other">
+        <graphics name="CAMK2A..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="191" y="426" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:2774 mmu:14680 rno:24611" type="other">
+        <graphics name="GNAL..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="211" y="292" width="45" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:801 hsa:805 hsa:808 hsa:810 mmu:12313 mmu:12314 mmu:12315 mmu:70405 mmu:80796 rno:24242 rno:24244 rno:50663" type="other">
+        <graphics name="CALM1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="300" y="462" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:5137 mmu:18575 rno:81742" type="other">
+        <graphics name="PDE1C..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="371" y="401" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="hsa:5566 hsa:5567 hsa:5568 hsa:5613 hsa:5616 mmu:18747 mmu:18749 mmu:19108 rno:25636" type="other">
+        <graphics name="PRKACA..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="454" y="199" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="hsa:109 mmu:104111 rno:64508" type="other">
+        <graphics name="ADCY3..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="136" y="389" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="rno:113911" type="other">
+        <graphics name="Gucy2d" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="557" y="308" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:5132 mmu:20028 rno:25343" type="other">
+        <graphics name="PDC..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="246" y="237" width="45" height="17"/>
+    </entry>
+    <entry id="15" name="hsa:409 mmu:216869 rno:25388" type="other">
+        <graphics name="ARRB2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="226" y="154" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="path:map04740" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map04740">
+        <graphics name="TITLE:Olfactory transduction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="159" y="39" width="222" height="25"/>
+    </entry>
+    <entry id="17" name="hsa:1261 mmu:12790 rno:85257 hsa:1262 mmu:233649 rno:85258 hsa:1258 mmu:333329 rno:83686" type="other">
+        <graphics name="CNGA3, CNCG3, ACHM2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="136" y="546" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:5592 hsa:5593 mmu:19091 mmu:19092 rno:25523" type="other">
+        <graphics name="PRKG1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="288" y="323" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:2978 mmu:14913 rno:301233 hsa:2979 hsa:9626" type="other">
+        <graphics name="GUCA1A..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="474" y="382" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:157 mmu:320129 rno:25372" type="other">
+        <graphics name="ADRBK2..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="183" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:1179 mmu:12722 mmu:23844 rnno:308015 hsa:9635 mmu:229933 mmu:80797 rno:308016 hsa:9629 hsa:22802 mmu:229927 mmu:99663 rno:362052 rno:362053" type="other">
+        <graphics name="CLCA1..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="557" y="427" width="45" height="17"/>
+    </entry>
+    <relation entry1="12" entry2="18" type="PPrel">
+        <subtype name="compound" value="1"/>
+    </relation>
+    <relation entry1="11" entry2="17" type="PPrel">
+        <subtype name="compound" value="2"/>
+    </relation>
+    <relation entry1="10" entry2="11" type="PPrel">
+        <subtype name="compound" value="2"/>
+    </relation>
+    <relation entry1="8" entry2="17" type="PPrel">
+        <subtype name="compound" value="3"/>
+    </relation>
+    <relation entry1="17" entry2="19" type="PPrel">
+        <subtype name="compound" value="3"/>
+    </relation>
+    <relation entry1="17" entry2="21" type="PPrel">
+        <subtype name="compound" value="3"/>
+    </relation>
+    <relation entry1="7" entry2="11" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="8" entry2="6" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="8" entry2="9" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="19" entry2="12" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="10" entry2="13" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="18" entry2="11" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="10" entry2="12" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="6" entry2="11" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="7" entry2="13" type="PPrel">
+        <subtype name="dissociation" value="-+-"/>
+    </relation>
+</pathway>

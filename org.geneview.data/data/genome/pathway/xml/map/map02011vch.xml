@@ -1,0 +1,650 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:52 +0900 (JST) -->
+<pathway name="path:map02011vch" org="map" number="02011vch"
+         image="http://www.genome.jp/kegg/pathway/map/map02011vch.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map02011vch">
+    <entry id="1" name="cpd:C14819" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14819">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="326" y="167" width="645" height="334"/>
+    </entry>
+    <entry id="2" name="cpd:C14819" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14819">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="326" y="147" width="645" height="294"/>
+    </entry>
+    <entry id="3" name="cpd:C14819" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14819">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="326" y="127" width="645" height="254"/>
+    </entry>
+    <entry id="4" name="cpd:C14819" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14819">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="326" y="107" width="645" height="215"/>
+    </entry>
+    <entry id="5" name="cpd:C00602" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00602">
+        <graphics name="C00602" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="225" width="85" height="450"/>
+    </entry>
+    <entry id="6" name="cpd:C00059" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00059">
+        <graphics name="C00059" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="69" width="84" height="138"/>
+    </entry>
+    <entry id="7" name="cpd:C06769" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06769">
+        <graphics name="C06769" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="362" y="186" width="717" height="372"/>
+    </entry>
+    <entry id="8" name="cpd:C06767" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06767">
+        <graphics name="C06767" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="362" y="50" width="717" height="101"/>
+    </entry>
+    <entry id="9" name="cpd:C00038" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00038">
+        <graphics name="C00038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="363" y="205" width="718" height="410"/>
+    </entry>
+    <entry id="10" name="cpd:C14819" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14819">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="326" y="88" width="645" height="176"/>
+    </entry>
+    <entry id="11" name="cpd:C05776" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C05776">
+        <graphics name="C05776" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="326" y="69" width="645" height="138"/>
+    </entry>
+    <entry id="12" name="cpd:C00098" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00098">
+        <graphics name="C00098" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="186" width="368" height="372"/>
+    </entry>
+    <entry id="13" name="cpd:C00012" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00012">
+        <graphics name="C00012" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="225" width="368" height="450"/>
+    </entry>
+    <entry id="14" name="cpd:C00012" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00012">
+        <graphics name="C00012" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="205" width="368" height="410"/>
+    </entry>
+    <entry id="15" name="cpd:C00012" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00012">
+        <graphics name="C00012" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="167" width="368" height="334"/>
+    </entry>
+    <entry id="16" name="cpd:C00012" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00012">
+        <graphics name="C00012" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="147" width="368" height="294"/>
+    </entry>
+    <entry id="17" name="cpd:C02385" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02385">
+        <graphics name="C02385" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="127" width="368" height="254"/>
+    </entry>
+    <entry id="18" name="cpd:C00009" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00009">
+        <graphics name="C00009" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="264" width="85" height="529"/>
+    </entry>
+    <entry id="19" name="cpd:C00009" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00009">
+        <graphics name="C00009" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="244" width="85" height="489"/>
+    </entry>
+    <entry id="20" name="cpd:C00121" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00121">
+        <graphics name="C00121" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="206" width="84" height="412"/>
+    </entry>
+    <entry id="21" name="cpd:C00150" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00150">
+        <graphics name="C00150" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="186" width="85" height="373"/>
+    </entry>
+    <entry id="22" name="cpd:C00378" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00378">
+        <graphics name="C00378" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="148" width="85" height="297"/>
+    </entry>
+    <entry id="23" name="cpd:C00208" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00208">
+        <graphics name="C00208" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="128" width="84" height="257"/>
+    </entry>
+    <entry id="24" name="cpd:C00093" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00093">
+        <graphics name="C00093" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="109" width="84" height="218"/>
+    </entry>
+    <entry id="25" name="cpd:C00315 cpd:C00134" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00315+C00134">
+        <graphics name="C00315..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="89" width="84" height="179"/>
+    </entry>
+    <entry id="26" name="cpd:C00059" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00059">
+        <graphics name="C00059" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="50" width="84" height="101"/>
+    </entry>
+    <entry id="27" name="path:map02011" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02011">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="290" y="36" width="362" height="25"/>
+    </entry>
+    <entry id="28" name="vch:VC1525" type="ortholog">
+        <graphics name="VC1525" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="262" y="138" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="vch:VC1524" type="ortholog">
+        <graphics name="VC1524" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="138" width="46" height="17"/>
+    </entry>
+    <entry id="30" name="vch:VC1523" type="ortholog">
+        <graphics name="VC1523" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="138" width="45" height="17"/>
+    </entry>
+    <entry id="31" name="vch:VC1666" type="ortholog">
+        <graphics name="VC1666" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="261" y="335" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="vch:VC1665" type="ortholog">
+        <graphics name="VC1665" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="216" y="335" width="46" height="17"/>
+    </entry>
+    <entry id="33" name="vch:VC1644" type="ortholog">
+        <graphics name="VC1644" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="142" y="335" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="vch:VC1327" type="ortholog">
+        <graphics name="VC1327" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="450" width="45" height="17"/>
+    </entry>
+    <entry id="35" name="vch:VC1328" type="ortholog">
+        <graphics name="VC1328" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="450" width="46" height="17"/>
+    </entry>
+    <entry id="36" name="vch:VC1325" type="ortholog">
+        <graphics name="VC1325" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="450" width="45" height="17"/>
+    </entry>
+    <entry id="37" name="vch:VC0602" type="ortholog">
+        <graphics name="VC0602" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="333" width="45" height="17"/>
+    </entry>
+    <entry id="38" name="vch:VC0601" type="ortholog">
+        <graphics name="VC0601" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="333" width="45" height="17"/>
+    </entry>
+    <entry id="39" name="vch:VC2520" type="ortholog">
+        <graphics name="VC2520" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="40" name="vch:VC2519" type="ortholog">
+        <graphics name="VC2519" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="526" width="46" height="17"/>
+    </entry>
+    <entry id="41" name="vch:VC2518" type="ortholog">
+        <graphics name="VC2518" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="526" width="45" height="17"/>
+    </entry>
+    <entry id="42" name="vch:VC1862" type="ortholog">
+        <graphics name="VC1862" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="129" width="45" height="17"/>
+    </entry>
+    <entry id="43" name="vch:VC0779" type="ortholog">
+        <graphics name="VC0779" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="372" width="45" height="17"/>
+    </entry>
+    <entry id="44" name="vch:VCA0687" type="ortholog">
+        <graphics name="VCA0687" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="294" width="45" height="17"/>
+    </entry>
+    <entry id="45" name="vch:VCA0230" type="ortholog">
+        <graphics name="VCA0230" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="901" y="215" width="45" height="17"/>
+    </entry>
+    <entry id="46" name="vch:VC0610" type="ortholog">
+        <graphics name="VC0610" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="253" width="45" height="17"/>
+    </entry>
+    <entry id="47" name="vch:VC0201" type="ortholog">
+        <graphics name="VC0201" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="898" y="175" width="45" height="17"/>
+    </entry>
+    <entry id="48" name="vch:VC1245" type="ortholog">
+        <graphics name="VC1245" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="896" y="137" width="45" height="17"/>
+    </entry>
+    <entry id="49" name="vch:VCA0915" type="ortholog">
+        <graphics name="VCA0915" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="50" name="vch:VC0589" type="ortholog">
+        <graphics name="VC0589" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="486" width="45" height="17"/>
+    </entry>
+    <entry id="51" name="vch:VC0247" type="ortholog">
+        <graphics name="VC0247" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="448" width="45" height="17"/>
+    </entry>
+    <entry id="52" name="vch:VC2083" type="ortholog">
+        <graphics name="VC2083" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="897" y="410" width="45" height="17"/>
+    </entry>
+    <entry id="53" name="vch:VC0778" type="ortholog">
+        <graphics name="VC0778" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="380" width="45" height="17"/>
+    </entry>
+    <entry id="54" name="vch:VC0777" type="ortholog">
+        <graphics name="VC0777" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="363" width="45" height="17"/>
+    </entry>
+    <entry id="55" name="vch:VCA0686" type="ortholog">
+        <graphics name="VCA0686" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="294" width="45" height="17"/>
+    </entry>
+    <entry id="56" name="vch:VCA0229" type="ortholog">
+        <graphics name="VCA0229" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="856" y="223" width="45" height="17"/>
+    </entry>
+    <entry id="57" name="vch:VCA0228" type="ortholog">
+        <graphics name="VCA0228" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="856" y="206" width="45" height="17"/>
+    </entry>
+    <entry id="58" name="vch:VC0609" type="ortholog">
+        <graphics name="VC0609" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="253" width="45" height="17"/>
+    </entry>
+    <entry id="59" name="vch:VC0203" type="ortholog">
+        <graphics name="VC0203" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="853" y="175" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="vch:VC1244" type="ortholog">
+        <graphics name="VC1244" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="137" width="44" height="17"/>
+    </entry>
+    <entry id="61" name="vch:VCA0914" type="ortholog">
+        <graphics name="VCA0914" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="62" name="vch:VC0590" type="ortholog">
+        <graphics name="VC0590" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="486" width="45" height="17"/>
+    </entry>
+    <entry id="63" name="vch:VC2046" type="ortholog">
+        <graphics name="VC2046" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="448" width="45" height="17"/>
+    </entry>
+    <entry id="64" name="vch:VC2082" type="ortholog">
+        <graphics name="VC2082" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="852" y="410" width="45" height="17"/>
+    </entry>
+    <entry id="65" name="vch:VC0776" type="ortholog">
+        <graphics name="VC0776" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="777" y="372" width="45" height="17"/>
+    </entry>
+    <entry id="66" name="vch:VCA0685" type="ortholog">
+        <graphics name="VCA0685" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="777" y="294" width="45" height="17"/>
+    </entry>
+    <entry id="67" name="vch:VCA0227" type="ortholog">
+        <graphics name="VCA0227" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="777" y="214" width="45" height="17"/>
+    </entry>
+    <entry id="68" name="vch:VC0608" type="ortholog">
+        <graphics name="VC0608" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="777" y="253" width="45" height="17"/>
+    </entry>
+    <entry id="69" name="vch:VC0202" type="ortholog">
+        <graphics name="VC0202" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="777" y="175" width="45" height="17"/>
+    </entry>
+    <entry id="70" name="vch:VCA0913" type="ortholog">
+        <graphics name="VCA0913" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="777" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="71" name="vch:VC2081" type="ortholog">
+        <graphics name="VC2081" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="778" y="410" width="45" height="17"/>
+    </entry>
+    <entry id="72" name="vch:VC0475" type="ortholog">
+        <graphics name="VC0475" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="703" y="253" width="45" height="17"/>
+    </entry>
+    <entry id="73" name="vch:VC0200" type="ortholog">
+        <graphics name="VC0200" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="703" y="175" width="45" height="17"/>
+    </entry>
+    <entry id="74" name="vch:VC0156" type="ortholog">
+        <graphics name="VC0156" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="703" y="137" width="45" height="17"/>
+    </entry>
+    <entry id="75" name="vch:VCA1101" type="ortholog">
+        <graphics name="VCA1101" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="487" width="45" height="17"/>
+    </entry>
+    <entry id="76" name="vch:VCA0588" type="ortholog">
+        <graphics name="VCA0588" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="449" width="45" height="17"/>
+    </entry>
+    <entry id="77" name="vch:VC1684" type="ortholog">
+        <graphics name="VC1684" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="418" width="45" height="17"/>
+    </entry>
+    <entry id="78" name="vch:VC1683" type="ortholog">
+        <graphics name="VC1683" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="401" width="45" height="17"/>
+    </entry>
+    <entry id="79" name="vch:VC1095" type="ortholog">
+        <graphics name="VC1095" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="380" width="45" height="17"/>
+    </entry>
+    <entry id="80" name="vch:VC1094" type="ortholog">
+        <graphics name="VC1094" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="363" width="45" height="17"/>
+    </entry>
+    <entry id="81" name="vch:VC0616" type="ortholog">
+        <graphics name="VC0616" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="342" width="45" height="17"/>
+    </entry>
+    <entry id="82" name="vch:VC0617" type="ortholog">
+        <graphics name="VC0617" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="325" width="45" height="17"/>
+    </entry>
+    <entry id="83" name="vch:VC0170" type="ortholog">
+        <graphics name="VC0170" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="294" width="45" height="17"/>
+    </entry>
+    <entry id="84" name="vch:VCA0760" type="ortholog">
+        <graphics name="VCA0760" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="254" width="45" height="17"/>
+    </entry>
+    <entry id="85" name="vch:VC1359" type="ortholog">
+        <graphics name="VC1359" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="215" width="45" height="17"/>
+    </entry>
+    <entry id="86" name="vch:VCA1037" type="ortholog">
+        <graphics name="VCA1037" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="175" width="45" height="17"/>
+    </entry>
+    <entry id="87" name="vch:VC1864" type="ortholog">
+        <graphics name="VC1864" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="138" width="45" height="17"/>
+    </entry>
+    <entry id="88" name="vch:VCA1100" type="ortholog">
+        <graphics name="VCA1100" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="495" width="45" height="17"/>
+    </entry>
+    <entry id="89" name="vch:VCA1099" type="ortholog">
+        <graphics name="VCA1099" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="478" width="45" height="17"/>
+    </entry>
+    <entry id="90" name="vch:VCA0589" type="ortholog">
+        <graphics name="VCA0589" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="457" width="45" height="17"/>
+    </entry>
+    <entry id="91" name="vch:VCA0590" type="ortholog">
+        <graphics name="VCA0590" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="440" width="45" height="17"/>
+    </entry>
+    <entry id="92" name="vch:VC1682" type="ortholog">
+        <graphics name="VC1682" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="418" width="45" height="17"/>
+    </entry>
+    <entry id="93" name="vch:VC1681" type="ortholog">
+        <graphics name="VC1681" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="401" width="45" height="17"/>
+    </entry>
+    <entry id="94" name="vch:VC1093" type="ortholog">
+        <graphics name="VC1093" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="380" width="45" height="17"/>
+    </entry>
+    <entry id="95" name="vch:VC1092" type="ortholog">
+        <graphics name="VC1092" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="363" width="45" height="17"/>
+    </entry>
+    <entry id="96" name="vch:VC0618" type="ortholog">
+        <graphics name="VC0618" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="342" width="45" height="17"/>
+    </entry>
+    <entry id="97" name="vch:VC0619" type="ortholog">
+        <graphics name="VC0619" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="325" width="45" height="17"/>
+    </entry>
+    <entry id="98" name="vch:VC0173" type="ortholog">
+        <graphics name="VC0173" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="302" width="45" height="17"/>
+    </entry>
+    <entry id="99" name="vch:VC0172" type="ortholog">
+        <graphics name="VC0172" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="285" width="45" height="17"/>
+    </entry>
+    <entry id="100" name="vch:VCA0757" type="ortholog">
+        <graphics name="VCA0757" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="262" width="45" height="17"/>
+    </entry>
+    <entry id="101" name="vch:VCA0758" type="ortholog">
+        <graphics name="VCA0758" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="245" width="45" height="17"/>
+    </entry>
+    <entry id="102" name="vch:VC1360" type="ortholog">
+        <graphics name="VC1360" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="223" width="45" height="17"/>
+    </entry>
+    <entry id="103" name="vch:VC1361" type="ortholog">
+        <graphics name="VC1361" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="206" width="45" height="17"/>
+    </entry>
+    <entry id="104" name="vch:VCA1038" type="ortholog">
+        <graphics name="VCA1038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="183" width="45" height="17"/>
+    </entry>
+    <entry id="105" name="vch:VCA1040" type="ortholog">
+        <graphics name="VCA1040" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="166" width="45" height="17"/>
+    </entry>
+    <entry id="106" name="vch:VC1861" type="ortholog">
+        <graphics name="VC1861" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="146" width="45" height="17"/>
+    </entry>
+    <entry id="107" name="vch:VCA1098" type="ortholog">
+        <graphics name="VCA1098" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="487" width="45" height="17"/>
+    </entry>
+    <entry id="108" name="vch:VCA0591" type="ortholog">
+        <graphics name="VCA0591" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="449" width="45" height="17"/>
+    </entry>
+    <entry id="109" name="vch:VC1680" type="ortholog">
+        <graphics name="VC1680" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="410" width="45" height="17"/>
+    </entry>
+    <entry id="110" name="vch:VC1091" type="ortholog">
+        <graphics name="VC1091" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="372" width="45" height="17"/>
+    </entry>
+    <entry id="111" name="vch:VC0620" type="ortholog">
+        <graphics name="VC0620" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="334" width="45" height="17"/>
+    </entry>
+    <entry id="112" name="vch:VC0171" type="ortholog">
+        <graphics name="VC0171" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="294" width="45" height="17"/>
+    </entry>
+    <entry id="113" name="vch:VCA0759" type="ortholog">
+        <graphics name="VCA0759" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="254" width="45" height="17"/>
+    </entry>
+    <entry id="114" name="vch:VC1362" type="ortholog">
+        <graphics name="VC1362" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="214" width="45" height="17"/>
+    </entry>
+    <entry id="115" name="vch:VCA1039" type="ortholog">
+        <graphics name="VCA1039" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="175" width="45" height="17"/>
+    </entry>
+    <entry id="116" name="vch:VC1863" type="ortholog">
+        <graphics name="VC1863" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="138" width="45" height="17"/>
+    </entry>
+    <entry id="117" name="vch:VC0008" type="ortholog">
+        <graphics name="VC0008" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="547" y="100" width="45" height="17"/>
+    </entry>
+    <entry id="118" name="vch:VCA0073" type="ortholog">
+        <graphics name="VCA0073" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="262" y="529" width="45" height="17"/>
+    </entry>
+    <entry id="119" name="vch:VC0726" type="ortholog">
+        <graphics name="VC0726" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="489" width="44" height="17"/>
+    </entry>
+    <entry id="120" name="vch:VCA0127" type="ortholog">
+        <graphics name="VCA0127" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="412" width="45" height="17"/>
+    </entry>
+    <entry id="121" name="vch:VC0009" type="ortholog">
+        <graphics name="VC0009" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="502" y="92" width="45" height="17"/>
+    </entry>
+    <entry id="122" name="vch:VCA0072" type="ortholog">
+        <graphics name="VCA0072" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="537" width="45" height="17"/>
+    </entry>
+    <entry id="123" name="vch:VCA0071" type="ortholog">
+        <graphics name="VCA0071" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="520" width="45" height="17"/>
+    </entry>
+    <entry id="124" name="vch:VC0725" type="ortholog">
+        <graphics name="VC0725" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="497" width="45" height="17"/>
+    </entry>
+    <entry id="125" name="vch:VC0724" type="ortholog">
+        <graphics name="VC0724" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="480" width="45" height="17"/>
+    </entry>
+    <entry id="126" name="vch:VCA0128" type="ortholog">
+        <graphics name="VCA0128" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="420" width="46" height="17"/>
+    </entry>
+    <entry id="127" name="vch:VCA0129" type="ortholog">
+        <graphics name="VCA0129" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="403" width="46" height="17"/>
+    </entry>
+    <entry id="128" name="vch:VC0010" type="ortholog">
+        <graphics name="VC0010" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="428" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="129" name="vch:VCA0070" type="ortholog">
+        <graphics name="VCA0070" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="529" width="45" height="17"/>
+    </entry>
+    <entry id="130" name="vch:VC0721" type="ortholog">
+        <graphics name="VC0721" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="489" width="45" height="17"/>
+    </entry>
+    <entry id="131" name="vch:VCA0130" type="ortholog">
+        <graphics name="VCA0130" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="412" width="45" height="17"/>
+    </entry>
+    <entry id="132" name="vch:VCA0724" type="ortholog">
+        <graphics name="VCA0724" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="373" width="45" height="17"/>
+    </entry>
+    <entry id="133" name="vch:VCA0725" type="ortholog">
+        <graphics name="VCA0725" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="373" width="46" height="17"/>
+    </entry>
+    <entry id="134" name="vch:VCA0726" type="ortholog">
+        <graphics name="VCA0726" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="373" width="45" height="17"/>
+    </entry>
+    <entry id="135" name="vch:VC2537" type="ortholog">
+        <graphics name="VC2537" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="297" width="45" height="17"/>
+    </entry>
+    <entry id="136" name="vch:VC2538" type="ortholog">
+        <graphics name="VC2538" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="297" width="46" height="17"/>
+    </entry>
+    <entry id="137" name="vch:VC2539" type="ortholog">
+        <graphics name="VC2539" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="297" width="45" height="17"/>
+    </entry>
+    <entry id="138" name="vch:VCA0946" type="ortholog">
+        <graphics name="VCA0946" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="257" width="45" height="17"/>
+    </entry>
+    <entry id="139" name="vch:VCA0943" type="ortholog">
+        <graphics name="VCA0943" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="265" width="46" height="17"/>
+    </entry>
+    <entry id="140" name="vch:VCA0944" type="ortholog">
+        <graphics name="VCA0944" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="248" width="46" height="17"/>
+    </entry>
+    <entry id="141" name="vch:VCA0945" type="ortholog">
+        <graphics name="VCA0945" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="257" width="45" height="17"/>
+    </entry>
+    <entry id="142" name="vch:VC1552" type="ortholog">
+        <graphics name="VC1552" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="217" width="45" height="17"/>
+    </entry>
+    <entry id="143" name="vch:VC1551" type="ortholog">
+        <graphics name="VC1551" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="225" width="46" height="17"/>
+    </entry>
+    <entry id="144" name="vch:VC1550" type="ortholog">
+        <graphics name="VC1550" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="208" width="46" height="17"/>
+    </entry>
+    <entry id="145" name="vch:VC1549" type="ortholog">
+        <graphics name="VC1549" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="216" width="45" height="17"/>
+    </entry>
+    <entry id="146" name="vch:VC1428" type="ortholog">
+        <graphics name="VC1428" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="178" width="45" height="17"/>
+    </entry>
+    <entry id="147" name="vch:VC1427" type="ortholog">
+        <graphics name="VC1427" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="186" width="46" height="17"/>
+    </entry>
+    <entry id="148" name="vch:VC1426" type="ortholog">
+        <graphics name="VC1426" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="169" width="46" height="17"/>
+    </entry>
+    <entry id="149" name="vch:VC1425" type="ortholog">
+        <graphics name="VC1425" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="186" width="45" height="17"/>
+    </entry>
+    <entry id="150" name="vch:VC1424" type="ortholog">
+        <graphics name="VC1424" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="169" width="45" height="17"/>
+    </entry>
+    <entry id="151" name="vch:VC0541" type="ortholog">
+        <graphics name="VC0541" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="152" name="vch:VC0540" type="ortholog">
+        <graphics name="VC0540" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="109" width="46" height="17"/>
+    </entry>
+    <entry id="153" name="vch:VC0539" type="ortholog">
+        <graphics name="VC0539" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="92" width="46" height="17"/>
+    </entry>
+    <entry id="154" name="vch:VC0538" type="ortholog">
+        <graphics name="VC0538" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="101" width="45" height="17"/>
+    </entry>
+</pathway>

@@ -1,0 +1,25 @@
+<imagemap image="map01150.gif">
+
+  <area shape="rect"	coords="222,160,307,193"	link="map00350.xml" />
+  <area shape="rect"	coords="322,645,533,731"	link="map00330.xml" />
+  <area shape="rect"	coords="322,547,533,645"	link="map00220.xml" />
+  <area shape="rect"	coords="49,408,274,624"		link="map00252.xml" />
+  <area shape="rect"	coords="313,493,530,543"	link="map00310.xml" />
+  <area shape="rect"	coords="313,440,530,493"	link="map00300.xml" />
+  <area shape="rect"	coords="325,362,466,433"	link="map00271.xml" />
+  <area shape="rect"	coords="111,355,238,408"	link="map00280.xml" />
+  <area shape="rect"	coords="111,296,238,355"	link="map00290.xml" />
+  <area shape="rect"	coords="325,253,433,362"	link="map00260.xml" />
+  <area shape="rect"	coords="51,113,222,193"		link="map00400.xml" />
+  <area shape="rect"	coords="307,160,470,253"	link="map00380.xml" />
+  <area shape="rect"	coords="128,193,307,253"	link="map00360.xml" />
+  <area shape="rect"	coords="222,113,380,160"	link="map00350.xml" />
+  <area shape="rect"	coords="380,113,511,160"	link="map00340.xml" />
+  <area shape="rect"	coords="242,70,511,113"		link="map00340.xml" />
+  <area shape="rect"	coords="238,296,325,408"	link="map00272.xml" />
+  <area shape="rect"	coords="37,253,325,296"		link="map00260.xml" />
+  <area shape="rect"	coords="433,253,471,280"	link="map00380.xml" />
+  <area shape="rect"	coords="49,624,313,715"		link="map00251.xml" />
+  <area shape="rect"	coords="274,408,313,624"	link="map00251.xml" />
+
+</imagemap>

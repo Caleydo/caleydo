@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01195" org="map" number="01195"
+         title="Biosynthesis of Secondary Metabolites"
+         image="http://www.genome.jp/kegg/pathway/map/map01195.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01195">
+    <entry id="1" name="path:map00331" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00331.html">
+        <graphics name="Clavulanic acid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="460" y="631" width="101" height="99"/>
+    </entry>
+    <entry id="2" name="path:map00231" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00231.html">
+        <graphics name="Puromycin biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="398" y="259" width="173" height="49"/>
+    </entry>
+    <entry id="3" name="path:map00253" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00253.html">
+        <graphics name="Tetracycline biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="102" y="728" width="145" height="77"/>
+    </entry>
+    <entry id="4" name="path:map00522" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00522.html">
+        <graphics name="Biosynthesis of 12-, 14- and 16-membered macrolides" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="111" y="132" width="160" height="106"/>
+    </entry>
+    <entry id="5" name="path:map00960" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00960.html">
+        <graphics name="Alkaloid biosynthesis II" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="296" y="664" width="234" height="165"/>
+    </entry>
+    <entry id="6" name="path:map00950" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00950.html">
+        <graphics name="Alkaloid biosynthesis I" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="394" y="371" width="182" height="169"/>
+    </entry>
+    <entry id="7" name="path:map00311" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00311.html">
+        <graphics name="Penicillin and cephalosporin biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="308" y="529" width="194" height="92"/>
+    </entry>
+    <entry id="8" name="path:map00900" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00900.html">
+        <graphics name="Terpenoid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="227" y="406" width="147" height="147"/>
+    </entry>
+    <entry id="9" name="path:map00521" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00521.html">
+        <graphics name="Streptomycin biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="242" y="232" width="94" height="193"/>
+    </entry>
+    <entry id="10" name="path:map00940" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00940.html">
+        <graphics name="Phenylpropanoid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="389" y="132" width="191" height="201"/>
+    </entry>
+</pathway>

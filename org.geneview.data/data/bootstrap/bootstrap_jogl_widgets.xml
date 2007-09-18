@@ -1,0 +1,50 @@
+<cerberus	version="0.1">
+
+	<workspace title="primary" server="localhost">
+	
+	<Application remote="no" IP="127.0.0.1"	port="4000"	>
+	
+		<CommandBuffer>
+				
+			<!--
+			
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	
+			  detail="data/genome/microarray/gpr_format/test_dataset_001.gpr"	
+				attrib1="SKIP;SKIP;INT;ABORT" 
+				attrib2="35101" 
+				attrib3="1 -1" />
+			
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE_N_STORAGES"	cmdId="99010"	uniqueId="-1"	
+				detail="data/genome/microarray/gpr_format/slide30.gpr"	
+				attrib1="SKIP;SKIP;SKIP;STRING;STRING;INT;ABORT" 
+				attrib2="55101" attrib3="32 -1" />
+			
+			-->
+
+			<!-- Window	11331	-->
+		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	uniqueId="11331" 
+			  label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="51991"	uniqueId="14331" 
+		 	  parent="11331" label="swt	container	2"	attrib2="ROW	VERTICAL"	/>			
+		
+		  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="68991"	uniqueId="91401" 
+		    parent="14331" label="Canvas"						attrib2="300	300" detail="1077991"
+		    gl_origin="0 0 0" gl_rotation="0 0 1 -10"	gl_forwarder="99081" />			
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_WIDGET"		cmdId="68992"	uniqueId="78401" parent="91401" 
+				label="GL Triangle	A"	
+				gl_origin="0 2 0" gl_rotation="0 0 1 0.85"
+				attrib3="0 20 0 20 -0.5f -3f        -1.0f 1.0f     -3.0f -1.0f   -1.0f  0.0f     30 4.0f"								
+				detail="45101" />
+	
+		 
+	 </CommandBuffer>
+		
+	</Application>
+	
+	</workspace>
+
+</cerberus>

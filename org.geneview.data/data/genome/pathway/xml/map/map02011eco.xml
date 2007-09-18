@@ -1,0 +1,966 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:51 +0900 (JST) -->
+<pathway name="path:map02011eco" org="map" number="02011eco"
+         image="http://www.genome.jp/kegg/pathway/map/map02011eco.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map02011eco">
+    <entry id="1" name="cpd:C00855" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00855">
+        <graphics name="C00855" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="281" width="709" height="563"/>
+    </entry>
+    <entry id="2" name="cpd:C00097" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00097">
+        <graphics name="C00097" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="86" width="368" height="172"/>
+    </entry>
+    <entry id="3" name="cpd:C14819" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C14819">
+        <graphics name="C14819" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="83" y="318" width="159" height="636"/>
+    </entry>
+    <entry id="4" name="cpd:C01487" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01487">
+        <graphics name="C01487" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="152" width="84" height="304"/>
+    </entry>
+    <entry id="5" name="path:map02011" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02011">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="290" y="37" width="361" height="25"/>
+    </entry>
+    <entry id="6" name="cpd:C00121" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00121">
+        <graphics name="C00121" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="50" width="84" height="101"/>
+    </entry>
+    <entry id="7" name="cpd:C00124" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00124">
+        <graphics name="C00124" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="67" width="84" height="135"/>
+    </entry>
+    <entry id="8" name="cpd:C00181" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00181">
+        <graphics name="C00181" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="84" width="84" height="169"/>
+    </entry>
+    <entry id="9" name="cpd:C00208" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00208">
+        <graphics name="C00208" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="187" width="84" height="375"/>
+    </entry>
+    <entry id="10" name="cpd:C00064" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00064">
+        <graphics name="C00064" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="50" width="368" height="101"/>
+    </entry>
+    <entry id="11" name="cpd:C00025 cpd:C00049" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00025+C00049">
+        <graphics name="C00025..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="67" width="368" height="135"/>
+    </entry>
+    <entry id="12" name="cpd:C00719 cpd:C00148" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00719+C00148">
+        <graphics name="C00719..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="331" width="368" height="662"/>
+    </entry>
+    <entry id="13" name="cpd:C02385" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C02385">
+        <graphics name="C02385" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="127" width="368" height="255"/>
+    </entry>
+    <entry id="14" name="cpd:C00047 cpd:C02385 cpd:C00077" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00047+C02385+C00077">
+        <graphics name="C00047..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="187" y="148" width="367" height="296"/>
+    </entry>
+    <entry id="15" name="cpd:C00012" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00012">
+        <graphics name="C00012" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="205" width="368" height="411"/>
+    </entry>
+    <entry id="16" name="cpd:C00107" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00107">
+        <graphics name="C00107" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="226" width="368" height="453"/>
+    </entry>
+    <entry id="17" name="cpd:C00098" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00098">
+        <graphics name="C00098" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="188" y="248" width="368" height="496"/>
+    </entry>
+    <entry id="18" name="cpd:C00315 cpd:C00134" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00315+C00134">
+        <graphics name="C00315..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="258" width="85" height="517"/>
+    </entry>
+    <entry id="19" name="cpd:C00134" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00134">
+        <graphics name="C00134" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="278" width="84" height="557"/>
+    </entry>
+    <entry id="20" name="cpd:C00378" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00378">
+        <graphics name="C00378" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="167" width="709" height="334"/>
+    </entry>
+    <entry id="21" name="cpd:C00009" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00009">
+        <graphics name="C00009" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="218" width="709" height="436"/>
+    </entry>
+    <entry id="22" name="cpd:C00093" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00093">
+        <graphics name="C00093" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="236" width="85" height="473"/>
+    </entry>
+    <entry id="23" name="cpd:C00059" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00059">
+        <graphics name="C00059" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="253" width="709" height="506"/>
+    </entry>
+    <entry id="24" name="cpd:C00291" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00291">
+        <graphics name="C00291" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="129" width="709" height="259"/>
+    </entry>
+    <entry id="25" name="cpd:C06232" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06232">
+        <graphics name="C06232" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="151" width="709" height="302"/>
+    </entry>
+    <entry id="26" name="cpd:C05776" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C05776">
+        <graphics name="C05776" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="199" width="709" height="399"/>
+    </entry>
+    <entry id="27" name="cpd:C06227" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06227">
+        <graphics name="C06227" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="321" y="51" width="634" height="103"/>
+    </entry>
+    <entry id="28" name="cpd:C06235" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06235">
+        <graphics name="C06235" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="236" width="709" height="472"/>
+    </entry>
+    <entry id="29" name="cpd:C06230" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06230">
+        <graphics name="C06230" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="321" y="92" width="634" height="184"/>
+    </entry>
+    <entry id="30" name="cpd:C06229" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C06229">
+        <graphics name="C06229" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="321" y="69" width="635" height="139"/>
+    </entry>
+    <entry id="31" name="cpd:C00135" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00135">
+        <graphics name="C00135" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="187" y="160" width="367" height="321"/>
+    </entry>
+    <entry id="32" name="cpd:C00123 cpd:C00407 cpd:C00183" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00123+C00407+C00183">
+        <graphics name="C00123..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="187" y="187" width="367" height="375"/>
+    </entry>
+    <entry id="33" name="cpd:C00123" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00123">
+        <graphics name="C00123" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="187" y="175" width="367" height="350"/>
+    </entry>
+    <entry id="34" name="cpd:C00259" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00259">
+        <graphics name="C00259" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="46" y="101" width="84" height="203"/>
+    </entry>
+    <entry id="35" name="cpd:C00114" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00114">
+        <graphics name="C00114" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="187" y="349" width="367" height="699"/>
+    </entry>
+    <entry id="36" name="cpd:C00245" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00245">
+        <graphics name="C00245" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="187" y="368" width="367" height="737"/>
+    </entry>
+    <entry id="37" name="cpd:C00038" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00038">
+        <graphics name="C00038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="110" width="709" height="221"/>
+    </entry>
+    <entry id="38" name="cpd:C00320" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00320">
+        <graphics name="C00320" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="264" width="709" height="528"/>
+    </entry>
+    <entry id="39" name="cpd:C00032" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00032">
+        <graphics name="C00032" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="358" y="299" width="709" height="599"/>
+    </entry>
+    <entry id="40" name="eco:b0760" type="ortholog">
+        <graphics name="b0760" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="311" width="45" height="17"/>
+    </entry>
+    <entry id="41" name="eco:b4046" type="ortholog">
+        <graphics name="b4046" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="953" y="221" width="45" height="17"/>
+    </entry>
+    <entry id="42" name="eco:b0588" type="ortholog">
+        <graphics name="b0588" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="182" width="45" height="17"/>
+    </entry>
+    <entry id="43" name="eco:b0589" type="ortholog">
+        <graphics name="b0589" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="191" width="45" height="17"/>
+    </entry>
+    <entry id="44" name="eco:b0590" type="ortholog">
+        <graphics name="b0590" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="174" width="45" height="17"/>
+    </entry>
+    <entry id="45" name="eco:b0592" type="ortholog">
+        <graphics name="b0592" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="183" width="45" height="17"/>
+    </entry>
+    <entry id="46" name="eco:b0584" type="ortholog">
+        <graphics name="b0584" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="183" width="45" height="17"/>
+    </entry>
+    <entry id="47" name="eco:b4287" type="ortholog">
+        <graphics name="b4287" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="887" y="137" width="45" height="17"/>
+    </entry>
+    <entry id="48" name="eco:b4288" type="ortholog">
+        <graphics name="b4288" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="842" y="146" width="46" height="17"/>
+    </entry>
+    <entry id="49" name="eco:b4289" type="ortholog">
+        <graphics name="b4289" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="842" y="129" width="46" height="17"/>
+    </entry>
+    <entry id="50" name="eco:b4290" type="ortholog">
+        <graphics name="b4290" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="138" width="45" height="17"/>
+    </entry>
+    <entry id="51" name="eco:b4291" type="ortholog">
+        <graphics name="b4291" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="138" width="45" height="17"/>
+    </entry>
+    <entry id="52" name="eco:b0151" type="ortholog">
+        <graphics name="b0151" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="53" name="eco:b0153" type="ortholog">
+        <graphics name="b0153" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="842" y="101" width="44" height="17"/>
+    </entry>
+    <entry id="54" name="eco:b0152" type="ortholog">
+        <graphics name="b0152" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="55" name="eco:b0150" type="ortholog">
+        <graphics name="b0150" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="693" y="102" width="45" height="17"/>
+    </entry>
+    <entry id="56" name="eco:b0765" type="ortholog">
+        <graphics name="b0765" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="294" width="45" height="17"/>
+    </entry>
+    <entry id="57" name="eco:b0764" type="ortholog">
+        <graphics name="b0764" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="302" width="45" height="17"/>
+    </entry>
+    <entry id="58" name="eco:b0763" type="ortholog">
+        <graphics name="b0763" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="301" width="45" height="17"/>
+    </entry>
+    <entry id="59" name="eco:b3480" type="ortholog">
+        <graphics name="b3480" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="267" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="eco:b3479" type="ortholog">
+        <graphics name="b3479" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="250" width="46" height="17"/>
+    </entry>
+    <entry id="61" name="eco:b3478" type="ortholog">
+        <graphics name="b3478" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="267" width="44" height="17"/>
+    </entry>
+    <entry id="62" name="eco:b3477" type="ortholog">
+        <graphics name="b3477" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="250" width="44" height="17"/>
+    </entry>
+    <entry id="63" name="eco:b3476" type="ortholog">
+        <graphics name="b3476" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="259" width="45" height="17"/>
+    </entry>
+    <entry id="64" name="eco:b2422" type="ortholog">
+        <graphics name="b2422" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="885" y="516" width="45" height="17"/>
+    </entry>
+    <entry id="65" name="eco:b2423" type="ortholog">
+        <graphics name="b2423" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="840" y="525" width="45" height="15"/>
+    </entry>
+    <entry id="66" name="eco:b2424" type="ortholog">
+        <graphics name="b2424" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="840" y="509" width="45" height="17"/>
+    </entry>
+    <entry id="67" name="eco:b3917" type="ortholog">
+        <graphics name="b3917" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="766" y="506" width="45" height="17"/>
+    </entry>
+    <entry id="68" name="eco:b4106" type="ortholog">
+        <graphics name="b4106" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="887" y="472" width="46" height="17"/>
+    </entry>
+    <entry id="69" name="eco:b4104" type="ortholog">
+        <graphics name="b4104" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="472" width="45" height="17"/>
+    </entry>
+    <entry id="70" name="eco:b4105" type="ortholog">
+        <graphics name="b4105" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="471" width="45" height="17"/>
+    </entry>
+    <entry id="71" name="eco:b3450" type="ortholog">
+        <graphics name="b3450" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="473" width="44" height="17"/>
+    </entry>
+    <entry id="72" name="eco:b3451" type="ortholog">
+        <graphics name="b3451" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="481" width="45" height="17"/>
+    </entry>
+    <entry id="73" name="eco:b3452" type="ortholog">
+        <graphics name="b3452" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="464" width="45" height="17"/>
+    </entry>
+    <entry id="74" name="eco:b3453" type="ortholog">
+        <graphics name="b3453" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="473" width="45" height="17"/>
+    </entry>
+    <entry id="75" name="eco:b3725" type="ortholog">
+        <graphics name="b3725" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="436" width="45" height="17"/>
+    </entry>
+    <entry id="76" name="eco:b3726" type="ortholog">
+        <graphics name="b3726" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="444" width="45" height="17"/>
+    </entry>
+    <entry id="77" name="eco:b3727" type="ortholog">
+        <graphics name="b3727" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="427" width="45" height="17"/>
+    </entry>
+    <entry id="78" name="eco:b3728" type="ortholog">
+        <graphics name="b3728" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="436" width="45" height="17"/>
+    </entry>
+    <entry id="79" name="eco:b1709" type="ortholog">
+        <graphics name="b1709" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="398" width="45" height="17"/>
+    </entry>
+    <entry id="80" name="eco:b1711" type="ortholog">
+        <graphics name="b1711" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="398" width="45" height="17"/>
+    </entry>
+    <entry id="81" name="eco:b1710" type="ortholog">
+        <graphics name="b1710" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="398" width="45" height="17"/>
+    </entry>
+    <entry id="82" name="eco:b0066" type="ortholog">
+        <graphics name="b0066" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="345" width="45" height="17"/>
+    </entry>
+    <entry id="83" name="eco:b0067" type="ortholog">
+        <graphics name="b0067" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="345" width="45" height="17"/>
+    </entry>
+    <entry id="84" name="eco:b0068" type="ortholog">
+        <graphics name="b0068" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="333" width="45" height="17"/>
+    </entry>
+    <entry id="85" name="eco:b0855" type="ortholog">
+        <graphics name="b0855" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="262" y="557" width="45" height="17"/>
+    </entry>
+    <entry id="86" name="eco:b0857" type="ortholog">
+        <graphics name="b0857" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="566" width="45" height="17"/>
+    </entry>
+    <entry id="87" name="eco:b0856" type="ortholog">
+        <graphics name="b0856" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="549" width="45" height="17"/>
+    </entry>
+    <entry id="88" name="eco:b0854" type="ortholog">
+        <graphics name="b0854" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="558" width="45" height="17"/>
+    </entry>
+    <entry id="89" name="eco:b1126" type="ortholog">
+        <graphics name="b1126" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="262" y="516" width="45" height="17"/>
+    </entry>
+    <entry id="90" name="eco:b1125" type="ortholog">
+        <graphics name="b1125" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="524" width="45" height="17"/>
+    </entry>
+    <entry id="91" name="eco:b1124" type="ortholog">
+        <graphics name="b1124" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="507" width="45" height="17"/>
+    </entry>
+    <entry id="92" name="eco:b1123" type="ortholog">
+        <graphics name="b1123" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="516" width="45" height="17"/>
+    </entry>
+    <entry id="93" name="eco:b1247" type="ortholog">
+        <graphics name="b1247" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="504" width="45" height="17"/>
+    </entry>
+    <entry id="94" name="eco:b1246" type="ortholog">
+        <graphics name="b1246" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="487" width="45" height="17"/>
+    </entry>
+    <entry id="95" name="eco:b1245" type="ortholog">
+        <graphics name="b1245" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="504" width="46" height="17"/>
+    </entry>
+    <entry id="96" name="eco:b1244" type="ortholog">
+        <graphics name="b1244" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="487" width="46" height="17"/>
+    </entry>
+    <entry id="97" name="eco:b1243" type="ortholog">
+        <graphics name="b1243" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="478" width="45" height="17"/>
+    </entry>
+    <entry id="98" name="eco:b3540" type="ortholog">
+        <graphics name="b3540" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="461" width="45" height="17"/>
+    </entry>
+    <entry id="99" name="eco:b3541" type="ortholog">
+        <graphics name="b3541" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="444" width="45" height="17"/>
+    </entry>
+    <entry id="100" name="eco:b3542" type="ortholog">
+        <graphics name="b3542" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="461" width="45" height="17"/>
+    </entry>
+    <entry id="101" name="eco:b3543" type="ortholog">
+        <graphics name="b3543" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="444" width="45" height="17"/>
+    </entry>
+    <entry id="102" name="eco:b1754" type="ortholog">
+        <graphics name="b1754" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="692" width="45" height="17"/>
+    </entry>
+    <entry id="103" name="eco:b1290" type="ortholog">
+        <graphics name="b1290" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="418" width="45" height="17"/>
+    </entry>
+    <entry id="104" name="eco:b1291" type="ortholog">
+        <graphics name="b1291" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="401" width="45" height="17"/>
+    </entry>
+    <entry id="105" name="eco:b1292" type="ortholog">
+        <graphics name="b1292" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="418" width="45" height="17"/>
+    </entry>
+    <entry id="106" name="eco:b1293" type="ortholog">
+        <graphics name="b1293" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="401" width="45" height="17"/>
+    </entry>
+    <entry id="107" name="eco:b1294" type="ortholog">
+        <graphics name="b1294" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="409" width="45" height="17"/>
+    </entry>
+    <entry id="108" name="eco:b2306" type="ortholog">
+        <graphics name="b2306" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="545" y="307" width="45" height="17"/>
+    </entry>
+    <entry id="109" name="eco:b2307" type="ortholog">
+        <graphics name="b2307" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="500" y="316" width="45" height="17"/>
+    </entry>
+    <entry id="110" name="eco:b2308" type="ortholog">
+        <graphics name="b2308" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="500" y="299" width="45" height="17"/>
+    </entry>
+    <entry id="111" name="eco:b2309" type="ortholog">
+        <graphics name="b2309" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="426" y="319" width="45" height="17"/>
+    </entry>
+    <entry id="112" name="eco:b2310" type="ortholog">
+        <graphics name="b2310" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="426" y="295" width="45" height="17"/>
+    </entry>
+    <entry id="113" name="eco:b0864" type="ortholog">
+        <graphics name="b0864" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="254" width="45" height="17"/>
+    </entry>
+    <entry id="114" name="eco:b0862" type="ortholog">
+        <graphics name="b0862" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="262" width="45" height="17"/>
+    </entry>
+    <entry id="115" name="eco:b0861" type="ortholog">
+        <graphics name="b0861" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="245" width="45" height="17"/>
+    </entry>
+    <entry id="116" name="eco:b0860" type="ortholog">
+        <graphics name="b0860" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="266" width="45" height="17"/>
+    </entry>
+    <entry id="117" name="eco:b0863" type="ortholog">
+        <graphics name="b0863" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="242" width="45" height="17"/>
+    </entry>
+    <entry id="118" name="eco:b2677" type="ortholog">
+        <graphics name="b2677" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="662" width="45" height="17"/>
+    </entry>
+    <entry id="119" name="eco:b2678" type="ortholog">
+        <graphics name="b2678" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="662" width="45" height="17"/>
+    </entry>
+    <entry id="120" name="eco:b2679" type="ortholog">
+        <graphics name="b2679" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="662" width="45" height="17"/>
+    </entry>
+    <entry id="121" name="eco:b3454" type="ortholog">
+        <graphics name="b3454" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="371" width="45" height="17"/>
+    </entry>
+    <entry id="122" name="eco:b3455" type="ortholog">
+        <graphics name="b3455" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="354" width="45" height="17"/>
+    </entry>
+    <entry id="123" name="eco:b3456" type="ortholog">
+        <graphics name="b3456" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="371" width="46" height="17"/>
+    </entry>
+    <entry id="124" name="eco:b3457" type="ortholog">
+        <graphics name="b3457" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="354" width="46" height="17"/>
+    </entry>
+    <entry id="125" name="eco:b3460" type="ortholog">
+        <graphics name="b3460" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="374" width="45" height="17"/>
+    </entry>
+    <entry id="126" name="eco:b3458" type="ortholog">
+        <graphics name="b3458" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="349" width="45" height="17"/>
+    </entry>
+    <entry id="127" name="eco:b0652" type="ortholog">
+        <graphics name="b0652" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="136" width="45" height="17"/>
+    </entry>
+    <entry id="128" name="eco:b0653" type="ortholog">
+        <graphics name="b0653" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="144" width="45" height="17"/>
+    </entry>
+    <entry id="129" name="eco:b0654" type="ortholog">
+        <graphics name="b0654" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="127" width="45" height="17"/>
+    </entry>
+    <entry id="130" name="eco:b0809" type="ortholog">
+        <graphics name="b0809" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="131" name="eco:b0810" type="ortholog">
+        <graphics name="b0810" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="132" name="eco:b0811" type="ortholog">
+        <graphics name="b0811" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="133" name="eco:b4035" type="ortholog">
+        <graphics name="b4035" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="385" width="45" height="17"/>
+    </entry>
+    <entry id="134" name="eco:b4032" type="ortholog">
+        <graphics name="b4032" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="393" width="46" height="17"/>
+    </entry>
+    <entry id="135" name="eco:b4033" type="ortholog">
+        <graphics name="b4033" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="376" width="46" height="17"/>
+    </entry>
+    <entry id="136" name="eco:b4460" type="ortholog">
+        <graphics name="b4460" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="202" width="45" height="17"/>
+    </entry>
+    <entry id="137" name="eco:b1901" type="ortholog">
+        <graphics name="b1901" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="202" width="45" height="17"/>
+    </entry>
+    <entry id="138" name="eco:b3567" type="ortholog">
+        <graphics name="b3567" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="168" width="46" height="17"/>
+    </entry>
+    <entry id="139" name="eco:b3568" type="ortholog">
+        <graphics name="b3568" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="168" width="45" height="17"/>
+    </entry>
+    <entry id="140" name="eco:b3566" type="ortholog">
+        <graphics name="b3566" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="168" width="45" height="17"/>
+    </entry>
+    <entry id="141" name="eco:b2149" type="ortholog">
+        <graphics name="b2149" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="134" width="45" height="17"/>
+    </entry>
+    <entry id="142" name="eco:b2148" type="ortholog">
+        <graphics name="b2148" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="134" width="46" height="17"/>
+    </entry>
+    <entry id="143" name="eco:b2150" type="ortholog">
+        <graphics name="b2150" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="134" width="45" height="17"/>
+    </entry>
+    <entry id="144" name="eco:b3749" type="ortholog">
+        <graphics name="b3749" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="101" width="45" height="17"/>
+    </entry>
+    <entry id="145" name="eco:b3748" type="ortholog">
+        <graphics name="b3748" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="109" width="46" height="17"/>
+    </entry>
+    <entry id="146" name="eco:b3750" type="ortholog">
+        <graphics name="b3750" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="92" width="46" height="17"/>
+    </entry>
+    <entry id="147" name="eco:b3751" type="ortholog">
+        <graphics name="b3751" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="100" width="45" height="17"/>
+    </entry>
+    <entry id="148" name="eco:b3193" type="ortholog">
+        <graphics name="b3193" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="663" width="45" height="17"/>
+    </entry>
+    <entry id="149" name="eco:b1920" type="ortholog">
+        <graphics name="b1920" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="426" y="171" width="45" height="17"/>
+    </entry>
+    <entry id="150" name="eco:b4034" type="ortholog">
+        <graphics name="b4034" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="375" width="45" height="17"/>
+    </entry>
+    <entry id="151" name="eco:b4037" type="ortholog">
+        <graphics name="b4037" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="396" width="45" height="17"/>
+    </entry>
+    <entry id="152" name="eco:b1900" type="ortholog">
+        <graphics name="b1900" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="202" width="46" height="17"/>
+    </entry>
+    <entry id="153" name="eco:b1516" type="ortholog">
+        <graphics name="b1516" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="144" y="238" width="45" height="17"/>
+    </entry>
+    <entry id="154" name="eco:b1514" type="ortholog">
+        <graphics name="b1514" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="228" width="46" height="17"/>
+    </entry>
+    <entry id="155" name="eco:b1513" type="ortholog">
+        <graphics name="b1513" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="237" width="45" height="17"/>
+    </entry>
+    <entry id="156" name="eco:b1515" type="ortholog">
+        <graphics name="b1515" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="245" width="46" height="17"/>
+    </entry>
+    <entry id="157" name="eco:b2548" type="ortholog">
+        <graphics name="b2548" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="272" width="45" height="17"/>
+    </entry>
+    <entry id="158" name="eco:b2546" type="ortholog">
+        <graphics name="b2546" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="272" width="45" height="17"/>
+    </entry>
+    <entry id="159" name="eco:b2547" type="ortholog">
+        <graphics name="b2547" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="272" width="46" height="17"/>
+    </entry>
+    <entry id="160" name="eco:b4088" type="ortholog">
+        <graphics name="b4088" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="304" width="45" height="17"/>
+    </entry>
+    <entry id="161" name="eco:b4086" type="ortholog">
+        <graphics name="b4086" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="304" width="45" height="17"/>
+    </entry>
+    <entry id="162" name="eco:b4087" type="ortholog">
+        <graphics name="b4087" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="304" width="46" height="17"/>
+    </entry>
+    <entry id="163" name="eco:b4227" type="ortholog">
+        <graphics name="b4227" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="339" width="45" height="17"/>
+    </entry>
+    <entry id="164" name="eco:b4230" type="ortholog">
+        <graphics name="b4230" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="330" width="46" height="17"/>
+    </entry>
+    <entry id="165" name="eco:b4231" type="ortholog">
+        <graphics name="b4231" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="347" width="46" height="17"/>
+    </entry>
+    <entry id="166" name="eco:b4485" type="ortholog">
+        <graphics name="b4485" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="339" width="45" height="17"/>
+    </entry>
+    <entry id="167" name="eco:b1310" type="ortholog">
+        <graphics name="b1310" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="432" width="45" height="17"/>
+    </entry>
+    <entry id="168" name="eco:b1311" type="ortholog">
+        <graphics name="b1311" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="422" width="46" height="17"/>
+    </entry>
+    <entry id="169" name="eco:b1312" type="ortholog">
+        <graphics name="b1312" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="439" width="46" height="17"/>
+    </entry>
+    <entry id="170" name="eco:b1318" type="ortholog">
+        <graphics name="b1318" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="262" y="431" width="45" height="17"/>
+    </entry>
+    <entry id="171" name="eco:b1440" type="ortholog">
+        <graphics name="b1440" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="143" y="601" width="45" height="17"/>
+    </entry>
+    <entry id="172" name="eco:b1443" type="ortholog">
+        <graphics name="b1443" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="592" width="45" height="17"/>
+    </entry>
+    <entry id="173" name="eco:b1442" type="ortholog">
+        <graphics name="b1442" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="609" width="45" height="17"/>
+    </entry>
+    <entry id="174" name="eco:b1441" type="ortholog">
+        <graphics name="b1441" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="262" y="601" width="45" height="17"/>
+    </entry>
+    <entry id="175" name="eco:b0263" type="ortholog">
+        <graphics name="b0263" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="635" width="45" height="17"/>
+    </entry>
+    <entry id="176" name="eco:b0262" type="ortholog">
+        <graphics name="b0262" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="635" width="46" height="17"/>
+    </entry>
+    <entry id="177" name="eco:b3194" type="ortholog">
+        <graphics name="b3194" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="663" width="45" height="17"/>
+    </entry>
+    <entry id="178" name="eco:b3195" type="ortholog">
+        <graphics name="b3195" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="663" width="45" height="17"/>
+    </entry>
+    <entry id="179" name="eco:b1755" type="ortholog">
+        <graphics name="b1755" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="217" y="692" width="45" height="17"/>
+    </entry>
+    <entry id="180" name="eco:b1756" type="ortholog">
+        <graphics name="b1756" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="692" width="46" height="17"/>
+    </entry>
+    <entry id="181" name="eco:b0491" type="ortholog">
+        <graphics name="b0491" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="218" y="720" width="45" height="17"/>
+    </entry>
+    <entry id="182" name="eco:b0490" type="ortholog">
+        <graphics name="b0490" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="263" y="720" width="45" height="17"/>
+    </entry>
+    <entry id="183" name="eco:b0655" type="ortholog">
+        <graphics name="b0655" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="136" width="45" height="17"/>
+    </entry>
+    <entry id="184" name="eco:b1918" type="ortholog">
+        <graphics name="b1918" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="172" width="46" height="17"/>
+    </entry>
+    <entry id="185" name="eco:b1917" type="ortholog">
+        <graphics name="b1917" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="172" width="45" height="17"/>
+    </entry>
+    <entry id="186" name="eco:b3269" type="ortholog">
+        <graphics name="b3269" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="199" width="46" height="17"/>
+    </entry>
+    <entry id="187" name="eco:b3268" type="ortholog">
+        <graphics name="b3268" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="208" width="45" height="17"/>
+    </entry>
+    <entry id="188" name="eco:b3270" type="ortholog">
+        <graphics name="b3270" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="216" width="46" height="17"/>
+    </entry>
+    <entry id="189" name="eco:b3271" type="ortholog">
+        <graphics name="b3271" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="208" width="45" height="17"/>
+    </entry>
+    <entry id="190" name="eco:b3544" type="ortholog">
+        <graphics name="b3544" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="452" width="45" height="17"/>
+    </entry>
+    <entry id="191" name="eco:b0830" type="ortholog">
+        <graphics name="b0830" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="537" width="45" height="17"/>
+    </entry>
+    <entry id="192" name="eco:b0831" type="ortholog">
+        <graphics name="b0831" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="529" width="45" height="17"/>
+    </entry>
+    <entry id="193" name="eco:b0832" type="ortholog">
+        <graphics name="b0832" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="546" width="45" height="17"/>
+    </entry>
+    <entry id="194" name="eco:b0829" type="ortholog">
+        <graphics name="b0829" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="538" width="45" height="17"/>
+    </entry>
+    <entry id="195" name="eco:b1487" type="ortholog">
+        <graphics name="b1487" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="580" width="45" height="17"/>
+    </entry>
+    <entry id="196" name="eco:b1486" type="ortholog">
+        <graphics name="b1486" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="571" width="46" height="17"/>
+    </entry>
+    <entry id="197" name="eco:b1485" type="ortholog">
+        <graphics name="b1485" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="588" width="46" height="17"/>
+    </entry>
+    <entry id="198" name="eco:b1484" type="ortholog">
+        <graphics name="b1484" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="571" width="45" height="17"/>
+    </entry>
+    <entry id="199" name="eco:b1483" type="ortholog">
+        <graphics name="b1483" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="588" width="45" height="17"/>
+    </entry>
+    <entry id="200" name="eco:b2177" type="ortholog">
+        <graphics name="b2177" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="623" width="45" height="17"/>
+    </entry>
+    <entry id="201" name="eco:b2178" type="ortholog">
+        <graphics name="b2178" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="614" width="45" height="17"/>
+    </entry>
+    <entry id="202" name="eco:b2179" type="ortholog">
+        <graphics name="b2179" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="631" width="45" height="17"/>
+    </entry>
+    <entry id="203" name="eco:b2180" type="ortholog">
+        <graphics name="b2180" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="623" width="45" height="17"/>
+    </entry>
+    <entry id="204" name="eco:b2131" type="ortholog">
+        <graphics name="b2131" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="426" y="698" width="45" height="17"/>
+    </entry>
+    <entry id="205" name="eco:b2128" type="ortholog">
+        <graphics name="b2128" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="500" y="689" width="45" height="17"/>
+    </entry>
+    <entry id="206" name="eco:b2130" type="ortholog">
+        <graphics name="b2130" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="500" y="706" width="45" height="17"/>
+    </entry>
+    <entry id="207" name="eco:b2129" type="ortholog">
+        <graphics name="b2129" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="545" y="698" width="45" height="17"/>
+    </entry>
+    <entry id="208" name="eco:b0365" type="ortholog">
+        <graphics name="b0365" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="737" width="45" height="17"/>
+    </entry>
+    <entry id="209" name="eco:b0367" type="ortholog">
+        <graphics name="b0367" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="501" y="737" width="46" height="17"/>
+    </entry>
+    <entry id="210" name="eco:b0366" type="ortholog">
+        <graphics name="b0366" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="737" width="45" height="17"/>
+    </entry>
+    <entry id="211" name="eco:b0368" type="ortholog">
+        <graphics name="b0368" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="613" y="737" width="45" height="17"/>
+    </entry>
+    <entry id="212" name="eco:b0936" type="ortholog">
+        <graphics name="b0936" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="766" width="45" height="17"/>
+    </entry>
+    <entry id="213" name="eco:b0934" type="ortholog">
+        <graphics name="b0934" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="500" y="766" width="45" height="17"/>
+    </entry>
+    <entry id="214" name="eco:b0933" type="ortholog">
+        <graphics name="b0933" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="546" y="766" width="46" height="17"/>
+    </entry>
+    <entry id="215" name="eco:b0937" type="ortholog">
+        <graphics name="b0937" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="613" y="767" width="45" height="17"/>
+    </entry>
+    <entry id="216" name="eco:b0935" type="ortholog">
+        <graphics name="b0935" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="670" y="768" width="45" height="17"/>
+    </entry>
+    <entry id="217" name="eco:b1857" type="ortholog">
+        <graphics name="b1857" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="221" width="45" height="17"/>
+    </entry>
+    <entry id="218" name="eco:b1859" type="ortholog">
+        <graphics name="b1859" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="841" y="221" width="45" height="17"/>
+    </entry>
+    <entry id="219" name="eco:b1858" type="ortholog">
+        <graphics name="b1858" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="886" y="221" width="45" height="17"/>
+    </entry>
+    <entry id="220" name="eco:b0069" type="ortholog">
+        <graphics name="b0069" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="767" y="360" width="45" height="17"/>
+    </entry>
+    <entry id="221" name="eco:b1329" type="ortholog">
+        <graphics name="b1329" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="495" width="45" height="17"/>
+    </entry>
+    <entry id="222" name="eco:b3020" type="ortholog">
+        <graphics name="b3020" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="512" width="45" height="17"/>
+    </entry>
+    <entry id="223" name="eco:b2425" type="ortholog">
+        <graphics name="b2425" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="766" y="528" width="45" height="17"/>
+    </entry>
+    <entry id="224" name="eco:b0197" type="ortholog">
+        <graphics name="b0197" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="768" y="561" width="45" height="17"/>
+    </entry>
+    <entry id="225" name="eco:b0198" type="ortholog">
+        <graphics name="b0198" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="842" y="562" width="45" height="17"/>
+    </entry>
+    <entry id="226" name="eco:b0199" type="ortholog">
+        <graphics name="b0199" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="887" y="562" width="45" height="17"/>
+    </entry>
+    <entry id="227" name="eco:b2197" type="ortholog">
+        <graphics name="b2197" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="768" y="598" width="45" height="17"/>
+    </entry>
+    <entry id="228" name="eco:b2200" type="ortholog">
+        <graphics name="b2200" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="842" y="588" width="45" height="17"/>
+    </entry>
+    <entry id="229" name="eco:b2199" type="ortholog">
+        <graphics name="b2199" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="842" y="605" width="45" height="17"/>
+    </entry>
+    <entry id="230" name="eco:b2201" type="ortholog">
+        <graphics name="b2201" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="887" y="598" width="45" height="17"/>
+    </entry>
+</pathway>

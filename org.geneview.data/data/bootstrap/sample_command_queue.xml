@@ -1,0 +1,47 @@
+<cerberus version="0.1">
+  
+  <!-- define workspace for destributed aplications -->
+  <workspace title="primary" server="localhost">  
+  
+    <!-- define one application on inside one workspace -->
+    <application remote="no" IP="127.0.0.1" port="4000" >
+  
+      <!-- define commands inside an application -->
+      <command>
+      
+        <!-- list of commands -->
+        <commandqueue>
+        
+          <!-- create a new command queue -->
+          <cmd queue="open" cmdqueue_id="1" />
+            <!-- add a new command queue to the command queue -->
+            <cmd queue="add" cmdqueue_id="1" />            
+          <!-- close the new command queue, makes queue read only! -->
+          <cmd queue="close" cmdqueue_id="1" />
+          
+          <!-- execute a command queue -->
+          <cmd queue="execute" cmdqueue_id="1" queue_thread="sequential" queue_thread_wait="none" />
+          
+          <cmd queue="open" cmdqueue_id="2" />
+            <cmd queue="add" cmdqueue_id="2" />
+          <cmd queue="close" cmdqueue_id="2" />
+          
+          <cmd queue="open" cmdqueue_id="3" />
+            <cmd queue="add" cmdqueue_id="3" />
+          <cmd queue="close" cmdqueue_id="3" />          
+          
+          <!-- execute a command queue by spawning a new thread -->
+          <cmd queue="execute" cmdqueue_id="2" queue_thread="1" queue_thread_wait="none" />
+          
+          <!-- execute a command queue by spawning a new thread, that waits for another tread to terminate before execution -->
+          <cmd queue="execute" cmdqueue_id="3" queue_thread="2" queue_thread_wait="1" />
+          
+        </commandqueue>
+        
+      </command>
+      
+    </application>
+  
+  </workspace>
+  
+</cerberus>

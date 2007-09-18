@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:53 +0900 (JST) -->
+<pathway name="path:map03050" org="map" number="03050"
+         title="Proteasome"
+         image="http://www.genome.jp/kegg/pathway/map/map03050.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map03050">
+    <entry id="1" name="path:map03050" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map03050">
+        <graphics name="TITLE:Proteasome" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="225" y="36" width="114" height="27"/>
+    </entry>
+    <entry id="2" name="ko:K03028" type="ortholog">
+        <graphics name="RPN1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="90" y="390" width="45" height="17"/>
+    </entry>
+    <entry id="3" name="ko:K03035" type="ortholog">
+        <graphics name="RPN5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="270" y="390" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="ko:K03036" type="ortholog">
+        <graphics name="RPN6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="315" y="390" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="ko:K03037" type="ortholog">
+        <graphics name="RPN7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="90" y="407" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="ko:K03039" type="ortholog">
+        <graphics name="RPN9" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="407" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="ko:K03065" type="ortholog">
+        <graphics name="RPT5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="270" y="424" width="45" height="17"/>
+    </entry>
+    <entry id="8" name="ko:K02730" type="ortholog">
+        <graphics name="PSMA6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="90" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="ko:K02726" type="ortholog">
+        <graphics name="PSMA2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="135" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="ko:K02728" type="ortholog">
+        <graphics name="PSMA4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="11" name="ko:K02731" type="ortholog">
+        <graphics name="PSMA7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="12" name="ko:K02729" type="ortholog">
+        <graphics name="PSMA5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="270" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="13" name="ko:K02725" type="ortholog">
+        <graphics name="PSMA1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="315" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="14" name="ko:K02727" type="ortholog">
+        <graphics name="PSMA3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="360" y="441" width="45" height="17"/>
+    </entry>
+    <entry id="15" name="ko:K02738" type="ortholog">
+        <graphics name="PSMB6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="90" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="16" name="ko:K02739" type="ortholog">
+        <graphics name="PSMB7" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="135" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="ko:K02735" type="ortholog">
+        <graphics name="PSMB3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="ko:K02734" type="ortholog">
+        <graphics name="PSMB2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="ko:K02737" type="ortholog">
+        <graphics name="PSMB5" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="270" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="20" name="ko:K02732" type="ortholog">
+        <graphics name="PSMB1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="315" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="ko:K02736" type="ortholog">
+        <graphics name="PSMB4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="360" y="458" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="ko:K03033" type="ortholog">
+        <graphics name="RPN3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="390" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="ko:K03038" type="ortholog">
+        <graphics name="RPN8" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="135" y="407" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="ko:K03029" type="ortholog">
+        <graphics name="RPN10" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="407" width="45" height="17"/>
+    </entry>
+    <entry id="25" name="ko:K03030" type="ortholog">
+        <graphics name="RPN11" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="270" y="407" width="45" height="17"/>
+    </entry>
+    <entry id="26" name="ko:K03031" type="ortholog">
+        <graphics name="RPN12" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="315" y="407" width="45" height="17"/>
+    </entry>
+    <entry id="27" name="ko:K03061" type="ortholog">
+        <graphics name="RPT1" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="90" y="424" width="45" height="17"/>
+    </entry>
+    <entry id="28" name="ko:K03062" type="ortholog">
+        <graphics name="RPT2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="135" y="424" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="ko:K03063" type="ortholog">
+        <graphics name="RPT3" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="180" y="424" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="ko:K03064" type="ortholog">
+        <graphics name="RPT4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="424" width="45" height="17"/>
+    </entry>
+    <entry id="31" name="ko:K03066" type="ortholog">
+        <graphics name="RPT6" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="315" y="424" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="ko:K03032" type="ortholog">
+        <graphics name="RPN2" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="135" y="390" width="45" height="17"/>
+    </entry>
+    <entry id="33" name="ko:K03034" type="ortholog">
+        <graphics name="RPN4" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="225" y="390" width="45" height="17"/>
+    </entry>
+</pathway>

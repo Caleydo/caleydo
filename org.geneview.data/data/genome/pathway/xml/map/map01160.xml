@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:48 +0900 (JST) -->
+<pathway name="path:map01160" org="map" number="01160"
+         title="Metabolism of Other Amino Acids"
+         image="http://www.genome.jp/kegg/pathway/map/map01160.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map01160">
+    <entry id="1" name="path:map00480" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00480.html">
+        <graphics name="Glutathione metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="394" y="465" width="171" height="65"/>
+    </entry>
+    <entry id="2" name="path:map00471" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00471.html">
+        <graphics name="D-Glutamine and D-glutamate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="371" y="401" width="164" height="61"/>
+    </entry>
+    <entry id="3" name="path:map00472" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00472.html">
+        <graphics name="D-Arginine and D-ornithine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="506" y="297" width="107" height="142"/>
+    </entry>
+    <entry id="4" name="path:map00410" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00410.html">
+        <graphics name="beta-Alanine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="288" y="338" width="306" height="61"/>
+    </entry>
+    <entry id="5" name="path:map00473" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00473.html">
+        <graphics name="D-Alanine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="284" y="248" width="169" height="47"/>
+    </entry>
+    <entry id="6" name="path:map00440" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00440.html">
+        <graphics name="Aminophosphonate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="110" y="222" width="177" height="149"/>
+    </entry>
+    <entry id="7" name="path:map00430" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00430.html">
+        <graphics name="Taurine and hypotaurine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="527" y="157" width="103" height="133"/>
+    </entry>
+    <entry id="8" name="path:map00460" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00460.html">
+        <graphics name="Cyanoamino acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="400" y="164" width="134" height="120"/>
+    </entry>
+    <entry id="9" name="path:map00450" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00450.html">
+        <graphics name="Selenoamino acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="266" y="169" width="130" height="109"/>
+    </entry>
+    <entry id="10" name="path:map00410" type="map"
+        link="http://www.genome.jp/kegg/pathway/map/map00410.html">
+        <graphics name="beta-Alanine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="326" y="291" width="230" height="36"/>
+    </entry>
+</pathway>

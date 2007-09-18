@@ -1,0 +1,302 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 24 2007 11:21:01 +0900 (JST) -->
+<pathway name="path:hsa05213" org="hsa" number="05213"
+         title="Endometrial cancer"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa05213.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?hsa05213">
+    <entry id="1" name="hsa:1499" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+1499">
+        <graphics name="CTNNB1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="639" y="345" width="45" height="17"/>
+    </entry>
+    <entry id="2" name="hsa:1499" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+1499">
+        <graphics name="CTNNB1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="467" y="383" width="45" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:3265 hsa:3845 hsa:4893" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3265+3845+4893">
+        <graphics name="HRAS, HRAS1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="464" y="243" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="hsa:7157" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+7157">
+        <graphics name="TP53" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="848" y="577" width="45" height="17"/>
+    </entry>
+    <entry id="5" name="hsa:10297 hsa:324" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+10297+324">
+        <graphics name="APC2..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="639" y="328" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="hsa:8312 hsa:8313" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+8312+8313">
+        <graphics name="AXIN1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="594" y="328" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:2932" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2932">
+        <graphics name="GSK3B" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="556" y="345" width="45" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:1495 hsa:1496 hsa:29119" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+1495+1496+29119">
+        <graphics name="CTNNA1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="309" y="323" width="45" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:1499" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+1499">
+        <graphics name="CTNNB1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="293" y="340" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="path:map04210" type="map">
+        <graphics name="Apoptosis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="897" y="521" width="102" height="38"/>
+    </entry>
+    <entry id="11" name="hsa:2309" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2309">
+        <graphics name="FOXO3, FKHRL1, FOXO3A" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="576" y="196" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="hsa:572" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+572">
+        <graphics name="BAD" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="576" y="165" width="46" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:842" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+842">
+        <graphics name="CASP9" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="576" y="136" width="46" height="17"/>
+    </entry>
+    <entry id="14" name="hsa:3611" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3611">
+        <graphics name="ILK" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="431" y="194" width="45" height="17"/>
+    </entry>
+    <entry id="15" name="path:hsa04012" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04012.html">
+        <graphics name="ErbB signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="349" y="535" width="103" height="38"/>
+    </entry>
+    <entry id="16" name="hsa:7157" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+7157">
+        <graphics name="TP53" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="848" y="409" width="45" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:2064" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2064">
+        <graphics name="ERBB2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="247" y="531" width="45" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:999" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+999">
+        <graphics name="CDH1, UVO" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="248" y="333" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:51176 hsa:6932 hsa:6934 hsa:83439" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+51176+6932+6934+83439">
+        <graphics name="LEF1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="799" y="345" width="46" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:5728" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5728">
+        <graphics name="PTEN, BZS, MHAM" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="337" y="125" width="46" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:5170" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5170">
+        <graphics name="PDPK1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="431" y="132" width="45" height="17"/>
+    </entry>
+    <entry id="22" name="hsa:6654 hsa:6655" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+6654+6655">
+        <graphics name="SOS1, GINGF..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="392" y="243" width="45" height="17"/>
+    </entry>
+    <entry id="23" name="hsa:2885" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2885">
+        <graphics name="GRB2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="320" y="243" width="45" height="17"/>
+    </entry>
+    <entry id="24" name="path:hsa04060" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04060.html">
+        <graphics name="Cytokine-cytokine receptor interaction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="164" y="284" width="102" height="38"/>
+    </entry>
+    <entry id="25" name="cpd:C05981" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C05981">
+        <graphics name="C05981" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="392" y="164" width="8" height="8"/>
+    </entry>
+    <entry id="26" name="hsa:4292" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+4292">
+        <graphics name="MLH1, COCA2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="950" y="144" width="45" height="17"/>
+    </entry>
+    <entry id="27" name="hsa:2002" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+2002">
+        <graphics name="ELK1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="799" y="244" width="46" height="17"/>
+    </entry>
+    <entry id="28" name="hsa:1956" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+1956">
+        <graphics name="EGFR, ERBB" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="248" y="243" width="45" height="17"/>
+    </entry>
+    <entry id="29" name="hsa:595" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+595">
+        <graphics name="CCND1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="921" y="357" width="45" height="17"/>
+    </entry>
+    <entry id="30" name="path:hsa04520" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04520.html">
+        <graphics name="Adherens junction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="390" y="352" width="109" height="37"/>
+    </entry>
+    <entry id="31" name="hsa:4609" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+4609">
+        <graphics name="MYC" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="921" y="334" width="45" height="17"/>
+    </entry>
+    <entry id="32" name="path:hsa04010" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04010.html">
+        <graphics name="MAPK signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="564" y="280" width="102" height="38"/>
+    </entry>
+    <entry id="33" name="hsa:10000 hsa:207 hsa:208" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+10000+207+208">
+        <graphics name="AKT3..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="486" y="165" width="45" height="17"/>
+    </entry>
+    <entry id="34" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+23533+5290+5291+5293+5294+5295+5296+8503">
+        <graphics name="PIK3R5..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="336" y="163" width="45" height="17"/>
+    </entry>
+    <entry id="35" name="hsa:1950" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+1950">
+        <graphics name="EGF" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="171" y="244" width="45" height="17"/>
+    </entry>
+    <entry id="36" name="path:hsa05213" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+hsa05213">
+        <graphics name="TITLE:Endometrial cancer" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="141" y="41" width="176" height="25"/>
+    </entry>
+    <entry id="37" name="path:hsa04310" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04310.html">
+        <graphics name="Wnt signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="564" y="414" width="109" height="37"/>
+    </entry>
+    <entry id="38" name="path:hsa04110" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04110.html">
+        <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="897" y="521" width="102" height="38"/>
+    </entry>
+    <entry id="39" name="hsa:5594 hsa:5595" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5594+5595">
+        <graphics name="MAPK1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="680" y="243" width="46" height="17"/>
+    </entry>
+    <entry id="40" name="hsa:5604 hsa:5605" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+5604+5605">
+        <graphics name="MAP2K1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="608" y="243" width="45" height="17"/>
+    </entry>
+    <entry id="41" name="hsa:369 hsa:5894 hsa:673" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+369+5894+673">
+        <graphics name="ARAF, ARAF1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="536" y="243" width="45" height="17"/>
+    </entry>
+    <entry id="42" name="hsa:3845" type="gene"
+        link="http://www.genome.jp/dbget-bin/www_bget?hsa+3845">
+        <graphics name="KRAS, KRAS2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="464" y="277" width="45" height="17"/>
+    </entry>
+    <entry id="43" name="undefined" type="group">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="337" width="148" height="54"/>
+        <component id="1"/>
+        <component id="5"/>
+        <component id="6"/>
+        <component id="7"/>
+    </entry>
+    <entry id="44" name="path:hsa04115" type="map"
+        link="http://www.genome.jp/kegg/pathway/hsa/hsa04115.html">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="897" y="467" width="102" height="38"/>
+    </entry>
+    <relation entry1="21" entry2="34" type="PPrel">
+        <subtype name="compound" value="25"/>
+    </relation>
+    <relation entry1="14" entry2="34" type="PPrel">
+        <subtype name="compound" value="25"/>
+    </relation>
+    <relation entry1="21" entry2="33" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="14" entry2="33" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="35" entry2="28" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="28" entry2="34" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="28" entry2="23" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="23" entry2="22" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="22" entry2="3" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="3" entry2="41" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="42" entry2="41" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="1" entry2="19" type="PPrel">
+        <subtype name="activation" value="-->"/>
+    </relation>
+    <relation entry1="19" entry2="31" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="19" entry2="29" type="GErel">
+        <subtype name="expression" value="-->"/>
+    </relation>
+    <relation entry1="9" entry2="18" type="PPrel">
+        <subtype name="binding/association" value="---"/>
+    </relation>
+    <relation entry1="8" entry2="9" type="PPrel">
+        <subtype name="binding/association" value="---"/>
+    </relation>
+    <relation entry1="33" entry2="13" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="33" entry2="12" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="33" entry2="11" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="41" entry2="40" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="40" entry2="39" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+    <relation entry1="39" entry2="27" type="PPrel">
+        <subtype name="activation" value="-->"/>
+        <subtype name="phosphorylation" value="+p"/>
+    </relation>
+</pathway>

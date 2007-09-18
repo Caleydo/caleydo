@@ -1,0 +1,315 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:54 +0900 (JST) -->
+<pathway name="path:map05114" org="map" number="05114"
+         image="http://www.genome.jp/kegg/pathway/map/map05114.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map05114">
+    <entry id="1" name="cpd:C01558" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01558">
+        <graphics name="C01558" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="205" y="342" width="402" height="684"/>
+    </entry>
+    <entry id="2" name="cpd:C00461" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C00461">
+        <graphics name="C00461" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="364" y="36" width="721" height="72"/>
+    </entry>
+    <entry id="3" name="cpd:C01674" type="compound"
+        link="http://www.genome.jp/dbget-bin/www_bget?compound+C01674">
+        <graphics name="C01674" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="397" y="51" width="786" height="103"/>
+    </entry>
+    <entry id="4" name="path:map05114" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map05114">
+        <graphics name="TITLE:" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="134" y="33" width="174" height="23"/>
+    </entry>
+    <entry id="5" name="path:vch03090" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch03090.html">
+        <graphics name="Type II secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="577" y="178" width="95" height="36"/>
+    </entry>
+    <entry id="6" name="path:vch03090" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch03090.html">
+        <graphics name="Type II secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="577" y="178" width="93" height="36"/>
+    </entry>
+    <entry id="7" name="path:vch02010" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch02010.html">
+        <graphics name="ABC transporters</a>" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="796" y="147" width="98" height="26"/>
+    </entry>
+    <entry id="8" name="path:vch02040" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch02040.html">
+        <graphics name="Flagellar assembly" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="819" y="402" width="121" height="27"/>
+    </entry>
+    <entry id="9" name="path:vch03090" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch03090.html">
+        <graphics name="Type II secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="810" y="464" width="94" height="35"/>
+    </entry>
+    <entry id="10" name="path:vch03090" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch03090.html">
+        <graphics name="Type II secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="821" y="226" width="96" height="36"/>
+    </entry>
+    <entry id="11" name="path:vch03090" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch03090.html">
+        <graphics name="Type II secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="824" y="287" width="96" height="36"/>
+    </entry>
+    <entry id="12" name="path:vch03090" type="map"
+        link="http://www.genome.jp/kegg/pathway/vch/vch03090.html">
+        <graphics name="Type II secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="827" y="615" width="94" height="37"/>
+    </entry>
+    <entry id="13" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="187" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="14" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="202" y="609" width="44" height="17"/>
+    </entry>
+    <entry id="15" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="203" y="626" width="44" height="17"/>
+    </entry>
+    <entry id="16" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="207" y="200" width="45" height="17"/>
+    </entry>
+    <entry id="17" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="227" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="18" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="242" y="391" width="44" height="17"/>
+    </entry>
+    <entry id="19" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="241" y="408" width="44" height="17"/>
+    </entry>
+    <entry id="20" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="243" y="349" width="33" height="5"/>
+    </entry>
+    <entry id="21" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="253" y="164" width="44" height="17"/>
+    </entry>
+    <entry id="22" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="273" y="480" width="44" height="17"/>
+    </entry>
+    <entry id="23" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="267" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="24" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="299" y="273" width="44" height="17"/>
+    </entry>
+    <entry id="25" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="298" y="231" width="44" height="17"/>
+    </entry>
+    <entry id="26" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="306" y="608" width="44" height="17"/>
+    </entry>
+    <entry id="27" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="306" y="625" width="44" height="17"/>
+    </entry>
+    <entry id="28" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="308" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="29" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="321" y="149" width="44" height="17"/>
+    </entry>
+    <entry id="30" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="336" y="561" width="44" height="17"/>
+    </entry>
+    <entry id="31" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="344" y="273" width="44" height="17"/>
+    </entry>
+    <entry id="32" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="346" y="165" width="43" height="15"/>
+    </entry>
+    <entry id="33" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="349" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="34" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="355" y="352" width="33" height="5"/>
+    </entry>
+    <entry id="35" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="390" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="36" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="396" y="199" width="44" height="17"/>
+    </entry>
+    <entry id="37" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="404" y="630" width="44" height="17"/>
+    </entry>
+    <entry id="38" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="403" y="589" width="33" height="5"/>
+    </entry>
+    <entry id="39" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="456" y="630" width="43" height="16"/>
+    </entry>
+    <entry id="40" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="455" y="589" width="33" height="5"/>
+    </entry>
+    <entry id="41" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="455" y="201" width="32" height="5"/>
+    </entry>
+    <entry id="42" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="466" y="372" width="33" height="5"/>
+    </entry>
+    <entry id="43" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="477" y="163" width="44" height="15"/>
+    </entry>
+    <entry id="44" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="471" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="45" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="482" y="240" width="44" height="17"/>
+    </entry>
+    <entry id="46" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="505" y="202" width="34" height="4"/>
+    </entry>
+    <entry id="47" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="516" y="632" width="44" height="17"/>
+    </entry>
+    <entry id="48" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="512" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="49" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="531" y="373" width="44" height="17"/>
+    </entry>
+    <entry id="50" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="530" y="390" width="44" height="17"/>
+    </entry>
+    <entry id="51" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="552" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="52" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="592" y="331" width="44" height="17"/>
+    </entry>
+    <entry id="53" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="381" width="34" height="5"/>
+    </entry>
+    <entry id="54" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="607" y="426" width="44" height="17"/>
+    </entry>
+    <entry id="55" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="609" y="593" width="44" height="17"/>
+    </entry>
+    <entry id="56" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="632" y="531" width="33" height="5"/>
+    </entry>
+    <entry id="57" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="640" y="104" width="43" height="16"/>
+    </entry>
+    <entry id="58" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="667" y="331" width="44" height="17"/>
+    </entry>
+    <entry id="59" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="666" y="348" width="45" height="15"/>
+    </entry>
+    <entry id="60" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="672" y="214" width="33" height="5"/>
+    </entry>
+    <entry id="61" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="686" y="396" width="33" height="5"/>
+    </entry>
+    <entry id="62" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="688" y="428" width="33" height="5"/>
+    </entry>
+    <entry id="63" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="703" y="673" width="44" height="16"/>
+    </entry>
+    <entry id="64" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="724" y="103" width="43" height="15"/>
+    </entry>
+    <entry id="65" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="720" y="239" width="33" height="5"/>
+    </entry>
+    <entry id="66" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="720" y="298" width="33" height="5"/>
+    </entry>
+    <entry id="67" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="730" y="168" width="44" height="17"/>
+    </entry>
+    <entry id="68" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="757" y="674" width="44" height="16"/>
+    </entry>
+    <entry id="69" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="813" y="674" width="44" height="17"/>
+    </entry>
+    <entry id="70" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="888" y="183" width="44" height="17"/>
+    </entry>
+    <entry id="71" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="902" y="306" width="43" height="16"/>
+    </entry>
+    <entry id="72" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="903" y="514" width="44" height="17"/>
+    </entry>
+    <entry id="73" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="940" y="492" width="44" height="17"/>
+    </entry>
+    <entry id="74" name=" cpd:vch03090" type="ortholog">
+        <graphics name="..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="946" y="288" width="44" height="15"/>
+    </entry>
+</pathway>

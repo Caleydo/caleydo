@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.6.1_.dtd">
+<!-- Creation date: Jul 19 2007 16:39:54 +0900 (JST) -->
+<pathway name="path:map03070" org="map" number="03070"
+         title="Type III secretion system"
+         image="http://www.genome.jp/kegg/pathway/map/map03070.gif"
+         link="http://www.genome.jp/dbget-bin/show_pathway?map03070">
+    <entry id="1" name="path:map03070" type="map"
+        link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map03070">
+        <graphics name="TITLE:Type III secretion system" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="315" y="56" width="236" height="26"/>
+    </entry>
+    <entry id="2" name="ko:K02417" type="ortholog">
+        <graphics name="FLINY" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="337" y="632" width="44" height="17"/>
+    </entry>
+    <entry id="3" name="ko:K02400" type="ortholog">
+        <graphics name="FLHA" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="632" width="45" height="17"/>
+    </entry>
+    <entry id="4" name="ko:K02401" type="ortholog">
+        <graphics name="FLHB" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="518" y="632" width="46" height="17"/>
+    </entry>
+    <entry id="5" name="ko:K02421" type="ortholog">
+        <graphics name="FLIR" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="472" y="632" width="45" height="17"/>
+    </entry>
+    <entry id="6" name="ko:K02420" type="ortholog">
+        <graphics name="FLIQ" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="632" width="45" height="17"/>
+    </entry>
+    <entry id="7" name="ko:K02419" type="ortholog">
+        <graphics name="FLIP" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="382" y="632" width="46" height="17"/>
+    </entry>
+    <entry id="8" name="ko:K02412" type="ortholog">
+        <graphics name="FLII" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="292" y="632" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="ko:K02411" type="ortholog">
+        <graphics name="FLIH" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="246" y="632" width="45" height="17"/>
+    </entry>
+    <entry id="10" name="ko:K02409" type="ortholog">
+        <graphics name="FLIF" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="201" y="632" width="46" height="17"/>
+    </entry>
+    <entry id="11" name="ko:K03230" type="ortholog">
+        <graphics name="YSCV" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="563" y="605" width="45" height="17"/>
+    </entry>
+    <entry id="12" name="ko:K03229" type="ortholog">
+        <graphics name="YSCU" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="518" y="605" width="46" height="17"/>
+    </entry>
+    <entry id="13" name="ko:K03228" type="ortholog">
+        <graphics name="YSCT" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="472" y="605" width="45" height="17"/>
+    </entry>
+    <entry id="14" name="ko:K03227" type="ortholog">
+        <graphics name="YSCS" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="427" y="605" width="45" height="17"/>
+    </entry>
+    <entry id="15" name="ko:K03226" type="ortholog">
+        <graphics name="YSCR" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="382" y="605" width="46" height="17"/>
+    </entry>
+    <entry id="16" name="ko:K03225" type="ortholog">
+        <graphics name="YSCQ" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="337" y="605" width="44" height="17"/>
+    </entry>
+    <entry id="17" name="ko:K03224" type="ortholog">
+        <graphics name="YSCN" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="292" y="605" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="ko:K03221" type="ortholog">
+        <graphics name="YSCF" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="155" y="605" width="45" height="17"/>
+    </entry>
+    <entry id="19" name="ko:K03222" type="ortholog">
+        <graphics name="YSCJ" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="201" y="605" width="46" height="17"/>
+    </entry>
+    <entry id="20" name="ko:K03220" type="ortholog">
+        <graphics name="YSCD" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="110" y="605" width="45" height="17"/>
+    </entry>
+    <entry id="21" name="ko:K03219" type="ortholog">
+        <graphics name="YSCC" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="65" y="605" width="46" height="17"/>
+    </entry>
+    <entry id="22" name="ko:K03223" type="ortholog">
+        <graphics name="YSCL" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="246" y="605" width="45" height="17"/>
+    </entry>
+</pathway>
