@@ -128,7 +128,7 @@ implements ISWTGUIManager {
 //						Shell refNewShell = new Shell(refDisplay);
 //						refNewShell.setLayout(new GridLayout());
 //						refNewShell.setMaximized(true);
-//						refNewShell.setImage(new Image(refDisplay, "resources/icons/GeneView.ico"));
+//						refNewShell.setImage(new Image(refDisplay, "resources/icons/geneview.ico"));
 //						refNewShell.setText( "Bla Bla Label");
 //
 //						refWindowMap.put( 20 , refNewShell);
@@ -146,7 +146,7 @@ implements ISWTGUIManager {
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
 		refNewShell.setMaximized(true);
-		refNewShell.setImage(new Image(refDisplay, "resources/icons/GeneView.ico"));
+		refNewShell.setImage(new Image(refDisplay, "resources/icons/geneview.ico"));
 		refNewShell.setText(sLabel);
 
 		refWindowMap.put(iUniqueId, refNewShell);
