@@ -10,8 +10,6 @@
 	<classpathentry kind="lib" path="lib/axis/axis.jar" sourcepath="lib_src/axis/axis-src-1_4.zip"/>
 	<classpathentry kind="lib" path="lib/axis/jaxrpc.jar"/>
 	<classpathentry kind="lib" path="lib/axis/log4j-1.2.8.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos-util_mod.jar"/>
 	<classpathentry kind="lib" path="lib/weka/weka.jar"/>
 	<classpathentry kind="lib" path="lib/jface/org.eclipse.jface_3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
@@ -23,17 +21,17 @@
 	<classpathentry kind="lib" path="lib_src/jogl/demos/nehe_demos_data.jar"/>
 	<classpathentry kind="lib" path="lib/muddleware/muddleware.jar" sourcepath="lib_src/muddleware/muddleware.jar"/>
 	<classpathentry kind="lib" path="lib/jgraph/jgraph.jar" sourcepath="lib_src/jgraph/jgraph-latest-stable-src_5_9.jar"/>
-	<classpathentry kind="lib" path="lib/gleem/gleem_mod_class.jar" sourcepath="lib_src/gleem/gleem_mod_src_doc.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Cerberus/lib_src/gleem/gleem_mod_src_doc.jar!/javadoc"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/org.geneview.graph_bin.jar" sourcepath="lib_src/org.geneview.graph_src_javadoc.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Cerberus/lib_src/org.geneview.graph_src_javadoc.zip!/javadoc"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.data"/>
+	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/demos/jogl-demos.jar"/>
+	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/demos/jogl-demos-util_mod.jar"/>
+	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/demos/jogl-demos-util.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.util.gleem"/>
 	<classpathentry kind="lib" path="/org.geneview.lib/lib/swt/swt.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

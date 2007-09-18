@@ -29,7 +29,7 @@ implements IViewCamera {
 	/**
 	 * Zoom is equal to scaling in a 4x4 matrix
 	 */
-	protected Vec3f v3fCameraScale = Vec3f.VEC_NULL ;
+	protected Vec3f v3fCameraScale = Vec3f.VEC_NULL;
 	
 	/**
 	 * Pan used to translate.

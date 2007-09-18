@@ -4,5 +4,8 @@
 	<classpathentry kind="lib" path="lib/jogl/jogl.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="lib/swt/swt.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos-util_mod.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

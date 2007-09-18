@@ -63,7 +63,7 @@ public class Application implements IApplication {
 		CerberusBootloader prototype = new CerberusBootloader();
 			
 		prototype.setXmlFileName(
-				"data/XML/bootstrap/cerberus_bootstrap_sample_RCP.xml"); 	
+				"data/bootstrap/rcp/bootstrap_sample_RCP.xml"); 	
 
 		Application.refGeneralManager = prototype.getGeneralManager();
 
