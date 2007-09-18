@@ -1,0 +1,69 @@
+/*
+ * Project: GenView
+ * 
+ * Author: Michael Kalkusch
+ * 
+ *  creation date: 18-05-2005
+ *  
+ */
+package org.geneview.core.data.collection.virtualarray.iterator;
+
+import org.geneview.core.data.collection.IVirtualArray;
+//import prometheus.data.collection.SelectionType;
+
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
+
+/**
+ * Automatical creates the suitable iterator for several IVirtualArray's.
+ * 
+ * Desing Pattern "Factory"
+ * 
+ * @author Michael Kalkusch
+ *
+ */
+public class VirtualArrayIteratorFactory {
+
+//	/**
+//	 * Reference to the actual iterator.
+//	 */
+//	protected IVirtualArrayIterator refSelectionIterator;
+	
+	/**
+	 * 
+	 */
+	public VirtualArrayIteratorFactory() {
+	
+	}
+
+	public IVirtualArrayIterator iterator( IVirtualArray setSelection ) {
+		
+		assert setSelection != null : "can not handle null-pointer IVirtualArray";
+		
+		IVirtualArrayIterator refSelectionIterator = null;
+		
+		switch ( setSelection.getSelectionType() ) {
+		
+		case VIRTUAL_ARRAY_SINGLE_BLOCK:
+			refSelectionIterator = new VirtualArraySingleBlockIterator( setSelection );
+			break;
+			
+		case VIRTUAL_ARRAY_MULTI_BLOCK:
+			refSelectionIterator = new VirtualArrayMultiBlockIterator( setSelection );
+			break;
+			
+		case VIRTUAL_ARRAY_MULTI_BLOCK_RLE:
+			
+		case VIRTUAL_ARRAY_RANDOM_BLOCK:
+			
+		default:
+			
+			throw new GeneViewRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
+					setSelection.getSelectionType() + "] !",
+					GeneViewRuntimeExceptionType.VIRTUALARRAY );
+		}
+		
+		return refSelectionIterator;
+	}	
+
+}

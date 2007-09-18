@@ -9,9 +9,9 @@ import org.studierstube.net.thread.IOperationCallback;
 
 import org.xml.sax.InputSource;
 
-import cerberus.manager.IXmlParserManager;
-import cerberus.manager.ILoggerManager.LoggerType;
-import cerberus.util.exception.GeneViewRuntimeException;
+import org.geneview.core.manager.IXmlParserManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
 
 /**
  * Callback triggered by incoming message from Muddleware server.
