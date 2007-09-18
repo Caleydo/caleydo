@@ -190,7 +190,7 @@ implements IMediatorReceiver, IMediatorSender {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see cerberus.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void initGLCanvas(GL gl) {
 
@@ -683,8 +683,8 @@ implements IMediatorReceiver, IMediatorSender {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
-	 *      cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
+	 *      org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 

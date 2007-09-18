@@ -52,7 +52,7 @@ implements IXmlParserHandler
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.parser.handler.IXmlParserHandler#getXmlActivationTag()
+	 * @see org.geneview.core.parser.handler.IXmlParserHandler#getXmlActivationTag()
 	 */
 	public final String getXmlActivationTag()
 	{
@@ -60,7 +60,7 @@ implements IXmlParserHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
+	 * @see org.geneview.core.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
 	 */
 	public final boolean isHandlerDestoryedAfterClosingTag()
 	{
@@ -81,7 +81,7 @@ implements IXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#initHandler()
+	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
 	 */
 	public void initHandler()
 	{
@@ -93,7 +93,7 @@ implements IXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
 	 */
 	public void destroyHandler()
 	{

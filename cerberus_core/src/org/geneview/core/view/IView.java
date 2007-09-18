@@ -19,13 +19,13 @@ public interface IView
 extends IUniqueObject {
 	
 	/**
-	 * Same as initView() but creation of SWT Container via CerberusManager is replaced
+	 * Same as initView() but creation of SWT Container via GeneralManager is replaced
 	 * by external creation of SWT Container.
 	 * 
 	 * @see IView#initView()
-	 * @see cerberus.view.AViewRep#initView()
-	 * @see cerberus.view.AViewRep#initViewRCP(Composite)
-	 * @see cerberus.view.AViewRep#initViewSwtComposit(Composite)
+	 * @see org.geneview.core.view.AViewRep#initView()
+	 * @see org.geneview.core.view.AViewRep#initViewRCP(Composite)
+	 * @see org.geneview.core.view.AViewRep#initViewSwtComposit(Composite)
 	 * 
 	 * @param swtContainer container to bind View to
 	 */
@@ -36,9 +36,9 @@ extends IUniqueObject {
 	 * All initialization sets must be accomplished in this method.
 	 * 
 	 * @see IView#initViewRCP(Composite)
-	 * @see cerberus.view.AViewRep#initView()
-	 * @see cerberus.view.AViewRep#initViewRCP(Composite)
-	 * @see cerberus.view.AViewRep#initViewSwtComposit(Composite)
+	 * @see org.geneview.core.view.AViewRep#initView()
+	 * @see org.geneview.core.view.AViewRep#initViewRCP(Composite)
+	 * @see org.geneview.core.view.AViewRep#initViewSwtComposit(Composite)
 	 */
 	public void initView();
 

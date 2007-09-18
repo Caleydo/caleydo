@@ -17,7 +17,7 @@ import org.geneview.core.data.IManagedObject;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.AUniqueReManagedObject
+ * @see org.geneview.core.data.AUniqueReManagedObject
  * @see prometheus.data.xml.MementiItemXML
  */
 public abstract class AManagedObject 

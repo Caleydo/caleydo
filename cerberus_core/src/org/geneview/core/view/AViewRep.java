@@ -22,8 +22,8 @@ import org.geneview.core.view.swt.widget.SWTNativeWidget;
  * It holds the the own view ID, the parent ID and the attributes that
  * needs to be processed.
  * 
- * @see cerberus.manager.event.mediator.IMediatorReceiver
- * @see cerberus.manager.event.mediator.IMediatorSender
+ * @see org.geneview.core.manager.event.mediator.IMediatorReceiver
+ * @see org.geneview.core.manager.event.mediator.IMediatorSender
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -125,7 +125,7 @@ implements IViewRep {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	public void initView() {
 	
@@ -152,7 +152,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
 	 */
 	public void updateReceiver( Object eventTrigger ) {
 		
@@ -162,7 +162,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
@@ -172,7 +172,7 @@ implements IViewRep {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.IView#getLabel()
+	 * @see org.geneview.core.view.IView#getLabel()
 	 */
 	public final String getLabel() {
 		
@@ -181,7 +181,7 @@ implements IViewRep {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.IView#getLabel()
+	 * @see org.geneview.core.view.IView#getLabel()
 	 */
 	public final void setLabel(String label) {
 				
@@ -201,7 +201,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.IView#setViewType(cerberus.view.ViewType)
+	 * @see org.geneview.core.view.IView#setViewType(org.geneview.core.view.ViewType)
 	 */
 	public final void setViewType(ViewType viewType) {
 		
@@ -209,7 +209,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see cerberus.view.IViewRep#getViewType()
+	 * @see org.geneview.core.view.IViewRep#getViewType()
 	 */
 	public final ViewType getViewType() {
 		return viewType;
@@ -217,7 +217,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see cerberus.view.IView#addSetId(int[])
+	 * @see org.geneview.core.view.IView#addSetId(int[])
 	 */
 	public final void addSetId( int [] iSet) {
 		
@@ -265,7 +265,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see cerberus.view.IView#removeAllSetIdByType(cerberus.data.collection.SetType)
+	 * @see org.geneview.core.view.IView#removeAllSetIdByType(org.geneview.core.data.collection.SetType)
 	 */
 	public final void removeAllSetIdByType( SetType setType ) {
 		
@@ -286,7 +286,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see cerberus.view.IView#removeSetId(int[])
+	 * @see org.geneview.core.view.IView#removeSetId(int[])
 	 */
 	public final void removeSetId( int [] iSet) {
 		
@@ -336,7 +336,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see cerberus.view.IView#getAllSetId()
+	 * @see org.geneview.core.view.IView#getAllSetId()
 	 */
 	public final synchronized int[] getAllSetId() {
 		
@@ -370,7 +370,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see cerberus.view.IView#hasSetId(int)
+	 * @see org.geneview.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
 		ISet refCurrentSet = refSetManager.getItemSet(iSetId);

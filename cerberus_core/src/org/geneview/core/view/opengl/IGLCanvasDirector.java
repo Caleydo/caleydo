@@ -7,8 +7,8 @@ import org.geneview.core.view.jogl.TriggeredAnimator;
 
 /**
  * 
- * @see cerberus.view.opengl.IGLCanvasUser
- * @see cerberus.view.jogl.JoglCanvasForwarder
+ * @see org.geneview.core.view.opengl.IGLCanvasUser
+ * @see org.geneview.core.view.jogl.JoglCanvasForwarder
  * 
  * @author Michael Kalkusch
  *
@@ -18,21 +18,21 @@ public interface IGLCanvasDirector {
 	/**
 	 * Forwards calls to GLCanvas object.
 	 * 
-	 * @see cerberus.view.jogl.JoglCanvasForwarder#addGLCanvasUser(IGLCanvasUser)
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder#addGLCanvasUser(IGLCanvasUser)
 	 * 
 	 * @param user
 	 */
 	public abstract void addGLCanvasUser(IGLCanvasUser user);
 
 	/**
-	 * @see cerberus.view.jogl.JoglCanvasForwarder#removeGLCanvasUser(IGLCanvasUser)
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder#removeGLCanvasUser(IGLCanvasUser)
 	 * 
 	 * @param user
 	 */
 	public abstract void removeGLCanvasUser(IGLCanvasUser user);
 	
 	/**
-	 * @see cerberus.view.jogl.JoglCanvasForwarder#containsGLCanvasUser(IGLCanvasUser)
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder#containsGLCanvasUser(IGLCanvasUser)
 	 * 
 	 * @param user
 	 * @return
@@ -40,12 +40,12 @@ public interface IGLCanvasDirector {
 	public abstract boolean containsGLCanvasUser(IGLCanvasUser user);
 
 	/**
-	 * @see cerberus.view.jogl.JoglCanvasForwarder#removeAllGLCanvasUsers()
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder#removeAllGLCanvasUsers()
 	 */
 	public abstract void removeAllGLCanvasUsers();
 
 	/**
-	 * @see cerberus.view.jogl.JoglCanvasForwarder#getAllGLCanvasUsers()
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder#getAllGLCanvasUsers()
 	 * 
 	 * @return
 	 */
@@ -85,7 +85,7 @@ public interface IGLCanvasDirector {
 	/**
 	 * Get id for GL EventListener
 	 * 
-	 * @see cerberus.view.jogl.JoglCanvasForwarder#getGlEventListernerId()
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder#getGlEventListernerId()
 	 * 
 	 * @return
 	 */

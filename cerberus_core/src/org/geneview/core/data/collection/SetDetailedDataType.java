@@ -15,8 +15,8 @@ import org.geneview.core.util.IGeneViewDefaultType;
  * 
  * @author Michael Kalkusch
  * 
- * @see cerberus.data.collection.SetDataType;
- * @see cerberus.data.collection.SetType;
+ * @see org.geneview.core.data.collection.SetDataType;
+ * @see org.geneview.core.data.collection.SetType;
  *
  */
 public enum SetDetailedDataType 
@@ -47,7 +47,7 @@ implements IGeneViewDefaultType <SetDetailedDataType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
 	 */
 	public SetDetailedDataType getTypeDefault() {
 

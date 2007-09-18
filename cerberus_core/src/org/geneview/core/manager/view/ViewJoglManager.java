@@ -798,7 +798,7 @@ implements IViewGLCanvasManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IViewManager#getAllViews()
+	 * @see org.geneview.core.manager.IViewManager#getAllViews()
 	 */
 	public Collection<IView> getAllViews() {
 
@@ -807,7 +807,7 @@ implements IViewGLCanvasManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IViewManager#getAllGLCanvasUsers()
+	 * @see org.geneview.core.manager.IViewManager#getAllGLCanvasUsers()
 	 */
 	public Collection<IGLCanvasUser> getAllGLCanvasUsers() {
 		

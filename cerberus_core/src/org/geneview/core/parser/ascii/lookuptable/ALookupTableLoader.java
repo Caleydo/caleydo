@@ -64,7 +64,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class, 
 	 * if required by logic of sub-class.
 	 * 
-	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
 	 */
 	public void setMultiMapInteger(MultiHashArrayIntegerMap setHashMap, 
 			GenomeMappingType type) {
@@ -75,7 +75,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see cerberus.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
 	 */
 	public void setMultiMapString(MultiHashArrayStringMap setHashMap, 
 			GenomeMappingType type) {
@@ -86,7 +86,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see cerberus.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, GenomeMappingType)
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, GenomeMappingType)
 	 */
 	public void setHashMap( final IGenomeIdMap setHashMap,
 			final GenomeMappingType type) {
@@ -98,7 +98,7 @@ implements ILookupTableLoader {
 	 * If internal data strucutres need to be allocated, 
 	 * the sub-class must implement this method.
 	 *
-	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#initLUT()
+	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#initLUT()
 	 */
 	public void initLUT() {
 
@@ -109,7 +109,7 @@ implements ILookupTableLoader {
 	 * If internal data strucutres were allocated, 
 	 * the sub-class must implement this method.
 	 * 
-	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#destroyLUT()
+	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#destroyLUT()
 	 */
 	public void destroyLUT() {
 

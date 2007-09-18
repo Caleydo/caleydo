@@ -18,8 +18,8 @@ import org.geneview.core.data.IUniqueObject;
 /**
  * View camera interface
  * 
- * @see cerberus.data.collection.SetDataType
- * @see cerberus.data.collection.set.viewdata.ISetViewData
+ * @see org.geneview.core.data.collection.SetDataType
+ * @see org.geneview.core.data.collection.set.viewdata.ISetViewData
  *  
  * @author Michael Kalkusch
  *
@@ -84,10 +84,10 @@ extends IUniqueObject {
 	
 	/**
 	 * Get camera rotation as axis and rotation angle in degrees.
-	 * Note: uses cerberus.math.MathUtil#radiant2Grad(float)
+	 * Note: uses org.geneview.core.math.MathUtil#radiant2Grad(float)
 	 * 
 	 * @see gleem.linalg.Rotf#get(Vec3f)
-	 * @see cerberus.math.MathUtil#radiant2Grad(float)
+	 * @see org.geneview.core.math.MathUtil#radiant2Grad(float)
 	 * 
 	 * @param axis 
 	 * @return angel of rotation around axis (quaternion)

@@ -22,8 +22,8 @@ import org.geneview.core.manager.data.IGenomeIdManager;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.data.map.MultiHashArrayIntegerMap
- * @see cerberus.manager.data.genome.IGenomeIdMap
+ * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
+ * @see org.geneview.core.manager.data.genome.IGenomeIdMap
  */
 public class MultiHashArrayStringMap 
 extends HashMap <String,ArrayList<String>> 

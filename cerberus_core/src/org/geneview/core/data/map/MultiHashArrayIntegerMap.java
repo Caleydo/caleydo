@@ -15,8 +15,8 @@ import java.util.Set;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.data.map.MultiHashArrayStringMap
- * @see cerberus.manager.data.genome.IGenomeIdMap
+ * @see org.geneview.core.data.map.MultiHashArrayStringMap
+ * @see org.geneview.core.manager.data.genome.IGenomeIdMap
  */
 public class MultiHashArrayIntegerMap 
 extends HashMap <Integer,ArrayList<Integer>> 

@@ -49,7 +49,7 @@ implements IGLCanvasDirector {
 	/**
 	 * Animator for Jogl thread; namely JoglCanvasForwarder
 	 * 
-	 * @see cerberus.view.jogl.JoglCanvasForwarder
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder
 	 * @see com.sun.opengl.util.Animator
 	 */
 	protected TriggeredAnimator refAnimator = null;
@@ -80,24 +80,24 @@ implements IGLCanvasDirector {
 	}
 	
 	/* ------------------------------------------------------------------ */
-	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
+	/* ----- END: forward to org.geneview.core.view.jogl.JoglCanvasForwarder ----- */
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public final void addGLCanvasUser( IGLCanvasUser user ) {
 		forwarder_GLEventListener.addGLCanvasUser(user);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public final void removeGLCanvasUser( IGLCanvasUser user ) {
 		forwarder_GLEventListener.removeGLCanvasUser(user);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
 	 */
 	public final void removeAllGLCanvasUsers() {
 		
@@ -106,7 +106,7 @@ implements IGLCanvasDirector {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#containsGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.opengl.IGLCanvasDirector#containsGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public final boolean containsGLCanvasUser(IGLCanvasUser user) {
 
@@ -114,7 +114,7 @@ implements IGLCanvasDirector {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
 	 */
 	public final Collection<IGLCanvasUser> getAllGLCanvasUsers() {
 		
@@ -126,13 +126,13 @@ implements IGLCanvasDirector {
 		return forwarder_GLEventListener;
 	}
 	
-	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
+	/* ----- END: forward to org.geneview.core.view.jogl.JoglCanvasForwarder ----- */
 	/* ------------------------------------------------------------------ */
 	
 	/**
 	 * Expose Animator for internal GLCanvas
 	 *
-	 * @see cerberus.view.jogl.JoglCanvasForwarder
+	 * @see org.geneview.core.view.jogl.JoglCanvasForwarder
 	 * @see com.sun.opengl.util.Animator
 	 * 
 	 * @return Animator for GLCanvas
@@ -144,8 +144,8 @@ implements IGLCanvasDirector {
 	
 
 	/**
-	 * @see cerberus.view.opengl.AGLCanvasDirector#setAnimator(TriggeredAnimator)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#setAnimator(cerberus.view.jogl.TriggeredAnimator)
+	 * @see org.geneview.core.view.opengl.AGLCanvasDirector#setAnimator(TriggeredAnimator)
+	 * @see org.geneview.core.view.opengl.IGLCanvasDirector#setAnimator(org.geneview.core.view.jogl.TriggeredAnimator)
 	 */
 	public final void setAnimator( final TriggeredAnimator setTriggeredAnimator) {
 
@@ -172,7 +172,7 @@ implements IGLCanvasDirector {
 
 	/**
 	 * 
-	 * @see cerberus.view.opengl.IGLCanvasDirector#getGlEventListernerId()
+	 * @see org.geneview.core.view.opengl.IGLCanvasDirector#getGlEventListernerId()
 	 * 
 	 * @return iGLEventListernerId id for gl_forwarder
 	 */
@@ -184,8 +184,8 @@ implements IGLCanvasDirector {
 	/**
 	 * Attention: call setOpenGLCanvasId(int) before calling this method!
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	public void initViewSwtComposit(Composite swtContainer) {
 			
@@ -281,7 +281,7 @@ implements IGLCanvasDirector {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#destroyDirector()
+	 * @see org.geneview.core.view.opengl.IGLCanvasDirector#destroyDirector()
 	 */
 	public void destroyDirector() {
 		
@@ -348,8 +348,8 @@ implements IGLCanvasDirector {
 	 * @see com.sun.opengl.util.Animator
 	 * @see com.sun.opengl.util.Animator#start()
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
-	 * @see cerberus.view.jogl.TriggeredAnimator#startEventCount()
+	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.geneview.core.view.jogl.TriggeredAnimator#startEventCount()
 	 */
 	protected void initGLContainer() {
 		

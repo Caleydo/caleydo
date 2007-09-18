@@ -66,7 +66,7 @@ implements IGeneViewDefaultType <GenomeMappingDataType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
 	 */
 	public GenomeMappingDataType getTypeDefault() {
 

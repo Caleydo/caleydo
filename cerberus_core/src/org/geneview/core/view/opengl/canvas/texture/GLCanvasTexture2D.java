@@ -32,7 +32,7 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.opengl.IGLCanvasUser
+ * @see org.geneview.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasTexture2D 
 extends AGLCanvasUser 
@@ -52,7 +52,7 @@ extends AGLCanvasUser
 	 * Defien number of histogram slots.
 	 * Default is 0 to ensure valid settings. 
 	 * 
-	 *  @see cerberus.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
+	 *  @see org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
 	 */
 	private int iCurrentHistogramLength = 0;
 	
@@ -230,7 +230,7 @@ extends AGLCanvasUser
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void initGLCanvasUser( GL gl ) {
 		setInitGLDone();

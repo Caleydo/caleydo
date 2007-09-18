@@ -77,7 +77,7 @@ implements IVirtualArrayManager
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#createSelection()
+	 * @see org.geneview.core.data.manager.SelectionManager#createSelection()
 	 */
 	public IVirtualArray createVirtualArray( final ManagerObjectType useSelectionType ) {
 		
@@ -112,14 +112,14 @@ implements IVirtualArrayManager
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.IVirtualArray)
+	 * @see org.geneview.core.data.manager.SelectionManager#deleteSelection(org.geneview.core.data.collection.IVirtualArray)
 	 */
 	public boolean deleteVirtualArray(IVirtualArray deleteSelection ) {
 		return vecVirtualArray.remove( deleteSelection );
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#deleteSelection(cerberus.data.collection.IVirtualArray)
+	 * @see org.geneview.core.data.manager.SelectionManager#deleteSelection(org.geneview.core.data.collection.IVirtualArray)
 	 */
 	public boolean deleteVirtualArray( final int iItemId ) {
 		try {
@@ -132,7 +132,7 @@ implements IVirtualArrayManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#getItemSelection(int)
+	 * @see org.geneview.core.data.manager.SelectionManager#getItemSelection(int)
 	 */
 	public IVirtualArray getItemVirtualArray( final int iItemId) {
 		
@@ -151,14 +151,14 @@ implements IVirtualArrayManager
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
 		return getItemVirtualArray(iItemId);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
+	 * @see org.geneview.core.data.manager.SelectionManager#getAllSelectionItems()
 	 */
 	public IVirtualArray[] getAllVirtualArrayItems() {
 		
@@ -173,7 +173,7 @@ implements IVirtualArrayManager
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SelectionManager#getAllSelectionItems()
+	 * @see org.geneview.core.data.manager.SelectionManager#getAllSelectionItems()
 	 */
 	public Vector<IVirtualArray> getAllVirtualArrayItemsVector() {
 		
@@ -181,14 +181,14 @@ implements IVirtualArrayManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
 		return hasItem_withUniqueId( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#size()
+	 * @see org.geneview.core.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
 		return vecVirtualArray.size();

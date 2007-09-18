@@ -8,7 +8,7 @@ package org.geneview.core.util.midi.device.data;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.util.midi.device.data.MidiData
+ * @see org.geneview.core.util.midi.device.data.MidiData
  */
 public enum MidiShortMessageType {
 

@@ -9,10 +9,10 @@ import org.geneview.core.view.jogl.IJoglMouseListener;
 
 /**
  * Create a Set that also is a IJoglMouseListener.
- * IJoglMouseListener provieds acces to cerberus.data.view.camera.IViewCamera
+ * IJoglMouseListener provieds acces to org.geneview.core.data.view.camera.IViewCamera
  * 
- * @see cerberus.data.view.camera.IViewCamera
- * @see cerberus.data.collection.SetDataType
+ * @see org.geneview.core.data.view.camera.IViewCamera
+ * @see org.geneview.core.data.collection.SetDataType
  * 
  * @author Michael Kalkusch
  *

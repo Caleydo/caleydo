@@ -202,14 +202,14 @@ implements IXmlParserManager, IManagedObject
 //	}
 	
 	/**
-	 * @see cerberus.data.collection.UniqueManagedInterface#getManager()
+	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getManager()
 	 */
 	public final IGeneralManager getManager() {
 		return this.refGeneralManager;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
+	 * @see org.geneview.core.xml.parser.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
 	public final boolean registerAndInitSaxHandler(IXmlParserHandler handler )
 	{
@@ -250,7 +250,7 @@ implements IXmlParserManager, IManagedObject
 	
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#unregisterSaxHandler(Stringt)
+	 * @see org.geneview.core.manager.IXmlParserManager#unregisterSaxHandler(Stringt)
 	 */
 	public final boolean unregisterSaxHandler( final String sActivationXmlTag)
 	{
@@ -301,7 +301,7 @@ implements IXmlParserManager, IManagedObject
 //	 * 
 //	 * @deprecated not used any more. use openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) instead.
 //	 * 
-//	 * @see cerberus.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
+//	 * @see org.geneview.core.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
 //	 */
 //	protected final void swapXmlParserHandler( IXmlParserHandler from, 
 //			IXmlParserHandler to ) {
@@ -345,7 +345,7 @@ implements IXmlParserManager, IManagedObject
 	
 
 	/*
-	 * @see cerberus.xml.parser.manager.IXmlParserManager#getCurrentXmlParserHandler()
+	 * @see org.geneview.core.xml.parser.manager.IXmlParserManager#getCurrentXmlParserHandler()
 	 */
 	public final IXmlParserHandler getCurrentXmlParserHandler() {
 		return this.currentHandler;

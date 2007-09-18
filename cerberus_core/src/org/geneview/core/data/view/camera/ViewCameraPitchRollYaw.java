@@ -21,7 +21,7 @@ import org.geneview.core.data.view.camera.ViewCameraBase;
  * 
  * Note: using OpenGL camera convention. camera viewing in -z direction onto the x-y plane.
  * 
- * @see cerberus.data.view.camera.IViewCamera
+ * @see org.geneview.core.data.view.camera.IViewCamera
  * 
  * @author Michael Kalkusch
  *

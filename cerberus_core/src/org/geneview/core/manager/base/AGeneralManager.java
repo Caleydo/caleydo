@@ -55,14 +55,14 @@ public abstract class AGeneralManager implements IGeneralManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#getGeneralManager()
+	 * @see org.geneview.core.manager.IGeneralManager#getGeneralManager()
 	 */
 	public final IGeneralManager getGeneralManager() {
 		return this.refGeneralManager;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#getSingelton()
+	 * @see org.geneview.core.manager.IGeneralManager#getSingelton()
 	 */
 	public final ISingelton getSingelton() {
 		return this.refSingelton;
@@ -70,7 +70,7 @@ public abstract class AGeneralManager implements IGeneralManager {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.IGeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public final int createNewId(ManagerObjectType setNewBaseType) {
 		return createNewIdByManager( setNewBaseType.getGroupType() );

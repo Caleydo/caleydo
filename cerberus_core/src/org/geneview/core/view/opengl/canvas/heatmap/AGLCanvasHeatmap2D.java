@@ -57,7 +57,7 @@ extends AGLCanvasUser
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.opengl.canvas.AGLCanvasUser#destroyGLCanvas()
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#destroyGLCanvas()
 	 */
 	public final void destroyGLCanvas()
 	{
@@ -67,7 +67,7 @@ extends AGLCanvasUser
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setResolution(float[])
+	 * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setResolution(float[])
 	 */
 	public final void setResolution( float[] setResolution ) {
 		

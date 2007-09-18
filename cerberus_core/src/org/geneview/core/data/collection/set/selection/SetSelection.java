@@ -46,7 +46,7 @@ implements ISetSelection {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISetSelection#setSelectionIdArray(int[])
+	 * @see org.geneview.core.data.collection.selection.ISetSelection#setSelectionIdArray(int[])
 	 */
 	public void setSelectionIdArray(int[] iArSelectionId) {
 		
@@ -63,7 +63,7 @@ implements ISetSelection {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISetSelection#setGroupArray(int[])
+	 * @see org.geneview.core.data.collection.selection.ISetSelection#setGroupArray(int[])
 	 */
 	public void setGroupArray(int[] iArSelectionGroup) {
 		
@@ -80,7 +80,7 @@ implements ISetSelection {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISetSelection#setOptionalDataArray(int[])
+	 * @see org.geneview.core.data.collection.selection.ISetSelection#setOptionalDataArray(int[])
 	 */
 	public void setOptionalDataArray(int[] iArSelectionOptionalData) {
 		
@@ -97,7 +97,7 @@ implements ISetSelection {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISetSelection#setAllSelectionDataArrays(int[], int[], int[])
+	 * @see org.geneview.core.data.collection.selection.ISetSelection#setAllSelectionDataArrays(int[], int[], int[])
 	 */
 	public void setAllSelectionDataArrays(int[] iArSelectionId, 
 			int[] iArSelectionGroup, 
@@ -126,7 +126,7 @@ implements ISetSelection {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getDimensions()
+	 * @see org.geneview.core.data.collection.ISet#getDimensions()
 	 */
 	public final int getDimensions() {
 		return 3;
@@ -134,7 +134,7 @@ implements ISetSelection {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISetSelection#getSelectionIdArray()
+	 * @see org.geneview.core.data.collection.selection.ISetSelection#getSelectionIdArray()
 	 */
 	public int[] getSelectionIdArray() {
 		
@@ -147,7 +147,7 @@ implements ISetSelection {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISetSelection#getGroupArray()
+	 * @see org.geneview.core.data.collection.selection.ISetSelection#getGroupArray()
 	 */
 	public int[] getGroupArray() {	
 
@@ -160,7 +160,7 @@ implements ISetSelection {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.selection.ISetSelection#getOptionalDataArray()
+	 * @see org.geneview.core.data.collection.selection.ISetSelection#getOptionalDataArray()
 	 */
 	public int[] getOptionalDataArray() {
 

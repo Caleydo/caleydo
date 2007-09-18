@@ -79,7 +79,7 @@ extends AMicroArrayLoader {
 	/**
 	 * Removes all data structures.
 	 * 
-	 * @see cerberus.parser.ascii.IParserObject#destroy()
+	 * @see org.geneview.core.parser.ascii.IParserObject#destroy()
 	 */
 	public final void destroy() {		
 		super.destroy();
@@ -392,7 +392,7 @@ extends AMicroArrayLoader {
 	/**
 	 * Init data structues. Use this to reset the stat also!
 	 * 
-	 * @see cerberus.parser.ascii.IParserObject#init()
+	 * @see org.geneview.core.parser.ascii.IParserObject#init()
 	 */
 	public void init() {
 		iLineInFile = 1;

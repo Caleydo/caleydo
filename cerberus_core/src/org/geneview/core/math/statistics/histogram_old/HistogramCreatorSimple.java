@@ -45,14 +45,14 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.statistic.histogram.HistogramCreator#clear()
+	 * @see org.geneview.core.statistic.histogram.HistogramCreator#clear()
 	 */
 	public void clear() {
 		arrayHistogram = null;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.statistic.histogram.HistogramCreator#update()
+	 * @see org.geneview.core.statistic.histogram.HistogramCreator#update()
 	 */
 	public void updateState() {
 		if ( arrayHistogram == null ) {
@@ -178,21 +178,21 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.statistic.histogram.HistogramCreator#getCounterPerRow()
+	 * @see org.geneview.core.statistic.histogram.HistogramCreator#getCounterPerRow()
 	 */
 	public int[] getCounterPerRow() {
 		return arrayHistogram;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.statistic.histogram.HistogramCreator#getRowWidth()
+	 * @see org.geneview.core.statistic.histogram.HistogramCreator#getRowWidth()
 	 */
 	public int getRowWidth() {
 		return iHistogramWidth;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.statistic.histogram.HistogramCreator#setRowWidth(int)
+	 * @see org.geneview.core.statistic.histogram.HistogramCreator#setRowWidth(int)
 	 */
 	public void setRowWidth(int iSetRowWidth) {
 		if ( iSetRowWidth > 1 ) {
@@ -201,14 +201,14 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.statistic.histogram.HistogramCreator#getSelection()
+	 * @see org.geneview.core.statistic.histogram.HistogramCreator#getSelection()
 	 */
 	public ISet getSet() {
 		return refSet;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.statistic.histogram.HistogramCreator#setSelection(cerberus.data.set.Selection)
+	 * @see org.geneview.core.statistic.histogram.HistogramCreator#setSelection(org.geneview.core.data.set.Selection)
 	 */
 	public void setSet( ISet setSet ) {
 		refSet = setSet;

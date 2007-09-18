@@ -10,9 +10,9 @@ package org.geneview.core.parser.xml.sax.handler;
 
 /**
  * Interface for all XML Handler's registered 
- * to the cerberus.manager.IXmlParserManager
+ * to the org.geneview.core.manager.IXmlParserManager
  * 
- * @see cerberus.manager.IXmlParserManager
+ * @see org.geneview.core.manager.IXmlParserManager
  *  
  * @author Michael Kalkusch
  *
@@ -27,7 +27,7 @@ extends IXmlBaseHandler
 	 * Initilisation of handler.
 	 * Called once by Manager before using the handler.
 	 *
-	 * @see cerberus.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
+	 * @see org.geneview.core.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
 	public void initHandler();
 	
@@ -39,10 +39,10 @@ extends IXmlBaseHandler
 	
 	/**
 	 * Get the XmlActivationTag, which makes this Handler the current XMLHandler, 
-	 * that receives all events from the cerberus.manager.IXmlParserManager.
+	 * that receives all events from the org.geneview.core.manager.IXmlParserManager.
 	 * XmlActivationTag is set via the Constructor.
 	 * 
-	 * @return tag that enables this Handler inside the cerberus.manager.IXmlParserManager
+	 * @return tag that enables this Handler inside the org.geneview.core.manager.IXmlParserManager
 	 */
 	public String getXmlActivationTag();
 	
@@ -51,8 +51,8 @@ extends IXmlBaseHandler
 	/**
 	 * TRUE if handler is destoryed after activation tag is closed.
 	 * 
-	 * @see cerberus.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
-	 * @see cerberus.manager.IXmlParserManager	 
+	 * @see org.geneview.core.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
+	 * @see org.geneview.core.manager.IXmlParserManager	 
 	 * 
 	 * @return TRUE if handler is destoryed after activation tag is closed
 	 */
@@ -62,7 +62,7 @@ extends IXmlBaseHandler
 	/**
 	 * TRUE if handler is destoryed after activation tag is closed.
 	 * 
-	 * @see cerberus.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @see org.geneview.core.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @param setHandlerDestoryedAfterClosingTag
 	 */
 	public void setHandlerDestoryedAfterClosingTag( 

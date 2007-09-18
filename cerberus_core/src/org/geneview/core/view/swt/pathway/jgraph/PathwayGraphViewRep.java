@@ -173,8 +173,8 @@ extends APathwayGraphViewRep {
 	 * Method uses the parent container ID to retrieve the GUI widget by calling
 	 * the createWidget method from the SWT GUI Manager.
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	public void initView() {
 
@@ -491,7 +491,7 @@ extends APathwayGraphViewRep {
 			
 			// Set vertex type to round rect
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
-					"cerberus.view.swt.pathway.jgraph.JGraphMultilineView");
+					"org.geneview.core.view.swt.pathway.jgraph.JGraphMultilineView");
 
 			GraphConstants.setBackground(changedMap, refRenderStyle.getPathwayNodeColor(false));
 		} 
@@ -504,7 +504,7 @@ extends APathwayGraphViewRep {
 			
 			// Set vertex type to ellipse
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
-					"cerberus.view.swt.pathway.jgraph.JGraphEllipseView");
+					"org.geneview.core.view.swt.pathway.jgraph.JGraphEllipseView");
 
 			if (!bShowBackgroundOverlay)
 			{
@@ -1148,8 +1148,8 @@ extends APathwayGraphViewRep {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
-	 *      cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
+	 *      org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 

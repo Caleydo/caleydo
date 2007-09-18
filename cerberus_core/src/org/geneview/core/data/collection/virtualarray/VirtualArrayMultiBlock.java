@@ -46,7 +46,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getSelectionType()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getSelectionType()
 	 */
 	public VirtualArrayType getSelectionType() {
 
@@ -54,7 +54,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getMultiRepeat()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiRepeat()
 	 */
 	public int getMultiRepeat() {
 
@@ -62,7 +62,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getMultiOffset()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiOffset()
 	 */
 	public int getMultiOffset() {
 
@@ -70,7 +70,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getIndexArray()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getIndexArray()
 	 */
 	public int[] getIndexArray() {
 
@@ -111,7 +111,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setMultiRepeat(int)
+	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {
 
@@ -125,7 +125,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setMultiOffset(int)
+	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize) {
 
@@ -139,7 +139,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setIndexArray(int[])
+	 * @see org.geneview.core.data.collection.IVirtualArray#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray) {
 
@@ -203,7 +203,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	/**
 	 * Create XML IMemento.
 	 * 
-	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
+	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
 	 */
 	public String createMementoXML() {
 
@@ -228,7 +228,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
+	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getBaseType()
 	 */
 	public ManagerObjectType getBaseType() {
 
@@ -237,7 +237,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ICollection#getCacheId()
+	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 

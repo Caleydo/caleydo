@@ -11,7 +11,7 @@ import org.geneview.core.command.base.ACmdCreate_IdTargetLabel;
 
 /**
  * 
- * @see cerberus.command.ICommand
+ * @see org.geneview.core.command.ICommand
  * 
  * @author Michael Kalkusch
  *

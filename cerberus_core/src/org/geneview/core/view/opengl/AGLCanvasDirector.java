@@ -59,24 +59,24 @@ implements IGLCanvasDirector {
 	}
 	
 	/* ------------------------------------------------------------------ */
-	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
+	/* ----- END: forward to org.geneview.core.view.jogl.JoglCanvasForwarder ----- */
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public final void addGLCanvasUser( IGLCanvasUser user ) {
 		forwarder_GLEventListener.addGLCanvasUser(user);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public final void removeGLCanvasUser( IGLCanvasUser user ) {
 		forwarder_GLEventListener.removeGLCanvasUser(user);
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
 	 */
 	public final void removeAllGLCanvasUsers() {
 		
@@ -85,7 +85,7 @@ implements IGLCanvasDirector {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasDirector#containsGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.opengl.IGLCanvasDirector#containsGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public final boolean containsGLCanvasUser(IGLCanvasUser user) {
 
@@ -93,7 +93,7 @@ implements IGLCanvasDirector {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#getAllGLCanvasUsers()
 	 */
 	public final Collection<IGLCanvasUser> getAllGLCanvasUsers() {
 		
@@ -108,7 +108,7 @@ implements IGLCanvasDirector {
 		return this.iGlEventListernerId;
 	}
 	
-	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
+	/* ----- END: forward to org.geneview.core.view.jogl.JoglCanvasForwarder ----- */
 	/* ------------------------------------------------------------------ */
 	
 	

@@ -30,7 +30,7 @@ implements IHistogramStatistic {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticBase#addDataValues(T[])
+	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
 	public void addData( final ISet useSet ) {
 		refSet = useSet;
@@ -75,7 +75,7 @@ implements IHistogramStatistic {
 	/**
 	 * Attention: ReadLock for ISet must be valid!
 	 *  
-	 * @see cerberus.math.statistics.histogram.HistogramStatisticInteger#calculateVariance(float)
+	 * @see org.geneview.core.math.statistics.histogram.HistogramStatisticInteger#calculateVariance(float)
 	 */
 	protected synchronized float calculateVariance( final float fUseEstimate ) {
 
@@ -107,7 +107,7 @@ implements IHistogramStatistic {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticInteger#calculateVarianceDouble(double)
+	 * @see org.geneview.core.math.statistics.HistogramStatisticInteger#calculateVarianceDouble(double)
 	 */
 	protected synchronized double calculateVarianceDouble( final double dUseEstimate ) {
 		assert false : "Not supported yet";
@@ -116,7 +116,7 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticBase#addDataValues(T[])
+	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
 	public void addDataValues(int[] setData) {
 		assert false : "Not supported yet";
@@ -126,7 +126,7 @@ implements IHistogramStatistic {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticInteger#addDataValues(java.lang.Number[])
+	 * @see org.geneview.core.math.statistics.HistogramStatisticInteger#addDataValues(java.lang.Number[])
 	 */
 	public void addDataValues(Number[] setData) {
 		assert false : "Not supported yet";
@@ -136,7 +136,7 @@ implements IHistogramStatistic {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticBase#updateHistogram()
+	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#updateHistogram()
 	 */
 	public boolean updateHistogram() {
 		
@@ -265,7 +265,7 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticBase#getUpdatedHistogramData()
+	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getUpdatedHistogramData()
 	 */
 	public HistogramData getUpdatedHistogramData() {
 		if ( this.updateHistogram() ) {

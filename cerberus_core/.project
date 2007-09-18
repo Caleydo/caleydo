@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>geneview_core</name>
+	<name>org.geneview.core</name>
 	<comment></comment>
 	<projects>
 		<project>Muddleware_raw</project>

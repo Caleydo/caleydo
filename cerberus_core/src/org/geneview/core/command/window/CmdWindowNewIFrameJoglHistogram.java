@@ -64,11 +64,11 @@ extends CmdWindowNewIFrameJoglBase {
 
 	
 	/** 
-	 * Example for using cerberus.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
+	 * Example for using org.geneview.core.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
 	 * as a spuer class.
 	 * 
-	 * @see cerberus.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {	
 		
@@ -82,7 +82,7 @@ extends CmdWindowNewIFrameJoglBase {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		

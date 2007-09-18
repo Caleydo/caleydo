@@ -27,8 +27,8 @@ import org.geneview.core.manager.type.ManagerType;
  * @author Michael Kalkusch
  *
  * @see prometheus.data.manager.SelectionManger
- * @see cerberus.manager.data.ISetManager
- * @see cerberus.manager.data.IStorageManager
+ * @see org.geneview.core.manager.data.ISetManager
+ * @see org.geneview.core.manager.data.IStorageManager
  * 
  */
 public abstract class ACollectionManager 

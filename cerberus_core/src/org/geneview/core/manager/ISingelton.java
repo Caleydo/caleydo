@@ -54,7 +54,7 @@ public interface ISingelton {
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 * 
 	 * @return unique networkHostId of this host.
 	 */
@@ -89,7 +89,7 @@ public interface ISingelton {
 	public abstract void setGenomeIdManager( IGenomeIdManager refIGenomeIdManager);
 	
 	/**
-	 * @see cerberus.manager.ILoggerManager#logMsg(String, LoggerType)
+	 * @see org.geneview.core.manager.ILoggerManager#logMsg(String, LoggerType)
 	 * 
 	 * @param info log message
 	 * @param logLevel type of message

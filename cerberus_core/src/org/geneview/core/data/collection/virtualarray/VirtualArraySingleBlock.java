@@ -42,7 +42,7 @@ implements IVirtualArray, IMementoItemXML
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getSelectionType()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getSelectionType()
 	 */
 	public VirtualArrayType getSelectionType() {		
 		return VirtualArrayType.VIRTUAL_ARRAY_SINGLE_BLOCK;
@@ -50,7 +50,7 @@ implements IVirtualArray, IMementoItemXML
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getMultiRepeat()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiRepeat()
 	 */
 	public int getMultiRepeat() {			
 		//do nothing. this is not supported
@@ -58,7 +58,7 @@ implements IVirtualArray, IMementoItemXML
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getMultiOffset()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiOffset()
 	 */
 	public int getMultiOffset() {
 		//do nothing. this is not supported
@@ -66,7 +66,7 @@ implements IVirtualArray, IMementoItemXML
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getIndexArray()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getIndexArray()
 	 */
 	public int[] getIndexArray() {
 		int[] indexArray = new int[ this.iSelectionLength ];
@@ -79,21 +79,21 @@ implements IVirtualArray, IMementoItemXML
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setMultiRepeat(int)
+	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setMultiOffset(int)
+	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setIndexArray(int[])
+	 * @see org.geneview.core.data.collection.IVirtualArray#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray) {
 		throw new RuntimeException("VirtualArraySingleBlock.setIndexArray() is not supported.");
@@ -134,7 +134,7 @@ implements IVirtualArray, IMementoItemXML
 	}
 
 	/**
-	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
+	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
 	 * @return String containing all information on the state 
 	 * of the object in XML form with out a header.
 	 */
@@ -147,7 +147,7 @@ implements IVirtualArray, IMementoItemXML
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
+	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getBaseType()
 	 */
 	public ManagerObjectType getBaseType() {
 		return ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK;
@@ -155,7 +155,7 @@ implements IVirtualArray, IMementoItemXML
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.collection.ICollection#getCacheId()
+	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		return this.iCacheId;
@@ -163,7 +163,7 @@ implements IVirtualArray, IMementoItemXML
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#iterator()
+	 * @see org.geneview.core.data.collection.IVirtualArray#iterator()
 	 */
 	public IVirtualArrayIterator iterator() {
 		return new VirtualArraySingleBlockIterator(this);

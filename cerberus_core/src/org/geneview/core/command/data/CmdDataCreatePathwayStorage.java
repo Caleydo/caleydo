@@ -203,7 +203,7 @@ extends ACmdCreate_IdTargetLabel {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		refCommandManager.runUndoCommand(this);		

@@ -58,28 +58,28 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.SelectionIterator#size()
+	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#size()
 	 */
 	public final int size() {
 		return iSelectionLength;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.SelectionIterator#remaining()
+	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#remaining()
 	 */
 	public final int remaining() {
 		return iSelectionLength - iCurrentVirtualIndex;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.SelectionIterator#getVirtualIndex()
+	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#getVirtualIndex()
 	 */
 	public final int getVirtualIndex() {
 		return iCurrentVirtualIndex;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#hasNext()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#hasNext()
 	 */
 	public final boolean hasNext() {
 		if ( iCurrentVirtualIndex < iSelectionLength ) {
@@ -90,7 +90,7 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#begin()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#begin()
 	 */
 	public void begin() {
 		iSelectionLength = refSelection.length();
@@ -101,12 +101,12 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
+	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public abstract void setVirtualIndex(int iSetVirtualIndex);
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public abstract int next();
 

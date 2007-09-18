@@ -130,7 +130,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1", "No description available!"),
 	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1", "No description available!"),
 	
-	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "Cerberus system shut down"),
+	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "GeneView system shut down"),
 	
 	WINDOW_IFRAME_OPEN_HEATMAP2D(),
 	WINDOW_IFRAME_OPEN_HISTOGRAM2D(),
@@ -377,7 +377,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
 	 */
 	public CommandQueueSaxType getTypeDefault() {
 

@@ -12,7 +12,7 @@ import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.IGLCanvasDirector;
 
 /**
- * @see cerberus.command.ICommand
+ * @see org.geneview.core.command.ICommand
  * 
  * @author Michael Kalkusch
  *
@@ -42,8 +42,8 @@ extends ACmdCreate_IdTargetParentGLObject {
 	/**
 	 * registers to ViewManager, calls doCommandPart()
 	 *  
-	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#doCommandPart()
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommandPart()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public final void doCommand() throws GeneViewRuntimeException
 	{
@@ -76,8 +76,8 @@ extends ACmdCreate_IdTargetParentGLObject {
 	/**
 	 * unregisters from ViewManager, calls undoCommandPart()
 	 * 
-	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#undoCommandPart()
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommandPart()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public final void undoCommand() throws GeneViewRuntimeException
 	{
@@ -99,15 +99,15 @@ extends ACmdCreate_IdTargetParentGLObject {
 	
 	/**
 	 * 
-	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#doCommand()
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public abstract void doCommandPart() throws GeneViewRuntimeException;
 	
 	/**
 	 * 
-	 * @see cerberus.command.base.ACmdCreate_GlCanvasUser#undoCommand()
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public abstract void undoCommandPart() throws GeneViewRuntimeException;
 

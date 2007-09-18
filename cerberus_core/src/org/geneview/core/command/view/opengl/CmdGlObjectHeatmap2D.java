@@ -38,8 +38,8 @@ import org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
  *				attrib4="0 50 1"	
  *				detail="35101" />		
  * 
- * @see cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D
- * @see cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
+ * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D
+ * @see org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
  * 
  * @author Michael Kalkusch
  *
@@ -61,7 +61,7 @@ extends ACmdCreate_GlCanvasUser {
 	/**
 	 * If of Set to be read data from
 	 * 
-	 * @see cerberus.data.collection.ISet
+	 * @see org.geneview.core.data.collection.ISet
 	 */
 	//protected int iTargetCollectionSetId;
 	

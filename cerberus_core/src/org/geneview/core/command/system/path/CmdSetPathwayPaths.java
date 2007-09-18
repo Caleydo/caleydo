@@ -49,7 +49,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 *  - Image maps
 	 *  - Background overlay images/textures
 	 * 
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -64,7 +64,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 
@@ -74,7 +74,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelAttr#setParameterHandler(cerberus.parser.parameter.IParameterHandler)
+	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttr#setParameterHandler(org.geneview.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		

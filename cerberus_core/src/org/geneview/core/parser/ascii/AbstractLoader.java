@@ -45,26 +45,26 @@ implements IMementoXML, IParserObject {
 	 * Defiens the nubmer of leines to beread from a file.
 	 * only usefull, if loadData_TestLinesToBeRead() was called before reading the file.
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
-	 * @see cerberus.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 */
 	private int iLinesInFileToBeRead = -1;
 		
 	/**
 	 * Position of progress bar stored in method progressBarSetStoreInitTitle()
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarResetTitle()
-	 * @see cerberus.parser.ascii.AbstractLoader#sLastProgressBarText
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarResetTitle()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#sLastProgressBarText
 	 */
 	private int iProgressBarLastPosition;
 	
 	/**
 	 * Text progress bar stored in method progressBarSetStoreInitTitle()
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarResetTitle()
-	 * @see cerberus.parser.ascii.AbstractLoader#iProgressBarLastPosition	 
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarResetTitle()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#iProgressBarLastPosition	 
 	 */
 	private String sLastProgressBarText;
 	
@@ -72,7 +72,7 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Stores the current position of the progress bar.
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarCurrentPosition()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarCurrentPosition()
 	 */
 	private int iProgressBarCurrentPosition;
 	
@@ -80,9 +80,9 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Stores the current positon of the progress bar after calling
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see cerberus.parser.ascii.AbstractLoader#fProgressBarInc
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarInc
 	 */
 	private float fProgressBarIndex;
 	
@@ -90,8 +90,8 @@ implements IMementoXML, IParserObject {
 	 * Increments progressbar index.
 	 * Call progressBarIncrement() increment the progress bar.
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see cerberus.parser.ascii.AbstractLoader#fProgressBarIndex
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarIndex
 	 */
 	private float fProgressBarInc;
 	
@@ -354,9 +354,9 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Get the nubmer of lines to be read from the current file.
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#iLinesInFileToBeRead
-	 * @see cerberus.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
-	 * @see cerberus.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#iLinesInFileToBeRead
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 * 
 	 * @return -1 if invalid or number of liens to be read
 	 */
@@ -457,10 +457,10 @@ implements IMementoXML, IParserObject {
 	 * @param sText new text for progress bar
 	 * @param iPosition range [0..200]
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#fProgressBarInc
-	 * @see cerberus.parser.ascii.AbstractLoader#fProgressBarIndex
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarResetTitle()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarInc
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarIndex
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarResetTitle()
 	 */
 	protected final void progressBarSetStoreInitTitle(final String sText, 
 			final int iCurrentProgressBarPosition,
@@ -494,7 +494,7 @@ implements IMementoXML, IParserObject {
 	 * @param iCurrentProgressBarPosition new progress bar position
 	 * @param iStepsTill100_Percent number of incremtens to reach 100 %
 	 * 
-	 * @see cerberus.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int, int)
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int, int)
 	 */
 	protected final void progressBarSetStoreInitTitle(final String sText, 
 			final int iCurrentProgressBarPosition,

@@ -6,8 +6,8 @@ import org.geneview.core.util.IGeneViewDefaultType;
 /**
  * Specify one type of ISet.
  * 
- * @see cerberus.data.collection.ISet#getSetType()
- * @see cerberus.data.collection.ISet#getSetDataType()
+ * @see org.geneview.core.data.collection.ISet#getSetType()
+ * @see org.geneview.core.data.collection.ISet#getSetDataType()
  * 
  * @author Michael Kalkusch
  *
@@ -30,8 +30,8 @@ implements IGeneViewDefaultType <SetDataType> {
 	/** 
 	 * Set for handlein IViewCamera 
 	 * 
-	 * @see cerberus.data.view.camera.IViewCamera
-	 * @see cerberus.data.collection.set.viewdata.ISetViewData
+	 * @see org.geneview.core.data.view.camera.IViewCamera
+	 * @see org.geneview.core.data.collection.set.viewdata.ISetViewData
 	 */
 	SET_VIEWCAMERA,
 	
@@ -80,7 +80,7 @@ implements IGeneViewDefaultType <SetDataType> {
 	 * 
 	 * @return SetDataType.SET_LINEAR
 	 * 
-	 * @see cerberus.util.IGeneViewDefaultType#getDefault()
+	 * @see org.geneview.core.util.IGeneViewDefaultType#getDefault()
 	 */
 	public final SetDataType getTypeDefault() {
 		return SetDataType.SET_LINEAR;

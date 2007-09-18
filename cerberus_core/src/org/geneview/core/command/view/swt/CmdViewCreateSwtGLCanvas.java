@@ -109,7 +109,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		super.setParameterHandler(refParameterHandler);	
 		
 		/**
-		 * Same code as cerberus.command.base.ACmdCreate_IdTargetParentGLObject#setParameterHandler( final IParameterHandler refParameterHandler ) 
+		 * Same code as org.geneview.core.command.base.ACmdCreate_IdTargetParentGLObject#setParameterHandler( final IParameterHandler refParameterHandler ) 
 		 * 
 		 */
 		String sPositionGLOrigin = refParameterHandler.getValueString( 

@@ -56,7 +56,7 @@ implements IColorMapping <T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#getColors()
+	 * @see org.geneview.core.util.mapping.IColorMapping#getColors()
 	 */
 	@Override
 	public final Collection<T> getColors() {
@@ -65,7 +65,7 @@ implements IColorMapping <T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#getValues()
+	 * @see org.geneview.core.util.mapping.IColorMapping#getValues()
 	 */
 	@Override
 	public final Collection<Float> getValues() {
@@ -75,7 +75,7 @@ implements IColorMapping <T> {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#colorMapping4i(int)
+	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping4i(int)
 	 */
 	public final Vec4f colorMapping4i(int lookupValue) {
 
@@ -84,7 +84,7 @@ implements IColorMapping <T> {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#colorMapping3i(int)
+	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping3i(int)
 	 */
 	public final Vec3f colorMapping3i(int lookupValue) {
 
@@ -92,7 +92,7 @@ implements IColorMapping <T> {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#colorMapping_glColor3f(javax.media.opengl.GL, int)
+	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping_glColor3f(javax.media.opengl.GL, int)
 	 */
 	public final void colorMapping_glColor3f(GL gl, int lookupValue) {
 
@@ -101,7 +101,7 @@ implements IColorMapping <T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#colorMapping_glColor3f(javax.media.opengl.GL, int)
+	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping_glColor3f(javax.media.opengl.GL, int)
 	 */
 	public final void colorMapping_glColor4f(GL gl, int lookupValue) {
 
@@ -110,7 +110,7 @@ implements IColorMapping <T> {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#removeColorPoint(float)
+	 * @see org.geneview.core.util.mapping.IColorMapping#removeColorPoint(float)
 	 */
 	public final boolean removeSamplingPoint(float value) {
 

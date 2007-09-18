@@ -59,7 +59,7 @@ extends ICommandActionListener, IGeneralManager {
 	/**
 	 * create a new command. Calls createCommandByType(CommandQueueSaxType) internal.
 	 * 
-	 * @see cerberus.manager.ICommandManager#createCommandByType(CommandQueueSaxType)
+	 * @see org.geneview.core.manager.ICommandManager#createCommandByType(CommandQueueSaxType)
 	 * 
 	 * @param phAttributes Define several attributes and assign them in new Command
 	 * @return new Command with attributes defined in phAttributes
@@ -120,20 +120,20 @@ extends ICommandActionListener, IGeneralManager {
 	public boolean hasCommandQueueId( final int iCmdQueueId );
 	
 	/**
-	 * Register a cerberus.command.ICommand after it's doCommand() method was called.
+	 * Register a org.geneview.core.command.ICommand after it's doCommand() method was called.
 	 * Used for redo-undo.
 	 * 
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 * 
 	 * @param runCmd
 	 */
 	public void runDoCommand( ICommand runCmd );
 	
 	/**
-	 * Register a cerberus.command.ICommand after it's undoCommand() method was called.
+	 * Register a org.geneview.core.command.ICommand after it's undoCommand() method was called.
 	 * Used for redo-undo.
 	 * 
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 * 
 	 * @param runCmd
 	 */

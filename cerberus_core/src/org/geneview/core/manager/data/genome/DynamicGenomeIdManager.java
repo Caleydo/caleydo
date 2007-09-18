@@ -187,7 +187,7 @@ implements IGenomeIdManager {
 	}
 	
 	/**
-	 * @see cerberus.manager.data.IGenomeIdManager#hasAnyMapByType(cerberus.data.mapping.GenomeMappingType)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#hasAnyMapByType(org.geneview.core.data.mapping.GenomeMappingType)
 	 */
 	public final boolean hasAnyMapByType( final GenomeMappingType codingLutType ) {
 		
@@ -219,7 +219,7 @@ implements IGenomeIdManager {
 	}	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes(cerberus.data.mapping.GenomeIdType, cerberus.data.mapping.GenomeIdType)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes(org.geneview.core.data.mapping.GenomeIdType, org.geneview.core.data.mapping.GenomeIdType)
 	 */
 	public boolean buildLUT_startEditing( final GenomeMappingType type ) {
 
@@ -256,7 +256,7 @@ implements IGenomeIdManager {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.data.IGenomeIdManager#buildLUT_stopEditing()
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#buildLUT_stopEditing()
 	 */
 	public boolean buildLUT_stopEditing( final GenomeMappingType type ) {
 
@@ -291,49 +291,49 @@ implements IGenomeIdManager {
 
 	
 	public int getIdIntFromStringByMapping(
-			final String sCerberusId, 
+			final String sGeneViewId, 
 			final GenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
 		assert buffer != null : "getIdFromStringByMapping(" + type +") type is not allocated";
 		
-		return buffer.getIntByStringChecked( sCerberusId );
+		return buffer.getIntByStringChecked( sGeneViewId );
 	}
 	
 
 	public int getIdIntFromIntByMapping(
-			final int iCerberusId, 
+			final int iUniqueId, 
 			final GenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
 		assert buffer != null : "getIdFromIntByMapping(" + type +") type is not allocated";
 
-		return buffer.getIntByIntChecked( iCerberusId );
+		return buffer.getIntByIntChecked( iUniqueId );
 	}
 	
 	public String getIdStringFromStringByMapping(
-			final String sCerberusId, 
+			final String sGeneViewId, 
 			final GenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
 		assert buffer != null : "getStringIdFromStringByMapping(" + type +") type is not allocated";
 		
-		return buffer.getStringByStringChecked( sCerberusId );
+		return buffer.getStringByStringChecked( sGeneViewId );
 	}
 
 
 	public String getIdStringFromIntByMapping(
-			final int iCerberusId, 
+			final int iUniqueId, 
 			final GenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
 		assert buffer != null : "getStringIdFromIntByMapping(" + type +") type is not allocated";
 		
-		return buffer.getStringByIntChecked( iCerberusId );
+		return buffer.getStringByIntChecked( iUniqueId );
 	}
 
 	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
@@ -392,11 +392,11 @@ implements IGenomeIdManager {
 
 
 	/**
-	 * @see cerberus.manager.data.IGenomeIdManager#setMapByType(cerberus.data.mapping.GenomeMappingType, java.lang.Object)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#setMapByType(org.geneview.core.data.mapping.GenomeMappingType, java.lang.Object)
 	 * 
-	 * @see cerberus.manager.data.genome.IGenomeIdMap
-	 * @see cerberus.data.map.MultiHashArrayStringMap
-	 * @see cerberus.data.map.MultiHashArrayIntegerMap
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap
+	 * @see org.geneview.core.data.map.MultiHashArrayStringMap
+	 * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
 	 */
 	public void setMapByType(final GenomeMappingType codingLutType, 
 			Object map) {
@@ -423,7 +423,7 @@ implements IGenomeIdManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IGenomeIdManager#removeMapByType(cerberus.data.mapping.GenomeMappingType)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#removeMapByType(org.geneview.core.data.mapping.GenomeMappingType)
 	 */
 	public void removeMapByType(final GenomeMappingType codingLutType) {
 		

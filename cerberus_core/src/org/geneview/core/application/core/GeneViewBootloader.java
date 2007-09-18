@@ -10,7 +10,7 @@ import org.geneview.core.manager.IXmlParserManager;
 import org.geneview.core.manager.parser.XmlParserManager;
 import org.geneview.core.manager.singleton.IGeneralManagerSingleton;
 import org.geneview.core.manager.singleton.OneForAllManager;
-//import org.geneview.core.util.system.CerberusInputStream;
+//import org.geneview.core.util.system.GeneViewInputStream;
 
 //import org.geneview.core.parser.handler.IXmlParserHandler;
 //import org.geneview.core.parser.handler.command.CommandSaxHandler;
@@ -26,7 +26,7 @@ import org.studierstube.net.protocol.muddleware.OperationEnum;
 
 
 /**
- * Basic Cerberus Bootloader, starts application either 
+ * Basic GeneView Bootloader, starts application either 
  * from local XML-file or fram Muddleware-Server.
  * 
  * Requires package: org.studierstube.net.protocol.muddleware.*
@@ -34,7 +34,7 @@ import org.studierstube.net.protocol.muddleware.OperationEnum;
  * @author Michael Kalkusch
  *
  */
-public class CerberusBootloader
+public class GeneViewBootloader
 {
 	
 	private boolean bIsRunning = false;
@@ -71,7 +71,7 @@ public class CerberusBootloader
 	
 	/**
 	 * Reference to XML parser. 
-	 * The parser does the bootstrapping of the cerberus application 
+	 * The parser does the bootstrapping of the GeneView application 
 	 * using an XML input stream.
 	 */
 	protected IXmlParserManager refXmlParserManager;
@@ -90,7 +90,7 @@ public class CerberusBootloader
 	
 
 	
-	public CerberusBootloader()
+	public GeneViewBootloader()
 	{
 		/**
 		 * In order to use SWT call setStateSWT( true ) to enabel SWT support!
@@ -103,7 +103,7 @@ public class CerberusBootloader
 		
 		logger = refSingelton.getLoggerManager();		
 		logger.logMsg("===========================", LoggerType.STATUS);
-		logger.logMsg("... Start Cerberus Core ...", LoggerType.STATUS);
+		logger.logMsg("... Start GeneView Core ...", LoggerType.STATUS);
 		logger.logMsg("===========================", LoggerType.STATUS);
 		logger.logMsg(" ", LoggerType.STATUS);
 		
@@ -162,7 +162,7 @@ public class CerberusBootloader
 		connection.setServerNameAndPort( "localhost", 20000 );
 		
 		if ( connection.connect() ) {
-			System.out.println("CerberusBootloader Can not connect to Muddleware server.");
+			System.out.println("GeneViewBootloader Can not connect to Muddleware server.");
 			return false;
 		}
 		
@@ -175,7 +175,7 @@ public class CerberusBootloader
 		IMessage receiveMsg = connection.sendReceiveMessage( sendMsg );
 		
 		if (( receiveMsg == null )||( receiveMsg.getNumOperations() < 1 )) {
-			System.out.println("CerberusBootloader XPath does not exist, Muddleware server has no data on canvas settings.");
+			System.out.println("GeneViewBootloader XPath does not exist, Muddleware server has no data on canvas settings.");
 			connection.disconnect();
 			return false;
 		}
@@ -193,10 +193,10 @@ public class CerberusBootloader
 			
 			refXmlParserManager.parseXmlString( op.getXPath(), op.getNodeString() );
 			
-			System.out.println("CerberusBootloader PARSE using Muddleware done.");
+			System.out.println("GeneViewBootloader PARSE using Muddleware done.");
 			
 		} else {
-			System.out.println("CerberusBootloader Muddleware server has no data on canvas settings.");
+			System.out.println("GeneViewBootloader Muddleware server has no data on canvas settings.");
 			connection.disconnect();
 			return false;
 		}
@@ -207,11 +207,11 @@ public class CerberusBootloader
 	
 
 	/**
-	 * Run the Cerberus core application ..
+	 * Run the GeneView core application ..
 	 */
 	public static void main(String[] args) 
 	{
-		CerberusBootloader prototype = new CerberusBootloader();
+		GeneViewBootloader prototype = new GeneViewBootloader();
 		
 		if ( args.length > 0 ) 
 		{
@@ -228,10 +228,10 @@ public class CerberusBootloader
 	 * Is case the XML file is received from the Muddleware server
 	 * This is the XPath used to query the Muddleware server.
 	 * 
-	 * @see cerberus.application.core.CerberusBootloader#setBootstrapViaMuddleware(boolean)
-	 * @see cerberus.application.core.CerberusBootloader#getBootstrapViaMuddleware()
+	 * @see org.geneview.core.application.core.GeneViewBootloader#setBootstrapViaMuddleware(boolean)
+	 * @see org.geneview.core.application.core.GeneViewBootloader#getBootstrapViaMuddleware()
 	 * 
-	 * @see cerberus.application.core.CerberusBootloader#getXmlFileName()
+	 * @see org.geneview.core.application.core.GeneViewBootloader#getXmlFileName()
 	 * 
 	 * @param fileName the sFileName to set
 	 */
@@ -242,10 +242,10 @@ public class CerberusBootloader
 	/**
 	 * Get local XML file name if config is read from local file or XPath if config is read from Muddleware server.
 	 *  
-	 * @see cerberus.application.core.CerberusBootloader#setBootstrapViaMuddleware(boolean)
-	 * @see cerberus.application.core.CerberusBootloader#getBootstrapViaMuddleware()
+	 * @see org.geneview.core.application.core.GeneViewBootloader#setBootstrapViaMuddleware(boolean)
+	 * @see org.geneview.core.application.core.GeneViewBootloader#getBootstrapViaMuddleware()
 	 * 
-	 * @see cerberus.application.core.CerberusBootloader#setXmlFileName(String)
+	 * @see org.geneview.core.application.core.GeneViewBootloader#setXmlFileName(String)
 	 * 
 	 * @return XML file name or XPath
 	 */
@@ -255,8 +255,8 @@ public class CerberusBootloader
 	
 	/**
 	 * 
-	 * @see cerberus.application.core.CerberusBootloader#setXmlFileName(String)
-	 * @see cerberus.application.core.CerberusBootloader#getXmlFileName()
+	 * @see org.geneview.core.application.core.GeneViewBootloader#setXmlFileName(String)
+	 * @see org.geneview.core.application.core.GeneViewBootloader#getXmlFileName()
 	 * 
 	 * @param bEnableBootstrapViaMuddleware TRUE for loading config via Muddleware or FALSE for loading config from local file.
 	 */
@@ -266,8 +266,8 @@ public class CerberusBootloader
 	
 	/**
 	 * 
-	 * @see cerberus.application.core.CerberusBootloader#setXmlFileName(String)
-	 * @see cerberus.application.core.CerberusBootloader#getXmlFileName()
+	 * @see org.geneview.core.application.core.GeneViewBootloader#setXmlFileName(String)
+	 * @see org.geneview.core.application.core.GeneViewBootloader#getXmlFileName()
 	 * 
 	 * @return TRUE is config will be loaded via Muddleware or FALSE is config is loaded from local file.
 	 */
@@ -304,8 +304,8 @@ public class CerberusBootloader
 	/**
 	 * Start GeneView core.
 	 * 
-	 * @see CerberusBootloader#isRunning()
-	 * @see CerberusBootloader#stop()
+	 * @see GeneViewBootloader#isRunning()
+	 * @see GeneViewBootloader#stop()
 	 */
 	public synchronized void run() {
 		
@@ -328,7 +328,7 @@ public class CerberusBootloader
 			 * Load configuration from Muddleware server.
 			 */
 			logger.logMsg("  load config via Muddleware server ...", LoggerType.STATUS);			
-			runUsingMuddleWare( "/cerberus/workspace" );
+			runUsingMuddleWare( "/geneview/workspace" );
 		}
 		else
 		{
@@ -349,8 +349,8 @@ public class CerberusBootloader
 	/**
 	 * Stop the GeneView core and clean up all managers.
 	 * 
-	 * @see CerberusBootloader#run()
-	 * @see CerberusBootloader#isRunning()
+	 * @see GeneViewBootloader#run()
+	 * @see GeneViewBootloader#isRunning()
 	 */
 	public synchronized void stop() {
 		if ( bIsRunning ) {
@@ -372,8 +372,8 @@ public class CerberusBootloader
 	/**
 	 * Test if GeneView core is running.
 	 * 
-	 * @see CerberusBootloader#run()
-	 * @see CerberusBootloader#stop()
+	 * @see GeneViewBootloader#run()
+	 * @see GeneViewBootloader#stop()
 	 * 
 	 * @return TRUE if GeneView core is running
 	 */

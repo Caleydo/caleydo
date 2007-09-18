@@ -21,7 +21,7 @@ public interface ICommandActionListener {
 	/**
 	 * Immedieatly executes command.
 	 * 
-	 * @see cerberus.command.Command.ICommandListener#scheduleCommand(cerberus.command.ICommand)
+	 * @see org.geneview.core.command.Command.ICommandListener#scheduleCommand(org.geneview.core.command.ICommand)
 	 * 
 	 * @param addCommand
 	 */
@@ -30,7 +30,7 @@ public interface ICommandActionListener {
 	/**
 	 * Insertes command into execution queue.
 	 * 
-	 * @see cerberus.command.Command.ICommandListener#handleCommand(cerberus.command.ICommand)
+	 * @see org.geneview.core.command.Command.ICommandListener#handleCommand(org.geneview.core.command.ICommand)
 	 * 
 	 * @param addCommand
 	 */

@@ -8,8 +8,8 @@ import org.geneview.core.manager.logger.AConsoleLogger;
 
 /**
  * 
- * @see cerberus.manager.ILoggerManager
- * @see cerberus.manager.IGeneralManager
+ * @see org.geneview.core.manager.ILoggerManager
+ * @see org.geneview.core.manager.IGeneralManager
  * 
  * @author Michael Kalkusch
  *
@@ -32,7 +32,7 @@ public class ConsoleSimpleLogger
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#logMsg(Stringt, short)
+	 * @see org.geneview.core.manager.ILoggerManager#logMsg(Stringt, short)
 	 */
 	public void logMsg(String info, LoggerType logLevel) {
 		System.out.println( logLevel + ": " + info );
@@ -41,7 +41,7 @@ public class ConsoleSimpleLogger
 	/**
 	 * Since the logger prints to system.out it is always flushed.
 	 * 
-	 * @see cerberus.manager.ILoggerManager#flushLog()
+	 * @see org.geneview.core.manager.ILoggerManager#flushLog()
 	 */
 	public void flushLog() {
 		assert false : "logger is always flushed, since it prints to system.out";

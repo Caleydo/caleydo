@@ -547,8 +547,8 @@ implements IXmlParserHandler {
     }
 
 	/**
-	 * @see cerberus.parser.handler.IXmlParserHandler#destroyHandler()
-	 * @see cerberus.parser.handler.AXmlParserHandler#destroyHandler()
+	 * @see org.geneview.core.parser.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.geneview.core.parser.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {

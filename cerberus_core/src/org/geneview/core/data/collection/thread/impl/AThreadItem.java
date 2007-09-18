@@ -30,7 +30,7 @@ public abstract class AThreadItem
 	 * 
 	 * @param iSetCollectionId new unique Id of this object.
 	 * 
-	 * @see cerberus.data.AUniqueItem#UniqueItem(int)
+	 * @see org.geneview.core.data.AUniqueItem#UniqueItem(int)
 	 */
 	protected AThreadItem( int iSetCollectionId ) {
 		super( iSetCollectionId );
@@ -43,7 +43,7 @@ public abstract class AThreadItem
 	 * 
 	 * @param iSetCollectionId new unique Id of this object.
 	 * 
-	 * @see cerberus.data.AUniqueItem#UniqueItem(int)
+	 * @see org.geneview.core.data.AUniqueItem#UniqueItem(int)
 	 */
 	protected AThreadItem( int iSetCollectionId,
 			final ICollectionLock setCollectionLock ) {

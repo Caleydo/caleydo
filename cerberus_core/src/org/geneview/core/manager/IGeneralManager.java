@@ -17,9 +17,9 @@ public interface IGeneralManager {
 	 * 
 	 * exampels: [12][03][9]
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_Increment
-	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_Increment
+	 * @see org.geneview.core.manager.IGeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public static final int iUniqueId_WorkspaceOffset = 10;
 	
@@ -32,18 +32,18 @@ public interface IGeneralManager {
 	 * 
 	 * exampels: [12][03][9]
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_Increment
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
-	 * @see cerberus.manager.IGeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_Increment
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.geneview.core.manager.IGeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public static final int iUniqueId_TypeOffsetMultiplyer = 10;
 	
 	/**
 	 * Increment from one Id to the next unique id.
 	 * 
-	 * @see cerberus.manager.GeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see cerberus.manager.GeneralManager#iUniqueId_Workspace
-	 * @see cerberus.manager.GeneralManager#createNewId(cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.GeneralManager#iUniqueId_TypeOffsetMultiplyer
+	 * @see org.geneview.core.manager.GeneralManager#iUniqueId_Workspace
+	 * @see org.geneview.core.manager.GeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public static final int iUniqueId_Increment = 1000;
 		
@@ -219,8 +219,8 @@ public interface IGeneralManager {
 	 * @return new unique Id
 	 * @param setNewBaseType type of object the id shall be created for
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	public int createId( final ManagerObjectType setNewBaseType );
 

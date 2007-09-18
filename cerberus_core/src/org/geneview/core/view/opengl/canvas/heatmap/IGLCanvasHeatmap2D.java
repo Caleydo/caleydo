@@ -6,8 +6,8 @@ import gleem.linalg.Vec3f;
 /**
  * Interface for accessing Heatmap from a Command.
  * 
- * @see cerberus.command.view.opengl.CmdGlObjectHeatmap2D#doCommand()
- * @see cerberus.command.view.opengl.CmdGlObjectHeatmap2D#undoCommand()
+ * @see org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D#doCommand()
+ * @see org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D#undoCommand()
  * 
  * @author Michael Kalkusch
  *

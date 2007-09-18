@@ -17,8 +17,8 @@ import org.geneview.core.manager.data.IGenomeIdManager;
  * @author Michael Kalkusch
  * @author Marc Streit
  * 
- * @see cerberus.data.map.MultiHashArrayStringMap
- * @see cerberus.data.map.MultiHashArrayIntegerMap
+ * @see org.geneview.core.data.map.MultiHashArrayStringMap
+ * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
  */
 public interface IGenomeIdMap {
 

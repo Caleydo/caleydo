@@ -153,7 +153,7 @@ implements ICollectionType <StorageType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
 	 */
 	public StorageType getTypeDefault() {
 

@@ -43,7 +43,7 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.observer.mediator.IMediator#destroyMediator(cerberus.observer.mediator.IMediatorSender)
+	 * @see org.geneview.core.observer.mediator.IMediator#destroyMediator(org.geneview.core.observer.mediator.IMediatorSender)
 	 */
 	protected final void destroyMediatorDerivedObject(final IEventPublisher sender) {
 		
@@ -54,7 +54,7 @@ implements IMediator {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.observer.mediator.IMediator#register(cerberus.observer.mediator.IMediatorSender)
+	 * @see org.geneview.core.observer.mediator.IMediator#register(org.geneview.core.observer.mediator.IMediatorSender)
 	 */
 	public final boolean register(IMediatorSender sender) {
 		assert sender != null : "can not register null-pointer";
@@ -71,7 +71,7 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.observer.mediator.IMediator#register(cerberus.observer.mediator.IMediatorReceiver)
+	 * @see org.geneview.core.observer.mediator.IMediator#register(org.geneview.core.observer.mediator.IMediatorReceiver)
 	 */
 	public final boolean register(IMediatorReceiver receiver) {
 		assert receiver != null : "can not register null-pointer";
@@ -88,7 +88,7 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.observer.mediator.IMediator#unregister(cerberus.observer.mediator.IMediatorSender)
+	 * @see org.geneview.core.observer.mediator.IMediator#unregister(org.geneview.core.observer.mediator.IMediatorSender)
 	 */
 	public final boolean unregister(IMediatorSender sender) {
 		assert sender != null : "can not register null-pointer";
@@ -97,7 +97,7 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.observer.mediator.IMediator#unregister(cerberus.observer.mediator.IMediatorReceiver)
+	 * @see org.geneview.core.observer.mediator.IMediator#unregister(org.geneview.core.observer.mediator.IMediatorReceiver)
 	 */
 	public final boolean unregister(IMediatorReceiver receiver) {
 		assert receiver != null : "can not register null-pointer";
@@ -106,7 +106,7 @@ implements IMediator {
 	}
 
 	/**
-	 * @see cerberus.manager.event.mediator.IMediator#hasReceiver(cerberus.manager.event.mediator.IMediatorReceiver)
+	 * @see org.geneview.core.manager.event.mediator.IMediator#hasReceiver(org.geneview.core.manager.event.mediator.IMediatorReceiver)
 	 */
 	public final boolean hasReceiver( IMediatorReceiver receiver ) {
 		assert receiver != null : "can not handle null-pointer";
@@ -114,7 +114,7 @@ implements IMediator {
 	}
 	
 	/**
-	 * @see cerberus.manager.event.mediator.IMediator#hasSender(cerberus.manager.event.mediator.IMediatorSender)
+	 * @see org.geneview.core.manager.event.mediator.IMediator#hasSender(org.geneview.core.manager.event.mediator.IMediatorSender)
 	 */
 	public final boolean hasSender( IMediatorSender sender ) {
 		assert sender != null : "can not handle null-pointer";
@@ -127,8 +127,8 @@ implements IMediator {
 	 * Notification of update events.
 	 * Calles updateReceiver(IMediatorSender) internal if updates are not stalled.
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
-	 * @see cerberus.observer.mediator.AThreadedMediatorReceiver#updateReceiver(cerberus.observer.mediator.IMediatorSender)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
+	 * @see org.geneview.core.observer.mediator.AThreadedMediatorReceiver#updateReceiver(org.geneview.core.observer.mediator.IMediatorSender)
 	 */
 	@Override
 	public void updateReceiver(Object eventTrigger) {
@@ -156,9 +156,9 @@ implements IMediator {
 	/**
 	 * Base implementation.
 	 * 
-	 * @see cerberus.manager.event.mediator.LockableExclusivFilterMediator
-	 * @see cerberus.manager.event.mediator.LockableIgnoreFilterMediator
-	 * @see cerberus.manager.event.mediator.ALockableMediatorReceiver#updateReceiverSelection(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.LockableExclusivFilterMediator
+	 * @see org.geneview.core.manager.event.mediator.LockableIgnoreFilterMediator
+	 * @see org.geneview.core.manager.event.mediator.ALockableMediatorReceiver#updateReceiverSelection(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	@Override
 	public void updateReceiverSpecialMediator(Object eventTrigger,

@@ -64,7 +64,7 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#createStorage()
+	 * @see org.geneview.core.data.manager.StorageManager#createStorage()
 	 */
 	public IStorage createStorage( final ManagerObjectType useStorageType ) {
 		
@@ -91,7 +91,7 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.IStorage)
+	 * @see org.geneview.core.data.manager.StorageManager#deleteStorage(org.geneview.core.data.collection.IStorage)
 	 */
 	public boolean deleteStorage(IStorage deleteStorage ) {
 		int iIndexStorage = 
@@ -102,7 +102,7 @@ implements IStorageManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#deleteStorage(cerberus.data.collection.IStorage)
+	 * @see org.geneview.core.data.manager.StorageManager#deleteStorage(org.geneview.core.data.collection.IStorage)
 	 */
 	public boolean deleteStorage( final int iItemId ) {
 		try {
@@ -117,7 +117,7 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#getItemStorage(int)
+	 * @see org.geneview.core.data.manager.StorageManager#getItemStorage(int)
 	 */
 	public IStorage getItemStorage( final int iItemId) {		
 		return vecStorage.get( iItemId );		
@@ -125,7 +125,7 @@ implements IStorageManager {
 
 	/**
 	 *  
-	 * @see cerberus.manager.IGeneralManager#getItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
@@ -134,7 +134,7 @@ implements IStorageManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#getAllStorageItems()
+	 * @see org.geneview.core.data.manager.StorageManager#getAllStorageItems()
 	 */
 	public IStorage[] getAllStorageItems() {
 		
@@ -151,7 +151,7 @@ implements IStorageManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.manager.StorageManager#getAllStorageItemsVector()
+	 * @see org.geneview.core.data.manager.StorageManager#getAllStorageItemsVector()
 	 */
 	public LinkedList<IStorage> getAllStorageItemsVector() {
 		
@@ -168,14 +168,14 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
 		return vecStorage.containsKey( iItemId );	
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#size()
+	 * @see org.geneview.core.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
 		return vecStorage.size();

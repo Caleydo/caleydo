@@ -30,7 +30,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#begin()
+	 * @see org.geneview.core.data.collection.set.iterator.ISetDataIterator#begin()
 	 */
 	public void begin() {
 		// TODO Auto-generated method stub
@@ -38,7 +38,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#hasNext()
+	 * @see org.geneview.core.data.collection.set.iterator.ISetDataIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		// TODO Auto-generated method stub
@@ -46,7 +46,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#hasNextInSelection()
+	 * @see org.geneview.core.data.collection.set.iterator.ISetDataIterator#hasNextInSelection()
 	 */
 	public boolean hasNextInSelection() {
 		// TODO Auto-generated method stub
@@ -54,7 +54,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#nextIndex()
+	 * @see org.geneview.core.data.collection.set.iterator.ISetDataIterator#nextIndex()
 	 */
 	public int nextIndex() {
 		// TODO Auto-generated method stub
@@ -62,7 +62,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.iterator.ISetDataIterator#nextSelection()
+	 * @see org.geneview.core.data.collection.set.iterator.ISetDataIterator#nextSelection()
 	 */
 	public IVirtualArray nextSelection() {
 		// TODO Auto-generated method stub

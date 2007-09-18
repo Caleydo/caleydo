@@ -27,7 +27,7 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.opengl.IGLCanvasUser
+ * @see org.geneview.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasMinMaxScatterPlot3D 
 extends AGLCanvasUser 
@@ -44,8 +44,8 @@ extends AGLCanvasUser
 	/**
 	 * Avoid that error message during rendering is shown each rendered frame.
 	 * 
-	 * @see cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#setTargetSetId(int)
-	 * @see cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#drawScatterPlotInteger(GL)
+	 * @see org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#setTargetSetId(int)
+	 * @see org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D#drawScatterPlotInteger(GL)
 	 */
 	private boolean bShowRenderingErrorMsgOnylOnce = true;
 	

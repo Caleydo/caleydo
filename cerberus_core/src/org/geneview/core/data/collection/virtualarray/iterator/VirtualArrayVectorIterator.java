@@ -58,7 +58,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * 
 	 * Note: must call begin() before using this iterator!
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param addSelection
 	 */
@@ -72,7 +72,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * Assign a hole Vector <IVirtualArray> to this iterator.
 	 * Note: begin() is called inside this method.
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param addSelectionVector
 	 */
@@ -82,7 +82,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#size()
+	 * @see org.geneview.core.data.collection.selection.iterator.IVirtualArrayIterator#size()
 	 */
 	public int size() {
 		Iterator <IVirtualArray> iter = vecSelection.iterator();
@@ -97,7 +97,7 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#remaining()
+	 * @see org.geneview.core.data.collection.selection.iterator.IVirtualArrayIterator#remaining()
 	 */
 	public int remaining() {
 		
@@ -114,14 +114,14 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#getVirtualIndex()
+	 * @see org.geneview.core.data.collection.selection.iterator.IVirtualArrayIterator#getVirtualIndex()
 	 */
 	public int getVirtualIndex() {
 		return iterator.getVirtualIndex();		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.selection.iterator.IVirtualArrayIterator#setVirtualIndex(int)
+	 * @see org.geneview.core.data.collection.selection.iterator.IVirtualArrayIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(final int iSetVirtualIndex)
 			throws GeneViewRuntimeException {
@@ -132,9 +132,9 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * Resets the iterator to the begin.
 	 * Note: must be called if Selections are set using addSelection().
 	 * 
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#begin()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#addSelection(IVirtualArray)
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#addSelection(IVirtualArray)
 	 * 
 	 */
 	public void begin() {
@@ -154,9 +154,9 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * Get the next index.
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public int next() {
 
@@ -195,9 +195,9 @@ public class VirtualArrayVectorIterator implements IVirtualArrayIterator {
 	 * 
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#hasNext()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		

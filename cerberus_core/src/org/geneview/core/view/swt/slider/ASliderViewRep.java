@@ -16,7 +16,7 @@ import org.geneview.core.view.ViewType;
  * selection and the first storage in the specified Set.
  * The Set is represented by the local variable setId.
  * 
- * @see cerberus.view.IView
+ * @see org.geneview.core.view.IView
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -41,8 +41,8 @@ implements IMediatorSender, IMediatorReceiver {
 	
 	/**
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

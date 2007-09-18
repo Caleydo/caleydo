@@ -61,7 +61,7 @@ extends IUniqueObject {
 	 * 
 	 * @throws PrometheusCommandException
 	 * 
-	 * @see cerberus.command.factory.CommandFactory.getCommandType()
+	 * @see org.geneview.core.command.factory.CommandFactory.getCommandType()
 	 */
 	public abstract CommandQueueSaxType getCommandType();	
 	

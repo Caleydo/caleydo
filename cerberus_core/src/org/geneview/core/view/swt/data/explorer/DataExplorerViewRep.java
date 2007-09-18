@@ -80,7 +80,7 @@ implements IView, IMediatorReceiver {
 
 //	/**
 //	 * 
-//	 * @see cerberus.view.IView#initView()
+//	 * @see org.geneview.core.view.IView#initView()
 //	 */
 //	public void initView() {
 //		
@@ -342,7 +342,7 @@ implements IView, IMediatorReceiver {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
@@ -359,7 +359,7 @@ implements IView, IMediatorReceiver {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, final ISet updatedSet) {
 

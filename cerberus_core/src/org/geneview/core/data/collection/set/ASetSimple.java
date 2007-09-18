@@ -42,14 +42,14 @@ implements ISet {
 	}
 
 //	/* (non-Javadoc)
-//	 * @see cerberus.data.collection.ISet#getStorage()
+//	 * @see org.geneview.core.data.collection.ISet#getStorage()
 //	 */
 //	public final IStorage getStorage() {
 //		return refFlatStorage[0];
 //	}
 //	
 //	/* (non-Javadoc)
-//	 * @see cerberus.data.collection.ISet#setStorage(cerberus.data.collection.IStorage)
+//	 * @see org.geneview.core.data.collection.ISet#setStorage(org.geneview.core.data.collection.IStorage)
 //	 */
 //	public final void setStorage(IStorage setStorage) {
 //		
@@ -61,7 +61,7 @@ implements ISet {
 	/**
 	 * Create "Header" for all Selections.
 	 * 
-	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
+	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
 	 * 
 	 * @return String containign the XML-header for this selection
 	 */
@@ -76,14 +76,14 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ICollection#getCacheId()
+	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
 	 */
 	public abstract int getCacheId();
 	
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ICollection#hasCacheChanged(int)
+	 * @see org.geneview.core.data.collection.ICollection#hasCacheChanged(int)
 	 */
 	public final boolean hasCacheChanged( final int iCompareCacheId ) {
 		return (iCompareCacheId < this.getCacheId());
@@ -91,7 +91,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#hasCacheChangedReadOnly(int)
+	 * @see org.geneview.core.data.collection.ISet#hasCacheChangedReadOnly(int)
 	 */
 	public final boolean hasCacheChangedReadOnly( final int iCompareCacheId ) {
 		return (iCompareCacheId > this.iCacheId);

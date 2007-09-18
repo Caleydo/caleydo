@@ -36,7 +36,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 
@@ -56,7 +56,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 

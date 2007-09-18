@@ -17,7 +17,7 @@ import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType
 
 
 /**
- * @see cerberus.command.ICommand
+ * @see org.geneview.core.command.ICommand
  * 
  * @author Michael Kalkusch
  *

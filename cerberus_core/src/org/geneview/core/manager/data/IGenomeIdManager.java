@@ -34,14 +34,14 @@ extends IGeneralManager {
 //	
 //	public int getIdByName( String name );
 //	
-//	public int getIdByTypeInt( final int iCerberusId, 
+//	public int getIdByTypeInt( final int iUniqueId, 
 //			final GenomeIdType type );
 //	
-//	public int getIdByTypeString( final String sCerberusId, 
+//	public int getIdByTypeString( final String sGeneViewId, 
 //			final GenomeIdType type );
 	
 	
-	public int getIdIntFromStringByMapping( final String sCerberusId, 
+	public int getIdIntFromStringByMapping( final String sGeneViewId, 
 			final GenomeMappingType type );
 	
 	/**
@@ -76,46 +76,46 @@ extends IGeneralManager {
 	
 	
 	/**
-	 * Get one "target" id mapped to one "origin" id defiend by iCerberusId 
+	 * Get one "target" id mapped to one "origin" id defiend by iUniqueId 
 	 * using type.
 	 * 
-	 * @param iCerberusId define "origin" id
+	 * @param iUniqueId define "origin" id
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public int getIdIntFromIntByMapping( final int iCerberusId, 
+	public int getIdIntFromIntByMapping( final int iUniqueId, 
 			final GenomeMappingType type );
 	
 	/**
 	 * Get one "target" id as String mapped to one String as "origin" id 
-	 * defiend by sCerberusId using type.
+	 * defiend by sGeneViewId using type.
 	 * 
-	 * @param sCerberusId define "origin" id
+	 * @param sGeneViewId define "origin" id
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public String getIdStringFromStringByMapping(final String sCerberusId, 
+	public String getIdStringFromStringByMapping(final String sGeneViewId, 
 			final GenomeMappingType type);
 	
 	/**
 	 * Get one "target" id as String mapped to one "origin" id defiend 
-	 * by iCerberusId using type.
+	 * by iUniqueId using type.
 	 * 
-	 * @param iCerberusId define "origin" id
+	 * @param iUniqueId define "origin" id
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public String getIdStringFromIntByMapping(final int iCerberusId, 
+	public String getIdStringFromIntByMapping(final int iUniqueId, 
 			final GenomeMappingType type);
 
 	
-//	public ArrayList<Integer> getIdListByType( final int iCerberusId, 
+//	public ArrayList<Integer> getIdListByType( final int iUniqueId, 
 //			final GenomeIdType type );
 	
-//	public String getIdListByTypeToString( final int iCerberusId, 
+//	public String getIdListByTypeToString( final int iUniqueId, 
 //			final GenomeIdType type );
 //	
-//	public void setIdLUTByType( final int iCerberusId, final GenomeIdType type );
+//	public void setIdLUTByType( final int iUniqueId, final GenomeIdType type );
 	
 	/**
 	 * Get lock to start adding key, value pairs to a specific HashMap defined by type.
@@ -172,9 +172,9 @@ extends IGeneralManager {
 	 * @param codingLutType define GenomeMappingType used for identifying
 	 * @param map to be added, must be IGenomeIdMap
 	 * 
-	 * @see cerberus.manager.data.genome.IGenomeIdMap
-	 * @see cerberus.data.map.MultiHashArrayStringMap
-	 * @see cerberus.data.map.MultiHashArrayIntegerMap
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap
+	 * @see org.geneview.core.data.map.MultiHashArrayStringMap
+	 * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
 	 */
 	public void setMapByType( final GenomeMappingType codingLutType, Object map );
 	
@@ -186,9 +186,9 @@ extends IGeneralManager {
 	 * 
 	 * @param codingLutType define GenomeMappingType used for identifying
 	 * 
-	 * @see cerberus.manager.data.genome.IGenomeIdMap
-	 * @see cerberus.data.map.MultiHashArrayStringMap
-	 * @see cerberus.data.map.MultiHashArrayIntegerMap
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap
+	 * @see org.geneview.core.data.map.MultiHashArrayStringMap
+	 * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
 	 */
 	public void removeMapByType(final GenomeMappingType codingLutType);
 	

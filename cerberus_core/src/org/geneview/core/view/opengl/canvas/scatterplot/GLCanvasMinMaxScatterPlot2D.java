@@ -26,8 +26,8 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.opengl.IGLCanvasUser
- * @see cerberus.manager.event.mediator.IMediatorReceiver
+ * @see org.geneview.core.view.opengl.IGLCanvasUser
+ * @see org.geneview.core.manager.event.mediator.IMediatorReceiver
  */
 public class GLCanvasMinMaxScatterPlot2D 
 extends AGLCanvasUser 

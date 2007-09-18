@@ -40,8 +40,8 @@ implements IView
 	
 	/**
 	 * 
-	 * @see cerberus.view.AViewRep#retrieveGUIContainer()
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	public void initViewSwtComposit(Composite swtContainer) {
 		

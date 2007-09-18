@@ -37,7 +37,7 @@ implements IGenomeIdMap {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.genome.IGenomeIdMap#getKeysInteger()
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getKeysInteger()
 	 */
 	public final Set<Integer> getKeysInteger() {
 
@@ -46,7 +46,7 @@ implements IGenomeIdMap {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.genome.IGenomeIdMap#getKeysString()
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getKeysString()
 	 */
 	public final Set<String> getKeysString() {
 
@@ -55,7 +55,7 @@ implements IGenomeIdMap {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.genome.IGenomeIdMap#getValuesInteger()
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getValuesInteger()
 	 */
 	public Collection<Integer> getValuesInteger() {
 		
@@ -64,7 +64,7 @@ implements IGenomeIdMap {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.genome.IGenomeIdMap#getValuesString()
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getValuesString()
 	 */
 	public Collection<String> getValuesString() {
 
@@ -80,7 +80,7 @@ implements IGenomeIdMap {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.event.IEventPublisherMap#getStringByInt(int)
+	 * @see org.geneview.core.manager.event.IEventPublisherMap#getStringByInt(int)
 	 */
 	public String getStringByInt(int key) {
 
@@ -89,7 +89,7 @@ implements IGenomeIdMap {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.genome.IGenomeIdMap#getStringByIntChecked(int)
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getStringByIntChecked(int)
 	 */
 	public String getStringByIntChecked(int key) {
 

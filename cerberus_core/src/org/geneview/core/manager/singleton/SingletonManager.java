@@ -78,7 +78,7 @@ implements ISingelton {
 	 * Unique Id per each application over the network.
 	 * Used to identify and create Id's unique for distributed applications. 
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	private int iNetworkApplicationIdPostfix = 0;
 	
@@ -100,49 +100,49 @@ implements ISingelton {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getMementoManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getMementoManager()
 	 */
 	public IMementoManager getMementoManager() {
 		return refMementoManager;
 	}
 	
 	/* (non-Javadoc)	
-	 * @see cerberus.manager.singelton.Singelton#getStorageManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getStorageManager()
 	 */
 	public IStorageManager getStorageManager() {
 		return refStorageManager;
 	}
 		
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getVirtualArrayManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getVirtualArrayManager()
 	 */
 	public IVirtualArrayManager getVirtualArrayManager() {
 		return refVirtualArrayManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getMenuManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getMenuManager()
 	 */
 	public IMenuManager getMenuManager() {
 		return this.refMenuManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getSetManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getSetManager()
 	 */
 	public ISetManager getSetManager() {
 		return refSetManager;
 	}
 	
 //	/* (non-Javadoc)
-//	 * @see cerberus.manager.singelton.Singelton#getViewCanvasManager()
+//	 * @see org.geneview.core.manager.singelton.Singelton#getViewCanvasManager()
 //	 */
 //	public IViewCanvasManager getViewCanvasManager() {
 //		return refViewCanvasManager;
 //	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getViewGLCanvasManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getViewGLCanvasManager()
 	 */
 	public IViewGLCanvasManager getViewGLCanvasManager() {
 		return refViewManager;
@@ -150,7 +150,7 @@ implements ISingelton {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.ISingelton#getPathwayManager()
+	 * @see org.geneview.core.manager.ISingelton#getPathwayManager()
 	 */
 	public IPathwayManager getPathwayManager() {
 		
@@ -159,7 +159,7 @@ implements ISingelton {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.ISingelton#getPathwayItemManager()
+	 * @see org.geneview.core.manager.ISingelton#getPathwayItemManager()
 	 */
 	public IPathwayItemManager getPathwayItemManager() {
 		
@@ -167,35 +167,35 @@ implements ISingelton {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getSWTGUIManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getSWTGUIManager()
 	 */
 	public ISWTGUIManager getSWTGUIManager() {
 		return refSWTGUIManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getEventManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getEventManager()
 	 */
 	public IEventPublisher getEventPublisher() {
 		return refEventPublisher;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getLoggerManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getLoggerManager()
 	 */
 	public ILoggerManager getLoggerManager() {
 		return this.refLoggerManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getXmlParserManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getXmlParserManager()
 	 */
 	public IXmlParserManager getXmlParserManager() {
 		return this.refXmlParserManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getCommandManager()
+	 * @see org.geneview.core.manager.singelton.Singelton#getCommandManager()
 	 */
 	public ICommandManager getCommandManager() {
 		return refCommandManager;
@@ -288,7 +288,7 @@ implements ISingelton {
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getManager(cerberus.manager.type.ManagerType)
+	 * @see org.geneview.core.manager.singelton.Singelton#getManager(org.geneview.core.manager.type.ManagerType)
 	 */
 	public IGeneralManager getManagerByBaseType( ManagerType type) {
 		
@@ -323,16 +323,16 @@ implements ISingelton {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.singelton.Singelton#getNetworkPostfix()
+	 * @see org.geneview.core.manager.singelton.Singelton#getNetworkPostfix()
 	 */
 	public int getNetworkPostfix() {
 		return iNetworkApplicationIdPostfix;
 	}
 	
 	/**
-	 * @see cerberus.manager.singelton.Singelton#setNetworkPostfix(int)
+	 * @see org.geneview.core.manager.singelton.Singelton#setNetworkPostfix(int)
 	 * 
-	 * @see cerberus.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	public void setNetworkPostfix( int iSetNetworkPrefix ) {
 		if (( iSetNetworkPrefix < IGeneralManager.iUniqueId_WorkspaceOffset) && 

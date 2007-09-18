@@ -64,7 +64,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManagerNew#createPathway(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
+	 * @see org.geneview.core.manager.data.IPathwayManagerNew#createPathway(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
 	public PathwayGraph createPathway(
 			final int iKEGGId,
@@ -83,7 +83,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#loadPathwayById(int)
+	 * @see org.geneview.core.manager.data.IPathwayManager#loadPathwayById(int)
 	 */
 	public boolean loadPathwayById(final int iPathwayID) {
 		
@@ -139,7 +139,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getRootPathway()
+	 * @see org.geneview.core.manager.data.IPathwayManager#getRootPathway()
 	 */
 	public Graph getRootPathway() {
 		
@@ -148,7 +148,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getPathwayXMLPath()
+	 * @see org.geneview.core.manager.data.IPathwayManager#getPathwayXMLPath()
 	 */
 	public String getPathwayXMLPath() {
 		
@@ -159,7 +159,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayXMLPath(java.lang.String)
+	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayXMLPath(java.lang.String)
 	 */
 	public void setPathwayXMLPath(final String sPathwayXMLPath) {
 
@@ -168,7 +168,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getPathwayImagePath()
+	 * @see org.geneview.core.manager.data.IPathwayManager#getPathwayImagePath()
 	 */
 	public final String getPathwayImagePath() {
 
@@ -179,7 +179,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayImagePath(java.lang.String)
+	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayImagePath(java.lang.String)
 	 */
 	public void setPathwayImagePath(final String sPathwayImagePath) {
 		
@@ -188,7 +188,7 @@ implements IPathwayManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getPathwayImageMapPath()
+	 * @see org.geneview.core.manager.data.IPathwayManager#getPathwayImageMapPath()
 	 */
 	public final String getPathwayImageMapPath() {
 		
@@ -199,7 +199,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#setPathwayImageMapPath(java.lang.String)
+	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayImageMapPath(java.lang.String)
 	 */
 	public void setPathwayImageMapPath(final String sPathwayImageMapPath) {
 		
@@ -208,7 +208,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#createPathwayImageMap(java.lang.String)
+	 * @see org.geneview.core.manager.data.IPathwayManager#createPathwayImageMap(java.lang.String)
 	 */
 	public void createPathwayImageMap(final String sImageLink) {
 		
@@ -217,7 +217,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.data.IPathwayManager#getCurrentPathwayImageMap()
+	 * @see org.geneview.core.manager.data.IPathwayManager#getCurrentPathwayImageMap()
 	 */
 	public PathwayImageMap getCurrentPathwayImageMap () {
 		
@@ -226,7 +226,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#getItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
 
@@ -235,7 +235,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#hasItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
 
@@ -247,7 +247,7 @@ implements IPathwayManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#registerItem(java.lang.Object, int, cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.IGeneralManager#registerItem(java.lang.Object, int, org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public boolean registerItem(Object registerItem, int itemId,
 			ManagerObjectType type) {
@@ -258,7 +258,7 @@ implements IPathwayManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#size()
+	 * @see org.geneview.core.manager.IGeneralManager#size()
 	 */
 	public int size() {
 
@@ -268,7 +268,7 @@ implements IPathwayManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.IGeneralManager#unregisterItem(int, org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public boolean unregisterItem(int itemId, ManagerObjectType type) {
 

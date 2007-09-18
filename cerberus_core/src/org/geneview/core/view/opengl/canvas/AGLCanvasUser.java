@@ -27,7 +27,7 @@ import org.geneview.core.view.opengl.IGLCanvasUser;
 
 /**
  * 
- * @see cerberus.view.jogl.IJoglMouseListener
+ * @see org.geneview.core.view.jogl.IJoglMouseListener
  * 
  * @author Michael Kalkusch
  */
@@ -112,7 +112,7 @@ implements IGLCanvasUser {
 	}
 	
 //	/* (non-Javadoc)
-//	 * @see cerberus.view.opengl.IGLCanvasUser#link2GLCanvasDirector(cerberus.view.opengl.IGLCanvasDirector)
+//	 * @see org.geneview.core.view.opengl.IGLCanvasUser#link2GLCanvasDirector(org.geneview.core.view.opengl.IGLCanvasDirector)
 //	 */
 //	public final void link2GLCanvasDirector(IGLCanvasDirector parentView)
 //	{
@@ -144,7 +144,7 @@ implements IGLCanvasUser {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasUser#getGLCanvasDirector()
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#getGLCanvasDirector()
 	 */
 	public final IGLCanvasDirector getGLCanvasDirector()
 	{
@@ -158,7 +158,7 @@ implements IGLCanvasUser {
 
 	
 	/**
-	 * @see cerberus.view.IView#addSetId(int[])
+	 * @see org.geneview.core.view.IView#addSetId(int[])
 	 */
 	public final void addSetId( int [] iSet) {
 		
@@ -208,7 +208,7 @@ implements IGLCanvasUser {
 	}
 	
 	/**
-	 * @see cerberus.view.IView#removeAllSetIdByType(cerberus.data.collection.SetType)
+	 * @see org.geneview.core.view.IView#removeAllSetIdByType(org.geneview.core.data.collection.SetType)
 	 */
 	public final void removeAllSetIdByType( SetType setType ) {
 		
@@ -229,7 +229,7 @@ implements IGLCanvasUser {
 	}
 	
 	/**
-	 * @see cerberus.view.IView#removeSetId(int[])
+	 * @see org.geneview.core.view.IView#removeSetId(int[])
 	 */
 	public final void removeSetId( int [] iSet) {
 		
@@ -279,7 +279,7 @@ implements IGLCanvasUser {
 	
 
 	/**
-	 * @see cerberus.view.IView#getAllSetId()
+	 * @see org.geneview.core.view.IView#getAllSetId()
 	 */
 	public final synchronized int[] getAllSetId() {
 		
@@ -313,7 +313,7 @@ implements IGLCanvasUser {
 	
 
 	/**
-	 * @see cerberus.view.IView#hasSetId(int)
+	 * @see org.geneview.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
 		ISet refCurrentSet = refSetManager.getItemSet(iSetId);
@@ -373,7 +373,7 @@ implements IGLCanvasUser {
 	}
 		
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
 	 */
 	public final void displayChanged(GL gl, 
 			boolean modeChanged, 
@@ -384,7 +384,7 @@ implements IGLCanvasUser {
 
 	
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
 	 */
 	public final void render( GL gl)
 	{		
@@ -422,7 +422,7 @@ implements IGLCanvasUser {
 	
 	
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
 	 */
 	public void initGLCanvas(GL gl)
 	{
@@ -431,7 +431,7 @@ implements IGLCanvasUser {
 
 	
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
 	 */
 	public void reshape(GL gl, 
 			final int x,
@@ -446,7 +446,7 @@ implements IGLCanvasUser {
 	
 
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#destroyGLCanvas()
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#destroyGLCanvas()
 	 */
 	public void destroyGLCanvas() {
 		
@@ -456,7 +456,7 @@ implements IGLCanvasUser {
 
 
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#update(javax.media.opengl.GL)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#update(javax.media.opengl.GL)
 	 */
 	public void update(GL gl) {
 		this.render( gl );	
@@ -481,7 +481,7 @@ implements IGLCanvasUser {
 	/*
 	 * Forwards render(GL) to derived class.
 	 * 
-	 * @see cerberus.view.opengl.canvas.AGLCanvasUser#render(GL)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#render(GL)
 	 * 
 	 * @param gl canvas created from GLAutoDrawable
 	 */

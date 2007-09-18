@@ -79,7 +79,7 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
+	 * @see org.geneview.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
 	 */
 	@Override
 	public final void addSamplingPoint_Color(final Color color, final float value) {
@@ -92,7 +92,7 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#colorMapping(int)
+	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping(int)
 	 */
 	public Vec4f colorMapping4f(final float lookupValue) {
 
@@ -100,7 +100,7 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.util.mapping.IColorMapping#colorMapping(int)
+	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping(int)
 	 */
 	public Vec3f colorMapping3f(final float lookupValue) {
 		

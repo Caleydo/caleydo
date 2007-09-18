@@ -70,7 +70,7 @@ implements ISWTGUIManager {
 	/**
 	 * Call createApplicationWindow() before using this object.
 	 * 
-	 * @see cerberus.manager.gui.SWTGUIManager#createApplicationWindow()
+	 * @see org.geneview.core.manager.gui.SWTGUIManager#createApplicationWindow()
 	 * 
 	 * @param setGeneralManager Reference to IGeneralManager
 	 */
@@ -99,7 +99,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createWindow()
+	 * @see org.geneview.core.manager.ISWTGUIManager#createWindow()
 	 */
 	public Shell createWindow() {
 
@@ -107,12 +107,12 @@ implements ISWTGUIManager {
 		final int iUniqueId = this.createId(ManagerObjectType.GUI_SWT_WINDOW);
 
 		// use default layout
-		return createWindow(iUniqueId, "Cerberus", "ROW VERTICAL");
+		return createWindow(iUniqueId, "GeneView", "ROW VERTICAL");
 	}
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createWindow(int, Stringt, Stringt)
+	 * @see org.geneview.core.manager.ISWTGUIManager#createWindow(int, Stringt, Stringt)
 	 */
 	public Shell createWindow(int iUniqueId,
 			String sLabel,
@@ -128,7 +128,7 @@ implements ISWTGUIManager {
 //						Shell refNewShell = new Shell(refDisplay);
 //						refNewShell.setLayout(new GridLayout());
 //						refNewShell.setMaximized(true);
-//						refNewShell.setImage(new Image(refDisplay, "resources/icons/Cerberus.ico"));
+//						refNewShell.setImage(new Image(refDisplay, "resources/icons/GeneView.ico"));
 //						refNewShell.setText( "Bla Bla Label");
 //
 //						refWindowMap.put( 20 , refNewShell);
@@ -146,7 +146,7 @@ implements ISWTGUIManager {
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
 		refNewShell.setMaximized(true);
-		refNewShell.setImage(new Image(refDisplay, "resources/icons/Cerberus.ico"));
+		refNewShell.setImage(new Image(refDisplay, "resources/icons/GeneView.ico"));
 		refNewShell.setText(sLabel);
 
 		refWindowMap.put(iUniqueId, refNewShell);
@@ -161,7 +161,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createComposite(int, int, Stringt)
+	 * @see org.geneview.core.manager.ISWTGUIManager#createComposite(int, int, Stringt)
 	 */
 	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
 			String refLayoutAttributes) {
@@ -181,7 +181,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createWidget(cerberus.manager.type.ManagerObjectType, int, int, int)
+	 * @see org.geneview.core.manager.ISWTGUIManager#createWidget(org.geneview.core.manager.type.ManagerObjectType, int, int, int)
 	 */
 	public ISWTWidget createWidget(final ManagerObjectType useWidgetType,
 			int iUniqueParentContainerId, int iWidth, int iHeight) {
@@ -202,7 +202,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createWidget(cerberus.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
+	 * @see org.geneview.core.manager.ISWTGUIManager#createWidget(org.geneview.core.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
 	 */
 	public synchronized ISWTWidget createWidget(final ManagerObjectType useWidgetType,
 			final Composite refExternalParentComposite, int iWidth, int iHeight) {
@@ -314,7 +314,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#runApplication()
+	 * @see org.geneview.core.manager.ISWTGUIManager#runApplication()
 	 */
 	public void runApplication() {
 
@@ -350,13 +350,13 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#createLoadingProgressBar()
+	 * @see org.geneview.core.manager.ISWTGUIManager#createLoadingProgressBar()
 	 */
 	public void createLoadingProgressBar() {
 				
 		refLoadingProgressBarWindow = new Shell(refDisplay, SWT.TITLE | SWT.BORDER);
 		refLoadingProgressBarWindow.setMaximized(false);
-		refLoadingProgressBarWindow.setText("Loading cerberus...");
+		refLoadingProgressBarWindow.setText("Loading org.geneview.core...");
 		
 		refLoadingProgressBar = 
 			new ProgressBar(refLoadingProgressBarWindow, SWT.SMOOTH );
@@ -369,7 +369,7 @@ implements ISWTGUIManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#setLoadingProgressBarPercentage(int)
+	 * @see org.geneview.core.manager.ISWTGUIManager#setLoadingProgressBarPercentage(int)
 	 */
 	public boolean setLoadingProgressBarPercentage(int iPercentage) {
 		
@@ -418,7 +418,7 @@ implements ISWTGUIManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
+	 * @see org.geneview.core.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
 	 */
 	public synchronized int getLoadingProgressBarPercentage() {
 		
@@ -457,7 +457,7 @@ implements ISWTGUIManager {
 	}
 
 	/**
-	 * @see cerberus.manager.ISWTGUIManager#getAnimatorById(int)
+	 * @see org.geneview.core.manager.ISWTGUIManager#getAnimatorById(int)
 	 */
 	public synchronized TriggeredAnimator getAnimatorById(int iAnimatorId) {
 
@@ -473,7 +473,7 @@ implements ISWTGUIManager {
 	}
 
 	/**
-	 * @see cerberus.manager.ISWTGUIManager#setAnimatorById(cerberus.view.jogl.TriggeredAnimator, int)
+	 * @see org.geneview.core.manager.ISWTGUIManager#setAnimatorById(org.geneview.core.view.jogl.TriggeredAnimator, int)
 	 */
 	public synchronized void setAnimatorById(TriggeredAnimator refAnimator, int iAnimatorId) {
 

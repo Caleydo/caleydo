@@ -191,7 +191,7 @@ public class MementoManager
 	/**
 	 * Mementos are internal structures and can not be search for.
 	 * 
-	 * @see cerberus.manager.IGeneralManager#hasItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public final boolean hasItem(final int iItemId) {
 		return false;

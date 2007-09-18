@@ -47,7 +47,7 @@ implements IView {
 	 * Maximum slider value = 100.
 	 * We use a fill layout to fill the available space optimally.
 	 * 
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

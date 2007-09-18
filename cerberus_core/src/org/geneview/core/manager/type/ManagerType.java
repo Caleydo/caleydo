@@ -11,7 +11,7 @@ package org.geneview.core.manager.type;
 /**
  * Group of Managers.
  * 
- * @see cerberus.manager.type.ManagerObjectType
+ * @see org.geneview.core.manager.type.ManagerObjectType
  * 
  * @author Michael Kalkusch
  *
@@ -124,8 +124,8 @@ public enum ManagerType {
 		/**
 		 * Get the postfix code of that Manager
 		 *
-		 * @see cerberus.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-		 * @see cerberus.manager.IGeneralManager
+		 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
+		 * @see org.geneview.core.manager.IGeneralManager
 		 *
 		 * @return [0..99]
 		 */

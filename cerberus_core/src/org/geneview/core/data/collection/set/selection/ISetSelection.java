@@ -12,7 +12,7 @@ import org.geneview.core.data.collection.ISet;
  * to the selection data.
  * 
  * @see cerverus.view.gui.AViewRep
- * @see cerberus.manager.event.mediator.IMediatorReceiver
+ * @see org.geneview.core.manager.event.mediator.IMediatorReceiver
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

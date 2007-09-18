@@ -12,7 +12,7 @@ import org.geneview.core.data.collection.ISet;
  * Exchange update(Object) with updateReceiver(Object)
  * in derived classes.
  * 
- * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
+ * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
  * 
  * @author Michael Kalkusch
  *
@@ -40,7 +40,7 @@ implements ILockableMediatorReceiver {
 
 	/**
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public final void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
@@ -52,7 +52,7 @@ implements ILockableMediatorReceiver {
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.observer.mediator.IMediatorReceiver#updateStall()
+	 * @see org.geneview.core.observer.mediator.IMediatorReceiver#updateStall()
 	 */
 	public synchronized final void updateStall() {
 		
@@ -72,7 +72,7 @@ implements ILockableMediatorReceiver {
 	 * Frees lock called by updateStall() and
 	 * calls update() respectevly updateReceiver()
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateContinue(Object)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateContinue(Object)
 	 */
 	public final void updateContinue(Object eventTrigger) {
 		
@@ -82,7 +82,7 @@ implements ILockableMediatorReceiver {
 	}
 	
 	/**
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#isUpdateStalled()
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#isUpdateStalled()
 	 */
 	public final boolean isUpdateStalled() {
 		
@@ -92,20 +92,20 @@ implements ILockableMediatorReceiver {
 	/**
 	 * Derived classes must implement this method instead of update(Object).
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
 	 * 	 
 	 * @param eventTrigger
 	 */
 	public abstract void updateReceiver(Object eventTrigger);
 	
 	/**
-	 * Called by cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet) 
+	 * Called by org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet) 
 	 * inside this abstract class.
 	 *  
 	 * @param eventTrigger
 	 * @param updateSet
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public abstract void updateReceiverSpecialMediator(Object eventTrigger,
 			ISet updateSet);

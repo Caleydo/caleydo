@@ -34,7 +34,7 @@ implements ICmdHandleSet {
 	/**
 	 * Reference to current ISet.
 	 * 
-	 * @see cerberus.command.base.ACmdHandleSet#setSet(ISet)
+	 * @see org.geneview.core.command.base.ACmdHandleSet#setSet(ISet)
 	 */
 	protected ISet refCurrentSet;
 	
@@ -74,7 +74,7 @@ implements ICmdHandleSet {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.base.ICmdHandleSet#setSet(cerberus.data.collection.ISet)
+	 * @see org.geneview.core.command.base.ICmdHandleSet#setSet(org.geneview.core.data.collection.ISet)
 	 */
 	public final void setSet( final ISet useSet) {
 		refCurrentSet = useSet;

@@ -321,8 +321,8 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Removes all data structures.
 	 * 
-	 * @see cerberus.parser.ascii.IParserObject#destroy()
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#destroy()
+	 * @see org.geneview.core.parser.ascii.IParserObject#destroy()
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#destroy()
 	 */
 	public void destroy() {
 		

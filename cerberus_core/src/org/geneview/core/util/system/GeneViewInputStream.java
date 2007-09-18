@@ -23,13 +23,13 @@ import org.geneview.core.parser.xml.sax.handler.IXmlBaseHandler;
  * @author Michael Kalkusch
  *
  */
-public class CerberusInputStream
+public class GeneViewInputStream
 {
 
 	/**
 	 * 
 	 */
-	private CerberusInputStream()
+	private GeneViewInputStream()
 	{
 		
 	}
@@ -55,7 +55,7 @@ public class CerberusInputStream
 			return inStream;
 		}
 		catch ( FileNotFoundException fnfe) {
-			refLoggerManager.logMsg("CerberusInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
+			refLoggerManager.logMsg("GeneViewInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
 					LoggerType.ERROR_ONLY );
 		}
 		return null;
@@ -80,7 +80,7 @@ public class CerberusInputStream
 			return inStream;
 		} catch (IOException e)
 		{
-			refLoggerManager.logMsg("CerberusInputStream.openInputStreamFromUrl(): Error loading resource.",
+			refLoggerManager.logMsg("GeneViewInputStream.openInputStreamFromUrl(): Error loading resource.",
 					LoggerType.ERROR_ONLY );
 			
 			e.printStackTrace();
@@ -90,7 +90,7 @@ public class CerberusInputStream
 	
 	/**
 	 * 
-	 * @see cerberus.manager.IXmlParserManager
+	 * @see org.geneview.core.manager.IXmlParserManager
 	 * @see org.xml.sax.ContentHandler
 	 * @see org.xml.sax.EntityResolver;
 	 * @see org.xml.sax.DTDHandler;
@@ -108,7 +108,7 @@ public class CerberusInputStream
 		
 		if ( handler == null ) 
 		{
-			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error because handler is null!",
 					LoggerType.ERROR_ONLY );
@@ -117,7 +117,7 @@ public class CerberusInputStream
 		} //if
 		
 		if ( inStream==null ) {
-			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error no input stream; skip file",
 					LoggerType.ERROR_ONLY );
@@ -141,7 +141,7 @@ public class CerberusInputStream
 			} 
 			catch (SAXParseException saxe)
 			{
-				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+				refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") SAXParser-error during parsing: line=" + saxe.getLineNumber() +
 						" at column=" + saxe.getColumnNumber() +
@@ -151,7 +151,7 @@ public class CerberusInputStream
 			}
 			catch ( IOException e) 
 			{
-				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+				refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") IO-error during parsing: " +
 						e.toString(),
@@ -159,7 +159,7 @@ public class CerberusInputStream
 			} // try
 			catch ( Exception e) 
 			{
-				refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+				refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") error during parsing: " +
 						e.toString() + "\n",
@@ -190,7 +190,7 @@ public class CerberusInputStream
 		} // try
 		catch (SAXException se) 
 		{
-			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") SAXError  while parsing: " +
 					se.toString(),
@@ -198,7 +198,7 @@ public class CerberusInputStream
 		} // end try-catch SAXException
 		catch (IOException ioe) 
 		{
-			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") IO-error while parsing: " +
 					ioe.toString(),
@@ -206,7 +206,7 @@ public class CerberusInputStream
 		} // end try-catch SAXException, IOException
 		catch (Exception e) 
 		{
-			refLoggerManager.logMsg("CerberusInputStream.parseOnce( " +
+			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") general error while parsing: " +
 					e.toString(),

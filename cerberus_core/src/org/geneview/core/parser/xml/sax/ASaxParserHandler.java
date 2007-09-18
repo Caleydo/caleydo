@@ -33,17 +33,17 @@ implements ISaxParserHandler
 
 	/**
 	 * Buffer for error messages.
-	 * An error message always sets the flag cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true.
+	 * An error message always sets the flag org.geneview.core.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#sInfoMessage
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#sInfoMessage
 	 */
 	private String sErrorMessage;
 	
 	/**
 	 * Buffer for info messages.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#sErrorMessage
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#sErrorMessage
 	 */
 	private String sInfoMessage;
 	
@@ -60,19 +60,19 @@ implements ISaxParserHandler
 	
 	/**
 	 * This variabel defines, if a parsing error shall throw a org.xml.sax.SAXParseException.
-	 * If an parsing error occurs the variabel cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing
+	 * If an parsing error occurs the variabel org.geneview.core.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing
 	 * is set to true. 
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
 	 */
 	protected boolean bError_HaltParsingOnError = true;
 	
 	/**
 	 * This variable indicates, that an error has occurred.
-	 * With respect to the variabel cerberus.net.dwt.swing.DParseBaseSaxHandler#bError_HaltParsingOnError 
+	 * With respect to the variabel org.geneview.core.net.dwt.swing.DParseBaseSaxHandler#bError_HaltParsingOnError 
 	 * the parsing is interrupted.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bError_HaltParsingOnError 
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#bError_HaltParsingOnError 
 	 */
 	protected boolean bErrorWhileParsing = false;
 	
@@ -105,7 +105,7 @@ implements ISaxParserHandler
 	/**
 	 * Tells if a parsing error will cause an abortion of parsing.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bError_HaltParsingOnError
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#bError_HaltParsingOnError
 	 * 
 	 * @return true if a parsing error will cause an parsing abortion
 	 */
@@ -155,12 +155,12 @@ implements ISaxParserHandler
 	
 	/**
 	 * Append an error message and set the "error-has-occurred"-flag true.
-	 * In comparision cerberus.net.dwt.swing.DParseBaseSaxHandler#appandInfoMsg(String) sets an info message
+	 * In comparision org.geneview.core.net.dwt.swing.DParseBaseSaxHandler#appandInfoMsg(String) sets an info message
 	 * without setting the "error-has-occurred"-flag true.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#appandInfoMsg(String)
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#appandInfoMsg(String)
 	 * 
 	 * @param errorMessage new error message
 	 */
@@ -189,9 +189,9 @@ implements ISaxParserHandler
 	
 	/**
 	 * Appands an new debug information, which can be read after parsing by calling
-	 * cerberus.net.dwt.swing.DParseBaseSaxHandler#
+	 * org.geneview.core.net.dwt.swing.DParseBaseSaxHandler#
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
 	 * @param infoMessage
 	 */
 	final protected void appandInfoMsg( final String infoMessage ) {
@@ -204,15 +204,15 @@ implements ISaxParserHandler
 	
 	/**
 	 * Returns the error message. An error message also always sets
-	 * cerberus.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true,
+	 * org.geneview.core.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true,
 	 * which can be tested via the method 
-	 * cerberus.net.dwt.swing.DParseBaseSaxHandler#hasErrorWhileParsing() .
+	 * org.geneview.core.net.dwt.swing.DParseBaseSaxHandler#hasErrorWhileParsing() .
 	 * 
 	 * @return text of error message. If no error occurred this String is empty.
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#hasErrorWhileParsing()
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getInfoMessage()
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#hasErrorWhileParsing()
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#getInfoMessage()
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
 	 */
 	public final String getErrorMessage() {
 		return sErrorMessage;
@@ -223,8 +223,8 @@ implements ISaxParserHandler
 	 * 
 	 * @return text of info message. 
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#hasErrorWhileParsing()
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#hasErrorWhileParsing()
 	 */
 	public final String getInfoMessage() {
 		return sInfoMessage;
@@ -233,11 +233,11 @@ implements ISaxParserHandler
 	/**
 	 * Test if parsing was successful.
 	 * 
-	 * To get error message call  cerberus.net.dwt.swing.DButtonSaxHandler#getErrorMessage()
+	 * To get error message call  org.geneview.core.net.dwt.swing.DButtonSaxHandler#getErrorMessage()
 	 * 
 	 * @return TRUE if an error occurred on parsing. 
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
 	 */
 	public final boolean hasErrorWhileParsing() {
 		return bErrorWhileParsing;
@@ -284,7 +284,7 @@ implements ISaxParserHandler
 	 * Important: all derived classes must call super.reset() inside their reset() call
 	 * to not cause side effects!
 	 * 
-	 * @see cerberus.parser.xml.sax.ISaxParserHandler#reset()
+	 * @see org.geneview.core.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		sErrorMessage = "";
@@ -305,7 +305,7 @@ implements ISaxParserHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.swing.DParseSaxHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
+	 * @see org.geneview.core.net.dwt.swing.DParseSaxHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public abstract void startElement(String uri, 
 			String localName, 
@@ -313,7 +313,7 @@ implements ISaxParserHandler
 			Attributes attributes);
 	
 	/* (non-Javadoc)
-	 * @see cerberus.net.dwt.swing.DParseSaxHandler#endElement(Stringt, Stringt, Stringt)
+	 * @see org.geneview.core.net.dwt.swing.DParseSaxHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	public abstract void endElement(String uri, String localName, String qName );
 

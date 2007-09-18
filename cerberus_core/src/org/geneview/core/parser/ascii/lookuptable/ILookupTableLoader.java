@@ -31,14 +31,14 @@ public interface ILookupTableLoader {
 	/**
 	 * initialize the lookup table if neccessary.
 	 * 
-	 * @see cerberus.parser.ascii.IParserObject#init()
+	 * @see org.geneview.core.parser.ascii.IParserObject#init()
 	 */
 	public void initLUT();
 	
 	/**
 	 * Destroy and cleanup stored variables of the lookup table if neccessary.
 	 * 
-	 * @see cerberus.parser.ascii.IParserObject#destroy()
+	 * @see org.geneview.core.parser.ascii.IParserObject#destroy()
 	 */
 	public void destroyLUT();
 	
@@ -47,10 +47,10 @@ public interface ILookupTableLoader {
 	 * This mehtode is called by LookupTableLoaderProxy#copyDataToInternalDataStructures(), which
 	 * is derived from AbstractLoader#copyDataToInternalDataStructures().
 	 * 
-	 * @see cerberus.parser.ascii.lookuptable.LookupTableLoaderProxy
-	 * @see cerberus.parser.ascii.lookuptable.LookupTableLoaderProxy#copyDataToInternalDataStructures()
-	 * @see cerberus.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
-	 * @see cerberus.manager.data.IGenomeIdManager
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableLoaderProxy
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableLoaderProxy#copyDataToInternalDataStructures()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see org.geneview.core.manager.data.IGenomeIdManager
 	 * 
 	 * @return TRUE on success.
 	 */

@@ -526,7 +526,7 @@ implements IEventPublisher {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.IEventPublisher#update(java.lang.Object)
+	 * @see org.geneview.core.manager.IEventPublisher#update(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
@@ -571,7 +571,7 @@ implements IEventPublisher {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.IEventPublisher#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.IEventPublisher#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		

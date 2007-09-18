@@ -75,7 +75,7 @@ implements ISet {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#setSelection(cerberus.data.collection.IVirtualArray, int)
+	 * @see org.geneview.core.data.collection.ISet#setSelection(org.geneview.core.data.collection.IVirtualArray, int)
 	 */
 	public boolean setVirtualArrayByDim(IVirtualArray[] addVirtualArray, int iAtDimension) {		
 		
@@ -113,7 +113,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#setStorageByDimAndIndex(cerberus.data.collection.IStorage, int, int)
+	 * @see org.geneview.core.data.collection.ISet#setStorageByDimAndIndex(org.geneview.core.data.collection.IStorage, int, int)
 	 */
 	public boolean setStorageByDimAndIndex( final IStorage addStorage, 
 			final int iAtDimension, 
@@ -139,7 +139,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#removeSelection(cerberus.data.collection.IVirtualArray, int)
+	 * @see org.geneview.core.data.collection.ISet#removeSelection(org.geneview.core.data.collection.IVirtualArray, int)
 	 */
 	public boolean removeVirtualArray( final IVirtualArray[] removeVirtualArray, final int iFromDimension) {
 		
@@ -153,7 +153,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#hasSelection(cerberus.data.collection.IVirtualArray, int)
+	 * @see org.geneview.core.data.collection.ISet#hasSelection(org.geneview.core.data.collection.IVirtualArray, int)
 	 */
 	public boolean hasVirtualArray(IVirtualArray testVirtualArray, int iAtDimension) {
 		
@@ -167,7 +167,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#hasSelectionInSet(cerberus.data.collection.IVirtualArray)
+	 * @see org.geneview.core.data.collection.ISet#hasSelectionInSet(org.geneview.core.data.collection.IVirtualArray)
 	 */
 	public boolean hasVirtualArrayInSet(IVirtualArray testVirtualArray) {
 		
@@ -181,7 +181,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getDimensionSizeForAllSelections()
+	 * @see org.geneview.core.data.collection.ISet#getDimensionSizeForAllSelections()
 	 */
 	public int[] getDimensionSizeForAllVirtualArrays() {
 		
@@ -190,7 +190,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getDimensionSize(int)
+	 * @see org.geneview.core.data.collection.ISet#getDimensionSize(int)
 	 */
 	public int getDimensionSize(int iAtDimension) {
 		//FIXME what shall that function do?
@@ -201,14 +201,14 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getDimensions()
+	 * @see org.geneview.core.data.collection.ISet#getDimensions()
 	 */
 	public int getDimensions() {
 		return 1;
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#setDimensionSize(int, int)
+	 * @see org.geneview.core.data.collection.ISet#setDimensionSize(int, int)
 	 */
 	public void setDimensionSize(int iIndexDimension, int iValueDimensionSize) {
 		//FIXME what shall that function do?
@@ -220,7 +220,7 @@ implements ISet {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getSelection(int)
+	 * @see org.geneview.core.data.collection.ISet#getSelection(int)
 	 */
 	public IVirtualArray[] getVirtualArrayByDim(int iAtDimension) {
 		//FIXME add range check..
@@ -229,7 +229,7 @@ implements ISet {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getSelectionByDimAndIndex(int, int)
+	 * @see org.geneview.core.data.collection.ISet#getSelectionByDimAndIndex(int, int)
 	 */
 	public IVirtualArray getVirtualArrayByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {
@@ -242,7 +242,7 @@ implements ISet {
 	 * Since only one selection is stored only one MetaData obejct is used.
 	 * 
 	 * @param setMetaData sets the meta data
-	 * @see cerberus.data.collection.IMetaDataCollection#setMetaData(cerberus.data.collection.IMetaData)
+	 * @see org.geneview.core.data.collection.IMetaDataCollection#setMetaData(org.geneview.core.data.collection.IMetaData)
 	 * 
 	 */
 	public void setMetaData(IMetaData setMetaData) {
@@ -253,7 +253,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IMetaDataCollection#getMetaData()
+	 * @see org.geneview.core.data.collection.IMetaDataCollection#getMetaData()
 	 */
 	public IMetaData getMetaData() {
 		return refMetaDataAllAndAny;
@@ -264,7 +264,7 @@ implements ISet {
 	 * 
 	 * @return curretn meta data
 	 * 
-	 * @see cerberus.data.collection.IMetaDataSet#getMetaData()
+	 * @see org.geneview.core.data.collection.IMetaDataSet#getMetaData()
 	 */
 	public IMetaData getMetaDataAny() {
 		return refMetaDataAllAndAny;
@@ -275,7 +275,7 @@ implements ISet {
 	 * 
 	 * @param sets the meta data
 	 * 
-	 * @see cerberus.data.collection.IMetaDataSet#setMetaData(cerberus.data.collection.IMetaData)
+	 * @see org.geneview.core.data.collection.IMetaDataSet#setMetaData(org.geneview.core.data.collection.IMetaData)
 	 */
 	public void setMetaDataAny(IMetaData setMetaData) {
 		setMetaData( setMetaData );
@@ -284,7 +284,7 @@ implements ISet {
 	/**
 	 * No subsets are available.
 	 * 
-	 * @see cerberus.data.collection.ISubSet#getSubSets()
+	 * @see org.geneview.core.data.collection.ISubSet#getSubSets()
 	 */
 	public ISet[] getSubSets() {
 		
@@ -296,7 +296,7 @@ implements ISet {
 	/**
 	 * No subsets are available.
 	 * 
-	 * @see cerberus.data.collection.ISubSet#hasSubSets()
+	 * @see org.geneview.core.data.collection.ISubSet#hasSubSets()
 	 */
 	public boolean hasSubSets() {
 		return false;
@@ -305,14 +305,14 @@ implements ISet {
 	/**
 	 * No subsets are available.
 	 * 
-	 * @see cerberus.data.collection.ISubSet#addSubSet(cerberus.data.collection.ISet)
+	 * @see org.geneview.core.data.collection.ISubSet#addSubSet(org.geneview.core.data.collection.ISet)
 	 */
 	public boolean addSubSet(ISet addSet) {
 		throw new RuntimeException("SetFlatSimple.addSubSet() SetFlatSimple does not supper ISubSet's.");
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISubSet#swapSubSet(cerberus.data.collection.ISet, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.data.collection.ISubSet#swapSubSet(org.geneview.core.data.collection.ISet, org.geneview.core.data.collection.ISet)
 	 */
 	public boolean swapSubSet(ISet fromSet, ISet toSet) {
 		
@@ -322,7 +322,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISubSet#removeSubSet(cerberus.data.collection.ISet)
+	 * @see org.geneview.core.data.collection.ISubSet#removeSubSet(org.geneview.core.data.collection.ISet)
 	 */
 	public boolean removeSubSet(ISet addSet) {
 
@@ -406,7 +406,7 @@ implements ISet {
 	}
 	
 	/**
-	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
+	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
 	 * @return String containing all information on the state 
 	 * of the object in XML form with out a header.
 	 */
@@ -426,14 +426,14 @@ implements ISet {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.UniqueManagedInterface#getBaseType()
+	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getBaseType()
 	 */
 	public ManagerObjectType getBaseType() {
 		return ManagerObjectType.SET_LINEAR;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getStorage()
+	 * @see org.geneview.core.data.collection.ISet#getStorage()
 	 */
 	public final IStorage[] getStorageByDim( final int iAtDimension ) {
 		return refFlatStorage;
@@ -446,7 +446,7 @@ implements ISet {
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#setStorage(cerberus.data.collection.IStorage)
+	 * @see org.geneview.core.data.collection.ISet#setStorage(org.geneview.core.data.collection.IStorage)
 	 */
 	public final void setStorageByDim(IStorage[] setStorage, final int iAtDimension ) {
 		
@@ -489,7 +489,7 @@ implements ISet {
 	/**
 	 * Create "Header" for all Selections.
 	 * 
-	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
+	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
 	 * 
 	 * @return String containign the XML-header for this selection
 	 */
@@ -504,7 +504,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ICollection#getCacheId()
+	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		
@@ -525,7 +525,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.CollectionThreadObject#hasCacheChanged(int)
+	 * @see org.geneview.core.data.collection.CollectionThreadObject#hasCacheChanged(int)
 	 */
 	public boolean hasCacheChanged( final int iCompareCacheId ) {
 		return (iCompareCacheId < this.getCacheId());
@@ -533,7 +533,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#hasCacheChangedReadOnly(int)
+	 * @see org.geneview.core.data.collection.ISet#hasCacheChangedReadOnly(int)
 	 */
 	public final boolean hasCacheChangedReadOnly( final int iCompareCacheId ) {
 		return (iCompareCacheId > this.iCacheId);
@@ -542,7 +542,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#iteratorStorageByDim(int)
+	 * @see org.geneview.core.data.collection.ISet#iteratorStorageByDim(int)
 	 */
 	public Iterator<IStorage> iteratorStorageByDim( final int iAtDimension ) {
 		
@@ -557,7 +557,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#iteratorSelectionByDim(int)
+	 * @see org.geneview.core.data.collection.ISet#iteratorSelectionByDim(int)
 	 */
 	public IVirtualArrayIterator iteratorVirtualArrayByDim( final int iAtDimension ) {
 		Vector<IVirtualArray> vec_Selection = 

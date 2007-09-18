@@ -9,9 +9,9 @@ import org.geneview.core.manager.event.mediator.MediatorUpdateType;
 
 /**
  * Ignore one special SelectionSet and let all other SelectionSet's pass when calling
- * cerberus.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet)
+ * org.geneview.core.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet)
  * 
- * @see cerberus.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet)
+ * @see org.geneview.core.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet)
  * 
  * @author Michael Kalkusch
  *
@@ -47,7 +47,7 @@ extends LockableMediator {
 	 * The update is only forwareded if the ignoreSelectionSet (internal)
 	 * is not equal the calling selectionSet.
 	 * 	 
-	 * @see cerberus.manager.event.mediator.LockableMediator#updateReceiverSpecialMediator(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.LockableMediator#updateReceiverSpecialMediator(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public final void updateReceiverSpecialMediator(Object eventTrigger,
 			ISet updatedSet) {

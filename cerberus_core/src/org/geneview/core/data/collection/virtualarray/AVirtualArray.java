@@ -61,7 +61,7 @@ implements IVirtualArray {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#length()
+	 * @see org.geneview.core.data.collection.IVirtualArray#length()
 	 */
 	public final int length()
 	{
@@ -69,7 +69,7 @@ implements IVirtualArray {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#getOffset()
+	 * @see org.geneview.core.data.collection.IVirtualArray#getOffset()
 	 */
 	public final int getOffset()
 	{
@@ -77,7 +77,7 @@ implements IVirtualArray {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setOffset(int)
+	 * @see org.geneview.core.data.collection.IVirtualArray#setOffset(int)
 	 */
 	public void setOffset(int iSetOffset)
 	{
@@ -88,7 +88,7 @@ implements IVirtualArray {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IVirtualArray#setLength(int)
+	 * @see org.geneview.core.data.collection.IVirtualArray#setLength(int)
 	 */
 	public void setLength(int iSetLength)
 	{
@@ -99,7 +99,7 @@ implements IVirtualArray {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IMetaDataCollection#getMetaData()
+	 * @see org.geneview.core.data.collection.IMetaDataCollection#getMetaData()
 	 */
 	public final IMetaData getMetaData()
 	{
@@ -107,7 +107,7 @@ implements IVirtualArray {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.IMetaDataCollection#setMetaData(cerberus.data.collection.IMetaData)
+	 * @see org.geneview.core.data.collection.IMetaDataCollection#setMetaData(org.geneview.core.data.collection.IMetaData)
 	 */
 	public final void setMetaData(IMetaData setMetaData)
 	{
@@ -117,7 +117,7 @@ implements IVirtualArray {
 	/**
 	 * Create "Header" for all Selections.
 	 * 
-	 * @see cerberus.data.xml.IMementoXML#createMementoXML()
+	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
 	 * @return String containign the XML-header for this selection
 	 */
 	final protected String createMementoXML_Intro(final String sSelectionType)
@@ -142,7 +142,7 @@ implements IVirtualArray {
 	/**
 	 * Default implementation of IMediatorReceiver, must be overloaded by derived class if used.
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
 		assert false : "update() has no effect";
@@ -151,7 +151,7 @@ implements IVirtualArray {
 	/**
 	 * Default implementation of IMediatorReceiver, must be overloaded by derived class if used.
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		assert false : "updateReceiver() has no effect";

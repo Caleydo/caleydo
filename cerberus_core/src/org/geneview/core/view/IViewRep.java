@@ -9,7 +9,7 @@ import org.geneview.core.view.IView;
  * 
  * @author Micahel Kalkusch
  *
- * @see cerberus.view.AViewRep
+ * @see org.geneview.core.view.AViewRep
  */
 public interface IViewRep 
 extends IView, IMediatorSender, IMediatorReceiver {

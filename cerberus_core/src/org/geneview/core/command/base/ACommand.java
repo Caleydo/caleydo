@@ -29,10 +29,10 @@ implements ICommand {
 	 * 
 	 * Used to
 	 * 
-	 * @see cerberus.manager.ICommandManager#runDoCommand(ICommand)
-	 * @see cerberus.manager.ICommandManager#runUndoCommand(ICommand)
-	 * @see cerberus.command.ICommand#doCommand()
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.manager.ICommandManager#runDoCommand(ICommand)
+	 * @see org.geneview.core.manager.ICommandManager#runUndoCommand(ICommand)
+	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 * 
 	 */
 	protected final ICommandManager refCommandManager;
@@ -55,7 +55,7 @@ implements ICommand {
 	
 	/**
 	 * @see prometheus.command.ICommand#isEqualType(prometheus.command.ICommand)
-	 *  * @see base.AManagedCmd#isEqualType(cerberus.command.ICommand)
+	 *  * @see base.AManagedCmd#isEqualType(org.geneview.core.command.ICommand)
 	 */
 	public final boolean isEqualType(ICommand compareToObject) {
 		if ( compareToObject.getCommandType() == this.getCommandType() ) { 
@@ -66,7 +66,7 @@ implements ICommand {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.data.IUniqueManagedObject#getBaseType()
+	 * @see org.geneview.core.data.IUniqueManagedObject#getBaseType()
 	 */
 	public final ManagerObjectType getBaseType() {
 		return ManagerObjectType.COMMAND;
@@ -74,7 +74,7 @@ implements ICommand {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.command.ICommand#getCommandType()
+	 * @see org.geneview.core.command.ICommand#getCommandType()
 	 */
 	public final CommandQueueSaxType getCommandType() {
 		return refCommandQueueSaxType;
@@ -82,7 +82,7 @@ implements ICommand {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.command.ICommand#setParameterHandler(cerberus.parser.parameter.IParameterHandler)
+	 * @see org.geneview.core.command.ICommand#setParameterHandler(org.geneview.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( IParameterHandler phHandler) {
 		
@@ -90,7 +90,7 @@ implements ICommand {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.command.ICommand#getInfoText()
+	 * @see org.geneview.core.command.ICommand#getInfoText()
 	 */
 	public String getInfoText() {
 		

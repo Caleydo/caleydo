@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.util.exception.CerberusExceptionType;
+
 //import org.geneview.core.util.exception.GeneViewRuntimeException;
 //import org.geneview.core.parser.parameter.IParameterHandler;
 
@@ -411,7 +411,7 @@ public final class StringConversionTool
 	 * If number of float values in sInput is smaller than iDimension the remaining values are "0".
 	 * Also if a non-float value is found it is replaced by "0".
 	 * 
-	 * @see cerberus.util.system.StringConversionTool#convertStringToFloatArrayVariableLength(String)
+	 * @see org.geneview.core.util.system.StringConversionTool#convertStringToFloatArrayVariableLength(String)
 	 * 
 	 * @param sInput input to be converted into an array of int[]
 	 * @param iDimension size of flaot array
@@ -450,7 +450,7 @@ public final class StringConversionTool
 	 * If number of float values in sInput is smaller than iDimension the remaining values are "0".
 	 * Also if a non-float value is found it is replaced by "0".
 	 * 
-	 * @see cerberus.util.system.StringConversionTool#convertStringToFloatArray(String, int)
+	 * @see org.geneview.core.util.system.StringConversionTool#convertStringToFloatArray(String, int)
 	 * 
 	 * @param sInput input to be converted into an array of int[]
 	 * @param iDimension size of flaot array

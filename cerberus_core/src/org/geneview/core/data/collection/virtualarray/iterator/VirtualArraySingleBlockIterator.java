@@ -35,7 +35,7 @@ implements IVirtualArrayIterator {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
+	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
 			throws GeneViewRuntimeException {
@@ -50,7 +50,7 @@ implements IVirtualArrayIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public int next() {
 		final int iCurrentRealIndex = iCurrentVirtualIndex + iSelectionOffset;

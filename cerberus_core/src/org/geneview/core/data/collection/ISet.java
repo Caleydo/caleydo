@@ -115,7 +115,7 @@ public interface ISet
 	/**
 	 * Get the size of one dimension addressed by iAtDimension.
 	 * 
-	 * @see cerberus.data.collection#setDimensionSize()
+	 * @see org.geneview.core.data.collection#setDimensionSize()
 	 * 
 	 * @param iAtDimension
 	 * @return size of the dimension defined by the set.
@@ -208,7 +208,7 @@ public interface ISet
 	/**
 	 * Test if cache has changed without reevaluating the stats of the cildren.
 	 * 
-	 * @see cerberus.data.collection.thread.ICollectionThreadObject#hasCacheChanged(int)
+	 * @see org.geneview.core.data.collection.thread.ICollectionThreadObject#hasCacheChanged(int)
 	 * 
 	 * @param iCompareCacheId
 	 */
@@ -270,7 +270,7 @@ public interface ISet
 //	/**
 //	 * Get the size of one dimension addressed by iAtDimension.
 //	 * 
-//	 * @see cerberus.data.collection#setDimensionSize()
+//	 * @see org.geneview.core.data.collection#setDimensionSize()
 //	 * 
 //	 * @param iAtDimension
 //	 * @return size of the dimension defined by the set.

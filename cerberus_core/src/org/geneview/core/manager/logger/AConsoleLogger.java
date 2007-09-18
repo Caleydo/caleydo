@@ -14,8 +14,8 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 
 /**
  * 
- * @see cerberus.manager.ILoggerManager
- * @see cerberus.manager.IGeneralManager
+ * @see org.geneview.core.manager.ILoggerManager
+ * @see org.geneview.core.manager.IGeneralManager
  * 
  * @author Michael Kalkusch
  *
@@ -41,7 +41,7 @@ public abstract class AConsoleLogger
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#setLogLevel(short)
+	 * @see org.geneview.core.manager.ILoggerManager#setLogLevel(short)
 	 */
 	public final void setLogLevel(LoggerType level) {
 		logLevel = level;
@@ -49,7 +49,7 @@ public abstract class AConsoleLogger
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#getLogLevel()
+	 * @see org.geneview.core.manager.ILoggerManager#getLogLevel()
 	 */
 	public final LoggerType getLogLevel() {
 		return logLevel;
@@ -58,7 +58,7 @@ public abstract class AConsoleLogger
 	/** 
 	 * Since the logger prints to system.out it is always flushed.
 	 * 
-	 * @see cerberus.manager.ILoggerManager#isLogFlushed()
+	 * @see org.geneview.core.manager.ILoggerManager#isLogFlushed()
 	 */
 	public final boolean isLogFlushed() {
 		return bIsLogFlushed;
@@ -67,7 +67,7 @@ public abstract class AConsoleLogger
 	/**
 	 * Do nothing, since all messages are loged any way.
 	 * 
-	 * @see cerberus.manager.ILoggerManager#setSystemLogLevel(short)
+	 * @see org.geneview.core.manager.ILoggerManager#setSystemLogLevel(short)
 	 */
 	public final void setSystemLogLevel(LoggerType systemLogLevel)
 	{
@@ -80,7 +80,7 @@ public abstract class AConsoleLogger
 	/**
 	 * Do nothing, since all messages are loged any way.
 	 * 
-	 * @see cerberus.manager.ILoggerManager#getSystemLogLevel()
+	 * @see org.geneview.core.manager.ILoggerManager#getSystemLogLevel()
 	 */
 	public final LoggerType getSystemLogLevel()
 	{
@@ -88,21 +88,21 @@ public abstract class AConsoleLogger
 	}
 	
 	/**
-	 * @see cerberus.manager.IGeneralManager#hasItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public final boolean hasItem(final int iItemId) {
 		throw new GeneViewRuntimeException("LOGGER: does not support this method hasItem()");
 	}
 
 	/**
-	 * @see cerberus.manager.IGeneralManager#getItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
 		throw new GeneViewRuntimeException("LOGGER: does not support this method getItem()");
 	}
 	
 	/**
-	 * @see cerberus.manager.IGeneralManager#size()
+	 * @see org.geneview.core.manager.IGeneralManager#size()
 	 */
 	public int size() {
 		return 0;
@@ -110,7 +110,7 @@ public abstract class AConsoleLogger
 	
 
 	/**
-	 * @see cerberus.manager.IGeneralManager#registerItem(java.lang.Object, int, cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.IGeneralManager#registerItem(java.lang.Object, int, org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public final boolean registerItem( final Object registerItem, 
 			final int iItemId , 
@@ -122,7 +122,7 @@ public abstract class AConsoleLogger
 	
 	
 	/**
-	 * @see cerberus.manager.IGeneralManager#unregisterItem(int, cerberus.manager.type.ManagerObjectType)
+	 * @see org.geneview.core.manager.IGeneralManager#unregisterItem(int, org.geneview.core.manager.type.ManagerObjectType)
 	 */
 	public final boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
 		throw new GeneViewRuntimeException("LOGGER: does not support this method unregisterItem()");

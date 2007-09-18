@@ -28,7 +28,7 @@ import org.geneview.core.parser.xml.sax.handler.SXmlParserHandler;
 /**
  * Create Menus in Frames from XML file.
  * 
- * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
+ * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
  * 
  * @author Michael Kalkusch
  *

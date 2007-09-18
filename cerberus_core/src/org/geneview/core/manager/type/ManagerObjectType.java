@@ -13,7 +13,7 @@ package org.geneview.core.manager.type;
 /**
  * Types of managers
  * 
- * @see cerberus.manager.enum.ManagerType
+ * @see org.geneview.core.manager.enum.ManagerType
  * 
  * @author Michael Kalkusch
  *
@@ -22,7 +22,7 @@ public enum ManagerObjectType {
 
 	
 	/**
-	 * see cerberus.command.CommandQueueSaxType.CREATE_EVENT_MEDIATOR
+	 * see org.geneview.core.command.CommandQueueSaxType.CREATE_EVENT_MEDIATOR
 	 */
 	EVENT_MEDIATOR_CREATE(ManagerType.EVENT_PUBLISHER),
 	EVENT_MEDIATOR_ADD_OBJECT(ManagerType.EVENT_PUBLISHER),

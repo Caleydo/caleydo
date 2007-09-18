@@ -255,7 +255,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void initGLCanvas( GL gl ) {
 	
@@ -1359,7 +1359,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.swt.pathway.IPathwayGraphView#showBackgroundOverlay(boolean)
+	 * @see org.geneview.core.view.swt.pathway.IPathwayGraphView#showBackgroundOverlay(boolean)
 	 */
 	public void showBackgroundOverlay(boolean bTurnOn) {
 
@@ -1373,7 +1373,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.view.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(Stringt)
+	 * @see org.geneview.core.view.swt.pathway.IPathwayGraphView#loadBackgroundOverlayImage(Stringt)
 	 */
 	public void loadBackgroundOverlayImage(PathwayGraph refTexturedPathway) {
 		
@@ -1438,7 +1438,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		

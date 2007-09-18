@@ -20,7 +20,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.AUniqueReManagedObject
+ * @see org.geneview.core.data.AUniqueReManagedObject
  * @see prometheus.data.xml.MementiItemXML
  */
 public abstract class AUniqueManagedObject 
@@ -56,8 +56,8 @@ implements IUniqueManagedObject {
 	/**
 	 * Reset GeneralManger object
 	 * 
-	 * @see cerberus.data.AUniqueReManagedObject#setManager(cerberus.manager.IGeneralManager)
-	 * @see cerberus.data.IUniqueManagedObject#getGeneralManager()
+	 * @see org.geneview.core.data.AUniqueReManagedObject#setManager(org.geneview.core.manager.IGeneralManager)
+	 * @see org.geneview.core.data.IUniqueManagedObject#getGeneralManager()
 	 */
 	final protected void setManager( final IGeneralManager setGeneralManager) {
 		throw new GeneViewRuntimeException("setManager() prohibited inside this class!");

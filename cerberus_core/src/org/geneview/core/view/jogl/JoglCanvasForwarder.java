@@ -25,9 +25,9 @@ import org.geneview.core.view.opengl.IGLCanvasUser;
 /**
  *JoglCanvasForwarder handles several objects and forwards the OpenGL events to them.
  * 
- * @see cerberus.view.swt.jogl.SwtJoglGLCanvasViewRep
- * @see cerberus.view.jogl.IJoglMouseListener
- * @see cerberus.view.opengl.IGLCanvasDirector
+ * @see org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep
+ * @see org.geneview.core.view.jogl.IJoglMouseListener
+ * @see org.geneview.core.view.opengl.IGLCanvasDirector
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -264,7 +264,7 @@ implements GLEventListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#addGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public void addGLCanvasUser( final IGLCanvasUser user ) {
 
@@ -296,7 +296,7 @@ implements GLEventListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(cerberus.view.opengl.IGLCanvasUser)
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#removeGLCanvasUser(org.geneview.core.view.opengl.IGLCanvasUser)
 	 */
 	public void removeGLCanvasUser( IGLCanvasUser user ) {
 		if ( ! vecGLCanvasUser.remove( user ) ) {
@@ -306,7 +306,7 @@ implements GLEventListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
+	 * @see org.geneview.core.view.swt.jogl.IGLCanvasDirector#removeAllGLCanvasUsers()
 	 */
 	public void removeAllGLCanvasUsers() {
 		

@@ -93,7 +93,7 @@ implements ISaxParserHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see cerberus.parser.xml.sax.ISaxParserHandler#reset()
+	 * @see org.geneview.core.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	

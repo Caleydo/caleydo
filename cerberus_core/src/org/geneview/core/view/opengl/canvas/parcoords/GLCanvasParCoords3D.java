@@ -31,7 +31,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.opengl.canvas.AGLCanvasUser#initGLCanvas(javax.media.opengl.GL)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initGLCanvas(javax.media.opengl.GL)
 	 */
 	public void initGLCanvas(GL gl) {
 	
@@ -44,7 +44,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
 	 */
 	public void renderPart(GL gl) 
 	{		

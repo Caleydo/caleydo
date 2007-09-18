@@ -47,7 +47,7 @@ extends IUniqueObject {
 	
 	/**
 	 * 
-	 * @see cerberus.view.opengl.IGLCanvasDirector#initGLCanvasUser()
+	 * @see org.geneview.core.view.opengl.IGLCanvasDirector#initGLCanvasUser()
 	 */
 	public abstract void setInitGLDone();
 	

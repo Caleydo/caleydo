@@ -32,8 +32,8 @@ import org.geneview.core.data.collection.ISet;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.ISet
- * @see cerberus.parser.ascii.microarray.AMicroArrayLoader
+ * @see org.geneview.core.data.collection.ISet
+ * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader
  */
 public class CmdSystemLoadFileNStorages 
 extends ACommand {
@@ -45,18 +45,18 @@ extends ACommand {
 	/**
 	 * Default is 32, because gpr files have a header of that size!
 	 * 
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#iStartParsingAtLine
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#getStartParsingAtLine()
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#iStartParsingAtLine
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#getStartParsingAtLine()
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStartPareseFileAtLine = 32;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
 	 * 
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#iStopParsingAtLine
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#getStopParsingAtLine()
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#iStopParsingAtLine
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#getStopParsingAtLine()
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopPareseFileAtLine = -1;
 	
@@ -146,9 +146,9 @@ extends ACommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.ascii.microarray.AMicroArrayLoader#loadData()
+	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#loadData()
 	 * 
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -224,7 +224,7 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		// no undo of system shutdown!

@@ -46,7 +46,7 @@ extends IGeneralManager {
 	/**
 	 * Expose HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
 	 * 
-	 * @see cerberus.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
+	 * @see org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
 	 * 
 	 * @return HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
 	 */

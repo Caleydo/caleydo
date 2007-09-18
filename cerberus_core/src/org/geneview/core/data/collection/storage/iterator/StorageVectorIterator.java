@@ -45,7 +45,7 @@ public class StorageVectorIterator {
 	 * 
 	 * Note: must call begin() before using this iterator!
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param addSelection
 	 */
@@ -67,7 +67,7 @@ public class StorageVectorIterator {
 	 * Assign a hole Vector <IStorage> to this iterator.
 	 * Note: begin() is called inside this method.
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
 	 * @param setStorageVector
 	 */
@@ -82,9 +82,9 @@ public class StorageVectorIterator {
 	 * Resets the iterator to the begin.
 	 * Note: must be called if Storages are set using addStorage().
 	 * 
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#begin()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#addSelection(IVirtualArray)
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#addSelection(IVirtualArray)
 	 * 
 	 */
 	public void begin() {
@@ -95,9 +95,9 @@ public class StorageVectorIterator {
 	 * Get the next index.
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#next()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public IStorage next() {
 		return iteratorStorage.next();
@@ -113,9 +113,9 @@ public class StorageVectorIterator {
 	 * 
 	 * Note: begin() must be called before pulling the frist index with next()
 	 * 
-	 * @see cerberus.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
+	 * @see org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator#begin()
 	 * 
-	 * @see cerberus.data.collection.iterator.ICollectionIterator#hasNext()
+	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#hasNext()
 	 */
 	public boolean hasNext() {
 		return iteratorStorage.hasNext();

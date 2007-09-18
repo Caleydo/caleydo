@@ -52,7 +52,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 	/**
 	 * 
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
@@ -96,7 +96,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.AViewRep#updateReceiver(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.view.AViewRep#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {

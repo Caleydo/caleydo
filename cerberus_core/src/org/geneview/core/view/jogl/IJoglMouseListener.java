@@ -59,7 +59,7 @@ public interface IJoglMouseListener
 	/**
 	 * Returns true if any data of the camera has changed.
 	 * 
-	 * @see cerberus.data.view.camera.IViewCamera#hasViewCameraChanged()
+	 * @see org.geneview.core.data.view.camera.IViewCamera#hasViewCameraChanged()
 	 * 
 	 * @return
 	 */

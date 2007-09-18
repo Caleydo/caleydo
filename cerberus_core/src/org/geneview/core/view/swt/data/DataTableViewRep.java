@@ -73,7 +73,7 @@ implements IDataTableView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.view.AViewRep#initView(org.eclipse.swt.widgets.Composite)
+	 * @see org.geneview.core.view.AViewRep#initView(org.eclipse.swt.widgets.Composite)
 	 */
 	public void initViewSwtComposit( Composite swtContainer ) {
 		

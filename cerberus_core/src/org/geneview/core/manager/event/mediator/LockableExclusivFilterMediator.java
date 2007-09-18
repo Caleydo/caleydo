@@ -9,9 +9,9 @@ import org.geneview.core.manager.event.mediator.MediatorUpdateType;
 
 /**
  * Exclusiv accept one SelectionSet and blockes all other SelectionSet's when calling
- * cerberus.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet).
+ * org.geneview.core.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet).
  * 
- * @see cerberus.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet)
+ * @see org.geneview.core.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet)
  * 
  * @author Michael Kalkusch
  *
@@ -46,7 +46,7 @@ extends LockableMediator {
 	 * The update is only forwareded if the exclusiveSelectionSet (internal)
 	 * is equal tio the calling selectionSet.
 	 * 
-	 * @see cerberus.manager.event.mediator.LockableMediator#updateReceiverSpecialMediator(java.lang.Object, cerberus.data.collection.ISet)
+	 * @see org.geneview.core.manager.event.mediator.LockableMediator#updateReceiverSpecialMediator(java.lang.Object, org.geneview.core.data.collection.ISet)
 	 */
 	public final void updateReceiverSpecialMediator(Object eventTrigger,
 			ISet updatedSet) {

@@ -22,7 +22,7 @@ implements IJoglMouseListener {
 	
 	/**
 	 * Constructor uses refIViewCamera as IViewCamera.
-	 * If refViewCamera==null a new cerberus.data.view.camera.ViewCameraBase is created. 
+	 * If refViewCamera==null a new org.geneview.core.data.view.camera.ViewCameraBase is created. 
 	 * 
 	 * @param iUniqueId
 	 * @param setGeneralManager

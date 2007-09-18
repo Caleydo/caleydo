@@ -14,7 +14,7 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 /**
  * @author Michael Kalkusch
  * 
- * @see cerberus.view.opengl.IGLCanvasUser
+ * @see org.geneview.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasTestTriangle 
 extends AGLCanvasUser 

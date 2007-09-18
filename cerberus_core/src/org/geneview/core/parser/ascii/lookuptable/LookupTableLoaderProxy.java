@@ -32,7 +32,7 @@ import org.geneview.core.parser.xml.sax.ISaxParserHandler;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.parser.ascii.IParserObject
+ * @see org.geneview.core.parser.ascii.IParserObject
  */
 public final class LookupTableLoaderProxy 
 extends AbstractLoader {
@@ -165,7 +165,7 @@ extends AbstractLoader {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
+	 * @see org.geneview.core.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
 	 */
 	@Override
 	protected int loadDataParseFile(BufferedReader brFile,
@@ -200,11 +200,11 @@ extends AbstractLoader {
 	}
 
 	/**
-	 * Writes back Map to IGenomeIdManager by calling cerberus.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * Writes back Map to IGenomeIdManager by calling org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
 	 * 
-	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see cerberus.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
-	 * @see cerberus.manager.data.IGenomeIdManager
+	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see org.geneview.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see org.geneview.core.manager.data.IGenomeIdManager
 	 */
 	@Override
 	protected boolean copyDataToInternalDataStructures() {
@@ -225,7 +225,7 @@ extends AbstractLoader {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.xml.IMementoXML#setMementoXML_usingHandler(cerberus.xml.parser.ISaxParserHandler)
+	 * @see org.geneview.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.geneview.core.xml.parser.ISaxParserHandler)
 	 */
 	public boolean setMementoXML_usingHandler(ISaxParserHandler refSaxHandler) {
 
@@ -233,14 +233,14 @@ extends AbstractLoader {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.IParserObject#init()
+	 * @see org.geneview.core.xml.parser.IParserObject#init()
 	 */
 	public void init() {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.xml.parser.IParserObject#destroy()
+	 * @see org.geneview.core.xml.parser.IParserObject#destroy()
 	 */
 	public void destroy() {
 		refProxyLookupTableLoader.destroyLUT();

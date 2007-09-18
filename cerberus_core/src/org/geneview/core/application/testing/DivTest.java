@@ -3,7 +3,7 @@ package org.geneview.core.application.testing;
 import org.geneview.core.math.MathUtil;
 
 /**
- * Test cerberus.math.MathUtil implementation.
+ * Test org.geneview.core.math.MathUtil implementation.
  * 
  * @author Michael Kalkusch
  *

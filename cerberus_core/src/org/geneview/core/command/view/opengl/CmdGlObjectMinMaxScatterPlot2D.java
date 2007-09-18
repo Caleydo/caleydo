@@ -29,7 +29,7 @@ extends ACmdCreate_GlCanvasUser {
 	/**
 	 * If of Set to be read data from
 	 * 
-	 * @see cerberus.data.collection.ISet
+	 * @see org.geneview.core.data.collection.ISet
 	 */
 	protected int iTargetCollectionSetId;
 	

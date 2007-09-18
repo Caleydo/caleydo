@@ -41,7 +41,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISet#getSetType()
+	 * @see org.geneview.core.data.collection.ISet#getSetType()
 	 */
 	public final SetType getSetType() {
 		return setType;

@@ -61,8 +61,8 @@ extends ACommand {
 //	/**
 //	 * Get the reference to the new created internal frame after calling doCommand() internal.
 //	 * 
-//	 * @see cerberus.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
-//	 * @see cerberus.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
+//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
+//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
 //	 * 
 //	 * @return new created IViewCanvas object 
 //	 */
@@ -74,8 +74,8 @@ extends ACommand {
 //	/**
 //	 * Get the last IViewCanvas created with doCommand().
 //	 * 
-//	 * @see cerberus.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
-//	 * @see cerberus.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
+//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
+//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
 //	 * 
 //	 * @return last IViewCanvas created by doCommand() 
 //	 */
@@ -89,8 +89,8 @@ extends ACommand {
 	/**
 	 * Reset the TargetFrameId for the next doCommand().
 	 * 
-	 * @see cerberus.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
-	 * @see cerberus.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
+	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
+	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
 	 * 
 	 * @param sTargetFrameId TargetFramId of the parent frame of the internal frame to be created
 	 */
@@ -103,7 +103,7 @@ extends ACommand {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -116,7 +116,7 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		

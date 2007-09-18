@@ -17,12 +17,12 @@ import org.geneview.core.data.AUniqueItem;
  * Abstract class providing methods defiend in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
- * Same as cerberus.data.AUniqueManagedObject but GeneralManger may be reassinged.
+ * Same as org.geneview.core.data.AUniqueManagedObject but GeneralManger may be reassinged.
  * 
  * @author Michael Kalkusch
  *
  * @see prometheus.data.xml.MementiItemXML
- * @see cerberus.data.AUniqueManagedObject
+ * @see org.geneview.core.data.AUniqueManagedObject
  */
 public abstract class AUniqueReManagedObject 
 extends AUniqueItem
@@ -56,7 +56,7 @@ implements IUniqueManagedObject {
 	/**
 	 * Reset the IGeneralManager.
 	 * 
-	 * @see cerberus.data.IUniqueManagedObject#getGeneralManager()
+	 * @see org.geneview.core.data.IUniqueManagedObject#getGeneralManager()
 	 */
 	final protected void setManager( final IGeneralManager setGeneralManager) {
 		this.refGeneralManager = setGeneralManager;

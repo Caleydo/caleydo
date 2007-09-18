@@ -43,7 +43,7 @@ implements IHistogramStatistic {
 	 * Number of histogram intervals.
 	 * iHistogramBorderLength = iHistogramIntervalLength + 1;
 	 * 
-	 * @see cerberus.math.statistics.histogram.HistogramStatisticData#iHistogramIntervallLength
+	 * @see org.geneview.core.math.statistics.histogram.HistogramStatisticData#iHistogramIntervallLength
 	 */
 	protected int iHistogramBorderLength = 101;
 	
@@ -54,7 +54,7 @@ implements IHistogramStatistic {
 	 * 
 	 * Note: always use setter method. do not assing directly!
 	 * 
-	 * @see cerberus.math.statistics.histogram.HistogramStatisticData#iHistogramBorderLength
+	 * @see org.geneview.core.math.statistics.histogram.HistogramStatisticData#iHistogramBorderLength
 	 */
 	protected int iHistogramIntervallLength = 100;
 	
@@ -66,7 +66,7 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticBase#setIntervalBorders(T[])
+	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#setIntervalBorders(T[])
 	 */
 	protected void setBorderIntervallLength( final int iSetLength ) {
 		
@@ -85,7 +85,7 @@ implements IHistogramStatistic {
 	
 
 	/* (non-Javadoc)
-	 * @see cerberus.math.statistics.HistogramStatisticBase#length()
+	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#length()
 	 */
 	public final int length() {
 		return iHistogramBorderLength;

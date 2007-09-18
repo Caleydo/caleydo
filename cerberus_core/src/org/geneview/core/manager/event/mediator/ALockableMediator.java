@@ -13,7 +13,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
  * 
- * @see cerberus.manager.event.mediator.IMediator
+ * @see org.geneview.core.manager.event.mediator.IMediator
  * 
  * @author Micheal Kalkusch
  * @author Marc Streit
@@ -58,7 +58,7 @@ extends ALockableMediatorReceiver {
 	/**
 	 * Implement cleanup inside this function.
 	 * 
-	 * @see cerberus.manager.event.mediator.ALockableMediator#destroyMediator(IEventPublisher)
+	 * @see org.geneview.core.manager.event.mediator.ALockableMediator#destroyMediator(IEventPublisher)
 	 * 
 	 * @param sender callling object 
 	 */
@@ -69,8 +69,8 @@ extends ALockableMediatorReceiver {
 	/**
 	 * Test if caller is creator and calls destroyMediatorObject(IMediatorSender).
 	 * 
-	 * @see cerberus.manager.event.mediator.IMediator#destroyMediator()
-	 * @see cerberus.manager.event.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
+	 * @see org.geneview.core.manager.event.mediator.IMediator#destroyMediator()
+	 * @see org.geneview.core.manager.event.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
 	 */
 	public final void destroyMediator( final IEventPublisher sender )
 	{
@@ -83,7 +83,7 @@ extends ALockableMediatorReceiver {
 	
 
 	/**
-	 * @see cerberus.data.IUniqueObject#getId()
+	 * @see org.geneview.core.data.IUniqueObject#getId()
 	 */
 	public final int getId() {
 
@@ -93,7 +93,7 @@ extends ALockableMediatorReceiver {
 	/**
 	 * Since the MediatorId is final this method must not be called.
 	 * 
-	 * @see cerberus.data.IUniqueObject#setId(int)
+	 * @see org.geneview.core.data.IUniqueObject#setId(int)
 	 */
 	public final void setId(int isetId) {
 		

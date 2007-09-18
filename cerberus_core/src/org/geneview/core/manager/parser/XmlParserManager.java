@@ -22,7 +22,7 @@ import org.geneview.core.parser.xml.sax.handler.command.CommandSaxHandler;
 import org.geneview.core.parser.xml.sax.handler.kegg.KgmlSaxHandler;
 import org.geneview.core.parser.xml.sax.handler.kegg.PathwayImageMapSaxHandler;
 import org.geneview.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
-import org.geneview.core.util.system.CerberusInputStream;
+import org.geneview.core.util.system.GeneViewInputStream;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
@@ -31,8 +31,8 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * Switches between several XML-SaxHandeler automatical, based by a registered tag.
  * Acts as proxy for other derived objects from IXmlParserManager
  * 
- * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
- * @see cerberus.manager.IXmlParserManager
+ * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
+ * @see org.geneview.core.manager.IXmlParserManager
  * 
  * @author Michael Kalkusch
  *
@@ -179,7 +179,7 @@ extends AXmlParserManager {
 	}
 
 	/**
-	 * @see cerberus.manager.IXmlParserManager#startElement_search4Tag(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
+	 * @see org.geneview.core.manager.IXmlParserManager#startElement_search4Tag(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement_search4Tag(String uri, 
 			String localName, 
@@ -276,7 +276,7 @@ extends AXmlParserManager {
 	
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#endElement_search4Tag(Stringt, Stringt, Stringt)
+	 * @see org.geneview.core.manager.IXmlParserManager#endElement_search4Tag(Stringt, Stringt, Stringt)
 	 */
 	public void endElement_search4Tag(String uri, 
 			String localName, 
@@ -324,7 +324,7 @@ extends AXmlParserManager {
 
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
 	 */
 	public boolean parseXmlString( final String sMuddlewareXPath, final String xmlString ) {
 		
@@ -337,7 +337,7 @@ extends AXmlParserManager {
 		refLoggerManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
 				LoggerType.VERBOSE_EXTRA );
 		
-		boolean status = CerberusInputStream.parseOnce( inStream ,
+		boolean status = GeneViewInputStream.parseOnce( inStream ,
 				sMuddlewareXPath,
 				this,
 				refLoggerManager );
@@ -349,7 +349,7 @@ extends AXmlParserManager {
 	}
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(Stringt)
+	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
 	 */
 	public boolean parseXmlFileByName( final String filename ) {
 		
@@ -359,17 +359,17 @@ extends AXmlParserManager {
 		InputSource inSource = null;
 		
 		if (resourceUrl != null) {
-			inSource = CerberusInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+			inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
 		}
 		else
 		{
-			inSource = CerberusInputStream.openInputStreamFromFile(filename, refLoggerManager);
+			inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
 		}
 		
 		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
 				LoggerType.VERBOSE_EXTRA );
 		
-		boolean status = CerberusInputStream.parseOnce( inSource ,
+		boolean status = GeneViewInputStream.parseOnce( inSource ,
 				filename,
 				this,
 				refLoggerManager );
@@ -381,7 +381,7 @@ extends AXmlParserManager {
 	}
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByName(Stringt)
+	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
 	 */
 	public boolean parseXmlFileByNameAndHandler( final String filename, 
 			final OpenExternalXmlFileSaxHandler openFileHandler ) {
@@ -394,14 +394,14 @@ extends AXmlParserManager {
 		InputSource inSource = null;
 		
 		if (resourceUrl != null) {
-			inSource = CerberusInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+			inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
 		}
 		else
 		{
-			inSource = CerberusInputStream.openInputStreamFromFile(filename, refLoggerManager);
+			inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
 		}
 		
-		return CerberusInputStream.parseOnce( inSource , 
+		return GeneViewInputStream.parseOnce( inSource , 
 				filename,
 				this,
 				refLoggerManager );		
@@ -409,13 +409,13 @@ extends AXmlParserManager {
 	
 	
 	/**
-	 * @see cerberus.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
+	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
 	 */
 	public boolean parseXmlFileByInputStream( InputSource inputStream,
 			final String inputStreamText ) {
 		
 		iCountOpenedFiles++;
-		return CerberusInputStream.parseOnce( inputStream ,
+		return GeneViewInputStream.parseOnce( inputStream ,
 				inputStreamText,
 				this,
 				refLoggerManager );	

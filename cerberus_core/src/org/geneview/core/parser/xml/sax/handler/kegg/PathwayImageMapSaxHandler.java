@@ -14,7 +14,7 @@ import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
 
 /**
  * 
- * @see cerberus.parser.xml.sax.handler.IXmlParserHandler
+ * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
  * 
  * @author Michael Kalkusch
  *
@@ -154,8 +154,8 @@ extends AXmlParserHandler {
 	}
 	
 	/**
-	 * @see cerberus.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
-	 * @see cerberus.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
+	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.geneview.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {

@@ -58,7 +58,7 @@ import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 /**
  * @author Michael Kalkusch
  * 
- * @see cerberus.view.opengl.IGLCanvasUser
+ * @see org.geneview.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHeatmap2DColumn
 extends AGLCanvasHeatmap2D
@@ -508,7 +508,7 @@ extends AGLCanvasHeatmap2D
 
 	
 	/**
-	 * @see cerberus.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
+	 * @see org.geneview.core.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
 	 */
 	@Override
 	public void initGLCanvas(GL gl)
@@ -1430,7 +1430,7 @@ extends AGLCanvasHeatmap2D
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setTargetSetId(int)
+	 * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setTargetSetId(int)
 	 */
 	public final void setTargetSetId(final int iTargetCollectionSetId) {
 
@@ -2158,7 +2158,7 @@ extends AGLCanvasHeatmap2D
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setSelectionItems(int[], int[], int[], int[])
+	 * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setSelectionItems(int[], int[], int[], int[])
 	 */
 	public void setSelectionItems(int[] selectionStartAtIndexX,
 			int[] selectionLengthX, int[] selectionStartAtIndexY,

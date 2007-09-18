@@ -10,7 +10,7 @@ import org.geneview.core.parser.parameter.IParameterHandler;
 /**
  * Abstract command class stores and handles commandId, tragertId and label of object.
  * 
- *  @see cerberus.command.ICommand
+ *  @see org.geneview.core.command.ICommand
  *  @author Michael Kalkusch
  *
  */

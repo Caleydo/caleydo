@@ -13,7 +13,7 @@ import org.geneview.core.view.swt.jogl.gears.GearsViewRep;
 /**
  * Class implementes the command for creating a gears view.
  * 
- * @see cerberus.command.ICommand
+ * @see org.geneview.core.command.ICommand
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

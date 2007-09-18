@@ -153,6 +153,6 @@ implements IGLCanvasDirector, IView {
 	}
 
 	
-	/* ----- END: forward to cerberus.view.jogl.JoglCanvasForwarder ----- */
+	/* ----- END: forward to org.geneview.core.view.jogl.JoglCanvasForwarder ----- */
 	/* ------------------------------------------------------------------ */
 }

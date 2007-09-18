@@ -37,7 +37,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.command.base.ACmdCreate_IdTargetLabelParentXY#checkOpenGLSetting()
+	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentXY#checkOpenGLSetting()
 	 */
 	protected final void checkOpenGLSetting() {
 		/** not openGL settings are required */	

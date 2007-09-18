@@ -19,7 +19,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
 public enum GeneViewRuntimeExceptionType 
 implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
 	
-	ANY_ERROR("cerberus-error"),
+	ANY_ERROR("GeneView-error"),
 	COMMAND("Command"),
 	CONVERSION("NumberFormatError"),
 	DATAHANDLING("LOAD,SAVE"),
@@ -43,7 +43,7 @@ implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
 	 */
 	public GeneViewRuntimeExceptionType getTypeDefault() {
 

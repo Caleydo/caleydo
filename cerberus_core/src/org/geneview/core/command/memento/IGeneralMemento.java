@@ -13,7 +13,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * 
  * Desing Patern "IMemento"
  * 
- * @see cerberus.manager.IMementoManager
+ * @see org.geneview.core.manager.IMementoManager
  * 
  * @author Michael Kalkusch
  *

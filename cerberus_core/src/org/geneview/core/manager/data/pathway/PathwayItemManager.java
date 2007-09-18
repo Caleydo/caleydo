@@ -252,7 +252,7 @@ implements IPathwayItemManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#getItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
 
@@ -271,7 +271,7 @@ implements IPathwayItemManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cerberus.manager.IGeneralManager#hasItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
 

@@ -42,7 +42,7 @@ extends ACmdHandleSet {
 
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -63,14 +63,14 @@ extends ACmdHandleSet {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		
 	}
 	
 //	/* (non-Javadoc)
-//	 * @see cerberus.command.ICommand#isEqualType(cerberus.command.ICommand)
+//	 * @see org.geneview.core.command.ICommand#isEqualType(org.geneview.core.command.ICommand)
 //	 */
 //	public boolean isEqualType(ICommand compareToObject) {		
 //		return compareToObject.getCommandType() == CommandType.WINDOW_IFRAME_OPEN_HEATMAP2D;

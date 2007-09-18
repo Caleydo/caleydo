@@ -34,19 +34,19 @@ import org.geneview.core.parser.parameter.IParameterHandler;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.IStorage
+ * @see org.geneview.core.data.collection.IStorage
  */
 public class CmdDataCreateStorage 
 extends ACmdCreate_IdTargetLabel {
 
 	/**
-	 * This list contains the data types for cerberus.data.collection.StorageType as String.
+	 * This list contains the data types for org.geneview.core.data.collection.StorageType as String.
 	 * 
 	 * Note: llDataRaw.size() == llDataTypes.size() must be equal!
 	 *
-	 * @see cerberus.data.collection.StorageType
-	 * @see cerberus.command.data.CmdDataCreateStorage#llDataRaw
-	 * @see cerberus.command.data.CmdDataCreateStorage#bDisposeDataAfterDoCommand
+	 * @see org.geneview.core.data.collection.StorageType
+	 * @see org.geneview.core.command.data.CmdDataCreateStorage#llDataRaw
+	 * @see org.geneview.core.command.data.CmdDataCreateStorage#bDisposeDataAfterDoCommand
 	 */
 	protected LinkedList<String> llDataTypes;
 	
@@ -56,8 +56,8 @@ extends ACmdCreate_IdTargetLabel {
 	 * 
 	 * Note: llDataRaw.size() == llDataTypes.size() must be equal!
 	 * 
-	 * @see cerberus.command.data.CmdDataCreateStorage#llDataTypes
-	 * @see cerberus.command.data.CmdDataCreateStorage#bDisposeDataAfterDoCommand	 
+	 * @see org.geneview.core.command.data.CmdDataCreateStorage#llDataTypes
+	 * @see org.geneview.core.command.data.CmdDataCreateStorage#bDisposeDataAfterDoCommand	 
 	 */
 	protected LinkedList<String> llDataRaw;
 	
@@ -95,9 +95,9 @@ extends ACmdCreate_IdTargetLabel {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -286,7 +286,7 @@ extends ACmdCreate_IdTargetLabel {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 

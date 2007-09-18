@@ -9,7 +9,7 @@ import org.geneview.core.manager.logger.AConsoleLogger;
 /**
  * Hides message that are tagged as not important.
  * 
- * @see cerberus.manager.ILoggerManager
+ * @see org.geneview.core.manager.ILoggerManager
  * @author Michael Kalkusch
  *
  */
@@ -39,7 +39,7 @@ extends AConsoleLogger {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.manager.ILoggerManager#logMsg(Stringt, short)
+	 * @see org.geneview.core.manager.ILoggerManager#logMsg(Stringt, short)
 	 */
 	public void logMsg( final String info, 
 			final LoggerType useLogLevel) {
@@ -58,7 +58,7 @@ extends AConsoleLogger {
 	/**
 	 * Since the logger prints to system.out it is always flushed.
 	 * 
-	 * @see cerberus.manager.ILoggerManager#flushLog()
+	 * @see org.geneview.core.manager.ILoggerManager#flushLog()
 	 */
 	public void flushLog() {
 		assert false : "logger is always flushed, since it prints to system.out";

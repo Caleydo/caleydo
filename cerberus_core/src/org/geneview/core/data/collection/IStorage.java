@@ -82,7 +82,7 @@ extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
 	 * ISet size of all containers.
 	 * Note: allocate() must be called to make the change permanent.
 	 * 
-	 * @see cerberus.data.collection.IStorage#getMaximumLengthOfAllArrays()
+	 * @see org.geneview.core.data.collection.IStorage#getMaximumLengthOfAllArrays()
 	 * 
 	 * @param size
 	 */
@@ -122,7 +122,7 @@ extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
 	/**
 	 * Get the size of the largest array in the storage.
 	 * 
-	 * @see cerberus.data.collection.IStorage#getAllSize()
+	 * @see org.geneview.core.data.collection.IStorage#getAllSize()
 	 * 
 	 * @return size of largest array
 	 */

@@ -44,7 +44,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISubSet#addSubSet(cerberus.data.collection.ISet)
+	 * @see org.geneview.core.data.collection.ISubSet#addSubSet(org.geneview.core.data.collection.ISet)
 	 */
 	public final boolean addSubSet(ISet addSet) {
 		
@@ -53,7 +53,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISubSet#getSubSets()
+	 * @see org.geneview.core.data.collection.ISubSet#getSubSets()
 	 */
 	public final ISet[] getSubSets() {
 
@@ -62,7 +62,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISubSet#hasSubSets()
+	 * @see org.geneview.core.data.collection.ISubSet#hasSubSets()
 	 */
 	public final boolean hasSubSets() {
 
@@ -70,7 +70,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.ISubSet#removeSubSet(cerberus.data.collection.ISet)
+	 * @see org.geneview.core.data.collection.ISubSet#removeSubSet(org.geneview.core.data.collection.ISet)
 	 */
 	public final boolean removeSubSet(ISet addSet) {
 
@@ -79,7 +79,7 @@ implements ISetViewData {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.ASetSimple#getCacheId()
+	 * @see org.geneview.core.data.collection.set.ASetSimple#getCacheId()
 	 */
 	@Override
 	public final int getCacheId() {
@@ -91,7 +91,7 @@ implements ISetViewData {
 	 * 
 	 */
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.viewdata.ISetViewData#getViewCamera()
+	 * @see org.geneview.core.data.collection.set.viewdata.ISetViewData#getViewCamera()
 	 */
 	public IViewCamera getViewCamera() {
 
@@ -100,14 +100,14 @@ implements ISetViewData {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.collection.set.viewdata.ISetViewData#setViewCamera(cerberus.data.view.camera.IViewCamera)
+	 * @see org.geneview.core.data.collection.set.viewdata.ISetViewData#setViewCamera(org.geneview.core.data.view.camera.IViewCamera)
 	 */
 	public void setViewCamera(IViewCamera setViewCamera) {
 
 		refIViewCamera = setViewCamera;
 	}
 	/* (non-Javadoc)
-	 * @see cerberus.view.jogl.IJoglMouseListener#hasViewCameraChanged()
+	 * @see org.geneview.core.view.jogl.IJoglMouseListener#hasViewCameraChanged()
 	 */
 	public boolean hasViewCameraChanged() {
 

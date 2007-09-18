@@ -39,7 +39,7 @@ import org.geneview.core.parser.parameter.IParameterHandler;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.IStorage
+ * @see org.geneview.core.data.collection.IStorage
  */
 public class CmdDataCreateSet 
 extends ACmdCreate_IdTargetLabelAttr {
@@ -49,13 +49,13 @@ extends ACmdCreate_IdTargetLabelAttr {
 	private ISet newObject = null;
 	
 	/**
-	 * This list contains the data types for cerberus.data.collection.StorageType as String.
+	 * This list contains the data types for org.geneview.core.data.collection.StorageType as String.
 	 * 
 	 * Note: llDataRaw.size() == llDataTypes.size() must be equal!
 	 *
-	 * @see cerberus.data.collection.StorageType
-	 * @see cerberus.command.data.CmdDataCreateSet#llRefVirtualArray
-	 * @see cerberus.command.data.CmdDataCreateSet#bDisposeDataAfterDoCommand
+	 * @see org.geneview.core.data.collection.StorageType
+	 * @see org.geneview.core.command.data.CmdDataCreateSet#llRefVirtualArray
+	 * @see org.geneview.core.command.data.CmdDataCreateSet#bDisposeDataAfterDoCommand
 	 */
 	protected LinkedList< LinkedList<String> > llRefStorage_nDim;
 	
@@ -65,8 +65,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * 
 	 * Note: llDataRaw.size() == llDataTypes.size() must be equal!
 	 * 
-	 * @see cerberus.command.data.CmdDataCreateSet#llRefStorage
-	 * @see cerberus.command.data.CmdDataCreateSet#bDisposeDataAfterDoCommand	 
+	 * @see org.geneview.core.command.data.CmdDataCreateSet#llRefStorage
+	 * @see org.geneview.core.command.data.CmdDataCreateSet#bDisposeDataAfterDoCommand	 
 	 */
 	protected LinkedList< LinkedList<String> > llRefVirtualArray_nDim;
 	
@@ -399,9 +399,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -475,7 +475,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	
 	
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 

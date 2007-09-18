@@ -31,8 +31,8 @@ import org.geneview.core.data.collection.ISet;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.ISet
- * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage
+ * @see org.geneview.core.data.collection.ISet
+ * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdSystemLoadFileViaImporter 
 extends ACommand {
@@ -44,18 +44,18 @@ extends ACommand {
 	/**
 	 * Default is 32, because gpr files have a header of that size!
 	 * 
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#iStartParsingAtLine
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#getStartParsingAtLine()
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStartParsingAtLine
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStartParsingAtLine()
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStartPareseFileAtLine = 32;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
 	 * 
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopPareseFileAtLine = -1;
 	
@@ -126,7 +126,7 @@ extends ACommand {
 //	/**
 //	 * Use 
 //	 * 
-//	 * @see cerberus.parser.handler.importer.ascii.MicroArrayLoader1Storage
+//	 * @see org.geneview.core.parser.handler.importer.ascii.MicroArrayLoader1Storage
 //	 */
 //	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
 //			String fileName, 
@@ -142,9 +142,9 @@ extends ACommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -220,7 +220,7 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		refCommandManager.runUndoCommand(this);

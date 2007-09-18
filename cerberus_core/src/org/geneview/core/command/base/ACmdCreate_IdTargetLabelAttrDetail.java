@@ -9,7 +9,7 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
 
 /**
- * @see cerberus.command.ICommand
+ * @see org.geneview.core.command.ICommand
  * 
  * @author Michael Kalkusch
  *

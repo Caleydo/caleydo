@@ -63,7 +63,7 @@ implements IGeneralManagerSingleton
 	/**
 	 * Defines, if initAll() was called.
 	 * 
-	 * @see cerberus.manager.singleton.OneForAllManager#initAll()
+	 * @see org.geneview.core.manager.singleton.OneForAllManager#initAll()
 	 */
 	private boolean bAllManagersInizailized = false;
 
@@ -106,16 +106,16 @@ implements IGeneralManagerSingleton
 
 	/**
 	 * Used to create a new item by a Fabrik.
-	 * used by cerberus.data.manager.OneForAllManager#createNewId(ManagerObjectType)
+	 * used by org.geneview.core.data.manager.OneForAllManager#createNewId(ManagerObjectType)
 	 * 
-	 * @see cerberus.manager.singleton.OneForAllManager#createNewId(ManagerObjectType)
+	 * @see org.geneview.core.manager.singleton.OneForAllManager#createNewId(ManagerObjectType)
 	 */
 	protected ManagerObjectType setCurrentType = ManagerObjectType.ALL_IN_ONE;
 
 	/**
 	 * Call initAll() before using this class!
 	 * 
-	 * @see cerberus.data.manager.singelton.OneForAllManager#initAll()
+	 * @see org.geneview.core.data.manager.singelton.OneForAllManager#initAll()
 	 */
 	public OneForAllManager(final SingletonManager sef_SingeltonManager)
 	{
@@ -131,8 +131,8 @@ implements IGeneralManagerSingleton
 
 		/**
 		 * The Network psotfix must be unique inside the network for 
-		 * destributed cerberus applications. 
-		 * For stand alone cerberus applications this id must match the XML file.
+		 * destributed GeneView applications. 
+		 * For stand alone GeneView applications this id must match the XML file.
 		 */
 		refSingeltonManager.setNetworkPostfix( 1 );
 		
@@ -143,7 +143,7 @@ implements IGeneralManagerSingleton
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getSingelton()
+	 * @see org.geneview.core.data.manager.GeneralManager#getSingelton()
 	 */
 	public final ISingelton getSingelton()
 	{
@@ -236,7 +236,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#hasItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(final int iItemId)
 	{
@@ -253,7 +253,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/**
-	 * @see cerberus.manager.IGeneralManager#hasItem(int)
+	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
 	 * 
 	 * @param iItemId unique Id used for lookup
 	 * @return Object bound to Id or null, if id was not found.
@@ -278,7 +278,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#size()
+	 * @see org.geneview.core.data.manager.GeneralManager#size()
 	 */
 	public int size()
 	{	
@@ -290,7 +290,7 @@ implements IGeneralManagerSingleton
 
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.manager.singelton.GeneralManagerSingelton#getCommandManager()
+	 * @see org.geneview.core.data.manager.singelton.GeneralManagerSingelton#getCommandManager()
 	 */
 	public ICommandManager getCommandManager()
 	{
@@ -298,7 +298,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getManagerType()
+	 * @see org.geneview.core.data.manager.GeneralManager#getManagerType()
 	 */
 	public ManagerType getManagerType()
 	{
@@ -306,7 +306,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getSingeltonManager()
+	 * @see org.geneview.core.data.manager.GeneralManager#getSingeltonManager()
 	 */
 	public IGeneralManager getGeneralManager()
 	{
@@ -322,7 +322,7 @@ implements IGeneralManagerSingleton
 	//	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewId(cerberus.data.manager.BaseManagerType)
+	 * @see org.geneview.core.data.manager.singelton.SingeltonManager#createNewId(org.geneview.core.data.manager.BaseManagerType)
 	 */
 	public final int createId(final ManagerObjectType type)
 	{
@@ -363,7 +363,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.singelton.SingeltonManager#createNewItem(cerberus.data.manager.BaseManagerType, Stringt)
+	 * @see org.geneview.core.data.manager.singelton.SingeltonManager#createNewItem(org.geneview.core.data.manager.BaseManagerType, Stringt)
 	 */
 	public Object createNewItem(final ManagerObjectType createNewType,
 			final String sNewTypeDetails)
@@ -517,8 +517,8 @@ implements IGeneralManagerSingleton
 	 * Must be set before initAll() is called!
 	 * Default is FALSE.
 	 * 
-	 * @see cerberus.manager.singleton.OneForAllManager#initAll()
-	 * @see cerberus.manager.singleton.OneForAllManager#getStateSWT()
+	 * @see org.geneview.core.manager.singleton.OneForAllManager#initAll()
+	 * @see org.geneview.core.manager.singleton.OneForAllManager#getStateSWT()
 	 * 
 	 * @param bEnableSWT TRUE to enable SWT
 	 */
@@ -536,7 +536,7 @@ implements IGeneralManagerSingleton
 	 * Get current state of SWT. 
 	 * TURE indicates that SWT is used.
 	 * 
-	 * @see cerberus.manager.singleton.OneForAllManager#setStateSWT(boolean)
+	 * @see org.geneview.core.manager.singleton.OneForAllManager#setStateSWT(boolean)
 	 * 
 	 * @return TRUE is SWT is enabled.
 	 */

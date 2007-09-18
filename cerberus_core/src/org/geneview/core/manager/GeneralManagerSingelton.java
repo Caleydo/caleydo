@@ -8,7 +8,7 @@ import org.geneview.core.manager.singleton.OneForAllManager;
 
 /**
  * Create or assign a Singleton.
- * Per default a cerberus.manager.singelton.OneForAllManager is created.
+ * Per default a org.geneview.core.manager.singelton.OneForAllManager is created.
  * Also another IGeneralManager can be assigned 
  *  
  * @author Michael Kalkusch

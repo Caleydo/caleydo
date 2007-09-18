@@ -80,7 +80,7 @@ extends ACommand  {
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -114,14 +114,14 @@ extends ACommand  {
 //	/**
 //	 * Attention- Side Effect: Canvas is not initialized after creating the class!
 //	 * Need to register canvas component to listener via
-//	 * cerberus.net.dwt.swing.jogl.DSwingJoglCanvas#getGLEventListener() 
-//	 * and cerberus.net.dwt.swing.jogl.listener.GLEventObserverListener#registerSource(GLEventListenerTarget)
+//	 * org.geneview.core.net.dwt.swing.jogl.DSwingJoglCanvas#getGLEventListener() 
+//	 * and org.geneview.core.net.dwt.swing.jogl.listener.GLEventObserverListener#registerSource(GLEventListenerTarget)
 //	 * 
-//	 * Example see cerberus.command.window.CmdWindowNewIFrameJogleHistogram
+//	 * Example see org.geneview.core.command.window.CmdWindowNewIFrameJogleHistogram
 //	 * 
-//	 * @see cerberus.net.dwt.swing.jogl.DSwingJoglCanvas#getGLEventListener()
-//	 * @see cerberus.net.dwt.swing.jogl.listener.GLEventObserverListener#registerSource(GLEventListenerTarget)
-//	 * @see cerberus.command.window.CmdWindowNewIFrameJogleHistogram
+//	 * @see org.geneview.core.net.dwt.swing.jogl.DSwingJoglCanvas#getGLEventListener()
+//	 * @see org.geneview.core.net.dwt.swing.jogl.listener.GLEventObserverListener#registerSource(GLEventListenerTarget)
+//	 * @see org.geneview.core.command.window.CmdWindowNewIFrameJogleHistogram
 //	 * 
 //	 * @return canvas
 //	 */
@@ -130,7 +130,7 @@ extends ACommand  {
 //	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		

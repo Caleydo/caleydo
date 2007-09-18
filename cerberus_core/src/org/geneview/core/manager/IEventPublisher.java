@@ -30,7 +30,7 @@ extends IGeneralManager, IMediatorReceiver {
 
 		/*
 		 * (non-Javadoc)
-		 * @see cerberus.util.IGeneViewDefaultType#getTypeDefault()
+		 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
 		 */
 		public MediatorType getTypeDefault() {
 

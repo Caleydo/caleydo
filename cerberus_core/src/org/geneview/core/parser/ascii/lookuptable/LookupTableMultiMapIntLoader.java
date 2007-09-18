@@ -37,7 +37,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
+	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
@@ -122,8 +122,8 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	
 	/**
 	 * Write back data to IGenomeIdManager
-	 * @see cerberus.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see cerberus.manager.data.IGenomeIdManager
+	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see org.geneview.core.manager.data.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 

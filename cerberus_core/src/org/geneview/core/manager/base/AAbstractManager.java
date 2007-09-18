@@ -57,41 +57,41 @@ public abstract class AAbstractManager implements IAbstractManager  {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.AbstractManagerImpl#getGeneralManager()
+	 * @see org.geneview.core.manager.AbstractManagerImpl#getGeneralManager()
 	 */
 	/* (non-Javadoc)
-	 * @see cerberus.manager.IAbstractManager#getGeneralManager()
+	 * @see org.geneview.core.manager.IAbstractManager#getGeneralManager()
 	 */
 	public final IGeneralManager getGeneralManager() {
 		return refGeneralManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.IAbstractManager#getSingelton()
+	 * @see org.geneview.core.manager.IAbstractManager#getSingelton()
 	 */
 	public final ISingelton getSingelton() {
 		return refSingelton;
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.AbstractManagerImpl#getGeneralManager()
+	 * @see org.geneview.core.manager.AbstractManagerImpl#getGeneralManager()
 	 */
 	/* (non-Javadoc)
-	 * @see cerberus.manager.IAbstractManager#setGeneralManager(cerberus.manager.IGeneralManager)
+	 * @see org.geneview.core.manager.IAbstractManager#setGeneralManager(org.geneview.core.manager.IGeneralManager)
 	 */
 	public final void setGeneralManager( IGeneralManager setGeneralManager ) {
 		throw new RuntimeException("AAbstractManager::setGeneralManager() is not supported!");
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.manager.IAbstractManager#setSingelton(cerberus.manager.singelton.SingeltonManager)
+	 * @see org.geneview.core.manager.IAbstractManager#setSingelton(org.geneview.core.manager.singelton.SingeltonManager)
 	 */
 	public final void setSingelton( ISingelton setSingeltonManager ) {
 		throw new RuntimeException("AAbstractManager::setSingelton() is not supported!");
 	}
 
 //	/* (non-Javadoc)
-//	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
+//	 * @see org.geneview.core.data.manager.GeneralManager#createNewId(org.geneview.core.data.manager.BaseManagerType)
 //	 */
 //	public final int createNewId(ManagerObjectType setNewBaseType) {
 //		
@@ -101,7 +101,7 @@ public abstract class AAbstractManager implements IAbstractManager  {
 //	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#createNewId(cerberus.data.manager.BaseManagerType)
+	 * @see org.geneview.core.data.manager.GeneralManager#createNewId(org.geneview.core.data.manager.BaseManagerType)
 	 */
 	public int createId(ManagerObjectType setNewBaseType) {
 		

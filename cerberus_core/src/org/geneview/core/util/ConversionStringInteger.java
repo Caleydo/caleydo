@@ -14,7 +14,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 /**
  * Convert SET <K> to SET <V> and Collection <K> to Collection <V> were K,V are elementOf(Integer, String) 
  * 
- * @see cerberus.manager.data.genome.GenomeIdMapInt2Int#getValuesInteger()
+ * @see org.geneview.core.manager.data.genome.GenomeIdMapInt2Int#getValuesInteger()
  * 
  * @author Michael Kalkusch
  *

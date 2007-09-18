@@ -49,7 +49,7 @@ public interface ICommandFactory {
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType);
 	
 	/**
-	 * @see cerberus.manager.ICommandManager#createCommandQueue(String, String, int, int, int, int)
+	 * @see org.geneview.core.manager.ICommandManager#createCommandQueue(String, String, int, int, int, int)
 	 */
 	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,

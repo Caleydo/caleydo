@@ -53,7 +53,7 @@ implements IView {
 	 * 
 	 * @see org.eclipse.swt.SWT
 	 * @see org.eclipse.swt.widgets.ProgressBar
-	 * @see cerberus.view.swt.progressbar.ProgressBarViewRep#retrieveNewGUIContainer()
+	 * @see org.geneview.core.view.swt.progressbar.ProgressBarViewRep#retrieveNewGUIContainer()
 	 * 
 	 * @param setStyle
 	 */
@@ -108,7 +108,7 @@ implements IView {
 
 	/**
 	 * 
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

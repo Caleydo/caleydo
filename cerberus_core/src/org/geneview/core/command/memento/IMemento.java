@@ -12,7 +12,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * 
  * @author Michael Kalkusch
  * 
- * @see cerberus.manager.IMementoManager
+ * @see org.geneview.core.manager.IMementoManager
  *
  */
 public interface IMemento {

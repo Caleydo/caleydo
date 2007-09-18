@@ -54,7 +54,7 @@ implements IView {
 	
 	/**
 	 * 
-	 * @see cerberus.view.IView#initView()
+	 * @see org.geneview.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

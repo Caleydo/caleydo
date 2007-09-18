@@ -29,7 +29,7 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 /**
  * @author Michael Kalkusch
  * 
- * @see  cerberus.view.opengl.IGLCanvasUser
+ * @see  org.geneview.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHistogram2D 
 extends AGLCanvasUser 
@@ -47,7 +47,7 @@ extends AGLCanvasUser
 	 * Define number of histogram slots.
 	 * Default is 0 to ensure valid settings. 
 	 * 
-	 *  @see cerberus.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
+	 *  @see org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
 	 */
 	private int iCurrentHistogramLength = 0;
 	

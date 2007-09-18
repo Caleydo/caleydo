@@ -107,7 +107,7 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#createSet()
+	 * @see org.geneview.core.data.manager.SetManager#createSet()
 	 */
 	public ISet createSet( final SetType setType ) {
 			
@@ -156,7 +156,7 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.ISet)
+	 * @see org.geneview.core.data.manager.SetManager#deleteSet(org.geneview.core.data.collection.ISet)
 	 */
 	public boolean deleteSet(ISet deleteSet ) {
 		
@@ -164,7 +164,7 @@ implements ISetManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#deleteSet(cerberus.data.collection.ISet)
+	 * @see org.geneview.core.data.manager.SetManager#deleteSet(org.geneview.core.data.collection.ISet)
 	 */
 	public boolean deleteSet( final int iItemId ) {
 		
@@ -181,7 +181,7 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#getItemSet(int)
+	 * @see org.geneview.core.data.manager.SetManager#getItemSet(int)
 	 */
 	public ISet getItemSet( final int iItemId) {
 		return hashId2Set.get( iItemId );
@@ -189,14 +189,14 @@ implements ISetManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
 		return getItemSet(iItemId);
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.SetManager#getAllSetItems()
+	 * @see org.geneview.core.data.manager.SetManager#getAllSetItems()
 	 */
 	public Collection<ISet> getAllSetItems() {
 		
@@ -204,14 +204,14 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#hasItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
 		return hashId2Set.containsKey( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManagerInterface#size()
+	 * @see org.geneview.core.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
 		return hashId2Set.size();

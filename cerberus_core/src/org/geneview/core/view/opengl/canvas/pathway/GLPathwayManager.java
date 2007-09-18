@@ -246,7 +246,7 @@ public class GLPathwayManager {
 			{
 //				// Consider only vertices for now
 //				if (lGraphItems.get(iItemIndex).getClass().equals
-//						(cerberus.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+//						(org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
 //				{			
 					hashSelectedGraphItemRepId2Depth.put(
 							lGraphItems.get(iItemIndex).getId(), (iDepthIndex + 1) / 2); // +1 / 2 because we want to ignore edge depth

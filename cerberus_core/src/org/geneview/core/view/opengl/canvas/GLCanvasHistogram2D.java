@@ -21,7 +21,7 @@ import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
 /**
  * @author Michael Kalkusch
  *
- * @see cerberus.view.opengl.IGLCanvasUser
+ * @see org.geneview.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHistogram2D 
 extends AGLCanvasUser

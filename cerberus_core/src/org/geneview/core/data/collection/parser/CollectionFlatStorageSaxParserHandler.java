@@ -33,9 +33,9 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * 
  * @author Michael Kalkusch
  * 
- * @see cerberus.net.dwt.swing.parser.DPanelSaxHandler
- * @see cerberus.net.dwt.swing.parser.DButtonSaxHandler
- * @see cerberus.net.dwt.swing.parser.ASaxParserHandler
+ * @see org.geneview.core.net.dwt.swing.parser.DPanelSaxHandler
+ * @see org.geneview.core.net.dwt.swing.parser.DButtonSaxHandler
+ * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler
  * 
  * @see org.xml.sax.helpers.DefaultHandler
  *
@@ -98,7 +98,7 @@ implements ISaxParserHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see cerberus.parser.xml.sax.ISaxParserHandler#reset()
+	 * @see org.geneview.core.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	
@@ -128,9 +128,9 @@ implements ISaxParserHandler
 	
 	/**
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.AComponentSaxParserHandler#endElement_DComponent(String, String, String)
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
+	 * @see org.geneview.core.net.dwt.swing.parser.AComponentSaxParserHandler#endElement_DComponent(String, String, String)
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
 	 * 
 	 * @return TRUE if the token was pased already, else false
 	 */
@@ -243,9 +243,9 @@ implements ISaxParserHandler
 	 *  
 	 * @return TRUE if the token was pased already, else false
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String) 
+	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String) 
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)	 
-	 * @see cerberus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see org.geneview.core.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 */
 	final protected boolean endElement_DComponent( final String uri, 
 			final String localName, 
@@ -341,7 +341,7 @@ implements ISaxParserHandler
 	/**
 	 * Note: do not forget to call startElement_DComponent(String, String, String, Attributes)!
 	 * 
-	 * @see cerberus.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see org.geneview.core.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement(String uri, String localName, String qName,
@@ -570,7 +570,7 @@ implements ISaxParserHandler
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.net.dwt.swing.parser.DParseBaseSaxHandler#getXML_ViewCanvas_Type()
+	 * @see org.geneview.core.net.dwt.swing.parser.DParseBaseSaxHandler#getXML_ViewCanvas_Type()
 	 */
 	public String getXML_ViewCanvas_Type() {		
 		return null;

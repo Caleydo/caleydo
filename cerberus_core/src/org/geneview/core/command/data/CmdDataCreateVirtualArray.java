@@ -31,8 +31,8 @@ import org.geneview.core.util.system.StringConversionTool;
  * 
  * @author Michael Kalkusch
  *
- * @see cerberus.data.collection.ISet
- * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage
+ * @see org.geneview.core.data.collection.ISet
+ * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdDataCreateVirtualArray 
 extends ACmdCreate_IdTargetLabel {
@@ -65,9 +65,9 @@ extends ACmdCreate_IdTargetLabel {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see cerberus.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
+	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -97,7 +97,7 @@ extends ACmdCreate_IdTargetLabel {
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		

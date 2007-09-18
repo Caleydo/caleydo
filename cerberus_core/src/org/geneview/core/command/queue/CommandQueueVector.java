@@ -19,7 +19,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 /**
  * Create a queue of command's, that can be executed in a row.
  * 
- * @see cerberus.command.ICommand
+ * @see org.geneview.core.command.ICommand
  * 
  * @author Michael Kalkusch
  *
@@ -44,7 +44,7 @@ implements ICommandQueue
 	 * If set to true this queue has been executed at leaset once.
 	 * Default is FALSE.
 	 * 
-	 * @see cerberus.command.queue.CommandQueueVector#bQueueCanBeExecutedSeveralTimes
+	 * @see org.geneview.core.command.queue.CommandQueueVector#bQueueCanBeExecutedSeveralTimes
 	 */
 	protected boolean bQueueWasExcecuted = false;
 	
@@ -93,7 +93,7 @@ implements ICommandQueue
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#doCommand()
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
@@ -135,7 +135,7 @@ implements ICommandQueue
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommand#undoCommand()
+	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		

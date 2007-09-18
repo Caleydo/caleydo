@@ -90,7 +90,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.CommandManager#addCommandListener(cerberus.command.ICommandListener)
+	 * @see org.geneview.core.data.manager.CommandManager#addCommandListener(org.geneview.core.command.ICommandListener)
 	 */
 	public void addCommandListener(ICommandListener addCommandListener) {
 		// TODO Auto-generated method stub
@@ -98,7 +98,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.CommandManager#removeCommandListener(cerberus.command.ICommandListener)
+	 * @see org.geneview.core.data.manager.CommandManager#removeCommandListener(org.geneview.core.command.ICommandListener)
 	 */
 	public boolean removeCommandListener(ICommandListener removeCommandListener) {
 		// TODO Auto-generated method stub
@@ -106,7 +106,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.CommandManager#hasCommandListener(cerberus.command.ICommandListener)
+	 * @see org.geneview.core.data.manager.CommandManager#hasCommandListener(org.geneview.core.command.ICommandListener)
 	 */
 	public boolean hasCommandListener(ICommandListener hasCommandListener) {
 		// TODO Auto-generated method stub
@@ -114,7 +114,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommandActionListener#handleCommand(cerberus.command.ICommand)
+	 * @see org.geneview.core.command.ICommandActionListener#handleCommand(org.geneview.core.command.ICommand)
 	 */
 	public void handleCommand(ICommand addCommand) {
 		
@@ -123,7 +123,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.command.ICommandActionListener#scheduleCommand(cerberus.command.ICommand)
+	 * @see org.geneview.core.command.ICommandActionListener#scheduleCommand(org.geneview.core.command.ICommand)
 	 */
 	public void scheduleCommand(ICommand addCommand) {
 		
@@ -133,21 +133,21 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#hasItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
 		return hash_CommandId.containsKey( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#getItem(int)
+	 * @see org.geneview.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
 		return hash_CommandId.get( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#size()
+	 * @see org.geneview.core.data.manager.GeneralManager#size()
 	 */
 	public int size() {
 		return hash_CommandId.size();
@@ -155,7 +155,7 @@ public class CommandManager
 
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#registerItem(java.lang.Object, int, cerberus.data.manager.BaseManagerType)
+	 * @see org.geneview.core.data.manager.GeneralManager#registerItem(java.lang.Object, int, org.geneview.core.data.manager.BaseManagerType)
 	 */
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
@@ -176,7 +176,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see cerberus.data.manager.GeneralManager#unregisterItem(int, cerberus.data.manager.BaseManagerType)
+	 * @see org.geneview.core.data.manager.GeneralManager#unregisterItem(int, org.geneview.core.data.manager.BaseManagerType)
 	 */
 	public boolean unregisterItem(int iItemId, ManagerObjectType type) {	
 		
@@ -245,7 +245,7 @@ public class CommandManager
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see cerberus.manager.ICommandManager#getCommandQueueByCmdQueueId(int)
+	 * @see org.geneview.core.manager.ICommandManager#getCommandQueueByCmdQueueId(int)
 	 */
 	public ICommandQueue getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
 		return hash_CommandQueueId.get( iCmdQueueId );
@@ -275,7 +275,7 @@ public class CommandManager
 	}
 
 	/**
-	 * @see cerberus.manager.ICommandManager#runDoCommand(cerberus.command.ICommand)
+	 * @see org.geneview.core.manager.ICommandManager#runDoCommand(org.geneview.core.command.ICommand)
 	 */
 	public synchronized void  runDoCommand(ICommand runCmd) {
 
@@ -300,7 +300,7 @@ public class CommandManager
 	}
 
 	/**
-	 * @see cerberus.manager.ICommandManager#runUndoCommand(cerberus.command.ICommand)
+	 * @see org.geneview.core.manager.ICommandManager#runUndoCommand(org.geneview.core.command.ICommand)
 	 */
 	public synchronized void runUndoCommand(ICommand runCmd) {
 

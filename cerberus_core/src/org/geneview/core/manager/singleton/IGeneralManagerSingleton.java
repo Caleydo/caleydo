@@ -19,8 +19,8 @@ extends IGeneralManager, IMementoCallbackXML {
 //	 * 
 //	 * @return int new unique Id
 //	 * 
-//	 * @see cerberus.manager.singelton.OneForAllManager#setNewType(ManagerObjectType)
-//	 * @see cerberus.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
+//	 * @see org.geneview.core.manager.singelton.OneForAllManager#setNewType(ManagerObjectType)
+//	 * @see org.geneview.core.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
 //	 */
 //	public abstract int createNewId(ManagerObjectType setNewBaseType);
 
