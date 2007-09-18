@@ -192,7 +192,8 @@ extends AGLCanvasHeatmap2D
 //		gl.glLoadName(id);
 //	}
 
-	protected void renderPart4pickingX(GL gl) {
+	protected void renderPart4pickingX(GL gl,
+			final float fIncX) {
 		
 		/* public void render_displayListHeatmap(GL gl) { */
 
@@ -202,8 +203,8 @@ extends AGLCanvasHeatmap2D
 		 * force update ...
 		 */
 
-		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
-				/ (float) (iValuesInRow );
+//		float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN])
+//				/ (float) (iValuesInRow );
 
 		float fNowY = viewingFrame[Y][MIN];
 		float fNextY = viewingFrame[Y][MAX];
@@ -237,7 +238,8 @@ extends AGLCanvasHeatmap2D
   
 	}
 
-	protected void renderPart4pickingY(GL gl) {
+	protected void renderPart4pickingY(GL gl,
+			final float fIncY) {
 
 		/* public void render_displayListHeatmap(GL gl) { */
 
@@ -249,9 +251,9 @@ extends AGLCanvasHeatmap2D
 		 * force update ...
 		 */
 
-		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
-				/ (float) (iValuesInColum);
-
+//		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
+//				/ (float) (iValuesInColum);
+		
 		float fNowX = viewingFrame[X][MIN];
 		float fNextX = viewingFrame[X][MAX];
 
@@ -307,7 +309,8 @@ extends AGLCanvasHeatmap2D
 
 	}
 	
-	protected void pickObjects(final GL gl, Point pickPoint) {
+	protected void pickObjects(final GL gl, Point pickPoint,
+			final float fIncX) {
 
 		int PICKING_BUFSIZE = 1024;
 
@@ -347,13 +350,16 @@ extends AGLCanvasHeatmap2D
 		// Reset picked point
 		pickPoint = null;
 
-		renderPart4pickingX(gl);
+		renderPart4pickingX(gl, fIncX);
 	
 		/* second layer of picking.. */
 		gl.glPushMatrix();
 		
+		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
+		/ (float) (iValuesInColum);
+		
 		gl.glTranslatef( 0,0, AGLCanvasHeatmap2D.fPickingBias );
-		renderPart4pickingY(gl);
+		renderPart4pickingY(gl,fIncY);
 		
 		gl.glPopMatrix();
 		
@@ -370,7 +376,8 @@ extends AGLCanvasHeatmap2D
 				
 	}
 
-	protected void handlePicking(final GL gl) {
+	protected void handlePicking(final GL gl,
+			final float fIncX) {
 
 		Point pickPoint = null;
 		
@@ -400,7 +407,7 @@ extends AGLCanvasHeatmap2D
 		// Check if an object was picked
 		if (pickPoint != null)
 		{
-			pickObjects(gl, pickPoint);
+			pickObjects(gl, pickPoint, fIncX);
 		}
 
 	}
@@ -832,7 +839,7 @@ extends AGLCanvasHeatmap2D
 	@Override
 	public void renderPart(GL gl)
 	{
-		handlePicking(gl);
+		handlePicking(gl, 0.0f);
 		
 		gl.glTranslatef( 0,0, 0.01f);
 	

@@ -35,9 +35,9 @@ import cerberus.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import cerberus.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import cerberus.view.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
 import cerberus.view.opengl.canvas.pathway.GLCanvasPanelPathway3D;
-import cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
+//import cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
-//import cerberus.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
+import cerberus.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
 import cerberus.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import cerberus.view.opengl.canvas.texture.GLCanvasTexture2D;
 import cerberus.view.opengl.canvas.widgets.GLCanvasWidget;
@@ -353,10 +353,10 @@ implements IViewGLCanvasManager {
 		case CREATE_GL_MINMAX_SCATTERPLOT2D:
 			refSingelton.logMsg("CREATE_GL_MINMAX_SCATTERPLOT2D ==> create GLMinMaxScatterplot2Dinteractive instead",LoggerType.MINOR_ERROR_XML);
 			
-//			return new GLMinMaxScatterplot2Dinteractive(refGeneralManager, iUniqueId,
-//					iGlForwarderId, sLabel);
-			return new GLCanvasMinMaxScatterPlot2D(refGeneralManager, iUniqueId,
+			return new GLMinMaxScatterplot2Dinteractive(refGeneralManager, iUniqueId,
 					iGlForwarderId, sLabel);
+//			return new GLCanvasMinMaxScatterPlot2D(refGeneralManager, iUniqueId,
+//					iGlForwarderId, sLabel);
 
 		case CREATE_GL_MINMAX_SCATTERPLOT3D:
 			return new GLCanvasMinMaxScatterPlot3D(refGeneralManager, iUniqueId,

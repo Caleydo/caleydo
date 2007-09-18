@@ -10,7 +10,8 @@ import cerberus.manager.IGeneralManager;
 import cerberus.parser.parameter.IParameterHandler;
 import cerberus.util.exception.GeneViewRuntimeException;
 import cerberus.util.system.StringConversionTool;
-import cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
+//import cerberus.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
+import cerberus.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
 
 /**
  * @author Michael Kalkusch
@@ -53,9 +54,9 @@ extends ACmdCreate_GlCanvasUser {
 		
 		super.setParameterHandler(refParameterHandler);
 		
-		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
+		iTargetCollectionSetId = StringConversionTool.convertStringToInt(
 				this.sDetail, 
-				-1 );
+				-1);
 		
 		fResolution = StringConversionTool.convertStringToFloatArray( 
 				sAttribute3,
@@ -77,18 +78,24 @@ extends ACmdCreate_GlCanvasUser {
 	@Override
 	public void doCommandPart() throws GeneViewRuntimeException
 	{
-		GLCanvasMinMaxScatterPlot2D canvas = 
-			(GLCanvasMinMaxScatterPlot2D) openGLCanvasUser;
-				
+//		GLCanvasMinMaxScatterPlot2D canvas = 
+//			(GLCanvasMinMaxScatterPlot2D) openGLCanvasUser;
+//		
+//		canvas.setOriginRotation( cameraOrigin, cameraRotation );
+//		canvas.setResolution( fResolution );
+//		canvas.setTargetSetId( iTargetCollectionSetId );
+//		canvas.setcolorDataPoints(fColorSpots);
+//		
+//		if ( sGridDetails.startsWith("no_grid") ) {
+//			canvas.setShowGrid(false);
+//		}
+		
+		GLMinMaxScatterplot2Dinteractive canvas =
+			(GLMinMaxScatterplot2Dinteractive) openGLCanvasUser;
+			
 		canvas.setOriginRotation( cameraOrigin, cameraRotation );
 		canvas.setResolution( fResolution );
-		canvas.setTargetSetId( iTargetCollectionSetId );
-		canvas.setcolorDataPoints(fColorSpots);
-		
-		if ( sGridDetails.startsWith("no_grid") ) {
-			canvas.setShowGrid(false);
-		}
-		
+		canvas.setTargetSetId( iTargetCollectionSetId );		
 	}
 
 	@Override
