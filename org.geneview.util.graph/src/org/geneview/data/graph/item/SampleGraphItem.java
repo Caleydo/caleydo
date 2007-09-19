@@ -3,8 +3,8 @@
  */
 package org.geneview.data.graph.item;
 
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.item.GraphItem;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.item.GraphItem;
 
 /**
  * Example for a graph item such as a node or an edge.

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.graph.item;
+package org.geneview.util.graph.item;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * Abstract class implementing IGraphDataHandler interface.
  * 
- * @see org.geneview.graph.item.GraphItemDataSequenzer
+ * @see org.geneview.util.graph.item.GraphItemDataSequenzer
  * 
  * @author Michael Kalkusch
  *
@@ -37,49 +37,49 @@ public abstract class AGraphDataHandler implements IGraphDataHandler {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.item.IGraphDataHandler#containsData(int)
+	 * @see org.geneview.util.graph.item.IGraphDataHandler#containsData(int)
 	 */
 	public final boolean containsData(int key) {
 		return key_2_data.containsKey(new Integer(key));
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.item.IGraphDataHandler#containsDataObject(java.lang.Object)
+	 * @see org.geneview.util.graph.item.IGraphDataHandler#containsDataObject(java.lang.Object)
 	 */
 	public final boolean containsDataObject(Object data) {
 		return key_2_data.containsValue(data);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.item.IGraphDataHandler#getAllData()
+	 * @see org.geneview.util.graph.item.IGraphDataHandler#getAllData()
 	 */
 	public final Collection <Object> getAllData() {
 		return key_2_data.values();
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.item.IGraphDataHandler#getData(int)
+	 * @see org.geneview.util.graph.item.IGraphDataHandler#getData(int)
 	 */
 	public final Object getData(int key) {
 		return key_2_data.get(new Integer(key));
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.item.IGraphDataHandler#removeAllData()
+	 * @see org.geneview.util.graph.item.IGraphDataHandler#removeAllData()
 	 */
 	public final void removeAllData() {
 		key_2_data.clear();
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.item.IGraphDataHandler#removeData(int)
+	 * @see org.geneview.util.graph.item.IGraphDataHandler#removeData(int)
 	 */
 	public final Object removeData(int key) {
 		return key_2_data.remove(new Integer(key));
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.item.IGraphDataHandler#setData(int, java.lang.Object)
+	 * @see org.geneview.util.graph.item.IGraphDataHandler#setData(int, java.lang.Object)
 	 */
 	public final boolean setData(int key, Object data) {
 		return (key_2_data.put(new Integer(key), data) == null ) ? false : true;

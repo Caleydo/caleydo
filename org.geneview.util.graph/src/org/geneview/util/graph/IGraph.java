@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.geneview.graph;
+package org.geneview.util.graph;
 
 import java.util.List;
 
-import org.geneview.graph.EGraphItemHierarchy;
-import org.geneview.graph.IGraphComponent;
-import org.geneview.graph.GraphRuntimeException;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.IGraphComponent;
+import org.geneview.util.graph.GraphRuntimeException;
 
 /**
  * Interface for graphs.
@@ -113,7 +113,7 @@ public interface IGraph extends IGraphComponent {
 	/**
 	 * Test if graph has a certain EGraphProperty.
 	 * 
-	 * @see org.geneview.graph.IGraph#setGraphProperty(EGraphProperty, boolean)
+	 * @see org.geneview.util.graph.IGraph#setGraphProperty(EGraphProperty, boolean)
 	 * 
 	 * @param test property to be tested
 	 * @return TRUE if property is set, FALSE else
@@ -123,7 +123,7 @@ public interface IGraph extends IGraphComponent {
 	/**
 	 * Set a graph property.
 	 * 
-	 * @see org.geneview.graph.IGraph#hasGraphProperty(EGraphProperty)
+	 * @see org.geneview.util.graph.IGraph#hasGraphProperty(EGraphProperty)
 	 * 
 	 * @param prop property to be set
 	 * @param value TURE of FALSE

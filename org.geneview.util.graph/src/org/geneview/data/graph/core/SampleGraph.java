@@ -3,7 +3,7 @@
  */
 package org.geneview.data.graph.core;
 
-import org.geneview.graph.core.Graph;
+import org.geneview.util.graph.core.Graph;
 
 /**
  * Example for a graph.

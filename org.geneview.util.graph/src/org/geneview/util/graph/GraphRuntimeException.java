@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.graph;
+package org.geneview.util.graph;
 
 /**
  * RuntimeException for graphs.
  * 
- * @see org.geneview.graph.IGraph
+ * @see org.geneview.util.graph.IGraph
  * 
  * @author Michael Kalkusch
  *

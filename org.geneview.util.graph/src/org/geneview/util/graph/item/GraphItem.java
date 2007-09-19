@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.geneview.graph.item;
+package org.geneview.util.graph.item;
 
 import java.util.List;
 import java.util.Iterator;
 
-import org.geneview.graph.EGraphItemHierarchy;
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.GraphRuntimeException;
-import org.geneview.graph.IGraph;
-import org.geneview.graph.IGraphItem;
-import org.geneview.graph.item.GraphGenericContainer;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.GraphRuntimeException;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
+import org.geneview.util.graph.item.GraphGenericContainer;
 
 /**
  * Base class for IGraphItem.
@@ -24,16 +24,16 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	private int iGraphItemId = 0;
 	
 	/**
-	 * initial size for org.geneview.graph.item.GraphItem#items
+	 * initial size for org.geneview.util.graph.item.GraphItem#items
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#items
+	 * @see org.geneview.util.graph.item.GraphItem#items
 	 */
 	private static final int iInitialSizeItemsDefault = 3;
 	
 	/**
-	 * initial size for org.geneview.graph.item.GraphItem#graphs
+	 * initial size for org.geneview.util.graph.item.GraphItem#graphs
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#graphs
+	 * @see org.geneview.util.graph.item.GraphItem#graphs
 	 */
 	private static final int iInitalSizeGraphsDefault = 2;
 	
@@ -46,7 +46,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	/**
 	 * Calls GraphItem(int, EGraphItemKind, int, int) with default settings.
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#GraphItem(int, EGraphItemKind, int, int)
+	 * @see org.geneview.util.graph.item.GraphItem#GraphItem(int, EGraphItemKind, int, int)
 	 * @param kind use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
 	public GraphItem(final int id,
@@ -87,7 +87,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.graph.IGraphComponent#getId()
+	 * @see org.geneview.util.graph.IGraphComponent#getId()
 	 */
 	public final int getId() {		
 		return iGraphItemId;
@@ -95,7 +95,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.graph.IGraphComponent#setId(int)
+	 * @see org.geneview.util.graph.IGraphComponent#setId(int)
 	 */
 	public final void setId(final int id) {
 		iGraphItemId = id;		
@@ -103,7 +103,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItem#addItemDoubleLinked(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.IGraphItem#addItemDoubleLinked(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public final void addItemDoubleLinked(IGraphItem item, EGraphItemProperty prop)
 	throws GraphRuntimeException {
@@ -126,7 +126,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItem#addItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.IGraphItem#addItem(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public void addItem(IGraphItem item, EGraphItemProperty prop)
 			throws GraphRuntimeException {
@@ -134,35 +134,35 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItem#containsItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.IGraphItem#containsItem(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public boolean containsItem(IGraphItem item, EGraphItemProperty prop) {
 		return items.containsGraphComponent(item, prop);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItem#getAllItemsByProp(org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.IGraphItem#getAllItemsByProp(org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public List<IGraphItem> getAllItemsByProp(EGraphItemProperty prop) {
 		return items.getAllGraphComponent(prop);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItem#getGraphKind()
+	 * @see org.geneview.util.graph.IGraphItem#getGraphKind()
 	 */
 	public EGraphItemKind getGraphKind() {
 		return itemKind;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItem#removeItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.IGraphItem#removeItem(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public boolean removeItem(IGraphItem item, EGraphItemProperty prop) {
 		return items.removeGraphComponent(item, prop);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItem#setGraphKind(org.geneview.graph.EGraphItemType)
+	 * @see org.geneview.util.graph.IGraphItem#setGraphKind(org.geneview.util.graph.EGraphItemType)
 	 */
 	public void setGraphKind(EGraphItemKind type) {
 		if ( itemKind == null ) 
@@ -180,42 +180,42 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItemHierarchy#addGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.IGraphItemHierarchy#addGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
 	 */
 	public void addGraph(IGraph graph, EGraphItemHierarchy type) {
 		graphs.addGraphComponent(graph, type);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItemHierarchy#containsGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.IGraphItemHierarchy#containsGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
 	 */
 	public boolean containsGraph(IGraph graph, EGraphItemHierarchy type) {
 		return graphs.containsGraphComponent(graph, type);		
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItemHierarchy#containsOtherGraph(org.geneview.graph.IGraph)
+	 * @see org.geneview.util.graph.IGraphItemHierarchy#containsOtherGraph(org.geneview.util.graph.IGraph)
 	 */
 	public boolean containsOtherGraph(IGraph graph) {
 		return graphs.containsGraphComponentAtAll(graph);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItemHierarchy#getAllGraphByType(org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.IGraphItemHierarchy#getAllGraphByType(org.geneview.util.graph.EGraphItemHierarchy)
 	 */
 	public List<IGraph> getAllGraphByType(EGraphItemHierarchy type) {
 		return graphs.getAllGraphComponent(type);	
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphItemHierarchy#removeGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.IGraphItemHierarchy#removeGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
 	 */
 	public boolean removeGraph(IGraph graph, EGraphItemHierarchy type) {
 		return graphs.removeGraphComponent(graph, type);	
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.graph.IGraphComponent#disposeItem()
+	 * @see org.geneview.util.graph.IGraphComponent#disposeItem()
 	 */
 	public void disposeItem() {
 		Iterator <IGraph> iter = graphs.getAllGraphComponent(null).iterator();

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.graph.item;
+package org.geneview.util.graph.item;
 
 import java.util.HashMap;
 

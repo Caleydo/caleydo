@@ -1,4 +1,4 @@
-package org.geneview.graph;
+package org.geneview.util.graph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,9 @@ import java.util.List;
  * Graph hierarchy properties like "PARENT, CHILD, NEIGHBOUR" as well as "GRAPH_ALIAS" and "GRAPH_NONE".
  * Describe properties of a graph.
  * 
- * @see org.geneview.graph.EGraphProperty
- * @see org.geneview.graph.EGraphItemProperty
- * @see org.geneview.graph.EGraphItemKind
+ * @see org.geneview.util.graph.EGraphProperty
+ * @see org.geneview.util.graph.EGraphItemProperty
+ * @see org.geneview.util.graph.EGraphItemKind
  * 
  * @author Michael Kalkusch
  *
@@ -32,9 +32,9 @@ public enum EGraphItemHierarchy {
 	/**
 	 * Get a list of active EGraphItemHierarchy items.
 	 * 
-	 * @see org.geneview.graph.item.GraphItem#GraphItem(int,EGraphItemKind)
-	 * @see org.geneview.graph.EGraphItemProperty#getActiveItems()
-	 * @see org.geneview.graph.EGraphItemKind#getActiveItems()
+	 * @see org.geneview.util.graph.item.GraphItem#GraphItem(int,EGraphItemKind)
+	 * @see org.geneview.util.graph.EGraphItemProperty#getActiveItems()
+	 * @see org.geneview.util.graph.EGraphItemKind#getActiveItems()
 	 * 
 	 * @return list of active EGraphItemHierarchy items
 	 */

@@ -1,7 +1,7 @@
-package org.geneview.graph.algorithm;
+package org.geneview.util.graph.algorithm;
 
-import org.geneview.graph.IGraph;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 
 /**
  * Abstract base class with setter and getter for IGraph, IGraphItem and searchDepth.

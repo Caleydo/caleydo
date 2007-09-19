@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.graph;
+package org.geneview.util.graph;
 
 
 /**
  * Top level interface for all graph components.
  * 
- * @see org.geneview.graph.IGraph
- * @see org.geneview.graph.IGraphItem
+ * @see org.geneview.util.graph.IGraph
+ * @see org.geneview.util.graph.IGraphItem
  * 
  * @author Michael Kalkusch
  *
@@ -27,7 +27,7 @@ public interface IGraphComponent {
 	 * Note: If the hole graph is disposed and the IGraphItem is not linked to other graphs this method can be skipped.
 	 * To test if only a graph is linked call containsOtherGraph(IGraph)
 	 * 
-	 * @see org.geneview.graph.IGraphItem#containsOtherGraph(IGraph)
+	 * @see org.geneview.util.graph.IGraphItem#containsOtherGraph(IGraph)
 	 */
 	public void disposeItem();
 	

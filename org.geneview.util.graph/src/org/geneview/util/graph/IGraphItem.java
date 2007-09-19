@@ -1,24 +1,24 @@
 /**
  * 
  */
-package org.geneview.graph;
+package org.geneview.util.graph;
 
 import java.util.List;
 
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.item.IGraphDataHandler;
-import org.geneview.graph.IGraphComponent;
-import org.geneview.graph.IGraphItemHierarchy;
-import org.geneview.graph.GraphRuntimeException;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.item.IGraphDataHandler;
+import org.geneview.util.graph.IGraphComponent;
+import org.geneview.util.graph.IGraphItemHierarchy;
+import org.geneview.util.graph.GraphRuntimeException;
 
 /**
  * Interface for all graph items. Could be nodes or edges.
  * 
- * @see org.geneview.graph.EGraphItemHierarchy
- * @see org.geneview.graph.EGraphItemProperty
- * @see org.geneview.graph.EGraphItemKind
- * @see org.geneview.graph.IGraph
+ * @see org.geneview.util.graph.EGraphItemHierarchy
+ * @see org.geneview.util.graph.EGraphItemProperty
+ * @see org.geneview.util.graph.EGraphItemKind
+ * @see org.geneview.util.graph.IGraph
  * 
  * @author Michael Kalkusch
  *
@@ -29,7 +29,7 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	/* ---------------- */
 
 	/**
-	 * @see org.geneview.graph.IGraphItem#setGraphKind(EGraphItemKind)
+	 * @see org.geneview.util.graph.IGraphItem#setGraphKind(EGraphItemKind)
 	 * 
 	 *  @return type of this GraphItem
 	 */
@@ -38,7 +38,7 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	/**
 	 * Set the type of this GraphItem.
 	 * 
-	 * @see org.geneview.graph.IGraphItem#getGraphKind()
+	 * @see org.geneview.util.graph.IGraphItem#getGraphKind()
 	 * 
 	 * @param kind type for this GraphItem
 	 */
@@ -61,7 +61,7 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	 * 
 	 * Note, if prop == EGraphItemProperty.NONE or null a GraphRuntimeException is thrown
 	 * 
-	 * @see org.geneview.graph.IGraphItem#addItemDoubleLinked(IGraphItem, EGraphItemProperty)
+	 * @see org.geneview.util.graph.IGraphItem#addItemDoubleLinked(IGraphItem, EGraphItemProperty)
 	 * 
 	 * @param item new IGraphItem to be added
 	 * @param prop property linked to the added item
@@ -73,7 +73,7 @@ public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy, IGra
 	 * Revert entry is done for prop==(EGraphItemProperty.INCOMING, EGraphItemProperty.OUTGOING, EGraphItemProperty.ALIAS_PARENT,EGraphItemProperty.ALIAS_CHILD )  
 	 * Note:  EGraphItemProperty.NONE causes a GraphRuntimeException.
 	 * 
-	 * @see org.geneview.graph.IGraphItem#addItem(IGraphItem, EGraphItemProperty)
+	 * @see org.geneview.util.graph.IGraphItem#addItem(IGraphItem, EGraphItemProperty)
 	 * 
 	 * @param item new IGraphItem to be added and to be linked reverse to this item; 
 	 * @param prop property linked to the added item

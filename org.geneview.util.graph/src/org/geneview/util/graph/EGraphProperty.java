@@ -1,16 +1,16 @@
 /**
  * 
  */
-package org.geneview.graph;
+package org.geneview.util.graph;
 
 /**
  * Define graph properties like HAS_CYCLES, HAS_NO_CYCLES, IS_TREE, HAS_SUB_GRAPH
  * 
  * @author Michael Kalkusch
  *
- * @see org.geneview.graph.EGraphItemHierarchy
- * @see org.geneview.graph.EGraphItemProperty
- * @see org.geneview.graph.EGraphItemKind
+ * @see org.geneview.util.graph.EGraphItemHierarchy
+ * @see org.geneview.util.graph.EGraphItemProperty
+ * @see org.geneview.util.graph.EGraphItemKind
  */
 public enum EGraphProperty {
 

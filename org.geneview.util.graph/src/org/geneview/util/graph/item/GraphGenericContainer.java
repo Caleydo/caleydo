@@ -1,15 +1,15 @@
 /**
  * 
  */
-package org.geneview.graph.item;
+package org.geneview.util.graph.item;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.geneview.graph.GraphRuntimeException;
-import org.geneview.graph.IGraphComponent;
+import org.geneview.util.graph.GraphRuntimeException;
+import org.geneview.util.graph.IGraphComponent;
 
 /**
  * General generic container for IGraph and IGraphItem objects.
@@ -18,8 +18,8 @@ import org.geneview.graph.IGraphComponent;
  * Note: <GraphComponent extends IGraphComponent,..> ensures, that generic "GraphComponent" extends IGraphComponent;
  * this is required for the method disposeItem().
  * 
- * @see org.geneview.graph.EGraphItemProperty
- * @see org.geneview.graph.EGraphItemHierarchy
+ * @see org.geneview.util.graph.EGraphItemProperty
+ * @see org.geneview.util.graph.EGraphItemHierarchy
  * 
  * @author Michael Kalkusch
  *
@@ -29,7 +29,7 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	/**
 	 * initial size for type2ArrayList.
 	 * 
-	 * @see org.geneview.graph.item.GraphGenericContainer#type2ArrayList
+	 * @see org.geneview.util.graph.item.GraphGenericContainer#type2ArrayList
 	 */
 	private static final int iInitialSizeHierarchyArray = 4;
 	
@@ -68,7 +68,7 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	}
 
 	/**
-	 * Same as {@link org.geneview.graph.item.GraphGenericContainer#addGraphComponent(IGraphComponent, Object)}
+	 * Same as {@link org.geneview.util.graph.item.GraphGenericContainer#addGraphComponent(IGraphComponent, Object)}
 	 * but it will be checked if the element is already added. In this case an assertion will be triggered.
 	 */
 	public void addGraphComponentChecked(GraphComponent item, final GraphEnum key) {
@@ -93,8 +93,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	}
 
 	/**
-	 * @see org.geneview.graph.item.GraphItem#addGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
-	 * @see org.geneview.graph.item.GraphItem#addItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.item.GraphItem#addGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.item.GraphItem#addItem(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public void addGraphComponent(GraphComponent item, final GraphEnum key) {
 
@@ -113,8 +113,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	}
 
 	/**
-	 * @see org.geneview.graph.item.GraphItem#containsGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
-	 * @see org.geneview.graph.item.GraphItem#containsItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.item.GraphItem#containsGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.item.GraphItem#containsItem(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public boolean containsGraphComponent(final GraphComponent item, final GraphEnum key) {
 		
@@ -132,8 +132,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	}
 	
 	/**
-	 * @see org.geneview.graph.item.GraphItem#containsGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
-	 * @see org.geneview.graph.item.GraphItem#containsItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.item.GraphItem#containsGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.item.GraphItem#containsItem(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public boolean containsGraphComponentAtAll(final GraphComponent item) {
 		Iterator <ArrayList <GraphComponent>> iter =
@@ -150,8 +150,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	}
 
 	/**
-	 * @see org.geneview.graph.item.GraphItem#getAllGraphByType(org.geneview.graph.EGraphItemHierarchy)
-	 * @see org.geneview.graph.item.GraphItem#getAllItemsByProp(org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.item.GraphItem#getAllGraphByType(org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.item.GraphItem#getAllItemsByProp(org.geneview.util.graph.EGraphItemProperty)
 	 */
 	public List <GraphComponent> getAllGraphComponent( final GraphEnum key ) {
 		
@@ -190,8 +190,8 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	
 
 	/**
-	 * @see org.geneview.graph.item.GraphItem#removeGraph(org.geneview.graph.IGraph, org.geneview.graph.EGraphItemHierarchy)
-	 * @see org.geneview.graph.item.GraphItem#removeItem(org.geneview.graph.IGraphItem, org.geneview.graph.EGraphItemProperty)
+	 * @see org.geneview.util.graph.item.GraphItem#removeGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.geneview.util.graph.item.GraphItem#removeItem(org.geneview.util.graph.IGraphItem, org.geneview.util.graph.EGraphItemProperty)
 	 * 
 	 */
 	public boolean removeGraphComponent(final GraphComponent item, GraphEnum key) {
@@ -224,7 +224,7 @@ public class GraphGenericContainer <GraphComponent extends IGraphComponent,Graph
 	}
 	
 	/**
-	 * @see org.geneview.graph.item.GraphItem#disposeItem()
+	 * @see org.geneview.util.graph.item.GraphItem#disposeItem()
 	 */
 	public void disposeItem() {
 		/** fill result array .. */
