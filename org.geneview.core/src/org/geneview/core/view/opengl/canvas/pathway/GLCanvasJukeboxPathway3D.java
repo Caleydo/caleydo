@@ -736,7 +736,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if (iSlerpFactor < 1000)
 		{
-			iSlerpFactor += 15;
+			iSlerpFactor += 500;
 		}
 	}
 

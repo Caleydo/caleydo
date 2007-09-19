@@ -6,12 +6,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.rcp.Application;
 
-import cerberus.command.CommandQueueSaxType;
-import cerberus.command.event.CmdEventCreateMediator;
-import cerberus.manager.IViewManager;
-import cerberus.manager.IEventPublisher.MediatorType;
-import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.swt.pathway.Pathway2DViewRep;
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.event.CmdEventCreateMediator;
+import org.geneview.core.manager.IViewManager;
+import org.geneview.core.manager.IEventPublisher.MediatorType;
+import org.geneview.core.manager.type.ManagerObjectType;
+import org.geneview.core.view.swt.pathway.Pathway2DViewRep;
 
 public class Pathway2DView 
 extends ViewPart {

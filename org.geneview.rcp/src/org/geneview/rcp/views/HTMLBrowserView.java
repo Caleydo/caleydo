@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.rcp.Application;
 
-import cerberus.manager.IViewManager;
-import cerberus.manager.type.ManagerObjectType;
-import cerberus.view.swt.browser.HTMLBrowserViewRep;
+import org.geneview.core.manager.IViewManager;
+import org.geneview.core.manager.type.ManagerObjectType;
+import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 
 public class HTMLBrowserView 
 extends ViewPart {

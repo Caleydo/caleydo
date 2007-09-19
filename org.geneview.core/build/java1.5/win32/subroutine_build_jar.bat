@@ -15,9 +15,12 @@ SETLOCAL
 
 rem you can switch between "src" and "bin"
 
-SET version=%1
-SET destination=%2
-SET destination2=%3
+SET destination=%1
+SET destination2=%2
+
+SET version=%3
+
+IF NOT "%3"=="" SET version=_r%3
 
 SET path_org_geneview_core=..\..\..\
 
@@ -39,7 +42,7 @@ SET class_files=%path_org_geneview_core%%destination%%destination2%
 
 
 rem path and filename of resulting jar file
-SET jar_file_name=%path_org_geneview_core%lib\org.geneview.core_%destination%_r%version%.jar
+SET jar_file_name=%path_org_geneview_core%lib\org.geneview.core_%destination%%version%.jar
 
 rem test if jogl.jar and swt.jar is in place.
 IF NOT EXIST %file_org_geneview_core_jogl_jar% GOTO COPY_PLATFORM_DEPANDENT_JAR

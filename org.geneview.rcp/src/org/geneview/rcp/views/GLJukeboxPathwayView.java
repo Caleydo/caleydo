@@ -20,10 +20,10 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.rcp.Application;
 
-import cerberus.command.CommandQueueSaxType;
-import cerberus.command.view.rcp.CmdExternalFlagSetter;
-import cerberus.command.view.rcp.EExternalFlagSetterType;
-import cerberus.view.jogl.JoglCanvasForwarder;
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
+import org.geneview.core.command.view.rcp.EExternalFlagSetterType;
+import org.geneview.core.view.jogl.JoglCanvasForwarder;
 
 import com.sun.opengl.util.Animator;
 

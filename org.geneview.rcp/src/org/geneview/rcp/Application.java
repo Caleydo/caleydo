@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import cerberus.application.core.CerberusBootloader;
-import cerberus.manager.IGeneralManager;
+import org.geneview.core.application.core.GeneViewBootloader;
+import org.geneview.core.manager.IGeneralManager;
 
 /**
  * This class controls all aspects of the application's execution
@@ -60,7 +60,7 @@ public class Application implements IApplication {
 	
 	protected void startCerberusCore() {
 		
-		CerberusBootloader prototype = new CerberusBootloader();
+		GeneViewBootloader prototype = new GeneViewBootloader();
 			
 		prototype.setXmlFileName(
 				"data/bootstrap/rcp/bootstrap_sample_RCP.xml"); 	

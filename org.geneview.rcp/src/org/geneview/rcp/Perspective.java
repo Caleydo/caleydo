@@ -14,7 +14,7 @@ import org.geneview.rcp.views.HTMLBrowserView;
 import org.geneview.rcp.views.Pathway2DView;
 import org.geneview.rcp.views.browser.IBrowserConstants;
 
-import cerberus.view.swt.browser.HTMLBrowserViewRep;
+import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 
 public class Perspective implements IPerspectiveFactory {
 

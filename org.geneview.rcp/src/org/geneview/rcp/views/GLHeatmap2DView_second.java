@@ -22,7 +22,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.rcp.Application;
 
-import cerberus.view.jogl.JoglCanvasForwarder;
+import org.geneview.core.view.jogl.JoglCanvasForwarder;
 
 import com.sun.opengl.util.Animator;
 
