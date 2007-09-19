@@ -17,5 +17,4 @@ Bundle-ClassPath: .,
  lib/data.jar,
  lib/muddleware/muddleware.jar,
  lib/jface/,
- lib/axis/,
- resources/
+ lib/axis/

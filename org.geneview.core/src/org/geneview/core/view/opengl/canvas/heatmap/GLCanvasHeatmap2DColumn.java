@@ -1143,8 +1143,8 @@ extends AGLCanvasHeatmap2D
 			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
 		}
 		
-//		render_Selection_ownArea(gl, fIncY);
-//		gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
+		render_Selection_ownArea(gl, fIncY);
+		gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
 		
 //		gl.glColor3f(1, 1, 0);
 //		renderGLAllQuadRectangle(gl, this.fIndexPickedCoored);
@@ -1163,10 +1163,10 @@ extends AGLCanvasHeatmap2D
 			render_picketPoints(gl, fIncY, fIncX);
 		//}
 		
-//		if (pickedGeneVertex != null && infoAreaRenderer.isPositionValid())
-//		{
-//			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
-//		}
+		if (pickedGeneVertex != null && infoAreaRenderer.isPositionValid())
+		{
+			infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
+		}
 		
 		
 		gl.glEnable(GL.GL_LIGHTING);
