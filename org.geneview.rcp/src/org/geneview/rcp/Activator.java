@@ -35,8 +35,9 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
+		plugin = null;	
+		super.stop(context);		
+		System.out.println( Application.debugMsgPrefix + getClass().getSimpleName() + ".stop() ... [done]");	
 	}
 
 	/**
@@ -58,4 +59,5 @@ public class Activator extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
+	
 }

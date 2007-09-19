@@ -1,5 +1,9 @@
 package org.geneview.rcp;
 
+import java.util.Map;
+import java.util.Collection;
+import java.util.HashMap;
+
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
@@ -14,17 +18,45 @@ import org.geneview.core.manager.IGeneralManager;
  */
 public class Application implements IApplication {
 
+	public static final String debugMsgPrefix = "RCP: ";
+	
 	// FIXME: should not be static!
 	public static IGeneralManager refGeneralManager;
+	
+	protected GeneViewBootloader geneview_core;
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
 	 */
 	public Object start(IApplicationContext context) throws Exception {
 
-		startCerberusCore();
+		System.out.println("GeneView_RCP: bootstrapping ...");
+		
+		String sGeneviewXMLfile = "";		
+		Map <String,Object> map = (Map <String,Object>) context.getArguments();
+				
+		if ( map.size() > 0) 
+		{
+			String [] info = (String[]) map.get("application.args");
+			
+			if ( info != null ) 
+			{
+				if ( info.length > 0) 
+				{					
+					sGeneviewXMLfile = info[0];
+					System.out.println(debugMsgPrefix +"XML config file:" +sGeneviewXMLfile );
+					
+					if ( info.length > 1 ) {
+						System.err.println(debugMsgPrefix + "can not handle more than on argument! ignor other argumets.");
+					}
+				}
+			}
+		}
+			
+		startGeneViewCore(sGeneviewXMLfile);
 		
 		Display display = PlatformUI.createDisplay();
+		
 		try {
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART)
@@ -32,20 +64,20 @@ public class Application implements IApplication {
 			else
 				return IApplication.EXIT_OK;
 		} finally {
+			disposeGeneViewCore();
 			display.dispose();
+			System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".start() ==> display.dispose() ... [done]");
 		}
-		
+				
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#stop()
 	 */
 	public void stop() {
+		System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".stop() ...");
+	
 		final IWorkbench workbench = PlatformUI.getWorkbench();
-		
-//		if ( Application.refGeneralManager != null ) {
-//			Application.refGeneralManager.stop();
-//		}
 		
 		if (workbench == null)
 			return;
@@ -58,16 +90,42 @@ public class Application implements IApplication {
 		});
 	}
 	
-	protected void startCerberusCore() {
+	protected void startGeneViewCore( final String xmlFileName ) {
 		
-		GeneViewBootloader prototype = new GeneViewBootloader();
+		geneview_core = new GeneViewBootloader();
 			
-		prototype.setXmlFileName(
+		if  (xmlFileName=="") 
+		{
+			geneview_core.setXmlFileName(
 				"data/bootstrap/rcp/bootstrap_sample_RCP.xml"); 	
+		}
+		else
+		{
+			geneview_core.setXmlFileName(
+				"data/bootstrap/rcp/bootstrap_sample_RCP.xml"); 
+		}
 
-		Application.refGeneralManager = prototype.getGeneralManager();
+		Application.refGeneralManager = geneview_core.getGeneralManager();
 
-		prototype.run();
+		geneview_core.run();
+	}
+	
+	protected void disposeGeneViewCore() {
+		
+		System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeGeneViewCore() shutdown ...");
+		
+		if ( geneview_core != null ) 
+		{
+			if ( geneview_core.isRunning() ) 
+			{
+				geneview_core.stop();
+				geneview_core = null;
+			}
+			else 
+			{
+				System.err.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeGeneViewCore() core was already stopped!");
+			}
+		}
 	}
 		
 }

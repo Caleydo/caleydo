@@ -12,6 +12,7 @@ import org.geneview.rcp.views.GLHeatmap2DView_third;
 import org.geneview.rcp.views.GLJukeboxPathwayView;
 import org.geneview.rcp.views.HTMLBrowserView;
 import org.geneview.rcp.views.Pathway2DView;
+import org.geneview.rcp.Application;
 //import org.geneview.rcp.views.browser.IBrowserConstants;
 
 //import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
@@ -20,6 +21,8 @@ public class Perspective implements IPerspectiveFactory {
 
 	public void createInitialLayout(IPageLayout layout) {
 
+		System.out.println(Application.debugMsgPrefix + getClass().getSimpleName() + ".createInitialLayout(..)"); 
+		
 		layout.setEditorAreaVisible(false);
 
 		//	    layout.addView(GLJukeboxPathwayView.ID +":1", IPageLayout.LEFT,
