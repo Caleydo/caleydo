@@ -53,15 +53,29 @@ public class BrowserPlugin extends AbstractUIPlugin {
      * Returns a list of all views and editors in the given page,
      * excluding any secondary views like the History view.
      * 
+     * @see org.eclipse.ui.IEditorReference
+     * @see org.eclipse.ui.IViewReference;
+     * 
      * @param page the workbench page
      * @return a list of all non-secondary parts in the page
      */
-    public static List getNonSecondaryParts(IWorkbenchPage page) {
-        ArrayList list = new ArrayList();
-        list.addAll(Arrays.asList(page.getViewReferences()));
-        list.addAll(Arrays.asList(page.getEditorReferences()));
-        for (Iterator i = list.iterator(); i.hasNext();) {
-            IWorkbenchPartReference ref = (IWorkbenchPartReference) i.next();
+    public static List <IWorkbenchPartReference> getNonSecondaryParts(IWorkbenchPage page) {
+        ArrayList <IWorkbenchPartReference> list = new ArrayList <IWorkbenchPartReference> ();
+               
+        /*
+         * list.addAll(  ( List<IViewReference extends IWorkbenchPartReference> ) 
+         * 			Arrays.asList( (IViewReference[]) page.getViewReferences()));
+         */
+        list.addAll(Arrays.asList( page.getViewReferences()));
+        
+        /*
+         * list.addAll(  ( List<IEditorReference extends IWorkbenchPartReference> ) 
+         * 			Arrays.asList( (IEditorReference[]) page.getEditorReferences()));
+         */
+        list.addAll(Arrays.asList( page.getEditorReferences()) );
+        
+        for (Iterator <IWorkbenchPartReference> i = list.iterator(); i.hasNext();) {
+            IWorkbenchPartReference ref = i.next();
             if (ref instanceof ISecondaryPart) {
                 i.remove();
             }

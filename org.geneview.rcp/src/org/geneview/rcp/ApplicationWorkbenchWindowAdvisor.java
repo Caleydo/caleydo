@@ -1,18 +1,18 @@
 package org.geneview.rcp;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+//import java.net.MalformedURLException;
+//import java.net.URL;
 
-import org.eclipse.swt.SWT;
+//import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PartInitException;
+//import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+//import org.eclipse.ui.browser.IWebBrowser;
+//import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 

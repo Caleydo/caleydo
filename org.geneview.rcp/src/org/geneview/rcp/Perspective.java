@@ -1,6 +1,6 @@
 package org.geneview.rcp;
 
-import javax.swing.text.html.HTML;
+//import javax.swing.text.html.HTML;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -12,9 +12,9 @@ import org.geneview.rcp.views.GLHeatmap2DView_third;
 import org.geneview.rcp.views.GLJukeboxPathwayView;
 import org.geneview.rcp.views.HTMLBrowserView;
 import org.geneview.rcp.views.Pathway2DView;
-import org.geneview.rcp.views.browser.IBrowserConstants;
+//import org.geneview.rcp.views.browser.IBrowserConstants;
 
-import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
+//import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 
 public class Perspective implements IPerspectiveFactory {
 

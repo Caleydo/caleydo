@@ -10,7 +10,7 @@ Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  ../org.geneview.lib/lib/jogl/jogl.jar,
  ../org.geneview.lib/lib/jogl/gluegen-rt.jar,
- lib/org.geneview.core_bin_r000.jar,
+ lib/org.geneview.core_bin.jar,
  lib/org.geneview.graph_bin.jar,
  lib/jgraph/jgraph.jar,
  lib/gleem/gleem_mod_class.jar,
