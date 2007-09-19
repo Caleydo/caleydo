@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraph;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

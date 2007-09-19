@@ -212,7 +212,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				( llRefVirtualArray_nDim.isEmpty()))
 		{
 			refGeneralManager.getSingelton().logMsg(
-					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
+					"CmdDataCreateSet.setAttributes().assingPlanarOrMultiDimensionalSet() not sufficient data available!",
 					LoggerType.MINOR_ERROR );
 			
 			return false;

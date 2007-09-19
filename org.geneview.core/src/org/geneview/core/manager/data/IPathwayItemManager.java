@@ -3,8 +3,8 @@ package org.geneview.core.manager.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.geneview.graph.IGraph;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 
 import org.geneview.core.manager.IGeneralManager;
 

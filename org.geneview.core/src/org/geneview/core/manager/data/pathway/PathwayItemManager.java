@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.geneview.graph.EGraphItemHierarchy;
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraph;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 
 import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
 import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;

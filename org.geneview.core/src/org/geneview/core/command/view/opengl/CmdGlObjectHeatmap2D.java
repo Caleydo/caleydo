@@ -11,7 +11,6 @@ import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;

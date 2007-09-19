@@ -16,9 +16,9 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.graph.EGraphItemHierarchy;
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraphItem;
 
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;

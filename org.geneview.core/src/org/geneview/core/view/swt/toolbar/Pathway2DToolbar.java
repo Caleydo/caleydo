@@ -1,7 +1,6 @@
 package org.geneview.core.view.swt.toolbar;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.swt.SWT;
@@ -15,7 +14,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
 
-import com.sun.opengl.util.texture.TextureIO;
+//import com.sun.opengl.util.texture.TextureIO;
 
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.view.swt.pathway.APathwayGraphViewRep;

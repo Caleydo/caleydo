@@ -1,12 +1,12 @@
 package org.geneview.core.view.opengl.util;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Point;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
+//import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 
 import com.sun.opengl.util.texture.Texture;

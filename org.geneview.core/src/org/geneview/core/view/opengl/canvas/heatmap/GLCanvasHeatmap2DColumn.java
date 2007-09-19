@@ -20,10 +20,10 @@ import java.util.Arrays;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.graph.EGraphItemHierarchy;
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraph;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 
 import com.sun.opengl.util.BufferUtil;
 

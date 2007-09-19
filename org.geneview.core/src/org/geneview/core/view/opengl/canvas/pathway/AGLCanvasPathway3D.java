@@ -13,8 +13,8 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.IGraphItem;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;

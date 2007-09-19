@@ -16,8 +16,6 @@ import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
 //import org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
-import org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 import org.geneview.core.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
 
 /**

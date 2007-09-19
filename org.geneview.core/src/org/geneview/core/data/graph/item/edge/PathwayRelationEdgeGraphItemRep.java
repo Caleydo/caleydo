@@ -1,8 +1,8 @@
 package org.geneview.core.data.graph.item.edge;
 
-import org.geneview.graph.EGraphItemKind;
-//import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.item.GraphItem;
+import org.geneview.util.graph.EGraphItemKind;
+//import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.item.GraphItem;
 
 //import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 

@@ -1,7 +1,7 @@
 package org.geneview.core.data.graph.item.edge;
 
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.item.GraphItem;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.item.GraphItem;
 
 
 public class PathwayRelationEdgeGraphItem 

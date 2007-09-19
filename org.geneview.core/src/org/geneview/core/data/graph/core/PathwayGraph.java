@@ -1,6 +1,6 @@
 package org.geneview.core.data.graph.core;
 
-import org.geneview.graph.core.Graph;
+import org.geneview.util.graph.core.Graph;
 
 public class PathwayGraph
 extends Graph {

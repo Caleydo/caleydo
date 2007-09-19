@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraphItem;
 
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;

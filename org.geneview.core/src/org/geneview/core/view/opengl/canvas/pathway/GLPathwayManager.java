@@ -10,11 +10,11 @@ import java.util.Map.Entry;
 
 import javax.media.opengl.GL;
 
-import org.geneview.graph.EGraphItemHierarchy;
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.EGraphItemProperty;
-import org.geneview.graph.IGraphItem;
-import org.geneview.graph.algorithm.GraphVisitorSearchBFS;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraphItem;
+import org.geneview.util.graph.algorithm.GraphVisitorSearchBFS;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.set.selection.SetSelection;

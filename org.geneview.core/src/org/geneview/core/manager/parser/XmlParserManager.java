@@ -3,7 +3,7 @@
  */
 package org.geneview.core.manager.parser;
 
-import java.io.StringReader;
+//import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
 //import java.util.Collection;

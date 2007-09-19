@@ -2,7 +2,7 @@ package org.geneview.core.manager.data.pathway;
 
 import java.util.HashMap;
 
-import org.geneview.graph.core.Graph;
+import org.geneview.util.graph.core.Graph;
 
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.view.rep.pathway.jgraph.PathwayImageMap;

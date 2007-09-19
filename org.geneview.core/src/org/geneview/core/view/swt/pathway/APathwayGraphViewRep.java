@@ -4,8 +4,8 @@ import java.awt.Frame;
 import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
-import org.geneview.graph.EGraphItemKind;
-import org.geneview.graph.IGraphItem;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.IGraphItem;
 
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
