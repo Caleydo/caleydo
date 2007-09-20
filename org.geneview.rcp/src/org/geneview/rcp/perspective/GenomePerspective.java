@@ -1,4 +1,4 @@
-package org.geneview.rcp;
+package org.geneview.rcp.perspective;
 
 //import javax.swing.text.html.HTML;
 
@@ -17,7 +17,7 @@ import org.geneview.rcp.Application;
 
 //import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 
-public class Perspective implements IPerspectiveFactory {
+public class GenomePerspective implements IPerspectiveFactory {
 
 	public void createInitialLayout(IPageLayout layout) {
 

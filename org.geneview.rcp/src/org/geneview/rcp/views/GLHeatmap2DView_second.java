@@ -1,5 +1,7 @@
 package org.geneview.rcp.views;
 
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.geneview.rcp.views.GLHeatmap2DView;
 
 /**
@@ -33,4 +35,5 @@ public class GLHeatmap2DView_second extends GLHeatmap2DView {
 		//TODO: remove hack for GLCanvasdirector
 		iGLCanvasDirectorId = 28;
 	}
+	
 }

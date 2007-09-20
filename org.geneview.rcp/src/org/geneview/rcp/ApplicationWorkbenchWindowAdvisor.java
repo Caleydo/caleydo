@@ -4,6 +4,8 @@ package org.geneview.rcp;
 //import java.net.URL;
 
 //import org.eclipse.swt.SWT;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.graphics.Point;
 //import org.eclipse.swt.widgets.Shell;
 //import org.eclipse.ui.PartInitException;
@@ -30,6 +32,13 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);    
         
+        /**
+         * Top Level Menu
+         */
+        configurer.setShowMenuBar(true);
+        
+
+        
 //      try {
 //    	IWorkbenchBrowserSupport browserSupport = configurer.getWorkbenchConfigurer().getWorkbench().getBrowserSupport();
 //    	System.out.println("Browser support: " +browserSupport.isInternalWebBrowserAvailable());
@@ -55,4 +64,14 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 //    	super.createWindowContents(shell); 
 //        shell.setMaximized(true);
 //    }
+    
+	protected void fillMenuBar(IMenuManager menuBar) {
+		MenuManager hyperbolaMenu = new MenuManager(
+		    "&GeneView", "geneview");
+		///hyperbolaMenu.add(exitAction);
+		MenuManager helpMenu = new MenuManager("&Help", "help");
+		//helpMenu.add(aboutAction);
+		menuBar.add(hyperbolaMenu);
+		menuBar.add(helpMenu);
+	}
 }

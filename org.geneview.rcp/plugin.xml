@@ -87,7 +87,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="RCP Perspective"
-            class="org.geneview.rcp.Perspective"
+            class="org.geneview.rcp.perspective.GenomePerspective"
             id="org.geneview.rcp.perspective">
       </perspective>
    </extension>

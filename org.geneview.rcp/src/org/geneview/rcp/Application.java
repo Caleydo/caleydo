@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -21,9 +23,9 @@ public class Application implements IApplication {
 	public static final String debugMsgPrefix = "RCP: ";
 	
 	// FIXME: should not be static!
-	public static IGeneralManager refGeneralManager;
+	public static IGeneralManager refGeneralManager;	
 	
-	protected GeneViewBootloader geneview_core;
+	public static GeneViewBootloader geneview_core;
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
@@ -90,6 +92,16 @@ public class Application implements IApplication {
 		});
 	}
 	
+	protected void fillMenuBar(IMenuManager menuBar) {
+		MenuManager hyperbolaMenu = new MenuManager(
+		    "&GeneView", "geneview");
+		///hyperbolaMenu.add(exitAction);
+		MenuManager helpMenu = new MenuManager("&Help", "help");
+		//helpMenu.add(aboutAction);
+		menuBar.add(hyperbolaMenu);
+		menuBar.add(helpMenu);
+	}
+
 	protected void startGeneViewCore( final String xmlFileName ) {
 		
 		geneview_core = new GeneViewBootloader();
@@ -107,7 +119,7 @@ public class Application implements IApplication {
 
 		Application.refGeneralManager = geneview_core.getGeneralManager();
 
-		geneview_core.run();
+		geneview_core.run_SWT();
 	}
 	
 	protected void disposeGeneViewCore() {
