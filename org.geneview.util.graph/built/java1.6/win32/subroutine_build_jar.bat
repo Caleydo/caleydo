@@ -2,19 +2,30 @@
 
 SETLOCAL
 
+rem test if JAVAHOME environment variable ist set...
+IF NOT "%JAVAHOME%"=="" GOTO JAVAHOME_IS_SET
+
+:NO_JAVAHOMEE
+echo.
+echo.  Enviroment variable JAVAHOME need to be set to java.exe   (java 1.6 or higher)
+echo.
+GOTO END
+
+:JAVAHOME_IS_SET
+
 rem you can switch between "src" and "bin"
 SET destination=%1
 
 rem path and file name for jar.exe
-SET file_jar=C:\Compiler\java\jre1.6\bin\jar.exe
+SET file_jar=%JAVAHOME%\jar.exe
 
 rem path to bin folder were *.class files are stored
-SET class_files=..\..\%destination%
+SET class_files=..\..\..\%destination%
 
 
 
 rem path and filename of resulting jar file
-SET jar_file_name=..\..\lib\org.geneview.graph_%destination%.jar
+SET jar_file_name=..\..\..\lib\org.geneview.graph_%destination%.jar
 
 echo info= %class_files%   %jar_file_name%
 
