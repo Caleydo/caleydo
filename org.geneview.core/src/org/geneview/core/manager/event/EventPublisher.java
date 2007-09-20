@@ -193,7 +193,7 @@ implements IEventPublisher {
 //						iCurrentSenderId + 
 //						"] does not implement interface IMediatorSender " +
 //						refGeneralManager.getItem(iCurrentSenderId).getClass(),
-//						LoggerType.ERROR_ONLY);
+//						LoggerType.ERROR);
 //				
 //				assert false : "receiver object does not implement interface IMediatorSender";
 //				break;
@@ -301,7 +301,7 @@ implements IEventPublisher {
 						iCurrentSenderId + 
 						"] does not implement interface IMediatorSender " +
 						refGeneralManager.getItem(iCurrentSenderId).getClass(),
-						LoggerType.ERROR_ONLY);
+						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorSender";
 				break;
@@ -398,7 +398,7 @@ implements IEventPublisher {
 						iCurrentReceiverId + 
 						"] does not implement interface IMediatorReceiver " +
 						refGeneralManager.getItem(iCurrentReceiverId).getClass(),
-						LoggerType.ERROR_ONLY);
+						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorReceiver";
 				break;

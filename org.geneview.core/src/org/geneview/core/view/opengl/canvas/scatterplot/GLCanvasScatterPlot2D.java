@@ -155,7 +155,7 @@ extends AGLCanvasUser
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D assigned Storage must contain at least equal number of Stprages as Selections!",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			return;
 		}
 		

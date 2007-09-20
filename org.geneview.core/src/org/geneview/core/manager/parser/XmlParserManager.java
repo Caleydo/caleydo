@@ -244,7 +244,7 @@ extends AXmlParserManager {
 			{
 				refLoggerManager.logMsg( "XmlParserManager.startElement_search4Tag() SAX error: " +
 						se.toString(),
-						LoggerType.ERROR_ONLY );
+						LoggerType.ERROR );
 				
 			} // try .. catch (SAXException se) 		
 			

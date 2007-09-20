@@ -383,7 +383,7 @@ implements IGLCanvasDirector {
 			refGeneralManager.getSingelton().logMsg(
 					"AJoglViewRep.retrieveGUIContainer() was called more than once + " +
 					this.getClass()
-					,LoggerType.ERROR_ONLY );
+					,LoggerType.ERROR );
 		}
 		
 		refAnimator.add(refGLCanvas);

@@ -24,7 +24,7 @@ public abstract class AConsoleLogger
 	extends AAbstractManager 
 	implements ILoggerManager {
 
-	protected LoggerType logLevel = LoggerType.ERROR_ONLY;
+	protected LoggerType logLevel = LoggerType.ERROR;
 	
 	protected LoggerType systemLogLevel = LoggerType.VERBOSE;
 

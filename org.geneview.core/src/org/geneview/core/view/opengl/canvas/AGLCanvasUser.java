@@ -193,7 +193,7 @@ implements IGLCanvasUser {
 				default:
 					refGeneralManager.getSingelton().logMsg(
 							"addSetId() unsupported SetType!",
-							LoggerType.ERROR_ONLY);
+							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
@@ -224,7 +224,7 @@ implements IGLCanvasUser {
 		default:
 			refGeneralManager.getSingelton().logMsg(
 					"addSetId() unsupported SetType!",
-					LoggerType.ERROR_ONLY);
+					LoggerType.ERROR);
 		} // switch (setType) {
 	}
 	
@@ -262,7 +262,7 @@ implements IGLCanvasUser {
 				default:
 					refGeneralManager.getSingelton().logMsg(
 							"removeSetId() unsupported SetType!",
-							LoggerType.ERROR_ONLY);
+							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )

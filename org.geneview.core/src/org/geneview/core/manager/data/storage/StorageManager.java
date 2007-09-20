@@ -195,7 +195,7 @@ implements IStorageManager {
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"try to register id that was already used!",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			
 			return false;
 		}

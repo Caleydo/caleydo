@@ -190,7 +190,7 @@ extends AGLCanvasUser
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(

@@ -217,7 +217,7 @@ extends AbstractLoader {
 
 			refLoggerManager.logMsg("copyDataToInternalDataStructures() calling wirteBackMapToGenomeIdManager() failed!\n  error=" + 
 					e.toString(), 
-					LoggerType.ERROR_ONLY);
+					LoggerType.ERROR);
 			
 			e.printStackTrace();
 			return false;

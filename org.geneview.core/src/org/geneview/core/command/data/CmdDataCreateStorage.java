@@ -162,10 +162,10 @@ extends ACmdCreate_IdTargetLabel {
 						refGeneralManager.getSingelton().logMsg(
 								"Can not convert (String) to (int) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
-								LoggerType.ERROR_ONLY );
+								LoggerType.ERROR );
 						refGeneralManager.getSingelton().logMsg(
 								"  SKIP: " + strToParse,
-								LoggerType.ERROR_ONLY );
+								LoggerType.ERROR );
 						
 						/** 
 						 * terminate while loop...
@@ -208,10 +208,10 @@ extends ACmdCreate_IdTargetLabel {
 						refGeneralManager.getSingelton().logMsg(
 								"Can not convert (String) to (int) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
-								LoggerType.ERROR_ONLY );
+								LoggerType.ERROR );
 						refGeneralManager.getSingelton().logMsg(
 								"  SKIP: " + strToParse,
-								LoggerType.ERROR_ONLY );
+								LoggerType.ERROR );
 						
 						/** 
 						 * terminate while loop...

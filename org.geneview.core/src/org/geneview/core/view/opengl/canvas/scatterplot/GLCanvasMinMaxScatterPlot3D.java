@@ -450,7 +450,7 @@ extends AGLCanvasUser
 		{
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot assigned Storage must contain at least equal number of Stprages as Selections!",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			return;
 		}
 		
@@ -488,7 +488,7 @@ extends AGLCanvasUser
 					
 					if  (bShowRenderingErrorMsgOnylOnce) {
 						this.refGeneralManager.getSingelton().logMsg("No valid data for scatter plot! Skip rendering. (show error message only once!)",
-							LoggerType.ERROR_ONLY);
+							LoggerType.ERROR);
 						bShowRenderingErrorMsgOnylOnce = false;
 					}
 					return;

@@ -97,7 +97,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		catch ( GeneViewRuntimeException ce)
 		{
 			refGeneralManager.getSingelton().logMsg("Can not open Jogl frame inside SWT container! " + ce.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			ce.printStackTrace();
 		}
 	}

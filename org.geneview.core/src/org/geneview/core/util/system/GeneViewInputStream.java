@@ -56,7 +56,7 @@ public class GeneViewInputStream
 		}
 		catch ( FileNotFoundException fnfe) {
 			refLoggerManager.logMsg("GeneViewInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 		}
 		return null;
 	}
@@ -81,7 +81,7 @@ public class GeneViewInputStream
 		} catch (IOException e)
 		{
 			refLoggerManager.logMsg("GeneViewInputStream.openInputStreamFromUrl(): Error loading resource.",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			
 			e.printStackTrace();
 		}
@@ -111,7 +111,7 @@ public class GeneViewInputStream
 			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error because handler is null!",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			
 			return false;
 		} //if
@@ -120,7 +120,7 @@ public class GeneViewInputStream
 			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error no input stream; skip file",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			return false;
 		}
 		
@@ -147,7 +147,7 @@ public class GeneViewInputStream
 						" at column=" + saxe.getColumnNumber() +
 						"  SAXParser-error during parsing:" + 
 						saxe.toString(),
-						LoggerType.ERROR_ONLY );
+						LoggerType.ERROR );
 			}
 			catch ( IOException e) 
 			{
@@ -155,7 +155,7 @@ public class GeneViewInputStream
 						sInputStreamLabel +
 						") IO-error during parsing: " +
 						e.toString(),
-						LoggerType.ERROR_ONLY );
+						LoggerType.ERROR );
 			} // try
 			catch ( Exception e) 
 			{
@@ -163,7 +163,7 @@ public class GeneViewInputStream
 						sInputStreamLabel +
 						") error during parsing: " +
 						e.toString() + "\n",
-						LoggerType.ERROR_ONLY );
+						LoggerType.ERROR );
 				
 				e.printStackTrace();
 			} // try
@@ -194,7 +194,7 @@ public class GeneViewInputStream
 					sInputStreamLabel +
 					") SAXError  while parsing: " +
 					se.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 		} // end try-catch SAXException
 		catch (IOException ioe) 
 		{
@@ -202,7 +202,7 @@ public class GeneViewInputStream
 					sInputStreamLabel +
 					") IO-error while parsing: " +
 					ioe.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 		} // end try-catch SAXException, IOException
 		catch (Exception e) 
 		{
@@ -210,7 +210,7 @@ public class GeneViewInputStream
 					sInputStreamLabel +
 					") general error while parsing: " +
 					e.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			
 			e.printStackTrace();
 		} // end try-catch SAXException, IOException

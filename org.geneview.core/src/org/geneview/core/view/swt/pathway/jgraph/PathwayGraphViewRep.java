@@ -658,7 +658,7 @@ extends APathwayGraphViewRep {
 		{
 			refGeneralManager.getSingelton()
 					.logMsg("Error while rendering JGraph part!",
-							LoggerType.ERROR_ONLY);
+							LoggerType.ERROR);
 
 			System.out.println("PathwayGraphViewRep.finishGraphBuilding() ERROR! : " + vecVertices.toString());
 
@@ -1062,7 +1062,7 @@ extends APathwayGraphViewRep {
 		}
 
 		refGeneralManager.getSingelton().logMsg("no valid Set",
-				LoggerType.ERROR_ONLY);
+				LoggerType.ERROR);
 	}
 
 	/**
@@ -1106,7 +1106,7 @@ extends APathwayGraphViewRep {
 			
 			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + ": ERROR! Can not convert String to Integer! " 
-					+ e.toString(), LoggerType.ERROR_ONLY);
+					+ e.toString(), LoggerType.ERROR);
 			
 			try {
 				refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {

@@ -418,7 +418,7 @@ extends ACommand {
 			
 			refGeneralManager.getSingelton().logMsg(
 					errorMsg,
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			
 			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
 			exitWarning.setText("ERROR",errorMsg);

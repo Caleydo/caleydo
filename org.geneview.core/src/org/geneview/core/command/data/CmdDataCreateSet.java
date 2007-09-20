@@ -389,7 +389,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			refGeneralManager.getSingelton().logMsg(
 					"error while creation of ISet! " + 
 					nfe.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 		}
 		
 		return true;
@@ -437,7 +437,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			refGeneralManager.getSingelton().logMsg(
 						"CmdDataCreateSet.doCommand() failed because type=[" +
 						setDataType + "] is not supported!",
-						LoggerType.ERROR_ONLY );
+						LoggerType.ERROR );
 			return;
 		}
 				

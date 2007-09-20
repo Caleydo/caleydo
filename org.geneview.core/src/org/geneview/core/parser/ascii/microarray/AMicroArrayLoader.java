@@ -196,7 +196,7 @@ implements IMementoXML, IParserObject {
 //			refGeneralManager.getSingelton().logMsg(
 //					"MicroArrayLoader: ERROR line=[" + iLineInFile +
 //					"] while parsing: " + ex.toString(),
-//					LoggerType.ERROR_ONLY );
+//					LoggerType.ERROR );
 //			
 //			ex.printStackTrace();
 //		    return false;

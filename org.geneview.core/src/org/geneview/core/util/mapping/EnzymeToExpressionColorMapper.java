@@ -174,7 +174,7 @@ public class EnzymeToExpressionColorMapper {
 				this.refGeneralManager.getSingelton().logMsg("color mapping failed, Storage=[" +
 						refExpressionStorage.getLabel() + "][" +
 						refExpressionStorage.toString() +
-						"] does not contain int[]!",LoggerType.ERROR_ONLY);
+						"] does not contain int[]!",LoggerType.ERROR);
 			}
 			
 			while (iterTmpMicroArrayId.hasNext())
@@ -267,7 +267,7 @@ public class EnzymeToExpressionColorMapper {
 					this.refGeneralManager.getSingelton().logMsg("color mapping failed, Storage=[" +
 							refExpressionStorage.getLabel() + "][" +
 							refExpressionStorage.toString() +
-							"] does not contain int[]!",LoggerType.ERROR_ONLY);
+							"] does not contain int[]!",LoggerType.ERROR);
 				}
 				
 				while (iterTmpAccessionId.hasNext())
@@ -351,7 +351,7 @@ public class EnzymeToExpressionColorMapper {
 				this.refGeneralManager.getSingelton().logMsg("color mapping failed, Storage=[" +
 						refExpressionStorage.getLabel() + "][" +
 						refExpressionStorage.toString() +
-						"] does not contain int[]!",LoggerType.ERROR_ONLY);
+						"] does not contain int[]!",LoggerType.ERROR);
 			}
 			
 			while (iterTmpMicroArrayId.hasNext())

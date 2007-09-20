@@ -10,6 +10,7 @@ import org.geneview.core.manager.IXmlParserManager;
 import org.geneview.core.manager.parser.XmlParserManager;
 import org.geneview.core.manager.singleton.IGeneralManagerSingleton;
 import org.geneview.core.manager.singleton.OneForAllManager;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
 //import org.geneview.core.util.system.GeneViewInputStream;
 
 //import org.geneview.core.parser.handler.IXmlParserHandler;
@@ -75,21 +76,15 @@ public class GeneViewBootloader
 	 * using an XML input stream.
 	 */
 	protected IXmlParserManager refXmlParserManager;
-	
-	
+		
 	/**
 	 * Reference to Logger
 	 */
 	protected ILoggerManager logger;
 	
-	//for debugging only:
-	//protected IViewManager refViewManager;	
-	
-	//for debugging only:
-	//protected IEventPublisher refEventPublisher;
-	
-
-	
+	/**
+	 * 
+	 */
 	public GeneViewBootloader()
 	{
 		/**
@@ -107,10 +102,7 @@ public class GeneViewBootloader
 		logger.logMsg("===========================", LoggerType.STATUS);
 		logger.logMsg(" ", LoggerType.STATUS);
 		
-		//refViewManager = (IViewManager) refSingelton.getViewGLCanvasManager();
-		
-		refSWTGUIManager = refSingelton.getSWTGUIManager();		
-	
+		refSWTGUIManager = refSingelton.getSWTGUIManager();			
 		
 		/**
 		 * create the parser manager..
@@ -129,14 +121,12 @@ public class GeneViewBootloader
 		 * <br>  
 		 * refXmlParserManager.registerAndInitSaxHandler( myNewHandler ); <br>
 		 * <br>
-		 */
-		
+		 */		
 		
 		/** 
 		 * Default file name
 		 */
 		setXmlFileName( "data/bootstrap/bootstrap_sample_demo.xml" );
-
 	}
 
 	
@@ -149,11 +139,12 @@ public class GeneViewBootloader
 	 */
 	protected final boolean runUsingMuddleWare( final String sXPath ) {
 		
-		System.out.print("   bootloader read data from muddleware server.. ");
+		logger.logMsg("   bootloader read data from muddleware server.. ",
+				LoggerType.STATUS);
 		
 		/**
 		 * initialize connection...
-		 * connection is null if runUsingMuddleWare() called fo the first time.
+		 * connection is null if runUsingMuddleWare() called for the first time.
 		 */
 		if ( connection == null ) {
 			connection = new ClientByteStreamHandler( null );
@@ -162,7 +153,8 @@ public class GeneViewBootloader
 		connection.setServerNameAndPort( "localhost", 20000 );
 		
 		if ( connection.connect() ) {
-			System.out.println("GeneViewBootloader Can not connect to Muddleware server.");
+			logger.logMsg("GeneViewBootloader can not connect to Muddleware server.",
+					LoggerType.MINOR_ERROR_XML);
 			return false;
 		}
 		
@@ -175,7 +167,8 @@ public class GeneViewBootloader
 		IMessage receiveMsg = connection.sendReceiveMessage( sendMsg );
 		
 		if (( receiveMsg == null )||( receiveMsg.getNumOperations() < 1 )) {
-			System.out.println("GeneViewBootloader XPath does not exist, Muddleware server has no data on canvas settings.");
+			logger.logMsg("GeneViewBootloader XPath does not exist, Muddleware server has no data on canvas settings.",
+					LoggerType.MINOR_ERROR_XML);
 			connection.disconnect();
 			return false;
 		}
@@ -196,31 +189,16 @@ public class GeneViewBootloader
 			System.out.println("GeneViewBootloader PARSE using Muddleware done.");
 			
 		} else {
-			System.out.println("GeneViewBootloader Muddleware server has no data on canvas settings.");
+			logger.logMsg("GeneViewBootloader Muddleware server has no data on canvas settings.",
+					LoggerType.MINOR_ERROR_XML);
 			connection.disconnect();
 			return false;
 		}
-		
 		
 		return true;
 	}
 	
 
-	/**
-	 * Run the GeneView core application ..
-	 */
-	public static void main(String[] args) 
-	{
-		GeneViewBootloader prototype = new GeneViewBootloader();
-		
-		if ( args.length > 0 ) 
-		{
-			prototype.setXmlFileName( args[0] ); 	
-		}
-		
-		prototype.run();
-		prototype.stop();
-	}
 	
 	
 	/**
@@ -262,67 +240,107 @@ public class GeneViewBootloader
 	 */
 	public final void setBootstrapViaMuddleware( boolean bEnableBootstrapViaMuddleware ) {
 		this.bEnableBootstrapViaMuddleware = bEnableBootstrapViaMuddleware;
+	}	
+	
+	/**
+	 * Test if GeneView core is running.
+	 * 
+	 * @see GeneViewBootloader#run_SWT()
+	 * @see GeneViewBootloader#stop()
+	 * 
+	 * @return TRUE if GeneView core is running
+	 */
+	public final synchronized boolean isRunning() {
+		return bIsRunning;
 	}
 	
+	public final IGeneralManagerSingleton getGeneralManager() {	
+		return refOneForAllManager;
+	}
+
 	/**
 	 * 
 	 * @see org.geneview.core.application.core.GeneViewBootloader#setXmlFileName(String)
 	 * @see org.geneview.core.application.core.GeneViewBootloader#getXmlFileName()
 	 * 
-	 * @return TRUE is config will be loaded via Muddleware or FALSE is config is loaded from local file.
+	 * @return TRUE shows that config will be loaded via Muddleware or FALSE indicates that config is loaded from local file.
 	 */
-	public final boolean getBootstrappingViaMuddleware() {
-		return this.bEnableBootstrapViaMuddleware;
-	}
-
-	
-	public final IGeneralManagerSingleton getGeneralManager() {
-	
-		return refOneForAllManager;
-	}
-
-	
-	/**
-	 * @return the bEnableBootstrapViaMuddleware
-	 */
-	public final boolean isBEnableBootstrapViaMuddleware() {
+	public final boolean isBootstrapViaMuddlewareEnabled() {
 	
 		return bEnableBootstrapViaMuddleware;
 	}
 
 	
 	/**
-	 * @param enableBootstrapViaMuddleware the bEnableBootstrapViaMuddleware to set
-	 */
-	public final void setBootstrappingViaMuddleware(
-			boolean enableBootstrapViaMuddleware) {
-	
-		bEnableBootstrapViaMuddleware = enableBootstrapViaMuddleware;
-	}
-	
-	
-	/**
 	 * Start GeneView core.
+	 * Calls run_parseXmlConfigFile(String) with getXmlFileName() and starts SWT. 
 	 * 
+	 * @see GeneViewBootloader#getXmlFileName()
+	 * @see GeneViewBootloader#run_parseXmlConfigFile(String)
 	 * @see GeneViewBootloader#isRunning()
 	 * @see GeneViewBootloader#stop()
 	 */
-	public synchronized void run() {
+	public synchronized void run_SWT() {
+		
+		run_parseXmlConfigFile( getXmlFileName() );		
+		logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);
+		
+		try 
+		{
+			refSWTGUIManager.runApplication(); 			
+			logger.logMsg("  config loaded ... [DONE]", LoggerType.STATUS);
+		}
+		catch (GeneViewRuntimeException gre)
+		{
+			logger.logMsg("run_SWT() failed. " +
+					gre.toString() , LoggerType.MINOR_ERROR_XML);
+			bIsRunning = false;
+		}
+		catch (Exception e) {
+			logger.logMsg("run_SWT() cased system error. " +
+					e.toString() , LoggerType.ERROR);
+			bIsRunning = false;
+		}	
+	}
+	
+	/**
+	 * does not Start SWT; intended for RCP and for parsing XML files after calling run_SWT() and starting the SWT canvas.
+	 * 
+	 * @see GeneViewBootloader#run_SWT()
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public synchronized boolean run_parseXmlConfigFile( final String fileName) {
 		
 		if ( this.refOneForAllManager == null ) {
 			System.err.println( "FATAL ERROR!  " + 
-					this.getClass().getSimpleName() + 
-					".run() can not be executed, because no GeneralManager has bee created!");
-			return;
+					getClass().getSimpleName() + 
+					".run_parseXmlConfigFile() can not be executed, because no GeneralManager has bee created!");
+			return false;
 		}
 		
-		/* make sure a logger was fetched.. */
-		if ( logger == null ) {
-			logger = refOneForAllManager.getSingelton().getLoggerManager();
+		try {
+			parseXmlConfigFileLocalOrRemote(fileName);
+			bIsRunning = true;
+			return true;
 		}
-		
+		catch (GeneViewRuntimeException gre)
+		{
+			logger.logMsg("run_parseXmlConfigFile(" + fileName + ") failed. " +
+					gre.toString() , LoggerType.MINOR_ERROR_XML);
+			return false;
+		}
+		catch (Exception e) {
+			logger.logMsg("run_parseXmlConfigFile(" + fileName + ") cased system error. " +
+					e.toString() , LoggerType.ERROR);
+			return false;
+		}			
+	}
+	
+	protected void parseXmlConfigFileLocalOrRemote( final String fileName) {
 		/* use muddleware? */
-		if ( getBootstrappingViaMuddleware() )
+		if ( bEnableBootstrapViaMuddleware )
 		{
 			/**
 			 * Load configuration from Muddleware server.
@@ -338,24 +356,19 @@ public class GeneViewBootloader
 			logger.logMsg("  load config via local XML file ... ", LoggerType.STATUS);			
 			refXmlParserManager.parseXmlFileByName( getXmlFileName() );		
 		}
-
-		logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);		
-		refSWTGUIManager.runApplication();
-		logger.logMsg("  config loaded ... [DONE]", LoggerType.STATUS);
-		
-		bIsRunning = true;
 	}
 	
 	/**
 	 * Stop the GeneView core and clean up all managers.
 	 * 
-	 * @see GeneViewBootloader#run()
+	 * @see GeneViewBootloader#run_SWT()
 	 * @see GeneViewBootloader#isRunning()
 	 */
 	public synchronized void stop() {
-		if ( bIsRunning ) {
-		
-			if ( refOneForAllManager!= null ) {
+		if ( bIsRunning ) 
+		{		
+			if ( refOneForAllManager!= null ) 
+			{
 				logger.logMsg("GeneView core   clean up...", LoggerType.STATUS);	
 				refOneForAllManager.destroyOnExit();
 				
@@ -364,20 +377,35 @@ public class GeneViewBootloader
 				
 				bIsRunning = false;
 			}
-		} else {
-			logger.logMsg("GeneView Core was not running and can not be stopped!", LoggerType.ERROR_ONLY);
+		} 
+		else 
+		{
+			if ( logger != null ) 
+			{
+				logger.logMsg("GeneView core was not running and can not be stopped!", LoggerType.ERROR);
+			}
+			else 
+			{
+				System.err.println("GeneView core was not running and can not be stopped!");
+			}
 		}
 	}
 	
+	
 	/**
-	 * Test if GeneView core is running.
-	 * 
-	 * @see GeneViewBootloader#run()
-	 * @see GeneViewBootloader#stop()
-	 * 
-	 * @return TRUE if GeneView core is running
+	 * Run the GeneView core application ..
 	 */
-	public final synchronized boolean isRunning() {
-		return bIsRunning;
+	public static void main(String[] args) 
+	{
+		GeneViewBootloader prototype = new GeneViewBootloader();
+		
+		if ( args.length > 0 ) 
+		{
+			prototype.setXmlFileName( args[0] ); 	
+		}
+		
+		prototype.run_SWT();
+		prototype.stop();
 	}
+
 }

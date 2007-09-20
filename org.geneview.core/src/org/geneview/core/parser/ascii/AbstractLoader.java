@@ -306,7 +306,7 @@ implements IMementoXML, IParserObject {
 			refGeneralManager.getSingelton().logMsg(
 					"AbstractLoader: ERROR line=[" + iLineInFile +
 					"] while testing file: " + ex.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			
 			ex.printStackTrace();
 			iLinesInFileToBeRead = -1;
@@ -433,7 +433,7 @@ implements IMementoXML, IParserObject {
 			refGeneralManager.getSingelton().logMsg(
 					"MicroArrayLoader: ERROR line=[" + iLineInFile +
 					"] while parsing: " + ex.toString(),
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 			
 			ex.printStackTrace();
 		    return false;

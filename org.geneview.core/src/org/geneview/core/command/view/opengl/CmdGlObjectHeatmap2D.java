@@ -230,7 +230,7 @@ extends ACmdCreate_GlCanvasUser {
 //		else 
 //		{
 //			refGeneralManager.getSingelton().logMsg( "CmdGLObjectHistogram2D no set defined!",
-//					LoggerType.ERROR_ONLY );
+//					LoggerType.ERROR );
 //		}
 		
 		/**

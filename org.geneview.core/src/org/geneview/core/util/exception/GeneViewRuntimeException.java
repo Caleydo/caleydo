@@ -67,4 +67,15 @@ public class GeneViewRuntimeException
 		this.type = type;
 	}
 
+	
+	/**
+	 * Expose error type
+	 * 
+	 * @return the type
+	 */
+	public final GeneViewRuntimeExceptionType getType() {
+	
+		return type;
+	}
+
 }

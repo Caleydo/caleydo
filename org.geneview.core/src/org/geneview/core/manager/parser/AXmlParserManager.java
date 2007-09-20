@@ -283,7 +283,7 @@ implements IXmlParserManager, IManagedObject
 		refGeneralManager.getSingelton().logMsg(
 				"XmlParserManager.unregisterHandler( "
 				+ sActivationXmlTag + " ) failed to unload!",
-				LoggerType.ERROR_ONLY );
+				LoggerType.ERROR );
 		
 		return false;
 	}
@@ -311,7 +311,7 @@ implements IXmlParserManager, IManagedObject
 //			refGeneralManager.getSingelton().logMsg( 
 //					"Error: can not find IXmlParserHandler 'from' in AXmlParserManager! " +
 //					from.getXmlActivationTag(),
-//					LoggerType.ERROR_ONLY );
+//					LoggerType.ERROR );
 //			return;
 //		} // if
 //		
@@ -321,7 +321,7 @@ implements IXmlParserManager, IManagedObject
 //			refGeneralManager.getSingelton().logMsg( 
 //					"Error: can not find IXmlParserHandler 'to' in AXmlParserManager! " +
 //					from.getXmlActivationTag(),
-//					LoggerType.ERROR_ONLY );
+//					LoggerType.ERROR );
 //			return;
 //		} // if
 //		

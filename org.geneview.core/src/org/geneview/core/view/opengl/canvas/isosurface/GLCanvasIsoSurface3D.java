@@ -193,7 +193,7 @@ extends AGLCanvasUser
 			refGeneralManager.getSingelton().logMsg(
 					"GLCanvasIsosurface3D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
-					LoggerType.ERROR_ONLY );
+					LoggerType.ERROR );
 		}
 		
 		refGeneralManager.getSingelton().logMsg(

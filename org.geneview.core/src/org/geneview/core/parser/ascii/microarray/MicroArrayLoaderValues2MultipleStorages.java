@@ -358,7 +358,7 @@ extends AMicroArrayLoader {
 							refGeneralManager.getSingelton().logMsg(
 								"Can not parse element, skip value: " + 
 								nfe.getMessage(),
-								LoggerType.ERROR_ONLY );
+								LoggerType.ERROR );
 						}
 						else
 						{
@@ -366,7 +366,7 @@ extends AMicroArrayLoader {
 									"Can not parse element, skip value: Assumed type=[" + 
 									bufferIter.getType() + "] => " + 
 									nfe.getMessage(),
-									LoggerType.ERROR_ONLY );							
+									LoggerType.ERROR );							
 						}
 					}
 

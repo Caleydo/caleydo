@@ -16,7 +16,7 @@ extends IGeneralManager
 	public static enum LoggerType 
 	implements IGeneViewDefaultType <LoggerType> {
 		
-		ERROR_ONLY		(  0, "E: ", "show error only" ),
+		ERROR			(  0, "E: ", "show error only" ),
 		MINOR_ERROR		(  5, "M: ", "show any errors" ),
 		MINOR_ERROR_XML	(  9, "X: ", "show xml errors" ),
 		STATUS			( 10, "S: ", "show errors and status messages" ),		
@@ -77,7 +77,7 @@ extends IGeneralManager
 		 */
 		public LoggerType getTypeDefault() {
 
-			return LoggerType.ERROR_ONLY;
+			return LoggerType.ERROR;
 		}
 	}
 
