@@ -50,9 +50,9 @@ public class GLPathwayManager {
 	private PathwayRenderStyle refRenderStyle;
 
 	private boolean bEnableGeneMapping = true;
-	private boolean bEnableEdgeRendering = true;
+	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
-	private boolean bEnableNeighborhood = false;
+	private boolean bEnableNeighborhood = true;
 	private boolean bEnableAnnotation = true;
 	
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
@@ -65,7 +65,8 @@ public class GLPathwayManager {
 	
 	private ArrayList<SetSelection> alSetSelection;
 	
-	private HashMap<Integer, Integer> hashSelectedGraphItemRepId2Depth;
+	private HashMap<Integer, Integer> hashSelectedVertexRepId2Depth;
+	private ArrayList<Integer> iArSelectedEdgeRepId;
 	
 	private HashMap<Integer, ArrayList<Color>> hashElementId2MappingColorArray;
 	
@@ -92,7 +93,8 @@ public class GLPathwayManager {
 		buildHighlightedEnzymeNodeDisplayList(gl);
 		
 		this.alSetSelection = alSetSelection;
-		hashSelectedGraphItemRepId2Depth = new HashMap<Integer, Integer>();
+		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
+		iArSelectedEdgeRepId = new ArrayList<Integer>();
 		
 		enzymeToExpressionColorMapper =
 			new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
@@ -143,7 +145,8 @@ public class GLPathwayManager {
 
 	private void performIdenticalNodeHighlighting() {
 		
-		hashSelectedGraphItemRepId2Depth.clear();
+		hashSelectedVertexRepId2Depth.clear();
+		iArSelectedEdgeRepId.clear();
 		
 		alSetSelection.get(0).getReadToken();
 		int[] iArTmpSelectedGraphItemIds = 
@@ -158,7 +161,7 @@ public class GLPathwayManager {
 		// Copy selection IDs to array list object
 		for(int iItemIndex = 0; iItemIndex < iArTmpSelectedGraphItemIds.length; iItemIndex++) 
 		{
-			hashSelectedGraphItemRepId2Depth.put(
+			hashSelectedVertexRepId2Depth.put(
 					iArTmpSelectedGraphItemIds[iItemIndex],
 					iArTmpSelectedGraphItemDepth[iItemIndex]);
 
@@ -186,37 +189,37 @@ public class GLPathwayManager {
 				{
 					identicalNode = iterIdenticalGraphItemReps.next();
 					
-					hashSelectedGraphItemRepId2Depth.put(
+					hashSelectedVertexRepId2Depth.put(
 							identicalNode.getId(), 0);
 				
 					performNeighborhoodAlgorithm(identicalNode);
 				}
 			}	
 		}
+	
+		// Store currently selected vertices back to selection set
+		Set<Entry<Integer, Integer>> setAllSelectedVertices = hashSelectedVertexRepId2Depth.entrySet();
 		
-		// FIXME: TURN ON AGAIN - Filter edges before - other views are only interested in vertices.
-//		// Store currently selected vertices back to selection set
-//		Set<Entry<Integer, Integer>> setAllSelectedVertices = hashSelectedGraphItemRepId2Depth.entrySet();
-//		
-//		int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];  
-//		int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
-//		
-//		Iterator<Entry<Integer, Integer>> iterAllSelectedVertices = setAllSelectedVertices.iterator();
-//		
-//		int iItemIndex = 0;
-//		Entry<Integer, Integer> tmpEntry;
-//		while (iterAllSelectedVertices.hasNext())
-//		{
-//			tmpEntry = iterAllSelectedVertices.next();
-//			iArTmpGraphItemId[iItemIndex] = tmpEntry.getKey();
-//			iArTmpGraphItemDepth[iItemIndex] = tmpEntry.getValue();
-//			iItemIndex++;
-//		}
-//	
-//		alSetSelection.get(0).getWriteToken();
-//		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
-//		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
-//		alSetSelection.get(0).returnWriteToken();
+		int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];  
+		int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
+		
+		Iterator<Entry<Integer, Integer>> iterAllSelectedVertices = setAllSelectedVertices.iterator();
+		
+		int iItemIndex = 0;
+		Entry<Integer, Integer> tmpEntry;
+		while (iterAllSelectedVertices.hasNext())
+		{
+			tmpEntry = iterAllSelectedVertices.next();
+			
+			iArTmpGraphItemId[iItemIndex] = tmpEntry.getKey();
+			iArTmpGraphItemDepth[iItemIndex] = tmpEntry.getValue();
+			iItemIndex++;
+		}
+	
+		alSetSelection.get(0).getWriteToken();
+		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
+		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
+		alSetSelection.get(0).returnWriteToken();
 	}
 	
 	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
@@ -244,13 +247,17 @@ public class GLPathwayManager {
 						
 			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
 			{
-//				// Consider only vertices for now
-//				if (lGraphItems.get(iItemIndex).getClass().equals
-//						(org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
-//				{			
-					hashSelectedGraphItemRepId2Depth.put(
-							lGraphItems.get(iItemIndex).getId(), (iDepthIndex + 1) / 2); // +1 / 2 because we want to ignore edge depth
-//				}
+				// Check if selected item is a vertex
+				if (lGraphItems.get(iItemIndex).getClass().equals
+						(org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+				{			
+					hashSelectedVertexRepId2Depth.put(
+							lGraphItems.get(iItemIndex).getId(), (iDepthIndex+1) / 2); // consider only vertices for depth
+				}
+				else
+				{
+					iArSelectedEdgeRepId.add(lGraphItems.get(iItemIndex).getId());
+				}
 			}
 		}
 	}
@@ -414,12 +421,16 @@ public class GLPathwayManager {
         	edgeRep = edgeIterator.next();
         	
         	if (edgeRep != null)
-        	{
-            	// Render edge if it is contained in the minimum spanning tree of the neighborhoods
-            	if (!hashSelectedGraphItemRepId2Depth.containsKey(edgeRep.getId()))
-            		continue;
-        		
-        		createEdge(gl, edgeRep, pathwayToExtract);        	        			
+        	{	
+        		if (bEnableEdgeRendering)
+        		{
+        			createEdge(gl, edgeRep, pathwayToExtract);
+        		}
+        		// Render edge if it is contained in the minimum spanning tree of the neighborhoods
+        		else if(iArSelectedEdgeRepId.contains(edgeRep.getId()))
+                {
+            		createEdge(gl, edgeRep, pathwayToExtract); 
+                }       	        			
         	}
         }   
 	}
@@ -479,10 +490,9 @@ public class GLPathwayManager {
 		else if (shape.equals(EPathwayVertexShape.rectangle))
 		{	
 			// Handle selection highlighting of element
-			if (hashSelectedGraphItemRepId2Depth.containsKey(vertexRep.getId()))
+			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
-				int iDepth = hashSelectedGraphItemRepId2Depth.get(vertexRep.getId());
-				//tmpNodeColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iDepth);
+				int iDepth = hashSelectedVertexRepId2Depth.get(vertexRep.getId());
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
 				
 				if (iDepth != 0)
@@ -601,7 +611,7 @@ public class GLPathwayManager {
 			final int iPathwayID, 
 			boolean bRenderLabels) {
 		
-		if (bEnableEdgeRendering)
+		if (bEnableEdgeRendering || !iArSelectedEdgeRepId.isEmpty())
 		{		
 			int iTmpEdgesDisplayListID = hashPathwayId2EdgesDisplayListId.get(iPathwayID);
 			gl.glCallList(iTmpEdgesDisplayListID);
