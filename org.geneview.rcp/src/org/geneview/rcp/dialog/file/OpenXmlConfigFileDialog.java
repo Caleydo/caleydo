@@ -4,7 +4,7 @@
 package org.geneview.rcp.dialog.file;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.window.IShellProvider;
+//import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 
+import org.geneview.core.manager.ISWTGUIManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.rcp.Application;
 
 /**
@@ -26,17 +28,11 @@ import org.geneview.rcp.Application;
  */
 public class OpenXmlConfigFileDialog extends Dialog {
 
-	private Text userIdText;
-
-	private Text serverText;
-
-	private Text nicknameText;
-
-	private String userId;
-
-	private String server;
-
-	private String nickname;
+	private Shell parentShell;
+	
+	private Text xmlFileNameText;
+	
+	private Text statusOnLoading;
 	
 	/**
 	 * @param parentShell
@@ -64,84 +60,90 @@ public class OpenXmlConfigFileDialog extends Dialog {
 		composite.setLayout(layout);
 
 		Label userIdLabel = new Label(composite, SWT.NONE);
-		userIdLabel.setText("&User id:");
+		userIdLabel.setText("&Xml file name:");
 		userIdLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
 				false, false));
 
-		userIdText = new Text(composite, SWT.BORDER);
-		userIdText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+		xmlFileNameText = new Text(composite, SWT.BORDER);
+		xmlFileNameText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
 				true, false));
-
-		Label serverLabel = new Label(composite, SWT.NONE);
-		serverLabel.setText("&Server:");
-		serverLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
+		
+		Label statusIdLabel = new Label(composite, SWT.NONE);
+		statusIdLabel.setText("loading status:");
+		statusIdLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
 				false, false));
-
-		serverText = new Text(composite, SWT.BORDER);
-		serverText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+	
+		statusOnLoading = new Text(composite, SWT.BORDER);
+		xmlFileNameText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
 				true, false));
+		statusOnLoading.setEditable(false);
+		statusOnLoading.setText("not loaded");
+		
 
-		Label nicknameLabel = new Label(composite, SWT.NONE);
-		nicknameLabel.setText("&Nickname:");
-		nicknameLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
-				false, false));
-
-		nicknameText = new Text(composite, SWT.BORDER);
-		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
-				false);
-		gridData.widthHint = convertHeightInCharsToPixels(20);
-		nicknameText.setLayoutData(gridData);
-
-		 FileDialog fd = new FileDialog(parent.getShell());
+		
+		if  (parentShell==null)
+		{
+			parentShell = parent.getShell();
+		}
+		
+		FileDialog fd = new FileDialog(parentShell);
 	        fd.setText("Open");
-	        fd.setFilterPath("C:/");
+	        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
 	        String[] filterExt = { "*.xml" };
 	        fd.setFilterExtensions(filterExt);
-	        String selected = fd.open();
-	        System.out.println(selected);
-	        
-	    Application.geneview_core.run_parseXmlConfigFile(selected);
+	        xmlFileNameText.setText( fd.open() );
 	    
 		return composite;
 	}
 
 	protected void okPressed() {
-		nickname = nicknameText.getText();
-		server = serverText.getText();
-		userId = userIdText.getText();
+		String xmlFileName = xmlFileNameText.getText();
 
-		if (nickname.equals("")) {
-			MessageDialog.openError(getShell(), "Invalid Nickname",
-					"Nickname field must not be blank.");
+		if (xmlFileName.equals("")) {
+			MessageDialog.openError(getShell(), "Invalid Xml file name",
+					"xml file name must not be blank.");
+			
+			FileDialog fd = new FileDialog(parentShell);
+		        fd.setText("Open");
+		        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
+		        String[] filterExt = { "*.xml" };
+		        fd.setFilterExtensions(filterExt);
+		        xmlFileName = fd.open();
+		        
 			return;
 		}
-		if (server.equals("")) {
-			MessageDialog.openError(getShell(), "Invalid Server",
-					"Server field must not be blank.");
-			return;
+		
+		ISWTGUIManager refISWTGUIManager = 
+			Application.geneview_core.getGeneralManager().getSingelton().getSWTGUIManager();
+		refISWTGUIManager.setProgressbarVisible(true);
+				
+		try 
+		{
+			
+			if (Application.geneview_core.run_parseXmlConfigFile(xmlFileName))
+			{
+				super.okPressed();
+			} 
+			else 
+			{
+				statusOnLoading.setText("error while laoding XML file.");
+			}
+			
+		} 
+		catch (Exception e) 
+		{
+			Application.geneview_core.getGeneralManager().getSingelton().logMsg("Error while loading Xml file=[" +
+					xmlFileName + "] " + e.toString(),
+					LoggerType.MINOR_ERROR_XML);
+			statusOnLoading.setText("system error while laoding XML file.");
 		}
-		if (userId.equals("")) {
-			MessageDialog.openError(getShell(), "Invalid User id",
-					"User id field must not be blank.");
-			return;
+		finally 
+		{
+			refISWTGUIManager.setProgressbarVisible(false);
 		}
-
-		super.okPressed();
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public String getServer() {
-		return server;
-	}
-
-	public String getNickname() {
-		return nickname;
 	}
 	
-	public String getServerText() {
-		return serverText.getText();
+	public String getXmlFielName() {
+		return xmlFileNameText.getText();
 	}
 }

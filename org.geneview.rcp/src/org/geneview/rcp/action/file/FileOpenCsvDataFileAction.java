@@ -5,7 +5,7 @@ package org.geneview.rcp.action.file;
 
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
+//import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -14,10 +14,10 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.geneview.rcp.dialog.file.OpenXmlConfigFileDialog;
+import org.geneview.rcp.dialog.file.OpenCsvDataFileDialog;
 import org.geneview.rcp.image.IImageKeys;
-import org.geneview.rcp.model.ContactsEntry;
-import org.geneview.rcp.model.ContactsGroup;
+//import org.geneview.rcp.model.ContactsEntry;
+//import org.geneview.rcp.model.ContactsGroup;
 //import org.eclipsercp.hyperbola.model.ContactsGroup;
 
 /**
@@ -103,15 +103,15 @@ public class FileOpenCsvDataFileAction extends Action implements
 	}
 
 	public void run() {
-		OpenXmlConfigFileDialog d = new OpenXmlConfigFileDialog(window.getShell());
+		OpenCsvDataFileDialog d = new OpenCsvDataFileDialog(window.getShell());
 		  int code = d.open();
 		  if (code == Window.OK) {
-		    Object item = selection.getFirstElement();
-		    ContactsGroup group = (ContactsGroup) item;
-		    ContactsEntry entry =
-		        new ContactsEntry(group, d.getNickname(), d.getNickname(),
-		            d.getServerText());
-		    group.addEntry(entry);
+//		    Object item = selection.getFirstElement();
+//		    ContactsGroup group = (ContactsGroup) item;
+//		    ContactsEntry entry =
+//		        new ContactsEntry(group, d.getNickname(), d.getNickname(),
+//		            d.getServerText());
+//		    group.addEntry(entry);
 		  }
 		}
 }

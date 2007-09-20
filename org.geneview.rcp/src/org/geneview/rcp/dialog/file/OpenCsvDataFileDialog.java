@@ -4,7 +4,7 @@
 package org.geneview.rcp.dialog.file;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.window.IShellProvider;
+//import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -16,6 +16,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.system.CmdSystemLoadFileViaImporter;
+import org.geneview.core.manager.ISWTGUIManager;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.rcp.Application;
 
 /**
@@ -26,17 +31,19 @@ import org.geneview.rcp.Application;
  */
 public class OpenCsvDataFileDialog extends Dialog {
 
-	private Text userIdText;
+	private Text csvFileNameText;
 
-	private Text serverText;
+	private Text inputPatternText;
 
-	private Text nicknameText;
+	private Text targetSetIdText;
 
-	private String userId;
+	private String csvFileName;
 
-	private String server;
+	private String inputPattern = "SKIP;INT;ABORT";
 
-	private String nickname;
+	private int targetSetId = 35101;
+	
+	protected String cvsPath = "D:/src/java/ICG/cerberus/org.geneview.data/data/genome/microarray/gpr_format";
 	
 	/**
 	 * @param parentShell
@@ -64,84 +71,110 @@ public class OpenCsvDataFileDialog extends Dialog {
 		composite.setLayout(layout);
 
 		Label userIdLabel = new Label(composite, SWT.NONE);
-		userIdLabel.setText("&User id:");
+		userIdLabel.setText("cvs &Fiel name:");
 		userIdLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
 				false, false));
 
-		userIdText = new Text(composite, SWT.BORDER);
-		userIdText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+		csvFileNameText = new Text(composite, SWT.BORDER);
+		csvFileNameText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
 				true, false));
 
 		Label serverLabel = new Label(composite, SWT.NONE);
-		serverLabel.setText("&Server:");
+		serverLabel.setText("&Input pattern:");
 		serverLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
 				false, false));
 
-		serverText = new Text(composite, SWT.BORDER);
-		serverText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+		inputPatternText = new Text(composite, SWT.BORDER);
+		inputPatternText.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
 				true, false));
+		/* write back default value to GUI */
+		inputPatternText.setText(inputPattern);
 
 		Label nicknameLabel = new Label(composite, SWT.NONE);
-		nicknameLabel.setText("&Nickname:");
+		nicknameLabel.setText("target&SetId:");
 		nicknameLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER,
 				false, false));
 
-		nicknameText = new Text(composite, SWT.BORDER);
+		targetSetIdText = new Text(composite, SWT.BORDER);
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);
 		gridData.widthHint = convertHeightInCharsToPixels(20);
-		nicknameText.setLayoutData(gridData);
+		targetSetIdText.setLayoutData(gridData);
+		/* write back default value to GUI */
+		targetSetIdText.setText( Integer.toString(targetSetId) );
 
 		 FileDialog fd = new FileDialog(parent.getShell());
 	        fd.setText("Open");
-	        fd.setFilterPath("C:/");
-	        String[] filterExt = { "*.xml" };
+	        fd.setFilterPath( cvsPath );
+	        String[] filterExt = { "*.gpr","*.csv","*.*" };
 	        fd.setFilterExtensions(filterExt);
-	        String selected = fd.open();
-	        System.out.println(selected);
+	        csvFileName = fd.open();
+	        String sBufferPath = fd.getFilterPath();
 	        
-	    Application.geneview_core.run_parseXmlConfigFile(selected);
-	    
+	        if  (sBufferPath != "") {
+	        	cvsPath = sBufferPath;
+	        }
+	        
+	        /* file name to GUI.. */
+	        csvFileNameText.setText(csvFileName);
+	        
 		return composite;
 	}
 
 	protected void okPressed() {
-		nickname = nicknameText.getText();
-		server = serverText.getText();
-		userId = userIdText.getText();
+				
+		try {
+			targetSetId = Integer.valueOf(targetSetIdText.getText());
+		} catch (NumberFormatException nfe) {
+			MessageDialog.openError(getShell(), "Invalid targetSetId",
+				" targetSetId must be an integer.");
+			
+			/* write back last valid id to GUI */
+			targetSetIdText.setText( Integer.toString(targetSetId) );
+		}
+		
+		inputPattern = inputPatternText.getText();
+		csvFileName = csvFileNameText.getText();
+		
+		if (inputPattern.equals("")) {
+			MessageDialog.openError(getShell(), "Invalid InputPatern",
+					"Patern ust be:  [INT|FLOAT|STRING] [[;]*]");
+			return;
+		}
+		if (csvFileName.equals("")) {
+			MessageDialog.openError(getShell(), "Invalid filename",
+					"invalid file name");
+			return;
+		}
 
-		if (nickname.equals("")) {
-			MessageDialog.openError(getShell(), "Invalid Nickname",
-					"Nickname field must not be blank.");
-			return;
+		CmdSystemLoadFileViaImporter cmdLoadCsv = (CmdSystemLoadFileViaImporter) 
+			Application.geneview_core.getGeneralManager().getCommandManager().createCommandByType(
+					CommandQueueSaxType.LOAD_DATA_FILE);
+		
+		ISWTGUIManager refISWTGUIManager= Application.geneview_core.getGeneralManager().getSingelton().getSWTGUIManager();
+		refISWTGUIManager.setProgressbarVisible(true);
+		
+		cmdLoadCsv.setAttributes(csvFileName, 
+				inputPattern, 				
+				32,
+				-1,
+				targetSetId);
+		
+		try {
+			cmdLoadCsv.doCommand();
+		} catch (GeneViewRuntimeException e) {
+			if ( e.getType().equals(GeneViewRuntimeExceptionType.SET)) {
+				MessageDialog.openError(getShell(), "Invalid SetId",
+				"targetSetId is invalid");
+				return;
+			}
 		}
-		if (server.equals("")) {
-			MessageDialog.openError(getShell(), "Invalid Server",
-					"Server field must not be blank.");
-			return;
+		finally 
+		{
+			refISWTGUIManager.setProgressbarVisible(false);
 		}
-		if (userId.equals("")) {
-			MessageDialog.openError(getShell(), "Invalid User id",
-					"User id field must not be blank.");
-			return;
-		}
-
+		
 		super.okPressed();
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public String getServer() {
-		return server;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-	
-	public String getServerText() {
-		return serverText.getText();
-	}
 }

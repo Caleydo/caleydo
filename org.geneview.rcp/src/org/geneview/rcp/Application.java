@@ -1,8 +1,8 @@
 package org.geneview.rcp;
 
 import java.util.Map;
-import java.util.Collection;
-import java.util.HashMap;
+//import java.util.Collection;
+//import java.util.HashMap;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -30,6 +30,7 @@ public class Application implements IApplication {
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
 	 */
+	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception {
 
 		System.out.println("GeneView_RCP: bootstrapping ...");
