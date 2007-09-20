@@ -29,7 +29,8 @@ implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
 	JOGL_SWT("Jogl SWT"),
 	RUNTIME("Runtime"),
 	SAXPARSER("Sax parser"),
-	VIRTUALARRAY("Virtual array");
+	VIRTUALARRAY("Virtual array"),
+	SET("Set");
 	
 	private String sExceptionDetail;
 	

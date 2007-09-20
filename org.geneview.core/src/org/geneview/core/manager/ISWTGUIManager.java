@@ -88,4 +88,11 @@ extends IGeneralManager {
 	 */
 	public TriggeredAnimator getAnimatorById(final int iAnimatorId);
 	
+	/**
+	 * Show or hide the "global" progress bar.
+	 * 
+	 * @param state TRUE enables the progress bar and shows it; FALSE hides the progressbar.
+	 */
+	public void setProgressbarVisible( final boolean state);
+	
 }

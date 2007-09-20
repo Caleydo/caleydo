@@ -20,6 +20,7 @@ import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.util.system.StringConversionTool;
 
 import org.geneview.core.data.collection.ISet;
@@ -139,6 +140,19 @@ extends ACommand {
 //		this.iTargetSetId = iTargetSet;
 //	}
 
+	public void setAttributes(String fileName,
+			String tokenPattern,
+			int startPareseFileAtLine,
+			int stopPareseFileAtLine,
+			int targetSetId) {
+		
+		sFileName = fileName;		
+		sTokenPattern = tokenPattern;		
+		iStartPareseFileAtLine = startPareseFileAtLine;		
+		iStopPareseFileAtLine = stopPareseFileAtLine;		
+		iTargetSetId = targetSetId;
+	}
+	
 	/**
 	 * Load data from file using a token pattern.
 	 * 
@@ -168,10 +182,13 @@ extends ACommand {
 					errorMsg,
 					LoggerType.ERROR );
 			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
-			exitWarning.setText("ERROR",errorMsg);
-			exitWarning.doCommand();
-			return;
+			throw new GeneViewRuntimeException("Set is not valid!",
+					GeneViewRuntimeExceptionType.SET);
+			
+//			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
+//			exitWarning.setText("ERROR",errorMsg);
+//			exitWarning.doCommand();
+//			return;
 		}
 		
 		MicroArrayLoader1Storage loader = null;

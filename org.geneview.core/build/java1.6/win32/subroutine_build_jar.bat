@@ -63,7 +63,7 @@ copy %path_org_geneview_lib_swt_jar% %path_org_geneview_core_swt_jar%
 
 echo.
 echo.   make jar next..
-pause
+rem pause
 
 :MAKE_JAR
 
@@ -72,7 +72,7 @@ echo.
 echo create jar in folder %jar_file_name%
 echo.
 
-pause
+rem pause
 
 IF NOT EXIST %file_jar% GOTO NO_JAR_EXE
 

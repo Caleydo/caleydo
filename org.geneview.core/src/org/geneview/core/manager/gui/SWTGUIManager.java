@@ -21,6 +21,7 @@ import org.geneview.core.manager.ISWTGUIManager;
 import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.view.jogl.TriggeredAnimator;
 import org.geneview.core.view.swt.ISWTWidget;
@@ -195,6 +196,16 @@ implements ISWTGUIManager {
 		{
 			// Check if the parent is a composite
 			refComposite = refCompositeMap.get(iUniqueParentContainerId);
+			
+			if (refComposite == null)
+			{
+				refSingelton.logMsg( getClass().getSimpleName() + ".createWidget(" +
+						useWidgetType.toString() + ", parentId=" +
+						iUniqueParentContainerId + 
+						", iWidth, iHeight) parent SWT canvas does not exist!", 
+						LoggerType.MINOR_ERROR_XML);
+				return null;
+			}
 		}
 
 		return (createWidget(useWidgetType, refComposite, iWidth, iHeight));
@@ -322,8 +333,7 @@ implements ISWTGUIManager {
 		Shell refCurrentShell;
 
 		// Close loading progress bar after bootstrapping is completed.
-		refLoadingProgressBarWindow.close();
-		refLoadingProgressBar = null;
+		setProgressbarVisible(false);
 
 		shellIterator = refWindowMap.values().iterator();
 		while (shellIterator.hasNext())
@@ -332,8 +342,7 @@ implements ISWTGUIManager {
 			refCurrentShell.setVisible(true);//open();
 		}
 
-		shellIterator = refWindowMap.values().iterator();
-		
+		shellIterator = refWindowMap.values().iterator();				
 		// TODO Don't know if this is ok like this!
 		while (shellIterator.hasNext())
 		{
@@ -345,7 +354,6 @@ implements ISWTGUIManager {
 			}
 		}
 
-		refDisplay.dispose();
 	}
 
 	/*
@@ -415,13 +423,13 @@ implements ISWTGUIManager {
 		
 		return sCurrentText;
 	}
-	
+
 	/*
 	 *  (non-Javadoc)
 	 * @see org.geneview.core.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
 	 */
 	public synchronized int getLoadingProgressBarPercentage() {
-		
+
 		return refLoadingProgressBar.getSelection();
 	}
 	
@@ -488,5 +496,27 @@ implements ISWTGUIManager {
 		}
 		
 		hashAnimator.put(iAnimatorId, refAnimator);
+	}
+	
+	public synchronized void setProgressbarVisible( final boolean state) {
+	
+		if ( this.refLoadingProgressBarWindow.isVisible() == state ) 
+		{
+			/* state is already set*/
+			return;
+		}
+		
+		/* toggle current state.. */
+		if ( ! refLoadingProgressBarWindow.isVisible() )
+		{
+			this.refDisplay.wake();
+		}
+		refLoadingProgressBarWindow.setVisible(state);
+		refLoadingProgressBar.setVisible(state);
+	}
+	
+	public void destroyOnExit() {
+		refLoadingProgressBarWindow.close();	
+		refDisplay.dispose();
 	}
 }

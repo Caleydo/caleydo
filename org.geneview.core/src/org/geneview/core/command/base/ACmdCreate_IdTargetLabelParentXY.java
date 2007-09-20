@@ -72,15 +72,30 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 				sAttribute2,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 		
-		refParameterHandler.setValueAndTypeAndDefault("iWidthX",
-				token.nextToken(), 
-				ParameterHandlerType.INT,
-				"-1" );
+		if  (token.hasMoreTokens())
+		{
+			refParameterHandler.setValueAndTypeAndDefault("iWidthX",
+					token.nextToken(), 
+					ParameterHandlerType.INT,
+					"-1" );
 		
-		refParameterHandler.setValueAndTypeAndDefault("iHeightY",
-				token.nextToken(), 
-				ParameterHandlerType.INT,
-				"-1" );
+			if (token.hasMoreTokens())
+			{
+				refParameterHandler.setValueAndTypeAndDefault("iHeightY",
+						token.nextToken(), 
+						ParameterHandlerType.INT,
+						"-1" );
+			}
+			else
+			{
+				refParameterHandler.setValueAndType("iHeightY", "-1", ParameterHandlerType.INT);
+			}
+		}
+		else
+		{
+			refParameterHandler.setValueAndType("iWidthX", "-1", ParameterHandlerType.INT);
+			refParameterHandler.setValueAndType("iHeightY", "-1", ParameterHandlerType.INT);
+		}
 		
 		iWidthX = refParameterHandler.getValueInt("iWidthX");
 		iHeightY = refParameterHandler.getValueInt("iHeightY");
