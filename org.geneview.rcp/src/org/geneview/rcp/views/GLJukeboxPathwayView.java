@@ -32,7 +32,8 @@ import org.geneview.core.command.view.rcp.EExternalFlagSetterType;
  * <p>
  */
 
-public class GLJukeboxPathwayView <T> extends AGLViewPart {
+public class GLJukeboxPathwayView 
+extends AGLViewPart {
 
 	public static final String ID = "org.geneview.rcp.views.GLJukeboxPathwayView";
 	
@@ -64,12 +65,6 @@ public class GLJukeboxPathwayView <T> extends AGLViewPart {
 	
 	private Action actEnableAnnotation;
 	private boolean bEnableAnnotation = true;
-	
-//	private Animator animatorGL;
-//	private GLCanvas canvasGL;
-//	private Frame frameGL;
-//	private Shell swtShell;
-//	private Composite swtComposit;
 
 	/**
 	 * The constructor.
@@ -95,7 +90,7 @@ public class GLJukeboxPathwayView <T> extends AGLViewPart {
 		
 		contributeToActionBars();
 
-		super.createPartControlGL(parent,24);	
+		//super.createPartControlGL();	
 	}
 	
 	private void contributeToActionBars() {
@@ -129,10 +124,10 @@ public class GLJukeboxPathwayView <T> extends AGLViewPart {
 		actToggleAnimatorRunningState = new Action() {
 			public void run() {
 								
-				if ( swtComposit.isVisible() ) {
+				if ( swtComposite.isVisible() ) {
 					/* toggle state */
 					setGLCanvasVisible( ! frameGL.isVisible() );
-				} //if ( swtComposit.isVisible() ) {
+				} //if ( swtComposite.isVisible() ) {
 			}
 		};
 		actToggleAnimatorRunningState.setText("Turn off/on animator");

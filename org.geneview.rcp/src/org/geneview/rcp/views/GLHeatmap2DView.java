@@ -29,7 +29,8 @@ import org.eclipse.ui.PlatformUI;
  * <p>
  */
 
-public class GLHeatmap2DView extends AGLViewPart {
+public class GLHeatmap2DView 
+extends AGLViewPart {
 
 	public static final String ID = "org.geneview.rcp.views.GLHeatmap2DView";
 	
@@ -42,9 +43,6 @@ public class GLHeatmap2DView extends AGLViewPart {
 	 */
 	public GLHeatmap2DView() {
 		super();
-		
-		//TODO: remove hack for GLCanvasdirector
-		iGLCanvasDirectorId = 26;
 	}
 
 	/**
@@ -57,8 +55,6 @@ public class GLHeatmap2DView extends AGLViewPart {
 		
 		createAnimatorToggleAction();
 		contributeToActionBars();
-		
-		super.createPartControlGL(parent,iGLCanvasDirectorId);
 	}
 	
 	protected void contributeToActionBars() {
@@ -83,10 +79,10 @@ public class GLHeatmap2DView extends AGLViewPart {
 		action1 = new Action() {
 			public void run() {
 								
-				if ( swtComposit.isVisible() ) {
+				if ( swtComposite.isVisible() ) {
 					/* toggle state */
 					setGLCanvasVisible( ! frameGL.isVisible() );
-				} //if ( swtComposit.isVisible() ) {
+				} //if ( swtComposite.isVisible() ) {
 			}
 		};
 		action1.setText("Action 1");

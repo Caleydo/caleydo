@@ -1,18 +1,15 @@
 package org.geneview.rcp;
 
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
-//import org.eclipse.jface.action.IToolBarManager;
-//import org.eclipse.jface.action.MenuManager;
-//import org.eclipse.jface.action.Separator;
-//import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.ui.IWorkbenchWindow;
-//import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -53,6 +50,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * FileOpenXmlConfigFileAction extends IWorkbenchAction
 	 */
 	protected FileOpenXmlConfigFileAction fileOpenXmlConfigAction;
+	
+	protected IContributionItem viewDynamicLoaded;
 	
 	
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
@@ -106,6 +105,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		openNewWorkBenchAction = ActionFactory.OPEN_NEW_WINDOW.create(window);		
 		register(openNewWorkBenchAction);
 	
+		viewDynamicLoaded = ContributionItemFactory.VIEWS_SHORTLIST.create(window);
+		//register((IAction) viewDynamicLoaded);
+		
 		windowCloseAction = ActionFactory.CLOSE.create(window);
 		register(windowCloseAction);
 		
@@ -151,16 +153,17 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		MenuManager viewOpenGLMenu = new MenuManager("Show Open&GL views ..", "create new OpenGL views");
 		MenuManager viewTextMenu = new MenuManager("Show text views ..", "create new text views");
 		
-			/**
-			 * VIEW ==> OpenGL
-			 */			
-			viewOpenGLMenu.add(exitAction);
+		/**
+		 * VIEW ==> OpenGL
+		 */			
+		viewOpenGLMenu.add(exitAction);
+	
+		/**
+		 * VIEW ==> Text
+		 */
+		viewTextMenu.add(exitAction);
 		
-			/**
-			 * VIEW ==> Text
-			 */
-			viewTextMenu.add(exitAction);
-		
+		viewMenu.add(viewDynamicLoaded);
 		viewMenu.add(viewOpenGLMenu);
 		viewMenu.add(viewTextMenu);
 		viewMenu.add( new Separator());	
@@ -194,5 +197,5 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	
 	 public void fillActionBars(int flags) {
 		 super.fillActionBars(ActionBarAdvisor.FILL_COOL_BAR|ActionBarAdvisor.FILL_MENU_BAR|ActionBarAdvisor.FILL_STATUS_LINE);
-	 }
+	 }		
 }

@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
-import org.geneview.rcp.Application;
 
 import com.sun.opengl.util.Animator;
 
@@ -24,20 +23,27 @@ import com.sun.opengl.util.Animator;
  * Shared object for all GeneView viewPart objects.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public abstract class AGLViewPart extends ViewPart {
+public abstract class AGLViewPart 
+extends ViewPart {
 
 	protected Animator animatorGL;
 	protected Frame frameGL;
 	protected Shell swtShell;
-	protected Composite swtComposit;
+	protected Composite swtComposite;
+	protected JoglCanvasForwarder canvasForwarder;
 	
 	/**
 	 * 
 	 */
 	public AGLViewPart() {
 		super();
+	}
+	
+	public void setCanvasForwader(final JoglCanvasForwarder canvasForwarder) {
+		this.canvasForwarder = canvasForwarder;
 	}
 	
 	protected final void showMessage(String title,String message) {
@@ -50,30 +56,23 @@ public abstract class AGLViewPart extends ViewPart {
 	 */
 	protected void createPartControlSWT(Composite parent) {
 		swtShell = parent.getShell();
-		swtComposit = new Composite(parent, SWT.EMBEDDED);
+		swtComposite = new Composite(parent, SWT.EMBEDDED);
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
-	protected void createPartControlGL(Composite parent, final int iGLCanvasDirectorId) {
+	public void createPartControlGL() {
 		
 		if ( frameGL==null ) {
-			frameGL = SWT_AWT.new_Frame(swtComposit);	
+			frameGL = SWT_AWT.new_Frame(swtComposite);	
 			
-			GLCanvas canvasGL= new GLCanvas();
-			
-			// FIXME: static canvas director ID is a hack.
-			JoglCanvasForwarder canvasForwarder = Application.refGeneralManager.getSingelton().getViewGLCanvasManager()
-				.getGLCanvasDirector(iGLCanvasDirectorId).getJoglCanvasForwarder();
-					
+			GLCanvas canvasGL= new GLCanvas();					
 			canvasGL.addGLEventListener(canvasForwarder);
 			
-			frameGL.add(canvasGL);		
-			//frameGL.setSize(300, 300);
-			
+			frameGL.add(canvasGL);					
 		    animatorGL = new Animator(canvasGL);
-		    
+		 
 		    frameGL.addWindowListener(new WindowAdapter() {
 		        public void windowClosing(WindowEvent e) {
 		        	
@@ -89,7 +88,6 @@ public abstract class AGLViewPart extends ViewPart {
 		        }
 		      });
 		    
-			//frameGL.setTitle("Cerberus JFrame");
 		    frameGL.setVisible(true);
 		    
 		    animatorGL.start();
@@ -123,7 +121,6 @@ public abstract class AGLViewPart extends ViewPart {
 		}
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
