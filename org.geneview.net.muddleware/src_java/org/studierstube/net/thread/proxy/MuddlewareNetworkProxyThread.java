@@ -62,11 +62,11 @@ public class MuddlewareNetworkProxyThread implements Runnable, IMessageCallback 
 	
 	private boolean bRunServer = false;
 	
-	private Collection vectorSentMsg;
+	private Collection <IMessage> vectorSentMsg;
 	
-	private Collection vectorReceiveMsg;
+	private Collection <IMessage> vectorReceiveMsg;
 	
-	private Collection vectorBufferingSendMsg;
+	private Collection <IMessage> vectorBufferingSendMsg;
 	
 	private boolean bTriggerSendInstantly = true;
 	
@@ -78,9 +78,9 @@ public class MuddlewareNetworkProxyThread implements Runnable, IMessageCallback 
 		inputStreamThread  = new InputStreamThread(this);
 		outputStreamThread = new OutputStreamThread(this);
 		
-		vectorSentMsg = new Vector ();		
-		vectorReceiveMsg = new Vector ();		
-		vectorBufferingSendMsg = new Vector ();
+		vectorSentMsg 			= new Vector <IMessage> ();		
+		vectorReceiveMsg 		= new Vector <IMessage> ();		
+		vectorBufferingSendMsg 	= new Vector <IMessage> ();
 		
 		sendBufferLock = new ReentrantLock();
 		sentListLock = new ReentrantLock();
@@ -204,7 +204,7 @@ public class MuddlewareNetworkProxyThread implements Runnable, IMessageCallback 
 			sendBufferLock.lock();
 		
 			if ( ! vectorBufferingSendMsg.isEmpty() ) {
-				Iterator iter = vectorBufferingSendMsg.iterator();
+				Iterator <IMessage> iter = vectorBufferingSendMsg.iterator();
 				
 				while ( iter.hasNext() ) {
 					outputStreamThread.sentMessage((IMessage) iter.next());

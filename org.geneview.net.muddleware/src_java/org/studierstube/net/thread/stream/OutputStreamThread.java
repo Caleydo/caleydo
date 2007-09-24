@@ -37,10 +37,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.studierstube.net.protocol.ErrorMessageHandler;
 import org.studierstube.net.protocol.muddleware.IMessage;
-import org.studierstube.net.protocol.muddleware.IOperation;
-import org.studierstube.net.protocol.muddleware.Message;
-import org.studierstube.net.protocol.muddleware.Operation;
-import org.studierstube.net.protocol.muddleware.OperationEnum;
+//import org.studierstube.net.protocol.muddleware.IOperation;
+//import org.studierstube.net.protocol.muddleware.Message;
+//import org.studierstube.net.protocol.muddleware.Operation;
+//import org.studierstube.net.protocol.muddleware.OperationEnum;
 import org.studierstube.net.thread.IMessageCallback;
 import org.studierstube.util.StudierstubeException;
 

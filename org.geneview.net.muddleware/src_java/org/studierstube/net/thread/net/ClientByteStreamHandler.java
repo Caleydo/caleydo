@@ -99,17 +99,9 @@ public class ClientByteStreamHandler extends AbstractClientByteStreamHandler
 	 * ------------------------
 	 */
 	
-	//java1.3>>
-	protected Vector vecReceiveBuffer;
-	protected Vector vecSendBuffer;
-	
-	//java1.3<<
-	
-	//java1.5>>
-	//protected Vector <Message> vecReceiveBuffer;	
-	//protected Vector <Message> vecSendBuffer;	
+	protected Vector <IMessage> vecReceiveBuffer;
+	protected Vector <IMessage> vecSendBuffer;
 	//protected Vector <String> vecLogMessageBuffer;
-	//java1.5<<
 	
 	
 	/* ------------------------
@@ -150,16 +142,11 @@ public class ClientByteStreamHandler extends AbstractClientByteStreamHandler
 	}
  
 	private void initDatastructures() {
+
+		vecReceiveBuffer = new Vector <IMessage> (40);
+		vecSendBuffer = new Vector <IMessage> (40);
 		
-		//java1.3>>
-		vecReceiveBuffer = new Vector (40);
-		vecSendBuffer = new Vector (40);
-		//java1.3<<
-		//java1.5>>
-		//vecReceiveBuffer = new Vector <Message> (40);
-		//vecSendBuffer = new Vector <Message> (40);
 		//vecLogMessageBuffer = new Vector <String> (10000);
-		//java1.5<<
 		
 	}
 

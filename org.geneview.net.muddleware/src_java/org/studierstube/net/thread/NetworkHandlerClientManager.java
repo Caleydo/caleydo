@@ -148,7 +148,7 @@ implements INetworkHanlderClientManager {
 		hashCallbackMessageId.put(messageId, callbackObject);
 		
 		/* search for watchdogs.. */
-		Iterator iter = sendMsg.getOperationIterator();
+		Iterator <IOperation> iter = sendMsg.getOperationIterator();
 		
 		while ( iter.hasNext() ) {
 			//IOperation bufferOp = (IOperation) iter.next();

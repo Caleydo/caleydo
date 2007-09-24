@@ -153,7 +153,7 @@ public class NetworkHandlerClientWithCallbackManager extends
 	protected IMessageCallback callbackMessageProcedure(IMessage received) {
 		synchronized (received) {
 			synchronized (hashAsyncWatchdogCallbacks) {
-			Iterator iter = received.getOperationIterator();
+			Iterator <IOperation> iter = received.getOperationIterator();
 			while (iter.hasNext()) {
 				IOperation op = (IOperation)iter.next();
 				if (op.getOperation() == OperationEnum.OP_WATCHDOG)
