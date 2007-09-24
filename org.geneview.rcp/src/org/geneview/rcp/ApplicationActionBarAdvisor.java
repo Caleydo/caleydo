@@ -153,15 +153,16 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		MenuManager viewOpenGLMenu = new MenuManager("Show Open&GL views ..", "create new OpenGL views");
 		MenuManager viewTextMenu = new MenuManager("Show text views ..", "create new text views");
 		
-		/**
-		 * VIEW ==> OpenGL
-		 */			
-		viewOpenGLMenu.add(exitAction);
+			/**
+			 * VIEW ==> OpenGL
+			 */			
+			viewOpenGLMenu.add(exitAction);
 	
-		/**
-		 * VIEW ==> Text
-		 */
-		viewTextMenu.add(exitAction);
+			/**
+			 * VIEW ==> Text
+			 */
+			viewTextMenu.add(exitAction);
+			viewTextMenu.add(exitAction);
 		
 		viewMenu.add(viewDynamicLoaded);
 		viewMenu.add(viewOpenGLMenu);
@@ -197,5 +198,5 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	
 	 public void fillActionBars(int flags) {
 		 super.fillActionBars(ActionBarAdvisor.FILL_COOL_BAR|ActionBarAdvisor.FILL_MENU_BAR|ActionBarAdvisor.FILL_STATUS_LINE);
-	 }		
+	 }
 }

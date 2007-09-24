@@ -81,7 +81,6 @@ public class FileOpenCsvDataFileAction extends Action implements
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
 	 */
-	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection incoming) {
 		  // Selection containing elements
 		  if (incoming instanceof IStructuredSelection) {
@@ -97,7 +96,7 @@ public class FileOpenCsvDataFileAction extends Action implements
 		  }
 	}
 
-	@Override
+
 	public void dispose() {
 		window.getSelectionService().removeSelectionListener(this);
 	}

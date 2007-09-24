@@ -39,18 +39,18 @@
       <view
             allowMultiple="true"
             category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLHeatmap2DView_second"
+            class="org.geneview.rcp.views.GLHeatmap2DView"
             icon="resources/icons/heatmap.png"
-            id="org.geneview.rcp.views.GLHeatmap2DView_second"
+            id="org.geneview.rcp.views.GLHeatmap2DView"
             name="GLHeatmap2DView_second">
       </view>    
       
        <view
             allowMultiple="true"
             category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLHeatmap2DView_third"
+            class="org.geneview.rcp.views.GLHeatmap2DView"
             icon="resources/icons/heatmap.png"
-            id="org.geneview.rcp.views.GLHeatmap2DView_third"
+            id="org.geneview.rcp.views.GLHeatmap2DView"
             name="GLHeatmap2DView_third">
       </view>              
       
