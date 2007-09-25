@@ -188,12 +188,30 @@ extends AMicroArrayLoader {
 					}
 					
 					
-					StringTokenizer strToken = new StringTokenizer( new String(strLineBuffer) );
+					StringTokenizer strToken = new StringTokenizer( new String(strLineBuffer),
+							IGeneralManager.sDelimiter_Parser_DataItems_Tab, true);
 					ListIterator <ParserTokenHandler> iterPerLine = 
 						alTokenTargetToParserTokenType.listIterator();
 					
-					while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
+					boolean bReadValueAndDetectEmptyField = true;
+					
+					while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) 
+					{
 						String sTokenObject = strToken.nextToken();
+						
+						// Ignore empty fields
+						if (bReadValueAndDetectEmptyField &&
+								sTokenObject.equals(IGeneralManager.sDelimiter_Parser_DataItems_Tab))
+						{
+							// Detected empty field and skip element
+							iterPerLine.next();
+							continue;
+						}
+						else if (sTokenObject.equals(IGeneralManager.sDelimiter_Parser_DataItems_Tab))
+						{
+							bReadValueAndDetectEmptyField = true;
+							continue;
+						}
 
 						try {
 							ParserTokenHandler bufferIter = iterPerLine.next();
@@ -203,18 +221,23 @@ extends AMicroArrayLoader {
 								//case SKIP: do nothing, only consume current token.
 								case ABORT:
 									bMaintainLoop = false;
+									bReadValueAndDetectEmptyField = false;
 									break;
 								case INT:
 									LLInteger.add( new Integer(sTokenObject) );
+									bReadValueAndDetectEmptyField = false;
 									break;
 								case FLOAT:
-									LLFloat.add( new Float(sTokenObject) );
+									LLFloat.add( (float)Math.log(new Float(sTokenObject)) );
+									bReadValueAndDetectEmptyField = false;
 									break;
 								case STRING:	
 									LLString.add( vecBufferText.get(iStringIndex) );	
 									iStringIndex++;
+									bReadValueAndDetectEmptyField = false;
 									break;
 								case SKIP:
+									bReadValueAndDetectEmptyField = false;
 									break;
 								default:
 									System.err.println("Unknown label");
@@ -313,15 +336,30 @@ extends AMicroArrayLoader {
 		    }
 		    refDataStorage.setArrayFloat( floatBuffer );
 		    
-		    IVirtualArray selFloat = 
-		    	new VirtualArrayThreadSingleBlock(1,null,null);
-		    selFloat.setLabel("import FLOAT");
-		    selFloat.setLength( LLFloat.size() );
+//		    IVirtualArray selFloat = 
+//		    	new VirtualArrayThreadSingleBlock(1,null,null);
+//		    selFloat.setLabel("import FLOAT");
+//		    selFloat.setLength( LLFloat.size() );
+		    
+		    refImportDataOverrideSelection.setLabel("import FLOAT");
+		    refImportDataOverrideSelection.setOffset( 0 );
+		    refImportDataOverrideSelection.setLength( LLFloat.size() );
+		    
+//		    refImportDataToSet.setStorageByDimAndIndex(
+//		    		refDataStorage,0,1);
+//		    refImportDataToSet.setVirtualArrayByDimAndIndex(
+//		    		selFloat,0,1);
+		    
+		    /*
+		     * notify selection cacheId of changed data...
+		     */
+		    refImportDataOverrideSelection.setCacheId(
+		    		refImportDataOverrideSelection.getCacheId() + 1 );
 		    
 		    refImportDataToSet.setStorageByDimAndIndex(
-		    		refDataStorage,0,1);
+		    		refDataStorage,0,0);
 		    refImportDataToSet.setVirtualArrayByDimAndIndex(
-		    		selFloat,0,1);
+		    		refImportDataOverrideSelection,0,0);
 	    }
 	    
 	    if ( LLString.size() > 1) {

@@ -39,7 +39,12 @@ implements IGeneViewDefaultType <GenomeMappingType> {
 	ACCESSION_2_NCBI_GENEID (
 			GenomeIdType.ACCESSION,
 			GenomeIdType.NCBI_GENEID,
-			GenomeMappingDataType.INT2INT),					
+			GenomeMappingDataType.INT2INT),	
+			
+	ACCESSION_2_MICROARRAY_EXPRESSION (
+			GenomeIdType.ACCESSION,
+			GenomeIdType.MICROARRAY_EXPRESSION,
+			GenomeMappingDataType.INT2INT),
 			
 	/* --- KEGG Gene Id --- */
 	/**
