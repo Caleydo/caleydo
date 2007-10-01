@@ -14,7 +14,7 @@ Bundle-ClassPath: .,
  lib/org.geneview.graph_bin.jar,
  lib/jgraph/jgraph.jar,
  lib/gleem/gleem_mod_class.jar,
- geneview.data.jar,
+ org.geneview.data.jar,
  lib/muddleware/muddleware.jar,
  lib/jface/,
  lib/axis
