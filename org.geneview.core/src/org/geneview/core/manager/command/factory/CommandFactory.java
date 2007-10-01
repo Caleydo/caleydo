@@ -16,6 +16,7 @@ import org.geneview.core.command.data.CmdDataCreateSetViewdata;
 import org.geneview.core.command.data.CmdDataCreateVirtualArray;
 import org.geneview.core.command.data.CmdDataCreateSet;
 import org.geneview.core.command.data.CmdDataCreateStorage;
+import org.geneview.core.command.data.filter.CmdDataFilterMath;
 import org.geneview.core.command.event.CmdEventCreateMediator;
 import org.geneview.core.command.event.CmdEventMediatorAddObject;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap;
@@ -617,7 +618,21 @@ public class CommandFactory
 			break;
 		}	
 		
+		/*
+		 * ----------------------
+		 *     DATA FILTER
+		 * ----------------------
+		 */
 		
+		case DATA_FILTER_MATH:
+		{
+			createdCommand =
+				new CmdDataFilterMath(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;
+		}
 		
 		default: 
 			throw new GeneViewRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 

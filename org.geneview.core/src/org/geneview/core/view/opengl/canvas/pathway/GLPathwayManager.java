@@ -52,7 +52,7 @@ public class GLPathwayManager {
 	private boolean bEnableGeneMapping = true;
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
-	private boolean bEnableNeighborhood = true;
+	private boolean bEnableNeighborhood = false;
 	private boolean bEnableAnnotation = true;
 	
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;

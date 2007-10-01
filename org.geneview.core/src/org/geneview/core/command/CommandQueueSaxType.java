@@ -38,6 +38,8 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	LOAD_URL_IN_BROWSER(ManagerType.EVENT_PUBLISHER,"cmd", "type", "-1", "Load URL in browser"),
 	//OPEN_VIEW("cmd","type"),
 
+	DATA_FILTER_MATH(ManagerType.DATA_STORAGE, "cmd", "type", "-1", "Filter data by using math operations"),
+	
 	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 		

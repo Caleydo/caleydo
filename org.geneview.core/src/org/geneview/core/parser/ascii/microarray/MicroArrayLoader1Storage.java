@@ -228,7 +228,7 @@ extends AMicroArrayLoader {
 									bReadValueAndDetectEmptyField = false;
 									break;
 								case FLOAT:
-									LLFloat.add( (float)Math.log(new Float(sTokenObject)) );
+									LLFloat.add( new Float(sTokenObject) );
 									bReadValueAndDetectEmptyField = false;
 									break;
 								case STRING:	
