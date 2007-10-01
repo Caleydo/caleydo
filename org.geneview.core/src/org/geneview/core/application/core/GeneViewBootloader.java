@@ -282,8 +282,18 @@ public class GeneViewBootloader
 	 */
 	public synchronized void run_SWT() {
 		
-		run_parseXmlConfigFile( getXmlFileName() );		
-		logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);
+		try 
+		{
+			run_parseXmlConfigFile( getXmlFileName() );		
+			logger.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);
+		}
+		catch (GeneViewRuntimeException gre)
+		{
+			logger.logMsg(" loading GUI config failed! " +
+					gre.toString() , LoggerType.MINOR_ERROR_XML);
+			bIsRunning = false;
+			return;
+		}
 		
 		try 
 		{
@@ -297,7 +307,7 @@ public class GeneViewBootloader
 			bIsRunning = false;
 		}
 		catch (Exception e) {
-			logger.logMsg("run_SWT() cased system error. " +
+			logger.logMsg("run_SWT() caused system error. " +
 					e.toString() , LoggerType.ERROR);
 			bIsRunning = false;
 		}	
@@ -332,7 +342,7 @@ public class GeneViewBootloader
 			return false;
 		}
 		catch (Exception e) {
-			logger.logMsg("run_parseXmlConfigFile(" + fileName + ") cased system error. " +
+			logger.logMsg("run_parseXmlConfigFile(" + fileName + ") caused system error. " +
 					e.toString() , LoggerType.ERROR);
 			return false;
 		}			
@@ -356,6 +366,7 @@ public class GeneViewBootloader
 			logger.logMsg("  load config via local XML file ... ", LoggerType.STATUS);			
 			refXmlParserManager.parseXmlFileByName( getXmlFileName() );		
 		}
+		
 	}
 	
 	/**

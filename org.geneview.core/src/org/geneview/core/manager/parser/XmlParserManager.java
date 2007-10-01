@@ -329,23 +329,45 @@ extends AXmlParserManager {
 	public boolean parseXmlString( final String sMuddlewareXPath, final String xmlString ) {
 		
 		iCountOpenedFiles++;
-		refLoggerManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + ") parse...",
-				LoggerType.VERBOSE );
+		try 
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + ") parse...",
+					LoggerType.VERBOSE );
+			
+			InputSource inStream = new InputSource( xmlString );	
+			
+			refLoggerManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
+					LoggerType.VERBOSE_EXTRA );
+			
+			boolean status = GeneViewInputStream.parseOnce( inStream ,
+					sMuddlewareXPath,
+					this,
+					refLoggerManager );
+			
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath + "], ..) done.",
+					LoggerType.STATUS );
+			
+			return 	status;
 		
-		InputSource inStream = new InputSource( xmlString );	
-		
-		refLoggerManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
-				LoggerType.VERBOSE_EXTRA );
-		
-		boolean status = GeneViewInputStream.parseOnce( inStream ,
-				sMuddlewareXPath,
-				this,
-				refLoggerManager );
-		
-		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath + "], ..) done.",
-				LoggerType.STATUS );
-		
-		return 	status;
+		} 
+		catch (GeneViewRuntimeException gve)
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
+					"," + xmlString + ") failed; geneview_error: " +
+					gve.toString(),
+					LoggerType.MINOR_ERROR_XML );
+			
+			return false;
+		}	
+		catch (RuntimeException e)
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
+					"," + xmlString + ") failed; system_error: " +
+					e.toString(),
+					LoggerType.MINOR_ERROR_XML );			
+			
+			return false;
+		}	
 	}
 	
 	/**
@@ -355,29 +377,50 @@ extends AXmlParserManager {
 		
 		iCountOpenedFiles++;
 		
-		URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
-		InputSource inSource = null;
-		
-		if (resourceUrl != null) {
-			inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
-		}
-		else
+		try
 		{
-			inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
-		}
+			URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
+			InputSource inSource = null;
+			
+			if (resourceUrl != null) {
+				inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+			}
+			else
+			{
+				inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
+			}
+			
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
+					LoggerType.VERBOSE_EXTRA );
 		
-		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
-				LoggerType.VERBOSE_EXTRA );
 		
-		boolean status = GeneViewInputStream.parseOnce( inSource ,
-				filename,
-				this,
-				refLoggerManager );
-		
-		refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") done.",
-				LoggerType.STATUS );
-		
-		return 	status;
+			boolean status = GeneViewInputStream.parseOnce( inSource ,
+					filename,
+					this,
+					refLoggerManager );
+			
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") done.",
+					LoggerType.STATUS );
+			
+			return 	status;
+			
+		} 
+		catch (GeneViewRuntimeException gve)
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; geneview_error: " +
+					gve.toString(),
+					LoggerType.MINOR_ERROR_XML );
+			
+			return false;
+		}	
+		catch (RuntimeException e)
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; system_error: " +
+					e.toString(),
+					LoggerType.MINOR_ERROR_XML );			
+			
+			return false;
+		}			
 	}
 	
 	/**
@@ -390,21 +433,40 @@ extends AXmlParserManager {
 		
 		iCountOpenedFiles++;
 		
-		URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
-		InputSource inSource = null;
-		
-		if (resourceUrl != null) {
-			inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
-		}
-		else
+		try {
+			URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
+			InputSource inSource = null;
+			
+			if (resourceUrl != null) {
+				inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+			}
+			else
+			{
+				inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
+			}
+			
+			return GeneViewInputStream.parseOnce( inSource , 
+					filename,
+					this,
+					refLoggerManager );		
+			
+		} 
+		catch (GeneViewRuntimeException gve)
 		{
-			inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
-		}
-		
-		return GeneViewInputStream.parseOnce( inSource , 
-				filename,
-				this,
-				refLoggerManager );		
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; geneview_error: " +
+					gve.toString(),
+					LoggerType.MINOR_ERROR_XML );
+			
+			return false;
+		}	
+		catch (RuntimeException e)
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; system_error: " +
+					e.toString(),
+					LoggerType.MINOR_ERROR_XML );			
+			
+			return false;
+		}		
 	}
 	
 	
@@ -415,10 +477,29 @@ extends AXmlParserManager {
 			final String inputStreamText ) {
 		
 		iCountOpenedFiles++;
-		return GeneViewInputStream.parseOnce( inputStream ,
-				inputStreamText,
-				this,
-				refLoggerManager );	
+		try {
+			
+			return GeneViewInputStream.parseOnce( inputStream ,
+					inputStreamText,
+					this,
+					refLoggerManager );	
+		} 
+		catch (GeneViewRuntimeException gve)
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; geneview_error: " +
+					gve.toString(),
+					LoggerType.MINOR_ERROR_XML );
+			
+			return false;
+		}	
+		catch (RuntimeException e)
+		{
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: " +
+					e.toString(),
+					LoggerType.MINOR_ERROR_XML );			
+			
+			return false;
+		}	
 	}
 
 

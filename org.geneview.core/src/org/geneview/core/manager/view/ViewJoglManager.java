@@ -238,67 +238,82 @@ implements IViewGLCanvasManager {
 
 		//final int iNewId = this.createNewId(useViewType);
 
-		switch (useViewType)
+		try
 		{
-		case VIEW:
+			switch (useViewType)
+			{
+			case VIEW:
 
-		case VIEW_SWT_PATHWAY:
-			return new Pathway2DViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_DATA_EXPLORER:
-			return new DataExplorerViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_DATA_EXCHANGER:
-			return new DataExchangerViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);	
-		case VIEW_SWT_DATA_SET_EDITOR:
-			return new NewSetEditorViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_PROGRESS_BAR:
-			return new ProgressBarViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_TEST_TABLE:
-			return new TestTableViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_GEARS:
-			return new GearsViewRep(this.refGeneralManager, 
-					iUniqueId,
-					iParentContainerId, 
-					sLabel,
-					iGlForwarderId);
+			case VIEW_SWT_PATHWAY:
+				return new Pathway2DViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_DATA_EXPLORER:
+				return new DataExplorerViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_DATA_EXCHANGER:
+				return new DataExchangerViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);	
+			case VIEW_SWT_DATA_SET_EDITOR:
+				return new NewSetEditorViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_PROGRESS_BAR:
+				return new ProgressBarViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_TEST_TABLE:
+				return new TestTableViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_GEARS:
+				return new GearsViewRep(this.refGeneralManager, 
+						iUniqueId,
+						iParentContainerId, 
+						sLabel,
+						iGlForwarderId);
 
-		//return new Heatmap2DViewRep(iNewId, this.refGeneralManager);
+			//return new Heatmap2DViewRep(iNewId, this.refGeneralManager);
+				
+			case VIEW_SWT_SELECTION_SLIDER:
+				return new SelectionSliderViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_STORAGE_SLIDER:
+				return new StorageSliderViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_MIXER:
+				return new MixerViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);			
+			case VIEW_SWT_BROWSER:
+				return new HTMLBrowserViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_IMAGE:
+				return new ImageViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);
+			case VIEW_SWT_UNDO_REDO:
+				return new UndoRedoViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);	
+			case VIEW_SWT_JOGL_MULTI_GLCANVAS:
+				return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId,					
+						iGlForwarderId,
+						sLabel,
+						JoglCanvasForwarderType.DEFAULT_FORWARDER);
+
+			default:
+				throw new GeneViewRuntimeException(
+						"StorageManagerSimple.createView() failed due to unhandled type ["
+								+ useViewType.toString() + "]");
+			}
 			
-		case VIEW_SWT_SELECTION_SLIDER:
-			return new SelectionSliderViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_STORAGE_SLIDER:
-			return new StorageSliderViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_MIXER:
-			return new MixerViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);			
-		case VIEW_SWT_BROWSER:
-			return new HTMLBrowserViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_IMAGE:
-			return new ImageViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);
-		case VIEW_SWT_UNDO_REDO:
-			return new UndoRedoViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId, sLabel);	
-		case VIEW_SWT_JOGL_MULTI_GLCANVAS:
-			return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iUniqueId,
-					iParentContainerId,					
-					iGlForwarderId,
-					sLabel,
-					JoglCanvasForwarderType.DEFAULT_FORWARDER);
-
-		default:
-			throw new GeneViewRuntimeException(
-					"StorageManagerSimple.createView() failed due to unhandled type ["
-							+ useViewType.toString() + "]");
+		} 
+		catch (NullPointerException e)
+		{
+			refSingelton.logMsg("Error while creating view; createView(" +
+					useViewType.toString() +
+					", " + iUniqueId + 
+					", " + iParentContainerId + 
+					", " + sLabel + " )", LoggerType.ERROR);
+			
+			return null;
 		}
+		
 	}
 
 	public ArrayList<IViewRep> getViewRepByType(ViewType viewType) {
@@ -323,99 +338,113 @@ implements IViewGLCanvasManager {
 			final int iGlForwarderId,
 			String sLabel ) {
 
-		switch (useViewType)
+		try
 		{
-		case CREATE_GL_TRIANGLE_TEST:
-			return new GLCanvasTestTriangle(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-
-		case CREATE_GL_HEATMAP:
-			return new GLCanvasHeatmap(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-
-		case CREATE_GL_HEATMAP2D:
-			System.err.println("  overwrite: create CREATE_GL_HEATMAP2DCOLUMN instead of requested CREATE_GL_HEATMAP2D");
-			return new GLCanvasHeatmap2DColumn(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-			/*
-			return new GLCanvasHeatmap2D(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-			*/
+			switch (useViewType)
+			{
+			case CREATE_GL_TRIANGLE_TEST:
+				return new GLCanvasTestTriangle(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+	
+			case CREATE_GL_HEATMAP:
+				return new GLCanvasHeatmap(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+	
+			case CREATE_GL_HEATMAP2D:
+				System.err.println("  overwrite: create CREATE_GL_HEATMAP2DCOLUMN instead of requested CREATE_GL_HEATMAP2D");
+				return new GLCanvasHeatmap2DColumn(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+				/*
+				return new GLCanvasHeatmap2D(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+				*/
+				
+			case CREATE_GL_HEATMAP2DCOLUMN:
+				return new GLCanvasHeatmap2DColumn(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+				
+			case CREATE_GL_SCATTERPLOT2D:
+				return new GLCanvasScatterPlot2D(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+	
+			case CREATE_GL_MINMAX_SCATTERPLOT2D:
+				refSingelton.logMsg("CREATE_GL_MINMAX_SCATTERPLOT2D ==> create GLMinMaxScatterplot2Dinteractive instead",LoggerType.MINOR_ERROR_XML);
+				
+				return new GLMinMaxScatterplot2Dinteractive(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+	//			return new GLCanvasMinMaxScatterPlot2D(refGeneralManager, iUniqueId,
+	//					iGlForwarderId, sLabel);
+	
+			case CREATE_GL_MINMAX_SCATTERPLOT3D:
+				return new GLCanvasMinMaxScatterPlot3D(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+				
+			case CREATE_GL_WIDGET:
+				return new GLCanvasWidget(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+	
+			case CREATE_GL_HISTOGRAM2D:
+				return new GLCanvasHistogram2D(refGeneralManager, iUniqueId,
+						iGlForwarderId, sLabel);
+	
+			case CREATE_GL_ISOSURFACE3D:
+				return new GLCanvasIsoSurface3D(
+						refGeneralManager, 
+						iUniqueId, 
+						iGlForwarderId, 
+						sLabel);
+				
+			case CREATE_GL_TEXTURE2D:
+				return new GLCanvasTexture2D(
+						refGeneralManager, 
+						iUniqueId, 
+						iGlForwarderId, 
+						sLabel);
+				
+			case CREATE_GL_LAYERED_PATHWAY_3D:
+				return new GLCanvasLayeredPathway3D(
+						refGeneralManager, 
+						iUniqueId,
+						iGlForwarderId, 
+						sLabel);
+				
+			case CREATE_GL_PANEL_PATHWAY_3D:
+				return new GLCanvasPanelPathway3D(
+						refGeneralManager, 
+						iUniqueId,
+						iGlForwarderId, 
+						sLabel);	
+	
+			case CREATE_GL_JUKEBOX_PATHWAY_3D:
+				return new GLCanvasJukeboxPathway3D(
+						refGeneralManager, 
+						iUniqueId,
+						iGlForwarderId, 
+						sLabel);
+				
+			case CREATE_GL_PARALLEL_COORDINATES_3D:
+				return new GLCanvasParCoords3D(
+						refGeneralManager, 
+						iUniqueId,
+						iGlForwarderId, 
+						sLabel);
+				
+			default:
+				throw new GeneViewRuntimeException(
+						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
+								+ useViewType.toString() + "]");
+			}
+		
+		} 
+		catch (NullPointerException e)
+		{
+			refSingelton.logMsg("Error while creating view; createView(" +
+					useViewType.toString() +
+					", " + iUniqueId + 
+					", " + iGlForwarderId + 
+					", " + sLabel + " )", LoggerType.ERROR);
 			
-		case CREATE_GL_HEATMAP2DCOLUMN:
-			return new GLCanvasHeatmap2DColumn(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-			
-		case CREATE_GL_SCATTERPLOT2D:
-			return new GLCanvasScatterPlot2D(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-
-		case CREATE_GL_MINMAX_SCATTERPLOT2D:
-			refSingelton.logMsg("CREATE_GL_MINMAX_SCATTERPLOT2D ==> create GLMinMaxScatterplot2Dinteractive instead",LoggerType.MINOR_ERROR_XML);
-			
-			return new GLMinMaxScatterplot2Dinteractive(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-//			return new GLCanvasMinMaxScatterPlot2D(refGeneralManager, iUniqueId,
-//					iGlForwarderId, sLabel);
-
-		case CREATE_GL_MINMAX_SCATTERPLOT3D:
-			return new GLCanvasMinMaxScatterPlot3D(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-			
-		case CREATE_GL_WIDGET:
-			return new GLCanvasWidget(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-
-		case CREATE_GL_HISTOGRAM2D:
-			return new GLCanvasHistogram2D(refGeneralManager, iUniqueId,
-					iGlForwarderId, sLabel);
-
-		case CREATE_GL_ISOSURFACE3D:
-			return new GLCanvasIsoSurface3D(
-					refGeneralManager, 
-					iUniqueId, 
-					iGlForwarderId, 
-					sLabel);
-			
-		case CREATE_GL_TEXTURE2D:
-			return new GLCanvasTexture2D(
-					refGeneralManager, 
-					iUniqueId, 
-					iGlForwarderId, 
-					sLabel);
-			
-		case CREATE_GL_LAYERED_PATHWAY_3D:
-			return new GLCanvasLayeredPathway3D(
-					refGeneralManager, 
-					iUniqueId,
-					iGlForwarderId, 
-					sLabel);
-			
-		case CREATE_GL_PANEL_PATHWAY_3D:
-			return new GLCanvasPanelPathway3D(
-					refGeneralManager, 
-					iUniqueId,
-					iGlForwarderId, 
-					sLabel);	
-
-		case CREATE_GL_JUKEBOX_PATHWAY_3D:
-			return new GLCanvasJukeboxPathway3D(
-					refGeneralManager, 
-					iUniqueId,
-					iGlForwarderId, 
-					sLabel);
-			
-		case CREATE_GL_PARALLEL_COORDINATES_3D:
-			return new GLCanvasParCoords3D(
-					refGeneralManager, 
-					iUniqueId,
-					iGlForwarderId, 
-					sLabel);
-			
-		default:
-			throw new GeneViewRuntimeException(
-					"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
-							+ useViewType.toString() + "]");
+			return null;
 		}
 	}
 

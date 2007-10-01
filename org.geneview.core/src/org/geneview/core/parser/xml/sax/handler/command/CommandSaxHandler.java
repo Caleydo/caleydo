@@ -20,7 +20,7 @@ import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.parser.parameter.ParameterHandler;
 import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 //import org.geneview.core.manager.IMenuManager;
-//import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.geneview.core.parser.xml.sax.handler.SXmlParserHandler;
 
@@ -233,6 +233,23 @@ extends AXmlParserHandler
 			
 			return lastCommand;
 			
+		}
+		catch ( GeneViewRuntimeException gve) 
+		{
+			String sDetails = "";
+			if ( lastCommand != null ) 
+			{
+				sDetails = lastCommand.getClass().getSimpleName();
+			}			
+			refGeneralManager.getSingelton().logMsg(
+					"CommandSaxHandler.readCommandData(" +
+					attrs.toString() + 
+					")\n  ERROR while executing command " +
+					sDetails + "  ==> " 
+					+ gve.toString() + "\n",
+					LoggerType.MINOR_ERROR_XML );
+			
+			return null;					
 		}
 		catch ( Exception e) 
 		{

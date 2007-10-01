@@ -7,6 +7,7 @@ import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IViewGLCanvasManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.IGLCanvasDirector;
@@ -50,16 +51,41 @@ extends ACmdCreate_IdTargetParentGLObject {
 		IViewGLCanvasManager glCanvasManager = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager();
 		
-		/**
-		 * create a new IGLCanvasUser object...
-		 */
-		openGLCanvasUser = glCanvasManager.createGLCanvasUser(
-				localManagerObjectType,
-				iUniqueId,
-				iParentContainerId,
-				sLabel );
-
-		this.doCommandPart();
+		try 
+		{
+			try 
+			{
+				/**
+				 * create a new IGLCanvasUser object...
+				 */
+				openGLCanvasUser = glCanvasManager.createGLCanvasUser(
+						localManagerObjectType,
+						iUniqueId,
+						iParentContainerId,
+						sLabel );
+			}
+			catch (NoClassDefFoundError ncde) 
+			{
+				String errorMsg = "ACmdCreate_GlCanvasUser().doCommand() missing class; most probably jogl.jar is missing; can not create OpenGL frame; ";
+				refGeneralManager.getSingelton().logMsg(
+						errorMsg + ncde.toString(), 
+						LoggerType.ERROR);
+				
+				throw new GeneViewRuntimeException(errorMsg);
+			}
+		
+			this.doCommandPart();
+		
+		}
+		catch (RuntimeException re) 
+		{
+			String errorMsg = "ACmdCreate_GlCanvasUser().doCommand() error while creating OpenGL frame; ";
+			refGeneralManager.getSingelton().logMsg(
+					errorMsg + re.toString(), 
+					LoggerType.ERROR);
+			
+			throw new GeneViewRuntimeException(errorMsg);
+		}
 		
 		glCanvasManager.registerGLCanvasUser( 
 				openGLCanvasUser, 

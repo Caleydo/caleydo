@@ -17,6 +17,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
 import org.geneview.core.view.jogl.JoglCanvasForwarderType;
 import org.geneview.core.view.opengl.RcpCanvasDirector;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 
 /**
  * Class implements the command for creating a RCP-Jogl canvas.
@@ -53,27 +54,41 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-			RcpCanvasDirector rcpCanvasDirector = new RcpCanvasDirector(iUniqueId, iGlForwarderId,
+		RcpCanvasDirector rcpCanvasDirector = null;
+		
+		try
+		{
+			rcpCanvasDirector = new RcpCanvasDirector(iUniqueId, iGlForwarderId,
 					refGeneralManager, JoglCanvasForwarderType.ONLY_2D_FORWARDER);
+		}
+		catch (NoClassDefFoundError ncde) 
+		{
+			String errorMsg = "missing class; most probably jogl.jar is missing; can not create OpenGL frame; ";
+			refGeneralManager.getSingelton().logMsg(
+					errorMsg + ncde.toString(), 
+					LoggerType.ERROR);
+			
+			throw new GeneViewRuntimeException(errorMsg);
+		}
+		
+		IViewGLCanvasManager viewManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
+		
+		viewManager.registerItem(
+				rcpCanvasDirector, 
+				iUniqueId, 
+				ManagerObjectType.VIEW);
+		
+		JoglCanvasForwarder canvasForwarder = rcpCanvasDirector.getJoglCanvasForwarder();
 
-			IViewGLCanvasManager viewManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
-			
-			viewManager.registerItem(
-					rcpCanvasDirector, 
-					iUniqueId, 
-					ManagerObjectType.VIEW);
-			
-			JoglCanvasForwarder canvasForwarder = rcpCanvasDirector.getJoglCanvasForwarder();
-
-			IViewCamera viewCamera = canvasForwarder.getViewCamera();
-			
-			if ( cameraOrigin_GLCanvas != null ) 
-				viewCamera.setCameraPosition(cameraOrigin_GLCanvas);
-			
-			if ( cameraRotation_GLCanvas != null)
-				viewCamera.setCameraRotation(cameraRotation_GLCanvas);
-			
-			refCommandManager.runDoCommand(this);
+		IViewCamera viewCamera = canvasForwarder.getViewCamera();
+		
+		if ( cameraOrigin_GLCanvas != null ) 
+			viewCamera.setCameraPosition(cameraOrigin_GLCanvas);
+		
+		if ( cameraRotation_GLCanvas != null)
+			viewCamera.setCameraRotation(cameraRotation_GLCanvas);
+		
+		refCommandManager.runDoCommand(this);
 			
 	}
 

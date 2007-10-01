@@ -134,7 +134,7 @@ implements IViewRep {
 		 * GUI widget by calling the createWidget method from
 		 * the SWT GUI Manager.
 		 * 
-		 * formally this was teh method: retrieveGUIContainer() 
+		 * formally this was the method: retrieveGUIContainer() 
 		 */
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) refGeneralManager
