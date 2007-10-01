@@ -8,13 +8,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
- ../org.geneview.lib/lib/jogl/jogl.jar,
- ../org.geneview.lib/lib/jogl/gluegen-rt.jar,
+ lib/jogl/jogl.jar,
+ lib/jogl/gluegen-rt.jar,
  lib/org.geneview.core_bin.jar,
  lib/org.geneview.graph_bin.jar,
  lib/jgraph/jgraph.jar,
  lib/gleem/gleem_mod_class.jar,
- lib/data.jar,
+ geneview.data.jar,
  lib/muddleware/muddleware.jar,
  lib/jface/,
- lib/axis/
+ lib/axis
