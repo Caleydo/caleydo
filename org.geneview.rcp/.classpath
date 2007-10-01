@@ -7,11 +7,11 @@
 	<classpathentry exported="true" kind="lib" path="lib/org.geneview.graph_bin.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jgraph/jgraph.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gleem/gleem_mod_class.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/data.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/muddleware/muddleware.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jface" sourcepath="lib/jface"/>
 	<classpathentry exported="true" kind="lib" path="lib/axis" sourcepath="lib/axis"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="org.geneview.data.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
