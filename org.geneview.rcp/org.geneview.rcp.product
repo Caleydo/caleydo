@@ -3,6 +3,19 @@
 
 <product name="GeneView Product" id="org.geneview.rcp.product" application="org.geneview.rcp.application" useFeatures="false">
 
+   <aboutInfo>
+      <image path="/org.geneview.rcp/resources/icons/storage.gif"/>
+      <text>
+         \n\nGeneView framework\n\
+Version: 1.0.0\n\n\
+GeneView is a visualization framework for biomedical data.\n\
+\n\
+(c) Copyright Institute for Computer Graphics and Vision (ICG) \n\
+Graz University of Technology - 2007. \
+All Rights Reserved.\n
+      </text>
+   </aboutInfo>
+
    <configIni use="default"/>
 
    <launcherArgs>
@@ -18,6 +31,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
       <linux type="ee">JavaSE-1.6</linux>
@@ -44,7 +58,7 @@
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true"/>
-      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.geneview.rcp"/>

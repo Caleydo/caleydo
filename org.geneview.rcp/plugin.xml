@@ -34,25 +34,7 @@
             icon="resources/icons/heatmap.png"
             id="org.geneview.rcp.views.GLHeatmap2DView"
             name="GLHeatmap2DView">
-      </view>   
-      
-      <view
-            allowMultiple="true"
-            category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLHeatmap2DView"
-            icon="resources/icons/heatmap.png"
-            id="org.geneview.rcp.views.GLHeatmap2DView"
-            name="GLHeatmap2DView_second">
-      </view>    
-      
-       <view
-            allowMultiple="true"
-            category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLHeatmap2DView"
-            icon="resources/icons/heatmap.png"
-            id="org.geneview.rcp.views.GLHeatmap2DView"
-            name="GLHeatmap2DView_third">
-      </view>              
+      </view>               
       
       <view
             id="org.geneview.rcp.views.browser.browserView"
@@ -100,6 +82,14 @@
          <property
                name="appName"
                value="GeneView Product">
+         </property>
+         <property
+               name="aboutImage"
+               value="resources/icons/storage.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="\n\nGeneView framework\n\&#x0A;Version: 1.0.0\n\n\&#x0A;GeneView is a visualization framework for biomedical data.\n\&#x0A;\n\&#x0A;(c) Copyright Institute for Computer Graphics and Vision (ICG) \n\&#x0A;Graz University of Technology - 2007. \&#x0A;All Rights Reserved.\n">
          </property>
       </product>
    </extension>

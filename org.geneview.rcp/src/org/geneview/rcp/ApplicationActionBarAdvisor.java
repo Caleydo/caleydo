@@ -114,7 +114,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		/**
 		 * HELP menu
 		 */
-		aboutAction = ActionFactory.ABOUT.create(window);		
+		aboutAction = ActionFactory.ABOUT.create(window);	
+		aboutAction.setText("About GeneView");
 		register(aboutAction);
 	}
 

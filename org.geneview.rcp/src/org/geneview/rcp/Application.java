@@ -1,17 +1,12 @@
 package org.geneview.rcp;
 
 import java.util.Map;
-//import java.util.Collection;
-//import java.util.HashMap;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-
 import org.geneview.core.application.core.GeneViewBootloader;
 import org.geneview.core.manager.IGeneralManager;
 
@@ -91,16 +86,6 @@ public class Application implements IApplication {
 					workbench.close();
 			}
 		});
-	}
-	
-	protected void fillMenuBar(IMenuManager menuBar) {
-		MenuManager hyperbolaMenu = new MenuManager(
-		    "&GeneView", "geneview");
-		///hyperbolaMenu.add(exitAction);
-		MenuManager helpMenu = new MenuManager("&Help", "help");
-		//helpMenu.add(aboutAction);
-		menuBar.add(hyperbolaMenu);
-		menuBar.add(helpMenu);
 	}
 
 	protected void startGeneViewCore( final String xmlFileName ) {
