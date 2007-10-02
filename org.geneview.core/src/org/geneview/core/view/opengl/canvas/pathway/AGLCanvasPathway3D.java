@@ -33,7 +33,6 @@ import org.geneview.core.manager.event.EventPublisher;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.util.mapping.EnzymeToExpressionColorMapper;
-import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.GLCanvasStatics;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
@@ -176,8 +175,6 @@ implements IMediatorReceiver, IMediatorSender {
 	protected boolean bIsMouseOverPickingEvent = false;
 	
 	protected float fLastMouseMovedTimeStamp = 0;
-	
-	protected SystemTime systemTime = new SystemTime();
 	
 	protected ArrayList<String> refInfoAreaCaption;
 	protected ArrayList<String> refInfoAreaContent;

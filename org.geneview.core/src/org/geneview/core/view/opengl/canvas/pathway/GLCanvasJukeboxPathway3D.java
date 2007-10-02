@@ -39,6 +39,8 @@ import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
 import org.geneview.core.util.sound.SoundPlayer;
+import org.geneview.core.util.system.SystemTime;
+import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLDragAndDrop;
@@ -113,6 +115,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private GLPathwayMemoPad memoPad;
 
 	private GLDragAndDrop dragAndDrop;
+	
+	private Time time;
 
 	/**
 	 * Constructor
@@ -163,28 +167,6 @@ implements IMediatorReceiver, IMediatorSender {
 				refGLPathwayTextureManager);
 
 		dragAndDrop = new GLDragAndDrop(refGLPathwayTextureManager);
-		
-//		alTextureColorByLayerPos = new ArrayList<float[]>();
-//		float[] tmpColor = new float[3];
-//		tmpColor[0] = 1;
-//		tmpColor[1] = 0.85f;
-//		tmpColor[2] = 0.85f;
-//		alTextureColorByLayerPos.add(tmpColor);
-//		tmpColor = new float[3];
-//		tmpColor[0] = 1f;
-//		tmpColor[1] = 1;
-//		tmpColor[2] = 0.85f;
-//		alTextureColorByLayerPos.add(tmpColor);
-//		tmpColor = new float[3];
-//		tmpColor[0] = 0.85f;
-//		tmpColor[1] = 1;
-//		tmpColor[2] = 0.85f;
-//		alTextureColorByLayerPos.add(tmpColor);
-//		tmpColor = new float[3];
-//		tmpColor[0] = 0.85f;
-//		tmpColor[1] = 0.85f;
-//		tmpColor[2] = 1;
-//		alTextureColorByLayerPos.add(tmpColor);
 	}
 
 	/*
@@ -194,6 +176,9 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void initGLCanvas(GL gl) {
 
+	    time = new SystemTime();
+	    ((SystemTime) time).rebase();
+		
 		// Clearing window and set background to WHITE
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -280,10 +265,14 @@ implements IMediatorReceiver, IMediatorSender {
 			bUpdateReceived = false;
 		}
 		
+		time.update();
+		
 		renderScene(gl);
 		renderInfoArea(gl);
 
-		testConnectingLines(gl);
+		renderConnectingLines(gl);
+		
+		doSlerpActions(gl);
 		
 		// int viewport[] = new int[4];
 		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
@@ -309,8 +298,6 @@ implements IMediatorReceiver, IMediatorSender {
 		renderPathwayUnderInteraction(gl);
 
 		memoPad.renderMemoPad(gl);
-		
-		doSlerpActions(gl);
 	}
 
 	private void buildLayeredPathways(final GL gl) {
@@ -728,16 +715,22 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void doSlerpActions(final GL gl) {
 
-		if (!arSlerpActions.isEmpty())
-		{
-			slerpPathway(gl, arSlerpActions.get(0));
-			// selectedVertex = null;
-		} 
-		
+		if (arSlerpActions.isEmpty())
+			return;
+				
 		if (iSlerpFactor < 1000)
 		{
-			iSlerpFactor += 500;
+			// Makes animation rendering speed independent
+			iSlerpFactor += 1200 * time.deltaT();
+			
+			if (iSlerpFactor > 1000)
+				iSlerpFactor = 1000;
+			
+			System.out.println("Slerp Factor: " +iSlerpFactor);
 		}
+		
+		slerpPathway(gl, arSlerpActions.get(0));
+		// selectedVertex = null;
 	}
 
 	private void slerpPathway(final GL gl, SlerpAction slerpAction) {
@@ -749,7 +742,7 @@ implements IMediatorReceiver, IMediatorSender {
 						slerpAction.getOriginPosIndex()), slerpAction
 				.getDestinationHierarchyLayer().getTransformByPositionIndex(
 						slerpAction.getDestinationPosIndex()),
-				iSlerpFactor / 1000f);
+				(int)iSlerpFactor / 1000f);
 
 		gl.glPushMatrix();
 		slerpMod.applySlerp(gl, transform);
@@ -1056,7 +1049,8 @@ implements IMediatorReceiver, IMediatorSender {
 			loadPathwayToUnderInteractionPosition(iPathwayId);
 
 			return;
-		} else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
+		}
+		else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
 				EPathwayVertexType.enzyme) 
 				|| pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
 				EPathwayVertexType.gene))
@@ -1289,7 +1283,7 @@ implements IMediatorReceiver, IMediatorSender {
 				LoggerType.MINOR_ERROR);
 	}
 	
-	public void testConnectingLines(final GL gl) {
+	public void renderConnectingLines(final GL gl) {
 		
 		if (!arSlerpActions.isEmpty() 
 				|| pathwayLayeredLayer.getElementList().size() < 2 
