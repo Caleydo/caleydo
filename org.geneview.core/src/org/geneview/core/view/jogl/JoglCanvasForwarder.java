@@ -21,6 +21,7 @@ import org.geneview.core.view.jogl.mouse.JoglMouseListener;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.IGLCanvasDirector;
 import org.geneview.core.view.opengl.IGLCanvasUser;
+import org.geneview.core.view.opengl.util.FPSCounter;
 
 /**
  *JoglCanvasForwarder handles several objects and forwards the OpenGL events to them.
@@ -48,6 +49,8 @@ implements GLEventListener {
 	 * This flag indicates, that the canvas was created.
 	 */
 	protected AtomicBoolean abEnableRendering;
+	
+	private FPSCounter fpsCounter;
 	
 	public JoglCanvasForwarder( final IGeneralManager refGeneralManager,
 			final IGLCanvasDirector refGLCanvasDirector, 
@@ -93,6 +96,9 @@ implements GLEventListener {
 			bCallInitOpenGL = false;
 			
 			GL gl = drawable.getGL();
+			
+			fpsCounter = new FPSCounter(drawable, 16);
+			fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
 	
 			refGeneralManager.getSingelton().logMsg(
 					"JoglCanvasForwarder [" + iUniqueId +
@@ -226,6 +232,8 @@ implements GLEventListener {
 				distanceZ );
 		
 		/** end: visual debugging ...*/
+		
+	    fpsCounter.draw();
 
 		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();		
 		while ( iter.hasNext() ) {
