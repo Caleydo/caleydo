@@ -1,7 +1,6 @@
 package org.geneview.core.view.jogl.mouse;
 
 import gleem.linalg.Vec3f;
-import gleem.linalg.Rotf;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -11,7 +10,7 @@ import java.awt.Point;
 
 import org.geneview.core.view.jogl.IJoglMouseListener;
 import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.math.MathUtil;
+//import org.geneview.core.math.MathUtil;
 
 
 /**
@@ -32,6 +31,8 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
   protected int prevMouseX, prevMouseY;
   
   protected Point pressedMousePosition;
+  
+  protected boolean bMouseLeftButtonDown = false;
   
   protected boolean bMouseRightButtonDown = false;
   
@@ -81,7 +82,10 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
   public final boolean isMouseMiddleButtondown() {
 	  return bMouseMiddleButtonDown;
   }  
-
+  
+  public final boolean isMouseLeftButtondown() {
+	  return bMouseLeftButtonDown;
+  } 
   public final Point getPressedMousePosition() {
 	  return pressedMousePosition;
   }
@@ -112,34 +116,25 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     pressedMousePosition.y = prevMouseY;
     
     /* --- Left -- Mouse Button --- */
-    if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) 
+    {
     	//System.err.println(" -- Left --");
-    	
-    	if (bMouseRight_StandbyRotate) {
-    		/* first button was "right" and 
-    		 * "right"-button is still pressed */
-    		bMouseRightButtonDown = false;
-    	}
-    	else {
-    		/* enable standby zoom...
-    		 * First button pressed is "left" */
-    		bMouseLeft_StandbyZoom = true;
-    	}
+    	this.bMouseLeftButtonDown = true;    	    
     }
     
     /* --- Right -- Mouse Button --- */
-    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+    if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) 
+    {
     	//System.err.println(" -- Right --");
     	
     	if ( bMouseLeft_StandbyZoom ) 
     	{
-    		/* first button pressed was "left" and 
-    		 * it is still pressed, but also "right" button is pressed now..
-    		 * ==> emmulate middle mouse button! */
+    		/* first button pressed was "middle" and 
+    		 * it is still pressed, but also "right" button is pressed now.. */
     		bMouseMiddleButtonDown = true;
     	}
     	else {
-    		/* first button pressed was NOT "left" and 
+    		/* first button pressed was NOT "middle" and 
     		 * but now "right" button is pressed.. */
     	
     		bMouseRightButtonDown = true;
@@ -148,10 +143,22 @@ public class JoglMouseListener implements MouseListener, MouseMotionListener {
     }
     
     /* --- Middle -- Mouse Button --- */
-    if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0) {    	
+    if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0) 
+    {    	
     	bMouseMiddleButtonDown = true;    	
     	//System.err.println(" -- Middle --");
-      }
+    	
+    	if (bMouseRight_StandbyRotate) {
+    		/* first button was "right" and 
+    		 * "right"-button is still pressed */
+    		bMouseRightButtonDown = false;
+    	}
+    	else {
+    		/* enable standby zoom...
+    		 * First button pressed is "middle" */
+    		bMouseLeft_StandbyZoom = true;
+    	}
+    }
   }
     
   public void mouseReleased(MouseEvent e) {

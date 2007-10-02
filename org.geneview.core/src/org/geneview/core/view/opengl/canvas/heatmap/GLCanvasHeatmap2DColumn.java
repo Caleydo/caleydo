@@ -4,6 +4,8 @@
 package org.geneview.core.view.opengl.canvas.heatmap;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
+import gleem.linalg.open.Vec3fGL;
 import gleem.linalg.open.Vec4i;
 
 import java.awt.Color;
@@ -48,9 +50,10 @@ import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
 //import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
 //import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener; //import org.geneview.core.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
 import org.geneview.core.util.mapping.ColorMapping;
+import org.geneview.core.util.mapping.ColorMapping3f_3SamplePoints;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.IGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
+//import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
@@ -76,21 +79,23 @@ extends AGLCanvasHeatmap2D
 	public static final int Z = AGLCanvasHeatmap2D.Z;
 
 	public static final int MAX = AGLCanvasHeatmap2D.MAX;
+	
 
 	/* ----  COLOR  ------ */
-	private float fColorMappingShiftFromMean = 1.0f;
+	private Vec3fGL color_PickedPoints = new Vec3fGL(1,1,0);
+	private Vec3fGL color_HeatmapFrame = new Vec3fGL(0,0,0);
+	private Vec3fGL color_Selection_FramefillColor = new Vec3fGL(0,1,1);
+	private Vec3fGL color_Selection_Frame = new Vec3fGL(0.1f,0.1f,0.1f);
+	private Vec3fGL color_Selection_Frame_Tip = new Vec3fGL(0,0,1);
+	private Vec3fGL color_Selection_DepthIndicator = new Vec3fGL(0,0,0);
+	private Vec3fGL color_Selection_ConnectionLine_inFocus = new Vec3fGL(0.2f,1, 110/255);
+	private Vec3fGL color_Selection_ConnectionLine_outOffFocus = new Vec3fGL(0.1f, 1, 1);
+	private Vec3fGL color_Selection_DepthIndicator_fillColor = new Vec3fGL(0, 0, 0);
+	
+	
+	
+	
 
-	private float fColorMappingHighValue = 1.0f;
-
-	private float fColorMappingLowValue = 0.0f;
-
-	private float fColorMappingMiddleValue = 0.25f;
-
-	private float fColorMappingHighRangeDivisor = 1 / 0.75f;
-
-	private float fColorMappingLowRangeDivisor = 1 / 0.25f;
-
-	private float fColorMappingLowRange = 0.25f;	
 	/* ----  END: COLOR ------ */
 	
 	private int iHeatmapDisplayListId = -1;
@@ -106,6 +111,8 @@ extends AGLCanvasHeatmap2D
 	private float fIncX_forSelection;
 	
 	private ColorMapping colorMapper;
+	
+	protected ColorMapping3f_3SamplePoints colorMapperVec3f;
 	
 	/**
 	 * If this limit is exceeded no lines between the data values will be shown 
@@ -183,11 +190,8 @@ extends AGLCanvasHeatmap2D
 	protected int[] iSelectionLengthX;
 
 	protected int[] iSelectionLengthY;
-	
-	/**
-	 * Stretch lowest color in order to be not Back!
-	 */
-	private float fColorMappingPercentageStretch = 0.2f;
+
+	private int iRenderSelection_encircleEachItem = 200;
 	
 	
 	/**
@@ -254,7 +258,9 @@ extends AGLCanvasHeatmap2D
 		
 		colorMapper = new ColorMapping(0, 60000);
 		
-		hashChildrenWindow = new HashMap <Integer,Vec4i> (4);		
+		colorMapperVec3f = new ColorMapping3f_3SamplePoints();
+		
+		hashChildrenWindow = new HashMap <Integer,Vec4i> (4);				
 	}
 	
 	/**
@@ -586,8 +592,10 @@ extends AGLCanvasHeatmap2D
 	/* --------------------------- */
 	/* -----  BEGEN: PICKING ----- */
 
-	protected final boolean processHits(final GL gl, int iHitCount,
-			int iArPickingBuffer[], final Point pickPoint,
+	protected final boolean processHits(final GL gl,
+			final int iHitCount,
+			int iArPickingBuffer[], 
+			final Point pickPoint,
 			ArrayList<Vec2f> fIndexPickedCoored) {
 
 		// System.out.println("Number of hits: " +iHitCount);
@@ -980,9 +988,9 @@ extends AGLCanvasHeatmap2D
 //		if ( pickingTriggerMouseAdapter.wasMouseMoved())
 //		pickingTriggerMouseAdapter.wasMouseMoved()
 		
-		if (pickingTriggerMouseAdapter.wasMousePressed())
+		if (pickingTriggerMouseAdapter.wasMouseReleased())
 		{
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			pickPoint = new Point( pickingTriggerMouseAdapter.getPickedPoint() );
 //			bIsMousePickingEvent = true;
 		}
 //		else
@@ -995,11 +1003,13 @@ extends AGLCanvasHeatmap2D
 		if (pickPoint != null)
 		{
 			pickObjects(gl, pickPoint);
+			
+			//pickPoint = null;
 		}
 
 	}
 
-	protected void pickObjects(final GL gl, Point pickPoint) {
+	protected void pickObjects(final GL gl, final Point pickPoint) {
 
 		int PICKING_BUFSIZE = 1024;
 
@@ -1034,11 +1044,6 @@ extends AGLCanvasHeatmap2D
 		// FIXME: values have to be taken from XML file!!
 		gl.glOrtho(-4.0f, 4.0f, -h, h, 1.0f, 60.0f);
 
-		// Store picked point
-		Point tmpPickPoint = (Point) pickPoint.clone();
-		// Reset picked point
-		pickPoint = null;
-
 		renderPart4pickingX(gl);
 	
 		/* second layer of picking.. */
@@ -1058,7 +1063,7 @@ extends AGLCanvasHeatmap2D
 		pickingBuffer.get(iArPickingBuffer);
 		
 		//boolean bPickinedNewObject = 
-		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, fIndexPickedCoored);
+		processHits(gl, iHitCount, iArPickingBuffer, pickPoint, fIndexPickedCoored);
 				
 	}
 	
@@ -1225,7 +1230,7 @@ extends AGLCanvasHeatmap2D
 				Iterator<Vec2f> iterPickedPoints = fIndexPickedCoored
 						.iterator();
 
-				gl.glColor3f(1.0f, 1.0f, 0);
+				color_Selection_FramefillColor.glColor3f(gl);				
 				for (int i = 0; iterPickedPoints.hasNext(); i++)
 				{
 					/**
@@ -1264,7 +1269,6 @@ extends AGLCanvasHeatmap2D
 				{
 
 					gl.glLineWidth(fSelectionLineWidth);
-					gl.glColor3f(0, 0, 1);
 
 					if ((selectedIndex[index_X_H] >= iRenderIndexStart)
 							&& (selectedIndex[index_X_H] < iRenderIndexStop))
@@ -1281,15 +1285,6 @@ extends AGLCanvasHeatmap2D
 						/* LINES */
 						fNowY = viewingFrame[Y][MIN];
 						fNextY = viewingFrame[Y][MAX];
-
-						gl.glBegin(GL.GL_LINES);
-
-						gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
-						gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
-
-						gl.glEnd();
 						
 						/* BOTTOM */
 						render_Selection_Detail(gl,
@@ -1305,13 +1300,23 @@ extends AGLCanvasHeatmap2D
 						fNowY = viewingFrame[Y][MAX];
 						fNextY = viewingFrame[Y][MAX] + fSelectionPixel * fIncY;
 						
-						gl.glColor3f(0,0,1);
+						color_Selection_FramefillColor.glColor3f(gl);
 						gl.glBegin(GL.GL_TRIANGLE_FAN);
 
 						gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
 						gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
 						gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
 						gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
+
+						gl.glEnd();
+						
+						color_Selection_Frame.glColor3f(gl);
+						gl.glBegin(GL.GL_LINES);
+
+						gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+						gl.glVertex3f(fNowX, fNextY, viewingFrame[Z][MIN]);
+						gl.glVertex3f(fNextX, fNowY, viewingFrame[Z][MIN]);
+						gl.glVertex3f(fNextX, fNextY, viewingFrame[Z][MIN]);
 
 						gl.glEnd();
 
@@ -1343,59 +1348,42 @@ extends AGLCanvasHeatmap2D
 	 * 
 	 * @param fColorMappingShiftFromMean 1.0f indicates no shift
 	 */
-	private void initColorMapping(final float fColorMappingShiftFromMean) {
+	private void initColorMapping() {
 
 		if (refMinMaxDataInteger.isValid())
 		{
-			fColorMappingLowValue = (float) refMinMaxDataInteger.getMin(0);
-			fColorMappingHighValue = (float) refMinMaxDataInteger.getMax(0);
-			fColorMappingMiddleValue = (float) refMinMaxDataInteger.getMean(0)
-					* fColorMappingShiftFromMean;
-
-			fColorMappingLowRange = fColorMappingMiddleValue
-					- fColorMappingLowValue;
-			fColorMappingHighRangeDivisor = 1.0f / (fColorMappingHighValue - fColorMappingMiddleValue);
-			fColorMappingLowRangeDivisor = 1.0f / (fColorMappingLowRange * (1.0f + fColorMappingPercentageStretch));
+			/**
+			 * Dynamic color mapping
+			 */
+			colorMapperVec3f.addSamplingPoint_Vecf( new Vec3f(1,0,0), (float) refMinMaxDataInteger.getMin(0));
+			colorMapperVec3f.addSamplingPoint_Vecf( new Vec3f(1,1,0), (float) refMinMaxDataInteger.getMean(0));
+			colorMapperVec3f.addSamplingPoint_Vecf( new Vec3f(0,1,0), (float) refMinMaxDataInteger.getMax(0));
 
 			float fValuesInColum = (float) refMinMaxDataInteger.getItems(0)
 					/ (float) iValuesInRow;
 
 			iValuesInColum = (int) (fValuesInColum);
+			
+			return;
 		} else
 		{
 			System.err.println("Error while init color mapping for Heatmap!");
 		}
 		
-		fColorMappingLowValue = 0.0f;
-		fColorMappingHighValue = 60000.0f;
+		float fColorMappingLowValue = 0.0f;
+		float fColorMappingHighValue = 60000.0f;
 		
-		fColorMappingLowRange = fColorMappingMiddleValue
-		- fColorMappingLowValue;
-		
-		fColorMappingHighRangeDivisor = 1.0f / (fColorMappingHighValue - fColorMappingMiddleValue);
-		fColorMappingLowRangeDivisor = 1.0f / (fColorMappingLowRange * (1.0f + fColorMappingPercentageStretch));
+		colorMapperVec3f.addSamplingPoint_Vecf( new Vec3f(1,0,0), fColorMappingLowValue);
+		colorMapperVec3f.addSamplingPoint_Vecf( new Vec3f(1,1,0), (fColorMappingHighValue - fColorMappingLowValue) / 2);
+		colorMapperVec3f.addSamplingPoint_Vecf( new Vec3f(0,1,0), fColorMappingHighValue);
 
 	}
 
 	protected void colorMapping(final GL gl, final int iValue) {
-
-//		float fValue = fColorMappingMiddleValue - (float) iValue;
-//
-//		if (fValue < 0.0f)
-//		{
-//			// range [fColorMappingLowValue..fColorMappingMiddleValue[
-//
-//			float fScale = (fColorMappingLowRange + fValue)
-//					* fColorMappingLowRangeDivisor;
-//			gl.glColor3f(0, 1.0f - fScale, 0);
-//
-//			return;
-//		}
-//		//else
-//
-//		//range [fColorMappingMiddleValue..fColorMappingHighValue]
-//		float fScale = (fValue) * fColorMappingHighRangeDivisor;
 		
+//		colorMapperVec3f.colorMapping_glColor3f(gl, iValue);
+		
+		/* Use color mapper with LUT.. */
 		Color tmpNodeColor = colorMapper.colorMappingLookup(iValue);
 		gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
 				tmpNodeColor.getGreen() / 255.0f, 
@@ -1457,7 +1445,7 @@ extends AGLCanvasHeatmap2D
 		if (bUpdateColorMapping)
 		{
 			refMinMaxDataInteger.useSet(addTargetSet);
-			initColorMapping(fColorMappingShiftFromMean);
+			initColorMapping();
 		}
 
 	}
@@ -1481,7 +1469,7 @@ extends AGLCanvasHeatmap2D
 		float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN])
 		/ (float) (alTargetSet.size());
 
-		gl.glColor3f(1.0f, 1.0f, 0.1f);
+		color_HeatmapFrame.glColor3f(gl);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], fBias_Z);
 		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], fBias_Z);
@@ -1622,8 +1610,8 @@ extends AGLCanvasHeatmap2D
 			final float fSign ) {
 		
 		//if  (selectedIndexModeArray[selectedIndexMode_Index] > 0 ) {
-		
-			gl.glColor3f(0, 0, 1);
+					
+			color_Selection_Frame_Tip.glColor3f(gl);
 			gl.glBegin(GL.GL_TRIANGLE_FAN);
 			
 			float fY_a = fY + selectedIndexMode_Value * fIncY * fSelectionPixel * fSign;
@@ -1642,7 +1630,7 @@ extends AGLCanvasHeatmap2D
 			/**
 			 * Render a line to indicate depth of selection; from neighborhood 
 			 */
-			gl.glColor3f(1, 1, 1);
+			color_Selection_DepthIndicator.glColor3f(gl);
 			float fZb = fZ + fPickingBias;
 			for ( int j=1; j < selectedIndexMode_Value; j++ ) {
 				fY_a = fY + j * fIncY * fSelectionPixel * fSign;
@@ -1677,6 +1665,13 @@ extends AGLCanvasHeatmap2D
 			return;
 		}
 		
+		boolean bShowSelectionItemBoundaries = true;
+		
+		if ( iRenderIndexStop - iRenderIndexStart > iRenderSelection_encircleEachItem  ) 
+		{
+			bShowSelectionItemBoundaries = false;
+		}
+		
 		/* reset rendering parameters.. */
 		float fOffsetY= 2.0f; //(viewingFrame[X][MAX] - viewingFrame[X][MIN]);
 		
@@ -1700,6 +1695,12 @@ extends AGLCanvasHeatmap2D
 		ArrayList <Integer> bufferValueArrays_Offset = new ArrayList <Integer> ();
 		
 		Iterator <ISet> iterTargetSet = alTargetSet.iterator();
+		
+		boolean bBuffer_ShowSelectionItemBoundaries = false;
+		boolean bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = true;
+		boolean bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine = false;
+		float fBuffer_ShowSelectionItemBoundaries = 0.0f;
+		float iBuffer_ShowSelectionItemBoundaries_lastIndex = -1;
 		
 		while (iterTargetSet.hasNext()) {
 			/* read ISet and add "selection-data" to internal data structure */
@@ -1742,7 +1743,6 @@ extends AGLCanvasHeatmap2D
 		 * end: sort selectedIndex
 		 * array (int[]) selectedIndex[] is sorted now
 		 */
-				
 		
 		for ( int i=0; i < selectedIndex.length; i++) {
 			
@@ -1823,11 +1823,110 @@ extends AGLCanvasHeatmap2D
 				if  ( (iCurrentIndex > this.iRenderIndexStart) && 
 						(iCurrentIndex < this.iRenderIndexStop )) 
 				{
-					gl.glColor3f(0.1f, 1, 1);
+					/** render separation line in selection */
+					color_Selection_Frame.glColor3f(gl);
+					
+					if  (bShowSelectionItemBoundaries)
+					{
+						
+						if ( bBuffer_ShowSelectionItemBoundaries ) 
+						{
+							if ( iBuffer_ShowSelectionItemBoundaries_lastIndex + 1 == iRenderTargetLine_Index ) 
+							{
+								/** put right line in buffer... 
+								 * overwrite buffer also */
+								fBuffer_ShowSelectionItemBoundaries = fLineXright;
+								iBuffer_ShowSelectionItemBoundaries_lastIndex = iRenderTargetLine_Index;	
+								bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = false;
+								bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine = true;
+							}
+							else
+							{
+								/**
+								 * Render line from buffer..
+								 */
+								/* render separation line in original heatmap  */
+								color_Selection_Frame.glColor3f(gl);
+								gl.glBegin(GL.GL_LINES);								
+								gl.glVertex3f(fBuffer_ShowSelectionItemBoundaries, 
+										viewingFrame[Y][MIN], 
+										viewingFrame[Z][MIN]);
+								gl.glVertex3f(fBuffer_ShowSelectionItemBoundaries, 
+										viewingFrame[Y][MAX], 
+										viewingFrame[Z][MIN]);
+								gl.glEnd();
+								
+								/** first line to draw */
+								
+								//gl.glColor3f(1, 0, 0);
+								gl.glBegin(GL.GL_LINES);								
+								gl.glVertex3f(fLineXleft, 
+										viewingFrame[Y][MIN], 
+										viewingFrame[Z][MIN]);
+								gl.glVertex3f(fLineXleft, 
+										viewingFrame[Y][MAX], 
+										viewingFrame[Z][MIN]);
+								gl.glEnd();
+								
+								iBuffer_ShowSelectionItemBoundaries_lastIndex = iRenderTargetLine_Index;
+								fBuffer_ShowSelectionItemBoundaries = fLineXright;
+								bBuffer_ShowSelectionItemBoundaries = true;
+								bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = true;
+							}
+						}		
+						else
+						{
+							/** first line to draw */
+							/* render separation line in original heatmap  */
+							color_Selection_Frame.glColor3f(gl);
+							gl.glBegin(GL.GL_LINES);								
+							gl.glVertex3f(fLineXleft, 
+									viewingFrame[Y][MIN], 
+									viewingFrame[Z][MIN]);
+							gl.glVertex3f(fLineXleft, 
+									viewingFrame[Y][MAX], 
+									viewingFrame[Z][MIN]);
+							gl.glEnd();
+							
+							iBuffer_ShowSelectionItemBoundaries_lastIndex = iRenderTargetLine_Index;
+							fBuffer_ShowSelectionItemBoundaries = fLineXright;
+							bBuffer_ShowSelectionItemBoundaries = true;
+							bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = true;
+						}
+						
+						if ( bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea )
+						{
+							/* render separation line in own render area for selection */
+							color_Selection_Frame.glColor3f(gl);
+							gl.glBegin(GL.GL_LINES);
+							
+							gl.glVertex3f(fNowX, viewingFrame[Y][MIN] + fOffsetY, viewingFrame[Z][MIN]);
+							gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+							
+							gl.glEnd();
+						}
+						
+						/** end: render separation line in selection */																		
+					}
+					
+					color_Selection_ConnectionLine_inFocus.glColor3f(gl);
 				}
 				else
-				{
-					gl.glColor3f(0, 1, 84/255);
+				{										
+					if ( bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine )
+					{
+						/* render separation line in own render area for selection */
+						color_Selection_Frame.glColor3f(gl);
+						gl.glBegin(GL.GL_LINES);
+						
+						gl.glVertex3f(fNowX, viewingFrame[Y][MIN] + fOffsetY, viewingFrame[Z][MIN]);
+						gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
+						
+						gl.glEnd();
+						bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine = false;
+					}
+					
+					color_Selection_ConnectionLine_outOffFocus.glColor3f(gl);
 				}
 				
 				gl.glBegin(GL.GL_LINES);
@@ -1840,6 +1939,7 @@ extends AGLCanvasHeatmap2D
 						viewingFrame[Z][MIN]);
 				
 				gl.glEnd();
+				
 				/** 
 				 * end: render connection line to target in heatmap 
 				 */
@@ -1869,7 +1969,6 @@ extends AGLCanvasHeatmap2D
 				/** 
 				 * TOP
 				 */
-				gl.glColor3f(0.1f, 1, 1);
 				gl.glBegin(GL.GL_TRIANGLES);				
 					gl.glVertex3f(fLineXleft, 
 							viewingFrame[Y][MAX], 
@@ -1885,6 +1984,8 @@ extends AGLCanvasHeatmap2D
 				/** 
 				 * BOTTOM
 				 */
+				
+				color_Selection_DepthIndicator_fillColor.glColor3f(gl);
 				gl.glBegin(GL.GL_TRIANGLES);
 				//gl.glBegin(GL.GL_LINE_LOOP);
 				
@@ -1898,21 +1999,11 @@ extends AGLCanvasHeatmap2D
 							viewingFrame[Y][MIN], 
 							viewingFrame[Z][MIN]);
 				
-				gl.glEnd();	
-				
+				gl.glEnd();					
 				/** 
 				 * end: Render BlueBox on top of heatmap, were selection is done 
 				 */
 				
-				
-//				/** render separation line in selection */
-//				gl.glBegin(GL.GL_LINES);
-//				
-//				gl.glVertex3f(fNowX, viewingFrame[Y][MIN] + fOffsetY, viewingFrame[Z][MIN]);
-//				gl.glVertex3f(fNowX, fNowY, viewingFrame[Z][MIN]);
-//				
-//				gl.glEnd();
-//				/** end: render separation line in selection */
 				
 				fNowX = fNextX;
 				fNextX += fIncX;
@@ -1920,16 +2011,31 @@ extends AGLCanvasHeatmap2D
 				/* reset Y.. */
 				fNowY = viewingFrame[Y][MIN] + fOffsetY;
 				fNextY = fNowY + fIncY;
-				
+								
 				/* search for data values now.. */
 				
 		
 		} //for ( int i=0; i < selectedIndex.length; i++) {
 		
+		if ( bBuffer_ShowSelectionItemBoundaries )
+		{
+			/* render remaining separation line in original heatmap  */
+			color_Selection_Frame.glColor3f(gl);
+			gl.glBegin(GL.GL_LINES);								
+			gl.glVertex3f(fBuffer_ShowSelectionItemBoundaries, 
+					viewingFrame[Y][MIN], 
+					viewingFrame[Z][MIN]);
+			gl.glVertex3f(fBuffer_ShowSelectionItemBoundaries, 
+					viewingFrame[Y][MAX], 
+					viewingFrame[Z][MIN]);
+			gl.glEnd();
+		}
+		
+		
 		/**
 		 * Surrounding box for "selection" on top of heatmap
 		 */
-		gl.glColor3f(1.0f, 1.0f, 0.1f);
+		color_Selection_Frame.glColor3f(gl);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(viewingFrame[X][MIN] + fXOffset, viewingFrame[Y][MIN]+ fOffsetY, viewingFrame[Z][MIN]);
 		gl.glVertex3f(fNowX, viewingFrame[Y][MIN]+ fOffsetY, viewingFrame[Z][MIN]);
@@ -2370,7 +2476,8 @@ extends AGLCanvasHeatmap2D
 		
 		Iterator<Vec4i> iter = hashChildrenWindow.values().iterator();
 		
-		gl.glColor3f(0, 1, 1);
+		color_Selection_Frame.glColor3f(gl);
+		
 		gl.glLineWidth(4);
 		while ( iter.hasNext() ) 
 		{

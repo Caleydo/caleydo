@@ -121,5 +121,18 @@ public class ColorMapping4f extends AColorMappingVecf <Vec4f> {
 
 		return new Vec3f( colorMapping4f(lookupValue) );
 	}
+	
+	@Override
+	protected final boolean testColorIsValid(Vec4f color) {
+
+		for (int i=0; i<color.length(); i++ )
+		{
+			float value = color.get(i);
+			if ( value < 0.0f || value>1.0f ) {
+				return false;
+			}
+		}
+		return false;
+	}
 
 }

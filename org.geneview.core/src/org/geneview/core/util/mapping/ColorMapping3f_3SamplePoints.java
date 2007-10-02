@@ -12,70 +12,83 @@ import java.util.Iterator;
 
 /**
  * Tuned color mapping for (float) ==> Vec3f as color; 
+ * Fixed number of 3 sample points.
  * Vec3f(x,y,z) ==> Color(R [0..1],G[0..1],B[0..1])
  * 
  * @author Michael Kalkusch
  *
  */
-public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
+public class ColorMapping3f_3SamplePoints extends AColorMappingVecf <Vec3f> {
+	
+	private static final int iSamplePoints = 3;
+	
+	/**
+	 * Define, how many sample points have been set
+	 */
+	protected int iSamplePointsSet = 0;
 	
 	/**
 	 * 
 	 */
-	public ColorMapping3f() {
+	public ColorMapping3f_3SamplePoints() {
 
 		super();
 		
-		supportingPoints_ColorInc = new Vec3f[0];
-		supportingPoints_ColorOffset = new Vec3f[0];
+		/**
+		 * do not need the two ArrayLists, use arrays only!
+		 */
+		supportingPoints_Color = null;
+		supportingPoints_Float = null;		
 		
 		belowLowerBound_ColorVecf = new Vec3f(0,0,0);
 		aboveUpperBound_ColorVecf = new Vec3f(1,1,1);
+		
+		/**
+		 * allocate arrays of super class
+		 */
+		supportingPoints_ColorInc = new Vec3f[iSamplePoints-1];
+		supportingPoints_ColorOffset = new Vec3f[iSamplePoints];		
+		supportingPoints_Values = new float[iSamplePoints];
+		supportingPoints_ValuesReciprocalRange = new float[iSamplePoints];
 	}
 
-	public final void addSamplingPoint_Vecf(final Vec3f color, final float value) {
+	public final void addSamplingPoint_Vecf(final Vec3f color, final float value) {	
 		
-		supportingPoints_Color.add(color);
-		supportingPoints_Float.add(value);
-		
-		supportingPoints_Values = new float[supportingPoints_Float.size()];
-		supportingPoints_ValuesReciprocalRange = new float[supportingPoints_Float.size()];
-		supportingPoints_ColorInc = new Vec3f[supportingPoints_Float.size()-1];
-		supportingPoints_ColorOffset = new Vec3f[supportingPoints_Float.size()-1];
-		
-		Iterator<Float> iterFloat = supportingPoints_Float.iterator();
-		
-		for ( int i=0; i<supportingPoints_Values.length-1; i++) 
+		if ( iSamplePointsSet < iSamplePoints) 
 		{
-			supportingPoints_Values[i] = iterFloat.next().floatValue();
+			supportingPoints_Values[iSamplePointsSet] = value;
+			supportingPoints_ColorOffset[iSamplePointsSet] = color;
 			
-			if ( i > 0 )
+			if ( iSamplePointsSet != 0 )
 			{
-				float divisor = supportingPoints_Values[i-1] - supportingPoints_Values[i];
+				float divisor = supportingPoints_Values[iSamplePointsSet] - supportingPoints_Values[iSamplePointsSet-1];
 				if  (divisor != 0.0f ) 
 				{
-					supportingPoints_ValuesReciprocalRange[i-1] = 1.0f / divisor;
+					supportingPoints_ValuesReciprocalRange[iSamplePointsSet-1] = 1.0f / divisor;
 				}
 				else
 				{
 					throw new RuntimeException("Division by Zero; during creation of color mapping");
 				}
+				
+				/* buffer low and high values.. */
+				Vec3f low = supportingPoints_ColorOffset[iSamplePointsSet-1];
+				
+				/**
+				 * this defines the color mapping!
+				 */
+				supportingPoints_ColorInc[iSamplePointsSet-1] = new Vec3f( 
+						low.x() - color.x(),
+						low.y() - color.y(),
+						low.z() - color.z());
 			}
 			
-			/* buffer low and high values.. */
-			Vec3f low = supportingPoints_Color.get(i);
-			Vec3f high = supportingPoints_Color.get(i+1);
-			
-			/**
-			 * this defines the color mapping!
-			 */
-			supportingPoints_ColorInc[i] = new Vec3f( 
-					low.x() - high.x(),
-					low.y() - high.y(),
-					low.z() - high.z());
+			iSamplePointsSet++;
 		}
-		
-		supportingPoints_Values[supportingPoints_Values.length] = iterFloat.next().floatValue();
+		else
+		{
+			throw new RuntimeException("Division by Zero; during creation of color mapping");
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -109,12 +122,12 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 			return belowLowerBound_ColorVecf;
 		}
 		
-		for ( int i=0; i<supportingPoints_Values.length; i++)
+		for ( int i=0; i<(supportingPoints_Values.length-1); i++)
 		{
 			/* test with NEXT supporting value.. */
 			if ( lookupValue < supportingPoints_Values[i+1] ) {
 				
-				/* use lower bound of current interval */
+				/* use lower bound of current interval; diff_percentage is in the range of [0.0f .. 1.0f] */
 				float diff_percentage = 
 					(lookupValue - supportingPoints_Values[i]) * supportingPoints_ValuesReciprocalRange[i];
 				return supportingPoints_ColorOffset[i].addScaled(diff_percentage, supportingPoints_ColorInc[i] );
@@ -124,7 +137,7 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 		/* above upper bound */
 		return this.aboveUpperBound_ColorVecf;
 	}
-
+	
 	@Override
 	protected boolean testColorIsValid(Vec3f color) {
 

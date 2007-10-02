@@ -261,7 +261,9 @@ implements IMediatorReceiver, IMediatorSender {
 		//GL gl = canvas.getGL();
 		
 		// Clearing window and set background to WHITE
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		// is already set inside JoglCanvasForwarder
+		//gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		
 		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	
 		

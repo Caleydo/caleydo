@@ -109,7 +109,7 @@ implements GLEventListener {
 
 			
 			gl.glShadeModel(GL.GL_SMOOTH); // Enables Smooth Shading
-			gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black Background
+			gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
 			gl.glClearDepth(1.0f); // Depth Buffer Setup
 	
 			gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing

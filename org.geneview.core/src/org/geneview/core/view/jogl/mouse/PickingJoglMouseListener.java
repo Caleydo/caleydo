@@ -16,7 +16,9 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 
 	protected boolean bMouseMoved = false;
 	
-	protected Point pickedPoint;
+	protected Point pickedPointDragStart;
+	
+	protected Point pickedPointCurrent;
 	
 	protected boolean bMousePressed = false;
 	
@@ -30,17 +32,21 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 	public PickingJoglMouseListener(final IJoglMouseListener refParentGearsMain) {
 
 		super(refParentGearsMain);
+		
+		pickedPointDragStart = new Point();
 	}
 	
 	public void mousePressed(MouseEvent mouseEvent) {
 
 		super.mousePressed(mouseEvent);
 		
-		if (mouseEvent.getButton() == MouseEvent.BUTTON2)
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1_MASK)
 		{
-			pickedPoint = mouseEvent.getPoint();
+			/** Left mouse button clicked.. */
 			bMousePressed = true;
 		}
+		
+		pickedPointDragStart.setLocation(mouseEvent.getPoint());
 	}
 	
     public void mouseMoved(MouseEvent mouseEvent){
@@ -48,7 +54,7 @@ public class PickingJoglMouseListener extends JoglMouseListener {
     	super.mouseMoved(mouseEvent);
     	
     	bMouseMoved = true;
-    	pickedPoint = mouseEvent.getPoint();
+    	pickedPointCurrent = mouseEvent.getPoint();
     }
     
 	public void mouseReleased(MouseEvent mouseEvent) {
@@ -56,7 +62,7 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 		super.mouseReleased(mouseEvent);
 		
 		bMouseReleased = true;
-		pickedPoint = mouseEvent.getPoint();
+		pickedPointCurrent = mouseEvent.getPoint();
 	}
 	
 	public void mouseDragged(MouseEvent mouseEvent) {
@@ -64,7 +70,7 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 		super.mouseDragged(mouseEvent);
 		
 		bMouseDragged = true;
-		pickedPoint = mouseEvent.getPoint();
+		pickedPointCurrent = mouseEvent.getPoint();
 	}
     
     public final boolean wasMousePressed() {
@@ -83,8 +89,8 @@ public class PickingJoglMouseListener extends JoglMouseListener {
     
     public final boolean wasMouseReleased() {
     	
-    	boolean bTmp = bMouseReleased;
-    	bMouseReleased = false;
+    	boolean bTmp = bMouseLeftButtonDown;
+    	bMouseLeftButtonDown = false;
     	return bTmp;
     }
     
@@ -97,7 +103,12 @@ public class PickingJoglMouseListener extends JoglMouseListener {
     
     public final Point getPickedPoint() {
     	
-    	return pickedPoint;
+    	return pickedPointCurrent;
+    }
+    
+    public final Point getPickedPointDragStart() {
+    	
+    	return pickedPointDragStart;
     }
 
 }
