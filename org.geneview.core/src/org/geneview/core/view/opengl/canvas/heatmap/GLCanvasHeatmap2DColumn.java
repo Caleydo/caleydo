@@ -1700,7 +1700,7 @@ extends AGLCanvasHeatmap2D
 		boolean bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = true;
 		boolean bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine = false;
 		float fBuffer_ShowSelectionItemBoundaries = 0.0f;
-		float iBuffer_ShowSelectionItemBoundaries_lastIndex = -1;
+		float iBuffer_ShowSelectionItemBoundaries_lastIndex = -2;
 		
 		while (iterTargetSet.hasNext()) {
 			/* read ISet and add "selection-data" to internal data structure */
@@ -1828,6 +1828,7 @@ extends AGLCanvasHeatmap2D
 					
 					if  (bShowSelectionItemBoundaries)
 					{
+						bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine = true;
 						
 						if ( bBuffer_ShowSelectionItemBoundaries ) 
 						{
@@ -1838,7 +1839,7 @@ extends AGLCanvasHeatmap2D
 								fBuffer_ShowSelectionItemBoundaries = fLineXright;
 								iBuffer_ShowSelectionItemBoundaries_lastIndex = iRenderTargetLine_Index;	
 								bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = false;
-								bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine = true;
+								
 							}
 							else
 							{
@@ -1870,7 +1871,6 @@ extends AGLCanvasHeatmap2D
 								
 								iBuffer_ShowSelectionItemBoundaries_lastIndex = iRenderTargetLine_Index;
 								fBuffer_ShowSelectionItemBoundaries = fLineXright;
-								bBuffer_ShowSelectionItemBoundaries = true;
 								bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = true;
 							}
 						}		
@@ -1889,9 +1889,9 @@ extends AGLCanvasHeatmap2D
 							gl.glEnd();
 							
 							iBuffer_ShowSelectionItemBoundaries_lastIndex = iRenderTargetLine_Index;
-							fBuffer_ShowSelectionItemBoundaries = fLineXright;
-							bBuffer_ShowSelectionItemBoundaries = true;
+							fBuffer_ShowSelectionItemBoundaries = fLineXright;							
 							bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea = true;
+							bBuffer_ShowSelectionItemBoundaries = true;
 						}
 						
 						if ( bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea )
@@ -1913,7 +1913,7 @@ extends AGLCanvasHeatmap2D
 				}
 				else
 				{										
-					if ( bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine )
+					if ( bShowSelectionItemBoundaries && bBuffer_ShowSelectionItemBoundaries_RenderSelectionArea_FinishLine )
 					{
 						/* render separation line in own render area for selection */
 						color_Selection_Frame.glColor3f(gl);
@@ -2017,7 +2017,7 @@ extends AGLCanvasHeatmap2D
 		
 		} //for ( int i=0; i < selectedIndex.length; i++) {
 		
-		if ( bBuffer_ShowSelectionItemBoundaries )
+		if ( bShowSelectionItemBoundaries && bBuffer_ShowSelectionItemBoundaries )
 		{
 			/* render remaining separation line in original heatmap  */
 			color_Selection_Frame.glColor3f(gl);

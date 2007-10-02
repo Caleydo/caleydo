@@ -46,7 +46,7 @@ public class Vec2i extends Veci {
 	 */
 	protected Vec2i(final int size) {
 
-		super(2);
+		super(size);
 	}
 	
 
