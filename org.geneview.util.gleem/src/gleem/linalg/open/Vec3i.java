@@ -16,7 +16,7 @@ public class Vec3i extends Veci {
 	//protected int[] data;
 	
 	/**
-	 * @param n
+	 * 
 	 */
 	public Vec3i() {
 
@@ -24,7 +24,7 @@ public class Vec3i extends Veci {
 	}
 
 	/**
-	 * @param arg
+	 * 
 	 */
 	public Vec3i(Veci source) {
 

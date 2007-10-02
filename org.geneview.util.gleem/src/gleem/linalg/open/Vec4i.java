@@ -16,7 +16,7 @@ public class Vec4i extends Vec2i {
 	protected static final int W = 3;
 	
 	/**
-	 * @param n
+	 * 
 	 */
 	public Vec4i() {
 
@@ -31,7 +31,7 @@ public class Vec4i extends Vec2i {
 	}
 
 	/**
-	 * @param arg
+	 * 
 	 */
 	public Vec4i(final Veci arg) {
 

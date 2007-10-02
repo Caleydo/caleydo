@@ -16,7 +16,7 @@ public class Vec2i extends Veci {
 	protected static final int Y = 1;
 	
 	/**
-	 * @param n
+	 * 
 	 */
 	public Vec2i() {
 
@@ -33,12 +33,23 @@ public class Vec2i extends Veci {
 	}
 	
 	/**
-	 * @param n
+	 * @param arg copy values
 	 */
-	protected Vec2i(int size) {
+	public Vec2i(Vec2i arg) {
 
-		super(size);
+		super(2);
+		this.set(arg);
 	}
+	
+	/**
+	 * @param size specify size
+	 */
+	protected Vec2i(final int size) {
+
+		super(2);
+	}
+	
+
 	
 	public final int x() {
 		return get(X);
@@ -46,6 +57,11 @@ public class Vec2i extends Veci {
 	
 	public final int y() {
 		return get(Y);
+	}
+	
+	public final void set(Vec2i arg) {
+		set(X,arg.x());
+		set(Y,arg.y());
 	}
 	
 	public final void setX(int x) {
