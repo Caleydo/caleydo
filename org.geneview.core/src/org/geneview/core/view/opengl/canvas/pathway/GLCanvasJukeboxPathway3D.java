@@ -726,8 +726,6 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			if (iSlerpFactor > 1000)
 				iSlerpFactor = 1000;
-			
-			System.out.println("Slerp Factor: " +iSlerpFactor);
 		}
 		
 		slerpPathway(gl, arSlerpActions.get(0));

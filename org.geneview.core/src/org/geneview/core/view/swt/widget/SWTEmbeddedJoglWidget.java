@@ -10,6 +10,8 @@
 package org.geneview.core.view.swt.widget;
 
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLJPanel;
+
 import org.eclipse.swt.widgets.Composite;
 
 import com.sun.opengl.util.Animator;
@@ -33,7 +35,8 @@ extends ASWTEmbeddedWidget {
 	/**
 	 * GLCanvas.
 	 */
-	protected GLCanvas refGLCanvas = null;
+	//protected GLCanvas refGLCanvas = null;
+	protected GLJPanel refGLCanvas = null;
 	
 	protected Animator refAnimator = null;
 	
@@ -55,7 +58,8 @@ extends ASWTEmbeddedWidget {
 		try {
 			assert refGLCanvas == null : "GLCanvas was already created!";
 			
-			refGLCanvas = new GLCanvas();
+			//refGLCanvas = new GLCanvas();
+			refGLCanvas = new GLJPanel();
 		} 
 		catch (UnsatisfiedLinkError ule) {
 			System.err.println("Can not open Jogl frame inside SWT container!");
@@ -73,12 +77,23 @@ extends ASWTEmbeddedWidget {
 	}
 
 	
+//	/**
+//	 * Get the GLCanvas.
+//	 * 
+//	 * @return The GLCanvas that is supposed to be filled by the View.
+//	 */
+//	public GLCanvas getGLCanvas() {
+//		
+//		return refGLCanvas;
+//	}
+	
 	/**
-	 * Get the GLCanvas.
+	 * Get the GLCanvas embedded in a JPanel.
+	 * Obviously this is faster than the GLCanvas AWT embedded frame!
 	 * 
 	 * @return The GLCanvas that is supposed to be filled by the View.
-	 */
-	public GLCanvas getGLCanvas() {
+	 */	
+	public GLJPanel getGLCanvas() {
 		
 		return refGLCanvas;
 	}
