@@ -3,7 +3,6 @@ package org.geneview.core.view.swt.jogl;
 import java.util.Collection;
 
 import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLJPanel;
 
 //import org.eclipse.swt.layout.FillLayout;
 //import org.eclipse.swt.layout.RowLayout;
@@ -365,8 +364,7 @@ implements IGLCanvasDirector {
 		
 		refSWTEmbeddedJoglWidget.createEmbeddedComposite();
 
-		//GLCanvas refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
-		GLJPanel refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
+		GLCanvas refGLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
 		
 		assert refGLCanvas != null : "GLCanvas was not be created";
 		
