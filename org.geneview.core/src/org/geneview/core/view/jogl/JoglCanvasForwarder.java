@@ -97,6 +97,9 @@ implements GLEventListener {
 			
 			GL gl = drawable.getGL();
 			
+			// This is specially important for Windows. Otherwise JOGL internally slows down dramatically (factor of 10).
+		    gl.setSwapInterval(0);
+			
 			fpsCounter = new FPSCounter(drawable, 16);
 			fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
 	
