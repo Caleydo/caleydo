@@ -89,8 +89,8 @@ public class PickingJoglMouseListener extends JoglMouseListener {
     
     public final boolean wasMouseReleased() {
     	
-    	boolean bTmp = bMouseLeftButtonDown;
-    	bMouseLeftButtonDown = false;
+    	boolean bTmp = bMouseReleased;
+    	bMouseReleased = false;
     	return bTmp;
     }
     

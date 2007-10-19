@@ -810,6 +810,10 @@ implements IMediatorReceiver, IMediatorSender {
 			dragAndDrop.setCurrentMousePos(gl, pickPoint);
 		}
 
+		System.out.println("Mouse released: " +bMouseReleased);
+		System.out.println("Mouse over memo pad: " +bMouseOverMemoPad);
+		System.out.println("Drag action running: " +dragAndDrop.isDragActionRunning());
+		
 		// Check if a drag&drop action was performed to add a pathway to the memo pad
 		if (bMouseReleased && bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
 		{
