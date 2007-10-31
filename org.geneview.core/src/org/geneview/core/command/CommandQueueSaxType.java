@@ -60,6 +60,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	CREATE_GL_WIDGET(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	
 	EXTERNAL_FLAG_SETTER(ManagerType.VIEW, "cmd", "type", "-1", "External flag setter"),
+	EXTERNAL_ACTION_TRIGGER(ManagerType.VIEW, "cmd", "type", "-1", "External action trigger"),
 	
 	CREATE_PATHWAY_STORAGE(ManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage Pathway"),
 	CREATE_SET_DATA(ManagerType.DATA,"cmd","type","-1", "Create SET"),	

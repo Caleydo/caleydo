@@ -125,6 +125,14 @@ public class JukeboxHierarchyLayer {
 		
 		llElementId.remove((Integer)iElementId);
 		llElementIdImportanceQueue.remove((Integer)iElementId);
+		llElementIdVisibleState.remove((Integer)iElementId);
+	}
+	
+	public void removeAllElements() {
+		
+		llElementId.clear();
+		llElementIdImportanceQueue.clear();
+		llElementIdVisibleState.clear();
 	}
 	
 	public boolean containsElement(int iElementId) {

@@ -10,21 +10,20 @@ import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 
 /**
  * 
- * Command for setting flags in org.geneview.core from the RCP interface.
+ * Command for triggering simple actions from the RCP interface that
+ * are executed in org.geneview.core.
  * 
  * @author Marc Streit
  *
  */
-public class CmdExternalFlagSetter 
+public class CmdExternalActionTrigger 
 extends ACmdCreate_IdTargetLabelAttrDetail {
-
-	private boolean bFlag = false;
 	
-	private EExternalFlagSetterType externalFlagSetterType;
+	private EExternalActionType externalActionType;
 	
 	private int iViewId;
 	
-	public CmdExternalFlagSetter(
+	public CmdExternalActionTrigger(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType) {
@@ -45,25 +44,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		if (viewObject.getClass().equals(GLCanvasJukeboxPathway3D.class))
 		{
-			if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_GENE_MAPPING))
+			if (externalActionType.equals(EExternalActionType.PATHWAY_CLEAR_ALL))
 			{
-				((GLCanvasJukeboxPathway3D)viewObject).enableGeneMapping(bFlag);
-			}
-			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_TEXTURES))
-			{
-				((GLCanvasJukeboxPathway3D)viewObject).enablePathwayTextures(bFlag);
-			}
-			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_NEIGHBORHOOD))
-			{
-				((GLCanvasJukeboxPathway3D)viewObject).enableNeighborhood(bFlag);
-			}
-			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_IDENTICAL_NODE_HIGHLIGHTING))
-			{
-				((GLCanvasJukeboxPathway3D)viewObject).enableIdenticalNodeHighlighting(bFlag);
-			}
-			else if (externalFlagSetterType.equals(EExternalFlagSetterType.PATHWAY_ENABLE_ANNOTATION))
-			{
-				((GLCanvasJukeboxPathway3D)viewObject).enableAnnotation(bFlag);
+				((GLCanvasJukeboxPathway3D)viewObject).clearAllPathways();
 			}
 		}
 	}
@@ -78,11 +61,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	}
 	
 	public void setAttributes(final int iViewId,
-			final boolean bFlag,
-			final EExternalFlagSetterType externalFlagSetterType) {
+			final EExternalActionType externalActionType) {
 		
-		this.bFlag = bFlag;
-		this.externalFlagSetterType = externalFlagSetterType;
+		this.externalActionType = externalActionType;
 		this.iViewId = iViewId;
 	}
 }

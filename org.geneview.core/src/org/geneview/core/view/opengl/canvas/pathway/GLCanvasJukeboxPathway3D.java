@@ -267,13 +267,13 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 		
 		time.update();
+
+		doSlerpActions(gl);
 		
 		renderScene(gl);
 		renderInfoArea(gl);
 
 		renderConnectingLines(gl);
-		
-		doSlerpActions(gl);
 		
 		// int viewport[] = new int[4];
 		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
@@ -809,10 +809,6 @@ implements IMediatorReceiver, IMediatorSender {
 			bIsMouseOverPickingEvent = false;
 			dragAndDrop.setCurrentMousePos(gl, pickPoint);
 		}
-
-		System.out.println("Mouse released: " +bMouseReleased);
-		System.out.println("Mouse over memo pad: " +bMouseOverMemoPad);
-		System.out.println("Drag action running: " +dragAndDrop.isDragActionRunning());
 		
 		// Check if a drag&drop action was performed to add a pathway to the memo pad
 		if (bMouseReleased && bMouseOverMemoPad && dragAndDrop.isDragActionRunning())
@@ -1434,6 +1430,17 @@ implements IMediatorReceiver, IMediatorSender {
 	public void enableAnnotation(final boolean bEnableAnnotation) {
 		
 		refGLPathwayManager.enableAnnotation(bEnableAnnotation);
+	}
+	
+	public void clearAllPathways() {
+		
+		pathwayLayeredLayer.removeAllElements();
+		pathwayUnderInteractionLayer.removeAllElements();
+
+		bRebuildVisiblePathwayDisplayLists = true;
+		refHashPathwayContainingSelectedVertex2VertexCount.clear();
+		
+		// TODO: clear textures and other stuff
 	}
 	
 	private void drawAxis(final GL gl) {

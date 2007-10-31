@@ -33,6 +33,7 @@ import org.geneview.core.command.view.opengl.CmdGlObjectTriangleTest;
 import org.geneview.core.command.view.opengl.CmdGlObjectIsosurface3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectWidget;
+import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
 import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
 import org.geneview.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.geneview.core.command.view.swt.CmdViewCreateDataExchanger;
@@ -564,6 +565,17 @@ public class CommandFactory
 						cmdType);
 			break;
 		}
+
+		case EXTERNAL_ACTION_TRIGGER:
+		{
+			createdCommand =
+				new CmdExternalActionTrigger(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);
+			break;
+		}
+
 		
 		/*
 		 * ----------------------
