@@ -11,7 +11,9 @@ import org.geneview.rcp.Application;
 import org.geneview.rcp.views.AGLViewPart;
 
 import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
 import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
+import org.geneview.core.command.view.rcp.EExternalActionType;
 import org.geneview.core.command.view.rcp.EExternalFlagSetterType;
 
 /**
@@ -48,6 +50,8 @@ extends AGLViewPart {
 	public static final String ACTION_ENABLE_IDENTICAL_NODE_HIGHLIGHTING_ICON = "resources/icons/PathwayEditor/identical_node_highlighting.png";
 	public static final String ACTION_ENABLE_ANNOTATION_TEXT = "Show/hide annotation";
 	public static final String ACTION_ENABLE_ANNOTATION_ICON = "resources/icons/PathwayEditor/annotation.png";
+	public static final String ACTION_CLEAR_ALL_PATHWAYS_TEXT = "Clear all pathways";
+	public static final String ACTION_CLEAR_ALL_PATHWAY_ICON = "resources/icons/PathwayEditor/back.png";
 	
 	private Action actToggleAnimatorRunningState;
 	
@@ -66,6 +70,8 @@ extends AGLViewPart {
 	private Action actEnableAnnotation;
 	private boolean bEnableAnnotation = true;
 
+	private Action actClearAllPathways;
+	
 	/**
 	 * The constructor.
 	 */
@@ -87,6 +93,7 @@ extends AGLViewPart {
 		createNeighborhoodToggleAction();
 		createIdenticalNodeHighlightingAction();
 		createAnnotationToggleAction();
+		createClearAllPathwaysAction();
 		
 		contributeToActionBars();
 
@@ -106,6 +113,7 @@ extends AGLViewPart {
 		manager.add(actEnableNeighborhood);
 		manager.add(actEnableIdenticalNodeHighlighting);
 		manager.add(actEnableAnnotation);
+		manager.add(actClearAllPathways);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
@@ -115,6 +123,7 @@ extends AGLViewPart {
 		manager.add(actEnableNeighborhood);
 		manager.add(actEnableIdenticalNodeHighlighting);
 		manager.add(actEnableAnnotation);
+		manager.add(actClearAllPathways);
 	}
 
 	private void createAnimatorToggleAction() {
@@ -222,6 +231,22 @@ extends AGLViewPart {
 		actEnableAnnotation.setImageDescriptor(ImageDescriptor.createFromURL(
 				this.getClass().getClassLoader().getResource(ACTION_ENABLE_ANNOTATION_ICON)));
 	}
+
+	private void createClearAllPathwaysAction() {
+		
+		actClearAllPathways = new Action() {
+			public void run() {
+	
+				triggerCmdExternalAction(EExternalActionType.PATHWAY_CLEAR_ALL);	
+			}
+		};
+		
+		actClearAllPathways.setText(ACTION_CLEAR_ALL_PATHWAYS_TEXT);
+		actClearAllPathways.setToolTipText(ACTION_CLEAR_ALL_PATHWAYS_TEXT);
+		actClearAllPathways.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_CLEAR_ALL_PATHWAY_ICON)));
+	}
+
 	
 	/**
 	 * We can use this method to dispose of any system
@@ -239,7 +264,19 @@ extends AGLViewPart {
 			(CmdExternalFlagSetter)Application.refGeneralManager.getSingelton()
 				.getCommandManager().createCommandByType(CommandQueueSaxType.EXTERNAL_FLAG_SETTER);
 
+		//FIXME: hard coded view ID
 		tmpCmd.setAttributes(82401, bFlag, type);
+		tmpCmd.doCommand();
+	}
+	
+	public void triggerCmdExternalAction(EExternalActionType type) {
+		
+		CmdExternalActionTrigger tmpCmd = 
+			(CmdExternalActionTrigger)Application.refGeneralManager.getSingelton()
+				.getCommandManager().createCommandByType(CommandQueueSaxType.EXTERNAL_ACTION_TRIGGER);
+		
+		//FIXME: hard coded view ID
+		tmpCmd.setAttributes(82401, type);
 		tmpCmd.doCommand();
 	}
 
