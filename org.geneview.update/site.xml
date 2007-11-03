@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="file:/home/mstreit/projects/geneview/SVN/org.geneview.update/">
+      GeneView Update Site
+   </description>
+   <feature url="features/org.geneview.rcp.feature_1.0.0.jar" id="org.geneview.rcp.feature" version="1.0.0">
+      <category name="geneview_core"/>
+   </feature>
+   <feature url="features/org.geneview.rcp.feature_2.0.0.jar" id="org.geneview.rcp.feature" version="2.0.0">
+      <category name="geneview_core"/>
+   </feature>
+   <category-def name="geneview_core" label="GeneView Core"/>
+</site>
