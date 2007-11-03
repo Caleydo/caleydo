@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.geneview.rcp.feature"
+      label="GeneView"
+      version="1.0.0"
+      provider-name="geneview.org"
+      plugin="org.geneview.rcp">
+
+   <description url="http://www.geneview.org">
+      GeneView is a visualization framework for biomedical data.
+   </description>
+
+   <copyright url="http://www.geneview.org">
+      (c) Copyright Institute for Computer Graphics and Vision (ICG)
+Graz University of Technology - 2007.
+All Rights Reserved.
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <url>
+      <update label="GeneView Local Update Site" url="file:/home/mstreit/projects/geneview/SVN/org.geneview.update/"/>
+      <discovery label="GeneView website" url="http://www.geneview.org"/>
+      <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
+   </url>
+
+   <includes
+         id="org.eclipse.rcp"
+         version="0.0.0"
+         name="%featureName"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime" version="3.1.0" match="compatible"/>
+      <import plugin="org.apache.lucene" version="1.9.1" match="compatible"/>
+      <import plugin="org.apache.lucene.analysis" version="1.9.1" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.help" version="3.3.0" match="compatible"/>
+      <import plugin="com.ibm.icu"/>
+      <import plugin="org.eclipse.equinox.http.jetty"/>
+      <import plugin="org.eclipse.help.base" version="3.3.0" match="compatible"/>
+      <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.forms" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.help.base" version="3.1.0" match="compatible"/>
+      <import plugin="org.apache.jasper" version="5.5.17" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.jsp.jasper.registry" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.http.registry" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="javax.servlet"/>
+      <import plugin="org.eclipse.osgi.services"/>
+      <import plugin="org.eclipse.help.appserver" version="3.1.0" match="compatible"/>
+      <import plugin="org.apache.commons.logging"/>
+      <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.update.configurator" version="3.1.0" match="compatible"/>
+      <import plugin="org.eclipse.core.net" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.update.core" version="3.1.0" match="compatible"/>
+      <import feature="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
+   </requires>
+
+   <plugin
+         id="org.apache.lucene"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.help.appserver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.help.base"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.help.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.help.webapp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.tomcat"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.update.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.update.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.geneview.rcp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
