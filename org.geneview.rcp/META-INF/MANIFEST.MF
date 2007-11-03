@@ -5,7 +5,9 @@ Bundle-SymbolicName: org.geneview.rcp; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.geneview.rcp.Activator
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.update.ui,
+ org.eclipse.update.core
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/jogl/jogl.jar,

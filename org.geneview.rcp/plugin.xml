@@ -85,11 +85,11 @@
          </property>
          <property
                name="aboutImage"
-               value="resources/icons/storage.gif">
+               value="resources/geneview_logo_small.png">
          </property>
          <property
                name="aboutText"
-               value="\n\nGeneView framework\n\&#x0A;Version: 1.0.0\n\n\&#x0A;GeneView is a visualization framework for biomedical data.\n\&#x0A;\n\&#x0A;(c) Copyright Institute for Computer Graphics and Vision (ICG) \n\&#x0A;Graz University of Technology - 2007. \&#x0A;All Rights Reserved.\n">
+               value="GeneView visualization framework&#x0A;GeneView is a visualization framework for biomedical data.&#x0A;See: www.geneview.org&#x0A;&#x0A;(c) Copyright Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>

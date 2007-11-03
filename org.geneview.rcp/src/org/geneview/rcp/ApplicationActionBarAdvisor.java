@@ -15,6 +15,7 @@ import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.geneview.rcp.action.file.FileOpenCsvDataFileAction;
 import org.geneview.rcp.action.file.FileOpenXmlConfigFileAction;
+import org.geneview.rcp.action.update.UpdateAction;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
@@ -43,6 +44,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected IWorkbenchAction fileLoadXmlConfigAction;
 	
 	protected IWorkbenchAction windowCloseAction;
+	
+	protected UpdateAction updateAction;
 	
 	protected FileOpenCsvDataFileAction fileOpenCsvDataAction;
 
@@ -117,6 +120,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		aboutAction = ActionFactory.ABOUT.create(window);	
 		aboutAction.setText("About GeneView");
 		register(aboutAction);
+		
+		updateAction = new UpdateAction(window);
+		updateAction.setText("Update...");
+		register(updateAction);
 	}
 
 	protected void fillMenuBar(IMenuManager menuBar) {
@@ -177,6 +184,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		 */
 		MenuManager helpMenu = new MenuManager("&Help", "help");
 		helpMenu.add(aboutAction);
+		helpMenu.add(updateAction);
 			
 		/**
          * Top Level Menu
