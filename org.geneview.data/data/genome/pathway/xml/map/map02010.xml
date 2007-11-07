@@ -202,7 +202,7 @@
     </entry>
     <entry id="42" name="path:map02010" type="map"
         link="http://www.genome.jp/dbget-bin/get_linkdb?pathway+map02010">
-        <graphics name="TITLE:ABC transporters</a>" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="TITLE:ABC transporters" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="429" y="47" width="166" height="27"/>
     </entry>
     <entry id="43" name="ko:K05664" type="ortholog">

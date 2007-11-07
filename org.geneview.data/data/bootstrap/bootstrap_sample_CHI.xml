@@ -54,6 +54,10 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401 83401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401 83401" detail="SELECTION_MEDIATOR" />  
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="95501" label="Mediator Heatmap2Pathway" attrib1="83401" attrib2="82401 84401" detail="SELECTION_MEDIATOR" />  
+
+			<!-- Browser active selection update -->
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator Browser" attrib1="85401" attrib2="82401 84401" detail="SELECTION_MEDIATOR" />  
+
      
    </CommandBuffer>
     
