@@ -268,6 +268,15 @@ implements IPathwayItemManager {
 		bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = false;
 		return hashNCBIGeneIdToPathwayVertexGraphItemId;
 	}
+	
+	// TODO: throw exception
+	public final int getPathwayVertexGraphItemIdByNCBIGeneId (final int iNCBIGeneId) {
+		
+		if (hashNCBIGeneIdToPathwayVertexGraphItemId.containsKey(iNCBIGeneId))
+			return hashNCBIGeneIdToPathwayVertexGraphItemId.get(iNCBIGeneId);
+		
+		return -1;
+	}
 
 	/*
 	 * (non-Javadoc)

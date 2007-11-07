@@ -51,4 +51,6 @@ extends IGeneralManager {
 	 * @return HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
 	 */
 	public HashMap<Integer, Integer> getHashNCBIGeneIdToPathwayVertexGraphItemId();
+	
+	public int getPathwayVertexGraphItemIdByNCBIGeneId (final int iNCBIGeneId);
 }

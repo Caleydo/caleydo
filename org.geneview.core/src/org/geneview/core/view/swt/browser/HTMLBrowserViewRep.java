@@ -3,8 +3,13 @@
  */
 package org.geneview.core.view.swt.browser;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.browser.LocationEvent;
+import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -14,13 +19,22 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.ICommand;
+import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.geneview.core.command.system.path.CmdSetPathwayPaths;
+import org.geneview.core.data.collection.set.selection.SetSelection;
+import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.geneview.core.data.mapping.GenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.event.EventPublisher;
+import org.geneview.core.manager.type.ManagerObjectType;
+import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.AViewRep;
 import org.geneview.core.view.IView;
 import org.geneview.core.view.ViewType;
 import org.geneview.core.view.swt.browser.HookedBrowser;
-//import org.geneview.core.view.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
  * Simple HTML browser.
@@ -32,11 +46,17 @@ public class HTMLBrowserViewRep
 extends AViewRep 
 implements IView {
 
+	public static String GENEVIEW_HOME = "http://www.geneview.org";
+	
     protected HookedBrowser refBrowser;
     
-    protected String sUrl = "";
+    protected String sUrl = GENEVIEW_HOME;
     
     protected Text refTextField;
+    
+    protected int iSelectionSetId;
+    
+    private IDExtractionLocationListener idExtractionLocationListener;
 	
 	public HTMLBrowserViewRep(
 			final IGeneralManager refGeneralManager, 
@@ -49,6 +69,15 @@ implements IView {
 				iParentContainerId, 
 				sLabel,
 				ViewType.SWT_HTML_BROWSER);	
+		
+		iSelectionSetId = refGeneralManager.getSingelton().getSetManager()
+			.createId(ManagerObjectType.SET_LINEAR);
+		
+		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) refGeneralManager.getSingelton().getCommandManager()
+			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
+		
+		selectedSetCmd.setAttributes(iSelectionSetId);
+		selectedSetCmd.doCommand();
 	}
 
 	
@@ -124,6 +153,10 @@ implements IView {
 		refBrowser = new HookedBrowser (
 				refSWTContainer, 
 				SWT.NONE, refGeneralManager);
+				
+		idExtractionLocationListener = new IDExtractionLocationListener(refGeneralManager,
+				refBrowser, iUniqueId, iSelectionSetId);
+		refBrowser.addLocationListener(idExtractionLocationListener);
 		
 		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
@@ -177,6 +210,13 @@ implements IView {
 	public void setUrl(String sUrl) {
 		
 		this.sUrl = sUrl;
+		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
+	}
+	
+	public void setUrlByBrowserQueryType(String sUrl,
+			final EBrowserQueryType browserQueryType) {
+		
+		this.sUrl = browserQueryType.getBrowserQueryStringPrefix() + sUrl;
 	}
 }
