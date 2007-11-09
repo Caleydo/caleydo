@@ -45,6 +45,8 @@ extends ARenderStyle {
 	 */
 	protected Color [] neighborhoodNodeColorArray;
 	
+	protected Color layerConnectionLinesColor;
+	
 	public static final int neighborhoodNodeColorArraysize = 4;
 	
 	protected EdgeLineStyle relationEdgeLineStyle;
@@ -89,8 +91,7 @@ extends ARenderStyle {
 		compoundNodeColorGeneMapped = Color.DARK_GRAY;
 		pathwayNodeColor 			= new Color(0.5f, 1f, 0.5f);//Color.GREEN;
 		pathwayNodeColorGeneMapped 	= Color.LIGHT_GRAY;
-		highlightedNodeColor 		= Color.RED;//new Color(0.0f, 0.0f, 1.0f);
-		//highlightedNodeColor 		= new Color(1.0f, 0.0f, 0.0f);
+		highlightedNodeColor 		= Color.BLUE;
 		neighborhoodNodeColorArray 	= new Color [neighborhoodNodeColorArraysize];
 		
 		/* currently highlighted */
@@ -103,10 +104,8 @@ extends ARenderStyle {
 		neighborhoodNodeColorArray[1] = new Color(0.2f, 0.2f, 1.0f);
 		neighborhoodNodeColorArray[2] = new Color(0.5f, 0.5f, 1.0f);
 		neighborhoodNodeColorArray[3] = new Color(0.8f, 0.8f, 1.0f);
-		
-//		neighborhoodNodeColor_1 = new Color(1.0f, 0.5f, 0.0f);
-//		neighborhoodNodeColor_2 = new Color(1.0f, 1.0f, 0.0f);
-//		neighborhoodNodeColor_3 = new Color(1.0f, 1.0f, 0.5f);
+
+		layerConnectionLinesColor = highlightedNodeColor;
 		
 		relationEdgeLineStyle 	= EdgeLineStyle.NORMAL;
 		reactionEdgeLineStyle 	= EdgeLineStyle.NORMAL;
@@ -348,6 +347,11 @@ extends ARenderStyle {
 	public Color getHighlightedNodeColor() {
 		
 		return highlightedNodeColor;
+	}
+	
+	public Color getLayerConnectionLinesColor() {
+		
+		return layerConnectionLinesColor;
 	}
 	
 	/**

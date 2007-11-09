@@ -5,6 +5,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IPathwayItemManager;
@@ -230,17 +232,7 @@ implements IMediatorReceiver, IMediatorSender {
 				&& selectedVertex != null)
 		{
 			bSelectionChanged = false;
-			bRebuildVisiblePathwayDisplayLists = true;
-	
-			// Write currently selected vertex to selection set
-			int[] iArTmpSelectionId = new int[1];
-			int[] iArTmpDepth = new int[1];
-			iArTmpSelectionId[0] = selectedVertex.getId();
-			iArTmpDepth[0] = 0;
-			alSetSelection.get(0).getWriteToken();
-			alSetSelection.get(0).setSelectionIdArray(iArTmpSelectionId);	
-			alSetSelection.get(0).setGroupArray(iArTmpDepth);
-			alSetSelection.get(0).returnWriteToken();	
+			bRebuildVisiblePathwayDisplayLists = true;	
 		}
 		
 		if (bRebuildVisiblePathwayDisplayLists)
@@ -914,8 +906,7 @@ implements IMediatorReceiver, IMediatorSender {
 			// Remove pathway pool fisheye
 			iMouseOverPickedPathwayId = -1;
 
-			selectedVertex = null;
-			infoAreaRenderer.resetAnimation();
+			infoAreaRenderer.resetPoint();
 
 			return;
 		}
@@ -993,9 +984,15 @@ implements IMediatorReceiver, IMediatorSender {
 		if (pickedVertexRep == null)
 			return;
 
-		loadNodeInformationInBrowser(((PathwayVertexGraphItem)pickedVertexRep.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
-
+		if (selectedVertex != null
+				&& !selectedVertex.equals(pickedVertexRep))
+		{
+			loadNodeInformationInBrowser(((PathwayVertexGraphItem)pickedVertexRep.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+			
+			infoAreaRenderer.resetAnimation();
+		}
+		
 		// Remove pathway pool fisheye
 		iMouseOverPickedPathwayId = -1;
 
@@ -1009,26 +1006,31 @@ implements IMediatorReceiver, IMediatorSender {
 		// highlight the object under the cursor
 		if (bIsMouseOverPickingEvent)
 		{
-			if (selectedVertex != null
-					&& !selectedVertex.equals(pickedVertexRep))
+			if (selectedVertex == null ||
+					(selectedVertex != null && !selectedVertex.equals(pickedVertexRep)))
 			{
-				infoAreaRenderer.resetAnimation();
+				selectedVertex = pickedVertexRep;
+				bSelectionChanged = true;
 			}
-
-			selectedVertex = pickedVertexRep;
-			bSelectionChanged = true;
-
-//			// Trigger update with selected vertex
-//			int[] iArSelectionId = new int[1];
-//			iArSelectionId[0] = selectedVertex.getId();
-//			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArSelectionId,
-//					new int[0], new int[0]);
-			
-//			// Trigger update on current selection
-//			alSetSelection.get(0).updateSelectionSet(iUniqueId);
 			
 			return;
 		}
+		
+//		// If event is just mouse over (and not real picking)
+//		// highlight the object under the cursor
+//		if (bIsMouseOverPickingEvent)
+//		{
+//			if (selectedVertex != null
+//					&& !selectedVertex.equals(pickedVertexRep))
+//			{
+//				infoAreaRenderer.resetAnimation();
+//			}
+//
+//			selectedVertex = pickedVertexRep;
+//			bSelectionChanged = true;
+//			
+//			return;
+//		}
 
 		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
 				EPathwayVertexType.map))
@@ -1114,7 +1116,7 @@ implements IMediatorReceiver, IMediatorSender {
 		iSlerpFactor = 0;
 
 		bRebuildVisiblePathwayDisplayLists = true;
-		selectedVertex = null;
+		//selectedVertex = null;
 
 		// Trigger update with current pathway that dependent pathways
 		// know which pathway is currently under interaction
@@ -1220,6 +1222,18 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		refGLPathwayManager.clearOldPickingIDs();
 
+		if (selectedVertex != null)
+		{
+			// Write currently selected vertex to selection set
+			int[] iArTmpSelectionId = new int[1];
+			int[] iArTmpDepth = new int[1];
+			iArTmpSelectionId[0] = selectedVertex.getId();
+			iArTmpDepth[0] = 0;
+			alSetSelection.get(0).getWriteToken();
+			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+			alSetSelection.get(0).returnWriteToken();
+		}
+			
 		// Update display list if something changed
 		// Rebuild display lists for visible pathways in layered view
 		Iterator<Integer> iterVisiblePathway = pathwayLayeredLayer
@@ -1243,7 +1257,7 @@ implements IMediatorReceiver, IMediatorSender {
 		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 
 		// Trigger update on current selection
-		alSetSelection.get(0).updateSelectionSet(iUniqueId);
+		//alSetSelection.get(0).updateSelectionSet(iUniqueId);
 	}
 
 	private void playPathwayPoolTickSound() {
@@ -1282,12 +1296,15 @@ implements IMediatorReceiver, IMediatorSender {
 				LoggerType.MINOR_ERROR);
 	}
 	
+	// TODO: render connecting lines to display list
 	public void renderConnectingLines(final GL gl) {
 		
 		if (!arSlerpActions.isEmpty() 
 				|| pathwayLayeredLayer.getElementList().size() < 2 
 				|| selectedVertex == null)
+		{
 			return;
+		}
 		
 		Iterator<IGraphItem> iterSelectedVertexGraphItems = 
 			selectedVertex.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).iterator();
@@ -1325,7 +1342,11 @@ implements IMediatorReceiver, IMediatorSender {
 		matDest.makeIdent();
 		
 		gl.glLineWidth(4);
-		gl.glColor3f(1, 0, 0);
+		Color tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
+		gl.glColor4f(tmpLineColor.getRed() / 255.0f, 
+				tmpLineColor.getGreen() / 255.0f, 
+				tmpLineColor.getBlue() / 255.0f, 1.0f);
+		
 		
 		for (int iLayerIndex = 0; iLayerIndex < 
 			pathwayLayeredLayer.getElementList().size() - 1; iLayerIndex++)	

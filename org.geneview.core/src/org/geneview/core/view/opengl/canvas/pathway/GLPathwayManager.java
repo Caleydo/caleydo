@@ -43,6 +43,7 @@ public class GLPathwayManager {
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
 	private int iHighlightedEnzymeNodeDisplayListId = -1;
+	private int iHighlightedCompoundNodeDisplayListId = -1;
 	
 	// First 200 IDs are reserved for picking of non pathway objects in the scene
 	private int iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
@@ -91,6 +92,7 @@ public class GLPathwayManager {
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
 		buildHighlightedEnzymeNodeDisplayList(gl);
+		buildHighlightedCompoundNodeDisplayList(gl);
 		
 		this.alSetSelection = alSetSelection;
 		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
@@ -301,6 +303,19 @@ public class GLPathwayManager {
         gl.glEndList();
 	}
 	
+	protected void buildHighlightedCompoundNodeDisplayList(final GL gl) {
+
+		// Creating display list for node cube objects
+		iHighlightedCompoundNodeDisplayListId = gl.glGenLists(1);
+		
+		float fNodeWidth = refRenderStyle.getCompoundNodeWidth(true);
+		float fNodeHeight = refRenderStyle.getCompoundNodeHeight(true);
+		
+		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL.GL_COMPILE);
+		fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
+        gl.glEndList();
+	}
+	
 	private void fillNodeDisplayList(final GL gl, 
 			final float fNodeWidth, final float fNodeHeight) {
 		
@@ -462,6 +477,18 @@ public class GLPathwayManager {
 		// Pathway link
 		if (shape.equals(EPathwayVertexShape.roundrectangle))
 		{		
+			// Handle selection highlighting of element
+			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			{
+				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				
+				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
+			}
+			
 			if (bEnableGeneMapping)
 				tmpNodeColor = refRenderStyle.getPathwayNodeColor(true);
 			else
@@ -475,7 +502,18 @@ public class GLPathwayManager {
 		}
 		// Compound
 		else if (shape.equals(EPathwayVertexShape.circle))
-		{				
+		{			
+			// Handle selection highlighting of element
+			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			{
+				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+							
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
+			}
+			
 			if (bEnableGeneMapping)
 				tmpNodeColor = refRenderStyle.getCompoundNodeColor(true);
 			else
