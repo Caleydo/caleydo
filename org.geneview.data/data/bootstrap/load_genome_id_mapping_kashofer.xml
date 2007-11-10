@@ -67,7 +67,7 @@
 			<!-- Expression data mapped to accession number (Kashofer) -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/accession_code_2_microarray_expression_storage_index.map"	
-		   		attrib1="ACCESSION_2_MICROARRAY_EXPRESSION LUT" 
+		   		attrib1="ACCESSION_2_MICROARRAY_EXPRESSION REVERSE LUT" 
 		   		attrib2=";" 
 		   		attrib3="2 -1" 
 		   		attrib4="ACCESSION_CODE_2_ACCESSION" />
