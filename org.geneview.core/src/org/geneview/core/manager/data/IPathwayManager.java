@@ -36,4 +36,6 @@ extends IGeneralManager {
 	public void createPathwayImageMap(final String sImageLink);
 	
 	public PathwayImageMap getCurrentPathwayImageMap();
+	
+	public int searchPathwayIdByName(final String sPathwayName);
 }

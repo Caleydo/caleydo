@@ -8,6 +8,7 @@ import org.geneview.core.manager.IViewManager;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.view.swt.browser.EBrowserType;
 import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 
 /**
@@ -20,6 +21,8 @@ import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
  */
 public class CmdViewCreateHTMLBrowser 
 extends ACmdCreate_IdTargetLabelParentXY {
+	
+	private EBrowserType browserType;
 	
 	/**
 	 * Constructor.
@@ -64,7 +67,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 				iUniqueId, 
 				ManagerObjectType.VIEW);
 
-		browserView.setAttributes(iWidthX, iHeightY);
+		browserView.setAttributes(iWidthX, iHeightY, browserType);
 		browserView.initView();
 		browserView.drawView();
 		
@@ -76,6 +79,14 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		assert refParameterHandler != null: "ParameterHandler object is null!";	
 		
 		super.setParameterHandler(refParameterHandler);	
+		
+		String sBrowserType = refParameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
+				
+		if(!sBrowserType.equals(""))
+			browserType = EBrowserType.valueOf(sBrowserType);	
+		else
+			browserType = EBrowserType.GENERAL;
 	}
 	
 	public void undoCommand() throws GeneViewRuntimeException {

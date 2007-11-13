@@ -1,9 +1,13 @@
 package org.geneview.core.manager.data.pathway;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geneview.util.graph.core.Graph;
 
+import org.geneview.core.application.mapping.PathwayListBuilder;
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.view.rep.pathway.jgraph.PathwayImageMap;
 import org.geneview.core.manager.IGeneralManager;
@@ -25,7 +29,9 @@ public class PathwayManager
 extends AAbstractManager
 implements IPathwayManager {
 
-	private HashMap<Integer, PathwayGraph> hashPathwayLUT;
+	private HashMap<Integer, PathwayGraph> hashPathwayIdToPathwayGraphLUT;
+	
+	private HashMap<String, Integer> hashPathwayTitleToPathwayIdLUT;
 	
 	private String sPathwayXMLPath;	
 	
@@ -57,7 +63,8 @@ implements IPathwayManager {
 			IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
 			ManagerType.DATA_PATHWAY_ELEMENT );
 		
-		hashPathwayLUT = new HashMap<Integer, PathwayGraph>();
+		hashPathwayIdToPathwayGraphLUT = new HashMap<Integer, PathwayGraph>();
+		hashPathwayTitleToPathwayIdLUT = new HashMap<String, Integer>();
 		
 		rootPathwayGraph = new Graph(0);
 	}
@@ -76,7 +83,8 @@ implements IPathwayManager {
 		PathwayGraph pathway = new PathwayGraph(
 				iKEGGId, sName, sTitle, sImageLink, sExternalLink);
 
-		hashPathwayLUT.put(iKEGGId, pathway);
+		hashPathwayIdToPathwayGraphLUT.put(iKEGGId, pathway);
+		hashPathwayTitleToPathwayIdLUT.put(sTitle, iKEGGId);
 		
 		return pathway;
 	}
@@ -88,7 +96,7 @@ implements IPathwayManager {
 	public boolean loadPathwayById(final int iPathwayID) {
 		
 		// Check if pathway was previously loaded
-		if (hashPathwayLUT.containsKey(iPathwayID))
+		if (hashPathwayIdToPathwayGraphLUT.containsKey(iPathwayID))
 		{
 			refGeneralManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
@@ -135,6 +143,31 @@ implements IPathwayManager {
 		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
 		
 		return refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.manager.data.IPathwayManager#searchPathwayByName(java.lang.String)
+	 */
+	public int searchPathwayIdByName(final String sPathwayName) {
+		
+		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayIdLUT.keySet().iterator();
+		Pattern pattern = Pattern.compile(sPathwayName);
+		Matcher regexMatcher;
+		String sTmpPathwayName;
+		
+		while(iterPathwayName.hasNext())
+		{
+			sTmpPathwayName = iterPathwayName.next();
+			regexMatcher = pattern.matcher(sTmpPathwayName);
+			
+			if(regexMatcher.find()) 
+			{
+				return hashPathwayTitleToPathwayIdLUT.get(sTmpPathwayName);
+			}
+		}
+		
+		return -1;
 	}
 	
 	/*
@@ -230,7 +263,7 @@ implements IPathwayManager {
 	 */
 	public Object getItem(int iItemId) {
 
-		return(hashPathwayLUT.get(iItemId));
+		return(hashPathwayIdToPathwayGraphLUT.get(iItemId));
 	}
 	
 	/*
@@ -239,7 +272,7 @@ implements IPathwayManager {
 	 */
 	public boolean hasItem(int iItemId) {
 
-		if (hashPathwayLUT.containsKey(iItemId))
+		if (hashPathwayIdToPathwayGraphLUT.containsKey(iItemId))
 			return true;
 			
 		return false;

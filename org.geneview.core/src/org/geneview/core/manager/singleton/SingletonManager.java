@@ -40,9 +40,7 @@ public class SingletonManager
 implements ISingelton {
 
 //	private final IGeneralManager refGeneralManager;
-	
-//	protected IViewCanvasManager refViewCanvasManager;
-	
+		
 	protected IStorageManager refStorageManager;
 	/**
 	 * Store all undo& redo Mementos
@@ -133,13 +131,6 @@ implements ISingelton {
 	public ISetManager getSetManager() {
 		return refSetManager;
 	}
-	
-//	/* (non-Javadoc)
-//	 * @see org.geneview.core.manager.singelton.Singelton#getViewCanvasManager()
-//	 */
-//	public IViewCanvasManager getViewCanvasManager() {
-//		return refViewCanvasManager;
-//	}
 	
 	/* (non-Javadoc)
 	 * @see org.geneview.core.manager.singelton.Singelton#getViewGLCanvasManager()
@@ -232,12 +223,6 @@ implements ISingelton {
 		
 		refSetManager = setSetManager;
 	}
-	
-//	public void setViewCanvasManager( IViewCanvasManager setViewCanvasManager ) {
-//		assert setViewCanvasManager != null : "IViewCanvasManager was null";
-//		
-//		refViewCanvasManager = setViewCanvasManager;
-//	}
 	
 	public void setViewGLCanvasManager( IViewGLCanvasManager setViewManager ) {
 		assert setViewManager != null : "IViewManager was null";

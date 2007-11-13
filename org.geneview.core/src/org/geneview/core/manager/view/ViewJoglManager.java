@@ -2,32 +2,31 @@ package org.geneview.core.manager.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Enumeration;
 
-import javax.swing.JFrame;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
+import javax.swing.JFrame;
 
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.IViewGLCanvasManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.IViewRep;
 import org.geneview.core.view.IView;
+import org.geneview.core.view.IViewRep;
 import org.geneview.core.view.ViewType;
 import org.geneview.core.view.jogl.JoglCanvasForwarderType;
 import org.geneview.core.view.opengl.IGLCanvasDirector;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.GLCanvasTestTriangle;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap;
-//import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 import org.geneview.core.view.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
@@ -35,26 +34,24 @@ import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPanelPathway3D;
-//import org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot2D;
 import org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
-import org.geneview.core.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
 import org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
+import org.geneview.core.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
 import org.geneview.core.view.opengl.canvas.texture.GLCanvasTexture2D;
 import org.geneview.core.view.opengl.canvas.widgets.GLCanvasWidget;
 import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 import org.geneview.core.view.swt.data.exchanger.DataExchangerViewRep;
 import org.geneview.core.view.swt.data.exchanger.NewSetEditorViewRep;
-//import org.geneview.core.view.swt.data.exchanger.SetEditorViewRep;
 import org.geneview.core.view.swt.data.explorer.DataExplorerViewRep;
-//import org.geneview.core.view.swt.data.DataTableViewRep;
+import org.geneview.core.view.swt.data.search.DataEntitySearcherViewRep;
+import org.geneview.core.view.swt.image.ImageViewRep;
+import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
+import org.geneview.core.view.swt.jogl.gears.GearsViewRep;
 import org.geneview.core.view.swt.mixer.MixerViewRep;
 import org.geneview.core.view.swt.pathway.Pathway2DViewRep;
 import org.geneview.core.view.swt.progressbar.ProgressBarViewRep;
-import org.geneview.core.view.swt.jogl.gears.GearsViewRep;
-import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.geneview.core.view.swt.slider.SelectionSliderViewRep;
 import org.geneview.core.view.swt.slider.StorageSliderViewRep;
-import org.geneview.core.view.swt.image.ImageViewRep;
 import org.geneview.core.view.swt.test.TestTableViewRep;
 import org.geneview.core.view.swt.undoredo.UndoRedoViewRep;
 
@@ -102,6 +99,8 @@ implements IViewGLCanvasManager {
 	protected ArrayList<JFrame> arWorkspaceJFrame;
 	
 	private JoglCanvasForwarderType joglCanvasForwarderType;
+	
+	private DataEntitySearcherViewRep dataEntitySearcher;
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
@@ -288,6 +287,9 @@ implements IViewGLCanvasManager {
 						iParentContainerId, sLabel);
 			case VIEW_SWT_UNDO_REDO:
 				return new UndoRedoViewRep(this.refGeneralManager, iUniqueId,
+						iParentContainerId, sLabel);	
+			case VIEW_SWT_DATA_ENTITY_SEARCHER:
+				return new DataEntitySearcherViewRep(this.refGeneralManager, iUniqueId,
 						iParentContainerId, sLabel);	
 			case VIEW_SWT_JOGL_MULTI_GLCANVAS:
 				return new SwtJoglGLCanvasViewRep(this.refGeneralManager, iUniqueId,
@@ -784,6 +786,8 @@ implements IViewGLCanvasManager {
 			case SWT_HTML_BROWSER:
 				arHTMLBrowserViewRep.add( (HTMLBrowserViewRep) refView);
 				return;
+			case SWT_DATA_ENTITY_SEARCHER:
+				dataEntitySearcher = (DataEntitySearcherViewRep)refView;
 				
 			default:
 				assert false : "unsupported ViewType " + refView.getViewType();
@@ -889,5 +893,10 @@ implements IViewGLCanvasManager {
 			JoglCanvasForwarderType type) {
 	
 		this.joglCanvasForwarderType = type;
+	}
+	
+	public DataEntitySearcherViewRep getDataEntitySearcher() {
+		
+		return dataEntitySearcher;
 	}
 }

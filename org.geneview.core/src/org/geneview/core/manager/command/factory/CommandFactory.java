@@ -36,6 +36,7 @@ import org.geneview.core.command.view.opengl.CmdGlObjectWidget;
 import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
 import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
 import org.geneview.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
+import org.geneview.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.geneview.core.command.view.swt.CmdViewCreateDataExchanger;
 import org.geneview.core.command.view.swt.CmdViewCreateSetEditor;
 import org.geneview.core.command.view.swt.CmdViewCreateDataExplorer;
@@ -396,6 +397,16 @@ public class CommandFactory
 			break;
 		}		
 		
+		case CREATE_VIEW_DATA_ENTITY_SEARCHER:
+		{
+			createdCommand =
+				new CmdViewCreateDataEntitySearcher(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;			
+		}
+		
 		/*
 		 * ----------------------
 		 *        OPEN GL
@@ -609,7 +620,6 @@ public class CommandFactory
 						cmdType);		
 			break;
 		}
-		
 		
 		case SYSTEM_SHUT_DOWN:
 		{

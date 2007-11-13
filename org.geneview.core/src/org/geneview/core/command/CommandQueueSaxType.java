@@ -42,7 +42,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	
 	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
-		
+	
 	CREATE_GL_TRIANGLE_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HEATMAP(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
@@ -84,6 +84,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	CREATE_VIEW_IMAGE(ManagerType.VIEW,"cmd", "type", "-1", "Create Image"),	
 	CREATE_VIEW_SET_EDITOR(ManagerType.VIEW,"cmd", "type","-1", "No description available!"),
 	CREATE_VIEW_UNDO_REDO(ManagerType.VIEW,"cmd", "type","-1", "Create UNDO/REDO"),
+	CREATE_VIEW_DATA_ENTITY_SEARCHER("cmd", "type", null, "Create Data Entity Searcher"),
 
 	CREATE_VIEW_SWT_GLCANVAS(ManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_RCP_GLCANVAS(ManagerType.VIEW,"cmd", "type", "-1", "Create RCP GL Canvas"),

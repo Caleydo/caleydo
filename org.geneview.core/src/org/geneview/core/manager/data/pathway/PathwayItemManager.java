@@ -3,6 +3,8 @@ package org.geneview.core.manager.data.pathway;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
@@ -37,9 +39,10 @@ implements IPathwayItemManager {
 
 	private HashMap<Integer, IGraphItem> hashVertexIdToGraphItem;
 	
-	private HashMap<String, IGraphItem> hashPathwayNameToGraphItem;
+	private HashMap<String, IGraphItem> hashVertexNameToGraphItem;
 	
 	private HashMap<Integer, Integer> hashNCBIGeneIdToPathwayVertexGraphItemId;
+	
 	private boolean bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = true;
 	
 	/**
@@ -53,7 +56,7 @@ implements IPathwayItemManager {
 				ManagerType.DATA_PATHWAY_ELEMENT );
 	
 		hashVertexIdToGraphItem = new HashMap<Integer, IGraphItem>();
-		hashPathwayNameToGraphItem = new HashMap<String, IGraphItem>();
+		hashVertexNameToGraphItem = new HashMap<String, IGraphItem>();
 		hashNCBIGeneIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
 	}
 	
@@ -64,10 +67,10 @@ implements IPathwayItemManager {
 			final String sReactionId) {
 		
 		// Check if same vertex is already contained
-		if (hashPathwayNameToGraphItem.containsKey(sName))
+		if (hashVertexNameToGraphItem.containsKey(sName))
 		{
 			// Return existing vertex
-			return hashPathwayNameToGraphItem.get(sName);
+			return hashVertexNameToGraphItem.get(sName);
 		}
 
 		int iGeneratedId = createId(ManagerObjectType.PATHWAY_VERTEX);
@@ -80,7 +83,7 @@ implements IPathwayItemManager {
     	refGeneralManager.getSingelton().getPathwayManager()
 				.getRootPathway().addItem(pathwayVertex);
     	
-    	hashPathwayNameToGraphItem.put(sName, pathwayVertex);
+    	hashVertexNameToGraphItem.put(sName, pathwayVertex);
     	
     	//Check if vertex is gene 
     	if (sType.equals(EPathwayVertexType.gene.toString()))

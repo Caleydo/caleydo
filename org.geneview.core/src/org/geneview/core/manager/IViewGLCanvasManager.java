@@ -11,6 +11,7 @@ import org.geneview.core.manager.IViewManager;
 import org.geneview.core.view.jogl.JoglCanvasForwarderType;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.IGLCanvasDirector;
+import org.geneview.core.view.swt.data.search.DataEntitySearcherViewRep;
 
 /**
  * Make Jogl GLCanvas addressable by id and provide ground for XML bootstrapping of 
@@ -57,4 +58,5 @@ extends IViewManager {
 	
 	public void setJoglCanvasForwarderType(JoglCanvasForwarderType type);
 	
+	public DataEntitySearcherViewRep getDataEntitySearcher();
 }

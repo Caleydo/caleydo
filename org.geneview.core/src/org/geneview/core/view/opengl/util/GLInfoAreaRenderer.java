@@ -68,6 +68,9 @@ public class GLInfoAreaRenderer {
     public void renderInfoArea(final GL gl,
     		final PathwayVertexGraphItemRep pickedVertexRep) {
     	
+    	if (pickedVertexRep == null)
+    		return;
+    	
     	if (fScaleFactor < 1.0)
     		fScaleFactor += 0.1f;
     	
