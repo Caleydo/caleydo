@@ -1174,7 +1174,7 @@ extends APathwayGraphViewRep {
 		{
 			// Remove old selected vertices
 			iLLSelectedVertices.clear();
-			// iLLNeighborDistance.clear();
+			//iLLNeighborDistance.clear();
 	
 			for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) refSetSelection
 					.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT); iSelectedVertexIndex++)
@@ -1186,6 +1186,14 @@ extends APathwayGraphViewRep {
 								iArSelectionId[iSelectedVertexIndex]);
 				
 				if ( selectedVertex != null ) {
+
+					// Ignore vertex if is NOT in the current pathway!
+					if (!refCurrentPathway.equals(
+							selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0)))
+					{
+						continue;
+					}
+					
 					// FIXME: name of the method is not good because inside
 					// resetPathway() and drawPathway() are called.
 					showBackgroundOverlay(bShowBackgroundOverlay);
@@ -1193,16 +1201,10 @@ extends APathwayGraphViewRep {
 					// //ATTENTION: Performance problem!
 					// resetPathway();
 					// drawView();
-		
-					// Ignore vertex if is NOT in the current pathway!
-					if (!refCurrentPathway.equals(
-							selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0)))
-					{
-						return;
-					}
-		
+				
 					iLLSelectedVertices.add(selectedVertex.getId());
-		
+					iLLNeighborDistance.add(0);
+					
 					highlightCell(hashVertexRep2GraphCell.get(selectedVertex), 
 							refRenderStyle.getHighlightedNodeColor());
 		
@@ -1211,7 +1213,6 @@ extends APathwayGraphViewRep {
 				iNeighbourhoodUndoCount++;
 	
 			}
-			
 		}
 	}
 }
