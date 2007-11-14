@@ -4,11 +4,16 @@ package org.geneview.rcp.views;
 //import org.eclipse.swt.SWT;
 //import org.eclipse.swt.layout.FillLayout;
 //import org.eclipse.swt.layout.RowLayout;
+import java.util.ArrayList;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.rcp.Application;
 
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.event.CmdEventCreateMediator;
 import org.geneview.core.manager.IViewManager;
+import org.geneview.core.manager.IEventPublisher.MediatorType;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 
@@ -45,6 +50,24 @@ extends ViewPart {
 		browserView.setAttributes(1000, 800);
 		browserView.initViewRCP(parent);
 		browserView.drawView();	
+		
+		ArrayList<Integer> iAlSender = new ArrayList<Integer>();
+		ArrayList<Integer> iAlReceiver = new ArrayList<Integer>();
+		iAlSender.add(iUniqueId);
+		//iAlReceiver.add(85401); 
+		iAlReceiver.add(84401);
+		iAlReceiver.add(82401);
+		
+		// Connect browser to 2D pathway
+		CmdEventCreateMediator cmd = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
+		 	.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
+		cmd.setAttributes(-1, iAlSender, iAlReceiver, MediatorType.SELECTION_MEDIATOR);
+		cmd.doCommand();
+
+		CmdEventCreateMediator cmdReverse = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
+	 		.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
+		cmdReverse.setAttributes(-1, iAlReceiver, iAlSender, MediatorType.SELECTION_MEDIATOR);
+		cmdReverse.doCommand();
 	}
 
 	/*

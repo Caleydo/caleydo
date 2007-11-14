@@ -15,6 +15,7 @@ import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.geneview.rcp.action.file.FileOpenCsvDataFileAction;
 import org.geneview.rcp.action.file.FileOpenXmlConfigFileAction;
+import org.geneview.rcp.action.search.OpenSearchDataEntityAction;
 import org.geneview.rcp.action.update.UpdateAction;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
@@ -40,6 +41,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected IWorkbenchAction editCutAction;
 	
 	protected IWorkbenchAction editDeleteAction;
+	
+	protected OpenSearchDataEntityAction editOpenSearchDataEntityAction;
 	
 	protected IWorkbenchAction fileLoadXmlConfigAction;
 	
@@ -102,6 +105,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		editDeleteAction = ActionFactory.DELETE.create(window);
 		register(editDeleteAction);
 		
+		editOpenSearchDataEntityAction = new OpenSearchDataEntityAction(window);
+		register(editOpenSearchDataEntityAction);
+		
+		/**
+		 * SEARCH menu
+		 */
+
+		
 		/**
 		 * VIEW menu
 		 */	
@@ -153,6 +164,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		editMenu.add(editPasteAction);		
 		editMenu.add( new Separator());
 		editMenu.add(editDeleteAction);
+		editMenu.add(editOpenSearchDataEntityAction);
 		
 		/**
 		 * VIEW
