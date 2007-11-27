@@ -57,11 +57,12 @@
 				attrib4="0 2001 1"	
 				detail="35101 36101 37101" />					
 
-				
+	    <!-- Search View -->
+	      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_ENTITY_SEARCHER" 	cmdId="69991" uniqueId="12345" label="Data Entity Search" 	detail="82401" /> 				
+												
 	  	<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="83401" attrib2="82401 85401 86401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="83401 85401 86401" detail="SELECTION_MEDIATOR" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="85401" attrib2="83401 82401 86401" detail="SELECTION_MEDIATOR" />     
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="86401" attrib2="83401 82401 85401" detail="SELECTION_MEDIATOR" />     
      
    </CommandBuffer>
