@@ -715,7 +715,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (iSlerpFactor < 1000)
 		{
 			// Makes animation rendering speed independent
-			iSlerpFactor += 1200 * time.deltaT();
+			iSlerpFactor += 1400 * time.deltaT();
 			
 			if (iSlerpFactor > 1000)
 				iSlerpFactor = 1000;
@@ -751,7 +751,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		gl.glPopMatrix();
 
-		if (iSlerpFactor >= 1000)
+		if (iSlerpFactor >= 990)
 		{
 			slerpAction.getDestinationHierarchyLayer()
 					.setElementVisibilityById(true, iPathwayId);

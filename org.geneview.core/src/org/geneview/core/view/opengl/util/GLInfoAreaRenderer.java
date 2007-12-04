@@ -145,8 +145,8 @@ public class GLInfoAreaRenderer {
 		// Do composition of info label string only once and store them (heading + text)
 		float fMaxWidth = calculateInfoAreaWidth(llMultipleMappingGenes.get(0));
 		
-		if (fMaxWidth < 1.0f)
-			fMaxWidth = 1.0f;
+		if (fMaxWidth < 1.15f)
+			fMaxWidth = 1.15f;
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -259,49 +259,88 @@ public class GLInfoAreaRenderer {
     	
 		textRenderer.begin3DRendering();
     	
-		float fLineHeight = 2.3f * (float)textRenderer.getBounds("A").getHeight() * GLPathwayManager.SCALING_FACTOR_Y;
+		float fLineHeight = 2.8f * (float)textRenderer.getBounds("A").getHeight() * GLPathwayManager.SCALING_FACTOR_Y;
 		float fXOffset = 0.03f;
 		float fYOffset = -0.03f;
 		
 		PathwayVertexGraphItem tmpVertexGraphItem = llMultipleMappingGenes.getFirst();
 
-		String sElementId = llMultipleMappingGenes.getFirst().getName();
+		String sElementId = llMultipleMappingGenes.getFirst().getName();		
+		String sName = "";
+		String sType = "";
 		
+		if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))		
+		{
+			sType = EPathwayVertexType.gene.getName();
+			sName = geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId);
+		}
+		else if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.compound)) 
+		{
+			sType = EPathwayVertexType.compound.getName();
+			sName = ((PathwayVertexGraphItemRep)tmpVertexGraphItem.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD).get(0)).getName();
+		}
+		else if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.enzyme)) 
+		{
+			sType = EPathwayVertexType.enzyme.getName();
+			sName = ((PathwayVertexGraphItemRep)tmpVertexGraphItem.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD).get(0)).getName();
+		}
+		else if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.map))
+		{
+			sType = EPathwayVertexType.map.getName();
+			sName = ((PathwayVertexGraphItemRep)tmpVertexGraphItem.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD).get(0)).getName();
+			
+			// Remove "TITLE: "
+			if (sName.contains("TITLE:"))
+				sName = sName.substring(6);			
+		}
+
 		gl.glColor3f(1, 1, 1);
-		textRenderer.draw3D("ID: " +sElementId,
+
+		textRenderer.draw3D("Type:",
 				fXOffset, 
 				fYOffset - fLineHeight, 
 				0.001f,
 				0.005f);  // scale factor
 		
-		String sTmp = "";
-		if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))		
-		{
-			sTmp = "Gene short name:" +geneAnnotationMapper.getGeneShortNameByNCBIGeneId(sElementId);
-		}
-		else if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.map))
-		{
-			sTmp = ((PathwayVertexGraphItemRep)tmpVertexGraphItem.getAllItemsByProp(
-					EGraphItemProperty.ALIAS_CHILD).get(0)).getName();
-			
-			// Remove "TITLE: "
-			if (sTmp.contains("TITLE:"))
-				sTmp = sTmp.substring(6);
-			
-			sTmp = "Pathway name: " + sTmp;
-		}
-		textRenderer.draw3D(sTmp,
+		textRenderer.draw3D(sType,
+				fXOffset + 0.3f, 
+				fYOffset - fLineHeight, 
+				0.001f,
+				0.005f);  // scale factor
+
+		textRenderer.draw3D("ID:",
 				fXOffset, 
 				fYOffset - 2*fLineHeight, 
 				0.001f,
 				0.005f);  // scale factor
 		
+		textRenderer.draw3D(sElementId,
+				fXOffset + 0.3f, 
+				fYOffset - 2*fLineHeight, 
+				0.001f,
+				0.005f);  // scale factor
+
+		textRenderer.draw3D("Name: ",
+				fXOffset, 
+				fYOffset - 3*fLineHeight, 
+				0.001f,
+				0.005f);  // scale factor
+		
+		textRenderer.draw3D(sName,
+				fXOffset + 0.3f, 
+				fYOffset - 3*fLineHeight, 
+				0.001f,
+				0.005f);  // scale factor
+
 		textRenderer.end3DRendering();
 		
 		if (bEnableColorMapping) 
 		{
 			// Render mapping if available
-			gl.glTranslatef(10*fXOffset, -3.6f*fLineHeight, -0.045f);
+			gl.glTranslatef(0.9f, -1.5f*fLineHeight, -0.045f);
 			gl.glScalef(3.0f, 3.0f, 3.0f);
 			if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
 			{					
