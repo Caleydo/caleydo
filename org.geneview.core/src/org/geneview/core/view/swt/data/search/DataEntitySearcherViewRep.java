@@ -23,12 +23,27 @@ import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
 import org.geneview.util.graph.IGraphItem;
 
+/**
+ * 
+ * DataEntitySearcherViewRep
+ * 
+ * @author Marc Streit
+ *
+ */
 public class DataEntitySearcherViewRep 
 extends AViewRep 
 implements IMediatorSender{;
 	
 	private int iSearchSelectionSetId;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 * @param iViewId
+	 * @param iParentContainerId
+	 * @param sLabel
+	 */
 	public DataEntitySearcherViewRep(final IGeneralManager refGeneralManager, 
 			final int iViewId, 
 			final int iParentContainerId, 
@@ -65,8 +80,9 @@ implements IMediatorSender{;
 	public boolean searchForEntity(final String sEntity) {
 
 		if (searchForPathway(sEntity)
-				|| searchForAccession(sEntity)
-				|| searchForNCBIGeneId(sEntity))
+				|| searchForNCBIGeneId(sEntity)
+				|| searchForGeneShortName(sEntity)
+				|| searchForAccession(sEntity))
 			return true;
 		
 		return false;
@@ -107,7 +123,7 @@ implements IMediatorSender{;
 
 	}
 	
-	private boolean searchForNCBIGeneId(String sNCBIGeneIdCode) {
+	private boolean searchForNCBIGeneId(final String sNCBIGeneIdCode) {
 		
 		int iNCBIGeneIdCode = StringConversionTool.convertStringToInt(sNCBIGeneIdCode, -1);
 		
@@ -151,6 +167,18 @@ implements IMediatorSender{;
 		triggerUpdate(iArSelectionId, iArSelectionDepth, iArSelectionOptional);
 		
 		return true;
+	}
+	
+	private boolean searchForGeneShortName(final String sEntity) {
+		
+		int iNCBIGeneId = refGeneralManager.getSingelton().getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
+				GenomeMappingType.GENE_SHORT_NAME_2_NCBI_GENEID);
+		
+		if (iNCBIGeneId == -1)
+			return false;
+		
+		return searchForNCBIGeneId(refGeneralManager.getSingelton().getGenomeIdManager()
+				.getIdStringFromIntByMapping(iNCBIGeneId, GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 	}
 	
 	private void triggerUpdate(int[] iArSelectionId,

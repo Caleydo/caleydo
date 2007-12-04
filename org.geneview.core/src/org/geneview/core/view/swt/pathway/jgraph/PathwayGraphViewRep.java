@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -836,8 +838,10 @@ extends APathwayGraphViewRep {
 		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 
-		GraphConstants.setBackground(attributeMap, color);
-
+		//GraphConstants.setBackground(attributeMap, color);
+		GraphConstants.setBorder(attributeMap,
+				BorderFactory.createLineBorder(color, 3) );
+		
 		nested.put(refCell, attributeMap);
 		refGraphLayoutCache.edit(nested, null, null, null);
 	}

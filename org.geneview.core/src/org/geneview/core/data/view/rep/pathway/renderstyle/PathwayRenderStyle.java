@@ -85,7 +85,7 @@ extends ARenderStyle {
 		compoundNodeShape 	= NodeShape.ROUND;
 		pathwayNodeShape 	= NodeShape.ROUNDRECTANGULAR;
 		
-		enzymeNodeColor 			= new Color(0.53f, 0.81f, 1.0f);
+		enzymeNodeColor 			= new Color(0.7f, 0.9f, 1.0f);
 		enzymeNodeColorGeneMapped 	= new Color(0.8f, 0.8f, 0.8f);
 		compoundNodeColor 			= new Color(1.0f, 0.65f, 0.0f); // DARK YELLOW
 		compoundNodeColorGeneMapped = Color.DARK_GRAY;

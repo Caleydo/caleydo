@@ -104,15 +104,6 @@ implements IView {
 	    //refTextField.setBounds(0, 30, 300, 25);
 	    refTextField.setText(sUrl);
 	    
-	    final Text searchText = new Text (refSWTContainer, SWT.BORDER);
-	    searchText.addListener(SWT.DefaultSelection, new Listener()
-		{
-			public void handleEvent(Event e)
-			{
-				refGeneralManager.getSingelton().getViewGLCanvasManager().getDataEntitySearcher()
-					.searchForEntity(searchText.getText());
-			}
-		});
 		GridData data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;

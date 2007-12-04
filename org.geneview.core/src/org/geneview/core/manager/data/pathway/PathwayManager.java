@@ -152,7 +152,7 @@ implements IPathwayManager {
 	public int searchPathwayIdByName(final String sPathwayName) {
 		
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayIdLUT.keySet().iterator();
-		Pattern pattern = Pattern.compile(sPathwayName);
+		Pattern pattern = Pattern.compile(sPathwayName, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 		String sTmpPathwayName;
 		

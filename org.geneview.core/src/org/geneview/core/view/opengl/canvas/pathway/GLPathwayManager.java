@@ -25,6 +25,7 @@ import org.geneview.core.data.graph.item.vertex.EPathwayVertexShape;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.util.mapping.EnzymeToExpressionColorMapper;
 import org.geneview.core.view.opengl.util.GLTextUtils;
 
@@ -103,7 +104,12 @@ public class GLPathwayManager {
 	}
 	
 	public void buildPathwayDisplayList(final GL gl, final int iPathwayId) {
-
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()
+				+ ": buildPathwayDisplayList(): Build display list for pathway: "+iPathwayId,
+				LoggerType.VERBOSE);
+		
 		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(iPathwayId);
 		
@@ -122,7 +128,7 @@ public class GLPathwayManager {
 			hashPathwayId2VerticesDisplayListId.put(iPathwayId, iVerticesDisplayListId);			
 		}
 		
-		performIdenticalNodeHighlighting();
+//		performIdenticalNodeHighlighting();
 		
 		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
 		extractVertices(gl, refTmpPathway);
@@ -145,7 +151,7 @@ public class GLPathwayManager {
 		gl.glEndList();
 	}
 
-	private void performIdenticalNodeHighlighting() {
+	public void performIdenticalNodeHighlighting() {
 		
 		hashSelectedVertexRepId2Depth.clear();
 		iArSelectedEdgeRepId.clear();

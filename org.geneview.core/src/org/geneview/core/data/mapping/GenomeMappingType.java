@@ -108,7 +108,17 @@ implements IGeneViewDefaultType <GenomeMappingType> {
 	NCBI_GENEID_2_ENZYME  (
 			GenomeIdType.NCBI_GENEID,
 			GenomeIdType.ENZYME,
-			GenomeMappingDataType.MULTI_INT2INT),			
+			GenomeMappingDataType.MULTI_INT2INT),	
+			
+	NCBI_GENEID_2_GENE_SHORT_NAME (
+			GenomeIdType.NCBI_GENEID,
+			GenomeIdType.GENE_SHORT_NAME,
+			GenomeMappingDataType.INT2STRING),			
+			
+	GENE_SHORT_NAME_2_NCBI_GENEID (
+			GenomeIdType.GENE_SHORT_NAME,
+			GenomeIdType.NCBI_GENEID,			
+			GenomeMappingDataType.STRING2INT),				
 						
 	/* --- Pathway --- */
 	PATHWAY_CODE_2_PATHWAY  (
@@ -199,12 +209,7 @@ implements IGeneViewDefaultType <GenomeMappingType> {
 	ACCESSION_2_GENE_NAME (
 			GenomeIdType.ACCESSION,
 			GenomeIdType.GENE_NAME,
-			GenomeMappingDataType.INT2STRING),
-			
-	NCBI_GENEID_2_GENE_SHORT_NAME (
-				GenomeIdType.NCBI_GENEID,
-				GenomeIdType.GENE_SHORT_NAME,
-				GenomeMappingDataType.INT2STRING),			
+			GenomeMappingDataType.INT2STRING),	
 					
 	NON_MAPPING(GenomeIdType.NONE,
 			GenomeIdType.NONE,

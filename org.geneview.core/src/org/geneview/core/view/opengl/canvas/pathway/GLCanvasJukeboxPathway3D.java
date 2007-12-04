@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -223,8 +224,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 	public void renderPart(GL gl) {
 
-		if (bRebuildVisiblePathwayDisplayLists)
-			rebuildVisiblePathwayDisplayLists(gl);
+//		if (bRebuildVisiblePathwayDisplayLists)
+//			rebuildVisiblePathwayDisplayLists(gl);
 		
 		handlePicking(gl);
 		
@@ -1153,12 +1154,16 @@ implements IMediatorReceiver, IMediatorSender {
 		ArrayList<IGraphItem> alSelectedVertexGraphItemReps = 
 			new ArrayList<IGraphItem>();
 		
+		// Remove duplicates by adding to a hash list
+		HashSet<IGraphItem> set = new HashSet<IGraphItem>();
+		
 		while(iterVertexGraphItems.hasNext())
 		{
-			alSelectedVertexGraphItemReps.addAll(
-					iterVertexGraphItems.next().getAllItemsByProp(
-							EGraphItemProperty.ALIAS_CHILD));
+			set.addAll(iterVertexGraphItems.next().getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD));
 		}
+		
+		alSelectedVertexGraphItemReps.addAll(set);
 				
 		loadDependentPathways(gl, alSelectedVertexGraphItemReps);
 	}
@@ -1166,6 +1171,9 @@ implements IMediatorReceiver, IMediatorSender {
 	public void loadDependentPathways(final GL gl,
 			final List<IGraphItem> alVertexRep) {
 
+		// Remove pathways from stacked layer view
+		pathwayLayeredLayer.removeAllElements();
+		
 		refHashPathwayContainingSelectedVertex2VertexCount.clear();
 		
 		Iterator<IGraphItem> iterIdenticalPathwayGraphItemReps = 
@@ -1234,6 +1242,8 @@ implements IMediatorReceiver, IMediatorSender {
 			alSetSelection.get(0).returnWriteToken();
 		}
 			
+		refGLPathwayManager.performIdenticalNodeHighlighting();
+		
 		// Update display list if something changed
 		// Rebuild display lists for visible pathways in layered view
 		Iterator<Integer> iterVisiblePathway = pathwayLayeredLayer
