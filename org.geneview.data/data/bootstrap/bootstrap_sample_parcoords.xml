@@ -6,6 +6,9 @@
   
     <CommandBuffer>  			
 	   				
+		<!-- Creating Data -->
+			<read-xml-file target="data/bootstrap/load_set_storage_virtual-array_for_pathways_parcoords.xml" />	   				
+	   				
 		<!-- Window	10331	-->
 		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
@@ -16,7 +19,8 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="16401" label="GL Parallel Coordinates" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
-							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f" /> 
+							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
+							detail="35101 36101 37101" /> 
 							
 	  	<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
