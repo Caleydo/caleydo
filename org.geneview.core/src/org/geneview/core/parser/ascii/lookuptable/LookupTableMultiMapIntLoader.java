@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.geneview.core.data.map.MultiHashArrayIntegerMap;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.ascii.lookuptable.ALookupTableLoader;
 import org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader;
@@ -30,7 +30,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	 */
 	public LookupTableMultiMapIntLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genomeIdType,
+			final EGenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
 
 		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
@@ -114,7 +114,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	}
 	
 	public void setMultiMapInteger( MultiHashArrayIntegerMap setMultiHashMap,
-			GenomeMappingType type ) {
+			EGenomeMappingType type ) {
 		
 		//refGenomeIdManager.
 		this.refMultiHashMapInteger = setMultiHashMap;

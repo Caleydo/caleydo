@@ -39,7 +39,7 @@ import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIter
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 //import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-//import org.geneview.core.data.mapping.GenomeMappingType;
+//import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 //import org.geneview.core.manager.data.IGenomeIdManager;
@@ -550,7 +550,7 @@ extends AGLCanvasHeatmap2D
 //		.getGenomeIdManager();
 //		
 //		hashNCBI_GENE2index = refIGenomeIdManager
-//				.getAllValuesByGenomeIdTypeHashMap(GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+//				.getAllValuesByGenomeIdTypeHashMap(EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 //
 //		if ( hashNCBI_GENE2index == null ) {
 //			refGeneralManager.getSingelton().logMsg("Can not load NCBI_GENEID mapping!", LoggerType.MINOR_ERROR_XML);

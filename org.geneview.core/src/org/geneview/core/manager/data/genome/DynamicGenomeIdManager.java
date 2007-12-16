@@ -13,11 +13,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 //import org.geneview.core.base.map.MultiHashArrayMap;
-//import org.geneview.core.data.mapping.GenomeIdType;
+//import org.geneview.core.data.mapping.EGenomeIdType;
 import org.geneview.core.data.map.MultiHashArrayIntegerMap;
 import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.GenomeMappingDataType;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingDataType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 //import org.geneview.core.base.map.MultiHashArrayStringMap;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -41,15 +41,15 @@ implements IGenomeIdManager {
 	
 	private AtomicBoolean bHasMapActiveWriter = new AtomicBoolean(false); 
 	
-	private GenomeMappingType currentEditingType;
+	private EGenomeMappingType currentEditingType;
 	
 	private IGenomeIdMap currentGenomeIdMap;
 	
-	protected HashMap<GenomeMappingType, IGenomeIdMap> hashType2Map;
+	protected HashMap<EGenomeMappingType, IGenomeIdMap> hashType2Map;
 	
-	protected HashMap<GenomeMappingType, MultiHashArrayIntegerMap> hashType2MultiMapInt;
+	protected HashMap<EGenomeMappingType, MultiHashArrayIntegerMap> hashType2MultiMapInt;
 	
-	protected HashMap<GenomeMappingType, MultiHashArrayStringMap> hashType2MultiMapString;
+	protected HashMap<EGenomeMappingType, MultiHashArrayStringMap> hashType2MultiMapString;
 	
 	public static final int iInitialSizeHashMap = 1000;
 	
@@ -66,24 +66,24 @@ implements IGenomeIdManager {
 
 		super(setGeneralManager, 66, ManagerType.DATA_GENOME_ID );
 		
-		hashType2Map = new HashMap<GenomeMappingType, IGenomeIdMap> (iInitialCountAllLookupTables);
+		hashType2Map = new HashMap<EGenomeMappingType, IGenomeIdMap> (iInitialCountAllLookupTables);
 		
-		hashType2MultiMapInt = new  HashMap<GenomeMappingType, MultiHashArrayIntegerMap> (iInitialCountMultiMapLookupTables);
+		hashType2MultiMapInt = new  HashMap<EGenomeMappingType, MultiHashArrayIntegerMap> (iInitialCountMultiMapLookupTables);
 		
-		hashType2MultiMapString = new HashMap<GenomeMappingType, MultiHashArrayStringMap> (iInitialCountMultiMapLookupTables);
+		hashType2MultiMapString = new HashMap<EGenomeMappingType, MultiHashArrayStringMap> (iInitialCountMultiMapLookupTables);
 	}
 
 	
-	public final boolean createMapByType( final GenomeMappingType codingLutType, 
-			final GenomeMappingDataType dataType ) {
+	public final boolean createMapByType( final EGenomeMappingType codingLutType, 
+			final EGenomeMappingDataType dataType ) {
 		
 		return createMapByType(codingLutType, 
 				dataType, 
 				DynamicGenomeIdManager.iInitialSizeHashMap );
 	}
 	
-	public boolean createMapByType( final GenomeMappingType codingLutType, 
-			final GenomeMappingDataType dataType,
+	public boolean createMapByType( final EGenomeMappingType codingLutType, 
+			final EGenomeMappingDataType dataType,
 			final int iSetInitialSizeHashMap ) {
 		
 		/* conisitency check */
@@ -171,25 +171,25 @@ implements IGenomeIdManager {
 		return true;
 	}
 	
-	public final IGenomeIdMap getMapByType( final GenomeMappingType type ) {
+	public final IGenomeIdMap getMapByType( final EGenomeMappingType type ) {
 		
 		return hashType2Map.get( type );
 	}
 	
-	public final MultiHashArrayIntegerMap getMultiMapIntegerByType( final GenomeMappingType type ) {
+	public final MultiHashArrayIntegerMap getMultiMapIntegerByType( final EGenomeMappingType type ) {
 		
 		return hashType2MultiMapInt.get( type );
 	}
 	
-	public final MultiHashArrayStringMap getMultiMapStringByType( final GenomeMappingType type ) {
+	public final MultiHashArrayStringMap getMultiMapStringByType( final EGenomeMappingType type ) {
 		
 		return hashType2MultiMapString.get( type );
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#hasAnyMapByType(org.geneview.core.data.mapping.GenomeMappingType)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#hasAnyMapByType(org.geneview.core.data.mapping.EGenomeMappingType)
 	 */
-	public final boolean hasAnyMapByType( final GenomeMappingType codingLutType ) {
+	public final boolean hasAnyMapByType( final EGenomeMappingType codingLutType ) {
 		
 		if (  hasMapByType( codingLutType ) ) {
 			return true;
@@ -198,12 +198,12 @@ implements IGenomeIdManager {
 		return hasMultiMapByType(codingLutType);
 	}
 	
-	public final boolean hasMapByType( final GenomeMappingType codingLutType ) {
+	public final boolean hasMapByType( final EGenomeMappingType codingLutType ) {
 		
 		return hashType2Map.containsKey( codingLutType );
 	}
 	
-	public final boolean hasMultiMapByType( final GenomeMappingType codingLutType ) {
+	public final boolean hasMultiMapByType( final EGenomeMappingType codingLutType ) {
 		
 		if ( hashType2MultiMapInt.containsKey( codingLutType ) ) 
 		{
@@ -219,9 +219,9 @@ implements IGenomeIdManager {
 	}	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes(org.geneview.core.data.mapping.GenomeIdType, org.geneview.core.data.mapping.GenomeIdType)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes(org.geneview.core.data.mapping.EGenomeIdType, org.geneview.core.data.mapping.EGenomeIdType)
 	 */
-	public boolean buildLUT_startEditing( final GenomeMappingType type ) {
+	public boolean buildLUT_startEditing( final EGenomeMappingType type ) {
 
 		if ( ! bHasMapActiveWriter.compareAndSet(false,true) ) {
 			return false;
@@ -258,7 +258,7 @@ implements IGenomeIdManager {
 	/* (non-Javadoc)
 	 * @see org.geneview.core.manager.data.IGenomeIdManager#buildLUT_stopEditing()
 	 */
-	public boolean buildLUT_stopEditing( final GenomeMappingType type ) {
+	public boolean buildLUT_stopEditing( final EGenomeMappingType type ) {
 
 		if ( ! bHasMapActiveWriter.compareAndSet(true,false) ) 
 		{
@@ -272,7 +272,7 @@ implements IGenomeIdManager {
 			//TODO: register multi hash map to!
 			//assert false :  "TODO: register multi hash map to!";
 			
-			currentEditingType = GenomeMappingType.NON_MAPPING;
+			currentEditingType = EGenomeMappingType.NON_MAPPING;
 			
 			return true;
 		} // if ( type.isMultiMap() ) ... else 
@@ -284,7 +284,7 @@ implements IGenomeIdManager {
 					currentEditingType + "]");
 		}
 
-		currentEditingType = GenomeMappingType.NON_MAPPING;
+		currentEditingType = EGenomeMappingType.NON_MAPPING;
 		
 		return true;
 	}
@@ -292,7 +292,7 @@ implements IGenomeIdManager {
 	
 	public int getIdIntFromStringByMapping(
 			final String sGeneViewId, 
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
@@ -304,7 +304,7 @@ implements IGenomeIdManager {
 
 	public int getIdIntFromIntByMapping(
 			final int iUniqueId, 
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
@@ -315,7 +315,7 @@ implements IGenomeIdManager {
 	
 	public String getIdStringFromStringByMapping(
 			final String sGeneViewId, 
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
@@ -327,7 +327,7 @@ implements IGenomeIdManager {
 
 	public String getIdStringFromIntByMapping(
 			final int iUniqueId, 
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
@@ -336,16 +336,16 @@ implements IGenomeIdManager {
 		return buffer.getStringByIntChecked( iUniqueId );
 	}
 
-	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
-	// Because in the hashType2MultiMapInt the maps are stored with the GenomeMappingType as key.
-	public ArrayList<Integer> getIdIntListByType(int iId, GenomeMappingType genomeMappingType) {
+	//MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// Because in the hashType2MultiMapInt the maps are stored with the EGenomeMappingType as key.
+	public ArrayList<Integer> getIdIntListByType(int iId, EGenomeMappingType genomeMappingType) {
 
 		return hashType2MultiMapInt.get(genomeMappingType).get(iId);
 	}
 	
-	//MARC: changed parameter from GenomeIdType to GenomeMappingType.
-	// Because in the hashType2MultiMapString the maps are stored with the GenomeMappingType as key.	
-	public ArrayList<String> getIdStringListByType(String sId, GenomeMappingType genomeMappingType) {
+	//MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// Because in the hashType2MultiMapString the maps are stored with the EGenomeMappingType as key.	
+	public ArrayList<String> getIdStringListByType(String sId, EGenomeMappingType genomeMappingType) {
 		
 		return hashType2MultiMapString.get(genomeMappingType).get(sId);
 	}
@@ -392,13 +392,13 @@ implements IGenomeIdManager {
 
 
 	/**
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#setMapByType(org.geneview.core.data.mapping.GenomeMappingType, java.lang.Object)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#setMapByType(org.geneview.core.data.mapping.EGenomeMappingType, java.lang.Object)
 	 * 
 	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap
 	 * @see org.geneview.core.data.map.MultiHashArrayStringMap
 	 * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
 	 */
-	public void setMapByType(final GenomeMappingType codingLutType, 
+	public void setMapByType(final EGenomeMappingType codingLutType, 
 			Object map) {
 		
 		if (map.getClass().equals(MultiHashArrayIntegerMap.class)) {
@@ -415,7 +415,7 @@ implements IGenomeIdManager {
 			hashType2Map.put(codingLutType, (IGenomeIdMap) map);
 		}
 		catch (NullPointerException npe) {
-			throw new GeneViewRuntimeException("setMapByType(final GenomeMappingType codingLutType, Object map) unsupported object=" +
+			throw new GeneViewRuntimeException("setMapByType(final EGenomeMappingType codingLutType, Object map) unsupported object=" +
 					map.getClass().toString(),
 					GeneViewRuntimeExceptionType.DATAHANDLING);		
 		}
@@ -423,9 +423,9 @@ implements IGenomeIdManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#removeMapByType(org.geneview.core.data.mapping.GenomeMappingType)
+	 * @see org.geneview.core.manager.data.IGenomeIdManager#removeMapByType(org.geneview.core.data.mapping.EGenomeMappingType)
 	 */
-	public void removeMapByType(final GenomeMappingType codingLutType) {
+	public void removeMapByType(final EGenomeMappingType codingLutType) {
 		
 		if (hashType2MultiMapInt.containsKey(codingLutType))
 		{
@@ -444,7 +444,7 @@ implements IGenomeIdManager {
 		}
 	}	
 
-	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, GenomeMappingType type) {
+	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, EGenomeMappingType type) {
 
 		assert iIdList != null : "can not handle null pointer";
 		
@@ -475,7 +475,7 @@ implements IGenomeIdManager {
 	}
 
 
-	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList, GenomeMappingType type) {
+	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList, EGenomeMappingType type) {
 
 		assert sIdList != null : "can not handle null pointer";
 		
@@ -506,7 +506,7 @@ implements IGenomeIdManager {
 	}
 
 
-	private Set <Integer> getKeysFromExposedDataStructues(final GenomeMappingType type) {
+	private Set <Integer> getKeysFromExposedDataStructues(final EGenomeMappingType type) {
 		
 		IGenomeIdMap bufferMap = this.hashType2Map.get( type );
 		
@@ -515,12 +515,12 @@ implements IGenomeIdManager {
 		}
 		Set <Integer> keyset = bufferMap.getKeysInteger();		
 	
-		//assert keyset == null : "GenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
+		//assert keyset == null : "EGenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
 		
 		return keyset;			
 	}
 	
-	private Collection <Integer> getValuesFromExposedDataStructues(final GenomeMappingType type) {
+	private Collection <Integer> getValuesFromExposedDataStructues(final EGenomeMappingType type) {
 		
 		IGenomeIdMap bufferMap = this.hashType2Map.get( type );
 		
@@ -531,7 +531,7 @@ implements IGenomeIdManager {
 		try {
 			Collection <Integer> keyset = bufferMap.getValuesInteger();		
 		
-			assert keyset != null : "GenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
+			assert keyset != null : "EGenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
 			
 			return keyset;		
 		} catch ( GeneViewRuntimeException gve ) {
@@ -549,16 +549,16 @@ implements IGenomeIdManager {
 	}
 	
 	/**
-	 * Creates a HashMap from the the MultiMap requested using (GenomeMappingType) type; 
-	 * < GenomeMappingType - Id , index from [0.. multiMap.keySet().size()-1) >
+	 * Creates a HashMap from the the MultiMap requested using (EGenomeMappingType) type; 
+	 * < EGenomeMappingType - Id , index from [0.. multiMap.keySet().size()-1) >
 	 * 
 	 * @param type
-	 * @return HashMap with < GenomeMappingType - Id , index from [0.. multiMap.keySet().size()-1) > 
+	 * @return HashMap with < EGenomeMappingType - Id , index from [0.. multiMap.keySet().size()-1) > 
 	 * 
-	 * @see GenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
-	 * @see GenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
+	 * @see EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
+	 * @see EGenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
 	 */
-	public HashMap<Integer,Integer> getAllKeysByGenomeIdTypeHashMap(final GenomeMappingType type) {
+	public HashMap<Integer,Integer> getAllKeysByGenomeIdTypeHashMap(final EGenomeMappingType type) {
 		
 		try {
 			Set <Integer> keyset = 
@@ -588,10 +588,10 @@ implements IGenomeIdManager {
 	
 	/**
 	 * 
-	 * @see GenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
-	 * @see GenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
+	 * @see EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
+	 * @see EGenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
 	 */
-	public int[] getAllKeysByGenomeIdType(GenomeMappingType type) {		
+	public int[] getAllKeysByGenomeIdType(EGenomeMappingType type) {		
 		
 		try {
 			Set <Integer> keyset =
@@ -620,7 +620,7 @@ implements IGenomeIdManager {
 
 	@Override
 	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(
-			GenomeMappingType type) {
+			EGenomeMappingType type) {
 
 		try {
 			Collection <Integer> keyset = 

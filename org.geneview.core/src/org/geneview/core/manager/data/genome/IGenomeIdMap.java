@@ -5,10 +5,10 @@ package org.geneview.core.manager.data.genome;
 import java.util.Collection;
 import java.util.Set;
 
-import org.geneview.core.data.mapping.GenomeMappingDataType;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingDataType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.data.IGenomeIdManager;
-//import org.geneview.core.data.mapping.GenomeMappingDataType;
+//import org.geneview.core.data.mapping.EGenomeMappingDataType;
 
 
 /**
@@ -24,7 +24,7 @@ public interface IGenomeIdMap {
 
 	public static final boolean ENABLE_DEBUG = false;
 	
-//	public Object getObjectByType( final Object byObject, GenomeMappingDataType type );
+//	public Object getObjectByType( final Object byObject, EGenomeMappingDataType type );
 	
 	public int getIntByInt( final int key);
 	
@@ -142,9 +142,9 @@ public interface IGenomeIdMap {
 	 */
 	public IGenomeIdMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
-			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2,
-			GenomeMappingDataType targetMappingDataType,
-			GenomeMappingDataType sourceMappingDataType);
+			EGenomeMappingType genomeMappingLUT_1,
+			EGenomeMappingType genomeMappingLUT_2,
+			EGenomeMappingDataType targetMappingDataType,
+			EGenomeMappingDataType sourceMappingDataType);
 	
 }

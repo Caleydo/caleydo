@@ -13,8 +13,8 @@ import java.util.StringTokenizer;
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.base.ACommand;
 import org.geneview.core.command.window.CmdWindowPopupInfo;
-import org.geneview.core.data.mapping.GenomeMappingType;
-import org.geneview.core.data.mapping.GenomeMappingDataType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingDataType;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -60,7 +60,7 @@ extends ACommand {
 	/**
 	 * Define type of lookup table to be created.
 	 * 
-	 * @see org.geneview.core.data.mapping.GenomeIdType
+	 * @see org.geneview.core.data.mapping.EGenomeIdType
 	 */
 	protected String sLUT_Target;
 	
@@ -258,33 +258,33 @@ extends ACommand {
 		
 		try 
 		{
-			GenomeMappingType lut_genome_type = 
-				GenomeMappingType.valueOf( sLookupTableType );
+			EGenomeMappingType lut_genome_type = 
+				EGenomeMappingType.valueOf( sLookupTableType );
 			
-			GenomeMappingDataType genomeDataType;
+			EGenomeMappingDataType genomeDataType;
 			
 			genomeDataType = lut_genome_type.getDataMapppingType();
 
 			if (bResolveCodeMappingUsingCodeToId_LUT_2)
 			{
-				if (genomeDataType == GenomeMappingDataType.INT2INT)
+				if (genomeDataType == EGenomeMappingDataType.INT2INT)
 				{
-					genomeDataType = GenomeMappingDataType.STRING2STRING;
+					genomeDataType = EGenomeMappingDataType.STRING2STRING;
 				}
-				else if (genomeDataType == GenomeMappingDataType.MULTI_INT2INT)
+				else if (genomeDataType == EGenomeMappingDataType.MULTI_INT2INT)
 				{
-					genomeDataType = GenomeMappingDataType.MULTI_STRING2STRING;
+					genomeDataType = EGenomeMappingDataType.MULTI_STRING2STRING;
 				}
 			}
 			else if (bResolveCodeMappingUsingCodeToId_LUT)
 			{
-				if (genomeDataType == GenomeMappingDataType.INT2STRING)
+				if (genomeDataType == EGenomeMappingDataType.INT2STRING)
 				{
-					genomeDataType = GenomeMappingDataType.STRING2STRING;
+					genomeDataType = EGenomeMappingDataType.STRING2STRING;
 				}
-				else if (genomeDataType == GenomeMappingDataType.INT2INT)
+				else if (genomeDataType == EGenomeMappingDataType.INT2INT)
 				{
-					genomeDataType = GenomeMappingDataType.STRING2INT;
+					genomeDataType = EGenomeMappingDataType.STRING2INT;
 				}
 			}
 			
@@ -312,22 +312,22 @@ extends ACommand {
 			/* --- Map codes in LUT to IDs --- */
 			if (bResolveCodeMappingUsingCodeToId_LUT || bResolveCodeMappingUsingCodeToId_LUT_2)
 			{
-				GenomeMappingType genomeMappingLUT_1 = 
-					GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_1 );
+				EGenomeMappingType genomeMappingLUT_1 = 
+					EGenomeMappingType.valueOf( sCodeResolvingLUTMappingType_1 );
 				
-				GenomeMappingType genomeMappingLUT_2 = null;
+				EGenomeMappingType genomeMappingLUT_2 = null;
 				
 				if(bResolveCodeMappingUsingCodeToId_LUT_2)
 				{
-					genomeMappingLUT_2 = GenomeMappingType.valueOf( sCodeResolvingLUTMappingType_2 );
+					genomeMappingLUT_2 = EGenomeMappingType.valueOf( sCodeResolvingLUTMappingType_2 );
 				}
 				
-				GenomeMappingDataType targetMappingDataType = genomeDataType;
+				EGenomeMappingDataType targetMappingDataType = genomeDataType;
 				
 				// Reset genomeDataType to real type
 				genomeDataType = lut_genome_type.getDataMapppingType();
 				
-				if (genomeDataType == GenomeMappingDataType.MULTI_INT2INT)
+				if (genomeDataType == EGenomeMappingDataType.MULTI_INT2INT)
 				{
 					LookupTableLoaderProxy.createCodeResolvedMultiMapFromMultiMapString(
 							refGeneralManager, 
@@ -351,12 +351,12 @@ extends ACommand {
 			{
 				// Concatenate genome id type target and origin type in swapped 
 				// order to determine reverse genome mapping type.
-				GenomeMappingType lut_genome_reverse_type = GenomeMappingType.valueOf(
+				EGenomeMappingType lut_genome_reverse_type = EGenomeMappingType.valueOf(
 					lut_genome_type.getTypeTarget().toString()
 					+ "_2_"
 					+ lut_genome_type.getTypeOrigin().toString());
 				
-				if (lut_genome_reverse_type.equals(GenomeMappingType.NON_MAPPING))
+				if (lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING))
 				{
 					assert false : "Reverse mapping: type=" + 
 					lut_genome_reverse_type.toString() + " has no valid reverse type.";
@@ -364,7 +364,7 @@ extends ACommand {
 					throw new RuntimeException("Reverse mapping: type=" +
 							lut_genome_type.toString() +
 							" has no valid reverse type.");
-				} //if (lut_genome_reverse_type.equals(GenomeMappingType.NON_MAPPING))
+				} //if (lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING))
 				
 				if ( lut_genome_reverse_type.isMultiMap() ) 
 				{

@@ -10,7 +10,7 @@ import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
 import org.geneview.core.command.event.CmdEventCreateMediator;
 import org.geneview.core.data.collection.set.selection.SetSelection;
 import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IEventPublisher.MediatorType;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
@@ -107,19 +107,19 @@ implements IMediatorSender{;
 	private boolean searchForAccession(final String sEntity) {
 		
 		int iFoundAccessionId = refGeneralManager.getSingelton().getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-			GenomeMappingType.ACCESSION_CODE_2_ACCESSION);
+			EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
 		
 		if (iFoundAccessionId == -1)
 			return false;
 		
 		int iNCBIGeneId = refGeneralManager.getSingelton().getGenomeIdManager().getIdIntFromIntByMapping(iFoundAccessionId, 
-				GenomeMappingType.ACCESSION_2_NCBI_GENEID);
+				EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
 
 		if (iNCBIGeneId == -1)
 			return false;
 		
 		return searchForNCBIGeneId(refGeneralManager.getSingelton().getGenomeIdManager()
-				.getIdStringFromIntByMapping(iNCBIGeneId, GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
+				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 
 	}
 	
@@ -172,13 +172,13 @@ implements IMediatorSender{;
 	private boolean searchForGeneShortName(final String sEntity) {
 		
 		int iNCBIGeneId = refGeneralManager.getSingelton().getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-				GenomeMappingType.GENE_SHORT_NAME_2_NCBI_GENEID);
+				EGenomeMappingType.GENE_SHORT_NAME_2_NCBI_GENEID);
 		
 		if (iNCBIGeneId == -1)
 			return false;
 		
 		return searchForNCBIGeneId(refGeneralManager.getSingelton().getGenomeIdManager()
-				.getIdStringFromIntByMapping(iNCBIGeneId, GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
+				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 	}
 	
 	private void triggerUpdate(int[] iArSelectionId,

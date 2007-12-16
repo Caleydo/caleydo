@@ -6,7 +6,7 @@ package org.geneview.core.manager.data.genome;
 import java.util.Collection;
 import java.util.Set;
 
-import org.geneview.core.data.mapping.GenomeMappingDataType;
+import org.geneview.core.data.mapping.EGenomeMappingDataType;
 import org.geneview.core.manager.data.genome.AGenomeIdMap;
 import org.geneview.core.manager.data.genome.IGenomeIdMap;
 import org.geneview.core.util.ConversionStringInteger;
@@ -22,14 +22,14 @@ implements IGenomeIdMap {
 	/**
 	 * 
 	 */
-	public GenomeIdMapInt2Int(final GenomeMappingDataType dataType) {
+	public GenomeIdMapInt2Int(final EGenomeMappingDataType dataType) {
 		super(dataType);
 	}
 
 	/**
 	 * @param iSizeHashMap
 	 */
-	public GenomeIdMapInt2Int(final GenomeMappingDataType dataType, int iSizeHashMap) {
+	public GenomeIdMapInt2Int(final EGenomeMappingDataType dataType, int iSizeHashMap) {
 		super(dataType, iSizeHashMap);
 	
 	}

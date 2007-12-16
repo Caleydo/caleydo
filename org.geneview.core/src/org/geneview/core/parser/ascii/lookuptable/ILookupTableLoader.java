@@ -6,7 +6,7 @@ import java.io.IOException;
 //import org.geneview.core.base.map.MultiHashArrayMap;
 import org.geneview.core.data.map.MultiHashArrayIntegerMap;
 import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.data.genome.IGenomeIdMap;
 
 /**
@@ -63,7 +63,7 @@ public interface ILookupTableLoader {
 	 * @param type specify the type of mapping
 	 */
 	public void setHashMap( final IGenomeIdMap setHashMap,
-			final GenomeMappingType type);
+			final EGenomeMappingType type);
 	
 	/**
 	 * set the reference to the hashmap
@@ -72,10 +72,10 @@ public interface ILookupTableLoader {
 	 * @param type specify the type of mapping
 	 */
 	public void setMultiMapInteger( final MultiHashArrayIntegerMap setHashMap,
-			final GenomeMappingType type);
+			final EGenomeMappingType type);
 	
 	public void setMultiMapString( final MultiHashArrayStringMap setHashMap,
-			final GenomeMappingType type);
+			final EGenomeMappingType type);
 	
 	/**
 	 * Define initial size. 

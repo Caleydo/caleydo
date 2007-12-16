@@ -13,7 +13,7 @@ import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IGenomeIdManager;
@@ -130,7 +130,7 @@ public class EnzymeToExpressionColorMapper {
 		int iNumberOfExpressionValues = 0;
 		
 		int iGeneID = refGenomeIdManager.getIdIntFromStringByMapping(sGeneID, 
-				GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+				EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
 		if (iGeneID == -1)
 		{	
@@ -139,7 +139,7 @@ public class EnzymeToExpressionColorMapper {
 		}
 		
 		int iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
-				GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+				EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 	
 		if (iAccessionID == -1)
 		{	
@@ -149,7 +149,7 @@ public class EnzymeToExpressionColorMapper {
 		
 		Collection<Integer> iArTmpMicroArrayId = null;
 		iArTmpMicroArrayId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
-					GenomeMappingType.ACCESSION_2_MICROARRAY);
+					EGenomeMappingType.ACCESSION_2_MICROARRAY);
 		
 		if (iArTmpMicroArrayId == null)
 		{	
@@ -182,7 +182,7 @@ public class EnzymeToExpressionColorMapper {
 				int iMicroArrayId = iterTmpMicroArrayId.next();
 								
 				int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
-						iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+						iMicroArrayId, EGenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
 				
 				// Get rid of 770 internal ID identifier
 				iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
@@ -219,7 +219,7 @@ public class EnzymeToExpressionColorMapper {
 		Iterator<IStorage> iterMappingStorage = alMappingStorage.iterator();
 		
 		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
-				GenomeMappingType.ENZYME_CODE_2_ENZYME);
+				EGenomeMappingType.ENZYME_CODE_2_ENZYME);
 		
 		if (iEnzymeID == -1)
 		{	
@@ -228,7 +228,7 @@ public class EnzymeToExpressionColorMapper {
 		}
 		
 		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
-				GenomeMappingType.ENZYME_2_NCBI_GENEID);
+				EGenomeMappingType.ENZYME_2_NCBI_GENEID);
 		
 		if(iTmpGeneId == null)
 		{	
@@ -243,13 +243,13 @@ public class EnzymeToExpressionColorMapper {
 			iGeneID = iterTmpGeneId.next();
 						
 			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
-					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+					EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 	
 			if (iAccessionID == -1)
 				break;
 							
 			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
-					GenomeMappingType.ACCESSION_2_MICROARRAY);
+					EGenomeMappingType.ACCESSION_2_MICROARRAY);
 			
 			if(iArTmpAccessionId == null)
 				continue;
@@ -275,7 +275,7 @@ public class EnzymeToExpressionColorMapper {
 					int iMicroArrayId = iterTmpAccessionId.next();
 									
 					int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
-							iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+							iMicroArrayId, EGenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
 					
 					// Get rid of 770 internal ID identifier
 					iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
@@ -310,7 +310,7 @@ public class EnzymeToExpressionColorMapper {
 		int iNumberOfExpressionValues = 0;
 		
 		int iGeneID = refGenomeIdManager.getIdIntFromStringByMapping(sGeneID, 
-				GenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+				EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
 		if (iGeneID == -1)
 		{	
@@ -318,7 +318,7 @@ public class EnzymeToExpressionColorMapper {
 		}
 		
 		int iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
-				GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+				EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 	
 		if (iAccessionID == -1)
 		{	
@@ -327,7 +327,7 @@ public class EnzymeToExpressionColorMapper {
 		
 		Collection<Integer> iArTmpMicroArrayId = null;
 		iArTmpMicroArrayId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
-					GenomeMappingType.ACCESSION_2_MICROARRAY);
+					EGenomeMappingType.ACCESSION_2_MICROARRAY);
 		
 		if (iArTmpMicroArrayId == null)
 		{	
@@ -359,7 +359,7 @@ public class EnzymeToExpressionColorMapper {
 				int iMicroArrayId = iterTmpMicroArrayId.next();
 								
 				int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
-						iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+						iMicroArrayId, EGenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
 				
 				// Get rid of 770 internal ID identifier
 				iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
@@ -412,13 +412,13 @@ public class EnzymeToExpressionColorMapper {
 //				.getGenomeIdManager();
 //
 //		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(
-//				sEnzymeCode, GenomeMappingType.ENZYME_CODE_2_ENZYME);
+//				sEnzymeCode, EGenomeMappingType.ENZYME_CODE_2_ENZYME);
 //
 //		if (iEnzymeID == -1)
 //			return;
 //
 //		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(
-//				iEnzymeID, GenomeMappingType.ENZYME_2_NCBI_GENEID);
+//				iEnzymeID, EGenomeMappingType.ENZYME_2_NCBI_GENEID);
 //
 //		if (iTmpGeneId == null)
 //			return;
@@ -429,25 +429,25 @@ public class EnzymeToExpressionColorMapper {
 //		{
 //			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(
 //					iterTmpGeneId.next(),
-//					GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+//					EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 //
 //			if (iAccessionID == -1)
 //				break;
 //
 //			sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(
-//					iAccessionID, GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+//					iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 //
 //			System.out.println("Accession Code for Enzyme " + sEnzymeCode
 //					+ ": " + sAccessionCode);
 //
 //			sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(
-//					iAccessionID, GenomeMappingType.ACCESSION_2_GENE_NAME);
+//					iAccessionID, EGenomeMappingType.ACCESSION_2_GENE_NAME);
 //
 //			System.out.println("Gene name for Enzyme " + sEnzymeCode + ": "
 //					+ sTmpGeneName);
 //
 //			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(
-//					iAccessionID, GenomeMappingType.ACCESSION_2_MICROARRAY);
+//					iAccessionID, EGenomeMappingType.ACCESSION_2_MICROARRAY);
 //
 //			if (iArTmpAccessionId == null)
 //				continue;
@@ -457,7 +457,7 @@ public class EnzymeToExpressionColorMapper {
 //			{
 //				String sMicroArrayCode = refGenomeIdManager
 //						.getIdStringFromIntByMapping(iterTmpAccessionId.next(),
-//								GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
+//								EGenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
 //
 //				System.out.println("MicroArray Code for Enzyme " + sEnzymeCode
 //						+ ": " + sMicroArrayCode);

@@ -3,11 +3,14 @@ package org.geneview.core.data.mapping;
 import org.geneview.core.util.IGeneViewDefaultType;
 
 /**
+ * Enum that defines data mapping types for genome ID mapping.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public enum GenomeMappingDataType
-implements IGeneViewDefaultType <GenomeMappingDataType> {
+public enum EGenomeMappingDataType
+implements IGeneViewDefaultType <EGenomeMappingDataType> {
 
 	INT2INT ( false, false ),
 	INT2STRING ( false, false ),
@@ -15,22 +18,7 @@ implements IGeneViewDefaultType <GenomeMappingDataType> {
 	STRING2STRING ( false, false ),
 	
 	MULTI_INT2INT ( true, false ),
-	
-//	/**
-//	 * Reads a Integer-2-Integer Multimap and uses a 
-//	 * lookup table to create the final Integer Multimap.
-//	 */
-//	MULTI_INT2INT_USE_LUT ( true, true ),
-	
 	MULTI_STRING2STRING ( true, false ),
-	
-//	/**
-//	 * Reads a String-2-String Multimap and uses a 
-//	 * lookup table to create the final String Multimap.
-//	 */
-//	MULTI_STRING2STRING_USE_LUT ( true, true ),
-//	
-//	MULTI_STRING2STRING_CREATE_REVERSE ( true, false ),
 	
 	NONE( false, false );
 	
@@ -40,7 +28,7 @@ implements IGeneViewDefaultType <GenomeMappingDataType> {
 	private final boolean bIsLokupTable;
 	
 	
-	private GenomeMappingDataType( boolean bEnableUseMultiMap,
+	private EGenomeMappingDataType( boolean bEnableUseMultiMap,
 			boolean bEnableIsLokupTable) {
 		this.bUseMultiMap = bEnableUseMultiMap;
 		this.bIsLokupTable = bEnableIsLokupTable;
@@ -68,8 +56,8 @@ implements IGeneViewDefaultType <GenomeMappingDataType> {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
 	 */
-	public GenomeMappingDataType getTypeDefault() {
+	public EGenomeMappingDataType getTypeDefault() {
 
-		return GenomeMappingDataType.NONE;
+		return EGenomeMappingDataType.NONE;
 	}
 }

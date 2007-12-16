@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.geneview.core.data.mapping.GenomeMappingDataType;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingDataType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.data.IGenomeIdManager;
 
 
@@ -23,13 +23,13 @@ implements IGenomeIdMap {
 
 	protected HashMap <K,V> hashGeneric;
 	
-	protected final GenomeMappingDataType dataType;
+	protected final EGenomeMappingDataType dataType;
 	
 	
 	/**
 	 * 
 	 */
-	public AGenomeIdMap(final GenomeMappingDataType dataType) {
+	public AGenomeIdMap(final EGenomeMappingDataType dataType) {
 		hashGeneric = new HashMap <K,V> ();
 		this.dataType = dataType;
 	}
@@ -38,7 +38,7 @@ implements IGenomeIdMap {
 	 * 
 	 * @param iSizeHashMap define size of hashmap
 	 */
-	protected AGenomeIdMap(final GenomeMappingDataType dataType, final int iSizeHashMap) {
+	protected AGenomeIdMap(final EGenomeMappingDataType dataType, final int iSizeHashMap) {
 		hashGeneric = new HashMap <K,V> (iSizeHashMap);
 		this.dataType = dataType;
 	}
@@ -82,14 +82,14 @@ implements IGenomeIdMap {
 			case INT2STRING:
 				/* ==> use STRING2INT */
 				reversedMap = new GenomeIdMapString2Int(
-						GenomeMappingDataType.STRING2INT,
+						EGenomeMappingDataType.STRING2INT,
 						this.size());
 				break;
 				
 			case STRING2INT:
 				/* ==> use INT2STRING */
 				reversedMap = new GenomeIdMapInt2String(
-						GenomeMappingDataType.INT2STRING,
+						EGenomeMappingDataType.INT2STRING,
 						this.size());
 				break;
 				
@@ -117,14 +117,14 @@ implements IGenomeIdMap {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(org.geneview.core.manager.data.IGenomeIdManager, org.geneview.core.data.mapping.GenomeMappingType, org.geneview.core.data.mapping.GenomeMappingType)
+	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(org.geneview.core.manager.data.IGenomeIdManager, org.geneview.core.data.mapping.EGenomeMappingType, org.geneview.core.data.mapping.EGenomeMappingType)
 	 */
 	public final IGenomeIdMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
-			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2,
-			GenomeMappingDataType targetMappingDataType,
-			GenomeMappingDataType sourceMappingDataType) {
+			EGenomeMappingType genomeMappingLUT_1,
+			EGenomeMappingType genomeMappingLUT_2,
+			EGenomeMappingDataType targetMappingDataType,
+			EGenomeMappingDataType sourceMappingDataType) {
 		
 		IGenomeIdMap codeResolvedMap = null;
 		
@@ -153,12 +153,12 @@ implements IGenomeIdMap {
 						entryBuffer.getKey().toString(), 
 						genomeMappingLUT_1);
 				
-				if (sourceMappingDataType == GenomeMappingDataType.STRING2INT)
+				if (sourceMappingDataType == EGenomeMappingDataType.STRING2INT)
 				{						
 					codeResolvedMap.put(Integer.toString(iResolvedID_1), 
 							entryBuffer.getValue().toString());
 				}
-				else if (sourceMappingDataType == GenomeMappingDataType.STRING2STRING)
+				else if (sourceMappingDataType == EGenomeMappingDataType.STRING2STRING)
 				{
 					iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
 							entryBuffer.getValue().toString(),

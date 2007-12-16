@@ -18,8 +18,8 @@ import java.util.Set;
 //import org.geneview.core.data.collection.parser.ParserTokenHandler;
 import org.geneview.core.data.map.MultiHashArrayIntegerMap;
 import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.GenomeMappingType;
-import org.geneview.core.data.mapping.GenomeMappingDataType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingDataType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -47,9 +47,9 @@ extends AbstractLoader {
 	 */
 	public LookupTableLoaderProxy(final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genomeIdType,
-			final GenomeMappingDataType type,
-			//final GenomeMappingType genomeIdType_optionalTarget,
+			final EGenomeMappingType genomeIdType,
+			final EGenomeMappingDataType type,
+			//final EGenomeMappingType genomeIdType_optionalTarget,
 			final boolean enableMultipeThreads) {
 		
 		super(setGeneralManager,
@@ -148,7 +148,7 @@ extends AbstractLoader {
 //	}
 	
 	public void setHashMap( final IGenomeIdMap setHashMap,
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 		
 		refLoggerManager.logMsg(
 				"setHashMap(" + setHashMap.toString() + " , " +
@@ -159,7 +159,7 @@ extends AbstractLoader {
 	}
 	
 	public void setMultiMap( final MultiHashArrayIntegerMap setMultiMap,
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 		
 		refProxyLookupTableLoader.setMultiMapInteger( setMultiMap, type );
 	}
@@ -248,8 +248,8 @@ extends AbstractLoader {
 	
 	public static final IGenomeIdMap createReverseMapFromMap( 
 			final IGeneralManager refGeneralManager,
-			final GenomeMappingType originMultiMapType,
-			final GenomeMappingType targetMultiMapType) {
+			final EGenomeMappingType originMultiMapType,
+			final EGenomeMappingType targetMultiMapType) {
 	
 		/* consistency check */
 		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget()) ||
@@ -282,13 +282,13 @@ extends AbstractLoader {
 	 */
 	public static final MultiHashArrayIntegerMap createReverseMultiMapFromMultiMapInt( 
 			final IGeneralManager refGeneralManager,
-			final GenomeMappingType originMultiMapType,
-			final GenomeMappingType targetMultiMapType) {
+			final EGenomeMappingType originMultiMapType,
+			final EGenomeMappingType targetMultiMapType) {
 		
 		/* consistency check */
 		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())||
 			 (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin())||
-			 (originMultiMapType.getDataMapppingType() != GenomeMappingDataType.MULTI_INT2INT))
+			 (originMultiMapType.getDataMapppingType() != EGenomeMappingDataType.MULTI_INT2INT))
 		{
 			assert false : "Can not create reverse multimap, because originMultMapType and targetMultMapType do not match!";
 			return null;
@@ -341,13 +341,13 @@ extends AbstractLoader {
 	 */
 	public static final MultiHashArrayStringMap createReverseMultiMapFromMultiMapString( 
 			final IGeneralManager refGeneralManager,
-			final GenomeMappingType originMultiMapType,
-			final GenomeMappingType targetMultiMapType) {
+			final EGenomeMappingType originMultiMapType,
+			final EGenomeMappingType targetMultiMapType) {
 		
 		/* consistency check */
 		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())||
 			 (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin())||
-			 (originMultiMapType.getDataMapppingType() != GenomeMappingDataType.MULTI_INT2INT))
+			 (originMultiMapType.getDataMapppingType() != EGenomeMappingDataType.MULTI_INT2INT))
 		{
 			assert false : "Can not create reverse multimap, because originMultMapType and targetMultMapType do not match!";
 			return null;
@@ -390,10 +390,10 @@ extends AbstractLoader {
 	
 	public static final IGenomeIdMap createCodeResolvedMapFromMap( 
 			final IGeneralManager refGeneralManager,		
-			GenomeMappingType originMapMappingType,
-			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2,
-			GenomeMappingDataType sourceMapMappingType) {
+			EGenomeMappingType originMapMappingType,
+			EGenomeMappingType genomeMappingLUT_1,
+			EGenomeMappingType genomeMappingLUT_2,
+			EGenomeMappingDataType sourceMapMappingType) {
 	
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
@@ -416,9 +416,9 @@ extends AbstractLoader {
 	
 	public static final MultiHashArrayIntegerMap createCodeResolvedMultiMapFromMultiMapString( 
 			final IGeneralManager refGeneralManager,		
-			GenomeMappingType originMapMappingType,
-			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2) {
+			EGenomeMappingType originMapMappingType,
+			EGenomeMappingType genomeMappingLUT_1,
+			EGenomeMappingType genomeMappingLUT_2) {
 	
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();

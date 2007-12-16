@@ -6,7 +6,7 @@ package org.geneview.core.parser.ascii.lookuptable;
 
 import org.geneview.core.data.map.MultiHashArrayIntegerMap;
 import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.data.genome.IGenomeIdMap;
@@ -25,7 +25,7 @@ implements ILookupTableLoader {
 	
 	protected String sFileName;
 	
-	protected GenomeMappingType currentGenomeIdType;
+	protected EGenomeMappingType currentGenomeIdType;
 	
 	protected final IGeneralManager refGeneralManager;
 	
@@ -42,7 +42,7 @@ implements ILookupTableLoader {
 	 */
 	public ALookupTableLoader( final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genomeIdType,
+			final EGenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
 
 		refGeneralManager = setGeneralManager;
@@ -64,10 +64,10 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class, 
 	 * if required by logic of sub-class.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, EGenomeMappingType)
 	 */
 	public void setMultiMapInteger(MultiHashArrayIntegerMap setHashMap, 
-			GenomeMappingType type) {
+			EGenomeMappingType type) {
 		assert false : "place holder! must be overwritten by sub-class!";
 	}
 	
@@ -75,10 +75,10 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, GenomeMappingType)
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, EGenomeMappingType)
 	 */
 	public void setMultiMapString(MultiHashArrayStringMap setHashMap, 
-			GenomeMappingType type) {
+			EGenomeMappingType type) {
 		assert false : "place holder! must be overwritten by sub-class!";
 	}
 	
@@ -86,10 +86,10 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, GenomeMappingType)
+	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, EGenomeMappingType)
 	 */
 	public void setHashMap( final IGenomeIdMap setHashMap,
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 		assert false : "place holder! must be overwritten by sub-class!";
 	}
 	

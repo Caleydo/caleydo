@@ -14,8 +14,8 @@ import java.util.StringTokenizer;
 
 import org.geneview.core.data.map.MultiHashArrayIntegerMap;
 import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.GenomeIdType;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeIdType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.data.genome.IGenomeIdMap;
@@ -50,7 +50,7 @@ implements ILookupTableLoader {
 	 */
 	public LookupTableMultiMapStringLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genomeIdType,
+			final EGenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy) {
 
 		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
@@ -229,8 +229,8 @@ implements ILookupTableLoader {
 			
 			IGenomeIdManager gidmng = refGeneralManager.getSingelton().getGenomeIdManager();
 			
-			GenomeIdType originType = this.currentGenomeIdType.getTypeOrigin();
-			GenomeIdType targetType = this.currentGenomeIdType.getTypeTarget();			
+			EGenomeIdType originType = this.currentGenomeIdType.getTypeOrigin();
+			EGenomeIdType targetType = this.currentGenomeIdType.getTypeTarget();			
 			
 			IGenomeIdMap originMap = gidmng.getMapByType( originType.getBasicConversion() );
 			IGenomeIdMap targetMap = gidmng.getMapByType( targetType.getBasicConversion() );
@@ -331,7 +331,7 @@ implements ILookupTableLoader {
 	//MARC: Changed method from Integer to String because we are
 	//in the MultiMapString class.
 	public void setMultiMapString( final MultiHashArrayStringMap setHashMap,
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 	
 		refMultiHashMapString = setHashMap;
 	}

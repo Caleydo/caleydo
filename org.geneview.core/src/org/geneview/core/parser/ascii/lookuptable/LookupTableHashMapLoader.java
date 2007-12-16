@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.genome.IGenomeIdMap;
@@ -33,7 +33,7 @@ implements ILookupTableLoader {
 	 */
 	public LookupTableHashMapLoader(final IGeneralManager setGeneralManager,
 			final String setFileName,
-			final GenomeMappingType genomeIdType,
+			final EGenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
 
 		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
@@ -127,7 +127,7 @@ implements ILookupTableLoader {
 	}
 	
 	public final void setHashMap( final IGenomeIdMap setHashMap,
-			final GenomeMappingType type) {
+			final EGenomeMappingType type) {
 		
 		assert type == currentGenomeIdType : "must use same type as in constructor!";
 		

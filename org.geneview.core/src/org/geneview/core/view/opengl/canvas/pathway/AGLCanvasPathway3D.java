@@ -24,7 +24,7 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexShape;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.mapping.GenomeMappingType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -1715,13 +1715,13 @@ implements IMediatorReceiver, IMediatorSender {
 					refGeneralManager.getSingelton().getGenomeIdManager();
 				
 				int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
-						GenomeMappingType.ENZYME_CODE_2_ENZYME);
+						EGenomeMappingType.ENZYME_CODE_2_ENZYME);
 				
 				if (iEnzymeID == -1)
 					return;
 				
 				Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
-						GenomeMappingType.ENZYME_2_NCBI_GENEID);
+						EGenomeMappingType.ENZYME_2_NCBI_GENEID);
 				
 				if(iTmpGeneId == null)
 					return;
@@ -1733,31 +1733,31 @@ implements IMediatorReceiver, IMediatorSender {
 					iGeneID = iterTmpGeneId.next();
 					
 					String sNCBIGeneId = refGenomeIdManager.getIdStringFromIntByMapping(iGeneID, 
-							GenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+							EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 					
 					refInfoAreaCaption.add("NCBI GeneID: ");
 					refInfoAreaContent.add(sNCBIGeneId);
 					
 					iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
-							GenomeMappingType.NCBI_GENEID_2_ACCESSION);
+							EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 			
 					if (iAccessionID == -1)
 						break;
 					
 					sAccessionCode = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
-							GenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+							EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 									
 					refInfoAreaCaption.add("Accession: ");
 					refInfoAreaContent.add(sAccessionCode);
 					
 					sTmpGeneName = refGenomeIdManager.getIdStringFromIntByMapping(iAccessionID, 
-							GenomeMappingType.ACCESSION_2_GENE_NAME);
+							EGenomeMappingType.ACCESSION_2_GENE_NAME);
 			
 					refInfoAreaCaption.add("Gene name: ");
 					refInfoAreaContent.add(sTmpGeneName);
 					
 					iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
-							GenomeMappingType.ACCESSION_2_MICROARRAY);
+							EGenomeMappingType.ACCESSION_2_MICROARRAY);
 					
 					if(iArTmpAccessionId == null)
 						continue;
@@ -1768,7 +1768,7 @@ implements IMediatorReceiver, IMediatorSender {
 						int iMicroArrayId = iterTmpAccessionId.next();
 						
 						sMicroArrayCode = refGenomeIdManager.getIdStringFromIntByMapping(iMicroArrayId, 
-								GenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
+								EGenomeMappingType.MICROARRAY_2_MICROARRAY_CODE);
 						
 						refInfoAreaCaption.add("MicroArray: ");
 						refInfoAreaContent.add(sMicroArrayCode);
@@ -1777,7 +1777,7 @@ implements IMediatorReceiver, IMediatorSender {
 						IStorage refExpressionStorage = refGeneralManager.getSingelton().
 							getStorageManager().getItemStorage(iExpressionStorageId);
 						int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
-								iMicroArrayId, GenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
+								iMicroArrayId, EGenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
 						
 						// Get rid of 770 internal ID identifier
 						iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);

@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.Set;
 //import java.util.Map.Entry;
 
-//import org.geneview.core.data.mapping.GenomeMappingDataType;
-import org.geneview.core.data.mapping.GenomeMappingType;
+//import org.geneview.core.data.mapping.EGenomeMappingDataType;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.data.IGenomeIdManager;
 //import org.geneview.core.manager.data.genome.GenomeIdMapInt2Int;
 //import org.geneview.core.manager.data.genome.IGenomeIdMap;
@@ -220,8 +220,8 @@ implements GenericMultiMap <String>  {
 	 */
 	public MultiHashArrayIntegerMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
-			GenomeMappingType genomeMappingLUT_1,
-			GenomeMappingType genomeMappingLUT_2) {
+			EGenomeMappingType genomeMappingLUT_1,
+			EGenomeMappingType genomeMappingLUT_2) {
 		
 		MultiHashArrayIntegerMap codeResolvedMultMapInt = 
 			new MultiHashArrayIntegerMap();

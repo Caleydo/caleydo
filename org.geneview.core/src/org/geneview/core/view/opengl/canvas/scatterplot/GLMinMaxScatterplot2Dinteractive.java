@@ -37,7 +37,7 @@ import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIter
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 //import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-//import org.geneview.core.data.mapping.GenomeMappingType;
+//import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 //import org.geneview.core.manager.data.IGenomeIdManager;
