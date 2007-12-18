@@ -26,7 +26,8 @@ import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.util.mapping.EnzymeToExpressionColorMapper;
+import org.geneview.core.util.mapping.AGenomeMapper;
+import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
 import org.geneview.core.view.opengl.util.GLTextUtils;
 
 /**
@@ -63,7 +64,7 @@ public class GLPathwayManager {
 	
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;	
 	
-	private EnzymeToExpressionColorMapper enzymeToExpressionColorMapper;
+	private AGenomeMapper genomeMapper;
 	
 	private ArrayList<SetSelection> alSetSelection;
 	
@@ -99,8 +100,11 @@ public class GLPathwayManager {
 		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 		
-		enzymeToExpressionColorMapper =
-			new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
+		// Initialize genome mapper
+		genomeMapper = refGeneralManager.getSingelton().getGenomeIdManager()
+			.getGenomeMapperByMappingCascadeType(
+					EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
+		genomeMapper.setMappingData(alSetData);
 	}
 	
 	public void buildPathwayDisplayList(final GL gl, final int iPathwayId) {
@@ -715,7 +719,7 @@ public class GLPathwayManager {
 		else
 		{
 			// Request mapping
-			alMappingColor = enzymeToExpressionColorMapper.getMappingColorArrayByVertexRep(pathwayVertexRep);
+			alMappingColor = genomeMapper.getMappingColorArrayByVertexRep(pathwayVertexRep);
 			hashElementId2MappingColorArray.put((Integer)pathwayVertexRep.getId(), alMappingColor);
 		}
 		
@@ -725,9 +729,7 @@ public class GLPathwayManager {
 	public void mapExpressionByGeneId(final GL gl, 
 			String sGeneID, final float fNodeWidth) {
 
-		drawMapping(gl, 
-				enzymeToExpressionColorMapper.getMappingColorArrayByGeneID(sGeneID),
-				fNodeWidth);
+		drawMapping(gl, genomeMapper.getMappingColorArrayByGeneID(sGeneID), fNodeWidth);
 	}
 	
 	private void drawMapping(final GL gl,

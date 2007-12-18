@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.util.mapping;
+package org.geneview.core.util.mapping.color;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
@@ -11,37 +11,49 @@ import java.util.Iterator;
 
 
 /**
- * Tuned color mapping for (float) ==> Vec3f as color; 
- * Vec3f(x,y,z) ==> Color(R [0..1],G[0..1],B[0..1])
+ * Tuned color mapping for (float) ==> Vec4f as color; 
+ * Vec4f(x,y,z,x) ==> Color(R [0..1],G[0..1],B[0..1], A[0..1])
  * 
  * @author Michael Kalkusch
  *
  */
-public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
+public class ColorMapping4f extends AColorMappingVecf <Vec4f> {
 	
 	/**
 	 * 
 	 */
-	public ColorMapping3f() {
+	public ColorMapping4f() {
 
 		super();
 		
-		supportingPoints_ColorInc = new Vec3f[0];
-		supportingPoints_ColorOffset = new Vec3f[0];
+		supportingPoints_ColorInc = new Vec4f[0];
+		supportingPoints_ColorOffset = new Vec4f[0];
 		
-		belowLowerBound_ColorVecf = new Vec3f(0,0,0);
-		aboveUpperBound_ColorVecf = new Vec3f(1,1,1);
+		belowLowerBound_ColorVecf = new Vec4f(0,0,0,1);
+		aboveUpperBound_ColorVecf = new Vec4f(1,1,1,1);
 	}
 
-	public final void addSamplingPoint_Vecf(final Vec3f color, final float value) {
+	public final void addSamplingPoint_Vecf(final Vec4f color, final float value) {
 		
-		supportingPoints_Color.add(color);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.geneview.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
+	 */
+	@Override
+	public final void addSamplingPoint_Color(final Color color, final float value) {
+
+		supportingPoints_Color.add( 
+				new Vec4f(color.getRed() / 255, 
+						color.getGreen() / 255, 
+						color.getBlue() / 255,
+						color.getAlpha() / 255) );
 		supportingPoints_Float.add(value);
 		
 		supportingPoints_Values = new float[supportingPoints_Float.size()];
 		supportingPoints_ValuesReciprocalRange = new float[supportingPoints_Float.size()];
-		supportingPoints_ColorInc = new Vec3f[supportingPoints_Float.size()-1];
-		supportingPoints_ColorOffset = new Vec3f[supportingPoints_Float.size()-1];
+		supportingPoints_ColorInc = new Vec4f[supportingPoints_Float.size()-1];
+		supportingPoints_ColorOffset = new Vec4f[supportingPoints_Float.size()-1];
 		
 		Iterator<Float> iterFloat = supportingPoints_Float.iterator();
 		
@@ -63,32 +75,20 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 			}
 			
 			/* buffer low and high values.. */
-			Vec3f low = supportingPoints_Color.get(i);
-			Vec3f high = supportingPoints_Color.get(i+1);
+			Vec4f low = supportingPoints_Color.get(i);
+			Vec4f high = supportingPoints_Color.get(i+1);
 			
 			/**
 			 * this defines the color mapping!
 			 */
-			supportingPoints_ColorInc[i] = new Vec3f( 
+			supportingPoints_ColorInc[i] = new Vec4f( 
 					low.x() - high.x(),
 					low.y() - high.y(),
-					low.z() - high.z());
+					low.z() - high.z(),
+					low.x() - high.w());
 		}
 		
 		supportingPoints_Values[supportingPoints_Values.length] = iterFloat.next().floatValue();
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.geneview.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
-	 */
-	@Override
-	public final void addSamplingPoint_Color(final Color color, final float value) {
-
-		addSamplingPoint_Vecf(
-				 new Vec3f(color.getRed() / 255, 
-							color.getGreen() / 255, 
-							color.getBlue() / 255 )
-				 , value);	
 	}
 
 	/* (non-Javadoc)
@@ -96,14 +96,6 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 	 */
 	public Vec4f colorMapping4f(final float lookupValue) {
 
-		return new Vec4f( colorMapping3f(lookupValue), 1.0f);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping(int)
-	 */
-	public Vec3f colorMapping3f(final float lookupValue) {
-		
 		if ( lookupValue < supportingPoints_Values[0] ) {
 			/* below lower bound */
 			return belowLowerBound_ColorVecf;
@@ -125,8 +117,13 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 		return this.aboveUpperBound_ColorVecf;
 	}
 
+	public Vec3f colorMapping3f(float lookupValue) {
+
+		return new Vec3f( colorMapping4f(lookupValue) );
+	}
+	
 	@Override
-	protected boolean testColorIsValid(Vec3f color) {
+	protected final boolean testColorIsValid(Vec4f color) {
 
 		for (int i=0; i<color.length(); i++ )
 		{

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.util.mapping;
+package org.geneview.core.util.mapping.color;
 
 import org.geneview.core.math.MathUtil;
 

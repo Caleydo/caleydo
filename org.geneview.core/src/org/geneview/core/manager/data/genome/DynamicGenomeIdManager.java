@@ -27,10 +27,14 @@ import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.mapping.AGenomeMapper;
+import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
+import org.geneview.core.util.mapping.GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX;
 
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class DynamicGenomeIdManager
@@ -57,12 +61,12 @@ implements IGenomeIdManager {
 	
 	public static final int iInitialCountMultiMapLookupTables = 4;
 	
-	
-	
 	/**
+	 * Constructor.
+	 * 
 	 * @param setGeneralManager
 	 */
-	public DynamicGenomeIdManager(IGeneralManager setGeneralManager) {
+	public DynamicGenomeIdManager(final IGeneralManager setGeneralManager) {
 
 		super(setGeneralManager, 66, ManagerType.DATA_GENOME_ID );
 		
@@ -648,4 +652,13 @@ implements IGenomeIdManager {
 		}
 	}
 
+	public AGenomeMapper getGenomeMapperByMappingCascadeType(
+			final EGenomeMappingCascadeType mappingCascadeType) {
+		
+		if (mappingCascadeType.equals(EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX))
+			return new GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX(refGeneralManager);
+
+		assert true : "No genome mapper is implemented for the requested mapping cascade!";
+		return null;
+	}
 }

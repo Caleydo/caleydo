@@ -1,4 +1,4 @@
-package org.geneview.core.util.mapping;
+package org.geneview.core.util.mapping.color;
 
 import java.awt.Color;
 

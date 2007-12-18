@@ -10,50 +10,40 @@ import java.awt.Color;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-//import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Arrays;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.geneview.core.data.collection.ISet;
+import org.geneview.core.data.collection.IStorage;
+import org.geneview.core.data.collection.IVirtualArray;
+import org.geneview.core.data.collection.set.selection.SetSelection;
+import org.geneview.core.data.collection.storage.FlatThreadStorageSimple;
+import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.geneview.core.data.graph.core.PathwayGraph;
+import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.event.EventPublisher;
+import org.geneview.core.manager.event.mediator.IMediatorReceiver;
+import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
+import org.geneview.core.util.mapping.color.ColorMapping;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.geneview.core.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
+import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
+import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
+import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
 import org.geneview.util.graph.IGraphItem;
 
 import com.sun.opengl.util.BufferUtil;
-
-
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.collection.storage.FlatThreadStorageSimple;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-//import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-//import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.event.EventPublisher;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
-//import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
-//import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener; //import org.geneview.core.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
-import org.geneview.core.util.mapping.ColorMapping;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.IGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
-import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
-import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 
 /**
  * @author Michael Kalkusch

@@ -52,6 +52,7 @@ import org.geneview.core.view.opengl.util.GLPathwayMemoPad;
 import org.geneview.core.view.opengl.util.GLTextUtils;
 
 import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.texture.Texture;
 
 /**
  * Jukebox setup that supports slerp animation.
@@ -290,6 +291,8 @@ implements IMediatorReceiver, IMediatorSender {
 		renderPathwayPool(gl);
 		renderPathwayLayered(gl);
 		renderPathwayUnderInteraction(gl);
+		
+//		renderPathwayPoolWithPathwayLayeredConnection(gl);
 
 		memoPad.renderMemoPad(gl);
 	}
@@ -368,12 +371,28 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void renderPathwayLayered(final GL gl) {
 
-		LinkedList<Integer> pathwayElementList = pathwayLayeredLayer
-				.getElementList();
-		for (int iPathwayIndex = 0; iPathwayIndex < pathwayElementList.size(); iPathwayIndex++)
-		{
-			int iPathwayId = pathwayElementList.get(iPathwayIndex);
-			renderPathwayById(gl, iPathwayId, pathwayLayeredLayer);
+		Iterator<Integer> iterPathwayElementList = pathwayLayeredLayer.getElementList().iterator();
+		int iPathwayId = 0;
+		
+		while(iterPathwayElementList.hasNext())
+		{		
+			iPathwayId = iterPathwayElementList.next();		
+			renderPathwayById(gl, iPathwayId, pathwayLayeredLayer);	
+			
+//			Texture pathwayTexture = refGLPathwayTextureManager.getTextureByPathwayId(iPathwayId);
+//			
+//			int iImageHeight = pathwayTexture.getImageHeight();
+//			if (iImageHeight > 500)
+//			{
+//				float iScalingFactor = 500f / iImageHeight;
+//				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
+//					.setScale(new Vec3f(iScalingFactor, iScalingFactor, 1f));
+//			}
+//			else
+//			{
+//				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
+//					.setScale(new Vec3f(0.7f, 0.7f, 1f));
+//			}		
 		}
 	}
 	
@@ -650,6 +669,69 @@ implements IMediatorReceiver, IMediatorSender {
 			//transform.setTranslation(new Vec3f(1,1,1));
 		}
 	}
+	
+//	private void renderPathwayPoolWithPathwayLayeredConnection(final GL gl) {
+//		
+//		Iterator<Integer> iterPathwayLayered = 
+//			pathwayLayeredLayer.getElementList().iterator();
+//	
+//		Vec3f vecMatSrc = new Vec3f(0, 0, 0);
+//		Vec3f vecMatDest = new Vec3f(0, 0, 0);
+//		Vec3f vecTransformedSrc = new Vec3f(0, 0, 0);
+//		Vec3f vecTransformedDest = new Vec3f(0, 0, 0);
+//		
+//		Vec3f vecTranslationSrc;
+//		Vec3f vecTranslationDest;
+//		Vec3f vecScaleSrc;
+//		Vec3f vecScaleDest;
+//		Rotf rotSrc;
+//		Rotf rotDest;
+//		Mat4f matSrc = new Mat4f();
+//		Mat4f matDest = new Mat4f();
+//		matSrc.makeIdent();
+//		matDest.makeIdent();
+//		
+//		while(iterPathwayLayered.hasNext()) {
+//			
+//			int iElementId = iterPathwayLayered.next();
+//
+//			vecTranslationSrc = pathwayLayeredLayer.getTransformByElementId(iElementId).getTranslation();
+//			vecScaleSrc = pathwayLayeredLayer.getTransformByElementId(iElementId).getScale();
+////			rotSrc = pathwayLayeredLayer.getTransformByElementId(iElementId).getRotation();
+//
+//			vecTranslationDest = pathwayPoolLayer.getTransformByElementId(iElementId).getTranslation();
+//			vecScaleDest = pathwayPoolLayer.getTransformByElementId(iElementId).getScale();
+////			rotDest = pathwayLayeredLayer.getTransformByElementId(iElementId).getRotation();
+//			
+////			vecMatSrc.set(tmpVertexGraphItemRepSrc.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+////					 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdSrc)
+////						.getImageHeight()-tmpVertexGraphItemRepSrc.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
+////			
+////			vecMatDest.set(tmpVertexGraphItemRepDest.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+////					 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest)
+////					 	.getImageHeight()-tmpVertexGraphItemRepDest.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
+////
+////			rotSrc.toMatrix(matSrc);
+////			rotDest.toMatrix(matDest);
+////
+////			matSrc.xformPt(vecMatSrc, vecTransformedSrc);
+////			matDest.xformPt(vecMatDest, vecTransformedDest);
+//			
+//			vecTransformedSrc.add(vecTranslationSrc);
+//			vecTransformedSrc.componentMul(vecScaleSrc);
+//			vecTransformedDest.add(vecTranslationDest);
+//			vecTransformedDest.componentMul(vecScaleDest);
+//			
+//			gl.glBegin(GL.GL_LINES);
+//			gl.glVertex3f(vecTransformedSrc.x(),
+//					vecTransformedSrc.y(),
+//					vecTransformedSrc.z());
+//			gl.glVertex3f(vecTransformedDest.x(),
+//					vecTransformedDest.y(),
+//					vecTransformedDest.z());
+//			gl.glEnd();		
+//		}
+//	}
 
 	private void renderInfoArea(final GL gl) {
 

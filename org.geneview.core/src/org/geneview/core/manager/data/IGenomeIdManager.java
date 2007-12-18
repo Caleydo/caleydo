@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.data.genome.IGenomeIdMap;
+import org.geneview.core.util.mapping.AGenomeMapper;
+import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
 
 //import org.geneview.core.data.mapping.EGenomeIdType;
 import org.geneview.core.data.mapping.EGenomeMappingDataType;
@@ -208,4 +210,6 @@ extends IGeneralManager {
 	// Because in the hashType2MultiMapInt the maps are stored with the EGenomeMappingType as key.
 	public Collection<String> getIdStringListFromIdListByType(Collection<String > sIdList, EGenomeMappingType type);
 
+	public AGenomeMapper getGenomeMapperByMappingCascadeType(
+			final EGenomeMappingCascadeType mappingCascadeType);
 }

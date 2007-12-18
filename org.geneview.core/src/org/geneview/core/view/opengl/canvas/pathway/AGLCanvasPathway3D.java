@@ -32,7 +32,8 @@ import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.event.EventPublisher;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.util.mapping.EnzymeToExpressionColorMapper;
+import org.geneview.core.util.mapping.AGenomeMapper;
+import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.GLCanvasStatics;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
@@ -831,11 +832,14 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 				else
 				{
-					EnzymeToExpressionColorMapper enzymeToExpressionColorMapper =
-						new EnzymeToExpressionColorMapper(refGeneralManager, alSetData);
+					// Initialize genome mapper
+					AGenomeMapper genomeMapper = refGeneralManager.getSingelton().getGenomeIdManager()
+						.getGenomeMapperByMappingCascadeType(
+								EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
+					genomeMapper.setMappingData(alSetData);
 					
 					ArrayList<Color> arMappingColor = 
-						enzymeToExpressionColorMapper.getMappingColorArrayByVertexRep(vertexRep);
+						genomeMapper.getMappingColorArrayByVertexRep(vertexRep);
 					
 					// Factor indicates how often the enzyme needs to be split
 					// so that all genes can be mapped.

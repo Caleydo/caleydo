@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.util.mapping;
+package org.geneview.core.util.mapping.color;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
