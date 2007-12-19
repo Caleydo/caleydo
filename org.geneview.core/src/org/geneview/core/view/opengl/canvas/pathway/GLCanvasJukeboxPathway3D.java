@@ -154,7 +154,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayPoolLayer.setChildLayer(pathwayLayeredLayer);
 
 		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.5f, -1.3f, 0f));
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.7f, -1.4f, 0f));
 		transformPathwayUnderInteraction.setScale(new Vec3f(1.8f, 1.8f, 1.8f));
 		//transformPathwayUnderInteraction.setRotation(new Rotf(new Vec3f(0,0,1), Vec3f.convertGrad2Radiant(30)));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
@@ -301,7 +301,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		float fLayerYPos = 1.7f;
+		float fLayerYPos = 1.1f;
 		int iMaxLayers = 4;
 
 		// Create free pathway layer spots
@@ -310,13 +310,13 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-4.4f, fLayerYPos, 0f));
+			transform.setTranslation(new Vec3f(-2.7f, fLayerYPos, 0f));
 			transform.setScale(new Vec3f(0.7f, 0.7f, 0.7f));
 			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
 			pathwayLayeredLayer.setTransformByPositionIndex(iLayerIndex,
 					transform);
 
-			fLayerYPos -= 1.5f;
+			fLayerYPos -= 1f;
 		}
 	}
 
@@ -377,22 +377,35 @@ implements IMediatorReceiver, IMediatorSender {
 		while(iterPathwayElementList.hasNext())
 		{		
 			iPathwayId = iterPathwayElementList.next();		
-			renderPathwayById(gl, iPathwayId, pathwayLayeredLayer);	
 			
-//			Texture pathwayTexture = refGLPathwayTextureManager.getTextureByPathwayId(iPathwayId);
-//			
-//			int iImageHeight = pathwayTexture.getImageHeight();
-//			if (iImageHeight > 500)
-//			{
-//				float iScalingFactor = 500f / iImageHeight;
-//				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
-//					.setScale(new Vec3f(iScalingFactor, iScalingFactor, 1f));
-//			}
-//			else
-//			{
-//				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
-//					.setScale(new Vec3f(0.7f, 0.7f, 1f));
-//			}		
+			// Check if pathway is visible
+			if(!pathwayLayeredLayer.getElementVisibilityById(iPathwayId))
+				return;
+			
+			Texture pathwayTexture = refGLPathwayTextureManager
+				.getTextureByPathwayId(iPathwayId);
+			
+			int iImageHeight = pathwayTexture.getImageHeight();
+			int iImageWidth = pathwayTexture.getImageWidth();
+			if (iImageHeight > 500)
+			{
+				float iScalingFactor = 450f / iImageHeight;
+				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
+					.setScale(new Vec3f(iScalingFactor, iScalingFactor, 1f));
+			}
+			else if (iImageWidth > 700)
+			{
+				float iScalingFactor = 620f / iImageWidth;
+				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
+					.setScale(new Vec3f(iScalingFactor, iScalingFactor, 1f));				
+			}
+			else
+			{
+				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
+					.setScale(new Vec3f(0.7f, 0.7f, 1f));
+			}
+			
+			renderPathwayById(gl, iPathwayId, pathwayLayeredLayer);			
 		}
 	}
 	
@@ -412,13 +425,12 @@ implements IMediatorReceiver, IMediatorSender {
 		Transform transform = layer.getTransformByElementId(iPathwayId);
 		Vec3f translation = transform.getTranslation();
 		Rotf rot = transform.getRotation();
-		Vec3f scale = transform.getScale();
-
-		gl.glScalef(scale.x(), scale.y(), scale.z());
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		
+		Vec3f scale = transform.getScale();		
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
+
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
 
 //		drawAxis(gl);
@@ -833,7 +845,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		gl.glPopMatrix();
 
-		if (iSlerpFactor >= 990)
+		if (iSlerpFactor >= 1000)
 		{
 			slerpAction.getDestinationHierarchyLayer()
 					.setElementVisibilityById(true, iPathwayId);
@@ -1494,10 +1506,11 @@ implements IMediatorReceiver, IMediatorSender {
 							matSrc.xformPt(vecMatSrc, vecTransformedSrc);
 							matDest.xformPt(vecMatDest, vecTransformedDest);
 							
-							vecTransformedSrc.add(vecTranslationSrc);
+
 							vecTransformedSrc.componentMul(vecScaleSrc);
-							vecTransformedDest.add(vecTranslationDest);
+							vecTransformedSrc.add(vecTranslationSrc);
 							vecTransformedDest.componentMul(vecScaleDest);
+							vecTransformedDest.add(vecTranslationDest);
 							
 							gl.glBegin(GL.GL_LINES);
 							gl.glVertex3f(vecTransformedSrc.x(),

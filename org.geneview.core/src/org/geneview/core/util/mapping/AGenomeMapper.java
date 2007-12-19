@@ -82,7 +82,11 @@ public abstract class AGenomeMapper {
 		}
 		else if (pathwayVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.enzyme))
 		{
-			return getMappingColorArrayByEnzymeVertex(pathwayVertexRep.getPathwayVertexGraphItem());
+			//return getMappingColorArrayByEnzymeVertex(pathwayVertexRep.getPathwayVertexGraphItem());
+			
+			ArrayList<Color> arMappingColor = new ArrayList<Color>();
+			arMappingColor.add(Color.BLACK);
+			return arMappingColor;
 		}
 		
 		return new ArrayList<Color>();
@@ -114,11 +118,15 @@ public abstract class AGenomeMapper {
 			return arMappingColor;
 		}
 
-		//---------------------------------------
-		// Just for testing kashofer data mapping
 		int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(iAccessionID,
 				EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 
+		if (iExpressionStorageIndex == -1)
+		{	
+			arMappingColor.add(Color.BLACK);
+			return arMappingColor;
+		}
+		
 		// Get rid of 770 internal ID identifier
 		iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
 
@@ -141,7 +149,10 @@ public abstract class AGenomeMapper {
 						
 			float fExpressionValue = bufferFloatArray[iExpressionStorageIndex];
 			
-			arMappingColor.add(expressionColorMapping.colorMappingLookup((int)fExpressionValue));			
+			if (fExpressionValue <= 1)
+				arMappingColor.add(Color.WHITE);
+			else
+				arMappingColor.add(expressionColorMapping.colorMappingLookup((int)fExpressionValue));			
 		}
 		
 		return arMappingColor;

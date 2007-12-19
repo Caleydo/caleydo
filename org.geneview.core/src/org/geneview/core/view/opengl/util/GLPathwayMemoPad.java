@@ -113,19 +113,19 @@ public class GLPathwayMemoPad {
 		
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(-0.7f, 2.0f, 0.0f);
-		gl.glVertex3f(-0.7f, 3.0f, 0.0f);
-		gl.glVertex3f(4.0f, 3.0f, 0.0f);
-		gl.glVertex3f(4.0f, 2.0f, 0.0f);
+		gl.glVertex3f(-0.7f, -1.5f, 0.0f);
+		gl.glVertex3f(-0.7f, -2.3f, 0.0f);
+		gl.glVertex3f(4.0f, -2.3f, 0.0f);
+		gl.glVertex3f(4.0f, -1.5f, 0.0f);
 		gl.glEnd();
 		
 		gl.glLineWidth(2);
 		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(-0.7f, 2.0f, 0.0f);
-		gl.glVertex3f(-0.7f, 3.0f, 0.0f);
-		gl.glVertex3f(4.0f, 3.0f, 0.0f);
-		gl.glVertex3f(4.0f, 2.0f, 0.0f);
+		gl.glVertex3f(-0.7f, -1.5f, 0.0f);
+		gl.glVertex3f(-0.7f, -2.3f, 0.0f);
+		gl.glVertex3f(4.0f, -2.3f, 0.0f);
+		gl.glVertex3f(4.0f, -1.5f, 0.0f);
 		gl.glEnd();
 		
 		if (textRenderer == null)
@@ -135,7 +135,7 @@ public class GLPathwayMemoPad {
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1.0f);
 		textRenderer.draw3D("MEMO PAD",
 				1.3f, 
-				2.05f, 
+				-2.2f, 
 				0.01f,
 				0.005f);  // scale factor
 		textRenderer.end3DRendering();
