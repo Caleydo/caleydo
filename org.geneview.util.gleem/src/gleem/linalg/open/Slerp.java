@@ -51,13 +51,9 @@ public class Slerp {
 		Vec3f axis = new Vec3f();
 		float fAngle = transform.getRotation().get(axis);
 
-		gl.glScalef(scale.x(), scale.y(), scale.z());	
-
-		gl.glTranslatef(translation.x(),
-				translation.y(),
-				translation.z());	
-		
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());			
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
+		gl.glScalef(scale.x(), scale.y(), scale.z());	
 	}
 
 //	   /**
