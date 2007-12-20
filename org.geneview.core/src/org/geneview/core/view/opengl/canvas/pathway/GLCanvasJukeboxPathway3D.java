@@ -1287,18 +1287,18 @@ implements IMediatorReceiver, IMediatorSender {
 			// Prevent slerp action if pathway is already in layered view
 			if (!pathwayLayeredLayer.containsElement(iPathwayId))
 			{
-				if (iMaxPathwayCount >= pathwayLayeredLayer
+				if (iMaxPathwayCount < pathwayLayeredLayer
 						.getCapacity())
-					break;
-
-				iMaxPathwayCount++;
-
-				// Slerp to layered pathway view
-				SlerpAction slerpAction = new SlerpAction(iPathwayId,
-						pathwayPoolLayer, false);
-
-				arSlerpActions.add(slerpAction);
-				iSlerpFactor = 0;
+				{
+					iMaxPathwayCount++;
+	
+					// Slerp to layered pathway view
+					SlerpAction slerpAction = new SlerpAction(iPathwayId,
+							pathwayPoolLayer, false);
+	
+					arSlerpActions.add(slerpAction);
+					iSlerpFactor = 0;
+				}
 			}
 
 			// Check if pathway has already a vertex counted
