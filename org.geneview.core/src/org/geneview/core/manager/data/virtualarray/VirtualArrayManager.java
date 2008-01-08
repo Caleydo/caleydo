@@ -13,6 +13,7 @@ import java.util.Iterator;
 
 import org.geneview.core.manager.IGeneralManager;
 //import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.ACollectionManager;
 import org.geneview.core.manager.data.IVirtualArrayManager;
 import org.geneview.core.manager.type.ManagerObjectType;
@@ -52,6 +53,22 @@ implements IVirtualArrayManager
 			
 		vecVirtualArray = new Vector< IVirtualArray > ( iInitSizeContainer );
 
+		if ( vecVirtualArray == null )
+		{
+			refGeneralManager.getSingelton().logMsg("current vecVirtualArray == null! ", 
+					LoggerType.MINOR_ERROR_XML);
+		}
+		else 
+		{
+			if ( vecVirtualArray.size() != iInitSizeContainer )
+			{
+				refGeneralManager.getSingelton().logMsg("current vecVirtualArray.size()=["
+						+ vecVirtualArray.size() + 
+						"] is != setSize(" + 
+						iInitSizeContainer +")", 
+						LoggerType.MINOR_ERROR_XML);
+			}
+		}
 		refGeneralManager.getSingelton().setVirtualArrayManager( this );
 		
 //		/**

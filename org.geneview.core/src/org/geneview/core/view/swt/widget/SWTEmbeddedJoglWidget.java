@@ -11,7 +11,9 @@ package org.geneview.core.view.swt.widget;
 
 import javax.media.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
-
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 import com.sun.opengl.util.Animator;
 
 import org.geneview.core.view.swt.widget.ASWTEmbeddedWidget;
@@ -60,8 +62,21 @@ extends ASWTEmbeddedWidget {
 		catch (UnsatisfiedLinkError ule) {
 			System.err.println("Can not open Jogl frame inside SWT container!");
 			System.err.println("Solution: Copy jogl related *.jar and native binary to path.");
-			System.err.println("SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: "				
-					+ ule.toString() );		
+			System.err.println("SWTEmbeddedJoglWidget.createEmbeddedComposite()");
+			System.err.println("  ERROR: " + ule.toString() );		
+			
+			Shell shell = this.getParentComposite().getDisplay().getShells()[0];
+			
+			MessageBox messageBox = 
+				//new MessageBox(shell, SWT.OK|SWT.CANCEL); 
+				new MessageBox( shell, SWT.OK|SWT.CANCEL);
+			messageBox.setText("SWTEmbeddedJoglWidget.createEmbeddedComposite()");
+			messageBox.setMessage("Fehler: " + ule.toString() + "Solution: Copy jogl related *.jar and native binary to path." );
+			
+			if (messageBox.open() == SWT.OK) { 
+				System.out.println("SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: "+ule.toString()+ 
+					"Solution: Copy jogl related *.jar and native binary to path."); 
+			}
 			
 			throw new GeneViewRuntimeException( "SWTEmbeddedJoglWidget.createEmbeddedComposite() ERROR: " + 
 					ule.toString(),

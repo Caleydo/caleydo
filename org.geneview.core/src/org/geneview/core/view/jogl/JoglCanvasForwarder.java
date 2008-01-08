@@ -240,6 +240,11 @@ implements GLEventListener {
 
 		Iterator <IGLCanvasUser> iter = vecGLCanvasUser.iterator();		
 		while ( iter.hasNext() ) {
+//			IGLCanvasUser GLuser = iter.next();
+//			
+//			if ( GLuser.isInitGLDone() ) {
+//				GLuser.render(gl);
+//			}
 			iter.next().render(gl);
 		}
 
