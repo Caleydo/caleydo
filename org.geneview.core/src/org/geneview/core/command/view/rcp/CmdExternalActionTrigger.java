@@ -5,6 +5,7 @@ import org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 
 
@@ -13,6 +14,7 @@ import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
  * Command for triggering simple actions from the RCP interface that
  * are executed in org.geneview.core.
  * 
+ * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
@@ -39,15 +41,23 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 		refCommandManager.runDoCommand(this);
 		
-		Object viewObject = refGeneralManager.getSingelton().getViewGLCanvasManager()
-			.getItem(iViewId);
-		
-		if (viewObject.getClass().equals(GLCanvasJukeboxPathway3D.class))
+		try 
 		{
-			if (externalActionType.equals(EExternalActionType.PATHWAY_CLEAR_ALL))
+			Object viewObject = refGeneralManager.getSingelton().getViewGLCanvasManager()
+				.getItem(iViewId);
+		
+			if (viewObject.getClass().equals(GLCanvasJukeboxPathway3D.class))
 			{
-				((GLCanvasJukeboxPathway3D)viewObject).clearAllPathways();
+				if (externalActionType.equals(EExternalActionType.PATHWAY_CLEAR_ALL))
+				{
+					((GLCanvasJukeboxPathway3D)viewObject).clearAllPathways();
+				}
 			}
+		}
+		catch ( Exception e )
+		{
+			throw new GeneViewRuntimeException("ERROR in CMD: " + e.toString(),
+					GeneViewRuntimeExceptionType.DATAHANDLING);
 		}
 	}
 
