@@ -85,7 +85,8 @@ extends AMicroArrayLoader {
 		this.refImportDataToSet = refUseSet;
 		
 		if ( refImportDataToSet.getBaseType() != ManagerObjectType.SET_MULTI_DIM ) {
-			refGeneralManager.getSingelton().logMsg("setTargetSet() ERROR! need a MultiSet!",
+			refGeneralManager.getSingelton().logMsg(" need a MultiSet; got [" +
+					refImportDataToSet.getBaseType()  + "] !",
 					LoggerType.MINOR_ERROR );
 		}
 		
@@ -291,6 +292,7 @@ extends AMicroArrayLoader {
 				while ((strToken.hasMoreTokens()) && (bMaintainLoop))
 				{
 					String sTokenObject = strToken.nextToken();
+					String[] bufferStringArray = null;
 
 					try
 					{
@@ -307,8 +309,16 @@ extends AMicroArrayLoader {
 						case INT:
 
 							int[] bufferIntArray = 
-								refArrayDataStorage[iDataArrayIndexPerLine]
+								refArrayDataStorage[lineInFile_CurrentDataIndex ]  //[iDataArrayIndexPerLine]
 									.getArrayInt();
+							
+							if ( bufferIntArray == null ) 
+							{
+								System.err.println("index out of bounce; skip index [" + 
+										iDataArrayIndexPerLine + 
+										"] empty INTEGER[] array[]==null ");									
+							}
+							
 							bufferIntArray[lineInFile_CurrentDataIndex] = 
 								new Integer(sTokenObject);
 							
@@ -325,11 +335,44 @@ extends AMicroArrayLoader {
 							// LLFloat.add( new Float(sTokenObject) );
 							break;
 						case STRING:
-							String[] bufferStringArray = refArrayDataStorage[iDataArrayIndexPerLine]
+//							try 
+//							{
+								//if ( lineInFile_CurrentDataIndex)
+								bufferStringArray = refArrayDataStorage[lineInFile_CurrentDataIndex]	//[iDataArrayIndexPerLine]
 									.getArrayString();
-							bufferStringArray[lineInFile_CurrentDataIndex] =
-								sTokenObject;
-
+							
+								if ( bufferStringArray == null ) 
+								{
+									System.err.println("index out of bounce; skip index [" + 
+											iDataArrayIndexPerLine + 
+											"] empty STRING[] array[]==null ");									
+								}
+								
+								bufferStringArray[lineInFile_CurrentDataIndex] =
+									sTokenObject;							
+//							}
+//							catch (ArrayIndexOutOfBoundsException aie)
+//							{
+//								System.err.println("index out of bounce; skip index [" + 
+//									iDataArrayIndexPerLine + 
+//									"] empty array[]= " + aie.toString()  );
+//							}
+								
+							if ( bufferStringArray.length > iDataArrayIndexPerLine )
+							{
+								iDataArrayIndexPerLine++;
+							}
+							else
+							{
+								System.err.println("index out of bounce; skip index [" + 
+										lineInFile_CurrentDataIndex +
+										" index2=" +
+										iDataArrayIndexPerLine +
+										" text=" +
+										bufferStringArray[lineInFile_CurrentDataIndex] + 
+										"] empty array[] ");;
+							}
+//						
 							iDataArrayIndexPerLine++;
 							// LLString.add(
 							// vecBufferText.get(iStringIndex) );
@@ -368,6 +411,33 @@ extends AMicroArrayLoader {
 									nfe.getMessage(),
 									LoggerType.ERROR );							
 						}
+					}
+					catch (ArrayIndexOutOfBoundsException aie)
+					{
+						String info = "index out of bounce; skip index [" + 
+						lineInFile_CurrentDataIndex + 
+						"] empty array[]= {";
+						
+						if ( bufferStringArray != null )
+						{
+							info += bufferStringArray.toString();
+						}						
+						else
+						{
+							info += "null";
+						}
+						
+						info +=  "} " + aie.toString();
+						
+						refGeneralManager.getSingelton().logMsg(
+								info,
+								LoggerType.ERROR );	
+						
+						System.out.println("index out of bounce; skip index [" + 
+								iDataArrayIndexPerLine + 
+								"] empty array[]= " + aie.toString()  );
+						
+						iDataArrayIndexPerLine++;
 					}
 
 				} // end of: while (( strToken.hasMoreTokens()
