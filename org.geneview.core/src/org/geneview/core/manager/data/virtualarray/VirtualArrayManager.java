@@ -39,6 +39,11 @@ implements IVirtualArrayManager
 	 */
 	protected Vector<IVirtualArray> vecVirtualArray;
 	
+	private void debugNullPointer() {
+		refGeneralManager.getSingelton().logMsg("current vecVirtualArray == null! ", 
+				LoggerType.MINOR_ERROR_XML);
+	}
+	
 	/**
 	 * 
 	 */
@@ -55,8 +60,7 @@ implements IVirtualArrayManager
 
 		if ( vecVirtualArray == null )
 		{
-			refGeneralManager.getSingelton().logMsg("current vecVirtualArray == null! ", 
-					LoggerType.MINOR_ERROR_XML);
+			debugNullPointer();
 		}
 		else 
 		{
@@ -132,6 +136,10 @@ implements IVirtualArrayManager
 	 * @see org.geneview.core.data.manager.SelectionManager#deleteSelection(org.geneview.core.data.collection.IVirtualArray)
 	 */
 	public boolean deleteVirtualArray(IVirtualArray deleteSelection ) {
+		if ( vecVirtualArray == null ) 
+		{
+			debugNullPointer();
+		}
 		return vecVirtualArray.remove( deleteSelection );
 	}
 	
@@ -140,6 +148,11 @@ implements IVirtualArrayManager
 	 */
 	public boolean deleteVirtualArray( final int iItemId ) {
 		try {
+			if ( vecVirtualArray == null ) 
+			{
+				debugNullPointer();
+			}
+			
 			vecVirtualArray.remove( iItemId );
 			return true;
 		}
@@ -161,6 +174,11 @@ implements IVirtualArrayManager
 			return null;
 		}
 		catch (NullPointerException npe) {
+			if ( vecVirtualArray == null ) 
+			{
+				debugNullPointer();
+			}
+			
 			assert false: "SelectionManagerSimple.getItemSelection() uniqueId=[" + iItemId + "] is not in Manager ";
 			return null;
 		}
@@ -179,6 +197,11 @@ implements IVirtualArrayManager
 	 */
 	public IVirtualArray[] getAllVirtualArrayItems() {
 		
+		if ( vecVirtualArray == null ) 
+		{
+			debugNullPointer();
+		}
+		
 		IVirtualArray[] resultArray = new IVirtualArray[ vecVirtualArray.size() ];
 		
 		Iterator<IVirtualArray> iter = vecVirtualArray.iterator();
@@ -194,6 +217,11 @@ implements IVirtualArrayManager
 	 */
 	public Vector<IVirtualArray> getAllVirtualArrayItemsVector() {
 		
+		if ( vecVirtualArray == null ) 
+		{
+			debugNullPointer();
+		}
+		
 		return vecVirtualArray;
 	}
 
@@ -208,6 +236,11 @@ implements IVirtualArrayManager
 	 * @see org.geneview.core.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
+		if ( vecVirtualArray == null ) 
+		{
+			debugNullPointer();
+		}
+		
 		return vecVirtualArray.size();
 	}
 	
