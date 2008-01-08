@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>org.geneview.testing</name>
+	<comment></comment>
+	<projects>
+		<project>org.geneview.core</project>
+		<project>org.geneview.data</project>
+		<project>org.geneview.lib</project>
+		<project>org.geneview.rcp</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>
