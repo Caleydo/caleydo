@@ -343,6 +343,18 @@ extends ACmdCreate_IdTargetLabelAttr {
 							LoggerType.VERBOSE );
 					
 					bErrorWhileParsing = true;
+					
+					// make both equal length using larger array as set-parameter..
+					if ( vecStorage.size() > vecVirtualArray.size() )
+					{
+						vecVirtualArray.setSize( vecStorage.size()-1 );
+					}
+					else
+					{
+						vecStorage.setSize( vecVirtualArray.size()-1 );
+					}
+					
+					
 				} // if ( vecStorage.size() != vecVirtualArray.size() )
 				
 			} // while (( iter_VirtualArray_nDim.hasNext() )&&( iter_Storage_nDim.hasNext() ))

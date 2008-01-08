@@ -72,8 +72,6 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 					throw new GeneViewRuntimeException("unsupported EExternalFlagSetterType",
 							GeneViewRuntimeExceptionType.DATAHANDLING);
 			}
-		
-			}
 		}
 	}
 
