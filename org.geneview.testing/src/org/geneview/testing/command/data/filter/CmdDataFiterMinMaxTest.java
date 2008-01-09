@@ -2,13 +2,13 @@
  * 
  */
 package org.geneview.testing.command.data.filter;
-import org.geneview.core.application.core.GeneViewBootloader;
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.data.filter.CmdDataFilterMinMax;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.StorageType;
-import org.geneview.rcp.Application;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.testing.testing_util.CoreStarter;
+
 
 import junit.framework.TestCase;
 
@@ -20,57 +20,27 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 
 	
 	
-	/**
-	 * @param name
-	 */
-	public CmdDataFiterMinMaxTest(String name) {
-		super(name);
-	}
-	private GeneViewBootloader geneviewCore;
+	private CoreStarter myCoreStarter;
 	private IGeneralManager myGeneralManager;
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
+	/**
+	 * Starting a GeneView Core
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		geneviewCore = new GeneViewBootloader();
-		
-		//if  (xmlFileName=="") 
-		//{
-			geneviewCore.setXmlFileName(
-				"data/bootstrap/bootstrap_sample_basic_unit_test.xml"); 	
-		//}
+		myCoreStarter = new CoreStarter();
+		myCoreStarter.startGeneViewCore("");
+		myGeneralManager = myCoreStarter.getGeneralManager();
 
-		Application.refGeneralManager = geneviewCore.getGeneralManager();
-
-		geneviewCore.run_SWT();
-		
-		myGeneralManager = geneviewCore.getGeneralManager();
-	
 	}
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#tearDown()
+	/**
+	 * Deleting a GeneView Core
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		//myStarter.disposeGeneViewCore();
+		myCoreStarter.disposeGeneViewCore();
 		
-		System.out.println(getClass().getSimpleName() + ".disposeGeneViewCore() shutdown ...");
-		
-		if ( geneviewCore != null ) 
-		{
-			if ( geneviewCore.isRunning() ) 
-			{
-				geneviewCore.stop();
-				geneviewCore = null;
-			}
-			else 
-			{
-				System.err.println(getClass().getSimpleName() + ".disposeGeneViewCore() core was already stopped!");
-			}
-		}
 	}	
 
 	public void testForFloat() 
