@@ -1,0 +1,177 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Expires" CONTENT="Mon, 3 Nov 1997 23:59:00 GMT">
+<TITLE>m_calcineurinPathway</TITLE>
+<STYLE TYPE="text/css">
+
+  BODY {background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  UL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  OL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  TH {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  TD {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  P {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DD {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DT {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  .crumb {background-color: #ccccff; font-family: Arial, Helvetica, sans-serif;}
+  .gNavBar {background-color: #993333; font-size:10pt;}
+  Blockquote {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  H3 {text-align:center; font-size:12pt;} 
+  H1,H2,H3,H4,H5,H6 {font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+  .helpSet {background-color: #ffffcc; padding: 2px; border: 2px; width: 200px; font: normal 10pt Arial; text-align: left;}
+  .genesrch {color: #003366; text-decoration: none}
+  A:hover {text-decoration: underline}
+
+</STYLE>
+
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+window.name = "CGAP";
+
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY>
+
+<TABLE cellspacing="0" cellpadding="0" border="0" WIDTH="100%" height=70 CLASS=topNavBar><TR>
+  
+<td background="http://cgap.nci.nih.gov/images/back3.jpg"> &nbsp;  <a href="/"><img src="http://cgap.nci.nih.gov/images/cgaplogo.gif" width=161 height=38 border=0 alt="CGAP"></a> &nbsp;   &nbsp;     &nbsp;  <img src="http://cgap.nci.nih.gov/images/cgap2b.gif" border=0 alt="the Cancer Genome Anatomy Project">
+</td></TR>
+</TABLE>
+
+<!-- Begin button table -->
+<TABLE width="100%" bgcolor="339999" cellpadding="0" cellspacing="0" border="0">
+<TR>
+<td background="http://cgap.nci.nih.gov/images/backlines.gif" width=20%> &nbsp; &nbsp; <a href="/Catalog"><font color=ffffff><B>CGAP HOW TO</B></font></A></TD>
+<TD width="80%" height=20 background="http://cgap.nci.nih.gov/images/backlines.gif">
+<a href="/Genes"><img src="http://cgap.nci.nih.gov/images/genes.gif" border=0 alt="Genes"></a><a href="/Chromosomes"><img src="http://cgap.nci.nih.gov/images/chromosomes.gif" border=0 alt="Chromosomes"></a><a href="/Tissues"><img src="http://cgap.nci.nih.gov/images/tissues.gif" border=0 alt="Tissues"></a><a href="/SAGE"><img src="http://cgap.nci.nih.gov/images/sage.gif" border=0 alt="SAGE"></a><a href="/RNAi"><img src="http://cgap.nci.nih.gov/images/RNAi.gif" border=0 "RNAi"></a><a href="/Pathways"><img src="http://cgap.nci.nih.gov/images/pathways-.gif" border=0 alt="Pathways"></a><a href="/Tools"><img src="http://cgap.nci.nih.gov/images/tools.gif" border=0 alt="Tools"></a><td background="http://cgap.nci.nih.gov/images/backlines.gif"> &nbsp;</td></tr></TABLE>
+<!-- End button table -->
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+  <!-- Begin main table -->
+<TABLE WIDTH="100%" ALIGN="CENTER" CELLPADDING="8" CELLSPACING="0" border="0">
+  <TR> 
+    <TD VALIGN="TOP" width="20%" ALIGN="left" bgcolor="#ccccff">
+
+  <p align=center>
+<a href="/Pathways"><img src="http://cgap.nci.nih.gov/images/pathways-big.gif" width=102 height=100 border=0 alt="Pathways"></A>
+<P><B>Pathways and Tools</b>
+<UL>
+<LI><a href="/Pathways/BioCarta_Pathways">BioCarta</A>
+<LI><a href="/Pathways/Kegg_Standard_Pathways">KEGG</A>
+<LI><a href="/Pathways/Pathway_Searcher">Pathway Searcher</A>
+</UL>
+<P><B>Related Links</B>
+<UL>
+<Li><A href=javascript:spawn("http://www.expasy.ch/cgi-bin/search-biochem-index")>ExPASy</a>
+<LI><a href=javascript:spawn("http://kinase.uhnres.utoronto.ca/signallingmap.html")> MAPK signalling</A>
+<LI><a href=javascript:spawn("http://www.grt.kyushu-u.ac.jp/spad/index.html")>SPAD</a>
+</UL>
+
+
+<P><B>Quick Links:</B>
+<UL>
+  <LI><a href=javascript:spawn("http://www.broad.mit.edu/chembio/icg/index.html")>ICG</A>
+  <LI><A href=javascript:spawn("http://www.nci.nih.gov")>NCI Home</a>
+  <LI><a href=javascript:spawn("http://ncicb.nci.nih.gov")>NCICB Home</a>
+  <LI><a href=javascript:spawn("http://www.ncbi.nlm.nih.gov")>NCBI Home</A> 
+  <LI><a href=javascript:spawn("http://www3.cancer.gov/ocg/")>OCG</A>
+</UL>
+<p align=center>
+<A HREF="http://cancer.gov"><center><img border="0" src="http://cgap.nci.nih.gov/images/ncilogo2.gif" alt="NCI Logo"></center></A>
+
+</TD>
+<TD VALIGN="top" width="80%"><P>
+
+
+
+
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Mm&PATH=m_calcineurinPathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Effects of calcineurin in Keratinocyte Differentiation</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="m_calcineurinPathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/m_calcineurinPathway.gif" width="492" height="450" border="0" usemap="#m_m_calcineurinPathway">
+<map name="m_m_calcineurinPathway">
+
+<area shape="poly" coords="435,100,443,101,448,103,452,107,454,111,452,115,448,119,443,121,435,122,428,121,422,119,418,115,417,111,418,107,422,103,428,101,435,100" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin" >
+<area shape="poly" coords="436,176,444,177,449,179,453,183,455,187,453,191,449,195,444,197,436,198,429,197,423,195,419,191,418,187,419,183,423,179,429,177,436,176" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin" >
+<area shape="poly" coords="172,383,180,384,187,387,191,391,193,397,192,399,190,400,182,399,176,398,171,400,169,403,169,406,171,410,157,406,153,401,151,397,153,391,157,387,164,384,172,383" href="/Genes/GeneInfo?ORG=Mm&BCID=sp3" >
+<area shape="poly" coords="154,372,162,373,169,376,173,380,175,386,174,388,172,389,164,388,158,387,153,389,151,392,151,395,153,399,139,395,135,390,133,386,135,380,139,376,146,373,154,372" href="/Genes/GeneInfo?ORG=Mm&BCID=sp1" >
+<area shape="poly" coords="161,291,168,292,174,295,179,299,180,304,178,307,171,306,164,306,159,307,158,310,158,313,159,317,147,312,143,308,141,304,143,299,147,295,153,292,161,291" href="/Genes/GeneInfo?ORG=Mm&BCID=nfatc" >
+<area shape="poly" coords="32,91,41,94,44,97,46,100,44,104,41,106,32,109,22,106,19,104,18,100,19,97,22,94,32,91" href="/Genes/GeneInfo?ORG=Mm&BCID=gnaq" >
+<area shape="poly" coords="82,96,81,100,78,103,70,105,62,102,58,105,53,105,45,102,43,99,42,94,44,89,41,85,40,80,41,76,44,73,52,71,57,72,60,74,65,71,70,70,78,73,81,77,81,81,78,87,81,91,82,96" href="/Genes/GeneInfo?ORG=Mm&BCID=plcg" >
+<area shape="poly" coords="220,157,236,160,240,157,245,156,248,157,250,159,250,165,250,172,248,174,245,174,240,173,236,171,220,173,205,171,201,168,199,165,201,162,205,160,220,157" href="/Genes/GeneInfo?ORG=Mm&BCID=prkc" >
+<area shape="poly" coords="221,86,237,89,241,86,246,85,249,86,251,88,251,94,251,101,249,103,246,103,241,102,237,100,221,102,206,100,202,97,200,94,202,91,206,89,221,86" href="/Genes/GeneInfo?ORG=Mm&BCID=prkc" >
+<area shape="poly" coords="463,197,466,200,466,209,463,212,409,212,406,209,406,200,409,197,463,197" href="/Genes/GeneInfo?ORG=Mm&BCID=marcks" >
+<area shape="poly" coords="309,398,303,399,298,398,294,396,288,397,281,401,265,385,275,381,280,381,285,383,289,384,294,384,300,381,305,377,320,390,314,394,309,398" href="/Genes/GeneInfo?ORG=Mm&BCID=cdkn1a" >
+<area shape="poly" coords="245,223,253,224,258,226,262,230,264,234,262,238,258,242,253,244,245,245,238,244,232,242,228,238,227,234,228,230,232,226,238,224,245,223" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin" >
+<area shape="poly" coords="114,244,122,243,127,241,131,237,133,233,131,229,127,225,122,223,114,222,107,223,101,225,97,229,96,233,97,237,101,241,107,243,114,244" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin" >
+<area shape="poly" coords="342,87,345,90,345,99,342,102,288,102,285,99,285,90,288,87,342,87" href="/Genes/GeneInfo?ORG=Mm&BCID=marcks" >
+<area shape="poly" coords="340,165,343,168,343,177,340,180,286,180,283,177,283,168,286,165,340,165" href="/Genes/GeneInfo?ORG=Mm&BCID=marcks" >
+<area shape="poly" coords="462,86,465,89,465,98,462,101,408,101,405,98,405,89,408,86,462,86" href="/Genes/GeneInfo?ORG=Mm&BCID=marcks" >
+<area shape="poly" coords="268,241,272,239,276,239,282,242,272,247,282,252,276,255,272,255,268,253,229,253,225,252,223,248,223,246,225,242,229,241,268,241" href="/Genes/GeneInfo?ORG=Mm&BCID=calcineurin" >
+<area shape="poly" coords="300,290,307,291,313,294,318,298,319,303,317,306,310,305,303,305,298,306,297,309,297,312,298,316,286,311,282,307,280,303,282,298,286,294,292,291,300,290" href="/Genes/GeneInfo?ORG=Mm&BCID=nfatc" >
+</map>
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/mouse.gif" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+<A href="/Pathways/BioCarta/h_calcineurinPathway"><IMG SRC="/images/BioCarta/people.gif" BORDER=0><BR><FONT face="arial" color=#009999 size=1>Human<BR>Pathway</FONT></A>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+</td>
+</tr>
+</table>
+
+<hr align=center noshade width=95%>
+
+<p align="center">If you have any questions, comments, or need information about CGAP,
+please contact the <a href="mailto:cgapbs-r@mail.nih.gov">
+NCI CGAP Help Desk</a>.
+
+</body>
+</html>
+

@@ -48,7 +48,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
 							attrib4="transparency 1" 								
-							detail="44101 35101 36101 37101 39101 85101" /> 
+							detail="35101 36101 37101 39101 85101" /> 
 							
 	  	<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401 83401" detail="SELECTION_MEDIATOR" /> 

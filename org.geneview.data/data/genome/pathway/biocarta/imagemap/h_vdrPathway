@@ -1,0 +1,260 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Expires" CONTENT="Mon, 3 Nov 1997 23:59:00 GMT">
+<TITLE>h_vdrPathway</TITLE>
+<STYLE TYPE="text/css">
+
+  BODY {background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  UL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  OL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  TH {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  TD {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  P {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DD {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DT {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  .crumb {background-color: #ccccff; font-family: Arial, Helvetica, sans-serif;}
+  .gNavBar {background-color: #993333; font-size:10pt;}
+  Blockquote {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  H3 {text-align:center; font-size:12pt;} 
+  H1,H2,H3,H4,H5,H6 {font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+  .helpSet {background-color: #ffffcc; padding: 2px; border: 2px; width: 200px; font: normal 10pt Arial; text-align: left;}
+  .genesrch {color: #003366; text-decoration: none}
+  A:hover {text-decoration: underline}
+
+</STYLE>
+
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+window.name = "CGAP";
+
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY>
+
+<TABLE cellspacing="0" cellpadding="0" border="0" WIDTH="100%" height=70 CLASS=topNavBar><TR>
+  
+<td background="http://cgap.nci.nih.gov/images/back3.jpg"> &nbsp;  <a href="/"><img src="http://cgap.nci.nih.gov/images/cgaplogo.gif" width=161 height=38 border=0 alt="CGAP"></a> &nbsp;   &nbsp;     &nbsp;  <img src="http://cgap.nci.nih.gov/images/cgap2b.gif" border=0 alt="the Cancer Genome Anatomy Project">
+</td></TR>
+</TABLE>
+
+<!-- Begin button table -->
+<TABLE width="100%" bgcolor="339999" cellpadding="0" cellspacing="0" border="0">
+<TR>
+<td background="http://cgap.nci.nih.gov/images/backlines.gif" width=20%> &nbsp; &nbsp; <a href="/Catalog"><font color=ffffff><B>CGAP HOW TO</B></font></A></TD>
+<TD width="80%" height=20 background="http://cgap.nci.nih.gov/images/backlines.gif">
+<a href="/Genes"><img src="http://cgap.nci.nih.gov/images/genes.gif" border=0 alt="Genes"></a><a href="/Chromosomes"><img src="http://cgap.nci.nih.gov/images/chromosomes.gif" border=0 alt="Chromosomes"></a><a href="/Tissues"><img src="http://cgap.nci.nih.gov/images/tissues.gif" border=0 alt="Tissues"></a><a href="/SAGE"><img src="http://cgap.nci.nih.gov/images/sage.gif" border=0 alt="SAGE"></a><a href="/RNAi"><img src="http://cgap.nci.nih.gov/images/RNAi.gif" border=0 "RNAi"></a><a href="/Pathways"><img src="http://cgap.nci.nih.gov/images/pathways-.gif" border=0 alt="Pathways"></a><a href="/Tools"><img src="http://cgap.nci.nih.gov/images/tools.gif" border=0 alt="Tools"></a><td background="http://cgap.nci.nih.gov/images/backlines.gif"> &nbsp;</td></tr></TABLE>
+<!-- End button table -->
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+  <!-- Begin main table -->
+<TABLE WIDTH="100%" ALIGN="CENTER" CELLPADDING="8" CELLSPACING="0" border="0">
+  <TR> 
+    <TD VALIGN="TOP" width="20%" ALIGN="left" bgcolor="#ccccff">
+
+  <p align=center>
+<a href="/Pathways"><img src="http://cgap.nci.nih.gov/images/pathways-big.gif" width=102 height=100 border=0 alt="Pathways"></A>
+<P><B>Pathways and Tools</b>
+<UL>
+<LI><a href="/Pathways/BioCarta_Pathways">BioCarta</A>
+<LI><a href="/Pathways/Kegg_Standard_Pathways">KEGG</A>
+<LI><a href="/Pathways/Pathway_Searcher">Pathway Searcher</A>
+</UL>
+<P><B>Related Links</B>
+<UL>
+<Li><A href=javascript:spawn("http://www.expasy.ch/cgi-bin/search-biochem-index")>ExPASy</a>
+<LI><a href=javascript:spawn("http://kinase.uhnres.utoronto.ca/signallingmap.html")> MAPK signalling</A>
+<LI><a href=javascript:spawn("http://www.grt.kyushu-u.ac.jp/spad/index.html")>SPAD</a>
+</UL>
+
+
+<P><B>Quick Links:</B>
+<UL>
+  <LI><a href=javascript:spawn("http://www.broad.mit.edu/chembio/icg/index.html")>ICG</A>
+  <LI><A href=javascript:spawn("http://www.nci.nih.gov")>NCI Home</a>
+  <LI><a href=javascript:spawn("http://ncicb.nci.nih.gov")>NCICB Home</a>
+  <LI><a href=javascript:spawn("http://www.ncbi.nlm.nih.gov")>NCBI Home</A> 
+  <LI><a href=javascript:spawn("http://www3.cancer.gov/ocg/")>OCG</A>
+</UL>
+<p align=center>
+<A HREF="http://cancer.gov"><center><img border="0" src="http://cgap.nci.nih.gov/images/ncilogo2.gif" alt="NCI Logo"></center></A>
+
+</TD>
+<TD VALIGN="top" width="80%"><P>
+
+
+
+
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Hs&PATH=h_vdrPathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Control of Gene Expression by Vitamin D Receptor</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="h_vdrPathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/h_vdrPathway.gif" width="616" height="688" border="0" usemap="#m_h_vdrPathway">
+<map name="m_h_vdrPathway">
+
+<area shape="poly" coords="449,114,465,116,470,119,472,122,470,124,465,127,449,129,433,127,428,124,426,122,428,119,433,116,449,114" href="/Genes/GeneInfo?ORG=Hs&BCID=supt16h" >
+
+<area shape="poly" coords="474,104,491,106,496,108,498,111,496,113,491,115,474,117,456,115,451,113,449,111,451,108,456,106,474,104" href="/Genes/GeneInfo?ORG=Hs&BCID=chaf1a" >
+
+<area shape="poly" coords="425,100,440,102,445,105,447,108,445,111,440,114,425,116,409,114,404,111,402,108,404,105,409,102,425,100" href="/Genes/GeneInfo?ORG=Hs&BCID=topo2b" >
+
+<area shape="poly" coords="492,93,507,95,511,97,513,100,511,103,507,105,492,107,477,105,473,103,471,100,473,97,477,95,492,93" href="/Genes/GeneInfo?ORG=Hs&BCID=baf53a" >
+
+<area shape="poly" coords="440,61,456,63,461,66,463,69,461,72,456,75,440,77,424,75,419,72,417,69,419,66,424,63,440,61" href="/Genes/GeneInfo?ORG=Hs&BCID=smarce1" >
+
+<area shape="poly" coords="482,79,497,81,501,84,503,87,501,89,497,92,482,94,466,92,462,89,460,87,462,84,466,81,482,79" href="/Genes/GeneInfo?ORG=Hs&BCID=smarcd1" >
+
+<area shape="poly" coords="480,67,496,69,501,72,503,76,501,79,496,82,480,84,463,82,458,79,456,76,458,72,463,69,480,67" href="/Genes/GeneInfo?ORG=Hs&BCID=smarcc2" >
+
+<area shape="poly" coords="438,75,454,77,459,80,461,83,459,85,454,88,438,90,422,88,417,85,415,83,417,80,422,77,438,75" href="/Genes/GeneInfo?ORG=Hs&BCID=smarcc1" >
+
+<area shape="poly" coords="455,86,471,89,476,92,477,96,476,100,471,103,455,106,439,103,435,100,433,96,435,92,439,89,455,86" href="/Genes/GeneInfo?ORG=Hs&BCID=smarca4" >
+
+<area shape="poly" coords="411,88,429,90,434,92,436,95,434,98,429,100,411,102,393,100,388,98,386,95,388,92,393,90,411,88" href="/Genes/GeneInfo?ORG=Hs&BCID=smarcf1" >
+
+<area shape="poly" coords="124,153,144,152,148,153,151,155,144,161,151,165,148,168,144,170,124,170,111,167,107,165,106,161,107,158,111,155,124,153" href="/Genes/GeneInfo?ORG=Hs&BCID=hdac" >
+
+<area shape="poly" coords="161,138,164,141,164,151,161,154,123,154,120,151,120,141,123,138,161,138" href="/Genes/GeneInfo?ORG=Hs&BCID=ncor1" >
+
+<area shape="poly" coords="178,121,181,124,181,134,178,137,140,137,137,134,137,124,140,121,178,121" href="/Genes/GeneInfo?ORG=Hs&BCID=alien" >
+
+<area shape="poly" coords="294,160,308,162,312,165,314,169,312,172,308,175,294,177,280,175,276,172,274,169,276,165,280,162,294,160" href="/Genes/GeneInfo?ORG=Hs&BCID=baz1b" >
+
+<area shape="poly" coords="302,226,301,229,298,231,296,231,293,234,289,235,285,234,283,231,282,231,278,229,277,226,277,225,278,222,282,221,283,221,285,217,289,216,293,217,296,221,298,221,301,222,302,225,302,226" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="278,245,280,249,280,258,275,269,271,274,268,276,266,274,264,275,264,275,261,274,257,270,251,259,249,251,251,246,255,247,260,249,262,245,264,244,267,245,268,249,273,246,278,245" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="267,160,273,162,278,167,281,175,283,184,281,195,276,203,276,205,273,209,267,210,260,209,257,205,258,203,253,195,251,184,252,175,256,167,261,162,267,160" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="277,241,275,242,275,250,275,249,276,247,280,241,282,236,284,235,286,231,284,229,283,231,282,234,280,235,279,239,277,241" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="266,215,269,220,269,222,268,223,268,224,268,226,269,233,267,239,266,247,267,251,269,249,270,247,269,244,269,242,269,238,270,235,270,232,270,230,271,224,271,220,269,216,265,206,263,207,264,210,265,212,266,215" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="326,207,333,208,338,210,342,214,343,218,341,221,335,220,329,220,325,221,324,226,325,229,314,226,310,222,309,218,310,214,314,210,319,208,326,207" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="168,207,175,208,180,210,184,214,185,218,183,221,177,220,171,220,167,221,166,226,167,229,156,226,152,222,151,218,152,214,156,210,161,208,168,207" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="230,246,232,250,232,259,227,270,223,275,220,277,218,275,216,276,216,276,213,275,209,271,203,260,201,252,203,247,207,248,212,250,214,246,216,245,219,246,220,250,225,247,230,246" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="218,161,224,163,229,168,232,176,233,185,232,196,227,204,227,206,224,210,218,211,211,210,208,206,209,204,204,196,202,185,203,176,207,168,212,163,218,161" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="248,224,247,227,244,228,242,229,239,232,235,233,232,232,229,229,228,229,224,227,223,224,223,223,224,220,228,219,229,219,231,215,235,214,239,215,242,219,244,218,247,220,248,223,248,224" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="223,245,221,247,218,249,220,250,223,248,226,244,229,236,229,236,231,237,234,231,233,229,231,230,229,233,227,233,227,234,226,237,225,242,223,245" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="217,214,219,220,219,222,218,223,217,225,217,228,218,233,217,238,215,247,216,246,218,246,219,245,218,243,219,240,219,238,220,233,221,228,221,225,221,219,219,214,218,213,217,210,215,208,213,209,215,212,217,214" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="418,404,421,407,421,415,418,418,376,418,373,415,373,407,376,404,418,404" href="/Genes/GeneInfo?ORG=Hs&BCID=ncoa62" >
+
+<area shape="poly" coords="397,434,414,436,419,439,421,443,419,446,414,449,397,451,380,449,375,446,373,443,375,439,380,436,397,434" href="/Genes/GeneInfo?ORG=Hs&BCID=trap220" >
+
+<area shape="poly" coords="398,419,414,421,419,424,421,427,419,429,414,432,398,434,382,432,377,429,375,427,377,424,382,421,398,419" href="/Genes/GeneInfo?ORG=Hs&BCID=tsc2" >
+
+<area shape="poly" coords="113,513,123,514,130,516,136,519,138,523,136,527,130,530,123,532,113,533,104,532,96,530,91,527,89,523,91,519,96,516,104,514,113,513" href="/Genes/GeneInfo?ORG=Hs&BCID=prmt1" >
+
+<area shape="poly" coords="295,502,309,504,313,507,315,511,313,514,309,517,295,519,281,517,277,514,275,511,277,507,281,504,295,502" href="/Genes/GeneInfo?ORG=Hs&BCID=baz1b" >
+
+<area shape="poly" coords="303,568,302,571,299,573,297,573,294,576,290,577,286,576,284,573,283,573,279,571,278,568,278,567,279,564,283,563,284,563,286,559,290,558,294,559,297,563,299,563,302,564,303,567,303,568" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="279,587,281,591,281,600,276,611,272,616,269,618,267,616,265,617,265,617,262,616,258,612,252,601,250,593,252,588,256,589,261,591,263,587,265,586,268,587,269,591,274,588,279,587" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="268,502,274,504,279,509,282,517,284,526,282,537,277,545,277,547,274,551,268,552,261,551,258,547,259,545,254,537,252,526,253,517,257,509,262,504,268,502" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="278,583,276,584,276,592,276,591,277,589,281,583,283,578,285,577,287,573,285,571,284,573,283,576,281,577,280,581,278,583" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="267,557,270,562,270,564,269,565,269,566,269,568,270,575,268,581,267,589,268,593,270,591,271,589,270,586,270,584,270,580,271,577,271,574,271,572,272,566,272,562,270,558,266,548,264,549,265,552,266,554,267,557" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="242,449,245,452,245,462,244,464,242,465,210,465,207,462,207,452,208,450,210,449,242,449" href="/Genes/GeneInfo?ORG=Hs&BCID=tif2" >
+
+<area shape="poly" coords="263,435,266,438,266,447,265,449,263,450,230,450,228,449,227,447,227,438,230,435,263,435" href="/Genes/GeneInfo?ORG=Hs&BCID=pcaf" >
+
+<area shape="poly" coords="275,465,278,468,278,482,275,485,241,485,238,482,238,468,241,465,275,465" href="/Genes/GeneInfo?ORG=Hs&BCID=src1" >
+
+<area shape="poly" coords="280,449,283,452,283,465,280,468,249,468,246,465,246,452,249,449,280,449" href="/Genes/GeneInfo?ORG=Hs&BCID=pcip" >
+
+<area shape="poly" coords="321,392,330,393,337,396,341,401,343,407,342,409,341,410,332,409,325,408,320,410,318,413,319,417,320,421,306,416,301,412,299,407,301,401,305,396,312,393,321,392" href="/Genes/GeneInfo?ORG=Hs&BCID=p300" >
+
+<area shape="poly" coords="130,514,140,514,147,512,152,509,153,504,152,500,147,496,140,494,130,493,120,494,112,496,108,499,106,503,108,508,112,511,120,514,130,514" href="/Genes/GeneInfo?ORG=Hs&BCID=carm1" >
+
+<area shape="poly" coords="312,388,315,389,316,392,315,395,312,397,300,397,300,409,300,409,299,412,296,413,293,412,292,410,292,398,289,401,284,402,277,400,274,393,277,387,284,384,288,385,292,388,292,377,293,374,295,373,298,374,299,377,299,377,299,388,312,388" href="/Genes/GeneInfo?ORG=Hs&BCID=cbp" >
+
+<area shape="poly" coords="327,549,334,550,339,552,343,556,344,560,342,563,336,562,330,562,326,563,325,568,326,571,315,568,311,564,310,560,311,556,315,552,320,550,327,549" href="/Genes/GeneInfo?ORG=Hs&BCID=vdr" >
+
+<area shape="poly" coords="169,549,176,550,181,552,185,556,186,560,184,563,178,562,172,562,168,563,167,568,168,571,157,568,153,564,152,560,153,556,157,552,162,550,169,549" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="231,588,233,592,233,601,228,612,224,617,221,619,219,617,217,618,217,618,214,617,210,613,204,602,202,594,204,589,208,590,213,592,215,588,217,587,220,588,221,592,226,589,231,588" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="219,503,225,505,230,510,233,518,234,527,233,538,228,546,228,548,225,552,219,553,212,552,209,548,210,546,205,538,203,527,204,518,208,510,213,505,219,503" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="249,566,248,569,245,570,243,571,240,574,236,575,233,574,230,571,229,571,225,569,224,566,224,565,225,562,229,561,230,561,232,557,236,556,240,557,243,561,245,560,248,562,249,565,249,566" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="224,587,222,589,219,591,221,592,224,590,227,586,230,578,230,578,232,579,235,573,234,571,232,572,230,575,228,575,228,576,227,579,226,584,224,587" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="218,556,220,562,220,564,219,565,218,567,218,570,219,575,218,580,216,589,217,588,219,588,220,587,219,585,220,582,220,580,221,575,222,570,222,567,222,561,220,556,219,555,218,552,216,550,214,551,216,554,218,556" href="/Genes/GeneInfo?ORG=Hs&BCID=rxr" >
+
+<area shape="poly" coords="316,477,324,478,327,481,324,484,316,485,307,484,304,481,307,478,316,477" href="/Genes/GeneInfo?ORG=Hs&BCID=smarce1" >
+</map>
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/people.gif" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+<A href="/Pathways/BioCarta/m_vdrPathway"><IMG SRC="/images/BioCarta/mouse.gif" BORDER=0><BR><FONT face="arial" color=#009999 size=1>Mouse<BR>Pathway</FONT></A>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+</td>
+</tr>
+</table>
+
+<hr align=center noshade width=95%>
+
+<p align="center">If you have any questions, comments, or need information about CGAP,
+please contact the <a href="mailto:cgapbs-r@mail.nih.gov">
+NCI CGAP Help Desk</a>.
+
+</body>
+</html>
+

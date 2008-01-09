@@ -1,0 +1,183 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Expires" CONTENT="Mon, 3 Nov 1997 23:59:00 GMT">
+<TITLE>h_akap13Pathway</TITLE>
+<STYLE TYPE="text/css">
+
+  BODY {background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  UL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  OL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  TH {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  TD {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  P {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DD {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DT {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  DL {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  .crumb {background-color: #ccccff; font-family: Arial, Helvetica, sans-serif;}
+  .gNavBar {background-color: #993333; font-size:10pt;}
+  Blockquote {font-family: Arial, Helvetica, sans-serif; font-size:10pt;}
+  H3 {text-align:center; font-size:12pt;} 
+  H1,H2,H3,H4,H5,H6 {font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+  .helpSet {background-color: #ffffcc; padding: 2px; border: 2px; width: 200px; font: normal 10pt Arial; text-align: left;}
+  .genesrch {color: #003366; text-decoration: none}
+  A:hover {text-decoration: underline}
+
+</STYLE>
+
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+window.name = "CGAP";
+
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY>
+
+<TABLE cellspacing="0" cellpadding="0" border="0" WIDTH="100%" height=70 CLASS=topNavBar><TR>
+  
+<td background="http://cgap.nci.nih.gov/images/back3.jpg"> &nbsp;  <a href="/"><img src="http://cgap.nci.nih.gov/images/cgaplogo.gif" width=161 height=38 border=0 alt="CGAP"></a> &nbsp;   &nbsp;     &nbsp;  <img src="http://cgap.nci.nih.gov/images/cgap2b.gif" border=0 alt="the Cancer Genome Anatomy Project">
+</td></TR>
+</TABLE>
+
+<!-- Begin button table -->
+<TABLE width="100%" bgcolor="339999" cellpadding="0" cellspacing="0" border="0">
+<TR>
+<td background="http://cgap.nci.nih.gov/images/backlines.gif" width=20%> &nbsp; &nbsp; <a href="/Catalog"><font color=ffffff><B>CGAP HOW TO</B></font></A></TD>
+<TD width="80%" height=20 background="http://cgap.nci.nih.gov/images/backlines.gif">
+<a href="/Genes"><img src="http://cgap.nci.nih.gov/images/genes.gif" border=0 alt="Genes"></a><a href="/Chromosomes"><img src="http://cgap.nci.nih.gov/images/chromosomes.gif" border=0 alt="Chromosomes"></a><a href="/Tissues"><img src="http://cgap.nci.nih.gov/images/tissues.gif" border=0 alt="Tissues"></a><a href="/SAGE"><img src="http://cgap.nci.nih.gov/images/sage.gif" border=0 alt="SAGE"></a><a href="/RNAi"><img src="http://cgap.nci.nih.gov/images/RNAi.gif" border=0 "RNAi"></a><a href="/Pathways"><img src="http://cgap.nci.nih.gov/images/pathways-.gif" border=0 alt="Pathways"></a><a href="/Tools"><img src="http://cgap.nci.nih.gov/images/tools.gif" border=0 alt="Tools"></a><td background="http://cgap.nci.nih.gov/images/backlines.gif"> &nbsp;</td></tr></TABLE>
+<!-- End button table -->
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+  <!-- Begin main table -->
+<TABLE WIDTH="100%" ALIGN="CENTER" CELLPADDING="8" CELLSPACING="0" border="0">
+  <TR> 
+    <TD VALIGN="TOP" width="20%" ALIGN="left" bgcolor="#ccccff">
+
+  <p align=center>
+<a href="/Pathways"><img src="http://cgap.nci.nih.gov/images/pathways-big.gif" width=102 height=100 border=0 alt="Pathways"></A>
+<P><B>Pathways and Tools</b>
+<UL>
+<LI><a href="/Pathways/BioCarta_Pathways">BioCarta</A>
+<LI><a href="/Pathways/Kegg_Standard_Pathways">KEGG</A>
+<LI><a href="/Pathways/Pathway_Searcher">Pathway Searcher</A>
+</UL>
+<P><B>Related Links</B>
+<UL>
+<Li><A href=javascript:spawn("http://www.expasy.ch/cgi-bin/search-biochem-index")>ExPASy</a>
+<LI><a href=javascript:spawn("http://kinase.uhnres.utoronto.ca/signallingmap.html")> MAPK signalling</A>
+<LI><a href=javascript:spawn("http://www.grt.kyushu-u.ac.jp/spad/index.html")>SPAD</a>
+</UL>
+
+
+<P><B>Quick Links:</B>
+<UL>
+  <LI><a href=javascript:spawn("http://www.broad.mit.edu/chembio/icg/index.html")>ICG</A>
+  <LI><A href=javascript:spawn("http://www.nci.nih.gov")>NCI Home</a>
+  <LI><a href=javascript:spawn("http://ncicb.nci.nih.gov")>NCICB Home</a>
+  <LI><a href=javascript:spawn("http://www.ncbi.nlm.nih.gov")>NCBI Home</A> 
+  <LI><a href=javascript:spawn("http://www3.cancer.gov/ocg/")>OCG</A>
+</UL>
+<p align=center>
+<A HREF="http://cancer.gov"><center><img border="0" src="http://cgap.nci.nih.gov/images/ncilogo2.gif" alt="NCI Logo"></center></A>
+
+</TD>
+<TD VALIGN="top" width="80%"><P>
+
+
+
+
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Hs&PATH=h_akap13Pathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Rho-Selective Guanine Exchange Factor AKAP13 Mediates Stress Fiber Formation</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="h_akap13Pathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/h_akap13Pathway.gif" width="482" height="416" border="0" usemap="#m_h_akap13Pathway">
+<map name="m_h_akap13Pathway">
+
+<area shape="poly" coords="198,241,207,244,210,246,211,250,210,254,207,256,198,259,188,256,185,254,184,250,185,246,188,244,198,241,198,241" href="/Genes/GeneInfo?ORG=Hs&BCID=prkar2a" >
+<area shape="poly" coords="222,234,227,235,230,238,233,241,234,246,233,251,230,254,227,257,222,258,217,257,214,254,211,251,210,246,211,241,214,238,217,235,222,234,222,234" href="/Genes/GeneInfo?ORG=Hs&BCID=prkar2b" >
+<area shape="poly" coords="198,255,214,258,218,255,223,254,227,255,228,257,228,263,228,270,227,272,223,273,218,272,214,269,198,272,182,269,178,267,176,263,178,260,182,258,198,255,198,255" href="/Genes/GeneInfo?ORG=Hs&BCID=pkac" >
+<area shape="poly" coords="205,151,214,154,217,156,218,160,217,164,214,166,205,169,195,166,192,164,191,160,192,156,195,154,205,151,205,151" href="/Genes/GeneInfo?ORG=Hs&BCID=prkar2a" >
+<area shape="poly" coords="229,144,234,145,237,148,240,151,241,156,240,161,237,164,234,167,229,168,224,167,221,164,218,161,217,156,218,151,221,148,224,145,229,144,229,144" href="/Genes/GeneInfo?ORG=Hs&BCID=prkar2b" >
+<area shape="poly" coords="205,165,221,168,225,165,230,164,234,165,235,167,235,173,235,180,234,182,230,183,225,182,221,179,205,182,189,179,185,177,183,173,185,170,189,168,205,165,205,165" href="/Genes/GeneInfo?ORG=Hs&BCID=pkac" >
+<area shape="poly" coords="162,254,150,235,162,216,187,216,199,235,187,254,162,254" href="/Genes/GeneInfo?ORG=Hs&BCID=akap13" >
+<area shape="poly" coords="96,131,102,132,107,135,111,139,112,144,111,148,107,152,102,155,96,156,89,155,84,152,80,148,79,144,80,139,84,135,89,132,96,131" href="/Genes/GeneInfo?ORG=Hs&BCID=gna12" >
+<area shape="poly" coords="42,86,45,84,42,82,39,84,42,86" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="45,84,45,130,45,130,42,132,39,130,39,130,39,84,45,84" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="50,86,53,84,50,82,47,84,50,86" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="53,84,53,130,53,130,50,132,47,130,47,130,47,84,53,84" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="95,86,98,84,95,82,92,84,95,86" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="98,84,98,130,98,130,95,132,92,130,92,130,92,84,98,84" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="59,86,62,84,59,82,56,84,59,86" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="62,84,62,130,62,130,59,132,56,130,56,130,56,84,62,84" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="68,86,71,84,68,82,65,84,68,86" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="71,84,71,130,71,130,68,132,65,130,65,130,65,84,71,84" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="77,86,80,84,77,82,74,84,77,86" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="80,84,80,130,80,130,77,132,74,130,74,130,74,84,80,84" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="104,86,107,84,104,82,101,84,104,86" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="107,84,107,130,107,130,104,132,101,130,101,130,101,84,107,84" href="/Genes/GeneInfo?ORG=Hs&BCID=lpar" >
+<area shape="poly" coords="245,309,290,309,278,318,293,326,237,326,245,309" href="/Genes/GeneInfo?ORG=Hs&BCID=rhoa" >
+<area shape="poly" coords="40,308,85,308,73,317,88,325,32,325,40,308" href="/Genes/GeneInfo?ORG=Hs&BCID=rhoa" >
+</map>
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/people.gif" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+<A href="/Pathways/BioCarta/m_akap13Pathway"><IMG SRC="/images/BioCarta/mouse.gif" BORDER=0><BR><FONT face="arial" color=#009999 size=1>Mouse<BR>Pathway</FONT></A>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+</td>
+</tr>
+</table>
+
+<hr align=center noshade width=95%>
+
+<p align="center">If you have any questions, comments, or need information about CGAP,
+please contact the <a href="mailto:cgapbs-r@mail.nih.gov">
+NCI CGAP Help Desk</a>.
+
+</body>
+</html>
+

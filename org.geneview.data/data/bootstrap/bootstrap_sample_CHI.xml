@@ -18,7 +18,7 @@
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="11331" label="Pathway 2D" attrib1="ROW HORIZONTAL" />   
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" uniqueId="84401" label="Pathway" 			parent="11331" attrib2="800 950" detail="49101 95101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"			parent="11331" attrib2="-1 950" />
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"			parent="11331" attrib2="-1 950" detail="GENERAL" />
 
 		<!-- Window	12331	-->	
 
@@ -49,15 +49,14 @@
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
 							attrib4="transparency 1" 								
 							detail="44101 35101 36101 37101 85101" /> 
-							
+				
+	    <!-- Search View -->
+	      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_ENTITY_SEARCHER" 	cmdId="69991" uniqueId="12345" label="Data Entity Search" 	detail="84401 82401" /> 				
+										
 	  	<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401 83401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401 83401" detail="SELECTION_MEDIATOR" />  
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="95501" label="Mediator Heatmap2Pathway" attrib1="83401" attrib2="82401 84401" detail="SELECTION_MEDIATOR" />  
-
-			<!-- Browser active selection update -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator Browser" attrib1="85401" attrib2="82401 84401" detail="SELECTION_MEDIATOR" />  
-
      
    </CommandBuffer>
     

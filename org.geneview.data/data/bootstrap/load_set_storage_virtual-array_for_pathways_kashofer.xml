@@ -2,17 +2,29 @@
 
 <details>
 
-	<!-- Create Storage, Virtual Arrays and Set objects -->
-		<!-- Setting paths -->	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Pathway Paths" 
+	<!-- Setting paths -->	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
+		detail="KEGG"
 		attrib1="data/genome/pathway/xml/hsa/" 
 		attrib2="data/genome/pathway/images/hsa/" 
 		attrib3="data/genome/pathway/imagemap/" /> 
+		
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
+		detail="BIOCARTA"
+		attrib1="data/genome/pathway/biocarta/imagemap/" 
+		attrib2="data/genome/pathway/biocarta/image/" 
+		attrib3="data/genome/pathway/biocarta/imagemap/" /> 	
 	 
     <!-- Set for list of pathways -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="44301" label="Pathway list storage"		attrib1="STRING" attrib2="" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="44201" label="Pathway list virtual array" attrib1="0 400 0 1"	/>
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="37991"	uniqueId="44101" label="Pathway list" 				attrib1="44201" attrib2="44301" attrib3="SET_PATHWAY_DATA" />
+	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="43301" label="Pathway list storage"		attrib1="STRING" attrib2="" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="43201" label="Pathway list virtual array" attrib1="0 400 0 1"	/>
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="37991"	uniqueId="43101" label="Pathway list" 				attrib1="43201" attrib2="43301" attrib3="SET_PATHWAY_DATA" />
+
+	<!-- Create Storage, Virtual Arrays and Set objects -->
 
     <!-- Set for 2D pathway view -->
     <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49301" label="Pathway list storage"		attrib1="INT" attrib2="271" />
@@ -27,18 +39,19 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="Storage	file for expression mapping 1"	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46301" label="Storage	file for expression mapping 2" 	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="Storage	file for expression mapping 3" 	attrib1="STRING" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49301" label="Storage	file for expression mapping 3" 	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="35101" label="Set for expression mapping 1" attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="36101" label="Set for expression mapping 2" attrib1="35201" attrib2="46301" attrib3="SET_GENE_EXPRESSION_DATA" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="37101" label="Set for expression mapping 3" attrib1="35201" attrib2="47301" attrib3="SET_GENE_EXPRESSION_DATA" />								
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="39101" label="Set for expression mapping 4" attrib1="35201" attrib2="49301" attrib3="SET_GENE_EXPRESSION_DATA" />								
 
 	<!-- Data file loading -->     
-	<!-- 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_LIST_FILE"		cmdId="99010"	uniqueId="-1"	detail="data/"	attrib2="38101" attrib3="1 -1" />	
-	 -->
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/pathway/KEGG_pathway_ID_2_pathway_name.txt"	
-			attrib1="INT;SKIP;ABORT" 								attrib2="44101" attrib3="0 -1" />			
+	<!--
+	  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/pathway/KEGG_pathway_ID_2_pathway_name.txt"	
+			attrib1="INT;STRING;ABORT" attrib2="44101" attrib3="0 -1" />			
+	  <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/pathway/BIOCARTA_ID_2_full_name_2_file_name.txt"	
+			attrib1="INT;STRING;ABORT" attrib2="43101" attrib3="0 -1" />
+    -->
+    
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/txt_format/C001.txt"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT" 				attrib2="35101" attrib3="1 -1" />			
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/txt_format/C002.txt"	
