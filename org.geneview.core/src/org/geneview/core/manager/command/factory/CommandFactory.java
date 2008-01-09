@@ -17,6 +17,7 @@ import org.geneview.core.command.data.CmdDataCreateVirtualArray;
 import org.geneview.core.command.data.CmdDataCreateSet;
 import org.geneview.core.command.data.CmdDataCreateStorage;
 import org.geneview.core.command.data.filter.CmdDataFilterMath;
+import org.geneview.core.command.data.filter.CmdDataFilterMinMax;
 import org.geneview.core.command.event.CmdEventCreateMediator;
 import org.geneview.core.command.event.CmdEventMediatorAddObject;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap;
@@ -656,6 +657,16 @@ public class CommandFactory
 			break;
 		}
 		
+		case DATA_FILTER_MIN_MAX:
+		{
+			createdCommand =
+				new CmdDataFilterMinMax(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);		
+			break;
+		}
+		
 		default: 
 			throw new GeneViewRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
 					cmdType + "]",
@@ -665,7 +676,7 @@ public class CommandFactory
 		//FIXME: create new command id! use lookup table for XML matching of cmd id's 
 		
 //		/**
-//		 * Create a new uniqueId if nessecary
+//		 * Create a new uniqueId if necessary
 //		 */
 //		int iNewUniqueId = iData_CmdId;		
 //		if ( iData_CmdId < 0 ) {

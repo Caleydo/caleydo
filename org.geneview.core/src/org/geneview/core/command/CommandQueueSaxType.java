@@ -39,6 +39,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	//OPEN_VIEW("cmd","type"),
 
 	DATA_FILTER_MATH(ManagerType.DATA_STORAGE, "cmd", "type", "-1", "Filter data by using math operations"),
+	DATA_FILTER_MIN_MAX(ManagerType.DATA_STORAGE, "cmd", "type", "-1", "Evaluate min and max of an entity"),
 	
 	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),

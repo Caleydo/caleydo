@@ -17,6 +17,8 @@ import org.geneview.core.parser.xml.sax.ISaxParserHandler;
 
 //import org.xml.sax.InputSource;
 
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.data.filter.CmdDataFilterMinMax;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.StorageType;
 //import org.geneview.core.data.manager.DComponentManager;
@@ -27,7 +29,7 @@ import org.geneview.core.data.collection.thread.lock.ICollectionLock;
 
 /**
  * @author Michael Kalkusch
- *
+ * @author Alexander Lex
  */
 public class FlatThreadStorageSimple 
 extends ACollectionThreadItem 
@@ -41,25 +43,38 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	 */
 	protected int [] dataInt = null;
 	
+	private int minInt = java.lang.Integer.MAX_VALUE;
+	private int maxInt = java.lang.Integer.MIN_VALUE;
+	
 	/**
 	 * One dimensional FLOAT array.
 	 */
 	protected float [] dataFloat = null;
 	
-	/**
-	 * One dimensional STRING array.
-	 */
-	protected String [] dataString = null;
+	private float minFloat = java.lang.Float.POSITIVE_INFINITY;
+	private float maxFloat = java.lang.Float.NEGATIVE_INFINITY;
 	
 	/**
 	 * One dimensional DOUBLE array.
 	 */
 	protected double [] dataDouble = null;
 	
+	private double minDouble = java.lang.Double.POSITIVE_INFINITY;
+	private double maxDouble = java.lang.Double.NEGATIVE_INFINITY;
+		
+	/**
+	 * One dimensional STRING array.
+	 */
+	protected String [] dataString = null;
+		
 	/**
 	 * One dimensional BOOLEAN array.
 	 */
 	protected boolean [] dataBoolean = null;
+	
+	/**
+	 * One dimensional Object array.
+	 */
 	
 	protected Object [] dataObject = null;
 	
@@ -85,8 +100,11 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	
 	/**
+	 * TODO: Doku
+	 * 
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
+	 * @param setCollectionLock
 	 */
 	public FlatThreadStorageSimple( final int iSetCollectionId, final IGeneralManager setGeneralManager,
 			final ICollectionLock setCollectionLock ) {
@@ -484,6 +502,44 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		return dataInt;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.IStorage#getMinInt()
+	 */
+	public int getMinInt() {
+
+		
+		if (minInt == java.lang.Integer.MAX_VALUE)
+		{
+			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) refGeneralManager
+		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+			
+			createdCmd.setAttributes(this, StorageType.INT);
+			createdCmd.doCommand();
+			minInt = createdCmd.getIMinValue();
+		}
+		return minInt;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.IStorage#getMaxInt()
+	 */
+	public int getMaxInt() {
+
+		// TODO Auto-generated method stub
+		if (maxInt == java.lang.Integer.MIN_VALUE)
+		{
+			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) refGeneralManager
+		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+			
+			createdCmd.setAttributes(this, StorageType.INT);
+			createdCmd.doCommand();
+			maxInt = createdCmd.getIMaxValue();
+		}
+		return maxInt;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.geneview.core.data.collection.IStorage#getArray2DInt()
 	 */
@@ -499,6 +555,43 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	public float[] getArrayFloat() {
 		return dataFloat;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.IStorage#getMinFloat()
+	 */
+	public float getMinFloat() 
+	{
+
+		if (minFloat == java.lang.Float.POSITIVE_INFINITY)
+		{
+			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) refGeneralManager
+		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+			
+			createdCmd.setAttributes(this, StorageType.FLOAT);
+			createdCmd.doCommand();
+			minFloat = createdCmd.getFMinValue();
+		}
+		return minFloat;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.IStorage#getMaxFloat()
+	 */
+	public float getMaxFloat() 
+	{	
+		if (maxFloat == java.lang.Float.NEGATIVE_INFINITY)
+		{
+			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) refGeneralManager
+		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+			
+			createdCmd.setAttributes(this, StorageType.FLOAT);
+			createdCmd.doCommand();
+			maxFloat = createdCmd.getFMaxValue();
+		}
+		return maxFloat;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.geneview.core.data.collection.IStorage#getArray2DFloat()
@@ -509,12 +602,66 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.IStorage#setArrayDouble(double[])
+	 */
+	public void setArrayDouble(double[] set) {
+		dataDouble = set;	
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.geneview.core.data.collection.IStorage#getArrayDouble()
 	 */
-	public double[] getArrayDouble() {
+	public double[] getArrayDouble() 
+	{
 		return dataDouble;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.IStorage#getMinDouble()
+	 */
+	public double getMinDouble() 
+	{
+
+		if (minDouble == java.lang.Double.POSITIVE_INFINITY)
+		{
+			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) refGeneralManager
+		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+			
+			createdCmd.setAttributes(this, StorageType.DOUBLE);
+			createdCmd.doCommand();
+			minDouble = createdCmd.getDMinValue();
+		}
+		return minDouble;
+	
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.IStorage#getMaxDouble()
+	 */
+	public double getMaxDouble() 
+	{
+		if (maxDouble == java.lang.Double.NEGATIVE_INFINITY)
+		{
+			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) refGeneralManager
+		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+			
+			createdCmd.setAttributes(this, StorageType.DOUBLE);
+			createdCmd.doCommand();
+			maxDouble = createdCmd.getDMaxValue();
+		}
+		return maxDouble;
+	}
+
+
+
+
+
+
+
 
 	/* (non-Javadoc)
 	 * @see org.geneview.core.data.collection.IStorage#getArray2DDouble()
@@ -756,4 +903,11 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		
 		return infoString;
 	}
+
+
+
+
+
+
+
 }

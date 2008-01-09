@@ -7,9 +7,13 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 
 //import org.geneview.core.data.view.camera.IViewCamera;
+
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.data.filter.CmdDataFilterMinMax;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.SetType;
+import org.geneview.core.data.collection.StorageType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
@@ -68,6 +72,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		while (iterSetData.hasNext())
 		{
 			ISet tmpSet = iterSetData.next();
+			// TODO: test
+			normalizeSet(tmpSet);
 			
 			if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
 			{
@@ -75,12 +81,16 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 			}
 		}
 		
-		renderCoordinateSystem(gl, alDataStorages.size(), 1);	
+		renderCoordinateSystem(gl, alDataStorages.size(), 3);	
 		
 		float[] graphData = new float[3];
 		graphData[0] = alDataStorages.get(0).getArrayFloat()[0];
 		graphData[1] = alDataStorages.get(1).getArrayFloat()[0];
 		graphData[2] = alDataStorages.get(2).getArrayFloat()[0];
+		
+		// TODO: test
+		normalize(alDataStorages.get(0));
+
 		
 		gl.glColor3f(0.0f, 1.0f, 0.0f);
 		renderGraphs(gl, graphData);
@@ -88,6 +98,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	
 	private void renderCoordinateSystem(GL gl, int numberParameters, float maxHeight)
 	{
+		
+		
 		// draw X-Axis
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
 		gl.glLineWidth(3.0f);
@@ -133,6 +145,29 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		gl.glEnd();	
 		
+	}
+	
+	private void normalize(IStorage myStorage)
+	{
+//		System.out.println(myStorage.getMaxFloat());
+//		System.out.println(myStorage.getMinFloat());
+//		System.out.println(myStorage.getMaxInt());
+//		System.out.println(myStorage.getMinInt());
+		System.out.println(myStorage.getMaxDouble());
+		System.out.println(myStorage.getMinDouble());
+
+	//	createdCmd.setAttributes(refGeneralManager.getSingelton().getStorageManager().g);
+	 // createdCmd.doCommand();
+		
+	}
+	
+	private void normalizeSet(ISet mySet)
+	{
+	
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) refGeneralManager
+	    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		
+		createdCmd.setAttributes(mySet, StorageType.INT);
 	}
 	
 

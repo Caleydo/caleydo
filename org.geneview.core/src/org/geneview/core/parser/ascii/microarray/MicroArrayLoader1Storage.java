@@ -231,6 +231,10 @@ extends AMicroArrayLoader {
 									LLFloat.add( new Float(sTokenObject) );
 									bReadValueAndDetectEmptyField = false;
 									break;
+								case DOUBLE:
+									LLDouble.add( new Double(sTokenObject) );
+									bReadValueAndDetectEmptyField = false;
+									break;
 								case STRING:	
 									LLString.add( vecBufferText.get(iStringIndex) );	
 									iStringIndex++;
@@ -302,6 +306,7 @@ extends AMicroArrayLoader {
 	    
 	    refDataStorage.setSize(StorageType.INT,1);
 	    refDataStorage.setSize(StorageType.FLOAT,1);
+	    refDataStorage.setSize(StorageType.DOUBLE,1);
 	    refDataStorage.setSize(StorageType.STRING,1);
 	    
 	    if ( LLInteger.size() > 1) {
@@ -344,6 +349,40 @@ extends AMicroArrayLoader {
 		    refImportDataOverrideSelection.setLabel("import FLOAT");
 		    refImportDataOverrideSelection.setOffset( 0 );
 		    refImportDataOverrideSelection.setLength( LLFloat.size() );
+		    
+//		    refImportDataToSet.setStorageByDimAndIndex(
+//		    		refDataStorage,0,1);
+//		    refImportDataToSet.setVirtualArrayByDimAndIndex(
+//		    		selFloat,0,1);
+		    
+		    /*
+		     * notify selection cacheId of changed data...
+		     */
+		    refImportDataOverrideSelection.setCacheId(
+		    		refImportDataOverrideSelection.getCacheId() + 1 );
+		    
+		    refImportDataToSet.setStorageByDimAndIndex(
+		    		refDataStorage,0,0);
+		    refImportDataToSet.setVirtualArrayByDimAndIndex(
+		    		refImportDataOverrideSelection,0,0);
+	    }
+	    
+	    if ( LLDouble.size() > 1) {
+		    Iterator<Double> iter_F = LLDouble.iterator();		    
+		    double[] doubleBuffer = new double[LLDouble.size()];		    
+		    for ( int i=0; iter_F.hasNext() ;i++ ) {
+		    	doubleBuffer[i]=iter_F.next().doubleValue();
+		    }
+		    refDataStorage.setArrayDouble( doubleBuffer );
+		    
+//		    IVirtualArray selFloat = 
+//		    	new VirtualArrayThreadSingleBlock(1,null,null);
+//		    selFloat.setLabel("import FLOAT");
+//		    selFloat.setLength( LLFloat.size() );
+		    
+		    refImportDataOverrideSelection.setLabel("import DOUBLE");
+		    refImportDataOverrideSelection.setOffset( 0 );
+		    refImportDataOverrideSelection.setLength( LLDouble.size() );
 		    
 //		    refImportDataToSet.setStorageByDimAndIndex(
 //		    		refDataStorage,0,1);

@@ -141,72 +141,78 @@ public final class MinMaxDataInteger {
 //	}
 	
 	
-	public boolean updateData() {
-		
+	public boolean updateData() 
+	{
 		bIsValid = false;
 		
-		  if ( refSet != null ) {
-		    	
-			  if ( refSet.getDimensions() < iDimensions ) {
-	    			System.out.println("MinMaxDataInteger.updateData()  Can not use a ISet with only one dimension!");
-	    			return false;
-			  }
+		if ( refSet != null ) 
+		{
+		   	
+		  if ( refSet.getDimensions() < iDimensions ) 
+		  {
+	    		System.out.println("MinMaxDataInteger.updateData()  Can not use a ISet with only one dimension!");
+	    		return false;
+		  }
 			  
-		    	if ( refSet.getReadToken() ) {
+		  if ( refSet.getReadToken() ) 
+		  {
 		    		
-		    		//int iDimension = refSet.getDimensions();
+		  	//int iDimension = refSet.getDimensions();
+		  		
+		  	//this.allocateMinMax( iDimension );
 		    		
-		    		//this.allocateMinMax( iDimension );
-		    		
-		    		for ( int iIndex = 0; iIndex < iDimensions; iIndex++ ) {
-		    					
-		    			IVirtualArray select = refSet.getVirtualArrayByDimAndIndex(iIndex,0);		    			
-		    			IVirtualArrayIterator iter = select.iterator();
-		    			IStorage refStorage = 
-		    				refSet.getStorageByDimAndIndex(iIndex,0);
+		  	for ( int iIndex = 0; iIndex < iDimensions; iIndex++ ) 
+		  	{		    					
+		    	IVirtualArray select = refSet.getVirtualArrayByDimAndIndex(iIndex,0);		    			
+		    	IVirtualArrayIterator iter = select.iterator();
+		    	IStorage refStorage = refSet.getStorageByDimAndIndex(iIndex,0);
 		    			
-		    			int[] i_dataValues = refStorage.getArrayInt();
+		    	int[] i_dataValues = refStorage.getArrayInt();
 		    			
-		    			if ( i_dataValues == null ) {
-		    				refSet.returnReadToken();
-		    				return false;
-		    			}
+		    	if ( i_dataValues == null ) 
+		    	{
+		    		refSet.returnReadToken();
+		    		return false;
+		    	}
 		    			
-		    			int iMin = i_dataValues[iter.next()];
-				    	int iMax = iMin;
-				    	int iSum = iMin;
+		    	int iMin = i_dataValues[iter.next()];
+				int iMax = iMin;
+				int iSum = iMin;
 				    	
-				    	int iCountAllItems = select.length();
+				int iCountAllItems = select.length();
 				    	
-				    	try {
-					    	while ( iter.hasNext() ) {	    
-					    		int iBuffer = i_dataValues[iter.next()];
+				try 
+				{
+					while ( iter.hasNext() ) 
+					{	    
+						int iBuffer = i_dataValues[iter.next()];
 					        	
-					        	if (iBuffer < iMin) { iMin = iBuffer; }
-					        	else if ( iBuffer > iMax ) {iMax = iBuffer; }
-					    		iSum += iBuffer;
-					    	} //end: while (( iterX.hasNext() )&&( iterY.hasNext() )) {
-				    	} catch (ArrayIndexOutOfBoundsException ae) {
+					    if (iBuffer < iMin) { iMin = iBuffer; }
+					    else if ( iBuffer > iMax ) {iMax = iBuffer; }
+					    iSum += iBuffer;
+					} //end: while (( iterX.hasNext() )&&( iterY.hasNext() )) {
+				} catch (ArrayIndexOutOfBoundsException ae) 
+				 	{
 				    		iCountAllItems = iCountAllItems - iter.remaining();
-				    	}
+				 	}
 				    	
-				    	fMinValue[iIndex] = iMin;
-				    	fMaxValue[iIndex] = iMax;
+				 fMinValue[iIndex] = iMin;
+				 fMaxValue[iIndex] = iMax;
 				    	
-				    	fMeanValue[iIndex] = (float) iSum / (float) iCountAllItems;
+				 fMeanValue[iIndex] = (float) iSum / (float) iCountAllItems;
 				    	
-				    	iCountItmes[iIndex] = iCountAllItems;
+				 iCountItmes[iIndex] = iCountAllItems;
 				    	
-		    		} // end: for ( int iIndex = 0; iIndex < iDimension; iIndex++ ) {
+		  	} // end: for ( int iIndex = 0; iIndex < iDimension; iIndex++ ) {
 		    					    	
 		    		
-			    	refSet.returnReadToken();
-			    	return true;
-		    	} //end: if ( refSet.getReadToken() ) {
+			refSet.returnReadToken();
+			return true;
+		  } //end: if ( refSet.getReadToken() ) {
 		    	
-		  } //end: if (refSet != null) {
+		} //end: if (refSet != null) {
 		  
-		  return false;
+		return false;
 	}
 	
 	

@@ -1,7 +1,6 @@
 package org.geneview.core.command.data.filter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.geneview.core.command.CommandQueueSaxType;
@@ -12,23 +11,39 @@ import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 
-
+/**
+ * @author Marc Streit
+ * @author Alexander Lex
+ *
+ *
+ */
 public class CmdDataFilterMath 
 extends ACmdCreate_IdTargetLabelAttr {
 
-	enum EDataFilterType {
+	public enum EDataFilterMathType {
 		LIN_2_LOG,
 		LOG_2_LIN,
+		NORMALIZE
 	}
 	
-	private ArrayList<Integer> iAlStorageId;
+//	public enum EStorageHandlingType 
+//	{
+//		OVERWRITE,
+//		COPY
+//	}
+//		
+	private ArrayList<Integer> iAlSrcStorageId;
+	private ArrayList<Integer> iAlTargetStorageId = null;
 	
-	private EDataFilterType dataFilterType;
+	private EDataFilterMathType dataFilterMathType;
 	
 	
 	/**
 	 * Constructor.
+	 * 
+	 * TODO: implemented only for float
 	 * 
 	 * @param refGeneralManager
 	 * @param refCommandManager
@@ -40,7 +55,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 
 		super(refGeneralManager, refCommandManager, refCommandQueueSaxType);
 		
-		iAlStorageId = new ArrayList<Integer>();
+		iAlSrcStorageId = new ArrayList<Integer>();
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -49,7 +64,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		super.setParameterHandler(refParameterHandler);	
 		
-		dataFilterType = EDataFilterType.valueOf(sAttribute1);
+		dataFilterMathType = EDataFilterMathType.valueOf(sAttribute1);
 		
 		/**
 		 * Fill storage IDs
@@ -59,8 +74,42 @@ extends ACmdCreate_IdTargetLabelAttr {
 					IGeneralManager.sDelimiter_Parser_DataItems); 
 
 		while ( strToken_DataTypes.hasMoreTokens() ) {
-			iAlStorageId.add(new Integer(strToken_DataTypes.nextToken()));
+			iAlSrcStorageId.add(new Integer(strToken_DataTypes.nextToken()));
 		}
+	}
+	
+	
+	/**
+	 * Writes the result of the filter specified into the targetStorages
+	 * Obviously the length of the target and the src array list has to be the same
+	 * The result of the storage at index n is written to the corresponding index n in the target array
+	 * 
+	 * @param dataFilterMathType The type of operation
+	 * @param iAlSrcStorageId The source storage ids.
+	 * @param iAlTargetStorageId The target storage ids.
+	 */
+	public void setAttributes(EDataFilterMathType dataFilterMathType, 
+			ArrayList<Integer> iAlSrcStorageId,
+			ArrayList<Integer>iAlTargetStorageId)
+	{
+		if (iAlSrcStorageId.size() != iAlTargetStorageId.size())
+		{
+			throw new GeneViewRuntimeException("Size of specified src and target storage are different", GeneViewRuntimeExceptionType.COMMAND);
+		}
+		this.iAlTargetStorageId = iAlTargetStorageId;
+		setAttributes(dataFilterMathType, iAlSrcStorageId);		
+	}
+	
+	/**
+	 * Overwrites the specified storage with the results of the operation 
+	 * 
+	 * @param dataFilterMathType The type of operation
+	 * @param iAlSrcStorageID The source storage ids. This storage is overwritten with the result.
+	 */
+	public void setAttributes(EDataFilterMathType dataFilterMathType, ArrayList<Integer> iAlSrcStorageID)
+	{
+		this.dataFilterMathType = dataFilterMathType;
+		this.iAlSrcStorageId = iAlSrcStorageID;
 	}
 	
 	/*
@@ -69,56 +118,56 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 
-		Iterator<Integer> iterStorageId = iAlStorageId.iterator();
+		//Iterator<Integer> iterStorageId = iAlSrcStorageId.iterator();
 		IStorage tmpStorage = null;
 		
-		while (iterStorageId.hasNext())
+		
+		for(int iCount = 0; iCount < iAlSrcStorageId.size(); iCount++)
+		//while (iterStorageId.hasNext())
 		{
 			tmpStorage = refGeneralManager.getSingelton().getStorageManager()
-					.getItemStorage(iterStorageId.next());
-
+					.getItemStorage(iAlSrcStorageId.get(iCount));
+		
 			if (tmpStorage == null)
-				continue;
-
-			tmpStorage.getWriteToken();
-
-			if (tmpStorage.getSize(StorageType.FLOAT) > 1)
+				continue;	
+			
+			if (dataFilterMathType.equals(EDataFilterMathType.LIN_2_LOG))
 			{
-				float[] fArTmp = tmpStorage.getArrayFloat();
-	
-				if (dataFilterType.equals(EDataFilterType.LIN_2_LOG))
+				if(iAlTargetStorageId == null)
+						tmpStorage.setArrayFloat(calculateLinToLog(tmpStorage));
+				else
 				{
-					float fTmp;
-					for(int index = 0; index < fArTmp.length; index++)
-					{
-						fTmp = fArTmp[index];
-						
-						// Shifting space so that all values are >= 1
-						fTmp += 1;
-						
-						// Clip data
-						if (fTmp <= 1)
-						{
-							fTmp = 1f;
-						}
-						else if(fTmp >= 1000)
-						{
-							fTmp = 1000f;
-						}
-						
-						fArTmp[index] = (float) Math.log10(fTmp);			
-					}					
-				}
-				else if (dataFilterType.equals(EDataFilterType.LOG_2_LIN))
-				{
-					for(int index = 0; index < fArTmp.length; index++)
-					{
-						fArTmp[index] = (float) Math.pow(10, fArTmp[index]);
-					}		
+					refGeneralManager.getSingelton().getStorageManager()
+						.getItemStorage(iAlTargetStorageId.get(iCount))
+						.setArrayFloat(calculateLinToLog(tmpStorage));
 				}
 			}
-
-			tmpStorage.returnWriteToken();
+			else if (dataFilterMathType.equals(EDataFilterMathType.LOG_2_LIN))
+			{
+				if(iAlTargetStorageId == null)
+					tmpStorage.setArrayFloat(calculateLogToLin(tmpStorage));
+				else
+				{	
+					refGeneralManager.getSingelton().getStorageManager()
+						.getItemStorage(iAlTargetStorageId.get(iCount))
+						.setArrayFloat(calculateLogToLin(tmpStorage));
+				}				
+			}
+			else if (dataFilterMathType.equals(EDataFilterMathType.NORMALIZE))
+			{
+				if(iAlTargetStorageId == null)
+					tmpStorage.setArrayFloat(normalize(tmpStorage));
+				else
+				{
+					refGeneralManager.getSingelton().getStorageManager()
+						.getItemStorage(iAlTargetStorageId.get(iCount))
+						.setArrayFloat(normalize(tmpStorage));
+				}
+				
+			}
+		
+				//tmpStorage.getWriteToken();
+				//tmpStorage.returnWriteToken();
 		}
 		
 	}
@@ -132,6 +181,91 @@ extends ACmdCreate_IdTargetLabelAttr {
 
 		// TODO Auto-generated method stub
 		
+	}
+	/**
+	 * TODO: Different data types need to be implemented. Clear way of handling the stuff is neccesary
+	 * 
+	 * @param tmpStorage
+	 * @return
+	 */
+	private float[] calculateLinToLog(IStorage tmpStorage)
+	{
+		
+		float[] fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
+
+		//float[] test = tmpStorage.getArrayInt().toArray(new float[]);
+		
+		if (tmpStorage.getSize(StorageType.FLOAT) > 1)
+		{
+			float[] fArTmpSrc = tmpStorage.getArrayFloat();
+			
+				
+			float fTmp;
+			for(int index = 0; index < fArTmpSrc.length; index++)
+			{
+				fTmp = fArTmpSrc[index];
+				
+				// Shifting space so that all values are >= 1
+				fTmp += 1;
+				
+				// Clip data
+				if (fTmp <= 1)
+				{
+					fTmp = 1f;
+				}
+				else if(fTmp >= 1000)
+				{
+					fTmp = 1000f;
+				}
+				
+				fArTmpTarget[index] = (float) Math.log10(fTmp);					
+			}			
+		}
+		return fArTmpTarget;
+	}
+	
+	private float[] calculateLogToLin(IStorage tmpStorage)
+	{
+		float[] fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
+		
+		if (tmpStorage.getSize(StorageType.FLOAT) > 1)
+		{
+			float[] fArTmpSrc = tmpStorage.getArrayFloat();
+
+		
+			for(int iCount = 0; iCount < fArTmpSrc.length; iCount++)
+			{	
+				fArTmpTarget[iCount] = (float) Math.pow(10, fArTmpSrc[iCount]);
+			}	
+		
+		}
+		
+		return fArTmpTarget;
+	}
+	
+	private float[] normalize(IStorage tmpStorage)
+	{
+		float[] fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
+		
+		if (tmpStorage.getSize(StorageType.FLOAT) > 1)
+		{
+			float[] fArTmpSrc = tmpStorage.getArrayFloat();
+			
+			for (int iCount = 0; iCount < fArTmpSrc.length; iCount++)
+			{
+				
+				//if (tmpStorage.getMinFloat() >= 0)
+				//{
+					fArTmpTarget[iCount] = (fArTmpSrc[iCount] - tmpStorage.getMinFloat()) / 
+										(tmpStorage.getMaxFloat() - tmpStorage.getMinFloat());
+				//}
+				//else
+				//{
+				//	fArTmpTarget[iCount] = (fArTmpSrc[iCount] - )
+				//}
+			}			
+		}		
+		return fArTmpTarget;		
 	}
 
 }

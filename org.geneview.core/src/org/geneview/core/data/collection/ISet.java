@@ -167,7 +167,7 @@ public interface ISet
 			final int iAtIndex );
 	
 	/**
-	 * Get an Iterator containin all IVirtualArray's used in this ISet.
+	 * Get an Iterator containig all IVirtualArray's used in this ISet.
 	 * 
 	 * @param iAtDimension requested dimension
 	 * @return iterator for IVirtualArray's
@@ -206,7 +206,7 @@ public interface ISet
 	public IVirtualArray getVirtualArrayByDimAndIndex( final int iAtDimension, final int iAtIndex );
 	
 	/**
-	 * Test if cache has changed without reevaluating the stats of the cildren.
+	 * Test if cache has changed without reevaluating the stats of the children.
 	 * 
 	 * @see org.geneview.core.data.collection.thread.ICollectionThreadObject#hasCacheChanged(int)
 	 * 

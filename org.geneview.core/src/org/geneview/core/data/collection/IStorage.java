@@ -17,7 +17,7 @@ import org.geneview.core.data.xml.IMementoNetEventXML;
 
 /**
  * @author Michael Kalkusch
- *
+ * @author Alexander Lex
  */
 public interface IStorage 
 extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
@@ -130,31 +130,60 @@ extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
 	
 	//-----------------------------------
 	
-	public int[] getArrayInt();
+	// FIXME: No setters for [][], Object and Boolean
+	
+	// Int
 	
 	public void setArrayInt( int[] set );
 	
+	public int[] getArrayInt();
+	
+	public int getMinInt();
+	
+	public int getMaxInt();
+	
+	public int[][] getArray2DInt();	
+	
+	
+    // Float
+	
 	public void setArrayFloat( float[] set );
 	
-	public void setArrayString( String[] set );
-	
-	public int[][] getArray2DInt();
-	
 	public float[] getArrayFloat();
+
+	public float getMinFloat();
+	
+	public float getMaxFloat();
 	
 	public float[][] getArray2DFloat();
 	
+	// Double
+	
+	public void setArrayDouble( double[] set );
+	
 	public double[] getArrayDouble();
+	
+	public double getMinDouble();
+	
+	public double getMaxDouble();
 	
 	public double[][] getArray2DDouble();
 	
+	// String
+	
+	public void setArrayString( String[] set );
+		
 	public String[] getArrayString();
 	
 	public String[][] getArray2DString();
 	
+	// Object
+	
 	public Object[] getArrayObject();
 	
 	public Object[][] getArray2DObject();
+	
+	// Boolean
 	
 	public boolean[] getArrayBoolean();
 

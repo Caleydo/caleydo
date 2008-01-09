@@ -56,6 +56,8 @@ implements IMementoXML, IParserObject {
 	
 	protected LinkedList<Float> LLFloat = null;
 	
+	protected LinkedList<Double> LLDouble = null;
+	
 	protected LinkedList<String> LLString = null;
 	
 	
@@ -269,6 +271,20 @@ implements IMementoXML, IParserObject {
 				iIndexPerArray[iIndexFromType]++;
 								          
 			}
+			else if (sBuffer.equalsIgnoreCase("double")) {
+				
+				int iIndexFromType = StorageType.DOUBLE.ordinal();
+				
+				ParserTokenHandler addType = 
+					new ParserTokenHandler(StorageType.DOUBLE,
+							iIndexPerArray[iIndexFromType] );	
+				
+				alTokenTargetToParserTokenType.add( addType );
+			
+				/// increment index...
+				iIndexPerArray[iIndexFromType]++;
+								          
+			}
 			else if (sBuffer.equalsIgnoreCase("string")) {				
 				
 				int iIndexFromType = StorageType.STRING.ordinal();
@@ -311,6 +327,10 @@ implements IMementoXML, IParserObject {
 		{
 			LLFloat = new LinkedList<Float>(); 
 		}
+		if ( LLDouble == null ) 
+		{
+			LLDouble = new LinkedList<Double>(); 
+		}		
 		if ( LLString == null ) 
 		{
 			LLString = new LinkedList<String>(); 
@@ -332,7 +352,11 @@ implements IMementoXML, IParserObject {
 		}
 		if ( LLFloat!= null ) 
 		{
-		LLFloat.clear();
+			LLFloat.clear();
+		}
+		if ( LLDouble!= null ) 
+		{
+			LLDouble.clear();
 		}
 		if ( LLString != null ) 
 		{
@@ -344,7 +368,8 @@ implements IMementoXML, IParserObject {
 		}
 		
 		LLInteger = null;		
-		LLFloat = null;		
+		LLFloat = null;	
+		LLDouble = null;
 		LLString = null;
 		
 		alTokenTargetToParserTokenType = null;

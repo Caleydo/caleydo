@@ -206,7 +206,7 @@ extends ACmdCreate_IdTargetLabel {
 					}
 					catch (NumberFormatException nfe) {
 						refGeneralManager.getSingelton().logMsg(
-								"Can not convert (String) to (int) at index=[" +
+								"Can not convert (String) to (float) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
 								LoggerType.ERROR );
 						refGeneralManager.getSingelton().logMsg(
@@ -231,6 +231,52 @@ extends ACmdCreate_IdTargetLabel {
 				break;
 			} // end case FLOAT
 
+			case DOUBLE:
+			{
+					
+				/**
+				 * initialize ...
+				 */
+				double [] bufferedArray = new double [iSizeArray];				
+				bParse = true;
+				iTokenIndex = 0;
+				
+				while (( tokenizer.hasMoreTokens() )&&(bParse) ) 
+				{				
+					try 
+					{
+						bufferedArray[iTokenIndex] = 
+							Double.valueOf( tokenizer.nextToken() );
+						
+						iTokenIndex++;
+					}
+					catch (NumberFormatException nfe) {
+						refGeneralManager.getSingelton().logMsg(
+								"Can not convert (String) to (double) at index=[" +
+								iTokenIndex + "]  => skip raw data:",
+								LoggerType.ERROR );
+						refGeneralManager.getSingelton().logMsg(
+								"  SKIP: " + strToParse,
+								LoggerType.ERROR );
+						
+						/** 
+						 * terminate while loop...
+						 */
+						bParse = false;
+					}
+					
+				} // end while ( tokenizer.hasMoreTokens() ) 
+					
+				/**
+				 * copy result to IStorage...
+				 */
+				newObject.setArrayDouble ( bufferedArray );
+				
+				bufferedArray = null;
+				
+				break;
+			} // end case Double
+			
 			case STRING:
 			{
 				/**
