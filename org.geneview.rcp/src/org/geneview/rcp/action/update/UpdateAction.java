@@ -1,7 +1,9 @@
 package org.geneview.rcp.action.update;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -52,13 +54,40 @@ public class UpdateAction extends Action implements IAction {
 		try {
 			String homeBase = System
 					.getProperty("org.geneview.rcp",
-							"file:/home/mstreit/projects/geneview/SVN/org.geneview.update/");
+							//"file:/home/mstreit/projects/geneview/SVN/org.geneview.update/");
+							"http://galactica.icg.tugraz.at/geneview");
+						
 			URL url = new URL(homeBase);
+			
 			scope.addSearchSite("GeneView", url, null);
+
 		} catch (MalformedURLException e) {
 			// skip bad URLs
 		}
 		result.setScope(scope);
 		return result;
+		
+//		SSLSocketFactory ssf;
+//		TrustManagerFactory tmf;
+//		KeyStore ks;
+//		FileInputStream fis;
+//		String pathKeyStore="C:
+//		client.keystore";
+//		char[] passphrase = "keystorePassword".toCharArray();
+//		fis=new FileInputStream(pathKeyStore);
+//		ks = KeyStore.getInstance("JKS");
+//		ks.load(fis, passphrase);
+//		tmf = TrustManagerFactory.getInstance("SunX509");
+//		tmf.init(ks);
+//		SSLContext ctx = SSLContext.getInstance("TLS");
+//		ctx.init(null, tmf.getTrustManagers(), null);
+//		fis.close();
+//		try {
+//		URL url = new URL("https://yourpage");
+//		com.sun.net.ssl.HttpsURLConnection connection = (com.sun.net.ssl.HttpsURLConnection) url.openConnection();
+//		ssf = ctx.getSocketFactory();
+//		connection.setSSLSocketFactory(ssf);
+//		connection.connect();
+//		System.out.println("Ok :" + connection.getURL());
 	}
 }

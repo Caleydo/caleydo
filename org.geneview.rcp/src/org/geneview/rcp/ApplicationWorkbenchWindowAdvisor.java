@@ -31,7 +31,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setInitialSize(new Point(400, 300));
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);  
-        configurer.setShowProgressIndicator(true);
+        configurer.setShowProgressIndicator(false);
         
         /**
          * Top Level Menu
@@ -67,12 +67,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 //    }
     
 	protected void fillMenuBar(IMenuManager menuBar) {
-		MenuManager hyperbolaMenu = new MenuManager(
+		MenuManager geneviewMenu = new MenuManager(
 		    "&GeneView", "geneview");
 		///hyperbolaMenu.add(exitAction);
 		MenuManager helpMenu = new MenuManager("&Help", "help");
 		//helpMenu.add(aboutAction);
-		menuBar.add(hyperbolaMenu);
+		menuBar.add(geneviewMenu);
 		menuBar.add(helpMenu);
 	}
 }

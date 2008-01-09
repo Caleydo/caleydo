@@ -99,8 +99,7 @@ public class Application implements IApplication {
 		}
 		else
 		{
-			geneview_core.setXmlFileName(
-				"data/bootstrap/rcp/bootstrap_sample_RCP.xml"); 
+			geneview_core.setXmlFileName(xmlFileName); 
 		}
 
 		Application.refGeneralManager = geneview_core.getGeneralManager();
