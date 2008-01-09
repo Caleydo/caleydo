@@ -26,6 +26,7 @@ import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.util.mapping.AGenomeMapper;
 import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
 import org.geneview.core.view.opengl.util.GLTextUtils;
@@ -52,7 +53,7 @@ public class GLPathwayManager {
 	
 	private PathwayRenderStyle refRenderStyle;
 
-	private boolean bEnableGeneMapping = true;
+	private boolean bEnableGeneMapping = false;
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableNeighborhood = false;
@@ -466,12 +467,6 @@ public class GLPathwayManager {
 		
 		Color tmpNodeColor = null;
 		
-		float fCanvasXPos = (vertexRep.getXPosition() * SCALING_FACTOR_X);
-		float fCanvasYPos =	(vertexRep.getYPosition() * SCALING_FACTOR_Y);
-		
-		float fNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
-		float fNodeHeight = vertexRep.getHeight() / 2.0f * SCALING_FACTOR_Y;
-		
 		// Create and store unique picking ID for that object
 //		if (bPickingRendering)
 //		{
@@ -481,12 +476,17 @@ public class GLPathwayManager {
 //		}
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
-		
-		gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 		// Pathway link
 		if (shape.equals(EPathwayVertexShape.roundrectangle))
-		{		
+		{	
+			float fCanvasXPos = (vertexRep.getXOrigin() * SCALING_FACTOR_X);
+			float fCanvasYPos =	(vertexRep.getYOrigin() * SCALING_FACTOR_Y);		
+			float fNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
+			float fNodeHeight = vertexRep.getHeight() / 2.0f * SCALING_FACTOR_Y;
+			
+			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
+			
 			// Handle selection highlighting of element
 			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
@@ -509,10 +509,17 @@ public class GLPathwayManager {
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
 
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
+			
+			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
 		// Compound
 		else if (shape.equals(EPathwayVertexShape.circle))
-		{			
+		{		
+			float fCanvasXPos = (vertexRep.getXOrigin() * SCALING_FACTOR_X);
+			float fCanvasYPos =	(vertexRep.getYOrigin() * SCALING_FACTOR_Y);		
+			
+			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
+			
 			// Handle selection highlighting of element
 			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
@@ -533,10 +540,19 @@ public class GLPathwayManager {
 					tmpNodeColor.getGreen() / 255.0f, 
 					tmpNodeColor.getBlue() / 255.0f, 1.0f);
 			gl.glCallList(iCompoundNodeDisplayListId);
+			
+			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}	
 		// Enzyme
-		else if (shape.equals(EPathwayVertexShape.rectangle))
+		else if (shape.equals(EPathwayVertexShape.rectangle)
+				|| shape.equals(EPathwayVertexShape.rect))
 		{	
+			float fCanvasXPos = (vertexRep.getXOrigin() * SCALING_FACTOR_X);
+			float fCanvasYPos =	(vertexRep.getYOrigin() * SCALING_FACTOR_Y);		
+			float fNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
+			
+			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
+			
 			// Handle selection highlighting of element
 			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
@@ -581,9 +597,43 @@ public class GLPathwayManager {
 				
 				gl.glCallList(iEnzymeNodeDisplayListId);
 			}
+			
+			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
+		else if (shape.equals(EPathwayVertexShape.poly)) // BIOCARTA
+		{			
+			gl.glColor4f(0,0,0,0);
+			
+			short[][] shArCoords = vertexRep.getCoords();
+			
+			gl.glBegin(GL.GL_POLYGON);			
+			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
+			{
+				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
+						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
+			}			
+			gl.glEnd();
 		
-		gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
+			// Handle selection highlighting of element
+			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			{
+				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
+						tmpNodeColor.getGreen() / 255.0f, 
+						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+			}
+			else
+				gl.glColor4f(1, 1, 0, 1);
+
+			
+			gl.glBegin(GL.GL_LINE_STRIP);			
+			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
+			{
+				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
+						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
+			}			
+			gl.glEnd();
+		}
 	}
 	
 	private void createEdge(final GL gl, 
@@ -643,11 +693,11 @@ public class GLPathwayManager {
 			{
 				tmpTargetGraphItem = (PathwayVertexGraphItemRep)iterTargetGraphItem.next();
 				
-				gl.glVertex3f(tmpSourceGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
-						-tmpSourceGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
+				gl.glVertex3f(tmpSourceGraphItem.getXOrigin() * SCALING_FACTOR_X + fReactionLineOffset,
+						-tmpSourceGraphItem.getYOrigin() * SCALING_FACTOR_Y + fReactionLineOffset,
 						0.02f);
-				gl.glVertex3f(tmpTargetGraphItem.getXPosition() * SCALING_FACTOR_X + fReactionLineOffset,
-						-tmpTargetGraphItem.getYPosition() * SCALING_FACTOR_Y + fReactionLineOffset,
+				gl.glVertex3f(tmpTargetGraphItem.getXOrigin() * SCALING_FACTOR_X + fReactionLineOffset,
+						-tmpTargetGraphItem.getYOrigin() * SCALING_FACTOR_Y + fReactionLineOffset,
 						0.02f);		
 			}
 		}
@@ -680,6 +730,10 @@ public class GLPathwayManager {
 	    PathwayVertexGraphItemRep vertexRep;
 		PathwayGraph tmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(iPathwayID);
+		
+		// Don't annotate BioCarta pathways - because of good texture annotation
+		if (tmpPathway.getType().equals(EPathwayDatabaseType.BIOCARTA))
+			return;
         
 	    Iterator<IGraphItem> vertexRepIterator = tmpPathway.getAllItemsByKind(
 				EGraphItemKind.NODE).iterator();
@@ -692,8 +746,8 @@ public class GLPathwayManager {
         	{
         		float fNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
         		float fNodeHeight = vertexRep.getHeight() / 2.0f * SCALING_FACTOR_Y;
-        		float fCanvasXPos = (vertexRep.getXPosition() * SCALING_FACTOR_X);
-        		float fCanvasYPos =	(vertexRep.getYPosition() * SCALING_FACTOR_Y);
+        		float fCanvasXPos = (vertexRep.getXOrigin() * SCALING_FACTOR_X);
+        		float fCanvasYPos =	(vertexRep.getYOrigin() * SCALING_FACTOR_Y);
  
         		gl.glTranslated(fCanvasXPos - fNodeWidth + 0.01f, -fCanvasYPos - 0.01f, 0);
         		gl.glColor3f(0, 0 , 0);

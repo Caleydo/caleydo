@@ -16,6 +16,7 @@ import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
  * 
  * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
  * 
+ * @author Marc Streit
  * @author Michael Kalkusch
  *
  */

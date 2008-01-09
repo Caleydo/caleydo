@@ -220,4 +220,12 @@ implements ISetSelection {
 			e.printStackTrace();
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.data.collection.set.SetPlanarSimple#toString()
+	 */
+	public String toString() {
+		return sLabel;
+	}
 }

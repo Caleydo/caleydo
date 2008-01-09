@@ -24,8 +24,6 @@ public class GLDragAndDrop {
 	
 	private boolean bDragActionRunning = false;
 	
-	private Texture dragThumbnailTexture;
-	
 	private float[] fArCurrentMousePos;
 	
 	private GLPathwayTextureManager pathwayTextureManager;
@@ -43,12 +41,10 @@ public class GLDragAndDrop {
 		return iDragObjectId;
 	}
 	
-	public void startDragAction(final int iDragObjectId,
-			final Texture dragThumbnailTexture) {
+	public void startDragAction(final int iDragObjectId) {
 		
 		bDragActionRunning = true;
 		this.iDragObjectId = iDragObjectId;
-		this.dragThumbnailTexture = dragThumbnailTexture;
 	}
 	
 	public void stopDragAction() {
@@ -62,14 +58,9 @@ public class GLDragAndDrop {
 		return bDragActionRunning;
 	}
 	
-	public void setDragThumbnailTexture(final Texture dragThumbnailTexture) {
-		
-		this.dragThumbnailTexture = dragThumbnailTexture;
-	}
-	
 	public Texture getDragThumbnailTexture() {
 		
-		return dragThumbnailTexture;
+		return pathwayTextureManager.getTextureByPathwayId(iDragObjectId);
 	}
 	
 	public void setCurrentMousePos(final GL gl,

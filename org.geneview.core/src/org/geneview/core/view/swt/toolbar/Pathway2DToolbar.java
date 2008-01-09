@@ -13,10 +13,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
-
-//import com.sun.opengl.util.texture.TextureIO;
-
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.view.swt.pathway.APathwayGraphViewRep;
 
 public class Pathway2DToolbar 
@@ -408,8 +406,9 @@ extends AToolbar {
 	        	  refPathwayGraphViewRep.setPathwayLevel(1);
 	        	  
 	        	  refPathwayGraphViewRep.loadImageMapFromFile(
-	        			  refGeneralManager.getSingelton().getPathwayManager().
-	        			  	getPathwayImageMapPath() + "map01100.xml");
+	        			  refGeneralManager.getSingelton().getPathwayManager()
+	        			  		.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).
+	        			  				getImageMapPath() + "map01100.xml");
 	          }
 	        }
 	      };

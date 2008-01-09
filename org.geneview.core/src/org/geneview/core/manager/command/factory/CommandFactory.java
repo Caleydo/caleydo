@@ -60,7 +60,7 @@ import org.geneview.core.command.system.CmdSystemExit;
 import org.geneview.core.command.system.CmdSystemLoadFileViaImporter;
 import org.geneview.core.command.system.CmdSystemLoadFileNStorages;
 import org.geneview.core.command.system.CmdSystemLoadFileLookupTable;
-import org.geneview.core.command.system.path.CmdSetPathwayPaths;
+import org.geneview.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
@@ -634,7 +634,7 @@ public class CommandFactory
 		case  SET_SYSTEM_PATH_PATHWAYS:
 		{
 			createdCommand =
-				new CmdSetPathwayPaths(
+				new CmdSetPathwayDatabasePath(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);

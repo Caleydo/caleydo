@@ -11,6 +11,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
 
+import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 import org.geneview.core.view.opengl.canvas.pathway.JukeboxHierarchyLayer;
@@ -29,10 +30,9 @@ import gleem.linalg.open.Transform;
 public class GLPathwayMemoPad {
 
 	private static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
-	
-	public static final int MEMO_PAD_PICKING_ID = 301;
-	
-	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 302;
+	public static final int MEMO_PAD_PICKING_ID = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS + 1;
+	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS + 2;
+	private static float SCALING_FACTOR_MEMO_PAD = 0.3f;
 	
 	private JukeboxHierarchyLayer memoPad;
 	
@@ -48,7 +48,8 @@ public class GLPathwayMemoPad {
 			final GLPathwayManager refGLPathwayManager,
 			final GLPathwayTextureManager refGLPathwayTextureManager) {
 		
-		memoPad = new JukeboxHierarchyLayer(4);
+		memoPad = new JukeboxHierarchyLayer(4, 
+				SCALING_FACTOR_MEMO_PAD, refGLPathwayTextureManager);
 		
 		this.refGLPathwayManager = refGLPathwayManager;
 		this.refGLPathwayTextureManager = refGLPathwayTextureManager;
@@ -63,8 +64,11 @@ public class GLPathwayMemoPad {
 		{
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(fMemoPos, 2.2f, 0.1f));
-			transform.setScale(new Vec3f(0.3f, 0.3f, 0.3f));
+			transform.setTranslation(new Vec3f(fMemoPos, -2f, 0.1f));
+			transform.setScale(new Vec3f(
+					SCALING_FACTOR_MEMO_PAD,
+					SCALING_FACTOR_MEMO_PAD,
+					SCALING_FACTOR_MEMO_PAD));
 			memoPad.setTransformByPositionIndex(iMemoIndex,
 					transform);			
 
@@ -189,13 +193,13 @@ public class GLPathwayMemoPad {
 		
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(3.4f, 2.4f, 0.5f);
+		gl.glVertex3f(3.4f, -2.1f, 0.5f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(3.9f, 2.4f, 0.5f);
+		gl.glVertex3f(3.9f, -2.1f, 0.5f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(3.9f, 2.9f, 0.5f);
+		gl.glVertex3f(3.9f, -1.6f, 0.5f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(3.4f, 2.9f, 0.5f);
+		gl.glVertex3f(3.4f, -1.6f, 0.5f);
 		gl.glEnd();
 
 		trashCanTexture.disable();

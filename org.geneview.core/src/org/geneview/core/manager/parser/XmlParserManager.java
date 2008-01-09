@@ -19,6 +19,7 @@ import org.geneview.core.manager.ILoggerManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.geneview.core.parser.xml.sax.handler.command.CommandSaxHandler;
+import org.geneview.core.parser.xml.sax.handler.kegg.BioCartaPathwayImageMapSaxHandler;
 import org.geneview.core.parser.xml.sax.handler.kegg.KgmlSaxHandler;
 import org.geneview.core.parser.xml.sax.handler.kegg.PathwayImageMapSaxHandler;
 import org.geneview.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
@@ -35,6 +36,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * @see org.geneview.core.manager.IXmlParserManager
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class XmlParserManager 
@@ -86,12 +88,16 @@ extends AXmlParserManager {
 		PathwayImageMapSaxHandler pathwayImageMapParser =
 			new PathwayImageMapSaxHandler ( generalManager, this );
 		
+		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser =
+			new BioCartaPathwayImageMapSaxHandler ( generalManager, this);
+		
 		CommandSaxHandler cmdHandler = 
 			new CommandSaxHandler( generalManager, this );
 		
 		registerAndInitSaxHandler( externalFileHandler );		
 		registerAndInitSaxHandler( kgmlParser );
 		registerAndInitSaxHandler( pathwayImageMapParser );
+		registerAndInitSaxHandler( biocartaPathwayParser );
 		registerAndInitSaxHandler( cmdHandler );
 		
 		//openCurrentTag( cmdHandler );

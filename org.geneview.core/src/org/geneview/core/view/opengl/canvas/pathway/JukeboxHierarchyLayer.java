@@ -1,14 +1,19 @@
 package org.geneview.core.view.opengl.canvas.pathway;
 
+import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.sun.opengl.util.texture.Texture;
+
 
 public class JukeboxHierarchyLayer {
 	
 	private HashMap<Integer, Transform> hashElementPositionIndexToTransform;
+	
+	private GLPathwayTextureManager pathwayTextureManager;
 	
 	/**
 	 * Index in list determines position in stack
@@ -24,13 +29,19 @@ public class JukeboxHierarchyLayer {
 	
 	private int iCapacity = 0;
 	
-	public JukeboxHierarchyLayer(int iCapacity) {
+	private float fScalingFactor = 0;
+	
+	public JukeboxHierarchyLayer(final int iCapacity, 
+			final float fScalingFactor,
+			final GLPathwayTextureManager pathwayTextureManager) {
 		
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
 		llElementId = new LinkedList<Integer>();
 		llElementIdImportanceQueue = new LinkedList<Integer>();
 		llElementIdVisibleState = new LinkedList<Boolean>();
 		this.iCapacity = iCapacity;
+		this.fScalingFactor = fScalingFactor;
+		this.pathwayTextureManager = pathwayTextureManager;
 	}
 	
 	public void setParentLayer(final JukeboxHierarchyLayer parentLayer) {
@@ -85,7 +96,13 @@ public class JukeboxHierarchyLayer {
 
 			llElementIdVisibleState.set(iReplacePosition, false);
 			
-			return llElementId.set(iReplacePosition, iElementId);			
+			llElementId.set(iReplacePosition, iElementId);
+			
+			if (iCapacity < 5)
+				calculatePathwayScaling(iElementId);
+			
+			return iLeastImportantElementId;
+			//return llElementId.set(iReplacePosition, iElementId);			
 		}
 		else
 		{
@@ -93,6 +110,9 @@ public class JukeboxHierarchyLayer {
 			llElementId.addLast(iElementId);
 			llElementIdVisibleState.addLast(false);
 			llElementIdImportanceQueue.addFirst(iElementId);
+		
+			if (iCapacity < 5)
+				calculatePathwayScaling(iElementId);
 			
 			return 0;
 		}
@@ -190,5 +210,40 @@ public class JukeboxHierarchyLayer {
 	public final int getCapacity() {
 		
 		return iCapacity;
+	}
+	
+	public final float getScalingFactor() {
+		
+		return fScalingFactor;
+	}
+	
+	private void calculatePathwayScaling(final int iPathwayId) {
+		
+		Texture pathwayTexture = pathwayTextureManager.getTextureByPathwayId(iPathwayId);
+		
+		int iImageHeight = pathwayTexture.getImageHeight();
+		int iImageWidth = pathwayTexture.getImageWidth();
+		float fTmpScalingFactor = 1;
+		if (iImageHeight > 600 && iImageHeight > iImageWidth)
+		{
+			fTmpScalingFactor = 600f / iImageHeight;
+			fTmpScalingFactor *= getScalingFactor();
+			
+			getTransformByElementId(iPathwayId)
+				.setScale(new Vec3f(fTmpScalingFactor, fTmpScalingFactor, 1f));
+		}
+		else if (iImageWidth > 750)
+		{
+			fTmpScalingFactor = 750f / iImageWidth;
+			fTmpScalingFactor *= getScalingFactor();
+			
+			getTransformByElementId(iPathwayId)
+				.setScale(new Vec3f(fTmpScalingFactor, fTmpScalingFactor, 1f));
+		}
+		else
+		{
+			getTransformByElementId(iPathwayId)
+				.setScale(new Vec3f(fScalingFactor, fScalingFactor, fScalingFactor));
+		}
 	}
 }

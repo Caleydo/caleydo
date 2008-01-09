@@ -55,6 +55,7 @@ import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IViewGLCanvasManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.swt.pathway.APathwayGraphViewRep;
@@ -275,8 +276,8 @@ extends APathwayGraphViewRep {
 
 					// Append file path
 					sLink = refGeneralManager.getSingelton()
-							.getPathwayManager().getPathwayImageMapPath()
-							+ sLink;
+								.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
+									.getImageMapPath() + sLink;
 
 					iPathwayLevel++;
 					if (iPathwayLevel >= 3)
@@ -487,8 +488,8 @@ extends APathwayGraphViewRep {
 		if (shape.equals(EPathwayVertexShape.roundrectangle))
 		{
 			vertexRect = new Rectangle2D.Double(
-						(int) ((vertexRep.getXPosition() - (vertexRep.getWidth() / 2)) * fScalingFactor),
-						(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getXOrigin() - (vertexRep.getWidth() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getYOrigin() - (vertexRep.getHeight() / 2)) * fScalingFactor),
 						vertexRep.getWidth(), vertexRep.getHeight());
 			
 			// Set vertex type to round rect
@@ -500,8 +501,8 @@ extends APathwayGraphViewRep {
 		else if (shape.equals(EPathwayVertexShape.circle))
 		{
 			vertexRect = new Rectangle2D.Double(
-						(int) ((vertexRep.getXPosition() - (vertexRep.getWidth() / 2)) * fScalingFactor),
-						(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getXOrigin() - (vertexRep.getWidth() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getYOrigin() - (vertexRep.getHeight() / 2)) * fScalingFactor),
 						vertexRep.getWidth(), vertexRep.getHeight());
 			
 			// Set vertex type to ellipse
@@ -518,13 +519,18 @@ extends APathwayGraphViewRep {
 		else if (shape.equals(EPathwayVertexShape.rectangle))
 		{
 			vertexRect = new Rectangle2D.Double(
-						(int) ((vertexRep.getXPosition() - (vertexRep.getWidth() / 2)) * fScalingFactor),
-						(int) ((vertexRep.getYPosition() - (vertexRep.getHeight() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getXOrigin() - (vertexRep.getWidth() / 2)) * fScalingFactor),
+						(int) ((vertexRep.getYOrigin() - (vertexRep.getHeight() / 2)) * fScalingFactor),
 						refRenderStyle.getEnzymeNodeWidth(false), refRenderStyle.getEnzymeNodeHeight(false));
 			
 			GraphConstants.setBackground(changedMap, refRenderStyle.getEnzymeNodeColor(false));
 		}
-
+		else
+		{
+			// unhandled shape -> SKIP
+			return;
+		}
+		
 		GraphConstants.setBounds(changedMap, vertexRect);
 
 		// Some global attributes
@@ -708,8 +714,8 @@ extends APathwayGraphViewRep {
 				.getPathwayManager().getCurrentPathwayImageMap();
 
 		loadBackgroundOverlayImage(refGeneralManager.getSingelton()
-				.getPathwayManager().getPathwayImageMapPath()
-				+ refCurrentPathwayImageMap.getImageLink());
+				.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
+						.getImageMapPath() + refCurrentPathwayImageMap.getImageLink());
 
 		refPathwayGraph.repaint();
 	}
@@ -945,8 +951,8 @@ extends APathwayGraphViewRep {
 			String sPathwayImageFilePath = refCurrentPathway.getName();
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
 			sPathwayImageFilePath = refGeneralManager.getSingelton()
-					.getPathwayManager().getPathwayImagePath()
-					+ sPathwayImageFilePath + ".gif";
+					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
+							.getImagePath() + sPathwayImageFilePath + ".gif";
 
 			refGeneralManager.getSingelton().logMsg(
 					"Load background pathway from file: "

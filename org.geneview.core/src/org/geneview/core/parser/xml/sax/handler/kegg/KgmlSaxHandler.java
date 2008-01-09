@@ -15,9 +15,20 @@ import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IXmlParserManager;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.geneview.core.parser.xml.sax.handler.IXmlParserHandler;
 
+/**
+ * 
+ * XML Parser that is able to load KEGG pathway files.
+ * The KEGG XML files follow the KGML.
+ * The class triggers the calls in the PathwayManager that
+ * actually creates the pathway graph and the items + item reps.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class KgmlSaxHandler 
 extends AXmlParserHandler 
 implements IXmlParserHandler {
@@ -159,8 +170,11 @@ implements IXmlParserHandler {
     		}			
    		}
 		
+		if (sTitle.isEmpty())
+			sTitle =  "unknown title";
+		
 		currentPathway = refGeneralManager.getSingelton().getPathwayManager().
-			createPathway(iKeggId, sName, sTitle, sImageLink, sExternalLink);
+			createPathway(EPathwayDatabaseType.KEGG, iKeggId, sName, sTitle, sImageLink, sExternalLink);
     }
     
 	/**
@@ -246,10 +260,10 @@ implements IXmlParserHandler {
     	
 		String sName = "";
 		String sShapeType = "";
-		int iHeight = 0;
-		int iWidth = 0;
-		int iXPosition = 0;
-		int iYPosition = 0;
+		short shHeight = 0;
+		short shWidth = 0;
+		short shXPosition = 0;
+		short shYPosition = 0;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -266,19 +280,19 @@ implements IXmlParserHandler {
 			}
    			else if (sAttributeName.equals("height"))
    			{
-   				iHeight = new Integer(attributes.getValue(iAttributeIndex)); 
+   				shHeight = new Short(attributes.getValue(iAttributeIndex)); 
    			}
    			else if (sAttributeName.equals("width"))
    			{
-   				iWidth = new Integer(attributes.getValue(iAttributeIndex)); 
+   				shWidth = new Short(attributes.getValue(iAttributeIndex)); 
    			}
     		else if (sAttributeName.equals("x"))
     		{
-    			iXPosition = new Integer(attributes.getValue(iAttributeIndex)); 
+    			shXPosition = new Short(attributes.getValue(iAttributeIndex)); 
     		}
    			else if (sAttributeName.equals("y"))
    			{
-   				iYPosition = new Integer(attributes.getValue(iAttributeIndex)); 
+   				shYPosition = new Short(attributes.getValue(iAttributeIndex)); 
    			}
    			else if (sAttributeName.equals("type"))
    			{
@@ -292,11 +306,10 @@ implements IXmlParserHandler {
 				alCurrentVertex, 
 				sName, 
 				sShapeType, 
-				iHeight, 
-				iWidth, 
-				iXPosition, 
-				iYPosition);
-    	
+				shXPosition, 
+				shYPosition, 
+				shWidth, 
+				shHeight);
     	hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
     	hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getName(), vertexRep);
     	hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getReactionId(), vertexRep);

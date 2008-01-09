@@ -29,6 +29,7 @@ import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IGenomeIdManager;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.EventPublisher;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
@@ -720,9 +721,9 @@ implements IMediatorReceiver, IMediatorSender {
 //				LoggerType.VERBOSE);
 		
 		fCanvasXPos = viewingFrame[X][MIN] + 
-			(vertexRep.getXPosition() * SCALING_FACTOR_X);
+			(vertexRep.getXOrigin() * SCALING_FACTOR_X);
 		fCanvasYPos = viewingFrame[Y][MIN] + 
-			(vertexRep.getYPosition() * SCALING_FACTOR_Y);
+			(vertexRep.getYOrigin() * SCALING_FACTOR_Y);
 		
 		fZLayerValue = refHashPathwayToZLayerValue.get(refContainingPathway);
 		
@@ -1227,9 +1228,9 @@ implements IMediatorReceiver, IMediatorSender {
 				fZLayerValue1 = 0.0f;
 				
 				fCanvasXPos1 = viewingFrame[X][MIN] + 
-					refVertexRep1.getXPosition() * SCALING_FACTOR_X;
+					refVertexRep1.getXOrigin() * SCALING_FACTOR_X;
 				fCanvasYPos1 = viewingFrame[Y][MIN] + 
-					refVertexRep1.getYPosition() * SCALING_FACTOR_Y;
+					refVertexRep1.getYOrigin() * SCALING_FACTOR_Y;
 			}
 			
 			if(refTmpPathway.containsItem(refVertexRep2.getPathwayVertexGraphItem()) == true)
@@ -1238,9 +1239,9 @@ implements IMediatorReceiver, IMediatorSender {
 				fZLayerValue2 = 0.0f;
 				
 				fCanvasXPos2 = viewingFrame[X][MIN] + 
-					refVertexRep2.getXPosition() * SCALING_FACTOR_X;
+					refVertexRep2.getXOrigin() * SCALING_FACTOR_X;
 				fCanvasYPos2 = viewingFrame[Y][MIN] + 
-					refVertexRep2.getYPosition() * SCALING_FACTOR_Y;
+					refVertexRep2.getYOrigin() * SCALING_FACTOR_Y;
 			}
 		}
 		
@@ -1390,7 +1391,8 @@ implements IMediatorReceiver, IMediatorSender {
 		int iFillFrontwithZero = AGLCanvasPathway3D.iPathwayName_FormatLength_LeadingZeros 
 			- bufferValue.length();		
 		
-		StringBuffer zerobuffer = new StringBuffer(refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath());
+		StringBuffer zerobuffer = new StringBuffer(refGeneralManager.getSingelton()
+				.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getImagePath());
 		zerobuffer.append(sPathwayName_prefix);
 		/** create leading "0"s .. */
 		for( int i=0; i< iFillFrontwithZero; i++) {

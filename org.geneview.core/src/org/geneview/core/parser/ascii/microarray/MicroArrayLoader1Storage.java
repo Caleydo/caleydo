@@ -236,7 +236,8 @@ extends AMicroArrayLoader {
 									bReadValueAndDetectEmptyField = false;
 									break;
 								case STRING:	
-									LLString.add( vecBufferText.get(iStringIndex) );	
+									//LLString.add( vecBufferText.get(iStringIndex) );	
+									LLString.add( new String(sTokenObject) );
 									iStringIndex++;
 									bReadValueAndDetectEmptyField = false;
 									break;
@@ -425,7 +426,7 @@ extends AMicroArrayLoader {
 	    /*
 	     * update cacheId of set by calling getCacheId() ...
 	     */
-	    refImportDataToSet.getCacheId();
+	    //refImportDataToSet.getCacheId();
 	    
 		return true;
 	}

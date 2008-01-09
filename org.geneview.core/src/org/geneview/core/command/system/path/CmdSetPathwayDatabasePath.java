@@ -13,6 +13,7 @@ import org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.data.IPathwayManager;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
@@ -21,19 +22,18 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * 
  * @author Marc Streit
  */
-public class CmdSetPathwayPaths 
+public class CmdSetPathwayDatabasePath 
 extends ACmdCreate_IdTargetLabelAttrDetail {
 	
-	private String sPathwayXMLPath = "";
-	
-	private String sPathwayImagePath = "";
-	
-	private String sPathwayImageMapPath = "";
+	private EPathwayDatabaseType type;
+	private String sXMLPath = "";
+	private String sImagePath = "";
+	private String sImageMapPath = "";
 	
 	/**
 	 * Constructor.
 	 */
-	public CmdSetPathwayPaths( final IGeneralManager refGeneralManager,
+	public CmdSetPathwayDatabasePath( final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType) {
 		
@@ -56,10 +56,8 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		IPathwayManager pathwayManager = 
 			refGeneralManager.getSingelton().getPathwayManager();
 		
-		pathwayManager.setPathwayXMLPath(sPathwayXMLPath);
-		pathwayManager.setPathwayImagePath(sPathwayImagePath);
-		pathwayManager.setPathwayImageMapPath(sPathwayImageMapPath);
-		
+		pathwayManager.createPathwayDatabase(type, sXMLPath, sImagePath, sImageMapPath);
+
 		refCommandManager.runDoCommand(this);
 	}
 	
@@ -82,9 +80,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		super.setParameterHandler(refParameterHandler);
 		
-		sPathwayXMLPath = this.sAttribute1;
-		sPathwayImagePath = this.sAttribute2;
-		sPathwayImageMapPath = this.sAttribute3;
+		type = EPathwayDatabaseType.valueOf(this.sDetail);
+		
+		sXMLPath = this.sAttribute1;
+		sImagePath = this.sAttribute2;
+		sImageMapPath = this.sAttribute3;
 	}
 	
 	/**
@@ -92,12 +92,14 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 * This method is needed when the command is triggered 
 	 * inside the system during runtime.
 	 */
-	public void setAttributes(String sPathwayXMLPath,
-			String sPathwayImagePath,
-			String sPathwayImageMapPath) {
+	public void setAttributes(final EPathwayDatabaseType type,
+			final String sPathwayXMLPath,
+			final String sPathwayImagePath,
+			final String sPathwayImageMapPath) {
 		
-		this.sPathwayXMLPath = sPathwayXMLPath;
-		this.sPathwayImagePath = sPathwayImagePath;
-		this.sPathwayImageMapPath = sPathwayImageMapPath;			
+		this.type = type;
+		this.sXMLPath = sPathwayXMLPath;
+		this.sImagePath = sPathwayImagePath;
+		this.sImageMapPath = sPathwayImageMapPath;			
 	}
 }

@@ -6,8 +6,10 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 
+import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -53,28 +55,20 @@ public class GLPathwayTextureManager {
 		hashPathwayIdToPathwayTexturePickingId_REVERSE.put(iPathwayTexturePickingId, iPathwayId);
 		iPathwayTexturePickingId++;
 		
-		String sPathwayTexturePath = "";
 		Texture refPathwayTexture = null;
+
+		String sPathwayTexturePath = ((PathwayGraph)refGeneralManager.getSingelton()
+				.getPathwayManager().getItem(iPathwayId)).getImageLink();
+
+		sPathwayTexturePath = sPathwayTexturePath.substring(
+				sPathwayTexturePath.lastIndexOf('/') + 1, 
+				sPathwayTexturePath.length());
 		
-		if (iPathwayId < 10)
-		{
-			sPathwayTexturePath = "hsa0000" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 100 && iPathwayId >= 10)
-		{
-			sPathwayTexturePath = "hsa000" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 1000 && iPathwayId >= 100)
-		{
-			sPathwayTexturePath = "hsa00" + Integer.toString(iPathwayId);
-		}
-		else if (iPathwayId < 10000 && iPathwayId >= 1000)
-		{
-			sPathwayTexturePath = "hsa0" + Integer.toString(iPathwayId);
-		}
+		EPathwayDatabaseType type = ((PathwayGraph)refGeneralManager.getSingelton()
+				.getPathwayManager().getItem(iPathwayId)).getType();
 		
-		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager().getPathwayImagePath()
-			+ sPathwayTexturePath +".gif";	
+		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager()
+				.getPathwayDatabaseByType(type).getImagePath() + sPathwayTexturePath;	
 		
 		try
 		{			
@@ -164,8 +158,19 @@ public class GLPathwayTextureManager {
 		gl.glEnd();
 	}
 	
+	/**
+	 * Method supports lazy loading of pathway textures
+	 * if they are not present at that time.
+	 * 
+	 * @param iPathwayId
+	 * @return Pathway texture
+	 */
 	public Texture getTextureByPathwayId(final int iPathwayId) {
 		
+		if (hashPathwayIdToTexture.containsKey(iPathwayId))
+			return hashPathwayIdToTexture.get(iPathwayId);
+		
+		loadPathwayTextureById(iPathwayId);
 		return hashPathwayIdToTexture.get(iPathwayId);
 	}
 	

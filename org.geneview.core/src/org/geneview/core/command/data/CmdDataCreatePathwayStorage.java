@@ -14,6 +14,7 @@ import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IStorageManager;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
 
@@ -87,8 +88,8 @@ extends ACmdCreate_IdTargetLabel {
 			}
 			
 			sPathwayFilePath = refGeneralManager.getSingelton()
-					.getPathwayManager().getPathwayXMLPath()
-					+ sPathwayFilePath + ".xml";			
+					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getXMLPath()
+							+ sPathwayFilePath + ".xml";			
 			
 			refGeneralManager.getSingelton().
 				getXmlParserManager().parseXmlFileByName(sPathwayFilePath);

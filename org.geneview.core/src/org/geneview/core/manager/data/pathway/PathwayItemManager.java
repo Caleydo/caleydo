@@ -3,13 +3,6 @@ package org.geneview.core.manager.data.pathway;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
 
 import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
 import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
@@ -24,7 +17,10 @@ import org.geneview.core.manager.data.IPathwayItemManager;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
 import org.geneview.core.util.system.StringConversionTool;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 
 /**
  * The element manager is in charge for handling the items. Items are
@@ -46,7 +42,7 @@ implements IPathwayItemManager {
 	private boolean bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = true;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 */
 	public PathwayItemManager(final IGeneralManager refGeneralManager) {
@@ -117,15 +113,15 @@ implements IPathwayItemManager {
 			final ArrayList<IGraphItem> alVertexGraphItem,
 			final String sName, 
 			final String sShapeType, 
-			final int iHeight, 
-			final int iWidth,
-			final int iXPosition, 
-			final int iYPosition) {
+			final short shHeight, 
+			final short shWidth,
+			final short shXPosition, 
+			final short shYPosition) {
 		
 		int iGeneratedId = createId(ManagerObjectType.PATHWAY_VERTEX_REP);
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(
-				iGeneratedId, sName, sShapeType, iHeight, iWidth,
-				iXPosition, iYPosition);
+				iGeneratedId, sName, sShapeType, shHeight, shWidth,
+				shXPosition, shYPosition);
 		
 		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertexRep);
 		
@@ -146,6 +142,33 @@ implements IPathwayItemManager {
 			pathwayVertex.addItem(pathwayVertexRep, 
 				EGraphItemProperty.ALIAS_CHILD);
 		}
+		return pathwayVertexRep;
+	}
+	
+	public IGraphItem createVertexRep(
+			final IGraph parentPathway,
+			final IGraphItem parentVertex,
+			final String sName, 
+			final String sShapeType, 
+			final String sCoords) {
+	
+		int iGeneratedId = createId(ManagerObjectType.PATHWAY_VERTEX_REP);
+		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(
+				iGeneratedId, sName, sShapeType, sCoords);
+		
+		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertexRep);
+		
+		parentPathway.addItem(pathwayVertexRep);
+		
+		pathwayVertexRep.addGraph(parentPathway, 
+				EGraphItemHierarchy.GRAPH_PARENT);
+			
+		pathwayVertexRep.addItem(parentVertex, 
+				EGraphItemProperty.ALIAS_PARENT);
+				
+		parentVertex.addItem(pathwayVertexRep, 
+				EGraphItemProperty.ALIAS_CHILD);
+
 		return pathwayVertexRep;
 	}
 	

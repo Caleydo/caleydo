@@ -18,15 +18,9 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
-
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.StorageType;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.collection.set.selection.SetSelection;
 import org.geneview.core.data.graph.core.PathwayGraph;
@@ -37,6 +31,7 @@ import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IPathwayItemManager;
+import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.util.slerp.SlerpAction;
@@ -50,9 +45,12 @@ import org.geneview.core.view.opengl.util.GLDragAndDrop;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.GLPathwayMemoPad;
 import org.geneview.core.view.opengl.util.GLTextUtils;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 
 import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.texture.Texture;
 
 /**
  * Jukebox setup that supports slerp animation.
@@ -64,10 +62,13 @@ public class GLCanvasJukeboxPathway3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 
-	public static final int MAX_LOADED_PATHWAYS = 300;
-	public static final int PATHWAY_TEXTURE_PICKING_ID_RANGE_START = 320;
-	public static final int FREE_PICKING_ID_RANGE_START = 600;
+	public static final int MAX_LOADED_PATHWAYS = 600;
+	public static final int PATHWAY_TEXTURE_PICKING_ID_RANGE_START = 620;
+	public static final int FREE_PICKING_ID_RANGE_START = 1200;
 	public static final String TICK_SOUND = "resources/sounds/tick.wav";
+	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 2.3f;
+	private static final float SCALING_FACTOR_LAYERED_LAYER = 1f;
+	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 
 	private float fTextureTransparency = 1.0f;
 	private float fLastMouseMovedTimeStamp = 0;
@@ -121,6 +122,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private GLDragAndDrop dragAndDrop;
 	
 	private Time time;
+	
+	private int iLazyPathwayLoadingId = -1;
 
 	/**
 	 * Constructor
@@ -145,9 +148,13 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		// Create Jukebox hierarchy
-		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(1);
-		pathwayLayeredLayer = new JukeboxHierarchyLayer(4);
-		pathwayPoolLayer = new JukeboxHierarchyLayer(200);
+		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(1, 
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
+				refGLPathwayTextureManager);
+		pathwayLayeredLayer = new JukeboxHierarchyLayer(4, 
+				SCALING_FACTOR_LAYERED_LAYER, refGLPathwayTextureManager);
+		pathwayPoolLayer = new JukeboxHierarchyLayer(MAX_LOADED_PATHWAYS, 
+				SCALING_FACTOR_POOL_LAYER, refGLPathwayTextureManager);
 		pathwayUnderInteractionLayer.setParentLayer(pathwayLayeredLayer);
 		pathwayLayeredLayer.setChildLayer(pathwayUnderInteractionLayer);
 		pathwayLayeredLayer.setParentLayer(pathwayPoolLayer);
@@ -155,8 +162,10 @@ implements IMediatorReceiver, IMediatorSender {
 
 		Transform transformPathwayUnderInteraction = new Transform();
 		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.7f, -1.4f, 0f));
-		transformPathwayUnderInteraction.setScale(new Vec3f(1.8f, 1.8f, 1.8f));
-		//transformPathwayUnderInteraction.setRotation(new Rotf(new Vec3f(0,0,1), Vec3f.convertGrad2Radiant(30)));
+		transformPathwayUnderInteraction.setScale(new Vec3f(
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER));
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 
@@ -227,6 +236,12 @@ implements IMediatorReceiver, IMediatorSender {
 
 //		if (bRebuildVisiblePathwayDisplayLists)
 //			rebuildVisiblePathwayDisplayLists(gl);
+		
+		if (iLazyPathwayLoadingId != -1)
+		{
+			loadPathwayToUnderInteractionPosition(iLazyPathwayLoadingId);
+			iLazyPathwayLoadingId = -1;
+		}
 		
 		handlePicking(gl);
 		
@@ -311,7 +326,9 @@ implements IMediatorReceiver, IMediatorSender {
 			// Store current model-view matrix
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-2.7f, fLayerYPos, 0f));
-			transform.setScale(new Vec3f(0.7f, 0.7f, 0.7f));
+			transform.setScale(new Vec3f(SCALING_FACTOR_LAYERED_LAYER,
+					SCALING_FACTOR_LAYERED_LAYER,
+					SCALING_FACTOR_LAYERED_LAYER));
 			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
 			pathwayLayeredLayer.setTransformByPositionIndex(iLayerIndex,
 					transform);
@@ -324,7 +341,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		int iMaxLines = 200;
+		int iMaxLines = MAX_LOADED_PATHWAYS;
 
 		// Create free pathway spots
 		Transform transform;
@@ -334,28 +351,26 @@ implements IMediatorReceiver, IMediatorSender {
 			transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad));
 			// transform.setTranslation(new Vec3f(-4.0f, -iLineIndex *
 			// fLineHeight, 10));
-			transform.setScale(new Vec3f(1f,1f,1f));
+			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
+					SCALING_FACTOR_POOL_LAYER,
+					SCALING_FACTOR_POOL_LAYER));
 			pathwayPoolLayer.setTransformByPositionIndex(iLineIndex, transform);
 		}
+		
+		// Load KEGG pathways
+		refGeneralManager.getSingelton().getPathwayManager()
+			.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
 
-		// Load pathway storage
-		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		int[] iArPathwayIDs = tmpStorage.getArrayInt();
-		int iPathwayId = 0;
-		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage
-				.getSize(StorageType.INT); iPathwayIndex++)
+		// Load BioCarta pathways
+		refGeneralManager.getSingelton().getPathwayManager()
+			.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
+		
+		Iterator<IGraph> iterPathwayGraphs = refGeneralManager.getSingelton()
+			.getPathwayManager().getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
+
+		while(iterPathwayGraphs.hasNext())
 		{
-			iPathwayId = iArPathwayIDs[iPathwayIndex];
-
-			// Load pathway
-			boolean bLoadingOK = refGeneralManager.getSingelton()
-					.getPathwayManager().loadPathwayById(iPathwayId);
-
-			if (!bLoadingOK)
-				return;
-
-			pathwayPoolLayer.addElement(iPathwayId);
+			pathwayPoolLayer.addElement((iterPathwayGraphs.next()).getId());
 		}
 	}
 
@@ -380,31 +395,8 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			// Check if pathway is visible
 			if(!pathwayLayeredLayer.getElementVisibilityById(iPathwayId))
-				return;
-			
-			Texture pathwayTexture = refGLPathwayTextureManager
-				.getTextureByPathwayId(iPathwayId);
-			
-			int iImageHeight = pathwayTexture.getImageHeight();
-			int iImageWidth = pathwayTexture.getImageWidth();
-			if (iImageHeight > 500)
-			{
-				float iScalingFactor = 450f / iImageHeight;
-				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
-					.setScale(new Vec3f(iScalingFactor, iScalingFactor, 1f));
-			}
-			else if (iImageWidth > 700)
-			{
-				float iScalingFactor = 620f / iImageWidth;
-				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
-					.setScale(new Vec3f(iScalingFactor, iScalingFactor, 1f));				
-			}
-			else
-			{
-				pathwayLayeredLayer.getTransformByElementId(iPathwayId)
-					.setScale(new Vec3f(0.7f, 0.7f, 1f));
-			}
-			
+				continue;
+						
 			renderPathwayById(gl, iPathwayId, pathwayLayeredLayer);			
 		}
 	}
@@ -435,24 +427,6 @@ implements IMediatorReceiver, IMediatorSender {
 
 //		drawAxis(gl);
 		
-		float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
-				iPathwayId).getImageHeight()* GLPathwayManager.SCALING_FACTOR_Y;
-
-		// Pathway texture height is subtracted from Y to align pathways to
-		// front level
-		gl.glTranslatef(0, tmp, 0);
-		
-		if (layer.equals(pathwayLayeredLayer))
-		{
-			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
-		}
-		else
-		{
-			refGLPathwayManager.renderPathway(gl, iPathwayId, true);
-		}
-		
-		gl.glTranslatef(0, -tmp, 0);
-
 		if (bEnablePathwayTextures)
 		{
 			if (!layer.getElementList().isEmpty()
@@ -467,6 +441,24 @@ implements IMediatorReceiver, IMediatorSender {
 						fTextureTransparency, false);
 			}
 		}
+		
+		float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
+				iPathwayId).getImageHeight()* GLPathwayManager.SCALING_FACTOR_Y;
+		
+		// Pathway texture height is subtracted from Y to align pathways to
+		// front level
+		gl.glTranslatef(0, tmp, 0);
+		
+		if (layer.equals(pathwayLayeredLayer))
+		{
+			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+		}
+		else
+		{
+			refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+		}
+		
+		gl.glTranslatef(0, -tmp, 0);
 		
 		gl.glPopMatrix();
 		
@@ -513,22 +505,18 @@ implements IMediatorReceiver, IMediatorSender {
 
 		// Initialize magnification factors with 0 (minimized)
 		ArrayList<Integer> alMagnificationFactor = new ArrayList<Integer>();
-		for (int i = 0; i < alSetData.get(0).getStorageByDimAndIndex(0, 0)
-				.getSize(StorageType.INT); i++)
+
+		for (int iPathwayIndex = 0; iPathwayIndex < MAX_LOADED_PATHWAYS; iPathwayIndex++)
 		{
 			alMagnificationFactor.add(0);
 		}
 
 		// Load pathway storage
-		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		int[] iArPathwayIDs = tmpStorage.getArrayInt();
 		int iPathwayId = 0;
-		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage
-				.getSize(StorageType.INT); iPathwayIndex++)
+		for (int iPathwayIndex = 0; iPathwayIndex < pathwayPoolLayer.getElementList().size(); iPathwayIndex++)
 		{
-			iPathwayId = iArPathwayIDs[iPathwayIndex];
-
+			iPathwayId = pathwayPoolLayer.getElementIdByPositionIndex(iPathwayIndex);
+		
 			if (iMouseOverPickedPathwayId == iPathwayId)
 			{
 				if ((iPathwayIndex - 2 >= 0)
@@ -569,22 +557,22 @@ implements IMediatorReceiver, IMediatorSender {
 
 		recalculatePathwayPoolTransformation(alMagnificationFactor);
 
-		String sRenderText;
+		String sRenderText = "";
 		float fYPos = 0;
 		float fZPos = 8;
 
-		for (int iPathwayIndex = 0; iPathwayIndex < tmpStorage
-				.getSize(StorageType.INT); iPathwayIndex++)
-		{
+		for (int iPathwayIndex = 0; iPathwayIndex < pathwayPoolLayer.getElementList().size(); iPathwayIndex++)
+		{		
 			gl.glPushMatrix();
 
-			iPathwayId = iArPathwayIDs[iPathwayIndex];
+			iPathwayId = pathwayPoolLayer.getElementIdByPositionIndex(iPathwayIndex);
 
 			gl.glLoadName(iPathwayIndex + 1);
 
 			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex + 1))
-				refHashPoolLinePickId2PathwayId.put(iPathwayIndex + 1,
-						iPathwayId);
+			{
+				refHashPoolLinePickId2PathwayId.put(iPathwayIndex + 1, iPathwayId);
+			}
 
 			Transform transform = pathwayPoolLayer
 					.getTransformByElementId(iPathwayId);
@@ -592,13 +580,15 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glTranslatef(translation.x(), translation.y(), translation.z()
 					+ fZPos);
 
-			sRenderText = ((PathwayGraph) refGeneralManager.getSingelton()
-					.getPathwayManager().getItem(iPathwayId)).getTitle();
-
 			// Append identical vertex count to pathway title
-			if (refHashPathwayContainingSelectedVertex2VertexCount
-					.containsKey(iPathwayId))
+			if (alMagnificationFactor.get(iPathwayIndex) != 0)
 			{
+				sRenderText = ((PathwayGraph) refGeneralManager.getSingelton()
+						.getPathwayManager().getItem(iPathwayId)).getTitle();
+			}
+			
+			if (refHashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
+			{	
 				sRenderText = sRenderText
 						+ " - "
 						+ refHashPathwayContainingSelectedVertex2VertexCount
@@ -654,11 +644,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 		Transform transform;
 		float fPathwayPoolHeight = -2.0f;
-		// Load pathway storage
-		// Assumes that the set consists of only one storage
-		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		for (int iLineIndex = 0; iLineIndex < tmpStorage
-				.getSize(StorageType.INT); iLineIndex++)
+		
+		for (int iLineIndex = 0; iLineIndex < pathwayPoolLayer.getElementList().size(); iLineIndex++)
 		{
 			transform = pathwayPoolLayer
 					.getTransformByPositionIndex(iLineIndex);
@@ -674,11 +661,10 @@ implements IMediatorReceiver, IMediatorSender {
 				fPathwayPoolHeight += 0.07;
 			} else if (alMagnificationFactor.get(iLineIndex) == 0)
 			{
-				fPathwayPoolHeight += 0.02;
+				fPathwayPoolHeight += 0.01;
 			}
 
 			transform.setTranslation(new Vec3f(-4.0f, -fPathwayPoolHeight, -6));
-			//transform.setTranslation(new Vec3f(1,1,1));
 		}
 	}
 	
@@ -775,7 +761,8 @@ implements IMediatorReceiver, IMediatorSender {
 		int[] iArOptional = refSetSelection.getOptionalDataArray();
 		if (iArOptional.length != 0)
 		{
-			loadPathwayToUnderInteractionPosition(refSetSelection.getOptionalDataArray()[0]);
+			iLazyPathwayLoadingId = 
+				refSetSelection.getOptionalDataArray()[0];
 		}
 		
 		int[] iArSelectionId = refSetSelection.getSelectionIdArray();
@@ -823,6 +810,12 @@ implements IMediatorReceiver, IMediatorSender {
 
 		int iPathwayId = slerpAction.getElementId();
 		SlerpMod slerpMod = new SlerpMod();
+		
+		if (slerpAction.getDestinationHierarchyLayer().equals(pathwayLayeredLayer))
+		{	
+			refGLPathwayTextureManager.loadPathwayTextureById(iPathwayId);
+		}
+		
 		Transform transform = slerpMod.interpolate(slerpAction
 				.getOriginHierarchyLayer().getTransformByPositionIndex(
 						slerpAction.getOriginPosIndex()), slerpAction
@@ -831,6 +824,7 @@ implements IMediatorReceiver, IMediatorSender {
 				(int)iSlerpFactor / 1000f);
 
 		gl.glPushMatrix();
+		
 		slerpMod.applySlerp(gl, transform);
 		
 		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
@@ -1053,8 +1047,7 @@ implements IMediatorReceiver, IMediatorSender {
 			else
 			{
 				dragAndDrop.startDragAction(
-						refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId),
-						refGLPathwayTextureManager.getTextureByPathwayId(iPickedObjectId));
+						refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedObjectId));
 			}
 			
 			return;
@@ -1146,10 +1139,12 @@ implements IMediatorReceiver, IMediatorSender {
 
 			return;
 		}
-		else if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
-				EPathwayVertexType.enzyme) 
-				|| pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
-				EPathwayVertexType.gene))
+		else if (pickedVertexRep.getPathwayVertexGraphItem().getType()
+				.equals(EPathwayVertexType.enzyme) 
+			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
+				.equals(EPathwayVertexType.gene)
+			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
+			.equals(EPathwayVertexType.other)) // FIXME: just for testing BioCarta integration
 		{
 			selectedVertex = pickedVertexRep;
 			bSelectionChanged = true;
@@ -1170,7 +1165,10 @@ implements IMediatorReceiver, IMediatorSender {
 		// Check if pathway is already under interaction
 		if (pathwayUnderInteractionLayer.containsElement(iPathwayId))
 			return;
-
+		
+		loadNodeInformationInBrowser(((PathwayGraph)refGeneralManager
+				.getSingelton().getPathwayManager().getItem(iPathwayId)).getExternalLink());
+		
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < 1000)
 			return;
@@ -1492,13 +1490,13 @@ implements IMediatorReceiver, IMediatorSender {
 							((PathwayGraph)tmpVertexGraphItemRepDest.getAllGraphByType(
 									EGraphItemHierarchy.GRAPH_PARENT).get(0)).getKeggId())
 						{		
-							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
 									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdSrc)
-										.getImageHeight()-tmpVertexGraphItemRepSrc.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
+										.getImageHeight()-tmpVertexGraphItemRepSrc.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 							
-							vecMatDest.set(tmpVertexGraphItemRepDest.getXPosition() * GLPathwayManager.SCALING_FACTOR_X,
+							vecMatDest.set(tmpVertexGraphItemRepDest.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
 									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest)
-									 	.getImageHeight()-tmpVertexGraphItemRepDest.getYPosition()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
+									 	.getImageHeight()-tmpVertexGraphItemRepDest.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 	
 							rotSrc.toMatrix(matSrc);
 							rotDest.toMatrix(matDest);

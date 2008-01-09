@@ -1,13 +1,12 @@
 package org.geneview.core.manager.data.pathway;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.geneview.util.graph.core.Graph;
-
-import org.geneview.core.application.mapping.PathwayListBuilder;
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.view.rep.pathway.jgraph.PathwayImageMap;
 import org.geneview.core.manager.IGeneralManager;
@@ -16,6 +15,8 @@ import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.data.IPathwayManager;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.core.Graph;
 
 /**
  * The pathway manager is in charge for 
@@ -33,11 +34,7 @@ implements IPathwayManager {
 	
 	private HashMap<String, Integer> hashPathwayTitleToPathwayIdLUT;
 	
-	private String sPathwayXMLPath;	
-	
-	private String sPathwayImagePath;
-	
-	private String sPathwayImageMapPath;
+	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
 	
 	/**
 	 * Root pathway contains all nodes that are loaded into the system.
@@ -51,8 +48,7 @@ implements IPathwayManager {
 	 * can be loaded. The image map defines the clickable
 	 * regions on that pathway image.
 	 */
-	protected PathwayImageMap refCurrentPathwayImageMap;
-
+	private PathwayImageMap refCurrentPathwayImageMap;
 	
 	/**
 	 * Constructor
@@ -65,8 +61,20 @@ implements IPathwayManager {
 		
 		hashPathwayIdToPathwayGraphLUT = new HashMap<Integer, PathwayGraph>();
 		hashPathwayTitleToPathwayIdLUT = new HashMap<String, Integer>();
+		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
 		
 		rootPathwayGraph = new Graph(0);
+	}
+	
+	public void createPathwayDatabase(final EPathwayDatabaseType type,
+			final String sXMLPath, 
+			final String sImagePath,
+			final String sImageMapPath) {
+		
+		PathwayDatabase tmpPathwayDatabase = new PathwayDatabase(type,
+				sXMLPath, sImagePath, sImagePath);
+		
+		hashPathwayDatabase.put(type, tmpPathwayDatabase);
 	}
 	
 	/*
@@ -74,18 +82,25 @@ implements IPathwayManager {
 	 * @see org.geneview.core.manager.data.IPathwayManagerNew#createPathway(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
 	public PathwayGraph createPathway(
+			final EPathwayDatabaseType type,
 			final int iKEGGId,
 			final String sName,
 			final String sTitle, 
 			final String sImageLink, 
 			final String sExternalLink) {
 
+		// TODO: handle this case appropriately
+		if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
+			return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
+		
 		PathwayGraph pathway = new PathwayGraph(
-				iKEGGId, sName, sTitle, sImageLink, sExternalLink);
+				type, iKEGGId, sName, sTitle, sImageLink, sExternalLink);
 
 		hashPathwayIdToPathwayGraphLUT.put(iKEGGId, pathway);
 		hashPathwayTitleToPathwayIdLUT.put(sTitle, iKEGGId);
 		
+		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
+	
 		return pathway;
 	}
 	
@@ -126,7 +141,7 @@ implements IPathwayManager {
 			sPathwayFilePath = "hsa0" + Integer.toString(iPathwayID);
 		}
 		
-		sPathwayFilePath = sPathwayXMLPath + sPathwayFilePath +".xml";		
+		sPathwayFilePath = hashPathwayDatabase.get(EPathwayDatabaseType.KEGG).getXMLPath() + sPathwayFilePath +".xml";		
 		
 		bLoadingOK = refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 
@@ -143,6 +158,29 @@ implements IPathwayManager {
 		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
 		
 		return refGeneralManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.manager.data.IPathwayManager#loadAllPathwaysByType(org.geneview.core.manager.data.pathway.EPathwayDatabaseType)
+	 */
+	public void loadAllPathwaysByType(final EPathwayDatabaseType type) {
+		
+	    File folder = new File(hashPathwayDatabase.get(type).getXMLPath());
+	    File[] arFiles = folder.listFiles();
+
+	    for (int iFileIndex = 0; iFileIndex < arFiles.length; iFileIndex++) 
+	    {		
+	    	// Skip subversion files
+	    	String sPathwayFilePath = arFiles[iFileIndex].toString();
+	    	
+	    	if (!sPathwayFilePath.endsWith(".xml") 
+	    			&& !sPathwayFilePath.contains("h_"))
+	    		continue;
+	    	
+			refGeneralManager.getSingelton().getXmlParserManager()
+				.parseXmlFileByName(sPathwayFilePath);
+	    }
 	}
 	
 	/*
@@ -178,67 +216,7 @@ implements IPathwayManager {
 		
 		return rootPathwayGraph;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#getPathwayXMLPath()
-	 */
-	public String getPathwayXMLPath() {
 		
-		assert !sPathwayXMLPath.isEmpty() : "Pathway XML path is not set!";
-		
-		return sPathwayXMLPath;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayXMLPath(java.lang.String)
-	 */
-	public void setPathwayXMLPath(final String sPathwayXMLPath) {
-
-		this.sPathwayXMLPath = sPathwayXMLPath;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#getPathwayImagePath()
-	 */
-	public final String getPathwayImagePath() {
-
-		assert !sPathwayImagePath.isEmpty() : "Pathway image path is not set!";
-		
-		return sPathwayImagePath;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayImagePath(java.lang.String)
-	 */
-	public void setPathwayImagePath(final String sPathwayImagePath) {
-		
-		this.sPathwayImagePath = sPathwayImagePath;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#getPathwayImageMapPath()
-	 */
-	public final String getPathwayImageMapPath() {
-		
-		assert !sPathwayImageMapPath.isEmpty() : "Pathway image map path is not set!";
-		
-		return sPathwayImageMapPath;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayImageMapPath(java.lang.String)
-	 */
-	public void setPathwayImageMapPath(final String sPathwayImageMapPath) {
-		
-		this.sPathwayImageMapPath = sPathwayImageMapPath;
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.manager.data.IPathwayManager#createPathwayImageMap(java.lang.String)
@@ -246,6 +224,11 @@ implements IPathwayManager {
 	public void createPathwayImageMap(final String sImageLink) {
 		
 		refCurrentPathwayImageMap = new PathwayImageMap(sImageLink);
+	}
+	
+	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
+		
+		return hashPathwayDatabase.get(type);
 	}
 	
 	/*

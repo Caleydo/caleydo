@@ -15,6 +15,8 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import org.ccil.cowan.tagsoup.HTMLSchema;
+import org.ccil.cowan.tagsoup.Parser;
 import org.geneview.core.manager.ILoggerManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.parser.xml.sax.handler.IXmlBaseHandler;
@@ -126,15 +128,33 @@ public class GeneViewInputStream
 		
 		try 
 		{			
-			XMLReader reader = XMLReaderFactory.createXMLReader();
+			XMLReader reader = null;
+			
+			if (sInputStreamLabel.contains("."))
+			{
+				reader = XMLReaderFactory.createXMLReader();
 
-			// Entity resolver avoids the XML Reader 
-			// to check external DTDs. 
-			reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
+				// Entity resolver avoids the XML Reader 
+				// to check external DTDs. 
+				reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
 					false);
-			reader.setEntityResolver(handler);
-			reader.setContentHandler(handler);
-
+				
+				reader.setEntityResolver(handler);
+				reader.setContentHandler(handler);
+			}
+			else
+			{
+				reader =
+					XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+				//reader.setFeature(org.ccil.cowan.tagsoup.Parser.defaultAttributesFeature, false);
+			
+				reader.setEntityResolver(handler);
+				reader.setContentHandler(handler);
+				
+				HTMLSchema htmlSchema = new HTMLSchema();
+				reader.setProperty(Parser.schemaProperty, htmlSchema);
+			}
+			
 			try 
 			{						
 				reader.parse( inStream );

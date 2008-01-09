@@ -337,9 +337,9 @@ extends AGLCanvasPathway3D {
 				fZLayerValue1 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				
 				fCanvasXPos1 = viewingFrame[X][MIN] + 
-					refVertexRep1.getXPosition() * SCALING_FACTOR_X;
+					refVertexRep1.getXOrigin() * SCALING_FACTOR_X;
 				fCanvasYPos1 = viewingFrame[Y][MIN] + 
-					refVertexRep1.getYPosition() * SCALING_FACTOR_Y;
+					refVertexRep1.getYOrigin() * SCALING_FACTOR_Y;
 			}
 			
 			if(refTmpPathway.containsItem(refVertexRep2.getPathwayVertexGraphItem()) == true)
@@ -347,9 +347,9 @@ extends AGLCanvasPathway3D {
 				fZLayerValue2 = refHashPathwayToZLayerValue.get(refTmpPathway);
 				
 				fCanvasXPos2 = viewingFrame[X][MIN] + 
-					refVertexRep2.getXPosition() * SCALING_FACTOR_X;
+					refVertexRep2.getXOrigin() * SCALING_FACTOR_X;
 				fCanvasYPos2 = viewingFrame[Y][MIN] + 
-					refVertexRep2.getYPosition() * SCALING_FACTOR_Y;
+					refVertexRep2.getYOrigin() * SCALING_FACTOR_Y;
 			}
 		}
 		

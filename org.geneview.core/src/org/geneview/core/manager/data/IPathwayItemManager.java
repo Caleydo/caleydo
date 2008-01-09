@@ -22,10 +22,17 @@ extends IGeneralManager {
 			final ArrayList<IGraphItem> alVertexGraphItem,
 			final String sName, 
 			final String sShapeType, 
-			final int iHeight, 
-			final int iWidth,
-			final int iXPosition, 
-			final int iYPosition);
+			final short shHeight, 
+			final short shWidth,
+			final short shXPosition, 
+			final short shYPosition);
+	
+	public IGraphItem createVertexRep(
+			final IGraph parentPathway,
+			final IGraphItem parentVertex,
+			final String sName, 
+			final String sShapeType, 
+			final String sCoords);
 	
 	public IGraphItem createRelationEdge(
 			final IGraphItem graphItemIn, 
