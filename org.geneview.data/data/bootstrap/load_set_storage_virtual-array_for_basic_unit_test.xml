@@ -35,11 +35,11 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/pathway/KEGG_pathway_ID_2_pathway_name.txt"	
 			attrib1="INT;SKIP;ABORT" 								attrib2="44101" attrib3="0 -1" />			
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/artificial_slide_CHI.gpr"	
-			attrib1="SKIP;DOUBLE;ABORT" 				attrib2="35101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/artificial_slide_CHI.gpr"	
-			attrib1="FLOAT;ABORT" 					attrib2="36101"	attrib3="1 -1" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/artificial_slide_CHI.gpr"	
-			attrib1="SKIP;SKIP;FLOAT;ABORT"			attrib2="37101" attrib3="1 -1" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/artificial_slide_simple.gpr"	
+			attrib1="INT;ABORT" 				attrib2="35101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/artificial_slide_simple.gpr"	
+			attrib1="SKIP;FLOAT;ABORT" 					attrib2="36101"	attrib3="1 -1" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/artificial_slide_simple.gpr"	
+			attrib1="SKIP;SKIP;DOUBLE;ABORT"			attrib2="37101" attrib3="1 -1" />								
 
 </details>
