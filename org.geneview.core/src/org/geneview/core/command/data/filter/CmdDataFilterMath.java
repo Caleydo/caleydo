@@ -90,7 +90,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 */
 	public void setAttributes(EDataFilterMathType dataFilterMathType, 
 			ArrayList<Integer> iAlSrcStorageId,
-			ArrayList<Integer>iAlTargetStorageId)
+			ArrayList<Integer> iAlTargetStorageId)
 	{
 		if (iAlSrcStorageId.size() != iAlTargetStorageId.size())
 		{
@@ -156,18 +156,23 @@ extends ACmdCreate_IdTargetLabelAttr {
 			else if (dataFilterMathType.equals(EDataFilterMathType.NORMALIZE))
 			{
 				if(iAlTargetStorageId == null)
+				{
+					tmpStorage.getWriteToken();
 					tmpStorage.setArrayFloat(normalize(tmpStorage));
+					tmpStorage.returnWriteToken();
+				}
 				else
 				{
-					refGeneralManager.getSingelton().getStorageManager()
-						.getItemStorage(iAlTargetStorageId.get(iCount))
-						.setArrayFloat(normalize(tmpStorage));
+					IStorage targetStorage = refGeneralManager.getSingelton().getStorageManager()
+						.getItemStorage(iAlTargetStorageId.get(iCount));
+						
+						targetStorage.getWriteToken();					
+						targetStorage.setArrayFloat(normalize(tmpStorage));
+						targetStorage.returnWriteToken();
 				}
 				
 			}
 		
-				//tmpStorage.getWriteToken();
-				//tmpStorage.returnWriteToken();
 		}
 		
 	}
@@ -205,18 +210,20 @@ extends ACmdCreate_IdTargetLabelAttr {
 			{
 				fTmp = fArTmpSrc[index];
 				
+				//TODO: what about negative values
+				//TODO: what about values between 0 and 1
 				// Shifting space so that all values are >= 1
 				fTmp += 1;
 				
-				// Clip data
-				if (fTmp <= 1)
-				{
-					fTmp = 1f;
-				}
-				else if(fTmp >= 1000)
-				{
-					fTmp = 1000f;
-				}
+				// Clip data why?
+//				if (fTmp <= 1)
+//				{
+//					fTmp = 1f;
+//				}
+//				else if(fTmp >= 1000)
+//				{
+//					fTmp = 1000f;
+//				}
 				
 				fArTmpTarget[index] = (float) Math.log10(fTmp);					
 			}			
@@ -243,6 +250,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		return fArTmpTarget;
 	}
 	
+	//TODO: Normalize to values other than 0-1
 	private float[] normalize(IStorage tmpStorage)
 	{
 		float[] fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
