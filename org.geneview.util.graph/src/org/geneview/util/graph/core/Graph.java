@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.GraphRuntimeException;
 import org.geneview.util.graph.IGraph;
 import org.geneview.util.graph.IGraphItem;
@@ -187,4 +188,10 @@ public class Graph extends AGraph {
 		return items.getAllGraphComponent(kind);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.geneview.util.graph.IGraphItemHierarchy#getAllGraphByType(org.geneview.util.graph.EGraphItemHierarchy)
+	 */
+	public List<IGraph> getAllGraphByType(EGraphItemHierarchy type) {
+		return graphs.getAllGraphComponent(type);	
+	}
 }
