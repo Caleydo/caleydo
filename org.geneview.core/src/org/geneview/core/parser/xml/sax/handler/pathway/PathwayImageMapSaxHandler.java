@@ -1,4 +1,4 @@
-package org.geneview.core.parser.xml.sax.handler.kegg;
+package org.geneview.core.parser.xml.sax.handler.pathway;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;

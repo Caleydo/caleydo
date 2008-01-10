@@ -1,4 +1,4 @@
-package org.geneview.core.parser.xml.sax.handler.kegg;
+package org.geneview.core.parser.xml.sax.handler.pathway;
 
 import java.util.ArrayList;
 import java.util.HashMap;
