@@ -1,4 +1,4 @@
-package org.geneview.rcp.action.search;
+package org.geneview.rcp.util.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,50 +1,20 @@
 package org.geneview.rcp.views;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.action.ControlContribution;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.geneview.rcp.Application;
-import org.geneview.rcp.action.search.SearchBox;
-import org.geneview.rcp.views.AGLViewPart;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.IGraph;
-
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
 import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
 import org.geneview.core.command.view.rcp.EExternalActionType;
 import org.geneview.core.command.view.rcp.EExternalFlagSetterType;
-import org.geneview.core.data.graph.core.PathwayGraph;
+import org.geneview.rcp.Application;
+import org.geneview.rcp.util.search.SearchBar;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view
@@ -144,96 +114,10 @@ public class GLJukeboxPathwayView extends AGLViewPart {
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		
-		
-		IContributionItem comboCI = new ControlContribution("Quick search") {
+		IContributionItem searchBar = 
+			new SearchBar("Quick search");
 
-			private SearchBox searchBox;
-
-			protected Control createControl(Composite parent) {
-
-				Composite composite = new Composite(parent, SWT.NONE);
-				RowLayout rowLayout = new RowLayout();
-				rowLayout.fill = true;
-				rowLayout.justify = true;
-				// rowLayout.pack = false;
-				rowLayout.type = SWT.VERTICAL;
-				// rowLayout.wrap = false;
-				composite.setLayout(rowLayout);
-				
-				Composite searchInputComposite = new Composite(composite,
-						SWT.NONE);
-				searchInputComposite.setLayout(new GridLayout(2, true));
-
-				Label searchInputLabel = new Label(searchInputComposite,
-						SWT.NULL);
-				searchInputLabel.setText("Quick search:");
-
-				searchBox = new SearchBox(searchInputComposite, SWT.NONE);
-				
-				String items[] = { "No pathways available!" };
-				searchBox.setItems(items);
-				
-				searchBox.addFocusListener(new FocusAdapter() {
-			        public void focusGained(FocusEvent e) {
-						
-						List<IGraph> lLoadedGraphs = Application.geneview_core
-						.getGeneralManager().getSingelton()
-							.getPathwayManager().getRootPathway()
-								.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
-			
-						String[] sArSearchItems = new String[lLoadedGraphs.size()];
-						PathwayGraph tmpPathwayGraph;
-						for (int iGraphIndex = 0; iGraphIndex < lLoadedGraphs.size(); iGraphIndex++) 
-						{
-							tmpPathwayGraph = ((PathwayGraph)lLoadedGraphs.get(iGraphIndex));
-							
-							sArSearchItems[iGraphIndex] = tmpPathwayGraph.toString() 
-								+ " (" + tmpPathwayGraph.getType().toString() +")";
-						}
-		
-						searchBox.setItems(sArSearchItems);
-						searchBox.removeFocusListener(this);
-					}
-				});
-				
-//				searchBox.addKeyListener(new KeyAdapter() {
-//			        public void keyPressed(KeyEvent event) {
-//			          switch (event.keyCode) {
-//			          case SWT.CR:
-//			          {
-//					    	 String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
-//					    	 sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
-//					    	 
-//					    	 boolean bFound = Application.geneview_core.getGeneralManager()
-//								.getSingelton().getViewGLCanvasManager()
-//									.getDataEntitySearcher().searchForEntity(sSearchEntity);
-//		
-//			          }
-//			          case SWT.ESC:
-//			            System.out.println(SWT.ESC);
-//			            break;
-//			          }
-//			        }
-//			      });
-				
-				searchBox.addSelectionListener(new SelectionAdapter() {
-				     public void widgetSelected(SelectionEvent e) {
-				    	 
-				    	 String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
-				    	 sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
-				    	 
-				    	 boolean bFound = Application.geneview_core.getGeneralManager()
-							.getSingelton().getViewGLCanvasManager()
-								.getDataEntitySearcher().searchForEntity(sSearchEntity);
-				     }
-				});
-				
-				composite.pack();
-				return composite;
-			}
-		};
-		
-		manager.add(comboCI);
+		manager.add(searchBar);
 		
 		manager.add(actToggleAnimatorRunningState);
 		manager.add(actEnableGeneMapping);
@@ -242,82 +126,6 @@ public class GLJukeboxPathwayView extends AGLViewPart {
 		manager.add(actEnableIdenticalNodeHighlighting);
 		manager.add(actEnableAnnotation);
 		manager.add(actClearAllPathways);
-
-//		IContributionItem comboCI = new ControlContribution("Quick search") {
-//
-//			private Text searchText;
-//
-//			private Label resultLabel;
-//
-//			protected Control createControl(Composite parent) {
-//
-//				Composite composite = new Composite(parent, SWT.NONE);
-//				RowLayout rowLayout = new RowLayout();
-//				// rowLayout.fill = true;
-//				// rowLayout.justify = true;
-//				// rowLayout.pack = false;
-//				rowLayout.type = SWT.VERTICAL;
-//				// rowLayout.wrap = false;
-//				composite.setLayout(rowLayout);
-//
-//				Composite searchInputComposite = new Composite(composite,
-//						SWT.NONE);
-//				searchInputComposite.setLayout(new GridLayout(2, true));
-//				resultLabel = new Label(composite, SWT.CENTER);
-//				Label searchInputLabel = new Label(searchInputComposite,
-//						SWT.NULL);
-//				searchInputLabel.setText("Quick search:");
-//
-//				searchText = new Text(searchInputComposite, SWT.SEARCH | SWT.CANCEL);
-//				searchText.setLayoutData(new GridData(GridData.FILL_BOTH));
-//				searchText.addKeyListener(new KeyAdapter() {
-//					public void keyPressed(KeyEvent event) 
-//					{
-//						switch (event.keyCode) 
-//						{
-//							case SWT.CR:
-//							{	
-//								boolean bFound = Application.geneview_core.getGeneralManager()
-//									.getSingelton().getViewGLCanvasManager()
-//										.getDataEntitySearcher().searchForEntity(
-//												searchText.getText());
-//			
-//								if (!bFound) {
-//									resultLabel.setText(" NOT FOUND! Try again...");
-//									resultLabel.setForeground(resultLabel.getDisplay()
-//											.getSystemColor(SWT.COLOR_RED));
-//									resultLabel.pack();
-//								}
-//								else
-//								{
-//									resultLabel.setText("");
-//									resultLabel.pack();
-//								}
-//							}
-//						}
-//					}
-//				});
-//
-////				searchText.addSelectionListener(new SelectionAdapter() 
-////				{
-////					public void widgetDefaultSelected(SelectionEvent e) 
-////					{
-////						if (e.detail == SWT.CANCEL) 
-////						{
-////							resultLabel.setText(" NOT FOUND! Try again...");
-////							resultLabel.setForeground(resultLabel.getDisplay()
-////									.getSystemColor(SWT.COLOR_RED));
-////						}
-////					}
-////				});
-//				
-//				composite.pack();
-//
-//				return composite;
-//			}
-//		};
-
-
 	}
 
 	private void createAnimatorToggleAction() {
