@@ -77,6 +77,15 @@
 		   		attrib1="NCBI_GENEID_2_GENE_SHORT_NAME REVERSE LUT" 
 		   		attrib2=";" 
 		   		attrib3="1 -1" 
-		   		attrib4="NCBI_GENEID_CODE_2_NCBI_GENEID" />		 		
+		   		attrib4="NCBI_GENEID_CODE_2_NCBI_GENEID" />		 	
+		  
+		   	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/accession_code_2_biocarta_geneid.map"	
+		   		attrib1="ACCESSION_2_BIOCARTA_GENEID REVERSE LUT" 
+		   		attrib2=";" 
+		   		attrib3="1 -1" 
+		   		attrib4="ACCESSION_CODE_2_ACCESSION" />			  
+		   		
+		   			
 
 </details>
