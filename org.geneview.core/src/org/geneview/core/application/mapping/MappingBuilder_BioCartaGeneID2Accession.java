@@ -15,7 +15,7 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 		"data/genome/pathway/biocarta/gene";
 	
 	private static String OUTPUT_FILE_PATH = 
-		"data/genome/mapping/biocarta_geneid_2_accession_code.map";
+		"data/genome/mapping/accession_code_2_biocarta_geneid.map";
 	
 	private PrintWriter outputWriter;	
 	
@@ -82,7 +82,7 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 	public void appendMappingToFile(final String sBioCartaGeneID, 
 			final String sAccessionNumber) {
 	
-		outputWriter.append(sBioCartaGeneID + ";" +sAccessionNumber + "\n");
+		outputWriter.append(sAccessionNumber + ";" + sBioCartaGeneID + "\n");
 	}
 	
     public static void main(String[] args) {

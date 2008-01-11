@@ -768,8 +768,8 @@ implements IMediatorReceiver, IMediatorSender {
 		int[] iArSelectionId = refSetSelection.getSelectionIdArray();
 		if (iArSelectionId.length != 0)
 		{
-//			selectedVertex = (PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
-//				.getPathwayItemManager().getItem(iArSelectionId[0]);
+			selectedVertex = (PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
+				.getPathwayItemManager().getItem(iArSelectionId[0]);
 			
 			bRebuildVisiblePathwayDisplayLists = true;
 //			bSelectionChanged = true;

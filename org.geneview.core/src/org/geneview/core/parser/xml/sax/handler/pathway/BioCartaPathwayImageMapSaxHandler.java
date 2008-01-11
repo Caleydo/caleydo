@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.geneview.core.data.graph.core.PathwayGraph;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IXmlParserManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.geneview.util.graph.IGraphItem;
@@ -197,6 +199,11 @@ extends AXmlParserHandler {
    			}
 		} 	
 		
+		sName = convertBioCartaIdToNCBIGeneIdCode(sName);
+		
+		if(sName.isEmpty())
+			return;
+		
 		IGraphItem vertex = refGeneralManager.getSingelton().getPathwayItemManager()
 			.createVertex(sName, "other", 
 					BIOCARTA_EXTERNAL_URL_VERTEX +  sExternalLink, "");
@@ -208,6 +215,31 @@ extends AXmlParserHandler {
 			sName, 
 			sShape, 
 			sCoords);
+	}
+	
+	private String convertBioCartaIdToNCBIGeneIdCode(final String sBioCartaId) {
+		
+		// Convert BioCarta ID to NCBI_GENEID
+		IGenomeIdManager genomeIdManager = 
+			refGeneralManager.getSingelton().getGenomeIdManager();
+		
+		int iAccession = genomeIdManager.getIdIntFromStringByMapping(sBioCartaId, 
+				EGenomeMappingType.BIOCARTA_GENEID_2_ACCESSION);
+		
+		if (iAccession == -1)
+			return "";
+		
+		int iNCBIGeneId = genomeIdManager.getIdIntFromIntByMapping(iAccession, 
+				EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
+		
+		if (iNCBIGeneId == -1)
+			return "";
+		
+		String sNCBIGeneIdCode = genomeIdManager.getIdStringFromIntByMapping(iNCBIGeneId,
+				EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+		
+		// Convert to KEGG format
+		return("hsa:" + sNCBIGeneIdCode);
 	}
 	
 	/**

@@ -49,7 +49,17 @@ implements IGeneViewDefaultType <EGenomeMappingType> {
 	ACCESSION_2_GENE_NAME (
 			EGenomeIdType.ACCESSION,
 			EGenomeIdType.GENE_NAME,
-			EGenomeMappingDataType.INT2STRING),			
+			EGenomeMappingDataType.INT2STRING),
+			
+	ACCESSION_2_BIOCARTA_GENEID (
+			EGenomeIdType.ACCESSION,
+			EGenomeIdType.BIOCARTA_GENEID,			
+			EGenomeMappingDataType.INT2STRING),	
+			
+	BIOCARTA_GENEID_2_ACCESSION (
+			EGenomeIdType.BIOCARTA_GENEID,
+			EGenomeIdType.ACCESSION,			
+			EGenomeMappingDataType.STRING2INT),				
 			
 	/* --- KEGG Gene Id --- */
 	/**
@@ -123,7 +133,7 @@ implements IGeneViewDefaultType <EGenomeMappingType> {
 	GENE_SHORT_NAME_2_NCBI_GENEID (
 			EGenomeIdType.GENE_SHORT_NAME,
 			EGenomeIdType.NCBI_GENEID,			
-			EGenomeMappingDataType.STRING2INT),				
+			EGenomeMappingDataType.STRING2INT),						
 						
 	/* --- Pathway --- */
 	PATHWAY_CODE_2_PATHWAY  (

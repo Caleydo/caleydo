@@ -13,6 +13,7 @@ import org.geneview.util.graph.IGraphItem;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.util.mapping.GeneAnnotationMapper;
@@ -36,7 +37,7 @@ public class GLInfoAreaRenderer {
 	
 	private GeneAnnotationMapper geneAnnotationMapper;
 	
-	private float fHeight = 0.4f;
+	private float fHeight = 0.5f;
 	private float fWidth = 1.0f;
 	
 	private TextRenderer textRenderer;
@@ -334,7 +335,25 @@ public class GLInfoAreaRenderer {
 				fYOffset - 3*fLineHeight, 
 				0.001f,
 				0.005f);  // scale factor
-
+		
+		if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))		
+		{
+			String sAccessionCode = 
+				geneAnnotationMapper.getAccessionCodeByNCBIGeneIdCode(sElementId);
+			
+			textRenderer.draw3D("Accession: ",
+				fXOffset, 
+				fYOffset - 4*fLineHeight, 
+				0.001f,
+				0.005f);  // scale factor
+		
+			textRenderer.draw3D(sAccessionCode,
+				fXOffset + 0.5f, 
+				fYOffset - 4*fLineHeight, 
+				0.001f,
+				0.005f);  // scale factor
+		}
+		
 		textRenderer.end3DRendering();
 		
 		if (bEnableColorMapping) 

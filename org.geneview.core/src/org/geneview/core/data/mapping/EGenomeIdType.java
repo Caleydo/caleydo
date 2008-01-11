@@ -8,7 +8,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  * Enum that defines all genome data types that could possibly be loaded
  * to the system.
  * 
- * Note: *_CODE indicates, that is it a String that is mapped to an integer internally.
+ * Note: *_CODE indicates, that it is a String that is mapped to an integer internally.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -68,6 +68,10 @@ implements IGeneViewDefaultType <EGenomeIdType> {
 	GENE_SHORT_NAME(StorageType.STRING,
 			EGenomeMappingType.NON_MAPPING,
 			"gene-short-name","gene pseudo short name"),
+			
+	BIOCARTA_GENEID(StorageType.STRING,
+			EGenomeMappingType.NON_MAPPING,
+			"biocarta geneid","biocarta geneid"),			
 					
 	KEGG(StorageType.INT,
 			EGenomeMappingType.KEGG_CODE_2_KEGG,
