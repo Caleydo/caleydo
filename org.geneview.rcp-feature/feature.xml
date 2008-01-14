@@ -4,7 +4,8 @@
       label="GeneView"
       version="1.0.0"
       provider-name="geneview.org"
-      plugin="org.geneview.rcp">
+      plugin="org.geneview.rcp"
+      os="linux,win32">
 
    <description url="http://www.geneview.org">
       GeneView is a visualization framework for biomedical data.
@@ -21,7 +22,7 @@ All Rights Reserved.
    </license>
 
    <url>
-      <update label="GeneView Local Update Site" url="file:/home/mstreit/projects/geneview/SVN/org.geneview.update/"/>
+      <update label="GeneView Local Update Site" url="http://galactica.icg.tugraz.at/geneview/"/>
       <discovery label="GeneView website" url="http://www.geneview.org"/>
       <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
    </url>
@@ -54,7 +55,10 @@ All Rights Reserved.
       <import plugin="org.eclipse.osgi"/>
       <import plugin="org.eclipse.update.configurator" version="3.1.0" match="compatible"/>
       <import plugin="org.eclipse.core.net" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.update.ui" version="3.1.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.update.core" version="3.1.0" match="compatible"/>
+      <import plugin="org.eclipse.update.configurator" version="3.1.100" match="compatible"/>
       <import feature="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
    </requires>
 
@@ -115,14 +119,21 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.update.ui"
+         id="org.geneview.rcp"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.geneview.rcp"
+         id="org.eclipse.core.net"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.update.scheduler"
          download-size="0"
          install-size="0"
          version="0.0.0"
