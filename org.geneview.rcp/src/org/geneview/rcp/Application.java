@@ -95,7 +95,7 @@ public class Application implements IApplication {
 		if  (xmlFileName=="") 
 		{
 			geneview_core.setXmlFileName(
-				"data/bootstrap/rcp/bootstrap_sample_RCP.xml"); 	
+				"data/bootstrap/rcp/lbi/bootstrap_sample_LBI.xml"); 	
 		}
 		else
 		{
