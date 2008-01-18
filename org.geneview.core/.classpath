@@ -7,7 +7,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Compiler/java/jre1.6/jre/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib_src/jogl/demos/nehe_demos_data.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.data"/>
 	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/demos/jogl-demos.jar"/>
