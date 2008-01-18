@@ -2,7 +2,7 @@
 <feature
       id="org.geneview.rcp.feature"
       label="GeneView"
-      version="1.1.4"
+      version="1.0.0"
       provider-name="geneview.org"
       plugin="org.geneview.rcp"
       os="linux,win32">
