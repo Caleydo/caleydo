@@ -1,6 +1,8 @@
 
- How to install Cerberus?
+ How to install GeneView?
 ==========================
+
+Eclipse 3.4.0
 
 author: Michael Kalkusch, kalkusch@icg.tu-graz.aca.t
 
