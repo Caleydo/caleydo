@@ -153,8 +153,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 //		System.out.println(myStorage.getMinFloat());
 //		System.out.println(myStorage.getMaxInt());
 //		System.out.println(myStorage.getMinInt());
-		System.out.println(myStorage.getMaxDouble());
-		System.out.println(myStorage.getMinDouble());
+//		System.out.println(myStorage.getMaxDouble());
+//		System.out.println(myStorage.getMinDouble());
 
 	//	createdCmd.setAttributes(refGeneralManager.getSingelton().getStorageManager().g);
 	 // createdCmd.doCommand();

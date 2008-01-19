@@ -18,6 +18,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  * in XML: <cmd process="LOAD_ON_DEMAND" />
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public enum CommandQueueSaxType
@@ -55,6 +56,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	CREATE_GL_PANEL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Panel Pathway 3D"),	
 	CREATE_GL_JUKEBOX_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox Pathway 3D"),		
 	CREATE_GL_PARALLEL_COORDINATES_3D(ManagerType.VIEW,"cmd","type","-1", "Create Parallel Coordinates 3D"),		
+	CREATE_GL_OVERALL_JUKEBOX_3D(ManagerType.VIEW,"cmd","type","-1", "Create Overall Jukebox 3D"),
 	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),

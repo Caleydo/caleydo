@@ -28,6 +28,7 @@ import org.geneview.core.command.view.opengl.CmdGlObjectParCoords3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DLayered;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DPanel;
+import org.geneview.core.command.view.opengl.CmdGlObjectOverallJukebox3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectScatterPlot2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectTexture2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectTriangleTest;
@@ -75,7 +76,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  *
  */
 public class CommandFactory 
-	implements  ICommandFactory {
+implements  ICommandFactory {
 
 	private ICommand refLastCommand;
 	
@@ -97,9 +98,7 @@ public class CommandFactory
 		
 		this.refGeneralManager = setRefGeneralManager;		
 		this.refCommandManager = refCommandManager;
-		
 	}
-	
 
 	
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType) {
@@ -223,8 +222,6 @@ public class CommandFactory
 						cmdType);		
 			break;
 		}
-		
-
 		
 		/*
 		 * ----------------------
@@ -413,8 +410,7 @@ public class CommandFactory
 		 *        OPEN GL
 		 * ----------------------
 		 */
-		
-		
+			
 		case CREATE_GL_TRIANGLE_TEST:
 		{
 			createdCommand =
@@ -531,6 +527,16 @@ public class CommandFactory
 		{
  			createdCommand =
 				new CmdGlObjectParCoords3D(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);	
+			break;
+		}
+		
+		case CREATE_GL_OVERALL_JUKEBOX_3D:
+		{
+ 			createdCommand =
+				new CmdGlObjectOverallJukebox3D(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);	

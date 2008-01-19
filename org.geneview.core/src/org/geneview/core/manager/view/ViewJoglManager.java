@@ -30,6 +30,7 @@ import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 import org.geneview.core.view.opengl.canvas.isosurface.GLCanvasIsoSurface3D;
+import org.geneview.core.view.opengl.canvas.jukebox.GLCanvasOverallJukebox3D;
 import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
@@ -430,6 +431,13 @@ implements IViewGLCanvasManager {
 						iUniqueId,
 						iGlForwarderId, 
 						sLabel);
+				
+			case CREATE_GL_OVERALL_JUKEBOX_3D:
+				return new GLCanvasOverallJukebox3D(
+						refGeneralManager, 
+						iUniqueId,
+						iGlForwarderId, 
+						sLabel);	
 				
 			default:
 				throw new GeneViewRuntimeException(

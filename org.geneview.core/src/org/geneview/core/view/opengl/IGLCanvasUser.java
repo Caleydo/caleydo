@@ -26,6 +26,7 @@ extends IUniqueObject {
 	 */	
 	public abstract void render(GL gl);
 	
+	public abstract void renderPart(GL gl);
 
 	public void reshape(GL gl, 
 			final int x,
