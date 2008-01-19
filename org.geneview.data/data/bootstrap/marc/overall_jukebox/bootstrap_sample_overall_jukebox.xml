@@ -1,0 +1,45 @@
+<cerberus version="0.1">
+
+  <workspace title="primary" server="localhost">
+  
+    <Application remote="no" IP="127.0.0.1" port="4000" >
+  
+    <CommandBuffer>  			
+						
+		<!-- Creating Data -->
+			<read-xml-file target="data/bootstrap/marc/overall_jukebox/load_data.xml" />	   										
+							
+		<!-- Window	11331	-->
+		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="11331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+				 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
+			  	gl_forwarder="99076" parent="11331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+				
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="16401" label="GL Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
+							detail="35101 36101 37101" /> 							
+							
+		<!-- Window	10331 -->	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
+				label="Overall Jukebox 3D" attrib1="ROW	HORIZONTAL"	/>	 
+				 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="17401" 
+			  	gl_forwarder="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+				
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_OVERALL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="17401" label="GL Overall Jukebox 3D" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
+							attrib4="transparency 1" 								
+							detail="" /> 
+							    
+   </CommandBuffer>
+    
+  </Application>
+  
+  </workspace>
+
+</cerberus>
