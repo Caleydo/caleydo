@@ -6,13 +6,25 @@ package org.geneview.rcp.views;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.media.opengl.GLCanvas;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
@@ -34,6 +46,13 @@ extends ViewPart {
 	protected Shell swtShell;
 	protected Composite swtComposite;
 	protected JoglCanvasForwarder canvasForwarder;
+	protected GLCanvas glCanvas;
+	
+	public static final String ACTION_WRITE_SCREENSHOT_TEXT = "Save screenshot";
+	public static final String ACTION_WRITE_SCREENSHOT_ICON = "resources/icons/PathwayEditor/back.png";
+	
+	private Action actWriteScreenshot;
+	private boolean bEnableWriteScreenshot = false;
 	
 	/**
 	 * 
@@ -57,6 +76,8 @@ extends ViewPart {
 	protected void createPartControlSWT(Composite parent) {
 		swtShell = parent.getShell();
 		swtComposite = new Composite(parent, SWT.EMBEDDED);
+		
+		createWriteScreenshotAction();
 	}
 	
 	/* (non-Javadoc)
@@ -67,11 +88,11 @@ extends ViewPart {
 		if ( frameGL==null ) {
 			frameGL = SWT_AWT.new_Frame(swtComposite);	
 			
-			GLCanvas canvasGL= new GLCanvas();					
-			canvasGL.addGLEventListener(canvasForwarder);
+			glCanvas = new GLCanvas();					
+			glCanvas.addGLEventListener(canvasForwarder);
 			
-			frameGL.add(canvasGL);					
-		    animatorGL = new Animator(canvasGL);
+			frameGL.add(glCanvas);					
+		    animatorGL = new Animator(glCanvas);
 		 
 		    frameGL.addWindowListener(new WindowAdapter() {
 		        public void windowClosing(WindowEvent e) {
@@ -153,4 +174,57 @@ extends ViewPart {
 		}
 	}
 
+	protected void writeScreenshot() {
+		
+		String sFilePath = "screenshot_" +getDateTime() +".png";
+		
+	    GC gc = new GC(swtComposite.getDisplay());
+		final Image image = new Image(swtComposite.getDisplay(), swtShell.getBounds());
+		gc.copyArea(image, swtShell.getBounds(). x,swtShell.getBounds().y);
+		gc.dispose();
+		
+	    FileDialog saveFileDialog = new FileDialog(swtShell, SWT.SAVE);
+	    saveFileDialog.setFileName(sFilePath);
+	    sFilePath = saveFileDialog.open();
+		
+	    ImageLoader loader = new ImageLoader();
+	    loader.data = new ImageData[] {image.getImageData()};
+	    loader.save(sFilePath, SWT.IMAGE_PNG);
+	    
+//        MessageBox messageBox = new MessageBox(swtShell, SWT.OK);
+//        messageBox.setText("Message from SWT");
+//        messageBox.setMessage("Screenshot successfully written to " + sFilePath);
+//        messageBox.open();	
+	}
+	
+    private String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+	
+	protected void fillLocalToolBar(IToolBarManager manager) {
+	
+		manager.add(actWriteScreenshot);
+	}
+	
+	private void createWriteScreenshotAction() {
+
+		// showMessage("Action 1", "make new action [toggle JOGL frame]");
+
+		actWriteScreenshot = new Action() {
+			public void run() {
+
+				bEnableWriteScreenshot = !bEnableWriteScreenshot;
+				writeScreenshot();
+			}
+		};
+		actWriteScreenshot.setText(ACTION_WRITE_SCREENSHOT_TEXT);
+		actWriteScreenshot.setToolTipText(ACTION_WRITE_SCREENSHOT_TEXT);
+		actWriteScreenshot.setImageDescriptor(ImageDescriptor
+				.createFromURL(this.getClass().getClassLoader().getResource(
+						ACTION_WRITE_SCREENSHOT_ICON)));
+
+		// showMessage("Action 1","executed toggle JOGL frame");
+	}
 }

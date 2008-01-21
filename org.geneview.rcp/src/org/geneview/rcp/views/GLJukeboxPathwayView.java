@@ -112,7 +112,7 @@ public class GLJukeboxPathwayView extends AGLViewPart {
 		manager.add(actClearAllPathways);
 	}
 
-	private void fillLocalToolBar(IToolBarManager manager) {
+	protected void fillLocalToolBar(IToolBarManager manager) {
 		
 		IContributionItem searchBar = 
 			new SearchBar("Quick search");
@@ -126,6 +126,8 @@ public class GLJukeboxPathwayView extends AGLViewPart {
 		manager.add(actEnableIdenticalNodeHighlighting);
 		manager.add(actEnableAnnotation);
 		manager.add(actClearAllPathways);
+		
+		super.fillLocalToolBar(manager);
 	}
 
 	private void createAnimatorToggleAction() {
@@ -250,6 +252,7 @@ public class GLJukeboxPathwayView extends AGLViewPart {
 			public void run() {
 
 				triggerCmdExternalAction(EExternalActionType.PATHWAY_CLEAR_ALL);
+				writeScreenshot();
 			}
 		};
 
