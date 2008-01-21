@@ -24,7 +24,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
 							attrib4="transparency 1" 								
-							detail="44101 35101 36101 37101 85101" /> 
+							detail="35101 36101 37101 85101" /> 
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="26" 
 			    gl_forwarder="26"
