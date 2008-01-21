@@ -24,7 +24,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
 							attrib4="transparency 1" 								
-							detail="85101 86101 87101 88101 89101 90101 92101 93101 94101 95101" /> 
+							detail="80101 85101 86101 87101 88101 89101 90101 92101 93101 94101 95101" /> 
 
 	    <!-- Search View -->
 	      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_ENTITY_SEARCHER" 	cmdId="69991" uniqueId="12345" label="Data Entity Search" 	detail="82401" /> 				

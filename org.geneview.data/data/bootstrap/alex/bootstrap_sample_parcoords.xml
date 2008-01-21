@@ -7,10 +7,10 @@
     <CommandBuffer>  			
 	   				
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/load_set_storage_virtual-array_for_basic_unit_test.xml" />	   				
+			<read-xml-file target="data/bootstrap/alex/load_set_storage_virtual-array_for_pathways_parcoords.xml" />	   				
 	   				
 		<!-- Window	10331	-->
-		<!--
+		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 				 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
@@ -22,7 +22,7 @@
 							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
 							detail="35101 36101 37101" /> 
 							
-	  	 Mediator -->
+	  	<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
 
