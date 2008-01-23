@@ -7,10 +7,10 @@
       <image path="/org.geneview.rcp/resources/geneview_logo_small.png"/>
       <text>
          GeneView visualization framework
-GeneView is a visualization framework for biomedical data.
+GeneView is a general purpose visualization framework.
 See: www.geneview.org
 
-(c) Copyright Institute for Computer Graphics and Vision (ICG)
+(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)
 Graz University of Technology - 2007.
 All Rights Reserved.
       </text>

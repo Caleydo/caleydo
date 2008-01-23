@@ -37,6 +37,6 @@
 	<classpathentry kind="lib" path="/org.geneview.lib/lib/kegg/keggapi.jar"/>
 	<classpathentry kind="lib" path="/org.geneview.lib/lib/muddleware/muddleware.jar"/>
 	<classpathentry kind="lib" path="/org.geneview.lib/lib/weka/weka.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/org.geneview/graph/org.geneview.graph_bin.jar"/>
+	<classpathentry kind="lib" path="/org.geneview.lib/lib/org.geneview/util/graph/org.geneview.graph_bin.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

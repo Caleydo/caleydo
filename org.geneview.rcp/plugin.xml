@@ -89,7 +89,7 @@
          </property>
          <property
                name="aboutText"
-               value="GeneView visualization framework&#x0A;GeneView is a visualization framework for biomedical data.&#x0A;See: www.geneview.org&#x0A;&#x0A;(c) Copyright Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved.">
+               value="GeneView visualization framework&#x0A;GeneView is a general purpose visualization framework.&#x0A;See: www.geneview.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG) &#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved. BSD licenced.">
          </property>
       </product>
    </extension>
