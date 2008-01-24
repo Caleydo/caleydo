@@ -24,9 +24,11 @@ import org.geneview.rcp.Application;
  * copy of RCP tutorial "org.eclipsercp.hyperbola.AddContactDialog.java"
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public class OpenXmlConfigFileDialog extends Dialog {
+public class OpenXmlConfigFileDialog 
+extends Dialog {
 
 	private Shell parentShell;
 	
@@ -35,26 +37,29 @@ public class OpenXmlConfigFileDialog extends Dialog {
 	private Text statusOnLoading;
 	
 	/**
+	 * Constructor.
+	 * 
 	 * @param parentShell
 	 */
 	public OpenXmlConfigFileDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
-//	/**
-//	 * @param parentShell
-//	 */
-//	public OpenXmlConfigFileDialog(IShellProvider parentShell) {
-//		super(parentShell);
-//		// TODO Auto-generated constructor stub
-//	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 */
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Open XML config File");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+	 */
 	protected Control createDialogArea(Composite parent) {
+		
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
@@ -79,36 +84,45 @@ public class OpenXmlConfigFileDialog extends Dialog {
 		statusOnLoading.setEditable(false);
 		statusOnLoading.setText("not loaded");
 		
-
-		
 		if  (parentShell==null)
 		{
 			parentShell = parent.getShell();
 		}
 		
 		FileDialog fd = new FileDialog(parentShell);
-	        fd.setText("Open");
-	        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
-	        String[] filterExt = { "*.xml" };
-	        fd.setFilterExtensions(filterExt);
-	        xmlFileNameText.setText( fd.open() );
+        fd.setText("Open");
+        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
+        String[] filterExt = { "*.xml" };
+        fd.setFilterExtensions(filterExt);
+        String result = fd.open();
+        
+        if (result == null)
+        	xmlFileNameText.setText("");
+        else
+        	xmlFileNameText.setText(result);
 	    
 		return composite;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+	 */
 	protected void okPressed() {
+		
 		String xmlFileName = xmlFileNameText.getText();
 
-		if (xmlFileName.equals("")) {
+		if (xmlFileName.equals("")) 
+		{
 			MessageDialog.openError(getShell(), "Invalid Xml file name",
 					"xml file name must not be blank.");
 			
 			FileDialog fd = new FileDialog(parentShell);
-		        fd.setText("Open");
-		        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
-		        String[] filterExt = { "*.xml" };
-		        fd.setFilterExtensions(filterExt);
-		        xmlFileName = fd.open();
+	        fd.setText("Open");
+	        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
+	        String[] filterExt = { "*.xml" };
+	        fd.setFilterExtensions(filterExt);
+	        xmlFileName = fd.open();
 		        
 			return;
 		}
@@ -118,17 +132,9 @@ public class OpenXmlConfigFileDialog extends Dialog {
 		refISWTGUIManager.setProgressbarVisible(true);
 				
 		try 
-		{
-			
-			if (Application.geneview_core.run_parseXmlConfigFile(xmlFileName))
-			{
-				super.okPressed();
-			} 
-			else 
-			{
-				statusOnLoading.setText("error while laoding XML file.");
-			}
-			
+		{		
+			Application.geneview_core.setXmlFileName(xmlFileName);
+			super.okPressed();			
 		} 
 		catch (Exception e) 
 		{
@@ -143,7 +149,13 @@ public class OpenXmlConfigFileDialog extends Dialog {
 		}
 	}
 	
-	public String getXmlFielName() {
-		return xmlFileNameText.getText();
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
+	 */
+	protected void cancelPressed() {
+
+		Application.geneview_core.setXmlFileName("");
+		super.cancelPressed();
 	}
 }

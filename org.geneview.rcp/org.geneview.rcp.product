@@ -19,6 +19,7 @@ All Rights Reserved.
    <configIni use="default"/>
 
    <launcherArgs>
+      <programArgsWin>-Xms256m -Xmx512m</programArgsWin>
       <vmArgs>-Xms256m -Xmx512m</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>

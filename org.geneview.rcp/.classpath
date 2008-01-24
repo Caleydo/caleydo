@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.geneview.util.graph_bin.jar"/>
 	<classpathentry exported="true" kind="lib" path="/org.geneview.lib/lib/jogl/jogl.jar"/>
 	<classpathentry exported="true" kind="lib" path="/org.geneview.lib/lib/jogl/gluegen-rt.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.geneview.core_bin.jar" sourcepath="lib/org.geneview.core_src.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/org.geneview.graph_bin.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jgraph/jgraph.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gleem/gleem_mod_class.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/muddleware/muddleware.jar"/>

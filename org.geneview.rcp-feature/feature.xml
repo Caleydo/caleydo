@@ -5,7 +5,10 @@
       version="1.0.0"
       provider-name="geneview.org"
       plugin="org.geneview.rcp"
-      os="linux,win32">
+      os="linux,win32"
+      ws="gtk,win32"
+      nl="en_US"
+      arch="ppc,x86,x86_64">
 
    <description url="http://www.geneview.org">
       GeneView is a visualization framework for biomedical data.
@@ -17,12 +20,14 @@ Graz University of Technology - 2007.
 All Rights Reserved.
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="http://www.geneview.org">
+      (c) Copyright Institute for Computer Graphics and Vision (ICG)
+Graz University of Technology - 2007.
+All Rights Reserved.
    </license>
 
    <url>
-      <update label="GeneView Local Update Site" url="file:/C:/data/geneview_workspace/org.geneview.update/"/>
+      <update label="GeneView Update Site" url="http://galactica.icg.tugraz.at/geneview/"/>
       <discovery label="GeneView website" url="http://www.geneview.org"/>
       <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
    </url>

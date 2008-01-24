@@ -4,11 +4,15 @@ import java.util.Map;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.geneview.core.application.core.GeneViewBootloader;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.rcp.dialog.file.OpenXmlConfigFileDialog;
 
 /**
  * This class controls all aspects of the application's execution
@@ -91,20 +95,34 @@ public class Application implements IApplication {
 	protected void startGeneViewCore( final String xmlFileName ) {
 		
 		geneview_core = new GeneViewBootloader();
-			
+		
+		// If no file is provided as command line argument a XML file open dialog is opened
 		if  (xmlFileName=="") 
 		{
-			geneview_core.setXmlFileName(
-				"data/bootstrap/rcp/lbi/bootstrap_sample_LBI.xml"); 	
+			Display display = PlatformUI.createDisplay();
+		    Shell shell = new Shell(display);
+		    shell.setText("Open project file");
+
+			OpenXmlConfigFileDialog openDialog = new OpenXmlConfigFileDialog(shell);
+			openDialog.open();
+			
+			if (geneview_core.getXmlFileName().isEmpty())
+				return;
+			
+			shell.dispose();
+			
+			Application.refGeneralManager = geneview_core.getGeneralManager();
+			geneview_core.run_SWT();
+			
+			return;
 		}
+		// Load as command line argument provided XML config file name.
 		else
 		{
 			geneview_core.setXmlFileName(xmlFileName); 
+			Application.refGeneralManager = geneview_core.getGeneralManager();
+			geneview_core.run_SWT();			
 		}
-
-		Application.refGeneralManager = geneview_core.getGeneralManager();
-
-		geneview_core.run_SWT();
 	}
 	
 	protected void disposeGeneViewCore() {
