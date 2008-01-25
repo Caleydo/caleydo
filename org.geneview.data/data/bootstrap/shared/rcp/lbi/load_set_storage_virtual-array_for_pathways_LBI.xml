@@ -72,6 +72,9 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/lbi/converted/spleen.csv"	
 			attrib1="SKIP;SKIP;FLOAT;FLOAT;ABORT"					attrib2="95101" attrib3="3 -1" />								
 
+	<!-- Data filtering (preprocessing) -->
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301" />								
+
 	<!-- Creating Heatmap Data -->	
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="12993"	uniqueId="35301" label="my Storage from	file"	attrib1="STRING" attrib2="test data	filled by	file"	/>
 	

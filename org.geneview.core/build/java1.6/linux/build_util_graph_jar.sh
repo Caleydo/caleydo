@@ -1,3 +1,3 @@
 #!/bin/bash
 
-jar -cvfM ../../../../org.geneview.core/lib/org.geneview.graph_bin.jar -C ../../../../org.geneview.util.graph/bin/ .    
+jar -cvfM ../../../../org.geneview.rcp/lib/org.geneview.util.graph_bin.jar -C ../../../../org.geneview.util.graph/bin/ .    

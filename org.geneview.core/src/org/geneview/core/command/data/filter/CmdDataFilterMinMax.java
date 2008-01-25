@@ -149,6 +149,8 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 		{
 			for(int iCount = 0; iCount < myStorage.getArrayFloat().length; iCount++)
 			{
+				//System.out.println(fMinValue +"/" +fMaxValue);
+				
 				float fCurrentValue = (myStorage.getArrayFloat())[iCount];
 				if (iCount == 0)
 				{

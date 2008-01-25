@@ -1,5 +1,7 @@
 package org.geneview.core.util.mapping;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,14 +33,14 @@ extends AGenomeMapper{
 		super(refGeneralManager);
 	}
 	
-	protected ArrayList<Color> getMappingColorArrayByGeneVertexRep(
+	protected ArrayList<Vec3f> getMappingColorArrayByGeneVertexRep(
 			final PathwayVertexGraphItemRep pathwayVertexRep) {
 		
-		ArrayList<Color> arMappingColor = new ArrayList<Color>();
+		ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 		
 		if (pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() > 1)
 		{
-			arMappingColor.add(Color.CYAN);
+			arMappingColor.add(new Vec3f(0,1,1)); // cyan
 		}
 		else
 		{
@@ -49,13 +51,13 @@ extends AGenomeMapper{
 		return arMappingColor;
 	}
 	
-	protected ArrayList<Color> getMappingColorArrayByEnzymeVertex(
+	protected ArrayList<Vec3f> getMappingColorArrayByEnzymeVertex(
 			final PathwayVertexGraphItem pathwayVertex) {
 		
 		int iCummulatedExpressionValue = 0;
 		int iNumberOfExpressionValues = 0;
 		
-		ArrayList<Color> arMappingColor = new ArrayList<Color>();
+		ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 		
 		String sEnzymeCode = pathwayVertex.getName().substring(3);
 		int iAccessionID = 0;
@@ -68,7 +70,7 @@ extends AGenomeMapper{
 		
 		if (iEnzymeID == -1)
 		{	
-			arMappingColor.add(Color.BLACK);
+			arMappingColor.add(new Vec3f(0,0,0));
 			return arMappingColor;
 		}
 		
@@ -77,7 +79,7 @@ extends AGenomeMapper{
 		
 		if(iTmpGeneId == null)
 		{	
-			arMappingColor.add(Color.BLACK);
+			arMappingColor.add(new Vec3f(0,0,0));
 			return arMappingColor;
 		}
 		

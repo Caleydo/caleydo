@@ -1,5 +1,7 @@
 package org.geneview.core.view.opengl.canvas.pathway;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
@@ -713,7 +715,7 @@ implements IMediatorReceiver, IMediatorSender {
 			PathwayGraph refContainingPathway) {
 		
 		boolean bHighlightVertex = false;
-		Color tmpNodeColor = null;
+		Vec3f tmpNodeColor = null;
 		int iNeighborDistance = 0;
 		
 //		refGeneralManager.getSingelton().logMsg(
@@ -752,9 +754,7 @@ implements IMediatorReceiver, IMediatorSender {
 				assert false : "can not find color for selection depth";
 			}
 			
-			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-					tmpNodeColor.getGreen() / 255.0f, 
-					tmpNodeColor.getBlue() / 255.0f, 1.0f);
+			gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
 		}
 		
 		EPathwayVertexShape shapeType = vertexRep.getShapeType();
@@ -772,9 +772,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if (bHighlightVertex == false)
 			{
 				tmpNodeColor = refRenderStyle.getPathwayNodeColor(bEnableGeneMapping);
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
 			}
 			
 			fPathwayNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
@@ -798,10 +796,7 @@ implements IMediatorReceiver, IMediatorSender {
 			else 
 			{
 				tmpNodeColor = refRenderStyle.getCompoundNodeColor(bEnableGeneMapping);
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);				//gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f); // green
-				gl.glCallList(iCompoundNodeDisplayListId);
+				gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());				gl.glCallList(iCompoundNodeDisplayListId);
 			}
 		}	
 		// Enzyme
@@ -826,9 +821,7 @@ implements IMediatorReceiver, IMediatorSender {
 				if (bEnableGeneMapping == false)
 				{
 					tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
-					gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-							tmpNodeColor.getGreen() / 255.0f, 
-							tmpNodeColor.getBlue() / 255.0f, 1.0f);	
+					gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
 					gl.glCallList(iEnzymeNodeDisplayListId);
 				}
 				else
@@ -839,7 +832,7 @@ implements IMediatorReceiver, IMediatorSender {
 								EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
 					genomeMapper.setMappingData(alSetData);
 					
-					ArrayList<Color> arMappingColor = 
+					ArrayList<Vec3f> arMappingColor = 
 						genomeMapper.getMappingColorArrayByVertexRep(vertexRep);
 					
 					// Factor indicates how often the enzyme needs to be split
@@ -871,10 +864,7 @@ implements IMediatorReceiver, IMediatorSender {
 						// Check if the mapping gave back a valid color
 						if (!tmpNodeColor.equals(Color.BLACK))
 						{
-							gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-									tmpNodeColor.getGreen() / 255.0f, 
-									tmpNodeColor.getBlue() / 255.0f, 1.0f);
-						
+							gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());				
 						}
 						// Take the default color
 						else
@@ -883,9 +873,7 @@ implements IMediatorReceiver, IMediatorSender {
 							tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
 						}
 						
-						gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-								tmpNodeColor.getGreen() / 255.0f, 
-								tmpNodeColor.getBlue() / 255.0f, 1.0f);
+						gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
 						
 						gl.glScalef(1.0f / iSplitFactor, 1.0f, 1.0f);
 						gl.glCallList(iEnzymeNodeDisplayListId);

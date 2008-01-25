@@ -1,5 +1,7 @@
 package org.geneview.core.data.view.rep.pathway.renderstyle;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Color;
 
 import org.geneview.core.data.ARenderStyle;
@@ -30,22 +32,22 @@ extends ARenderStyle {
 	
 	// Colors for pathway elements.
 	// Separate colors are provided if gene mapping is turned on.
-	protected Color enzymeNodeColor;
-	protected Color enzymeNodeColorGeneMapped;
-	protected Color compoundNodeColor;
-	protected Color compoundNodeColorGeneMapped;
-	protected Color pathwayNodeColor;
-	protected Color pathwayNodeColorGeneMapped;
+	protected Vec3f enzymeNodeColor;
+	protected Vec3f enzymeNodeColorGeneMapped;
+	protected Vec3f compoundNodeColor;
+	protected Vec3f compoundNodeColorGeneMapped;
+	protected Vec3f pathwayNodeColor;
+	protected Vec3f pathwayNodeColorGeneMapped;
 	
-	protected Color highlightedNodeColor;
+	protected Vec3f highlightedNodeColor;
 	
 	/**
 	 * The color of the neighborhood node with the distance 
 	 * to the clicked node of [1..neighborhoodNodeColorArraysize]
 	 */
-	protected Color [] neighborhoodNodeColorArray;
+	protected Vec3f [] neighborhoodNodeColorArray;
 	
-	protected Color layerConnectionLinesColor;
+	protected Vec3f layerConnectionLinesColor;
 	
 	public static final int neighborhoodNodeColorArraysize = 4;
 	
@@ -53,9 +55,9 @@ extends ARenderStyle {
 	protected EdgeLineStyle reactionEdgeLineStyle;
 	protected EdgeLineStyle maplinkEdgeLineStyle;
 	
-	protected Color relationEdgeColor;
-	protected Color reactionEdgeColor;
-	protected Color maplinkEdgeColor;
+	protected Vec3f relationEdgeColor;
+	protected Vec3f reactionEdgeColor;
+	protected Vec3f maplinkEdgeColor;
 	
 	protected EdgeArrowHeadStyle relationEdgeArrowHeadStyle;
 	protected EdgeArrowHeadStyle reactionEdgeArrowHeadStyle;
@@ -85,14 +87,14 @@ extends ARenderStyle {
 		compoundNodeShape 	= NodeShape.ROUND;
 		pathwayNodeShape 	= NodeShape.ROUNDRECTANGULAR;
 		
-		enzymeNodeColor 			= new Color(0.7f, 0.9f, 1.0f);
-		enzymeNodeColorGeneMapped 	= new Color(0.8f, 0.8f, 0.8f);
-		compoundNodeColor 			= new Color(1.0f, 0.65f, 0.0f); // DARK YELLOW
-		compoundNodeColorGeneMapped = Color.DARK_GRAY;
-		pathwayNodeColor 			= new Color(0.5f, 1f, 0.5f);//Color.GREEN;
-		pathwayNodeColorGeneMapped 	= Color.LIGHT_GRAY;
-		highlightedNodeColor 		= Color.RED; // BLUE
-		neighborhoodNodeColorArray 	= new Color [neighborhoodNodeColorArraysize];
+		enzymeNodeColor 			= new Vec3f(0.7f, 0.9f, 1.0f);
+		enzymeNodeColorGeneMapped 	= new Vec3f(0.8f, 0.8f, 0.8f);
+		compoundNodeColor 			= new Vec3f(1.0f, 0.65f, 0.0f); // DARK YELLOW
+		compoundNodeColorGeneMapped = new Vec3f(0.3f,0.3f,0.3f);
+		pathwayNodeColor 			= new Vec3f(0.5f, 1f, 0.5f);
+		pathwayNodeColorGeneMapped 	= new Vec3f(0.8f,0.8f,0.8f); // light gray
+		highlightedNodeColor 		= new Vec3f(1,0,0);
+		neighborhoodNodeColorArray 	= new Vec3f [neighborhoodNodeColorArraysize];
 		
 		/* currently highlighted */
 		neighborhoodNodeColorArray[0] = highlightedNodeColor;
@@ -101,9 +103,9 @@ extends ARenderStyle {
 //		neighborhoodNodeColorArray[2] = new Color(1.0f, 0.67f, 0.0f);
 //		neighborhoodNodeColorArray[3] = new Color(0.95f, 1.0f, 0.0f);
 		
-		neighborhoodNodeColorArray[1] = new Color(0.2f, 0.2f, 1.0f);
-		neighborhoodNodeColorArray[2] = new Color(0.5f, 0.5f, 1.0f);
-		neighborhoodNodeColorArray[3] = new Color(0.8f, 0.8f, 1.0f);
+		neighborhoodNodeColorArray[1] = new Vec3f(0.2f, 0.2f, 1.0f);
+		neighborhoodNodeColorArray[2] = new Vec3f(0.5f, 0.5f, 1.0f);
+		neighborhoodNodeColorArray[3] = new Vec3f(0.8f, 0.8f, 1.0f);
 
 		layerConnectionLinesColor = highlightedNodeColor;
 		
@@ -115,9 +117,9 @@ extends ARenderStyle {
 		reactionEdgeArrowHeadStyle 	= EdgeArrowHeadStyle.FILLED;
 		mapEdgeArrowHeadStyle 		= EdgeArrowHeadStyle.EMPTY;
 		
-		relationEdgeColor 	= Color.BLUE;//.GREEN;
-		reactionEdgeColor 	= Color.BLUE;//.BLUE;
-		maplinkEdgeColor 	= Color.MAGENTA;
+		relationEdgeColor 	= new Vec3f(0,0,1); // blue
+		reactionEdgeColor 	= new Vec3f(0,0,1); // blue
+		maplinkEdgeColor 	= new Vec3f(1,0,1); // magenta
 		
 		fEnzymeNodeWidth 	= 45;
 		fEnzymeNodeHeight 	= 17;
@@ -130,7 +132,7 @@ extends ARenderStyle {
 		fCompoundNodeHeightGL = fCompoundNodeHeight * SCALING_FACTOR_Y / 2.0f;
 	}
 
-	public Color getCompoundNodeColor(boolean bGeneMappingEnabled) {
+	public Vec3f getCompoundNodeColor(boolean bGeneMappingEnabled) {
 	
 		if (bGeneMappingEnabled)
 			return compoundNodeColorGeneMapped;
@@ -138,7 +140,7 @@ extends ARenderStyle {
 		return compoundNodeColor;
 	}
 
-	public void setCompoundNodeColor(Color compoundNodeColor) {
+	public void setCompoundNodeColor(Vec3f compoundNodeColor) {
 	
 		this.compoundNodeColor = compoundNodeColor;
 	}
@@ -153,7 +155,7 @@ extends ARenderStyle {
 		this.compoundNodeShape = compoundNodeShape;
 	}
 
-	public Color getEnzymeNodeColor(boolean bGeneMappingEnabled) {
+	public Vec3f getEnzymeNodeColor(boolean bGeneMappingEnabled) {
 	
 		if (bGeneMappingEnabled)
 			return enzymeNodeColorGeneMapped;
@@ -161,7 +163,7 @@ extends ARenderStyle {
 		return enzymeNodeColor;
 	}
 
-	public void setEnzymeNodeColor(Color enzymeNodeColor) {
+	public void setEnzymeNodeColor(Vec3f enzymeNodeColor) {
 	
 		this.enzymeNodeColor = enzymeNodeColor;
 	}
@@ -187,12 +189,12 @@ extends ARenderStyle {
 		this.mapEdgeArrowHeadStyle = maplinkEdgeArrowHeadStyle;
 	}
 
-	public Color getMaplinkEdgeColor() {
+	public Vec3f getMaplinkEdgeColor() {
 	
 		return maplinkEdgeColor;
 	}
 
-	public void setMaplinkEdgeColor(Color maplinkEdgeColor) {
+	public void setMaplinkEdgeColor(Vec3f maplinkEdgeColor) {
 	
 		this.maplinkEdgeColor = maplinkEdgeColor;
 	}
@@ -207,7 +209,7 @@ extends ARenderStyle {
 		this.maplinkEdgeLineStyle = maplinkEdgeLineStyle;
 	}
 
-	public Color getPathwayNodeColor(boolean bGeneMappingEnabled) {
+	public Vec3f getPathwayNodeColor(boolean bGeneMappingEnabled) {
 	
 		if (bGeneMappingEnabled)
 			return pathwayNodeColorGeneMapped;
@@ -215,7 +217,7 @@ extends ARenderStyle {
 		return pathwayNodeColor;
 	}
 
-	public void setPathwayNodeColor(Color pathwayNodeColor) {
+	public void setPathwayNodeColor(Vec3f pathwayNodeColor) {
 	
 		this.pathwayNodeColor = pathwayNodeColor;
 	}
@@ -241,12 +243,12 @@ extends ARenderStyle {
 		this.reactionEdgeArrowHeadStyle = reactionEdgeArrowHeadStyle;
 	}
 
-	public Color getReactionEdgeColor() {
+	public Vec3f getReactionEdgeColor() {
 	
 		return reactionEdgeColor;
 	}
 
-	public void setReactionEdgeColor(Color reactionEdgeColor) {
+	public void setReactionEdgeColor(Vec3f reactionEdgeColor) {
 	
 		this.reactionEdgeColor = reactionEdgeColor;
 	}
@@ -272,12 +274,12 @@ extends ARenderStyle {
 		this.relationEdgeArrowHeadStyle = relationEdgeArrowHeadStyle;
 	}
 
-	public Color getRelationEdgeColor() {
+	public Vec3f getRelationEdgeColor() {
 	
 		return relationEdgeColor;
 	}
 
-	public void setRelationEdgeColor(Color relationEdgeColor) {
+	public void setRelationEdgeColor(Vec3f relationEdgeColor) {
 	
 		this.relationEdgeColor = relationEdgeColor;
 	}
@@ -344,12 +346,12 @@ extends ARenderStyle {
 		fEnzymeNodeHeight = enzymeNodeHeight;
 	}
 
-	public Color getHighlightedNodeColor() {
+	public Vec3f getHighlightedNodeColor() {
 		
 		return highlightedNodeColor;
 	}
 	
-	public Color getLayerConnectionLinesColor() {
+	public Vec3f getLayerConnectionLinesColor() {
 		
 		return layerConnectionLinesColor;
 	}
@@ -362,7 +364,7 @@ extends ARenderStyle {
 	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0 highlightedNodeColor is returened
 	 * @return
 	 */
-	public Color getNeighborhoodNodeColorByDepth( final int depth ) {
+	public Vec3f getNeighborhoodNodeColorByDepth( final int depth ) {
 		if ( depth >= neighborhoodNodeColorArraysize) {
 			throw new GeneViewRuntimeException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
 		}

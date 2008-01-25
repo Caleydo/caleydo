@@ -7,17 +7,15 @@ import java.util.LinkedList;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
-
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.util.mapping.GeneAnnotationMapper;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraphItem;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -364,9 +362,10 @@ public class GLInfoAreaRenderer {
 			if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
 			{					
 				float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
+				float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
 				
 				refGLPathwayManager.mapExpressionByGeneId(
-						gl, llMultipleMappingGenes.get(0).getName(), fNodeWidth);
+						gl, llMultipleMappingGenes.get(0).getName(), fNodeWidth, fNodeHeight);
 				
 				llMultipleMappingGenes.remove(0);
 			}

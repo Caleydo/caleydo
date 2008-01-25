@@ -1,6 +1,7 @@
 package org.geneview.core.view.opengl.canvas.pathway;
 
-import java.awt.Color;
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,6 +23,8 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
 import org.geneview.core.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexShape;
+import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
+import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
@@ -53,7 +56,7 @@ public class GLPathwayManager {
 	
 	private PathwayRenderStyle refRenderStyle;
 
-	private boolean bEnableGeneMapping = false;
+	private boolean bEnableGeneMapping = true;
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableNeighborhood = false;
@@ -72,7 +75,7 @@ public class GLPathwayManager {
 	private HashMap<Integer, Integer> hashSelectedVertexRepId2Depth;
 	private ArrayList<Integer> iArSelectedEdgeRepId;
 	
-	private HashMap<Integer, ArrayList<Color>> hashElementId2MappingColorArray;
+	private HashMap<Integer, ArrayList<Vec3f>> hashElementId2MappingColorArray;
 	
 	/**
 	 * Constructor.
@@ -85,7 +88,7 @@ public class GLPathwayManager {
 		hashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();		
-		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Color>>();
+		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Vec3f>>();
 	}
 	
 	public void init(final GL gl, 
@@ -465,7 +468,7 @@ public class GLPathwayManager {
 			PathwayVertexGraphItemRep vertexRep, 
 			PathwayGraph refContainingPathway) {
 		
-		Color tmpNodeColor = null;
+		Vec3f tmpNodeColor = null;
 		
 		// Create and store unique picking ID for that object
 //		if (bPickingRendering)
@@ -477,8 +480,12 @@ public class GLPathwayManager {
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
+		EPathwayVertexType vertexType = 
+			((PathwayVertexGraphItem)vertexRep.getPathwayVertexGraphItem()).getType();
+		
 		// Pathway link
-		if (shape.equals(EPathwayVertexShape.roundrectangle))
+		//if (shape.equals(EPathwayVertexShape.roundrectangle))
+		if (vertexType.equals(EPathwayVertexType.map))
 		{	
 			float fCanvasXPos = (vertexRep.getXOrigin() * SCALING_FACTOR_X);
 			float fCanvasYPos =	(vertexRep.getYOrigin() * SCALING_FACTOR_Y);		
@@ -492,9 +499,7 @@ public class GLPathwayManager {
 			{
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
 				
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 			}
@@ -504,16 +509,15 @@ public class GLPathwayManager {
 			else
 				tmpNodeColor = refRenderStyle.getPathwayNodeColor(false);
 				
-			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-					tmpNodeColor.getGreen() / 255.0f, 
-					tmpNodeColor.getBlue() / 255.0f, 1.0f);
+			gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 			
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
 		// Compound
-		else if (shape.equals(EPathwayVertexShape.circle))
+		//else if (shape.equals(EPathwayVertexShape.circle))
+		else if (vertexType.equals(EPathwayVertexType.compound))
 		{		
 			float fCanvasXPos = (vertexRep.getXOrigin() * SCALING_FACTOR_X);
 			float fCanvasYPos =	(vertexRep.getYOrigin() * SCALING_FACTOR_Y);		
@@ -525,9 +529,7 @@ public class GLPathwayManager {
 			{
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
 							
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
 			}
 			
@@ -536,20 +538,53 @@ public class GLPathwayManager {
 			else
 				tmpNodeColor = refRenderStyle.getCompoundNodeColor(false);
 			
-			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-					tmpNodeColor.getGreen() / 255.0f, 
-					tmpNodeColor.getBlue() / 255.0f, 1.0f);
+			gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 			gl.glCallList(iCompoundNodeDisplayListId);
 			
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}	
+		else if (shape.equals(EPathwayVertexShape.poly)) // BIOCARTA
+		{			
+			gl.glColor4f(0,0,0,0);
+			
+			short[][] shArCoords = vertexRep.getCoords();
+			
+			gl.glBegin(GL.GL_POLYGON);			
+			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
+			{
+				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
+						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
+			}			
+			gl.glEnd();
+		
+			// Handle selection highlighting of element
+			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			{
+				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
+			}
+			else
+				gl.glColor4f(1, 1, 0, 1);
+
+			
+			gl.glBegin(GL.GL_LINE_STRIP);			
+			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
+			{
+				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
+						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
+			}			
+			gl.glEnd();
+		}
 		// Enzyme
-		else if (shape.equals(EPathwayVertexShape.rectangle)
-				|| shape.equals(EPathwayVertexShape.rect))
+		//else if (shape.equals(EPathwayVertexShape.rectangle)
+		//		|| shape.equals(EPathwayVertexShape.rect))
+		else if (vertexType.equals(EPathwayVertexType.gene)
+				|| vertexType.equals(EPathwayVertexType.enzyme))
 		{	
 			float fCanvasXPos = (vertexRep.getXOrigin() * SCALING_FACTOR_X);
 			float fCanvasYPos =	(vertexRep.getYOrigin() * SCALING_FACTOR_Y);		
 			float fNodeWidth = vertexRep.getWidth() / 2.0f * SCALING_FACTOR_X;
+			float fNodeHeight = vertexRep.getHeight() / 2.0f * SCALING_FACTOR_Y;
 			
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 			
@@ -577,62 +612,24 @@ public class GLPathwayManager {
 					gl.glLineStipple(1, (short) 0xAAAA);					
 				}
 			
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 				gl.glDisable(GL.GL_LINE_STIPPLE);
 			}
 			
-			if (bEnableGeneMapping)
+			if (bEnableGeneMapping && vertexType.equals(EPathwayVertexType.gene))
 			{
-				mapExpression(gl, vertexRep, fNodeWidth);
+				mapExpression(gl, vertexRep, fNodeWidth, fNodeHeight);
 			}
 			else
 			{
-				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(false);
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-					tmpNodeColor.getGreen() / 255.0f, 
-					tmpNodeColor.getBlue() / 255.0f, 1.0f);
+				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
+				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				
 				gl.glCallList(iEnzymeNodeDisplayListId);
 			}
 			
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
-		}
-		else if (shape.equals(EPathwayVertexShape.poly)) // BIOCARTA
-		{			
-			gl.glColor4f(0,0,0,0);
-			
-			short[][] shArCoords = vertexRep.getCoords();
-			
-			gl.glBegin(GL.GL_POLYGON);			
-			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
-			{
-				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
-						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
-			}			
-			gl.glEnd();
-		
-			// Handle selection highlighting of element
-			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
-			{
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
-			}
-			else
-				gl.glColor4f(1, 1, 0, 1);
-
-			
-			gl.glBegin(GL.GL_LINE_STRIP);			
-			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
-			{
-				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
-						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
-			}			
-			gl.glEnd();
 		}
 	}
 	
@@ -653,7 +650,7 @@ public class GLPathwayManager {
 			return;
 		}
 		
-		Color tmpColor;
+		Vec3f tmpColor;
 		float fReactionLineOffset = 0;
 		
 		// Check if edge is a reaction
@@ -671,11 +668,11 @@ public class GLPathwayManager {
 		}
 		else
 		{
-			tmpColor = Color.BLACK;
+			tmpColor = new Vec3f(0,0,0);
 		}
 
 		gl.glLineWidth(3.0f);
-		gl.glColor3f(tmpColor.getRed(), tmpColor.getGreen(), tmpColor.getBlue());
+		gl.glColor4f(tmpColor.x(), tmpColor.y(), tmpColor.z(), 1);
 		gl.glBegin(GL.GL_LINES);
 		
 		Iterator<IGraphItem> iterSourceGraphItem = 
@@ -760,9 +757,10 @@ public class GLPathwayManager {
 	
 	public void mapExpression(final GL gl, 
 			final PathwayVertexGraphItemRep pathwayVertexRep, 
-			final float fNodeWidth) {
+			final float fNodeWidth,
+			final float fNodeHeight) {
 		
-		ArrayList<Color> alMappingColor;
+		ArrayList<Vec3f> alMappingColor;
 		
 		// Check if vertex is already mapped 
 		if (hashElementId2MappingColorArray.containsKey(pathwayVertexRep.getId()))
@@ -777,66 +775,79 @@ public class GLPathwayManager {
 			hashElementId2MappingColorArray.put((Integer)pathwayVertexRep.getId(), alMappingColor);
 		}
 		
-		drawMapping(gl, alMappingColor, fNodeWidth);
+		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight);
 	}
 	
 	public void mapExpressionByGeneId(final GL gl, 
-			String sGeneID, final float fNodeWidth) {
+			String sGeneID, 
+			final float fNodeWidth,
+			final float fNodeHeight) {
 
-		drawMapping(gl, genomeMapper.getMappingColorArrayByGeneID(sGeneID), fNodeWidth);
+		drawMapping(gl, genomeMapper.getMappingColorArrayByGeneID(sGeneID), 
+				fNodeWidth, fNodeHeight);
 	}
 	
 	private void drawMapping(final GL gl,
-			final ArrayList<Color> alMappingColor,
-			final float fNodeWidth) {
+			final ArrayList<Vec3f> alMappingColor,
+			final float fNodeWidth,
+			final float fNodeHeight) {
 		
 		// Factor indicates how often the enzyme needs to be split
 		// so that all genes can be mapped.
-		int iSplitFactor = alMappingColor.size();
-		Color tmpNodeColor = null;
+		int iRowCount = 2;
+		int iColumnCount = (int)Math.ceil((float)alMappingColor.size() / (float)iRowCount);
+		
+		Vec3f tmpNodeColor = null;
 		
 		gl.glPushMatrix();
 		
-		if (iSplitFactor > 1)
+		// If no mapping is available - render whole node in one color
+		if (alMappingColor.size() == 1)
 		{
-			gl.glTranslatef(-fNodeWidth, 0.0f, 0.0f);
-			gl.glTranslatef(fNodeWidth * 2.0f / (iSplitFactor * 2.0f), 0.0f, 0.0f);
-		}		
-		for (int iSplitIndex = 0; iSplitIndex < iSplitFactor; iSplitIndex++)
-		{
-			tmpNodeColor = alMappingColor.get(iSplitIndex);
+			tmpNodeColor = alMappingColor.get(0);
 			
 			// Check if the mapping gave back a valid color
-			if (!tmpNodeColor.equals(Color.BLACK))
-			{
-				gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-						tmpNodeColor.getGreen() / 255.0f, 
-						tmpNodeColor.getBlue() / 255.0f, 1.0f);
-			
-			}
-			// Take the default color
-			else
-			{
-				//gl.glColor4f(0.53f, 0.81f, 1.0f, 1.0f); // ligth blue
-				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
-			}
-			
-			gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-					tmpNodeColor.getGreen() / 255.0f, 
-					tmpNodeColor.getBlue() / 255.0f, 1.0f);
-			
-			gl.glScalef(1.0f / iSplitFactor, 1.0f, 1.0f);
-			gl.glCallList(iEnzymeNodeDisplayListId);
-			gl.glScalef(iSplitFactor, 1.0f, 1.0f);
+			if (tmpNodeColor.x() == -1)
+				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(true);
 
-			if (iSplitFactor > 1)
+		
+			gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());		
+			gl.glCallList(iEnzymeNodeDisplayListId);
+		}
+		else
+		{
+			gl.glTranslatef(-fNodeWidth + fNodeWidth / iColumnCount, 
+					-fNodeHeight + fNodeHeight / iRowCount, 0.0f);
+
+			for (int iRowIndex = 0; iRowIndex < iRowCount; iRowIndex++)
 			{
-				gl.glTranslatef(fNodeWidth * 2.0f / iSplitFactor, 0.0f, 0.0f);
-			}
+				for (int iColumnIndex = 0; iColumnIndex < iColumnCount; iColumnIndex++)
+				{
+					int iCurrentElement = iRowIndex * iRowCount + iColumnIndex;
+
+					if (iCurrentElement < alMappingColor.size())
+						tmpNodeColor = alMappingColor.get(iRowIndex+1 * iColumnIndex);
+					else
+						continue;
+					
+					// Check if the mapping gave back a valid color
+					if (tmpNodeColor.x() != -1)
+					{
+						gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
+						gl.glScalef(1.0f / iColumnCount, 1.0f / iRowCount, 1.0f);
+						gl.glCallList(iEnzymeNodeDisplayListId);
+						gl.glScalef(iColumnCount, iRowCount, 1.0f);
+					}
+
+					gl.glTranslatef(fNodeWidth * 2.0f / iColumnCount, 0.0f, 0.0f);
+				}
+		
+				gl.glTranslatef(-2.0f * fNodeWidth , 
+						2.0f * fNodeHeight / iRowCount, 0.0f);
+			}			
 		}
 
 		gl.glPopMatrix();
-
 	}
 	
 	public PathwayVertexGraphItemRep getVertexRepByPickID(int iPickID) {

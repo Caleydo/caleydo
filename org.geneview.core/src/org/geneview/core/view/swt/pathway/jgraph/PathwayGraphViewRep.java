@@ -1,5 +1,7 @@
 package org.geneview.core.view.swt.pathway.jgraph;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -374,7 +376,7 @@ extends APathwayGraphViewRep {
 			}
 
 			// Highlight current cell
-			highlightCell(lastClickedGraphCell, Color.RED);
+			highlightCell(lastClickedGraphCell, new Vec3f(1, 0, 0));
 //			dataMappingTest(((PathwayVertexRep) lastClickedGraphCell
 //					.getUserObject()));
 
@@ -496,7 +498,8 @@ extends APathwayGraphViewRep {
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
 					"org.geneview.core.view.swt.pathway.jgraph.JGraphMultilineView");
 
-			GraphConstants.setBackground(changedMap, refRenderStyle.getPathwayNodeColor(false));
+			Vec3f tmpColor = refRenderStyle.getPathwayNodeColor(false);
+			GraphConstants.setBackground(changedMap, new Color(tmpColor.x(), tmpColor.y(), tmpColor.z()));
 		} 
 		else if (shape.equals(EPathwayVertexShape.circle))
 		{
@@ -514,7 +517,8 @@ extends APathwayGraphViewRep {
 				GraphConstants.setAutoSize(changedMap, true);
 			}
 
-			GraphConstants.setBackground(changedMap, refRenderStyle.getCompoundNodeColor(false));
+			Vec3f tmpColor = refRenderStyle.getCompoundNodeColor(false);
+			GraphConstants.setBackground(changedMap, new Color(tmpColor.x(), tmpColor.y(), tmpColor.z()));
 		} 
 		else if (shape.equals(EPathwayVertexShape.rectangle))
 		{
@@ -523,7 +527,8 @@ extends APathwayGraphViewRep {
 						(int) ((vertexRep.getYOrigin() - (vertexRep.getHeight() / 2)) * fScalingFactor),
 						refRenderStyle.getEnzymeNodeWidth(false), refRenderStyle.getEnzymeNodeHeight(false));
 			
-			GraphConstants.setBackground(changedMap, refRenderStyle.getEnzymeNodeColor(false));
+			Vec3f tmpColor = refRenderStyle.getEnzymeNodeColor(false);
+			GraphConstants.setBackground(changedMap, new Color(tmpColor.x(), tmpColor.y(), tmpColor.z()));
 		}
 		else
 		{
@@ -773,8 +778,8 @@ extends APathwayGraphViewRep {
 
 			if (iDistanceIndex < PathwayRenderStyle.neighborhoodNodeColorArraysize)
 			{
-				nodeColor = refRenderStyle
-						.getNeighborhoodNodeColorByDepth(iDistanceIndex);
+				Vec3f tmpColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iDistanceIndex);
+				nodeColor = new Color(tmpColor.x(), tmpColor.y(), tmpColor.z());
 			} else
 			{
 				assert false : "can not find color for selection depth";
@@ -839,14 +844,15 @@ extends APathwayGraphViewRep {
 		return;
 	}
 
-	public void highlightCell(final DefaultGraphCell refCell, final Color color) {
+	public void highlightCell(final DefaultGraphCell refCell, final Vec3f color) {
 
 		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
 
+		Color tmpColor = new Color(color.x(), color.y(), color.z());
 		//GraphConstants.setBackground(attributeMap, color);
 		GraphConstants.setBorder(attributeMap,
-				BorderFactory.createLineBorder(color, 3) );
+				BorderFactory.createLineBorder(tmpColor) );
 		
 		nested.put(refCell, attributeMap);
 		refGraphLayoutCache.edit(nested, null, null, null);

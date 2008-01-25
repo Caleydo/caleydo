@@ -53,7 +53,7 @@ import org.geneview.util.graph.IGraphItem;
 import com.sun.opengl.util.BufferUtil;
 
 /**
- * Jukebox setup that supports slerp animation.
+ * Jukebox setup for pathways that supports slerp animation.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
@@ -138,7 +138,6 @@ implements IMediatorReceiver, IMediatorSender {
 
 		this.refViewCamera.setCaller(this);
 
-		// refHashPathwayIdToModelMatrix = new HashMap<Integer, Mat4f>();
 		refGLPathwayManager = new GLPathwayManager(refGeneralManager);
 		refGLPathwayTextureManager = new GLPathwayTextureManager(
 				refGeneralManager);
@@ -1444,10 +1443,8 @@ implements IMediatorReceiver, IMediatorSender {
 		matDest.makeIdent();
 		
 		gl.glLineWidth(4);
-		Color tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
-		gl.glColor4f(tmpLineColor.getRed() / 255.0f, 
-				tmpLineColor.getGreen() / 255.0f, 
-				tmpLineColor.getBlue() / 255.0f, 1.0f);
+		Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
+		gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
 		
 		
 		for (int iLayerIndex = 0; iLayerIndex < 

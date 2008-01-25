@@ -4,6 +4,7 @@
 package org.geneview.core.view.opengl.canvas.scatterplot;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec4i;
 
 import java.awt.Color;
@@ -240,7 +241,7 @@ extends AGLCanvasHeatmap2D
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				new GLPathwayManager(setGeneralManager));
 		
-		colorMapper = new ColorMapping(0, 60000);
+		colorMapper = new ColorMapping(0, 1);
 		
 		hashChildrenWindow = new HashMap <Integer,Vec4i> (4);		
 	}
@@ -1189,11 +1190,8 @@ extends AGLCanvasHeatmap2D
 //		//range [fColorMappingMiddleValue..fColorMappingHighValue]
 //		float fScale = (fValue) * fColorMappingHighRangeDivisor;
 		
-		Color tmpNodeColor = colorMapper.colorMappingLookup(iValue);
-		gl.glColor4f(tmpNodeColor.getRed() / 255.0f, 
-				tmpNodeColor.getGreen() / 255.0f, 
-				tmpNodeColor.getBlue() / 255.0f, 1.0f);
-
+		Vec3f tmpNodeColor = colorMapper.colorMappingLookup(iValue);
+		gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
 	}
 
 	public final void setRednerIndexStartStop(final int iSetRenderIndexStart,

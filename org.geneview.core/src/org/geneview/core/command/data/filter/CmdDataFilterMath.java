@@ -215,15 +215,15 @@ extends ACmdCreate_IdTargetLabelAttr {
 				// Shifting space so that all values are >= 1
 				fTmp += 1;
 				
-				// Clip data why?
-//				if (fTmp <= 1)
-//				{
-//					fTmp = 1f;
-//				}
-//				else if(fTmp >= 1000)
-//				{
-//					fTmp = 1000f;
-//				}
+				// Clip data
+				if (fTmp <= 1)
+				{
+					fTmp = 1f;
+				}
+				else if(fTmp >= 1000)
+				{
+					fTmp = 1000f;
+				}
 				
 				fArTmpTarget[index] = (float) Math.log10(fTmp);					
 			}			
@@ -253,10 +253,12 @@ extends ACmdCreate_IdTargetLabelAttr {
 	//TODO: Normalize to values other than 0-1
 	private float[] normalize(IStorage tmpStorage)
 	{
-		float[] fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
+		float[] fArTmpTarget = new float[0];
 		
 		if (tmpStorage.getSize(StorageType.FLOAT) > 1)
 		{
+			fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
+			
 			float[] fArTmpSrc = tmpStorage.getArrayFloat();
 			
 			for (int iCount = 0; iCount < fArTmpSrc.length; iCount++)
@@ -266,13 +268,26 @@ extends ACmdCreate_IdTargetLabelAttr {
 				//{
 					fArTmpTarget[iCount] = (fArTmpSrc[iCount] - tmpStorage.getMinFloat()) / 
 										(tmpStorage.getMaxFloat() - tmpStorage.getMinFloat());
+					
 				//}
 				//else
 				//{
 				//	fArTmpTarget[iCount] = (fArTmpSrc[iCount] - )
 				//}
 			}			
-		}		
+		}	
+		else if (tmpStorage.getSize(StorageType.INT) > 1)
+		{
+			fArTmpTarget = new float[tmpStorage.getSize(StorageType.INT)];
+			
+			int[] iArTmpSrc = tmpStorage.getArrayInt();
+			
+			for (int iCount = 0; iCount < iArTmpSrc.length; iCount++)
+			{
+				fArTmpTarget[iCount] = ((float)iArTmpSrc[iCount] - tmpStorage.getMinInt()) / 
+									(tmpStorage.getMaxInt() - tmpStorage.getMinInt());
+			}			
+		}	
 		return fArTmpTarget;		
 	}
 

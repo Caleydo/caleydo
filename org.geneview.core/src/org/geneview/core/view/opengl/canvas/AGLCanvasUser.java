@@ -6,6 +6,11 @@ package org.geneview.core.view.opengl.canvas;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -25,11 +30,14 @@ import org.geneview.core.view.jogl.mouse.AViewCameraListenerObject;
 import org.geneview.core.view.opengl.IGLCanvasDirector;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 
+import com.sun.opengl.util.Screenshot;
+
 /**
  * 
  * @see org.geneview.core.view.jogl.IJoglMouseListener
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public abstract class AGLCanvasUser 
 extends AViewCameraListenerObject

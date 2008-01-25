@@ -1,6 +1,7 @@
 package org.geneview.core.util.mapping;
 
-import java.awt.Color;
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -44,9 +45,7 @@ public abstract class AGenomeMapper {
 		alMappingStorage = new ArrayList<IStorage>();
 		refGenomeIdManager = refGeneralManager.getSingelton().getGenomeIdManager();
 		
-		// Create Color Lookup Table
-		// FIXME: take MIN MAX out of storage!!
-		expressionColorMapping = new ColorMapping(0, 60000);
+		expressionColorMapping = new ColorMapping(0, 1);
 	}
 	
 	public void setMappingData(final ArrayList<ISet> alSetData) {
@@ -67,13 +66,13 @@ public abstract class AGenomeMapper {
 		}	
 	}
 	
-	public final ArrayList<Color> getMappingColorArrayByVertexRep(
+	public final ArrayList<Vec3f> getMappingColorArrayByVertexRep(
 			final PathwayVertexGraphItemRep pathwayVertexRep) {
 		
 		// Do nothing if picked node is invalid.
 		if (pathwayVertexRep == null)
 		{
-			return new ArrayList<Color>();
+			return new ArrayList<Vec3f>();
 		}
 		
 		if (pathwayVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
@@ -82,30 +81,28 @@ public abstract class AGenomeMapper {
 		}
 		else if (pathwayVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.enzyme))
 		{
-			//return getMappingColorArrayByEnzymeVertex(pathwayVertexRep.getPathwayVertexGraphItem());
-			
-			ArrayList<Color> arMappingColor = new ArrayList<Color>();
-			arMappingColor.add(Color.BLACK);
+			ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
+			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
 			return arMappingColor;
 		}
 		
-		return new ArrayList<Color>();
+		return new ArrayList<Vec3f>();
 	}
 	
-	public ArrayList<Color> getMappingColorArrayByGeneID(
+	public ArrayList<Vec3f> getMappingColorArrayByGeneID(
 			String sGeneID) {
 		
 		// Remove prefix ("hsa:")
 		sGeneID = sGeneID.substring(4);
 		
-		ArrayList<Color> arMappingColor = new ArrayList<Color>();
+		ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 		
 		int iGeneID = refGenomeIdManager.getIdIntFromStringByMapping(sGeneID, 
 				EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
 		if (iGeneID == -1)
 		{	
-			arMappingColor.add(Color.BLACK);
+			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
 			return arMappingColor;
 		}
 		
@@ -114,7 +111,7 @@ public abstract class AGenomeMapper {
 	
 		if (iAccessionID == -1)
 		{	
-			arMappingColor.add(Color.BLACK);
+			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
 			return arMappingColor;
 		}
 
@@ -123,7 +120,7 @@ public abstract class AGenomeMapper {
 
 		if (iExpressionStorageIndex == -1)
 		{	
-			arMappingColor.add(Color.BLACK);
+			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
 			return arMappingColor;
 		}
 		
@@ -147,20 +144,16 @@ public abstract class AGenomeMapper {
 						"] does not contain float[]!",LoggerType.ERROR);
 			}
 						
-			float fExpressionValue = bufferFloatArray[iExpressionStorageIndex];
-			
-			if (fExpressionValue <= 1)
-				arMappingColor.add(Color.WHITE);
-			else
-				arMappingColor.add(expressionColorMapping.colorMappingLookup((int)fExpressionValue));			
+			float fExpressionValue = bufferFloatArray[iExpressionStorageIndex];	
+			arMappingColor.add(expressionColorMapping.colorMappingLookup(fExpressionValue));
 		}
 		
 		return arMappingColor;
 	}
 	
-	protected abstract ArrayList<Color> getMappingColorArrayByGeneVertexRep(
+	protected abstract ArrayList<Vec3f> getMappingColorArrayByGeneVertexRep(
 			final PathwayVertexGraphItemRep pathwayVertexRep);
 	
-	protected abstract ArrayList<Color> getMappingColorArrayByEnzymeVertex(
+	protected abstract ArrayList<Vec3f> getMappingColorArrayByEnzymeVertex(
 			final PathwayVertexGraphItem pathwayVertex);
 }
