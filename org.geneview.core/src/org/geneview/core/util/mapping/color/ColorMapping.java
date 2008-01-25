@@ -12,7 +12,7 @@ import gleem.linalg.Vec3f;
  *
  */
 public class ColorMapping 
-extends AColorMappingInt {
+extends AColorMapping {
 
 	private float fMid;
 	
