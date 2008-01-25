@@ -8,6 +8,9 @@
 	   				
 		<!-- Creating Data -->
 			<read-xml-file target="data/bootstrap/alex/load_set_storage_virtual-array_for_pathways_parcoords.xml" />	   				
+	   			
+      	<!-- Creating GenomeId mapping -->
+		  	<read-xml-file target="data/bootstrap/alex/load_genome_id_mapping.xml" />	   					   			
 	   				
 		<!-- Window	10331	-->
 		
@@ -19,16 +22,10 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="16401" label="GL Parallel Coordinates" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
-							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
-							detail="35101 36101 37101" /> 
+							attrib3="0 20 0 20 -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
+							detail="35101 36101 37101 95101" /> 
 							
-	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="96501" label="Mediator A" 		attrib1="15201" attrib2="19401 10401 20401" detail="DATA_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="97501" label="Mediator B" 		attrib1="25201" attrib2="21401 10401 22401" detail="DATA_MEDIATOR" /> 
-
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401" detail="SELECTION_MEDIATOR" />  
-     
+	 
    </CommandBuffer>
     
   </Application>

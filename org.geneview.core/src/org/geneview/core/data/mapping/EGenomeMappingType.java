@@ -197,7 +197,12 @@ implements IGeneViewDefaultType <EGenomeMappingType> {
 	MICROARRAY_2_MICROARRAY_EXPRESSION (
 			EGenomeIdType.MICROARRAY,
 			EGenomeIdType.MICROARRAY_EXPRESSION,
-			EGenomeMappingDataType.INT2INT),	
+			EGenomeMappingDataType.INT2INT),
+			
+	MICROARRAY_EXPRESSION_2_ACCESSION (
+			EGenomeIdType.MICROARRAY_EXPRESSION,
+			EGenomeIdType.ACCESSION,
+			EGenomeMappingDataType.INT2INT),
 				
 	/* --- Enzyme --- */
 	ENZYME_CODE_2_ENZYME  (

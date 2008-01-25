@@ -7,7 +7,7 @@
     <CommandBuffer>  			
 	   				
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/load_set_storage_virtual-array_for_basic_unit_test.xml" />	   				
+			<read-xml-file target="data/bootstrap/shared/testing/load_set_storage_virtual-array_for_basic_unit_test.xml" />	   				
 	   				
 		<!-- Window	10331	-->
 		<!--
