@@ -55,7 +55,7 @@ public class UpdateAction extends Action implements IAction {
 			String homeBase = System
 					.getProperty("org.geneview.rcp",
 							//"file:/home/mstreit/projects/geneview/SVN/org.geneview.update/");
-							"http://galactica.icg.tugraz.at/geneview");
+							"http://galactica.icg.tugraz.at/geneview/");
 						
 			URL url = new URL(homeBase);
 			
@@ -66,28 +66,5 @@ public class UpdateAction extends Action implements IAction {
 		}
 		result.setScope(scope);
 		return result;
-		
-//		SSLSocketFactory ssf;
-//		TrustManagerFactory tmf;
-//		KeyStore ks;
-//		FileInputStream fis;
-//		String pathKeyStore="C:
-//		client.keystore";
-//		char[] passphrase = "keystorePassword".toCharArray();
-//		fis=new FileInputStream(pathKeyStore);
-//		ks = KeyStore.getInstance("JKS");
-//		ks.load(fis, passphrase);
-//		tmf = TrustManagerFactory.getInstance("SunX509");
-//		tmf.init(ks);
-//		SSLContext ctx = SSLContext.getInstance("TLS");
-//		ctx.init(null, tmf.getTrustManagers(), null);
-//		fis.close();
-//		try {
-//		URL url = new URL("https://yourpage");
-//		com.sun.net.ssl.HttpsURLConnection connection = (com.sun.net.ssl.HttpsURLConnection) url.openConnection();
-//		ssf = ctx.getSocketFactory();
-//		connection.setSSLSocketFactory(ssf);
-//		connection.connect();
-//		System.out.println("Ok :" + connection.getURL());
 	}
 }
