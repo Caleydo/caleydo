@@ -52,9 +52,13 @@ public enum ManagerType {
 		
 		VIEW("view manager", 30),
 		
+		// @deprecated
 		VIEW_GUI_AWT("Sing GUI manager",ManagerType.VIEW, 31),
 		
+		// @deprecated
 		VIEW_GUI_SWT("SWT GUI manager",ManagerType.VIEW, 32 ),	
+		
+		PICKING_MANAGER("Manage Picking for all Views", ManagerType.VIEW, 43),
 		
 		VIEW_DISTRIBUTE_GUI("distributed GUI", 29);
 

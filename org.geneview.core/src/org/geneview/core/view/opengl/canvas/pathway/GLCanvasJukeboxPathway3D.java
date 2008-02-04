@@ -932,11 +932,11 @@ implements IMediatorReceiver, IMediatorSender {
 
 		gl.glPushName(0);
 
-		/* create 5x5 pixel picking region near cursor location */
+		/* create 1x1 pixel picking region near cursor location */
 		GLU glu = new GLU();
 		glu.gluPickMatrix((double) pickPoint.x,
 				(double) (viewport[3] - pickPoint.y),// 
-				1.0, 1.0, viewport, 0); // pick width and height is set to 5
+				1.0, 1.0, viewport, 0); // pick width and height is set to 1
 		// (i.e. picking tolerance)
 
 		float h = (float) (float) (viewport[3] - viewport[1])

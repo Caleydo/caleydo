@@ -102,6 +102,8 @@ implements IViewGLCanvasManager {
 	private JoglCanvasForwarderType joglCanvasForwarderType;
 	
 	private DataEntitySearcherViewRep dataEntitySearcher;
+	
+	private PickingManager myPickingManager;
 
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
@@ -111,6 +113,8 @@ implements IViewGLCanvasManager {
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
+		myPickingManager = new PickingManager(setGeneralManager);
+		
 		hashViewId2View = new HashMap<Integer, IView>();
 
 		hashGLCanvas = new HashMap<Integer, GLCanvas>();
@@ -906,5 +910,10 @@ implements IViewGLCanvasManager {
 	public DataEntitySearcherViewRep getDataEntitySearcher() {
 		
 		return dataEntitySearcher;
+	}
+	
+	public PickingManager getPickingManager()
+	{
+		return myPickingManager;
 	}
 }

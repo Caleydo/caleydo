@@ -1,14 +1,16 @@
 package org.geneview.core.manager;
 
 
-import javax.swing.JFrame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.JFrame;
+
 import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.IViewRep;
+import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.view.IView;
+import org.geneview.core.view.IViewRep;
 import org.geneview.core.view.ViewType;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 
@@ -55,4 +57,10 @@ extends IGeneralManager {
 	 * @return
 	 */
 	public Iterator<JFrame> getWorkspaceIterator();
+	
+	/**
+	 * Get the PickingManager which is responsible for system wide picking
+	 * @return the PickingManager
+	 */
+	public PickingManager getPickingManager();
 }

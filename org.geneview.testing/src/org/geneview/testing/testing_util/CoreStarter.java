@@ -25,7 +25,7 @@ public class CoreStarter {
 		if  (xmlFileName=="") 
 		{
 			geneviewCore.setXmlFileName(
-				"data/bootstrap/bootstrap_sample_basic_unit_test.xml"); 	
+				"data/bootstrap/shared/testing/bootstrap_sample_basic_unit_test.xml"); 	
 		}
 
 		geneviewCore.run_SWT();
