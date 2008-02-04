@@ -860,13 +860,12 @@ implements IViewGLCanvasManager {
 	}
 
 
-	public JFrame createWorkspace(ManagerObjectType useViewCanvasType, String sAditionalParameter) {
+	public JFrame createWorkspace(
+			ManagerObjectType useViewCanvasType, String sAditionalParameter) {
 
 		switch (useViewCanvasType)
 		{
 		case VIEW_NEW_FRAME:
-//			WorkspaceSwingFrame newJFrame = 
-//				new WorkspaceSwingFrame( refGeneralManager, true);
 			JFrame newJFrame = 
 				new JFrame();
 			arWorkspaceJFrame.add(newJFrame);
@@ -880,13 +879,6 @@ implements IViewGLCanvasManager {
 		} //switch (useViewCanvasType)
 	
 	}
-
-
-	public Iterator<JFrame> getWorkspaceIterator() {
-
-		return arWorkspaceJFrame.iterator();
-	}
-
 	
 	/**
 	 * @return the joglCanvasForwarderType
@@ -895,8 +887,6 @@ implements IViewGLCanvasManager {
 	
 		return joglCanvasForwarderType;
 	}
-
-
 	
 	/**
 	 * @param joglCanvasForwarderType the joglCanvasForwarderType to set

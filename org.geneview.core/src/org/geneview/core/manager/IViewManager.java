@@ -3,7 +3,6 @@ package org.geneview.core.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.JFrame;
 
@@ -15,9 +14,10 @@ import org.geneview.core.view.ViewType;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 
 /**
- * Manage all canvas, view, ViewRep's nad GLCanvas objects.
+ * Manage all canvas, view, ViewRep's and GLCanvas objects.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public interface IViewManager 
 extends IGeneralManager {
@@ -50,13 +50,6 @@ extends IGeneralManager {
 	public JFrame createWorkspace( 
 			final ManagerObjectType useViewCanvasType,
 			final String sAditionalParameter );
-	
-	/**
-	 * Get an iterator for all avaliable JFrames (== WorkspaceSwingFrame)
-	 * 
-	 * @return
-	 */
-	public Iterator<JFrame> getWorkspaceIterator();
 	
 	/**
 	 * Get the PickingManager which is responsible for system wide picking

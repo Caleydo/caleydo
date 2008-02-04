@@ -11,6 +11,7 @@ import org.geneview.core.command.view.opengl.ACmdGLObjectPathway3D;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
+import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
@@ -26,6 +27,8 @@ extends ACmdGLObjectPathway3D {
 	protected ArrayList<Integer> iArSetIDs;
 	
 	protected float [] fResolution;
+	
+	private int iMappingRowCount = -1;
 	
 	
 	/**
@@ -74,7 +77,13 @@ extends ACmdGLObjectPathway3D {
 			StringConversionTool.convertStringToFloatArrayVariableLength(
 					sAttribute3);
 		
-		setParameterHandler_DetailsPathway3D();
+		refParameterHandler.setValueAndTypeAndDefault("mapping_row_count", 
+				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()), 
+				ParameterHandlerType.INT, "1");
+		
+		iMappingRowCount = refParameterHandler.getValueInt("mapping_row_count");
+		
+		setParameterHandler_DetailsPathway3D();	
 	}
 
 	@Override
@@ -91,6 +100,7 @@ extends ACmdGLObjectPathway3D {
 		
 		canvas.addSetId(iArTmp);
 		canvas.setTextureTransparency(fSetTransparencyValue);
+		canvas.setMappingRowCount(iMappingRowCount);
 	}
 
 	@Override

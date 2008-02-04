@@ -1,14 +1,4 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.geneview.core.manager.type;
-
-//import prometheus.util.exception.PrometheusRuntimeException;
 
 /**
  * Types of managers
@@ -16,6 +6,7 @@ package org.geneview.core.manager.type;
  * @see org.geneview.core.manager.enum.ManagerType
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public enum ManagerObjectType {
@@ -41,7 +32,6 @@ public enum ManagerObjectType {
 	 */
 	STORAGE_FLAT(ManagerType.DATA_STORAGE),
 	
-	
 	/*
 	 * SELECTION
 	 */
@@ -54,13 +44,6 @@ public enum ManagerObjectType {
 	VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.DATA_VIRTUAL_ARRAY),
 	
 	VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
-	
-//	/**
-//	 * Load a microarray dataset. Is defined as IVirtualArray, because 
-//	 * all storage decives are loaded prior.
-//	 */
-//	SELECTION_LOAD_MICROARRAY(ManagerType.VIRTUAL_ARRAY),
-	
 	
 	/*
 	 * SET
@@ -88,18 +71,6 @@ public enum ManagerObjectType {
 	VIEW_CANVAS_FORWARDER(ManagerType.VIEW),
 	
 	VIEW_HISTOGRAM(ManagerType.VIEW),
-	
-	// VIEW_OPENGL_CANVAS(ManagerType.VIEW),
-	
-//	VIEW_OPENGL_TEST_TRIANGLE(ManagerType.VIEW),
-//	
-//	VIEW_OPENGL_HEATMAP(ManagerType.VIEW),
-//	
-//	VIEW_OPENGL_SCATTERPLOT2D(ManagerType.VIEW),
-	
-//	VIEW_SWT_SCATTERPLOT2D(ManagerType.VIEW),
-//	
-//	VIEW_SWT_SCATTERPLOT3D(ManagerType.VIEW),
 	
 	VIEW_SWT_DENDROGRAM(ManagerType.VIEW),
 	
@@ -140,31 +111,38 @@ public enum ManagerObjectType {
 	VIEW_SWT_DATA_ENTITY_SEARCHER(ManagerType.VIEW),
 	
 	VIEW_META_TABLE(ManagerType.VIEW),
-	
-	//deprecated
-	
-	VIEW_HISTOGRAM2D(ManagerType.VIEW),
-	
-	VIEW_HEATMAP2D(ManagerType.VIEW),
-	
-	/** Create new JOGL canvas with a single GLEventListener */
-	VIEW_JOGL_CANVAS_SINGLE(ManagerType.VIEW),
-	
-	/** Create new JOGL canvas with a multiple GLEventListener */
-	VIEW_JOGL_CANVAS_MULTIPLE(ManagerType.VIEW),
-	
-	VIEW_JOGL_HISTOGRAM(ManagerType.VIEW),
 
 	VIEW_NEW_FRAME(ManagerType.VIEW),
 	
-	/** Creates a new internal frame */
-	VIEW_NEW_IFRAME(ManagerType.VIEW),
+//	Deprecated
+	
+//	VIEW_HISTOGRAM2D(ManagerType.VIEW),
+//	
+//	VIEW_HEATMAP2D(ManagerType.VIEW),
+//	
+//	/** Create new JOGL canvas with a single GLEventListener */
+//	VIEW_JOGL_CANVAS_SINGLE(ManagerType.VIEW),
+//	
+//	/** Create new JOGL canvas with a multiple GLEventListener */
+//	VIEW_JOGL_CANVAS_MULTIPLE(ManagerType.VIEW),
+//	
+//	VIEW_JOGL_HISTOGRAM(ManagerType.VIEW),
+//
+//	
+//	/** Creates a new internal frame */
+//	VIEW_NEW_IFRAME(ManagerType.VIEW),
+	
+// 	VIEW_OPENGL_CANVAS(ManagerType.VIEW),
+//	VIEW_OPENGL_TEST_TRIANGLE(ManagerType.VIEW),
+//	VIEW_OPENGL_HEATMAP(ManagerType.VIEW),
+//	VIEW_OPENGL_SCATTERPLOT2D(ManagerType.VIEW),
+//	VIEW_SWT_SCATTERPLOT2D(ManagerType.VIEW),
+//	VIEW_SWT_SCATTERPLOT3D(ManagerType.VIEW),
 	
 	
 	/*
 	 * GUI_COMPONENT
 	 */
-//	GUI_COMPONENT(ManagerType.GUI_COMPONENT),
 	
 	GUI_AWT(ManagerType.VIEW_GUI_AWT),
 	
@@ -232,11 +210,6 @@ public enum ManagerObjectType {
 	LOGGER(ManagerType.LOGGER ),
 	
 	ALL_IN_ONE(ManagerType.SINGELTON);
-	
-	/*
-	 * Pathway
-	 */
-	
 	
 	/**
 	 * Define type of manager group

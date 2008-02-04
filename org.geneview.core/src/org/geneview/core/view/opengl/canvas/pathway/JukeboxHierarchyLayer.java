@@ -219,14 +219,17 @@ public class JukeboxHierarchyLayer {
 	
 	private void calculatePathwayScaling(final int iPathwayId) {
 		
+		if (pathwayTextureManager == null)
+			return;
+		
 		Texture pathwayTexture = pathwayTextureManager.getTextureByPathwayId(iPathwayId);
 		
 		int iImageHeight = pathwayTexture.getImageHeight();
 		int iImageWidth = pathwayTexture.getImageWidth();
 		float fTmpScalingFactor = 1;
-		if (iImageHeight > 600 && iImageHeight > iImageWidth)
+		if (iImageHeight > 570 && iImageHeight > iImageWidth)
 		{
-			fTmpScalingFactor = 600f / iImageHeight;
+			fTmpScalingFactor = 570f / iImageHeight;
 			fTmpScalingFactor *= getScalingFactor();
 			
 			getTransformByElementId(iPathwayId)

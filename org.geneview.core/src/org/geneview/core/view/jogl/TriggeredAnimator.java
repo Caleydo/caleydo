@@ -7,31 +7,37 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.media.opengl.GLAutoDrawable;
 
-import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.FPSAnimator;
 
 
 /**
  * @author Michael Kalkusch
  *
  */
-public class TriggeredAnimator extends Animator {
+public class TriggeredAnimator extends FPSAnimator {
 
 	protected AtomicInteger iEventCounter;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
-	public TriggeredAnimator() {
+	public TriggeredAnimator(final int iFrameRate) {
 
+		super (iFrameRate);
 		iEventCounter = new AtomicInteger(0);
 	}
 
-	/**
-	 * @param drawable
-	 */
-	public TriggeredAnimator(GLAutoDrawable drawable) {
 
-		super(drawable);
+	/**
+	 * Constructor.
+	 * 
+	 * @param drawable
+	 * @param iFrameRate
+	 */
+	public TriggeredAnimator(final GLAutoDrawable drawable, final int iFrameRate) {
+
+		super(drawable, iFrameRate);
+		iEventCounter = new AtomicInteger(0);
 	}
 	
 	/**

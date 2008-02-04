@@ -1,5 +1,9 @@
 package org.geneview.core.view.opengl.canvas.jukebox;
 
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
+import gleem.linalg.open.Transform;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,6 +15,7 @@ import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.JukeboxHierarchyLayer;
 
 /**
@@ -25,10 +30,13 @@ public class GLCanvasOverallJukebox3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 	
-//	private GLPathwayMemoPad memoPad;
+	private static final int MAX_LOADED_VIEWS = 100;
+	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 2f;
+	private static final float SCALING_FACTOR_STACK_LAYER = 1f;
+	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 
 	private JukeboxHierarchyLayer underInteractionLayer;
-	private JukeboxHierarchyLayer stackedLayer;
+	private JukeboxHierarchyLayer stackLayer;
 	private JukeboxHierarchyLayer poolLayer;
 	
 	private ArrayList<SlerpAction> arSlerpActions;
@@ -50,6 +58,32 @@ implements IMediatorReceiver, IMediatorSender {
 		super(generalManager, null, iViewId, iParentContainerId, "");
 
 		this.refViewCamera.setCaller(this);
+		
+		underInteractionLayer = new JukeboxHierarchyLayer(1, 
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER, 
+				null);
+		
+		stackLayer = new JukeboxHierarchyLayer(4, 
+				SCALING_FACTOR_STACK_LAYER, 
+				null);
+		
+		poolLayer = new JukeboxHierarchyLayer(MAX_LOADED_VIEWS, 
+				SCALING_FACTOR_POOL_LAYER, 
+				null);
+		
+		underInteractionLayer.setParentLayer(stackLayer);
+		stackLayer.setChildLayer(underInteractionLayer);
+		stackLayer.setParentLayer(poolLayer);
+		poolLayer.setChildLayer(stackLayer);
+		
+		Transform transformPathwayUnderInteraction = new Transform();
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.5f, -1f, 0f));
+		transformPathwayUnderInteraction.setScale(new Vec3f(
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
+				SCALING_FACTOR_UNDER_INTERACTION_LAYER));
+		underInteractionLayer.setTransformByPositionIndex(0,
+				transformPathwayUnderInteraction);
 	}
 	
 	/*
@@ -72,19 +106,13 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 		
-		retrieveContainedViews();
-	}
-
-	private void retrieveContainedViews() {
+		buildStackLayer(gl);
 		
+		retrieveContainedViews(gl);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
-	 */
-	public void renderPart(GL gl) {
 
+	private void retrieveContainedViews(final GL gl) {
+		
 		Iterator<IGLCanvasUser> iterCanvasUser = 
 			refGeneralManager.getSingelton().getViewGLCanvasManager()
 			.getAllGLCanvasUsers().iterator();
@@ -96,7 +124,102 @@ implements IMediatorReceiver, IMediatorSender {
 			if(tmp == this)
 				continue;
 			
-			tmp.renderPart(gl);
+			if (underInteractionLayer.getElementList().size() < 1)
+				underInteractionLayer.addElement(tmp.getId());
+			
+			stackLayer.addElement(tmp.getId());
+			
+			tmp.initGLCanvas(gl);
 		}
+	}
+	
+	private void buildStackLayer(final GL gl) {
+
+		float fTiltAngleDegree = 57; // degree
+		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
+		float fLayerYPos = 1.1f;
+		int iMaxLayers = 4;
+
+		// Create free pathway layer spots
+		Transform transform;
+		for (int iLayerIndex = 0; iLayerIndex < iMaxLayers; iLayerIndex++)
+		{
+			// Store current model-view matrix
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(-2.7f, fLayerYPos, 0f));
+			transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
+					SCALING_FACTOR_STACK_LAYER,
+					SCALING_FACTOR_STACK_LAYER));
+			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
+			stackLayer.setTransformByPositionIndex(iLayerIndex,
+					transform);
+
+			fLayerYPos -= 1f;
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
+	 */
+	public void renderPart(GL gl) {
+
+//		renderPoolLayer(gl);
+		renderStackLayer(gl);
+		renderUnderInteractionLayer(gl);
+	}
+	
+	private void renderUnderInteractionLayer(final GL gl) {
+		
+		// Check if a pathway is currently under interaction
+		if (underInteractionLayer.getElementList().size() == 0)
+			return;
+
+		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
+		renderViewById(gl, iViewId, underInteractionLayer);
+	}
+	
+	private void renderStackLayer(final GL gl) {
+
+		Iterator<Integer> iterElementList = stackLayer.getElementList().iterator();
+		int iViewId = 0;
+		
+		while(iterElementList.hasNext())
+		{		
+			iViewId = iterElementList.next();		
+			
+//			// Check if pathway is visible
+//			if(!stackLayer.getElementVisibilityById(iPathwayId))
+//				continue;
+						
+			renderViewById(gl, iViewId, stackLayer);		
+		}
+	}
+	
+	private void renderViewById(final GL gl,
+			final int iViewId, 
+			final JukeboxHierarchyLayer layer) {
+		
+//		// Check if view is visible
+//		if(!layer.getElementVisibilityById(iViewId))
+//			return;
+		
+		gl.glPushMatrix();
+		
+		Transform transform = layer.getTransformByElementId(iViewId);
+		Vec3f translation = transform.getTranslation();
+		Rotf rot = transform.getRotation();
+		Vec3f scale = transform.getScale();		
+		Vec3f axis = new Vec3f();
+		float fAngle = rot.get(axis);
+
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
+		
+		((IGLCanvasUser)refGeneralManager.getSingelton()
+				.getViewGLCanvasManager().getItem(iViewId)).renderPart(gl);
+		
+		gl.glPopMatrix();	
 	}
 }

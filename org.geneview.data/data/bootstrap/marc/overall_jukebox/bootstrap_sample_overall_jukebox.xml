@@ -19,8 +19,22 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="16401" label="GL Parallel Coordinates" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
-							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
-							detail="35101 36101 37101" /> 							
+							attrib3="0 20 0 20 -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
+							detail="35101 36101 37101 95101" /> 
+							
+		<!-- Window	12331	-->	
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="12331"
+				label="Heatmap" attrib1="ROW	HORIZONTAL"	/>	 
+				 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	 
+			  	uniqueId="18401" parent="12331" gl_forwarder="99077" label="Canvas" attrib2="300 300" detail="1077991"	/>
+  		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"			cmdId="68993"	uniqueId="84401" parent="18401" label="GL Triangle	C"	
+				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
+				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 1.5f    2.0f 1.0f   400"			
+				attrib4="0 100"	
+				detail="35101 36101 37101" />													
 							
 		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 

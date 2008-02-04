@@ -474,7 +474,7 @@ implements ISWTGUIManager {
 			return hashAnimator.get(iAnimatorId);
 		}
 		
-		TriggeredAnimator newTriggeredAnimator = new TriggeredAnimator();		
+		TriggeredAnimator newTriggeredAnimator = new TriggeredAnimator(60);		
 		hashAnimator.put(iAnimatorId, newTriggeredAnimator);
 		
 		return newTriggeredAnimator;

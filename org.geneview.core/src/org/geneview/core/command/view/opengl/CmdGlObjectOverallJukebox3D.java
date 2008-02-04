@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.jukebox.GLCanvasOverallJukebox3D;
-import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 
 /**
  * @author Michael Kalkusch
@@ -18,7 +18,7 @@ import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
  *
  */
 public class CmdGlObjectOverallJukebox3D 
-extends ACmdGLObjectPathway3D {
+extends ACmdCreate_GlCanvasUser {
 
 	protected ArrayList<Integer> iArSetIDs;
 		

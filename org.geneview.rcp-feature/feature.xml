@@ -8,7 +8,7 @@
       os="linux,win32"
       ws="gtk,win32"
       nl="en_US"
-      arch="ppc,x86,x86_64">
+      arch="x86,x86_64">
 
    <description url="http://www.geneview.org">
       GeneView is a visualization framework for biomedical data.

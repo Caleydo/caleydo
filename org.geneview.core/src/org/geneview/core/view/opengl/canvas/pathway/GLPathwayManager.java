@@ -77,6 +77,8 @@ public class GLPathwayManager {
 	
 	private HashMap<Integer, ArrayList<Vec3f>> hashElementId2MappingColorArray;
 	
+	private int iMappingRowCount = -1;
+	
 	/**
 	 * Constructor.
 	 */
@@ -792,10 +794,8 @@ public class GLPathwayManager {
 			final float fNodeWidth,
 			final float fNodeHeight) {
 		
-		// Factor indicates how often the enzyme needs to be split
-		// so that all genes can be mapped.
-		int iRowCount = 2;
-		int iColumnCount = (int)Math.ceil((float)alMappingColor.size() / (float)iRowCount);
+		int iColumnCount = (int)Math.ceil((float)alMappingColor.size() 
+				/ (float)iMappingRowCount);
 		
 		Vec3f tmpNodeColor = null;
 		
@@ -817,16 +817,16 @@ public class GLPathwayManager {
 		else
 		{
 			gl.glTranslatef(-fNodeWidth + fNodeWidth / iColumnCount, 
-					-fNodeHeight + fNodeHeight / iRowCount, 0.0f);
+					-fNodeHeight + fNodeHeight / iMappingRowCount, 0.0f);
 
-			for (int iRowIndex = 0; iRowIndex < iRowCount; iRowIndex++)
+			for (int iRowIndex = 0; iRowIndex < iMappingRowCount; iRowIndex++)
 			{
 				for (int iColumnIndex = 0; iColumnIndex < iColumnCount; iColumnIndex++)
 				{
-					int iCurrentElement = iRowIndex * iRowCount + iColumnIndex;
+					int iCurrentElement = iRowIndex * iMappingRowCount + iColumnIndex;
 
 					if (iCurrentElement < alMappingColor.size())
-						tmpNodeColor = alMappingColor.get(iRowIndex+1 * iColumnIndex);
+						tmpNodeColor = alMappingColor.get((iRowIndex+1) * iColumnIndex);
 					else
 						continue;
 					
@@ -834,16 +834,16 @@ public class GLPathwayManager {
 					if (tmpNodeColor.x() != -1)
 					{
 						gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
-						gl.glScalef(1.0f / iColumnCount, 1.0f / iRowCount, 1.0f);
+						gl.glScalef(1.0f / iColumnCount, 1.0f / iMappingRowCount, 1.0f);
 						gl.glCallList(iEnzymeNodeDisplayListId);
-						gl.glScalef(iColumnCount, iRowCount, 1.0f);
+						gl.glScalef(iColumnCount, iMappingRowCount, 1.0f);
 					}
 
 					gl.glTranslatef(fNodeWidth * 2.0f / iColumnCount, 0.0f, 0.0f);
 				}
 		
 				gl.glTranslatef(-2.0f * fNodeWidth , 
-						2.0f * fNodeHeight / iRowCount, 0.0f);
+						2.0f * fNodeHeight / iMappingRowCount, 0.0f);
 			}			
 		}
 
@@ -889,5 +889,10 @@ public class GLPathwayManager {
 	public void enableAnnotation(final boolean bEnableAnnotation) {
 		
 		this.bEnableAnnotation = bEnableAnnotation;
+	}
+	
+	public void setMappingRowCount(final int iMappingRowCount) {
+		
+		this.iMappingRowCount = iMappingRowCount;
 	}
 }

@@ -1167,28 +1167,28 @@ public class GLCanvasHeatmap2DColumn extends AGLCanvasHeatmap2D
 			return;
 		}
 
-		ISet primaryTargetSet = alTargetSet.get(0);
-		if ((primaryTargetSet.hasCacheChanged(iSetCacheId))
-				|| (iHeatmapDisplayListId == -1))
-		{
+//		ISet primaryTargetSet = alTargetSet.get(0);
+//		if ((primaryTargetSet.hasCacheChanged(iSetCacheId))
+//				|| (iHeatmapDisplayListId == -1))
+//		{
 
-			iSetCacheId = primaryTargetSet.getCacheId();
+//			iSetCacheId = primaryTargetSet.getCacheId();
 
 			// System.out.print("H:");
 			// for ( int i=0;i<iHistogramIntervalls.length; i++) {
 			// System.out.print(";" +
 			// Integer.toString(iHistogramIntervalls[i]) );
 			// }
-			System.out.println("GLCanvasHeatmap2DColumn - UPDATED!");
+//			System.out.println("GLCanvasHeatmap2DColumn - UPDATED!");
 
 			render_createDisplayLists(gl);
 
-			refGeneralManager.getSingelton().logMsg(
-					"createHistogram() use ISet(" + primaryTargetSet.getId()
-							+ ":" + primaryTargetSet.getLabel() + ")",
-					LoggerType.FULL);
+//			refGeneralManager.getSingelton().logMsg(
+//					"createHistogram() use ISet(" + primaryTargetSet.getId()
+//							+ ":" + primaryTargetSet.getLabel() + ")",
+//					LoggerType.FULL);
 
-		}
+//		}
 
 		if (bUseGLWireframe)
 		{

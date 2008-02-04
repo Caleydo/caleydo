@@ -5,7 +5,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -501,15 +500,15 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 	private void renderPathwayPool(final GL gl) {
-
+		
 		// Initialize magnification factors with 0 (minimized)
 		ArrayList<Integer> alMagnificationFactor = new ArrayList<Integer>();
 
 		for (int iPathwayIndex = 0; iPathwayIndex < MAX_LOADED_PATHWAYS; iPathwayIndex++)
 		{
 			alMagnificationFactor.add(0);
-		}
-
+		}		
+		
 		// Load pathway storage
 		int iPathwayId = 0;
 		for (int iPathwayIndex = 0; iPathwayIndex < pathwayPoolLayer.getElementList().size(); iPathwayIndex++)
@@ -518,44 +517,45 @@ implements IMediatorReceiver, IMediatorSender {
 		
 			if (iMouseOverPickedPathwayId == iPathwayId)
 			{
-				if ((iPathwayIndex - 2 >= 0)
-						&& (alMagnificationFactor.get(iPathwayIndex - 2) < 1))
-				{
-					alMagnificationFactor.set(iPathwayIndex - 2, 1);
-				}
-
-				if ((iPathwayIndex - 1 >= 0)
-						&& (alMagnificationFactor.get(iPathwayIndex - 1) < 2))
-				{
-					alMagnificationFactor.set(iPathwayIndex - 1, 2);
-				}
+//				if ((iPathwayIndex - 2 >= 0)
+//						&& (alMagnificationFactor.get(iPathwayIndex - 2) < 1))
+//				{
+//					alMagnificationFactor.set(iPathwayIndex - 2, 1);
+//				}
+//
+//				if ((iPathwayIndex - 1 >= 0)
+//						&& (alMagnificationFactor.get(iPathwayIndex - 1) < 2))
+//				{
+//					alMagnificationFactor.set(iPathwayIndex - 1, 2);
+//				}
 
 				alMagnificationFactor.set(iPathwayIndex, 3);
 
-				if ((iPathwayIndex + 1 < alMagnificationFactor.size())
-						&& (alMagnificationFactor.get(iPathwayIndex + 1) < 2))
-				{
-					alMagnificationFactor.set(iPathwayIndex + 1, 2);
-				}
-
-				if ((iPathwayIndex + 2 < alMagnificationFactor.size())
-						&& (alMagnificationFactor.get(iPathwayIndex + 2) < 1))
-				{
-					alMagnificationFactor.set(iPathwayIndex + 2, 1);
-				}
+//				if ((iPathwayIndex + 1 < alMagnificationFactor.size())
+//						&& (alMagnificationFactor.get(iPathwayIndex + 1) < 2))
+//				{
+//					alMagnificationFactor.set(iPathwayIndex + 1, 2);
+//				}
+//
+//				if ((iPathwayIndex + 2 < alMagnificationFactor.size())
+//						&& (alMagnificationFactor.get(iPathwayIndex + 2) < 1))
+//				{
+//					alMagnificationFactor.set(iPathwayIndex + 2, 1);
+//				}
 			} else if (pathwayLayeredLayer.containsElement(iPathwayId)
 					|| pathwayUnderInteractionLayer.containsElement(iPathwayId))
 			{
 				alMagnificationFactor.set(iPathwayIndex, 2);
-			} else if (refHashPathwayContainingSelectedVertex2VertexCount
+			} 
+			else if (refHashPathwayContainingSelectedVertex2VertexCount
 					.containsKey(iPathwayId))
 			{
 				alMagnificationFactor.set(iPathwayIndex, 1);
 			}
 		}
-
+		
 		recalculatePathwayPoolTransformation(alMagnificationFactor);
-
+		
 		String sRenderText = "";
 		float fYPos = 0;
 		float fZPos = 8;
@@ -566,6 +566,10 @@ implements IMediatorReceiver, IMediatorSender {
 
 			iPathwayId = pathwayPoolLayer.getElementIdByPositionIndex(iPathwayIndex);
 
+//			// Ignore all list elements that are of no interest at the moment 
+//			if (alMagnificationFactor.get(iPathwayIndex) == 0)
+//				break;
+			
 			gl.glLoadName(iPathwayIndex + 1);
 
 			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex + 1))
@@ -614,9 +618,9 @@ implements IMediatorReceiver, IMediatorSender {
 			} else if (alMagnificationFactor.get(iPathwayIndex) == 0)
 			{
 				fYPos = 0.02f;
-
+	
 				gl.glColor3f(0, 0, 0);
-
+	
 				gl.glBegin(GL.GL_QUADS);
 				gl.glVertex3f(0, 0, 0);
 				gl.glVertex3f(0, fYPos, 0);
@@ -624,7 +628,7 @@ implements IMediatorReceiver, IMediatorSender {
 				gl.glVertex3f(0.1f, 0, 0);
 				gl.glEnd();
 			}
-
+			
 			gl.glColor4f(0, 0, 0, 0);
 
 			gl.glBegin(GL.GL_QUADS);
@@ -652,16 +656,19 @@ implements IMediatorReceiver, IMediatorSender {
 			if (alMagnificationFactor.get(iLineIndex) == 3)
 			{
 				fPathwayPoolHeight += 0.15;
-			} else if (alMagnificationFactor.get(iLineIndex) == 2)
+			} 
+			else if (alMagnificationFactor.get(iLineIndex) == 2)
 			{
 				fPathwayPoolHeight += 0.1;
-			} else if (alMagnificationFactor.get(iLineIndex) == 1)
+			} 
+			else if (alMagnificationFactor.get(iLineIndex) == 1)
 			{
 				fPathwayPoolHeight += 0.07;
-			} else if (alMagnificationFactor.get(iLineIndex) == 0)
-			{
-				fPathwayPoolHeight += 0.01;
-			}
+			} 
+//			else if (alMagnificationFactor.get(iLineIndex) == 0)
+//			{
+//				fPathwayPoolHeight += 0.01;
+//			}
 
 			transform.setTranslation(new Vec3f(-4.0f, -fPathwayPoolHeight, -6));
 		}
@@ -1397,6 +1404,11 @@ implements IMediatorReceiver, IMediatorSender {
 				LoggerType.MINOR_ERROR);
 	}
 	
+	public void setMappingRowCount(final int iMappingRowCount) {
+		
+		refGLPathwayManager.setMappingRowCount(iMappingRowCount);
+	}
+	
 	// TODO: render connecting lines to display list
 	public void renderConnectingLines(final GL gl) {
 		
@@ -1560,23 +1572,5 @@ implements IMediatorReceiver, IMediatorSender {
 
 		bRebuildVisiblePathwayDisplayLists = true;
 		refHashPathwayContainingSelectedVertex2VertexCount.clear();
-		
-		// TODO: clear textures and other stuff
-	}
-	
-	private void drawAxis(final GL gl) {
-		
-		gl.glLineWidth(10);
-	    gl.glBegin(GL.GL_LINES);
-	    gl.glColor4f(1, 0, 0, 1);
-	    gl.glVertex3f(0,  0,  0);
-	    gl.glVertex3f(1,  0,  0);
-	    gl.glColor4f(0, 1, 0, 1);
-	    gl.glVertex3f( 0,  0,  0);
-	    gl.glVertex3f( 0, 1,  0);
-	    gl.glColor4f(0, 0, 1, 1);
-	    gl.glVertex3f( 0,  0,  0);
-	    gl.glVertex3f( 0,  0, 1);
-	    gl.glEnd();
 	}
 }
