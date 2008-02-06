@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import javax.swing.ImageIcon;
+
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
 import org.geneview.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
@@ -173,8 +176,21 @@ implements IXmlParserHandler {
 		if (sTitle.isEmpty())
 			sTitle =  "unknown title";
 		
+		// Find out pathway texture width and height
+		// TODO: Find faster solution for extracting width and height
+		String sPathwayTexturePath = sImageLink.substring(
+				sImageLink.lastIndexOf('/') + 1, 
+				sImageLink.length());
+		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager()
+				.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getImagePath() + sPathwayTexturePath;
+		
+		ImageIcon img = new ImageIcon(sPathwayTexturePath);
+		int iWidth = img.getIconWidth();
+		int iHeight = img.getIconHeight();
+		
 		currentPathway = refGeneralManager.getSingelton().getPathwayManager().
-			createPathway(EPathwayDatabaseType.KEGG, iKeggId, sName, sTitle, sImageLink, sExternalLink);
+			createPathway(EPathwayDatabaseType.KEGG, iKeggId, sName, sTitle, 
+					sImageLink, sExternalLink, iWidth, iHeight);
     }
     
 	/**

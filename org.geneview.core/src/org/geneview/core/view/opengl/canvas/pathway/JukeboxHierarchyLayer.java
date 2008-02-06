@@ -6,10 +6,15 @@ import gleem.linalg.open.Transform;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.geneview.core.data.graph.core.PathwayGraph;
+import org.geneview.core.manager.IGeneralManager;
+
 import com.sun.opengl.util.texture.Texture;
 
 
 public class JukeboxHierarchyLayer {
+	
+	private IGeneralManager generalManager;
 	
 	private HashMap<Integer, Transform> hashElementPositionIndexToTransform;
 	
@@ -31,10 +36,13 @@ public class JukeboxHierarchyLayer {
 	
 	private float fScalingFactor = 0;
 	
-	public JukeboxHierarchyLayer(final int iCapacity, 
+	public JukeboxHierarchyLayer(
+			final IGeneralManager generalManager,
+			final int iCapacity, 
 			final float fScalingFactor,
 			final GLPathwayTextureManager pathwayTextureManager) {
 		
+		this.generalManager = generalManager;
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
 		llElementId = new LinkedList<Integer>();
 		llElementIdImportanceQueue = new LinkedList<Integer>();
@@ -219,13 +227,18 @@ public class JukeboxHierarchyLayer {
 	
 	private void calculatePathwayScaling(final int iPathwayId) {
 		
-		if (pathwayTextureManager == null)
-			return;
+//		if (pathwayTextureManager == null)
+//			return;
+//		
+//		Texture pathwayTexture = pathwayTextureManager.getTextureByPathwayId(iPathwayId);
 		
-		Texture pathwayTexture = pathwayTextureManager.getTextureByPathwayId(iPathwayId);
-		
-		int iImageHeight = pathwayTexture.getImageHeight();
-		int iImageWidth = pathwayTexture.getImageWidth();
+//		int iImageHeight = pathwayTexture.getImageHeight();
+//		int iImageWidth = pathwayTexture.getImageWidth();
+		int iImageWidth = ((PathwayGraph)generalManager.getSingelton()
+				.getPathwayManager().getItem(iPathwayId)).getWidth();
+		int iImageHeight = ((PathwayGraph)generalManager.getSingelton()
+				.getPathwayManager().getItem(iPathwayId)).getHeight();
+	
 		float fTmpScalingFactor = 1;
 		if (iImageHeight > 570 && iImageHeight > iImageWidth)
 		{

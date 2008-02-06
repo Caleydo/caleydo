@@ -146,13 +146,12 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		// Create Jukebox hierarchy
-		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(1, 
-				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
-				refGLPathwayTextureManager);
-		pathwayLayeredLayer = new JukeboxHierarchyLayer(4, 
-				SCALING_FACTOR_LAYERED_LAYER, refGLPathwayTextureManager);
-		pathwayPoolLayer = new JukeboxHierarchyLayer(MAX_LOADED_PATHWAYS, 
-				SCALING_FACTOR_POOL_LAYER, refGLPathwayTextureManager);
+		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(refGeneralManager,
+				1, SCALING_FACTOR_UNDER_INTERACTION_LAYER, refGLPathwayTextureManager);
+		pathwayLayeredLayer = new JukeboxHierarchyLayer(refGeneralManager,
+				4, SCALING_FACTOR_LAYERED_LAYER, refGLPathwayTextureManager);
+		pathwayPoolLayer = new JukeboxHierarchyLayer(refGeneralManager,
+				MAX_LOADED_PATHWAYS, SCALING_FACTOR_POOL_LAYER, refGLPathwayTextureManager);
 		pathwayUnderInteractionLayer.setParentLayer(pathwayLayeredLayer);
 		pathwayLayeredLayer.setChildLayer(pathwayUnderInteractionLayer);
 		pathwayLayeredLayer.setParentLayer(pathwayPoolLayer);
@@ -174,7 +173,8 @@ implements IMediatorReceiver, IMediatorSender {
 				refGLPathwayManager);
 		infoAreaRenderer.enableColorMappingArea(true);
 		
-		memoPad = new GLPathwayMemoPad(refGLPathwayManager,
+		memoPad = new GLPathwayMemoPad(refGeneralManager,
+				refGLPathwayManager,
 				refGLPathwayTextureManager);
 
 		dragAndDrop = new GLDragAndDrop(refGLPathwayTextureManager);
@@ -440,8 +440,8 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}
 		
-		float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
-				iPathwayId).getImageHeight()* GLPathwayManager.SCALING_FACTOR_Y;
+		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)refGeneralManager
+				.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
@@ -590,6 +590,10 @@ implements IMediatorReceiver, IMediatorSender {
 						.getPathwayManager().getItem(iPathwayId)).getTitle();
 			}
 			
+			// Limit pathway name in length
+			if(sRenderText.length()> 35 && alMagnificationFactor.get(iPathwayIndex) <= 2)
+				sRenderText = sRenderText.subSequence(0, 35) + "...";
+			
 			if (refHashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
 			{	
 				sRenderText = sRenderText
@@ -607,15 +611,18 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				GLTextUtils.renderText(gl, sRenderText, 18, 0, 0.06f, 0);
 				fYPos = 0.15f;
-			} else if (alMagnificationFactor.get(iPathwayIndex) == 2)
-			{
+			} 
+			else if (alMagnificationFactor.get(iPathwayIndex) == 2)
+			{	
 				GLTextUtils.renderText(gl, sRenderText, 12, 0, 0.04f, 0);
 				fYPos = 0.1f;
-			} else if (alMagnificationFactor.get(iPathwayIndex) == 1)
+			} 
+			else if (alMagnificationFactor.get(iPathwayIndex) == 1)
 			{
 				GLTextUtils.renderText(gl, sRenderText, 10, 0, 0.02f, 0);
 				fYPos = 0.07f;
-			} else if (alMagnificationFactor.get(iPathwayIndex) == 0)
+			} 
+			else if (alMagnificationFactor.get(iPathwayIndex) == 0)
 			{
 				fYPos = 0.02f;
 	
@@ -836,9 +843,9 @@ implements IMediatorReceiver, IMediatorSender {
 		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
 				fTextureTransparency, true);
 
-		float tmp = refGLPathwayTextureManager
-				.getTextureByPathwayId(iPathwayId).getImageHeight()
-				* GLPathwayManager.SCALING_FACTOR_Y;
+		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)refGeneralManager
+				.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
+		
 		gl.glTranslatef(0, tmp, 0);
 		refGLPathwayManager.renderPathway(gl, iPathwayId, false);
 		gl.glTranslatef(0, -tmp, 0);
@@ -1500,19 +1507,18 @@ implements IMediatorReceiver, IMediatorSender {
 									EGraphItemHierarchy.GRAPH_PARENT).get(0)).getKeggId())
 						{		
 							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
-									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdSrc)
-										.getImageHeight()-tmpVertexGraphItemRepSrc.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
+									 (((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayIdSrc)).getHeight()
+											 -tmpVertexGraphItemRepSrc.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 							
 							vecMatDest.set(tmpVertexGraphItemRepDest.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
-									 (refGLPathwayTextureManager.getTextureByPathwayId(iPathwayIdDest)
-									 	.getImageHeight()-tmpVertexGraphItemRepDest.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
-	
+									 (((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayIdDest)).getHeight()
+											 -tmpVertexGraphItemRepDest.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
+							
 							rotSrc.toMatrix(matSrc);
 							rotDest.toMatrix(matDest);
 
 							matSrc.xformPt(vecMatSrc, vecTransformedSrc);
 							matDest.xformPt(vecMatDest, vecTransformedDest);
-							
 
 							vecTransformedSrc.componentMul(vecScaleSrc);
 							vecTransformedSrc.add(vecTranslationSrc);

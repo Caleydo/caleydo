@@ -87,14 +87,17 @@ implements IPathwayManager {
 			final String sName,
 			final String sTitle, 
 			final String sImageLink, 
-			final String sExternalLink) {
+			final String sExternalLink,
+			final int iWidth,
+			final int iHeight) {
 
 		// TODO: handle this case appropriately
 		if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
 			return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
 		
 		PathwayGraph pathway = new PathwayGraph(
-				type, iKEGGId, sName, sTitle, sImageLink, sExternalLink);
+				type, iKEGGId, sName, sTitle, sImageLink, sExternalLink,
+				iWidth, iHeight);
 
 		hashPathwayIdToPathwayGraphLUT.put(iKEGGId, pathway);
 		hashPathwayTitleToPathwayIdLUT.put(sTitle, iKEGGId);

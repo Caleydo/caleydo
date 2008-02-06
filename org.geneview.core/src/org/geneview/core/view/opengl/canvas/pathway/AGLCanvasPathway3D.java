@@ -1204,11 +1204,14 @@ implements IMediatorReceiver, IMediatorSender {
 			refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 				getItem(iArPathwayIDs[iPathwayIndex]);
 
-			// Recalculate scaling factor
-			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
-			fPathwayTextureAspectRatio = 
-				(float)refPathwayTexture.getImageWidth() / 
-				(float)refPathwayTexture.getImageHeight();								
+//			// Recalculate scaling factor
+//			refPathwayTexture = refHashPathwayToTexture.get(refTmpPathway);
+//			fPathwayTextureAspectRatio = 
+//				(float)refPathwayTexture.getImageWidth() / 
+//				(float)refPathwayTexture.getImageHeight();		
+			
+			fPathwayTextureAspectRatio = (GLPathwayManager.SCALING_FACTOR_X * refTmpPathway.getWidth()) 
+				/ (GLPathwayManager.SCALING_FACTOR_Y * refTmpPathway.getHeight());
 			
 			if(refTmpPathway.containsItem(refVertexRep1.getPathwayVertexGraphItem()) == true)
 			{					

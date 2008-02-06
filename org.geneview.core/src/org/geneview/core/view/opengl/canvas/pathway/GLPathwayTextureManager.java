@@ -119,9 +119,11 @@ public class GLPathwayTextureManager {
 			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
 		
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
-		
-		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * refTmpPathwayTexture.getImageWidth();
-		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * refTmpPathwayTexture.getImageHeight();				
+
+		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * 
+			((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getWidth();
+		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * 
+			((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		gl.glLoadName(hashPathwayIdToPathwayTexturePickingId.get(iPathwayId));
 				

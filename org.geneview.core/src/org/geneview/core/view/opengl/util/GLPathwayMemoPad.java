@@ -11,6 +11,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
 
+import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
@@ -45,11 +46,12 @@ public class GLPathwayMemoPad {
 	private Texture trashCanTexture;
 	
 	public GLPathwayMemoPad(
+			final IGeneralManager refGeneralManager,
 			final GLPathwayManager refGLPathwayManager,
 			final GLPathwayTextureManager refGLPathwayTextureManager) {
 		
-		memoPad = new JukeboxHierarchyLayer(4, 
-				SCALING_FACTOR_MEMO_PAD, refGLPathwayTextureManager);
+		memoPad = new JukeboxHierarchyLayer(refGeneralManager,
+				4, SCALING_FACTOR_MEMO_PAD, refGLPathwayTextureManager);
 		
 		this.refGLPathwayManager = refGLPathwayManager;
 		this.refGLPathwayTextureManager = refGLPathwayTextureManager;

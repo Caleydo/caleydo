@@ -22,7 +22,9 @@ extends IGeneralManager {
 			final String sName, 
 			final String sTitle, 
 			final String sImageLink,
-			final String sExternalLink);
+			final String sExternalLink,
+			final int iWidth,
+			final int iHeight);
 	
 	public void createPathwayDatabase(final EPathwayDatabaseType type,
 			final String sXMLPath,

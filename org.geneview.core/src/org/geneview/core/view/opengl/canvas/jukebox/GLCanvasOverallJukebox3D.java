@@ -59,15 +59,18 @@ implements IMediatorReceiver, IMediatorSender {
 
 		this.refViewCamera.setCaller(this);
 		
-		underInteractionLayer = new JukeboxHierarchyLayer(1, 
+		underInteractionLayer = new JukeboxHierarchyLayer(refGeneralManager,
+				1, 
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER, 
 				null);
 		
-		stackLayer = new JukeboxHierarchyLayer(4, 
+		stackLayer = new JukeboxHierarchyLayer(refGeneralManager,
+				4, 
 				SCALING_FACTOR_STACK_LAYER, 
 				null);
 		
-		poolLayer = new JukeboxHierarchyLayer(MAX_LOADED_VIEWS, 
+		poolLayer = new JukeboxHierarchyLayer(refGeneralManager,
+				MAX_LOADED_VIEWS, 
 				SCALING_FACTOR_POOL_LAYER, 
 				null);
 		

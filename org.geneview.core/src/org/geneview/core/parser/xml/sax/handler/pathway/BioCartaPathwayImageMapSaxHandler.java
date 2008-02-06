@@ -11,6 +11,7 @@ import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -128,6 +129,8 @@ extends AXmlParserHandler {
 		
 		String sName = "";
     	String sImageLink = "";
+    	int iWidth = -1;
+    	int iHeight = -1;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -146,6 +149,16 @@ extends AXmlParserHandler {
    			{
    				sName = attributes.getValue(iAttributeIndex); 
    			}
+   			else if (sAttributeName.equals("width"))
+   			{
+   				iWidth = StringConversionTool.convertStringToInt(
+   						attributes.getValue(iAttributeIndex), -1); 
+   			}
+   			else if (sAttributeName.equals("height"))
+   			{
+   				iHeight = StringConversionTool.convertStringToInt(
+   						attributes.getValue(iAttributeIndex), -1); 
+   			}			
 		} 	
 		
 		if (sImageLink.isEmpty() || sName.isEmpty())
@@ -156,7 +169,8 @@ extends AXmlParserHandler {
 		currentPathway = refGeneralManager.getSingelton().getPathwayManager().
 			createPathway(EPathwayDatabaseType.BIOCARTA, 
 					rand.nextInt(), "<name>", sTitle, 
-					sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
+					sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName,
+					iWidth, iHeight);
 		
 		sTitle = "";
 	}

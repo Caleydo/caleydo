@@ -23,13 +23,19 @@ extends Graph {
 
 	private String sExternalLink;
 	
+	private int iWidth;
+	
+	private int iHeight;
+	
 	public PathwayGraph(
 			final EPathwayDatabaseType type,
 			final int iKeggId,
 			final String sName,
 			final String sTitle,
 			final String sImageLink,
-			final String sLink) {
+			final String sLink,
+			final int iWidth,
+			final int iHeight) {
 
 		super(iKeggId);
 		
@@ -39,6 +45,8 @@ extends Graph {
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
 		this.sExternalLink = sLink;
+		this.iWidth = iWidth;
+		this.iHeight = iHeight;
 	}
 	
 	public int getKeggId() {
@@ -69,6 +77,16 @@ extends Graph {
 	public final EPathwayDatabaseType getType() {
 		
 		return type;
+	}
+	
+	public final int getWidth() {
+		
+		return iWidth;
+	}
+
+	public final int getHeight() {
+		
+		return iHeight;
 	}
 	
 	@Override
