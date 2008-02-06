@@ -15,7 +15,6 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
-import org.geneview.core.view.opengl.canvas.pathway.JukeboxHierarchyLayer;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -117,7 +116,7 @@ public class GLPathwayMemoPad {
 		
 		gl.glLoadName(MEMO_PAD_PICKING_ID);
 		
-		gl.glColor3f(0.5f, 0.5f, 0.5f);
+		gl.glColor3f(0.7f, 0.7f, 0.7f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(-0.7f, -1.5f, 0.0f);
 		gl.glVertex3f(-0.7f, -2.3f, 0.0f);
@@ -126,7 +125,7 @@ public class GLPathwayMemoPad {
 		gl.glEnd();
 		
 		gl.glLineWidth(2);
-		gl.glColor3f(0.2f, 0.2f, 0.2f);
+		gl.glColor3f(0.4f, 0.4f, 0.4f);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(-0.7f, -1.5f, 0.0f);
 		gl.glVertex3f(-0.7f, -2.3f, 0.0f);

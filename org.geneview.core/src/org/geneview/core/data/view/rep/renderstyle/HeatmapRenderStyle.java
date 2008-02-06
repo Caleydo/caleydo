@@ -1,4 +1,4 @@
-package org.geneview.core.data.view.rep.pathway.renderstyle;
+package org.geneview.core.data.view.rep.renderstyle;
 
 import org.geneview.core.data.ARenderStyle;
 

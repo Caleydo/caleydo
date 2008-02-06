@@ -1,6 +1,6 @@
 package org.geneview.core.util.slerp;
 
-import org.geneview.core.view.opengl.canvas.pathway.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 public class SlerpAction {
 

@@ -26,7 +26,7 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
+import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IPathwayItemManager;
@@ -44,6 +44,7 @@ import org.geneview.core.view.opengl.util.GLDragAndDrop;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.GLPathwayMemoPad;
 import org.geneview.core.view.opengl.util.GLTextUtils;
+import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
@@ -101,8 +102,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private JukeboxHierarchyLayer pathwayLayeredLayer;
 
 	private JukeboxHierarchyLayer pathwayPoolLayer;
-	
-//	private ArrayList<float[]> alTextureColorByLayerPos;
 
 	private PathwayVertexGraphItemRep selectedVertex;
 
@@ -277,10 +276,9 @@ implements IMediatorReceiver, IMediatorSender {
 
 		doSlerpActions(gl);
 		
+		renderConnectingLines(gl);
 		renderScene(gl);
 		renderInfoArea(gl);
-
-		renderConnectingLines(gl);
 		
 		// int viewport[] = new int[4];
 		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
@@ -430,8 +428,16 @@ implements IMediatorReceiver, IMediatorSender {
 			if (!layer.getElementList().isEmpty()
 					&& pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) == iPathwayId)
 			{
-				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
-						fTextureTransparency, true);
+				if (layer.equals(pathwayLayeredLayer))
+				{
+					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+							fTextureTransparency, true);					
+				}
+				else
+				{
+					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+							1.0f, true);
+				}
 			}
 			else
 			{
@@ -439,7 +445,7 @@ implements IMediatorReceiver, IMediatorSender {
 						fTextureTransparency, false);
 			}
 		}
-		
+
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)refGeneralManager
 				.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		

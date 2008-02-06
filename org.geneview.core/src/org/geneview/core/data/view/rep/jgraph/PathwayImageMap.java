@@ -1,4 +1,4 @@
-package org.geneview.core.data.view.rep.pathway.jgraph;
+package org.geneview.core.data.view.rep.jgraph;
 
 import java.awt.Point;
 import java.awt.Rectangle;

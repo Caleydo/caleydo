@@ -10,7 +10,7 @@ import javax.media.opengl.glu.GLU;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
+import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.util.mapping.GeneAnnotationMapper;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;

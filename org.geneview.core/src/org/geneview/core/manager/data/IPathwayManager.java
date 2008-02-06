@@ -1,7 +1,7 @@
 package org.geneview.core.manager.data;
 
 import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.view.rep.pathway.jgraph.PathwayImageMap;
+import org.geneview.core.data.view.rep.jgraph.PathwayImageMap;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.data.pathway.PathwayDatabase;

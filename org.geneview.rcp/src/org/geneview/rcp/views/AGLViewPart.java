@@ -6,9 +6,9 @@ package org.geneview.rcp.views;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.media.opengl.GLCanvas;
 
@@ -24,12 +24,12 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
 
 import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.FPSAnimator;
 
 /**
  * Shared object for all GeneView viewPart objects.
@@ -92,7 +92,7 @@ extends ViewPart {
 			glCanvas.addGLEventListener(canvasForwarder);
 			
 			frameGL.add(glCanvas);					
-		    animatorGL = new Animator(glCanvas);
+		    animatorGL = new FPSAnimator(glCanvas, 60); // restricts maximum FPS to about 40 in reality
 		 
 		    frameGL.addWindowListener(new WindowAdapter() {
 		        public void windowClosing(WindowEvent e) {
@@ -132,7 +132,7 @@ extends ViewPart {
 					animatorGL.start();
 				}				
 			} else {
-				// not visisble
+				// not visible
 				//showMessage("Info - Action 1", "disable AWT frame, stop animator");	
 				if ( animatorGL.isAnimating() ) {
 					animatorGL.stop();

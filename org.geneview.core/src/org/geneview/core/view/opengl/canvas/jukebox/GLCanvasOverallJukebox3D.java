@@ -16,7 +16,7 @@ import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
-import org.geneview.core.view.opengl.canvas.pathway.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * Implementation of the overall Jukebox setup.

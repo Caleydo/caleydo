@@ -1,4 +1,4 @@
-package org.geneview.core.data.view.rep.pathway.renderstyle;
+package org.geneview.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec3f;
 
@@ -358,8 +358,8 @@ extends ARenderStyle {
 	
 	/**
 	 * 
-	 * @see org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle#neighborhoodNodeColorArraysize
-	 * @see org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle#highlightedNodeColor
+	 * @see org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle#neighborhoodNodeColorArraysize
+	 * @see org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle#highlightedNodeColor
 	 * 
 	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0 highlightedNodeColor is returened
 	 * @return

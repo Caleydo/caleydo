@@ -12,7 +12,6 @@ import org.geneview.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
@@ -187,6 +186,7 @@ implements IXmlParserHandler {
 		ImageIcon img = new ImageIcon(sPathwayTexturePath);
 		int iWidth = img.getIconWidth();
 		int iHeight = img.getIconHeight();
+		img = null;
 		
 		currentPathway = refGeneralManager.getSingelton().getPathwayManager().
 			createPathway(EPathwayDatabaseType.KEGG, iKeggId, sName, sTitle, 

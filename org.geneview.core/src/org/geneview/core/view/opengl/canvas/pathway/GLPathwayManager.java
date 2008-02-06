@@ -26,7 +26,7 @@ import org.geneview.core.data.graph.item.vertex.EPathwayVertexShape;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.view.rep.pathway.renderstyle.PathwayRenderStyle;
+import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;

@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.pathway;
+package org.geneview.core.view.opengl.util;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 
 import com.sun.opengl.util.texture.Texture;
 
@@ -227,13 +228,9 @@ public class JukeboxHierarchyLayer {
 	
 	private void calculatePathwayScaling(final int iPathwayId) {
 		
-//		if (pathwayTextureManager == null)
-//			return;
-//		
-//		Texture pathwayTexture = pathwayTextureManager.getTextureByPathwayId(iPathwayId);
+		if (pathwayTextureManager == null)
+			return;
 		
-//		int iImageHeight = pathwayTexture.getImageHeight();
-//		int iImageWidth = pathwayTexture.getImageWidth();
 		int iImageWidth = ((PathwayGraph)generalManager.getSingelton()
 				.getPathwayManager().getItem(iPathwayId)).getWidth();
 		int iImageHeight = ((PathwayGraph)generalManager.getSingelton()

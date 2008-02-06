@@ -252,7 +252,6 @@ public class GLJukeboxPathwayView extends AGLViewPart {
 			public void run() {
 
 				triggerCmdExternalAction(EExternalActionType.PATHWAY_CLEAR_ALL);
-				writeScreenshot();
 			}
 		};
 
