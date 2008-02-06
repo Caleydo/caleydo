@@ -2,8 +2,6 @@ package org.geneview.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Color;
-
 import org.geneview.core.data.ARenderStyle;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 

@@ -30,6 +30,7 @@ implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
 	RUNTIME("Runtime"),
 	SAXPARSER("Sax parser"),
 	VIRTUALARRAY("Virtual array"),
+	VIEW("View"),
 	SET("Set");
 	
 	private String sExceptionDetail;

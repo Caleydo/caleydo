@@ -3,11 +3,12 @@ package org.geneview.core.manager.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.geneview.core.data.IUniqueManagedObject;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerType;
-
-
+import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 
 /**
  * 
@@ -26,11 +27,12 @@ import org.geneview.core.manager.type.ManagerType;
  */
 
 public class PickingManager extends AAbstractManager 
-{
-	
+{	
 	private HashMap<Integer, Integer> hashSignatureToCounter;
 	
 	private HashMap<Integer, ArrayList<Integer>> hashSignatureToHitList;
+	
+	
 
 	public PickingManager(IGeneralManager setGeneralManager) 
 	{
@@ -50,8 +52,14 @@ public class PickingManager extends AAbstractManager
 	 * has to be between 0 and 99 
 	 * @return 
 	 */
-	public int getPickingID(int iViewID, int iType)
+	public int getPickingID(IUniqueManagedObject uniqueManagedObject, int iType)
 	{
+		checkType(iType);		
+		
+		int iViewID = uniqueManagedObject.getId();
+		
+		checkViewID(iViewID);
+		
 		int iSignature = iViewID * 100 + iType; 
 		
 		if(hashSignatureToCounter.get(iSignature) == null)
@@ -70,16 +78,17 @@ public class PickingManager extends AAbstractManager
 	/**
 	 * Extracts the nearest hit from the provided iArPickingBuffer
 	 * Stores it internally
+	 * Can process only one hit at at time at the moment
 	 * 
 	 * @param iHitCount
 	 * @param iArPickingBuffer
 	 */
-	public void calculateNearestHit(int iHitCount, int[] iArPickingBuffer)
+	public void processHits(int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
 	{
 		int iPickingBufferCounter = 0;
 	
 		
-		int iPickedObjectId =0;
+		int iPickedObjectId = 0;
 		
 		// Only pick object that is nearest
 		int iMinimumZValue = Integer.MAX_VALUE;
@@ -99,8 +108,9 @@ public class PickingManager extends AAbstractManager
 			iPickingBufferCounter += 4 ;
 		}		
 		if(iPickedObjectId != 0)
-			addPick(iPickedObjectId);
-		
+		{
+			processPicks(iPickedObjectId, myMode);
+		}
 		//return iPickedObjectId;		
 	}
 	
@@ -111,8 +121,12 @@ public class PickingManager extends AAbstractManager
 	 * @param iType
 	 * @return null if no Hits, else the ArrayList<Integer> with the hits
 	 */	
-	public ArrayList<Integer> getHits(int iViewID, int iType)
+	public ArrayList<Integer> getHits(IUniqueManagedObject uniqueManagedObject, int iType)
 	{
+		checkType(iType);
+		int iViewID = uniqueManagedObject.getId();
+		checkViewID(iViewID);
+		
 		int iSignature = getSignature(iViewID, iType);		
 		
 		if (hashSignatureToHitList.get(iSignature) == null)
@@ -127,35 +141,62 @@ public class PickingManager extends AAbstractManager
 	 * @param iViewID
 	 * @param iType
 	 */
-	public void flushHits(int iViewID, int iType)
+	public void flushHits(IUniqueManagedObject uniqueManagedObject, int iType)
 	{
+		checkType(iType);
+		int iViewID = uniqueManagedObject.getId();
+		checkViewID(iViewID);
+		
 		if (hashSignatureToHitList.get(getSignature(iViewID, iType)) != null)
 		{
 			hashSignatureToHitList.get(getSignature(iViewID, iType)).clear();
 		}
 			
 	}
+	
 			
 	private int calculateID(int iViewID, int iType, int iCount)
 	{		
 		return (iCount * 10000000 + iViewID * 100 + iType);		
 	}
 	
-	private void addPick(int iPickingID)
+	private void processPicks(int iPickingID, EPickingMode myMode)
 	{
 		int iSignature = getSignature(iPickingID);
 		
+		
+		
 		if (hashSignatureToHitList.get(iSignature) == null)
 		{
-			ArrayList<Integer> tempList = new ArrayList<Integer>();
-			tempList.add(iPickingID);
-			hashSignatureToHitList.put(iSignature, tempList);
+			if (myMode == EPickingMode.RemovePick)
+			{
+				return;
+			}
+			else 
+			{
+				ArrayList<Integer> tempList = new ArrayList<Integer>();
+				tempList.add(iPickingID);
+				hashSignatureToHitList.put(iSignature, tempList);
+			}
 		}
 		else
 		{
-			//ArrayList<Integer> listTemp =
-			hashSignatureToHitList.get(iSignature).add(iPickingID);
-			//listTemp.add(iSignature);
+			if(myMode == EPickingMode.AddPick)
+			{
+				//ArrayList<Integer> listTemp =
+				hashSignatureToHitList.get(iSignature).add(iPickingID);
+				//listTemp.add(iSignature);
+			}
+			if(myMode == EPickingMode.ReplacePick)
+			{
+				hashSignatureToHitList.get(iSignature).clear();
+				hashSignatureToHitList.get(iSignature).add(iPickingID);
+			}
+			if(myMode == EPickingMode.RemovePick)
+			{
+				ArrayList<Integer> alTempList = hashSignatureToHitList.get(iSignature);
+				alTempList.remove(iSignature);				
+			}
 		}		
 	}
 	
@@ -171,6 +212,26 @@ public class PickingManager extends AAbstractManager
 	private int getSignature(int iViewID, int iType)
 	{
 		return (iViewID * 100 + iType);
+	}
+	
+	private void checkViewID(int iViewID)
+	{
+		if (iViewID > 99999 || iViewID < 10000)
+		{
+			throw new GeneViewRuntimeException(
+					"PickingManager: The view id has to have exactly 5 digits",
+					GeneViewRuntimeExceptionType.VIEW);
+		}
+	}
+	
+	private void checkType(int iType)
+	{
+		if (iType >= 99 || iType <= 0)
+		{
+			throw new GeneViewRuntimeException(
+					"PickingManager: Type has to be larger then or exactly 0 and less than 100",
+					GeneViewRuntimeExceptionType.VIEW);
+		}
 	}
 	
 }

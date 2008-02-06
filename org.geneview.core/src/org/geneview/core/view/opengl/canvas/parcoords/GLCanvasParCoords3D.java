@@ -1,9 +1,12 @@
 package org.geneview.core.view.opengl.canvas.parcoords;
 
 
+import gleem.linalg.Vec4f;
+
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
@@ -11,9 +14,11 @@ import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
+import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
@@ -29,12 +34,12 @@ import com.sun.opengl.util.BufferUtil;
  */
 public class GLCanvasParCoords3D extends AGLCanvasUser {
 
+	
+
 //	private IGeneralManager refGeneralManager;
 	// how much room between the axis?
 	private float axisSpacing;
-	
-	private int iViewID;
-	
+		
 	private int iGLDisplayListIndex;
 	
 	private PickingManager myPickingManager;
@@ -43,9 +48,24 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	// flag whether one array should be a polyline or an axis
 	private boolean bRenderArrayAsPolyline = true;
 	// flag whether the whole data or the selection should be rendered
+	// TODO check this
 	private boolean bRenderSelection = true;
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = false;
+	
+	private boolean bIsDisplayListDirty = true;
+	
+	private boolean bRenderPolylineSelection = false;
+	
+	private ParCoordsRenderStyle renderStyle;
+	
+	private HashMap<Integer, Integer> hashPolylinePickingIDToIndex;
+	private HashMap<Integer, Integer> hashPolylineIndexToPickingID;
+	
+	
+	private static final int POLYLINE_SELECTION = 1;
+	private static final int AXIS_SELECTION = 2;		
+
 	
 	/**
 	 * Constructor
@@ -61,8 +81,6 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 			String label) 
 	{
 		super(refGeneralManager, null, viewId, parentContainerId, label);
-
-		iViewID = viewId;
 		
 		myPickingManager = refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 
@@ -70,8 +88,13 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		this.refViewCamera.setCaller(this);
 		this.axisSpacing = 1;
 		
+		hashPolylinePickingIDToIndex = new HashMap<Integer, Integer>();
+		hashPolylineIndexToPickingID = new HashMap<Integer, Integer>();
+		
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-		.getJoglCanvasForwarder().getJoglMouseListener();	 
+		.getJoglCanvasForwarder().getJoglMouseListener();
+		
+		renderStyle = new ParCoordsRenderStyle();
 		
 	}
 	
@@ -92,7 +115,11 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
 		
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+		gl.glClearColor(ParCoordsRenderStyle.CANVAS_COLOR.x(), 
+						ParCoordsRenderStyle.CANVAS_COLOR.y(), 
+						ParCoordsRenderStyle.CANVAS_COLOR.z(),
+						ParCoordsRenderStyle.CANVAS_COLOR.w());
+		
 
 		
 		gl.glEnable(GL.GL_DEPTH_TEST);
@@ -103,21 +130,13 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-		gl.glLineWidth(1.0f);
+	
 
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);		
 		//gl.glRenderMode(GL.GL_SELECT);
 		
-		iGLDisplayListIndex = gl.glGenLists(1);		
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		renderPolyLines(gl);
-		gl.glEndList();
-		
-		
-		
-		
-		
+		iGLDisplayListIndex = gl.glGenLists(1);				
 	}
 	
 
@@ -130,16 +149,23 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		
 		//gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+		if(bIsDisplayListDirty)
+		{
+			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+			renderScene(gl, false);
+			if(bRenderPolylineSelection)
+			{				
+				renderScene(gl, bRenderPolylineSelection);			
+			}
+			
 		
+			gl.glEndList();
+			bIsDisplayListDirty = false;
+		}
+			
 		gl.glCallList(iGLDisplayListIndex);
 		handlePicking(gl);
 		
-	
-		
-		// dirty flag - new list auf gleichen index
-		
-		//renderPolyLines(gl);	
-		// render coordinate system here
 	}
 	
 	/**
@@ -175,8 +201,10 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	
 
 	
-	private void renderPolyLines(GL gl)
+	private void renderScene(GL gl, boolean bRenderPolylineSelection)
 	{	
+		
+		int iNumberOfAxis = 0;
 		
 		if (alSetData == null)
 			return;
@@ -202,46 +230,98 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 
 		int iNumberOfStoragesToRender = 0;
-		int iNumberOfEntiresToRender = 0;
-		if(bRenderSelection)
-		{
-			iNumberOfStoragesToRender = alDataStorages.size();
-			iNumberOfEntiresToRender = alSetSelection.get(0).getSelectionIdArray().length;
+		int iNumberOfEntriesToRender = 0;
+		
+		if(bRenderPolylineSelection)
+		{			
+			iNumberOfStoragesToRender = myPickingManager.getHits(this, POLYLINE_SELECTION).size();
 		}
 		else
 		{
 			iNumberOfStoragesToRender = alDataStorages.size();
-			//iNumberOfEntiresToRender = alDataStorages.get(0).getArrayFloat().length;
-			iNumberOfEntiresToRender = 1000;
 		}
 		
-		if(bPreventOcclusion)
+		
+		if(bRenderSelection)
 		{
-			gl.glColor4f(0.0f, 0.0f, 0.0f, 0.1f);
+			//iNumberOfStoragesToRender = alDataStorages.size();
+			iNumberOfEntriesToRender = alSetSelection.get(0).getSelectionIdArray().length;
+		}	
+		else
+		{
+			//iNumberOfStoragesToRender = alDataStorages.size();
+			//iNumberOfEntiresToRender = alDataStorages.get(0).getArrayFloat().length;
+			iNumberOfEntriesToRender = 1000;
+		}
+		
+		// color management
+		if(bRenderPolylineSelection)
+		{
+			gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.z(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.w());
+		}
+		else if(bPreventOcclusion)
+		{
+			Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(iNumberOfEntriesToRender);
+			gl.glColor4f(occlusionPrevColor.x(),
+						occlusionPrevColor.y(),
+						occlusionPrevColor.z(),
+						occlusionPrevColor.w());
 		}
 		else
 		{
-			gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+			gl.glColor4f(ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.x(),
+						ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.y(),
+						ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.z(),
+						ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.w());
 		}
+		
+		
 		
 		if (bRenderArrayAsPolyline)
 		{
-			// render all polylines
+			iNumberOfAxis = iNumberOfEntriesToRender;
+			
+			// this for loop executes once per polyline
 			for (int iStorageCount = 0; iStorageCount < iNumberOfStoragesToRender; iStorageCount++)
 			{		
-				// TODO
-				
-				gl.glLoadName(myPickingManager.getPickingID(iViewID, 0));		
-				// render one polyline
+				// get picking ID and store it locally
+				if(hashPolylineIndexToPickingID.get(iStorageCount) == null)
+				{				
+					int iPickingID = myPickingManager.getPickingID(this, POLYLINE_SELECTION);
+					gl.glLoadName(iPickingID);	
+					hashPolylinePickingIDToIndex.put(iPickingID, iStorageCount);	
+					hashPolylineIndexToPickingID.put(iStorageCount, iPickingID);
+				}
+				else
+				{
+					gl.glLoadName(hashPolylineIndexToPickingID.get(iStorageCount));
+				}
+			
 				gl.glBegin(GL.GL_LINE_STRIP);		
 				
-				IStorage currentStorage = alDataStorages.get(iStorageCount);
+				int iWhichStorage = 0;
+				if(bRenderPolylineSelection)
+				{
+					iWhichStorage = hashPolylinePickingIDToIndex.
+						get(myPickingManager.getHits(this, POLYLINE_SELECTION).get(iStorageCount));
+				}
+				else
+				{
+					iWhichStorage = iStorageCount;
+				}
 				
+				IStorage currentStorage = alDataStorages.get(iWhichStorage);					
+		
 				
-				//int[] iArSelection = alSetSelection.get(0).getSelectionIdArray();
-				for (int iCount = 0; iCount < iNumberOfEntiresToRender; iCount++)
+				// this for loop executes once per axis
+				for (int iCount = 0; iCount < iNumberOfEntriesToRender; iCount++)
 				{
 					int iStorageIndex = 0;
+					
+					// if only selection should be rendered we get the ids out of the selection array					
 					if (bRenderSelection)
 					{
 						iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iCount];
@@ -251,23 +331,20 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 						iStorageIndex = iCount;
 					}							
 					gl.glVertex3f(iCount * axisSpacing, 
-							currentStorage.getArrayFloat()[iStorageIndex], 0.0f); 			
-								
-					
+							currentStorage.getArrayFloat()[iStorageIndex], 0.0f); 						
 				}
-				gl.glEnd();
-					
+				gl.glEnd();					
 			}
-			renderCoordinateSystem(gl, iNumberOfEntiresToRender, 1);//currentStorage.getArrayFloat().length, 1);
 		}
 		else
 		{	
-			for (int iCount = 0; iCount < iNumberOfEntiresToRender; iCount++)
-			{
-				
-				// render one polyline
+			iNumberOfAxis = iNumberOfStoragesToRender;
+			// this for loop executes once per polyline
+			for (int iCount = 0; iCount < iNumberOfEntriesToRender; iCount++)
+			{				
 				gl.glBegin(GL.GL_LINE_STRIP);				
 				
+				// this for loop executes once per axis
 				for (int iStorageCount = 0; iStorageCount < iNumberOfStoragesToRender; iStorageCount++)
 				{
 					IStorage currentStorage = alDataStorages.get(iStorageCount);
@@ -289,7 +366,13 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 				
 				
 			}	
-			renderCoordinateSystem(gl, iNumberOfStoragesToRender, 1);			
+				
+		}
+		
+		// render the coordinate system only on the first run, not when we render the selection
+		if(!bRenderPolylineSelection)
+		{
+			renderCoordinateSystem(gl, iNumberOfAxis, 1);		
 		}
 	}
 	
@@ -337,7 +420,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		if (pickingTriggerMouseAdapter.wasMousePressed()
 				|| bMouseReleased)
-		{
+		{			
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			//bIsMouseOverPickingEvent = false;
 		}
@@ -404,7 +487,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 			int iArPickingBuffer[], final Point pickPoint) 
 	{
 
-		myPickingManager.calculateNearestHit(iHitCount, iArPickingBuffer);
+		myPickingManager.processHits(iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
 		
 		//System.out.println("Number of hits: " +iHitCount);
 		
@@ -412,16 +495,24 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		//System.out.println("iPickedObjectID"+iPickedObjectId);
 		
-		if(myPickingManager.getHits(iViewID, 0) != null)
+		// check if we hit a polyline
+		if(myPickingManager.getHits(this, POLYLINE_SELECTION) != null)
 		{
-			ArrayList<Integer> tempList = myPickingManager.getHits(iViewID, 0);
+			ArrayList<Integer> tempList = myPickingManager.getHits(this, POLYLINE_SELECTION);
 			
-			if (tempList.size() != 0)
-				System.out.println(tempList.get(0));
+			if (tempList != null)
+			{
+				if (tempList.size() != 0 )
+				{
+					//System.out.println(tempList.get(0));
+					bIsDisplayListDirty = true;
+					bRenderPolylineSelection = true;
+				}
+			}
+				
 		}
-		myPickingManager.flushHits(iViewID,0);
-		
-		
+		//myPickingManager.flushHits(iViewID, POLYLINE);
+		//TODO: here decide whether to rerender 		
 	}
 
 }
