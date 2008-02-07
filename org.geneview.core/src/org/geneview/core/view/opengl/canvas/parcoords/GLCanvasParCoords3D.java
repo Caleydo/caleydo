@@ -14,9 +14,10 @@ import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
+import org.geneview.core.data.mapping.EGenomeMappingType;
+import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.PickingManager;
@@ -46,12 +47,11 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
 	// flag whether one array should be a polyline or an axis
-	private boolean bRenderArrayAsPolyline = true;
+	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
-	// TODO check this
 	private boolean bRenderSelection = true;
 	// flag whether to take measures against occlusion or not
-	private boolean bPreventOcclusion = false;
+	private boolean bPreventOcclusion = true;
 	
 	private boolean bIsDisplayListDirty = true;
 	
@@ -84,6 +84,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		myPickingManager = refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 
+		// TODO:
+		//int bla = EGenomeIdType.ACCESSION_CODE.ordinal();
 		
 		this.refViewCamera.setCaller(this);
 		this.axisSpacing = 1;
@@ -210,9 +212,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 			return;
 		
 		if (alSetSelection == null)
-			return;
-		
-			
+			return;			
 		
 		Iterator<ISet> iterSetData = alSetData.iterator();
 		ArrayList<IStorage> alDataStorages = new ArrayList<IStorage>();
@@ -229,19 +229,15 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		}		
 		
 
-		int iNumberOfStoragesToRender = 0;
+		//int iNumberOfStoragesToRender = 0;
+		// this is the number of entires in a storage
 		int iNumberOfEntriesToRender = 0;
 		
-		if(bRenderPolylineSelection)
-		{			
-			iNumberOfStoragesToRender = myPickingManager.getHits(this, POLYLINE_SELECTION).size();
-		}
-		else
-		{
-			iNumberOfStoragesToRender = alDataStorages.size();
-		}
+
 		
 		
+		// decide whether to render a selection from the storage - virtual array mechanism 
+		// or to render all 
 		if(bRenderSelection)
 		{
 			//iNumberOfStoragesToRender = alDataStorages.size();
@@ -251,7 +247,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		{
 			//iNumberOfStoragesToRender = alDataStorages.size();
 			//iNumberOfEntiresToRender = alDataStorages.get(0).getArrayFloat().length;
-			iNumberOfEntriesToRender = 1000;
+			iNumberOfEntriesToRender = 100;
 		}
 		
 		// color management
@@ -278,96 +274,187 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 						ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.w());
 		}
 		
+		int iNumberOfPolyLinesToRender = 0;
 		
 		
+		
+		
+
+		
+		
+		// if true one array corresponds to one polyline, number of arrays is number of polylines
 		if (bRenderArrayAsPolyline)
 		{
-			iNumberOfAxis = iNumberOfEntriesToRender;
-			
-			// this for loop executes once per polyline
-			for (int iStorageCount = 0; iStorageCount < iNumberOfStoragesToRender; iStorageCount++)
-			{		
-				// get picking ID and store it locally
-				if(hashPolylineIndexToPickingID.get(iStorageCount) == null)
-				{				
-					int iPickingID = myPickingManager.getPickingID(this, POLYLINE_SELECTION);
-					gl.glLoadName(iPickingID);	
-					hashPolylinePickingIDToIndex.put(iPickingID, iStorageCount);	
-					hashPolylineIndexToPickingID.put(iStorageCount, iPickingID);
-				}
-				else
-				{
-					gl.glLoadName(hashPolylineIndexToPickingID.get(iStorageCount));
-				}
-			
-				gl.glBegin(GL.GL_LINE_STRIP);		
-				
-				int iWhichStorage = 0;
-				if(bRenderPolylineSelection)
-				{
-					iWhichStorage = hashPolylinePickingIDToIndex.
-						get(myPickingManager.getHits(this, POLYLINE_SELECTION).get(iStorageCount));
-				}
-				else
-				{
-					iWhichStorage = iStorageCount;
-				}
-				
-				IStorage currentStorage = alDataStorages.get(iWhichStorage);					
-		
-				
-				// this for loop executes once per axis
-				for (int iCount = 0; iCount < iNumberOfEntriesToRender; iCount++)
-				{
-					int iStorageIndex = 0;
-					
-					// if only selection should be rendered we get the ids out of the selection array					
-					if (bRenderSelection)
-					{
-						iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iCount];
-					}
-					else
-					{
-						iStorageIndex = iCount;
-					}							
-					gl.glVertex3f(iCount * axisSpacing, 
-							currentStorage.getArrayFloat()[iStorageIndex], 0.0f); 						
-				}
-				gl.glEnd();					
+			// decide whether to render a picked selection 
+			// or everything else
+			if(bRenderPolylineSelection)
+			{			
+				iNumberOfPolyLinesToRender = myPickingManager.getHits(this, POLYLINE_SELECTION).size();
 			}
+			else
+			{
+				iNumberOfPolyLinesToRender = alDataStorages.size();
+			}
+			
+			iNumberOfAxis = iNumberOfEntriesToRender;
+			// = iNumberOfStoragesToRender;
+			
 		}
+		// render polylines across storages - first element of storage 1 to n makes up polyline
 		else
 		{	
-			iNumberOfAxis = iNumberOfStoragesToRender;
-			// this for loop executes once per polyline
-			for (int iCount = 0; iCount < iNumberOfEntriesToRender; iCount++)
+			if(bRenderPolylineSelection)
+			{
+				iNumberOfPolyLinesToRender = myPickingManager.getHits(this, POLYLINE_SELECTION).size();
+			}
+			else
 			{				
-				gl.glBegin(GL.GL_LINE_STRIP);				
-				
-				// this for loop executes once per axis
-				for (int iStorageCount = 0; iStorageCount < iNumberOfStoragesToRender; iStorageCount++)
+				iNumberOfPolyLinesToRender = iNumberOfEntriesToRender;
+			}
+			iNumberOfAxis = alDataStorages.size();
+		}
+			
+		// this for loop executes once per polyline
+		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
+		{
+			// get picking ID and store it locally if not already stored, give
+			// it to opengl
+			if (hashPolylineIndexToPickingID.get(iPolyLineCount) == null)
+			{
+				int iPickingID = myPickingManager.getPickingID(this,
+						POLYLINE_SELECTION);
+				gl.glLoadName(iPickingID);
+				hashPolylinePickingIDToIndex.put(iPickingID, iPolyLineCount);
+				hashPolylineIndexToPickingID.put(iPolyLineCount, iPickingID);
+			}
+			// retrieve picking ID and give it to opengl
+			else
+			{
+				gl.glLoadName(hashPolylineIndexToPickingID.get(iPolyLineCount));
+			}
+
+			gl.glBegin(GL.GL_LINE_STRIP);
+
+			IStorage currentStorage = null;
+			
+			// decide on which storage to use when array is polyline
+			if(bRenderArrayAsPolyline)
+			{
+				int iWhichStorage = 0;
+				if (bRenderPolylineSelection)
 				{
-					IStorage currentStorage = alDataStorages.get(iStorageCount);
-					
-					int iStorageIndex = 0;
+					iWhichStorage = hashPolylinePickingIDToIndex
+							.get(myPickingManager.getHits(this, POLYLINE_SELECTION)
+									.get(iPolyLineCount));
+				} 
+				else
+				{
+					iWhichStorage = iPolyLineCount;
+				}
+	
+				currentStorage = alDataStorages.get(iWhichStorage);
+			}
+
+			// this loop executes once per axis
+			for (int iVertricesCount = 0; iVertricesCount < iNumberOfAxis; iVertricesCount++)
+			{
+				int iStorageIndex = 0;
+				
+				// get the index if array as polyline
+				if (bRenderArrayAsPolyline)
+				{
+					// if only selection should be rendered we get the ids out of
+					// the selection array
 					if (bRenderSelection)
 					{
-						iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iCount];
+						iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iVertricesCount];
+					} 
+					else
+					{
+						iStorageIndex = iVertricesCount;
+					}
+				}
+				// get the storage and the storage index for the different cases				
+				else
+				{
+					currentStorage = alDataStorages.get(iVertricesCount);					
+					
+					if (bRenderSelection)
+					{
+						if (bRenderPolylineSelection)
+						{
+							int iTempIndex = hashPolylinePickingIDToIndex
+							.get(myPickingManager.getHits(this, POLYLINE_SELECTION).get(iPolyLineCount));
+							
+							iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iTempIndex];
+						}
+						else
+						{						
+							iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iPolyLineCount];
+						}
+					
 					}
 					else
 					{
-						iStorageIndex = iCount;
+						if (bRenderPolylineSelection)
+						{
+							iStorageIndex = hashPolylinePickingIDToIndex
+							.get(myPickingManager.getHits(this, POLYLINE_SELECTION).get(iPolyLineCount));
+						}
+						else
+						{
+							iStorageIndex = iPolyLineCount;
+						}
 					}
 					
-					gl.glVertex3f(iStorageCount * axisSpacing, 
-							currentStorage.getArrayFloat()[iStorageIndex], 0.0f); 			
-				}
-				gl.glEnd();
+				}			
 				
+				int test = refGeneralManager.getSingelton().getGenomeIdManager()
+			     .getIdIntFromIntByMapping(iStorageIndex*1000+770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION); 
+				System.out.println("Accesion Internal: "+test);
 				
-			}	
+				String sAccessionCode = refGeneralManager.getSingelton().getGenomeIdManager()
+			     .getIdStringFromIntByMapping(test, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 				
+				System.out.println("Accession Number: "+sAccessionCode);
+				
+				gl.glVertex3f(iVertricesCount * axisSpacing, currentStorage
+						.getArrayFloat()[iStorageIndex], 0.0f);
+			}
+			gl.glEnd();
 		}
+		
+
+	
+// // this for loop executes once per polyline
+// for (int iCount = 0; iCount < iNumberOfEntriesToRender; iCount++)
+//			{				
+//				gl.glBegin(GL.GL_LINE_STRIP);				
+//				
+//				// this for loop executes once per axis
+//				for (int iStorageCount = 0; iStorageCount < iNumberOfStoragesToRender; iStorageCount++)
+//				{
+//					IStorage currentStorage = alDataStorages.get(iStorageCount);
+//					
+//					int iStorageIndex = 0;
+//					if (bRenderSelection)
+//					{
+//						iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iCount];
+//					}
+//					else
+//					{
+//						iStorageIndex = iCount;
+//					}
+//					
+//					gl.glVertex3f(iStorageCount * axisSpacing, 
+//							currentStorage.getArrayFloat()[iStorageIndex], 0.0f); 			
+//				}
+//				gl.glEnd();
+//				
+//				
+//			}	
+				
+		
 		
 		// render the coordinate system only on the first run, not when we render the selection
 		if(!bRenderPolylineSelection)

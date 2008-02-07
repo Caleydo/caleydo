@@ -46,7 +46,14 @@ extends ARenderStyle
 	// TODO: intelligent factor for number
 	public Vec4f getPolylineOcclusionPrevColor(int numberOfRenderedLines) 
 	{
-		polylineOcclusionPrevColor.set(4, 0.1f);
+		if (numberOfRenderedLines > 100)
+		{
+			polylineOcclusionPrevColor.set(3, 0.1f);
+		}
+		else
+		{
+			polylineOcclusionPrevColor.set(3, 0.6f);
+		}
 		return polylineOcclusionPrevColor;
 	}
 	
