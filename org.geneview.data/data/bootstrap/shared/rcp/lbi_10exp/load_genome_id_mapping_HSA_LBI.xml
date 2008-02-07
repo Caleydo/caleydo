@@ -45,7 +45,7 @@
 		   		
 			<!-- Expression data mapped to accession number (Kashofer) -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	uniqueId="-1"	
-		   		detail="data/bootstrap/shared/rcp/lbi/accession_code_2_microarray_expression_storage_index.map"	
+		   		detail="data/bootstrap/shared/rcp/lbi_10exp/accession_code_2_microarray_expression_storage_index.map"	
 		   		attrib1="ACCESSION_2_MICROARRAY_EXPRESSION LUT" 
 		   		attrib2=";" 
 		   		attrib3="2 -1" 
