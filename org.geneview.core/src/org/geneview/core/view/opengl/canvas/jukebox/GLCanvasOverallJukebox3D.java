@@ -13,15 +13,21 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.slerp.SlerpAction;
+import org.geneview.core.util.slerp.SlerpMod;
+import org.geneview.core.util.system.SystemTime;
+import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.BufferUtil;
@@ -50,6 +56,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private JukeboxHierarchyLayer poolLayer;
 	
 	private ArrayList<SlerpAction> arSlerpActions;
+	private Time time;
 
 	/**
 	 * Slerp factor: 0 = source; 1 = destination
@@ -59,9 +66,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private PickingManager pickingManager;
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
-	// TODO: Move to picking manager
-	private HashMap<Integer, Integer> hashPickingIDToViewID;
-	private HashMap<Integer, Integer> hashViewIDToPickingID;
+	private boolean bRebuildVisiblePathwayDisplayLists = false;
 	
 	/**
 	 * Constructor.
@@ -111,8 +116,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
 			.getJoglCanvasForwarder().getJoglMouseListener();
 		
-		hashPickingIDToViewID = new HashMap<Integer, Integer>();
-		hashViewIDToPickingID = new HashMap<Integer, Integer>();
+		arSlerpActions = new ArrayList<SlerpAction>();
 	}
 	
 	/*
@@ -122,6 +126,9 @@ implements IMediatorReceiver, IMediatorSender {
 	public void initGLCanvas(GL gl) {
 	
 		super.initGLCanvas(gl);
+		
+	    time = new SystemTime();
+	    ((SystemTime) time).rebase();
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -138,6 +145,8 @@ implements IMediatorReceiver, IMediatorSender {
 		buildStackLayer(gl);
 		
 		retrieveContainedViews(gl);
+		
+		setInitGLDone();
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -153,15 +162,20 @@ implements IMediatorReceiver, IMediatorSender {
 			if(tmpView == this)
 				continue;
 			
-			if (underInteractionLayer.getElementList().size() < 1)
-				underInteractionLayer.addElement(tmpView.getId());
+			int iViewId = tmpView.getId();
 			
-			stackLayer.addElement(tmpView.getId());
+			if (underInteractionLayer.getElementList().size() < 1)
+			{
+				underInteractionLayer.addElement(iViewId);
+				underInteractionLayer.setElementVisibilityById(true, iViewId);
+			}
+			
+			stackLayer.addElement(iViewId);
+			stackLayer.setElementVisibilityById(true, iViewId);
+			
 			tmpView.initGLCanvas(gl);
 			
-			int iPickingID = pickingManager.getPickingID(this, VIEW_PICKING, tmpView.getId());
-			hashPickingIDToViewID.put(iPickingID, tmpView.getId());
-			hashViewIDToPickingID.put(tmpView.getId(), iPickingID);
+			pickingManager.getPickingID(this, VIEW_PICKING, tmpView.getId());
 		}
 	}
 	
@@ -198,6 +212,12 @@ implements IMediatorReceiver, IMediatorSender {
 
 		handlePicking(gl);
 		
+//		if (bRebuildVisiblePathwayDisplayLists)
+//			rebuildVisiblePathwayDisplayLists(gl);
+		
+		time.update();
+		doSlerpActions(gl);
+		
 //		renderPoolLayer(gl);
 		renderStackLayer(gl);
 		renderUnderInteractionLayer(gl);
@@ -210,7 +230,9 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
+		gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
 		renderViewById(gl, iViewId, underInteractionLayer);
+		gl.glPopName();
 	}
 	
 	private void renderStackLayer(final GL gl) {
@@ -226,9 +248,9 @@ implements IMediatorReceiver, IMediatorSender {
 //			if(!stackLayer.getElementVisibilityById(iPathwayId))
 //				continue;
 			
-			gl.glLoadName(hashViewIDToPickingID.get(iViewId));
-		
+			gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
 			renderViewById(gl, iViewId, stackLayer);		
+			gl.glPopName();
 		}
 	}
 	
@@ -236,9 +258,9 @@ implements IMediatorReceiver, IMediatorSender {
 			final int iViewId, 
 			final JukeboxHierarchyLayer layer) {
 		
-//		// Check if view is visible
-//		if(!layer.getElementVisibilityById(iViewId))
-//			return;
+		// Check if view is visible
+		if(!layer.getElementVisibilityById(iViewId))
+			return;
 		
 		gl.glPushMatrix();
 		
@@ -257,6 +279,58 @@ implements IMediatorReceiver, IMediatorSender {
 				.getViewGLCanvasManager().getItem(iViewId)).renderPart(gl);
 		
 		gl.glPopMatrix();	
+	}
+	
+	private void doSlerpActions(final GL gl) {
+
+		if (arSlerpActions.isEmpty())
+			return;
+				
+		if (iSlerpFactor < 1000)
+		{
+			// Makes animation rendering speed independent
+			iSlerpFactor += 1400 * time.deltaT();
+			
+			if (iSlerpFactor > 1000)
+				iSlerpFactor = 1000;
+		}
+		
+		slerpView(gl, arSlerpActions.get(0));
+		// selectedVertex = null;
+	}
+	
+	private void slerpView(final GL gl, SlerpAction slerpAction) {
+
+		int iViewId = slerpAction.getElementId();
+		SlerpMod slerpMod = new SlerpMod();
+		
+		Transform transform = slerpMod.interpolate(slerpAction
+				.getOriginHierarchyLayer().getTransformByPositionIndex(
+						slerpAction.getOriginPosIndex()), slerpAction
+				.getDestinationHierarchyLayer().getTransformByPositionIndex(
+						slerpAction.getDestinationPosIndex()),
+				(int)iSlerpFactor / 1000f);
+
+		gl.glPushMatrix();
+		
+		slerpMod.applySlerp(gl, transform);
+		
+		((IGLCanvasUser)refGeneralManager.getSingelton()
+				.getViewGLCanvasManager().getItem(iViewId)).renderPart(gl);
+
+		gl.glPopMatrix();
+
+		if (iSlerpFactor >= 1000)
+		{
+			slerpAction.getDestinationHierarchyLayer()
+					.setElementVisibilityById(true, iViewId);
+
+			arSlerpActions.remove(slerpAction);
+			iSlerpFactor = 0;
+		}
+
+		if ((iSlerpFactor == 0))
+			slerpMod.playSlerpSound();
 	}
 	
 	private void handlePicking(GL gl)
@@ -296,7 +370,7 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 
-		gl.glPushName(0);
+		//gl.glPushName(0);
 
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
@@ -347,10 +421,106 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				if (tempList.size() != 0 )
 				{
-					System.out.println("Picked object:" +tempList.get(0));
+					int iViewId = pickingManager.getExternalIDFromPickingID(this, tempList.get(0));
+					System.out.println("Picked object:" +iViewId);
+					
+					loadViewToUnderInteractionLayer(iViewId);
 				}
 			}
-				
 		}	
+		
+		pickingManager.flushHits(this, VIEW_PICKING);
 	}
+	
+	private void loadViewToUnderInteractionLayer(final int iViewId) {
+
+		refGeneralManager
+				.getSingelton()
+				.logMsg(this.getClass().getSimpleName()
+								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
+								+ iViewId + " is under interaction.",
+						LoggerType.VERBOSE);
+
+		// Check if pathway is already under interaction
+		if (underInteractionLayer.containsElement(iViewId))
+			return;
+				
+		// Check if other slerp action is currently running
+		if (iSlerpFactor > 0 && iSlerpFactor < 1000)
+			return;
+
+		arSlerpActions.clear();
+
+		// Slerp current pathway back to layered view
+		if (!underInteractionLayer.getElementList().isEmpty())
+		{
+			SlerpAction reverseSlerpAction = new SlerpAction(
+					underInteractionLayer.getElementIdByPositionIndex(0),
+					underInteractionLayer, true);
+
+			arSlerpActions.add(reverseSlerpAction);
+		}
+
+		SlerpAction slerpAction;
+
+		// Prevent slerp action if pathway is already in layered view
+		if (!stackLayer.containsElement(iViewId))
+		{
+			// Slerp to layered pathway view
+			slerpAction = new SlerpAction(iViewId, poolLayer, false);
+
+			arSlerpActions.add(slerpAction);
+		}
+
+		// Slerp from layered to under interaction position
+		slerpAction = new SlerpAction(iViewId, stackLayer, false);
+
+		arSlerpActions.add(slerpAction);
+		iSlerpFactor = 0;
+
+		bRebuildVisiblePathwayDisplayLists = true;
+		//selectedVertex = null;
+	}
+	
+//	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
+//
+//		// Reset rebuild trigger flag
+//		bRebuildVisiblePathwayDisplayLists = false;
+//		
+////		if (selectedVertex != null)
+////		{
+////			// Write currently selected vertex to selection set
+////			int[] iArTmpSelectionId = new int[1];
+////			int[] iArTmpDepth = new int[1];
+////			iArTmpSelectionId[0] = selectedVertex.getId();
+////			iArTmpDepth[0] = 0;
+////			alSetSelection.get(0).getWriteToken();
+////			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+////			alSetSelection.get(0).returnWriteToken();
+////		}
+//			
+//		// Update display list if something changed
+//		// Rebuild display lists for visible pathways in layered view
+//		Iterator<Integer> iterVisiblePathway = stackLayer.getElementList().iterator();
+//
+//		while (iterVisiblePathway.hasNext())
+//		{
+//			refGLPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway.next());
+//		}
+//
+//		// Rebuild display lists for visible pathways in focus position
+//		if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
+//				&& !pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer
+//				.getElementIdByPositionIndex(0)))
+//		{
+//			refGLPathwayManager.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
+//							.getElementIdByPositionIndex(0));
+//		}
+//		
+//		// Cleanup unused textures
+//		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
+//
+//		// Trigger update on current selection
+//		//alSetSelection.get(0).updateSelectionSet(iUniqueId);
+//	}
 }

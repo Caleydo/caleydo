@@ -48,7 +48,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
 	// flag whether one array should be a polyline or an axis
-	private boolean bRenderArrayAsPolyline = true;
+	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
 	private boolean bRenderSelection = true;
 	// flag whether to take measures against occlusion or not
@@ -147,8 +147,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		
 		//gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-		if(bIsDisplayListDirty)
-		{
+//		if(bIsDisplayListDirty)
+//		{
 			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 			renderScene(gl, false);
 			if(bRenderPolylineSelection)
@@ -159,7 +159,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 			gl.glEndList();
 			bIsDisplayListDirty = false;
-		}
+//		}
 			
 		gl.glCallList(iGLDisplayListIndex);
 		handlePicking(gl);
@@ -319,7 +319,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{
-			gl.glLoadName(myPickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineCount));
+			gl.glPushName(myPickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineCount));
 			// get picking ID and store it locally if not already stored, give
 			// it to opengl
 //			if (myPickingManager.getPickingID(uniqueManagedObject, iType, iExternalID)  hashPolylineIndexToPickingID.get(iPolyLineCount) == null)
@@ -435,6 +435,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 						.getArrayFloat()[iStorageIndex], 0.0f);
 			}
 			gl.glEnd();
+			
+			gl.glPopName();
 		}
 		
 
