@@ -3,7 +3,7 @@ package org.geneview.core.manager.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.geneview.core.data.IUniqueManagedObject;
+import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerType;
@@ -14,22 +14,24 @@ import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
  * 
  * @author Alexander Lex
  * 
- * Manage Picking IDs in a system-wide unique way
+ * Manages Picking IDs in a system-wide unique way and stores them locally
+ * 
+ * Do NOT store picking ids in classes that use this class
  * 
  * Syntax for Picking IDs
  * 
  * 2 last digits: type
- * digits 3-8: ViewID
  * rest: counter
  * 
- * C*VVVVVTT
+ * C*TT
  *
  */
 
 public class PickingManager extends AAbstractManager 
 {	
-	private HashMap<Integer, Integer> hashSignatureToCounter;
-	
+	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToPickingIDHashMap;
+	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToExternalIDHashMap;
+	private int iIDCounter;
 	private HashMap<Integer, ArrayList<Integer>> hashSignatureToHitList;
 	
 	
@@ -45,20 +47,26 @@ public class PickingManager extends AAbstractManager
 				IGeneralManager.iUniqueID_TypeOffset_PickingID, 
 				ManagerType.PICKING_MANAGER);
 		
-		hashSignatureToCounter = new HashMap<Integer, Integer>();
+		iIDCounter = 0;
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Integer>>();
-		
+		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
+		hashSignatureToExternalIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 	}
 	
 	/**
 	 * Returns a unique picking ID based on the ViewID and a special type
+	 * and stores it in a hash map with the external id
+	 * 
+	 * DO NOT store picking id's locally
 	 *  
 	 * @param iViewID the ID of the calling view, has to have 5 digits max
 	 * @param iType a type which is part of the picking ID, 
 	 * has to be between 0 and 99 
 	 * @return 
 	 */
-	public int getPickingID(IUniqueManagedObject uniqueManagedObject, int iType)
+	public int getPickingID(AUniqueManagedObject uniqueManagedObject, 
+							int iType, 
+							int iExternalID)
 	{
 		checkType(iType);		
 		
@@ -66,19 +74,25 @@ public class PickingManager extends AAbstractManager
 		
 		checkViewID(iViewID);
 		
-		int iSignature = iViewID * 100 + iType; 
+		int iSignature = getSignature(uniqueManagedObject, iType);
+				
 		
-		if(hashSignatureToCounter.get(iSignature) == null)
+		if(hashSignatureToPickingIDHashMap.get(iSignature) == null)
 		{
-			hashSignatureToCounter.put(iSignature, 1);
-			return calculateID(iViewID, iType, 1);
-		}
-		else
+			hashSignatureToPickingIDHashMap.put(iSignature, new HashMap<Integer, Integer>());			
+			hashSignatureToExternalIDHashMap.put(iSignature, new HashMap<Integer, Integer>());
+			
+		}		
+		else if(hashSignatureToExternalIDHashMap.get(iSignature).get(iExternalID) != null)
 		{
-			hashSignatureToCounter.put(iSignature, (hashSignatureToCounter.get(iSignature) + 1));
-			return calculateID(iViewID, iType, hashSignatureToCounter.get(iSignature));
-		}
+			return hashSignatureToExternalIDHashMap.get(iSignature).get(iExternalID);
+		}	
 		
+		int iPickingID = calculateID(iViewID, iType);
+		hashSignatureToPickingIDHashMap.get(iSignature).put(iPickingID, iExternalID);
+		hashSignatureToExternalIDHashMap.get(iSignature).put(iExternalID, iPickingID);
+			
+		return iPickingID;		
 	}
 	
 	/**
@@ -89,8 +103,8 @@ public class PickingManager extends AAbstractManager
 	 * @param iHitCount
 	 * @param iArPickingBuffer
 	 */
-	public void processHits(int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
-	{
+	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
+	{			
 		int iPickingBufferCounter = 0;
 	
 		
@@ -115,7 +129,7 @@ public class PickingManager extends AAbstractManager
 		}		
 		if(iPickedObjectId != 0)
 		{
-			processPicks(iPickedObjectId, myMode);
+			processPicks(iPickedObjectId, uniqueManagedObject ,myMode);
 		}
 		//return iPickedObjectId;		
 	}
@@ -127,7 +141,7 @@ public class PickingManager extends AAbstractManager
 	 * @param iType
 	 * @return null if no Hits, else the ArrayList<Integer> with the hits
 	 */	
-	public ArrayList<Integer> getHits(IUniqueManagedObject uniqueManagedObject, int iType)
+	public ArrayList<Integer> getHits(AUniqueManagedObject uniqueManagedObject, int iType)
 	{
 		checkType(iType);
 		int iViewID = uniqueManagedObject.getId();
@@ -142,12 +156,58 @@ public class PickingManager extends AAbstractManager
 	}
 	
 	/**
+	 * Returns the external ID (the id with which you initialized getPickingID()) when you provide the picking ID
+	 * 
+	 * @param uniqueManagedObject
+	 * @param iPickingID the picking ID
+	 * @return the ID, null if no entry for that pickingID
+	 */
+	public int getExternalIDFromPickingID(AUniqueManagedObject uniqueManagedObject, int iPickingID)
+	{
+		//TODO: exceptions
+		int iSignature = getSignatureFromPickingID(iPickingID, uniqueManagedObject);
+		return hashSignatureToPickingIDHashMap.get(iSignature).get(iPickingID);
+	}
+	
+	/**
+	 * Returns the external ID (the id with which you initialized getPickingID()) when you provide the hit count, 
+	 * meaning the n-th element in the hit list. 
+	 * @param uniqueManagedObject
+	 * @param iType the type, >= 0, <100
+	 * @param iHitCount
+	 * @return the ID, null if no entry for that hit count
+	 */
+	public int getExternalIDFromHitCount(AUniqueManagedObject uniqueManagedObject, int iType, int iHitCount)
+	{
+		//TODO: exceptions
+		int iSignature = getSignature(uniqueManagedObject, iType);		
+		int iPickingID = hashSignatureToHitList.get(iSignature).get(iHitCount);		
+		return  hashSignatureToPickingIDHashMap.get(iSignature).get(iPickingID);
+		 
+	}
+	
+	/**
+	 * Removes the picking IDs form internal storage and from the hit list
+	 * You should do that when you close a view, remember to do it for all types
+	 * 
+	 * @param uniqueManagedObject
+	 * @param iType
+	 */
+	public void flushPickingIDs(AUniqueManagedObject uniqueManagedObject, int iType)
+	{
+		int iSignature = getSignature(uniqueManagedObject, iType);
+		hashSignatureToExternalIDHashMap.remove(iSignature);
+		hashSignatureToHitList.remove(iSignature);
+		hashSignatureToPickingIDHashMap.remove(iSignature);
+	}
+	
+	/**
 	 * Flush a particular hit list
 	 * 
 	 * @param iViewID
 	 * @param iType
 	 */
-	public void flushHits(IUniqueManagedObject uniqueManagedObject, int iType)
+	public void flushHits(AUniqueManagedObject uniqueManagedObject, int iType)
 	{
 		checkType(iType);
 		int iViewID = uniqueManagedObject.getId();
@@ -156,19 +216,18 @@ public class PickingManager extends AAbstractManager
 		if (hashSignatureToHitList.get(getSignature(iViewID, iType)) != null)
 		{
 			hashSignatureToHitList.get(getSignature(iViewID, iType)).clear();
-		}
-			
+		}			
 	}
-	
 			
-	private int calculateID(int iViewID, int iType, int iCount)
+	private int calculateID(int iViewID, int iType)
 	{		
-		return (iCount * 10000000 + iViewID * 100 + iType);		
+		iIDCounter++;
+		return (iIDCounter * 100 + iType);		
 	}
 	
-	private void processPicks(int iPickingID, EPickingMode myMode)
+	private void processPicks(int iPickingID, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode)
 	{
-		int iSignature = getSignature(iPickingID);
+		int iSignature = getSignatureFromPickingID(iPickingID, uniqueManagedObject);
 		
 		
 		
@@ -205,19 +264,25 @@ public class PickingManager extends AAbstractManager
 			}
 		}		
 	}
-	
-	private int getSignature(int iPickingID)	
-	{
-		int iCounter = iPickingID / 10000000;
-
-		int iSignature = iPickingID - iCounter * 10000000;
 		
-		return iSignature;
-	}
-	
 	private int getSignature(int iViewID, int iType)
 	{
 		return (iViewID * 100 + iType);
+	}
+	
+	private int getSignature(AUniqueManagedObject uniqueManagedObject, int iType)
+	{
+		return getSignature(uniqueManagedObject.getId(), iType);
+	}
+	
+	private int getSignatureFromPickingID(int iPickingID, AUniqueManagedObject uniqueManagedObject)
+	{
+		int iViewID = uniqueManagedObject.getId();
+		int iTemp = iPickingID / 100;
+		int iType = iPickingID - iTemp * 100;
+		
+		return (getSignature(iViewID, iType));
+		
 	}
 	
 	private void checkViewID(int iViewID)

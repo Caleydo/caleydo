@@ -159,7 +159,7 @@ implements IMediatorReceiver, IMediatorSender {
 			stackLayer.addElement(tmpView.getId());
 			tmpView.initGLCanvas(gl);
 			
-			int iPickingID = pickingManager.getPickingID(this, VIEW_PICKING);
+			int iPickingID = pickingManager.getPickingID(this, VIEW_PICKING, tmpView.getId());
 			hashPickingIDToViewID.put(iPickingID, tmpView.getId());
 			hashViewIDToPickingID.put(tmpView.getId(), iPickingID);
 		}
@@ -337,7 +337,7 @@ implements IMediatorReceiver, IMediatorSender {
 			int iArPickingBuffer[], final Point pickPoint) 
 	{
 
-		pickingManager.processHits(iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
+		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
 		
 		if(pickingManager.getHits(this, VIEW_PICKING) != null)
 		{
