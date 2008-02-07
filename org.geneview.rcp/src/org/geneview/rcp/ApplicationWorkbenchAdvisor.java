@@ -14,6 +14,7 @@ import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.rcp.views.AGLViewPart;
 import org.geneview.rcp.views.GLHeatmap2DView;
 import org.geneview.rcp.views.GLJukeboxPathwayView;
+import org.geneview.rcp.views.GLParCoordsView;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
@@ -75,6 +76,13 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 						.getActiveWorkbenchWindow().getActivePage().showView(GLHeatmap2DView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}
+				else if (tmpCanvasUser.getClass().equals(
+						org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D.class))
+				{
+					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage().showView(GLParCoordsView.ID,
+								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
+				}			
 				
 				if (viewPart == null)
 					continue;

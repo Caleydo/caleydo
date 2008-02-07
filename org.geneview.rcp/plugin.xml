@@ -34,7 +34,16 @@
             icon="resources/icons/heatmap.png"
             id="org.geneview.rcp.views.GLHeatmap2DView"
             name="GLHeatmap2DView">
-      </view>               
+      </view>      
+
+      <view
+            allowMultiple="true"
+            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.geneview.rcp.views.GLParCoordsView"
+            icon="resources/icons/heatmap.png"
+            id="org.geneview.rcp.views.GLParCoordsView"
+            name="GLParCoordsView">
+      </view>         
       
       <view
             id="org.geneview.rcp.views.browser.browserView"
