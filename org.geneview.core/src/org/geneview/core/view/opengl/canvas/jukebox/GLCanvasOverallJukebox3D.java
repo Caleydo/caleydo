@@ -4,19 +4,27 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Point;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.slerp.SlerpAction;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+
+import com.sun.opengl.util.BufferUtil;
 
 /**
  * Implementation of the overall Jukebox setup.
@@ -34,6 +42,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 2f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 1f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
+	
+	private static final int VIEW_PICKING = 0;	
 
 	private JukeboxHierarchyLayer underInteractionLayer;
 	private JukeboxHierarchyLayer stackLayer;
@@ -45,6 +55,13 @@ implements IMediatorReceiver, IMediatorSender {
 	 * Slerp factor: 0 = source; 1 = destination
 	 */
 	private int iSlerpFactor = 0;
+	
+	private PickingManager pickingManager;
+	private PickingJoglMouseListener pickingTriggerMouseAdapter;
+	
+	// TODO: Move to picking manager
+	private HashMap<Integer, Integer> hashPickingIDToViewID;
+	private HashMap<Integer, Integer> hashViewIDToPickingID;
 	
 	/**
 	 * Constructor.
@@ -87,6 +104,15 @@ implements IMediatorReceiver, IMediatorSender {
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER));
 		underInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
+		
+		pickingManager = refGeneralManager.getSingelton()
+			.getViewGLCanvasManager().getPickingManager();
+		
+		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
+			.getJoglCanvasForwarder().getJoglMouseListener();
+		
+		hashPickingIDToViewID = new HashMap<Integer, Integer>();
+		hashViewIDToPickingID = new HashMap<Integer, Integer>();
 	}
 	
 	/*
@@ -122,17 +148,20 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		while(iterCanvasUser.hasNext())
 		{
-			IGLCanvasUser tmp = iterCanvasUser.next();
+			IGLCanvasUser tmpView = iterCanvasUser.next();
 			
-			if(tmp == this)
+			if(tmpView == this)
 				continue;
 			
 			if (underInteractionLayer.getElementList().size() < 1)
-				underInteractionLayer.addElement(tmp.getId());
+				underInteractionLayer.addElement(tmpView.getId());
 			
-			stackLayer.addElement(tmp.getId());
+			stackLayer.addElement(tmpView.getId());
+			tmpView.initGLCanvas(gl);
 			
-			tmp.initGLCanvas(gl);
+			int iPickingID = pickingManager.getPickingID(this, VIEW_PICKING);
+			hashPickingIDToViewID.put(iPickingID, tmpView.getId());
+			hashViewIDToPickingID.put(tmpView.getId(), iPickingID);
 		}
 	}
 	
@@ -167,6 +196,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void renderPart(GL gl) {
 
+		handlePicking(gl);
+		
 //		renderPoolLayer(gl);
 		renderStackLayer(gl);
 		renderUnderInteractionLayer(gl);
@@ -194,7 +225,9 @@ implements IMediatorReceiver, IMediatorSender {
 //			// Check if pathway is visible
 //			if(!stackLayer.getElementVisibilityById(iPathwayId))
 //				continue;
-						
+			
+			gl.glLoadName(hashViewIDToPickingID.get(iViewId));
+		
 			renderViewById(gl, iViewId, stackLayer);		
 		}
 	}
@@ -224,5 +257,100 @@ implements IMediatorReceiver, IMediatorSender {
 				.getViewGLCanvasManager().getItem(iViewId)).renderPart(gl);
 		
 		gl.glPopMatrix();	
+	}
+	
+	private void handlePicking(GL gl)
+	{
+		Point pickPoint = null;
+
+		boolean bMouseReleased =
+			pickingTriggerMouseAdapter.wasMouseReleased();
+
+		
+		if (pickingTriggerMouseAdapter.wasMousePressed()
+				|| bMouseReleased)
+		{			
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			//bIsMouseOverPickingEvent = false;
+		}
+		else
+		{
+			return;
+		}
+		
+		
+		int PICKING_BUFSIZE = 1024;
+
+		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
+		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
+		int iHitCount = -1;
+		int viewport[] = new int[4];
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+
+		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
+		gl.glRenderMode(GL.GL_SELECT);
+
+		gl.glInitNames();
+
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+
+		gl.glPushName(0);
+
+		/* create 5x5 pixel picking region near cursor location */
+		GLU glu = new GLU();
+		glu.gluPickMatrix((double) pickPoint.x,
+				(double) (viewport[3] - pickPoint.y),// 
+				5.0, 5.0, viewport, 0); // pick width and height is set to 5
+		// (i.e. picking tolerance)
+
+		float h = (float) (float) (viewport[3] - viewport[1])
+				/ (float) (viewport[2] - viewport[0]);
+
+		// FIXME: values have to be taken from XML file!!
+		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		// Store picked point
+		Point tmpPickPoint = (Point) pickPoint.clone();
+		// Reset picked point
+		pickPoint = null;
+
+		renderStackLayer(gl);
+		renderUnderInteractionLayer(gl);
+		
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPopMatrix();
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		iHitCount = gl.glRenderMode(GL.GL_RENDER);
+		pickingBuffer.get(iArPickingBuffer);
+		System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
+		System.out.println("MAX int:" +Integer.MAX_VALUE);
+		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint);
+	}
+	
+	
+	protected void processHits(final GL gl, int iHitCount,
+			int iArPickingBuffer[], final Point pickPoint) 
+	{
+
+		pickingManager.processHits(iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
+		
+		if(pickingManager.getHits(this, VIEW_PICKING) != null)
+		{
+			ArrayList<Integer> tempList = pickingManager.getHits(this, VIEW_PICKING);
+			
+			if (tempList != null)
+			{
+				if (tempList.size() != 0 )
+				{
+					System.out.println("Picked object:" +tempList.get(0));
+				}
+			}
+				
+		}	
 	}
 }

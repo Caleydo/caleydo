@@ -34,8 +34,9 @@ import com.sun.opengl.util.BufferUtil;
  *
  */
 public class GLCanvasParCoords3D extends AGLCanvasUser {
-
 	
+	private static final int POLYLINE_SELECTION = 1;
+	private static final int AXIS_SELECTION = 2;	
 
 //	private IGeneralManager refGeneralManager;
 	// how much room between the axis?
@@ -49,7 +50,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	// flag whether one array should be a polyline or an axis
 	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
-	private boolean bRenderSelection = true;
+	private boolean bRenderSelection = false;
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;
 	
@@ -60,12 +61,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	private ParCoordsRenderStyle renderStyle;
 	
 	private HashMap<Integer, Integer> hashPolylinePickingIDToIndex;
-	private HashMap<Integer, Integer> hashPolylineIndexToPickingID;
-	
-	
-	private static final int POLYLINE_SELECTION = 1;
-	private static final int AXIS_SELECTION = 2;		
-
+	private HashMap<Integer, Integer> hashPolylineIndexToPickingID;	
 	
 	/**
 	 * Constructor
@@ -94,7 +90,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		hashPolylineIndexToPickingID = new HashMap<Integer, Integer>();
 		
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-		.getJoglCanvasForwarder().getJoglMouseListener();
+			.getJoglCanvasForwarder().getJoglMouseListener();
 		
 		renderStyle = new ParCoordsRenderStyle();
 		
@@ -245,9 +241,9 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		}	
 		else
 		{
-			//iNumberOfStoragesToRender = alDataStorages.size();
-			//iNumberOfEntiresToRender = alDataStorages.get(0).getArrayFloat().length;
-			iNumberOfEntriesToRender = 100;
+			iNumberOfEntriesToRender = alDataStorages.size();
+			//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
+			//iNumberOfEntriesToRender = 10;
 		}
 		
 		// color management
@@ -409,14 +405,14 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 					
 				}			
 				
-				int test = refGeneralManager.getSingelton().getGenomeIdManager()
-			     .getIdIntFromIntByMapping(iStorageIndex*1000+770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION); 
-				System.out.println("Accesion Internal: "+test);
-				
-				String sAccessionCode = refGeneralManager.getSingelton().getGenomeIdManager()
-			     .getIdStringFromIntByMapping(test, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-				
-				System.out.println("Accession Number: "+sAccessionCode);
+//				int test = refGeneralManager.getSingelton().getGenomeIdManager()
+//			     .getIdIntFromIntByMapping(iStorageIndex*1000+770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION); 
+//				System.out.println("Accesion Internal: "+test);
+//				
+//				String sAccessionCode = refGeneralManager.getSingelton().getGenomeIdManager()
+//			     .getIdStringFromIntByMapping(test, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+//				
+//				System.out.println("Accession Number: "+sAccessionCode);
 				
 				gl.glVertex3f(iVertricesCount * axisSpacing, currentStorage
 						.getArrayFloat()[iStorageIndex], 0.0f);

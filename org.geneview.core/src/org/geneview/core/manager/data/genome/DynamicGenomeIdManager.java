@@ -300,7 +300,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer != null : "getIdFromStringByMapping(" + type +") type is not allocated";
+		assert buffer == null : "getIdFromStringByMapping(" + type +") type is not allocated";
 		
 		return buffer.getIntByStringChecked( sGeneViewId );
 	}
@@ -312,7 +312,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer != null : "getIdFromIntByMapping(" + type +") type is not allocated";
+		assert buffer == null : "getIdFromIntByMapping(" + type +") type is not allocated";
 
 		return buffer.getIntByIntChecked( iUniqueId );
 	}
@@ -323,7 +323,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer != null : "getStringIdFromStringByMapping(" + type +") type is not allocated";
+		assert buffer == null : "getStringIdFromStringByMapping(" + type +") type is not allocated";
 		
 		return buffer.getStringByStringChecked( sGeneViewId );
 	}
@@ -335,7 +335,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer != null : "getStringIdFromIntByMapping(" + type +") type is not allocated";
+		assert buffer == null : "getStringIdFromIntByMapping(" + type +") type is not allocated";
 		
 		return buffer.getStringByIntChecked( iUniqueId );
 	}
@@ -450,7 +450,7 @@ implements IGenomeIdManager {
 
 	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, EGenomeMappingType type) {
 
-		assert iIdList != null : "can not handle null pointer";
+		assert iIdList == null : "can not handle null pointer";
 		
 		HashMap <Integer,Integer> sortBuffer = new HashMap <Integer,Integer>(iSortBufferInitialsize);
 		
@@ -481,7 +481,7 @@ implements IGenomeIdManager {
 
 	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList, EGenomeMappingType type) {
 
-		assert sIdList != null : "can not handle null pointer";
+		assert sIdList == null : "can not handle null pointer";
 		
 		HashMap <String,String> sortBuffer = new HashMap <String,String>(iSortBufferInitialsize);
 		
@@ -535,7 +535,7 @@ implements IGenomeIdManager {
 		try {
 			Collection <Integer> keyset = bufferMap.getValuesInteger();		
 		
-			assert keyset != null : "EGenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
+			assert keyset == null : "EGenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
 			
 			return keyset;		
 		} catch ( GeneViewRuntimeException gve ) {

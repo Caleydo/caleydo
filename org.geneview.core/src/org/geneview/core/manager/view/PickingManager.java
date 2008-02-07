@@ -33,11 +33,17 @@ public class PickingManager extends AAbstractManager
 	private HashMap<Integer, ArrayList<Integer>> hashSignatureToHitList;
 	
 	
-
-	public PickingManager(IGeneralManager setGeneralManager) 
+	/**
+	 * Constructor. 
+	 * 
+	 * @param setGeneralManager
+	 */
+	public PickingManager(IGeneralManager refGeneralManager) 
 	{
 
-		super(setGeneralManager, IGeneralManager.iUniqueID_TypeOffset_PickingID, ManagerType.PICKING_MANAGER);
+		super(refGeneralManager, 
+				IGeneralManager.iUniqueID_TypeOffset_PickingID, 
+				ManagerType.PICKING_MANAGER);
 		
 		hashSignatureToCounter = new HashMap<Integer, Integer>();
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Integer>>();
@@ -226,7 +232,7 @@ public class PickingManager extends AAbstractManager
 	
 	private void checkType(int iType)
 	{
-		if (iType >= 99 || iType <= 0)
+		if (iType > 99 || iType < 0)
 		{
 			throw new GeneViewRuntimeException(
 					"PickingManager: Type has to be larger then or exactly 0 and less than 100",
