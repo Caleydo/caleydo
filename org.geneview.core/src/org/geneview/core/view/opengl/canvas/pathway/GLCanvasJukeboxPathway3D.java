@@ -56,7 +56,6 @@ import com.sun.opengl.util.BufferUtil;
  * Jukebox setup for pathways that supports slerp animation.
  * 
  * @author Marc Streit
- * @author Michael Kalkusch
  */
 public class GLCanvasJukeboxPathway3D 
 extends AGLCanvasUser

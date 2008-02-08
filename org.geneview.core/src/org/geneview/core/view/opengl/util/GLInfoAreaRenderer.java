@@ -36,7 +36,7 @@ public class GLInfoAreaRenderer {
 	private GeneAnnotationMapper geneAnnotationMapper;
 	
 	private float fHeight = 0.5f;
-	private float fWidth = 1.0f;
+	private float fWidth = 1.7f;
 	
 	private TextRenderer textRenderer;
 	
@@ -144,8 +144,8 @@ public class GLInfoAreaRenderer {
 		// Do composition of info label string only once and store them (heading + text)
 		float fMaxWidth = calculateInfoAreaWidth(llMultipleMappingGenes.get(0));
 		
-		if (fMaxWidth < 1.15f)
-			fMaxWidth = 1.15f;
+		if (fMaxWidth < fWidth)
+			fMaxWidth = fWidth;
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -339,14 +339,14 @@ public class GLInfoAreaRenderer {
 			String sAccessionCode = 
 				geneAnnotationMapper.getAccessionCodeByNCBIGeneIdCode(sElementId);
 			
-			textRenderer.draw3D("Accession: ",
+			textRenderer.draw3D("Acc.: ",
 				fXOffset, 
 				fYOffset - 4*fLineHeight, 
 				0.001f,
 				0.005f);  // scale factor
 		
 			textRenderer.draw3D(sAccessionCode,
-				fXOffset + 0.5f, 
+				fXOffset + 0.3f, 
 				fYOffset - 4*fLineHeight, 
 				0.001f,
 				0.005f);  // scale factor
@@ -357,20 +357,21 @@ public class GLInfoAreaRenderer {
 		if (bEnableColorMapping) 
 		{
 			// Render mapping if available
-			gl.glTranslatef(0.9f, -1.5f*fLineHeight, -0.045f);
-			gl.glScalef(3.0f, 3.0f, 3.0f);
+			gl.glTranslatef(1.3f, -2f*fLineHeight-0.05f, -0.045f);
+			gl.glScalef(6.0f, 6.0f, 6.0f);
 			if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
 			{					
 				float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
 				float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
 				
 				refGLPathwayManager.mapExpressionByGeneId(
-						gl, llMultipleMappingGenes.get(0).getName(), fNodeWidth, fNodeHeight);
+						gl, llMultipleMappingGenes.get(0).getName(), 
+						fNodeWidth, fNodeHeight, true);
 				
 				llMultipleMappingGenes.remove(0);
 			}
 		}
-		gl.glScalef(1 / 3.0f, 1 / 3.0f, 1 / 3.0f);
+		gl.glScalef(1 / 6.0f, 1 / 6.0f, 1 / 6.0f);
     }
     
     public void convertWindowCoordinatesToWorldCoordinates(final GL gl, 

@@ -46,6 +46,8 @@ public class GLPathwayManager {
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
 	
+	private static final float Z_OFFSET = 0.015f;
+	
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
 	private int iHighlightedEnzymeNodeDisplayListId = -1;
@@ -340,68 +342,68 @@ public class GLPathwayManager {
         // FRONT FACE
 		gl.glNormal3f( 0.0f, 0.0f, 1.0f);	
 		// Top Right Of The Quad (Front)
-        gl.glVertex3f(-fNodeWidth , -fNodeHeight, 0.015f);		
+        gl.glVertex3f(-fNodeWidth , -fNodeHeight, Z_OFFSET);		
         // Top Left Of The Quad (Front)
-        gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.015f);			
+        gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);			
         // Bottom Left Of The Quad (Front)
-        gl.glVertex3f(fNodeWidth, fNodeHeight, 0.015f);
+        gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
 		// Bottom Right Of The Quad (Front)
-        gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.015f);
+        gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
 
         // BACK FACE
         gl.glNormal3f( 0.0f, 0.0f,-1.0f);
         // Bottom Left Of The Quad (Back)
-        gl.glVertex3f(fNodeWidth, -fNodeHeight,-0.015f);	
+        gl.glVertex3f(fNodeWidth, -fNodeHeight,-Z_OFFSET);	
         // Bottom Right Of The Quad (Back)
-        gl.glVertex3f(-fNodeWidth, -fNodeHeight,-0.015f);	
+        gl.glVertex3f(-fNodeWidth, -fNodeHeight,-Z_OFFSET);	
         // Top Right Of The Quad (Back)
-        gl.glVertex3f(-fNodeWidth, fNodeHeight,-0.015f);			
+        gl.glVertex3f(-fNodeWidth, fNodeHeight,-Z_OFFSET);			
         // Top Left Of The Quad (Back)
-        gl.glVertex3f(fNodeWidth, fNodeHeight,-0.015f);			
+        gl.glVertex3f(fNodeWidth, fNodeHeight,-Z_OFFSET);			
 
 		// TOP FACE
         gl.glNormal3f( 0.0f, 1.0f, 0.0f);	
         // Top Right Of The Quad (Top)
-        gl.glVertex3f(fNodeWidth, fNodeHeight,-0.015f);	
+        gl.glVertex3f(fNodeWidth, fNodeHeight,-Z_OFFSET);	
         // Top Left Of The Quad (Top)
-        gl.glVertex3f(-fNodeWidth, fNodeHeight,-0.015f);	
+        gl.glVertex3f(-fNodeWidth, fNodeHeight,-Z_OFFSET);	
         // Bottom Left Of The Quad (Top)
-        gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.015f);
+        gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
         // Bottom Right Of The Quad (Top)
-        gl.glVertex3f(fNodeWidth, fNodeHeight, 0.015f);			
+        gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);			
 
         // BOTTOM FACE
         gl.glNormal3f( 0.0f,-1.0f, 0.0f);	
         // Top Right Of The Quad (Bottom)
-        gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.015f);
+        gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
         // Top Left Of The Quad (Bottom)
-        gl.glVertex3f(-fNodeWidth, -fNodeHeight, 0.015f);
+        gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);
         // Bottom Left Of The Quad (Bottom)
-        gl.glVertex3f(-fNodeWidth, -fNodeHeight,-0.015f);
+        gl.glVertex3f(-fNodeWidth, -fNodeHeight,-Z_OFFSET);
         // Bottom Right Of The Quad (Bottom)
-        gl.glVertex3f(fNodeWidth, -fNodeHeight,-0.015f);			
+        gl.glVertex3f(fNodeWidth, -fNodeHeight,-Z_OFFSET);			
 
         // RIGHT FACE
         gl.glNormal3f( 1.0f, 0.0f, 0.0f);	
         // Top Right Of The Quad (Right)
-        gl.glVertex3f(fNodeWidth, fNodeHeight,-0.015f);
+        gl.glVertex3f(fNodeWidth, fNodeHeight,-Z_OFFSET);
         // Top Left Of The Quad (Right)
-        gl.glVertex3f(fNodeWidth, fNodeHeight, 0.015f);
+        gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
         // Bottom Left Of The Quad (Right)
-        gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.015f);
+        gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
         // Bottom Right Of The Quad (Right)
-        gl.glVertex3f(fNodeWidth, -fNodeHeight,-0.015f);			
+        gl.glVertex3f(fNodeWidth, -fNodeHeight,-Z_OFFSET);			
         
         // LEFT FACE
         gl.glNormal3f(-1.0f, 0.0f, 0.0f);	
         // Top Right Of The Quad (Left)
-        gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.015f);	
+        gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);	
         // Top Left Of The Quad (Left)
-        gl.glVertex3f(-fNodeWidth, fNodeHeight,-0.015f);	
+        gl.glVertex3f(-fNodeWidth, fNodeHeight,-Z_OFFSET);	
         // Bottom Left Of The Quad (Left)
-        gl.glVertex3f(-fNodeWidth, -fNodeHeight,-0.015f);	
+        gl.glVertex3f(-fNodeWidth, -fNodeHeight,-Z_OFFSET);	
         // Bottom Right Of The Quad (Left)
-        gl.glVertex3f(-fNodeWidth, -fNodeHeight, 0.015f);	
+        gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);	
         
         gl.glEnd();
 	}
@@ -555,7 +557,7 @@ public class GLPathwayManager {
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
 			{
 				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
-						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
+						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, Z_OFFSET);					
 			}			
 			gl.glEnd();
 		
@@ -573,7 +575,7 @@ public class GLPathwayManager {
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
 			{
 				gl.glVertex3f(shArCoords[iPointIndex][0] * SCALING_FACTOR_X, 
-						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, 0.015f);					
+						-shArCoords[iPointIndex][1] * SCALING_FACTOR_Y, Z_OFFSET);					
 			}			
 			gl.glEnd();
 		}
@@ -777,22 +779,24 @@ public class GLPathwayManager {
 			hashElementId2MappingColorArray.put((Integer)pathwayVertexRep.getId(), alMappingColor);
 		}
 		
-		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight);
+		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight, false);
 	}
 	
 	public void mapExpressionByGeneId(final GL gl, 
 			String sGeneID, 
 			final float fNodeWidth,
-			final float fNodeHeight) {
+			final float fNodeHeight,
+			final boolean bEnableGrid) {
 
 		drawMapping(gl, genomeMapper.getMappingColorArrayByGeneID(sGeneID), 
-				fNodeWidth, fNodeHeight);
+				fNodeWidth, fNodeHeight, bEnableGrid);
 	}
 	
 	private void drawMapping(final GL gl,
 			final ArrayList<Vec3f> alMappingColor,
 			final float fNodeWidth,
-			final float fNodeHeight) {
+			final float fNodeHeight,
+			final boolean bEnableGrid) {
 		
 		int iColumnCount = (int)Math.ceil((float)alMappingColor.size() 
 				/ (float)iMappingRowCount);
@@ -846,8 +850,35 @@ public class GLPathwayManager {
 						2.0f * fNodeHeight / iMappingRowCount, 0.0f);
 			}			
 		}
-
+		
 		gl.glPopMatrix();
+
+		// Render grid
+		if (bEnableGrid)
+		{
+			gl.glColor3f(1,1,1);
+			gl.glBegin(GL.GL_LINE_LOOP);
+	        gl.glVertex3f(-fNodeWidth , -fNodeHeight, Z_OFFSET);		
+	        gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);			
+	        gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
+	        gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
+			gl.glEnd();
+			
+			gl.glBegin(GL.GL_LINES);
+			for (int iRowIndex = 1; iRowIndex <= iMappingRowCount; iRowIndex++)
+			{
+				gl.glVertex3f(-fNodeWidth, -fNodeHeight + 
+						(2*fNodeHeight/iMappingRowCount)*iRowIndex, Z_OFFSET);
+				gl.glVertex3f(fNodeWidth, -fNodeHeight + 
+						(2*fNodeHeight/iMappingRowCount)*iRowIndex, Z_OFFSET);
+			}
+			for (int iColumnIndex = 1; iColumnIndex <= iColumnCount; iColumnIndex++)
+			{
+				gl.glVertex3f(-fNodeWidth + (2*fNodeWidth/iColumnCount)*iColumnIndex, fNodeHeight, Z_OFFSET);
+				gl.glVertex3f(-fNodeWidth + (2*fNodeWidth/iColumnCount)*iColumnIndex, -fNodeHeight, Z_OFFSET);
+			}
+			gl.glEnd();
+		}
 	}
 	
 	public PathwayVertexGraphItemRep getVertexRepByPickID(int iPickID) {

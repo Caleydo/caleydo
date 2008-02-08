@@ -143,10 +143,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
 	 */
 	public void renderPart(GL gl) 
-	{	
-		
-		
-		//gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	{		
+//		//gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 //		if(bIsDisplayListDirty)
 //		{
 			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -199,11 +197,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		this.bPreventOcclusion = bPreventOcclusion;
 	}
 	
-
-	
 	private void renderScene(GL gl, boolean bRenderPolylineSelection)
 	{	
-		
 		int iNumberOfAxis = 0;
 		
 		if (alSetData == null)
@@ -616,7 +611,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 			if (tempList != null)
 			{
 				if (tempList.size() != 0 )
-				{					
+				{
+					// FIXME: this happens every time when something is selected
 					bIsDisplayListDirty = true;
 					bRenderPolylineSelection = true;
 				}

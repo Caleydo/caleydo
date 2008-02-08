@@ -12,60 +12,61 @@ import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.ICommand;
 import org.geneview.core.command.data.CmdDataCreatePathwayStorage;
 import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
-import org.geneview.core.command.data.CmdDataCreateSetViewdata;
-import org.geneview.core.command.data.CmdDataCreateVirtualArray;
 import org.geneview.core.command.data.CmdDataCreateSet;
+import org.geneview.core.command.data.CmdDataCreateSetViewdata;
 import org.geneview.core.command.data.CmdDataCreateStorage;
+import org.geneview.core.command.data.CmdDataCreateVirtualArray;
 import org.geneview.core.command.data.filter.CmdDataFilterMath;
 import org.geneview.core.command.data.filter.CmdDataFilterMinMax;
 import org.geneview.core.command.event.CmdEventCreateMediator;
 import org.geneview.core.command.event.CmdEventMediatorAddObject;
+import org.geneview.core.command.queue.CmdSystemRunCmdQueue;
+import org.geneview.core.command.queue.CommandQueueVector;
+import org.geneview.core.command.system.CmdSystemExit;
+import org.geneview.core.command.system.CmdSystemLoadFileLookupTable;
+import org.geneview.core.command.system.CmdSystemLoadFileNStorages;
+import org.geneview.core.command.system.CmdSystemLoadFileViaImporter;
+import org.geneview.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap;
+import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectHistogram2D;
+import org.geneview.core.command.view.opengl.CmdGlObjectIsosurface3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
+import org.geneview.core.command.view.opengl.CmdGlObjectOverallJukebox3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectParCoords3D;
+import org.geneview.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DLayered;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DPanel;
-import org.geneview.core.command.view.opengl.CmdGlObjectOverallJukebox3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectScatterPlot2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectTexture2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectTriangleTest;
-import org.geneview.core.command.view.opengl.CmdGlObjectIsosurface3D;
-import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectWidget;
 import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
 import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
 import org.geneview.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.geneview.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.geneview.core.command.view.swt.CmdViewCreateDataExchanger;
-import org.geneview.core.command.view.swt.CmdViewCreateSetEditor;
 import org.geneview.core.command.view.swt.CmdViewCreateDataExplorer;
 import org.geneview.core.command.view.swt.CmdViewCreateGears;
+import org.geneview.core.command.view.swt.CmdViewCreateHTMLBrowser;
 import org.geneview.core.command.view.swt.CmdViewCreateImage;
 import org.geneview.core.command.view.swt.CmdViewCreateMixer;
 import org.geneview.core.command.view.swt.CmdViewCreatePathway;
 import org.geneview.core.command.view.swt.CmdViewCreateProgressBar;
 import org.geneview.core.command.view.swt.CmdViewCreateSelectionSlider;
+import org.geneview.core.command.view.swt.CmdViewCreateSetEditor;
 import org.geneview.core.command.view.swt.CmdViewCreateStorageSlider;
 import org.geneview.core.command.view.swt.CmdViewCreateSwtGLCanvas;
 import org.geneview.core.command.view.swt.CmdViewCreateUndoRedo;
 import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import org.geneview.core.command.view.swt.CmdViewCreateHTMLBrowser;
-import org.geneview.core.command.window.swt.CmdWindowCreate;
 import org.geneview.core.command.window.swt.CmdContainerCreate;
-import org.geneview.core.command.queue.CmdSystemRunCmdQueue;
-import org.geneview.core.command.queue.CommandQueueVector;
-import org.geneview.core.command.system.CmdSystemExit;
-import org.geneview.core.command.system.CmdSystemLoadFileViaImporter;
-import org.geneview.core.command.system.CmdSystemLoadFileNStorages;
-import org.geneview.core.command.system.CmdSystemLoadFileLookupTable;
-import org.geneview.core.command.system.path.CmdSetPathwayDatabasePath;
+import org.geneview.core.command.window.swt.CmdWindowCreate;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 
 /**
  * Class is responsible for creating the commands.
@@ -517,6 +518,16 @@ implements  ICommandFactory {
 		{
  			createdCommand =
 				new CmdGlObjectPathway3DJukebox(
+						refGeneralManager,
+						refCommandManager,
+						cmdType);	
+			break;
+		}
+		
+		case CREATE_GL_PATHWAY_3D:
+		{
+ 			createdCommand =
+				new CmdGlObjectPathway3D(
 						refGeneralManager,
 						refCommandManager,
 						cmdType);	

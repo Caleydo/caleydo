@@ -35,6 +35,7 @@ import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasLayeredPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPanelPathway3D;
+import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasMinMaxScatterPlot3D;
 import org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
 import org.geneview.core.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
@@ -60,6 +61,7 @@ import org.geneview.core.view.swt.undoredo.UndoRedoViewRep;
  * Manage all canvas, view, ViewRep's and GLCanvas objects.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public class ViewJoglManager 
 extends AAbstractManager
@@ -96,7 +98,6 @@ implements IViewGLCanvasManager {
 	 */
 	protected ArrayList<IViewRep> arHTMLBrowserViewRep;
 		
-	//protected ArrayList<WorkspaceSwingFrame> arWorkspaceSwingFrame;
 	protected ArrayList<JFrame> arWorkspaceJFrame;
 	
 	private JoglCanvasForwarderType joglCanvasForwarderType;
@@ -105,6 +106,11 @@ implements IViewGLCanvasManager {
 	
 	private PickingManager myPickingManager;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param setGeneralManager
+	 */
 	public ViewJoglManager(IGeneralManager setGeneralManager) {
 
 		super(setGeneralManager, 
@@ -272,9 +278,6 @@ implements IViewGLCanvasManager {
 						iParentContainerId, 
 						sLabel,
 						iGlForwarderId);
-
-			//return new Heatmap2DViewRep(iNewId, this.refGeneralManager);
-				
 			case VIEW_SWT_SELECTION_SLIDER:
 				return new SelectionSliderViewRep(this.refGeneralManager, iUniqueId,
 						iParentContainerId, sLabel);
@@ -428,6 +431,13 @@ implements IViewGLCanvasManager {
 						iUniqueId,
 						iGlForwarderId, 
 						sLabel);
+				
+			case CREATE_GL_PATHWAY_3D:
+				return new GLCanvasPathway3D(
+						refGeneralManager, 
+						iUniqueId,
+						iGlForwarderId, 
+						sLabel);	
 				
 			case CREATE_GL_PARALLEL_COORDINATES_3D:
 				return new GLCanvasParCoords3D(
