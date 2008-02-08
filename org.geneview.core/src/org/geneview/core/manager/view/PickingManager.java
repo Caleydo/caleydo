@@ -3,6 +3,8 @@ package org.geneview.core.manager.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
+
 import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.base.AAbstractManager;
@@ -95,6 +97,11 @@ public class PickingManager extends AAbstractManager
 		return iPickingID;		
 	}
 	
+	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
+	{	
+		processHits(uniqueManagedObject, iHitCount, iArPickingBuffer, myMode, false);
+	}
+	
 	/**
 	 * Extracts the nearest hit from the provided iArPickingBuffer
 	 * Stores it internally
@@ -103,20 +110,22 @@ public class PickingManager extends AAbstractManager
 	 * @param iHitCount
 	 * @param iArPickingBuffer
 	 */
-	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
+	public void processHits(AUniqueManagedObject uniqueManagedObject, 
+							int iHitCount, 
+							int[] iArPickingBuffer, 
+							EPickingMode myMode, 
+							boolean bIsMaster)
 	{			
-		 int iPickingBufferCounter = 0;
-	
+		 int iPickingBufferCounter = 0;	
 		
 		 ArrayList<Integer> iAlPickedObjectId = new ArrayList<Integer>(2);
 		
 		// Only pick object that is nearest
 		int iMinimumZValue = Integer.MAX_VALUE;
 		int iNumberOfNames = 0;
+		int iNearestObjectIndex = 0;
 		for (int iCount = 0; iCount < iHitCount; iCount++)
-		{
-		
-			iNumberOfNames = iArPickingBuffer[iCount];
+		{			
 			//iPickingBufferCounter++;
 			// Check if object is nearer than previous objects
 			if (iArPickingBuffer[iPickingBufferCounter+1] < iMinimumZValue)
@@ -124,20 +133,26 @@ public class PickingManager extends AAbstractManager
 				// first element is number of names on name stack				
 				// second element is min Z Value
 				iMinimumZValue = iArPickingBuffer[iPickingBufferCounter+1];
+				iNearestObjectIndex = iPickingBufferCounter;
 				// third element is max Z Value
 				// fourth element is name of lowest name on stack
-				iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3]);
+				//iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3]);
 			}
-			iPickingBufferCounter = iPickingBufferCounter + 3;
-			for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++)
-			{
-				iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter + iNameCount]);
-			}
-			iPickingBufferCounter += iNumberOfNames;
+			iPickingBufferCounter = iPickingBufferCounter + 3 + iArPickingBuffer[iPickingBufferCounter];
+			
 		}		
+		
+		iNumberOfNames = iArPickingBuffer[iNearestObjectIndex];
+		
+		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++)
+		{
+			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3 + iNameCount]);
+		}
+		
+		//iPickingBufferCounter += iNumberOfNames;
 		if(iAlPickedObjectId.size() > 0)
 		{
-			processPicks(iAlPickedObjectId, uniqueManagedObject ,myMode);
+			processPicks(iAlPickedObjectId, uniqueManagedObject, myMode, bIsMaster);
 		}
 		//return iPickedObjectId;		
 	}
@@ -233,16 +248,31 @@ public class PickingManager extends AAbstractManager
 		return (iIDCounter * 100 + iType);		
 	}
 	
-	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode)
+	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode, boolean bIsMaster)
 	{
 		
 		int iPickingID = 0;
+		int iSignature = 0;
+		int iOrigianlPickingID = 0;
 		for (int iResultCounter = 0; iResultCounter < alPickingIDs.size(); iResultCounter++)
-		{
+		{			
 			iPickingID = alPickingIDs.get(iResultCounter);
-			int iSignature = getSignatureFromPickingID(iPickingID,
+		
+			if (iResultCounter == 0)
+			{
+				iSignature = getSignatureFromPickingID(iPickingID,
 					uniqueManagedObject);
-
+				iOrigianlPickingID = iPickingID;
+			}
+			if (iResultCounter == 1 && bIsMaster)
+			{				
+				int iViewUnderInteractionID = hashSignatureToPickingIDHashMap.get(iSignature).get(iOrigianlPickingID);
+				iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
+				System.out.println("Should be the name of a view: " + iViewUnderInteractionID);
+				
+			}
+			
+			
 			if (hashSignatureToHitList.get(iSignature) == null)
 			{
 				if (myMode == EPickingMode.RemovePick)
@@ -274,6 +304,8 @@ public class PickingManager extends AAbstractManager
 					alTempList.remove(iSignature);
 				}
 			}
+		
+			
 		}
 	}
 		
@@ -290,11 +322,16 @@ public class PickingManager extends AAbstractManager
 	private int getSignatureFromPickingID(int iPickingID, AUniqueManagedObject uniqueManagedObject)
 	{
 		int iViewID = uniqueManagedObject.getId();
+		return getSignatureFromPickingID(iPickingID, iViewID);
+		
+	}
+	
+	private int getSignatureFromPickingID(int iPickingID, int iViewID)
+	{
 		int iTemp = iPickingID / 100;
 		int iType = iPickingID - iTemp * 100;
 		
 		return (getSignature(iViewID, iType));
-		
 	}
 	
 	private void checkViewID(int iViewID)

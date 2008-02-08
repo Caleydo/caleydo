@@ -163,6 +163,8 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 			
 		gl.glCallList(iGLDisplayListIndex);
 		handlePicking(gl);
+		// check if we hit a polyline
+		checkForHits();
 		
 	}
 	
@@ -279,11 +281,6 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		int iNumberOfPolyLinesToRender = 0;
 		
 		
-		
-		
-
-		
-		
 		// if true one array corresponds to one polyline, number of arrays is number of polylines
 		if (bRenderArrayAsPolyline)
 		{
@@ -353,8 +350,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 					
 					iWhichStorage = myPickingManager.getExternalIDFromHitCount(this, POLYLINE_SELECTION, iPolyLineCount);
 					//iWhichStorage = hashPolylinePickingIDToIndex
-							//.get();
-					
+							//.get();					
 					
 				} 
 				else
@@ -482,30 +478,38 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	private void renderCoordinateSystem(GL gl, int numberParameters, float maxHeight)
 	{		
 		
-		gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-		gl.glLineWidth(3.0f);
+		
 				
+		// draw X-Axis
+		gl.glColor4f(ParCoordsRenderStyle.X_AXIS_COLOR.x(),
+					ParCoordsRenderStyle.X_AXIS_COLOR.y(),
+					ParCoordsRenderStyle.X_AXIS_COLOR.z(),
+					ParCoordsRenderStyle.X_AXIS_COLOR.w());
+				
+		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
 		gl.glBegin(GL.GL_LINES);		
 	
 		gl.glVertex3f(-0.1f, 0.0f, 0.0f); 
 		gl.glVertex3f(((numberParameters-1) * axisSpacing)+0.1f, 0.0f, 0.0f);
-		
-		//gl.glVertex3f(0.0f, 0.0f, 0.0f);
-		//gl.glVertex3f(0.0f, maxHeight, 0.0f);			
-		
+			
 		gl.glEnd();
 		
 		// draw all Y-Axis
 
-		gl.glLineWidth(1.0f);
+		gl.glColor4f(ParCoordsRenderStyle.Y_AXIS_COLOR.x(),
+				ParCoordsRenderStyle.Y_AXIS_COLOR.y(),
+				ParCoordsRenderStyle.Y_AXIS_COLOR.z(),
+				ParCoordsRenderStyle.Y_AXIS_COLOR.w());
+			
+		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 		gl.glBegin(GL.GL_LINES);	
 		
-		int count = 0;
-		while (count < numberParameters)
+		int iCount = 0;
+		while (iCount < numberParameters)
 		{
-			gl.glVertex3f(count * axisSpacing, 0.0f, 0.0f);
-			gl.glVertex3f(count * axisSpacing, maxHeight, 0.0f);
-			count++;
+			gl.glVertex3f(iCount * axisSpacing, 0.0f, 0.0f);
+			gl.glVertex3f(iCount * axisSpacing, maxHeight, 0.0f);
+			iCount++;
 		}
 		
 		gl.glEnd();	
@@ -549,7 +553,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 
-		gl.glPushName(99);
+		//gl.glPushName(99);
 
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
@@ -597,7 +601,14 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		
 		//System.out.println("iPickedObjectID"+iPickedObjectId);
 		
-		// check if we hit a polyline
+		
+	
+		//myPickingManager.flushHits(iViewID, POLYLINE);
+		//TODO: here decide whether to rerender 		
+	}
+	
+	protected void checkForHits()
+	{
 		if(myPickingManager.getHits(this, POLYLINE_SELECTION) != null)
 		{
 			ArrayList<Integer> tempList = myPickingManager.getHits(this, POLYLINE_SELECTION);
@@ -605,16 +616,13 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 			if (tempList != null)
 			{
 				if (tempList.size() != 0 )
-				{
-					System.out.println(tempList.get(0));
+				{					
 					bIsDisplayListDirty = true;
 					bRenderPolylineSelection = true;
 				}
 			}
 				
 		}
-		//myPickingManager.flushHits(iViewID, POLYLINE);
-		//TODO: here decide whether to rerender 		
 	}
 
 }

@@ -35,7 +35,7 @@ extends ARenderStyle
 	public static final float POLYLINE_LINE_WIDTH = 1.0f;
 	public static final float SELECTED_POLYLINE_LINE_WIDTH = 2.0f;
 
-	public static final float Y_AXIS_LINE_WIDTH = 2.0f;
+	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 	public static final float X_AXIS_LINE_WIDTH = 3.0f;
 	
 	public ParCoordsRenderStyle()

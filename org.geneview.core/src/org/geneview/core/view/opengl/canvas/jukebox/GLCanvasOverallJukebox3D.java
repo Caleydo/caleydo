@@ -411,7 +411,7 @@ implements IMediatorReceiver, IMediatorSender {
 			int iArPickingBuffer[], final Point pickPoint) 
 	{
 
-		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
+		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.ReplacePick, true);
 		
 		if(pickingManager.getHits(this, VIEW_PICKING) != null)
 		{
