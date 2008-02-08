@@ -105,15 +105,18 @@ public class PickingManager extends AAbstractManager
 	 */
 	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
 	{			
-		int iPickingBufferCounter = 0;
+		 int iPickingBufferCounter = 0;
 	
 		
-		int iPickedObjectId = 0;
+		 ArrayList<Integer> iAlPickedObjectId = new ArrayList<Integer>(2);
 		
 		// Only pick object that is nearest
 		int iMinimumZValue = Integer.MAX_VALUE;
+		int iNumberOfNames = 0;
 		for (int iCount = 0; iCount < iHitCount; iCount++)
 		{
+		
+			iNumberOfNames = iArPickingBuffer[iCount];
 			//iPickingBufferCounter++;
 			// Check if object is nearer than previous objects
 			if (iArPickingBuffer[iPickingBufferCounter+1] < iMinimumZValue)
@@ -123,13 +126,18 @@ public class PickingManager extends AAbstractManager
 				iMinimumZValue = iArPickingBuffer[iPickingBufferCounter+1];
 				// third element is max Z Value
 				// fourth element is name of lowest name on stack
-				iPickedObjectId = iArPickingBuffer[iPickingBufferCounter+3];
+				iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3]);
 			}
-			iPickingBufferCounter += 4 ;
+			iPickingBufferCounter = iPickingBufferCounter + 3;
+			for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++)
+			{
+				iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter + iNameCount]);
+			}
+			iPickingBufferCounter += iNumberOfNames;
 		}		
-		if(iPickedObjectId != 0)
+		if(iAlPickedObjectId.size() > 0)
 		{
-			processPicks(iPickedObjectId, uniqueManagedObject ,myMode);
+			processPicks(iAlPickedObjectId, uniqueManagedObject ,myMode);
 		}
 		//return iPickedObjectId;		
 	}
@@ -225,44 +233,48 @@ public class PickingManager extends AAbstractManager
 		return (iIDCounter * 100 + iType);		
 	}
 	
-	private void processPicks(int iPickingID, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode)
+	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode)
 	{
-		int iSignature = getSignatureFromPickingID(iPickingID, uniqueManagedObject);
 		
-		
-		
-		if (hashSignatureToHitList.get(iSignature) == null)
+		int iPickingID = 0;
+		for (int iResultCounter = 0; iResultCounter < alPickingIDs.size(); iResultCounter++)
 		{
-			if (myMode == EPickingMode.RemovePick)
+			iPickingID = alPickingIDs.get(iResultCounter);
+			int iSignature = getSignatureFromPickingID(iPickingID,
+					uniqueManagedObject);
+
+			if (hashSignatureToHitList.get(iSignature) == null)
 			{
-				return;
-			}
-			else 
+				if (myMode == EPickingMode.RemovePick)
+				{
+					return;
+				} else
+				{
+					ArrayList<Integer> tempList = new ArrayList<Integer>();
+					tempList.add(iPickingID);
+					hashSignatureToHitList.put(iSignature, tempList);
+				}
+			} else
 			{
-				ArrayList<Integer> tempList = new ArrayList<Integer>();
-				tempList.add(iPickingID);
-				hashSignatureToHitList.put(iSignature, tempList);
+				if (myMode == EPickingMode.AddPick)
+				{
+					// ArrayList<Integer> listTemp =
+					hashSignatureToHitList.get(iSignature).add(iPickingID);
+					// listTemp.add(iSignature);
+				}
+				if (myMode == EPickingMode.ReplacePick)
+				{
+					hashSignatureToHitList.get(iSignature).clear();
+					hashSignatureToHitList.get(iSignature).add(iPickingID);
+				}
+				if (myMode == EPickingMode.RemovePick)
+				{
+					ArrayList<Integer> alTempList = hashSignatureToHitList
+							.get(iSignature);
+					alTempList.remove(iSignature);
+				}
 			}
 		}
-		else
-		{
-			if(myMode == EPickingMode.AddPick)
-			{
-				//ArrayList<Integer> listTemp =
-				hashSignatureToHitList.get(iSignature).add(iPickingID);
-				//listTemp.add(iSignature);
-			}
-			if(myMode == EPickingMode.ReplacePick)
-			{
-				hashSignatureToHitList.get(iSignature).clear();
-				hashSignatureToHitList.get(iSignature).add(iPickingID);
-			}
-			if(myMode == EPickingMode.RemovePick)
-			{
-				ArrayList<Integer> alTempList = hashSignatureToHitList.get(iSignature);
-				alTempList.remove(iSignature);				
-			}
-		}		
 	}
 		
 	private int getSignature(int iViewID, int iType)
