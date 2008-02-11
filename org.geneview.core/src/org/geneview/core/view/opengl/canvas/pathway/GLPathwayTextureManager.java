@@ -125,7 +125,7 @@ public class GLPathwayTextureManager {
 		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * 
 			((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
-		gl.glLoadName(hashPathwayIdToPathwayTexturePickingId.get(iPathwayId));
+		gl.glPushName(hashPathwayIdToPathwayTexturePickingId.get(iPathwayId));
 				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
@@ -158,6 +158,8 @@ public class GLPathwayTextureManager {
 		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);; 				
 		gl.glEnd();
+		
+		gl.glPopName();
 	}
 	
 	/**

@@ -7,10 +7,11 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.manager.IViewManager;
+import org.geneview.core.manager.view.PickingManager;
+import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.JoglCanvasForwarderType;
-import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.IGLCanvasDirector;
+import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.swt.data.search.DataEntitySearcherViewRep;
 
 /**
@@ -18,6 +19,7 @@ import org.geneview.core.view.swt.data.search.DataEntitySearcherViewRep;
  * GLCanvas & GLEventListener.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public interface IViewGLCanvasManager 
@@ -59,4 +61,8 @@ extends IViewManager {
 	public void setJoglCanvasForwarderType(JoglCanvasForwarderType type);
 	
 	public DataEntitySearcherViewRep getDataEntitySearcher();
+	
+	public PickingManager getPickingManager();
+	
+	public SelectionManager getSelectionManager();
 }

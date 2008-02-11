@@ -104,22 +104,25 @@ implements IViewGLCanvasManager {
 	
 	private DataEntitySearcherViewRep dataEntitySearcher;
 	
-	private PickingManager myPickingManager;
+	private PickingManager pickingManager;
+	
+	private SelectionManager selectionManager;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param setGeneralManager
 	 */
-	public ViewJoglManager(IGeneralManager setGeneralManager) {
+	public ViewJoglManager(IGeneralManager generalManager) {
 
-		super(setGeneralManager, 
+		super(generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
 				ManagerType.VIEW_GUI_SWT );
 
-		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
+		assert generalManager != null : "Constructor with null-pointer to singelton";
 
-		myPickingManager = new PickingManager(setGeneralManager);
+		pickingManager = new PickingManager(generalManager);
+		selectionManager = new SelectionManager(generalManager);
 		
 		hashViewId2View = new HashMap<Integer, IView>();
 
@@ -912,8 +915,13 @@ implements IViewGLCanvasManager {
 		return dataEntitySearcher;
 	}
 	
-	public PickingManager getPickingManager()
-	{
-		return myPickingManager;
+	public PickingManager getPickingManager() {
+
+		return pickingManager;
+	}
+	
+	public SelectionManager getSelectionManager() {
+		
+		return selectionManager;
 	}
 }

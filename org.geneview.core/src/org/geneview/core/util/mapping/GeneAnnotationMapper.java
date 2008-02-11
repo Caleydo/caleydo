@@ -1,8 +1,5 @@
 package org.geneview.core.util.mapping;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.data.IGenomeIdManager;
@@ -14,6 +11,11 @@ public class GeneAnnotationMapper {
 	
 	protected IGenomeIdManager refGenomeIdManager;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 */
 	public GeneAnnotationMapper (final IGeneralManager refGeneralManager) {
 	
 		refGenomeIdManager = refGeneralManager.getSingelton().getGenomeIdManager();

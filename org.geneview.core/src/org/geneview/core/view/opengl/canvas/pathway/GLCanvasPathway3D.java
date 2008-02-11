@@ -15,14 +15,19 @@ import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.geneview.core.data.mapping.EGenomeMappingType;
+import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IPathwayManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.PickingManager;
+import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
@@ -41,7 +46,7 @@ import com.sun.opengl.util.BufferUtil;
 public class GLCanvasPathway3D 
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
-
+	
 	private int iPathwayID = -1;
 	
 	private float fLastMouseMovedTimeStamp = 0;
@@ -54,12 +59,16 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private int iMouseOverPickedPathwayId = -1;
 
+	private IGeneralManager generalManager;
+	
 	private IPathwayManager pathwayManager;
 	
 	private GLPathwayManager refGLPathwayManager;
 
-	private GLPathwayTextureManager refGLPathwayTextureManager;
-
+	private SelectionManager selectionManager;
+	
+	private PickingManager pickingManager;
+	
 	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 
 	private PathwayVertexGraphItemRep selectedVertex;
@@ -73,23 +82,30 @@ implements IMediatorReceiver, IMediatorSender {
 	private HashMap<Integer, Integer> refHashPathwayContainingSelectedVertex2VertexCount;
 	
 	/**
+	 * Own texture manager is needed for each GL context, 
+	 * because textures cannot be bound to multiple GL contexts.
+	 */
+	private HashMap<GL, GLPathwayTextureManager> refHashGLcontext2TextureManager;
+	
+	/**
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasPathway3D(final IGeneralManager refGeneralManager,
+	public GLCanvasPathway3D(final IGeneralManager generalManager,
 			int iViewId,
 			int iParentContainerId,
 			String sLabel) {
 
-		super(refGeneralManager, null, iViewId, iParentContainerId, "");
+		super(generalManager, null, iViewId, iParentContainerId, "");
 
 		this.refViewCamera.setCaller(this);
 
+		this.generalManager = generalManager;
+		
 		pathwayManager = refGeneralManager.getSingelton().getPathwayManager();
 		
 		refGLPathwayManager = new GLPathwayManager(refGeneralManager);
-		refGLPathwayTextureManager = new GLPathwayTextureManager(
-				refGeneralManager);
+		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
@@ -97,7 +113,11 @@ implements IMediatorReceiver, IMediatorSender {
 
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				refGLPathwayManager);
+		
 		infoAreaRenderer.enableColorMappingArea(true);	
+		
+		pickingManager = refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager();
+		selectionManager = refGeneralManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
 	}
 
 	/*
@@ -132,16 +152,36 @@ implements IMediatorReceiver, IMediatorSender {
 	protected void initPathwayData(final GL gl) {
 
 		refGLPathwayManager.init(gl, alSetData, alSetSelection);
+		
+		// Create new pathway manager for GL context
+		if(!refHashGLcontext2TextureManager.containsKey(gl))
+		{
+			refHashGLcontext2TextureManager.put(gl, 
+					new GLPathwayTextureManager(refGeneralManager));	
+		}		
 		loadAllPathways(gl);
-//		buildPathwayDisplayList(gl);
+
+		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+		
+//		//------------------------------------------------
+//		// MARC: Selection test
+//		String sAccessionCode = "NM_001565";
+//	
+//		int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
+//			.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
+//		
+//		selectionManager.addSelectionRep(iAccessionID, 
+//				new SelectedElementRep(this.getId(), 200, 450));
+//		//------------------------------------------------
 	}
 
 	public void renderPart(GL gl) {
 		
-		handlePicking(gl);
+		//handlePicking(gl);
+		checkForHits();
 				
-		if (bRebuildVisiblePathwayDisplayLists)
-			rebuildPathwayDisplayList(gl);
+//		if (bRebuildVisiblePathwayDisplayLists)
+//			rebuildPathwayDisplayList(gl);
 
 		renderScene(gl);
 		renderInfoArea(gl);
@@ -168,15 +208,18 @@ implements IMediatorReceiver, IMediatorSender {
 		// Load BioCarta pathways
 		pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
 		
-		Iterator<IGraph> iterPathwayGraphs = pathwayManager
-			.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
-
-		while(iterPathwayGraphs.hasNext())
-		{
-			iterPathwayGraphs.next();
-			iPathwayID = iterPathwayGraphs.next().getId();
-			break;
-		}
+//		Iterator<IGraph> iterPathwayGraphs = pathwayManager
+//			.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
+//
+//		while(iterPathwayGraphs.hasNext())
+//		{
+//			iterPathwayGraphs.next();
+//			iPathwayID = iterPathwayGraphs.next().getId();
+//			break;
+//		}
+		
+		List<IGraph> tmp = pathwayManager.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
+		iPathwayID = tmp.get(117).getId();
 	}
 
 	private void renderPathwayById(final GL gl,
@@ -186,7 +229,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if (bEnablePathwayTexture)
 		{
-			refGLPathwayTextureManager.renderPathway(gl, iPathwayId, 1.0f, false);
+			refHashGLcontext2TextureManager.get(gl).renderPathway(gl, iPathwayId, 1.0f, false);
 		}
 
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * 
@@ -195,7 +238,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
 		gl.glTranslatef(0, tmp, 0);
-		refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+		refGLPathwayManager.renderPathway(gl, iPathwayId, false);
 		gl.glTranslatef(0, -tmp, 0);
 		
 		gl.glPopMatrix();
@@ -217,11 +260,25 @@ implements IMediatorReceiver, IMediatorSender {
 	 *      org.geneview.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
-
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()
+						+ ": updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
+						+ eventTrigger.getClass().getSimpleName(),
+				LoggerType.VERBOSE);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
+	 */
 	public void updateReceiver(Object eventTrigger) {
 
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()
+						+ ": updateReceiver(Object eventTrigger): Update called by "
+						+ eventTrigger.getClass().getSimpleName(),
+				LoggerType.VERBOSE);
 	}
 
 	private void handlePicking(final GL gl) {
@@ -318,107 +375,181 @@ implements IMediatorReceiver, IMediatorSender {
 	protected void processHits(final GL gl, int iHitCount,
 			int iArPickingBuffer[], final Point pickPoint) {
 
-		// System.out.println("Number of hits: " +iHitCount);
-
-		int iPtr = 0;
-		int i = 0;
-
-		int iPickedObjectId = 0;
-
-		// Only pick object that is nearest
-		int iMinimumZValue = Integer.MAX_VALUE;
-		for (i = 0; i < iHitCount; i++)
+		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
+//
+//		int iPtr = 0;
+//		int i = 0;
+//
+//		int iPickedObjectId = 0;
+//
+//		// Only pick object that is nearest
+//		int iMinimumZValue = Integer.MAX_VALUE;
+//		for (i = 0; i < iHitCount; i++)
+//		{
+//			iPtr++;
+//			// Check if object is nearer than previous objects
+//			if (iArPickingBuffer[iPtr] < iMinimumZValue)
+//			{
+//				iMinimumZValue = iArPickingBuffer[iPtr];
+//				iPtr++;
+//				iPtr++;
+//				iPickedObjectId = iArPickingBuffer[iPtr];
+//			}
+//			iPtr++;
+//		}
+//		
+//		if (iPickedObjectId == 0)
+//		{
+//			// Remove pathway pool fisheye
+//			iMouseOverPickedPathwayId = -1;
+//
+//			infoAreaRenderer.resetPoint();
+//
+//			return;
+//		}
+//
+//		PathwayVertexGraphItemRep pickedVertexRep
+//			= refGLPathwayManager.getVertexRepByPickID(iPickedObjectId);
+//
+//		if (pickedVertexRep == null)
+//			return;
+//
+//		if (selectedVertex != null
+//				&& !selectedVertex.equals(pickedVertexRep))
+//		{
+//			loadNodeInformationInBrowser(((PathwayVertexGraphItem)pickedVertexRep.getAllItemsByProp(
+//					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+//			
+//			infoAreaRenderer.resetAnimation();
+//		}
+//		
+//		// Remove pathway pool fisheye
+//		iMouseOverPickedPathwayId = -1;
+//
+//		// System.out.println("Picked node:" +refPickedVertexRep.getName());
+//
+//		// Reset pick point
+//		infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl,
+//				pickPoint.x, pickPoint.y);
+//
+//		// If event is just mouse over (and not real picking)
+//		// highlight the object under the cursor
+//		if (bIsMouseOverPickingEvent)
+//		{
+//			if (selectedVertex == null ||
+//					(selectedVertex != null && !selectedVertex.equals(pickedVertexRep)))
+//			{
+//				selectedVertex = pickedVertexRep;
+//				bSelectionChanged = true;
+//			}
+//			
+//			return;
+//		}
+//
+//		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
+//				EPathwayVertexType.map))
+//		{
+//			String strTmp = pickedVertexRep.getPathwayVertexGraphItem().getName();
+//
+//			int iPathwayId = -1;
+//			try
+//			{
+//				iPathwayId = Integer.parseInt(strTmp
+//						.substring(strTmp.length() - 4));
+//			} catch (NumberFormatException e)
+//			{
+//				return;
+//			}
+//
+//			loadPathwayToUnderInteractionPosition(iPathwayId);
+//
+//			return;
+//		}
+//		else if (pickedVertexRep.getPathwayVertexGraphItem().getType()
+//				.equals(EPathwayVertexType.enzyme) 
+//			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
+//				.equals(EPathwayVertexType.gene)
+//			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
+//				.equals(EPathwayVertexType.other)) // FIXME: just for testing BioCarta integration
+//		{
+//			selectedVertex = pickedVertexRep;
+//			bSelectionChanged = true;
+//
+//			loadDependentPathwayBySingleVertex(gl, selectedVertex);
+//
+//			if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
+//			{
+//				int iAccessionID  = refGeneralManager.getSingelton().getGenomeIdManager()
+//					.getIdIntFromIntByMapping(pickedVertexRep.getId(), 
+//						EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+//				
+//				generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+//					.addSelectionRep(iAccessionID, new SelectedElementRep(this.getId(), 
+//							pickedVertexRep.getXOrigin(), pickedVertexRep.getYOrigin()));
+//			}
+//		}
+	}
+	
+	protected void checkForHits()
+	{
+		if(pickingManager.getHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION) != null)
 		{
-			iPtr++;
-			// Check if object is nearer than previous objects
-			if (iArPickingBuffer[iPtr] < iMinimumZValue)
-			{
-				iMinimumZValue = iArPickingBuffer[iPtr];
-				iPtr++;
-				iPtr++;
-				iPickedObjectId = iArPickingBuffer[iPtr];
-			}
-			iPtr++;
-		}
-		
-		if (iPickedObjectId == 0)
-		{
-			// Remove pathway pool fisheye
-			iMouseOverPickedPathwayId = -1;
-
-			infoAreaRenderer.resetPoint();
-
-			return;
-		}
-
-		PathwayVertexGraphItemRep pickedVertexRep
-			= refGLPathwayManager.getVertexRepByPickID(iPickedObjectId);
-
-		if (pickedVertexRep == null)
-			return;
-
-		if (selectedVertex != null
-				&& !selectedVertex.equals(pickedVertexRep))
-		{
-			loadNodeInformationInBrowser(((PathwayVertexGraphItem)pickedVertexRep.getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+			ArrayList<Integer> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION);
 			
-			infoAreaRenderer.resetAnimation();
-		}
-		
-		// Remove pathway pool fisheye
-		iMouseOverPickedPathwayId = -1;
-
-		// System.out.println("Picked node:" +refPickedVertexRep.getName());
-
-		// Reset pick point
-		infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl,
-				pickPoint.x, pickPoint.y);
-
-		// If event is just mouse over (and not real picking)
-		// highlight the object under the cursor
-		if (bIsMouseOverPickingEvent)
-		{
-			if (selectedVertex == null ||
-					(selectedVertex != null && !selectedVertex.equals(pickedVertexRep)))
+			if (tempList != null)
 			{
-				selectedVertex = pickedVertexRep;
-				bSelectionChanged = true;
+				if (tempList.size() != 0 )
+				{
+					int iElementID = pickingManager.getExternalIDFromPickingID(this, tempList.get(0));
+				
+					PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
+						.getPathwayItemManager().getItem(iElementID);
+					
+					PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
+					
+					int iGeneID = refGeneralManager.getSingelton().getGenomeIdManager()
+						.getIdIntFromStringByMapping(
+								tmpVertexGraphItem.getName().substring(4), 
+								EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+							
+					if (iGeneID == -1)
+					{	
+						return;
+					}
+					
+					int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
+						.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+					
+//					// Just for testing
+//					String sAccessionCode = "NM_001565";					
+//					int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
+//						.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
+
+					selectionManager.clear();
+
+					int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
+					
+					selectionManager.addSelectionRep(iAccessionID, new SelectedElementRep(this.getId(), 
+							tmpVertexGraphItemRep.getXOrigin(), iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()));
+
+
+					// Trigger update
+
+					// Write currently selected vertex to selection set
+					int[] iArTmpSelectionId = new int[1];
+					int[] iArTmpDepth = new int[1];
+					iArTmpSelectionId[0] = iAccessionID;
+					iArTmpDepth[0] = 0;
+					alSetSelection.get(0).getWriteToken();
+					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+					alSetSelection.get(0).returnWriteToken();
+					alSetSelection.get(0).updateSelectionSet(iUniqueId);
+				}
 			}
 			
-			return;
-		}
-
-		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
-				EPathwayVertexType.map))
-		{
-			String strTmp = pickedVertexRep.getPathwayVertexGraphItem().getName();
-
-			int iPathwayId = -1;
-			try
-			{
-				iPathwayId = Integer.parseInt(strTmp
-						.substring(strTmp.length() - 4));
-			} catch (NumberFormatException e)
-			{
-				return;
-			}
-
-			loadPathwayToUnderInteractionPosition(iPathwayId);
-
-			return;
-		}
-		else if (pickedVertexRep.getPathwayVertexGraphItem().getType()
-				.equals(EPathwayVertexType.enzyme) 
-			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
-				.equals(EPathwayVertexType.gene)
-			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
-			.equals(EPathwayVertexType.other)) // FIXME: just for testing BioCarta integration
-		{
-			selectedVertex = pickedVertexRep;
-			bSelectionChanged = true;
-
-			loadDependentPathwayBySingleVertex(gl, selectedVertex);
+			// TODO: flush hits!
+			pickingManager.flushHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION);
 		}
 	}
 
@@ -504,30 +635,30 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void rebuildPathwayDisplayList(final GL gl) {
 
-		// Reset rebuild trigger flag
-		bRebuildVisiblePathwayDisplayLists = false;
-		
-		refGLPathwayManager.clearOldPickingIDs();
-
-		if (selectedVertex != null)
-		{
-			// Write currently selected vertex to selection set
-			int[] iArTmpSelectionId = new int[1];
-			int[] iArTmpDepth = new int[1];
-			iArTmpSelectionId[0] = selectedVertex.getId();
-			iArTmpDepth[0] = 0;
-			alSetSelection.get(0).getWriteToken();
-			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-			alSetSelection.get(0).returnWriteToken();
-		}
-			
-		refGLPathwayManager.performIdenticalNodeHighlighting();
-		
-
-		refGLPathwayManager.buildPathwayDisplayList(gl, 261);
-		
-		// Cleanup unused textures
-//		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
+//		// Reset rebuild trigger flag
+//		bRebuildVisiblePathwayDisplayLists = false;
+//		
+//		refGLPathwayManager.clearOldPickingIDs();
+//
+//		if (selectedVertex != null)
+//		{
+//			// Write currently selected vertex to selection set
+//			int[] iArTmpSelectionId = new int[1];
+//			int[] iArTmpDepth = new int[1];
+//			iArTmpSelectionId[0] = selectedVertex.getId();
+//			iArTmpDepth[0] = 0;
+//			alSetSelection.get(0).getWriteToken();
+//			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+//			alSetSelection.get(0).returnWriteToken();
+//		}
+//			
+//		refGLPathwayManager.performIdenticalNodeHighlighting();
+//		
+//
+//		refGLPathwayManager.buildPathwayDisplayList(gl, this, 261);
+//		
+//		// Cleanup unused textures
+////		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 
 	}
 

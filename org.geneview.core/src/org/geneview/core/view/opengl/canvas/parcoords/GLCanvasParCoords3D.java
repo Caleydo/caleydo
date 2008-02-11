@@ -18,9 +18,14 @@ import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
+import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.event.mediator.IMediatorReceiver;
+import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.PickingManager;
+import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
@@ -28,12 +33,15 @@ import com.sun.opengl.util.BufferUtil;
 
 /**
  * 
- * @author Alexander Lex
+ * @author Alexander Lex (responsible for PC)
+ * @author Marc Streit
  * 
  * This class is responsible for rendering the parallel coordinates
  *
  */
-public class GLCanvasParCoords3D extends AGLCanvasUser {
+public class GLCanvasParCoords3D 
+extends AGLCanvasUser
+implements IMediatorReceiver, IMediatorSender {
 	
 	private static final int POLYLINE_SELECTION = 1;
 	private static final int AXIS_SELECTION = 2;	
@@ -61,7 +69,10 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 	private ParCoordsRenderStyle renderStyle;
 	
 	//private HashMap<Integer, Integer> hashPolylinePickingIDToIndex;
-	//private HashMap<Integer, Integer> hashPolylineIndexToPickingID;	
+	//private HashMap<Integer, Integer> hashPolylineIndexToPickingID;
+	
+	// TODO: Marc: just for update testing
+	private int iSelectedAccessionID = -1;
 	
 	/**
 	 * Constructor
@@ -134,10 +145,23 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);		
 		//gl.glRenderMode(GL.GL_SELECT);
 		
-		iGLDisplayListIndex = gl.glGenLists(1);				
+		iGLDisplayListIndex = gl.glGenLists(1);	
+		
+		//------------------------------------------------
+		// MARC: Selection test
+//		String sAccessionCode = "NM_001565";
+//	
+//		int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
+//			.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
+//	
+//		SelectionManager selectionManager = 
+//			refGeneralManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
+//		
+//		selectionManager.addSelectionRep(iAccessionID, 
+//				new SelectedElementRep(this.getId(), 200, 0));
+		//------------------------------------------------
 	}
 	
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
@@ -250,7 +274,7 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 		}
 		
 		// color management
-		if(bRenderPolylineSelection)
+		if(bRenderPolylineSelection || iSelectedAccessionID != -1)
 		{
 			gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
 						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
@@ -620,5 +644,49 @@ public class GLCanvasParCoords3D extends AGLCanvasUser {
 				
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
+	 *      org.geneview.core.data.collection.ISet)
+	 */
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+		
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()
+						+ ": updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
+						+ eventTrigger.getClass().getSimpleName(),
+				LoggerType.VERBOSE);
+		
+		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
+		refSetSelection.getReadToken();
+		int[] iArSelection = refSetSelection.getSelectionIdArray();
+		if (iArSelection.length != 0)
+		{
+			iSelectedAccessionID = iArSelection[0];
+			
+			String sAccessionCode = refGeneralManager.getSingelton().getGenomeIdManager()
+				.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+		
+			System.out.println("Accession Code: " +sAccessionCode);
+			
+			refGeneralManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+				.addSelectionRep(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0, 0));
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
+	 */
+	public void updateReceiver(Object eventTrigger) {
+
+		refGeneralManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()
+						+ ": updateReceiver(Object eventTrigger): Update called by "
+						+ eventTrigger.getClass().getSimpleName(),
+				LoggerType.VERBOSE);
+	}
 }

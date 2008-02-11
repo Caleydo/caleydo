@@ -68,6 +68,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private boolean bRebuildVisiblePathwayDisplayLists = false;
 	
+	private GLConnectionLineRenderer glConnectionLineRenderer;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -117,6 +119,9 @@ implements IMediatorReceiver, IMediatorSender {
 			.getJoglCanvasForwarder().getJoglMouseListener();
 		
 		arSlerpActions = new ArrayList<SlerpAction>();
+		
+		glConnectionLineRenderer = new GLConnectionLineRenderer(refGeneralManager,
+				underInteractionLayer, stackLayer, poolLayer);
 	}
 	
 	/*
@@ -181,27 +186,63 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void buildStackLayer(final GL gl) {
 
+//		float fTiltAngleDegree = 57; // degree
+//		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
+//		float fLayerYPos = 1.1f;
+//		int iMaxLayers = 4;
+
+//		// Create free pathway layer spots
+//		Transform transform;
+//		for (int iLayerIndex = 0; iLayerIndex < iMaxLayers; iLayerIndex++)
+//		{
+//			// Store current model-view matrix
+//			transform = new Transform();
+//			transform.setTranslation(new Vec3f(-2.7f, fLayerYPos, 0f));
+//			transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
+//					SCALING_FACTOR_STACK_LAYER,
+//					SCALING_FACTOR_STACK_LAYER));
+//			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
+//			stackLayer.setTransformByPositionIndex(iLayerIndex,
+//					transform);
+//
+//			fLayerYPos -= 1f;
+//		}
+		
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		float fLayerYPos = 1.1f;
-		int iMaxLayers = 4;
+		
+		Transform transform = new Transform();
 
-		// Create free pathway layer spots
-		Transform transform;
-		for (int iLayerIndex = 0; iLayerIndex < iMaxLayers; iLayerIndex++)
-		{
-			// Store current model-view matrix
-			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2.7f, fLayerYPos, 0f));
-			transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
-					SCALING_FACTOR_STACK_LAYER,
-					SCALING_FACTOR_STACK_LAYER));
-			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
-			stackLayer.setTransformByPositionIndex(iLayerIndex,
-					transform);
+		transform.setTranslation(new Vec3f(0, -2.5f, 0));
+		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER));		
+		transform.setRotation(new Rotf(new Vec3f(-1f, 0, 0), fTiltAngleRad));
+		stackLayer.setTransformByPositionIndex(0, transform);
 
-			fLayerYPos -= 1f;
-		}
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(0, 1.5f, 0));
+		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER));		
+		transform.setRotation(new Rotf(new Vec3f(1f, 0, 0), fTiltAngleRad));
+		stackLayer.setTransformByPositionIndex(1, transform);
+
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(-2, 0, 0));
+		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER));		
+		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad));
+		stackLayer.setTransformByPositionIndex(2, transform);
+
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(2, 0, 0));
+		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER));		
+		transform.setRotation(new Rotf(new Vec3f(0, 1f, 0), fTiltAngleRad));
+		stackLayer.setTransformByPositionIndex(3, transform);
 	}
 	
 	/*
@@ -221,6 +262,8 @@ implements IMediatorReceiver, IMediatorSender {
 //		renderPoolLayer(gl);
 		renderStackLayer(gl);
 		renderUnderInteractionLayer(gl);
+		
+		glConnectionLineRenderer.render(gl);
 	}
 	
 	private void renderUnderInteractionLayer(final GL gl) {
@@ -383,7 +426,8 @@ implements IMediatorReceiver, IMediatorSender {
 				/ (float) (viewport[2] - viewport[0]);
 
 		// FIXME: values have to be taken from XML file!!
-		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		//gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 

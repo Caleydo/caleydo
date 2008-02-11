@@ -212,14 +212,14 @@ extends AXmlParserHandler {
    				}
    			}
 		} 	
-		
+
 		sName = convertBioCartaIdToNCBIGeneIdCode(sName);
 		
 		if(sName.isEmpty())
 			return;
 		
 		IGraphItem vertex = refGeneralManager.getSingelton().getPathwayItemManager()
-			.createVertex(sName, "other", 
+			.createVertex(sName, "gene", 
 					BIOCARTA_EXTERNAL_URL_VERTEX +  sExternalLink, "");
 		
 		refGeneralManager.getSingelton()

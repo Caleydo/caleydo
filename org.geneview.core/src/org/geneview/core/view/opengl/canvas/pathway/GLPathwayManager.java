@@ -11,12 +11,7 @@ import java.util.Map.Entry;
 
 import javax.media.opengl.GL;
 
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
-import org.geneview.util.graph.algorithm.GraphVisitorSearchBFS;
-
+import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.set.selection.SetSelection;
 import org.geneview.core.data.graph.core.PathwayGraph;
@@ -33,6 +28,11 @@ import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.util.mapping.AGenomeMapper;
 import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
 import org.geneview.core.view.opengl.util.GLTextUtils;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemKind;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraphItem;
+import org.geneview.util.graph.algorithm.GraphVisitorSearchBFS;
 
 /**
  * 
@@ -42,6 +42,8 @@ import org.geneview.core.view.opengl.util.GLTextUtils;
 public class GLPathwayManager {
 
 	private IGeneralManager refGeneralManager;
+	
+	public static final int PATHWAY_VERTEX_SELECTION = 1;
 	
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
@@ -54,7 +56,7 @@ public class GLPathwayManager {
 	private int iHighlightedCompoundNodeDisplayListId = -1;
 	
 	// First 200 IDs are reserved for picking of non pathway objects in the scene
-	private int iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
+//	private int iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
 	
 	private PathwayRenderStyle refRenderStyle;
 
@@ -64,7 +66,7 @@ public class GLPathwayManager {
 	private boolean bEnableNeighborhood = false;
 	private boolean bEnableAnnotation = true;
 	
-	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
+//	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
 	
 	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
 	
@@ -89,7 +91,7 @@ public class GLPathwayManager {
 		this.refGeneralManager = refGeneralManager;
 		
 		refRenderStyle = new PathwayRenderStyle();
-		hashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
+//		hashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();		
 		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Vec3f>>();
@@ -115,7 +117,9 @@ public class GLPathwayManager {
 		genomeMapper.setMappingData(alSetData);
 	}
 	
-	public void buildPathwayDisplayList(final GL gl, final int iPathwayId) {
+	public void buildPathwayDisplayList(final GL gl, 			
+			final AUniqueManagedObject containingView,
+			final int iPathwayId) {
 		
 		refGeneralManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()
@@ -143,7 +147,7 @@ public class GLPathwayManager {
 //		performIdenticalNodeHighlighting();
 		
 		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
-		extractVertices(gl, refTmpPathway);
+		extractVertices(gl, containingView, refTmpPathway);
 		gl.glEndList();
 		
 		if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
@@ -422,6 +426,7 @@ public class GLPathwayManager {
 	}
 	
 	private void extractVertices(final GL gl,
+			final AUniqueManagedObject containingView,
 			PathwayGraph pathwayToExtract) {
 		
 	    Iterator<IGraphItem> vertexIterator =
@@ -434,7 +439,7 @@ public class GLPathwayManager {
 
         	if (vertexRep != null)
         	{
-        		createVertex(gl,
+        		createVertex(gl, containingView,
         				(PathwayVertexGraphItemRep)vertexRep, 
         				pathwayToExtract);        	
         	}
@@ -469,6 +474,7 @@ public class GLPathwayManager {
 	}
 	
 	private void createVertex(final GL gl, 
+			final AUniqueManagedObject containingView,
 			PathwayVertexGraphItemRep vertexRep, 
 			PathwayGraph refContainingPathway) {
 		
@@ -477,9 +483,12 @@ public class GLPathwayManager {
 		// Create and store unique picking ID for that object
 //		if (bPickingRendering)
 //		{
-			iUniqueObjectPickId++;
-			gl.glLoadName(iUniqueObjectPickId);
-			hashPickID2VertexRep.put(iUniqueObjectPickId, vertexRep);			
+//			iUniqueObjectPickId++;
+			//gl.glPushName(iUniqueObjectPickId);
+			gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+					.getPickingID(containingView, PATHWAY_VERTEX_SELECTION, vertexRep.getId()));
+
+//			hashPickID2VertexRep.put(iUniqueObjectPickId, vertexRep);			
 //		}
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
@@ -635,6 +644,8 @@ public class GLPathwayManager {
 			
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
+		
+		gl.glPopName();
 	}
 	
 	private void createEdge(final GL gl, 
@@ -881,16 +892,16 @@ public class GLPathwayManager {
 		}
 	}
 	
-	public PathwayVertexGraphItemRep getVertexRepByPickID(int iPickID) {
-		
-		return hashPickID2VertexRep.get(iPickID);
-	}
+//	public PathwayVertexGraphItemRep getVertexRepByPickID(int iPickID) {
+//		
+//		return hashPickID2VertexRep.get(iPickID);
+//	}
 	
-	public void clearOldPickingIDs() {
-		
-		hashPickID2VertexRep.clear();
-		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
-	}
+//	public void clearOldPickingIDs() {
+//		
+//		hashPickID2VertexRep.clear();
+//		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
+//	}
 	
 	public void updateSelectionSet(final SetSelection setSelection) 
 	{

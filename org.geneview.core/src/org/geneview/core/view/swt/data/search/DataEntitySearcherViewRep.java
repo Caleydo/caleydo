@@ -123,6 +123,7 @@ implements IMediatorSender{;
 
 	}
 	
+	// TODO: make case insensitive
 	private boolean searchForNCBIGeneId(final String sNCBIGeneIdCode) {
 		
 		int iNCBIGeneIdCode = StringConversionTool.convertStringToInt(sNCBIGeneIdCode, -1);

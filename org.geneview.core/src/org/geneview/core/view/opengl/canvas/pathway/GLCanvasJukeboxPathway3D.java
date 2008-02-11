@@ -1084,9 +1084,9 @@ implements IMediatorReceiver, IMediatorSender {
 			dragAndDrop.stopDragAction();
 		}
 
-		PathwayVertexGraphItemRep pickedVertexRep
-			= refGLPathwayManager.getVertexRepByPickID(iPickedObjectId);
-
+		PathwayVertexGraphItemRep pickedVertexRep = (PathwayVertexGraphItemRep) refGeneralManager
+			.getSingelton().getPathwayItemManager().getItem(iPickedObjectId);
+		
 		if (pickedVertexRep == null)
 			return;
 
@@ -1338,7 +1338,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// Reset rebuild trigger flag
 		bRebuildVisiblePathwayDisplayLists = false;
 		
-		refGLPathwayManager.clearOldPickingIDs();
+//		refGLPathwayManager.clearOldPickingIDs();
 
 		if (selectedVertex != null)
 		{
@@ -1361,7 +1361,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		while (iterVisiblePathway.hasNext())
 		{
-			refGLPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway.next());
+			refGLPathwayManager.buildPathwayDisplayList(gl, this, iterVisiblePathway.next());
 		}
 
 		// Rebuild display lists for visible pathways in focus position
@@ -1369,8 +1369,8 @@ implements IMediatorReceiver, IMediatorSender {
 				&& !pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer
 				.getElementIdByPositionIndex(0)))
 		{
-			refGLPathwayManager.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
-							.getElementIdByPositionIndex(0));
+			refGLPathwayManager.buildPathwayDisplayList(gl, this,
+					pathwayUnderInteractionLayer.getElementIdByPositionIndex(0));
 		}
 		
 		// Cleanup unused textures

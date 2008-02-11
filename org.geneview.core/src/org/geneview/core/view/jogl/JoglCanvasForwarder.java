@@ -173,8 +173,8 @@ implements GLEventListener {
 		gl.glLoadIdentity();
 		
 		//FIXME Perspective/ortho projection should be chosen in XML file
-		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+		//gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();

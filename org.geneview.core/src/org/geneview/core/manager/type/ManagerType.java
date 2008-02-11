@@ -60,6 +60,8 @@ public enum ManagerType {
 		
 		PICKING_MANAGER("Manage Picking for all Views", ManagerType.VIEW, 43),
 		
+		SELECTION_MANAGER("Manage selections for all views", ManagerType.VIEW, 44),
+		
 		VIEW_DISTRIBUTE_GUI("distributed GUI", 29);
 
 

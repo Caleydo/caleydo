@@ -71,6 +71,8 @@ public interface IGeneralManager {
 	public static final int iUniqueId_TypeOffset_MenuItem = 42;
 	
 	public static final int iUniqueID_TypeOffset_PickingID = 43;
+	
+	public static final int iUniqueID_TypeOffset_Selection = 44;
 
 	public static final int iUniqueId_TypeOffset_Set = 51;
 	
