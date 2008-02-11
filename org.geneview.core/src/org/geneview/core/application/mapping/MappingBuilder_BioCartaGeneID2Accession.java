@@ -1,8 +1,10 @@
 package org.geneview.core.application.mapping;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.MappedByteBuffer;
@@ -22,8 +24,9 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 	public MappingBuilder_BioCartaGeneID2Accession() 
 	 	throws IOException {
 		
-		outputWriter = 
-			new PrintWriter(OUTPUT_FILE_PATH);
+		 outputWriter = new PrintWriter(
+				 new BufferedWriter(new FileWriter(OUTPUT_FILE_PATH), 100000));
+			//new PrintWriter(OUTPUT_FILE_PATH);
 	}
 	
 	public void loadAllFilesInFolder(final String sFolderPath) {
@@ -50,7 +53,7 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 
 			byte[] bArTmp = new byte[(int) (fc.size())];
 			mbf.get(bArTmp);
-
+			
 			String sFileText = new String(bArTmp); // one big string
 			
 			// TODO: Search for more that the first occurrence
@@ -82,7 +85,10 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 	public void appendMappingToFile(final String sBioCartaGeneID, 
 			final String sAccessionNumber) {
 	
-		outputWriter.append(sAccessionNumber + ";" + sBioCartaGeneID + "\n");
+		outputWriter.println(sAccessionNumber + ";" + sBioCartaGeneID);
+//		boolean err = outputWriter.checkError();
+//		System.out.println(err);
+		outputWriter.flush();
 	}
 	
     public static void main(String[] args) {
