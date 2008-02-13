@@ -1,10 +1,5 @@
-/**
- * 
- */
 package org.geneview.core.parser.xml.sax.handler.command;
 
-
-//import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 //import org.xml.sax.helpers.DefaultHandler;
@@ -48,7 +43,7 @@ extends AXmlParserHandler
 	private final ICommandManager refCommandManager;
 	
 	/**
-	 * Since the opening tag is handled by the extenal handler
+	 * Since the opening tag is handled by the external handler
 	 * this fal is set to true by default.
 	 */
 	private boolean bCommandBuffer_isActive = false;
@@ -134,8 +129,8 @@ extends AXmlParserHandler
 					ParameterHandlerType.INT );
 			
 			phAttributes.setValueBySaxAttributes( attrs,
-					CommandQueueSaxType.TAG_GLCANVAS_FORWARDER.getXmlKey(), 
-					CommandQueueSaxType.TAG_GLCANVAS_FORWARDER.getDefault(),
+					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey(), 
+					CommandQueueSaxType.TAG_GLCANVAS.getDefault(),
 					ParameterHandlerType.INT );				
 			
 			phAttributes.setValueBySaxAttributes( attrs,

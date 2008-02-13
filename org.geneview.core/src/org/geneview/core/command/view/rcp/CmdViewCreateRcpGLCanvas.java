@@ -3,21 +3,15 @@ package org.geneview.core.command.view.rcp;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
+
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
-import org.geneview.core.data.view.camera.IViewCamera;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.math.MathUtil;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
-import org.geneview.core.view.jogl.JoglCanvasForwarderType;
-import org.geneview.core.view.opengl.RcpCanvasDirector;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
 
 /**
  * Class implements the command for creating a RCP-Jogl canvas.
@@ -54,42 +48,42 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		RcpCanvasDirector rcpCanvasDirector = null;
+//		RcpCanvasDirector rcpCanvasDirector = null;
+//		
+//		try
+//		{
+//			rcpCanvasDirector = new RcpCanvasDirector(iUniqueId, iGlForwarderId,
+//					generalManager, JoglCanvasForwarderType.ONLY_2D_FORWARDER);
+//		}
+//		catch (NoClassDefFoundError ncde) 
+//		{
+//			String errorMsg = "missing class; most probably jogl.jar is missing; can not create OpenGL frame; ";
+//			generalManager.getSingelton().logMsg(
+//					errorMsg + ncde.toString(), 
+//					LoggerType.ERROR);
+//			
+//			throw new GeneViewRuntimeException(errorMsg);
+//		}
 		
-		try
-		{
-			rcpCanvasDirector = new RcpCanvasDirector(iUniqueId, iGlForwarderId,
-					refGeneralManager, JoglCanvasForwarderType.ONLY_2D_FORWARDER);
-		}
-		catch (NoClassDefFoundError ncde) 
-		{
-			String errorMsg = "missing class; most probably jogl.jar is missing; can not create OpenGL frame; ";
-			refGeneralManager.getSingelton().logMsg(
-					errorMsg + ncde.toString(), 
-					LoggerType.ERROR);
-			
-			throw new GeneViewRuntimeException(errorMsg);
-		}
-		
-		IViewGLCanvasManager viewManager = refGeneralManager.getSingelton().getViewGLCanvasManager();
-		
-		viewManager.registerItem(
-				rcpCanvasDirector, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
-		
-		JoglCanvasForwarder canvasForwarder = rcpCanvasDirector.getJoglCanvasForwarder();
+//		IViewGLCanvasManager viewManager = generalManager.getSingelton().getViewGLCanvasManager();
+//		
+//		viewManager.registerItem(
+//				rcpCanvasDirector, 
+//				iUniqueId, 
+//				ManagerObjectType.VIEW);
+//		
+//		JoglCanvasForwarder canvasForwarder = rcpCanvasDirector.getJoglCanvasForwarder();
 
-		IViewCamera viewCamera = canvasForwarder.getViewCamera();
-		
-		if ( cameraOrigin_GLCanvas != null ) 
-			viewCamera.setCameraPosition(cameraOrigin_GLCanvas);
-		
-		if ( cameraRotation_GLCanvas != null)
-			viewCamera.setCameraRotation(cameraRotation_GLCanvas);
-		
-		refCommandManager.runDoCommand(this);
-			
+//		IViewCamera viewCamera = canvasForwarder.getViewCamera();
+//		
+//		if ( cameraOrigin_GLCanvas != null ) 
+//			viewCamera.setCameraPosition(cameraOrigin_GLCanvas);
+//		
+//		if ( cameraRotation_GLCanvas != null)
+//			viewCamera.setCameraRotation(cameraRotation_GLCanvas);
+//		
+//		refCommandManager.runDoCommand(this);
+//			
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

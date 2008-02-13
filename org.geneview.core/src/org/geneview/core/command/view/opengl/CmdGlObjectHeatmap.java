@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.command.view.opengl;
 
 import java.util.StringTokenizer;
@@ -14,6 +11,7 @@ import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap;
+import org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 
 /**
  * @author Michael Kalkusch
@@ -70,7 +68,7 @@ extends ACmdCreate_GlCanvasUser {
 			String logMessage = "CmdGlObjectHeatmap.setAttributesHeatmapWidthHeight() failed! 3 values are excpected, but only " +
 			i + " are present";
 			
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					logMessage,
 					LoggerType.MINOR_ERROR );
 			
@@ -82,26 +80,24 @@ extends ACmdCreate_GlCanvasUser {
 				-1 );
 	}
 
-
-
-	@Override
-	public void doCommandPart() throws GeneViewRuntimeException
-	{
-
-		GLCanvasHeatmap canvas = 
-			(GLCanvasHeatmap) openGLCanvasUser;
-				
-		canvas.setOriginRotation( cameraOrigin, cameraRotation );
-		canvas.setResolution( iResolution );
-		canvas.setTargetSetId( iTargetCollectionSetId );
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 */
+	public final void doCommand() {
 		
+		super.doCommand();
+
+		((GLCanvasHistogram2D)gLEventListener).setTargetSetId(iTargetCollectionSetId);
 	}
 
-	@Override
-	public void undoCommandPart() throws GeneViewRuntimeException
-	{
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 */
+	public final void undoCommand() {
+		super.undoCommand();	
 		
+		((GLCanvasHistogram2D)gLEventListener).destroyGLCanvas();
 	}
-	
-	
 }

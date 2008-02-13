@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.command.view.opengl;
 
 import java.util.StringTokenizer;
@@ -14,6 +11,7 @@ import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
+import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 
 /**
  * @author Michael Kalkusch
@@ -69,37 +67,34 @@ extends ACmdCreate_GlCanvasUser {
 				sDetail, 
 				-1 );
 	}
-
-
-
-	@Override
-	public void doCommandPart() throws GeneViewRuntimeException {
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 */
+	public final void doCommand() {
 		
-		GLCanvasHistogram2D canvas = 
-			(GLCanvasHistogram2D) openGLCanvasUser;
-				
-		canvas.setOriginRotation( cameraOrigin, cameraRotation );
-		canvas.setResolution( fResolution );
+		super.doCommand();
 		
 		if ( iTargetCollectionSetId > -1 ) {
-			canvas.setTargetSetId( iTargetCollectionSetId );
+			((GLCanvasHistogram2D)gLEventListener).setTargetSetId( iTargetCollectionSetId );
 		}
 		else 
 		{
-			refGeneralManager.getSingelton().logMsg( 
+			generalManager.getSingelton().logMsg( 
 					"CmdGLObjectHistogram2D no set defined!", 
 					LoggerType.STATUS);
 		}
-		canvas.setHistogramLength( iHistogramLevel );
+		((GLCanvasHistogram2D)gLEventListener).setHistogramLength( iHistogramLevel );
 	}
 
-	@Override
-	public void undoCommandPart() throws GeneViewRuntimeException {
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 */
+	public final void undoCommand() {
+		super.undoCommand();	
 		
-		GLCanvasHistogram2D canvas = 
-			(GLCanvasHistogram2D) openGLCanvasUser;
-		
-		canvas.destroyGLCanvas();
-		canvas = null;
+		((GLCanvasHistogram2D)gLEventListener).destroyGLCanvas();
 	}
 }

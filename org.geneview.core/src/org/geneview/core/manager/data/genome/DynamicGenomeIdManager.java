@@ -95,7 +95,7 @@ implements IGenomeIdManager {
 		
 		if ( hashType2Map.containsKey( codingLutType ) ) 
 		{
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"createMapByType(" + 
 					codingLutType.toString() + "," +
 					dataType.toString() + ",*) WARNING! type is already registered!",
@@ -111,7 +111,7 @@ implements IGenomeIdManager {
 		
 		IGenomeIdMap newMap = null;
 		
-		refSingelton.logMsg("createMapByType(" +
+		singelton.logMsg("createMapByType(" +
 				codingLutType.toString() + "," +
 				dataType.toString() + ",*) ...",
 				LoggerType.VERBOSE);
@@ -539,11 +539,11 @@ implements IGenomeIdManager {
 			
 			return keyset;		
 		} catch ( GeneViewRuntimeException gve ) {
-			refSingelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() +
+			singelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() +
 					") failed, because String values could not be converted to Integer",
 					LoggerType.MINOR_ERROR_XML );
 			/* more details on exception .. */
-			refSingelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() + 
+			singelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() + 
 					") failed; Exception= " + gve.toString(),
 					LoggerType.VERBOSE );
 			
@@ -656,7 +656,7 @@ implements IGenomeIdManager {
 			final EGenomeMappingCascadeType mappingCascadeType) {
 		
 		if (mappingCascadeType.equals(EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX))
-			return new GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX(refGeneralManager);
+			return new GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX(generalManager);
 
 		assert true : "No genome mapper is implemented for the requested mapping cascade!";
 		return null;

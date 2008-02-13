@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 
@@ -19,7 +19,7 @@ import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
  *
  */
 public class CmdGlObjectPathway3D 
-extends ACmdGLObjectPathway3D {
+extends ACmdCreate_GlCanvasUser {
 
 	protected ArrayList<Integer> iArSetIDs;
 	
@@ -29,14 +29,11 @@ extends ACmdGLObjectPathway3D {
 	 * Constructor.
 	 * 
 	 */
-	public CmdGlObjectPathway3D(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+	public CmdGlObjectPathway3D(final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, commandManager, commandQueueSaxType);
 				
 		iArSetIDs = new ArrayList<Integer>();
 
@@ -73,33 +70,30 @@ extends ACmdGLObjectPathway3D {
 		
 		refParameterHandler.setValueAndTypeAndDefault("mapping_row_count", 
 				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()), 
-				ParameterHandlerType.INT, "1");
-		
-		setParameterHandler_DetailsPathway3D();	
+				ParameterHandlerType.INT, "1");		
 	}
-
-	@Override
-	public void doCommandPart() throws GeneViewRuntimeException {
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 */
+	public final void doCommand() {
 		
-		GLCanvasPathway3D canvas = 
-			(GLCanvasPathway3D) openGLCanvasUser;		
-		
-		canvas.setOriginRotation(cameraOrigin, cameraRotation);
+		super.doCommand();
 		
 		int[] iArTmp = new int[iArSetIDs.size()];
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		canvas.addSetId(iArTmp);
+		((GLCanvasPathway3D)gLEventListener).addSetId(iArTmp);
 	}
 
-	@Override
-	public void undoCommandPart() throws GeneViewRuntimeException {
-
-		GLCanvasPathway3D canvas = 
-			(GLCanvasPathway3D) openGLCanvasUser;
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 */
+	public final void undoCommand() {
 		
-		canvas.destroyGLCanvas();
-		canvas = null;
+		super.undoCommand();
 	}
 }

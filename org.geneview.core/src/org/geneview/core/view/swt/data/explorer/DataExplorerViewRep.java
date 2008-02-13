@@ -153,7 +153,7 @@ implements IView, IMediatorReceiver {
 		rootViewModel = new DataCollectionModel(0, "VIEW");
 		rootModel.add(rootViewModel);
 
-		allSetItems = ((ISetManager) refGeneralManager
+		allSetItems = ((ISetManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
 		
 		try
@@ -219,7 +219,7 @@ implements IView, IMediatorReceiver {
 									currentSetModel.add(currentStorageModel);
 								} else
 								{
-									refGeneralManager
+									generalManager
 											.getSingelton()
 											.getLoggerManager()
 											.logMsg(
@@ -242,7 +242,7 @@ implements IView, IMediatorReceiver {
 				}
 			}
 
-			allStorageItems = ((IStorageManager) refGeneralManager
+			allStorageItems = ((IStorageManager) generalManager
 					.getManagerByBaseType(ManagerObjectType.STORAGE))
 					.getAllStorageItems();
 
@@ -265,7 +265,7 @@ implements IView, IMediatorReceiver {
 				throw new RuntimeException(e.toString());
 			}
 
-			allSelectionItems = ((IVirtualArrayManager) refGeneralManager
+			allSelectionItems = ((IVirtualArrayManager) generalManager
 					.getManagerByBaseType(ManagerObjectType.VIRTUAL_ARRAY))
 					.getAllVirtualArrayItems();
 
@@ -349,7 +349,7 @@ implements IView, IMediatorReceiver {
 		
 		//int triggerId = ((IVirtualArray) eventTrigger).getId();
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				"Data Explorer update called by " + eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 
@@ -370,7 +370,7 @@ implements IView, IMediatorReceiver {
 		
 		final ISetSelection refSetSelection = (ISetSelection)updatedSet;
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				"Data Explorer selection update called by " 
 				+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);

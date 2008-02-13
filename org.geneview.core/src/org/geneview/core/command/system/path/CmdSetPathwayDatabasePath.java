@@ -54,7 +54,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	public void doCommand() throws GeneViewRuntimeException {
 		
 		IPathwayManager pathwayManager = 
-			refGeneralManager.getSingelton().getPathwayManager();
+			generalManager.getSingelton().getPathwayManager();
 		
 		pathwayManager.createPathwayDatabase(type, sXMLPath, sImagePath, sImageMapPath);
 

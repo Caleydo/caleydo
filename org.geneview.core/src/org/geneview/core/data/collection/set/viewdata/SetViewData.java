@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.data.collection.set.viewdata;
 
 import org.geneview.core.data.collection.ISet;
@@ -35,7 +32,7 @@ implements ISetViewData {
 		
 		if ( setViewCamera == null ) 
 		{
-			this.refIViewCamera = new ViewCameraPitchRollYaw(iSetCollectionId, this);
+			this.refIViewCamera = new ViewCameraPitchRollYaw(iSetCollectionId);
 		} //if ( setViewCamera == null ) 
 		else
 		{

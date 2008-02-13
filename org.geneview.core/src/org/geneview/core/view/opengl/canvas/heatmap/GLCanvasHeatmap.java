@@ -1,12 +1,8 @@
-/**
- * 
- */
 package org.geneview.core.view.opengl.canvas.heatmap;
 
 import javax.media.opengl.GL;
-
-//import gleem.linalg.Vec3f;
-//import gleem.linalg.Vec4f;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.manager.IGeneralManager;
@@ -18,27 +14,22 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
  *
  */
 public class GLCanvasHeatmap 
-extends AGLCanvasUser 
-//implements IGLCanvasUser
-{
+extends AGLCanvasUser {
 	
 	protected int[] iResolution;
 	
 	protected ISet targetSet;
 	
 	/**
-	 * @param setGeneralManager
+	 * Constructor.
+	 * 
 	 */
-	public GLCanvasHeatmap( final IGeneralManager setGeneralManager,
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel )
-	{
-		super( setGeneralManager, 
-				null,
-				iViewId,  
-				iParentContainerId, 
-				sLabel );
+	public GLCanvasHeatmap(final IGeneralManager generalManager,
+			int iViewID,
+			int iGLCanvasID,
+			String sLabel) {
+
+		super(generalManager, iViewID, iGLCanvasID, sLabel);
 	}
 
 	public void setResolution( int[] iResolution ) {
@@ -52,22 +43,37 @@ extends AGLCanvasUser
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			refGeneralManager.getSingelton().getSetManager(
+			generalManager.getSingelton().getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"GLCanvasObjectHeatmap.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.FULL );
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void init(GLAutoDrawable drawable) {
 
+		((GLEventListener)parentGLCanvas).init(drawable);
+		
+		final GL gl = drawable.getGL();
+	}
 	
-	@Override
-	public void renderPart(GL gl)
-	{
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void display(GLAutoDrawable drawable) {
+		
+		((GLEventListener)parentGLCanvas).display(drawable);
+		
+		final GL gl = drawable.getGL();	
 		
 		if  ( targetSet != null ) 
 		{
@@ -120,8 +126,24 @@ extends AGLCanvasUser
 			fX = fX_init;
 			fY = fY_next;
 		}
-		
-		//System.err.println(" TestTriangle.render(GLCanvas canvas)");
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
 
+		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+	
+	}
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.view.swt.widget;
 
 import java.awt.Frame;
@@ -14,7 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author Michael Kalkusch
- *
+ * @author Marc Streit
  */
 public abstract class ASWTEmbeddedWidget 
 extends ASWTWidget {
@@ -27,10 +24,6 @@ extends ASWTWidget {
 	protected Composite refEmbeddedFrameComposite;
 	
 	protected final Composite refParentComposite;
-	
-//	protected final int iWidth;
-//	
-//	protected final int iHeight;
 	
 	/**
 	 * @param refParentComposite

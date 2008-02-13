@@ -1,14 +1,9 @@
 package org.geneview.core.view.swt.jogl.gears;
 
-import javax.media.opengl.GLCanvas;
-
 import org.eclipse.swt.widgets.Composite;
-
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.jogl.JoglCanvasDirectForwarder;
-import org.geneview.core.view.jogl.JoglCanvasForwarderType;
-import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.geneview.core.view.IView;
+import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 
 import demos.gears.Gears;
 
@@ -16,43 +11,36 @@ import demos.gears.Gears;
  * Sample for running Gears demo. Alter it to fit any 
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class GearsViewRep 
 extends SwtJoglGLCanvasViewRep 
 implements IView
-{
-	protected GLCanvas refGLCanvas;
-	
+{	
+	/**
+	 * Constructor
+	 * 
+	 */
 	public GearsViewRep(IGeneralManager refGeneralManager, 
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel,
-			int iGLEventListenerId)
+			int iViewID, 
+			int iParentContainerID, 
+			int iGLCanvasID,
+			String sLabel)
 	{
 		super(refGeneralManager, 
-				iViewId, 
-				iParentContainerId,
-				iGLEventListenerId,
-				sLabel,
-				JoglCanvasForwarderType.GLEVENT_LISTENER_FORWARDER);		
+				iViewID, 
+				iParentContainerID,
+				iGLCanvasID,
+				sLabel);		
 	}
 	
-	/**
-	 * 
-	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
-	 * @see org.geneview.core.view.IView#initView()
-	 */
 	public void initViewSwtComposit(Composite swtContainer) {
 		
 		Gears gears = new Gears();
-				
-		JoglCanvasDirectForwarder forwarder = 
-			(JoglCanvasDirectForwarder) this.getJoglCanvasForwarder();
 		
-		forwarder.setDirectGLEventListener( gears );	
+		gLCanvas.addGLEventListener(gears);	
 	}
-
 }
 	
 	

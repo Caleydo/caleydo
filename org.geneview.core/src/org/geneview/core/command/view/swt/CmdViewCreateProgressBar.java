@@ -42,14 +42,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		ProgressBarViewRep progressBarView = (ProgressBarViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR,
 							iUniqueId, 
 							iParentContainerId, 
-							iGlForwarderId,
 							sLabel);
 		
 		viewManager.registerItem(

@@ -1,18 +1,19 @@
-/**
- * 
- */
 package org.geneview.core.view.jogl.mouse;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.geneview.core.view.jogl.IJoglMouseListener;
+import org.geneview.core.view.jogl.JoglCanvasForwarder;
 
 /**
+ * Mouse picking listener for JOGL views
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
-public class PickingJoglMouseListener extends JoglMouseListener {
+public class PickingJoglMouseListener 
+extends JoglMouseListener {
 
 	protected boolean bMouseMoved = false;
 	
@@ -27,15 +28,19 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 	protected boolean bMouseDragged = false;
 	
 	/**
-	 * @param refParentGearsMain
+	 * Constructor.
+	 *
 	 */
-	public PickingJoglMouseListener(final IJoglMouseListener refParentGearsMain) {
+	public PickingJoglMouseListener(final JoglCanvasForwarder gLCanvas) {
 
-		super(refParentGearsMain);
-		
+		super(gLCanvas);
 		pickedPointDragStart = new Point();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	public void mousePressed(MouseEvent mouseEvent) {
 
 		super.mousePressed(mouseEvent);
@@ -49,6 +54,10 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 		pickedPointDragStart.setLocation(mouseEvent.getPoint());
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mouseMoved(java.awt.event.MouseEvent)
+	 */
     public void mouseMoved(MouseEvent mouseEvent){
     	
     	super.mouseMoved(mouseEvent);
@@ -57,6 +66,10 @@ public class PickingJoglMouseListener extends JoglMouseListener {
     	pickedPointCurrent = mouseEvent.getPoint();
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
 	public void mouseReleased(MouseEvent mouseEvent) {
 	
 		super.mouseReleased(mouseEvent);
@@ -65,6 +78,10 @@ public class PickingJoglMouseListener extends JoglMouseListener {
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mouseDragged(java.awt.event.MouseEvent)
+	 */
 	public void mouseDragged(MouseEvent mouseEvent) {
 	
 		super.mouseDragged(mouseEvent);

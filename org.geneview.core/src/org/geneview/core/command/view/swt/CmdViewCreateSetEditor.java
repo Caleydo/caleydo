@@ -41,14 +41,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		NewSetEditorViewRep setEditorView = (NewSetEditorViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_SET_EDITOR,
 							iUniqueId, 
 							iParentContainerId, 
-							iGlForwarderId,
 							sLabel);
 		
 		viewManager.registerItem(

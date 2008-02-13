@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.command.CommandQueueSaxType;
@@ -69,7 +71,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final float SCALING_FACTOR_LAYERED_LAYER = 1f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 
-	private float fTextureTransparency = 1.0f;
+	private float fTextureTransparency = 0.6f;
 	private float fLastMouseMovedTimeStamp = 0;
 	
 	private boolean bRebuildVisiblePathwayDisplayLists = false;
@@ -123,17 +125,15 @@ implements IMediatorReceiver, IMediatorSender {
 	private int iLazyPathwayLoadingId = -1;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 */
 	public GLCanvasJukeboxPathway3D(final IGeneralManager refGeneralManager,
-			int iViewId,
-			int iParentContainerId,
+			int iViewID,
+			int iGLCanvasID,
 			String sLabel) {
 
-		super(refGeneralManager, null, iViewId, iParentContainerId, "");
-
-		this.refViewCamera.setCaller(this);
+		super(refGeneralManager, iViewID, iGLCanvasID, sLabel);
 
 		refGLPathwayManager = new GLPathwayManager(refGeneralManager);
 		refGLPathwayTextureManager = new GLPathwayTextureManager(
@@ -164,8 +164,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 
-		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-				.getJoglCanvasForwarder().getJoglMouseListener();
+		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				refGLPathwayManager);
@@ -180,31 +179,24 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void initGLCanvas(GL gl) {
+	public void init(GLAutoDrawable drawable) {
 
+		((GLEventListener)parentGLCanvas).init(drawable);
+		
+		final GL gl = drawable.getGL();
+		
 	    time = new SystemTime();
 	    ((SystemTime) time).rebase();
 		
-		// Clearing window and set background to WHITE
-		// is already set inside JoglCanvasForwarder
-		//gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
 		// gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
-
 		// gl.glEnable(GL.GL_ALPHA_TEST);
 		// gl.glAlphaFunc(GL.GL_GREATER, 0);
-
-		// gl.glEnable(GL.GL_TEXTURE_2D);
-		// gl.glTexEnvf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE,
-		// GL.GL_REPLACE);
 
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -217,21 +209,17 @@ implements IMediatorReceiver, IMediatorSender {
 
 		memoPad.init(gl);
 		initPathwayData(gl);
-
-		setInitGLDone();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void display(GLAutoDrawable drawable) {
 
-	protected void initPathwayData(final GL gl) {
-
-		refGLPathwayManager.init(gl, alSetData, alSetSelection);
-		buildPathwayPool(gl);
-		buildLayeredPathways(gl);
-	}
-
-	public void renderPart(GL gl) {
-
-//		if (bRebuildVisiblePathwayDisplayLists)
-//			rebuildVisiblePathwayDisplayLists(gl);
+		((GLEventListener)parentGLCanvas).display(drawable);
+		
+		final GL gl = drawable.getGL();
 		
 		if (iLazyPathwayLoadingId != -1)
 		{
@@ -260,7 +248,7 @@ implements IMediatorReceiver, IMediatorSender {
 			// unpack selection item reps
 			int[] iArSelectionId = alSetSelection.get(0).getSelectionIdArray();
 			ArrayList<IGraphItem> alSelectedVertexReps = new ArrayList<IGraphItem>();
-			IPathwayItemManager pathwayItemManager = refGeneralManager.getSingelton().getPathwayItemManager();
+			IPathwayItemManager pathwayItemManager = generalManager.getSingelton().getPathwayItemManager();
 			for (int iItemIndex = 0; iItemIndex < iArSelectionId.length; iItemIndex++)
 			{
 				alSelectedVertexReps.add(
@@ -278,31 +266,41 @@ implements IMediatorReceiver, IMediatorSender {
 		renderConnectingLines(gl);
 		renderScene(gl);
 		renderInfoArea(gl);
-		
-		// int viewport[] = new int[4];
-		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		//
-		// GLProjectionUtils.orthogonalStart(gl, 1, 1);
-		//		
-		// gl.glColor3f(1,0,0);
-		// gl.glBegin(GL.GL_QUADS);
-		// gl.glVertex2f(0, 0);
-		// gl.glVertex2f(0, 1);
-		// gl.glVertex2f(1, 1);
-		// gl.glVertex2f(1, 0);
-		// gl.glEnd();
-		//		
-		// GLProjectionUtils.orthogonalEnd(gl);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(
+				drawable, modeChanged, deviceChanged);		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 
 	}
+	
+	protected void initPathwayData(final GL gl) {
+
+		refGLPathwayManager.init(gl, alSetData, alSetSelection);
+		buildPathwayPool(gl);
+		buildLayeredPathways(gl);
+	}
+
 
 	public void renderScene(final GL gl) {
 		
 		renderPathwayPool(gl);
 		renderPathwayLayered(gl);
 		renderPathwayUnderInteraction(gl);
-		
-//		renderPathwayPoolWithPathwayLayeredConnection(gl);
 
 		memoPad.renderMemoPad(gl);
 	}
@@ -353,14 +351,14 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 		
 		// Load KEGG pathways
-		refGeneralManager.getSingelton().getPathwayManager()
+		generalManager.getSingelton().getPathwayManager()
 			.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
 
 		// Load BioCarta pathways
-		refGeneralManager.getSingelton().getPathwayManager()
+		generalManager.getSingelton().getPathwayManager()
 			.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
 		
-		Iterator<IGraph> iterPathwayGraphs = refGeneralManager.getSingelton()
+		Iterator<IGraph> iterPathwayGraphs = generalManager.getSingelton()
 			.getPathwayManager().getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
 
 		while(iterPathwayGraphs.hasNext())
@@ -445,7 +443,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}
 
-		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)refGeneralManager
+		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)generalManager
 				.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		// Pathway texture height is subtracted from Y to align pathways to
@@ -591,7 +589,7 @@ implements IMediatorReceiver, IMediatorSender {
 			// Append identical vertex count to pathway title
 			if (alMagnificationFactor.get(iPathwayIndex) != 0)
 			{
-				sRenderText = ((PathwayGraph) refGeneralManager.getSingelton()
+				sRenderText = ((PathwayGraph) generalManager.getSingelton()
 						.getPathwayManager().getItem(iPathwayId)).getTitle();
 			}
 			
@@ -767,7 +765,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -786,7 +784,7 @@ implements IMediatorReceiver, IMediatorSender {
 		int[] iArSelectionId = refSetSelection.getSelectionIdArray();
 		if (iArSelectionId.length != 0)
 		{
-			selectedVertex = (PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
+			selectedVertex = (PathwayVertexGraphItemRep) generalManager.getSingelton()
 				.getPathwayItemManager().getItem(iArSelectionId[0]);
 			
 			bRebuildVisiblePathwayDisplayLists = true;
@@ -848,7 +846,7 @@ implements IMediatorReceiver, IMediatorSender {
 		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
 				fTextureTransparency, true);
 
-		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)refGeneralManager
+		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)generalManager
 				.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		gl.glTranslatef(0, tmp, 0);
@@ -1084,7 +1082,7 @@ implements IMediatorReceiver, IMediatorSender {
 			dragAndDrop.stopDragAction();
 		}
 
-		PathwayVertexGraphItemRep pickedVertexRep = (PathwayVertexGraphItemRep) refGeneralManager
+		PathwayVertexGraphItemRep pickedVertexRep = (PathwayVertexGraphItemRep) generalManager
 			.getSingelton().getPathwayItemManager().getItem(iPickedObjectId);
 		
 		if (pickedVertexRep == null)
@@ -1173,7 +1171,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {
 
-		refGeneralManager
+		generalManager
 				.getSingelton()
 				.logMsg(this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): Pathway with ID "
@@ -1184,7 +1182,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (pathwayUnderInteractionLayer.containsElement(iPathwayId))
 			return;
 		
-		loadNodeInformationInBrowser(((PathwayGraph)refGeneralManager
+		loadNodeInformationInBrowser(((PathwayGraph)generalManager
 				.getSingelton().getPathwayManager().getItem(iPathwayId)).getExternalLink());
 		
 		// Check if other slerp action is currently running
@@ -1194,7 +1192,7 @@ implements IMediatorReceiver, IMediatorSender {
 		arSlerpActions.clear();
 
 		// Check if selected pathway is loaded.
-		if (!refGeneralManager.getSingelton().getPathwayManager().hasItem(iPathwayId))
+		if (!generalManager.getSingelton().getPathwayManager().hasItem(iPathwayId))
 		{
 			return;
 		}
@@ -1390,7 +1388,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (sUrl.isEmpty())
 			return;
 
-		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) refGeneralManager
+		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
 				.getSingelton().getCommandManager().createCommandByType(
 						CommandQueueSaxType.LOAD_URL_IN_BROWSER);
 
@@ -1398,24 +1396,6 @@ implements IMediatorReceiver, IMediatorSender {
 		createdCmd.doCommand();
 	}
 
-	/**
-	 * @param textureTransparency
-	 *            the fTextureTransparency to set
-	 */
-	public final void setTextureTransparency(float textureTransparency) {
-
-		if ((textureTransparency >= 0.0f) && (textureTransparency <= 1.0f))
-		{
-			fTextureTransparency = textureTransparency;
-			return;
-		}
-
-		refGeneralManager.getSingelton().logMsg(
-				"setTextureTransparency() failed! value=" + textureTransparency
-						+ " was out of range [0.0f .. 1.0f]",
-				LoggerType.MINOR_ERROR);
-	}
-	
 	public void setMappingRowCount(final int iMappingRowCount) {
 		
 		refGLPathwayManager.setMappingRowCount(iMappingRowCount);
@@ -1512,11 +1492,11 @@ implements IMediatorReceiver, IMediatorSender {
 									EGraphItemHierarchy.GRAPH_PARENT).get(0)).getKeggId())
 						{		
 							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
-									 (((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayIdSrc)).getHeight()
+									 (((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayIdSrc)).getHeight()
 											 -tmpVertexGraphItemRepSrc.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 							
 							vecMatDest.set(tmpVertexGraphItemRepDest.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
-									 (((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayIdDest)).getHeight()
+									 (((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayIdDest)).getHeight()
 											 -tmpVertexGraphItemRepDest.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 							
 							rotSrc.toMatrix(matSrc);

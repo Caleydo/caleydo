@@ -125,7 +125,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		for(int iCount = 0; iCount < iAlSrcStorageId.size(); iCount++)
 		//while (iterStorageId.hasNext())
 		{
-			tmpStorage = refGeneralManager.getSingelton().getStorageManager()
+			tmpStorage = generalManager.getSingelton().getStorageManager()
 					.getItemStorage(iAlSrcStorageId.get(iCount));
 		
 			if (tmpStorage == null)
@@ -137,7 +137,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 						tmpStorage.setArrayFloat(calculateLinToLog(tmpStorage));
 				else
 				{
-					refGeneralManager.getSingelton().getStorageManager()
+					generalManager.getSingelton().getStorageManager()
 						.getItemStorage(iAlTargetStorageId.get(iCount))
 						.setArrayFloat(calculateLinToLog(tmpStorage));
 				}
@@ -148,7 +148,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 					tmpStorage.setArrayFloat(calculateLogToLin(tmpStorage));
 				else
 				{	
-					refGeneralManager.getSingelton().getStorageManager()
+					generalManager.getSingelton().getStorageManager()
 						.getItemStorage(iAlTargetStorageId.get(iCount))
 						.setArrayFloat(calculateLogToLin(tmpStorage));
 				}				
@@ -163,7 +163,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				}
 				else
 				{
-					IStorage targetStorage = refGeneralManager.getSingelton().getStorageManager()
+					IStorage targetStorage = generalManager.getSingelton().getStorageManager()
 						.getItemStorage(iAlTargetStorageId.get(iCount));
 						
 						targetStorage.getWriteToken();					

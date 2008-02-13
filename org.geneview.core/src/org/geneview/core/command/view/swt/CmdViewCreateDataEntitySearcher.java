@@ -55,13 +55,12 @@ extends ACmdCreate_IdTargetLabelAttrDetail{
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep)viewManager
 			.createView(ManagerObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER,
 					iUniqueId, 
-					-1,
 					-1,
 					sLabel);
 		

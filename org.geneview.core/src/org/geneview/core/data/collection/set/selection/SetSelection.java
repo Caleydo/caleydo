@@ -199,20 +199,20 @@ implements ISetSelection {
 	public void updateSelectionSet(int iUniqueTriggerID) {
 		
 		try {	
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
 					": updateSelectionSet(): Set selection data and trigger update.",
 					LoggerType.VERBOSE );
 			
 	 		// Calls update with the ID of the view
-	 		((EventPublisher)refGeneralManager.getSingelton().
-				getEventPublisher()).updateReceiver(refGeneralManager.
+	 		((EventPublisher)generalManager.getSingelton().
+				getEventPublisher()).updateReceiver(generalManager.
 						getSingelton().getViewGLCanvasManager().
 							getItem(iUniqueTriggerID), this);
 	 		
 		} catch (Exception e)
 		{
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
 					": updateSelectionSet(): Problem during selection update triggering.",
 					LoggerType.MINOR_ERROR );

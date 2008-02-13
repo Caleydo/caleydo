@@ -1,15 +1,6 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.geneview.core.command;
 
 import org.geneview.core.manager.ICommandManager;
-//import org.geneview.core.command.CommandInterface;
 import org.geneview.core.command.ICommandActionListener;
 import org.geneview.core.data.xml.IMementoNetEventXML;
 

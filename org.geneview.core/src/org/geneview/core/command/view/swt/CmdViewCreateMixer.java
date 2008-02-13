@@ -42,14 +42,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		MixerViewRep mixerView = (MixerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_MIXER,
 						iUniqueId, 
 						iParentContainerId, 
-						iGlForwarderId,
 						sLabel);
 		
 		viewManager.registerItem(

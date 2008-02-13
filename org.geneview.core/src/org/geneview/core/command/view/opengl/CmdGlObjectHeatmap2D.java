@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.command.view.opengl;
 
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
+import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 
@@ -146,7 +144,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 				if ( bufferOne.length() > 0 ) {
 					selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
-							refGeneralManager.getSingelton().getLoggerManager(), 
+							generalManager.getSingelton().getLoggerManager(), 
 							bufferOne, 
 							IGeneralManager.sDelimiter_Parser_DataItems);
 				}  //if ( bufferOne.length() > 0 ) {
@@ -157,7 +155,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 				if  (splitter.hasMoreTokens()) {
 					selectionArrayY = StringConversionTool.convertStringToIntArrayVariableLength(
-							refGeneralManager.getSingelton().getLoggerManager(), 
+							generalManager.getSingelton().getLoggerManager(), 
 							splitter.nextToken(), 
 							IGeneralManager.sDelimiter_Parser_DataItems);
 				} //if  (splitter.hasMoreTokens()) {
@@ -171,7 +169,7 @@ extends ACmdCreate_GlCanvasUser {
 			{
 				
 				selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
-						refGeneralManager.getSingelton().getLoggerManager(), 
+						generalManager.getSingelton().getLoggerManager(), 
 						this.sAttribute4, 
 						IGeneralManager.sDelimiter_Parser_DataItems);
 				
@@ -201,22 +199,26 @@ extends ACmdCreate_GlCanvasUser {
 //		} //if ( halfLengthSelectionArray > 0) {		
 //	} 
 	
-	
-	@Override
-	public void doCommandPart() throws GeneViewRuntimeException {
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 */
+	public final void doCommand() {
+		
+		super.doCommand();
 
 		IGLCanvasHeatmap2D canvas;
 		
 		if  (this.bUseDefaultHeatmap) {
 			canvas = 
-				(IGLCanvasHeatmap2D) openGLCanvasUser;
+				((GLCanvasHeatmap2D)gLEventListener);
 		} else {
 			canvas = 
-				(GLCanvasHeatmap2DColumn) openGLCanvasUser;
+				(GLCanvasHeatmap2DColumn)gLEventListener;
 		}		
 		
-		canvas.setOriginRotation( cameraOrigin, cameraRotation );
-		canvas.setResolution( fResolution );
+//		canvas.setOriginRotation( cameraOrigin, cameraRotation );
+//		canvas.setResolution( fResolution );
 		
 		Iterator<Integer> iter = iArSetIDs.iterator();
 		while ( iter.hasNext() ) {
@@ -317,24 +319,15 @@ extends ACmdCreate_GlCanvasUser {
 ////					bufferSelectionIndexArrayY,
 ////					bufferSelectionLengthArrayY );
 //		}  //if ((selectionArrayX != null )||(selectionArrayY != null))
-		
-		
 	}
 
-	@Override
-	public void undoCommandPart() throws GeneViewRuntimeException {
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 */
+	public final void undoCommand() {
+		super.undoCommand();	
 		
-		IGLCanvasHeatmap2D canvas;
-		
-		if  (this.bUseDefaultHeatmap) {
-			canvas = 
-				(IGLCanvasHeatmap2D) openGLCanvasUser;
-		} else {
-			canvas = 
-				(GLCanvasHeatmap2DColumn) openGLCanvasUser;
-		}		
-		
-		canvas.destroyGLCanvas();
-		canvas = null;
+		((GLCanvasHeatmap2D)gLEventListener).destroyGLCanvas();
 	}
 }

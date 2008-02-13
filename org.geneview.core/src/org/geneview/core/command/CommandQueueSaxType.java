@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.command;
 
 import org.geneview.core.manager.type.ManagerType;
@@ -111,7 +108,6 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	NO_OPERATION("cmd","type","NO_OPERATION", "No description available!"),
 	
 	
-	
 	/*
 	 * -------  COMMAND QUEUE  --------
 	 */ 
@@ -128,7 +124,6 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	CMD_THREAD_POOL_ID("cmdqueue","queue_thread","-1", "No description available!"),
 	CMD_THREAD_POOL_WAIT_ID("cmdqueue","queue_thread_wait","-1", "No description available!"),
 
-	
 	/*
 	 * =================================================
 	 *    Import from former Type "CommandType"
@@ -152,36 +147,6 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	SYSTEM_NEW_FRAME(),
 	SYSTEM_NOP(),
 	
-//	/*
-//	 * ==================================================
-//	 *           enumeration used internal
-//	 * ==================================================
-//	 */
-//	M_PATHWAY_VERTEX(ManagerType.DATA_PATHWAY_ELEMENT,"select or identify a vertex inside a pathway"),
-//	M_PATHWAY_ELEMENT(ManagerType.DATA_PATHWAY_ELEMENT,"select or identify a vertex or edge inside a pathway"),
-//	M_COMMAND(ManagerType.COMMAND),
-//	M_MEMENTO(ManagerType.MEMENTO),
-//	
-//	/*
-//	 * SET
-//	 */
-//	M_SET_LINEAR(ManagerType.DATA_SET),
-//	M_SET_PLANAR(ManagerType.DATA_SET),	
-//	M_SET_CUBIC(ManagerType.DATA_SET),	
-//	M_SET_MULTI_DIM(ManagerType.DATA_SET),	
-//	M_SET_MULTI_DIM_VARIABLE(ManagerType.DATA_SET),
-//	
-//	M_STORAGE_FLAT(ManagerType.DATA_STORAGE),	
-//	
-//	/*
-//	 * SELECTION
-//	 */
-//	M_VIRTUAL_ARRAY(ManagerType.DATA_VIRTUAL_ARRAY),
-//	M_VIRTUAL_ARRAY_SINGLE_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
-//	M_VIRTUAL_ARRAY_MULTI_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
-//	M_VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.DATA_VIRTUAL_ARRAY),
-//	M_VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
-	
 	/*
 	 * ==================================================
 	 *       TAG's used only while parsing XML files  
@@ -199,7 +164,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	TAG_ATTRIBUTE4("cmd","attrib4",""),
 	TAG_DETAIL("cmd","detail",""),
 	TAG_PARENT("cmd","parent","-1"),
-	TAG_GLCANVAS_FORWARDER("cmd","gl_forwarder","-1"),
+	TAG_GLCANVAS("cmd","gl_canvas","-1"),
 	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),
 	TAG_LABEL("cmd","label",""),
 	
@@ -212,7 +177,6 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	TAG_POS_GL_ROTATION("cmd","gl_rotation","0 0 1 0.0");
 	
 
-	
 	/**
 	 *  * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>
 	 * "type" is the Key.<br>
@@ -254,7 +218,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	}
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param type
 	 * @param sXmlTag
@@ -266,41 +230,14 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 			String sXmlTag, 
 			String sXmlKey,
 			String sDefaultValue,
-			String sInfoText) 
-	{
+			String sInfoText) {
+		
 		this.sXmlTag = sXmlTag;		
 		this.sXmlKey = sXmlKey;
 		this.sDefaultValue = sDefaultValue;
 		this.sInfoText = sInfoText;
-		this.eGroupType = type;
-		
+		this.eGroupType = type;	
 	}
-	
-//	/**
-//	 * Constructor for internal use.
-//	 * 
-//	 * @param type
-//	 */
-//	private CommandQueueSaxType( ManagerType type,
-//			String sInfoText ) 
-//	{
-//		this.sXmlTag = null;		
-//		this.sXmlKey = null;
-//		this.sDefaultValue = null;
-//		this.sInfoText = sInfoText;
-//		this.eGroupType = type;
-//		
-//	}
-	
-//	/**
-//	 * Constructor for internal use.
-//	 * 
-//	 * @param type
-//	 */
-//	private CommandQueueSaxType( ManagerType type ) 
-//	{
-//		this(type,"...");		
-//	}
 	
 	/**
 	 * Constructor.
@@ -313,8 +250,8 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	private CommandQueueSaxType( String sXmlTag, 
 			String sXmlKey,
 			String sDefaultValue,
-			String sInfoText) 
-	{
+			String sInfoText) {
+		
 		this( ManagerType.NONE,
 				sXmlTag, 
 				sXmlKey,
@@ -325,8 +262,8 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	
 	private CommandQueueSaxType( String sXmlTag, 
 			String sXmlKey,
-			String sDefaultValue) 
-	{
+			String sDefaultValue) {
+		
 		this( ManagerType.NONE,
 				sXmlTag, 
 				sXmlKey,

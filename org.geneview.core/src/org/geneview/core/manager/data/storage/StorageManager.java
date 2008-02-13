@@ -60,7 +60,7 @@ implements IStorageManager {
 		vecStorage = new Hashtable<Integer,IStorage> ( iInitSizeContainer );
 		vecStorage_reverse = new Hashtable<IStorage,Integer> ( iInitSizeContainer );
 		
-		refGeneralManager.getSingelton().setStorageManager( this );		
+		generalManager.getSingelton().setStorageManager( this );		
 	}
 
 	/* (non-Javadoc)
@@ -78,7 +78,7 @@ implements IStorageManager {
 		switch ( useStorageType ) {
 			case STORAGE:
 			case STORAGE_FLAT:
-				return new FlatThreadStorageSimple( iNewId, refGeneralManager, null );				
+				return new FlatThreadStorageSimple( iNewId, generalManager, null );				
 				
 			default:
 				throw new GeneViewRuntimeException("StorageManagerSimple.createStorage() failed due to unhandled type [" +
@@ -193,7 +193,7 @@ implements IStorageManager {
 		
 		if ( vecStorage.containsKey( iItemId ) ) 
 		{
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"try to register id that was already used!",
 					LoggerType.ERROR );
 			

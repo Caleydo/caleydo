@@ -133,7 +133,7 @@ implements IEventPublisher {
 		{
 			newMediator = hashMediatorId2Mediator.get(iMediatorId);
 			
-			refSingelton.logMsg("createMediator(" + iMediatorId + 
+			singelton.logMsg("createMediator(" + iMediatorId + 
 					") mediator already exists. add Senders and Receivers now.",
 					LoggerType.VERBOSE);
 		}
@@ -265,7 +265,7 @@ implements IEventPublisher {
 				mediatorType, 
 				mediatorUpdateType);
 		
-		refSingelton.logMsg("EventPublisher: success registering senderId(s)=[" +
+		singelton.logMsg("EventPublisher: success registering senderId(s)=[" +
 				arSenderIDs.toString() + "] and receiverId(s)=[" +
 				arReceiverIDs.toString() + "]",
 				LoggerType.VERBOSE);
@@ -292,15 +292,15 @@ implements IEventPublisher {
 			
 			try
 			{
-				sender = (IMediatorSender) refGeneralManager
+				sender = (IMediatorSender) generalManager
 						.getItem(iCurrentSenderId);
 			} 
 			catch ( ClassCastException cce)
 			{
-				refSingelton.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
+				singelton.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
 						iCurrentSenderId + 
 						"] does not implement interface IMediatorSender " +
-						refGeneralManager.getItem(iCurrentSenderId).getClass(),
+						generalManager.getItem(iCurrentSenderId).getClass(),
 						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorSender";
@@ -308,7 +308,7 @@ implements IEventPublisher {
 			}
 	
 			if ( sender == null ) {
-				refSingelton.logMsg("EventPublisher: invalid SenderId=[" +
+				singelton.logMsg("EventPublisher: invalid SenderId=[" +
 						iCurrentSenderId + "] => receiverId=" + 
 						arReceiverIDs.toString() + 
 						" ignore sender!",
@@ -370,7 +370,7 @@ implements IEventPublisher {
 		// are there any valid senders?
 		if ( ! bHasValidSender ) 
 		{
-			refSingelton.logMsg("EventPublisher: all SenderId(s)=" +
+			singelton.logMsg("EventPublisher: all SenderId(s)=" +
 					arSenderIDs.toString() + " are invalid; ignore all receivers=" +
 					arReceiverIDs.toString() + " also!",
 					LoggerType.MINOR_ERROR);
@@ -389,15 +389,15 @@ implements IEventPublisher {
 			IMediatorReceiver receiver = null;
 			try 
 			{
-				receiver = (IMediatorReceiver) refGeneralManager
+				receiver = (IMediatorReceiver) generalManager
 					.getItem(iCurrentReceiverId);
 			} 
 			catch ( ClassCastException cce)
 			{
-				refSingelton.logMsg("EventPublisher.createMediator() failed because referenced receiver object id=[" +
+				singelton.logMsg("EventPublisher.createMediator() failed because referenced receiver object id=[" +
 						iCurrentReceiverId + 
 						"] does not implement interface IMediatorReceiver " +
-						refGeneralManager.getItem(iCurrentReceiverId).getClass(),
+						generalManager.getItem(iCurrentReceiverId).getClass(),
 						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorReceiver";
@@ -405,7 +405,7 @@ implements IEventPublisher {
 			}
 	
 			if ( receiver == null ) {
-				refSingelton.logMsg("EventPublisher: sender(s) " +
+				singelton.logMsg("EventPublisher: sender(s) " +
 						arSenderIDs.toString() + " ==> invalid ReceiverId=[" +
 						iCurrentReceiverId + "] ignore receiver!",
 						LoggerType.MINOR_ERROR);
@@ -445,7 +445,7 @@ implements IEventPublisher {
 								GeneViewRuntimeExceptionType.OBSERVER);
 				} // switch ( mediatorType ) {
 			
-				refSingelton.logMsg("EventPublisher: successful added senderId(s)" +
+				singelton.logMsg("EventPublisher: successful added senderId(s)" +
 						arSenderIDs.toString() + " => [" +
 						iCurrentReceiverId + "]",
 						LoggerType.VERBOSE);
@@ -456,14 +456,14 @@ implements IEventPublisher {
 		
 		if ( ! bHasValidReceiver )
 		{
-			refSingelton.logMsg("EventPublisher: ignore command with senderId(s)=[" +
+			singelton.logMsg("EventPublisher: ignore command with senderId(s)=[" +
 					arSenderIDs.toString() + "] and receiverId(s)=[" +
 					arReceiverIDs.toString() + "] because no valid receiver was found!",
 					LoggerType.MINOR_ERROR);
 			return;
 		}
 		
-		refSingelton.logMsg("EventPublisher: Mediator " + newMediator.toString() + 
+		singelton.logMsg("EventPublisher: Mediator " + newMediator.toString() + 
 				" success registering senderId(s)=[" +
 				arSenderIDs.toString() + "] and receiverId(s)=[" +
 				arReceiverIDs.toString() + "]",

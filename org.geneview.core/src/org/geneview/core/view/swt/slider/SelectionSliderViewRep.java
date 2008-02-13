@@ -29,7 +29,7 @@ extends ASliderViewRep {
 		super.initViewSwtComposit(swtContainer);
 		
 		IVirtualArray tmpSelection =
-			refGeneralManager.getSingelton().getVirtualArrayManager()
+			generalManager.getSingelton().getVirtualArrayManager()
 				.getItemVirtualArray(iSelectionId);
 		
 		if (sSelectionFieldName.equals("length"))
@@ -52,7 +52,7 @@ extends ASliderViewRep {
 	    refSlider.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event event) {
 				IVirtualArray tmpSelection =
-					refGeneralManager.getSingelton().getVirtualArrayManager()
+					generalManager.getSingelton().getVirtualArrayManager()
 						.getItemVirtualArray(iSelectionId);
 				
 				tmpSelection.getWriteToken();
@@ -92,7 +92,7 @@ extends ASliderViewRep {
 	public void updateReceiver(Object eventTrigger) {
 		
 		int triggerId = ((IVirtualArray)eventTrigger).getId();	
-		refGeneralManager.getSingelton().logMsg( 
+		generalManager.getSingelton().logMsg( 
 				"Slider update called by " +triggerId,
 				LoggerType.VERBOSE );
 		

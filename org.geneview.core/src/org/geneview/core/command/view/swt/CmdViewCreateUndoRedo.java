@@ -40,14 +40,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		UndoRedoViewRep undoRedoView = (UndoRedoViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_UNDO_REDO,
 							iUniqueId, 
 							iParentContainerId, 							
-							iGlForwarderId,
 							sLabel);
 		
 		viewManager.registerItem(
@@ -60,7 +59,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		undoRedoView.drawView();
 		
 		// Register UNDO/REDO view to command manager.
-		refGeneralManager.getSingelton().getCommandManager().
+		generalManager.getSingelton().getCommandManager().
 			addUndoRedoViewRep(undoRedoView);
 		
 		refCommandManager.runDoCommand(this);

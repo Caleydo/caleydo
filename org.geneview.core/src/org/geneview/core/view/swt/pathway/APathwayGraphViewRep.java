@@ -221,7 +221,7 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				CmdViewLoadURLInHTMLBrowser createdCmd = 
-					(CmdViewLoadURLInHTMLBrowser)refGeneralManager.getSingelton().getCommandManager().
+					(CmdViewLoadURLInHTMLBrowser)generalManager.getSingelton().getCommandManager().
 						createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
 
 				createdCmd.setAttributes(sUrl);

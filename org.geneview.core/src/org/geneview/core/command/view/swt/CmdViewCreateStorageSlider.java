@@ -43,14 +43,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		StorageSliderViewRep sliderView = (StorageSliderViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_STORAGE_SLIDER,
 							iUniqueId, 
 							iParentContainerId, 
-							iGlForwarderId,
 							sLabel);
 		
 		viewManager.registerItem(

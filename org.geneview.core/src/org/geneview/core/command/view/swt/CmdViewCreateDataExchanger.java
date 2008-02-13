@@ -11,7 +11,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.view.swt.data.exchanger.DataExchangerViewRep;
 
 /**
- * Class implementes the command for 
+ * Class implements the command for 
  * the data exchanger view.
  * 
  * @author Michael Kalkusch
@@ -37,26 +37,28 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentXY#checkOpenGLSetting()
+	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.geneview.core.parser.parameter.IParameterHandler)
 	 */
-	protected final void checkOpenGLSetting() {
-		/** not openGL settings are required */	
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
+		
+		assert parameterHandler != null: "ParameterHandler object is null!";	
+		
+		super.setParameterHandler(parameterHandler);	
 	}
 	
-	/**
-	 * Method creates a data exchanger view, sets the attributes 
-	 * and calls the init and draw method.
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		DataExchangerViewRep dataExchangerView = (DataExchangerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,
 							iUniqueId, 
 							iParentContainerId,
-							iGlForwarderId,
 							sLabel);
 		
 		viewManager.registerItem(
@@ -72,15 +74,12 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 		
 		refCommandManager.runDoCommand(this);
 	}
-
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
-		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(refParameterHandler);	
-	}
 	
-	public void undoCommand() throws GeneViewRuntimeException {
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 */
+	public void undoCommand() {
 
 		refCommandManager.runUndoCommand(this);
 	}

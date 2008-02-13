@@ -1,41 +1,37 @@
-/**
- * 
- */
 package org.geneview.core.command.view.opengl;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 
 /**
- * @author Michael Kalkusch
+ * Create parallel coordinates view.
+ * 
  * @author Marc Streit
  *
  */
 public class CmdGlObjectParCoords3D 
-extends ACmdGLObjectPathway3D {
+extends ACmdCreate_GlCanvasUser {
 
 	protected ArrayList<Integer> iArSetIDs;
-		
+
 	/**
 	 * Constructor.
 	 * 
 	 */
 	public CmdGlObjectParCoords3D(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, commandManager, commandQueueSaxType);
 				
 		iArSetIDs = new ArrayList<Integer>();
 
@@ -67,28 +63,27 @@ extends ACmdGLObjectPathway3D {
 		}
 	}
 
-	@Override
-	public void doCommandPart() throws GeneViewRuntimeException {
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 */
+	public final void doCommand() {
 		
-		GLCanvasParCoords3D canvas = 
-			(GLCanvasParCoords3D) openGLCanvasUser;		
-		
-		canvas.setOriginRotation(cameraOrigin, cameraRotation);
+		super.doCommand();
 		
 		int[] iArTmp = new int[iArSetIDs.size()];
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		canvas.addSetId(iArTmp);
+		((GLCanvasParCoords3D)gLEventListener).addSetId(iArTmp);
 	}
 
-	@Override
-	public void undoCommandPart() throws GeneViewRuntimeException {
-
-		GLCanvasParCoords3D canvas = 
-			(GLCanvasParCoords3D) openGLCanvasUser;
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 */
+	public final void undoCommand() {
 		
-		canvas.destroyGLCanvas();
-		canvas = null;
+		super.undoCommand();
 	}
 }

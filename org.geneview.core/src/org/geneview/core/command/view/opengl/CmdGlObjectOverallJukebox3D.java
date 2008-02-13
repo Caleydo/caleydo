@@ -8,11 +8,13 @@ import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
+import org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 import org.geneview.core.view.opengl.canvas.jukebox.GLCanvasOverallJukebox3D;
 
 /**
+ * Create overall jukebox view
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
@@ -27,13 +29,11 @@ extends ACmdCreate_GlCanvasUser {
 	 * 
 	 */
 	public CmdGlObjectOverallJukebox3D(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, commandManager, commandQueueSaxType);
 				
 		iArSetIDs = new ArrayList<Integer>();
 
@@ -65,28 +65,27 @@ extends ACmdCreate_GlCanvasUser {
 		}
 	}
 
-	@Override
-	public void doCommandPart() throws GeneViewRuntimeException {
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 */
+	public final void doCommand() {
 		
-		GLCanvasOverallJukebox3D canvas = 
-			(GLCanvasOverallJukebox3D) openGLCanvasUser;		
-		
-		canvas.setOriginRotation(cameraOrigin, cameraRotation);
+		super.doCommand();
 		
 		int[] iArTmp = new int[iArSetIDs.size()];
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		canvas.addSetId(iArTmp);
+		((GLCanvasOverallJukebox3D)gLEventListener).addSetId(iArTmp);
 	}
 
-	@Override
-	public void undoCommandPart() throws GeneViewRuntimeException {
-
-		GLCanvasOverallJukebox3D canvas = 
-			(GLCanvasOverallJukebox3D) openGLCanvasUser;
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 */
+	public final void undoCommand() {
 		
-		canvas.destroyGLCanvas();
-		canvas = null;
+		super.undoCommand();
 	}
 }

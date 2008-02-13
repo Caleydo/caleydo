@@ -15,26 +15,24 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ISWTGUIManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.jogl.TriggeredAnimator;
 import org.geneview.core.view.swt.ISWTWidget;
+import org.geneview.core.view.swt.widget.ASWTWidget;
 import org.geneview.core.view.swt.widget.SWTEmbeddedGraphWidget;
 import org.geneview.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.geneview.core.view.swt.widget.SWTNativeWidget;
-import org.geneview.core.view.swt.widget.ASWTWidget;
 
 /**
  * The SWTGUIManager is responsible for the creation 
  * and the administration of the windows and composites.
  * Also the overall layout is defined here and the
- * menues are added to the windows.
+ * menus are added to the windows.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
@@ -59,8 +57,6 @@ implements ISWTGUIManager {
 	protected final HashMap<Integer, Shell> refWindowMap;
 
 	protected final HashMap<Integer, Composite> refCompositeMap;
-
-	protected final HashMap<Integer,TriggeredAnimator> hashAnimator;
 	
 	protected final Vector<ISWTWidget> refWidgetMap;
 	
@@ -83,7 +79,7 @@ implements ISWTGUIManager {
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
-		refGeneralManager.getSingelton().setSWTGUIManager(this);
+		generalManager.getSingelton().setSWTGUIManager(this);
 
 		refWidgetMap = new Vector<ISWTWidget>();
 
@@ -92,8 +88,6 @@ implements ISWTGUIManager {
 		refWindowMap = new HashMap<Integer, Shell>();
 
 		refCompositeMap = new HashMap<Integer, Composite>();
-		
-		hashAnimator = new HashMap<Integer,TriggeredAnimator> ();
 		
 		createLoadingProgressBar();
 	}
@@ -121,29 +115,6 @@ implements ISWTGUIManager {
 
 		assert iUniqueId != 0 :"createWindow() iUniqueId must not be 0!";
 		
-//		/* Multi Threaded Version */
-//		refDisplay.asyncExec(
-//				new Runnable() {
-//					public void run() {
-//						
-//						Shell refNewShell = new Shell(refDisplay);
-//						refNewShell.setLayout(new GridLayout());
-//						refNewShell.setMaximized(true);
-//						refNewShell.setImage(new Image(refDisplay, "resources/icons/geneview.ico"));
-//						refNewShell.setText( "Bla Bla Label");
-//
-//						refWindowMap.put( 20 , refNewShell);
-//
-//						//refMenuBar = createMenuBar(refShell);
-//						//refShell.setMenuBar(refMenuBar); 
-//
-//						setUpLayout(refNewShell, "HORIZONTAL");
-//						
-//					}
-//				});
-//		
-//		return null;
-		
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
 		refNewShell.setMaximized(true);
@@ -151,9 +122,6 @@ implements ISWTGUIManager {
 		refNewShell.setText(sLabel);
 
 		refWindowMap.put(iUniqueId, refNewShell);
-
-		//refMenuBar = createMenuBar(refShell);
-		//refShell.setMenuBar(refMenuBar); 
 
 		setUpLayout(refNewShell, sLayoutAttributes);
 
@@ -199,7 +167,7 @@ implements ISWTGUIManager {
 			
 			if (refComposite == null)
 			{
-				refSingelton.logMsg( getClass().getSimpleName() + ".createWidget(" +
+				singelton.logMsg( getClass().getSimpleName() + ".createWidget(" +
 						useWidgetType.toString() + ", parentId=" +
 						iUniqueParentContainerId + 
 						", iWidth, iHeight) parent SWT canvas does not exist!", 
@@ -275,17 +243,6 @@ implements ISWTGUIManager {
 
 		//gridLayout.makeColumnsEqualWidth = true;
 		refNewComposite.setLayout(gridLayout);
-
-		//		FillLayout fillLayout = new FillLayout();
-		//		
-		//		if (layoutDirection == LayoutDirection.HORIZONTAL)
-		//		{
-		//			fillLayout.type = SWT.HORIZONTAL;
-		//		}
-		//		else if (layoutDirection == LayoutDirection.VERTICAL)
-		//		{
-		//			fillLayout.type = SWT.VERTICAL;
-		//		} 
 	}
 
 	protected Menu createMenuBar(Shell refShell) {
@@ -302,17 +259,6 @@ implements ISWTGUIManager {
 
 		MenuItem addViewMenuItem = new MenuItem(fileMenu, SWT.NULL);
 		addViewMenuItem.setText("&Add view");
-		//	    addViewMenuItem.addSelectionListener(new SelectionAdapter()
-		//	    {
-		//	    	public void widgetSelected(SelectionEvent event)
-		//	    	{
-		//	    		if (((MenuItem) event.widget).getText().equals("&Add view"))
-		//	    		{
-		//	    			CmdViewNewPathway commandNewPathway = new CmdViewNewPathway(refGeneralManager);
-		//	    			commandNewPathway.doCommand();
-		//	    		}
-		//	    	}
-		//	    });
 
 		MenuItem exitMenuItem = new MenuItem(fileMenu, SWT.NULL);
 		exitMenuItem.setText("&Exit");
@@ -328,7 +274,7 @@ implements ISWTGUIManager {
 	 * @see org.geneview.core.manager.ISWTGUIManager#runApplication()
 	 */
 	public void runApplication() {
-
+				
 		Iterator<Shell> shellIterator;
 		Shell refCurrentShell;
 
@@ -341,9 +287,12 @@ implements ISWTGUIManager {
 			refCurrentShell = shellIterator.next();
 			refCurrentShell.setVisible(true);//open();
 		}
+		
+		generalManager.getSingelton().getViewGLCanvasManager().createAnimator();
+		//refGeneralManager.getSingelton().getViewGLCanvasManager().getAnimator().start();
 
 		shellIterator = refWindowMap.values().iterator();				
-		// TODO Don't know if this is ok like this!
+		
 		while (shellIterator.hasNext())
 		{
 			refCurrentShell = shellIterator.next();
@@ -353,7 +302,6 @@ implements ISWTGUIManager {
 					refDisplay.sleep();
 			}
 		}
-
 	}
 
 	/*
@@ -419,8 +367,7 @@ implements ISWTGUIManager {
 //					
 //			}
 //		});
-		
-		
+			
 		return sCurrentText;
 	}
 
@@ -462,40 +409,6 @@ implements ISWTGUIManager {
 
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	/**
-	 * @see org.geneview.core.manager.ISWTGUIManager#getAnimatorById(int)
-	 */
-	public synchronized TriggeredAnimator getAnimatorById(int iAnimatorId) {
-
-		if ( hashAnimator.containsKey(iAnimatorId) )
-		{
-			return hashAnimator.get(iAnimatorId);
-		}
-		
-		TriggeredAnimator newTriggeredAnimator = new TriggeredAnimator(60);		
-		hashAnimator.put(iAnimatorId, newTriggeredAnimator);
-		
-		return newTriggeredAnimator;
-	}
-
-	/**
-	 * @see org.geneview.core.manager.ISWTGUIManager#setAnimatorById(org.geneview.core.view.jogl.TriggeredAnimator, int)
-	 */
-	public synchronized void setAnimatorById(TriggeredAnimator refAnimator, int iAnimatorId) {
-
-		if ( hashAnimator.containsKey(iAnimatorId) ) {
-			assert false : "id:" + iAnimatorId + " for Animator is already registerd!";
-			return;
-		}
-		
-		if ( hashAnimator.containsValue(refAnimator) ) {
-			assert false : "Animator is already registerd!";
-			return;
-		}
-		
-		hashAnimator.put(iAnimatorId, refAnimator);
 	}
 	
 	public synchronized void setProgressbarVisible( final boolean state) {

@@ -43,14 +43,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		ImageViewRep imageView = (ImageViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_IMAGE,
 							iUniqueId, 
 							iParentContainerId, 
-							iGlForwarderId,
 							sLabel);
 		
 		viewManager.registerItem(

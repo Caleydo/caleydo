@@ -50,7 +50,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public void doCommand() throws GeneViewRuntimeException {
 			
-		IEventPublisher refEventPublisher = (IEventPublisher) refGeneralManager.
+		IEventPublisher refEventPublisher = (IEventPublisher) generalManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER);
 				
 		IMediator refMediator = refEventPublisher.getItemMediator(iUniqueId);

@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.geneview.core.command;
 
 /**
@@ -19,7 +11,7 @@ package org.geneview.core.command;
 public interface ICommandActionListener {
 
 	/**
-	 * Immedieatly executes command.
+	 * Immediately executes command.
 	 * 
 	 * @see org.geneview.core.command.Command.ICommandListener#scheduleCommand(org.geneview.core.command.ICommand)
 	 * 
@@ -28,7 +20,7 @@ public interface ICommandActionListener {
 	public void handleCommand( ICommand addCommand );
 	
 	/**
-	 * Insertes command into execution queue.
+	 * Inserts command into execution queue.
 	 * 
 	 * @see org.geneview.core.command.Command.ICommandListener#handleCommand(org.geneview.core.command.ICommand)
 	 * 

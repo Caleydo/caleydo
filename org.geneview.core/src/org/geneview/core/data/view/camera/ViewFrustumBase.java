@@ -32,7 +32,7 @@ public class ViewFrustumBase implements IViewFrustum {
 	 * 
 	 */
 	public ViewFrustumBase() {
-		refViewCamera = new ViewCameraBase(99999,this);
+		refViewCamera = new ViewCameraBase(99999);
 	}
 
 	/* (non-Javadoc)

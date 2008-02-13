@@ -1,17 +1,8 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.geneview.core.command;
 
 import org.geneview.core.data.IUniqueObject;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
-
 
 /**
  * Design Pattern "Command" ;behaviour pattern
@@ -43,9 +34,7 @@ extends IUniqueObject {
 		throws GeneViewRuntimeException;
 	
 	public abstract void setParameterHandler( IParameterHandler refParameterHandler);
-	
-	//public abstract void setAttribute( String, int, boolean);
-	
+		
 	/**
 	 * Tests, if two commands are of the same type.
 	 * 
@@ -73,5 +62,4 @@ extends IUniqueObject {
 	 * @return
 	 */
 	public abstract String getInfoText();
-
 }

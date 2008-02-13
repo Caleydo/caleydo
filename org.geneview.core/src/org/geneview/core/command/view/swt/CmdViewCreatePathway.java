@@ -50,14 +50,13 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {	
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		Pathway2DViewRep pathwayView = (Pathway2DViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,
 						iUniqueId,
 						iParentContainerId, 
-						iGlForwarderId,
 						sLabel);
 		
 		viewManager.registerItem(

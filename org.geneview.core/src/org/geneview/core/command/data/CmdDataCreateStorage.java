@@ -104,7 +104,7 @@ extends ACmdCreate_IdTargetLabel {
 		assert llDataTypes != null : "Probably this doCommand() was already executed once!";
 		
 		IStorageManager refStorageManager = 
-			refGeneralManager.getSingelton().getStorageManager();
+			generalManager.getSingelton().getStorageManager();
 		
 		IStorage newObject = (IStorage) refStorageManager.createStorage(
 				ManagerObjectType.STORAGE_FLAT );
@@ -159,11 +159,11 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						refGeneralManager.getSingelton().logMsg(
+						generalManager.getSingelton().logMsg(
 								"Can not convert (String) to (int) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
 								LoggerType.ERROR );
-						refGeneralManager.getSingelton().logMsg(
+						generalManager.getSingelton().logMsg(
 								"  SKIP: " + strToParse,
 								LoggerType.ERROR );
 						
@@ -205,11 +205,11 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						refGeneralManager.getSingelton().logMsg(
+						generalManager.getSingelton().logMsg(
 								"Can not convert (String) to (float) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
 								LoggerType.ERROR );
-						refGeneralManager.getSingelton().logMsg(
+						generalManager.getSingelton().logMsg(
 								"  SKIP: " + strToParse,
 								LoggerType.ERROR );
 						
@@ -251,11 +251,11 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						refGeneralManager.getSingelton().logMsg(
+						generalManager.getSingelton().logMsg(
 								"Can not convert (String) to (double) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
 								LoggerType.ERROR );
-						refGeneralManager.getSingelton().logMsg(
+						generalManager.getSingelton().logMsg(
 								"  SKIP: " + strToParse,
 								LoggerType.ERROR );
 						
@@ -318,7 +318,7 @@ extends ACmdCreate_IdTargetLabel {
 				newObject.getId(), 
 				newObject.getBaseType() );
 
-		refGeneralManager.getSingelton().logMsg( 
+		generalManager.getSingelton().logMsg( 
 				"DO new STO: " + 
 				newObject.toString(),
 				LoggerType.VERBOSE );
@@ -335,11 +335,11 @@ extends ACmdCreate_IdTargetLabel {
 	 * @see org.geneview.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
-		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
+		generalManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		refGeneralManager.getSingelton().logMsg( 
+		generalManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueId,
 				LoggerType.VERBOSE );	

@@ -38,7 +38,7 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 
 	public void doCommand() throws GeneViewRuntimeException
 	{
-		refGeneralManager.getSingelton().
+		generalManager.getSingelton().
 			getSWTGUIManager().createComposite(
 					iUniqueId, 
 					iParentContainerId, 

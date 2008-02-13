@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- * Creation date: 18-05-2005
- *  
- */
 package org.geneview.core.manager.command.factory;
 
 import org.geneview.core.command.CommandQueueSaxType;
@@ -30,19 +22,10 @@ import org.geneview.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectHistogram2D;
-import org.geneview.core.command.view.opengl.CmdGlObjectIsosurface3D;
-import org.geneview.core.command.view.opengl.CmdGlObjectMinMaxScatterPlot2D;
-import org.geneview.core.command.view.opengl.CmdGlObjectMinMaxScatterPlot3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectOverallJukebox3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectParCoords3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
-import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DLayered;
-import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DPanel;
-import org.geneview.core.command.view.opengl.CmdGlObjectScatterPlot2D;
-import org.geneview.core.command.view.opengl.CmdGlObjectTexture2D;
-import org.geneview.core.command.view.opengl.CmdGlObjectTriangleTest;
-import org.geneview.core.command.view.opengl.CmdGlObjectWidget;
 import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
 import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
 import org.geneview.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
@@ -77,13 +60,13 @@ import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
  *
  */
 public class CommandFactory 
-implements  ICommandFactory {
+implements ICommandFactory {
 
-	private ICommand refLastCommand;
+	private ICommand lastCommand;
 	
-	protected final IGeneralManager refGeneralManager;
+	protected final IGeneralManager generalManager;
 
-	protected final ICommandManager refCommandManager;
+	protected final ICommandManager commandManager;
 	
 	
 	/**
@@ -97,8 +80,8 @@ implements  ICommandFactory {
 		
 		assert setRefGeneralManager != null:"Can not create CommandFactory from null-pointer to IGeneralManager";
 		
-		this.refGeneralManager = setRefGeneralManager;		
-		this.refCommandManager = refCommandManager;
+		this.generalManager = setRefGeneralManager;		
+		this.commandManager = refCommandManager;
 	}
 
 	
@@ -113,113 +96,98 @@ implements  ICommandFactory {
 		 *        LAODING...
 		 * ----------------------
 		 */
-		
 		case LOAD_LOOKUP_TABLE_FILE: 
 		{
-			createdCommand =
-				new CmdSystemLoadFileLookupTable( 
-						refGeneralManager,
-						refCommandManager,
+			createdCommand = new CmdSystemLoadFileLookupTable( 
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
-		}
-		
+		}	
 		case LOAD_DATA_FILE: 
 		{
-			createdCommand =
-				new CmdSystemLoadFileViaImporter(
-						refGeneralManager,
-						refCommandManager,
+			createdCommand = new CmdSystemLoadFileViaImporter(
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
-		
 		case LOAD_DATA_FILE_N_STORAGES:
 		{
-			createdCommand =
-				new CmdSystemLoadFileNStorages( 
-						refGeneralManager,
-						refCommandManager,
+			createdCommand = new CmdSystemLoadFileNStorages( 
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
-		
 		case LOAD_URL_IN_BROWSER:
 		{
 			createdCommand =
 				new CmdViewLoadURLInHTMLBrowser(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
 		
-
 		/*
 		 * ----------------------
 		 *    DATA CONTAINERS
 		 * ----------------------
 		 */
-		
 		case CREATE_STORAGE:
 		{					
 			createdCommand =
 				new CmdDataCreateStorage(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType,
 						true);
 			break;
 		}
-		
 		case CREATE_PATHWAY_STORAGE:
 		{					
 			createdCommand =
 				new CmdDataCreatePathwayStorage(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
-		}				
-
+		}
 		case CREATE_VIRTUAL_ARRAY:
 		{
 			createdCommand =
 				new CmdDataCreateVirtualArray(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_SET_DATA:
 		{
 			createdCommand =
 				new CmdDataCreateSet(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType,
 						true);
 			break;
 		}
-		
 		case CREATE_SET_VIEW:
 		{
 			createdCommand =
 				new CmdDataCreateSetViewdata(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
-		
-
 		case CREATE_SET_SELECTION_MAKRO:
 		{
 			createdCommand =
 				new CmdDataCreateSelectionSetMakro(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
@@ -229,79 +197,72 @@ implements  ICommandFactory {
 		 *        SWT
 		 * ----------------------
 		 */
-		
 		case CREATE_SWT_WINDOW:
 		{
 			createdCommand =
 				new CmdWindowCreate(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_SWT_CONTAINER:
 		{
 			createdCommand =
 				new CmdContainerCreate(						
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
-		
+	
 		/*
 		 * ----------------------
 		 *        VIEW
 		 * ----------------------
 		 */
-		
 		case CREATE_VIEW_GEARS:
 		{
 			createdCommand =
 				new CmdViewCreateGears(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_SWT_GLCANVAS:
 		{
 			createdCommand =
 				new CmdViewCreateSwtGLCanvas(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_RCP_GLCANVAS:
 		{
 			createdCommand =
 				new CmdViewCreateRcpGLCanvas(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_DATA_EXPLORER:
 		{
 			createdCommand =
 				new CmdViewCreateDataExplorer(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_DATA_EXCHANGER:
 		{
 			createdCommand =
 				new CmdViewCreateDataExchanger(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
@@ -310,98 +271,89 @@ implements  ICommandFactory {
 		{
 			createdCommand =
 				new CmdViewCreateSetEditor(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_PROGRESSBAR:
 		{
 			createdCommand =
 				new CmdViewCreateProgressBar(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);			
 			break;
 		}
-		
 		case CREATE_VIEW_PATHWAY:
 		{
 			createdCommand =
 				new CmdViewCreatePathway(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-
 		case CREATE_VIEW_STORAGE_SLIDER:
 		{
 			createdCommand =
 				new CmdViewCreateStorageSlider(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_SELECTION_SLIDER:
 		{
 			createdCommand =
 				new CmdViewCreateSelectionSlider(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_MIXER:
 		{
 			createdCommand =
 				new CmdViewCreateMixer(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
-		
 		case CREATE_VIEW_BROWSER:
 		{
 			createdCommand =
 				new CmdViewCreateHTMLBrowser(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case CREATE_VIEW_IMAGE:
 		{
 			createdCommand =
 				new CmdViewCreateImage(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}	
-		
 		case CREATE_VIEW_UNDO_REDO:
 		{
 			createdCommand =
 				new CmdViewCreateUndoRedo(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}		
-		
 		case CREATE_VIEW_DATA_ENTITY_SEARCHER:
 		{
 			createdCommand =
 				new CmdViewCreateDataEntitySearcher(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;			
 		}
@@ -410,209 +362,159 @@ implements  ICommandFactory {
 		 * ----------------------
 		 *        OPEN GL
 		 * ----------------------
-		 */
-			
-		case CREATE_GL_TRIANGLE_TEST:
-		{
-			createdCommand =
-				new CmdGlObjectTriangleTest(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);			
-			break;
-		}
-		
+		 */	
 		case CREATE_GL_HEATMAP:
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);	
 			break;
 		}
-		
 		case CREATE_GL_HISTOGRAM2D:
 		{
  			createdCommand =
 				new CmdGlObjectHistogram2D(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
-		case CREATE_GL_ISOSURFACE3D:
-		{
- 			createdCommand =
-				new CmdGlObjectIsosurface3D(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);		
-			break;
-		}
-		
-		case CREATE_GL_SCATTERPLOT2D:
-		{
-			createdCommand =
-				new CmdGlObjectScatterPlot2D(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);		
-			break;
-		}
-		
-		case CREATE_GL_TEXTURE2D:
-		{
-			createdCommand =
-				new CmdGlObjectTexture2D(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);		
-			break;
-		}
-		
+//		case CREATE_GL_ISOSURFACE3D:
+//		{
+// 			createdCommand =
+//				new CmdGlObjectIsosurface3D(
+//						generalManager,
+//						commandManager,
+//						cmdType);		
+//			break;
+//		}
+//		case CREATE_GL_SCATTERPLOT2D:
+//		{
+//			createdCommand =
+//				new CmdGlObjectScatterPlot2D(
+//						generalManager,
+//						commandManager,
+//						cmdType);		
+//			break;
+//		}
+//		case CREATE_GL_TEXTURE2D:
+//		{
+//			createdCommand =
+//				new CmdGlObjectTexture2D(
+//						generalManager,
+//						commandManager,
+//						cmdType);		
+//			break;
+//		}
 		case CREATE_GL_HEATMAP2D:
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap2D(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType,
 						true);			
 			break;
 		}
-		
 		case CREATE_GL_HEATMAP2DCOLUMN:
 		{
 			createdCommand =
 				new CmdGlObjectHeatmap2D(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType,
 						false);			
 			break;
 		}
-		
-		case CREATE_GL_LAYERED_PATHWAY_3D:
-		{
- 			createdCommand =
-				new CmdGlObjectPathway3DLayered(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);	
-			break;
-		}
-		
-		case CREATE_GL_PANEL_PATHWAY_3D:
-		{
- 			createdCommand =
-				new CmdGlObjectPathway3DPanel(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);	
-			break;
-		}
-		
 		case CREATE_GL_JUKEBOX_PATHWAY_3D:
 		{
  			createdCommand =
 				new CmdGlObjectPathway3DJukebox(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);	
 			break;
 		}
-		
 		case CREATE_GL_PATHWAY_3D:
 		{
  			createdCommand =
 				new CmdGlObjectPathway3D(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);	
 			break;
 		}
-		
 		case CREATE_GL_PARALLEL_COORDINATES_3D:
 		{
  			createdCommand =
 				new CmdGlObjectParCoords3D(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);	
 			break;
 		}
-		
 		case CREATE_GL_OVERALL_JUKEBOX_3D:
 		{
  			createdCommand =
 				new CmdGlObjectOverallJukebox3D(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);	
 			break;
 		}
-		
-		case CREATE_GL_MINMAX_SCATTERPLOT2D:
-		{
-			createdCommand =
-				new CmdGlObjectMinMaxScatterPlot2D(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);
-			break;
-		}
-		
-		case CREATE_GL_WIDGET:
-		{
-			createdCommand =
-				new CmdGlObjectWidget(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);
-			break;
-		}
-				
-		
-		case CREATE_GL_MINMAX_SCATTERPLOT3D:
-		{
-			createdCommand =
-				new CmdGlObjectMinMaxScatterPlot3D(
-						refGeneralManager,
-						refCommandManager,
-						cmdType);
-			break;
-		}
-		
+//		case CREATE_GL_MINMAX_SCATTERPLOT2D:
+//		{
+//			createdCommand =
+//				new CmdGlObjectMinMaxScatterPlot2D(
+//						generalManager,
+//						commandManager,
+//						cmdType);
+//			break;
+//		}
+//		case CREATE_GL_WIDGET:
+//		{
+//			createdCommand =
+//				new CmdGlObjectWidget(
+//						generalManager,
+//						commandManager,
+//						cmdType);
+//			break;
+//		}
+//		case CREATE_GL_MINMAX_SCATTERPLOT3D:
+//		{
+//			createdCommand =
+//				new CmdGlObjectMinMaxScatterPlot3D(
+//						generalManager,
+//						commandManager,
+//						cmdType);
+//			break;
+//		}
 		case EXTERNAL_FLAG_SETTER:
 		{
 			createdCommand =
 				new CmdExternalFlagSetter(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
-
 		case EXTERNAL_ACTION_TRIGGER:
 		{
 			createdCommand =
 				new CmdExternalActionTrigger(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}
-
 		
 		/*
 		 * ----------------------
 		 *        SYSTEM
 		 * ----------------------
 		 */
-		
-		
 		
 		/*
 		 * ----------------------
@@ -623,37 +525,31 @@ implements  ICommandFactory {
 		{
 			createdCommand =
 				new CmdEventCreateMediator(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
-		}
-		
+		}	
 		case EVENT_MEDIATOR_ADD_OBJECT:
 		{
 			createdCommand =
 				new CmdEventMediatorAddObject(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case SYSTEM_SHUT_DOWN:
 		{
-			createdCommand = new CmdSystemExit(refGeneralManager);
+			createdCommand = new CmdSystemExit(generalManager);
 			break;
 		}
-		
-		/**
-		 * Set path for pathway XML files, images and imagemaps.
-		 */
 		case  SET_SYSTEM_PATH_PATHWAYS:
 		{
 			createdCommand =
 				new CmdSetPathwayDatabasePath(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);
 			break;
 		}	
@@ -663,46 +559,29 @@ implements  ICommandFactory {
 		 *     DATA FILTER
 		 * ----------------------
 		 */
-		
 		case DATA_FILTER_MATH:
 		{
 			createdCommand =
 				new CmdDataFilterMath(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		case DATA_FILTER_MIN_MAX:
 		{
 			createdCommand =
 				new CmdDataFilterMinMax(
-						refGeneralManager,
-						refCommandManager,
+						generalManager,
+						commandManager,
 						cmdType);		
 			break;
 		}
-		
 		default: 
 			throw new GeneViewRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
 					cmdType + "]",
 					GeneViewRuntimeExceptionType.SAXPARSER);
-		} // end switch
-		
-		//FIXME: create new command id! use lookup table for XML matching of cmd id's 
-		
-//		/**
-//		 * Create a new uniqueId if necessary
-//		 */
-//		int iNewUniqueId = iData_CmdId;		
-//		if ( iData_CmdId < 0 ) {
-//			iNewUniqueId = refCommandManager.createNewId( null );
-//		}
-//		createdCommand.setId( iNewUniqueId );
-//		/**
-//		 * End: Create a new uniqueId if nessecary
-//		 */			
+		} // end switch	
 		
 		return createdCommand;
 	}
@@ -722,7 +601,7 @@ implements  ICommandFactory {
 		 */
 		int iNewUniqueId = iCmdId;		
 		if ( iCmdId < 0 ) {
-			iNewUniqueId = refCommandManager.createId( null );
+			iNewUniqueId = commandManager.createId( null );
 		}
 		/**
 		 * End: Create a new uniqueId if necessary
@@ -742,8 +621,8 @@ implements  ICommandFactory {
 		{
 		case COMMAND_QUEUE_OPEN: {
 			ICommand cmdQueue = new CommandQueueVector(iNewUniqueId, 
-					refGeneralManager,
-					refCommandManager,
+					generalManager,
+					commandManager,
 					queueType,
 					iCmdQueueId);				
 			return cmdQueue;
@@ -751,8 +630,8 @@ implements  ICommandFactory {
 			
 		case COMMAND_QUEUE_RUN:
 			return new CmdSystemRunCmdQueue(iNewUniqueId,
-					refGeneralManager,
-					refCommandManager,
+					generalManager,
+					commandManager,
 					queueType,
 					iCmdQueueId);
 			
@@ -770,7 +649,7 @@ implements  ICommandFactory {
 	 * @return reference to last created command
 	 */
 	protected ICommand getLastCreatedCommand() {
-		return refLastCommand;
+		return lastCommand;
 	}
 	
 	
@@ -818,7 +697,4 @@ implements  ICommandFactory {
 					GeneViewRuntimeExceptionType.COMMAND );
 		}
 	}
-	
-
-
 }

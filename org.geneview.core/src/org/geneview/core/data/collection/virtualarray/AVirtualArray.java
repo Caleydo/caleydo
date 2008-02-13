@@ -83,7 +83,7 @@ implements IVirtualArray {
 	{
 		this.iSelectionOffset = iSetOffset;
 		
-		((EventPublisher)refGeneralManager.getSingelton().
+		((EventPublisher)generalManager.getSingelton().
 				getEventPublisher()).updateReceiver(this);
 	}
 
@@ -94,7 +94,7 @@ implements IVirtualArray {
 	{
 		this.iSelectionLength = iSetLength;
 		
-		((EventPublisher)refGeneralManager.getSingelton().
+		((EventPublisher)generalManager.getSingelton().
 				getEventPublisher()).updateReceiver(this);
 	}
 

@@ -60,7 +60,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		
 		new Pathway2DToolbar(refSWTContainer, 
 				refPathwayGraphViewRep,
-				refGeneralManager);
+				generalManager);
 		
 		// Graph initialization
 		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);

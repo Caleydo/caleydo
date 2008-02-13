@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.view.opengl.canvas.heatmap;
 
 import gleem.linalg.Vec2f;
@@ -11,25 +8,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.GLUT;
-
-import org.geneview.core.data.collection.IVirtualArray;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
+import org.geneview.core.data.collection.IVirtualArray;
 import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-//import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
-//import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
-//import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
+
+import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.GLUT;
 
 /**
  * @author Michael Kalkusch
@@ -38,7 +33,7 @@ import org.geneview.core.view.opengl.canvas.heatmap.AGLCanvasHeatmap2D;
  */
 public class GLCanvasHeatmap2D 
 extends AGLCanvasHeatmap2D
-		implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
+implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	//private int[] iIndexPickedCoored = {-1,-1};
 	
@@ -108,18 +103,15 @@ extends AGLCanvasHeatmap2D
 	private boolean bMouseOverEvent = false;
 	
 	/**
-	 * @param setGeneralManager
+	 * Constructor.
+	 * 
 	 */
-	public GLCanvasHeatmap2D(final IGeneralManager setGeneralManager,
-			int iViewId,
-			int iParentContainerId,
+	public GLCanvasHeatmap2D(final IGeneralManager generalManager,
+			int iViewID,
+			int iGLCanvasID,
 			String sLabel) {
 
-		super(setGeneralManager, 
-				null,
-				iViewId, 
-				iParentContainerId, 
-				sLabel);
+		super(generalManager, iViewID, iGLCanvasID, sLabel);
 
 		fAspectRatio = new float[2][3];
 		viewingFrame = new float[3][2];
@@ -144,6 +136,121 @@ extends AGLCanvasHeatmap2D
 		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void init(GLAutoDrawable drawable) {
+
+		((GLEventListener)parentGLCanvas).init(drawable);
+		
+		final GL gl = drawable.getGL();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void display(GLAutoDrawable drawable) {
+		
+		((GLEventListener)parentGLCanvas).display(drawable);
+		
+		final GL gl = drawable.getGL();	
+		
+		handlePicking(gl, 0.0f);
+		
+		gl.glTranslatef( 0,0, 0.01f);
+	
+		  if ( targetSet == null ) 
+		  {
+			  generalManager.getSingelton().logMsg(
+					  "createHistogram() can not create Heatmap, because targetSet=null",
+					  LoggerType.STATUS );
+			  return;
+		  }
+		  
+		  if ( iValuesInRow < 1) {
+			  generalManager.getSingelton().logMsg(
+					  "createHistogram() can not create Heatmap, because histogramLevels are outside range [1..max]",
+					  LoggerType.FULL );
+			  return;
+		  }
+		  
+		  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
+		  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
+	  		  
+	
+		  if ((targetSet.hasCacheChanged(iSetCacheId))||
+				  ( iHeatmapDisplayListId == -1 ))
+			{
+
+				iSetCacheId = targetSet.getCacheId();
+
+				//	    			System.out.print("H:");
+				//	    			for ( int i=0;i<iHistogramIntervalls.length; i++) {
+				//	    				System.out.print(";" +
+				//	    						Integer.toString(iHistogramIntervalls[i]) );
+				//	    			}
+				System.out.println("GLCanvasHeatmap2D - UPDATED!");
+				
+				render_createDisplayLists( gl );
+				
+				  generalManager.getSingelton().logMsg(
+						  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
+						  LoggerType.FULL );
+				  
+			}
+		  
+		  if ( refBufferStorage == null ) {
+			  return;
+		  }
+		
+		  if (bUseGLWireframe) {
+		    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		    }
+		    
+//		    else 
+//		    {
+//		    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+//		    }     
+
+		  //renderGLSingleQuad(gl,this.fIndexPickedCoored,0);
+		  
+		  gl.glDisable( GL.GL_LIGHTING );
+		  
+		  gl.glCallList( iHeatmapDisplayListId );
+		  
+		  gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
+		  gl.glColor3f(1, 1, 0);
+		  renderGLAllQuadRectangle(gl,this.fIndexPickedCoored);
+		  
+		  gl.glColor3f(0.8f, 0.8f, 0);
+		  renderGLAllQuadDots(gl,this.fIndexPickedCoored);
+		  
+		  gl.glEnable( GL.GL_LIGHTING );
+		  
+		//System.err.println(" Heatmap2D ! .render(GLCanvas canvas)");
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+	
+	}
+	
 	protected void drawSelectionX(GL gl, final float fStartX,
 			final float fStartY, final float fEndX, final float fEndY,
 			final float fIncX, final float fIncY) {
@@ -509,7 +616,7 @@ extends AGLCanvasHeatmap2D
 	
 		bEnablePicking = enablePicking;
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName() + ".setEnablePicking( " +
 				Boolean.toString(enablePicking) + " )",
 				LoggerType.STATUS);
@@ -517,19 +624,6 @@ extends AGLCanvasHeatmap2D
 	
 	/* -----   END: PICKING  ----- */
 	/* --------------------------- */
-	
-	/**
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
-	 */
-	@Override
-	public void initGLCanvas(GL gl)
-	{
-		pickingTriggerMouseAdapter = 
-			(PickingJoglMouseListener) 
-			openGLCanvasDirector.getJoglCanvasForwarder().getJoglMouseListener();
-				
-		setInitGLDone();		
-	}
 	
 	protected void drawSelectionY(GL gl, final float fStartX,
 			final float fStartY, final float fEndX, final float fEndY,
@@ -602,17 +696,17 @@ extends AGLCanvasHeatmap2D
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			refGeneralManager.getSingelton().getSetManager(
+			generalManager.getSingelton().getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.FULL );
 		}
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!",
 				LoggerType.FULL );
@@ -630,7 +724,7 @@ extends AGLCanvasHeatmap2D
 		render_displayListHeatmap( gl );
 		gl.glEndList();
 		
-		  refGeneralManager.getSingelton().logMsg(
+		  generalManager.getSingelton().logMsg(
 				  "createHeatmap() create DsiplayList)",
 				  LoggerType.FULL );
 		  
@@ -835,93 +929,12 @@ extends AGLCanvasHeatmap2D
 			
 		}
 	}
-	
-	@Override
-	public void renderPart(GL gl)
-	{
-		handlePicking(gl, 0.0f);
-		
-		gl.glTranslatef( 0,0, 0.01f);
-	
-		  if ( targetSet == null ) 
-		  {
-			  refGeneralManager.getSingelton().logMsg(
-					  "createHistogram() can not create Heatmap, because targetSet=null",
-					  LoggerType.STATUS );
-			  return;
-		  }
-		  
-		  if ( iValuesInRow < 1) {
-			  refGeneralManager.getSingelton().logMsg(
-					  "createHistogram() can not create Heatmap, because histogramLevels are outside range [1..max]",
-					  LoggerType.FULL );
-			  return;
-		  }
-		  
-		  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
-		  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
-	  		  
-	
-		  if ((targetSet.hasCacheChanged(iSetCacheId))||
-				  ( iHeatmapDisplayListId == -1 ))
-			{
-
-				iSetCacheId = targetSet.getCacheId();
-
-				//	    			System.out.print("H:");
-				//	    			for ( int i=0;i<iHistogramIntervalls.length; i++) {
-				//	    				System.out.print(";" +
-				//	    						Integer.toString(iHistogramIntervalls[i]) );
-				//	    			}
-				System.out.println("GLCanvasHeatmap2D - UPDATED!");
-				
-				render_createDisplayLists( gl );
-				
-				  refGeneralManager.getSingelton().logMsg(
-						  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
-						  LoggerType.FULL );
-				  
-			}
-		  
-		  if ( refBufferStorage == null ) {
-			  return;
-		  }
-		
-		  if (bUseGLWireframe) {
-		    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-		    }
-		    
-//		    else 
-//		    {
-//		    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-//		    }     
-
-		  //renderGLSingleQuad(gl,this.fIndexPickedCoored,0);
-		  
-		 
-
-		  gl.glDisable( GL.GL_LIGHTING );
-		  
-		  gl.glCallList( iHeatmapDisplayListId );
-		  
-		  gl.glTranslatef(0, 0, -AGLCanvasHeatmap2D.fPickingBias);
-		  gl.glColor3f(1, 1, 0);
-		  renderGLAllQuadRectangle(gl,this.fIndexPickedCoored);
-		  
-		  gl.glColor3f(0.8f, 0.8f, 0);
-		  renderGLAllQuadDots(gl,this.fIndexPickedCoored);
-		  
-		  gl.glEnable( GL.GL_LIGHTING );
-		  
-		//System.err.println(" Heatmap2D ! .render(GLCanvas canvas)");
-	}
-	
 
 	
  //public int[] createHistogram(final int iHistogramLevels) {
   public void renderHeatmap(final int iHistogramLevels) {
 
-	  refGeneralManager.getSingelton().logMsg( "HEATMAP: set  ", LoggerType.FULL );
+	  generalManager.getSingelton().logMsg( "HEATMAP: set  ", LoggerType.FULL );
 	  
   }
 
@@ -1152,7 +1165,7 @@ extends AGLCanvasHeatmap2D
 	
 	public void updateReceiver(Object eventTrigger) {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()+
 				": updateReceiver( (" + 
 				eventTrigger.getClass().getSimpleName() + ") " +
@@ -1164,7 +1177,7 @@ extends AGLCanvasHeatmap2D
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()+
 				": updateReceiver( (" + 
 				eventTrigger.getClass().getSimpleName() + ") " +

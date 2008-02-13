@@ -52,14 +52,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_BROWSER,
 							iUniqueId, 
 							iParentContainerId, 
-							iGlForwarderId,
 							sLabel);
 		
 		viewManager.registerItem(

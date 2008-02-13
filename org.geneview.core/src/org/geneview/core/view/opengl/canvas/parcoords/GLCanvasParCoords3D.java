@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.data.collection.ISet;
@@ -56,7 +58,7 @@ implements IMediatorReceiver, IMediatorSender {
 		NOT_IN_SELECTION
 	}
 
-//	private IGeneralManager refGeneralManager;
+//	private IGeneralManager generalManager;
 	// how much room between the axis?
 	private float axisSpacing;
 		
@@ -99,31 +101,29 @@ implements IMediatorReceiver, IMediatorSender {
 	/**
 	 * Constructor
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param viewId
 	 * @param parentContainerId
 	 * @param label
 	 */
-	public GLCanvasParCoords3D(IGeneralManager refGeneralManager,
-			int viewId,
-			int parentContainerId,
+	public GLCanvasParCoords3D(IGeneralManager generalManager,
+			int iViewId,
+			int iGLCanvasID,
 			String label) 
 	{
-		super(refGeneralManager, null, viewId, parentContainerId, label);
+		super(generalManager, iViewId, iGLCanvasID, label);
 		
-		myPickingManager = refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager();
+		myPickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 
 		// TODO:
 		//int bla = EGenomeIdType.ACCESSION_CODE.ordinal();
 		
-		this.refViewCamera.setCaller(this);
 		this.axisSpacing = 1;
 		
 		//hashPolylinePickingIDToIndex = new HashMap<Integer, Integer>();
 		//hashPolylineIndexToPickingID = new HashMap<Integer, Integer>();
 		
-		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-			.getJoglCanvasForwarder().getJoglMouseListener();
+		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 		
 		renderStyle = new ParCoordsRenderStyle();	
 		
@@ -132,16 +132,17 @@ implements IMediatorReceiver, IMediatorSender {
 		alNormalPolylines = new ArrayList<Integer>();
 		alMouseOverPolylines = new ArrayList<Integer>();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initGLCanvas(javax.media.opengl.GL)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void initGLCanvas(GL gl) {
-	
-		super.initGLCanvas(gl);
+	public void init(GLAutoDrawable drawable) {
 		
+		((GLEventListener)parentGLCanvas).init(drawable);
 		
+		final GL gl = drawable.getGL();
+
 		ISetSelection tmpSelection = alSetSelection.get(0);
 		
 		int[] iArTmpSelectionIDs = {13, 18, 19, 20, 33, 36, 37, 38, 39, 40};
@@ -189,15 +190,18 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		
 		initPolyLineLists();
-		
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void renderPart(GL gl) 
-	{		
+	public void display(GLAutoDrawable drawable) {
+
+		((GLEventListener)parentGLCanvas).display(drawable);
+		
+		final GL gl = drawable.getGL();
+		
 //		//gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 //		if(bIsDisplayListDirty)
 //		{
@@ -215,7 +219,27 @@ implements IMediatorReceiver, IMediatorSender {
 		handlePicking(gl);
 		// check if we hit a polyline
 		checkForHits();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
 		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+
+//		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
 	}
 	
 	/**
@@ -415,11 +439,11 @@ implements IMediatorReceiver, IMediatorSender {
 					iStorageIndex = alDataToRender.get(iPolyLineCount);					
 				}			
 				
-//				int test = refGeneralManager.getSingelton().getGenomeIdManager()
+//				int test = generalManager.getSingelton().getGenomeIdManager()
 //			     .getIdIntFromIntByMapping(iStorageIndex*1000+770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION); 
 //				System.out.println("Accesion Internal: "+test);
 //				
-//				String sAccessionCode = refGeneralManager.getSingelton().getGenomeIdManager()
+//				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 //			     .getIdStringFromIntByMapping(test, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 //				
 //				System.out.println("Accession Number: "+sAccessionCode);
@@ -679,7 +703,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -693,12 +717,12 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			iSelectedAccessionID = iArSelection[0];
 			
-			String sAccessionCode = refGeneralManager.getSingelton().getGenomeIdManager()
+			String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 				.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 		
 			System.out.println("Accession Code: " +sAccessionCode);
 			
-			refGeneralManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+			generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
 				.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0, 0), ESelectionMode.ReplacePick);
 		}
 	}
@@ -709,7 +733,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),

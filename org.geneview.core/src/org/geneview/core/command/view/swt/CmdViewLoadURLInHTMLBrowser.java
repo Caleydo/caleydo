@@ -55,7 +55,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		try {
 			
 			Iterator<IViewRep> iterHTMLBrowser =
-				refGeneralManager.getSingelton().getViewGLCanvasManager().
+				generalManager.getSingelton().getViewGLCanvasManager().
 				getViewRepByType(ViewType.SWT_HTML_BROWSER).iterator();
 
 			while (iterHTMLBrowser.hasNext())
@@ -65,7 +65,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 
 		} catch (Exception e)
 		{
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
 					": doCommand(): Invalid view ID. Requested view is not a browser!",
 					LoggerType.MINOR_ERROR );

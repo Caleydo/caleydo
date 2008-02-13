@@ -1,32 +1,17 @@
-/**
- * 
- */
 package org.geneview.core.view.opengl.canvas.isosurface;
 
 import gleem.linalg.Vec3f;
 
-//import java.util.Iterator;
-//import java.util.LinkedList;
-//import java.util.List;
-
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 
-import com.sun.opengl.util.GLUT;
-
-//import gleem.linalg.Vec3f;
-//import gleem.linalg.Vec4f;
-
-//import org.geneview.core.data.collection.IVirtualArray;
 import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.math.statistics.histogram.HistogramData;
-//import org.geneview.core.math.statistics.histogram.HistogramStatisticsSet;
-//import org.geneview.core.math.statistics.histogram.StatisticHistogramType;
-import org.geneview.core.view.opengl.GLCanvasStatics;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+
+import com.sun.opengl.util.GLUT;
 
 
 /**
@@ -54,8 +39,6 @@ extends AGLCanvasUser
 	 */
 	private int iCurrentHistogramLength = 0;
 	
-	private float [][] viewingFrame;
-	
 	//private int iGridSize = 40;
 	
 	//private float fPointSize = 1.0f;
@@ -75,53 +58,68 @@ extends AGLCanvasUser
 	protected float[] fResolution;
 	
 	protected ISet targetSet;
-	
-	
-	private static final int X = GLCanvasStatics.X;
-	private static final int Y = GLCanvasStatics.Y;
-	private static final int Z = GLCanvasStatics.Z;
-	private static final int MIN = GLCanvasStatics.MIN;
-	private static final int MAX = GLCanvasStatics.MAX;
-	private static final int OFFSET = GLCanvasStatics.OFFSET;
-	
-	
+		
 	private int iCounterRender = 0;
 	
-
-	
 	/**
-	 * @param setGeneralManager
+	 * Constructor.
+	 * 
 	 */
-	public GLCanvasIsoSurface3D( final IGeneralManager setGeneralManager,
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel )
-	{
-		super( setGeneralManager, 
-				null,
-				iViewId,  
-				iParentContainerId, 
-				sLabel );
+	public GLCanvasIsoSurface3D(final IGeneralManager generalManager,
+			int iViewID,
+			int iGLCanvasID,
+			String sLabel) {
+
+		super(generalManager, iViewID, iGLCanvasID, sLabel);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void init(GLAutoDrawable drawable) {
+
+		((GLEventListener)parentGLCanvas).init(drawable);
 		
-		fAspectRatio = new float [2][3];
-		viewingFrame = new float [3][2];
+		final GL gl = drawable.getGL();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void display(GLAutoDrawable drawable) {
+
+		((GLEventListener)parentGLCanvas).display(drawable);
 		
-		fAspectRatio[X][MIN] = 0.0f;
-		fAspectRatio[X][MAX] = 20.0f; 
-		fAspectRatio[Y][MIN] = 0.0f; 
-		fAspectRatio[Y][MAX] = 20.0f; 
+		final GL gl = drawable.getGL();
 		
-		fAspectRatio[Y][OFFSET] = 0.0f; 
-		fAspectRatio[Y][OFFSET] = -2.0f; 
+		gl.glTranslatef( 0,0, 0.01f);
 		
-		viewingFrame[X][MIN] = -1.0f;
-		viewingFrame[X][MAX] = 1.0f; 
-		viewingFrame[Y][MIN] = 1.0f; 
-		viewingFrame[Y][MAX] = -1.0f; 
-		
-		viewingFrame[Z][MIN] = 0.0f; 
-		viewingFrame[Z][MAX] = 0.0f; 
-		
+		if ( iCounterRender > 50 ) {
+			displayHistogram( gl );
+		}
+		iCounterRender++;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(
+				drawable, modeChanged, deviceChanged);		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+
 	}
 	
 	public void renderText( GL gl, 
@@ -154,56 +152,27 @@ extends AGLCanvasUser
 	         
 	}
 	
-
-	public void setResolution( float[] setResolution ) {
-		
-//		if ( fResolution.length < 6 ) {
-//			throw new RuntimeException("GLCanvasMinMaxScatterPlot2D.setResolution() array must contain 3 items.");
-//		}
-		
-		this.fResolution = setResolution;
-		
-		fAspectRatio[X][MIN] = fResolution[0];
-		fAspectRatio[X][MAX] = fResolution[1]; 
-		fAspectRatio[Y][MIN] = fResolution[2]; 
-		fAspectRatio[Y][MAX] = fResolution[3]; 
-		
-		fAspectRatio[X][OFFSET] = fResolution[4]; 
-		fAspectRatio[Y][OFFSET] = fResolution[5];
-		
-		viewingFrame[X][MIN] = fResolution[6];
-		viewingFrame[X][MAX] = fResolution[7]; 
-		viewingFrame[Y][MIN] = fResolution[8]; 
-		viewingFrame[Y][MAX] = fResolution[9];
-		
-		viewingFrame[Z][MIN] = fResolution[10]; 
-		viewingFrame[Z][MAX] = fResolution[11]; 
-				
-		iCurrentHistogramLength = (int) fResolution[12]; 
-		
-	}
-	
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			refGeneralManager.getSingelton().getSetManager(
+			generalManager.getSingelton().getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"GLCanvasIsosurface3D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.ERROR );
 		}
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				"GLCanvasIsosurface3D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!",
 				LoggerType.STATUS );
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"GLCanvasIsosurface3D.setTargetSetId(" +
 					iTargetCollectionSetId + ") skip isovalue (not implemented yet!",
 					LoggerType.STATUS );
@@ -248,38 +217,12 @@ extends AGLCanvasUser
 		
 		this.bHasIsoSurface = true;
 	}
-	
-	
-	@Override
-	public void renderPart(GL gl)
-	{
-		gl.glTranslatef( 0,0, 0.01f);
-	
-		if ( iCounterRender > 50 ) {
-			displayHistogram( gl );
-		}
-		iCounterRender++;
-		
-		//System.err.println(" MinMax ScatterPlot2D .render(GLCanvas canvas)");
-	}
-
-	
-	public void update(GL gl)
-	{
-		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");	
-		
-		createIsoSurface( iCurrentHistogramLength );
-	}
 
 	public void destroyGLCanvas()
 	{
-		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
+		generalManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
 				LoggerType.STATUS );
 	}
-	
-
-
- 
   
   public void setIsoValue( final int iSetLegth ) {
 	  
@@ -301,28 +244,22 @@ extends AGLCanvasUser
 	  
 	  gl.glDisable( GL.GL_LIGHTING );
 	    
-	  /**
-		 * Box..
-		 */
-		
-		gl.glColor3fv( colorGrid, 0); // Set the color to red
-		gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
-		gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
-		gl.glEnd(); // Finish drawing the triangle
-		
-		/**
-		 * End draw Box
-		 */
-		
-	
+//	  /**
+//	   * Box..
+//	   */		
+//	  gl.glColor3fv( colorGrid, 0); // Set the color to red
+//	  gl.glBegin(GL.GL_LINE_LOOP); // Drawing using triangles
+//	  gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Top
+//	  gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN]); // Bottom left
+//	  gl.glVertex3f(viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+//	  gl.glVertex3f(viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN]); // Bottom left
+//	  gl.glEnd(); // Finish drawing the triangle
+//	  /**
+//	   *  End draw Box
+//	   */
 
-
-
-	    if (( isosurface != null )&&( isosurface.hasValidIsosurface() )) {
-	    	
+	  if (( isosurface != null )&&( isosurface.hasValidIsosurface() )) 
+	  {  	
 	    	Vec3f[] vertexArray = isosurface.getVertices();	    	
 	    	int[] facesetArray = isosurface.getFaceSet();
 	    	

@@ -42,15 +42,14 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) refGeneralManager
+		IViewManager viewManager = ((IViewManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
 		GearsViewRep gearsView = (GearsViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_GEARS,
 						iUniqueId, 
-							iParentContainerId,
-							iGlForwarderId,
-							sLabel);
+						iParentContainerId,
+						sLabel);
 		
 		viewManager.registerItem(
 				gearsView, 

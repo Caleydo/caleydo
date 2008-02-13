@@ -77,10 +77,10 @@ implements IDataTableView {
 	 */
 	public void initViewSwtComposit( Composite swtContainer ) {
 		
-		refStorageManager = (IStorageManager) refGeneralManager
+		refStorageManager = (IStorageManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.STORAGE);
 
-		refSelectionManager = (IVirtualArrayManager) refGeneralManager
+		refSelectionManager = (IVirtualArrayManager) generalManager
 				.getManagerByBaseType(ManagerObjectType.VIRTUAL_ARRAY);
 	}
 

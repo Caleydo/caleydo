@@ -72,7 +72,7 @@ extends ACmdCreate_IdTargetLabel {
 	public void doCommand() throws GeneViewRuntimeException {
 		
 		IVirtualArrayManager refVirtualArrayManager = 
-			refGeneralManager.getSingelton().getVirtualArrayManager();
+			generalManager.getSingelton().getVirtualArrayManager();
 		
 		IVirtualArray newObject = (IVirtualArray) refVirtualArrayManager.createVirtualArray(
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
@@ -88,7 +88,7 @@ extends ACmdCreate_IdTargetLabel {
 				iUniqueId, 
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 
-		refGeneralManager.getSingelton().logMsg( 
+		generalManager.getSingelton().logMsg( 
 				"DO new SEL: " + 
 				newObject.toString(),
 				LoggerType.VERBOSE );
@@ -101,11 +101,11 @@ extends ACmdCreate_IdTargetLabel {
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 		
-		refGeneralManager.getSingelton().getVirtualArrayManager().unregisterItem( 
+		generalManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		refGeneralManager.getSingelton().logMsg( 
+		generalManager.getSingelton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueId,
 				LoggerType.VERBOSE );

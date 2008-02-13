@@ -54,8 +54,8 @@ extends ViewCameraBase {
 	/**
 	 * 
 	 */
-	public ViewCameraPitchRollYaw(int iId, Object caller) {
-		super(iId, caller);
+	public ViewCameraPitchRollYaw(int iId) {
+		super(iId);
 	}
 	
 	private void updateRollZ( final float fSetRadiant ) {
@@ -269,7 +269,8 @@ extends ViewCameraBase {
 	 * Creates a clone of this camera by copying all settings.
 	 */
 	public ViewCameraBase clone() {
-		ViewCameraBase exportClone = new ViewCameraBase(this.iUniqueId, this);
+		
+		ViewCameraBase exportClone = new ViewCameraBase(iUniqueId);
 		
 		exportClone.setCameraAll( v3fCameraPosition, v3fCameraScale, rotfCameraRotation );
 		

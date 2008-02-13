@@ -1,53 +1,33 @@
-/**
- * 
- */
 package org.geneview.core.view.opengl.canvas;
 
-import gleem.linalg.Rotf;
-import gleem.linalg.Vec3f;
-
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
 
+import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.collection.set.viewdata.ISetViewData;
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.data.view.camera.ViewCameraBase;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.ISetManager;
 import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.jogl.mouse.AViewCameraListenerObject;
-import org.geneview.core.view.opengl.IGLCanvasDirector;
-import org.geneview.core.view.opengl.IGLCanvasUser;
-
-import com.sun.opengl.util.Screenshot;
+import org.geneview.core.view.jogl.JoglCanvasForwarder;
 
 /**
  * 
- * @see org.geneview.core.view.jogl.IJoglMouseListener
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public abstract class AGLCanvasUser 
-extends AViewCameraListenerObject
-implements IGLCanvasUser {
+extends AUniqueManagedObject
+implements GLEventListener {
 	
-	protected GL canvas;
-	
-	protected IGLCanvasDirector openGLCanvasDirector;
-	
-	private boolean bInitGLcanvawsWasCalled = false;
+	// TODO: should be a list of parent canvas object to be generic
+	protected JoglCanvasForwarder parentGLCanvas;
 	
 	/**
 	 * List for all ISet objects providing data for this ViewRep.
@@ -59,104 +39,36 @@ implements IGLCanvasUser {
 	 */
 	protected ArrayList <SetSelection> alSetSelection;
 	
-	protected ISetManager refSetManager;
-	
+	protected ISetManager setManager;
+
 	/**
-	 * @param setGeneralManager
+	 * Constructor.
+	 * 
+	 * @param generalManager
+	 * @param iViewId
+	 * @param iGLCanvasID
+	 * @param sLabel
 	 */
-	protected AGLCanvasUser( final IGeneralManager setGeneralManager,
-			final IViewCamera setViewCamera,
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel )
+	protected AGLCanvasUser( final IGeneralManager generalManager,
+			int iViewID, 
+			int iGLCanvasID,
+			String sLabel)
 	{
-		super( iViewId, setGeneralManager, setViewCamera);
-		
-		if ( refViewCamera==null ) {
-			IViewCamera newViewCamera = new ViewCameraBase(iViewId,this);
-			setViewCamera(newViewCamera);			
-		}
-		
-		openGLCanvasDirector =
-			setGeneralManager.getSingelton().getViewGLCanvasManager().getGLCanvasDirector( iParentContainerId );
-		
-		assert openGLCanvasDirector != null : 
-			"parent GLCanvas Director is null! Maybe parentID=" + 
-			iParentContainerId + " in XML file is invalid.";
-		
-		//this.canvas = openGLCanvasDirector.getGLCanvas();
-		
-		//assert canvas != null : "canvas from parten ist null!";
+		super(iViewID, generalManager);
 		
 		alSetData = new ArrayList <ISet> ();
 		alSetSelection = new ArrayList <SetSelection> ();
+
+		setManager = generalManager.getSingelton().getSetManager();
 		
-		refSetManager = refGeneralManager.getSingelton().getSetManager();
-	}
+		parentGLCanvas = ((JoglCanvasForwarder)generalManager.getSingelton().getViewGLCanvasManager()
+				.getItem(iGLCanvasID));
+		
+		// Register GL event listener view to GL canvas
+		parentGLCanvas.addGLEventListener(this);
 
-	public final boolean isInitGLDone() 
-	{
-		return this.bInitGLcanvawsWasCalled;
-	}
-	
-	public final void setInitGLDone() 
-	{
-		if ( bInitGLcanvawsWasCalled ) {
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName()+
-					".setInitGLDone() is called more than once! WARNING!" +
-					this.getId(),
-					LoggerType.STATUS );
-		}
-		else 
-		{
-			refGeneralManager.getSingelton().logMsg(
-					this.getClass().getSimpleName()+
-					".setInitGLDone() is called" +
-					this.getId(),
-					LoggerType.TRANSITION );
-		}
-		bInitGLcanvawsWasCalled = true;
-	}
-	
-//	/* (non-Javadoc)
-//	 * @see org.geneview.core.view.opengl.IGLCanvasUser#link2GLCanvasDirector(org.geneview.core.view.opengl.IGLCanvasDirector)
-//	 */
-//	public final void link2GLCanvasDirector(IGLCanvasDirector parentView)
-//	{
-//		if ( openGLCanvasDirector == null ) {
-//			openGLCanvasDirector = parentView;
-//		}
-//		
-//		parentView.addGLCanvasUser( this );
-//	}
-
-
-	/**
-	 * Canvas must not be read from outside.
-	 * 
-	 */
-	public final GL getGLCanvas()
-	{
-		return canvas;
-	}
-
-	/**
-	 * Canvas must not be set from outside!
-	 * 
-	 * @param canvas
-	 */
-	protected final void setGLCanvas(GL canvas)
-	{
-		assert false : "Canvas must not be set!";
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#getGLCanvasDirector()
-	 */
-	public final IGLCanvasDirector getGLCanvasDirector()
-	{
-		return openGLCanvasDirector;
+		generalManager.getSingelton().getViewGLCanvasManager()
+			.registerGLEventListenerByGLCanvasID(parentGLCanvas.getID(), this);
 	}
 
 	public final ManagerObjectType getBaseType()
@@ -164,7 +76,6 @@ implements IGLCanvasUser {
 		return null;
 	}
 
-	
 	/**
 	 * @see org.geneview.core.view.IView#addSetId(int[])
 	 */
@@ -174,11 +85,11 @@ implements IGLCanvasUser {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet refCurrentSet = refSetManager.getItemSet(iSet[i]);
+			ISet refCurrentSet = setManager.getItemSet(iSet[i]);
 			
 			if ( refCurrentSet == null ) 
 			{
-				refGeneralManager.getSingelton().logMsg(
+				setManager.getSingelton().logMsg(
 						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
 						LoggerType.MINOR_ERROR);
 				
@@ -199,7 +110,7 @@ implements IGLCanvasUser {
 					break;
 					
 				default:
-					refGeneralManager.getSingelton().logMsg(
+					setManager.getSingelton().logMsg(
 							"addSetId() unsupported SetType!",
 							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
@@ -207,7 +118,7 @@ implements IGLCanvasUser {
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				refGeneralManager.getSingelton().logMsg(
+				setManager.getSingelton().logMsg(
 						"addSetId(" + iSet[i] + ") ISet is already registered!",
 						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
@@ -230,7 +141,7 @@ implements IGLCanvasUser {
 			break;
 			
 		default:
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"addSetId() unsupported SetType!",
 					LoggerType.ERROR);
 		} // switch (setType) {
@@ -245,11 +156,11 @@ implements IGLCanvasUser {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet refCurrentSet = refSetManager.getItemSet(iSet[i]);
+			ISet refCurrentSet = setManager.getItemSet(iSet[i]);
 			
 			if ( refCurrentSet == null ) 
 			{
-				refGeneralManager.getSingelton().logMsg(
+				generalManager.getSingelton().logMsg(
 						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
 						LoggerType.MINOR_ERROR);
 				
@@ -268,7 +179,7 @@ implements IGLCanvasUser {
 					break;
 					
 				default:
-					refGeneralManager.getSingelton().logMsg(
+					generalManager.getSingelton().logMsg(
 							"removeSetId() unsupported SetType!",
 							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
@@ -276,7 +187,7 @@ implements IGLCanvasUser {
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				refGeneralManager.getSingelton().logMsg(
+				generalManager.getSingelton().logMsg(
 						"removeSetId(" + iSet[i] + ") ISet was not registered!",
 						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
@@ -324,7 +235,7 @@ implements IGLCanvasUser {
 	 * @see org.geneview.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
-		ISet refCurrentSet = refSetManager.getItemSet(iSetId);
+		ISet refCurrentSet = setManager.getItemSet(iSetId);
 		
 		if ( refCurrentSet == null )
 		{
@@ -356,142 +267,4 @@ implements IGLCanvasUser {
 		
 		return false;			
 	}
-	
-
-	public final void setOriginRotation( final Vec3f origin,	
-			final Rotf rotation ) {
-			
-		if ( origin == null ) 
-		{
-			refViewCamera.setCameraPosition(new Vec3f() );
-		}
-		else
-		{
-			refViewCamera.setCameraPosition(origin);
-		}
-		
-		if ( rotation == null ) 
-		{
-			refViewCamera.setCameraRotation( new Rotf() );
-		}
-		else
-		{
-			refViewCamera.setCameraRotation(rotation);
-		}
-	}
-		
-	/**
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#displayChanged(javax.media.opengl.GL, boolean, boolean)
-	 */
-	public final void displayChanged(GL gl, 
-			boolean modeChanged, 
-			boolean deviceChanged) {
-		
-		this.render( gl );		
-	}
-
-	
-	/**
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#render(javax.media.opengl.GLAutoDrawable)
-	 */
-	public final void render( GL gl)
-	{		
-		gl.glPushMatrix();
-		
-		/** Read viewing parameters... */
-		final Vec3f rot_Vec3f = new Vec3f();
-		final Vec3f position = refViewCamera.getCameraPosition();
-		final float w = refViewCamera.getCameraRotationGrad(rot_Vec3f);
-		
-	
-		/** Translation */
-		gl.glTranslatef(position.x(),
-				position.y(),
-				position.z() );
-		
-		
-		/** Rotation */		
-		gl.glRotatef( w, 
-				rot_Vec3f.x(), 
-				rot_Vec3f.y(), 
-				rot_Vec3f.z());
-		
-		// isInitGLDone() == bInitGLcanvawsWasCalled 
-		if  ( ! bInitGLcanvawsWasCalled ) {
-			initGLCanvas(gl);
-			System.err.println("INIT CALLED IN RENDER METHOD of " +this.getClass().getSimpleName());
-		}
-		
-		this.renderPart( gl );
-		
-		gl.glPopMatrix();
-	}
-	
-	
-	
-	/**
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#initGLCanvas(javax.media.opengl.GLCanvas)
-	 */
-	public void initGLCanvas(GL gl)
-	{
-		setInitGLDone();		
-	}
-
-	
-	/**
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
-	 */
-	public void reshape(GL gl, 
-			final int x,
-			final int y,
-			final int width,
-			final int height) {
-		
-		System.out.println("AGLCanvasUser.reshape(GLCanvas canvas)");
-		
-		this.renderPart( gl );
-	}
-	
-
-	/**
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#destroyGLCanvas()
-	 */
-	public void destroyGLCanvas() {
-		
-	}
-
-
-
-
-	/**
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#update(javax.media.opengl.GL)
-	 */
-	public void update(GL gl) {
-		this.render( gl );	
-	}
-	
-
-	
-	public void updateReceiver(Object eventTrigger) {
-
-	}
-	
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
-
-		if ( updatedSet.getSetType() == SetType.SET_VIEW_DATA ) 
-		{
-			ISetViewData refSetViewData = (ISetViewData) updatedSet;
-			
-			refViewCamera.clone(refSetViewData.getViewCamera());
-		}
-		
-	}
-	/*
-	 * Forwards render(GL) to derived class.
-	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#render(GL)
-	 * 
-	 * @param gl canvas created from GLAutoDrawable
-	 */
-	public abstract void renderPart(GL gl);
 }

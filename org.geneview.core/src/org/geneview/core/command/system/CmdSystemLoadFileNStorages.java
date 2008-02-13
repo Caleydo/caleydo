@@ -65,17 +65,17 @@ extends ACommand {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param refCommandManager
 	 * @param refCommandQueueSaxType
 	 */
 	public CmdSystemLoadFileNStorages( 
-			final IGeneralManager refGeneralManager,
+			final IGeneralManager generalManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType) {
 		
 		super(-1,
-				refGeneralManager,
+				generalManager,
 				refCommandManager,
 				refCommandQueueSaxType);
 		
@@ -112,7 +112,7 @@ extends ACommand {
 				
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 						(iArrayStartStop[1] != -1 )) {
-					refGeneralManager.getSingelton().logMsg(
+					generalManager.getSingelton().logMsg(
 							"CmdSystemLoadFileNStorages ignore stop index=(" + 
 							iArrayStartStop[1]  + 
 							"), because it is smaller than start index (" + 
@@ -152,14 +152,14 @@ extends ACommand {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])",
 				LoggerType.STATUS );
 		
-		ISet useSet = refGeneralManager.getSingelton().getSetManager(
+		ISet useSet = generalManager.getSingelton().getSetManager(
 				).getItemSet( iTargetSetId );
 		
 		if ( useSet == null ) {
@@ -168,11 +168,11 @@ extends ACommand {
 			sTokenPattern + "]  targetSet(s)=[" +
 			iTargetSetId + "])";
 			
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					errorMsg,
 					LoggerType.ERROR );
 			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
+			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
 			exitWarning.setText("ERROR",errorMsg);
 			exitWarning.doCommand();
 			return;
@@ -182,7 +182,7 @@ extends ACommand {
 		
 		try 
 		{
-			loader = new MicroArrayLoaderValues2MultipleStorages( refGeneralManager,
+			loader = new MicroArrayLoaderValues2MultipleStorages( generalManager,
 					sFileName, 
 					IGeneralManager.bEnableMultipelThreads );
 			
@@ -203,11 +203,11 @@ extends ACommand {
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					errorMsg,
 					LoggerType.ERROR );
 			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
+			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
 			exitWarning.setText("ERROR",errorMsg);
 			exitWarning.doCommand();
 		} // catch

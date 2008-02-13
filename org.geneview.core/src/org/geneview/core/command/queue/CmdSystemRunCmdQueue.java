@@ -47,7 +47,7 @@ extends ACommand {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		ICommandQueue cmdQueue = 
-			this.refGeneralManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
+			this.generalManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
 			throw new GeneViewRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
@@ -62,7 +62,7 @@ extends ACommand {
 	public void undoCommand() throws GeneViewRuntimeException {
 		
 		ICommandQueue cmdQueue = 
-			this.refGeneralManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
+			this.generalManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
 			throw new GeneViewRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");

@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.geneview.core.data.view.camera;
 
 import gleem.linalg.Mat4f;
@@ -18,28 +10,27 @@ import org.geneview.core.math.MathUtil;
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class ViewCameraBase 
 extends AUniqueItem
 implements IViewCamera {
-
-	private Object caller;
 	
 	/**
 	 * Zoom is equal to scaling in a 4x4 matrix
 	 */
-	protected Vec3f v3fCameraScale = Vec3f.VEC_NULL;
+	protected Vec3f v3fCameraScale = new Vec3f(1,1,1);
 	
 	/**
 	 * Pan used to translate.
 	 */
-	protected Vec3f v3fCameraPosition = Vec3f.VEC_NULL;
+	protected Vec3f v3fCameraPosition = new Vec3f(0,0,0);
 	
 	/**
 	 * Rotation in euler angles
 	 */
-	protected Vec3f v3fCameraRotationEuler = Vec3f.VEC_NULL;
+	protected Vec3f v3fCameraRotationEuler = new Vec3f(0,0,0);
 	
 	/**
 	 * Rotation stored as qaternion.
@@ -65,7 +56,8 @@ implements IViewCamera {
 	 * zoom to (1,1,1)
 	 * and rotation to (1,0,0,0) using null-vector (0,0,0)
 	 */
-	public ViewCameraBase( int iId, Object caller ) {
+	public ViewCameraBase( int iId) {
+		
 		super( iId );		
 		
 		rotfCameraRotation = new Rotf();
@@ -73,17 +65,7 @@ implements IViewCamera {
 		mat4fCameraViewMatrix = Mat4f.MAT4F_UNITY;		
 		
 		System.err.println("ViewCameraBase constructor [" + Integer.toString(iId) + "]");
-		
-		this.setCaller(caller);
 	}
-
-//	/**
-//	 * Default constructor calls ViewCameraBase(int)
-//	 *
-//	 */
-//	public ViewCameraBase() {
-//		this(-1);
-//	}
 	
 	/**
 	 * Updates the matrix using Roatation Pan and Zoom. 
@@ -105,17 +87,16 @@ implements IViewCamera {
 	 * @see prometheus.data.collection.view.camera.ViewCamera#setViewPan(gleem.linalg.Vec3f)
 	 */
 	public void setCameraPosition(final Vec3f setPan) {
-		System.out.println( "ViewCameraBase.setCameraPosition()   +-> set camera pos! [" + setPan.toString() + "] id=[" +
-				getId() + "] " + caller.toString());
-		
+
 		v3fCameraPosition = new Vec3f(setPan);
-		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
+//		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
 	}
 
 	public void addCameraPosition( final Vec3f setPos ) {
 		
-		this.v3fCameraPosition.add(setPos);
-		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
+		v3fCameraPosition = new Vec3f(v3fCameraPosition);
+		v3fCameraPosition.add(setPos);
+//		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
 	}
 	
 	/* (non-Javadoc)
@@ -132,7 +113,8 @@ implements IViewCamera {
 	 */
 	public void setCameraScale(final Vec3f setZoom) {
 		v3fCameraScale = new Vec3f(setZoom);
-		mat4fCameraViewMatrix.setScale( v3fCameraScale );
+		v3fCameraScale.add(setZoom);
+		//mat4fCameraViewMatrix.setScale( v3fCameraScale );
 	}
 
 	/* (non-Javadoc)
@@ -282,24 +264,13 @@ implements IViewCamera {
 	public void addCameraRotation(final Rotf setRot) {
 
 		Rotf buffer = rotfCameraRotation.times(setRot);
-
-//		System.out.println("ViewCameraBase.addCameraPosition() now =" + 
-//				rotfCameraRotation.toString() + 
-//				"\n  +  " + 
-//				setRot.toString() + 
-//				"\n ==> " + 
-//				buffer.toString() );c
-	
 		rotfCameraRotation = buffer;
 	}
 
 	public void addCameraScale(final Vec3f setScale) {
 
-		System.err.println("    +--> addCamera() " + this.getId() + "  " + 
-				caller.toString() + "  " + caller.getClass().getSimpleName() );
-		
 		v3fCameraScale.add(setScale);
-		v3fCameraPosition.add(setScale);
+//		v3fCameraPosition.add(setScale);
 	}
 	
 	public final Vec3f addCameraScaleAndGet(final Vec3f setScale) {
@@ -316,17 +287,5 @@ implements IViewCamera {
 		this.rotfCameraRotation = new Rotf(cloneFromCamera.getCameraRotation());
 		
 		bHasChanged = true;
-	}
-
-	
-	/**
-	 * @param caller the caller to set
-	 */
-	public final void setCaller(Object caller) {
-			
-		this.caller = caller;
-		
-		System.err.println("  setCaller " + this.getId() + "  " + 
-				caller.toString() + "  " + caller.getClass().getSimpleName() );
 	}
 }

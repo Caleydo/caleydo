@@ -113,17 +113,17 @@ extends ACommand {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param refCommandManager
 	 * @param refCommandQueueSaxType
 	 */
 	public CmdSystemLoadFileLookupTable( 
-			final IGeneralManager refGeneralManager,
+			final IGeneralManager generalManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType) {
 		
 		super(-1,
-				refGeneralManager,
+				generalManager,
 				refCommandManager,
 				refCommandQueueSaxType);
 		
@@ -217,7 +217,7 @@ extends ACommand {
 			{
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 						( iArrayStartStop[1] != -1 )) {
-					refGeneralManager.getSingelton().logMsg(
+					generalManager.getSingelton().logMsg(
 							"CmdSystemLoadFileLookupTable ignore stop index=(" + 
 							iArrayStartStop[1]  + 
 							"), because it is smaller than start index (" + 
@@ -240,12 +240,12 @@ extends ACommand {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "]",
 				LoggerType.STATUS );
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 	    		"load file via importer: [LUT-tpye:[" +
 				sLookupTableType + "]  cast=[" + 
 				iTargetSetId + "])",
@@ -254,7 +254,7 @@ extends ACommand {
 		LookupTableLoaderProxy loader = null;
 		
 		IGenomeIdManager refGenomeIdManager = 
-			refGeneralManager.getSingelton().getGenomeIdManager();
+			generalManager.getSingelton().getGenomeIdManager();
 		
 		try 
 		{
@@ -289,7 +289,7 @@ extends ACommand {
 			}
 			
 			loader = new LookupTableLoaderProxy( 
-					refGeneralManager, 
+					generalManager, 
 					sFileName,
 					lut_genome_type,
 					genomeDataType,
@@ -330,7 +330,7 @@ extends ACommand {
 				if (genomeDataType == EGenomeMappingDataType.MULTI_INT2INT)
 				{
 					LookupTableLoaderProxy.createCodeResolvedMultiMapFromMultiMapString(
-							refGeneralManager, 
+							generalManager, 
 							lut_genome_type, 
 							genomeMappingLUT_1, 
 							genomeMappingLUT_2);
@@ -338,7 +338,7 @@ extends ACommand {
 				else 
 				{
 					LookupTableLoaderProxy.createCodeResolvedMapFromMap(
-							refGeneralManager, 
+							generalManager, 
 							lut_genome_type, 
 							genomeMappingLUT_1, 
 							genomeMappingLUT_2,
@@ -372,14 +372,14 @@ extends ACommand {
 					{
 					case INT:
 						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapInt(
-								refGeneralManager, 
+								generalManager, 
 								lut_genome_type, 
 								lut_genome_reverse_type);
 						break;
 						
 					case STRING:
 						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapString(
-								refGeneralManager, 
+								generalManager, 
 								lut_genome_type, 
 								lut_genome_reverse_type);
 						break;
@@ -396,7 +396,7 @@ extends ACommand {
 				} //if ( lut_genome_reverse_type.isMultiMap() ) 
 				else
 				{			
-					LookupTableLoaderProxy.createReverseMapFromMap(refGeneralManager, 
+					LookupTableLoaderProxy.createReverseMapFromMap(generalManager, 
 							lut_genome_type, 
 							lut_genome_reverse_type);				
 					
@@ -416,11 +416,11 @@ extends ACommand {
 			
 			e.printStackTrace();
 			
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					errorMsg,
 					LoggerType.ERROR );
 			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
+			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
 			exitWarning.setText("ERROR",errorMsg);
 			exitWarning.doCommand();
 		} // catch

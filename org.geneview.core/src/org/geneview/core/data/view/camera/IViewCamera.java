@@ -205,8 +205,6 @@ extends IUniqueObject {
 	 */
 	public void clone( IViewCamera cloneFromCamera);
 	
-	public void setCaller(Object caller);
-	
 	/**
 	 * Get debug info as String.
 	 * 

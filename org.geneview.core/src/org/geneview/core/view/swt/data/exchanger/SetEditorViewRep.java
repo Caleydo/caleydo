@@ -195,7 +195,7 @@ implements IView {
 		
 		int iSetIndex = arSetIdList.get(iIndex).intValue();
 		
-		ISet detailsOnSet = refGeneralManager.getSingelton().
+		ISet detailsOnSet = generalManager.getSingelton().
 			getSetManager().getItemSet(iSetIndex);
 		
 		labelDimension.setText( 
@@ -208,7 +208,7 @@ implements IView {
 	
 	public void drawView() {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName() + 
 				": drawView()", 
 				LoggerType.VERBOSE );		
@@ -221,7 +221,7 @@ implements IView {
 	
 	protected void fillCombos() {
 		
-		Collection<ISet> arSets = refGeneralManager.getSingelton().
+		Collection<ISet> arSets = generalManager.getSingelton().
 			getSetManager().getAllSetItems();
 		
 		Iterator<ISet> iterSets = arSets.iterator();
@@ -258,7 +258,7 @@ implements IView {
 	protected void fillDataSets(Combo viewCombo) {
 		
 		Collection<ISet> allSets = 
-			refGeneralManager.getSingelton().getSetManager().getAllSetItems();
+			generalManager.getSingelton().getSetManager().getAllSetItems();
 		
 		Iterator<ISet> iterSets = allSets.iterator();
 		int iTmpSetId = 0;

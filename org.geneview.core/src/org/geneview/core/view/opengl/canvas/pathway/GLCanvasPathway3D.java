@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.command.CommandQueueSaxType;
@@ -61,8 +63,6 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private int iMouseOverPickedPathwayId = -1;
 
-	private IGeneralManager generalManager;
-	
 	private IPathwayManager pathwayManager;
 	
 	private GLPathwayManager refGLPathwayManager;
@@ -94,90 +94,69 @@ implements IMediatorReceiver, IMediatorSender {
 	 * 
 	 */
 	public GLCanvasPathway3D(final IGeneralManager generalManager,
-			int iViewId,
-			int iParentContainerId,
+			int iViewID,
+			int iGLCanvasID,
 			String sLabel) {
 
-		super(generalManager, null, iViewId, iParentContainerId, "");
-
-		this.refViewCamera.setCaller(this);
-
-		this.generalManager = generalManager;
+		super(generalManager, iViewID, iGLCanvasID, sLabel);
 		
-		pathwayManager = refGeneralManager.getSingelton().getPathwayManager();
+		pathwayManager = generalManager.getSingelton().getPathwayManager();
 		
-		refGLPathwayManager = new GLPathwayManager(refGeneralManager);
+		refGLPathwayManager = new GLPathwayManager(generalManager);
 		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
-		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-				.getJoglCanvasForwarder().getJoglMouseListener();
+//		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
+//				.getJoglCanvasForwarder().getJoglMouseListener();
 
-		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
+		infoAreaRenderer = new GLInfoAreaRenderer(generalManager,
 				refGLPathwayManager);
 		
 		infoAreaRenderer.enableColorMappingArea(true);	
 		
-		pickingManager = refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager();
-		selectionManager = refGeneralManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
+		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
+		selectionManager = generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.geneview.core.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
 	 */
-	public void initGLCanvas(GL gl) {
+	public void init(GLAutoDrawable drawable) {
 
-		// Clearing window and set background to WHITE
-		// is already set inside JoglCanvasForwarder
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-		gl.glDepthFunc(GL.GL_LEQUAL);
-		gl.glEnable(GL.GL_LINE_SMOOTH);
-		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-		gl.glLineWidth(1.0f);
-
-		gl.glEnable(GL.GL_COLOR_MATERIAL);
-		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+		((GLEventListener)parentGLCanvas).init(drawable);
+		
+		final GL gl = drawable.getGL();
+		
+//		// Clearing window and set background to WHITE
+//		// is already set inside JoglCanvasForwarder
+//		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+//
+//		gl.glEnable(GL.GL_DEPTH_TEST);
+//		gl.glEnable(GL.GL_BLEND);
+//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//
+//		gl.glDepthFunc(GL.GL_LEQUAL);
+//		gl.glEnable(GL.GL_LINE_SMOOTH);
+//		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+//		gl.glLineWidth(1.0f);
+//
+//		gl.glEnable(GL.GL_COLOR_MATERIAL);
+//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 
 		initPathwayData(gl);
-
-		setInitGLDone();
 	}
-
-	protected void initPathwayData(final GL gl) {
-
-		refGLPathwayManager.init(gl, alSetData, alSetSelection);
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void display(GLAutoDrawable drawable) {
 		
-		// Create new pathway manager for GL context
-		if(!refHashGLcontext2TextureManager.containsKey(gl))
-		{
-			refHashGLcontext2TextureManager.put(gl, 
-					new GLPathwayTextureManager(refGeneralManager));	
-		}		
-		loadAllPathways(gl);
-
-		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+		((GLEventListener)parentGLCanvas).display(drawable);
 		
-//		//------------------------------------------------
-//		// MARC: Selection test
-//		String sAccessionCode = "NM_001565";
-//	
-//		int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
-//			.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
-//		
-//		selectionManager.addSelectionRep(iAccessionID, 
-//				new SelectedElementRep(this.getId(), 200, 450));
-//		//------------------------------------------------
-	}
-
-	public void renderPart(GL gl) {
+		final GL gl = drawable.getGL();		
 		
 		//handlePicking(gl);
 		checkForHits();
@@ -187,7 +166,58 @@ implements IMediatorReceiver, IMediatorSender {
 
 		renderScene(gl);
 		renderInfoArea(gl);
+		
 	}
+
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+	
+//		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
+		
+//		display(drawable);
+	}
+	
+	protected void initPathwayData(final GL gl) {
+
+		refGLPathwayManager.init(gl, alSetData, alSetSelection);
+		
+		// Create new pathway manager for GL context
+		if(!refHashGLcontext2TextureManager.containsKey(gl))
+		{
+			refHashGLcontext2TextureManager.put(gl, 
+					new GLPathwayTextureManager(generalManager));	
+		}		
+		loadAllPathways(gl);
+
+		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+		
+//		//------------------------------------------------
+//		// MARC: Selection test
+//		String sAccessionCode = "NM_001565";
+//	
+//		int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
+//			.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
+//		
+//		selectionManager.addSelectionRep(iAccessionID, 
+//				new SelectedElementRep(this.getId(), 200, 450));
+//		//------------------------------------------------
+	}
+
 
 	public void renderScene(final GL gl) {
 		
@@ -263,7 +293,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -276,7 +306,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -482,7 +512,7 @@ implements IMediatorReceiver, IMediatorSender {
 //
 //			if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
 //			{
-//				int iAccessionID  = refGeneralManager.getSingelton().getGenomeIdManager()
+//				int iAccessionID  = generalManager.getSingelton().getGenomeIdManager()
 //					.getIdIntFromIntByMapping(pickedVertexRep.getId(), 
 //						EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 //				
@@ -505,13 +535,13 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					int iElementID = pickingManager.getExternalIDFromPickingID(this, tempList.get(0).getPickingID());
 				
-					PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
+					PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager.getSingelton()
 						.getPathwayItemManager().getItem(iElementID);
 					
 					PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 					
-					int iGeneID = refGeneralManager.getSingelton().getGenomeIdManager()
+					int iGeneID = generalManager.getSingelton().getGenomeIdManager()
 						.getIdIntFromStringByMapping(
 								tmpVertexGraphItem.getName().substring(4), 
 								EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
@@ -521,12 +551,12 @@ implements IMediatorReceiver, IMediatorSender {
 						return;
 					}
 					
-					int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
+					int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
 						.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 					
 //					// Just for testing
 //					String sAccessionCode = "NM_001565";					
-//					int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
+//					int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
 //						.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
 
 					selectionManager.clear();
@@ -535,7 +565,6 @@ implements IMediatorReceiver, IMediatorSender {
 					
 					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
 							tmpVertexGraphItemRep.getXOrigin(), iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()), ESelectionMode.ReplacePick);
-
 
 					// Trigger update
 
@@ -670,7 +699,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (sUrl.isEmpty())
 			return;
 
-		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) refGeneralManager
+		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
 				.getSingelton().getCommandManager().createCommandByType(
 						CommandQueueSaxType.LOAD_URL_IN_BROWSER);
 

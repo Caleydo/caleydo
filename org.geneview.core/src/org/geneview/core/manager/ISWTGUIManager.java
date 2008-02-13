@@ -2,9 +2,7 @@ package org.geneview.core.manager;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-
 import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.jogl.TriggeredAnimator;
 import org.geneview.core.view.swt.ISWTWidget;
 
 public interface ISWTGUIManager 
@@ -55,7 +53,7 @@ extends IGeneralManager {
 	public void createLoadingProgressBar();
 	
 	/**
-	 * Sets the percentag of the progress bar during the loading progress 
+	 * Sets the percentage of the progress bar during the loading progress 
 	 * of the application.
 	 * 
 	 * @param iPercentage
@@ -70,23 +68,6 @@ extends IGeneralManager {
 	 * @return Progress bar percentage.
 	 */
 	public int getLoadingProgressBarPercentage();
-	
-	/**
-	 * Set an Animator by it's id.
-	 * 
-	 * @param iAnimatorId
-	 * @return
-	 */
-	public void setAnimatorById(final TriggeredAnimator refAnimator, 
-			final int iAnimatorId);
-	
-	/**
-	 * Get an Animator by it's id.
-	 * 
-	 * @param iAnimatorId
-	 * @return
-	 */
-	public TriggeredAnimator getAnimatorById(final int iAnimatorId);
 	
 	/**
 	 * Show or hide the "global" progress bar.

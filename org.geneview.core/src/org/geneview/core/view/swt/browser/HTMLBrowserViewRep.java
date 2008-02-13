@@ -150,9 +150,9 @@ implements IView {
 		
 		refBrowser = new HookedBrowser (
 				refSWTContainer, 
-				SWT.NONE, refGeneralManager);
+				SWT.NONE, generalManager);
 				
-		idExtractionLocationListener = new IDExtractionLocationListener(refGeneralManager,
+		idExtractionLocationListener = new IDExtractionLocationListener(generalManager,
 				refBrowser, iUniqueId, iSelectionSetId);
 		refBrowser.addLocationListener(idExtractionLocationListener);
 		
@@ -166,7 +166,7 @@ implements IView {
 
 	public void drawView() {
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName() + 
 				": drawView(): Load "+sUrl, 
 				LoggerType.VERBOSE );
@@ -198,7 +198,7 @@ implements IView {
 		}
 			catch (SWTException swte) 
 		{
-				refGeneralManager.getSingelton().logMsg(
+				generalManager.getSingelton().logMsg(
 						this.getClass().getSimpleName() + 
 						": error while setURL ["+sUrl + "]", 
 						LoggerType.STATUS );

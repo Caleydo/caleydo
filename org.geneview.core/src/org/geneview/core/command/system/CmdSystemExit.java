@@ -41,7 +41,7 @@ implements ICommand {
 	public void doCommand() throws GeneViewRuntimeException {
 		System.out.println("CmdSystemExit: shut down application...");
 		
-		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
+		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
 		exitWarning.setText("WARNING","Close application. Current state is stored..");
 		exitWarning.doCommand();
 		

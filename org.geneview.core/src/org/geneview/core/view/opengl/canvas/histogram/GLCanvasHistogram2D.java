@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.view.opengl.canvas.histogram;
 
 import java.util.Iterator;
@@ -8,23 +5,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 
-import com.sun.opengl.util.GLUT;
-
-//import gleem.linalg.Vec3f;
-//import gleem.linalg.Vec4f;
-
-import org.geneview.core.data.collection.IVirtualArray;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.geneview.core.data.collection.IVirtualArray;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.math.statistics.histogram.HistogramData;
 import org.geneview.core.math.statistics.histogram.HistogramStatisticsSet;
 import org.geneview.core.math.statistics.histogram.StatisticHistogramType;
-import org.geneview.core.view.opengl.GLCanvasStatics;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+
+import com.sun.opengl.util.GLUT;
 
 /**
  * @author Michael Kalkusch
@@ -32,8 +26,7 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
  * @see  org.geneview.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHistogram2D 
-extends AGLCanvasUser 
-{
+extends AGLCanvasUser {
 	
 	private boolean bUseGLWireframe = false;
 	
@@ -51,8 +44,6 @@ extends AGLCanvasUser
 	 */
 	private int iCurrentHistogramLength = 0;
 	
-	private float [][] viewingFrame;
-	
 	//private int iGridSize = 40;
 	
 	//private float fPointSize = 1.0f;
@@ -68,55 +59,18 @@ extends AGLCanvasUser
 	
 	private int iBorderIntervallLength = 5;
 	
-	protected float[][] fAspectRatio;
-	
-	protected float[] fResolution;
-	
 	protected ISet targetSet;
 	
-	
-	private static final int X = GLCanvasStatics.X;
-	private static final int Y = GLCanvasStatics.Y;
-	private static final int Z = GLCanvasStatics.Z;
-	private static final int MIN = GLCanvasStatics.MIN;
-	private static final int MAX = GLCanvasStatics.MAX;
-	private static final int OFFSET = GLCanvasStatics.OFFSET;
-
-	
 	/**
-	 * @param setGeneralManager
+	 * Constructor.
+	 * 
 	 */
-	public GLCanvasHistogram2D( final IGeneralManager setGeneralManager,
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel )
-	{
-		super( setGeneralManager, 
-				null,
-				iViewId,  
-				iParentContainerId, 
-				sLabel );
-		
-		this.refViewCamera.setCaller(this);
-		
-		fAspectRatio = new float [2][3];
-		viewingFrame = new float [3][2];
-		
-		fAspectRatio[X][MIN] = 0.0f;
-		fAspectRatio[X][MAX] = 20.0f; 
-		fAspectRatio[Y][MIN] = 0.0f; 
-		fAspectRatio[Y][MAX] = 20.0f; 
-		
-		fAspectRatio[Y][OFFSET] = 0.0f; 
-		fAspectRatio[Y][OFFSET] = -2.0f; 
-		
-		viewingFrame[X][MIN] = -1.0f;
-		viewingFrame[X][MAX] = 1.0f; 
-		viewingFrame[Y][MIN] = 1.0f; 
-		viewingFrame[Y][MAX] = -1.0f; 
-		
-		viewingFrame[Z][MIN] = 0.0f; 
-		viewingFrame[Z][MAX] = 0.0f; 
+	public GLCanvasHistogram2D(final IGeneralManager generalManager,
+			int iViewID,
+			int iGLCanvasID,
+			String sLabel) {
+
+		super(generalManager, iViewID, iGLCanvasID, sLabel);
 		
 		listHistogramData = new  LinkedList < HistogramData > ();
 	}
@@ -151,49 +105,68 @@ extends AGLCanvasUser
 	         
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void init(GLAutoDrawable drawable) {
 
-	public void setResolution( float[] setResolution ) {
+		((GLEventListener)parentGLCanvas).init(drawable);
 		
-//		if ( fResolution.length < 6 ) {
-//			throw new RuntimeException("GLCanvasMinMaxScatterPlot2D.setResolution() array must contain 3 items.");
-//		}
+		final GL gl = drawable.getGL();
 		
-		this.fResolution = setResolution;
+		createHistogram( iCurrentHistogramLength );
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void display(GLAutoDrawable drawable) {
+
+		((GLEventListener)parentGLCanvas).display(drawable);
 		
-		fAspectRatio[X][MIN] = fResolution[0];
-		fAspectRatio[X][MAX] = fResolution[1]; 
-		fAspectRatio[Y][MIN] = fResolution[2]; 
-		fAspectRatio[Y][MAX] = fResolution[3]; 
+		final GL gl = drawable.getGL();
 		
-		fAspectRatio[X][OFFSET] = fResolution[4]; 
-		fAspectRatio[Y][OFFSET] = fResolution[5];
+		gl.glTranslatef( 0,0, 0.01f);
 		
-		viewingFrame[X][MIN] = fResolution[6];
-		viewingFrame[X][MAX] = fResolution[7]; 
-		viewingFrame[Y][MIN] = fResolution[8]; 
-		viewingFrame[Y][MAX] = fResolution[9];
-		
-		viewingFrame[Z][MIN] = fResolution[10]; 
-		viewingFrame[Z][MAX] = fResolution[11]; 
-				
-		iCurrentHistogramLength = (int) fResolution[12]; 
-		
+		displayHistogram( gl );
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(
+				drawable, modeChanged, deviceChanged);		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+
 	}
 	
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			refGeneralManager.getSingelton().getSetManager(
+			generalManager.getSingelton().getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.ERROR );
 		}
 		
-		refGeneralManager.getSingelton().logMsg(
+		generalManager.getSingelton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!",
 				LoggerType.STATUS );
@@ -204,46 +177,26 @@ extends AGLCanvasUser
 		}
 	}
 	
-	
-	@Override
-	public void renderPart(GL gl)
-	{
-		gl.glTranslatef( 0,0, 0.01f);
-	
-		displayHistogram( gl );
-		
-		//System.err.println(" MinMax ScatterPlot2D .render(GLCanvas canvas)");
-	}
-
-	
-	public void update(GL gl)
-	{
-		System.err.println(" GLCanvasHistogram2D.update(GLCanvas canvas)");	
-		
-		createHistogram( iCurrentHistogramLength );
-	}
-
 	public void destroyGLCanvas()
 	{
-		refGeneralManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
+		generalManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
 				LoggerType.STATUS );
 	}
 	
 
-	
  //public int[] createHistogram(final int iHistogramLevels) {
   public void createHistogram(final int iHistogramLevels) {
 	  
 	  if ( targetSet == null ) 
 	  {
-		  refGeneralManager.getSingelton().logMsg(
+		  generalManager.getSingelton().logMsg(
 				  "createHistogram() can not create Histogram, because targetSet=null",
 				  LoggerType.STATUS );
 		  return;
 	  }
 	  
 	  if ( iHistogramLevels < 1) {
-		  refGeneralManager.getSingelton().logMsg(
+		  generalManager.getSingelton().logMsg(
 				  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
 				  LoggerType.FULL );
 		  return;
@@ -252,7 +205,7 @@ extends AGLCanvasUser
 	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
 	  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
   		  
-	  refGeneralManager.getSingelton().logMsg(
+	  generalManager.getSingelton().logMsg(
 			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
 			  LoggerType.FULL );
 	  
@@ -273,7 +226,7 @@ extends AGLCanvasUser
 	  HistogramData refResultBuffer = 
 		  histogramCreatorSet.getUpdatedHistogramData();
 	 
-	  refGeneralManager.getSingelton().logMsg( 
+	  generalManager.getSingelton().logMsg( 
 			  "HISTOGRAM:\n  " + refResultBuffer.toString(),
 			  LoggerType.FULL );
 	  
@@ -389,13 +342,13 @@ extends AGLCanvasUser
 //			    	float fMinY = -0.7f;
 //			    	float fMaxY = 0.7f;
 			    	
-			    	float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN]) / 
-			    		(float) iCurrentHistogramLength;
-			    	float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 
-			    		(float) currentHistogram.iMaxValuesInIntervall;
-			    	
-			    	float fNowX = viewingFrame[X][MIN];
-			    	float fNextX = fNowX + fIncX;
+//			    	float fIncX = (viewingFrame[X][MAX] - viewingFrame[X][MIN]) / 
+//			    		(float) iCurrentHistogramLength;
+//			    	float fIncY = (viewingFrame[Y][MAX] - viewingFrame[Y][MIN]) / 
+//			    		(float) currentHistogram.iMaxValuesInIntervall;
+//			    	
+//			    	float fNowX = viewingFrame[X][MIN];
+//			    	float fNextX = fNowX + fIncX;
 			    	
 			    	gl.glNormal3f( 0.0f, 0.0f, 1.0f );
 		    	
@@ -415,29 +368,29 @@ extends AGLCanvasUser
 					    	bToggleColor = true;
 					    }
 					    
-					    float fBar =  
-				    		viewingFrame[Y][MIN] + fIncY * 
-					    	currentHistogram.iCounterPerItervall[i];
-					    //iHistogramIntervalls[i];
-					    
-							gl.glVertex3f( fNowX,  viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNextX, viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNextX, fBar, viewingFrame[Z][MIN] );
-							gl.glVertex3f( fNowX, fBar, viewingFrame[Z][MIN] );						
-							
-							fNowX  += fIncX;
-							fNextX += fIncX;
-													
-						gl.glEnd();
-			    	} //end for:		   
-		    	
-			    	gl.glColor3f( 0.1f, 0.1f, 1.0f );
-			    	gl.glBegin( GL.GL_LINE_LOOP );
-				    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
-						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
-						gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
-					gl.glEnd();
+//					    float fBar =  
+//				    		viewingFrame[Y][MIN] + fIncY * 
+//					    	currentHistogram.iCounterPerItervall[i];
+//					    //iHistogramIntervalls[i];
+//					    
+//							gl.glVertex3f( fNowX,  viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+//							gl.glVertex3f( fNextX, viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+//							gl.glVertex3f( fNextX, fBar, viewingFrame[Z][MIN] );
+//							gl.glVertex3f( fNowX, fBar, viewingFrame[Z][MIN] );						
+//							
+//							fNowX  += fIncX;
+//							fNextX += fIncX;
+//													
+//						gl.glEnd();
+//			    	} //end for:		   
+//		    	
+//			    	gl.glColor3f( 0.1f, 0.1f, 1.0f );
+//			    	gl.glBegin( GL.GL_LINE_LOOP );
+//				    	gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+//						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MIN], viewingFrame[Z][MIN] );
+//						gl.glVertex3f( viewingFrame[X][MAX], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
+//						gl.glVertex3f( viewingFrame[X][MIN], viewingFrame[Y][MAX], viewingFrame[Z][MIN] );
+//					gl.glEnd();
 		    	} //end: if
 		    	
 	    	} // end while
@@ -478,5 +431,5 @@ extends AGLCanvasUser
 	    //gl.glMatrixMode(GL.GL_MODELVIEW);
 	    //gl.glPopMatrix();
 	  }
-  
+  }
 }

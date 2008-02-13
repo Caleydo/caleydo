@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.view.opengl.canvas.heatmap;
 
 import org.geneview.core.data.view.camera.IViewCamera;
@@ -15,7 +12,7 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
  */
 public abstract class AGLCanvasHeatmap2D 
 extends AGLCanvasUser
-		implements IGLCanvasHeatmap2D {
+implements IGLCanvasHeatmap2D {
 
 	public static final int OFFSET = 2;
 	public static final int X = 0;
@@ -37,23 +34,16 @@ extends AGLCanvasUser
 	protected int iValuesInColum = 10;
 	
 	/**
-	 * @param setGeneralManager
-	 * @param refViewCamera
-	 * @param viewId
-	 * @param parentContainerId
-	 * @param label
+	 * Constructor.
+	 * 
 	 */
-	public AGLCanvasHeatmap2D(IGeneralManager setGeneralManager,
-			IViewCamera refViewCamera,
-			int viewId,
-			int parentContainerId,
-			String label) {
+	public AGLCanvasHeatmap2D(final IGeneralManager generalManager,
+			int iViewID,
+			int iGLCanvasID,
+			String sLabel) {
 
-		super(setGeneralManager, refViewCamera, viewId, parentContainerId,
-				label);
-		// TODO Auto-generated constructor stub
+		super(generalManager, iViewID, iGLCanvasID, sLabel);
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -61,7 +51,7 @@ extends AGLCanvasUser
 	 */
 	public final void destroyGLCanvas()
 	{
-		refGeneralManager.getSingelton().logMsg( 
+		generalManager.getSingelton().logMsg( 
 				"IGLCanvasHeatmap2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
 				LoggerType.FULL );
 	}

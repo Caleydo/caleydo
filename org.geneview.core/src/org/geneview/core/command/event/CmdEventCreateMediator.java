@@ -49,7 +49,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public void doCommand() throws GeneViewRuntimeException {
 			
-		((IEventPublisher)refGeneralManager.
+		((IEventPublisher)generalManager.
 				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
 					createMediator(iUniqueId,
 							iArSenderIDs, 

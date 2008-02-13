@@ -40,7 +40,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	 */
 	public void doCommand() throws GeneViewRuntimeException {
 
-		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
+		ISetManager refISetManager =  generalManager.getSingelton().getSetManager();
 		ISetViewData refISetViewData = (ISetViewData) refISetManager.createSet(SetType.SET_VIEW_DATA);
 		
 		IViewCamera refViewCamera = refISetViewData.getViewCamera();
@@ -60,7 +60,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	 */
 	public void undoCommand() throws GeneViewRuntimeException {
 
-		ISetManager refISetManager =  refGeneralManager.getSingelton().getSetManager();
+		ISetManager refISetManager =  generalManager.getSingelton().getSetManager();
 		refISetManager.unregisterItem(iUniqueId, ManagerObjectType.SET_VIEWDATA);
 
 	}

@@ -40,7 +40,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	
 	public void doCommand() throws GeneViewRuntimeException
 	{
-		refGeneralManager.getSingelton().
+		generalManager.getSingelton().
 			getSWTGUIManager().createWindow( 
 					iUniqueId, sLabel, sLayoutAttributes);	
 		

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.core.command.base;
 
 import java.util.StringTokenizer;
@@ -13,9 +10,9 @@ import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 /**
- * @see org.geneview.core.command.ICommand
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public abstract class ACmdCreate_IdTargetLabelParentXY 
@@ -30,23 +27,6 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 	 * Height of the widget;
 	 */
 	protected int iHeightY;
-	
-//	/**
-//	 * Canvas Id used for OpenGL
-//	 * 
-//	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#setParameterHandler(IParameterHandler)
-//	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#checkOpenGLSetting()
-//	 */
-//	protected int iGLCanvasId = 0;
-	 
-	/**
-	 * GLEventListener Id used for OpenGL
-	 * 
-	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#setParameterHandler(IParameterHandler)
-	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL#checkOpenGLSetting()
-	 * 
-	 */
-	protected int iGlForwarderId = 0;
 	
 	/**
 	 * Constructor.

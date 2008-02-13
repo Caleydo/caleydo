@@ -10,23 +10,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
+import org.geneview.core.data.collection.ISet;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
 import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
-import org.geneview.core.manager.view.EPickingMode;
-import org.geneview.core.manager.view.Pick;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -43,8 +45,8 @@ extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 	
 	private static final int MAX_LOADED_VIEWS = 100;
-	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 2f;
-	private static final float SCALING_FACTOR_STACK_LAYER = 1f;
+	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 1.5f;
+	private static final float SCALING_FACTOR_STACK_LAYER = 1.3f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 	
 	private static final int VIEW_PICKING = 0;	
@@ -74,24 +76,22 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public GLCanvasOverallJukebox3D(final IGeneralManager generalManager,
 			int iViewId,
-			int iParentContainerId,
+			int iGLCanvasID,
 			String sLabel) {
 
-		super(generalManager, null, iViewId, iParentContainerId, "");
-
-		this.refViewCamera.setCaller(this);
+		super(generalManager, iViewId, iGLCanvasID, sLabel);
 		
-		underInteractionLayer = new JukeboxHierarchyLayer(refGeneralManager,
+		underInteractionLayer = new JukeboxHierarchyLayer(generalManager,
 				1, 
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER, 
 				null);
 		
-		stackLayer = new JukeboxHierarchyLayer(refGeneralManager,
+		stackLayer = new JukeboxHierarchyLayer(generalManager,
 				4, 
 				SCALING_FACTOR_STACK_LAYER, 
 				null);
 		
-		poolLayer = new JukeboxHierarchyLayer(refGeneralManager,
+		poolLayer = new JukeboxHierarchyLayer(generalManager,
 				MAX_LOADED_VIEWS, 
 				SCALING_FACTOR_POOL_LAYER, 
 				null);
@@ -102,7 +102,7 @@ implements IMediatorReceiver, IMediatorSender {
 		poolLayer.setChildLayer(stackLayer);
 		
 		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.5f, -1f, 0f));
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(-2f, -2f, 0f));
 		transformPathwayUnderInteraction.setScale(new Vec3f(
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
@@ -110,62 +110,33 @@ implements IMediatorReceiver, IMediatorSender {
 		underInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 		
-		pickingManager = refGeneralManager.getSingelton()
+		pickingManager = generalManager.getSingelton()
 			.getViewGLCanvasManager().getPickingManager();
 		
-		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-			.getJoglCanvasForwarder().getJoglMouseListener();
+//		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 		
 		arSlerpActions = new ArrayList<SlerpAction>();
 		
-		glConnectionLineRenderer = new GLConnectionLineRenderer(refGeneralManager,
+		glConnectionLineRenderer = new GLConnectionLineRenderer(generalManager,
 				underInteractionLayer, stackLayer, poolLayer);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initGLCanvas(javax.media.opengl.GL)
-	 */
-	public void initGLCanvas(GL gl) {
-	
-		super.initGLCanvas(gl);
-		
-	    time = new SystemTime();
-	    ((SystemTime) time).rebase();
-		
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glDepthFunc(GL.GL_LEQUAL);
-		gl.glEnable(GL.GL_LINE_SMOOTH);
-		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-		gl.glLineWidth(1.0f);
-		gl.glEnable(GL.GL_COLOR_MATERIAL);
-		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+	private void retrieveContainedViews(final GL gl,
+			final GLAutoDrawable drawable) {
 		
-		buildStackLayer(gl);
+		Iterator<GLEventListener> iterGLEventListener = 
+			generalManager.getSingelton().getViewGLCanvasManager()
+			.getAllGLEventListeners().iterator();
 		
-		retrieveContainedViews(gl);
-		
-		setInitGLDone();
-	}
-
-	private void retrieveContainedViews(final GL gl) {
-		
-		Iterator<IGLCanvasUser> iterCanvasUser = 
-			refGeneralManager.getSingelton().getViewGLCanvasManager()
-			.getAllGLCanvasUsers().iterator();
-		
-		while(iterCanvasUser.hasNext())
+		while(iterGLEventListener.hasNext())
 		{
-			IGLCanvasUser tmpView = iterCanvasUser.next();
+			GLEventListener tmpGLEventListener = iterGLEventListener.next();
 			
-			if(tmpView == this)
+			if(tmpGLEventListener == this)
 				continue;
 			
-			int iViewId = tmpView.getId();
+			int iViewId = ((AGLCanvasUser)tmpGLEventListener).getId();
 			
 			if (underInteractionLayer.getElementList().size() < 1)
 			{
@@ -176,9 +147,9 @@ implements IMediatorReceiver, IMediatorSender {
 			stackLayer.addElement(iViewId);
 			stackLayer.setElementVisibilityById(true, iViewId);
 			
-			tmpView.initGLCanvas(gl);
+			tmpGLEventListener.init(drawable);
 			
-			pickingManager.getPickingID(this, VIEW_PICKING, tmpView.getId());
+			pickingManager.getPickingID(this, VIEW_PICKING, iViewId);
 		}
 	}
 	
@@ -211,7 +182,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		Transform transform = new Transform();
 
-		transform.setTranslation(new Vec3f(0, -2.5f, 0));
+		transform.setTranslation(new Vec3f(0, -4.5f, 0));
 		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
@@ -219,7 +190,7 @@ implements IMediatorReceiver, IMediatorSender {
 		stackLayer.setTransformByPositionIndex(0, transform);
 
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 1.5f, 0));
+		transform.setTranslation(new Vec3f(0, 2.5f, 0));
 		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
@@ -242,29 +213,9 @@ implements IMediatorReceiver, IMediatorSender {
 		transform.setRotation(new Rotf(new Vec3f(0, 1f, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#renderPart(javax.media.opengl.GL)
-	 */
-	public void renderPart(GL gl) {
-
-		handlePicking(gl);
 		
-//		if (bRebuildVisiblePathwayDisplayLists)
-//			rebuildVisiblePathwayDisplayLists(gl);
-		
-		time.update();
-		doSlerpActions(gl);
-		
-//		renderPoolLayer(gl);
-		renderStackLayer(gl);
-		renderUnderInteractionLayer(gl);
-		
-		glConnectionLineRenderer.render(gl);
-	}
-	
-	private void renderUnderInteractionLayer(final GL gl) {
+	private void renderUnderInteractionLayer(final GL gl,
+			final GLAutoDrawable drawable) {
 		
 		// Check if a pathway is currently under interaction
 		if (underInteractionLayer.getElementList().size() == 0)
@@ -272,11 +223,12 @@ implements IMediatorReceiver, IMediatorSender {
 
 		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
 		gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
-		renderViewById(gl, iViewId, underInteractionLayer);
+		renderViewById(gl, drawable, iViewId, underInteractionLayer);
 		gl.glPopName();
 	}
 	
-	private void renderStackLayer(final GL gl) {
+	private void renderStackLayer(final GL gl,
+			final GLAutoDrawable drawable) {
 
 		Iterator<Integer> iterElementList = stackLayer.getElementList().iterator();
 		int iViewId = 0;
@@ -290,12 +242,13 @@ implements IMediatorReceiver, IMediatorSender {
 //				continue;
 			
 			gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
-			renderViewById(gl, iViewId, stackLayer);		
+			renderViewById(gl, drawable, iViewId, stackLayer);		
 			gl.glPopName();
 		}
 	}
 	
 	private void renderViewById(final GL gl,
+			final GLAutoDrawable drawable,
 			final int iViewId, 
 			final JukeboxHierarchyLayer layer) {
 		
@@ -316,13 +269,14 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
 		
-		((IGLCanvasUser)refGeneralManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId)).renderPart(gl);
+		((GLEventListener) generalManager.getSingelton()
+				.getViewGLCanvasManager().getItem(iViewId)).display(drawable);
 		
 		gl.glPopMatrix();	
 	}
 	
-	private void doSlerpActions(final GL gl) {
+	private void doSlerpActions(final GL gl,
+			final GLAutoDrawable drawable) {
 
 		if (arSlerpActions.isEmpty())
 			return;
@@ -336,11 +290,12 @@ implements IMediatorReceiver, IMediatorSender {
 				iSlerpFactor = 1000;
 		}
 		
-		slerpView(gl, arSlerpActions.get(0));
+		slerpView(gl, drawable, arSlerpActions.get(0));
 		// selectedVertex = null;
 	}
 	
-	private void slerpView(final GL gl, SlerpAction slerpAction) {
+	private void slerpView(final GL gl, 
+			final GLAutoDrawable drawable, SlerpAction slerpAction) {
 
 		int iViewId = slerpAction.getElementId();
 		SlerpMod slerpMod = new SlerpMod();
@@ -356,8 +311,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		slerpMod.applySlerp(gl, transform);
 		
-		((IGLCanvasUser)refGeneralManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId)).renderPart(gl);
+		((GLEventListener) generalManager.getSingelton()
+				.getViewGLCanvasManager().getItem(iViewId)).display(drawable);
 
 		gl.glPopMatrix();
 
@@ -374,7 +329,7 @@ implements IMediatorReceiver, IMediatorSender {
 			slerpMod.playSlerpSound();
 	}
 	
-	private void handlePicking(GL gl)
+	private void handlePicking(final GL gl, final GLAutoDrawable drawable)
 	{
 		Point pickPoint = null;
 
@@ -434,8 +389,8 @@ implements IMediatorReceiver, IMediatorSender {
 		// Reset picked point
 		pickPoint = null;
 
-		renderStackLayer(gl);
-		renderUnderInteractionLayer(gl);
+		renderStackLayer(gl, drawable);
+		renderUnderInteractionLayer(gl, drawable);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
@@ -463,7 +418,9 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				if (tempList.size() != 0 )
 				{
-					int iViewId = pickingManager.getExternalIDFromPickingID(this, tempList.get(0).getPickingID());
+					int iViewId = pickingManager.getExternalIDFromPickingID(
+							this, tempList.get(0).getPickingID());					
+					
 					System.out.println("Picked object:" +iViewId);
 					
 					loadViewToUnderInteractionLayer(iViewId);
@@ -476,7 +433,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void loadViewToUnderInteractionLayer(final int iViewId) {
 
-		refGeneralManager
+		generalManager
 				.getSingelton()
 				.logMsg(this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
@@ -522,6 +479,86 @@ implements IMediatorReceiver, IMediatorSender {
 
 		bRebuildVisiblePathwayDisplayLists = true;
 		//selectedVertex = null;
+	}
+
+	@Override
+	public void updateReceiver(Object eventTrigger) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void display(GLAutoDrawable drawable) {
+
+		((GLEventListener)parentGLCanvas).display(drawable);
+		
+		final GL gl = drawable.getGL();
+
+		//handlePicking(gl, drawable);
+		
+//		if (bRebuildVisiblePathwayDisplayLists)
+//			rebuildVisiblePathwayDisplayLists(gl);
+		
+		time.update();
+		doSlerpActions(gl, drawable);
+		
+//		renderPoolLayer(gl);
+		renderStackLayer(gl, drawable);
+		renderUnderInteractionLayer(gl, drawable);
+		
+		glConnectionLineRenderer.render(gl);
+	}
+
+	@Override
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
+		
+	}
+
+	@Override
+	public void init(GLAutoDrawable drawable) {
+		
+		((GLEventListener)parentGLCanvas).init(drawable);
+		
+		final GL gl = drawable.getGL();
+		
+	    time = new SystemTime();
+	    ((SystemTime) time).rebase();
+		
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+//
+//		gl.glEnable(GL.GL_DEPTH_TEST);
+//		gl.glEnable(GL.GL_BLEND);
+//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//		gl.glDepthFunc(GL.GL_LEQUAL);
+//		gl.glEnable(GL.GL_LINE_SMOOTH);
+//		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+//		gl.glLineWidth(1.0f);
+//		gl.glEnable(GL.GL_COLOR_MATERIAL);
+//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+		
+		buildStackLayer(gl);
+		
+		retrieveContainedViews(gl, drawable);
+		
+	}
+
+	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+
+		// TODO Auto-generated method stub
+		
 	}
 	
 //	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
