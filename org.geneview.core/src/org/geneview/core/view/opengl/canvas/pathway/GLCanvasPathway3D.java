@@ -25,6 +25,7 @@ import org.geneview.core.manager.data.IPathwayManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.manager.view.SelectionManager;
@@ -35,6 +36,7 @@ import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
 import org.geneview.util.graph.IGraphItem;
+import org.geneview.core.manager.view.Pick;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -376,7 +378,7 @@ implements IMediatorReceiver, IMediatorSender {
 	protected void processHits(final GL gl, int iHitCount,
 			int iArPickingBuffer[], final Point pickPoint) {
 
-		pickingManager.processHits(this, iHitCount, iArPickingBuffer, ESelectionMode.ReplacePick);
+		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.CLICKED);
 //
 //		int iPtr = 0;
 //		int i = 0;
@@ -495,13 +497,13 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		if(pickingManager.getHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION) != null)
 		{
-			ArrayList<Integer> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION);
+			ArrayList<Pick> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION);
 			
 			if (tempList != null)
 			{
 				if (tempList.size() != 0 )
 				{
-					int iElementID = pickingManager.getExternalIDFromPickingID(this, tempList.get(0));
+					int iElementID = pickingManager.getExternalIDFromPickingID(this, tempList.get(0).getPickingID());
 				
 					PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) refGeneralManager.getSingelton()
 						.getPathwayItemManager().getItem(iElementID);

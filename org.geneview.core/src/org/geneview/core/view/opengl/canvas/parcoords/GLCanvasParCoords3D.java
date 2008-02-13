@@ -6,7 +6,6 @@ import gleem.linalg.Vec4f;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
@@ -25,9 +24,10 @@ import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.PickingManager;
-import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.Pick;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -46,6 +46,15 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final int POLYLINE_SELECTION = 1;
 	private static final int X_AXIS_SELECTION = 2;	
 	private static final int Y_AXIS_SELECTION = 3;
+	
+	private enum RenderMode
+	{
+		ALL,
+		NORMAL,
+		SELECTION,
+		MOUSE_OVER,
+		NOT_IN_SELECTION
+	}
 
 //	private IGeneralManager refGeneralManager;
 	// how much room between the axis?
@@ -59,11 +68,13 @@ implements IMediatorReceiver, IMediatorSender {
 	// flag whether one array should be a polyline or an axis
 	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
-	private boolean bRenderSelection = true;
+	private boolean bRenderSelection = false;
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;
 	
 	private boolean bIsDisplayListDirty = true;
+	
+	private int iNumberOfAxis = 0;
 	
 	private boolean bRenderPolylineSelection = false;
 	
@@ -74,6 +85,10 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private ArrayList<Integer> alSelectedPolylines;
 	private ArrayList<Integer> alNormalPolylines;
+	private ArrayList<Integer> alMouseOverPolylines;
+	
+	
+	ArrayList<IStorage> alDataStorages;
 	
 	//private HashMap<Integer, Integer> hashPolylinePickingIDToIndex;
 	//private HashMap<Integer, Integer> hashPolylineIndexToPickingID;
@@ -110,7 +125,12 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
 			.getJoglCanvasForwarder().getJoglMouseListener();
 		
-		renderStyle = new ParCoordsRenderStyle();		
+		renderStyle = new ParCoordsRenderStyle();	
+		
+		alDataStorages = new ArrayList<IStorage>();
+		alSelectedPolylines = new ArrayList<Integer>();
+		alNormalPolylines = new ArrayList<Integer>();
+		alMouseOverPolylines = new ArrayList<Integer>();
 	}
 	
 	/*
@@ -166,6 +186,10 @@ implements IMediatorReceiver, IMediatorSender {
 //		selectionManager.addSelectionRep(iAccessionID, 
 //				new SelectedElementRep(this.getId(), 200, 0));
 		//------------------------------------------------
+		
+		
+		initPolyLineLists();
+		
 	}
 	
 	/*
@@ -178,11 +202,9 @@ implements IMediatorReceiver, IMediatorSender {
 //		if(bIsDisplayListDirty)
 //		{
 			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-			renderScene(gl, false);
-			if(bRenderPolylineSelection)
-			{				
-				renderScene(gl, bRenderPolylineSelection);			
-			}
+			renderScene(gl, RenderMode.NORMAL);
+			renderScene(gl, RenderMode.MOUSE_OVER);
+			renderScene(gl, RenderMode.SELECTION);
 			
 		
 			gl.glEndList();
@@ -205,6 +227,7 @@ implements IMediatorReceiver, IMediatorSender {
 	public void renderArrayAsPolyline(boolean bRenderArrayAsPolyline)
 	{
 		this.bRenderArrayAsPolyline = bRenderArrayAsPolyline;
+		initPolyLineLists();
 	}
 	
 	/**
@@ -227,18 +250,20 @@ implements IMediatorReceiver, IMediatorSender {
 		this.bPreventOcclusion = bPreventOcclusion;
 	}
 	
-	private void renderScene(GL gl, boolean bRenderPolylineSelection)
-	{	
-		int iNumberOfAxis = 0;
+	/**
+	 * Initializes the array lists that contain the data. Must be run at program start 
+	 * and every time you exchange axis and polylines.
+	 */
+	private void initPolyLineLists()
+	{		
 		
 		if (alSetData == null)
 			return;
 		
 		if (alSetSelection == null)
-			return;			
+			return;				
 		
 		Iterator<ISet> iterSetData = alSetData.iterator();
-		ArrayList<IStorage> alDataStorages = new ArrayList<IStorage>();
 		while (iterSetData.hasNext())
 		{
 			ISet tmpSet = iterSetData.next();
@@ -250,14 +275,7 @@ implements IMediatorReceiver, IMediatorSender {
 				alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
 			}
 		}		
-		
-
-		//int iNumberOfStoragesToRender = 0;
-		// this is the number of entires in a storage
-		int iNumberOfEntriesToRender = 0;
-		
-
-		
+		int iNumberOfEntriesToRender = 0;		
 		
 		// decide whether to render a selection from the storage - virtual array mechanism 
 		// or to render all 
@@ -279,69 +297,82 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}
 		
-		// color management
-		if(bRenderPolylineSelection || iSelectedAccessionID != -1)
-		{
-			gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.z(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.w());
-		}
-		else if(bPreventOcclusion)
-		{
-			Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(iNumberOfEntriesToRender);
-			gl.glColor4f(occlusionPrevColor.x(),
-						occlusionPrevColor.y(),
-						occlusionPrevColor.z(),
-						occlusionPrevColor.w());
-		}
-		else
-		{
-			gl.glColor4f(ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.x(),
-						ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.y(),
-						ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.z(),
-						ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.w());
-		}
-		
+	
 		int iNumberOfPolyLinesToRender = 0;
 		
 		
 		// if true one array corresponds to one polyline, number of arrays is number of polylines
 		if (bRenderArrayAsPolyline)
-		{
-			// decide whether to render a picked selection 
-			// or everything else
-			if(bRenderPolylineSelection)
-			{			
-				iNumberOfPolyLinesToRender = myPickingManager.getHits(this, POLYLINE_SELECTION).size();
-			}
-			else
-			{
-				iNumberOfPolyLinesToRender = alDataStorages.size();
-			}
-			
-			iNumberOfAxis = iNumberOfEntriesToRender;
-			// = iNumberOfStoragesToRender;
-			
+		{			
+			iNumberOfPolyLinesToRender = alDataStorages.size();
+			iNumberOfAxis = iNumberOfEntriesToRender;			
 		}
 		// render polylines across storages - first element of storage 1 to n makes up polyline
 		else
-		{	
-			if(bRenderPolylineSelection)
-			{
-				iNumberOfPolyLinesToRender = myPickingManager.getHits(this, POLYLINE_SELECTION).size();
-			}
-			else
-			{				
-				iNumberOfPolyLinesToRender = iNumberOfEntriesToRender;
-			}
+		{						
+			iNumberOfPolyLinesToRender = iNumberOfEntriesToRender;
 			iNumberOfAxis = alDataStorages.size();
 		}
 			
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{
-			gl.glPushName(myPickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineCount));
+			
+				alNormalPolylines.add(iPolyLineCount);	
+		}
+		
+	}
+	
+	private void renderScene(GL gl, RenderMode renderMode)
+	{		
+		
+		ArrayList<Integer> alDataToRender = null;
+		
+		switch (renderMode)
+		{
+			case NORMAL:
+				alDataToRender = alNormalPolylines;
+				if(bPreventOcclusion)
+				{
+					// TODO: input the number of polylines here
+					Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(100);
+					gl.glColor4f(occlusionPrevColor.x(),
+								occlusionPrevColor.y(),
+								occlusionPrevColor.z(),
+								occlusionPrevColor.w());
+				}
+				else
+				{
+					gl.glColor4f(ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.x(),
+								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.y(),
+								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.z(),
+								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.w());
+				}				
+				break;
+			case SELECTION:	
+				alDataToRender = alSelectedPolylines;
+				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.z(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.w());
+				break;
+			case MOUSE_OVER:
+				alDataToRender = alMouseOverPolylines;
+				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.x(),
+						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.y(),
+						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.z(),
+						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.w());
+				break;
+			default:
+				alDataToRender = alNormalPolylines;
+		}
+	
+		
+		int iNumberOfPolyLinesToRender = alDataToRender.size();
+		// this for loop executes once per polyline
+		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
+		{
+			gl.glPushName(myPickingManager.getPickingID(this, POLYLINE_SELECTION, alDataToRender.get(iPolyLineCount)));	
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 
@@ -351,23 +382,9 @@ implements IMediatorReceiver, IMediatorSender {
 			if(bRenderArrayAsPolyline)
 			{
 				int iWhichStorage = 0;
-				if (bRenderPolylineSelection)
-				{
-					//int iPickingID = myPickingManager.getHits(this, POLYLINE_SELECTION)
-					//.get(iPolyLineCount);
-					
-					//iWhichStorage = myPickingManager.getExternalIDFromPickingID(this, iPickingID);
-					
-					iWhichStorage = myPickingManager.getExternalIDFromHitCount(this, POLYLINE_SELECTION, iPolyLineCount);
-					//iWhichStorage = hashPolylinePickingIDToIndex
-							//.get();					
-					
-				} 
-				else
-				{
-					iWhichStorage = iPolyLineCount;
-				}
-	
+
+				iWhichStorage = alDataToRender.get(iPolyLineCount);
+				
 				currentStorage = alDataStorages.get(iWhichStorage);
 			}
 
@@ -395,37 +412,7 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					currentStorage = alDataStorages.get(iVertricesCount);					
 					
-					if (bRenderSelection)
-					{
-						if (bRenderPolylineSelection)
-						{
-							//int iPickingID = myPickingManager.getHits(this, POLYLINE_SELECTION).get(iPolyLineCount);
-							//int iTempIndex = myPickingManager.getExternalIDFromPickingID(this, iPickingID);			
-							
-							int iTempIndex = myPickingManager.getExternalIDFromHitCount(this, POLYLINE_SELECTION, iPolyLineCount);
-							
-							iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iTempIndex];
-						}
-						else
-						{						
-							iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iPolyLineCount];
-						}
-					
-					}
-					else
-					{
-						if (bRenderPolylineSelection)
-						{
-							iStorageIndex = myPickingManager.getExternalIDFromHitCount(this, POLYLINE_SELECTION, iPolyLineCount);
-							//iStorageIndex = hashPolylinePickingIDToIndex
-							//.get(myPickingManager.getHits(this, POLYLINE_SELECTION).get(iPolyLineCount));
-						}
-						else
-						{
-							iStorageIndex = iPolyLineCount;
-						}
-					}
-					
+					iStorageIndex = alDataToRender.get(iPolyLineCount);					
 				}			
 				
 //				int test = refGeneralManager.getSingelton().getGenomeIdManager()
@@ -445,40 +432,8 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glPopName();
 		}
 		
-
-	
-// // this for loop executes once per polyline
-// for (int iCount = 0; iCount < iNumberOfEntriesToRender; iCount++)
-//			{				
-//				gl.glBegin(GL.GL_LINE_STRIP);				
-//				
-//				// this for loop executes once per axis
-//				for (int iStorageCount = 0; iStorageCount < iNumberOfStoragesToRender; iStorageCount++)
-//				{
-//					IStorage currentStorage = alDataStorages.get(iStorageCount);
-//					
-//					int iStorageIndex = 0;
-//					if (bRenderSelection)
-//					{
-//						iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iCount];
-//					}
-//					else
-//					{
-//						iStorageIndex = iCount;
-//					}
-//					
-//					gl.glVertex3f(iStorageCount * axisSpacing, 
-//							currentStorage.getArrayFloat()[iStorageIndex], 0.0f); 			
-//				}
-//				gl.glEnd();
-//				
-//				
-//			}	
-				
-		
-		
 		// render the coordinate system only on the first run, not when we render the selection
-		if(!bRenderPolylineSelection)
+		if(renderMode == RenderMode.NORMAL)
 		{
 			renderCoordinateSystem(gl, iNumberOfAxis, 1);		
 		}
@@ -538,15 +493,16 @@ implements IMediatorReceiver, IMediatorSender {
 		boolean bMouseReleased =
 			pickingTriggerMouseAdapter.wasMouseReleased();
 
+		EPickingMode ePickingMode = EPickingMode.CLICKED;
 		
 		if (pickingTriggerMouseAdapter.wasMousePressed()
 				|| bMouseReleased)
 		{			
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			//bIsMouseOverPickingEvent = false;
-		}
-		
-		if (pickingTriggerMouseAdapter.wasMouseMoved())
+			ePickingMode = EPickingMode.CLICKED;
+		}		
+		else if (pickingTriggerMouseAdapter.wasMouseMoved())
 		{
 			// Restart timer
 			fLastMouseMovedTimeStamp = System.nanoTime();
@@ -557,6 +513,7 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			fLastMouseMovedTimeStamp = System.nanoTime();
+			ePickingMode = EPickingMode.MOUSE_OVER;
 		}
 //		else if (pickingTriggerMouseAdapter.wasMouseDragged())
 //		{
@@ -568,6 +525,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 		}
 		
+		bIsMouseOverPickingEvent = false;
 		
 		int PICKING_BUFSIZE = 1024;
 
@@ -619,15 +577,15 @@ implements IMediatorReceiver, IMediatorSender {
 		iHitCount = gl.glRenderMode(GL.GL_RENDER);
 		pickingBuffer.get(iArPickingBuffer);
 		System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
-		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint);
+		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, ePickingMode);
 	}
 	
 	
 	protected void processHits(final GL gl, int iHitCount,
-			int iArPickingBuffer[], final Point pickPoint) 
+			int iArPickingBuffer[], final Point pickPoint, EPickingMode ePickingMode) 
 	{
 
-		myPickingManager.processHits(this, iHitCount, iArPickingBuffer, ESelectionMode.ReplacePick);
+		myPickingManager.processHits(this, iHitCount, iArPickingBuffer, ePickingMode);
 		
 		//System.out.println("Number of hits: " +iHitCount);
 		
@@ -645,12 +603,36 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		if(myPickingManager.getHits(this, POLYLINE_SELECTION) != null)
 		{
-			ArrayList<Integer> tempList = myPickingManager.getHits(this, POLYLINE_SELECTION);
+			ArrayList<Pick> tempList = myPickingManager.getHits(this, POLYLINE_SELECTION);
 			
 			if (tempList != null)
 			{
 				if (tempList.size() != 0 )
 				{
+					
+					// if replace
+					alNormalPolylines.addAll(alSelectedPolylines);					
+					alSelectedPolylines.clear();
+					alNormalPolylines.addAll(alMouseOverPolylines);
+					alMouseOverPolylines.clear();
+					
+					for (int iCount = 0; iCount < tempList.size(); iCount++)
+					{
+						Pick tempPick = tempList.get(iCount);
+						int iPickingID = tempPick.getPickingID();
+						int iExternalID = myPickingManager.getExternalIDFromPickingID(this, iPickingID);
+						alNormalPolylines.remove(new Integer(iExternalID));
+						if (tempPick.getPickingMode() == EPickingMode.CLICKED)
+						{
+							alSelectedPolylines.add(iExternalID);
+						}
+						else if (tempPick.getPickingMode() == EPickingMode.MOUSE_OVER)
+						{
+							alMouseOverPolylines.add(iExternalID);
+						}
+					}
+					
+					myPickingManager.flushHits(this, POLYLINE_SELECTION);
 					// FIXME: this happens every time when something is selected
 					bIsDisplayListDirty = true;
 					bRenderPolylineSelection = true;
@@ -660,7 +642,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 		if(myPickingManager.getHits(this, X_AXIS_SELECTION) != null)
 		{
-			ArrayList<Integer> tempList = myPickingManager.getHits(this, X_AXIS_SELECTION);
+			ArrayList<Pick> tempList = myPickingManager.getHits(this, X_AXIS_SELECTION);
 			
 			if (tempList != null)
 			{
@@ -674,7 +656,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 		if(myPickingManager.getHits(this, Y_AXIS_SELECTION) != null)
 		{
-			ArrayList<Integer> tempList = myPickingManager.getHits(this, Y_AXIS_SELECTION);
+			ArrayList<Pick> tempList = myPickingManager.getHits(this, Y_AXIS_SELECTION);
 			
 			if (tempList != null)
 			{

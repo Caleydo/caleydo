@@ -3,8 +3,6 @@ package org.geneview.core.manager.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
-
 import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.base.AAbstractManager;
@@ -34,7 +32,7 @@ public class PickingManager extends AAbstractManager
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToPickingIDHashMap;
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToExternalIDHashMap;
 	private int iIDCounter;
-	private HashMap<Integer, ArrayList<Integer>> hashSignatureToHitList;
+	private HashMap<Integer, ArrayList<Pick>> hashSignatureToHitList;
 	
 	
 	/**
@@ -50,7 +48,7 @@ public class PickingManager extends AAbstractManager
 				ManagerType.PICKING_MANAGER);
 		
 		iIDCounter = 0;
-		hashSignatureToHitList = new HashMap<Integer, ArrayList<Integer>>();
+		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 		hashSignatureToExternalIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 	}
@@ -97,7 +95,7 @@ public class PickingManager extends AAbstractManager
 		return iPickingID;		
 	}
 	
-	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, ESelectionMode myMode)
+	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
 	{	
 		processHits(uniqueManagedObject, iHitCount, iArPickingBuffer, myMode, false);
 	}
@@ -113,7 +111,7 @@ public class PickingManager extends AAbstractManager
 	public void processHits(AUniqueManagedObject uniqueManagedObject, 
 							int iHitCount, 
 							int[] iArPickingBuffer, 
-							ESelectionMode myMode, 
+							EPickingMode myMode, 
 							boolean bIsMaster)
 	{			
 		 int iPickingBufferCounter = 0;	
@@ -164,7 +162,7 @@ public class PickingManager extends AAbstractManager
 	 * @param iType
 	 * @return null if no Hits, else the ArrayList<Integer> with the hits
 	 */	
-	public ArrayList<Integer> getHits(AUniqueManagedObject uniqueManagedObject, int iType)
+	public ArrayList<Pick> getHits(AUniqueManagedObject uniqueManagedObject, int iType)
 	{
 		checkType(iType);
 		int iViewID = uniqueManagedObject.getId();
@@ -204,7 +202,7 @@ public class PickingManager extends AAbstractManager
 	{
 		//TODO: exceptions
 		int iSignature = getSignature(uniqueManagedObject, iType);		
-		int iPickingID = hashSignatureToHitList.get(iSignature).get(iHitCount);		
+		int iPickingID = hashSignatureToHitList.get(iSignature).get(iHitCount).getPickingID();		
 		return  hashSignatureToPickingIDHashMap.get(iSignature).get(iPickingID);
 		 
 	}
@@ -248,7 +246,7 @@ public class PickingManager extends AAbstractManager
 		return (iIDCounter * 100 + iType);		
 	}
 	
-	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, ESelectionMode myMode, boolean bIsMaster)
+	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode, boolean bIsMaster)
 	{
 		
 		int iPickingID = 0;
@@ -274,35 +272,17 @@ public class PickingManager extends AAbstractManager
 			
 			
 			if (hashSignatureToHitList.get(iSignature) == null)
-			{
-				if (myMode == ESelectionMode.RemovePick)
-				{
-					return;
-				} else
-				{
-					ArrayList<Integer> tempList = new ArrayList<Integer>();
-					tempList.add(iPickingID);
+			{				
+				ArrayList<Pick> tempList = new ArrayList<Pick>();
+				tempList.add(new Pick(iPickingID, myMode));
 					hashSignatureToHitList.put(iSignature, tempList);
-				}
+			
 			} else
 			{
-				if (myMode == ESelectionMode.AddPick)
-				{
-					// ArrayList<Integer> listTemp =
-					hashSignatureToHitList.get(iSignature).add(iPickingID);
-					// listTemp.add(iSignature);
-				}
-				if (myMode == ESelectionMode.ReplacePick)
-				{
+				
 					hashSignatureToHitList.get(iSignature).clear();
-					hashSignatureToHitList.get(iSignature).add(iPickingID);
-				}
-				if (myMode == ESelectionMode.RemovePick)
-				{
-					ArrayList<Integer> alTempList = hashSignatureToHitList
-							.get(iSignature);
-					alTempList.remove(iSignature);
-				}
+					hashSignatureToHitList.get(iSignature).add(new Pick(iPickingID, myMode));
+				
 			}
 		
 			

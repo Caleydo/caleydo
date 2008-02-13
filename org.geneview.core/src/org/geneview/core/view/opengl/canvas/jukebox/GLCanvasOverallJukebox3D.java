@@ -7,18 +7,15 @@ import gleem.linalg.open.Transform;
 import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
@@ -27,8 +24,9 @@ import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.IGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.Pick;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -455,17 +453,17 @@ implements IMediatorReceiver, IMediatorSender {
 			int iArPickingBuffer[], final Point pickPoint) 
 	{
 
-		pickingManager.processHits(this, iHitCount, iArPickingBuffer, ESelectionMode.ReplacePick, true);
+		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.CLICKED, true);
 		
 		if(pickingManager.getHits(this, VIEW_PICKING) != null)
 		{
-			ArrayList<Integer> tempList = pickingManager.getHits(this, VIEW_PICKING);
+			ArrayList<Pick> tempList = pickingManager.getHits(this, VIEW_PICKING);
 			
 			if (tempList != null)
 			{
 				if (tempList.size() != 0 )
 				{
-					int iViewId = pickingManager.getExternalIDFromPickingID(this, tempList.get(0));
+					int iViewId = pickingManager.getExternalIDFromPickingID(this, tempList.get(0).getPickingID());
 					System.out.println("Picked object:" +iViewId);
 					
 					loadViewToUnderInteractionLayer(iViewId);

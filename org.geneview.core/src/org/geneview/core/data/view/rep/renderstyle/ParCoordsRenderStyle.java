@@ -20,6 +20,7 @@ extends ARenderStyle
 	// final Colors 
 	public static final Vec4f POLYLINE_NO_OCCLUSION_PREV_COLOR = new Vec4f(1.0f, 0.0f, 0.0f, 1.0f);
 	public static final Vec4f POLYLINE_SELECTED_COLOR = new Vec4f(1.0f, 0.0f, 0.0f, 1.0f);
+	public static final Vec4f POLYLINE_MOUSE_OVER_COLOR = new Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
 	
 	public static final Vec4f Y_AXIS_COLOR = new Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
 	public static final Vec4f X_AXIS_COLOR = new Vec4f(0.0f, 0.0f, 1.0f, 1.0f);
