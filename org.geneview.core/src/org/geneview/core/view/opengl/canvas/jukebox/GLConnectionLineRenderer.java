@@ -1,5 +1,6 @@
 package org.geneview.core.view.opengl.canvas.jukebox;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import gleem.linalg.Mat4f;
@@ -53,8 +54,7 @@ public class GLConnectionLineRenderer {
 		if (selectionManager.getAllSelectedElements().size() == 0)
 			return;
 		
-		renderConnectionLinesByElementID(gl,
-				(Integer)selectionManager.getAllSelectedElements().toArray()[0]);
+		renderConnectionLines(gl);
 	}
 	
 	public void renderTestViewConnectionLines(final GL gl) {
@@ -79,9 +79,9 @@ public class GLConnectionLineRenderer {
 		Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
 		gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
 		
-		vecTranslationSrc = stackLayer.getTransformByPositionIndex(1).getTranslation();
-		vecScaleSrc = stackLayer.getTransformByPositionIndex(1).getScale();
-		rotSrc = stackLayer.getTransformByPositionIndex(1).getRotation();
+		vecTranslationSrc = underInteractionLayer.getTransformByPositionIndex(1).getTranslation();
+		vecScaleSrc = underInteractionLayer.getTransformByPositionIndex(1).getScale();
+		rotSrc = underInteractionLayer.getTransformByPositionIndex(1).getRotation();
 
 		vecTranslationDest = underInteractionLayer.getTransformByPositionIndex(0).getTranslation();
 		vecScaleDest = underInteractionLayer.getTransformByPositionIndex(0).getScale();
@@ -113,8 +113,7 @@ public class GLConnectionLineRenderer {
 		gl.glLineWidth(1);
 	}
 	
-	private void renderConnectionLinesByElementID(final GL gl,
-			final int iElementID) {
+	private void renderConnectionLines(final GL gl) {
 		
 		Vec3f vecMatSrc = new Vec3f(0, 0, 0);
 		Vec3f vecMatDest = new Vec3f(0, 0, 0);
@@ -131,66 +130,86 @@ public class GLConnectionLineRenderer {
 		Mat4f matDest = new Mat4f();
 		matSrc.makeIdent();
 		matDest.makeIdent();
-			
-		vecTranslationSrc = stackLayer.getTransformByPositionIndex(1).getTranslation();
-		vecScaleSrc = stackLayer.getTransformByPositionIndex(1).getScale();
-		rotSrc = stackLayer.getTransformByPositionIndex(1).getRotation();
 
-		vecTranslationDest = underInteractionLayer.getTransformByPositionIndex(0).getTranslation();
-		vecScaleDest = underInteractionLayer.getTransformByPositionIndex(0).getScale();
-		rotDest = underInteractionLayer.getTransformByPositionIndex(0).getRotation();
-				
-		Iterator<SelectedElementRep> iterSelectedElementReps = 
-			selectionManager.getSelectedElementRepsByElementID(iElementID).iterator();
+		Iterator<Integer> iterSelectedElementID = 
+			selectionManager.getAllSelectedElements().iterator();
 		
-//		while(iterSelectedElementReps.hasNext()) {
+		while(iterSelectedElementID.hasNext()) 
+		{
+			int iSelectedElementID = iterSelectedElementID.next();
+			Iterator<SelectedElementRep> iterSelectedElementRep = 
+				selectionManager.getSelectedElementRepsByElementID(iSelectedElementID).iterator();
 			
-			SelectedElementRep selectedElementRepSrc; 
-			if (iterSelectedElementReps.hasNext())
-				selectedElementRepSrc = iterSelectedElementReps.next();
-			else
-				return;
-			
-			SelectedElementRep selectedElementRepDest;
-			if (iterSelectedElementReps.hasNext())
-				selectedElementRepDest = iterSelectedElementReps.next();
-			else
-				return;
-			
-			float fXCoordSrc = selectedElementRepSrc.getXCoord() * GLPathwayManager.SCALING_FACTOR_X;
-			float fYCoordSrc = selectedElementRepSrc.getYCoord() * GLPathwayManager.SCALING_FACTOR_Y;
-			float fXCoordDest = selectedElementRepDest.getXCoord() * GLPathwayManager.SCALING_FACTOR_X;
-			float fYCoordDest = selectedElementRepDest.getYCoord() * GLPathwayManager.SCALING_FACTOR_Y;
-			
-			vecMatSrc.set(fXCoordSrc, fYCoordSrc, 0);
-			vecMatDest.set(fXCoordDest, fYCoordDest, 0);
-			
-			rotSrc.toMatrix(matSrc);
-			rotDest.toMatrix(matDest);
+			while (iterSelectedElementRep.hasNext())
+			{
+				SelectedElementRep selectedElementRepSrc = iterSelectedElementRep.next();
 
-			matSrc.xformPt(vecMatSrc, vecTransformedSrc);
-			matDest.xformPt(vecMatDest, vecTransformedDest);
+				// Check if element is in under interaction layer
+				if (underInteractionLayer.containsElement(selectedElementRepSrc.getContainingViewID()))
+				{
+					vecTranslationSrc = underInteractionLayer.getTransformByElementId(
+							selectedElementRepSrc.getContainingViewID()).getTranslation();
+					vecScaleSrc = underInteractionLayer.getTransformByElementId(
+							selectedElementRepSrc.getContainingViewID()).getScale();
+					rotSrc = underInteractionLayer.getTransformByElementId(
+							selectedElementRepSrc.getContainingViewID()).getRotation();
+					
+					Iterator<SelectedElementRep> iterSelectedElementRepInner = 
+						selectionManager.getSelectedElementRepsByElementID(iSelectedElementID).iterator();
+					
+					while(iterSelectedElementRepInner.hasNext())
+					{
+						SelectedElementRep selectedElementRepDest = iterSelectedElementRepInner.next();
+						
+						// Check if element is in stack view
+						if (stackLayer.containsElement(selectedElementRepDest.getContainingViewID()))
+						{
+							vecTranslationDest = stackLayer.getTransformByElementId(
+									selectedElementRepDest.getContainingViewID()).getTranslation();
+							vecScaleDest = stackLayer.getTransformByElementId(
+									selectedElementRepDest.getContainingViewID()).getScale();
+							rotDest = stackLayer.getTransformByElementId(
+									selectedElementRepDest.getContainingViewID()).getRotation();
 
-			vecTransformedSrc.componentMul(vecScaleSrc);
-			vecTransformedSrc.add(vecTranslationSrc);
-			vecTransformedDest.componentMul(vecScaleDest);
-			vecTransformedDest.add(vecTranslationDest);
+							float fXCoordSrc = selectedElementRepSrc.getXCoord() * GLPathwayManager.SCALING_FACTOR_X;
+							float fYCoordSrc = selectedElementRepSrc.getYCoord() * GLPathwayManager.SCALING_FACTOR_Y;
+							float fXCoordDest = selectedElementRepDest.getXCoord() * GLPathwayManager.SCALING_FACTOR_X;
+							float fYCoordDest = selectedElementRepDest.getYCoord() * GLPathwayManager.SCALING_FACTOR_Y;
+							
+							vecMatSrc.set(fXCoordSrc, fYCoordSrc, 0);
+							vecMatDest.set(fXCoordDest, fYCoordDest, 0);
+							
+							rotSrc.toMatrix(matSrc);
+							rotDest.toMatrix(matDest);
+
+							matSrc.xformPt(vecMatSrc, vecTransformedSrc);
+							matDest.xformPt(vecMatDest, vecTransformedDest);
+
+							vecTransformedSrc.componentMul(vecScaleSrc);
+							vecTransformedSrc.add(vecTranslationSrc);
+							vecTransformedDest.componentMul(vecScaleDest);
+							vecTransformedDest.add(vecTranslationDest);
+							
+							gl.glLineWidth(4);
+							Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
+							gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
+						
+							
+							gl.glBegin(GL.GL_LINES);
+							gl.glVertex3f(vecTransformedSrc.x(),
+									vecTransformedSrc.y(),
+									vecTransformedSrc.z());
+							gl.glVertex3f(vecTransformedDest.x(),
+									vecTransformedDest.y(),
+									vecTransformedDest.z());
+							gl.glEnd();	
+						}
+					}
+				}
+			}
 			
-			gl.glLineWidth(4);
-			Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
-			gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
+		}
 		
-			
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(vecTransformedSrc.x(),
-					vecTransformedSrc.y(),
-					vecTransformedSrc.z());
-			gl.glVertex3f(vecTransformedDest.x(),
-					vecTransformedDest.y(),
-					vecTransformedDest.z());
-			gl.glEnd();	
-//		}
-	
 		gl.glLineWidth(1);
 	}
 }
