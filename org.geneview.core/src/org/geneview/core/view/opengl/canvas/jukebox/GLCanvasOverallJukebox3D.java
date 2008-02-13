@@ -18,7 +18,7 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
@@ -455,7 +455,7 @@ implements IMediatorReceiver, IMediatorSender {
 			int iArPickingBuffer[], final Point pickPoint) 
 	{
 
-		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.ReplacePick, true);
+		pickingManager.processHits(this, iHitCount, iArPickingBuffer, ESelectionMode.ReplacePick, true);
 		
 		if(pickingManager.getHits(this, VIEW_PICKING) != null)
 		{

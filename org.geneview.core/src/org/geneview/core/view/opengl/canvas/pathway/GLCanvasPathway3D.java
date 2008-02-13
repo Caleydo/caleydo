@@ -25,7 +25,7 @@ import org.geneview.core.manager.data.IPathwayManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
@@ -352,7 +352,8 @@ implements IMediatorReceiver, IMediatorSender {
 				/ (float) (viewport[2] - viewport[0]);
 
 		// FIXME: values have to be taken from XML file!!
-		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+//		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
@@ -375,7 +376,7 @@ implements IMediatorReceiver, IMediatorSender {
 	protected void processHits(final GL gl, int iHitCount,
 			int iArPickingBuffer[], final Point pickPoint) {
 
-		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
+		pickingManager.processHits(this, iHitCount, iArPickingBuffer, ESelectionMode.ReplacePick);
 //
 //		int iPtr = 0;
 //		int i = 0;
@@ -530,8 +531,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 					int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
 					
-					selectionManager.addSelectionRep(iAccessionID, new SelectedElementRep(this.getId(), 
-							tmpVertexGraphItemRep.getXOrigin(), iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()));
+					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
+							tmpVertexGraphItemRep.getXOrigin(), iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()), ESelectionMode.ReplacePick);
 
 
 					// Trigger update

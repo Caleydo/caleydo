@@ -23,7 +23,7 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
@@ -44,7 +44,8 @@ extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 	
 	private static final int POLYLINE_SELECTION = 1;
-	private static final int AXIS_SELECTION = 2;	
+	private static final int X_AXIS_SELECTION = 2;	
+	private static final int Y_AXIS_SELECTION = 3;
 
 //	private IGeneralManager refGeneralManager;
 	// how much room between the axis?
@@ -66,7 +67,13 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private boolean bRenderPolylineSelection = false;
 	
+	private float fLastMouseMovedTimeStamp = 0;
+	private boolean bIsMouseOverPickingEvent = false;
+	
 	private ParCoordsRenderStyle renderStyle;
+	
+	private ArrayList<Integer> alSelectedPolylines;
+	private ArrayList<Integer> alNormalPolylines;
 	
 	//private HashMap<Integer, Integer> hashPolylinePickingIDToIndex;
 	//private HashMap<Integer, Integer> hashPolylineIndexToPickingID;
@@ -103,8 +110,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
 			.getJoglCanvasForwarder().getJoglMouseListener();
 		
-		renderStyle = new ParCoordsRenderStyle();
-		
+		renderStyle = new ParCoordsRenderStyle();		
 	}
 	
 	/*
@@ -336,21 +342,6 @@ implements IMediatorReceiver, IMediatorSender {
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{
 			gl.glPushName(myPickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineCount));
-			// get picking ID and store it locally if not already stored, give
-			// it to opengl
-//			if (myPickingManager.getPickingID(uniqueManagedObject, iType, iExternalID)  hashPolylineIndexToPickingID.get(iPolyLineCount) == null)
-//			{
-//				int iPickingID = myPickingManager.getPickingID(this,
-//						POLYLINE_SELECTION, int iPolylineCount);
-//				gl.glLoadName(iPickingID);
-//				hashPolylinePickingIDToIndex.put(iPickingID, iPolyLineCount);
-//				hashPolylineIndexToPickingID.put(iPolyLineCount, iPickingID);
-//			}
-//			// retrieve picking ID and give it to opengl
-//			else
-//			{
-//				gl.glLoadName(hashPolylineIndexToPickingID.get(iPolyLineCount));
-//			}
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 
@@ -506,12 +497,15 @@ implements IMediatorReceiver, IMediatorSender {
 					ParCoordsRenderStyle.X_AXIS_COLOR.w());
 				
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
+		
+		gl.glPushName(myPickingManager.getPickingID(this, X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);		
 	
 		gl.glVertex3f(-0.1f, 0.0f, 0.0f); 
 		gl.glVertex3f(((numberParameters-1) * axisSpacing)+0.1f, 0.0f, 0.0f);
 			
 		gl.glEnd();
+		gl.glPopName();
 		
 		// draw all Y-Axis
 
@@ -521,17 +515,19 @@ implements IMediatorReceiver, IMediatorSender {
 				ParCoordsRenderStyle.Y_AXIS_COLOR.w());
 			
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
-		gl.glBegin(GL.GL_LINES);	
+			
 		
 		int iCount = 0;
 		while (iCount < numberParameters)
 		{
+			gl.glPushName(myPickingManager.getPickingID(this, Y_AXIS_SELECTION, iCount));
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * axisSpacing, 0.0f, 0.0f);
 			gl.glVertex3f(iCount * axisSpacing, maxHeight, 0.0f);
+			gl.glEnd();	
 			iCount++;
-		}
-		
-		gl.glEnd();	
+			gl.glPopName();
+		}		
 		
 	}
 	
@@ -549,7 +545,25 @@ implements IMediatorReceiver, IMediatorSender {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			//bIsMouseOverPickingEvent = false;
 		}
-		else
+		
+		if (pickingTriggerMouseAdapter.wasMouseMoved())
+		{
+			// Restart timer
+			fLastMouseMovedTimeStamp = System.nanoTime();
+			bIsMouseOverPickingEvent = true;
+		} 
+		else if (bIsMouseOverPickingEvent == true
+				&& System.nanoTime() - fLastMouseMovedTimeStamp >= 0)// 1e9)
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			fLastMouseMovedTimeStamp = System.nanoTime();
+		}
+//		else if (pickingTriggerMouseAdapter.wasMouseDragged())
+//		{
+//			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+//		}		
+		
+		if (pickPoint == null)
 		{
 			return;
 		}
@@ -585,7 +599,8 @@ implements IMediatorReceiver, IMediatorSender {
 				/ (float) (viewport[2] - viewport[0]);
 
 		// FIXME: values have to be taken from XML file!!
-		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		//gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
@@ -612,7 +627,7 @@ implements IMediatorReceiver, IMediatorSender {
 			int iArPickingBuffer[], final Point pickPoint) 
 	{
 
-		myPickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.ReplacePick);
+		myPickingManager.processHits(this, iHitCount, iArPickingBuffer, ESelectionMode.ReplacePick);
 		
 		//System.out.println("Number of hits: " +iHitCount);
 		
@@ -642,6 +657,35 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 				
+		}
+		if(myPickingManager.getHits(this, X_AXIS_SELECTION) != null)
+		{
+			ArrayList<Integer> tempList = myPickingManager.getHits(this, X_AXIS_SELECTION);
+			
+			if (tempList != null)
+			{
+				if (tempList.size() != 0 )
+				{
+					//System.out.println("X Axis Selected");
+					//bIsDisplayListDirty = true;
+					//bRenderPolylineSelection = true;
+				}
+			}
+		}
+		if(myPickingManager.getHits(this, Y_AXIS_SELECTION) != null)
+		{
+			ArrayList<Integer> tempList = myPickingManager.getHits(this, Y_AXIS_SELECTION);
+			
+			if (tempList != null)
+			{
+				if (tempList.size() != 0 )
+				{
+					System.out.println("Y Axis Selected");
+					myPickingManager.flushHits(this, Y_AXIS_SELECTION);
+					//bIsDisplayListDirty = true;
+					//bRenderPolylineSelection = true;
+				}
+			}
 		}
 	}
 	
@@ -673,7 +717,7 @@ implements IMediatorReceiver, IMediatorSender {
 			System.out.println("Accession Code: " +sAccessionCode);
 			
 			refGeneralManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-				.addSelectionRep(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0, 0));
+				.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0, 0), ESelectionMode.ReplacePick);
 		}
 	}
 

@@ -97,7 +97,7 @@ public class PickingManager extends AAbstractManager
 		return iPickingID;		
 	}
 	
-	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
+	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, ESelectionMode myMode)
 	{	
 		processHits(uniqueManagedObject, iHitCount, iArPickingBuffer, myMode, false);
 	}
@@ -113,7 +113,7 @@ public class PickingManager extends AAbstractManager
 	public void processHits(AUniqueManagedObject uniqueManagedObject, 
 							int iHitCount, 
 							int[] iArPickingBuffer, 
-							EPickingMode myMode, 
+							ESelectionMode myMode, 
 							boolean bIsMaster)
 	{			
 		 int iPickingBufferCounter = 0;	
@@ -248,7 +248,7 @@ public class PickingManager extends AAbstractManager
 		return (iIDCounter * 100 + iType);		
 	}
 	
-	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode, boolean bIsMaster)
+	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, ESelectionMode myMode, boolean bIsMaster)
 	{
 		
 		int iPickingID = 0;
@@ -275,7 +275,7 @@ public class PickingManager extends AAbstractManager
 			
 			if (hashSignatureToHitList.get(iSignature) == null)
 			{
-				if (myMode == EPickingMode.RemovePick)
+				if (myMode == ESelectionMode.RemovePick)
 				{
 					return;
 				} else
@@ -286,18 +286,18 @@ public class PickingManager extends AAbstractManager
 				}
 			} else
 			{
-				if (myMode == EPickingMode.AddPick)
+				if (myMode == ESelectionMode.AddPick)
 				{
 					// ArrayList<Integer> listTemp =
 					hashSignatureToHitList.get(iSignature).add(iPickingID);
 					// listTemp.add(iSignature);
 				}
-				if (myMode == EPickingMode.ReplacePick)
+				if (myMode == ESelectionMode.ReplacePick)
 				{
 					hashSignatureToHitList.get(iSignature).clear();
 					hashSignatureToHitList.get(iSignature).add(iPickingID);
 				}
-				if (myMode == EPickingMode.RemovePick)
+				if (myMode == ESelectionMode.RemovePick)
 				{
 					ArrayList<Integer> alTempList = hashSignatureToHitList
 							.get(iSignature);

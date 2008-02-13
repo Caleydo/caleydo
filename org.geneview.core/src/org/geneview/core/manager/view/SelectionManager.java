@@ -8,6 +8,8 @@ import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerType;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.util.graph.IGraph;
 
 /**
@@ -15,13 +17,13 @@ import org.geneview.util.graph.IGraph;
  * Selection manager that manages selections of views.
  * The selection data itself is still stored in each view.
  * The manager is able to identify identical selections in different
- * views. The selections are held in a graph structure.
+ * views. 
+ * 
  * Selections have selection representations. Selection representations 
  * store their containing view and the x/y position in the view area.
  * 
  * @author Marc Streit
- * 
- * TODO: add method for removing elements and selectedElementReps.
+ * @author Alexander Lex
  *
  */
 public class SelectionManager  
@@ -46,35 +48,111 @@ extends AAbstractManager  {
 			new HashMap<Integer, ArrayList<SelectedElementRep>>();
 	}
 	
-	private void addSelection(final int iElementID) {
-		
-		hashSelectedElementID2SelectedElementReps.put(
-				iElementID, new ArrayList<SelectedElementRep>());
+	/**
+	 * Modify a selection in a way specified by selectionMode
+	 * 
+	 * @param iElementID
+	 * @param selectedElementRep
+	 * @param selectionMode
+	 */
+	
+	public void modifySelection(final int iElementID, 
+			final SelectedElementRep selectedElementRep, final ESelectionMode selectionMode) 
+	{
+		switch (selectionMode)
+		{
+		case AddPick:			
+			addSelection(iElementID, selectedElementRep);
+			break;
+		case RemovePick:			
+			removeSelection(iElementID, selectedElementRep);			
+			break;
+		case ReplacePick:
+			clear();
+			addSelection(iElementID, selectedElementRep);			
+			break;			
+		default:
+			throw new GeneViewRuntimeException("No selection mode specified",  GeneViewRuntimeExceptionType.MANAGER);			
+		}		
 	}
 	
-	public void addSelectionRep(final int iElementID, 
-			final SelectedElementRep selectedElementRep) {
-		
+	/**
+	 * Add a selection
+	 * 
+	 * @param iElementID
+	 * @param selectedElementRep
+	 */
+	public void addSelection(final int iElementID, final SelectedElementRep selectedElementRep) 
+	{
 		if (!hashSelectedElementID2SelectedElementReps.containsKey(iElementID))
-			addSelection(iElementID);
-		
-		hashSelectedElementID2SelectedElementReps.get(
-				iElementID).add(selectedElementRep);
+		{	
+			hashSelectedElementID2SelectedElementReps.put(
+				iElementID, new ArrayList<SelectedElementRep>());
+			hashSelectedElementID2SelectedElementReps.get(
+				iElementID).add(selectedElementRep);		
+		}
 	}
 	
-	public Set<Integer> getAllSelectedElements() {
+	/** 
+	 * Remove a particular selection
+	 * 
+	 * @param iElementID
+	 * @param selectedElementRep
+	 */
+	public void removeSelection(final int iElementID, SelectedElementRep selectedElementRep)
+	{
+		if (hashSelectedElementID2SelectedElementReps.containsKey(iElementID))
+		{
+			hashSelectedElementID2SelectedElementReps.get(
+				iElementID).remove(selectedElementRep);
+		
+			hashSelectedElementID2SelectedElementReps.remove(iElementID);
+		}
+	}
+	
+	/**
+	 * Replace all selections with new selection
+	 * 
+	 * @param iElementID
+	 * @param selectedElementRep
+	 */
+	public void replaceSelection(final int iElementID, SelectedElementRep selectedElementRep)
+	{
+		clear();
+		addSelection(iElementID, selectedElementRep);
+	}
+	
+	/**
+	 * Get all selected elements
+	 * @return a Set of IDs
+	 */
+	public Set<Integer> getAllSelectedElements() 
+	{
 		
 		return hashSelectedElementID2SelectedElementReps.keySet();
 	}
 	
+	/**
+	 * Get a representation of a particular element
+	 * @param iElementID
+	 * @return
+	 */
 	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(
-			final int iElementID) {
+			final int iElementID) 
+	{
+		ArrayList<SelectedElementRep> tempList = hashSelectedElementID2SelectedElementReps.get(iElementID);
 		
-		return hashSelectedElementID2SelectedElementReps.get(iElementID);
+		if(tempList == null)
+			throw new GeneViewRuntimeException(
+					"SelectionManager: No representations for this element ID", GeneViewRuntimeExceptionType.MANAGER);		
+		return tempList;
 	}
 	
-	public void clear() {
-		
+	/**
+	 * Clear all selections and representations
+	 */
+	public void clear() 
+	{		
 		hashSelectedElementID2SelectedElementReps.clear();
-	}
+	}	
 }
