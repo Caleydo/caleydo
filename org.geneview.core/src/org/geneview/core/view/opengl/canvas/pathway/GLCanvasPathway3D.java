@@ -62,16 +62,14 @@ implements IMediatorReceiver, IMediatorSender {
 	private boolean bUpdateReceived = false;
 
 	private int iMouseOverPickedPathwayId = -1;
+	
+	private int iGLDisplayListIndex = -1;
 
 	private IPathwayManager pathwayManager;
 	
 	private GLPathwayManager refGLPathwayManager;
 
 	private SelectionManager selectionManager;
-	
-	private PickingManager pickingManager;
-	
-	private PickingJoglMouseListener pickingTriggerMouseAdapter;
 
 	private PathwayVertexGraphItemRep selectedVertex;
 
@@ -106,14 +104,11 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
-		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
-
 		infoAreaRenderer = new GLInfoAreaRenderer(generalManager,
 				refGLPathwayManager);
 		
 		infoAreaRenderer.enableColorMappingArea(true);	
 		
-		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 		selectionManager = generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
 	}
 
@@ -140,27 +135,50 @@ implements IMediatorReceiver, IMediatorSender {
 //		gl.glEnable(GL.GL_COLOR_MATERIAL);
 //		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 
+		iGLDisplayListIndex = gl.glGenLists(1);
+		
 		initPathwayData(gl);
 	}
 	
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 */
+	public void displayLocal(final GL gl) {
+		
+		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, false);
+		
+		display(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 */
+	public void displayRemote(final GL gl) {
+		
+		display(gl);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
-	public void display(final GL gl) {	
+	public void display(final GL gl) {
 		
-		handlePicking(gl);
-		// as soon as there is a display list use this to handle picking
-		//pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, iGLDisplayListIndex)
 		checkForHits();
 				
 //		if (bRebuildVisiblePathwayDisplayLists)
 //			rebuildPathwayDisplayList(gl);
 
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		renderScene(gl);
-		renderInfoArea(gl);
+		gl.glEndList();
 		
+		// TODO: add dirty flag
+		gl.glCallList(iGLDisplayListIndex);
+		
+		renderInfoArea(gl);
 	}
 	
 	protected void initPathwayData(final GL gl) {
@@ -282,105 +300,6 @@ implements IMediatorReceiver, IMediatorSender {
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
-	}
-
-	private void handlePicking(final GL gl) {
-
-		Point pickPoint = null;
-
-		boolean bMouseReleased =
-			pickingTriggerMouseAdapter.wasMouseReleased();
-		
-		if (pickingTriggerMouseAdapter.wasMousePressed()
-				|| bMouseReleased)
-		{
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			bIsMouseOverPickingEvent = false;
-		}
-
-		if (pickingTriggerMouseAdapter.wasMouseMoved())
-		{
-			// Restart timer
-			fLastMouseMovedTimeStamp = System.nanoTime();
-			bIsMouseOverPickingEvent = true;
-		} 
-		else if (bIsMouseOverPickingEvent == true
-				&& System.nanoTime() - fLastMouseMovedTimeStamp >= 0)// 1e9)
-		{
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			fLastMouseMovedTimeStamp = System.nanoTime();
-		}
-		else if (pickingTriggerMouseAdapter.wasMouseDragged())
-		{
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-		}
-
-		// Check if an object was picked
-		if (pickPoint != null)
-		{	
-			pickObjects(gl, pickPoint);
-			bIsMouseOverPickingEvent = false;
-		}
-	}
-
-	private void pickObjects(final GL gl, Point pickPoint) {
-
-		int PICKING_BUFSIZE = 1024;
-
-		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
-		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
-		int iHitCount = -1;
-		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-
-		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
-		gl.glRenderMode(GL.GL_SELECT);
-
-		gl.glInitNames();
-
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glPushMatrix();
-		gl.glLoadIdentity();
-
-		//gl.glPushName(0);
-
-		/* create 5x5 pixel picking region near cursor location */
-		GLU glu = new GLU();
-		glu.gluPickMatrix((double) pickPoint.x,
-				(double) (viewport[3] - pickPoint.y),// 
-				5.0, 5.0, viewport, 0); // pick width and height is set to 5
-		// (i.e. picking tolerance)
-
-		float fAspectRatio = (float) (float) (viewport[3] - viewport[1]) 
-			/ (float) (viewport[2] - viewport[0]);
-
-	    if (fAspectRatio < 1.0)
-	    {
-	    	fAspectRatio = 1.0f / fAspectRatio;
-	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
-	    }
-	    else 
-	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
-	    
-		// FIXME: values have to be taken from XML file!!
-//		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-//		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-		
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-
-		// Store picked point
-		Point tmpPickPoint = (Point) pickPoint.clone();
-		// Reset picked point
-		pickPoint = null;
-
-		renderScene(gl);
-
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glPopMatrix();
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-
-		iHitCount = gl.glRenderMode(GL.GL_RENDER);
-		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.CLICKED);
 	}
 	
 	protected void checkForHits()

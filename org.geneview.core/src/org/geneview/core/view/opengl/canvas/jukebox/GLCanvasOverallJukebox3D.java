@@ -4,33 +4,24 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
-import java.awt.Point;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.Pick;
-import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
 import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
-
-import com.sun.opengl.util.BufferUtil;
 
 /**
  * Implementation of the overall Jukebox setup.
@@ -63,8 +54,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	private int iSlerpFactor = 0;
 	
-	private PickingManager pickingManager;
-	private PickingJoglMouseListener pickingTriggerMouseAdapter;
+	private int iGLDisplayListIndex = -1;
 	
 	private boolean bRebuildVisiblePathwayDisplayLists = false;
 	
@@ -110,11 +100,6 @@ implements IMediatorReceiver, IMediatorSender {
 		underInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 		
-		pickingManager = generalManager.getSingelton()
-			.getViewGLCanvasManager().getPickingManager();
-		
-		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
-		
 		arSlerpActions = new ArrayList<SlerpAction>();
 		
 		glConnectionLineRenderer = new GLConnectionLineRenderer(generalManager,
@@ -130,18 +115,8 @@ implements IMediatorReceiver, IMediatorSender {
 	    time = new SystemTime();
 	    ((SystemTime) time).rebase();
 		
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-//
-//		gl.glEnable(GL.GL_DEPTH_TEST);
-//		gl.glEnable(GL.GL_BLEND);
-//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//		gl.glDepthFunc(GL.GL_LEQUAL);
-//		gl.glEnable(GL.GL_LINE_SMOOTH);
-//		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-//		gl.glLineWidth(1.0f);
-//		gl.glEnable(GL.GL_COLOR_MATERIAL);
-//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
-		
+	    iGLDisplayListIndex = gl.glGenLists(1);
+	    
 		buildStackLayer(gl);
 		
 		retrieveContainedViews(gl);
@@ -149,23 +124,50 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 */
+	public void displayLocal(final GL gl) {
+		
+		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
+		
+		display(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 */
+	public void displayRemote(final GL gl) {
+	
+		display(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) {
-
-		handlePicking(gl);
+		
+		checkForHits();
 		
 //		if (bRebuildVisiblePathwayDisplayLists)
 //			rebuildVisiblePathwayDisplayLists(gl);
 		
 		time.update();
+
 		doSlerpActions(gl);
 		
+//		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 //		renderPoolLayer(gl);
 		renderStackLayer(gl);
 		renderUnderInteractionLayer(gl);
+//		gl.glEndList();
 		
 		glConnectionLineRenderer.render(gl);
+		
+		// TODO: add dirty flag
+//		gl.glCallList(iGLDisplayListIndex);
+		
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -312,7 +314,7 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
 		
 		((AGLCanvasUser) generalManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId)).display(gl);
+				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);
 		
 		gl.glPopMatrix();	
 	}
@@ -369,105 +371,19 @@ implements IMediatorReceiver, IMediatorSender {
 			slerpMod.playSlerpSound();
 	}
 	
-	private void handlePicking(final GL gl)
+	protected void checkForHits() 
 	{
-		Point pickPoint = null;
-
-		boolean bMouseReleased =
-			pickingTriggerMouseAdapter.wasMouseReleased();
-
+		ArrayList<Pick> alHits = null;		
 		
-		if (pickingTriggerMouseAdapter.wasMousePressed()
-				|| bMouseReleased)
+		alHits = pickingManager.getHits(this, VIEW_PICKING);		
+		if(alHits != null)
 		{			
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			//bIsMouseOverPickingEvent = false;
-		}
-		else
-		{
-			return;
-		}
-		
-		
-		int PICKING_BUFSIZE = 1024;
-
-		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
-		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
-		int iHitCount = -1;
-		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-
-		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
-		gl.glRenderMode(GL.GL_SELECT);
-
-		gl.glInitNames();
-
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glPushMatrix();
-		gl.glLoadIdentity();
-
-		//gl.glPushName(0);
-
-		/* create 5x5 pixel picking region near cursor location */
-		GLU glu = new GLU();
-		glu.gluPickMatrix((double) pickPoint.x,
-				(double) (viewport[3] - pickPoint.y),// 
-				5.0, 5.0, viewport, 0); // pick width and height is set to 5
-		// (i.e. picking tolerance)
-
-		float fAspectRatio = (float) (float) (viewport[3] - viewport[1]) 
-			/ (float) (viewport[2] - viewport[0]);
-
-	    if (fAspectRatio < 1.0)
-	    {
-	    	fAspectRatio = 1.0f / fAspectRatio;
-	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
-	    }
-	    else 
-	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
-
-		// FIXME: values have to be taken from XML file!!
-		//gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-//		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-		
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-
-		// Store picked point
-		Point tmpPickPoint = (Point) pickPoint.clone();
-		// Reset picked point
-		pickPoint = null;
-
-		renderStackLayer(gl);
-		renderUnderInteractionLayer(gl);
-		
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glPopMatrix();
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-
-		iHitCount = gl.glRenderMode(GL.GL_RENDER);
-		pickingBuffer.get(iArPickingBuffer);
-		System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
-		System.out.println("MAX int:" +Integer.MAX_VALUE);
-		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint);
-	}
-	
-	
-	protected void processHits(final GL gl, int iHitCount,
-			int iArPickingBuffer[], final Point pickPoint) 
-	{
-
-		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.CLICKED, true);
-		
-		if(pickingManager.getHits(this, VIEW_PICKING) != null)
-		{
-			ArrayList<Pick> tempList = pickingManager.getHits(this, VIEW_PICKING);
-			
-			if (tempList != null)
+			if (alHits.size() != 0 )
 			{
-				if (tempList.size() != 0 )
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
 				{
 					int iViewId = pickingManager.getExternalIDFromPickingID(
-							this, tempList.get(0).getPickingID());					
+							this, alHits.get(iCount).getPickingID());					
 					
 					System.out.println("Picked object:" +iViewId);
 					

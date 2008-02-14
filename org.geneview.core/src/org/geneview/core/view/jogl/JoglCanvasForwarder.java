@@ -68,63 +68,38 @@ implements GLEventListener {
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
 		gl.glClearDepth(1.0f); // Depth Buffer Setup
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
-		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Test To Do
-	
-		/* Really Nice Perspective Calculations */
+		
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glDepthFunc(GL.GL_LEQUAL);
+		
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+		
+		gl.glEnable(GL.GL_COLOR_MATERIAL);
+		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);	
 	}
 
-	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
 	public void reshape(GLAutoDrawable drawable, 
 			int x, 
 			int y, 
 			int width,
 			int height) {
-
-		generalManager.getSingelton().logMsg(
-				"JoglCanvasForwarder  RESHAPE GL",
-				LoggerType.STATUS);
-
-//		GL gl = drawable.getGL();
-
-//		float h = (float) height / (float) width;
-//		
-//		generalManager.getSingelton().logMsg(
-//				"JoglCanvasForwarder  RESHAPE GL" +
-//				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
-//				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
-//				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
-//				LoggerType.STATUS);
-//		
-//		gl.glMatrixMode(GL.GL_PROJECTION);
-//		gl.glLoadIdentity();
-//		
-//		//FIXME Perspective/ortho projection should be chosen in XML file
-//		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-//		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-//		
-//		gl.glMatrixMode(GL.GL_MODELVIEW);
-//		gl.glLoadIdentity();
 		
-	    GL gl = drawable.getGL();
-	    //
-	    double fAspectRatio = (double) height / (double) width;
-
-	    gl.glViewport(0, 0, width, height);
-	    gl.glMatrixMode(GL.GL_PROJECTION);
-	    gl.glLoadIdentity();
-	    if (fAspectRatio < 1.0)
-	    {
-	    	fAspectRatio = 1.0 / fAspectRatio;
-	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
-	    }
-	    else 
-	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
-	    gl.glMatrixMode(GL.GL_MODELVIEW);
+		// Implemented in registered GLEventListener classes
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
 	public void display(GLAutoDrawable drawable) {
 			    
 		final GL gl = drawable.getGL();
@@ -157,12 +132,19 @@ implements GLEventListener {
 				rot_Vec3f.z());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
 	public void displayChanged(GLAutoDrawable drawable, 
 			final boolean modeChanged,
 			final boolean deviceChanged) {
 
 	}
 	
+	/*
+	 * 
+	 */
 	public final ManagerObjectType getBaseType() {
 		return ManagerObjectType.VIEW_CANVAS_FORWARDER;
 	}

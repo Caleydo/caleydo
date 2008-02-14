@@ -15,7 +15,10 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.ISetManager;
 import org.geneview.core.manager.type.ManagerObjectType;
+import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 
 /**
  * 
@@ -41,6 +44,10 @@ implements GLEventListener {
 	protected ArrayList <SetSelection> alSetSelection;
 	
 	protected ISetManager setManager;
+	
+	protected PickingManager pickingManager;
+	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
+
 
 	/**
 	 * Constructor.
@@ -70,6 +77,9 @@ implements GLEventListener {
 
 		generalManager.getSingelton().getViewGLCanvasManager()
 			.registerGLEventListenerByGLCanvasID(parentGLCanvas.getID(), this);
+		
+		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
+		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 	}
 
 	/*
@@ -90,8 +100,8 @@ implements GLEventListener {
 	public void display(GLAutoDrawable drawable) {
 
 		((GLEventListener)parentGLCanvas).display(drawable);
-		
-		display(drawable.getGL());
+
+		displayLocal(drawable.getGL());
 	}
 
 	/*
@@ -101,8 +111,7 @@ implements GLEventListener {
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
 			boolean deviceChanged) {
 
-		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
-		
+		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);	
 	}
 
 	/*
@@ -112,7 +121,29 @@ implements GLEventListener {
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 
-		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
+	    GL gl = drawable.getGL();
+
+		generalManager.getSingelton().logMsg(
+				"\n---------------------------------------------------"+
+				"\nGLEventListener with ID " +iUniqueId+ " RESHAPE GL" +
+				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
+				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
+				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
+				LoggerType.STATUS);
+	    
+	    double fAspectRatio = (double) height / (double) width;
+
+	    gl.glViewport(0, 0, width, height);
+	    gl.glMatrixMode(GL.GL_PROJECTION);
+	    gl.glLoadIdentity();
+	    if (fAspectRatio < 1.0)
+	    {
+	    	fAspectRatio = 1.0 / fAspectRatio;
+	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
+	    }
+	    else 
+	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
+	    gl.glMatrixMode(GL.GL_MODELVIEW);
 	}
 	
 	public final ManagerObjectType getBaseType()
@@ -121,7 +152,25 @@ implements GLEventListener {
 	}
 	
 	public abstract void init(final GL gl);
+	
 	public abstract void display(final GL gl);
+	
+	/**
+	 * Intended for internal use when no other view is managing the scene.
+	 * Has to call display internally!
+	 *
+	 * @param gl
+	 */
+	public abstract void displayLocal(final GL gl);
+	
+	/**
+	 * Intended for external use when another instance of a view manages the scene.
+	 * This is specially designed for composite views.
+	 * Has to call display internally!
+	 * 
+	 * @param gl
+	 */
+	public abstract void displayRemote(final GL gl);
 	
 	/**
 	 * @see org.geneview.core.view.IView#addSetId(int[])

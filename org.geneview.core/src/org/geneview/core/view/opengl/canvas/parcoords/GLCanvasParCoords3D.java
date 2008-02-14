@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
@@ -22,12 +20,12 @@ import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.ESelectionMode;
+import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.manager.view.Pick;
 
 /**
  * 
@@ -62,10 +60,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final float MAX_HEIGHT = 1; 
 		
 	private int iGLDisplayListIndex;
-	
-	private PickingManager myPickingManager;
-	private PickingJoglMouseListener pickingTriggerMouseAdapter;
-	
+		
 	// flag whether one array should be a polyline or an axis
 	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
@@ -108,17 +103,11 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		super(generalManager, iViewId, iGLCanvasID, label);
 		
-		myPickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
-
 		// TODO:
 		//int bla = EGenomeIdType.ACCESSION_CODE.ordinal();
 		
-		
-		
 		//hashPolylinePickingIDToIndex = new HashMap<Integer, Integer>();
 		//hashPolylineIndexToPickingID = new HashMap<Integer, Integer>();
-		
-		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 		
 		renderStyle = new ParCoordsRenderStyle();	
 		
@@ -147,20 +136,7 @@ implements IMediatorReceiver, IMediatorSender {
 						ParCoordsRenderStyle.CANVAS_COLOR.z(),
 						ParCoordsRenderStyle.CANVAS_COLOR.w());
 		
-
-		
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		
-
-		gl.glDepthFunc(GL.GL_LEQUAL);
-		gl.glEnable(GL.GL_LINE_SMOOTH);
-		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 	
-
-		gl.glEnable(GL.GL_COLOR_MATERIAL);
-		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);		
 		//gl.glRenderMode(GL.GL_SELECT);
 		
 		iGLDisplayListIndex = gl.glGenLists(1);	
@@ -185,11 +161,30 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 */
+	public void displayLocal(final GL gl) {
+		
+		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, false);
+		
+		display(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 */
+	public void displayRemote(final GL gl) {
+	
+		display(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) {
 		
-
 		//if(bIsDisplayListDirty)
 		//{
 			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -210,30 +205,9 @@ implements IMediatorReceiver, IMediatorSender {
 		//}
 			
 		gl.glCallList(iGLDisplayListIndex);
-		myPickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, iGLDisplayListIndex);
+
 		// check if we hit a polyline
 		checkForHits();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
-	 */
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-			boolean deviceChanged) {
-
-		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
-		
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
-	 */
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
-
-		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
 	}
 	
 	/**
@@ -390,7 +364,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{
-			gl.glPushName(myPickingManager.getPickingID(this, POLYLINE_SELECTION, alDataToRender.get(iPolyLineCount)));	
+			gl.glPushName(pickingManager.getPickingID(this, POLYLINE_SELECTION, alDataToRender.get(iPolyLineCount)));	
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 
@@ -462,7 +436,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
 		
-		gl.glPushName(myPickingManager.getPickingID(this, X_AXIS_SELECTION, 1));
+		gl.glPushName(pickingManager.getPickingID(this, X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);		
 	
 		gl.glVertex3f(-0.1f, 0.0f, 0.0f); 
@@ -484,7 +458,7 @@ implements IMediatorReceiver, IMediatorSender {
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(myPickingManager.getPickingID(this, Y_AXIS_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(this, Y_AXIS_SELECTION, iCount));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, 0.0f, 0.0f);
 			gl.glVertex3f(iCount * fAxisSpacing, MAX_HEIGHT, 0.0f);
@@ -507,7 +481,7 @@ implements IMediatorReceiver, IMediatorSender {
 		fHeight = 0.3f;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(myPickingManager.getPickingID(this, LOWER_GATE_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(this, LOWER_GATE_SELECTION, iCount));
 			float fCurrentPosition = iCount * fAxisSpacing;
 			
 			// The tip of the gate (which is pickable)
@@ -549,15 +523,13 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			iCount++;
 		}
-		
-		
 	}
 	
 	protected void checkForHits()
 	{
 		ArrayList<Pick> alHits = null;		
 	
-		alHits = myPickingManager.getHits(this, POLYLINE_SELECTION);		
+		alHits = pickingManager.getHits(this, POLYLINE_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -569,7 +541,7 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					Pick tempPick = alHits.get(iCount);
 					int iPickingID = tempPick.getPickingID();
-					int iExternalID = myPickingManager.getExternalIDFromPickingID(this, iPickingID);
+					int iExternalID = pickingManager.getExternalIDFromPickingID(this, iPickingID);
 					alNormalPolylines.remove(new Integer(iExternalID));
 						
 					switch (tempPick.getPickingMode())
@@ -604,36 +576,36 @@ implements IMediatorReceiver, IMediatorSender {
 						
 					}					
 				}
-				myPickingManager.flushHits(this, POLYLINE_SELECTION);
+				pickingManager.flushHits(this, POLYLINE_SELECTION);
 				// FIXME: this happens every time when something is selected
 				bIsDisplayListDirty = true;
 				//bRenderPolylineSelection = true;
 			}				
 		}
-		alHits = myPickingManager.getHits(this, X_AXIS_SELECTION);		
+		alHits = pickingManager.getHits(this, X_AXIS_SELECTION);		
 		if(alHits != null)
 		{				
 			if (alHits.size() != 0 )
 			{
 				System.out.println("X Axis Selected");
-				myPickingManager.flushHits(this, X_AXIS_SELECTION);
+				pickingManager.flushHits(this, X_AXIS_SELECTION);
 				//bIsDisplayListDirty = true;
 				//bRenderPolylineSelection = true;
 			}
 		}
-		alHits = myPickingManager.getHits(this, Y_AXIS_SELECTION);		
+		alHits = pickingManager.getHits(this, Y_AXIS_SELECTION);		
 		if(alHits != null)
 		{		
 			if (alHits.size() != 0 )
 			{
 				System.out.println("Y Axis Selected");
-				myPickingManager.flushHits(this, Y_AXIS_SELECTION);
+				pickingManager.flushHits(this, Y_AXIS_SELECTION);
 				//bIsDisplayListDirty = true;
 				//bRenderPolylineSelection = true;
 			}			
 		}
 		
-		alHits = myPickingManager.getHits(this, LOWER_GATE_SELECTION);
+		alHits = pickingManager.getHits(this, LOWER_GATE_SELECTION);
 		if(alHits != null)
 		{		
 			if (alHits.size() != 0 )
@@ -642,7 +614,7 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					Pick tempPick = alHits.get(iCount);
 					int iPickingID = tempPick.getPickingID();
-					int iExternalID = myPickingManager.getExternalIDFromPickingID(this, iPickingID);
+					int iExternalID = pickingManager.getExternalIDFromPickingID(this, iPickingID);
 					
 					switch (tempPick.getPickingMode())
 					{						
@@ -654,7 +626,7 @@ implements IMediatorReceiver, IMediatorSender {
 							// do nothing
 					}
 				}
-				myPickingManager.flushHits(this, LOWER_GATE_SELECTION);
+				pickingManager.flushHits(this, LOWER_GATE_SELECTION);
 				
 			}			
 		}		
@@ -695,6 +667,12 @@ implements IMediatorReceiver, IMediatorSender {
 				.getIdIntFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 		
 			System.out.println("Expression stroage index:" +iExpressionStorageIndex);
+			iExpressionStorageIndex = (iExpressionStorageIndex - 770) / 1000;
+			
+//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
+//			{
+				alSelectedPolylines.add(iExpressionStorageIndex);				
+//			}
 		}
 	}
 

@@ -86,9 +86,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private GLPathwayManager refGLPathwayManager;
 
 	private GLPathwayTextureManager refGLPathwayTextureManager;
-
-	private PickingJoglMouseListener pickingTriggerMouseAdapter;
-
+	
 	private ArrayList<SlerpAction> arSlerpActions;
 
 	/**
@@ -164,8 +162,6 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 
-		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
-
 		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
 				refGLPathwayManager);
 		infoAreaRenderer.enableColorMappingArea(true);
@@ -209,9 +205,30 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 */
+	public void displayLocal(final GL gl) {
+		
+		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
+		
+		display(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 */
+	public void displayRemote(final GL gl) {
+	
+		display(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) {
+		
 		
 		if (iLazyPathwayLoadingId != -1)
 		{
@@ -258,26 +275,6 @@ implements IMediatorReceiver, IMediatorSender {
 		renderConnectingLines(gl);
 		renderScene(gl);
 		renderInfoArea(gl);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
-	 */
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-			boolean deviceChanged) {
-
-		((GLEventListener)parentGLCanvas).displayChanged(
-				drawable, modeChanged, deviceChanged);		
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
-	 */
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
-
 	}
 	
 	protected void initPathwayData(final GL gl) {

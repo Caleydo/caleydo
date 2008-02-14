@@ -3,7 +3,7 @@
  */
 package org.geneview.core.view.jogl;
 
-/**´
+/**ï¿½
  * Define type of OpenGL canvas forwarder
  * 
  * @see org.geneview.core.view.jogl.JoglCanvasForwarder
@@ -13,6 +13,7 @@ package org.geneview.core.view.jogl;
  * 
  * @author Michael Kalkusch
  *
+ * @deprecated Camera relevant parameters (rotation, translation) etc. are directly specified in XML command
  */
 public enum JoglCanvasForwarderType
 {

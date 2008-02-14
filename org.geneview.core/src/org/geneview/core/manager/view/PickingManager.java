@@ -15,6 +15,7 @@ import org.geneview.core.manager.type.ManagerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -107,20 +108,10 @@ public class PickingManager extends AAbstractManager
 			
 		return iPickingID;		
 	}
-	
-	public void handlePicking(AUniqueManagedObject uniqueManagedObject, 
-					GL gl,
-					PickingJoglMouseListener pickingTriggerMouseAdapter, 
-					int iGLDisplayListIndex)
-	{
-		handlePicking(uniqueManagedObject, gl, pickingTriggerMouseAdapter, iGLDisplayListIndex, false);
-	}
-
 		
 	public void handlePicking(AUniqueManagedObject uniqueManagedObject, 
 				GL gl,
 				PickingJoglMouseListener pickingTriggerMouseAdapter, 
-				int iGLDisplayListIndex, 
 				boolean bIsMaster)
 	{
 		int iViewID = uniqueManagedObject.getId();
@@ -206,10 +197,6 @@ public class PickingManager extends AAbstractManager
 	    else 
 	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
 		
-		// FIXME: values have to be taken from XML file!!
-//		gl.glOrtho(-1.0f, 1.0f, -h, h, 1.0f, 1.0f);
-		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
 		// Store picked point
@@ -217,8 +204,7 @@ public class PickingManager extends AAbstractManager
 		// Reset picked point
 		pickPoint = null;
 
-		gl.glCallList(iGLDisplayListIndex);
-		//renderPolyLines(gl);
+		((AGLCanvasUser)uniqueManagedObject).display(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
