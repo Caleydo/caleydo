@@ -41,19 +41,10 @@ package gleem.linalg;
 
 /** 3-element single-precision vector
   *
-  * @author Michael Kalkusch: Added new static variables VEC_NULL and VEC_ONE 
+  * @author Michael Kalkusch
   */
 
 public class Vec3f {
-	
-  public static final Vec3f VEC_NULL   = new Vec3f( 0,  0,  0);
-  public static final Vec3f VEC_ONE    = new Vec3f( 1,  1,  1);
-  public static final Vec3f X_AXIS     = new Vec3f( 1,  0,  0);
-  public static final Vec3f Y_AXIS     = new Vec3f( 0,  1,  0);
-  public static final Vec3f Z_AXIS     = new Vec3f( 0,  0,  1);
-  public static final Vec3f NEG_X_AXIS = new Vec3f(-1,  0,  0);
-  public static final Vec3f NEG_Y_AXIS = new Vec3f( 0, -1,  0);
-  public static final Vec3f NEG_Z_AXIS = new Vec3f( 0,  0, -1);
   
   /**
    * PI stored in a float.
@@ -86,7 +77,7 @@ public class Vec3f {
   }
   
   /**
-   * Convert grad to radiant (eg: [-360° .. +360°] ==> [-2PI .. 2PI]).
+   * Convert grad to radiant (eg: [-360ï¿½ .. +360ï¿½] ==> [-2PI .. 2PI]).
    *  
    * @param fGrad in grad
    * @return grad converted to radiant
@@ -96,7 +87,7 @@ public class Vec3f {
   }
   
   /**
-   * Convert radiant to grad (eg:[-2PI .. 2PI] ==> [-360° .. +360°]).
+   * Convert radiant to grad (eg:[-2PI .. 2PI] ==> [-360ï¿½ .. +360ï¿½]).
    * 
    * @param fRadiant angle in radiant
    * @return radiant converted to grad

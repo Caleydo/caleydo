@@ -71,8 +71,8 @@ public class TestTranslate1 {
       gl.glEnable(GL.GL_DEPTH_TEST);
 
       params.setPosition(new Vec3f(0, 0, 0));
-      params.setForwardDirection(Vec3f.NEG_Z_AXIS);
-      params.setUpDirection(Vec3f.Y_AXIS);
+      params.setForwardDirection(new Vec3f(0,0,-1));
+      params.setUpDirection(new Vec3f(0,1,0));
       params.setVertFOV((float) (Math.PI / 8.0));
       params.setImagePlaneAspectRatio(1);
       params.xSize = X_SIZE;

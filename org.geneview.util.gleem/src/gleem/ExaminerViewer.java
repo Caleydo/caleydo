@@ -44,6 +44,7 @@ import java.awt.event.*;
 import java.util.*;
 
 import gleem.linalg.*;
+
 import javax.media.opengl.*;
 
 /** <P> This is an application-level class, not part of the
@@ -275,7 +276,7 @@ public class ExaminerViewer {
 
   /** Sets the position of this ExaminerViewer. */
   public void setPosition(Vec3f position) {
-    Vec3f tmp = orientation.rotateVector(Vec3f.NEG_Z_AXIS);
+    Vec3f tmp = orientation.rotateVector(new Vec3f(0,0,-1));
     tmp.scale(dolly.z());
     center.add(position, tmp);
   }
@@ -376,8 +377,8 @@ public class ExaminerViewer {
     int ySize = window.getHeight();
     params.setOrientation(orientation);
     params.setPosition(computePosition(new Vec3f()));
-    params.setForwardDirection(Vec3f.NEG_Z_AXIS);
-    params.setUpDirection(Vec3f.Y_AXIS);
+    params.setForwardDirection(new Vec3f(0,0,-1));
+    params.setUpDirection(new Vec3f(0,1,0));
     params.setVertFOV((float) Math.PI / 8.0f);
     params.setImagePlaneAspectRatio((float) xSize / (float) ySize);
     params.setXSize(xSize);
@@ -399,8 +400,8 @@ public class ExaminerViewer {
         // Rotation functionality
         float xRads = (float) Math.PI * -1.0f * dy * rotateSpeed / 1000.0f;
         float yRads = (float) Math.PI * -1.0f * dx * rotateSpeed / 1000.0f;
-        Rotf xRot = new Rotf(Vec3f.X_AXIS, xRads);
-        Rotf yRot = new Rotf(Vec3f.Y_AXIS, yRads);
+        Rotf xRot = new Rotf(new Vec3f(1,0,0), xRads);
+        Rotf yRot = new Rotf(new Vec3f(0,1,0), yRads);
         Rotf newRot = yRot.times(xRot);
         orientation = orientation.times(newRot);
 
@@ -512,9 +513,9 @@ public class ExaminerViewer {
     // Recompute position, forward and up vectors
     Vec3f tmp = new Vec3f();
     params.setPosition(computePosition(tmp));
-    orientation.rotateVector(Vec3f.NEG_Z_AXIS, tmp);
+    orientation.rotateVector(new Vec3f(0,0,-1), tmp);
     params.setForwardDirection(tmp);
-    orientation.rotateVector(Vec3f.Y_AXIS, tmp);
+    orientation.rotateVector(new Vec3f(0,1,0), tmp);
     params.setUpDirection(tmp);
     params.setOrientation(orientation);
 

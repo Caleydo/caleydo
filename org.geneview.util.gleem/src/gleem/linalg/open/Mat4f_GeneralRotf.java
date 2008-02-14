@@ -30,7 +30,7 @@ public class Mat4f_GeneralRotf {
 	 */
 	public Mat4f_GeneralRotf() {
 		
-		centerOfRotation = new Vec3f( Vec3f.VEC_NULL );		
+		centerOfRotation = new Vec3f(0,0,0);		
 		rotation  = new Rotf();
 		matrix = new Mat4f();
 	}
@@ -212,8 +212,8 @@ public class Mat4f_GeneralRotf {
 	}
 	
 	public void reset() {
-		centerOfRotation.set( Vec3f.VEC_NULL );
-		rotation.set( Vec3f.NEG_X_AXIS, 0.0f );
+		centerOfRotation.set(0,0,0 );
+		rotation.set(new Vec3f(-1,0,0), 0.0f );
 	}
 	
 	public void update() {

@@ -21,7 +21,7 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 	public Mat4f_GeneraRotfScale() {
 
 		super();
-		scale = new Vec3f( Vec3f.VEC_ONE );	
+		scale = new Vec3f(1,1,1);	
 	}
 	
 	public Mat4f_GeneraRotfScale(final Mat4f_GeneraRotfScale copy) {
@@ -92,9 +92,9 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 	
 	@Override
 	public void reset() {
-		centerOfRotation.set( Vec3f.VEC_NULL );
-		scale.set( Vec3f.VEC_ONE );
-		rotation.set( Vec3f.NEG_X_AXIS, 0.0f );
+		centerOfRotation.set(0,0,0);
+		scale.set(1,1,1);
+		rotation.set(new Vec3f(-1,0,0), 0.0f );
 	}
 	
 	@Override
