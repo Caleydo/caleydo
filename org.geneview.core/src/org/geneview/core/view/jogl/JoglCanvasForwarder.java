@@ -87,26 +87,41 @@ implements GLEventListener {
 				"JoglCanvasForwarder  RESHAPE GL",
 				LoggerType.STATUS);
 
-		GL gl = drawable.getGL();
+//		GL gl = drawable.getGL();
 
-		float h = (float) height / (float) width;
+//		float h = (float) height / (float) width;
+//		
+//		generalManager.getSingelton().logMsg(
+//				"JoglCanvasForwarder  RESHAPE GL" +
+//				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
+//				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
+//				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
+//				LoggerType.STATUS);
+//		
+//		gl.glMatrixMode(GL.GL_PROJECTION);
+//		gl.glLoadIdentity();
+//		
+//		//FIXME Perspective/ortho projection should be chosen in XML file
+//		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+//		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+//		
+//		gl.glMatrixMode(GL.GL_MODELVIEW);
+//		gl.glLoadIdentity();
 		
-		generalManager.getSingelton().logMsg(
-				"JoglCanvasForwarder  RESHAPE GL" +
-				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
-				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
-				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
-				LoggerType.STATUS);
-		
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glLoadIdentity();
-		
-		//FIXME Perspective/ortho projection should be chosen in XML file
-		//gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
-		
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		gl.glLoadIdentity();
+	    GL gl = drawable.getGL();
+	    //
+	    double fAspectRatio = (double) width / (double) height;
+
+	    gl.glViewport(0, 0, width, height);
+	    gl.glMatrixMode(GL.GL_PROJECTION);
+	    gl.glLoadIdentity();
+	    if (fAspectRatio < 1.0)
+	    {
+	    	fAspectRatio = 1.0 / fAspectRatio;
+	      gl.glOrtho(-fAspectRatio, fAspectRatio, -1.0, 1.0, -1.0, 1.0);
+	    }
+	    else gl.glOrtho(-1.0, 1.0, -fAspectRatio, fAspectRatio, -1.0, 1.0);
+	    gl.glMatrixMode(GL.GL_MODELVIEW);
 	}
 	
 	public void display(GLAutoDrawable drawable) {

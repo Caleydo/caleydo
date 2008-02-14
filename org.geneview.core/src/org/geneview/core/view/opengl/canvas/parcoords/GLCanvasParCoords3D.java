@@ -239,7 +239,7 @@ implements IMediatorReceiver, IMediatorSender {
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 
-//		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
+		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
 	}
 	
 	/**
@@ -577,12 +577,19 @@ implements IMediatorReceiver, IMediatorSender {
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
-		float h = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]);
+		float fAspectRatio = (float) (float) (viewport[2] - viewport[0]) 
+			/ (float) (viewport[3] - viewport[1]);
 
+	    if (fAspectRatio < 1.0)
+	    {
+	    	fAspectRatio = 1.0f / fAspectRatio;
+	      gl.glOrtho(-fAspectRatio, fAspectRatio, -1.0, 1.0, -1.0, 1.0);
+	    }
+	    else gl.glOrtho(-1.0, 1.0, -fAspectRatio, fAspectRatio, -1.0, 1.0);
+		
 		// FIXME: values have to be taken from XML file!!
-		//gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+//		gl.glOrtho(-1.0f, 1.0f, -h, h, 1.0f, 1.0f);
+		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
