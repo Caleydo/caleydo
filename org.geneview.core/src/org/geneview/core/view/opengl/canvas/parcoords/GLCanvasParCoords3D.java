@@ -660,19 +660,49 @@ implements IMediatorReceiver, IMediatorSender {
 		
 			System.out.println("Accession Code: " +sAccessionCode);
 			
-			generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-				.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0, 0), ESelectionMode.AddPick);
-
+		
 			int iExpressionStorageIndex = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 		
-			System.out.println("Expression stroage index:" +iExpressionStorageIndex);
+			System.out.println("Expression stroage index: " +iExpressionStorageIndex);
 			iExpressionStorageIndex = (iExpressionStorageIndex - 770) / 1000;
 			
-//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
-//			{
-				alSelectedPolylines.add(iExpressionStorageIndex);				
-//			}
+			if (iExpressionStorageIndex >= 0)
+			{
+				if(!bRenderArrayAsPolyline)
+				{
+			
+					//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
+					//			{
+					alSelectedPolylines.add(iExpressionStorageIndex);				
+					//			}
+						
+					Iterator<ISet> iterSetData = alSetData.iterator();
+					while (iterSetData.hasNext())
+					{
+						ISet tmpSet = iterSetData.next();
+						// TODO: test
+						//normalizeSet(tmpSet);
+							
+						if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
+						{
+								alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
+						}
+					}	
+						
+					float fYValue = alDataStorages.get(0).getArrayFloat()[iExpressionStorageIndex];
+					
+					generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+						.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, fYValue), ESelectionMode.AddPick);
+				}
+				else
+				{
+					System.out.println("Highlighting for Axis not implemented yet");
+					generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+					.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
+				}
+			}
+
 		}
 	}
 
