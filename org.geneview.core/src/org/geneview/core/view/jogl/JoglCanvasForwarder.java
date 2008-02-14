@@ -110,7 +110,7 @@ implements GLEventListener {
 		
 	    GL gl = drawable.getGL();
 	    //
-	    double fAspectRatio = (double) width / (double) height;
+	    double fAspectRatio = (double) height / (double) width;
 
 	    gl.glViewport(0, 0, width, height);
 	    gl.glMatrixMode(GL.GL_PROJECTION);
@@ -118,9 +118,10 @@ implements GLEventListener {
 	    if (fAspectRatio < 1.0)
 	    {
 	    	fAspectRatio = 1.0 / fAspectRatio;
-	      gl.glOrtho(-fAspectRatio, fAspectRatio, -1.0, 1.0, -1.0, 1.0);
+	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
 	    }
-	    else gl.glOrtho(-1.0, 1.0, -fAspectRatio, fAspectRatio, -1.0, 1.0);
+	    else 
+	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
 	    gl.glMatrixMode(GL.GL_MODELVIEW);
 	}
 	

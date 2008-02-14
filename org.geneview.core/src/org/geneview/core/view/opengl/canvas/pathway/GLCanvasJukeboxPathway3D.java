@@ -948,11 +948,16 @@ implements IMediatorReceiver, IMediatorSender {
 				1.0, 1.0, viewport, 0); // pick width and height is set to 1
 		// (i.e. picking tolerance)
 
-		float h = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]);
+		float fAspectRatio = (float) (float) (viewport[3] - viewport[1]) 
+			/ (float) (viewport[2] - viewport[0]);
 
-		// FIXME: values have to be taken from XML file!!
-		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
+		if (fAspectRatio < 1.0)
+		{
+			fAspectRatio = 1.0f / fAspectRatio;
+			gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
+		} 
+		else
+			gl.glOrtho(-4 * 1.0, 4 * 1.0, -4 * fAspectRatio, 4 * fAspectRatio, -1.0, 1.0);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
