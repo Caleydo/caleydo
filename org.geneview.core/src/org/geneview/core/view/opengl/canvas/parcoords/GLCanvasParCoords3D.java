@@ -723,7 +723,12 @@ implements IMediatorReceiver, IMediatorSender {
 			System.out.println("Accession Code: " +sAccessionCode);
 			
 			generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-				.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0, 0), ESelectionMode.ReplacePick);
+				.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0, 0), ESelectionMode.AddPick);
+
+			int iExpressionStorageIndex = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
+		
+			System.out.println("Expression stroage index:" +iExpressionStorageIndex);
 		}
 	}
 

@@ -88,9 +88,10 @@ extends AAbstractManager  {
 		{	
 			hashSelectedElementID2SelectedElementReps.put(
 				iElementID, new ArrayList<SelectedElementRep>());
-			hashSelectedElementID2SelectedElementReps.get(
-				iElementID).add(selectedElementRep);		
 		}
+		
+		hashSelectedElementID2SelectedElementReps.get(
+			iElementID).add(selectedElementRep);		
 	}
 	
 	/** 
@@ -105,7 +106,6 @@ extends AAbstractManager  {
 		{
 			hashSelectedElementID2SelectedElementReps.get(
 				iElementID).remove(selectedElementRep);
-		
 			hashSelectedElementID2SelectedElementReps.remove(iElementID);
 		}
 	}

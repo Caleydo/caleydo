@@ -224,59 +224,59 @@ implements MouseListener, MouseMotionListener {
 
 		if (!bMouseRightButtonDown)
 		{
-
-			    	if ( ! bMouseMiddleButtonDown ) {
-				    
-					/**
-			    	 *   --- ROTATION ---
-			    	 */
-			    		
-			    	Rotf currentRotX = new Rotf();
-			    	Rotf currentRotY = new Rotf();
-			   	    
-			    	float fpercentX = (float)(x-prevMouseX)/(float)(size.width) 
-			    		* fMouseSensitivityRotation;
-			    	
-			    	float fpercentY = (float)(y-prevMouseY)/(float)(size.height) 
-			    		* fMouseSensitivityRotation;
-			    	
-			    	
-			   	    currentRotX.set(new Vec3f(0,1,0), 
-			   	    		fpercentX* MathUtil.PI);
-			   	    
-			   	    currentRotY.set(new Vec3f(0,1,0), 
-				    		fpercentY* MathUtil.PI);
-			   	    
-			   	    /* concatinate roations.. */
-			   	    currentRotX = currentRotX.times(currentRotY);
-			   	    
-				    prevMouseX = x;
-				    prevMouseY = y;
-				    
-				    /* set new paramters to ViewCamera */
-				    gLCanvas.getViewCamera().addCameraRotation(currentRotX);
-				    
-			    	}
-				    else
-			    	{
-				    	/**
-				    	 *   --- ZOOMING ---
-				    	 */				    
-					    float zoomX = fZoomScale * (float)(x-prevMouseX);
-					    float zoomY = fZoomScale * (float)(prevMouseY-y);
-					    
-					    /* take abs(zoomX) */
-					    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
-					    	zoomX = -zoomX;
-					    }
-					    
-				    	prevMouseX = x;
-					    prevMouseY = y;
-					    
-					    /* set new paramters to ViewCamera */
-					    gLCanvas.getViewCamera().addCameraScale(
-					    		new Vec3f( 0, 0, zoomY +zoomX) );
-			    	}
+//
+//			    	if ( ! bMouseMiddleButtonDown ) {
+//				    
+//					/**
+//			    	 *   --- ROTATION ---
+//			    	 */
+//			    		
+//			    	Rotf currentRotX = new Rotf();
+//			    	Rotf currentRotY = new Rotf();
+//			   	    
+//			    	float fpercentX = (float)(x-prevMouseX)/(float)(size.width) 
+//			    		* fMouseSensitivityRotation;
+//			    	
+//			    	float fpercentY = (float)(y-prevMouseY)/(float)(size.height) 
+//			    		* fMouseSensitivityRotation;
+//			    	
+//			    	
+//			   	    currentRotX.set(new Vec3f(0,1,0), 
+//			   	    		fpercentX* MathUtil.PI);
+//			   	    
+//			   	    currentRotY.set(new Vec3f(0,1,0), 
+//				    		fpercentY* MathUtil.PI);
+//			   	    
+//			   	    /* concatinate roations.. */
+//			   	    currentRotX = currentRotX.times(currentRotY);
+//			   	    
+//				    prevMouseX = x;
+//				    prevMouseY = y;
+//				    
+//				    /* set new paramters to ViewCamera */
+//				    gLCanvas.getViewCamera().addCameraRotation(currentRotX);
+//				    
+//			    	}
+//				    else
+//			    	{
+//				    	/**
+//				    	 *   --- ZOOMING ---
+//				    	 */				    
+//					    float zoomX = fZoomScale * (float)(x-prevMouseX);
+//					    float zoomY = fZoomScale * (float)(prevMouseY-y);
+//					    
+//					    /* take abs(zoomX) */
+//					    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
+//					    	zoomX = -zoomX;
+//					    }
+//					    
+//				    	prevMouseX = x;
+//					    prevMouseY = y;
+//					    
+//					    /* set new paramters to ViewCamera */
+//					    gLCanvas.getViewCamera().addCameraScale(
+//					    		new Vec3f( 0, 0, zoomY +zoomX) );
+//			    	}
 
 		} else
 		{

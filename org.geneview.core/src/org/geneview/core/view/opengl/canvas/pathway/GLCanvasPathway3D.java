@@ -355,9 +355,10 @@ implements IMediatorReceiver, IMediatorSender {
 	    if (fAspectRatio < 1.0)
 	    {
 	    	fAspectRatio = 1.0f / fAspectRatio;
-	      gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
+	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
 	    }
-	    else gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
+	    else 
+	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
 	    
 		// FIXME: values have to be taken from XML file!!
 //		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
@@ -377,126 +378,7 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
 		iHitCount = gl.glRenderMode(GL.GL_RENDER);
-		pickingBuffer.get(iArPickingBuffer);
-		processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint);
-	}
-
-	protected void processHits(final GL gl, int iHitCount,
-			int iArPickingBuffer[], final Point pickPoint) {
-
 		pickingManager.processHits(this, iHitCount, iArPickingBuffer, EPickingMode.CLICKED);
-//
-//		int iPtr = 0;
-//		int i = 0;
-//
-//		int iPickedObjectId = 0;
-//
-//		// Only pick object that is nearest
-//		int iMinimumZValue = Integer.MAX_VALUE;
-//		for (i = 0; i < iHitCount; i++)
-//		{
-//			iPtr++;
-//			// Check if object is nearer than previous objects
-//			if (iArPickingBuffer[iPtr] < iMinimumZValue)
-//			{
-//				iMinimumZValue = iArPickingBuffer[iPtr];
-//				iPtr++;
-//				iPtr++;
-//				iPickedObjectId = iArPickingBuffer[iPtr];
-//			}
-//			iPtr++;
-//		}
-//		
-//		if (iPickedObjectId == 0)
-//		{
-//			// Remove pathway pool fisheye
-//			iMouseOverPickedPathwayId = -1;
-//
-//			infoAreaRenderer.resetPoint();
-//
-//			return;
-//		}
-//
-//		PathwayVertexGraphItemRep pickedVertexRep
-//			= refGLPathwayManager.getVertexRepByPickID(iPickedObjectId);
-//
-//		if (pickedVertexRep == null)
-//			return;
-//
-//		if (selectedVertex != null
-//				&& !selectedVertex.equals(pickedVertexRep))
-//		{
-//			loadNodeInformationInBrowser(((PathwayVertexGraphItem)pickedVertexRep.getAllItemsByProp(
-//					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
-//			
-//			infoAreaRenderer.resetAnimation();
-//		}
-//		
-//		// Remove pathway pool fisheye
-//		iMouseOverPickedPathwayId = -1;
-//
-//		// System.out.println("Picked node:" +refPickedVertexRep.getName());
-//
-//		// Reset pick point
-//		infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl,
-//				pickPoint.x, pickPoint.y);
-//
-//		// If event is just mouse over (and not real picking)
-//		// highlight the object under the cursor
-//		if (bIsMouseOverPickingEvent)
-//		{
-//			if (selectedVertex == null ||
-//					(selectedVertex != null && !selectedVertex.equals(pickedVertexRep)))
-//			{
-//				selectedVertex = pickedVertexRep;
-//				bSelectionChanged = true;
-//			}
-//			
-//			return;
-//		}
-//
-//		if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
-//				EPathwayVertexType.map))
-//		{
-//			String strTmp = pickedVertexRep.getPathwayVertexGraphItem().getName();
-//
-//			int iPathwayId = -1;
-//			try
-//			{
-//				iPathwayId = Integer.parseInt(strTmp
-//						.substring(strTmp.length() - 4));
-//			} catch (NumberFormatException e)
-//			{
-//				return;
-//			}
-//
-//			loadPathwayToUnderInteractionPosition(iPathwayId);
-//
-//			return;
-//		}
-//		else if (pickedVertexRep.getPathwayVertexGraphItem().getType()
-//				.equals(EPathwayVertexType.enzyme) 
-//			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
-//				.equals(EPathwayVertexType.gene)
-//			|| pickedVertexRep.getPathwayVertexGraphItem().getType()
-//				.equals(EPathwayVertexType.other)) // FIXME: just for testing BioCarta integration
-//		{
-//			selectedVertex = pickedVertexRep;
-//			bSelectionChanged = true;
-//
-//			loadDependentPathwayBySingleVertex(gl, selectedVertex);
-//
-//			if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.gene))
-//			{
-//				int iAccessionID  = generalManager.getSingelton().getGenomeIdManager()
-//					.getIdIntFromIntByMapping(pickedVertexRep.getId(), 
-//						EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-//				
-//				generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-//					.addSelectionRep(iAccessionID, new SelectedElementRep(this.getId(), 
-//							pickedVertexRep.getXOrigin(), pickedVertexRep.getYOrigin()));
-//			}
-//		}
 	}
 	
 	protected void checkForHits()
@@ -540,7 +422,7 @@ implements IMediatorReceiver, IMediatorSender {
 					int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
 					
 					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-							tmpVertexGraphItemRep.getXOrigin(), iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()), ESelectionMode.ReplacePick);
+							tmpVertexGraphItemRep.getXOrigin(), iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()), ESelectionMode.AddPick);
 
 					// Trigger update
 
@@ -552,11 +434,9 @@ implements IMediatorReceiver, IMediatorSender {
 					alSetSelection.get(0).getWriteToken();
 					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
 					alSetSelection.get(0).returnWriteToken();
-					alSetSelection.get(0).updateSelectionSet(iUniqueId);
 				}
 			}
 			
-			// TODO: flush hits!
 			pickingManager.flushHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION);
 		}
 	}
