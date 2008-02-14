@@ -170,14 +170,11 @@ public class GLConnectionLineRenderer {
 									selectedElementRepDest.getContainingViewID()).getScale();
 							rotDest = stackLayer.getTransformByElementId(
 									selectedElementRepDest.getContainingViewID()).getRotation();
-
-							float fXCoordSrc = selectedElementRepSrc.getXCoord() * GLPathwayManager.SCALING_FACTOR_X;
-							float fYCoordSrc = selectedElementRepSrc.getYCoord() * GLPathwayManager.SCALING_FACTOR_Y;
-							float fXCoordDest = selectedElementRepDest.getXCoord() * GLPathwayManager.SCALING_FACTOR_X;
-							float fYCoordDest = selectedElementRepDest.getYCoord() * GLPathwayManager.SCALING_FACTOR_Y;
 							
-							vecMatSrc.set(fXCoordSrc, fYCoordSrc, 0);
-							vecMatDest.set(fXCoordDest, fYCoordDest, 0);
+							vecMatSrc.set( selectedElementRepSrc.getXCoord(), 
+									selectedElementRepSrc.getYCoord(), 0);
+							vecMatDest.set(selectedElementRepDest.getXCoord(), 
+									selectedElementRepDest.getYCoord(), 0);
 							
 							rotSrc.toMatrix(matSrc);
 							rotDest.toMatrix(matDest);

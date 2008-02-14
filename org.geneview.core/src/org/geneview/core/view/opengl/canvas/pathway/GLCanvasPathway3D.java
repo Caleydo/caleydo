@@ -343,7 +343,9 @@ implements IMediatorReceiver, IMediatorSender {
 					int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
 					
 					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-							tmpVertexGraphItemRep.getXOrigin(), iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()), ESelectionMode.AddPick);
+							tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X, 
+							(iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y), 
+							ESelectionMode.AddPick);
 
 					// Trigger update
 
