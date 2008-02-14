@@ -1,7 +1,12 @@
 package org.geneview.core.manager.view;
 
+import java.awt.Point;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.manager.IGeneralManager;
@@ -9,6 +14,9 @@ import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+
+import com.sun.opengl.util.BufferUtil;
 
 /**
  * 
@@ -31,12 +39,15 @@ public class PickingManager extends AAbstractManager
 {	
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToPickingIDHashMap;
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToExternalIDHashMap;
-	private int iIDCounter;
+	private int iIDCounter = 0;
 	private HashMap<Integer, ArrayList<Pick>> hashSignatureToHitList;
+	
+	private HashMap<Integer, Long> hashViewIDToLastMouseMovedTimeStamp;
+	private HashMap<Integer, Boolean> hashViewIDToIsMouseOverPickingEvent;
 	
 	
 	/**
-	 * Constructor. 
+	 * Constructor 
 	 * 
 	 * @param setGeneralManager
 	 */
@@ -47,10 +58,12 @@ public class PickingManager extends AAbstractManager
 				IGeneralManager.iUniqueID_TypeOffset_PickingID, 
 				ManagerType.PICKING_MANAGER);
 		
-		iIDCounter = 0;
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 		hashSignatureToExternalIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
+		hashViewIDToLastMouseMovedTimeStamp = new HashMap<Integer, Long>();
+		hashViewIDToIsMouseOverPickingEvent = new HashMap<Integer, Boolean>();
+		
 	}
 	
 	/**
@@ -95,11 +108,136 @@ public class PickingManager extends AAbstractManager
 		return iPickingID;		
 	}
 	
+	public void handlePicking(AUniqueManagedObject uniqueManagedObject, 
+					GL gl,
+					PickingJoglMouseListener pickingTriggerMouseAdapter, 
+					int iGLDisplayListIndex)
+	{
+		handlePicking(uniqueManagedObject, gl, pickingTriggerMouseAdapter, iGLDisplayListIndex, false);
+	}
+
+		
+	public void handlePicking(AUniqueManagedObject uniqueManagedObject, 
+				GL gl,
+				PickingJoglMouseListener pickingTriggerMouseAdapter, 
+				int iGLDisplayListIndex, 
+				boolean bIsMaster)
+	{
+		int iViewID = uniqueManagedObject.getId();
+		
+		Point pickPoint = null;
+
+		boolean bMouseReleased =
+			pickingTriggerMouseAdapter.wasMouseReleased();
+
+		EPickingMode ePickingMode = EPickingMode.CLICKED;
+		
+		if (pickingTriggerMouseAdapter.wasMousePressed()
+				|| bMouseReleased)
+		{			
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			//bIsMouseOverPickingEvent = false;
+			ePickingMode = EPickingMode.CLICKED;
+		}	
+		else if (pickingTriggerMouseAdapter.wasMouseDragged())
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			ePickingMode = EPickingMode.DRAGGED;
+		}	
+		else if (pickingTriggerMouseAdapter.wasMouseMoved())
+		{
+			// Restart timer
+			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
+			hashViewIDToIsMouseOverPickingEvent.put(iViewID, true);
+			
+		} 
+		else if (hashViewIDToIsMouseOverPickingEvent.get(iViewID) != null &&
+				 hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null &&
+				hashViewIDToIsMouseOverPickingEvent.get(iViewID) == true
+				&& System.nanoTime() - hashViewIDToLastMouseMovedTimeStamp.get(iViewID) >= 0)// 1e9)
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
+			ePickingMode = EPickingMode.MOUSE_OVER;
+		}
+	
+		
+		if (pickPoint == null)
+		{
+			return;
+		}
+		
+		hashViewIDToIsMouseOverPickingEvent.put(iViewID, false);
+		
+		int PICKING_BUFSIZE = 1024;
+
+		int iArPickingBuffer[] = new int[PICKING_BUFSIZE];
+		IntBuffer pickingBuffer = BufferUtil.newIntBuffer(PICKING_BUFSIZE);
+		int iHitCount = -1;
+		int viewport[] = new int[4];
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+
+		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
+		gl.glRenderMode(GL.GL_SELECT);
+
+		gl.glInitNames();
+
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+
+		//gl.glPushName(99);
+
+		/* create 5x5 pixel picking region near cursor location */
+		GLU glu = new GLU();
+		glu.gluPickMatrix((double) pickPoint.x,
+				(double) (viewport[3] - pickPoint.y),// 
+				5.0, 5.0, viewport, 0); // pick width and height is set to 5
+		// (i.e. picking tolerance)
+
+		float fAspectRatio = (float) (float) (viewport[3] - viewport[1]) 
+			/ (float) (viewport[2] - viewport[0]);
+
+	    if (fAspectRatio < 1.0)
+	    {
+	    	fAspectRatio = 1.0f / fAspectRatio;
+	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
+	    }
+	    else 
+	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
+		
+		// FIXME: values have to be taken from XML file!!
+//		gl.glOrtho(-1.0f, 1.0f, -h, h, 1.0f, 1.0f);
+		//gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+		
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		// Store picked point
+		Point tmpPickPoint = (Point) pickPoint.clone();
+		// Reset picked point
+		pickPoint = null;
+
+		gl.glCallList(iGLDisplayListIndex);
+		//renderPolyLines(gl);
+		
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glPopMatrix();
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		iHitCount = gl.glRenderMode(GL.GL_RENDER);
+		pickingBuffer.get(iArPickingBuffer);
+		//System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
+		//processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, ePickingMode);
+		processHits(uniqueManagedObject, iHitCount, iArPickingBuffer, ePickingMode, bIsMaster);
+	}
+	
+	// delete when other views are up to date
 	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
 	{	
 		processHits(uniqueManagedObject, iHitCount, iArPickingBuffer, myMode, false);
 	}
 	
+	// make private when other views are up to date
 	/**
 	 * Extracts the nearest hit from the provided iArPickingBuffer
 	 * Stores it internally
@@ -277,15 +415,12 @@ public class PickingManager extends AAbstractManager
 				tempList.add(new Pick(iPickingID, myMode));
 					hashSignatureToHitList.put(iSignature, tempList);
 			
-			} else
-			{
-				
+			} 
+			else
+			{				
 					hashSignatureToHitList.get(iSignature).clear();
-					hashSignatureToHitList.get(iSignature).add(new Pick(iPickingID, myMode));
-				
-			}
-		
-			
+					hashSignatureToHitList.get(iSignature).add(new Pick(iPickingID, myMode));				
+			}			
 		}
 	}
 		
@@ -320,7 +455,7 @@ public class PickingManager extends AAbstractManager
 		{
 			throw new GeneViewRuntimeException(
 					"PickingManager: The view id has to have exactly 5 digits",
-					GeneViewRuntimeExceptionType.VIEW);
+					GeneViewRuntimeExceptionType.MANAGER);
 		}
 	}
 	
@@ -330,7 +465,7 @@ public class PickingManager extends AAbstractManager
 		{
 			throw new GeneViewRuntimeException(
 					"PickingManager: Type has to be larger then or exactly 0 and less than 100",
-					GeneViewRuntimeExceptionType.VIEW);
+					GeneViewRuntimeExceptionType.MANAGER);
 		}
 	}
 	

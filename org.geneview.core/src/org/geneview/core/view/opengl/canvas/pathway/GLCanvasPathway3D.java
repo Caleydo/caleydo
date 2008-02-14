@@ -151,6 +151,8 @@ implements IMediatorReceiver, IMediatorSender {
 	public void display(final GL gl) {	
 		
 		handlePicking(gl);
+		// as soon as there is a display list use this to handle picking
+		//pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, iGLDisplayListIndex)
 		checkForHits();
 				
 //		if (bRebuildVisiblePathwayDisplayLists)
