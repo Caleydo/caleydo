@@ -3,7 +3,8 @@ package org.geneview.core.view.opengl.canvas;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.AUniqueManagedObject;
@@ -71,11 +72,57 @@ implements GLEventListener {
 			.registerGLEventListenerByGLCanvasID(parentGLCanvas.getID(), this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void init(GLAutoDrawable drawable) {
+		
+		((GLEventListener)parentGLCanvas).init(drawable);
+
+		init(drawable.getGL());
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 */
+	public void display(GLAutoDrawable drawable) {
+
+		((GLEventListener)parentGLCanvas).display(drawable);
+		
+		display(drawable.getGL());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
+	 */
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
+
+		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
+		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
+
+		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
+	}
+	
 	public final ManagerObjectType getBaseType()
 	{
 		return null;
 	}
-
+	
+	public abstract void init(final GL gl);
+	public abstract void display(final GL gl);
+	
 	/**
 	 * @see org.geneview.core.view.IView#addSetId(int[])
 	 */

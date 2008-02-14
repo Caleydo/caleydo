@@ -56,24 +56,17 @@ extends AGLCanvasUser {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
-	public void init(GLAutoDrawable drawable) {
-
-		((GLEventListener)parentGLCanvas).init(drawable);
+	public void init(final GL gl) {
 		
-		final GL gl = drawable.getGL();
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
-	public void display(GLAutoDrawable drawable) {
-		
-		((GLEventListener)parentGLCanvas).display(drawable);
-		
-		final GL gl = drawable.getGL();	
+	public void display(final GL gl) {
 		
 		if  ( targetSet != null ) 
 		{

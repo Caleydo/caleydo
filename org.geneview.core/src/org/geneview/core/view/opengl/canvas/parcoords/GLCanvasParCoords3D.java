@@ -135,13 +135,9 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
-	public void init(GLAutoDrawable drawable) {
-		
-		((GLEventListener)parentGLCanvas).init(drawable);
-		
-		final GL gl = drawable.getGL();
+	public void init(final GL gl) {
 
 		ISetSelection tmpSelection = alSetSelection.get(0);
 		
@@ -194,13 +190,9 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
-	public void display(GLAutoDrawable drawable) {
-
-		((GLEventListener)parentGLCanvas).display(drawable);
-		
-		final GL gl = drawable.getGL();
+	public void display(final GL gl) {
 		
 //		//gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 //		if(bIsDisplayListDirty)

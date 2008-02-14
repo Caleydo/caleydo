@@ -106,8 +106,7 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
-//		pickingTriggerMouseAdapter = (PickingJoglMouseListener) openGLCanvasDirector
-//				.getJoglCanvasForwarder().getJoglMouseListener();
+		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 
 		infoAreaRenderer = new GLInfoAreaRenderer(generalManager,
 				refGLPathwayManager);
@@ -120,13 +119,9 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
-	public void init(GLAutoDrawable drawable) {
-
-		((GLEventListener)parentGLCanvas).init(drawable);
-		
-		final GL gl = drawable.getGL();
+	public void init(final GL gl) {
 		
 //		// Clearing window and set background to WHITE
 //		// is already set inside JoglCanvasForwarder
@@ -148,17 +143,14 @@ implements IMediatorReceiver, IMediatorSender {
 		initPathwayData(gl);
 	}
 	
+
 	/*
 	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
-	public void display(GLAutoDrawable drawable) {
+	public void display(final GL gl) {	
 		
-		((GLEventListener)parentGLCanvas).display(drawable);
-		
-		final GL gl = drawable.getGL();		
-		
-		//handlePicking(gl);
+		handlePicking(gl);
 		checkForHits();
 				
 //		if (bRebuildVisiblePathwayDisplayLists)
@@ -167,29 +159,6 @@ implements IMediatorReceiver, IMediatorSender {
 		renderScene(gl);
 		renderInfoArea(gl);
 		
-	}
-
-	
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
-	 */
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-			boolean deviceChanged) {
-
-		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
-	 */
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
-	
-//		((GLEventListener)parentGLCanvas).reshape(drawable, x, y, width, height);
-		
-//		display(drawable);
 	}
 	
 	protected void initPathwayData(final GL gl) {
@@ -373,19 +342,26 @@ implements IMediatorReceiver, IMediatorSender {
 
 		//gl.glPushName(0);
 
-		/* create 1x1 pixel picking region near cursor location */
+		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
 		glu.gluPickMatrix((double) pickPoint.x,
 				(double) (viewport[3] - pickPoint.y),// 
-				1.0, 1.0, viewport, 0); // pick width and height is set to 1
+				5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
-		float h = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]);
+		float fAspectRatio = (float) (float) (viewport[2] - viewport[0]) 
+			/ (float) (viewport[3] - viewport[1]);
 
+	    if (fAspectRatio < 1.0)
+	    {
+	    	fAspectRatio = 1.0f / fAspectRatio;
+	      gl.glOrtho(-fAspectRatio, fAspectRatio, -1.0, 1.0, -1.0, 1.0);
+	    }
+	    else gl.glOrtho(-1.0, 1.0, -fAspectRatio, fAspectRatio, -1.0, 1.0);
+	    
 		// FIXME: values have to be taken from XML file!!
 //		gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+//		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 

@@ -113,17 +113,62 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingManager = generalManager.getSingelton()
 			.getViewGLCanvasManager().getPickingManager();
 		
-//		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
+		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 		
 		arSlerpActions = new ArrayList<SlerpAction>();
 		
 		glConnectionLineRenderer = new GLConnectionLineRenderer(generalManager,
 				underInteractionLayer, stackLayer, poolLayer);
 	}
-	
 
-	private void retrieveContainedViews(final GL gl,
-			final GLAutoDrawable drawable) {
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
+	 */
+	public void init(final GL gl) {
+		
+	    time = new SystemTime();
+	    ((SystemTime) time).rebase();
+		
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+//
+//		gl.glEnable(GL.GL_DEPTH_TEST);
+//		gl.glEnable(GL.GL_BLEND);
+//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//		gl.glDepthFunc(GL.GL_LEQUAL);
+//		gl.glEnable(GL.GL_LINE_SMOOTH);
+//		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+//		gl.glLineWidth(1.0f);
+//		gl.glEnable(GL.GL_COLOR_MATERIAL);
+//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+		
+		buildStackLayer(gl);
+		
+		retrieveContainedViews(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
+	 */
+	public void display(final GL gl) {
+
+		handlePicking(gl);
+		
+//		if (bRebuildVisiblePathwayDisplayLists)
+//			rebuildVisiblePathwayDisplayLists(gl);
+		
+		time.update();
+		doSlerpActions(gl);
+		
+//		renderPoolLayer(gl);
+		renderStackLayer(gl);
+		renderUnderInteractionLayer(gl);
+		
+		glConnectionLineRenderer.render(gl);
+	}
+
+	private void retrieveContainedViews(final GL gl) {
 		
 		Iterator<GLEventListener> iterGLEventListener = 
 			generalManager.getSingelton().getViewGLCanvasManager()
@@ -131,7 +176,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		while(iterGLEventListener.hasNext())
 		{
-			GLEventListener tmpGLEventListener = iterGLEventListener.next();
+			AGLCanvasUser tmpGLEventListener = (AGLCanvasUser)iterGLEventListener.next();
 			
 			if(tmpGLEventListener == this)
 				continue;
@@ -147,7 +192,7 @@ implements IMediatorReceiver, IMediatorSender {
 			stackLayer.addElement(iViewId);
 			stackLayer.setElementVisibilityById(true, iViewId);
 			
-			tmpGLEventListener.init(drawable);
+			tmpGLEventListener.init(gl);
 			
 			pickingManager.getPickingID(this, VIEW_PICKING, iViewId);
 		}
@@ -214,8 +259,7 @@ implements IMediatorReceiver, IMediatorSender {
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
 		
-	private void renderUnderInteractionLayer(final GL gl,
-			final GLAutoDrawable drawable) {
+	private void renderUnderInteractionLayer(final GL gl) {
 		
 		// Check if a pathway is currently under interaction
 		if (underInteractionLayer.getElementList().size() == 0)
@@ -223,12 +267,11 @@ implements IMediatorReceiver, IMediatorSender {
 
 		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
 		gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
-		renderViewById(gl, drawable, iViewId, underInteractionLayer);
+		renderViewById(gl, iViewId, underInteractionLayer);
 		gl.glPopName();
 	}
 	
-	private void renderStackLayer(final GL gl,
-			final GLAutoDrawable drawable) {
+	private void renderStackLayer(final GL gl) {
 
 		Iterator<Integer> iterElementList = stackLayer.getElementList().iterator();
 		int iViewId = 0;
@@ -242,13 +285,12 @@ implements IMediatorReceiver, IMediatorSender {
 //				continue;
 			
 			gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
-			renderViewById(gl, drawable, iViewId, stackLayer);		
+			renderViewById(gl, iViewId, stackLayer);		
 			gl.glPopName();
 		}
 	}
 	
 	private void renderViewById(final GL gl,
-			final GLAutoDrawable drawable,
 			final int iViewId, 
 			final JukeboxHierarchyLayer layer) {
 		
@@ -269,14 +311,13 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
 		
-		((GLEventListener) generalManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId)).display(drawable);
+		((AGLCanvasUser) generalManager.getSingelton()
+				.getViewGLCanvasManager().getItem(iViewId)).display(gl);
 		
 		gl.glPopMatrix();	
 	}
 	
-	private void doSlerpActions(final GL gl,
-			final GLAutoDrawable drawable) {
+	private void doSlerpActions(final GL gl) {
 
 		if (arSlerpActions.isEmpty())
 			return;
@@ -290,12 +331,11 @@ implements IMediatorReceiver, IMediatorSender {
 				iSlerpFactor = 1000;
 		}
 		
-		slerpView(gl, drawable, arSlerpActions.get(0));
+		slerpView(gl, arSlerpActions.get(0));
 		// selectedVertex = null;
 	}
 	
-	private void slerpView(final GL gl, 
-			final GLAutoDrawable drawable, SlerpAction slerpAction) {
+	private void slerpView(final GL gl, SlerpAction slerpAction) {
 
 		int iViewId = slerpAction.getElementId();
 		SlerpMod slerpMod = new SlerpMod();
@@ -311,8 +351,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		slerpMod.applySlerp(gl, transform);
 		
-		((GLEventListener) generalManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId)).display(drawable);
+		((AGLCanvasUser) generalManager.getSingelton()
+				.getViewGLCanvasManager().getItem(iViewId)).display(gl);
 
 		gl.glPopMatrix();
 
@@ -329,7 +369,7 @@ implements IMediatorReceiver, IMediatorSender {
 			slerpMod.playSlerpSound();
 	}
 	
-	private void handlePicking(final GL gl, final GLAutoDrawable drawable)
+	private void handlePicking(final GL gl)
 	{
 		Point pickPoint = null;
 
@@ -375,12 +415,19 @@ implements IMediatorReceiver, IMediatorSender {
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
-		float h = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]);
+		float fAspectRatio = (float) (float) (viewport[2] - viewport[0]) 
+			/ (float) (viewport[3] - viewport[1]);
+
+	    if (fAspectRatio < 1.0)
+	    {
+	    	fAspectRatio = 1.0f / fAspectRatio;
+	      gl.glOrtho(-fAspectRatio, fAspectRatio, -1.0, 1.0, -1.0, 1.0);
+	    }
+	    else gl.glOrtho(-1.0, 1.0, -fAspectRatio, fAspectRatio, -1.0, 1.0);
 
 		// FIXME: values have to be taken from XML file!!
 		//gl.glOrtho(-4.0f, 4.0f, -4*h, 4*h, 1.0f, 1000.0f);
-		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
+//		gl.glFrustum(-1.0f, 1.0f, -h, h, 1.0f, 1000.0f);
 		
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
@@ -389,8 +436,8 @@ implements IMediatorReceiver, IMediatorSender {
 		// Reset picked point
 		pickPoint = null;
 
-		renderStackLayer(gl, drawable);
-		renderUnderInteractionLayer(gl, drawable);
+		renderStackLayer(gl);
+		renderUnderInteractionLayer(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
@@ -490,72 +537,6 @@ implements IMediatorReceiver, IMediatorSender {
 
 	@Override
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
-
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void display(GLAutoDrawable drawable) {
-
-		((GLEventListener)parentGLCanvas).display(drawable);
-		
-		final GL gl = drawable.getGL();
-
-		//handlePicking(gl, drawable);
-		
-//		if (bRebuildVisiblePathwayDisplayLists)
-//			rebuildVisiblePathwayDisplayLists(gl);
-		
-		time.update();
-		doSlerpActions(gl, drawable);
-		
-//		renderPoolLayer(gl);
-		renderStackLayer(gl, drawable);
-		renderUnderInteractionLayer(gl, drawable);
-		
-		glConnectionLineRenderer.render(gl);
-	}
-
-	@Override
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-			boolean deviceChanged) {
-
-		((GLEventListener)parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
-		
-	}
-
-	@Override
-	public void init(GLAutoDrawable drawable) {
-		
-		((GLEventListener)parentGLCanvas).init(drawable);
-		
-		final GL gl = drawable.getGL();
-		
-	    time = new SystemTime();
-	    ((SystemTime) time).rebase();
-		
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-//
-//		gl.glEnable(GL.GL_DEPTH_TEST);
-//		gl.glEnable(GL.GL_BLEND);
-//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//		gl.glDepthFunc(GL.GL_LEQUAL);
-//		gl.glEnable(GL.GL_LINE_SMOOTH);
-//		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-//		gl.glLineWidth(1.0f);
-//		gl.glEnable(GL.GL_COLOR_MATERIAL);
-//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
-		
-		buildStackLayer(gl);
-		
-		retrieveContainedViews(gl, drawable);
-		
-	}
-
-	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
 
 		// TODO Auto-generated method stub
 		
