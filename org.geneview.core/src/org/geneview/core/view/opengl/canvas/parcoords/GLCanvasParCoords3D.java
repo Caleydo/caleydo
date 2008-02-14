@@ -5,6 +5,7 @@ import gleem.linalg.Vec4f;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -21,10 +22,8 @@ import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
-import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 /**
@@ -76,11 +75,12 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private ParCoordsRenderStyle renderStyle;
 	
+	private PolylineSelectionManager polyLineSelectionManager;
 	// Selection array lists - combined they make up all polylines
-	private ArrayList<Integer> alSelectedPolylines;
-	private ArrayList<Integer> alNormalPolylines;
-	private ArrayList<Integer> alMouseOverPolylines;
-	private ArrayList<Integer> alDeselectedPolylines;
+//	private ArrayList<Integer> alSelectedPolylines;
+//	private ArrayList<Integer> alNormalPolylines;
+//	private ArrayList<Integer> alMouseOverPolylines;
+//	private ArrayList<Integer> alDeselectedPolylines;
 	
 	
 	ArrayList<IStorage> alDataStorages;
@@ -112,16 +112,21 @@ implements IMediatorReceiver, IMediatorSender {
 		renderStyle = new ParCoordsRenderStyle();	
 		
 		alDataStorages = new ArrayList<IStorage>();
-		alSelectedPolylines = new ArrayList<Integer>();
-		alNormalPolylines = new ArrayList<Integer>();
-		alMouseOverPolylines = new ArrayList<Integer>();
+		polyLineSelectionManager = new PolylineSelectionManager();
+//		alSelectedPolylines = new ArrayList<Integer>();
+//		alNormalPolylines = new ArrayList<Integer>();
+//		alMouseOverPolylines = new ArrayList<Integer>();
+		
+	
+		
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
-	public void init(final GL gl) {
+	public void init(final GL gl) 
+	{
 
 		ISetSelection tmpSelection = alSetSelection.get(0);
 		
@@ -131,13 +136,15 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
 		
+		
+		initPolyLineLists();
+		
+		
 		gl.glClearColor(ParCoordsRenderStyle.CANVAS_COLOR.x(), 
 						ParCoordsRenderStyle.CANVAS_COLOR.y(), 
 						ParCoordsRenderStyle.CANVAS_COLOR.z(),
 						ParCoordsRenderStyle.CANVAS_COLOR.w());
 		
-	
-		//gl.glRenderMode(GL.GL_SELECT);
 		
 		iGLDisplayListIndex = gl.glGenLists(1);	
 		
@@ -155,8 +162,8 @@ implements IMediatorReceiver, IMediatorSender {
 //				new SelectedElementRep(this.getId(), 200, 0));
 		//------------------------------------------------
 		
-		
-		initPolyLineLists();
+	
+	
 	}
 	
 	/*
@@ -250,7 +257,9 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	private void initPolyLineLists()
 	{		
-		
+		// TODO: check if I only get in here once
+		alDataStorages.clear();
+		polyLineSelectionManager.clearAll();
 		if (alSetData == null)
 			return;
 		
@@ -287,7 +296,7 @@ implements IMediatorReceiver, IMediatorSender {
 			else
 			{				
 				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-				iNumberOfEntriesToRender = 100;
+				iNumberOfEntriesToRender = 1000;
 			}
 		}
 		
@@ -310,7 +319,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{			
-				alNormalPolylines.add(iPolyLineCount);	
+				polyLineSelectionManager.initialAdd(iPolyLineCount);	
 		}
 		
 	}
@@ -318,20 +327,21 @@ implements IMediatorReceiver, IMediatorSender {
 	private void renderScene(GL gl, RenderMode renderMode)
 	{		
 		
-		ArrayList<Integer> alDataToRender = null;
+		Set<Integer> setDataToRender = null;
 		
 		switch (renderMode)
 		{
 			case NORMAL:
-				alDataToRender = alNormalPolylines;
+				setDataToRender = polyLineSelectionManager.getNormalPolylines();
 				if(bPreventOcclusion)
 				{
 					// TODO: input the number of polylines here
-					Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(100);
+					Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(setDataToRender.size());
 					gl.glColor4f(occlusionPrevColor.x(),
 								occlusionPrevColor.y(),
 								occlusionPrevColor.z(),
 								occlusionPrevColor.w());
+					
 				}
 				else
 				{
@@ -339,32 +349,38 @@ implements IMediatorReceiver, IMediatorSender {
 								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.y(),
 								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.z(),
 								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.w());
-				}				
+				}
+				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				break;
 			case SELECTION:	
-				alDataToRender = alSelectedPolylines;
+				setDataToRender = polyLineSelectionManager.getSelectedPolylines();
 				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
 						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
 						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.z(),
 						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.w());
+				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
-				alDataToRender = alMouseOverPolylines;
+				setDataToRender = polyLineSelectionManager.getMouseOverPolylines();
 				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.x(),
 						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.y(),
 						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.z(),
 						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.w());
+				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				break;
 			default:
-				alDataToRender = alNormalPolylines;
+				setDataToRender = polyLineSelectionManager.getNormalPolylines();
 		}
 	
 		
-		int iNumberOfPolyLinesToRender = alDataToRender.size();
+		//int iNumberOfPolyLinesToRender = setDataToRender.size();
+		
+		Iterator<Integer> dataIterator = setDataToRender.iterator();
 		// this for loop executes once per polyline
-		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
+		while(dataIterator.hasNext())
 		{
-			gl.glPushName(pickingManager.getPickingID(this, POLYLINE_SELECTION, alDataToRender.get(iPolyLineCount)));	
+			int iPolyLineID = dataIterator.next();
+			gl.glPushName(pickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineID));	
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 
@@ -375,7 +391,7 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				int iWhichStorage = 0;
 
-				iWhichStorage = alDataToRender.get(iPolyLineCount);
+				iWhichStorage = iPolyLineID;
 				
 				currentStorage = alDataStorages.get(iWhichStorage);
 			}
@@ -404,7 +420,7 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					currentStorage = alDataStorages.get(iVertricesCount);					
 					
-					iStorageIndex = alDataToRender.get(iPolyLineCount);					
+					iStorageIndex = iPolyLineID;					
 				}			
 				
 //				int test = generalManager.getSingelton().getGenomeIdManager()
@@ -421,7 +437,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 			gl.glEnd();
 			
-			gl.glPopName();
+			gl.glPopName();			
 		}		
 	}
 	
@@ -542,7 +558,7 @@ implements IMediatorReceiver, IMediatorSender {
 					Pick tempPick = alHits.get(iCount);
 					int iPickingID = tempPick.getPickingID();
 					int iExternalID = pickingManager.getExternalIDFromPickingID(this, iPickingID);
-					alNormalPolylines.remove(new Integer(iExternalID));
+					//alNormalPolylines.remove(new Integer(iExternalID));
 						
 					switch (tempPick.getPickingMode())
 					{						
@@ -551,20 +567,18 @@ implements IMediatorReceiver, IMediatorSender {
 							if(!bSelectionCleared)
 							{
 								bSelectionCleared = true;
-								alNormalPolylines.addAll(alSelectedPolylines);					
-								alSelectedPolylines.clear();								
+								polyLineSelectionManager.clearSelection();								
 							}
-							alSelectedPolylines.add(iExternalID);
+							polyLineSelectionManager.addSelection(iExternalID);
 							break;	
 						case MOUSE_OVER:
 							// TODO: if replace
 							if(!bMouseOverCleared)
 							{
 								bMouseOverCleared = true;
-								alNormalPolylines.addAll(alMouseOverPolylines);
-								alMouseOverPolylines.clear();
+								polyLineSelectionManager.clearMouseOver();
 							}
-							alMouseOverPolylines.add(iExternalID);
+							polyLineSelectionManager.addMouseOver(iExternalID);
 							break;
 						case DRAGGED:
 							// no drag action for polylines
@@ -674,7 +688,8 @@ implements IMediatorReceiver, IMediatorSender {
 			
 					//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
 					//			{
-					alSelectedPolylines.add(iExpressionStorageIndex);				
+					polyLineSelectionManager.clearSelection();
+					polyLineSelectionManager.addSelection(iExpressionStorageIndex);				
 					//			}
 						
 					Iterator<ISet> iterSetData = alSetData.iterator();

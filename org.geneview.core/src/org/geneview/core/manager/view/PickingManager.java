@@ -214,70 +214,21 @@ public class PickingManager extends AAbstractManager
 		pickingBuffer.get(iArPickingBuffer);
 		//System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
 		//processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint, ePickingMode);
-		processHits(uniqueManagedObject, iHitCount, iArPickingBuffer, ePickingMode, bIsMaster);
-	}
-	
-	// delete when other views are up to date
-	public void processHits(AUniqueManagedObject uniqueManagedObject, int iHitCount, int[] iArPickingBuffer, EPickingMode myMode)
-	{	
-		processHits(uniqueManagedObject, iHitCount, iArPickingBuffer, myMode, false);
-	}
-	
-	// make private when other views are up to date
-	/**
-	 * Extracts the nearest hit from the provided iArPickingBuffer
-	 * Stores it internally
-	 * Can process only one hit at at time at the moment
-	 * 
-	 * @param iHitCount
-	 * @param iArPickingBuffer
-	 */
-	public void processHits(AUniqueManagedObject uniqueManagedObject, 
-							int iHitCount, 
-							int[] iArPickingBuffer, 
-							EPickingMode myMode, 
-							boolean bIsMaster)
-	{			
-		 int iPickingBufferCounter = 0;	
+		ArrayList<Integer> iAlPickedObjectId =	processHits(iHitCount, iArPickingBuffer);
 		
-		 ArrayList<Integer> iAlPickedObjectId = new ArrayList<Integer>(2);
-		
-		// Only pick object that is nearest
-		int iMinimumZValue = Integer.MAX_VALUE;
-		int iNumberOfNames = 0;
-		int iNearestObjectIndex = 0;
-		for (int iCount = 0; iCount < iHitCount; iCount++)
-		{			
-			//iPickingBufferCounter++;
-			// Check if object is nearer than previous objects
-			if (iArPickingBuffer[iPickingBufferCounter+1] < iMinimumZValue)
-			{
-				// first element is number of names on name stack				
-				// second element is min Z Value
-				iMinimumZValue = iArPickingBuffer[iPickingBufferCounter+1];
-				iNearestObjectIndex = iPickingBufferCounter;
-				// third element is max Z Value
-				// fourth element is name of lowest name on stack
-				//iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3]);
-			}
-			iPickingBufferCounter = iPickingBufferCounter + 3 + iArPickingBuffer[iPickingBufferCounter];
-			
-		}		
-		
-		iNumberOfNames = iArPickingBuffer[iNearestObjectIndex];
-		
-		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++)
-		{
-			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3 + iNameCount]);
-		}
-		
-		//iPickingBufferCounter += iNumberOfNames;
 		if(iAlPickedObjectId.size() > 0)
 		{
-			processPicks(iAlPickedObjectId, uniqueManagedObject, myMode, bIsMaster);
+			processPicks(iAlPickedObjectId, 
+					uniqueManagedObject, 
+					ePickingMode, 
+					bIsMaster, 
+					tmpPickPoint, 
+					pickingTriggerMouseAdapter.getPickedPointDragStart());
 		}
-		//return iPickedObjectId;		
+		
 	}
+	
+	
 	
 	/**
 	 * Returns the hit for a particular view and type
@@ -370,9 +321,62 @@ public class PickingManager extends AAbstractManager
 		return (iIDCounter * 100 + iType);		
 	}
 	
-	private void processPicks(ArrayList<Integer> alPickingIDs, AUniqueManagedObject uniqueManagedObject, EPickingMode myMode, boolean bIsMaster)
-	{
+	/**
+	 * Extracts the nearest hit from the provided iArPickingBuffer
+	 * Stores it internally
+	 * Can process only one hit at at time at the moment
+	 * 
+	 * @param iHitCount
+	 * @param iArPickingBuffer
+	 */
+	private ArrayList<Integer> processHits(int iHitCount, int[] iArPickingBuffer)
+	{			
+		 int iPickingBufferCounter = 0;	
 		
+		 ArrayList<Integer> iAlPickedObjectId = new ArrayList<Integer>(2);
+		
+		// Only pick object that is nearest
+		int iMinimumZValue = Integer.MAX_VALUE;
+		int iNumberOfNames = 0;
+		int iNearestObjectIndex = 0;
+		for (int iCount = 0; iCount < iHitCount; iCount++)
+		{			
+			//iPickingBufferCounter++;
+			// Check if object is nearer than previous objects
+			if (iArPickingBuffer[iPickingBufferCounter+1] < iMinimumZValue)
+			{
+				// first element is number of names on name stack				
+				// second element is min Z Value
+				iMinimumZValue = iArPickingBuffer[iPickingBufferCounter+1];
+				iNearestObjectIndex = iPickingBufferCounter;
+				// third element is max Z Value
+				// fourth element is name of lowest name on stack
+				//iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3]);
+			}
+			iPickingBufferCounter = iPickingBufferCounter + 3 + iArPickingBuffer[iPickingBufferCounter];
+			
+		}		
+		
+		iNumberOfNames = iArPickingBuffer[iNearestObjectIndex];
+		
+		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++)
+		{
+			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3 + iNameCount]);
+		}
+		
+		return iAlPickedObjectId;
+		//iPickingBufferCounter += iNumberOfNames;
+		
+		//return iPickedObjectId;		
+	}
+	
+	private void processPicks(ArrayList<Integer> alPickingIDs, 
+				AUniqueManagedObject uniqueManagedObject, 
+				EPickingMode myMode, 
+				boolean bIsMaster,
+				Point pickedPoint,
+				Point dragStartPoint)
+	{		
 		int iPickingID = 0;
 		int iSignature = 0;
 		int iOrigianlPickingID = 0;
@@ -390,22 +394,21 @@ public class PickingManager extends AAbstractManager
 			{				
 				int iViewUnderInteractionID = hashSignatureToPickingIDHashMap.get(iSignature).get(iOrigianlPickingID);
 				iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
-				System.out.println("Should be the name of a view: " + iViewUnderInteractionID);
-				
+				//System.out.println("Should be the name of a view: " + iViewUnderInteractionID);				
 			}
 			
 			
 			if (hashSignatureToHitList.get(iSignature) == null)
 			{				
 				ArrayList<Pick> tempList = new ArrayList<Pick>();
-				tempList.add(new Pick(iPickingID, myMode));
+				tempList.add(new Pick(iPickingID, myMode, pickedPoint, dragStartPoint));
 					hashSignatureToHitList.put(iSignature, tempList);
 			
 			} 
 			else
 			{				
-					hashSignatureToHitList.get(iSignature).clear();
-					hashSignatureToHitList.get(iSignature).add(new Pick(iPickingID, myMode));				
+				hashSignatureToHitList.get(iSignature).clear();
+				hashSignatureToHitList.get(iSignature).add(new Pick(iPickingID, myMode, pickedPoint, dragStartPoint));				
 			}			
 		}
 	}

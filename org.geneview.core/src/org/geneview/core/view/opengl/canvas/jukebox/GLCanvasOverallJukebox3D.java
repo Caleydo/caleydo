@@ -397,12 +397,12 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void loadViewToUnderInteractionLayer(final int iViewId) {
 
-		generalManager
-				.getSingelton()
-				.logMsg(this.getClass().getSimpleName()
-								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
-								+ iViewId + " is under interaction.",
-						LoggerType.VERBOSE);
+//		generalManager
+//				.getSingelton()
+//				.logMsg(this.getClass().getSimpleName()
+//								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
+//								+ iViewId + " is under interaction.",
+//						LoggerType.VERBOSE);
 
 		// Check if pathway is already under interaction
 		if (underInteractionLayer.containsElement(iViewId))
