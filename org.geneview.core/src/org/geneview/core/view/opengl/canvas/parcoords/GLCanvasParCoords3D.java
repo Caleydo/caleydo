@@ -73,22 +73,15 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private int iNumberOfAxis = 0;
 	
-	//private boolean bRenderPolylineSelection = false;
-	
 	private ParCoordsRenderStyle renderStyle;
 	
 	private PolylineSelectionManager polyLineSelectionManager;
-	// Selection array lists - combined they make up all polylines
-//	private ArrayList<Integer> alSelectedPolylines;
-//	private ArrayList<Integer> alNormalPolylines;
-//	private ArrayList<Integer> alMouseOverPolylines;
-//	private ArrayList<Integer> alDeselectedPolylines;
-	
+
 	
 	ArrayList<IStorage> alDataStorages;
 		
 	// TODO: Marc: just for update testing
-	private int iSelectedAccessionID = -1;
+	//private int iSelectedAccessionID = -1;
 	
 	/**
 	 * Constructor
@@ -108,17 +101,9 @@ implements IMediatorReceiver, IMediatorSender {
 		// TODO:
 		//int bla = EGenomeIdType.ACCESSION_CODE.ordinal();
 		
-		//hashPolylinePickingIDToIndex = new HashMap<Integer, Integer>();
-		//hashPolylineIndexToPickingID = new HashMap<Integer, Integer>();
-		
-		renderStyle = new ParCoordsRenderStyle();	
-		
 		alDataStorages = new ArrayList<IStorage>();
-		polyLineSelectionManager = new PolylineSelectionManager();
-//		alSelectedPolylines = new ArrayList<Integer>();
-//		alNormalPolylines = new ArrayList<Integer>();
-//		alMouseOverPolylines = new ArrayList<Integer>();
-			
+		renderStyle = new ParCoordsRenderStyle();		
+		polyLineSelectionManager = new PolylineSelectionManager();			
 	}
 	
 	/*
@@ -147,16 +132,13 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void init(final GL gl) 
 	{
-
-		ISetSelection tmpSelection = alSetSelection.get(0);
-		
-		
-		int[] iArTmpSelectionIDs = {13, 18, 19, 20, 33, 36, 37, 38, 39, 40};
-		//Collection<Integer> test = refGeneralManager.getSingelton().getGenomeIdManager()
-		//	.getIdIntListByType(13770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);		
-		
+		// initialize selection to an empty array with 
+		ISetSelection tmpSelection = alSetSelection.get(0);		
+		int[] iArTmpSelectionIDs = {};
 		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
 		
+		//Collection<Integer> test = refGeneralManager.getSingelton().getGenomeIdManager()
+		//	.getIdIntListByType(13770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);			
 		
 		initPolyLineLists();
 		
@@ -204,31 +186,9 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void display(final GL gl) 
 	{		
-		
-	
-
-		// check if we hit a polyline
 		checkForHits();
 	}
-	
-	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
-	{
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		// render the coordinate system only on the first run, not when we render the selection
-		//if(renderMode == RenderMode.NORMAL)
-		//{
-		renderCoordinateSystem(gl, iNumberOfAxis);		
-		//}
-		renderScene(gl, RenderMode.NORMAL);
-		renderScene(gl, RenderMode.MOUSE_OVER);
-		renderScene(gl, RenderMode.SELECTION);
 		
-		renderGates(gl, iNumberOfAxis, 0.0f);
-		
-	
-		gl.glEndList();
-	}
-	
 	/**
 	 * Choose whether to render one array as a polyline and every entry across arrays is an axis 
 	 * or whether the array corresponds to an axis and every entry across arrays is a polyline
@@ -282,9 +242,7 @@ implements IMediatorReceiver, IMediatorSender {
 		while (iterSetData.hasNext())
 		{
 			ISet tmpSet = iterSetData.next();
-			// TODO: test
-			//normalizeSet(tmpSet);
-			
+						
 			if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
 			{
 				alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
@@ -308,7 +266,7 @@ implements IMediatorReceiver, IMediatorSender {
 			else
 			{				
 				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-				//iNumberOfEntriesToRender = 1000;
+				iNumberOfEntriesToRender = 1000;
 			}
 		}
 		
@@ -330,13 +288,31 @@ implements IMediatorReceiver, IMediatorSender {
 			
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
-		{			
-				polyLineSelectionManager.initialAdd(iPolyLineCount);	
+		{	
+			if(!bRenderSelection)
+				polyLineSelectionManager.initialAdd(iPolyLineCount);
+			else
+				polyLineSelectionManager.initialAdd(alSetSelection.get(0).getSelectionIdArray()[iPolyLineCount]);
 		}
 		
 	}
 	
-	private void renderScene(GL gl, RenderMode renderMode)
+	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
+	{
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+	
+		renderCoordinateSystem(gl, iNumberOfAxis);	
+		
+		renderPolylines(gl, RenderMode.NORMAL);
+		renderPolylines(gl, RenderMode.MOUSE_OVER);
+		renderPolylines(gl, RenderMode.SELECTION);
+		
+		renderGates(gl, iNumberOfAxis, 0.0f);		
+	
+		gl.glEndList();
+	}
+	
+	private void renderPolylines(GL gl, RenderMode renderMode)
 	{		
 		
 		Set<Integer> setDataToRender = null;
@@ -352,8 +328,7 @@ implements IMediatorReceiver, IMediatorSender {
 					gl.glColor4f(occlusionPrevColor.x(),
 								occlusionPrevColor.y(),
 								occlusionPrevColor.z(),
-								occlusionPrevColor.w());
-					
+								occlusionPrevColor.w());					
 				}
 				else
 				{
@@ -493,8 +468,7 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glEnd();	
 			iCount++;
 			gl.glPopName();
-		}		
-		
+		}				
 	}
 	
 	private void renderGates(GL gl, int iNumberAxis, float fHeight)
@@ -552,6 +526,8 @@ implements IMediatorReceiver, IMediatorSender {
 			iCount++;
 		}
 	}
+	
+
 	
 	protected void checkForHits()
 	{
@@ -634,9 +610,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if (alHits.size() != 0 )
 			{
 				System.out.println("X Axis Selected");
-				pickingManager.flushHits(this, X_AXIS_SELECTION);
-				//bIsDisplayListDirty = true;
-				//bRenderPolylineSelection = true;
+				pickingManager.flushHits(this, X_AXIS_SELECTION);				
 			}
 		}
 		alHits = pickingManager.getHits(this, Y_AXIS_SELECTION);		
@@ -645,9 +619,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if (alHits.size() != 0 )
 			{
 				System.out.println("Y Axis Selected");
-				pickingManager.flushHits(this, Y_AXIS_SELECTION);
-				//bIsDisplayListDirty = true;
-				//bRenderPolylineSelection = true;
+				pickingManager.flushHits(this, Y_AXIS_SELECTION);			
 			}			
 		}
 		
@@ -698,64 +670,70 @@ implements IMediatorReceiver, IMediatorSender {
 		refSetSelection.getReadToken();
 		// contains all genes in center pathway (not yet)
 		int[] iArSelection = refSetSelection.getSelectionIdArray();
+
 		// contains type - 0 for not selected 1 for selected
 		int[] iArGroup = refSetSelection.getGroupArray();
-		// iterate here
-		if (iArSelection.length != 0)
+		// iterate here		
+		int[] iArSelectionStorageIndices = convertAccessionToExpressionIndices(iArSelection);
+		iArSelectionStorageIndices = cleanSelection(iArSelectionStorageIndices);
+		setSelection(iArSelectionStorageIndices);
+		
+		int iSelectedAccessionID = 0;
+		int iSelectedStorageIndex = 0;
+		
+		for(int iSelectionCount = 0; iSelectionCount < iArSelectionStorageIndices.length;  iSelectionCount++)
 		{
-			iSelectedAccessionID = iArSelection[0];
-			
-			String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
-				.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-		
-			System.out.println("Accession Code: " +sAccessionCode);
-			
-		
-			int iExpressionStorageIndex = generalManager.getSingelton().getGenomeIdManager()
-				.getIdIntFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
-		
-			System.out.println("Expression stroage index: " +iExpressionStorageIndex);
-			iExpressionStorageIndex = (iExpressionStorageIndex - 770) / 1000;
-			
-			if (iExpressionStorageIndex >= 0)
+			// TODO: set this to 1 resp. later to a enum as soon as I get real data
+			if(iArGroup[iSelectionCount] == 0)
 			{
-				if(!bRenderArrayAsPolyline)
-				{
+				iSelectedAccessionID = iArSelection[iSelectionCount];
+				iSelectedStorageIndex = iArSelectionStorageIndices[iSelectionCount];
+				
+				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
+					.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 			
-					//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
-					//			{
-					polyLineSelectionManager.clearSelection();
-					polyLineSelectionManager.addSelection(iExpressionStorageIndex);	
-					bIsDisplayListDirtyLocal = true;
-					bIsDisplayListDirtyRemote = true;
-					//			}
-						
-					Iterator<ISet> iterSetData = alSetData.iterator();
-					while (iterSetData.hasNext())
+				System.out.println("Accession Code: " +sAccessionCode);			
+				System.out.println("Expression stroage index: " +iSelectedStorageIndex);
+				
+				if (iSelectedStorageIndex >= 0)
+				{						
+					if(!bRenderArrayAsPolyline)
 					{
-						ISet tmpSet = iterSetData.next();
-						// TODO: test
-						//normalizeSet(tmpSet);
+				
+						//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
+						//			{
+						polyLineSelectionManager.clearSelection();
+						polyLineSelectionManager.addSelection(iSelectedStorageIndex);	
+						bIsDisplayListDirtyLocal = true;
+						bIsDisplayListDirtyRemote = true;
+						//			}
 							
-						if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
+						Iterator<ISet> iterSetData = alSetData.iterator();
+						while (iterSetData.hasNext())
 						{
-								alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
-						}
-					}	
+							ISet tmpSet = iterSetData.next();
+							// TODO: test
+							//normalizeSet(tmpSet);
+								
+							if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
+							{
+									alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
+							}
+						}	
+							
+						float fYValue = alDataStorages.get(0).getArrayFloat()[iSelectedStorageIndex];
 						
-					float fYValue = alDataStorages.get(0).getArrayFloat()[iExpressionStorageIndex];
-					
-					generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-						.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, fYValue), ESelectionMode.AddPick);
-				}
-				else
-				{
-					System.out.println("Highlighting for Axis not implemented yet");
-					generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-					.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
+						generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+							.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, fYValue), ESelectionMode.AddPick);
+					}
+					else
+					{
+						System.out.println("Highlighting for Axis not implemented yet");
+						generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+						.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
+					}
 				}
 			}
-
 		}
 	}
 
@@ -771,4 +749,40 @@ implements IMediatorReceiver, IMediatorSender {
 						+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 	}
+	
+	protected int[] cleanSelection(int[] iArSelection)
+	{
+	
+		for (int iCount = 0; iCount < iArSelection.length; iCount++)
+		{
+			if(iArSelection[iCount] == -1)
+				continue;		
+			
+			iArSelection[iCount] = iArSelection[iCount] / 1000;	
+			System.out.println("Storageindexalex: " + iArSelection[iCount]);
+		}		
+		
+		return iArSelection;
+		
+	}
+	
+	protected void setSelection(int[] iArSelection)
+	{
+	
+		alSetSelection.get(0).setSelectionIdArray(iArSelection);
+		initPolyLineLists();
+	}
+	
+	protected int[] convertAccessionToExpressionIndices(int[] iArSelection)
+	{
+		int[] iArSelectionStorageIndices = new int[iArSelection.length];
+		
+		for(int iCount = 0; iCount < iArSelection.length; iCount++)
+		{
+			iArSelectionStorageIndices[iCount] = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromIntByMapping(iArSelection[iCount], EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
+		}		
+		return iArSelectionStorageIndices;
+	}
+	
 }

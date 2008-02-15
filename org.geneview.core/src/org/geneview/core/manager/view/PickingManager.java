@@ -370,7 +370,13 @@ public class PickingManager extends AAbstractManager
 		int iNumberOfNames = 0;
 		int iNearestObjectIndex = 0;
 		for (int iCount = 0; iCount < iHitCount; iCount++)
-		{			
+		{		
+			// if first object is no hit skip z values
+			if(iArPickingBuffer[iPickingBufferCounter] == 0)
+			{
+				iPickingBufferCounter += 3;
+				continue;
+			}
 			//iPickingBufferCounter++;
 			// Check if object is nearer than previous objects
 			if (iArPickingBuffer[iPickingBufferCounter+1] < iMinimumZValue)
