@@ -1,7 +1,6 @@
 package org.geneview.core.view.swt.jogl;
 
 import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLEventListener;
 
 import org.eclipse.swt.widgets.Composite;
 import org.geneview.core.manager.IGeneralManager;

@@ -12,30 +12,33 @@
       	<!-- Creating GenomeId mapping -->
 		  	<read-xml-file target="data/bootstrap/marc/overall_jukebox/load_genome_id_mapping.xml" />	   				
 						
-		<!-- Window	13331	-->					
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="13331" label="Pathway" attrib1="ROW	HORIZONTAL"	/>	 
+		<!-- Window	13331	-->	
+			<!--				
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="13331" label="Pathway" attrib1="ROW	HORIZONTAL"	/>	 
 				 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="19401" 
-			  	gl_canvas="99078" parent="13331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="19401" 
+				  	gl_canvas="99078" parent="13331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+			-->	
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="85401" parent="99078" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="0 20 0 20 -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
-							detail="35101 36101 37101 94101" /> 							
+							detail="35101 36101 37101 39101 94101" /> 							
 							
 		<!-- Window	11331	-->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="11331" label="Parallel Coordinates" attrib1="ROW	HORIZONTAL"	/>	 
+			<!--
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="11331" label="Parallel Coordinates" attrib1="ROW	HORIZONTAL"	/>	 
 				 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
-			  	gl_canvas="99076" parent="11331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-				
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
+			  		gl_canvas="99076" parent="11331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+			-->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="0 20 0 20 -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"
 							attrib4="transparency 0.6" 
-							detail="35101 36101 37101 95101" /> 						
+							detail="35101 36101 37101 39101 95101" /> 						
 			
 		<!-- Window	12331	-->	
 		<!--
@@ -49,7 +52,7 @@
 				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
 				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 1.5f    2.0f 1.0f   400"			
 				attrib4="0 100"	
-				detail="35101 36101 37101" />													
+				detail="35101 36101 37101 39101" />													
 		-->
 							
 		<!-- Window	10331 -->	

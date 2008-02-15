@@ -33,7 +33,6 @@ extends ViewPart {
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,
 						iUniqueId,
 						-1, 
-						-1,
 						"Pathway 2D");
 		
 		viewManager.registerItem(

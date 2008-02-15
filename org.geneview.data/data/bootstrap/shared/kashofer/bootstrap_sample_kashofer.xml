@@ -21,7 +21,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"			parent="11331" attrib2="-1 950" />
 
 		<!-- Window	12331	-->	
-
+		<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="12331"
 				label="Heatmap" attrib1="ROW	HORIZONTAL"	/>	 
 				 
@@ -33,7 +33,7 @@
 				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 1.5f    2.0f 1.0f   400"			
 				attrib4="0 100"	
 				detail="35101 36101 37101" />
-
+		-->
 		<!-- Window	10331	-->	
 		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 

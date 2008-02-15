@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.geneview.rcp.views;
 
 import java.awt.Frame;
@@ -87,13 +84,10 @@ extends ViewPart {
 		
 		if ( frameGL==null ) {
 			frameGL = SWT_AWT.new_Frame(swtComposite);	
-			
-			glCanvas = new GLCanvas();					
-			glCanvas.addGLEventListener(canvasForwarder);
-			
-			frameGL.add(glCanvas);					
-		    animatorGL = new FPSAnimator(glCanvas, 60); // restricts maximum FPS to about 40 in reality
-		 
+		
+		animatorGL = new FPSAnimator(canvasForwarder, 60);
+
+		frameGL.add(canvasForwarder);
 		    frameGL.addWindowListener(new WindowAdapter() {
 		        public void windowClosing(WindowEvent e) {
 		        	

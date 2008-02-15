@@ -489,13 +489,16 @@ implements IViewGLCanvasManager {
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final GLEventListener gLEventListener) {
 		
+		hashGLEventListenerID2GLEventListener.put((
+				(AGLCanvasUser)gLEventListener).getId(), gLEventListener);
+		
+		if (iGLCanvasID == -1)
+			return;
+		
 		if (!hashGLCanvasID2GLEventListeners.containsKey(iGLCanvasID))
 			hashGLCanvasID2GLEventListeners.put(iGLCanvasID, new ArrayList<GLEventListener>());
 			
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
-
-		hashGLEventListenerID2GLEventListener.put((
-				(AGLCanvasUser)gLEventListener).getId(), gLEventListener);
 	}
 
 	public boolean unregisterGLCanvas(final GLCanvas canvas) {

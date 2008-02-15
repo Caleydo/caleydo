@@ -75,18 +75,28 @@ implements GLEventListener {
 		parentGLCanvas = ((JoglCanvasForwarder)generalManager.getSingelton().getViewGLCanvasManager()
 				.getItem(iGLCanvasID));
 		
-		// Register GL event listener view to GL canvas
-		parentGLCanvas.addGLEventListener(this);
+		if (parentGLCanvas != null)
+		{
+			// Register GL event listener view to GL canvas
+			parentGLCanvas.addGLEventListener(this);
+			
+			generalManager.getSingelton().getViewGLCanvasManager()
+				.registerGLEventListenerByGLCanvasID(parentGLCanvas.getID(), this);
 
-		generalManager.getSingelton().getViewGLCanvasManager()
-			.registerGLEventListenerByGLCanvasID(parentGLCanvas.getID(), this);
+			pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 		
+			// TODO: read view frustum params from XML file
+			viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
+					-4.0f, 4.0f, -4.0f, 4.0f, -10f, 10f);
+		}
+		// Frustum will only be remotely rendered by another view
+		else
+		{
+			generalManager.getSingelton().getViewGLCanvasManager()
+				.registerGLEventListenerByGLCanvasID(-1, this);
+		}
+
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
-		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
-	
-		// TODO: read view frustum params from XML file
-		viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
-				-4.0f, 4.0f, -4.0f, 4.0f, -1f, 1f);
 	}
 
 	/*
@@ -422,6 +432,11 @@ implements GLEventListener {
 		}
 		
 		return false;			
+	}
+	
+	public final JoglCanvasForwarder getParentGLCanvas() {
+		
+		return parentGLCanvas;
 	}
 	
 	public final IViewFrustum getViewFrustum() {

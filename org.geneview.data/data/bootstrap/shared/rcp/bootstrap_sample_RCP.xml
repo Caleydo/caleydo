@@ -16,7 +16,7 @@
 		  	<read-xml-file target="data/bootstrap/shared/rcp/load_genome_id_mapping_HSA.xml" />	   				
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
-			  	gl_forwarder="24"
+			  	gl_canvas="24"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="GL Jukebox Pathway 3D" 
@@ -29,7 +29,7 @@
 
 		<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="26" 
-			    gl_forwarder="26"
+			    gl_canvas="26"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
 	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2DCOLUMN"			cmdId="68993"	uniqueId="83401" parent="26" label="GL Heatmap 3D"	
@@ -39,7 +39,7 @@
 				detail="35101 36101 37101" />
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="28" 
-			    gl_forwarder="28"
+			    gl_canvas="28"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
 	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2DCOLUMN"			cmdId="68993"	uniqueId="85401" parent="28" label="GL Heatmap 3D 2nd"	
@@ -50,7 +50,7 @@
 				
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="29" 
-			    gl_forwarder="29"
+			    gl_canvas="29"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>
 	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2DCOLUMN"			cmdId="68993"	uniqueId="86401" parent="29" label="GL Heatmap 3D 2nd"	

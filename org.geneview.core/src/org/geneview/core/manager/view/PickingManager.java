@@ -145,7 +145,7 @@ public class PickingManager extends AAbstractManager
 			
 		} 
 		else if (hashViewIDToIsMouseOverPickingEvent.get(iViewID) != null &&
-				 hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null &&
+				hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null &&
 				hashViewIDToIsMouseOverPickingEvent.get(iViewID) == true
 				&& System.nanoTime() - hashViewIDToLastMouseMovedTimeStamp.get(iViewID) >= 0)// 1e9)
 		{

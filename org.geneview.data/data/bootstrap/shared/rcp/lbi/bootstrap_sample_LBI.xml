@@ -16,7 +16,7 @@
 		  	<read-xml-file target="data/bootstrap/shared/rcp/lbi/load_genome_id_mapping_HSA_LBI.xml" />	   				
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
-			  	gl_forwarder="24"
+			  	gl_canvas="24"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="GL Jukebox Pathway 3D" 

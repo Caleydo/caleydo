@@ -289,13 +289,13 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
 		
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f( 2.0f, 2.0f, -0.01f);
-		gl.glVertex3f(-2.0f, 2.0f, -0.01f);
-		gl.glVertex3f(-2.0f, -2.0f, -0.01f);
-		gl.glVertex3f( 2.0f, -2.0f, -0.01f);
+		gl.glVertex3f( 2.0f, 2.0f, -0.1f);
+		gl.glVertex3f(-2.0f, 2.0f, -0.1f);
+		gl.glVertex3f(-2.0f, -2.0f, -0.1f);
+		gl.glVertex3f( 2.0f, -2.0f, -0.1f);
 		gl.glEnd();
 		
-		GLSharedObjects.drawAxis(gl);
+//		GLSharedObjects.drawAxis(gl);
 	}
 	
 	private void renderUnderInteractionLayer(final GL gl) {

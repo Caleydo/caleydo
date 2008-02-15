@@ -2,6 +2,8 @@ package org.geneview.rcp;
 
 import java.util.Iterator;
 
+import javax.media.opengl.GLEventListener;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
@@ -10,7 +12,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
-import org.geneview.core.view.opengl.IGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.rcp.views.AGLViewPart;
 import org.geneview.rcp.views.GLHeatmap2DView;
 import org.geneview.rcp.views.GLJukeboxPathwayView;
@@ -47,36 +49,36 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	protected void openLoadedViews() {
 		
 		// Initialize all GL view in RCP
-		Iterator<IGLCanvasUser> iterCanvasUser = Application.refGeneralManager.getSingelton()
-			.getViewGLCanvasManager().getAllGLCanvasUsers().iterator();
+		Iterator<GLEventListener> iterGLEventListener = Application.refGeneralManager.getSingelton()
+			.getViewGLCanvasManager().getAllGLEventListeners().iterator();
+		
 		JoglCanvasForwarder tmpCanvasForwarder;
-		IGLCanvasUser tmpCanvasUser;
+		GLEventListener tmpGLEventListener;
 		int iInstanceNum = 0;
 		AGLViewPart viewPart = null;
 		
-		while (iterCanvasUser.hasNext()) 
+		while (iterGLEventListener.hasNext()) 
 		{
-			tmpCanvasUser = iterCanvasUser.next();
-			tmpCanvasForwarder = tmpCanvasUser.getGLCanvasDirector()
-					.getJoglCanvasForwarder();
+			tmpGLEventListener = iterGLEventListener.next();
+			tmpCanvasForwarder = ((AGLCanvasUser)tmpGLEventListener).getParentGLCanvas();
 			
 			try 
 			{	
-				if (tmpCanvasUser.getClass().equals(
+				if (tmpGLEventListener.getClass().equals(
 						org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D.class)) 
 				{	
 					viewPart = (GLJukeboxPathwayView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLJukeboxPathwayView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}
-				else if (tmpCanvasUser.getClass().equals(
+				else if (tmpGLEventListener.getClass().equals(
 						org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn.class))
 				{
 					viewPart = (GLHeatmap2DView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLHeatmap2DView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}
-				else if (tmpCanvasUser.getClass().equals(
+				else if (tmpGLEventListener.getClass().equals(
 						org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D.class))
 				{
 					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()

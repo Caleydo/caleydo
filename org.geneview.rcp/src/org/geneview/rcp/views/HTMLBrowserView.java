@@ -39,7 +39,6 @@ extends ViewPart {
 				.createView(ManagerObjectType.VIEW_SWT_BROWSER,
 						iUniqueId,
 						-1, 
-						-1,
 						"Browser");
 		
 		viewManager.registerItem(
