@@ -138,6 +138,26 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	/*
 	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 */	
+	public void initLocal(final GL gl)
+	{
+		//iGLDisplayListIndexLocal = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
+	 */
+	public void initRemote(final GL gl)
+	{
+		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) {

@@ -172,6 +172,27 @@ implements IMediatorReceiver, IMediatorSender {
 
 		dragAndDrop = new GLDragAndDrop(refGLPathwayTextureManager);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 */	
+	public void initLocal(final GL gl)
+	{
+		//iGLDisplayListIndexLocal = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
+	 */
+	public void initRemote(final GL gl)
+	{
+		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
+		init(gl);
+	}
+	
 
 	/*
 	 * (non-Javadoc)

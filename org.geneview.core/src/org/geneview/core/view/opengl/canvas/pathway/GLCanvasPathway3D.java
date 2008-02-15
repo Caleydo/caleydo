@@ -114,26 +114,29 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 */	
+	public void initLocal(final GL gl)
+	{
+		//iGLDisplayListIndexLocal = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
+	 */
+	public void initRemote(final GL gl)
+	{
+		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) {
-		
-//		// Clearing window and set background to WHITE
-//		// is already set inside JoglCanvasForwarder
-//		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-//
-//		gl.glEnable(GL.GL_DEPTH_TEST);
-//		gl.glEnable(GL.GL_BLEND);
-//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//
-//		gl.glDepthFunc(GL.GL_LEQUAL);
-//		gl.glEnable(GL.GL_LINE_SMOOTH);
-//		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-//		gl.glLineWidth(1.0f);
-//
-//		gl.glEnable(GL.GL_COLOR_MATERIAL);
-//		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 
 		iGLDisplayListIndex = gl.glGenLists(1);
 		

@@ -58,16 +58,18 @@ implements IMediatorReceiver, IMediatorSender {
 	// how high is an axis - do NOT change
 	private static final float MAX_HEIGHT = 1; 
 		
-	private int iGLDisplayListIndex;
+	private int iGLDisplayListIndexLocal;
+	private int iGLDisplayListIndexRemote;
 		
 	// flag whether one array should be a polyline or an axis
 	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
-	private boolean bRenderSelection = false;
+	private boolean bRenderSelection = true;
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;
 	
-	private boolean bIsDisplayListDirty = true;
+	private boolean bIsDisplayListDirtyLocal = true;
+	private boolean bIsDisplayListDirtyRemote = true;
 	
 	private int iNumberOfAxis = 0;
 	
@@ -116,9 +118,27 @@ implements IMediatorReceiver, IMediatorSender {
 //		alSelectedPolylines = new ArrayList<Integer>();
 //		alNormalPolylines = new ArrayList<Integer>();
 //		alMouseOverPolylines = new ArrayList<Integer>();
-		
+			
+	}
 	
-		
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 */	
+	public void initLocal(final GL gl)
+	{
+		iGLDisplayListIndexLocal = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
+	 */
+	public void initRemote(final GL gl)
+	{
+		iGLDisplayListIndexRemote = gl.glGenLists(1);	
+		init(gl);
 	}
 
 	/*
@@ -130,6 +150,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		ISetSelection tmpSelection = alSetSelection.get(0);
 		
+		
 		int[] iArTmpSelectionIDs = {13, 18, 19, 20, 33, 36, 37, 38, 39, 40};
 		//Collection<Integer> test = refGeneralManager.getSingelton().getGenomeIdManager()
 		//	.getIdIntListByType(13770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);		
@@ -139,31 +160,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		initPolyLineLists();
 		
-		
 		gl.glClearColor(ParCoordsRenderStyle.CANVAS_COLOR.x(), 
 						ParCoordsRenderStyle.CANVAS_COLOR.y(), 
 						ParCoordsRenderStyle.CANVAS_COLOR.z(),
 						ParCoordsRenderStyle.CANVAS_COLOR.w());
-		
-		
-		iGLDisplayListIndex = gl.glGenLists(1);	
-		
-		//------------------------------------------------
-		// MARC: Selection test
-//		String sAccessionCode = "NM_001565";
-//	
-//		int iAccessionID = refGeneralManager.getSingelton().getGenomeIdManager()
-//			.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
-//	
-//		SelectionManager selectionManager = 
-//			refGeneralManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
-//		
-//		selectionManager.addSelectionRep(iAccessionID, 
-//				new SelectedElementRep(this.getId(), 200, 0));
-		//------------------------------------------------
-		
-	
-	
 	}
 	
 	/*
@@ -173,48 +173,60 @@ implements IMediatorReceiver, IMediatorSender {
 	public void displayLocal(final GL gl) {
 		
 		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, false);
-		
+		if(bIsDisplayListDirtyLocal)
+		{
+			buildPolyLineDisplayList(gl, iGLDisplayListIndexLocal);
+			bIsDisplayListDirtyLocal = false;			
+		}	
 		display(gl);
+		gl.glCallList(iGLDisplayListIndexLocal);
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) 
+	{	
 	
+		if(bIsDisplayListDirtyRemote)
+		{
+			buildPolyLineDisplayList(gl, iGLDisplayListIndexRemote);
+			bIsDisplayListDirtyRemote = false;
+		}	
 		display(gl);
+		gl.glCallList(iGLDisplayListIndexRemote);
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
-	public void display(final GL gl) {
+	public void display(final GL gl) 
+	{		
 		
-		//if(bIsDisplayListDirty)
-		//{
-			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-			// render the coordinate system only on the first run, not when we render the selection
-			//if(renderMode == RenderMode.NORMAL)
-			//{
-			renderCoordinateSystem(gl, iNumberOfAxis);		
-			//}
-			renderScene(gl, RenderMode.NORMAL);
-			renderScene(gl, RenderMode.MOUSE_OVER);
-			renderScene(gl, RenderMode.SELECTION);
-			
-			renderGates(gl, iNumberOfAxis, 0.0f);
-			
-		
-			gl.glEndList();
-			bIsDisplayListDirty = false;
-		//}
-			
-		gl.glCallList(iGLDisplayListIndex);
+	
 
 		// check if we hit a polyline
 		checkForHits();
+	}
+	
+	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
+	{
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		// render the coordinate system only on the first run, not when we render the selection
+		//if(renderMode == RenderMode.NORMAL)
+		//{
+		renderCoordinateSystem(gl, iNumberOfAxis);		
+		//}
+		renderScene(gl, RenderMode.NORMAL);
+		renderScene(gl, RenderMode.MOUSE_OVER);
+		renderScene(gl, RenderMode.SELECTION);
+		
+		renderGates(gl, iNumberOfAxis, 0.0f);
+		
+	
+		gl.glEndList();
 	}
 	
 	/**
@@ -296,7 +308,7 @@ implements IMediatorReceiver, IMediatorSender {
 			else
 			{				
 				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-				iNumberOfEntriesToRender = 1000;
+				//iNumberOfEntriesToRender = 1000;
 			}
 		}
 		
@@ -592,7 +604,8 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 				pickingManager.flushHits(this, POLYLINE_SELECTION);
 				// FIXME: this happens every time when something is selected
-				bIsDisplayListDirty = true;
+				bIsDisplayListDirtyLocal = true;
+				bIsDisplayListDirtyRemote = true;
 				//bRenderPolylineSelection = true;
 			}				
 		}
@@ -664,7 +677,11 @@ implements IMediatorReceiver, IMediatorSender {
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
 		refSetSelection.getReadToken();
+		// contains all genes in center pathway (not yet)
 		int[] iArSelection = refSetSelection.getSelectionIdArray();
+		// contains type - 0 for not selected 1 for selected
+		int[] iArGroup = refSetSelection.getGroupArray();
+		// iterate here
 		if (iArSelection.length != 0)
 		{
 			iSelectedAccessionID = iArSelection[0];
@@ -689,7 +706,9 @@ implements IMediatorReceiver, IMediatorSender {
 					//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
 					//			{
 					polyLineSelectionManager.clearSelection();
-					polyLineSelectionManager.addSelection(iExpressionStorageIndex);				
+					polyLineSelectionManager.addSelection(iExpressionStorageIndex);	
+					bIsDisplayListDirtyLocal = true;
+					bIsDisplayListDirtyRemote = true;
 					//			}
 						
 					Iterator<ISet> iterSetData = alSetData.iterator();

@@ -90,7 +90,7 @@ implements GLEventListener {
 		
 		((GLEventListener)parentGLCanvas).init(drawable);
 
-		init(drawable.getGL());
+		initLocal(drawable.getGL());
 	}
 	
 	/*
@@ -151,8 +151,30 @@ implements GLEventListener {
 		return null;
 	}
 	
+	/**
+	 * Initialization for gl, general stuff
+	 * @param gl
+	 */
 	public abstract void init(final GL gl);
 	
+	/**
+	 * Initialization for gl called by the local instance
+	 * Has to call init internally!
+	 * @param gl
+	 */
+	public abstract void initLocal(final GL gl);
+		
+	/**
+	 * Initialization for gl called by a managing view
+	 * Has to call init internally!
+	 * @param gl
+	 */
+	public abstract void initRemote(final GL gl);
+	
+	/**
+	 * GL display method that has to be called in all cases
+	 * @param gl
+	 */
 	public abstract void display(final GL gl);
 	
 	/**

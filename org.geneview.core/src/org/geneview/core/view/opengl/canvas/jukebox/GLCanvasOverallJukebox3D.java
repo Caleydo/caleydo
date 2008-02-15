@@ -108,6 +108,26 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 */	
+	public void initLocal(final GL gl)
+	{
+		//iGLDisplayListIndexLocal = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
+	 */
+	public void initRemote(final GL gl)
+	{
+		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
+		init(gl);
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) {
@@ -194,7 +214,7 @@ implements IMediatorReceiver, IMediatorSender {
 			stackLayer.addElement(iViewId);
 			stackLayer.setElementVisibilityById(true, iViewId);
 			
-			tmpGLEventListener.init(gl);
+			tmpGLEventListener.initRemote(gl);
 			
 			pickingManager.getPickingID(this, VIEW_PICKING, iViewId);
 		}
@@ -354,7 +374,7 @@ implements IMediatorReceiver, IMediatorSender {
 		slerpMod.applySlerp(gl, transform);
 		
 		((AGLCanvasUser) generalManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId)).display(gl);
+				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);
 
 		gl.glPopMatrix();
 
