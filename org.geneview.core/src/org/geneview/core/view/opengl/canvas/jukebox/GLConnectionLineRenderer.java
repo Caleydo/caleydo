@@ -1,11 +1,10 @@
 package org.geneview.core.view.opengl.canvas.jukebox;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
+import java.util.Iterator;
 
 import javax.media.opengl.GL;
 

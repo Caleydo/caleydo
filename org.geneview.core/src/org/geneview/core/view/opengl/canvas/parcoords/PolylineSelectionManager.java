@@ -1,10 +1,8 @@
 package org.geneview.core.view.opengl.canvas.parcoords;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 

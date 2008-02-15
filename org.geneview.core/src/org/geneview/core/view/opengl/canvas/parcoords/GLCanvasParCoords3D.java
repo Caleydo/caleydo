@@ -582,6 +582,25 @@ implements IMediatorReceiver, IMediatorSender {
 								polyLineSelectionManager.clearSelection();								
 							}
 							polyLineSelectionManager.addSelection(iExternalID);
+							
+							// Convert expression storage ID to accession ID
+							int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
+								.getIdIntFromIntByMapping(iExternalID*1000+770, 
+										EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);
+							
+							if (iAccessionID == -1)
+								break;
+							
+							// Write currently selected vertex to selection set
+							// and trigger update event
+							int[] iArTmpSelectionId = new int[1];
+							int[] iArTmpDepth = new int[1];
+							iArTmpSelectionId[0] = iAccessionID;
+							iArTmpDepth[0] = 0;
+							alSetSelection.get(0).getWriteToken();
+							alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+							alSetSelection.get(0).returnWriteToken();
+							
 							break;	
 						case MOUSE_OVER:
 							// TODO: if replace

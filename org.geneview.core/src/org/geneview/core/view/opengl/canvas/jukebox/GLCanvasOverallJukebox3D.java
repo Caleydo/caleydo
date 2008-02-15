@@ -12,7 +12,6 @@ import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.Pick;
@@ -21,6 +20,7 @@ import org.geneview.core.util.slerp.SlerpMod;
 import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.util.GLSharedObjects;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -53,10 +53,6 @@ implements IMediatorReceiver, IMediatorSender {
 	 * Slerp factor: 0 = source; 1 = destination
 	 */
 	private int iSlerpFactor = 0;
-	
-	private int iGLDisplayListIndex = -1;
-	
-	private boolean bRebuildVisiblePathwayDisplayLists = false;
 	
 	private GLConnectionLineRenderer glConnectionLineRenderer;
 	
@@ -110,9 +106,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
 	 */	
-	public void initLocal(final GL gl)
-	{
-		//iGLDisplayListIndexLocal = gl.glGenLists(1);	
+	public void initLocal(final GL gl) {
+	
 		init(gl);
 	}
 	
@@ -120,9 +115,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
 	 */
-	public void initRemote(final GL gl)
-	{
-		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
+	public void initRemote(final GL gl) {
+		
 		init(gl);
 	}
 	
@@ -134,11 +128,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 	    time = new SystemTime();
 	    ((SystemTime) time).rebase();
-		
-	    iGLDisplayListIndex = gl.glGenLists(1);
 	    
 		buildStackLayer(gl);
-		
 		retrieveContainedViews(gl);
 	}
 	
@@ -149,8 +140,13 @@ implements IMediatorReceiver, IMediatorSender {
 	public void displayLocal(final GL gl) {
 		
 		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
-		
+//		if(bIsDisplayListDirtyLocal)
+//		{
+//			buildDisplayList(gl, iGLDisplayListIndexLocal);
+//			bIsDisplayListDirtyLocal = false;			
+//		}	
 		display(gl);
+//		gl.glCallList(iGLDisplayListIndexLocal);
 	}
 	
 	/*
@@ -159,7 +155,13 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void displayRemote(final GL gl) {
 	
+//		if(bIsDisplayListDirtyRemote)
+//		{
+//			buildPathwayDisplayList(gl, iGLDisplayListIndexRemote);
+//			bIsDisplayListDirtyRemote = false;
+//		}	
 		display(gl);
+//		gl.glCallList(iGLDisplayListIndexRemote);
 	}
 	
 	/*
@@ -178,6 +180,7 @@ implements IMediatorReceiver, IMediatorSender {
 		doSlerpActions(gl);
 		
 //		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		renderBucket(gl);
 //		renderPoolLayer(gl);
 		renderStackLayer(gl);
 		renderUnderInteractionLayer(gl);
@@ -281,6 +284,20 @@ implements IMediatorReceiver, IMediatorSender {
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
 		
+	private void renderBucket(final GL gl) {
+		
+		gl.glColor3f(0.5f, 0.5f, 0.5f);
+		
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f( 2.0f, 2.0f, -0.01f);
+		gl.glVertex3f(-2.0f, 2.0f, -0.01f);
+		gl.glVertex3f(-2.0f, -2.0f, -0.01f);
+		gl.glVertex3f( 2.0f, -2.0f, -0.01f);
+		gl.glEnd();
+		
+		GLSharedObjects.drawAxis(gl);
+	}
+	
 	private void renderUnderInteractionLayer(final GL gl) {
 		
 		// Check if a pathway is currently under interaction
@@ -405,8 +422,6 @@ implements IMediatorReceiver, IMediatorSender {
 					int iViewId = pickingManager.getExternalIDFromPickingID(
 							this, alHits.get(iCount).getPickingID());					
 					
-					System.out.println("Picked object:" +iViewId);
-					
 					loadViewToUnderInteractionLayer(iViewId);
 				}
 			}
@@ -461,7 +476,7 @@ implements IMediatorReceiver, IMediatorSender {
 		arSlerpActions.add(slerpAction);
 		iSlerpFactor = 0;
 
-		bRebuildVisiblePathwayDisplayLists = true;
+//		bRebuildVisiblePathwayDisplayLists = true;
 		//selectedVertex = null;
 	}
 

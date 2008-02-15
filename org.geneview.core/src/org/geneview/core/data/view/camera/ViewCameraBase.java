@@ -89,14 +89,14 @@ implements IViewCamera {
 	public void setCameraPosition(final Vec3f setPan) {
 
 		v3fCameraPosition = new Vec3f(setPan);
-//		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
+		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
 	}
 
 	public void addCameraPosition( final Vec3f setPos ) {
 		
 		v3fCameraPosition = new Vec3f(v3fCameraPosition);
 		v3fCameraPosition.add(setPos);
-//		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
+		mat4fCameraViewMatrix.setTranslation( v3fCameraPosition );
 	}
 	
 	/* (non-Javadoc)
@@ -113,8 +113,8 @@ implements IViewCamera {
 	 */
 	public void setCameraScale(final Vec3f setZoom) {
 		v3fCameraScale = new Vec3f(setZoom);
-		v3fCameraScale.add(setZoom);
-		//mat4fCameraViewMatrix.setScale( v3fCameraScale );
+//		v3fCameraScale.add(setZoom);
+		mat4fCameraViewMatrix.setScale( v3fCameraScale );
 	}
 
 	/* (non-Javadoc)
@@ -270,7 +270,7 @@ implements IViewCamera {
 	public void addCameraScale(final Vec3f setScale) {
 
 		v3fCameraScale.add(setScale);
-//		v3fCameraPosition.add(setScale);
+		v3fCameraPosition.add(setScale);
 	}
 	
 	public final Vec3f addCameraScaleAndGet(final Vec3f setScale) {

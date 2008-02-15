@@ -9,6 +9,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.geneview.core.data.AUniqueManagedObject;
+import org.geneview.core.data.view.camera.IViewFrustum;
+import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.base.AAbstractManager;
 import org.geneview.core.manager.type.ManagerType;
@@ -189,14 +191,45 @@ public class PickingManager extends AAbstractManager
 		float fAspectRatio = (float) (float) (viewport[3] - viewport[1]) 
 			/ (float) (viewport[2] - viewport[0]);
 
+		IViewFrustum viewFrustum = ((AGLCanvasUser)uniqueManagedObject).getViewFrustum();
+		
 	    if (fAspectRatio < 1.0)
 	    {
 	    	fAspectRatio = 1.0f / fAspectRatio;
-	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
+	    	
+	    	if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
+	    	{
+	    		gl.glOrtho(viewFrustum.getLeft() * fAspectRatio, 
+	    			viewFrustum.getRight() * fAspectRatio, 
+	    			viewFrustum.getBottom(), viewFrustum.getTop(),
+	    			viewFrustum.getNear(), viewFrustum.getFar());
+	    	}
+	    	else
+	    	{
+	    		gl.glFrustum(viewFrustum.getLeft() * fAspectRatio, 
+		    		viewFrustum.getRight() * fAspectRatio, 
+	    			viewFrustum.getBottom(), viewFrustum.getTop(),
+		    		viewFrustum.getNear(), viewFrustum.getFar());	    		
+	    	}
 	    }
 	    else 
-	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
-		
+	    {
+	    	if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
+	    	{
+	    		gl.glOrtho(viewFrustum.getLeft(), viewFrustum.getRight(), 
+	    			viewFrustum.getBottom() * fAspectRatio, 
+	    			viewFrustum.getTop() * fAspectRatio, 
+	    			viewFrustum.getNear(), viewFrustum.getFar());
+	    	}
+	    	else
+	    	{
+	    		gl.glFrustum(viewFrustum.getLeft(), viewFrustum.getRight(), 
+		    		viewFrustum.getBottom() * fAspectRatio, 
+		    		viewFrustum.getTop() * fAspectRatio, 
+		    		viewFrustum.getNear(), viewFrustum.getFar());		
+	    	}
+	    }
+	    
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
 		// Store picked point
@@ -204,7 +237,7 @@ public class PickingManager extends AAbstractManager
 		// Reset picked point
 		pickPoint = null;
 
-		((AGLCanvasUser)uniqueManagedObject).display(gl);
+		((AGLCanvasUser)uniqueManagedObject).displayLocal(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
@@ -224,11 +257,8 @@ public class PickingManager extends AAbstractManager
 					bIsMaster, 
 					tmpPickPoint, 
 					pickingTriggerMouseAdapter.getPickedPointDragStart());
-		}
-		
+		}	
 	}
-	
-	
 	
 	/**
 	 * Returns the hit for a particular view and type

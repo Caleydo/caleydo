@@ -11,6 +11,9 @@ import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.SetSelection;
+import org.geneview.core.data.view.camera.IViewFrustum;
+import org.geneview.core.data.view.camera.ViewFrustumBase;
+import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.ISetManager;
@@ -18,7 +21,6 @@ import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 
 /**
  * 
@@ -47,7 +49,8 @@ implements GLEventListener {
 	
 	protected PickingManager pickingManager;
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
-
+	
+	private IViewFrustum viewFrustum;
 
 	/**
 	 * Constructor.
@@ -80,6 +83,10 @@ implements GLEventListener {
 		
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 		pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
+	
+		// TODO: read view frustum params from XML file
+		viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
+				-4.0f, 4.0f, -4.0f, 4.0f, -1f, 1f);
 	}
 
 	/*
@@ -136,13 +143,44 @@ implements GLEventListener {
 	    gl.glViewport(0, 0, width, height);
 	    gl.glMatrixMode(GL.GL_PROJECTION);
 	    gl.glLoadIdentity();
+	    
 	    if (fAspectRatio < 1.0)
 	    {
 	    	fAspectRatio = 1.0 / fAspectRatio;
-	    	gl.glOrtho(-4*fAspectRatio, 4*fAspectRatio, -4*1.0, 4*1.0, -1.0, 1.0);
+	    	
+	    	if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
+	    	{
+	    		gl.glOrtho(viewFrustum.getLeft() * fAspectRatio, 
+	    			viewFrustum.getRight() * fAspectRatio, 
+	    			viewFrustum.getBottom(), viewFrustum.getTop(), 
+	    			viewFrustum.getNear(), viewFrustum.getFar());
+	    	}
+	    	else
+	    	{
+	    		gl.glFrustum(viewFrustum.getLeft() * fAspectRatio, 
+		    		viewFrustum.getRight() * fAspectRatio, 
+	    			viewFrustum.getBottom(), viewFrustum.getTop(),
+		    		viewFrustum.getNear(), viewFrustum.getFar());	    		
+	    	}
 	    }
 	    else 
-	    	gl.glOrtho(-4*1.0, 4*1.0, -4*fAspectRatio, 4*fAspectRatio, -1.0, 1.0);
+	    {
+	    	if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
+	    	{
+	    		gl.glOrtho(viewFrustum.getLeft(), viewFrustum.getRight(), 
+	    			viewFrustum.getBottom() * fAspectRatio, 
+	    			viewFrustum.getTop() * fAspectRatio, 
+	    			viewFrustum.getNear(), viewFrustum.getFar());
+	    	}
+	    	else
+	    	{
+	    		gl.glFrustum(viewFrustum.getLeft(), viewFrustum.getRight(), 
+		    		viewFrustum.getBottom() * fAspectRatio, 
+		    		viewFrustum.getTop() * fAspectRatio, 
+		    		viewFrustum.getNear(), viewFrustum.getFar());		
+	    	}
+	    }
+	    
 	    gl.glMatrixMode(GL.GL_MODELVIEW);
 	}
 	
@@ -384,5 +422,10 @@ implements GLEventListener {
 		}
 		
 		return false;			
+	}
+	
+	public final IViewFrustum getViewFrustum() {
+		
+		return viewFrustum;
 	}
 }

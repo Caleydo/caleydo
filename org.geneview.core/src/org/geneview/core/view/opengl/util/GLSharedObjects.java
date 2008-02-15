@@ -12,7 +12,7 @@ import javax.media.opengl.GL;
  */
 public class GLSharedObjects {
 	
-	private static void drawAxis(final GL gl) {
+	public static void drawAxis(final GL gl) {
 		
 		gl.glLineWidth(10);
 	    gl.glBegin(GL.GL_LINES);
