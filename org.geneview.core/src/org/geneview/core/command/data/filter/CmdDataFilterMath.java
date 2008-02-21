@@ -264,16 +264,24 @@ extends ACmdCreate_IdTargetLabelAttr {
 			for (int iCount = 0; iCount < fArTmpSrc.length; iCount++)
 			{
 				
-				//if (tmpStorage.getMinFloat() >= 0)
-				//{
+				// MARC: Just for testing
+				// Problem when handling invalid data items (-1) -> see LBI data
+				// TODO: find clean solution
+				if (fArTmpSrc[iCount] == -1)
+					fArTmpTarget[iCount] = -1;
+				else
+				{			
+					//if (tmpStorage.getMinFloat() >= 0)
+					//{
 					fArTmpTarget[iCount] = (fArTmpSrc[iCount] - tmpStorage.getMinFloat()) / 
 										(tmpStorage.getMaxFloat() - tmpStorage.getMinFloat());
 					
-				//}
-				//else
-				//{
-				//	fArTmpTarget[iCount] = (fArTmpSrc[iCount] - )
-				//}
+					//}
+					//else
+					//{
+					//	fArTmpTarget[iCount] = (fArTmpSrc[iCount] - )
+					//}
+				}
 			}			
 		}	
 		else if (tmpStorage.getSize(StorageType.INT) > 1)

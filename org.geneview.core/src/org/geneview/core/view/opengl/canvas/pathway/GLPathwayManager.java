@@ -43,7 +43,7 @@ public class GLPathwayManager {
 
 	private IGeneralManager refGeneralManager;
 	
-	public static final int PATHWAY_VERTEX_SELECTION = 1;
+	public static final int PATHWAY_SELECTION = 1;
 	
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
@@ -54,10 +54,7 @@ public class GLPathwayManager {
 	private int iCompoundNodeDisplayListId = -1;
 	private int iHighlightedEnzymeNodeDisplayListId = -1;
 	private int iHighlightedCompoundNodeDisplayListId = -1;
-	
-	// First 200 IDs are reserved for picking of non pathway objects in the scene
-//	private int iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
-	
+		
 	private PathwayRenderStyle refRenderStyle;
 
 	private boolean bEnableGeneMapping = true;
@@ -65,8 +62,6 @@ public class GLPathwayManager {
 	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableNeighborhood = false;
 	private boolean bEnableAnnotation = true;
-	
-//	private HashMap<Integer, PathwayVertexGraphItemRep> hashPickID2VertexRep;
 	
 	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
 	
@@ -91,7 +86,6 @@ public class GLPathwayManager {
 		this.refGeneralManager = refGeneralManager;
 		
 		refRenderStyle = new PathwayRenderStyle();
-//		hashPickID2VertexRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();		
 		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Vec3f>>();
@@ -483,12 +477,8 @@ public class GLPathwayManager {
 		// Create and store unique picking ID for that object
 //		if (bPickingRendering)
 //		{
-//			iUniqueObjectPickId++;
-			//gl.glPushName(iUniqueObjectPickId);
 			gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-					.getPickingID(containingView, PATHWAY_VERTEX_SELECTION, vertexRep.getId()));
-
-//			hashPickID2VertexRep.put(iUniqueObjectPickId, vertexRep);			
+					.getPickingID(containingView, PATHWAY_SELECTION, vertexRep.getId()));
 //		}
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
@@ -891,17 +881,6 @@ public class GLPathwayManager {
 			gl.glEnd();
 		}
 	}
-	
-//	public PathwayVertexGraphItemRep getVertexRepByPickID(int iPickID) {
-//		
-//		return hashPickID2VertexRep.get(iPickID);
-//	}
-	
-//	public void clearOldPickingIDs() {
-//		
-//		hashPickID2VertexRep.clear();
-//		iUniqueObjectPickId = GLCanvasJukeboxPathway3D.FREE_PICKING_ID_RANGE_START;
-//	}
 	
 	public void updateSelectionSet(final SetSelection setSelection) 
 	{

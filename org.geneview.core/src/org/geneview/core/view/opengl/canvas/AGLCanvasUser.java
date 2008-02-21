@@ -50,7 +50,7 @@ implements GLEventListener {
 	protected PickingManager pickingManager;
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
-	private IViewFrustum viewFrustum;
+	protected IViewFrustum viewFrustum;
 
 	/**
 	 * Constructor.
@@ -84,10 +84,6 @@ implements GLEventListener {
 				.registerGLEventListenerByGLCanvasID(parentGLCanvas.getID(), this);
 
 			pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
-		
-			// TODO: read view frustum params from XML file
-			viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
-					-4.0f, 4.0f, -4.0f, 4.0f, -10f, 10f);
 		}
 		// Frustum will only be remotely rendered by another view
 		else
@@ -95,6 +91,10 @@ implements GLEventListener {
 			generalManager.getSingelton().getViewGLCanvasManager()
 				.registerGLEventListenerByGLCanvasID(-1, this);
 		}
+		
+		// TODO: read view frustum params from XML file
+		viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
+				-2.5f, 2.5f, -2.5f, 2.5f, -20f, 20f);
 
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 	}

@@ -1,10 +1,13 @@
 package org.geneview.core.view.opengl.canvas.pathway;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 
@@ -78,6 +81,9 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	private HashMap<GL, GLPathwayTextureManager> refHashGLcontext2TextureManager;
 	
+	private Vec3f vecScaling;
+	private Vec3f vecTranslation;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -101,6 +107,9 @@ implements IMediatorReceiver, IMediatorSender {
 		infoAreaRenderer.enableColorMappingArea(true);	
 		
 		selectionManager = generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
+	
+		vecScaling = new Vec3f(1,1,1);
+		vecTranslation = new Vec3f(0,0,0);
 	}
 
 	/*
@@ -180,20 +189,10 @@ implements IMediatorReceiver, IMediatorSender {
 			refHashGLcontext2TextureManager.put(gl, 
 					new GLPathwayTextureManager(generalManager));	
 		}		
+		
 		loadAllPathways(gl);
 
 		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
-		
-//		//------------------------------------------------
-//		// MARC: Selection test
-//		String sAccessionCode = "NM_001565";
-//	
-//		int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
-//			.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
-//		
-//		selectionManager.addSelectionRep(iAccessionID, 
-//				new SelectedElementRep(this.getId(), 200, 450));
-//		//------------------------------------------------
 	}
 
 
@@ -206,17 +205,15 @@ implements IMediatorReceiver, IMediatorSender {
 	private void loadAllPathways(final GL gl) {
 		
 		// Check if pathways are already loaded
-		if (!pathwayManager.getRootPathway().getAllGraphByType(
+		if (pathwayManager.getRootPathway().getAllGraphByType(
 				EGraphItemHierarchy.GRAPH_CHILDREN).isEmpty()) 
 		{
-			return;
-		}
-		
-		// Load KEGG pathways
-		pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
+			// Load KEGG pathways
+			pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
 
-		// Load BioCarta pathways
-		pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
+			// Load BioCarta pathways
+			pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
+		}
 		
 //		Iterator<IGraph> iterPathwayGraphs = pathwayManager
 //			.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
@@ -228,14 +225,20 @@ implements IMediatorReceiver, IMediatorSender {
 //			break;
 //		}
 		
+		Random rand = new Random();
+		
 		List<IGraph> tmp = pathwayManager.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
-		iPathwayID = tmp.get(117).getId();
+		iPathwayID = tmp.get(rand.nextInt(500)).getId();
+		
+		calculatePathwayScaling(gl, iPathwayID);
 	}
 
 	private void renderPathwayById(final GL gl,
 			final int iPathwayId) {
 		
 		gl.glPushMatrix();
+		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
+		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 		
 		if (bEnablePathwayTexture)
 		{
@@ -250,6 +253,9 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glTranslatef(0, tmp, 0);
 		refGLPathwayManager.renderPathway(gl, iPathwayId, false);
 		gl.glTranslatef(0, -tmp, 0);
+		
+		gl.glScalef(1/vecScaling.x(), 1/vecScaling.y(),1/ vecScaling.z());
+		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		
 		gl.glPopMatrix();
 		
@@ -314,9 +320,9 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void checkForHits()
 	{
-		if(pickingManager.getHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION) != null)
+		if(pickingManager.getHits(this, GLPathwayManager.PATHWAY_SELECTION) != null)
 		{
-			ArrayList<Pick> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION);
+			ArrayList<Pick> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_SELECTION);
 			
 			if (tempList != null)
 			{
@@ -370,7 +376,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			pickingManager.flushHits(this, GLPathwayManager.PATHWAY_VERTEX_SELECTION);
+			pickingManager.flushHits(this, GLPathwayManager.PATHWAY_SELECTION);
 		}
 	}
 
@@ -484,6 +490,46 @@ implements IMediatorReceiver, IMediatorSender {
 //////		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 //
 //	}
+	
+	private void calculatePathwayScaling(final GL gl, final int iPathwayId) {
+		
+		if (refHashGLcontext2TextureManager.get(gl) == null)
+			return;
+		
+		int iImageWidth = ((PathwayGraph)generalManager.getSingelton()
+				.getPathwayManager().getItem(iPathwayId)).getWidth();
+		int iImageHeight = ((PathwayGraph)generalManager.getSingelton()
+				.getPathwayManager().getItem(iPathwayId)).getHeight();
+	
+		float fAspectRatio = (float)iImageWidth / (float)iImageHeight;
+
+		float fTmpPathwayWidth = iImageWidth * GLPathwayManager.SCALING_FACTOR_X * 3.2f;
+		float fTmpPathwayHeight = iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * 3.2f;
+		
+		if (fTmpPathwayWidth > (viewFrustum.getRight() - viewFrustum.getLeft()))
+		{			
+			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / (iImageWidth * GLPathwayManager.SCALING_FACTOR_X));
+			vecScaling.setY(vecScaling.x());
+
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f,
+					(viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f * 1/fAspectRatio, 0);			
+		}
+		else if (fTmpPathwayHeight > (viewFrustum.getTop() - viewFrustum.getBottom()))
+		{
+			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y));
+			vecScaling.setX(vecScaling.y());
+
+			vecTranslation.set((viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f * fAspectRatio,
+					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f, 0);
+		}
+		else
+		{
+			vecScaling.set(3.2f, 3.2f, 3.2f);
+			
+			vecTranslation.set(fTmpPathwayWidth / 2.0f,
+					fTmpPathwayHeight / 2.0f, 0);
+		}
+	}
 
 	public void loadNodeInformationInBrowser(String sUrl) {
 

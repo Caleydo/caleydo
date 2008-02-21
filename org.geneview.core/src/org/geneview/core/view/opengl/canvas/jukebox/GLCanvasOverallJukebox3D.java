@@ -36,8 +36,8 @@ extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 	
 	private static final int MAX_LOADED_VIEWS = 100;
-	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 1.5f;
-	private static final float SCALING_FACTOR_STACK_LAYER = 1.3f;
+	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
+	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 	
 	private static final int VIEW_PICKING = 0;	
@@ -88,13 +88,12 @@ implements IMediatorReceiver, IMediatorSender {
 		poolLayer.setChildLayer(stackLayer);
 		
 		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(-2f, -2f, 0f));
+		transformPathwayUnderInteraction.setTranslation(new Vec3f(0, 0, 0f));
 		transformPathwayUnderInteraction.setScale(new Vec3f(
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER));
-		underInteractionLayer.setTransformByPositionIndex(0,
-				transformPathwayUnderInteraction);
+		underInteractionLayer.setTransformByPositionIndex(0, transformPathwayUnderInteraction);
 		
 		arSlerpActions = new ArrayList<SlerpAction>();
 		
@@ -180,7 +179,6 @@ implements IMediatorReceiver, IMediatorSender {
 		doSlerpActions(gl);
 		
 //		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		renderBucket(gl);
 //		renderPoolLayer(gl);
 		renderStackLayer(gl);
 		renderUnderInteractionLayer(gl);
@@ -247,52 +245,56 @@ implements IMediatorReceiver, IMediatorSender {
 //			fLayerYPos -= 1f;
 //		}
 		
-		float fTiltAngleDegree = 57; // degree
+		float fTiltAngleDegree = 60; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		
+		// TOP BUCKET WALL
 		Transform transform = new Transform();
-
-		transform.setTranslation(new Vec3f(0, -4.5f, 0));
+		transform.setTranslation(new Vec3f(0, 8 * SCALING_FACTOR_STACK_LAYER, 0));
 		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
-		transform.setRotation(new Rotf(new Vec3f(-1f, 0, 0), fTiltAngleRad));
+		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(0, transform);
 
+		// BOTTOM BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 2.5f, 0));
+		transform.setTranslation(new Vec3f(0, -4 * SCALING_FACTOR_STACK_LAYER, 3.45f));
 		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
-		transform.setRotation(new Rotf(new Vec3f(1f, 0, 0), fTiltAngleRad));
+		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), Vec3f.convertGrad2Radiant(60)));
 		stackLayer.setTransformByPositionIndex(1, transform);
 
+		// LEFT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-2, 0, 0));
+		transform.setTranslation(new Vec3f(-4 * SCALING_FACTOR_STACK_LAYER, 0, 3.45f));
+		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER,
+				SCALING_FACTOR_STACK_LAYER));		
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), Vec3f.convertGrad2Radiant(60)));
+		stackLayer.setTransformByPositionIndex(2, transform);
+
+		// RIGHT BUCKET WALL
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(8 * SCALING_FACTOR_STACK_LAYER, 0, 0));
 		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
 		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad));
-		stackLayer.setTransformByPositionIndex(2, transform);
-
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(2, 0, 0));
-		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
-				SCALING_FACTOR_STACK_LAYER,
-				SCALING_FACTOR_STACK_LAYER));		
-		transform.setRotation(new Rotf(new Vec3f(0, 1f, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
 		
-	private void renderBucket(final GL gl) {
+	private void renderBucketWall(final GL gl) {
 		
-		gl.glColor3f(0.5f, 0.5f, 0.5f);
+		gl.glColor3f(0f, 1f, 0f);
+		gl.glLineWidth(1);
 		
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f( 2.0f, 2.0f, -0.1f);
-		gl.glVertex3f(-2.0f, 2.0f, -0.1f);
-		gl.glVertex3f(-2.0f, -2.0f, -0.1f);
-		gl.glVertex3f( 2.0f, -2.0f, -0.1f);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, -0.01f);
+		gl.glVertex3f(0, 8, -0.01f);
+		gl.glVertex3f(8, 8, -0.01f);
+		gl.glVertex3f(8, 0, -0.01f);
 		gl.glEnd();
 		
 //		GLSharedObjects.drawAxis(gl);
@@ -345,10 +347,16 @@ implements IMediatorReceiver, IMediatorSender {
 		Vec3f scale = transform.getScale();		
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
-
+		
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
+
+//		GLSharedObjects.drawAxis(gl);
+
+		renderBucketWall(gl);
+		
+		gl.glTranslatef(4, 4, 0);
 		
 		((AGLCanvasUser) generalManager.getSingelton()
 				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);
@@ -389,6 +397,8 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glPushMatrix();
 		
 		slerpMod.applySlerp(gl, transform);
+		
+		gl.glTranslatef(4, 4, 0);
 		
 		((AGLCanvasUser) generalManager.getSingelton()
 				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);
