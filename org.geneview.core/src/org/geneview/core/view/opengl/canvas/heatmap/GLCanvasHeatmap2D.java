@@ -16,6 +16,7 @@ import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.IVirtualArray;
 import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
@@ -107,11 +108,12 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	 * 
 	 */
 	public GLCanvasHeatmap2D(final IGeneralManager generalManager,
-			int iViewID,
-			int iGLCanvasID,
-			String sLabel) {
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
-		super(generalManager, iViewID, iGLCanvasID, sLabel);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 
 		fAspectRatio = new float[2][3];
 		viewingFrame = new float[3][2];

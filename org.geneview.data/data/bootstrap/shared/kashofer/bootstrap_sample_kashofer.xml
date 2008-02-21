@@ -30,7 +30,7 @@
   		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"			cmdId="68993"	uniqueId="83401" parent="99076" label="GL Triangle	C"	
 				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
-				attrib3="0 10 0 40   -0.5f -0.5f    -4.0f 4.0f   -0.0f 1.5f    2.0f 1.0f   400"			
+				attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 				attrib4="0 100"	
 				detail="35101 36101 37101" />
 		-->
@@ -46,7 +46,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="99075" label="GL Jukebox Pathway 3D" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
-							attrib3="0 20 0 20   -0.5f -0.5f   0.0f 1.0f   0.0f 1.0f    -15.0f 10.0f"	
+							attrib3="ORTHOGRAPHIC -2.35 2.35 -2.35 2.35 -20 20"
 							attrib1="2"								
 							detail="35101 36101 37101 39101 85101" /> 
 							

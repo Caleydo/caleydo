@@ -5,6 +5,7 @@ package org.geneview.core.view.opengl.canvas.histogram;
 
 import java.util.HashMap;
 
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.view.opengl.canvas.histogram.HistogramContainer;
@@ -24,17 +25,16 @@ public class GLCanvasHistogram2Dinteractive extends GLCanvasHistogram2D {
 	protected HistogramContainer [] arrayHistogramContainer;
 	
 	/**
-	 * @param setGeneralManager
-	 * @param viewId
-	 * @param parentContainerId
-	 * @param label
+	 * Constructor.
+	 * 
 	 */
-	public GLCanvasHistogram2Dinteractive(IGeneralManager setGeneralManager,
-			int viewId,
-			int parentContainerId,
-			String label) {
+	public GLCanvasHistogram2Dinteractive(final IGeneralManager generalManager,
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
-		super(setGeneralManager, viewId, parentContainerId, label);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
 	}
 	

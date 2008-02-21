@@ -19,6 +19,7 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.mapping.EGenomeMappingType;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -89,11 +90,12 @@ implements IMediatorReceiver, IMediatorSender {
 	 * 
 	 */
 	public GLCanvasPathway3D(final IGeneralManager generalManager,
-			int iViewID,
-			int iGLCanvasID,
-			String sLabel) {
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
-		super(generalManager, iViewID, iGLCanvasID, sLabel);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
 		pathwayManager = generalManager.getSingelton().getPathwayManager();
 		

@@ -60,11 +60,12 @@ implements GLEventListener {
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 */
-	protected AGLCanvasUser( final IGeneralManager generalManager,
-			int iViewID, 
-			int iGLCanvasID,
-			String sLabel)
-	{
+	protected AGLCanvasUser(final IGeneralManager generalManager,
+			final int iViewID, 
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
+		
 		super(iViewID, generalManager);
 		
 		alSetData = new ArrayList <ISet> ();
@@ -91,11 +92,8 @@ implements GLEventListener {
 			generalManager.getSingelton().getViewGLCanvasManager()
 				.registerGLEventListenerByGLCanvasID(-1, this);
 		}
-		
-		// TODO: read view frustum params from XML file
-		viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
-				-2.5f, 2.5f, -2.5f, 2.5f, -20f, 20f);
 
+		this.viewFrustum = viewFrustum;
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 	}
 
@@ -442,5 +440,10 @@ implements GLEventListener {
 	public final IViewFrustum getViewFrustum() {
 		
 		return viewFrustum;
+	}
+	
+	public void setFrustum(IViewFrustum viewFrustum) {
+		
+		this.viewFrustum = viewFrustum;
 	}
 }

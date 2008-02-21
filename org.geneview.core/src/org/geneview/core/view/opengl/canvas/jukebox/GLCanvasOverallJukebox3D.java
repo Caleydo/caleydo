@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.collection.ISet;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
@@ -20,7 +21,6 @@ import org.geneview.core.util.slerp.SlerpMod;
 import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.util.GLSharedObjects;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -61,11 +61,12 @@ implements IMediatorReceiver, IMediatorSender {
 	 * 
 	 */
 	public GLCanvasOverallJukebox3D(final IGeneralManager generalManager,
-			int iViewId,
-			int iGLCanvasID,
-			String sLabel) {
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
-		super(generalManager, iViewId, iGLCanvasID, sLabel);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
 		underInteractionLayer = new JukeboxHierarchyLayer(generalManager,
 				1, 

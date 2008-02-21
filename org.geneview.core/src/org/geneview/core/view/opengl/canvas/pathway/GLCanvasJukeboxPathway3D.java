@@ -23,6 +23,7 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -116,27 +117,28 @@ implements IMediatorReceiver, IMediatorSender {
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasJukeboxPathway3D(final IGeneralManager refGeneralManager,
-			int iViewID,
-			int iGLCanvasID,
-			String sLabel) {
+	public GLCanvasJukeboxPathway3D(final IGeneralManager generalManager,
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
-		super(refGeneralManager, iViewID, iGLCanvasID, sLabel);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 
-		refGLPathwayManager = new GLPathwayManager(refGeneralManager);
+		refGLPathwayManager = new GLPathwayManager(generalManager);
 		refGLPathwayTextureManager = new GLPathwayTextureManager(
-				refGeneralManager);
+				generalManager);
 		arSlerpActions = new ArrayList<SlerpAction>();
 
 		refHashPoolLinePickId2PathwayId = new HashMap<Integer, Integer>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		// Create Jukebox hierarchy
-		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(refGeneralManager,
+		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(generalManager,
 				1, SCALING_FACTOR_UNDER_INTERACTION_LAYER, refGLPathwayTextureManager);
-		pathwayLayeredLayer = new JukeboxHierarchyLayer(refGeneralManager,
+		pathwayLayeredLayer = new JukeboxHierarchyLayer(generalManager,
 				4, SCALING_FACTOR_LAYERED_LAYER, refGLPathwayTextureManager);
-		pathwayPoolLayer = new JukeboxHierarchyLayer(refGeneralManager,
+		pathwayPoolLayer = new JukeboxHierarchyLayer(generalManager,
 				MAX_LOADED_PATHWAYS, SCALING_FACTOR_POOL_LAYER, refGLPathwayTextureManager);
 		pathwayUnderInteractionLayer.setParentLayer(pathwayLayeredLayer);
 		pathwayLayeredLayer.setChildLayer(pathwayUnderInteractionLayer);
@@ -152,11 +154,11 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 
-		infoAreaRenderer = new GLInfoAreaRenderer(refGeneralManager,
+		infoAreaRenderer = new GLInfoAreaRenderer(generalManager,
 				refGLPathwayManager);
 		infoAreaRenderer.enableColorMappingArea(true);
 		
-		memoPad = new GLPathwayMemoPad(refGeneralManager,
+		memoPad = new GLPathwayMemoPad(generalManager,
 				refGLPathwayManager,
 				refGLPathwayTextureManager);
 

@@ -14,6 +14,7 @@ import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.mapping.EGenomeMappingType;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
@@ -84,19 +85,17 @@ implements IMediatorReceiver, IMediatorSender {
 	//private int iSelectedAccessionID = -1;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param viewId
-	 * @param parentContainerId
-	 * @param label
 	 */
-	public GLCanvasParCoords3D(IGeneralManager generalManager,
-			int iViewId,
-			int iGLCanvasID,
-			String label) 
-	{
-		super(generalManager, iViewId, iGLCanvasID, label);
+	public GLCanvasParCoords3D(final IGeneralManager generalManager,
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
+		
+
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
 		// TODO:
 		//int bla = EGenomeIdType.ACCESSION_CODE.ordinal();

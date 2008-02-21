@@ -10,6 +10,7 @@ import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 
 import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IViewGLCanvasManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -339,7 +340,8 @@ implements IViewGLCanvasManager {
 	public GLEventListener createGLCanvas(CommandQueueSaxType useViewType,
 			final int iUniqueId, 
 			final int iGLCanvasID,
-			String sLabel ) {
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
 		try
 		{
@@ -353,7 +355,7 @@ implements IViewGLCanvasManager {
 //	
 			case CREATE_GL_HEATMAP2D:
 				return new GLCanvasHeatmap2DColumn(generalManager, 
-						iUniqueId, iGLCanvasID, sLabel);
+						iUniqueId, iGLCanvasID, sLabel, viewFrustum);
 				/*
 				return new GLCanvasHeatmap2D(refGeneralManager, iUniqueId,
 						iGlForwarderId, sLabel);
@@ -418,28 +420,32 @@ implements IViewGLCanvasManager {
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 
-						sLabel);
+						sLabel,
+						viewFrustum);
 				
 			case CREATE_GL_PATHWAY_3D:
 				return new GLCanvasPathway3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID,
-						sLabel);	
+						sLabel,
+						viewFrustum);	
 				
 			case CREATE_GL_PARALLEL_COORDINATES_3D:
 				return new GLCanvasParCoords3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 
-						sLabel);
+						sLabel,
+						viewFrustum);
 				
 			case CREATE_GL_OVERALL_JUKEBOX_3D:
 				return new GLCanvasOverallJukebox3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 
-						sLabel);	
+						sLabel,
+						viewFrustum);	
 				
 			default:
 				throw new GeneViewRuntimeException(

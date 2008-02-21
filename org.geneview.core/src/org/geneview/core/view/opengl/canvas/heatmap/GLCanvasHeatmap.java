@@ -5,6 +5,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.collection.ISet;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
@@ -25,11 +26,12 @@ extends AGLCanvasUser {
 	 * 
 	 */
 	public GLCanvasHeatmap(final IGeneralManager generalManager,
-			int iViewID,
-			int iGLCanvasID,
-			String sLabel) {
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
-		super(generalManager, iViewID, iGLCanvasID, sLabel);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 	}
 
 	public void setResolution( int[] iResolution ) {

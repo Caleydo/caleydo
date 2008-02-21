@@ -1,19 +1,18 @@
 package org.geneview.core.manager;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.JoglCanvasForwarderType;
 import org.geneview.core.view.swt.data.search.DataEntitySearcherViewRep;
 
 import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.FPSAnimator;
 
 /**
  * Make Jogl GLCanvas addressable by id and provide ground for XML bootstrapping of 
@@ -29,7 +28,8 @@ extends IViewManager {
 	public GLEventListener createGLCanvas(CommandQueueSaxType useViewType,
 			final int iUniqueId, 
 			final int iGLCanvasID,
-			String sLabel );
+			String sLabel,
+			IViewFrustum viewFrustum);
 
 	public Collection<GLCanvas> getAllGLCanvasUsers();
 	

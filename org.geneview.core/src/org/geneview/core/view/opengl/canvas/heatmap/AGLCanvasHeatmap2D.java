@@ -1,6 +1,7 @@
 package org.geneview.core.view.opengl.canvas.heatmap;
 
 import org.geneview.core.data.view.camera.IViewCamera;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
@@ -38,11 +39,12 @@ implements IGLCanvasHeatmap2D {
 	 * 
 	 */
 	public AGLCanvasHeatmap2D(final IGeneralManager generalManager,
-			int iViewID,
-			int iGLCanvasID,
-			String sLabel) {
+			final int iViewId,
+			final int iGLCanvasID,
+			final String sLabel,
+			final IViewFrustum viewFrustum) {
 
-		super(generalManager, iViewID, iGLCanvasID, sLabel);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 	}
 
 	/*
