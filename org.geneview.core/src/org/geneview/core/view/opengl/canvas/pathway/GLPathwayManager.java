@@ -478,7 +478,7 @@ public class GLPathwayManager {
 //		if (bPickingRendering)
 //		{
 			gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-					.getPickingID(containingView, PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
+					.getPickingID(containingView.getId(), PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
 //		}
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();

@@ -118,7 +118,7 @@ public class GLPathwayTextureManager {
 			((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView, PATHWAY_TEXTURE_SELECTION, iPathwayId));
+				.getPickingID(containingView.getId(), PATHWAY_TEXTURE_SELECTION, iPathwayId));
 				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 

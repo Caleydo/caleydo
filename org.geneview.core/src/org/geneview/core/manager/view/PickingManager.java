@@ -8,7 +8,6 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.geneview.core.manager.IGeneralManager;
@@ -49,6 +48,8 @@ public class PickingManager extends AAbstractManager
 	private HashMap<Integer, Boolean> hashViewIDToIsMouseOverPickingEvent;
 	
 	
+	// TODO: replace AUniqueManagedObject with view id
+	
 	/**
 	 * Constructor 
 	 * 
@@ -80,17 +81,15 @@ public class PickingManager extends AAbstractManager
 	 * has to be between 0 and 99 
 	 * @return 
 	 */
-	public int getPickingID(AUniqueManagedObject uniqueManagedObject, 
+	public int getPickingID(int iViewID, 
 							int iType, 
 							int iExternalID)
 	{
 		checkType(iType);		
-		
-		int iViewID = uniqueManagedObject.getId();
-		
+			
 		checkViewID(iViewID);
 		
-		int iSignature = getSignature(uniqueManagedObject, iType);
+		int iSignature = getSignature(iViewID, iType);
 				
 		
 		if(hashSignatureToPickingIDHashMap.get(iSignature) == null)
@@ -118,12 +117,13 @@ public class PickingManager extends AAbstractManager
 	 * @param pickingTriggerMouseAdapter
 	 * @param bIsMaster
 	 */
-	public void handlePicking(AUniqueManagedObject uniqueManagedObject, 
-				GL gl,
-				PickingJoglMouseListener pickingTriggerMouseAdapter, 
-				boolean bIsMaster)
-	{
-		int iViewID = uniqueManagedObject.getId();
+	public void handlePicking(final int iViewID, 
+				final GL gl,				
+				final boolean bIsMaster)
+	{	
+		
+		AGLCanvasUser canvasUser = (AGLCanvasUser)(generalManager.getSingelton().getViewGLCanvasManager().getItem(iViewID));
+		PickingJoglMouseListener pickingTriggerMouseAdapter =  canvasUser.getParentGLCanvas().getJoglMouseListener();
 		
 		Point pickPoint = null;
 
@@ -199,7 +199,7 @@ public class PickingManager extends AAbstractManager
 		float fAspectRatio = (float) (float) (viewport[3] - viewport[1]) 
 			/ (float) (viewport[2] - viewport[0]);
 
-		IViewFrustum viewFrustum = ((AGLCanvasUser)uniqueManagedObject).getViewFrustum();
+		IViewFrustum viewFrustum = canvasUser.getViewFrustum();
 		
 	    if (fAspectRatio < 1.0)
 	    {
@@ -245,7 +245,7 @@ public class PickingManager extends AAbstractManager
 		// Reset picked point
 		pickPoint = null;
 
-		((AGLCanvasUser)uniqueManagedObject).display(gl);
+		canvasUser.display(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
@@ -260,7 +260,7 @@ public class PickingManager extends AAbstractManager
 		if(iAlPickedObjectId.size() > 0)
 		{
 			processPicks(iAlPickedObjectId, 
-					uniqueManagedObject, 
+					iViewID, 
 					ePickingMode, 
 					bIsMaster, 
 					tmpPickPoint, 
@@ -275,10 +275,9 @@ public class PickingManager extends AAbstractManager
 	 * @param iType
 	 * @return null if no Hits, else the ArrayList<Integer> with the hits
 	 */	
-	public ArrayList<Pick> getHits(AUniqueManagedObject uniqueManagedObject, int iType)
+	public ArrayList<Pick> getHits(int iViewID, int iType)
 	{
 		checkType(iType);
-		int iViewID = uniqueManagedObject.getId();
 		checkViewID(iViewID);
 		
 		int iSignature = getSignature(iViewID, iType);		
@@ -296,10 +295,10 @@ public class PickingManager extends AAbstractManager
 	 * @param iPickingID the picking ID
 	 * @return the ID, null if no entry for that pickingID
 	 */
-	public int getExternalIDFromPickingID(AUniqueManagedObject uniqueManagedObject, int iPickingID)
+	public int getExternalIDFromPickingID(int iViewID, int iPickingID)
 	{
 		//TODO: exceptions
-		int iSignature = getSignatureFromPickingID(iPickingID, uniqueManagedObject);
+		int iSignature = getSignatureFromPickingID(iPickingID, iViewID);
 		return hashSignatureToPickingIDHashMap.get(iSignature).get(iPickingID);
 	}
 	
@@ -311,10 +310,10 @@ public class PickingManager extends AAbstractManager
 	 * @param iHitCount
 	 * @return the ID, null if no entry for that hit count
 	 */
-	public int getExternalIDFromHitCount(AUniqueManagedObject uniqueManagedObject, int iType, int iHitCount)
+	public int getExternalIDFromHitCount(int iViewID, int iType, int iHitCount)
 	{
 		//TODO: exceptions
-		int iSignature = getSignature(uniqueManagedObject, iType);		
+		int iSignature = getSignature(iViewID, iType);		
 		int iPickingID = hashSignatureToHitList.get(iSignature).get(iHitCount).getPickingID();		
 		return  hashSignatureToPickingIDHashMap.get(iSignature).get(iPickingID);
 		 
@@ -327,9 +326,9 @@ public class PickingManager extends AAbstractManager
 	 * @param uniqueManagedObject
 	 * @param iType
 	 */
-	public void flushPickingIDs(AUniqueManagedObject uniqueManagedObject, int iType)
+	public void flushPickingIDs(int iViewID, int iType)
 	{
-		int iSignature = getSignature(uniqueManagedObject, iType);
+		int iSignature = getSignature(iViewID, iType);
 		hashSignatureToExternalIDHashMap.remove(iSignature);
 		hashSignatureToHitList.remove(iSignature);
 		hashSignatureToPickingIDHashMap.remove(iSignature);
@@ -341,10 +340,9 @@ public class PickingManager extends AAbstractManager
 	 * @param iViewID
 	 * @param iType
 	 */
-	public void flushHits(AUniqueManagedObject uniqueManagedObject, int iType)
+	public void flushHits(int iViewID, int iType)
 	{
 		checkType(iType);
-		int iViewID = uniqueManagedObject.getId();
 		checkViewID(iViewID);
 		
 		if (hashSignatureToHitList.get(getSignature(iViewID, iType)) != null)
@@ -415,7 +413,7 @@ public class PickingManager extends AAbstractManager
 	}
 	
 	private void processPicks(ArrayList<Integer> alPickingIDs, 
-				AUniqueManagedObject uniqueManagedObject, 
+				int iViewID, 
 				EPickingMode myMode, 
 				boolean bIsMaster,
 				Point pickedPoint,
@@ -430,8 +428,8 @@ public class PickingManager extends AAbstractManager
 		
 			if (iResultCounter == 0)
 			{
-				iSignature = getSignatureFromPickingID(iPickingID,
-					uniqueManagedObject);
+				iSignature = getSignatureFromPickingID(iPickingID, iViewID);
+			
 				iOrigianlPickingID = iPickingID;
 			}
 			if (iResultCounter == 1 && bIsMaster)
@@ -461,18 +459,7 @@ public class PickingManager extends AAbstractManager
 	{
 		return (iViewID * 100 + iType);
 	}
-	
-	private int getSignature(AUniqueManagedObject uniqueManagedObject, int iType)
-	{
-		return getSignature(uniqueManagedObject.getId(), iType);
-	}
-	
-	private int getSignatureFromPickingID(int iPickingID, AUniqueManagedObject uniqueManagedObject)
-	{
-		int iViewID = uniqueManagedObject.getId();
-		return getSignatureFromPickingID(iPickingID, iViewID);
 		
-	}
 	
 	private int getSignatureFromPickingID(int iPickingID, int iViewID)
 	{

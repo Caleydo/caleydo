@@ -206,7 +206,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void displayLocal(final GL gl) {
 		
-		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
+		pickingManager.handlePicking(iUniqueId, gl, true);
 		
 		display(gl);
 		pickingTriggerMouseAdapter.resetEvents();
@@ -523,7 +523,7 @@ implements IMediatorReceiver, IMediatorSender {
 //				break;
 			
 			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-					.getPickingID(this, PATHWAY_POOL_SELECTION, iPathwayId));
+					.getPickingID(iUniqueId, PATHWAY_POOL_SELECTION, iPathwayId));
 
 			Transform transform = pathwayPoolLayer
 					.getTransformByElementId(iPathwayId);
@@ -759,7 +759,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		ArrayList<Pick> alHits = null;		
 		
-		alHits = pickingManager.getHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -768,7 +768,7 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					Pick tempPick = alHits.get(iCount);
 					int iPickingID = tempPick.getPickingID();
-					int iPickedElementID = pickingManager.getExternalIDFromPickingID(this, iPickingID);
+					int iPickedElementID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
 
 					PathwayVertexGraphItemRep pickedVertexRep = (PathwayVertexGraphItemRep) generalManager
 						.getSingelton().getPathwayItemManager().getItem(iPickedElementID);
@@ -859,7 +859,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			alHits = pickingManager.getHits(this, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);		
+			alHits = pickingManager.getHits(iUniqueId, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);		
 			if(alHits != null)
 			{			
 				if (alHits.size() != 0 )
@@ -868,7 +868,7 @@ implements IMediatorReceiver, IMediatorSender {
 					{
 						Pick tempPick = alHits.get(iCount);
 						int iPickedPathwayTextureID = pickingManager.getExternalIDFromPickingID(
-								this, tempPick.getPickingID());
+								iUniqueId, tempPick.getPickingID());
 
 						iMouseOverPickedPathwayId = -1;
 						
@@ -889,7 +889,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			alHits = pickingManager.getHits(this, PATHWAY_POOL_SELECTION);		
+			alHits = pickingManager.getHits(iUniqueId, PATHWAY_POOL_SELECTION);		
 			if(alHits != null)
 			{			
 				if (alHits.size() != 0 )
@@ -898,7 +898,7 @@ implements IMediatorReceiver, IMediatorSender {
 					{
 						Pick tempPick = alHits.get(iCount);
 						int iPickedPathwayID = pickingManager.getExternalIDFromPickingID(
-								this, tempPick.getPickingID());
+								iUniqueId, tempPick.getPickingID());
 						
 						infoAreaRenderer.resetPoint();
 						
@@ -920,7 +920,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			alHits = pickingManager.getHits(this, GLPathwayMemoPad.MEMO_PAD_SELECTION);		
+			alHits = pickingManager.getHits(iUniqueId, GLPathwayMemoPad.MEMO_PAD_SELECTION);		
 			if(alHits != null)
 			{			
 				if (alHits.size() != 0 )
@@ -929,7 +929,7 @@ implements IMediatorReceiver, IMediatorSender {
 					{
 						Pick tempPick = alHits.get(iCount);
 						int iPickedElementID = pickingManager.getExternalIDFromPickingID(
-								this, tempPick.getPickingID());
+								iUniqueId, tempPick.getPickingID());
 						
 						infoAreaRenderer.resetPoint();
 						
@@ -963,10 +963,10 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}
 		
-		pickingManager.flushHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
-		pickingManager.flushHits(this, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);
-		pickingManager.flushHits(this, PATHWAY_POOL_SELECTION);
-		pickingManager.flushHits(this, GLPathwayMemoPad.MEMO_PAD_SELECTION);
+		pickingManager.flushHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
+		pickingManager.flushHits(iUniqueId, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);
+		pickingManager.flushHits(iUniqueId, PATHWAY_POOL_SELECTION);
+		pickingManager.flushHits(iUniqueId, GLPathwayMemoPad.MEMO_PAD_SELECTION);
 	}
 
 	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {

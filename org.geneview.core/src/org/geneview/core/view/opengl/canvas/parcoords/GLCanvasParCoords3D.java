@@ -1,6 +1,7 @@
 package org.geneview.core.view.opengl.canvas.parcoords;
 
 
+import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
 import java.awt.Point;
@@ -30,6 +31,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
+import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 
 /**
  * 
@@ -59,7 +61,7 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 	// how much room between the axis?
-	private float fAxisSpacing = 1;
+	private float fAxisSpacing = 0.5f;
 	// how high is an axis - do NOT change
 	private static final float MAX_HEIGHT = 1; 
 		
@@ -83,6 +85,10 @@ implements IMediatorReceiver, IMediatorSender {
 	private float[] fArGateHeight;
 	private int iDraggedGateNumber = 0;
 	
+	private float fScaling = 0;
+	private float fXTranslation = 0;
+	private float fYTranslation = 0;
+	
 	private ParCoordsRenderStyle renderStyle;
 	
 	private PolylineSelectionManager polyLineSelectionManager;
@@ -99,11 +105,10 @@ implements IMediatorReceiver, IMediatorSender {
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
-			final IViewFrustum viewFrustum) {
-		
-
+			final IViewFrustum viewFrustum) 
+	{
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
-		
+	
 		// TODO:
 		//int bla = EGenomeIdType.ACCESSION_CODE.ordinal();
 		
@@ -121,6 +126,9 @@ implements IMediatorReceiver, IMediatorSender {
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
+		//toolBoxRenderer = new GLTo
+		
+		toolboxRenderer = new GLToolboxRenderer(generalManager,	iUniqueId, new Vec3f (0, 0, 0), null, true);
 	}
 	
 	/*
@@ -135,6 +143,8 @@ implements IMediatorReceiver, IMediatorSender {
 		iGLDisplayListIndexRemote = gl.glGenLists(1);	
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
+		// TODO should not be null
+		toolboxRenderer = new GLToolboxRenderer(generalManager,	iUniqueId, new Vec3f (0, 0, 0), null, true);
 	}
 
 	/*
@@ -154,6 +164,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		initPolyLineLists();
 		
+		
+		
+		
+		
 		gl.glClearColor(ParCoordsRenderStyle.CANVAS_COLOR.x(), 
 						ParCoordsRenderStyle.CANVAS_COLOR.y(), 
 						ParCoordsRenderStyle.CANVAS_COLOR.z(),
@@ -166,7 +180,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void displayLocal(final GL gl) 
 	{		
-		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, false);
+		pickingManager.handlePicking(iUniqueId, gl, false);
 		if(bIsDisplayListDirtyLocal)
 		{
 			buildPolyLineDisplayList(gl, iGLDisplayListIndexLocal);
@@ -174,6 +188,9 @@ implements IMediatorReceiver, IMediatorSender {
 		}	
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		display(gl);
+		
+		checkForHits(gl);
+		
 		//gl.glCallList(iGLDisplayListIndexLocal);
 		pickingTriggerMouseAdapter.resetEvents();
 	}
@@ -191,6 +208,8 @@ implements IMediatorReceiver, IMediatorSender {
 		}	
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		display(gl);
+		
+		checkForHits(gl);
 		//gl.glCallList(iGLDisplayListIndexRemote);
 		//pickingTriggerMouseAdapter.resetEvents();
 	}
@@ -202,11 +221,32 @@ implements IMediatorReceiver, IMediatorSender {
 	public void display(final GL gl) 
 	{	
 		if(bIsDraggingActive)
-		{
+		{		
+			
+			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
+			gl.glScalef(fScaling, fScaling, 1.0f);
+			
 			handleDragging(gl);
+			
+			gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
+			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);
 		}
-		checkForHits(gl);
-		gl.glCallList(iGLDisplayListToCall);		
+
+		
+		
+//		gl.glColor3f(0.0f, 0.0f, 0.0f);
+//		gl.glLineWidth(3.0f);
+//		
+//		gl.glBegin(GL.GL_LINES);
+//		gl.glVertex3f(-1.0f, 0.0f, 0.0f);
+//		gl.glVertex3f(1.0f, 0.0f, 0.0f);
+//		gl.glVertex3f(0.0f, -1.0f, 0.0f);
+//		gl.glVertex3f(0.0f, 1.0f, 0.0f);
+//		gl.glEnd();
+
+		gl.glCallList(iGLDisplayListToCall);
+		toolboxRenderer.render(gl);
+	
 	}
 		
 	/**
@@ -322,12 +362,28 @@ implements IMediatorReceiver, IMediatorSender {
 				polyLineSelectionManager.initialAdd(alSetSelection.get(0).getSelectionIdArray()[iPolyLineCount]);
 		}
 		
+		fScaling = 2.5f;
+		
+		fXTranslation = (viewFrustum.getRight() - viewFrustum.getLeft()
+				-(iNumberOfAxis-1)*fAxisSpacing*fScaling)/2.0f;
+		fYTranslation = (viewFrustum.getTop() - viewFrustum.getBottom() - fScaling)/2.0f;
+	
+		
 	}
 	
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
+
+		
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 	
+		//float fXTranslation = -(iNumberOfAxis-1)*fAxisSpacing/2.0f*fScaling;
+		
+		//gl.glLoadIdentity();
+		//gl.glTranslatef(fXTranslation, -0.5f*fScaling, 0.0f);
+		gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
+		gl.glScalef(fScaling, fScaling, 1.0f);
+		
 		renderCoordinateSystem(gl, iNumberOfAxis);	
 		
 		renderPolylines(gl, RenderMode.DESELECTED);
@@ -337,7 +393,11 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		
 		renderGates(gl, iNumberOfAxis);		
-	
+		
+		gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
+		gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);
+		//gl.glTranslatef(-fXTranslation, 0.5f*fScaling, 0.0f);
+		
 		gl.glEndList();
 	}
 	
@@ -409,7 +469,7 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			int iPolyLineID = dataIterator.next();
 			if(renderMode != RenderMode.DESELECTED)
-				gl.glPushName(pickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineID));	
+				gl.glPushName(pickingManager.getPickingID(iUniqueId, POLYLINE_SELECTION, iPolyLineID));	
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 
@@ -481,7 +541,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
 		
-		gl.glPushName(pickingManager.getPickingID(this, X_AXIS_SELECTION, 1));
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);		
 	
 		gl.glVertex3f(-0.1f, 0.0f, 0.0f); 
@@ -503,7 +563,7 @@ implements IMediatorReceiver, IMediatorSender {
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(pickingManager.getPickingID(this, Y_AXIS_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, Y_AXIS_SELECTION, iCount));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, 0.0f, 0.0f);
 			gl.glVertex3f(iCount * fAxisSpacing, MAX_HEIGHT, 0.0f);
@@ -524,7 +584,7 @@ implements IMediatorReceiver, IMediatorSender {
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(pickingManager.getPickingID(this, LOWER_GATE_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, LOWER_GATE_SELECTION, iCount));
 			float fCurrentPosition = iCount * fAxisSpacing;
 			
 			// The tip of the gate (which is pickable)
@@ -696,7 +756,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		ArrayList<Pick> alHits = null;		
 	
-		alHits = pickingManager.getHits(this, POLYLINE_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, POLYLINE_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -708,7 +768,7 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					Pick tempPick = alHits.get(iCount);
 					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(this, iPickingID);
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
 					//alNormalPolylines.remove(new Integer(iExternalID));
 						
 					switch (tempPick.getPickingMode())
@@ -761,33 +821,33 @@ implements IMediatorReceiver, IMediatorSender {
 						
 					}					
 				}
-				pickingManager.flushHits(this, POLYLINE_SELECTION);
+				pickingManager.flushHits(iUniqueId, POLYLINE_SELECTION);
 				// FIXME: this happens every time when something is selected
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 				//bRenderPolylineSelection = true;
 			}				
 		}
-		alHits = pickingManager.getHits(this, X_AXIS_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, X_AXIS_SELECTION);		
 		if(alHits != null)
 		{				
 			if (alHits.size() != 0 )
 			{
 				//System.out.println("X Axis Selected");
-				pickingManager.flushHits(this, X_AXIS_SELECTION);				
+				pickingManager.flushHits(iUniqueId, X_AXIS_SELECTION);				
 			}
 		}
-		alHits = pickingManager.getHits(this, Y_AXIS_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, Y_AXIS_SELECTION);		
 		if(alHits != null)
 		{		
 			if (alHits.size() != 0 )
 			{
 				//System.out.println("Y Axis Selected");
-				pickingManager.flushHits(this, Y_AXIS_SELECTION);			
+				pickingManager.flushHits(iUniqueId, Y_AXIS_SELECTION);			
 			}			
 		}
 		
-		alHits = pickingManager.getHits(this, LOWER_GATE_SELECTION);
+		alHits = pickingManager.getHits(iUniqueId, LOWER_GATE_SELECTION);
 		if(alHits != null)
 		{		
 			if (alHits.size() != 0 )
@@ -796,7 +856,7 @@ implements IMediatorReceiver, IMediatorSender {
 				{
 					Pick tempPick = alHits.get(iCount);
 					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(this, iPickingID);
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
 					
 					switch (tempPick.getPickingMode())
 					{						
@@ -815,10 +875,50 @@ implements IMediatorReceiver, IMediatorSender {
 							// do nothing
 					}
 				}
-				pickingManager.flushHits(this, LOWER_GATE_SELECTION);
+				pickingManager.flushHits(iUniqueId, LOWER_GATE_SELECTION);
 				
 			}			
-		}		
+		}
+		
+		alHits = pickingManager.getHits(iUniqueId, 7);
+		if(alHits != null)
+		{		
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+					
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:							
+							if (bRenderArrayAsPolyline == true)
+								renderArrayAsPolyline(false);
+							else
+								renderArrayAsPolyline(true);
+							
+							bIsDisplayListDirtyLocal = true;
+							bIsDisplayListDirtyRemote = true;
+							pickingManager.flushHits(iUniqueId, 7);
+							break;
+//						case DRAGGED:
+//							//System.out.println("Gate Dragged");
+//							
+//						
+//							bIsDraggingActive = true;
+//							iDraggedGateNumber = iExternalID;
+//							break;
+						default:
+							// do nothing
+					}
+				}
+				pickingManager.flushHits(iUniqueId, LOWER_GATE_SELECTION);
+				
+			}			
+		}
+	
 	}
 	
 	/*

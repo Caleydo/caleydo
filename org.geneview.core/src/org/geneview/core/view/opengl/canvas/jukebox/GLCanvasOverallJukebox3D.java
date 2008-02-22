@@ -144,7 +144,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void displayLocal(final GL gl) {
 		
-		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
+		pickingManager.handlePicking(iUniqueId, gl, true);
 //		if(bIsDisplayListDirtyLocal)
 //		{
 //			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -224,7 +224,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			tmpGLEventListener.initRemote(gl, pickingTriggerMouseAdapter);
 			
-			pickingManager.getPickingID(this, VIEW_PICKING, iViewId);
+			pickingManager.getPickingID(iUniqueId, VIEW_PICKING, iViewId);
 		}
 	}
 	
@@ -314,7 +314,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
-		gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, VIEW_PICKING, iViewId));
 		renderViewById(gl, iViewId, underInteractionLayer);
 		gl.glPopName();
 	}
@@ -332,7 +332,7 @@ implements IMediatorReceiver, IMediatorSender {
 //			if(!stackLayer.getElementVisibilityById(iPathwayId))
 //				continue;
 			
-			gl.glPushName(pickingManager.getPickingID(this, VIEW_PICKING, iViewId));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, VIEW_PICKING, iViewId));
 			renderViewById(gl, iViewId, stackLayer);		
 			gl.glPopName();
 		}
@@ -425,7 +425,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		ArrayList<Pick> alHits = null;		
 		
-		alHits = pickingManager.getHits(this, VIEW_PICKING);		
+		alHits = pickingManager.getHits(iUniqueId, VIEW_PICKING);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -433,14 +433,14 @@ implements IMediatorReceiver, IMediatorSender {
 				for (int iCount = 0; iCount < alHits.size(); iCount++)
 				{
 					int iViewId = pickingManager.getExternalIDFromPickingID(
-							this, alHits.get(iCount).getPickingID());					
+							iUniqueId, alHits.get(iCount).getPickingID());					
 					
 					loadViewToUnderInteractionLayer(iViewId);
 				}
 			}
 		}	
 		
-		pickingManager.flushHits(this, VIEW_PICKING);
+		pickingManager.flushHits(iUniqueId, VIEW_PICKING);
 	}
 	
 	private void loadViewToUnderInteractionLayer(final int iViewId) {

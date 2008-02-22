@@ -93,7 +93,7 @@ extends AGLCanvasUser {
 	 */
 	public void displayLocal(final GL gl) {
 		
-		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
+		pickingManager.handlePicking(iUniqueId, gl, true);
 		
 		display(gl);
 		pickingTriggerMouseAdapter.resetEvents();

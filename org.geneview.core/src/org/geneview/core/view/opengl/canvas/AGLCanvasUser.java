@@ -1,5 +1,7 @@
 package org.geneview.core.view.opengl.canvas;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -12,7 +14,6 @@ import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.SetSelection;
 import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.camera.ViewFrustumBase;
 import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -21,6 +22,9 @@ import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.geneview.core.view.opengl.util.GLToolboxRenderer;
+import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+
 
 /**
  * 
@@ -51,6 +55,8 @@ implements GLEventListener {
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 	
 	protected IViewFrustum viewFrustum;
+	
+	protected GLToolboxRenderer toolboxRenderer;
 
 	/**
 	 * Constructor.
@@ -95,6 +101,7 @@ implements GLEventListener {
 
 		this.viewFrustum = viewFrustum;
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
+	
 	}
 
 	/*
@@ -106,6 +113,9 @@ implements GLEventListener {
 		((GLEventListener)parentGLCanvas).init(drawable);
 
 		initLocal(drawable.getGL());
+		
+	
+		
 	}
 	
 	/*
@@ -446,5 +456,24 @@ implements GLEventListener {
 	public void setFrustum(IViewFrustum viewFrustum) {
 		
 		this.viewFrustum = viewFrustum;
+	}
+
+	/**
+	 * 
+	 * @param gl the gl of the context, remote gl when called remote
+	 * @param leftPoint is the bottom left point if bRenderLeftToRight
+	 * 			is true, else the top left point
+	 * @param layer 
+	 * @param bIsCalledLocally true if called locally	  
+	 * @param bRenderLeftToRight true if it should be rendered left to right,
+	 * 			false if top to bottom
+	 */
+	public void renderToolbox(final GL gl, 
+			final Vec3f leftPoint,
+			final JukeboxHierarchyLayer layer,
+			final boolean bIsCalledLocally,
+			final boolean bRenderLeftToRight)
+	{
+		
 	}
 }

@@ -149,7 +149,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void displayLocal(final GL gl) {
 		
-		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, false);
+		pickingManager.handlePicking(iUniqueId, gl, false);
 		if(bIsDisplayListDirtyLocal)
 		{
 			refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
@@ -325,15 +325,15 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void checkForHits()
 	{
-		if(pickingManager.getHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION) != null)
+		if(pickingManager.getHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION) != null)
 		{
-			ArrayList<Pick> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
+			ArrayList<Pick> tempList = pickingManager.getHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
 			
 			if (tempList != null)
 			{
 				if (tempList.size() != 0 )
 				{
-					int iElementID = pickingManager.getExternalIDFromPickingID(this, tempList.get(0).getPickingID());
+					int iElementID = pickingManager.getExternalIDFromPickingID(iUniqueId, tempList.get(0).getPickingID());
 				
 					PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager.getSingelton()
 						.getPathwayItemManager().getItem(iElementID);
@@ -381,7 +381,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			pickingManager.flushHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
+			pickingManager.flushHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
 		}
 	}
 
