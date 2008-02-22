@@ -30,6 +30,7 @@ import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.SelectionManager;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.util.graph.EGraphItemHierarchy;
@@ -121,14 +122,18 @@ implements IMediatorReceiver, IMediatorSender {
 	public void initLocal(final GL gl)
 	{
 		init(gl);
+		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
-	 */
-	public void initRemote(final GL gl)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */	
+	public void initRemote(final GL gl, 
+			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
+		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+	
 		init(gl);
 	}
 	
@@ -154,6 +159,7 @@ implements IMediatorReceiver, IMediatorSender {
 			bIsDisplayListDirtyLocal = false;			
 		}	
 		display(gl);
+		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*

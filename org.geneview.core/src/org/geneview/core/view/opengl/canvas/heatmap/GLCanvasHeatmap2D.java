@@ -150,10 +150,13 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
-	 */
-	public void initRemote(final GL gl)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */	
+	public void initRemote(final GL gl, 
+			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
+		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+	
 		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
 		init(gl);
 	}
@@ -175,6 +178,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
 		
 		display(gl);
+		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*

@@ -3,12 +3,14 @@ package org.geneview.core.view.opengl.canvas.parcoords;
 
 import gleem.linalg.Vec4f;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.eclipse.swt.events.MouseEvent;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.SetType;
@@ -25,7 +27,9 @@ import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.util.GLCoordinateUtils;
 
 /**
  * 
@@ -61,18 +65,23 @@ implements IMediatorReceiver, IMediatorSender {
 		
 	private int iGLDisplayListIndexLocal;
 	private int iGLDisplayListIndexRemote;
+	private int iGLDisplayListToCall = 0;
 		
 	// flag whether one array should be a polyline or an axis
 	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
-	private boolean bRenderSelection = true;
+	private boolean bRenderSelection = false;
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;
 	
 	private boolean bIsDisplayListDirtyLocal = true;
 	private boolean bIsDisplayListDirtyRemote = true;
 	
+	private boolean bIsDraggingActive = false;
+		
 	private int iNumberOfAxis = 0;
+	private float[] fArGateHeight;
+	private int iDraggedGateNumber = 0;
 	
 	private ParCoordsRenderStyle renderStyle;
 	
@@ -81,8 +90,6 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	ArrayList<IStorage> alDataStorages;
 		
-	// TODO: Marc: just for update testing
-	//private int iSelectedAccessionID = -1;
 	
 	/**
 	 * Constructor.
@@ -111,17 +118,22 @@ implements IMediatorReceiver, IMediatorSender {
 	 */	
 	public void initLocal(final GL gl)
 	{
-		iGLDisplayListIndexLocal = gl.glGenLists(1);	
+		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
-	 */
-	public void initRemote(final GL gl)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */	
+	public void initRemote(final GL gl, 
+			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
+		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+	
 		iGLDisplayListIndexRemote = gl.glGenLists(1);	
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -133,7 +145,8 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		// initialize selection to an empty array with 
 		ISetSelection tmpSelection = alSetSelection.get(0);		
-		int[] iArTmpSelectionIDs = {};
+		// TODO: only for tests, should be {}
+		int[] iArTmpSelectionIDs = {3, 6, 9, 12};
 		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
 		
 		//Collection<Integer> test = refGeneralManager.getSingelton().getGenomeIdManager()
@@ -151,16 +164,18 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
-	public void displayLocal(final GL gl) {
-		
+	public void displayLocal(final GL gl) 
+	{		
 		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, false);
 		if(bIsDisplayListDirtyLocal)
 		{
 			buildPolyLineDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;			
 		}	
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		display(gl);
-		gl.glCallList(iGLDisplayListIndexLocal);
+		//gl.glCallList(iGLDisplayListIndexLocal);
+		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*
@@ -168,15 +183,16 @@ implements IMediatorReceiver, IMediatorSender {
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
 	public void displayRemote(final GL gl) 
-	{	
-	
+	{		
 		if(bIsDisplayListDirtyRemote)
 		{
 			buildPolyLineDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}	
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		display(gl);
-		gl.glCallList(iGLDisplayListIndexRemote);
+		//gl.glCallList(iGLDisplayListIndexRemote);
+		//pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*
@@ -184,8 +200,13 @@ implements IMediatorReceiver, IMediatorSender {
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) 
-	{		
-		checkForHits();
+	{	
+		if(bIsDraggingActive)
+		{
+			handleDragging(gl);
+		}
+		checkForHits(gl);
+		gl.glCallList(iGLDisplayListToCall);		
 	}
 		
 	/**
@@ -258,15 +279,20 @@ implements IMediatorReceiver, IMediatorSender {
 		}	
 		else
 		{
-			if(bRenderArrayAsPolyline)
-			{
-				iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-			}
-			else
-			{				
-				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-				iNumberOfEntriesToRender = 1000;
-			}
+			//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
+			iNumberOfEntriesToRender = 1000;
+//			if(bRenderArrayAsPolyline)
+//			{
+//				// TODO: temp solution
+//				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
+//				iNumberOfEntriesToRender = 10;
+//			}
+//			else
+//			{	
+//				// TODO: temp solution
+//				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
+//				iNumberOfEntriesToRender = 1000;
+//			}
 		}
 		
 	
@@ -284,11 +310,13 @@ implements IMediatorReceiver, IMediatorSender {
 			iNumberOfPolyLinesToRender = iNumberOfEntriesToRender;
 			iNumberOfAxis = alDataStorages.size();
 		}
+		
+		fArGateHeight = new float[iNumberOfAxis];
 			
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{	
-			if(!bRenderSelection)
+			if(!bRenderSelection || bRenderArrayAsPolyline)
 				polyLineSelectionManager.initialAdd(iPolyLineCount);
 			else
 				polyLineSelectionManager.initialAdd(alSetSelection.get(0).getSelectionIdArray()[iPolyLineCount]);
@@ -302,11 +330,13 @@ implements IMediatorReceiver, IMediatorSender {
 	
 		renderCoordinateSystem(gl, iNumberOfAxis);	
 		
+		renderPolylines(gl, RenderMode.DESELECTED);
 		renderPolylines(gl, RenderMode.NORMAL);
 		renderPolylines(gl, RenderMode.MOUSE_OVER);
 		renderPolylines(gl, RenderMode.SELECTION);
 		
-		renderGates(gl, iNumberOfAxis, 0.0f);		
+		
+		renderGates(gl, iNumberOfAxis);		
 	
 		gl.glEndList();
 	}
@@ -314,7 +344,9 @@ implements IMediatorReceiver, IMediatorSender {
 	private void renderPolylines(GL gl, RenderMode renderMode)
 	{		
 		
+		
 		Set<Integer> setDataToRender = null;
+		float fZDepth = 0.0f;
 		
 		switch (renderMode)
 		{
@@ -323,7 +355,7 @@ implements IMediatorReceiver, IMediatorSender {
 				if(bPreventOcclusion)
 				{
 					// TODO: input the number of polylines here
-					Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(setDataToRender.size());
+					Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(setDataToRender.size());//polyLineSelectionManager.getNumberOfPolylines());
 					gl.glColor4f(occlusionPrevColor.x(),
 								occlusionPrevColor.y(),
 								occlusionPrevColor.z(),
@@ -354,6 +386,16 @@ implements IMediatorReceiver, IMediatorSender {
 						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.w());
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				break;
+			case DESELECTED:	
+				setDataToRender = polyLineSelectionManager.getDeselectedPolylines();				
+				Vec4f deselectedOccPrevColor = renderStyle.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size());
+				
+				gl.glColor4f(deselectedOccPrevColor.x(),
+						deselectedOccPrevColor.y(),
+						deselectedOccPrevColor.z(),
+						deselectedOccPrevColor.w());
+				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
+				break;
 			default:
 				setDataToRender = polyLineSelectionManager.getNormalPolylines();
 		}
@@ -366,7 +408,8 @@ implements IMediatorReceiver, IMediatorSender {
 		while(dataIterator.hasNext())
 		{
 			int iPolyLineID = dataIterator.next();
-			gl.glPushName(pickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineID));	
+			if(renderMode != RenderMode.DESELECTED)
+				gl.glPushName(pickingManager.getPickingID(this, POLYLINE_SELECTION, iPolyLineID));	
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 
@@ -419,11 +462,11 @@ implements IMediatorReceiver, IMediatorSender {
 //				System.out.println("Accession Number: "+sAccessionCode);
 				
 				gl.glVertex3f(iVertricesCount * fAxisSpacing, currentStorage
-						.getArrayFloat()[iStorageIndex], 0.0f);
+						.getArrayFloat()[iStorageIndex], fZDepth);
 			}
 			gl.glEnd();
-			
-			gl.glPopName();			
+			if(renderMode != RenderMode.DESELECTED)
+				gl.glPopName();			
 		}		
 	}
 	
@@ -470,7 +513,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}				
 	}
 	
-	private void renderGates(GL gl, int iNumberAxis, float fHeight)
+	private void renderGates(GL gl, int iNumberAxis)
 	{
 		
 		gl.glColor4f(ParCoordsRenderStyle.GATE_COLOR.x(),
@@ -479,7 +522,6 @@ implements IMediatorReceiver, IMediatorSender {
 				ParCoordsRenderStyle.GATE_COLOR.w());
 		
 		int iCount = 0;
-		fHeight = 0.3f;
 		while (iCount < iNumberAxis)
 		{
 			gl.glPushName(pickingManager.getPickingID(this, LOWER_GATE_SELECTION, iCount));
@@ -489,15 +531,15 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
 			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fHeight - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
 						0.001f);
 			// variable
 			gl.glVertex3f(fCurrentPosition,
-						fHeight,
+						fArGateHeight[iCount],
 						0.001f);			
 			// variable
 			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fHeight - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
 						0.001f);
 			gl.glEnd();
 			gl.glPopName();
@@ -514,11 +556,11 @@ implements IMediatorReceiver, IMediatorSender {
 						0.001f);
 			// variable
 			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fHeight - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
 						0.001f);			
 			// variable
 			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fHeight - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
 						0.001f);
 			gl.glEnd();
 			
@@ -527,8 +569,130 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 	
 
+	private void handleDragging(GL gl)
+	{	
+		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		
+		float[] fArTargetWorldCoordinates = GLCoordinateUtils.
+			convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);	
+		
+		float height = fArTargetWorldCoordinates[1];
+		if (height > 1)
+		{
+			height = 1;
+		}
+		else if (height < 0)
+		{
+			height = 0;
+		}
+		
+		fArGateHeight[iDraggedGateNumber] = height;
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;		
 	
-	protected void checkForHits()
+		if(pickingTriggerMouseAdapter.wasMouseReleased())
+		{
+			bIsDraggingActive = false;
+		}
+		handleUnselection(iDraggedGateNumber);		
+	}
+	
+	/**
+	 * Unselect all lines that are deselected with the gates
+	 * @param iAxisNumber
+	 */
+	private void handleUnselection(int iAxisNumber)
+	{	
+		IStorage currentStorage = null;
+		
+		// for every polyline
+		for (int iPolylineCount = 0; iPolylineCount < polyLineSelectionManager.getNumberOfPolylines(); iPolylineCount++)
+		{	
+			int iStorageIndex = 0;
+			
+			// get the index if array as polyline
+			if (bRenderArrayAsPolyline)
+			{
+				currentStorage = alDataStorages.get(iPolylineCount);
+				// if only selection should be rendered we get the ids out of
+				// the selection array
+				if (bRenderSelection)
+				{
+					iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iAxisNumber];
+				} 
+				else
+				{
+					iStorageIndex = iAxisNumber;
+				}
+			}
+			// get the storage and the storage index for the different cases				
+			else
+			{
+				
+				if(!bRenderSelection)					
+					iStorageIndex = iPolylineCount;	
+				else
+					iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iPolylineCount];
+			
+				currentStorage = alDataStorages.get(iAxisNumber);						
+			}							
+			
+			if(currentStorage.getArrayFloat()[iStorageIndex] < fArGateHeight[iAxisNumber])
+			{			
+				if(!bRenderSelection || bRenderArrayAsPolyline)
+					polyLineSelectionManager.addDeselection(iPolylineCount);
+				else
+					polyLineSelectionManager.addDeselection(alSetSelection.get(0).getSelectionIdArray()[iPolylineCount]);
+			}
+			else
+			{
+				boolean bIsBlocked = false;
+				
+				// every axis
+				for (int iLocalAxisCount = 0; iLocalAxisCount < iNumberOfAxis; iLocalAxisCount++)
+				{					
+					int iLocalStorageIndex = 0;
+					if(bRenderArrayAsPolyline)
+					{
+						if(!bRenderSelection)					
+							iLocalStorageIndex = iLocalAxisCount;	
+						else
+							iLocalStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iLocalAxisCount];
+						
+						if(currentStorage.getArrayFloat()[iLocalStorageIndex] < fArGateHeight[iLocalAxisCount])
+						{						
+							bIsBlocked = true;
+							break;
+						}			
+					}
+					else
+					{
+						//iLocalStorage = alDataStorages.get(iCount);
+						//iLocalStorageIndex = iPolylineCount;
+						if(!bRenderSelection)					
+							iLocalStorageIndex = iPolylineCount;
+						else
+							iLocalStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iPolylineCount];
+						
+						if(alDataStorages.get(iLocalAxisCount).getArrayFloat()[iLocalStorageIndex] < fArGateHeight[iLocalAxisCount])
+						{
+							bIsBlocked = true;
+							break;
+						}						
+					}							
+				}
+				if (!bIsBlocked)
+				{
+					if(!bRenderSelection || bRenderArrayAsPolyline)
+						polyLineSelectionManager.removeDeselection(iPolylineCount);
+					else
+						polyLineSelectionManager.removeDeselection(alSetSelection.get(0).getSelectionIdArray()[iPolylineCount]);
+				}				
+			}
+		}		
+	} 
+	
+	private void checkForHits(GL gl)
 	{
 		ArrayList<Pick> alHits = null;		
 	
@@ -584,6 +748,7 @@ implements IMediatorReceiver, IMediatorSender {
 								bMouseOverCleared = true;
 								polyLineSelectionManager.clearMouseOver();
 							}
+							//if(!polyLineSelectionManager.isPolylineDeselected(iExternalID))
 							polyLineSelectionManager.addMouseOver(iExternalID);
 							break;
 						case DRAGGED:
@@ -608,7 +773,7 @@ implements IMediatorReceiver, IMediatorSender {
 		{				
 			if (alHits.size() != 0 )
 			{
-				System.out.println("X Axis Selected");
+				//System.out.println("X Axis Selected");
 				pickingManager.flushHits(this, X_AXIS_SELECTION);				
 			}
 		}
@@ -617,7 +782,7 @@ implements IMediatorReceiver, IMediatorSender {
 		{		
 			if (alHits.size() != 0 )
 			{
-				System.out.println("Y Axis Selected");
+				//System.out.println("Y Axis Selected");
 				pickingManager.flushHits(this, Y_AXIS_SELECTION);			
 			}			
 		}
@@ -638,6 +803,13 @@ implements IMediatorReceiver, IMediatorSender {
 						case CLICKED:						
 							System.out.println("Gate Selected");
 							//bIsDisplayListDirty = true;
+							break;
+						case DRAGGED:
+							//System.out.println("Gate Dragged");
+							
+						
+							bIsDraggingActive = true;
+							iDraggedGateNumber = iExternalID;
 							break;
 						default:
 							// do nothing

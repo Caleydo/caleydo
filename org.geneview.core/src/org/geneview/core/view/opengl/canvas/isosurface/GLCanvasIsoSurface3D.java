@@ -10,6 +10,7 @@ import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.GLUT;
@@ -87,10 +88,13 @@ extends AGLCanvasUser
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
-	 */
-	public void initRemote(final GL gl)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */	
+	public void initRemote(final GL gl, 
+			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
+		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+	
 		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
 		init(gl);
 	}
@@ -113,6 +117,7 @@ extends AGLCanvasUser
 		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
 		
 		display(gl);
+		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*

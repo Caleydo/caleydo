@@ -215,7 +215,8 @@ implements GLEventListener {
 	 * Has to call init internally!
 	 * @param gl
 	 */
-	public abstract void initRemote(final GL gl);
+	public abstract void initRemote(final GL gl, 
+			final PickingJoglMouseListener pickingTriggerMouseAdapter);
 	
 	/**
 	 * GL display method that has to be called in all cases

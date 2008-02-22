@@ -32,6 +32,7 @@ public class PolylineSelectionManager
 	private HashMap<Integer, Boolean> hashSelectedPolylines;
 	private HashMap<Integer, Boolean> hashMouseOverPolylines;
 	private HashMap<Integer, Boolean> hashDeselectedPolylines;
+	private int iNumberOfPolylines = 0;
 	
 	
 	public PolylineSelectionManager() 
@@ -44,7 +45,8 @@ public class PolylineSelectionManager
 	
 	public Boolean initialAdd(int iPolylineID)
 	{		
-		return hashNormalPolylines.put(iPolylineID, true);
+		iNumberOfPolylines++;
+		return hashNormalPolylines.put(iPolylineID, true);		
 	}
 	
 	public void clearAll()
@@ -53,6 +55,7 @@ public class PolylineSelectionManager
 		 hashSelectedPolylines.clear();
 		 hashMouseOverPolylines.clear();
 		 hashDeselectedPolylines.clear();
+		 iNumberOfPolylines = 0;
 	}
 	
 	public Set<Integer> getNormalPolylines()
@@ -132,14 +135,8 @@ public class PolylineSelectionManager
 	
 	public void removeDeselection(int iPolylineID)
 	{
-		if(hashDeselectedPolylines.remove(iPolylineID) == null)
-		{
-			throw new GeneViewRuntimeException(
-					"PolylineSelectionManger: tried to remove deselected polyline that was not deselected",
-					GeneViewRuntimeExceptionType.VIEW);			
-		}
-		
-		hashDeselectedPolylines.put(iPolylineID, true);		
+		if(!(hashDeselectedPolylines.remove(iPolylineID) == null))
+			hashNormalPolylines.put(iPolylineID, true);		
 	}
 	
 	public void clearDeselection()
@@ -148,6 +145,18 @@ public class PolylineSelectionManager
 		hashDeselectedPolylines.clear();
 	}
 	
+	public int getNumberOfPolylines()
+	{
+		return iNumberOfPolylines;
+	}
+	
+	public boolean isPolylineDeselected(int iPolylineID)
+	{
+		if(hashDeselectedPolylines.get(iPolylineID) != null)
+			return true;
+		else
+			return false;
+	}
 	
 	private boolean checkAndRemoveAllOthers(int iPolylineID, RenderMode eRenderMode)
 	{

@@ -2,6 +2,7 @@ package org.geneview.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
+import java.math.*;
 
 import org.geneview.core.data.ARenderStyle;
 
@@ -26,6 +27,9 @@ extends ARenderStyle
 	public static final Vec4f POLYLINE_MOUSE_OVER_COLOR = new Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
 	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 3.0f;
 	
+
+	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
+	
 	public static final Vec4f Y_AXIS_COLOR = new Vec4f(0.0f, 1.0f, 0.0f, 1.0f);
 	public static final Vec4f X_AXIS_COLOR = new Vec4f(0.0f, 0.0f, 1.0f, 1.0f);
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
@@ -40,7 +44,8 @@ extends ARenderStyle
 	
 	// modifiable colors
 	protected Vec4f polylineOcclusionPrevColor;
-	
+	protected Vec4f polylineDeselectedColor; 
+	protected float fOcclusionPrevAlpha = 0.1f;
 
 	
 	// Line widths
@@ -52,20 +57,25 @@ extends ARenderStyle
 	public ParCoordsRenderStyle()
 	{
 		polylineOcclusionPrevColor = new Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+		polylineDeselectedColor = new Vec4f(0.0f, 0.0f, 0.0f, 0.1f);
 	}
 
 	// TODO: intelligent factor for number
-	public Vec4f getPolylineOcclusionPrevColor(int numberOfRenderedLines) 
+	public Vec4f getPolylineOcclusionPrevColor(int iNumberOfRenderedLines) 
 	{
-		if (numberOfRenderedLines > 100)
-		{
-			polylineOcclusionPrevColor.set(3, 0.1f);
-		}
-		else
-		{
-			polylineOcclusionPrevColor.set(3, 0.6f);
-		}
+	
+		fOcclusionPrevAlpha = (float) (4/Math.sqrt(iNumberOfRenderedLines));
+		
+		polylineOcclusionPrevColor.set(3, fOcclusionPrevAlpha);
+		
 		return polylineOcclusionPrevColor;
+	}
+	
+	public Vec4f getPolylineDeselectedOcclusionPrevColor(int iNumberOfRenderedLines)
+	{
+		
+		polylineDeselectedColor.set(3, (float)(0.5/Math.sqrt(iNumberOfRenderedLines)));
+		return polylineDeselectedColor;
 	}
 	
 	

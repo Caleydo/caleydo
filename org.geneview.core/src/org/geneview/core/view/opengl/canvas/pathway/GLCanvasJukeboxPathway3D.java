@@ -37,6 +37,7 @@ import org.geneview.core.util.slerp.SlerpMod;
 import org.geneview.core.util.sound.SoundPlayer;
 import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
+import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLDragAndDrop;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
@@ -173,14 +174,18 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		//iGLDisplayListIndexLocal = gl.glGenLists(1);	
 		init(gl);
+		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL)
-	 */
-	public void initRemote(final GL gl)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */	
+	public void initRemote(final GL gl, 
+			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
+		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+	
 		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
 		init(gl);
 	}
@@ -208,6 +213,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingManager.handlePicking(this, gl, pickingTriggerMouseAdapter, true);
 		
 		display(gl);
+		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*

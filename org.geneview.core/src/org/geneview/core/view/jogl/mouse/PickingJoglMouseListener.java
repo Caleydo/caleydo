@@ -93,28 +93,34 @@ extends JoglMouseListener {
     public final boolean wasMousePressed() {
     	
     	boolean bTmp = bMousePressed;
-    	bMousePressed = false;
+    	
     	return bTmp;
     }
     
     public final boolean wasMouseMoved() {
     	
     	boolean bTmp = bMouseMoved;
-    	bMouseMoved = false;
+    
     	return bTmp;
     }
+    // FIXME: Hack to conserve the mouse state - discuss mouse states
+//    public final boolean wasMouseReleased()
+//    {
+//    	return wasMouseReleased(false);
+//    }
     
-    public final boolean wasMouseReleased() {
-    	
+    public final boolean wasMouseReleased()//boolean bDoConserveState) 
+    {
     	boolean bTmp = bMouseReleased;
-    	bMouseReleased = false;
+    	//if(!bDoConserveState)
+    	
     	return bTmp;
     }
     
     public final boolean wasMouseDragged() {
     	
     	boolean bTmp = bMouseDragged;
-    	bMouseDragged = false;
+    
     	return bTmp;
     }
     
@@ -126,6 +132,14 @@ extends JoglMouseListener {
     public final Point getPickedPointDragStart() {
     	
     	return pickedPointDragStart;
+    }
+    
+    public final void resetEvents()
+    {
+    	bMouseDragged = false;
+    	bMouseReleased = false;
+    	bMouseMoved = false;
+    	bMousePressed = false;
     }
 
 }

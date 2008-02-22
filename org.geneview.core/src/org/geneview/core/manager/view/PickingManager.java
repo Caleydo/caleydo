@@ -111,6 +111,13 @@ public class PickingManager extends AAbstractManager
 		return iPickingID;		
 	}
 		
+	/**
+	 * TODO: Documentation
+	 * @param uniqueManagedObject
+	 * @param gl
+	 * @param pickingTriggerMouseAdapter
+	 * @param bIsMaster
+	 */
 	public void handlePicking(AUniqueManagedObject uniqueManagedObject, 
 				GL gl,
 				PickingJoglMouseListener pickingTriggerMouseAdapter, 
@@ -120,10 +127,11 @@ public class PickingManager extends AAbstractManager
 		
 		Point pickPoint = null;
 
+		//FIXME: hack to conserve the mouse state - Discuss
 		boolean bMouseReleased =
 			pickingTriggerMouseAdapter.wasMouseReleased();
 
-		EPickingMode ePickingMode = EPickingMode.CLICKED;
+		EPickingMode ePickingMode = EPickingMode.CLICKED;		
 		
 		if (pickingTriggerMouseAdapter.wasMousePressed()
 				|| bMouseReleased)
@@ -237,7 +245,7 @@ public class PickingManager extends AAbstractManager
 		// Reset picked point
 		pickPoint = null;
 
-		((AGLCanvasUser)uniqueManagedObject).displayLocal(gl);
+		((AGLCanvasUser)uniqueManagedObject).display(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();
