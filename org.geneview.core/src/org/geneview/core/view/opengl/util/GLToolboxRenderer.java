@@ -1,16 +1,13 @@
 package org.geneview.core.view.opengl.util;
 
-import java.util.ArrayList;
-
 import gleem.linalg.Vec3f;
+import gleem.linalg.Vec4f;
 
 import javax.media.opengl.GL;
 
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.view.Pick;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.PickingManager;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 
 /**
  * 
@@ -23,8 +20,7 @@ public class GLToolboxRenderer
 {
 	
 	protected final static float ELEMENT_LENGTH = 0.1f;
-	//TODO: centralize modes
-	protected final static int ICON_SELECTION = 7;
+	protected final static float ELEMENT_SPACING = 0.02f;
 	
 	protected Vec3f vecLeftPoint;
 	protected JukeboxHierarchyLayer layer;
@@ -34,6 +30,9 @@ public class GLToolboxRenderer
 	protected IGeneralManager generalManager;
 	protected PickingManager pickingManager; 
 	protected int iContainingViewID;
+	
+	protected float fRenderLenght;
+	protected float fOverallRenderLength;
 	
 	
 	/**
@@ -65,52 +64,49 @@ public class GLToolboxRenderer
 	 */
 	public void render(final GL gl)
 	{
+		addIcon(gl, iContainingViewID, EPickingType.BUCKET_ICON_SELECTION, 1, new Vec4f(1, 0, 0, 1));
 		//pickingManager.handlePicking(iContainingViewID, gl, false);
 		// Icon one
-		gl.glColor3f(1, 0, 0);
-		gl.glPushName(pickingManager.getPickingID(iContainingViewID, ICON_SELECTION, 1));	
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(vecLeftPoint.x(), vecLeftPoint.y(), vecLeftPoint.z());
-		gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y(), vecLeftPoint.z());
-		gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());
-		gl.glVertex3f(vecLeftPoint.x(), vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());		
-		gl.glEnd();	
-		gl.glPopName();
+//		gl.glColor3f(1, 0, 0);
+//		gl.glPushName(pickingManager.getPickingID(iContainingViewID, EPickingType.BUCKET_ICON_SELECTION, 1));	
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(vecLeftPoint.x(), vecLeftPoint.y(), vecLeftPoint.z());
+//		gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y(), vecLeftPoint.z());
+//		gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());
+//		gl.glVertex3f(vecLeftPoint.x(), vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());		
+//		gl.glEnd();	
+//		gl.glPopName();
+		fOverallRenderLength = fRenderLenght;
+		fRenderLenght = 0;
 		
-		
-//		checkForHits();
 	}
 	
-	public void checkForHits()
-	{
-		ArrayList<Pick> alHits = null;		
-		
-		alHits = pickingManager.getHits(iContainingViewID, ICON_SELECTION);		
-		if(alHits != null)
-		{			
-			if (alHits.size() != 0 )
-			{
-//				boolean bSelectionCleared = false;
-//				boolean bMouseOverCleared = false;					
-				
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iContainingViewID, iPickingID);
-					//alNormalPolylines.remove(new Integer(iExternalID));
-						
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:	
-							((GLCanvasParCoords3D)generalManager.getSingelton().getViewGLCanvasManager().getItem(iContainingViewID)).renderArrayAsPolyline(true);
-						
-					}
-				}
-			}
+	protected void addIcon(final GL gl, int iContainingViewID, EPickingType ePickingType, int iIconID, Vec4f vecColor)
+	{		
+		gl.glColor4f(vecColor.x(), vecColor.y(), vecColor.z(), vecColor.w());
+		gl.glPushName(pickingManager.getPickingID(iContainingViewID, ePickingType, iIconID));	
+		gl.glBegin(GL.GL_POLYGON);
+		if(bRenderLeftToRight)
+		{
+			gl.glVertex3f(fRenderLenght + vecLeftPoint.x(), vecLeftPoint.y(), vecLeftPoint.z());
+			gl.glVertex3f(fRenderLenght + vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y(), vecLeftPoint.z());
+			gl.glVertex3f(fRenderLenght + vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());
+			gl.glVertex3f(fRenderLenght + vecLeftPoint.x(), vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());		
 		}
+		else
+		{
+			gl.glVertex3f(vecLeftPoint.x(), fRenderLenght + vecLeftPoint.y(), vecLeftPoint.z());
+			gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, fRenderLenght + vecLeftPoint.y(), vecLeftPoint.z());
+			gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, fRenderLenght + vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());
+			gl.glVertex3f(vecLeftPoint.x(), fRenderLenght + vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());	
 		
+		}
+		gl.glEnd();	
+		gl.glPopName();
+		fRenderLenght = fRenderLenght + ELEMENT_LENGTH + ELEMENT_SPACING;
 	}
+		
+
 	
 	
 	

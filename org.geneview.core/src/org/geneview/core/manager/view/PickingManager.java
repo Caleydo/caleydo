@@ -82,9 +82,10 @@ public class PickingManager extends AAbstractManager
 	 * @return 
 	 */
 	public int getPickingID(int iViewID, 
-							int iType, 
+							EPickingType ePickingType, 
 							int iExternalID)
 	{
+		int iType = ePickingType.ordinal();
 		checkType(iType);		
 			
 		checkViewID(iViewID);
@@ -275,8 +276,9 @@ public class PickingManager extends AAbstractManager
 	 * @param iType
 	 * @return null if no Hits, else the ArrayList<Integer> with the hits
 	 */	
-	public ArrayList<Pick> getHits(int iViewID, int iType)
+	public ArrayList<Pick> getHits(int iViewID, EPickingType ePickingType)
 	{
+		int iType = ePickingType.ordinal();
 		checkType(iType);
 		checkViewID(iViewID);
 		
@@ -340,8 +342,9 @@ public class PickingManager extends AAbstractManager
 	 * @param iViewID
 	 * @param iType
 	 */
-	public void flushHits(int iViewID, int iType)
+	public void flushHits(int iViewID, EPickingType ePickingType)
 	{
+		int iType = ePickingType.ordinal();
 		checkType(iType);
 		checkViewID(iViewID);
 		

@@ -25,6 +25,7 @@ import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.util.mapping.AGenomeMapper;
 import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
 import org.geneview.core.view.opengl.util.GLTextUtils;
@@ -43,7 +44,7 @@ public class GLPathwayManager {
 
 	private IGeneralManager refGeneralManager;
 	
-	public static final int PATHWAY_ELEMENT_SELECTION = 1;
+	
 	
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
@@ -478,7 +479,7 @@ public class GLPathwayManager {
 //		if (bPickingRendering)
 //		{
 			gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-					.getPickingID(containingView.getId(), PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
+					.getPickingID(containingView.getId(), EPickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
 //		}
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();

@@ -10,6 +10,7 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.texture.Texture;
@@ -118,7 +119,7 @@ public class GLPathwayTextureManager {
 			((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView.getId(), PATHWAY_TEXTURE_SELECTION, iPathwayId));
+				.getPickingID(containingView.getId(), EPickingType.PATHWAY_TEXTURE_SELECTION, iPathwayId));
 				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 

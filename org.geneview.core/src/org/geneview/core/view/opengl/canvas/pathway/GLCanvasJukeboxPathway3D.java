@@ -32,6 +32,7 @@ import org.geneview.core.manager.data.IPathwayItemManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
@@ -523,7 +524,7 @@ implements IMediatorReceiver, IMediatorSender {
 //				break;
 			
 			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-					.getPickingID(iUniqueId, PATHWAY_POOL_SELECTION, iPathwayId));
+					.getPickingID(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION, iPathwayId));
 
 			Transform transform = pathwayPoolLayer
 					.getTransformByElementId(iPathwayId);
@@ -759,7 +760,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		ArrayList<Pick> alHits = null;		
 		
-		alHits = pickingManager.getHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -859,7 +860,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			alHits = pickingManager.getHits(iUniqueId, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);		
+			alHits = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);		
 			if(alHits != null)
 			{			
 				if (alHits.size() != 0 )
@@ -889,7 +890,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			alHits = pickingManager.getHits(iUniqueId, PATHWAY_POOL_SELECTION);		
+			alHits = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION);		
 			if(alHits != null)
 			{			
 				if (alHits.size() != 0 )
@@ -920,7 +921,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			alHits = pickingManager.getHits(iUniqueId, GLPathwayMemoPad.MEMO_PAD_SELECTION);		
+			alHits = pickingManager.getHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);		
 			if(alHits != null)
 			{			
 				if (alHits.size() != 0 )
@@ -963,10 +964,10 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}
 		
-		pickingManager.flushHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
-		pickingManager.flushHits(iUniqueId, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);
-		pickingManager.flushHits(iUniqueId, PATHWAY_POOL_SELECTION);
-		pickingManager.flushHits(iUniqueId, GLPathwayMemoPad.MEMO_PAD_SELECTION);
+		pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
+		pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+		pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION);
+		pickingManager.flushHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);
 	}
 
 	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {

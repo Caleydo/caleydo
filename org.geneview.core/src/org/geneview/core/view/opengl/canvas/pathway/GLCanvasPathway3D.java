@@ -25,6 +25,7 @@ import org.geneview.core.manager.data.IPathwayManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.SelectionManager;
@@ -325,9 +326,9 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void checkForHits()
 	{
-		if(pickingManager.getHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION) != null)
+		if(pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION) != null)
 		{
-			ArrayList<Pick> tempList = pickingManager.getHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
+			ArrayList<Pick> tempList = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 			
 			if (tempList != null)
 			{
@@ -381,7 +382,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			pickingManager.flushHits(iUniqueId, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
+			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 		}
 	}
 

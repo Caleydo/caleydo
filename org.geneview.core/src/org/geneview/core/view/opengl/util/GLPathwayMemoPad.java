@@ -10,6 +10,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
@@ -123,7 +124,7 @@ public class GLPathwayMemoPad {
 			final AGLCanvasUser containingView) {
 		
 		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView.getId(), MEMO_PAD_SELECTION, MEMO_PAD_PICKING_ID));
+				.getPickingID(containingView.getId(), EPickingType.MEMO_PAD_SELECTION, MEMO_PAD_PICKING_ID));
 		
 		gl.glColor3f(0.7f, 0.7f, 0.7f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -198,7 +199,7 @@ public class GLPathwayMemoPad {
 		TextureCoords texCoords = trashCanTexture.getImageTexCoords();
 
 		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView.getId(), MEMO_PAD_SELECTION, MEMO_PAD_TRASH_CAN_PICKING_ID));
+				.getPickingID(containingView.getId(), EPickingType.MEMO_PAD_SELECTION, MEMO_PAD_TRASH_CAN_PICKING_ID));
 		
 		trashCanTexture.enable();
 		trashCanTexture.bind();

@@ -4,6 +4,7 @@ package org.geneview.core.view.opengl.canvas.parcoords;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
+import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Drawable;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.SetType;
@@ -24,6 +25,7 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
@@ -32,6 +34,8 @@ import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
+
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * 
@@ -45,11 +49,11 @@ public class GLCanvasParCoords3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 	
-	private static final int POLYLINE_SELECTION = 1;
-	private static final int X_AXIS_SELECTION = 2;	
-	private static final int Y_AXIS_SELECTION = 3;
-	private static final int LOWER_GATE_SELECTION = 4;
-	private static final int UPPER_GATE_SELECTION = 5;
+//	private static final int POLYLINE_SELECTION = 1;
+//	private static final int X_AXIS_SELECTION = 2;	
+//	private static final int Y_AXIS_SELECTION = 3;
+//	private static final int LOWER_GATE_SELECTION = 4;
+//	private static final int UPPER_GATE_SELECTION = 5;
 	
 	private enum RenderMode
 	{
@@ -92,6 +96,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private ParCoordsRenderStyle renderStyle;
 	
 	private PolylineSelectionManager polyLineSelectionManager;
+	
+	private TextRenderer textRenderer;
 
 	
 	ArrayList<IStorage> alDataStorages;
@@ -114,7 +120,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle();		
-		polyLineSelectionManager = new PolylineSelectionManager();			
+		polyLineSelectionManager = new PolylineSelectionManager();	
+		
+		textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 16), false);
 	}
 	
 	/*
@@ -128,7 +137,7 @@ implements IMediatorReceiver, IMediatorSender {
 		init(gl);
 		//toolBoxRenderer = new GLTo
 		
-		toolboxRenderer = new GLToolboxRenderer(generalManager,	iUniqueId, new Vec3f (0, 0, 0), null, true);
+		toolboxRenderer = new GLParCoordsToolboxRenderer(generalManager, iUniqueId, new Vec3f (0, 0, 0), null, true);
 	}
 	
 	/*
@@ -162,10 +171,7 @@ implements IMediatorReceiver, IMediatorSender {
 		//Collection<Integer> test = refGeneralManager.getSingelton().getGenomeIdManager()
 		//	.getIdIntListByType(13770, EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);			
 		
-		initPolyLineLists();
-		
-		
-		
+		initPolyLineLists();		
 		
 		
 		gl.glClearColor(ParCoordsRenderStyle.CANVAS_COLOR.x(), 
@@ -268,7 +274,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void renderSelection(boolean bRenderSelection)
 	{
-		this.bRenderSelection = bRenderSelection;		
+		this.bRenderSelection = bRenderSelection;	
+		initPolyLineLists();
 	}
 	
 	/**
@@ -279,6 +286,17 @@ implements IMediatorReceiver, IMediatorSender {
 	public void preventOcclusion(boolean bPreventOcclusion)
 	{
 		this.bPreventOcclusion = bPreventOcclusion;
+	}
+	
+	public void resetSelections()
+	{
+		for(int iCount = 0; iCount < fArGateHeight.length; iCount++)
+		{
+			fArGateHeight[iCount] = 0;
+		}
+		polyLineSelectionManager.clearDeselection();
+		polyLineSelectionManager.clearMouseOver();
+		polyLineSelectionManager.clearSelection();
 	}
 	
 	/**
@@ -469,7 +487,7 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			int iPolyLineID = dataIterator.next();
 			if(renderMode != RenderMode.DESELECTED)
-				gl.glPushName(pickingManager.getPickingID(iUniqueId, POLYLINE_SELECTION, iPolyLineID));	
+				gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.POLYLINE_SELECTION, iPolyLineID));	
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 
@@ -532,7 +550,10 @@ implements IMediatorReceiver, IMediatorSender {
 	
 
 	private void renderCoordinateSystem(GL gl, final int iNumberAxis)
-	{					
+	{
+//		textRenderer.beginRendering(drawable., 2);
+//		textRenderer.draw("Test", 1, 1);
+//		textRenderer.endRendering();
 		// draw X-Axis
 		gl.glColor4f(ParCoordsRenderStyle.X_AXIS_COLOR.x(),
 					ParCoordsRenderStyle.X_AXIS_COLOR.y(),
@@ -541,7 +562,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
 		
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, X_AXIS_SELECTION, 1));
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);		
 	
 		gl.glVertex3f(-0.1f, 0.0f, 0.0f); 
@@ -563,7 +584,7 @@ implements IMediatorReceiver, IMediatorSender {
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, Y_AXIS_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.Y_AXIS_SELECTION, iCount));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, 0.0f, 0.0f);
 			gl.glVertex3f(iCount * fAxisSpacing, MAX_HEIGHT, 0.0f);
@@ -584,7 +605,7 @@ implements IMediatorReceiver, IMediatorSender {
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, LOWER_GATE_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
 			float fCurrentPosition = iCount * fAxisSpacing;
 			
 			// The tip of the gate (which is pickable)
@@ -604,7 +625,10 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glEnd();
 			gl.glPopName();
 			
+			
+			
 			// The body of the gate
+			//gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
 			// constant
 			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
@@ -756,7 +780,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		ArrayList<Pick> alHits = null;		
 	
-		alHits = pickingManager.getHits(iUniqueId, POLYLINE_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.POLYLINE_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -821,33 +845,33 @@ implements IMediatorReceiver, IMediatorSender {
 						
 					}					
 				}
-				pickingManager.flushHits(iUniqueId, POLYLINE_SELECTION);
+				pickingManager.flushHits(iUniqueId, EPickingType.POLYLINE_SELECTION);
 				// FIXME: this happens every time when something is selected
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 				//bRenderPolylineSelection = true;
 			}				
 		}
-		alHits = pickingManager.getHits(iUniqueId, X_AXIS_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.X_AXIS_SELECTION);		
 		if(alHits != null)
 		{				
 			if (alHits.size() != 0 )
 			{
 				//System.out.println("X Axis Selected");
-				pickingManager.flushHits(iUniqueId, X_AXIS_SELECTION);				
+				pickingManager.flushHits(iUniqueId, EPickingType.X_AXIS_SELECTION);				
 			}
 		}
-		alHits = pickingManager.getHits(iUniqueId, Y_AXIS_SELECTION);		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.Y_AXIS_SELECTION);		
 		if(alHits != null)
 		{		
 			if (alHits.size() != 0 )
 			{
 				//System.out.println("Y Axis Selected");
-				pickingManager.flushHits(iUniqueId, Y_AXIS_SELECTION);			
+				pickingManager.flushHits(iUniqueId, EPickingType.Y_AXIS_SELECTION);			
 			}			
 		}
 		
-		alHits = pickingManager.getHits(iUniqueId, LOWER_GATE_SELECTION);
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION);
 		if(alHits != null)
 		{		
 			if (alHits.size() != 0 )
@@ -875,12 +899,12 @@ implements IMediatorReceiver, IMediatorSender {
 							// do nothing
 					}
 				}
-				pickingManager.flushHits(iUniqueId, LOWER_GATE_SELECTION);
+				pickingManager.flushHits(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION);
 				
 			}			
 		}
 		
-		alHits = pickingManager.getHits(iUniqueId, 7);
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
 		if(alHits != null)
 		{		
 			if (alHits.size() != 0 )
@@ -893,28 +917,43 @@ implements IMediatorReceiver, IMediatorSender {
 					
 					switch (tempPick.getPickingMode())
 					{						
-						case CLICKED:							
-							if (bRenderArrayAsPolyline == true)
-								renderArrayAsPolyline(false);
-							else
-								renderArrayAsPolyline(true);
+						case CLICKED:	
+							if(iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
+							{							
+								if (bRenderArrayAsPolyline == true)
+									renderArrayAsPolyline(false);
+								else
+									renderArrayAsPolyline(true);
+							}
+							else if(iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
+							{
+								if (bPreventOcclusion == true)
+									preventOcclusion(false);
+								else
+									preventOcclusion(true);
+							}
+							else if(iExternalID == EIconIDs.TOGGLE_RENDER_SELECTION.ordinal())
+							{
+								if (bRenderSelection == true)
+									renderSelection(false);
+								else
+									renderSelection(true);
+							}
+							else if(iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
+							{
+								resetSelections();
+							}
+							
 							
 							bIsDisplayListDirtyLocal = true;
 							bIsDisplayListDirtyRemote = true;
-							pickingManager.flushHits(iUniqueId, 7);
+							pickingManager.flushHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
 							break;
-//						case DRAGGED:
-//							//System.out.println("Gate Dragged");
-//							
-//						
-//							bIsDraggingActive = true;
-//							iDraggedGateNumber = iExternalID;
-//							break;
 						default:
 							// do nothing
 					}
 				}
-				pickingManager.flushHits(iUniqueId, LOWER_GATE_SELECTION);
+				pickingManager.flushHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
 				
 			}			
 		}

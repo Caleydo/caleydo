@@ -15,6 +15,7 @@ import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
@@ -41,7 +42,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 	
-	private static final int VIEW_PICKING = 0;	
+	
 
 	private JukeboxHierarchyLayer underInteractionLayer;
 	private JukeboxHierarchyLayer stackLayer;
@@ -224,7 +225,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			tmpGLEventListener.initRemote(gl, pickingTriggerMouseAdapter);
 			
-			pickingManager.getPickingID(iUniqueId, VIEW_PICKING, iViewId);
+			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_PICKING, iViewId);
 		}
 	}
 	
@@ -314,7 +315,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, VIEW_PICKING, iViewId));
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_PICKING, iViewId));
 		renderViewById(gl, iViewId, underInteractionLayer);
 		gl.glPopName();
 	}
@@ -332,7 +333,7 @@ implements IMediatorReceiver, IMediatorSender {
 //			if(!stackLayer.getElementVisibilityById(iPathwayId))
 //				continue;
 			
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, VIEW_PICKING, iViewId));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_PICKING, iViewId));
 			renderViewById(gl, iViewId, stackLayer);		
 			gl.glPopName();
 		}
@@ -425,7 +426,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		ArrayList<Pick> alHits = null;		
 		
-		alHits = pickingManager.getHits(iUniqueId, VIEW_PICKING);		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.VIEW_PICKING);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -440,7 +441,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}	
 		
-		pickingManager.flushHits(iUniqueId, VIEW_PICKING);
+		pickingManager.flushHits(iUniqueId, EPickingType.VIEW_PICKING);
 	}
 	
 	private void loadViewToUnderInteractionLayer(final int iViewId) {
