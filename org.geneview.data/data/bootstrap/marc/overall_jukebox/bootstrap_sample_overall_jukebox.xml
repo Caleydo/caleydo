@@ -77,14 +77,14 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_OVERALL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Overall Jukebox" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib3="PERSPECTIVE -2 2 -2 2 3 8"
 							attrib4="transparency 1" 								
 							detail="" /> 
 			    
 	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC" 		attrib1="85401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: PC - Pathway" 		attrib1="82401" attrib2="85401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - Overall" 	attrib1="85401" attrib2="17401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC" 		attrib1="85401 86401 87401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: PC - Pathway" 		attrib1="82401" attrib2="85401 86401 87401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - Overall" 	attrib1="85401 86401 87401" attrib2="17401" detail="SELECTION_MEDIATOR" /> 
 							    
    </CommandBuffer>
     

@@ -1,23 +1,24 @@
 package org.geneview.core.view.opengl.util;
 
+import gleem.linalg.Vec3f;
+import gleem.linalg.open.Transform;
+
 import java.awt.Font;
 import java.io.File;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import com.sun.opengl.util.j2d.TextRenderer;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
-
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 
-import gleem.linalg.Vec3f;
-import gleem.linalg.open.Transform;
+import com.sun.opengl.util.j2d.TextRenderer;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Class that implements the memo pad that
@@ -30,30 +31,36 @@ import gleem.linalg.open.Transform;
 public class GLPathwayMemoPad {
 
 	private static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
-	public static final int MEMO_PAD_PICKING_ID = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS + 1;
-	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = GLCanvasJukeboxPathway3D.MAX_LOADED_PATHWAYS + 2;
+
+	public static final int MEMO_PAD_SELECTION = 4;
+	public static final int MEMO_PAD_PICKING_ID = 0;
+	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 1;
+	
 	private static float SCALING_FACTOR_MEMO_PAD = 0.3f;
 	
 	private JukeboxHierarchyLayer memoPad;
 	
-	private GLPathwayManager refGLPathwayManager;
+	private IGeneralManager generalManager;
 	
-	private GLPathwayTextureManager refGLPathwayTextureManager;
+	private GLPathwayManager gLPathwayManager;
+	
+	private GLPathwayTextureManager gLPathwayTextureManager;
 	
 	private TextRenderer textRenderer;
 	
 	private Texture trashCanTexture;
 	
 	public GLPathwayMemoPad(
-			final IGeneralManager refGeneralManager,
-			final GLPathwayManager refGLPathwayManager,
-			final GLPathwayTextureManager refGLPathwayTextureManager) {
+			final IGeneralManager generalManager,
+			final GLPathwayManager gLPathwayManager,
+			final GLPathwayTextureManager gLPathwayTextureManager) {
 		
-		memoPad = new JukeboxHierarchyLayer(refGeneralManager,
-				4, SCALING_FACTOR_MEMO_PAD, refGLPathwayTextureManager);
+		memoPad = new JukeboxHierarchyLayer(generalManager,
+				4, SCALING_FACTOR_MEMO_PAD, gLPathwayTextureManager);
 		
-		this.refGLPathwayManager = refGLPathwayManager;
-		this.refGLPathwayTextureManager = refGLPathwayTextureManager;
+		this.generalManager = generalManager;
+		this.gLPathwayManager = gLPathwayManager;
+		this.gLPathwayTextureManager = gLPathwayTextureManager;
 	}
 	
 	public void init(final GL gl) {
@@ -112,9 +119,11 @@ public class GLPathwayMemoPad {
 		memoPad.removeElement(iPathwayId);
 	}
 	
-	public void renderMemoPad(final GL gl) {
+	public void renderMemoPad(final GL gl, 
+			final AGLCanvasUser containingView) {
 		
-		gl.glLoadName(MEMO_PAD_PICKING_ID);
+		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+				.getPickingID(containingView, MEMO_PAD_SELECTION, MEMO_PAD_PICKING_ID));
 		
 		gl.glColor3f(0.7f, 0.7f, 0.7f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -162,30 +171,34 @@ public class GLPathwayMemoPad {
 			Vec3f scale = transform.getScale();
 			gl.glScalef(scale.x(), scale.y(), scale.z());
 
-			refGLPathwayTextureManager.renderPathway(gl, 
+			gLPathwayTextureManager.renderPathway(gl, containingView, 
 					iPathwayId, 1f, false);
 			
-			float tmp = refGLPathwayTextureManager.getTextureByPathwayId(
+			float tmp = gLPathwayTextureManager.getTextureByPathwayId(
 					iPathwayId).getImageHeight()
 					* GLPathwayManager.SCALING_FACTOR_Y;
 			gl.glTranslatef(0, tmp, 0.01f);
-			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+			gLPathwayManager.renderPathway(gl, iPathwayId, false);
 			gl.glTranslatef(0, -tmp, 0.01f);
 			
 			gl.glPopMatrix();
 		}	
 		
-		renderTrashCan(gl);
+		gl.glPopName();
+		
+		renderTrashCan(gl, containingView);
 	}
 	
-	public void renderTrashCan(final GL gl) {
+	public void renderTrashCan(final GL gl,
+			final AGLCanvasUser containingView) {
 
 		if (trashCanTexture == null)
 			return;
 		
 		TextureCoords texCoords = trashCanTexture.getImageTexCoords();
 
-		gl.glLoadName(MEMO_PAD_TRASH_CAN_PICKING_ID);
+		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+				.getPickingID(containingView, MEMO_PAD_SELECTION, MEMO_PAD_TRASH_CAN_PICKING_ID));
 		
 		trashCanTexture.enable();
 		trashCanTexture.bind();
@@ -204,5 +217,7 @@ public class GLPathwayMemoPad {
 		gl.glEnd();
 
 		trashCanTexture.disable();
+
+		gl.glPopName();
 	}
 }

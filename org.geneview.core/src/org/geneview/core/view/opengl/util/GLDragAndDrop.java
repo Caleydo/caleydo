@@ -6,7 +6,7 @@ import java.awt.Point;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-//import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 
 import com.sun.opengl.util.texture.Texture;
@@ -87,13 +87,14 @@ public class GLDragAndDrop {
 		fArCurrentMousePos[1] = (float)wcoord[1];
 	}
 	
-	public void renderDragThumbnailTexture(final GL gl) {
+	public void renderDragThumbnailTexture(final GL gl,
+			final AGLCanvasUser containingView) {
 		
 		gl.glPushMatrix();
 		gl.glTranslatef(fArCurrentMousePos[0], fArCurrentMousePos[1], 5);
 		gl.glScalef(0.2f, 0.2f, 0.2f);
 		
-		pathwayTextureManager.renderPathway(gl, 
+		pathwayTextureManager.renderPathway(gl, containingView,
 				iDragObjectId, 0.5f, false);
 		gl.glPopMatrix();
 	}

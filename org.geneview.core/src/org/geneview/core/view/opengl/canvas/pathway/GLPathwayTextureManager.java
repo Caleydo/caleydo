@@ -10,6 +10,7 @@ import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -22,27 +23,20 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLPathwayTextureManager {
 
-	private IGeneralManager refGeneralManager;
+	public static final int PATHWAY_TEXTURE_SELECTION = 2;
+	
+	private IGeneralManager generalManager;
 	
 	private HashMap<Integer, Texture> hashPathwayIdToTexture;
 	
-	private HashMap<Integer, Integer> hashPathwayIdToPathwayTexturePickingId;
-	
-	private HashMap<Integer, Integer> hashPathwayIdToPathwayTexturePickingId_REVERSE;
-	
-	private int iPathwayTexturePickingId = 
-		GLCanvasJukeboxPathway3D.PATHWAY_TEXTURE_PICKING_ID_RANGE_START;
-
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayTextureManager(IGeneralManager refGeneralManager) {
+	public GLPathwayTextureManager(final IGeneralManager generalManager) {
 		
-		this.refGeneralManager = refGeneralManager;
+		this.generalManager = generalManager;
 		
 		hashPathwayIdToTexture = new HashMap<Integer, Texture>();
-		hashPathwayIdToPathwayTexturePickingId = new HashMap<Integer, Integer>();
-		hashPathwayIdToPathwayTexturePickingId_REVERSE = new HashMap<Integer, Integer>();
 
 	}
 	
@@ -51,23 +45,19 @@ public class GLPathwayTextureManager {
 		if (hashPathwayIdToTexture.containsKey(iPathwayId))
 			return hashPathwayIdToTexture.get(iPathwayId);
 		
-		hashPathwayIdToPathwayTexturePickingId.put(iPathwayId, iPathwayTexturePickingId);
-		hashPathwayIdToPathwayTexturePickingId_REVERSE.put(iPathwayTexturePickingId, iPathwayId);
-		iPathwayTexturePickingId++;
-		
 		Texture refPathwayTexture = null;
 
-		String sPathwayTexturePath = ((PathwayGraph)refGeneralManager.getSingelton()
+		String sPathwayTexturePath = ((PathwayGraph)generalManager.getSingelton()
 				.getPathwayManager().getItem(iPathwayId)).getImageLink();
 
 		sPathwayTexturePath = sPathwayTexturePath.substring(
 				sPathwayTexturePath.lastIndexOf('/') + 1, 
 				sPathwayTexturePath.length());
 		
-		EPathwayDatabaseType type = ((PathwayGraph)refGeneralManager.getSingelton()
+		EPathwayDatabaseType type = ((PathwayGraph)generalManager.getSingelton()
 				.getPathwayManager().getItem(iPathwayId)).getType();
 		
-		sPathwayTexturePath = refGeneralManager.getSingelton().getPathwayManager()
+		sPathwayTexturePath = generalManager.getSingelton().getPathwayManager()
 				.getPathwayDatabaseByType(type).getImagePath() + sPathwayTexturePath;	
 		
 		try
@@ -88,7 +78,7 @@ public class GLPathwayTextureManager {
 			
 			hashPathwayIdToTexture.put(iPathwayId, refPathwayTexture);
 			
-			refGeneralManager.getSingelton().logMsg(
+			generalManager.getSingelton().logMsg(
 					this.getClass().getSimpleName() + 
 					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayId,
 					LoggerType.VERBOSE );
@@ -104,9 +94,11 @@ public class GLPathwayTextureManager {
 		return null;
 	}
 	
-	public void renderPathway(final GL gl, int iPathwayId, 
-			float fTextureTransparency,
-			boolean bHighlight) {
+	public void renderPathway(final GL gl,
+			final AGLCanvasUser containingView,
+			final int iPathwayId, 
+			final float fTextureTransparency,
+			final boolean bHighlight) {
 
 		Texture refTmpPathwayTexture = loadPathwayTextureById(iPathwayId);
 		
@@ -121,11 +113,12 @@ public class GLPathwayTextureManager {
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
 
 		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * 
-			((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getWidth();
+			((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getWidth();
 		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * 
-			((PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
+			((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
-		gl.glPushName(hashPathwayIdToPathwayTexturePickingId.get(iPathwayId));
+		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+				.getPickingID(containingView, PATHWAY_TEXTURE_SELECTION, iPathwayId));
 				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
@@ -193,16 +186,11 @@ public class GLPathwayTextureManager {
 				// Remove and dispose texture
 				hashPathwayIdToTexture.remove(iTmpPathwayId).dispose();
 
-				refGeneralManager.getSingelton().logMsg(
+				generalManager.getSingelton().logMsg(
 						this.getClass().getSimpleName() 
 						+": unloadUnusedTextures(): Unloading pathway texture with ID " + iTmpPathwayId,
 						LoggerType.VERBOSE);
 			}
 		}
-	}
-	
-	public int getPathwayIdByPathwayTexturePickingId(final int iPickingId) {
-		
-		return hashPathwayIdToPathwayTexturePickingId_REVERSE.get(iPickingId);
 	}
 }

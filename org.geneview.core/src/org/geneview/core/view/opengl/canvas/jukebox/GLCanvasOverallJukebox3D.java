@@ -252,7 +252,7 @@ implements IMediatorReceiver, IMediatorSender {
 //			fLayerYPos -= 1f;
 //		}
 		
-		float fTiltAngleDegree = 60; // degree
+		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		
 		// TOP BUCKET WALL
@@ -266,20 +266,20 @@ implements IMediatorReceiver, IMediatorSender {
 
 		// BOTTOM BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, -4 * SCALING_FACTOR_STACK_LAYER, 3.45f));
+		transform.setTranslation(new Vec3f(0, 0, 4));
 		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
-		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), Vec3f.convertGrad2Radiant(60)));
+		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(1, transform);
 
 		// LEFT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-4 * SCALING_FACTOR_STACK_LAYER, 0, 3.45f));
+		transform.setTranslation(new Vec3f(0, 0, 4));
 		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), Vec3f.convertGrad2Radiant(60)));
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(2, transform);
 
 		// RIGHT BUCKET WALL
@@ -363,8 +363,6 @@ implements IMediatorReceiver, IMediatorSender {
 
 		renderBucketWall(gl);
 		
-		gl.glTranslatef(4, 4, 0);
-		
 		((AGLCanvasUser) generalManager.getSingelton()
 				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);
 		
@@ -404,8 +402,6 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glPushMatrix();
 		
 		slerpMod.applySlerp(gl, transform);
-		
-		gl.glTranslatef(4, 4, 0);
 		
 		((AGLCanvasUser) generalManager.getSingelton()
 				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);

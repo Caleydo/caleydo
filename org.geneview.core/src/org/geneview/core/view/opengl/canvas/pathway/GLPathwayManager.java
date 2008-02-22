@@ -43,7 +43,7 @@ public class GLPathwayManager {
 
 	private IGeneralManager refGeneralManager;
 	
-	public static final int PATHWAY_SELECTION = 1;
+	public static final int PATHWAY_ELEMENT_SELECTION = 1;
 	
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
@@ -478,7 +478,7 @@ public class GLPathwayManager {
 //		if (bPickingRendering)
 //		{
 			gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-					.getPickingID(containingView, PATHWAY_SELECTION, vertexRep.getId()));
+					.getPickingID(containingView, PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
 //		}
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();

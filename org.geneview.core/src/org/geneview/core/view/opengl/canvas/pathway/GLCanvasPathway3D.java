@@ -4,8 +4,6 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -36,7 +34,6 @@ import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
 
 /**
  * Single OpenGL pathway view
@@ -245,12 +242,13 @@ implements IMediatorReceiver, IMediatorSender {
 			final int iPathwayId) {
 		
 		gl.glPushMatrix();
-		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
+		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 		
 		if (bEnablePathwayTexture)
 		{
-			refHashGLcontext2TextureManager.get(gl).renderPathway(gl, iPathwayId, 1.0f, false);
+			refHashGLcontext2TextureManager.get(gl).renderPathway(
+					gl, this, iPathwayId, 1.0f, false);
 		}
 
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * 
@@ -263,10 +261,9 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glTranslatef(0, -tmp, 0);
 		
 		gl.glScalef(1/vecScaling.x(), 1/vecScaling.y(),1/ vecScaling.z());
-		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
+		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
 		
 		gl.glPopMatrix();
-		
 	}
 	
 	private void renderInfoArea(final GL gl) {
@@ -328,9 +325,9 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void checkForHits()
 	{
-		if(pickingManager.getHits(this, GLPathwayManager.PATHWAY_SELECTION) != null)
+		if(pickingManager.getHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION) != null)
 		{
-			ArrayList<Pick> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_SELECTION);
+			ArrayList<Pick> tempList = pickingManager.getHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
 			
 			if (tempList != null)
 			{
@@ -356,19 +353,19 @@ implements IMediatorReceiver, IMediatorSender {
 					
 					int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
 						.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-					
-//					// Just for testing
-//					String sAccessionCode = "NM_001565";					
-//					int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
-//						.getIdIntFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
 
 					selectionManager.clear();
 
 					int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
 					
+//					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
+//							tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X  * vecScaling.x(), 
+//							(iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()), 
+//							ESelectionMode.AddPick);
+					
 					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-							tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X, 
-							(iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y), 
+							(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
+							((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y()), 
 							ESelectionMode.AddPick);
 
 					// Trigger update
@@ -384,7 +381,7 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 			}
 			
-			pickingManager.flushHits(this, GLPathwayManager.PATHWAY_SELECTION);
+			pickingManager.flushHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
 		}
 	}
 
@@ -510,32 +507,44 @@ implements IMediatorReceiver, IMediatorSender {
 				.getPathwayManager().getItem(iPathwayId)).getHeight();
 	
 		float fAspectRatio = (float)iImageWidth / (float)iImageHeight;
-
-		float fTmpPathwayWidth = iImageWidth * GLPathwayManager.SCALING_FACTOR_X * 3.2f;
-		float fTmpPathwayHeight = iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * 3.2f;
+		float fPathwayScalingFactor = 0;
 		
-		if (fTmpPathwayWidth > (viewFrustum.getRight() - viewFrustum.getLeft()))
+		if (((PathwayGraph)generalManager.getSingelton().getPathwayManager()
+				.getItem(iPathwayId)).getType().equals(EPathwayDatabaseType.BIOCARTA))
+		{
+			fPathwayScalingFactor = 5;
+		}
+		else
+		{
+			fPathwayScalingFactor = 3.2f;
+		}
+		
+		float fTmpPathwayWidth = iImageWidth * GLPathwayManager.SCALING_FACTOR_X * fPathwayScalingFactor;
+		float fTmpPathwayHeight = iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * fPathwayScalingFactor;
+		
+		if (fTmpPathwayWidth > (viewFrustum.getRight() - viewFrustum.getLeft())
+				&& fTmpPathwayWidth > fTmpPathwayHeight)
 		{			
 			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / (iImageWidth * GLPathwayManager.SCALING_FACTOR_X));
-			vecScaling.setY(vecScaling.x());
+			vecScaling.setY(vecScaling.x());	
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f,
-					(viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f * 1/fAspectRatio, 0);			
+			vecTranslation.set(0, (viewFrustum.getTop() - viewFrustum.getBottom() - 
+							iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
 		}
 		else if (fTmpPathwayHeight > (viewFrustum.getTop() - viewFrustum.getBottom()))
 		{
 			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y));
 			vecScaling.setX(vecScaling.y());
 
-			vecTranslation.set((viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f * fAspectRatio,
-					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f, 0);
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - 
+							iImageWidth * GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, 0, 0);
 		}
 		else
 		{
-			vecScaling.set(3.2f, 3.2f, 3.2f);
-			
-			vecTranslation.set(fTmpPathwayWidth / 2.0f,
-					fTmpPathwayHeight / 2.0f, 0);
+			vecScaling.set(fPathwayScalingFactor, fPathwayScalingFactor, 1f);			
+		
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - fTmpPathwayWidth / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - fTmpPathwayHeight / 2.0f, 0);
 		}
 	}
 

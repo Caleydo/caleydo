@@ -4,6 +4,7 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
+import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GLMatrixType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,9 +59,9 @@ public class GLCanvasJukeboxPathway3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 
+	public static final int PATHWAY_POOL_SELECTION = 3;
+	
 	public static final int MAX_LOADED_PATHWAYS = 600;
-	public static final int PATHWAY_TEXTURE_PICKING_ID_RANGE_START = 620;
-	public static final int FREE_PICKING_ID_RANGE_START = 1200;
 	public static final String TICK_SOUND = "resources/sounds/tick.wav";
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 2.3f;
 	private static final float SCALING_FACTOR_LAYERED_LAYER = 1f;
@@ -69,9 +70,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private float fTextureTransparency = 0.6f;
 	
 	private boolean bRebuildVisiblePathwayDisplayLists = false;
-	private boolean bIsMouseOverPickingEvent = false;
 	private boolean bEnablePathwayTextures = true;
-	private boolean bMouseOverMemoPad = false;
 	private boolean bSelectionChanged = false;
 	private boolean bUpdateReceived = false;
 
@@ -97,8 +96,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private PathwayVertexGraphItemRep selectedVertex;
 
 	private GLInfoAreaRenderer infoAreaRenderer;
-
-	private HashMap<Integer, Integer> refHashPoolLinePickId2PathwayId;
 
 	/**
 	 * Hash map stores which pathways contain the currently selected vertex and
@@ -131,7 +128,6 @@ implements IMediatorReceiver, IMediatorSender {
 				generalManager);
 		arSlerpActions = new ArrayList<SlerpAction>();
 
-		refHashPoolLinePickId2PathwayId = new HashMap<Integer, Integer>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		// Create Jukebox hierarchy
@@ -251,7 +247,7 @@ implements IMediatorReceiver, IMediatorSender {
 			rebuildVisiblePathwayDisplayLists(gl);
 		
 		if (dragAndDrop.isDragActionRunning()) {
-			dragAndDrop.renderDragThumbnailTexture(gl);
+			dragAndDrop.renderDragThumbnailTexture(gl, this);
 		}
 		
 		if (bUpdateReceived)
@@ -293,7 +289,7 @@ implements IMediatorReceiver, IMediatorSender {
 		renderPathwayLayered(gl);
 		renderPathwayUnderInteraction(gl);
 
-		memoPad.renderMemoPad(gl);
+		memoPad.renderMemoPad(gl, this);
 	}
 
 	private void buildLayeredPathways(final GL gl) {
@@ -418,18 +414,18 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				if (layer.equals(pathwayLayeredLayer))
 				{
-					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+					refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 							fTextureTransparency, true);					
 				}
 				else
 				{
-					refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+					refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 							1.0f, true);
 				}
 			}
 			else
 			{
-				refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+				refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 						fTextureTransparency, false);
 			}
 		}
@@ -526,12 +522,8 @@ implements IMediatorReceiver, IMediatorSender {
 //			if (alMagnificationFactor.get(iPathwayIndex) == 0)
 //				break;
 			
-			gl.glLoadName(iPathwayIndex + 1);
-
-			if (!refHashPoolLinePickId2PathwayId.containsKey(iPathwayIndex + 1))
-			{
-				refHashPoolLinePickId2PathwayId.put(iPathwayIndex + 1, iPathwayId);
-			}
+			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+					.getPickingID(this, PATHWAY_POOL_SELECTION, iPathwayId));
 
 			Transform transform = pathwayPoolLayer
 					.getTransformByElementId(iPathwayId);
@@ -597,11 +589,12 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(0, 0, 0.1f);
 			gl.glVertex3f(0, fYPos, 0.1f);
-			gl.glVertex3f(0.5f, fYPos, 0.1f);
-			gl.glVertex3f(0.5f, 0, 0.1f);
+			gl.glVertex3f(1f, fYPos, 0.1f);
+			gl.glVertex3f(1f, 0, 0.1f);
 			gl.glEnd();
 
 			gl.glPopMatrix();
+			gl.glPopName();
 		}
 	}
 
@@ -640,7 +633,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private void renderInfoArea(final GL gl) {
 
 		if (selectedVertex != null
-				&& !bMouseOverMemoPad
+//				&& !bMouseOverMemoPad
 				&& infoAreaRenderer.isPositionValid())
 		{
 			infoAreaRenderer.renderInfoArea(gl, selectedVertex);
@@ -733,7 +726,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		slerpMod.applySlerp(gl, transform);
 		
-		refGLPathwayTextureManager.renderPathway(gl, iPathwayId,
+		refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 				fTextureTransparency, true);
 
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)generalManager
@@ -759,18 +752,18 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 
-	protected void checkForHits(final GL gl)
-	{
+	protected void checkForHits(final GL gl) {
+		
+		if (pickingTriggerMouseAdapter.getPickedPoint() != null)
+			dragAndDrop.setCurrentMousePos(gl, pickingTriggerMouseAdapter.getPickedPoint());
+		
 		ArrayList<Pick> alHits = null;		
 		
-		alHits = pickingManager.getHits(this, GLPathwayManager.PATHWAY_SELECTION);		
+		alHits = pickingManager.getHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
 			{
-//				boolean bSelectionCleared = false;
-//				boolean bMouseOverCleared = false;					
-				
 				for (int iCount = 0; iCount < alHits.size(); iCount++)
 				{
 					Pick tempPick = alHits.get(iCount);
@@ -783,85 +776,23 @@ implements IMediatorReceiver, IMediatorSender {
 					if (pickedVertexRep == null)
 						return;
 					
+					if (iPickedElementID == 0)
+					{
+						// Remove pathway pool fisheye
+						iMouseOverPickedPathwayId = -1;
+			
+						infoAreaRenderer.resetPoint();
+			
+						return;
+					}
+					
+					// Do not handle picking if a slerp action is in progress
+					if (!arSlerpActions.isEmpty())
+						return;
+					
 					switch (tempPick.getPickingMode())
 					{						
 						case CLICKED:	
-
-							if (iPickedElementID == 0)
-							{
-								// Remove pathway pool fisheye
-								iMouseOverPickedPathwayId = -1;
-					
-								infoAreaRenderer.resetPoint();
-					
-								return;
-							}
-				
-							// Do not handle picking if a slerp action is in progress
-							if (!arSlerpActions.isEmpty())
-								return;
-					
-							bMouseOverMemoPad = false;
-							
-							//System.out.println("Pick ID: " + iPickedObjectId);
-					
-							// Check if picked object a non-pathway object (like pathway pool lines,
-							// navigation handles, etc.)
-							if (iPickedElementID < MAX_LOADED_PATHWAYS)
-							{
-								int iPathwayId = refHashPoolLinePickId2PathwayId
-										.get(iPickedElementID);
-					
-								// If mouse over event - just highlight pathway line
-								if (bIsMouseOverPickingEvent)
-								{
-									// Check if mouse moved to another pathway in the pathway pool
-									// list
-									if (iMouseOverPickedPathwayId != iPathwayId)
-									{
-										iMouseOverPickedPathwayId = iPathwayId;
-										playPathwayPoolTickSound();
-									}
-					
-									return;
-								}
-					
-								loadPathwayToUnderInteractionPosition(iPathwayId);
-								
-								return;
-							} 
-							else if (iPickedElementID >= PATHWAY_TEXTURE_PICKING_ID_RANGE_START 
-									&& iPickedElementID < FREE_PICKING_ID_RANGE_START)
-							{
-								if (bIsMouseOverPickingEvent)
-									return;
-								
-								if (dragAndDrop.isDragActionRunning())
-								{
-									iMouseOverPickedPathwayId = 
-										refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedElementID);
-								}
-								else
-								{
-									dragAndDrop.startDragAction(
-											refGLPathwayTextureManager.getPathwayIdByPathwayTexturePickingId(iPickedElementID));
-								}
-								
-								return;
-							}
-					
-							if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_PICKING_ID)
-							{
-								bMouseOverMemoPad = true;
-							} 
-							else if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_TRASH_CAN_PICKING_ID)
-							{
-								// Remove dragged object from memo pad
-								memoPad.removePathwayFromMemoPad(
-										dragAndDrop.getDraggedObjectedId());
-								
-								dragAndDrop.stopDragAction();
-							}
 					
 							if (selectedVertex != null
 									&& !selectedVertex.equals(pickedVertexRep))
@@ -873,8 +804,7 @@ implements IMediatorReceiver, IMediatorSender {
 							}
 							
 							// Remove pathway pool fisheye
-							iMouseOverPickedPathwayId = -1;
-				
+							iMouseOverPickedPathwayId = -1;			
 					
 							if (pickedVertexRep.getPathwayVertexGraphItem().getType().equals(
 									EPathwayVertexType.map))
@@ -910,7 +840,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 							
 							break;
-						case MOUSE_OVER:
+						case MOUSE_OVER:	
 							
 							if (selectedVertex == null ||
 									(selectedVertex != null && !selectedVertex.equals(pickedVertexRep)))
@@ -928,15 +858,120 @@ implements IMediatorReceiver, IMediatorSender {
 					}			
 				}
 			}
+			
+			alHits = pickingManager.getHits(this, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);		
+			if(alHits != null)
+			{			
+				if (alHits.size() != 0 )
+				{
+					for (int iCount = 0; iCount < alHits.size(); iCount++)
+					{
+						Pick tempPick = alHits.get(iCount);
+						int iPickedPathwayTextureID = pickingManager.getExternalIDFromPickingID(
+								this, tempPick.getPickingID());
+
+						iMouseOverPickedPathwayId = -1;
+						
+						switch (tempPick.getPickingMode())
+						{						
+							case CLICKED:	
+
+								//loadPathwayToUnderInteractionPosition(iPickedPathwayTextureID);
+
+								break;
+							case MOUSE_OVER:
+
+								dragAndDrop.startDragAction(iPickedPathwayTextureID);
+
+								break;
+						}
+					}
+				}
+			}
+			
+			alHits = pickingManager.getHits(this, PATHWAY_POOL_SELECTION);		
+			if(alHits != null)
+			{			
+				if (alHits.size() != 0 )
+				{
+					for (int iCount = 0; iCount < alHits.size(); iCount++)
+					{
+						Pick tempPick = alHits.get(iCount);
+						int iPickedPathwayID = pickingManager.getExternalIDFromPickingID(
+								this, tempPick.getPickingID());
+						
+						infoAreaRenderer.resetPoint();
+						
+						switch (tempPick.getPickingMode())
+						{			
+							case CLICKED:	
+
+								loadPathwayToUnderInteractionPosition(iPickedPathwayID);
+								break;
+								
+							case MOUSE_OVER:
+								
+								iMouseOverPickedPathwayId = iPickedPathwayID;
+								playPathwayPoolTickSound();
+								
+								break;
+						}
+					}
+				}
+			}
+			
+			alHits = pickingManager.getHits(this, GLPathwayMemoPad.MEMO_PAD_SELECTION);		
+			if(alHits != null)
+			{			
+				if (alHits.size() != 0 )
+				{
+					for (int iCount = 0; iCount < alHits.size(); iCount++)
+					{
+						Pick tempPick = alHits.get(iCount);
+						int iPickedElementID = pickingManager.getExternalIDFromPickingID(
+								this, tempPick.getPickingID());
+						
+						infoAreaRenderer.resetPoint();
+						
+						switch (tempPick.getPickingMode())
+						{			
+							case CLICKED:	
+
+								break;
+								
+							case MOUSE_OVER:
+								
+								if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_PICKING_ID)
+								{
+									dragAndDrop.stopDragAction();
+									
+									if (dragAndDrop.getDraggedObjectedId() != -1)
+										memoPad.addPathwayToMemoPad(dragAndDrop.getDraggedObjectedId());
+								} 
+								else if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_TRASH_CAN_PICKING_ID)
+								{
+									// Remove dragged object from memo pad
+									memoPad.removePathwayFromMemoPad(
+											dragAndDrop.getDraggedObjectedId());
+									
+									dragAndDrop.stopDragAction();
+								}
+								break;
+						}
+					}
+				}
+			}
 		}
 		
-		pickingManager.flushHits(this, GLPathwayManager.PATHWAY_SELECTION);
+		pickingManager.flushHits(this, GLPathwayManager.PATHWAY_ELEMENT_SELECTION);
+		pickingManager.flushHits(this, GLPathwayTextureManager.PATHWAY_TEXTURE_SELECTION);
+		pickingManager.flushHits(this, PATHWAY_POOL_SELECTION);
+		pickingManager.flushHits(this, GLPathwayMemoPad.MEMO_PAD_SELECTION);
 	}
 
 	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {
 
-		generalManager
-				.getSingelton()
+		generalManager.getSingelton()
 				.logMsg(this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): Pathway with ID "
 								+ iPathwayId + " is under interaction.",
