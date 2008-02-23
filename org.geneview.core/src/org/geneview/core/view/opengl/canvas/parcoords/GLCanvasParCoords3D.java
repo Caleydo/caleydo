@@ -84,9 +84,11 @@ implements IMediatorReceiver, IMediatorSender {
 	private boolean bIsDisplayListDirtyRemote = true;
 	
 	private boolean bIsDraggingActive = false;
+	private EPickingType draggedObject;
 		
 	private int iNumberOfAxis = 0;
-	private float[] fArGateHeight;
+	private float[] fArGateTipHeight;
+	private float[] fArGateBottomHeight;
 	private int iDraggedGateNumber = 0;
 	
 	private float fScaling = 0;
@@ -290,9 +292,10 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	public void resetSelections()
 	{
-		for(int iCount = 0; iCount < fArGateHeight.length; iCount++)
+		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
-			fArGateHeight[iCount] = 0;
+			fArGateTipHeight[iCount] = 0;
+			fArGateBottomHeight[iCount] = 0;
 		}
 		polyLineSelectionManager.clearDeselection();
 		polyLineSelectionManager.clearMouseOver();
@@ -369,7 +372,14 @@ implements IMediatorReceiver, IMediatorSender {
 			iNumberOfAxis = alDataStorages.size();
 		}
 		
-		fArGateHeight = new float[iNumberOfAxis];
+		fArGateTipHeight = new float[iNumberOfAxis];
+		fArGateBottomHeight = new float[iNumberOfAxis];
+		
+		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
+		{
+			fArGateTipHeight[iCount] = 0;
+			fArGateBottomHeight[iCount] = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+		}
 			
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
@@ -605,22 +615,22 @@ implements IMediatorReceiver, IMediatorSender {
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
 			float fCurrentPosition = iCount * fAxisSpacing;
 			
 			// The tip of the gate (which is pickable)
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
 			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
 						0.001f);
 			// variable
 			gl.glVertex3f(fCurrentPosition,
-						fArGateHeight[iCount],
+						fArGateTipHeight[iCount],
 						0.001f);			
 			// variable
 			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
 						0.001f);
 			gl.glEnd();
 			gl.glPopName();
@@ -628,25 +638,45 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			
 			// The body of the gate
-			//gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_BODY_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
-			// constant
+			// bottom
 			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET,
-						0.001f);
+						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						0.0001f);
 			// constant
 			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET,
-						0.001f);
+						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						0.0001f);
+			// top
+			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
+						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						0.0001f);			
+			// top
+			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
+						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						0.0001f);
+			gl.glEnd();
+			gl.glPopName();
+			
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_BOTTOM_SELECTION, iCount));			
+			// The bottom of the gate 
+			gl.glBegin(GL.GL_POLYGON);
 			// variable
 			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						0.001f);
+			// variable
+			gl.glVertex3f(fCurrentPosition,
+						fArGateBottomHeight[iCount],
 						0.001f);			
 			// variable
 			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
 						0.001f);
 			gl.glEnd();
+			gl.glPopName();
+			
 			
 			iCount++;
 		}
@@ -661,16 +691,50 @@ implements IMediatorReceiver, IMediatorSender {
 			convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);	
 		
 		float height = fArTargetWorldCoordinates[1];
-		if (height > 1)
+		if (draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
 		{
-			height = 1;
+			float fLowerLimit = fArGateBottomHeight[iDraggedGateNumber] + 2 * ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			
+			if (height > 1)
+			{
+				height = 1;
+			}
+			else if (height < 0)
+			{
+				height = 0;
+			}				
+			else if (height < fLowerLimit)
+			{
+				height = fLowerLimit;
+			}
+			
+			fArGateTipHeight[iDraggedGateNumber] = height;
 		}
-		else if (height < 0)
+		else if (draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
 		{
-			height = 0;
+			float fLowerLimit = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			float fUpperLimit = fArGateTipHeight[iDraggedGateNumber] - 2 * ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			
+			if (height > 1 - ParCoordsRenderStyle.GATE_TIP_HEIGHT)
+			{
+					height = 1 - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			}			
+			else if (height < fLowerLimit)
+			{
+				height = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			}
+			else if (height > fUpperLimit)
+			{
+				height = fUpperLimit;
+			}
+			
+			fArGateBottomHeight[iDraggedGateNumber] =  height;
+		}
+		else if (draggedObject == EPickingType.LOWER_GATE_BODY_SELECTION)
+		{
+			
 		}
 		
-		fArGateHeight[iDraggedGateNumber] = height;
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;		
 	
@@ -720,8 +784,9 @@ implements IMediatorReceiver, IMediatorSender {
 			
 				currentStorage = alDataStorages.get(iAxisNumber);						
 			}							
-			
-			if(currentStorage.getArrayFloat()[iStorageIndex] < fArGateHeight[iAxisNumber])
+			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex];
+			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
+			                                    && fCurrentValue > fArGateBottomHeight[iAxisNumber])
 			{			
 				if(!bRenderSelection || bRenderArrayAsPolyline)
 					polyLineSelectionManager.addDeselection(iPolylineCount);
@@ -743,7 +808,9 @@ implements IMediatorReceiver, IMediatorSender {
 						else
 							iLocalStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iLocalAxisCount];
 						
-						if(currentStorage.getArrayFloat()[iLocalStorageIndex] < fArGateHeight[iLocalAxisCount])
+						fCurrentValue = currentStorage.getArrayFloat()[iLocalStorageIndex];
+						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
+						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
 						{						
 							bIsBlocked = true;
 							break;
@@ -757,8 +824,9 @@ implements IMediatorReceiver, IMediatorSender {
 							iLocalStorageIndex = iPolylineCount;
 						else
 							iLocalStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iPolylineCount];
-						
-						if(alDataStorages.get(iLocalAxisCount).getArrayFloat()[iLocalStorageIndex] < fArGateHeight[iLocalAxisCount])
+						fCurrentValue = alDataStorages.get(iLocalAxisCount).getArrayFloat()[iLocalStorageIndex];
+						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
+						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
 						{
 							bIsBlocked = true;
 							break;
@@ -893,6 +961,7 @@ implements IMediatorReceiver, IMediatorSender {
 							
 						
 							bIsDraggingActive = true;
+							draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 							iDraggedGateNumber = iExternalID;
 							break;
 						default:
@@ -900,6 +969,40 @@ implements IMediatorReceiver, IMediatorSender {
 					}
 				}
 				pickingManager.flushHits(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION);
+				
+			}			
+		}
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.LOWER_GATE_BOTTOM_SELECTION);
+		if(alHits != null)
+		{		
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+					
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:						
+							System.out.println("Gate Selected");
+							//bIsDisplayListDirty = true;
+							break;
+						case DRAGGED:
+							System.out.println("Gate Dragged");
+						
+						
+							bIsDraggingActive = true;
+							draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+							iDraggedGateNumber = iExternalID;
+							break;
+						default:
+							// do nothing
+					}
+				}
+				pickingManager.flushHits(iUniqueId, EPickingType.LOWER_GATE_BOTTOM_SELECTION);
 				
 			}			
 		}
