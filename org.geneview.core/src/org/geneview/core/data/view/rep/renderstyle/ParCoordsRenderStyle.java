@@ -42,15 +42,21 @@ extends ARenderStyle
 	public static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;
 	public static final float GATE_TIP_HEIGHT = 0.03f;
 	
+	/**
+	 *  lenght of markes on y axis in one direction (1/2 of actual length)
+	 */
+	public static final float AXIS_MARKER_WIDTH = 0.01f;
+	
+	public static final float SMALL_FONT_SCALING_FACTOR = 0.0025f;
+	
+
+	// Line widths
+	public static final float POLYLINE_LINE_WIDTH = 1.0f;
+	
 	// modifiable colors
 	protected Vec4f polylineOcclusionPrevColor;
 	protected Vec4f polylineDeselectedColor; 
 	protected float fOcclusionPrevAlpha = 0.1f;
-
-	
-	// Line widths
-	public static final float POLYLINE_LINE_WIDTH = 1.0f;
-
 
 	
 	

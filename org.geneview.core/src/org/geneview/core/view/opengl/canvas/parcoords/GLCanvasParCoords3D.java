@@ -6,13 +6,14 @@ import gleem.linalg.Vec4f;
 
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.eclipse.swt.graphics.Drawable;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.SetType;
@@ -23,6 +24,7 @@ import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.EPickingType;
@@ -33,6 +35,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
+import org.geneview.core.view.opengl.util.GLTextInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -49,11 +52,6 @@ public class GLCanvasParCoords3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 	
-//	private static final int POLYLINE_SELECTION = 1;
-//	private static final int X_AXIS_SELECTION = 2;	
-//	private static final int Y_AXIS_SELECTION = 3;
-//	private static final int LOWER_GATE_SELECTION = 4;
-//	private static final int UPPER_GATE_SELECTION = 5;
 	
 	private enum RenderMode
 	{
@@ -80,6 +78,9 @@ implements IMediatorReceiver, IMediatorSender {
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;
 	
+	private EInputDataTypes eAxisDataType = EInputDataTypes.EXPERIMENTS;
+	private EInputDataTypes ePolylineDataType = EInputDataTypes.GENES;
+	
 	private boolean bIsDisplayListDirtyLocal = true;
 	private boolean bIsDisplayListDirtyRemote = true;
 	
@@ -95,15 +96,23 @@ implements IMediatorReceiver, IMediatorSender {
 	private float fXTranslation = 0;
 	private float fYTranslation = 0;
 	
+
+	
 	private ParCoordsRenderStyle renderStyle;
 	
 	private PolylineSelectionManager polyLineSelectionManager;
 	
 	private TextRenderer textRenderer;
+	
+	private GLTextInfoAreaRenderer infoRenderer; 
+	private boolean bRenderInfoArea = false;
+	
+	private IGenomeIdManager IDManager;
 
 	
 	ArrayList<IStorage> alDataStorages;
-		
+	
+	DecimalFormat decimalFormat;
 	
 	/**
 	 * Constructor.
@@ -126,6 +135,11 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
+		
+		infoRenderer = new GLTextInfoAreaRenderer();
+		
+		decimalFormat = new DecimalFormat("#####.##");
+		IDManager = generalManager.getSingelton().getGenomeIdManager();
 	}
 	
 	/*
@@ -227,18 +241,26 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void display(final GL gl) 
 	{	
+		// FIXME: scaling here not too nice, operations are not in display lists
 		if(bIsDraggingActive)
-		{		
-			
+		{			
 			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
 			gl.glScalef(fScaling, fScaling, 1.0f);
-			
 			handleDragging(gl);
-			
+			gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
+			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);			
+		}
+
+		if(bRenderInfoArea)
+		{
+			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
+			gl.glScalef(fScaling, fScaling, 1.0f);
+		
+			infoRenderer.renderInfoArea(gl);
+		
 			gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
 			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);
 		}
-
 		
 		
 //		gl.glColor3f(0.0f, 0.0f, 0.0f);
@@ -265,6 +287,9 @@ implements IMediatorReceiver, IMediatorSender {
 	public void renderArrayAsPolyline(boolean bRenderArrayAsPolyline)
 	{
 		this.bRenderArrayAsPolyline = bRenderArrayAsPolyline;
+		EInputDataTypes eTempType = eAxisDataType;
+		eAxisDataType = ePolylineDataType;
+		ePolylineDataType = eTempType;
 		initPolyLineLists();
 	}
 	
@@ -340,19 +365,7 @@ implements IMediatorReceiver, IMediatorSender {
 		else
 		{
 			//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-			iNumberOfEntriesToRender = 1000;
-//			if(bRenderArrayAsPolyline)
-//			{
-//				// TODO: temp solution
-//				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-//				iNumberOfEntriesToRender = 10;
-//			}
-//			else
-//			{	
-//				// TODO: temp solution
-//				//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-//				iNumberOfEntriesToRender = 1000;
-//			}
+			iNumberOfEntriesToRender = 20;
 		}
 		
 	
@@ -420,6 +433,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		
 		renderGates(gl, iNumberOfAxis);		
+		
 		
 		gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
 		gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);
@@ -498,8 +512,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if(renderMode != RenderMode.DESELECTED)
 				gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.POLYLINE_SELECTION, iPolyLineID));	
 
-			gl.glBegin(GL.GL_LINE_STRIP);
-
+			
 			IStorage currentStorage = null;
 			
 			// decide on which storage to use when array is polyline
@@ -511,6 +524,11 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				currentStorage = alDataStorages.get(iWhichStorage);
 			}
+			
+			float fPreviousXValue = 0;
+			float fPreviousYValue = 0;
+			float fCurrentXValue = 0;
+			float fCurrentYValue = 0;
 
 			// this loop executes once per axis
 			for (int iVertricesCount = 0; iVertricesCount < iNumberOfAxis; iVertricesCount++)
@@ -548,10 +566,26 @@ implements IMediatorReceiver, IMediatorSender {
 //				
 //				System.out.println("Accession Number: "+sAccessionCode);
 				
-				gl.glVertex3f(iVertricesCount * fAxisSpacing, currentStorage
-						.getArrayFloat()[iStorageIndex], fZDepth);
-			}
-			gl.glEnd();
+				fCurrentXValue = iVertricesCount * fAxisSpacing;
+				fCurrentYValue = currentStorage.getArrayFloat()[iStorageIndex];
+				if(iVertricesCount != 0)
+				{
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(fPreviousXValue, fPreviousYValue, fZDepth);
+					gl.glVertex3f(fCurrentXValue, fCurrentYValue, fZDepth);	
+					gl.glEnd();
+				}
+				
+				if(renderMode == RenderMode.SELECTION || renderMode == RenderMode.MOUSE_OVER)
+				{
+					renderYValues(gl, fCurrentXValue, fCurrentYValue, renderMode);					
+				}				
+				
+				fPreviousXValue = fCurrentXValue;
+				fPreviousYValue = fCurrentYValue;
+			}			
+			
+			
 			if(renderMode != RenderMode.DESELECTED)
 				gl.glPopName();			
 		}		
@@ -560,9 +594,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void renderCoordinateSystem(GL gl, final int iNumberAxis)
 	{
-//		textRenderer.beginRendering(drawable., 2);
-//		textRenderer.draw("Test", 1, 1);
-//		textRenderer.endRendering();
+		textRenderer.setColor(0, 0, 0, 1);
+
 		// draw X-Axis
 		gl.glColor4f(ParCoordsRenderStyle.X_AXIS_COLOR.x(),
 					ParCoordsRenderStyle.X_AXIS_COLOR.y(),
@@ -597,9 +630,47 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, 0.0f, 0.0f);
 			gl.glVertex3f(iCount * fAxisSpacing, MAX_HEIGHT, 0.0f);
-			gl.glEnd();	
-			iCount++;
+			gl.glVertex3f(iCount * fAxisSpacing - ParCoordsRenderStyle.AXIS_MARKER_WIDTH, MAX_HEIGHT, 0.0f);
+			gl.glVertex3f(iCount * fAxisSpacing + ParCoordsRenderStyle.AXIS_MARKER_WIDTH, MAX_HEIGHT, 0.0f);			
+			gl.glEnd();				
 			gl.glPopName();
+			
+			
+			String sAxisLabel = null;
+			switch (eAxisDataType) 
+			{
+			case EXPERIMENTS:
+				sAxisLabel = "Exp." + iCount;
+				break;
+			case GENES:
+				
+			
+				
+				//System.out.println("Accession Code: " +sAccessionCode);	
+				
+				// TODO: iCount is wrong here, if selection is active
+				sAxisLabel = getAccessionNumberFromStorageIndex(iCount);
+				//sAxisLabel = generalManager.getSingelton().getGenomeIdManager().getIdStringFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_2_GENE_NAME);
+				
+				break;
+			default:
+				sAxisLabel = "No Label";
+			}
+			
+			gl.glRotatef(90, 0, 0, 1);
+			textRenderer.begin3DRendering();	
+			textRenderer.draw3D(sAxisLabel, MAX_HEIGHT + 0.01f, - iCount * fAxisSpacing, 0, ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
+			textRenderer.end3DRendering();
+			gl.glRotatef(-90, 0, 0, 1);
+			
+			textRenderer.begin3DRendering();
+			// TODO: set this to real values once we have more than normalized values
+			textRenderer.draw3D(String.valueOf(MAX_HEIGHT),
+								iCount * fAxisSpacing + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
+								MAX_HEIGHT, 0, 0.002f);
+			textRenderer.end3DRendering();
+			
+			iCount++;
 		}				
 	}
 	
@@ -634,6 +705,7 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glEnd();
 			gl.glPopName();
 			
+			renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], RenderMode.NORMAL);
 			
 			
 			// The body of the gate
@@ -676,10 +748,73 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glEnd();
 			gl.glPopName();
 			
+			renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], RenderMode.NORMAL);
+			
 			
 			iCount++;
 		}
 	}
+	
+	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, RenderMode renderMode)
+	{
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
+		gl.glColor4f(ParCoordsRenderStyle.Y_AXIS_COLOR.x(),
+				ParCoordsRenderStyle.Y_AXIS_COLOR.y(),
+				ParCoordsRenderStyle.Y_AXIS_COLOR.z(),
+				ParCoordsRenderStyle.Y_AXIS_COLOR.w());
+		
+//		gl.glBegin(GL.GL_LINES);
+//		gl.glVertex3f(fXOrigin - ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fYOrigin, 0.002f);	
+//		gl.glVertex3f(fXOrigin + ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fYOrigin, 0.002f);
+//		gl.glEnd();
+		
+		Rectangle2D tempRectangle = textRenderer.getBounds(decimalFormat.format(fYOrigin));
+		float fBackPlaneWidth = (float)tempRectangle.getWidth() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR;
+		float fBackPlaneHeight = (float)tempRectangle.getHeight() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR;
+		float fXTextOrigin = fXOrigin + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
+		float fYTextOrigin = fYOrigin;
+		
+		//System.out.println(					+ ", " + );
+		gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(fXTextOrigin, fYTextOrigin, 0.002f);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin, 0.002f);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, 0.002f);
+		gl.glVertex3f(fXTextOrigin, fYTextOrigin + fBackPlaneHeight, 0.002f);
+		gl.glEnd();
+		
+		textRenderer.begin3DRendering();
+		// TODO: set this to real values once we have more than normalized values
+		textRenderer.draw3D(decimalFormat.format(fYOrigin),
+							fXTextOrigin,
+							fYTextOrigin,
+							0.0021f, ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		textRenderer.end3DRendering();
+		gl.glPopAttrib();
+
+		
+		// TODO: remove this when pop works
+		switch(renderMode)
+		{
+			case SELECTION:	
+				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.z(),
+						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.w());
+				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
+				break;
+			case MOUSE_OVER:
+				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.x(),
+						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.y(),
+						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.z(),
+						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.w());
+				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
+				break;
+		}
+	}
+	
+	
 	
 
 	private void handleDragging(GL gl)
@@ -873,24 +1008,31 @@ implements IMediatorReceiver, IMediatorSender {
 							}
 							polyLineSelectionManager.addSelection(iExternalID);
 							
-							// Convert expression storage ID to accession ID
-							int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
-								.getIdIntFromIntByMapping(iExternalID*1000+770, 
-										EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);
-							
-							if (iAccessionID == -1)
-								break;
-							
-							// Write currently selected vertex to selection set
-							// and trigger update event
-							int[] iArTmpSelectionId = new int[1];
-							int[] iArTmpDepth = new int[1];
-							iArTmpSelectionId[0] = iAccessionID;
-							iArTmpDepth[0] = 0;
-							alSetSelection.get(0).getWriteToken();
-							alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-							alSetSelection.get(0).returnWriteToken();
-							
+							if (ePolylineDataType == EInputDataTypes.GENES)
+							{
+								
+								int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);
+								String sAccessionNumber = getAccessionNumberFromStorageIndex(iExternalID);								
+								
+								ArrayList<String> sContent = new ArrayList<String>();									
+								sContent.add(sAccessionNumber);
+								infoRenderer.setData(sContent, tempPick.getPickedPoint());
+								// TODO check where to unset it
+								bRenderInfoArea = true;
+								
+								if (iAccessionID == -1)
+									break;
+								
+								// Write currently selected vertex to selection set
+								// and trigger update event
+								int[] iArTmpSelectionId = new int[1];
+								int[] iArTmpDepth = new int[1];
+								iArTmpSelectionId[0] = iAccessionID;
+								iArTmpDepth[0] = 0;
+								alSetSelection.get(0).getWriteToken();
+								alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+								alSetSelection.get(0).returnWriteToken();
+							}
 							break;	
 						case MOUSE_OVER:
 							// TODO: if replace
@@ -1124,8 +1266,6 @@ implements IMediatorReceiver, IMediatorSender {
 						while (iterSetData.hasNext())
 						{
 							ISet tmpSet = iterSetData.next();
-							// TODO: test
-							//normalizeSet(tmpSet);
 								
 							if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
 							{
@@ -1195,6 +1335,27 @@ implements IMediatorReceiver, IMediatorSender {
 				.getIdIntFromIntByMapping(iArSelection[iCount], EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 		}		
 		return iArSelectionStorageIndices;
+	}
+	
+	private int getAccesionIDFromStorageIndex(int index)
+	{
+		int iAccessionID = IDManager.getIdIntFromIntByMapping(index*1000+770, 
+				EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);
+		return iAccessionID;
+	}
+	
+	private String getAccessionNumberFromStorageIndex(int index)
+	{
+			
+		// Convert expression storage ID to accession ID
+		int iAccessionID = IDManager.getIdIntFromIntByMapping(index*1000+770, 
+					EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);
+		String sAccessionNumber = IDManager.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+		if(sAccessionNumber == "")
+			return "Unkonwn Gene";
+		else
+			return sAccessionNumber;
+		
 	}
 	
 }
