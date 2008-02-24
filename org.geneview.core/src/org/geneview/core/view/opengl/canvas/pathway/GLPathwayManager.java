@@ -180,6 +180,10 @@ public class GLPathwayManager {
 		// Copy selection IDs to array list object
 		for(int iItemIndex = 0; iItemIndex < iArTmpSelectedGraphItemIds.length; iItemIndex++) 
 		{
+			// Check if ID is valid
+			if (iArTmpSelectedGraphItemIds[iItemIndex] == 0)
+				continue;
+			
 			hashSelectedVertexRepId2Depth.put(
 					iArTmpSelectedGraphItemIds[iItemIndex],
 					iArTmpSelectedGraphItemDepth[iItemIndex]);

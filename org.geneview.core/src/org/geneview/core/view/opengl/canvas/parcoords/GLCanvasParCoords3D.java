@@ -137,7 +137,6 @@ implements IMediatorReceiver, IMediatorSender {
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-		//toolBoxRenderer = new GLTo
 		
 		toolboxRenderer = new GLParCoordsToolboxRenderer(generalManager, iUniqueId, new Vec3f (0, 0, 0), null, true);
 	}

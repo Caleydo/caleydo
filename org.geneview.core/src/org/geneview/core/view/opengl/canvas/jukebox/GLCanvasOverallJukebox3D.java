@@ -42,8 +42,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 	
-	
-
 	private JukeboxHierarchyLayer underInteractionLayer;
 	private JukeboxHierarchyLayer stackLayer;
 	private JukeboxHierarchyLayer poolLayer;
@@ -507,46 +505,4 @@ implements IMediatorReceiver, IMediatorSender {
 		// TODO Auto-generated method stub
 		
 	}
-	
-//	private void rebuildVisiblePathwayDisplayLists(final GL gl) {
-//
-//		// Reset rebuild trigger flag
-//		bRebuildVisiblePathwayDisplayLists = false;
-//		
-////		if (selectedVertex != null)
-////		{
-////			// Write currently selected vertex to selection set
-////			int[] iArTmpSelectionId = new int[1];
-////			int[] iArTmpDepth = new int[1];
-////			iArTmpSelectionId[0] = selectedVertex.getId();
-////			iArTmpDepth[0] = 0;
-////			alSetSelection.get(0).getWriteToken();
-////			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-////			alSetSelection.get(0).returnWriteToken();
-////		}
-//			
-//		// Update display list if something changed
-//		// Rebuild display lists for visible pathways in layered view
-//		Iterator<Integer> iterVisiblePathway = stackLayer.getElementList().iterator();
-//
-//		while (iterVisiblePathway.hasNext())
-//		{
-//			refGLPathwayManager.buildPathwayDisplayList(gl, iterVisiblePathway.next());
-//		}
-//
-//		// Rebuild display lists for visible pathways in focus position
-//		if (!pathwayUnderInteractionLayer.getElementList().isEmpty() 
-//				&& !pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer
-//				.getElementIdByPositionIndex(0)))
-//		{
-//			refGLPathwayManager.buildPathwayDisplayList(gl, pathwayUnderInteractionLayer
-//							.getElementIdByPositionIndex(0));
-//		}
-//		
-//		// Cleanup unused textures
-//		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
-//
-//		// Trigger update on current selection
-//		//alSetSelection.get(0).updateSelectionSet(iUniqueId);
-//	}
 }

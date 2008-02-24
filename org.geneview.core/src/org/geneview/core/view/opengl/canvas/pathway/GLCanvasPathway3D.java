@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -50,14 +51,9 @@ implements IMediatorReceiver, IMediatorSender {
 	private boolean bIsDisplayListDirtyLocal = true;
 	private boolean bIsDisplayListDirtyRemote = true;
 	
-	private boolean bIsMouseOverPickingEvent = false;
 	private boolean bEnablePathwayTexture = true;
 	private boolean bSelectionChanged = false;
 	private boolean bUpdateReceived = false;
-
-	private int iMouseOverPickedPathwayId = -1;
-	
-	private int iGLDisplayListIndex = -1;
 
 	private IPathwayManager pathwayManager;
 	
@@ -66,8 +62,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private SelectionManager selectionManager;
 
 	private PathwayVertexGraphItemRep selectedVertex;
-
-	private GLInfoAreaRenderer infoAreaRenderer;
 
 	/**
 	 * Hash map stores which pathways contain the currently selected vertex and
@@ -101,11 +95,6 @@ implements IMediatorReceiver, IMediatorSender {
 		refGLPathwayManager = new GLPathwayManager(generalManager);
 		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
-
-		infoAreaRenderer = new GLInfoAreaRenderer(generalManager,
-				refGLPathwayManager);
-		
-		infoAreaRenderer.enableColorMappingArea(true);	
 		
 		selectionManager = generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
 	
@@ -153,7 +142,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingManager.handlePicking(iUniqueId, gl, false);
 		if(bIsDisplayListDirtyLocal)
 		{
-			refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+			rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyLocal = false;			
 		}	
 		display(gl);
@@ -168,7 +157,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if(bIsDisplayListDirtyRemote)
 		{
-			refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+			rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyRemote = false;
 		}	
 		display(gl);
@@ -182,7 +171,6 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		checkForHits();
 		renderScene(gl);
-		renderInfoArea(gl);
 	}
 	
 	protected void initPathwayData(final GL gl) {
@@ -198,7 +186,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		loadAllPathways(gl);
 
-		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+//		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
 
@@ -266,15 +254,28 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		gl.glPopMatrix();
 	}
-	
-	private void renderInfoArea(final GL gl) {
 
-		if (selectedVertex != null && infoAreaRenderer.isPositionValid())
+	private void rebuildPathwayDisplayList(final GL gl) {
+		
+		if (selectedVertex != null)
 		{
-			infoAreaRenderer.renderInfoArea(gl, selectedVertex);
+			// Write currently selected vertex to selection set
+			int[] iArTmpSelectionId = new int[1];
+			int[] iArTmpDepth = new int[1];
+			iArTmpSelectionId[0] = selectedVertex.getId();
+			iArTmpDepth[0] = 0;
+			alSetSelection.get(0).getWriteToken();
+			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+			alSetSelection.get(0).returnWriteToken();
+			
+			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
 		}
+		
+		refGLPathwayManager.performIdenticalNodeHighlighting();
+		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -342,6 +343,8 @@ implements IMediatorReceiver, IMediatorSender {
 					PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 					
+					selectedVertex = tmpVertexGraphItemRep;
+					
 					int iGeneID = generalManager.getSingelton().getGenomeIdManager()
 						.getIdIntFromStringByMapping(
 								tmpVertexGraphItem.getName().substring(4), 
@@ -368,44 +371,25 @@ implements IMediatorReceiver, IMediatorSender {
 							(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
 							((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y()), 
 							ESelectionMode.AddPick);
-
+					
 					// Trigger update
 
-					// Write currently selected vertex to selection set
-					int[] iArTmpSelectionId = new int[1];
-					int[] iArTmpDepth = new int[1];
-					iArTmpSelectionId[0] = iAccessionID;
-					iArTmpDepth[0] = 0;
-					alSetSelection.get(0).getWriteToken();
-					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-					alSetSelection.get(0).returnWriteToken();
+//					// Write currently selected vertex to selection set
+//					int[] iArTmpSelectionId = new int[1];
+//					int[] iArTmpDepth = new int[1];
+//					iArTmpSelectionId[0] = iAccessionID;
+//					iArTmpDepth[0] = 0;
+//					alSetSelection.get(0).getWriteToken();
+//					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+//					alSetSelection.get(0).returnWriteToken();
+									
+					bIsDisplayListDirtyLocal = true;
+					bIsDisplayListDirtyRemote = true;
 				}
 			}
 			
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 		}
-	}
-
-	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {
-		
-		loadNodeInformationInBrowser(((PathwayGraph)pathwayManager
-				.getItem(iPathwayId)).getExternalLink());
-
-		// Check if selected pathway is loaded.
-		if (!pathwayManager.hasItem(iPathwayId))
-		{
-			return;
-		}
-
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote = true;
-
-		// Trigger update with current pathway that dependent pathways
-		// know which pathway is currently under interaction
-		int[] iArOptional = new int[1];
-		iArOptional[0] = iPathwayId;
-		alSetSelection.get(0).updateSelectionSet(iUniqueId, new int[0],
-				new int[0], iArOptional);
 	}
 	
 //	public void loadDependentPathwayBySingleVertex(final GL gl,
