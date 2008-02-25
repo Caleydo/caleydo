@@ -167,12 +167,12 @@ public class GLPathwayManager {
 		hashSelectedVertexRepId2Depth.clear();
 		iArSelectedEdgeRepId.clear();
 		
-		alSetSelection.get(0).getReadToken();
+		alSetSelection.get(1).getReadToken();
 		int[] iArTmpSelectedGraphItemIds = 
-			alSetSelection.get(0).getSelectionIdArray();
+			alSetSelection.get(1).getSelectionIdArray();
 		int[] iArTmpSelectedGraphItemDepth =
-			alSetSelection.get(0).getGroupArray();
-		alSetSelection.get(0).returnReadToken();
+			alSetSelection.get(1).getGroupArray();
+		alSetSelection.get(1).returnReadToken();
 		
 		if (iArTmpSelectedGraphItemIds.length == 0)
 			return;
@@ -239,10 +239,10 @@ public class GLPathwayManager {
 			iItemIndex++;
 		}
 	
-		alSetSelection.get(0).getWriteToken();
-		alSetSelection.get(0).setSelectionIdArray(iArTmpGraphItemId);	
-		alSetSelection.get(0).setGroupArray(iArTmpGraphItemDepth);
-		alSetSelection.get(0).returnWriteToken();
+		alSetSelection.get(1).getWriteToken();
+		alSetSelection.get(1).setSelectionIdArray(iArTmpGraphItemId);	
+		alSetSelection.get(1).setGroupArray(iArTmpGraphItemDepth);
+		alSetSelection.get(1).returnWriteToken();
 	}
 	
 	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {

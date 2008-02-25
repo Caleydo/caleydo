@@ -90,8 +90,10 @@ public class GLDragAndDrop {
 	public void renderDragThumbnailTexture(final GL gl,
 			final AGLCanvasUser containingView) {
 		
+		float fOffset = 0.02f;
+		
 		gl.glPushMatrix();
-		gl.glTranslatef(fArCurrentMousePos[0], fArCurrentMousePos[1], 5);
+		gl.glTranslatef(fArCurrentMousePos[0] + fOffset, fArCurrentMousePos[1] + fOffset, 5);
 		gl.glScalef(0.2f, 0.2f, 0.2f);
 		
 		pathwayTextureManager.renderPathway(gl, containingView,

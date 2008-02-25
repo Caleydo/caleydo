@@ -264,9 +264,9 @@ implements IMediatorReceiver, IMediatorSender {
 			int[] iArTmpDepth = new int[1];
 			iArTmpSelectionId[0] = selectedVertex.getId();
 			iArTmpDepth[0] = 0;
-			alSetSelection.get(0).getWriteToken();
-			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-			alSetSelection.get(0).returnWriteToken();
+			alSetSelection.get(1).getWriteToken();
+			alSetSelection.get(1).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+			alSetSelection.get(1).returnWriteToken();
 			
 			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
 					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
@@ -374,14 +374,14 @@ implements IMediatorReceiver, IMediatorSender {
 					
 					// Trigger update
 
-//					// Write currently selected vertex to selection set
-//					int[] iArTmpSelectionId = new int[1];
-//					int[] iArTmpDepth = new int[1];
-//					iArTmpSelectionId[0] = iAccessionID;
-//					iArTmpDepth[0] = 0;
-//					alSetSelection.get(0).getWriteToken();
-//					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-//					alSetSelection.get(0).returnWriteToken();
+					// Write currently selected vertex to selection set
+					int[] iArTmpSelectionId = new int[1];
+					int[] iArTmpDepth = new int[1];
+					iArTmpSelectionId[0] = iAccessionID;
+					iArTmpDepth[0] = 0;
+					alSetSelection.get(0).getWriteToken();
+					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+					alSetSelection.get(0).returnWriteToken();
 									
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;

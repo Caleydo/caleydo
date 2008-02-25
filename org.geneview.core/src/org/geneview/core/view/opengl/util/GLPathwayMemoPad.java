@@ -12,7 +12,6 @@ import javax.media.opengl.GL;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 
@@ -34,7 +33,7 @@ public class GLPathwayMemoPad {
 	private static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
 
 	public static final int MEMO_PAD_SELECTION = 4;
-	public static final int MEMO_PAD_PICKING_ID = 0;
+	public static final int MEMO_PAD_PICKING_ID = 1;
 	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 1;
 	
 	private static float SCALING_FACTOR_MEMO_PAD = 0.3f;
@@ -143,6 +142,8 @@ public class GLPathwayMemoPad {
 		gl.glVertex3f(4.0f, -1.5f, 0.0f);
 		gl.glEnd();
 		
+		gl.glPopName();
+		
 		if (textRenderer == null)
 			return;
 		
@@ -184,8 +185,6 @@ public class GLPathwayMemoPad {
 			
 			gl.glPopMatrix();
 		}	
-		
-		gl.glPopName();
 		
 		renderTrashCan(gl, containingView);
 	}

@@ -4,7 +4,6 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-import gov.nih.nlm.ncbi.www.soap.eutils.efetch.GLMatrixType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -254,7 +253,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (bUpdateReceived)
 		{
 			// unpack selection item reps
-			int[] iArSelectionId = alSetSelection.get(0).getSelectionIdArray();
+			int[] iArSelectionId = alSetSelection.get(1).getSelectionIdArray();
 			ArrayList<IGraphItem> alSelectedVertexReps = new ArrayList<IGraphItem>();
 			IPathwayItemManager pathwayItemManager = generalManager.getSingelton().getPathwayItemManager();
 			for (int iItemIndex = 0; iItemIndex < iArSelectionId.length; iItemIndex++)
@@ -692,6 +691,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 		if (arSlerpActions.isEmpty())
 			return;
+		
+		infoAreaRenderer.resetPoint();
 				
 		if (iSlerpFactor < 1000)
 		{
@@ -783,7 +784,7 @@ implements IMediatorReceiver, IMediatorSender {
 						iMouseOverPickedPathwayId = -1;
 			
 						infoAreaRenderer.resetPoint();
-			
+						pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 						return;
 					}
 					
@@ -819,11 +820,12 @@ implements IMediatorReceiver, IMediatorSender {
 											.substring(strTmp.length() - 4));
 								} catch (NumberFormatException e)
 								{
+									pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 									return;
 								}
 					
 								loadPathwayToUnderInteractionPosition(iPathwayId);
-					
+								pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 								return;
 							}
 							else if (pickedVertexRep.getPathwayVertexGraphItem().getType()
@@ -858,116 +860,115 @@ implements IMediatorReceiver, IMediatorSender {
 							break;
 					}			
 				}
-			}
-			
-			alHits = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);		
-			if(alHits != null)
-			{			
-				if (alHits.size() != 0 )
-				{
-					for (int iCount = 0; iCount < alHits.size(); iCount++)
-					{
-						Pick tempPick = alHits.get(iCount);
-						int iPickedPathwayTextureID = pickingManager.getExternalIDFromPickingID(
-								iUniqueId, tempPick.getPickingID());
-
-						iMouseOverPickedPathwayId = -1;
-						
-						switch (tempPick.getPickingMode())
-						{						
-							case CLICKED:	
-
-								//loadPathwayToUnderInteractionPosition(iPickedPathwayTextureID);
-
-								break;
-							case MOUSE_OVER:
-
-								dragAndDrop.startDragAction(iPickedPathwayTextureID);
-
-								break;
-						}
-					}
-				}
-			}
-			
-			alHits = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION);		
-			if(alHits != null)
-			{			
-				if (alHits.size() != 0 )
-				{
-					for (int iCount = 0; iCount < alHits.size(); iCount++)
-					{
-						Pick tempPick = alHits.get(iCount);
-						int iPickedPathwayID = pickingManager.getExternalIDFromPickingID(
-								iUniqueId, tempPick.getPickingID());
-						
-						infoAreaRenderer.resetPoint();
-						
-						switch (tempPick.getPickingMode())
-						{			
-							case CLICKED:	
-
-								loadPathwayToUnderInteractionPosition(iPickedPathwayID);
-								break;
-								
-							case MOUSE_OVER:
-								
-								iMouseOverPickedPathwayId = iPickedPathwayID;
-								playPathwayPoolTickSound();
-								
-								break;
-						}
-					}
-				}
-			}
-			
-			alHits = pickingManager.getHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);		
-			if(alHits != null)
-			{			
-				if (alHits.size() != 0 )
-				{
-					for (int iCount = 0; iCount < alHits.size(); iCount++)
-					{
-						Pick tempPick = alHits.get(iCount);
-						int iPickedElementID = pickingManager.getExternalIDFromPickingID(
-								iUniqueId, tempPick.getPickingID());
-						
-						infoAreaRenderer.resetPoint();
-						
-						switch (tempPick.getPickingMode())
-						{			
-							case CLICKED:	
-
-								break;
-								
-							case MOUSE_OVER:
-								
-								if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_PICKING_ID)
-								{
-									dragAndDrop.stopDragAction();
-									
-									if (dragAndDrop.getDraggedObjectedId() != -1)
-										memoPad.addPathwayToMemoPad(dragAndDrop.getDraggedObjectedId());
-								} 
-								else if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_TRASH_CAN_PICKING_ID)
-								{
-									// Remove dragged object from memo pad
-									memoPad.removePathwayFromMemoPad(
-											dragAndDrop.getDraggedObjectedId());
-									
-									dragAndDrop.stopDragAction();
-								}
-								break;
-						}
-					}
-				}
+				
+				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 			}
 		}
-		
-		pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-		pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
-		pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION);
-		pickingManager.flushHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);
+			
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);		
+		if(alHits != null)
+		{			
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickedPathwayTextureID = pickingManager.getExternalIDFromPickingID(
+							iUniqueId, tempPick.getPickingID());
+
+					iMouseOverPickedPathwayId = -1;
+					infoAreaRenderer.resetPoint();
+					
+					switch (tempPick.getPickingMode())
+					{						
+						case DRAGGED:	
+
+							//loadPathwayToUnderInteractionPosition(iPickedPathwayTextureID);
+							dragAndDrop.startDragAction(iPickedPathwayTextureID);
+							
+							break;
+						case MOUSE_OVER:
+
+							break;
+					}
+				}
+				
+				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+			}
+		}
+			
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION);		
+		if(alHits != null)
+		{			
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickedPathwayID = pickingManager.getExternalIDFromPickingID(
+							iUniqueId, tempPick.getPickingID());
+					
+					infoAreaRenderer.resetPoint();
+					
+					switch (tempPick.getPickingMode())
+					{			
+						case CLICKED:	
+
+							loadPathwayToUnderInteractionPosition(iPickedPathwayID);
+							break;
+							
+						case MOUSE_OVER:
+							
+							iMouseOverPickedPathwayId = iPickedPathwayID;
+							playPathwayPoolTickSound();
+							
+							break;
+					}
+				}
+				
+				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION);
+			}
+		}
+			
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);		
+		if(alHits != null)
+		{			
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickedElementID = pickingManager.getExternalIDFromPickingID(
+							iUniqueId, tempPick.getPickingID());
+					
+					infoAreaRenderer.resetPoint();
+					
+					switch (tempPick.getPickingMode())
+					{										
+						case CLICKED:
+							
+							if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_PICKING_ID)
+							{
+								if (dragAndDrop.getDraggedObjectedId() != -1)
+								{
+									memoPad.addPathwayToMemoPad(dragAndDrop.getDraggedObjectedId());
+									dragAndDrop.stopDragAction();
+								}
+							} 
+							else if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_TRASH_CAN_PICKING_ID)
+							{
+								// Remove dragged object from memo pad
+								memoPad.removePathwayFromMemoPad(dragAndDrop.getDraggedObjectedId());
+								
+								dragAndDrop.stopDragAction();
+							}
+							break;
+					}
+				}
+				
+				pickingManager.flushHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);
+			}
+		}
 	}
 
 	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {
@@ -1145,9 +1146,9 @@ implements IMediatorReceiver, IMediatorSender {
 			int[] iArTmpDepth = new int[1];
 			iArTmpSelectionId[0] = selectedVertex.getId();
 			iArTmpDepth[0] = 0;
-			alSetSelection.get(0).getWriteToken();
-			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-			alSetSelection.get(0).returnWriteToken();
+			alSetSelection.get(1).getWriteToken();
+			alSetSelection.get(1).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+			alSetSelection.get(1).returnWriteToken();
 		}
 			
 		refGLPathwayManager.performIdenticalNodeHighlighting();
