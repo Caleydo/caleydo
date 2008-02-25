@@ -48,7 +48,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -2.35 2.35 -2.35 2.35 -20 20"
 							attrib1="2"								
-							detail="35101 36101 37101 39101 85101" /> 
+							detail="35101 36101 37101 39101 85101 86101" /> 
 							
 	  	<!-- Mediator -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401 83401" detail="SELECTION_MEDIATOR" /> 

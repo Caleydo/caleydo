@@ -24,19 +24,19 @@
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							detail="35101 36101 37101 39101 94101" /> 							
+							detail="35101 36101 37101 39101 90101 91101" /> 							
 						
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="86401" parent="99079" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"							
-							detail="35101 36101 37101 39101 94101" /> 	
+							detail="35101 36101 37101 39101 92101 93101" /> 	
 													
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="87401" parent="99080" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							detail="35101 36101 37101 39101 94101" /> 						
+							detail="35101 36101 37101 39101 94101 95101" /> 						
 							
 		<!-- Window	11331	-->
 			<!--
@@ -50,7 +50,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="transparency 0.6" 
-							detail="35101 36101 37101 39101 95101" /> 						
+							detail="35101 36101 37101 39101 96101" /> 						
 			
 		<!-- Window	12331	-->	
 		<!--
