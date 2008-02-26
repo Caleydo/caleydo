@@ -8,8 +8,13 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
+import org.geneview.core.data.GeneralRenderStyle;
+import org.geneview.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
+import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.view.opengl.canvas.parcoords.EInputDataTypes;
 import org.geneview.core.view.opengl.miniview.AGLMiniView;
+import org.geneview.core.view.opengl.miniview.AGLParCoordsMiniView;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -24,17 +29,23 @@ public class GLTextInfoAreaRenderer
 	private ArrayList<String> sContent;
 	private Point pickedPoint;
 	private AGLMiniView miniView;
+	private InformationContentCreator contentCreator;
 	
+	private float fXOrigin = 0;
+	private float fYOrigin = 0;
 	private float fHeight = 0;
 	private float fWidth = 0;
 	private float fTextWidth;
 	private float fSpacing = 0.02f;
-	private float fZValue = 0.001f;
+	private float fZValue = 0.005f;
 	
-	public GLTextInfoAreaRenderer()
+	public GLTextInfoAreaRenderer(final IGeneralManager generalManager)
 	{
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false); 
+		
+		contentCreator = new InformationContentCreator(generalManager);
+		
 	}
 	/**
 	 * Set the data to be rendered.
@@ -42,66 +53,63 @@ public class GLTextInfoAreaRenderer
 	 * @param sContent An ArrayList of Strings
 	 * @param pickedPoint the picked point in Screen Coordinates!
 	 */
-	public void setData(ArrayList<String> sContent, Point pickedPoint) 
+	public void setData(int iGeneViewID, EInputDataTypes eInputDataTypes, Point pickedPoint) 
 	{
-		this.sContent = sContent;
+		this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
 		this.pickedPoint = pickedPoint;
-		miniView = null;
-	}
-	
-	/**
-	 * Set the data to be rendered.
-	 * 
-	 * @param sContent An ArrayList of Strings
-	 * @param pickedPoint the picked point in Screen Coordinates!
-	 */
-	public void setData(ArrayList<String> sContent, Point pickedPoint, AGLMiniView miniView) 
-	{
-		setData(sContent, pickedPoint);
-		this.miniView = miniView;	
-	}
-	
-	public void renderInfoArea(GL gl)
-	{		
+		miniView =  new AGLParCoordsMiniView();
+		fXOrigin = 0;
+		fYOrigin = 0;
 		fHeight = 0;
 		fWidth = 0;
-		float[] fArWorldCoords = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
-		
-		calculateWidthAndHeight();
-		
-		float fXOrigin = fArWorldCoords[0];
-		float fYOrigin = fArWorldCoords[1];
-		float fTextHeight = 0;
-		
-		
-		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);		
-		gl.glBegin(GL.GL_LINE);
-		gl.glVertex3f(0, 0, 0);
-		
-		//gl.glVertex3f(fXOrigin, fYOrigin, 0);
-		gl.glEnd();
-		gl.glVertex3f(0, 0, 0);	
-		
+	}
+	
+	
+	public void renderInfoArea(GL gl, boolean bFirstTime)
+	{	
+		textRenderer.setColor(0f, 0f, 0f, 1);	
+				
+		if(bFirstTime)
+		{
+			float[] fArWorldCoords = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
+			
+			calculateWidthAndHeight();
+			
+			fXOrigin = fArWorldCoords[0];
+			fYOrigin = fArWorldCoords[1];	
+		}
 		
 		String sCurrent;
 		float fXLowerLeft = fXOrigin + 0.2f;
 		float fYLowerLeft = fYOrigin + 0.2f;
-		//gl.glColor4f(0.1f, 0.1f, 0.1f, 0.7f);
-		//textRenderer.setColor(0f, 0f, 0f, 1);
-		//textRenderer.
 		
+		
+		float fYUpperLeft = fYLowerLeft + fHeight;
+	
+		float fNextLineHeight = fYUpperLeft;
+				
 		textRenderer.begin3DRendering();
 		
 		Iterator<String> contentIterator = sContent.iterator();
 		int iCount = 0;
+		
+		float fFontScaling = GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR;
 		while(contentIterator.hasNext())
-		{
+		{			
+			if(iCount > 0)
+			{
+				fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
+			}
+			sCurrent = contentIterator.next();	
+			fNextLineHeight -= ((float)textRenderer.getBounds(sCurrent).getHeight() 
+								* fFontScaling
+								+ fSpacing);
 			
-			sCurrent = contentIterator.next();			
-			fTextHeight += (float)textRenderer.getBounds(sCurrent).getHeight() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR;
 			textRenderer.draw3D(sCurrent,
-						fXLowerLeft  + fSpacing, fYLowerLeft + fTextHeight + fSpacing * iCount, fZValue,
-						ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
+						fXLowerLeft  + fSpacing, 
+						fNextLineHeight, fZValue + 0.001f,
+						fFontScaling);
+			
 			iCount++;
 		}
 		textRenderer.end3DRendering();	
@@ -110,17 +118,32 @@ public class GLTextInfoAreaRenderer
 			miniView.render(gl, fXLowerLeft + fTextWidth + fSpacing, fYLowerLeft + fSpacing);
 	
 		
-		gl.glColor4f(0.1f, 0.1f, 0.1f, 0.7f);
-		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(fXOrigin, fYOrigin, 0);
 		
-		gl.glVertex3f(fXLowerLeft, fYLowerLeft, 0);
-		gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft, 0);
-		gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft + fHeight, 0);
-		gl.glVertex3f(fXLowerLeft, fYLowerLeft + fHeight, 0);
-		gl.glVertex3f(fXLowerLeft, fYLowerLeft + 0.05f, 0);
-		//gl.glVertex3f(fXOrigin, fYOrigin, 0);
-		gl.glEnd();
+//		gl.glVertex3f(fXOrigin, fYOrigin, 0);
+		iCount = 0;
+		while (iCount < 2)
+		{
+			if (iCount == 0)
+			{	
+				gl.glColor4fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
+				
+				gl.glBegin(GL.GL_POLYGON);
+			}
+			else
+			{
+				gl.glColor4fv(InfoAreaRenderStyle.INFO_AREA_BORDER_COLOR, 0);
+				gl.glLineWidth(InfoAreaRenderStyle.INFO_AREA_BORDER_WIDTH);
+				gl.glBegin(GL.GL_LINE_STRIP);
+			}
+			gl.glVertex3f(fXLowerLeft, fYLowerLeft, fZValue);
+			gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft, fZValue);
+			gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft + fHeight, fZValue);
+			gl.glVertex3f(fXLowerLeft, fYLowerLeft + fHeight, fZValue);
+			if (iCount == 1)
+				gl.glVertex3f(fXLowerLeft, fYLowerLeft, fZValue);
+			gl.glEnd();
+			iCount++;
+		}
 	}
 	
 	public void calculateWidthAndHeight()
@@ -159,10 +182,8 @@ public class GLTextInfoAreaRenderer
 				fHeight = miniView.getHeight();
 			
 			fHeight += fSpacing * 2;
-		}
-		
-	}
-	
+		}		
+	}	
 }
 	
 	

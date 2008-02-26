@@ -429,16 +429,39 @@ public class PickingManager extends AAbstractManager
 		{			
 			iPickingID = alPickingIDs.get(iResultCounter);
 		
-			if (iResultCounter == 0)
+			int iType = getTypeFromPickingID(iPickingID);
+						
+			// check here for all icons in the toolbox that the overall should handle
+			// FIXME: longterm: not the nicest thing, removes generality from picking manager
+			if(iType == EPickingType.BUCKET_ICON_SELECTION.ordinal())
 			{
+				
 				iSignature = getSignatureFromPickingID(iPickingID, iViewID);
-			
-				iOrigianlPickingID = iPickingID;
+				
+				iOrigianlPickingID = iPickingID;			
 			}
-			if (iResultCounter == 1 && bIsMaster)
+			else
+			{	
+				if(bIsMaster && iResultCounter == 0)
+				{
+					iSignature = getSignatureFromPickingID(iPickingID, iViewID);
+					
+					iOrigianlPickingID = iPickingID;
+				}
+				else
+				{
+					int iViewUnderInteractionID = hashSignatureToPickingIDHashMap.get(iSignature).get(iOrigianlPickingID);
+					iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
+					
+				}
+			}
+			
+			if (!bIsMaster)
+			{
+			
+			}
+			else
 			{				
-				int iViewUnderInteractionID = hashSignatureToPickingIDHashMap.get(iSignature).get(iOrigianlPickingID);
-				iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
 				//System.out.println("Should be the name of a view: " + iViewUnderInteractionID);				
 			}
 			
@@ -470,6 +493,12 @@ public class PickingManager extends AAbstractManager
 		int iType = iPickingID - iTemp * 100;
 		
 		return (getSignature(iViewID, iType));
+	}
+	
+	private int getTypeFromPickingID(int iPickingID)
+	{
+		int iTemp = iPickingID / 100;
+		return (iPickingID - iTemp * 100);
 	}
 	
 	private void checkViewID(int iViewID)

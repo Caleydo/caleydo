@@ -158,6 +158,14 @@ public class PolylineSelectionManager
 			return false;
 	}
 	
+	public boolean isPolylineSelected(int iPolylineID)
+	{
+		if(hashSelectedPolylines.get(iPolylineID) != null)
+			return true;
+		else
+			return false;
+	}
+	
 	private boolean checkAndRemoveAllOthers(int iPolylineID, RenderMode eRenderMode)
 	{
 		short countIsRemoved = 0;

@@ -106,8 +106,9 @@ implements IMediatorReceiver, IMediatorSender {
 	private TextRenderer textRenderer;
 	
 	private GLTextInfoAreaRenderer infoRenderer; 
-	private boolean bUpdateInfoArea = false;
+	
 	private boolean bRenderInfoArea = false;
+	private boolean bInfoAreaFirstTime = false;
 	
 	private IGenomeIdManager IDManager;
 
@@ -135,7 +136,7 @@ implements IMediatorReceiver, IMediatorSender {
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
 		
-		infoRenderer = new GLTextInfoAreaRenderer();
+		infoRenderer = new GLTextInfoAreaRenderer(generalManager);
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
@@ -199,7 +200,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void displayLocal(final GL gl) 
 	{		
-		pickingManager.handlePicking(iUniqueId, gl, false);
+		pickingManager.handlePicking(iUniqueId, gl, true);
 		if(bIsDisplayListDirtyLocal)
 		{
 			buildPolyLineDisplayList(gl, iGLDisplayListIndexLocal);
@@ -254,46 +255,16 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glScalef(fScaling, fScaling, 1.0f);
 		
 			//Point tempPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			infoRenderer.renderInfoArea(gl);
+			
+			infoRenderer.renderInfoArea(gl, bInfoAreaFirstTime);
+			bInfoAreaFirstTime = false;
 		
 			gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
 			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);
 		}
 
-		
-
 		gl.glCallList(iGLDisplayListToCall);
-		toolboxRenderer.render(gl);
-		
-		
-		gl.glColor3f(0.5f, 0.5f, 0.5f);
-		gl.glLineWidth(3.0f);
-		
-//		// should be grey and is
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(-1.0f, 1.0f, 0.0f);
-//		gl.glVertex3f(0.0f, 1.0f, 0.0f);
-//		gl.glEnd();
-//		
-//		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-//		gl.glColor3f(1.0f, 0.0f, 0.0f);
-//		
-//		// should be red and is
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(-1.0f, 2.0f, 0.0f);
-//		gl.glVertex3f(0.0f, 2.0f, 0.0f);
-//		gl.glEnd();
-//		
-//		gl.glPopAttrib();
-//		
-//		// should be grey but is red
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(-1.0f, 3.0f, 0.0f);
-//		gl.glVertex3f(0.0f, 3.0f, 0.0f);
-//		gl.glEnd();
-		
-		
-	
+		toolboxRenderer.render(gl);	
 	}
 		
 	/**
@@ -342,6 +313,8 @@ implements IMediatorReceiver, IMediatorSender {
 		polyLineSelectionManager.clearDeselection();
 		polyLineSelectionManager.clearMouseOver();
 		polyLineSelectionManager.clearSelection();
+		
+		bRenderInfoArea = false;
 	}
 	
 	/**
@@ -650,7 +623,7 @@ implements IMediatorReceiver, IMediatorSender {
 			default:
 				sAxisLabel = "No Label";
 			}
-			
+			gl.glPushAttrib(GL.GL_CURRENT_BIT);
 			gl.glRotatef(90, 0, 0, 1);
 			textRenderer.begin3DRendering();	
 			textRenderer.draw3D(sAxisLabel, MAX_HEIGHT + 0.01f, - iCount * fAxisSpacing, 0, ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
@@ -663,6 +636,7 @@ implements IMediatorReceiver, IMediatorSender {
 								iCount * fAxisSpacing + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
 								MAX_HEIGHT, 0, 0.002f);
 			textRenderer.end3DRendering();
+			gl.glPopAttrib();
 			
 			iCount++;
 		}				
@@ -751,7 +725,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, RenderMode renderMode)
 	{
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_CURRENT_BIT);
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 		gl.glColor4f(ParCoordsRenderStyle.Y_AXIS_COLOR.x(),
 				ParCoordsRenderStyle.Y_AXIS_COLOR.y(),
@@ -787,25 +761,6 @@ implements IMediatorReceiver, IMediatorSender {
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
 
-		
-		// TODO: remove this when pop works
-		switch(renderMode)
-		{
-			case SELECTION:	
-				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.z(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.w());
-				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
-				break;
-			case MOUSE_OVER:
-				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.x(),
-						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.y(),
-						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.z(),
-						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.w());
-				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
-				break;
-		}
 	}
 	
 	
@@ -915,7 +870,10 @@ implements IMediatorReceiver, IMediatorSender {
 			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex];
 			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
 			                                    && fCurrentValue > fArGateBottomHeight[iAxisNumber])
-			{			
+			{	
+				if(polyLineSelectionManager.isPolylineSelected(iPolylineCount))
+					bRenderInfoArea = false;
+				
 				if(!bRenderSelection || bRenderArrayAsPolyline)
 					polyLineSelectionManager.addDeselection(iPolylineCount);
 				else
@@ -1005,16 +963,12 @@ implements IMediatorReceiver, IMediatorSender {
 							if (ePolylineDataType == EInputDataTypes.GENES)
 							{
 								
-								int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);
-								String sAccessionNumber = getAccessionNumberFromStorageIndex(iExternalID);								
+								int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);								
 								
-								ArrayList<String> sContent = new ArrayList<String>();									
-								sContent.add(sAccessionNumber);
-								sContent.add("Test");
-								sContent.add("Test2");
-								infoRenderer.setData(sContent, tempPick.getPickedPoint(), new AGLParCoordsMiniView());
+								infoRenderer.setData(iAccessionID, ePolylineDataType, tempPick.getPickedPoint());
 								// TODO check where to unset it
 								bRenderInfoArea = true;
+								bInfoAreaFirstTime = true;
 								//bUpdateInfoArea = true;
 								
 								if (iAccessionID == -1)
@@ -1345,8 +1299,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 			
 		// Convert expression storage ID to accession ID
-		int iAccessionID = IDManager.getIdIntFromIntByMapping(index*1000+770, 
-					EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);
+		int iAccessionID = getAccesionIDFromStorageIndex(index);
 		String sAccessionNumber = IDManager.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 		if(sAccessionNumber == "")
 			return "Unkonwn Gene";

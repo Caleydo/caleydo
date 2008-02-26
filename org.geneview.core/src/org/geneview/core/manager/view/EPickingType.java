@@ -3,6 +3,10 @@ package org.geneview.core.manager.view;
 
 public enum EPickingType
 {
+	// overall jukebox
+	BUCKET_ICON_SELECTION,	
+	VIEW_SELECTION,
+		
 	// parallel coordinates
 	POLYLINE_SELECTION, 
 	X_AXIS_SELECTION,	
@@ -13,9 +17,7 @@ public enum EPickingType
 	UPPER_GATE_SELECTION,
 	PC_ICON_SELECTION,
 	
-	// overall jukebox
-	BUCKET_ICON_SELECTION,	
-	VIEW_PICKING,
+
 	
 	// pathway manager
 	PATHWAY_ELEMENT_SELECTION,	

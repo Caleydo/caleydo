@@ -225,7 +225,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
 			
-			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_PICKING, iViewId);
+			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId);
 		}
 	}
 	
@@ -315,7 +315,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_PICKING, iViewId));
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
 		renderViewById(gl, iViewId, underInteractionLayer);
 		gl.glPopName();
 	}
@@ -333,7 +333,7 @@ implements IMediatorReceiver, IMediatorSender {
 //			if(!stackLayer.getElementVisibilityById(iPathwayId))
 //				continue;
 			
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_PICKING, iViewId));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
 			renderViewById(gl, iViewId, stackLayer);		
 			gl.glPopName();
 		}

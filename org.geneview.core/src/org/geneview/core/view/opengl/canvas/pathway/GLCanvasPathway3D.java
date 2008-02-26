@@ -33,6 +33,7 @@ import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
+import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
@@ -111,6 +112,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		init(gl);
 		pickingTriggerMouseAdapter.resetEvents();
+		// TODO: individual toolboxrenderer
 	}
 	
 	/*
@@ -123,7 +125,9 @@ implements IMediatorReceiver, IMediatorSender {
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-	
+		toolboxRenderer = new GLToolboxRenderer(generalManager,
+				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true);
+		
 		init(gl);
 	}
 	
@@ -174,6 +178,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		checkForHits();
 		renderScene(gl);
+		toolboxRenderer.render(gl);
 	}
 	
 	protected void initPathwayData(final GL gl) {

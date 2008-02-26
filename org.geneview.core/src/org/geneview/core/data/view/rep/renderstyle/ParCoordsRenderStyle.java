@@ -47,7 +47,7 @@ extends GeneralRenderStyle
 	 */
 	public static final float AXIS_MARKER_WIDTH = 0.01f;
 	
-	public static final float SMALL_FONT_SCALING_FACTOR = 0.0025f;
+	
 	
 
 	// Line widths
