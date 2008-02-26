@@ -83,7 +83,7 @@ public class GLToolboxRenderer
 	{
 		if(layer != null)
 		{
-			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_ICON_SELECTION, 1, new Vec4f(1, 0, 0, 1));
+			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_ICON_SELECTION, iContainingViewID, new Vec4f(1, 0, 0, 1));
 		}
 		fOverallRenderLength = fRenderLenght;
 		fRenderLenght = 0;

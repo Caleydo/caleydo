@@ -426,22 +426,44 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		ArrayList<Pick> alHits = null;		
 		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.VIEW_PICKING);		
+//		alHits = pickingManager.getHits(iUniqueId, EPickingType.VIEW_PICKING);		
+//		if(alHits != null)
+//		{			
+//			if (alHits.size() != 0 )
+//			{
+//				for (int iCount = 0; iCount < alHits.size(); iCount++)
+//				{
+//					int iViewId = pickingManager.getExternalIDFromPickingID(
+//							iUniqueId, alHits.get(iCount).getPickingID());					
+//					
+//					loadViewToUnderInteractionLayer(iViewId);
+//				}
+//				
+//				pickingManager.flushHits(iUniqueId, EPickingType.VIEW_PICKING);
+//			}
+//		}	
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_ICON_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
 			{
 				for (int iCount = 0; iCount < alHits.size(); iCount++)
 				{
-					int iViewId = pickingManager.getExternalIDFromPickingID(
-							iUniqueId, alHits.get(iCount).getPickingID());					
-					
-					loadViewToUnderInteractionLayer(iViewId);
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+						
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:
+							loadViewToUnderInteractionLayer(iExternalID);
+					}
 				}
 			}
 		}	
 		
-		pickingManager.flushHits(iUniqueId, EPickingType.VIEW_PICKING);
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_ICON_SELECTION);
 	}
 	
 	private void loadViewToUnderInteractionLayer(final int iViewId) {
