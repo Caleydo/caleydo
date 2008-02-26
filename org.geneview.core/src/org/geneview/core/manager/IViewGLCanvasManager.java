@@ -42,8 +42,6 @@ extends IViewManager {
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final GLEventListener gLEventListener);
 	
-	public void setJoglCanvasForwarderType(JoglCanvasForwarderType type);
-	
 	public DataEntitySearcherViewRep getDataEntitySearcher();
 	
 	/**

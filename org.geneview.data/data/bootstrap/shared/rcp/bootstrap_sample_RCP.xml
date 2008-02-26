@@ -24,7 +24,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -2.35 2.35 -2.35 2.35 -20 20"								attrib4="transparency 0.6"
 							attrib1="1"									
-							detail="35101 36101 37101 85101" /> 
+							detail="35101 36101 37101 85101 86101" /> 
 
 		<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="26" 

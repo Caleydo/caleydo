@@ -200,7 +200,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		// Check if pathways are already loaded
 		if (pathwayManager.getRootPathway().getAllGraphByType(
-				EGraphItemHierarchy.GRAPH_CHILDREN).isEmpty()) 
+				EGraphItemHierarchy.GRAPH_CHILDREN).size() <= 1) // <= 1 not clean - due to pathway2D 
 		{
 			// Load KEGG pathways
 			pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);

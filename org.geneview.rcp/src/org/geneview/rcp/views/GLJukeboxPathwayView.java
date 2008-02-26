@@ -119,14 +119,12 @@ extends AGLViewPart {
 
 	private void createAnimatorToggleAction() {
 
-		// showMessage("Action 1", "make new action [toggle JOGL frame]");
-
 		actToggleAnimatorRunningState = new Action() {
 			public void run() {
 
 				if (swtComposite.isVisible()) {
 					/* toggle state */
-					setGLCanvasVisible(!frameGL.isVisible());
+//					setGLCanvasVisible(!frameGL.isVisible());
 				} // if ( swtComposite.isVisible() ) {
 			}
 		};
@@ -135,8 +133,6 @@ extends AGLViewPart {
 		actToggleAnimatorRunningState.setImageDescriptor(ImageDescriptor
 				.createFromURL(this.getClass().getClassLoader().getResource(
 						ACTION_ENABLE_ANIMATOR_ICON)));
-
-		// showMessage("Action 1","executed toggle JOGL frame");
 	}
 
 	private void createGeneMappingToggleAction() {

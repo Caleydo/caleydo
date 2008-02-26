@@ -17,10 +17,17 @@ import org.geneview.rcp.views.AGLViewPart;
 import org.geneview.rcp.views.GLHeatmap2DView;
 import org.geneview.rcp.views.GLJukeboxPathwayView;
 import org.geneview.rcp.views.GLParCoordsView;
+import org.geneview.rcp.views.GLPathway3DView;
 
-public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
+import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.FPSAnimator;
+
+public class ApplicationWorkbenchAdvisor 
+extends WorkbenchAdvisor {
 
 	private static final String PERSPECTIVE_ID = "org.geneview.rcp.perspective";
+	
+	protected Animator gLAnimator;
 
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
         return new ApplicationWorkbenchWindowAdvisor(configurer);
@@ -57,6 +64,8 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		int iInstanceNum = 0;
 		AGLViewPart viewPart = null;
 		
+		gLAnimator = new FPSAnimator(null, 60);
+		
 		while (iterGLEventListener.hasNext()) 
 		{
 			tmpGLEventListener = iterGLEventListener.next();
@@ -85,6 +94,13 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 						.getActiveWorkbenchWindow().getActivePage().showView(GLParCoordsView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}			
+				else if (tmpGLEventListener.getClass().equals(
+						org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D.class))
+				{
+					viewPart = (GLPathway3DView) PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage().showView(GLPathway3DView.ID,
+								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
+				}			
 				
 				if (viewPart == null)
 					continue;
@@ -92,11 +108,15 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 				viewPart.setCanvasForwader(tmpCanvasForwarder);
 				viewPart.createPartControlGL();
 				
+				gLAnimator.add(tmpCanvasForwarder);
+				
 				iInstanceNum++;
 				
 			} catch (CoreException e) {
 				e.printStackTrace();
 			} 
 		}
+		
+		gLAnimator.start();
 	}
 }

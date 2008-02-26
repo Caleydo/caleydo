@@ -18,7 +18,13 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
 			  	gl_forwarder="24"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-				
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="Pathway" 
+				gl_origin="0 0 0" 
+				gl_rotation="0 0 0 0"					
+				attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+				detail="35101 36101 37101 39101 61101 62101" /> 
+			<!--	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="GL Jukebox Pathway 3D" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
@@ -26,6 +32,7 @@
 							attrib4="transparency 0.6"
 							attrib1="2"								
 							detail="74101 75101 76101 77101 78101 79101 80101 81101 82101 83101 84101 85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 60101" /> 
+			-->	
 				 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="25" 
 			  	gl_forwarder="25"

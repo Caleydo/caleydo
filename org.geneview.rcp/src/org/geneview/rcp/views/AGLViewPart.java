@@ -25,9 +25,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
 
-import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.FPSAnimator;
-
 /**
  * Shared object for all GeneView viewPart objects.
  * 
@@ -38,7 +35,6 @@ import com.sun.opengl.util.FPSAnimator;
 public abstract class AGLViewPart 
 extends ViewPart {
 
-	protected Animator animatorGL;
 	protected Frame frameGL;
 	protected Shell swtShell;
 	protected Composite swtComposite;
@@ -82,59 +78,59 @@ extends ViewPart {
 	 */
 	public void createPartControlGL() {
 		
-		if ( frameGL==null ) {
-			frameGL = SWT_AWT.new_Frame(swtComposite);	
+		if ( frameGL==null ) 
+		{
+			frameGL = SWT_AWT.new_Frame(swtComposite);
+		}
 		
-		animatorGL = new FPSAnimator(canvasForwarder, 60);
-
 		frameGL.add(canvasForwarder);
-		    frameGL.addWindowListener(new WindowAdapter() {
-		        public void windowClosing(WindowEvent e) {
-		        	
-		          // Run this on another thread than the AWT event queue to
-		          // make sure the call to Animator.stop() completes before
-		          // exiting
-		          new Thread(new Runnable() {
-		              public void run() {
-		                animatorGL.stop();
-		                frameGL.setVisible(false);
-		              }
-		            }).start();
-		        }
-		      });
-		    
-		    frameGL.setVisible(true);
-		    
-		    animatorGL.start();
-		}
+//		    frameGL.addWindowListener(new WindowAdapter() {
+//		        public void windowClosing(WindowEvent e) {
+//		        	
+//		          // Run this on another thread than the AWT event queue to
+//		          // make sure the call to Animator.stop() completes before
+//		          // exiting
+//		          new Thread(new Runnable() {
+//		              public void run() {
+//		                animatorGL.stop();
+//		                frameGL.setVisible(false);
+//		              }
+//		            }).start();
+//		        }
+//		      });
+//		    
+//		    frameGL.setVisible(true);
+//		    
+//		    animatorGL.start();
+//		}
 	}
 
-	protected final void setGLCanvasVisible( boolean visible) {
-		if (( frameGL == null)||( animatorGL== null )) {
-			return;			
-		}
-		
-		if ( visible != frameGL.isVisible() ) {
-			/* state change for GL canvas */			
-			frameGL.setVisible(visible);
-			
-			/* animatorGL */			
-			if ( visible ) {	
-				// is visible
-				//showMessage("Info - Action 1", "enable AWT frame, restart animator");		
-				if ( !animatorGL.isAnimating() ) {
-					animatorGL.start();
-				}				
-			} else {
-				// not visible
-				//showMessage("Info - Action 1", "disable AWT frame, stop animator");	
-				if ( animatorGL.isAnimating() ) {
-					animatorGL.stop();
-				}	
-			}
-			
-		}
-	}
+//	protected final void setGLCanvasVisible( boolean visible) {
+//		if (( frameGL == null)||( animatorGL== null )) {
+//			return;			
+//		}
+//		
+//		if ( visible != frameGL.isVisible() ) {
+//			/* state change for GL canvas */			
+//			frameGL.setVisible(visible);
+//			
+//			/* animatorGL */			
+//			if ( visible ) {	
+//				// is visible
+//				//showMessage("Info - Action 1", "enable AWT frame, restart animator");		
+//				if ( !animatorGL.isAnimating() ) {
+//					animatorGL.start();
+//				}				
+//			} else {
+//				// not visible
+//				//showMessage("Info - Action 1", "disable AWT frame, stop animator");	
+//				if ( animatorGL.isAnimating() ) {
+//					animatorGL.stop();
+//				}	
+//			}
+//			
+//		}
+//	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
@@ -153,19 +149,19 @@ extends ViewPart {
 		
 		super.dispose();
 		
-		this.setGLCanvasVisible(false);
-		
-		if ( frameGL != null ) {
-			frameGL.dispose();
-			frameGL = null;
-		}
-		
-		if ( animatorGL!= null ) {
-			if ( animatorGL.isAnimating() ) {
-				animatorGL.stop();				
-			}
-			animatorGL = null;
-		}
+//		this.setGLCanvasVisible(false);
+//		
+//		if ( frameGL != null ) {
+//			frameGL.dispose();
+//			frameGL = null;
+//		}
+//		
+//		if ( animatorGL!= null ) {
+//			if ( animatorGL.isAnimating() ) {
+//				animatorGL.stop();				
+//			}
+//			animatorGL = null;
+//		}
 	}
 
 	protected void writeScreenshot() {

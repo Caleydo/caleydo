@@ -78,8 +78,6 @@ implements IViewGLCanvasManager {
 		
 	protected ArrayList<JFrame> arWorkspaceJFrame;
 	
-	private JoglCanvasForwarderType joglCanvasForwarderType;
-	
 	private Animator fpsAnimator;
 	
 	private DataEntitySearcherViewRep dataEntitySearcher;
@@ -634,23 +632,6 @@ implements IViewGLCanvasManager {
 	
 	}
 	
-	/**
-	 * @return the joglCanvasForwarderType
-	 */
-	protected final JoglCanvasForwarderType getJoglCanvasForwarderType() {
-	
-		return joglCanvasForwarderType;
-	}
-	
-	/**
-	 * @param joglCanvasForwarderType the joglCanvasForwarderType to set
-	 */
-	public final void setJoglCanvasForwarderType(
-			JoglCanvasForwarderType type) {
-	
-		this.joglCanvasForwarderType = type;
-	}
-	
 	public DataEntitySearcherViewRep getDataEntitySearcher() {
 		
 		return dataEntitySearcher;
@@ -668,22 +649,15 @@ implements IViewGLCanvasManager {
 	
 	public void createAnimator() {
 		
-//		//fpsAnimator = new FPSAnimator(null, 60);
-//		fpsAnimator = new Animator(null);
-//		
-//		Iterator<GLCanvas> iterGLCanvas = hashCanvasID2GLCanvas.values().iterator();
-//		while(iterGLCanvas.hasNext())
-//		{
-//			fpsAnimator.add(iterGLCanvas.next());
-//		}
+		fpsAnimator = new FPSAnimator(null, 60);
 		
 		Iterator<GLCanvas> iterGLCanvas = hashGLCanvasID2GLCanvas.values().iterator();
 		while(iterGLCanvas.hasNext())
 		{
-			Animator fpsAnimator = new FPSAnimator(null, 60);
 			fpsAnimator.add(iterGLCanvas.next());
-			fpsAnimator.start();
 		}
+		
+		fpsAnimator.start();
 	}
 	
 	public Animator getAnimator() {

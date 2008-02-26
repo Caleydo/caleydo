@@ -417,10 +417,10 @@ public class GLPathwayManager {
 		gl.glLineWidth(3);
 		
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
-		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.02f);
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.02f);
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, 0.02f);		
+		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.001f);
+		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.001f);
+		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.001f);
+		gl.glVertex3f(-fNodeWidth, -fNodeHeight, 0.001f);		
         gl.glEnd();
 	}
 	
@@ -574,7 +574,7 @@ public class GLPathwayManager {
 			else
 				gl.glColor4f(1, 1, 0, 1);
 
-			
+			gl.glLineWidth(3);
 			gl.glBegin(GL.GL_LINE_STRIP);			
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
 			{
@@ -681,7 +681,7 @@ public class GLPathwayManager {
 			tmpColor = new Vec3f(0,0,0);
 		}
 
-		gl.glLineWidth(3.0f);
+		gl.glLineWidth(3);
 		gl.glColor4f(tmpColor.x(), tmpColor.y(), tmpColor.z(), 1);
 		gl.glBegin(GL.GL_LINES);
 		

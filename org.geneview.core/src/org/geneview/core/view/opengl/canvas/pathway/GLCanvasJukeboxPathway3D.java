@@ -5,6 +5,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.view.camera.IViewFrustum;
+import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -50,6 +52,8 @@ import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
 import org.geneview.util.graph.IGraphItem;
 
+import com.sun.opengl.util.j2d.TextRenderer;
+
 /**
  * Jukebox setup for pathways that supports slerp animation.
  * 
@@ -67,7 +71,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final float SCALING_FACTOR_LAYERED_LAYER = 1f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
 
-	private float fTextureTransparency = 0.6f;
+	private float fTextureTransparency = 0.75f;
 	
 	private boolean bRebuildVisiblePathwayDisplayLists = false;
 	private boolean bEnablePathwayTextures = true;
@@ -110,6 +114,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private Time time;
 	
 	private int iLazyPathwayLoadingId = -1;
+	
+	private TextRenderer textRenderer;
 
 	/**
 	 * Constructor.
@@ -144,6 +150,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 		Transform transformPathwayUnderInteraction = new Transform();
 		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.7f, -1.4f, 0f));
+//		transformPathwayUnderInteraction.setTranslation(new Vec3f(-0.7f, -4, 0f));
+		
 		transformPathwayUnderInteraction.setScale(new Vec3f(
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
@@ -160,6 +168,9 @@ implements IMediatorReceiver, IMediatorSender {
 				refGLPathwayTextureManager);
 
 		dragAndDrop = new GLDragAndDrop(refGLPathwayTextureManager);
+		
+		textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 16), false);
 	}
 	
 	/*
@@ -306,14 +317,20 @@ implements IMediatorReceiver, IMediatorSender {
 			// Store current model-view matrix
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-2.7f, fLayerYPos, 0f));
+			
+			// DKT horizontal stack
+//			transform.setTranslation(new Vec3f(-2.7f + fLayerYPos, 1.1f, 0));
+			
 			transform.setScale(new Vec3f(SCALING_FACTOR_LAYERED_LAYER,
 					SCALING_FACTOR_LAYERED_LAYER,
 					SCALING_FACTOR_LAYERED_LAYER));
 			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
+//			transform.setRotation(new Rotf(new Vec3f(-0.7f, -1f, 0), fTiltAngleRad));
+			
 			pathwayLayeredLayer.setTransformByPositionIndex(iLayerIndex,
 					transform);
 
-			fLayerYPos -= 1f;
+			fLayerYPos -= 1;
 		}
 	}
 
@@ -551,29 +568,62 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 			
 			if (pathwayUnderInteractionLayer.containsElement(iPathwayId))
-				gl.glColor4f(1, 0, 0, 1);
+			{
+				textRenderer.setColor(1,0,0,1);
+//				gl.glColor4f(1, 0, 0, 1);				
+			}
 			else
-				gl.glColor4f(0, 0, 0, 1);
+			{
+				textRenderer.setColor(0,0,0,1);
+//				gl.glColor4f(0, 0, 0, 1);
+			}
 			
 			if (alMagnificationFactor.get(iPathwayIndex) == 3)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 18, 0, 0.06f, 0);
-				fYPos = 0.15f;
+				textRenderer.begin3DRendering();	
+				textRenderer.draw3D(sRenderText,
+						0, 
+						0, 
+						0,
+						0.0055f);  // scale factor
+				textRenderer.end3DRendering();
+				
+				fYPos = 0.12f;
+
+//				GLTextUtils.renderText(gl, sRenderText, 18, 0, 0.06f, 0);
+//				fYPos = 0.15f;
 			} 
 			else if (alMagnificationFactor.get(iPathwayIndex) == 2)
 			{	
-				GLTextUtils.renderText(gl, sRenderText, 12, 0, 0.04f, 0);
-				fYPos = 0.1f;
+				textRenderer.begin3DRendering();	
+				textRenderer.draw3D(sRenderText,
+						0, 
+						0, 
+						0,
+						0.004f);  // scale factor
+				textRenderer.end3DRendering();
+				
+				fYPos = 0.12f;
+				
+//				GLTextUtils.renderText(gl, sRenderText, 12, 0, 0.04f, 0);
 			} 
 			else if (alMagnificationFactor.get(iPathwayIndex) == 1)
 			{
-				GLTextUtils.renderText(gl, sRenderText, 10, 0, 0.02f, 0);
-				fYPos = 0.07f;
+				textRenderer.begin3DRendering();	
+				textRenderer.draw3D(sRenderText,
+						0, 
+						0, 
+						0,
+						0.004f);  // scale factor
+				textRenderer.end3DRendering();
+				
+				fYPos = 0.12f;
+				
+//				GLTextUtils.renderText(gl, sRenderText, 10, 0, 0.02f, 0);
+//				fYPos = 0.07f;
 			} 
 			else if (alMagnificationFactor.get(iPathwayIndex) == 0)
-			{
-				fYPos = 0.02f;
-	
+			{	
 				gl.glColor3f(0, 0, 0);
 	
 				gl.glBegin(GL.GL_QUADS);
@@ -582,6 +632,8 @@ implements IMediatorReceiver, IMediatorSender {
 				gl.glVertex3f(0.1f, fYPos, 0);
 				gl.glVertex3f(0.1f, 0, 0);
 				gl.glEnd();
+
+				fYPos = 0.02f;
 			}
 			
 			gl.glColor4f(0, 0, 0, 0);
@@ -611,15 +663,17 @@ implements IMediatorReceiver, IMediatorSender {
 
 			if (alMagnificationFactor.get(iLineIndex) == 3)
 			{
-				fPathwayPoolHeight += 0.15;
+//				fPathwayPoolHeight += 0.15;
+				fPathwayPoolHeight += 0.12;
 			} 
 			else if (alMagnificationFactor.get(iLineIndex) == 2)
 			{
-				fPathwayPoolHeight += 0.1;
+				fPathwayPoolHeight += 0.12;
 			} 
 			else if (alMagnificationFactor.get(iLineIndex) == 1)
 			{
-				fPathwayPoolHeight += 0.07;
+//				fPathwayPoolHeight += 0.07;
+				fPathwayPoolHeight += 0.12;
 			} 
 //			else if (alMagnificationFactor.get(iLineIndex) == 0)
 //			{
@@ -883,12 +937,12 @@ implements IMediatorReceiver, IMediatorSender {
 					{						
 						case DRAGGED:	
 
-							//loadPathwayToUnderInteractionPosition(iPickedPathwayTextureID);
 							dragAndDrop.startDragAction(iPickedPathwayTextureID);
-							
 							break;
-						case MOUSE_OVER:
+							
+						case CLICKED:
 
+							loadPathwayToUnderInteractionPosition(iPickedPathwayTextureID);
 							break;
 					}
 				}
