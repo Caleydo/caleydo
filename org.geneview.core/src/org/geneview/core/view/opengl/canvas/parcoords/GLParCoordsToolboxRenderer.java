@@ -15,14 +15,24 @@ public class GLParCoordsToolboxRenderer
 extends GLToolboxRenderer 
 {
 	public GLParCoordsToolboxRenderer(final IGeneralManager generalManager,
-			final int containingViewID,
+			final int iContainingViewID,
+			final Vec3f vecLeftPoint,			
+			final boolean bRenderLeftToRight)
+	{
+		super(generalManager, iContainingViewID,
+				vecLeftPoint, bRenderLeftToRight);
+	}
+	
+	public GLParCoordsToolboxRenderer(final IGeneralManager generalManager,
+			final int iContainingViewID,
+			final int iRemoteViewID,
 			final Vec3f vecLeftPoint,			
 			final JukeboxHierarchyLayer layer,
 			final boolean bRenderLeftToRight)
 	{
-		super(generalManager, containingViewID,
-				vecLeftPoint, layer,
-				bRenderLeftToRight);
+		super(generalManager, iContainingViewID, 
+				iRemoteViewID, vecLeftPoint, 
+				layer, bRenderLeftToRight);
 	}
 	
 	public void render(GL gl)

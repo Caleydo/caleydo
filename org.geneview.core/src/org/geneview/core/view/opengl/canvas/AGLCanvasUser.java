@@ -225,7 +225,9 @@ implements GLEventListener {
 	 * Has to call init internally!
 	 * @param gl
 	 */
-	public abstract void initRemote(final GL gl, 
+	public abstract void initRemote(final GL gl,
+			final int iRemoteViewID, 
+			final JukeboxHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter);
 	
 	/**

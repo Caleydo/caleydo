@@ -1,6 +1,7 @@
 package org.geneview.core.view.opengl.canvas.heatmap;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.nio.IntBuffer;
@@ -23,6 +24,8 @@ import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.geneview.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
+import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
@@ -150,11 +153,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
-	 */	
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */
 	public void initRemote(final GL gl, 
+			final int iRemoteViewID, 
+			final JukeboxHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
+			
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 	
 		//iGLDisplayListIndexRemote = gl.glGenLists(1);	

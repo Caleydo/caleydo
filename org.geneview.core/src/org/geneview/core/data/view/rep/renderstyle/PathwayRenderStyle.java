@@ -2,11 +2,11 @@ package org.geneview.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec3f;
 
-import org.geneview.core.data.ARenderStyle;
+import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
 public class PathwayRenderStyle 
-extends ARenderStyle {
+extends GeneralRenderStyle {
 	
 	public enum NodeShape {
 		RECTANGULAR,

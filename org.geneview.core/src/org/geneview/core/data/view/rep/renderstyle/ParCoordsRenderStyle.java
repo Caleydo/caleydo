@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.math.*;
 
-import org.geneview.core.data.ARenderStyle;
+import org.geneview.core.data.GeneralRenderStyle;
 
 /**
  * 
@@ -15,7 +15,7 @@ import org.geneview.core.data.ARenderStyle;
  */
 
 public class ParCoordsRenderStyle 
-extends ARenderStyle 
+extends GeneralRenderStyle 
 {
 	
 	 

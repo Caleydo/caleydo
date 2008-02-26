@@ -186,9 +186,11 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
-	 */	
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */
 	public void initRemote(final GL gl, 
+			final int iRemoteViewID, 
+			final JukeboxHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;

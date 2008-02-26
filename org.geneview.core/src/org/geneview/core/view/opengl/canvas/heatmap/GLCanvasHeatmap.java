@@ -1,5 +1,7 @@
 package org.geneview.core.view.opengl.canvas.heatmap;
 
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -10,6 +12,8 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
+import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * @author Michael Kalkusch
@@ -69,11 +73,16 @@ extends AGLCanvasUser {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
-	 */	
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */
 	public void initRemote(final GL gl, 
+			final int iRemoteViewID, 
+			final JukeboxHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
+//		toolboxRenderer = new GLParCoordsToolboxRenderer(generalManager,
+//				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true);
+//		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 		//iGLDisplayListIndexRemote = gl.glGenLists(1);	
 		init(gl);

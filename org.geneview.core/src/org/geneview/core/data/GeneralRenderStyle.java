@@ -1,5 +1,6 @@
 package org.geneview.core.data;
 
-public abstract class ARenderStyle {
+public class GeneralRenderStyle 
+{
 	
 }

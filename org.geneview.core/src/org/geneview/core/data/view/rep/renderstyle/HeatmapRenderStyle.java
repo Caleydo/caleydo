@@ -1,8 +1,8 @@
 package org.geneview.core.data.view.rep.renderstyle;
 
-import org.geneview.core.data.ARenderStyle;
+import org.geneview.core.data.GeneralRenderStyle;
 
 public class HeatmapRenderStyle 
-extends ARenderStyle {
+extends GeneralRenderStyle {
 
 }

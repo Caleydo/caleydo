@@ -23,6 +23,7 @@ import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -113,13 +114,14 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
-	 */	
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 */
 	public void initRemote(final GL gl, 
+			final int iRemoteViewID, 
+			final JukeboxHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
-	{
+	{		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-	
 		
 		init(gl);
 	}
@@ -221,7 +223,7 @@ implements IMediatorReceiver, IMediatorSender {
 			stackLayer.addElement(iViewId);
 			stackLayer.setElementVisibilityById(true, iViewId);
 			
-			tmpGLEventListener.initRemote(gl, pickingTriggerMouseAdapter);
+			tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
 			
 			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_PICKING, iViewId);
 		}
