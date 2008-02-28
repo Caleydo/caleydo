@@ -5,11 +5,11 @@ import javax.media.opengl.GL;
 import org.geneview.core.data.GeneralRenderStyle;
 
 
-public class AGLParCoordsMiniView 
+public class GLParCoordsMiniView 
 extends AGLMiniView
 {
 
-	public AGLParCoordsMiniView()
+	public GLParCoordsMiniView()
 	{
 		fWidth = 0.2f;
 		fHeight = 0.2f;

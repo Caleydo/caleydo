@@ -34,8 +34,8 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.miniview.AGLParCoordsMiniView;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
+import org.geneview.core.view.opengl.util.GLInfoAreaManager;
 import org.geneview.core.view.opengl.util.GLTextInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
@@ -56,7 +56,6 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private enum RenderMode
 	{
-		ALL,
 		NORMAL,
 		SELECTION,
 		MOUSE_OVER,
@@ -97,15 +96,13 @@ implements IMediatorReceiver, IMediatorSender {
 	private float fXTranslation = 0;
 	private float fYTranslation = 0;
 	
-
-	
 	private ParCoordsRenderStyle renderStyle;
 	
 	private PolylineSelectionManager polyLineSelectionManager;
 	
 	private TextRenderer textRenderer;
 	
-	private GLTextInfoAreaRenderer infoRenderer; 
+	private GLInfoAreaManager infoAreaManager; 
 	
 	private boolean bRenderInfoArea = false;
 	private boolean bInfoAreaFirstTime = false;
@@ -136,7 +133,7 @@ implements IMediatorReceiver, IMediatorSender {
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
 		
-		infoRenderer = new GLTextInfoAreaRenderer(generalManager);
+		infoAreaManager = new GLInfoAreaManager(generalManager);
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
@@ -187,11 +184,7 @@ implements IMediatorReceiver, IMediatorSender {
 		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
 			
 		initPolyLineLists();				
-		
-//		gl.glClearColor(ParCoordsRenderStyle.CANVAS_COLOR.x(), 
-//						ParCoordsRenderStyle.CANVAS_COLOR.y(), 
-//						ParCoordsRenderStyle.CANVAS_COLOR.z(),
-//						ParCoordsRenderStyle.CANVAS_COLOR.w());
+
 	}
 	
 	/*
@@ -209,8 +202,7 @@ implements IMediatorReceiver, IMediatorSender {
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		display(gl);
 		
-		checkForHits(gl);
-		
+		checkForHits(gl);		
 		
 		pickingTriggerMouseAdapter.resetEvents();
 	}
@@ -239,7 +231,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void display(final GL gl) 
 	{	
-		// FIXME: scaling here not too nice, operations are not in display lists
+		// FIXME: scaling here not nice, operations are not in display lists
 		if(bIsDraggingActive)
 		{			
 			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
@@ -253,10 +245,8 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
 			gl.glScalef(fScaling, fScaling, 1.0f);
-		
-			//Point tempPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			
-			infoRenderer.renderInfoArea(gl, bInfoAreaFirstTime);
+			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 			bInfoAreaFirstTime = false;
 		
 			gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
@@ -303,6 +293,9 @@ implements IMediatorReceiver, IMediatorSender {
 		this.bPreventOcclusion = bPreventOcclusion;
 	}
 	
+	/**
+	 * Reset all selections and deselections
+	 */
 	public void resetSelections()
 	{
 		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
@@ -356,7 +349,7 @@ implements IMediatorReceiver, IMediatorSender {
 		else
 		{
 			//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-			iNumberOfEntriesToRender = 20;
+			iNumberOfEntriesToRender = 1000;
 		}
 		
 	
@@ -434,46 +427,32 @@ implements IMediatorReceiver, IMediatorSender {
 			case NORMAL:
 				setDataToRender = polyLineSelectionManager.getNormalPolylines();
 				if(bPreventOcclusion)
-				{
-					Vec4f occlusionPrevColor = renderStyle.getPolylineOcclusionPrevColor(setDataToRender.size());
-					gl.glColor4f(occlusionPrevColor.x(),
-								occlusionPrevColor.y(),
-								occlusionPrevColor.z(),
-								occlusionPrevColor.w());					
+				{					
+					gl.glColor4fv(renderStyle.
+							getPolylineOcclusionPrevColor(setDataToRender.size()),
+							0);									
 				}
 				else
 				{
-					gl.glColor4f(ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.x(),
-								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.y(),
-								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.z(),
-								ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR.w());
+					gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
 				}
 				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				break;
 			case SELECTION:	
 				setDataToRender = polyLineSelectionManager.getSelectedPolylines();
-				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.x(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.y(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.z(),
-						ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR.w());
+				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
 				setDataToRender = polyLineSelectionManager.getMouseOverPolylines();
-				gl.glColor4f(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.x(),
-						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.y(),
-						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.z(),
-						ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR.w());
+				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				break;
 			case DESELECTED:	
 				setDataToRender = polyLineSelectionManager.getDeselectedPolylines();				
-				Vec4f deselectedOccPrevColor = renderStyle.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size());
-				
-				gl.glColor4f(deselectedOccPrevColor.x(),
-						deselectedOccPrevColor.y(),
-						deselectedOccPrevColor.z(),
-						deselectedOccPrevColor.w());
+				gl.glColor4fv(renderStyle.
+						getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()),
+						0);
 				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
@@ -553,8 +532,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				fPreviousXValue = fCurrentXValue;
 				fPreviousYValue = fCurrentYValue;
-			}			
-			
+			}						
 			
 			if(renderMode != RenderMode.DESELECTED)
 				gl.glPopName();			
@@ -567,10 +545,7 @@ implements IMediatorReceiver, IMediatorSender {
 		textRenderer.setColor(0, 0, 0, 1);
 
 		// draw X-Axis
-		gl.glColor4f(ParCoordsRenderStyle.X_AXIS_COLOR.x(),
-					ParCoordsRenderStyle.X_AXIS_COLOR.y(),
-					ParCoordsRenderStyle.X_AXIS_COLOR.z(),
-					ParCoordsRenderStyle.X_AXIS_COLOR.w());
+		gl.glColor4fv(ParCoordsRenderStyle.X_AXIS_COLOR, 0);
 				
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
 		
@@ -585,13 +560,9 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		// draw all Y-Axis
 
-		gl.glColor4f(ParCoordsRenderStyle.Y_AXIS_COLOR.x(),
-				ParCoordsRenderStyle.Y_AXIS_COLOR.y(),
-				ParCoordsRenderStyle.Y_AXIS_COLOR.z(),
-				ParCoordsRenderStyle.Y_AXIS_COLOR.w());
+		gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
 			
-		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
-			
+		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);			
 		
 		int iCount = 0;
 		while (iCount < iNumberAxis)
@@ -645,10 +616,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private void renderGates(GL gl, int iNumberAxis)
 	{
 		
-		gl.glColor4f(ParCoordsRenderStyle.GATE_COLOR.x(),
-				ParCoordsRenderStyle.GATE_COLOR.y(),
-				ParCoordsRenderStyle.GATE_COLOR.z(),
-				ParCoordsRenderStyle.GATE_COLOR.w());
+		gl.glColor4fv(ParCoordsRenderStyle.GATE_COLOR, 0);
 		
 		int iCount = 0;
 		while (iCount < iNumberAxis)
@@ -716,8 +684,7 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glEnd();
 			gl.glPopName();
 			
-			renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], RenderMode.NORMAL);
-			
+			renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], RenderMode.NORMAL);			
 			
 			iCount++;
 		}
@@ -727,15 +694,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		gl.glPushAttrib(GL.GL_CURRENT_BIT);
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
-		gl.glColor4f(ParCoordsRenderStyle.Y_AXIS_COLOR.x(),
-				ParCoordsRenderStyle.Y_AXIS_COLOR.y(),
-				ParCoordsRenderStyle.Y_AXIS_COLOR.z(),
-				ParCoordsRenderStyle.Y_AXIS_COLOR.w());
-		
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(fXOrigin - ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fYOrigin, 0.002f);	
-//		gl.glVertex3f(fXOrigin + ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fYOrigin, 0.002f);
-//		gl.glEnd();
+		gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
 		
 		Rectangle2D tempRectangle = textRenderer.getBounds(decimalFormat.format(fYOrigin));
 		float fBackPlaneWidth = (float)tempRectangle.getWidth() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR;
@@ -743,7 +702,6 @@ implements IMediatorReceiver, IMediatorSender {
 		float fXTextOrigin = fXOrigin + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 		
-		//System.out.println(					+ ", " + );
 		gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXTextOrigin, fYTextOrigin, 0.002f);
@@ -761,10 +719,7 @@ implements IMediatorReceiver, IMediatorSender {
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
 
-	}
-	
-	
-	
+	}	
 
 	private void handleDragging(GL gl)
 	{	
@@ -904,8 +859,6 @@ implements IMediatorReceiver, IMediatorSender {
 					}
 					else
 					{
-						//iLocalStorage = alDataStorages.get(iCount);
-						//iLocalStorageIndex = iPolylineCount;
 						if(!bRenderSelection)					
 							iLocalStorageIndex = iPolylineCount;
 						else
@@ -947,7 +900,6 @@ implements IMediatorReceiver, IMediatorSender {
 					Pick tempPick = alHits.get(iCount);
 					int iPickingID = tempPick.getPickingID();
 					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					//alNormalPolylines.remove(new Integer(iExternalID));
 						
 					switch (tempPick.getPickingMode())
 					{						
@@ -965,11 +917,10 @@ implements IMediatorReceiver, IMediatorSender {
 								
 								int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);								
 								
-								infoRenderer.setData(iAccessionID, ePolylineDataType, tempPick.getPickedPoint());
-								// TODO check where to unset it
+								infoAreaManager.setData(iAccessionID, 
+										ePolylineDataType, tempPick.getPickedPoint());
 								bRenderInfoArea = true;
-								bInfoAreaFirstTime = true;
-								//bUpdateInfoArea = true;
+								bInfoAreaFirstTime = true;								
 								
 								if (iAccessionID == -1)
 									break;
@@ -981,7 +932,8 @@ implements IMediatorReceiver, IMediatorSender {
 								iArTmpSelectionId[0] = iAccessionID;
 								iArTmpDepth[0] = 0;
 								alSetSelection.get(0).getWriteToken();
-								alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+								alSetSelection.get(0).updateSelectionSet(iUniqueId, 
+										iArTmpSelectionId, iArTmpDepth, new int[0]);
 								alSetSelection.get(0).returnWriteToken();
 							}
 							break;	
@@ -1137,8 +1089,7 @@ implements IMediatorReceiver, IMediatorSender {
 							else if(iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
 							{
 								resetSelections();
-							}
-							
+							}							
 							
 							bIsDisplayListDirtyLocal = true;
 							bIsDisplayListDirtyRemote = true;
@@ -1304,8 +1255,6 @@ implements IMediatorReceiver, IMediatorSender {
 		if(sAccessionNumber == "")
 			return "Unkonwn Gene";
 		else
-			return sAccessionNumber;
-		
-	}
-	
+			return sAccessionNumber;		
+	}	
 }

@@ -31,6 +31,8 @@ import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
+ * 
  */
 public abstract class AGLCanvasUser 
 extends AUniqueManagedObject

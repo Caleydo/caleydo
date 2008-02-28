@@ -10,10 +10,24 @@ import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
+/**
+ * Extends GLToolboxRenderer by the icons relevant for the PCs
+ * 
+ * @author Alexander Lex
+ *
+ */
 
 public class GLParCoordsToolboxRenderer 
 extends GLToolboxRenderer 
 {
+	/**
+	 * Constructor - use this one when you only work locally
+	 * 
+	 * @param generalManager
+	 * @param iContainingViewID
+	 * @param vecLeftPoint
+	 * @param bRenderLeftToRight
+	 */
 	public GLParCoordsToolboxRenderer(final IGeneralManager generalManager,
 			final int iContainingViewID,
 			final Vec3f vecLeftPoint,			
@@ -23,6 +37,16 @@ extends GLToolboxRenderer
 				vecLeftPoint, bRenderLeftToRight);
 	}
 	
+	/**
+	 * Constructor - use this one when you want remote and local icons in the same toolbox
+	 * 
+	 * @param generalManager
+	 * @param iContainingViewID
+	 * @param iRemoteViewID
+	 * @param vecLeftPoint
+	 * @param layer
+	 * @param bRenderLeftToRight
+	 */
 	public GLParCoordsToolboxRenderer(final IGeneralManager generalManager,
 			final int iContainingViewID,
 			final int iRemoteViewID,
@@ -35,6 +59,11 @@ extends GLToolboxRenderer
 				layer, bRenderLeftToRight);
 	}
 	
+	/**
+	 * Does the actual rendering
+	 * 
+	 * @param gl
+	 */
 	public void render(GL gl)
 	{
 		super.render(gl);

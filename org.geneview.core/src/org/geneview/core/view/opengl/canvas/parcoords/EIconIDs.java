@@ -1,6 +1,10 @@
 package org.geneview.core.view.opengl.canvas.parcoords;
 
-
+/**
+ * Icon IDs for the parallel coordinates
+ * @author alexsb
+ *
+ */
 public enum EIconIDs
 {
 	TOGGLE_RENDER_ARRAY_AS_POLYLINE,
