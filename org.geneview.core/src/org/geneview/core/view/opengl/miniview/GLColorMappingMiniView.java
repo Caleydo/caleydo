@@ -35,7 +35,7 @@ extends AGLMiniView
 		genomeMapper = generalManager.getSingelton().getGenomeIdManager()
 		.getGenomeMapperByMappingCascadeType(
 				EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
-		//genomeMapper.setMappingData(alSetData);
+	//	genomeMapper.setMappingData(alSetData);
 	}
 	
 	

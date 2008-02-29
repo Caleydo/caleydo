@@ -72,7 +72,7 @@ public class GLTextInfoAreaRenderer
 	{
 		this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
 		//this.pickedPoint = pickedPoint;
-		miniView =  new GLParCoordsMiniView();
+		//miniView =  new GLParCoordsMiniView();
 		fHeight = 0;
 		fWidth = 0;
 		vecSize = new Vec2f();

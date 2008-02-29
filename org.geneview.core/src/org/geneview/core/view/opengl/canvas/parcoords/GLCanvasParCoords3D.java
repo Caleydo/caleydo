@@ -2,17 +2,21 @@ package org.geneview.core.view.opengl.canvas.parcoords;
 
 
 import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
 
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLException;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
@@ -34,12 +38,16 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
 import org.geneview.core.view.opengl.util.GLInfoAreaManager;
-import org.geneview.core.view.opengl.util.GLTextInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
+import com.sun.media.sound.AlawCodec;
 import com.sun.opengl.util.j2d.TextRenderer;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * 
@@ -51,8 +59,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public class GLCanvasParCoords3D 
 extends AGLCanvasUser
-implements IMediatorReceiver, IMediatorSender {
-	
+implements IMediatorReceiver, IMediatorSender 
+{
 	
 	private enum RenderMode
 	{
@@ -60,12 +68,9 @@ implements IMediatorReceiver, IMediatorSender {
 		SELECTION,
 		MOUSE_OVER,
 		DESELECTED
-	}
-
-	// how much room between the axis?
-	private float fAxisSpacing = 0.5f;
-	// how high is an axis - do NOT change
-	private static final float MAX_HEIGHT = 1; 
+	}	
+		
+	private float fAxisSpacing = 0;
 		
 	private int iGLDisplayListIndexLocal;
 	private int iGLDisplayListIndexRemote;
@@ -74,7 +79,7 @@ implements IMediatorReceiver, IMediatorSender {
 	// flag whether one array should be a polyline or an axis
 	private boolean bRenderArrayAsPolyline = false;
 	// flag whether the whole data or the selection should be rendered
-	private boolean bRenderSelection = false;
+	private boolean bRenderSelection = true;
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;
 	
@@ -104,15 +109,26 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private GLInfoAreaManager infoAreaManager; 
 	
+	//protected HashMap <ESelectionType, ISetSelection> hashSetSelection;
+	
 	private boolean bRenderInfoArea = false;
 	private boolean bInfoAreaFirstTime = false;
 	
 	private IGenomeIdManager IDManager;
-
+	
+	private ESelectionType eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
+	private ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
+	private ArrayList<Integer> alContentSelection;
+	private ArrayList<Integer> alStorageSelection;
+	
 	
 	ArrayList<IStorage> alDataStorages;
 	
 	DecimalFormat decimalFormat;
+	
+	EnumMap<EIconTextures, Texture> mapIconTextures;
+	EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
+	//Texture texture;
 	
 	/**
 	 * Constructor.
@@ -137,6 +153,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
+		
+		mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
+		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
+		//hashSetSelection = new HashMap<ESelectionType, ISetSelection>();
 	}
 	
 	/*
@@ -177,14 +197,33 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void init(final GL gl) 
 	{
+		
+		for(EIconTextures eIconTextures : EIconTextures.values())
+		{
+			try
+			{
+				Texture tempTexture = TextureIO.newTexture(TextureIO.newTextureData(
+						new File(eIconTextures.getFileName()), true, "PNG"));
+				mapIconTextures.put(eIconTextures, tempTexture);
+			} catch (GLException e)
+			{
+				e.printStackTrace();
+			} catch (IllegalArgumentException e)
+			{
+				e.printStackTrace();
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}	
+		}
+		
 		// initialize selection to an empty array with 
 		ISetSelection tmpSelection = alSetSelection.get(0);		
 		// TODO: only for tests, should be {}
-		int[] iArTmpSelectionIDs = {3, 6, 9, 12};
+		int[] iArTmpSelectionIDs = {3, 4, 5, 6, 7, 9, 12};
 		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
-			
-		initPolyLineLists();				
-
+		initSelections();
+		initPolyLineLists();
 	}
 	
 	/*
@@ -279,7 +318,13 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void renderSelection(boolean bRenderSelection)
 	{
-		this.bRenderSelection = bRenderSelection;	
+		this.bRenderSelection = bRenderSelection;
+		if(bRenderSelection)
+		{
+			eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
+		}
+		else
+			eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
 		initPolyLineLists();
 	}
 	
@@ -301,7 +346,8 @@ implements IMediatorReceiver, IMediatorSender {
 		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			fArGateTipHeight[iCount] = 0;
-			fArGateBottomHeight[iCount] = 0;
+			fArGateBottomHeight[iCount] = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET -
+				ParCoordsRenderStyle.GATE_TIP_HEIGHT;
 		}
 		polyLineSelectionManager.clearDeselection();
 		polyLineSelectionManager.clearMouseOver();
@@ -310,22 +356,27 @@ implements IMediatorReceiver, IMediatorSender {
 		bRenderInfoArea = false;
 	}
 	
-	/**
-	 * Initializes the array lists that contain the data. 
-	 * Must be run at program start, 
-	 * every time you exchange axis and polylines and
-	 * every time you change storages or selections
-	 */
-	private void initPolyLineLists()
-	{		
+	public void refresh()
+	{
+		initPolyLineLists();
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;
+		bRenderInfoArea = false;
+	}
+	
+	
+	private void initSelections()
+	{
 		// TODO: check if I only get in here once
 		alDataStorages.clear();
-		polyLineSelectionManager.clearAll();
+		
+		
 		if (alSetData == null)
 			return;
 		
 		if (alSetSelection == null)
 			return;				
+				
 		
 		Iterator<ISet> iterSetData = alSetData.iterator();
 		while (iterSetData.hasNext())
@@ -336,36 +387,68 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
 			}
-		}		
-		int iNumberOfEntriesToRender = 0;		
-		
-		// decide whether to render a selection from the storage - virtual array mechanism 
-		// or to render all 
-		if(bRenderSelection)
-		{
-			//iNumberOfStoragesToRender = alDataStorages.size();
-			iNumberOfEntriesToRender = alSetSelection.get(0).getSelectionIdArray().length;
 		}	
-		else
+		
+		ArrayList<Integer> alTempList = new ArrayList<Integer>();
+		int[] iArTemp = alSetSelection.get(0).getSelectionIdArray();
+		for(int iCount = 0; iCount < iArTemp.length; iCount++)
 		{
-			//iNumberOfEntriesToRender = alDataStorages.get(0).getArrayFloat().length;
-			iNumberOfEntriesToRender = 1000;
+			alTempList.add(iArTemp[iCount]);
 		}
 		
+		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
+
+		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
+		int iStorageLength = 1000;
+		alTempList = new ArrayList<Integer>(iStorageLength);
+		// initialize full list
+		for(int iCount = 0; iCount < iStorageLength; iCount++)
+		{
+			alTempList.add(iCount);
+		}
+		
+		mapSelections.put(ESelectionType.COMPLETE_SELECTION, alTempList);
+		
+		alTempList = new ArrayList<Integer>();
+		
+		for(int iCount = 0; iCount < alDataStorages.size(); iCount++)
+		{
+			alTempList.add(iCount);
+		}
+		
+		mapSelections.put(ESelectionType.STORAGE_SELECTION, alTempList);
+	}
+	
+	
+	/**
+	 * Initializes the array lists that contain the data. 
+	 * Must be run at program start, 
+	 * every time you exchange axis and polylines and
+	 * every time you change storages or selections
+	 */
+	private void initPolyLineLists()
+	{						
+		polyLineSelectionManager.clearAll();
+		
+		int iNumberOfEntriesToRender = 0;		
+
+		alContentSelection = mapSelections.get(eWhichContentSelection);
+		alStorageSelection = mapSelections.get(eWhichStorageSelection);
+		iNumberOfEntriesToRender = alContentSelection.size();
 	
 		int iNumberOfPolyLinesToRender = 0;		
 		
 		// if true one array corresponds to one polyline, number of arrays is number of polylines
 		if (bRenderArrayAsPolyline)
 		{			
-			iNumberOfPolyLinesToRender = alDataStorages.size();
+			iNumberOfPolyLinesToRender = alStorageSelection.size();
 			iNumberOfAxis = iNumberOfEntriesToRender;			
 		}
 		// render polylines across storages - first element of storage 1 to n makes up polyline
 		else
 		{						
 			iNumberOfPolyLinesToRender = iNumberOfEntriesToRender;
-			iNumberOfAxis = alDataStorages.size();
+			iNumberOfAxis = alStorageSelection.size();
 		}
 		
 		fArGateTipHeight = new float[iNumberOfAxis];
@@ -380,10 +463,10 @@ implements IMediatorReceiver, IMediatorSender {
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{	
-			if(!bRenderSelection || bRenderArrayAsPolyline)
-				polyLineSelectionManager.initialAdd(iPolyLineCount);
+			if(bRenderArrayAsPolyline)
+				polyLineSelectionManager.initialAdd(alStorageSelection.get(iPolyLineCount));
 			else
-				polyLineSelectionManager.initialAdd(alSetSelection.get(0).getSelectionIdArray()[iPolyLineCount]);
+				polyLineSelectionManager.initialAdd(alContentSelection.get(iPolyLineCount));
 		}
 		
 		fScaling = 2.5f;
@@ -392,8 +475,11 @@ implements IMediatorReceiver, IMediatorSender {
 				-(iNumberOfAxis-1)*fAxisSpacing*fScaling)/2.0f;
 		fYTranslation = (viewFrustum.getTop() - viewFrustum.getBottom() - fScaling)/2.0f;
 	
+		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
 		
 	}
+	
+
 	
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{		
@@ -426,16 +512,12 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			case NORMAL:
 				setDataToRender = polyLineSelectionManager.getNormalPolylines();
-				if(bPreventOcclusion)
-				{					
+				if(bPreventOcclusion)				
 					gl.glColor4fv(renderStyle.
-							getPolylineOcclusionPrevColor(setDataToRender.size()),
-							0);									
-				}
+							getPolylineOcclusionPrevColor(setDataToRender.size()), 0);									
 				else
-				{
 					gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
-				}
+				
 				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				break;
 			case SELECTION:	
@@ -458,9 +540,6 @@ implements IMediatorReceiver, IMediatorSender {
 			default:
 				setDataToRender = polyLineSelectionManager.getNormalPolylines();
 		}
-	
-		
-		//int iNumberOfPolyLinesToRender = setDataToRender.size();
 		
 		Iterator<Integer> dataIterator = setDataToRender.iterator();
 		// this for loop executes once per polyline
@@ -468,18 +547,15 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			int iPolyLineID = dataIterator.next();
 			if(renderMode != RenderMode.DESELECTED)
-				gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.POLYLINE_SELECTION, iPolyLineID));	
-
+				gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.POLYLINE_SELECTION, iPolyLineID));
 			
 			IStorage currentStorage = null;
 			
 			// decide on which storage to use when array is polyline
 			if(bRenderArrayAsPolyline)
 			{
-				int iWhichStorage = 0;
-
-				iWhichStorage = iPolyLineID;
-				
+				int iWhichStorage = iPolyLineID;				
+				//currentStorage = alDataStorages.get(alStorageSelection.get(iWhichStorage));
 				currentStorage = alDataStorages.get(iWhichStorage);
 			}
 			
@@ -496,22 +572,12 @@ implements IMediatorReceiver, IMediatorSender {
 				// get the index if array as polyline
 				if (bRenderArrayAsPolyline)
 				{
-					// if only selection should be rendered we get the ids out of
-					// the selection array
-					if (bRenderSelection)
-					{
-						iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iVertricesCount];
-					} 
-					else
-					{
-						iStorageIndex = iVertricesCount;
-					}
+					iStorageIndex = alContentSelection.get(iVertricesCount);
 				}
 				// get the storage and the storage index for the different cases				
 				else
-				{
-					currentStorage = alDataStorages.get(iVertricesCount);					
-					
+				{				
+					currentStorage = alDataStorages.get(alStorageSelection.get(iVertricesCount));					
 					iStorageIndex = iPolyLineID;					
 				}			
 								
@@ -569,10 +635,18 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.Y_AXIS_SELECTION, iCount));
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(iCount * fAxisSpacing, 0.0f, 0.0f);
-			gl.glVertex3f(iCount * fAxisSpacing, MAX_HEIGHT, 0.0f);
-			gl.glVertex3f(iCount * fAxisSpacing - ParCoordsRenderStyle.AXIS_MARKER_WIDTH, MAX_HEIGHT, 0.0f);
-			gl.glVertex3f(iCount * fAxisSpacing + ParCoordsRenderStyle.AXIS_MARKER_WIDTH, MAX_HEIGHT, 0.0f);			
+			gl.glVertex3f(iCount * fAxisSpacing, 
+					ParCoordsRenderStyle.Y_AXIS_LOW, 
+					ParCoordsRenderStyle.AXIS_Z);
+			gl.glVertex3f(iCount * fAxisSpacing, 
+					ParCoordsRenderStyle.MAX_HEIGHT,
+					ParCoordsRenderStyle.AXIS_Z);
+			gl.glVertex3f(iCount * fAxisSpacing - ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
+					ParCoordsRenderStyle.MAX_HEIGHT, 
+					ParCoordsRenderStyle.AXIS_Z);
+			gl.glVertex3f(iCount * fAxisSpacing + ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
+					ParCoordsRenderStyle.MAX_HEIGHT, 
+					ParCoordsRenderStyle.AXIS_Z);			
 			gl.glEnd();				
 			gl.glPopName();
 			
@@ -582,14 +656,10 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 			case EXPERIMENTS:
 				sAxisLabel = "Exp." + iCount;
+				sAxisLabel = alSetData.get(alStorageSelection.get(iCount)).getLabel();
 				break;
 			case GENES:				
-				//System.out.println("Accession Code: " +sAccessionCode);	
-				
-				// TODO: iCount is wrong here, if selection is active
-				sAxisLabel = getAccessionNumberFromStorageIndex(iCount);
-				//sAxisLabel = generalManager.getSingelton().getGenomeIdManager().getIdStringFromStringByMapping(sAccessionCode, EGenomeMappingType.ACCESSION_2_GENE_NAME);
-				
+				sAxisLabel = getAccessionNumberFromStorageIndex(alContentSelection.get(iCount));
 				break;
 			default:
 				sAxisLabel = "No Label";
@@ -597,34 +667,117 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glPushAttrib(GL.GL_CURRENT_BIT);
 			gl.glRotatef(90, 0, 0, 1);
 			textRenderer.begin3DRendering();	
-			textRenderer.draw3D(sAxisLabel, MAX_HEIGHT + 0.01f, - iCount * fAxisSpacing, 0, ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
+			textRenderer.draw3D(sAxisLabel, ParCoordsRenderStyle.MAX_HEIGHT + 0.01f, - iCount * fAxisSpacing, 0, ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
 			textRenderer.end3DRendering();
 			gl.glRotatef(-90, 0, 0, 1);
 			
 			textRenderer.begin3DRendering();
 			// TODO: set this to real values once we have more than normalized values
-			textRenderer.draw3D(String.valueOf(MAX_HEIGHT),
+			textRenderer.draw3D(String.valueOf(ParCoordsRenderStyle.MAX_HEIGHT),
 								iCount * fAxisSpacing + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-								MAX_HEIGHT, 0, 0.002f);
+								ParCoordsRenderStyle.MAX_HEIGHT, 0, 0.002f);
 			textRenderer.end3DRendering();
 			gl.glPopAttrib();
 			
+			// render Buttons
+			
+			int iNumberOfButtons = 0;
+			if(iCount != 0 || iCount != iNumberAxis-1)			
+				iNumberOfButtons = 4;			
+			else
+				iNumberOfButtons = 3;
+		
+			float fXButtonOrigin = 0;
+			float fYButtonOrigin = 0;
+			int iPickingID = -1;
+			
+			fXButtonOrigin = iCount * fAxisSpacing - 
+				(iNumberOfButtons * ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
+				(iNumberOfButtons - 1) * ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING) / 2;
+			fYButtonOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET;
+			
+			if(iCount != 0)
+			{				
+				iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.MOVE_AXIS_LEFT, iCount);
+				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.MOVE_AXIS_LEFT);
+			}			
+		
+			// remove button
+			fXButtonOrigin = fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
+				ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING;
+			
+			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.REMOVE_AXIS, iCount);			
+			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.REMOVE_AXIS);
+			
+			// duplicate axis button
+			fXButtonOrigin = fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
+			ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING;
+			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.DUPLICATE_AXIS, iCount);			
+			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.DUPLICATE_AXIS);	
+		
+			if(iCount != iNumberAxis-1)
+			{
+				// right, move right button
+				fXButtonOrigin = fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
+					ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING;				
+				iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.MOVE_AXIS_RIGHT, iCount);
+				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.MOVE_AXIS_RIGHT);		
+			}
 			iCount++;
 		}				
 	}
 	
-	private void renderGates(GL gl, int iNumberAxis)
-	{
+	private void renderButton(GL gl, float fXButtonOrigin, 
+				float fYButtonOrigin, 
+				int iPickingID, 
+				EIconTextures eIconTextures)
+	{	
 		
+		Texture tempTexture = mapIconTextures.get(eIconTextures);
+		tempTexture.enable();
+		tempTexture.bind();
+		
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+		
+		gl.glPushAttrib(GL.GL_CURRENT_BIT);
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glPushName(iPickingID);
+		gl.glBegin(GL.GL_POLYGON);		
+		
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
+		gl.glVertex3f(fXButtonOrigin, 
+				fYButtonOrigin, 
+				ParCoordsRenderStyle.AXIS_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
+		gl.glVertex3f(fXButtonOrigin, 
+				fYButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
+				ParCoordsRenderStyle.AXIS_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
+		gl.glVertex3f(fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
+				fYButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
+				ParCoordsRenderStyle.AXIS_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
+		gl.glVertex3f(fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
+				fYButtonOrigin,
+				ParCoordsRenderStyle.AXIS_Z);
+		gl.glEnd();	
+		gl.glPopName();
+		gl.glPopAttrib();
+		tempTexture.disable();
+	}
+	
+	private void renderGates(GL gl, int iNumberAxis)
+	{		
 		gl.glColor4fv(ParCoordsRenderStyle.GATE_COLOR, 0);
 		
 		int iCount = 0;
 		while (iCount < iNumberAxis)
-		{
+		{			
 			float fCurrentPosition = iCount * fAxisSpacing;
 			
 			// The tip of the gate (which is pickable)
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, 
+					EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
 			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
@@ -666,7 +819,7 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glEnd();
 			gl.glPopName();
 			
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_BOTTOM_SELECTION, iCount));			
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_BOTTOM_SELECTION, iCount));	
 			// The bottom of the gate 
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
@@ -692,6 +845,10 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, RenderMode renderMode)
 	{
+		// don't render values that are below the y axis
+		if(fYOrigin < 0)
+			return;
+		
 		gl.glPushAttrib(GL.GL_CURRENT_BIT);
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 		gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
@@ -799,27 +956,14 @@ implements IMediatorReceiver, IMediatorSender {
 			// get the index if array as polyline
 			if (bRenderArrayAsPolyline)
 			{
-				currentStorage = alDataStorages.get(iPolylineCount);
-				// if only selection should be rendered we get the ids out of
-				// the selection array
-				if (bRenderSelection)
-				{
-					iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iAxisNumber];
-				} 
-				else
-				{
-					iStorageIndex = iAxisNumber;
-				}
+				currentStorage = alDataStorages.get(alStorageSelection.get(iPolylineCount));
+
+				iStorageIndex = alContentSelection.get(iAxisNumber);
 			}
 			// get the storage and the storage index for the different cases				
 			else
 			{
-				
-				if(!bRenderSelection)					
-					iStorageIndex = iPolylineCount;	
-				else
-					iStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iPolylineCount];
-			
+				iStorageIndex = alContentSelection.get(iPolylineCount);			
 				currentStorage = alDataStorages.get(iAxisNumber);						
 			}							
 			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex];
@@ -829,10 +973,10 @@ implements IMediatorReceiver, IMediatorSender {
 				if(polyLineSelectionManager.isPolylineSelected(iPolylineCount))
 					bRenderInfoArea = false;
 				
-				if(!bRenderSelection || bRenderArrayAsPolyline)
-					polyLineSelectionManager.addDeselection(iPolylineCount);
+				if(bRenderArrayAsPolyline)
+					polyLineSelectionManager.addDeselection(alStorageSelection.get(iPolylineCount));
 				else
-					polyLineSelectionManager.addDeselection(alSetSelection.get(0).getSelectionIdArray()[iPolylineCount]);
+					polyLineSelectionManager.addDeselection(alContentSelection.get(iPolylineCount));
 			}
 			else
 			{
@@ -847,7 +991,7 @@ implements IMediatorReceiver, IMediatorSender {
 						if(!bRenderSelection)					
 							iLocalStorageIndex = iLocalAxisCount;	
 						else
-							iLocalStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iLocalAxisCount];
+							iLocalStorageIndex = alContentSelection.get(iLocalAxisCount);
 						
 						fCurrentValue = currentStorage.getArrayFloat()[iLocalStorageIndex];
 						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
@@ -862,7 +1006,7 @@ implements IMediatorReceiver, IMediatorSender {
 						if(!bRenderSelection)					
 							iLocalStorageIndex = iPolylineCount;
 						else
-							iLocalStorageIndex = alSetSelection.get(0).getSelectionIdArray()[iPolylineCount];
+							iLocalStorageIndex = alContentSelection.get(iPolylineCount);
 						fCurrentValue = alDataStorages.get(iLocalAxisCount).getArrayFloat()[iLocalStorageIndex];
 						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
 						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
@@ -874,10 +1018,10 @@ implements IMediatorReceiver, IMediatorSender {
 				}
 				if (!bIsBlocked)
 				{
-					if(!bRenderSelection || bRenderArrayAsPolyline)
-						polyLineSelectionManager.removeDeselection(iPolylineCount);
+					if(bRenderArrayAsPolyline)
+						polyLineSelectionManager.removeDeselection(alStorageSelection.get(iPolylineCount));
 					else
-						polyLineSelectionManager.removeDeselection(alSetSelection.get(0).getSelectionIdArray()[iPolylineCount]);
+						polyLineSelectionManager.removeDeselection(alContentSelection.get(iPolylineCount));
 				}				
 			}
 		}		
@@ -961,7 +1105,6 @@ implements IMediatorReceiver, IMediatorSender {
 				// FIXME: this happens every time when something is selected
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
-				//bRenderPolylineSelection = true;
 			}				
 		}
 		alHits = pickingManager.getHits(iUniqueId, EPickingType.X_AXIS_SELECTION);		
@@ -1000,10 +1143,7 @@ implements IMediatorReceiver, IMediatorSender {
 							System.out.println("Gate Selected");
 							//bIsDisplayListDirty = true;
 							break;
-						case DRAGGED:
-							//System.out.println("Gate Dragged");
-							
-						
+						case DRAGGED:							
 							bIsDraggingActive = true;
 							draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 							iDraggedGateNumber = iExternalID;
@@ -1093,7 +1233,6 @@ implements IMediatorReceiver, IMediatorSender {
 							
 							bIsDisplayListDirtyLocal = true;
 							bIsDisplayListDirtyRemote = true;
-							pickingManager.flushHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
 							break;
 						default:
 							// do nothing
@@ -1103,6 +1242,151 @@ implements IMediatorReceiver, IMediatorSender {
 				
 			}			
 		}
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.REMOVE_AXIS);
+		if(alHits != null)
+		{		
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+					
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:	
+							//int iSelection = 0;
+							if(bRenderArrayAsPolyline)
+							{
+								alContentSelection.remove(iExternalID);	
+							}
+							else
+							{
+								alStorageSelection.remove(iExternalID);															
+							}
+							refresh();
+							break;
+						default:
+							// do nothing
+					}
+				}
+				pickingManager.flushHits(iUniqueId, EPickingType.REMOVE_AXIS);
+				
+			}			
+		}
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.MOVE_AXIS_LEFT);
+		if(alHits != null)
+		{		
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+					
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:	
+							
+							ArrayList<Integer> alSelection;
+							if(bRenderArrayAsPolyline)							
+								alSelection = alContentSelection;							
+							else						
+								alSelection = alStorageSelection;								
+							
+							if (iExternalID > 0 && iExternalID < alSelection.size())
+							{
+								int iTemp = alSelection.get(iExternalID - 1);
+								alSelection.set(iExternalID - 1, alSelection.get(iExternalID));
+								alSelection.set(iExternalID, iTemp);
+								refresh();
+							}
+
+							break;
+						default:
+							// do nothing
+					}
+				}
+				pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_LEFT);
+				
+			}			
+		}
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.MOVE_AXIS_RIGHT);
+		if(alHits != null)
+		{		
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+					
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:	
+							ArrayList<Integer> alSelection;
+							if(bRenderArrayAsPolyline)							
+								alSelection = alContentSelection;							
+							else						
+								alSelection = alStorageSelection;
+							
+							if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
+							{
+								int iTemp = alSelection.get(iExternalID + 1);
+								alSelection.set(iExternalID+1, alSelection.get(iExternalID));
+								alSelection.set(iExternalID, iTemp);
+								refresh();
+							}						
+							break;
+						default:
+							// do nothing
+					}
+				}
+				pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_RIGHT);
+				
+			}			
+		}
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.DUPLICATE_AXIS);
+		if(alHits != null)
+		{		
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+					
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:	
+							ArrayList<Integer> alSelection;
+							if(bRenderArrayAsPolyline)							
+								alSelection = alContentSelection;							
+							else						
+								alSelection = alStorageSelection;
+							
+							if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
+							{
+								alSelection.add(iExternalID+1, alSelection.get(iExternalID));
+								refresh();
+							}						
+							break;
+						default:
+							// do nothing
+					}
+				}
+				pickingManager.flushHits(iUniqueId, EPickingType.DUPLICATE_AXIS);				
+			}			
+		}
+	
 	
 	}
 	

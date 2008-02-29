@@ -3,6 +3,7 @@ package org.geneview.core.view.opengl.canvas;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;

@@ -1,7 +1,5 @@
 package org.geneview.core.data.view.rep.renderstyle;
 
-import gleem.linalg.Vec4f;
-
 import org.geneview.core.data.GeneralRenderStyle;
 
 /**
@@ -28,10 +26,14 @@ extends GeneralRenderStyle
 
 	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
 	
+	
+	public static final float MAX_HEIGHT = 1; 
+	public static final float Y_AXIS_LOW = -0.1f;
 	public static final float[] Y_AXIS_COLOR = {0.0f, 1.0f, 0.0f, 1.0f};
 	public static final float[] X_AXIS_COLOR = {0.0f, 0.0f, 1.0f, 1.0f};
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 	public static final float X_AXIS_LINE_WIDTH = 3.0f;
+	public static final float AXIS_Z = 0.0f;
 	
 	public static final float[] CANVAS_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
 	
@@ -40,11 +42,16 @@ extends GeneralRenderStyle
 	public static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;
 	public static final float GATE_TIP_HEIGHT = 0.03f;
 	
+
+	
 	/**
 	 *  lenght of markes on y axis in one direction (1/2 of actual length)
 	 */
 	public static final float AXIS_MARKER_WIDTH = 0.01f;
 	
+	public static final float AXIS_BUTTONS_Y_OFFSET = 0.2f;
+	public static final float AXIS_BUTTONS_X_SPACING = 0.01f;
+	public static final float AXIS_BUTTON_WIDTH = 0.07f;
 	
 	
 
@@ -55,6 +62,9 @@ extends GeneralRenderStyle
 	protected float[] polylineOcclusionPrevColor  = {0.0f, 0.0f, 0.0f, 1.0f};
 	protected float[] polylineDeselectedColor = {0.0f, 0.0f, 0.0f, 0.1f};
 	protected float fOcclusionPrevAlpha = 0.1f;
+	
+	// how much room between the axis?
+	protected float fAxisSpacing = 0.5f;
 
 	
 	
@@ -80,5 +90,10 @@ extends GeneralRenderStyle
 		
 		polylineDeselectedColor[3] =  (float)(0.5/Math.sqrt(iNumberOfRenderedLines));
 		return polylineDeselectedColor;
+	}
+	
+	public float getAxisSpacing(int iNumberOfAxis)
+	{
+		return fAxisSpacing;
 	}
 }
