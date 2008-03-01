@@ -14,6 +14,9 @@ import org.geneview.core.data.collection.IVirtualArray;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.EPickingType;
+import org.geneview.core.manager.view.Pick;
 import org.geneview.core.math.statistics.histogram.HistogramData;
 import org.geneview.core.math.statistics.histogram.HistogramStatisticsSet;
 import org.geneview.core.math.statistics.histogram.StatisticHistogramType;
@@ -475,4 +478,15 @@ extends AGLCanvasUser {
 	    //gl.glPopMatrix();
 	  }
   }
+  /*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 */
+	protected void handleEvents(final EPickingType ePickingType, 
+			final EPickingMode ePickingMode, 
+			final int iExternalID,
+			final Pick pick)
+	{
+		
+	}
 }

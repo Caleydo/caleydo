@@ -31,6 +31,7 @@ import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
@@ -964,7 +965,7 @@ implements IMediatorReceiver, IMediatorSender
 			else
 			{
 				iStorageIndex = alContentSelection.get(iPolylineCount);			
-				currentStorage = alDataStorages.get(iAxisNumber);						
+				currentStorage = alDataStorages.get(alStorageSelection.get(iAxisNumber));						
 			}							
 			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex];
 			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
@@ -1002,12 +1003,9 @@ implements IMediatorReceiver, IMediatorSender
 						}			
 					}
 					else
-					{
-						if(!bRenderSelection)					
-							iLocalStorageIndex = iPolylineCount;
-						else
-							iLocalStorageIndex = alContentSelection.get(iPolylineCount);
-						fCurrentValue = alDataStorages.get(iLocalAxisCount).getArrayFloat()[iLocalStorageIndex];
+					{					
+						iLocalStorageIndex = alContentSelection.get(iPolylineCount);
+						fCurrentValue = alDataStorages.get(alStorageSelection.get(iLocalAxisCount)).getArrayFloat()[iLocalStorageIndex];
 						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
 						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
 						{
@@ -1026,368 +1024,237 @@ implements IMediatorReceiver, IMediatorSender
 			}
 		}		
 	} 
-	
-	private void checkForHits(GL gl)
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 */
+	protected void handleEvents(final EPickingType ePickingType, 
+			final EPickingMode ePickingMode, 
+			final int iExternalID,
+			final Pick pick)
 	{
-		ArrayList<Pick> alHits = null;		
-	
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.POLYLINE_SELECTION);		
-		if(alHits != null)
-		{			
-			if (alHits.size() != 0 )
-			{
-				boolean bSelectionCleared = false;
-				boolean bMouseOverCleared = false;					
-				
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+		switch (ePickingType)
+		{
+		case POLYLINE_SELECTION:
+			switch (ePickingMode)
+			{						
+				case CLICKED:						
+					polyLineSelectionManager.clearSelection();							
+					polyLineSelectionManager.addSelection(iExternalID);
+					
+					if (ePolylineDataType == EInputDataTypes.GENES)
+					{
 						
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:						
-							// TODO: if replace
-							if(!bSelectionCleared)
-							{
-								bSelectionCleared = true;
-								polyLineSelectionManager.clearSelection();								
-							}
-							polyLineSelectionManager.addSelection(iExternalID);
-							
-							if (ePolylineDataType == EInputDataTypes.GENES)
-							{
-								
-								int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);								
-								
-								infoAreaManager.setData(iAccessionID, 
-										ePolylineDataType, tempPick.getPickedPoint());
-								bRenderInfoArea = true;
-								bInfoAreaFirstTime = true;								
-								
-								if (iAccessionID == -1)
-									break;
-								
-								// Write currently selected vertex to selection set
-								// and trigger update event
-								int[] iArTmpSelectionId = new int[1];
-								int[] iArTmpDepth = new int[1];
-								iArTmpSelectionId[0] = iAccessionID;
-								iArTmpDepth[0] = 0;
-								alSetSelection.get(0).getWriteToken();
-								alSetSelection.get(0).updateSelectionSet(iUniqueId, 
-										iArTmpSelectionId, iArTmpDepth, new int[0]);
-								alSetSelection.get(0).returnWriteToken();
-							}
-							break;	
-						case MOUSE_OVER:
-							// TODO: if replace
-							if(!bMouseOverCleared)
-							{
-								bMouseOverCleared = true;
-								polyLineSelectionManager.clearMouseOver();
-							}
-							//if(!polyLineSelectionManager.isPolylineDeselected(iExternalID))
-							polyLineSelectionManager.addMouseOver(iExternalID);
-							break;
-						case DRAGGED:
-							// no drag action for polylines
-							break;						
-						default:
-							throw new GeneViewRuntimeException(
-									"Parallel Coordinates: No such picking mode", 
-									GeneViewRuntimeExceptionType.VIEW);
+						int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);								
 						
-					}					
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.POLYLINE_SELECTION);
-				// FIXME: this happens every time when something is selected
-				bIsDisplayListDirtyLocal = true;
-				bIsDisplayListDirtyRemote = true;
-			}				
-		}
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.X_AXIS_SELECTION);		
-		if(alHits != null)
-		{				
-			if (alHits.size() != 0 )
-			{
-				//System.out.println("X Axis Selected");
-				pickingManager.flushHits(iUniqueId, EPickingType.X_AXIS_SELECTION);				
-			}
-		}
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.Y_AXIS_SELECTION);		
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
-			{
-				//System.out.println("Y Axis Selected");
-				pickingManager.flushHits(iUniqueId, EPickingType.Y_AXIS_SELECTION);			
-			}			
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION);
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:						
-							System.out.println("Gate Selected");
-							//bIsDisplayListDirty = true;
-							break;
-						case DRAGGED:							
-							bIsDraggingActive = true;
-							draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
-							iDraggedGateNumber = iExternalID;
-							break;
-						default:
-							// do nothing
-					}
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.LOWER_GATE_TIP_SELECTION);
-				
-			}			
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.LOWER_GATE_BOTTOM_SELECTION);
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:						
-							System.out.println("Gate Selected");
-							//bIsDisplayListDirty = true;
-							break;
-						case DRAGGED:
-							System.out.println("Gate Dragged");
+						infoAreaManager.setData(iAccessionID, 
+								ePolylineDataType, pick.getPickedPoint());
+						bRenderInfoArea = true;
+						bInfoAreaFirstTime = true;								
 						
+						if (iAccessionID == -1)
+							break;
 						
-							bIsDraggingActive = true;
-							draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
-							iDraggedGateNumber = iExternalID;
-							break;
-						default:
-							// do nothing
+						// Write currently selected vertex to selection set
+						// and trigger update event
+						int[] iArTmpSelectionId = new int[1];
+						int[] iArTmpDepth = new int[1];
+						iArTmpSelectionId[0] = iAccessionID;
+						iArTmpDepth[0] = 0;
+						alSetSelection.get(0).getWriteToken();
+						alSetSelection.get(0).updateSelectionSet(iUniqueId, 
+								iArTmpSelectionId, iArTmpDepth, new int[0]);
+						alSetSelection.get(0).returnWriteToken();
 					}
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.LOWER_GATE_BOTTOM_SELECTION);
-				
-			}			
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:	
-							if(iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
-							{							
-								if (bRenderArrayAsPolyline == true)
-									renderArrayAsPolyline(false);
-								else
-									renderArrayAsPolyline(true);
-							}
-							else if(iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
-							{
-								if (bPreventOcclusion == true)
-									preventOcclusion(false);
-								else
-									preventOcclusion(true);
-							}
-							else if(iExternalID == EIconIDs.TOGGLE_RENDER_SELECTION.ordinal())
-							{
-								if (bRenderSelection == true)
-									renderSelection(false);
-								else
-									renderSelection(true);
-							}
-							else if(iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
-							{
-								resetSelections();
-							}							
-							
-							bIsDisplayListDirtyLocal = true;
-							bIsDisplayListDirtyRemote = true;
-							break;
-						default:
-							// do nothing
-					}
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
-				
-			}			
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.REMOVE_AXIS);
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:	
-							//int iSelection = 0;
-							if(bRenderArrayAsPolyline)
-							{
-								alContentSelection.remove(iExternalID);	
-							}
-							else
-							{
-								alStorageSelection.remove(iExternalID);															
-							}
-							refresh();
-							break;
-						default:
-							// do nothing
-					}
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.REMOVE_AXIS);
-				
-			}			
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.MOVE_AXIS_LEFT);
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:	
-							
-							ArrayList<Integer> alSelection;
-							if(bRenderArrayAsPolyline)							
-								alSelection = alContentSelection;							
-							else						
-								alSelection = alStorageSelection;								
-							
-							if (iExternalID > 0 && iExternalID < alSelection.size())
-							{
-								int iTemp = alSelection.get(iExternalID - 1);
-								alSelection.set(iExternalID - 1, alSelection.get(iExternalID));
-								alSelection.set(iExternalID, iTemp);
-								refresh();
-							}
+					bIsDisplayListDirtyLocal = true;
+					bIsDisplayListDirtyRemote = true;
+					break;	
+				case MOUSE_OVER:
 
-							break;
-						default:
-							// do nothing
-					}
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_LEFT);
+					polyLineSelectionManager.clearMouseOver();
+					polyLineSelectionManager.addMouseOver(iExternalID);
+					bIsDisplayListDirtyLocal = true;
+					bIsDisplayListDirtyRemote = true;
+					break;					
+				default:
 				
-			}			
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.MOVE_AXIS_RIGHT);
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
+			}
+			pickingManager.flushHits(iUniqueId, ePickingType);
+			break;
+			
+		case X_AXIS_SELECTION:
+			pickingManager.flushHits(iUniqueId, ePickingType);
+			break;
+		case Y_AXIS_SELECTION:
+			pickingManager.flushHits(iUniqueId, ePickingType);
+			break;
+		case LOWER_GATE_TIP_SELECTION:
+			switch (ePickingMode)
 			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:	
-							ArrayList<Integer> alSelection;
-							if(bRenderArrayAsPolyline)							
-								alSelection = alContentSelection;							
-							else						
-								alSelection = alStorageSelection;
-							
-							if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
-							{
-								int iTemp = alSelection.get(iExternalID + 1);
-								alSelection.set(iExternalID+1, alSelection.get(iExternalID));
-								alSelection.set(iExternalID, iTemp);
-								refresh();
-							}						
-							break;
-						default:
-							// do nothing
-					}
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_RIGHT);
+			case CLICKED:						
+				System.out.println("Gate Selected");
+				//bIsDisplayListDirty = true;
+				break;
+			case DRAGGED:							
+				bIsDraggingActive = true;
+				draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
+				iDraggedGateNumber = iExternalID;
+				break;
+			}
+			pickingManager.flushHits(iUniqueId, ePickingType);
+			break;
+		case LOWER_GATE_BOTTOM_SELECTION:
+			switch (ePickingMode)
+			{
+				case CLICKED:						
+					System.out.println("Gate Selected");
+					//bIsDisplayListDirty = true;
+					break;
+				case DRAGGED:
+					System.out.println("Gate Dragged");
 				
-			}			
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.DUPLICATE_AXIS);
-		if(alHits != null)
-		{		
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-					
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:	
-							ArrayList<Integer> alSelection;
-							if(bRenderArrayAsPolyline)							
-								alSelection = alContentSelection;							
-							else						
-								alSelection = alStorageSelection;
-							
-							if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
-							{
-								alSelection.add(iExternalID+1, alSelection.get(iExternalID));
-								refresh();
-							}						
-							break;
-						default:
-							// do nothing
+				
+					bIsDraggingActive = true;
+					draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+					iDraggedGateNumber = iExternalID;
+					break;
+				default:
+					// do nothing
+			}
+			pickingManager.flushHits(iUniqueId, ePickingType);
+		case PC_ICON_SELECTION:	
+			switch (ePickingMode)
+			{						
+				case CLICKED:	
+					if(iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
+					{							
+						if (bRenderArrayAsPolyline == true)
+							renderArrayAsPolyline(false);
+						else
+							renderArrayAsPolyline(true);
 					}
-				}
-				pickingManager.flushHits(iUniqueId, EPickingType.DUPLICATE_AXIS);				
+					else if(iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
+					{
+						if (bPreventOcclusion == true)
+							preventOcclusion(false);
+						else
+							preventOcclusion(true);
+					}
+					else if(iExternalID == EIconIDs.TOGGLE_RENDER_SELECTION.ordinal())
+					{
+						if (bRenderSelection == true)
+							renderSelection(false);
+						else
+							renderSelection(true);
+					}
+					else if(iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
+					{
+						resetSelections();
+					}							
+					
+					bIsDisplayListDirtyLocal = true;
+					bIsDisplayListDirtyRemote = true;
+					break;
+				default:
+					// do nothing
+			}
+		
+			pickingManager.flushHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
+			break;
+		case REMOVE_AXIS:
+			switch (ePickingMode)
+			{						
+				case CLICKED:	
+					//int iSelection = 0;
+					if(bRenderArrayAsPolyline)
+					{
+						alContentSelection.remove(iExternalID);	
+					}
+					else
+					{
+						alStorageSelection.remove(iExternalID);															
+					}
+					refresh();
+					break;
+				default:
+					// do nothing
+			}		
+			pickingManager.flushHits(iUniqueId, EPickingType.REMOVE_AXIS);
+			break;
+		case MOVE_AXIS_LEFT:
+			switch (ePickingMode)
+			{						
+				case CLICKED:	
+					
+					ArrayList<Integer> alSelection;
+					if(bRenderArrayAsPolyline)							
+						alSelection = alContentSelection;							
+					else						
+						alSelection = alStorageSelection;								
+					
+					if (iExternalID > 0 && iExternalID < alSelection.size())
+					{
+						int iTemp = alSelection.get(iExternalID - 1);
+						alSelection.set(iExternalID - 1, alSelection.get(iExternalID));
+						alSelection.set(iExternalID, iTemp);
+						refresh();
+					}
+
+					break;
+				default:
+					// do nothing
+			}
+			pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_LEFT);
+			break;
+		case MOVE_AXIS_RIGHT:	
+				
+			switch (ePickingMode)
+			{						
+				case CLICKED:	
+					ArrayList<Integer> alSelection;
+					if(bRenderArrayAsPolyline)							
+						alSelection = alContentSelection;							
+					else						
+						alSelection = alStorageSelection;
+					
+					if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
+					{
+						int iTemp = alSelection.get(iExternalID + 1);
+						alSelection.set(iExternalID+1, alSelection.get(iExternalID));
+						alSelection.set(iExternalID, iTemp);
+						refresh();
+					}						
+					break;
+				default:
+					// do nothing
 			}			
+			pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_RIGHT);
+			break;
+		case DUPLICATE_AXIS:			
+			switch (ePickingMode)
+			{						
+				case CLICKED:	
+					ArrayList<Integer> alSelection;
+					if(bRenderArrayAsPolyline)							
+						alSelection = alContentSelection;							
+					else						
+						alSelection = alStorageSelection;
+					
+					if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
+					{
+						alSelection.add(iExternalID+1, alSelection.get(iExternalID));
+						refresh();
+					}						
+					break;
+				default:
+					// do nothing
+			}		
+			pickingManager.flushHits(iUniqueId, EPickingType.DUPLICATE_AXIS);			
+			break;			
+		default:
+			// do nothing		
+		
 		}
-	
-	
 	}
 	
 	/*

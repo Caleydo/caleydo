@@ -26,6 +26,7 @@ import org.geneview.core.manager.data.IPathwayManager;
 import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
@@ -592,5 +593,17 @@ implements IMediatorReceiver, IMediatorSender {
 	public void enableAnnotation(final boolean bEnableAnnotation) {
 		
 		refGLPathwayManager.enableAnnotation(bEnableAnnotation);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 */
+	protected void handleEvents(final EPickingType ePickingType, 
+			final EPickingMode ePickingMode, 
+			final int iExternalID,
+			final Pick pick)
+	{
+
 	}
 }

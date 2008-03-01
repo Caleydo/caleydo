@@ -22,6 +22,9 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.EPickingType;
+import org.geneview.core.manager.view.Pick;
 import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
@@ -1250,4 +1253,16 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 */
+	protected void handleEvents(final EPickingType ePickingType, 
+			final EPickingMode ePickingMode, 
+			final int iExternalID,
+			final Pick pick)
+	{
+	}
+	
 }

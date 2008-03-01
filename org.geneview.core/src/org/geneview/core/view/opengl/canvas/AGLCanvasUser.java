@@ -3,7 +3,6 @@ package org.geneview.core.view.opengl.canvas;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
@@ -20,6 +19,9 @@ import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.data.ISetManager;
 import org.geneview.core.manager.type.ManagerObjectType;
+import org.geneview.core.manager.view.EPickingMode;
+import org.geneview.core.manager.view.EPickingType;
+import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
@@ -256,6 +258,7 @@ implements GLEventListener {
 	 */
 	public abstract void displayRemote(final GL gl);
 	
+	
 	/**
 	 * @see org.geneview.core.view.IView#addSetId(int[])
 	 */
@@ -481,4 +484,51 @@ implements GLEventListener {
 	{
 		
 	}
+	
+	/**
+	 * This class uses the pickingManager to check if any events have occured
+	 * it calls the abstract handleEvents method where the events should be handled
+	 * @param gl
+	 */
+	protected void checkForHits(final GL gl)
+	{		
+		// TODO: should only iterate over those relevant to the view - should it?
+		for(EPickingType ePickingType : EPickingType.values())
+		{		
+			ArrayList<Pick> alHits = null;		
+		
+			alHits = pickingManager.getHits(iUniqueId, ePickingType);		
+			if(alHits != null)
+			{			
+				if (alHits.size() != 0 )
+				{				
+					for (int iCount = 0; iCount < alHits.size(); iCount++)
+					{
+						Pick tempPick = alHits.get(iCount);
+						int iPickingID = tempPick.getPickingID();
+						int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+						EPickingMode ePickingMode = tempPick.getPickingMode();
+						handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);	
+						
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This method is called every time a method occurs. It should take care of reacting
+	 * appropriately to the events.
+	 * 
+	 * @param ePickingType the Picking type, held in EPickingType
+	 * @param ePickingMode the Picking mode (clicked, dragged etc.)
+	 * @param iExternalID  the name specified for an element with glPushName
+	 * @param pick		   the pick object which can be useful to retrieve for example
+	 * 							the mouse position when the pick occurred
+	 */
+	abstract protected void handleEvents(final EPickingType ePickingType,
+			final EPickingMode ePickingMode,
+			final int iExternalID,
+			final Pick pick);
+	
 }
