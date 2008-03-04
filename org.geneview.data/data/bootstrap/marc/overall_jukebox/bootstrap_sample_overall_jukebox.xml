@@ -37,6 +37,12 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							detail="35101 36101 37101 39101 94101 95101" /> 						
+	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							detail="35101 36101 37101 39101 95101 96101" /> 
 							
 		<!-- Window	11331	-->
 			<!--
@@ -50,7 +56,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="transparency 0.6" 
-							detail="35101 36101 37101 39101 96101" /> 						
+							detail="35101 36101 37101 39101 97101" /> 						
 			
 		<!-- Window	12331	-->	
 		<!--
@@ -77,7 +83,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_OVERALL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Overall Jukebox" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
-							attrib3="PERSPECTIVE -2 2 -2 2 3 8"
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 3 8"
 							attrib4="transparency 1" 								
 							detail="" /> 
 			    
