@@ -13,12 +13,12 @@ import javax.media.opengl.GL;
 import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.set.selection.SetSelection;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.view.opengl.canvas.parcoords.EInputDataTypes;
 import org.geneview.core.view.opengl.miniview.AGLMiniView;
-import org.geneview.core.view.opengl.miniview.GLParCoordsMiniView;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -45,20 +45,25 @@ public class GLTextInfoAreaRenderer
 	private float fHeight = 0;
 	private float fWidth = 0;
 	private float fTextWidth;
-	private float fSpacing = 0.02f;
+	private float fSpacing = 0;
 	private float fZValue = 0.005f;
+	
+	private InfoAreaRenderStyle renderStyle;
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param generalManager
 	 */
-	public GLTextInfoAreaRenderer(final IGeneralManager generalManager)
+	public GLTextInfoAreaRenderer(final IGeneralManager generalManager, IViewFrustum viewFrustum)
 	{
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false); 
 		
 		contentCreator = new InformationContentCreator(generalManager);
+		
+		renderStyle = new InfoAreaRenderStyle(viewFrustum);
+		fSpacing = renderStyle.getSpacing();
 		
 	}
 	/**
@@ -119,18 +124,10 @@ public class GLTextInfoAreaRenderer
 				gl.glVertex3f(fXLowerLeft, fYLowerLeft, fZValue);
 			gl.glEnd();
 			iCount++;
-		}
-		
+		}		
 		
 		textRenderer.setColor(1f, 1f, 1f, 1);	
-			
-		// we need to do this here instead of in setData because of the gl context
-	
-		
-		
-	
-		
-		
+				
 		float fYUpperLeft = fYLowerLeft + fHeight;
 	
 		float fNextLineHeight = fYUpperLeft;
@@ -140,12 +137,12 @@ public class GLTextInfoAreaRenderer
 		Iterator<String> contentIterator = sContent.iterator();
 		iCount = 0;
 		
-		float fFontScaling = GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR;
+		float fFontScaling = renderStyle.getHeadingFontScalingFactor();
 		while(contentIterator.hasNext())
 		{			
-			if(iCount > 0)
+			if(iCount == 1)
 			{
-				fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
+				fFontScaling = renderStyle.getSmallFontScalingFactor();
 			}
 			sCurrent = contentIterator.next();	
 			fNextLineHeight -= ((float)textRenderer.getBounds(sCurrent).getHeight() 
@@ -190,20 +187,27 @@ public class GLTextInfoAreaRenderer
 		float fTemp;
 		
 		Iterator<String> contentIterator = sContent.iterator();
+		int iCount = 0;
+		float fFontScalingFactor = renderStyle.getHeadingFontScalingFactor();
 		while(contentIterator.hasNext())
 		{
+			
 			sCurrent = contentIterator.next();
-			
+			if (iCount == 1)
+				fFontScalingFactor = renderStyle.getSmallFontScalingFactor();
+				
 			box = textRenderer.getBounds(sCurrent).getBounds2D();
-			fHeight += (box.getHeight() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
+			fHeight += (box.getHeight() * fFontScalingFactor);
 			
-			fTemp = ((float)box.getWidth() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
+			fTemp = ((float)box.getWidth() * fFontScalingFactor);
 		
 			if(fTemp > fWidth)
 			{
 				fWidth = fTemp;
 			}
 			fHeight += fSpacing;
+			
+			iCount++;
 			
 		}
 		fWidth += 2 * fSpacing;

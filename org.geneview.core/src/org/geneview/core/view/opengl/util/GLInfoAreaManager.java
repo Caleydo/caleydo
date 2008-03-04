@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.set.selection.SetSelection;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.view.opengl.canvas.parcoords.EInputDataTypes;
@@ -38,11 +39,13 @@ public class GLInfoAreaManager
 	
 	private float fXElementOrigin = 0;
 	private float fYElementOrigin = 0;
-	Vec3f vecLowerLeft;
+	private Vec3f vecLowerLeft;
+	private IViewFrustum viewFrustum;
 	
-	public GLInfoAreaManager(final IGeneralManager generalManager)
+	public GLInfoAreaManager(final IGeneralManager generalManager, final IViewFrustum viewFrustum)
 	{
-		infoArea = new GLTextInfoAreaRenderer(generalManager);
+		infoArea = new GLTextInfoAreaRenderer(generalManager, viewFrustum);
+		this.viewFrustum = viewFrustum; 
 	}
 	
 	/**
@@ -96,11 +99,11 @@ public class GLInfoAreaManager
 		
 		gl.glColor3fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXOrigin, fYOrigin, InfoAreaRenderStyle.INFO_AREA_Z);
+		gl.glVertex3f(fXOrigin, fYOrigin, InfoAreaRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin,
-				InfoAreaRenderStyle.INFO_AREA_Z);
+				InfoAreaRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glVertex3f(fXElementOrigin , fYElementOrigin + infoArea.getHeight(), 
-				InfoAreaRenderStyle.INFO_AREA_Z);
+				InfoAreaRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glEnd();
 		
 		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime);

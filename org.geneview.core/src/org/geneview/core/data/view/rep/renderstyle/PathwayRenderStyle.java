@@ -3,6 +3,7 @@ package org.geneview.core.data.view.rep.renderstyle;
 import gleem.linalg.Vec3f;
 
 import org.geneview.core.data.GeneralRenderStyle;
+import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
 public class PathwayRenderStyle 
@@ -73,13 +74,27 @@ extends GeneralRenderStyle {
 	private static final float SCALING_FACTOR_X = 0.0025f;
 	private static final float SCALING_FACTOR_Y = 0.0025f;
 
+	public PathwayRenderStyle(IViewFrustum viewFrustum)
+	{
+		
+		super(viewFrustum);
+		init();
+	}
+	
+	public PathwayRenderStyle()
+	{
+		init();
+	}
+	
 	/**
 	 * Constructor.
 	 * Initializes the pathway render style.
 	 * 
 	 * TODO: load pathway style from XML file.
 	 */
-	public PathwayRenderStyle() {
+	private void init()
+	{
+			
 		
 		enzymeNodeShape 	= NodeShape.RECTANGULAR;
 		compoundNodeShape 	= NodeShape.ROUND;

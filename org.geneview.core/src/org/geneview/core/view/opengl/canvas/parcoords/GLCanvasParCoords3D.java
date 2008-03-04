@@ -98,7 +98,7 @@ implements IMediatorReceiver, IMediatorSender
 	private float[] fArGateBottomHeight;
 	private int iDraggedGateNumber = 0;
 	
-	private float fScaling = 0;
+	//private float fScaling = 0;
 	private float fXTranslation = 0;
 	private float fYTranslation = 0;
 	
@@ -144,13 +144,13 @@ implements IMediatorReceiver, IMediatorSender
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 	
 		alDataStorages = new ArrayList<IStorage>();
-		renderStyle = new ParCoordsRenderStyle();		
+		renderStyle = new ParCoordsRenderStyle(viewFrustum);		
 		polyLineSelectionManager = new PolylineSelectionManager();	
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
 		
-		infoAreaManager = new GLInfoAreaManager(generalManager);
+		infoAreaManager = new GLInfoAreaManager(generalManager, viewFrustum);
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
@@ -275,26 +275,30 @@ implements IMediatorReceiver, IMediatorSender
 		if(bIsDraggingActive)
 		{			
 			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
-			gl.glScalef(fScaling, fScaling, 1.0f);
+			//gl.glScalef(fScaling, fScaling, 1.0f);
 			handleDragging(gl);
 	
-			gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
+			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
 			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);			
 		}
 		if(bRenderInfoArea)
 		{
 			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
-			gl.glScalef(fScaling, fScaling, 1.0f);
+			//gl.glScalef(fScaling, fScaling, 1.0f);
 			
 			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 			bInfoAreaFirstTime = false;
 		
-			gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
+			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
 			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
-		toolboxRenderer.render(gl);	
+		
+		gl.glTranslatef(fXTranslation - renderStyle.getXSpacing(), 
+				fYTranslation - renderStyle.getBottomSpacing(), 0.0f);
+		toolboxRenderer.render(gl);
+		gl.glTranslatef(-fXTranslation + renderStyle.getXSpacing(), -fYTranslation + renderStyle.getBottomSpacing(), 0.0f);
 	}
 		
 	/**
@@ -347,8 +351,8 @@ implements IMediatorReceiver, IMediatorSender
 		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			fArGateTipHeight[iCount] = 0;
-			fArGateBottomHeight[iCount] = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET -
-				ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset() -
+				renderStyle.getGateTipHeight();
 		}
 		polyLineSelectionManager.clearDeselection();
 		polyLineSelectionManager.clearMouseOver();
@@ -458,7 +462,8 @@ implements IMediatorReceiver, IMediatorSender
 		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			fArGateTipHeight[iCount] = 0;
-			fArGateBottomHeight[iCount] = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset() - 
+				renderStyle.getGateTipHeight();
 		}
 			
 		// this for loop executes once per polyline
@@ -470,12 +475,15 @@ implements IMediatorReceiver, IMediatorSender
 				polyLineSelectionManager.initialAdd(alContentSelection.get(iPolyLineCount));
 		}
 		
-		fScaling = 2.5f;
+		//fScaling = 1f;
 		
-		fXTranslation = (viewFrustum.getRight() - viewFrustum.getLeft()
-				-(iNumberOfAxis-1)*fAxisSpacing*fScaling)/2.0f;
-		fYTranslation = (viewFrustum.getTop() - viewFrustum.getBottom() - fScaling)/2.0f;
-	
+		System.out.println("Frustum height: " + (viewFrustum.getTop() - viewFrustum.getBottom()));
+		System.out.println("Frustum right: " + (viewFrustum.getRight()));
+		System.out.println("Frustum left: " + (viewFrustum.getLeft()));
+		
+		fXTranslation = viewFrustum.getLeft() + renderStyle.getXSpacing();
+		fYTranslation = viewFrustum.getBottom() + renderStyle.getBottomSpacing();
+		
 		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
 		
 	}
@@ -486,8 +494,17 @@ implements IMediatorReceiver, IMediatorSender
 	{		
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
+		
+		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), 0);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), 0);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glEnd();
+		
 		gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
-		gl.glScalef(fScaling, fScaling, 1.0f);
+		//gl.glScalef(fScaling, fScaling, 1.0f);
 		
 		renderCoordinateSystem(gl, iNumberOfAxis);	
 		
@@ -498,7 +515,7 @@ implements IMediatorReceiver, IMediatorSender
 		
 		renderGates(gl, iNumberOfAxis);				
 		
-		gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
+		//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
 		gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);		
 		gl.glEndList();
 	}
@@ -587,14 +604,18 @@ implements IMediatorReceiver, IMediatorSender
 				if(iVertricesCount != 0)
 				{
 					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(fPreviousXValue, fPreviousYValue, fZDepth);
-					gl.glVertex3f(fCurrentXValue, fCurrentYValue, fZDepth);	
+					gl.glVertex3f(fPreviousXValue, 
+							fPreviousYValue * renderStyle.getAxisHeight(),
+							fZDepth);
+					gl.glVertex3f(fCurrentXValue, 
+							fCurrentYValue * renderStyle.getAxisHeight(), 
+							fZDepth);	
 					gl.glEnd();
 				}
 				
 				if(renderMode == RenderMode.SELECTION || renderMode == RenderMode.MOUSE_OVER)
 				{
-					renderYValues(gl, fCurrentXValue, fCurrentYValue, renderMode);					
+					renderYValues(gl, fCurrentXValue, fCurrentYValue * renderStyle.getAxisHeight(), renderMode);					
 				}				
 				
 				fPreviousXValue = fCurrentXValue;
@@ -640,13 +661,13 @@ implements IMediatorReceiver, IMediatorSender
 					ParCoordsRenderStyle.Y_AXIS_LOW, 
 					ParCoordsRenderStyle.AXIS_Z);
 			gl.glVertex3f(iCount * fAxisSpacing, 
-					ParCoordsRenderStyle.MAX_HEIGHT,
+					renderStyle.getAxisHeight(),
 					ParCoordsRenderStyle.AXIS_Z);
 			gl.glVertex3f(iCount * fAxisSpacing - ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-					ParCoordsRenderStyle.MAX_HEIGHT, 
+					renderStyle.getAxisHeight(), 
 					ParCoordsRenderStyle.AXIS_Z);
 			gl.glVertex3f(iCount * fAxisSpacing + ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-					ParCoordsRenderStyle.MAX_HEIGHT, 
+					renderStyle.getAxisHeight(), 
 					ParCoordsRenderStyle.AXIS_Z);			
 			gl.glEnd();				
 			gl.glPopName();
@@ -657,7 +678,7 @@ implements IMediatorReceiver, IMediatorSender
 			{
 			case EXPERIMENTS:
 				sAxisLabel = "Exp." + iCount;
-				sAxisLabel = alSetData.get(alStorageSelection.get(iCount)).getLabel();
+				//sAxisLabel = alSetData.get(alStorageSelection.get(iCount)).getLabel();
 				break;
 			case GENES:				
 				sAxisLabel = getAccessionNumberFromStorageIndex(alContentSelection.get(iCount));
@@ -666,17 +687,20 @@ implements IMediatorReceiver, IMediatorSender
 				sAxisLabel = "No Label";
 			}
 			gl.glPushAttrib(GL.GL_CURRENT_BIT);
-			gl.glRotatef(90, 0, 0, 1);
-			textRenderer.begin3DRendering();	
-			textRenderer.draw3D(sAxisLabel, ParCoordsRenderStyle.MAX_HEIGHT + 0.01f, - iCount * fAxisSpacing, 0, ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
-			textRenderer.end3DRendering();
-			gl.glRotatef(-90, 0, 0, 1);
 			
+			gl.glTranslatef(iCount * fAxisSpacing, renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
+			gl.glRotatef(25, 0, 0, 1);
+			textRenderer.begin3DRendering();	
+			textRenderer.draw3D(sAxisLabel, 0, 0, 0, renderStyle.getSmallFontScalingFactor());
+			textRenderer.end3DRendering();
+			gl.glRotatef(-25, 0, 0, 1);
+			gl.glTranslatef(-iCount * fAxisSpacing, -(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()), 0);
+						
 			textRenderer.begin3DRendering();
 			// TODO: set this to real values once we have more than normalized values
-			textRenderer.draw3D(String.valueOf(ParCoordsRenderStyle.MAX_HEIGHT),
+			textRenderer.draw3D(String.valueOf(1),
 								iCount * fAxisSpacing + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-								ParCoordsRenderStyle.MAX_HEIGHT, 0, 0.002f);
+								renderStyle.getAxisHeight(), 0, renderStyle.getSmallFontScalingFactor());
 			textRenderer.end3DRendering();
 			gl.glPopAttrib();
 			
@@ -693,9 +717,9 @@ implements IMediatorReceiver, IMediatorSender
 			int iPickingID = -1;
 			
 			fXButtonOrigin = iCount * fAxisSpacing - 
-				(iNumberOfButtons * ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
-				(iNumberOfButtons - 1) * ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING) / 2;
-			fYButtonOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET;
+				(iNumberOfButtons * renderStyle.getAxisButtonWidht() +
+				(iNumberOfButtons - 1) * renderStyle.getAxisButtonXSpacing()) / 2;
+			fYButtonOrigin = -renderStyle.getAxisButtonYOffset();
 			
 			if(iCount != 0)
 			{				
@@ -704,23 +728,23 @@ implements IMediatorReceiver, IMediatorSender
 			}			
 		
 			// remove button
-			fXButtonOrigin = fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
-				ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING;
+			fXButtonOrigin = fXButtonOrigin + renderStyle.getAxisButtonWidht() +
+				renderStyle.getAxisButtonXSpacing();
 			
 			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.REMOVE_AXIS, iCount);			
 			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.REMOVE_AXIS);
 			
 			// duplicate axis button
-			fXButtonOrigin = fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
-			ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING;
+			fXButtonOrigin = fXButtonOrigin + renderStyle.getAxisButtonWidht() +
+			renderStyle.getAxisButtonXSpacing();
 			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.DUPLICATE_AXIS, iCount);			
 			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.DUPLICATE_AXIS);	
 		
 			if(iCount != iNumberAxis-1)
 			{
 				// right, move right button
-				fXButtonOrigin = fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH +
-					ParCoordsRenderStyle.AXIS_BUTTONS_X_SPACING;				
+				fXButtonOrigin = fXButtonOrigin + renderStyle.getAxisButtonWidht() +
+					renderStyle.getAxisButtonXSpacing();				
 				iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.MOVE_AXIS_RIGHT, iCount);
 				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.MOVE_AXIS_RIGHT);		
 			}
@@ -751,14 +775,14 @@ implements IMediatorReceiver, IMediatorSender
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
 		gl.glVertex3f(fXButtonOrigin, 
-				fYButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
+				fYButtonOrigin + renderStyle.getAxisButtonWidht(),
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-		gl.glVertex3f(fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
-				fYButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
+		gl.glVertex3f(fXButtonOrigin + renderStyle.getAxisButtonWidht(),
+				fYButtonOrigin + renderStyle.getAxisButtonWidht(),
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
-		gl.glVertex3f(fXButtonOrigin + ParCoordsRenderStyle.AXIS_BUTTON_WIDTH,
+		gl.glVertex3f(fXButtonOrigin + renderStyle.getAxisButtonWidht(),
 				fYButtonOrigin,
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glEnd();	
@@ -771,6 +795,9 @@ implements IMediatorReceiver, IMediatorSender
 	{		
 		gl.glColor4fv(ParCoordsRenderStyle.GATE_COLOR, 0);
 		
+		final float fGateWidth = renderStyle.getGateWidth();
+		final float fGateTipHeight = renderStyle.getGateTipHeight();
+		final float fGateYOffset = renderStyle.getGateYOffset();
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{			
@@ -781,16 +808,16 @@ implements IMediatorReceiver, IMediatorSender
 					EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
-			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition + fGateWidth,
+						fArGateTipHeight[iCount] - fGateTipHeight,
 						0.001f);
 			// variable
 			gl.glVertex3f(fCurrentPosition,
 						fArGateTipHeight[iCount],
 						0.001f);			
 			// variable
-			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition - fGateWidth,
+						fArGateTipHeight[iCount] - fGateTipHeight,
 						0.001f);
 			gl.glEnd();
 			gl.glPopName();
@@ -802,20 +829,20 @@ implements IMediatorReceiver, IMediatorSender
 			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.LOWER_GATE_BODY_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
 			// bottom
-			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition - fGateWidth,
+						fArGateBottomHeight[iCount] + fGateTipHeight,
 						0.0001f);
 			// constant
-			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition + fGateWidth,
+						fArGateBottomHeight[iCount] + fGateTipHeight,
 						0.0001f);
 			// top
-			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition + fGateWidth,
+						fArGateTipHeight[iCount] - fGateTipHeight,
 						0.0001f);			
 			// top
-			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateTipHeight[iCount] - ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition - fGateWidth,
+						fArGateTipHeight[iCount] - fGateTipHeight,
 						0.0001f);
 			gl.glEnd();
 			gl.glPopName();
@@ -824,16 +851,16 @@ implements IMediatorReceiver, IMediatorSender
 			// The bottom of the gate 
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
-			gl.glVertex3f(fCurrentPosition + ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition + fGateWidth,
+						fArGateBottomHeight[iCount] + fGateTipHeight,
 						0.001f);
 			// variable
 			gl.glVertex3f(fCurrentPosition,
 						fArGateBottomHeight[iCount],
 						0.001f);			
 			// variable
-			gl.glVertex3f(fCurrentPosition - ParCoordsRenderStyle.GATE_WIDTH,
-						fArGateBottomHeight[iCount] + ParCoordsRenderStyle.GATE_TIP_HEIGHT,
+			gl.glVertex3f(fCurrentPosition - fGateWidth,
+						fArGateBottomHeight[iCount] + fGateTipHeight,
 						0.001f);
 			gl.glEnd();
 			gl.glPopName();
@@ -855,8 +882,8 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
 		
 		Rectangle2D tempRectangle = textRenderer.getBounds(decimalFormat.format(fYOrigin));
-		float fBackPlaneWidth = (float)tempRectangle.getWidth() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR;
-		float fBackPlaneHeight = (float)tempRectangle.getHeight() * ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR;
+		float fBackPlaneWidth = (float)tempRectangle.getWidth() * renderStyle.getSmallFontScalingFactor();
+		float fBackPlaneHeight = (float)tempRectangle.getHeight() * renderStyle.getSmallFontScalingFactor();
 		float fXTextOrigin = fXOrigin + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 		
@@ -870,10 +897,10 @@ implements IMediatorReceiver, IMediatorSender
 		
 		textRenderer.begin3DRendering();
 		// TODO: set this to real values once we have more than normalized values
-		textRenderer.draw3D(decimalFormat.format(fYOrigin),
+		textRenderer.draw3D(decimalFormat.format(fYOrigin / renderStyle.getAxisHeight()),
 							fXTextOrigin,
 							fYTextOrigin,
-							0.0021f, ParCoordsRenderStyle.SMALL_FONT_SCALING_FACTOR);
+							0.0021f, renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
 
@@ -889,11 +916,12 @@ implements IMediatorReceiver, IMediatorSender
 		float height = fArTargetWorldCoordinates[1];
 		if (draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
 		{
-			float fLowerLimit = fArGateBottomHeight[iDraggedGateNumber] + 2 * ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			float fLowerLimit = fArGateBottomHeight[iDraggedGateNumber] + 
+				2 * renderStyle.getGateTipHeight();
 			
-			if (height > 1)
+			if (height > renderStyle.getAxisHeight())
 			{
-				height = 1;
+				height = renderStyle.getAxisHeight();
 			}
 			else if (height < 0)
 			{
@@ -908,16 +936,17 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		else if (draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
 		{
-			float fLowerLimit = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
-			float fUpperLimit = fArGateTipHeight[iDraggedGateNumber] - 2 * ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+			float fLowerLimit = renderStyle.getGateYOffset() 
+				- renderStyle.getGateTipHeight();
+			float fUpperLimit = fArGateTipHeight[iDraggedGateNumber] - 2 * renderStyle.getGateTipHeight();
 			
-			if (height > 1 - ParCoordsRenderStyle.GATE_TIP_HEIGHT)
+			if (height > renderStyle.getAxisHeight() - renderStyle.getGateTipHeight())
 			{
-					height = 1 - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+					height = renderStyle.getAxisHeight() - renderStyle.getGateTipHeight();
 			}			
 			else if (height < fLowerLimit)
 			{
-				height = ParCoordsRenderStyle.GATE_NEGATIVE_Y_OFFSET - ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+				height = renderStyle.getGateYOffset() - renderStyle.getGateTipHeight();
 			}
 			else if (height > fUpperLimit)
 			{
@@ -967,7 +996,7 @@ implements IMediatorReceiver, IMediatorSender
 				iStorageIndex = alContentSelection.get(iPolylineCount);			
 				currentStorage = alDataStorages.get(alStorageSelection.get(iAxisNumber));						
 			}							
-			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex];
+			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex] * renderStyle.getAxisHeight();
 			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
 			                                    && fCurrentValue > fArGateBottomHeight[iAxisNumber])
 			{	
@@ -994,7 +1023,7 @@ implements IMediatorReceiver, IMediatorSender
 						else
 							iLocalStorageIndex = alContentSelection.get(iLocalAxisCount);
 						
-						fCurrentValue = currentStorage.getArrayFloat()[iLocalStorageIndex];
+						fCurrentValue = currentStorage.getArrayFloat()[iLocalStorageIndex] * renderStyle.getAxisHeight();
 						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
 						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
 						{						
@@ -1005,7 +1034,7 @@ implements IMediatorReceiver, IMediatorSender
 					else
 					{					
 						iLocalStorageIndex = alContentSelection.get(iPolylineCount);
-						fCurrentValue = alDataStorages.get(alStorageSelection.get(iLocalAxisCount)).getArrayFloat()[iLocalStorageIndex];
+						fCurrentValue = alDataStorages.get(alStorageSelection.get(iLocalAxisCount)).getArrayFloat()[iLocalStorageIndex] * renderStyle.getAxisHeight();
 						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
 						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
 						{
@@ -1052,19 +1081,19 @@ implements IMediatorReceiver, IMediatorSender
 						bRenderInfoArea = true;
 						bInfoAreaFirstTime = true;								
 						
-						if (iAccessionID == -1)
-							break;
-						
-						// Write currently selected vertex to selection set
-						// and trigger update event
-						int[] iArTmpSelectionId = new int[1];
-						int[] iArTmpDepth = new int[1];
-						iArTmpSelectionId[0] = iAccessionID;
-						iArTmpDepth[0] = 0;
-						alSetSelection.get(0).getWriteToken();
-						alSetSelection.get(0).updateSelectionSet(iUniqueId, 
-								iArTmpSelectionId, iArTmpDepth, new int[0]);
-						alSetSelection.get(0).returnWriteToken();
+						if (iAccessionID != -1)
+						{						
+							// Write currently selected vertex to selection set
+							// and trigger update event
+							int[] iArTmpSelectionId = new int[1];
+							int[] iArTmpDepth = new int[1];
+							iArTmpSelectionId[0] = iAccessionID;
+							iArTmpDepth[0] = 0;
+							alSetSelection.get(0).getWriteToken();
+							alSetSelection.get(0).updateSelectionSet(iUniqueId, 
+									iArTmpSelectionId, iArTmpDepth, new int[0]);
+							alSetSelection.get(0).returnWriteToken();
+						}
 					}
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
@@ -1240,11 +1269,11 @@ implements IMediatorReceiver, IMediatorSender
 					else						
 						alSelection = alStorageSelection;
 					
-					if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
-					{
+//					if (iExternalID >= 0 && iExternalID < alSelection.size()-1)
+//					{
 						alSelection.add(iExternalID+1, alSelection.get(iExternalID));
 						refresh();
-					}						
+//					}						
 					break;
 				default:
 					// do nothing

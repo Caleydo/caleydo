@@ -1,6 +1,7 @@
 package org.geneview.core.data.view.rep.renderstyle;
 
 import org.geneview.core.data.GeneralRenderStyle;
+import org.geneview.core.data.view.camera.IViewFrustum;
 
 /**
  * Render styles for the info area 
@@ -17,5 +18,16 @@ extends GeneralRenderStyle
 	
 	public static final float[] INFO_AREA_COLOR = {0.8f, 0.8f, 0.8f, 1f};
 	
+	private static final float SPACING = 0.005f;
+	
+	public InfoAreaRenderStyle(IViewFrustum viewFrustum)
+	{
+		super(viewFrustum);
+	}
+	
+	public float getSpacing()
+	{
+		return SPACING * fScaling;
+	}
 	
 }
