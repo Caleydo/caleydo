@@ -22,6 +22,9 @@ public class GeneralRenderStyle
 	protected float fFrustumWidth = 0;
 	protected float fScaling = 0;
 	
+	protected static final float BUTTONS_SPACING = 0.005f;
+	protected static final float BUTTON_WIDTH = 0.018f;
+	
 	public GeneralRenderStyle()
 	{
 		
@@ -47,4 +50,15 @@ public class GeneralRenderStyle
 	{
 		return HEADING_FONT_SCALING_FACTOR * fScaling;
 	}
+	
+	public float getButtonSpacing()
+	{
+		return BUTTONS_SPACING * fScaling;
+	}
+	
+	public float getButtonWidht()
+	{
+		return BUTTON_WIDTH * fScaling;
+	}
+	
 }

@@ -70,8 +70,7 @@ extends GeneralRenderStyle
 		
 	// buttons below axis
 	private static final float AXIS_BUTTONS_Y_OFFSET = 0.04f;
-	private static final float AXIS_BUTTONS_X_SPACING = 0.005f;
-	private static final float AXIS_BUTTON_WIDTH = 0.018f;
+
 	
 	private static final float fAxisSpacingLowerLimit = 0.1f;
 	
@@ -126,17 +125,8 @@ extends GeneralRenderStyle
 	public float getAxisButtonYOffset()
 	{
 		return AXIS_BUTTONS_Y_OFFSET * fScaling;
-	}
-	
-	public float getAxisButtonXSpacing()
-	{
-		return AXIS_BUTTONS_X_SPACING * fScaling;
-	}
-	
-	public float getAxisButtonWidht()
-	{
-		return AXIS_BUTTON_WIDTH * fScaling;
-	}
+	}	
+
 	
 	public float getGateWidth()
 	{

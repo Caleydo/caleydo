@@ -163,7 +163,7 @@ implements IMediatorReceiver, IMediatorSender
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 		
-		toolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true);
+		toolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true, renderStyle);
 		
 	}
 	
@@ -177,7 +177,7 @@ implements IMediatorReceiver, IMediatorSender
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
 		toolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager,
-				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true);
+				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 	
@@ -693,36 +693,36 @@ implements IMediatorReceiver, IMediatorSender
 			int iPickingID = -1;
 			
 			fXButtonOrigin = iCount * fAxisSpacing - 
-				(iNumberOfButtons * renderStyle.getAxisButtonWidht() +
-				(iNumberOfButtons - 1) * renderStyle.getAxisButtonXSpacing()) / 2;
+				(iNumberOfButtons * renderStyle.getButtonWidht() +
+				(iNumberOfButtons - 1) * renderStyle.getButtonSpacing()) / 2;
 			fYButtonOrigin = -renderStyle.getAxisButtonYOffset();
 			
 			if(iCount != 0)
 			{				
 				iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.MOVE_AXIS_LEFT, iCount);
-				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.MOVE_AXIS_LEFT);
+				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.ARROW_LEFT);
 			}			
 		
 			// remove button
-			fXButtonOrigin = fXButtonOrigin + renderStyle.getAxisButtonWidht() +
-				renderStyle.getAxisButtonXSpacing();
+			fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht() +
+				renderStyle.getButtonSpacing();
 			
 			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.REMOVE_AXIS, iCount);			
-			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.REMOVE_AXIS);
+			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.REMOVE);
 			
 			// duplicate axis button
-			fXButtonOrigin = fXButtonOrigin + renderStyle.getAxisButtonWidht() +
-			renderStyle.getAxisButtonXSpacing();
+			fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht() +
+			renderStyle.getButtonSpacing();
 			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.DUPLICATE_AXIS, iCount);			
-			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.DUPLICATE_AXIS);	
+			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.DUPLICATE);	
 		
 			if(iCount != iNumberAxis-1)
 			{
 				// right, move right button
-				fXButtonOrigin = fXButtonOrigin + renderStyle.getAxisButtonWidht() +
-					renderStyle.getAxisButtonXSpacing();				
+				fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht() +
+					renderStyle.getButtonSpacing();				
 				iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.MOVE_AXIS_RIGHT, iCount);
-				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.MOVE_AXIS_RIGHT);		
+				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.ARROW_RIGHT);		
 			}
 			iCount++;
 		}				
@@ -751,14 +751,14 @@ implements IMediatorReceiver, IMediatorSender
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
 		gl.glVertex3f(fXButtonOrigin, 
-				fYButtonOrigin + renderStyle.getAxisButtonWidht(),
+				fYButtonOrigin + renderStyle.getButtonWidht(),
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-		gl.glVertex3f(fXButtonOrigin + renderStyle.getAxisButtonWidht(),
-				fYButtonOrigin + renderStyle.getAxisButtonWidht(),
+		gl.glVertex3f(fXButtonOrigin + renderStyle.getButtonWidht(),
+				fYButtonOrigin + renderStyle.getButtonWidht(),
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
-		gl.glVertex3f(fXButtonOrigin + renderStyle.getAxisButtonWidht(),
+		gl.glVertex3f(fXButtonOrigin + renderStyle.getButtonWidht(),
 				fYButtonOrigin,
 				ParCoordsRenderStyle.AXIS_Z);
 		gl.glEnd();	

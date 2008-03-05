@@ -4,7 +4,6 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +11,7 @@ import javax.media.opengl.GL;
 
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
+import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.graph.core.PathwayGraph;
@@ -33,7 +33,6 @@ import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.util.graph.EGraphItemHierarchy;
@@ -81,6 +80,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
 	
+	private GeneralRenderStyle renderStyle;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -103,6 +104,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 		vecScaling = new Vec3f(1,1,1);
 		vecTranslation = new Vec3f(0,0,0);
+		renderStyle = new GeneralRenderStyle(viewFrustum);
 	}
 
 	/*
@@ -127,7 +129,7 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 		toolboxRenderer = new GLToolboxRenderer(gl, generalManager,
-				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true);
+				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
 		init(gl);
 	}

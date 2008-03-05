@@ -1,22 +1,18 @@
 package org.geneview.core.view.opengl.util;
 
-import java.io.File;
-import java.io.IOException;
+import gleem.linalg.Vec3f;
+
 import java.util.EnumMap;
 
-import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
-
 import javax.media.opengl.GL;
-import javax.media.opengl.GLException;
 
+import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.PickingManager;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * 
@@ -26,10 +22,7 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 
 public class GLToolboxRenderer 
-{
-	protected final static float ELEMENT_LENGTH = 0.1f;
-	protected final static float ELEMENT_SPACING = 0.02f;
-	
+{	
 	protected Vec3f vecLeftPoint;
 	protected JukeboxHierarchyLayer layer;
 	protected boolean bIsCalledLocally;
@@ -46,6 +39,7 @@ public class GLToolboxRenderer
 	EnumMap<EIconTextures, Texture> mapIconTextures;
 	
 	protected GLIconTextureManager iconTextureManager;
+	protected GeneralRenderStyle renderStyle;
 	
 	
 	/**
@@ -61,7 +55,8 @@ public class GLToolboxRenderer
 			final IGeneralManager generalManager,
 			final int iContainingViewID,
 			final Vec3f vecLeftPoint,			
-			final boolean bRenderLeftToRight)
+			final boolean bRenderLeftToRight,
+			final GeneralRenderStyle renderStyle)
 	{
 		this.generalManager = generalManager;
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
@@ -69,6 +64,7 @@ public class GLToolboxRenderer
 		this.vecLeftPoint = vecLeftPoint;
 
 		this.bRenderLeftToRight = bRenderLeftToRight;
+		this.renderStyle = renderStyle;
 		
 		this.layer = null;
 		this.iRemoteViewID = -1;
@@ -82,11 +78,12 @@ public class GLToolboxRenderer
 			final int iRemoteViewID,
 			final Vec3f vecLeftPoint,			
 			final JukeboxHierarchyLayer layer,
-			final boolean bRenderLeftToRight)
+			final boolean bRenderLeftToRight,
+			final GeneralRenderStyle renderStyle)
 	{
 		
 		this(gl, generalManager, iContainingViewID, 
-				vecLeftPoint, bRenderLeftToRight);
+				vecLeftPoint, bRenderLeftToRight, renderStyle);
 		
 		this.layer = layer;
 		this.iRemoteViewID = iRemoteViewID;
@@ -103,7 +100,7 @@ public class GLToolboxRenderer
 		if(layer != null)
 		{
 			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_ICON_SELECTION,
-					iContainingViewID, EIconTextures.MOVE_AXIS_LEFT);
+					iContainingViewID, EIconTextures.ARROW_LEFT);
 		}
 		fOverallRenderLength = fRenderLenght;
 		fRenderLenght = 0;
@@ -124,7 +121,7 @@ public class GLToolboxRenderer
 		
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		
-		//gl.glColor4f(vecColor.x(), vecColor.y(), vecColor.z(), vecColor.w());
+		gl.glColor4f(1, 1, 1, 1);
 		gl.glPushName(pickingManager.getPickingID(iContainingViewID, ePickingType, iIconID));	
 		gl.glBegin(GL.GL_POLYGON);
 		if(bRenderLeftToRight)
@@ -132,24 +129,24 @@ public class GLToolboxRenderer
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
 			gl.glVertex3f(fRenderLenght + vecLeftPoint.x(), vecLeftPoint.y(), vecLeftPoint.z());
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
-			gl.glVertex3f(fRenderLenght + vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y(), vecLeftPoint.z());
+			gl.glVertex3f(fRenderLenght + vecLeftPoint.x() + renderStyle.getButtonWidht(), vecLeftPoint.y(), vecLeftPoint.z());
 			gl.glTexCoord2f(texCoords.right(), texCoords.top()); 
-			gl.glVertex3f(fRenderLenght + vecLeftPoint.x() + ELEMENT_LENGTH, vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());
+			gl.glVertex3f(fRenderLenght + vecLeftPoint.x() + renderStyle.getButtonWidht(), vecLeftPoint.y() + renderStyle.getButtonWidht(), vecLeftPoint.z());
 			gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
-			gl.glVertex3f(fRenderLenght + vecLeftPoint.x(), vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());		
+			gl.glVertex3f(fRenderLenght + vecLeftPoint.x(), vecLeftPoint.y() + renderStyle.getButtonWidht(), vecLeftPoint.z());		
 		}
 		else
 		{
 			gl.glVertex3f(vecLeftPoint.x(), fRenderLenght + vecLeftPoint.y(), vecLeftPoint.z());
-			gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, fRenderLenght + vecLeftPoint.y(), vecLeftPoint.z());
-			gl.glVertex3f(vecLeftPoint.x() + ELEMENT_LENGTH, fRenderLenght + vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());
-			gl.glVertex3f(vecLeftPoint.x(), fRenderLenght + vecLeftPoint.y() + ELEMENT_LENGTH, vecLeftPoint.z());	
+			gl.glVertex3f(vecLeftPoint.x() + renderStyle.getButtonWidht(), fRenderLenght + vecLeftPoint.y(), vecLeftPoint.z());
+			gl.glVertex3f(vecLeftPoint.x() + renderStyle.getButtonWidht(), fRenderLenght + vecLeftPoint.y() + renderStyle.getButtonWidht(), vecLeftPoint.z());
+			gl.glVertex3f(vecLeftPoint.x(), fRenderLenght + vecLeftPoint.y() + renderStyle.getButtonWidht(), vecLeftPoint.z());	
 		
 		}
 		gl.glEnd();	
 		gl.glPopName();
 		tempTexture.disable();
-		fRenderLenght = fRenderLenght + ELEMENT_LENGTH + ELEMENT_SPACING;
+		fRenderLenght = fRenderLenght + renderStyle.getButtonWidht() + renderStyle.getButtonSpacing();
 	}
 	
 

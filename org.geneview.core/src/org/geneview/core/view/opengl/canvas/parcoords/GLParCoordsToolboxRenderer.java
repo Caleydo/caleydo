@@ -5,6 +5,7 @@ import gleem.linalg.Vec4f;
 
 import javax.media.opengl.GL;
 
+import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.view.opengl.util.EIconTextures;
@@ -33,10 +34,11 @@ extends GLToolboxRenderer
 			final IGeneralManager generalManager,
 			final int iContainingViewID,
 			final Vec3f vecLeftPoint,			
-			final boolean bRenderLeftToRight)
+			final boolean bRenderLeftToRight,
+			final GeneralRenderStyle renderStyle)
 	{
 		super(gl, generalManager, iContainingViewID,
-				vecLeftPoint, bRenderLeftToRight);
+				vecLeftPoint, bRenderLeftToRight, renderStyle);
 	}
 	
 	/**
@@ -55,11 +57,12 @@ extends GLToolboxRenderer
 			final int iRemoteViewID,
 			final Vec3f vecLeftPoint,			
 			final JukeboxHierarchyLayer layer,
-			final boolean bRenderLeftToRight)
+			final boolean bRenderLeftToRight,
+			final GeneralRenderStyle renderStyle)
 	{
 		super(gl, generalManager, iContainingViewID, 
 				iRemoteViewID, vecLeftPoint, 
-				layer, bRenderLeftToRight);
+				layer, bRenderLeftToRight, renderStyle);
 	}
 	
 	/**
@@ -73,16 +76,16 @@ extends GLToolboxRenderer
 		fRenderLenght = fOverallRenderLength;
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION, 
 				EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal(), 
-				EIconTextures.MOVE_AXIS_LEFT);
+				EIconTextures.POLYLINE_TO_AXIS);
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION, 
 				EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal(),
-				EIconTextures.MOVE_AXIS_LEFT);
+				EIconTextures.PREVENT_OCCLUSION);
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,
 				EIconIDs.TOGGLE_RENDER_SELECTION.ordinal(),
-				EIconTextures.MOVE_AXIS_LEFT);
+				EIconTextures.RENDER_SELECTION);
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,
 				EIconIDs.RESET_SELECTIONS.ordinal(),
-				EIconTextures.MOVE_AXIS_LEFT);
+				EIconTextures.RESET_SELECTIONS);
 		
 		fOverallRenderLength = fRenderLenght;
 		fRenderLenght = 0;
