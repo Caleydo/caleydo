@@ -6,17 +6,13 @@ import gleem.linalg.Vec3f;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLException;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
@@ -35,20 +31,17 @@ import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
+import org.geneview.core.view.opengl.util.GLIconTextureManager;
 import org.geneview.core.view.opengl.util.GLInfoAreaManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
-import com.sun.media.sound.AlawCodec;
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * 
@@ -123,12 +116,14 @@ implements IMediatorReceiver, IMediatorSender
 	private ArrayList<Integer> alStorageSelection;
 	
 	
-	ArrayList<IStorage> alDataStorages;
+	private ArrayList<IStorage> alDataStorages;
 	
-	DecimalFormat decimalFormat;
+	private DecimalFormat decimalFormat;
 	
-	EnumMap<EIconTextures, Texture> mapIconTextures;
-	EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
+	
+	private EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
+	
+	private GLIconTextureManager iconTextureManager;
 	//Texture texture;
 	
 	/**
@@ -154,10 +149,8 @@ implements IMediatorReceiver, IMediatorSender
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
-		
-		mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
-		//hashSetSelection = new HashMap<ESelectionType, ISetSelection>();
+		
 	}
 	
 	/*
@@ -170,7 +163,8 @@ implements IMediatorReceiver, IMediatorSender
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 		
-		toolboxRenderer = new GLParCoordsToolboxRenderer(generalManager, iUniqueId, new Vec3f (0, 0, 0), true);
+		toolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true);
+		
 	}
 	
 	/*
@@ -182,7 +176,7 @@ implements IMediatorReceiver, IMediatorSender
 			final JukeboxHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
-		toolboxRenderer = new GLParCoordsToolboxRenderer(generalManager,
+		toolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true);
 		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
@@ -197,27 +191,8 @@ implements IMediatorReceiver, IMediatorSender
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) 
-	{
-		
-		for(EIconTextures eIconTextures : EIconTextures.values())
-		{
-			try
-			{
-				Texture tempTexture = TextureIO.newTexture(TextureIO.newTextureData(
-						new File(eIconTextures.getFileName()), true, "PNG"));
-				mapIconTextures.put(eIconTextures, tempTexture);
-			} catch (GLException e)
-			{
-				e.printStackTrace();
-			} catch (IllegalArgumentException e)
-			{
-				e.printStackTrace();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}	
-		}
-		
+	{		
+		iconTextureManager = new GLIconTextureManager(gl);	
 		// initialize selection to an empty array with 
 		ISetSelection tmpSelection = alSetSelection.get(0);		
 		// TODO: only for tests, should be {}
@@ -240,9 +215,10 @@ implements IMediatorReceiver, IMediatorSender
 			bIsDisplayListDirtyLocal = false;			
 		}	
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+	
 		display(gl);
-		
-		checkForHits(gl);		
+		checkForHits(gl);	
+			
 		
 		pickingTriggerMouseAdapter.resetEvents();
 	}
@@ -271,7 +247,8 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void display(final GL gl) 
 	{	
-		// FIXME: scaling here not nice, operations are not in display lists
+		//GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+		// FIXME: translation here not nice, operations are not in display lists
 		if(bIsDraggingActive)
 		{			
 			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
@@ -298,7 +275,8 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glTranslatef(fXTranslation - renderStyle.getXSpacing(), 
 				fYTranslation - renderStyle.getBottomSpacing(), 0.0f);
 		toolboxRenderer.render(gl);
-		gl.glTranslatef(-fXTranslation + renderStyle.getXSpacing(), -fYTranslation + renderStyle.getBottomSpacing(), 0.0f);
+		gl.glTranslatef(-fXTranslation + renderStyle.getXSpacing(),
+				-fYTranslation + renderStyle.getBottomSpacing(), 0.0f);
 	}
 		
 	/**
@@ -310,6 +288,7 @@ implements IMediatorReceiver, IMediatorSender
 	public void renderArrayAsPolyline(boolean bRenderArrayAsPolyline)
 	{
 		this.bRenderArrayAsPolyline = bRenderArrayAsPolyline;
+		bRenderInfoArea = false;
 		EInputDataTypes eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
@@ -481,9 +460,13 @@ implements IMediatorReceiver, IMediatorSender
 		System.out.println("Frustum right: " + (viewFrustum.getRight()));
 		System.out.println("Frustum left: " + (viewFrustum.getLeft()));
 		
-		fXTranslation = viewFrustum.getLeft() + renderStyle.getXSpacing();
-		fYTranslation = viewFrustum.getBottom() + renderStyle.getBottomSpacing();
+//		fXTranslation = viewFrustum.getLeft() + renderStyle.getXSpacing();
+//		fYTranslation = viewFrustum.getBottom() + renderStyle.getBottomSpacing();
+//		
 		
+		fXTranslation = renderStyle.getXSpacing();
+		fYTranslation = renderStyle.getBottomSpacing();
+	
 		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
 		
 	}
@@ -492,17 +475,10 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{		
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);	
 
-		
-		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), 0);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), 0);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		gl.glEnd();
-		
+//		if(bIsDraggingActive)
+//			handleDragging(gl);
 		gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
 		//gl.glScalef(fScaling, fScaling, 1.0f);
 		
@@ -758,7 +734,7 @@ implements IMediatorReceiver, IMediatorSender
 				EIconTextures eIconTextures)
 	{	
 		
-		Texture tempTexture = mapIconTextures.get(eIconTextures);
+		Texture tempTexture = iconTextureManager.getIconTexture(eIconTextures);
 		tempTexture.enable();
 		tempTexture.bind();
 		
@@ -908,6 +884,8 @@ implements IMediatorReceiver, IMediatorSender
 
 	private void handleDragging(GL gl)
 	{	
+//		bIsDisplayListDirtyLocal = true;
+//		bIsDisplayListDirtyRemote = true;
 		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
 		
 		float[] fArTargetWorldCoordinates = GLCoordinateUtils.
@@ -1128,6 +1106,8 @@ implements IMediatorReceiver, IMediatorSender
 				bIsDraggingActive = true;
 				draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 				iDraggedGateNumber = iExternalID;
+//				bIsDisplayListDirtyLocal = true;
+//				bIsDisplayListDirtyRemote = true;
 				break;
 			}
 			pickingManager.flushHits(iUniqueId, ePickingType);

@@ -2,7 +2,7 @@ package org.geneview.core.view.opengl.canvas.parcoords;
 
 /**
  * Icon IDs for the parallel coordinates
- * @author alexsb
+ * @author Alexander Lex
  *
  */
 public enum EIconIDs

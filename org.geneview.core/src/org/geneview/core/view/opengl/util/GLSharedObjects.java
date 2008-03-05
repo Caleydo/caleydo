@@ -2,6 +2,8 @@ package org.geneview.core.view.opengl.util;
 
 import javax.media.opengl.GL;
 
+import org.geneview.core.data.view.camera.IViewFrustum;
+
 /**
  * 
  * Class contains GL commands for rendering 
@@ -26,5 +28,16 @@ public class GLSharedObjects {
 	    gl.glVertex3f( 0,  0,  0);
 	    gl.glVertex3f( 0,  0, 1);
 	    gl.glEnd();
+	}
+	
+	public static void drawViewFrustum(final GL gl, final IViewFrustum viewFrustum)
+	{
+		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), 0);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), 0);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glEnd();
 	}
 }

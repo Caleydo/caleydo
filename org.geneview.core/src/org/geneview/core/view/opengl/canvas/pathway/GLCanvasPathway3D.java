@@ -126,7 +126,7 @@ implements IMediatorReceiver, IMediatorSender {
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-		toolboxRenderer = new GLToolboxRenderer(generalManager,
+		toolboxRenderer = new GLToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true);
 		
 		init(gl);
