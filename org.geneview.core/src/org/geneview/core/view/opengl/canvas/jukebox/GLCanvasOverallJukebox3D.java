@@ -12,6 +12,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.view.camera.IViewFrustum;
+import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
@@ -24,7 +25,6 @@ import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -39,10 +39,12 @@ public class GLCanvasOverallJukebox3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender {
 	
-	private static final int MAX_LOADED_VIEWS = 100;
+	private static final int MAX_LOADED_VIEWS = 10;
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
-	private static final float SCALING_FACTOR_POOL_LAYER = 0.1f;
+	private static final float SCALING_FACTOR_POOL_LAYER = 0.05f;
+	
+	private static final int SLERP_SPEED = 1000;
 	
 	private JukeboxHierarchyLayer underInteractionLayer;
 	private JukeboxHierarchyLayer stackLayer;
@@ -138,8 +140,10 @@ implements IMediatorReceiver, IMediatorSender {
 	    time = new SystemTime();
 	    ((SystemTime) time).rebase();
 	    
-		buildStackLayer(gl);
 		retrieveContainedViews(gl);
+		
+	    buildPoolLayer(gl);
+		buildStackLayer(gl);
 	}
 	
 	/*
@@ -190,8 +194,8 @@ implements IMediatorReceiver, IMediatorSender {
 		doSlerpActions(gl);
 		
 //		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-//		renderPoolLayer(gl);
-		renderStackLayer(gl);
+		renderLayer(gl, poolLayer);
+		renderLayer(gl, stackLayer);
 		renderUnderInteractionLayer(gl);
 //		gl.glEndList();
 		
@@ -199,7 +203,6 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		// TODO: add dirty flag
 //		gl.glCallList(iGLDisplayListIndex);
-		
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -226,6 +229,9 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				stackLayer.addElement(iViewId);
 				stackLayer.setElementVisibilityById(true, iViewId);
+
+				poolLayer.addElement(iViewId);
+				poolLayer.setElementVisibilityById(true, iViewId);
 			}
 			
 			tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
@@ -235,28 +241,6 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 	
 	private void buildStackLayer(final GL gl) {
-
-//		float fTiltAngleDegree = 57; // degree
-//		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-//		float fLayerYPos = 1.1f;
-//		int iMaxLayers = 4;
-
-//		// Create free pathway layer spots
-//		Transform transform;
-//		for (int iLayerIndex = 0; iLayerIndex < iMaxLayers; iLayerIndex++)
-//		{
-//			// Store current model-view matrix
-//			transform = new Transform();
-//			transform.setTranslation(new Vec3f(-2.7f, fLayerYPos, 0f));
-//			transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
-//					SCALING_FACTOR_STACK_LAYER,
-//					SCALING_FACTOR_STACK_LAYER));
-//			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
-//			stackLayer.setTransformByPositionIndex(iLayerIndex,
-//					transform);
-//
-//			fLayerYPos -= 1f;
-//		}
 		
 		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
@@ -297,6 +281,20 @@ implements IMediatorReceiver, IMediatorSender {
 		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
+	
+	private void buildPoolLayer(final GL gl) {
+		
+		for (int iViewIndex = 0; iViewIndex < poolLayer.getElementList().size(); iViewIndex++)
+		{		
+			Transform transform = new Transform();
+			transform.setTranslation(new Vec3f(4.1f, 
+					0.5f * iViewIndex, 4));
+			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
+					SCALING_FACTOR_POOL_LAYER,
+					SCALING_FACTOR_POOL_LAYER));		
+			poolLayer.setTransformByPositionIndex(iViewIndex, transform);		}
+	}
+
 		
 	private void renderBucketWall(final GL gl) {
 		
@@ -309,8 +307,6 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glVertex3f(8, 8, -0.01f);
 		gl.glVertex3f(8, 0, -0.01f);
 		gl.glEnd();
-		
-//		GLSharedObjects.drawAxis(gl);
 	}
 	
 	private void renderUnderInteractionLayer(final GL gl) {
@@ -330,9 +326,10 @@ implements IMediatorReceiver, IMediatorSender {
 		gl.glPopName();
 	}
 	
-	private void renderStackLayer(final GL gl) {
+	private void renderLayer(final GL gl, 
+			final JukeboxHierarchyLayer layer) {
 
-		Iterator<Integer> iterElementList = stackLayer.getElementList().iterator();
+		Iterator<Integer> iterElementList = layer.getElementList().iterator();
 		int iViewId = 0;
 		
 		while(iterElementList.hasNext())
@@ -344,11 +341,11 @@ implements IMediatorReceiver, IMediatorSender {
 				continue;
 			
 			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
-			renderViewById(gl, iViewId, stackLayer);		
+			renderViewById(gl, iViewId, layer);		
 			gl.glPopName();
 		}
 	}
-	
+		
 	private void renderViewById(final GL gl,
 			final int iViewId, 
 			final JukeboxHierarchyLayer layer) {
@@ -385,13 +382,13 @@ implements IMediatorReceiver, IMediatorSender {
 		if (arSlerpActions.isEmpty())
 			return;
 				
-		if (iSlerpFactor < 1000)
+		if (iSlerpFactor < SLERP_SPEED)
 		{
 			// Makes animation rendering speed independent
-			iSlerpFactor += 1400 * time.deltaT();
+			iSlerpFactor += 600 * time.deltaT();
 			
-			if (iSlerpFactor > 1000)
-				iSlerpFactor = 1000;
+			if (iSlerpFactor > SLERP_SPEED)
+				iSlerpFactor = SLERP_SPEED;
 		}
 		
 		slerpView(gl, arSlerpActions.get(0));
@@ -595,7 +592,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 				
 		// Check if other slerp action is currently running
-		if (iSlerpFactor > 0 && iSlerpFactor < 1000)
+		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_SPEED)
 			return;
 
 		arSlerpActions.clear();

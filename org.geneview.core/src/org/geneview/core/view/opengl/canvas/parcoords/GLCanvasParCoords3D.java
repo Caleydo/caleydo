@@ -210,7 +210,7 @@ implements IMediatorReceiver, IMediatorSender
 		// initialize selection to an empty array with 
 		ISetSelection tmpSelection = alSetSelection.get(0);		
 		// TODO: only for tests, should be {}
-		int[] iArTmpSelectionIDs = {3, 4, 5, 6, 7, 9, 12};
+		int[] iArTmpSelectionIDs = {};//3, 4, 5, 6, 7, 9, 12};
 		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
 		initSelections();
 		initPolyLineLists();
@@ -1312,20 +1312,20 @@ implements IMediatorReceiver, IMediatorSender
 		// contains type - 0 for not selected 1 for selected
 		int[] iArGroup = refSetSelection.getGroupArray();
 		// iterate here		
-		int[] iArSelectionStorageIndices = convertAccessionToExpressionIndices(iArSelection);
-		iArSelectionStorageIndices = cleanSelection(iArSelectionStorageIndices);
-		setSelection(iArSelectionStorageIndices);
+		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iArSelection);
+		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices);
+		setSelection(iAlSelectionStorageIndices);
 		
 		int iSelectedAccessionID = 0;
 		int iSelectedStorageIndex = 0;
 		
-		for(int iSelectionCount = 0; iSelectionCount < iArSelectionStorageIndices.length;  iSelectionCount++)
+		for(int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size();  iSelectionCount++)
 		{
 			// TODO: set this to 1 resp. later to a enum as soon as I get real data
-			if(iArGroup[iSelectionCount] == 0)
+			if(iArGroup[iSelectionCount] == 1)
 			{
 				iSelectedAccessionID = iArSelection[iSelectionCount];
-				iSelectedStorageIndex = iArSelectionStorageIndices[iSelectionCount];
+				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
 				
 				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 					.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
@@ -1361,13 +1361,14 @@ implements IMediatorReceiver, IMediatorSender
 						float fYValue = alDataStorages.get(0).getArrayFloat()[iSelectedStorageIndex];
 						
 						generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-							.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, fYValue), ESelectionMode.AddPick);
+							.modifySelection(iSelectedAccessionID, new SelectedElementRep(
+									iUniqueId, renderStyle.getXSpacing(), fYValue * renderStyle.getScaling() + renderStyle.getBottomSpacing()), ESelectionMode.AddPick);
 					}
 					else
 					{
 						System.out.println("Highlighting for Axis not implemented yet");
 						generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-						.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
+							.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
 					}
 				}
 			}
@@ -1387,39 +1388,51 @@ implements IMediatorReceiver, IMediatorSender
 				LoggerType.VERBOSE);
 	}
 	
-	protected int[] cleanSelection(int[] iArSelection)
+	protected ArrayList<Integer>  cleanSelection(ArrayList<Integer> iAlSelection )
 	{
-	
-		for (int iCount = 0; iCount < iArSelection.length; iCount++)
+		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
-			if(iArSelection[iCount] == -1)
+			if(iAlSelection.get(iCount) == -1)
 				continue;		
 			
-			iArSelection[iCount] = iArSelection[iCount] / 1000;	
-			System.out.println("Storageindexalex: " + iArSelection[iCount]);
+			iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);	
+//			System.out.println("Storageindexalex: " + iAlSelection[iCount]);
 		}		
 		
-		return iArSelection;
-		
+		return iAlSelection;
 	}
 	
-	protected void setSelection(int[] iArSelection)
+	protected void setSelection(ArrayList<Integer> iAlSelection)
 	{
+		int[] iArSelection = new int[iAlSelection.size()];
+		
+		for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
+		{
+			iArSelection[iSelectionIndex] = iAlSelection.get(iSelectionIndex);
+		}
 	
 		alSetSelection.get(0).setSelectionIdArray(iArSelection);
+		
+		initSelections();
 		initPolyLineLists();
 	}
 	
-	protected int[] convertAccessionToExpressionIndices(int[] iArSelection)
+	protected ArrayList<Integer> convertAccessionToExpressionIndices(int[] iArSelection)
 	{
-		int[] iArSelectionStorageIndices = new int[iArSelection.length];
-		
+//		int[] iArSelectionStorageIndices = new int[iArSelection.length];
+		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
 		for(int iCount = 0; iCount < iArSelection.length; iCount++)
 		{
-			iArSelectionStorageIndices[iCount] = generalManager.getSingelton().getGenomeIdManager()
+			int iTmp = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iArSelection[iCount], EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
-		}		
-		return iArSelectionStorageIndices;
+			
+			if (iTmp == -1)
+				continue;
+			
+			iAlSelectionStorageIndices.add(iTmp);
+		}
+		
+		return iAlSelectionStorageIndices;
 	}
 	
 	private int getAccesionIDFromStorageIndex(int index)

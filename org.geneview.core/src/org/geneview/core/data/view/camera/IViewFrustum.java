@@ -26,6 +26,18 @@ public interface IViewFrustum {
 	
 	public float getFar();
 	
+	public void setLeft(final float fLeft);
+	
+	public void setRight(final float fRight);
+
+	public void setTop(final float fTop);
+
+	public void setBottom(final float fBottom);
+
+	public void setNear(final float fNear);
+
+	public void setFar(final float fFar);
+
 //	/**
 //	 * Returns ture if ViewFrustum or camera view point has changed.
 //	 * 

@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -15,6 +16,7 @@ import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.graph.core.PathwayGraph;
+import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.mapping.EGenomeMappingType;
@@ -36,8 +38,10 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemKind;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
+import org.geneview.util.graph.IGraphItem;
 
 /**
  * Single OpenGL pathway view
@@ -355,16 +359,7 @@ implements IMediatorReceiver, IMediatorSender {
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 					
 					selectedVertex = tmpVertexGraphItemRep;
-					
-					// Write currently selected vertex to selection set and trigger upate
-					int[] iArTmpSelectionId = new int[1];
-					int[] iArTmpDepth = new int[1];
-					iArTmpSelectionId[0] = selectedVertex.getId();
-					iArTmpDepth[0] = 0;
-					alSetSelection.get(0).getWriteToken();
-					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-					alSetSelection.get(0).returnWriteToken();
-									
+														
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
 					
@@ -390,6 +385,60 @@ implements IMediatorReceiver, IMediatorSender {
 							(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
 							((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y()), 
 							ESelectionMode.AddPick);
+
+					// TODO: Move to own method (outside this class)
+					// Store alle genes in that pathway with selection group 0
+					Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph)generalManager.getSingelton()
+							.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
+					
+					ArrayList<Integer> iAlSelectedGenes = new ArrayList<Integer>();
+					PathwayVertexGraphItemRep tmpPathwayVertexGraphItem = null;
+					while(iterPathwayVertexGraphItem.hasNext()) 
+					{
+						tmpPathwayVertexGraphItem = ((PathwayVertexGraphItemRep)iterPathwayVertexGraphItem.next());
+						
+//						if (tmpPathwayVertexGraphItem..getType().equals(EPathwayVertexType.gene))
+//						{
+							String sGeneID = tmpPathwayVertexGraphItem.getName();
+						
+							// Remove prefix ("hsa:")
+							sGeneID = sGeneID.substring(4);
+							
+							iGeneID = generalManager.getSingelton().getGenomeIdManager()
+								.getIdIntFromStringByMapping(sGeneID, 
+									EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+									
+							if (iGeneID == -1)
+								continue;
+							
+							int iTmpAccessionID = generalManager.getSingelton().getGenomeIdManager()
+								.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+						
+							if (iTmpAccessionID == -1)
+								continue;
+							
+							iAlSelectedGenes.add(iTmpAccessionID);
+//						}
+					}
+					
+					// Write currently selected vertex to selection set and trigger upate
+					int[] iArTmpSelectionId = new int[iAlSelectedGenes.size()];
+					int[] iArTmpGroupId = new int[iAlSelectedGenes.size()];
+
+					for (int iGeneIndex = 0; iGeneIndex < iAlSelectedGenes.size(); iGeneIndex++)
+					{
+						iArTmpSelectionId[iGeneIndex] = iAlSelectedGenes.get(iGeneIndex);
+						
+						// TODO enum for selction modes
+						if (iAlSelectedGenes.get(iGeneIndex) == iAccessionID)
+							iArTmpGroupId[iGeneIndex] = 1;
+						else
+							iArTmpGroupId[iGeneIndex] = 0;
+					}
+					
+					alSetSelection.get(0).getWriteToken();
+					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpGroupId, new int[0]);
+					alSetSelection.get(0).returnWriteToken();
 				}
 			}
 			

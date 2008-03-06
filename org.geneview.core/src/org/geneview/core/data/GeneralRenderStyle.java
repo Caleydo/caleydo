@@ -61,4 +61,9 @@ public class GeneralRenderStyle
 		return BUTTON_WIDTH * fScaling;
 	}
 	
+	public float getScaling() 
+	{
+		return fScaling;
+	}
+	
 }

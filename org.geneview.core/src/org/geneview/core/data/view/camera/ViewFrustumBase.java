@@ -76,6 +76,36 @@ implements IViewFrustum {
 		return fFar;
 	}
 	
+	public void setLeft(final float fLeft) {
+		
+		this.fLeft = fLeft;
+	}
+	
+	public void setRight(final float fRight) {
+		
+		this.fRight = fRight;
+	}
+
+	public void setTop(final float fTop) {
+		
+		this.fTop = fTop;
+	}
+
+	public void setBottom(final float fBottom) {
+		
+		this.fBottom = fBottom;
+	}
+
+	public void setNear(final float fNear) {
+		
+		this.fNear = fNear;
+	}
+
+	public void setFar(final float fFar) {
+		
+		this.fFar = fFar;
+	}
+	
 //	protected IViewCamera refViewCamera;
 //	
 //	protected boolean bViewFrustumHasChanged = true;
