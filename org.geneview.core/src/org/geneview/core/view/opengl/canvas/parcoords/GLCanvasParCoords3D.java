@@ -97,7 +97,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private ParCoordsRenderStyle renderStyle;
 	
-	private PolylineSelectionManager polyLineSelectionManager;
+	private GenericSelectionManager polyLineSelectionManager;
 	
 	private TextRenderer textRenderer;
 	
@@ -140,7 +140,19 @@ implements IMediatorReceiver, IMediatorSender
 	
 		alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);		
-		polyLineSelectionManager = new PolylineSelectionManager();	
+		
+		ArrayList<String> alSelectionType = new ArrayList<String>();
+//		for(EPolyLineSelectionType selectionType : EPolyLineSelectionType.values())
+//		{
+		//	alSelectionType.add(selectionType.getSelectionType());
+//		}
+		// FIXXME
+		alSelectionType.add("NORMAL");
+		alSelectionType.add("SELECTION");
+		alSelectionType.add("MOUSE_OVER");
+		alSelectionType.add("DESELECTED");
+		
+		polyLineSelectionManager = new GenericSelectionManager(alSelectionType, EPolyLineSelectionType.NORMAL.getSelectionType());	
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
@@ -150,6 +162,8 @@ implements IMediatorReceiver, IMediatorSender
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
+		
+		
 		
 	}
 	
@@ -333,9 +347,7 @@ implements IMediatorReceiver, IMediatorSender
 			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset() -
 				renderStyle.getGateTipHeight();
 		}
-		polyLineSelectionManager.clearDeselection();
-		polyLineSelectionManager.clearMouseOver();
-		polyLineSelectionManager.clearSelection();
+		polyLineSelectionManager.clearSelections();
 		
 		bRenderInfoArea = false;
 	}
@@ -505,7 +517,8 @@ implements IMediatorReceiver, IMediatorSender
 		switch (renderMode)
 		{
 			case NORMAL:
-				setDataToRender = polyLineSelectionManager.getNormalPolylines();
+				setDataToRender = polyLineSelectionManager.getElement(
+							EPolyLineSelectionType.NORMAL.getSelectionType());
 				if(bPreventOcclusion)				
 					gl.glColor4fv(renderStyle.
 							getPolylineOcclusionPrevColor(setDataToRender.size()), 0);									
@@ -515,24 +528,28 @@ implements IMediatorReceiver, IMediatorSender
 				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				break;
 			case SELECTION:	
-				setDataToRender = polyLineSelectionManager.getSelectedPolylines();
+				setDataToRender = polyLineSelectionManager.getElement(
+						EPolyLineSelectionType.SELECTION.getSelectionType());
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
-				setDataToRender = polyLineSelectionManager.getMouseOverPolylines();
+				setDataToRender = polyLineSelectionManager.getElement(
+						EPolyLineSelectionType.MOUSE_OVER.getSelectionType());
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				break;
 			case DESELECTED:	
-				setDataToRender = polyLineSelectionManager.getDeselectedPolylines();				
+				setDataToRender = polyLineSelectionManager.getElement(
+						EPolyLineSelectionType.DESELECTED.getSelectionType());				
 				gl.glColor4fv(renderStyle.
 						getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()),
 						0);
 				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
-				setDataToRender = polyLineSelectionManager.getNormalPolylines();
+				setDataToRender = polyLineSelectionManager.getElement(
+						EPolyLineSelectionType.NORMAL.getSelectionType());
 		}
 		
 		Iterator<Integer> dataIterator = setDataToRender.iterator();
@@ -957,7 +974,7 @@ implements IMediatorReceiver, IMediatorSender
 		IStorage currentStorage = null;
 		
 		// for every polyline
-		for (int iPolylineCount = 0; iPolylineCount < polyLineSelectionManager.getNumberOfPolylines(); iPolylineCount++)
+		for (int iPolylineCount = 0; iPolylineCount < polyLineSelectionManager.getNumberOfElements(); iPolylineCount++)
 		{	
 			int iStorageIndex = 0;
 			
@@ -978,13 +995,15 @@ implements IMediatorReceiver, IMediatorSender
 			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
 			                                    && fCurrentValue > fArGateBottomHeight[iAxisNumber])
 			{	
-				if(polyLineSelectionManager.isPolylineSelected(iPolylineCount))
+				if(polyLineSelectionManager.checkStatus(EPolyLineSelectionType.SELECTION.getSelectionType(), iPolylineCount))
 					bRenderInfoArea = false;
 				
 				if(bRenderArrayAsPolyline)
-					polyLineSelectionManager.addDeselection(alStorageSelection.get(iPolylineCount));
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.DESELECTED.getSelectionType(), 
+							alStorageSelection.get(iPolylineCount));
 				else
-					polyLineSelectionManager.addDeselection(alContentSelection.get(iPolylineCount));
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.DESELECTED.getSelectionType(), 
+							alContentSelection.get(iPolylineCount));
 			}
 			else
 			{
@@ -1024,9 +1043,11 @@ implements IMediatorReceiver, IMediatorSender
 				if (!bIsBlocked)
 				{
 					if(bRenderArrayAsPolyline)
-						polyLineSelectionManager.removeDeselection(alStorageSelection.get(iPolylineCount));
+						polyLineSelectionManager.removeFromType(EPolyLineSelectionType.DESELECTED.getSelectionType(),
+								alStorageSelection.get(iPolylineCount));
 					else
-						polyLineSelectionManager.removeDeselection(alContentSelection.get(iPolylineCount));
+						polyLineSelectionManager.removeFromType(EPolyLineSelectionType.DESELECTED.getSelectionType(),
+								alContentSelection.get(iPolylineCount));
 				}				
 			}
 		}		
@@ -1046,8 +1067,9 @@ implements IMediatorReceiver, IMediatorSender
 			switch (ePickingMode)
 			{						
 				case CLICKED:						
-					polyLineSelectionManager.clearSelection();							
-					polyLineSelectionManager.addSelection(iExternalID);
+					polyLineSelectionManager.clearSelection(EPolyLineSelectionType.SELECTION.getSelectionType());							
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.SELECTION.getSelectionType(),
+							iExternalID);
 					
 					if (ePolylineDataType == EInputDataTypes.GENES)
 					{
@@ -1078,8 +1100,8 @@ implements IMediatorReceiver, IMediatorSender
 					break;	
 				case MOUSE_OVER:
 
-					polyLineSelectionManager.clearMouseOver();
-					polyLineSelectionManager.addMouseOver(iExternalID);
+					polyLineSelectionManager.clearSelection(EPolyLineSelectionType.MOUSE_OVER.getSelectionType());
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.MOUSE_OVER.getSelectionType(), iExternalID);
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
 					break;					
@@ -1318,8 +1340,9 @@ implements IMediatorReceiver, IMediatorSender
 				
 						//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
 						//			{
-						polyLineSelectionManager.clearSelection();
-						polyLineSelectionManager.addSelection(iSelectedStorageIndex);	
+						polyLineSelectionManager.clearSelection(EPolyLineSelectionType.MOUSE_OVER.getSelectionType());
+						polyLineSelectionManager.addToType(EPolyLineSelectionType.MOUSE_OVER.getSelectionType(), iSelectedStorageIndex);
+						
 						bIsDisplayListDirtyLocal = true;
 						bIsDisplayListDirtyRemote = true;
 						//			}
