@@ -25,7 +25,6 @@ import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -46,7 +45,6 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLDragAndDrop;
 import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.GLPathwayMemoPad;
-import org.geneview.core.view.opengl.util.GLTextUtils;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
@@ -223,6 +221,10 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingManager.handlePicking(iUniqueId, gl, true);
 		
 		display(gl);
+		
+		if (pickingTriggerMouseAdapter.wasMouseReleased())
+			dragAndDrop.stopDragAction();
+		
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
@@ -250,6 +252,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		checkForHits(gl);
 		
+		if (dragAndDrop.isDragActionRunning()) {
+			dragAndDrop.renderDragThumbnailTexture(gl, this);
+		}
+		
 		if (arSlerpActions.isEmpty() && bSelectionChanged 
 				&& selectedVertex != null)
 		{
@@ -259,10 +265,6 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if (bRebuildVisiblePathwayDisplayLists)
 			rebuildVisiblePathwayDisplayLists(gl);
-		
-		if (dragAndDrop.isDragActionRunning()) {
-			dragAndDrop.renderDragThumbnailTexture(gl, this);
-		}
 		
 		if (bUpdateReceived)
 		{
@@ -310,7 +312,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		float fLayerYPos = 1.1f;
+		float fLayerYPos = 0.9f;
 		int iMaxLayers = 4;
 
 		// Create free pathway layer spots
@@ -368,10 +370,10 @@ implements IMediatorReceiver, IMediatorSender {
 		Iterator<IGraph> iterPathwayGraphs = generalManager.getSingelton()
 			.getPathwayManager().getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
 
-		while(iterPathwayGraphs.hasNext())
-		{
-			pathwayPoolLayer.addElement((iterPathwayGraphs.next()).getId());
-		}
+//		while(iterPathwayGraphs.hasNext())
+//		{
+//			pathwayPoolLayer.addElement((iterPathwayGraphs.next()).getId());
+//		}
 	}
 
 	private void renderPathwayUnderInteraction(final GL gl) {
@@ -481,6 +483,17 @@ implements IMediatorReceiver, IMediatorSender {
 			alMagnificationFactor.add(0);
 		}		
 		
+//		// Clear pathway pool list
+//		pathwayPoolLayer.removeAllElements();
+//		
+//		Iterator<Integer> iterSelectedPathways = 
+//			refHashPathwayContainingSelectedVertex2VertexCount.keySet().iterator();
+//		
+//		while(iterSelectedPathways.hasNext())
+//		{
+//			pathwayPoolLayer.addElement(iterSelectedPathways.next());
+//		}
+		
 		// Load pathway storage
 		int iPathwayId = 0;
 		for (int iPathwayIndex = 0; iPathwayIndex < pathwayPoolLayer.getElementList().size(); iPathwayIndex++)
@@ -588,7 +601,7 @@ implements IMediatorReceiver, IMediatorSender {
 						0, 
 						0, 
 						0,
-						0.0055f);  // scale factor
+						0.0057f);  // scale factor
 				textRenderer.end3DRendering();
 				
 				fYPos = 0.12f;
@@ -603,7 +616,7 @@ implements IMediatorReceiver, IMediatorSender {
 						0, 
 						0, 
 						0,
-						0.004f);  // scale factor
+						0.0047f);  // scale factor
 				textRenderer.end3DRendering();
 				
 				fYPos = 0.12f;
@@ -617,7 +630,7 @@ implements IMediatorReceiver, IMediatorSender {
 						0, 
 						0, 
 						0,
-						0.004f);  // scale factor
+						0.0037f);  // scale factor
 				textRenderer.end3DRendering();
 				
 				fYPos = 0.12f;
@@ -902,17 +915,16 @@ implements IMediatorReceiver, IMediatorSender {
 							break;
 						case MOUSE_OVER:	
 							
-							if (selectedVertex == null ||
-									(selectedVertex != null && !selectedVertex.equals(pickedVertexRep)))
-							{
-								// Reset pick point
-								infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl,
-										pickingTriggerMouseAdapter.getPickedPoint().x, 
-										pickingTriggerMouseAdapter.getPickedPoint().y);
-								
-								selectedVertex = pickedVertexRep;
-								bSelectionChanged = true;
-							}
+							// Reset pick point
+							infoAreaRenderer.convertWindowCoordinatesToWorldCoordinates(gl,
+									pickingTriggerMouseAdapter.getPickedPoint().x, 
+									pickingTriggerMouseAdapter.getPickedPoint().y);
+							
+							selectedVertex = pickedVertexRep;
+							bSelectionChanged = true;
+							
+							loadNodeInformationInBrowser(((PathwayVertexGraphItem)pickedVertexRep.getAllItemsByProp(
+									EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
 							
 							break;
 					}			
@@ -939,8 +951,10 @@ implements IMediatorReceiver, IMediatorSender {
 					switch (tempPick.getPickingMode())
 					{						
 						case DRAGGED:	
-
-							dragAndDrop.startDragAction(iPickedPathwayTextureID);
+							
+							if (!dragAndDrop.isDragActionRunning())
+								dragAndDrop.startDragAction(iPickedPathwayTextureID);
+							
 							break;
 							
 						case CLICKED:
@@ -1012,12 +1026,18 @@ implements IMediatorReceiver, IMediatorSender {
 									dragAndDrop.stopDragAction();
 								}
 							} 
-							else if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_TRASH_CAN_PICKING_ID)
+							break;
+						
+						case DRAGGED:
+							
+							if (iPickedElementID == GLPathwayMemoPad.MEMO_PAD_TRASH_CAN_PICKING_ID)
 							{
-								// Remove dragged object from memo pad
-								memoPad.removePathwayFromMemoPad(dragAndDrop.getDraggedObjectedId());
-								
-								dragAndDrop.stopDragAction();
+								if (dragAndDrop.getDraggedObjectedId() != -1)
+								{
+									// Remove dragged object from memo pad
+									memoPad.removePathwayFromMemoPad(dragAndDrop.getDraggedObjectedId());
+									dragAndDrop.stopDragAction();
+								}
 							}
 							break;
 					}
@@ -1070,6 +1090,8 @@ implements IMediatorReceiver, IMediatorSender {
 		// Prevent slerp action if pathway is already in layered view
 		if (!pathwayLayeredLayer.containsElement(iPathwayId))
 		{
+			pathwayPoolLayer.addElement(iPathwayId);
+
 			// Slerp to layered pathway view
 			slerpAction = new SlerpAction(iPathwayId, pathwayPoolLayer, false);
 
@@ -1139,7 +1161,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		// Remove pathways from stacked layer view
 		pathwayLayeredLayer.removeAllElements();
-		
+		pathwayPoolLayer.removeAllElements();
 		refHashPathwayContainingSelectedVertex2VertexCount.clear();
 		
 		Iterator<IGraphItem> iterIdenticalPathwayGraphItemReps = 
@@ -1154,8 +1176,10 @@ implements IMediatorReceiver, IMediatorSender {
 			identicalPathwayGraphItemRep = iterIdenticalPathwayGraphItemReps.next();
 	
 			iPathwayId = ((PathwayGraph)identicalPathwayGraphItemRep
-					.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getKeggId();
+					.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
 
+			pathwayPoolLayer.addElement(iPathwayId);
+			
 			// Prevent slerp action if pathway is already in layered view
 			if (!pathwayLayeredLayer.containsElement(iPathwayId))
 			{
@@ -1163,7 +1187,7 @@ implements IMediatorReceiver, IMediatorSender {
 						.getCapacity())
 				{
 					iMaxPathwayCount++;
-	
+					
 					// Slerp to layered pathway view
 					SlerpAction slerpAction = new SlerpAction(iPathwayId,
 							pathwayPoolLayer, false);

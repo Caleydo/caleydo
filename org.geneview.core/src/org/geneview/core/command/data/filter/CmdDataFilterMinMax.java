@@ -33,12 +33,12 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	private IStorage myStorage = null;
 	private StorageType myStorageType = null;
 	
-	private int iMinValue;
-	private int iMaxValue;	
-	private float fMinValue;
-	private float fMaxValue;
-	private double dMinValue;
-	private double dMaxValue;
+	private int iMinValue = Integer.MAX_VALUE;
+	private int iMaxValue = Integer.MIN_VALUE;	
+	private float fMinValue = Float.MAX_VALUE;
+	private float fMaxValue = Float.MIN_VALUE;
+	private double dMinValue = Double.MAX_VALUE;
+	private double dMaxValue = Double.MIN_VALUE;
 	
 //	private int iSetMinValue;
 //	private int iSetMaxValue;	
@@ -132,12 +132,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 			for(int iCount = 0; iCount < myStorage.getArrayInt().length; iCount++)
 			{
 				int iCurrentValue = (myStorage.getArrayInt())[iCount];
-				if (iCount == 0)
-				{
-					iMinValue = iCurrentValue;
-					iMaxValue = iCurrentValue;	
-					continue;
-				}
+				
+				// TODO handle NaN values
+				
 				if(iCurrentValue < iMinValue)
 					iMinValue = iCurrentValue;
 				if(iCurrentValue > iMaxValue)
@@ -152,12 +149,10 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 				//System.out.println(fMinValue +"/" +fMaxValue);
 				
 				float fCurrentValue = (myStorage.getArrayFloat())[iCount];
-				if (iCount == 0)
-				{
-					fMinValue = fCurrentValue;
-					fMaxValue = fCurrentValue;	
+
+				if (Float.isNaN(fCurrentValue))
 					continue;
-				}
+				
 				if(fCurrentValue < fMinValue)
 				{
 					fMinValue = fCurrentValue;

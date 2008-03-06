@@ -356,6 +356,18 @@ implements IMediatorReceiver, IMediatorSender {
 					
 					selectedVertex = tmpVertexGraphItemRep;
 					
+					// Write currently selected vertex to selection set and trigger upate
+					int[] iArTmpSelectionId = new int[1];
+					int[] iArTmpDepth = new int[1];
+					iArTmpSelectionId[0] = selectedVertex.getId();
+					iArTmpDepth[0] = 0;
+					alSetSelection.get(0).getWriteToken();
+					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+					alSetSelection.get(0).returnWriteToken();
+									
+					bIsDisplayListDirtyLocal = true;
+					bIsDisplayListDirtyRemote = true;
+					
 					int iGeneID = generalManager.getSingelton().getGenomeIdManager()
 						.getIdIntFromStringByMapping(
 								tmpVertexGraphItem.getName().substring(4), 
@@ -363,6 +375,7 @@ implements IMediatorReceiver, IMediatorSender {
 							
 					if (iGeneID == -1)
 					{	
+						pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 						return;
 					}
 					
@@ -373,29 +386,10 @@ implements IMediatorReceiver, IMediatorSender {
 
 					int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
 					
-//					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-//							tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X  * vecScaling.x(), 
-//							(iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()), 
-//							ESelectionMode.AddPick);
-					
 					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
 							(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
 							((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y()), 
 							ESelectionMode.AddPick);
-					
-					// Trigger update
-
-					// Write currently selected vertex to selection set
-					int[] iArTmpSelectionId = new int[1];
-					int[] iArTmpDepth = new int[1];
-					iArTmpSelectionId[0] = iAccessionID;
-					iArTmpDepth[0] = 0;
-					alSetSelection.get(0).getWriteToken();
-					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-					alSetSelection.get(0).returnWriteToken();
-									
-					bIsDisplayListDirtyLocal = true;
-					bIsDisplayListDirtyRemote = true;
 				}
 			}
 			

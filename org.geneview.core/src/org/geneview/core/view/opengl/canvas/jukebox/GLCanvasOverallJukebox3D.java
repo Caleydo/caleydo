@@ -58,6 +58,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private GLConnectionLineRenderer glConnectionLineRenderer;
 	
+	private int iDraggedViewID = -1;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -220,9 +222,11 @@ implements IMediatorReceiver, IMediatorSender {
 				underInteractionLayer.addElement(iViewId);
 				underInteractionLayer.setElementVisibilityById(true, iViewId);
 			}
-			
-			stackLayer.addElement(iViewId);
-			stackLayer.setElementVisibilityById(true, iViewId);
+			else
+			{
+				stackLayer.addElement(iViewId);
+				stackLayer.setElementVisibilityById(true, iViewId);
+			}
 			
 			tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
 			
@@ -316,6 +320,11 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
+		
+		// Check if pathway is valid
+		if(iViewId == -1)
+			return;
+		
 		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
 		renderViewById(gl, iViewId, underInteractionLayer);
 		gl.glPopName();
@@ -330,9 +339,9 @@ implements IMediatorReceiver, IMediatorSender {
 		{		
 			iViewId = iterElementList.next();		
 			
-//			// Check if pathway is visible
-//			if(!stackLayer.getElementVisibilityById(iPathwayId))
-//				continue;
+			// Check if pathway is valid
+			if(iViewId == -1)
+				continue;
 			
 			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
 			renderViewById(gl, iViewId, stackLayer);		
@@ -427,24 +436,76 @@ implements IMediatorReceiver, IMediatorSender {
 	{
 		ArrayList<Pick> alHits = null;		
 		
-//		alHits = pickingManager.getHits(iUniqueId, EPickingType.VIEW_PICKING);		
-//		if(alHits != null)
-//		{			
-//			if (alHits.size() != 0 )
-//			{
-//				for (int iCount = 0; iCount < alHits.size(); iCount++)
-//				{
-//					int iViewId = pickingManager.getExternalIDFromPickingID(
-//							iUniqueId, alHits.get(iCount).getPickingID());					
-//					
-//					loadViewToUnderInteractionLayer(iViewId);
-//				}
-//				
-//				pickingManager.flushHits(iUniqueId, EPickingType.VIEW_PICKING);
-//			}
-//		}	
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.VIEW_SELECTION);		
+		if(alHits != null)
+		{			
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iViewID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+						
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:			
+					
+							if (iDraggedViewID == -1 || iViewID == iDraggedViewID)
+							{
+								pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
+								return;
+							}
+							
+							if (stackLayer.containsElement(iViewID))
+							{
+								int iDestPositionIndex = stackLayer.getPositionIndexByElementId(iViewID);
+								
+								if (stackLayer.containsElement(iDraggedViewID))
+								{
+									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
+									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
+								}		
+								else if (underInteractionLayer.containsElement(iDraggedViewID))
+								{
+									int iSrcPositionIndex = underInteractionLayer.getPositionIndexByElementId(iDraggedViewID);
+									underInteractionLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
+								}
+								
+								stackLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
+							}		
+							else if (underInteractionLayer.containsElement(iViewID))
+							{
+								int iDestPositionIndex = underInteractionLayer.getPositionIndexByElementId(iViewID);
+								
+								if (stackLayer.containsElement(iDraggedViewID))
+								{
+									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
+									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
+								}		
+								
+								underInteractionLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
+							}	
+							
+							// Reset dragged view
+							iDraggedViewID = -1;
+							
+							break;
+					}
+				}
+			}
+		}	
 		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_ICON_SELECTION);		
+		if (iDraggedViewID != -1)
+		{
+			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION);
+			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_REMOVE_ICON_SELECTION);
+			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_SWITCH_ICON_SELECTION);
+			pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
+			return;
+		}
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION);		
 		if(alHits != null)
 		{			
 			if (alHits.size() != 0 )
@@ -459,12 +520,65 @@ implements IMediatorReceiver, IMediatorSender {
 					{						
 						case CLICKED:
 							loadViewToUnderInteractionLayer(iExternalID);
+							break;
 					}
 				}
 			}
 		}	
 		
-		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_ICON_SELECTION);
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_REMOVE_ICON_SELECTION);		
+		if(alHits != null)
+		{			
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+						
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:
+
+							if (underInteractionLayer.containsElement(iExternalID))
+								underInteractionLayer.removeElement(iExternalID);
+							if (stackLayer.containsElement(iExternalID))
+								stackLayer.removeElement(iExternalID);
+							
+							break;
+					}
+				}
+			}
+		}	
+		
+		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_SWITCH_ICON_SELECTION);		
+		if(alHits != null)
+		{			
+			if (alHits.size() != 0 )
+			{
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
+				{
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+						
+					switch (tempPick.getPickingMode())
+					{						
+						case CLICKED:
+
+							iDraggedViewID = iExternalID;	
+							
+							break;
+					}
+				}
+			}
+		}	
+		
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION);
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_REMOVE_ICON_SELECTION);
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_SWITCH_ICON_SELECTION);
+		pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
 	}
 	
 	private void loadViewToUnderInteractionLayer(final int iViewId) {

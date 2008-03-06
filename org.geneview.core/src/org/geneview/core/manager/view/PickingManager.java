@@ -433,7 +433,9 @@ public class PickingManager extends AAbstractManager
 						
 			// check here for all icons in the toolbox that the overall should handle
 			// FIXME: longterm: not the nicest thing, removes generality from picking manager
-			if(iType == EPickingType.BUCKET_ICON_SELECTION.ordinal())
+			if(iType == EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.BUCKET_SWITCH_ICON_SELECTION.ordinal())
 			{
 				
 				iSignature = getSignatureFromPickingID(iPickingID, iViewID);

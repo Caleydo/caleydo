@@ -4,7 +4,9 @@ package org.geneview.core.manager.view;
 public enum EPickingType
 {
 	// overall jukebox
-	BUCKET_ICON_SELECTION,	
+	BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION,	
+	BUCKET_REMOVE_ICON_SELECTION,
+	BUCKET_SWITCH_ICON_SELECTION,
 	VIEW_SELECTION,
 		
 	// parallel coordinates

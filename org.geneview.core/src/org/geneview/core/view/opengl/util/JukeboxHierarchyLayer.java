@@ -155,6 +155,16 @@ public class JukeboxHierarchyLayer {
 		llElementId.remove((Integer)iElementId);
 		llElementIdImportanceQueue.remove((Integer)iElementId);
 		llElementIdVisibleState.remove((Integer)iElementId);
+		
+//		if (llElementId.contains((Integer)iElementId))
+//			llElementId.set(llElementId.indexOf((Integer)iElementId), -1);
+//	
+//		if (llElementIdImportanceQueue.contains((Integer)iElementId))
+//			llElementIdImportanceQueue.set(llElementIdImportanceQueue.indexOf((Integer)iElementId), -1);
+//
+//		if (llElementIdVisibleState.contains((Integer)iElementId))
+//			llElementIdVisibleState.set(llElementIdVisibleState.indexOf((Integer)iElementId), false);
+
 	}
 	
 	public void removeAllElements() {
@@ -167,6 +177,27 @@ public class JukeboxHierarchyLayer {
 	public boolean containsElement(int iElementId) {
 		
 		return llElementId.contains(iElementId);
+	}
+	
+//	public int replaceElement(int iElementToReplaceId, int iNewElementId) {
+//		
+//		if (llElementId.contains(iElementToReplaceId))
+//			llElementId.set(llElementId.indexOf(iElementToReplaceId),iNewElementId);
+//			
+//		if (llElementIdImportanceQueue.contains(iElementToReplaceId))
+//			llElementIdImportanceQueue.set(llElementIdImportanceQueue.indexOf(iElementToReplaceId),iNewElementId);
+//		
+////		if (llElementIdVisibleState.contains(iElementToReplaceId))
+////			llElementIdVisibleState.set(llElementIdVisibleState.indexOf(iElementToReplaceId), true);
+//		
+//		return llElementId.indexOf(iNewElementId);
+//	}
+	
+	public void setElementByPositionIndex(final int iPositionIndex,
+			final int iElementId) {
+	
+		llElementId.set(iPositionIndex, iElementId);
+		llElementIdImportanceQueue.set(iPositionIndex, iElementId);
 	}
 	
 	public final Transform getTransformByElementId(int iElementId) {

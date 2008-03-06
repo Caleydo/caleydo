@@ -18,9 +18,9 @@ extends AColorMapping {
 	
 	private static final int MAPPING_WIDTH = 100;
 	
-	private Vec3f color_1 = new Vec3f(1,0,0); // red
+	private Vec3f color_1 = new Vec3f(0,1,0); // green
 	private Vec3f color_2 = new Vec3f(1,1,0); // yellow
-	private Vec3f color_3 = new Vec3f(0,1,0); // green
+	private Vec3f color_3 = new Vec3f(1,0,0); // red
 
 	private float fMappingWidth_div_Mid;
 	
@@ -82,7 +82,7 @@ extends AColorMapping {
 	
 	public Vec3f colorMappingLookup(final float fLookupValue) {
 		
-		if (( fLookupValue < fMin ) || (fLookupValue > fMax)) {
+		if (( fLookupValue < fMin ) || (fLookupValue > fMax) || Float.isNaN(fLookupValue)) {
 			return color_outOfRange;
 		}
 		

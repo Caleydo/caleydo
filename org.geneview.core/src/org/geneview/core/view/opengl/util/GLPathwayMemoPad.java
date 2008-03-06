@@ -34,9 +34,9 @@ public class GLPathwayMemoPad {
 
 	public static final int MEMO_PAD_SELECTION = 4;
 	public static final int MEMO_PAD_PICKING_ID = 1;
-	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 1;
+	public static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 2;
 	
-	private static float SCALING_FACTOR_MEMO_PAD = 0.3f;
+	private static float SCALING_FACTOR_MEMO_PAD = 0.4f;
 	
 	private JukeboxHierarchyLayer memoPad;
 	
@@ -72,7 +72,7 @@ public class GLPathwayMemoPad {
 		{
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(fMemoPos, -2f, 0.1f));
+			transform.setTranslation(new Vec3f(fMemoPos, -2.15f, 0.1f));
 			transform.setScale(new Vec3f(
 					SCALING_FACTOR_MEMO_PAD,
 					SCALING_FACTOR_MEMO_PAD,
@@ -80,7 +80,7 @@ public class GLPathwayMemoPad {
 			memoPad.setTransformByPositionIndex(iMemoIndex,
 					transform);			
 
-			fMemoPos += 1f;
+			fMemoPos += 0.9f;
 		}
 		
 		try {			

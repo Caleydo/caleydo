@@ -44,8 +44,6 @@ public class GLPathwayManager {
 
 	private IGeneralManager refGeneralManager;
 	
-	
-	
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
 	
@@ -417,10 +415,10 @@ public class GLPathwayManager {
 		gl.glLineWidth(3);
 		
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.001f);
-		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.001f);
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.001f);
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, 0.001f);		
+		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
+		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.02f);
+		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.02f);
+		gl.glVertex3f(-fNodeWidth, -fNodeHeight, 0.02f);		
         gl.glEnd();
 	}
 	
@@ -478,13 +476,9 @@ public class GLPathwayManager {
 			PathwayGraph refContainingPathway) {
 		
 		Vec3f tmpNodeColor = null;
-		
-		// Create and store unique picking ID for that object
-//		if (bPickingRendering)
-//		{
-			gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-					.getPickingID(containingView.getId(), EPickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
-//		}
+
+		gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+				.getPickingID(containingView.getId(), EPickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
@@ -681,7 +675,7 @@ public class GLPathwayManager {
 			tmpColor = new Vec3f(0,0,0);
 		}
 
-		gl.glLineWidth(3);
+		gl.glLineWidth(4);
 		gl.glColor4f(tmpColor.x(), tmpColor.y(), tmpColor.z(), 1);
 		gl.glBegin(GL.GL_LINES);
 		
@@ -836,7 +830,7 @@ public class GLPathwayManager {
 					int iCurrentElement = iRowIndex * iMappingRowCount + iColumnIndex;
 
 					if (iCurrentElement < alMappingColor.size())
-						tmpNodeColor = alMappingColor.get((iRowIndex+1) * iColumnIndex);
+						tmpNodeColor = alMappingColor.get(iCurrentElement);//(iRowIndex+1) * iColumnIndex);
 					else
 						continue;
 					

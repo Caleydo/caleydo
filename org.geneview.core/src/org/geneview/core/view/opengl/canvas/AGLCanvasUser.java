@@ -118,9 +118,6 @@ implements GLEventListener {
 		((GLEventListener)parentGLCanvas).init(drawable);
 
 		initLocal(drawable.getGL());
-		
-	
-		
 	}
 	
 	/*
@@ -163,7 +160,7 @@ implements GLEventListener {
 	    
 	    double fAspectRatio = (double) height / (double) width;
 
-	    gl.glViewport(0, 0, width, height);
+	    gl.glViewport(x, y, width, height);
 	    gl.glMatrixMode(GL.GL_PROJECTION);
 	    gl.glLoadIdentity();
 	    

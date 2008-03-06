@@ -106,7 +106,7 @@ extends GeneralRenderStyle {
 		compoundNodeColorGeneMapped = new Vec3f(0.3f,0.3f,0.3f);
 		pathwayNodeColor 			= new Vec3f(0.5f, 1f, 0.5f);
 		pathwayNodeColorGeneMapped 	= new Vec3f(0.8f,0.8f,0.8f); // light gray
-		highlightedNodeColor 		= new Vec3f(1,0,0);
+		highlightedNodeColor 		= new Vec3f(0,0,1);
 		neighborhoodNodeColorArray 	= new Vec3f [neighborhoodNodeColorArraysize];
 		
 		/* currently highlighted */
@@ -120,7 +120,7 @@ extends GeneralRenderStyle {
 		neighborhoodNodeColorArray[2] = new Vec3f(0.5f, 0.5f, 1.0f);
 		neighborhoodNodeColorArray[3] = new Vec3f(0.8f, 0.8f, 1.0f);
 
-		layerConnectionLinesColor = highlightedNodeColor;
+		layerConnectionLinesColor = new Vec3f(1,0,0);
 		
 		relationEdgeLineStyle 	= EdgeLineStyle.NORMAL;
 		reactionEdgeLineStyle 	= EdgeLineStyle.NORMAL;

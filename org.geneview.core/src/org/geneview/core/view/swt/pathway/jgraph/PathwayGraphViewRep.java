@@ -479,6 +479,14 @@ extends APathwayGraphViewRep {
 		// create node
 		DefaultGraphCell refGraphCell = new DefaultGraphCell(vertexRep);
 
+
+		if(((PathwayVertexGraphItemRep) refGraphCell.getUserObject())
+				.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.group))
+		{
+			// Ignore KEGG groups
+			return;
+		}
+		
 		hashVertexRep2GraphCell.put(vertexRep, refGraphCell);
 
 		AttributeMap changedMap = refGraphCell.getAttributes();
