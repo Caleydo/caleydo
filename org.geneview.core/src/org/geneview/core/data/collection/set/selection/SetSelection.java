@@ -30,9 +30,9 @@ implements ISetSelection
 {
 	// TODO: replace this with a storage that takes ArrayLists
 	
-	private ArrayList<Integer> iAlSelectionID;
-	private ArrayList<Integer> iAlSelectionGroup;
-	private ArrayList<Integer> iAlSelectionOptionalData;
+	private ArrayList<Integer> iAlSelectionID = null;
+	private ArrayList<Integer> iAlSelectionGroup = null;
+	private ArrayList<Integer> iAlSelectionOptionalData = null;
 
 	/**
 	 * Constructor.
@@ -46,10 +46,6 @@ implements ISetSelection
 		super(iSetCollectionId, 
 				refGeneralManager, 
 				SetType.SET_SELECTION);
-		
-		iAlSelectionID = new ArrayList<Integer>();
-		iAlSelectionGroup = new ArrayList<Integer>();
-		iAlSelectionOptionalData = new ArrayList<Integer>();
 		
 //		/** add missing objects for optional data */
 //		vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));		
@@ -249,5 +245,48 @@ implements ISetSelection
 	 */
 	public String toString() {
 		return sLabel;
+	}
+	
+	public void mergeSelection(ArrayList<Integer> iAlNewSelectionID,
+			ArrayList<Integer> iAlNewSelectionGroup,
+			ArrayList<Integer> iAlNewOptional)
+	{
+		if(iAlSelectionID == null)
+		{
+			setAllSelectionDataArrays(iAlNewSelectionID, iAlNewSelectionGroup, iAlSelectionOptionalData);
+		}
+		
+		int iCount = 0;
+		for(Integer iCurrent : iAlNewSelectionID)
+		{
+			
+			if(iAlSelectionID.contains(iCurrent))
+			{
+				int iIndex = iAlSelectionID.indexOf(iCurrent);
+				if(iAlNewSelectionGroup.get(iCount) == -1)
+				{
+					iAlSelectionID.remove(iIndex);
+					if(iAlSelectionGroup != null)
+						iAlSelectionGroup.remove(iIndex);
+					if(iAlSelectionOptionalData != null)
+						iAlSelectionOptionalData.remove(iIndex);
+				}
+				else
+				{				
+					iAlSelectionGroup.set(iIndex, iAlNewSelectionGroup.get(iCount));
+					if(iAlSelectionOptionalData != null)
+						iAlSelectionOptionalData.set(iIndex, iAlNewOptional.get(iCount));
+				}
+			}
+			else
+			{
+				iAlSelectionID.add(iCurrent);
+				if(iAlSelectionGroup != null)
+					iAlSelectionGroup.add(iAlNewSelectionGroup.get(iCount));
+				if(iAlSelectionOptionalData != null)
+					iAlSelectionOptionalData.add(iAlNewSelectionGroup.get(iCount));
+			}
+			iCount++;
+		}
 	}
 }

@@ -1364,10 +1364,11 @@ implements IMediatorReceiver, IMediatorSender
 
 		// contains type - 0 for not selected 1 for selected
 		ArrayList<Integer> iAlGroup = refSetSelection.getGroupArray();
+		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
 		// iterate here		
 		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iAlSelection);
 		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices);
-		setSelection(iAlSelectionStorageIndices);
+		setSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
 		
 		int iSelectedAccessionID = 0;
 		int iSelectedStorageIndex = 0;
@@ -1461,7 +1462,9 @@ implements IMediatorReceiver, IMediatorSender
 		return iAlSelection;
 	}
 	
-	protected void setSelection(ArrayList<Integer> iAlSelection)
+	protected void setSelection(ArrayList<Integer> iAlSelection, 
+			ArrayList<Integer> iAlGroup,
+			ArrayList<Integer> iAlOptional)
 	{
 //		ArrayList<Integer> alCurrentSelection = new ArrayList<Integer>();
 //		int[] iArCurrentSelection = alSetSelection.get(0).getSelectionIdArray();
@@ -1484,7 +1487,7 @@ implements IMediatorReceiver, IMediatorSender
 //			iArSelection[iSelectionIndex] = iAlSelection.get(iSelectionIndex);
 //		}
 	
-		alSetSelection.get(0).setSelectionIdArray(iAlSelection);
+		alSetSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
 		
 		initSelections();
 		initPolyLineLists();
