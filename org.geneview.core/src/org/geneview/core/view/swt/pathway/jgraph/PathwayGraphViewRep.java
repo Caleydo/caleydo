@@ -233,30 +233,29 @@ extends APathwayGraphViewRep {
 
 					processSelectedCell();
 
-					int[] iArSelectedVertices = null;
-					int[] iArNeighborDistance = null;
+					ArrayList<Integer> iAlSelectedVertices = new ArrayList<Integer>();
+					ArrayList<Integer> iAlNeighborDistance = new ArrayList<Integer>();
 
 					// Convert Link List to int[]
 					Iterator<Integer> iter_I = iLLSelectedVertices.iterator();
-					iArSelectedVertices = new int[iLLSelectedVertices.size()];
 					for (int i = 0; iter_I.hasNext(); i++)
 					{
-						iArSelectedVertices[i] = iter_I.next().intValue();
+						iAlSelectedVertices.add(iter_I.next());//.intValue();
 					}
 
 					iter_I = iLLNeighborDistance.iterator();
-					iArNeighborDistance = new int[iLLNeighborDistance.size()];
+					//iArNeighborDistance = new int[iLLNeighborDistance.size()];
 					for (int i = 0; iter_I.hasNext(); i++)
 					{
-						iArNeighborDistance[i] = iter_I.next().intValue();
+						iAlNeighborDistance.add(iter_I.next());//.intValue();
 					}
 
-					int[] iArPathway = new int[1];
-					iArPathway[0] = refCurrentPathway.getId();
+					ArrayList<Integer> iAlPathway = new ArrayList<Integer>(1);
+					iAlPathway.add(refCurrentPathway.getId());
 					alSetSelection.get(0).updateSelectionSet(iParentContainerId,
-							iArSelectedVertices, 
-							iArNeighborDistance,
-							iArPathway);
+							iAlSelectedVertices, 
+							iAlNeighborDistance,
+							iAlPathway);
 
 				}// if(refCurrentPathway != 0)
 				else if (refCurrentPathwayImageMap != null)
@@ -893,26 +892,26 @@ extends APathwayGraphViewRep {
 		// Update neighborhood visualization on the fly
 		processSelectedCell();
 
-		int[] iArSelectedVertices = null;
-		int[] iArNeighborDistance = null;
+		ArrayList<Integer> iAlSelectedVertices = new ArrayList<Integer>();
+		ArrayList<Integer> iAlNeighborDistance = new ArrayList<Integer>();
 
 		// Convert Link List to int[]
 		Iterator<Integer> iter_I = iLLSelectedVertices.iterator();
-		iArSelectedVertices = new int[iLLSelectedVertices.size()];
+		//iArSelectedVertices = new int[iLLSelectedVertices.size()];
 		for (int i = 0; iter_I.hasNext(); i++)
 		{
-			iArSelectedVertices[i] = iter_I.next().intValue();
+			iAlSelectedVertices.add(iter_I.next());
 		}
 
 		iter_I = iLLNeighborDistance.iterator();
-		iArNeighborDistance = new int[iLLNeighborDistance.size()];
+		//iAlNeighborDistance = new int[iLLNeighborDistance.size()];
 		for (int i = 0; iter_I.hasNext(); i++)
 		{
-			iArNeighborDistance[i] = iter_I.next().intValue();
+			iAlNeighborDistance.add(iter_I.next());//.intValue();
 		}
 
 		alSetSelection.get(0).updateSelectionSet(iParentContainerId,
-				iArSelectedVertices, new int[0], iArNeighborDistance);
+				iAlSelectedVertices, null, iAlNeighborDistance);
 	}
 
 //	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
@@ -1162,11 +1161,13 @@ extends APathwayGraphViewRep {
 		// Trigger update with current pathway that dependent pathways 
 		// know which pathway is currently under interaction
 		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
-		int[] tmp = new int[1];
-		tmp[0] = iPathwayId;
-		refTmpStorage.setArrayInt(tmp);
+		ArrayList<Integer> tmp = new ArrayList<Integer>(1);
+		tmp.add(iPathwayId);
+		int[] iArTmp = new int[1];
+		iArTmp[0] = iPathwayId;
+		refTmpStorage.setArrayInt(iArTmp);
 		alSetSelection.get(0).updateSelectionSet(iParentContainerId,
-				new int[0], new int[0], tmp);
+				null, null, tmp);
 	}
 
 	/*
@@ -1185,16 +1186,22 @@ extends APathwayGraphViewRep {
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
 		refSetSelection.getReadToken();
-		int[] iArOptional = refSetSelection.getOptionalDataArray();
-		if (iArOptional.length != 0)
+		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
+		if (iAlOptional.size() != 0)
 		{
 			IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+			int[] iArOptional = new int[iAlOptional.size()];
+			for(int iCount = 0; iCount < iAlOptional.size(); iCount++)
+			{
+				iArOptional[iCount] = iAlOptional.get(iCount);
+			}
+			                          
 			refTmpStorage.setArrayInt(iArOptional);
-			loadPathwayFromFile(refSetSelection.getOptionalDataArray()[0]);
+			loadPathwayFromFile(refSetSelection.getOptionalDataArray().get(0));
 		}
 		
-		int[] iArSelectionId = refSetSelection.getSelectionIdArray();
-		if (iArSelectionId.length != 0)
+		ArrayList<Integer> iAlSelectionId = refSetSelection.getSelectionIdArray();
+		if (iAlSelectionId.size() != 0)
 		{
 			// Remove old selected vertices
 			iLLSelectedVertices.clear();
@@ -1207,7 +1214,7 @@ extends APathwayGraphViewRep {
 				PathwayVertexGraphItemRep selectedVertex = 
 					(PathwayVertexGraphItemRep) generalManager.getSingelton()
 						.getPathwayItemManager().getItem(
-								iArSelectionId[iSelectedVertexIndex]);
+								iAlSelectionId.get(iSelectedVertexIndex));
 				
 				if ( selectedVertex != null ) {
 

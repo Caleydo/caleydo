@@ -61,9 +61,9 @@ extends LocationAdapter
 		String sSearchPhrase_NCBIGeneId = "http://www.genome.jp/dbget-bin/www_bget?hsa+";
 		String sSearchPhrase_Pathway = "http://www.genome.jp/dbget-bin/show_pathway?hsa";
 		
-		int[] iArSelectionId = null;
-		int[] iArSelectionDepth = null;
-		int[] iArOptional = null;
+		ArrayList <Integer> iAlSelectionId = null;
+		ArrayList <Integer> iAlSelectionDepth = null;
+		ArrayList <Integer> iAlOptional = null;
 		
 		if(event.location.contains(sSearchPhrase_NCBIGeneId))
 		{
@@ -82,8 +82,8 @@ extends LocationAdapter
 			Iterator <IGraphItem> iterList = 
 				vertexItemBuffer.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
 			
-			ArrayList <Integer> iAlSelectionId = new ArrayList <Integer>();
-			ArrayList <Integer> iAlSelectionDepth = new ArrayList <Integer> ();
+			iAlSelectionId = new ArrayList <Integer>();
+			iAlSelectionDepth = new ArrayList <Integer> ();
 			
 			while (iterList.hasNext()) 
 			{
@@ -92,16 +92,7 @@ extends LocationAdapter
 				iAlSelectionDepth.add(0);
 			}
 			
-			// Trigger update with selected vertex
-			iArSelectionId = new int[iAlSelectionId.size()];
-			iArSelectionDepth = new int[iAlSelectionDepth.size()];
-			iArOptional = new int[0];
 			
-			for ( int iItemIndex = 0; iItemIndex < iAlSelectionId.size(); iItemIndex++) 
-			{
-				iArSelectionId[iItemIndex] = iAlSelectionId.get(iItemIndex).intValue();
-				iArSelectionDepth[iItemIndex] = iAlSelectionDepth.get(iItemIndex).intValue();	
-			}
 		}	
 		else if (event.location.contains(sSearchPhrase_Pathway))
 		{
@@ -126,10 +117,10 @@ extends LocationAdapter
 			iPathwayId = StringConversionTool.convertStringToInt(event.location
 					.substring(iPathwayIdIndex, event.location.lastIndexOf('+')), 0);
 			
-			iArSelectionId = new int[0];
-			iArSelectionDepth = new int[0];
-			iArOptional = new int[1];
-			iArOptional[0] = iPathwayId;
+//			iArSelectionId = new int[0];
+//			iArSelectionDepth = new int[0];
+			
+			iAlOptional.add(iPathwayId);
 		}
 		else
 		{
@@ -139,9 +130,9 @@ extends LocationAdapter
 		SetSelection tmpSelectionSet = 
 			(SetSelection) refGeneralManager.getSingelton().getSetManager().getItemSet(iSelectionSetId);
 		tmpSelectionSet.updateSelectionSet(iBrowserId, 
-				iArSelectionId,
-				iArSelectionDepth, 
-				iArOptional);
+				iAlSelectionId,
+				iAlSelectionDepth, 
+				iAlOptional);
 	}
 	
 	public void updateSkipNextChangeEvent(boolean bSkipNextChangeEvent) {

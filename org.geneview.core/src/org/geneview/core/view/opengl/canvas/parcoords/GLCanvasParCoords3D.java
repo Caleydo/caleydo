@@ -396,12 +396,12 @@ implements IMediatorReceiver, IMediatorSender
 			}
 		}	
 		
-		ArrayList<Integer> alTempList = new ArrayList<Integer>();
-		int[] iArTemp = alSetSelection.get(0).getSelectionIdArray();
-		for(int iCount = 0; iCount < iArTemp.length; iCount++)
-		{
-			alTempList.add(iArTemp[iCount]);
-		}
+		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
+//		A iArTemp = ;
+//		for(int iCount = 0; iCount < iArTemp.length; iCount++)
+//		{
+//			alTempList.add(iArTemp[iCount]);
+//		}
 		
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
@@ -1118,13 +1118,14 @@ implements IMediatorReceiver, IMediatorSender
 						{						
 							// Write currently selected vertex to selection set
 							// and trigger update event
-							int[] iArTmpSelectionId = new int[1];
-							int[] iArTmpDepth = new int[1];
-							iArTmpSelectionId[0] = iAccessionID;
-							iArTmpDepth[0] = 0;
+							ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
+							//iAlTmpSelectionId.add(1);
+							ArrayList<Integer> iAlTmpDepth = new ArrayList<Integer>(1);
+							iAlTmpSelectionId.add(iAccessionID);
+							iAlTmpDepth.add(2);
 							alSetSelection.get(0).getWriteToken();
 							alSetSelection.get(0).updateSelectionSet(iUniqueId, 
-									iArTmpSelectionId, iArTmpDepth, new int[0]);
+									iAlTmpSelectionId, iAlTmpDepth, null); // TODO check this
 							alSetSelection.get(0).returnWriteToken();
 						}
 					}
@@ -1359,12 +1360,12 @@ implements IMediatorReceiver, IMediatorSender
 
 		refSetSelection.getReadToken();
 		// contains all genes in center pathway (not yet)
-		int[] iArSelection = refSetSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
 
 		// contains type - 0 for not selected 1 for selected
-		int[] iArGroup = refSetSelection.getGroupArray();
+		ArrayList<Integer> iAlGroup = refSetSelection.getGroupArray();
 		// iterate here		
-		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iArSelection);
+		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iAlSelection);
 		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices);
 		setSelection(iAlSelectionStorageIndices);
 		
@@ -1377,9 +1378,9 @@ implements IMediatorReceiver, IMediatorSender
 		for(int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size();  iSelectionCount++)
 		{
 			// TODO: set this to 1 resp. later to a enum as soon as I get real data
-			if(iArGroup[iSelectionCount] == 1)
+			if(iAlGroup.get(iSelectionCount) == 1)
 			{
-				iSelectedAccessionID = iArSelection[iSelectionCount];
+				iSelectedAccessionID = iAlSelection.get(iSelectionCount);
 				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
 				
 				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
@@ -1476,27 +1477,27 @@ implements IMediatorReceiver, IMediatorSender
 //		testSet.addAll(iAlSelection);
 //		Integer[] integerArray = testSet.toArray();
 		
-		int[] iArSelection = new int[iAlSelection.size()];
-		
-		for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
-		{
-			iArSelection[iSelectionIndex] = iAlSelection.get(iSelectionIndex);
-		}
+//		int[] iArSelection = new int[iAlSelection.size()];
+//		
+//		for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
+//		{
+//			iArSelection[iSelectionIndex] = iAlSelection.get(iSelectionIndex);
+//		}
 	
-		alSetSelection.get(0).setSelectionIdArray(iArSelection);
+		alSetSelection.get(0).setSelectionIdArray(iAlSelection);
 		
 		initSelections();
 		initPolyLineLists();
 	}
 	
-	protected ArrayList<Integer> convertAccessionToExpressionIndices(int[] iArSelection)
+	protected ArrayList<Integer> convertAccessionToExpressionIndices(ArrayList<Integer> iAlSelection)
 	{
 //		int[] iArSelectionStorageIndices = new int[iArSelection.length];
 		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
-		for(int iCount = 0; iCount < iArSelection.length; iCount++)
+		for(int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
 			int iTmp = generalManager.getSingelton().getGenomeIdManager()
-				.getIdIntFromIntByMapping(iArSelection[iCount], EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
+				.getIdIntFromIntByMapping(iAlSelection.get(iCount), EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 			
 			if (iTmp == -1)
 				continue;

@@ -1069,15 +1069,17 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 				}
 			}
 
-			int[] iArSelectionId = new int[alSelectionId.size()];
-			int[] iArSelectionDepthData = new int[alSelectionId.size()];
-			int[] iArSelectionOptionalData = new int[alSelectionId.size()];
+//			int[] iArSelectionId = new int[alSelectionId.size()];
+//			int[] iArSelectionDepthData = new int[alSelectionId.size()];
+//			int[] iArSelectionOptionalData = new int[alSelectionId.size()];
 
+			ArrayList<Integer> iAlSelectionGroup = new ArrayList<Integer>();
 			for (int i = 0; i < alSelectionId.size(); i++)
 			{
-				iArSelectionId[i] = alSelectionId.get(i).intValue();
-				iArSelectionDepthData[i] = iModeValue;
-				iArSelectionOptionalData[i] = alSelectionId_PathwayId.get(i);
+				iAlSelectionGroup.add(iModeValue);
+				//iArSelectionId[i] = alSelectionId.get(i).intValue();
+				//iArSelectionDepthData[i] = iModeValue;
+				//iArSelectionOptionalData[i] = alSelectionId_PathwayId.get(i);
 			}
 
 			IStorage[] storageArray = new IStorage[3];
@@ -1087,9 +1089,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 						.getId(), generalManager, null);
 				selectionSet.setStorageByDim(storageArray, 0);
 			}
-
-			selectionSet.setAllSelectionDataArrays(iArSelectionId,
-					iArSelectionDepthData, iArSelectionOptionalData);
+			// TODO: use ArrayLists all the way
+//			ArrayList<Integer> iAlTmp = new ArrayList<Integer>();
+//			for(int iCount = 0; iCount < iArSelectionId.length; iCount++)
+//			{
+//				
+//			}
+			selectionSet.setAllSelectionDataArrays(alSelectionId,
+					iAlSelectionGroup, alSelectionId_PathwayId);
 
 			// Calls update with the ID of the PathwayViewRep
 			((EventPublisher) generalManager.getSingelton()
@@ -1182,18 +1189,23 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 				}
 			}
 
-			int[] iArSelectionId = new int[alSelectionId.size()];
-			int[] iArSelectionDepthData = new int[alSelectionId.size()];
-			int[] iArSelectionOptionalData = new int[alSelectionId.size()];
+//			int[] iArSelectionId = new int[alSelectionId.size()];
+//			int[] iArSelectionDepthData = new int[alSelectionId.size()];
+//			int[] iArSelectionOptionalData = new int[alSelectionId.size()];
 
+			ArrayList<Integer> iAlSelectionGroup = new ArrayList<Integer>();
 			for (int i = 0; i < alSelectionId.size(); i++)
 			{
-				iArSelectionId[i] = alSelectionId.get(i).intValue();
-				iArSelectionDepthData[i] = iModeValue;
-				iArSelectionOptionalData[i] = alSelectionId_PathwayId.get(i);
+				iAlSelectionGroup.add(iModeValue);
+			
+//				iArSelectionId[i] = alSelectionId.get(i).intValue();
+//				iArSelectionDepthData[i] = iModeValue;
+//				iArSelectionOptionalData[i] = alSelectionId_PathwayId.get(i);
 			}
 
 			IStorage[] storageArray = new IStorage[3];
+			
+			
 			for (int i = 0; i < 3; i++)
 			{
 				storageArray[i] = new FlatThreadStorageSimple(selectionSet
@@ -1201,8 +1213,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 				selectionSet.setStorageByDim(storageArray, 0);
 			}
 
-			selectionSet.setAllSelectionDataArrays(iArSelectionId,
-					iArSelectionDepthData, iArSelectionOptionalData);
+			selectionSet.setAllSelectionDataArrays(alSelectionId,
+					iAlSelectionGroup, alSelectionId_PathwayId);
 
 			// Calls update with the ID of the PathwayViewRep
 			((EventPublisher) generalManager.getSingelton()

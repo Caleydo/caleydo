@@ -96,10 +96,10 @@ implements IMediatorSender{;
 		if(iFoundPathwayId == -1)
 			return false;
 
-		int[] iArPathwayId = new int[1];
-		iArPathwayId[0] = iFoundPathwayId;
+		ArrayList<Integer> iAlPathwayId = new ArrayList<Integer>(1);
+		iAlPathwayId.add(iFoundPathwayId);
 		
-		triggerUpdate(new int[0], new int[0], iArPathwayId);
+		triggerUpdate(null, null, iAlPathwayId);
 		
 		return true;
 	}
@@ -154,18 +154,16 @@ implements IMediatorSender{;
 			iAlPathwayId.add( buffer.getKeggId() );
 		}							
 	
-		int[] iArSelectionId = new int[iAlSelectionId.size()];
-		int[] iArSelectionDepth = new int[iAlSelectionId.size()];
-		int[] iArSelectionOptional = new int[iAlSelectionId.size()];
+		
+		ArrayList<Integer> iAlSelectionDepth = new ArrayList<Integer>(0);
+		
 		
 		for ( int i=0; i < iAlSelectionId.size(); i++) 
 		{
-			iArSelectionId[i] = iAlSelectionId.get(i).intValue();
-			iArSelectionDepth[i] = 0;
-			iArSelectionOptional[i] = iAlPathwayId.get(i).intValue();
+			iAlSelectionDepth.add(0);
 		}
 		
-		triggerUpdate(iArSelectionId, iArSelectionDepth, iArSelectionOptional);
+		triggerUpdate(iAlSelectionId, iAlSelectionDepth, iAlPathwayId);
 		
 		return true;
 	}
@@ -182,17 +180,17 @@ implements IMediatorSender{;
 				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 	}
 	
-	private void triggerUpdate(int[] iArSelectionId,
-			int [] iArSelectionDepth,
-			int [] iArOptional) {
+	private void triggerUpdate(ArrayList<Integer> iAlSelectionId,
+			ArrayList<Integer> iAlSelectionDepth,
+			ArrayList<Integer> iAlOptional) {
 		
 		SetSelection tmpSelectionSet = 
 			(SetSelection) generalManager.getSingelton().getSetManager().getItemSet(iSearchSelectionSetId);
 		
 		tmpSelectionSet.updateSelectionSet(iUniqueId, 
-				iArSelectionId,
-				iArSelectionDepth, 
-				iArOptional);
+				iAlSelectionId,
+				iAlSelectionDepth, 
+				iAlOptional);
 	}
 
 	@Override

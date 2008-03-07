@@ -3,6 +3,8 @@
  */
 package org.geneview.core.data.collection.set.selection;
 
+import java.util.ArrayList;
+
 import org.geneview.core.data.collection.ISet;
 
 /**
@@ -21,19 +23,19 @@ import org.geneview.core.data.collection.ISet;
 public interface ISetSelection 
 extends ISet {
 
-	public void setSelectionIdArray(int[] iArSelectionId);
+	public void setSelectionIdArray(ArrayList<Integer> iAlSelectionId);
 	
-	public void setGroupArray(int[] iArSelectionGroup);
+	public void setGroupArray(ArrayList<Integer> iAlSelectionGroup);
 
-	public void setOptionalDataArray(int[] iArSelectionOptionalData);
+	public void setOptionalDataArray(ArrayList<Integer> iAlSelectionOptionalData);
 
-	public void setAllSelectionDataArrays(int[] iArSelectionId, 
-			int[] iArSelectionGroup, 
-			int[] iArSelectionOptionalData);
+	public void setAllSelectionDataArrays(ArrayList<Integer> iAlSelectionId, 
+			ArrayList<Integer> iAlSelectionGroup, 
+			ArrayList<Integer> iAlSelectionOptionalData);
 	
-	public int[] getSelectionIdArray();
+	public ArrayList<Integer> getSelectionIdArray();
 	
-	public int[] getGroupArray();
+	public ArrayList<Integer> getGroupArray();
 	
-	public int[] getOptionalDataArray();
+	public ArrayList<Integer> getOptionalDataArray();
 }

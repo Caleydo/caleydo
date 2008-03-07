@@ -166,36 +166,36 @@ public class GLPathwayManager {
 		iArSelectedEdgeRepId.clear();
 		
 		alSetSelection.get(1).getReadToken();
-		int[] iArTmpSelectedGraphItemIds = 
+		ArrayList<Integer> iAlTmpSelectedGraphItemIds = 
 			alSetSelection.get(1).getSelectionIdArray();
-		int[] iArTmpSelectedGraphItemDepth =
+		ArrayList<Integer> iAlTmpSelectedGraphItemDepth =
 			alSetSelection.get(1).getGroupArray();
 		alSetSelection.get(1).returnReadToken();
 		
-		if (iArTmpSelectedGraphItemIds.length == 0)
+		if (iAlTmpSelectedGraphItemIds.size() == 0)
 			return;
 		
 		// Copy selection IDs to array list object
-		for(int iItemIndex = 0; iItemIndex < iArTmpSelectedGraphItemIds.length; iItemIndex++) 
+		for(int iItemIndex = 0; iItemIndex < iAlTmpSelectedGraphItemIds.size(); iItemIndex++) 
 		{
 			// Check if ID is valid
-			if (iArTmpSelectedGraphItemIds[iItemIndex] == 0)
+			if (iAlTmpSelectedGraphItemIds.get(iItemIndex) == 0)
 				continue;
 			
 			hashSelectedVertexRepId2Depth.put(
-					iArTmpSelectedGraphItemIds[iItemIndex],
-					iArTmpSelectedGraphItemDepth[iItemIndex]);
+					iAlTmpSelectedGraphItemIds.get(iItemIndex),
+					iAlTmpSelectedGraphItemDepth.get(iItemIndex));
 
 			if (!bEnableIdenticalNodeHighlighting)
 				continue;
 			
 			// Perform identical node highlighting only on nodes with depth 0
-			if (iArTmpSelectedGraphItemDepth[iItemIndex] != 0)
+			if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
 				continue;
 			
 			Iterator<IGraphItem> iterGraphItems = 
 				((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
-						.getItem(iArTmpSelectedGraphItemIds[iItemIndex])).getAllItemsByProp(
+						.getItem(iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(
 								EGraphItemProperty.ALIAS_PARENT).iterator();
 			Iterator<IGraphItem> iterIdenticalGraphItemReps;
 			IGraphItem identicalNode;
@@ -221,8 +221,11 @@ public class GLPathwayManager {
 		// Store currently selected vertices back to selection set
 		Set<Entry<Integer, Integer>> setAllSelectedVertices = hashSelectedVertexRepId2Depth.entrySet();
 		
-		int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];  
-		int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
+//		int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];  
+//		int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
+		
+		ArrayList<Integer> iAlTmpGraphItemId = new ArrayList<Integer>();  
+		ArrayList<Integer> iAlTmpGraphItemDepth = new ArrayList<Integer>();
 		
 		Iterator<Entry<Integer, Integer>> iterAllSelectedVertices = setAllSelectedVertices.iterator();
 		
@@ -232,14 +235,14 @@ public class GLPathwayManager {
 		{
 			tmpEntry = iterAllSelectedVertices.next();
 			
-			iArTmpGraphItemId[iItemIndex] = tmpEntry.getKey();
-			iArTmpGraphItemDepth[iItemIndex] = tmpEntry.getValue();
+			iAlTmpGraphItemId.add(tmpEntry.getKey());
+			iAlTmpGraphItemDepth.add(tmpEntry.getValue());
 			iItemIndex++;
 		}
 	
 		alSetSelection.get(1).getWriteToken();
-		alSetSelection.get(1).setSelectionIdArray(iArTmpGraphItemId);	
-		alSetSelection.get(1).setGroupArray(iArTmpGraphItemDepth);
+		alSetSelection.get(1).setSelectionIdArray(iAlTmpGraphItemId);	
+		alSetSelection.get(1).setGroupArray(iAlTmpGraphItemDepth);
 		alSetSelection.get(1).returnWriteToken();
 	}
 	

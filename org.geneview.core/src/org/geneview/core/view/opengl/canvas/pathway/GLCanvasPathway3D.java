@@ -304,10 +304,10 @@ implements IMediatorReceiver, IMediatorSender {
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
 		refSetSelection.getReadToken();
-		int[] iArSelection = refSetSelection.getSelectionIdArray();
-		if (iArSelection.length != 0)
+		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
+		if (iAlSelection.size() != 0)
 		{
-			int iAccessionID = iArSelection[0];
+			int iAccessionID = iAlSelection.get(0);
 			
 			String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 				.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
@@ -578,14 +578,14 @@ implements IMediatorReceiver, IMediatorSender {
 					ESelectionMode.AddPick);
 
 			// Write currently selected vertex to selection set and trigger update
-			int[] iArTmpSelectionId = new int[1];
-			int[] iArTmpGroupId = new int[1];
-
-			iArTmpSelectionId[0] = iAccessionID;
-			iArTmpGroupId[0] = 1; 
+			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(1);
+			ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(1);
+		
+			iAlTmpSelectionId.add(iAccessionID);
+			iAlTmpGroupId.add(1); 
 			
 			alSetSelection.get(0).getWriteToken();
-			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpGroupId, new int[0]);
+			alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
 			alSetSelection.get(0).returnWriteToken();
 
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
@@ -637,22 +637,22 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 		
 		// Write currently selected vertex to selection set and trigger upate
-		int[] iArTmpSelectionId = new int[iAlSelectedGenes.size()];
-		int[] iArTmpGroupId = new int[iAlSelectedGenes.size()];
+		
+		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(iAlSelectedGenes.size());
 
 		for (int iGeneIndex = 0; iGeneIndex < iAlSelectedGenes.size(); iGeneIndex++)
 		{
-			iArTmpSelectionId[iGeneIndex] = iAlSelectedGenes.get(iGeneIndex);
+			
 			
 			// TODO enum for selction modes
 			if (iAlSelectedGenes.get(iGeneIndex) == iAccessionID)
-				iArTmpGroupId[iGeneIndex] = 1;
+				iAlTmpGroupId.add(1);
 			else
-				iArTmpGroupId[iGeneIndex] = 0;
+				iAlTmpGroupId.add(0);
 		}
 		
 		alSetSelection.get(0).getWriteToken();
-		alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpGroupId, new int[0]);
+		alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlSelectedGenes, iAlTmpGroupId, null);
 		alSetSelection.get(0).returnWriteToken();
 	}
 }

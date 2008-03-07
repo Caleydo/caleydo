@@ -3,6 +3,7 @@
  */
 package org.geneview.core.data.collection.set.selection;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.geneview.core.data.collection.IStorage;
@@ -21,10 +22,17 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class SetSelection 
 extends SetPlanarSimple 
-implements ISetSelection {
+implements ISetSelection 
+{
+	// TODO: replace this with a storage that takes ArrayLists
+	
+	private ArrayList<Integer> iAlSelectionID;
+	private ArrayList<Integer> iAlSelectionGroup;
+	private ArrayList<Integer> iAlSelectionOptionalData;
 
 	/**
 	 * Constructor.
@@ -39,90 +47,101 @@ implements ISetSelection {
 				refGeneralManager, 
 				SetType.SET_SELECTION);
 		
-		/** add missing objects for optional data */
-		vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));		
-		vecRefStorage_Array.add(2, new Vector<IStorage> (2));
+		iAlSelectionID = new ArrayList<Integer>();
+		iAlSelectionGroup = new ArrayList<Integer>();
+		iAlSelectionOptionalData = new ArrayList<Integer>();
+		
+//		/** add missing objects for optional data */
+//		vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));		
+//		vecRefStorage_Array.add(2, new Vector<IStorage> (2));
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.data.collection.selection.ISetSelection#setSelectionIdArray(int[])
 	 */
-	public void setSelectionIdArray(int[] iArSelectionId) {
-		
-		this.getWriteToken();
-		this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
-		
-		//TODO: fix this after CHI!
-//		IVirtualArray bufferVA= this.getVirtualArrayByDimAndIndex(0, 0);
-//		bufferVA.setOffset(0);
-//		bufferVA.setLength(iArSelectionId.length-1);
-		
-		this.returnWriteToken();
+	public void setSelectionIdArray(ArrayList<Integer> iAlSelectionId) 
+	{
+		this.iAlSelectionID = iAlSelectionId;
+//		this.getWriteToken();
+//		this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
+//		
+//		//TODO: fix this after CHI!
+////		IVirtualArray bufferVA= this.getVirtualArrayByDimAndIndex(0, 0);
+////		bufferVA.setOffset(0);
+////		bufferVA.setLength(iArSelectionId.length-1);
+//		
+//		this.returnWriteToken();
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.data.collection.selection.ISetSelection#setGroupArray(int[])
 	 */
-	public void setGroupArray(int[] iArSelectionGroup) {
+	public void setGroupArray(ArrayList<Integer> iAlSelectionGroup) {
 		
-		this.getWriteToken();
-		this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
+		this.iAlSelectionGroup = iAlSelectionGroup;
+//		this.getWriteToken();
+//		this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
 		
 		//TODO: fix this after CHI!
 //		IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, 1);
 //		bufferVA.setOffset(0);
 //		bufferVA.setLength(iArSelectionGroup.length-1);
 		
-		this.returnWriteToken();
+		//this.returnWriteToken();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.data.collection.selection.ISetSelection#setOptionalDataArray(int[])
 	 */
-	public void setOptionalDataArray(int[] iArSelectionOptionalData) {
+	public void setOptionalDataArray(ArrayList<Integer> iAlSelectionOptionalData)
+	{
+		this.iAlSelectionOptionalData = iAlSelectionOptionalData;
 		
-		this.getWriteToken();
-		this.getStorageByDimAndIndex(0, 2).setArrayInt(iArSelectionOptionalData);
+//		this.getWriteToken();
+//		this.getStorageByDimAndIndex(0, 2).setArrayInt(iArSelectionOptionalData);
 		
 		//TODO: fix this after CHI!
 //		IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, 2);
 //		bufferVA.setOffset(0);
 //		bufferVA.setLength(iArSelectionOptionalData.length-1);
 		
-		this.returnWriteToken();
+		//this.returnWriteToken();
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.data.collection.selection.ISetSelection#setAllSelectionDataArrays(int[], int[], int[])
 	 */
-	public void setAllSelectionDataArrays(int[] iArSelectionId, 
-			int[] iArSelectionGroup, 
-			int[] iArSelectionOptionalData) {
-		
-		if (( iArSelectionId.length != iArSelectionGroup.length )&&
-				(iArSelectionGroup.length != iArSelectionOptionalData.length))
-		{
-			throw new GeneViewRuntimeException("Try to set a SetSelection wiht array of different length!");		
-		}
-		
-		this.getWriteToken();
-		this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
-		this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
-		this.getStorageByDimAndIndex(0, 2).setArrayInt(iArSelectionOptionalData);
-		
-		//TODO: fix this after CHI!
-//		for ( int i=0; i<3; i++)
+	public void setAllSelectionDataArrays(ArrayList<Integer> iAlSelectionId, 
+			ArrayList<Integer> iAlSelectionGroup, 
+			ArrayList<Integer> iAlSelectionOptionalData) 
+	{
+		this.iAlSelectionID = iAlSelectionId;
+		this.iAlSelectionGroup = iAlSelectionGroup;
+		this.iAlSelectionOptionalData = iAlSelectionOptionalData;
+//		if (( iArSelectionId.length != iArSelectionGroup.length )&&
+//				(iArSelectionGroup.length != iArSelectionOptionalData.length))
 //		{
-//			IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, i);
-//			bufferVA.setOffset(0);
-//			bufferVA.setLength(iArSelectionId.length);
+//			throw new GeneViewRuntimeException("Try to set a SetSelection wiht array of different length!");		
 //		}
-		
-		this.returnWriteToken();
+//		
+//		this.getWriteToken();
+//		this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
+//		this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
+//		this.getStorageByDimAndIndex(0, 2).setArrayInt(iArSelectionOptionalData);
+//		
+//		//TODO: fix this after CHI!
+////		for ( int i=0; i<3; i++)
+////		{
+////			IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, i);
+////			bufferVA.setOffset(0);
+////			bufferVA.setLength(iArSelectionId.length);
+////		}
+//		
+//		this.returnWriteToken();
 	}
 	
 	/* (non-Javadoc)
@@ -136,39 +155,42 @@ implements ISetSelection {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.data.collection.selection.ISetSelection#getSelectionIdArray()
 	 */
-	public int[] getSelectionIdArray() {
+	public ArrayList<Integer> getSelectionIdArray() {
 		
-		this.getReadToken();
-		int[] tmp = this.getStorageByDimAndIndex(0, 0).getArrayInt();
-		this.returnReadToken();
-		
-		return tmp;
+//		this.getReadToken();
+//		int[] tmp = this.getStorageByDimAndIndex(0, 0).getArrayInt();
+//		this.returnReadToken();
+//		
+//		return tmp;
+		return iAlSelectionID;
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.data.collection.selection.ISetSelection#getGroupArray()
 	 */
-	public int[] getGroupArray() {	
+	public ArrayList<Integer> getGroupArray() {	
 
-		this.getReadToken();
-		int[] tmp = this.getStorageByDimAndIndex(0, 1).getArrayInt();
-		this.returnReadToken();
-		
-		return tmp;
+//		this.getReadToken();
+//		int[] tmp = this.getStorageByDimAndIndex(0, 1).getArrayInt();
+//		this.returnReadToken();
+//		
+//		return tmp;
+		return iAlSelectionGroup;
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.data.collection.selection.ISetSelection#getOptionalDataArray()
 	 */
-	public int[] getOptionalDataArray() {
+	public ArrayList<Integer> getOptionalDataArray() {
 
-		this.getReadToken();
-		int[] tmp = this.getStorageByDimAndIndex(0, 2).getArrayInt();
-		this.returnReadToken();
-		
-		return tmp;	
+//		this.getReadToken();
+//		int[] tmp = this.getStorageByDimAndIndex(0, 2).getArrayInt();
+//		this.returnReadToken();
+//		
+//		return tmp;	
+		return iAlSelectionOptionalData;
 	}
 	
 	
@@ -185,13 +207,13 @@ implements ISetSelection {
 	 * @param iArNeighborVertices
 	 */
 	public void updateSelectionSet(int iUniqueTriggerID, 
-			int[] iArSelectionVertexId,
-			int[] iArSelectionGroup,
-			int[] iArNeighborVertices) {
+			ArrayList<Integer> iAlSelectionVertexId,
+			ArrayList<Integer> iAlSelectionGroup,
+			ArrayList<Integer> iAlNeighborVertices) {
 	
 			// Update selection SET data.
 			this.setAllSelectionDataArrays(
-					iArSelectionVertexId, iArSelectionGroup, iArNeighborVertices);
+					iAlSelectionVertexId, iAlSelectionGroup, iAlNeighborVertices);
 			
 			updateSelectionSet(iUniqueTriggerID);
 	}

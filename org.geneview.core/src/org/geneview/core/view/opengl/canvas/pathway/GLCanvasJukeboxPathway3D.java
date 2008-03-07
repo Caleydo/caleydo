@@ -269,13 +269,13 @@ implements IMediatorReceiver, IMediatorSender {
 		if (bUpdateReceived)
 		{
 			// unpack selection item reps
-			int[] iArSelectionId = alSetSelection.get(1).getSelectionIdArray();
+			ArrayList<Integer> iAlSelectionId = alSetSelection.get(1).getSelectionIdArray();
 			ArrayList<IGraphItem> alSelectedVertexReps = new ArrayList<IGraphItem>();
 			IPathwayItemManager pathwayItemManager = generalManager.getSingelton().getPathwayItemManager();
-			for (int iItemIndex = 0; iItemIndex < iArSelectionId.length; iItemIndex++)
+			for (int iItemIndex = 0; iItemIndex < iAlSelectionId.size(); iItemIndex++)
 			{
 				alSelectedVertexReps.add(
-						(IGraphItem) pathwayItemManager.getItem(iArSelectionId[iItemIndex]));
+						(IGraphItem) pathwayItemManager.getItem(iAlSelectionId.get(iItemIndex)));
 			}
 			loadDependentPathways(gl, alSelectedVertexReps);
 			
@@ -727,18 +727,18 @@ implements IMediatorReceiver, IMediatorSender {
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
 		refSetSelection.getReadToken();
-		int[] iArOptional = refSetSelection.getOptionalDataArray();
-		if (iArOptional.length != 0)
+		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
+		if (iAlOptional.size() != 0)
 		{
 			iLazyPathwayLoadingId = 
-				refSetSelection.getOptionalDataArray()[0];
+				refSetSelection.getOptionalDataArray().get(0);
 		}
 		
-		int[] iArSelectionId = refSetSelection.getSelectionIdArray();
-		if (iArSelectionId.length != 0)
+		ArrayList<Integer> iAlSelectionId = refSetSelection.getSelectionIdArray();
+		if (iAlSelectionId.size() != 0)
 		{
 			selectedVertex = (PathwayVertexGraphItemRep) generalManager.getSingelton()
-				.getPathwayItemManager().getItem(iArSelectionId[0]);
+				.getPathwayItemManager().getItem(iAlSelectionId.get(0));
 			
 			bRebuildVisiblePathwayDisplayLists = true;
 //			bSelectionChanged = true;
@@ -1109,10 +1109,15 @@ implements IMediatorReceiver, IMediatorSender {
 
 		// Trigger update with current pathway that dependent pathways
 		// know which pathway is currently under interaction
-		int[] iArOptional = new int[1];
-		iArOptional[0] = iPathwayId;
-		alSetSelection.get(0).updateSelectionSet(iUniqueId, new int[0],
-				new int[0], iArOptional);
+		ArrayList<Integer> iAlOptional = new ArrayList<Integer>();
+		iAlOptional.add(iPathwayId);
+		ArrayList<Integer> iAlGroup = new ArrayList<Integer>();
+		iAlGroup.add(0);
+		ArrayList<Integer> iAlSelection = new ArrayList<Integer>();
+		iAlSelection.add(0);
+		
+		alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlSelection,
+				iAlGroup, iAlOptional);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1223,12 +1228,13 @@ implements IMediatorReceiver, IMediatorSender {
 		if (selectedVertex != null)
 		{
 			// Write currently selected vertex to selection set
-			int[] iArTmpSelectionId = new int[1];
-			int[] iArTmpDepth = new int[1];
-			iArTmpSelectionId[0] = selectedVertex.getId();
-			iArTmpDepth[0] = 0;
+			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(1);
+			ArrayList<Integer> iAlTmpDepth = new ArrayList<Integer> ();
+			iAlTmpSelectionId.add(selectedVertex.getId());
+			iAlTmpDepth.add(0);
+			ArrayList<Integer> iAlOptional = new ArrayList<Integer>();
 			alSetSelection.get(1).getWriteToken();
-			alSetSelection.get(1).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+			alSetSelection.get(1).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpDepth, iAlOptional);
 			alSetSelection.get(1).returnWriteToken();
 		}
 			
