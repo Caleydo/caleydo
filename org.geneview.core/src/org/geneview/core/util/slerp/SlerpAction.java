@@ -2,6 +2,12 @@ package org.geneview.core.util.slerp;
 
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
+/**
+ * Slerp action in 3D scene.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class SlerpAction {
 
 	private int iElementId = -1;
@@ -9,34 +15,64 @@ public class SlerpAction {
 	private JukeboxHierarchyLayer originHierarchyLayer;
 	
 	private JukeboxHierarchyLayer destinationHierarchyLayer;
-	
-	private boolean bSlerpUpInHierarchy = true;
 
 	private int iOriginPosIndex = -1;
 	
 	private int iDestinationPosIndex = -1;
 
+	/**
+	 * 
+	 * Constructor.
+	 * 
+	 * @param iElementId
+	 * @param originHierarchyLayer
+	 * @param bSlerpUpInHierarchy
+	 */
 	public SlerpAction(int iElementId, 
 			JukeboxHierarchyLayer originHierarchyLayer,
 			boolean bSlerpUpInHierarchy) {
-		
-		this.iElementId = iElementId;
-		this.originHierarchyLayer = originHierarchyLayer;
-		this.bSlerpUpInHierarchy = bSlerpUpInHierarchy;
-		
-		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
 		
 		if (bSlerpUpInHierarchy)
 			destinationHierarchyLayer = originHierarchyLayer.getParentLayer();
 		else
 			destinationHierarchyLayer = originHierarchyLayer.getChildLayer(); 
 		
+		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
+	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param iElementId
+	 * @param originHierarchyLayer
+	 * @param destinationHierarchyLayer
+	 */
+	public SlerpAction(int iElementId, 
+			JukeboxHierarchyLayer originHierarchyLayer,
+			JukeboxHierarchyLayer destinationHierarchyLayer) {
+		
+		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
+	}
+	
+	private void init(int iElementId, 
+			JukeboxHierarchyLayer originHierarchyLayer,
+			JukeboxHierarchyLayer destinationHierarchyLayer) {
+		
+		this.iElementId = iElementId;
+		this.originHierarchyLayer = originHierarchyLayer;
+		this.destinationHierarchyLayer = destinationHierarchyLayer;
+		
+		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
+		
 		// If pathway is already in this layer - slerp to the existing position.
 		if (destinationHierarchyLayer.containsElement(iElementId))
 			this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(iElementId);
 		else
 			this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();
-
+	}
+	
+	public void start() {
+		
 		// Only add element if it is not contained already in this layer
 		if (!destinationHierarchyLayer.containsElement(iElementId))
 		{
@@ -52,11 +88,6 @@ public class SlerpAction {
 	public JukeboxHierarchyLayer getOriginHierarchyLayer() {
 	
 		return originHierarchyLayer;
-	}
-	
-	public boolean isSlerpUpInHierarchy() {
-	
-		return bSlerpUpInHierarchy;
 	}
 	
 	public int getOriginPosIndex() {

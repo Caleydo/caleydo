@@ -164,11 +164,8 @@ extends AXmlParserHandler {
 		if (sImageLink.isEmpty() || sName.isEmpty())
 			return;
 		
-		// FIXME: generate appropriate BioCarta IDs
-		Random rand = new Random();
 		currentPathway = refGeneralManager.getSingelton().getPathwayManager().
-			createPathway(EPathwayDatabaseType.BIOCARTA, 
-					rand.nextInt(), "<name>", sTitle, 
+			createPathway(EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, 
 					sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName,
 					iWidth, iHeight);
 		

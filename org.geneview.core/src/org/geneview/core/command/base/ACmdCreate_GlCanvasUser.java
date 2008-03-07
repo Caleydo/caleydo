@@ -62,9 +62,6 @@ extends ACmdCreate_IdTargetParentGLObject {
 		
 		super.setParameterHandler(refParameterHandler);
 		
-		sAttribute3 = refParameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey());
-		
 		StringTokenizer frustumToken = new StringTokenizer(
 				sAttribute3,
 				IGeneralManager.sDelimiter_Parser_DataItems);

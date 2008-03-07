@@ -16,7 +16,6 @@ import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.mapping.EGenomeMappingType;
@@ -111,6 +110,11 @@ implements IMediatorReceiver, IMediatorSender {
 		renderStyle = new GeneralRenderStyle(viewFrustum);
 	}
 
+	public void setPathwayID(final int iPathwayID) {
+		
+		this.iPathwayID = iPathwayID;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
@@ -145,6 +149,8 @@ implements IMediatorReceiver, IMediatorSender {
 	public void init(final GL gl) {
 
 		initPathwayData(gl);
+		// FIXME: should only be called one
+		initialContainedGenePropagation(); 
 	}
 	
 	/*
@@ -183,7 +189,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void display(final GL gl) {
 		
-		checkForHits();
+		checkForHits(gl);
 		renderScene(gl);
 		toolboxRenderer.render(gl);
 	}
@@ -224,20 +230,10 @@ implements IMediatorReceiver, IMediatorSender {
 			pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
 		}
 		
-//		Iterator<IGraph> iterPathwayGraphs = pathwayManager
-//			.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
-//
-//		while(iterPathwayGraphs.hasNext())
-//		{
-//			iterPathwayGraphs.next();
-//			iPathwayID = iterPathwayGraphs.next().getId();
-//			break;
-//		}
-		
-		Random rand = new Random();
-		
-		List<IGraph> tmp = pathwayManager.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
-		iPathwayID = tmp.get(rand.nextInt(500)).getId();
+//		Random rand = new Random();
+//		
+//		List<IGraph> tmp = pathwayManager.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
+//		iPathwayID = tmp.get(rand.nextInt(500)).getId();
 		
 		calculatePathwayScaling(gl, iPathwayID);
 	}
@@ -272,22 +268,22 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void rebuildPathwayDisplayList(final GL gl) {
 		
-		if (selectedVertex != null)
-		{
-			// Write currently selected vertex to selection set
-			int[] iArTmpSelectionId = new int[1];
-			int[] iArTmpDepth = new int[1];
-			iArTmpSelectionId[0] = selectedVertex.getId();
-			iArTmpDepth[0] = 0;
-			alSetSelection.get(1).getWriteToken();
-			alSetSelection.get(1).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-			alSetSelection.get(1).returnWriteToken();
-			
-			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
-		}
+//		if (selectedVertex != null)
+//		{
+//			// Write currently selected vertex to selection set
+//			int[] iArTmpSelectionId = new int[1];
+//			int[] iArTmpDepth = new int[1];
+//			iArTmpSelectionId[0] = selectedVertex.getId();
+//			iArTmpDepth[0] = 0;
+//			alSetSelection.get(1).getWriteToken();
+//			alSetSelection.get(1).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
+//			alSetSelection.get(1).returnWriteToken();
+//			
+//			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+//					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+//		}
 		
-		refGLPathwayManager.performIdenticalNodeHighlighting();
+		//refGLPathwayManager.performIdenticalNodeHighlighting();
 		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 	
@@ -338,112 +334,6 @@ implements IMediatorReceiver, IMediatorSender {
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
-	}
-	
-	protected void checkForHits()
-	{
-		if(pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION) != null)
-		{
-			ArrayList<Pick> tempList = pickingManager.getHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-			
-			if (tempList != null)
-			{
-				if (tempList.size() != 0 )
-				{
-					int iElementID = pickingManager.getExternalIDFromPickingID(iUniqueId, tempList.get(0).getPickingID());
-				
-					PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager.getSingelton()
-						.getPathwayItemManager().getItem(iElementID);
-					
-					PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
-					
-					selectedVertex = tmpVertexGraphItemRep;
-														
-					bIsDisplayListDirtyLocal = true;
-					bIsDisplayListDirtyRemote = true;
-					
-					int iGeneID = generalManager.getSingelton().getGenomeIdManager()
-						.getIdIntFromStringByMapping(
-								tmpVertexGraphItem.getName().substring(4), 
-								EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
-							
-					if (iGeneID == -1)
-					{	
-						pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-						return;
-					}
-					
-					int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
-						.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-
-					selectionManager.clear();
-
-					int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
-					
-					selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-							(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
-							((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y()), 
-							ESelectionMode.AddPick);
-
-					// TODO: Move to own method (outside this class)
-					// Store alle genes in that pathway with selection group 0
-					Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph)generalManager.getSingelton()
-							.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
-					
-					ArrayList<Integer> iAlSelectedGenes = new ArrayList<Integer>();
-					PathwayVertexGraphItemRep tmpPathwayVertexGraphItem = null;
-					while(iterPathwayVertexGraphItem.hasNext()) 
-					{
-						tmpPathwayVertexGraphItem = ((PathwayVertexGraphItemRep)iterPathwayVertexGraphItem.next());
-						
-//						if (tmpPathwayVertexGraphItem..getType().equals(EPathwayVertexType.gene))
-//						{
-							String sGeneID = tmpPathwayVertexGraphItem.getName();
-						
-							// Remove prefix ("hsa:")
-							sGeneID = sGeneID.substring(4);
-							
-							iGeneID = generalManager.getSingelton().getGenomeIdManager()
-								.getIdIntFromStringByMapping(sGeneID, 
-									EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
-									
-							if (iGeneID == -1)
-								continue;
-							
-							int iTmpAccessionID = generalManager.getSingelton().getGenomeIdManager()
-								.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-						
-							if (iTmpAccessionID == -1)
-								continue;
-							
-							iAlSelectedGenes.add(iTmpAccessionID);
-//						}
-					}
-					
-					// Write currently selected vertex to selection set and trigger upate
-					int[] iArTmpSelectionId = new int[iAlSelectedGenes.size()];
-					int[] iArTmpGroupId = new int[iAlSelectedGenes.size()];
-
-					for (int iGeneIndex = 0; iGeneIndex < iAlSelectedGenes.size(); iGeneIndex++)
-					{
-						iArTmpSelectionId[iGeneIndex] = iAlSelectedGenes.get(iGeneIndex);
-						
-						// TODO enum for selction modes
-						if (iAlSelectedGenes.get(iGeneIndex) == iAccessionID)
-							iArTmpGroupId[iGeneIndex] = 1;
-						else
-							iArTmpGroupId[iGeneIndex] = 0;
-					}
-					
-					alSetSelection.get(0).getWriteToken();
-					alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpGroupId, new int[0]);
-					alSetSelection.get(0).returnWriteToken();
-				}
-			}
-			
-			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-		}
 	}
 	
 //	public void loadDependentPathwayBySingleVertex(final GL gl,
@@ -649,6 +539,120 @@ implements IMediatorReceiver, IMediatorSender {
 			final int iExternalID,
 			final Pick pick)
 	{
+		switch (ePickingType)
+		{	
+		case PATHWAY_ELEMENT_SELECTION:
+			
+			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager.getSingelton()
+				.getPathwayItemManager().getItem(iExternalID);
+			
+			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
+			
+			selectedVertex = tmpVertexGraphItemRep;
+												
+			bIsDisplayListDirtyLocal = true;
+			bIsDisplayListDirtyRemote = true;
+			
+			int iGeneID = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromStringByMapping(
+						tmpVertexGraphItem.getName().substring(4), 
+						EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+					
+			if (iGeneID == -1)
+			{	
+				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
+				return;
+			}
+			
+			int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 
+			selectionManager.clear();
+
+			int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
+			
+			selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
+					(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
+					((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y()), 
+					ESelectionMode.AddPick);
+
+			// Write currently selected vertex to selection set and trigger update
+			int[] iArTmpSelectionId = new int[1];
+			int[] iArTmpGroupId = new int[1];
+
+			iArTmpSelectionId[0] = iAccessionID;
+			iArTmpGroupId[0] = 1; 
+			
+			alSetSelection.get(0).getWriteToken();
+			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpGroupId, new int[0]);
+			alSetSelection.get(0).returnWriteToken();
+
+			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
+			break;
+			
+		}
+	}
+	
+	private void initialContainedGenePropagation () {
+		
+		// TODO: Move to own method (outside this class)
+		// Store all genes in that pathway with selection group 0
+		Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph)generalManager.getSingelton()
+				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
+		
+		ArrayList<Integer> iAlSelectedGenes = new ArrayList<Integer>();
+		PathwayVertexGraphItemRep tmpPathwayVertexGraphItem = null;
+		int iGeneID = -1;
+		int iAccessionID = -1;
+		while(iterPathwayVertexGraphItem.hasNext()) 
+		{
+			tmpPathwayVertexGraphItem = ((PathwayVertexGraphItemRep)iterPathwayVertexGraphItem.next());
+			
+//			if (tmpPathwayVertexGraphItem..getType().equals(EPathwayVertexType.gene))
+//			{
+				String sGeneID = tmpPathwayVertexGraphItem.getName();
+			
+				// Remove prefix ("hsa:")
+				if (sGeneID.length() < 5)
+					continue;
+				
+				sGeneID = sGeneID.substring(4);
+				
+				iGeneID = generalManager.getSingelton().getGenomeIdManager()
+					.getIdIntFromStringByMapping(sGeneID, 
+						EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+						
+				if (iGeneID == -1)
+					continue;
+				
+				int iTmpAccessionID = generalManager.getSingelton().getGenomeIdManager()
+					.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+			
+				if (iTmpAccessionID == -1)
+					continue;
+				
+				iAlSelectedGenes.add(iTmpAccessionID);
+//			}
+		}
+		
+		// Write currently selected vertex to selection set and trigger upate
+		int[] iArTmpSelectionId = new int[iAlSelectedGenes.size()];
+		int[] iArTmpGroupId = new int[iAlSelectedGenes.size()];
+
+		for (int iGeneIndex = 0; iGeneIndex < iAlSelectedGenes.size(); iGeneIndex++)
+		{
+			iArTmpSelectionId[iGeneIndex] = iAlSelectedGenes.get(iGeneIndex);
+			
+			// TODO enum for selction modes
+			if (iAlSelectedGenes.get(iGeneIndex) == iAccessionID)
+				iArTmpGroupId[iGeneIndex] = 1;
+			else
+				iArTmpGroupId[iGeneIndex] = 0;
+		}
+		
+		alSetSelection.get(0).getWriteToken();
+		alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpGroupId, new int[0]);
+		alSetSelection.get(0).returnWriteToken();
 	}
 }

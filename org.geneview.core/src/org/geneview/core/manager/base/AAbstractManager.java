@@ -25,12 +25,12 @@ implements IAbstractManager  {
 	protected final IGeneralManager generalManager;
 	
 	/**
-	 * Reference to ISingelton assinged via Constructor
+	 * Reference to ISingelton assigned via Constructor
 	 */
 	protected final ISingelton singelton;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	protected AAbstractManager(final IGeneralManager generalManager,
 			final int iUniqueId_type_offset,
@@ -47,9 +47,10 @@ implements IAbstractManager  {
 	}
 	
 	public int calculateInitialUniqueId( final int iUniqueId_type_offset ) {
+		
 		return iUniqueId_type_offset * 
 			IGeneralManager.iUniqueId_TypeOffsetMultiplyer +
-			generalManager.getSingelton() .getNetworkPostfix();
+			generalManager.getSingelton().getNetworkPostfix();
 	}
 	
 	/*

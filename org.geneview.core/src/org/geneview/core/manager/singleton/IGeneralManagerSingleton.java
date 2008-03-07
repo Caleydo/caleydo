@@ -34,13 +34,6 @@ extends IGeneralManager, IMementoCallbackXML {
 	public abstract Object createNewItem(final ManagerObjectType createNewType,
 			final String sNewTypeDetails);
 
-//	/**
-//	 * Get the reference to the mangerer handling View's and Canvas.
-//	 * 
-//	 * @return manger for IViewCanvas objects
-//	 */
-//	public IViewCanvasManager getViewCanvasManager();
-	
 	/**
 	 * Get the current ICommandManager.
 	 * 
@@ -67,15 +60,6 @@ extends IGeneralManager, IMementoCallbackXML {
 //	 * @return manager for a certain type.
 //	 */
 //	public IGeneralManager getManagerByBaseType(CommandQueueSaxType managerType);
-	
-	
-	/**
-	 * Enable SWT
-	 * 
-	 * @param enableSWT
-	 */
-	public void  setStateSWT( boolean enableSWT );
-	
 	
 	/**
 	 * Initialize all data structures.

@@ -139,7 +139,7 @@ implements IXmlParserHandler {
     	String sTitle = "";
     	String sImageLink = "";
     	String sExternalLink = "";
-    	int iKeggId = 0;
+//    	int iKeggId = 0;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -160,7 +160,7 @@ implements IXmlParserHandler {
 			}
 			else if (sAttributeName.equals("number"))
 			{
-				iKeggId = new Integer(attributes.getValue(iAttributeIndex)); 
+//				iKeggId = new Integer(attributes.getValue(iAttributeIndex)); 
 			}
    			else if (sAttributeName.equals("image"))
    			{
@@ -189,7 +189,7 @@ implements IXmlParserHandler {
 		img = null;
 		
 		currentPathway = refGeneralManager.getSingelton().getPathwayManager().
-			createPathway(EPathwayDatabaseType.KEGG, iKeggId, sName, sTitle, 
+			createPathway(EPathwayDatabaseType.KEGG, sName, sTitle, 
 					sImageLink, sExternalLink, iWidth, iHeight);
     }
     

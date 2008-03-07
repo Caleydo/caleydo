@@ -2,7 +2,6 @@ package org.geneview.core.manager;
 
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
-//import prometheus.net.dwt.swing.mdi.DDesktopPane;
 
 public interface IGeneralManager {
 
@@ -15,7 +14,7 @@ public interface IGeneralManager {
 	 * Schema: [enumeration of components][type][unique network id]
 	 * regular ranges: [ >0][01..99][0..9]
 	 * 
-	 * exampels: [12][03][9]
+	 * examples: [12][03][9]
 	 * 
 	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
 	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_Increment
@@ -30,7 +29,7 @@ public interface IGeneralManager {
 	 * Schema: [enumeration of components][type][unique network id]
 	 * regular ranges: [ >0][01..99][0..9]
 	 * 
-	 * exampels: [12][03][9]
+	 * examples: [12][03][9]
 	 * 
 	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_Increment
 	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
@@ -96,7 +95,7 @@ public interface IGeneralManager {
 	
 	public static final int iUniqueId_TypeOffset_GenomeId_ENZYME = 72;
 	
-	public static final int iUniqueId_TypeOffset_GenomeId_METHBOLIT = 73;
+	public static final int iUniqueId_TypeOffset_GenomeId_METHABOLIT = 73;
 	
 	public static final int iUniqueId_TypeOffset_GenomeId_NCBI_GENE = 74;
 	
@@ -235,7 +234,7 @@ public interface IGeneralManager {
 	 * 
 	 * @param setNewBaseType test if manager may create such an id
 	 * @param iCurrentId set the new current Id
-	 * @return ture if the new current Id was valid, which is the case if it is larger than the current NewId!
+	 * @return true if the new current Id was valid, which is the case if it is larger than the current NewId!
 	 */
 	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId );
 	

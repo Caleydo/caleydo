@@ -12,8 +12,8 @@ import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.EPickingMode;
@@ -41,14 +41,17 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private static final int MAX_LOADED_VIEWS = 10;
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
+	private static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.05f;
 	
-	private static final int SLERP_SPEED = 1000;
+	private static final int SLERP_RANGE = 1000;
+	private static final int SLERP_SPEED = 900;
 	
 	private JukeboxHierarchyLayer underInteractionLayer;
 	private JukeboxHierarchyLayer stackLayer;
 	private JukeboxHierarchyLayer poolLayer;
+	private JukeboxHierarchyLayer transitionLayer;
 	
 	private ArrayList<SlerpAction> arSlerpActions;
 	private Time time;
@@ -89,18 +92,33 @@ implements IMediatorReceiver, IMediatorSender {
 				SCALING_FACTOR_POOL_LAYER, 
 				null);
 		
+		transitionLayer = new JukeboxHierarchyLayer(generalManager,
+				1, 
+				SCALING_FACTOR_TRANSITION_LAYER, 
+				null);
+		
 		underInteractionLayer.setParentLayer(stackLayer);
 		stackLayer.setChildLayer(underInteractionLayer);
 		stackLayer.setParentLayer(poolLayer);
 		poolLayer.setChildLayer(stackLayer);
 		
-		Transform transformPathwayUnderInteraction = new Transform();
-		transformPathwayUnderInteraction.setTranslation(new Vec3f(0, 0, 0f));
-		transformPathwayUnderInteraction.setScale(new Vec3f(
+		Transform transformUnderInteraction = new Transform();
+		transformUnderInteraction.setTranslation(new Vec3f(0, 0, 0f));
+		transformUnderInteraction.setScale(new Vec3f(
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER));
-		underInteractionLayer.setTransformByPositionIndex(0, transformPathwayUnderInteraction);
+
+		underInteractionLayer.setTransformByPositionIndex(0, transformUnderInteraction);
+		
+		Transform transformTransition = new Transform();
+		transformTransition.setTranslation(new Vec3f(0, 0, 0.1f));
+		transformTransition.setScale(new Vec3f(
+				SCALING_FACTOR_TRANSITION_LAYER,
+				SCALING_FACTOR_TRANSITION_LAYER,
+				SCALING_FACTOR_TRANSITION_LAYER));
+		
+		transitionLayer.setTransformByPositionIndex(0, transformTransition);
 		
 		arSlerpActions = new ArrayList<SlerpAction>();
 		
@@ -194,9 +212,11 @@ implements IMediatorReceiver, IMediatorSender {
 		doSlerpActions(gl);
 		
 //		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		renderLayer(gl, transitionLayer);
 		renderLayer(gl, poolLayer);
 		renderLayer(gl, stackLayer);
-		renderUnderInteractionLayer(gl);
+		renderLayer(gl, underInteractionLayer);
+//		renderUnderInteractionLayer(gl);
 //		gl.glEndList();
 		
 		glConnectionLineRenderer.render(gl);
@@ -220,16 +240,18 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			int iViewId = ((AGLCanvasUser)tmpGLEventListener).getId();
 			
-			if (underInteractionLayer.getElementList().size() < 1)
+			if (underInteractionLayer.getElementList().size() < underInteractionLayer.getCapacity())
 			{
 				underInteractionLayer.addElement(iViewId);
 				underInteractionLayer.setElementVisibilityById(true, iViewId);
 			}
-			else
+			else if (stackLayer.getElementList().size() < stackLayer.getCapacity())
 			{
 				stackLayer.addElement(iViewId);
 				stackLayer.setElementVisibilityById(true, iViewId);
-
+			}
+			else if (poolLayer.getElementList().size() < poolLayer.getCapacity())
+			{
 				poolLayer.addElement(iViewId);
 				poolLayer.setElementVisibilityById(true, iViewId);
 			}
@@ -284,7 +306,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void buildPoolLayer(final GL gl) {
 		
-		for (int iViewIndex = 0; iViewIndex < poolLayer.getElementList().size(); iViewIndex++)
+		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
 		{		
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(4.1f, 
@@ -297,34 +319,34 @@ implements IMediatorReceiver, IMediatorSender {
 
 		
 	private void renderBucketWall(final GL gl) {
-		
-		gl.glColor3f(0f, 1f, 0f);
-		gl.glLineWidth(1);
-		
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, -0.01f);
-		gl.glVertex3f(0, 8, -0.01f);
-		gl.glVertex3f(8, 8, -0.01f);
-		gl.glVertex3f(8, 0, -0.01f);
-		gl.glEnd();
+//		
+//		gl.glColor3f(0.4f, 0.4f, 0.4f);
+//		gl.glLineWidth(3);
+//		
+//		gl.glBegin(GL.GL_LINE_LOOP);
+//		gl.glVertex3f(0, 0, -0.01f);
+//		gl.glVertex3f(0, 8, -0.01f);
+//		gl.glVertex3f(8, 8, -0.01f);
+//		gl.glVertex3f(8, 0, -0.01f);
+//		gl.glEnd();
 	}
 	
-	private void renderUnderInteractionLayer(final GL gl) {
-		
-		// Check if a pathway is currently under interaction
-		if (underInteractionLayer.getElementList().size() == 0)
-			return;
-
-		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
-		
-		// Check if pathway is valid
-		if(iViewId == -1)
-			return;
-		
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
-		renderViewById(gl, iViewId, underInteractionLayer);
-		gl.glPopName();
-	}
+//	private void renderUnderInteractionLayer(final GL gl) {
+//		
+//		// Check if a pathway is currently under interaction
+//		if (underInteractionLayer.getElementList().size() == 0)
+//			return;
+//
+//		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
+//		
+//		// Check if pathway is valid
+//		if(iViewId == -1)
+//			return;
+//		
+//		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
+//		renderViewById(gl, iViewId, underInteractionLayer);
+//		gl.glPopName();
+//	}
 	
 	private void renderLayer(final GL gl, 
 			final JukeboxHierarchyLayer layer) {
@@ -381,18 +403,34 @@ implements IMediatorReceiver, IMediatorSender {
 
 		if (arSlerpActions.isEmpty())
 			return;
-				
-		if (iSlerpFactor < SLERP_SPEED)
+		
+		SlerpAction tmpSlerpAction = arSlerpActions.get(0);
+		
+		if (iSlerpFactor == 0)
 		{
-			// Makes animation rendering speed independent
-			iSlerpFactor += 600 * time.deltaT();
+			tmpSlerpAction.start();
 			
-			if (iSlerpFactor > SLERP_SPEED)
-				iSlerpFactor = SLERP_SPEED;
+			int iOriginPosIndex;
+			if (tmpSlerpAction.getOriginHierarchyLayer().equals(transitionLayer))
+				iOriginPosIndex = 0;
+			else
+				iOriginPosIndex = tmpSlerpAction.getOriginPosIndex();
+			
+			tmpSlerpAction.getOriginHierarchyLayer().setElementVisibilityById(false, 
+					tmpSlerpAction.getOriginHierarchyLayer().getElementIdByPositionIndex(
+							iOriginPosIndex));
 		}
 		
-		slerpView(gl, arSlerpActions.get(0));
-		// selectedVertex = null;
+		if (iSlerpFactor < SLERP_RANGE)
+		{
+			// Makes animation rendering speed independent
+			iSlerpFactor += SLERP_SPEED * time.deltaT();
+			
+			if (iSlerpFactor > SLERP_RANGE)
+				iSlerpFactor = SLERP_RANGE;
+		}
+		
+		slerpView(gl, tmpSlerpAction);
 	}
 	
 	private void slerpView(final GL gl, SlerpAction slerpAction) {
@@ -400,12 +438,23 @@ implements IMediatorReceiver, IMediatorSender {
 		int iViewId = slerpAction.getElementId();
 		SlerpMod slerpMod = new SlerpMod();
 		
+		if ((iSlerpFactor == 0))
+		{	
+			slerpMod.playSlerpSound();
+		}
+		
+		int iOriginPosIndex;
+		if (slerpAction.getOriginHierarchyLayer().equals(transitionLayer))
+			iOriginPosIndex = 0;
+		else
+			iOriginPosIndex = slerpAction.getOriginPosIndex();
+		
 		Transform transform = slerpMod.interpolate(slerpAction
 				.getOriginHierarchyLayer().getTransformByPositionIndex(
-						slerpAction.getOriginPosIndex()), slerpAction
+						iOriginPosIndex), slerpAction
 				.getDestinationHierarchyLayer().getTransformByPositionIndex(
 						slerpAction.getDestinationPosIndex()),
-				(int)iSlerpFactor / 1000f);
+				(float)iSlerpFactor / SLERP_RANGE);
 
 		gl.glPushMatrix();
 		
@@ -416,17 +465,19 @@ implements IMediatorReceiver, IMediatorSender {
 
 		gl.glPopMatrix();
 
-		if (iSlerpFactor >= 1000)
+		if (iSlerpFactor >= SLERP_RANGE)
 		{
 			slerpAction.getDestinationHierarchyLayer()
 					.setElementVisibilityById(true, iViewId);
 
 			arSlerpActions.remove(slerpAction);
+			
+			// Remove view from origin layer after slerping
+			slerpAction.getOriginHierarchyLayer().removeElement(
+					slerpAction.getOriginPosIndex());
+			
 			iSlerpFactor = 0;
 		}
-
-		if ((iSlerpFactor == 0))
-			slerpMod.playSlerpSound();
 	}
 	
 	protected void checkForHits() 
@@ -454,6 +505,7 @@ implements IMediatorReceiver, IMediatorSender {
 								return;
 							}
 							
+							// TODO: Should be done using slerping
 							if (stackLayer.containsElement(iViewID))
 							{
 								int iDestPositionIndex = stackLayer.getPositionIndexByElementId(iViewID);
@@ -578,54 +630,110 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
 	}
 	
-	private void loadViewToUnderInteractionLayer(final int iViewId) {
+	private void loadViewToUnderInteractionLayer(final int iViewID) {
 
-//		generalManager
-//				.getSingelton()
-//				.logMsg(this.getClass().getSimpleName()
-//								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
-//								+ iViewId + " is under interaction.",
-//						LoggerType.VERBOSE);
+		generalManager
+				.getSingelton()
+				.logMsg(this.getClass().getSimpleName()
+								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
+								+ iViewID + " is under interaction.", LoggerType.VERBOSE);
 
 		// Check if pathway is already under interaction
-		if (underInteractionLayer.containsElement(iViewId))
+		if (underInteractionLayer.containsElement(iViewID))
 			return;
 				
 		// Check if other slerp action is currently running
-		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_SPEED)
+		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 			return;
 
 		arSlerpActions.clear();
 
-		// Slerp current pathway back to layered view
-		if (!underInteractionLayer.getElementList().isEmpty())
+//		// Check if under interaction layer is free
+//		if (underInteractionLayer.getElementList().isEmpty())
+//		{
+//			// Slerp directly from pool to under interaction layer
+//			SlerpAction slerpAction = new SlerpAction(iViewId, stackLayer, false);
+//			arSlerpActions.add(slerpAction);
+//		}
+//		else
+//		{
+
+		// Check if layered layer has free spot to switch out view under interaction
+		if (stackLayer.getElementList().size() < stackLayer.getCapacity())
 		{
-			SlerpAction reverseSlerpAction = new SlerpAction(
-					underInteractionLayer.getElementIdByPositionIndex(0),
-					underInteractionLayer, true);
-
-			arSlerpActions.add(reverseSlerpAction);
+			// Slerp current view back to layered view
+			if (!underInteractionLayer.getElementList().isEmpty())
+			{
+				SlerpAction reverseSlerpAction = new SlerpAction(
+						underInteractionLayer.getElementIdByPositionIndex(0),
+						underInteractionLayer, true);
+	
+				arSlerpActions.add(reverseSlerpAction);
+			}
 		}
-
-		SlerpAction slerpAction;
-
-		// Prevent slerp action if pathway is already in layered view
-		if (!stackLayer.containsElement(iViewId))
+		else
 		{
-			// Slerp to layered pathway view
-			slerpAction = new SlerpAction(iViewId, poolLayer, false);
-
-			arSlerpActions.add(slerpAction);
+			// Check if stack layer has a free spot
+			if (stackLayer.getElementList().size() < stackLayer.getCapacity())
+			{
+			}
+			else
+			{
+				// Slerp selected view to under interaction transition position
+				SlerpAction slerpActionTransition = new SlerpAction(
+						iViewID, poolLayer, transitionLayer);	
+				arSlerpActions.add(slerpActionTransition);
+				
+				// Slerp view from stack to pool
+				SlerpAction reverseSlerpAction = new SlerpAction(
+						stackLayer.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()),
+						stackLayer, true);
+				arSlerpActions.add(reverseSlerpAction);		
+				
+				// Slerp under interaction view to free spot in stack
+				SlerpAction reverseSlerpAction2 = new SlerpAction(
+						underInteractionLayer.getElementIdByPositionIndex(0),
+						underInteractionLayer, true);
+				arSlerpActions.add(reverseSlerpAction2);		
+				
+				// Slerp selected view to under interaction position
+				SlerpAction slerpAction = new SlerpAction(
+						iViewID, transitionLayer, underInteractionLayer);	
+				arSlerpActions.add(slerpAction);
+			}
 		}
-
-		// Slerp from layered to under interaction position
-		slerpAction = new SlerpAction(iViewId, stackLayer, false);
-
-		arSlerpActions.add(slerpAction);
+		
 		iSlerpFactor = 0;
-
-//		bRebuildVisiblePathwayDisplayLists = true;
-		//selectedVertex = null;
+		
+//		// Slerp current pathway back to layered view
+//		if (!underInteractionLayer.getElementList().isEmpty())
+//		{
+//			SlerpAction reverseSlerpAction = new SlerpAction(
+//					underInteractionLayer.getElementIdByPositionIndex(0),
+//					underInteractionLayer, true);
+//
+//			arSlerpActions.add(reverseSlerpAction);
+//		}
+//
+//		SlerpAction slerpAction;
+//
+//		// Prevent slerp action if pathway is already in layered view
+//		if (!stackLayer.containsElement(iViewId))
+//		{
+//			// Slerp to layered pathway view
+//			slerpAction = new SlerpAction(iViewId, poolLayer, false);
+//
+//			arSlerpActions.add(slerpAction);
+//		}
+//
+//		// Slerp from layered to under interaction position
+//		slerpAction = new SlerpAction(iViewId, stackLayer, false);
+//
+//		arSlerpActions.add(slerpAction);
+//		iSlerpFactor = 0;
+//
+////		bRebuildVisiblePathwayDisplayLists = true;
+//		//selectedVertex = null;
 	}
 
 	@Override

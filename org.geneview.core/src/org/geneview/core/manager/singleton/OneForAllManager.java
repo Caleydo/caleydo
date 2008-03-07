@@ -1,38 +1,28 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.geneview.core.manager.singleton;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.xml.IMementoXML;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IEventPublisher;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.IMementoManager;
 import org.geneview.core.manager.IMenuManager;
-import org.geneview.core.manager.ISingelton;
 import org.geneview.core.manager.ISWTGUIManager;
-//import org.geneview.core.manager.IViewCanvasManager;
+import org.geneview.core.manager.ISingelton;
 import org.geneview.core.manager.IViewGLCanvasManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.command.CommandManager;
 import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.data.IPathwayItemManager;
 import org.geneview.core.manager.data.IPathwayManager;
-import org.geneview.core.manager.data.IVirtualArrayManager;
 import org.geneview.core.manager.data.ISetManager;
 import org.geneview.core.manager.data.IStorageManager;
+import org.geneview.core.manager.data.IVirtualArrayManager;
 import org.geneview.core.manager.data.genome.DynamicGenomeIdManager;
 import org.geneview.core.manager.data.pathway.PathwayItemManager;
 import org.geneview.core.manager.data.pathway.PathwayManager;
@@ -40,20 +30,22 @@ import org.geneview.core.manager.data.set.SetManager;
 import org.geneview.core.manager.data.storage.StorageManager;
 import org.geneview.core.manager.data.virtualarray.VirtualArrayManager;
 import org.geneview.core.manager.event.EventPublisher;
+import org.geneview.core.manager.gui.SWTGUIManager;
 import org.geneview.core.manager.logger.ConsoleLogger;
-//import org.geneview.core.manager.logger.ConsoleSimpleLogger;
 import org.geneview.core.manager.memento.MementoManager;
 import org.geneview.core.manager.menu.swing.SwingMenuManager;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.type.ManagerType;
 import org.geneview.core.manager.view.ViewJoglManager;
-import org.geneview.core.manager.gui.SWTGUIManager;
 import org.geneview.core.parser.xml.sax.ISaxParserHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
 
 /**
+ * Overall manager that contains all module managers.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class OneForAllManager 
@@ -65,12 +57,7 @@ implements IGeneralManagerSingleton
 	 * 
 	 * @see org.geneview.core.manager.singleton.OneForAllManager#initAll()
 	 */
-	private boolean bAllManagersInizailized = false;
-
-	/**
-	 * Define if SWT is used.
-	 */
-	private boolean bEnableSWT = false;
+	private boolean bAllManagersInitialized = false;
 
 	private LinkedList <IGeneralManager> llAllManagerObjects;
 	
@@ -85,8 +72,6 @@ implements IGeneralManagerSingleton
 	protected IMementoManager refMementoManager;
 
 	protected IMenuManager refMenuManager;
-
-//	protected IViewCanvasManager refViewCanvasManager;
 
 	protected ICommandManager refCommandManager;
 
@@ -134,7 +119,7 @@ implements IGeneralManagerSingleton
 		 * destributed GeneView applications. 
 		 * For stand alone GeneView applications this id must match the XML file.
 		 */
-		refSingeltonManager.setNetworkPostfix( 1 );
+		refSingeltonManager.setNetworkPostfix( 0 );
 		
 		llAllManagerObjects = new LinkedList <IGeneralManager> ();
 		
@@ -158,12 +143,12 @@ implements IGeneralManagerSingleton
 	public void initAll()
 	{
 
-		if (bAllManagersInizailized)
+		if (bAllManagersInitialized)
 		{
 			throw new GeneViewRuntimeException(
 					"initAll() was called at least twice!");
 		}
-		bAllManagersInizailized = true;
+		bAllManagersInitialized = true;
 
 		/** int logger first! */
 		refLoggerManager = new ConsoleLogger(this);
@@ -176,13 +161,9 @@ implements IGeneralManagerSingleton
 		refStorageManager = new StorageManager(this, 4);
 		refVirtualArrayManager = new VirtualArrayManager(this, 4);
 		refSetManager = new SetManager(this, 4);
-		
 		refMementoManager = new MementoManager(this);
-		
-		//refViewCanvasManager = new ViewCanvasManager(this);
 		refCommandManager = new CommandManager(this);
 		refMenuManager = new SwingMenuManager(this);
-		
 		refViewGLCanvasManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refPathwayManager = new PathwayManager(this);
@@ -210,12 +191,6 @@ implements IGeneralManagerSingleton
 		llAllManagerObjects.add( refCommandManager );
 		llAllManagerObjects.add( refMementoManager );
 		
-		/**
-		 * Make sure SWT is only used, when needed!
-		 */
-		//		if ( bEnableSWT ) {
-		//			refSWTGUIManager.createApplicationWindow();		
-		//		}
 		/**
 		 * Register managers to singelton ...
 		 */
@@ -511,39 +486,6 @@ implements IGeneralManagerSingleton
 //	{
 //		return refViewCanvasManager;
 //	}
-
-	/**
-	 * ISet curretn state of SWT.
-	 * Must be set before initAll() is called!
-	 * Default is FALSE.
-	 * 
-	 * @see org.geneview.core.manager.singleton.OneForAllManager#initAll()
-	 * @see org.geneview.core.manager.singleton.OneForAllManager#getStateSWT()
-	 * 
-	 * @param bEnableSWT TRUE to enable SWT
-	 */
-	public void setStateSWT(final boolean bEnableSWT)
-	{
-		if (bAllManagersInizailized)
-		{
-			throw new GeneViewRuntimeException(
-					"setStateSWT() was called after initAll() was called, which has no influence!");
-		}
-		this.bEnableSWT = bEnableSWT;
-	}
-
-	/**
-	 * Get current state of SWT. 
-	 * TURE indicates that SWT is used.
-	 * 
-	 * @see org.geneview.core.manager.singleton.OneForAllManager#setStateSWT(boolean)
-	 * 
-	 * @return TRUE is SWT is enabled.
-	 */
-	public boolean getStateSWT()
-	{
-		return this.bEnableSWT;
-	}
 	
 	public void destroyOnExit() {
 		

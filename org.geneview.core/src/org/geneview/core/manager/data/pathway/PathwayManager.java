@@ -83,7 +83,6 @@ implements IPathwayManager {
 	 */
 	public PathwayGraph createPathway(
 			final EPathwayDatabaseType type,
-			final int iKEGGId,
 			final String sName,
 			final String sTitle, 
 			final String sImageLink, 
@@ -91,16 +90,17 @@ implements IPathwayManager {
 			final int iWidth,
 			final int iHeight) {
 
-		// TODO: handle this case appropriately
-		if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
-			return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
+//		if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
+//			return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
+
+		int iPathwayId = this.createId(null);
 		
 		PathwayGraph pathway = new PathwayGraph(
-				type, iKEGGId, sName, sTitle, sImageLink, sExternalLink,
+				type, iPathwayId, sName, sTitle, sImageLink, sExternalLink,
 				iWidth, iHeight);
 
-		hashPathwayIdToPathwayGraphLUT.put(iKEGGId, pathway);
-		hashPathwayTitleToPathwayIdLUT.put(sTitle, iKEGGId);
+		hashPathwayIdToPathwayGraphLUT.put(iPathwayId, pathway);
+		hashPathwayTitleToPathwayIdLUT.put(sTitle, iPathwayId);
 		
 		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
 	

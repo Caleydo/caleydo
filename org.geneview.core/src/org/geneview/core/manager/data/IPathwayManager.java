@@ -18,7 +18,6 @@ extends IGeneralManager {
 
 	public PathwayGraph createPathway(
 			final EPathwayDatabaseType type,
-			final int iKeggId,
 			final String sName, 
 			final String sTitle, 
 			final String sImageLink,

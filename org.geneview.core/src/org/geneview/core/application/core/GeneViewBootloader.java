@@ -91,7 +91,6 @@ public class GeneViewBootloader
 		 * In order to use SWT call setStateSWT( true ) to enabel SWT support!
 		 */
 		refOneForAllManager = new OneForAllManager(null);
-		refOneForAllManager.setStateSWT( true );
 		refOneForAllManager.initAll();
 
 		final ISingelton refSingelton = refOneForAllManager.getSingelton();

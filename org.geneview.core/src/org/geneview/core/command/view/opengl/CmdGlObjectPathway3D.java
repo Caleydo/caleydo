@@ -9,6 +9,7 @@ import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
+import org.geneview.core.util.ConversionStringInteger;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 
@@ -21,9 +22,10 @@ import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 public class CmdGlObjectPathway3D 
 extends ACmdCreate_GlCanvasUser {
 
-	protected ArrayList<Integer> iArSetIDs;
+	private ArrayList<Integer> iArSetIDs;
 	
-	protected float [] fResolution;
+	private int iPathwayID = -1;
+	
 	
 	/**
 	 * Constructor.
@@ -64,13 +66,11 @@ extends ACmdCreate_GlCanvasUser {
 					setToken.nextToken(), -1));
 		}
 		
-		fResolution = 
-			StringConversionTool.convertStringToFloatArrayVariableLength(
-					sAttribute3);
-		
 		refParameterHandler.setValueAndTypeAndDefault("mapping_row_count", 
 				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()), 
 				ParameterHandlerType.INT, "1");		
+		
+		iPathwayID = StringConversionTool.convertStringToInt(sAttribute4, -1);
 	}
 	
 	/*
@@ -86,6 +86,7 @@ extends ACmdCreate_GlCanvasUser {
 			iArTmp[index] = iArSetIDs.get(index);
 		
 		((GLCanvasPathway3D)gLEventListener).addSetId(iArTmp);
+		((GLCanvasPathway3D)gLEventListener).setPathwayID(iPathwayID);
 	}
 
 	/*
