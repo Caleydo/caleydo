@@ -29,8 +29,6 @@ import org.geneview.util.graph.IGraph;
 public class SelectionManager  
 extends AAbstractManager  {
 
-	IGraph selectionGraph;
-	
 	HashMap<Integer, ArrayList<SelectedElementRep>> hashSelectedElementID2SelectedElementReps;
 	
 	/**

@@ -1,7 +1,5 @@
 package org.geneview.core.view.opengl.canvas.parcoords;
 
-import java.util.ArrayList;
-
 
 public enum EPolyLineSelectionType
 {
@@ -18,7 +16,7 @@ public enum EPolyLineSelectionType
 		this.sType = sType;
 	}
 	
-	public String getSelectionType()
+	public String getString()
 	{
 		return sType;
 	}

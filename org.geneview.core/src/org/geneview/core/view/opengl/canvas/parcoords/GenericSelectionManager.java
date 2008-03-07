@@ -9,6 +9,7 @@ import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 
 
 /**
+ * Manages selections generically. You have to define one "normal" type in the constructor.
  * 
  * @author Alexander Lex
  *
@@ -37,13 +38,16 @@ public class GenericSelectionManager
 		
 	}
 	
-	public void initialAdd(int iPolylineID)
+	public void initialAdd(int iElementID)
 	{
 		iNumberOfElements++;
-		hashSelectionTypes.get(sNormalType).put(iPolylineID, true);
+		hashSelectionTypes.get(sNormalType).put(iElementID, true);
 	}
 	
-	public void clearAll()
+	/**
+	 * Clears all elements and sets the element counter to 0
+	 */
+	public void resetSelectionManager()
 	{
 		hashSelectionTypes.clear();
 		for (String sType : selectionTypes)
@@ -53,6 +57,10 @@ public class GenericSelectionManager
 		iNumberOfElements = 0;
 	}
 	
+	/**
+	 * Clears all selections
+	 * all selections are written into the "normal" type 
+	 */
 	public void clearSelections()
 	{
 		for (String sType : selectionTypes)
@@ -65,6 +73,12 @@ public class GenericSelectionManager
 	
 	}
 	
+	/**
+	 * Clear one specific selction type
+	 * The elements are added to the "normal" type
+	 * 
+	 * @param sSelectionType the selection type to be cleared
+	 */
 	public void clearSelection(String sSelectionType)
 	{	
 		if(sSelectionType == sNormalType)
@@ -76,7 +90,13 @@ public class GenericSelectionManager
 		hashSelectionTypes.get(sSelectionType).clear();
 	}
 	
-	public Set<Integer> getElement(String sSelectionType)
+	/**
+	 * Returns all elements that are in a specific selection type
+	 * 
+	 * @param sSelectionType
+	 * @return
+	 */
+	public Set<Integer> getElements(String sSelectionType)
 	{
 		return hashSelectionTypes.get(sSelectionType).keySet();
 	}

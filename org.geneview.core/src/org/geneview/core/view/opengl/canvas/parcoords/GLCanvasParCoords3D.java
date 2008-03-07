@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -56,14 +57,6 @@ extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender 
 {
 	
-	private enum RenderMode
-	{
-		NORMAL,
-		SELECTION,
-		MOUSE_OVER,
-		DESELECTED
-	}	
-		
 	private float fAxisSpacing = 0;
 		
 	private int iGLDisplayListIndexLocal;
@@ -75,10 +68,24 @@ implements IMediatorReceiver, IMediatorSender
 	// flag whether the whole data or the selection should be rendered
 	private boolean bRenderSelection = true;
 	// flag whether to take measures against occlusion or not
-	private boolean bPreventOcclusion = true;
+	private boolean bPreventOcclusion = true;	
 	
+	// Specify the current input data type for the axis and polylines
+	// Is used for meta information, such as captions
 	private EInputDataTypes eAxisDataType = EInputDataTypes.EXPERIMENTS;
 	private EInputDataTypes ePolylineDataType = EInputDataTypes.GENES;
+	
+	// Specify which type of selection is currently active
+	private ESelectionType eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
+	private ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
+	
+	// the list of all selection arrays
+	private EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
+	
+	// the currently active selection arrays for content and storage 
+	// (references to mapSelection entries)
+	private ArrayList<Integer> alContentSelection;
+	private ArrayList<Integer> alStorageSelection;
 	
 	private boolean bIsDisplayListDirtyLocal = true;
 	private boolean bIsDisplayListDirtyRemote = true;
@@ -87,20 +94,28 @@ implements IMediatorReceiver, IMediatorSender
 	private EPickingType draggedObject;
 		
 	private int iNumberOfAxis = 0;
+	
 	private float[] fArGateTipHeight;
 	private float[] fArGateBottomHeight;
 	private int iDraggedGateNumber = 0;
 	
-	//private float fScaling = 0;
 	private float fXTranslation = 0;
 	private float fYTranslation = 0;
 	
 	private ParCoordsRenderStyle renderStyle;
 	
+	// internal management of polyline selections, use 
+	// EPolylineSelectionType for types 
 	private GenericSelectionManager polyLineSelectionManager;
 	
-	private TextRenderer textRenderer;
+
+	// internal management of axis selections, use
+	// EAxisSelectionTypes for types
+	private GenericSelectionManager axisSelectionManager;
 	
+	private TextRenderer textRenderer;	
+	
+	// Draws the info area(s)
 	private GLInfoAreaManager infoAreaManager; 
 	
 	//protected HashMap <ESelectionType, ISetSelection> hashSetSelection;
@@ -108,12 +123,7 @@ implements IMediatorReceiver, IMediatorSender
 	private boolean bRenderInfoArea = false;
 	private boolean bInfoAreaFirstTime = false;
 	
-	private IGenomeIdManager IDManager;
-	
-	private ESelectionType eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
-	private ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
-	private ArrayList<Integer> alContentSelection;
-	private ArrayList<Integer> alStorageSelection;
+	private IGenomeIdManager IDManager;	
 	
 	
 	private ArrayList<IStorage> alDataStorages;
@@ -121,11 +131,8 @@ implements IMediatorReceiver, IMediatorSender
 	private DecimalFormat decimalFormat;
 	
 	
-	private EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
-	
+	// holds the textures for the icons
 	private GLIconTextureManager iconTextureManager;
-	//Texture texture;
-	
 	/**
 	 * Constructor.
 	 * 
@@ -141,18 +148,23 @@ implements IMediatorReceiver, IMediatorSender
 		alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);		
 		
+		// initialize polyline selection manager
 		ArrayList<String> alSelectionType = new ArrayList<String>();
-//		for(EPolyLineSelectionType selectionType : EPolyLineSelectionType.values())
-//		{
-		//	alSelectionType.add(selectionType.getSelectionType());
-//		}
-		// FIXXME
-		alSelectionType.add("NORMAL");
-		alSelectionType.add("SELECTION");
-		alSelectionType.add("MOUSE_OVER");
-		alSelectionType.add("DESELECTED");
+		for(EPolyLineSelectionType selectionType : EPolyLineSelectionType.values())
+		{
+			alSelectionType.add(selectionType.getString());
+		}		
+		polyLineSelectionManager = new GenericSelectionManager(
+				alSelectionType, EPolyLineSelectionType.NORMAL.getString());	
 		
-		polyLineSelectionManager = new GenericSelectionManager(alSelectionType, EPolyLineSelectionType.NORMAL.getSelectionType());	
+		// initialize axis selection manager
+		alSelectionType = new ArrayList<String>();
+		for(EAxisSelectionType selectionType : EAxisSelectionType.values())
+		{
+			alSelectionType.add(selectionType.getString());
+		}
+		axisSelectionManager = new GenericSelectionManager(
+				alSelectionType, EAxisSelectionType.NORMAL.getString());
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
@@ -161,10 +173,7 @@ implements IMediatorReceiver, IMediatorSender
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
-		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
-		
-		
-		
+		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
 	}
 	
 	/*
@@ -208,10 +217,7 @@ implements IMediatorReceiver, IMediatorSender
 	{		
 		iconTextureManager = new GLIconTextureManager(gl);	
 		// initialize selection to an empty array with 
-		ISetSelection tmpSelection = alSetSelection.get(0);		
-		// TODO: only for tests, should be {}
-		int[] iArTmpSelectionIDs = {};//3, 4, 5, 6, 7, 9, 12};
-		tmpSelection.setSelectionIdArray(iArTmpSelectionIDs);
+//		s
 		initSelections();
 		initPolyLineLists();
 	}
@@ -316,14 +322,15 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void renderSelection(boolean bRenderSelection)
 	{
-		this.bRenderSelection = bRenderSelection;
+		this.bRenderSelection = bRenderSelection;		
 		if(bRenderSelection)
 		{
 			eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
 		}
 		else
 			eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
-		initPolyLineLists();
+		refresh();
+		//initPolyLineLists();
 	}
 	
 	/**
@@ -348,10 +355,14 @@ implements IMediatorReceiver, IMediatorSender
 				renderStyle.getGateTipHeight();
 		}
 		polyLineSelectionManager.clearSelections();
+		axisSelectionManager.clearSelections();
 		
 		bRenderInfoArea = false;
 	}
 	
+	/**
+	 * Build everything new but the data base
+	 */
 	public void refresh()
 	{
 		initPolyLineLists();
@@ -424,7 +435,7 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	private void initPolyLineLists()
 	{						
-		polyLineSelectionManager.clearAll();
+		polyLineSelectionManager.resetSelectionManager();
 		
 		int iNumberOfEntriesToRender = 0;		
 
@@ -466,6 +477,15 @@ implements IMediatorReceiver, IMediatorSender
 				polyLineSelectionManager.initialAdd(alContentSelection.get(iPolyLineCount));
 		}
 		
+		// this for loop executes one per axis
+		for (int iAxisCount = 0; iAxisCount < iNumberOfAxis; iAxisCount++)
+		{
+			if(bRenderArrayAsPolyline)
+				axisSelectionManager.initialAdd(alContentSelection.get(iAxisCount));
+			else
+				axisSelectionManager.initialAdd(alStorageSelection.get(iAxisCount));
+		}
+		
 		//fScaling = 1f;
 		
 		System.out.println("Frustum height: " + (viewFrustum.getTop() - viewFrustum.getBottom()));
@@ -475,7 +495,6 @@ implements IMediatorReceiver, IMediatorSender
 //		fXTranslation = viewFrustum.getLeft() + renderStyle.getXSpacing();
 //		fYTranslation = viewFrustum.getBottom() + renderStyle.getBottomSpacing();
 //		
-		
 		fXTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	
@@ -496,10 +515,10 @@ implements IMediatorReceiver, IMediatorSender
 		
 		renderCoordinateSystem(gl, iNumberOfAxis);	
 		
-		renderPolylines(gl, RenderMode.DESELECTED);
-		renderPolylines(gl, RenderMode.NORMAL);
-		renderPolylines(gl, RenderMode.MOUSE_OVER);
-		renderPolylines(gl, RenderMode.SELECTION);		
+		renderPolylines(gl, EPolyLineSelectionType.DESELECTED);
+		renderPolylines(gl, EPolyLineSelectionType.NORMAL);
+		renderPolylines(gl, EPolyLineSelectionType.MOUSE_OVER);
+		renderPolylines(gl, EPolyLineSelectionType.SELECTION);		
 		
 		renderGates(gl, iNumberOfAxis);				
 		
@@ -508,7 +527,7 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glEndList();
 	}
 	
-	private void renderPolylines(GL gl, RenderMode renderMode)
+	private void renderPolylines(GL gl, EPolyLineSelectionType renderMode)
 	{				
 		
 		Set<Integer> setDataToRender = null;
@@ -517,8 +536,8 @@ implements IMediatorReceiver, IMediatorSender
 		switch (renderMode)
 		{
 			case NORMAL:
-				setDataToRender = polyLineSelectionManager.getElement(
-							EPolyLineSelectionType.NORMAL.getSelectionType());
+				setDataToRender = polyLineSelectionManager.getElements(
+							renderMode.getString());
 				if(bPreventOcclusion)				
 					gl.glColor4fv(renderStyle.
 							getPolylineOcclusionPrevColor(setDataToRender.size()), 0);									
@@ -528,28 +547,28 @@ implements IMediatorReceiver, IMediatorSender
 				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				break;
 			case SELECTION:	
-				setDataToRender = polyLineSelectionManager.getElement(
-						EPolyLineSelectionType.SELECTION.getSelectionType());
+				setDataToRender = polyLineSelectionManager.getElements(
+						renderMode.getString());
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
-				setDataToRender = polyLineSelectionManager.getElement(
-						EPolyLineSelectionType.MOUSE_OVER.getSelectionType());
+				setDataToRender = polyLineSelectionManager.getElements(
+						renderMode.getString());
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				break;
 			case DESELECTED:	
-				setDataToRender = polyLineSelectionManager.getElement(
-						EPolyLineSelectionType.DESELECTED.getSelectionType());				
+				setDataToRender = polyLineSelectionManager.getElements(
+						renderMode.getString());				
 				gl.glColor4fv(renderStyle.
 						getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()),
 						0);
 				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
-				setDataToRender = polyLineSelectionManager.getElement(
-						EPolyLineSelectionType.NORMAL.getSelectionType());
+				setDataToRender = polyLineSelectionManager.getElements(
+						EPolyLineSelectionType.NORMAL.getString());
 		}
 		
 		Iterator<Integer> dataIterator = setDataToRender.iterator();
@@ -557,7 +576,7 @@ implements IMediatorReceiver, IMediatorSender
 		while(dataIterator.hasNext())
 		{
 			int iPolyLineID = dataIterator.next();
-			if(renderMode != RenderMode.DESELECTED)
+			if(renderMode != EPolyLineSelectionType.DESELECTED)
 				gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.POLYLINE_SELECTION, iPolyLineID));
 			
 			IStorage currentStorage = null;
@@ -606,7 +625,7 @@ implements IMediatorReceiver, IMediatorSender
 					gl.glEnd();
 				}
 				
-				if(renderMode == RenderMode.SELECTION || renderMode == RenderMode.MOUSE_OVER)
+				if(renderMode == EPolyLineSelectionType.SELECTION || renderMode == EPolyLineSelectionType.MOUSE_OVER)
 				{
 					renderYValues(gl, fCurrentXValue, fCurrentYValue * renderStyle.getAxisHeight(), renderMode);					
 				}				
@@ -615,7 +634,7 @@ implements IMediatorReceiver, IMediatorSender
 				fPreviousYValue = fCurrentYValue;
 			}						
 			
-			if(renderMode != RenderMode.DESELECTED)
+			if(renderMode != EPolyLineSelectionType.DESELECTED)
 				gl.glPopName();			
 		}		
 	}
@@ -640,15 +659,29 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glPopName();
 		
 		// draw all Y-Axis
-
-		gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
-			
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);			
+		
+		Set<Integer> selectedSet = axisSelectionManager.getElements(EAxisSelectionType.SELECTION.getString());
+		Set<Integer> mouseOverSet = axisSelectionManager.getElements(EAxisSelectionType.MOUSE_OVER.getString());
+		ArrayList<Integer> alAxisSelection;
+		
+		if(bRenderArrayAsPolyline)
+			alAxisSelection = alContentSelection;			
+		else
+			alAxisSelection = alStorageSelection;
+			
 		
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.Y_AXIS_SELECTION, iCount));
+			if(selectedSet.contains(alAxisSelection.get(iCount)))				
+				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR, 0);
+			else if (mouseOverSet.contains(alAxisSelection.get(iCount)))
+				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR, 0);
+			else
+				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
+			
+			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.Y_AXIS_SELECTION, alAxisSelection.get(iCount)));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, 
 					ParCoordsRenderStyle.Y_AXIS_LOW, 
@@ -815,7 +848,7 @@ implements IMediatorReceiver, IMediatorSender
 			gl.glEnd();
 			gl.glPopName();
 			
-			renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], RenderMode.NORMAL);
+			renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], EPolyLineSelectionType.NORMAL);
 			
 			
 			// The body of the gate
@@ -858,13 +891,13 @@ implements IMediatorReceiver, IMediatorSender
 			gl.glEnd();
 			gl.glPopName();
 			
-			renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], RenderMode.NORMAL);			
+			renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], EPolyLineSelectionType.NORMAL);			
 			
 			iCount++;
 		}
 	}
 	
-	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, RenderMode renderMode)
+	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, EPolyLineSelectionType renderMode)
 	{
 		// don't render values that are below the y axis
 		if(fYOrigin < 0)
@@ -995,14 +1028,14 @@ implements IMediatorReceiver, IMediatorSender
 			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
 			                                    && fCurrentValue > fArGateBottomHeight[iAxisNumber])
 			{	
-				if(polyLineSelectionManager.checkStatus(EPolyLineSelectionType.SELECTION.getSelectionType(), iPolylineCount))
+				if(polyLineSelectionManager.checkStatus(EPolyLineSelectionType.SELECTION.getString(), iPolylineCount))
 					bRenderInfoArea = false;
 				
 				if(bRenderArrayAsPolyline)
-					polyLineSelectionManager.addToType(EPolyLineSelectionType.DESELECTED.getSelectionType(), 
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.DESELECTED.getString(), 
 							alStorageSelection.get(iPolylineCount));
 				else
-					polyLineSelectionManager.addToType(EPolyLineSelectionType.DESELECTED.getSelectionType(), 
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.DESELECTED.getString(), 
 							alContentSelection.get(iPolylineCount));
 			}
 			else
@@ -1043,10 +1076,10 @@ implements IMediatorReceiver, IMediatorSender
 				if (!bIsBlocked)
 				{
 					if(bRenderArrayAsPolyline)
-						polyLineSelectionManager.removeFromType(EPolyLineSelectionType.DESELECTED.getSelectionType(),
+						polyLineSelectionManager.removeFromType(EPolyLineSelectionType.DESELECTED.getString(),
 								alStorageSelection.get(iPolylineCount));
 					else
-						polyLineSelectionManager.removeFromType(EPolyLineSelectionType.DESELECTED.getSelectionType(),
+						polyLineSelectionManager.removeFromType(EPolyLineSelectionType.DESELECTED.getString(),
 								alContentSelection.get(iPolylineCount));
 				}				
 			}
@@ -1067,8 +1100,8 @@ implements IMediatorReceiver, IMediatorSender
 			switch (ePickingMode)
 			{						
 				case CLICKED:						
-					polyLineSelectionManager.clearSelection(EPolyLineSelectionType.SELECTION.getSelectionType());							
-					polyLineSelectionManager.addToType(EPolyLineSelectionType.SELECTION.getSelectionType(),
+					polyLineSelectionManager.clearSelection(EPolyLineSelectionType.SELECTION.getString());							
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.SELECTION.getString(),
 							iExternalID);
 					
 					if (ePolylineDataType == EInputDataTypes.GENES)
@@ -1100,8 +1133,8 @@ implements IMediatorReceiver, IMediatorSender
 					break;	
 				case MOUSE_OVER:
 
-					polyLineSelectionManager.clearSelection(EPolyLineSelectionType.MOUSE_OVER.getSelectionType());
-					polyLineSelectionManager.addToType(EPolyLineSelectionType.MOUSE_OVER.getSelectionType(), iExternalID);
+					polyLineSelectionManager.clearSelection(EPolyLineSelectionType.MOUSE_OVER.getString());
+					polyLineSelectionManager.addToType(EPolyLineSelectionType.MOUSE_OVER.getString(), iExternalID);
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
 					break;					
@@ -1115,6 +1148,25 @@ implements IMediatorReceiver, IMediatorSender
 			pickingManager.flushHits(iUniqueId, ePickingType);
 			break;
 		case Y_AXIS_SELECTION:
+			switch (ePickingMode)
+			{
+			case CLICKED:
+				axisSelectionManager.clearSelection(
+						EAxisSelectionType.SELECTION.getString());
+				axisSelectionManager.addToType(
+						EAxisSelectionType.SELECTION.getString(), iExternalID);
+				bIsDisplayListDirtyLocal = true;
+				bIsDisplayListDirtyRemote = true;
+				break;
+			case MOUSE_OVER:
+				axisSelectionManager.clearSelection(
+						EAxisSelectionType.MOUSE_OVER.getString());
+				axisSelectionManager.addToType(
+						EAxisSelectionType.MOUSE_OVER.getString(), iExternalID);
+				bIsDisplayListDirtyLocal = true;
+				bIsDisplayListDirtyRemote = true;
+				break;
+			}
 			pickingManager.flushHits(iUniqueId, ePickingType);
 			break;
 		case LOWER_GATE_TIP_SELECTION:
@@ -1319,6 +1371,9 @@ implements IMediatorReceiver, IMediatorSender
 		int iSelectedAccessionID = 0;
 		int iSelectedStorageIndex = 0;
 		
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;
+		
 		for(int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size();  iSelectionCount++)
 		{
 			// TODO: set this to 1 resp. later to a enum as soon as I get real data
@@ -1340,13 +1395,15 @@ implements IMediatorReceiver, IMediatorSender
 				
 						//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
 						//			{
-						polyLineSelectionManager.clearSelection(EPolyLineSelectionType.MOUSE_OVER.getSelectionType());
-						polyLineSelectionManager.addToType(EPolyLineSelectionType.MOUSE_OVER.getSelectionType(), iSelectedStorageIndex);
 						
-						bIsDisplayListDirtyLocal = true;
-						bIsDisplayListDirtyRemote = true;
+						// handle local selection
+						polyLineSelectionManager.clearSelection(EPolyLineSelectionType.MOUSE_OVER.getString());
+						polyLineSelectionManager.addToType(EPolyLineSelectionType.MOUSE_OVER.getString(), iSelectedStorageIndex);
+						
+					
 						//			}
 							
+						// handle global selection
 						Iterator<ISet> iterSetData = alSetData.iterator();
 						while (iterSetData.hasNext())
 						{
@@ -1366,9 +1423,10 @@ implements IMediatorReceiver, IMediatorSender
 					}
 					else
 					{
-						System.out.println("Highlighting for Axis not implemented yet");
-						generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-							.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
+						axisSelectionManager.clearSelection(EAxisSelectionType.MOUSE_OVER.getString());
+						axisSelectionManager.addToType(EAxisSelectionType.MOUSE_OVER.getString(), iSelectedStorageIndex);
+						//generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
+						//	.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
 					}
 				}
 			}
@@ -1404,6 +1462,20 @@ implements IMediatorReceiver, IMediatorSender
 	
 	protected void setSelection(ArrayList<Integer> iAlSelection)
 	{
+//		ArrayList<Integer> alCurrentSelection = new ArrayList<Integer>();
+//		int[] iArCurrentSelection = alSetSelection.get(0).getSelectionIdArray();
+//		
+//		
+//		for (int iCurrentCount = 0; iCurrentCount < iArCurrentSelection.length; iCurrentCount++)
+//		{
+//			alCurrentSelection.add(iArCurrentSelection[iCurrentCount]);
+//		}
+//		
+//		iAlSelection.addAll(alCurrentSelection);
+//		Set<Integer> testSet = new HashSet<Integer>();
+//		testSet.addAll(iAlSelection);
+//		Integer[] integerArray = testSet.toArray();
+		
 		int[] iArSelection = new int[iAlSelection.size()];
 		
 		for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)

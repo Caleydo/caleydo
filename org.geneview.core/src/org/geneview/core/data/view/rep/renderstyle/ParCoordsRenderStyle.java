@@ -28,7 +28,10 @@ extends GeneralRenderStyle
 	
 	
 
-	public static final float[] Y_AXIS_COLOR = {0.0f, 1.0f, 0.0f, 1.0f};
+	public static final float[] Y_AXIS_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
+	public static final float[] Y_AXIS_SELECTED_COLOR = {1.0f, 0.0f, 0.0f, 1.0f};
+	public static final float[] Y_AXIS_MOUSE_OVER_COLOR = {0.0f, 1.0f, 0.0f, 1.0f};
+	
 	public static final float[] X_AXIS_COLOR = {0.0f, 0.0f, 1.0f, 1.0f};
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 	public static final float X_AXIS_LINE_WIDTH = 3.0f;
