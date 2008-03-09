@@ -25,6 +25,7 @@ import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -319,34 +320,26 @@ implements IMediatorReceiver, IMediatorSender {
 
 		
 	private void renderBucketWall(final GL gl) {
-//		
-//		gl.glColor3f(0.4f, 0.4f, 0.4f);
-//		gl.glLineWidth(3);
-//		
-//		gl.glBegin(GL.GL_LINE_LOOP);
-//		gl.glVertex3f(0, 0, -0.01f);
-//		gl.glVertex3f(0, 8, -0.01f);
-//		gl.glVertex3f(8, 8, -0.01f);
-//		gl.glVertex3f(8, 0, -0.01f);
-//		gl.glEnd();
+		
+		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
+		gl.glLineWidth(4);
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, -0.01f);
+		gl.glVertex3f(0, 8, -0.01f);
+		gl.glVertex3f(8, 8, -0.01f);
+		gl.glVertex3f(8, 0, -0.01f);
+		gl.glEnd();
+		
+		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.5f);
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, -0.01f);
+		gl.glVertex3f(0, 8, -0.01f);
+		gl.glVertex3f(8, 8, -0.01f);
+		gl.glVertex3f(8, 0, -0.01f);
+		gl.glEnd();
 	}
-	
-//	private void renderUnderInteractionLayer(final GL gl) {
-//		
-//		// Check if a pathway is currently under interaction
-//		if (underInteractionLayer.getElementList().size() == 0)
-//			return;
-//
-//		int iViewId = underInteractionLayer.getElementIdByPositionIndex(0);
-//		
-//		// Check if pathway is valid
-//		if(iViewId == -1)
-//			return;
-//		
-//		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
-//		renderViewById(gl, iViewId, underInteractionLayer);
-//		gl.glPopName();
-//	}
 	
 	private void renderLayer(final GL gl, 
 			final JukeboxHierarchyLayer layer) {
@@ -391,7 +384,10 @@ implements IMediatorReceiver, IMediatorSender {
 
 //		GLSharedObjects.drawAxis(gl);
 
-		renderBucketWall(gl);
+		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
+		{
+			renderBucketWall(gl);
+		}
 		
 		((AGLCanvasUser) generalManager.getSingelton()
 				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);
@@ -496,7 +492,14 @@ implements IMediatorReceiver, IMediatorSender {
 					int iViewID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
 						
 					switch (tempPick.getPickingMode())
-					{						
+					{			
+						case MOUSE_OVER:
+							
+							generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+								.setDataAboutView(iViewID);
+							
+							break;
+					
 						case CLICKED:			
 					
 							if (iDraggedViewID == -1 || iViewID == iDraggedViewID)
@@ -504,6 +507,9 @@ implements IMediatorReceiver, IMediatorSender {
 								pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
 								return;
 							}
+							
+							generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+								.setDataAboutView(iViewID);
 							
 							// TODO: Should be done using slerping
 							if (stackLayer.containsElement(iViewID))
@@ -760,5 +766,16 @@ implements IMediatorReceiver, IMediatorSender {
 			final Pick pick)
 	{
 		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
 	}
 }

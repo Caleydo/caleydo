@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util;
+package org.geneview.core.view.opengl.util.infoarea;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
@@ -17,7 +17,7 @@ import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataTypes;
+import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.geneview.core.view.opengl.miniview.AGLMiniView;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -73,7 +73,7 @@ public class GLTextInfoAreaRenderer
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iGeneViewID, EInputDataTypes eInputDataTypes) 
+	public void setData(int iGeneViewID, EInputDataType eInputDataTypes) 
 	{
 		this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
 		//this.pickedPoint = pickedPoint;

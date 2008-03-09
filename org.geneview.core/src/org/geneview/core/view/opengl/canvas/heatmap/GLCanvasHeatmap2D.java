@@ -1265,4 +1265,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	{
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
+	}
 }

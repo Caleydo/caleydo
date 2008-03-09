@@ -43,9 +43,9 @@ import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.GLDragAndDrop;
-import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.GLPathwayMemoPad;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaRenderer;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
@@ -1463,5 +1463,16 @@ implements IMediatorReceiver, IMediatorSender {
 			final Pick pick)
 	{
 		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
 	}
 }

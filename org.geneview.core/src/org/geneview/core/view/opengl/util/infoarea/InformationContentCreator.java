@@ -1,12 +1,13 @@
-package org.geneview.core.view.opengl.util;
+package org.geneview.core.view.opengl.util.infoarea;
 
 import java.util.ArrayList;
 
+import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.util.mapping.GeneAnnotationMapper;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataTypes;
+import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 
 /**
  * 
@@ -44,38 +45,58 @@ public class InformationContentCreator
 	 * Returns an AL of Strings when you pass it an ID and a data type
 	 * The list is in such order that the first element is suitable for a title
 	 * 
-	 * @param iGeneViewID
+	 * @param iUniqueID
 	 * @param eInputDataTypes
 	 * @return
 	 */
-	ArrayList<String> getStringContentForID(final int iGeneViewID, final EInputDataTypes eInputDataTypes)
+	ArrayList<String> getStringContentForID(final int iUniqueID, 
+			final EInputDataType eInputDataTypes)
 	{
 		sContent.clear();
 		switch (eInputDataTypes)
 		{
-		case GENES:
+		case GENE:
+			
 			String sAccessionNumber;
 			String sGeneName;
 			
-			if (iGeneViewID == -1)
+			if (iUniqueID == -1)
 			{
 				sAccessionNumber = "unknown";
 				sGeneName = "unknown";
 			}
 			else
 			{
-				sAccessionNumber = getAccessionNumberFromAccessionID(iGeneViewID);							
-				sGeneName = mapper.getGeneShortNameByAccession(iGeneViewID);
+				sAccessionNumber = getAccessionNumberFromAccessionID(iUniqueID);							
+				sGeneName = mapper.getGeneShortNameByAccession(iUniqueID);
 			}
 			sContent.add("Type: Gene");
 			sContent.add("Name: " + sGeneName);			
 			sContent.add("Acc.: " + sAccessionNumber);
 		
-		
 			break;
-		case EXPERIMENTS:
+			
+		case PATHWAY:
+			
+			PathwayGraph pathway = ((PathwayGraph)generalManager.getSingelton().getPathwayManager()
+					.getItem(iUniqueID));
+			
+			if (pathway == null)
+			{
+				break;
+			}
+			
+			String sPathwayTitle = pathway.getTitle();
+			
+			sContent.add("Type: " +pathway.getType().getName() +"Pathway");
+			sContent.add("Pathway: " +sPathwayTitle);
+			break;
+			
+		case EXPERIMENT:
+			
 			sContent.add("Type: Experiment");
 			break;
+			
 		default:
 			sContent.add("No Data");
 		}

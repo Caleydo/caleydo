@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util;
+package org.geneview.core.view.opengl.util.infoarea;
 
 import java.awt.Font;
 import java.util.Iterator;
@@ -14,6 +14,7 @@ import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.util.mapping.GeneAnnotationMapper;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
+import org.geneview.core.view.opengl.util.GLStarEffectRenderer;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraphItem;
 

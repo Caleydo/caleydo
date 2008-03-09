@@ -37,8 +37,8 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
 import org.geneview.core.view.opengl.util.GLIconTextureManager;
-import org.geneview.core.view.opengl.util.GLInfoAreaManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -72,8 +72,8 @@ implements IMediatorReceiver, IMediatorSender
 	
 	// Specify the current input data type for the axis and polylines
 	// Is used for meta information, such as captions
-	private EInputDataTypes eAxisDataType = EInputDataTypes.EXPERIMENTS;
-	private EInputDataTypes ePolylineDataType = EInputDataTypes.GENES;
+	private EInputDataType eAxisDataType = EInputDataType.EXPERIMENT;
+	private EInputDataType ePolylineDataType = EInputDataType.GENE;
 	
 	// Specify which type of selection is currently active
 	private ESelectionType eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
@@ -114,9 +114,6 @@ implements IMediatorReceiver, IMediatorSender
 	private GenericSelectionManager axisSelectionManager;
 	
 	private TextRenderer textRenderer;	
-	
-	// Draws the info area(s)
-	private GLInfoAreaManager infoAreaManager; 
 	
 	//protected HashMap <ESelectionType, ISetSelection> hashSetSelection;
 	
@@ -169,8 +166,6 @@ implements IMediatorReceiver, IMediatorSender
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
 		
-		infoAreaManager = new GLInfoAreaManager(generalManager, viewFrustum);
-		
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
@@ -186,7 +181,7 @@ implements IMediatorReceiver, IMediatorSender
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 		
-		toolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true, renderStyle);
+		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true, renderStyle);
 		
 	}
 	
@@ -199,7 +194,7 @@ implements IMediatorReceiver, IMediatorSender
 			final JukeboxHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
-		toolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager,
+		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
@@ -283,7 +278,7 @@ implements IMediatorReceiver, IMediatorSender
 			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
 			//gl.glScalef(fScaling, fScaling, 1.0f);
 			
-			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
+//			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 			bInfoAreaFirstTime = false;
 		
 			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
@@ -294,7 +289,7 @@ implements IMediatorReceiver, IMediatorSender
 		
 		gl.glTranslatef(fXTranslation - renderStyle.getXSpacing(), 
 				fYTranslation - renderStyle.getBottomSpacing(), 0.0f);
-		toolboxRenderer.render(gl);
+		glToolboxRenderer.render(gl);
 		gl.glTranslatef(-fXTranslation + renderStyle.getXSpacing(),
 				-fYTranslation + renderStyle.getBottomSpacing(), 0.0f);
 	}
@@ -309,7 +304,7 @@ implements IMediatorReceiver, IMediatorSender
 	{
 		this.bRenderArrayAsPolyline = bRenderArrayAsPolyline;
 		bRenderInfoArea = false;
-		EInputDataTypes eTempType = eAxisDataType;
+		EInputDataType eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
 		initPolyLineLists();
@@ -702,11 +697,11 @@ implements IMediatorReceiver, IMediatorSender
 			String sAxisLabel = null;
 			switch (eAxisDataType) 
 			{
-			case EXPERIMENTS:
+			case EXPERIMENT:
 				sAxisLabel = "Exp." + iCount;
 				//sAxisLabel = alSetData.get(alStorageSelection.get(iCount)).getLabel();
 				break;
-			case GENES:				
+			case GENE:				
 				sAxisLabel = getAccessionNumberFromStorageIndex(alContentSelection.get(iCount));
 				break;
 			default:
@@ -1104,13 +1099,13 @@ implements IMediatorReceiver, IMediatorSender
 					polyLineSelectionManager.addToType(EPolyLineSelectionType.SELECTION.getString(),
 							iExternalID);
 					
-					if (ePolylineDataType == EInputDataTypes.GENES)
+					if (ePolylineDataType == EInputDataType.GENE)
 					{
 						
 						int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);								
 						
-						infoAreaManager.setData(iAccessionID, 
-								ePolylineDataType, pick.getPickedPoint());
+						generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+							.setData(iAccessionID, ePolylineDataType, pick.getPickedPoint());
 						bRenderInfoArea = true;
 						bInfoAreaFirstTime = true;								
 						
@@ -1529,4 +1524,15 @@ implements IMediatorReceiver, IMediatorSender
 		else
 			return sAccessionNumber;		
 	}	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
+	}
 }

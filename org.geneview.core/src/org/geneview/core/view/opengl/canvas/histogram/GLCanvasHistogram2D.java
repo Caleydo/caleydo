@@ -1,5 +1,6 @@
 package org.geneview.core.view.opengl.canvas.histogram;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -488,5 +489,16 @@ extends AGLCanvasUser {
 			final Pick pick)
 	{
 		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
 	}
 }

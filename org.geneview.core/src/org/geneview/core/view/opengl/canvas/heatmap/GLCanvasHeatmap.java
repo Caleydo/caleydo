@@ -1,5 +1,7 @@
 package org.geneview.core.view.opengl.canvas.heatmap;
 
+import java.util.ArrayList;
+
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
@@ -208,4 +210,15 @@ extends AGLCanvasUser {
 			final Pick pick)
 	{
 	}	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
+	}
 }

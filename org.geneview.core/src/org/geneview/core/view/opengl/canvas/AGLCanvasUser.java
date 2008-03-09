@@ -61,7 +61,7 @@ implements GLEventListener {
 	
 	protected IViewFrustum viewFrustum;
 	
-	protected GLToolboxRenderer toolboxRenderer;
+	protected GLToolboxRenderer glToolboxRenderer;
 
 	/**
 	 * Constructor.
@@ -106,7 +106,6 @@ implements GLEventListener {
 
 		this.viewFrustum = viewFrustum;
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
-	
 	}
 
 	/*
@@ -115,8 +114,11 @@ implements GLEventListener {
 	 */
 	public void init(GLAutoDrawable drawable) {
 		
+		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+			.initInfoOverlay(iUniqueId, drawable);
+		
 		((GLEventListener)parentGLCanvas).init(drawable);
-
+		
 		initLocal(drawable.getGL());
 	}
 	
@@ -125,10 +127,13 @@ implements GLEventListener {
 	 * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
 	 */
 	public void display(GLAutoDrawable drawable) {
-
+		
 		((GLEventListener)parentGLCanvas).display(drawable);
 
 		displayLocal(drawable.getGL());
+		
+		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+			.renderInfoOverlay(iUniqueId, drawable);
 	}
 
 	/*
@@ -527,5 +532,7 @@ implements GLEventListener {
 			final EPickingMode ePickingMode,
 			final int iExternalID,
 			final Pick pick);
+	
+	public abstract ArrayList<String> getInfo();
 	
 }

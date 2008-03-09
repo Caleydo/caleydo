@@ -41,8 +41,8 @@ import org.geneview.core.util.mapping.color.ColorMapping;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
-import org.geneview.core.view.opengl.util.GLInfoAreaRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaRenderer;
 import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
@@ -2750,4 +2750,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	{
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
+	}
 }

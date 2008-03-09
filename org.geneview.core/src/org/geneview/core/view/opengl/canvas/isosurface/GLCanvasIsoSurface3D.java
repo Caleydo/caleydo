@@ -1,5 +1,7 @@
 package org.geneview.core.view.opengl.canvas.isosurface;
 
+import java.util.ArrayList;
+
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
@@ -422,5 +424,15 @@ extends AGLCanvasUser
 	{
 		
 	}
-  
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		sAlInfo.add("No info available!");
+		return sAlInfo;
+	}
 }

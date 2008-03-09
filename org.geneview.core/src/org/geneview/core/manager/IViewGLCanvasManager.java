@@ -9,7 +9,7 @@ import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.manager.view.PickingManager;
 import org.geneview.core.manager.view.SelectionManager;
-import org.geneview.core.view.jogl.JoglCanvasForwarderType;
+import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.geneview.core.view.swt.data.search.DataEntitySearcherViewRep;
 
 import com.sun.opengl.util.Animator;
@@ -51,6 +51,8 @@ extends IViewManager {
 	public PickingManager getPickingManager();
 	
 	public SelectionManager getSelectionManager();
+	
+	public GLInfoAreaManager getInfoAreaManager();
 
 	public void createAnimator();
 	public Animator getAnimator();

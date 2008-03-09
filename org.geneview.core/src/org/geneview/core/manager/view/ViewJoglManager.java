@@ -21,13 +21,13 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.view.IView;
 import org.geneview.core.view.IViewRep;
 import org.geneview.core.view.ViewType;
-import org.geneview.core.view.jogl.JoglCanvasForwarderType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.geneview.core.view.opengl.canvas.jukebox.GLCanvasOverallJukebox3D;
 import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
+import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
 import org.geneview.core.view.swt.data.exchanger.DataExchangerViewRep;
 import org.geneview.core.view.swt.data.exchanger.NewSetEditorViewRep;
@@ -86,6 +86,8 @@ implements IViewGLCanvasManager {
 	
 	private SelectionManager selectionManager;
 
+	private GLInfoAreaManager infoAreaManager; 
+	
 	/**
 	 * Constructor.
 	 * 
@@ -101,6 +103,7 @@ implements IViewGLCanvasManager {
 
 		pickingManager = new PickingManager(generalManager);
 		selectionManager = new SelectionManager(generalManager);
+		infoAreaManager = new GLInfoAreaManager(generalManager);
 		
 		hashViewId2View = new HashMap<Integer, IView>();
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCanvas>();
@@ -645,6 +648,11 @@ implements IViewGLCanvasManager {
 	public SelectionManager getSelectionManager() {
 		
 		return selectionManager;
+	}
+	
+	public GLInfoAreaManager getInfoAreaManager() {
+		
+		return infoAreaManager;
 	}
 	
 	public void createAnimator() {

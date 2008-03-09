@@ -1,18 +1,23 @@
-package org.geneview.core.view.opengl.util;
+package org.geneview.core.view.opengl.util.infoarea;
 
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.set.selection.SetSelection;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataTypes;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.geneview.core.view.opengl.util.GLCoordinateUtils;
 
 /**
  * 
@@ -26,9 +31,11 @@ import org.geneview.core.view.opengl.canvas.parcoords.EInputDataTypes;
  * connections from the infoarea to the selected element
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class GLInfoAreaManager 
 {
+	private IGeneralManager generalManager;
 	
 	private Point pickedPoint;
 	
@@ -42,10 +49,22 @@ public class GLInfoAreaManager
 	private Vec3f vecLowerLeft;
 	private IViewFrustum viewFrustum;
 	
-	public GLInfoAreaManager(final IGeneralManager generalManager, final IViewFrustum viewFrustum)
+	private InformationContentCreator contentCreator;
+	
+	private HashMap<Integer, GLInfoOverlayRenderer> hashViewIDToInfoOverlay;
+	
+	private boolean bUpdateViewInfo = true;
+	
+	/**
+	 * Constructor. 
+	 * 
+	 * @param generalManager
+	 */
+	public GLInfoAreaManager(final IGeneralManager generalManager)
 	{
-		infoArea = new GLTextInfoAreaRenderer(generalManager, viewFrustum);
-		this.viewFrustum = viewFrustum; 
+		this.generalManager = generalManager;
+//		infoArea = new GLTextInfoAreaRenderer(generalManager, viewFrustum);
+		hashViewIDToInfoOverlay = new HashMap<Integer, GLInfoOverlayRenderer>();
 	}
 	
 	/**
@@ -55,7 +74,7 @@ public class GLInfoAreaManager
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iGeneViewID, EInputDataTypes eInputDataTypes, Point pickedPoint) 
+	public void setData(int iGeneViewID, EInputDataType eInputDataTypes, Point pickedPoint) 
 	{
 		//this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
 		this.pickedPoint = pickedPoint;
@@ -74,8 +93,6 @@ public class GLInfoAreaManager
 		infoArea.setMiniViewData(alStorages, alSetSelection);
 	}
 	
-	
-	
 	/**
 	 * Render the data previously set
 	 * 
@@ -85,7 +102,6 @@ public class GLInfoAreaManager
 	 */
 	public void renderInfoArea(GL gl, boolean bFirstTime)
 	{
-	
 		if(bFirstTime)
 		{
 			float[] fArWorldCoords = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
@@ -109,4 +125,60 @@ public class GLInfoAreaManager
 		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime);
 	}
 
+	public void initInfoOverlay(final int iViewID, final GLAutoDrawable drawable)
+	{
+		// Lazy creation to be sure that all managers are already initialized
+		if (hashViewIDToInfoOverlay.isEmpty())
+			contentCreator = new InformationContentCreator(generalManager);
+		
+		if (!hashViewIDToInfoOverlay.containsKey(iViewID))
+		{
+			 GLInfoOverlayRenderer infoOverlayRenderer = new GLInfoOverlayRenderer(generalManager);
+			 
+			 hashViewIDToInfoOverlay.put(iViewID, infoOverlayRenderer);
+			 
+			 infoOverlayRenderer.init(drawable);	 
+		}	
+	}	
+	
+	public void renderInfoOverlay(final int iViewID, final GLAutoDrawable drawable) 
+	{	
+		hashViewIDToInfoOverlay.get(iViewID).render(drawable);
+	}
+	
+	public void setData(final int iViewID, 
+			final int iUniqueID, final EInputDataType eInputDataType, 
+			final ArrayList<String> sAlContent) 
+	{	
+		bUpdateViewInfo = false;
+		
+		sAlContent.add("---------------------------------------------------------");
+		sAlContent.addAll(contentCreator.getStringContentForID(iUniqueID, eInputDataType));
+		
+		Iterator<GLInfoOverlayRenderer> iterInfoOverlay = 
+			hashViewIDToInfoOverlay.values().iterator();
+		
+		while (iterInfoOverlay.hasNext())
+		{	
+			iterInfoOverlay.next().setData(sAlContent);
+		}
+	}
+	
+	public void setDataAboutView(final int iViewID) 
+	{
+		if (bUpdateViewInfo == false)
+		{
+			bUpdateViewInfo = true;
+			return;			
+		}
+			
+		Iterator<GLInfoOverlayRenderer> iterInfoOverlay = 
+			hashViewIDToInfoOverlay.values().iterator();
+		
+		while (iterInfoOverlay.hasNext())
+		{	
+			iterInfoOverlay.next().setData(((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
+					.getItem(iViewID)).getInfo());
+		}
+	}
 }

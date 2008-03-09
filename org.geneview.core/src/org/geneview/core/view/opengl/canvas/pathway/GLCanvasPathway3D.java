@@ -34,6 +34,7 @@ import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.util.graph.EGraphItemHierarchy;
@@ -136,7 +137,7 @@ implements IMediatorReceiver, IMediatorSender {
 			final PickingJoglMouseListener pickingTriggerMouseAdapter)
 	{
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-		toolboxRenderer = new GLToolboxRenderer(gl, generalManager,
+		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
 		init(gl);
@@ -191,7 +192,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		checkForHits(gl);
 		renderScene(gl);
-		toolboxRenderer.render(gl);
+		glToolboxRenderer.render(gl);
 	}
 	
 	protected void initPathwayData(final GL gl) {
@@ -268,22 +269,24 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void rebuildPathwayDisplayList(final GL gl) {
 		
-//		if (selectedVertex != null)
-//		{
-//			// Write currently selected vertex to selection set
-//			int[] iArTmpSelectionId = new int[1];
-//			int[] iArTmpDepth = new int[1];
-//			iArTmpSelectionId[0] = selectedVertex.getId();
-//			iArTmpDepth[0] = 0;
-//			alSetSelection.get(1).getWriteToken();
-//			alSetSelection.get(1).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-//			alSetSelection.get(1).returnWriteToken();
-//			
-//			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
-//					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
-//		}
+		if (selectedVertex != null)
+		{
+			// Write currently selected vertex to selection set
+			// Selected elements are rendered highlighted by GLPathwayManager
+			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
+			ArrayList<Integer> iAlTmpDepth = new ArrayList<Integer>();
+			iAlTmpSelectionId.add(selectedVertex.getId());
+			iAlTmpDepth.add(0);
+			alSetSelection.get(1).getWriteToken();
+			alSetSelection.get(1).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpDepth, null);
+			alSetSelection.get(1).returnWriteToken();
+			
+			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
 		
-		//refGLPathwayManager.performIdenticalNodeHighlighting();
+			refGLPathwayManager.performIdenticalNodeHighlighting();
+		}
+
 		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 	
@@ -568,6 +571,9 @@ implements IMediatorReceiver, IMediatorSender {
 			int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 
+			generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+				.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());
+			
 			selectionManager.clear();
 
 			int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
@@ -602,9 +608,9 @@ implements IMediatorReceiver, IMediatorSender {
 				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
 		
 		ArrayList<Integer> iAlSelectedGenes = new ArrayList<Integer>();
+		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>();
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItem = null;
 		int iGeneID = -1;
-		int iAccessionID = -1;
 		while(iterPathwayVertexGraphItem.hasNext()) 
 		{
 			tmpPathwayVertexGraphItem = ((PathwayVertexGraphItemRep)iterPathwayVertexGraphItem.next());
@@ -633,26 +639,31 @@ implements IMediatorReceiver, IMediatorSender {
 					continue;
 				
 				iAlSelectedGenes.add(iTmpAccessionID);
-//			}
-		}
-		
-		// Write currently selected vertex to selection set and trigger upate
-		
-		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(iAlSelectedGenes.size());
-
-		for (int iGeneIndex = 0; iGeneIndex < iAlSelectedGenes.size(); iGeneIndex++)
-		{
-			
-			
-			// TODO enum for selction modes
-			if (iAlSelectedGenes.get(iGeneIndex) == iAccessionID)
-				iAlTmpGroupId.add(1);
-			else
 				iAlTmpGroupId.add(0);
+//			}
 		}
 		
 		alSetSelection.get(0).getWriteToken();
 		alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlSelectedGenes, iAlTmpGroupId, null);
 		alSetSelection.get(0).returnWriteToken();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
+	public ArrayList<String> getInfo() {
+		
+		ArrayList<String> sAlInfo = new ArrayList<String>();
+		
+		PathwayGraph pathway = ((PathwayGraph)generalManager.getSingelton().getPathwayManager()
+				.getItem(iPathwayID));
+	
+		String sPathwayTitle = pathway.getTitle();
+		
+		sAlInfo.add("Type: " +pathway.getType().getName() +" Pathway");
+		sAlInfo.add("Pathway: " +sPathwayTitle);
+		
+		return sAlInfo;
 	}
 }
