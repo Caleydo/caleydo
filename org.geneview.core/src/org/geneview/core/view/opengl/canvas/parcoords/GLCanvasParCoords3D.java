@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -32,6 +31,7 @@ import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
+import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.EIconTextures;
@@ -127,6 +127,8 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private DecimalFormat decimalFormat;
 	
+	private SelectionManager extSelectionManager;
+	
 	
 	// holds the textures for the icons
 	private GLIconTextureManager iconTextureManager;
@@ -169,6 +171,10 @@ implements IMediatorReceiver, IMediatorSender
 		decimalFormat = new DecimalFormat("#####.##");
 		IDManager = generalManager.getSingelton().getGenomeIdManager();
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
+	
+		extSelectionManager = generalManager.
+			getSingelton().getViewGLCanvasManager().getSelectionManager();
+	
 	}
 	
 	/*
@@ -1094,7 +1100,9 @@ implements IMediatorReceiver, IMediatorSender
 		case POLYLINE_SELECTION:
 			switch (ePickingMode)
 			{						
-				case CLICKED:						
+				case CLICKED:				
+					
+					Set<Integer> selectedSet = polyLineSelectionManager.getElements(EPolyLineSelectionType.SELECTION.getString());					
 					polyLineSelectionManager.clearSelection(EPolyLineSelectionType.SELECTION.getString());							
 					polyLineSelectionManager.addToType(EPolyLineSelectionType.SELECTION.getString(),
 							iExternalID);
@@ -1103,26 +1111,45 @@ implements IMediatorReceiver, IMediatorSender
 					{
 						
 						int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);								
-						
-						generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-							.setData(iAccessionID, ePolylineDataType, pick.getPickedPoint());
+						System.out.println("Accession ID: " + iAccessionID);
+						//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+						//	.setData(iAccessionID, ePolylineDataType, pick.getPickedPoint());
 						bRenderInfoArea = true;
 						bInfoAreaFirstTime = true;								
 						
+						// Write currently selected vertex to selection set
+						// and trigger update event
+						ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
+						//iAlTmpSelectionId.add(1);
+						ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
+						
 						if (iAccessionID != -1)
 						{						
-							// Write currently selected vertex to selection set
-							// and trigger update event
-							ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
-							//iAlTmpSelectionId.add(1);
-							ArrayList<Integer> iAlTmpDepth = new ArrayList<Integer>(1);
+							
 							iAlTmpSelectionId.add(iAccessionID);
-							iAlTmpDepth.add(2);
-							alSetSelection.get(0).getWriteToken();
-							alSetSelection.get(0).updateSelectionSet(iUniqueId, 
-									iAlTmpSelectionId, iAlTmpDepth, null); // TODO check this
-							alSetSelection.get(0).returnWriteToken();
+							iAlTmpGroup.add(2);
+							extSelectionManager.modifySelection(iAccessionID, 
+									createElementRep(iExternalID), ESelectionMode.ReplacePick);
+						}							
+							
+						for(Integer iCurrent : selectedSet)
+						{
+							iAccessionID = getAccesionIDFromStorageIndex(iCurrent);
+							if(iAccessionID != -1)
+							{
+								iAlTmpSelectionId.add(iAccessionID);
+								iAlTmpGroup.add(-1);
+							}
 						}
+
+						alSetSelection.get(0).getWriteToken();
+						alSetSelection.get(0).updateSelectionSet(iUniqueId, 
+								iAlTmpSelectionId, iAlTmpGroup, null);
+						alSetSelection.get(0).returnWriteToken();
+
+					
+
+						
 					}
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
@@ -1362,7 +1389,7 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
 		// iterate here		
 		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iAlSelection);
-		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices);
+		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices, iAlGroup);
 		setSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
 		
 		int iSelectedAccessionID = 0;
@@ -1388,42 +1415,21 @@ implements IMediatorReceiver, IMediatorSender
 				if (iSelectedStorageIndex >= 0)
 				{						
 					if(!bRenderArrayAsPolyline)
-					{
-				
-						//			if (alSelectedPolylines.contains(iExpressionStorageIndex))
-						//			{
-						
+					{				
 						// handle local selection
 						polyLineSelectionManager.clearSelection(EPolyLineSelectionType.MOUSE_OVER.getString());
 						polyLineSelectionManager.addToType(EPolyLineSelectionType.MOUSE_OVER.getString(), iSelectedStorageIndex);
 						
-					
-						//			}
-							
-						// handle global selection
-						Iterator<ISet> iterSetData = alSetData.iterator();
-						while (iterSetData.hasNext())
-						{
-							ISet tmpSet = iterSetData.next();
-								
-							if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
-							{
-									alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
-							}
-						}	
-							
-						float fYValue = alDataStorages.get(0).getArrayFloat()[iSelectedStorageIndex];
-						
-						generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-							.modifySelection(iSelectedAccessionID, new SelectedElementRep(
-									iUniqueId, renderStyle.getXSpacing(), fYValue * renderStyle.getScaling() + renderStyle.getBottomSpacing()), ESelectionMode.AddPick);
+						// handle external selection
+						extSelectionManager.modifySelection(iSelectedAccessionID, 
+								createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
 					}
 					else
 					{
 						axisSelectionManager.clearSelection(EAxisSelectionType.MOUSE_OVER.getString());
 						axisSelectionManager.addToType(EAxisSelectionType.MOUSE_OVER.getString(), iSelectedStorageIndex);
-						//generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager()
-						//	.modifySelection(iSelectedAccessionID, new SelectedElementRep(iUniqueId, 0.0f, 0), ESelectionMode.AddPick);
+						
+						extSelectionManager.modifySelection(iSelectedAccessionID, createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
 					}
 				}
 			}
@@ -1443,16 +1449,65 @@ implements IMediatorReceiver, IMediatorSender
 				LoggerType.VERBOSE);
 	}
 	
-	protected ArrayList<Integer>  cleanSelection(ArrayList<Integer> iAlSelection )
+	private SelectedElementRep createElementRep(int iStorageIndex)
 	{
+		
+		SelectedElementRep elemntRep;
+		
+		if(!bRenderArrayAsPolyline)
+		{
+			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
+			float fYValue;
+			float fXValue;
+			int iCount = 0;
+			for(Integer iCurrent : alStorageSelection)
+			{
+				fYValue = alDataStorages.get(iCurrent).getArrayFloat()[iStorageIndex];
+				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
+				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing();
+				alPoints.add(new Vec3f(fXValue, fYValue, 0));
+				iCount++;
+			}		
+		
+			elemntRep = new SelectedElementRep(iUniqueId, alPoints);
+		
+		}
+		else
+		{			
+			float fXValue = alContentSelection.indexOf(iStorageIndex) 
+				* fAxisSpacing + renderStyle.getXSpacing();
+		
+			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
+			alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing(), 0));
+			alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing() + 
+					renderStyle.getAxisHeight(), 0));
+			
+			elemntRep = new SelectedElementRep(iUniqueId, alPoints);
+		}
+		return elemntRep;
+		
+	}
+	
+	protected ArrayList<Integer>  cleanSelection(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
+	{
+		ArrayList<Integer> alDelete = new ArrayList<Integer>(1);
 		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
+			// TODO remove elements if -1
 			if(iAlSelection.get(iCount) == -1)
+			{
+				alDelete.add(iCount);
 				continue;		
-			
+			}
 			iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);	
 //			System.out.println("Storageindexalex: " + iAlSelection[iCount]);
 		}		
+		
+		for(int iCount = alDelete.size()-1; iCount >= 0; iCount--)
+		{
+			iAlSelection.remove(iCount);
+			iAlGroup.remove(iCount);
+		}
 		
 		return iAlSelection;
 	}
@@ -1460,28 +1515,7 @@ implements IMediatorReceiver, IMediatorSender
 	protected void setSelection(ArrayList<Integer> iAlSelection, 
 			ArrayList<Integer> iAlGroup,
 			ArrayList<Integer> iAlOptional)
-	{
-//		ArrayList<Integer> alCurrentSelection = new ArrayList<Integer>();
-//		int[] iArCurrentSelection = alSetSelection.get(0).getSelectionIdArray();
-//		
-//		
-//		for (int iCurrentCount = 0; iCurrentCount < iArCurrentSelection.length; iCurrentCount++)
-//		{
-//			alCurrentSelection.add(iArCurrentSelection[iCurrentCount]);
-//		}
-//		
-//		iAlSelection.addAll(alCurrentSelection);
-//		Set<Integer> testSet = new HashSet<Integer>();
-//		testSet.addAll(iAlSelection);
-//		Integer[] integerArray = testSet.toArray();
-		
-//		int[] iArSelection = new int[iAlSelection.size()];
-//		
-//		for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
-//		{
-//			iArSelection[iSelectionIndex] = iAlSelection.get(iSelectionIndex);
-//		}
-	
+	{	
 		alSetSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
 		
 		initSelections();
@@ -1490,7 +1524,6 @@ implements IMediatorReceiver, IMediatorSender
 	
 	protected ArrayList<Integer> convertAccessionToExpressionIndices(ArrayList<Integer> iAlSelection)
 	{
-//		int[] iArSelectionStorageIndices = new int[iArSelection.length];
 		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
 		for(int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{

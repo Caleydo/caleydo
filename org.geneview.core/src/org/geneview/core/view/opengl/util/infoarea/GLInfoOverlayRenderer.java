@@ -78,6 +78,10 @@ public class GLInfoOverlayRenderer
 		if (panelHeight > MAX_OVERLAY_HEIGHT)
 			panelHeight = MAX_OVERLAY_HEIGHT;
 
+		
+		if (drawable.getWidth() == 0 || drawable.getHeight() == 0)
+			return;
+		
 		Graphics2D g2d = glOverlay.createGraphics();
 		g2d.setComposite(AlphaComposite.Src);
 

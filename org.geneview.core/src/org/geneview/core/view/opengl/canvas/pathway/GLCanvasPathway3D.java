@@ -321,6 +321,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
 					0, 
+					0, 
 					0), 
 					ESelectionMode.AddPick);
 		}
@@ -580,7 +581,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
 					(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
-					((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y()), 
+					((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
 					ESelectionMode.AddPick);
 
 			// Write currently selected vertex to selection set and trigger update

@@ -148,10 +148,6 @@ public class GenericSelectionManager
 		else
 			return false;
 	}
-	
 
-	
-
-	
 	
 }

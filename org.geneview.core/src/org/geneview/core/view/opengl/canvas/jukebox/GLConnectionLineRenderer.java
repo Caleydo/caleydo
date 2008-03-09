@@ -4,10 +4,12 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
+import org.geneview.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
 import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
@@ -21,6 +23,7 @@ import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
  * jukebox setup.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  *
  */
 public class GLConnectionLineRenderer {
@@ -123,6 +126,7 @@ public class GLConnectionLineRenderer {
 		Vec3f vecTranslationDest;
 		Vec3f vecScaleSrc;
 		Vec3f vecScaleDest;
+		
 		Rotf rotSrc;
 		Rotf rotDest;
 		Mat4f matSrc = new Mat4f();
@@ -170,35 +174,24 @@ public class GLConnectionLineRenderer {
 							rotDest = stackLayer.getTransformByElementId(
 									selectedElementRepDest.getContainingViewID()).getRotation();
 							
-							vecMatSrc.set( selectedElementRepSrc.getXCoord(), 
-									selectedElementRepSrc.getYCoord(), 0);
-							vecMatDest.set(selectedElementRepDest.getXCoord(), 
-									selectedElementRepDest.getYCoord(), 0);
+							ArrayList<Vec3f> alSrcPoints = selectedElementRepSrc.getPoints();
+							ArrayList<Vec3f> alSrcPointsTransformed = new ArrayList<Vec3f>();
 							
-							rotSrc.toMatrix(matSrc);
-							rotDest.toMatrix(matDest);
-
-							matSrc.xformPt(vecMatSrc, vecTransformedSrc);
-							matDest.xformPt(vecMatDest, vecTransformedDest);
-
-							vecTransformedSrc.componentMul(vecScaleSrc);
-							vecTransformedSrc.add(vecTranslationSrc);
-							vecTransformedDest.componentMul(vecScaleDest);
-							vecTransformedDest.add(vecTranslationDest);
+							for (Vec3f vecCurrentPoint : alSrcPoints)
+							{
+								alSrcPointsTransformed.add(transform(vecCurrentPoint, vecTranslationSrc, vecScaleSrc, rotSrc));
+							}
 							
-							gl.glLineWidth(4);
-							Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
-							gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
-						
+							ArrayList<Vec3f> alDestPoints = selectedElementRepDest.getPoints();
+							ArrayList<Vec3f> alDestPointsTransformed = new ArrayList<Vec3f>();
+							for (Vec3f vecCurrentPoint : alDestPoints)
+							{
+								alDestPointsTransformed.add(transform(vecCurrentPoint, vecTranslationDest, vecScaleDest, rotDest));
+							}				
 							
-							gl.glBegin(GL.GL_LINES);
-							gl.glVertex3f(vecTransformedSrc.x(),
-									vecTransformedSrc.y(),
-									vecTransformedSrc.z());
-							gl.glVertex3f(vecTransformedDest.x(),
-									vecTransformedDest.y(),
-									vecTransformedDest.z());
-							gl.glEnd();	
+					
+							renderConnection(gl, alSrcPointsTransformed, alDestPointsTransformed);
+					
 						}
 					}
 				}
@@ -207,5 +200,83 @@ public class GLConnectionLineRenderer {
 		}
 		
 		gl.glLineWidth(1);
+	}
+	
+	private void renderConnection(final GL gl, final ArrayList<Vec3f> alSrcPoints, final ArrayList<Vec3f> alDestPoints)
+	{
+		gl.glLineWidth(4);
+		Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
+		gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
+	
+		if(alSrcPoints.size() == 1 && alDestPoints.size() == 1)
+		{
+			Vec3f vecSrcPoint = alSrcPoints.get(0);
+			Vec3f vecDestPoint = alDestPoints.get(0);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(vecSrcPoint.x(),
+					vecSrcPoint.y(),
+					vecSrcPoint.z());
+			gl.glVertex3f(vecDestPoint.x(),
+					vecDestPoint.y(),
+					vecDestPoint.z());
+			gl.glEnd();	
+			return;
+		}		
+		
+		ArrayList<Vec3f> alPoints;
+		Vec3f vecPoint;
+		if(alSrcPoints.size() == 1 && alDestPoints.size() > 1)
+		{
+			alPoints = alDestPoints;
+			vecPoint = alSrcPoints.get(0);	
+			renderPlanes(gl, vecPoint, alPoints);
+		}
+		else if(alSrcPoints.size() > 1 && alDestPoints.size() == 1)
+		{
+			alPoints = alSrcPoints;
+			vecPoint = alDestPoints.get(0);
+			renderPlanes(gl, vecPoint, alPoints);
+		}
+	
+	}
+	
+	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints)
+	{
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_COLOR, 0);
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
+		for(Vec3f vecCurrent : alPoints)
+		{
+			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
+		}
+		gl.glEnd();
+		
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glBegin(GL.GL_LINES);		
+		for(Vec3f vecCurrent : alPoints)
+		{
+			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
+			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
+		}
+		gl.glEnd();
+		
+	}
+	
+	private Vec3f transform(Vec3f vecOriginalPoint, Vec3f vecTranslation, Vec3f vecScale, Rotf rotation)
+	{
+	
+		Mat4f matSrc = new Mat4f();
+		Vec3f vecTransformedPoint = new Vec3f();
+		
+		rotation.toMatrix(matSrc);
+
+		
+		matSrc.xformPt(vecOriginalPoint, vecTransformedPoint);		
+
+		vecTransformedPoint.componentMul(vecScale);
+		
+		vecTransformedPoint.add(vecTranslation);
+		
+		return vecTransformedPoint;
 	}
 }

@@ -15,6 +15,8 @@ import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.EventPublisher;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
+import com.sun.org.apache.bcel.internal.generic.IALOAD;
+
 /**
  * Selection SET that gives access to
  * the selection storage arrays.
@@ -41,7 +43,8 @@ implements ISetSelection
 	 * @param setGeneralManager
 	 */
 	public SetSelection(int iSetCollectionId, 
-			IGeneralManager refGeneralManager) {
+			IGeneralManager refGeneralManager) 
+	{
 
 		super(iSetCollectionId, 
 				refGeneralManager, 
@@ -253,7 +256,19 @@ implements ISetSelection
 	{
 		if(iAlSelectionID == null)
 		{
-			setAllSelectionDataArrays(iAlNewSelectionID, iAlNewSelectionGroup, iAlSelectionOptionalData);
+			iAlSelectionID = new ArrayList<Integer>();
+			
+			if (iAlNewSelectionGroup != null)
+			{
+				iAlSelectionGroup = new ArrayList<Integer>();
+			}
+			
+			if (iAlNewOptional != null)
+			{
+				iAlSelectionGroup = new ArrayList<Integer>();
+			}
+				
+			//setAllSelectionDataArrays(iAlNewSelectionID, iAlNewSelectionGroup, iAlSelectionOptionalData);
 		}
 		
 		int iCount = 0;
@@ -272,8 +287,9 @@ implements ISetSelection
 						iAlSelectionOptionalData.remove(iIndex);
 				}
 				else
-				{				
-					iAlSelectionGroup.set(iIndex, iAlNewSelectionGroup.get(iCount));
+				{	
+					if(iAlSelectionGroup != null)
+						iAlSelectionGroup.set(iIndex, iAlNewSelectionGroup.get(iCount));
 					if(iAlSelectionOptionalData != null)
 						iAlSelectionOptionalData.set(iIndex, iAlNewOptional.get(iCount));
 				}
