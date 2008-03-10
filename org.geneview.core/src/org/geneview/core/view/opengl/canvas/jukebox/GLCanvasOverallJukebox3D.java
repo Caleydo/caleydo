@@ -46,7 +46,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.05f;
 	
 	private static final int SLERP_RANGE = 1000;
-	private static final int SLERP_SPEED = 900;
+	private static final int SLERP_SPEED = 1300;
 	
 	private JukeboxHierarchyLayer underInteractionLayer;
 	private JukeboxHierarchyLayer stackLayer;
@@ -112,7 +112,7 @@ implements IMediatorReceiver, IMediatorSender {
 		underInteractionLayer.setTransformByPositionIndex(0, transformUnderInteraction);
 		
 		Transform transformTransition = new Transform();
-		transformTransition.setTranslation(new Vec3f(0, 0, 0.1f));
+		transformTransition.setTranslation(new Vec3f(1.9f, 0, 0.1f));
 		transformTransition.setScale(new Vec3f(
 				SCALING_FACTOR_TRANSITION_LAYER,
 				SCALING_FACTOR_TRANSITION_LAYER,

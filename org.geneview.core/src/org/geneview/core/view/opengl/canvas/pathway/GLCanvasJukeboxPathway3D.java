@@ -46,6 +46,8 @@ import org.geneview.core.view.opengl.util.GLDragAndDrop;
 import org.geneview.core.view.opengl.util.GLPathwayMemoPad;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaRenderer;
+import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraph;
@@ -115,6 +117,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private int iLazyPathwayLoadingId = -1;
 	
 	private TextRenderer textRenderer;
+	
+	private GenericSelectionManager pathwayVertexSelectionManager;
 
 	/**
 	 * Constructor.
@@ -170,6 +174,15 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
+		
+		// initialize internal gene selection manager
+		ArrayList<EViewInternalSelectionType> alSelectionType = new ArrayList<EViewInternalSelectionType>();
+		for(EViewInternalSelectionType selectionType : EViewInternalSelectionType.values())
+		{
+			alSelectionType.add(selectionType);
+		}		
+		pathwayVertexSelectionManager = new GenericSelectionManager(
+				alSelectionType, EViewInternalSelectionType.NORMAL);	
 	}
 	
 	/*
@@ -293,7 +306,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData(final GL gl) {
 
-		refGLPathwayManager.init(gl, alSetData, alSetSelection);
+		refGLPathwayManager.init(gl, alSetData, pathwayVertexSelectionManager);
 		buildPathwayPool(gl);
 		buildLayeredPathways(gl);
 	}
@@ -744,8 +757,8 @@ implements IMediatorReceiver, IMediatorSender {
 //			bSelectionChanged = true;
 			infoAreaRenderer.resetPoint();
 			
-			refGLPathwayManager.updateSelectionSet(
-					(SetSelection) refSetSelection);
+//			refGLPathwayManager.updateSelectionSet(
+//					(SetSelection) refSetSelection);
 			
 			bUpdateReceived = true;
 		}

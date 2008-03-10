@@ -25,6 +25,9 @@ import com.sun.org.apache.bcel.internal.generic.IALOAD;
  * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
+ * 
+ * 
+ * FIXME: DO NOT ASSIGN REFERENCES TO INTERNAL DATA
  */
 public class SetSelection 
 extends SetPlanarSimple 

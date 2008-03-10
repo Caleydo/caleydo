@@ -37,6 +37,8 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemKind;
 import org.geneview.util.graph.EGraphItemProperty;
@@ -66,6 +68,8 @@ implements IMediatorReceiver, IMediatorSender {
 	private GLPathwayManager refGLPathwayManager;
 
 	private SelectionManager selectionManager;
+	
+	private GenericSelectionManager pathwayVertexSelectionManager;
 
 	private PathwayVertexGraphItemRep selectedVertex;
 
@@ -109,6 +113,15 @@ implements IMediatorReceiver, IMediatorSender {
 		vecScaling = new Vec3f(1,1,1);
 		vecTranslation = new Vec3f(0,0,0);
 		renderStyle = new GeneralRenderStyle(viewFrustum);
+		
+		// initialize internal gene selection manager
+		ArrayList<EViewInternalSelectionType> alSelectionType = new ArrayList<EViewInternalSelectionType>();
+		for(EViewInternalSelectionType selectionType : EViewInternalSelectionType.values())
+		{
+			alSelectionType.add(selectionType);
+		}		
+		pathwayVertexSelectionManager = new GenericSelectionManager(
+				alSelectionType, EViewInternalSelectionType.NORMAL);	
 	}
 
 	public void setPathwayID(final int iPathwayID) {
@@ -197,7 +210,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData(final GL gl) {
 
-		refGLPathwayManager.init(gl, alSetData, alSetSelection);
+		refGLPathwayManager.init(gl, alSetData, pathwayVertexSelectionManager);
 		
 		// Create new pathway manager for GL context
 		if(!refHashGLcontext2TextureManager.containsKey(gl))
@@ -269,24 +282,38 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void rebuildPathwayDisplayList(final GL gl) {
 		
-		if (selectedVertex != null)
-		{
-			// Write currently selected vertex to selection set
-			// Selected elements are rendered highlighted by GLPathwayManager
-			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
-			ArrayList<Integer> iAlTmpDepth = new ArrayList<Integer>();
-			iAlTmpSelectionId.add(selectedVertex.getId());
-			iAlTmpDepth.add(0);
-			alSetSelection.get(1).getWriteToken();
-			alSetSelection.get(1).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpDepth, null);
-			alSetSelection.get(1).returnWriteToken();
-			
-			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+//		if (selectedVertex != null)
+//		{
+//			// Write currently selected vertex to selection set
+//			// Selected elements are rendered highlighted by GLPathwayManager
+//			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
+//			ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>();
+//			
+//			alSetSelection.get(1).getReadToken();
+//			int iPreviousSelectedElement = -1;
+//			if (alSetSelection.get(1).getSelectionIdArray() != null)
+//			{
+//				iPreviousSelectedElement = alSetSelection.get(1).getSelectionIdArray().get(0);
+//				alSetSelection.get(1).returnReadToken();
+//				iAlTmpSelectionId.add(iPreviousSelectedElement);
+//				iAlTmpGroup.add(-1);
+//			}
+//			else
+//				return;
+//			
+//			iAlTmpSelectionId.add(selectedVertex.getId());
+//			iAlTmpGroup.add(0);
+//			
+//			alSetSelection.get(1).getWriteToken();
+//			alSetSelection.get(1).mergeSelection(iAlTmpSelectionId, iAlTmpGroup, null);
+//			alSetSelection.get(1).returnWriteToken();
+//			
+//			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+//					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+//		
+//		}
 		
-			refGLPathwayManager.performIdenticalNodeHighlighting();
-		}
-
+		refGLPathwayManager.performIdenticalNodeHighlighting();
 		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 	
@@ -300,8 +327,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		generalManager.getSingelton().logMsg(
 				this.getClass().getSimpleName()
-						+ ": updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
-						+ eventTrigger.getClass().getSimpleName(),
+						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
+						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
 				LoggerType.VERBOSE);
 		
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
@@ -544,7 +571,8 @@ implements IMediatorReceiver, IMediatorSender {
 			final Pick pick)
 	{
 		// Check if selection occurs in the pool layer of the bucket
-		if (glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
+		if (glToolboxRenderer.getContainingLayer() != null 
+				&& glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
 			return;
 		
 		switch (ePickingType)
@@ -557,12 +585,33 @@ implements IMediatorReceiver, IMediatorSender {
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 			
+			// Actively unselect previously selected gene
+			int iGeneID = generalManager.getSingelton().getGenomeIdManager()
+			.getIdIntFromStringByMapping(
+					tmpVertexGraphItem.getName().substring(4), 
+					EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+			int iUnselectAccessionID = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+
+			// Remove old vertex from internal selection manager
+			if (selectedVertex != null)
+			{
+				pathwayVertexSelectionManager.removeFromType(
+					EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
+			}
+			
 			selectedVertex = tmpVertexGraphItemRep;
+			
+			// Add new vertex to internal selection manager
+			// FIXME: not nice to intially add gene in all modes
+			pathwayVertexSelectionManager.initialAdd(selectedVertex.getId());
+			pathwayVertexSelectionManager.addToType(
+					EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
 												
 			bIsDisplayListDirtyLocal = true;
 			bIsDisplayListDirtyRemote = true;
 			
-			int iGeneID = generalManager.getSingelton().getGenomeIdManager()
+			iGeneID = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromStringByMapping(
 						tmpVertexGraphItem.getName().substring(4), 
 						EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
@@ -594,6 +643,10 @@ implements IMediatorReceiver, IMediatorSender {
 		
 			iAlTmpSelectionId.add(iAccessionID);
 			iAlTmpGroupId.add(1); 
+			
+			// Active unselection
+			iAlTmpSelectionId.add(iUnselectAccessionID);
+			iAlTmpGroupId.add(0);
 			
 			alSetSelection.get(0).getWriteToken();
 			alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);

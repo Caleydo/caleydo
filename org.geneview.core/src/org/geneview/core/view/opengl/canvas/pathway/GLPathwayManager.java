@@ -29,6 +29,8 @@ import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.util.mapping.AGenomeMapper;
 import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
 import org.geneview.core.view.opengl.util.GLTextUtils;
+import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemKind;
 import org.geneview.util.graph.EGraphItemProperty;
@@ -68,7 +70,7 @@ public class GLPathwayManager {
 	
 	private AGenomeMapper genomeMapper;
 	
-	private ArrayList<SetSelection> alSetSelection;
+	private GenericSelectionManager internalSelectionManager;
 	
 	private HashMap<Integer, Integer> hashSelectedVertexRepId2Depth;
 	private ArrayList<Integer> iArSelectedEdgeRepId;
@@ -92,14 +94,15 @@ public class GLPathwayManager {
 	
 	public void init(final GL gl, 
 			final ArrayList<ISet> alSetData,
-			final ArrayList<SetSelection> alSetSelection) {
+			final GenericSelectionManager internalSelectionManager) {
 		
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
 		buildHighlightedEnzymeNodeDisplayList(gl);
 		buildHighlightedCompoundNodeDisplayList(gl);
 		
-		this.alSetSelection = alSetSelection;
+		this.internalSelectionManager = internalSelectionManager;
+		
 		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 		
@@ -165,33 +168,32 @@ public class GLPathwayManager {
 		hashSelectedVertexRepId2Depth.clear();
 		iArSelectedEdgeRepId.clear();
 		
-		alSetSelection.get(1).getReadToken();
-		ArrayList<Integer> iAlTmpSelectedGraphItemIds = 
-			alSetSelection.get(1).getSelectionIdArray();
-		ArrayList<Integer> iAlTmpSelectedGraphItemDepth =
-			alSetSelection.get(1).getGroupArray();
-		alSetSelection.get(1).returnReadToken();
+		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
+		iAlTmpSelectedGraphItemIds.addAll(internalSelectionManager.getElements(EViewInternalSelectionType.MOUSE_OVER));
 		
+//		ArrayList<Integer> iAlTmpSelectedGraphItemDepth =
+//			alSetSelection.get(1).getGroupArray();
+	
 		if (iAlTmpSelectedGraphItemIds.size() == 0)
 			return;
 		
 		// Copy selection IDs to array list object
 		for(int iItemIndex = 0; iItemIndex < iAlTmpSelectedGraphItemIds.size(); iItemIndex++) 
 		{
-			// Check if ID is valid
-			if (iAlTmpSelectedGraphItemIds.get(iItemIndex) == 0)
-				continue;
+//			// Check if ID is valid
+//			if (iAlTmpSelectedGraphItemIds.get(iItemIndex) == 0)
+//				continue;
 			
 			hashSelectedVertexRepId2Depth.put(
 					iAlTmpSelectedGraphItemIds.get(iItemIndex),
-					iAlTmpSelectedGraphItemDepth.get(iItemIndex));
+					0);//iAlTmpSelectedGraphItemDepth.get(iItemIndex));
 
 			if (!bEnableIdenticalNodeHighlighting)
 				continue;
 			
-			// Perform identical node highlighting only on nodes with depth 0
-			if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
-				continue;
+//			// Perform identical node highlighting only on nodes with depth 0
+//			if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
+//				continue;
 			
 			Iterator<IGraphItem> iterGraphItems = 
 				((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
@@ -239,11 +241,6 @@ public class GLPathwayManager {
 			iAlTmpGraphItemDepth.add(tmpEntry.getValue());
 			iItemIndex++;
 		}
-	
-		alSetSelection.get(1).getWriteToken();
-		alSetSelection.get(1).setSelectionIdArray(iAlTmpGraphItemId);	
-		alSetSelection.get(1).setGroupArray(iAlTmpGraphItemDepth);
-		alSetSelection.get(1).returnWriteToken();
 	}
 	
 	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
@@ -882,11 +879,6 @@ public class GLPathwayManager {
 			}
 			gl.glEnd();
 		}
-	}
-	
-	public void updateSelectionSet(final SetSelection setSelection) 
-	{
-		alSetSelection.add(0, setSelection);
 	}
 	
 	public void enableEdgeRendering(final boolean bEnableEdgeRendering) {

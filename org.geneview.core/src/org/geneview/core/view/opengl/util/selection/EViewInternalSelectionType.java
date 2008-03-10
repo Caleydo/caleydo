@@ -1,16 +1,17 @@
-package org.geneview.core.view.opengl.canvas.parcoords;
+package org.geneview.core.view.opengl.util.selection;
 
 
-public enum EAxisSelectionType
+public enum EViewInternalSelectionType
 {
 	NORMAL ("NORMAL"),
 	SELECTION ("SELECTION"),
-	MOUSE_OVER ("MOUSE_OVER");
+	MOUSE_OVER ("MOUSE_OVER"),
+	DESELECTED ("DESELECTED");
 	
 	private String sType;
 	//private static ArrayList<String> alSelectionType;
 	
-	EAxisSelectionType(String sType)
+	EViewInternalSelectionType(String sType)
 	{
 		this.sType = sType;
 	}
