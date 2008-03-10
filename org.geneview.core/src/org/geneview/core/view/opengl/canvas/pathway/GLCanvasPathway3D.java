@@ -32,6 +32,8 @@ import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.manager.view.SelectionManager;
+import org.geneview.core.util.ConversionStringInteger;
+import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
@@ -70,7 +72,7 @@ implements IMediatorReceiver, IMediatorSender {
 	private SelectionManager selectionManager;
 	
 	private GenericSelectionManager pathwayVertexSelectionManager;
-
+	
 	private PathwayVertexGraphItemRep selectedVertex;
 
 	/**
@@ -121,7 +123,7 @@ implements IMediatorReceiver, IMediatorSender {
 			alSelectionType.add(selectionType);
 		}		
 		pathwayVertexSelectionManager = new GenericSelectionManager(
-				alSelectionType, EViewInternalSelectionType.NORMAL);	
+				alSelectionType, EViewInternalSelectionType.NORMAL);		
 	}
 
 	public void setPathwayID(final int iPathwayID) {
@@ -337,20 +339,62 @@ implements IMediatorReceiver, IMediatorSender {
 		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
 		if (iAlSelection.size() != 0)
 		{
+			int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
+			
 			int iAccessionID = iAlSelection.get(0);
 			
 			String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 				.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 		
 			System.out.println("Accession Code: " +sAccessionCode);
+								
+			int iNCBIGeneID = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
+
+			String sNCBIGeneIDCode = generalManager.getSingelton().getGenomeIdManager()
+				.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+		
+			int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
 			
-//			int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
+			PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
+				((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
+					generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+
+			Iterator<IGraphItem> iterPathwayVertexGraphItemRep = 
+				tmpPathwayVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
 			
-			selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-					0, 
-					0, 
-					0), 
-					ESelectionMode.AddPick);
+			PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
+			while (iterPathwayVertexGraphItemRep.hasNext())
+			{
+				tmpPathwayVertexGraphItemRep = 
+					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
+				
+				// Check if vertex is contained in this pathway viewFrustum
+				if (!((PathwayGraph)generalManager.getSingelton().getPathwayManager()
+						.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
+					continue;
+				
+				selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
+						(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
+						((iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
+						ESelectionMode.AddPick);
+			
+				// Remove old vertex from internal selection manager
+				if (selectedVertex != null)
+				{
+					pathwayVertexSelectionManager.removeFromType(
+						EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
+				}
+				
+				selectedVertex = tmpPathwayVertexGraphItemRep;
+				
+				// Add new vertex to internal selection manager
+				pathwayVertexSelectionManager.addToType(
+						EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
+													
+				bIsDisplayListDirtyLocal = true;
+				bIsDisplayListDirtyRemote = true;
+			}
 		}
 	}
 
@@ -585,11 +629,11 @@ implements IMediatorReceiver, IMediatorSender {
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 			
-			// Actively unselect previously selected gene
+			// Actively deselect previously selected gene
 			int iGeneID = generalManager.getSingelton().getGenomeIdManager()
-			.getIdIntFromStringByMapping(
-					tmpVertexGraphItem.getName().substring(4), 
+				.getIdIntFromStringByMapping(tmpVertexGraphItem.getName().substring(4), 
 					EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+			
 			int iUnselectAccessionID = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 
@@ -603,8 +647,6 @@ implements IMediatorReceiver, IMediatorSender {
 			selectedVertex = tmpVertexGraphItemRep;
 			
 			// Add new vertex to internal selection manager
-			// FIXME: not nice to intially add gene in all modes
-			pathwayVertexSelectionManager.initialAdd(selectedVertex.getId());
 			pathwayVertexSelectionManager.addToType(
 					EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
 												
@@ -624,7 +666,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-
+			
 			generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
 				.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());
 			
@@ -675,6 +717,8 @@ implements IMediatorReceiver, IMediatorSender {
 			
 //			if (tmpPathwayVertexGraphItem..getType().equals(EPathwayVertexType.gene))
 //			{
+			pathwayVertexSelectionManager.initialAdd(tmpPathwayVertexGraphItem.getId());
+			
 				String sGeneID = tmpPathwayVertexGraphItem.getName();
 			
 				// Remove prefix ("hsa:")
@@ -695,6 +739,8 @@ implements IMediatorReceiver, IMediatorSender {
 			
 				if (iTmpAccessionID == -1)
 					continue;
+				
+				pathwayVertexSelectionManager.initialAdd(iTmpAccessionID);
 				
 				iAlSelectedGenes.add(iTmpAccessionID);
 				iAlTmpGroupId.add(0);
