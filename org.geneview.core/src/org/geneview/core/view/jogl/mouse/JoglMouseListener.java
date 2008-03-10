@@ -1,6 +1,5 @@
 package org.geneview.core.view.jogl.mouse;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Dimension;
@@ -8,12 +7,10 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-import javax.media.opengl.GLCanvas;
-
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.math.MathUtil;
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * Jogl mouse event listener
@@ -25,9 +22,7 @@ import org.geneview.core.view.jogl.JoglCanvasForwarder;
 public class JoglMouseListener 
 implements MouseListener, MouseMotionListener {
 
-	// TODO: should be an array of canvas object 
-	// because camera might be shared between several canvas objects.
-	protected JoglCanvasForwarder gLCanvas;
+	protected ArrayList<AGLCanvasUser> alGlCanvas;
 	
 	protected float fZoomScale = 0.072f;
 
@@ -55,13 +50,12 @@ implements MouseListener, MouseMotionListener {
 	 */
 	protected float fMouseSensitivityRotation = 1.0f;
 
-	public JoglMouseListener(final JoglCanvasForwarder gLCanvas) {
+	public JoglMouseListener() {
 
-		this.gLCanvas = gLCanvas;
-		
 		pressedMousePosition = new Point();
+		alGlCanvas = new ArrayList<AGLCanvasUser>();
 	}
-
+	
 	public final void setMouseSensitivityRotation(
 			float fSetMouseSensitivityRotation) {
 
@@ -271,8 +265,13 @@ implements MouseListener, MouseMotionListener {
 			    prevMouseY = y;
 			    
 			    /* set new paramters to ViewCamera */
-			    gLCanvas.getViewCamera().addCameraScale(
-			    		new Vec3f( 0, 0, zoomY +zoomX) );
+			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+			    
+			    while (iterGLCanvas.hasNext())
+			    {
+			    	iterGLCanvas.next().getViewCamera().addCameraScale(
+				    		new Vec3f( 0, 0, zoomY +zoomX) );
+			    }
 	    	}
 		} 
 		else
@@ -289,7 +288,18 @@ implements MouseListener, MouseMotionListener {
 			prevMouseY = y;
 
 		    /* set new paramters to ViewCamera */
-			gLCanvas.getViewCamera().addCameraPosition(addVec3f);
+		    /* set new paramters to ViewCamera */
+		    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+		    
+		    while (iterGLCanvas.hasNext())
+		    {
+		    	iterGLCanvas.next().getViewCamera().addCameraPosition(addVec3f);
+		    }
 		}
+	}
+	
+	public void addGLCanvas(final AGLCanvasUser gLCanvas) {
+		
+		alGlCanvas.add(gLCanvas);
 	}
 }

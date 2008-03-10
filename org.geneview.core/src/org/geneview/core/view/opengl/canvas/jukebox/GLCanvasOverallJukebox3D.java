@@ -77,6 +77,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
+		pickingTriggerMouseAdapter.addGLCanvas(this);
+		
 		underInteractionLayer = new JukeboxHierarchyLayer(generalManager,
 				1, 
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER, 
@@ -262,9 +264,9 @@ implements IMediatorReceiver, IMediatorSender {
 				poolLayer.setElementVisibilityById(true, iViewId);
 				
 				tmpGLEventListener.initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);
-
 			}
 						
+//			pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
 			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId);
 		}
 	}
@@ -393,6 +395,19 @@ implements IMediatorReceiver, IMediatorSender {
 		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
 		{
 			renderBucketWall(gl);
+		}
+		
+		// Render transparent plane for picking views without texture (e.g. PC)
+		if (layer.equals(poolLayer))
+		{
+			gl.glColor4f(1,1,1,1);
+			
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(0, 0, -0.01f);
+			gl.glVertex3f(0, 8, -0.01f);
+			gl.glVertex3f(8, 8, -0.01f);
+			gl.glVertex3f(8, 0, -0.01f);
+			gl.glEnd();
 		}
 		
 		((AGLCanvasUser) generalManager.getSingelton()

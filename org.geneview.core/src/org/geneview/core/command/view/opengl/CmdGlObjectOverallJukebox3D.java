@@ -77,7 +77,7 @@ extends ACmdCreate_GlCanvasUser {
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		((GLCanvasOverallJukebox3D)gLEventListener).addSetId(iArTmp);
+		((GLCanvasOverallJukebox3D)gLEventListener).addSetId(iArTmp);	
 	}
 
 	/*

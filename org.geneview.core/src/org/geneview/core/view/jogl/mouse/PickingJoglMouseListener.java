@@ -31,9 +31,9 @@ extends JoglMouseListener {
 	 * Constructor.
 	 *
 	 */
-	public PickingJoglMouseListener(final JoglCanvasForwarder gLCanvas) {
+	public PickingJoglMouseListener() {
 
-		super(gLCanvas);
+		super();
 		pickedPointDragStart = new Point();
 	}
 	

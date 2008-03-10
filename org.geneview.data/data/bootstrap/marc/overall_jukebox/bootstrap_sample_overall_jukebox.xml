@@ -106,7 +106,7 @@
 			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_OVERALL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Overall Jukebox" 
-							gl_origin="0 0 0" 
+							gl_origin="-2 -2 -8" 
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 3 100"
 							attrib4="transparency 1" 								

@@ -1,5 +1,7 @@
 package org.geneview.core.command.base;
 
+import gleem.CameraParameters;
+
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GLEventListener;
@@ -14,6 +16,7 @@ import org.geneview.core.manager.IViewGLCanvasManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.system.StringConversionTool;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * 
@@ -133,6 +136,9 @@ extends ACmdCreate_IdTargetParentGLObject {
 				sLabel,
 				viewFrustum);
 
+		((AGLCanvasUser)gLEventListener).getViewCamera().setCameraPosition(cameraOrigin);
+		((AGLCanvasUser)gLEventListener).getViewCamera().setCameraRotation(cameraRotation);		
+		
 		refCommandManager.runDoCommand(this);
 	}
 

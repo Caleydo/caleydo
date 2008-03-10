@@ -369,6 +369,13 @@ implements IMediatorReceiver, IMediatorSender {
 				tmpPathwayVertexGraphItemRep = 
 					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
 				
+				// Remove old vertex from internal selection manager
+				if (selectedVertex != null)
+				{
+					pathwayVertexSelectionManager.removeFromType(
+						EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
+				}
+				
 				// Check if vertex is contained in this pathway viewFrustum
 				if (!((PathwayGraph)generalManager.getSingelton().getPathwayManager()
 						.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
@@ -378,13 +385,6 @@ implements IMediatorReceiver, IMediatorSender {
 						(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
 						((iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
 						ESelectionMode.AddPick);
-			
-				// Remove old vertex from internal selection manager
-				if (selectedVertex != null)
-				{
-					pathwayVertexSelectionManager.removeFromType(
-						EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
-				}
 				
 				selectedVertex = tmpPathwayVertexGraphItemRep;
 				

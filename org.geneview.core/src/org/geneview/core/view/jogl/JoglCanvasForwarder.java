@@ -1,18 +1,17 @@
 package org.geneview.core.view.jogl;
 
-import gleem.linalg.Vec3f;
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.data.view.camera.ViewCameraBase;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.FPSCounter;
 
 /**
@@ -33,21 +32,18 @@ implements GLEventListener {
 	
 	private PickingJoglMouseListener joglMouseListener;
 	
-	private IViewCamera viewCamera;
-	
 	public JoglCanvasForwarder(final IGeneralManager generalManager,
 			final int iGLCanvasID) {
 		
 		this.generalManager = generalManager;
-		this.iGLCanvasID = iGLCanvasID;
 		
-		joglMouseListener = new PickingJoglMouseListener(this);
+		joglMouseListener = new PickingJoglMouseListener();
+		
+		this.iGLCanvasID = iGLCanvasID;
 		
 		// Register mouse listener to GL canvas
 		this.addMouseListener(joglMouseListener);
 		this.addMouseMotionListener(joglMouseListener);
-		
-		viewCamera = new ViewCameraBase(iGLCanvasID);
 	}
 	
 	public void init(GLAutoDrawable drawable) {
@@ -112,22 +108,6 @@ implements GLEventListener {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		
 	    fpsCounter.draw();
-		
-		/** Read viewing parameters... */
-		final Vec3f rot_Vec3f = new Vec3f();
-		final Vec3f position = viewCamera.getCameraPosition();
-		final float w = viewCamera.getCameraRotationGrad(rot_Vec3f);
-		
-		/** Translation */
-		gl.glTranslatef(position.x(),
-				position.y(),
-				position.z() );
-		
-		/** Rotation */		
-		gl.glRotatef( w, 
-				rot_Vec3f.x(), 
-				rot_Vec3f.y(), 
-				rot_Vec3f.z());
 	}
 
 	/*
@@ -156,11 +136,6 @@ implements GLEventListener {
 			final PickingJoglMouseListener joglMouseListener) {
 
 		this.joglMouseListener = joglMouseListener;
-	}
-	
-	public final IViewCamera getViewCamera() {
-		
-		return viewCamera;
 	}
 	
 	public int getID() {

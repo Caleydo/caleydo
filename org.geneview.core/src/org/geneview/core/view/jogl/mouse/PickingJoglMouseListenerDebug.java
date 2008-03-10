@@ -2,9 +2,6 @@ package org.geneview.core.view.jogl.mouse;
 
 import java.awt.event.MouseEvent;
 
-import org.geneview.core.view.jogl.IJoglMouseListener;
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
-
 /**
  * Print debug messages to System.*
  * 
@@ -20,9 +17,9 @@ extends PickingJoglMouseListener {
 	 * 
 	 * @param mouseListener
 	 */
-	public PickingJoglMouseListenerDebug(final JoglCanvasForwarder gLCanvas) {
+	public PickingJoglMouseListenerDebug() {
 
-		super(gLCanvas);
+		super();
 	}
 
 	public void mousePressed(MouseEvent e) {

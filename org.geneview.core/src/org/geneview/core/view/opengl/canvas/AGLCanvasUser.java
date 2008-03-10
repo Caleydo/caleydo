@@ -13,7 +13,9 @@ import org.geneview.core.data.AUniqueManagedObject;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.SetSelection;
+import org.geneview.core.data.view.camera.IViewCamera;
 import org.geneview.core.data.view.camera.IViewFrustum;
+import org.geneview.core.data.view.camera.ViewCameraBase;
 import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
@@ -61,6 +63,8 @@ implements GLEventListener {
 	
 	protected IViewFrustum viewFrustum;
 	
+	protected IViewCamera viewCamera;
+	
 	protected GLToolboxRenderer glToolboxRenderer;
 
 	/**
@@ -105,6 +109,9 @@ implements GLEventListener {
 		}
 
 		this.viewFrustum = viewFrustum;
+
+		viewCamera = new ViewCameraBase(iUniqueId); // FIXME: generate own ID for camera
+		
 		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
 	}
 
@@ -133,7 +140,25 @@ implements GLEventListener {
 		
 		((GLEventListener)parentGLCanvas).display(drawable);
 
-		displayLocal(drawable.getGL());
+		/** Read viewing parameters... */
+		final Vec3f rot_Vec3f = new Vec3f();
+		final Vec3f position = viewCamera.getCameraPosition();
+		final float w = viewCamera.getCameraRotationGrad(rot_Vec3f);
+		
+		GL gl = drawable.getGL();
+		
+		/** Translation */
+		gl.glTranslatef(position.x(),
+				position.y(),
+				position.z() );
+		
+		/** Rotation */		
+		gl.glRotatef( w, 
+				rot_Vec3f.x(), 
+				rot_Vec3f.y(), 
+				rot_Vec3f.z());
+		
+		displayLocal(gl);
 		
 		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
 			.renderInfoOverlay(iUniqueId, drawable);
@@ -542,4 +567,8 @@ implements GLEventListener {
 		return glToolboxRenderer;
 	}
 	
+	public final IViewCamera getViewCamera() {
+		
+		return viewCamera;
+	}	
 }
