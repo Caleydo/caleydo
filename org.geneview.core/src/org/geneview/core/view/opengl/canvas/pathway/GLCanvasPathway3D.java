@@ -543,6 +543,10 @@ implements IMediatorReceiver, IMediatorSender {
 			final int iExternalID,
 			final Pick pick)
 	{
+		// Check if selection occurs in the pool layer of the bucket
+		if (glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
+			return;
+		
 		switch (ePickingType)
 		{	
 		case PATHWAY_ELEMENT_SELECTION:

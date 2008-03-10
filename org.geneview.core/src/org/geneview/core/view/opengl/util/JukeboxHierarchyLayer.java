@@ -92,6 +92,17 @@ public class JukeboxHierarchyLayer {
 			return 0;
 		}
 		
+		if (llElementId.contains(-1))
+		{
+			int iReplacePosition = llElementId.indexOf(-1);
+
+			llElementId.set(iReplacePosition, iElementId);
+			llElementIdVisibleState.set(iReplacePosition, false);
+			llElementIdImportanceQueue.addFirst(iElementId);	
+			
+			return 0;
+		}
+		
 		// Check if element limit is reached
 		if (llElementId.size() >= iCapacity)
 		{
@@ -151,20 +162,15 @@ public class JukeboxHierarchyLayer {
 	}
 	
 	public void removeElement(int iElementId) {
-		
-		llElementId.remove((Integer)iElementId);
-		llElementIdImportanceQueue.remove((Integer)iElementId);
-		llElementIdVisibleState.remove((Integer)iElementId);
-		
-//		if (llElementId.contains((Integer)iElementId))
-//			llElementId.set(llElementId.indexOf((Integer)iElementId), -1);
-//	
-//		if (llElementIdImportanceQueue.contains((Integer)iElementId))
-//			llElementIdImportanceQueue.set(llElementIdImportanceQueue.indexOf((Integer)iElementId), -1);
-//
-//		if (llElementIdVisibleState.contains((Integer)iElementId))
-//			llElementIdVisibleState.set(llElementIdVisibleState.indexOf((Integer)iElementId), false);
 
+		if (llElementId.contains((Integer)iElementId))
+		{
+			int iReplacePosition = llElementId.indexOf((Integer)iElementId);
+			
+			llElementId.set(iReplacePosition, -1);
+			llElementIdVisibleState.set(iReplacePosition, false);
+			llElementIdImportanceQueue.removeLastOccurrence(iElementId);
+		}
 	}
 	
 	public void removeAllElements() {
@@ -222,6 +228,10 @@ public class JukeboxHierarchyLayer {
 		{	
 			// Append to the end of the list
 			return llElementId.size(); 
+		}
+		else if (llElementId.contains(-1))
+		{
+			return llElementId.indexOf(-1);
 		}
 		else 
 		{	

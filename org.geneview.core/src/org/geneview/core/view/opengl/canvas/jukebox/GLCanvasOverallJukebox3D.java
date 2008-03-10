@@ -25,7 +25,6 @@ import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -245,20 +244,27 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				underInteractionLayer.addElement(iViewId);
 				underInteractionLayer.setElementVisibilityById(true, iViewId);
+				
+				tmpGLEventListener.initRemote(gl, iUniqueId, underInteractionLayer, pickingTriggerMouseAdapter);
+
 			}
 			else if (stackLayer.getElementList().size() < stackLayer.getCapacity())
 			{
 				stackLayer.addElement(iViewId);
 				stackLayer.setElementVisibilityById(true, iViewId);
+				
+				tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
+
 			}
 			else if (poolLayer.getElementList().size() < poolLayer.getCapacity())
 			{
 				poolLayer.addElement(iViewId);
 				poolLayer.setElementVisibilityById(true, iViewId);
+				
+				tmpGLEventListener.initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);
+
 			}
-			
-			tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
-			
+						
 			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId);
 		}
 	}
@@ -406,15 +412,14 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			tmpSlerpAction.start();
 			
-			int iOriginPosIndex;
-			if (tmpSlerpAction.getOriginHierarchyLayer().equals(transitionLayer))
-				iOriginPosIndex = 0;
-			else
-				iOriginPosIndex = tmpSlerpAction.getOriginPosIndex();
-			
 			tmpSlerpAction.getOriginHierarchyLayer().setElementVisibilityById(false, 
 					tmpSlerpAction.getOriginHierarchyLayer().getElementIdByPositionIndex(
-							iOriginPosIndex));
+							tmpSlerpAction.getOriginPosIndex()));
+			
+			// Update layer in toolbox renderer
+			((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager().getItem(
+					tmpSlerpAction.getElementId())).getToolboxRenderer()
+						.updateLayer(tmpSlerpAction.getDestinationHierarchyLayer());
 		}
 		
 		if (iSlerpFactor < SLERP_RANGE)
@@ -439,15 +444,9 @@ implements IMediatorReceiver, IMediatorSender {
 			slerpMod.playSlerpSound();
 		}
 		
-		int iOriginPosIndex;
-		if (slerpAction.getOriginHierarchyLayer().equals(transitionLayer))
-			iOriginPosIndex = 0;
-		else
-			iOriginPosIndex = slerpAction.getOriginPosIndex();
-		
 		Transform transform = slerpMod.interpolate(slerpAction
 				.getOriginHierarchyLayer().getTransformByPositionIndex(
-						iOriginPosIndex), slerpAction
+						slerpAction.getOriginPosIndex()), slerpAction
 				.getDestinationHierarchyLayer().getTransformByPositionIndex(
 						slerpAction.getDestinationPosIndex()),
 				(float)iSlerpFactor / SLERP_RANGE);
@@ -470,10 +469,14 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			// Remove view from origin layer after slerping
 			slerpAction.getOriginHierarchyLayer().removeElement(
-					slerpAction.getOriginPosIndex());
+					slerpAction.getElementId());
 			
 			iSlerpFactor = 0;
 		}
+		
+		// After last slerp action is done the line connections are turned on again
+		if (arSlerpActions.isEmpty())
+			glConnectionLineRenderer.enableRendering(true);
 	}
 	
 	protected void checkForHits() 
@@ -502,45 +505,50 @@ implements IMediatorReceiver, IMediatorSender {
 					
 						case CLICKED:			
 					
-							if (iDraggedViewID == -1 || iViewID == iDraggedViewID)
-							{
-								pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
-								return;
-							}
+//							if (iDraggedViewID == -1 || iViewID == iDraggedViewID)
+//							{
+//								pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
+//								return;
+//							}
 							
 							generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
 								.setDataAboutView(iViewID);
 							
-							// TODO: Should be done using slerping
-							if (stackLayer.containsElement(iViewID))
+							if (poolLayer.containsElement(iViewID) || stackLayer.containsElement(iViewID))
 							{
-								int iDestPositionIndex = stackLayer.getPositionIndexByElementId(iViewID);
-								
-								if (stackLayer.containsElement(iDraggedViewID))
-								{
-									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
-									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
-								}		
-								else if (underInteractionLayer.containsElement(iDraggedViewID))
-								{
-									int iSrcPositionIndex = underInteractionLayer.getPositionIndexByElementId(iDraggedViewID);
-									underInteractionLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
-								}
-								
-								stackLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
-							}		
-							else if (underInteractionLayer.containsElement(iViewID))
-							{
-								int iDestPositionIndex = underInteractionLayer.getPositionIndexByElementId(iViewID);
-								
-								if (stackLayer.containsElement(iDraggedViewID))
-								{
-									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
-									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
-								}		
-								
-								underInteractionLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
-							}	
+								loadViewToUnderInteractionLayer(iViewID);
+							}
+							
+//							// TODO: Should be done using slerping
+//							if (stackLayer.containsElement(iViewID))
+//							{
+//								int iDestPositionIndex = stackLayer.getPositionIndexByElementId(iViewID);
+//								
+//								if (stackLayer.containsElement(iDraggedViewID))
+//								{
+//									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
+//									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
+//								}		
+//								else if (underInteractionLayer.containsElement(iDraggedViewID))
+//								{
+//									int iSrcPositionIndex = underInteractionLayer.getPositionIndexByElementId(iDraggedViewID);
+//									underInteractionLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
+//								}
+//								
+//								stackLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
+//							}		
+//							else if (underInteractionLayer.containsElement(iViewID))
+//							{
+//								int iDestPositionIndex = underInteractionLayer.getPositionIndexByElementId(iViewID);
+//								
+//								if (stackLayer.containsElement(iDraggedViewID))
+//								{
+//									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
+//									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
+//								}		
+//								
+//								underInteractionLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
+//							}	
 							
 							// Reset dragged view
 							iDraggedViewID = -1;
@@ -653,6 +661,8 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		arSlerpActions.clear();
+		
+		glConnectionLineRenderer.enableRendering(false);
 
 //		// Check if under interaction layer is free
 //		if (underInteractionLayer.getElementList().isEmpty())
@@ -679,9 +689,24 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 		else
 		{
-			// Check if stack layer has a free spot
-			if (stackLayer.getElementList().size() < stackLayer.getCapacity())
+			// Check if view is already loaded in the stack layer
+			if (stackLayer.containsElement(iViewID))
 			{
+				// Slerp selected view to under interaction transition position
+				SlerpAction slerpActionTransition = new SlerpAction(
+						iViewID, stackLayer, transitionLayer);	
+				arSlerpActions.add(slerpActionTransition);
+				
+				// Slerp under interaction view to free spot in stack
+				SlerpAction reverseSlerpAction2 = new SlerpAction(
+						underInteractionLayer.getElementIdByPositionIndex(0),
+						underInteractionLayer, stackLayer);
+				arSlerpActions.add(reverseSlerpAction2);	
+				
+				// Slerp selected view from transition position to under interaction position
+				SlerpAction slerpAction = new SlerpAction(
+						iViewID, transitionLayer, underInteractionLayer);	
+				arSlerpActions.add(slerpAction);
 			}
 			else
 			{
@@ -702,10 +727,10 @@ implements IMediatorReceiver, IMediatorSender {
 						underInteractionLayer, true);
 				arSlerpActions.add(reverseSlerpAction2);		
 				
-				// Slerp selected view to under interaction position
+				// Slerp selected view from transition position to under interaction position
 				SlerpAction slerpAction = new SlerpAction(
 						iViewID, transitionLayer, underInteractionLayer);	
-				arSlerpActions.add(slerpAction);
+				arSlerpActions.add(slerpAction);	
 			}
 		}
 		

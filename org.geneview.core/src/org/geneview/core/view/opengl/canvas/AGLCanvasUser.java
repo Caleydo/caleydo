@@ -117,6 +117,9 @@ implements GLEventListener {
 		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
 			.initInfoOverlay(iUniqueId, drawable);
 		
+		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+			.initInfoInPlace(viewFrustum);
+		
 		((GLEventListener)parentGLCanvas).init(drawable);
 		
 		initLocal(drawable.getGL());
@@ -493,7 +496,7 @@ implements GLEventListener {
 	 * @param gl
 	 */
 	protected void checkForHits(final GL gl)
-	{		
+	{	
 		// TODO: should only iterate over those relevant to the view - should it?
 		for(EPickingType ePickingType : EPickingType.values())
 		{		
@@ -510,8 +513,7 @@ implements GLEventListener {
 						int iPickingID = tempPick.getPickingID();
 						int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
 						EPickingMode ePickingMode = tempPick.getPickingMode();
-						handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);	
-						
+						handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);					
 					}
 				}
 			}
@@ -534,5 +536,10 @@ implements GLEventListener {
 			final Pick pick);
 	
 	public abstract ArrayList<String> getInfo();
+	
+	public GLToolboxRenderer getToolboxRenderer() 
+	{
+		return glToolboxRenderer;
+	}
 	
 }

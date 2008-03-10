@@ -75,7 +75,6 @@ public class GLToolboxRenderer
 		iconTextureManager = new GLIconTextureManager(gl);
 	}
 	
-	
 	public GLToolboxRenderer(final GL gl,
 			final IGeneralManager generalManager,
 			final int iContainingViewID,
@@ -91,8 +90,6 @@ public class GLToolboxRenderer
 		
 		this.layer = layer;
 		this.iRemoteViewID = iRemoteViewID;
-
-	
 	}
 	
 	/**
@@ -227,4 +224,14 @@ public class GLToolboxRenderer
 //		camPos.setY(matrix[1] * camPos.x() + matrix[5] * camPos.y() + matrix[9] * camPos.z() + matrix[13]);
 //		camPos.setZ(matrix[2] * camPos.x() + matrix[6] * camPos.y() + matrix[10] * camPos.z() + matrix[14]);
 //    }
+	
+	public void updateLayer(final JukeboxHierarchyLayer layer)
+	{
+		this.layer = layer;
+	}
+	
+	public JukeboxHierarchyLayer getContainingLayer() 
+	{
+		return layer;
+	}
 }

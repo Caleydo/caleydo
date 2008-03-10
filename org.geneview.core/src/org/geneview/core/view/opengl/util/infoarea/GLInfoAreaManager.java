@@ -47,7 +47,6 @@ public class GLInfoAreaManager
 	private float fXElementOrigin = 0;
 	private float fYElementOrigin = 0;
 	private Vec3f vecLowerLeft;
-	private IViewFrustum viewFrustum;
 	
 	private InformationContentCreator contentCreator;
 	
@@ -63,35 +62,29 @@ public class GLInfoAreaManager
 	public GLInfoAreaManager(final IGeneralManager generalManager)
 	{
 		this.generalManager = generalManager;
-//		infoArea = new GLTextInfoAreaRenderer(generalManager, viewFrustum);
 		hashViewIDToInfoOverlay = new HashMap<Integer, GLInfoOverlayRenderer>();
 	}
 	
-	/**
-	 * Set the data to be rendered.
-	 * 
-	 * @param iGeneViewID
-	 * @param eInputDataTypes
-	 * @param pickedPoint
-	 */
-	public void setData(int iGeneViewID, EInputDataType eInputDataTypes, Point pickedPoint) 
+	public void initInfoInPlace(final IViewFrustum viewFrustum) 
 	{
-		//this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
-		this.pickedPoint = pickedPoint;
-		vecLowerLeft = new Vec3f();
-		
-		infoArea.setData(iGeneViewID, eInputDataTypes);
-		//miniView =  new AGLParCoordsMiniView();
-//		fXOrigin = 0;
-//		fYOrigin = 0;
-//		fHeight = 0;
-//		fWidth = 0;
+		infoArea = new GLTextInfoAreaRenderer(generalManager, viewFrustum);
 	}
 	
-	public void setMiniViewData(ArrayList<IStorage> alStorages, ArrayList<SetSelection> alSetSelection)
+	public void initInfoOverlay(final int iViewID, final GLAutoDrawable drawable)
 	{
-		infoArea.setMiniViewData(alStorages, alSetSelection);
-	}
+		// Lazy creation to be sure that all managers are already initialized
+		if (hashViewIDToInfoOverlay.isEmpty())
+			contentCreator = new InformationContentCreator(generalManager);
+		
+		if (!hashViewIDToInfoOverlay.containsKey(iViewID))
+		{
+			 GLInfoOverlayRenderer infoOverlayRenderer = new GLInfoOverlayRenderer(generalManager);
+			 
+			 hashViewIDToInfoOverlay.put(iViewID, infoOverlayRenderer);
+			 
+			 infoOverlayRenderer.init(drawable);	 
+		}	
+	}	
 	
 	/**
 	 * Render the data previously set
@@ -100,7 +93,7 @@ public class GLInfoAreaManager
 	 * @param bFirstTime this has to be true only the first time you render it
 	 * 			and can never be true after that
 	 */
-	public void renderInfoArea(GL gl, boolean bFirstTime)
+	public void renderInPlaceInfo(GL gl, boolean bFirstTime)
 	{
 		if(bFirstTime)
 		{
@@ -125,22 +118,6 @@ public class GLInfoAreaManager
 		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime);
 	}
 
-	public void initInfoOverlay(final int iViewID, final GLAutoDrawable drawable)
-	{
-		// Lazy creation to be sure that all managers are already initialized
-		if (hashViewIDToInfoOverlay.isEmpty())
-			contentCreator = new InformationContentCreator(generalManager);
-		
-		if (!hashViewIDToInfoOverlay.containsKey(iViewID))
-		{
-			 GLInfoOverlayRenderer infoOverlayRenderer = new GLInfoOverlayRenderer(generalManager);
-			 
-			 hashViewIDToInfoOverlay.put(iViewID, infoOverlayRenderer);
-			 
-			 infoOverlayRenderer.init(drawable);	 
-		}	
-	}	
-	
 	public void renderInfoOverlay(final int iViewID, final GLAutoDrawable drawable) 
 	{	
 		hashViewIDToInfoOverlay.get(iViewID).render(drawable);
@@ -180,5 +157,31 @@ public class GLInfoAreaManager
 			iterInfoOverlay.next().setData(((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
 					.getItem(iViewID)).getInfo());
 		}
+	}
+	
+	/**
+	 * Set the data to be rendered.
+	 * 
+	 * @param iGeneViewID
+	 * @param eInputDataTypes
+	 * @param pickedPoint
+	 */
+	public void setData(int iGeneViewID, EInputDataType eInputDataTypes, Point pickedPoint) 
+	{
+		//this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
+		this.pickedPoint = pickedPoint;
+		vecLowerLeft = new Vec3f();
+		
+		infoArea.setData(iGeneViewID, eInputDataTypes);
+		//miniView =  new AGLParCoordsMiniView();
+//		fXOrigin = 0;
+//		fYOrigin = 0;
+//		fHeight = 0;
+//		fWidth = 0;
+	}
+	
+	public void setMiniViewData(ArrayList<IStorage> alStorages, ArrayList<SetSelection> alSetSelection)
+	{
+		infoArea.setMiniViewData(alStorages, alSetSelection);
 	}
 }

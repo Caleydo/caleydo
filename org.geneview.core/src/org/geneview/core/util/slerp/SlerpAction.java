@@ -61,7 +61,10 @@ public class SlerpAction {
 		this.iElementId = iElementId;
 		this.originHierarchyLayer = originHierarchyLayer;
 		this.destinationHierarchyLayer = destinationHierarchyLayer;
-		
+	}
+	
+	public void start() {
+	
 		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
 		
 		// If pathway is already in this layer - slerp to the existing position.
@@ -69,9 +72,6 @@ public class SlerpAction {
 			this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(iElementId);
 		else
 			this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();
-	}
-	
-	public void start() {
 		
 		// Only add element if it is not contained already in this layer
 		if (!destinationHierarchyLayer.containsElement(iElementId))

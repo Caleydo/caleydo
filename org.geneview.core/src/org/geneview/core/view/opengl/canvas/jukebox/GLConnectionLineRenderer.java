@@ -34,6 +34,8 @@ public class GLConnectionLineRenderer {
 	
 	private SelectionManager selectionManager;
 	
+	private boolean bEnableRendering = true;
+	
 	/**
 	 * Constructor.
 	 */
@@ -53,7 +55,8 @@ public class GLConnectionLineRenderer {
 		
 		//renderTestViewConnectionLines(gl);
 
-		if (selectionManager.getAllSelectedElements().size() == 0)
+		if ((selectionManager.getAllSelectedElements().size() == 0)
+				|| (bEnableRendering == false))
 			return;
 		
 		renderConnectionLines(gl);
@@ -116,11 +119,6 @@ public class GLConnectionLineRenderer {
 	}
 	
 	private void renderConnectionLines(final GL gl) {
-		
-		Vec3f vecMatSrc = new Vec3f(0, 0, 0);
-		Vec3f vecMatDest = new Vec3f(0, 0, 0);
-		Vec3f vecTransformedSrc = new Vec3f(0, 0, 0);
-		Vec3f vecTransformedDest = new Vec3f(0, 0, 0);
 		
 		Vec3f vecTranslationSrc;
 		Vec3f vecTranslationDest;
@@ -278,5 +276,10 @@ public class GLConnectionLineRenderer {
 		vecTransformedPoint.add(vecTranslation);
 		
 		return vecTransformedPoint;
+	}
+	
+	public void enableRendering(final boolean bEnableRendering) {
+		
+		this.bEnableRendering = bEnableRendering;
 	}
 }
